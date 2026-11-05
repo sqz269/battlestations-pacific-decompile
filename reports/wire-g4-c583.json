@@ -1,0 +1,389 @@
+{
+  "chain": 583,
+  "worker": "agent/g4-w5",
+  "base": "e9bd9b953",
+  "switch": "bsp::kWireGoal4Chain583Bound",
+  "picked": "Reuse class-free raw DWORD getters in the live adopted-substream producer and read path.",
+  "wired_before": 9912,
+  "wired_after": 9914,
+  "validation": {
+    "baseline_build": "Win32 Release and all four tests passed",
+    "final_build": "./scripts/build.ps1: Win32 Release succeeded; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed.",
+    "call_graph": "00BA7170 has a new entry-reachable call at 1056B491 from read_native_adopted_substream_00BF1000; 00B9A4B0 has one at 1056B211 from construct_native_adopted_substream_00BF1130.",
+    "runtime": "Game not run; emitted entry reachability is not runtime/gameplay proof.",
+    "float_math_changed": false,
+    "icf": "Release folds each getter with identical functions; native_adopted_substream.obj REL32 relocations independently name @bsp_tagged_b9bb_00ba7170@4 and @bsp_tagged_b9bb_00b9a4b0@4, disambiguating the new callers.",
+    "existing_body": "No reconstructed body was duplicated or changed; replaced only equivalent current DWORD reads at BF100C and BF119F.",
+    "readiness": [
+      {
+        "address": "00b9a4b0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 4,
+        "callers_live": 4
+      },
+      {
+        "address": "00ba7170",
+        "state": "wired",
+        "called": null,
+        "call_sites": null,
+        "callers_live": null
+      }
+    ],
+    "call_graph_summary": "37877/38042 emitted functions reachable; 4990/5499 reconstructed addresses called; both new caller sites independently identified in the source object.",
+    "baseline_count": "9912 measured against the HEAD source version of native_adopted_substream.cpp using the same current inventory/index; only the two claimed rows change state in the final source.",
+    "readiness_called_caveat": "00BA7170 has called=null in wire_readiness despite its reachable emitted caller at 1056B491; Release ICF aliases its code. Direct COFF REL32 to its exact symbol plus the entry-reachable changed caller establish the binding. No additional ICF alias calls are claimed."
+  },
+  "rows": [
+    {
+      "native": "00ba7170",
+      "status": "wired",
+      "host_site": "src/native_adopted_substream.cpp:read_native_adopted_substream_00bf1000",
+      "reason": "Reuse the existing class-free raw DWORD-at-+8 body for the live adopted-source pointer; replaces BF100C's equivalent read."
+    },
+    {
+      "native": "00b9a4b0",
+      "status": "wired",
+      "host_site": "src/native_adopted_substream.cpp:construct_native_adopted_substream_00bf1130",
+      "reason": "Reuse the existing class-free raw DWORD-at-+14 body for BF119F's live start-high reload after the actual source seek."
+    },
+    {
+      "native": "00bf1000",
+      "status": "skipped",
+      "host_site": "src/native_adopted_substream.cpp:read_native_adopted_substream_00bf1000",
+      "reason": "Already entry-reachable before this packet; used as the real-state caller for 00BA7170, not claimed as newly wired."
+    },
+    {
+      "native": "00bf1130",
+      "status": "skipped",
+      "host_site": "src/native_adopted_substream.cpp:construct_native_adopted_substream_00bf1130",
+      "reason": "Existing real stream producer; used as caller for 00B9A4B0, not claimed as newly wired."
+    },
+    {
+      "native": "007663f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameMissionLuaHost Countdown binding",
+      "reason": "008B16E0 broadcasts countdown text only in session mode 1; no single-player local message consumer justifies constructing this message."
+    },
+    {
+      "native": "00766460",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameMissionLuaHost Countdown binding",
+      "reason": "Countdown message serialization belongs to the multiplayer-only 00772B30 broadcast, absent from the single-player binding path."
+    },
+    {
+      "native": "007664e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameMissionLuaHost Countdown binding",
+      "reason": "No single-player countdown message receive/factory path; single-player starts the countdown directly."
+    },
+    {
+      "native": "00766550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameMissionLuaHost Countdown binding",
+      "reason": "No admitted single-player countdown message lifetime to destroy; the examined broadcast is multiplayer-only."
+    },
+    {
+      "native": "007611d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:ShipSetTorpedoStock binding",
+      "reason": "0089EEE0 directly calls 0081F8B0, which does not send a 96h message; adding a codec to this path would invent a transport step."
+    },
+    {
+      "native": "00761270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:ShipSetTorpedoStock binding",
+      "reason": "The inspected single-player stock setter has no original 96h send step requiring this writer."
+    },
+    {
+      "native": "007612c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:ShipSetTorpedoStock binding",
+      "reason": "The inspected single-player stock setter has no original 96h receive step requiring this reader."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Existing codec view explicitly lacks a real selected-player/game ownership binding for full native message construction."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp:existing sampler write",
+      "reason": "Readiness already reports an entry-reachable call; adding another invocation would duplicate existing wiring."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:submit_native_main_scene_00b101c0",
+      "reason": "Existing main-scene caller already invokes the body but lacks an admitted reachable D5E13C command execution path."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp:assign_native_animation_values_00b926e0",
+      "reason": "Reserve is already called by the source assignment/growth helpers; no additional live animation consumer was established."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:existing word-array reserve call",
+      "reason": "Existing source call already reserves the actual message words; a switch around that same call would not add wiring."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:existing word-array resize call",
+      "reason": "Existing source call already resizes the actual message words; no new single-player message35 producer was established."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_fileblock_owner.cpp:ensure_native_loading_job_fileblock_00504790",
+      "reason": "The inspected VFS application owns ordinary FileBlocks but supplies no actual loading-job receiver for this body."
+    },
+    {
+      "native": "00ba7180",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp:ocean_field_update_water_ring_mesh_00b9cb80",
+      "reason": "The original ocean caller's +2BC receiver/root contract was not established in a live native ocean owner."
+    },
+    {
+      "native": "00bbce40",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b9bb_16i.cpp:bsp_tagged_b9bb_00bbce40",
+      "reason": "No required live +94 DWORD read was established in the selected adopted-substream owner."
+    },
+    {
+      "native": "00b9a500",
+      "status": "skipped",
+      "host_site": "src/native_adopted_substream.cpp:stream field reads",
+      "reason": "The selected stream paths consume the full DWORD at +10, not a byte; substituting the byte getter would change semantics."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:owner field reads",
+      "reason": "Original scene-renderer pass-getter consumer remains outside the chosen stream packet; avoided post-effect files under review."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp:native_post_effect_pass_raw_08_00b4cb90",
+      "reason": "Post-effect getter integration overlaps the active/review post-effect work stream; selected disjoint stream ownership instead."
+    },
+    {
+      "native": "00a8fd30",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_construction.cpp:allocate_native_directional_shadow_owner_00a8fd30",
+      "reason": "No complete live directional-shadow construction admission and renderer caller were established."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp:set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "No admitted live light/shadow owner pair and lifetime context were established in the inspected application path."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit-pick screen state",
+      "reason": "Live HUD state lacks the original +30 mode and +C4 selection-vector lifetime needed by the full reset body."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp:publish_and_update",
+      "reason": "Existing chain521 already calls the body with the live channel; the HUD ambient-volume stand-in has no actual ambient SoundInstance."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:AI task ticking",
+      "reason": "No actual task+2F4 unit pointer and authoritative per-side unit+9C2 gate storage were established."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:director state stores",
+      "reason": "The inspected path stores director flags directly and supplies no single-player controller-state message consumer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot candidate",
+      "reason": "No actual single-player snapshot recipient and complete director getter inputs were established."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp:gui_extent",
+      "reason": "Live host already calls semantic gui_aspect_extent_00aa1fe0; readiness selects an unmatched ledger identifier."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "This is an approach-owned subobject, not a process registry; no live approach allocation/caller was established."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp:destroy_native_bot_state_registry_004116d0",
+      "reason": "No actual live approach-owned registry lifetime was established for destruction."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group candidate calculations",
+      "reason": "The inspected host exposes resource-usage member values, not the original per-member recon values required by this ratio."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:class-pair scoring candidate",
+      "reason": "No actual mode-specific ClassPairRow table consumer was established."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group spawning candidate",
+      "reason": "No matched original threat-record/source gate was established in the inspected live host."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user path operations",
+      "reason": "No ClearUserPathPoints caller exists in the inspected command paths; other point erasures do not select the same slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command target descriptors",
+      "reason": "The live host uses SceneCommandTarget and lacks the original class-ordinal cell consumed by this descriptor constructor."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command target descriptors",
+      "reason": "No live descriptor message consumer was established for the reconstructed ordinal/entity-index projection."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile impact presentation",
+      "reason": "The inspected impact path lacks the actual point-effect consumer for the selected weapon-class effect slot."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:unit order ring",
+      "reason": "The real ring lacks the original serialized rudder or sinking-override producer required to supply this setter input."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane engine state",
+      "reason": "No retained PlaneEngineSlots list with actual burning-byte producers was established."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane engine state",
+      "reason": "No actual PlaneEngineSlots stop-slot owner list was established."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:engine-movie playback candidate",
+      "reason": "No actual EngineMovieClock and track-rewind consumer exist in the inspected live hosts."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:engine-movie playback candidate",
+      "reason": "No live EngineMovieClock producer/playback update path was established."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:briefing candidate",
+      "reason": "No implemented MissionLaunchHost path reaches a retained BriefingScreenState for this mission setter."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp:get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No existing entry-reachable product-query consumer was established; current inspected camera paths use different expressions."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp:scene text handling",
+      "reason": "The live scene code decodes input; no original multiline scene writer consumer was established for escaping."
+    },
+    {
+      "native": "00c4d980",
+      "status": "skipped",
+      "host_site": "src/native_dyn_world_step.cpp:flush kernel",
+      "reason": "The native world-step kernel already includes the flush operation; no new live removal owner/caller was established."
+    },
+    {
+      "native": "00c321b0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_world_step.cpp:profile-tree reset kernel",
+      "reason": "No new actual profile-tree consumer was established; adding a wrapper around an existing kernel would not add behavior."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:player_bomb_release_006082d0",
+      "reason": "The live bomb-release host omits the original bomb-view direction comparison state and inputs."
+    },
+    {
+      "native": "00794750",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_vehicle_camera_pose_0079f710",
+      "reason": "The built entry call graph contains no linked camera-direction-delta consumer; swapping equivalent math here would remain unreachable."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:pose orthonormalization",
+      "reason": "Existing live callers require 0085DC80's basis policy; no row-Z-first consumer was established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp:text rendering",
+      "reason": "No actual text-input glyph-byte validation consumer was established; rendering glyph selection has different semantics."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:LoadingScreen::gui_refresh",
+      "reason": "The inspected refresh site is a record-only boundary and lacks the original GUI command queue receiver."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:GuiPointerRuntime update",
+      "reason": "Existing frame code already invokes update_pointer_00aa3910; readiness uses the unmatched BSP_GuiManager_UpdatePointer ledger name."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:language-list candidate",
+      "reason": "No live language-list dropdown consumer of the reconstructed LanguageEntry vector was established."
+    },
+    {
+      "native": "00bbc5f0",
+      "status": "skipped",
+      "host_site": "src/native_procedural_factory_table_construction.cpp:caustics factory",
+      "reason": "Existing procedural-factory construction already invokes this body with real allocated storage; no new call was added."
+    }
+  ],
+  "advertised_pool_wired": 9909,
+  "validated_new_functions": 2
+}
