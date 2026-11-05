@@ -1,6 +1,8 @@
 #include "bsp/native_renderer_vertex_binding.hpp"
 #include "bsp/native_renderer_binding_getters.hpp"
 #include "bsp/native_renderer_surface_bindings.hpp"
+#include "bsp/native_shadow_draw_leaves.hpp"
+#include "bsp/wire_goal4_chain590_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -103,6 +105,22 @@ using SetDepth = HRESULT (STDMETHODCALLTYPE*)(IDirect3DDevice9*, IDirect3DSurfac
 
 void* get_native_logical_vertex_buffer_00b48cf0(const void* logical,
     const NativeLogicalBufferDeviceRestoreProfiles& profiles) {
+    if constexpr (kWireGoal4Chain590Bound) {
+        // Reuse the complete B48D00 MOV EAX,[ECX+58h]; RET leaf for
+        // B48CF0's identical first load (bsp.py show 00b48d00 --asm).
+        // This is Source body reuse, not an original B48CF0 -> B48D00 edge.
+        // Borrow the actual logical stream without changing its profile or
+        // retaining its physical owner; the following dispatch stays current.
+        const void* const physical = native_logical_vertex_physical_00b48d00(logical);
+        const auto profile = word(physical);
+        const volatile Word* table;
+        if (profile == 0x00d61e34) table = profiles.private_vertex_00d61e34;
+        else if (profile == 0x00d61e7c) table = profiles.pooled_vertex_00d61e7c;
+        else { __assume(0); }
+        const auto getter = word(table, 0x1c);
+        __assume(getter == 0x00b4b9f0);
+        return native_physical_vertex_buffer_get_com_00b4b9f0(physical);
+    } else {
     const void* const physical = pointer(word(logical, 0x58));
     const auto profile = word(physical);
     const volatile Word* table;
@@ -112,6 +130,7 @@ void* get_native_logical_vertex_buffer_00b48cf0(const void* logical,
     const auto getter = word(table, 0x1c);
     __assume(getter == 0x00b4b9f0);
     return native_physical_vertex_buffer_get_com_00b4b9f0(physical);
+    }
 }
 
 void* assign_native_renderer_vertex_owner_00b23710(void* destination,
