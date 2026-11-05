@@ -1,5 +1,7 @@
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_class_ownership.hpp"
+#include "bsp/game_native_lua_display_string.hpp"
+#include "bsp/wire_goal4_chain610_switches.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -275,8 +277,20 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
         LuaRefOwner globals{lua, lua.globals()};
         LuaRefOwner groups{lua, lua.get_by_name(globals.ref, "Channelgroups")};
         each_lua_entry(lua, groups.ref, [&](const GuiLuaRef& key, const GuiLuaRef& value) {
-            const bool is_system = lua.type_of(key) == GuiLuaType::String &&
-                std::strcmp(lua.to_string(key), "System") == 0;
+            const bool is_system = [&] {
+                if constexpr (kWireGoal4Chain610Bound) {
+                    // A808D5 calls B68630 on the actual iteration key and
+                    // A808DA..A808FC immediately returns the temporary string.
+                    // This is unconditional setup code, before A8090A's
+                    // "System" comparison; it does not rename the group.
+                    game::discard_sound_configuration_key_display(lua, key, owning_strings);
+                    return lua.type_of(key) == GuiLuaType::String &&
+                        std::strcmp(lua.to_string(key), "System") == 0;
+                } else {
+                    return lua.type_of(key) == GuiLuaType::String &&
+                        std::strcmp(lua.to_string(key), "System") == 0;
+                }
+            }();
             if (is_system) {
                 LuaRefOwner dsp{lua, lua.get_by_name(value, "DSP")};
                 configure_system_dsps_00a7e0d0(system.system, state, dsp.ref, fmod, lua);

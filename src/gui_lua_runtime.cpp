@@ -280,6 +280,19 @@ double GuiLua51Host::to_number(const GuiLuaRef& object) {
     impl_->push(object);
     return lua_tonumber(impl_->state, -1);
 }
+NativeString* GuiLua51Host::to_display_string(const GuiLuaRef& object,
+    void* fresh, const NativeLuaDisplayStringCalls& calls) {
+    StackTop restore(impl_->state);
+    impl_->push(object);
+    // B68630/B65F80/B66270 read only owner+4 and kind/index. This is a
+    // non-owning view of the SAME interpreter and its actual retained value;
+    // it acquires no original stack-tracking slot and closes no interpreter.
+    NativeLuaStateStorage owner{};
+    owner.state_04 = impl_->state;
+    const NativeLuaObjectStorage view{&owner, 2, lua_gettop(impl_->state), 0, 0, {}};
+    return native_lua_to_display_string_00b68630(view, fresh, calls);
+}
+
 const char* GuiLua51Host::to_string(const GuiLuaRef& object) {
     const auto source = impl_->reference(object);
     if (source.kind != Impl::RefKind::tracked)
