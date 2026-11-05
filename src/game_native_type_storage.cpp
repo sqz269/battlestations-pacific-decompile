@@ -25,7 +25,10 @@ GameNativeTypeStorage::GameNativeTypeStorage() noexcept
       model_base_types_{model_base_guard_01090031_, model_base_01090044_[0],
           model_base_01090044_[1], model_base_01090044_[2], model_base_01090044_[3]},
       group_types_{group_guard_010902e1_, group_0109032c_},
-      fallback_resource_types_{fallback_guard_0109020d_, fallback_0109021c_} {}
+      fallback_resource_types_{fallback_guard_0109020d_, fallback_0109021c_},
+      texture_source_types_{data_source_guard_00f8d424_, data_source_00f8d428_,
+          texture_source_guard_0109e9c0_, texture_source_0109e9c4_,
+          animated_texture_guard_0109e9c1_} {}
 
 ModelTypeBootstrapStorage& GameNativeTypeStorage::model_types() noexcept {
     return model_types_;
@@ -109,6 +112,20 @@ void GameNativeTypeStorage::initialize_physical_00cd9030(
     require_common_bootstrap(common_root_bootstrap);
     NativeStreamTypeIds types(existing_counter, common_root_bootstrap, stream_types_);
     types.initialize_physical_00cd9030();
+}
+
+void GameNativeTypeStorage::initialize_texture_source_types(
+    TypeIdCounterLifetime& existing_counter, LightTypeBootstrap& common_root_bootstrap) {
+    require_common_bootstrap(common_root_bootstrap);
+    NativeTextureSourceTypeIds types(existing_counter, common_root_bootstrap,
+        texture_source_types_);
+    // Live Ghidra CRT table CE36A0/CE36A8/CE36AC points to CD9030/CD90D0/
+    // CD9120 respectively: texture global 0109E9C4 precedes animated
+    // global 0109E9D4. Their inlined bodies have the same guard/name/parent/
+    // counter schedule as C30310/C30360 (bsp.py show for those addresses).
+    // C30310 itself initializes the canonical F8D428 parent via B19C70.
+    types.initialize_texture_source_00c30310(texture_source_0109e9c4_);
+    types.initialize_animated_texture_source_00c30360(animated_texture_0109e9d4_);
 }
 
 } // namespace bsp::game

@@ -14,6 +14,7 @@
 #include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain589_switches.hpp"
 
 #include <cctype>
 #include <cstdint>
@@ -117,6 +118,11 @@ struct GameNativeVfsApplication::Impl {
         auto& process_pool = game_native_physical_pool_process();
         pool_registration_status = process_pool.initialize_once_00cd9010();
         type_storage.initialize_physical_00cd9030(owner_services.types(), common_types);
+        if constexpr (kWireGoal4Chain589Bound) {
+            type_storage.initialize_texture_source_types(owner_services.types(), common_types);
+        } else {
+            // Previously this bootstrap did not initialize texture-source types.
+        }
         auto& physical_pool = process_pool.physical_provider_pool_context_0109dbf0();
 
         manager_storage_a0 = singleton_lifetime_allocate(
