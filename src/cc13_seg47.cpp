@@ -4,6 +4,7 @@
 
 #include "bsp/cc13_seg47.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -1981,6 +1982,25 @@ private:
     Raw plane_;
 };
 } // namespace
+
+// 007C7600..007C7747; bsp.py show 007c7600 --asm, chain 556.
+// 007C7675 JNC passes ordered rocket E0h <= 0 (unordered falls through).
+// 007C7690/76AB JA are ordered pitch comparisons. 007C7734 JBE accepts an
+// unordered bank/curve comparison, so preserve !(abs(bank) > limit).
+// 00419010 owns the x87 arithmetic and its float store; this body adds no
+// float arithmetic chain. Names and this value interface remain hypotheses.
+__declspec(noinline) bool dive_drop_attitude_gate_007c7600(float pitch_c64, float bank_c68,
+    const PlaneDiveDropTuning& tuning, const float* first_rocket_e0,
+    const bool* checked_bay_blocks_release) noexcept {
+    if (checked_bay_blocks_release != nullptr && *checked_bay_blocks_release) return false;
+    if (first_rocket_e0 != nullptr && *first_rocket_e0 <= 0.0f) return true;
+    if (pitch_c64 > tuning.pitch_max_568) return false;
+    if (tuning.pitch_min_564 > pitch_c64) return true;
+    const float limit = bsp::clamped_interpolate_00419010(
+        tuning.roll_max_pitch_560, tuning.roll_max_558,
+        tuning.roll_min_pitch_55c, tuning.roll_min_554, pitch_c64);
+    return !(std::fabs(bank_c68) > limit);
+}
 
 bool plane_level_bomb_attitude_gate_007c7750(PlaneBombModeFields& fields, std::uint8_t check_doors) {
     if (check_doors != 0 && fields.bay_blocks_release()) return false;

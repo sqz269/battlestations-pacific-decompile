@@ -715,6 +715,20 @@ struct PlaneBombModeFields {
     virtual float paratrooper_min_altitude_354() = 0;
     virtual float paratrooper_max_altitude_358() = 0;
 };
+// 007C7600, native __thiscall(ECX=plane, byte check_doors), RET 4, AL result.
+// These are observations of the same plane and loaded GameTuning, not a native
+// object layout or a replacement ABI. A null checked_bay_blocks_release means
+// the native check_doors argument is zero; otherwise its pointee is the exact
+// +DECh channel-C enabled/value!=1 and local-slot +9C3h conjunction. A null
+// first_rocket_e0 means the first bomb-class answer is absent or not kind 33h.
+struct PlaneDiveDropTuning {
+    float roll_min_554, roll_max_558, roll_min_pitch_55c, roll_max_pitch_560;
+    float pitch_min_564, pitch_max_568;
+};
+bool dive_drop_attitude_gate_007c7600(float pitch_c64, float bank_c68,
+    const PlaneDiveDropTuning& tuning, const float* first_rocket_e0,
+    const bool* checked_bay_blocks_release) noexcept;
+
 bool plane_level_bomb_attitude_gate_007c7750(PlaneBombModeFields& fields, std::uint8_t check_doors);
 bool plane_level_bomb_attitude_gate_007c7750(Seg47Host& host, Raw plane, std::uint8_t check_doors);
 

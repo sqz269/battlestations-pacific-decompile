@@ -1,0 +1,92 @@
+{
+  "chain": 556,
+  "slot": "g4-w3",
+  "base": "a12f45a199cffe1476c8bff21f32249a4b49fb36",
+  "switch": "bsp::kWireGoal4Chain556Bound",
+  "wired_before": 9882,
+  "wired_after": 9883,
+  "rows": [
+    {
+      "native": "007C7600",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "source": "src/cc13_seg47.cpp: dive_drop_attitude_gate_007c7600",
+      "state": "Live plane_pitch_angle_c64/plane_bank_angle_c68 and loaded GameTuning roll/pitch fields +554h..568h; original caller passes check_doors=0; actual ordnance mask must exclude kind 33h before null first-rocket observation is passed.",
+      "scope": "Player bomb-mode gate only; mixed rocket loadouts or unavailable tuning retain the previous host checks. Exactly one new call replaces the old checks on the supported path.",
+      "original_abi": "__thiscall(ECX=plane, byte check_doors), RET 4, AL; value interface is not ABI compatible",
+      "evidence": [
+        "bsp.py show 007c7600 --asm: bay refusal precedes the ordered rocket E0h<=0 shortcut; pitch comparisons at 007C7690 and 007C76AB use JA; final bank/curve comparison at 007C7734 uses unordered-accepting JBE.",
+        "bsp.py show 006082d0 --asm: 00608357 PUSH 0 and 00608362 CALL 007C7600 on the non-level-bomber branch.",
+        "Existing clamped_interpolate_00419010 supplies the native PC24 arithmetic and float-store result; no additional float arithmetic chain was introduced."
+      ],
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "10298970",
+      "built_target": "103B4A60",
+      "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameUnitsHost::player_bomb_release_006082d0 -> Impl::player_bomb_release_006082d0 -> dive_drop_attitude_gate_007c7600"
+    },
+    {
+      "native": "005251C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_selected_unit_00647300 / ForceSelectUnit::push_controlled_unit_interface_00647040",
+      "reason": "Needs the unit-pick screen's actual +C4h selection-vector and +30h mode owner plus its input-context adapter; current sites only record the reset."
+    },
+    {
+      "native": "00604F30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding cockpit_screen_mode",
+      "reason": "Needs a produced plane-effects screen with retained +B8h plane and +FCh cockpit mode; current cockpit-wanted path is false and mode is a record."
+    },
+    {
+      "native": "0068C0B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding toggle_tactical_overlay",
+      "reason": "Needs the tactical/support screen state, level-3 screen-set/input-context operations and tracked target adapter; current host records this operation."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Needs the real engine-emitter +BBCh, child-gun audio traversal and unit +6B4h state adapter; calling only the decision plan would leave its effects unwritten."
+    },
+    {
+      "native": "009BDBB0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: moveonpath command installation",
+      "reason": "Needs a Cc13Seg67bHost factory/009BCE50 constructor and ownership adapter for the units host's retained path-task state; the current path constructs/ticks that host state separately."
+    },
+    {
+      "native": "0088B6D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: UnloadMessageMapGlue::session_manage_messages",
+      "reason": "Session-only MANAGE_MESSAGES arm is not taken by the campaign host's game_session_mode_1fe4()==0; omitted from single-player wiring."
+    },
+    {
+      "native": "008F3A20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary / SceneNumericPropertyMerge enum insertion",
+      "reason": "Already entry-reachable through src/scene_numeric_property_merge.cpp in the baseline; the ready text classification does not represent missing executable wiring."
+    },
+    {
+      "native": "008F54F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / SceneNumericPropertyMerge",
+      "reason": "Already entry-reachable through src/scene_numeric_property_merge.cpp in the baseline; no additional call is needed."
+    }
+  ],
+  "validation": {
+    "baseline": "Fresh index and scripts/build.ps1 passed all 5 checks before selection.",
+    "build": "scripts/build.ps1 passed after the C++ changes: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
+    "call_graph": "python tools/call_graph.py; who 007c7600; path 007c7600: production Win32 executable, one reachable call from the changed host function.",
+    "readiness": "wire_readiness.py --standins: 9882 -> 9883 wired; 007c7600 state=wired, called=true, call_sites=1, callers_live=1; current Win32 graph stale=false.",
+    "pc24": "pc24_lint.py --staged: 0 findings across 4 source/header files; post-commit origin/main...HEAD check also required.",
+    "focused_fixture": "Ignored local/run_g4_c556_probe.py links the production bsp_core.lib with /MANIFEST:EMBED: 12 PC24 pitch/bank endpoint, NaN, rocket and bay-priority assertions passed. Fixture values are synthetic and are not supplied by the game path.",
+    "switch_off": "Original gate block matches HEAD byte-for-byte after newline normalization; source contains exactly one new body call.",
+    "ghidra": "Verified config project C:/Users/sqz269/bsp.gpr and live /battlestationspacific.exe; preserved name and prior comment, appended evidence through locked ghidra_annotate.py, saved project and refreshed 007c7600 export.",
+    "limits": "No game launched. No original ABI replacement, live bomb release or runtime regression proof. Rack-tick path remains the previous host implementation."
+  },
+  "left_for_others": [
+    "007C7600 rack-tick caller adaptation, including native first bomb-class descriptor ordering for mixed rocket loadouts.",
+    "Other HUD object producers/adapters described by the skipped rows."
+  ]
+}
