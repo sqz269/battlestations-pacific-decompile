@@ -1,0 +1,105 @@
+{
+  "run": 1220,
+  "chain": 591,
+  "branch": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain591Bound",
+  "picked": "Real MaterialEffect constructor byte and fourteen scalar-word initialization",
+  "wired_total": {
+    "before": 9923,
+    "after": 9925,
+    "delta": 2
+  },
+  "rows": [
+    {
+      "native": "00B400C0",
+      "status": "wired",
+      "host_site": "src/native_material_effect_owner.cpp: finish_derived, called by initialize_native_material_effect_with_texture_cache_00b407a0",
+      "state": "Same live NativeMaterialEffectStorage allocation; binary constructor constant zero at +13C before installing D61A00",
+      "call_graph": "REACHABLE; one call site at 105bfaa2 in finish_derived"
+    },
+    {
+      "native": "00B40820",
+      "status": "wired",
+      "host_site": "src/native_material_effect_owner.cpp: finish_derived, called by initialize_native_material_effect_with_texture_cache_00b407a0",
+      "state": "Same live NativeMaterialEffectStorage allocation; binary constructor zero bits at fourteen ascending +140..+174 DWORDs after installing D61A00",
+      "call_graph": "REACHABLE; one loop call site at 105bfab7 in finish_derived"
+    },
+    {
+      "native": "00B407A0",
+      "status": "skipped",
+      "host_site": "src/native_material_effect_owner.cpp: initialize_native_material_effect_with_texture_cache_00b407a0",
+      "reason": "Already reached by startup material loading; inspected as constructor evidence, no additional wiring needed."
+    },
+    {
+      "native": "00B21F10",
+      "status": "skipped",
+      "host_site": "src/native_render_resource_init.cpp: copy_native_renderer_dimensions_00b21f10",
+      "reason": "Already called from reachable code in the baseline despite its readiness source state; no new compiled-call opportunity."
+    },
+    {
+      "native": "00BEE060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "Missing an existing host consumer of the actual frame clock's previous timestamp."
+    },
+    {
+      "native": "00B4CC00",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: child_quad_count_00b4cc00 host seam",
+      "reason": "Missing the live post-effect child owner and its parent render-fx execution route."
+    },
+    {
+      "native": "00B4E3D0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: child_set_frame_target_00b4e3d0 host seam",
+      "reason": "Missing the live post-effect child/frame-target owner binding on that render-fx route."
+    },
+    {
+      "native": "00C302A0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_time.cpp: set_native_texture_source_time_00c302a0",
+      "reason": "Missing a connected animated texture-source owner and its actual frame-time consumer."
+    },
+    {
+      "native": "00C30570",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_producer.cpp: populate_native_texture_source_00c30570",
+      "reason": "Missing the application's texture-source production and lifetime composition, beyond this bounded parameter-store packet."
+    },
+    {
+      "native": "00B1BF20",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp: shadow command dispatch composition",
+      "reason": "Missing the live application shadow-command dispatch route to the existing scene getter."
+    },
+    {
+      "native": "00B1BF30",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp: shadow command dispatch composition",
+      "reason": "Missing the live application shadow-command dispatch route to the existing context getter."
+    },
+    {
+      "native": "00BE6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_file_store_name_00be6040",
+      "reason": "Existing VFS name-copy route already uses this reconstructed boundary; no additional wiring selected."
+    }
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00b407a0: native +13C zero, D61A00 install, then fourteen +140..+174 zero DWORD stores",
+    "python tools/bsp.py show 00b400c0 --asm: ECX actual owner, low stack DWORD byte stored to +13C, RET4",
+    "python tools/bsp.py show 00b40820 --asm: ECX actual owner, stack index and raw binary32 bits, MOVSS to +140+index*4, RET8",
+    "Baseline call_graph.py who found neither setter linked; after build both have one reachable call site from finish_derived",
+    "call_graph.py path 00b40820 traces startup shader preload through the real material cache and effect constructor"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "diff_check": "git diff --check passed",
+    "disabled_arm": "Compared against HEAD before editing; prior function body preserved exactly",
+    "readiness": "Both 00b400c0 and 00b40820 now wired, called=true, call_sites=1",
+    "float_arithmetic": "None changed; indexed setter copies the binary's zero DWORD bits with MOVSS",
+    "game_run": "Not performed, as instructed",
+    "abi_scope": "Reused the existing original-register/stack setter bodies; no new address body or ABI adapter"
+  },
+  "notes": "Constructor stores are equivalent substitutions, not recovered native call edges. The enabled switch replaces the old stores; its disabled arm preserves the prior code. Existing bodies and original game installation are unchanged."
+}
