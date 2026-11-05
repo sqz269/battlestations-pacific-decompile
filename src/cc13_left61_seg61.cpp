@@ -40,7 +40,7 @@ float image_abs(float x) { return x > 0.0f ? x : kNegativeZero - x; }
 // the same values. The |matrix| copy keeps only the nine rotation entries
 // (indices 0,1,2,4,5,6,8,9,10); the image leaves the fourth column of its stack
 // copy unwritten, and 0042D0D0 does not read it, so it is zero here.
-void transform_box_0092e250(const float* box, float* out, const float* matrix, Left61Host& host) {
+void transform_box_0092e250(const float* box, float* out, const float* matrix, BoxTransformHost& host) {
     float centre[3];
     float extent[3];
     centre[0] = static_cast<float>(static_cast<float>(box[0] + box[3]) * kHalf);
