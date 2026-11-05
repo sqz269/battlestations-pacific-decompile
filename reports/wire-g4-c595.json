@@ -1,0 +1,209 @@
+{
+  "chain": 595,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain595Bound",
+  "rows": [
+    {
+      "native": "00b8eeb0",
+      "status": "wired",
+      "host_site": "src/native_group_storage_lifetime.cpp::delete_native_group_storage_00b8f8c0 (inlined into NativeGroupStorageReference::delete_scalar_00b8f8c0)",
+      "evidence": "bsp.py show 00b8f8c0 --asm: B8F8CF..B8F8D5 returns the destroyed slot to canonical 010902F4 iff the low flags byte has bit 0; show 00b8eeb0 --asm performs the identical canonical-pool B8ED40 call.",
+      "state": "The original slot is passed after destruction, using the already bound static pool; require_static_binding checks that it is the SAME pool as the lifetime companion. The old direct return remains unchanged in the switch's else arm."
+    },
+    {
+      "native": "00443cb0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::less",
+      "reason": "The proposed raw LoopLengths owner is not entry-reachable; its actual string-header producer must be connected first. Lease dropped without edits; agent/g4-w4 is separately investigating a live input-vector COMDAT-equivalent route."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::maximum_native_soldier_loop_node_004437a0",
+      "reason": "Missing entry-reachable raw LoopLengths tree producer and traversal caller; the inspected implementation delegates to the Soldier registry specialization."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::minimum_native_soldier_loop_node_004437c0",
+      "reason": "Missing entry-reachable raw LoopLengths tree producer and traversal caller; the inspected implementation delegates to the Soldier registry specialization."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SetSelectedUnit screen_reset_005251c0 record",
+      "reason": "Missing actual raw screen owner with mode+30, selection vector+C4 and iterator-erase adapter; the current selection host records this reset."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::state_message_build_00721280",
+      "reason": "No qualified live producer for all controller flags, mode and both command-target descriptors was established in this packet."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::snapshot_build_007214c0",
+      "reason": "Missing qualified live controller-state message and director/getter snapshot inputs; no substitute values were introduced."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart write_checkpoint override",
+      "reason": "The adjacent checkpoint_differs override still returns false; the checkpoint decision and actual rewrite/persistence ownership need qualification together."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRows animation_interval override",
+      "reason": "Missing live ticker animation owner: weapon_animation currently records the query and returns handle zero."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_input_actions.cpp::GameInputDeadlineCallback::post_tick",
+      "reason": "An existing callback already names the body, but a live callback instance attached to the frame input tick was not qualified in this packet."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_binding_getters.cpp::native_logical_vertex_stream_get_buffer_00b48cf0",
+      "reason": "Needs a callable relocated CURRENT physical-owner getter table at slot+1C; numeric original profile addresses alone cannot be tail-jumped in the rebuilt executable."
+    },
+    {
+      "native": "00b48dc0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_binding_getters.cpp::native_logical_index_stream_get_buffer_00b48dc0",
+      "reason": "Needs a callable relocated CURRENT physical-owner getter table at slot+1C; numeric original profile addresses alone cannot be tail-jumped in the rebuilt executable."
+    },
+    {
+      "native": "00b188a0",
+      "status": "skipped",
+      "host_site": "src/native_shader_owner_texture_release.cpp::unload_native_shader_owner_textures_00b188a0",
+      "reason": "No qualified live shader-owner texture array and corresponding unload lifecycle caller was established in the reviewed host route."
+    },
+    {
+      "native": "00b24e20",
+      "status": "skipped",
+      "host_site": "src/native_shader_owner_texture_release.cpp::unload_native_renderer_shader_owner_textures_00b24e20",
+      "reason": "Needs a qualified current shader-owner record array at renderer+1A9C/+1AA0 and its original unload lifecycle trigger."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp::set_native_render_command_metadata_00b1bf50",
+      "reason": "No entry-reachable three-word command metadata update producer was qualified in this packet; constructor zeroing is a separate operation."
+    },
+    {
+      "native": "00b1d910",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp::set_native_render_command_diagnostic_00b1d910",
+      "reason": "Needs the actual command diagnostic source header and native string-pool update caller; no live update producer was qualified."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::set_native_last_render_command_metadata_00b1cb50 call",
+      "reason": "An existing submission caller already names the body; its entry-reachable queue submission path was not qualified in this packet."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/engine_seg4_6_9_cc13.cpp::release_session_render_resources_004bfd70",
+      "reason": "Remap setters already use the actual renderer resources, but the original session/library teardown reset trigger still needs a live host adapter."
+    },
+    {
+      "native": "00a8ff30",
+      "status": "skipped",
+      "host_site": "src/native_shadow_depth_target_owner.cpp::create_native_shadow_depth_target_00a8ff30",
+      "reason": "The reviewed parent constructs the target; a qualified live resource-creation trigger with the real enabled byte is still missing."
+    },
+    {
+      "native": "00a8fd10",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp::get_native_shadow_color_texture_00a8fd10",
+      "reason": "Requires the live created/enabled shadow-target texture bindings and original consuming caller; only target construction was qualified here."
+    },
+    {
+      "native": "00a8fd90",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp::get_native_shadow_color_texture_00a8fd90",
+      "reason": "Its existing getter caller still needs live shadow-map consumption and actual created target texture bindings."
+    },
+    {
+      "native": "00b3ceb0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp::set_native_texture_reported_dimensions_00b3ceb0",
+      "reason": "Missing qualified shadow-toggle caller over the actual created texture wrappers; nominal dimensions were not substituted."
+    },
+    {
+      "native": "00a8fdd0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp::toggle_native_shadow_target_00a8fdd0",
+      "reason": "Needs the original live enable/disable trigger and actual created color/depth texture companions."
+    },
+    {
+      "native": "004bfaa0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_execution.cpp::frame_job_optional_callback_004bfaa0",
+      "reason": "No active optional-callback dispatch was qualified; the inspected body is RET-only."
+    },
+    {
+      "native": "004c2d30",
+      "status": "skipped",
+      "host_site": "src/native_world_parent_headers.cpp::clear_native_world_parent_headers",
+      "reason": "Existing helper already calls the destructor thunk, but lacks an entry-reachable raw world parent-header owner/lifetime path."
+    },
+    {
+      "native": "008f0310",
+      "status": "skipped",
+      "host_site": "src/native_reference_payload_replace.cpp::replace_native_reference_payload_008f0310",
+      "reason": "Missing qualified actual eight-byte reference-payload owner and replacement producer using the canonical allocation domain."
+    },
+    {
+      "native": "008f0380",
+      "status": "skipped",
+      "host_site": "src/native_reference_payload_reset.cpp::reset_native_reference_payload_008f0380",
+      "reason": "Missing qualified actual eight-byte reference-payload owner and reset lifetime caller using the canonical allocation domain."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_string_vector_erase_unordered.cpp::erase_native_string_vector_unordered_0043ea00",
+      "reason": "Needs an actual raw string-vector removal operation and its iterator cell; no live removal producer was qualified."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_pool_allocate.cpp::return_native_particle_model_00af62f0",
+      "reason": "The candidate typed particle-model scalar-deletion path was not linked in the baseline executable; a live actual model owner is needed first."
+    },
+    {
+      "native": "00af7f40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp::delete_native_particle_model_00af7f40",
+      "reason": "No baseline built function matched this typed particle-model scalar deleter; its actual model producer and lifetime path must be connected first."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five existing CTests passed",
+    "float_math_changed": false,
+    "called_addresses_before": 4999,
+    "called_addresses_after": 5000,
+    "readiness_wired_before": 9927,
+    "readiness_wired_after": 9928,
+    "new_body_called": true,
+    "new_body_call_sites": 1,
+    "new_call": "NativeGroupStorageReference::delete_scalar_00b8f8c0 -> return_native_group_slot_00b8eeb0; reachable call site 104D7F8F in this build",
+    "entry_path": "WinMainCRTStartup -> game startup/page lifetime -> NativeGroupStorageReference virtual release -> GroupDeleteCalls::delete_vslot04 -> NativeGroupStorageReference::delete_scalar_00b8f8c0 -> return_native_group_slot_00b8eeb0",
+    "evidence_commands": [
+      "python tools/bsp.py show 00b8f8c0 --asm --lines 30",
+      "python tools/bsp.py show 00b8eeb0 --asm --lines 24",
+      "python tools/call_graph.py",
+      "python tools/call_graph.py who 00b8eeb0",
+      "python tools/call_graph.py path 00b8eeb0",
+      "python tools/wire_readiness.py --standins"
+    ],
+    "limits": "Build/tests and entry-reachable binary call graph only. Game not run; original ABI and gameplay behavior remain unvalidated."
+  }
+}
