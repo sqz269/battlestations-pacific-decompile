@@ -1,0 +1,131 @@
+{
+  "chain": 586,
+  "owner": "agent/g4-w4",
+  "switch": "kWireGoal4Chain586Bound",
+  "base": "8edcc0e766",
+  "scope": "Actual 2D texture owner dimensions during device reset and retained-memory recreation",
+  "contract": "Reuse the existing class-agnostic ECX DWORD readers on the same actual owner; preserve height-before-width order, intervening retained mip-level read, all device arguments, and the original raw reads in switch-off arms.",
+  "evidence": [
+    "bsp.py show 00b3d0a0 --asm: complete MOV EAX,[ECX+28h]; RET body",
+    "bsp.py show 00b3d0b0 --asm: complete MOV EAX,[ECX+2Ch]; RET body",
+    "bsp.py show 00b3dd90 --asm: B3DE61 reads owner+2C before B3DE65 reads owner+28",
+    "bsp.py show 00b3e190 --asm: B3E1B5/B3E1C8/B3E1CE read owner+2C/+3C/+28 in that order"
+  ],
+  "validation": {
+    "baseline_wired": 9915,
+    "final_wired": 9917,
+    "build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "release_graph": "Both leaves have entry-reachable calls from each changed host; Release ICF folds identical DWORD readers, so aggregate caller counts include aliases.",
+    "analysis_graph": "call_graph.py --build passed with /Ob0 and /OPT:NOICF. Each distinct native_tagged_leaf_b3_03.obj body has exactly two entry-reachable call sites through the two changed host lambdas; no unreachable callers.",
+    "float_math": "No float arithmetic changed",
+    "runtime": "No game execution; this is source, build, and entry-reachability evidence. Original virtual-slot/class identity is not inferred from these raw operation bodies."
+  },
+  "rows": [
+    {
+      "native": "00b3d0a0",
+      "status": "wired",
+      "called": true,
+      "analysis_call_sites": 2,
+      "host_site": "src/native_texture_device_reset.cpp:restore_native_texture_2d_after_reset_00b3dd90; src/native_texture_2d_retained_recreation.cpp:recreate_native_texture_2d_retained_00b3e190",
+      "real_state": "The same actual texture owner+28 width already consumed by these renderer resource recreation paths"
+    },
+    {
+      "native": "00b3d0b0",
+      "status": "wired",
+      "called": true,
+      "analysis_call_sites": 2,
+      "host_site": "src/native_texture_device_reset.cpp:restore_native_texture_2d_after_reset_00b3dd90; src/native_texture_2d_retained_recreation.cpp:recreate_native_texture_2d_retained_00b3e190",
+      "real_state": "The same actual texture owner+2C height already consumed by these renderer resource recreation paths"
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp:NativeFontResources::accepts_text_byte",
+      "reason": "Gameplay's image-backed glyph tree needs a compatible adapter before the existing typed FontData body can serve this path."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_render_pass_initializers.cpp:set_native_post_effect_color0_00b4cb70",
+      "reason": "The inspected native color-target path already calls this raw +08 body; no missing replacement remains there."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_owner.cpp:destroy_native_post_effect_owner_00b4e2f0",
+      "reason": "Chain578 already replaces the actual owner's +18 capture with this body; another call at this site would duplicate existing wiring."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/native_luminance_owner.cpp:destroy_native_luminance_owner_00b50dd0",
+      "reason": "The inspected luminance member release already calls this raw +23C body; no new replacement was identified."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:unregister_native_vertex_shader_00b268a0",
+      "reason": "The existing shader lifetime path already calls this body and the baseline graph marks it reachable; it needs no additional wiring."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:unregister_native_pixel_shader_00b268c0",
+      "reason": "The existing shader lifetime path already calls this body and shares its folded baseline graph target; it needs no additional wiring."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:submit_native_main_scene_00b101c0",
+      "reason": "No rooted concrete invocation of the inspected queue-metadata operation was established; its main-scene submission binding needs resolution first."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp:set_native_last_render_command_metadata_00b1cb50",
+      "reason": "The candidate queue-metadata caller has no established rooted concrete invocation; replacing its copy alone would not establish live wiring."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:resize_native_distortion_records_00b4ee20",
+      "reason": "Resize already calls reserve; a new nonzero live distortion-record growth path is missing, so adding another reserve call is unwarranted."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:destroy_native_distortion_records_00b4f0a0",
+      "reason": "The baseline executable already reaches resize through distortion destruction; no new call is needed at this site."
+    },
+    {
+      "native": "00b3d090",
+      "status": "skipped",
+      "host_site": "src/native_texture_device_reset.cpp:restore_native_texture_2d_after_reset_00b3dd90",
+      "reason": "The chosen reset/recreation operations do not consume owner+24; a matching live field consumer remains to be identified."
+    },
+    {
+      "native": "00b3cd00",
+      "status": "skipped",
+      "host_site": "src/native_texture_device_reset.cpp:restore_native_texture_2d_after_reset_00b3dd90",
+      "reason": "Chain574 already routes this operation's actual +18 format read through 00B33E60; a second format read would duplicate work."
+    },
+    {
+      "native": "00b3ce90",
+      "status": "skipped",
+      "host_site": "src/native_texture_2d_retained_recreation.cpp:recreate_native_texture_2d_retained_00b3e190",
+      "reason": "The chosen reset/recreation operations do not consume owner+30; a matching live field consumer remains to be identified."
+    },
+    {
+      "native": "00b3d650",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_owner.cpp:construct_native_cube_texture_00b3d650",
+      "reason": "A rooted factory caller supplying the actual cube owner and its creation arguments was not established in this packet."
+    },
+    {
+      "native": "00b3d720",
+      "status": "skipped",
+      "host_site": "src/native_volume_texture_owner.cpp:construct_native_runtime_volume_texture_00b3d720",
+      "reason": "A rooted factory caller supplying the actual volume owner and its creation arguments was not established in this packet."
+    }
+  ]
+}
