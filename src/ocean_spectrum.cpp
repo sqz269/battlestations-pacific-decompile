@@ -7,14 +7,18 @@
 #include <cstddef>
 #include <cstring>
 #include <memory>
+#include <stdexcept>
 #include <string>
+#include <utility>
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/pc24_flightrender_cc13.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/scene_weather_cc13.hpp"
 #include "bsp/wire_goal2_chain129_switches.hpp"
+#include "bsp/wire_goal4_chain560_switches.hpp"
 
 // pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 (x87_*24) in the
 // spectrum leaves the main thread runs at 24-bit precision control; OFF keeps each double
@@ -408,7 +412,96 @@ OceanWaveGridView ocean_spectrum_grid(const OceanSpectrum& sp) noexcept {
     return view;
 }
 
+namespace {
+
+// A value view of the parsed scene's actual g_Ocean bag. 004EB9B0 reads only
+// scalar I/F/B/S fields, CausticsType's enum name, and nested bags. Do not manufacture values for raw,
+// context-dependent assignments which the scene parser has not decoded.
+int append_ocean_property_bag(const ScenePropertyBlock& source, ScenePropertyBagModel& model) {
+    const int bag = static_cast<int>(model.bags.size());
+    model.bags.emplace_back();
+    for (const SceneProperty& property : source.values) {
+        ScenePropertyValue value;
+        if (property.has_integer) {
+            value.type = ScenePropertyType::Int;
+            value.int_value = property.integer_value;
+        } else if (property.has_float) {
+            value.type = ScenePropertyType::Float;
+            value.float_value = property.float_value;
+        } else if (property.has_boolean) {
+            value.type = ScenePropertyType::Bool;
+            value.int_value = property.boolean_value;
+        } else if (property.has_string && !property.values.empty()) {
+            value.type = ScenePropertyType::String;
+            value.text = property.values.front();
+        } else if (property.has_enum && property.key == "CausticsType") {
+            // 004EC767 calls 008F0DF0 on this enum solely for its name. The
+            // parser owns the closed E table : symbol spelling, so retain that
+            // name and the Enum tag; no guessed ordinal enters a numeric field.
+            value.type = ScenePropertyType::Enum;
+            value.text = property.values[2];
+        } else {
+            throw std::runtime_error("undecoded ocean scene property: " + property.key);
+        }
+        scene_property_bag_insert(model, bag, property.key, std::move(value));
+    }
+    for (const auto& child : source.blocks) {
+        const int sub_bag = append_ocean_property_bag(child.second, model);
+        ScenePropertyValue value;
+        value.type = ScenePropertyType::SubBag;
+        ScenePropertyEntry& entry = scene_property_bag_insert(model, bag, child.first, std::move(value));
+        entry.sub_bag = sub_bag;
+    }
+    return bag;
+}
+
+}  // namespace
+
 OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header) {
+    if constexpr (kWireGoal4Chain560Bound) {
+        OceanSceneWaves waves;  // 004CB420's retained wave defaults
+        const ScenePropertyBlock* ocean = nullptr;
+        for (const auto& child : header.blocks) {
+            if (child.first == "g_Ocean") ocean = &child.second;
+        }
+        if (ocean == nullptr) return waves;  // 004F21E9: no group, no reader call
+
+        ScenePropertyBagModel model;
+        const int bag = append_ocean_property_bag(*ocean, model);
+        scene_weather_cc13::SceneOceanFields fields;
+        fields.waves_falloff_9bc = waves.falloff_2c;
+        fields.waves_layer_scale_9c0 = waves.layer_scale_30;
+        fields.waves_time_scale_9c4 = waves.time_scale_34;
+        fields.waves_wind_direction_9dc = waves.wind_direction_4c;
+        fields.waves_wind_speed_9e0 = waves.wind_speed_50;
+        fields.waves_wave_height_9e4 = waves.wave_height_54;
+        fields.waves_choppy_factor_9e8 = waves.choppy_58;
+        fields.waves_height_scale_9ec = waves.height_scale_5c;
+
+        // Native 004F2205 -> 004EB9B0 (ECX bag, EDX scene record). The typed
+        // reader owns I-to-F conversion and all field lookup; its wave outputs
+        // feed the existing live spectrum producer below, once. The colour
+        // linearization flag is the image's immutable byte 00F88A0C = 0:
+        // bsp.py ghidra bytes/xrefs 00f88a0c, 2026-11-04, all 32 xrefs READ.
+        // Optical/particle outputs have no live renderer consumer here.
+        std::string error;
+        if (!scene_weather_cc13::read_water_properties_004eb9b0(
+                model, bag, false, fields, error)) {
+            throw std::runtime_error("scene ocean properties: " + error);
+        }
+        waves.falloff_2c = fields.waves_falloff_9bc;
+        waves.layer_scale_30 = fields.waves_layer_scale_9c0;
+        waves.time_scale_34 = fields.waves_time_scale_9c4;
+        waves.wind_direction_4c = fields.waves_wind_direction_9dc;
+        waves.wind_speed_50 = fields.waves_wind_speed_9e0;
+        waves.wave_height_54 = fields.waves_wave_height_9e4;
+        waves.choppy_58 = fields.waves_choppy_factor_9e8;
+        waves.height_scale_5c = fields.waves_height_scale_9ec;
+        waves.simple_ocean = fields.simple_ocean_c20 != 0;
+        const ScenePropertyEntry* waves_entry = scene_property_bag_find(model, bag, "Waves");
+        waves.authored = waves_entry != nullptr && waves_entry->value.type == ScenePropertyType::SubBag;
+        return waves;
+    } else {
     OceanSceneWaves waves;
     const ScenePropertyBlock* ocean = nullptr;
     for (const auto& child : header.blocks) {
@@ -437,6 +530,7 @@ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header) 
     read("ChoppyWavesFactor", waves.choppy_58);
     read("HeightScale", waves.height_scale_5c);
     return waves;
+    }
 }
 
 void ocean_live_field_build(OceanLiveField& ocean, const OceanSceneWaves& waves) {
