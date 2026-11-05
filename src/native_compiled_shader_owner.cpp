@@ -1,6 +1,8 @@
 #include "bsp/native_compiled_shader_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_tagged_leaf_b3_06.hpp"
 #include "bsp/wire_goal4_chain377_switches.hpp"
+#include "bsp/wire_goal4_chain584_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -92,11 +94,23 @@ NativeCompiledShaderStorage* initialize_native_compiled_shader_00b3b3c0_fragment
     shader->vtable_00 = 0x00ceb130;
     shader->references_04.store(1, std::memory_order_relaxed);
     shader->vtable_00 = 0x00d61810;
-    shader->byte_74 = 0;
+    // B3B57C..B3B5B0 and B3B5D6..B3B60A (bsp.py show 00b3b3c0):
+    // both real 88h reflection owners initialize +74h and +84h to zero.
+    // Reuse the existing single-store bodies at those exact initialization
+    // sites; their Source ECX/EDX interfaces differ from native RET4 setters.
+    if constexpr (kWireGoal4Chain584Bound) {
+        (void)native_tagged_b3_write_byte_74_00b343b0(shader, 0);
+    } else {
+        shader->byte_74 = 0;
+    }
     shader->constants_78.data_00 = nullptr;
     shader->constants_78.count_04 = 0;
     shader->constants_78.capacity_08 = 0;
-    shader->word_84 = 0;
+    if constexpr (kWireGoal4Chain584Bound) {
+        (void)native_tagged_b3_write_dword_84_00b343e0(shader, 0);
+    } else {
+        shader->word_84 = 0;
+    }
     std::memset(shader->initialized_ff_08.data(), 0xff, 0x36);
     return shader;
 }
