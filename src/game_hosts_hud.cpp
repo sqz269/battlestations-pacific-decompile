@@ -568,10 +568,11 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 
 // The leaf register overrides (+10h, kHudScreenLayouts) that run on their
 // blocks: each is 004F71D0 and at most one page load (bsp.py show <address>
-// --asm; 0060D1C0 and 00565EE0 build the name in a native-string temporary),
+// --asm; 0060D1C0, 00565EE0 and 0051ED60 build the name in a native-string temporary),
 // and each page is the one kHudScreenLayouts lists for the slot.
-constexpr std::array<std::uint32_t, 7> kHudLeafScreenRegisters{{
+constexpr std::array<std::uint32_t, 8> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
+    0x0051ED60u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -694,6 +695,23 @@ private:
     HudLeafStringPool pool_;
 };
 
+// 0051ED60. Its name temporary is built in this process's actual string pool
+// (game_native_string_process().strings(), passed as the body's storage); its
+// 004C12B0 manager is the registry owner that loads the page.
+class HudLeafBinocularsRegisterBinding final : public bsp::cc13_seg14::BinocularsRegisterHooks {
+public:
+    explicit HudLeafBinocularsRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_get_or_create_004c12b0() override { return &context_.menu; }
+    void* gui_manager_load_page_00aa5840(void* manager, void* name, std::uint32_t, std::uint32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("0051ED60 loaded its page through another GUI manager");
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
 void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     std::uint8_t* const p = context.screen.data();
     const bsp::ingame_gui_cc13::Raw raw{p};
@@ -705,6 +723,7 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x00604890u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_pause_cheat_register_00604890(p, b); return; }
     case 0x0060D1C0u: { HudLeafPlaneSpawnRegisterBinding b(context); bsp::seg25_cc13::hud_plane_spawn_screen_register_0060d1c0(p, b); return; }
     case 0x00565EE0u: { HudLeafLimboRegisterBinding b(context); bsp::cc13_fe3::hud_limbo_register_00565ee0(raw, b); return; }
+    case 0x0051ED60u: { HudLeafBinocularsRegisterBinding b(context); bsp::cc13_seg14::binoculars_screen_register_0051ed60(p, b, game_native_string_process().strings()); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");
