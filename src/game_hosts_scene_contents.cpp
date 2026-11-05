@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/wire_goal4_chain516_switches.hpp"
+#include "bsp/wire_goal4_chain550_switches.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal4_chain384_switches.hpp"
@@ -5394,8 +5395,32 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
 
 template <bool kPc24Bound>
 float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noexcept {
+    std::array<int, 2> sample_counts;
+    if constexpr (bsp::kWireGoal4Chain550Bound) {
+        // bsp.py show 00ADB3A0: its range checks call terrain slots 10h/14h.
+        // bsp.py show 00ADAC50 / 00ADAC70: those read only +38h / +3Ch,
+        // returning tiles * [00D5D658] + 1, or 0 for an empty dimension.
+        // Project the loaded TDT dimensions into the existing shared body's
+        // input layout. The prefix is unread; no terrain/sample data is copied.
+        struct DimensionView {
+            std::uint8_t unread_00[0x38];
+            std::int32_t tiles_wide_38;
+            std::int32_t tiles_deep_3c;
+        } dimensions;
+        static_assert(offsetof(DimensionView, tiles_wide_38) == 0x38);
+        static_assert(offsetof(DimensionView, tiles_deep_3c) == 0x3c);
+        dimensions.tiles_wide_38 = tiles_wide;
+        dimensions.tiles_deep_3c = tiles_deep;
+        // The reconstruction uses one body for the two native query slots.
+        sample_counts = {
+            bsp::cc13_terrain::height_field_samples_00adac50(&dimensions, false),
+            bsp::cc13_terrain::height_field_samples_00adac50(&dimensions, true)};
+    } else {
     const int wide = tiles_wide != 0 ? tiles_wide * kTerrainTileCells + 1 : 0;
     const int deep = tiles_deep != 0 ? tiles_deep * kTerrainTileCells + 1 : 0;
+        sample_counts = {wide, deep};
+    }
+    const int wide = sample_counts[0], deep = sample_counts[1];
     if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
     int tx = i >> kTerrainTileShift, lx = i - (tx << kTerrainTileShift);
     int tz = j >> kTerrainTileShift, lz = j - (tz << kTerrainTileShift);
