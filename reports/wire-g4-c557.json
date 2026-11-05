@@ -1,0 +1,182 @@
+{
+  "goal": 4,
+  "chain": 557,
+  "worker": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain557Bound",
+  "picked": "Landing-ship ramp-open review correction: canonical native player owner unavailable; shared clock binding independent of chain 539",
+  "readiness_wired_before": 9882,
+  "readiness_wired_before_review": 9883,
+  "readiness_wired_after": 9882,
+  "new_wires_counted": 0,
+  "call_graph_new_reachable_native_addresses": [],
+  "review_round": 1,
+  "review_findings": [
+    {
+      "finding": 1,
+      "status": "fixed",
+      "action": "Removed the A6 constructor adapter, concrete profile and live ramp call. 00749AA0 is skipped rather than called with Image::game's synthetic null selected-owner cell.",
+      "evidence": "SessionParticipantPools retains ParticipantRecordBytes and ParticipantRecordId arrays only. Mission loading reset_and_claim_local_flags publishes a claimed identity, but no canonical native 118h player-record pointer is produced or exposed to this path. A copied flag projection is not a native participant object."
+    },
+    {
+      "finding": 2,
+      "status": "fixed",
+      "action": "Mission-frame setup includes chain557's switch and binds the shared live game-state/step-count references when kWireGoal4Chain539Bound || kWireGoal4Chain557Bound. The former chain557 ramp exception path was also removed with the rejected constructor binding."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00749aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landing_ship_ramp_step retains the previous route record",
+      "reason": "Canonical live native player-record storage and its game+18CCh publication are unavailable; Image::game's zero-filled selected-owner cell is synthetic even though flags 4 drops the message before consuming it.",
+      "evidence": [
+        "bsp.py show 0074af50 --start 66 --lines 31: local 0074A420, then constructor at 0074B089 and route at 0074B0A0 with flags 4",
+        "bsp.py show 00749aa0: base A6h, delivery 1, id/relay zero, profile 00CFF8D4",
+        "bsp.py ghidra bytes 00cff8d4 --length 20: 0074A1D0, 0075B480, 0075B4C0, 00749AD0, 004499C0",
+        "bsp.py show 0077c2a0: exactly flags 4 returns outside host mode before local override, serialization or receive dispatch",
+        "tests/math_tests.cpp existing mode-0 flags-4 case verifies no routing and no local delivery"
+      ]
+    },
+    {
+      "native": "00749ad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: potential A6 sender/route binding",
+      "reason": "Single-player flags 4 returns before privilege, audit and receive-type queries; no native single-player call to this IsType body exists on the ramp route."
+    },
+    {
+      "native": "00749d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: approach landing-mode-3 and request-landing paths",
+      "reason": "LandAtPad needs canonical pad/building entity-handle views and receive-side resolution; current pad model carries marker ids and building indices without the native entity object producer."
+    },
+    {
+      "native": "00749e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: potential LandAtPad codec bridge",
+      "reason": "No canonical live A5 sender message is bound; requires the pad/building handle producer before serializing its 13-bit and 12-bit ids."
+    },
+    {
+      "native": "00749e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: potential LandAtPad codec bridge",
+      "reason": "No A5 sender/factory bridge and canonical decoded-handle resolver are bound."
+    },
+    {
+      "native": "0074b570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: potential landing-ship receive handler",
+      "reason": "A6 flags-4 send has no single-player receive path; A5 additionally needs canonical entity-handle resolution and the role/prompt callbacks."
+    },
+    {
+      "native": "0074af50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landing_ship_ramp_step",
+      "reason": "The whole raw-object update needs the actual ship layout and remaining scene-node/unload host callbacks; this packet retains the existing live latch/unload projections."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated-unit brain registration",
+      "reason": "Native composite-brain storage and the inherited constructor callback chain are not bound to the current typed controller owner."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "The live flak-alternate ammo record at ammo+48h has no host producer."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "The unit+660h native vector owner and its live contents are not represented on this capture path."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit screen reset",
+      "reason": "Requires the owning HUD screen, its native selection vector and input-context levels; the host currently records this reset."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::cockpit_screen_mode",
+      "reason": "The live cockpit screen object and its Fe5Host state are not bound."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::map_screen_busy",
+      "reason": "The actual powerup-screen slide bytes +1F9h/+13Fh have no live owning screen storage."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::toggle_movie_camera",
+      "reason": "The interface/spectate camera state producer and downstream Fe5Host operations are not bound."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::toggle_new_movie_camera",
+      "reason": "The second movie-camera interface state and downstream camera operations are not bound."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::exit_free_camera_overlay",
+      "reason": "The raw interface overlay owner and its spectating/level-transition callbacks are not bound."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::toggle_tactical_overlay",
+      "reason": "The actual interface overlay object and target transition host are not bound."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "The bridge has no live WeaponInfo animation object; weapon_animation currently returns a recorded zero token."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / merge_group_into",
+      "reason": "The source/destination are host ScenePropertyBlock projections, not the required distinct raw-produced native bags with the shared clone/insertion/retirement context."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: authored enum-property merge",
+      "reason": "A native enum registry exists, but the destination property bag and native insertion context are not bound on this projected property path."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: voice-language content ownership",
+      "reason": "The profile content-list producer is marketplace enumeration and is unhosted; no fabricated ownership list was introduced."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command callbacks",
+      "reason": "The actual AI group+564Ch command owner and virtual forward callback are not available on these host paths."
+    }
+  ],
+  "validation": {
+    "baseline_build": "Prior-round baseline scripts/build.ps1 passed, 4/4 CTests",
+    "enabled_build": "Final review-fix scripts/build.ps1 passed, 4/4 CTests; chain539=true and chain557=true",
+    "independent_switch_build": "Chain539=false / chain557=true scripts/build.ps1 passed, 4/4 CTests; chain539 restored to true afterward",
+    "independent_switch_call_graph": "With chain539=false / chain557=true, bind_local_message_clock is entry-reachable with one direct call from GameMissionFrameHost::run_scene_load_004dfb70.",
+    "float_math": "No arithmetic expressions changed; existing latch math remains unchanged.",
+    "call_graph": "The final build has no 00749AA0 symbol or original-address mapping. bind_local_message_clock remains entry-reachable with one direct call from GameMissionFrameHost::run_scene_load_004dfb70.",
+    "readiness": "Corrected total 9882, matching the pre-chain557 baseline (the rejected prior round reported 9883). 00749AA0 is ready, not called, and absent from the final executable's original-address mappings. Zero new wires counted."
+  },
+  "limits": [
+    "Built executable call-graph evidence, not gameplay execution or an ABI-compatible replacement.",
+    "00749AA0 is intentionally unwired until canonical live native participant storage is available; the existing ramp-open behavior and route record remain.",
+    "No synthetic player record, copied flag-only surrogate, concrete A6 profile or alternate address-suffixed body was introduced.",
+    "The shared clock-binding fix is retained for independent switch operation; it does not establish native participant ownership."
+  ]
+}
