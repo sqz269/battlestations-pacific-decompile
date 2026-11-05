@@ -1,4 +1,5 @@
 #include "bsp/native_renderer_viewport_clear.hpp"
+#include "bsp/native_main_scene_execution_prefix.hpp"
 #include "bsp/native_renderer_cached_states.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -152,7 +153,8 @@ struct ClearCall {
     void* entry;
 };
 static_assert(sizeof(ClearCall) == 32);
-void __cdecl clear_body(void* renderer, const NativeRendererViewportClearContext* context,
+template<bool CameraColor>
+void __cdecl clear_body_impl(void* renderer, const NativeRendererViewportClearContext* context,
     const void* argument_slots) {
     const Word flags = word(argument_slots, 8); // original B2144A, before guard
     if (flags == 0) return;
@@ -172,7 +174,31 @@ void __cdecl clear_body(void* renderer, const NativeRendererViewportClearContext
         mov ecx, [eax]
         mov outgoing.stencil, edx
         mov edx, [edi + 0ch]
+    }
+    if constexpr (CameraColor) {
+        // bsp.py show 00B6FE60 / 00B21430: same raw DWORD load, now through
+        // the existing camera leaf. Keep it after optional guard entry and
+        // between the stencil load and depth spill. The raw leaf preserves
+        // EDX and the pending x87 depth; its output is the COM Clear color.
+        // Preserve EAX's actual COM device as well as ECX's device vtable:
+        // the getter returns its output address in EAX, not the device.
+        __asm {
+            push eax // actual COM device, saved before LEA changes EAX
+            push ecx // current device vtable
+            lea eax, outgoing.color
+            push eax
+            mov ecx, edx // actual camera, not a projected CameraView
+            call get_native_camera_clear_color_00b6fe60 // RET4
+            pop ecx
+            pop eax // restore the device for outgoing.device
+            mov edx, outgoing.color
+        }
+    } else {
+        __asm {
         mov edx, [edx]
+        }
+    }
+    __asm {
         fstp outgoing.depth_bits
         mov outgoing.color, edx
         mov edx, [edi + 4]
@@ -201,6 +227,15 @@ void __cdecl clear_body(void* renderer, const NativeRendererViewportClearContext
     }
     normal_leave(cleanup, guard, globals);
 }
+
+void __cdecl clear_body(void* renderer, const NativeRendererViewportClearContext* context,
+    const void* argument_slots) {
+    clear_body_impl<false>(renderer, context, argument_slots);
+}
+void __cdecl clear_body_from_camera(void* renderer, const NativeRendererViewportClearContext* context,
+    const void* argument_slots) {
+    clear_body_impl<true>(renderer, context, argument_slots);
+}
 } // namespace
 
 // New EDX context; preserve public callee argument slots until their exact
@@ -224,6 +259,17 @@ __declspec(naked) void __fastcall clear_native_renderer_00b21430(void*,
     __asm { push edx }
     __asm { push ecx }
     __asm { call clear_body }
+    __asm { add esp, 0ch }
+    __asm { ret 18h }
+}
+__declspec(naked) void __fastcall clear_native_renderer_camera_color(void*,
+    const NativeRendererViewportClearContext*, Word, const void*, Word,
+    const void*, float, Word) {
+    __asm { lea eax, [esp + 4] }
+    __asm { push eax }
+    __asm { push edx }
+    __asm { push ecx }
+    __asm { call clear_body_from_camera }
     __asm { add esp, 0ch }
     __asm { ret 18h }
 }

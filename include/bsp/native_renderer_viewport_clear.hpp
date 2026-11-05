@@ -40,4 +40,13 @@ void __fastcall clear_native_renderer_00b21430(void* actual_renderer,
     const NativeRendererViewportClearContext*, std::uint32_t count,
     const void* rectangles, std::uint32_t flags, const void* color_word,
     float depth, std::uint32_t stencil);
+
+// Camera-command adapter to the SAME clear implementation: the stacked color
+// argument carries the actual camera. After the optional guard
+// enters, 00B6FE60 supplies the DWORD at the original color-load site. Zero
+// flags still return without reading the camera, context, depth or device.
+void __fastcall clear_native_renderer_camera_color(void* actual_renderer,
+    const NativeRendererViewportClearContext*, std::uint32_t count,
+    const void* rectangles, std::uint32_t flags, const void* actual_camera,
+    float depth, std::uint32_t stencil);
 } // namespace bsp
