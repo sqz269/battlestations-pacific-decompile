@@ -34,6 +34,7 @@
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/avoid_zone_geometry.hpp"
+#include "bsp/avoid_zone_query_binding.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/entity_lifecycle_tails.hpp"
@@ -4322,6 +4323,32 @@ int main() {
             "00422500: the backward corner is (100, 100) pushed the same way");
         check(detour.forward_index == 1 && detour.backward_index == 1,
             "00422BCA and 00423173: corner 1 forward, corner 2 backward reported as edge 1");
+
+        // Chain 546: the ship-placement query must measure from the polygon,
+        // rather than treating its 800-unit broad-phase slack as clearance.
+        // Reuse this fixture's derived corners through the production snapshot
+        // adapter, including the half-open upper broad-phase boundary.
+        std::array<bsp::ShipAiPathLateralRecord, 4> records;
+        std::array<bsp::ShipAiPathLateralRecord*, 4> pointers;
+        for (std::size_t i = 0; i < records.size(); ++i) {
+            const auto& c = square.corners[i];
+            records[i] = {c.position[0], c.position[1], c.edge_direction[0], c.edge_direction[1],
+                c.normal[0], c.normal[1], c.edge_length, c.turn_angle, c.spare};
+            pointers[i] = &records[i];
+        }
+        const bsp::AvoidZoneNativeStorage native{{pointers.data(), 4}, 4, 0, nullptr,
+            -100.0f, -100.0f, 100.0f, 100.0f};
+        const volatile std::uint32_t sqrt_bypass = 1;
+        const bsp::CameraAxesCrtAccess crt{&sqrt_bypass,
+            [](std::int32_t, bsp::CameraAxesCrtException*, std::uint16_t*) {
+                throw std::logic_error("finite clearance fixture reached legacy CRT error dispatch");
+            }};
+        bsp::AvoidZoneBoundaryQueries distances({&native}, crt);
+        check(distances.distance_within_slack({150.0f, 0.0f}, 800.0f) == 50.0f
+                && distances.distance_within_slack({0.0f, 0.0f}, 800.0f) == 0.0f
+                && distances.distance_within_slack({900.0f, 0.0f}, 800.0f)
+                    == (std::numeric_limits<float>::max)(),
+            "0041B680/0041B120: ship placement uses shoreline distance, inside zero, and half-open slack bounds");
     }
 
     {

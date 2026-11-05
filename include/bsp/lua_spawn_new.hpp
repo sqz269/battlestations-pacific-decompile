@@ -175,6 +175,11 @@ struct SpawnNewGroupMember {
     bool has_class_extents{false};
     float class_length_a0{0.0f};
     float class_width_a4{0.0f};
+    // Chain 546: the loaded ship descriptor's depth-zero navigation layer
+    // (+560h). Only an established kind-6 class/navigation read admits this
+    // projection; non-ships retain their existing placement path.
+    bool surface_navigation_bound{false};
+    std::uint32_t surface_navigation_layer_560{0};
 };
 
 // `excludeRadiusOverride`. The record keeps one float of this block at +ACh,
@@ -420,6 +425,10 @@ public:
     virtual ~SpawnPlacementWorld() = default;
     // 0071C4F0 BSP_Game_PointOutsideMapBounds.
     virtual bool point_outside_map_0071c4f0(const float position[3]) const = 0;
+    // Chain 546: 00941D76..00941DCE for a bound kind-6 member, before
+    // entity separation. Other members keep their pre-existing admission.
+    virtual bool surface_member_placement_legal(const SpawnNewGroupMember&,
+        const float position[3]) const = 0;
     virtual void placement_entities(std::vector<SpawnPlacementEntity>& out) const = 0;
 };
 void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept;
@@ -427,8 +436,9 @@ void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept;
 // 00941D30, __fastcall(ECX = record+78h party, EDX = the member's translation
 // row, stack: aircraft flag (vtable+18h(0Fh) at 00949420), class, frame,
 // record+9Ch block), RET 10h. Refuses outside the map; for a non-aircraft
-// member runs terrain/depth probes (not modelled: every member here is created
-// as a plane squadron, docs/LUA_SPAWN_NEW_HOST.md section 8 deviation 1); then
+// member runs terrain/depth probes. The solver's chain-546 world callback
+// supplies the ship-class clearance arm; non-ship terrain probes remain
+// unmodelled here. This function supplies the entity-separation walk: then
 // for each entity with dy = p.y - e.y: same party and |dy| <= ownVertical and
 // |p - e|^2 < ownHorizontal^2 refuses; other party and |dy| <= enemyVertical
 // and |p - e|^2 < enemyHorizontal^2 refuses. The squares are 009481A0's

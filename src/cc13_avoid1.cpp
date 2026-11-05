@@ -157,7 +157,9 @@ bool cc13_avoid_group_arc_hit_0041b510(const std::vector<AvoidZoneBoundaryZoneVi
     return false;
 }
 
-float cc13_avoid_zone_distance_0041b120(AvoidZoneBoundaryHost& host,
+// Chain 546 retains this entry as a call so the executable's new
+// 0041B680 -> 0041B120 edge can be checked independently of compiler inlining.
+__declspec(noinline) float cc13_avoid_zone_distance_0041b120(AvoidZoneBoundaryHost& host,
     const AvoidZoneBoundaryZoneView& zone, const std::array<float, 2>& point, float slack) {
     float best = (std::numeric_limits<float>::max)();  // 00D7A248
     const float minimum_x = zone.bounds[0] - slack;

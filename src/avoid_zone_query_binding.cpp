@@ -3,6 +3,7 @@
 #include "bsp/avoid_zone_offset.hpp"
 #include "bsp/avoid_zone_segment_math.hpp"
 #include "bsp/native_vector2_math.hpp"
+#include "bsp/cc13_avoid1.hpp"
 
 #include <cstring>
 
@@ -58,6 +59,12 @@ AvoidZoneBoundaryQueries::AvoidZoneBoundaryQueries(
 
 const std::vector<AvoidZoneBoundaryZoneView>& AvoidZoneBoundaryQueries::zones() const noexcept {
     return views_;
+}
+
+float AvoidZoneBoundaryQueries::distance_within_slack(
+    const std::array<float, 2>& point, float slack) {
+    // The same ordered snapshots and geometry providers used by 0041B840.
+    return cc13_avoid_group_distance_0041b680(*this, views_, point, slack);
 }
 
 float AvoidZoneBoundaryQueries::distance_normal(std::size_t zone,

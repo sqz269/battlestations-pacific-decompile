@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_avoid_zone_runtime.hpp"
+#include "bsp/wire_goal4_chain546_switches.hpp"
 #include "bsp/wire_goal4_chain484_switches.hpp"
 #include "bsp/wire_goal4_chain531_switches.hpp"
 #include "bsp/wire_goal4_chain490_switches.hpp"
@@ -5548,11 +5550,27 @@ namespace {
 // (packet p16_lua_natives); without it, or with none loaded, nothing is outside.
 class SpawnPlacementUnits final : public bsp::SpawnPlacementWorld {
 public:
-    SpawnPlacementUnits(const GameUnitsHost& units, const bsp::WorldMapBounds* bounds)
-        : units_(units), bounds_(bounds) {}
+    SpawnPlacementUnits(const GameUnitsHost& units, const bsp::WorldMapBounds* bounds,
+        GameAvoidZoneRuntime* zones = nullptr)
+        : units_(units), bounds_(bounds), zones_(zones) {}
     bool point_outside_map_0071c4f0(const float* p) const override {
         if (!kSpawnPlacementMapBoundsBound || bounds_ == nullptr || p == nullptr) return false;
         return bsp::point_outside_world_map_0071c4f0(*bounds_, {p[0], p[1], p[2]});
+    }
+    bool surface_member_placement_legal(const bsp::SpawnNewGroupMember& member,
+        const float position[3]) const override {
+        if (!member.surface_navigation_bound) return true;
+        // An unavailable manager is the pre-existing unbound host path, not
+        // proof that the native class's group is null. Leave it unchanged.
+        if (zones_ == nullptr || !zones_->ready()) return true;
+        const std::uint32_t group = zones_->group_for_layer(member.surface_navigation_layer_560);
+        // bsp.py show 00941d30 --asm, 00941D76..00941DCE: default 10000
+        // (00CE3D64 = 461C4000h), depth 0 at 0082ADA0, slack 800
+        // (00CE3950 = 44480000h), then reject iff class+A0h > distance.
+        // +A0h is this same member's authored Length, NOT its Draft.
+        const float distance = group == 0 ? 10000.0f
+            : zones_->distance_within_slack(group, {position[0], position[2]}, 800.0f);
+        return !(member.class_length_a0 > distance);
     }
     void placement_entities(std::vector<bsp::SpawnPlacementEntity>& out) const override {
         out.clear();
@@ -5568,6 +5586,7 @@ public:
 private:
     const GameUnitsHost& units_;
     const bsp::WorldMapBounds* bounds_;
+    GameAvoidZoneRuntime* zones_;
 };
 }  // namespace
 
@@ -5957,6 +5976,32 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
         // VehicleClass[Type] from the installed table.
         // VehicleClass[Type] through read_vehicle_class_row; an absent key
         // reads as 0, as the class field's zero default does.
+        if constexpr (kWireGoal4Chain546Bound) {
+        for (bsp::SpawnNewGroupMember& m : request.members) {
+            m.surface_navigation_bound = false;
+            const GameVehicleClassRow row = read_vehicle_class_row(m.type_class_id);
+            if (!row.found) continue;
+            m.class_length_a0 = row.length;
+            m.class_width_a4 = row.width;
+            m.has_class_extents = true;
+            const auto* kind = bsp::vehicle_class_kind_row(row.type.c_str());
+            // The eight descriptor leaves 7..0Eh all implement IsKindOf(6).
+            // This is the same class family the creation arm resolves below.
+            if (kind == nullptr || kind->kind < bsp::VehicleClassKind::Destroyer
+                || kind->kind > bsp::VehicleClassKind::TorpedoBoat) continue;
+            GameShipNavigationInput navigation{};
+            std::string error;
+            if (!read_ship_navigation_input(m.type_class_id,
+                    static_cast<bsp::LuaBindingNavigatorHost&>(*script_orders_).game_session_mode(),
+                    navigation, error)) {
+                log_.notef("SpawnNew surface placement remains unbound for class %d: %s",
+                    m.type_class_id, error.c_str());
+                continue;
+            }
+            m.surface_navigation_layer_560 = navigation.tuning.array[0];
+            m.surface_navigation_bound = true;
+        }
+        } else {
         for (bsp::SpawnNewGroupMember& m : request.members) {
             const GameVehicleClassRow row = read_vehicle_class_row(m.type_class_id);
             if (!row.found) continue;
@@ -5964,7 +6009,14 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             m.class_width_a4 = row.width;
             m.has_class_extents = true;
         }
+        }
+        if constexpr (kWireGoal4Chain546Bound) {
+            GameShipAiHost* const ai = units_hooks_ ? units_hooks_->ship_ai() : nullptr;
+            placement_world.emplace(script_orders_->units(), world_border_bounds(),
+                ai ? ai->avoid_zone_runtime_mutable() : nullptr);
+        } else {
         placement_world.emplace(script_orders_->units(), world_border_bounds());
+        }
         bsp::set_spawn_placement_world(&*placement_world);
     }
     struct ClearWorld {

@@ -251,6 +251,11 @@ std::array<float, 2> GameAvoidZoneRuntime::nearest(std::uint32_t group,
     const std::array<float, 2>& point, float slack, float push) {
     impl_->require_ready(); return impl_->groups.at(group - 1).boundary->nearest_boundary_point(point, slack, push);
 }
+float GameAvoidZoneRuntime::distance_within_slack(std::uint32_t group,
+    const std::array<float, 2>& point, float slack) {
+    impl_->require_ready();
+    return impl_->groups.at(group - 1).boundary->distance_within_slack(point, slack);
+}
 bool GameAvoidZoneRuntime::segment(std::uint32_t layer, const std::array<float, 2>& toward,
     const std::array<float, 2>& from, std::uint32_t& zone, std::int32_t& edge) const {
     impl_->require_ready(); AvoidZoneManagerZone hit;

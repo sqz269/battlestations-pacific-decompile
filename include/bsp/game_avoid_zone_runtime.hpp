@@ -33,6 +33,9 @@ public:
         const std::array<float, 2>&, float margin) const;
     std::array<float, 2> nearest(std::uint32_t group,
         const std::array<float, 2>&, float slack, float push);
+    // 0041B680 over this loaded manager's real group, for 00941D30.
+    float distance_within_slack(std::uint32_t group,
+        const std::array<float, 2>& point, float slack);
     bool segment(std::uint32_t layer, const std::array<float, 2>& toward,
         const std::array<float, 2>& from, std::uint32_t& zone, std::int32_t& edge) const;
     bool segment_point(std::uint32_t layer, const std::array<float, 2>& toward,

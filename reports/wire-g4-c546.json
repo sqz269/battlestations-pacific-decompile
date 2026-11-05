@@ -1,0 +1,184 @@
+{
+  "chain": 546,
+  "worker": "agent/g4-w2",
+  "picked": "SpawnNew ship shoreline-clearance admission",
+  "switch": "bsp::kWireGoal4Chain546Bound",
+  "driver": "src/game_hosts_lua.cpp:GameMissionLuaHost::fulfil_spawn_request_009483d0 -> src/lua_spawn_new.cpp:solve_spawn_placement_0094a140 -> SpawnPlacementUnits::surface_member_placement_legal",
+  "wired_before": 9864,
+  "wired_after": 9865,
+  "compiled_called_before": 4936,
+  "compiled_called_after": 4938,
+  "evidence": [
+    "bsp.py show 00941d30 --asm: 00941D76..00941DCE selects depth-zero navigation group, measures shoreline clearance with slack 800, and rejects iff class+A0h Length exceeds the result; native no-group distance is 10000.",
+    "Ghidra /battlestationspacific.exe verified; bytes 00CE3D64=00 40 1C 46 (10000), 00CE3950=00 00 48 44 (800).",
+    "bsp.py show 0041b120 and 0041b680: half-open expanded bounds, inside zero, otherwise minimum segment distance over each zone, then minimum over group.",
+    "Existing loaded VehicleClass Length and ShipLeafTuning array[0] supply each request member; GameAvoidZoneRuntime supplies the same ordered native-zone snapshots and geometry services used by existing boundary queries."
+  ],
+  "validation": [
+    "scripts/build.ps1: Win32 Release and all five CTests passed.",
+    "One focused extension to the existing square fixture verifies distance 50 outside the shoreline, zero inside, and FLT_MAX at the excluded upper slack boundary.",
+    "call_graph.py who 0041b680: reachable call from AvoidZoneBoundaryQueries::distance_within_slack.",
+    "call_graph.py who 0041b120: reachable call from cc13_avoid_group_distance_0041b680; noinline keeps this newly used leaf visible to the executable census."
+  ],
+  "limits": [
+    "Missing class/navigation input or unavailable zone manager retains the existing permissive host path; no missing manager is treated as a proven native null group.",
+    "Non-ship terrain probes remain unbound. These are typed C++ class/zone projections, not original binary ABI replacements.",
+    "No game was launched; compiled reachability and fixture evidence do not prove gameplay behavior."
+  ],
+  "rows": [
+    {
+      "native": "0041b680",
+      "status": "wired",
+      "host_site": "src/avoid_zone_query_binding.cpp:AvoidZoneBoundaryQueries::distance_within_slack"
+    },
+    {
+      "native": "0041b120",
+      "status": "wired",
+      "host_site": "src/cc13_avoid1.cpp:cc13_avoid_group_distance_0041b680"
+    },
+    {
+      "native": "00aa6b10",
+      "status": "skipped",
+      "host_site": "src/gui_widget_frame_runtime.cpp:GuiWidgetFrameRuntime::contains_pointer_00aa6a40",
+      "reason": "Typed GUI frame/pointer runtime has no entry-reachable owner in this executable; attempted wiring was reverted."
+    },
+    {
+      "native": "00aa8f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::widget_text_height",
+      "reason": "The live text origin subtracts its pivot; this rectangle helper does not, and its native bounds-copy consumers are unhosted."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp:reflection descriptor walk",
+      "reason": "The alphabetical reflection consumer is unhosted; substituting it for the live draw order would change semantics."
+    },
+    {
+      "native": "00421500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp:GameAvoidZoneRegistry::NativeRegistry",
+      "reason": "This host owns the terrain-layer registry, not the separate 78h manager with its groups, hull list and critical section."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "A retained ammunition-record owner and its ammo+48h flak-alternate producer, including references and tree ownership, are absent."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:command-building message handling",
+      "reason": "The actual unit+660h vector44 owner and its element lifetime providers are absent."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landfort fire handling",
+      "reason": "The retained death-smoke effect owner and its create/stop/message providers are absent."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landfort_fire_roll_007470b0",
+      "reason": "The recorded D1h presentation sync path has no connected message/effect consumer here."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:flight_state_notify_007c11e0",
+      "reason": "The retained plane C98h FX subcomponent whose timer is reset is not built."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:flight_state_notify_007c11e0",
+      "reason": "The plane C98h FX component and its actual presentation objects are absent."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:flight_state_notify_007c11e0",
+      "reason": "The plane C98h FX component's owning effect arrays and their producers are absent."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:formation group creation",
+      "reason": "Whole InitWithLeader requires native unit owners; the existing group view uses one-based registry identities."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:land task installation",
+      "reason": "The native land approach and its embedded state objects are absent; a registry constructed only to name enum states would not replace their ownership."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:land task retirement",
+      "reason": "There is no native land-state registry owner to destroy."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:land task installation",
+      "reason": "The same actual 274h land approach, B8h registry and eight embedded state identities required by this body are absent."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:move-on-path task handling",
+      "reason": "The canonical lazy path-leg manager singleton, its constructor and lifetime registration are unbound."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:pilot task tick",
+      "reason": "The retained plane step-record byte at 9C2h and the original read/write parity publications are not hosted."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:controller sync description",
+      "reason": "A live single-player consumer of the controller sync-message object was not found."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot stand-in",
+      "reason": "The native controller snapshot owner and a single-player snapshot consumer are not connected."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::insert_into",
+      "reason": "Already entry-reachable in the baseline executable through the native property-merge adapter; no new wiring needed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable in the baseline executable through the native property-merge adapter; no new wiring needed."
+    },
+    {
+      "native": "00429fd0",
+      "status": "skipped",
+      "host_site": "src/scenes_seg1_cc13.cpp:native_legacy_sbo_string_assign_cstring_00429fd0",
+      "reason": "The native callers are peer removal and XLive error text, outside this single-player wiring scope."
+    },
+    {
+      "native": "00c41ad0",
+      "status": "skipped",
+      "host_site": "src/dyn_world_settings.cpp:dyn_world_settings_game",
+      "reason": "The settings projection already calls this body; whole native world ownership is a separate interface and was not added."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart write_checkpoint",
+      "reason": "Agent g4-w4 claimed the checkpoint-clearing slice; no files in that slice were changed here."
+    }
+  ]
+}
