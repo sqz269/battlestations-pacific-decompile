@@ -1,10 +1,13 @@
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/cc13_seg87.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/native_wide_string.hpp"
 #include "bsp/wide_string_substring_view.hpp"
 #include "bsp/wire_goal2_chain116_switches.hpp"
 #include "bsp/wire_goal2_chain163_switches.hpp"
+#include "bsp/wire_goal4_chain549_switches.hpp"
 
+#include <clocale>
 #include <cstdint>
 #include <cwchar>
 #include <limits>
@@ -97,6 +100,33 @@ std::u16string locale_substring(const std::u16string& source, std::size_t positi
 }
 
 } // namespace
+
+bool uppercase_ascii_text_with_current_c_locale(char16_t* text, std::size_t length) {
+    const char* const locale = std::setlocale(LC_CTYPE, nullptr);
+    if (!locale || locale[0] != 'C' || locale[1] != '\0'
+        || length > (std::numeric_limits<std::uint32_t>::max)()) return false;
+    for (std::size_t i = 0; i < length; ++i)
+        if (text[i] > 0x7fu) return false;
+    if (length == 0) return true;
+
+    std::string bytes(length, '\0');
+    for (std::size_t i = 0; i < length; ++i)
+        bytes[i] = static_cast<char>(text[i]);
+    struct BorrowedString {
+        std::uint32_t length;
+        char* data;
+    } view{static_cast<std::uint32_t>(bytes.size()), bytes.data()};
+    static_assert(sizeof(BorrowedString) == 8 && offsetof(BorrowedString, data) == 4);
+    // bsp.py show 004fb1f0: ECX {length, data}, RET; rewrite a..z in place,
+    // including bytes after NUL, without allocating or touching the header.
+    // This is a host adapter to that existing body, not its original caller
+    // or an ABI replacement. Both the extent and bytes are the resolved text.
+    cc13_fe3::native_string_to_upper_ascii_004fb1f0(
+        {reinterpret_cast<std::uint8_t*>(&view)});
+    for (std::size_t i = 0; i < length; ++i)
+        text[i] = static_cast<unsigned char>(bytes[i]);
+    return true;
+}
 
 char16_t locale_uppercase_00a9eba0(const LocaleTables& tables,
     LocaleTextRuntimeHost& host, char16_t code_unit) {
@@ -221,8 +251,22 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
         }
     }
     if (uppercase) {
+        if constexpr (kWireGoal4Chain549Bound) {
+            // The complete appended result includes resolved context tokens.
+            // Sidecar mappings take precedence over CRT even for ASCII, so
+            // only an empty mapping table permits the production span adapter.
+            const bool converted = tables_.sidecar_first().empty()
+                && host_.uppercase_ascii_text(output.data() + old_length,
+                    output.size() - old_length);
+            if (!converted) {
+                for (std::size_t i = old_length; i < output.size(); ++i) {
+                    output[i] = locale_uppercase_00a9eba0(tables_, host_, output[i]);
+                }
+            }
+        } else {
         for (std::size_t i = old_length; i < output.size(); ++i) {
             output[i] = locale_uppercase_00a9eba0(tables_, host_, output[i]);
+        }
         }
     }
 }

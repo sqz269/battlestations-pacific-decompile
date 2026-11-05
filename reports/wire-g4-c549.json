@@ -1,0 +1,184 @@
+{
+  "goal": 4,
+  "chain": 549,
+  "run": 1133,
+  "owner": "agent/g4-w5",
+  "base": "23d8834e1aa9ca37aa7e8f83620d8af92537e727",
+  "switch": "bsp::kWireGoal4Chain549Bound",
+  "switch_header": "include/bsp/wire_goal4_chain549_switches.hpp",
+  "rows": [
+    {
+      "native": "004fb1f0",
+      "status": "wired",
+      "host_site": "src/locale_text_lookup.cpp: uppercase_ascii_text_with_current_c_locale, reached through GameLocaleTextRuntime and LiteralTextLocale",
+      "newly_wired": true,
+      "state": "Actual resolved captions or copied text for an uppercase-only font; the ASCII bytes and their extent are losslessly narrowed from that text, passed through a borrowed eight-byte NativeString view, and the body's result is written back for rendering.",
+      "domain": "Production host explicitly opts in; current LC_CTYPE is exactly C; every code unit is ASCII; caller's current locale sidecar mapping table is empty.",
+      "evidence": "bsp.py show 004fb1f0: ECX points to {DWORD length, char* data}; RET; ASCII a..z transformed in place over the counted extent, with no header modification or allocation.",
+      "call_graph": "REACHABLE; one direct call from bsp::uppercase_ascii_text_with_current_c_locale; both production host overrides are entry-reachable.",
+      "fallback": "Non-ASCII text, non-C locale, sidecar mappings and hosts without the optional binding keep the existing scalar implementation. A successfully converted span does not run it again."
+    },
+    {
+      "native": "00a9ec30",
+      "status": "wired",
+      "host_site": "src/cc13_seg87.cpp: uppercase_native_wide_string_00a9ec30; called by src/game_hosts_text.cpp: GameGuiTextBinding::transform",
+      "newly_wired": false,
+      "state": "Existing wide-header body now offers its live text span to the same guarded ASCII adapter; its original scalar loop remains the switch-off implementation and the fallback."
+    },
+    {
+      "native": "005b8ea0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: append_effect_sound_sample_005b9af0 (proposed caller, unchanged)",
+      "reason": "Missing production EffectSound reader/dispatcher owner: 005B9AF0 and 0086EF60 are absent even from the fresh no-inline game build, so repairing only the reserve edge would remain dormant."
+    },
+    {
+      "native": "005b9af0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: acquire_and_append (unchanged)",
+      "reason": "Missing production EffectSound component acquisition/reader binding; its source is text-wired but the typed append is not linked in the no-inline executable."
+    },
+    {
+      "native": "0086ef60",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_scalar_components.cpp: GameplayEffectScalarComponentDispatcher::read_lua_slot_14 (unchanged)",
+      "reason": "Missing production construction and retention of GameplayEffectScalarComponentDispatcher with its real sound/texture service contexts; this reader is absent from the no-inline executable."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00 (no selected live caller)",
+      "reason": "Missing an entry-reachable text-edit admission path carrying the current font; rendering glyph fallback is not this input-byte acceptance operation."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cache.cpp: append_sound_resource_cache_record_00a84530 (unchanged)",
+      "reason": "Missing canonical raw 2Ch sound-cache record storage and its string/list copy services; the live cache currently owns typed vector records, which cannot be cast to this raw array."
+    },
+    {
+      "native": "0093fd00",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp: copy_construct_sound_sample_options_0093fdf0 (unchanged)",
+      "reason": "Missing a live typed spatial-channel options consumer; 00A8A700 and this assignment body are not linked in the fresh no-inline executable."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: close_sound_system_00a7e240 (unchanged)",
+      "reason": "No missing executable call edge: fresh baseline analysis already shows this body entry-reachable, despite its readiness state being ready."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_types_00a7fcc0_fragment (unchanged)",
+      "reason": "No missing executable call edge: fresh baseline analysis already shows this body entry-reachable, despite its readiness state being ready."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selection reset stand-in (unchanged)",
+      "reason": "Missing canonical raw selection-screen owner, checked-iterator vector erase and real input-context callbacks for the existing raw body."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: mover_build_frustum_planes_0042e180 (unchanged)",
+      "reason": "Missing live mover-frustum host binding that borrows the current camera projection; no existing verified fov-times-aspect consumer was found to replace."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: Lua baseline capture; teardown caller not added",
+      "reason": "Missing raw baseline-set and LuaObject iteration/string/vector service adapter for the full teardown body; the existing baseline capture alone does not supply those contracts."
+    },
+    {
+      "native": "00befcb0",
+      "status": "skipped",
+      "host_site": "src/file_store_cc13.cpp: ram_image_path_is_tga_00befcb0 (unchanged)",
+      "reason": "Missing an entry-reachable terrain RamImage load path using this typed filename helper; it is not linked in the no-inline game build."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35 path (unchanged)",
+      "reason": "Missing a live message35 factory/receive producer or another verified native word-array owner; reserve and resize are absent from the no-inline executable."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30 (unchanged)",
+      "reason": "Missing a live retained native word-array owner and its message lifecycle; no entry-reachable call exists in the baseline analysis build."
+    },
+    {
+      "native": "00763d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: queue_shipyard_launch_7a (inspected, unchanged)",
+      "reason": "Missing a live A9h SHIPYARD_LAUNCH_SLOT producer: the available host path is the distinct 7Ah VEHICLE_SHIPYARD_LAUNCH message and must not use this constructor."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target stand-in (unchanged)",
+      "reason": "Missing mapped native 00F87574..00F8757C publication words for the existing literal absolute-address body; calling it in the rebuilt image would not borrow valid process state."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_class_activation.cpp: pointer-array resize calls (unchanged)",
+      "reason": "Missing a production native vehicle-class activation/lifetime binding; the reserve body is absent from the fresh no-inline game executable."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20 (unchanged)",
+      "reason": "No missing executable call edge: fresh baseline analysis already shows reserve entry-reachable through resize."
+    },
+    {
+      "native": "00903f30",
+      "status": "skipped",
+      "host_site": "src/entity_lifecycle_tails.cpp: chain_unlink_00903f30 (no selected live caller)",
+      "reason": "Missing a production indexed IntrusiveChain/nodes-vector owner compatible with this typed projection; the live native chain cannot be replaced by invented indices."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: advance_ticker stand-in (unchanged)",
+      "reason": "Missing the live award-message queue producer and retained widget timed-entry owner; the host explicitly leaves the award ticker queue empty."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310 (unchanged)",
+      "reason": "Missing the full CloudManager frame/instance host contract: the legacy ocean-named body only projects part of the now-identified cloud-manager operation."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 9871,
+    "readiness_wired_after": 9872,
+    "analysis_reconstructed_called_before": 6570,
+    "analysis_reconstructed_called_after": 6571,
+    "newly_wired_addresses": [
+      "004fb1f0"
+    ],
+    "note": "Fresh /Ob0 /OPT:NOICF builds were used for executable totals; the initial readiness report's cached graph was stale. Source readiness and executable address totals are different instruments."
+  },
+  "validation": {
+    "release_build_switch_on": "scripts/build.ps1 passed, all four existing test suites",
+    "release_build_switch_off": "scripts/build.ps1 passed, all four existing test suites",
+    "focused_probe": "local/chain549_ascii_probe.ps1; Win32 /MANIFEST:EMBED probe passed with switch ON and OFF",
+    "probe_inputs": "Installed lockit/englishauthentic.lan (6864 records), installed empty lanx, caption FE.briefing; focused ASCII extent, non-ASCII/non-C rejection and sidecar-priority fixtures",
+    "probe_result": "ASCII=128; installed caption equals scalar result; pre-existing output prefix preserved; native wide-header result correct; sidecar mapping wins; no second scalar pass after successful conversion",
+    "analysis_build": "python tools/call_graph.py --build",
+    "call_graph_queries": [
+      "python tools/call_graph.py who 004fb1f0",
+      "python tools/call_graph.py path 004fb1f0"
+    ],
+    "readiness": "python tools/wire_readiness.py --standins; 004fb1f0 state=wired called=true call_sites=1 callers_live=1",
+    "float_math": "No float arithmetic changed."
+  },
+  "limits": [
+    "The new caller is a host adapter using a lossless ASCII view of real text, not a recovered original caller or native binary ABI replacement.",
+    "Entry-reachable compiled calls and a focused installed-data probe are verified; no game was run and visual/gameplay behavior is unvalidated.",
+    "The probe is an ignored local validation artifact, not a new permanent test suite."
+  ]
+}

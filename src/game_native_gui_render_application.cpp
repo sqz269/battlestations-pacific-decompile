@@ -16,6 +16,7 @@
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_text_application.hpp"
 #include "bsp/game_hosts_text.hpp"
+#include "bsp/locale_text_lookup.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/camera_configuration.hpp"
 #include "bsp/gui_material_binding.hpp"
@@ -37,6 +38,7 @@
 #include "bsp/native_renderer_indexed_draw.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/wire_goal4_chain493_switches.hpp"
+#include "bsp/wire_goal4_chain549_switches.hpp"
 #include <d3d9.h>
 #include <d3dx9shader.h>
 #include <clocale>
@@ -307,6 +309,13 @@ struct LiteralTextLocale final : LocaleTextRuntimeHost {
             return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
         } else {
         return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
+        }
+    }
+    bool uppercase_ascii_text(char16_t* text, std::size_t length) override {
+        if constexpr (kWireGoal4Chain549Bound) {
+            return uppercase_ascii_text_with_current_c_locale(text, length);
+        } else {
+            return false;
         }
     }
 };
