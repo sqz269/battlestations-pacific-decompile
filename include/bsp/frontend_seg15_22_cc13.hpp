@@ -825,7 +825,7 @@ Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHos
 void pause_multi_destroy_005d3710(Raw s, Seg15Host& host);
 // 005D3790, widget listener at screen+0Ch, RET 4.
 void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host);
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host);
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host);
 void pause_multi_exit_005d3960(Raw s, Seg15Host& host);
 void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host);
 

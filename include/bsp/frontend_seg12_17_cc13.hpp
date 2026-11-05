@@ -73,7 +73,7 @@ inline constexpr std::array<CollectChildrenSlot, 5> kCollectChildrenSlots{{
 // ---------------------------------------------------------------------------
 // Engine routines the packet's code calls. ECX-taking routines get the object first.
 // ---------------------------------------------------------------------------
-struct Fe3Host : ingame_gui_cc13::HudScreenBaseHost {
+struct Fe3Host : ingame_gui_cc13::HudScreenBaseHost, ingame_gui_cc13::HudScreenRegisterHost {
     virtual ~Fe3Host() = default;
     // Allocation.
     virtual void free_00bf65ac(void* block) = 0;
@@ -138,7 +138,7 @@ void owned_library_entry_delete_00501ce0(Raw holder, Fe3Host& host);
 void* loading_queue_deleting_destructor_0050ace0(Raw object, std::uint8_t flags, Fe3Host& host);
 void* frame_deleting_destructor_00517d60(Raw object, std::uint8_t flags, Fe3Host& host);
 // 005176A0 BSP_InGameScreen23_Register: 004F71D0, then +20h = 0.
-void in_game_screen_23_register_005176a0(Raw screen, Fe3Host& host);
+void in_game_screen_23_register_005176a0(Raw screen, ingame_gui_cc13::HudScreenRegisterHost& host);
 // 005176C0, __thiscall(observer, released), RET 4: clears whichever of +14h / +18h holds it
 // (the first match only).
 void in_game_screen_23_on_released_005176c0(Raw observer, void* released) noexcept;

@@ -645,7 +645,7 @@ void* session_message188_scalar_delete_005f97d0(void* message, std::uint8_t flag
 // Screen registration, construction and destruction
 // ---------------------------------------------------------------------------
 
-void hud_objectives_register_005ee010(void* screen, ScreenLifetimeHost& host) {
+void hud_objectives_register_005ee010(void* screen, ScreenRegisterPageHost& host) {
     host.frontend_register_004f71d0(screen);
     write_field(screen, 0x10, host.load_page_00aa5840(kHudObjectivesPage));
     write_field<std::uint8_t>(screen, 0x64, 0);
@@ -671,7 +671,7 @@ void hud_order_register_005f9ff0(void* screen, ScreenLifetimeHost& host) {
     write_field<std::uint32_t>(screen, 0x70, 0);
 }
 
-void hud_pause_cheat_register_00604890(void* screen, ScreenLifetimeHost& host) {
+void hud_pause_cheat_register_00604890(void* screen, ScreenRegisterPageHost& host) {
     host.frontend_register_004f71d0(screen);
     write_field(screen, 0x08, host.load_page_00aa5840(kHudPauseCheatPage));
 }

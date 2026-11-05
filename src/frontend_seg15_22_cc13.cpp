@@ -2337,7 +2337,7 @@ void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& hos
 }
 
 // 005D38A0: page GUI_pause_multi into +10h.
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host) {
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x10) = host.gui_load_page_00aa5840("GUI_pause_multi");
 }

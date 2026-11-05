@@ -544,7 +544,15 @@ struct FrontEndScreenConstructHost {
     virtual void frontend_construct_004f7180(void* screen) = 0;
 };
 
-struct ScreenLifetimeHost : FrontEndScreenConstructHost {
+// 005EE010 and 00604890, two of 0068CC70's leaf register overrides: the
+// registry's 004F71D0 and one page load 00AA5840.
+struct ScreenRegisterPageHost {
+    virtual ~ScreenRegisterPageHost() = default;
+    virtual void frontend_register_004f71d0(void* screen) = 0;
+    virtual std::uint32_t load_page_00aa5840(std::string_view name) = 0;
+};
+
+struct ScreenLifetimeHost : FrontEndScreenConstructHost, ScreenRegisterPageHost {
     virtual ~ScreenLifetimeHost() = default;
     // BSP_FrontEndScreen_Register 004F71D0 / _Construct 004F7180 / _Destruct, ECX = screen.
     virtual void frontend_register_004f71d0(void* screen) = 0;
@@ -575,9 +583,9 @@ struct ScreenLifetimeHost : FrontEndScreenConstructHost {
 inline constexpr std::string_view kHudObjectivesPage = "GUI_objectives";
 inline constexpr std::string_view kHudOrderPage = "GUI_order";
 inline constexpr std::string_view kHudPauseCheatPage = "GUI_pause_cheat";
-void hud_objectives_register_005ee010(void* screen, ScreenLifetimeHost& host);
+void hud_objectives_register_005ee010(void* screen, ScreenRegisterPageHost& host);
 void hud_order_register_005f9ff0(void* screen, ScreenLifetimeHost& host);
-void hud_pause_cheat_register_00604890(void* screen, ScreenLifetimeHost& host);
+void hud_pause_cheat_register_00604890(void* screen, ScreenRegisterPageHost& host);
 // 005EA720 MultiMainMenu: Register, vtable +14h, +F0h = +E0h = +E4h = 0,
 // +ECh = the y of widget +DCh's resolved position, +F4h = -1, then
 // LayoutAchievementLocks (tail JMP).

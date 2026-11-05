@@ -80,7 +80,7 @@ void* frame_deleting_destructor_00517d60(Raw o, std::uint8_t flags, Fe3Host& hos
     return o.p;
 }
 
-void in_game_screen_23_register_005176a0(Raw s, Fe3Host& host) {
+void in_game_screen_23_register_005176a0(Raw s, ingame_gui_cc13::HudScreenRegisterHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.at<std::uint32_t>(0x20) = 0;
 }

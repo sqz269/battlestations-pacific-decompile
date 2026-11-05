@@ -3156,7 +3156,7 @@ void hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw) 
 std::int32_t hud_tactical_sheet_screen_get_screen_id_0067af60(Raw) noexcept { return 0x54; }
 std::int32_t hud_cursor_screen_get_screen_id_0067b320(Raw) noexcept { return 0x28; }
 void hud_cursor_screen_exit_0067b330(Raw) noexcept {}
-void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenServices& host) {
+void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenRegisterHost& host) {
     host.front_end_screen_register_004f71d0(self);
 }
 void hud_common_overlay_screen_enter_0067b400(Raw) noexcept {}

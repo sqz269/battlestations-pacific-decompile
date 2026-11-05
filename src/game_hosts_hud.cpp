@@ -563,6 +563,77 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");
 }
 
+// The leaf register overrides (+10h, kHudScreenLayouts) that run on their
+// blocks: each is 004F71D0 and at most one page load (bsp.py show <address>
+// --asm), and each page is the one kHudScreenLayouts lists for the slot.
+constexpr std::array<std::uint32_t, 5> kHudLeafScreenRegisters{{
+    0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u,
+}};
+bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
+    return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
+        register_virtual) != kHudLeafScreenRegisters.end();
+}
+
+// What a leaf register's 004F71D0 and 00AA5840 reach: the registry the
+// menu owner keeps (registering this block's own base flags) and the page
+// that registry loads for the slot. The page root is what 00AA5840 returns.
+struct HudLeafRegisterContext {
+    HudLeafScreenStorage& screen;
+    GameMenuHost& menu;
+    int slot;
+    std::string name;
+    std::uint32_t register_virtual;
+    std::uint32_t layout_virtual;
+
+    void register_base(const void* p) {
+        if (p != screen.data())
+            throw std::logic_error("004F71D0 base belongs to a different HUD screen");
+        if (!menu.register_in_game_screen(slot, name, register_virtual, layout_virtual,
+                &screen.flags()))
+            throw std::logic_error("004F71D0 could not register a free HUD slot");
+    }
+    void* load_page(std::string_view page_name) {
+        const std::string page(page_name);
+        menu.attach_in_game_page(slot, page);
+        GuiLayoutPage* loaded = menu.in_game_page(slot, page);
+        return loaded != nullptr && loaded->root ? loaded->root.get() : nullptr;
+    }
+};
+class HudLeafRegisterBinding final : public bsp::ingame_gui_cc13::HudScreenRegisterPageHost {
+public:
+    explicit HudLeafRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void* gui_load_page_00aa5840(std::string_view name) override { return context_.load_page(name); }
+private:
+    HudLeafRegisterContext& context_;
+};
+class HudLeafScreenRegisterBinding final : public bsp::cc13_fe1::ScreenRegisterPageHost {
+public:
+    explicit HudLeafScreenRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    std::uint32_t load_page_00aa5840(std::string_view name) override {
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(context_.load_page(name)));
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
+void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
+    std::uint8_t* const p = context.screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    switch (context.register_virtual) {
+    case 0x0067B3F0u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::hud_common_overlay_screen_register_0067b3f0(raw, b); return; }
+    case 0x005176A0u: { HudLeafRegisterBinding b(context); bsp::cc13_fe3::in_game_screen_23_register_005176a0(raw, b); return; }
+    case 0x005D38A0u: { HudLeafRegisterBinding b(context); bsp::frontend_seg15_22_cc13::pause_multi_register_005d38a0(raw, b); return; }
+    case 0x005EE010u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_objectives_register_005ee010(p, b); return; }
+    case 0x00604890u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_pause_cheat_register_00604890(p, b); return; }
+    default: break;
+    }
+    throw std::logic_error("0068CC70 leaf register listed but not bound");
+}
+
 // Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
 // (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
 GameSoundRuntime* g_hud_sound_runtime = nullptr;
@@ -1575,7 +1646,21 @@ public:
         char name[32];
         std::snprintf(name, sizeof(name), "HUD%02X",
             static_cast<unsigned>(slot.registry_slot));
+        // The leaf's own register override over its block, for the overrides
+        // kHudLeafScreenRegisters lists. As for scene-init, the generic page
+        // loader below must not also run on that screen.
+        bool leaf_registered = false;
         const bool registered = [&]() {
+            if (owner_.leaf_screens[index] && layout != nullptr
+                && is_hud_leaf_screen_register(layout->register_virtual)) {
+                if (owner_.menu.in_game_screen_registered(slot.registry_slot)) return false;
+                HudLeafRegisterContext context{*owner_.leaf_screens[index], owner_.menu,
+                    slot.registry_slot, name, layout->register_virtual, layout->layout_virtual};
+                run_hud_leaf_screen_register(context);
+                owner_.done("InGameInterface::leaf_screen_register", layout->register_virtual);
+                leaf_registered = true;
+                return true;
+            }
             if (slot.registry_slot == kSceneInitRegistrySlot) {
                 // bsp.py show 00636f30: register this exact base, load
                 // FE_sceneinit, bind Message_Text, retain its four colour
@@ -1606,7 +1691,7 @@ public:
                 record.pages.push_back(page);
                 ++owner_.summary.pages_requested;
                 const bool loaded = [&]() {
-                    if (slot.registry_slot == kSceneInitRegistrySlot)
+                    if (slot.registry_slot == kSceneInitRegistrySlot || leaf_registered)
                         return owner_.menu.in_game_page(slot.registry_slot, page) != nullptr;
                     return owner_.menu.attach_in_game_page(slot.registry_slot, page);
                 }();
