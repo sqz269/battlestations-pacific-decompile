@@ -2,7 +2,6 @@
   "chain": 619,
   "slot": "g4-w5",
   "base": "02de8d48c6",
-  "switch": "bsp::kWireGoal4Chain619Bound",
   "scope": "Route the live native world simulator's full and remainder substeps through the existing public 00C5BB30 body.",
   "rows": [
     {
@@ -16,7 +15,7 @@
         "bsp.py show 00c5bb30 --asm --lines 32: stack world/timestep entry; existing body retains its original instruction schedule.",
         "src/game_native_game_runtime.cpp: GameNativeGameRuntime::simulate_physics_00875e0c checks live constructed ownership and reads the actual game+18h world."
       ],
-      "double_run_prevention": "Each call site selects one route. ON calls the existing public body; OFF calls the unchanged private shim. Both share the original substep kernel, so no second substep or arithmetic body is introduced.",
+      "double_run_prevention": "Both existing call sites unconditionally call substep_route, which invokes the existing public body once. The replaced private substep_shim and chain619 switch were deleted; the single arithmetic body remains substep_kernel behind the public entry.",
       "abi": "New source interface, not a binary replacement ABI. The adapter consumes the existing context/world/float stack triple via __stdcall; the public entry remains __cdecl and binds the same borrowed services. Native FH3 and fault/unwind behavior remain outside its existing normal-return contract."
     },
     {
@@ -84,13 +83,36 @@
   },
   "validation": {
     "initial_build": "scripts/build.ps1: PASS; all five CTests passed.",
-    "changed_build": "scripts/build.ps1: PASS; all five CTests passed.",
-    "call_graph": "00C5BB30 absent from initial built EXE; after wiring REACHABLE with one direct call from substep_route at 1055B356. path reaches simulate_kernel, simulate_native_dyn_world_00c5c540, GameNativeGameRuntime, fixed-step host, mission/menu/frame/startup and WinMainCRTStartup.",
-    "probe_sources": ["local/c619_substep_probe.cpp", "local/c619_substep_probe.cmd"],
-    "probe": "ON/OFF compiled /O2 /W4 /WX with embedded manifests and byte-identical logs. The live simulation caller executed full/full/remainder with dt words 3D4CCCCD,3D4CCCCD,3CCCCCCE. Each step produced exactly one velocity/collision/create-groups/position/sleep sequence, using the same world, scene and borrowed contexts. ESP, EBX, ESI, EDI, EBP, CW=007F and TOP=0 passed; profile scopes balanced and accumulator reset.",
-    "probe_logs": ["local/output/c619_substep_on.txt", "local/output/c619_substep_off.txt"],
+    "changed_build": "Review round 1: scripts/build.ps1 PASS; all five CTests passed (10.72 seconds).",
+    "call_graph": "Review round 1 rebuilt EXE: 00C5BB30 remains REACHABLE with one direct call from unconditional substep_route at 1055B356. path reaches simulate_kernel, simulate_native_dyn_world_00c5c540, GameNativeGameRuntime, fixed-step host, mission/menu/frame/startup and WinMainCRTStartup. Reconstructed addresses called remain 5033/5551.",
+    "probe_sources": [
+      "local/c619_substep_probe.cpp",
+      "local/c619_substep_probe.cmd"
+    ],
+    "probe": "Unconditional dispatch probe compiled /O2 /W4 /WX with an embedded manifest and passed. The simulation caller executed full/full/remainder, explicitly checking dt words 3D4CCCCD,3D4CCCCD,3CCCCCCE and 21 timestamp service calls. Each step produced exactly one velocity/collision/create-groups/position/sleep sequence, using the same world, scene and borrowed contexts. ESP, EBX, ESI, EDI, EBP, CW=007F and TOP=0 passed; profile scopes balanced and accumulator reset. No alternate dispatch path or switch override is compiled.",
+    "probe_logs": [
+      "local/output/c619_substep_probe.txt"
+    ],
     "float_math": "No arithmetic or rounding schedule changed; only an existing stored float argument crosses the adapter.",
     "limits": "The probe uses a no-contact raw-world fixture with controlled phase services. It verifies the new dispatch boundary, not full solver/collision behavior, native ABI/FH3 compatibility, or gameplay. The game was not launched."
   },
-  "left": "The original substep arithmetic and phase implementations are unchanged. Other ready rows still need their actual owners/producers or direct dispatch callers; reviewed physics/property files were left to their owners."
+  "left": "The original substep arithmetic and phase implementations are unchanged. Other ready rows still need their actual owners/producers or direct dispatch callers; reviewed physics/property files were left to their owners.",
+  "review_round_1": {
+    "review_run": 1284,
+    "reviewed_head": "fba847b7b7cc9e433110647b30a0bb40da9d5bd8",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "Made substep_route unconditional, deleted substep_shim and include/bsp/wire_goal4_chain619_switches.hpp, and removed switch-dependent probe/report behavior."
+      }
+    ],
+    "validation": {
+      "build": "PASS; five of five tests",
+      "unconditional_probe": "PASS",
+      "call_graph": "00C5BB30 reachable; 5033 reconstructed addresses called",
+      "source_check": "Deleted shim, chain619 conditional and header; no new kWireGoal switch.",
+      "readiness": "9955 wired; 00C5BB30 wired, called=true, call_sites=1, callers_live=1."
+    }
+  }
 }

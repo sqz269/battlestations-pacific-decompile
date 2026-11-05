@@ -32,7 +32,8 @@ struct Calls final:bsp::NativeDynWorldStepCalls {
     std::uint64_t read_timestamp(unsigned site)noexcept override{sites.push_back(site);return 1000ULL+17ULL*serial++;}
 };
 
-// Exercise the real simulation caller and check all Win32 callee-saved GPRs
+// Exercise unconditional full/remainder dispatch through the real simulation
+// caller and check all Win32 callee-saved GPRs
 // and ESP across both full-step and remainder dispatches.
 __declspec(naked) unsigned __cdecl invoke(void*,float,const bsp::NativeDynWorldStepContext*){
     __asm {
@@ -92,6 +93,7 @@ int main(){
     require(calls.timesteps.size()==3&&calls.phases.size()==15);
     for(unsigned i=0;i<calls.phases.size();++i)require(calls.phases[i]==i%5+1);
     require(calls.timesteps[0]==bits(0.05f)&&calls.timesteps[1]==bits(0.05f));
+    require(calls.timesteps[2]==0x3cccccceU&&calls.sites.size()==21);
     require(field<unsigned>(&world,0x2c)==1&&field<unsigned>(&world,0x48)==0);
     require(field<void*>(&profile,4)==&root&&field<unsigned>(&simulate,0x40)==1);
     for(auto* node:{&groups,&positions,&sleep})require(field<unsigned>(node,0x40)==3);

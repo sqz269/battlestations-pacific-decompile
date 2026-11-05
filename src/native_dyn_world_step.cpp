@@ -1,5 +1,4 @@
 #include "bsp/native_dyn_world_step.hpp"
-#include "bsp/wire_goal4_chain619_switches.hpp"
 #include "bsp/wire_goal4_chain613_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -154,29 +153,13 @@ __declspec(naked) void enter_shim(){
         ret 8
     }
 }
-__declspec(naked) void substep_shim(){
-    __asm {
-        push dword ptr [esp+4]
-        push dword ptr [esp+10h]
-        push dword ptr [esp+10h]
-        call substep_kernel
-        ret 0ch
-    }
-}
 // bsp.py show 00c5c540 --asm: 00C5C668..66D and 00C5C6B8..6BD
 // pass the actual world (EDI) and the already-rounded full/remainder timestep
 // on the stack to 00C5BB30 (RET 8). The source kernel adds a borrowed Context
 // argument; forward its existing owner to the one public body. No timestep,
 // accumulator arithmetic, service binding, or substep is added here.
 void __stdcall substep_route(Context* c,void* world,float dt){
-    if constexpr(kWireGoal4Chain619Bound){
-        run_native_dyn_world_substep_00c5bb30(world,dt,*c->owner);
-    }else{
-        __asm {push dt}
-        __asm {push world}
-        __asm {push c}
-        __asm {call substep_shim}
-    }
+    run_native_dyn_world_substep_00c5bb30(world,dt,*c->owner);
 }
 __declspec(naked) void timestamp_00c5bb9d(){
     __asm {
