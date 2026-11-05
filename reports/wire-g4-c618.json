@@ -79,6 +79,7 @@
     }
   ],
   "measurement": {
+    "stage": "Initial packet before the landing retry; merged-tree checks are recorded in landing_retry.",
     "readiness_text_wired_before": 9952,
     "readiness_text_wired_after": 9952,
     "entry_called_unique_addresses_before": 5029,
@@ -96,5 +97,35 @@
     "call_graph": "Both bodies REACHABLE with direct call sites from NativeDynPrimitiveDispatchRuntime::dispatch_collision; range_kernel directly calls collision_dispatch_bridge. Original table methods remain valid callers.",
     "floating_point": "Recovered instruction kernels and all float operation/store schedules are unchanged; the new adapter only compares method pointers and forwards existing arguments.",
     "scope": "Build, call-graph and synthetic ABI/input/output evidence only. No game execution or gameplay validation."
+  },
+  "landing_retry": {
+    "merged_origin_main": "9605d6b4ccb9c143cf91520b955c7592acc01c75",
+    "previous_packet_head": "674e082e657c75148c0593a4a0647f722d044663",
+    "resolved_file": "src/native_dyn_narrow_phase.cpp",
+    "resolution": "Retained chain614's switch include, manifold_bridge, append_bridge, private-shim adaptations and contact-matching call, alongside chain618's primitive include, switch, collision_dispatch_bridge and conditional 00C4414A call. No ledger or CMake conflicts occurred.",
+    "final_switch": "kWireGoal4Chain618Bound=true",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main: zero findings in the merged working tree.",
+    "build": "Final plain scripts/build.ps1 after the ON-build checker: MSVC Win32 Release, all five CTests passed.",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal4Chain618Bound: exit 0, zero distinct diagnostics. Temporarily set the owned header false for checker selection, then restored true before the final plain build.",
+    "probe": "local/c618_dispatch_probe.cmd: four byte-identical known pair hit/miss comparisons and one exact foreign-method invocation through 00C44090 passed on the merged tree.",
+    "entry_called_unique_addresses": 5040,
+    "readiness": {
+      "command": "python tools/wire_readiness.py --standins after the final plain build and fresh call_graph.py",
+      "text_wired": 9964,
+      "selected_rows": {
+        "00c518d0": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2},
+        "00c48330": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2}
+      },
+      "note": "The text-only graph has no caller edges for these dispatcher entries; both compiled body boundaries have entry-reachable calls. The merged total includes upstream chains, not just this packet."
+    },
+    "selected_calls": {
+      "00c518d0": {"reachable": true, "call_sites": 2, "new_dispatch_site": "105607f0"},
+      "00c48330": {"reachable": true, "call_sites": 2, "new_dispatch_site": "10560817"}
+    },
+    "preserved_chain614_calls": {
+      "00c3f4d0": {"reachable": true, "call_sites": 1, "caller": "manifold_bridge"},
+      "00c35260": {"reachable": true, "call_sites": 1, "caller": "append_bridge"},
+      "00c3f650": {"reachable": true, "call_sites": 1, "caller": "insert_kernel"}
+    }
   }
 }

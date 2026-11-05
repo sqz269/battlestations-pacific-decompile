@@ -19,6 +19,10 @@ namespace bsp {
 // Ordinary successful, nonthrowing, nonaliasing, nonreentrant, single-threaded
 // current-provider domain only. No failure rollback, Original private CRT/EH,
 // wider parser/class, full Original ABI or game-validation claim.
+// Chain616 ON composes the existing 008F0310 body over record+18h for
+// the replacement sequence; OFF retains the literal setter instruction
+// schedule. The ON arm preserves the declared ordinary state/return contract,
+// without admitting Original flags, volatile registers or private-stack timing.
 // This descriptive name is a hypothesis, not a recovered symbol.
 void* __fastcall set_native_scene_property_reference_008f0420(
     void* actual_record_ecx, void* unused_edx, const char* borrowed_nullable_target,

@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_primitive_dispatch.hpp"
+#include "bsp/wire_goal4_chain614_switches.hpp"
 #include "bsp/wire_goal4_chain618_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -23,12 +24,35 @@ bool __fastcall collision_dispatch_bridge(void* owner,U method,void* result,
     const void* a,const float* ma,const void* b,const float* mb){
     return NativeDynPrimitiveDispatchRuntime::dispatch_collision(owner,method,result,a,ma,b,mb);
 }
+void* __cdecl manifold_bridge(Context* context,void* pool,void* first,void* second){
+    return find_or_create_native_dyn_manifold_00c3f4d0(pool,first,second,
+        context->memory,context->calls);
+}
+void __cdecl append_bridge(Context* context,void* body,void* manifold){
+    append_native_dyn_manifold_00c35260(body,manifold,context->memory,context->calls);
+}
 alignas(8) const std::uint32_t constant_00d7a208=0x80000000U;
 alignas(8) const std::uint64_t constant_00d7a270=0x3fa99999a0000000ULL;
 alignas(8) const std::uint64_t constant_00d7a280=0x3fe0000000000000ULL;
 alignas(8) const std::uint32_t constant_00d7a2d8=0x3b23d70bU;
 // Explicit context adapter; retain original argument offsets.
 __declspec(naked) void manifold_shim(){
+    if constexpr (kWireGoal4Chain614Bound) {
+        // bsp.py show 00C44090 --asm: 00C441C3..C5 passes the two actual
+        // bodies and EDI pool. Only EAX is consumed afterwards (EDI is reset
+        // at 00C441D6); the public body retains the same allocator/CS calls.
+        // Incoming stack: return, context, first, second. Translate once;
+        // the public entry calls the sole manifold_kernel below.
+        __asm {
+            push dword ptr [esp+0ch]
+            push dword ptr [esp+0ch]
+            push edi
+            push dword ptr [esp+10h]
+            call manifold_bridge
+            add esp,10h
+            ret 0ch
+        }
+    } else {
     __asm {
         push dword ptr [esp+4]
         push dword ptr [esp+10h]
@@ -36,14 +60,30 @@ __declspec(naked) void manifold_shim(){
         call manifold_kernel
         ret 0ch
     }
+    }
 }
 // Explicit context adapter; retain original argument offsets.
 __declspec(naked) void append_shim(){
+    if constexpr (kWireGoal4Chain614Bound) {
+        // bsp.py show 00C3F4D0 --asm: 00C3F622/00C3F62E append EBX to ESI's
+        // actual +74/+78/+7C vector, then reload ESI from manifold+D0 for
+        // the second call. No volatile result is live across either append.
+        // Incoming stack: return, context, manifold; ESI is the live body.
+        __asm {
+            push dword ptr [esp+8]
+            push esi
+            push dword ptr [esp+0ch]
+            call append_bridge
+            add esp,0ch
+            ret 8
+        }
+    } else {
     __asm {
         push dword ptr [esp+4]
         push dword ptr [esp+0ch]
         call append_kernel
         ret 8
+    }
     }
 }
 // Explicit context adapter; retain original argument offsets.
@@ -295,7 +335,24 @@ __declspec(naked) void insert_kernel(){
         fstp st(0) // 00c3f7a9
         ja l_00c3ffd0 // 00c3f7ab
         mov eax, esi // 00c3f7b1
+    }
+    if constexpr (kWireGoal4Chain614Bound) {
+        // bsp.py show 00C3F650 --asm: EAX manifold / EDI nine-float
+        // candidate, EAX index. The x87 stack is empty after FCOMIP/FSTP
+        // at 00C3F7A7/A9. The next instruction reloads ECX and CMP defines
+        // flags; no volatile result except EAX is consumed by the caller.
+        __asm {
+            push edi
+            push eax
+            call match_native_dyn_contact_00c3f650
+            add esp,8
+        }
+    } else {
+    __asm {
         call match_kernel // 00c3f7b3
+    }
+    }
+    __asm {
         mov ecx, dword ptr [esi + 0c8h] // 00c3f7b8
         cmp eax, ecx // 00c3f7be
         jge l_00c3f943 // 00c3f7c0
@@ -1436,7 +1493,7 @@ void* NativeDynNarrowPhaseCalls::malloc_00bf9f1a(U,U size,const AvoidZoneDynHull
 void NativeDynNarrowPhaseCalls::free_00bf6989(U,void* p,const AvoidZoneDynHullMemory& m){m.release(m.context,p);}
 void NativeDynNarrowPhaseCalls::enter_critical_section(U,void* p){EnterCriticalSection(static_cast<CRITICAL_SECTION*>(p));}
 void NativeDynNarrowPhaseCalls::leave_critical_section(U,void* p){LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(p));}
-void append_native_dyn_manifold_00c35260(void* body,void* manifold,const AvoidZoneDynHullMemory& memory,NativeDynNarrowPhaseCalls& calls){
+__declspec(noinline) void append_native_dyn_manifold_00c35260(void* body,void* manifold,const AvoidZoneDynHullMemory& memory,NativeDynNarrowPhaseCalls& calls){
     Context context{memory,calls};auto* c=&context;
     __asm {
         push esi
@@ -1447,7 +1504,7 @@ void append_native_dyn_manifold_00c35260(void* body,void* manifold,const AvoidZo
         pop esi
     }
 }
-void* find_or_create_native_dyn_manifold_00c3f4d0(void* pool,void* first_body,void* second_body,const AvoidZoneDynHullMemory& memory,NativeDynNarrowPhaseCalls& calls){
+__declspec(noinline) void* find_or_create_native_dyn_manifold_00c3f4d0(void* pool,void* first_body,void* second_body,const AvoidZoneDynHullMemory& memory,NativeDynNarrowPhaseCalls& calls){
     Context context{memory,calls};auto* c=&context;void* result;
     __asm {
         push edi
@@ -1461,7 +1518,7 @@ void* find_or_create_native_dyn_manifold_00c3f4d0(void* pool,void* first_body,vo
     }
     return result;
 }
-std::int32_t match_native_dyn_contact_00c3f650(void* manifold,const float* candidate) noexcept {
+__declspec(noinline) std::int32_t match_native_dyn_contact_00c3f650(void* manifold,const float* candidate) noexcept {
     std::int32_t result;
     __asm {
         push edi
