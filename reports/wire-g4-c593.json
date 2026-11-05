@@ -1,0 +1,241 @@
+{
+  "chain": 593,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain593Bound",
+  "scope": "Reuse the complete package-name copy for actual VFS candidate temporary construction.",
+  "rows": [
+    {
+      "native": "00bb5540",
+      "status": "wired",
+      "host_site": "src/native_vfs_name_resolution.cpp: resolve_candidates (native BDDD9A) and paths (native BDDF5A, first_full arm)",
+      "evidence": "bsp.py show 00bb5540 --asm; show 00426060 --asm; show 00bddc80 --asm --start 85 --lines 50 and --start 220 --lines 35. The two copy bodies clear both destination words before identity, capture length for resize, then reread source guard/destination count/source data/destination data for memmove. Both return output without initial-copy cleanup.",
+      "real_state": "The mutable VFS request header, validated current group-prefix node+8 header, existing candidate temporary headers and the resolver actual owning pool. Original native call sites target 426060; BB5540 is equivalent source body reuse, not a recovered original call edge.",
+      "abi": "Native ECX unused; stack output,input; RET8; EAX output. Existing C++ function has explicit output,input,ActualNativeStringPoolStorage&. No binary ABI replacement claim."
+    },
+    {
+      "native": "00b6fe20",
+      "status": "skipped",
+      "host_site": "src/native_cockpit_helper_construction.cpp: construct_native_cockpit_helper_00b3c800",
+      "reason": "No missing call: the refreshed baseline graph already reaches this setter from cockpit construction; adding constructor copies would not wire a new address."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: render_scene_00b156c0; src/native_post_effect_owner.cpp",
+      "reason": "No missing call in the baseline graph; scene-renderer alternative still lacks its concrete full post-effect frame dispatch."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: submit scene metadata callback",
+      "reason": "Missing a rooted concrete scene/shadow submission host with the actual nonempty native command queue and command metadata."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/native_sampler_parameter_write.cpp: parameter_body",
+      "reason": "Missing an application call site with the actual sampler Lua-owner receiver and native key/value headers."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_fileblock_owner.cpp: ensure_native_loading_job_fileblock_00504790",
+      "reason": "Missing a rooted actual loading-job owner with +14 name and +20 retained FileBlock slots."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Missing additional actual distortion-record population; existing cleanup already calls the reserve/resize bodies and must not be duplicated."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion storage cleanup",
+      "reason": "Existing cleanup already calls this body; no independent actual record-population path was established."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: SetControlledUnitBinding::publish_listener",
+      "reason": "Missing the renderer listener/invalidation mapping and real listener handle; the current binding only records publication."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint",
+      "reason": "Missing the profile persistence rewrite composition; the reconstructed helper covers Lua checkpoint clearing only."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: get_profile_manager_00425c20",
+      "reason": "Missing an admitted actual publication/lifetime owner for the semantic ProfileManagerOwner projection."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing a menu-bound concrete queue reset provider with correctly ordered renderer begin/end and worker-mode handling."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score table",
+      "reason": "Missing a live candidate score-list owner and gameplay consumer; the documented image table consumer is debug-only."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score chosen marker",
+      "reason": "Missing a live candidate score-list owner with entries and a non-debug gameplay consumer."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "Missing an actual weapon-animation timed-entry owner: weapon_animation returns zero and stop_weapon_animation only records."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: reserve_native_word_array_005296a0",
+      "reason": "Missing an actual rooted message35 word-array owner; do not substitute unrelated semantic vectors."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: resize_native_word_array_00529980",
+      "reason": "Missing an actual rooted message35 word-array owner and consumer."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "Missing a production previous-timestamp consumer; current clock hosts use current/interval and do not need an extra read."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp: content removal",
+      "reason": "Missing a demonstrated rooted native content-removal request with the actual owned string vector and erase iterator."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_member_vector.cpp: copy_native_unit_group_member_vector_0070d980",
+      "reason": "Missing an actual rooted native group member table; fallback assembly also retains original absolute vector constants."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/native_world_constant_byte.cpp: native_world_constant_byte_009035d0",
+      "reason": "Missing a concrete original-world virtual consumer; a constant-return body alone does not establish a valid gameplay call site."
+    },
+    {
+      "native": "00b3ce90",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b3_03.cpp: native_tagged_b3_read_dword_30_00b3ce90",
+      "reason": "Missing a validated production consumer for the texture +30 word; constructor zero initialization is not a getter use."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "logical vertex buffer existing reconstructed callers",
+      "reason": "No missing body reach in the baseline readiness graph; adding another call solely for a readiness text label would duplicate established wiring."
+    },
+    {
+      "native": "00b48dc0",
+      "status": "skipped",
+      "host_site": "logical index buffer existing reconstructed callers",
+      "reason": "No missing body reach in the baseline readiness graph; adding another call solely for a readiness text label would duplicate established wiring."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "animation value reserve existing reconstructed callers",
+      "reason": "No missing body reach in the baseline readiness graph; adding another call solely for a readiness text label would duplicate established wiring."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 5 existing tests",
+    "before": {
+      "readiness_summary": {
+        "wired": 9926,
+        "callees_done_no_wired_caller": 9146,
+        "ready": 1400,
+        "blocked_on_callees": 52,
+        "unknown_no_identifier": 201
+      },
+      "called_rows": 6139,
+      "call_graph_summary": {
+        "functions": 38050,
+        "reachable_functions": 37885,
+        "data_symbols": 43227,
+        "edges": 194830,
+        "roots": 1,
+        "instructions": 2203578,
+        "recon_addresses": 5511,
+        "recon_called": 4995,
+        "orphan_refs_ignored": 0,
+        "folded_functions": 2099
+      }
+    },
+    "float_math_changed": false,
+    "game_run": false,
+    "limitations": "Static source/assembly review, Win32 build/tests and built entry reachability are distinct from execution or gameplay validation. No new test cases or reconstructed functions.",
+    "release_build": "scripts/build.ps1 passed after the code change; all 5 existing tests passed.",
+    "release_graph": "BB5540 is entry-reachable at both changed call sites, but Release /OPT:ICF folds it with BE6040; aggregate address counts are not a valid before/after comparison. The analysis graph disables folding.",
+    "after_readiness_summary": {
+      "wired": 9927,
+      "callees_done_no_wired_caller": 9145,
+      "ready": 1400,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "target_readiness": {
+      "address": "00bb5540",
+      "name": "copy_native_package_name_00bb5540",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "category": "scene",
+      "state": "wired",
+      "callers": 0,
+      "wired_callers": 0,
+      "callees": 1,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": true,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 2,
+      "callers_live": 2
+    },
+    "wired_total": {
+      "before": 9926,
+      "after": 9927,
+      "metric": "wire_readiness source reachability"
+    },
+    "analysis_graph": {
+      "command": "python tools/call_graph.py --build; python tools/call_graph.py who 00bb5540; python tools/call_graph.py path 00bb5540",
+      "body": "bsp::copy_native_package_name_00bb5540 @10760a30, native_vfs_lookup_leaves.obj",
+      "reachable": true,
+      "call_sites": 2,
+      "unreachable_callers": 0,
+      "callers": [
+        {
+          "host": "src/native_vfs_name_resolution.cpp: paths",
+          "site": "10627bba"
+        },
+        {
+          "host": "src/native_vfs_name_resolution.cpp: resolve_candidates",
+          "site": "106280d7"
+        }
+      ],
+      "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost application initialization -> GameNativeTextureAtlasApplication::load_common_normal -> load_native_texture_atlas_storage_00af0060 -> register_native_texture_atlas_descriptor_00aef280 -> resolve_native_vfs_existing_name_00bdf4c0 -> resolve_candidates -> copy_native_package_name_00bb5540",
+      "note": "Analysis build disables inlining and ICF. Aggregate counts from this configuration cannot be compared with baseline Release counts."
+    },
+    "assumption": "Reuse of an existing complete generic string-copy body is appropriate at equivalent real-header copy sites; original edges are documented explicitly and the old operation runs only in the disabled switch arm."
+  },
+  "run": 1222,
+  "owner": "agent/g4-w3"
+}
