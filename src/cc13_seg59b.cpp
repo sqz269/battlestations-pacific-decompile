@@ -5,6 +5,7 @@
 #include "bsp/cc13_seg59b.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/mission_result.hpp"
+#include "bsp/native_scene_typed_array_vector_providers.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -850,24 +851,21 @@ float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float
 // +14h = z, +18h/+1Ch/+20h/+24h/+30h/+34h = 0, byte +2Ch = 1 (008F3819..008F3851, in that
 // order); 008F3859 008F33F0(ECX = bag, key, record). Null: 008F386F 008F33F0(bag, key, 0).
 // ---------------------------------------------------------------------------
-void* scene_property_bag_add_vec3_008f37e0(Seg59bHost& host, void* bag, const char* key,
+void* scene_property_bag_add_vec3_008f37e0(NativeScenePropertyInsertionContext& context,
+                                           void* bag, const char* key,
                                            std::uint32_t x_bits, std::uint32_t y_bits,
                                            std::uint32_t z_bits) {
-    void* const record = host.operator_new_00bf681b(0x38);
-    if (record == nullptr) return host.scene_property_bag_insert_008f33f0(bag, key, nullptr);
-    at<std::uint32_t>(record, 0x0C) = x_bits;
-    at<std::uint32_t>(record, 0x10) = y_bits;
-    at<std::uint32_t>(record, 0x00) = kScenePropertyRecordVtable;
-    at<std::uint32_t>(record, 0x04) = 7;
-    at<std::uint32_t>(record, 0x14) = z_bits;
-    at<std::uint32_t>(record, 0x18) = 0;
-    at<std::uint32_t>(record, 0x1C) = 0;
-    at<std::uint32_t>(record, 0x20) = 0;
-    at<std::uint32_t>(record, 0x24) = 0;
-    at<std::uint32_t>(record, 0x30) = 0;
-    at<std::uint32_t>(record, 0x34) = 0;
-    at<std::uint8_t>(record, 0x2C) = 1;
-    return host.scene_property_bag_insert_008f33f0(bag, key, record);
+    // Source reuse, not an Original CALL: bsp.py show 008F37E0 and 008F3690
+    // establish the same 38h allocation, 45 written/11 untouched bytes,
+    // phase/tag7, inline XYZ words and final 008F33F0 ownership transfer.
+    // 37E0 stores X/Y before phase/tag; 3690 stores phase/tag first. There
+    // is no intervening call or external observer in this successful,
+    // disjoint fresh-root domain, so share the existing producer. Only it
+    // allocates/inserts; there is no second record or duplicate publication.
+    // The local words are copied as bits, including signed zero, and are
+    // neither retained nor passed through floating-point arithmetic.
+    const std::uint32_t words[3]{x_bits, y_bits, z_bits};
+    return add_native_scene_property_three_word_008f3690(bag, key, words, context);
 }
 
 // ---------------------------------------------------------------------------

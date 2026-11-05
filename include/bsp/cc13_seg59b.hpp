@@ -12,9 +12,10 @@
 // 68h, kEntityKindUnit 5, the 008FEAC0 property layout), which the bodies here reuse.
 //
 // Model: every routine works on the original object as raw bytes (Win32 layout, offsets as in the
-// image) and reaches the engine through Seg59bHost, whose methods name the image routine or the
-// virtual slot they stand for. New C++ interfaces, not drop-in binary replacements; nothing here is
-// bound into bsp_game. Names are hypotheses, not recovered symbols. Marker: cc13_seg59b.
+// image) and usually reaches the engine through Seg59bHost, whose methods name the image routine
+// or virtual slot. The V3 entry 008F37E0 instead borrows the actual insertion context and is called
+// by the scene merge host (chain559). New C++ interfaces, not drop-in binary replacements.
+// Names are hypotheses, not recovered symbols. Marker: cc13_seg59b.
 
 #ifndef BSP_CC13_SEG59B_HPP
 #define BSP_CC13_SEG59B_HPP
@@ -22,7 +23,10 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace bsp { struct MissionScoringManagerState; }
+namespace bsp {
+struct MissionScoringManagerState;
+class NativeScenePropertyInsertionContext;
+}
 
 namespace bsp::cc13_seg59b {
 
@@ -656,8 +660,13 @@ const char* scene_property_string_value_008f0df0(Seg59bHost& host, void* propert
 const char* scene_property_value_text_008f0e20(Seg59bHost& host, void* property);
 
 // 008F37E0, __thiscall(ECX = bag, key, x, y, z), RET 10h; EAX = 008F33F0's result: a new type-7
-// (vec3) record. The coordinates are passed as their float bits.
-void* scene_property_bag_add_vec3_008f37e0(Seg59bHost& host, void* bag, const char* key,
+// (vec3) record. The coordinates are passed as their float bits. This entry
+// uses the same actual-bag/current-pool successful-domain contract as 008F3690
+// (native_scene_typed_array_vector_providers.hpp), through a borrowed context.
+// Its Source implementation shares that provider; Original stack/register ABI
+// and intermediate initialization-store order are not reproduced.
+void* scene_property_bag_add_vec3_008f37e0(NativeScenePropertyInsertionContext& context,
+                                           void* bag, const char* key,
                                            std::uint32_t x_bits, std::uint32_t y_bits,
                                            std::uint32_t z_bits);
 // 008F3880, __thiscall(ECX = bag, key, 64-byte matrix by value), RET 44h; EAX: the matrix as a

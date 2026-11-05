@@ -32,6 +32,8 @@
 #include "bsp/wire_goal4_chain416_switches.hpp"
 #include "bsp/wire_goal4_chain421_switches.hpp"
 #include "bsp/wire_goal4_chain425_switches.hpp"
+#include "bsp/wire_goal4_chain559_switches.hpp"
+#include "bsp/cc13_seg59b.hpp"
 
 #include <algorithm>
 #include <array>
@@ -626,10 +628,22 @@ private:
                     add_native_scene_property_string_008f38a0(
                         data(), value.key.c_str(), value.values.front().c_str(), context_);
                 } else {
+                    if constexpr (kWireGoal4Chain559Bound) {
+                        // Source API reuse of 008F37E0's by-value XYZ entry:
+                        // these are the same real parser-owned V3 lanes that
+                        // the pointer entry below consumed. Its result owns
+                        // the one record in this actual bag; merge/clone and
+                        // subsequent class readers consume that record.
+                        std::uint32_t bits[3];
+                        std::memcpy(bits, value.vector3.data(), sizeof(bits));
+                        cc13_seg59b::scene_property_bag_add_vec3_008f37e0(
+                            context_, data(), value.key.c_str(), bits[0], bits[1], bits[2]);
+                    } else {
                     // bsp.py show 008F3690: native type 7 owns three inline
                     // words copied from the parser's retained binary32 lanes.
                     add_native_scene_property_three_word_008f3690(
                         data(), value.key.c_str(), value.vector3.data(), context_);
+                    }
                 }
             } else {
             if (value.type_letter == "I") {
