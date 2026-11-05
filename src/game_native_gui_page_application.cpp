@@ -21,6 +21,7 @@
 #include "bsp/native_gui_widget_load_hooks.hpp"
 #include "bsp/native_node_parenting_storage.hpp"
 #include "bsp/cc13_gui1.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/game_native_dyn_process.hpp"
@@ -743,7 +744,9 @@ struct GameNativeGuiPageApplication::Impl {
                     actual, &app.visibility.actual_zero_00d7a218));
             }
             if (target != 0x00aa38e0) reject("visibility+38", target);
-            return *static_cast<const volatile std::uint8_t*>(at(actual, 0xf5));
+            // 00AA38E0..00AA38E6: MOV AL,[ECX+F5h]; RET. Forward the same
+            // live Page/Group widget, including noncanonical flag bytes.
+            return oct18_tail_c::gui_layer_visible_00aa38e0(actual);
         }
         void call_visibility_changed_3c(void* actual, Word target, std::uint8_t visible) override {
             if (!app.is_page_widget(actual) && app.live_widget(actual).icon) {
