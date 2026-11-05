@@ -1,6 +1,7 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_vfs_runtime_bindings.hpp"
 #include "bsp/native_material_compiler_providers.hpp"
+#include "bsp/wire_goal4_chain562_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -103,7 +104,14 @@ Cache* construct(void* raw,NativeShaderBinaryCacheContext& c,Op& a) {
         destroy_native_string_header_0041dd20(&a.temporary,c.reads.strings);a.temporary_live=false;
         if(c.load_variants_0108d6f0) {
             a.native_site=0x00b38b14;write_count(read<void*>(cache,8),0,c);
-        }else {a.native_site=0x00b38b2b;load(cache,c,a);}
+        }else {
+            a.native_site=0x00b38b2b;
+            if constexpr(kWireGoal4Chain562Bound) {
+                load_native_shader_cache_records_00b35340(cache,c,a);
+            } else {
+                load(cache,c,a);
+            }
+        }
     }
     return cache;
 }
@@ -123,14 +131,41 @@ void* read_native_shader_cache_string_00be45f0(void* stream,void* output,U* actu
     require(entry(stream,0x48)==0x00be4620,"unsupported shader-cache underlying string reader");
     (void)read_native_stream_string_00be4620(stream,output,actual,c);return output;
 }
-void load_native_shader_cache_records_00b35340(Cache* cache,NativeShaderBinaryCacheContext& c,Op& a) {
-    start(a,0x00b35340,cache);
-    try {load(cache,c,a);a.phase=Op::Phase::complete;}catch(...) {a.phase=Op::Phase::failed;throw;}
+__declspec(noinline) void load_native_shader_cache_records_00b35340(Cache* cache,NativeShaderBinaryCacheContext& c,Op& a) {
+    if constexpr(kWireGoal4Chain562Bound) {
+        // bsp.py show 00B38A70: 00B38B2B calls 00B35340 on this SAME
+        // cache. Borrow its retained invocation state rather than restarting
+        // the one-shot operation or making a second cache/record allocation.
+        const bool root=a.phase==Op::Phase::fresh;
+        if(root) start(a,0x00b35340,cache);
+        else require(a.phase==Op::Phase::running && a.cache==cache &&
+            a.native_site==0x00b38b2b &&
+            (a.function==0x00b38a70 || a.function==0x00b3a600),
+            "shader cache record loader requires its active constructor invocation");
+        try {load(cache,c,a);if(root)a.phase=Op::Phase::complete;}
+        catch(...) {a.phase=Op::Phase::failed;throw;}
+    } else {
+        start(a,0x00b35340,cache);
+        try {load(cache,c,a);a.phase=Op::Phase::complete;}catch(...) {a.phase=Op::Phase::failed;throw;}
+    }
 }
-Cache* construct_native_shader_binary_cache_00b38a70(void* raw,NativeShaderBinaryCacheContext& c,Op& a) {
-    start(a,0x00b38a70,static_cast<Cache*>(raw));
-    try {auto* result=construct(raw,c,a);a.phase=Op::Phase::complete;return result;}
-    catch(...) {a.phase=Op::Phase::failed;throw;}
+__declspec(noinline) Cache* construct_native_shader_binary_cache_00b38a70(void* raw,NativeShaderBinaryCacheContext& c,Op& a) {
+    if constexpr(kWireGoal4Chain562Bound) {
+        // 00B3A631 calls 00B38A70 BEFORE publishing 0108D6EC. Keep the
+        // creator's allocation/failure diagnostics and running phase until
+        // that publication; direct constructor calls still own a fresh frame.
+        const bool root=a.phase==Op::Phase::fresh;
+        if(root) start(a,0x00b38a70,static_cast<Cache*>(raw));
+        else require(a.phase==Op::Phase::running && a.function==0x00b3a600 &&
+            a.native_site==0x00b3a631 && a.allocation==raw,
+            "shader cache constructor requires its active creator invocation");
+        try {auto* result=construct(raw,c,a);if(root)a.phase=Op::Phase::complete;return result;}
+        catch(...) {a.phase=Op::Phase::failed;throw;}
+    } else {
+        start(a,0x00b38a70,static_cast<Cache*>(raw));
+        try {auto* result=construct(raw,c,a);a.phase=Op::Phase::complete;return result;}
+        catch(...) {a.phase=Op::Phase::failed;throw;}
+    }
 }
 void destroy_native_shader_binary_cache_00b352b0(Cache* cache,NativeShaderBinaryCacheContext& c) {
     if(c.source_mode_0108d6f1)return;
@@ -158,7 +193,14 @@ void create_native_shader_binary_cache_00b3a600(NativeShaderBinaryCacheContext& 
     try {
         a.native_site=0x00b3a618;auto* raw=c.allocate_object_00bf681b(16);a.allocation=raw;
         Cache* result=nullptr;
-        if(raw) {a.native_site=0x00b3a631;result=construct(raw,c,a);}
+        if(raw) {
+            a.native_site=0x00b3a631;
+            if constexpr(kWireGoal4Chain562Bound) {
+                result=construct_native_shader_binary_cache_00b38a70(raw,c,a);
+            } else {
+                result=construct(raw,c,a);
+            }
+        }
         c.actual_cache_0108d6ec=result;a.phase=Op::Phase::complete;
     }catch(...) {a.phase=Op::Phase::failed;throw;}
 }

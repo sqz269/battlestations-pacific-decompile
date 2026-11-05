@@ -1,0 +1,154 @@
+{
+  "chain": 562,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain562Bound",
+  "summary": "Route real published shader-cache creation through the existing constructor and record-loader entries, borrowing the same persistent operation frame.",
+  "wired_before": 9888,
+  "wired_after": 9890,
+  "previous_skip_resolution": "Chain151 noted that private helpers already performed the algorithms. This change preserves those algorithms and their single execution, but makes the existing address entries compose the creator's retained frame. It adds no child allocation or parallel cache. Both entries are now direct entry-reachable calls in the built game.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five CTest suites passed",
+    "call_graph": "call_graph.py rebuilt against this worktree's Win32 executable; both new entries have called=true and one reachable direct call site",
+    "constructor_call_site": "10519e85 in create_native_shader_binary_cache_00b3a600 -> construct_native_shader_binary_cache_00b38a70",
+    "loader_call_site": "10519db1 in construct_native_shader_binary_cache_00b38a70 -> load_native_shader_cache_records_00b35340",
+    "production_path": "WinMain -> GameStartupHost initialization -> preload_startup_shaders -> StartupShaderPreload::open -> MissionShipShaderPreloadGraph::create -> preload_native_application_shaders_0073bf80 -> create_native_shader_binary_cache_00b3a600",
+    "evidence": ["bsp.py show 00b3a600", "bsp.py show 00b38a70", "bsp.py show 00b35340"],
+    "float_math": "No float arithmetic changed",
+    "limits": "Build and static call-graph proof only; no game execution or new runtime/ABI parity claim"
+  },
+  "rows": [
+    {
+      "native": "00b38a70",
+      "status": "wired",
+      "host_site": "src/native_shader_binary_cache.cpp:create_native_shader_binary_cache_00b3a600",
+      "state": "Same real 10h allocation, VFS/string domain, mode cells and cache publication; nested entry leaves creator running until publication"
+    },
+    {
+      "native": "00b35340",
+      "status": "wired",
+      "host_site": "src/native_shader_binary_cache.cpp:construct_native_shader_binary_cache_00b38a70 via construct",
+      "state": "Same real cache/stream and retained counters/temporary; source-mode and variants gates unchanged"
+    },
+    {
+      "native": "00b3a600",
+      "status": "wired",
+      "previously_wired": true,
+      "host_site": "src/native_shader_preload.cpp:preload_native_application_shaders_0073bf80",
+      "state": "Existing live caller retained; its constructor call now uses the public address entry"
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot provenance",
+      "reason": "Missing stored ControllerSnapshotMessage and routed snapshot consumer; copying flattened flags into a disposable snapshot would not establish wiring."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:SetSelectedUnit and ForceSelectUnit screen reset",
+      "reason": "Missing selection-mode producer at screen+30h and owned selection-vector storage at +C4h..+D0h."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group score-list release policy",
+      "reason": "No live candidate score-table owner or gameplay consumer; the documented image reader is an unreachable debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group score-list release policy",
+      "reason": "No actual candidate score-list records to mark; the documented table consumer is debug-only."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 composite targets",
+      "reason": "The semantic render_scene_00b156c0 body is not linked in this executable; its direct field read cannot establish an entry-reachable getter call."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 distortion_texture",
+      "reason": "Missing entry-reachable distortion-texture branch; the semantic render_scene_00b156c0 containing the field read is not linked."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 luminance output",
+      "reason": "Missing entry-reachable tone-map/composite owner branch; the semantic render_scene_00b156c0 containing these reads is not linked."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:existing metadata call",
+      "reason": "Deferred: an existing source call is present, but this investigation did not establish its entry-reachable submission owner."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:existing shadow command append",
+      "reason": "Deferred: an existing source call is present, but this investigation did not establish its entry-reachable submission owner."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:plane bomb-view direction comparison",
+      "reason": "Missing original sight-display camera/impact branch and yaw/pitch consumer; the current bomb release path only implements release gates."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::begin_submarine_periscope_failure",
+      "reason": "Common repair state exists, but missing per-instance mast/Dyn shape owners prevent applying the outer body's visibility and collision effects."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_retreat_00bf16b0",
+      "reason": "Missing entry-reachable error-context map owner; the checked advance/erase entries are not linked in this executable."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_advance_00bf1450",
+      "reason": "Missing entry-reachable error-context map owner; the advance entry is not linked in this executable."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Missing entry-reachable error-context map producer/rebalance path; the erase entry is not linked in this executable."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Missing entry-reachable error-context map producer/rebalance path; the erase entry is not linked in this executable."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:word-array record reading",
+      "reason": "Deferred: missing verified live WordArray/session-message35 owner path in the chosen subsystem."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:word-array record reading",
+      "reason": "Deferred: missing verified live WordArray/session-message35 owner path in the chosen subsystem."
+    },
+    {
+      "native": "006e2e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile activation path",
+      "reason": "Deferred: missing mapping from retained projectile state to the full raw bomb record and Seg33aHost activation contract."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:torpedo water entry",
+      "reason": "Deferred: missing native shot/effect-owner adapter for +44h water state and +24h/+28h callbacks."
+    }
+  ]
+}

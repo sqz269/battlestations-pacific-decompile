@@ -25,6 +25,9 @@ struct NativeShaderBinaryCacheContext {
     void (*free_object_00bf65ac)(void*);
 };
 // Persistent normal-path invocation state, retained BEFORE side effects.
+// Nested creator -> constructor -> record-loader entries borrow this SAME
+// running frame; only its root entry completes it. The function field retains
+// the root address while native_site follows the innermost side effect.
 // Failure does not roll back native resources or permit replay. The caller
 // must retain a failed frame and its context; original FH3 is not reproduced.
 struct NativeShaderBinaryCacheOperation final {
