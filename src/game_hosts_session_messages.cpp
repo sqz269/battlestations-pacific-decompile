@@ -620,6 +620,11 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     return result;
 }
 
+namespace {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type);
+}
+
 std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t type,
                                                                std::uint16_t member_id) const {
     const Image& image = *image_;
@@ -648,18 +653,43 @@ std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t typ
     // and the case's ConstructForRead (007690E6 / 00769106), then 0076A27B
     // vtable[8], the class reader.
     stream.begin_read();
-    seg42::FormationMemberMessage queued{};
+    // Chain 626: retain the factory's actual 24h allocation through decode
+    // and member-id consumption. The profile's scalar delete owns that block;
+    // the stack sender takes the same delete with flags=0.
+    const auto is_type = [join](std::uint32_t id) {
+        return join ? seg42::is_formation_join_0075a310(id)
+                    : seg42::is_formation_leave_0075a360(id);
+    };
+    auto decode = [&](seg42::FormationMemberMessage& queued) {
+        if (join) {
+            seg42::construct_for_read_formation_join_0075a2e0(&queued, image.seg42);
+            seg42::read_formation_join_0075c810(&queued, &stream.in);
+        } else {
+            seg42::construct_for_read_formation_leave_0075a330(&queued, image.seg42);
+            seg42::read_formation_leave_0075c8b0(&queued, &stream.in);
+        }
+        // 00780120 queries this message's actual IsType slot before the
+        // session-kind switch consumes its member id. Both formation classes
+        // answer their own tag, 49h and 46h (bsp.py show 0075A310/0075A360).
+        if (!copy_goes_to_unit_handler(is_type) || !is_type(queued.u.h.base.type_10))
+            throw std::logic_error("Formation: decoded copy did not reach the unit formation arm");
+        return queued.member_id_20;
+    };
+    std::uint16_t member;
     if (join) {
-        seg42::construct_for_read_formation_join_0075a2e0(&queued, image.seg42);
-        seg42::read_formation_join_0075c810(&queued, &stream.in);
+        OwnedDecodedMessage<seg42::FormationMemberMessage,
+            delete_formation_join_message_0075ca20> owner;
+        member = decode(owner.get());
+        delete_formation_join_message_0075ca20(&sent, 0u);
     } else {
-        seg42::construct_for_read_formation_leave_0075a330(&queued, image.seg42);
-        seg42::read_formation_leave_0075c8b0(&queued, &stream.in);
+        OwnedDecodedMessage<seg42::FormationMemberMessage,
+            delete_formation_leave_message_0075ca40> owner;
+        member = decode(owner.get());
+        delete_formation_leave_message_0075ca40(&sent, 0u);
     }
     // 0076E5B2 then stores the sender's +174h at the copy's +18h; the hosts
     // deliver to the posting unit directly, so that store is not repeated.
-    // The drain's scalar delete (0075CA20 / 0075CA40) has no owned storage.
-    return queued.member_id_20;
+    return member;
 }
 
 std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) const {
@@ -674,17 +704,16 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     LocalStream stream;
     seg42::write_vehicle_set_party_007602f0(&sent, &stream.out);
     stream.begin_read();
-    seg42::VehicleValueMessage queued{};
+    // 00768530 allocates 20h at 007691B2 before 00760260. Release that
+    // decoded allocation with 00760610(1), after retaining the copied party.
+    OwnedDecodedMessage<seg42::VehicleValueMessage,
+        delete_vehicle_set_party_message_00760610> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_set_party_00760260(&queued, image.seg42);
     seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
-    // Both message lifetimes own no heap members. The native scalar delete
-    // only restamps the vtable before freeing its allocation.
-    return queued.value_1c;
-}
-
-namespace {
-template <class IsType>
-bool copy_goes_to_unit_handler(IsType is_type);
+    const auto copied_party = queued.value_1c;
+    delete_vehicle_set_party_message_00760610(&sent, 0u);
+    return copied_party;
 }
 
 std::uint32_t HostSessionMessages::queue_vehicle_race_80(
@@ -1445,7 +1474,11 @@ HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_laun
     seg42::write_vehicle_shipyard_launch_00760550(&sent, &stream.out);
     // 00768530 case 7Ah: 007604C0 at 00769166; 0076A27B vtable[8] = 007605A0.
     stream.begin_read();
-    seg42::VehicleShipyardLaunchMessage queued{};
+    // The 7Ah factory allocates 24h at 00769152, then calls 007604C0 at
+    // 00769166. Its existing profile selects 00760650 for final release.
+    OwnedDecodedMessage<seg42::VehicleShipyardLaunchMessage,
+        delete_vehicle_shipyard_launch_message_00760650> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_shipyard_launch_007604c0(&queued, image.seg42);
     seg42::read_vehicle_shipyard_launch_007605a0(&queued, &stream.in);
     ShipyardLaunchCopy copy;
@@ -1453,7 +1486,7 @@ HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_laun
     copy.to_unit = copy_goes_to_unit_handler(&seg42::is_vehicle_shipyard_launch_00760520);
     copy.shipyard_launch_7a = copy.to_unit && copy.type == 0x7A;
     copy.flag = queued.flag_20;
-    // Neither message owns storage; 00760650 only restamps.
+    delete_vehicle_shipyard_launch_message_00760650(&sent, 0u);
     return copy;
 }
 

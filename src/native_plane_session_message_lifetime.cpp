@@ -63,4 +63,50 @@ delete_ship_explode_to_parts_message_007625e0(seg42::UnitMessage* message,
     if ((flags & 1u) != 0) singleton_lifetime_free(message);
     return message;
 }
+
+// Chain 626: bsp.py show 0075CA20 / 0075CA40 / 00760610 / 00760650 --asm,
+// existing bsp.gpr /battlestationspacific.exe. Each TESTs the low flags byte's
+// bit 0, stores 00CE4974 at [this], optionally calls 00BF65AC, and returns
+// this in EAX with RET4. Retain their correct CG_scalar_deleting_dtor names
+// in Ghidra. These typed interfaces use the existing callable root profile
+// and the same malloc/free pair as the factory's OwnedDecodedMessage.
+static_assert(sizeof(seg42::FormationMemberMessage) == 0x24);
+static_assert(sizeof(seg42::VehicleValueMessage) == 0x20);
+static_assert(sizeof(seg42::VehicleShipyardLaunchMessage) == 0x24);
+
+__declspec(noinline) seg42::FormationMemberMessage*
+delete_formation_join_message_0075ca20(seg42::FormationMemberMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
+
+__declspec(noinline) seg42::FormationMemberMessage*
+delete_formation_leave_message_0075ca40(seg42::FormationMemberMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
+
+__declspec(noinline) seg42::VehicleValueMessage*
+delete_vehicle_set_party_message_00760610(seg42::VehicleValueMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
+
+__declspec(noinline) seg42::VehicleShipyardLaunchMessage*
+delete_vehicle_shipyard_launch_message_00760650(seg42::VehicleShipyardLaunchMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 } // namespace bsp
