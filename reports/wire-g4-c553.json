@@ -1,0 +1,177 @@
+{
+  "goal": 4,
+  "chain": 553,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain553Bound",
+  "rows": [
+    {
+      "native": "007bc7a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "Real flight-state pitch/bank and rocket-free rack-kind mask reach the reconstructed gate once; mixed rocket/paratrooper loadouts retain the existing calculation."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "The typed baseline names are retained, but the raw +1930h native string-set/head and teardown Lua-object/string/vector adapters are missing."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "Missing actual native 00F87574/78/7C authority and persistent command-target receiver ownership; current method only returns zero."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: report_target_event",
+      "reason": "Missing the native reporter channel graph, callback storage and raw entity-id boxes needed by the existing reporting body."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp / src/game_hosts_ship_ai.cpp: director construction notes",
+      "reason": "Missing a complete shared raw director owner and 00720180 base-construction adapter; current hosts retain semantic director state."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path ownership",
+      "reason": "No live user-path clear call site selecting the native last-filled queue path was found; the existing helper only returns a slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live controller snapshot descriptor producer or verified current 00E08F8C ordinal owner was found."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director-mask reader comments",
+      "reason": "The identified consumer is controller network snapshot serialization; this single-player task does not wire that path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: snapshot candidate",
+      "reason": "The identified body builds a controller network snapshot; this single-player task does not wire that path."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit",
+      "reason": "Missing selection-mode +30h and native selection-vector +C4h producers, plus the retained +C0h/+D4h screen fields."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: distortion_add_object callback",
+      "reason": "No live distortion-add-object owner/caller graph was found to supply the actual distortion record array."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Its inspected shadow-fit and camera-mover callers have no linked entry-reachable body in this build."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Missing a linked production shadow-fit owner/caller; the built graph contains no function at this address."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The original caller is unreferenced and this body has no linked entry-reachable path in the build."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The checkpoint-difference producer remains a false-returning stand-in, and native profile-record/storage write continuations are missing."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: register_generated_units",
+      "reason": "Missing the complete persistent raw 2268h ship-brain owner and constructor host; existing ship AI state is semantic."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::failure_side_effect",
+      "reason": "Missing native per-slot scoring maps/vectors, attacker player records and award tables; the current failure call does not carry the required hit record."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Missing native per-slot repair scoring vectors and award-table/health providers; the host marks this notification unreached."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate direct_hit",
+      "reason": "Missing native scoring/player-record/award graph and per-source relation/class maps; live damage attribution alone is insufficient."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: player_bomb_release_006082d0",
+      "reason": "The current player-release path omits the plane HUD aiming-vector marker calculations that consume these angle deltas."
+    },
+    {
+      "native": "007c7600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: player_bomb_release_006082d0",
+      "reason": "The complete bay-door per-slot +9C3h and first-bomb-class rocket producers are missing for extraction of this separate dive gate."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_native_font_application.cpp: FontData decoding",
+      "reason": "The typed FontData object found here serves decoding; no live byte-acceptance caller over this same font view was found."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TailGunnerBot constructor notes",
+      "reason": "Missing the raw gun-bot receiver/base-construction host and current 00E199A0 descriptor authority."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TorpedoBot constructor notes",
+      "reason": "Missing the raw gun-bot receiver/base-construction host and current 00E1998C descriptor authority."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameHostLog::notef candidate",
+      "reason": "The live logger uses a different bounded variadic-buffer contract; replacing it with the fixed native 1024-byte formatter is not justified."
+    }
+  ],
+  "validation": {
+    "baseline_build": "Win32 Release and four CTests passed",
+    "build": "Win32 Release and four CTests passed",
+    "differential_probe": "3120 comparisons passed against an instruction-transcribed 007BC7A0 oracle under PC24/PC53; linked the actual built bsp_core.lib; not original-PE execution",
+    "called_before": 4962,
+    "called_after": 4963,
+    "readiness_wired_before": 9879,
+    "call_graph": "007bc7a0 REACHABLE, one call at 1029892a from GameUnitsHost::Impl::player_bomb_release_006082d0; entry path recorded in local/call-graph-g4-c553-after.txt",
+    "game_run": false,
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 4 files",
+    "build_log": "local/build-g4-c553-final.log",
+    "readiness_wired_after": 9879,
+    "readiness_note": "Readiness is a source-text metric; the built called-address total rises by exactly one."
+  },
+  "assumptions": [
+    "The retained ordnance ancestry mask accurately excludes every rocket class when bit33h is absent; the general-bomb predicate already enforces this.",
+    "The mixed rocket/paratrooper path retains its prior calculation because this host lacks the first-rack descriptor +E0h producer."
+  ]
+}
