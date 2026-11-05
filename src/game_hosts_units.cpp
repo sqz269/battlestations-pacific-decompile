@@ -37,6 +37,7 @@
 #include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain419_switches.hpp"
 #include "bsp/wire_goal4_chain414_switches.hpp"
+#include "bsp/wire_goal4_chain556_switches.hpp"
 #include "bsp/wire_goal4_chain553_switches.hpp"
 #include "bsp/cc13_left1.hpp"
 #include "bsp/wire_goal4_chain412_switches.hpp"
@@ -7642,6 +7643,54 @@ struct GameUnitsHost::Impl {
         const float pitch = slot.plane_pitch_angle_c64;
         const float bank = slot.plane_bank_angle_c68;
         if (needs_dive_gate) {
+        if constexpr (bsp::kWireGoal4Chain556Bound) {
+            if (lua.plane_globals_loaded() && !set.contains(0x33)) {
+                const bsp::GameTuningBlock& g = lua.plane_globals();
+                const bsp::cc13_seg47::PlaneDiveDropTuning tuning{
+                    g.pilot_general_dive_bomb_roll_angle_min,
+                    g.pilot_general_dive_bomb_roll_angle_max,
+                    g.pilot_general_dive_bomb_roll_angle_min_pitch,
+                    g.pilot_general_dive_bomb_roll_angle_max_pitch,
+                    g.pilot_general_dive_bomb_pitch_angle_min,
+                    g.pilot_general_dive_bomb_pitch_angle_max};
+                // 00608357 PUSH 0 -> 00608362 CALL 007C7600: no bay test.
+                // The actual loadout mask excludes kind 33h here, so its first
+                // bomb class cannot be a rocket. Mixed rocket loadouts and an
+                // unloaded tuning owner retain the existing host path below.
+                if (!bsp::cc13_seg47::dive_drop_attitude_gate_007c7600(
+                        pitch, bank, tuning, nullptr, nullptr)) {
+                    r.reason = pitch > tuning.pitch_max_568
+                        ? "007C7600: pitch above DiveBombPitchAngleMax"
+                        : "007C7600: bank outside the roll curve";
+                    return r;
+                }
+                done("Plane::dive_drop_attitude_gate_007c7600", 0x007c7600u);
+            } else {
+                // 00608367 007C7600, the same attitude gate the rack tick applies
+                // (run_rack_tick_006e56f0). The bay byte unit+9C3h is not modelled.
+                float pmin = 1.0471976f, pmax = 1.5707964f;
+                float rmin = 1.0471976f, rmax = 1.5707964f;
+                float rmin_p = -1.3962634f, rmax_p = 1.5707964f;
+                if (lua.plane_globals_loaded()) {
+                    const bsp::GameTuningBlock& g = lua.plane_globals();
+                    pmin = g.pilot_general_dive_bomb_pitch_angle_min;
+                    pmax = g.pilot_general_dive_bomb_pitch_angle_max;
+                    rmin = g.pilot_general_dive_bomb_roll_angle_min;
+                    rmax = g.pilot_general_dive_bomb_roll_angle_max;
+                    rmin_p = g.pilot_general_dive_bomb_roll_angle_min_pitch;
+                    rmax_p = g.pilot_general_dive_bomb_roll_angle_max_pitch;
+                }
+                if (pitch > pmax) {
+                    r.reason = "007C7600: pitch above DiveBombPitchAngleMax";
+                    return r;
+                }
+                if (!(pmin > pitch) && std::fabs(bank) > bsp::clamped_interpolate_00419010(
+                                           rmax_p, rmax, rmin_p, rmin, pitch)) {
+                    r.reason = "007C7600: bank outside the roll curve";
+                    return r;
+                }
+            }
+        } else {
         // 00608367 007C7600, the same attitude gate the rack tick applies
         // (run_rack_tick_006e56f0). The bay byte unit+9C3h is not modelled.
         float pmin = 1.0471976f, pmax = 1.5707964f;
@@ -7666,6 +7715,9 @@ struct GameUnitsHost::Impl {
             return r;
         }
         }
+        }
+        // 007BC7A0 is the later release-site gate. Keep it outside the
+        // dive-only 007C7600 scope so level bombers still reach it too.
         if constexpr (bsp::kWireGoal4Chain553Bound) {
             if (!set.contains(0x33)) {
                 // The live rack-kind mask excludes every rocket here, so the
