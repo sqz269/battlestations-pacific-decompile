@@ -1,0 +1,156 @@
+{
+  "goal": 4,
+  "chain": 608,
+  "worker": "agent/g4-w4",
+  "control_plane_run": 1256,
+  "base_head": "965c112e773f6a447c3d3c9775cc0fd2455d68d5",
+  "switch": "bsp::kWireGoal4Chain608Bound",
+  "selection": "Initialize the five actual frame-target intrusive surface handles with the existing raw DWORD-slot initializer, replacing the equivalent inline stores in their native order.",
+  "validation": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (4/4 tests).",
+    "built_reconstructed_addresses_called_before": 5012,
+    "built_reconstructed_addresses_called_after": 5013,
+    "readiness_text_wired_before": 9941,
+    "readiness_text_wired_after": 9942,
+    "readiness_row": "00415680: state=wired, called=true, call_sites=5, callers_live=1",
+    "direct_call": "construct_native_frame_target_owner_00b1fbb0 at 105E3180 calls raw_initialize_native_ref_counted_handle_00415680 at 1062B8E0 five times; first call site 105E31B2.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameLoopCallbacks::frame -> GameDeviceHost::clear_and_present -> GameNativeRendererApplication::prepare_mission_ship -> MissionShipGraph::prepare -> MissionRenderResourcesGraph::construct_and_initialize -> RenderResourcesGraph::construct -> construct_native_render_resources_00b14a10 -> construct_native_frame_target_owner_00b1fbb0 -> raw_initialize_native_ref_counted_handle_00415680",
+    "float_math_changed": false,
+    "new_tests": false,
+    "diff_check": "git diff --check passed",
+    "proof_boundary": "Normal MSVC Win32 build/tests and static entry-reachable call-site evidence only; no game was run and no new original-caller ABI or gameplay claim is made. The existing naked initializer body is unchanged."
+  },
+  "rows": [
+    {
+      "native": "00415680",
+      "status": "wired",
+      "host_site": "src/native_frame_target_owner.cpp: bsp::construct_native_frame_target_owner_00b1fbb0",
+      "evidence": "bsp.py show 00415680 --asm: MOV EAX,ECX; MOV DWORD PTR [EAX],0; RET. B1FBC7/B1FBD9/B1FBDF/B1FBE5/B1FBEB zero actual owner fields +18/+08/+0C/+10/+14 respectively.",
+      "real_state": "Each argument is the address of an intrusive surface-handle field in the existing actual 40h NativeFrameTargetOwnerStorage supplied by the reached render-resource/post-effect/distortion constructors. No temporary owner, synthetic reference count, substituted table or new allocation is introduced.",
+      "behavior": "Source reuse rather than an original native call edge. Exactly one zero DWORD store replaces each old zero DWORD store, with depth first and each color before its separate COM companion. No preimage read or release occurs. The old statements remain in the switch OFF arms.",
+      "abi": "Existing raw __fastcall ECX slot/EAX identity/plain RET implementation retained unchanged; surrounding reconstructed C++ interfaces are not claimed as original ABI replacements.",
+      "entry_reachable": true,
+      "call_sites": 5
+    },
+    {
+      "native": "00b1fbb0",
+      "status": "skipped",
+      "host_site": "src/native_frame_target_owner.cpp: bsp::construct_native_frame_target_owner_00b1fbb0",
+      "reason": "Already entry-reachable at baseline through seven call sites; used as the changed caller and not counted as another newly wired function."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_owner.cpp: bsp::delete_native_point_light_00b7c850",
+      "reason": "A reached point-light ownership/deletion path is missing from the baseline executable; the canonical-pool return selector cannot be justified from an unreached deleter alone."
+    },
+    {
+      "native": "00b7c850",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: bsp::NativePointLightStorageReference::delete_scalar_00b7c850",
+      "reason": "A live point-light producer and its actual companion/pool graph were not established; neither typed scalar-deleter variant appears in the normal baseline call graph."
+    },
+    {
+      "native": "00b3d220",
+      "status": "skipped",
+      "host_site": "src/d3d9_texture2d_pool.cpp: bsp::D3D9Texture2DPool::allocate_raw_slot_00b3ef60",
+      "reason": "The ledger maps this originally unreferenced out-of-line copy to a generic slab helper; no unique addressed body/call boundary was established for replacement of the live inline slab pop."
+    },
+    {
+      "native": "00b3d250",
+      "status": "skipped",
+      "host_site": "src/d3d9_texture2d_pool.cpp: bsp::D3D9Texture2DPool::return_raw_slot_00b3d8d0",
+      "reason": "The ledger maps this originally unreferenced out-of-line copy to a generic slab helper; no unique addressed body/call boundary was established for replacement of the live inline slab push."
+    },
+    {
+      "native": "00b3ceb0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp: bsp::set_native_texture_reported_dimensions_00b3ceb0",
+      "reason": "No reached shadow-dimension update with the actual borrowed texture/global bindings was established; the normal baseline graph does not contain this setter."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: call to bsp::set_native_last_render_command_metadata_00b1cb50",
+      "reason": "A reached nonempty native command queue and its actual metadata source remain unestablished; the existing main-scene submission call is absent from the baseline graph."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp: bsp::set_native_render_command_metadata_00b1bf50",
+      "reason": "No reached per-command metadata producer supplying the actual command and three source words was established in this packet."
+    },
+    {
+      "native": "00b1d910",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp: bsp::set_native_render_command_diagnostic_00b1d910",
+      "reason": "A normal single-player diagnostic-string preparation path was not established; debug-only preparation is excluded from this goal."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: bsp::set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "A reached actual light-to-shadow replacement operation with the full shadow-owner lifetime context was not established."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_vertex_binding.cpp: bsp::logical_buffer",
+      "reason": "The naked tail-dispatch entry needs executable physical vtables, while current game objects use symbolic profiles and an existing inlined typed adapter for this same address; no additional safe wiring was established."
+    },
+    {
+      "native": "00b48dc0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_index_binding.cpp: bsp::bind_native_renderer_index_stream_00b24b00",
+      "reason": "The naked tail-dispatch entry needs executable physical vtables, while current game objects use symbolic profiles and an existing inlined typed adapter for this same address; no additional safe wiring was established."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: bsp::reserve_native_word_array_005296a0",
+      "reason": "A reached producer of the actual custom WORD-array header is missing from this packet; semantic host vectors cannot be passed as its data/size/capacity storage."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: bsp::resize_native_word_array_00529980",
+      "reason": "A reached producer of the actual custom WORD-array header and resize request is missing from this packet."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: bsp::gameplay_seg38_cc13::state_message_build_00721280",
+      "reason": "The complete live controller flags, mode and two target descriptors needed for the native state message were not established in the candidate hosts."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: bsp::gameplay_seg38_cc13::snapshot_build_007214c0",
+      "reason": "A complete actual controller state-message producer plus the extended live director fields/getter result is still needed."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp: bsp::create_native_gui_scrollbar_default_00aa15c0",
+      "reason": "A reached concrete scrollbar factory dispatch and its actual widget ownership path were not established; existing GUI factories are not assumed active from readiness alone."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: bsp::create_native_gui_button_default_00aa4440",
+      "reason": "A reached concrete button factory dispatch with the actual acquisition/lifetime context was not established."
+    },
+    {
+      "native": "00b3d650",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_owner.cpp: bsp::construct_native_cube_texture_00b3d650",
+      "reason": "A real unnamed-cube texture producer is missing; the reached loader uses the distinct named-cube constructor and cannot substitute the unnamed body without changing resource naming."
+    },
+    {
+      "native": "00b4e3d0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_frame_binding.cpp: bsp::set_native_post_effect_frame_target_00b4e3d0",
+      "reason": "A reached post-effect frame replacement operation with the actual increment/decrement cells and frame-target lifetime context was not established."
+    }
+  ]
+}
