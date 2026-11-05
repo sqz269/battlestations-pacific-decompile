@@ -2,6 +2,8 @@
 #define NOMINMAX
 #include <Windows.h>
 #include "bsp/native_dyn_narrow_phase.hpp"
+#include "bsp/native_dyn_primitive_dispatch.hpp"
+#include "bsp/wire_goal4_chain618_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native narrow phase requires MSVC Win32 x87 assembly.
@@ -17,6 +19,10 @@ void __cdecl enter_bridge(U site,Context* c,void* p){c->calls.enter_critical_sec
 void __cdecl leave_bridge(U site,Context* c,void* p){c->calls.leave_critical_section(site,p);}
 void append_kernel();
 void manifold_kernel();
+bool __fastcall collision_dispatch_bridge(void* owner,U method,void* result,
+    const void* a,const float* ma,const void* b,const float* mb){
+    return NativeDynPrimitiveDispatchRuntime::dispatch_collision(owner,method,result,a,ma,b,mb);
+}
 alignas(8) const std::uint32_t constant_00d7a208=0x80000000U;
 alignas(8) const std::uint64_t constant_00d7a270=0x3fa99999a0000000ULL;
 alignas(8) const std::uint64_t constant_00d7a280=0x3fe0000000000000ULL;
@@ -1242,7 +1248,16 @@ __declspec(naked) void range_kernel(){
         push edi // 00c44144
         lea eax, [esp + 040h] // 00c44145
         push eax // 00c44149
-        call edx // 00c4414a
+    }
+    // Chain 618. Only the call target changes: ECX/EDX and all five native
+    // stack arguments above flow through unchanged; the bridge returns AL and
+    // pops 14h just like vslot 0. Unknown methods still run exactly once.
+    if constexpr(kWireGoal4Chain618Bound) {
+        __asm { call collision_dispatch_bridge }
+    } else {
+        __asm { call edx } // 00c4414a
+    }
+    __asm {
         test al, al // 00c4414c
         je l_00c44316 // 00c4414e
         movss xmm0, dword ptr [edi + 028h] // 00c44154

@@ -2276,7 +2276,10 @@ float sqrt_native_dyn_float_004011d0(float value,const CameraAxesCrtAccess& crt)
     }
     return result;
 }
-bool intersect_native_dyn_spheres_00c518d0(void* result,const void* a,const float* ma,const void* b,const float* mb,const CameraAxesCrtAccess& crt){
+// Keep these recovered pair-body entry boundaries callable from both the live
+// dispatcher and the original table methods; their instruction kernels remain
+// unchanged. Inlining previously erased the address-suffixed entry boundaries.
+__declspec(noinline) bool intersect_native_dyn_spheres_00c518d0(void* result,const void* a,const float* ma,const void* b,const float* mb,const CameraAxesCrtAccess& crt){
     const auto* c=&crt;unsigned char answer;
     __asm {
         push c
@@ -2290,7 +2293,7 @@ bool intersect_native_dyn_spheres_00c518d0(void* result,const void* a,const floa
     }
     return answer!=0;
 }
-bool intersect_native_dyn_box_sphere_00c48330(void* result,const void* a,const float* ma,const void* b,const float* mb,const CameraAxesCrtAccess& crt){
+__declspec(noinline) bool intersect_native_dyn_box_sphere_00c48330(void* result,const void* a,const float* ma,const void* b,const float* mb,const CameraAxesCrtAccess& crt){
     const auto* c=&crt;unsigned char answer;
     __asm {
         push c
@@ -2338,6 +2341,21 @@ NativeDynPrimitiveDispatchRuntime::NativeDynPrimitiveDispatchRuntime(const Camer
 const CameraAxesCrtAccess& NativeDynPrimitiveDispatchRuntime::context(const void* p) noexcept {
     const auto& owner=*static_cast<const DynStaticDispatchObjectStorage*>(p);
     return *static_cast<const Entry*>(owner.vtable)->crt;
+}
+bool __fastcall NativeDynPrimitiveDispatchRuntime::dispatch_collision(void* owner,std::uintptr_t method,
+    void* result,const void* a,const float* ma,const void* b,const float* mb){
+    // bsp.py show 00C44090 --asm, 00C44118..00C4414E: the scene's
+    // kind-pair cell supplies ECX, its vslot supplies EDX, and the stack is
+    // (result, shape A, body A+8, shape B, body B+8). Do not infer a method
+    // from shape kinds or replace any of those actual pointers.
+    if(method==reinterpret_cast<std::uintptr_t>(&sphere_sphere))
+        return intersect_native_dyn_spheres_00c518d0(result,a,ma,b,mb,context(owner));
+    if(method==reinterpret_cast<std::uintptr_t>(&box_sphere))
+        return intersect_native_dyn_box_sphere_00c48330(result,a,ma,b,mb,context(owner));
+    // EDX held the method address at the original call. Preserve it for
+    // foreign/replaced tables as well as the original RET 14h stack transport.
+    using EntryCall=bool (__fastcall *)(void*,std::uintptr_t,void*,const void*,const float*,const void*,const float*);
+    return reinterpret_cast<EntryCall>(method)(owner,method,result,a,ma,b,mb);
 }
 bool __fastcall NativeDynPrimitiveDispatchRuntime::sphere_sphere(void* owner,void*,void* result,const void* a,const float* ma,const void* b,const float* mb){
     return intersect_native_dyn_spheres_00c518d0(result,a,ma,b,mb,context(owner));
