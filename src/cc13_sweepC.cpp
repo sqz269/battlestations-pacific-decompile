@@ -1868,7 +1868,7 @@ void* resource_create_instance_00b89fe0(SweepCHost& host, void* resource) {
 }
 
 // 00B8A200, RET 4 -> camera or 0: 00B71930(ECX = 458h); non-null -> 00B71A80(ECX = block, arg).
-void* camera_pool_create_camera_00b8a200(SweepCHost& host, std::uint32_t arg) {
+void* camera_pool_create_camera_00b8a200(CameraPoolFactoryHost& host, std::uint32_t arg) {
     void* const block = host.camera_pool_allocate_00b71930(0x458);
     return block != nullptr ? host.camera_construct_00b71a80(block, arg) : nullptr;
 }

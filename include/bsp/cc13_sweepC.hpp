@@ -77,7 +77,16 @@ struct DialogChannelLayoutHost {
     virtual std::uint32_t image_dword(std::uint32_t address) = 0;
 };
 
-struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayoutHost {
+// 00B8A200 needs only the actual static camera pool and camera constructor.
+// The 458h ECX value at B8A216 is ignored by the B71930 static-pool forwarder.
+struct CameraPoolFactoryHost {
+    virtual ~CameraPoolFactoryHost() = default;
+    virtual void* camera_pool_allocate_00b71930(std::uint32_t size) = 0;
+    virtual void* camera_construct_00b71a80(void* block, std::uint32_t arg) = 0;
+};
+
+struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayoutHost,
+                    CameraPoolFactoryHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
@@ -377,11 +386,6 @@ struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayo
     virtual void resource_name_copy_00b887d0(void* dst, const void* src) = 0;
     // 00B89F20, __thiscall(ECX = new 3Ch block, resource), RET 4 -> instance.
     virtual void* resource_instance_construct_00b89f20(void* block, void* resource) = 0;
-    // 00B71930, __fastcall(ECX = size) -> block; 00B71A80, __thiscall(ECX = block, arg), RET 4 ->
-    // camera.
-    virtual void* camera_pool_allocate_00b71930(std::uint32_t size) = 0;
-    virtual void* camera_construct_00b71a80(void* block, std::uint32_t arg) = 0;
-
     // [object]->vtable[0](ECX = object, one stack dword), reached by a tail jump.
     virtual std::uint32_t object_vslot_00(void* object, std::uint32_t arg) = 0;
 };
@@ -718,7 +722,7 @@ void* resource_node_construct_00b88d00(SweepCHost& host, void* node, std::uint32
                                        std::uint32_t b, std::uint32_t c, const void* keyed_name,
                                        std::uint8_t flag);
 void* resource_create_instance_00b89fe0(SweepCHost& host, void* resource);
-void* camera_pool_create_camera_00b8a200(SweepCHost& host, std::uint32_t arg);
+void* camera_pool_create_camera_00b8a200(CameraPoolFactoryHost& host, std::uint32_t arg);
 // Segment 91: 00B999A0, __thiscall(ECX = plane {n, d}, const float3*), RET 4 -> ST0.
 float plane_signed_distance_00b999a0(const void* plane, const float* point);
 // The pointer-table growth (data +0h, count +4h, capacity +8h), one shape at four addresses.
