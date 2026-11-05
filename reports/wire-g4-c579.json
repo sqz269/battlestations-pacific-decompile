@@ -1,0 +1,168 @@
+{
+  "chain": 579,
+  "owner": "agent/g4-w1",
+  "switch": "kWireGoal4Chain579Bound",
+  "scope": "Luminance owner's actual +23C holder load during ordered cleanup",
+  "before": {
+    "readiness_wired": 9907,
+    "built_called_addresses": 4983
+  },
+  "after": {
+    "readiness_wired": 9908,
+    "built_called_addresses": 4984
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed, including all five existing tests",
+    "graph": "00B4FFE0 has one entry-reachable call site from delete_native_luminance_owner_00b50fe0; previously absent from the linked image",
+    "evidence": "bsp.py show 00B4FFE0 --asm: MOV EAX,[ECX+23Ch]; RET. B50E8C loads the same actual holder after +238h release/clear and before +23Ch release/clear.",
+    "state": "The receiver is the existing actual 250h luminance owner. The getter replaces one existing field load; it adds no allocation, reference operation, second load or second cleanup.",
+    "abi": "Reuses the existing naked Win32 ECX-input/EAX-result/plain-RET body; no new address-suffixed body or ledger row",
+    "float_math": "Unchanged; the edit only selects a DWORD pointer load",
+    "game_run": false
+  },
+  "rows": [
+    {
+      "native": "00b4ffe0",
+      "status": "wired",
+      "host_site": "src/native_luminance_owner.cpp: destroy_native_luminance_owner_00b50dd0, +23Ch iteration; emitted caller delete_native_luminance_owner_00b50fe0"
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_submission.cpp: draw_native_post_effect_00b4dcc0",
+      "reason": "Owned and wired concurrently by agent/g4-w3 chain578; no independent call-site change made."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_submission.cpp: draw_native_post_effect_00b4dcc0",
+      "reason": "Owned and wired concurrently by agent/g4-w3 chain578; no independent call-site change made."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_construction.cpp: remove_native_vertex_shader_registry_00b253e0",
+      "reason": "Existing shader-lifetime and renderer-record cleanup callers already name this body; no new real-state caller identified."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_construction.cpp: remove_native_pixel_shader_registry_00b25450",
+      "reason": "Existing shader-lifetime cleanup already names this registry-removal body; no new real-state caller identified."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "Missing a live directional-light attachment consumer with its actual constructed per-light shadow owner; the shadow-target application constructs a different shared target object."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow-view fitting",
+      "reason": "Missing an entry-reachable shadow-fit caller that consumes the actual camera aspect-times-FOV product."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native scene submission clip setup",
+      "reason": "Existing native submission already calls this body, but its concrete submission body has no linked entry-reachable caller in this build; adding the same call cannot wire it."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native scene submission clip setup",
+      "reason": "Existing native submission already calls this body, but its concrete submission body has no linked entry-reachable caller in this build; missing the actual main-scene submission root."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: metadata_queue publication",
+      "reason": "Missing entry-reachable concrete main-scene submission; its existing metadata call already supplies the real queue and binary constants."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp: sampler parameter publication",
+      "reason": "Existing actual mission-material refresh already directly calls this body; no additional caller needed at that site."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen reset callbacks",
+      "reason": "Missing producer and owner for pick-screen +30h selection mode and +C4h vector, plus retained +C0h/+D4h fields; callbacks only record the reset."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list bookkeeping",
+      "reason": "Score-list contents feed only an unreachable debug text overlay; excluded debug-only work rather than creating an unused gameplay list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list bookkeeping",
+      "reason": "Chosen flags feed only an unreachable debug text overlay; no single-player gameplay consumer exists in the inspected host."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification",
+      "reason": "Chain451 already calls this body with the loaded descriptor, real level and stream-one draw; a second invocation would duplicate its random draw."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime::set_all_paused",
+      "reason": "Existing runtime already calls this body on the canonical alternate-dialog owner and live logical streams; no missing call at that site."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing an actual ambient sound-instance owner; the callback currently discards the computed volume and records the setter."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "Missing a real animation/ticker handle producer; weapon_animation currently returns zero before this recorded interval callback."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: word-array reservation",
+      "reason": "Existing message35 implementation already calls this body; missing a live type35 producer/transport root rather than another reserve call."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: word-array resize",
+      "reason": "Existing message35 implementation already calls this body; no live type35 producer/transport root was established in this packet."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: clear_values, append_values and assign_native_animation_values_00b926e0",
+      "reason": "Existing native animation-item operations already call this body; a new host-owned animation-item producer was not established in this packet."
+    },
+    {
+      "native": "00858260",
+      "status": "skipped",
+      "host_site": "src/native_particle_tracer_state.cpp: node_construct_bridge",
+      "reason": "Existing tracer-state bridge already calls this constructor; no separate legitimate construction site was identified."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Existing resize already calls reserve; missing a live nonempty distortion-record producer rather than another allocation on an empty owner."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion owner destruction",
+      "reason": "Existing destruction already calls the resize body with zero; no additional live mutation of actual distortion records was established."
+    }
+  ]
+}
