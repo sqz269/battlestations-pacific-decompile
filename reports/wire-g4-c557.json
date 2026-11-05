@@ -3,16 +3,32 @@
   "chain": 557,
   "worker": "agent/g4-w5",
   "switch": "bsp::kWireGoal4Chain557Bound",
-  "picked": "Landing-ship ramp-open A6 sender construction and single-player route drop",
+  "picked": "Landing-ship ramp-open review correction: canonical native player owner unavailable; shared clock binding independent of chain 539",
   "readiness_wired_before": 9882,
-  "readiness_wired_after": 9883,
-  "call_graph_new_reachable_native_addresses": ["00749aa0"],
+  "readiness_wired_before_review": 9883,
+  "readiness_wired_after": 9882,
+  "new_wires_counted": 0,
+  "call_graph_new_reachable_native_addresses": [],
+  "review_round": 1,
+  "review_findings": [
+    {
+      "finding": 1,
+      "status": "fixed",
+      "action": "Removed the A6 constructor adapter, concrete profile and live ramp call. 00749AA0 is skipped rather than called with Image::game's synthetic null selected-owner cell.",
+      "evidence": "SessionParticipantPools retains ParticipantRecordBytes and ParticipantRecordId arrays only. Mission loading reset_and_claim_local_flags publishes a claimed identity, but no canonical native 118h player-record pointer is produced or exposed to this path. A copied flag projection is not a native participant object."
+    },
+    {
+      "finding": 2,
+      "status": "fixed",
+      "action": "Mission-frame setup includes chain557's switch and binds the shared live game-state/step-count references when kWireGoal4Chain539Bound || kWireGoal4Chain557Bound. The former chain557 ramp exception path was also removed with the rejected constructor binding."
+    }
+  ],
   "rows": [
     {
       "native": "00749aa0",
-      "status": "wired",
-      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landing_ship_ramp_step -> src/game_hosts_session_messages.cpp: HostSessionMessages::route_landing_ship_open_a6",
-      "real_state": "The actual lander's ramp latch, using the live hull contact, clock and delta, triggers construction after its existing local open. The route gate reads the bound live mission game-state word and retained session mode. The constructor borrows the existing process session-message context and its selected-owner cell; that cell is never consumed on the flags-4 drop path.",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landing_ship_ramp_step retains the previous route record",
+      "reason": "Canonical live native player-record storage and its game+18CCh publication are unavailable; Image::game's zero-filled selected-owner cell is synthetic even though flags 4 drops the message before consuming it.",
       "evidence": [
         "bsp.py show 0074af50 --start 66 --lines 31: local 0074A420, then constructor at 0074B089 and route at 0074B0A0 with flags 4",
         "bsp.py show 00749aa0: base A6h, delivery 1, id/relay zero, profile 00CFF8D4",
@@ -24,7 +40,7 @@
     {
       "native": "00749ad0",
       "status": "skipped",
-      "host_site": "src/game_hosts_session_messages.cpp: A6 profile and route_landing_ship_open_a6",
+      "host_site": "src/game_hosts_ship_ai.cpp: potential A6 sender/route binding",
       "reason": "Single-player flags 4 returns before privilege, audit and receive-type queries; no native single-player call to this IsType body exists on the ramp route."
     },
     {
@@ -149,17 +165,18 @@
     }
   ],
   "validation": {
-    "baseline_build": "scripts/build.ps1 passed, 4/4 CTests",
-    "switch_off_build": "scripts/build.ps1 passed, 4/4 CTests",
-    "enabled_build": "Final scripts/build.ps1 passed, 4/4 CTests; switch restored to true",
+    "baseline_build": "Prior-round baseline scripts/build.ps1 passed, 4/4 CTests",
+    "enabled_build": "Final review-fix scripts/build.ps1 passed, 4/4 CTests; chain539=true and chain557=true",
+    "independent_switch_build": "Chain539=false / chain557=true scripts/build.ps1 passed, 4/4 CTests; chain539 restored to true afterward",
+    "independent_switch_call_graph": "With chain539=false / chain557=true, bind_local_message_clock is entry-reachable with one direct call from GameMissionFrameHost::run_scene_load_004dfb70.",
     "float_math": "No arithmetic expressions changed; existing latch math remains unchanged.",
-    "call_graph": "00749AA0 has one reachable direct call from HostSessionMessages::route_landing_ship_open_a6 through landing_ship_ramp_step and the fixed-step mission path. The switch-off build does not link that body. Comparing original-address mappings adds only 00749AA0.",
-    "readiness": "9882 -> 9883 wired; 00749AA0 state=wired, called=true, call_sites=1. 00749AD0 remains uncalled."
+    "call_graph": "The final build has no 00749AA0 symbol or original-address mapping. bind_local_message_clock remains entry-reachable with one direct call from GameMissionFrameHost::run_scene_load_004dfb70.",
+    "readiness": "Corrected total 9882, matching the pre-chain557 baseline (the rejected prior round reported 9883). 00749AA0 is ready, not called, and absent from the final executable's original-address mappings. Zero new wires counted."
   },
   "limits": [
     "Built executable call-graph evidence, not gameplay execution or an ABI-compatible replacement.",
-    "The new sender is single-player only. Nonlocal session behavior retains the previous record.",
-    "The concrete A6 profile stores original-address tokens, as the existing seg41/seg42 bridge does; it is never executed as a vtable on the drop path.",
-    "The selected-owner cell in the existing process message context is unused by this route; this packet does not reconstruct player-record ownership."
+    "00749AA0 is intentionally unwired until canonical live native participant storage is available; the existing ramp-open behavior and route record remain.",
+    "No synthetic player record, copied flag-only surrogate, concrete A6 profile or alternate address-suffixed body was introduced.",
+    "The shared clock-binding fix is retained for independent switch operation; it does not establish native participant ownership."
   ]
 }
