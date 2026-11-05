@@ -8,6 +8,7 @@
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_model_base_bootstrap.hpp"
 #include "bsp/native_group_owner.hpp"
+#include "bsp/native_texture_source_type_ids.hpp"
 
 #include <cstdint>
 
@@ -76,6 +77,18 @@ public:
     void initialize_physical_00cd9030(TypeIdCounterLifetime& existing_counter,
         LightTypeBootstrap& common_root_bootstrap);
 
+    // CD90D0/CD9120 initialize these canonical texture/animated descriptors in
+    // that order after CD9030. Delegate their guarded bodies using the existing
+    // process counter/root; no absolute numeric type IDs or omitted CRT entries
+    // are synthesized. Reentry retains each body's early guard/partial state.
+    void initialize_texture_source_types(TypeIdCounterLifetime& existing_counter,
+        LightTypeBootstrap& common_root_bootstrap);
+    NativeTextureSourceTypeIdStorage& texture_source_types() noexcept {
+        return texture_source_types_;
+    }
+    volatile NativeShaderAnimatedTextureSourceTypeDescriptor&
+    animated_texture_source_type() noexcept { return animated_texture_0109e9d4_; }
+
 private:
     void require_common_bootstrap(const LightTypeBootstrap&) const;
 
@@ -142,6 +155,16 @@ private:
     volatile std::uint8_t fallback_guard_0109020d_{};
     volatile std::uint32_t fallback_0109021c_[4]{};
     GameNativeFallbackResourceTypeStorage fallback_resource_types_;
+
+    // Canonical process-owned BSS roles, appended to preserve existing offsets.
+    // The parent view and initialized targets always refer to these same cells.
+    volatile std::uint8_t data_source_guard_00f8d424_{};
+    volatile NativeShaderDataSourceTypeDescriptor data_source_00f8d428_{};
+    volatile std::uint8_t texture_source_guard_0109e9c0_{};
+    volatile NativeShaderTextureSourceTypeDescriptor texture_source_0109e9c4_{};
+    volatile std::uint8_t animated_texture_guard_0109e9c1_{};
+    volatile NativeShaderAnimatedTextureSourceTypeDescriptor animated_texture_0109e9d4_{};
+    NativeTextureSourceTypeIdStorage texture_source_types_;
 };
 
 } // namespace bsp::game

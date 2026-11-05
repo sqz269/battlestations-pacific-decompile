@@ -39,7 +39,9 @@ std::uint32_t NativeTextureSourceTypeIds::consume_type_id() {
     return result;
 }
 
-void NativeTextureSourceTypeIds::initialize_data_source_00b19c70(
+// Keep the shared parent body observable in the built game's call graph; its
+// guard/name/root/counter schedule remains at C30310's original call position.
+__declspec(noinline) void NativeTextureSourceTypeIds::initialize_data_source_00b19c70(
     volatile NativeShaderDataSourceTypeDescriptor& target) {
     if (storage_.data_guard_00f8d424 == 0) {
         storage_.data_guard_00f8d424 = 1;
