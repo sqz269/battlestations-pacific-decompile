@@ -3,6 +3,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal2_chain114_switches.hpp"
 #include "bsp/wire_goal4_chain309_switches.hpp"
+#include "bsp/wire_goal4_chain566_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -203,11 +204,16 @@ template<class Pool> void trim_empty_slabs(NativeMaterialPoolStorage& storage) {
         }
     }
 }
-template<class Pool> void destroy_pool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage) {
+template<class Pool, void (*FreeTable)(void*) noexcept = nullptr>
+void destroy_pool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage) {
     storage.allocator_00.native_vtable_00 = Pool::native_vtable;
     for (std::uint32_t i = 0; i < storage.slab_count_2c; ++i)
         singleton_lifetime_free(storage.slabs_28[i]);
-    free_table(storage);
+    if constexpr (FreeTable != nullptr) {
+        FreeTable(&storage.slabs_28);
+    } else {
+        free_table(storage);
+    }
     destroy_section(storage);
     list.unlink_base_element_00403970(storage.allocator_00);
 }
@@ -417,7 +423,16 @@ void NativeGuiGroupPool::trim_00ac74f0() {
     trim_empty_slabs<NativeGuiGroupPool>(storage_);
 }
 void NativeGuiGroupPool::destroy_00ac71a0() {
-    destroy_pool<NativeGuiGroupPool>(allocator_list_,storage_);
+    if constexpr (kWireGoal4Chain566Bound) {
+        // bsp.py show 00AC71A0/00AC70D0: the destroy body's inline table
+        // free and the out-of-line helper both free only the current +28h
+        // pointer, preserving count/capacity and the dangling pointer. Pass
+        // the actual pool header after slab retirement, before CS/list teardown.
+        destroy_pool<NativeGuiGroupPool,
+            &free_native_gui_group_pool_table_00ac70d0>(allocator_list_,storage_);
+    } else {
+        destroy_pool<NativeGuiGroupPool>(allocator_list_,storage_);
+    }
 }
 void NativeGuiGroupPool::invoke_trim(void* context) {
     static_cast<NativeGuiGroupPool*>(context)->trim_00ac74f0();
@@ -425,7 +440,7 @@ void NativeGuiGroupPool::invoke_trim(void* context) {
 __declspec(noinline) void* initialize_native_gui_group_slab_00ac6ff0(void* raw,std::uint32_t index) noexcept {
     return initialize_slab<NativeGuiGroupPool>(raw,index);
 }
-void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
+__declspec(noinline) void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
     void* const table=read<void*>(static_cast<const std::byte*>(header));
     if (table) singleton_lifetime_free(table);
 }

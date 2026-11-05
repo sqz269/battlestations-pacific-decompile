@@ -1,0 +1,297 @@
+{
+  "chain": 566,
+  "owner": "agent/g4-w5",
+  "picked": "GUI group pool pointer-table retirement",
+  "switch": "kWireGoal4Chain566Bound",
+  "implementation": "The existing GUI group pool destroy path passes its actual +28h slab-table header to the existing 00AC70D0 body after freeing slabs and before critical-section/list teardown. The old destroy instantiation remains unchanged in the switch's else arm. The helper preserves pointer/count/capacity and frees the table once.",
+  "evidence": [
+    "bsp.py brief verified /battlestationspacific.exe in the existing Ghidra project; no Ghidra mutation was needed.",
+    "bsp.py show 00AC71A0 and 00AC70D0 establish the identical nonnull current-table free, with no header reset.",
+    "src/native_gui_group_storage.cpp registers GameNativeGuiGroupPoolProcess::destroy_00CE0AE0 with the real CRT atexit function after pool initialization.",
+    "call_graph.py who 00AC70D0: reachable at 104BEC60, one call at 104BE9A4 from NativeGuiGroupPool::destroy_00AC71A0. The body was absent from the baseline executable."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after the change",
+    "ctest": "4/4 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "called_addresses_before": 4973,
+    "called_addresses_after": 4974,
+    "readiness_wired_before": 9890,
+    "readiness_wired_after": 9891,
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Build/test and entry-reachable binary-call evidence; no gameplay or original binary-ABI claim.",
+    "index_refresh": "Attempted index --if-stale; replacement failed because local/bsp_index.sqlite was held open by another process. The old index remained readable and untouched."
+  },
+  "rows": [
+    {
+      "native": "00ac70d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiGroupPool::destroy_00ac71a0",
+      "call_site": "104be9a4"
+    },
+    {
+      "native": "00ac71a0",
+      "status": "skipped",
+      "host_site": "src/native_gui_group_storage.cpp: GameNativeGuiGroupPoolProcess::destroy_00ce0ae0",
+      "reason": "Already entry-reachable at baseline; its existing teardown is the host for the new table-free call, not another newly wired address."
+    },
+    {
+      "native": "0071bb40",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_classification.cpp: NativeGameResourceDispatchCalls::append_item",
+      "reason": "No linked game-resource classification dispatcher reaches this body in the current executable; connecting the actual resource loader and classification owner remains necessary."
+    },
+    {
+      "native": "0071b8d0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_classification.cpp: append_and_classify_native_game_item_0071bb40",
+      "reason": "The type44 append body is not linked because its classification caller 0071BB40 has no active game-resource dispatch owner."
+    },
+    {
+      "native": "0071b940",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_classification.cpp: append_and_classify_native_game_item_0071bb40",
+      "reason": "The type54 append body is not linked because its classification caller 0071BB40 has no active game-resource dispatch owner."
+    },
+    {
+      "native": "0071b9b0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_classification.cpp: append_and_classify_native_game_item_0071bb40",
+      "reason": "The type64 append body is not linked because its classification caller 0071BB40 has no active game-resource dispatch owner."
+    },
+    {
+      "native": "0071b230",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: append_native_game_type44_pointer_0071b8d0",
+      "reason": "Append currently bypasses this entry via shared insert_one_impl, but the whole type44 caller graph is also unlinked; helper-only routing would not create a live call."
+    },
+    {
+      "native": "0071b2c0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: append_native_game_type54_pointer_0071b940",
+      "reason": "Append currently bypasses this entry via shared insert_one_impl, but the whole type54 caller graph is also unlinked; helper-only routing would not create a live call."
+    },
+    {
+      "native": "0071b350",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: append_native_game_type64_pointer_0071b9b0",
+      "reason": "Append currently bypasses this entry via shared insert_one_impl, but the whole type64 caller graph is also unlinked; helper-only routing would not create a live call."
+    },
+    {
+      "native": "0071a5a0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_one_0071b230",
+      "reason": "Shared insert_one_impl bypasses this entry; the type44 append/classification owner is also absent from the linked game."
+    },
+    {
+      "native": "0071a760",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_one_0071b2c0",
+      "reason": "Shared insert_one_impl bypasses this entry; the type54 append/classification owner is also absent from the linked game."
+    },
+    {
+      "native": "0071a920",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_one_0071b350",
+      "reason": "Shared insert_one_impl bypasses this entry; the type64 append/classification owner is also absent from the linked game."
+    },
+    {
+      "native": "00714120",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_copies_0071a5a0",
+      "reason": "The shared insertion schedule uses allocate_impl directly; the complete type44 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716a50",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_copies_0071a5a0",
+      "reason": "The shared insertion schedule bypasses this fill-range entry; the complete type44 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716a70",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_copies_0071a5a0",
+      "reason": "The shared insertion schedule bypasses this backward-copy entry; the complete type44 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00718350",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_copies_0071a5a0",
+      "reason": "The shared insertion schedule bypasses this copy-range entry; the complete type44 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "007188c0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type44_copies_0071a5a0",
+      "reason": "The shared insertion schedule bypasses this fill-copies entry; the complete type44 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00714180",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_copies_0071a760",
+      "reason": "The shared insertion schedule uses allocate_impl directly; the complete type54 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716aa0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_copies_0071a760",
+      "reason": "The shared insertion schedule bypasses this fill-range entry; the complete type54 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716ac0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_copies_0071a760",
+      "reason": "The shared insertion schedule bypasses this backward-copy entry; the complete type54 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00718380",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_copies_0071a760",
+      "reason": "The shared insertion schedule bypasses this copy-range entry; the complete type54 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "007188f0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type54_copies_0071a760",
+      "reason": "The shared insertion schedule bypasses this fill-copies entry; the complete type54 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "007141e0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_copies_0071a920",
+      "reason": "The shared insertion schedule uses allocate_impl directly; the complete type64 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716af0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_copies_0071a920",
+      "reason": "The shared insertion schedule bypasses this fill-range entry; the complete type64 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00716b10",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_copies_0071a920",
+      "reason": "The shared insertion schedule bypasses this backward-copy entry; the complete type64 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "007183b0",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_copies_0071a920",
+      "reason": "The shared insertion schedule bypasses this copy-range entry; the complete type64 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "00718920",
+      "status": "skipped",
+      "host_site": "src/native_game_resource_lists.cpp: insert_native_game_type64_copies_0071a920",
+      "reason": "The shared insertion schedule bypasses this fill-copies entry; the complete type64 caller/owner graph must first be connected to the real loader."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native message35 read path",
+      "reason": "The native word-array owner is confined to the unlinked message35 path; no active real word-array producer/consumer was found to adopt this allocator."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native message35 read path",
+      "reason": "The native word-array owner is confined to the unlinked message35 path; no active real word-array producer/consumer was found to adopt this resize."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native message35 destruction path",
+      "reason": "The native word-array lifetime belongs to the unlinked message35 path; an active producer/consumer must be admitted before its teardown."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: assign_native_animation_values_00b926e0 and append_values",
+      "reason": "The raw animation-value reader/assignment graph is unlinked; an actual native skinned-animation item owner and reader must first reach it."
+    },
+    {
+      "native": "00b86390",
+      "status": "skipped",
+      "host_site": "src/native_mesh_section.cpp: clear_native_mesh_section_resources_00b86390",
+      "reason": "The addressed clear-resources entry is unlinked; the active mesh-section lifetime/profile dispatch needs review before selecting an overload and passing its real owner."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp: native_post_effect_pass_raw_08_00b4cb90",
+      "reason": "A live post-effect pass/frame-target dispatch owner is missing; no valid actual pass receiver was identified for this raw getter."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp: native_post_effect_pass_raw_18_00b4ec50",
+      "reason": "A live post-effect pass dispatch owner is missing; no valid actual pass receiver was identified for this raw getter."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp: native_post_effect_owner_raw_23c_00b4ffe0",
+      "reason": "A live complete post-effect owner dispatch is missing; admitted resource lifetime contexts do not establish the +23Ch render-pass receiver."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: main-scene metadata submission",
+      "reason": "A source call already exists, but the main-scene submission route is unlinked; its frame/scene producer must be admitted instead of adding another metadata write."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp: skip_native_scene_group_008f0800",
+      "reason": "No production parser call to this group-skip operation was found; an actual parser branch needing to discard a group must supply the token owner/context."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: maximum_native_soldier_loop_node_004437a0",
+      "reason": "The linked LoopLengths object only exposes subtree destruction; its maximum-node consumer and active LoopLengths tree traversal are missing."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: minimum_native_soldier_loop_node_004437c0",
+      "reason": "The linked LoopLengths object only exposes subtree destruction; its minimum-node consumer and active LoopLengths tree traversal are missing."
+    },
+    {
+      "native": "00be6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_file_store_name_00be6040",
+      "reason": "This file-store vslot+1Ch getter has no active dispatch consumer; the existing VFS lookup routes query existence and path replacement instead of requesting a provider name."
+    },
+    {
+      "native": "00bb5540",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_package_name_00bb5540",
+      "reason": "This package-provider vslot+1Ch getter has no active dispatch consumer; no real provider-name request was identified to replace."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "The current clock publication path requests current/start/interval samples; a consumer of the previous timestamp is missing."
+    },
+    {
+      "native": "00ad5750",
+      "status": "skipped",
+      "host_site": "src/native_world_configuration_leaves.cpp: set_native_foliage_byte_00ad5750",
+      "reason": "The world-construction settings route does not supply a live admitted foliage receiver and its actual raw +10h configuration value for this setter."
+    },
+    {
+      "native": "004ba130",
+      "status": "skipped",
+      "host_site": "src/native_enum_map_lifetime.cpp: initialize_native_cenum_table_map_storage_004ba130",
+      "reason": "The live scene-registry constructor already initializes its map subobject inline; a separate CEnumTableMap construction owner is missing and replaying initialization would overwrite live state."
+    },
+    {
+      "native": "00b402b0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPassPool::destroy_00b40980",
+      "reason": "The material-pass pool destroy method is not linked in this executable; connecting only its table-free helper would leave the real pool lifetime unreachable."
+    }
+  ]
+}
