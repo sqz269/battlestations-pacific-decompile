@@ -2,6 +2,7 @@
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/wire_goal2_chain189_switches.hpp"
 #include "bsp/wire_goal4_chain503_switches.hpp"
+#include "bsp/wire_goal4_chain561_switches.hpp"
 
 #include <algorithm>
 
@@ -374,7 +375,16 @@ void construct_front_end_managers_004e4171(FrontEndManagerSet& set,
     if (set.options == nullptr) {
         OptionsMenuManager* options = host.create_options_manager();
         if (options != nullptr) {
+            if constexpr (kWireGoal4Chain561Bound) {
+                // 00689800 now runs 00684E10's unique registration. Retain
+                // support for hosts returning a preconstructed typed owner.
+                if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
+                    == registry.managers.end()) {
+                    registry.managers.push_back(&options->base);
+                }
+            } else {
             registry.managers.push_back(&options->base);
+            }
             init_options_menu_006898c0(*options, set, lock, host, payloads);
         }
     }
@@ -520,7 +530,14 @@ void raise_options_menu_004bac20(FrontEndManagerSet& set, FrontEndManagerRegistr
     if (set.options == nullptr) {
         OptionsMenuManager* options = host.create_options_manager();
         if (options != nullptr) {
+            if constexpr (kWireGoal4Chain561Bound) {
+                if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
+                    == registry.managers.end()) {
+                    registry.managers.push_back(&options->base);
+                }
+            } else {
             registry.managers.push_back(&options->base);
+            }
             init_options_menu_006898c0(*options, set, lock, host, payloads);
         }
         // The Lua collection only runs after a fresh construction.

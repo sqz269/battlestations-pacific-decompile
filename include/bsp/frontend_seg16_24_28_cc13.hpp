@@ -13,8 +13,9 @@
 // (Win32 layout, offsets as in the image) and reaches the engine through
 // Fe5Host, whose methods are named after the image routine. Vtable stores keep
 // the image's vtable addresses. New C++ interfaces, not drop-in binary
-// replacements. The constructor chain 006844F0/00684E10/00686170 instead
-// projects onto the typed front-end manager consumed by bsp_game (chain 503).
+// replacements. The constructor chain 006844F0/00684E10/00686170 and options
+// constructor 00689800 project onto the typed front-end managers consumed by
+// bsp_game (chains 503 and 561).
 
 #ifndef BSP_FRONTEND_SEG16_24_28_CC13_HPP
 #define BSP_FRONTEND_SEG16_24_28_CC13_HPP
@@ -942,7 +943,8 @@ void multi_menu_update_online_interface_006890b0(Raw menu, Fe5Host& host);
 
 // 00689800 __thiscall(menu) -> EAX: base construct, vtable 00CF78C4.
 inline constexpr std::uint32_t kOptionsMenuVtable = 0x00CF78C4;
-void* options_menu_construct_00689800(Raw menu, Fe5Host& host);
+OptionsMenuManager* options_menu_construct_00689800(
+    OptionsMenuManager& menu, FrontEndManagerRegistry& registry);
 
 // The attract screen (vtable 00CF78E8, global 00E198BC): page "FE_attract" at
 // +40h, idle countdown +44h (reset to 45.0 from 00CE3D60), byte +48h = 1.

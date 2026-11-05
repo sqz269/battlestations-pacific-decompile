@@ -7,6 +7,7 @@
 #include "bsp/wire_goal4_chain507_switches.hpp"
 #include "bsp/wire_goal4_chain528_switches.hpp"
 #include "bsp/wire_goal4_chain545_switches.hpp"
+#include "bsp/wire_goal4_chain561_switches.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -672,6 +673,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     FrontEndInterfaceLock interface_lock{};
     FrontEndManagerSet managers{};
     MainMenuManager main_menu{};
+    OptionsMenuManager options_menu{}; // chain 561: owner published as 00E198B8 by Init
     MainMenuMusicState title_music{};
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
@@ -2142,8 +2144,15 @@ public:
     }
     void set_game_state(int state) override { owner_.state.value = state; }
     OptionsMenuManager* create_options_manager() override {
+        if constexpr (kWireGoal4Chain561Bound) {
+            auto* manager = cc13_fe5::options_menu_construct_00689800(
+                owner_.options_menu, owner_.manager_registry);
+            owner_.log.implemented("FrontEndManager::create_options_manager", "00689800");
+            return manager;
+        } else {
         owner_.log.unimplemented("FrontEndManager::create_options_manager", "00689800");
         return nullptr;
+        }
     }
     MainMenuManager* create_main_menu_manager() override {
         if constexpr (kWireGoal4Chain503Bound) {
@@ -2677,7 +2686,17 @@ public:
     }
     std::int32_t game_state() override { return owner_.state.value; }
     void create_manager_b8() override {
+        if constexpr (kWireGoal4Chain561Bound) {
+            // 004E4171 constructs, then calls virtual +4h (006898C0). Its
+            // own publication is what the frame/request/teardown paths read.
+            auto* manager = managers_.create_options_manager();
+            if (manager == nullptr) return;
+            init_options_menu_006898c0(*manager, owner_.managers,
+                owner_.interface_lock, managers_, payloads_);
+            owner_.log.implemented("FrontEndShell::create_manager_b8", "006898c0");
+        } else {
         owner_.log.unimplemented("FrontEndShell::create_manager_b8", "00689800");
+        }
     }
     void create_manager_ac() override {
         MainMenuManager* manager = managers_.create_main_menu_manager();
