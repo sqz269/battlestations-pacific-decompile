@@ -1,0 +1,172 @@
+{
+  "goal": 4,
+  "chain": 564,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain564Bound",
+  "base": "42aa91d8e187f6fcb1c3d252d39d1c40ae29ec1c",
+  "wired_before": 9890,
+  "wired_after": 9891,
+  "rows": [
+    {
+      "native": "007f2bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::create_units",
+      "details": "Each real PlaneSquadronGen scene/launch record constructs PilotBotSettings from the already-loaded GameTuningBlock. Its written fields are projected into the live squadron slot read by Lua setters, altitude/speed logic, avoidance and ordnance issue. The original body remains the sole implementation; its host contract is narrowed to its two actual tuning-getter calls.",
+      "evidence": [
+        "bsp.py show 007f2bd0 and --asm: 007F2BD9 reads tuning+53Ch; 007F2C42/48 initializes settings+14h (squadron+390h) from tuning+5F4h, correcting the host's allocation-zero assumption.",
+        "Original caller 007F2C60 passes squadron+37Ch at 007F2D2B. The host identifies that owner through the actual scene record's class_id=18h, excluding generated wing-plane records with class_id=-1.",
+        "game_hosts_mission_frame.cpp loads gameplay settings immediately before create_units; the binding refuses the unloaded zero preimage.",
+        "Static assertions verify the complete 34h output layout and both borrowed GameTuningBlock offsets.",
+        "call_graph.py who 007f2bd0: reconstructed body REACHABLE at 104A0320, one call at 1025D62E from GameUnitsHost::create_units.",
+        "wire_readiness.py --standins: state=wired, called=true, call_sites=1, callers_live=1."
+      ]
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI candidate scoring",
+      "reason": "The native diagnostic score-list has no live owner or gameplay consumer; its documented image reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI candidate scoring",
+      "reason": "No native diagnostic score-list entries are produced for this chosen-marker operation; the documented reader is debug-only."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::exit_free_camera_overlay",
+      "reason": "The record-only callback lacks the live support-screen +30h/+0Ah state and level-three screen-vector owner required by the raw interface body."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::toggle_tactical_overlay",
+      "reason": "The host does not supply the native support-screen availability/list producer, tracked target and overlay-screen flag state needed by this body."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The flight-state path has no retained native plane FX component or effect-instance producer to receive OnFlightState."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The host records the FX step but has no actual native component/effect-instance state; a zeroed dummy would not be real game state."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::UnitGroup creation",
+      "reason": "The retained group uses registry identities rather than the native unit objects needed by InitWithLeader and its member/wake-transfer dependencies."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::TailGunnerBot skill notification",
+      "reason": "An existing chain451 arm already calls this body with the loaded descriptor, actual skill and shared stream-one draw; no new call is missing."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp::GameNativeTypeStorage::initialize_memory_00cd8fc0 and initialize_physical_00cd9030",
+      "reason": "Both existing derived stream-type initializers already invoke this body; no additional initialization call is warranted."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp::skip_native_scene_group_008f0800",
+      "reason": "The recovered callers are parser-vtable slots; no live unknown-group dispatch with the required native tokenizer/context was established in this packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path message handling",
+      "reason": "The current sender produces additions only and does not retain every last-filled slot's path owner required by the clear-message arm."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "No live default-descriptor consumer was found; adding it ahead of the existing populated descriptor constructor would be redundant."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::atmosphere cloud update",
+      "reason": "The frame host lacks the actual cloud-manager image and reference-node dirty/world-axis producer required by the body."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::vehicle_avoidance_007df4f0",
+      "reason": "The image's velocity-plus-unit+B04h frame producer is not represented; the existing inverse-pose arm needs no extra orthonormalization."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp::text_accepts_input_char_00ab6d30",
+      "reason": "No concrete input-character GuiLeafHost carrying the selected live FontData was found; the glyph-acceptance body is otherwise only probe-used."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/ingame_gui_cc13.cpp::marker projection",
+      "reason": "No concrete marker-clamp host currently supplies the native margin globals and widescreen-layout byte to this typed body."
+    },
+    {
+      "native": "004b5510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::party_admitted",
+      "reason": "This native predicate belongs to the nonzero game+1FE4h session arm; the current campaign producer takes the zero arm and needs no participant-slot predicate."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp::GameAvoidZoneRuntime::refresh_search",
+      "reason": "The existing runtime already calls the body with the retained search cache, segment list and loaded manager; call-graph reachability was verified."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing reachable query-refresh body already invokes this helper; adding another call would repeat its effects."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing reachable query-refresh body already invokes this refill helper; it is inlined in the normal build."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The body is already reachable with three call sites, including two in the real query-refresh path; no new wiring is missing."
+    },
+    {
+      "native": "007ee720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::squadron task predicate",
+      "reason": "The raw member+DF4h task-stack/list and task-vslot20 projection is missing; the host's current true substitution is not a real input object."
+    },
+    {
+      "native": "007ee8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::squadron attack-command admission",
+      "reason": "The raw squadron/target/class/ordnance views and the complete Cc15Seg48Host admission callbacks are not supplied by this settings-only packet."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; five of five tests passed",
+    "final_build": "scripts/build.ps1 passed; five of five tests passed",
+    "call_graph": "007f2bd0 reachable from GameUnitsHost::create_units, one call site",
+    "readiness": "9890 -> 9891 wired; 007f2bd0 called=true",
+    "diff_check": "git diff --check passed",
+    "runtime": "Game was not run. Build/static call-graph evidence only; original ABI and gameplay equivalence are not claimed."
+  },
+  "remaining": "Native squadron task-stack/admission adapters, archive load/save and the full binary squadron constructor remain separate work."
+}

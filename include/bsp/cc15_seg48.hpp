@@ -20,6 +20,7 @@
 
 #include "bsp/cc13_seg48U.hpp"
 
+#include <cstddef>
 #include <cstdint>
 
 namespace bsp {
@@ -227,7 +228,44 @@ void cc15_seg48_plane_squadron_unregister_from_world_lists_007f10e0(void* squadr
 void cc15_seg48_pilot_bot_settings_save_007f0bf0(void* settings, void* writer, Cc15Seg48Host& host);
 void cc15_seg48_pilot_bot_settings_load_007f0dc0(void* settings, void* reader, Cc15Seg48Host& host);
 void cc15_seg48_plane_squadron_save_to_archive_007f1160(void* squadron, void* writer, Cc15Seg48Host& host);
-void* cc15_seg48_pilot_bot_settings_init_007f2bd0(void* settings, Cc15Seg48Host& host);
+
+// 007F2BD0 only needs the tuning getter, not the archive/session/scene hooks of
+// Cc15Seg48Host. Keep both getter calls at their native sites and borrow the
+// loaded block; this interface does not synthesize an image singleton.
+struct PilotBotSettingsInitHost {
+    virtual ~PilotBotSettingsInitHost() = default;
+    virtual const void* game_tuning_get_singleton_0042e740() = 0;
+};
+
+// The written fields of squadron+37Ch. No default member initializers: the
+// recovered constructor supplies every field, apart from trailing padding.
+struct PilotBotSettingsNative {
+    float countdowns_00[4];
+    std::uint8_t frozen_10[4];
+    float drop_all_equipment_percent_14;
+    float travel_altitude_18;
+    float attack_altitude_1c;
+    float release_altitude_20;
+    float travel_speed_24;
+    std::uint32_t avoidance_mask_28;
+    std::uint8_t flag_2c;
+    std::uint8_t locks_2d[4];
+    std::uint8_t enable_altitude_randomization_31;
+    std::uint8_t force_release_32;
+};
+static_assert(sizeof(PilotBotSettingsNative) == 0x34);
+static_assert(offsetof(PilotBotSettingsNative, frozen_10) == 0x10);
+static_assert(offsetof(PilotBotSettingsNative, drop_all_equipment_percent_14) == 0x14);
+static_assert(offsetof(PilotBotSettingsNative, travel_altitude_18) == 0x18);
+static_assert(offsetof(PilotBotSettingsNative, attack_altitude_1c) == 0x1c);
+static_assert(offsetof(PilotBotSettingsNative, release_altitude_20) == 0x20);
+static_assert(offsetof(PilotBotSettingsNative, travel_speed_24) == 0x24);
+static_assert(offsetof(PilotBotSettingsNative, avoidance_mask_28) == 0x28);
+static_assert(offsetof(PilotBotSettingsNative, locks_2d) == 0x2d);
+static_assert(offsetof(PilotBotSettingsNative, enable_altitude_randomization_31) == 0x31);
+static_assert(offsetof(PilotBotSettingsNative, force_release_32) == 0x32);
+
+void* cc15_seg48_pilot_bot_settings_init_007f2bd0(void* settings, PilotBotSettingsInitHost& host);
 
 // ---- home base, stock, layers, creation ----
 void cc15_seg48_plane_squadron_set_home_air_base_007f1c00(void* squadron, void* base, std::uint8_t inside,
