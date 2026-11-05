@@ -1,5 +1,7 @@
 #include "bsp/native_material_owner.hpp"
 #include "bsp/native_material_lifetime.hpp"
+#include "bsp/scene_renderer_cc13.hpp"
+#include "bsp/wire_goal4_chain621_switches.hpp"
 #include "native_material_typed_storage.hpp"
 #include <cstring>
 #include <exception>
@@ -100,7 +102,14 @@ NativeMaterialStorage* initialize_body(void* slot,
     material.word_08 = 0;
     try {
         initialize_common(material);
-        material.word_104 = 0xffffffff;
+        if constexpr (kWireGoal4Chain621Bound) {
+            // 00B18900 stores FFFFFFFF at +104 after zeroing +100. Reuse
+            // 00B17310's single +104 store on this same live allocation.
+            // Evidence: bsp.py show 00b18900 / 00b17310.
+            scene_renderer::set_material_alpha_ref_00b17310(&material, -1);
+        } else {
+            material.word_104 = 0xffffffff;
+        }
         material.word_108 = 0xffffffff;
         material.lighting_enabled_10c = 0;
         material.retain_source_10d = 0;
@@ -137,7 +146,16 @@ NativeMaterialStorage* clone_body(void* slot,
         material.lighting_enabled_10c = 1;
         std::memcpy(material.lighting_38.data(), source.lighting_38.data(), sizeof(material.lighting_38));
         assign_actual(material.effect_7c, source.effect_7c, owners,issuer,0);
-        material.word_104 = source.word_104;
+        if constexpr (kWireGoal4Chain621Bound) {
+            // 00B18B60 copies source+104 after effect assignment. Preserve
+            // all DWORD bits, including the FFFFFFFF default, across the
+            // setter's signed source interface; no numeric conversion.
+            std::int32_t alpha_ref;
+            std::memcpy(&alpha_ref, &source.word_104, sizeof(alpha_ref));
+            scene_renderer::set_material_alpha_ref_00b17310(&material, alpha_ref);
+        } else {
+            material.word_104 = source.word_104;
+        }
         material.word_108 = source.word_108;
         if(issuer)issuer->returned(material); // exact Native normal continuation, before outer host/effect tails
         return &material;
