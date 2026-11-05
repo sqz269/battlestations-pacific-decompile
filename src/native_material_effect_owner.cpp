@@ -2,6 +2,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/wire_goal4_chain582_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -113,32 +114,68 @@ NativeMaterialEffectStorage* finish_derived(NativeMaterialEffectStorage* storage
 }
 } // namespace
 
-NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
-    void* slot,NativeMaterialEffectConstructionAccess& access) {
+// bsp.py show 00B18D60: retain the existing fallback/temporary/serial order.
+// Keep this one native boundary visible in the optimized entry call graph.
+__declspec(noinline) NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
+    void* slot,NativeMaterialEffectConstructionAccess& access,
+    NativeMaterialEffectBaseEntry entry, const NativeMaterialEffectBaseTextureConstruction* texture) {
     require_storage(slot);
-    auto* storage=::new(slot) NativeMaterialEffectBaseStorage;
-    initialize_base(*storage,access);return storage;
+    if (texture) require_texture_construction_domain(access,texture->cache,texture->acquired);
+    auto* storage = entry == NativeMaterialEffectBaseEntry::derived_subobject
+        ? static_cast<NativeMaterialEffectBaseStorage*>(slot)
+        : ::new(slot) NativeMaterialEffectBaseStorage;
+    if (texture) {
+        initialize_base(*storage,access,&texture->cache,&texture->acquired,
+            texture->renderer_profile_00d5f0a8);
+    } else {
+        initialize_base(*storage,access);
+    }
+    return storage;
 }
 NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
     void* slot,NativeMaterialEffectConstructionAccess& access) {
     require_storage(slot);
     auto* storage=::new(slot) NativeMaterialEffectStorage;
+    if constexpr (kWireGoal4Chain582Bound) {
+        // bsp.py show 00B407A0: its first native call is B18D60 on the
+        // same effect, before any derived stores. Keep the live base subobject.
+        initialize_native_material_effect_base_00b18d60(&storage->base,access,
+            NativeMaterialEffectBaseEntry::derived_subobject);
+    } else {
     initialize_base(storage->base,access);
+    }
     return finish_derived(storage);
 }
 NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_with_texture_cache_00b18d60(
     void* slot, NativeMaterialEffectConstructionAccess& access, NativeTextureCacheContext& cache,
     NativeTextureCacheAcquired& acquired, const volatile std::uint32_t* profile) {
+    if constexpr (kWireGoal4Chain582Bound) {
+        const NativeMaterialEffectBaseTextureConstruction texture{cache,acquired,profile};
+        return initialize_native_material_effect_base_00b18d60(slot,access,
+            NativeMaterialEffectBaseEntry::fresh_storage,&texture);
+    } else {
     require_storage(slot); require_texture_construction_domain(access,cache,acquired);
     auto* storage=::new(slot) NativeMaterialEffectBaseStorage;
     initialize_base(*storage,access,&cache,&acquired,profile); return storage;
+    }
 }
 NativeMaterialEffectStorage* initialize_native_material_effect_with_texture_cache_00b407a0(
     void* slot, NativeMaterialEffectConstructionAccess& access, NativeTextureCacheContext& cache,
     NativeTextureCacheAcquired& acquired, const volatile std::uint32_t* profile) {
     require_storage(slot); require_texture_construction_domain(access,cache,acquired);
     auto* storage=::new(slot) NativeMaterialEffectStorage;
+    if constexpr (kWireGoal4Chain582Bound) {
+        // B407A0 -> B18D60, using the loader's actual renderer/string/cache
+        // domains and its same persistent texture acquisition. The native
+        // B18D60 body owns fallback acquisition/cleanup and serial publication;
+        // execute it once, then perform the unchanged derived tail.
+        const NativeMaterialEffectBaseTextureConstruction texture{cache,acquired,profile};
+        initialize_native_material_effect_base_00b18d60(&storage->base,access,
+            NativeMaterialEffectBaseEntry::derived_subobject,&texture);
+        return finish_derived(storage);
+    } else {
     initialize_base(storage->base,access,&cache,&acquired,profile); return finish_derived(storage);
+    }
 }
 void destroy_native_material_effect_names_00b18d50(NativeString* names,NativeStringStorage& strings) noexcept {
     for(std::size_t i=11;i!=0;--i)destroy_native_string_header_0041dd20(names+i-1,strings);

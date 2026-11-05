@@ -73,6 +73,16 @@ struct NativeMaterialEffectDestructionAccess {
     NativeRenderActualOwners& retained_owners;
 };
 
+// The derived constructor has already started the complete object's lifetime.
+// Its base call must initialize that same subobject without constructing its
+// pooled-string headers a second time.
+enum class NativeMaterialEffectBaseEntry { fresh_storage, derived_subobject };
+struct NativeMaterialEffectBaseTextureConstruction {
+    NativeTextureCacheContext& cache;
+    NativeTextureCacheAcquired& acquired;
+    const volatile std::uint32_t* renderer_profile_00d5f0a8;
+};
+
 // Original ECX fresh storage, EAX same storage, RET. Aligned C4h/178h storage
 // required. Base builds the actual temporary "error.tga" header, then invokes
 // CURRENT callable renderer+64 (ECX renderer; stack header/0; EAX owned fallback;
@@ -81,8 +91,11 @@ struct NativeMaterialEffectDestructionAccess {
 // shared DWORD serial; write full+C0, bytes+08/+B4, then increment modulo2^32.
 // Derived leaves+C8..137 UNWRITTEN. Caller/loader must establish every pass
 // slot before destruction. Base leaves+9C..A7, +AC/+B0 and padding untouched.
+// Entry/cache binding are source-only arguments; native ECX/EAX/RET is unchanged.
 NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
-    void* actual_storage, NativeMaterialEffectConstructionAccess&);
+    void* actual_storage, NativeMaterialEffectConstructionAccess&,
+    NativeMaterialEffectBaseEntry = NativeMaterialEffectBaseEntry::fresh_storage,
+    const NativeMaterialEffectBaseTextureConstruction* = nullptr);
 NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
     void* actual_storage, NativeMaterialEffectConstructionAccess&);
 
