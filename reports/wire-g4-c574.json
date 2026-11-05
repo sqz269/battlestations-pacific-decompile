@@ -1,0 +1,144 @@
+{
+  "chain": 574,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain574Bound",
+  "baseline_head": "12454fbae23a78874c29cb7182de87f75e4aecc7",
+  "wired_before": 9899,
+  "wired_after": 9902,
+  "rows": [
+    {
+      "native": "00b33e50",
+      "status": "wired",
+      "host_site": "src/native_texture_device_reset.cpp: restore_native_texture_2d_after_reset_00b3dd90",
+      "details": "Read mip count from the same actual texture owner+14 before CreateTexture, replacing the old inline load."
+    },
+    {
+      "native": "00b33e60",
+      "status": "wired",
+      "host_site": "src/native_texture_device_reset.cpp: restore_native_texture_2d_after_reset_00b3dd90; src/native_texture_2d_retained_recreation.cpp: recreate_native_texture_2d_retained_00b3e190",
+      "details": "Read actual texture format at +18; retain the existing recreation 14h-to-15h conversion, input order, and COM outputs."
+    },
+    {
+      "native": "00b33e70",
+      "status": "wired",
+      "host_site": "src/native_texture_device_reset.cpp: restore_native_texture_2d_after_reset_00b3dd90",
+      "details": "Read actual texture flags at +1C after seeding the genuine reused-surface output; preserve all pool/usage decoding."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "Existing reader already calls reserve on its owned words_40; missing reachable message-35 producer/factory cannot be supplied by another reserve call."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "Existing reader already calls resize on words_40; missing reachable message-35 producer/factory remains."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message-35 destruction",
+      "reason": "Existing message-35 destruction already calls the word-array destructor; no new reachable message-35 allocation/lifetime site was found."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing hash iterator begin site",
+      "reason": "Numeric-property merge already calls the raw iterator; a new live property-bag merge consumer is missing."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing hash iterator increment site",
+      "reason": "Numeric-property merge already calls the raw iterator; a new live property-bag merge consumer is missing."
+    },
+    {
+      "native": "00aa8b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows weapon_animation",
+      "reason": "HUD returns zero; the frontend layout needs a canonical live GuiWidgetOwner and its timed-entry constant/ownership domain before get-or-create can supply a real entry."
+    },
+    {
+      "native": "00aa8b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows stop_weapon_animation",
+      "reason": "Missing canonical timed-entry allocation/slot ownership for the actual weapon-info widget; recording a delete is not an owned-entry deletion."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "weapon_animation still returns zero; a real weapon-widget timed entry and its target/rate writeback are missing."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing reachable input-character consumer with its text-context font; existing direct body calls only use probe constants."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 / fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Both inspected shadow-fit callers lack a wired caller; replacing their product alone would leave the getter unreachable."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: existing metadata queue write",
+      "reason": "Existing scene submission already calls this body; a new reachable scene-submission owner/caller is missing."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: unregister_native_vertex_shader_00b268a0",
+      "reason": "Existing unregister wrapper already calls this body on renderer+1AC4; adding another call would repeat registry removal."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: unregister_native_pixel_shader_00b268c0",
+      "reason": "Existing unregister wrapper already calls this body on renderer+1AD0; adding another call would repeat registry removal."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Actual-storage resize already invokes reserve; missing new live distortion-record producer cannot be replaced by a redundant reserve."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: existing actual-storage destruction",
+      "reason": "Actual-storage destruction already invokes resize(0); no new live distortion-record owner/producer was established."
+    },
+    {
+      "native": "00be25c0",
+      "status": "skipped",
+      "host_site": "src/native_vfs_derived_manager.cpp: derived-manager base destruction",
+      "reason": "The real derived VFS lifetime already calls the base destructor; missing standalone base-profile deleting-dispatch site cannot be invented with a flags-zero wrapper."
+    },
+    {
+      "native": "00be31e0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_lifetime.cpp: destroy_native_frame_job_owner_004bfad0",
+      "reason": "Current frame-job owner embeds its pool and already destroys it; no separately allocated pool requiring the scalar-deleting wrapper was established."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00b33e50, 00b33e60, 00b33e70: complete raw DWORD loads at +14, +18, +1C",
+    "bsp.py show 00b3dd90 --start 42 --lines 55: actual texture flags/format/level inputs to CreateTexture",
+    "Existing recreate_native_texture_2d_retained_00b3e190 source: actual format input at +18, before stream callbacks"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release and all five CTests",
+    "readiness": "Fresh wire_readiness.py --standins: 9899 -> 9902 wired; 00b33e50, 00b33e60 and 00b33e70 each state=wired, called=true; call_graph.stale=false.",
+    "call_graph": "Fresh Release graph confirms all three getter symbols reachable and direct calls from the changed reset function; +18 also called by the changed retained recreation function.",
+    "release_icf": "Release folds these simple getters with identical functions. The graph identifies the new callers, and the source diff resolves which getter each calls; no unfolded analysis build was run.",
+    "float_math": "No float arithmetic changes; all substituted fields are DWORDs.",
+    "runtime": "Game not run; no live D3D reset or visual/gameplay validation claimed."
+  },
+  "left": "HUD weapon timed-entry ownership/input-character font consumer, message-35 producer, and other skipped caller roots remain unwired."
+}
