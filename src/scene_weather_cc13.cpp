@@ -1,5 +1,6 @@
 #include "bsp/scene_weather_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/wire_goal4_chain560_switches.hpp"
 
 #include <cmath>
 #include <cstddef>
@@ -634,7 +635,16 @@ void read_ocean(const ScenePropertyBagModel& model, int bag, bool linearize, Sce
             out.caustics_scale_ab8 = read_number(*e);
         }
         if (const ScenePropertyEntry* e = find(model, caustics, "CausticsType")) {
+            if constexpr (kWireGoal4Chain560Bound) {
+                // bsp.py show 008F0DF0: type 4 returns its enum name via
+                // 008F0D80. The call at 004EC767 uses that same getter, not
+                // a type-2 assertion. The typed view retains the scene's enum
+                // name in text; no native declaration/ordinal ABI is claimed.
+                if (e->value.type == ScenePropertyType::Enum) out.caustics_type_acc = e->value.text;
+                else read_string_into(*e, out.caustics_type_acc);
+            } else {
             read_string_into(*e, out.caustics_type_acc);
+            }
         }
     }
 

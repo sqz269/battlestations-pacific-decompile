@@ -1,0 +1,225 @@
+{
+  "chain": 560,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain560Bound",
+  "rows": [
+    {
+      "native": "004eb9b0",
+      "status": "wired",
+      "host_site": "src/ocean_spectrum.cpp::ocean_scene_waves_from_header (called by src/game_hosts_mission.cpp::GameMissionHost::Impl::read_scene_file)",
+      "evidence": "004F2205 calls native reader; 004EC767 calls enum-capable 008F0DF0; 00F88A0C is initially zero and all 32 Ghidra xrefs are READ. Existing body consumes decoded actual scene bag and its eight wave outputs feed ocean_live_field_build; OFF retains prior direct loader. One entry-reachable call site from ocean_scene_waves_from_header."
+    },
+    {
+      "native": "008f0df0",
+      "status": "skipped",
+      "host_site": "src/scene_weather_cc13.cpp::read_ocean/CausticsType",
+      "reason": "Inspected native getter to correct the typed reader; raw Seg59bHost enum-declaration adapter is not bound here, so no separate wiring credit."
+    },
+    {
+      "native": "004ee9e0",
+      "status": "skipped",
+      "host_site": "src/scene_weather_cc13.cpp::read_static_shadow_and_shader_textures_004ee9e0",
+      "reason": "No live terrain shader-scalar/texture owner consumes SceneTerrainFields; current scene-object shadow parsing is a separate path."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge",
+      "reason": "Movie page/node/material/video texture owners remain unimplemented, so the native +4Ch/+F0h texture binding graph is absent."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::clear_subtitles",
+      "reason": "The host retains a typed subtitle schedule, not the raw +104h..+12Ch movie subtitle vectors and text-widget owner required by this body."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::run_teardown_arm_004e458a",
+      "reason": "The sound-transition site only records the call; no actual game+7184h/movie-screen visibility and input-transition object graph is bound."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::replicate_objective_state",
+      "reason": "The callback records replication and discards slot/entry/status; a native objective-completed message owner/route is absent."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Dispatch explicitly requires native group/owner attachment; the wave job still only logs and discards group, position and step."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Dispatch explicitly requires native group/owner attachment; the wave job still only logs and discards group, position and step."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Dispatch explicitly requires native group/owner attachment; the wave job still only logs and discards group, position and step."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Dispatch explicitly requires native group/owner attachment; the interpolation job has no actual tick-group item receiver."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "The existing main-thread mission Lua owner drains an empty deferred list; no off-main-thread named-call producer supplies arguments to copy."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiGroupScoreList release path",
+      "reason": "The host deliberately owns no score list: the retained source evidence identifies its consumer as an unreachable debug text overlay, excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiGroupScoreList release path",
+      "reason": "Chosen score-list state serves the same excluded debug text overlay; no gameplay decision consumes it."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::cockpit_screen_mode",
+      "reason": "cockpit_screen_wanted returns false and there is no plane-effects screen owner supplying the cockpit-mode fields."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::map_screen_busy",
+      "reason": "map_screen_wanted returns false; the host has no native power-up carousel/scroller byte producers."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::toggle_movie_camera",
+      "reason": "The legacy movie-camera toggle still records a call and has no live legacy spectate-screen/target owner graph."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::toggle_new_movie_camera",
+      "reason": "The toggle still records a call; new-camera state alone does not supply its screen visibility/target and spectated-selection producers."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::toggle_tactical_overlay",
+      "reason": "The callback records its argument without an owned tactical screen, support list or overlay request graph."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRowsBinding::animation_interval",
+      "reason": "weapon_animation returns zero, so no actual animation/timed-entry owner reaches the range callback."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::set_ambient_volume",
+      "reason": "The callback discards volume and has no owned sound instance on which to scale it."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "The controlled-audio callback remains record-only; its per-unit sound-instance owner/route is absent."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootUpdateBinding::advance_ticker",
+      "reason": "The host has no nonempty award queue or owned ticker widgets/timed entries to advance."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::player seat handover",
+      "reason": "Function-6 handover still records 0084C500/0072D5B0; no Seg52Host fire-mode adapter binds the raw gun/class receiver."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::gun-bot target-validity binding",
+      "reason": "clear_fire_target_slot38 is empty; the raw bot+38h command-target record and observer-unregister pair are not bound."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::snapshot provenance",
+      "reason": "Only provenance of flattened controller flags exists, with no stored ControllerSnapshotMessage and routed snapshot consumer."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp::SensorClassBinding::load",
+      "reason": "The existing SensorClassBinding already calls this loader; no duplicate call or wiring claim is added in this packet."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneEntity host cloud callbacks",
+      "reason": "Cloud callbacks are not_reached; no concrete atmosphere/cloud-group node producer supplies the constructor owner graph."
+    },
+    {
+      "native": "00bbf8a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneEntity host atmosphere callbacks",
+      "reason": "No live atmosphere sky resource/mesh/material/texture graph supplies the raw sky-box constructor."
+    },
+    {
+      "native": "00bc33b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneEntity host cloud callbacks",
+      "reason": "No class puff collection, mapped vertex buffer or concrete cloud render host exists on this application path."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::helm_aim_track_target",
+      "reason": "The observed atan2 path is an injected helm-aim harness; the body belongs to the separate plane bomb-fire HUD caller, which is not bound here."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp::support_site_can_supply_class_0084d050",
+      "reason": "No host SupportSiteConfig/enabled-entry-tree producer supplies active state and per-class permissions."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp::support_site_squad_size_0084cf80",
+      "reason": "No host support-site class/squad-size list producer or live consumer is present."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: all 5 checks passed",
+    "installed_data": "Ad hoc manifested Win32 probe: all 258 installed scene ocean headers passed; eight wave outputs compared to actual authored scalar payloads",
+    "call_graph": {
+      "before_called": 4968,
+      "after_called": 4969,
+      "address": "004eb9b0",
+      "reachable_call_sites": 1,
+      "caller": "bsp::ocean_scene_waves_from_header"
+    },
+    "wire_readiness": {
+      "before_wired": 9887,
+      "after_wired": 9887,
+      "reader_state": "ready",
+      "note": "Text-only state remains ready and total remains 9887; independent executable graph and readiness called=true confirm the new reachable call (1 call site). No text-only wiring credit is claimed."
+    },
+    "limits": "No game launch, native ABI compatibility, optical/particle rendering or gameplay validation claimed. Parser-owned CausticsType enum spelling is a typed name projection, not a recovered declaration/ordinal ABI.",
+    "installed_data_command": "local/compile_ocean_scene_probe.cmd; local/ocean_scene_probe.exe (ignored local probe, /MANIFEST:EMBED)",
+    "installed_data_log": "local/output/wire-g4-c560-installed-scene-probe.txt"
+  }
+}
