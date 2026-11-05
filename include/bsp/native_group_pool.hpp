@@ -41,6 +41,8 @@ public:
     void initialize_00b8f190();
     void* allocate_raw_slot_00b8f310();
     void return_raw_slot_00b8ed40(void* slot);
+    // Check host binding identity without changing native pool or slot state.
+    void require_static_binding() const;
     void trim_empty_slabs_00b8f270(); // no internal critical-section entry
     void destroy_00b8ec80();         // does not invoke any group destructor
     NativeGroupPoolStorage& storage() noexcept { return storage_; }

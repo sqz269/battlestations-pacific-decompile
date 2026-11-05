@@ -228,6 +228,11 @@ void bind_static_native_group_pool_010902f4(NativeGroupPool& pool) {
     static_pool_010902f4 = &pool;
 }
 
+void NativeGroupPool::require_static_binding() const {
+    if (&require_static_pool() != this)
+        throw std::invalid_argument("group return requires the SAME canonical 010902f4 pool");
+}
+
 int initialize_static_native_group_pool_00cd8460(NativeGroupPoolAtexit register_atexit) {
     if (!register_atexit) throw std::invalid_argument("CRT atexit registration is required");
     require_static_pool().initialize_00b8f190();
