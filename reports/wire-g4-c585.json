@@ -1,0 +1,125 @@
+{
+  "chain": 585,
+  "slot": "g4-w1",
+  "switch": "kWireGoal4Chain585Bound",
+  "scope": "Reuse the complete FileStore name-copy body for the equivalent inline copy in the entry-reachable VFS file-existence route.",
+  "real_state": "The output is the route's existing stack name header; input is its actual caller-supplied resource-name header; allocation uses the existing actual string pool. Normalization and mount traversal consume the copied name.",
+  "evidence": [
+    "bsp.py show 00BDD440: output header zeroing, source identity check, resize from source length, copy of output length, then arm ownership before normalization.",
+    "bsp.py show 00BE6040: the same full copy behavior, ECX unused, output returned in EAX, original RET8.",
+    "The existing BE6040 reconstruction delegates to the same complete 00426060 implementation previously called by this route. No additional address-suffixed body was introduced."
+  ],
+  "limitations": [
+    "BDD440 originally inlines this copy; BDD440 to BE6040 is deliberate source-level body reuse, not a recovered native call edge.",
+    "The C++ interface carries an explicit string-pool argument and is not a native ABI replacement.",
+    "No game launch or runtime behavior validation was performed."
+  ],
+  "rows": [
+    {
+      "native": "00be6040",
+      "status": "wired",
+      "host_site": "src/native_vfs_lookup_routes.cpp: exists_native_vfs_file_00bdd440"
+    },
+    {
+      "native": "00b87350",
+      "status": "skipped",
+      "host_site": "src/native_resource_hierarchy_append.cpp: append_native_hierarchy_item_00b87ae0",
+      "reason": "Already called from the entry-reachable hierarchy append path before this chain; replacing another helper use would add no newly wired body."
+    },
+    {
+      "native": "00b87410",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp: destroy_native_hierarchy_item_pointers_00b87b40",
+      "reason": "Already wired through actual hierarchy-array destruction; the reserve it could additionally call is also already wired."
+    },
+    {
+      "native": "00b87800",
+      "status": "skipped",
+      "host_site": "src/structured_model.cpp: StructuredHierarchyItems::release",
+      "reason": "Missing an authentic clear-only hierarchy-array operation and its SweepCHost binding; release already uses the complete resize-before-free destructor."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native message35 word-array users",
+      "reason": "Missing an entry-reachable owner of the raw native word-array triplet; the inspected native message35 caller is not called in the baseline graph."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30",
+      "reason": "Missing an entry-reachable raw word-array owner; its existing native reserve and message35 callers do not establish that ownership."
+    },
+    {
+      "native": "00ae19b0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_node_array_release.cpp: native shadow-array release",
+      "reason": "Existing release and disposal already call this body directly; missing an entry-reachable owner for those native shadow-array paths."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: assign_native_animation_values_00b926e0",
+      "reason": "Missing an entry-reachable native animation-record producer supplying the actual 0x30-byte value-array triplet."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "Missing a verified live directional-shadow construction and deleting-table context for the frontend setter sites."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: native distortion-array resize",
+      "reason": "Missing an entry-reachable native distortion-record owner; its existing reserve caller is not called in the baseline graph."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_owner.cpp: destroy_native_post_effect_owner_00b4e2f0",
+      "reason": "Chain578 already calls this getter in the source; missing entry reachability for that actual 24h post-effect owner path."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native scene-command submission",
+      "reason": "Missing entry reachability for the inspected full native main-scene submission caller and its actual command queue."
+    },
+    {
+      "native": "00b3ceb0",
+      "status": "skipped",
+      "host_site": "src/native_texture_2d_owner.cpp: actual texture dimension stores",
+      "reason": "The existing setter requires a NativeD3D9ShadowTexture view; missing a verified live binding of that view to the raw texture owner's actual dimension fields."
+    },
+    {
+      "native": "00bb5540",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_package_name_00bb5540",
+      "reason": "Missing a verified live package-vtable name-copy invocation; BE6040 already replaces the inspected equivalent VFS copy without a duplicate execution."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed: Win32 Release and all five CTests",
+    "diff_check": "git diff --check passed",
+    "call_graph": {
+      "native": "00be6040",
+      "built_address": "10606290",
+      "entry_reachable": true,
+      "reachable_call_sites": 1,
+      "call_site": "1055209e",
+      "caller": "bsp::exists_native_vfs_file_00bdd440",
+      "path": "WinMainCRTStartup -> WinMain -> native VFS core initialization -> NativeVfsRuntimeBindings::exists -> exists_native_vfs_file_00bdd440 -> copy_native_file_store_name_00be6040"
+    },
+    "before": {
+      "readiness_wired": 9914
+    },
+    "after": {
+      "readiness_wired": 9915,
+      "target_state": "wired",
+      "target_called": true,
+      "target_call_sites": 1,
+      "target_live_callers": 1
+    }
+  }
+}

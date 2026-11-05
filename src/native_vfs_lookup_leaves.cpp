@@ -56,7 +56,9 @@ bool probe_native_file_store_name_00be5c40(void* store, const void* name,
     return contains_file_store(store, name, crt);
 }
 
-void* copy_native_file_store_name_00be6040(void* output, const void* name,
+// Retain this reconstructed boundary in the built call graph when the live
+// VFS existence route reuses it for its equivalent inline name copy.
+__declspec(noinline) void* copy_native_file_store_name_00be6040(void* output, const void* name,
     ActualNativeStringPoolStorage& strings) {
     // These native inline instructions have the same current-header ordering
     // as the already-complete 426060 body, including identity and failure.
