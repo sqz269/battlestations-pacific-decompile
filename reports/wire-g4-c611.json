@@ -1,0 +1,72 @@
+{
+  "chain": 611,
+  "worker": "agent/g4-w3",
+  "base": "f43e7a069c",
+  "switch": "bsp::kWireGoal4Chain611Bound",
+  "scope": "Route the owned Dyn convex-shape support slots and their hull query through the existing address-bearing entry points. The assembly kernels already ran on this path; this change makes their reconstructed public bodies called without adding a second calculation.",
+  "rows": [
+    {
+      "native": "00c386e0",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_support.cpp: NativeDynConvexShapeRuntime::support32",
+      "state_provenance": "The process ConvexBinding owns the runtime table installed on constructed convex shapes; forward that shape, output/direction buffers, caller transform, and the owner's borrowed mutable CRT conversion cell.",
+      "call_sites": 1,
+      "called": true
+    },
+    {
+      "native": "00c385b0",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_support.cpp: NativeDynConvexShapeRuntime::support64",
+      "state_provenance": "Forward the same owned shape, original double buffers, float transform and CRT conversion cell; the existing kernel retains the original narrowing and widening schedule.",
+      "call_sites": 1,
+      "called": true
+    },
+    {
+      "native": "00c358a0",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_support.cpp: local_support_bridge, called by support32_kernel and support64_kernel",
+      "state_provenance": "Use the existing shape+210h borrowed mesh, the already-spilled local direction, original output buffer, and the same CRT mode pointer.",
+      "call_sites": 1,
+      "called": true
+    },
+    {
+      "native": "004842c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: publish_bow_anchor / publish_stern_anchor",
+      "reason": "The inspected host path still returns empty transformed anchors and records publication; actual anchor-effect nodes, parent transforms and class-anchor producers are missing there."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The inspected site only updates a host boolean; an adapter traversing actual hull shape objects and clearing their owning body's manifolds under the world lock is missing there."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The inspected site only updates a host boolean; an adapter traversing actual hull shape objects and clearing their owning body's manifolds under the world lock is missing there."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00c358a0, 00c386e0 and 00c385b0, including assembly at the private-register input and the two nested call sites",
+    "00C38769 and 00C38654 call hull support with the direction fully spilled; the new integer-only fastcall bridge preserves those buffers and RET 8 cleanup",
+    "The original shape support slots are D7A0AC+8 and D7A0AC+12; source callbacks retain RET 0Ch cleanup",
+    "GameNativeDynProcess::ConvexBinding constructs NativeDynConvexShapeRuntime from the actual convex pool and process conversion cell and supplies shape.table() to its body-creation context"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after; all five CTest groups passed",
+    "diff_check": "git diff --check passed",
+    "pc24_lint": "0 findings; no floating arithmetic changed",
+    "binary_called_reconstructed_before": 5015,
+    "binary_called_reconstructed_after": 5018,
+    "source_readiness_wired_before": 9943,
+    "source_readiness_wired_after": 9943,
+    "readiness_note": "All three target rows have called=true and call_sites=1. The source-only state remains callees_done_no_wired_caller because the file-reachability heuristic does not follow the runtime table owner.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameNativeDynProcess::initialize_convex_pool_once_00cc89c0 -> NativeDynConvexShapeRuntime constructor -> support32/support64 -> address-bearing shape entry -> kernel -> local_support_bridge -> address-bearing hull entry",
+    "generated_adapters": "dumpbin of the built native_dyn_convex_support.obj confirms all six adapters contain only integer instructions; fastcall stack cleanup is 8 bytes for the hull bridge and 12 bytes for the shape callbacks",
+    "local_disassembly": "local/output/g4-c611-support-disasm.txt",
+    "game_run": false,
+    "limits": "Build and static entry reachability only. No new copied-original differential fixture, native private-register ABI claim, dynamic query observation, or gameplay proof. Existing x87 arithmetic kernels and their operation order are unchanged."
+  }
+}

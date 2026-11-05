@@ -1,5 +1,6 @@
 #include "bsp/native_dyn_convex_support.hpp"
 #include "bsp/native_render_batch_keys.hpp"
+#include "bsp/wire_goal4_chain611_switches.hpp"
 #include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -143,6 +144,19 @@ __declspec(naked) void __fastcall local_support_kernel(const volatile std::uint3
 
 // Original floating-point instruction schedule,including operand direction.
 // Integer adapters supply the borrowed CRT address; no native private-stack ABI.
+// 00C38769 / 00C38654 call 00C358A0 with the shape's borrowed mesh+210h,
+// the caller's output, and the direction just spilled by the shape method.
+// Integer-only ABI adapter: retain those buffers and the process CRT mode;
+// the one arithmetic body remains local_support_kernel behind its public API.
+void __fastcall local_support_bridge(const volatile std::uint32_t* mode,
+    const AvoidZoneDynHullData* mesh,OceanVec3* output,const OceanVec3* direction) noexcept {
+    if constexpr (kWireGoal4Chain611Bound) {
+        support_native_dyn_hull_00c358a0(*mesh,*output,*direction,*mode);
+    } else {
+        local_support_kernel(mode,mesh,output,direction);
+    }
+}
+
 __declspec(naked) void __fastcall support32_kernel(const DynConvexShapeStorage*,const volatile std::uint32_t*,OceanVec3*,const OceanVec3*,const float*) noexcept {
     __asm {
         movd xmm1,edx // Keep explicit conversion context until the mesh call.
@@ -198,7 +212,7 @@ __declspec(naked) void __fastcall support32_kernel(const DynConvexShapeStorage*,
         fstp dword ptr [esp + 01ch] // 00c38765
         movd ecx,xmm1
         mov edx,eax
-        call local_support_kernel // 00c38769
+        call local_support_bridge // 00c38769
         fld dword ptr [edi + 4] // 00c3876e
         fstp dword ptr [esp + 020h] // 00c38771
         fld dword ptr [edi] // 00c38775
@@ -315,7 +329,7 @@ __declspec(naked) void __fastcall support64_kernel(const DynConvexShapeStorage*,
         fstp dword ptr [esp + 018h] // 00c38650
         movd ecx,xmm1
         mov edx,eax
-        call local_support_kernel // 00c38654
+        call local_support_bridge // 00c38654
         fld dword ptr [esp + 028h] // 00c38659
         fld dword ptr [esp + 014h] // 00c3865d
         fld st(0) // 00c38661
@@ -366,9 +380,11 @@ __declspec(naked) void __fastcall support64_kernel(const DynConvexShapeStorage*,
 }
 
 } // namespace
-void support_native_dyn_hull_00c358a0(const AvoidZoneDynHullData& mesh,OceanVec3& output,const OceanVec3& direction,const volatile std::uint32_t& mode) noexcept {local_support_kernel(&mode,&mesh,&output,&direction);}
-void support_native_dyn_convex_shape_00c386e0(const DynConvexShapeStorage& shape,OceanVec3& output,const OceanVec3& direction,const float* matrix,const volatile std::uint32_t& mode) noexcept {support32_kernel(&shape,&mode,&output,&direction,matrix);}
-void support_native_dyn_convex_shape_00c385b0(const DynConvexShapeStorage& shape,double* output,const double* direction,const float* matrix,const volatile std::uint32_t& mode) noexcept {support64_kernel(&shape,&mode,output,direction,matrix);}
+// Keep the address-bearing entry points visible in the built call graph. These
+// wrappers share the original kernels; they introduce no second support query.
+__declspec(noinline) void support_native_dyn_hull_00c358a0(const AvoidZoneDynHullData& mesh,OceanVec3& output,const OceanVec3& direction,const volatile std::uint32_t& mode) noexcept {local_support_kernel(&mode,&mesh,&output,&direction);}
+__declspec(noinline) void support_native_dyn_convex_shape_00c386e0(const DynConvexShapeStorage& shape,OceanVec3& output,const OceanVec3& direction,const float* matrix,const volatile std::uint32_t& mode) noexcept {support32_kernel(&shape,&mode,&output,&direction,matrix);}
+__declspec(noinline) void support_native_dyn_convex_shape_00c385b0(const DynConvexShapeStorage& shape,double* output,const double* direction,const float* matrix,const volatile std::uint32_t& mode) noexcept {support64_kernel(&shape,&mode,output,direction,matrix);}
 static_assert(std::is_standard_layout_v<NativeDynConvexShapeRuntime>);
 NativeDynConvexShapeRuntime::NativeDynConvexShapeRuntime(DynConvexShapePoolStorage& pool,const volatile std::uint32_t& mode) noexcept
     :methods_{reinterpret_cast<std::uintptr_t>(&bounds),reinterpret_cast<std::uintptr_t>(&scalar),reinterpret_cast<std::uintptr_t>(&support32),reinterpret_cast<std::uintptr_t>(&support64)},pool_(&pool),conversion_(&mode) {}
@@ -378,6 +394,21 @@ const NativeDynConvexShapeRuntime& NativeDynConvexShapeRuntime::owner(const void
 }
 void __fastcall NativeDynConvexShapeRuntime::bounds(void* p,void*) {dyn_convex_shape_refresh_bounds_00c57c40(*static_cast<DynConvexShapeStorage*>(p));}
 void* __fastcall NativeDynConvexShapeRuntime::scalar(void* p,void*,std::uint32_t flags) {auto* pool=owner(p).pool_;return delete_native_dyn_convex_shape_004062c0(*static_cast<DynConvexShapeStorage*>(p),flags,*pool);}
-void __fastcall NativeDynConvexShapeRuntime::support32(void* p,void*,OceanVec3* output,const OceanVec3* direction,const float* matrix) noexcept {support32_kernel(static_cast<const DynConvexShapeStorage*>(p),owner(p).conversion_,output,direction,matrix);}
-void __fastcall NativeDynConvexShapeRuntime::support64(void* p,void*,double* output,const double* direction,const float* matrix) noexcept {support64_kernel(static_cast<const DynConvexShapeStorage*>(p),owner(p).conversion_,output,direction,matrix);}
+void __fastcall NativeDynConvexShapeRuntime::support32(void* p,void*,OceanVec3* output,const OceanVec3* direction,const float* matrix) noexcept {
+    // D7A0AC slot 2 (00C386E0), installed by the process convex-shape owner.
+    // Use the actual shape, query buffers, transform and borrowed CRT cell.
+    if constexpr (kWireGoal4Chain611Bound) {
+        support_native_dyn_convex_shape_00c386e0(*static_cast<const DynConvexShapeStorage*>(p),*output,*direction,matrix,*owner(p).conversion_);
+    } else {
+        support32_kernel(static_cast<const DynConvexShapeStorage*>(p),owner(p).conversion_,output,direction,matrix);
+    }
+}
+void __fastcall NativeDynConvexShapeRuntime::support64(void* p,void*,double* output,const double* direction,const float* matrix) noexcept {
+    // D7A0AC slot 3 (00C385B0); its original kernel performs the F64 narrowing.
+    if constexpr (kWireGoal4Chain611Bound) {
+        support_native_dyn_convex_shape_00c385b0(*static_cast<const DynConvexShapeStorage*>(p),output,direction,matrix,*owner(p).conversion_);
+    } else {
+        support64_kernel(static_cast<const DynConvexShapeStorage*>(p),owner(p).conversion_,output,direction,matrix);
+    }
+}
 } // namespace bsp
