@@ -19,6 +19,7 @@
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/camera_configuration.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/gui_widget_clip_refresh.hpp"
 #include "bsp/native_camera_reference.hpp"
@@ -39,6 +40,7 @@
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/wire_goal4_chain493_switches.hpp"
 #include "bsp/wire_goal4_chain549_switches.hpp"
+#include "bsp/wire_goal4_chain605_switches.hpp"
 #include <d3d9.h>
 #include <d3dx9shader.h>
 #include <clocale>
@@ -561,6 +563,41 @@ struct GameNativeGuiRenderApplication::Impl {
         auto& environment = renderer.camera_environment();
         camera_name_live = true;
         camera_name.assign_0041e870(raw.strings, "GuiCam_NativeText");
+        if constexpr (kWireGoal4Chain605Bound) {
+            struct Calls final : cc13_sweepC::CameraPoolFactoryHost {
+                Impl& app;
+                NativeCameraEnvironment& environment;
+                NativeRenderActualOwnerRegistry::BindingAdmission admission;
+                Calls(Impl& owner, NativeCameraEnvironment& camera_environment)
+                    : app(owner), environment(camera_environment) {}
+                void* camera_pool_allocate_00b71930(std::uint32_t) override {
+                    // B71930 binds the same canonical 0108FFB0 pool as this
+                    // renderer environment; its incoming ECX=458h is ignored.
+                    app.camera_raw = allocate_native_camera_slot_00b71930();
+                    return app.camera_raw;
+                }
+                void* camera_construct_00b71a80(void* block, Word name) override {
+                    require(block == app.camera_raw && name == static_cast<Word>(
+                        reinterpret_cast<std::uintptr_t>(&app.camera_name)),
+                        "GUI camera factory must retain its actual slot and name");
+                    admission = app.renderer.actual_owners().prepare_binding(block);
+                    auto viewport = app.renderer.viewport_registry().admit(app.viewport_record);
+                    app.camera = std::make_unique<NativeCameraOwner>(block,
+                        NativeCameraPool::slot_bytes, environment);
+                    return construct_native_camera_00b71a80(*app.camera,
+                        reinterpret_cast<const void*>(name), app.renderer.node_constants(),
+                        std::move(viewport));
+                }
+            } calls(*this, environment);
+            // B8A21B/B8A236: one allocation, then one construction with the
+            // live pooled name header. Keep canonical publication after both.
+            require(cc13_sweepC::camera_pool_create_camera_00b8a200(calls,
+                static_cast<Word>(reinterpret_cast<std::uintptr_t>(&camera_name))),
+                "native GUI camera pool returned null");
+            camera_reference = std::make_unique<NativeCameraReference>(*camera,
+                NativeCameraCompanionDisposal{this, &retire_camera});
+            renderer.actual_owners().publish(std::move(calls.admission), *camera_reference);
+        } else {
         camera_raw = environment.pool_0108ffb0.allocate_raw_slot_00b71770();
         require(camera_raw, "native GUI camera pool returned null");
         auto admission = renderer.actual_owners().prepare_binding(camera_raw);
@@ -572,6 +609,7 @@ struct GameNativeGuiRenderApplication::Impl {
         camera_reference = std::make_unique<NativeCameraReference>(*camera,
             NativeCameraCompanionDisposal{this, &retire_camera});
         renderer.actual_owners().publish(std::move(admission), *camera_reference);
+        }
         camera_name.release_to(raw.strings);
         camera_name_live = false;
         // The recovered GUI scene acquisition disables distance/height fog.

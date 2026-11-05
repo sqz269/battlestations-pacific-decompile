@@ -1,0 +1,108 @@
+{
+  "chain": 605,
+  "slot": "g4-w1",
+  "run": 1249,
+  "switch": "kWireGoal4Chain605Bound",
+  "picked": "Camera pool factory through the existing live GUI camera creation path",
+  "rows": [
+    {
+      "native": "00b8a200",
+      "status": "wired",
+      "host_site": "src/game_native_gui_render_application.cpp: GameNativeGuiRenderApplication::Impl::make_camera",
+      "evidence": "Existing cc13_sweepC::camera_pool_create_camera_00b8a200 body now calls the canonical camera allocator and typed constructor through CameraPoolFactoryHost; built call_graph who shows one reachable direct call at 10366ec1."
+    },
+    {
+      "native": "00b71930",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp: make_camera::Calls::camera_pool_allocate_00b71930",
+      "reason": "Already entry-reachable through four baseline callers; reused as the factory allocator, with no additional newly wired address claimed."
+    },
+    {
+      "native": "00be10a0",
+      "status": "skipped",
+      "host_site": "src/native_vfs_search_groups.cpp: Payload::construct",
+      "reason": "The live search-group constructor and its host file were claimed by agent/g4-w5 for chain603; file/address ownership is unavailable to this packet."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: delete_native_gui_button_00aa3d10",
+      "reason": "The existing canonical GUI button pool free implementation is already called in the baseline executable; another free would duplicate behavior."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: existing vertex shader teardown",
+      "reason": "Existing baseline cleanup already calls the reconstructed registry removal with real renderer state; no new call is needed."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: existing pixel shader teardown",
+      "reason": "Existing baseline cleanup already calls the reconstructed registry removal with real renderer state; no new call is needed."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: destroy_native_distortion_records",
+      "reason": "Already entry-reachable from existing actual-storage destruction; another resize would duplicate the existing clear."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "No live distortion-record growth producer was established; the existing zero-count teardown does not justify an invented reserve request."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: existing last-command metadata call",
+      "reason": "A source caller exists but no standalone entry-reachable body is identified in the baseline executable; a real command-producing submission path was not established here."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/native_listener_renderer.cpp: update_native_listener_renderer_00b0d7b0",
+      "reason": "No live raw listener-renderer owner, invalidation owner and root bindings were established; the typed view cannot be fabricated."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values / assign_native_animation_values_00b926e0",
+      "reason": "Existing parser helpers already reference this reserve; no additional live animation-item producer or required growth operation was established."
+    },
+    {
+      "native": "00ae19b0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_node_array_release.cpp: existing shadow pointer clear",
+      "reason": "The current source already calls this body for pointer-array teardown; another switched call at that site would duplicate the clear."
+    }
+  ],
+  "built": [
+    "Narrowed the existing factory host boundary to its two real camera services; retained the single existing address-suffixed body.",
+    "Bound the factory to the canonical 0108FFB0 camera pool and existing live GUI camera name, viewport admission, NativeCameraOwner, reference and actual-owner publication.",
+    "Preserved the prior allocation/construction/publication block exactly in the switch OFF arm."
+  ],
+  "counts": {
+    "readiness_wired_before": 9938,
+    "readiness_wired_after": 9938,
+    "entry_reachable_reconstructed_before": 5009,
+    "entry_reachable_reconstructed_after": 5010,
+    "note": "Readiness text classification retains the old ledger identifier BSP_CameraPool_CreateCamera and does not recognize the existing lowercase C++ name. Executable called/call_sites establish the new wire."
+  },
+  "validation": {
+    "baseline": "scripts/build.ps1 passed; all 5 tests passed",
+    "final": "scripts/build.ps1 passed; all 5 tests passed",
+    "binary": "call_graph.py: 5010 reconstructed addresses reachable; who 00b8a200: one direct call from make_camera; path reaches GameStartupHost initialization and WinMainCRTStartup",
+    "switch": "Static comparison confirms the OFF allocation/construction/publication block is byte-for-byte unchanged and the assigned switch is enabled once.",
+    "diff": "git diff --check passed",
+    "float_math": "No float math changed; pc24_lint not required.",
+    "limits": "Build/test and executable static entry reach only. The game was not run; no gameplay or original binary ABI equivalence is claimed."
+  },
+  "evidence": [
+    "bsp.py show 00b8a200; assembly B8A216/B8A21B/B8A236: 458h argument, static-pool allocation, null gate, same supplied name argument to constructor.",
+    "bsp.py show 00b71930: no-argument static 0108FFB0 pool forwarder; ignores incoming ECX.",
+    "src/game_native_resource_pools.cpp binds the canonical static camera pool; src/game_native_renderer_camera.inc uses the same process camera pool in the environment."
+  ],
+  "left": "Other candidates in the report remain unchanged; particle/tracer runtime producers and unrelated pools remain for later packets."
+}
