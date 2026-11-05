@@ -1,0 +1,40 @@
+{
+  "chain": 602,
+  "packet": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain602Bound",
+  "newly_wired": ["00bdcea0"],
+  "rows": [
+    {
+      "native": "00bdcea0",
+      "status": "wired",
+      "host_site": "src/native_vfs_extension_prefix.cpp: bsp::register_native_vfs_extension_prefix_00be1480",
+      "newly_wired": true,
+      "evidence": "Original 00BE154D calls 00BDCEA0 after extension/directory normalization; bsp.py show 00bdcea0 --asm confirms two eight-byte headers at +0/+8 copied in order.",
+      "real_state": "The existing normalized temporary, its destination temporary, and the manager's ActualNativeStringPoolStorage; no replacement state or string values are introduced.",
+      "ownership": "Compile-time checks enforce both pair layouts. The destination's existing cleanup is armed before construction so a second allocation failure releases the first header; normal destruction remains directory then extension. The former inline copy runs only in the switch-off arm.",
+      "compiled_call_site": "106080de: register_native_vfs_extension_prefix_00be1480 -> copy_string_pair_00bdcea0 at 1037fd70"
+    },
+    {
+      "native": "00be1480",
+      "status": "wired",
+      "host_site": "src/native_vfs_extension_prefix.cpp: bsp::register_native_vfs_extension_prefix_00be1480, reached by register_native_vfs_search_defaults_00738360",
+      "newly_wired": false,
+      "reason": "Existing entry-reachable caller retained; this chain replaces only its normalized-pair copy site. Its thirteen startup call sites already existed before the change."
+    },
+    {
+      "native": "00be10a0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: construct_search_group_payload_00be10a0 (selection candidate)",
+      "reason": "No game-run search-group payload constructor adapter was established in this selection pass; the live extension-prefix pair-copy path was selected instead."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after the change; all five CTest tests passed.",
+    "call_graph": "5006 -> 5007 distinct reconstructed addresses called from entry-reachable code; 00BDCEA0 changes from absent to one reachable direct call in 00BE1480.",
+    "wire_readiness": "9936 -> 9937 wired rows; 00BDCEA0 changes from ready/not called to wired/called with one reachable call site. Readiness called rows: 5261 -> 5262 (row-based count, separate from the distinct-address call-graph count above).",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameVfsHost::phase2 -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 -> register_native_vfs_extension_prefix_00be1480 -> copy_string_pair_00bdcea0",
+    "float_math": "Unchanged; pc24 lint is not required for this string-copy-only change.",
+    "limits": "Compilation, existing tests and static executable reachability only. No game execution, new fault-injection fixture, binary ABI equivalence or original SEH identity is claimed."
+  },
+  "left": "The VFS search-group payload constructor 00BE10A0 and other unrelated candidates remain unchanged."
+}

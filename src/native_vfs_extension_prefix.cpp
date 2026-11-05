@@ -3,6 +3,7 @@
 #include "bsp/wire_goal2_chain148_switches.hpp"
 #include "bsp/wire_goal2_chain208_switches.hpp"
 #include "bsp/wire_goal4_chain457_switches.hpp"
+#include "bsp/wire_goal4_chain602_switches.hpp"
 
 #include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -258,7 +259,23 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
     }
     normalized.lower_and_trail();
     Pair copied(strings);
+    if constexpr (kWireGoal4Chain602Bound) {
+        // 00BE154D calls 00BDCEA0 with the normalized pair as its source.
+        // Both headers stay in the actual temporary and use the manager's
+        // existing string pool. BDCEA0 copies +0 then +8 (show 00bdcea0 --asm).
+        static_assert(offsetof(decltype(copied), first) == 0);
+        static_assert(offsetof(decltype(copied), second) == 8);
+        static_assert(offsetof(decltype(normalized), first) == 0);
+        static_assert(offsetof(decltype(normalized), second) == 8);
+        // Arm the existing null-data cleanup before calling: on a second-copy
+        // allocation exception it releases the completed first header, matching
+        // BDCEA0's state-0 unwind, without a second successful-path copy.
+        copied.state = 1;
+        engine_services_cc13::copy_string_pair_00bdcea0(
+            &copied.first, &normalized.first, strings);
+    } else {
     copied.construct_extension_first(&normalized.first, &normalized.second);
+    }
     insert_pair(tree, copied, strings);
 }
 } // namespace bsp
