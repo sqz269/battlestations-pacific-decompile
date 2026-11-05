@@ -4,6 +4,7 @@
 #include "bsp/wire_goal2_chain114_switches.hpp"
 #include "bsp/wire_goal4_chain309_switches.hpp"
 #include "bsp/wire_goal4_chain566_switches.hpp"
+#include "bsp/wire_goal4_chain572_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -280,7 +281,15 @@ void NativeMaterialPassPool::trim_empty_slabs_00b41170() {
     trim_empty_slabs<NativeMaterialPassPool>(storage_);
 }
 void NativeMaterialPassPool::destroy_00b40980() {
+    if constexpr (kWireGoal4Chain572Bound) {
+        // bsp.py show 00B40980 and 00B402B0 --asm: both release the current
+        // pool+28h table without clearing its pointer/count/capacity. Pass the
+        // actual table header after slab destruction and before CS/list teardown.
+        destroy_pool<NativeMaterialPassPool,
+            &destroy_native_material_pass_pool_table_00b402b0>(allocator_list_, storage_);
+    } else {
     destroy_pool<NativeMaterialPassPool>(allocator_list_, storage_);
+    }
 }
 void NativeMaterialPassPool::invoke_trim(void* context) {
     static_cast<NativeMaterialPassPool*>(context)->trim_empty_slabs_00b41170();
@@ -290,7 +299,7 @@ void NativeMaterialPassPool::invoke_trim(void* context) {
 __declspec(noinline) void* initialize_native_material_pass_slab_00b401d0(void* raw, std::uint32_t index) noexcept {
     return initialize_slab<NativeMaterialPassPool>(raw, index);
 }
-void destroy_native_material_pass_pool_table_00b402b0(void* header) noexcept {
+__declspec(noinline) void destroy_native_material_pass_pool_table_00b402b0(void* header) noexcept {
     std::byte** table;
     std::memcpy(&table, header, sizeof(table));
     if (table) singleton_lifetime_free(table);
@@ -334,12 +343,21 @@ void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     return_slot<NativeShaderStateListPool>(storage_,slot);
 }
 void NativeShaderStateListPool::trim_empty_slabs_00b62590(){trim_empty_slabs<NativeShaderStateListPool>(storage_);}
-void NativeShaderStateListPool::destroy_00b62500(){destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
+void NativeShaderStateListPool::destroy_00b62500(){
+    if constexpr (kWireGoal4Chain572Bound) {
+        // bsp.py show 00B62500 and 00B621B0 --asm: the same nonnull table
+        // release, over this pool's retained +28h header, preserving stale fields.
+        destroy_pool<NativeShaderStateListPool,
+            &destroy_native_shader_state_list_pool_table_00b621b0>(allocator_list_, storage_);
+    } else {
+        destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);
+    }
+}
 void NativeShaderStateListPool::invoke_trim(void* context){static_cast<NativeShaderStateListPool*>(context)->trim_empty_slabs_00b62590();}
 __declspec(noinline) void* initialize_native_shader_state_list_slab_00b620f0(void* raw,std::uint32_t index) noexcept {
     return initialize_slab<NativeShaderStateListPool>(raw,index);
 }
-void destroy_native_shader_state_list_pool_table_00b621b0(void* header) noexcept {
+__declspec(noinline) void destroy_native_shader_state_list_pool_table_00b621b0(void* header) noexcept {
     void* data;std::memcpy(&data,header,sizeof(data));if(data)singleton_lifetime_free(data);
 }
 namespace {NativeShaderStateListPool* canonical_shader_state_list_pool;}

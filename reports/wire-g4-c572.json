@@ -1,0 +1,281 @@
+{
+  "chain": 572,
+  "slot": "g4-w5",
+  "run": 1179,
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain572Bound",
+  "base": "4eec81ec14",
+  "scope": "Material-pass and shader-state-list pool table cleanup, over the actual retained application pools.",
+  "rows": [
+    {
+      "native": "00b402b0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPassPool::destroy_00b40980 -> destroy_pool<NativeMaterialPassPool, &destroy_native_material_pass_pool_table_00b402b0>",
+      "reason": "Replaces the existing inline table free with the same single release over the actual retained pool+28h header; slab frees precede it and critical-section/list teardown follows it."
+    },
+    {
+      "native": "00b621b0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeShaderStateListPool::destroy_00b62500 -> destroy_pool<NativeShaderStateListPool, &destroy_native_shader_state_list_pool_table_00b621b0>",
+      "reason": "Replaces the existing inline table free with the same single release over the actual retained pool+28h header; pointer/count/capacity remain stale as in the original."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing raw bag integer producer",
+      "reason": "Already called at baseline by the existing raw property-bag path; an additional call would not add wiring."
+    },
+    {
+      "native": "008f39b0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing raw bag enum-word producer",
+      "reason": "Already called at baseline by the existing raw property-bag path; an additional call would not add wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing raw bag enum-symbol producer",
+      "reason": "Already called at baseline by the existing raw property-bag path; an additional call would not add wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing raw bag whole bag merge",
+      "reason": "Already called at baseline by the existing raw property-bag path; an additional call would not add wiring."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: words_40 reserve",
+      "reason": "The existing message35 reader/destructor already uses this body; a live message35 producer and factory path are still missing from this wiring."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: words_40 resize",
+      "reason": "The existing message35 reader/destructor already uses this body; a live message35 producer and factory path are still missing from this wiring."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: words_40 destructor",
+      "reason": "The existing message35 reader/destructor already uses this body; a live message35 producer and factory path are still missing from this wiring."
+    },
+    {
+      "native": "0052aef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: message35 producer/factory candidate",
+      "reason": "Missing an identified live single-player message35 producer with owned subtype-dependent payloads; no default message was fabricated."
+    },
+    {
+      "native": "00829180",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ship indexed-point storage candidate",
+      "reason": "Missing a live native indexed-point array owner and the producer/consumer bridge for its actual 16-byte rows."
+    },
+    {
+      "native": "005cd070",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: vehicle camera row/array candidate",
+      "reason": "Missing a live vehicle camera array owner supplying the raw 5Ch rows and their retained string-pool context."
+    },
+    {
+      "native": "005cd260",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: vehicle camera row/array candidate",
+      "reason": "Missing a live vehicle camera array owner supplying the raw 5Ch rows and their retained string-pool context."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::pause_slot40",
+      "reason": "The runtime adapter already calls this body; missing a live gameplay caller of this adapter method, so no extra state query or pause was inserted."
+    },
+    {
+      "native": "00a79a30",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::handle_slot18",
+      "reason": "The runtime adapter already calls this body; missing a live gameplay caller of this adapter method, so no extra state query or pause was inserted."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::progress_slot20",
+      "reason": "The runtime adapter already calls this body; missing a live gameplay caller of this adapter method, so no extra state query or pause was inserted."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::audibility_slot1c",
+      "reason": "The runtime adapter already calls this body; missing a live gameplay caller of this adapter method, so no extra state query or pause was inserted."
+    },
+    {
+      "native": "00a7f640",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::create_nonspatial",
+      "reason": "Existing factory adapter has no identified live sample-instance producer on this path; wiring requires a real playback request rather than constructing a spare sound."
+    },
+    {
+      "native": "00a7f710",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::create_spatial",
+      "reason": "Existing factory adapter has no identified live sample-instance producer on this path; wiring requires a real playback request rather than constructing a spare sound."
+    },
+    {
+      "native": "00a818d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: effect_sound_admit_at_position_0086a740 candidate",
+      "reason": "Missing the original effect-sound caller's live selected sample/resource at this site; the raw sample+78h predicate cannot consume an invented sample."
+    },
+    {
+      "native": "00a87bd0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: FMOD allocator callback candidate",
+      "reason": "Missing a live FMOD custom allocator installation using the corresponding allocation/reallocation ownership contract; no unrelated free was redirected."
+    },
+    {
+      "native": "00a7b4b0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: reset_ref_slot_return_self candidate",
+      "reason": "No original caller was identified, and the shared body requires a live intrusive-reference slot with compatible virtual deletion; no slot was fabricated."
+    },
+    {
+      "native": "00a7b4e0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: reset_ref_slot_return_self candidate",
+      "reason": "No original caller was identified, and the shared body requires a live intrusive-reference slot with compatible virtual deletion; no slot was fabricated."
+    },
+    {
+      "native": "00a82880",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: reset_ref_slot_return_self candidate",
+      "reason": "No original caller was identified, and the shared body requires a live intrusive-reference slot with compatible virtual deletion; no slot was fabricated."
+    },
+    {
+      "native": "00b78530",
+      "status": "skipped",
+      "host_site": "src/native_animation_group_lifetime.cpp: animation group lifetime candidate",
+      "reason": "Existing lifetime functions already call their reconstructed helpers; missing the live resource deletion-domain entry needed to reach this lifetime chain."
+    },
+    {
+      "native": "00b8a3c0",
+      "status": "skipped",
+      "host_site": "src/native_animation_group_lifetime.cpp: animation keys lifetime candidate",
+      "reason": "Existing lifetime functions already call their reconstructed helpers; missing the live resource deletion-domain entry needed to reach this lifetime chain."
+    },
+    {
+      "native": "00b8a7d0",
+      "status": "skipped",
+      "host_site": "src/native_animation_group_lifetime.cpp: animation channel lifetime candidate",
+      "reason": "Existing lifetime functions already call their reconstructed helpers; missing the live resource deletion-domain entry needed to reach this lifetime chain."
+    },
+    {
+      "native": "00b8a680",
+      "status": "skipped",
+      "host_site": "src/native_resource_extra_item_lifetime.cpp: AnimationChannels item lifetime candidate",
+      "reason": "Missing a proven live resource deletion-domain entry to this existing terminal; no second destructor or extra release was added."
+    },
+    {
+      "native": "00b8a8a0",
+      "status": "skipped",
+      "host_site": "src/native_resource_extra_item_lifetime.cpp: Bone item lifetime candidate",
+      "reason": "Missing a proven live resource deletion-domain entry to this existing terminal; no second destructor or extra release was added."
+    },
+    {
+      "native": "00b88180",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp: hierarchy fields lifetime candidate",
+      "reason": "Existing reconstructed container cleanup already calls its child lifetimes; missing the live owner/deletion-domain entry for additional wiring."
+    },
+    {
+      "native": "00b88430",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp: resource container lifetime candidate",
+      "reason": "Existing reconstructed container cleanup already calls its child lifetimes; missing the live owner/deletion-domain entry for additional wiring."
+    },
+    {
+      "native": "005a1610",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: point-light backlink array candidate",
+      "reason": "The required SAME live light/backlink owner domain and pool-slot admission were not established for this bounded task."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: existing TailGunnerBot skill path",
+      "reason": "The current chain451 arm already calls this body with the live descriptor, skill notification and shared stream-one draw; no extra call is needed."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight_state_notify plane FX timer candidate",
+      "reason": "Missing a persistent plane-FX timer owner and consumer; the current site only records the operation."
+    },
+    {
+      "native": "00b40980",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPassPool::destroy_00b40980",
+      "reason": "Already part of reachable static pool teardown before this change; retained as the real caller, with no new-address credit requested for the parent destructor."
+    },
+    {
+      "native": "00b62500",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeShaderStateListPool::destroy_00b62500",
+      "reason": "Already part of reachable static pool teardown before this change; retained as the real caller, with no new-address credit requested for the parent destructor."
+    }
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00b402b0 --asm --lines 30: MOV EAX,[ECX], TEST/JZ, conditional free, POP ECX, RET; no header stores.",
+    "python tools/bsp.py show 00b621b0 --asm --lines 30: same conditional free and header preservation.",
+    "python tools/bsp.py show 00b40980 --lines 65 and show 00b62500 --lines 45: free live slabs, current +28h table, drain recursion, destroy CS, unlink allocator.",
+    "Existing destroy_pool<Pool, FreeTable> passes &storage.slabs_28 after freeing slabs; the selected specialization replaces free_table rather than adding another release.",
+    "Release call graph: actual static material-pass and shader-state-list destruction callbacks both call the helper code; /OPT:ICF folds the two identical bodies and an existing GUI-group helper.",
+    "No-ICF paths: WinMainCRTStartup -> WinMain/catch -> real graphics or shader process initialization -> registered static pool destruction callback -> corresponding pool destructor -> selected destroy_pool specialization -> the separately linked cleanup body."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 4 CTests",
+    "changed_build": "scripts/build.ps1 passed, all 4 CTests",
+    "diff_check": "git diff --check passed",
+    "floats": "No floating-point math changed; pc24_lint not required.",
+    "readiness_before": 9897,
+    "readiness_after": 9899,
+    "called_rows_after": {
+      "00b402b0": true,
+      "00b621b0": true
+    },
+    "release_graph_before": {
+      "recon_addresses": 5477,
+      "recon_called": 4981
+    },
+    "release_graph_after": {
+      "recon_addresses": 5479,
+      "recon_called": 4980
+    },
+    "release_graph_count_note": "Global recon_called is distorted by identical-code folding/reassignment; use the two per-address call sites and the separate no-ICF analysis build for attribution.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passed; call_graph.py --build-dir build/analysis gives separate reachable cleanup functions.",
+    "analysis_calls": {
+      "00b402b0": {
+        "symbol": "10617110",
+        "call_site": "10615564",
+        "caller": "destroy_pool<NativeMaterialPassPool, &destroy_native_material_pass_pool_table_00b402b0>",
+        "parent": "NativeMaterialPassPool::destroy_00b40980",
+        "reachable": true
+      },
+      "00b621b0": {
+        "symbol": "10617130",
+        "call_site": "10615604",
+        "caller": "destroy_pool<NativeShaderStateListPool, &destroy_native_shader_state_list_pool_table_00b621b0>",
+        "parent": "NativeShaderStateListPool::destroy_00b62500",
+        "reachable": true
+      }
+    }
+  },
+  "limits": [
+    "Build and static call-graph evidence only; the game was not run.",
+    "Ordinary reconstructed C++ interfaces; no native binary ABI compatibility claim."
+  ],
+  "assumptions": [
+    "Reused the proven table-cleanup bodies at semantically identical normal pool teardown sites; the pool constructors' separate exception-unwind cleanup stays unchanged.",
+    "No new address-suffixed function was defined, so no new reconstruction-ledger row was needed."
+  ]
+}
