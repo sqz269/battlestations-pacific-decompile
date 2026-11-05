@@ -1,4 +1,6 @@
 #include "bsp/native_frame_target_owner.hpp"
+#include "bsp/native_ref_counted_handle_initialize.hpp"
+#include "bsp/wire_goal4_chain608_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain469_switches.hpp"
 
@@ -113,7 +115,16 @@ NativeFrameTargetOwnerStorage* construct_native_frame_target_owner_00b1fbb0(
     put(owner, 0x00ceb130);
     put(address(owner, 4), 1);
     put(owner, 0x00d5e600);
-    put(address(owner, 0x18), 0);
+    if constexpr (kWireGoal4Chain608Bound) {
+        // Source reuse on the actual intrusive surface-handle slots, not an
+        // original call edge: B1FBC7/B1FBD9/B1FBDF/B1FBE5/B1FBEB each store
+        // one zero DWORD. bsp.py show 00415680 --asm: MOV EAX,ECX;
+        // MOV DWORD PTR [EAX],0; RET. It reads no preimage and releases nothing.
+        // Keep depth first and each color before its separate COM companion.
+        raw_initialize_native_ref_counted_handle_00415680(address(owner, 0x18));
+    } else {
+        put(address(owner, 0x18), 0);
+    }
     put(address(owner, 0x1c), 0);
     put(address(owner, 0x20), 0);
     put(address(owner, 0x24), 0);
@@ -127,14 +138,25 @@ NativeFrameTargetOwnerStorage* construct_native_frame_target_owner_00b1fbb0(
     } else {
         put_byte(address(owner, 0x3c), 0);
     }
-    put(address(owner, 8), 0);
-    put(address(owner, 0x28), 0);
-    put(address(owner, 0xc), 0);
-    put(address(owner, 0x2c), 0);
-    put(address(owner, 0x10), 0);
-    put(address(owner, 0x30), 0);
-    put(address(owner, 0x14), 0);
-    put(address(owner, 0x34), 0);
+    if constexpr (kWireGoal4Chain608Bound) {
+        raw_initialize_native_ref_counted_handle_00415680(address(owner, 8));
+        put(address(owner, 0x28), 0);
+        raw_initialize_native_ref_counted_handle_00415680(address(owner, 0xc));
+        put(address(owner, 0x2c), 0);
+        raw_initialize_native_ref_counted_handle_00415680(address(owner, 0x10));
+        put(address(owner, 0x30), 0);
+        raw_initialize_native_ref_counted_handle_00415680(address(owner, 0x14));
+        put(address(owner, 0x34), 0);
+    } else {
+        put(address(owner, 8), 0);
+        put(address(owner, 0x28), 0);
+        put(address(owner, 0xc), 0);
+        put(address(owner, 0x2c), 0);
+        put(address(owner, 0x10), 0);
+        put(address(owner, 0x30), 0);
+        put(address(owner, 0x14), 0);
+        put(address(owner, 0x34), 0);
+    }
     return owner;
 }
 
