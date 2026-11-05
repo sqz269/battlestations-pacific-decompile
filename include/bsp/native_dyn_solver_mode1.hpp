@@ -27,6 +27,15 @@ public:
     NativeDynSolverMode1Runtime(const NativeDynSolverMode1Runtime&)=delete;
     NativeDynSolverMode1Runtime& operator=(const NativeDynSolverMode1Runtime&)=delete;
     const void* table() const noexcept {return methods_;}
+    struct TaskBinding {
+        const DynProfileScopeContext* profile;
+        NativeDynSolverMode1Calls* calls;
+        const CameraAxesCrtAccess* crt;
+    };
+    // A valid task whose slot zero is our source callback carries this runtime
+    // as its table owner. Borrow its stable services without executing it;
+    // leave the binding unchanged for other task implementations.
+    static bool bind_task(void* task,TaskBinding&) noexcept;
 private:
     std::uintptr_t methods_[1];
     DynProfileScopeContext profile_;

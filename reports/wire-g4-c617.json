@@ -1,0 +1,152 @@
+{
+  "goal": 4,
+  "chain": 617,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain617Bound",
+  "switch_header": "include/bsp/wire_goal4_chain617_switches.hpp",
+  "picked": "Explicit mode-1 solver dispatch from the real Dyn scheduler worker",
+  "rows": [
+    {
+      "native": "00403850",
+      "status": "wired",
+      "host_site": "src/dyn_task_manager.cpp::worker_loop_00c375f0 (compiled into worker_entry_00c37680)",
+      "real_state": "The actual dequeued task supplies its world at +8, inclusive group bounds at +C/+10 and dt at +14. bind_task recognizes the existing runtime callback in vslot zero before borrowing that same owner's profile, allocator, calls and CRT services.",
+      "replacement": "Owned mode-1 tasks call the existing address-suffixed body directly. The previous virtual call runs only for other task implementations or with the switch off; completion bookkeeping remains shared and runs once.",
+      "evidence": [
+        "bsp.py show 00c375f0 --asm: 00C37644..00C3764A loads task vslot zero and invokes it with ECX=the dequeued task",
+        "bsp.py show 00403850 --asm: actual task layout and inclusive group loop at 004038A8..004038E3",
+        "bsp.py show 00c33140: scheduler submits borrowed task pointers; world+480h is the mode-1 task vector",
+        "call_graph.py who 00403850: reachable direct call at 105FD6FC from worker_entry_00c37680, plus existing runtime callback call at 10569FFE"
+      ],
+      "new_emitted_address_boundary": true
+    },
+    {
+      "native": "00c350c0",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::solve_kernel -> store_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c35160",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::prestep_kernel -> rows_size_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c37c40",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::solve_kernel -> writeback_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c42ed0",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::solve_kernel -> friction_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c431d0",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::solve_kernel -> normal_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c437d0",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::prestep_kernel -> warm_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c4f140",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::prestep_kernel -> build_rows_shim -> build_rows_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c5c710",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::task_kernel -> solve_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "00c5c7a0",
+      "status": "wired",
+      "host_site": "src/native_dyn_solver_mode1.cpp::task_kernel -> prestep_shim -> prestep_kernel",
+      "entry_reachable_before": true,
+      "new_emitted_address_boundary": false,
+      "wiring_scope": "Existing unchanged helper kernel in the mode-1 chain now text-wired through the direct scheduler call to 00403850; not a newly counted executable call."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer participant-count handling is outside the single-player work pool; its active multiplayer session/player state is not a single-player producer."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SetSelectedUnit screen reset",
+      "reason": "Missing the actual manager+CCh selection-screen owner, its C4h selection vector and mode/input-context producer; the live host currently records this reset."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp candidate-score list",
+      "reason": "Missing a live native candidate-score-list owner and gameplay consumer; the documented native table reader is a debug overlay, which this assignment excludes."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp candidate-score chosen mark",
+      "reason": "Missing real candidate-score-list entries to mark; producing an auxiliary debug table would not replace a gameplay state consumer."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ShipAiFirepower ammo_select_flak_alternate_0095cf80",
+      "reason": "Missing the flak-alternate ammo+48h record producer; the current host explicitly records this unavailable alternate selection."
+    },
+    {
+      "native": "00c4b9b0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_collision_pass.cpp::update_kernel",
+      "reason": "No missing emitted-call coverage: the baseline already has four entry-reachable calls from HullTerrainContactSolver::world_step, so this packet chose the uncounted mode-1 task instead."
+    }
+  ],
+  "validation": {
+    "baseline_head": "39a6ad7afb",
+    "baseline_build": "scripts/build.ps1: passed; 4/4 tests",
+    "final_build": "scripts/build.ps1: passed; 4/4 tests",
+    "call_graph_recon_called_before": 5028,
+    "call_graph_recon_called_after": 5029,
+    "wire_readiness_text_wired_before": 9952,
+    "wire_readiness_text_wired_after": 9962,
+    "call_graph_address_called_after": true,
+    "call_graph_address_call_sites_after": 2,
+    "focused_probe": "cmd /c local\\c617_dispatch_probe.cmd: PASS; exact source callback recognition, nonowned binding unchanged, 32 mixed batches with two real Win32 workers, 96 task completions, each foreign callback exactly once per batch",
+    "probe_scope": "Synthetic scheduler/dispatch fixture with an empty inclusive solver-group range. It does not validate nonempty contact solving or gameplay. Probe is local/ignored and links the built bsp_core.lib with /MANIFEST:EMBED.",
+    "float_math": "Unchanged; existing x87/SSE task kernel and solver dependencies reused verbatim.",
+    "boundary": "The old source callback already inlined the solver body. This change establishes an explicit named body call from the scheduler and retains a noinline address boundary for emitted-call verification; it adds no second solver execution.",
+    "limits": "Build, static entry reach and focused source fixture checked. Game not launched; native FH3/SEH and nonempty solver parity are not newly validated.",
+    "wire_readiness_text_delta_explanation": "The direct scheduler identifier makes the complete mode-1 source chain text-wired: task plus nine existing helper kernels. Those nine were already emitted/called before; only 00403850 adds a counted address boundary.",
+    "probe_source_sha256": "7201aa55c6ed33c236f4a6b60a2625f631d1bc6a0c37c6c129d56e3ceccdc627",
+    "probe_exe_sha256": "dcf56dfb9fcdd1c1110929cffd71f15aa5bff245b45237e30aee41cabf68d68c"
+  },
+  "left": "Other task-runtime specializations retain their virtual calls. HUD selection-screen ownership and flak-alternate record production remain open."
+}

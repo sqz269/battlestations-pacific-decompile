@@ -1,4 +1,6 @@
 #include "bsp/dyn_task_manager.hpp"
+#include "bsp/native_dyn_solver_mode1.hpp"
+#include "bsp/wire_goal4_chain617_switches.hpp"
 #include <windows.h>
 #include <process.h>
 #include <cstddef>
@@ -31,9 +33,27 @@ void worker_loop_00c375f0(DynTaskManagerStorage& storage) {
         void* task = at<void**>(manager, 0xc)[count - 1];
         at<std::uint32_t>(manager, 0x10) = count - 1;
         LeaveCriticalSection(&at<CRITICAL_SECTION>(manager, 0x18));
-        using Execute = void (__thiscall*)(void*);
-        auto* vtable = at<Execute*>(task, 0);
-        vtable[0](task);
+        if constexpr (kWireGoal4Chain617Bound) {
+            // 00C37644..00C3764A calls slot zero with this dequeued task.
+            // Its existing mode-1 owner supplies the exact same services;
+            // unknown slots retain the original virtual call. Completion
+            // bookkeeping below still happens once after either route.
+            NativeDynSolverMode1Runtime::TaskBinding binding;
+            if (NativeDynSolverMode1Runtime::bind_task(task, binding)) {
+                // 00403850 reads the original world+8, group C/10 and dt+14
+                // from this task. No task or solver state is reconstructed here.
+                execute_native_dyn_solver_mode1_00403850(task, *binding.profile,
+                    *binding.calls, *binding.crt);
+            } else {
+                using Execute = void (__thiscall*)(void*);
+                auto* vtable = at<Execute*>(task, 0);
+                vtable[0](task);
+            }
+        } else {
+            using Execute = void (__thiscall*)(void*);
+            auto* vtable = at<Execute*>(task, 0);
+            vtable[0](task);
+        }
         const auto group = at<std::uint32_t>(task, 4);
         if (InterlockedDecrement(&at<volatile LONG>(manager, 0x30 + group * 4)) == 0) {
             // Native reloads task+4 after the decrement, before fetching event.
