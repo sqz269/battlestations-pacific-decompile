@@ -1,8 +1,10 @@
 #include "bsp/native_texture_2d_retained_recreation.hpp"
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_shader_device_reset.hpp"
+#include "bsp/native_tagged_leaf_b3_03.hpp"
 #include "bsp/native_tagged_leaf_b3_05.hpp"
 #include "bsp/wire_goal4_chain574_switches.hpp"
+#include "bsp/wire_goal4_chain586_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native retained texture recreation requires MSVC Win32.
@@ -52,9 +54,24 @@ void recreate_native_texture_2d_retained_00b3e190(void* owner,
     }();
     void* const length_stream = pointer(word(address(owner, 0x4c)));
     auto** const output = reinterpret_cast<IDirect3DTexture9**>(address(owner, 0x10));
-    const auto height = word(address(owner, 0x2c));
+    // B3E190's retained-image path reads this actual owner's +2C, +3C,
+    // then +28. The B3D0B0/B3D0A0 raw DWORD leaves preserve those loads;
+    // they assert no class identity (bsp.py show <address> --asm).
+    const auto height = [&] {
+        if constexpr (kWireGoal4Chain586Bound) {
+            return native_tagged_b3_read_dword_2c_00b3d0b0(owner);
+        } else {
+            return word(address(owner, 0x2c));
+        }
+    }();
     const auto mip_levels = word(address(owner, 0x3c));
-    const auto width = word(address(owner, 0x28));
+    const auto width = [&] {
+        if constexpr (kWireGoal4Chain586Bound) {
+            return native_tagged_b3_read_dword_28_00b3d0a0(owner);
+        } else {
+            return word(address(owner, 0x28));
+        }
+    }();
     const auto length = static_cast<UINT>(
         dispatch_native_memory_stream_length(length_stream, context.retained_memory));
     void* const data_stream = pointer(word(address(owner, 0x4c)));

@@ -1,8 +1,10 @@
 #include "bsp/native_texture_device_reset.hpp"
 #include "bsp/native_surface_owner.hpp"
+#include "bsp/native_tagged_leaf_b3_03.hpp"
 #include "bsp/native_tagged_leaf_b3_05.hpp"
 #include "bsp/native_tagged_leaf_b3_06.hpp"
 #include "bsp/wire_goal4_chain574_switches.hpp"
+#include "bsp/wire_goal4_chain586_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native texture device reset requires MSVC Win32.
@@ -122,8 +124,23 @@ void restore_native_texture_2d_after_reset_00b3dd90(void* owner,
             return read_word(address(owner, 0x14));
         }
     }();
-    const auto height = read_word(address(owner, 0x2c));
-    const auto width = read_word(address(owner, 0x28));
+    // B3DE61/B3DE65 read height then width from this same actual texture.
+    // B3D0B0/B3D0A0 are complete MOV EAX,[ECX+2C/28]; RET bodies,
+    // with no writes or additional reads (bsp.py show <address> --asm).
+    const auto height = [&] {
+        if constexpr (kWireGoal4Chain586Bound) {
+            return native_tagged_b3_read_dword_2c_00b3d0b0(owner);
+        } else {
+            return read_word(address(owner, 0x2c));
+        }
+    }();
+    const auto width = [&] {
+        if constexpr (kWireGoal4Chain586Bound) {
+            return native_tagged_b3_read_dword_28_00b3d0a0(owner);
+        } else {
+            return read_word(address(owner, 0x28));
+        }
+    }();
     (void)create(captured_device, width, height, levels, usage, format, pool,
         device_argument_and_texture_output, nullptr);
 
