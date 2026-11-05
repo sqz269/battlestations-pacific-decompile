@@ -1,0 +1,91 @@
+{
+  "chain": 577,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain577Bound",
+  "summary": "Reuse the existing VFS manager deleting body from the actual derived-manager shutdown path with the same allocation, incoming flags and lifetime context.",
+  "rows": [
+    {
+      "native": "00be25c0",
+      "status": "wired",
+      "host_site": "src/native_vfs_derived_manager.cpp::delete_native_vfs_derived_manager_00bedac0",
+      "real_state": "The current D68D04-profile owner and flags arrive from native_singleton_destruction.cpp::delete_legacy_current_profile with the application's existing VFS lifetime context.",
+      "evidence": "bsp.py show 00bedac0 --asm and show 00be25c0 --asm: both call BE1F60(owner), test incoming flags bit0, optionally call BF65AC(owner), then return the original owner with RET4.",
+      "replacement": "The enabled arm returns through the one existing BE25C0 body; the original destroy/free sequence remains unchanged only in the disabled arm.",
+      "built_call": "REACHABLE tail jump at 10551bb4 from delete_native_vfs_derived_manager_00bedac0 to delete_native_vfs_manager_00be25c0 at 10605b20."
+    },
+    {
+      "native": "00be31e0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_lifetime.cpp::destroy_native_frame_job_owner_004bfad0 (candidate)",
+      "reason": "The current pool is an embedded owner subobject; a standalone pool deletion request with actual incoming deleting flags is missing."
+    },
+    {
+      "native": "00be5380",
+      "status": "skipped",
+      "host_site": "src/native_singleton_destruction.cpp::delete_legacy_current_profile (candidate)",
+      "reason": "The published file-store factory uses its derived secondary deleting profile; an actual base-only factory owner requesting deletion is missing."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_publication.cpp::published clock accessors (candidate)",
+      "reason": "The application consumes current and interval timestamps; an existing consumer of the actual previous-timestamp view is missing."
+    },
+    {
+      "native": "00be6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_routes.cpp::file-store provider dispatch (candidate)",
+      "reason": "An actual file-store vtable slot7 copy-name request path is missing; canonical string copies alone do not establish that operation."
+    },
+    {
+      "native": "00b1bf20",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp::execute_native_shadow_frame_job_00a8ae50",
+      "reason": "The existing getter caller is not entry-reachable; the actual native shadow-command construction and submission path is missing."
+    },
+    {
+      "native": "00b1bf30",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp::execute_native_shadow_frame_job_00a8ae50",
+      "reason": "The existing getter caller is not entry-reachable; the actual native shadow-command construction and submission path is missing."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp::set_native_render_command_metadata_00b1bf50 (candidate)",
+      "reason": "An entry-reachable producer of the actual render-command allocation and its metadata arguments is missing."
+    },
+    {
+      "native": "00b1d910",
+      "status": "skipped",
+      "host_site": "src/native_render_command_preparation.cpp::set_native_render_command_diagnostic_00b1d910 (candidate)",
+      "reason": "An entry-reachable producer of the actual render-command allocation and diagnostic assignment is missing."
+    },
+    {
+      "native": "00b21f10",
+      "status": "skipped",
+      "host_site": "src/native_render_resource_init.cpp::existing dimension-copy caller (candidate)",
+      "reason": "The existing dimension-copy caller is outside the current entry-reachable application path; its initialization route is missing."
+    },
+    {
+      "native": "00b34300",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b3_01.cpp::native_tagged_b3_read_dword_00b34300 (candidate)",
+      "reason": "The leaf's original owner class is unknown; an identified actual receiver and operation-specific consumer are missing."
+    }
+  ],
+  "validation": {
+    "wired_total_before": 9903,
+    "wired_total_after": 9904,
+    "newly_wired": ["00be25c0"],
+    "new_body_called_from_entry": true,
+    "new_body_call_sites": 1,
+    "baseline_build": "scripts/build.ps1 passed, including all five CTests",
+    "enabled_build": "scripts/build.ps1 passed, including all five CTests",
+    "call_graph": "python tools/call_graph.py; who 00be25c0; path 00be25c0; who 00bedac0",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameSingletonHost::shutdown -> destroy_native_singleton_manager_00bd0400 -> destroy_manager_body -> delete_current_profile -> delete_legacy_current_profile -> delete_native_vfs_derived_manager_00bedac0 -> delete_native_vfs_manager_00be25c0",
+    "float_math_changed": false,
+    "game_run": false,
+    "boundary": "Build, existing tests and executable entry reachability checked; in-game shutdown and original binary ABI replacement were not exercised."
+  }
+}
