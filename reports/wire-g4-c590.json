@@ -1,0 +1,85 @@
+{
+  "chain": 590,
+  "owner": "agent/g4-w5",
+  "switch": "kWireGoal4Chain590Bound",
+  "summary": "Reuse the existing logical-vertex physical-owner getter in the live renderer's token-adapted buffer lookup.",
+  "rows": [
+    {
+      "native": "00b48d00",
+      "status": "wired",
+      "host_site": "src/native_renderer_vertex_binding.cpp:get_native_logical_vertex_buffer_00b48cf0 (inlined into logical_buffer)",
+      "evidence": "bsp.py show 00b48d00 --asm: MOV EAX,[ECX+58h]; RET. B48CF0 begins MOV ECX,[ECX+58h]. The existing body replaces that single real-stream field read, then preserves current physical-profile and slot+1C dispatch.",
+      "call_graph": "REACHABLE, one call at 105f3e85 from logical_buffer; reached through bind_native_renderer_vertex_stream_00b24840. No folded-function warning."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_vertex_binding.cpp:logical_buffer",
+      "reason": "The naked native_logical_vertex_stream_get_buffer entry requires relocated callable physical vtables; current production owners use original-address tokens and the existing token adapter."
+    },
+    {
+      "native": "00b48dc0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_index_binding.cpp:bind_native_renderer_index_stream_00b24b00",
+      "reason": "The naked native_logical_index_stream_get_buffer entry requires relocated callable physical vtables; current production owners use original-address tokens and the existing token adapter."
+    },
+    {
+      "native": "00b343f0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_command.inc:MissionCommandGraph::begin_submission",
+      "reason": "Already called from the mission host in the baseline executable; no additional wiring is needed for this getter."
+    },
+    {
+      "native": "00b21f10",
+      "status": "skipped",
+      "host_site": "src/native_render_resource_init.cpp:begin_native_render_resource_init_00b107f0_fragment",
+      "reason": "No new reachable dimensions consumer with a verified real output header was established during selection; the existing initializer remains unchanged."
+    },
+    {
+      "native": "00b4cc00",
+      "status": "skipped",
+      "host_site": "original 00b529a0:BSP_PostEffectState_RenderOldFilm (candidate caller)",
+      "reason": "A live old-film post-effect receiver for the +20 count getter was not established in this packet."
+    },
+    {
+      "native": "00b4e3d0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_frame_binding.cpp:set_native_post_effect_frame_target_00b4e3d0 (candidate host route)",
+      "reason": "A live post-effect receiver and its current increment/decrement and frame-target lifetime context were not established in this packet."
+    },
+    {
+      "native": "00b3ceb0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp:write_dimensions",
+      "reason": "A production NativeD3D9ShadowTexture binding for this typed shadow-wrapper route was not established in this packet."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp:NativeStreamTypeIds::initialize_memory_00cd8fc0 and initialize_physical_00cd9030",
+      "reason": "Existing memory/physical type initializers already source-call this body; no distinct missing production call was established during selection."
+    },
+    {
+      "native": "00b268a0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:unregister",
+      "reason": "The existing vertex shader destructor already source-calls this wrapper; no distinct missing production caller was established during selection."
+    },
+    {
+      "native": "00b268c0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:unregister",
+      "reason": "The existing pixel shader destructor already source-calls this wrapper; no distinct missing production caller was established during selection."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release",
+    "tests": "All four existing CTests passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
+    "diff_check": "git diff --check passed",
+    "reconstructed_addresses_called_before": 4996,
+    "reconstructed_addresses_called_after": 4997,
+    "readiness_wired_before": 9921,
+    "readiness_wired_after": 9922,
+    "runtime": "Game not run; evidence is build, existing tests, original assembly and executable call-graph reachability."
+  }
+}
