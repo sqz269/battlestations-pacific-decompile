@@ -1,0 +1,78 @@
+{
+  "chain": 573,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain573Bound",
+  "picked": "Actual node child-count reads in prepend and unlink",
+  "newly_wired": ["00b6d980"],
+  "rows": [
+    {
+      "native": "00b6d980",
+      "status": "wired",
+      "host_site": "src/native_node_parenting.cpp:prepend_native_node_child_00b6e010; src/native_node_destruction.cpp:unlink_native_node_child_00b6d940",
+      "evidence": "bsp.py show/ghidra proto 00b6d980: ECX actual node, MOV EAX,[ECX+38h], RET. CameraTransform::raw_node_key retains the actual node identity; NativeNodeBinding's CameraTransformBacking aliases that node's count at +38h.",
+      "behavior": "Replace the read half of the existing unsigned increment/decrement with the existing getter. Keep each store after the same sibling/head changes and callbacks, with DWORD wrap. Unbound diagnostic transforms retain their existing field access. The OFF arms are unchanged."
+    },
+    {
+      "native": "00b6e010",
+      "status": "wired",
+      "already_wired": true,
+      "host_site": "src/native_node_parenting.cpp:prepend_native_node_child_00b6e010",
+      "note": "Existing reachable caller; only its bound parent-count read now calls 00B6D980. No new reconstruction credit for this address."
+    },
+    {
+      "native": "00b6d940",
+      "status": "wired",
+      "already_wired": true,
+      "host_site": "src/native_node_destruction.cpp:unlink_native_node_child_00b6d940",
+      "note": "Existing reachable caller; only its bound parent-count read now calls 00B6D980. No new reconstruction credit for this address."
+    },
+    {"native":"00b4ed70","status":"skipped","host_site":"src/native_distortion_lifetime.cpp:resize_native_distortion_records_00b4ee20","reason":"Already directly called and entry-reachable in the baseline executable; no additional wiring is missing."},
+    {"native":"00b4ee20","status":"skipped","host_site":"src/native_distortion_lifetime.cpp:destroy_owner/destroy_native_distortion_records_00b4f0a0","reason":"Already directly called and entry-reachable in the baseline executable; another resize would repeat work."},
+    {"native":"00b253e0","status":"skipped","host_site":"src/native_d3d9_shader_lifetime.cpp:unregister_native_vertex_shader_00b268a0","reason":"Already directly called and entry-reachable in the baseline executable; no new caller is required."},
+    {"native":"00b25450","status":"skipped","host_site":"src/native_d3d9_shader_lifetime.cpp:unregister_native_pixel_shader_00b268c0","reason":"Already directly called and entry-reachable in the baseline executable; no new caller is required."},
+    {"native":"00b92440","status":"skipped","host_site":"src/native_skinned_animation_item.cpp:append_values/assign_native_animation_values_00b926e0","reason":"Existing helpers already call reserve; a live actual skinned-animation record producer and consumer are missing upstream."},
+    {"native":"00b7bdf0","status":"skipped","host_site":"src/game_native_mission_lighting.inc:mission sun owner","reason":"The live sun requires its constructor's null shadow and has no shadow assignment event; an actual directional-shadow producer and assignment consumer are missing."},
+    {"native":"00b1cb50","status":"skipped","host_site":"src/native_main_scene_submission.cpp:main scene submission","reason":"Existing native submission already names the getter; an entry-reachable submission operation with its actual metadata source is missing."},
+    {"native":"00b1eb80","status":"skipped","host_site":"src/native_main_scene_submission.cpp:main scene submission","reason":"Existing native submission already calls the body; its live command producer and full submission context remain missing upstream."},
+    {"native":"00b33e50","status":"skipped","host_site":"src/native_tagged_leaf_b3_06.cpp:native_tagged_b3_read_dword_14_00b33e50","reason":"The candidate mask consumer has DDS bytes rather than the native texture-resource owner whose +14h field this body reads."},
+    {"native":"00b4cb90","status":"skipped","host_site":"src/native_post_effect_raw_access.cpp:native_post_effect_pass_raw_08_00b4cb90","reason":"No live native post-effect pass/frame-target owner was found at the candidate caller."},
+    {"native":"00b4ec50","status":"skipped","host_site":"src/native_post_effect_raw_access.cpp:native_post_effect_pass_raw_18_00b4ec50","reason":"No live native post-effect pass owner was found for the +18h field read."},
+    {"native":"00b4ffe0","status":"skipped","host_site":"src/native_post_effect_raw_access.cpp:native_post_effect_owner_raw_23c_00b4ffe0","reason":"No live native post-effect owner and consuming luminance/pass graph was found for the +23Ch read."},
+    {"native":"00bbc5f0","status":"skipped","host_site":"src/native_procedural_factory_storage.cpp:construct_native_caustics_factory_00bbc5f0","reason":"Already entry-reachable in the baseline executable; no new wiring is missing."},
+    {"native":"00b87410","status":"skipped","host_site":"src/structured_model.cpp:StructuredHierarchyItems::release","reason":"Another worker completed this exact hierarchy-array destructor/resize work in chain571; avoid overlapping its pending integration."},
+    {"native":"00b86390","status":"skipped","host_site":"src/native_mesh_section.cpp:BSP_DrawSection_ClearResources","reason":"Another worker completed this mesh-section cleanup work in chain570; avoid overlapping its pending integration."},
+    {"native":"005296a0","status":"skipped","host_site":"src/native_session_message35.cpp:read_native_session_message35_0052abe0","reason":"Existing message35 reader already calls reserve; a live message35 producer/factory path is missing upstream."},
+    {"native":"00529980","status":"skipped","host_site":"src/native_session_message35.cpp:read_native_session_message35_0052abe0","reason":"Existing message35 reader already calls resize; a live message35 producer/factory path is missing upstream."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp:AI candidate score list","reason":"No live candidate-table producer and gameplay consumer was found; existing notes identify the image-table reader as a debug overlay."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp:AI candidate score list","reason":"No live candidate score-list entries and gameplay selection consumer exist to mark."},
+    {"native":"00ac2f20","status":"skipped","host_site":"src/game_hosts_hud.cpp:weapon animation interval","reason":"weapon_animation supplies zero; an actual weapon-animation ticker owner and timed entry are missing."},
+    {"native":"008fbef0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp:GameGunneryHost::notify_gun_skill_level","reason":"The existing chain451 arm already calls this body with the loaded descriptor, actual skill and shared random stream."},
+    {"native":"00b0d7b0","status":"skipped","host_site":"src/game_hosts_units.cpp:publish_listener","reason":"The caller supplies only a bool; the actual driven-listener pointer and live renderer invalidation-owner/root mapping are missing."},
+    {"native":"00bee060","status":"skipped","host_site":"src/native_frame_clock_actual.cpp:get_raw_timer_previous_00bee060","reason":"The actual timer exists, but no live consumer of its previous timestamp was found; current and interval consumers need different fields."},
+    {"native":"00c302a0","status":"skipped","host_site":"src/native_texture_source_time.cpp:set_native_texture_source_time_00c302a0","reason":"No live actual animated texture-source owner and frame-time consumer were found; sampler TextureSource fields are indices rather than that owner."},
+    {"native":"00ae19b0","status":"skipped","host_site":"src/native_shadow_node_array_release.cpp:release_native_shadow_entry_nodes_00ae1c20","reason":"Existing release and disposal bodies already call resize directly; a new resize there would duplicate existing work."},
+    {"native":"00b873c0","status":"skipped","host_site":"src/native_resource_pointer_array.cpp:resize_native_resource_item_pointers_00b873c0","reason":"The resource-item array append already uses its native reserve/append schedule; a live matching clear/resize owner path is missing."},
+    {"native":"00b87b20","status":"skipped","host_site":"src/native_resource_container_lifetime.cpp:resource unwind","reason":"Existing container unwind already calls this destructor; a live actual container destruction/unwind producer is missing upstream."},
+    {"native":"007214c0","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp:snapshot_build_007214c0","reason":"No controller snapshot producer/transport and consuming snapshot owner was found; round-tripping flattened flags would manufacture work."},
+    {"native":"00b18d60","status":"skipped","host_site":"src/native_material_effect_owner.cpp:initialize_native_material_effect_base_with_texture_cache_00b18d60","reason":"The live cache-aware variant already uses the same initialization implementation; calling the other entry would repeat initialization or bypass its required texture-cache context."},
+    {"native":"00be31e0","status":"skipped","host_site":"src/native_frame_job_lifetime.cpp:delete_native_frame_job_pool_00be31e0","reason":"The live pool is embedded in its owning frame-job object; no standalone pool allocation/deletion owner exists to justify the separate scalar-delete entry."},
+    {"native":"00b72080","status":"skipped","host_site":"src/scene_graph2_cc13.cpp:refresh_leaf_worlds_00b72080","reason":"This body traverses the legacy SceneNode projection; a live producer and consumer of that graph were not found, so it cannot substitute for actual CameraTransform backing."}
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, including all five existing CTests",
+    "float_math_changed": false,
+    "baseline_readiness_wired": 9898,
+    "final_readiness_wired": 9899,
+    "readiness_row": {"native":"00b6d980","state":"wired","called":true,"call_sites":2,"callers_live":2},
+    "call_graph": {
+      "command": "python tools/call_graph.py --build; python tools/call_graph.py who 00b6d980; python tools/call_graph.py path 00b6d980",
+      "build": "build/callgraph, no inlining and no identical-code folding",
+      "callee": "bsp_tagged_b6_16e_00b6d980 in native_tagged_leaf_b6_16e.obj at 10560570",
+      "callers": ["unlink_native_node_child_00b6d940 at 1063f72e", "prepend_native_node_child_00b6e010 at 1065704b"],
+      "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> application_shutdown -> retire_native_gui_text_before_fonts -> GameNativeGuiRenderApplication::retire_before_fonts -> GameNativeGuiGroupApplication::detach_text -> set_native_node_parent_00b6e680 -> unlink_native_node_child_00b6d940 -> bsp_tagged_b6_16e_00b6d980",
+      "optimized_build": "Also reachable in build/win32; MSVC folds the identical +38h getter with the texture saved-height getter. Attribution was therefore verified independently with --build."
+    },
+    "game_run": false,
+    "limits": "Source integration and built-executable reachability only; no gameplay validation or new native ABI claim."
+  }
+}
