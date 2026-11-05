@@ -3,11 +3,10 @@
   "chain": 620,
   "slot": "g4-w1",
   "base_head": "b49b34ac30",
-  "switch": "bsp::kWireGoal4Chain620Bound",
   "scope": "Scene property-library group publication, native payload lookup and owning teardown",
   "wired_total_before": 9954,
-  "wired_total_after": 9955,
-  "measurement_note": "wire_readiness states are lexical; all three selected native bodies have explicit entry-reachable calls in the Release exe. The aggregate lexical gain is one.",
+  "wired_total_after": 9953,
+  "measurement_note": "wire_readiness states are lexical and include superseded implementation paths. All three selected native bodies retain explicit entry-reachable calls in the Release exe after deleting the borrowed index.",
   "real_state": "The scene parser and parent merges supply each named group. Complete supported trees use existing native record producers in a fresh heap-owned 114h bag, the retained string process, E175B0 inner nodes, E17540 outer nodes and the real singleton CRT heap. Mapped native payloads are decoded for inheritance/entity defaults.",
   "fallback": "Unsupported trees use parser-owned group data and never call owning insertion. A formerly supported tree remains owned but is marked unused after an unsupported reopening, until replacement or teardown. Non-ASCII group names retain source lookup.",
   "validation": [
@@ -116,5 +115,28 @@
       "host_site": "src/native_dyn_convex_ray.cpp: NativeDynConvexRayRuntime adapter",
       "reason": "Missing an established new caller/state path beyond the existing runtime adapter in this packet; no duplicate ray body or count-only wrapper added."
     }
-  ]
+  ],
+  "review_fixes": [
+    {
+      "run": 1286,
+      "round": 1,
+      "finding": 1,
+      "status": "fixed",
+      "resolution": "Made owning group lookup and publication unconditional; deleted the superseded LibraryGroupNameIndex/native_groups_ implementation and its unused includes, retained the ASCII admission rule in library_group_name_is_native_ascii, and removed the chain620 switch header/include/report field.",
+      "validation": [
+        "./scripts/build.ps1: all five checks passed after direct replacement, including the owning-bag replacement/readback/cleanup regression",
+        "python tools/call_graph.py: 008F29A0, 008F56A0 and 008F4C50 remain REACHABLE from entry with 1, 2 and 2 call sites respectively",
+        "Removal check: no LibraryGroupNameIndex or kWireGoal4Chain620Bound remains; switch header is absent; report switch field is absent",
+        "git diff --check: passed",
+        "python tools/wire_readiness.py --standins: wired=9953; all three claimed rows called=true"
+      ]
+    }
+  ],
+  "review_base_head": "16a4f8f053f1cc541743f9be3954c944ef8ec8a8",
+  "review_wired_total_before": 9955,
+  "review_call_graph_summary": {
+    "reachable_reconstructed": 5035,
+    "linked_reconstructed": 5553,
+    "note": "The superseded borrowed-index cleanup no longer retains the separate 008F3DC0 helper; all three claimed native bodies remain entry-reachable."
+  }
 }
