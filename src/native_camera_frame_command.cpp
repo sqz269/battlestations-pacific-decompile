@@ -1,5 +1,4 @@
 #include "bsp/native_camera_frame_command.hpp"
-#include "bsp/wire_goal4_chain567_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native camera frame command requires MSVC Win32 x87 assembly.
@@ -65,15 +64,11 @@ __declspec(naked) void __fastcall execute_native_camera_frame_command_00b71360(
         push ecx // reserve original outgoing depth word
         fstp dword ptr [esp] // B713AD: including flags=0
     }
-    if constexpr (kWireGoal4Chain567Bound) {
+    {
         // Lend the SAME actual camera to the clear adapter. It calls the
         // existing 00B6FE60 at the original color-load site AFTER guard entry.
         __asm {
             mov eax, esi
-        }
-    } else {
-        __asm {
-        lea eax, [esi + 190h]
         }
     }
     __asm {
@@ -85,10 +80,8 @@ __declspec(naked) void __fastcall execute_native_camera_frame_command_00b71360(
         mov edx, [esp + 1ch]
         mov edx, [edx + 0ch]
     }
-    if constexpr (kWireGoal4Chain567Bound) {
+    {
         __asm { call clear_native_renderer_camera_color } // B713C2, RET18h
-    } else {
-        __asm { call clear_native_renderer_00b21430 } // B713C2, RET18h
     }
     __asm {
     finished:

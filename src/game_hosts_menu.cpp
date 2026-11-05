@@ -2,12 +2,6 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
-#include "bsp/wire_goal4_chain461_switches.hpp"
-#include "bsp/wire_goal4_chain503_switches.hpp"
-#include "bsp/wire_goal4_chain507_switches.hpp"
-#include "bsp/wire_goal4_chain528_switches.hpp"
-#include "bsp/wire_goal4_chain545_switches.hpp"
-#include "bsp/wire_goal4_chain561_switches.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -16,11 +10,6 @@
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_frame_clock_publication.hpp"
-#include "bsp/wire_goal4_chain251_switches.hpp"
-#include "bsp/wire_goal4_chain271_switches.hpp"
-#include "bsp/wire_goal4_chain302_switches.hpp"
-#include "bsp/wire_goal4_chain312_switches.hpp"
-#include "bsp/wire_goal4_chain337_switches.hpp"
 #include "bsp/engine_core_cc13.hpp"
 #include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
@@ -53,14 +42,6 @@
 #include "bsp/press_start_screen.hpp"
 #include "bsp/render_queue_seg83_cc13.hpp"
 #include "bsp/title_init.hpp"
-#include "bsp/wire_goal1_chain4_switches.hpp"
-#include "bsp/wire_goal2_chain34_switches.hpp"
-#include "bsp/wire_goal2_chain48_switches.hpp"
-#include "bsp/wire_goal2_chain54_switches.hpp"
-#include "bsp/wire_goal2_chain57_switches.hpp"
-#include "bsp/wire_goal2_chain91_switches.hpp"
-#include "bsp/wire_goal2_chain111_switches.hpp"
-#include "bsp/wire_goal2_chain189_switches.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_title_sound.hpp"
@@ -406,33 +387,23 @@ GameFrameProfiler::GameFrameProfiler(GameHostLog& log, int slot_count)
     counters_.display = display_.data();
     counters_.slot_count = slot_count_;
 
-    if constexpr (kWireGoal4Chain337Bound) {
-        class Clock final : public cc13_engine_core::PerfClockHost {
-        public:
-            explicit Clock(GameFrameProfiler& profiler) : profiler_(profiler) {}
-            std::int64_t query_performance_counter() override {
-                return profiler_.query_performance_counter();
-            }
-            void sleep_ms(std::uint32_t milliseconds) override { Sleep(milliseconds); }
-        private:
-            GameFrameProfiler& profiler_;
-        } clock(*this);
-        // bsp.py show 00BE3310 --asm: QPC, Sleep(100), QPC, delta * 10.
-        // 00CD8F30 stores the result in 0109DB48; 00BE3360 / 00BE34D0
-        // divide by it. Keep the actual measured ticks/second, not its inverse.
-        tick_scale_ = cc13_engine_core::calibrate_ticks_per_second_00be3310(clock);
-        log_.notef("profiler slots=%d history=%d spare=%d ticks_per_second=%.9f "
-            "(0109db48 calibrated by 00be3310)",
-            slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
-    } else {
-        LARGE_INTEGER frequency{};
-        tick_scale_ = QueryPerformanceFrequency(&frequency) && frequency.QuadPart != 0
-            ? 1.0 / static_cast<double>(frequency.QuadPart)
-            : 0.0;
-        log_.notef("profiler slots=%d history=%d spare=%d tick_scale=%.9f "
-            "(0109db48 is zero in the image; seconds per QPC tick substituted)",
-            slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
-    }
+    class Clock final : public cc13_engine_core::PerfClockHost {
+    public:
+        explicit Clock(GameFrameProfiler& profiler) : profiler_(profiler) {}
+        std::int64_t query_performance_counter() override {
+            return profiler_.query_performance_counter();
+        }
+        void sleep_ms(std::uint32_t milliseconds) override { Sleep(milliseconds); }
+    private:
+        GameFrameProfiler& profiler_;
+    } clock(*this);
+    // bsp.py show 00BE3310 --asm: QPC, Sleep(100), QPC, delta * 10.
+    // 00CD8F30 stores the result in 0109DB48; 00BE3360 / 00BE34D0
+    // divide by it. Keep the actual measured ticks/second, not its inverse.
+    tick_scale_ = cc13_engine_core::calibrate_ticks_per_second_00be3310(clock);
+    log_.notef("profiler slots=%d history=%d spare=%d ticks_per_second=%.9f "
+        "(0109db48 calibrated by 00be3310)",
+        slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
 }
 
 std::int64_t GameFrameProfiler::query_performance_counter() {
@@ -517,23 +488,21 @@ struct MenuLeafOwner {
     std::unique_ptr<MenuLeafBacking> native_leaf;
 };
 struct NoMenuLeafOwner {};
-using MenuLeafOwnership = std::conditional_t<kWireGoal2Chain91Bound, MenuLeafOwner, NoMenuLeafOwner>;
+using MenuLeafOwnership = MenuLeafOwner;
 
 template <class Screen>
 void retain_menu_leaf(Screen& screen, std::unique_ptr<MenuLeafBacking> native) {
-    if constexpr (kWireGoal2Chain91Bound) screen.native_leaf = std::move(native);
+    screen.native_leaf = std::move(native);
 }
 
 template <class Screen>
 void release_menu_leaf(Screen& screen) {
-    if constexpr (kWireGoal2Chain91Bound) {
-        if (screen.native_leaf) {
-            // Constructor-only backing owns no raw page/vector elements. The
-            // existing menu and mission hosts retain those separate owners.
-            screen.owned_flags = *screen.flags;
-            screen.flags = &screen.owned_flags;
-            screen.native_leaf.reset();
-        }
+    if (screen.native_leaf) {
+        // Constructor-only backing owns no raw page/vector elements. The
+        // existing menu and mission hosts retain those separate owners.
+        screen.owned_flags = *screen.flags;
+        screen.flags = &screen.owned_flags;
+        screen.native_leaf.reset();
     }
 }
 
@@ -596,7 +565,7 @@ struct MenuLocaleTableBorrow<true> {
     LocaleTables* borrowed_menu_locale_tables() const noexcept { return tables; }
 };
 
-struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
+struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
     // One registry slot. The flag bytes live in whichever object owns them
     // (004f7180 clears +4h and +5h in the base constructor), so this record
     // points at them rather than holding a second copy.
@@ -693,25 +662,13 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // 0057BEC0 at every report: null unless 0057CB60 built the screen.
     void report_loading_progress_0057bec0(float progress) {
         const LoadingProgressCrtAccess crt{&loading_progress_scale_00cef258, &sse2_0109eea4};
-        if constexpr (kWireGoal4Chain545Bound) {
-            // 0057BFF0 publishes before virtual Init returns. Progress raised
-            // inside Init must already see that SAME owner, even though the
-            // legacy created flag is only set by begin_loading_screen later.
-            report_loading_progress(loading_screen_singleton, progress, crt);
-            if (loading_screen_singleton != nullptr) {
-                loading_elements.rotation.progress = loading_screen_singleton->progress;
-                loading_elements.rotation.progress_units = loading_screen_singleton->progress_units;
-            }
-        } else {
-        if constexpr (kWireGoal4Chain251Bound) {
-            report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
-            if (loading_screen.created) {
-                loading_elements.rotation.progress = loading_screen.progress;
-                loading_elements.rotation.progress_units = loading_screen.progress_units;
-            }
-        } else {
-        report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
-        }
+        // 0057BFF0 publishes before virtual Init returns. Progress raised
+        // inside Init must already see that SAME owner, even though the
+        // legacy created flag is only set by begin_loading_screen later.
+        report_loading_progress(loading_screen_singleton, progress, crt);
+        if (loading_screen_singleton != nullptr) {
+            loading_elements.rotation.progress = loading_screen_singleton->progress;
+            loading_elements.rotation.progress_units = loading_screen_singleton->progress_units;
         }
     }
     GameSingletonHost& singletons;
@@ -1062,44 +1019,27 @@ public:
             && action_pressed_this_frame_004c43c0(owner_.press_action);
     }
     void* primary_device() override {
-        if constexpr (kWireGoal4Chain507Bound) {
-            // bsp.py show 0067CFB0: 0067D19A..1AE captures the existing
-            // F8BBF4 backend's class-2/index-0 device (004BA6D0), including its
-            // real null result when that vector is empty.
-            void* const device = input_runtime().input_device(2, 0);
-            owner_.log.implemented("PressStartScreen::primary_device", "004ba6d0");
-            return device;
-        } else {
-        owner_.log.unimplemented("PressStartScreen::primary_device", "004ba6d0");
-        return nullptr;
-        }
+        // bsp.py show 0067CFB0: 0067D19A..1AE captures the existing
+        // F8BBF4 backend's class-2/index-0 device (004BA6D0), including its
+        // real null result when that vector is empty.
+        void* const device = input_runtime().input_device(2, 0);
+        owner_.log.implemented("PressStartScreen::primary_device", "004ba6d0");
+        return device;
     }
     bool device_button_held(void* device) override {
-        if constexpr (kWireGoal4Chain507Bound) {
-            // bsp.py show 0067C880: +20h(0) || +20h(0Eh), with the second
-            // query skipped when the first succeeds. Reuse the existing body
-            // on the same device the live press-start update just captured.
-            PressStartDeviceButtons buttons(input_runtime().devices());
-            const bool held = ingame_gui_cc13::press_start_device_button_held_0067c880(device, buttons);
-            owner_.log.implemented("PressStartScreen::device_button_held", "0067c880");
-            return held;
-        } else {
-        static_cast<void>(device);
-        owner_.log.unimplemented("PressStartScreen::device_button_held", "0067c880");
-        return false;
-        }
+        // bsp.py show 0067C880: +20h(0) || +20h(0Eh), with the second
+        // query skipped when the first succeeds. Reuse the existing body
+        // on the same device the live press-start update just captured.
+        PressStartDeviceButtons buttons(input_runtime().devices());
+        const bool held = ingame_gui_cc13::press_start_device_button_held_0067c880(device, buttons);
+        owner_.log.implemented("PressStartScreen::device_button_held", "0067c880");
+        return held;
     }
     int device_pad_index(void* device) override {
-        if constexpr (kWireGoal4Chain507Bound) {
-            // 0067D29F..2AE invokes +34h on this same captured device.
-            const int index = input_runtime().devices().identifier_vslot34(device);
-            owner_.log.implemented("PressStartScreen::device_pad_index", "0067c880+34h");
-            return index;
-        } else {
-        static_cast<void>(device);
-        owner_.log.unimplemented("PressStartScreen::device_pad_index", "0067c880+34h");
-        return 0;
-        }
+        // 0067D29F..2AE invokes +34h on this same captured device.
+        const int index = input_runtime().devices().identifier_vslot34(device);
+        owner_.log.implemented("PressStartScreen::device_pad_index", "0067c880+34h");
+        return index;
     }
     void rebind_primary_input() override {
         owner_.log.unimplemented("PressStartScreen::rebind_primary_input", "0067c970");
@@ -1217,21 +1157,17 @@ public:
         owner_.log.unimplemented("PressStartScreen::refresh_input_bindings", "008d44c0");
     }
     void commit_input_manager() override {
-        if constexpr (kWireGoal4Chain302Bound) {
-            // 0067CEB9 (apply_sign_in) and 0067D50F (the no-user arm): ECX =
-            // [00E188A8]+3Ch, CALL 00698A10, unconditionally (no +55Ch gate,
-            // unlike OnInitOnce 004DD739): Inputs.lua is re-read into the action
-            // owner, rebound, ticked once at zero seconds, and the keyboard
-            // defaults preserved when [00F88A30] is clear.
-            if (owner_.input_configuration == nullptr) {
-                owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
-                return;
-            }
-            owner_.input_configuration->load();
-            owner_.log.implemented("PressStartScreen::commit_input_manager", "00698a10");
-        } else {
+        // 0067CEB9 (apply_sign_in) and 0067D50F (the no-user arm): ECX =
+        // [00E188A8]+3Ch, CALL 00698A10, unconditionally (no +55Ch gate,
+        // unlike OnInitOnce 004DD739): Inputs.lua is re-read into the action
+        // owner, rebound, ticked once at zero seconds, and the keyboard
+        // defaults preserved when [00F88A30] is clear.
+        if (owner_.input_configuration == nullptr) {
             owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+            return;
         }
+        owner_.input_configuration->load();
+        owner_.log.implemented("PressStartScreen::commit_input_manager", "00698a10");
     }
 
     // --- frame tail ---------------------------------------------------------
@@ -1381,22 +1317,9 @@ public:
     }
     void update_press_start_screen(float raw_delta) override {
         // 004F71F0 dispatches the real screen's +20h; OFF keeps the direct press-start update.
-        if constexpr (kWireGoal2Chain34Bound) {
-            MenuPressStartUpdateAdapter screen(owner_, press_);
-            engine_seg11_35_66_cc13::update_front_end_screen_004f71f0(screen, raw_delta);
-            owner_.log.implemented("TitleScreen::update_press_start_screen", "004f71f0");
-        } else {
-        // 004f71f0 on title+40h, which tail-calls the screen's vtable +20h with
-        // the raw delta. The registry pump reaches the same body in pass C, so
-        // the native runs 0067cfb0 twice per frame in state 2 and so does this.
-        const PressStartOutcome outcome = update_press_start_screen_0067cfb0(
-            owner_.press_start, owner_.press_globals, owner_.prompt_pulse, raw_delta,
-            press_);
-        owner_.log.implemented("PressStartScreen::update", "0067cfb0");
-        if (outcome != PressStartOutcome::Idle) {
-            owner_.log.notef("press-start outcome %d", static_cast<int>(outcome));
-        }
-        }
+        MenuPressStartUpdateAdapter screen(owner_, press_);
+        engine_seg11_35_66_cc13::update_front_end_screen_004f71f0(screen, raw_delta);
+        owner_.log.implemented("TitleScreen::update_press_start_screen", "004f71f0");
     }
 
 private:
@@ -1450,34 +1373,20 @@ public:
         owner_.log.unimplemented("TitleInit::attract_screen_init", "00689d90+4h");
     }
     void* create_title_screen() override {
-        if constexpr (kWireGoal4Chain528Bound) {
-            auto* title = cc13_fe5::title_screen_construct_0068d760(
-                owner_.title_object, owner_.manager_registry, owner_.world.title);
-            owner_.log.implemented("TitleInit::create_title_screen", "0068d760");
-            return title;
-        } else {
-        // operator new(44h) then 0068d760. Only +40h is recovered.
+        auto* title = cc13_fe5::title_screen_construct_0068d760(
+            owner_.title_object, owner_.manager_registry, owner_.world.title);
         owner_.log.implemented("TitleInit::create_title_screen", "0068d760");
-        return &owner_.title_object;
-        }
+        return title;
     }
     void title_screen_activate(void* screen) override {
-        if constexpr (kWireGoal4Chain528Bound) {
-            auto& title = *static_cast<TitleScreen*>(screen);
-            // 0068D8D0 receives the constructor's object. Its +40h is the
-            // source and destination of the activation projection, including
-            // the skip-title arm, which does not create a new screen.
-            owner_.handover.press_start = title.attached_screen;
-            activate_title_screen_0068d8d0(owner_.handover, owner_.world.screens, handover_);
-            title.attached_screen = owner_.handover.press_start;
-            owner_.log.implemented("TitleInit::title_screen_activate", "0068d8d0");
-        } else {
-        static_cast<void>(screen);
+        auto& title = *static_cast<TitleScreen*>(screen);
+        // 0068D8D0 receives the constructor's object. Its +40h is the
+        // source and destination of the activation projection, including
+        // the skip-title arm, which does not create a new screen.
+        owner_.handover.press_start = title.attached_screen;
         activate_title_screen_0068d8d0(owner_.handover, owner_.world.screens, handover_);
-        owner_.title_object.attached_screen = owner_.handover.press_start;
-        owner_.world.title = &owner_.title_object;
+        title.attached_screen = owner_.handover.press_start;
         owner_.log.implemented("TitleInit::title_screen_activate", "0068d8d0");
-        }
     }
     void title_screen_skip() override {
         owner_.log.unimplemented("TitleInit::title_screen_skip", "0068d8a0");
@@ -1754,31 +1663,24 @@ public:
     bool render_queue_retained() override {
         // 00B1BF90 on the renderer's actual 00F8D440 queue (004E4BBA CALL 004C11F0,
         // MOV ECX,EAX, 004E4BC1 CALL 00B1BF90, 004E4BC6 TEST EAX,EAX); OFF keeps false.
-        if constexpr (kWireGoal2Chain48Bound) {
-            // The queue is GameNativeRendererApplication's FrameGraph::queue, the
-            // 00F8D440 cell its end frame fills through 004C11F0 (00B1F280 sets
-            // +20h = 0), published by bind_platform_services as
-            // native_deletion_bindings().render_queue and retired at renderer drain.
-            // Before the first end frame the cell is empty; 004C11F0 would build
-            // the queue with +20h = 0 there, so the frame opens as below.
-            const NativeRenderQueueDestructionContext* const published =
-                owner_.singletons.native_deletion_bindings().render_queue;
-            const NativeRenderCommandQueueStorage* const queue =
-                published != nullptr ? published->actual_queue_00f8d440 : nullptr;
-            if (queue != nullptr) {
-                // Own label: the call table keeps a row's first status, and the
-                // first call (before frame 1's end) takes the unpublished arm.
-                owner_.log.implemented("FrontEndFrame::render_queue_retention_control", "00b1bf90");
-                return cc13_seg83::render_queue_mode_00b1bf90(queue) != 0;
-            }
-            owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
-            return false;
-        } else {
-            // 004c11f0 then 00b1bf90. No retention control exists here, so the
-            // branch always opens its frame.
-            owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
-            return false;
+        // The queue is GameNativeRendererApplication's FrameGraph::queue, the
+        // 00F8D440 cell its end frame fills through 004C11F0 (00B1F280 sets
+        // +20h = 0), published by bind_platform_services as
+        // native_deletion_bindings().render_queue and retired at renderer drain.
+        // Before the first end frame the cell is empty; 004C11F0 would build
+        // the queue with +20h = 0 there, so the frame opens as below.
+        const NativeRenderQueueDestructionContext* const published =
+            owner_.singletons.native_deletion_bindings().render_queue;
+        const NativeRenderCommandQueueStorage* const queue =
+            published != nullptr ? published->actual_queue_00f8d440 : nullptr;
+        if (queue != nullptr) {
+            // Own label: the call table keeps a row's first status, and the
+            // first call (before frame 1's end) takes the unpublished arm.
+            owner_.log.implemented("FrontEndFrame::render_queue_retention_control", "00b1bf90");
+            return cc13_seg83::render_queue_mode_00b1bf90(queue) != 0;
         }
+        owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
+        return false;
     }
     void renderer_begin_frame() override {
         // 00f8d394 vtable +0Ch. The milestone's own Clear/BeginScene stands in.
@@ -1791,15 +1693,13 @@ public:
         owner_.log.unimplemented("FrontEndFrame::reinitialize_title_screen", "004db220");
     }
     void update_title_screen(float raw_delta) override {
-        if constexpr (kWireGoal4Chain528Bound) {
+        {
             // The state-2 driver tested world.title before this callback.
             // 0068D850 reads that very object's +40h; retain the handover's
             // other real state while taking the attachment from its owner.
             auto live_title = owner_.handover;
             live_title.press_start = owner_.world.title->attached_screen;
             update_title_screen_0068d850(live_title, handover_, raw_delta);
-        } else {
-        update_title_screen_0068d850(owner_.handover, handover_, raw_delta);
         }
         owner_.log.implemented("FrontEndFrame::update_title_screen", "0068d850");
     }
@@ -1827,23 +1727,19 @@ public:
         owner_.log.unimplemented("FrontEndFrame::gui_update", "00aa4f80");
     }
     void game_render() override {
-        if constexpr (kWireGoal4Chain312Bound) {
-            // 004CA44E: nothing runs unless game+34h is 1 (the frame begun by
-            // 004E4BB5..004E4BDB, frame_state.render_queue_open here). In the
-            // front-end states [00E198C4] is null, so 004CA4E7 falls through to
-            // 004CA5D4's 00735B50. The rest of 004CA440 keeps its record.
-            if (owner_.frame_state.render_queue_open) {
-                if (NullInterfaceSoundFrame* const sound = owner_.bind_sound_frame()) {
-                    service_sound_frame_00735b50(sound->context());
-                    owner_.log.implemented("FrontEndFrame::sound_frame_service", "00735b50");
-                } else {
-                    owner_.log.unimplemented("FrontEndFrame::sound_frame_service", "00735b50");
-                }
+        // 004CA44E: nothing runs unless game+34h is 1 (the frame begun by
+        // 004E4BB5..004E4BDB, frame_state.render_queue_open here). In the
+        // front-end states [00E198C4] is null, so 004CA4E7 falls through to
+        // 004CA5D4's 00735B50. The rest of 004CA440 keeps its record.
+        if (owner_.frame_state.render_queue_open) {
+            if (NullInterfaceSoundFrame* const sound = owner_.bind_sound_frame()) {
+                service_sound_frame_00735b50(sound->context());
+                owner_.log.implemented("FrontEndFrame::sound_frame_service", "00735b50");
+            } else {
+                owner_.log.unimplemented("FrontEndFrame::sound_frame_service", "00735b50");
             }
-            owner_.log.unimplemented("FrontEndFrame::game_render", "004ca440");
-        } else {
-        owner_.log.unimplemented("FrontEndFrame::game_render", "004ca440");
         }
+        owner_.log.unimplemented("FrontEndFrame::game_render", "004ca440");
     }
     void game_finish_render_frame() override {
         // 004ca1f0 clears game+34h. The milestone's own Present is the frame
@@ -1881,43 +1777,31 @@ public:
         return false;
     }
     void* create_music_stream(std::string_view path) override {
-        if constexpr (kWireGoal2Chain57Bound) {
-            // 00588528: 00A877D0 builds the 54h stream on the live sound core;
-            // OFF keeps the null stand-in. No started core: the OFF record.
-            MenuTitleMusicStream* const title = owner_.bind_title_stream();
-            void* const stream = title != nullptr ? title->construct(path) : nullptr;
-            if (title != nullptr) {
-                owner_.log.implemented("TitleMusic::create_music_stream", "00a877d0");
-            } else {
-                owner_.log.unimplemented("TitleMusic::create_music_stream", "00a877d0");
-            }
-            owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
-            return stream;
+        // 00588528: 00A877D0 builds the 54h stream on the live sound core;
+        // OFF keeps the null stand-in. No started core: the OFF record.
+        MenuTitleMusicStream* const title = owner_.bind_title_stream();
+        void* const stream = title != nullptr ? title->construct(path) : nullptr;
+        if (title != nullptr) {
+            owner_.log.implemented("TitleMusic::create_music_stream", "00a877d0");
         } else {
             owner_.log.unimplemented("TitleMusic::create_music_stream", "00a877d0");
-            owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
-            return nullptr;
         }
+        owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
+        return stream;
     }
     std::string_view selected_track_name() override {
         owner_.log.unimplemented("TitleMusic::selected_track_name", "00e19504");
         return {};
     }
     void open_stream(void* stream, std::string_view track) override {
-        if constexpr (kWireGoal2Chain57Bound) {
-            // 0058855C: 00A867B0 starts the stream. The track is the host's empty
-            // one, which is 00E19504's: that .data string is zero in the PE and
-            // its other xrefs (0058BE63, 0059A16B) are c_str() fallbacks, not
-            // writers. OFF keeps the record.
-            if (stream != nullptr && owner_.title_stream != nullptr) {
-                owner_.title_stream->start(stream, track);
-                owner_.log.implemented("TitleMusic::open_stream", "00a867b0");
-            } else {
-                owner_.log.unimplemented("TitleMusic::open_stream", "00a867b0");
-            }
+        // 0058855C: 00A867B0 starts the stream. The track is the host's empty
+        // one, which is 00E19504's: that .data string is zero in the PE and
+        // its other xrefs (0058BE63, 0059A16B) are c_str() fallbacks, not
+        // writers. OFF keeps the record.
+        if (stream != nullptr && owner_.title_stream != nullptr) {
+            owner_.title_stream->start(stream, track);
+            owner_.log.implemented("TitleMusic::open_stream", "00a867b0");
         } else {
-            static_cast<void>(stream);
-            static_cast<void>(track);
             owner_.log.unimplemented("TitleMusic::open_stream", "00a867b0");
         }
     }
@@ -1931,17 +1815,12 @@ public:
         owner_.log.unimplemented("TitleMusic::set_stream_volume", "00a864f0");
     }
     void play_stream(void* stream) override {
-        if constexpr (kWireGoal2Chain57Bound) {
-            // 005885AD: 00A85C20 requests the fade-in on the stream 00A867B0
-            // started (state +20h, fade-out +Ah; sets +Bh and +Ch). OFF keeps the record.
-            if (stream != nullptr) {
-                request_sound_stream_fade_in_00a85c20(stream);
-                owner_.log.implemented("TitleMusic::play_stream", "00a85c20");
-            } else {
-                owner_.log.unimplemented("TitleMusic::play_stream", "00a85c20");
-            }
+        // 005885AD: 00A85C20 requests the fade-in on the stream 00A867B0
+        // started (state +20h, fade-out +Ah; sets +Bh and +Ch). OFF keeps the record.
+        if (stream != nullptr) {
+            request_sound_stream_fade_in_00a85c20(stream);
+            owner_.log.implemented("TitleMusic::play_stream", "00a85c20");
         } else {
-            static_cast<void>(stream);
             owner_.log.unimplemented("TitleMusic::play_stream", "00a85c20");
         }
     }
@@ -1959,31 +1838,21 @@ public:
     explicit MenuManagerHost(GameMenuHost::Impl& owner) : owner_(owner) {}
 
     void open_load_block(std::string_view name) override {
-        if constexpr (kWireGoal2Chain54Bound) {
-            // 00be0ae0: FileBlockScope_Construct enters the label's block on the live
-            // VFS; OFF keeps the record row and the note.
-            if (owner_.open_load_block_00be0ae0(name)) {
-                owner_.log.implemented("FrontEndManager::open_load_block", "00be0ae0");
-            } else {
-                owner_.log.unimplemented("FrontEndManager::open_load_block", "00be0ae0");
-            }
-            owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
-                name.data());
+        // 00be0ae0: FileBlockScope_Construct enters the label's block on the live
+        // VFS; OFF keeps the record row and the note.
+        if (owner_.open_load_block_00be0ae0(name)) {
+            owner_.log.implemented("FrontEndManager::open_load_block", "00be0ae0");
         } else {
             owner_.log.unimplemented("FrontEndManager::open_load_block", "00be0ae0");
-            owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
-                name.data());
         }
+        owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
+            name.data());
     }
     void close_load_block() override {
-        if constexpr (kWireGoal2Chain54Bound) {
-            // 00bdcb30: FileBlock_Destroy leaves the block 00be0ae0 entered; OFF keeps
-            // the record row.
-            if (owner_.close_load_block_00bdcb30()) {
-                owner_.log.implemented("FrontEndManager::close_load_block", "00bdcb30");
-            } else {
-                owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
-            }
+        // 00bdcb30: FileBlock_Destroy leaves the block 00be0ae0 entered; OFF keeps
+        // the record row.
+        if (owner_.close_load_block_00bdcb30()) {
+            owner_.log.implemented("FrontEndManager::close_load_block", "00bdcb30");
         } else {
             owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
         }
@@ -2000,46 +1869,16 @@ public:
     void* create_screen(std::size_t size_bytes, std::uint32_t constructor_address) override {
         // 005CA880 / 0052FCE0: construct the leaves named by 00686380's table;
         // OFF preserves the existing constructor-address registry stand-ins.
-        if constexpr (kWireGoal2Chain91Bound) {
-            owner_.log.unimplemented("FrontEndManager::create_screen", "00bf681b");
-            auto native = construct_menu_leaf(size_bytes, constructor_address, owner_.log);
-            const MainMenuScreenClass* recovered = nullptr;
-            for (const MainMenuScreenClass& entry : kMainMenuScreens) {
-                // A constructed leaf's own primary vtable selects its class.
-                // That body-produced value is what 004F71D0 dispatches through.
-                const bool matches = native
-                    ? entry.primary_vtable == *native->primary_vtable
-                    : entry.constructor == constructor_address;
-                if (matches) {
-                    recovered = &entry;
-                    break;
-                }
-            }
-            if (recovered == nullptr) {
-                owner_.log.notef("front-end screen %08lx (%zu bytes) has no recovered class",
-                    static_cast<unsigned long>(constructor_address), size_bytes);
-                return nullptr;
-            }
-            GameMenuHost::Impl::MenuScreen& screen = owner_.add_screen(recovered->screen_id,
-                std::string(recovered->primary_layout), native ? native->flags : nullptr,
-                recovered->enter_virtual, recovered->exit_virtual, recovered->update_virtual, false);
-            retain_menu_leaf(screen, std::move(native));
-            owner_.log.notef("front-end screen id=%d layout=%.*s constructor=%08lx size=%lu",
-                recovered->screen_id, static_cast<int>(recovered->primary_layout.size()),
-                recovered->primary_layout.data(),
-                static_cast<unsigned long>(constructor_address),
-                static_cast<unsigned long>(recovered->object_size));
-            return &screen;
-        } else {
-        // operator new(size) then the leaf constructor. None of the seven
-        // main-menu screen classes is reconstructed (docs/MAIN_MENU_SCREENS.md
-        // records their vtables, ids and layouts), so the executable builds its
-        // own registry record from that recovered table and records the
-        // constructor address it stands for.
         owner_.log.unimplemented("FrontEndManager::create_screen", "00bf681b");
+        auto native = construct_menu_leaf(size_bytes, constructor_address, owner_.log);
         const MainMenuScreenClass* recovered = nullptr;
         for (const MainMenuScreenClass& entry : kMainMenuScreens) {
-            if (entry.constructor == constructor_address) {
+            // A constructed leaf's own primary vtable selects its class.
+            // That body-produced value is what 004F71D0 dispatches through.
+            const bool matches = native
+                ? entry.primary_vtable == *native->primary_vtable
+                : entry.constructor == constructor_address;
+            if (matches) {
                 recovered = &entry;
                 break;
             }
@@ -2050,15 +1889,15 @@ public:
             return nullptr;
         }
         GameMenuHost::Impl::MenuScreen& screen = owner_.add_screen(recovered->screen_id,
-            std::string(recovered->primary_layout), nullptr, recovered->enter_virtual,
-            recovered->exit_virtual, recovered->update_virtual, false);
+            std::string(recovered->primary_layout), native ? native->flags : nullptr,
+            recovered->enter_virtual, recovered->exit_virtual, recovered->update_virtual, false);
+        retain_menu_leaf(screen, std::move(native));
         owner_.log.notef("front-end screen id=%d layout=%.*s constructor=%08lx size=%lu",
             recovered->screen_id, static_cast<int>(recovered->primary_layout.size()),
             recovered->primary_layout.data(),
             static_cast<unsigned long>(constructor_address),
             static_cast<unsigned long>(recovered->object_size));
         return &screen;
-        }
     }
     void register_screen(void* screen) override {
         // The leaf's virtual +10h, which chains 004f71d0 and, in five of the
@@ -2114,16 +1953,10 @@ public:
     }
     void register_locale_table(std::string_view name) override {
         // 00686240's registrations use the application's existing locale owner; OFF keeps the log stand-in.
-        if constexpr (kWireGoal2Chain189Bound) {
-            auto* const tables = owner_.borrowed_menu_locale_tables();
-            if (tables == nullptr)
-                throw std::logic_error("Main-menu locale registration requires the phase-6 tables");
-            tables->register_table_00aa0d30(std::string(name));
-        } else {
-        owner_.log.unimplemented("FrontEndManager::register_locale_table", "00aa09d0");
-        owner_.log.notef("front-end locale table %.*s", static_cast<int>(name.size()),
-            name.data());
-        }
+        auto* const tables = owner_.borrowed_menu_locale_tables();
+        if (tables == nullptr)
+            throw std::logic_error("Main-menu locale registration requires the phase-6 tables");
+        tables->register_table_00aa0d30(std::string(name));
     }
     void reload_locale_tables() override {
         owner_.log.unimplemented("FrontEndManager::reload_locale_tables", "00aa06d0");
@@ -2144,30 +1977,18 @@ public:
     }
     void set_game_state(int state) override { owner_.state.value = state; }
     OptionsMenuManager* create_options_manager() override {
-        if constexpr (kWireGoal4Chain561Bound) {
-            auto* manager = cc13_fe5::options_menu_construct_00689800(
-                owner_.options_menu, owner_.manager_registry);
-            owner_.log.implemented("FrontEndManager::create_options_manager", "00689800");
-            return manager;
-        } else {
-        owner_.log.unimplemented("FrontEndManager::create_options_manager", "00689800");
-        return nullptr;
-        }
+        auto* manager = cc13_fe5::options_menu_construct_00689800(
+            owner_.options_menu, owner_.manager_registry);
+        owner_.log.implemented("FrontEndManager::create_options_manager", "00689800");
+        return manager;
     }
     MainMenuManager* create_main_menu_manager() override {
-        if constexpr (kWireGoal4Chain503Bound) {
-            // 004E41B0 constructs before Init. Run the recovered body over the
-            // actual owner used below and publish its base in the real registry.
-            auto* manager = cc13_fe5::main_menu_construct_00686170(
-                owner_.main_menu, owner_.manager_registry);
-            owner_.log.implemented("FrontEndManager::create_main_menu_manager", "00686170");
-            return manager;
-        } else {
-        // operator new(78h) then 00686170. Only the fields the recovered Init
-        // and destructor touch are modelled.
+        // 004E41B0 constructs before Init. Run the recovered body over the
+        // actual owner used below and publish its base in the real registry.
+        auto* manager = cc13_fe5::main_menu_construct_00686170(
+            owner_.main_menu, owner_.manager_registry);
         owner_.log.implemented("FrontEndManager::create_main_menu_manager", "00686170");
-        return &owner_.main_menu;
-        }
+        return manager;
     }
     MultiMenuManager* create_multi_menu_manager() override {
         owner_.log.unimplemented("FrontEndManager::create_multi_menu_manager", "006887e0");
@@ -2337,14 +2158,10 @@ public:
     void gui_refresh() override { rec("LoadingScreen::gui_refresh", "00aa2b80"); }
     // C251 publishes the loading screen's own page through the real registry.
     void screen_registry_commit() override {
-        if constexpr (kWireGoal4Chain251Bound) {
-            MenuCommitHost commit(owner_);
-            commit_front_end_screen_visibility_004f83b0(owner_.loading_screen.base,
-                kLoadingScreenId, commit);
-            owner_.log.implemented("LoadingScreen::screen_registry_commit", "004f83b0");
-        } else {
-        rec("LoadingScreen::screen_registry_commit", "004f83b0");
-        }
+        MenuCommitHost commit(owner_);
+        commit_front_end_screen_visibility_004f83b0(owner_.loading_screen.base,
+            kLoadingScreenId, commit);
+        owner_.log.implemented("LoadingScreen::screen_registry_commit", "004f83b0");
     }
     void screen_pump_reset() override { rec("LoadingScreen::screen_pump_reset", "004f8ac0"); }
     void close_previous_screen() override { rec("LoadingScreen::close_previous_screen", "00e19698"); }
@@ -2353,79 +2170,50 @@ public:
         rec("LoadingScreen::load_texture_atlas", "00af0060");
     }
     void create_screen() override {
-        if constexpr (kWireGoal4Chain545Bound) {
-            auto& binding = owner_.loading_screen_deletion;
-            binding = {&owner_, &owner_.loading_screen.lifetime,
-                [](void* context, void* hook, std::uint32_t flags) {
-                    auto& owner = *static_cast<GameMenuHost::Impl*>(context);
-                    if (hook != &owner.loading_screen.lifetime || flags != 1u)
-                        throw std::logic_error("loading screen drain requires its registered member and deleting flag 1");
-                    MenuLoadingScreenHost host(owner);
-                    host.screen_destroy();
-                    // Host storage remains allocated with Impl; retire the SAME
-                    // owner instead of freeing an interior semantic projection.
-                    owner.loading_screen.created = false;
-                }};
-            auto& admitted = owner_.singletons.native_deletion_bindings().loading_screen;
-            if (admitted != nullptr && admitted != &binding)
-                throw std::logic_error("loading screen lifetime already has another owner");
-            admitted = &binding; // before the recovered constructor registers
-            auto context = lifetime_context();
-            frontend_seg19_21_cc13::loading_screen_construct_0057c1c0(
-                owner_.loading_screen, context);
-            owner_.log.implemented("LoadingScreen::create_screen", "0057c1c0");
-        } else {
-        rec("LoadingScreen::create_screen", "0057c1c0");
-        }
+        auto& binding = owner_.loading_screen_deletion;
+        binding = {&owner_, &owner_.loading_screen.lifetime,
+            [](void* context, void* hook, std::uint32_t flags) {
+                auto& owner = *static_cast<GameMenuHost::Impl*>(context);
+                if (hook != &owner.loading_screen.lifetime || flags != 1u)
+                    throw std::logic_error("loading screen drain requires its registered member and deleting flag 1");
+                MenuLoadingScreenHost host(owner);
+                host.screen_destroy();
+                // Host storage remains allocated with Impl; retire the SAME
+                // owner instead of freeing an interior semantic projection.
+                owner.loading_screen.created = false;
+            }};
+        auto& admitted = owner_.singletons.native_deletion_bindings().loading_screen;
+        if (admitted != nullptr && admitted != &binding)
+            throw std::logic_error("loading screen lifetime already has another owner");
+        admitted = &binding; // before the recovered constructor registers
+        auto context = lifetime_context();
+        frontend_seg19_21_cc13::loading_screen_construct_0057c1c0(
+            owner_.loading_screen, context);
+        owner_.log.implemented("LoadingScreen::create_screen", "0057c1c0");
     }
     void screen_init() override {
-        if constexpr (kWireGoal4Chain251Bound) {
-            MenuLoadingElementHost elements(owner_);
-            bind_loading_screen_elements_0057c560(owner_.loading_elements.elements, elements);
-            owner_.log.implemented("LoadingScreen::bind_elements", "0057c560");
-        } else {
-        rec("LoadingScreen::screen_init", "00cef264+10h");
-        }
+        MenuLoadingElementHost elements(owner_);
+        bind_loading_screen_elements_0057c560(owner_.loading_elements.elements, elements);
+        owner_.log.implemented("LoadingScreen::bind_elements", "0057c560");
     }
     void screen_show() override { rec("LoadingScreen::screen_show", "00cef264+18h"); }
     void screen_stop_worker() override { rec("LoadingScreen::screen_stop_worker", "00cef264+1Ch"); }
     void screen_destroy() override {
-        if constexpr (kWireGoal4Chain545Bound) {
-            auto context = lifetime_context();
-            frontend_seg19_21_cc13::loading_screen_destruct_0057c2e0(
-                owner_.loading_screen, context, *this);
-            owner_.log.implemented("LoadingScreen::screen_destroy", "0057c2e0");
-        } else {
-        if constexpr (kWireGoal4Chain251Bound) {
-            // end_loading_screen already committed active=false. Retire the
-            // borrowed view before the next load can initialize the singleton.
-            auto* page = static_cast<GuiLayoutPage*>(owner_.loading_elements.elements.page);
-            owner_.frontend.release_screen_page(page);
-            unregister_front_end_screen_004f71a0(owner_.world.screens,
-                owner_.loading_screen.base);
-            owner_.screens.erase(kLoadingScreenId);
-            owner_.loading_elements = {};
-            owner_.loading_hints = {};
-            rec("LoadingScreen::screen_destroy", "00cef264+0Ch");
-        } else {
-        rec("LoadingScreen::screen_destroy", "00cef264+0Ch");
-        }
-        }
+        auto context = lifetime_context();
+        frontend_seg19_21_cc13::loading_screen_destruct_0057c2e0(
+            owner_.loading_screen, context, *this);
+        owner_.log.implemented("LoadingScreen::screen_destroy", "0057c2e0");
     }
     void lifetime_unregister() override {
-        if constexpr (kWireGoal4Chain545Bound) {
-            // 0057C250 first unregisters directly; 0057C090 subsequently repeats
-            // the search under the captured manager lock and clears E194B4.
-            auto lifetime = owner_.singletons.sound_lifetime();
-            // 0057C29C..B6 captures/pushes the member before 00415350.
-            auto* const registered = owner_.loading_screen_singleton
-                ? &owner_.loading_screen_singleton->lifetime : nullptr;
-            auto manager = lifetime.get_manager_00415350();
-            manager.unregister_object(registered);
-            owner_.log.implemented("LoadingScreen::lifetime_unregister", "00bcfca0");
-        } else {
-        rec("LoadingScreen::lifetime_unregister", "00415350");
-        }
+        // 0057C250 first unregisters directly; 0057C090 subsequently repeats
+        // the search under the captured manager lock and clears E194B4.
+        auto lifetime = owner_.singletons.sound_lifetime();
+        // 0057C29C..B6 captures/pushes the member before 00415350.
+        auto* const registered = owner_.loading_screen_singleton
+            ? &owner_.loading_screen_singleton->lifetime : nullptr;
+        auto manager = lifetime.get_manager_00415350();
+        manager.unregister_object(registered);
+        owner_.log.implemented("LoadingScreen::lifetime_unregister", "00bcfca0");
     }
     void remove_loading_page() override {
         auto* page = static_cast<GuiLayoutPage*>(owner_.loading_elements.elements.page);
@@ -2475,19 +2263,15 @@ public:
         return 0.0f;
     }
     void prepare_extra_elements() override {
-        if constexpr (kWireGoal4Chain251Bound) {
-            // 0057CE83 -> 0057C990 -> 0057C360, then tail-jump 0057C4C0.
-            // Capture the keys from the actual 0057CFF0 config publication.
-            owner_.loading_hints.keys = owner_.loading_globals.images;
-            MenuLoadingElementHost elements(owner_);
-            reset_loading_hints_0057c990(owner_.loading_elements, owner_.loading_hints, elements);
-            // Both projections name the singleton's same native +2C/+30 pair.
-            owner_.loading_screen.progress_units = owner_.loading_elements.rotation.progress_units;
-            owner_.loading_screen.progress = owner_.loading_elements.rotation.progress;
-            owner_.log.implemented("LoadingScreen::reset_hints", "0057c990");
-        } else {
-        rec("LoadingScreen::prepare_extra_elements", "0057c990");
-        }
+        // 0057CE83 -> 0057C990 -> 0057C360, then tail-jump 0057C4C0.
+        // Capture the keys from the actual 0057CFF0 config publication.
+        owner_.loading_hints.keys = owner_.loading_globals.images;
+        MenuLoadingElementHost elements(owner_);
+        reset_loading_hints_0057c990(owner_.loading_elements, owner_.loading_hints, elements);
+        // Both projections name the singleton's same native +2C/+30 pair.
+        owner_.loading_screen.progress_units = owner_.loading_elements.rotation.progress_units;
+        owner_.loading_screen.progress = owner_.loading_elements.rotation.progress;
+        owner_.log.implemented("LoadingScreen::reset_hints", "0057c990");
     }
     void start_render_worker(int rate) override {
         static_cast<void>(rate);
@@ -2572,16 +2356,11 @@ public:
     }
     void probe_sound_memory(const char* label) override {
         // Native 00a7a460 calls on_out_of_sound_memory on the live FMOD library; OFF keeps the probe stub.
-        if constexpr (kWireGoal1Chain4Bound) {
-            GameSoundRuntime* sound = owner_.singletons.native_deletion_bindings().sound_runtime;
-            if (sound != nullptr) {
-                sound->fmod().on_out_of_sound_memory(label);
-                owner_.log.implemented("FrontEndShell::probe_sound_memory", "00a7a460");
-            } else {
-                owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
-            }
+        GameSoundRuntime* sound = owner_.singletons.native_deletion_bindings().sound_runtime;
+        if (sound != nullptr) {
+            sound->fmod().on_out_of_sound_memory(label);
+            owner_.log.implemented("FrontEndShell::probe_sound_memory", "00a7a460");
         } else {
-            static_cast<void>(label);
             owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
         }
     }
@@ -2591,26 +2370,17 @@ public:
     }
     bool title_screen_present() override { return owner_.world.title != nullptr; }
     void destroy_title_screen() override {
-        if constexpr (kWireGoal4Chain528Bound) {
-            // 0068D7E0 -> 00684FA0 erases this manager from 00E19898. Remove
-            // the newly owned base here too, before the main menu activates;
-            // otherwise 00684700 would visit a destroyed title manager and
-            // clear screen sets. The press-start lifetime remains with the
-            // existing screen owner below; this is not whole-dtor wiring.
-            auto& managers = owner_.manager_registry.managers;
-            managers.erase(std::remove(managers.begin(), managers.end(),
-                &owner_.title_object.base), managers.end());
-            owner_.world.title = nullptr;
-            owner_.title_init.title_screen = nullptr;
-            owner_.log.implemented("FrontEndShell::destroy_title_screen", "004e4071");
-        } else {
-        // 004e4071: the 44h object's vtable +0h with 1, then the global is
-        // nulled. Its press-start screen stays registered until the screen sets
-        // drop it, which is what the pump's exit pass then does.
+        // 0068D7E0 -> 00684FA0 erases this manager from 00E19898. Remove
+        // the newly owned base here too, before the main menu activates;
+        // otherwise 00684700 would visit a destroyed title manager and
+        // clear screen sets. The press-start lifetime remains with the
+        // existing screen owner below; this is not whole-dtor wiring.
+        auto& managers = owner_.manager_registry.managers;
+        managers.erase(std::remove(managers.begin(), managers.end(),
+            &owner_.title_object.base), managers.end());
         owner_.world.title = nullptr;
         owner_.title_init.title_screen = nullptr;
         owner_.log.implemented("FrontEndShell::destroy_title_screen", "004e4071");
-        }
     }
     bool front_end_manager_b8_present() override { return owner_.managers.options != nullptr; }
     bool front_end_manager_ac_present() override { return owner_.managers.main_menu != nullptr; }
@@ -2653,11 +2423,7 @@ public:
                     static_cast<double>(owner_.loading_screen.progress));
             }
             MenuLoadingScreenHost host(owner_);
-            if constexpr (kWireGoal4Chain545Bound) {
-                end_loading_screen(owner_.loading_screen_singleton, host);
-            } else {
-            end_loading_screen(owner_.loading_screen.created ? &owner_.loading_screen : nullptr, host);
-            }
+            end_loading_screen(owner_.loading_screen_singleton, host);
             owner_.log.implemented("FrontEndShell::end_loading", "0057c250");
         } else {
             owner_.log.unimplemented("FrontEndShell::end_loading", "0057c250");
@@ -2686,17 +2452,13 @@ public:
     }
     std::int32_t game_state() override { return owner_.state.value; }
     void create_manager_b8() override {
-        if constexpr (kWireGoal4Chain561Bound) {
-            // 004E4171 constructs, then calls virtual +4h (006898C0). Its
-            // own publication is what the frame/request/teardown paths read.
-            auto* manager = managers_.create_options_manager();
-            if (manager == nullptr) return;
-            init_options_menu_006898c0(*manager, owner_.managers,
-                owner_.interface_lock, managers_, payloads_);
-            owner_.log.implemented("FrontEndShell::create_manager_b8", "006898c0");
-        } else {
-        owner_.log.unimplemented("FrontEndShell::create_manager_b8", "00689800");
-        }
+        // 004E4171 constructs, then calls virtual +4h (006898C0). Its
+        // own publication is what the frame/request/teardown paths read.
+        auto* manager = managers_.create_options_manager();
+        if (manager == nullptr) return;
+        init_options_menu_006898c0(*manager, owner_.managers,
+            owner_.interface_lock, managers_, payloads_);
+        owner_.log.implemented("FrontEndShell::create_manager_b8", "006898c0");
     }
     void create_manager_ac() override {
         MainMenuManager* manager = managers_.create_main_menu_manager();
@@ -2704,11 +2466,7 @@ public:
         init_main_menu_00686380(*manager, owner_.managers, owner_.interface_lock, managers_,
             payloads_, screens_, owner_.manager_registry);
         owner_.managers.main_menu = manager;
-        if constexpr (kWireGoal4Chain503Bound) {
-            // 00684E10 already inserted this base before 00686380 ran.
-        } else {
-        owner_.manager_registry.managers.push_back(&manager->base);
-        }
+        // 00684E10 already inserted this base before 00686380 ran.
         owner_.log.implemented("FrontEndShell::create_manager_ac", "00686380");
     }
     void create_manager_b4() override {
@@ -2739,16 +2497,12 @@ public:
     bool award_gate_open() override {
         // 0090C5D0 at 004E42F2: midway_save_folder_preexisted_0090c5d0 over the
         // actual string pool and the Win32 shell/file calls; OFF keeps false.
-        if constexpr (kWireGoal2Chain111Bound) {
-            MidwaySaveFolderProbe probe(game_native_string_process().raw_context());
-            const bool preexisted = midway_save_folder_preexisted_0090c5d0(probe);
-            owner_.log.implemented("FrontEndShell::award_gate_open", "0090c5d0");
-            owner_.log.notef("front-end shell: 0090C5D0 Midway save folder preexisted=%d",
-                preexisted ? 1 : 0);
-            return preexisted;
-        } else {
-            return false;
-        }
+        MidwaySaveFolderProbe probe(game_native_string_process().raw_context());
+        const bool preexisted = midway_save_folder_preexisted_0090c5d0(probe);
+        owner_.log.implemented("FrontEndShell::award_gate_open", "0090c5d0");
+        owner_.log.notef("front-end shell: 0090C5D0 Midway save folder preexisted=%d",
+            preexisted ? 1 : 0);
+        return preexisted;
     }
     int award_id(const char* key) override {
         static_cast<void>(key);
@@ -2972,16 +2726,12 @@ GameMenuHost::Impl::MenuScreen& GameMenuHost::Impl::add_screen(int slot, std::st
     screen.slot = slot;
     screen.name = std::move(name);
     // 004f7180 calls construct_front_end_screen_004f7180; OFF keeps default-owned flags.
-    if constexpr (kWireGoal1Chain4Bound) {
-        // External leaf objects already run their constructor (0067c840 for
-        // press-start); only construct the registry-owned screen base here.
-        screen.flags = external != nullptr ? external
-            : &construct_front_end_screen_004f7180(screen.owned_flags);
-        if (external == nullptr) {
-            log.implemented("FrontEndScreen::construct", "004f7180");
-        }
-    } else {
-        screen.flags = external != nullptr ? external : &screen.owned_flags;
+    // External leaf objects already run their constructor (0067c840 for
+    // press-start); only construct the registry-owned screen base here.
+    screen.flags = external != nullptr ? external
+        : &construct_front_end_screen_004f7180(screen.owned_flags);
+    if (external == nullptr) {
+        log.implemented("FrontEndScreen::construct", "004f7180");
     }
     screen.enter_virtual = enter_virtual;
     screen.exit_virtual = exit_virtual;
@@ -3107,16 +2857,12 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     std::string trajectory_csv, std::string order_command, std::string order_command_target,
     float order_speed, bool order_speed_set)
     : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame, vfs)) {
-    if constexpr (kWireGoal4Chain251Bound) {
-        impl_->loading_locale = &locale;
-    }
+    impl_->loading_locale = &locale;
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
     impl_->profile_scripts = &scripts;
-    if constexpr (kWireGoal2Chain189Bound) {
-        impl_->bind_menu_locale_tables(locale);
-    }
+    impl_->bind_menu_locale_tables(locale);
     if constexpr (kHintTriggerPassesCc15Bound) {
         impl_->hint_registry = std::make_unique<MenuHintRegistry>(*impl_, *this, locale);
     }
@@ -3139,19 +2885,15 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
 }
 
 GameMenuHost::~GameMenuHost() {
-    if constexpr (kWireGoal4Chain545Bound) {
-        // Retire a screen left by an interrupted load before its borrowed
-        // binding and GUI owner disappear. A completed canonical drain already
-        // cleared this publication, so it never recreates the manager here.
-        if (impl_->loading_screen_singleton != nullptr) {
-            MenuLoadingScreenHost loading(*impl_);
-            loading.screen_destroy();
-        }
-        auto& binding = impl_->singletons.native_deletion_bindings().loading_screen;
-        if (binding == &impl_->loading_screen_deletion) binding = nullptr;
-    } else {
-        // Previous default destructor: member owners perform their cleanup.
+    // Retire a screen left by an interrupted load before its borrowed
+    // binding and GUI owner disappear. A completed canonical drain already
+    // cleared this publication, so it never recreates the manager here.
+    if (impl_->loading_screen_singleton != nullptr) {
+        MenuLoadingScreenHost loading(*impl_);
+        loading.screen_destroy();
     }
+    auto& binding = impl_->singletons.native_deletion_bindings().loading_screen;
+    if (binding == &impl_->loading_screen_deletion) binding = nullptr;
 }
 
 void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
@@ -3185,10 +2927,7 @@ void GameMenuHost::Impl::publish_input_device_flags_sink() {
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;
-    if constexpr (kWireGoal4Chain302Bound) {
-        impl_->publish_input_device_flags_sink();
-    } else {
-    }
+    impl_->publish_input_device_flags_sink();
 }
 
 GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }
@@ -3230,16 +2969,11 @@ bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
     // 004f7180 leaves both flag bytes clear, so the screen is registered
     // neither wanted nor active and only the level-set recompute can ask for it.
     Impl::MenuScreen& screen = [&]() -> Impl::MenuScreen& {
-        if constexpr (kWireGoal4Chain461Bound) {
-            // A reconstructed leaf already constructed this base. Keep the
-            // registry on that same owner's flags; add_screen does not run
-            // 004F7180 again for an external base.
-            return host.add_screen(slot, name, constructed_flags, 0, 0, layout_virtual,
-                false);
-        } else {
-            return host.add_screen(slot, name, nullptr, 0, 0, layout_virtual,
-                false);
-        }
+        // A reconstructed leaf already constructed this base. Keep the
+        // registry on that same owner's flags; add_screen does not run
+        // 004F7180 again for an external base.
+        return host.add_screen(slot, name, constructed_flags, 0, 0, layout_virtual,
+            false);
     }();
     screen.enter_virtual = register_virtual;
     register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
@@ -3306,12 +3040,7 @@ void GameMenuHost::clear_level3_screen_and_context_sets() {
     MenuSetBindings bindings(host);
     static const int kNone[] = {0};
     set_front_end_screen_set_level(host.screen_sets, host.world.screens, bindings, 3, kNone, 1);
-    if constexpr (kWireGoal4Chain271Bound) {
-        publish_level3_input_contexts(kNone, 1);
-    } else {
-    host.input_contexts.levels[2].clear();
-    apply_input_context_levels_004c4300(host.input_contexts, 3);
-    }
+    publish_level3_input_contexts(kNone, 1);
 }
 
 void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
@@ -3362,20 +3091,7 @@ void GameMenuHost::publish_level2_screen_set_004f85d0(const int* ids, std::size_
 
 void GameMenuHost::publish_level2_input_contexts_004d8ae0(const int* ids,
     std::size_t count) {
-    if constexpr (kWireGoal4Chain271Bound) {
-        publish_native_input_context_set(impl_->input_contexts, 2, ids, count);
-    } else {
-    // Packet cc13-releasegun: 004D8AE0's tail is `PUSH 2 ; CALL 004d6410`
-    // (004D8B46), 004d8a50's setter on level 2.
-    Impl& host = *impl_;
-    std::vector<int> pending;
-    for (std::size_t i = 0; i < count && ids != nullptr; ++i) {
-        if (ids[i] == 0) break;
-        pending.push_back(ids[i]);
-    }
-    host.input_contexts.levels[1] = pending;
-    apply_input_context_levels_004c4300(host.input_contexts, 2);
-    }
+    publish_native_input_context_set(impl_->input_contexts, 2, ids, count);
 }
 
 void GameMenuHost::publish_level3_input_contexts(const int* ids, std::size_t count) {
@@ -3400,30 +3116,19 @@ void GameMenuHost::destroy_main_menu_manager_00686c90() {
         Impl::MenuScreen* screen = host.screen_at(entry.screen_id);
         if (screen == nullptr || screen->flags == nullptr) continue;
         // 004b6e50 calls close_front_end_screen; OFF keeps the inlined 00686DA0..00686DB9 close.
-        if constexpr (kWireGoal1Chain4Bound) {
+        {
             MenuPressStartHost press(host);
             MenuScreenHost screens(host, press, commit);
             MainMenuClosingScreenHost closing(host, commit, screens, exited);
             close_front_end_screen(*screen->flags, entry.screen_id, closing);
             host.log.implemented("MainMenuManager::close_screen", "004b6e50");
-        } else {
-            if (screen->flags->active) {
-                host.log.unimplemented("MainMenuScreen::exit", "00686dad");
-                ++exited;
-            }
-            screen->flags->wanted = false;
-            screen->flags->active = false;
-            commit_front_end_screen_visibility_004f83b0(*screen->flags, entry.screen_id, commit);
-            host.log.implemented("MainMenuManager::commit_screen_visibility", "00686db9");
         }
         // 00686e14, the screen's own vtable +0Ch with the deleting flag. The
         // seven classes are not reconstructed; unregistering the executable's
         // record is what a destroyed screen leaves behind in the registry.
         host.log.unimplemented("MainMenuScreen::deleting_destructor", "00686e14");
         unregister_front_end_screen_004f71a0(host.world.screens, *screen->flags);
-        if constexpr (kWireGoal2Chain91Bound) {
-            release_menu_leaf(*screen);
-        }
+        release_menu_leaf(*screen);
     }
     host.log.notef("main-menu manager destroyed: %zu of %zu screens exited and committed, "
         "all seven unregistered", exited, kMainMenuScreens.size());
@@ -3433,13 +3138,11 @@ void GameMenuHost::destroy_main_menu_manager_00686c90() {
     host.log.implemented("FrontEndManager::deactivate", "00683aa0");
     host.main_menu.base.active = false;  // +3Ch, cleared by 00683aa0
     host.summary.main_menu_manager_active = false;
-    if constexpr (kWireGoal2Chain57Bound) {
-        // 00686ED1..00686EF0, after 00683AA0 and the 00E198AC clear: release
-        // the +50h title stream's reference (00A87B30 at zero). OFF built none.
-        if (host.title_stream != nullptr && host.title_music.title_stream != nullptr) {
-            host.title_stream->release();
-            host.log.implemented("MainMenuManager::release_title_stream", "00a87b30");
-        }
+    // 00686ED1..00686EF0, after 00683AA0 and the 00E198AC clear: release
+    // the +50h title stream's reference (00A87B30 at zero). OFF built none.
+    if (host.title_stream != nullptr && host.title_music.title_stream != nullptr) {
+        host.title_stream->release();
+        host.log.implemented("MainMenuManager::release_title_stream", "00a87b30");
     }
 }
 

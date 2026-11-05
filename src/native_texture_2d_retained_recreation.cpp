@@ -3,8 +3,6 @@
 #include "bsp/native_shader_device_reset.hpp"
 #include "bsp/native_tagged_leaf_b3_03.hpp"
 #include "bsp/native_tagged_leaf_b3_05.hpp"
-#include "bsp/wire_goal4_chain574_switches.hpp"
-#include "bsp/wire_goal4_chain586_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native retained texture recreation requires MSVC Win32.
@@ -46,11 +44,7 @@ void recreate_native_texture_2d_retained_00b3e190(void* owner,
     // 00B3E190 consumes this SAME retained texture owner's format at +18.
     // 00B33E60 is the complete DWORD getter; keep the original 14h->15h map.
     const auto format = [&] {
-        if constexpr (kWireGoal4Chain574Bound) {
-            return native_tagged_b3_read_dword_18_00b33e60(owner) == 0x14u ? 0x15u : 0u;
-        } else {
-            return word(address(owner, 0x18)) == 0x14u ? 0x15u : 0u;
-        }
+        return native_tagged_b3_read_dword_18_00b33e60(owner) == 0x14u ? 0x15u : 0u;
     }();
     void* const length_stream = pointer(word(address(owner, 0x4c)));
     auto** const output = reinterpret_cast<IDirect3DTexture9**>(address(owner, 0x10));
@@ -58,19 +52,11 @@ void recreate_native_texture_2d_retained_00b3e190(void* owner,
     // then +28. The B3D0B0/B3D0A0 raw DWORD leaves preserve those loads;
     // they assert no class identity (bsp.py show <address> --asm).
     const auto height = [&] {
-        if constexpr (kWireGoal4Chain586Bound) {
-            return native_tagged_b3_read_dword_2c_00b3d0b0(owner);
-        } else {
-            return word(address(owner, 0x2c));
-        }
+        return native_tagged_b3_read_dword_2c_00b3d0b0(owner);
     }();
     const auto mip_levels = word(address(owner, 0x3c));
     const auto width = [&] {
-        if constexpr (kWireGoal4Chain586Bound) {
-            return native_tagged_b3_read_dword_28_00b3d0a0(owner);
-        } else {
-            return word(address(owner, 0x28));
-        }
+        return native_tagged_b3_read_dword_28_00b3d0a0(owner);
     }();
     const auto length = static_cast<UINT>(
         dispatch_native_memory_stream_length(length_stream, context.retained_memory));

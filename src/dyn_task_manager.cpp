@@ -1,6 +1,5 @@
 #include "bsp/dyn_task_manager.hpp"
 #include "bsp/native_dyn_solver_mode1.hpp"
-#include "bsp/wire_goal4_chain617_switches.hpp"
 #include <windows.h>
 #include <process.h>
 #include <cstddef>
@@ -33,7 +32,7 @@ void worker_loop_00c375f0(DynTaskManagerStorage& storage) {
         void* task = at<void**>(manager, 0xc)[count - 1];
         at<std::uint32_t>(manager, 0x10) = count - 1;
         LeaveCriticalSection(&at<CRITICAL_SECTION>(manager, 0x18));
-        if constexpr (kWireGoal4Chain617Bound) {
+        {
             // 00C37644..00C3764A calls slot zero with this dequeued task.
             // Its existing mode-1 owner supplies the exact same services;
             // unknown slots retain the original virtual call. Completion
@@ -49,10 +48,6 @@ void worker_loop_00c375f0(DynTaskManagerStorage& storage) {
                 auto* vtable = at<Execute*>(task, 0);
                 vtable[0](task);
             }
-        } else {
-            using Execute = void (__thiscall*)(void*);
-            auto* vtable = at<Execute*>(task, 0);
-            vtable[0](task);
         }
         const auto group = at<std::uint32_t>(task, 4);
         if (InterlockedDecrement(&at<volatile LONG>(manager, 0x30 + group * 4)) == 0) {

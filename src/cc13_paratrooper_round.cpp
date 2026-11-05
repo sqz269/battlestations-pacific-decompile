@@ -7,10 +7,6 @@
 #include "bsp/bomb_torpedo_tick.hpp"   // bomb_air_velocity (006E1510)
 #include "bsp/gameplay_seg33_cc13.hpp"  // projectile_extrapolate_position_006e2220
 #include "bsp/cc13_seg33b.hpp"
-#include "bsp/wire_goal2_chain131_switches.hpp"
-#include "bsp/wire_goal2_chain179_switches.hpp"
-#include "bsp/wire_goal4_chain282_switches.hpp"
-#include "bsp/wire_goal4_chain536_switches.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -100,34 +96,18 @@ void NativeCommandBuildingCapturers::add(std::uint32_t round) {
 }
 
 bool NativeCommandBuildingCapturers::remove(std::uint32_t round) {
-    if constexpr (kWireGoal4Chain536Bound) {
-        Impl::Guard guard(*impl_);
-        const std::int32_t before = impl_->fields.size_7e0;
-        cc13_seg33b::command_building_remove_paratrooper_006f34b0(*impl_, impl_->object(), round);
-        return impl_->fields.size_7e0 != before;
-    } else {
-    std::lock_guard<Impl::Section> guard(impl_->section);
+    Impl::Guard guard(*impl_);
     const std::int32_t before = impl_->fields.size_7e0;
     cc13_seg33b::command_building_remove_paratrooper_006f34b0(*impl_, impl_->object(), round);
     return impl_->fields.size_7e0 != before;
-    }
 }
 
 void NativeCommandBuildingCapturers::read(std::vector<std::uint32_t>& out) const {
-    if constexpr (kWireGoal4Chain536Bound) {
-        Impl::Guard guard(*impl_);
-        out.clear();
-        // The capture-strength consumer reads this exact owned vector.
-        if (impl_->fields.size_7e0 != 0) {
-            out.assign(impl_->fields.data_7dc, impl_->fields.data_7dc + impl_->fields.size_7e0);
-        }
-    } else {
-    std::lock_guard<Impl::Section> guard(impl_->section);
+    Impl::Guard guard(*impl_);
     out.clear();
-    // Do not form an end pointer from the null data of a newly empty list.
+    // The capture-strength consumer reads this exact owned vector.
     if (impl_->fields.size_7e0 != 0) {
         out.assign(impl_->fields.data_7dc, impl_->fields.data_7dc + impl_->fields.size_7e0);
-    }
     }
 }
 
@@ -214,25 +194,16 @@ public:
         // last step, which is the position this host keeps.
         // 006E2220 (007AC0FE): ON runs projectile_extrapolate_position_006e2220 on the round's
         // position (+448h) and velocity (+318h); OFF keeps the double-chain stand-in below.
-        if constexpr (kWireGoal2Chain131Bound) {
-            const gameplay_seg33_cc13::Seg33Vec3 out =
-                gameplay_seg33_cc13::projectile_extrapolate_position_006e2220(
-                    gameplay_seg33_cc13::Seg33Vec3{round_.position.x, round_.position.y,
-                                                   round_.position.z},
-                    gameplay_seg33_cc13::Seg33Vec3{s.velocity_318.x, s.velocity_318.y,
-                                                   s.velocity_318.z},
-                    dt);
-            round_.position.x = out.x;
-            round_.position.y = out.y;
-            round_.position.z = out.z;
-        } else {
-            round_.position.x = f32(static_cast<double>(round_.position.x) +
-                                    static_cast<double>(dt) * s.velocity_318.x);
-            round_.position.y = f32(static_cast<double>(round_.position.y) +
-                                    static_cast<double>(s.velocity_318.y) * dt);
-            round_.position.z = f32(static_cast<double>(round_.position.z) +
-                                    static_cast<double>(dt) * s.velocity_318.z);
-        }
+        const gameplay_seg33_cc13::Seg33Vec3 out =
+            gameplay_seg33_cc13::projectile_extrapolate_position_006e2220(
+                gameplay_seg33_cc13::Seg33Vec3{round_.position.x, round_.position.y,
+                                               round_.position.z},
+                gameplay_seg33_cc13::Seg33Vec3{s.velocity_318.x, s.velocity_318.y,
+                                               s.velocity_318.z},
+                dt);
+        round_.position.x = out.x;
+        round_.position.y = out.y;
+        round_.position.z = out.z;
     }
     void orthonormalize_upright() override {}             // 0085DAD0: the pose only
     bool chute_anim_present() override { return true; }   // [[+464h]+0Ch]: the chute model
@@ -301,37 +272,18 @@ public:
     // 007AC095: 00875A80 (fixed_step_callback_register_00875a80) links the round's node
     // on the world's callback list; OFF keeps the callback_registered bool.
     void register_fixed_step_once() override {
-        if constexpr (kWireGoal2Chain179Bound) {
-            world_.register_round_callback(round_);
-        } else {
-            round_.callback_registered = true;
-        }
+        world_.register_round_callback(round_);
     }
     void add_capturer(std::uint32_t building) override {
         // 006F39B0: append under the building's +764h lock.
-        if constexpr (kWireGoal4Chain282Bound) {
-            world_.native_capturer_lists_.try_emplace(building).first->second.add(round_.id);
-        } else {
-            world_.capturer_list_.emplace_back(building, round_.id);
-        }
+        world_.native_capturer_lists_.try_emplace(building).first->second.add(round_.id);
         ++world_.counters_.capturer_adds;
     }
     void remove_capturer(std::uint32_t building) override {
         // 006F34B0: erase this round from the building's array.
-        if constexpr (kWireGoal4Chain282Bound) {
-            const auto found = world_.native_capturer_lists_.find(building);
-            if (found != world_.native_capturer_lists_.end() && found->second.remove(round_.id)) {
-                ++world_.counters_.capturer_removes;
-            }
-        } else {
-            auto& list = world_.capturer_list_;
-            for (auto it = list.begin(); it != list.end(); ++it) {
-                if (it->first == building && it->second == round_.id) {
-                    list.erase(it);
-                    ++world_.counters_.capturer_removes;
-                    return;
-                }
-            }
+        const auto found = world_.native_capturer_lists_.find(building);
+        if (found != world_.native_capturer_lists_.end() && found->second.remove(round_.id)) {
+            ++world_.counters_.capturer_removes;
         }
     }
     bool soldier_clip_visible(std::uint32_t, const Vec3&) override { return false; }  // 0048A010
@@ -494,7 +446,7 @@ void RoundWorld::land_registered_round(Round& r, float now, bool soldier_draw,
 // constructor leaves it (fixed_step_callback_list_init, the host's 00874C40 stand-in
 // that GameStepSubsystemsHost uses too).
 RoundWorld::RoundWorld() {
-    if constexpr (kWireGoal2Chain179Bound) fixed_step_callback_list_init(fixed_step_callbacks_);
+    fixed_step_callback_list_init(fixed_step_callbacks_);
 }
 
 // 007AC095: 00875A80(ECX = round+3E4h, repeating = 0, the PUSH 0 at 007AC086). The
@@ -553,15 +505,9 @@ void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGl
     // registered last step. The model clears +490h, so it runs once.
     // 00874DE0 (wire g2-w2): ON walks the rounds' nodes 00875A80 linked, through
     // fixed_step_callback_list_run_00874de0; OFF keeps the callback_registered loop.
-    if constexpr (kWireGoal2Chain179Bound) {
+    {
         RoundCallbackRun run(*this, now, soldier_draw, svc);
         fixed_step_callback_list_run_00874de0(fixed_step_callbacks_, dt, run);
-    } else {
-        for (Round& r : rounds_) {
-            if (!r.alive || !r.callback_registered) continue;
-            r.callback_registered = false;
-            land_registered_round(r, now, soldier_draw, svc);
-        }
     }
     // Job wave 1: tick element +4h 006E1060 rescales the step by class+5Ch and
     // calls +194h (007AC000) while the shot query +2Ch answers 0.
@@ -606,31 +552,20 @@ void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGl
     rounds_.erase(std::remove_if(rounds_.begin(), rounds_.end(),
                                  [](const Round& r) { return !r.alive; }),
                   rounds_.end());
-    if constexpr (kWireGoal2Chain179Bound) release_round_callbacks();
+    release_round_callbacks();
 }
 
 void RoundWorld::capturers(std::uint32_t building, std::vector<Capturer>& out) const {
     out.clear();
-    if constexpr (kWireGoal4Chain282Bound) {
-        const auto found = native_capturer_lists_.find(building);
-        if (found == native_capturer_lists_.end()) return;
-        std::vector<std::uint32_t> ids;
-        found->second.read(ids);
-        for (const std::uint32_t id : ids) {
-            for (const Round& r : rounds_) {
-                if (r.id != id) continue;
-                out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
-                break;
-            }
-        }
-    } else {
-        for (const auto& entry : capturer_list_) {
-            if (entry.first != building) continue;
-            for (const Round& r : rounds_) {
-                if (r.id != entry.second) continue;
-                out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
-                break;
-            }
+    const auto found = native_capturer_lists_.find(building);
+    if (found == native_capturer_lists_.end()) return;
+    std::vector<std::uint32_t> ids;
+    found->second.read(ids);
+    for (const std::uint32_t id : ids) {
+        for (const Round& r : rounds_) {
+            if (r.id != id) continue;
+            out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
+            break;
         }
     }
 }

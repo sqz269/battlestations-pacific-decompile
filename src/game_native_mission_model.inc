@@ -31,7 +31,6 @@
 #include "bsp/structured_resource.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
-#include "bsp/wire_goal4_chain481_switches.hpp"
 #include <algorithm>
 #include <cstring>
 #include <iterator>
@@ -392,12 +391,8 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         if(parent==0xffffffffu) world_matrices[index]=local;
         else {
             mission_model_detail::require(parent<hierarchy.size(),"installed hierarchy parent is out of range");
-            if constexpr (kWireGoal4Chain481Bound) {
-                world_matrices[index] = mission_model_detail::compose_model_matrix(
-                    local, authored_world(asset,parent));
-            } else {
-            multiply_camera_matrices_00413920(world_matrices[index],local,authored_world(asset,parent));
-            }
+            world_matrices[index] = mission_model_detail::compose_model_matrix(
+                local, authored_world(asset,parent));
         }
         matrix_states[index]=2;
         return world_matrices[index];
@@ -790,12 +785,8 @@ bool GameNativeMissionModel::update_unit_transform(std::size_t index, const Came
             mission_model_detail::require(!drawable.retired && drawable.unit_index==index,
                 "mission unit drawable range changed identity");
             CameraMatrix local;
-            if constexpr (kWireGoal4Chain481Bound) {
-                local = mission_model_detail::compose_model_matrix(
-                    p.authored_world(*unit.asset,drawable.hierarchy_index), transform);
-            } else {
-            multiply_camera_matrices_00413920(local,p.authored_world(*unit.asset,drawable.hierarchy_index),transform);
-            }
+            local = mission_model_detail::compose_model_matrix(
+                p.authored_world(*unit.asset,drawable.hierarchy_index), transform);
             // Actual B6DB10 copies local, clears world/bounds flags, notifies
             // attached +A0/current virtual3C, then invalidates descendants.
             // Never write cached world matrices or maintain a simulation pose.
@@ -803,12 +794,8 @@ bool GameNativeMissionModel::update_unit_transform(std::size_t index, const Came
         }
         for(const auto& node:unit.rest_nodes) {
             CameraMatrix local;
-            if constexpr (kWireGoal4Chain481Bound) {
-                local = mission_model_detail::compose_model_matrix(
-                    p.authored_world(*unit.asset,node.first), transform);
-            } else {
-            multiply_camera_matrices_00413920(local,p.authored_world(*unit.asset,node.first),transform);
-            }
+            local = mission_model_detail::compose_model_matrix(
+                p.authored_world(*unit.asset,node.first), transform);
             set_raw_local_matrix_00b6db10(node.second,p.transform_profiles,&local);
         }
         return true;

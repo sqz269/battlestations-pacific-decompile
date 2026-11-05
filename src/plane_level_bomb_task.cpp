@@ -10,7 +10,6 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_seg67b.hpp"                   // 009B7B10 / 009B7B40 typed views
-#include "bsp/wire_goal2_chain209_switches.hpp"  // kWireGoal2Chain209Bound
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 009B5C80
 // level_bomb_aim_tick_009b5c80 (the +-0.5 doubling at 009B5FA2/009B5FDC and the
 // pitch scale 009B6271-009B6281); 009B6670 level_bomb_prepare_tick_009b6670 (q at
@@ -142,24 +141,16 @@ LevelBombState level_bomb_next_state_009b88f0(const LevelBombTransitionInputs& i
             return e.in_range_cd ? S::kAim : S::kAttackRun;           // 009B8A0F
         case S::kAim: {
             // 009B7B10 / 009B7B40 on the aim state.
-            if constexpr (kWireGoal2Chain209Bound) {
-                // 009B8A26 CALL 009B7B10 and 009B8A45 CALL 009B7B40: the typed bodies
-                // over aim+18h/+19h and ctl+3AEh; OFF keeps the inline predicates.
-                if (bot_state_level_bomb_aim_should_release_009b7b10(
-                        in.aim_release_18, in.aim_abort_19, in.force_release_3ae)) {
-                    return S::kRelease;                               // 009B8A38
-                }
-                const bool abort = bot_state_level_bomb_aim_should_abort_009b7b40(
-                    in.aim_abort_19, in.force_release_3ae);
-                if (!abort && e.has_ordnance_ce) return S::kAim;
-                return S::kGoAway;                                    // 009B8A63
-            } else {
-            const bool release = in.aim_release_18 || (in.aim_abort_19 && in.force_release_3ae);
-            if (release) return S::kRelease;                          // 009B8A38
-            const bool abort = in.aim_abort_19 && !in.force_release_3ae;
-            if (!abort && e.has_ordnance_ce) return S::kAim;
-            return S::kGoAway;                                        // 009B8A63
+            // 009B8A26 CALL 009B7B10 and 009B8A45 CALL 009B7B40: the typed bodies
+            // over aim+18h/+19h and ctl+3AEh; OFF keeps the inline predicates.
+            if (bot_state_level_bomb_aim_should_release_009b7b10(
+                    in.aim_release_18, in.aim_abort_19, in.force_release_3ae)) {
+                return S::kRelease;                               // 009B8A38
             }
+            const bool abort = bot_state_level_bomb_aim_should_abort_009b7b40(
+                in.aim_abort_19, in.force_release_3ae);
+            if (!abort && e.has_ordnance_ce) return S::kAim;
+            return S::kGoAway;                                    // 009B8A63
         }
         case S::kRelease:
             // 009B8A6B-009B8A91: leave once release+1Ch drops below zero.

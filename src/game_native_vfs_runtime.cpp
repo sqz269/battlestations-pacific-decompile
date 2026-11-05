@@ -2,9 +2,6 @@
 
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/oct18_tail_c.hpp"
-#include "bsp/wire_goal4_chain342_switches.hpp"
-#include "bsp/wire_goal4_chain464_switches.hpp"
-#include "bsp/wire_goal4_chain519_switches.hpp"
 #include "bsp/vfs_whole_stream_reader.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -183,17 +180,11 @@ struct OpenedStream {
     void release() {
         if (!stream) return;
         void* const owned = std::exchange(stream, nullptr);
-        if constexpr (kWireGoal4Chain342Bound) {
-            // The outer owner is detached before a possibly throwing terminal
-            // call, as in the old arm. 00BE4500 consumes this non-null slot once.
-            void* slot = owned;
-            RuntimeStreamReferenceCalls calls(bindings);
-            engine_services_cc13::release_ref_slot_unchecked_00be4500(&slot, &calls);
-        } else {
-        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
-                static_cast<std::byte*>(owned) + 4)) == 0)
-            bindings.zero_reference(table, owned);
-        }
+        // The outer owner is detached before a possibly throwing terminal
+        // call, as in the old arm. 00BE4500 consumes this non-null slot once.
+        void* slot = owned;
+        RuntimeStreamReferenceCalls calls(bindings);
+        engine_services_cc13::release_ref_slot_unchecked_00be4500(&slot, &calls);
     }
 };
 }
@@ -476,10 +467,8 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         required(inputs.data, 0x00d68cfc, 0x10);
         required(inputs.data, 0x00d688b4, 0x10);
         lookup.pending = &pending;
-        if constexpr (bsp::kWireGoal4Chain519Bound) {
-            // Read the same installed PE profile used at every reached slot.
-            lookup.actual_flagged_exists_profile_00d683a4 = required(inputs.data, 0x00d683a4, 12);
-        }
+        // Read the same installed PE profile used at every reached slot.
+        lookup.actual_flagged_exists_profile_00d683a4 = required(inputs.data, 0x00d683a4, 12);
 
         previous_mpkg = bindings.bind_mpkg_provider(&mpkg_provider);
         inputs.owners.bind_deletion(inputs.deletion_bindings);
@@ -986,17 +975,11 @@ bool GameNativeVfsRuntime::read(const char* path, void* output,
         throw std::invalid_argument("Native VFS read output is null");
     PooledHeader name(impl_->inputs.owners.strings(), path);
     const auto open_stream = [&]() -> void* {
-        if constexpr (kWireGoal4Chain342Bound) {
-            void* stream;
-            RuntimeStreamReferenceCalls calls(impl_->bindings);
-            engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
-                reinterpret_cast<std::uint32_t>(&name.value), 2, &calls);
-            return stream;
-        } else {
-    void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
-        name.value, 2);
-            return stream;
-        }
+        void* stream;
+        RuntimeStreamReferenceCalls calls(impl_->bindings);
+        engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
+            reinterpret_cast<std::uint32_t>(&name.value), 2, &calls);
+        return stream;
     };
     void* const stream = open_stream();
     bytes_read = 0;
@@ -1016,17 +999,11 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
         throw std::logic_error("Native VFS core is not registered");
     PooledHeader name(impl_->inputs.owners.strings(), path);
     const auto open_stream = [&]() -> void* {
-        if constexpr (kWireGoal4Chain342Bound) {
-            void* stream;
-            RuntimeStreamReferenceCalls calls(impl_->bindings);
-            engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
-                reinterpret_cast<std::uint32_t>(&name.value), flags, &calls);
-            return stream;
-        } else {
-    void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
-        name.value, flags);
-            return stream;
-        }
+        void* stream;
+        RuntimeStreamReferenceCalls calls(impl_->bindings);
+        engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
+            reinterpret_cast<std::uint32_t>(&name.value), flags, &calls);
+        return stream;
     };
     void* const stream = open_stream();
     if (!stream) return std::nullopt;
@@ -1038,7 +1015,7 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
             static_cast<std::uint64_t>((std::numeric_limits<std::uint32_t>::max)()));
     if (length > win32_count_limit || length > bytes.max_size())
         throw std::length_error("Native VFS file exceeds Win32 read/allocation limit");
-    if constexpr (kWireGoal4Chain464Bound) {
+    {
         // 00BE4770 (bsp.py show 00be4770): read byte, append, repeat until
         // zero bytes; embedded NULs are data. Its existing typed body consumes
         // the real opened stream through this bounded, buffered view. Keep
@@ -1050,18 +1027,6 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
             });
         const auto contents = cc13_files::read_stream_to_end_00be4770(reader);
         bytes.assign(contents.begin(), contents.end());
-    } else {
-    bytes.resize(static_cast<std::size_t>(length));
-    std::size_t offset = 0;
-    while (offset < bytes.size()) {
-        const auto requested = static_cast<std::uint32_t>(bytes.size() - offset);
-        std::uint32_t actual = 0;
-        impl_->bindings.read(opened.table, stream, bytes.data() + offset,
-            requested, &actual);
-        if (actual == 0 || actual > requested)
-            throw std::runtime_error("Native VFS full-file read was short or invalid");
-        offset += actual;
-    }
     }
     opened.release();
     return std::move(bytes);

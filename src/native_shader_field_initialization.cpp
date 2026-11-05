@@ -1,5 +1,4 @@
 #include "bsp/native_shader_field_initialization.hpp"
-#include "bsp/wire_goal4_chain381_switches.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include <cstring>
@@ -99,17 +98,13 @@ void append_native_shader_vertex_decode_00b35820(NativeMaterialProgramBuilderSto
                 const auto* slots = pointer<NativeShaderFieldStorage*>(&builder, 4);
                 const auto* field = *reinterpret_cast<NativeShaderFieldStorage* const volatile*>(slots + a.row);
                 at(a, Step::swizzle_construct, 0x00b35883); a.swizzle_live = true;
-                if constexpr (kWireGoal4Chain381Bound) {
-                    // bsp.py show 00B35820: B35883 calls B34E90 on the current
-                    // actual 1Ch field and fresh 8h output. No field projection
-                    // or extra string construction; the same pool/context and
-                    // caller-owned output flow into the existing body.
-                    a.swizzle_call = std::make_unique<NativeShaderFieldInitializationOperation>();
-                    construct_native_shader_field_swizzle_00b34e90(
-                        *field, a.swizzle, context, *a.swizzle_call);
-                } else {
-                swizzle(*field, a.swizzle, a);
-                }
+                // bsp.py show 00B35820: B35883 calls B34E90 on the current
+                // actual 1Ch field and fresh 8h output. No field projection
+                // or extra string construction; the same pool/context and
+                // caller-owned output flow into the existing body.
+                a.swizzle_call = std::make_unique<NativeShaderFieldInitializationOperation>();
+                construct_native_shader_field_swizzle_00b34e90(
+                    *field, a.swizzle, context, *a.swizzle_call);
                 a.swizzle_text = text_or_empty(&a.swizzle, a);
                 // The table is reloaded once after the allocating child. Native
                 // then loads the row/name twice, right-hand expression first.

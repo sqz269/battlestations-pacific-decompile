@@ -1,6 +1,5 @@
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
-#include "bsp/wire_goal4_chain427_switches.hpp"
 
 namespace bsp::cc13_band0080 {
 
@@ -54,108 +53,55 @@ std::string escape_scene_text_008ee5f0(const char* text, std::int32_t max_charac
 bool segment_intersect_triangle_0085d020(const Vec3f& p0, const Vec3f& p1, const Vec3f& a,
                                          const Vec3f& b, const Vec3f& c, Vec3f& out) noexcept
 {
-    if constexpr (kWireGoal4Chain427Bound) {
-        using namespace cc13x87;
-        // bsp.py show 0085D020 --asm, 0085D023..0085D2F8. The live
-        // main-thread caller runs PC24: each x87 arithmetic operation rounds,
-        // including products still on the stack. Retain the extended exponent
-        // until the listing's FSTP DWORDs; the former fixture used PC53.
-        const float dx = static_cast<float>(x87_sub24(p1.x, p0.x));
-        const float dy = static_cast<float>(x87_sub24(p1.y, p0.y));
-        const float dz = static_cast<float>(x87_sub24(p1.z, p0.z));
-        const float e1x = static_cast<float>(x87_sub24(b.x, a.x));
-        const float e1y = static_cast<float>(x87_sub24(b.y, a.y));
-        const float e1z = static_cast<float>(x87_sub24(b.z, a.z));
-        const float e2x = static_cast<float>(x87_sub24(c.x, a.x));
-        const float e2y = static_cast<float>(x87_sub24(c.y, a.y));
-        const float e2z = static_cast<float>(x87_sub24(c.z, a.z));
-        const float hx = static_cast<float>(x87_sub24(x87_mul24(dy, e2z), x87_mul24(dz, e2y)));
-        const float hy = static_cast<float>(x87_sub24(x87_mul24(e2x, dz), x87_mul24(dx, e2z)));
-        const float hz = static_cast<float>(x87_sub24(x87_mul24(e2y, dx), x87_mul24(dy, e2x)));
-        // 0085D10B..0085D129: (hy*e1y + hx*e1x) + hz*e1z.
-        const float det = static_cast<float>(x87_add24(
-            x87_add24(x87_mul24(hy, e1y), x87_mul24(hx, e1x)), x87_mul24(hz, e1z)));
-        // Actual double cells 00D0D098 / 00D7A268 contain promoted +/-1e-4f.
-        if (det > -0.0000999999974737875 && det < 0.0000999999974737875) return false;
-        const float inv = static_cast<float>(x87_div24(1.0, det));
-        const float sx = static_cast<float>(x87_sub24(p0.x, a.x));
-        const float sy = static_cast<float>(x87_sub24(p0.y, a.y));
-        const float sz = static_cast<float>(x87_sub24(p0.z, a.z));
-        const float u_dot = static_cast<float>(x87_add24(
-            x87_add24(x87_mul24(hy, sy), x87_mul24(hx, sx)), x87_mul24(hz, sz)));
-        const float u = static_cast<float>(x87_mul24(u_dot, inv));
-        if (u < 0.0f || u > 1.0f) return false;
-        const float qx = static_cast<float>(x87_sub24(x87_mul24(sy, e1z), x87_mul24(sz, e1y)));
-        const float qy = static_cast<float>(x87_sub24(x87_mul24(sz, e1x), x87_mul24(e1z, sx)));
-        const float qz = static_cast<float>(x87_sub24(x87_mul24(e1y, sx), x87_mul24(sy, e1x)));
-        const float v_dot = static_cast<float>(x87_add24(
-            x87_add24(x87_mul24(qy, dy), x87_mul24(qx, dx)), x87_mul24(qz, dz)));
-        const float v = static_cast<float>(x87_mul24(v_dot, inv));
-        if (v < 0.0f || x87_add24(v, u) > 1.0) return false;
-        const float t_dot = static_cast<float>(x87_add24(
-            x87_add24(x87_mul24(qy, e2y), x87_mul24(qx, e2x)), x87_mul24(qz, e2z)));
-        const float t = static_cast<float>(x87_mul24(t_dot, inv));
-        // 0085D297/2A4 use JA: unordered comparisons also fall through.
-        if (t < 0.0f || t > 1.0f) return false;
-        const float tx = static_cast<float>(x87_mul24(t, dx));
-        const float ty = static_cast<float>(x87_mul24(t, dy));
-        const float tz = static_cast<float>(x87_mul24(t, dz));
-        out.x = static_cast<float>(x87_add24(p0.x, tx));
-        out.y = static_cast<float>(x87_add24(p0.y, ty));
-        out.z = static_cast<float>(x87_add24(p0.z, tz));
-        return true;
-    } else {
-    const float dx = p1.x - p0.x;
-    const float dy = p1.y - p0.y;
-    const float dz = p1.z - p0.z;
-    const float e1x = b.x - a.x;
-    const float e1y = b.y - a.y;
-    const float e1z = b.z - a.z;
-    const float e2x = c.x - a.x;
-    const float e2y = c.y - a.y;
-    const float e2z = c.z - a.z;
-    // h = d x e2
-    const float hx = static_cast<float>(double(dy) * e2z - double(dz) * e2y);
-    const float hy = static_cast<float>(double(e2x) * dz - double(dx) * e2z);
-    const float hz = static_cast<float>(double(e2y) * dx - double(dy) * e2x);
-    // 0085D10B..0085D129: (hx*e1x + hy*e1y) + hz*e1z, stored to a float slot before the two FCOMI
-    // tests. The summation order and the float stores of each dot product below were corrected
-    // after the native fixture (docs/CC13_FIXTURE_PASS_1.md) showed last-place differences.
-    const float det = static_cast<float>(double(hx) * e1x + double(hy) * e1y + double(hz) * e1z);
-    if (double(det) > -0.0000999999974737875 && double(det) < 0.0000999999974737875) {
-        return false;
-    }
-    const float inv = static_cast<float>(1.0 / det);
-    const float sx = p0.x - a.x;
-    const float sy = p0.y - a.y;
-    const float sz = p0.z - a.z;
-    // 0085D184..0085D1B0: (hy*sy + hx*sx) + hz*sz stored as a float, times inv, stored again.
-    const float u_dot = static_cast<float>(double(hy) * sy + double(hx) * sx + double(hz) * sz);
-    const float u = static_cast<float>(double(u_dot) * inv);
-    if (u < 0.0f || u > 1.0f) {
-        return false;
-    }
-    // q = s x e1
-    const float qx = static_cast<float>(double(sy) * e1z - double(sz) * e1y);
-    const float qy = static_cast<float>(double(sz) * e1x - double(e1z) * sx);
-    const float qz = static_cast<float>(double(e1y) * sx - double(sy) * e1x);
-    // 0085D215..0085D23F: (qy*dy + qx*dx) + qz*dz stored as a float, times inv, stored again.
-    const float v_dot = static_cast<float>(double(qy) * dy + double(qx) * dx + double(qz) * dz);
-    const float v = static_cast<float>(double(v_dot) * inv);
-    if (v < 0.0f || 1.0 < double(v) + u) {
-        return false;
-    }
-    // 0085D269..0085D28D: (qy*e2y + qx*e2x) + qz*e2z stored as a float, times inv, stored again.
-    const float t_dot = static_cast<float>(double(qy) * e2y + double(qx) * e2x + double(qz) * e2z);
-    const float t = static_cast<float>(double(t_dot) * inv);
-    if (t < 0.0f || t > 1.0f) {
-        return false;
-    }
-    out.x = p0.x + t * dx;
-    out.y = p0.y + t * dy;
-    out.z = p0.z + t * dz;
+    using namespace cc13x87;
+    // bsp.py show 0085D020 --asm, 0085D023..0085D2F8. The live
+    // main-thread caller runs PC24: each x87 arithmetic operation rounds,
+    // including products still on the stack. Retain the extended exponent
+    // until the listing's FSTP DWORDs; the former fixture used PC53.
+    const float dx = static_cast<float>(x87_sub24(p1.x, p0.x));
+    const float dy = static_cast<float>(x87_sub24(p1.y, p0.y));
+    const float dz = static_cast<float>(x87_sub24(p1.z, p0.z));
+    const float e1x = static_cast<float>(x87_sub24(b.x, a.x));
+    const float e1y = static_cast<float>(x87_sub24(b.y, a.y));
+    const float e1z = static_cast<float>(x87_sub24(b.z, a.z));
+    const float e2x = static_cast<float>(x87_sub24(c.x, a.x));
+    const float e2y = static_cast<float>(x87_sub24(c.y, a.y));
+    const float e2z = static_cast<float>(x87_sub24(c.z, a.z));
+    const float hx = static_cast<float>(x87_sub24(x87_mul24(dy, e2z), x87_mul24(dz, e2y)));
+    const float hy = static_cast<float>(x87_sub24(x87_mul24(e2x, dz), x87_mul24(dx, e2z)));
+    const float hz = static_cast<float>(x87_sub24(x87_mul24(e2y, dx), x87_mul24(dy, e2x)));
+    // 0085D10B..0085D129: (hy*e1y + hx*e1x) + hz*e1z.
+    const float det = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(hy, e1y), x87_mul24(hx, e1x)), x87_mul24(hz, e1z)));
+    // Actual double cells 00D0D098 / 00D7A268 contain promoted +/-1e-4f.
+    if (det > -0.0000999999974737875 && det < 0.0000999999974737875) return false;
+    const float inv = static_cast<float>(x87_div24(1.0, det));
+    const float sx = static_cast<float>(x87_sub24(p0.x, a.x));
+    const float sy = static_cast<float>(x87_sub24(p0.y, a.y));
+    const float sz = static_cast<float>(x87_sub24(p0.z, a.z));
+    const float u_dot = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(hy, sy), x87_mul24(hx, sx)), x87_mul24(hz, sz)));
+    const float u = static_cast<float>(x87_mul24(u_dot, inv));
+    if (u < 0.0f || u > 1.0f) return false;
+    const float qx = static_cast<float>(x87_sub24(x87_mul24(sy, e1z), x87_mul24(sz, e1y)));
+    const float qy = static_cast<float>(x87_sub24(x87_mul24(sz, e1x), x87_mul24(e1z, sx)));
+    const float qz = static_cast<float>(x87_sub24(x87_mul24(e1y, sx), x87_mul24(sy, e1x)));
+    const float v_dot = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(qy, dy), x87_mul24(qx, dx)), x87_mul24(qz, dz)));
+    const float v = static_cast<float>(x87_mul24(v_dot, inv));
+    if (v < 0.0f || x87_add24(v, u) > 1.0) return false;
+    const float t_dot = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(qy, e2y), x87_mul24(qx, e2x)), x87_mul24(qz, e2z)));
+    const float t = static_cast<float>(x87_mul24(t_dot, inv));
+    // 0085D297/2A4 use JA: unordered comparisons also fall through.
+    if (t < 0.0f || t > 1.0f) return false;
+    const float tx = static_cast<float>(x87_mul24(t, dx));
+    const float ty = static_cast<float>(x87_mul24(t, dy));
+    const float tz = static_cast<float>(x87_mul24(t, dz));
+    out.x = static_cast<float>(x87_add24(p0.x, tx));
+    out.y = static_cast<float>(x87_add24(p0.y, ty));
+    out.z = static_cast<float>(x87_add24(p0.z, tz));
     return true;
-    }
 }
 
 std::int32_t effect_component_category(std::string_view component) noexcept

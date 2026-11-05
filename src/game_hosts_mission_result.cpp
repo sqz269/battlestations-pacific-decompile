@@ -45,7 +45,6 @@
 #include "bsp/session_context_cc13.hpp"
 #include "bsp/cc13_seg59a.hpp"
 #include "bsp/cc13_seg59b.hpp"
-#include "bsp/wire_goal2_chain127_switches.hpp"
 
 #include <cstdio>
 #include <cstring>
@@ -340,22 +339,17 @@ GameMissionResultHost::GameMissionResultHost(GameHostLog& log,
     : log_(log), control_(control),
       movie_bridge_(std::make_unique<MovieBridge>(log, vfs, locale)),
       completion_bridge_(std::make_unique<CompletionBridge>(log, control)) {
-    if constexpr (bsp::kWireGoal2Chain127Bound) {
-        final_scoring_name_ = std::make_unique<FinalScoringName>();
-    }
+    final_scoring_name_ = std::make_unique<FinalScoringName>();
 }
 
 GameMissionResultHost::~GameMissionResultHost() = default;
 
 void GameMissionResultHost::set_final_scoring_function_name(const std::string& name) {
     // 0090BFC0 assigns the Lua-produced name; OFF keeps the former empty setter.
-    if constexpr (bsp::kWireGoal2Chain127Bound) {
-        const bsp::cc13_seg59a::NativeStr input{
-            static_cast<std::uint32_t>(name.size()), const_cast<char*>(name.data())};
-        bsp::cc13_seg59a::scoring_set_final_function_name_0090bfc0(*final_scoring_name_,
-            bsp::cc13_seg59a::ScoringFunctionNameView{final_scoring_name_->value}, &input);
-    } else {
-    }
+    const bsp::cc13_seg59a::NativeStr input{
+        static_cast<std::uint32_t>(name.size()), const_cast<char*>(name.data())};
+    bsp::cc13_seg59a::scoring_set_final_function_name_0090bfc0(*final_scoring_name_,
+        bsp::cc13_seg59a::ScoringFunctionNameView{final_scoring_name_->value}, &input);
 }
 
 void GameMissionResultHost::record(const char* method, std::uint32_t address) {

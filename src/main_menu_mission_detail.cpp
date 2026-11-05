@@ -1,6 +1,5 @@
 #include "bsp/main_menu_mission_detail.hpp"
 #include "bsp/cc13_x87_model.hpp"
-#include "bsp/wire_goal4_chain407_switches.hpp"
 
 // Reconstruction of 0058C010, the main menu's mission-detail page builder.
 // Evidence addresses are in include/bsp/main_menu_mission_detail.hpp and in
@@ -103,19 +102,11 @@ int mission_map_point_state(bool selected, bool side_mission) noexcept {
 }
 
 double mission_detail_scroll_range(double text_height, float clip_height) noexcept {
-    if constexpr (kWireGoal4Chain407Bound) {
-        // bsp.py ghidra disasm 0058C86D: FSUBR at 0058C870, then FADD
-        // [00CEED60] at 0058C877. Main-thread PC24 rounds BOTH operations;
-        // the double memory operands do not change the precision control.
-        return cc13x87::x87_add24(cc13x87::x87_sub24(text_height, clip_height),
-            kMissionDetailScrollPadding);
-    } else {
-    // 0058C86D: FLD [EAX+4] is the second component of the 00AA6740 size pair.
-    // 0058C870 subtracts it from the x87 double already on the stack and
-    // 0058C877 adds the constant, all in extended precision before the single
-    // store at 0058C87D.
-    return text_height - static_cast<double>(clip_height) + kMissionDetailScrollPadding;
-    }
+    // bsp.py ghidra disasm 0058C86D: FSUBR at 0058C870, then FADD
+    // [00CEED60] at 0058C877. Main-thread PC24 rounds BOTH operations;
+    // the double memory operands do not change the precision control.
+    return cc13x87::x87_add24(cc13x87::x87_sub24(text_height, clip_height),
+        kMissionDetailScrollPadding);
 }
 
 std::string streamed_dialog_path(std::string_view language, std::string_view voice_key) {

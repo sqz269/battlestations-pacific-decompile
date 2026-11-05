@@ -36,7 +36,6 @@
 #include "bsp/building_pads.hpp"
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/native_rocket_class_query.hpp"
-#include "bsp/wire_goal4_chain517_switches.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -52,21 +51,6 @@
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (kPc24UnitsHostCc13Bound)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp4 (MP2b, the 004E17FD gate)
 #include "bsp/plane_task_reach_sw3.hpp"  // cc9-sweep3c reach counter (log only)
-#include "bsp/wire_goal2_chain58_switches.hpp"  // goal 2 chain 58 (kWireGoal2Chain58Bound)
-#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
-#include "bsp/wire_goal4_chain304_switches.hpp"
-#include "bsp/wire_goal4_chain308_switches.hpp"
-#include "bsp/wire_goal4_chain341_switches.hpp"
-#include "bsp/wire_goal4_chain359_switches.hpp"
-#include "bsp/wire_goal4_chain364_switches.hpp"
-#include "bsp/wire_goal4_chain400_switches.hpp"
-#include "bsp/wire_goal4_chain409_switches.hpp"
-#include "bsp/wire_goal4_chain474_switches.hpp"
-#include "bsp/wire_goal4_chain490_switches.hpp"
-#include "bsp/wire_goal4_chain544_switches.hpp"
-#include "bsp/wire_goal4_chain552_switches.hpp"
-#include "bsp/wire_goal4_chain541_switches.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
@@ -234,16 +218,11 @@ void GameObjectiveSets::erase_member_unless_held(int slot, const std::string& na
         }
         // 008DF4B2 +1Ch == 0; 008DF4C5/008DF4CB the hidden test, which with
         // +1Ch == 0 leaves kind != 2; 008DF4E3 008DC4A0 the list test.
-        if constexpr (bsp::kWireGoal4Chain400Bound) {
-            // bsp.py show 008DA130/008DA140 and 008DF400: 008DF4B2 followed
-            // by 008DF4C5/008DF4CB inlines both predicates in this same order.
-            // Another active, visible objective must still list the real unit.
-            if (!bsp::cc13_band0085::objective_is_active_008da130(o.state)
-                || !bsp::cc13_band0085::objective_is_shown_008da140(o.kind, o.state)) continue;
-        } else {
-        if (o.state != 0) continue;
-        if (o.kind == 2 && o.state != 1) continue;
-        }
+        // bsp.py show 008DA130/008DA140 and 008DF400: 008DF4B2 followed
+        // by 008DF4C5/008DF4CB inlines both predicates in this same order.
+        // Another active, visible objective must still list the real unit.
+        if (!bsp::cc13_band0085::objective_is_active_008da130(o.state)
+            || !bsp::cc13_band0085::objective_is_shown_008da140(o.kind, o.state)) continue;
         if (std::find(o.units.begin(), o.units.end(), unit) != o.units.end()) {
             ++member_holds;                               // 008DF502 JNZ 008DF5AD
             return;
@@ -958,28 +937,19 @@ public:
     float rocket_accuracy(const void* attacker, const bsp::AiPlaneBulletFacts& bullet,
                           const void* target) override {
         if (!group_) return 0.0f;
-        if constexpr (bsp::kWireGoal4Chain517Bound) {
-            // bsp.py show 009fe270 --asm, 009FE516 / 009FE530: both
-            // predicates read this loaded rocket class's AntiAir (+E4h).
-            // Use the selector's existing read-only class view; its global
-            // input is the same host F874FD value used by the prior path.
-            bsp::NativeRocketClassQuery query(bullet.ignition_delay, bullet.anti_air,
-                rocket_air_ground_same());
-            const auto view = bsp::cc13_seg47::raw(query.data());
-            const bool air = bsp::cc13_seg47::target_flag_e4_set_or_global_007b80a0(query, view) != 0;
-            const bool ground = bsp::cc13_seg47::target_flag_e4_clear_or_global_007b80c0(query, view) != 0;
-            const std::uint32_t offset = bsp::ai_rocket_accuracy_offset_009fe4f1(
-                entity_is_type(attacker, 0x0F), bullet.ignition_delay <= 0.0f,
-                air, ground, static_cast<int>(group_(index_of(target))));
-            return offset == 0u ? 0.0f : block_.at(offset);
-        } else {
-        const bool same = rocket_air_ground_same();
+        // bsp.py show 009fe270 --asm, 009FE516 / 009FE530: both
+        // predicates read this loaded rocket class's AntiAir (+E4h).
+        // Use the selector's existing read-only class view; its global
+        // input is the same host F874FD value used by the prior path.
+        bsp::NativeRocketClassQuery query(bullet.ignition_delay, bullet.anti_air,
+            rocket_air_ground_same());
+        const auto view = bsp::cc13_seg47::raw(query.data());
+        const bool air = bsp::cc13_seg47::target_flag_e4_set_or_global_007b80a0(query, view) != 0;
+        const bool ground = bsp::cc13_seg47::target_flag_e4_clear_or_global_007b80c0(query, view) != 0;
         const std::uint32_t offset = bsp::ai_rocket_accuracy_offset_009fe4f1(
             entity_is_type(attacker, 0x0F), bullet.ignition_delay <= 0.0f,
-            bullet.anti_air || same, !bullet.anti_air || same,
-            static_cast<int>(group_(index_of(target))));
+            air, ground, static_cast<int>(group_(index_of(target))));
         return offset == 0u ? 0.0f : block_.at(offset);
-        }
     }
     void note_plane_option(std::uint32_t descriptor, float value) override {
         const int loadout_slot = ai_loadout_descriptor_slot(descriptor);
@@ -1768,40 +1738,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     const bsp::AiTuningBlock& current_tuning() const {
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
-            // Impl is the mutable object owned by the coordinator even when
-            // a const query builds a projected scoring/capture record.
-            auto& self = const_cast<Impl&>(*this);
-            self.refresh_tuning_selection();
-            return self.tuning;
-        } else {
-            return tuning;
-        }
+        // Impl is the mutable object owned by the coordinator even when
+        // a const query builds a projected scoring/capture record.
+        auto& self = const_cast<Impl&>(*this);
+        self.refresh_tuning_selection();
+        return self.tuning;
     }
 
-    float selected_tuning_field(std::uint32_t offset, int effective_mode) {
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
-            TuningRecordBridge bridge(*this, static_cast<int>(current_tuning().mode));
-            const auto* record = static_cast<const std::uint8_t*>(
-                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
-            if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
-            float value;
-            std::memcpy(&value, record + offset, sizeof(value));
-            return value;
-        } else {
-            // 009FFC80: modes outside 0..3 never read the difficulty operand.
-            // Their index is derived afresh from the live session/game mode, not
-            // the mode cached when this coordinator was created. Callers retain
-            // the old path for 0..3 until game+18CCh[slot]+2Ch is available.
-            const int index = static_cast<int>(bsp::ai_tuning_mode_009ffc80(effective_mode, 0));
-            TuningRecordBridge bridge(*this, index);
-            const auto* record = static_cast<const std::uint8_t*>(
-                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
-            if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
-            float value;
-            std::memcpy(&value, record + offset, sizeof(value));
-            return value;
-        }
+    float selected_tuning_field(std::uint32_t offset, int /*effective_mode*/) {
+        TuningRecordBridge bridge(*this, static_cast<int>(current_tuning().mode));
+        const auto* record = static_cast<const std::uint8_t*>(
+            bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
+        if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
+        float value;
+        std::memcpy(&value, record + offset, sizeof(value));
+        return value;
     }
 
     // The AiModeTuning record 00A08460 reads, projected out of the same block
@@ -2117,11 +2068,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // constructor installed. ON: destroy_group replaces it with IDLE,
             // as 00A10040 does when 00A2D440 notifies (kAiTargetGroupDestroyedIdleBound).
             if (!kAiTargetGroupDestroyedIdleBound) {
-                if constexpr (bsp::kWireGoal4Chain544Bound) {
-                    replace_command(h, birth);
-                } else {
-                    h->command = birth;
-                }
+                replace_command(h, birth);
             }
         }
         if constexpr (kAiGroupScoreListReleaseBound) {
@@ -2145,37 +2092,23 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A2D440 -> 00696330: each ATTACK command observing g runs 00A10040,
             // which builds IDLE (new(8), vtable 00D229E0, +4h = its own group) and
             // installs it with 00A2BD00, deleting the attack command.
-            if constexpr (bsp::kWireGoal4Chain544Bound) {
-                // 00A2D440 -> 00696330: notify only commands whose constructor
-                // actually registered this target. Replacing each command
-                // removes its pair, including a possible self-observation.
-                while (g->attack_endpoint && !g->attack_endpoint->commands.empty()) {
-                    NativeAttackCommand* observed = g->attack_endpoint->commands.back();
-                    Group* h = static_cast<Group*>(observed->owner_group());
-                    if (h == nullptr || h->native_attack.get() != observed)
-                        throw std::logic_error("ATTACK notification has no owning command");
-                    bsp::AiCommandObject idle;
-                    idle.type = bsp::AiCommandType::Idle;
-                    idle.owner_group = h;
-                    replace_command(h, idle);
-                    done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
-                }
-            } else {
-                for (Group* h : registry) {
-                    if (h == nullptr || h == g) continue;
-                    if (h->command.target_group != static_cast<void*>(g)) continue;
-                    bsp::AiCommandObject idle;
-                    idle.type = bsp::AiCommandType::Idle;
-                    idle.owner_group = h;
-                    h->command = idle;
-                    done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
-                }
+            // 00A2D440 -> 00696330: notify only commands whose constructor
+            // actually registered this target. Replacing each command
+            // removes its pair, including a possible self-observation.
+            while (g->attack_endpoint && !g->attack_endpoint->commands.empty()) {
+                NativeAttackCommand* observed = g->attack_endpoint->commands.back();
+                Group* h = static_cast<Group*>(observed->owner_group());
+                if (h == nullptr || h->native_attack.get() != observed)
+                    throw std::logic_error("ATTACK notification has no owning command");
+                bsp::AiCommandObject idle;
+                idle.type = bsp::AiCommandType::Idle;
+                idle.owner_group = h;
+                replace_command(h, idle);
+                done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
             }
         }
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            // Group teardown also destroys its outgoing command observer.
-            g->native_attack.reset();
-        }
+        // Group teardown also destroys its outgoing command observer.
+        g->native_attack.reset();
         registry.erase(std::remove(registry.begin(), registry.end(), g), registry.end());
         for (std::vector<Group*>& list : by_team) {
             list.erase(std::remove(list.begin(), list.end(), g), list.end());
@@ -2283,11 +2216,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         // group+564Ch, the eight-byte NONCONTROL or IDLE instance the
         // constructor installs before the first member is added.
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, initial_command_for(g));
-        } else {
-            g->command = initial_command_for(g);
-        }
+        replace_command(g, initial_command_for(g));
         ++summary.groups_created;
         attach(g, unit);
         done("AiGroups::create_group", 0x00a2dfa0u);
@@ -2365,7 +2294,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     bsp::AiCommandObject initial_command_for(Group* g) const {
         bsp::AiCommandObject cmd;
         const int slot = g->party;
-        if constexpr (bsp::kWireGoal4Chain552Bound) {
+        {
             // The group constructor chooses the native NONCONTROL/IDLE
             // profile from this party's actual admission state (00A2E0F1..140).
             // Project its vt+4h result with the existing class leaf. These
@@ -2374,8 +2303,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             cmd.type = type == bsp::AiCommandType::Idle
                 ? bsp::ai_command_idle_get_type_00a0fd80()
                 : bsp::ai_command_non_control_get_type_00a0fce0();
-        } else {
-        cmd.type = bsp::ai_command_initial_type(slot, party_admitted(slot));
         }
         cmd.owner_group = g;
         return cmd;
@@ -2437,63 +2364,33 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             done("AiGroups::can_auto_merge", 0x00a2c8d0u);
             return false;
         }
-        if constexpr (kWireGoal4Chain304Bound) {
-            // The shared gates of 00A11F80 / 00A12450 precede their calls to
-            // 00A10D50 and 00A10C60. Other command classes use 00A0FC80 (false).
-            if (!bsp::ai_command_overrides_merge(b->command.type)
-                || group_has_groupable_combatant(from) != group_has_groupable_combatant(into)
-                || (b->command.type == bsp::AiCommandType::Idle
-                    && group_matches_009fe0b0(b) != group_matches_009fe0b0(a))) {
-                done("AiGroups::can_auto_merge", 0x00a2c8d0u);
-                return false;
-            }
-            AiGroupListQuery own(b->members, [this](std::size_t member) { return handle(member); });
-            AiGroupListQuery other(a->members, [this](std::size_t member) { return handle(member); });
-            AiGroupLeaderQuery own_leader(group_leader_position(from), group_leader_order_key(from));
-            AiGroupLeaderQuery other_leader(group_leader_position(into), group_leader_order_key(into));
-            own.bind_first_entity(&own_leader);
-            other.bind_first_entity(&other_leader);
-            AiCommandGroupQuery command;
-            command.owner_group = own.data(); // command+4, the absorbed group
-            AiGroupMergeQueryBinding query(current_tuning());
-            // bsp.py show 00a10d50 --asm: candidate >= own via unrounded ST0;
-            // show 00a10c60 --asm: spilled X/Z deltas, radius and squared terms.
-            // Reuse those bodies; the old typed arithmetic is only in OFF.
-            const bool ok = bsp::oct18_tail_c::ai_merge_strength_00a10d50(
-                &command, other.data(), query.bindings())
-                && bsp::oct18_tail_c::ai_merge_distance_00a10c60(
-                    &command, other.data(), query.bindings());
+        // The shared gates of 00A11F80 / 00A12450 precede their calls to
+        // 00A10D50 and 00A10C60. Other command classes use 00A0FC80 (false).
+        if (!bsp::ai_command_overrides_merge(b->command.type)
+            || group_has_groupable_combatant(from) != group_has_groupable_combatant(into)
+            || (b->command.type == bsp::AiCommandType::Idle
+                && group_matches_009fe0b0(b) != group_matches_009fe0b0(a))) {
             done("AiGroups::can_auto_merge", 0x00a2c8d0u);
-            return ok;
-        } else {
-        bsp::AiCommandMergeFacts facts;
-        facts.type = b->command.type;              // the absorbed group's command
-        facts.other_group_present = true;          // `into` is the argument
-        facts.other_population = static_cast<std::uint32_t>(a->members.size());
-        facts.own_population = static_cast<std::uint32_t>(b->members.size());
-        facts.own_has_groupable_combatant = group_has_groupable_combatant(from);
-        facts.other_has_groupable_combatant = group_has_groupable_combatant(into);
-        if (facts.type == bsp::AiCommandType::Idle) {
-            facts.own_matches_009fe0b0 = group_matches_009fe0b0(b);
-            facts.other_matches_009fe0b0 = group_matches_009fe0b0(a);
+            return false;
         }
-        facts.own_leader_weight = static_cast<float>(group_leader_order_key(from));
-        facts.other_leader_weight = static_cast<float>(group_leader_order_key(into));
-        // 00A10C60 substitutes the zero vector at 00F87574 for an empty group.
-        static const float kOrigin[3] = {0.0f, 0.0f, 0.0f};
-        const float* own_leader = group_leader_position(from);
-        const float* other_leader = group_leader_position(into);
-        if (own_leader == nullptr) own_leader = kOrigin;
-        if (other_leader == nullptr) other_leader = kOrigin;
-        for (int i = 0; i < 3; ++i) {
-            facts.own_leader_position[i] = own_leader[i];
-            facts.other_leader_position[i] = other_leader[i];
-        }
-        facts.auto_merge_dist = current_tuning().at(bsp::kAiTuningAutoMergeMergeDist);
-        const bool ok = bsp::ai_command_can_merge_with(facts);
+        AiGroupListQuery own(b->members, [this](std::size_t member) { return handle(member); });
+        AiGroupListQuery other(a->members, [this](std::size_t member) { return handle(member); });
+        AiGroupLeaderQuery own_leader(group_leader_position(from), group_leader_order_key(from));
+        AiGroupLeaderQuery other_leader(group_leader_position(into), group_leader_order_key(into));
+        own.bind_first_entity(&own_leader);
+        other.bind_first_entity(&other_leader);
+        AiCommandGroupQuery command;
+        command.owner_group = own.data(); // command+4, the absorbed group
+        AiGroupMergeQueryBinding query(current_tuning());
+        // bsp.py show 00a10d50 --asm: candidate >= own via unrounded ST0;
+        // show 00a10c60 --asm: spilled X/Z deltas, radius and squared terms.
+        // Reuse those bodies; the old typed arithmetic is only in OFF.
+        const bool ok = bsp::oct18_tail_c::ai_merge_strength_00a10d50(
+            &command, other.data(), query.bindings())
+            && bsp::oct18_tail_c::ai_merge_distance_00a10c60(
+                &command, other.data(), query.bindings());
         done("AiGroups::can_auto_merge", 0x00a2c8d0u);
         return ok;
-        }
     }
 
     void merge_group(void* into, void* from) override {
@@ -2517,19 +2414,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 c.owner_group = g;
                 c.target_group = a;
                 if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
-                if constexpr (bsp::kWireGoal4Chain544Bound) {
-                    replace_command(g, c);
-                } else {
-                    g->command = c;
-                }
+                replace_command(g, c);
             } else {
-                if constexpr (bsp::kWireGoal4Chain544Bound) {
-                    bsp::AiCommandObject next = g->command;
-                    next.target_group = a;
-                    replace_command(g, next);
-                } else {
-                    g->command.target_group = a;
-                }
+                bsp::AiCommandObject next = g->command;
+                next.target_group = a;
+                replace_command(g, next);
             }
             ++summary.commands_retargeted;
         }
@@ -2692,9 +2581,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             auto_merge_leave_00a10ec0(group_at(cmd->owner_group));
         }
         bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            if (tick.route_ran) store_command_route_state(group_at(cmd->owner_group));
-        }
+        if (tick.route_ran) store_command_route_state(group_at(cmd->owner_group));
         if (tick.route_ran) {
             // Packet cc9_director_moveonpath_route: the census of 00A14DD0.
             Group* rg = group_at(cmd->owner_group);
@@ -3062,16 +2949,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A2C720 walks the group's +563Ch list for the entity.
         Group* g = group_at(target_group);
         if (g == nullptr) return false;
-        if constexpr (kWireGoal4Chain304Bound) {
-            AiGroupListQuery query(g->members, [this](std::size_t member) { return handle(member); });
-            // Preserve the host's entity handles (including squadron identity)
-            // and member order; a candidate is not replaced by its flight proxy.
-            return bsp::oct18_tail_c::ai_group_contains_entity_00a2c720(
-                query.data(), candidate, ai_group_query_invalid_iterator);
-        } else {
-        const std::size_t unit = unit_index_of(candidate);
-        return std::find(g->members.begin(), g->members.end(), unit) != g->members.end();
-        }
+        AiGroupListQuery query(g->members, [this](std::size_t member) { return handle(member); });
+        // Preserve the host's entity handles (including squadron identity)
+        // and member order; a candidate is not replaced by its flight proxy.
+        return bsp::oct18_tail_c::ai_group_contains_entity_00a2c720(
+            query.data(), candidate, ai_group_query_invalid_iterator);
     }
     void* close_member_current_target(void* member) override {
         // The member's vtable[+114h] then 0071EB60, then 00521EA0 to resolve
@@ -3625,41 +3507,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // runs here rather than through the session; the wire hop is the
             // part that is not modelled, not the merge.
             bool posted = false;
-            if constexpr (kWireGoal4Chain260Bound) {
-                // Goal 4 chain 260: 0076E520's copy of the 76h (0075C7C0 write,
-                // 0075A2E0 / 0075C810); the delivery joins the copy's leader.
-                const std::size_t copy_leader =
-                    commands_formation_member_copy_0076e520(0x76, leader_index);
-                if (copy_leader < units.count()) {
-                    if constexpr (kPlannerJoinLoopbackBound) {
-                        ++formation_joins_posted;
-                        posted = commands_post_loopback_callback_0076e520(follower_index,
-                            [this, follower_index, copy_leader] {
-                                ++formation_joins_delivered;
-                                if (units.formation_join_0077f940(follower_index,
-                                                                  copy_leader)) {
-                                    ++formation_joins_made;
-                                }
-                            });
-                    }
-                    if (!posted && units.formation_join_0077f940(follower_index, copy_leader)) {
-                        ++formation_joins_made;
-                    }
+            // Goal 4 chain 260: 0076E520's copy of the 76h (0075C7C0 write,
+            // 0075A2E0 / 0075C810); the delivery joins the copy's leader.
+            const std::size_t copy_leader =
+                commands_formation_member_copy_0076e520(0x76, leader_index);
+            if (copy_leader < units.count()) {
+                if constexpr (kPlannerJoinLoopbackBound) {
+                    ++formation_joins_posted;
+                    posted = commands_post_loopback_callback_0076e520(follower_index,
+                        [this, follower_index, copy_leader] {
+                            ++formation_joins_delivered;
+                            if (units.formation_join_0077f940(follower_index,
+                                                              copy_leader)) {
+                                ++formation_joins_made;
+                            }
+                        });
                 }
-            } else {
-            if constexpr (kPlannerJoinLoopbackBound) {
-                ++formation_joins_posted;
-                posted = commands_post_loopback_callback_0076e520(follower_index,
-                    [this, follower_index, leader_index] {
-                        ++formation_joins_delivered;
-                        if (units.formation_join_0077f940(follower_index, leader_index)) {
-                            ++formation_joins_made;
-                        }
-                    });
-            }
-            if (!posted && units.formation_join_0077f940(follower_index, leader_index)) {
-                ++formation_joins_made;
-            }
+                if (!posted && units.formation_join_0077f940(follower_index, copy_leader)) {
+                    ++formation_joins_made;
+                }
             }
         } else {
             ++formation_requests_refused;
@@ -3928,15 +3794,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             groupable ? 1 : 0,
             static_cast<double>(tick_horizontal_distance(own, tgt)),
             static_cast<double>(current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)));
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
+        {
             bsp::AiCommandObject next;
             next.type = type;
             next.owner_group = g;
             next.target_group = g->command.target_group;
             replace_command(g, next);
-        } else {
-            g->command.type = type;
-            g->command.owner_group = g;
         }
         done("AiCommand::promote_to_close_attack", 0x00a2bd00u);
     }
@@ -3958,21 +3821,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     float auto_merge_dist() override {
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
-            return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, game_mode());
-        } else {
-            if constexpr (bsp::kWireGoal4Chain341Bound) {
-                const int mode = game_mode();
-                if (mode < 0 || mode > 3) {
-                    return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, mode);
-                }
-                return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
-            } else {
-                // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
-                done("AiGroups::auto_merge_dist", 0x00a371a0u);
-                return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
-            }
-        }
+        return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, game_mode());
     }
 
     int game_mode() override {
@@ -4267,7 +4116,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void store_party_brain(int party_slot, void* brain) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return;
         if (brain == nullptr) brains[static_cast<std::size_t>(party_slot)].reset();
-        if constexpr (bsp::kWireGoal4Chain474Bound) refresh_tuning_selection();
+        refresh_tuning_selection();
     }
     float next_think_time(int party_slot) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return 0.0f;
@@ -4321,7 +4170,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             brain->planners[static_cast<std::size_t>(slot)].slot = slot;
             brain->planners[static_cast<std::size_t>(slot)].kind = planner_kind_for_slot(slot);
         }
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
+        {
             // 00A15A70's constructor dispatch: modes 4..7 leave +0Ch null;
             // the default arm installs the actual Capture planner there.
             const int mode = game_mode();
@@ -4329,7 +4178,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         Brain* raw = brain.get();
         brains[static_cast<std::size_t>(party_slot)] = std::move(brain);
-        if constexpr (bsp::kWireGoal4Chain474Bound) refresh_tuning_selection();
+        refresh_tuning_selection();
         party_row(party_slot).brain_created = true;
         record("AiGroups::create_party_brain", 0x00a15a70u);
         return raw;
@@ -4490,18 +4339,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
-        if constexpr (bsp::kWireGoal4Chain552Bound) {
-            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
-        } else {
-        c.type = bsp::AiCommandType::PatrolTo;
-        }
+        c.type = bsp::ai_command_patrol_to_get_type_00a10470();
         c.owner_group = g;
         for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, c);
-        } else {
-            g->command = c;
-        }
+        replace_command(g, c);
         ++mode_think_patrols;
     }
     // 00A2CCF0(group)(point, ratio) through ai_order_cautious_move_00a2ccf0. The
@@ -4548,44 +4389,33 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A2CDA3..00A2CDB7: the previous +564Ch is deleted, the new one stored.
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
-        if constexpr (kWireGoal4Chain541Bound) {
-            // bsp.py show 00A2CCF0 / 00A10240: the constructor receives
-            // this live group and the planner's point.
-            // MOVETO's inline construction in 00A2CCF0 has the same final
-            // layout as 00A10240. Borrow an aligned Original-shaped object,
-            // then publish its actual fields into the command the tick consumes.
-            // Constructor padding stays unread; no image vtable is invoked.
-            if (choice == Choice::MoveTo) {
-                alignas(std::uint32_t) std::array<std::uint8_t, 0x14> storage;
-                const auto native = bsp::cc13_seg69::ai_command_moveto_construct_00a10240(
-                    bsp::cc13_seg69::Raw{storage.data()}, g, point);
-                // Dispatch the published primary vtable's +4h slot to its
-                // reconstructed leaf (bsp.py show 00A10270).
-                if (native.at<std::uint32_t>(0) != bsp::cc13_seg69::kMoveToVtable)
-                    std::abort(); // 00A10240 must publish the MOVETO class.
-                c.type = bsp::ai_command_move_to_get_type_00a10270();
-                c.owner_group = native.ptr(4);
-                std::memcpy(c.target_position, native.p + 8, sizeof(c.target_position));
-            } else {
-                // The only current caller passes ratio=1.0, so its stream-1
-                // fraction cannot select this branch. Retain the host path
-                // until a real producer can select CAUTIOUSMOVE; merely adding
-                // a static CALL here would not make 00A102D0 run in the game.
-                c.type = bsp::AiCommandType::CautiousMove;
-                c.owner_group = g;
-                for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
-            }
+        // bsp.py show 00A2CCF0 / 00A10240: the constructor receives
+        // this live group and the planner's point.
+        // MOVETO's inline construction in 00A2CCF0 has the same final
+        // layout as 00A10240. Borrow an aligned Original-shaped object,
+        // then publish its actual fields into the command the tick consumes.
+        // Constructor padding stays unread; no image vtable is invoked.
+        if (choice == Choice::MoveTo) {
+            alignas(std::uint32_t) std::array<std::uint8_t, 0x14> storage;
+            const auto native = bsp::cc13_seg69::ai_command_moveto_construct_00a10240(
+                bsp::cc13_seg69::Raw{storage.data()}, g, point);
+            // Dispatch the published primary vtable's +4h slot to its
+            // reconstructed leaf (bsp.py show 00A10270).
+            if (native.at<std::uint32_t>(0) != bsp::cc13_seg69::kMoveToVtable)
+                std::abort(); // 00A10240 must publish the MOVETO class.
+            c.type = bsp::ai_command_move_to_get_type_00a10270();
+            c.owner_group = native.ptr(4);
+            std::memcpy(c.target_position, native.p + 8, sizeof(c.target_position));
         } else {
-        c.type = choice == Choice::CautiousMove ? bsp::AiCommandType::CautiousMove
-                                                : bsp::AiCommandType::MoveTo;
-        c.owner_group = g;
-        for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
+            // The only current caller passes ratio=1.0, so its stream-1
+            // fraction cannot select this branch. Retain the host path
+            // until a real producer can select CAUTIOUSMOVE; merely adding
+            // a static CALL here would not make 00A102D0 run in the game.
+            c.type = bsp::AiCommandType::CautiousMove;
+            c.owner_group = g;
+            for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
         }
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, c);
-        } else {
-            g->command = c;
-        }
+        replace_command(g, c);
         ++mode_think_moves;
     }
     void mode_think_apply(Planner& p, Group* g, const bsp::gameplay_seg69_70_cc13::ModeThinkResult& r) {
@@ -4942,21 +4772,17 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 in.speed = 0.0f;
             }
             in.arrive_to_range_time = t.arrive_to_range_time;
-            if constexpr (kWireGoal4Chain250Bound) {
-                // Goal 4 chain 250: the 00A03760 body (gameplay_seg69_70_cc13)
-                // in place of ai_planner_tails' second implementation. It takes
-                // target+7A0h as the dword 00A037CF FILDs, and its 00A037E5 JBE
-                // also returns the weight for an unordered (NaN) distance.
-                const int target_7a0 = static_cast<int>(
-                    kCaptureAccessorsBound
-                        ? h.units.command_building_capture_range_07a0(unit_index_of(target))
-                        : kCaptureRangeStandIn);
-                return bsp::gameplay_seg69_70_cc13::ai_unit_arrival_value_00a03760(
-                    in.capture_weight, in.distance, target_7a0, in.speed,
-                    in.arrive_to_range_time);
-            } else {
-                return bsp::ai_tail_unit_arrival_value(in);
-            }
+            // Goal 4 chain 250: the 00A03760 body (gameplay_seg69_70_cc13)
+            // in place of ai_planner_tails' second implementation. It takes
+            // target+7A0h as the dword 00A037CF FILDs, and its 00A037E5 JBE
+            // also returns the weight for an unordered (NaN) distance.
+            const int target_7a0 = static_cast<int>(
+                kCaptureAccessorsBound
+                    ? h.units.command_building_capture_range_07a0(unit_index_of(target))
+                    : kCaptureRangeStandIn);
+            return bsp::gameplay_seg69_70_cc13::ai_unit_arrival_value_00a03760(
+                in.capture_weight, in.distance, target_7a0, in.speed,
+                in.arrive_to_range_time);
         }
         int near_unit_count() override { return static_cast<int>(near_list.size()); }
         int near_unit_team(int i) override {
@@ -5020,16 +4846,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             const std::size_t e = units.world_list_entry(28, i);
             if (e >= units.count() || units.unit_side_0054(e) == side) continue;
             Group* eg = e < group_of_unit.size() ? group_of_unit[e] : nullptr;
-            if constexpr (bsp::kWireGoal4Chain364Bound) {
+            {
                 // 00A1A7DE calls 00A2BDB0 before any point/pose query.
                 // The returned match selects this real world-list-28 entity.
                 CaptureAttackTargetQuery query(cmd);
                 if (query.matches(eg)) return e;
-            } else {
-                if (bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::Attack) &&
-                    cmd.target_group == static_cast<void*>(eg)) {
-                    return e;
-                }
             }
             float ex = 0.0f, ey = 0.0f, ez = 0.0f;
             units.unit_position_00fc(e, ex, ey, ez);
@@ -5057,87 +4878,52 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::size_t capture_defenders_00a24870(std::size_t target, int enemy_side,
                                             const CaptureTuning& t,
                                             std::vector<std::size_t>* collected = nullptr) const {
-        if constexpr (kWireGoal4Chain250Bound) {
-            // Goal 4 chain 250: 00A24870 itself (src/gameplay_seg69_70_cc13.cpp),
-            // over 00A07D40's walk of world list 2 ([[00E188A8]+19CCh]+34h) and
-            // 00A1A660's sphere test. Each view carries what 00A07D40 reads:
-            // +5Dh (00A07D73), +54h (00A07D81), +FCh after 00414DB0 (00A07DAC)
-            // and IsKindOf 6 / 18h / 1Bh / 45h / 46h (00A07DB2..00A07DDF). The
-            // image tests +5Dh alone, so the stand-in's +5Ch (unit_active) filter
-            // is dropped. ECX = planner+34h is enemy_side; the radius is
-            // Capture_CollectDefendersDist (tuning+1A4h).
-            std::vector<std::size_t> world_units;
-            std::vector<bsp::gameplay_seg69_70_cc13::TeamEntityView> world;
-            for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
-                const std::size_t u = units.world_list_entry(2, i);
-                if (u >= units.count()) continue;
-                world_units.push_back(u);
-            }
-            world.reserve(world_units.size());
-            for (const std::size_t u : world_units) {
-                bsp::gameplay_seg69_70_cc13::TeamEntityView v;
-                v.id = units.unit_identity(u);
-                v.byte_05d = units.unit_flag_005d(u);
-                v.team_054 = units.unit_side_0054(u);
-                units.unit_position_00fc(u, v.pos[0], v.pos[1], v.pos[2]);
-                v.kind_06 = units.unit_is_kind_of(u, 0x06);
-                v.kind_18 = units.unit_is_kind_of(u, 0x18);
-                v.kind_1b = units.unit_is_kind_of(u, 0x1B);
-                v.kind_45 = units.unit_is_kind_of(u, 0x45);
-                v.kind_46 = units.unit_is_kind_of(u, 0x46);
-                world.push_back(v);
-            }
-            bsp::gameplay_seg69_70_cc13::TeamEntityView entity;
-            entity.id = units.unit_identity(target);
-            entity.byte_05d = units.unit_flag_005d(target);
-            entity.team_054 = units.unit_side_0054(target);
-            units.unit_position_00fc(target, entity.pos[0], entity.pos[1], entity.pos[2]);
-            const std::vector<const bsp::gameplay_seg69_70_cc13::TeamEntityView*> records =
-                bsp::gameplay_seg69_70_cc13::ai_collect_threats_near_00a24870(
-                    enemy_side, entity, t.collect_defenders, world);
-            if (collected != nullptr) {
-                for (const auto* r : records) {
-                    // 00A248FD's lone record is the target's own view.
-                    collected->push_back(r == &entity
-                        ? target
-                        : world_units[static_cast<std::size_t>(r - world.data())]);
-                }
-            }
-            return records.size();
-        } else {
-            float tx = 0.0f, ty = 0.0f, tz = 0.0f;
-            units.unit_position_00fc(target, tx, ty, tz);
-            const float r2 = t.collect_defenders * t.collect_defenders;
-            std::size_t n = 0;
-            for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
-                const std::size_t u = units.world_list_entry(2, i);
-                if (u >= units.count()) continue;
-                if (!units.unit_active(u)) continue;   // LABELLED: +5Dh read as the active row
-                // Packet cc13-ver13: 00A07D73 reads +5Dh itself, set at the kill step's
-                // flush, so a sinking wreck is no defender; +5Ch stays the row above.
-                if (kCaptureDefenderDeadByteBound && units.unit_flag_005d(u)) continue;
-                if (units.unit_side_0054(u) != enemy_side) continue;
-                float x = 0.0f, y = 0.0f, z = 0.0f;
-                units.unit_position_00fc(u, x, y, z);
-                const float dx = x - tx, dy = y - ty, dz = z - tz;
-                float d2;
-                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                    // 00A1A68E-00A1A69E: (dx*dx + dy*dy) + dz*dz, stored as a float.
-                    const float dv[3] = {dx, dy, dz};
-                    d2 = bsp::pc24_unitshost::dot3(dv, dv);
-                } else {
-                    d2 = dz * dz + dy * dy + dx * dx;
-                }
-                if (r2 < d2) continue;   // 00A1A660 answers 1: skip
-                if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
-                    units.unit_is_kind_of(u, 0x1B)) {
-                    ++n;
-                    if (collected != nullptr) collected->push_back(u);
-                }
-            }
-            if (n == 0 && collected != nullptr) collected->push_back(target);   // 00A248FD
-            return n == 0 ? 1u : n;   // 00A248FD: the target's own record
+        // Goal 4 chain 250: 00A24870 itself (src/gameplay_seg69_70_cc13.cpp),
+        // over 00A07D40's walk of world list 2 ([[00E188A8]+19CCh]+34h) and
+        // 00A1A660's sphere test. Each view carries what 00A07D40 reads:
+        // +5Dh (00A07D73), +54h (00A07D81), +FCh after 00414DB0 (00A07DAC)
+        // and IsKindOf 6 / 18h / 1Bh / 45h / 46h (00A07DB2..00A07DDF). The
+        // image tests +5Dh alone, so the stand-in's +5Ch (unit_active) filter
+        // is dropped. ECX = planner+34h is enemy_side; the radius is
+        // Capture_CollectDefendersDist (tuning+1A4h).
+        std::vector<std::size_t> world_units;
+        std::vector<bsp::gameplay_seg69_70_cc13::TeamEntityView> world;
+        for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+            const std::size_t u = units.world_list_entry(2, i);
+            if (u >= units.count()) continue;
+            world_units.push_back(u);
         }
+        world.reserve(world_units.size());
+        for (const std::size_t u : world_units) {
+            bsp::gameplay_seg69_70_cc13::TeamEntityView v;
+            v.id = units.unit_identity(u);
+            v.byte_05d = units.unit_flag_005d(u);
+            v.team_054 = units.unit_side_0054(u);
+            units.unit_position_00fc(u, v.pos[0], v.pos[1], v.pos[2]);
+            v.kind_06 = units.unit_is_kind_of(u, 0x06);
+            v.kind_18 = units.unit_is_kind_of(u, 0x18);
+            v.kind_1b = units.unit_is_kind_of(u, 0x1B);
+            v.kind_45 = units.unit_is_kind_of(u, 0x45);
+            v.kind_46 = units.unit_is_kind_of(u, 0x46);
+            world.push_back(v);
+        }
+        bsp::gameplay_seg69_70_cc13::TeamEntityView entity;
+        entity.id = units.unit_identity(target);
+        entity.byte_05d = units.unit_flag_005d(target);
+        entity.team_054 = units.unit_side_0054(target);
+        units.unit_position_00fc(target, entity.pos[0], entity.pos[1], entity.pos[2]);
+        const std::vector<const bsp::gameplay_seg69_70_cc13::TeamEntityView*> records =
+            bsp::gameplay_seg69_70_cc13::ai_collect_threats_near_00a24870(
+                enemy_side, entity, t.collect_defenders, world);
+        if (collected != nullptr) {
+            for (const auto* r : records) {
+                // 00A248FD's lone record is the target's own view.
+                collected->push_back(r == &entity
+                    ? target
+                    : world_units[static_cast<std::size_t>(r - world.data())]);
+            }
+        }
+        return records.size();
     }
 
     // 00A250A0, __thiscall(planner)(group, entity), returns ST0:
@@ -5146,11 +4932,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     float capture_group_value_00a250a0(const Group* g, const CaptureTargetRec& rec) {
         std::vector<GroupValueRecord> attackers;
         std::vector<GroupValueRecord> defenders;
-        if constexpr (bsp::kWireGoal4Chain359Bound) {
-            build_group_value_records(g, attackers);
-        } else {
-        for (const std::size_t m : g->members) attackers.push_back(group_value_record_00a04560(m));
-        }
+        build_group_value_records(g, attackers);
         for (const std::size_t u : rec.defender_units) {
             defenders.push_back(group_value_record_00a04560(u));
         }
@@ -5232,11 +5014,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (Group* g : owned) {
             CaptureGroupRec gr;
             gr.g = g;
-            if constexpr (bsp::kWireGoal4Chain308Bound) {
-                gr.resource = group_resource(g);                           // 00A2A2C7
-            } else {
-            gr.resource = kCaptureGroupResource;                           // 00A2A2C7
-            }
+            gr.resource = group_resource(g);                           // 00A2A2C7
             gr.current = capture_current_target_00a1a7a0(g, side);         // 00A2A2D2
             gr.weight.assign(plan.targets.size(), 0.0f);
             gr.has_weight.assign(plan.targets.size(), 0);
@@ -5350,17 +5128,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return 3;
             if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
             bsp::AiCommandObject c;
-            if constexpr (bsp::kWireGoal4Chain552Bound) {
-                c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
-            } else {
-            c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
-            }
+            c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
             c.owner_group = g;
-            if constexpr (bsp::kWireGoal4Chain544Bound) {
-                replace_command(g, c);
-            } else {
-                g->command = c;
-            }
+            replace_command(g, c);
             ++capture_orders_defend;
             return 1;
         }
@@ -5376,20 +5146,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
-        if constexpr (bsp::kWireGoal4Chain552Bound) {
-            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
-        } else {
-        c.type = bsp::AiCommandType::PatrolTo;
-        }
+        c.type = bsp::ai_command_patrol_to_get_type_00a10470();
         c.owner_group = g;
         c.target_position[0] = ex;
         c.target_position[1] = ey;
         c.target_position[2] = ez;
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, c);
-        } else {
-            g->command = c;
-        }
+        replace_command(g, c);
         ++capture_orders_patrol;
         return 2;
     }
@@ -5628,11 +5390,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             bsp::AiCommandObject c;
             c.type = bsp::AiCommandType::Selling;
             c.owner_group = g;
-            if constexpr (bsp::kWireGoal4Chain544Bound) {
-                replace_command(g, c);
-            } else {
-                g->command = c;
-            }
+            replace_command(g, c);
             ++sell_orders;
         }
         done("AiPlanners::sell_think_00a22800", 0x00a22800u);
@@ -5960,13 +5718,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 if (anchor == kCaptureNone) continue;
             }
             for (DefendRecord& r : records) {
-                if constexpr (bsp::kWireGoal4Chain308Bound) {
-                    if (r.entity == anchor) r.remaining -= group_resource(g);  // 00A2C530
-                } else {
-                if (r.entity == anchor) r.remaining -= kCaptureGroupResource;   // 00A2C530
-                }
+                if (r.entity == anchor) r.remaining -= group_resource(g);  // 00A2C530
             }
-            if constexpr (bsp::kWireGoal4Chain409Bound) {
+            {
                 // 00A1A6D0..00A1A712 (bsp.py show 00a1a6d0): the semantic
                 // body selects PATROLTO for 00A2C5A0(group), DEFENDPOSITION
                 // otherwise. Reuse it for the same choice in DefendThink's
@@ -5979,12 +5733,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 } else {
                     defend_issue_position_00a2be20(g, side);
                 }
-            } else {
-            if (!group_has_groupable_combatant(g)) {
-                defend_issue_position_00a2be20(g, side);
-            } else {
-                defend_issue_patrol_00a2c310(g, anchor);
-            }
             }
             lists[anchor].push_back(g);
         }
@@ -6033,17 +5781,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return;
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
-        if constexpr (bsp::kWireGoal4Chain552Bound) {
-            c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
-        } else {
-        c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
-        }
+        c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
         c.owner_group = g;
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, c);
-        } else {
-            g->command = c;
-        }
+        replace_command(g, c);
         ++defend_positions;
         if (capture_diag_enabled() && diag_capture_lines < 60) {
             ++diag_capture_lines;
@@ -6063,20 +5803,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         units.unit_position_00fc(anchor, ex, ey, ez);
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
-        if constexpr (bsp::kWireGoal4Chain552Bound) {
-            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
-        } else {
-        c.type = bsp::AiCommandType::PatrolTo;   // vtable 00D22B3C
-        }
+        c.type = bsp::ai_command_patrol_to_get_type_00a10470();
         c.owner_group = g;
         c.target_position[0] = ex;
         c.target_position[1] = ey;
         c.target_position[2] = ez;
-        if constexpr (bsp::kWireGoal4Chain544Bound) {
-            replace_command(g, c);
-        } else {
-            g->command = c;
-        }
+        replace_command(g, c);
         ++defend_patrols;
     }
     unsigned long long defend_record_thinks{0};
@@ -6447,29 +6179,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // [00D7A24C]. Only the Lua native SetHintWeight (00A07F60 / 00A07F80)
         // fills them, and in this installation only the multiplayer
         // competitive scripts call it, so on these rows the factor is 1.0.
-        if constexpr (bsp::kWireGoal4Chain490Bound) {
-            // A045EE..A04604 multiplies the class value by A04240(entity).
-            // Lua Ptr is this host's creation ID (unit index+1). A squadron's
-            // creation entity survives leader promotion: r.unit is only the
-            // geometric proxy, not the entity A045FF passes to A04240.
-            // E0E344 starts at -1 (installed bytes); only a live party think
-            // supplies the valid party index the native reader requires.
-            if (current_party >= 0 && current_party < 8) {
-                const float class_weight = unit_class_weight(member);
-                const Squadron* const squadron = squadron_of(member);
-                const auto hint_entity = squadron != nullptr ? squadron->hint_entity_handle
-                    : static_cast<std::uint32_t>(member + 1u);
-                const float hint_weight = bsp::cc13_front6::ai_hint_weight_entity_multiplier_00a04240(
-                    hint_entity, current_party,
-                    bsp::process_ai_hint_weights());
-                r.fix_weight = class_weight * hint_weight;
-            } else {
-                // Preserve the host's non-party observation calls; the image's
-                // unchecked party-map read has no defined source domain here.
-                r.fix_weight = unit_class_weight(member);
-            }
+        // A045EE..A04604 multiplies the class value by A04240(entity).
+        // Lua Ptr is this host's creation ID (unit index+1). A squadron's
+        // creation entity survives leader promotion: r.unit is only the
+        // geometric proxy, not the entity A045FF passes to A04240.
+        // E0E344 starts at -1 (installed bytes); only a live party think
+        // supplies the valid party index the native reader requires.
+        if (current_party >= 0 && current_party < 8) {
+            const float class_weight = unit_class_weight(member);
+            const Squadron* const squadron = squadron_of(member);
+            const auto hint_entity = squadron != nullptr ? squadron->hint_entity_handle
+                : static_cast<std::uint32_t>(member + 1u);
+            const float hint_weight = bsp::cc13_front6::ai_hint_weight_entity_multiplier_00a04240(
+                hint_entity, current_party,
+                bsp::process_ai_hint_weights());
+            r.fix_weight = class_weight * hint_weight;
         } else {
-        r.fix_weight = unit_class_weight(member);
+            // Preserve the host's non-party observation calls; the image's
+            // unchecked party-map read has no defined source domain here.
+            r.fix_weight = unit_class_weight(member);
         }
         r.spread = group_value_spread();
         // 00A04652 IsKindOf(5) takes [entity+538h], 00A0466E IsKindOf(18h)
@@ -6644,13 +6372,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A07E40 twice: one record per member of the +563Ch list, in order.
         std::vector<GroupValueRecord> attackers;
         std::vector<GroupValueRecord> targets;
-        if constexpr (bsp::kWireGoal4Chain359Bound) {
-            build_group_value_records(own, attackers);
-            build_group_value_records(target, targets);
-        } else {
-        for (const std::size_t m : own->members) attackers.push_back(group_value_record_00a04560(m));
-        for (const std::size_t m : target->members) targets.push_back(group_value_record_00a04560(m));
-        }
+        build_group_value_records(own, attackers);
+        build_group_value_records(target, targets);
         float attack_sum = 0.0f;
         float maxes_sum = 0.0f;
         const float result = compose_attack_value_00a0c650(attackers, targets, attack_sum, maxes_sum);
@@ -6748,21 +6471,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     float near_radius_squared() override { return bsp::kAiEngagementRadiusSquaredValue; }
     float tuning_field(std::uint32_t offset) override {
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
-            return selected_tuning_field(offset, game_mode());
-        } else {
-            if constexpr (bsp::kWireGoal4Chain341Bound) {
-                const int mode = game_mode();
-                if (mode < 0 || mode > 3) return selected_tuning_field(offset, mode);
-                return tuning.at(offset);
-            } else {
-                // 00A371A0 + offset. The six fields this packet reconstructed carry the
-                // shipped values; every other slot is the zero an unloaded block holds,
-                // so an unreconstructed field answers what it answered before.
-                done("AiPlanners::tuning_field", 0x00a371a0u);
-                return tuning.at(offset);
-            }
-        }
+        return selected_tuning_field(offset, game_mode());
     }
     float range_interpolation(float near_value, float far_value, float distance) override {
         if (kPlannerRangeInterpBound) {
@@ -6812,22 +6521,17 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record("AiPlanners::quick_spawn_named_group", 0x00a25b90u);
     }
     void publish_spawn_bias(float bias) override {
-        if constexpr (kWireGoal4Chain250Bound) {
-            // Goal 4 chain 250: 00A25FEA..00A25FFA (and the Escort, Siege and
-            // Competitive arms at 00A26291 / 00A26590 / 00A26670) load the
-            // 0.5 at 00CE3800 and call 00A16450 with ECX = [00E0E344], the
-            // published party. It pulls next_think[party] (00F8A87C) forward
-            // to [00F876A4] + 0.5 when that is earlier. The image indexes the
-            // array with ECX unchecked; outside a party's think nothing calls it.
-            if (current_party >= 0 && current_party < bsp::kAiGroupPartySlotCount) {
-                bsp::band009f::ai_party_schedule_think_within_00a16450(
-                    next_think, current_party, clock_seconds, bias);
-                done("AiPlanners::publish_spawn_bias", 0x00a16450u);
-            } else {
-                record("AiPlanners::publish_spawn_bias", 0x00a16450u);
-            }
+        // Goal 4 chain 250: 00A25FEA..00A25FFA (and the Escort, Siege and
+        // Competitive arms at 00A26291 / 00A26590 / 00A26670) load the
+        // 0.5 at 00CE3800 and call 00A16450 with ECX = [00E0E344], the
+        // published party. It pulls next_think[party] (00F8A87C) forward
+        // to [00F876A4] + 0.5 when that is earlier. The image indexes the
+        // array with ECX unchecked; outside a party's think nothing calls it.
+        if (current_party >= 0 && current_party < bsp::kAiGroupPartySlotCount) {
+            bsp::band009f::ai_party_schedule_think_within_00a16450(
+                next_think, current_party, clock_seconds, bias);
+            done("AiPlanners::publish_spawn_bias", 0x00a16450u);
         } else {
-            (void)bias;
             record("AiPlanners::publish_spawn_bias", 0x00a16450u);
         }
     }
@@ -7164,11 +6868,7 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
                                 : bsp::AiCommandType::MoveToAttack;
     replacement.owner_group = g;
     replacement.target_group = t;
-    if constexpr (bsp::kWireGoal4Chain544Bound) {
-        replace_command(g, replacement);
-    } else {
-        g->command = replacement;
-    }
+    replace_command(g, replacement);
     if (diag_order_lines < 12) {
         ++diag_order_lines;
         log.notef("  ai diag order_attack group_members=%zu group_leader=%s "
@@ -7270,7 +6970,7 @@ void GameAiCoordinatorHost::create_00a32350() {
     host.group_of_unit.assign(host.candidate_count(), nullptr);
     // 00A31730 -> 00A163D0 ai_init_party_think_schedule_00a163d0 over the host's
     // 00F876A4 clock and 00BD2F10 stream; OFF keeps both arrays zeroed.
-    if constexpr (bsp::kWireGoal2Chain58Bound) {
+    {
         // 00A16405 CALL 00BD2F10 with ECX = 1: the host keeps one 00BD2F10
         // stand-in stream (rng), the one random_think_interval draws from.
         struct CoordinatorThinkRng final : bsp::gameplay_seg69_70_cc13::ThinkScheduleRng {
@@ -7290,9 +6990,6 @@ void GameAiCoordinatorHost::create_00a32350() {
             host.party_record[p] = slots[p].ai_enabled_000;    // 00F8A8C8 + p*1Ch, +0h
             // 00F8A89C + p*4 = 0: brains[p] is still empty, `created` guards this.
         }
-    } else {
-        host.next_think.fill(0.0f);
-        host.party_record.fill(false);
     }
     // The party records the mission's `SetParty` binding fills. This process
     // has no party record block, so a party slot is enabled when at least one
@@ -7336,32 +7033,14 @@ void GameAiCoordinatorHost::create_00a32350() {
     // difficulty record remains unavailable and retains its prior fallback.
     {
         bsp::AiTuningAuthoredReader reader;
-        if constexpr (bsp::kWireGoal4Chain474Bound) {
-            for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
-                auto& block = host.loaded_tuning_blocks[static_cast<std::size_t>(i)];
-                bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
-                std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
-                    block.field, sizeof(block.field));
-            }
-            host.tuning_selection_ready = true;
-            host.refresh_tuning_selection();
-        } else {
-            const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
-            if constexpr (bsp::kWireGoal4Chain341Bound) {
-                // 00A335D0's 00A3374B..00A370D4 loop loads all seven modes.
-                // Preserve the existing partial loader's field coverage/defaults;
-                // unknown fields are not claimed as recovered by this owner.
-                for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
-                    bsp::AiTuningBlock block;
-                    bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
-                    std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
-                        block.field, sizeof(block.field));
-                    if (block.mode == mode) host.tuning = block;
-                }
-            } else {
-                bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
-            }
+        for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
+            auto& block = host.loaded_tuning_blocks[static_cast<std::size_t>(i)];
+            bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
+            std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
+                block.field, sizeof(block.field));
         }
+        host.tuning_selection_ready = true;
+        host.refresh_tuning_selection();
         host.summary.tuning_mode = static_cast<int>(host.current_tuning().mode);
         host.summary.tuning_merge_dist = host.current_tuning().at(bsp::kAiTuningAutoMergeMergeDist);
         host.summary.tuning_near_dist = host.current_tuning().at(bsp::kAiTuningFreeAttackNearDist);
@@ -7377,18 +7056,10 @@ void GameAiCoordinatorHost::create_00a32350() {
         // and 4 are enabled; above 3 every slot is.
         row.ai_enabled = host.party_admitted(party);
     }
-    if constexpr (bsp::kWireGoal4Chain490Bound) {
-        // A32441 follows the completed scene attach/activation calls.
-        bsp::cc13_seg69::ai_hint_weight_maps_clear_00a03a60(bsp::process_ai_hint_weights());
-    } else {
-        // Previously this host held no hint-weight maps.
-    }
+    // A32441 follows the completed scene attach/activation calls.
+    bsp::cc13_seg69::ai_hint_weight_maps_clear_00a03a60(bsp::process_ai_hint_weights());
     host.record("AiController::create", 0x00a32350u);
-    if constexpr (bsp::kWireGoal2Chain58Bound) {
-        host.done("AiController::construct", 0x00a31730u);   // its 00A163D0 ran above
-    } else {
-        host.record("AiController::construct", 0x00a31730u);
-    }
+    host.done("AiController::construct", 0x00a31730u);   // its 00A163D0 ran above
 }
 
 // One unit's squadron seed, the body build_squadrons ran per unit. Packet
@@ -7429,21 +7100,15 @@ void GameAiCoordinatorHost::Impl::seed_squadron_for_unit(std::size_t unit) {
     // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
     if (wing_units.front() != unit) return;
     Squadron s;
-    if constexpr (bsp::kWireGoal4Chain490Bound) {
-        // The registry records the fused creation slot, independent of its
-        // current first member. An unregistered single plane owns its entity.
-        s.hint_entity_handle = static_cast<std::uint32_t>(
-            (owner != nullptr ? owner->squadron_unit : unit) + 1u);
-    } else {
-        // Previously the planner did not query hint weights.
-    }
-    if constexpr (bsp::kWireGoal4Chain308Bound) {
-        // The canonical squadron's original fused creation slot survives
-        // 007ED610 promotion / 007F3970 member removal. Do not use wing_units[0]
-        // or proxy() here: a squadron can first be seeded after promotion too.
-        // An unregistered singleton squadron owns its one plane's creation row.
-        s.resource_owner.creation_unit = owner != nullptr ? owner->squadron_unit : unit;
-    }
+    // The registry records the fused creation slot, independent of its
+    // current first member. An unregistered single plane owns its entity.
+    s.hint_entity_handle = static_cast<std::uint32_t>(
+        (owner != nullptr ? owner->squadron_unit : unit) + 1u);
+    // The canonical squadron's original fused creation slot survives
+    // 007ED610 promotion / 007F3970 member removal. Do not use wing_units[0]
+    // or proxy() here: a squadron can first be seeded after promotion too.
+    // An unregistered singleton squadron owns its one plane's creation row.
+    s.resource_owner.creation_unit = owner != nullptr ? owner->squadron_unit : unit;
     // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
     // the registry carries when there is one; the absent-key arm 007F4735,
     // which defaults to 3, is only right for a plane in no squadron.
@@ -7621,7 +7286,7 @@ void GameAiCoordinatorHost::fixed_step(float step_seconds) {
         ++host.coordinator_steps_absent;
         (void)step_seconds;
     } else {
-        if constexpr (bsp::kWireGoal4Chain474Bound) host.refresh_tuning_selection();
+        host.refresh_tuning_selection();
         if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
         if constexpr (kAiGroupPartyChangeRemovalBound) host.apply_party_change_removals_00a2db50();
         host.clock_seconds += step_seconds;
@@ -7634,7 +7299,7 @@ void GameAiCoordinatorHost::fixed_step(float step_seconds) {
 }
 
 const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
-    if constexpr (bsp::kWireGoal4Chain474Bound) impl_->refresh_tuning_selection();
+    impl_->refresh_tuning_selection();
     return impl_->summary;
 }
 
@@ -7644,7 +7309,7 @@ const std::vector<GameAiPartyRow>& GameAiCoordinatorHost::party_rows() const noe
 
 void GameAiCoordinatorHost::report() {
     Impl& host = *impl_;
-    if constexpr (bsp::kWireGoal4Chain474Bound) host.refresh_tuning_selection();
+    host.refresh_tuning_selection();
     const GameAiSummary& s = host.summary;
     std::size_t with_task = 0;
     for (const Impl::Group* g : host.registry) {

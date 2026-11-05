@@ -1,6 +1,5 @@
 #include "bsp/native_dyn_convex_simplex.hpp"
 #include "bsp/math.hpp"
-#include "bsp/wire_goal4_chain609_switches.hpp"
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native convex simplex reduction requires MSVC Win32 x87 assembly.
 #endif
@@ -8,51 +7,11 @@ namespace bsp {
 namespace {
 // Consumed existing game math leaf; not a new reconstruction claim.
 __declspec(naked) void cross_reference() noexcept {
-    if constexpr (kWireGoal4Chain609Bound) {
-        __asm { jmp cross_reversed_register_bridge }
-    } else {
-    __asm {
-        fld qword ptr [ecx + 010h] // 00401c20
-        fmul qword ptr [edx + 8] // 00401c23
-        fld qword ptr [edx + 010h] // 00401c26
-        fmul qword ptr [ecx + 8] // 00401c29
-        fsubp st(1), st(0) // 00401c2c
-        fstp qword ptr [eax] // 00401c2e
-        fld qword ptr [edx + 010h] // 00401c30
-        fmul qword ptr [ecx] // 00401c33
-        fld qword ptr [ecx + 010h] // 00401c35
-        fmul qword ptr [edx] // 00401c38
-        fsubp st(1), st(0) // 00401c3a
-        fstp qword ptr [eax + 8] // 00401c3c
-        fld qword ptr [ecx + 8] // 00401c3f
-        fmul qword ptr [edx] // 00401c42
-        fld qword ptr [ecx] // 00401c44
-        fmul qword ptr [edx + 8] // 00401c46
-        fsubp st(1), st(0) // 00401c49
-        fstp qword ptr [eax + 010h] // 00401c4b
-        ret  // 00401c4e
-    }
-    }
+    __asm { jmp cross_reversed_register_bridge }
 }
 // Consumed existing game math leaf; not a new reconstruction claim.
 __declspec(naked) void scale_reference() noexcept {
-    if constexpr (kWireGoal4Chain609Bound) {
-        __asm { jmp scale_register_bridge }
-    } else {
-    __asm {
-        fld qword ptr [eax] // 00401cd0
-        fld qword ptr [esp + 4] // 00401cd2
-        fmul st(1), st(0) // 00401cd6
-        fxch st(1) // 00401cd8
-        fstp qword ptr [eax] // 00401cda
-        fld qword ptr [eax + 8] // 00401cdc
-        fmul st(0), st(1) // 00401cdf
-        fstp qword ptr [eax + 8] // 00401ce1
-        fmul qword ptr [eax + 010h] // 00401ce4
-        fstp qword ptr [eax + 010h] // 00401ce7
-        ret 8 // 00401cea
-    }
-    }
+    __asm { jmp scale_register_bridge }
 }
 } // namespace
 // Original switch table C3F178: counts1,2,3,4 map to the labels below.

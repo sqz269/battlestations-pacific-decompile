@@ -10,7 +10,6 @@
 #include "bsp/camera_decomposition.hpp"  // normalize_camera_basis_0042b260
 #include "bsp/cc13_jm08_switches.hpp"
 #include "bsp/native_unit_wake_append_dependencies.hpp"
-#include "bsp/wire_goal2_chain137_switches.hpp"
 #include "bsp/unit_rudder.hpp"  // wrapped_angle_add_00438aa0 / _subtract_00438b10
 
 namespace bsp {
@@ -190,12 +189,8 @@ void ship_ai_wake_append_00810190(ShipAiWakeTrail& trail, const float world_pos[
             prev2_sample.segment = span;
             write_sample(prev_sample, nx, ny, nz, heading, yaw_rate);
             // 00810160: call the six-float copy; OFF keeps the host sample assignment.
-            if constexpr (kWireGoal2Chain137Bound) {
-                copy_native_unit_wake_sample_00810160(&trail.samples[h], nullptr,
-                    &trail.samples[ring_step_forward(h)]);
-            } else {
-                trail.samples[h] = trail.samples[ring_step_forward(h)];
-            }
+            copy_native_unit_wake_sample_00810160(&trail.samples[h], nullptr,
+                &trail.samples[ring_step_forward(h)]);
             trail.head = prev;
             ++trail.merges;
             return;  // prev_sample.segment is now 0, so the tail cannot advance

@@ -1,6 +1,5 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/cc13_seg87.hpp"
-#include "bsp/wire_goal4_chain398_switches.hpp"
 #include <limits>
 #include <cmath>
 #include <cstring>
@@ -107,7 +106,7 @@ struct TableSnapshot {
         if (!lua_checkstack(state, 8))
             throw std::runtime_error("GUI table snapshot could not extend the Lua stack");
         const void* identity;
-        if constexpr (kWireGoal4Chain398Bound) {
+        {
             // 00B662E0 listing: read object+0 -> owner+4 and object+8,
             // then tail-jump to lua_topointer. This borrowed owner view holds
             // the evaluator's actual Lua state; the object names the live
@@ -116,8 +115,6 @@ struct TableSnapshot {
             identity_owner.state_04 = state;
             NativeLuaObjectStorage object{&identity_owner, 2, index, 0, 0, {}};
             identity = native_lua_to_pointer_00b662e0(object);
-        } else {
-            identity = lua_topointer(state, index);
         }
         if (active.count(identity)) throw std::runtime_error("GUI table contains a cycle");
         const auto previous = tables.find(identity);

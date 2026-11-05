@@ -1,6 +1,5 @@
 #include "bsp/native_dyn_collision_pass.hpp"
 #include "bsp/dyn_task_manager.hpp"
-#include "bsp/wire_goal4_chain613_switches.hpp"
 #include <intrin.h>
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -56,21 +55,10 @@ __declspec(naked) void update_shim(){
 // the caller's borrowed services. The private Context's new tail member
 // leaves every assembly-visible field offset unchanged.
 void __stdcall update_route(Context* c,void* pool){
-    if constexpr(kWireGoal4Chain613Bound){
-        update_native_dyn_manifolds_00c549d0(pool,*c->owner);
-    }else{
-        __asm {push pool}
-        __asm {push c}
-        __asm {call update_shim}
-    }
+    update_native_dyn_manifolds_00c549d0(pool,*c->owner);
 }
 void __stdcall events_route(void* scene){
-    if constexpr(kWireGoal4Chain613Bound){
-        dispatch_native_dyn_contact_events_00c35480(scene);
-    }else{
-        __asm {push scene}
-        __asm {call events_kernel}
-    }
+    dispatch_native_dyn_contact_events_00c35480(scene);
 }
 __declspec(naked) void remove_shim(){
     __asm {

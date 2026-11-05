@@ -157,11 +157,7 @@ bool parse_hierarchy_00b7f100(StructuredNode& container,
                 // when chain563 is OFF. ON uses the native pointer-array body
                 // for the real parsed records consumed by model/muzzle readers.
                 [&](auto& output) {
-                    if constexpr (kWireGoal4Chain563Bound) {
-                        output.hierarchy.append_native(std::move(item));
-                    } else {
-                        output.hierarchy.push_back(std::move(item));
-                    }
+                    output.hierarchy.append_native(std::move(item));
                 }(output);
             } else {
                 if (!child->skip_00be9c40()) {
@@ -213,14 +209,11 @@ bool dispatch_root_00b7f430(StructuredNode& root,
             const char* tag = child->tag().c_str();
             if (_stricmp(tag, "Resource") == 0) {
                 const bool dispatched = [&](auto& output) {
-                    if constexpr (kWireGoal4Chain575Bound) {
+                    {
                         // Preserve native append-before-child-close and partial
                         // output on failure; consumers use this same owner/order.
                         auto sink = StructuredResourceOutput::native_items(output.resources);
                         if (!registry.dispatch_items_00b7e970(*child, sink, error)) return false;
-                    } else {
-                        if (!registry.dispatch_items_00b7e970(*child,
-                                output.resources, error)) return false;
                     }
                     return true;
                 }(output);

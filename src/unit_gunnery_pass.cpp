@@ -3,7 +3,6 @@
 // the coverage of each is in that document's routine table.
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/cc13_seg53.hpp"
-#include "bsp/wire_goal2_chain113_switches.hpp"
 
 #include <exception>
 
@@ -166,7 +165,7 @@ UnitGunneryCategoryState apply_director_stance_008624c0(
     // Steps 4 to 7. Each list is walked in full; the change test the native code
     // makes against adapter+0Dh..+10h only saves work, it does not change the
     // result, so the projection applies every group every time.
-    if constexpr (kWireGoal2Chain113Bound) {
+    {
         GunneryCategoryGroups groups(state);
         const cc13_seg53::GunneryGroupView view{state.mask.data()};
         // 00861D70 calls the existing torpedo setter; OFF keeps the word loop and flag store.
@@ -177,24 +176,6 @@ UnitGunneryCategoryState apply_director_stance_008624c0(
         cc13_seg53::unit_gunnery_ai_set_aa_group_allowed_00861d20(view, stance.anti_air, groups);
         // 00861DC0 calls the existing depth-charge setter; OFF keeps the word loop and flag store.
         cc13_seg53::unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(view, stance.depth_charge, groups);
-    } else {
-    for (const int category : kTorpedoCategories) {          // 00861D70
-        store_mask_word(state, category, stance.torpedo);
-    }
-    state.torpedo_group_flag = stance.torpedo;               // 00861DB7
-
-    for (const int category : kArtilleryCategories) {        // 00861CD0
-        set_mask_bit(state, category, kCategoryMaskMayEngageOther, stance.artillery);
-    }
-
-    for (const int category : kAaFlakCategories) {           // 00861D20
-        set_mask_bit(state, category, kCategoryMaskMayEngagePlane, stance.anti_air);
-    }
-
-    for (const int category : kDepthChargeCategories) {      // 00861DC0
-        store_mask_word(state, category, stance.depth_charge);
-    }
-    state.depth_charge_group_flag = stance.depth_charge;     // 00861E07
     }
 
     return state;

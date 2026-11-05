@@ -1,6 +1,5 @@
 #include "bsp/native_render_command_execution.hpp"
 #include "bsp/native_main_scene_execution_prefix.hpp"
-#include "bsp/wire_goal4_chain567_switches.hpp"
 #include "bsp/native_camera_frame_command.hpp"
 #include "bsp/native_frame_job_lifetime.hpp"
 #include "bsp/native_material_entry_dispatch.hpp"
@@ -106,16 +105,12 @@ void execute_native_render_command_00b1d950(void* command,
     void* const target_renderer=c.actual_renderer_00f8d394;
     const Word target_slot=renderer_slot(target_renderer,0x98,c);
     void* const captured_camera=[&] {
-        if constexpr (kWireGoal4Chain567Bound) {
-            // bsp.py show 00B1BF40: the existing two-MOV leaf follows this
-            // live queue command's retained +28h context to its +08h camera.
-            // No provider runs between the context capture above and here.
-            // The returned identity feeds camera execution, system
-            // constants and both batch passes below.
-            return get_native_scene_command_camera_00b1bf40(command);
-        } else {
-            return pointer(context,8);
-        }
+        // bsp.py show 00B1BF40: the existing two-MOV leaf follows this
+        // live queue command's retained +28h context to its +08h camera.
+        // No provider runs between the context capture above and here.
+        // The returned identity feeds camera execution, system
+        // constants and both batch passes below.
+        return get_native_scene_command_camera_00b1bf40(command);
     }();
     auto* const target=static_cast<NativeFrameTargetOwnerStorage*>(pointer(context,0x14));
     require(target_slot==0x00b24e70 && c.targets &&

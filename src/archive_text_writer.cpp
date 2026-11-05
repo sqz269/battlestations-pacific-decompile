@@ -8,7 +8,6 @@
 #include "bsp/native_string_append.hpp"
 #include "bsp/native_string_float_format.hpp"
 #include "bsp/pool_pool15_cc13.hpp"
-#include "bsp/wire_goal4_chain542_switches.hpp"
 
 #include <array>
 #include <cstring>
@@ -267,29 +266,8 @@ void ArchiveStringSink::write(std::string_view bytes) {
 }
 
 void ArchiveTextOutput::emit(std::string_view bytes) {
-    if constexpr (kWireGoal4Chain542Bound) {
-        ArchiveEmitter emitter(*this);
-        emitter.emit(bytes);
-    } else {
-    if (compact_encoded_0109cee4) {
-        if (!file_0109cee0)
-            throw std::logic_error("encoded archive output requires a FILE");
-        //00BD6100 strips these bytes everywhere, even inside quoted text.
-        //SAR CL,4 sign-extends; ordinary nibble rotation is wrong for>=80h.
-        for (unsigned char byte : bytes) {
-            if (byte == ' ' || byte == '\r' || byte == '\n' || byte == '\t') continue;
-            const unsigned int shifted = (byte >> 4) | ((byte & 0x80u) ? 0xf0u : 0u);
-            const char encoded = static_cast<char>(shifted | ((byte << 4) & 0xffu));
-            file_fragment(file_0109cee0, std::string_view(&encoded, 1));
-        }
-    } else if (file_0109cee0) {
-        file_fragment(file_0109cee0, bytes);
-    } else if (buffered_0109cecc) {
-        buffered_0109cecc->write(bytes);
-    } else {
-        throw std::logic_error("archive output has no FILE or buffered sink");
-    }
-    }
+    ArchiveEmitter emitter(*this);
+    emitter.emit(bytes);
 }
 
 ArchiveTextWriter::ArchiveTextWriter(ArchiveTextOutput& output,
@@ -321,22 +299,13 @@ std::string ArchiveTextWriter::format_key(const GuiLuaVariant& key) const {
 }
 
 void ArchiveTextWriter::indent() {
-    if constexpr (kWireGoal4Chain542Bound) {
-        ArchiveEmitter emitter(output_);
-        emitter.run([&] { cc13_front5::archive_emit_indent_00bd6990(depth_, emitter.globals(), emitter); });
-    } else {
-    //00BD6990 fills with spaces, then overwrites the entire string with09h.
-    output_.emit(std::string(depth_, '\t'));
-    }
+    ArchiveEmitter emitter(output_);
+    emitter.run([&] { cc13_front5::archive_emit_indent_00bd6990(depth_, emitter.globals(), emitter); });
 }
 
 void ArchiveTextWriter::terminate_row() {
-    if constexpr (kWireGoal4Chain542Bound) {
-        ArchiveEmitter emitter(output_);
-        emitter.run([&] { cc13_front5::archive_emit_terminator_00bd6ac0(depth_ == 0, emitter.globals(), emitter); });
-    } else {
-    output_.emit(depth_ == 0 ? "\n" : ",\n");
-    }
+    ArchiveEmitter emitter(output_);
+    emitter.run([&] { cc13_front5::archive_emit_terminator_00bd6ac0(depth_ == 0, emitter.globals(), emitter); });
 }
 
 void ArchiveTextWriter::begin_section(const char* name) {
@@ -346,20 +315,12 @@ void ArchiveTextWriter::begin_section(const char* name) {
 void ArchiveTextWriter::begin_section(const GuiLuaVariant& key) {
     if (depth_ == std::numeric_limits<std::uint32_t>::max())
         throw std::overflow_error("archive section depth overflow");
-    if constexpr (kWireGoal4Chain542Bound) {
-        const auto native_key = archive_key(key, depth_ == 0);
-        indent();
-        ArchiveEmitter emitter(output_);
-        emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
-        output_.emit("{\n");
-        ++depth_;
-    } else {
-    const std::string formatted_key = format_key(key);
+    const auto native_key = archive_key(key, depth_ == 0);
     indent();
-    output_.emit(formatted_key);
+    ArchiveEmitter emitter(output_);
+    emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
     output_.emit("{\n");
     ++depth_;
-    }
 }
 
 void ArchiveTextWriter::end_section() {
@@ -375,22 +336,13 @@ void ArchiveTextWriter::write_field(const char* key, const SettingsValue& value)
 }
 
 void ArchiveTextWriter::write_field(const GuiLuaVariant& key, const SettingsValue& value) {
-    if constexpr (kWireGoal4Chain542Bound) {
-        const auto native_key = archive_key(key, depth_ == 0);
-        const auto native_value = archive_value(value);
-        indent();
-        ArchiveEmitter emitter(output_);
-        emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
-        emitter.run([&] { cc13_front5::archive_emit_value_00bd7f50(native_value, emitter.globals(), emitter); });
-        terminate_row();
-    } else {
-    const std::string formatted_key = format_key(key);
-    const std::string formatted_value = scalar_text(value);
+    const auto native_key = archive_key(key, depth_ == 0);
+    const auto native_value = archive_value(value);
     indent();
-    output_.emit(formatted_key);
-    output_.emit(formatted_value);
+    ArchiveEmitter emitter(output_);
+    emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
+    emitter.run([&] { cc13_front5::archive_emit_value_00bd7f50(native_value, emitter.globals(), emitter); });
     terminate_row();
-    }
 }
 
 void ArchiveTextWriter::write_options_text_008d6170() {

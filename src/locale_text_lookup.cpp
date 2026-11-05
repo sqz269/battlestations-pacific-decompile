@@ -3,9 +3,6 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/native_wide_string.hpp"
 #include "bsp/wide_string_substring_view.hpp"
-#include "bsp/wire_goal2_chain116_switches.hpp"
-#include "bsp/wire_goal2_chain163_switches.hpp"
-#include "bsp/wire_goal4_chain549_switches.hpp"
 
 #include <clocale>
 #include <cstdint>
@@ -187,21 +184,16 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
         append_checked(output, text ? *text : widen_bytes_004c5e60(stripped));
         std::size_t marker = [&]() -> std::size_t {
         // 00A9EF60 calls the existing wide first-of body; OFF keeps the host marker search.
-        if constexpr (kWireGoal2Chain163Bound) {
-            // 00A9F5E2..00A9F5FC: the set is the widened "#" at 00CF828C;
-            // the haystack is the same output appended above, starting at its old length.
-            // Both headers borrow terminated backing for this call only. The body reads it.
-            char16_t separators[] = u"#";
-            const NativeWideStringHeader text{static_cast<std::uint32_t>(output.size()),
-                output.data()};
-            const NativeWideStringHeader set{1u, separators};
-            const std::int32_t index = find_first_of_native_wide_string_00a9ef60(
-                text, set, static_cast<std::int32_t>(old_length));
-            return index < 0 ? std::u16string::npos : static_cast<std::size_t>(index);
-        } else {
-        std::size_t marker = output.find(u'#', old_length);
-        return marker;
-        }
+        // 00A9F5E2..00A9F5FC: the set is the widened "#" at 00CF828C;
+        // the haystack is the same output appended above, starting at its old length.
+        // Both headers borrow terminated backing for this call only. The body reads it.
+        char16_t separators[] = u"#";
+        const NativeWideStringHeader text{static_cast<std::uint32_t>(output.size()),
+            output.data()};
+        const NativeWideStringHeader set{1u, separators};
+        const std::int32_t index = find_first_of_native_wide_string_00a9ef60(
+            text, set, static_cast<std::int32_t>(old_length));
+        return index < 0 ? std::u16string::npos : static_cast<std::size_t>(index);
         }();
         while (marker != std::u16string::npos) {
             const std::size_t close = output.find(u'#', marker + 1);
@@ -211,26 +203,8 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
                 throw std::invalid_argument("unmatched locale substitution marker");
             }
             // 00770E50 calls the substring body at the three slices; OFF keeps the host loop.
-            if constexpr (kWireGoal2Chain116Bound) {
-                const std::string path = narrow_low_bytes_00436630(locale_substring(output, marker + 1,
-                    static_cast<std::uint32_t>(close - marker - 1)));
-                std::u16string replacement;
-                if (path.empty()) {
-                    replacement = u"\n";
-                } else if (path == ":") {
-                    replacement = u"#";
-                } else {
-                    const std::string value = host_.context_string_00b692c0(path);
-                    append_key_list_00a9fad0(replacement, value);
-                }
-                std::u16string joined = locale_substring(output, 0, static_cast<std::uint32_t>(marker));
-                append_checked(joined, replacement);
-                append_checked(joined, locale_substring(output, close + 1, 0x7fffffffu));
-                output.swap(joined);
-                marker = output.find(u'#', marker + replacement.size());
-            } else {
-            const std::string path = narrow_low_bytes_00436630(
-                output.substr(marker + 1, close - marker - 1));
+            const std::string path = narrow_low_bytes_00436630(locale_substring(output, marker + 1,
+                static_cast<std::uint32_t>(close - marker - 1)));
             std::u16string replacement;
             if (path.empty()) {
                 replacement = u"\n";
@@ -240,33 +214,24 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
                 const std::string value = host_.context_string_00b692c0(path);
                 append_key_list_00a9fad0(replacement, value);
             }
-            std::u16string joined = output.substr(0, marker);
+            std::u16string joined = locale_substring(output, 0, static_cast<std::uint32_t>(marker));
             append_checked(joined, replacement);
-            append_checked(joined, output.substr(close + 1));
+            append_checked(joined, locale_substring(output, close + 1, 0x7fffffffu));
             output.swap(joined);
-            // The recursive call already resolved replacement. Do not scan it
-            // again: '#:#' must survive as '#', and '.literal' stays literal.
             marker = output.find(u'#', marker + replacement.size());
-            }
         }
     }
     if (uppercase) {
-        if constexpr (kWireGoal4Chain549Bound) {
-            // The complete appended result includes resolved context tokens.
-            // Sidecar mappings take precedence over CRT even for ASCII, so
-            // only an empty mapping table permits the production span adapter.
-            const bool converted = tables_.sidecar_first().empty()
-                && host_.uppercase_ascii_text(output.data() + old_length,
-                    output.size() - old_length);
-            if (!converted) {
-                for (std::size_t i = old_length; i < output.size(); ++i) {
-                    output[i] = locale_uppercase_00a9eba0(tables_, host_, output[i]);
-                }
+        // The complete appended result includes resolved context tokens.
+        // Sidecar mappings take precedence over CRT even for ASCII, so
+        // only an empty mapping table permits the production span adapter.
+        const bool converted = tables_.sidecar_first().empty()
+            && host_.uppercase_ascii_text(output.data() + old_length,
+                output.size() - old_length);
+        if (!converted) {
+            for (std::size_t i = old_length; i < output.size(); ++i) {
+                output[i] = locale_uppercase_00a9eba0(tables_, host_, output[i]);
             }
-        } else {
-        for (std::size_t i = old_length; i < output.size(); ++i) {
-            output[i] = locale_uppercase_00a9eba0(tables_, host_, output[i]);
-        }
         }
     }
 }

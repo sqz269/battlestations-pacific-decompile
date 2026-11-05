@@ -1,7 +1,5 @@
 #include "bsp/structured_reader.hpp"
 #include "bsp/engine_services_cc13.hpp"
-#include "bsp/wire_goal2_chain122_switches.hpp"
-#include "bsp/wire_goal4_chain347_switches.hpp"
 #include <new>
 #include <utility>
 
@@ -220,101 +218,74 @@ bool StructuredNode::read_control_00be9a40() noexcept {
 }
 
 bool StructuredNode::read_u32(std::uint32_t& output) noexcept {
-    if constexpr (kWireGoal4Chain347Bound) {
-        if (!reader_ || !reader_->check_leaf(*this)) return false;
-        std::uint32_t value;
-        bool success = false;
-        // GeomMesh 00727310/00727694 and the other value parsers use 00BE9A80.
-        // Borrow the very reader and node budget produced by create_node.
-        // The retained MemoryStream's complete-transfer DWORD read is the
-        // projection of slot34/00BF0280; no native object layout is fabricated.
-        engine_services_cc13::structured_node_read_u32_slot34_00be9a80(this,
-            {reader_, &remaining_}, &value, {&success,
-                [](void* context, void* reader, std::uint32_t* remaining) {
-                    std::uint32_t word = 0;
-                    *static_cast<bool*>(context) = static_cast<StructuredReader*>(reader)->read_exact(
-                        &word, 4, *remaining, true);
-                    // Failed reads only write the private staging value;
-                    // the public output is committed after success below.
-                    return word;
-                }});
-        if (!success) return false;
-        output = value;
-        return true;
-    } else {
     if (!reader_ || !reader_->check_leaf(*this)) return false;
     std::uint32_t value;
-    if (!reader_->read_exact(&value, 4, remaining_, true)) return false;
+    bool success = false;
+    // GeomMesh 00727310/00727694 and the other value parsers use 00BE9A80.
+    // Borrow the very reader and node budget produced by create_node.
+    // The retained MemoryStream's complete-transfer DWORD read is the
+    // projection of slot34/00BF0280; no native object layout is fabricated.
+    engine_services_cc13::structured_node_read_u32_slot34_00be9a80(this,
+        {reader_, &remaining_}, &value, {&success,
+            [](void* context, void* reader, std::uint32_t* remaining) {
+                std::uint32_t word = 0;
+                *static_cast<bool*>(context) = static_cast<StructuredReader*>(reader)->read_exact(
+                    &word, 4, *remaining, true);
+                // Failed reads only write the private staging value;
+                // the public output is committed after success below.
+                return word;
+            }});
+    if (!success) return false;
     output = value;
     return true;
-    }
 }
 
 bool StructuredNode::read_u32_with_native_node_wrapper(
     std::uint32_t& output, bool slot34) noexcept {
-    if constexpr (kWireGoal2Chain122Bound) {
-        if (!reader_ || !reader_->check_leaf(*this)) return false;
-        std::uint32_t value;
-        bool success = false;
-        // create_node produces reader_ and remaining_ from the same stream's
-        // chunk header. No image, reader budget, cursor or payload is copied.
-        engine_services_cc13::StructuredNodeWordView<StructuredReader> view{
-            reader_, &remaining_};
-        auto read_word = [&](StructuredReader* reader, std::uint32_t* remaining) {
-            // Both slots are little-endian DWORD reads in this host's existing
-            // complete-transfer domain. read_exact debits the actual byte count
-            // and updates the same expected cursor, including sticky failures.
-            success = reader->read_exact(&value, 4, *remaining, true);
-        };
-        if (slot34) {
-            // 00BE99E0 consumes via its typed body; OFF keeps read_u32 below.
-            engine_services_cc13::structured_node_read_u32_discarded_00be99e0(view, read_word);
-        } else {
-            // 00BE9A10 consumes via its typed body; OFF keeps read_u32 below.
-            engine_services_cc13::structured_node_skip_u32_00be9a10(view, read_word);
-        }
-        if (!success) return false;
-        output = value;
-        return true;
+    if (!reader_ || !reader_->check_leaf(*this)) return false;
+    std::uint32_t value;
+    bool success = false;
+    // create_node produces reader_ and remaining_ from the same stream's
+    // chunk header. No image, reader budget, cursor or payload is copied.
+    engine_services_cc13::StructuredNodeWordView<StructuredReader> view{
+        reader_, &remaining_};
+    auto read_word = [&](StructuredReader* reader, std::uint32_t* remaining) {
+        // Both slots are little-endian DWORD reads in this host's existing
+        // complete-transfer domain. read_exact debits the actual byte count
+        // and updates the same expected cursor, including sticky failures.
+        success = reader->read_exact(&value, 4, *remaining, true);
+    };
+    if (slot34) {
+        // 00BE99E0 consumes via its typed body; OFF keeps read_u32 below.
+        engine_services_cc13::structured_node_read_u32_discarded_00be99e0(view, read_word);
     } else {
-        return read_u32(output);
+        // 00BE9A10 consumes via its typed body; OFF keeps read_u32 below.
+        engine_services_cc13::structured_node_skip_u32_00be9a10(view, read_word);
     }
+    if (!success) return false;
+    output = value;
+    return true;
 }
 
 bool StructuredNode::read_float(float& output) noexcept {
-    if constexpr (kWireGoal4Chain347Bound) {
-        if (!reader_ || !reader_->check_leaf(*this)) return false;
-        float value;
-        bool success = false;
-        engine_services_cc13::structured_node_read_float_00be9a60(this,
-            {reader_, &remaining_}, &value, {&success,
-                [](void* context, void* reader, std::uint32_t* remaining) {
-                    std::uint32_t bits;
-                    const bool read = static_cast<StructuredReader*>(reader)->read_exact(
-                        &bits, 4, *remaining, true);
-                    *static_cast<bool*>(context) = read;
-                    if (!read) return 0.0f; // Private staging only; no FLD on a failed read.
-                    // The existing complete-transfer 00BF02C0 projection:
-                    // FLD32/FSTP32, with no added arithmetic or double read.
-                    return read_complete_float_bits(bits);
-                }});
-        if (!success) return false;
-        output = value;
-        return true;
-    } else {
-    std::uint32_t bits;
-    if (!read_u32(bits)) return false;
-    //00be4360 FLD32 -> ST0;00bf02c0 rounds through a float temporary. Full
-    // reads erase the pointer-seeded argument-slot distinction. Short reads
-    // are rejected above, not replaced with the font adapter's zero-fill.
+    if (!reader_ || !reader_->check_leaf(*this)) return false;
     float value;
-    __asm {
-        fld dword ptr bits
-        fstp dword ptr value
-    }
+    bool success = false;
+    engine_services_cc13::structured_node_read_float_00be9a60(this,
+        {reader_, &remaining_}, &value, {&success,
+            [](void* context, void* reader, std::uint32_t* remaining) {
+                std::uint32_t bits;
+                const bool read = static_cast<StructuredReader*>(reader)->read_exact(
+                    &bits, 4, *remaining, true);
+                *static_cast<bool*>(context) = read;
+                if (!read) return 0.0f; // Private staging only; no FLD on a failed read.
+                // The existing complete-transfer 00BF02C0 projection:
+                // FLD32/FSTP32, with no added arithmetic or double read.
+                return read_complete_float_bits(bits);
+            }});
+    if (!success) return false;
     output = value;
     return true;
-    }
 }
 
 bool StructuredNode::read_bytes(void* destination, std::uint32_t count) noexcept {

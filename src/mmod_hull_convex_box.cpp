@@ -9,8 +9,6 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/ship_hull_shapes.hpp"
 #include "bsp/structured_reader.hpp"
-#include "bsp/wire_goal2_chain122_switches.hpp"
-#include "bsp/wire_goal4_chain426_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -43,21 +41,11 @@ struct PointBox {
 // not feed the box and are skipped with the rest of the payload.
 bool read_convex_points(StructuredNode& entry, PointBox& box) {
     std::uint32_t word = 0;
-    if constexpr (kWireGoal4Chain426Bound) {
-        // bsp.py show 006FAD70 --asm, 006FAD7E..006FAD8F: 00BE9B20,
-        // CMP EAX,0Ch / JC, then 00BE9A10. +64h belongs to the shared
-        // reader's root control word, not this ConvexObject's byte budget.
-        if (entry.format_version() >= 0x0Cu &&
-            !entry.read_u32_with_native_node_wrapper(word, false)) return false;
-    } else {
-    if constexpr (kWireGoal2Chain122Bound) {
-        // 00BE9A10 consumes the optional word; OFF keeps the host DWORD read.
-        if (entry.remaining() >= 0x0Cu &&
-            !entry.read_u32_with_native_node_wrapper(word, false)) return false;
-    } else {
-        if (entry.remaining() >= 0x0Cu && !entry.read_u32(word)) return false;
-    }
-    }
+    // bsp.py show 006FAD70 --asm, 006FAD7E..006FAD8F: 00BE9B20,
+    // CMP EAX,0Ch / JC, then 00BE9A10. +64h belongs to the shared
+    // reader's root control word, not this ConvexObject's byte budget.
+    if (entry.format_version() >= 0x0Cu &&
+        !entry.read_u32_with_native_node_wrapper(word, false)) return false;
     std::uint32_t count = 0;
     if (!entry.read_u32(count)) return false;
     for (int k = 0; k < 3; ++k) {

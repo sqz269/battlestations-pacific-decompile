@@ -32,10 +32,6 @@
 #include "bsp/profile_commit.hpp"
 #include "bsp/settings_archive_reader.hpp"
 #include "bsp/storage_backend.hpp"
-#include "bsp/wire_goal2_chain90_switches.hpp"
-#include "bsp/wire_goal2_chain144_switches.hpp"
-#include "bsp/wire_goal4_chain302_switches.hpp"
-#include "bsp/wire_goal4_chain445_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -275,14 +271,9 @@ public:
     void deserialize_settings_008d6dc0(GameSettingsBlock& settings) override {
         read_settings_archive_008d6dc0(settings, readers_.back()->reader, input_, *this, *this);
         log_.implemented("QuickSettings::read_settings_archive", "008d6dc0");
-        if constexpr (kWireGoal4Chain302Bound) {
-            // The input configuration exists now; only the 006ABA50 reader is missing.
-            log_.unimplemented("QuickSettings::keyboard_setup (keyboardSetup reader unwired)",
-                "006aba50");
-        } else {
-            log_.unimplemented("QuickSettings::keyboard_setup (no input configuration 00698a10)",
-                "006aba50");
-        }
+        // The input configuration exists now; only the 006ABA50 reader is missing.
+        log_.unimplemented("QuickSettings::keyboard_setup (keyboardSetup reader unwired)",
+            "006aba50");
         log_.notef("quick settings: read masterVolume=%.6g musicVol=%.6g sfxVol=%.6g speechVol=%.6g "
             "rumbleOff=%d swapSticks=%d invertCameraY=%d invertPlaneY=%d swapMapSticks=%d gamma=%.6g "
             "markerAlpha=%.6g CockpitMode=%d HardwareReported=%d XboxCompatibilityMode=%d dlc=%zu",
@@ -363,76 +354,56 @@ public:
     void sound_set_group_volume([[maybe_unused]] std::uint32_t mask, [[maybe_unused]] float volume) override {
         // 00A7ABF0 at 008D54D9: set_sound_class_levels_00a7abf0 on [00F8BBD8]'s
         // class table (the running sound owner's levels); OFF keeps the record.
-        if constexpr (kWireGoal2Chain90Bound) {
-            if (!sinks_.apply_sound_class_levels || !sinks_.apply_sound_class_levels(mask, volume)) {
-                missing("sound_set_group_volume", "00a7abf0");
-                return;
-            }
-            log_.implemented("QuickSettingsApply::sound_set_group_volume", "00a7abf0");
-        } else {
+        if (!sinks_.apply_sound_class_levels || !sinks_.apply_sound_class_levels(mask, volume)) {
             missing("sound_set_group_volume", "00a7abf0");
+            return;
         }
+        log_.implemented("QuickSettingsApply::sound_set_group_volume", "00a7abf0");
     }
     void sound_set_named_bus_volume([[maybe_unused]] const char* bus,
         [[maybe_unused]] float volume) override {
         // 00A7F8E0: the startup-bound sink applies the profile gain; OFF keeps the missing-call record.
-        if constexpr (kWireGoal2Chain144Bound) {
-            if (!sinks_.apply_named_sound_class_level || !sinks_.apply_named_sound_class_level(bus, volume)) {
-                missing("sound_set_named_bus_volume", "00a7acf0");
-                return;
-            }
-            log_.implemented("QuickSettingsApply::sound_set_named_bus_volume", "00a7f8e0");
-        } else {
+        if (!sinks_.apply_named_sound_class_level || !sinks_.apply_named_sound_class_level(bus, volume)) {
             missing("sound_set_named_bus_volume", "00a7acf0");
+            return;
         }
+        log_.implemented("QuickSettingsApply::sound_set_named_bus_volume", "00a7f8e0");
     }
     void ui_sound_set_master_volume([[maybe_unused]] float volume) override {
         // 004C1710 at 008D5686: get_native_media_manager_004c1710 gets or builds
         // the 18h media manager (00F8AEF8), then 008D56B0 stores the clamped
         // master at +10h; OFF keeps the record.
-        if constexpr (kWireGoal2Chain90Bound) {
-            void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
-            if (media == nullptr) {
-                missing("ui_sound_set_master_volume", "004c1710+10h");
-                return;
-            }
-            std::memcpy(static_cast<unsigned char*>(media) + 0x10, &volume, sizeof volume); // 008D56B0
-            log_.implemented("QuickSettingsApply::ui_sound_set_master_volume", "004c1710");
-            log_.notef("quick settings: 004C1710 media=%p +10h=%g", media, static_cast<double>(volume));
-        } else {
+        void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
+        if (media == nullptr) {
             missing("ui_sound_set_master_volume", "004c1710+10h");
+            return;
         }
+        std::memcpy(static_cast<unsigned char*>(media) + 0x10, &volume, sizeof volume); // 008D56B0
+        log_.implemented("QuickSettingsApply::ui_sound_set_master_volume", "004c1710");
+        log_.notef("quick settings: 004C1710 media=%p +10h=%g", media, static_cast<double>(volume));
     }
     void renderer_set_texture_detail_bias([[maybe_unused]] int bias) override {
         // 00B1FFB0 at 008D5B80: set_native_renderer_texture_detail_bias_00b1ffb0
         // on [00F8D394] (receiver+1D84h = 2 - texture detail); OFF keeps the record.
-        if constexpr (kWireGoal2Chain90Bound) {
-            if (!sinks_.store_renderer_texture_detail_bias ||
-                !sinks_.store_renderer_texture_detail_bias(static_cast<std::uint32_t>(bias))) {
-                missing("renderer_set_texture_detail_bias", "00b1ffb0");
-                return;
-            }
-            log_.implemented("QuickSettingsApply::renderer_set_texture_detail_bias", "00b1ffb0");
-            log_.notef("quick settings: 00B1FFB0 +1D84h=%d", bias);
-        } else {
+        if (!sinks_.store_renderer_texture_detail_bias ||
+            !sinks_.store_renderer_texture_detail_bias(static_cast<std::uint32_t>(bias))) {
             missing("renderer_set_texture_detail_bias", "00b1ffb0");
+            return;
         }
+        log_.implemented("QuickSettingsApply::renderer_set_texture_detail_bias", "00b1ffb0");
+        log_.notef("quick settings: 00B1FFB0 +1D84h=%d", bias);
     }
     void renderer_set_gamma(float) override { missing("renderer_set_gamma", "00f8d394+f0h"); }
     void input_set_stick_modifiers([[maybe_unused]] bool swap_sticks,
         [[maybe_unused]] bool invert_camera_y, [[maybe_unused]] bool invert_plane_y,
         [[maybe_unused]] bool swap_map_sticks) override {
         // 008D5BB6: ECX = [00E188A8], CALL 004B46E0 (ADD ECX,3Ch; JMP 00699B80).
-        if constexpr (kWireGoal4Chain302Bound) {
-            if (!sinks_.set_input_device_flags_00699b80 || !sinks_.set_input_device_flags_00699b80(
-                    swap_sticks, invert_camera_y, invert_plane_y, swap_map_sticks)) {
-                missing("input_set_stick_modifiers", "00699b80");
-                return;
-            }
-            log_.implemented("QuickSettingsApply::input_set_stick_modifiers", "00699b80");
-        } else {
+        if (!sinks_.set_input_device_flags_00699b80 || !sinks_.set_input_device_flags_00699b80(
+                swap_sticks, invert_camera_y, invert_plane_y, swap_map_sticks)) {
             missing("input_set_stick_modifiers", "00699b80");
+            return;
         }
+        log_.implemented("QuickSettingsApply::input_set_stick_modifiers", "00699b80");
     }
     void game_refresh_after_settings() override { missing("game_refresh_after_settings", "004dcdf0"); }
     void foliage_system_set_detail_scale(float) override {
@@ -442,17 +413,13 @@ public:
     void ui_set_subtitles_enabled([[maybe_unused]] bool enabled) override {
         // 004C1710 at 008D5C85: the same media manager, then 008D5C8D stores
         // settings+09h's byte at +14h; OFF keeps the record.
-        if constexpr (kWireGoal2Chain90Bound) {
-            void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
-            if (media == nullptr) {
-                missing("ui_set_subtitles_enabled", "004c1710+14h");
-                return;
-            }
-            static_cast<unsigned char*>(media)[0x14] = enabled ? 1u : 0u; // 008D5C8D
-            log_.implemented("QuickSettingsApply::ui_set_subtitles_enabled", "004c1710");
-        } else {
+        void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
+        if (media == nullptr) {
             missing("ui_set_subtitles_enabled", "004c1710+14h");
+            return;
         }
+        static_cast<unsigned char*>(media)[0x14] = enabled ? 1u : 0u; // 008D5C8D
+        log_.implemented("QuickSettingsApply::ui_set_subtitles_enabled", "004c1710");
     }
     void font_registry_set_language_path(const char*, const char*) override {
         missing("font_registry_set_language_path", "007371d0");
@@ -486,19 +453,15 @@ public:
     }
     void renderer_change_presentation_mode(int width, int height, bool fullscreen,
         int sample_count, bool vsync, bool force) override {
-        if constexpr (kWireGoal4Chain445Bound) {
-            // 008D6092: forward the settings operands without replacing them
-            // with current dimensions or suppressing a requested reset.
-            if (!sinks_.change_renderer_presentation_mode ||
-                !sinks_.change_renderer_presentation_mode(width, height, fullscreen,
-                    sample_count, vsync, force)) {
-                missing("renderer_change_presentation_mode", "00b29e60");
-                return;
-            }
-            log_.implemented("QuickSettingsApply::renderer_change_presentation_mode", "00b29e60");
-        } else {
+        // 008D6092: forward the settings operands without replacing them
+        // with current dimensions or suppressing a requested reset.
+        if (!sinks_.change_renderer_presentation_mode ||
+            !sinks_.change_renderer_presentation_mode(width, height, fullscreen,
+                sample_count, vsync, force)) {
             missing("renderer_change_presentation_mode", "00b29e60");
+            return;
         }
+        log_.implemented("QuickSettingsApply::renderer_change_presentation_mode", "00b29e60");
     }
     void platform_window_set_mode(bool, int, int) override {
         missing("platform_window_set_mode", "0109cf04+0ch");

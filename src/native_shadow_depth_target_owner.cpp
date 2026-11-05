@@ -5,7 +5,6 @@
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/native_singleton_removal_reorder.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain533_switches.hpp"
 #include <exception>
 #include <new>
 #include <stdexcept>
@@ -73,26 +72,18 @@ void base_destroy(void* owner,NativeShadowDepthTargetContext& c,NativeShadowDept
 }
 void extents_construct(void* owner,const volatile NativeShadowDepthTargetDimensions& input,
     NativeShadowDepthTargetContext& c,NativeShadowDepthTargetOperation& a) {
-    if constexpr (kWireGoal4Chain533Bound) {
-        // bsp.py show 00A8A980 --asm: A8A983 calls A8A820 on this same owner,
-        // before either dimension is read. Reuse the retained enclosing
-        // operation so nested entry adds no allocation or failure boundary.
-        construct_native_shadow_target_singleton_00a8a820(owner,c,&a);
-    } else {
-    base_construct(owner,c,a);
-    }
+    // bsp.py show 00A8A980 --asm: A8A983 calls A8A820 on this same owner,
+    // before either dimension is read. Reuse the retained enclosing
+    // operation so nested entry adds no allocation or failure boundary.
+    construct_native_shadow_target_singleton_00a8a820(owner,c,&a);
     const U width=input.width;const U height=input.height;
     put(owner,4,width);put(owner,0,0x00d5b558);put(owner,8,height);byte(owner,0x0e,0);
 }
 void extents_destroy(void* owner,NativeShadowDepthTargetContext& c,NativeShadowDepthTargetOperation& a) {
-    if constexpr (kWireGoal4Chain533Bound) {
-        // bsp.py show 00A8A9D0 --asm: stamp the intermediate profile, then
-        // A8A9D6 tail-jumps to A8A8C0 with the same current publication.
-        put(owner,0,0x00d5b558);
-        destroy_native_shadow_target_singleton_00a8a8c0(owner,c,&a);
-    } else {
-    put(owner,0,0x00d5b558);base_destroy(owner,c,a);
-    }
+    // bsp.py show 00A8A9D0 --asm: stamp the intermediate profile, then
+    // A8A9D6 tail-jumps to A8A8C0 with the same current publication.
+    put(owner,0,0x00d5b558);
+    destroy_native_shadow_target_singleton_00a8a8c0(owner,c,&a);
 }
 const void* capabilities(NativeShadowDepthTargetContext& c) {
     const auto& b=c.bindings;void* renderer=b.renderer_00f8d394;
@@ -122,14 +113,10 @@ void destroy_target(void* owner,NativeShadowDepthTargetContext& c,NativeShadowDe
     release_child(owner,0x10,child(owner,0x10),c,a,0x00a90049);
     release_child(owner,0x1c,child(owner,0x1c),c,a,0x00a90065);
     release_child(owner,0x18,child(owner,0x18),c,a,0x00a90081);
-    if constexpr (kWireGoal4Chain533Bound) {
-        // bsp.py show 00A8FFF0 --asm: A9009C calls A8A9D0 only after
-        // the late 14h/10h/1Ch/18h releases and the original state update.
-        a.exception_state=0xffffffffu;a.native_site=0x00a9009c;
-        destroy_native_shadow_target_extents_00a8a9d0(owner,c,&a);
-    } else {
-    a.exception_state=0xffffffffu;a.native_site=0x00a9009c;extents_destroy(owner,c,a);
-    }
+    // bsp.py show 00A8FFF0 --asm: A9009C calls A8A9D0 only after
+    // the late 14h/10h/1Ch/18h releases and the original state update.
+    a.exception_state=0xffffffffu;a.native_site=0x00a9009c;
+    destroy_native_shadow_target_extents_00a8a9d0(owner,c,&a);
 }
 } // namespace
 
@@ -209,14 +196,10 @@ NativeShadowDepthTargetStorage* construct_native_shadow_depth_target_00a8fe30(vo
     perform(c,NativeShadowDepthTargetCall::construct,owner,[&](auto& a){
         ::new(owner) NativeShadowDepthTargetStorage;
         a.saved_dimensions.height=input.height;a.saved_dimensions.width=input.width;
-        if constexpr (kWireGoal4Chain533Bound) {
-            // bsp.py show 00A8FE30: CALL A8A980 at A8FE5A uses the fresh
-            // 2Ch allocation and the constructor's captured width/height.
-            a.native_site=0x00a8fe5a;
-            construct_native_shadow_target_extents_00a8a980(owner,a.saved_dimensions,c,&a);
-        } else {
-        a.native_site=0x00a8fe5a;extents_construct(owner,a.saved_dimensions,c,a);
-        }
+        // bsp.py show 00A8FE30: CALL A8A980 at A8FE5A uses the fresh
+        // 2Ch allocation and the constructor's captured width/height.
+        a.native_site=0x00a8fe5a;
+        construct_native_shadow_target_extents_00a8a980(owner,a.saved_dimensions,c,&a);
         put(owner,0,0x00d5b5e8);
         for(U offset:{0x10u,0x14u,0x18u,0x1cu})put(owner,offset,0);
         byte(owner,0x20,0);byte(owner,0x0c,0);byte(owner,0x0d,0);put(owner,0x24,0);put(owner,0x28,0);
@@ -275,15 +258,11 @@ __declspec(noinline) void destroy_native_shadow_depth_target_00a8fff0(
 }
 void* delete_native_shadow_depth_target_00a900c0(void* owner,U flags,NativeShadowDepthTargetContext& c) {
     perform(c,NativeShadowDepthTargetCall::scalar_delete,owner,[&](auto& a){
-        if constexpr (kWireGoal4Chain533Bound) {
-            // bsp.py show 00A900C0 --asm: A900C3 calls A8FFF0 once before
-            // testing flags&1 and freeing this exact constructed allocation.
-            a.native_site=0x00a900c3;
-            destroy_native_shadow_depth_target_00a8fff0(
-                *static_cast<NativeShadowDepthTargetStorage*>(owner),c,&a);
-        } else {
-        a.native_site=0x00a900c3;destroy_target(owner,c,a);
-        }
+        // bsp.py show 00A900C0 --asm: A900C3 calls A8FFF0 once before
+        // testing flags&1 and freeing this exact constructed allocation.
+        a.native_site=0x00a900c3;
+        destroy_native_shadow_depth_target_00a8fff0(
+            *static_cast<NativeShadowDepthTargetStorage*>(owner),c,&a);
         if(flags&1u) {a.native_site=0x00a900d0;singleton_lifetime_free(owner);}
     });return owner;
 }

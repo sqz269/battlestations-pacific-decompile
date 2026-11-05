@@ -2,32 +2,8 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_native_renderer_application.hpp"
-#include "bsp/wire_goal4_chain516_switches.hpp"
-#include "bsp/wire_goal4_chain550_switches.hpp"
-#include "bsp/wire_goal4_chain357_switches.hpp"
-#include "bsp/wire_goal4_chain361_switches.hpp"
-#include "bsp/wire_goal4_chain384_switches.hpp"
-#include "bsp/wire_goal4_chain392_switches.hpp"
-#include "bsp/wire_goal4_chain430_switches.hpp"
-#include "bsp/wire_goal4_chain465_switches.hpp"
-#include "bsp/wire_goal4_chain497_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
-#include "bsp/wire_goal2_chain51_switches.hpp"
-#include "bsp/wire_goal2_chain74_switches.hpp"
-#include "bsp/wire_goal2_chain81_switches.hpp"
-#include "bsp/wire_goal2_chain120_switches.hpp"
-#include "bsp/wire_goal2_chain132_switches.hpp"
-#include "bsp/wire_goal2_chain192_switches.hpp"
-#include "bsp/wire_goal4_chain268_switches.hpp"
-#include "bsp/wire_goal4_chain270_switches.hpp"
-#include "bsp/wire_goal4_chain278_switches.hpp"
-#include "bsp/wire_goal4_chain290_switches.hpp"
-#include "bsp/wire_goal4_chain296_switches.hpp"
-#include "bsp/wire_goal4_chain308_switches.hpp"
-#include "bsp/wire_goal4_chain319_switches.hpp"
-#include "bsp/wire_goal4_chain329_switches.hpp"
-#include "bsp/wire_goal4_chain332_switches.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
@@ -63,7 +39,6 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
-#include "bsp/wire_goal1_chain13_switches.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -166,7 +141,7 @@ constexpr bool kSceneTrafficBlockBound = true;
 // The chain 361 reader leaves `traffic` and `SceneBrowserGroups` for their
 // block readers to consume (0046EB5B, 0046EBD3). The recorded stand-ins
 // consume nothing, so the reader would peek the same keyword forever.
-static_assert(!kWireGoal4Chain361Bound || (kSceneTrafficBlockBound && kSceneBrowserGroupsBound),
+static_assert(kSceneTrafficBlockBound && kSceneBrowserGroupsBound,
     "chain 361's peeking scene reader needs the 009514B0 and 00469E40 loaders");
 
 class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
@@ -470,16 +445,12 @@ public:
           declaration_{strings_.raw_context(), tables_.symbol_pool(),
               strings_.enum_empty_00e186ed(), strings_.query_empty_00e17654()} {
         // 004D3040 builds the registry immediately before loading universe/library.
-        if constexpr (kWireGoal4Chain430Bound) {
-            // bsp.py show 004D25F0 --asm: the complete constructor writes the
-            // same CE78BC/CE7514 phase words, zero count and 64 bucket heads as
-            // the factory's 004D3069 inline initializer. Reuse that body on the
-            // actual fresh 10Ch library registry; no second initialization.
-            // This is Source reuse, not an Original call at the factory site.
-            initialize_native_scene_enum_registry_storage_004d25f0(&registry_);
-        } else {
-            initialize_native_scene_enum_registry_storage_004d3069(&registry_);
-        }
+        // bsp.py show 004D25F0 --asm: the complete constructor writes the
+        // same CE78BC/CE7514 phase words, zero count and 64 bucket heads as
+        // the factory's 004D3069 inline initializer. Reuse that body on the
+        // actual fresh 10Ch library registry; no second initialization.
+        // This is Source reuse, not an Original call at the factory site.
+        initialize_native_scene_enum_registry_storage_004d25f0(&registry_);
     }
     ~LibraryNativeEnums() {
         // Same nested registry -> CEnum -> keys/nodes release as 004D2620.
@@ -608,45 +579,20 @@ void insert_library_enum_symbol(EnumTable& table, const std::string& name, int v
 class PropertyLibrary {
 public:
     void begin_load() {
-        if constexpr (kWireGoal2Chain120Bound) {
-            if (!native_enums_) native_enums_ = std::make_unique<LibraryNativeEnums>();
-        }
+        if (!native_enums_) native_enums_ = std::make_unique<LibraryNativeEnums>();
     }
     void read_native_enum(SceneLexer& lexer, const std::string& name) {
         native_enums_->read(lexer, name);
     }
     bool has_enum_table(const std::string& name) const {
-        if constexpr (kWireGoal2Chain120Bound) {
-            return native_enums_ != nullptr && native_enums_->has_table(name);
-        } else {
-            for (const EnumTable& row : enums_) {
-                if (equal_insensitive(row.name, name)) return true;
-            }
-            return false;
-        }
+        return native_enums_ != nullptr && native_enums_->has_table(name);
     }
     void read_enum_body(const std::string& name, const std::string& body) {
         // 008F67B0's owning enum adapter already implements 008F69FF followed
         // by conditional 008F6A18 publication. Reuse it, including first-value
         // retention on reopening, instead of building a second enum registry.
         SceneLexer lexer("{" + body + "}", kPropertyLibraryDelimiters);
-        if constexpr (kWireGoal2Chain120Bound) {
-            read_native_enum(lexer, name);
-        } else {
-            EnumTable table;
-            table.name = name;
-            lexer.next(); // opening brace supplied by the loader callback
-            while (!lexer.at_end() && lexer.peek().text != "}") {
-                const SceneToken symbol = lexer.next();
-                if (lexer.peek().text != "=") continue;
-                lexer.next();
-                const SceneToken value = lexer.next();
-                std::int32_t parsed = 0;
-                if (scene_scan_int(value.text, parsed))
-                    insert_library_enum_symbol(table, symbol.text, static_cast<int>(parsed));
-            }
-            add_enum(std::move(table));
-        }
+        read_native_enum(lexer, name);
     }
     void add_group(PropertyGroupDefinition group);
     void add_enum(EnumTable table) {
@@ -679,63 +625,31 @@ public:
     // fold costs nothing and matches the reader's other lookups.
     bool resolve_symbol(const std::string& table, const std::string& symbol,
         int& value) const {
-        if constexpr (kWireGoal2Chain120Bound) {
-            return native_enums_ != nullptr && native_enums_->resolve_symbol(table, symbol, value);
-        } else {
-        for (const EnumTable& row : enums_) {
-            if (!table.empty() && !equal_insensitive(row.name, table)) continue;
-            for (const auto& entry : row.symbols) {
-                if (equal_insensitive(entry.first, symbol)) {
-                    value = entry.second;
-                    return true;
-                }
-            }
-            if (!table.empty()) return false;
-        }
-        return false;
-        }
+        return native_enums_ != nullptr && native_enums_->resolve_symbol(table, symbol, value);
     }
     // Chain 319: the registry the E arm reads, for the native bag merge; null
     // before the ON library-load phase builds it.
     SceneNativeEnumSource* native_enum_source() const noexcept {
-        if constexpr (kWireGoal2Chain120Bound) {
-            return native_enums_.get();
-        } else {
-            return nullptr;
-        }
+        return native_enums_.get();
     }
     // An E property's integer. ON: a merged E property carries its native
     // type-4 +0Ch (008F3A20's 0048E840 word), which the executable's readers
     // take as is; anything else still resolves through the tables. OFF: always
     // resolve_symbol, the previous behaviour.
     bool resolve_enum(const SceneEnumProperty& e, int& value) const {
-        if constexpr (kWireGoal4Chain319Bound) {
-            if (e.has_native_value) {
-                value = e.native_value;
-                return true;
-            }
-            return resolve_symbol(e.table, e.symbol, value);
-        } else {
-            return resolve_symbol(e.table, e.symbol, value);
+        if (e.has_native_value) {
+            value = e.native_value;
+            return true;
         }
+        return resolve_symbol(e.table, e.symbol, value);
     }
 
     std::size_t group_count() const noexcept { return groups_.size(); }
     std::size_t enum_count() const noexcept {
-        if constexpr (kWireGoal2Chain120Bound) {
-            return native_enums_ != nullptr ? native_enums_->enum_count() : 0;
-        } else {
-            return enums_.size();
-        }
+        return native_enums_ != nullptr ? native_enums_->enum_count() : 0;
     }
     std::size_t symbol_count() const noexcept {
-        if constexpr (kWireGoal2Chain120Bound) {
-            return native_enums_ != nullptr ? native_enums_->symbol_count() : 0;
-        } else {
-        std::size_t total = 0;
-        for (const EnumTable& row : enums_) total += row.symbols.size();
-        return total;
-        }
+        return native_enums_ != nullptr ? native_enums_->symbol_count() : 0;
     }
 
 private:
@@ -759,99 +673,9 @@ private:
 void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& other,
     bool overwrite, bool require_compatible_types = false,
     SceneNativeEnumSource* enums = nullptr) {
-    if constexpr (kWireGoal4Chain296Bound) {
-        SceneNumericPropertyMerge native_merge(bag, other, overwrite, enums);
-        for (std::size_t i = 0; i < other.values.size(); ++i) {
-            const SceneProperty& value = other.values[i];
-            if (require_compatible_types) {
-                for (const auto& child : bag.blocks) {
-                    if (equal_insensitive(child.first, value.key)) {
-                        throw std::runtime_error("unsupported library scalar/child conflict: " + value.key);
-                    }
-                }
-            }
-            SceneProperty* existing = nullptr;
-            for (SceneProperty& candidate : bag.values) {
-                if (equal_insensitive(candidate.key, value.key)) { existing = &candidate; break; }
-            }
-            if (require_compatible_types && existing != nullptr
-                && existing->type_letter != value.type_letter) {
-                throw std::runtime_error("unsupported library scalar type conflict: " + value.key);
-            }
-            if (native_merge.handles(i)) {
-                SceneProperty merged = native_merge.result(
-                    existing != nullptr && !overwrite ? *existing : value);
-                if (existing == nullptr) bag.values.push_back(std::move(merged));
-                else *existing = std::move(merged);
-            } else {
-                if (existing == nullptr) bag.values.push_back(value);
-                else if (overwrite) *existing = value;
-            }
-        }
-        if constexpr (kWireGoal4Chain332Bound) {
-        for (const auto& block : other.blocks) {
-            if (require_compatible_types) {
-                for (const SceneProperty& value : bag.values) {
-                    if (equal_insensitive(value.key, block.first)) {
-                        throw std::runtime_error("unsupported library child/scalar conflict: " + block.first);
-                    }
-                }
-            }
-            ScenePropertyBlock* target = nullptr;
-            for (auto& existing : bag.blocks) {
-                if (equal_insensitive(existing.first, block.first)) {
-                    target = &existing.second;
-                    break;
-                }
-            }
-            // The authored/group trees supply the complete supported child,
-            // including its real inherited destination. The native type-6
-            // merge determines all changed payloads; do not also run the old
-            // recursive host merge on a successfully projected subtree.
-            ScenePropertyBlock merged;
-            const bool unique_parent_key = std::none_of(bag.values.begin(), bag.values.end(),
-                    [&](const SceneProperty& value) { return equal_insensitive(value.key, block.first); })
-                && std::count_if(bag.blocks.begin(), bag.blocks.end(),
-                    [&](const auto& child) { return equal_insensitive(child.first, block.first); }) <= 1
-                && std::count_if(other.blocks.begin(), other.blocks.end(),
-                    [&](const auto& child) { return equal_insensitive(child.first, block.first); }) == 1;
-            if (unique_parent_key
-                && native_merge.merge_child(block.first, target, block.second, merged)) {
-                if (target == nullptr) bag.blocks.emplace_back(block.first, std::move(merged));
-                else *target = std::move(merged);
-            } else {
-                if (target == nullptr) {
-                    bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
-                    target = &bag.blocks.back().second;
-                }
-                merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
-            }
-        }
-        } else {
-        for (const auto& block : other.blocks) {
-            if (require_compatible_types) {
-                for (const SceneProperty& value : bag.values) {
-                    if (equal_insensitive(value.key, block.first)) {
-                        throw std::runtime_error("unsupported library child/scalar conflict: " + block.first);
-                    }
-                }
-            }
-            ScenePropertyBlock* target = nullptr;
-            for (auto& existing : bag.blocks) {
-                if (equal_insensitive(existing.first, block.first)) {
-                    target = &existing.second;
-                    break;
-                }
-            }
-            if (target == nullptr) {
-                bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
-                target = &bag.blocks.back().second;
-            }
-            merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
-        }
-        }
-    } else {
-    for (const SceneProperty& value : other.values) {
+    SceneNumericPropertyMerge native_merge(bag, other, overwrite, enums);
+    for (std::size_t i = 0; i < other.values.size(); ++i) {
+        const SceneProperty& value = other.values[i];
         if (require_compatible_types) {
             for (const auto& child : bag.blocks) {
                 if (equal_insensitive(child.first, value.key)) {
@@ -867,10 +691,14 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
             && existing->type_letter != value.type_letter) {
             throw std::runtime_error("unsupported library scalar type conflict: " + value.key);
         }
-        if (existing == nullptr) {
-            bag.values.push_back(value);
-        } else if (overwrite) {
-            *existing = value;
+        if (native_merge.handles(i)) {
+            SceneProperty merged = native_merge.result(
+                existing != nullptr && !overwrite ? *existing : value);
+            if (existing == nullptr) bag.values.push_back(std::move(merged));
+            else *existing = std::move(merged);
+        } else {
+            if (existing == nullptr) bag.values.push_back(value);
+            else if (overwrite) *existing = value;
         }
     }
     for (const auto& block : other.blocks) {
@@ -888,12 +716,28 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
                 break;
             }
         }
-        if (target == nullptr) {
-            bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
-            target = &bag.blocks.back().second;
+        // The authored/group trees supply the complete supported child,
+        // including its real inherited destination. The native type-6
+        // merge determines all changed payloads; do not also run the old
+        // recursive host merge on a successfully projected subtree.
+        ScenePropertyBlock merged;
+        const bool unique_parent_key = std::none_of(bag.values.begin(), bag.values.end(),
+                [&](const SceneProperty& value) { return equal_insensitive(value.key, block.first); })
+            && std::count_if(bag.blocks.begin(), bag.blocks.end(),
+                [&](const auto& child) { return equal_insensitive(child.first, block.first); }) <= 1
+            && std::count_if(other.blocks.begin(), other.blocks.end(),
+                [&](const auto& child) { return equal_insensitive(child.first, block.first); }) == 1;
+        if (unique_parent_key
+            && native_merge.merge_child(block.first, target, block.second, merged)) {
+            if (target == nullptr) bag.blocks.emplace_back(block.first, std::move(merged));
+            else *target = std::move(merged);
+        } else {
+            if (target == nullptr) {
+                bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
+                target = &bag.blocks.back().second;
+            }
+            merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
         }
-        merge_property_block(*target, block.second, overwrite, require_compatible_types);
-    }
     }
 }
 
@@ -927,20 +771,13 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
     // This owning-tree projection validates its supported domain on a copy;
     // native malformed-input failure, aliases and rollback are not modeled.
     ScenePropertyBlock captured = existing != nullptr ? existing->block : ScenePropertyBlock{};
-    if constexpr (kWireGoal4Chain319Bound) {
-        // The E arm resolves against the enums loaded so far, as 008F5A00
-        // does while this library file is read; an unknown table or symbol
-        // stays on the host path.
-        for (const std::string& base : group.bases) {
-            merge_property_block(captured, this->group(base)->block, true, true, native_enum_source());
-        }
-        merge_property_block(captured, group.block, true, true, native_enum_source());
-    } else {
+    // The E arm resolves against the enums loaded so far, as 008F5A00
+    // does while this library file is read; an unknown table or symbol
+    // stays on the host path.
     for (const std::string& base : group.bases) {
-        merge_property_block(captured, this->group(base)->block, true, true);
+        merge_property_block(captured, this->group(base)->block, true, true, native_enum_source());
     }
-    merge_property_block(captured, group.block, true, true);
-    }
+    merge_property_block(captured, group.block, true, true, native_enum_source());
     if (existing != nullptr) {
         existing->block = std::move(captured);
         existing->bases = std::move(group.bases);
@@ -960,11 +797,7 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     ScenePropertyBlock& bag) {
     const PropertyGroupDefinition* group = library.group(name);
     if (group == nullptr) return;
-    if constexpr (kWireGoal4Chain319Bound) {
-        merge_property_block(bag, group->block, false, false, library.native_enum_source());
-    } else {
-    merge_property_block(bag, group->block, false);
-    }
+    merge_property_block(bag, group->block, false, false, library.native_enum_source());
 }
 
 // 0077E857 calls 0048F5D0 on the descriptor's merged creation bag. Borrow the
@@ -1884,27 +1717,10 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
             continue;
         }
         if (equal_insensitive(token.text, kPropertyLibraryKeywordEnum)) {
-            if constexpr (kWireGoal2Chain120Bound) {
+            {
                 // 008F697C/69C9/69FF/6A18: native enum graph; OFF keeps the old parser.
                 const std::string table_name = lexer.next().text;
                 library.read_native_enum(lexer, table_name);
-            } else {
-            EnumTable table;
-            table.name = lexer.next().text;
-            if (lexer.peek().text != "{") continue;
-            lexer.next();
-            while (!lexer.at_end() && lexer.peek().text != "}") {
-                const SceneToken symbol = lexer.next();
-                if (lexer.peek().text != "=") continue;
-                lexer.next();
-                const SceneToken value = lexer.next();
-                std::int32_t parsed = 0;
-                if (scene_scan_int(value.text, parsed)) {
-                    insert_library_enum_symbol(table, symbol.text, static_cast<int>(parsed));
-                }
-            }
-            if (!lexer.at_end()) lexer.next();
-            library.add_enum(std::move(table));
             }
             continue;
         }
@@ -1915,20 +1731,11 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
 }
 
 void GameSceneContentsHost::Impl::load_property_library() {
-    if constexpr (kWireGoal2Chain120Bound) {
-        library.begin_load();
-    }
-    if constexpr (kWireGoal4Chain278Bound && kWireGoal4Chain268Bound) {
-        log.implemented("SceneContents::property_library_load", "008f67b0");
-    } else {
-    // 008f6fc0 enumerates the library directory through 00886280 and calls
-    // 008f67b0 once per file. The enumeration is the recovered one; the load is
-    // this file's stand-in, and the host record says so.
-    log.unimplemented("SceneContents::property_library_load", "008f67b0");
-    }
+    library.begin_load();
+    log.implemented("SceneContents::property_library_load", "008f67b0");
     auto* manager = vfs.ready() ? &vfs.context() : nullptr;
     if (manager == nullptr) return;
-    if constexpr (kWireGoal4Chain268Bound) {
+    {
         // 008F710E/008F711B call 008F6FC0 with .enums, then .props;
         // 008F701B enumerates and 008F7092 loads each result into this library
         // (bsp.py show 008f7100 and 008f6fc0). Supply the actual mounted VFS
@@ -1954,76 +1761,60 @@ void GameSceneContentsHost::Impl::load_property_library() {
 
             bool load_library_file(const std::string& entry,
                 PropLibraryDocument& document, std::string& error) override {
-                if constexpr (kWireGoal4Chain278Bound) {
-                    class FileBinding final : public PropLibraryHost {
-                    public:
-                        explicit FileBinding(Impl& owner) : owner_(owner) {}
-                        std::vector<std::string> enumerate_library_files(
-                            const std::string& folder, const std::string& extension) override {
-                            std::vector<std::string> found;
-                            std::string error;
-                            if (!enumerate_resources_00bdd990_fragment(owner_.vfs.context(),
-                                    folder, extension, 1, found, error))
-                                throw std::runtime_error("property library: " + error);
-                            return found;
-                        }
-                        bool read_library_file(const std::string& path,
-                            std::string& text) override {
-                            return owner_.read_vfs_file(path, text)
-                                || owner_.read_vfs_file(
-                                    std::string(kPropertyLibraryDirectory) + "/" + path, text);
-                        }
-                        bool has_group(const std::string& name) override {
-                            return owner_.library.group(name) != nullptr;
-                        }
-                        bool has_enum_table(const std::string& name) override {
-                            return owner_.library.has_enum_table(name);
-                        }
-                        void register_group(const PropLibraryGroup& source) override {
-                            PropertyGroupDefinition group;
-                            group.name = source.name;
-                            group.bases = source.parents;
-                            group.block = source.body;
-                            owner_.library.add_group(std::move(group));
-                        }
-                        void parse_enum_body(const std::string& name,
-                            const std::string& body) override {
-                            owner_.library.read_enum_body(name, body);
-                        }
-                        void register_enum_table(const PropLibraryEnumTable& table) override {
-                            // read_enum_body already publishes the real owner after
-                            // parsing; a second insert would run 008F6A18 twice.
-                            if (!owner_.library.has_enum_table(table.name))
-                                throw std::logic_error("property library enum was not published");
-                        }
-                    private:
-                        Impl& owner_;
-                    } file(owner_);
-                    // Original 008F7092 -> 008F67B0. Actual mounted VFS bytes
-                    // feed the existing one-file body, and its callbacks update
-                    // the same library that entity loading reads. Typed C++
-                    // adapter; this does not establish original allocation ABI.
-                    if (!load_prop_library_file(entry, file, document, error)) {
-                        owner_.log.notef("property library: %s", error.c_str());
-                        return false;
+                class FileBinding final : public PropLibraryHost {
+                public:
+                    explicit FileBinding(Impl& owner) : owner_(owner) {}
+                    std::vector<std::string> enumerate_library_files(
+                        const std::string& folder, const std::string& extension) override {
+                        std::vector<std::string> found;
+                        std::string error;
+                        if (!enumerate_resources_00bdd990_fragment(owner_.vfs.context(),
+                                folder, extension, 1, found, error))
+                            throw std::runtime_error("property library: " + error);
+                        return found;
                     }
-                    ++owner_.summary.library_files;
-                    return true;
-                } else {
-                std::string text;
-                std::string full = entry;
-                if (!owner_.read_vfs_file(full, text)) {
-                    full = std::string(kPropertyLibraryDirectory) + "/" + entry;
-                    if (!owner_.read_vfs_file(full, text)) {
-                        error = "cannot read " + entry;
-                        owner_.log.notef("property library: %s did not resolve", entry.c_str());
-                        return false;
+                    bool read_library_file(const std::string& path,
+                        std::string& text) override {
+                        return owner_.read_vfs_file(path, text)
+                            || owner_.read_vfs_file(
+                                std::string(kPropertyLibraryDirectory) + "/" + path, text);
                     }
+                    bool has_group(const std::string& name) override {
+                        return owner_.library.group(name) != nullptr;
+                    }
+                    bool has_enum_table(const std::string& name) override {
+                        return owner_.library.has_enum_table(name);
+                    }
+                    void register_group(const PropLibraryGroup& source) override {
+                        PropertyGroupDefinition group;
+                        group.name = source.name;
+                        group.bases = source.parents;
+                        group.block = source.body;
+                        owner_.library.add_group(std::move(group));
+                    }
+                    void parse_enum_body(const std::string& name,
+                        const std::string& body) override {
+                        owner_.library.read_enum_body(name, body);
+                    }
+                    void register_enum_table(const PropLibraryEnumTable& table) override {
+                        // read_enum_body already publishes the real owner after
+                        // parsing; a second insert would run 008F6A18 twice.
+                        if (!owner_.library.has_enum_table(table.name))
+                            throw std::logic_error("property library enum was not published");
+                    }
+                private:
+                    Impl& owner_;
+                } file(owner_);
+                // Original 008F7092 -> 008F67B0. Actual mounted VFS bytes
+                // feed the existing one-file body, and its callbacks update
+                // the same library that entity loading reads. Typed C++
+                // adapter; this does not establish original allocation ABI.
+                if (!load_prop_library_file(entry, file, document, error)) {
+                    owner_.log.notef("property library: %s", error.c_str());
+                    return false;
                 }
-                owner_.parse_library_file(full, text);
                 ++owner_.summary.library_files;
                 return true;
-                }
             }
 
         private:
@@ -2034,55 +1825,15 @@ void GameSceneContentsHost::Impl::load_property_library() {
         if (!loaded.ok) log.notef("property library: %s", loaded.error.c_str());
         log.implemented("SceneContents::property_library_folder", "008f7100");
         log.implemented("SceneContents::property_library_extension", "008f6fc0");
-    } else {
-    // 008f7100 calls 008f6fc0 twice, first with ".enums" (00d1655c at 008f7106)
-    // and then with ".props" (00d16554 at 008f7113), so the enum tables are
-    // loaded before .props inputs. Preserve that order: enum redeclarations
-    // retain their first values, and global.enums also supplies property groups.
-    const char* extensions[] = {".enums", ".props"};
-    std::vector<std::string> names;
-    for (const char* extension : extensions) {
-        std::vector<std::string> found;
-        std::string error;
-        if (!enumerate_resources_00bdd990_fragment(*manager,
-                kPropertyLibraryDirectory, extension, 0, found, error)) {
-            log.notef("property library: %s enumeration failed: %s", extension,
-                error.c_str());
-            continue;
-        }
-        std::sort(found.begin(), found.end());
-        names.insert(names.end(), found.begin(), found.end());
-    }
-    for (const std::string& entry : names) {
-        std::string text;
-        std::string full = entry;
-        if (!read_vfs_file(full, text)) {
-            full = std::string(kPropertyLibraryDirectory) + "/" + entry;
-            if (!read_vfs_file(full, text)) {
-                log.notef("property library: %s did not resolve", entry.c_str());
-                continue;
-            }
-        }
-        parse_library_file(full, text);
-        ++summary.library_files;
-    }
     }
     summary.property_groups = library.group_count();
     summary.enum_tables = library.enum_count();
     summary.enum_symbols = library.symbol_count();
     summary.library_loaded = summary.library_files != 0;
-    if constexpr (kWireGoal4Chain278Bound && kWireGoal4Chain268Bound) {
-        log.notef("property library: %zu file(s) under %s, %zu property group(s), %zu enum "
-            "table(s), %zu symbol(s) (008f67b0 over mounted VFS and entity-consumed library)",
-            summary.library_files, kPropertyLibraryDirectory, summary.property_groups,
-            summary.enum_tables, summary.enum_symbols);
-    } else {
     log.notef("property library: %zu file(s) under %s, %zu property group(s), %zu enum "
-        "table(s), %zu symbol(s) (008f67b0 CPropTreeLibrary::Load is not reconstructed; "
-        "this is the executable's own reader over the recovered tokenizer and 008f5a00)",
+        "table(s), %zu symbol(s) (008f67b0 over mounted VFS and entity-consumed library)",
         summary.library_files, kPropertyLibraryDirectory, summary.property_groups,
         summary.enum_tables, summary.enum_symbols);
-    }
 }
 
 namespace {
@@ -2123,38 +1874,17 @@ public:
             static_cast<int>(class_index), "Catapult", "LaunchedClass", -1));
     }
     void append_census(std::int32_t class_index) override {
-        if constexpr (bsp::kWireGoal2Chain192Bound) {
-            // 0095C550 (0095C754/0095C75B/0095C99D): the census append's own dedupe
-            // scan and append over Impl::preload_census (00F8A09C); OFF keeps this loop.
-            bsp::oct18_tail_b::append_vehicle_census_0095c550(owner_.preload_census,
-                class_index);
-        } else {
-            for (std::int32_t existing : owner_.preload_census) {
-                if (existing == class_index) return;
-            }
-            owner_.preload_census.push_back(class_index);
-        }
+        // 0095C550 (0095C754/0095C75B/0095C99D): the census append's own dedupe
+        // scan and append over Impl::preload_census (00F8A09C); OFF keeps this loop.
+        bsp::oct18_tail_b::append_vehicle_census_0095c550(owner_.preload_census,
+            class_index);
     }
     bool pop_stock_queue(std::int32_t& class_index) override {
-        if constexpr (bsp::kWireGoal4Chain392Bound) {
-            return owner_.pending_classes.pop_stock_queue(class_index);
-        } else {
-        if (owner_.stock_queue.empty()) return false;
-        class_index = owner_.stock_queue.front();
-        owner_.stock_queue.erase(owner_.stock_queue.begin());
-        return true;
-        }
+        return owner_.pending_classes.pop_stock_queue(class_index);
     }
     void push_stock_queue(std::int32_t class_index) override {
-        if constexpr (bsp::kWireGoal4Chain392Bound) {
-            // 0095C4D0 maps through the live registry before queue de-duplication.
-            owner_.pending_classes.push_stock_queue(map_class_index(class_index));
-        } else {
-        for (std::int32_t existing : owner_.stock_queue) {
-            if (existing == class_index) return;
-        }
-        owner_.stock_queue.push_back(class_index);
-        }
+        // 0095C4D0 maps through the live registry before queue de-duplication.
+        owner_.pending_classes.push_stock_queue(map_class_index(class_index));
     }
 
 private:
@@ -2362,35 +2092,24 @@ void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
 // UNCERTAIN: a party outside 0..2 would read the next row's byte in the image;
 // here it reads as unmarked.
 bool scene_class_is_enemy_0095bab0(GameSceneContentsHost::Impl& owner, std::int32_t index) {
-    if constexpr (bsp::kWireGoal4Chain290Bound) {
-        // 0095BAC0..0095BB06 (bsp.py show 0095bab0): read the local party's
-        // byte from the same rows that scene registration/0095BA60 and the
-        // plane preload alias below produce. Borrow the vector so native
-        // resize semantics affect subsequent class registrations/lookups.
-        // The supported single-player load copies side block 0 to player 0
-        // (004BB440); local_player_party() reads that published slot's +28h.
-        // Preserve this host's existing policy outside the model's domain.
-        if (index < 0) return true;
-        const int party = local_player_party();
-        if (party < 0 || party >= kVehicleClassPartyStride) {
-            auto& rows = owner.vehicle_registry.party_required;
-            if (static_cast<std::size_t>(index) >= rows.size()) {
-                rows.resize(static_cast<std::size_t>(index) + 1);
-            }
-            return true;
-        }
-        return bsp::gameplay_seg61_62_cc13::class_registry_party_row_clear_0095bab0(
-            owner.vehicle_registry.party_required, index, 0, party);
-    } else {
-    auto& rows = owner.vehicle_registry.party_required;
+    // 0095BAC0..0095BB06 (bsp.py show 0095bab0): read the local party's
+    // byte from the same rows that scene registration/0095BA60 and the
+    // plane preload alias below produce. Borrow the vector so native
+    // resize semantics affect subsequent class registrations/lookups.
+    // The supported single-player load copies side block 0 to player 0
+    // (004BB440); local_player_party() reads that published slot's +28h.
+    // Preserve this host's existing policy outside the model's domain.
     if (index < 0) return true;
-    if (static_cast<std::size_t>(index) >= rows.size()) {
-        rows.resize(static_cast<std::size_t>(index) + 1);   // 004359E0
-    }
     const int party = local_player_party();
-    if (party < 0 || party >= kVehicleClassPartyStride) return true;
-    return rows[static_cast<std::size_t>(index)][static_cast<std::size_t>(party)] == 0;
+    if (party < 0 || party >= kVehicleClassPartyStride) {
+        auto& rows = owner.vehicle_registry.party_required;
+        if (static_cast<std::size_t>(index) >= rows.size()) {
+            rows.resize(static_cast<std::size_t>(index) + 1);
+        }
+        return true;
     }
+    return bsp::gameplay_seg61_62_cc13::class_registry_party_row_clear_0095bab0(
+        owner.vehicle_registry.party_required, index, 0, party);
 }
 
 // 0095C1C0, __fastcall(ECX = out string, EDX = class id), EAX = out. The entry
@@ -2551,22 +2270,12 @@ public:
         ++stock_walks_;
         if constexpr (kVehicleClassPreloadCc15Bound) {
             // 0046bf20 calls the stock body; OFF keeps the host's property/class filters and append.
-            if constexpr (kWireGoal1Chain13Bound) {
+            {
                 SceneStockPropertyAdapter host(owner_, properties);
                 seg6::scene_stock_register_from_type_property_0046bf20(host,
                     g_scene_database_00e18680,
                     reinterpret_cast<seg6::Object>(const_cast<ScenePropertyBlock*>(&properties)),
                     class_name.c_str());
-            } else {
-            // 0046BF20: a `Type` property, and the class name's id
-            // (00469690) is not 47h (Path).
-            const SceneEntityClassRow* klass = scene_class_row_by_name(class_name);
-            if (properties.find(kSceneUnitTypeKey) != nullptr
-                && (klass == nullptr || klass->class_id != 0x47)
-                && scene_stock_register_0046be90(owner_,
-                       scene_stock_int(owner_, properties, kSceneUnitTypeKey))) {
-                ++owner_.scene_vector_gate_pushes;
-            }
             }
             owner_.log.implemented("SceneGate::register_multiplayer_stock", "0046bf20");
         } else {
@@ -2690,9 +2399,7 @@ public:
         // with nothing to issue.
         entity_.command = command;
         entity_.command_target = target;
-        if constexpr (bsp::kWireGoal2Chain51Bound) {
-            entity_.command_present = true; // callback means inner Command exists
-        }
+        entity_.command_present = true; // callback means inner Command exists
         owner_.log.unimplemented("SceneUnit::queue_entity_command", "00469610");
         ++commands_;
     }
@@ -2902,14 +2609,10 @@ public:
                         ->resolve_symbol(table, symbol, value);
                 });
             const SceneTrafficReadResult read = [&] {
-                if constexpr (kWireGoal4Chain361Bound) {
-                    // 0046EB5B: the reader left `traffic` pending, as the image
-                    // does; 009514B0 clears (009514B5), expects the keyword
-                    // and reads the block.
-                    return read_traffic_block(lexer, recorder);
-                } else {
-                    return read_traffic_block_after_keyword(lexer, recorder);
-                }
+                // 0046EB5B: the reader left `traffic` pending, as the image
+                // does; 009514B0 clears (009514B5), expects the keyword
+                // and reads the block.
+                return read_traffic_block(lexer, recorder);
             }();
             owner_.log.implemented("SceneContents::load_traffic_block", "009514b0");
             std::size_t templates = 0;
@@ -2946,13 +2649,9 @@ public:
         if constexpr (kSceneBrowserGroupsBound) {
             SceneBrowserGroupsCounter counter;
             const SceneBrowserGroupsReadResult read = [&] {
-                if constexpr (kWireGoal4Chain361Bound) {
-                    // 0046EBD3: the reader left `SceneBrowserGroups` pending;
-                    // 00469E40 expects it (00469E48..00469E4F), then `{`.
-                    return read_browser_groups_block(lexer, counter);
-                } else {
-                    return read_browser_groups_after_keyword(lexer, counter);
-                }
+                // 0046EBD3: the reader left `SceneBrowserGroups` pending;
+                // 00469E40 expects it (00469E48..00469E4F), then `{`.
+                return read_browser_groups_block(lexer, counter);
             }();
             owner_.log.implemented("SceneContents::load_browser_groups", "00469e40");
             owner_.log.notef("scene browser groups: %zu entries, ok=%d%s%s", counter.count,
@@ -3271,18 +2970,7 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
             if (!chunk) { error = "bad NODE child"; return nullptr; }
             if (terrain_tag_is(*chunk, "U16")) {
                 SceneTerrainBlock block;
-                if constexpr (bsp::kWireGoal4Chain497Bound) {
-                    if (!read_terrain_u16_chunk(*chunk, block, error)) return nullptr;
-                } else {
-                float scale = 0.0f;
-                if (!chunk->read_float(block.offset) || !chunk->read_float(scale)) {
-                    error = "U16 lacks its floats"; return nullptr;
-                }
-                block.inv_scale = terrain_f32(1.0 / static_cast<double>(scale));  // +34h
-                for (std::uint16_t& sample : block.samples) {
-                    if (!chunk->read_bytes(&sample, 2)) { error = "short U16"; return nullptr; }
-                }
-                }
+                if (!read_terrain_u16_chunk(*chunk, block, error)) return nullptr;
                 field->block_index[static_cast<std::size_t>(wide) * tz + tx]
                     = static_cast<int>(field->blocks.size());
                 field->blocks.push_back(block);
@@ -3295,10 +2983,8 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
         }
         if (!node->close()) { error = "bad NODE close"; return nullptr; }
     }
-    if constexpr (bsp::kWireGoal2Chain74Bound) {
-        // 00ADDDF2 then 00AEA820: initialize bounds and build nodes at the native load phase.
-        build_quadtree_00aea820(*field);
-    }
+    // 00ADDDF2 then 00AEA820: initialize bounds and build nodes at the native load phase.
+    build_quadtree_00aea820(*field);
     return field;
 }
 
@@ -3355,14 +3041,12 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
     } else {
         object.file_path = scene_deck_text(bag, "FilePath");      // 00883C5E -> +3C4h
         // 004772C0 calls property_bag_find_by_cstring at 00883C82; OFF keeps scene_deck_text's lookup.
-        if constexpr (bsp::kWireGoal2Chain132Bound) {
+        {
             SceneLandscapePropertyAdapter properties(bag);
             const SceneProperty* model = seg6::property_bag_find_by_cstring_004772c0(
                 properties, "ModelPath");
             object.model_path = model == nullptr || model->values.empty()
                 ? std::string() : model->values.back();
-        } else {
-        object.model_path = scene_deck_text(bag, "ModelPath");    // 00883C7B -> +424h
         }
         object.shallow_water_block = scene_deck_sub_block(bag, "ShallowWater") != nullptr
             || bag.find("ShallowWater") != nullptr;               // 00883E1D
@@ -3429,9 +3113,7 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
                 field->sample_min = lo;
                 field->sample_max = hi;
                 owner.log.implemented("Landscape::load_height_field", "00adda60");
-                if constexpr (bsp::kWireGoal2Chain74Bound) {
-                    owner.log.implemented("Landscape::quadtree_set_bounds", "00aea900");
-                }
+                owner.log.implemented("Landscape::quadtree_set_bounds", "00aea900");
                 object.terrain = std::move(field);
             } else {
                 owner.log.notef("scene terrain refused: landscape=%s heightmap=%s: %s",
@@ -3596,13 +3278,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     for (const std::string& group : entity.groups) {
         merge_group_into(owner.library, group, bag);
     }
-    if constexpr (kWireGoal4Chain319Bound) {
-        // The authored body's E statements are the parse 008F5A00 performs
-        // into this bag: 0048E960 / 008F3A20 on the library registry.
-        merge_property_block(bag, entity.properties, true, false, owner.library.native_enum_source());
-    } else {
-    merge_property_block(bag, entity.properties, true);
-    }
+    // The authored body's E statements are the parse 008F5A00 performs
+    // into this bag: 0048E960 / 008F3A20 on the library registry.
+    merge_property_block(bag, entity.properties, true, false, owner.library.native_enum_source());
 
     const SceneEntityClassRow* klass = scene_class_row_by_name(entity.class_name);
     if (klass == nullptr) {
@@ -3810,36 +3488,16 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.party_symbol = party.symbol;
     record.party = party_id;
     record.race = race_id;
-    if constexpr (kWireGoal4Chain308Bound) {
-        // 0077E830's kind-1 descriptor reads the merged creation bag, before
-        // the nonzero key is erased at 0077E885. Preserve that owning value
-        // across a Hidden/GenerateObject deferral, not a later Lua self field.
-        // 0048F5D0 reads type1 as float and other numeric tags as int32.
-        if (find_scene_unit_creator(klass->class_id) != nullptr) {
-            if constexpr (kWireGoal4Chain384Bound) {
-                // Evidence: 0048F5D0's export, reached at 0077E857 with FLDZ
-                // default; retain its result across delayed entity creation.
-                SceneResourceUsageLookup lookup(bag, owner.library, entity.name);
-                record.resource_usage_304 = bsp::cc13_seg7::property_bag_get_float_or_default_0048f5d0(
-                    lookup, lookup.bag(), "ResourceUsage", 0.0f);
-            } else {
-            if (const SceneProperty* resource = bag.find("ResourceUsage")) {
-                if (equal_insensitive(resource->type_letter, "F") && resource->has_float) {
-                    record.resource_usage_304 = resource->float_value;
-                } else if (equal_insensitive(resource->type_letter, "I") && resource->has_integer) {
-                    record.resource_usage_304 = static_cast<float>(resource->integer_value);
-                } else {
-                    const SceneEnumProperty value = scene_enum_property(bag, "ResourceUsage");
-                    int numeric = 0;
-                    if (!equal_insensitive(resource->type_letter, "E") || !value.present
-                        || !owner.library.resolve_enum(value, numeric)) {
-                        throw std::runtime_error("unsupported ResourceUsage property: " + entity.name);
-                    }
-                    record.resource_usage_304 = static_cast<float>(numeric);
-                }
-            }
-            }
-        }
+    // 0077E830's kind-1 descriptor reads the merged creation bag, before
+    // the nonzero key is erased at 0077E885. Preserve that owning value
+    // across a Hidden/GenerateObject deferral, not a later Lua self field.
+    // 0048F5D0 reads type1 as float and other numeric tags as int32.
+    if (find_scene_unit_creator(klass->class_id) != nullptr) {
+        // Evidence: 0048F5D0's export, reached at 0077E857 with FLDZ
+        // default; retain its result across delayed entity creation.
+        SceneResourceUsageLookup lookup(bag, owner.library, entity.name);
+        record.resource_usage_304 = bsp::cc13_seg7::property_bag_get_float_or_default_0048f5d0(
+            lookup, lookup.bag(), "ResourceUsage", 0.0f);
     }
     {
         // Packet cc9_ai_owner_player_slot: 0077F1C8.. finds `OwnerPlayer` and
@@ -3881,25 +3539,23 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             record.bag_skill = v == 0 ? 0 : v == 1 ? 1 : v == 2 ? 2 : v == 3 ? 5 : 1;
             record.bag_skill_source = "Crew";
         }
-        if constexpr (bsp::kWireGoal4Chain270Bound) {
-            // Goal 4 chain 270: 0095E5B0 BSP_Unit_ReadCommonLuaProperties, after
-            // the constructor's -1 (0095CDEF / 0095CDF5). 0095E8DB..0095E8F2:
-            // `LaunchClassID` found with type code 0 (an `I` value, as authored
-            // `LaunchClassID = I 171`) -> +530h = its +0Ch. 0095E901..0095E912:
-            // `LaunchEquipment` found, no type test -> +534h = its +0Ch, which an
-            // `E EquipmentIndex : none` resolves to through the library.
-            const SceneProperty* launch_class = bag.find("LaunchClassID");   // 00CE9270
-            if (launch_class != nullptr && launch_class->type_letter == "I"
-                && !launch_class->values.empty()) {
-                std::int32_t parsed = 0;
-                if (scene_scan_int(launch_class->values.back(), parsed)) {
-                    record.launch_class_530 = static_cast<int>(parsed);
-                }
+        // Goal 4 chain 270: 0095E5B0 BSP_Unit_ReadCommonLuaProperties, after
+        // the constructor's -1 (0095CDEF / 0095CDF5). 0095E8DB..0095E8F2:
+        // `LaunchClassID` found with type code 0 (an `I` value, as authored
+        // `LaunchClassID = I 171`) -> +530h = its +0Ch. 0095E901..0095E912:
+        // `LaunchEquipment` found, no type test -> +534h = its +0Ch, which an
+        // `E EquipmentIndex : none` resolves to through the library.
+        const SceneProperty* launch_class = bag.find("LaunchClassID");   // 00CE9270
+        if (launch_class != nullptr && launch_class->type_letter == "I"
+            && !launch_class->values.empty()) {
+            std::int32_t parsed = 0;
+            if (scene_scan_int(launch_class->values.back(), parsed)) {
+                record.launch_class_530 = static_cast<int>(parsed);
             }
-            int launch_equipment = 0;
-            if (bag_int("LaunchEquipment", launch_equipment)) {              // 00D1A98C
-                record.launch_equipment_534 = launch_equipment;
-            }
+        }
+        int launch_equipment = 0;
+        if (bag_int("LaunchEquipment", launch_equipment)) {              // 00D1A98C
+            record.launch_equipment_534 = launch_equipment;
         }
     }
     if (klass->class_id == 0x18) {
@@ -3943,11 +3599,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     if (klass->class_id == 0x1a) retain_land_convoy_roster(bag, record, owner.library);
     if (klass->class_id == 0x47) {
         // 007B34F0 loads the authored Path source; OFF keeps the retention loop.
-        if constexpr (kWireGoal2Chain81Bound) {
-            load_scene_path_source(bag, owner.library, record, owner.log);
-        } else {
-        retain_path_points(bag, record);
-        }
+        load_scene_path_source(bag, owner.library, record, owner.log);
         owner.log.notef("scene path retained: id=%zu parent=%zu name=%s points=%zu "
             "valid=%d creator_concrete=0", record.scene_id, record.parent_scene_id,
             record.name.c_str(), record.path_points_local.size(), record.path_points_retained);
@@ -3966,12 +3618,8 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 world_points.push_back({transformed[0] / w, transformed[1] / w,
                                         transformed[2] / w});
             }
-            if constexpr (bsp::kWireGoal4Chain357Bound) {
-                scene_path_registry().add_authored(record.name, std::move(world_points),
-                    record.path_points_local, record.world);
-            } else {
-            scene_path_registry().add(record.name, std::move(world_points));
-            }
+            scene_path_registry().add_authored(record.name, std::move(world_points),
+                record.path_points_local, record.world);
         }
     }
 
@@ -4526,13 +4174,8 @@ public:
         owner_.log.unimplemented("SceneContents::close_file_block", "00bdcb30");
     }
     std::string record_remap_texture_name(std::size_t slot) override {
-        if constexpr (bsp::kWireGoal4Chain516Bound) {
-            if (owner_.remap_renderer) return owner_.remap_names.at(slot);
-            return std::string();
-        } else {
-        static_cast<void>(slot);
+        if (owner_.remap_renderer) return owner_.remap_names.at(slot);
         return std::string();
-        }
     }
     void set_remap_texture_0(const std::string& name) override { remap(name, "00b0fd70"); }
     void set_remap_texture_1(const std::string& name) override { remap(name, "00b0fdc0"); }
@@ -4593,19 +4236,15 @@ public:
         owner_.log.implemented("SceneContents::set_game_mode", "004bc890");
     }
     void clear_pending_class_ids() override {
-        if constexpr (bsp::kWireGoal4Chain392Bound) {
-            GamePendingClassCensusView census(owner_.preload_census);
-            auto state = owner_.pending_classes.reset_state(census);
-            const bsp::SingletonLifetimeCallbacks callbacks{nullptr, nullptr,
-                [](void*) { throw std::logic_error("pending class census range is invalid"); }};
-            // bsp.py show 004C8AA0 --asm, 004C8AE8..004C8B25: erase the
-            // live census, self-link its stock queue, zero count, free nodes.
-            bsp::oct18_tail_a::clear_pending_class_ids_004c8aa0(state, callbacks);
-            census.publish_size();
-            owner_.log.implemented("SceneContents::clear_pending_class_ids", "004c8aa0");
-        } else {
-        owner_.log.unimplemented("SceneContents::clear_pending_class_ids", "004c8aa0");
-        }
+        GamePendingClassCensusView census(owner_.preload_census);
+        auto state = owner_.pending_classes.reset_state(census);
+        const bsp::SingletonLifetimeCallbacks callbacks{nullptr, nullptr,
+            [](void*) { throw std::logic_error("pending class census range is invalid"); }};
+        // bsp.py show 004C8AA0 --asm, 004C8AE8..004C8B25: erase the
+        // live census, self-link its stock queue, zero count, free nodes.
+        bsp::oct18_tail_a::clear_pending_class_ids_004c8aa0(state, callbacks);
+        census.publish_size();
+        owner_.log.implemented("SceneContents::clear_pending_class_ids", "004c8aa0");
     }
     void clear_scene_database_nodes() override {
         owner_.log.unimplemented("SceneContents::clear_scene_database_nodes", "00468c90");
@@ -4658,22 +4297,17 @@ public:
 
 private:
     void remap(const std::string& name, const char* address) {
-        if constexpr (bsp::kWireGoal4Chain516Bound) {
-            if (owner_.remap_renderer) {
-                const std::size_t slot = std::strcmp(address, "00b0fd70") == 0 ? 0
-                    : std::strcmp(address, "00b0fdc0") == 0 ? 1
-                    : std::strcmp(address, "00b0fe10") == 0 ? 2 : 3;
-                if (owner_.remap_renderer->set_scene_remap_texture(slot, name))
-                    owner_.log.implemented("SceneContents::set_remap_texture", address);
-                else
-                    owner_.log.notef("scene colour remap %s retained until native F8D39C initialization",
-                        address);
-            } else {
-                owner_.log.unimplemented("SceneContents::set_remap_texture", address);
-            }
+        if (owner_.remap_renderer) {
+            const std::size_t slot = std::strcmp(address, "00b0fd70") == 0 ? 0
+                : std::strcmp(address, "00b0fdc0") == 0 ? 1
+                : std::strcmp(address, "00b0fe10") == 0 ? 2 : 3;
+            if (owner_.remap_renderer->set_scene_remap_texture(slot, name))
+                owner_.log.implemented("SceneContents::set_remap_texture", address);
+            else
+                owner_.log.notef("scene colour remap %s retained until native F8D39C initialization",
+                    address);
         } else {
-        static_cast<void>(name);
-        owner_.log.unimplemented("SceneContents::set_remap_texture", address);
+            owner_.log.unimplemented("SceneContents::set_remap_texture", address);
         }
     }
 
@@ -5039,25 +4673,17 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
         NavStream(GameSceneContentsHost::Impl& owner_in, const std::string& data_in)
             : owner(owner_in), data(data_in) {}
         void ensure_registry() override {
-            if constexpr (bsp::kWireGoal4Chain465Bound) {
-                static_cast<void>(GameAvoidZoneRegistry::instance());
-                owner.log.implemented("SceneContents::avoid_zone_registry", "004c17d0");
-            } else {
+            static_cast<void>(GameAvoidZoneRegistry::instance());
             owner.log.implemented("SceneContents::avoid_zone_registry", "004c17d0");
-            }
         }
         void begin_load() override {
             owner.log.implemented("SceneContents::avoid_zone_begin_load", "0041ded0");
         }
         void end_load() override {
-            if constexpr (bsp::kWireGoal4Chain465Bound) {
-                // 00424975 calls 0041E000 after the last parsed layer. The
-                // registry owns these file-backed grids and retains +10h.
-                GameAvoidZoneRegistry::instance().load_scene_layers(owner.avoid_zone_layers);
-                owner.log.implemented("SceneContents::avoid_zone_end_load", "0041e000");
-            } else {
+            // 00424975 calls 0041E000 after the last parsed layer. The
+            // registry owns these file-backed grids and retains +10h.
+            GameAvoidZoneRegistry::instance().load_scene_layers(owner.avoid_zone_layers);
             owner.log.implemented("SceneContents::avoid_zone_end_load", "0041e000");
-            }
         }
         std::string read_string() override {
             const std::uint32_t length = read_u32();
@@ -5110,26 +4736,13 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
     owner_.log.implemented("SceneContents::load_avoid_zones", "004c17d0");
     // Packet cc9_avoid_zone_registry: the layers go into the registry singleton
     // [00E17620] the image's 004248A0 fills, where the planes' samples read them.
-    if constexpr (bsp::kWireGoal4Chain465Bound) {
-        const auto& registry = GameAvoidZoneRegistry::instance();
-        owner_.log.implemented("SceneContents::avoid_zone_registry_construct", "00424730");
-        owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` loaded into %zu "
-            "native registry layer(s), replacing the constructor defaults; "
-            "0041e000 first-layer maximum height %.9g m",
-            bytes->size(), registry.layer_count(),
-            static_cast<double>(*registry.max_cell_height()));
-    } else {
-    GameAvoidZoneRegistry::instance().load_scene_layers(owner_.avoid_zone_layers);
-    const bsp::TerrainGridLayerRecord* first = owner_.avoid_zone_layers.empty()
-        ? nullptr : &owner_.avoid_zone_layers.front();
-    owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` parsed into %zu "
-        "TerrainGridLayer(s)%s. The registry constructor 00424730 leaves one ten-degree "
-        "default layer in the list and 004248a0 appends without clearing, so a loaded "
-        "registry holds that default plus the file's layers",
-        bytes->size(), owner_.avoid_zone_layers.size(),
-        first == nullptr ? "" : "; the first is 240x240 at 100.0 m per cell");
-    static_cast<void>(first);
-    }
+    const auto& registry = GameAvoidZoneRegistry::instance();
+    owner_.log.implemented("SceneContents::avoid_zone_registry_construct", "00424730");
+    owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` loaded into %zu "
+        "native registry layer(s), replacing the constructor defaults; "
+        "0041e000 first-layer maximum height %.9g m",
+        bytes->size(), registry.layer_count(),
+        static_cast<double>(*registry.max_cell_height()));
 }
 
 void SceneContentsBinding::scatter_clouds() {
@@ -5198,9 +4811,7 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameSceneContentsHost::~GameSceneContentsHost() {
-    if constexpr (kWireGoal2Chain81Bound) {
-        scene_path_sources().clear();
-    }
+    scene_path_sources().clear();
     if (g_live_scene_contents == this) g_live_scene_contents = nullptr;
 }
 
@@ -5259,12 +4870,10 @@ void ScenePathRegistry::add(const std::string& name,
                             std::vector<std::array<float, 3>> points_world) {
     for (ScenePathEntry& entry : entries_) {
         if (entry.name == name) {
-            if constexpr (bsp::kWireGoal4Chain357Bound) {
-                // A world-only replacement cannot retain a previous owner's
-                // local points/frame. This overload remains world-only.
-                entry.points_local.clear();
-                entry.has_local_geometry = false;
-            }
+            // A world-only replacement cannot retain a previous owner's
+            // local points/frame. This overload remains world-only.
+            entry.points_local.clear();
+            entry.has_local_geometry = false;
             entry.points_world = std::move(points_world);
             return;
         }
@@ -5386,7 +4995,7 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
 template <bool kPc24Bound>
 float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noexcept {
     std::array<int, 2> sample_counts;
-    if constexpr (bsp::kWireGoal4Chain550Bound) {
+    {
         // bsp.py show 00ADB3A0: its range checks call terrain slots 10h/14h.
         // bsp.py show 00ADAC50 / 00ADAC70: those read only +38h / +3Ch,
         // returning tiles * [00D5D658] + 1, or 0 for an empty dimension.
@@ -5405,10 +5014,6 @@ float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noex
         sample_counts = {
             bsp::cc13_terrain::height_field_samples_00adac50(&dimensions, false),
             bsp::cc13_terrain::height_field_samples_00adac50(&dimensions, true)};
-    } else {
-    const int wide = tiles_wide != 0 ? tiles_wide * kTerrainTileCells + 1 : 0;
-    const int deep = tiles_deep != 0 ? tiles_deep * kTerrainTileCells + 1 : 0;
-        sample_counts = {wide, deep};
     }
     const int wide = sample_counts[0], deep = sample_counts[1];
     if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
@@ -5567,30 +5172,16 @@ void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3
     const float d2[3] = {0.0f, terrain_f32(static_cast<double>(h01) - h00),
         terrain_f32(static_cast<double>(p2z) - fj)};
     float c[3];
-    if constexpr (kWireGoal4Chain329Bound) {
-        // 00ADAB3E's 004F9B30 on the live cell edges, through its recovered
-        // 004FA230 assignment wrapper. c feeds the normal below. The Dyn
-        // worker's separate PC53 arm retains its existing arithmetic.
-        if constexpr (kPc24Bound) {
-            cc13_fe3::vector3_assign_cross_004fa230(c, d2, d1);
-        } else {
-            // pc24-lint: allow PC53 Dyn-worker path, unchanged from OFF.
-            c[0] = terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]);
-            c[1] = terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]);
-            c[2] = terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0]);
-        }
-    } else {
+    // 00ADAB3E's 004F9B30 on the live cell edges, through its recovered
+    // 004FA230 assignment wrapper. c feeds the normal below. The Dyn
+    // worker's separate PC53 arm retains its existing arithmetic.
     if constexpr (kPc24Bound) {
-        // The 004F9B30 cross (called at 00ADAB3E; inlined here): both products rounded before the FSUBRP (004F9B5F / 004F9B6D / 004F9B71,
-        // 004F9B87 / 004F9B8F / 004F9B93, 004F9B9A / 004F9B9C / 004F9B9E).
-        c[0] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[1], d1[2]), pc24::x87_mul24(d2[2], d1[1])));
-        c[1] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[2], d1[0]), pc24::x87_mul24(d2[0], d1[2])));
-        c[2] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[0], d1[1]), pc24::x87_mul24(d2[1], d1[0])));
+        cc13_fe3::vector3_assign_cross_004fa230(c, d2, d1);
     } else {
+        // pc24-lint: allow PC53 Dyn-worker path, unchanged from OFF.
         c[0] = terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]);
         c[1] = terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]);
         c[2] = terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0]);
-    }
     }
     const float xx = terrain_f32(static_cast<double>(c[0]) * c[0]);
     const float yy = terrain_f32(static_cast<double>(c[1]) * c[1]);
@@ -5906,24 +5497,19 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
     for (int u = n; 1 < u; u >>= 1) ++depth;
     if ((1 << depth) < n) ++depth;
     // 00AEA900 calls terrain_quadtree_set_bounds_00aea900; OFF keeps the host's leaf-count/clear stand-in.
-    if constexpr (bsp::kWireGoal2Chain74Bound) {
+    {
         // 00ADDA60's tail: span from the loaded grid's depth and the
         // 00AE9870 tile size (300); low/high Y are the binary's own constants.
         const float span = terrain_f32(static_cast<double>(1 << depth) * kQuadTileSize);
         const float minimum[3] = {0.0f, kTerrainNoGround, 0.0f};
         const float maximum[3] = {span, kQuadTreeTop, span};
-        auto view = scene_terrain_quadtree_bounds<bsp::kWireGoal2Chain74Bound>(field);
+        auto view = scene_terrain_quadtree_bounds<true>(field);
         bsp::cc13_terrain::terrain_quadtree_set_bounds_00aea900(
             view, const_cast<SceneTerrainHeightField*>(&field), minimum, maximum, depth);
-    } else {
-    field.quadtree_leaves = 1 << depth;
+    }
+    // 00AEA82E: 00AEA820 itself opens with 00AEA590(0) on tree+3Ch. No OFF
+    // arm: the host's vector was already emptied above (or by 00AEA900's clear).
     field.quadtree.clear();
-    }
-    if constexpr (bsp::kWireGoal2Chain150Bound) {
-        // 00AEA82E: 00AEA820 itself opens with 00AEA590(0) on tree+3Ch. No OFF
-        // arm: the host's vector was already emptied above (or by 00AEA900's clear).
-        field.quadtree.clear();
-    }
     SceneTerrainHeightField::QuadNode root;
     node_range_00ae9c80(field, 0, 0, field.quadtree_leaves, root.min_y, root.max_y);
     root.children = 0;
@@ -5940,30 +5526,16 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
 // 004F9B30: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z,
 // out.z = b.y*a.x - a.y*b.x.
 void quad_cross(const float a[3], const float b[3], float out[3]) noexcept {
-    if constexpr (kWireGoal4Chain329Bound) {
-        // 00ADEB40/00ADEB80's real terrain vertices and line direction reach
-        // 004F9B30 through the recovered assignment wrapper. The result feeds
-        // the scalar triple/dot predicates and interpolation weights below.
-        if constexpr (kPc24FlightRenderCc13Bound) {
-            cc13_fe3::vector3_assign_cross_004fa230(out, a, b);
-        } else {
-            // pc24-lint: allow legacy PC53 precision-switch arm, unchanged from OFF.
-            out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
-            out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
-            out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
-        }
-    } else {
+    // 00ADEB40/00ADEB80's real terrain vertices and line direction reach
+    // 004F9B30 through the recovered assignment wrapper. The result feeds
+    // the scalar triple/dot predicates and interpolation weights below.
     if constexpr (kPc24FlightRenderCc13Bound) {
-        // pc24w1-sweep1-4: each product rounded at PC24 before its FSUBRP, and the
-        // difference rounded (004F9B54..004F9BA0).
-        out[0] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(a[1], b[2]), pc24::x87_mul24(a[2], b[1])));
-        out[1] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(b[0], a[2]), pc24::x87_mul24(a[0], b[2])));
-        out[2] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(b[1], a[0]), pc24::x87_mul24(a[1], b[0])));
+        cc13_fe3::vector3_assign_cross_004fa230(out, a, b);
     } else {
+        // pc24-lint: allow legacy PC53 precision-switch arm, unchanged from OFF.
         out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
         out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
         out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
-    }
     }
 }
 
@@ -6730,18 +6302,11 @@ bool vsub_clip_upper_00aebb90(float s[6], float v, int axis) noexcept {
 
 // 00AEBD20 (thiscall segment; min pair, max pair), RET 8.
 bool vsub_clip_00aebd20(float s[6], const float lo[2], const float hi[2]) noexcept {
-    if constexpr (kWireGoal4Chain361Bound) {
-        // The upper bounds call 00AEBB90, the lower ones 00AEBA00.
-        if (!vsub_clip_00aeba00(s, lo[0], 0, false)) return false;
-        if (!vsub_clip_upper_00aebb90(s, hi[0], 0)) return false;
-        if (!vsub_clip_00aeba00(s, lo[1], 2, false)) return false;
-        return vsub_clip_upper_00aebb90(s, hi[1], 2);
-    } else {
+    // The upper bounds call 00AEBB90, the lower ones 00AEBA00.
     if (!vsub_clip_00aeba00(s, lo[0], 0, false)) return false;
-    if (!vsub_clip_00aeba00(s, hi[0], 0, true)) return false;
+    if (!vsub_clip_upper_00aebb90(s, hi[0], 0)) return false;
     if (!vsub_clip_00aeba00(s, lo[1], 2, false)) return false;
-    return vsub_clip_00aeba00(s, hi[1], 2, true);
-    }
+    return vsub_clip_upper_00aebb90(s, hi[1], 2);
 }
 
 // 00AEB7E0 / 00AEB890: dy (double) over the 2-D length (float).
@@ -6910,22 +6475,11 @@ bool vsub_cell_edge_00aec090(VsubCellWalker& w, float bx, float bz, float yb) no
     w.yb = yb; w.bx = bx; w.bz = bz;
     if (w.e0i == w.e1i && w.e0j == w.e1j) {
         w.hb = vsub_sample(w, w.e0i, w.e0j);
-    } else if constexpr (kWireGoal4Chain361Bound) {
+    } else {
         // 00AEC0FD..00AEC10D: 00AEAFA0(&walker+18h, &walker+20h, walker+28h).
         const int e0[2] = {w.e0i, w.e0j};
         const int e1[2] = {w.e1i, w.e1j};
         w.hb = vsub_edge_ground_00aeafa0(w, e0, e1, w.frac);
-    } else {
-        const float s0 = vsub_sample(w, w.e0i, w.e0j);
-        const float s1 = vsub_sample(w, w.e1i, w.e1j);
-        if constexpr (kPc24FlightRenderCc13Bound) {
-            // pc24w1-sweep1-6: 00AEAFA0's s1 * frac (00AEB007), 1 - frac (00AEB00B), times
-            // s0 (00AEB00D), the FADDP (00AEB010); each rounded at PC24, stored.
-            w.hb = terrain_f32(pc24::x87_add24(pc24::x87_mul24(s1, w.frac),
-                                               pc24::x87_mul24(pc24::x87_sub24(1.0, w.frac), s0)));
-        } else {
-            w.hb = terrain_f32(static_cast<double>(s1) * w.frac + (1.0 - w.frac) * s0);
-        }
     }
     return vsub_cross_00aeb940(w);
 }
@@ -7060,7 +6614,7 @@ bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
     const float hi[2] = {n, n};
     (void)vsub_clip_00aebd20(s, lo, hi);                         // 00AEC544, AL not tested
     VsubCellWalker c;
-    if constexpr (kWireGoal4Chain361Bound) {
+    {
         // 00AEC549..00AEC572: the {block, node y} source and 00AEAE70; the
         // clipped segment into +48h..+5Ch (00AEC577..00AEC5CC); 00AEB7E0.
         VsubCellWalker source;
@@ -7069,12 +6623,6 @@ bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
         vsub_cell_walker_copy_00aeae70(c, source);
         for (int k = 0; k < 6; ++k) c.seg[k] = s[k];
         vsub_cell_walker_prepare_00aeb7e0(c);
-    } else {
-    c.block = block;
-    c.node_y = w.node_y;
-    c.sx = s[0]; c.sz = s[2]; c.ex = s[3]; c.ez = s[5];
-    c.y0 = s[1]; c.y1 = s[4];
-    c.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);  // 00AEB7E0
     }
     float out[3];
     if (!vsub_cell_walk_00aec120(c, out, cells)) return false;
@@ -7177,7 +6725,7 @@ bool vsub_subwalk_00aeca60(const SceneTerrainHeightField& field, const float fro
         return false;
     }
     VsubTileWalker w;
-    if constexpr (kWireGoal4Chain361Bound) {
+    {
         // 00AECB96..00AECBAF: 00AEB770 builds a temporary over the terrain
         // and 00AEADE0 copies it into the walker; the clipped segment into
         // +54h..+68h (00AECBB4..00AECC09); 00AEB890 (00AECC12).
@@ -7185,12 +6733,6 @@ bool vsub_subwalk_00aeca60(const SceneTerrainHeightField& field, const float fro
         vsub_tile_walker_copy_00aeade0(w, vsub_tile_walker_construct_00aeb770(temporary, field));
         for (int k = 0; k < 6; ++k) w.seg[k] = s[k];
         vsub_tile_walker_prepare_00aeb890(w);
-    } else {
-    w.field = &field;
-    w.node_y = field.node_y;                                     // 00AEB770, node +124h
-    w.sx = s[0]; w.sz = s[2]; w.ex = s[3]; w.ez = s[5];          // 00AEB890
-    w.y0 = s[1]; w.y1 = s[4];
-    w.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);
     }
     return vsub_tile_walk_00aec7c0(w, out, tiles, cells);
 }
@@ -7553,9 +7095,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.mode_areas = {};
     // Same reason again: the authored Path entities belong to this scene.
     scene_path_registry().clear();
-    if constexpr (kWireGoal2Chain81Bound) {
-        scene_path_sources().clear();
-    }
+    scene_path_sources().clear();
     scene_world_class_lists().clear();
     scene_director_enables_clear();
     // Same reason as the pool above: the squadron table belongs to the scene

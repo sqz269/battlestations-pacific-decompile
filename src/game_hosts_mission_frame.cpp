@@ -20,9 +20,6 @@
 // See include/bsp/game_hosts_mission_frame.hpp for the address list.
 
 #include "bsp/game_hosts_mission_frame.hpp"
-#include "bsp/wire_goal4_chain539_switches.hpp"
-#include "bsp/wire_goal4_chain557_switches.hpp"
-#include "bsp/wire_goal4_chain466_switches.hpp"
 #include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
@@ -33,12 +30,9 @@
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_input_runtime.hpp"
-#include "bsp/wire_goal4_chain316_switches.hpp"
-#include "bsp/wire_goal4_chain424_switches.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
-#include "bsp/wire_goal4_chain336_switches.hpp"
 #include "bsp/native_mission_clock_reset.hpp"
 #include "bsp/wire_goal3_chain242_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
@@ -50,10 +44,8 @@
 #include "bsp/warning_owner.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
-#include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
-#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -84,15 +76,6 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
-#include "bsp/wire_goal2_chain27_switches.hpp"
-#include "bsp/wire_goal2_chain36_switches.hpp"
-#include "bsp/wire_goal2_chain127_switches.hpp"
-#include "bsp/wire_goal2_chain166_switches.hpp"
-#include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
-#include "bsp/wire_goal4_chain439_switches.hpp"   // 004CD0F0's dialog pause arm
-#include "bsp/wire_goal4_chain264_switches.hpp"   // the class-table resets after luaPrecacheUnits
-#include "bsp/wire_goal4_chain312_switches.hpp"   // 004DA780's session-teardown sound reset
-#include "bsp/wire_goal4_chain331_switches.hpp"   // LoadMessageMap's 00706760 on game+21DCh
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_frame_service.hpp"
@@ -496,16 +479,12 @@ struct GameMissionFrameHost::Impl {
         lua.attach_extra_fixed_step(fixed_step.get());
         // Packet cc13-fix20: the Scoring_SetMissionCompleted and PlayBinkMovie rows.
         lua.attach_mission_result(result.get());
-        if constexpr (bsp::kWireGoal4Chain424Bound) {
-            lua.attach_spawn_participants(&participants);
-        }
+        lua.attach_spawn_participants(&participants);
     }
 
     ~Impl() {
         release_units();
-        if constexpr (bsp::kWireGoal4Chain424Bound) {
-            lua.attach_spawn_participants(nullptr);
-        }
+        lua.attach_spawn_participants(nullptr);
         // Not in release_units: the scene load calls that before the scripts run,
         // and the result object lives for the whole mission.
         lua.attach_mission_result(nullptr);
@@ -1471,19 +1450,13 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     if (killer != nullptr && !query.is_kind_5c(killer, bsp::kWarningKindUnit)) killer = nullptr;
     // 00922A90: class id +C4h in {19h, 1Ah, 1Bh, 36h, 45h, 46h, 1Ch}.
     const auto land_family = [&]() {
-        if constexpr (bsp::kWireGoal2Chain36Bound) {
-            // 00982044 00922A90 class_id_is_land_family_00922a90 over the victim's +C4h
-            // (unit_class_id); OFF keeps the inline seven-id test.
-            std::int32_t entity[0xC8 / 4]{};
-            entity[0xC4 / 4] = host.units->unit_class_id(unit);
-            host.done("WarningManager::kill_land_family", 0x00922a90u);
-            return bsp::cc13_seg49::class_id_is_land_family_00922a90(
-                bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(entity)});
-        } else {
-        const int id = host.units->unit_class_id(unit);
-        return id == 0x19 || id == 0x1a || id == 0x1b || id == 0x36 || id == 0x45
-            || id == 0x46 || id == 0x1c;
-        }
+        // 00982044 00922A90 class_id_is_land_family_00922a90 over the victim's +C4h
+        // (unit_class_id); OFF keeps the inline seven-id test.
+        std::int32_t entity[0xC8 / 4]{};
+        entity[0xC4 / 4] = host.units->unit_class_id(unit);
+        host.done("WarningManager::kill_land_family", 0x00922a90u);
+        return bsp::cc13_seg49::class_id_is_land_family_00922a90(
+            bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(entity)});
     };
     bool report = false;
     if (relation == 0) {
@@ -1764,16 +1737,10 @@ public:
     bool game_cinematic_hidden_634() override { return host_.cinematic_hidden; }
     void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool pause_dialog_on_hide) override {
         const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
-        if constexpr (bsp::kWireGoal4Chain249Bound) {
-            host_.cinematic_sound_classes_on_change_004cd0f0(host_.cinematic_hidden,
-                flags.hud_hidden);
-        }
-        if constexpr (bsp::kWireGoal4Chain439Bound) {
-            host_.cinematic_dialog_pause_on_change(host_.cinematic_hidden,
-                flags.hud_hidden, pause_dialog_on_hide);
-        } else {
-            // Original host left the dialog pause arm unimplemented.
-        }
+        host_.cinematic_sound_classes_on_change_004cd0f0(host_.cinematic_hidden,
+            flags.hud_hidden);
+        host_.cinematic_dialog_pause_on_change(host_.cinematic_hidden,
+            flags.hud_hidden, pause_dialog_on_hide);
         host_.cinematic_hidden = flags.hud_hidden;
         host_.cinematic_allow_simulation = flags.simulate_while_hidden;
         host_.frame_state.cinematic_hidden = flags.hud_hidden;
@@ -2639,16 +2606,14 @@ public:
         owner_.result->run_end_scene_004d7970(false);
     }
     bool request_10_teardown_004e458a(bsp::GameFrameControlState& state) override {
-        if constexpr (bsp::kWireGoal4Chain312Bound) {
-            // Goal 4 chain 312: 004DA780's sound reset, 004DA824..004DA999, under
-            // the same 004DA7A0..004DA7BC gate (not front-end states 1/2/4). It
-            // runs before the 004DAD52 clock reset below, as in the image.
-            if (state.state != 1u && state.state != 2u && state.state != 4u) {
-                if (reset_session_sound_004da824()) {
-                    owner_.done("MissionTeardown::session_sound_reset", 0x004da824u);
-                } else {
-                    owner_.record("MissionTeardown::session_sound_reset", 0x004da824u);
-                }
+        // Goal 4 chain 312: 004DA780's sound reset, 004DA824..004DA999, under
+        // the same 004DA7A0..004DA7BC gate (not front-end states 1/2/4). It
+        // runs before the 004DAD52 clock reset below, as in the image.
+        if (state.state != 1u && state.state != 2u && state.state != 4u) {
+            if (reset_session_sound_004da824()) {
+                owner_.done("MissionTeardown::session_sound_reset", 0x004da824u);
+            } else {
+                owner_.record("MissionTeardown::session_sound_reset", 0x004da824u);
             }
         }
         if constexpr (bsp::kWireGoal3Chain242Bound) {
@@ -2735,17 +2700,13 @@ public:
     DeviceWaitBinding(GameMissionFrameHost::Impl& owner, bool& entered)
         : owner_(owner), entered_(entered) {}
 
-    bool poll_button_edge(bsp::DeviceWaitLatch& legacy_latch) override {
-        if constexpr (kWireGoal4Chain316Bound) {
-            if (!owner_.input_runtime)
-                throw std::logic_error("mission device-wait requires the application's input runtime");
-            // 004DB962..977 is the same +DDh edge/store as 004B43B0. Reuse
-            // that body on the actual backend; the semantic latch below and
-            // its synthetic any-button sample do not run on this path.
-            return owner_.input_runtime->poll_dynamic_button_edge();
-        } else {
-            return bsp::MissionDeviceWaitHost::poll_button_edge(legacy_latch);
-        }
+    bool poll_button_edge(bsp::DeviceWaitLatch& /*legacy_latch*/) override {
+        if (!owner_.input_runtime)
+            throw std::logic_error("mission device-wait requires the application's input runtime");
+        // 004DB962..977 is the same +DDh edge/store as 004B43B0. Reuse
+        // that body on the actual backend; the semantic latch below and
+        // its synthetic any-button sample do not run on this path.
+        return owner_.input_runtime->poll_dynamic_button_edge();
     }
 
     // Retained OFF implementation. ON poll_button_edge above bypasses it.
@@ -2840,16 +2801,10 @@ public:
         static_cast<void>(third);
         const bsp::CinematicModeFlags flags
             = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
-        if constexpr (bsp::kWireGoal4Chain249Bound) {
-            owner_.cinematic_sound_classes_on_change_004cd0f0(owner_.cinematic_hidden,
-                flags.hud_hidden);
-        }
-        if constexpr (bsp::kWireGoal4Chain439Bound) {
-            owner_.cinematic_dialog_pause_on_change(owner_.cinematic_hidden,
-                flags.hud_hidden, third);
-        } else {
-            // Original host left the dialog pause arm unimplemented.
-        }
+        owner_.cinematic_sound_classes_on_change_004cd0f0(owner_.cinematic_hidden,
+            flags.hud_hidden);
+        owner_.cinematic_dialog_pause_on_change(owner_.cinematic_hidden,
+            flags.hud_hidden, third);
         owner_.cinematic_hidden = flags.hud_hidden;
         owner_.cinematic_allow_simulation = flags.simulate_while_hidden;
         owner_.entry.cinematic_cleared = !flags.hud_hidden && !flags.simulate_while_hidden;
@@ -2974,36 +2929,26 @@ public:
                 owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1",
                     bsp::game::kVehicleClassMovieStopPurgeCc15Bound);
             }
-            if constexpr (bsp::kWireGoal4Chain264Bound) {
-                // 0045F6C6..0045F6F8: the seven resets with no live host reader run;
-                // the three the host still reads lazily stay records.
-                run_class_table_resets_cc264(owner_.lua, owner_.log, "0045F6C6");
-                owner_.record("EngineMovieStop::device_class_reset", 0x0045f6c6u);
-                owner_.record("EngineMovieStop::bullet_classes_reload", 0x0045f6cbu);
-                owner_.record("EngineMovieStop::stationary_class_reset", 0x0045f6d0u);
-            } else {
-            owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
-            }
+            // 0045F6C6..0045F6F8: the seven resets with no live host reader run;
+            // the three the host still reads lazily stay records.
+            run_class_table_resets_cc264(owner_.lua, owner_.log, "0045F6C6");
+            owner_.record("EngineMovieStop::device_class_reset", 0x0045f6c6u);
+            owner_.record("EngineMovieStop::bullet_classes_reload", 0x0045f6cbu);
+            owner_.record("EngineMovieStop::stationary_class_reset", 0x0045f6d0u);
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
-            if constexpr (bsp::kWireGoal4Chain336Bound) {
-                // 0045F955, after the stage-init arm: 004B46B0 walks E188B4,
-                // invokes each allocator's virtual0, then reloads next+8
-                // (004B46C8). Borrow the application's SAME list: CRT pool
-                // startup has already published its real elements and bound
-                // their concrete trim callbacks. No pool/list is born here.
-                // The preceding HUD/dialog/quad-tree work remains unbound.
-                game_native_physical_pool_process()
-                    .allocator_list_domain_00e188b4().trim_all_004b46b0();
-                owner_.done("EngineMovieStop::allocator_list_trim_all", 0x004b46b0u);
-                owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
-                    "luaStageInitMulti and luaStageInit on the first in-mission frame "
-                    "(kEngineMovieEntryBound)");
-            } else {
+            // 0045F955, after the stage-init arm: 004B46B0 walks E188B4,
+            // invokes each allocator's virtual0, then reloads next+8
+            // (004B46C8). Borrow the application's SAME list: CRT pool
+            // startup has already published its real elements and bound
+            // their concrete trim callbacks. No pool/list is born here.
+            // The preceding HUD/dialog/quad-tree work remains unbound.
+            game_native_physical_pool_process()
+                .allocator_list_domain_00e188b4().trim_all_004b46b0();
+            owner_.done("EngineMovieStop::allocator_list_trim_all", 0x004b46b0u);
             owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
                 "luaStageInitMulti and luaStageInit on the first in-mission frame "
                 "(kEngineMovieEntryBound)");
-            }
         }
     }
     void begin_engine_movie_004cce50() override {
@@ -3725,22 +3670,11 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     // map at +15Ch, whose readers are unread.
     auto& pending = host->warning().pending;
     const std::uint32_t target = static_cast<std::uint32_t>(unit);
-    if constexpr (bsp::kWireGoal2Chain36Bound) {
+    {
         // 00976F10 warning_manager_cancel_by_target_00976f10 over the pending vector's
         // +E0h list view; OFF keeps the inline kind-4/+80h erase loop and +15Ch stamp.
         PendingWarningCancelView view(*host, pending);
         host->warning_loss_cancelled += view.cancel_by_target(target);
-    } else {
-    for (auto it = pending.begin(); it != pending.end();) {
-        if (it->kind == 4 && it->target_id == target) {
-            it = pending.erase(it);
-            ++host->warning_loss_cancelled;
-        } else {
-            ++it;
-        }
-    }
-    host->warning_loss_stamp_15c[unit] = static_cast<float>(
-        static_cast<double>(host->world_clock) + 2.0);
     }
     host->done("WarningManager::cancel_by_target", 0x00976f10u);
     // 0098168D..009816C5: a ship (IsKindOf 6) loses its proximity record at
@@ -3878,7 +3812,7 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
         }
         // 00989855..00989871: 009761D0 (the live bytes and 0077EDF0) without own
         // fire, 009681D0 (the live bytes) with it, on the reported entity.
-        if constexpr (bsp::kWireGoal2Chain36Bound) {
+        {
             // 0098986A 009681D0 unit_is_active_for_hit_channel_009681d0 when BL, the
             // own-fire byte [esp+98h] (local attacker, relation 0; 00988770/00989604),
             // is set, over the target's +5Ch/+5Dh/+5Eh (SceneNodeFlags) and +60h
@@ -3904,11 +3838,6 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
                 ++counts.not_reportable;
                 return;
             }
-        } else {
-        if (!live(target)) {
-            ++counts.not_reportable;
-            return;
-        }
         }
         // 00989877..0098994A: a command building of another slot (+180h) sends
         // the E6h session message first; its +78Ch/+180h are not in the host.
@@ -3973,15 +3902,13 @@ void game_warning_torpedo_effect_00977820(std::size_t unit) {
 }
 
 void game_warning_clear_waiting_queue() {
-    if constexpr (bsp::kWireGoal2Chain166Bound) {
-        // 008D0008 MOV ECX,ESI ([00F8A0C4]) / 008D000A CALL 0096BF70: the manager
-        // is this process's mission frame host; none exists before a mission.
-        GameMissionFrameHost::Impl* host = g_warning_owner;
-        if (host == nullptr) return;
-        PendingWarningClearBinding binding(*host);
-        bsp::cc13_seg49_64_78::warning_manager_clear_waiting_0096bf70(binding);
-        host->done("WarningManager::clear_waiting", 0x0096bf70u);
-    }
+    // 008D0008 MOV ECX,ESI ([00F8A0C4]) / 008D000A CALL 0096BF70: the manager
+    // is this process's mission frame host; none exists before a mission.
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr) return;
+    PendingWarningClearBinding binding(*host);
+    bsp::cc13_seg49_64_78::warning_manager_clear_waiting_0096bf70(binding);
+    host->done("WarningManager::clear_waiting", 0x0096bf70u);
 }
 
 void GameMissionFrameHost::bind_input_runtime(GameInputRuntime* runtime) {
@@ -4119,16 +4046,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 continue;
             }
         }
-        if constexpr (bsp::kWireGoal4Chain264Bound) {
-            // 004E019F CALL 006AD600. The step table's "reset_effect_atlas" row is
-            // that call (cc13_sweepB2.cpp: the body clears five mission Lua
-            // globals; nothing about an atlas). OFF leaves the row a record.
-            if (method == "reset_effect_atlas") {
-                clear_mission_lua_globals_cc264(host.lua, host.log);
-                host.done(label, step.address);
-                ++host.load.concrete;
-                continue;
-            }
+        // 004E019F CALL 006AD600. The step table's "reset_effect_atlas" row is
+        // that call (cc13_sweepB2.cpp: the body clears five mission Lua
+        // globals; nothing about an atlas). OFF leaves the row a record.
+        if (method == "reset_effect_atlas") {
+            clear_mission_lua_globals_cc264(host.lua, host.log);
+            host.done(label, step.address);
+            ++host.load.concrete;
+            continue;
         }
 
         // Milestone 2m. The three rows packet cc2_mission_load_hosts
@@ -4192,17 +4117,11 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
 
         if (method == "set_cinematic_mode") {
             const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(false, false);
-            if constexpr (bsp::kWireGoal4Chain249Bound) {
-                host.cinematic_sound_classes_on_change_004cd0f0(host.cinematic_hidden,
-                    flags.hud_hidden);
-            }
-            if constexpr (bsp::kWireGoal4Chain439Bound) {
-                // This load step unhides; the third byte is not read on that arm.
-                host.cinematic_dialog_pause_on_change(host.cinematic_hidden,
-                    flags.hud_hidden, false);
-            } else {
-                // Original host left the dialog pause arm unimplemented.
-            }
+            host.cinematic_sound_classes_on_change_004cd0f0(host.cinematic_hidden,
+                flags.hud_hidden);
+            // This load step unhides; the third byte is not read on that arm.
+            host.cinematic_dialog_pause_on_change(host.cinematic_hidden,
+                flags.hud_hidden, false);
             host.cinematic_hidden = flags.hud_hidden;
             host.cinematic_allow_simulation = flags.simulate_while_hidden;
             host.done(label, step.address);
@@ -4313,12 +4232,9 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // Milestone 2m: 0095c640's three reads of the live VehicleClass
             // table, which the recovered global-script step already loaded.
             host.scene_contents->attach_lua(&host.lua);
-            if constexpr (bsp::kWireGoal4Chain516Bound) {
-                if (host.remap_renderer)
-                    host.scene_contents->bind_native_scene_remaps(*host.remap_renderer,
-                        host.remap_names);
-            } else {
-            }
+            if (host.remap_renderer)
+                host.scene_contents->bind_native_scene_remaps(*host.remap_renderer,
+                    host.remap_names);
             // game+614h and game+61Ch are the two fields 004bca50 reads as the
             // raw game mode and its forced flag; MissionSceneLoadState names the
             // same pair script_slot / script_slot_forced, because 004e087b picks
@@ -4346,14 +4262,12 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // the mission machine and says so.
             host.units->load_gameplay_settings_0083b5e0();
             host.units->create_units(host.scene_contents->entities());
-            if constexpr (bsp::kWireGoal2Chain27Bound) {
-                // Wire goal 2 chain 27: the gunnery host's blast grid stamps its nodes
-                // with game+648h (0098C653, 0098A755); this frame state's counter is
-                // the one run_mission_frame bumps at 004E4FF5. The first create_units
-                // built the gunnery host, which lives as long as host.units.
-                if (GameGunneryHost* gunnery = host.units->gunnery()) {
-                    gunnery->attach_game_frame_counter_648(&host.frame_state.frame_counter);
-                }
+            // Wire goal 2 chain 27: the gunnery host's blast grid stamps its nodes
+            // with game+648h (0098C653, 0098A755); this frame state's counter is
+            // the one run_mission_frame bumps at 004E4FF5. The first create_units
+            // built the gunnery host, which lives as long as host.units.
+            if (GameGunneryHost* gunnery = host.units->gunnery()) {
+                gunnery->attach_game_frame_counter_648(&host.frame_state.frame_counter);
             }
             host.world_host = std::make_unique<GameWorldHost>(host.log, *host.units);
             host.world_host->build_entity_chains_009037f0();
@@ -4530,25 +4444,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // created instances instead of being counted as records.
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
-            if constexpr (bsp::kWireGoal4Chain482Bound) {
-                host.script_orders->attach_narrative_hud(host.hud);
-            } else {
-            }
-            if constexpr (bsp::kWireGoal4Chain466Bound) {
-                // Same game+21A0h owner for 0077C91B formation-use scoring;
-                // keep its attachment independent of the scoring-name switch.
-                host.script_orders->attach_scoring_name_owner(host.result.get());
-            } else {
-                if constexpr (bsp::kWireGoal2Chain127Bound) {
-                    host.script_orders->attach_scoring_name_owner(host.result.get());
-                }
-            }
-            if constexpr (bsp::kWireGoal4Chain331Bound) {
-                // [game+21DCh] for the LoadMessageMap binding (008C62FC). Null until
-                // construct_world builds it; that step attaches it as well.
-                host.script_orders->attach_message_manager(host.messages.get());
-            } else {
-            }
+            host.script_orders->attach_narrative_hud(host.hud);
+            // Same game+21A0h owner for 0077C91B formation-use scoring;
+            // keep its attachment independent of the scoring-name switch.
+            host.script_orders->attach_scoring_name_owner(host.result.get());
+            // [game+21DCh] for the LoadMessageMap binding (008C62FC). Null until
+            // construct_world builds it; that step attaches it as well.
+            host.script_orders->attach_message_manager(host.messages.get());
             for (const GameSceneMarkerSeed& marker : markers) {
                 // Packet cc9_building_pad_model: the class id lets the pad model
                 // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).
@@ -4570,10 +4472,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
-            if constexpr (bsp::kWireGoal4Chain539Bound || bsp::kWireGoal4Chain557Bound) {
-                host.ship_ai->bind_local_message_clock(
-                    host.entry_state.game_state, host.fixed_clock.step_count);
-            }
+            host.ship_ai->bind_local_message_clock(
+                host.entry_state.game_state, host.fixed_clock.step_count);
             host.ship_ai->bind_session_participants(host.participants);
             host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());
@@ -4773,16 +4673,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 // 004E0A9B, the first of the eleven calls after luaPrecacheUnits.
                 host.lua.census_vehicle_class_purge_0095ca70("004E0A9B", true);
             }
-            if constexpr (bsp::kWireGoal4Chain264Bound) {
-                // 004E0AA0..004E0ACD, the other ten, before luaStageInitMulti: the
-                // seven with no live host reader run; the three the host still reads
-                // lazily stay records. (The step table's precache_units row names the
-                // same calls but sits after luaStageInit; it stays a record.)
-                run_class_table_resets_cc264(host.lua, host.log, "004E0AA0");
-                host.record("MissionSceneLoad::device_class_reset", 0x004e0aa0u);
-                host.record("MissionSceneLoad::bullet_classes_reload", 0x004e0aa5u);
-                host.record("MissionSceneLoad::stationary_class_reset", 0x004e0aaau);
-            }
+            // 004E0AA0..004E0ACD, the other ten, before luaStageInitMulti: the
+            // seven with no live host reader run; the three the host still reads
+            // lazily stay records. (The step table's precache_units row names the
+            // same calls but sits after luaStageInit; it stays a record.)
+            run_class_table_resets_cc264(host.lua, host.log, "004E0AA0");
+            host.record("MissionSceneLoad::device_class_reset", 0x004e0aa0u);
+            host.record("MissionSceneLoad::bullet_classes_reload", 0x004e0aa5u);
+            host.record("MissionSceneLoad::stationary_class_reset", 0x004e0aaau);
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;
             continue;
@@ -4814,13 +4712,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                         host.language);
                 }
                 host.messages->construct_00707480();  // logs its own native row
-                if constexpr (bsp::kWireGoal4Chain331Bound) {
-                    // 004DFA4B stores the manager at game+21DCh, the `this`
-                    // 008C62FC hands 00706760.
-                    if (host.script_orders != nullptr) {
-                        host.script_orders->attach_message_manager(host.messages.get());
-                    }
-                } else {
+                // 004DFA4B stores the manager at game+21DCh, the `this`
+                // 008C62FC hands 00706760.
+                if (host.script_orders != nullptr) {
+                    host.script_orders->attach_message_manager(host.messages.get());
                 }
             }
         }
@@ -4941,18 +4836,11 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
         host.log.note("state 0Ch participant +9/+0E view is unavailable for the count arm");
         return false;
     }
-    if constexpr (kWireGoal4Chain316Bound) {
-        if (!host.entry.device_wait_ran)
-            host.log.notef("mission participant entry: view_available=%d unbound=%zu "
-                "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
-                host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
-                inputs.local_view_mode);
-    } else {
-    host.log.notef("mission participant entry: view_available=%d unbound=%zu "
-        "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
-        host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
-        inputs.local_view_mode);
-    }
+    if (!host.entry.device_wait_ran)
+        host.log.notef("mission participant entry: view_available=%d unbound=%zu "
+            "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
+            host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
+            inputs.local_view_mode);
 
     bool entered = false;
     DeviceWaitBinding device_wait(host, entered);
@@ -4963,17 +4851,12 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     host.done("MissionState::device_wait", 0x004db920u);
 
     if (!entered && !wait_entered) {
-        if constexpr (kWireGoal4Chain316Bound) {
-            if (first_device_wait) {
-                if (!host.entry.player_count_arm)
-                    host.log.note("state 0Ch waiting for a real dynamic-device button edge");
-                else
-                    host.log.notef("state 0Ch did not enter: %zu player slot(s) still unbound",
-                        inputs.unbound_player_slots);
-            }
-        } else {
-        host.log.notef("state 0Ch did not enter: %zu player slot(s) still unbound",
-            inputs.unbound_player_slots);
+        if (first_device_wait) {
+            if (!host.entry.player_count_arm)
+                host.log.note("state 0Ch waiting for a real dynamic-device button edge");
+            else
+                host.log.notef("state 0Ch did not enter: %zu player slot(s) still unbound",
+                    inputs.unbound_player_slots);
         }
         return false;
     }
@@ -6594,10 +6477,8 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.frames.requested, host.frames.frames, host.frames.simulated,
         host.frames.paused, host.frames.units_ticked, host.frames.mission_events_applied,
         host.frames.script_calls, host.frames.interface_updates);
-    if constexpr (bsp::kWireGoal4Chain249Bound) {
-        host.log.notef("summary mission cinematic sound classes (goal 4 chain 249, 004CD0F0 -> "
-            "00A7ACF0/00A7F890): changes=%llu", host.cinematic_sound_class_changes);
-    }
+    host.log.notef("summary mission cinematic sound classes (goal 4 chain 249, 004CD0F0 -> "
+        "00A7ACF0/00A7F890): changes=%llu", host.cinematic_sound_class_changes);
     host.log.notef("summary mission exit frames=%llu injected=%d completed=%d state=0x%02X",
         host.frames.exit_frames, host.frames.complete_injected ? 1 : 0,
         host.frames.exit_completed ? 1 : 0, host.control.state);

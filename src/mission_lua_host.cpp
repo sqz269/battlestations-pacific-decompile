@@ -4,7 +4,6 @@
 #include "bsp/native_mission_lua_scalar_push.hpp"
 #include "bsp/native_mission_lua_stack.hpp"
 #include "bsp/settings_seg29_cc13.hpp"
-#include "bsp/wire_goal4_chain340_switches.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -774,13 +773,9 @@ NamedCallOutcome run_named_call_body(
 
     const int marker = host.lua_gettop();
     host.adjust_call_stack_marker(marker);
-    if constexpr (kWireGoal4Chain340Bound) {
-        // 00887989 / 00888094: CALL 006B8530 on the machine, not 00a680e0.
-        outcome.pcall_status =
-            host.lua_protected_call_006b8530(nargs, kLuaMultRet, error_handler_index);
-    } else {
-    outcome.pcall_status = host.lua_pcall(nargs, kLuaMultRet, error_handler_index);
-    }
+    // 00887989 / 00888094: CALL 006B8530 on the machine, not 00a680e0.
+    outcome.pcall_status =
+        host.lua_protected_call_006b8530(nargs, kLuaMultRet, error_handler_index);
     host.adjust_call_stack_marker(-marker);
 
     const int results = host.lua_gettop() - saved_top;
@@ -891,11 +886,7 @@ NamedCallOutcome call_named_entry_point(MissionLuaHostServices& host, const Name
     if (!request.run_during_shutdown && host.game_lifecycle_state() == kRefusedLifecycleState) {
         return outcome;
     }
-    if constexpr (kWireGoal4Chain340Bound) {
-        return run_named_call(host, request, outcome);
-    } else {
-    return run_named_call_body(host, request, outcome);
-    }
+    return run_named_call(host, request, outcome);
 }
 
 NamedCallOutcome call_named_entry_point_forced(
@@ -932,11 +923,7 @@ NamedCallOutcome call_named_entry_point_threadsafe(
     request.forward_stack_last = kLuaMultRet;
     request.collect_results = false;
     request.run_during_shutdown = true;
-    if constexpr (kWireGoal4Chain340Bound) {
-        return run_named_call(host, request, outcome);
-    } else {
-    return run_named_call_body(host, request, outcome);
-    }
+    return run_named_call(host, request, outcome);
 }
 
 NamedCallOutcome call_entry_point_if_defined(MissionLuaHostServices& host, const std::string& name,

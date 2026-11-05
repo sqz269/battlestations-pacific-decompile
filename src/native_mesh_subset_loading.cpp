@@ -8,7 +8,6 @@
 #include "bsp/native_string_compare.hpp"
 #include "bsp/native_camera_group_resource.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain587_switches.hpp"
 #include <atomic>
 #include <cstring>
 #include <stdexcept>
@@ -484,24 +483,16 @@ void NativeMeshResourceTypeIds::initialize_derived(volatile std::uint8_t& guard,
     guard = 1;
     descriptor[4] = name;
     if (initialize_mesh) initialize_mesh_after_guard_check();
-    if constexpr (kWireGoal4Chain587Bound) {
-        // bsp.py show --asm CD86F0/CD87B0: CD875A/CD881A samples the
-        // current base own-ID before the two inherited IDs and all stores.
-        // B93000 is exactly MOV EAX,[01090444];RET. Replace that one read
-        // with its existing body, using the SAME actual process descriptor;
-        // no lazy initialization or additional ID sample is introduced.
-        const U mesh = read_native_mesh_resource_type_00b93000(storage_.mesh_01090444[0]);
-        const U scene = storage_.mesh_01090444[1];
-        const U root = storage_.mesh_01090444[2];
-        descriptor[1] = mesh; descriptor[2] = scene; descriptor[3] = root;
-        descriptor[0] = consume_id();
-    } else {
-    const U mesh = storage_.mesh_01090444[0];
+    // bsp.py show --asm CD86F0/CD87B0: CD875A/CD881A samples the
+    // current base own-ID before the two inherited IDs and all stores.
+    // B93000 is exactly MOV EAX,[01090444];RET. Replace that one read
+    // with its existing body, using the SAME actual process descriptor;
+    // no lazy initialization or additional ID sample is introduced.
+    const U mesh = read_native_mesh_resource_type_00b93000(storage_.mesh_01090444[0]);
     const U scene = storage_.mesh_01090444[1];
     const U root = storage_.mesh_01090444[2];
     descriptor[1] = mesh; descriptor[2] = scene; descriptor[3] = root;
     descriptor[0] = consume_id();
-    }
 }
 void NativeMeshResourceTypeIds::initialize_skined_mesh_resource_00cd86f0() {
     initialize_derived(storage_.skined_guard_01090441, storage_.skined_01090454, 0x00d637b8);

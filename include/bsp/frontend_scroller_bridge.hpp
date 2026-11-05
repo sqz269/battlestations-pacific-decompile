@@ -3,7 +3,6 @@
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
-#include "bsp/wire_goal4_chain407_switches.hpp"
 
 #include <set>
 
@@ -40,13 +39,9 @@ inline D3DCOLOR bridge_color(const float (&color)[4]) noexcept {
 class FrontendScrollerBridge {
 public:
     void bind(const FrontEndScreenScroller& scroller) {
-        if constexpr (kWireGoal4Chain407Bound) {
-            for (void* widget : {scroller.thumb_widget, scroller.arrow_start_widget,
-                                 scroller.arrow_end_widget}) {
-                if (widget) controls_.insert(static_cast<const GuiLayoutWidget*>(widget));
-            }
-        } else {
-            static_cast<void>(scroller);
+        for (void* widget : {scroller.thumb_widget, scroller.arrow_start_widget,
+                             scroller.arrow_end_widget}) {
+            if (widget) controls_.insert(static_cast<const GuiLayoutWidget*>(widget));
         }
     }
 
@@ -72,12 +67,7 @@ public:
 
 private:
     bool contains(const GuiLayoutWidget* widget) const {
-        if constexpr (kWireGoal4Chain407Bound) {
-            return widget && controls_.count(widget) != 0;
-        } else {
-            static_cast<void>(widget);
-            return false;
-        }
+        return widget && controls_.count(widget) != 0;
     }
     std::set<const GuiLayoutWidget*> controls_;
 };

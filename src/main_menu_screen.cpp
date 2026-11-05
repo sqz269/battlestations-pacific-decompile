@@ -1,5 +1,4 @@
 #include "bsp/main_menu_screen.hpp"
-#include "bsp/wire_goal4_chain432_switches.hpp"
 
 #include <cmath>
 
@@ -223,13 +222,9 @@ void run_mission_detail_arm(MainMenuScreenState& state,
     state.map_offset_y =
         host.blend_map_offset(state.map_offset_y, kMissionDetailOffsetLow, kMissionDetailOffsetHigh);
     host.drive_map(seconds, group, kMissionDetailZoomDelta, false);
-    if constexpr (game::kWireGoal4Chain432Bound) {
-        // 0059A3CB calls 00588C70 once; its +130h store is the zoom update.
-        if (!host.map_geometry_updates_zoom())
-            state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, kMissionDetailZoomDelta);
-    } else {
-    state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, kMissionDetailZoomDelta);
-    }
+    // 0059A3CB calls 00588C70 once; its +130h store is the zoom update.
+    if (!host.map_geometry_updates_zoom())
+        state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, kMissionDetailZoomDelta);
     if (host.action_fired(kFrontEndActionBack)) {
         host.mission_detail_back();
     } else if (host.action_fired(kFrontEndActionAccept)) {
@@ -277,13 +272,9 @@ void run_mission_list_arm(MainMenuScreenState& state,
         moved = false;
     }
     host.drive_map(seconds, group, zoom_argument, moved);
-    if constexpr (game::kWireGoal4Chain432Bound) {
-        // 0059A678 likewise has no second delta application after the call.
-        if (!host.map_geometry_updates_zoom())
-            state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, zoom_argument);
-    } else {
-    state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, zoom_argument);
-    }
+    // 0059A678 likewise has no second delta application after the call.
+    if (!host.map_geometry_updates_zoom())
+        state.map_zoom = apply_map_zoom_00588c70(state.map_zoom, zoom_argument);
 
     if (host.action_fired(kFrontEndActionBack)) {
         host.position_backdrop();

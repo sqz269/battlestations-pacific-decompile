@@ -1,5 +1,4 @@
 #include "bsp/native_language_catalog_lifetime.hpp"
-#include "bsp/wire_goal4_chain385_switches.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <exception>
@@ -58,32 +57,22 @@ __declspec(noinline) void resize_native_language_catalog_008d5aa0(void* p,I n,Na
 }
 void shutdown_native_language_catalog_00cdeea0(void* p,NativeStringRawPoolContext& strings,
     NativeLanguageCatalogAllocationCalls& calls,Op& op) {
-    if constexpr(kWireGoal4Chain385Bound) {
-        // bsp.py show 00CDEEA0: CDEEA7 calls the whole 008D5AA0 with zero,
-        // then CDEEAC reloads the CURRENT F88974 backing before CDEEB2 frees it.
-        // GameNativeSettingsProcess::shutdown_catalog supplies that process's
-        // actual catalog, strings and allocation service. Reuse the SAME op so
-        // interrupted row destruction retains its original diagnostic owner.
-        // Resize begins the fresh operation; its successful completion is only
-        // the child return, so keep shutdown running until the backing free.
-        if(op.phase!=Phase::fresh)throw std::logic_error("native language catalog lifetime operation cannot replay");
-        try {
-            op.native_site=0xcdeea7;
-            resize_native_language_catalog_008d5aa0(p,0,strings,calls,op);
-            op.phase=Phase::running;
-            void* const backing=get<void*>(p);op.released_backing=backing;
-            op.native_site=0xcdeeb2;calls.free_00bf6989(backing);
-            op.phase=Phase::complete;
-        }catch(...){op.phase=Phase::failed;throw;}
-    } else {
-    begin(p,op);
+    // bsp.py show 00CDEEA0: CDEEA7 calls the whole 008D5AA0 with zero,
+    // then CDEEAC reloads the CURRENT F88974 backing before CDEEB2 frees it.
+    // GameNativeSettingsProcess::shutdown_catalog supplies that process's
+    // actual catalog, strings and allocation service. Reuse the SAME op so
+    // interrupted row destruction retains its original diagnostic owner.
+    // Resize begins the fresh operation; its successful completion is only
+    // the child return, so keep shutdown running until the backing free.
+    if(op.phase!=Phase::fresh)throw std::logic_error("native language catalog lifetime operation cannot replay");
     try {
-        op.native_site=0xcdeea7;resize(p,0,strings,calls,op);
+        op.native_site=0xcdeea7;
+        resize_native_language_catalog_008d5aa0(p,0,strings,calls,op);
+        op.phase=Phase::running;
         void* const backing=get<void*>(p);op.released_backing=backing;
         op.native_site=0xcdeeb2;calls.free_00bf6989(backing);
         op.phase=Phase::complete;
     }catch(...){op.phase=Phase::failed;throw;}
-    }
 }
 int NativeLanguageCatalogRegistrationCalls::register_shutdown_00bf6ff5(void (*f)()){return std::atexit(f);}
 int register_native_language_catalog_shutdown_00cd2da0(NativeLanguageCatalogRegistrationCalls& calls,void (*f)()) {

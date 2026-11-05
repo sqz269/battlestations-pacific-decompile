@@ -1,6 +1,5 @@
 #include "bsp/native_d3d9_shader_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain576_switches.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -66,16 +65,14 @@ void destroy(NativeD3d9ShaderStorage& owner, NativeD3d9ShaderLifetimeContext& c,
 }
 void run_destroy(NativeD3d9ShaderStorage& owner, NativeD3d9ShaderLifetimeContext& c,
     Op& a, bool pixel, NativeD3d9ShaderDestructorEntry entry) {
-    if constexpr (kWireGoal4Chain576Bound) {
-        if (entry == NativeD3d9ShaderDestructorEntry::scalar_deleting) {
-            // Borrow only the matching deleting entry before its first destructor
-            // effect. Its catch/free tail retains ownership of the operation.
-            if (a.phase != Op::Phase::running || a.owner != &owner ||
-                a.function != (pixel ? 0xb5f6e0u : 0xb5f700u) || a.destructor_function != 0)
-                throw std::logic_error("shader destructor requires its active deleting operation");
-            destroy(owner, c, a, pixel);
-            return;
-        }
+    if (entry == NativeD3d9ShaderDestructorEntry::scalar_deleting) {
+        // Borrow only the matching deleting entry before its first destructor
+        // effect. Its catch/free tail retains ownership of the operation.
+        if (a.phase != Op::Phase::running || a.owner != &owner ||
+            a.function != (pixel ? 0xb5f6e0u : 0xb5f700u) || a.destructor_function != 0)
+            throw std::logic_error("shader destructor requires its active deleting operation");
+        destroy(owner, c, a, pixel);
+        return;
     }
     if (entry != NativeD3d9ShaderDestructorEntry::standalone)
         throw std::logic_error("shader destructor borrowing requires chain576");
@@ -87,17 +84,13 @@ NativeD3d9ShaderStorage* run_delete(NativeD3d9ShaderStorage* owner, U flags,
     NativeD3d9ShaderLifetimeContext& c, Op& a, bool pixel) {
     begin(a, owner, pixel ? 0xb5f6e0 : 0xb5f700, flags);
     try {
-        if constexpr (kWireGoal4Chain576Bound) {
-            // bsp.py show 00B5F6E0 / 00B5F700: call B5F410 / B5F490 on
-            // this same owner before testing flags&1 and freeing it. Reuse the
-            // existing destructor and operation; never run the helper twice.
-            if (pixel) destroy_native_pixel_shader_00b5f410(*owner, c, a,
-                NativeD3d9ShaderDestructorEntry::scalar_deleting);
-            else destroy_native_vertex_shader_00b5f490(*owner, c, a,
-                NativeD3d9ShaderDestructorEntry::scalar_deleting);
-        } else {
-            destroy(*owner, c, a, pixel);
-        }
+        // bsp.py show 00B5F6E0 / 00B5F700: call B5F410 / B5F490 on
+        // this same owner before testing flags&1 and freeing it. Reuse the
+        // existing destructor and operation; never run the helper twice.
+        if (pixel) destroy_native_pixel_shader_00b5f410(*owner, c, a,
+            NativeD3d9ShaderDestructorEntry::scalar_deleting);
+        else destroy_native_vertex_shader_00b5f490(*owner, c, a,
+            NativeD3d9ShaderDestructorEntry::scalar_deleting);
         if (flags & 1u) {
             a.native_site = pixel ? 0xb5f6f0 : 0xb5f710; a.free_entered = true;
             singleton_lifetime_free(owner);

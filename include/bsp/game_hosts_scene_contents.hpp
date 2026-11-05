@@ -40,8 +40,6 @@
 
 #include "bsp/air_operations.hpp"
 #include "bsp/scene_file.hpp"
-#include "bsp/wire_goal2_chain74_switches.hpp"
-#include "bsp/wire_goal2_chain150_switches.hpp"
 #include "bsp/scene_graph2_cc13.hpp"
 
 namespace bsp::cc13_terrain {
@@ -795,7 +793,7 @@ template <> struct SceneTerrainQuadNodeStorage<true> {
     using type = SceneTerrainNativeQuadNodes;
 };
 
-struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<bsp::kWireGoal2Chain74Bound> {
+struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<true> {
     std::string root;               // `TRNV2` on this installation's islands
     int tiles_wide{0};              // +38h
     int tiles_deep{0};              // +3Ch
@@ -846,7 +844,7 @@ struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<bsp::kWireGoal2
     // x, tile z), built here on the first slot 3Ch query. `quadtree_leaves` is
     // +38h, 1 << depth tiles per side.
     using QuadNode = SceneTerrainQuadNode;
-    mutable SceneTerrainQuadNodeStorage<bsp::kWireGoal2Chain150Bound>::type quadtree;
+    mutable SceneTerrainQuadNodeStorage<true>::type quadtree;
     mutable int quadtree_leaves{0};
 };
 

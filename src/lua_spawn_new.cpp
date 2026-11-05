@@ -3,7 +3,6 @@
 // needs. No host, no Lua: the mission Lua host in src/game_hosts_lua.cpp is the
 // only caller.
 #include "bsp/lua_spawn_new.hpp"
-#include "bsp/wire_goal4_chain546_switches.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -408,20 +407,13 @@ SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& reque
             }
             float pos[3];
             spawn_member_position_00949300(frame, off, pos);
-            if constexpr (kWireGoal4Chain546Bound) {
-                // 00941D41 precedes the surface-class arm (00941D76..00941DCE),
-                // which precedes the existing entity-separation walk.
-                if (g_spawn_placement_world->point_outside_map_0071c4f0(pos)
-                    || !g_spawn_placement_world->surface_member_placement_legal(request.members[i], pos)
-                    || !spawn_member_placement_legal_00941d30(pos, request.party,
-                        request.exclude, entities, false)) {
-                    return false;
-                }
-            } else {
-            if (!spawn_member_placement_legal_00941d30(pos, request.party, request.exclude,
-                    entities, g_spawn_placement_world->point_outside_map_0071c4f0(pos))) {
+            // 00941D41 precedes the surface-class arm (00941D76..00941DCE),
+            // which precedes the existing entity-separation walk.
+            if (g_spawn_placement_world->point_outside_map_0071c4f0(pos)
+                || !g_spawn_placement_world->surface_member_placement_legal(request.members[i], pos)
+                || !spawn_member_placement_legal_00941d30(pos, request.party,
+                    request.exclude, entities, false)) {
                 return false;
-            }
             }
         }
         return true;

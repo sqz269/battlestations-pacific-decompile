@@ -1,8 +1,5 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/leftovers_cc13.hpp"
-#include "bsp/wire_goal2_chain181_switches.hpp"
-#include "bsp/wire_goal2_chain122_switches.hpp"
-#include "bsp/wire_goal4_chain426_switches.hpp"
 
 #include <new>
 #include <cstring>
@@ -57,24 +54,13 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
     // 00727336 CALL 00BE9B20 / CMP EAX,4 / JNC tests the format version,
     // not payload length: 00BE9A51 writes reader+64h from the root control
     // word (bsp.py show 00BE9A40/00BE9B20 --asm). Older formats are skipped.
-    if constexpr (kWireGoal4Chain426Bound) {
-        if (node.format_version() < 4) {
-            output.payload_too_small = true;
-            if (!node.skip_00be9c40()) {
-                error = "Could not skip an unsupported GeomMesh format.";
-                return false;
-            }
-            return true;
-        }
-    } else {
-    if (node.remaining() < 4) {
+    if (node.format_version() < 4) {
         output.payload_too_small = true;
         if (!node.skip_00be9c40()) {
-            error = "Could not skip an undersized GeomMesh payload.";
+            error = "Could not skip an unsupported GeomMesh format.";
             return false;
         }
         return true;
-    }
     }
 
     try {
@@ -175,25 +161,10 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
             // 00727672 CALL 00BE9B20 / CMP EAX,7 / JC: format >=7 has one
             // additional DWORD. Its presence does not depend on bytes left.
             std::uint32_t leading = 0;
-            if constexpr (kWireGoal4Chain426Bound) {
-                if (node.format_version() >= 7 &&
-                    !node.read_u32_with_native_node_wrapper(leading, true)) {
-                    error = "Could not read GeomMesh triangle leading word.";
-                    return false;
-                }
-            } else {
-            if (node.remaining() >= 7) {
-                if constexpr (kWireGoal2Chain122Bound) {
-                    // 00BE99E0 consumes the word; OFF keeps the host field read.
-                    if (!node.read_u32_with_native_node_wrapper(leading, true)) {
-                        error = "Could not read GeomMesh triangle leading word.";
-                        return false;
-                    }
-                } else {
-                    if (!read_u32_field(node, leading, "triangle leading word", error))
-                        return false;
-                }
-            }
+            if (node.format_version() >= 7 &&
+                !node.read_u32_with_native_node_wrapper(leading, true)) {
+                error = "Could not read GeomMesh triangle leading word.";
+                return false;
             }
             std::uint32_t corner[3] = {0, 0, 0};
             for (std::uint32_t& value : corner) {
@@ -222,7 +193,7 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
 
         output.elements = output.authored_elements;
         merge_same_kind_elements_00727704(output.elements);
-        if constexpr (kWireGoal2Chain181Bound) {
+        {
             // 00725380 builds decoded mesh bounds/trees; OFF keeps the unbuilt payload.
             namespace gm = leftovers_cc13;
             auto tree = std::make_shared<gm::GeomMesh>();
@@ -249,8 +220,6 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
             for (std::size_t i = 0; i < output.elements.size(); ++i)
                 output.elements[i].triangle_ordinals = tree->parts[i].triangle_list;
             output.retain_bounds_and_trees(std::move(tree));
-        } else {
-            // Existing host payload has no bounds/tree owner.
         }
         return true;
     } catch (const std::bad_alloc&) {

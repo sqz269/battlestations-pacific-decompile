@@ -5,7 +5,6 @@
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/native_singleton_vector_reserve_construct.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain594_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -84,19 +83,13 @@ __declspec(noinline) void* get_native_resource_registry_00b1b730(
             // before publication and the second lookup/registration calls.
             try {
                 if (allocation) {
-                    if constexpr (kWireGoal4Chain594Bound) {
-                        // bsp.py show 00b1b6e0 --asm: save the actual owner,
-                        // call B1AA70, store D5E59C, return that same owner.
-                        // Reuse the whole body with this allocation and the
-                        // SAME publication cell; the outer allocation cleanup
-                        // and subsequent singleton registration stay here.
-                        construct_native_resource_registry_00b1b6e0(
-                            allocation, actual_registry_publication_00f8d41c);
-                    } else {
-                    construct_native_resource_registry_00b1aa70(
+                    // bsp.py show 00b1b6e0 --asm: save the actual owner,
+                    // call B1AA70, store D5E59C, return that same owner.
+                    // Reuse the whole body with this allocation and the
+                    // SAME publication cell; the outer allocation cleanup
+                    // and subsequent singleton registration stay here.
+                    construct_native_resource_registry_00b1b6e0(
                         allocation, actual_registry_publication_00f8d41c);
-                    *static_cast<volatile std::uint32_t*>(allocation) = 0x00d5e59cu;
-                    }
                 }
             } catch (...) {
                 singleton_lifetime_free(allocation);

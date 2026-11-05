@@ -11,10 +11,6 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/vfs_mounts.hpp"
-#include "bsp/wire_goal2_chain46_switches.hpp"
-#include "bsp/wire_goal2_chain82_switches.hpp"
-#include "bsp/wire_goal4_chain261_switches.hpp"
-#include "bsp/wire_goal4_chain269_switches.hpp"
 
 #include <d3d9.h>
 #include <mmsystem.h>
@@ -373,35 +369,27 @@ public:
     std::uint32_t current_memory_size() override { return image_.fields_28.memory_mb_2c; }
     std::string localized_message(std::int32_t index, const std::string& a,
         const std::string& b) override {
-        if constexpr (kWireGoal4Chain261Bound) {
-            // 0073C467's detection object owns the LCID until the probe returns.
-            return hardware_probe_localized_message(static_cast<std::uint32_t>(
-                reinterpret_cast<std::uintptr_t>(image_.language_c38)), index, a, b);
-        } else {
-            return owner_.localized_message(index, a, b);
-        }
+        // 0073C467's detection object owns the LCID until the probe returns.
+        return hardware_probe_localized_message(static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(image_.language_c38)), index, a, b);
     }
     bool ask_write_default_options(const std::string& text, const std::string& caption) override {
         return owner_.ask_write_default_options(text, caption);
     }
     void write_default_options_file(const std::string& path) override {
-        if constexpr (kWireGoal4Chain269Bound) {
-            // Native row zero has score 1, so its unknown-GPU +20h gate
-            // changes the recommendation. Keep index -1 and the old writer
-            // until that word has an evidenced producer; do not open a file.
-            if (image_.fields_28.gpu_index_28 == -1) {
-                owner_.write_default_options_file(path);
-                return;
-            }
-            // 0073C83E reaches this only after the real probe dialog's IDYES.
-            // 0098F430 opens first, then calls 0098E910 twice (strlen/write).
-            // Keep the same live detection owner through both formatter calls.
-            const bool written = hardware::write_default_options_file_0098f430(path.c_str(), *this);
-            log_.implemented("HardwareProbe::write_default_options_file", "0098f430");
-            log_.notef("hardware default options path=%s written=%d", path.c_str(), written ? 1 : 0);
-        } else {
+        // Native row zero has score 1, so its unknown-GPU +20h gate
+        // changes the recommendation. Keep index -1 and the old writer
+        // until that word has an evidenced producer; do not open a file.
+        if (image_.fields_28.gpu_index_28 == -1) {
             owner_.write_default_options_file(path);
+            return;
         }
+        // 0073C83E reaches this only after the real probe dialog's IDYES.
+        // 0098F430 opens first, then calls 0098E910 twice (strlen/write).
+        // Keep the same live detection owner through both formatter calls.
+        const bool written = hardware::write_default_options_file_0098f430(path.c_str(), *this);
+        log_.implemented("HardwareProbe::write_default_options_file", "0098f430");
+        log_.notef("hardware default options path=%s written=%d", path.c_str(), written ? 1 : 0);
     }
     const char* build_default_options_text_0098e910() override {
         using Bindings = oct18_tail_c::HardwareOptionsBindings;
@@ -520,8 +508,7 @@ std::uint32_t GameHardwareProbe::current_gpu_device_id() {
 
 std::string GameHardwareProbe::gpu_device_name(std::uint32_t id) {
     // 0098c890 calls gpu_device_name_0098c890; OFF keeps the unimplemented lookup.
-    if constexpr (kWireGoal2Chain46Bound) {
-        // The current-device producer is still unimplemented and returns zero.
+    // The current-device producer is still unimplemented and returns zero.
         // Only the nonzero stored GPUDeviceID admitted by run()'s profile gate
         // supplies real state (0073c49f -> CALL 0073c4b4); keep the synthetic
         // current-device call unchanged until detection owns its adapter index.
@@ -543,11 +530,6 @@ std::string GameHardwareProbe::gpu_device_name(std::uint32_t id) {
         };
         log_.implemented("HardwareProbe::gpu_device_name", "0098c890");
         return engine_seg11_35_66_cc13::gpu_device_name_0098c890(id, gpu_catalog);
-    } else {
-    static_cast<void>(id);
-    log_.unimplemented("HardwareProbe::gpu_device_name", "0098c890");
-    return {};
-    }
 }
 
 std::string GameHardwareProbe::current_sound_device() {
@@ -591,17 +573,10 @@ bool GameHardwareProbe::ask_write_default_options(const std::string& text,
             "taking the IDNO branch");
         return false;
     }
-    if constexpr (kWireGoal4Chain261Bound) {
-        const auto wide_text = hardware_message_wide(text, CP_UTF8);
-        const auto wide_caption = hardware_message_wide(caption, CP_UTF8);
-        return MessageBoxW(nullptr, wide_text.c_str(), wide_caption.c_str(),
-            MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
-    } else {
-    const std::wstring wide_text(text.begin(), text.end());
-    const std::wstring wide_caption(caption.begin(), caption.end());
+    const auto wide_text = hardware_message_wide(text, CP_UTF8);
+    const auto wide_caption = hardware_message_wide(caption, CP_UTF8);
     return MessageBoxW(nullptr, wide_text.c_str(), wide_caption.c_str(),
         MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
-    }
 }
 
 void GameHardwareProbe::write_default_options_file(const std::string& path) {
@@ -620,25 +595,9 @@ void GameHardwareProbe::write_hardware_dword(const std::string& value_name,
             value_name.c_str(), static_cast<unsigned long>(value));
         return;
     }
-    if constexpr (kWireGoal4Chain261Bound) {
-        // 0073C856/86E/886 pass the detected MemSize/CPUSpeed/GPUDeviceID.
-        // 0098D570 -> 0098D470 owns the sole write and key-close on this arm.
-        hardware::write_hardware_dword_0098d570(value_name.c_str(), value);
-    } else {
-    HKEY key = nullptr;
-    DWORD disposition = 0;
-    if (RegCreateKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, nullptr, 0,
-        kHardwareWriteAccess, nullptr, &key, &disposition) != ERROR_SUCCESS) {
-        log_.notef("hardware write-back %s failed to open the key", value_name.c_str());
-        return;
-    }
-    // 0098d570 writes four bytes typed REG_QWORD (0098d571 PUSH 4, 0098d57c MOV
-    // EDX,0Bh into 0098d470's RegSetValueExA dwType), so 0098d5c0's REG_QWORD
-    // read accepts its own write-back.
-    RegSetValueExA(key, value_name.c_str(), 0, REG_QWORD,
-        reinterpret_cast<const BYTE*>(&value), sizeof(value));
-    RegCloseKey(key);
-    }
+    // 0073C856/86E/886 pass the detected MemSize/CPUSpeed/GPUDeviceID.
+    // 0098D570 -> 0098D470 owns the sole write and key-close on this arm.
+    hardware::write_hardware_dword_0098d570(value_name.c_str(), value);
 }
 
 void GameHardwareProbe::write_hardware_string(const std::string& value_name,
@@ -649,24 +608,9 @@ void GameHardwareProbe::write_hardware_string(const std::string& value_name,
             value_name.c_str(), value.c_str());
         return;
     }
-    if constexpr (kWireGoal4Chain261Bound) {
-        // 0073C89E supplies the detected DirectSound name. 0098D590 retains
-        // the image's REG_SZ strlen+1 convention; the host write is replaced.
-        hardware::write_hardware_string_0098d590(value_name.c_str(), value.c_str());
-    } else {
-    HKEY key = nullptr;
-    DWORD disposition = 0;
-    if (RegCreateKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, nullptr, 0,
-        kHardwareWriteAccess, nullptr, &key, &disposition) != ERROR_SUCCESS) {
-        log_.notef("hardware write-back %s failed to open the key", value_name.c_str());
-        return;
-    }
-    // 0098d590 writes strlen + 1 bytes.
-    RegSetValueExA(key, value_name.c_str(), 0, REG_SZ,
-        reinterpret_cast<const BYTE*>(value.c_str()),
-        static_cast<DWORD>(value.size() + 1));
-    RegCloseKey(key);
-    }
+    // 0073C89E supplies the detected DirectSound name. 0098D590 retains
+    // the image's REG_SZ strlen+1 convention; the host write is replaced.
+    hardware::write_hardware_string_0098d590(value_name.c_str(), value.c_str());
 }
 
 void GameHardwareProbe::run() {
@@ -688,38 +632,22 @@ void GameHardwareProbe::run() {
     }
     summary_.profile_complete = true;
     // 009927D0/0098C870 construct/read the survey; OFF keeps the host's accessor stand-ins.
-    if constexpr (kWireGoal2Chain82Bound) {
-        HardwareProbeMachine machine(*this, log_);
-        machine.construct(hardware::read_language_from_options_00992830());
-        log_.implemented("HardwareProbe::construct_detection_object", "009927d0");
-        HardwareProbeInputs inputs;
-        inputs.stored = profile;
-        inputs.current.gpu_device_id = machine.current_gpu_device_id();
-        inputs.current.sound_device = machine.current_sound_device();
-        inputs.current.cpu_speed = machine.current_cpu_speed();
-        inputs.current.mem_size = machine.current_memory_size();
-        summary_.changes = hardware_probe_changes_0073c3b0(inputs).size();
-        summary_.result = run_hardware_probe_tail_0073c3b0(profile, machine);
-        log_.notef("hardware probe stored gpu=%lu cpu=%lu mem=%lu sound=\"%s\" changes=%zu "
-            "result=%d", static_cast<unsigned long>(profile.gpu_device_id),
-            static_cast<unsigned long>(profile.cpu_speed),
-            static_cast<unsigned long>(profile.mem_size), profile.sound_device.c_str(),
-            summary_.changes, static_cast<int>(summary_.result));
-    } else {
+    HardwareProbeMachine machine(*this, log_);
+    machine.construct(hardware::read_language_from_options_00992830());
+    log_.implemented("HardwareProbe::construct_detection_object", "009927d0");
     HardwareProbeInputs inputs;
     inputs.stored = profile;
-    inputs.current.gpu_device_id = current_gpu_device_id();
-    inputs.current.sound_device = current_sound_device();
-    inputs.current.cpu_speed = current_cpu_speed();
-    inputs.current.mem_size = current_memory_size();
+    inputs.current.gpu_device_id = machine.current_gpu_device_id();
+    inputs.current.sound_device = machine.current_sound_device();
+    inputs.current.cpu_speed = machine.current_cpu_speed();
+    inputs.current.mem_size = machine.current_memory_size();
     summary_.changes = hardware_probe_changes_0073c3b0(inputs).size();
-    summary_.result = run_hardware_probe_tail_0073c3b0(profile, *this);
+    summary_.result = run_hardware_probe_tail_0073c3b0(profile, machine);
     log_.notef("hardware probe stored gpu=%lu cpu=%lu mem=%lu sound=\"%s\" changes=%zu "
         "result=%d", static_cast<unsigned long>(profile.gpu_device_id),
         static_cast<unsigned long>(profile.cpu_speed),
         static_cast<unsigned long>(profile.mem_size), profile.sound_device.c_str(),
         summary_.changes, static_cast<int>(summary_.result));
-    }
 }
 
 // ---------------------------------------------------------------------------

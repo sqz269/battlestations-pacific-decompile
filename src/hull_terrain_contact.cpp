@@ -19,7 +19,6 @@
 #include "bsp/native_dyn_terrain_convex.hpp"
 #include "bsp/pc24_dyn_hull_cc13.hpp"
 #include "bsp/pool_pool06_cc13.hpp"  // convex_object_compute_box_006f9ee0
-#include "bsp/wire_goal2_chain131_switches.hpp"
 
 #include <algorithm>
 
@@ -211,25 +210,12 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
         // each sum rounded to float first (006FA25D..006FA2AF).
         // 006F9EE0 (006FAE89): ON runs convex_object_compute_box_006f9ee0 over the raw points
         // (packed xyz, stride 0Ch) and takes its centre (+14h..+1Ch); OFF keeps the inline copy.
-        if constexpr (kWireGoal2Chain131Bound) {
+        {
             static_assert(sizeof(OceanVec3) == 3 * sizeof(float));
             ConvexObjectBox box;
             convex_object_compute_box_006f9ee0(
                 box, raw.empty() ? nullptr : &raw.front().x, static_cast<int>(raw.size()));
             for (int k = 0; k < 3; ++k) centre[k] = box.centre[k];
-        } else {
-            float lo[3] = {3.402823466e+38f, 3.402823466e+38f, 3.402823466e+38f};
-            float hi[3] = {-3.402823466e+38f, -3.402823466e+38f, -3.402823466e+38f};
-            for (const OceanVec3& p : raw) {
-                const float c[3] = {p.x, p.y, p.z};
-                for (int k = 0; k < 3; ++k) {
-                    if (lo[k] > c[k]) lo[k] = c[k];
-                    if (hi[k] < c[k]) hi[k] = c[k];
-                }
-            }
-            for (int k = 0; k < 3; ++k) {
-                centre[k] = f32(static_cast<double>(f32(static_cast<double>(lo[k]) + hi[k])) * 0.5);
-            }
         }
         std::vector<OceanVec3> centred(raw.size());
         for (std::size_t i = 0; i < raw.size(); ++i) {

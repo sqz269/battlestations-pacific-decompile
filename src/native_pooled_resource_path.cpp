@@ -4,7 +4,6 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_compare.hpp"
 #include "bsp/native_string_pool_storage.hpp"
-#include "bsp/wire_goal4_chain394_switches.hpp"
 #include <type_traits>
 
 #include <cstddef>
@@ -66,28 +65,19 @@ template<class Storage>
 static void normalize_with_storage(void* actual_header, Storage& storage) {
     lowercase_native_string_header_004bcc00(actual_header);
     const auto slash_length = read_header<std::uint32_t>(actual_header, 0);
-    if constexpr (kWireGoal4Chain394Bound) {
-        if (signed_positive(slash_length)) {
-            const auto data = reinterpret_cast<std::uintptr_t>(read_header<char*>(actual_header, 4));
-            const auto header = reinterpret_cast<std::uintptr_t>(actual_header);
-            // 00BEE690's slash pass and 004259F0 (bsp.py show for both) replace
-            // the same bytes from index zero. Reuse the existing body on the
-            // live pooled string, retaining BEE690's signed-count gate. There
-            // are no callbacks in either pass. Disjoint owning string backing
-            // cannot change its header, so 4259F0's fresh length reads equal
-            // BEE690's captured count. Keep the original pass for header aliases
-            // (which could change that count) and the native null-data fault.
-            if (data != 0 && header - data >= slash_length && data - header >= sizeof(NativeString)) {
-                replace_native_string_character_004259f0(actual_header, '\\', '/', 0);
-            } else {
-                for (std::uint32_t index = 0; index < slash_length; ++index) {
-                    auto* byte = byte_at(read_header<char*>(actual_header, 4), index);
-                    if (*byte == '\\') *byte = '/';
-                }
-            }
-        }
-    } else {
-        if (signed_positive(slash_length)) {
+    if (signed_positive(slash_length)) {
+        const auto data = reinterpret_cast<std::uintptr_t>(read_header<char*>(actual_header, 4));
+        const auto header = reinterpret_cast<std::uintptr_t>(actual_header);
+        // 00BEE690's slash pass and 004259F0 (bsp.py show for both) replace
+        // the same bytes from index zero. Reuse the existing body on the
+        // live pooled string, retaining BEE690's signed-count gate. There
+        // are no callbacks in either pass. Disjoint owning string backing
+        // cannot change its header, so 4259F0's fresh length reads equal
+        // BEE690's captured count. Keep the original pass for header aliases
+        // (which could change that count) and the native null-data fault.
+        if (data != 0 && header - data >= slash_length && data - header >= sizeof(NativeString)) {
+            replace_native_string_character_004259f0(actual_header, '\\', '/', 0);
+        } else {
             for (std::uint32_t index = 0; index < slash_length; ++index) {
                 auto* byte = byte_at(read_header<char*>(actual_header, 4), index);
                 if (*byte == '\\') *byte = '/';

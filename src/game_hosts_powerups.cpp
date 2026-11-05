@@ -15,8 +15,6 @@
 #include "bsp/ai_command_object.hpp"
 #include "bsp/objectives_seg57_argon.hpp"
 #include "bsp/powerup_session_broadcast_cc13.hpp"
-#include "bsp/wire_goal4_chain310_switches.hpp"
-#include "bsp/wire_goal4_chain501_switches.hpp"
 #include "bsp/powerup_seg58_argon.hpp"
 
 #include <cstddef>
@@ -118,22 +116,16 @@ public:
         // The image returns after clearing its outputs when EnablePowerups is
         // clear; it does not inspect a player or an inventory on that path.
         if (enabled_ == 0 && !include_disabled_inventory) return;
-        if constexpr (kWireGoal4Chain501Bound) {
-            // bsp.py show 004B4740 / 004B6BC0: store game+18ECh and test
-            // its signed range [0, 8). The existing collector view has that
-            // exact field offset (asserted above); its value comes from the
-            // installed runtime host and selects the real inventory below.
-            // These are C++ field projections of the original thiscall RET 4
-            // setter and fastcall AL predicate, not native ABI replacements.
-            cc13_band004b::game_set_local_player_slot_004b4740(
-                game_.local_slot, runtime.host->local_player_slot_18ec());
-            if (!cc13_band004b::game_has_local_player_slot_004b6bc0(game_.local_slot))
-                throw std::logic_error("008E9AF0 local player outside 0..7");
-        } else {
-        game_.local_slot = runtime.host->local_player_slot_18ec();
-        if (game_.local_slot < 0 || game_.local_slot >= 8)
+        // bsp.py show 004B4740 / 004B6BC0: store game+18ECh and test
+        // its signed range [0, 8). The existing collector view has that
+        // exact field offset (asserted above); its value comes from the
+        // installed runtime host and selects the real inventory below.
+        // These are C++ field projections of the original thiscall RET 4
+        // setter and fastcall AL predicate, not native ABI replacements.
+        cc13_band004b::game_set_local_player_slot_004b4740(
+            game_.local_slot, runtime.host->local_player_slot_18ec());
+        if (!cc13_band004b::game_has_local_player_slot_004b6bc0(game_.local_slot))
             throw std::logic_error("008E9AF0 local player outside 0..7");
-        }
         for (std::size_t slot = 0; slot < heads_.size(); ++slot) {
             // 004C6890's published scene parties; an unauthored Party is -1.
             players_[slot].party = static_cast<int>(slot) == game_.local_slot
@@ -650,17 +642,7 @@ std::optional<float> reconstructed_site_product(int category, PowerupQueryUnit u
 std::optional<float> powerup_site_product(int category, std::size_t unit_index) {
     std::optional<float> result;
     if constexpr (kPowerUpSubsystemCc13Bound) {
-        if constexpr (bsp::kWireGoal4Chain310Bound) {
-            result = reconstructed_site_product(category, PowerupQueryUnit{unit_index, nullptr});
-        } else {
-            if (const std::list<PowerupModifier>* list = gated_list(category)) {
-                PowerupUnitView unit;
-                if (g_unit_resolver == nullptr || !g_unit_resolver->view_unit(unit_index, unit)) {
-                    throw std::logic_error("008E6430 without a unit view");
-                }
-                result = gameplay_modifier_product_008e6430(*list, unit, *g_unit_resolver);
-            }
-        }
+        result = reconstructed_site_product(category, PowerupQueryUnit{unit_index, nullptr});
     } else {
         (void)category;
         (void)unit_index;
@@ -671,16 +653,7 @@ std::optional<float> powerup_site_product(int category, std::size_t unit_index) 
 std::optional<float> powerup_site_product_for_view(int category, const PowerupUnitView& view) {
     std::optional<float> result;
     if constexpr (kPowerUpSubsystemCc13Bound) {
-        if constexpr (bsp::kWireGoal4Chain310Bound) {
-            result = reconstructed_site_product(category, PowerupQueryUnit{0, &view});
-        } else {
-            if (const std::list<PowerupModifier>* list = gated_list(category)) {
-                if (g_unit_resolver == nullptr) {
-                    throw std::logic_error("008E6430 without a unit resolver");
-                }
-                result = gameplay_modifier_product_008e6430(*list, view, *g_unit_resolver);
-            }
-        }
+        result = reconstructed_site_product(category, PowerupQueryUnit{0, &view});
     } else {
         (void)category;
         (void)view;

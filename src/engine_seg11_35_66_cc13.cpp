@@ -6,7 +6,6 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/sound_retained_record.hpp"
-#include "bsp/wire_goal2_chain157_switches.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -549,24 +548,11 @@ void read_message_record_00704590(VoiceClipRecord& record, PropertyVisitor& read
         path += voice + ".fsb";
         auto take = [&](const std::string& file) {
             void* bank = calls.load_sound_bank_00a83fd0(file);
-            if constexpr (kWireGoal2Chain157Bound) {
-                // 004E7BB0(ECX = &slot, &temporary) assigns the sample into the record slot:
-                // take(path) replaces the image's inlined copy at 00704E57..00704E93, take(plain)
-                // the real call at 00704FF9. OFF keeps the inline compare/retain/release.
-                assign_sound_sample_reference_004e7bb0(&record.resources_20[slot], &bank,
-                    calls.sample_reference_lifetime());
-            } else {
-                void* const previous = record.resources_20[slot];
-                if (previous != bank) {
-                    record.resources_20[slot] = bank;
-                    if (bank != nullptr) {
-                        calls.retain_reference(bank);
-                    }
-                    if (previous != nullptr) {
-                        calls.release_reference(previous);
-                    }
-                }
-            }
+            // 004E7BB0(ECX = &slot, &temporary) assigns the sample into the record slot:
+            // take(path) replaces the image's inlined copy at 00704E57..00704E93, take(plain)
+            // the real call at 00704FF9. OFF keeps the inline compare/retain/release.
+            assign_sound_sample_reference_004e7bb0(&record.resources_20[slot], &bank,
+                calls.sample_reference_lifetime());
             if (bank != nullptr) {
                 calls.release_reference(bank);  // the temporary's reference
             }
@@ -3440,7 +3426,6 @@ void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_
 
 #include "bsp/native_mpkg_directory.hpp"
 #include "bsp/native_mpkg_archive.hpp"
-#include "bsp/wire_goal4_chain459_switches.hpp"
 namespace bsp::oct18_tail_c {
 namespace {
 // Chain459: profiles in actual owners contain original numeric entries, not
@@ -3488,20 +3473,12 @@ void archive_write_field_00bd8cd0(void* writer, GuiTaggedWord key, GuiTaggedWord
 }
 __declspec(noinline) std::uint32_t mpkg_entry_offset_00bb8a90(void* state, void* entry, const MpkgBindings& b) {
     if (c_read<std::uint8_t>(entry, 0xc)) return c_read<CWord>(entry, 0x10);
-    if constexpr (kWireGoal4Chain459Bound) {
-        mpkg_seek(c_read<void*>(state,0xc),c_read<CWord>(entry,8),b);
-    } else {
-    c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, c_read<CWord>(entry, 8), CWord{0}, CWord{0});
-    }
+    mpkg_seek(c_read<void*>(state,0xc),c_read<CWord>(entry,8),b);
     void* const source = c_read<void*>(state, 0xc); // captured before allocation
     struct Reader { void* base; CWord reported; void* cursor; } reader;
     static_assert(sizeof(Reader) == 0xc);
     reader.base = b.allocate_header_00bf55be(0x1e);
-    if constexpr (kWireGoal4Chain459Bound) {
-        mpkg_read(source,reader.base,0x1e,&reader.reported,b);
-    } else {
-    c_virtual<void>(source, 0x24, reader.base, CWord{0x1e}, &reader.reported);
-    }
+    mpkg_read(source,reader.base,0x1e,&reader.reported,b);
     reader.cursor = reader.base;
     alignas(4) unsigned char header[0x34]; // actual header; local-only fields stay unwritten
     read_native_mpkg_header_00bb8850(&reader, header, 1);
@@ -3517,11 +3494,7 @@ void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
     (void)flags; // original stacked flags are unused
     const CWord offset = mpkg_entry_offset_00bb8a90(state, entry, b);
     if (c_read<std::uint16_t>(entry, 0x14) != 0) {
-        if constexpr (kWireGoal4Chain459Bound) {
-            mpkg_seek(c_read<void*>(state,0xc),offset,b);
-        } else {
-        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
-        }
+        mpkg_seek(c_read<void*>(state,0xc),offset,b);
         void* const allocation = b.allocate_owner_00bf681b(0x34);
         void* inflate = nullptr;
         if (allocation) {
@@ -3531,28 +3504,16 @@ void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
         }
         void* const memory = b.memory_00bef750(inflate);
         if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(inflate, 4))) == 0) {
-            if constexpr (kWireGoal4Chain459Bound) {
-                mpkg_zero_reference(inflate,b);
-            } else {
-            c_virtual<void>(inflate, 0);
-            }
+            mpkg_zero_reference(inflate,b);
         }
         return memory;
     }
     if (c_read<CWord>(entry, 0x1c) <= 0x40000) {
-        if constexpr (kWireGoal4Chain459Bound) {
-            mpkg_seek(c_read<void*>(state,0xc),offset,b);
-        } else {
-        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
-        }
+        mpkg_seek(c_read<void*>(state,0xc),offset,b);
         return b.copy_range_00bef840(c_read<void*>(state, 0xc), offset, 0, c_read<CWord>(entry, 0x1c), 0);
     }
     void* reopened;
-    if constexpr (kWireGoal4Chain459Bound) {
-        reopened = mpkg_reopen(vfs,c_at(state,4),b);
-    } else {
-        reopened = c_virtual<void*>(vfs, 4, c_at(state, 4), CWord{2});
-    }
+    reopened = mpkg_reopen(vfs,c_at(state,4),b);
     void* const allocation = b.allocate_owner_00bf681b(0x28);
     if (!allocation) return nullptr; // original does not retire reopened source here
     return b.adopted_00bf1130(allocation, reopened, offset, 0, c_read<CWord>(entry, 0x1c), 0);

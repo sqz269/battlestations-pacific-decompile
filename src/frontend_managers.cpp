@@ -1,8 +1,5 @@
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
-#include "bsp/wire_goal2_chain189_switches.hpp"
-#include "bsp/wire_goal4_chain503_switches.hpp"
-#include "bsp/wire_goal4_chain561_switches.hpp"
 
 #include <algorithm>
 
@@ -256,10 +253,9 @@ void init_main_menu_00686380(MainMenuManager& manager, FrontEndManagerSet& set,
     }
     host.register_locale_table(kMainMenuLocaleTable);
     // 00686240 at 00686690: register FE/FE_pc; OFF keeps the existing globals-only sequence.
-    if constexpr (kWireGoal2Chain189Bound) {
+    {
         MenuLocalisationRegistration registration(host);
         cc13_fe5::main_menu_register_localisation_tables_00686240(registration);
-    } else {
     }
     host.reload_locale_tables();
     // A mission result waiting to be shown clears the return flag and raises
@@ -375,15 +371,11 @@ void construct_front_end_managers_004e4171(FrontEndManagerSet& set,
     if (set.options == nullptr) {
         OptionsMenuManager* options = host.create_options_manager();
         if (options != nullptr) {
-            if constexpr (kWireGoal4Chain561Bound) {
-                // 00689800 now runs 00684E10's unique registration. Retain
-                // support for hosts returning a preconstructed typed owner.
-                if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
-                    == registry.managers.end()) {
-                    registry.managers.push_back(&options->base);
-                }
-            } else {
-            registry.managers.push_back(&options->base);
+            // 00689800 now runs 00684E10's unique registration. Retain
+            // support for hosts returning a preconstructed typed owner.
+            if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
+                == registry.managers.end()) {
+                registry.managers.push_back(&options->base);
             }
             init_options_menu_006898c0(*options, set, lock, host, payloads);
         }
@@ -392,16 +384,12 @@ void construct_front_end_managers_004e4171(FrontEndManagerSet& set,
     if (set.main_menu == nullptr) {
         MainMenuManager* main_menu = host.create_main_menu_manager();
         if (main_menu != nullptr) {
-            if constexpr (kWireGoal4Chain503Bound) {
-                // The actual 00686170/00684E10 constructor already publishes
-                // the base. Retain this helper's support for hosts that hand
-                // back a preconstructed typed manager without registering it.
-                if (std::find(registry.managers.begin(), registry.managers.end(), &main_menu->base)
-                    == registry.managers.end()) {
-                    registry.managers.push_back(&main_menu->base);
-                }
-            } else {
-            registry.managers.push_back(&main_menu->base);
+            // The actual 00686170/00684E10 constructor already publishes
+            // the base. Retain this helper's support for hosts that hand
+            // back a preconstructed typed manager without registering it.
+            if (std::find(registry.managers.begin(), registry.managers.end(), &main_menu->base)
+                == registry.managers.end()) {
+                registry.managers.push_back(&main_menu->base);
             }
             init_main_menu_00686380(
                 *main_menu, set, lock, host, payloads, screens, registry);
@@ -530,13 +518,9 @@ void raise_options_menu_004bac20(FrontEndManagerSet& set, FrontEndManagerRegistr
     if (set.options == nullptr) {
         OptionsMenuManager* options = host.create_options_manager();
         if (options != nullptr) {
-            if constexpr (kWireGoal4Chain561Bound) {
-                if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
-                    == registry.managers.end()) {
-                    registry.managers.push_back(&options->base);
-                }
-            } else {
-            registry.managers.push_back(&options->base);
+            if (std::find(registry.managers.begin(), registry.managers.end(), &options->base)
+                == registry.managers.end()) {
+                registry.managers.push_back(&options->base);
             }
             init_options_menu_006898c0(*options, set, lock, host, payloads);
         }

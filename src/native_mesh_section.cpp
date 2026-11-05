@@ -1,6 +1,5 @@
 #include "bsp/native_mesh_section.hpp"
 #include "bsp/native_mesh_section_lifetime.hpp"
-#include "bsp/wire_goal4_chain570_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -612,15 +611,11 @@ static void destroy_section_body(
     const SectionBaseCleanup base(section);
     release_then_clear(section.next_section_38, owners,issuer,next_site);
     release_then_clear(section.instance_generator_binding_5c, owners,issuer,generator_site);
-    if constexpr (kWireGoal4Chain570Bound) {
-        // Original 00B86495 calls 00B86390 after +38/+5C releases, before
-        // the base-profile cleanup. Forward this real section, owner registry
-        // and SAME observer; each child still releases exactly once.
-        // Evidence: bsp.py show 00b86420 / 00b86390.
-        clear_native_mesh_section_resources_00b86390(section, owners, issuer);
-    } else {
-        clear_section_resources_body(section, owners,issuer);
-    }
+    // Original 00B86495 calls 00B86390 after +38/+5C releases, before
+    // the base-profile cleanup. Forward this real section, owner registry
+    // and SAME observer; each child still releases exactly once.
+    // Evidence: bsp.py show 00b86420 / 00b86390.
+    clear_native_mesh_section_resources_00b86390(section, owners, issuer);
 }
 void clear_native_mesh_section_vertex_streams_00b86550(
     NativeMeshSectionStorage& section,NativeRenderActualOwners& owners) {
@@ -716,11 +711,7 @@ void NativeMeshSectionLifetimeAccess::mutate(NativeMeshSectionStorage& section,
     case Operation::indexed: set_native_mesh_section_indexed_00b85600(section,static_cast<std::uint8_t>(index));break;
     case Operation::clear_streams: clear_section_streams_body(section,owners,&issuer);break;
     case Operation::clear_resources:
-        if constexpr (kWireGoal4Chain570Bound) {
-            clear_native_mesh_section_resources_00b86390(section,owners,&issuer);
-        } else {
-            clear_section_resources_body(section,owners,&issuer);
-        }
+        clear_native_mesh_section_resources_00b86390(section,owners,&issuer);
         break;
     case Operation::rebuild: rebuild_section_layout_body(section,owners,operand,*services,&issuer);break;
     default: throw std::logic_error("Section private mutation operation mismatch");
@@ -730,12 +721,8 @@ void NativeMeshSectionLifetimeAccess::destroy(NativeMeshSectionStorage& section,
     NativeRenderActualOwners& owners,NativeMeshSectionLifetimeFrame& frame,
     NativeMeshSectionLifetimeCall& call) {
     NativeMeshSectionLifetimeIssuer issuer(frame,call);
-    if constexpr (kWireGoal4Chain570Bound) {
-        // The lifetime adapter supplies metadata to the existing Native
-        // destructor entry instead of bypassing it via the shared kernel.
-        destroy_native_mesh_section_00b86420(section,owners,&issuer);
-    } else {
-        destroy_section_body(section,owners,&issuer);
-    }
+    // The lifetime adapter supplies metadata to the existing Native
+    // destructor entry instead of bypassing it via the shared kernel.
+    destroy_native_mesh_section_00b86420(section,owners,&issuer);
 }
 } // namespace bsp

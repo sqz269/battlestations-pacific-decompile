@@ -13,9 +13,6 @@
 #include "bsp/native_entity_kind_4c_4e.hpp"
 #include "bsp/native_plane_kind.hpp"
 #include "bsp/native_plane_derived_kind.hpp"
-#include "bsp/wire_goal4_chain383_switches.hpp"
-#include "bsp/wire_goal4_chain444_switches.hpp"
-#include "bsp/wire_goal4_chain448_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -285,159 +282,120 @@ const UnitKindClassBody* unit_kind_body_for_class(int class_id) noexcept {
 
 bool unit_is_kind_of(int class_id, int literal) noexcept {
     if (class_id >= 0x0f && class_id <= 0x17) {
-        if constexpr (kWireGoal4Chain444Bound) {
-            // Source adapter, not an original-layout plane: callers supply the
-            // owning id from their live unit/device state. As for chain383's
-            // ships, populate only the sole field these raw leaves can read.
-            // bsp.py show <address> --asm for all nine entries: fixed ancestor
-            // compares, then one DWORD [ECX+C4h] compare, full EAX 0/1, RET 4.
-            // Each owning id is already a fixed accepted word, so this final
-            // read adds no answer to the former table-only API, including for
-            // negative/out-of-catalog queries. The unread prefix supplies no
-            // fabricated scene/vtable state; the aligned cell lives throughout
-            // the synchronous call. No native world/object ABI is claimed.
-            struct PlaneKindReceiver {
-                std::uint8_t unread_prefix[0xc4];
-                std::int32_t class_id_c4;
-            };
-            static_assert(offsetof(PlaneKindReceiver, class_id_c4) == 0xc4);
-            static_assert(sizeof(PlaneKindReceiver) == 0xc8);
-            PlaneKindReceiver receiver;
-            receiver.class_id_c4 = class_id;
-            const auto query = static_cast<std::uint32_t>(literal);
-            switch (class_id) {
-            case 0x0f:
-                return native_plane_is_kind_0074e400(&receiver, nullptr, query) != 0;
-            case 0x10:
-                return native_plane_derived_is_kind_007d77f0(&receiver, nullptr, query) != 0;
-            case 0x11:
-                return native_plane_derived_is_kind_009535c0(&receiver, nullptr, query) != 0;
-            case 0x12:
-                return native_plane_derived_is_kind_00953530(&receiver, nullptr, query) != 0;
-            case 0x13:
-                return native_plane_derived_is_kind_007dda80(&receiver, nullptr, query) != 0;
-            case 0x14:
-                return native_plane_derived_is_kind_0074e480(&receiver, nullptr, query) != 0;
-            case 0x15:
-                return native_plane_derived_is_kind_0084c9f0(&receiver, nullptr, query) != 0;
-            case 0x16:
-                return native_plane_derived_is_kind_0074e4e0(&receiver, nullptr, query) != 0;
-            case 0x17:
-                return native_plane_derived_is_kind_009534a0(&receiver, nullptr, query) != 0;
-            }
-        } else {
-        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-        if (body == nullptr) {
-            return false;
-        }
-        for (std::size_t i = 0; i < body->accept_count; ++i) {
-            if (body->accepts[i] == literal) {
-                return true;
-            }
-        }
-        return false;
-        }
-    }
-    if constexpr (kWireGoal4Chain383Bound) {
-        // This API receives the live owning class id, not a native object.
-        // GameUnitsHost::unit_is_kind_of and the other gameplay callers already
-        // supply that id from their unit/device state. Adapt exactly the sole
-        // field the native leaf reads; the prefix is unread, not fabricated
-        // scene or vtable state. This is a call-scoped layout adapter, not an
-        // assertion that the host unit has the original native object layout.
-        // bsp.py show <address> --asm: the eight bodies below test their fixed
-        // owning-class chain, then CMP EAX,[ECX+C4h], and return full EAX 0/1,
-        // RET 4. Here +C4h equals the supplied owning id, which is already in
-        // that body's fixed chain, so its final comparison preserves this API's
-        // table-only rule even for negative and out-of-catalog query DWORDs.
-        struct ShipKindReceiver {
+        // Source adapter, not an original-layout plane: callers supply the
+        // owning id from their live unit/device state. As for chain383's
+        // ships, populate only the sole field these raw leaves can read.
+        // bsp.py show <address> --asm for all nine entries: fixed ancestor
+        // compares, then one DWORD [ECX+C4h] compare, full EAX 0/1, RET 4.
+        // Each owning id is already a fixed accepted word, so this final
+        // read adds no answer to the former table-only API, including for
+        // negative/out-of-catalog queries. The unread prefix supplies no
+        // fabricated scene/vtable state; the aligned cell lives throughout
+        // the synchronous call. No native world/object ABI is claimed.
+        struct PlaneKindReceiver {
             std::uint8_t unread_prefix[0xc4];
             std::int32_t class_id_c4;
         };
-        static_assert(offsetof(ShipKindReceiver, class_id_c4) == 0xc4);
-        static_assert(sizeof(ShipKindReceiver) == 0xc8);
-        if (class_id >= 0x06 && class_id <= 0x0e && class_id != 0x07) {
-            ShipKindReceiver receiver;
-            receiver.class_id_c4 = class_id;
-            const auto query = static_cast<std::uint32_t>(literal);
-            switch (class_id) {
-            case 0x06:
-                return native_ship_base_is_kind_006dfe50(&receiver, nullptr, query) != 0;
-            case 0x08:
-                return native_submarine_is_kind_00853050(&receiver, nullptr, query) != 0;
-            case 0x09:
-                return native_mothership_is_kind_00758510(&receiver, nullptr, query) != 0;
-            case 0x0a:
-                return native_cruiser_is_kind_006fb3d0(&receiver, nullptr, query) != 0;
-            case 0x0b:
-                return native_cargo_is_kind_006eb230(&receiver, nullptr, query) != 0;
-            case 0x0c:
-                return native_landing_ship_is_kind_0074bc60(&receiver, nullptr, query) != 0;
-            case 0x0d:
-                return native_battleship_is_kind_006dfe90(&receiver, nullptr, query) != 0;
-            case 0x0e:
-                return native_torpedo_boat_is_kind_00857dc0(&receiver, nullptr, query) != 0;
-            }
+        static_assert(offsetof(PlaneKindReceiver, class_id_c4) == 0xc4);
+        static_assert(sizeof(PlaneKindReceiver) == 0xc8);
+        PlaneKindReceiver receiver;
+        receiver.class_id_c4 = class_id;
+        const auto query = static_cast<std::uint32_t>(literal);
+        switch (class_id) {
+        case 0x0f:
+            return native_plane_is_kind_0074e400(&receiver, nullptr, query) != 0;
+        case 0x10:
+            return native_plane_derived_is_kind_007d77f0(&receiver, nullptr, query) != 0;
+        case 0x11:
+            return native_plane_derived_is_kind_009535c0(&receiver, nullptr, query) != 0;
+        case 0x12:
+            return native_plane_derived_is_kind_00953530(&receiver, nullptr, query) != 0;
+        case 0x13:
+            return native_plane_derived_is_kind_007dda80(&receiver, nullptr, query) != 0;
+        case 0x14:
+            return native_plane_derived_is_kind_0074e480(&receiver, nullptr, query) != 0;
+        case 0x15:
+            return native_plane_derived_is_kind_0084c9f0(&receiver, nullptr, query) != 0;
+        case 0x16:
+            return native_plane_derived_is_kind_0074e4e0(&receiver, nullptr, query) != 0;
+        case 0x17:
+            return native_plane_derived_is_kind_009534a0(&receiver, nullptr, query) != 0;
         }
-        if constexpr (kWireGoal4Chain448Bound) {
-            // bsp.py show 0042B8F0/0047F190/0042C010/004351E0 --asm:
-            // each complete slot-5Ch body accepts its fixed chain, then reads
-            // only DWORD [ECX+C4h]. Reuse those bodies on the class identity
-            // supplied by the live gameplay callers of this API. As with the
-            // ship adapter above, the unread prefix supplies no object state.
-            // The final compare repeats the owning id, preserving this API's
-            // fixed-chain semantics. unit_kind_body_answers still separately
-            // handles a different dynamic id for inherited slot-5Ch bodies.
-            if (class_id == 0x00 || class_id == 0x01 ||
-                class_id == 0x4c || class_id == 0x4e) {
-                ShipKindReceiver receiver;
-                receiver.class_id_c4 = class_id;
-                const auto query = static_cast<std::uint32_t>(literal);
-                switch (class_id) {
-                case 0x00:
-                    return native_entity_root_is_kind_0042b8f0(&receiver, nullptr, query) != 0;
-                case 0x01:
-                    return native_entity_root_is_kind_0047f190(&receiver, nullptr, query) != 0;
-                case 0x4c:
-                    return native_entity_is_kind_0042c010(&receiver, nullptr, query) != 0;
-                case 0x4e:
-                    return native_entity_is_kind_004351e0(&receiver, nullptr, query) != 0;
-                }
-            }
-            const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-            if (body == nullptr) {
-                return false;
-            }
-            for (std::size_t i = 0; i < body->accept_count; ++i) {
-                if (body->accepts[i] == literal) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-            if (body == nullptr) {
-                return false;
-            }
-            for (std::size_t i = 0; i < body->accept_count; ++i) {
-                if (body->accepts[i] == literal) {
-                    return true;
-                }
-            }
-            return false;
+    }
+    // This API receives the live owning class id, not a native object.
+    // GameUnitsHost::unit_is_kind_of and the other gameplay callers already
+    // supply that id from their unit/device state. Adapt exactly the sole
+    // field the native leaf reads; the prefix is unread, not fabricated
+    // scene or vtable state. This is a call-scoped layout adapter, not an
+    // assertion that the host unit has the original native object layout.
+    // bsp.py show <address> --asm: the eight bodies below test their fixed
+    // owning-class chain, then CMP EAX,[ECX+C4h], and return full EAX 0/1,
+    // RET 4. Here +C4h equals the supplied owning id, which is already in
+    // that body's fixed chain, so its final comparison preserves this API's
+    // table-only rule even for negative and out-of-catalog query DWORDs.
+    struct ShipKindReceiver {
+        std::uint8_t unread_prefix[0xc4];
+        std::int32_t class_id_c4;
+    };
+    static_assert(offsetof(ShipKindReceiver, class_id_c4) == 0xc4);
+    static_assert(sizeof(ShipKindReceiver) == 0xc8);
+    if (class_id >= 0x06 && class_id <= 0x0e && class_id != 0x07) {
+        ShipKindReceiver receiver;
+        receiver.class_id_c4 = class_id;
+        const auto query = static_cast<std::uint32_t>(literal);
+        switch (class_id) {
+        case 0x06:
+            return native_ship_base_is_kind_006dfe50(&receiver, nullptr, query) != 0;
+        case 0x08:
+            return native_submarine_is_kind_00853050(&receiver, nullptr, query) != 0;
+        case 0x09:
+            return native_mothership_is_kind_00758510(&receiver, nullptr, query) != 0;
+        case 0x0a:
+            return native_cruiser_is_kind_006fb3d0(&receiver, nullptr, query) != 0;
+        case 0x0b:
+            return native_cargo_is_kind_006eb230(&receiver, nullptr, query) != 0;
+        case 0x0c:
+            return native_landing_ship_is_kind_0074bc60(&receiver, nullptr, query) != 0;
+        case 0x0d:
+            return native_battleship_is_kind_006dfe90(&receiver, nullptr, query) != 0;
+        case 0x0e:
+            return native_torpedo_boat_is_kind_00857dc0(&receiver, nullptr, query) != 0;
         }
-    } else {
-        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-        if (body == nullptr) {
-            return false;
+    }
+    // bsp.py show 0042B8F0/0047F190/0042C010/004351E0 --asm:
+    // each complete slot-5Ch body accepts its fixed chain, then reads
+    // only DWORD [ECX+C4h]. Reuse those bodies on the class identity
+    // supplied by the live gameplay callers of this API. As with the
+    // ship adapter above, the unread prefix supplies no object state.
+    // The final compare repeats the owning id, preserving this API's
+    // fixed-chain semantics. unit_kind_body_answers still separately
+    // handles a different dynamic id for inherited slot-5Ch bodies.
+    if (class_id == 0x00 || class_id == 0x01 ||
+        class_id == 0x4c || class_id == 0x4e) {
+        ShipKindReceiver receiver;
+        receiver.class_id_c4 = class_id;
+        const auto query = static_cast<std::uint32_t>(literal);
+        switch (class_id) {
+        case 0x00:
+            return native_entity_root_is_kind_0042b8f0(&receiver, nullptr, query) != 0;
+        case 0x01:
+            return native_entity_root_is_kind_0047f190(&receiver, nullptr, query) != 0;
+        case 0x4c:
+            return native_entity_is_kind_0042c010(&receiver, nullptr, query) != 0;
+        case 0x4e:
+            return native_entity_is_kind_004351e0(&receiver, nullptr, query) != 0;
         }
-        for (std::size_t i = 0; i < body->accept_count; ++i) {
-            if (body->accepts[i] == literal) {
-                return true;
-            }
-        }
+    }
+    const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+    if (body == nullptr) {
         return false;
     }
+    for (std::size_t i = 0; i < body->accept_count; ++i) {
+        if (body->accepts[i] == literal) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool unit_kind_body_answers(int owner_class_id, int dynamic_class_id, int literal) noexcept {

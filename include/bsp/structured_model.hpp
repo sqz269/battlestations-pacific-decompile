@@ -1,8 +1,6 @@
 #pragma once
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/structured_resource_registry.hpp"
-#include "bsp/wire_goal4_chain563_switches.hpp"
-#include "bsp/wire_goal4_chain575_switches.hpp"
 #include <cstddef>
 #include <iterator>
 #include <type_traits>
@@ -41,8 +39,7 @@ private:
     alignas(4) std::array<std::byte, 0x28> resource_fields_{};
 };
 
-using StructuredHierarchyStorage = std::conditional_t<kWireGoal4Chain563Bound,
-    StructuredHierarchyItems, std::vector<HierarchyItem>>;
+using StructuredHierarchyStorage = StructuredHierarchyItems;
 
 // Own the decoded records whose opaque pointers occupy resource+10h/14h/18h.
 // Serialized ordinals, including unsupported records, come only from this
@@ -97,8 +94,7 @@ private:
     alignas(4) std::array<std::byte, 0x1c> resource_fields_{};
 };
 
-using StructuredResourceStorage = std::conditional_t<kWireGoal4Chain575Bound,
-    StructuredResourceItems, std::vector<DecodedStructuredResource>>;
+using StructuredResourceStorage = StructuredResourceItems;
 
 // Retained owning wire values, not the native 0x74-byte GameResource ABI.
 // Resource records preserve indices even for unsupported payloads (nullopt).

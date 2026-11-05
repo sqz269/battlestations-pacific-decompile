@@ -17,8 +17,6 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_graph2_cc13.hpp"
 #include "bsp/scene_weather_cc13.hpp"
-#include "bsp/wire_goal2_chain129_switches.hpp"
-#include "bsp/wire_goal4_chain560_switches.hpp"
 
 // pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 (x87_*24) in the
 // spectrum leaves the main thread runs at 24-bit precision control; OFF keeps each double
@@ -175,18 +173,13 @@ void ocean_spectrum_build_00b95750(OceanSpectrum& sp) {
 
     const std::size_t grid = static_cast<std::size_t>(kOceanGridSide * kOceanGridSide);
     // 00B97030: construct_float_vector supplies the live spectrum tables; OFF keeps assign.
-    if constexpr (kWireGoal2Chain129Bound) {
-        // 00B971ED/00B9720D construct the +4Ch/+5Ch tables with 1000h zero floats.
-        // This host sizes those tables in the builder reached by that same constructor,
-        // and also rebuilds them after authored wind/height changes. `grid` is its extent.
-        sp.inv_k_60 = cc13_scene2::construct_float_vector_00b97030(
-            static_cast<std::uint32_t>(grid), 0.0f);
-        sp.omega_50 = cc13_scene2::construct_float_vector_00b97030(
-            static_cast<std::uint32_t>(grid), 0.0f);
-    } else {
-    sp.inv_k_60.assign(grid, 0.0f);
-    sp.omega_50.assign(grid, 0.0f);
-    }
+    // 00B971ED/00B9720D construct the +4Ch/+5Ch tables with 1000h zero floats.
+    // This host sizes those tables in the builder reached by that same constructor,
+    // and also rebuilds them after authored wind/height changes. `grid` is its extent.
+    sp.inv_k_60 = cc13_scene2::construct_float_vector_00b97030(
+        static_cast<std::uint32_t>(grid), 0.0f);
+    sp.omega_50 = cc13_scene2::construct_float_vector_00b97030(
+        static_cast<std::uint32_t>(grid), 0.0f);
     std::size_t i = 0;
     for (int m = -kOceanSpectrumHalf; m < kOceanSpectrumHalf; ++m) {
         const float a = f32(m * kOceanWaveNumberStep);
@@ -234,7 +227,7 @@ void ocean_spectrum_set_height_00b96c50(OceanSpectrum& sp, float height, float c
 void ocean_spectrum_construct_00b97100(OceanSpectrum& sp) {
     sp = OceanSpectrum{};
     // 00B96B60: fill_pairs initializes the spectrum cells; OFF keeps vector::assign.
-    if constexpr (kWireGoal2Chain129Bound) {
+    {
         // 00B9717F -> 00B96F80 -> 00B96FF8 constructs the 1000h complex cells
         // from the constructor's two zero dwords. Copy representations rather
         // than aliasing the host's float members as uint32_t objects.
@@ -250,8 +243,6 @@ void ocean_spectrum_construct_00b97100(OceanSpectrum& sp) {
             static_cast<std::int32_t>(count), zero_pair);
         sp.h_20.resize(count);
         std::memcpy(sp.h_20.data(), initialized.get(), count * sizeof(OceanComplex));
-    } else {
-    sp.h_20.assign(static_cast<std::size_t>(kOceanGridSide * kOceanGridSide), {});
     }
     sp.direction_power_84 = 0.5f;                                    // 00CE3800
     // 00B97295..00B972DA: 00D638CC..00D638E0.
@@ -458,79 +449,48 @@ int append_ocean_property_bag(const ScenePropertyBlock& source, ScenePropertyBag
 }  // namespace
 
 OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header) {
-    if constexpr (kWireGoal4Chain560Bound) {
-        OceanSceneWaves waves;  // 004CB420's retained wave defaults
-        const ScenePropertyBlock* ocean = nullptr;
-        for (const auto& child : header.blocks) {
-            if (child.first == "g_Ocean") ocean = &child.second;
-        }
-        if (ocean == nullptr) return waves;  // 004F21E9: no group, no reader call
-
-        ScenePropertyBagModel model;
-        const int bag = append_ocean_property_bag(*ocean, model);
-        scene_weather_cc13::SceneOceanFields fields;
-        fields.waves_falloff_9bc = waves.falloff_2c;
-        fields.waves_layer_scale_9c0 = waves.layer_scale_30;
-        fields.waves_time_scale_9c4 = waves.time_scale_34;
-        fields.waves_wind_direction_9dc = waves.wind_direction_4c;
-        fields.waves_wind_speed_9e0 = waves.wind_speed_50;
-        fields.waves_wave_height_9e4 = waves.wave_height_54;
-        fields.waves_choppy_factor_9e8 = waves.choppy_58;
-        fields.waves_height_scale_9ec = waves.height_scale_5c;
-
-        // Native 004F2205 -> 004EB9B0 (ECX bag, EDX scene record). The typed
-        // reader owns I-to-F conversion and all field lookup; its wave outputs
-        // feed the existing live spectrum producer below, once. The colour
-        // linearization flag is the image's immutable byte 00F88A0C = 0:
-        // bsp.py ghidra bytes/xrefs 00f88a0c, 2026-11-04, all 32 xrefs READ.
-        // Optical/particle outputs have no live renderer consumer here.
-        std::string error;
-        if (!scene_weather_cc13::read_water_properties_004eb9b0(
-                model, bag, false, fields, error)) {
-            throw std::runtime_error("scene ocean properties: " + error);
-        }
-        waves.falloff_2c = fields.waves_falloff_9bc;
-        waves.layer_scale_30 = fields.waves_layer_scale_9c0;
-        waves.time_scale_34 = fields.waves_time_scale_9c4;
-        waves.wind_direction_4c = fields.waves_wind_direction_9dc;
-        waves.wind_speed_50 = fields.waves_wind_speed_9e0;
-        waves.wave_height_54 = fields.waves_wave_height_9e4;
-        waves.choppy_58 = fields.waves_choppy_factor_9e8;
-        waves.height_scale_5c = fields.waves_height_scale_9ec;
-        waves.simple_ocean = fields.simple_ocean_c20 != 0;
-        const ScenePropertyEntry* waves_entry = scene_property_bag_find(model, bag, "Waves");
-        waves.authored = waves_entry != nullptr && waves_entry->value.type == ScenePropertyType::SubBag;
-        return waves;
-    } else {
-    OceanSceneWaves waves;
+    OceanSceneWaves waves;  // 004CB420's retained wave defaults
     const ScenePropertyBlock* ocean = nullptr;
     for (const auto& child : header.blocks) {
         if (child.first == "g_Ocean") ocean = &child.second;
     }
-    if (ocean == nullptr) return waves;
-    if (const SceneProperty* simple = ocean->find("0_SimpleOcean")) {
-        if (simple->has_boolean) waves.simple_ocean = simple->boolean_value != 0;
+    if (ocean == nullptr) return waves;  // 004F21E9: no group, no reader call
+
+    ScenePropertyBagModel model;
+    const int bag = append_ocean_property_bag(*ocean, model);
+    scene_weather_cc13::SceneOceanFields fields;
+    fields.waves_falloff_9bc = waves.falloff_2c;
+    fields.waves_layer_scale_9c0 = waves.layer_scale_30;
+    fields.waves_time_scale_9c4 = waves.time_scale_34;
+    fields.waves_wind_direction_9dc = waves.wind_direction_4c;
+    fields.waves_wind_speed_9e0 = waves.wind_speed_50;
+    fields.waves_wave_height_9e4 = waves.wave_height_54;
+    fields.waves_choppy_factor_9e8 = waves.choppy_58;
+    fields.waves_height_scale_9ec = waves.height_scale_5c;
+
+    // Native 004F2205 -> 004EB9B0 (ECX bag, EDX scene record). The typed
+    // reader owns I-to-F conversion and all field lookup; its wave outputs
+    // feed the existing live spectrum producer below, once. The colour
+    // linearization flag is the image's immutable byte 00F88A0C = 0:
+    // bsp.py ghidra bytes/xrefs 00f88a0c, 2026-11-04, all 32 xrefs READ.
+    // Optical/particle outputs have no live renderer consumer here.
+    std::string error;
+    if (!scene_weather_cc13::read_water_properties_004eb9b0(
+            model, bag, false, fields, error)) {
+        throw std::runtime_error("scene ocean properties: " + error);
     }
-    const ScenePropertyBlock* block = nullptr;
-    for (const auto& child : ocean->blocks) {
-        if (child.first == "Waves") block = &child.second;
-    }
-    if (block == nullptr) return waves;
-    waves.authored = true;
-    const auto read = [block](const char* key, float& out) {
-        const SceneProperty* p = block->find(key);
-        if (p != nullptr && p->has_float) out = p->float_value;
-    };
-    read("Falloff", waves.falloff_2c);
-    read("LayerScale", waves.layer_scale_30);
-    read("TimeScale", waves.time_scale_34);
-    read("WindDirection", waves.wind_direction_4c);
-    read("WindSpeed", waves.wind_speed_50);
-    read("WaveHeight", waves.wave_height_54);
-    read("ChoppyWavesFactor", waves.choppy_58);
-    read("HeightScale", waves.height_scale_5c);
+    waves.falloff_2c = fields.waves_falloff_9bc;
+    waves.layer_scale_30 = fields.waves_layer_scale_9c0;
+    waves.time_scale_34 = fields.waves_time_scale_9c4;
+    waves.wind_direction_4c = fields.waves_wind_direction_9dc;
+    waves.wind_speed_50 = fields.waves_wind_speed_9e0;
+    waves.wave_height_54 = fields.waves_wave_height_9e4;
+    waves.choppy_58 = fields.waves_choppy_factor_9e8;
+    waves.height_scale_5c = fields.waves_height_scale_9ec;
+    waves.simple_ocean = fields.simple_ocean_c20 != 0;
+    const ScenePropertyEntry* waves_entry = scene_property_bag_find(model, bag, "Waves");
+    waves.authored = waves_entry != nullptr && waves_entry->value.type == ScenePropertyType::SubBag;
     return waves;
-    }
 }
 
 void ocean_live_field_build(OceanLiveField& ocean, const OceanSceneWaves& waves) {

@@ -8,7 +8,6 @@
 #include "bsp/native_renderer_debug_records24.hpp"
 #include "bsp/native_renderer_debug_records40.hpp"
 #include "bsp/render_queue_seg83_cc13.hpp"
-#include "bsp/wire_goal4_chain446_switches.hpp"
 #include "bsp/xlive_library.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -163,16 +162,12 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
     auto* const section = at(renderer, 0x19f4);
     EnterCriticalSection(static_cast<CRITICAL_SECTION*>(section));
     put(section, 0x18, word(section, 0x18) + 1u);
-    if constexpr (kWireGoal4Chain446Bound) {
-        // 00B1FEB0 (bsp.py show): MOV EAX,[ECX+1974h]; RET, borrowed
-        // physical vertex wrapper with no AddRef. Use the current actual
-        // renderer, under the same +19F4h section, and consume the result in
-        // the existing rewind; no copied renderer or second rewind is made.
-        rewind_native_physical_vertex_00b232b0(
-            cc13_seg83::renderer_shared_vertex_buffer_00b1feb0(renderer), c.actual_rewind);
-    } else {
-        rewind_native_physical_vertex_00b232b0(pointer(word(renderer, 0x1974)), c.actual_rewind);
-    }
+    // 00B1FEB0 (bsp.py show): MOV EAX,[ECX+1974h]; RET, borrowed
+    // physical vertex wrapper with no AddRef. Use the current actual
+    // renderer, under the same +19F4h section, and consume the result in
+    // the existing rewind; no copied renderer or second rewind is made.
+    rewind_native_physical_vertex_00b232b0(
+        cc13_seg83::renderer_shared_vertex_buffer_00b1feb0(renderer), c.actual_rewind);
     // No native EH cleanup is armed for this embedded section.
     put(section, 0x18, word(section, 0x18) - 1u);
     LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(section));

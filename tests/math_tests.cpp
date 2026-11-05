@@ -14,8 +14,6 @@
 #include "bsp/unit_weapons.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
-#include "bsp/wire_goal4_chain426_switches.hpp"
-#include "bsp/wire_goal4_chain563_switches.hpp"
 #include "bsp/structured_model.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/ai_planner_tails.hpp"
@@ -46,7 +44,6 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/archive_text_writer.hpp"
-#include "bsp/wire_goal4_chain542_switches.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
@@ -70,10 +67,8 @@
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_scroller_bridge.hpp"
-#include "bsp/wire_goal4_chain463_switches.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/native_input_action_contexts.hpp"
-#include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/seg10_cc13.hpp"
 #include "bsp/sound_cc13.hpp"
 #include "bsp/hud_screens.hpp"
@@ -107,13 +102,10 @@
 #include "bsp/native_property_library_insert.hpp"
 #include "bsp/native_property_library_readers.hpp"
 #include "bsp/native_property_tree_library_storage.hpp"
-#include "bsp/wire_goal4_chain425_switches.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_enum_scalar_delete.hpp"
 #include "bsp/native_enum_symbol_insertion.hpp"
-#include "bsp/wire_goal4_chain382_switches.hpp"
-#include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_instance_layout.hpp"
@@ -1802,18 +1794,16 @@ int main() {
             "the branch just below that boundary agrees with it");
         check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
             "a zero range fills the track with the thumb and reports not scrollable");
-        if constexpr (bsp::game::kWireGoal4Chain463Bound) {
-            // Each vector differs by one binary32 ULP from the old double
-            // chain. Values stay inside the drag track; compare the native
-            // PC24 operation schedule, not a tolerance that hides the error.
-            check(bsp::dragged_thumb_y(0.08659771829843521f, 0.48606812953948975f,
-                      0.03748560696840286f, 0.023717306554317474f, 0.8193197250366211f)
-                    == 0.5864341855049133f,
-                "00683820 drag rounds FSUB and both FADD operations at PC24");
-            check(bsp::scroll_offset_from_thumb_y(0.22475291788578033f, 0.0728134736418724f,
-                      0.746063232421875f, 0.9753149747848511f) == -0.19862771034240723f,
-                "00683820 drag ratio rounds FSUB before FDIV and its DWORD spill");
-        }
+        // Each vector differs by one binary32 ULP from the old double
+        // chain. Values stay inside the drag track; compare the native
+        // PC24 operation schedule, not a tolerance that hides the error.
+        check(bsp::dragged_thumb_y(0.08659771829843521f, 0.48606812953948975f,
+                  0.03748560696840286f, 0.023717306554317474f, 0.8193197250366211f)
+                == 0.5864341855049133f,
+            "00683820 drag rounds FSUB and both FADD operations at PC24");
+        check(bsp::scroll_offset_from_thumb_y(0.22475291788578033f, 0.0728134736418724f,
+                  0.746063232421875f, 0.9753149747848511f) == -0.19862771034240723f,
+            "00683820 drag ratio rounds FSUB before FDIV and its DWORD spill");
     }
 
     {
@@ -1851,7 +1841,7 @@ int main() {
             bridge.refresh(drawn_thumb, &thumb);
             bridge.refresh(drawn_arrow, &top);
             const bool positive = range > 0.0f;
-            if constexpr (bsp::kWireGoal4Chain407Bound) {
+            {
                 // build_quads uses this height in bottom = top + height*screen_h
                 // and this packed diffuse value in ALL six submitted vertices.
                 const float expected_pixels = positive ? 230.4f : 374.4f;
@@ -1861,11 +1851,6 @@ int main() {
                         && bridge.color(drawn_arrow, &bottom) == (positive ? 0xffffffffu : 0x40ffffffu)
                         && !drawn_thumb.runtime,
                     "chain407 zero/positive range reaches authored thumb geometry and thumb/arrow vertex tint");
-            } else {
-                check(drawn_thumb.height == 0.12f && !drawn_thumb.runtime
-                        && bridge.color(drawn_thumb, &thumb) == 0xffffffffu
-                        && bridge.color(drawn_arrow, &top) == 0xffffffffu,
-                    "chain407 OFF preserves authored cached size and constant-white vertex tint");
             }
             check(!bridge.refresh(untouched, &unrelated) && untouched.height == 0.7f
                     && bridge.color(untouched, &unrelated) == 0xffffffffu,
@@ -1993,51 +1978,49 @@ int main() {
                     && std::fgetc(file) == EOF && sink.str() == expected,
                 "archive encoded output strips whitespace and preserves signed high-byte transform");
             std::fclose(file);
-            if constexpr (bsp::kWireGoal4Chain542Bound) {
-                // The successful compact write just warmed TWO same-sized
-                // pooled blocks (original + by-value encoded copy). Reusing
-                // that input makes unchanged bump/free counts a direct check
-                // for missing OR double returns when an output provider fails.
-                auto& strings = bsp::game::game_native_string_process();
-                auto* const pool = strings.pool_01090aa8();
-                check(pool != nullptr && strings.returns_disabled_01090aa4() == 0,
-                    "archive failure fixture has the actual returning pool");
-                const auto bump = pool->bump_6acfc8;
-                const auto free_blocks = pool->ring_6acfcc.live_2004b0;
-                struct RejectingSink final : bsp::ArchiveByteSink {
-                    unsigned calls{};
-                    void write(std::string_view) override {
-                        ++calls;
-                        throw std::runtime_error("archive rejecting sink");
-                    }
-                } rejecting;
-                output = {nullptr, false, &rejecting};
-                bool plain_failed = false;
+            // The successful compact write just warmed TWO same-sized
+            // pooled blocks (original + by-value encoded copy). Reusing
+            // that input makes unchanged bump/free counts a direct check
+            // for missing OR double returns when an output provider fails.
+            auto& strings = bsp::game::game_native_string_process();
+            auto* const pool = strings.pool_01090aa8();
+            check(pool != nullptr && strings.returns_disabled_01090aa4() == 0,
+                "archive failure fixture has the actual returning pool");
+            const auto bump = pool->bump_6acfc8;
+            const auto free_blocks = pool->ring_6acfcc.live_2004b0;
+            struct RejectingSink final : bsp::ArchiveByteSink {
+                unsigned calls{};
+                void write(std::string_view) override {
+                    ++calls;
+                    throw std::runtime_error("archive rejecting sink");
+                }
+            } rejecting;
+            output = {nullptr, false, &rejecting};
+            bool plain_failed = false;
+            try {
+                output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
+            } catch (const std::runtime_error& error) {
+                plain_failed = std::string_view(error.what()) == "archive rejecting sink";
+            }
+            check(plain_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
+                    && pool->ring_6acfcc.live_2004b0 == free_blocks,
+                "throwing archive sink returns its owned pooled block exactly once");
+
+            std::FILE* read_only = nullptr;
+            check(fopen_s(&read_only, "NUL", "rb") == 0 && read_only != nullptr,
+                "archive compact failure fixture opens a read-only FILE");
+            if (read_only != nullptr) {
+                output = {read_only, true, &rejecting};
+                bool compact_failed = false;
                 try {
                     output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
                 } catch (const std::runtime_error& error) {
-                    plain_failed = std::string_view(error.what()) == "archive rejecting sink";
+                    compact_failed = std::string_view(error.what()) == "archive fwrite failed";
                 }
-                check(plain_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
+                check(compact_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
                         && pool->ring_6acfcc.live_2004b0 == free_blocks,
-                    "throwing archive sink returns its owned pooled block exactly once");
-
-                std::FILE* read_only = nullptr;
-                check(fopen_s(&read_only, "NUL", "rb") == 0 && read_only != nullptr,
-                    "archive compact failure fixture opens a read-only FILE");
-                if (read_only != nullptr) {
-                    output = {read_only, true, &rejecting};
-                    bool compact_failed = false;
-                    try {
-                        output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
-                    } catch (const std::runtime_error& error) {
-                        compact_failed = std::string_view(error.what()) == "archive fwrite failed";
-                    }
-                    check(compact_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
-                            && pool->ring_6acfcc.live_2004b0 == free_blocks,
-                        "failed compact fwrite returns both pooled blocks exactly once");
-                    std::fclose(read_only);
-                }
+                    "failed compact fwrite returns both pooled blocks exactly once");
+                std::fclose(read_only);
             }
         }
     }
@@ -2252,57 +2235,55 @@ int main() {
 
     {
         // Chain 382: keep a captured enum word when its live symbol changes.
-        if constexpr (bsp::kWireGoal4Chain382Bound) {
-            struct EnumSource final : bsp::game::SceneNativeEnumSource {
-                bsp::game::GameNativeStringProcess& strings = bsp::game::game_native_string_process();
-                void* pool;
-                bsp::NativeSceneEnumOwnerStorage* owner;
-                EnumSource() {
-                    auto& pools = bsp::game::game_native_physical_pool_process();
-                    pools.initialize_enum_symbol_pool_once_00cc8a50();
-                    pool = pools.enum_symbol_pool_storage_00e17578();
-                    owner = static_cast<bsp::NativeSceneEnumOwnerStorage*>(bsp::singleton_lifetime_allocate(
-                        {bsp::SingletonAllocationKind::object, 0x19c, 0x19c}));
-                    static constexpr char type = 'E';
-                    bsp::initialize_native_scene_enum_owner_008f4dd0(*owner, strings.raw_context(), &type);
-                    set_word(7);
-                }
-                ~EnumSource() {
-                    bsp::delete_native_scene_enum_owner_008f59c0(owner, 1, pool, strings.raw_context());
-                }
-                void set_word(std::uint32_t word) {
-                    bsp::NativeString key;
-                    bsp::construct_native_string_header_0041e870(&key, strings.raw_context(), "Alpha");
-                    bsp::insert_native_enum_symbol_word_008f2850(&owner->map, key, word, pool,
-                        strings.raw_context(), strings.enum_empty_00e186ed(), strings.query_empty_00e17654());
-                    bsp::destroy_native_string_header_0041dd20(&key, strings.raw_context());
-                }
-                const void* known_enum_owner(const std::string& table, const std::string& symbol) override {
-                    return table == "Words" && symbol == "Alpha" ? owner : nullptr;
-                }
-            } enums;
-            std::vector<std::string> errors;
-            bsp::SceneLexer enum_text("{ Choice = E Words : Alpha ; }");
-            const auto source = bsp::parse_scene_property_block_008f5a00(enum_text, errors);
-            bsp::ScenePropertyBlock empty, captured;
-            {
-                bsp::game::SceneNumericPropertyMerge merge(empty, source, false, &enums);
-                captured.values.push_back(merge.result(source.values.at(0)));
+        struct EnumSource final : bsp::game::SceneNativeEnumSource {
+            bsp::game::GameNativeStringProcess& strings = bsp::game::game_native_string_process();
+            void* pool;
+            bsp::NativeSceneEnumOwnerStorage* owner;
+            EnumSource() {
+                auto& pools = bsp::game::game_native_physical_pool_process();
+                pools.initialize_enum_symbol_pool_once_00cc8a50();
+                pool = pools.enum_symbol_pool_storage_00e17578();
+                owner = static_cast<bsp::NativeSceneEnumOwnerStorage*>(bsp::singleton_lifetime_allocate(
+                    {bsp::SingletonAllocationKind::object, 0x19c, 0x19c}));
+                static constexpr char type = 'E';
+                bsp::initialize_native_scene_enum_owner_008f4dd0(*owner, strings.raw_context(), &type);
+                set_word(7);
             }
-            enums.set_word(9);
-            bool passed = errors.empty() && captured.values[0].has_enum_value
-                && captured.values[0].enum_value == 7;
-            {
-                bsp::game::SceneNumericPropertyMerge merge(empty, captured, false, &enums);
-                passed = passed && merge.result(captured.values[0]).enum_value == 7;
+            ~EnumSource() {
+                bsp::delete_native_scene_enum_owner_008f59c0(owner, 1, pool, strings.raw_context());
             }
-            for (const bool overwrite : {false, true}) {
-                bsp::game::SceneNumericPropertyMerge merge(captured, source, overwrite, &enums);
-                passed = passed && merge.result(overwrite ? source.values[0] : captured.values[0])
-                    .enum_value == (overwrite ? 9 : 7);
+            void set_word(std::uint32_t word) {
+                bsp::NativeString key;
+                bsp::construct_native_string_header_0041e870(&key, strings.raw_context(), "Alpha");
+                bsp::insert_native_enum_symbol_word_008f2850(&owner->map, key, word, pool,
+                    strings.raw_context(), strings.enum_empty_00e186ed(), strings.query_empty_00e17654());
+                bsp::destroy_native_string_header_0041dd20(&key, strings.raw_context());
             }
-            check(passed, "native enum copy preserves captured words across symbol changes, while fresh overwrite resolves again");
+            const void* known_enum_owner(const std::string& table, const std::string& symbol) override {
+                return table == "Words" && symbol == "Alpha" ? owner : nullptr;
+            }
+        } enums;
+        std::vector<std::string> errors;
+        bsp::SceneLexer enum_text("{ Choice = E Words : Alpha ; }");
+        const auto source = bsp::parse_scene_property_block_008f5a00(enum_text, errors);
+        bsp::ScenePropertyBlock empty, captured;
+        {
+            bsp::game::SceneNumericPropertyMerge merge(empty, source, false, &enums);
+            captured.values.push_back(merge.result(source.values.at(0)));
         }
+        enums.set_word(9);
+        bool passed = errors.empty() && captured.values[0].has_enum_value
+            && captured.values[0].enum_value == 7;
+        {
+            bsp::game::SceneNumericPropertyMerge merge(empty, captured, false, &enums);
+            passed = passed && merge.result(captured.values[0]).enum_value == 7;
+        }
+        for (const bool overwrite : {false, true}) {
+            bsp::game::SceneNumericPropertyMerge merge(captured, source, overwrite, &enums);
+            passed = passed && merge.result(overwrite ? source.values[0] : captured.values[0])
+                .enum_value == (overwrite ? 9 : 7);
+        }
+        check(passed, "native enum copy preserves captured words across symbol changes, while fresh overwrite resolves again");
     }
 
     {
@@ -2330,104 +2311,100 @@ int main() {
     {
         // Chain 330: one fixture covers authored V3A -> native owning bag ->
         // keep/overwrite/miss merge -> independent publication after teardown.
-        if constexpr (bsp::kWireGoal4Chain330Bound) {
-            const SceneDocument doc = parse_scene_document(
-                "entity \"Array\" (Landscape) { "
-                "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
-                "Route = V3A 2 (1.25 -0 .75) (-2 3 4); "
-                "Short = V3A 2 (1 2 3); "
-                "Bad = V3A 1 (1 x 3); "
-                "Zero = V3A 0; After = I 7; } }");
-            const ScenePropertyBlock& source = doc.entities.at(0).properties;
-            const SceneProperty* route = source.find("Route");
-            check(doc.errors.empty() && route != nullptr && route->has_vector3_array
-                    && route->vector3_array.size() == 2
-                    && std::signbit(route->vector3_array[0][1])
-                    && !source.find("Short")->has_vector3_array
-                    && !source.find("Bad")->has_vector3_array
-                    && !source.find("Zero")->has_vector3_array
-                    && source.find("After")->integer_value == 7,
-                "V3A admits complete triples, preserves signed zero and bounds malformed statements");
-            if (route != nullptr && route->has_vector3_array) {
-                ScenePropertyBlock destination;
-                SceneProperty old = *route;
-                old.vector3_array = {{{9.0f, 8.0f, 7.0f}}};
-                destination.values.push_back(old);
-                SceneProperty kept, replaced, cloned;
-                {
-                    bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
-                    check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
-                        "native V3A projection handles only the complete payload");
-                    kept = merge.result(old);
-                }
-                {
-                    bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
-                    replaced = merge.result(*route);
-                }
-                {
-                    ScenePropertyBlock empty;
-                    bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
-                    cloned = merge.result(*route);
-                }
-                check(kept.has_vector3_array && kept.vector3_array == old.vector3_array
-                        && replaced.has_vector3_array && cloned.has_vector3_array
-                        && replaced.vector3_array == route->vector3_array
-                        && cloned.vector3_array == route->vector3_array
-                        && std::signbit(replaced.vector3_array[0][1])
-                        && std::signbit(cloned.vector3_array[0][1]),
-                    "native type-11 keep, assignment and clone publish owned bytes after both bags retire");
+        const SceneDocument doc = parse_scene_document(
+            "entity \"Array\" (Landscape) { "
+            "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
+            "Route = V3A 2 (1.25 -0 .75) (-2 3 4); "
+            "Short = V3A 2 (1 2 3); "
+            "Bad = V3A 1 (1 x 3); "
+            "Zero = V3A 0; After = I 7; } }");
+        const ScenePropertyBlock& source = doc.entities.at(0).properties;
+        const SceneProperty* route = source.find("Route");
+        check(doc.errors.empty() && route != nullptr && route->has_vector3_array
+                && route->vector3_array.size() == 2
+                && std::signbit(route->vector3_array[0][1])
+                && !source.find("Short")->has_vector3_array
+                && !source.find("Bad")->has_vector3_array
+                && !source.find("Zero")->has_vector3_array
+                && source.find("After")->integer_value == 7,
+            "V3A admits complete triples, preserves signed zero and bounds malformed statements");
+        if (route != nullptr && route->has_vector3_array) {
+            ScenePropertyBlock destination;
+            SceneProperty old = *route;
+            old.vector3_array = {{{9.0f, 8.0f, 7.0f}}};
+            destination.values.push_back(old);
+            SceneProperty kept, replaced, cloned;
+            {
+                bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
+                check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
+                    "native V3A projection handles only the complete payload");
+                kept = merge.result(old);
             }
+            {
+                bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
+                replaced = merge.result(*route);
+            }
+            {
+                ScenePropertyBlock empty;
+                bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
+                cloned = merge.result(*route);
+            }
+            check(kept.has_vector3_array && kept.vector3_array == old.vector3_array
+                    && replaced.has_vector3_array && cloned.has_vector3_array
+                    && replaced.vector3_array == route->vector3_array
+                    && cloned.vector3_array == route->vector3_array
+                    && std::signbit(replaced.vector3_array[0][1])
+                    && std::signbit(cloned.vector3_array[0][1]),
+                "native type-11 keep, assignment and clone publish owned bytes after both bags retire");
         }
     }
 
     {
         // Chain 425: FA parser -> actual type-9 owner -> keep/replace/clone,
         // with an independent published payload surviving both native bags.
-        if constexpr (bsp::kWireGoal4Chain425Bound) {
-            const SceneDocument doc = parse_scene_document(
-                "entity \"Array\" (Landscape) { "
-                "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
-                "Weights = FA 3 1.25 -0 .75; Short = FA 2 1; "
-                "Bad = FA 1 x; Zero = FA 0; After = I 7; } }");
-            const ScenePropertyBlock& source = doc.entities.at(0).properties;
-            const SceneProperty* weights = source.find("Weights");
-            check(doc.errors.empty() && weights != nullptr && weights->has_float_array
-                    && weights->float_array == std::vector<float>({1.25f, -0.0f, 0.75f})
-                    && std::signbit(weights->float_array[1])
-                    && !source.find("Short")->has_float_array
-                    && !source.find("Bad")->has_float_array
-                    && !source.find("Zero")->has_float_array
-                    && source.find("After")->integer_value == 7,
-                "FA retains complete finite payloads and leaves malformed statements raw");
-            if (weights != nullptr && weights->has_float_array) {
-                ScenePropertyBlock destination;
-                SceneProperty old = *weights;
-                old.float_array = {9.0f};
-                destination.values.push_back(old);
-                SceneProperty kept, replaced, cloned;
-                {
-                    bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
-                    check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
-                        "native FA projection selects complete payloads only");
-                    kept = merge.result(old);
-                }
-                {
-                    bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
-                    replaced = merge.result(*weights);
-                }
-                {
-                    ScenePropertyBlock empty;
-                    bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
-                    cloned = merge.result(*weights);
-                }
-                check(kept.has_float_array && kept.float_array == old.float_array
-                        && replaced.has_float_array && cloned.has_float_array
-                        && replaced.float_array == weights->float_array
-                        && cloned.float_array == weights->float_array
-                        && std::signbit(replaced.float_array[1])
-                        && std::signbit(cloned.float_array[1]),
-                    "native type-9 keep, replacement and clone publish bytes after owner retirement");
+        const SceneDocument doc = parse_scene_document(
+            "entity \"Array\" (Landscape) { "
+            "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
+            "Weights = FA 3 1.25 -0 .75; Short = FA 2 1; "
+            "Bad = FA 1 x; Zero = FA 0; After = I 7; } }");
+        const ScenePropertyBlock& source = doc.entities.at(0).properties;
+        const SceneProperty* weights = source.find("Weights");
+        check(doc.errors.empty() && weights != nullptr && weights->has_float_array
+                && weights->float_array == std::vector<float>({1.25f, -0.0f, 0.75f})
+                && std::signbit(weights->float_array[1])
+                && !source.find("Short")->has_float_array
+                && !source.find("Bad")->has_float_array
+                && !source.find("Zero")->has_float_array
+                && source.find("After")->integer_value == 7,
+            "FA retains complete finite payloads and leaves malformed statements raw");
+        if (weights != nullptr && weights->has_float_array) {
+            ScenePropertyBlock destination;
+            SceneProperty old = *weights;
+            old.float_array = {9.0f};
+            destination.values.push_back(old);
+            SceneProperty kept, replaced, cloned;
+            {
+                bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
+                check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
+                    "native FA projection selects complete payloads only");
+                kept = merge.result(old);
             }
+            {
+                bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
+                replaced = merge.result(*weights);
+            }
+            {
+                ScenePropertyBlock empty;
+                bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
+                cloned = merge.result(*weights);
+            }
+            check(kept.has_float_array && kept.float_array == old.float_array
+                    && replaced.has_float_array && cloned.has_float_array
+                    && replaced.float_array == weights->float_array
+                    && cloned.float_array == weights->float_array
+                    && std::signbit(replaced.float_array[1])
+                    && std::signbit(cloned.float_array[1]),
+                "native type-9 keep, replacement and clone publish bytes after owner retirement");
         }
     }
 
@@ -4857,7 +4834,7 @@ int main() {
               "answers vtable +1FCh true, because 007CEAEE precedes 007CEB00");
     }
 
-    if constexpr (bsp::kWireGoal4Chain563Bound) {
+    {
         // Retaining 17 authored records crosses the native 16-pointer growth
         // boundary. The muzzle reader's value extraction must preserve their
         // order after its temporary model and raw pointer backing are gone.
@@ -4909,7 +4886,7 @@ int main() {
         check(retained, "00B87AE0/00B87350 retain 17 model records through muzzle extraction and teardown");
     }
 
-    if constexpr (bsp::kWireGoal4Chain575Bound) {
+    {
         // One serialized ownership regression: cross sixteen resource slots,
         // preserve an unsupported ordinal, then destroy the stream and moved-
         // from model before reading the retained records through the real array.
@@ -4977,7 +4954,7 @@ int main() {
             "00B87AA0/00B872F0 resource growth preserves ordinals, payloads and ownership after move");
     }
 
-    if constexpr (bsp::kWireGoal4Chain426Bound) {
+    {
         // Chain426 regression: a large nested ConvexObject still uses the
         // root's format version. Version 11 omits the optional first DWORD;
         // version 12 includes it, independently of the payload's byte count.
@@ -5120,7 +5097,7 @@ int main() {
         ::operator delete(slabs);
     }
 
-    if constexpr (bsp::game::kWireGoal4Chain271Bound) {
+    {
         // Chain 271: one synthetic sequence uses the complete native context
         // operation and two actual action records. Check table writes, maximum
         // priority AND action activation through publish/clear. No gameplay proof.

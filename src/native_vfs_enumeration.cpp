@@ -1,7 +1,5 @@
 #include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/engine_services_cc13.hpp"
-#include "bsp/wire_goal2_chain148_switches.hpp"
-#include "bsp/wire_goal4_chain358_switches.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -79,37 +77,20 @@ void append_unique_00be0fc0(void* actual_list, std::uint32_t by_value[2],
         void* const head = pointer(actual_list, 4);
         void* cursor = pointer(head);
         // 00bdbfd0 calls the native name-list search; OFF keeps the local scan.
-        if constexpr (kWireGoal2Chain148Bound) {
+        {
             engine_services_cc13::NativeIterator found;
             engine_services_cc13::find_string_in_list_00bdbfd0(found,
                 *reinterpret_cast<const NativeString*>(by_value),
                 {actual_list, cursor}, {actual_list, head});
             cursor = found.node;
-        } else {
-            for (; cursor != head; cursor = pointer(cursor)) {
-                if (word(cursor, 8) == by_value[0] &&
-                    (by_value[0] == 0 ||
-                     _stricmp(static_cast<const char*>(pointer(cursor, 0x0c)),
-                         reinterpret_cast<const char*>(by_value[1])) == 0)) break;
-            }
         }
         if (cursor == head) {
-            if constexpr (kWireGoal4Chain358Bound) {
-                // 004D2660..004D2691 is the same capture/copy/count/link
-                // sequence inlined at 00BE1041..00BE1066. Reuse its body with
-                // the live enumeration output list and its actual pooled name.
-                // The by-value input is still consumed once by BE0FC0 below;
-                // its node copy remains owned by the caller's PooledNameList.
-                append_native_render_alias_004d2660(actual_list, by_value, context.strings);
-            } else {
-            auto* current_head = static_cast<NativeRenderResourceAliasNode*>(pointer(actual_list, 4));
-            auto* inserted = allocate_native_render_alias_node_004ce6f0(current_head,
-                static_cast<NativeRenderResourceAliasNode*>(pointer(current_head, 4)),
-                by_value, context.strings);
-            grow_native_alias_list_count_004ce780(actual_list, 1);
-            put(current_head, 4, reinterpret_cast<std::uint32_t>(inserted));
-            put(pointer(inserted, 4), 0, reinterpret_cast<std::uint32_t>(inserted));
-            }
+            // 004D2660..004D2691 is the same capture/copy/count/link
+            // sequence inlined at 00BE1041..00BE1066. Reuse its body with
+            // the live enumeration output list and its actual pooled name.
+            // The by-value input is still consumed once by BE0FC0 below;
+            // its node copy remains owned by the caller's PooledNameList.
+            append_native_render_alias_004d2660(actual_list, by_value, context.strings);
         } else {
             context.duplicates.rejected_duplicate(by_value[1]
                 ? reinterpret_cast<const char*>(by_value[1]) : context.empty_name_0109cef0);

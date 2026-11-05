@@ -2,7 +2,6 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_tagged_leaf_b3_03.hpp"
 #include "bsp/native_tagged_leaf_b3_06.hpp"
-#include "bsp/wire_goal4_chain588_switches.hpp"
 
 #include <cstring>
 #include <new>
@@ -147,19 +146,11 @@ void destroy_native_surface_00b3f4e0(
         if ((current_flags & 0x110u) != 0) --context.actual_tracking_counter_0108dafc;
     } catch (...) {
         // Dtor state 1 releases the current name then state 0 installs the base.
-        if constexpr (kWireGoal4Chain588Bound) {
-            release_string_preserving_fields(actual_surface_name(owner), context.actual_string_pool_00419cc0);
-        } else {
-            release_string_preserving_fields(owner.name_10, context.actual_string_pool_00419cc0);
-        }
+        release_string_preserving_fields(actual_surface_name(owner), context.actual_string_pool_00419cc0);
         owner.vtable_00 = refcounted_profile;
         throw;
     }
-    if constexpr (kWireGoal4Chain588Bound) {
-        release_string_preserving_fields(actual_surface_name(owner), context.actual_string_pool_00419cc0);
-    } else {
-        release_string_preserving_fields(owner.name_10, context.actual_string_pool_00419cc0);
-    }
+    release_string_preserving_fields(actual_surface_name(owner), context.actual_string_pool_00419cc0);
     owner.vtable_00 = refcounted_profile; // 00BD30F0's complete base destructor.
 }
 
@@ -186,26 +177,17 @@ void release_native_surface_for_reset_00b3d510(NativeSurfaceOwnerStorage& owner)
 }
 
 HRESULT recreate_native_surface_00b3d550(NativeSurfaceOwnerStorage& owner, IDirect3DDevice9& device) {
-    if constexpr (kWireGoal4Chain588Bound) {
-        // B3D550 selects the device method using +30h, then reads saved +18h
-        // format. B3CD00 reads precisely that DWORD on this same surface.
-        static_assert(offsetof(NativeSurfaceOwnerStorage, format_18) == 0x18);
-        if (owner.kind_30 != 0) {
-            return device.CreateDepthStencilSurface(owner.width_1c, owner.height_20,
-                static_cast<D3DFORMAT>(native_tagged_b3_read_dword_18_00b3cd00(&owner)),
-                owner.multisample_24, 0, TRUE, &owner.surface_2c, nullptr);
-        }
-        return device.CreateRenderTarget(owner.width_1c, owner.height_20,
+    // B3D550 selects the device method using +30h, then reads saved +18h
+    // format. B3CD00 reads precisely that DWORD on this same surface.
+    static_assert(offsetof(NativeSurfaceOwnerStorage, format_18) == 0x18);
+    if (owner.kind_30 != 0) {
+        return device.CreateDepthStencilSurface(owner.width_1c, owner.height_20,
             static_cast<D3DFORMAT>(native_tagged_b3_read_dword_18_00b3cd00(&owner)),
-            owner.multisample_24, 0, FALSE, &owner.surface_2c, nullptr);
-    } else {
-        if (owner.kind_30 != 0) {
-            return device.CreateDepthStencilSurface(owner.width_1c, owner.height_20, owner.format_18,
-                owner.multisample_24, 0, TRUE, &owner.surface_2c, nullptr);
-        }
-        return device.CreateRenderTarget(owner.width_1c, owner.height_20, owner.format_18,
-            owner.multisample_24, 0, FALSE, &owner.surface_2c, nullptr);
+            owner.multisample_24, 0, TRUE, &owner.surface_2c, nullptr);
     }
+    return device.CreateRenderTarget(owner.width_1c, owner.height_20,
+        static_cast<D3DFORMAT>(native_tagged_b3_read_dword_18_00b3cd00(&owner)),
+        owner.multisample_24, 0, FALSE, &owner.surface_2c, nullptr);
 }
 
 bool remove_first_native_surface_00b25630(

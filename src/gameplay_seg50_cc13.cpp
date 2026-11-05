@@ -10,7 +10,6 @@
 #include "bsp/cc13_seg62.hpp"
 #include "bsp/entity_identity.hpp"        // compare_insensitive_00438e10
 #include "bsp/native_string_compare.hpp"  // equal_native_string_header_00425850
-#include "bsp/wire_goal4_chain534_switches.hpp"
 
 #include <array>
 #include <cstddef>
@@ -79,33 +78,23 @@ static_assert(offsetof(DeviceIterationView::Node, device) == 8);
 // The walk: categories in list order, devices of each category in turn.
 template <std::size_t N, typename Add>
 float sum_over(const std::int32_t (&list)[N], const std::vector<UnitDevice>& devices, Add add) {
-    if constexpr (kWireGoal4Chain534Bound) {
-        DeviceIterationView view(devices);
-        std::array<std::int32_t, N + 1> categories;
-        for (std::size_t i = 0; i < N; ++i) categories[i] = list[i];
-        // The existing typed lists omit the native terminator. Live bytes at
-        // 00E0A4F8..00E0A533 confirm 0Ch after each of the four category tables.
-        categories[N] = 12;
-        auto* const unit = reinterpret_cast<std::uint8_t*>(&view.unit);
-        cc13_seg62::DeviceListIterator iterator;
-        cc13_seg62::device_list_first_00952080(unit, categories.data(), &iterator);
-        float s = 0.0f;
-        while (iterator.node != 0) {
-            const auto* const node = reinterpret_cast<const DeviceIterationView::Node*>(
-                static_cast<std::uintptr_t>(iterator.node));
-            s = add(*node->device, s);
-            cc13_seg62::device_list_next_009520e0(unit, categories.data(), &iterator);
-        }
-        return s;
-    } else {
+    DeviceIterationView view(devices);
+    std::array<std::int32_t, N + 1> categories;
+    for (std::size_t i = 0; i < N; ++i) categories[i] = list[i];
+    // The existing typed lists omit the native terminator. Live bytes at
+    // 00E0A4F8..00E0A533 confirm 0Ch after each of the four category tables.
+    categories[N] = 12;
+    auto* const unit = reinterpret_cast<std::uint8_t*>(&view.unit);
+    cc13_seg62::DeviceListIterator iterator;
+    cc13_seg62::device_list_first_00952080(unit, categories.data(), &iterator);
     float s = 0.0f;
-    for (std::int32_t c : list) {
-        for (const UnitDevice& d : devices) {
-            if (d.category == c) s = add(d, s);
-        }
+    while (iterator.node != 0) {
+        const auto* const node = reinterpret_cast<const DeviceIterationView::Node*>(
+            static_cast<std::uintptr_t>(iterator.node));
+        s = add(*node->device, s);
+        cc13_seg62::device_list_next_009520e0(unit, categories.data(), &iterator);
     }
     return s;
-    }
 }
 
 float add_barrels(const UnitDevice& d, float s) {

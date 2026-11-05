@@ -9,7 +9,6 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
-#include "bsp/wire_goal4_chain396_switches.hpp"
 
 #include "bsp/native_gameplay_effect_construction.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
@@ -37,13 +36,10 @@ GameSingletonHost::GameSingletonHost(GameHostLog& log)
     deletion_bindings_.allocation_stats = &allocation_stats_context_;
     deletion_bindings_.actual_loading_queue_publication_00e18d4c =
         &loading_queue_publication_00e18d4c_;
-    if constexpr (kWireGoal4Chain396Bound) {
-        // Bind before the fixed-step getter registers CE3CEC. The permanent
-        // process cell and this dispatch table both survive normal/fallback drain.
-        deletion_bindings_.actual_spatial_index_publication_00f8a0d8 =
-            &game_native_string_process().spatial_index_00f8a0d8();
-    } else {
-    }
+    // Bind before the fixed-step getter registers CE3CEC. The permanent
+    // process cell and this dispatch table both survive normal/fallback drain.
+    deletion_bindings_.actual_spatial_index_publication_00f8a0d8 =
+        &game_native_string_process().spatial_index_00f8a0d8();
 }
 
 GameSingletonHost::~GameSingletonHost() {

@@ -3,10 +3,6 @@
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_startup_random.hpp"
-#include "bsp/wire_goal4_chain305_switches.hpp"
-#include "bsp/wire_goal4_chain445_switches.hpp"
-#include "bsp/wire_goal4_chain489_switches.hpp"
-#include "bsp/wire_goal4_chain495_switches.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/platform_activation.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
@@ -75,13 +71,11 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
-#include "bsp/wire_goal4_chain249_switches.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
 #include "bsp/native_shader_preload.hpp"
-#include "bsp/wire_goal4_chain418_switches.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -97,21 +91,15 @@
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/native_input_action_contexts.hpp"
 #include "bsp/input_action_classifier.hpp"
-#include "bsp/wire_goal4_chain271_switches.hpp"
-#include "bsp/wire_goal4_chain302_switches.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
-#include "bsp/wire_goal4_chain463_switches.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/game_platform_services.hpp"
 #include "bsp/game_sound_runtime.hpp"
-#include "bsp/wire_goal4_chain449_switches.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
-#include "bsp/wire_goal2_chain180_switches.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_input_runtime.hpp"
-#include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/sound_alternate_owner.hpp"
@@ -121,8 +109,6 @@
 #include "bsp/native_platform_focus_owners.hpp"
 #include "bsp/native_world_configuration_leaves.hpp"
 #include "bsp/legacy_crt_math.hpp"
-#include "bsp/wire_goal2_chain90_switches.hpp"
-#include "bsp/wire_goal2_chain144_switches.hpp"
 
 namespace bsp::game {
 namespace {
@@ -271,27 +257,23 @@ LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
         if (g_active_platform != nullptr) g_active_platform->close_requested = true;
         return 0;
     }
-    if constexpr (kWireGoal4Chain489Bound) {
-        // bsp.py show 00BED3B0, case 6 (BED3F3..BED507): TEST BX,BX
-        // selects A7A480 for an inactive LOWORD, A7A4A0 otherwise. Feed the
-        // existing typed bodies the actual manager and class-entry collection,
-        // never a raw-layout copy. Their dirty flags are consumed by A7AA80
-        // during the normal sound frame, where owner.flag_50 mutes the level.
-        // This binds the sound calls only; the remaining activation services
-        // still require their own application bindings.
-        if (message == WM_ACTIVATE && g_active_platform != nullptr) {
-            auto* const runtime = g_window_sound_runtime;
-            if (runtime != nullptr && runtime->started()) {
-                if (static_cast<std::uint16_t>(wparam) == WA_INACTIVE)
-                    pause_sound_manager_00a7a480(runtime->owner());
-                else
-                    resume_sound_manager_00a7a4a0(runtime->owner());
-            }
+    // bsp.py show 00BED3B0, case 6 (BED3F3..BED507): TEST BX,BX
+    // selects A7A480 for an inactive LOWORD, A7A4A0 otherwise. Feed the
+    // existing typed bodies the actual manager and class-entry collection,
+    // never a raw-layout copy. Their dirty flags are consumed by A7AA80
+    // during the normal sound frame, where owner.flag_50 mutes the level.
+    // This binds the sound calls only; the remaining activation services
+    // still require their own application bindings.
+    if (message == WM_ACTIVATE && g_active_platform != nullptr) {
+        auto* const runtime = g_window_sound_runtime;
+        if (runtime != nullptr && runtime->started()) {
+            if (static_cast<std::uint16_t>(wparam) == WA_INACTIVE)
+                pause_sound_manager_00a7a480(runtime->owner());
+            else
+                resume_sound_manager_00a7a4a0(runtime->owner());
         }
-        return DefWindowProcA(window, message, wparam, lparam);
-    } else {
-    return DefWindowProcA(window, message, wparam, lparam);
     }
+    return DefWindowProcA(window, message, wparam, lparam);
 }
 
 // ---------------------------------------------------------------------------
@@ -1319,28 +1301,12 @@ void GameFrameHost::game_on_move(float seconds) {
     // menu_->frame drives; game_frame_control.cpp holds the timing block 004E4D3E..004E4D94
     // and mission_state_frame.cpp holds 004E4DF4..004E551E.
     log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
-    if constexpr (kWireGoal4Chain463Bound) {
-        if (!input_configuration_)
-            throw std::logic_error("normal-frame input requires the application's input configuration");
-        // bsp.py show 004E4A40: 004E4A63..72 calls 004BEC00 then A92C40
-        // before the close processor. The whole tick already polls the same
-        // backend once, then updates the real configured action/listener rows.
-        input_configuration_->update_actions(seconds);
-    } else {
-    if constexpr (kWireGoal4Chain316Bound) {
-        if (!input_runtime_)
-            throw std::logic_error("normal-frame input refresh requires the application's input runtime");
-        // 004E4A63..72 updates input using the incoming frame delta before
-        // the close processor and state dispatch (including state 0Ch).
-        // +2Ch button queries only read device caches: refresh the canonical
-        // backend once here, including released frames, before any wait query.
-        // The inner semantic InputTickBinding remains record-only; refreshing
-        // there as well would poll twice in an in-mission normal frame.
-        input_runtime_->update_backend(seconds);
-    } else {
-        // Previously normal-frame dispatch did not refresh the native backend.
-    }
-    }
+    if (!input_configuration_)
+        throw std::logic_error("normal-frame input requires the application's input configuration");
+    // bsp.py show 004E4A40: 004E4A63..72 calls 004BEC00 then A92C40
+    // before the close processor. The whole tick already polls the same
+    // backend once, then updates the real configured action/listener rows.
+    input_configuration_->update_actions(seconds);
     // Native 004E4A79 calls the close processor before the front-end update.
     // Bind the actual online publication and current game state; an unavailable
     // confirmation owner is an explicit source boundary, never permission to exit.
@@ -1796,16 +1762,10 @@ struct GameStartupHost::SoundServices {
         // Registration happens in startup, after the raw deletion dispatcher
         // has this exact core allocation available.
         app.singletons_->bind_sound_runtime(&core);
-        if constexpr (kWireGoal4Chain489Bound) {
-            g_window_sound_runtime = &core;
-        } else {
-        }
+        g_window_sound_runtime = &core;
     }
     ~SoundServices() {
-        if constexpr (kWireGoal4Chain489Bound) {
-            if (g_window_sound_runtime == &core) g_window_sound_runtime = nullptr;
-        } else {
-        }
+        if (g_window_sound_runtime == &core) g_window_sound_runtime = nullptr;
         try{settings_process.bind_profile_sdk(nullptr);}
         catch(...){std::fputs("bsp_game: online owner outlived settings SDK binding\n",stderr);std::fflush(stderr);std::_Exit(1);}
     }
@@ -2712,10 +2672,7 @@ GameStartupHost::~GameStartupHost() {
     }
     delete menu_;
     menu_ = nullptr;
-    if constexpr (kWireGoal4Chain302Bound) {
-        retire_native_input_configuration();
-    } else {
-    }
+    retire_native_input_configuration();
     if (page_frontend_phase_ != PageFrontendPhase::unselected) {
         retire_page_frontend_resources_before_drain();
         exit_if_native_gui_resources_retained();
@@ -2758,12 +2715,10 @@ GameStartupHost::~GameStartupHost() {
         }
         // Page bindings are gone; the singleton host is deleted below, so
         // the manager's deletion binding and publication cells go first.
-        if constexpr (kWireGoal2Chain90Bound) {
-            // Chain 90: the native_media arm borrowed the manager's owners.
-            if (singletons_ && native_gui_manager_ &&
-                singletons_->native_deletion_bindings().native_media == &native_gui_manager_->context())
-                singletons_->native_deletion_bindings().native_media = nullptr;
-        }
+        // Chain 90: the native_media arm borrowed the manager's owners.
+        if (singletons_ && native_gui_manager_ &&
+            singletons_->native_deletion_bindings().native_media == &native_gui_manager_->context())
+            singletons_->native_deletion_bindings().native_media = nullptr;
         if constexpr (kGuiManagerCc15Bound) native_gui_manager_.reset();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
@@ -2783,13 +2738,10 @@ GameStartupHost::~GameStartupHost() {
     }
     input_runtime_ = nullptr;
     input_.reset();
-    if constexpr (kWireGoal2Chain180Bound) {
+    {
         GameScriptOrdersHost::bind_music_dialog(nullptr);
-    } else {
     }
-    if constexpr (kWireGoal4Chain249Bound) {
-        GameHudHost::bind_sound_runtime(nullptr, nullptr);  // before the runtime it names goes
-    }
+    GameHudHost::bind_sound_runtime(nullptr, nullptr);  // before the runtime it names goes
     sound_.reset();
     delete singletons_;
     singletons_ = nullptr;
@@ -2814,12 +2766,8 @@ GameStartupHost::~GameStartupHost() {
     delete window_host_;
     xinput_library_.reset();
     delete vfs_;
-    if constexpr (bsp::kWireGoal4Chain305Bound) {
-        publish_startup_random(nullptr);
-        delete random_threads_;
-    } else {
+    publish_startup_random(nullptr);
     delete random_threads_;
-    }
 }
 
 long GameStartupHost::com_initialize() {
@@ -2897,14 +2845,10 @@ void GameStartupHost::exit_process(int code) {
 
 void GameStartupHost::random_threads_initialize() {
     log_.implemented("StartupHost::random_threads_initialize", "00bd2e20");
-    if constexpr (bsp::kWireGoal4Chain305Bound) {
-        if (random_threads_ == nullptr) random_threads_ = new RandomThreads();
-        // Borrow the original startup owner, before WinMain registers its
-        // current thread and before any mission/AA-bot consumer is constructed.
-        publish_startup_random(random_threads_);
-    } else {
     if (random_threads_ == nullptr) random_threads_ = new RandomThreads();
-    }
+    // Borrow the original startup owner, before WinMain registers its
+    // current thread and before any mission/AA-bot consumer is constructed.
+    publish_startup_random(random_threads_);
 }
 
 void* GameStartupHost::allocate_thread_slot() {
@@ -2929,12 +2873,8 @@ void GameStartupHost::release_thread_slot(void* slot) {
 
 void GameStartupHost::random_threads_shutdown() {
     log_.implemented("StartupHost::random_threads_shutdown", "00bd30d0");
-    if constexpr (bsp::kWireGoal4Chain305Bound) {
-        publish_startup_random(nullptr);
-        delete random_threads_;
-    } else {
+    publish_startup_random(nullptr);
     delete random_threads_;
-    }
     random_threads_ = nullptr;
 }
 
@@ -3744,14 +3684,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     decals_->run();
     summary_.decal_definitions = decals_->summary().definitions;
 
-    if constexpr (kWireGoal4Chain418Bound) {
-        // 0073E239/E2B7/E335/E3B3/E431: the five binary-authored names and
-        // flags32 populate the SAME native FileStore used by mounted readers,
-        // before game entry/OnInitTitle (0073E45C). No second cache walk runs.
-        vfs_->preload_startup_scripts();
-    } else {
-        // These five startup cache calls were previously absent.
-    }
+    // 0073E239/E2B7/E335/E3B3/E431: the five binary-authored names and
+    // flags32 populate the SAME native FileStore used by mounted readers,
+    // before game entry/OnInitTitle (0073E45C). No second cache walk runs.
+    vfs_->preload_startup_scripts();
 
     // GGame::OnInitTitle 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     // It writes game state 2, selects front-end frame set 0 (FE_frame and
@@ -3767,15 +3703,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_view_.gameplay.language_index_04);
     // cc15-bank: the sample cache [00F8BBE8] 00A83FD0 reads (under kMessageSoundBankCc15Bound).
     GameMessageManagerHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr);
-    if constexpr (kWireGoal2Chain180Bound) {
-        GameScriptOrdersHost::bind_music_dialog(sound_ ? &sound_->dialog : nullptr);
-    } else {
-    }
-    if constexpr (kWireGoal4Chain249Bound) {
-        // [00F8BBD8] for the in-mission interface update's 00A7B710 (0068CC49).
-        GameHudHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr,
-            &vfs_->borrow_raw_services().strings);
-    }
+    GameScriptOrdersHost::bind_music_dialog(sound_ ? &sound_->dialog : nullptr);
+    // [00F8BBD8] for the in-mission interface update's 00A7B710 (0068CC49).
+    GameHudHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr,
+        &vfs_->borrow_raw_services().strings);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(),
         // cc13-mp1. Campaign identity: no --skirmish passes options_.menu_select as before.
@@ -3785,37 +3716,29 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
         options_.order_speed, options_.order_speed_set);
-    if constexpr (kWireGoal4Chain271Bound) {
-        menu_->bind_input_context_manager(input_->context_manager);
-    }
-    if constexpr (kWireGoal4Chain316Bound) {
-        if (GameMissionHost* mission = menu_->mission())
-            mission->bind_input_runtime(input_runtime_);
-    } else {
-        // Previously mission device-wait had no native input binding.
-    }
-    if constexpr (kWireGoal4Chain302Bound) {
-        // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game
-        // constructor's embedded input configuration. No native game exists in
-        // this process, so the application owns that span and builds it here,
-        // before OnInitOnce (004DD745) and the press-start commits load it. Its
-        // services are the ones already live: the input runtime and its action
-        // owner/records, the input settings tables loaded in phase 5, the Lua and
-        // VFS strings, and the raw settings block (+41h, +44h, +B0h). The binding
-        // constants and timing are the same cells action_bindings uses.
-        input_configuration_ = std::make_unique<GameNativeInputConfigurationApplication>(
-            GameNativeInputConfigurationBindings{log_, input_->core, scripts_->input(),
-                *lua_services_, vfs_->borrow_raw_services().strings, *native_data_,
-                settings_process_->settings(), input_backend_00f8bbf4_,
-                input_->sse2_available, application_camera_axes_crt(),
-                {input_->trigger_threshold_00ce3800, input_->negative_zero_00d7a208,
-                    input_->one_00d7a24c, input_->quarter_00d7a348, input_->half_00d7a280,
-                    input_->seven_eighths_00ce42e0, input_->eighth_00d04380},
-                {input_->action_timing.quick_edge_and_hold, input_->action_timing.repeat_delay,
-                    input_->action_timing.repeat_step},
-                input_->zero_00d7a218});
-        menu_->bind_input_configuration(input_configuration_.get());
-    }
+    menu_->bind_input_context_manager(input_->context_manager);
+    if (GameMissionHost* mission = menu_->mission())
+        mission->bind_input_runtime(input_runtime_);
+    // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game
+    // constructor's embedded input configuration. No native game exists in
+    // this process, so the application owns that span and builds it here,
+    // before OnInitOnce (004DD745) and the press-start commits load it. Its
+    // services are the ones already live: the input runtime and its action
+    // owner/records, the input settings tables loaded in phase 5, the Lua and
+    // VFS strings, and the raw settings block (+41h, +44h, +B0h). The binding
+    // constants and timing are the same cells action_bindings uses.
+    input_configuration_ = std::make_unique<GameNativeInputConfigurationApplication>(
+        GameNativeInputConfigurationBindings{log_, input_->core, scripts_->input(),
+            *lua_services_, vfs_->borrow_raw_services().strings, *native_data_,
+            settings_process_->settings(), input_backend_00f8bbf4_,
+            input_->sse2_available, application_camera_axes_crt(),
+            {input_->trigger_threshold_00ce3800, input_->negative_zero_00d7a208,
+                input_->one_00d7a24c, input_->quarter_00d7a348, input_->half_00d7a280,
+                input_->seven_eighths_00ce42e0, input_->eighth_00d04380},
+            {input_->action_timing.quick_edge_and_hold, input_->action_timing.repeat_delay,
+                input_->action_timing.repeat_step},
+            input_->zero_00d7a218});
+    menu_->bind_input_configuration(input_configuration_.get());
     // Milestone 2n, --order-unit <name>. It is a setter rather than another
     // constructor argument so the menu host, which this packet does not own,
     // keeps its signature.
@@ -3848,50 +3771,44 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         sinks.languages = &settings_host_->language_catalog();
         sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
         sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
-        if constexpr (kWireGoal4Chain445Bound) {
-            if (native_renderer_) {
-                GameNativeRendererApplication* const renderer = native_renderer_.get();
-                sinks.change_renderer_presentation_mode = [renderer](int width, int height,
-                    bool fullscreen, int sample_count, bool vsync, bool force) {
-                    return renderer->change_presentation_mode(width, height, fullscreen,
-                        sample_count, vsync, force);
-                };
-            }
-        } else {
-            // The previous host supplied no presentation-mode sink.
+        if (native_renderer_) {
+            GameNativeRendererApplication* const renderer = native_renderer_.get();
+            sinks.change_renderer_presentation_mode = [renderer](int width, int height,
+                bool fullscreen, int sample_count, bool vsync, bool force) {
+                return renderer->change_presentation_mode(width, height, fullscreen,
+                    sample_count, vsync, force);
+            };
         }
         // 00A7F8E0: set_sound_class_level_00a7f8e0 applies named profile gains; OFF keeps the unbound sink.
-        if constexpr (kWireGoal2Chain144Bound) {
-            // 008D5539/55C4/564F borrow [00F8BBD8], initialized at 0073DAFD.
-            // Keep these bindings through profile application; sound and VFS
-            // already outlive the menu and its borrowed settings sinks.
-            if (sound_ && sound_->core.started()) {
-                SoundServices* const sound = sound_.get();
-                NativeStringStorage* const strings = &vfs_->borrow_raw_services().strings;
-                sinks.apply_named_sound_class_level = [sound, strings](const char* bus, float volume) {
-                    if (!sound->core.started()) return false;
-                    // 008D54DE..5539, 5565..55C4 and 55F0..564F construct
-                    // Warnings/GUITestSpeech/GUIMusic, find the class, then
-                    // pass settings+30h/+30h/+28h to A7F8E0 (RET8).
-                    // Configuration setup produced the existing descriptors,
-                    // names and live entry references; settings supplies gain.
-                    struct BusName {
-                        NativeString value;
-                        NativeStringStorage& strings;
-                        BusName(NativeStringStorage& storage, const char* text) : strings(storage) {
-                            value.assign_0041e870(strings, text);
-                        }
-                        ~BusName() { value.release_to(strings); }
-                    } name(*strings, bus);
-                    auto& owner = sound->core.owner();
-                    const auto index = find_sound_class_00a7acf0(owner.levels, name.value, sound->core.fmod());
-                    // A missing configured name supplies no descriptor. Keep
-                    // the diagnostic rather than inventing a class or index.
-                    if (index < 0) return false;
-                    set_sound_class_level_00a7f8e0(owner.levels, index, volume, owner.classes);
-                    return true;
-                };
-            }
+        // 008D5539/55C4/564F borrow [00F8BBD8], initialized at 0073DAFD.
+        // Keep these bindings through profile application; sound and VFS
+        // already outlive the menu and its borrowed settings sinks.
+        if (sound_ && sound_->core.started()) {
+            SoundServices* const sound = sound_.get();
+            NativeStringStorage* const strings = &vfs_->borrow_raw_services().strings;
+            sinks.apply_named_sound_class_level = [sound, strings](const char* bus, float volume) {
+                if (!sound->core.started()) return false;
+                // 008D54DE..5539, 5565..55C4 and 55F0..564F construct
+                // Warnings/GUITestSpeech/GUIMusic, find the class, then
+                // pass settings+30h/+30h/+28h to A7F8E0 (RET8).
+                // Configuration setup produced the existing descriptors,
+                // names and live entry references; settings supplies gain.
+                struct BusName {
+                    NativeString value;
+                    NativeStringStorage& strings;
+                    BusName(NativeStringStorage& storage, const char* text) : strings(storage) {
+                        value.assign_0041e870(strings, text);
+                    }
+                    ~BusName() { value.release_to(strings); }
+                } name(*strings, bus);
+                auto& owner = sound->core.owner();
+                const auto index = find_sound_class_00a7acf0(owner.levels, name.value, sound->core.fmod());
+                // A missing configured name supplies no descriptor. Keep
+                // the diagnostic rather than inventing a class or index.
+                if (index < 0) return false;
+                set_sound_class_level_00a7f8e0(owner.levels, index, volume, owner.classes);
+                return true;
+            };
         }
         if (input_) {
             GameInputRuntime* input = &input_->core;
@@ -3899,41 +3816,39 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
                 input->set_rumble_enabled_00a94c50(enabled);
             };
         }
-        if constexpr (kWireGoal2Chain90Bound) {
-            // Chain 90: 008D5B50's [00F8BBD8] class table, [00F8D394] renderer
-            // and 004C1710 owners. The 18h media manager 004C1710 builds is
-            // registered on 01090AA0, so the drain's native_media arm
-            // (00A4C620, vtable 00D24D94) gets the same owners; it is cleared
-            // where the GUI manager application is reset. Native's first
-            // 004C1710 caller is probably the WM_ACTIVATE handler 00BED3B0
-            // (00BED42E/00BED4A7), which this host does not run, so the host
-            // builds the manager later, at sign-in (008D5686), and registers it
-            // later on 01090AA0; 00A4C620 depends on no other singleton.
-            if (sound_) {
-                // 008D54C3/008D54D9: ECX = [00F8BBD8], the running sound owner.
-                SoundServices* const sound = sound_.get();
-                sinks.apply_sound_class_levels = [sound](std::uint32_t mask, float volume) {
-                    if (!sound->core.started()) return false;
-                    set_sound_class_levels_00a7abf0(sound->core.owner().levels, mask, volume);
-                    return true;
-                };
-            }
-            if (native_renderer_) {
-                // 008D5B71/008D5B80: ECX = [00F8D394], the 1D94h actual renderer.
-                void* const volatile* const renderer_cell = &native_renderer_->publication_00f8d394();
-                sinks.store_renderer_texture_detail_bias = [renderer_cell](std::uint32_t word) {
-                    void* const renderer = *renderer_cell;
-                    if (renderer == nullptr) return false;
-                    set_native_renderer_texture_detail_bias_00b1ffb0(renderer, nullptr, word);
-                    return true;
-                };
-            }
-            if (native_gui_manager_ && singletons_) {
-                // 008D5686/008D5C85: 004C1710 over the cells 00F8AEF8/01090AA0.
-                NativePlatformFocusOwnersContext* const owners = &native_gui_manager_->context();
-                singletons_->native_deletion_bindings().native_media = owners;
-                sinks.media_manager = [owners]() { return get_native_media_manager_004c1710(*owners); };
-            }
+        // Chain 90: 008D5B50's [00F8BBD8] class table, [00F8D394] renderer
+        // and 004C1710 owners. The 18h media manager 004C1710 builds is
+        // registered on 01090AA0, so the drain's native_media arm
+        // (00A4C620, vtable 00D24D94) gets the same owners; it is cleared
+        // where the GUI manager application is reset. Native's first
+        // 004C1710 caller is probably the WM_ACTIVATE handler 00BED3B0
+        // (00BED42E/00BED4A7), which this host does not run, so the host
+        // builds the manager later, at sign-in (008D5686), and registers it
+        // later on 01090AA0; 00A4C620 depends on no other singleton.
+        if (sound_) {
+            // 008D54C3/008D54D9: ECX = [00F8BBD8], the running sound owner.
+            SoundServices* const sound = sound_.get();
+            sinks.apply_sound_class_levels = [sound](std::uint32_t mask, float volume) {
+                if (!sound->core.started()) return false;
+                set_sound_class_levels_00a7abf0(sound->core.owner().levels, mask, volume);
+                return true;
+            };
+        }
+        if (native_renderer_) {
+            // 008D5B71/008D5B80: ECX = [00F8D394], the 1D94h actual renderer.
+            void* const volatile* const renderer_cell = &native_renderer_->publication_00f8d394();
+            sinks.store_renderer_texture_detail_bias = [renderer_cell](std::uint32_t word) {
+                void* const renderer = *renderer_cell;
+                if (renderer == nullptr) return false;
+                set_native_renderer_texture_detail_bias_00b1ffb0(renderer, nullptr, word);
+                return true;
+            };
+        }
+        if (native_gui_manager_ && singletons_) {
+            // 008D5686/008D5C85: 004C1710 over the cells 00F8AEF8/01090AA0.
+            NativePlatformFocusOwnersContext* const owners = &native_gui_manager_->context();
+            singletons_->native_deletion_bindings().native_media = owners;
+            sinks.media_manager = [owners]() { return get_native_media_manager_004c1710(*owners); };
         }
         menu_->bind_profile_settings_sinks(sinks);
     }
@@ -3961,26 +3876,20 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // separate initialization work, not implied by this fragment's log entry.
     input_runtime_->initialize_classes_004dd6a8();
     log_.implemented("OnInitOnce::configure_input_classes_fragment", "004dd6b4");
-    if constexpr (kWireGoal4Chain449Bound) {
-        // 004DD6F6 calls 00940EC0 after input-class initialization and before
-        // the input-configuration load at 004DD745. The core already owns
-        // the real sound class table, sample cache and FMOD/VFS services.
-        sound_->core.initialize_gui_sound_set();
-        log_.implemented("OnInitOnce::initialize_gui_sound_set", "00940ec0");
-    } else {
-    }
-    if constexpr (kWireGoal4Chain302Bound) {
-        // The same OnInitOnce, later: 004DD739 CMP byte [game+55Ch],0 (the
-        // configuration's +520h loaded byte); clear, 004DD742 LEA ECX,[game+3Ch]
-        // and 004DD745 CALL 00698A10 (Scripts\datatables\Inputs.lua into the
-        // action owner, then rebind, a zero-second tick and the keyboard
-        // defaults). The remaining intervening OnInitOnce steps (readers, GUI
-        // hooks, safe zone) are not run by this host; [00F8BBFC], stored at
-        // 004DD71B, has no writer here (see the application's comment).
-        if (input_configuration_ && input_configuration_->load_if_unloaded())
-            log_.implemented("OnInitOnce::load_input_configuration", "00698a10");
-    } else {
-    }
+    // 004DD6F6 calls 00940EC0 after input-class initialization and before
+    // the input-configuration load at 004DD745. The core already owns
+    // the real sound class table, sample cache and FMOD/VFS services.
+    sound_->core.initialize_gui_sound_set();
+    log_.implemented("OnInitOnce::initialize_gui_sound_set", "00940ec0");
+    // The same OnInitOnce, later: 004DD739 CMP byte [game+55Ch],0 (the
+    // configuration's +520h loaded byte); clear, 004DD742 LEA ECX,[game+3Ch]
+    // and 004DD745 CALL 00698A10 (Scripts\datatables\Inputs.lua into the
+    // action owner, then rebind, a zero-second tick and the keyboard
+    // defaults). The remaining intervening OnInitOnce steps (readers, GUI
+    // hooks, safe zone) are not run by this host; [00F8BBFC], stored at
+    // 004DD71B, has no writer here (see the application's comment).
+    if (input_configuration_ && input_configuration_->load_if_unloaded())
+        log_.implemented("OnInitOnce::load_input_configuration", "00698a10");
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
@@ -4018,16 +3927,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
-    if constexpr (kWireGoal4Chain463Bound) {
-        frame_host_->bind_input_configuration(input_configuration_.get());
-    } else {
-        // Previous frame host borrows only the backend runtime below.
-    }
-    if constexpr (kWireGoal4Chain316Bound) {
-        frame_host_->bind_input_runtime(input_runtime_);
-    } else {
-        // OFF retains the previous unbound normal-frame input path.
-    }
+    frame_host_->bind_input_configuration(input_configuration_.get());
+    frame_host_->bind_input_runtime(input_runtime_);
     frame_host_->bind_loading_queue(singletons_->manager_publication_01090aa0(),
         singletons_->loading_queue_publication_00e18d4c());
     std::function<void(IDirect3DDevice9&)> capture;
@@ -4069,7 +3970,7 @@ void GameStartupHost::platform_run_loop_dispatch() {
     if (!loop_->frames_enabled) {
         log_.note("frames are disabled; the loop would never call the frame callback");
     }
-    if constexpr (kWireGoal4Chain495Bound) {
+    {
         native_platform_->require_ready();
         // 00D68CC4+24h = 00BEC1A0. This resolves the original table's
         // identity onto the existing Source loop, with the SAME native
@@ -4093,8 +3994,6 @@ void GameStartupHost::platform_run_loop_dispatch() {
             throw std::logic_error("Platform loop view must alias the published owner's cells");
         engine_services_cc13::platform_run_loop_dispatch_00bea800(native_platform_->publication, &calls);
         log_.implemented("StartupHost::published_platform_loop_dispatch", "00bea800");
-    } else {
-        platform_run_loop_00bec1a0(*loop_, *loop_callbacks_);
     }
     summary_.loop_finished = loop_->loop_finished;
     summary_.frames_presented = device_ != nullptr ? device_->presented() : 0ull;
@@ -4221,14 +4120,11 @@ void GameStartupHost::application_shutdown() {
     }
     delete menu_;
     menu_ = nullptr;
-    if constexpr (kWireGoal4Chain302Bound) {
-        // Native reaches 004DCEB0 on game+3Ch from the game's destructor
-        // (004DE270 -> 004DCF90, CALL at 004DD577), which still borrows the live
-        // singleton manager (docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md), so
-        // it precedes the 008F8449 raw drain; provisional placement here.
-        retire_native_input_configuration();
-    } else {
-    }
+    // Native reaches 004DCEB0 on game+3Ch from the game's destructor
+    // (004DE270 -> 004DCF90, CALL at 004DD577), which still borrows the live
+    // singleton manager (docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md), so
+    // it precedes the 008F8449 raw drain; provisional placement here.
+    retire_native_input_configuration();
     if (page_frontend_phase_ != PageFrontendPhase::unselected) {
         retire_page_frontend_resources_before_drain();
         exit_if_native_gui_resources_retained();

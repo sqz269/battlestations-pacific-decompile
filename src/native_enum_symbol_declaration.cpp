@@ -1,7 +1,6 @@
 #include "bsp/native_enum_symbol_declaration.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_enum_dictionary_membership.hpp"
-#include "bsp/wire_goal4_chain318_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native enum symbol declaration requires MSVC Win32.
@@ -36,26 +35,15 @@ void declare_native_enum_symbol_008f2e40(void* owner,const char* symbol,
     std::int32_t value,NativeEnumSymbolDeclarationContext& context) {
     NativeString query;
     const bool duplicate = [&] {
-        if constexpr (kWireGoal4Chain318Bound) {
-            // bsp.py show 008f2e40: its first temporary is used only to test
-            // symbol membership, then released before metadata/insertion.
-            // Reuse the complete 0048E8D0 body with this live CEnum owner and
-            // declaration's authored symbol, process pool and empty cells.
-            // 0048E914..0048E93B (show --asm) captures node!=NULL before
-            // pool cleanup, as the replaced sequence does. No node+8 read.
-            return contains_native_enum_symbol_0048e8d0(owner, symbol,
-                context.actual_strings, context.actual_enum_empty_00e186ed,
-                context.actual_query_empty_00e17654);
-        } else {
-            construct_native_string_header_0041e870(&query,context.actual_strings,symbol);
-            void* const map=map_receiver(owner);
-            std::uint32_t bucket;
-            const bool duplicate=find_native_enum_symbol_node_0048d480(map,query,bucket,
-                context.actual_enum_empty_00e186ed,context.actual_query_empty_00e17654)!=nullptr;
-            // Native captures the lookup result before returning the CURRENT header.
-            destroy_native_string_header_0041dd20(&query,context.actual_strings);
-            return duplicate;
-        }
+        // bsp.py show 008f2e40: its first temporary is used only to test
+        // symbol membership, then released before metadata/insertion.
+        // Reuse the complete 0048E8D0 body with this live CEnum owner and
+        // declaration's authored symbol, process pool and empty cells.
+        // 0048E914..0048E93B (show --asm) captures node!=NULL before
+        // pool cleanup, as the replaced sequence does. No node+8 read.
+        return contains_native_enum_symbol_0048e8d0(owner, symbol,
+            context.actual_strings, context.actual_enum_empty_00e186ed,
+            context.actual_query_empty_00e17654);
     }();
     if(duplicate) {
         // Complete Original004254B0 is the single byte C3. It dereferences no

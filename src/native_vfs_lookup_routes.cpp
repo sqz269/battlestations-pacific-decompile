@@ -12,7 +12,6 @@
 #include "bsp/native_vfs_lookup_leaves.hpp"
 #include "bsp/native_vfs_pending_routes.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain585_switches.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -278,16 +277,12 @@ std::uint8_t exists_native_vfs_file_00bdd440(void* manager, const void* name,
     auto& strings = context.physical.strings;
     std::uint32_t copied_name[2];
     // No ownership state is armed during this initial copy.
-    if constexpr (kWireGoal4Chain585Bound) {
-        // bsp.py show 00BDD440 / 00BE6040: both clear the output header,
-        // test identity, resize from the current source length, and copy the
-        // resulting output length. Reuse the complete BE6040 body for the
-        // original inline copy, with this lookup's real name and string pool.
-        // This is source-level body reuse, not a recovered BDD440->BE6040 edge.
-        copy_native_file_store_name_00be6040(copied_name, name, strings);
-    } else {
-    copy_construct_native_string_header_00426060(copied_name, name, strings);
-    }
+    // bsp.py show 00BDD440 / 00BE6040: both clear the output header,
+    // test identity, resize from the current source length, and copy the
+    // resulting output length. Reuse the complete BE6040 body for the
+    // original inline copy, with this lookup's real name and string pool.
+    // This is source-level body reuse, not a recovered BDD440->BE6040 edge.
+    copy_native_file_store_name_00be6040(copied_name, name, strings);
     bool name_armed = true;
     std::uint32_t visitor[2];
     bool visitor_armed = false;

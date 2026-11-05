@@ -11,7 +11,6 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain349_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -86,15 +85,11 @@ struct PairCleanup {
         destroy();
     }
     void destroy() {
-        if constexpr (kWireGoal4Chain349Bound) {
-            if constexpr (ResidentPair) {
-                // 00BE7760 listing: BE7837 destroys the copied second pair via
-                // BE5D70; BE7845 destroys the constructed first pair via BE5CF0.
-                // Keep that identity for ordinary completion and C++ unwinding.
-                destroy_native_file_store_resident_pair_00be5cf0(pair, context.strings, context.streams);
-            } else {
-                destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
-            }
+        if constexpr (ResidentPair) {
+            // 00BE7760 listing: BE7837 destroys the copied second pair via
+            // BE5D70; BE7845 destroys the constructed first pair via BE5CF0.
+            // Keep that identity for ordinary completion and C++ unwinding.
+            destroy_native_file_store_resident_pair_00be5cf0(pair, context.strings, context.streams);
         } else {
             destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
         }

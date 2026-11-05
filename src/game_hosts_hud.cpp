@@ -1,24 +1,13 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
-#include "bsp/wire_goal4_chain530_switches.hpp"
-#include "bsp/wire_goal4_chain520_switches.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
-#include "bsp/wire_goal4_chain505_switches.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/oct18_tail_a.hpp"
-#include "bsp/wire_goal4_chain499_switches.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/frontend_seg20_cc13.hpp"
-#include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/frontend_state_machine.hpp"
-#include "bsp/wire_goal4_chain436_switches.hpp"
-#include "bsp/wire_goal4_chain370_switches.hpp"
-#include "bsp/wire_goal4_chain271_switches.hpp"
-#include "bsp/wire_goal4_chain291_switches.hpp"
-#include "bsp/wire_goal4_chain339_switches.hpp"
-#include "bsp/wire_goal4_chain360_switches.hpp"
 #include "bsp/game_hosts_powerups.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
 
@@ -60,13 +49,8 @@
 #include "bsp/cc13_big1_null_host.hpp"
 #include "bsp/hud_root_rows.hpp"
 #include "bsp/local_player_unit_lists.hpp"
-#include "bsp/wire_goal1_chain12_switches.hpp"
-#include "bsp/wire_goal2_chain35_switches.hpp"
-#include "bsp/wire_goal3_chain233_switches.hpp"
 #include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
 #include "bsp/world_map_bounds.hpp"
-#include "bsp/wire_goal4_chain252_switches.hpp"
-#include "bsp/wire_goal4_chain265_switches.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -78,10 +62,6 @@
 #include "bsp/ship_captain_camera_draws_cc13.hpp"
 #include "bsp/unit_kind_query.hpp"
 // Goal 4 chain 249: the in-mission interface's calls into the live sound runtime.
-#include "bsp/wire_goal4_chain249_switches.hpp"
-#include "bsp/wire_goal4_chain376_switches.hpp"
-#include "bsp/wire_goal4_chain391_switches.hpp"
-#include "bsp/wire_goal4_chain413_switches.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
@@ -401,11 +381,7 @@ struct GameHudHost::Impl {
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
-        if constexpr (kWireGoal4Chain461Bound) {
-            return {constructed_root_screen.data()};
-        } else {
-        return {root_interface_fields.data()};
-        }
+        return {constructed_root_screen.data()};
     }
     void set_root_closed_value(std::int32_t value) {
         root_interface_view().at<std::int32_t>(0x1C) = value;
@@ -508,11 +484,7 @@ struct GameHudHost::Impl {
     int record_pending_id_20{0};
     std::size_t record_pending_payload_38{static_cast<std::size_t>(-1)};
     void note_pending_record_004cc460(int id, bool controlled_payload) {
-        if constexpr (kWireGoal4Chain413Bound) {
-            pending_explicit_payload = false;
-        } else {
-            // The old tracker has no independently retained payload.
-        }
+        pending_explicit_payload = false;
         record_pending_id_20 = id;
         record_pending_payload_38 = controlled_payload && units != nullptr
             && units->controlled_bound() ? units->controlled_index()
@@ -667,11 +639,7 @@ void GameHudHost::Impl::refresh_root_saved_payload() {
     void* old = root_interface_view().ptr(0xE4);
     root_interface_view().ptr(0xE4) = nullptr;
     RootSavedInterfaceObserver observer(*this);
-    if constexpr (kWireGoal4Chain461Bound) {
-        observer.observer_unregister_006952a0(root_interface_view().p + 0xD0, old);
-    } else {
-    observer.observer_unregister_006952a0(root_interface_fields.data() + 0xD0, old);
-    }
+    observer.observer_unregister_006952a0(root_interface_view().p + 0xD0, old);
     root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
 }
 
@@ -757,24 +725,16 @@ public:
         owner_.record("InGameInterface::limbo_screen_take_unit", 0x00565fb0u);
     }
     void hud_root_screen_set_interface(int interface_id, bool has_payload) override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            bsp::HudRootPayload payload = has_payload ? query_.payload() : bsp::HudRootPayload{};
-            if (has_payload && (interface_id == kInterfacePlane
-                || interface_id == kInterfacePlaneBomber || interface_id == kInterfacePlaneSpawn)) {
-                // Native 0068AF18 delegates through +3D0h before these plane
-                // interfaces. Keep a previously explicit plane exact, including
-                // one whose index happens to equal the fused squadron slot.
-                payload = payload.plane_member(owner_.first_squadron_member(payload.unit));
-                query_.use_payload(payload);
-            }
-            owner_.save_root_interface(interface_id, payload);
-        } else {
-        static_cast<void>(interface_id);
-        static_cast<void>(has_payload);
-        // 00646040 BSP_InGameHudRootScreen_SetInterface, the per-id hook the
-        // manager calls on registry slot 44h before the switch.
-        owner_.record("InGameInterface::hud_root_set_interface", 0x00646040u);
+        bsp::HudRootPayload payload = has_payload ? query_.payload() : bsp::HudRootPayload{};
+        if (has_payload && (interface_id == kInterfacePlane
+            || interface_id == kInterfacePlaneBomber || interface_id == kInterfacePlaneSpawn)) {
+            // Native 0068AF18 delegates through +3D0h before these plane
+            // interfaces. Keep a previously explicit plane exact, including
+            // one whose index happens to equal the fused squadron slot.
+            payload = payload.plane_member(owner_.first_squadron_member(payload.unit));
+            query_.use_payload(payload);
         }
+        owner_.save_root_interface(interface_id, payload);
     }
     bool mission_overlay_present() override { return false; }
     void tick_mission_overlay() override {
@@ -816,52 +776,23 @@ public:
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
         if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
             const std::size_t unit = owner_.units->controlled_index();
-            if constexpr (kWireGoal4Chain265Bound) {
-                owner_.bind_ship_screen_unit_0064d590(unit);
-            } else {
-            // 0064D598..0064D5B7: a different unit sets +188h (and stops the
-            // timed entries of four widgets through 00AA8B80(2), which this
-            // host never starts).
-            if (!owner_.ship_screen.has_unit || owner_.ship_screen_unit != unit) {
-                owner_.ship_screen.unit_changed_188 = true;
-            }
-            owner_.ship_screen.has_unit = true;
-            owner_.ship_screen_unit = unit;
-            // 0064D5E3: with the screen applied, 0064AE20 sets the gauge
-            // flags +104h..+107h from the unit's class (Lua VehicleClass
-            // NoRepairGUI, class+C8h, 00818300, 0059CB90, 00852350) and the
-            // recon and torpedo icons. SUBSTITUTION: not bound, so the flags
-            // keep the enter's clear values and only the speed gauge runs.
-            if (kHudShipScreenGaugesBound) {
-                if constexpr (kHudShipScreenApplyUnitBound) {
-                    // 0064D5F1: only with screen+5 set.
-                    if (owner_.ship_screen.active_05) owner_.apply_ship_screen_unit_0064ae20();
-                } else {
-                    owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
-                }
-            }
-            }
+            owner_.bind_ship_screen_unit_0064d590(unit);
         }
     }
     int hud_root_screen_query() override {
-        if constexpr (kWireGoal4Chain499Bound) {
-            // bsp.py show 00644230: MOV EAX,[00E188D8]; RET, ECX unused.
-            // 0068ACA0's two bomb-view queries now read the live publication
-            // maintained by 004C0890, rather than returning the old zero.
-            if (owner_.units == nullptr) {
-                owner_.record("InGameInterface::hud_root_screen_query_missing_units", 0x00644230u);
-                return 0;
-            }
-            void* const unit = oct18_tail_a::hud_controlled_unit_00644230(
-                owner_.units->controlled_unit_publication());
-            owner_.done("InGameInterface::hud_root_screen_query", 0x00644230u);
-            static_assert(sizeof(int) == sizeof(void*));
-            // The existing interface transports Win32 identity words as int.
-            return static_cast<int>(reinterpret_cast<std::uintptr_t>(unit));
-        } else {
-        owner_.record("InGameInterface::hud_root_screen_query", 0x00644230u);
-        return 0;
+        // bsp.py show 00644230: MOV EAX,[00E188D8]; RET, ECX unused.
+        // 0068ACA0's two bomb-view queries now read the live publication
+        // maintained by 004C0890, rather than returning the old zero.
+        if (owner_.units == nullptr) {
+            owner_.record("InGameInterface::hud_root_screen_query_missing_units", 0x00644230u);
+            return 0;
         }
+        void* const unit = oct18_tail_a::hud_controlled_unit_00644230(
+            owner_.units->controlled_unit_publication());
+        owner_.done("InGameInterface::hud_root_screen_query", 0x00644230u);
+        static_assert(sizeof(int) == sizeof(void*));
+        // The existing interface transports Win32 identity words as int.
+        return static_cast<int>(reinterpret_cast<std::uintptr_t>(unit));
     }
     void bomb_view_screen_bind(int value) override { static_cast<void>(value); }
     void bomb_view_screen_store(int value) override { static_cast<void>(value); }
@@ -876,15 +807,8 @@ public:
     }
     void collapse_overlays(bool clear_level2, bool run_extra_hook) override {
         // 0068AD43: 0068AB80 collapse_in_game_overlays over the menu's screen sets; OFF keeps the record.
-        if constexpr (bsp::kWireGoal2Chain35Bound) {
-            owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
-                "InGameInterface::collapse_overlays");
-        } else {
-        static_cast<void>(clear_level2);
-        static_cast<void>(run_extra_hook);
-        // 0068ab80 collapses the level-2 and level-3 sets. Both are empty here.
-        owner_.record("InGameInterface::collapse_overlays", 0x0068ab80u);
-        }
+        owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
+            "InGameInterface::collapse_overlays");
     }
     InGameInterfaceUnitQuery& unit_query() override { return query_; }
     bool is_multiplayer() override { return false; }
@@ -932,14 +856,9 @@ public:
         // 00e188d8, written by BSP_Game_SetControlledUnit 004c0880; the units
         // host binds its controlled unit through 004c0890.
         if constexpr (kHudInterfaceControlledUnitBound) {
-            if constexpr (kWireGoal4Chain499Bound) {
-                owner_.done("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
-                return owner_.units != nullptr && oct18_tail_a::hud_controlled_unit_00644230(
-                    owner_.units->controlled_unit_publication()) != nullptr;
-            } else {
             owner_.done("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
-            return owner_.units != nullptr && owner_.units->controlled_bound();
-            }
+            return owner_.units != nullptr && oct18_tail_a::hud_controlled_unit_00644230(
+                owner_.units->controlled_unit_publication()) != nullptr;
         } else {
             owner_.record("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
             return false;
@@ -996,14 +915,8 @@ public:
         owner_.record("InGameInterfaceUpdate::set_level3_screen_set", 0x004f8670u);
     }
     void set_level3_input_contexts(const int* ids, std::size_t count) override {
-        if constexpr (kWireGoal4Chain271Bound) {
-            owner_.menu.publish_level3_input_contexts(ids, count);
-            owner_.done("InGameInterfaceUpdate::set_level3_input_contexts", 0x004d8b70u);
-        } else {
-        static_cast<void>(ids);
-        static_cast<void>(count);
-        owner_.record("InGameInterfaceUpdate::set_level3_input_contexts", 0x004d8b70u);
-        }
+        owner_.menu.publish_level3_input_contexts(ids, count);
+        owner_.done("InGameInterfaceUpdate::set_level3_input_contexts", 0x004d8b70u);
     }
 
     // The spectate walk over [[game+19cch]+58h]. construct_world 004de610 is a
@@ -1052,14 +965,8 @@ public:
     }
     void collapse_overlays(bool clear_level2, bool run_extra_hook) override {
         // 0068C6E7: 0068AB80 collapse_in_game_overlays over the menu's screen sets; OFF keeps the record.
-        if constexpr (bsp::kWireGoal2Chain35Bound) {
-            owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
-                "InGameInterfaceUpdate::collapse_overlays");
-        } else {
-        static_cast<void>(clear_level2);
-        static_cast<void>(run_extra_hook);
-        owner_.record("InGameInterfaceUpdate::collapse_overlays", 0x0068ab80u);
-        }
+        owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
+            "InGameInterfaceUpdate::collapse_overlays");
     }
     void toggle_movie_camera() override {
         owner_.record("InGameInterfaceUpdate::toggle_movie_camera", 0x0068a160u);
@@ -1075,11 +982,7 @@ public:
     }
 
     void hud_root_set_field_1c(std::uint32_t value) override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            owner_.set_root_closed_value(static_cast<std::int32_t>(value));
-        } else {
-        owner_.record("InGameInterfaceUpdate::hud_root_set_field_1c", 0x00644220u);
-        }
+        owner_.set_root_closed_value(static_cast<std::int32_t>(value));
     }
     bool screen_2b_wanted() override { return false; }
     void screen_2b_set_mode(bool) override {
@@ -1121,9 +1024,7 @@ public:
     bool pause_screen_flag_08() override { return false; }
     bool pause_screen_child_query() override { return false; }
     bool support_request_pending() override {
-        if constexpr (kWireGoal4Chain360Bound) {
-            return game_powerups::local_player_has_usable_powerup();
-        } else { return record_false("008ed9c0", 0x008ed9c0u); }
+        return game_powerups::local_player_has_usable_powerup();
     }
 
     void input_manager_update(float seconds) override {
@@ -1186,30 +1087,26 @@ public:
     }
     void set_audio_environment(std::string_view name) override {
         owner_.summary.audio_environment.assign(name.data(), name.size());
-        if constexpr (bsp::kWireGoal4Chain249Bound) {
-            // 0068CC3C..0068CC4F: PUSH the chosen literal, ECX = [00F8BBD8], CALL
-            // 00A7B710 on every update. The body finds the listener by name
-            // (00A7AE00), and only when that ordinal differs from +10Ch moves +10Ch
-            // to +110h, stores the new one and selects it (00A7AE80, +104h/+108h),
-            // on the listener table the sound Lua configuration (00A7FF80) built.
-            // The image has no null test; a runtime that never started has no
-            // configuration, so that case stays the record below.
-            GameSoundRuntime* const sound = g_hud_sound_runtime;
-            if (sound != nullptr && sound->started()) {
-                SoundConfigurationState& configuration = sound->owner().configuration;
-                const std::int32_t before = configuration.current_listener_10c;
-                bsp::cc13_audio::set_sound_listener_environment_00a7b710(configuration,
-                    owner_.summary.audio_environment.c_str(), sound->fmod());
-                ++owner_.summary.audio_environment_selects;
-                if (configuration.current_listener_10c != before)
-                    ++owner_.summary.audio_environment_changes;
-                owner_.done("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
-                return;
-            }
-            owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
-        } else {
-        owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
+        // 0068CC3C..0068CC4F: PUSH the chosen literal, ECX = [00F8BBD8], CALL
+        // 00A7B710 on every update. The body finds the listener by name
+        // (00A7AE00), and only when that ordinal differs from +10Ch moves +10Ch
+        // to +110h, stores the new one and selects it (00A7AE80, +104h/+108h),
+        // on the listener table the sound Lua configuration (00A7FF80) built.
+        // The image has no null test; a runtime that never started has no
+        // configuration, so that case stays the record below.
+        GameSoundRuntime* const sound = g_hud_sound_runtime;
+        if (sound != nullptr && sound->started()) {
+            SoundConfigurationState& configuration = sound->owner().configuration;
+            const std::int32_t before = configuration.current_listener_10c;
+            bsp::cc13_audio::set_sound_listener_environment_00a7b710(configuration,
+                owner_.summary.audio_environment.c_str(), sound->fmod());
+            ++owner_.summary.audio_environment_selects;
+            if (configuration.current_listener_10c != before)
+                ++owner_.summary.audio_environment_changes;
+            owner_.done("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
+            return;
         }
+        owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
     }
     void tick_profile_hints(int slot) override {
         static_cast<void>(slot);
@@ -1256,88 +1153,56 @@ public:
         owner_.done("InGameInterface::publish_manager_global", 0x0068ccfeu);
     }
     void base_init() override {
-        if constexpr (kWireGoal4Chain252Bound) {
-            // 0068CD04 calls the inherited +4h virtual, 00683A90. Its entire
-            // retail body is RET (bsp.py show 00683a90); it needs no object fields.
-            bsp::front_end_manager_init_default_00683a90();
-            owner_.done("InGameInterface::base_init", 0x00683a90u);
-        } else {
-        // 0068cd04, the base Init 00683a90, a bare RET in this build.
+        // 0068CD04 calls the inherited +4h virtual, 00683A90. Its entire
+        // retail body is RET (bsp.py show 00683a90); it needs no object fields.
+        bsp::front_end_manager_init_default_00683a90();
         owner_.done("InGameInterface::base_init", 0x00683a90u);
-        }
     }
     bool allocate_screen(std::size_t index, std::size_t size_bytes) override {
-        if constexpr (kWireGoal4Chain461Bound) {
-            if (index == 0) {
-                if (size_bytes != sizeof(HudRootConstructionStorage))
-                    throw std::logic_error("0068CC70 HUD root allocation size changed");
-                // This screen is inline in the HUD owner, alive before any
-                // registry borrows it and until that owner is destroyed.
-                owner_.done("InGameInterface::allocate_root_screen", 0x00bf681bu);
-                return true;
-            }
-            if constexpr (kWireGoal4Chain530Bound) {
-                if (index < kInGameHudScreenCount
-                    && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
-                    if (size_bytes != sizeof(HudSceneInitStorage))
-                        throw std::logic_error("0068CC70 scene-init allocation size changed");
-                    owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
-                    return true;
-                }
-                owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
-                return true;
-            } else {
-            owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
+        if (index == 0) {
+            if (size_bytes != sizeof(HudRootConstructionStorage))
+                throw std::logic_error("0068CC70 HUD root allocation size changed");
+            // This screen is inline in the HUD owner, alive before any
+            // registry borrows it and until that owner is destroyed.
+            owner_.done("InGameInterface::allocate_root_screen", 0x00bf681bu);
             return true;
-            }
-        } else {
-        static_cast<void>(index);
-        static_cast<void>(size_bytes);
+        }
+        if (index < kInGameHudScreenCount
+            && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
+            if (size_bytes != sizeof(HudSceneInitStorage))
+                throw std::logic_error("0068CC70 scene-init allocation size changed");
+            owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
+            return true;
+        }
         owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
         return true;
-        }
     }
     void construct_screen(std::size_t index, std::uint32_t constructor) override {
-        if constexpr (kWireGoal4Chain461Bound) {
-            if (index == 0 && constructor == 0x0068BF60u) {
-                // bsp.py show 0068bf60: one base call, then native vtables,
-                // empty vectors, observer state and literal flags. No engine
-                // services or fixture-supplied inputs are needed on this path.
-                HudRootConstructionBinding binding(owner_.constructed_root_screen);
-                bsp::cc13_fe5::hud_root_screen_construct_0068bf60(
-                    {owner_.constructed_root_screen.data()}, binding);
+        if (index == 0 && constructor == 0x0068BF60u) {
+            // bsp.py show 0068bf60: one base call, then native vtables,
+            // empty vectors, observer state and literal flags. No engine
+            // services or fixture-supplied inputs are needed on this path.
+            HudRootConstructionBinding binding(owner_.constructed_root_screen);
+            bsp::cc13_fe5::hud_root_screen_construct_0068bf60(
+                {owner_.constructed_root_screen.data()}, binding);
+            ++owner_.summary.screen_constructors;
+            owner_.done("InGameInterface::root_screen_constructor", constructor);
+        } else {
+            if (index < kInGameHudScreenCount
+                && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
+                if (constructor != 0x00636D90u)
+                    throw std::logic_error("0068CC70 scene-init constructor changed");
+                // bsp.py show 00636d90: base construction, callback
+                // owner zero stores and the two native vtable values.
+                HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
+                bsp::ingame_gui_cc13::scene_init_construct_00636d90(
+                    {owner_.constructed_scene_init_screen.data()}, binding);
                 ++owner_.summary.screen_constructors;
-                owner_.done("InGameInterface::root_screen_constructor", constructor);
+                owner_.done("InGameInterface::scene_init_constructor", constructor);
             } else {
-                if constexpr (kWireGoal4Chain530Bound) {
-                    if (index < kInGameHudScreenCount
-                        && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
-                        if (constructor != 0x00636D90u)
-                            throw std::logic_error("0068CC70 scene-init constructor changed");
-                        // bsp.py show 00636d90: base construction, callback
-                        // owner zero stores and the two native vtable values.
-                        HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
-                        bsp::ingame_gui_cc13::scene_init_construct_00636d90(
-                            {owner_.constructed_scene_init_screen.data()}, binding);
-                        ++owner_.summary.screen_constructors;
-                        owner_.done("InGameInterface::scene_init_constructor", constructor);
-                    } else {
-                        if (constructor != 0) ++owner_.summary.screen_constructors;
-                        owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
-                    }
-                } else {
                 if (constructor != 0) ++owner_.summary.screen_constructors;
                 owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
-                }
             }
-        } else {
-        static_cast<void>(index);
-        // The 42 leaf constructors have 42 distinct addresses, all of them call
-        // sites inside 0068cc70; kInGameHudScreens carries them. One record
-        // stands for the set, because recording them under one method name
-        // would put 42 call sites on one row.
-        if (constructor != 0) ++owner_.summary.screen_constructors;
-        owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
         }
     }
     void register_screen(std::size_t index) override {
@@ -1355,35 +1220,19 @@ public:
             static_cast<unsigned>(slot.registry_slot));
         const bool registered = [&]() {
             if (slot.registry_slot == kSceneInitRegistrySlot) {
-                if constexpr (kWireGoal4Chain530Bound) {
-                    // bsp.py show 00636f30: register this exact base, load
-                    // FE_sceneinit, bind Message_Text, retain its four colour
-                    // words and hide the loaded page. The generic host page
-                    // loader below must not also run on this screen.
-                    HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
-                    bsp::ingame_gui_cc13::scene_init_register_00636f30(
-                        {owner_.constructed_scene_init_screen.data()}, binding);
-                    owner_.done("InGameInterface::scene_init_register", 0x00636f30u);
-                    return true;
-                } else {
-                    if constexpr (kWireGoal4Chain461Bound) {
-                        return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                            record.register_virtual, record.layout_virtual,
-                            index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
-                    } else {
-                        return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                            record.register_virtual, record.layout_virtual);
-                    }
-                }
+                // bsp.py show 00636f30: register this exact base, load
+                // FE_sceneinit, bind Message_Text, retain its four colour
+                // words and hide the loaded page. The generic host page
+                // loader below must not also run on this screen.
+                HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
+                bsp::ingame_gui_cc13::scene_init_register_00636f30(
+                    {owner_.constructed_scene_init_screen.data()}, binding);
+                owner_.done("InGameInterface::scene_init_register", 0x00636f30u);
+                return true;
             }
-            if constexpr (kWireGoal4Chain461Bound) {
-                return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                    record.register_virtual, record.layout_virtual,
-                    index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
-            } else {
-                return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                    record.register_virtual, record.layout_virtual);
-            }
+            return owner_.menu.register_in_game_screen(slot.registry_slot, name,
+                record.register_virtual, record.layout_virtual,
+                index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
         }();
         if (!registered) {
             owner_.log.notef("HUD screen slot %02X could not be registered",
@@ -1399,13 +1248,9 @@ public:
                 record.pages.push_back(page);
                 ++owner_.summary.pages_requested;
                 const bool loaded = [&]() {
-                    if constexpr (kWireGoal4Chain530Bound) {
-                        if (slot.registry_slot == kSceneInitRegistrySlot)
-                            return owner_.menu.in_game_page(slot.registry_slot, page) != nullptr;
-                        return owner_.menu.attach_in_game_page(slot.registry_slot, page);
-                    } else {
-                        return owner_.menu.attach_in_game_page(slot.registry_slot, page);
-                    }
+                    if (slot.registry_slot == kSceneInitRegistrySlot)
+                        return owner_.menu.in_game_page(slot.registry_slot, page) != nullptr;
+                    return owner_.menu.attach_in_game_page(slot.registry_slot, page);
                 }();
                 if (loaded) {
                     ++record.pages_loaded;
@@ -1417,14 +1262,10 @@ public:
                 ++record.widgets_requested;
                 ++owner_.summary.widgets_requested;
                 const bool bound = [&]() {
-                    if constexpr (kWireGoal4Chain530Bound) {
-                        if (slot.registry_slot == kSceneInitRegistrySlot && widget == "Message_Text")
-                            return bsp::ingame_gui_cc13::Raw{
-                                owner_.constructed_scene_init_screen.data()}.ptr(0x20) != nullptr;
-                        return owner_.menu.in_game_page_has_child(slot.registry_slot, widget);
-                    } else {
-                        return owner_.menu.in_game_page_has_child(slot.registry_slot, widget);
-                    }
+                    if (slot.registry_slot == kSceneInitRegistrySlot && widget == "Message_Text")
+                        return bsp::ingame_gui_cc13::Raw{
+                            owner_.constructed_scene_init_screen.data()}.ptr(0x20) != nullptr;
+                    return owner_.menu.in_game_page_has_child(slot.registry_slot, widget);
                 }();
                 if (bound) {
                     ++record.widgets_bound;
@@ -1443,12 +1284,7 @@ public:
         owner_.record("InGameInterface::push_interface_request", 0x004cc460u);
     }
     void hud_root_set_field_1c(std::uint32_t value) override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            owner_.set_root_closed_value(static_cast<std::int32_t>(value));
-        } else {
-        static_cast<void>(value);
-        owner_.record("InGameInterface::hud_root_set_field_1c", 0x00644220u);
-        }
+        owner_.set_root_closed_value(static_cast<std::int32_t>(value));
     }
 
 private:
@@ -1595,25 +1431,17 @@ void GameHudHost::build_manager_0068a990() {
 void GameHudHost::apply_pending_interface_0068aca0() {
     Impl& impl = *impl_;
     if (!impl.summary.manager_built) return;
-    if constexpr (kWireGoal4Chain413Bound) {
-        // A pending member payload is also a weak reference (+38h in the
-        // native request record). A member that died after the push must not
-        // be restored from its still-allocated host slot on the next frame.
-        if (impl.pending_explicit_payload && impl.release_destroyed_payload(impl.pending_payload))
-            impl.record_pending_payload_38 = SIZE_MAX;
-    } else {
-        // The old service has no separately retained member payload.
-    }
+    // A pending member payload is also a weak reference (+38h in the
+    // native request record). A member that died after the push must not
+    // be restored from its still-allocated host slot on the next frame.
+    if (impl.pending_explicit_payload && impl.release_destroyed_payload(impl.pending_payload))
+        impl.record_pending_payload_38 = SIZE_MAX;
     bool has_payload = false;
     const std::size_t controlled = impl.units != nullptr && impl.units->controlled_bound()
         ? impl.units->controlled_index() : SIZE_MAX;
     bsp::HudRootPayload payload{controlled, bsp::HudRootPayloadKind::Unit};
-    if constexpr (kWireGoal4Chain413Bound) {
-        if (controlled != SIZE_MAX && impl.is_squadron_slot(controlled))
-            payload.kind = bsp::HudRootPayloadKind::Squadron;
-    } else {
-        // The old service has no payload provenance to classify.
-    }
+    if (controlled != SIZE_MAX && impl.is_squadron_slot(controlled))
+        payload.kind = bsp::HudRootPayloadKind::Squadron;
     int requested = kInterfaceScene3d;
     if (!impl.summary.interface_applied) {
         has_payload = false;
@@ -1622,16 +1450,12 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         // with [00E188D8]), serviced through the same 006840f0 / 00684600 path.
         requested = impl.pending_interface_id;
         impl.pending_interface_id = 0;
-        if constexpr (kWireGoal4Chain413Bound) {
-            if (impl.pending_explicit_payload) {
-                payload = impl.pending_payload;
-                impl.pending_explicit_payload = false;
-                has_payload = impl.units != nullptr && payload.unit < impl.units->count();
-            } else {
-                has_payload = impl.units != nullptr && impl.units->controlled_bound();
-            }
+        if (impl.pending_explicit_payload) {
+            payload = impl.pending_payload;
+            impl.pending_explicit_payload = false;
+            has_payload = impl.units != nullptr && payload.unit < impl.units->count();
         } else {
-        has_payload = impl.units != nullptr && impl.units->controlled_bound();
+            has_payload = impl.units != nullptr && impl.units->controlled_bound();
         }
     } else if (impl.unit_request_pending && !impl.unit_request_applied) {
         // Milestone 2k: the second request, the one that carries the controlled
@@ -1645,13 +1469,9 @@ void GameHudHost::apply_pending_interface_0068aca0() {
     // manager's own virtual +10h.
     impl.record("InGameInterface::service_pending_request", 0x006840f0u);
     HudUnitQuery query(impl);
-    if constexpr (kWireGoal4Chain413Bound) {
-        // 00647080 emits 22h/23h with the actual first member. Those arms do
-        // not run the 20h classifier; preserve their identity for 00646040.
-        query.use_payload(has_payload ? payload : bsp::HudRootPayload{});
-    } else {
-        // The original query derives its payload from the controlled unit.
-    }
+    // 00647080 emits 22h/23h with the actual first member. Those arms do
+    // not run the 20h classifier; preserve their identity for 00646040.
+    query.use_payload(has_payload ? payload : bsp::HudRootPayload{});
     HudInterfaceBinding binding(impl, query);
     const bool accepted = apply_in_game_interface_0068aca0(impl.manager, binding,
         requested, has_payload);
@@ -1690,14 +1510,10 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         pages += page;
     }
     const char* requested_label;
-    if constexpr (kWireGoal4Chain413Bound) {
-        requested_label = requested == kInterfaceScene3d ? "INTF_SCENE3D"
+    requested_label = requested == kInterfaceScene3d ? "INTF_SCENE3D"
             : requested == kInterfacePlane ? "INTF_PLANE"
             : requested == kInterfacePlaneBomber ? "INTF_PLANEBOMBER"
             : "request 2Ch (movie camera new)";
-    } else {
-        requested_label = requested == kInterfaceScene3d ? "INTF_SCENE3D" : "request 2Ch (movie camera new)";
-    }
     impl.log.notef("in-mission level-1 set for %s (%s payload, single player) "
         "applied as %02Xh: screens %s| contexts %s| pages %s",
         requested_label,
@@ -1716,7 +1532,7 @@ bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
     if (units == nullptr) return false;
     float right[3], up[3], forward[3], translation[3];
     if (!units->unit_pose(camera_unit, right, up, forward, translation)) return false;
-    if constexpr (bsp::kWireGoal4Chain505Bound) {
+    {
         namespace seg2 = bsp::profile_seg2_cc13;
         struct Copy final : seg2::MatrixCopyHost {
             void matrix_copy_004134f0(seg2::Raw destination, const seg2::Mat16& source) override {
@@ -1734,10 +1550,6 @@ bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
             translation[0], translation[1], translation[2], 1.0f}};
         seg2::matrix_assign_0042b680(
             {reinterpret_cast<std::uint8_t*>(out.world.data())}, source, copy);
-    } else {
-    out.world = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
-        forward[0], forward[1], forward[2], 0.0f,
-        translation[0], translation[1], translation[2], 1.0f};
     }
     const GameUnitRow* row = units->unit_row(camera_unit);
     out.throttle = row != nullptr ? row->throttle : 0.0f;        // unit+980h
@@ -1832,17 +1644,9 @@ public:
         // 0059BBD0(unit, role, slot): the permission word is 9 or the local
         // slot game+18ECh (0 here).
         std::uint32_t permission_mask = 0;
-        if constexpr (bsp::kWireGoal4Chain436Bound) {
-            permission_mask = owner_.units->unit_role_permission_mask(index, 0);
-        }
+        permission_mask = owner_.units->unit_role_permission_mask(index, 0);
         auto open = [&](int role) {
-            if constexpr (bsp::kWireGoal4Chain436Bound) {
-                return (permission_mask & (1u << role)) != 0;
-            } else {
-            std::int32_t word = 8;
-            return owner_.units->unit_role_permission(index, role, word)
-                && (word == 9 || word == 0);
-            }
+            return (permission_mask & (1u << role)) != 0;
         };
         bool permitted = false;
         switch (group) {
@@ -2627,25 +2431,17 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.unit_interface_id = 0;
     impl.movie_screen = bsp::HudMovieScreenState{};
     impl.pending_interface_id = 0;
-    if constexpr (kWireGoal4Chain413Bound) {
-        if constexpr (kWireGoal4Chain461Bound) {
-            // detach_world releases the mission's saved interface, not the
-            // screen itself. Keep its constructed vtables/containers and the
-            // registry's live flag bytes across this world-owner boundary.
-            impl.root_interface_view().at<std::int32_t>(0x1C) = 0;
-            impl.root_interface_view().at<std::uint32_t>(0xCC) = 0;
-            impl.root_interface_view().ptr(0xE4) = nullptr;
-        } else {
-        impl.root_interface_fields.fill(0);
-        }
-        impl.root_saved_observer_identity = nullptr;
-        impl.root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
-        impl.set_root_closed_value(0);
-        impl.pending_explicit_payload = false;
-        impl.pending_payload = {};
-    } else {
-        // The old path retains no root interface/payload fields.
-    }
+    // detach_world releases the mission's saved interface, not the
+    // screen itself. Keep its constructed vtables/containers and the
+    // registry's live flag bytes across this world-owner boundary.
+    impl.root_interface_view().at<std::int32_t>(0x1C) = 0;
+    impl.root_interface_view().at<std::uint32_t>(0xCC) = 0;
+    impl.root_interface_view().ptr(0xE4) = nullptr;
+    impl.root_saved_observer_identity = nullptr;
+    impl.root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
+    impl.set_root_closed_value(0);
+    impl.pending_explicit_payload = false;
+    impl.pending_payload = {};
     impl.record_pending_id_20 = 0;
     impl.record_pending_payload_38 = static_cast<std::size_t>(-1);
     impl.movie = bsp::HudMovieCamera{};
@@ -2706,19 +2502,12 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     // 00645110 vtable[124h]() (packet cc9_vtable124_liveness).
     in.vtable_124_allows = unit_vtable_124(unit, 0x00645110u);
     // 00645121 00927C50(unit, 0): any role word 9 or 0.
-    if constexpr (bsp::kWireGoal4Chain436Bound) {
+    {
         // 00927CC0 returns the same predicates as a bitmask. Consume it for
         // this any-role gate; role zero's raw word still supplies spectate_kind.
         std::int32_t word = 0;
         if (units->unit_role_permission(unit, 0, word)) in.spectate_kind = word;
         in.team_query_00927c50 = units->unit_role_permission_mask(unit, 0) != 0;
-    } else {
-    for (int role = 0; role < bsp::kUnitRoleTableEntries; ++role) {
-        std::int32_t word = 0;
-        if (!units->unit_role_permission(unit, role, word)) continue;
-        if (role == 0) in.spectate_kind = word;          // [unit+188h]
-        if (word == 9 || word == 0) in.team_query_00927c50 = true;
-    }
     }
     // 0064507A: in single player game+2194h is clear, so BL = 0 and the
     // spectator door is shut. SUBSTITUTION (labelled): +2194h is not modelled;
@@ -3019,17 +2808,13 @@ public:
         // read from the installed VehicleClass row.
         const GameUnitRow* row = owner_.units != nullptr ? owner_.units->unit_row(unit) : nullptr;
         if (row == nullptr || owner_.lua == nullptr) return 0.0f;
-        if constexpr (bsp::kWireGoal4Chain391Bound) {
-            // Goal 4 chain 391: class +A8h as the descriptor load 00960230 read it
-            // (009603D6, a plain number; nil reads 0). Without a loaded
-            // descriptor (load unbound) the direct read stands in.
-            const bsp::VehicleClassBaseFields* fields =
-                owner_.lua->loaded_vehicle_class_base_fields(row->type_id, "hud_class_height_a8");
-            return fields != nullptr ? fields->height
-                : owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
-        } else {
-        return owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
-        }
+        // Goal 4 chain 391: class +A8h as the descriptor load 00960230 read it
+        // (009603D6, a plain number; nil reads 0). Without a loaded
+        // descriptor (load unbound) the direct read stands in.
+        const bsp::VehicleClassBaseFields* fields =
+            owner_.lua->loaded_vehicle_class_base_fields(row->type_id, "hud_class_height_a8");
+        return fields != nullptr ? fields->height
+            : owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
     }
     bool ground_height_00903860(const std::array<float, 3>& point, float& out) override {
         // Switch 6 (packet cc9_movie_camera_keys): the scene-contents host's
@@ -3366,17 +3151,13 @@ public:
     }
     bool unit_is_group_leader_00778890(std::uint32_t unit) override {
         const std::int32_t group = group_of(unit);
-        if constexpr (bsp::kWireGoal4Chain520Bound) {
-            // bsp.py show 00778890: a null +284h is false; otherwise compare
-            // the current +14h leader with this unit. Keep the HUD's existing
-            // one-based identities, including zero for a missing group.
-            return bsp::ship_ai_unit_group_leads_00778890(unit,
-                group < 0 ? 0u : static_cast<std::uint32_t>(group) + 1u,
-                group < 0 ? 0u : static_cast<std::uint32_t>(
-                    owner_.units->formation_leader_0014(group) + 1u));
-        } else {
-        return group >= 0 && owner_.units->formation_leader_0014(group) == unit - 1;
-        }
+        // bsp.py show 00778890: a null +284h is false; otherwise compare
+        // the current +14h leader with this unit. Keep the HUD's existing
+        // one-based identities, including zero for a missing group.
+        return bsp::ship_ai_unit_group_leads_00778890(unit,
+            group < 0 ? 0u : static_cast<std::uint32_t>(group) + 1u,
+            group < 0 ? 0u : static_cast<std::uint32_t>(
+                owner_.units->formation_leader_0014(group) + 1u));
     }
     bool unit_is_group_member_007788b0(std::uint32_t unit) override {
         return unit != 0 && owner_.units->unit_is_formation_follower_007788b0(unit - 1);
@@ -3560,18 +3341,14 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
             ship_screen_widgets[0x40] =
                 damage != nullptr && damage->root ? damage->root.get() : nullptr;
         }
-        if constexpr (bsp::kWireGoal4Chain370Bound) {
-            // 0064C0F0 stores the speed icons at +60/+64. The other two
-            // pairs (+68..+74) are already bound by the apply-unit arm.
-            GuiLayoutPage* page = menu.in_game_page(0x45, "GUI_ship");
-            if (page != nullptr && page->root) {
-                ship_screen_widgets[0x60] =
-                    bsp::find_descendant_by_name(*page->root, "ship_speed_num1_Icon");
-                ship_screen_widgets[0x64] =
-                    bsp::find_descendant_by_name(*page->root, "ship_speed_num2_Icon");
-            }
-        } else {
-            // OFF keeps the existing widget bindings.
+        // 0064C0F0 stores the speed icons at +60/+64. The other two
+        // pairs (+68..+74) are already bound by the apply-unit arm.
+        GuiLayoutPage* page = menu.in_game_page(0x45, "GUI_ship");
+        if (page != nullptr && page->root) {
+            ship_screen_widgets[0x60] =
+                bsp::find_descendant_by_name(*page->root, "ship_speed_num1_Icon");
+            ship_screen_widgets[0x64] =
+                bsp::find_descendant_by_name(*page->root, "ship_speed_num2_Icon");
         }
     }
     auto it = ship_screen_widgets.find(static_cast<int>(widget));
@@ -3871,37 +3648,27 @@ public:
         return 0;
     }
     void gauge_digit(int gauge, int digit, float magnitude) override {
-        if constexpr (bsp::kWireGoal4Chain370Bound) {
-            // The speed magnitude comes from 0092D730 on the controlled
-            // unit. Recon/torpedo gauges still have recorded source hooks
-            // above, so do not feed their substituted zeros to the body.
-            if (gauge != 0) {
-                owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
-                return;
-            }
-            // 0064B429 constructs the speed pair; 0043DFB9..DFCE
-            // appends its SECOND argument first. Thus digit 0 (units) is
-            // num2 (+64), digit 1 (tens) is num1 (+60).
-            if (digit < 0 || digit >= 2) {
-                throw std::logic_error("HUD ship digit outside native gauge pair");
-            }
-            const auto slot = static_cast<bsp::ShipScreenWidget>(0x64 - 4 * digit);
-            GuiLayoutWidget* widget = owner_.ship_screen_widget(slot);
-            if (widget != nullptr && owner_.menu.frontend().roll_widget_digit(*widget, digit, magnitude)) {
-                owner_.done("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
-            } else {
-                // A missing authored widget/loaded atlas is still a missing
-                // resource, rather than an invented icon rectangle.
-                owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
-            }
+        // The speed magnitude comes from 0092D730 on the controlled
+        // unit. Recon/torpedo gauges still have recorded source hooks
+        // above, so do not feed their substituted zeros to the body.
+        if (gauge != 0) {
+            owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+            return;
+        }
+        // 0064B429 constructs the speed pair; 0043DFB9..DFCE
+        // appends its SECOND argument first. Thus digit 0 (units) is
+        // num2 (+64), digit 1 (tens) is num1 (+60).
+        if (digit < 0 || digit >= 2) {
+            throw std::logic_error("HUD ship digit outside native gauge pair");
+        }
+        const auto slot = static_cast<bsp::ShipScreenWidget>(0x64 - 4 * digit);
+        GuiLayoutWidget* widget = owner_.ship_screen_widget(slot);
+        if (widget != nullptr && owner_.menu.frontend().roll_widget_digit(*widget, digit, magnitude)) {
+            owner_.done("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
         } else {
-        static_cast<void>(gauge);
-        static_cast<void>(digit);
-        static_cast<void>(magnitude);
-        // 0043ABA0 rewrites the digit icon's vertex UVs through its vertex
-        // stream (+A0h, lock +10h, unlock +14h); the sprite bridge draws a
-        // widget's first authored state only.
-        owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+            // A missing authored widget/loaded atlas is still a missing
+            // resource, rather than an invented icon rectangle.
+            owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
         }
     }
 
@@ -3944,7 +3711,7 @@ public:
             // rewrites class+C8h after the load is not established.
             if (row != nullptr && owner_.lua != nullptr) {
                 GameMissionLuaHost& lua = *owner_.lua;
-                if constexpr (bsp::kWireGoal4Chain391Bound) {
+                {
                     // Goal 4 chain 391: class +C8h from the descriptor load
                     // 00960230 (00960503; 0 when Catapult is not a table). Without
                     // a loaded descriptor (load unbound) the direct read stands in.
@@ -3953,9 +3720,6 @@ public:
                     put<std::int32_t>(class_, 0xC8, fields != nullptr ? fields->launch_stock
                         : lua.read_vehicle_class_integer(row->type_id, "Catapult",
                                                          "LaunchStock", 0));
-                } else {
-                put<std::int32_t>(class_, 0xC8, lua.read_vehicle_class_integer(
-                                                     row->type_id, "Catapult", "LaunchStock", 0));
                 }
                 no_repair_gui_ =
                     lua.read_vehicle_class_boolean(row->type_id, "NoRepairGUI", false) ? 1 : 0;
@@ -4259,36 +4023,29 @@ public:
         // 00683140..00683158, 00681F40(ECX = [00E188A8], &unit+FCh, 0.0f): ON runs
         // game_near_world_edge_00681f40 over the host's border box; OFF keeps the
         // substitution's false.
-        if constexpr (bsp::kWireGoal3Chain233Bound) {
-            // GGame+711Ch..+7130h is the box GameMissionLuaHost keeps from the
-            // avoid-zone load (select_world_map_bounds_004d5ede, set before any
-            // script runs). Before that load there is no box, and no mission
-            // frame runs this update then.
-            const bsp::WorldMapBounds* bounds =
-                owner_.lua != nullptr ? owner_.lua->world_border_bounds() : nullptr;
-            if (bounds == nullptr) {
-                owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
-                return false;
-            }
-            auto game = std::make_unique<GameWorldBoxImage>();
-            for (int i = 0; i < 3; ++i) {
-                game->north_west[i] = bounds->north_west[static_cast<std::size_t>(i)];
-                game->south_east[i] = bounds->south_east[static_cast<std::size_t>(i)];
-            }
-            // &[00E188D8]+FCh, the controlled unit's world translation (its pose
-            // is current here, pose_current_c8).
-            float position[3];
-            owner_.units->unit_position_00fc(owner_.units->controlled_index(),
-                position[0], position[1], position[2]);
-            owner_.done("HudWarningScreen::world_edge", 0x00681f40u);
-            return bsp::cc13_fe5::game_near_world_edge_00681f40(
-                bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(game.get())}, position, 0.0f);
-        } else {
-            // SUBSTITUTION: GGame+711Ch..+7130h, the world bounds 00681F40 tests,
-            // are unmodelled (as in the units host's fly-to solver).
+        // GGame+711Ch..+7130h is the box GameMissionLuaHost keeps from the
+        // avoid-zone load (select_world_map_bounds_004d5ede, set before any
+        // script runs). Before that load there is no box, and no mission
+        // frame runs this update then.
+        const bsp::WorldMapBounds* bounds =
+            owner_.lua != nullptr ? owner_.lua->world_border_bounds() : nullptr;
+        if (bounds == nullptr) {
             owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
             return false;
         }
+        auto game = std::make_unique<GameWorldBoxImage>();
+        for (int i = 0; i < 3; ++i) {
+            game->north_west[i] = bounds->north_west[static_cast<std::size_t>(i)];
+            game->south_east[i] = bounds->south_east[static_cast<std::size_t>(i)];
+        }
+        // &[00E188D8]+FCh, the controlled unit's world translation (its pose
+        // is current here, pose_current_c8).
+        float position[3];
+        owner_.units->unit_position_00fc(owner_.units->controlled_index(),
+            position[0], position[1], position[2]);
+        owner_.done("HudWarningScreen::world_edge", 0x00681f40u);
+        return bsp::cc13_fe5::game_near_world_edge_00681f40(
+            bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(game.get())}, position, 0.0f);
     }
     void set_visible(bsp::WarningWidget widget, bool visible) override {
         GuiLayoutWidget* w = owner_.warning_widget(widget);
@@ -4321,30 +4078,25 @@ public:
         // warning_screen_show_alert (phase += dt, first_Group shown, the alert's
         // key, the pulsed alpha on the three widgets, 00682800) over the HUD's
         // warning widgets; OFF keeps the record.
-        if constexpr (bsp::kWireGoal3Chain233Bound) {
-            const std::size_t i = static_cast<std::size_t>(alert & 3);
-            WarningScreenImage image{};
-            for (std::size_t k = 0; k < 4; ++k) {
-                image.phase[k] = screen.phase[k];
-                // A non-null +40h slot is a tracked sound 00682800 made; this host
-                // has made none (its samples are null), so a set flag has no handle.
-                if (screen.sound[k]) bsp::cc13_fe5::fe5_unreached("warning sound handle");
-            }
-            image.dt = screen.dt_78;
-            image.text = owner_.warning_widget(bsp::WarningWidget::Text);
-            image.icon1 = owner_.warning_widget(bsp::WarningWidget::Icon1);
-            image.icon2 = owner_.warning_widget(bsp::WarningWidget::Icon2);
-            image.first_group = owner_.warning_widget(bsp::WarningWidget::FirstGroup);
-            WarningAlertFe5Binding fe5(owner_);
-            bsp::cc13_fe5::warning_screen_show_alert(
-                bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(&image)}, alert & 3, fe5);
-            screen.phase[i] = image.phase[i];
-            screen.sound[i] = image.sound[i] != nullptr;
-            owner_.done("HudWarningScreen::show_alert", kShow[i]);
-        } else {
-            static_cast<void>(screen);
-            owner_.record("HudWarningScreen::show_alert", kShow[alert & 3]);
+        const std::size_t i = static_cast<std::size_t>(alert & 3);
+        WarningScreenImage image{};
+        for (std::size_t k = 0; k < 4; ++k) {
+            image.phase[k] = screen.phase[k];
+            // A non-null +40h slot is a tracked sound 00682800 made; this host
+            // has made none (its samples are null), so a set flag has no handle.
+            if (screen.sound[k]) bsp::cc13_fe5::fe5_unreached("warning sound handle");
         }
+        image.dt = screen.dt_78;
+        image.text = owner_.warning_widget(bsp::WarningWidget::Text);
+        image.icon1 = owner_.warning_widget(bsp::WarningWidget::Icon1);
+        image.icon2 = owner_.warning_widget(bsp::WarningWidget::Icon2);
+        image.first_group = owner_.warning_widget(bsp::WarningWidget::FirstGroup);
+        WarningAlertFe5Binding fe5(owner_);
+        bsp::cc13_fe5::warning_screen_show_alert(
+            bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(&image)}, alert & 3, fe5);
+        screen.phase[i] = image.phase[i];
+        screen.sound[i] = image.sound[i] != nullptr;
+        owner_.done("HudWarningScreen::show_alert", kShow[i]);
     }
 
 private:
@@ -4807,15 +4559,10 @@ public:
         return owner_.menu.input_action_pressed(action);
     }
     bool base_screen_active() override {
-        if constexpr (kWireGoal4Chain252Bound) {
-            // 0068A140 reads the manager's last pending id at +20h, including
-            // after application. Preserve that owner here, not the applied id
-            // in summary (bsp.py show 0068a140).
-            return bsp::is_base_interface_0068a140(owner_.record_pending_id_20);
-        } else {
-        // 0068A140 reads manager+20h (the pending record, not the applied id).
-        return owner_.record_pending_id_20 == 0x31 || owner_.record_pending_id_20 == 0x32;
-        }
+        // 0068A140 reads the manager's last pending id at +20h, including
+        // after application. Preserve that owner here, not the applied id
+        // in summary (bsp.py show 0068a140).
+        return bsp::is_base_interface_0068a140(owner_.record_pending_id_20);
     }
     bool panel_54_active() override {
         // Manager+54h is registry slot 4Ch; +5h is its applied byte.
@@ -5157,12 +4904,7 @@ public:
         return false;
     }
     float mission_clock() override {
-        if constexpr (kWireGoal4Chain339Bound) {
-            return powerup_entries_.clock;
-        } else {
-        owner_.record("HudRootScreen::mission_clock", 0x00649c6bu);
-        return 0.0f;
-        }
+        return powerup_entries_.clock;
     }
     bool controlled_unit_present() override {
         return owner_.units != nullptr && owner_.units->controlled_bound();
@@ -5172,49 +4914,27 @@ public:
     void release_icon_clones() override {}
     void release_circle_clones() override {}
     void collect_powerups() override {
-        if constexpr (kWireGoal4Chain339Bound) {
-            game_powerups::collect_hud_powerups(powerup_entries_);
-            owner_.done("HudRootScreen::collect_powerups", 0x008e9af0u);
-        } else {
-        // SUBSTITUTION: the power-up manager [00F88C30] is not built; 008E9AF0
-        // answers five empty vectors.
-        owner_.record("HudRootScreen::collect_powerups", 0x008e9af0u);
-        }
+        game_powerups::collect_hud_powerups(powerup_entries_);
+        owner_.done("HudRootScreen::collect_powerups", 0x008e9af0u);
     }
     std::size_t untimed_entry_count() override {
-        if constexpr (kWireGoal4Chain339Bound) {
-            return powerup_entries_.untimed.size();
-        } else { return 0; }
+        return powerup_entries_.untimed.size();
     }
     std::size_t timed_entry_count() override {
-        if constexpr (kWireGoal4Chain339Bound) {
-            return powerup_entries_.timed.size();
-        } else { return 0; }
+        return powerup_entries_.timed.size();
     }
     float timed_entry_deadline(std::size_t index) override {
-        if constexpr (kWireGoal4Chain339Bound) {
-            return powerup_entries_.deadlines.at(index);
-        } else { return 0.0f; }
+        return powerup_entries_.deadlines.at(index);
     }
     bool untimed_entry_applies(std::size_t index) override {
-        if constexpr (kWireGoal4Chain360Bound) {
-            if (!controlled_unit_present()) return false;
-            return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.untimed.at(index),
-                *owner_.units, owner_.units->controlled_index());
-        } else {
-        owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
-        return false;
-        }
+        if (!controlled_unit_present()) return false;
+        return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.untimed.at(index),
+            *owner_.units, owner_.units->controlled_index());
     }
     bool timed_entry_applies(std::size_t index) override {
-        if constexpr (kWireGoal4Chain360Bound) {
-            if (!controlled_unit_present()) return false;
-            return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.timed.at(index),
-                *owner_.units, owner_.units->controlled_index());
-        } else {
-        owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
-        return false;
-        }
+        if (!controlled_unit_present()) return false;
+        return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.timed.at(index),
+            *owner_.units, owner_.units->controlled_index());
     }
     std::uint32_t clone_icon_template() override {
         owner_.record("HudRootScreen::clone_template", 0x00aab4c0u);
@@ -5273,95 +4993,68 @@ public:
     }
     std::uint32_t resolve_weapon_info(bool& needs_fallback) override {
         // 00644CC0 calls hud_root_find_unit; OFF keeps the neutral selection tuple.
-        if constexpr (kWireGoal1Chain12Bound) {
-            HudRootSelectionBinding binding(owner_);
-            const auto& lists = owner_.root_lists;
-            const bsp::HudUnitListView primary{lists.primary_8c.data(),
-                static_cast<std::uint32_t>(lists.primary_8c.size())};
-            const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
-                static_cast<std::uint32_t>(lists.secondary_9c.size())};
-            const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
-            const auto selection = bsp::hud_root_find_unit(primary, secondary, controlled, binding);
-            needs_fallback = selection.index == 0xffffu;
-            return (static_cast<std::uint32_t>(selection.index) << 16)
-                | (selection.secondary ? 1u : 0u);
-        } else {
-        // 00644CC0 (and its fallback 00644C20) look the controlled unit up in
-        // the primary and secondary lists 00648290 builds; neither the lists
-        // nor the lookups are bound here. +C2h has no reader in this host.
-        owner_.record("HudRootScreen::selection_tuple", 0x0064a114u);
-        needs_fallback = false;
-        return 0xFFFF0000u;
-        }
+        HudRootSelectionBinding binding(owner_);
+        const auto& lists = owner_.root_lists;
+        const bsp::HudUnitListView primary{lists.primary_8c.data(),
+            static_cast<std::uint32_t>(lists.primary_8c.size())};
+        const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
+            static_cast<std::uint32_t>(lists.secondary_9c.size())};
+        const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
+        const auto selection = bsp::hud_root_find_unit(primary, secondary, controlled, binding);
+        needs_fallback = selection.index == 0xffffu;
+        return (static_cast<std::uint32_t>(selection.index) << 16)
+            | (selection.secondary ? 1u : 0u);
     }
     std::uint32_t resolve_weapon_info_fallback() override {
         // 00644C20 calls hud_root_find_primary_unit; OFF keeps the neutral fallback.
-        if constexpr (kWireGoal1Chain12Bound) {
-            HudRootSelectionBinding binding(owner_);
-            const auto& lists = owner_.root_lists;
-            const bsp::HudUnitListView primary{lists.primary_8c.data(),
-                static_cast<std::uint32_t>(lists.primary_8c.size())};
-            const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
-            const auto selection = bsp::hud_root_find_primary_unit(primary, controlled, binding);
-            return (static_cast<std::uint32_t>(selection.index) << 16)
-                | (selection.secondary ? 1u : 0u);
-        } else {
-            return 0xFFFF0000u;
-        }
+        HudRootSelectionBinding binding(owner_);
+        const auto& lists = owner_.root_lists;
+        const bsp::HudUnitListView primary{lists.primary_8c.data(),
+            static_cast<std::uint32_t>(lists.primary_8c.size())};
+        const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
+        const auto selection = bsp::hud_root_find_primary_unit(primary, controlled, binding);
+        return (static_cast<std::uint32_t>(selection.index) << 16)
+            | (selection.secondary ? 1u : 0u);
     }
     void update_unit_rows(float) override {
         // 00644DB0 calls hud_root_poll_selection; OFF keeps the selection-poll record.
-        if constexpr (kWireGoal1Chain12Bound) {
-            if (owner_.units == nullptr) return;
-            HudRootSelectionBinding binding(owner_);
-            auto& state = owner_.root_selection;
-            auto& lists = owner_.root_lists;
-            const auto incoming = owner_.hud_root.weapon_info_field;
-            state.selection = {(incoming & 0xffu) != 0,
-                static_cast<std::uint16_t>(incoming >> 16)};
-            // The caller just wrote root+C2h. selected_unit() must see that
-            // same tuple if the poll converts a secondary selection to primary.
-            lists.cursor = state.selection;
-            state.pending = lists.force_pending_c0;
-            const bsp::HudUnitListView primary{lists.primary_8c.data(),
-                static_cast<std::uint32_t>(lists.primary_8c.size())};
-            const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
-                static_cast<std::uint32_t>(lists.secondary_9c.size())};
-            bsp::hud_root_poll_selection(state, primary, secondary, binding);
-            lists.cursor = state.selection;
-            lists.force_pending_c0 = state.pending;
-            owner_.hud_root.weapon_info_field = (incoming & 0x0000ff00u)
-                | (static_cast<std::uint32_t>(state.selection.index) << 16)
-                | (state.selection.secondary ? 1u : 0u);
-            owner_.done("HudRootScreen::selection_poll", 0x00644db0u);
-        } else {
-        // 00644DB0, the selection poll over actions 8Dh, 8Ch, 8Eh and 8Fh.
-        owner_.record("HudRootScreen::selection_poll", 0x00644db0u);
-        }
+        if (owner_.units == nullptr) return;
+        HudRootSelectionBinding binding(owner_);
+        auto& state = owner_.root_selection;
+        auto& lists = owner_.root_lists;
+        const auto incoming = owner_.hud_root.weapon_info_field;
+        state.selection = {(incoming & 0xffu) != 0,
+            static_cast<std::uint16_t>(incoming >> 16)};
+        // The caller just wrote root+C2h. selected_unit() must see that
+        // same tuple if the poll converts a secondary selection to primary.
+        lists.cursor = state.selection;
+        state.pending = lists.force_pending_c0;
+        const bsp::HudUnitListView primary{lists.primary_8c.data(),
+            static_cast<std::uint32_t>(lists.primary_8c.size())};
+        const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
+            static_cast<std::uint32_t>(lists.secondary_9c.size())};
+        bsp::hud_root_poll_selection(state, primary, secondary, binding);
+        lists.cursor = state.selection;
+        lists.force_pending_c0 = state.pending;
+        owner_.hud_root.weapon_info_field = (incoming & 0x0000ff00u)
+            | (static_cast<std::uint32_t>(state.selection.index) << 16)
+            | (state.selection.secondary ? 1u : 0u);
+        owner_.done("HudRootScreen::selection_poll", 0x00644db0u);
     }
     void update_medals() override {
-        if constexpr (kWireGoal4Chain291Bound) {
-            // 00648C20, the unit rows (name, flag, payload, health, command).
-            if (owner_.units == nullptr) {
-                owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
-                return;
-            }
-            HudRootRowsBinding binding(owner_);
-            bsp::hud_root_update_rows(owner_.root_rows, binding);
-            ++owner_.root_row_updates;
-            owner_.done("HudRootScreen::unit_rows", 0x00648c20u);
-        } else {
         // 00648C20, the unit rows (name, flag, payload, health, command).
-        owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
+        if (owner_.units == nullptr) {
+            owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
+            return;
         }
+        HudRootRowsBinding binding(owner_);
+        bsp::hud_root_update_rows(owner_.root_rows, binding);
+        ++owner_.root_row_updates;
+        owner_.done("HudRootScreen::unit_rows", 0x00648c20u);
     }
 
     bool controlled_unit_is_kind(int kind) override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            return owner_.selection_is_kind_of(owner_.units->controlled_index(), kind);
-        } else {
-        return owner_.units->unit_is_kind_of(owner_.units->controlled_index(), kind);
-        }
+        return owner_.selection_is_kind_of(owner_.units->controlled_index(), kind);
     }
     bool game_blocks_toggle() override {
         // SUBSTITUTION: game+19C4h is not modelled (as for screen 46h); read clear.
@@ -5372,42 +5065,31 @@ public:
         return owner_.menu.input_action_pressed(action);
     }
     bool controlled_unit_flag_379() override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            return owner_.lua != nullptr
-                && owner_.lua->squadron_force_gunner_mode_379(owner_.units->controlled_index());
-        } else {
-        // Reached only for a kind-18h (plane) controlled unit.
-        owner_.record("HudRootScreen::plane_flag_379", 0x0064a1e0u);
-        return false;
-        }
+        return owner_.lua != nullptr
+            && owner_.lua->squadron_force_gunner_mode_379(owner_.units->controlled_index());
     }
     void toggle_closed_hud() override {
-        if constexpr (kWireGoal4Chain413Bound) {
-            owner_.refresh_root_saved_payload();
-            const auto root = owner_.root_interface_view();
-            const std::size_t saved = owner_.root_identity_index(root.ptr(0xE4));
-            bsp::HudClosedRowsState state{
-                root.at<std::int32_t>(0x1C), root.at<std::int32_t>(0xCC),
-                saved != SIZE_MAX ? static_cast<std::uint32_t>(saved + 1) : 0u};
-            // Closing pushes the current first PLANE; reopening preserves the
-            // saved payload's original meaning rather than reclassifying its
-            // index as a squadron after that plane's death.
-            HudClosedRowsBinding binding(owner_, state.closed == 1
-                ? owner_.root_saved_payload_kind : bsp::HudRootPayloadKind::Plane);
-            if (state.closed == 0 && (state.interface_id == 0x22 || state.interface_id == 0x23)
-                && binding.first_member(binding.controlled_unit()) == 0) {
-                owner_.record("HudRootScreen::unresolved_closed_rows_member", 0x00647080u);
-                return;
-            }
-            // bsp.py show 00647080: exactly-zero closes, exactly-one restores
-            // the saved interface/payload; all other state values are inert.
-            bsp::hud_root_toggle_closed_00647080(state, binding);
-            owner_.set_root_closed_value(state.closed);
-            owner_.done("HudRootScreen::toggle_closed_hud", 0x00647080u);
-        } else {
-        // 00647080 pushes interface requests 22h/23h: not performed.
-        owner_.record("HudRootScreen::toggle_closed_hud", 0x00647080u);
+        owner_.refresh_root_saved_payload();
+        const auto root = owner_.root_interface_view();
+        const std::size_t saved = owner_.root_identity_index(root.ptr(0xE4));
+        bsp::HudClosedRowsState state{
+            root.at<std::int32_t>(0x1C), root.at<std::int32_t>(0xCC),
+            saved != SIZE_MAX ? static_cast<std::uint32_t>(saved + 1) : 0u};
+        // Closing pushes the current first PLANE; reopening preserves the
+        // saved payload's original meaning rather than reclassifying its
+        // index as a squadron after that plane's death.
+        HudClosedRowsBinding binding(owner_, state.closed == 1
+            ? owner_.root_saved_payload_kind : bsp::HudRootPayloadKind::Plane);
+        if (state.closed == 0 && (state.interface_id == 0x22 || state.interface_id == 0x23)
+            && binding.first_member(binding.controlled_unit()) == 0) {
+            owner_.record("HudRootScreen::unresolved_closed_rows_member", 0x00647080u);
+            return;
         }
+        // bsp.py show 00647080: exactly-zero closes, exactly-one restores
+        // the saved interface/payload; all other state values are inert.
+        bsp::hud_root_toggle_closed_00647080(state, binding);
+        owner_.set_root_closed_value(state.closed);
+        owner_.done("HudRootScreen::toggle_closed_hud", 0x00647080u);
     }
     // +20h is the screen's own byte; nothing in this host sets it, and the
     // tail then stops at game+1FE4h, which is zero in single player.
@@ -5753,7 +5435,7 @@ public:
         }
     }
     bool grey_arrow_contains_008ddf90(std::size_t unit) override {
-        if constexpr (kHudGreyArrowSetBound && bsp::kWireGoal4Chain376Bound) {
+        if constexpr (kHudGreyArrowSetBound) {
             // 008DDF90 itself (bsp::objective_set_contains_008ddf90) on the local
             // slot's set (game+18ECh is 0 here): the size test 008DDF93, the kind
             // arms 008DDFA9 / 008DDFB8 and the 008DDF00 lookup feed the body.
@@ -6091,11 +5773,9 @@ void GameHudHost::report() {
         impl.summary.pump_frames, impl.summary.update_frames,
         impl.summary.audio_environment.empty() ? "(none)"
                                                : impl.summary.audio_environment.c_str());
-    if constexpr (kWireGoal4Chain249Bound) {
-        impl.log.notef("summary mission hud listener environment (goal 4 chain 249, 00A7B710): "
-            "selects=%llu changes=%llu", impl.summary.audio_environment_selects,
-            impl.summary.audio_environment_changes);
-    }
+    impl.log.notef("summary mission hud listener environment (goal 4 chain 249, 00A7B710): "
+        "selects=%llu changes=%llu", impl.summary.audio_environment_selects,
+        impl.summary.audio_environment_changes);
     impl.log.notef("summary mission hud gun aim message 79h (cc15-smA, 00954A10 / 0075FFF0 / "
         "0075FF60 / 007600D0): bound=%d round_trips=%llu changed yaw=%llu pitch=%llu camera=%llu "
         "bools=%llu group=%llu target=%llu max_delta yaw=%.9g pitch=%.9g",
@@ -6245,11 +5925,7 @@ void GameHudHost::Impl::run_root_observer_notice() {
         done("HudRootObserver::destruction_notice_other", 0x00644a2du);
         return;
     }
-    if constexpr (kWireGoal4Chain413Bound) {
-        set_root_closed_value(0);
-    } else {
-    record("HudRootObserver::clear_root_1c", 0x00644a31u);   // root+1Ch, no host field
-    }
+    set_root_closed_value(0);
     units->clear_controlled_unit_004c0890();                  // 00644A38
     root_lists.cursor = bsp::HudUnitSelection{false, 0xffffu};   // 00644A3D/00644A44
     ++observer_releases;
@@ -6262,11 +5938,7 @@ void GameHudHost::Impl::run_root_observer_notice() {
 
 void GameHudHost::update_in_game_interface_0068c1f0() {
     Impl& impl = *impl_;
-    if constexpr (kWireGoal4Chain413Bound) {
-        impl.refresh_root_saved_payload();
-    } else {
-        // The old path has no saved interface weak reference to release.
-    }
+    impl.refresh_root_saved_payload();
     if constexpr (kControlledUnitObserverBound) impl.run_root_observer_notice();
     if (!manager_active()) return;
     HudUpdateBinding binding(impl);

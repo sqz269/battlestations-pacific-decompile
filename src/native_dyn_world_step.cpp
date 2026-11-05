@@ -1,5 +1,4 @@
 #include "bsp/native_dyn_world_step.hpp"
-#include "bsp/wire_goal4_chain613_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native world step requires MSVC Win32 x87/SSE assembly.
@@ -33,21 +32,10 @@ void reset_kernel();
 // bodies and borrowed owner context, and replace each private-kernel call
 // with one call to its existing address-named entry point.
 void __fastcall reset_route(void* node){
-    if constexpr(kWireGoal4Chain613Bound){
-        reset_native_dyn_profile_tree_00c321b0(node);
-    }else{
-        __asm {mov ecx,node}
-        __asm {call reset_kernel}
-    }
+    reset_native_dyn_profile_tree_00c321b0(node);
 }
 void __fastcall flush_route(void* world,void*,Context* c){
-    if constexpr(kWireGoal4Chain613Bound){
-        flush_native_dyn_pending_bodies_00c4d980(world,*c->owner);
-    }else{
-        __asm {push c}
-        __asm {mov ecx,world}
-        __asm {call flush_kernel}
-    }
+    flush_native_dyn_pending_bodies_00c4d980(world,*c->owner);
 }
 alignas(8) const std::uint64_t constant_00d7a398=0x3f0a36e2e0000000ULL;
 const char name_00d79f18[]={83,105,109,117,108,97,116,101,0};

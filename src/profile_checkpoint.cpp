@@ -16,9 +16,6 @@
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/oct18_tail_a.hpp"                 // 00436C50
-#include "bsp/wire_goal4_chain274_switches.hpp"
-#include "bsp/wire_goal4_chain299_switches.hpp"
-#include "bsp/wire_goal4_chain422_switches.hpp"
 extern "C" {
 #include <lua.h>
 }
@@ -355,11 +352,7 @@ void copy_checkpoint_slot_objects(NativeLuaObjectStorage& destination,
 // that the original 00436730/00438020 loops called 00B65F70. The existing
 // 00B67080/00B67190 producers retain the key's real owner/index/lifetime.
 bool checkpoint_key_is_bound(const NativeLuaObjectStorage& key) noexcept {
-    if constexpr (kWireGoal4Chain422Bound) {
-        return native_lua_is_bound_00b65f70(key);
-    } else {
-        return !native_lua_is_unbound_00b66420(key);
-    }
+    return native_lua_is_bound_00b65f70(key);
 }
 
 // The 00436730 table arm's loop: 00B65F50 twice, 00B67080, then 00436730 per
@@ -416,12 +409,8 @@ void write_other_entries(lua_State* L, int checkpoints, const std::string& missi
     while (lua_next(L, checkpoints)) {
         const int value = lua_gettop(L);
         if (lua_istable(L, value) && !same_name(lua_text(L, value - 1), mission_id)) {
-            if constexpr (kWireGoal4Chain274Bound) {
-                // 004388C6 (00438020) and 00437405 (00437250): CALL 00435D30.
-                write_lua_slot_archive_00435d30(L, value - 1, value, writer);
-            } else {
-            write_slot(L, value - 1, value, writer, 0);
-            }
+            // 004388C6 (00438020) and 00437405 (00437250): CALL 00435D30.
+            write_lua_slot_archive_00435d30(L, value - 1, value, writer);
         }
         lua_pop(L, 1);
     }
@@ -434,30 +423,26 @@ void write_lua_slot_archive_00435d30(lua_State* L, int key, int value, SettingsW
 }
 
 void copy_lua_slot_00436730(lua_State* source, int key, int value, lua_State* destination, int table) {
-    if constexpr (kWireGoal4Chain299Bound) {
-        // The three stacked LuaObjects name existing stack slots; one owner
-        // when both sides are the same state, so its tracked indices stay
-        // consistent across the copy's pushes and removals.
-        key = abs_index(source, key);
-        value = abs_index(source, value);
-        table = abs_index(destination, table);
-        const int held = lua_gettop(source) > lua_gettop(destination)
-            ? lua_gettop(source) : lua_gettop(destination);
-        admit_native_copy(source, value, held);
-        NativeLuaStateStorage source_owner;
-        NativeLuaStateStorage destination_owner;
-        bind_owner(source_owner, source);
-        NativeLuaStateStorage& to = destination == source
-            ? source_owner : bind_owner(destination_owner, destination);
-        NativeLuaObjectStorage destination_object = stack_object(to, table);
-        NativeLuaObjectStorage key_object = stack_object(source_owner, key);
-        NativeLuaObjectStorage value_object = stack_object(source_owner, value);
-        CheckpointSlotContext context{game::game_native_string_process().raw_context(),
-                                      crt_sse2_conversion()};
-        copy_checkpoint_slot_objects(destination_object, key_object, value_object, context);
-    } else {
-        copy_slot(source, key, value, destination, table, 0);
-    }
+    // The three stacked LuaObjects name existing stack slots; one owner
+    // when both sides are the same state, so its tracked indices stay
+    // consistent across the copy's pushes and removals.
+    key = abs_index(source, key);
+    value = abs_index(source, value);
+    table = abs_index(destination, table);
+    const int held = lua_gettop(source) > lua_gettop(destination)
+        ? lua_gettop(source) : lua_gettop(destination);
+    admit_native_copy(source, value, held);
+    NativeLuaStateStorage source_owner;
+    NativeLuaStateStorage destination_owner;
+    bind_owner(source_owner, source);
+    NativeLuaStateStorage& to = destination == source
+        ? source_owner : bind_owner(destination_owner, destination);
+    NativeLuaObjectStorage destination_object = stack_object(to, table);
+    NativeLuaObjectStorage key_object = stack_object(source_owner, key);
+    NativeLuaObjectStorage value_object = stack_object(source_owner, value);
+    CheckpointSlotContext context{game::game_native_string_process().raw_context(),
+                                  crt_sse2_conversion()};
+    copy_checkpoint_slot_objects(destination_object, key_object, value_object, context);
 }
 
 void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
@@ -486,7 +471,7 @@ void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
     lua_pushnumber(mission, play_time);
     lua_setfield(mission, entry, "__playTime");
     // 0043846F..004384DB: copy the script table through 00436C50.
-    if constexpr (kWireGoal4Chain299Bound) {
+    {
         // 0043844D..004384DB: key [ESP+64h] and value [ESP+B4h] from 00B65F50,
         // 00B67080 over the data table, then per slot 00436C50(ECX manager,
         // destination entry, key, value) while 00B66420(key) reports bound,
@@ -524,13 +509,6 @@ void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
             oct18_tail_a::copy_profile_lua_value_00436c50(nullptr, destination, key, value, context);
             native_lua_iterate_next_00b67190(data, key, value);
         }
-    } else {
-    lua_pushnil(script);
-    while (lua_next(script, data_table)) {
-        const int value = lua_gettop(script);
-        copy_slot(script, value - 1, value, mission, entry, 0);
-        lua_pop(script, 1);
-    }
     }
     if (writer) {
         // 0043856B..004386D0.
@@ -545,12 +523,8 @@ void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
         lua_pushnil(script);
         while (lua_next(script, data_table)) {
             const int value = lua_gettop(script);
-            if constexpr (kWireGoal4Chain274Bound) {
-                // 00438747: CALL 00435D30 per script slot.
-                write_lua_slot_archive_00435d30(script, value - 1, value, *writer);
-            } else {
-            write_slot(script, value - 1, value, *writer, 0);
-            }
+            // 00438747: CALL 00435D30 per script slot.
+            write_lua_slot_archive_00435d30(script, value - 1, value, *writer);
             lua_pop(script, 1);
         }
         writer->end_section();
@@ -583,12 +557,8 @@ std::optional<float> load_checkpoint_004379c0(lua_State* mission, const std::str
     lua_pushnil(mission);
     while (lua_next(mission, entry)) {
         const int value = lua_gettop(mission);
-        if constexpr (kWireGoal4Chain274Bound) {
-            // 00437B21: CALL 00436730 per entry slot.
-            copy_lua_slot_00436730(mission, value - 1, value, destination, copy);
-        } else {
-        copy_slot(mission, value - 1, value, destination, copy, 0);
-        }
+        // 00437B21: CALL 00436730 per entry slot.
+        copy_lua_slot_00436730(mission, value - 1, value, destination, copy);
         lua_pop(mission, 1);
     }
     lua_pop(mission, 2);

@@ -1,11 +1,7 @@
 // bsp_game.exe milestone 2b: phase 7 of application initialize and the title GUI pages.
 // See include/bsp/game_hosts_frontend.hpp for the address list and the evidence.
 #include "bsp/game_hosts_frontend.hpp"
-#include "bsp/wire_goal4_chain251_switches.hpp"
-#include "bsp/wire_goal4_chain370_switches.hpp"
-#include "bsp/wire_goal4_chain433_switches.hpp"
 #include "bsp/frontend_scroller_bridge.hpp"
-#include "bsp/wire_goal4_chain435_switches.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_sweepA2.hpp"
 
@@ -916,11 +912,7 @@ GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std:
     ++summary.pages_requested;
     GuiLayoutPage* page = nullptr;
     try {
-        if constexpr (kWireGoal4Chain251Bound) {
-            page = load_gui_page_00aa5840(registry, host, name, screen_flag, false);
-        } else {
-        page = load_gui_page_00aa5840(registry, host, name, 1, false);
-        }
+        page = load_gui_page_00aa5840(registry, host, name, screen_flag, false);
     } catch (const std::exception& error) {
         record.error = error.what();
     }
@@ -1239,22 +1231,15 @@ void GameFrontendHost::Impl::build_quads() {
             const GuiWidgetPoint point = resolved_point(*node);
             record.x = point.x;
             record.y = point.y;
-            if constexpr (bsp::kWireGoal4Chain435Bound) {
-                record.z = published_resolved_z(node->transform);
-            } else {
-                record.z = point.z;
-            }
+            record.z = published_resolved_z(node->transform);
             record.width = node->transform.size.width;
             record.height = node->transform.size.height;
             record.pivot_x = node->transform.pivot_x;
             record.pivot_y = node->transform.pivot_y;
         }
-        if constexpr (kWireGoal4Chain407Bound) {
-            // 006834A0 changes authored controls too. Refresh the exact
-            // records whose dimensions feed the emitted quad corners below.
-            scroller_bridge.refresh(record, node);
-        } else {
-        }
+        // 006834A0 changes authored controls too. Refresh the exact
+        // records whose dimensions feed the emitted quad corners below.
+        scroller_bridge.refresh(record, node);
         if (!bridge_visible(node)) continue;
         // Milestone 2d: a Text widget carries a font, not a texture, so it takes the
         // reconstructed text path instead of the atlas lookup below.
@@ -1322,19 +1307,13 @@ void GameFrontendHost::Impl::build_quads() {
         // authored Color and Rotate on every quad is bridge work this milestone
         // does not do; see the follow-ups.
         const D3DCOLOR color = [&] {
-            if constexpr (kWireGoal4Chain407Bound) {
-                return scroller_bridge.color(record, node);
-            } else {
-                const D3DCOLOR legacy_color = (node != nullptr && record.runtime)
-                    ? bridge_color(node->color) : D3DCOLOR_ARGB(255, 255, 255, 255);
-                return legacy_color;
-            }
+            return scroller_bridge.color(record, node);
         }();
         BridgeVertex top_left{left, top, 0.0f, 1.0f, color, u1, v1};
         BridgeVertex top_right{right, top, 0.0f, 1.0f, color, u2, v1};
         BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, u1, v2};
         BridgeVertex bottom_right{right, bottom, 0.0f, 1.0f, color, u2, v2};
-        if constexpr (bsp::kWireGoal4Chain370Bound) {
+        {
             // Keep the authored dimensions above: the digit routine changes
             // the sampled strip, not the geometry's width/height.
             const auto found = digit_uvs.find(node);
@@ -1345,8 +1324,6 @@ void GameFrontendHost::Impl::build_quads() {
                 bottom_left.u = uv[2][0]; bottom_left.v = uv[2][1];
                 bottom_right.u = uv[3][0]; bottom_right.v = uv[3][1];
             }
-        } else {
-            // OFF keeps the four authored atlas UV pairs above.
         }
         if (node != nullptr && record.runtime && node->transform.rotate != 0.0f) {
             // The authored Rotate reaches the native Z rotation builder 00AA7250
@@ -1357,11 +1334,7 @@ void GameFrontendHost::Impl::build_quads() {
             const float pivot_x = record.x * screen_w;
             const float pivot_y = record.y * screen_h;
             const float angle = [&] {
-                if constexpr (bsp::kWireGoal4Chain433Bound) {
-                    return published_rotation_angle(*node);
-                } else {
-                    return -node->transform.rotate;
-                }
+                return published_rotation_angle(*node);
             }();
             const float cosine = std::cos(angle);
             const float sine = std::sin(angle);
@@ -1441,11 +1414,7 @@ GuiLayoutPage* GameFrontendHost::load_screen_page(const std::string& name, std::
     GameGuiLayoutHost layout(host, *host.page_scripts);
     const std::size_t before = host.widget_records.size();
     GuiLayoutPage* page;
-    if constexpr (kWireGoal4Chain251Bound) {
-        page = host.load_page(layout, name, true, screen_flag);
-    } else {
-    page = host.load_page(layout, name, true);
-    }
+    page = host.load_page(layout, name, true, screen_flag);
     if (page == nullptr) return nullptr;
     host.screen_pages.insert(page);
     for (std::size_t index = before; index < host.widget_records.size(); ++index) {
@@ -1727,40 +1696,26 @@ GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,
 void GameFrontendHost::set_widget_local_position(GuiLayoutWidget& widget, float x, float y,
     float z) {
     Impl& host = *impl_;
-    if constexpr (bsp::kWireGoal4Chain435Bound) {
-        widget.transform.position.x = x;
-        widget.transform.position.y = y;
-        widget.transform.authored_x = x;
-        // Saved listing 00AA7910..00AA7920: MOVSS +14h then 00AA7220,
-        // without the bounds refresh performed by the separate 00AA7D40.
-        // The caller supplies the marker/minimap widget and its real Z.
-        Impl::LocalZPublication publication(host, widget.transform);
-        bsp::gui_widgets_cc13::gui_widget_set_local_z_00aa7910(
-            widget.transform, z, publication);
-    } else {
     widget.transform.position.x = x;
     widget.transform.position.y = y;
-    widget.transform.position.z = z;
     widget.transform.authored_x = x;
-    host.quads_built = false;
-    }
+    // Saved listing 00AA7910..00AA7920: MOVSS +14h then 00AA7220,
+    // without the bounds refresh performed by the separate 00AA7D40.
+    // The caller supplies the marker/minimap widget and its real Z.
+    Impl::LocalZPublication publication(host, widget.transform);
+    bsp::gui_widgets_cc13::gui_widget_set_local_z_00aa7910(
+        widget.transform, z, publication);
 }
 
 void GameFrontendHost::set_widget_rotation(GuiLayoutWidget& widget, float radians) {
     Impl& host = *impl_;
-    if constexpr (bsp::kWireGoal4Chain433Bound) {
-        if (widget.transform.rotate == radians) return;
-        // 00AA7930 stores the actual requested angle then calls 00AA7220.
-        // Keep the bridge's existing unchanged-angle gate; the publication
-        // below replaces its old store/cache invalidation exactly once.
-        Impl::RotationPublication publication(host, widget);
-        bsp::gui_widgets_cc13::gui_widget_set_rotate_00aa7930(widget.transform,
-            radians, publication);
-    } else {
     if (widget.transform.rotate == radians) return;
-    widget.transform.rotate = radians;
-    host.quads_built = false;
-    }
+    // 00AA7930 stores the actual requested angle then calls 00AA7220.
+    // Keep the bridge's existing unchanged-angle gate; the publication
+    // below replaces its old store/cache invalidation exactly once.
+    Impl::RotationPublication publication(host, widget);
+    bsp::gui_widgets_cc13::gui_widget_set_rotate_00aa7930(widget.transform,
+        radians, publication);
 }
 
 void GameFrontendHost::refresh_widget_geometry(GuiLayoutWidget& widget) {

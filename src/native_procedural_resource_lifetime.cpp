@@ -3,7 +3,6 @@
 #include "bsp/native_texture_source_storage.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain547_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -99,14 +98,10 @@ void destroy_body(void* owner, NativeRenderActualOwners& owners, Op& op) {
 void* delete_body(void* owner, U flags, NativeRenderActualOwners& owners, Op& op, U function) {
     begin(op, function, owner);
     invoke(op, [&] {
-        if constexpr (kWireGoal4Chain547Bound) {
-            // 00BBC6D0 / 00BBC7F0 call 00C304A0 before their flags&1 free
-            // (bsp.py show for both scalar-deleting wrappers). Reuse the SAME
-            // actual owner, canonical child domain and persistent operation.
-            destroy_native_procedural_resource_00c304a0(owner, owners, op);
-        } else {
-        destroy_body(owner, owners, op);
-        }
+        // 00BBC6D0 / 00BBC7F0 call 00C304A0 before their flags&1 free
+        // (bsp.py show for both scalar-deleting wrappers). Reuse the SAME
+        // actual owner, canonical child domain and persistent operation.
+        destroy_native_procedural_resource_00c304a0(owner, owners, op);
         if (flags & 1u) {
             op.native_site = function == 0x00bbc6d0 ? 0x00bbc6e0 : 0x00bbc800;
             singleton_lifetime_free(owner);

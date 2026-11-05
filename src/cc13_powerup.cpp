@@ -9,8 +9,6 @@
 #include "bsp/objectives_seg57_argon.hpp"
 #include "bsp/panel_sequence_types.hpp"
 #include "bsp/powerup_seg58_argon.hpp"
-#include "bsp/wire_goal4_chain344_switches.hpp"
-#include "bsp/wire_goal4_chain438_switches.hpp"
 
 #include <Windows.h>
 
@@ -141,7 +139,7 @@ PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
     const std::size_t position = static_cast<std::size_t>(at - keys.begin());
     if (at == keys.end() || key < *at) {
         keys.insert(at, key);
-        if constexpr (bsp::kWireGoal4Chain438Bound) {
+        {
             SlotResetView native;
             objectives_seg57_argon::powerup_slot_record_reset_008e3710(&native);
             PowerUpSlot value{};
@@ -153,8 +151,6 @@ PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
             // source_offset is the host's cached class+80h, not a native
             // record field. A freshly reset record has no source class.
             values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), value);
-        } else {
-            values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), PowerUpSlot{});
         }
         ++runtime.counts.records_inserted;
     }
@@ -366,7 +362,7 @@ std::vector<const PowerupItem*> list_ready_items_008ea0c0(PowerupRuntime& runtim
     for (const PowerupItem& item : runtime.inventories[slot_index(slot)]) {
         // 008EA133: the record is looked up (and inserted) for every item.
         const PowerUpSlot& record = slot_record_00617030(runtime, slot, item.cls);
-        if constexpr (kWireGoal4Chain344Bound) {
+        {
             // 008EA13C..008EA14F duplicates 008E4B40's CMP/FCOMIP/JBE.
             // The helper still short-circuits the clock read for deferred slots.
             SlotExpiryView native;
@@ -374,13 +370,6 @@ std::vector<const PowerupItem*> list_ready_items_008ea0c0(PowerupRuntime& runtim
             native.deferred_14 = record.relative_deadline ? 1u : 0u;
             if (powerup_seg58_argon::powerup_slot_record_is_cooldown_expired_008e4b40(
                     clock, &native) == 0u) continue;
-        } else {
-        // 008EA13C: byte +14h set skips.
-        if (record.relative_deadline) continue;
-        // 008EA142..008EA14F: FLD [rec+10h], FLD [00F876A4], FCOMIP, JBE: the
-        // clock must be above the stored end; unordered skips.
-        const float now = host.clock_00f876a4();
-        if (!(now > record.absolute_expiry)) continue;
         }
         // 008EA163..008EA1B1: the last entry of the same class is replaced,
         // else the item is pushed.

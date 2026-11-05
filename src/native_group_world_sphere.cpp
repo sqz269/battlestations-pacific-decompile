@@ -1,5 +1,4 @@
 #include "bsp/native_group_world_sphere.hpp"
-#include "bsp/wire_goal4_chain317_switches.hpp"
 #include <cstddef>
 #include <stdexcept>
 
@@ -126,7 +125,7 @@ __declspec(naked) float* __fastcall merge_native_group_sphere_00b8e9f0(
         FSUB dword ptr [ESP + 0x14] // 00b8ea3c
         FSTP dword ptr [ESP + 0x2c] // 00b8ea40
     }
-    if constexpr (kWireGoal4Chain317Bound) {
+    {
         // Evidence: bsp.py show 00b8e9f0 --asm, 00B8EA01..00B8EA49;
         // show 00b8e980 --asm, RET4 at B8E9CB/B8E9E4. The image has
         // already pushed its length-output pointer. Replace that one argument
@@ -140,10 +139,6 @@ __declspec(naked) float* __fastcall merge_native_group_sphere_00b8e9f0(
             push ebx
             push eax
             call normalize_native_group_sphere_delta_00b8e980
-        }
-    } else {
-        __asm {
-            CALL normalize_kernel // 00b8ea44
         }
     }
     __asm {

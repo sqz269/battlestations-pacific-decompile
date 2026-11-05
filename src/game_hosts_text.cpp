@@ -25,12 +25,8 @@
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/oct18_tail_c.hpp"
-#include "bsp/wire_goal2_chain52_switches.hpp"
-#include "bsp/wire_goal4_chain407_switches.hpp"
 #include "bsp/cc13_gui1.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
-#include "bsp/wire_goal4_chain493_switches.hpp"
-#include "bsp/wire_goal4_chain549_switches.hpp"
 
 #include <array>
 #include <atomic>
@@ -341,31 +337,23 @@ public:
 
     char16_t crt_uppercase_00c0391c(char16_t code_unit) override {
         log_.implemented("LocaleText::crt_uppercase", "00c0391c");
-        if constexpr (bsp::kWireGoal4Chain493Bound) {
-            // 004F9AB0 (bsp.py show/--asm): signed byte a..z -> A..Z,
-            // otherwise unchanged. This is also towupper's ASCII operation
-            // in the C locale. Use the current text unit, and retain CRT
-            // handling outside that domain (including locale-specific i).
-            if (code_unit <= 0x7f) {
-                const char* const locale = std::setlocale(LC_CTYPE, nullptr);
-                if (locale && locale[0] == 'C' && locale[1] == '\0') {
-                    const char byte = static_cast<char>(code_unit);
-                    return static_cast<char16_t>(
-                        bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
-                }
+        // 004F9AB0 (bsp.py show/--asm): signed byte a..z -> A..Z,
+        // otherwise unchanged. This is also towupper's ASCII operation
+        // in the C locale. Use the current text unit, and retain CRT
+        // handling outside that domain (including locale-specific i).
+        if (code_unit <= 0x7f) {
+            const char* const locale = std::setlocale(LC_CTYPE, nullptr);
+            if (locale && locale[0] == 'C' && locale[1] == '\0') {
+                const char byte = static_cast<char>(code_unit);
+                return static_cast<char16_t>(
+                    bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
             }
-            return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));
-        } else {
-        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));
         }
+        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));
     }
 
     bool uppercase_ascii_text(char16_t* text, std::size_t length) override {
-        if constexpr (kWireGoal4Chain549Bound) {
-            return uppercase_ascii_text_with_current_c_locale(text, length);
-        } else {
-            return false;
-        }
+        return uppercase_ascii_text_with_current_c_locale(text, length);
     }
 
 private:
@@ -630,7 +618,7 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
         ++host.summary.runs_failed;
         return false;
     }
-    if constexpr (kWireGoal4Chain407Bound) {
+    {
         // bsp.py show 00AB6BD0: reads only +FCh, +178h, or [font+14h].
         // A read-only query view of the SAME layout/font used below, not a
         // second text lifetime. Wrapped height is the unscaled raw extent;
@@ -649,7 +637,6 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
         }
         run.normalized_height = cc13_gui1::text_context_get_normalized_text_height_00ab6bd0(
             context.data());
-    } else {
     }
     run.sheet = borrow_font_sheet(*owned, run.error);
     if (run.sheet == nullptr) {
@@ -688,7 +675,7 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     for (const FontGlyphPlacement& placement : placements) {
         const FontGlyphData& glyph = native ? native->glyph(placement.code_unit)
             : select_font_glyph_00ad4480(*decoded, placement.code_unit);
-        if constexpr (kWireGoal2Chain52Bound) {
+        {
             // 00AB98F0: glyph_quad_00ab98f0, the complete body, writes this placement's
             // quad into the scratch buffer; OFF keeps the 00AB98F0..00AB9C5D fragment.
             vertices.fill(0);
@@ -703,20 +690,6 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
             oct18_tail_c::glyph_quad_00ab98f0(&context, &glyph, pen, &writer,
                 indices.data(), pen, pen, 0, height, 0, placement.code_unit,
                 glyph_quad_image(), no_glyph_child_services);
-        } else {
-        FontGeometryParameters parameters;
-        parameters.x = placement.x;
-        parameters.y = placement.y;
-        parameters.width_scale = text.font_scale;
-        parameters.vertical_scale = vertical_scale_00e12fd4();
-        parameters.height = height;
-        parameters.quad_index = 0;
-        vertices.fill(0);
-        if (!write_font_quad_00ab98f0_fragment(glyph, parameters, layout, vertices.data(),
-                vertices.size(), 0, indices)) {
-            run.error = "the glyph quad writer rejected a placement";
-            break;
-        }
         }
         GameTextQuad quad;
         quad.left = vertex_float(vertices.data(), 0, kQuadPositionOffset);

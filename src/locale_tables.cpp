@@ -65,13 +65,12 @@ std::string decimal(std::size_t value) {
 }  // namespace
 
 NativeLocaleKeyOwner::~NativeLocaleKeyOwner() {
-    if constexpr (kWireGoal2Chain215Bound)
-        record_.key.release_to(crt_string_storage());
+    record_.key.release_to(crt_string_storage());
 }
 
 NativeLocaleKeyOwner& NativeLocaleKeyOwner::operator=(std::string&& source) {
     // 00A9F460 constructs the owned map key; OFF retains insert_00a9fc30's string move.
-    if constexpr (kWireGoal2Chain215Bound) {
+    {
         // AA0192..AA01CE: zero temporary header, resize to strlen(composed key),
         // then copy length+1. The host parser supplies the same complete key.
         struct ParserKey {
@@ -256,11 +255,7 @@ void LocaleTables::insert_00a9fc30(std::string key, std::u16string text) {
     }
     auto node = std::make_unique<Node>();
     // 00A9F460 copies the parser key into the ON native owner; OFF keeps the string move.
-    if constexpr (kWireGoal2Chain215Bound) {
-        node->key = std::move(key);
-    } else {
-        node->key = std::move(key);
-    }
+    node->key = std::move(key);
     node->text = std::move(text);
     node->next = buckets_[index];
     buckets_[index] = node.get();

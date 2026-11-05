@@ -7,7 +7,6 @@
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/native_ambient_color.hpp"
 #include "bsp/band_006b_cc13.hpp"
-#include "bsp/wire_goal4_chain441_switches.hpp"
 #include <cstring>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -263,10 +262,6 @@ __declspec(naked) void __fastcall prepare_camera(void*, const NativeRendererCame
 
 void __fastcall prepare_native_renderer_camera_00b285a0(void* renderer,
     const NativeRendererCameraPrepareContext* context, void* camera) {
-    if constexpr (kWireGoal4Chain441Bound) {
-        prepare_camera<true>(renderer, context, camera);
-    } else {
-        prepare_camera<false>(renderer, context, camera);
-    }
+    prepare_camera<true>(renderer, context, camera);
 }
 } // namespace bsp

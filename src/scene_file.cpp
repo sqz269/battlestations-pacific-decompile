@@ -6,25 +6,10 @@
 #include "bsp/scene_property_bag.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
-#include "bsp/wire_goal4_chain537_switches.hpp"
-#include "bsp/wire_goal4_chain491_switches.hpp"
-#include "bsp/wire_goal4_chain477_switches.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/oct18_rec.hpp"
 #include "bsp/oct18_tail_b.hpp"
 #include "bsp/support_seg61_cc13.hpp"
-#include "bsp/wire_goal2_chain115_switches.hpp"
-#include "bsp/wire_goal2_chain145_switches.hpp"
-#include "bsp/wire_goal2_chain202_switches.hpp"
-#include "bsp/wire_goal4_chain258_switches.hpp"
-#include "bsp/wire_goal4_chain319_switches.hpp"
-#include "bsp/wire_goal4_chain284_switches.hpp"
-#include "bsp/wire_goal4_chain307_switches.hpp"
-#include "bsp/wire_goal4_chain311_switches.hpp"
-#include "bsp/wire_goal4_chain321_switches.hpp"
-#include "bsp/wire_goal4_chain330_switches.hpp"
-#include "bsp/wire_goal4_chain361_switches.hpp"
-#include "bsp/wire_goal4_chain425_switches.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
@@ -234,27 +219,10 @@ public:
     }
     const char* decode(const char* token) override
     {
-        if constexpr (kWireGoal4Chain258Bound) {
-            // 008EFB00's 008EE670 call: token is exactly read_token()'s real
-            // fragment. Its <400h, NUL-free, paired-escape guards above imply
-            // at most 3FFh output bytes plus NUL; escapes never expand text.
-            return oct18_tail_b::decode_scene_fragment_008ee670(token, scratch_.data());
-        } else {
-        decoded_.clear();
-        for (const char* p = token; *p != '\0';) {
-            const char ch = *p++;
-            if (ch != '\\') {
-                decoded_.push_back(ch);
-                continue;
-            }
-            const char escape = *p++;   // read_token admitted only paired escapes
-            if (escape == '\\') decoded_.push_back('\\');
-            else if (escape == 'n') decoded_.push_back('\n');
-            else if (escape == 'q') decoded_.push_back('"');
-            // All other backslash pairs emit nothing in 008EE670.
-        }
-        return decoded_.c_str();
-        }
+        // 008EFB00's 008EE670 call: token is exactly read_token()'s real
+        // fragment. Its <400h, NUL-free, paired-escape guards above imply
+        // at most 3FFh output bytes plus NUL; escapes never expand text.
+        return oct18_tail_b::decode_scene_fragment_008ee670(token, scratch_.data());
     }
     void append(const char* decoded) override { value_ += decoded; }
     char* join() override { return value_.data(); }
@@ -513,73 +481,21 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         // Chain 311: the +4h quoted byte of the token after the letter, as the
         // reference arm tests it at 008F623A before 008D9980 reads the target.
         bool first_value_quoted = false;
-        if constexpr (kWireGoal4Chain311Bound) {
-            first_value_quoted = cur.lexer().peek().quoted;
-        }
+        first_value_quoted = cur.lexer().peek().quoted;
         if (equal_insensitive(prop.type_letter, "S") && cur.lexer().peek().quoted) {
-            if constexpr (kWireGoal2Chain145Bound) {
+            {
                 // 008F5CF6 -> 008EFB00 with its chunk-list writer: 009502E0,
                 // 0094FF10 and 009500A0 build the value. OFF keeps chain 115's
                 // std::string view and the inline run loop below.
                 SceneQuotedRunChunkView runs(cur.lexer());
-                if constexpr (kWireGoal4Chain284Bound) {
-                    const SceneAssignedStringProperty assigned(
-                        oct18_rec::read_quoted_runs_008efb00(runs));
-                    prop.values.emplace_back(assigned.text());
-                } else {
-                prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
-                }
-            } else if constexpr (kWireGoal2Chain115Bound) {
-                // 008F5CF6 -> 008EFB00: read_quoted_runs_008efb00 consumes the
-                // quoted runs over this lexer; OFF keeps the inline run loop.
-                SceneQuotedRunView runs(cur.lexer());
-                if constexpr (kWireGoal4Chain284Bound) {
-                    const SceneAssignedStringProperty assigned(
-                        oct18_rec::read_quoted_runs_008efb00(runs));
-                    prop.values.emplace_back(assigned.text());
-                } else {
-                prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
-                }
-            } else {
-            // 008F5CF6 -> 008EFB00: consume quoted runs by +4h, not token text.
-            // 008EE670 decodes each run before the builder appends without a
-            // separator. The lexer itself retains raw tokens/backslashes.
-            std::string value;
-            do {
-                const SceneToken fragment = cur.lexer().next();
-                // The native cached/read buffers are 400h (+5h/+405h, cache
-                // +805h). Overflow, embedded NUL and a trailing single escape
-                // are outside this source binding, not safe native recovery.
-                if (fragment.text.size() >= 0x400
-                    || fragment.text.find('\0') != std::string::npos) {
-                    throw std::runtime_error("unsupported quoted scene string fragment");
-                }
-                for (std::size_t i = 0; i < fragment.text.size();) {
-                    const char ch = fragment.text[i++];
-                    if (ch != '\\') {
-                        value.push_back(ch);
-                        continue;
-                    }
-                    if (i == fragment.text.size()) {
-                        throw std::runtime_error("unsupported trailing scene string escape");
-                    }
-                    const char escape = fragment.text[i++];
-                    if (escape == '\\') value.push_back('\\');
-                    else if (escape == 'n') value.push_back('\n');
-                    else if (escape == 'q') value.push_back('"');
-                    // All other backslash pairs emit nothing in 008EE670.
-                }
-            } while (cur.lexer().peek().quoted);
-            prop.values.push_back(std::move(value));
+                const SceneAssignedStringProperty assigned(
+                    oct18_rec::read_quoted_runs_008efb00(runs));
+                prop.values.emplace_back(assigned.text());
             }
-            if constexpr (kWireGoal4Chain307Bound) {
-                // 008F5CF6 reads quoted runs before 008F38A0 duplicates the
-                // decoded text. Retain presence only for a closed statement;
-                // empty quoted text is present, while bare S ';' stays raw.
-                prop.has_string = cur.at(";") && prop.values.size() == 1;
-            } else {
-                // The previous parser retained only the decoded token.
-            }
+            // 008F5CF6 reads quoted runs before 008F38A0 duplicates the
+            // decoded text. Retain presence only for a closed statement;
+            // empty quoted text is present, while bare S ';' stays raw.
+            prop.has_string = cur.at(";") && prop.values.size() == 1;
         } else if (equal_insensitive(prop.type_letter, "F") && !cur.at(";")) {
             // Successful explicit F: 008F5C55 reads, 008F5C5A stores binary32.
             // Empty F remains on the raw partial path: a native existing value
@@ -599,12 +515,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
             if (first < token.text.size()
                 && (token.text[first] == '+' || token.text[first] == '-')) ++first;
             bool digit;
-            if constexpr (kWireGoal4Chain491Bound) {
-                digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
-            } else {
-                digit = first < token.text.size()
-                    && std::isdigit(static_cast<unsigned char>(token.text[first]));
-            }
+            digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
             const bool fraction = first + 1 < token.text.size()
                 && token.text[first] == '.'
                 && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
@@ -655,12 +566,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                     if (first < token.text.size()
                         && (token.text[first] == '+' || token.text[first] == '-')) ++first;
                     bool digit;
-                    if constexpr (kWireGoal4Chain491Bound) {
-                        digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
-                    } else {
-                        digit = first < token.text.size()
-                            && std::isdigit(static_cast<unsigned char>(token.text[first]));
-                    }
+                    digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
                     const bool fraction = first + 1 < token.text.size()
                         && token.text[first] == '.'
                         && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
@@ -694,22 +600,14 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
             // current closing brace and nest later blocks one level too deep
             // (scene175/scene907; docs/SCENE_FILE_READER.md Corrections).
             // 008F635E -> 0045C440 checks the pending ';'; OFF keeps the raw token scan.
-            if constexpr (kWireGoal2Chain202Bound) {
-                ScenePropertyTokenCompareAdapter compare;
-                while (!cc13_sweepA::scene_token_equals_0045c440(
-                           cc13_sweepA::SceneTokenView{cur.lexer().peek().text.c_str()}, ";", compare)
-                    && !cur.at("{") && !cur.at("}") && !cur.at_end() && !cur.exhausted()) {
-                    prop.values.push_back(cur.read_token());
-                }
-            } else {
-            while (!cur.at(";") && !cur.at("{") && !cur.at("}") && !cur.at_end()
-                && !cur.exhausted()) {
+            ScenePropertyTokenCompareAdapter compare;
+            while (!cc13_sweepA::scene_token_equals_0045c440(
+                       cc13_sweepA::SceneTokenView{cur.lexer().peek().text.c_str()}, ";", compare)
+                && !cur.at("{") && !cur.at("}") && !cur.at_end() && !cur.exhausted()) {
                 prop.values.push_back(cur.read_token());
             }
-            }
         }
-        if constexpr (kWireGoal4Chain425Bound) {
-            // bsp.py show 008F5A00 --asm, 008F6432..008F64B9: read the
+        // bsp.py show 008F5A00 --asm, 008F6432..008F64B9: read the
             // count with 008D9AD0, allocate 4*count, and FSTP each 008D9B40
             // return into that buffer before the flags-0 008F3510 insertion.
             // Match the existing V3/V3A finite decimal %f provider; historical
@@ -732,12 +630,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                             && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
                         if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
                         bool digit;
-                        if constexpr (kWireGoal4Chain491Bound) {
-                            digit = cc13_seg56::scene_token_is_int_008d8f10(text);
-                        } else {
-                            digit = first < text.size()
-                                && std::isdigit(static_cast<unsigned char>(text[first]));
-                        }
+                        digit = cc13_seg56::scene_token_is_int_008d8f10(text);
                         const bool fraction = first + 1 < text.size() && text[first] == '.'
                             && std::isdigit(static_cast<unsigned char>(text[first + 1]));
                         const bool hex = first + 1 < text.size() && text[first] == '0'
@@ -761,11 +654,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                     }
                 }
             }
-        } else {
-            // The prior parser retains only FA's raw tokens.
-        }
-        if constexpr (kWireGoal4Chain330Bound) {
-            // bsp.py disasm-raw 008F65CF: count at 65DE, allocate 12*count
+        // bsp.py disasm-raw 008F65CF: count at 65DE, allocate 12*count
             // at 65F6, expect '(' / ')' at 6617 / 6653, three 008D9B40
             // reads each FSTP binary32 at 6628/6638/6648. 669A hands the
             // owned buffer to 008F3610 with flags 0. Admit only complete,
@@ -792,12 +681,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                                 && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
                             if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
                             bool digit;
-                            if constexpr (kWireGoal4Chain491Bound) {
-                                digit = cc13_seg56::scene_token_is_int_008d8f10(text);
-                            } else {
-                                digit = first < text.size()
-                                    && std::isdigit(static_cast<unsigned char>(text[first]));
-                            }
+                            digit = cc13_seg56::scene_token_is_int_008d8f10(text);
                             const bool fraction = first + 1 < text.size() && text[first] == '.'
                                 && std::isdigit(static_cast<unsigned char>(text[first + 1]));
                             const bool hex = first + 1 < text.size() && text[first] == '0'
@@ -825,9 +709,6 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                     }
                 }
             }
-        } else {
-            // The prior parser retains only V3A's raw tokens.
-        }
         // 008F5D8A/5DA1 recognize true/false, then store type-3 byte +0Ch.
         // Keep the raw scan and admit only one literal with a closed statement;
         // native existing-record/empty assignment needs declaration context.
@@ -839,25 +720,21 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.has_boolean = true;
             }
         }
-        if constexpr (kWireGoal4Chain319Bound) {
-            // bsp.py show 008F5A00 --asm, 008F5E15..008F5FCF: E reads the table
-            // token (008D9980), looks it up (0048E960, ECX = [00E1867C]), and
-            // only when ':' follows (00467CC0, 00CF00B0) reads the symbol token
-            // and calls 008F3A20(key, table, symbol); without ':' nothing is
-            // added. Mark the closed one-table/one-symbol form; the native merge
-            // decides whether the registry knows both (0048E840 needs a hit).
-            if (equal_insensitive(prop.type_letter, "E") && cur.at(";")
-                && prop.values.size() == 3 && prop.values[1] == ":"
-                && !prop.values[0].empty() && !prop.values[2].empty()) {
-                bool bounded = true;
-                for (const std::string& token : prop.values) {
-                    bounded = bounded && token.size() < 0x400
-                        && token.find('\0') == std::string::npos;
-                }
-                prop.has_enum = bounded;
+        // bsp.py show 008F5A00 --asm, 008F5E15..008F5FCF: E reads the table
+        // token (008D9980), looks it up (0048E960, ECX = [00E1867C]), and
+        // only when ':' follows (00467CC0, 00CF00B0) reads the symbol token
+        // and calls 008F3A20(key, table, symbol); without ':' nothing is
+        // added. Mark the closed one-table/one-symbol form; the native merge
+        // decides whether the registry knows both (0048E840 needs a hit).
+        if (equal_insensitive(prop.type_letter, "E") && cur.at(";")
+            && prop.values.size() == 3 && prop.values[1] == ":"
+            && !prop.values[0].empty() && !prop.values[2].empty()) {
+            bool bounded = true;
+            for (const std::string& token : prop.values) {
+                bounded = bounded && token.size() < 0x400
+                    && token.find('\0') == std::string::npos;
             }
-        } else {
-            // The prior parser retains only the raw E tokens.
+            prop.has_enum = bounded;
         }
         // 008F5BB2 reads %d and 008F5BC6/008F3730 store the type-0 DWORD.
         // Keep the existing source CRT provider and raw diagnostics; bare I
@@ -866,73 +743,67 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
             && prop.values.size() == 1 && !prop.values.front().empty()) {
             prop.has_integer = scene_scan_int(prop.values.front(), prop.integer_value);
         }
-        if constexpr (kWireGoal4Chain311Bound) {
-            // 008F64E5 matches "IA" [00D16514]; unless the next token is ';'
-            // (008F64FC, 0045C440 on [00CE5698]) 008F650C reads the count with
-            // 008D9AD0, 008F6524 allocates 4*count, and 008F653B reads each
-            // element with 008D9AD0 into the buffer; 008F6585 then hands
-            // (data, count, flags 0) to 008F3590 and 008F66A6 expects ';'.
-            // Admit only a closed statement whose first token is a count n >= 1
-            // followed by exactly n tokens, all accepted by the same %d rule.
-            // A failed read (native 0 without consuming), a count mismatch or
-            // an empty/zero count stays on the raw token path.
-            if (equal_insensitive(prop.type_letter, "IA") && cur.at(";")
-                && prop.values.size() >= 2) {
-                std::int32_t count = 0;
-                if (scene_scan_int(prop.values.front(), count) && count >= 1
-                    && static_cast<std::size_t>(count) == prop.values.size() - 1) {
-                    std::vector<std::int32_t> elements(static_cast<std::size_t>(count));
-                    bool all = true;
-                    for (std::size_t i = 0; i < elements.size() && all; ++i) {
-                        all = scene_scan_int(prop.values[i + 1], elements[i]);
-                    }
-                    if (all) {
-                        prop.integer_array = std::move(elements);
-                        prop.has_integer_array = true;
-                    }
+        // 008F64E5 matches "IA" [00D16514]; unless the next token is ';'
+        // (008F64FC, 0045C440 on [00CE5698]) 008F650C reads the count with
+        // 008D9AD0, 008F6524 allocates 4*count, and 008F653B reads each
+        // element with 008D9AD0 into the buffer; 008F6585 then hands
+        // (data, count, flags 0) to 008F3590 and 008F66A6 expects ';'.
+        // Admit only a closed statement whose first token is a count n >= 1
+        // followed by exactly n tokens, all accepted by the same %d rule.
+        // A failed read (native 0 without consuming), a count mismatch or
+        // an empty/zero count stays on the raw token path.
+        if (equal_insensitive(prop.type_letter, "IA") && cur.at(";")
+            && prop.values.size() >= 2) {
+            std::int32_t count = 0;
+            if (scene_scan_int(prop.values.front(), count) && count >= 1
+                && static_cast<std::size_t>(count) == prop.values.size() - 1) {
+                std::vector<std::int32_t> elements(static_cast<std::size_t>(count));
+                bool all = true;
+                for (std::size_t i = 0; i < elements.size() && all; ++i) {
+                    all = scene_scan_int(prop.values[i + 1], elements[i]);
                 }
-            }
-            // 008F6163..008F6231 consume one of eight reference letters (case-
-            // insensitive 00467CC0) and put its kind in EDI; 008F623A tests the
-            // peeked token's quoted byte and 008F6245 (008D9980) reads it as
-            // the target of 008F3AC0 (word18 0, word08 kind); an unquoted next
-            // token gives target "" [00CE3A0C] and is left for 008F66A6. Admit
-            // only the closed one-quoted-token form, within the 400h buffer.
-            if (scene_reference_kind(prop.type_letter) >= 0 && cur.at(";")
-                && prop.values.size() == 1 && first_value_quoted
-                && prop.values.front().size() < 0x400
-                && prop.values.front().find('\0') == std::string::npos) {
-                prop.has_reference = true;
+                if (all) {
+                    prop.integer_array = std::move(elements);
+                    prop.has_integer_array = true;
+                }
             }
         }
-        if constexpr (kWireGoal4Chain321Bound) {
-            // bsp.py show 008F5A00 --asm, 008F632D..008F63DF: BIN reads
-            // count with 008D9AD0, allocates count bytes, then passes each
-            // 008D9980 token in ECX to 008EF6D0. The provider receives the
-            // retained buffer, count and flags 0. Admit complete nonempty
-            // explicit statements; existing-record/empty forms stay raw.
-            if (equal_insensitive(prop.type_letter, "BIN") && cur.at(";")
-                && prop.values.size() >= 2) {
-                std::int32_t count = 0;
-                if (scene_scan_int(prop.values.front(), count) && count >= 1
-                    && static_cast<std::size_t>(count) == prop.values.size() - 1) {
-                    const bool bounded = std::all_of(prop.values.begin() + 1, prop.values.end(),
-                        [](const std::string& token) {
-                            return token.size() < 0x400
-                                && token.find('\0') == std::string::npos;
-                        });
-                    if (bounded) {
-                        prop.byte_array.reserve(static_cast<std::size_t>(count));
-                        for (std::size_t i = 1; i < prop.values.size(); ++i) {
-                            prop.byte_array.push_back(cc13_band0080::decode_hex_byte_token_008ef6d0(
-                                prop.values[i].c_str()));
-                        }
-                        prop.has_byte_array = true;
+        // 008F6163..008F6231 consume one of eight reference letters (case-
+        // insensitive 00467CC0) and put its kind in EDI; 008F623A tests the
+        // peeked token's quoted byte and 008F6245 (008D9980) reads it as
+        // the target of 008F3AC0 (word18 0, word08 kind); an unquoted next
+        // token gives target "" [00CE3A0C] and is left for 008F66A6. Admit
+        // only the closed one-quoted-token form, within the 400h buffer.
+        if (scene_reference_kind(prop.type_letter) >= 0 && cur.at(";")
+            && prop.values.size() == 1 && first_value_quoted
+            && prop.values.front().size() < 0x400
+            && prop.values.front().find('\0') == std::string::npos) {
+            prop.has_reference = true;
+        }
+        // bsp.py show 008F5A00 --asm, 008F632D..008F63DF: BIN reads
+        // count with 008D9AD0, allocates count bytes, then passes each
+        // 008D9980 token in ECX to 008EF6D0. The provider receives the
+        // retained buffer, count and flags 0. Admit complete nonempty
+        // explicit statements; existing-record/empty forms stay raw.
+        if (equal_insensitive(prop.type_letter, "BIN") && cur.at(";")
+            && prop.values.size() >= 2) {
+            std::int32_t count = 0;
+            if (scene_scan_int(prop.values.front(), count) && count >= 1
+                && static_cast<std::size_t>(count) == prop.values.size() - 1) {
+                const bool bounded = std::all_of(prop.values.begin() + 1, prop.values.end(),
+                    [](const std::string& token) {
+                        return token.size() < 0x400
+                            && token.find('\0') == std::string::npos;
+                    });
+                if (bounded) {
+                    prop.byte_array.reserve(static_cast<std::size_t>(count));
+                    for (std::size_t i = 1; i < prop.values.size(); ++i) {
+                        prop.byte_array.push_back(cc13_band0080::decode_hex_byte_token_008ef6d0(
+                            prop.values[i].c_str()));
                     }
+                    prop.has_byte_array = true;
                 }
             }
-        } else {
-            // The prior parser retains only the raw BIN tokens.
         }
         cur.expect(";");
         block.values.push_back(std::move(prop));
@@ -1280,33 +1151,19 @@ bool scene_scan_int(const std::string& text, std::int32_t& out) noexcept
 
 int scene_reference_kind(const std::string& letter) noexcept
 {
-    if constexpr (kWireGoal4Chain477Bound) {
-        // 008F1960's eight kind-to-letter arms (bsp.py show 008f1960 --asm,
-        // 008F1960..008F19F8) supply the same binary constants previously
-        // duplicated below. Invert that existing reconstruction against the
-        // authored letter from the live scene/library lexer. Only native
-        // kinds 0..7 enter it; unknown letters retain the host's -1 result.
-        // This reuses the typed letter projection, not the original
-        // NativeString assignment/register ABI; no second table/body runs.
-        for (int kind = 0; kind <= 7; ++kind) {
-            const char* const native_letter = scene_reference_kind_letter_008f1960(
-                static_cast<SceneReferenceKind>(kind));
-            if (equal_insensitive(letter, native_letter)) return kind;
-        }
-        return -1;
-    } else {
-    // Letter strings: R [00CE60EC], RLand [00D1637C], RFort [00D16384],
-    // RShip [00D1636C], RPlane [00D16374], RPlnShp [00D16364],
-    // RLPlnShp [00D16358], RPath [00D1638C]; kinds from 008F6163..008F6231.
-    static constexpr struct { const char* text; int kind; } kLetters[] = {
-        {"R", 0}, {"RLand", 1}, {"RFort", 2}, {"RShip", 3},
-        {"RPlane", 4}, {"RPlnShp", 5}, {"RLPlnShp", 6}, {"RPath", 7},
-    };
-    for (const auto& entry : kLetters) {
-        if (equal_insensitive(letter, entry.text)) return entry.kind;
+    // 008F1960's eight kind-to-letter arms (bsp.py show 008f1960 --asm,
+    // 008F1960..008F19F8) supply the same binary constants previously
+    // duplicated below. Invert that existing reconstruction against the
+    // authored letter from the live scene/library lexer. Only native
+    // kinds 0..7 enter it; unknown letters retain the host's -1 result.
+    // This reuses the typed letter projection, not the original
+    // NativeString assignment/register ABI; no second table/body runs.
+    for (int kind = 0; kind <= 7; ++kind) {
+        const char* const native_letter = scene_reference_kind_letter_008f1960(
+            static_cast<SceneReferenceKind>(kind));
+        if (equal_insensitive(letter, native_letter)) return kind;
     }
     return -1;
-    }
 }
 
 bool scene_scan_float(const std::string& text, float& out) noexcept
@@ -1572,118 +1429,52 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
     bool tail_begun = false;
     bool stop = false;
     while (!stop && !cur.at_end() && !cur.exhausted()) {
-        if constexpr (kWireGoal4Chain361Bound) {
-            // 0046E9F7..0046EBD8 (bsp.py show 0046DF00 --asm): every arm peeks
-            // the keyword (008D8A70) and compares it with 00438E10, in the
-            // order entity 00CE5818, traffic 00CE5890, groups 00CE55E4,
-            // SceneBrowserGroups 00CE56A4. Only `entity` is consumed here.
-            const std::string keyword = lexer.peek().text;
-            if (equal_insensitive(keyword, "entity")) {
-                lexer.next();  // 0046EA47 008D8960
-                // 0046EB0F: 0046CF40 reads the entity block (identity parent
-                // frame built at 0046EA4C..0046EB01); visit_entity is its
-                // instantiation half (0046C550), as before.
-                SceneEntity ent = parse_scene_entity_0046cf40(lexer, doc.errors);
-                if constexpr (kWireGoal4Chain537Bound) {
-                    visit_root_entity(host, ent, pass, result.entities_visited);
-                } else {
-                    visit_entity(host, ent, kIdentity, pass, result.entities_visited);
-                }
-                doc.entities.push_back(std::move(ent));
-                continue;
-            }
-            if (equal_insensitive(keyword, "traffic")) {
-                ++doc.traffic_blocks;
-                if (scene_pass_stops_at_tail_blocks(pass)) {
-                    // 0046EB3D JNZ 0046EBDD: 0095CA10 with the keyword still
-                    // pending, then the loop ends.
-                    host.skip_traffic_block(lexer);
-                    stop = true;
-                    continue;
-                }
-                if (!tail_begun) {
-                    host.begin_tail_blocks();  // 0046EB4B 00925F20
-                    tail_begun = true;
-                }
-                // 0046EB5B 009514B0: the block reader expects `traffic` itself.
-                host.load_traffic_block(lexer);
-                continue;
-            }
-            if (equal_insensitive(keyword, "groups")) {
-                if (scene_pass_stops_at_tail_blocks(pass)) {
-                    stop = true;  // 0046EB7E JNZ 0046EBE2, keyword left pending
-                    continue;
-                }
-                if (!tail_begun) {
-                    host.begin_tail_blocks();  // 0046EB88 00925F20
-                    tail_begun = true;
-                }
-                // 0046EB95 00467E10. Its first step is its own `groups` expect
-                // (00467E15..00467E1C, 008D9930 on 00CE55E4); the recovered
-                // body starts at the `{` that follows (scene_file.hpp: block
-                // parsers take the keyword consumed), so the expect is here.
-                cur.expect("groups");
-                const std::vector<SceneGroupEntry> groups
-                    = parse_scene_groups_00467e10(lexer, doc.errors);
-                doc.groups.insert(doc.groups.end(), groups.begin(), groups.end());
-                doc.has_groups = true;
-                host.load_groups(doc.groups);
-                continue;
-            }
-            if (equal_insensitive(keyword, "SceneBrowserGroups")) {
-                if (scene_pass_stops_at_tail_blocks(pass)) {
-                    stop = true;  // 0046EBBC JNZ 0046EBE2, keyword left pending
-                    continue;
-                }
-                if (!tail_begun) {
-                    host.begin_tail_blocks();  // 0046EBC6 00925F20
-                    tail_begun = true;
-                }
-                // 0046EBD3 00469E40: the block reader expects
-                // `SceneBrowserGroups` (00469E48..00469E4F) itself.
-                host.load_browser_groups(lexer);
-                continue;
-            }
-            // DEVIATION (kept from the previous loop): an unknown top-level
-            // keyword is consumed and ignored. At 0046EBB4 the image jumps back
-            // to 0046E9F5 and peeks the same cached token again, so it never
-            // leaves the loop; no shipped scene has such a keyword.
-            lexer.next();
-        } else {
-        const SceneToken token = lexer.next();
-        if (equal_insensitive(token.text, "entity")) {
-            SceneEntity ent = parse_entity(cur);
-            if constexpr (kWireGoal4Chain537Bound) {
-                visit_root_entity(host, ent, pass, result.entities_visited);
-            } else {
-                visit_entity(host, ent, kIdentity, pass, result.entities_visited);
-            }
+        // 0046E9F7..0046EBD8 (bsp.py show 0046DF00 --asm): every arm peeks
+        // the keyword (008D8A70) and compares it with 00438E10, in the
+        // order entity 00CE5818, traffic 00CE5890, groups 00CE55E4,
+        // SceneBrowserGroups 00CE56A4. Only `entity` is consumed here.
+        const std::string keyword = lexer.peek().text;
+        if (equal_insensitive(keyword, "entity")) {
+            lexer.next();  // 0046EA47 008D8960
+            // 0046EB0F: 0046CF40 reads the entity block (identity parent
+            // frame built at 0046EA4C..0046EB01); visit_entity is its
+            // instantiation half (0046C550), as before.
+            SceneEntity ent = parse_scene_entity_0046cf40(lexer, doc.errors);
+            visit_root_entity(host, ent, pass, result.entities_visited);
             doc.entities.push_back(std::move(ent));
             continue;
         }
-        if (equal_insensitive(token.text, "traffic")) {
+        if (equal_insensitive(keyword, "traffic")) {
             ++doc.traffic_blocks;
             if (scene_pass_stops_at_tail_blocks(pass)) {
-                host.skip_traffic_block(lexer);  // 0095ca10, then the loop ends
+                // 0046EB3D JNZ 0046EBDD: 0095CA10 with the keyword still
+                // pending, then the loop ends.
+                host.skip_traffic_block(lexer);
                 stop = true;
                 continue;
             }
             if (!tail_begun) {
-                host.begin_tail_blocks();
+                host.begin_tail_blocks();  // 0046EB4B 00925F20
                 tail_begun = true;
             }
+            // 0046EB5B 009514B0: the block reader expects `traffic` itself.
             host.load_traffic_block(lexer);
             continue;
         }
-        if (equal_insensitive(token.text, "groups")) {
+        if (equal_insensitive(keyword, "groups")) {
             if (scene_pass_stops_at_tail_blocks(pass)) {
-                stop = true;
+                stop = true;  // 0046EB7E JNZ 0046EBE2, keyword left pending
                 continue;
             }
             if (!tail_begun) {
-                host.begin_tail_blocks();
+                host.begin_tail_blocks();  // 0046EB88 00925F20
                 tail_begun = true;
             }
+            // 0046EB95 00467E10. Its first step is its own `groups` expect
+            // (00467E15..00467E1C, 008D9930 on 00CE55E4); the recovered
+            // body starts at the `{` that follows (scene_file.hpp: block
+            // parsers take the keyword consumed), so the expect is here.
+            cur.expect("groups");
             const std::vector<SceneGroupEntry> groups
                 = parse_scene_groups_00467e10(lexer, doc.errors);
             doc.groups.insert(doc.groups.end(), groups.begin(), groups.end());
@@ -1691,20 +1482,25 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
             host.load_groups(doc.groups);
             continue;
         }
-        if (equal_insensitive(token.text, "SceneBrowserGroups")) {
+        if (equal_insensitive(keyword, "SceneBrowserGroups")) {
             if (scene_pass_stops_at_tail_blocks(pass)) {
-                stop = true;
+                stop = true;  // 0046EBBC JNZ 0046EBE2, keyword left pending
                 continue;
             }
             if (!tail_begun) {
-                host.begin_tail_blocks();
+                host.begin_tail_blocks();  // 0046EBC6 00925F20
                 tail_begun = true;
             }
+            // 0046EBD3 00469E40: the block reader expects
+            // `SceneBrowserGroups` (00469E48..00469E4F) itself.
             host.load_browser_groups(lexer);
             continue;
         }
-        // Unknown top-level keyword: ignored, as in the native loop.
-        }
+        // DEVIATION (kept from the previous loop): an unknown top-level
+        // keyword is consumed and ignored. At 0046EBB4 the image jumps back
+        // to 0046E9F5 and peeks the same cached token again, so it never
+        // leaves the loop; no shipped scene has such a keyword.
+        lexer.next();
     }
     if (!tail_begun) {
         host.end_tail_blocks();  // 00925f20 runs once either way

@@ -1,14 +1,10 @@
 // bsp_game.exe milestone 2e: from the main menu to the mission load request.
 // See include/bsp/game_hosts_mission.hpp for the address list and the evidence.
 #include "bsp/game_hosts_mission.hpp"
-#include "bsp/wire_goal4_chain484_switches.hpp"
 #include "bsp/game_native_texture_atlas_application.hpp"
 #include "bsp/native_particle_texture_names_raw.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
-#include "bsp/wire_goal2_chain29_switches.hpp"
-#include "bsp/wire_goal2_chain146_switches.hpp"
-#include "bsp/wire_goal2_chain176_switches.hpp"
 #include "bsp/cc13_sweepB2.hpp"
 
 #include "bsp/game_hosts_lua.hpp"
@@ -45,7 +41,6 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/game_native_renderer_application.hpp"
-#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/gui_texture.hpp"
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/native_game_grid.hpp"
@@ -64,15 +59,6 @@
 #include "bsp/sw1b_switch_reach.hpp"
 #include "bsp/profile_manager.hpp"
 #include "bsp/storage_backend.hpp"
-#include "bsp/wire_goal4_chain274_switches.hpp"
-#include "bsp/wire_goal4_chain316_switches.hpp"
-#include "bsp/wire_goal4_chain366_switches.hpp"
-#include "bsp/wire_goal4_chain387_switches.hpp"
-#include "bsp/wire_goal4_chain407_switches.hpp"
-#include "bsp/wire_goal4_chain432_switches.hpp"
-#include "bsp/wire_goal4_chain462_switches.hpp"
-#include "bsp/wire_goal4_chain463_switches.hpp"
-#include "bsp/wire_goal4_chain473_switches.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -95,16 +81,14 @@
 namespace bsp::game {
 
 void GameLoadingConfig::finish_start() {
-    if constexpr (kWireGoal4Chain473Bound) {
-        if (!temporary_present_) return;
-        // 0058BFEF -> 004D2A80 on the same owning config constructed for
-        // 0058BEDE's 0057D060 publication. Release its name/vector once;
-        // never pass the borrowed mission headers or the retained globals.
-        ReleaseHost host(strings_);
-        cc13_seg10::game_clear_pending_mission_name_004d2a80(
-            host, reinterpret_cast<cc13_seg10::Object>(&temporary_));
-        temporary_present_ = false;
-    }
+    if (!temporary_present_) return;
+    // 0058BFEF -> 004D2A80 on the same owning config constructed for
+    // 0058BEDE's 0057D060 publication. Release its name/vector once;
+    // never pass the borrowed mission headers or the retained globals.
+    ReleaseHost host(strings_);
+    cc13_seg10::game_clear_pending_mission_name_004d2a80(
+        host, reinterpret_cast<cc13_seg10::Object>(&temporary_));
+    temporary_present_ = false;
 }
 
 namespace {
@@ -340,36 +324,12 @@ public:
     }
 
     std::vector<std::string> read_string_array(std::string_view key) override {
-        if constexpr (kWireGoal2Chain146Bound) {
-            // 005C5860 reads the live Lua list; OFF keeps the host's list loop.
-            std::vector<std::string> out;
-            MissionStringVectorBinding binding(host_, stack_.back(), out);
-            const std::string name(key);
-            cc13_sweepB2_mission_tree_read_string_vector_005c5860(binding, 0, name.c_str(), binding);
-            return out;
-        } else {
+        // 005C5860 reads the live Lua list; OFF keeps the host's list loop.
         std::vector<std::string> out;
-        const GuiLuaRef table = child(std::string(key).c_str());
-        if (host_.type_of(table) == GuiLuaType::Table) {
-            for (std::int32_t index = 1;; ++index) {
-                const GuiLuaRef element = host_.get_by_index(table, index);
-                const GuiLuaType type = host_.type_of(element);
-                if (type == GuiLuaType::Nil) {
-                    release(element);
-                    break;
-                }
-                if (type == GuiLuaType::String) {
-                    const char* text = host_.to_string(element);
-                    out.emplace_back(text != nullptr ? text : "");
-                } else {
-                    out.emplace_back();
-                }
-                release(element);
-            }
-        }
-        release(table);
+        MissionStringVectorBinding binding(host_, stack_.back(), out);
+        const std::string name(key);
+        cc13_sweepB2_mission_tree_read_string_vector_005c5860(binding, 0, name.c_str(), binding);
         return out;
-        }
     }
     std::vector<std::int32_t> read_int_array(std::string_view key) override {
         std::vector<std::int32_t> out;
@@ -656,33 +616,31 @@ struct NativeMissionPictureLoader {
         // Existing ready/native-acquisition gate the font producer uses.
         (void)renderer.section_layout_services();
         validate_mission_picture_services(services);
-        if constexpr (bsp::kWireGoal4Chain484Bound) {
-            class_icon_callbacks = callbacks;
-            class_icon_callbacks.find_atlas_item = [this, &vfs](std::string_view name)
-                -> const TextureAtlasItem* {
-                // Saved AEFB20: current F8C26C manager, borrowed item result.
-                // Reuse its one raw reconstructed body and the application's
-                // actual string pool/null-pattern role. Do not project the
-                // sprite bridge atlas (whose textures are COM pointers).
-                void* manager = GameNativeTextureAtlasApplication::process_roles()
-                    .atlas_publication_00f8c26c();
-                if (!manager)
-                    throw std::logic_error("vehicle class icon requires the live native atlas manager");
-                const std::string terminated(name);
-                const void* item = find_native_particle_atlas_item_00aefb20(manager,
-                    terminated.c_str(), vfs.raw_strings(),
-                    vfs.native_application().borrow_null_pattern_00e17bf0());
-                if (!item) return nullptr;
-                // AA2660 reads only item+08h (texture) and +14h..+20h (UV).
-                // The snapshot borrows those same values for this call alone;
-                // AA2660 performs its one actual +04 retain on an atlas hit.
-                const auto* bytes = static_cast<const unsigned char*>(item);
-                std::memcpy(&class_icon_item.texture, bytes + 8, sizeof(void*));
-                std::memcpy(class_icon_item.uv.data(), bytes + 0x14, sizeof(float) * 4);
-                return &class_icon_item;
-            };
-            validate_mission_picture_services(class_icon_services);
-        }
+        class_icon_callbacks = callbacks;
+        class_icon_callbacks.find_atlas_item = [this, &vfs](std::string_view name)
+            -> const TextureAtlasItem* {
+            // Saved AEFB20: current F8C26C manager, borrowed item result.
+            // Reuse its one raw reconstructed body and the application's
+            // actual string pool/null-pattern role. Do not project the
+            // sprite bridge atlas (whose textures are COM pointers).
+            void* manager = GameNativeTextureAtlasApplication::process_roles()
+                .atlas_publication_00f8c26c();
+            if (!manager)
+                throw std::logic_error("vehicle class icon requires the live native atlas manager");
+            const std::string terminated(name);
+            const void* item = find_native_particle_atlas_item_00aefb20(manager,
+                terminated.c_str(), vfs.raw_strings(),
+                vfs.native_application().borrow_null_pattern_00e17bf0());
+            if (!item) return nullptr;
+            // AA2660 reads only item+08h (texture) and +14h..+20h (UV).
+            // The snapshot borrows those same values for this call alone;
+            // AA2660 performs its one actual +04 retain on an atlas hit.
+            const auto* bytes = static_cast<const unsigned char*>(item);
+            std::memcpy(&class_icon_item.texture, bytes + 8, sizeof(void*));
+            std::memcpy(class_icon_item.uv.data(), bytes + 0x14, sizeof(float) * 4);
+            return &class_icon_item;
+        };
+        validate_mission_picture_services(class_icon_services);
     }
     NativeMissionPictureLoader(const NativeMissionPictureLoader&) = delete;
     NativeMissionPictureLoader& operator=(const NativeMissionPictureLoader&) = delete;
@@ -910,34 +868,18 @@ public:
         return true;
     }
     float scroll_axis() override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            if (!input_) throw std::logic_error("Main-menu scroller action records are not bound");
-            return input_->frontend_scroll_axis();
-        } else {
-            throw std::logic_error("Main-menu scroller action records are not bound");
-        }
+        if (!input_) throw std::logic_error("Main-menu scroller action records are not bound");
+        return input_->frontend_scroll_axis();
     }
     bool pad_axis(int axis, double& value) override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            if (!input_) throw std::logic_error("Main-menu scroller pad provider is not bound");
-            return input_->frontend_scroll_pad_axis(static_cast<std::uint32_t>(axis), value);
-        } else {
-            throw std::logic_error("Main-menu scroller pad provider is not bound");
-        }
+        if (!input_) throw std::logic_error("Main-menu scroller pad provider is not bound");
+        return input_->frontend_scroll_pad_axis(static_cast<std::uint32_t>(axis), value);
     }
     float cursor_x() override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            return frontend_.scroller_cursor().x;
-        } else {
-            throw std::logic_error("Main-menu scroller GUI cursor is not bound");
-        }
+        return frontend_.scroller_cursor().x;
     }
     float cursor_y() override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            return frontend_.scroller_cursor().y;
-        } else {
-            throw std::logic_error("Main-menu scroller GUI cursor is not bound");
-        }
+        return frontend_.scroller_cursor().y;
     }
 private:
     static GuiLayoutWidget& node(void* widget) {
@@ -954,7 +896,7 @@ private:
     GameInputRuntime* input_{};
 };
 
-struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Bound> {
+struct GameMissionHost::Impl : MissionIdleCameraShotOwner<true> {
     GameHostLog& log;
     GameVfsHost& vfs;
     GameScriptHost& scripts;
@@ -1081,12 +1023,9 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
           language(std::move(language_in)) {
         summary.requested_id = requested_id;
         summary.mission_frames_requested = mission_frames;
-        if constexpr (kWireGoal4Chain387Bound) {
-            // 005902E0 -> 00683610 twice; native defaults, not fake input.
-            construct_front_end_screen_scroller_00683610(mission_scroller_1d4);
-            construct_front_end_screen_scroller_00683610(briefing_scroller_354);
-        } else {
-        }
+        // 005902E0 -> 00683610 twice; native defaults, not fake input.
+        construct_front_end_screen_scroller_00683610(mission_scroller_1d4);
+        construct_front_end_screen_scroller_00683610(briefing_scroller_354);
     }
 
     const MissionRecordData* selected_record() const {
@@ -1240,20 +1179,15 @@ public:
     }
     int read_tree_selected_mission_index() override {
         // 005C3850 calls the reconstructed name lookup; OFF keeps the cached tree ordinal.
-        if constexpr (kWireGoal2Chain29Bound) {
-            const MissionRecordData* record = selected_mission_005806a0(owner_.tables,
-                owner_.tables.selection.group, owner_.tables.selection.mission);
-            if (record == nullptr)
-                throw std::logic_error("mission-index lookup requires the selected tree record");
-            MissionTreeLookupBinding lookup;
-            const auto index = cc13_fe1::mission_tree_mission_index_of_005c3850(
-                &owner_.tables, &record->screen.name, lookup);
-            owner_.log.implemented("MissionDetail::read_tree_selected_mission_index", "005c3850");
-            return index;
-        } else {
+        const MissionRecordData* record = selected_mission_005806a0(owner_.tables,
+            owner_.tables.selection.group, owner_.tables.selection.mission);
+        if (record == nullptr)
+            throw std::logic_error("mission-index lookup requires the selected tree record");
+        MissionTreeLookupBinding lookup;
+        const auto index = cc13_fe1::mission_tree_mission_index_of_005c3850(
+            &owner_.tables, &record->screen.name, lookup);
         owner_.log.implemented("MissionDetail::read_tree_selected_mission_index", "005c3850");
-        return static_cast<int>(owner_.tables.selection.mission);
-        }
+        return index;
     }
     void publish_selection(int group, int mission_index) override {
         owner_.published_group = static_cast<std::uint32_t>(group);
@@ -1355,12 +1289,8 @@ public:
     }
     std::array<float, 3> map_point_position(std::string_view widget_name) override {
         GuiLayoutWidget* node = find_in_group(widget_name);
-        if constexpr (kWireGoal4Chain432Bound) {
-            if (node == nullptr)
-                throw std::logic_error("Mission-map point list requires its authored point icon");
-        } else {
-        if (node == nullptr) return {0.0f, 0.0f, 0.0f};
-        }
+        if (node == nullptr)
+            throw std::logic_error("Mission-map point list requires its authored point icon");
         const GuiWidgetPoint point = resolved_position(node->transform);
         owner_.log.implemented("MissionDetail::map_point_position", "00aa6750");
         return {point.x, point.y, point.z};
@@ -1387,35 +1317,26 @@ public:
         owner_.log.implemented("MissionDetail::set_briefing_text", "00abaed0");
     }
     void reset_scroller() override {
-        if constexpr (kWireGoal4Chain387Bound) {
-            if (owner_.briefing_scroller_attached) {
-                MainMenuScrollerLayoutHost layout(owner_.frontend);
-                // 0058C84E passes null: retain content/base, clear offset,
-                // drag and auto-scroll, then reposition the existing widgets.
-                attach_content_00683790(owner_.briefing_scroller_354, nullptr, layout);
-                owner_.log.implemented("MissionDetail::reset_scroller", "00683790");
-            } else {
-                owner_.log.unimplemented("MissionDetail::reset_scroller", "00683790");
-            }
+        if (owner_.briefing_scroller_attached) {
+            MainMenuScrollerLayoutHost layout(owner_.frontend);
+            // 0058C84E passes null: retain content/base, clear offset,
+            // drag and auto-scroll, then reposition the existing widgets.
+            attach_content_00683790(owner_.briefing_scroller_354, nullptr, layout);
+            owner_.log.implemented("MissionDetail::reset_scroller", "00683790");
         } else {
             owner_.log.unimplemented("MissionDetail::reset_scroller", "00683790");
         }
     }
     double briefing_text_height() override {
-        if constexpr (kWireGoal4Chain407Bound) {
-            GuiLayoutWidget* text = owner_.widget(0x3b8); // 0058C82C, screen's briefing Text
-            float height{};
-            briefing_height_available_ = text && owner_.frontend.widget_text_height(*text, height);
-            if (briefing_height_available_) {
-                owner_.log.implemented("MissionDetail::briefing_text_height", "00ab6bd0");
-                return height;
-            }
-            owner_.log.unimplemented("MissionDetail::briefing_text_height_missing_layout", "00ab6bd0");
-            return 0.0; // ignored by set_scroll_range when no real measurement exists
-        } else {
-        owner_.log.unimplemented("MissionDetail::briefing_text_height", "00ab6bd0");
-        return 0.0;
+        GuiLayoutWidget* text = owner_.widget(0x3b8); // 0058C82C, screen's briefing Text
+        float height{};
+        briefing_height_available_ = text && owner_.frontend.widget_text_height(*text, height);
+        if (briefing_height_available_) {
+            owner_.log.implemented("MissionDetail::briefing_text_height", "00ab6bd0");
+            return height;
         }
+        owner_.log.unimplemented("MissionDetail::briefing_text_height_missing_layout", "00ab6bd0");
+        return 0.0; // ignored by set_scroll_range when no real measurement exists
     }
     float text_clip_height() override {
         GuiLayoutWidget* node = owner_.widget(kMissionDetailTextClipField);
@@ -1423,24 +1344,19 @@ public:
         return node != nullptr ? node->transform.size.height : 0.0f;
     }
     void set_scroll_range(double range) override {
-        if constexpr (kWireGoal4Chain407Bound) {
-            // 0058C844..0058C888: reset +354h, then 006834A0 with text
-            // height minus the real clip height. Do not consume the old
-            // zero-height fallback when the layout/font is unavailable.
-            if (!briefing_height_available_ || !owner_.widget(kMissionDetailTextClipField)) {
-                owner_.log.unimplemented("MissionDetail::set_scroll_range_missing_layout", "006834a0");
-                return;
-            }
-            MainMenuScrollerLayoutHost layout(owner_.frontend);
-            // Review R1: authored controls otherwise retain their load-time
-            // dimensions and constant-white diffuse color in the bridge.
-            owner_.frontend.bind_scroller_controls(owner_.briefing_scroller_354);
-            bsp::set_scroll_range(owner_.briefing_scroller_354, static_cast<float>(range), layout);
-            owner_.log.implemented("MissionDetail::set_scroll_range", "006834a0");
-        } else {
-        static_cast<void>(range);
-        owner_.log.unimplemented("MissionDetail::set_scroll_range", "006834a0");
+        // 0058C844..0058C888: reset +354h, then 006834A0 with text
+        // height minus the real clip height. Do not consume the old
+        // zero-height fallback when the layout/font is unavailable.
+        if (!briefing_height_available_ || !owner_.widget(kMissionDetailTextClipField)) {
+            owner_.log.unimplemented("MissionDetail::set_scroll_range_missing_layout", "006834a0");
+            return;
         }
+        MainMenuScrollerLayoutHost layout(owner_.frontend);
+        // Review R1: authored controls otherwise retain their load-time
+        // dimensions and constant-white diffuse color in the bridge.
+        owner_.frontend.bind_scroller_controls(owner_.briefing_scroller_354);
+        bsp::set_scroll_range(owner_.briefing_scroller_354, static_cast<float>(range), layout);
+        owner_.log.implemented("MissionDetail::set_scroll_range", "006834a0");
     }
     void start_preview_movie(std::string_view movie_key) override {
         static_cast<void>(movie_key);
@@ -1674,73 +1590,50 @@ public:
         owner_.log.implemented("MainMenuUpdate::set_active_mission_group", "0059a4b4");
     }
     void position_backdrop() override {
-        if constexpr (kWireGoal4Chain432Bound) {
-            MissionMapGeometryBinding(owner_).move_backdrop(owner_.backdrop);
-        } else {
-        owner_.log.unimplemented("MainMenuUpdate::position_backdrop", "00aa8240");
-        }
+        MissionMapGeometryBinding(owner_).move_backdrop(owner_.backdrop);
     }
     void drive_map(float seconds, MissionGroup group, float zoom_delta, bool moved) override {
-        if constexpr (kWireGoal4Chain432Bound) {
-            static_cast<void>(seconds); // Native first stack argument is unread.
-            auto& geometry = owner_.map_geometry;
-            geometry.zoom = owner_.screen_state.map_zoom;
-            MainMenuMapGeometryInput input;
-            input.lookup_root = reinterpret_cast<std::uintptr_t>(owner_.active_group);
-            input.zoom_delta = zoom_delta;
-            input.point_list_index = static_cast<std::size_t>(group);
-            // 0059A3CB/0059A678 borrow screen+1A4h. Registration 00582F30
-            // clears x/z; the page machine supplies the live +1A8h y value.
-            input.additional_offset = {0.0f, owner_.screen_state.map_offset_y, 0.0f};
-            input.immediate_when_zooming = moved;
-            input.has_selected_point_widget = owner_.selected_map_point != nullptr;
-            MissionMapGeometryBinding binding(owner_);
-            update_main_menu_map_geometry_00588c70(geometry, input, binding);
-            owner_.screen_state.map_zoom = geometry.zoom;
-            owner_.log.implemented("MainMenuUpdate::drive_map", "00588c70");
-        } else {
-        static_cast<void>(seconds);
-        static_cast<void>(group);
-        static_cast<void>(zoom_delta);
-        static_cast<void>(moved);
-        // 00588C70's own body is the map anchor and the point-list walk, which
-        // needs the world-map camera this process does not build.
-        owner_.log.unimplemented("MainMenuUpdate::drive_map", "00588c70");
-        }
+        static_cast<void>(seconds); // Native first stack argument is unread.
+        auto& geometry = owner_.map_geometry;
+        geometry.zoom = owner_.screen_state.map_zoom;
+        MainMenuMapGeometryInput input;
+        input.lookup_root = reinterpret_cast<std::uintptr_t>(owner_.active_group);
+        input.zoom_delta = zoom_delta;
+        input.point_list_index = static_cast<std::size_t>(group);
+        // 0059A3CB/0059A678 borrow screen+1A4h. Registration 00582F30
+        // clears x/z; the page machine supplies the live +1A8h y value.
+        input.additional_offset = {0.0f, owner_.screen_state.map_offset_y, 0.0f};
+        input.immediate_when_zooming = moved;
+        input.has_selected_point_widget = owner_.selected_map_point != nullptr;
+        MissionMapGeometryBinding binding(owner_);
+        update_main_menu_map_geometry_00588c70(geometry, input, binding);
+        owner_.screen_state.map_zoom = geometry.zoom;
+        owner_.log.implemented("MainMenuUpdate::drive_map", "00588c70");
     }
-    bool map_geometry_updates_zoom() const noexcept override { return kWireGoal4Chain432Bound; }
+    bool map_geometry_updates_zoom() const noexcept override { return true; }
     MapZoomInput map_zoom_input() override {
         // Records 121h and 122h have no entry in this process's action table.
         owner_.log.implemented("MainMenuUpdate::map_zoom_input", "0059a517");
         return MapZoomInput{};
     }
     void animate_detail_group() override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            if (!owner_.input_runtime)
-                throw std::logic_error("Main-menu scroll update requires the application's input runtime");
-            // 0059A414..41C: this+354h and stack byte1, over the retained briefing
-            // scroller attached by 005861B0 and ranged by 0058C010.
-            MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
-            update_front_end_screen_scroller_00683820(owner_.briefing_scroller_354, true, binding);
-            owner_.log.implemented("MainMenuUpdate::animate_detail_group", "00683820");
-        } else {
-        owner_.log.unimplemented("MainMenuUpdate::animate_detail_group", "00683820");
-        }
+        if (!owner_.input_runtime)
+            throw std::logic_error("Main-menu scroll update requires the application's input runtime");
+        // 0059A414..41C: this+354h and stack byte1, over the retained briefing
+        // scroller attached by 005861B0 and ranged by 0058C010.
+        MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
+        update_front_end_screen_scroller_00683820(owner_.briefing_scroller_354, true, binding);
+        owner_.log.implemented("MainMenuUpdate::animate_detail_group", "00683820");
     }
     void animate_page_group(bool pad_axis_override_off) override {
-        if constexpr (kWireGoal4Chain463Bound) {
-            if (!owner_.input_runtime)
-                throw std::logic_error("Main-menu scroll update requires the application's input runtime");
-            // 0059A6A7..6B5: this+1D4h, with the exact screen+56Ch byte supplied
-            // by the reconstructed 00599DB0 caller. No second input poll.
-            MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
-            update_front_end_screen_scroller_00683820(owner_.mission_scroller_1d4,
-                pad_axis_override_off, binding);
-            owner_.log.implemented("MainMenuUpdate::animate_page_group", "00683820");
-        } else {
-        static_cast<void>(pad_axis_override_off);
-        owner_.log.unimplemented("MainMenuUpdate::animate_page_group", "00683820");
-        }
+        if (!owner_.input_runtime)
+            throw std::logic_error("Main-menu scroll update requires the application's input runtime");
+        // 0059A6A7..6B5: this+1D4h, with the exact screen+56Ch byte supplied
+        // by the reconstructed 00599DB0 caller. No second input poll.
+        MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
+        update_front_end_screen_scroller_00683820(owner_.mission_scroller_1d4,
+            pad_axis_override_off, binding);
+        owner_.log.implemented("MainMenuUpdate::animate_page_group", "00683820");
     }
     void update_scene(int scene_id) override {
         static_cast<void>(scene_id);
@@ -1873,19 +1766,12 @@ public:
     }
     void publish_loading_config(const std::vector<std::string>& text,
         std::string_view mission_name, bool second_side_enabled) override {
-        if constexpr (kWireGoal4Chain462Bound) {
-            if (!owner_.loading_config)
-                owner_.loading_config = std::make_unique<GameLoadingConfig>(game_native_string_process());
-            // 0058BEDE -> 0057D060 -> 0057CFF0, using the selected record's
-            // actual side vector, title and record+20Ch low-byte projection.
-            owner_.loading_config->publish(text, mission_name, second_side_enabled);
-            owner_.log.implemented("MissionStart::publish_loading_config", "0057d060");
-        } else {
-        static_cast<void>(text);
-        static_cast<void>(mission_name);
-        static_cast<void>(second_side_enabled);
-        owner_.log.unimplemented("MissionStart::publish_loading_config", "0057d060");
-        }
+        if (!owner_.loading_config)
+            owner_.loading_config = std::make_unique<GameLoadingConfig>(game_native_string_process());
+        // 0058BEDE -> 0057D060 -> 0057CFF0, using the selected record's
+        // actual side vector, title and record+20Ch low-byte projection.
+        owner_.loading_config->publish(text, mission_name, second_side_enabled);
+        owner_.log.implemented("MissionStart::publish_loading_config", "0057d060");
     }
     void set_mission_key_mirror(std::string_view mission_id) override {
         static_cast<void>(mission_id);
@@ -1957,19 +1843,8 @@ public:
         owner_.log.unimplemented("MissionStart::report_metrics", "00753810");
     }
     void finish_start() override {
-        if constexpr (kWireGoal4Chain473Bound) {
-            if (owner_.loading_config) owner_.loading_config->finish_start();
-            owner_.log.implemented("MissionStart::finish_start", "004d2a80");
-        } else {
-        if constexpr (kMissionStartTemporaryReleaseCc15Bound) {
-            // 0058BFEF 004D2A80 on the [ESP+10h] loading-config block: the
-            // binding built no copy of it (publish_loading_config took the
-            // record's vector and name by reference), so nothing is freed.
-            owner_.log.implemented("MissionStart::finish_start", "004d2a80");
-        } else {
-            owner_.log.unimplemented("MissionStart::finish_start", "004d2a80");
-        }
-        }
+        if (owner_.loading_config) owner_.loading_config->finish_start();
+        owner_.log.implemented("MissionStart::finish_start", "004d2a80");
     }
 
 private:
@@ -2598,23 +2473,16 @@ void GameMissionHost::Impl::lobby_multi_menu_init_00689540() {
     // number becomes an enabled slot-1 option keyed by that number, payload its ordinal.
     std::int32_t ordinal = 0;
     for (const MissionRecordData& map : tables.multi) {
-        if constexpr (bsp::kWireGoal4Chain366Bound) {
-            // 00425BD0: NativeString +4h -> _atol, with an empty-string fallback
-            // for a null buffer (bsp.py show 00425bd0, complete leaf). Reuse that
-            // conversion on the authored map-record name, represented here by
-            // std::string. Its result is the live registry key, not a census.
-            // This is a source-level substitution for 008D2F50's inline _atol;
-            // the image does not call 00425BD0 at this site.
-            const std::int32_t number = bsp::seg1_cc13::native_string_to_long_00425bd0(map.screen.name.c_str());
-            if (number == 0) continue;
-            registry.enabled_28[1][number] = 1;
-            registry.numbers_1c[1][number] = ++ordinal;
-        } else {
-            const long number = std::atol(map.screen.name.c_str());
-            if (number == 0) continue;
-            registry.enabled_28[1][static_cast<std::int32_t>(number)] = 1;
-            registry.numbers_1c[1][static_cast<std::int32_t>(number)] = ++ordinal;
-        }
+        // 00425BD0: NativeString +4h -> _atol, with an empty-string fallback
+        // for a null buffer (bsp.py show 00425bd0, complete leaf). Reuse that
+        // conversion on the authored map-record name, represented here by
+        // std::string. Its result is the live registry key, not a census.
+        // This is a source-level substitution for 008D2F50's inline _atol;
+        // the image does not call 00425BD0 at this site.
+        const std::int32_t number = bsp::seg1_cc13::native_string_to_long_00425bd0(map.screen.name.c_str());
+        if (number == 0) continue;
+        registry.enabled_28[1][number] = 1;
+        registry.numbers_1c[1][number] = ++ordinal;
     }
     registry.loaded = true;
     lobby.registry = registry;
@@ -2671,13 +2539,9 @@ std::uint64_t GameMissionHost::Impl::map_content_mask_005d9c50() const {
     if (name.empty()) return 0;
     const std::size_t underscore = name.rfind('_');
     const std::string suffix = name.substr(underscore == std::string::npos ? 0 : underscore + 1);
-    if constexpr (bsp::kWireGoal4Chain366Bound) {
-        // Same canonical NativeString numeric conversion as the map-id keys
-        // above; this actual content-ID suffix selects the consumed mask bit.
-        return bsp::lobby_content_mask_005d9c50(bsp::seg1_cc13::native_string_to_long_00425bd0(suffix.c_str()));
-    } else {
-        return bsp::lobby_content_mask_005d9c50(static_cast<std::int32_t>(std::atol(suffix.c_str())));
-    }
+    // Same canonical NativeString numeric conversion as the map-id keys
+    // above; this actual content-ID suffix selects the consumed mask bit.
+    return bsp::lobby_content_mask_005d9c50(bsp::seg1_cc13::native_string_to_long_00425bd0(suffix.c_str()));
 }
 
 // 005E51D0 (lobby enter), 005E57B0..005E58B7, as the host (+1FE4h == 1).
@@ -2738,10 +2602,7 @@ void GameMissionHost::Impl::lobby_apply_selected_map_005da530() {
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const std::string& scene_path) {
     participant_scene_counts.erase(scene_path);
-    if constexpr (bsp::kWireGoal4Chain516Bound) {
-        remap_scene_names.erase(scene_path);
-    } else {
-    }
+    remap_scene_names.erase(scene_path);
     // 0046DF00's header pass. 008D9CF0 opens the path through the VFS provider
     // table at 0109CEEC and reads the whole stream; the parser then runs over
     // the text. The scene-graph owner is needed by passes 2 and 3 (004D4DF0),
@@ -2784,18 +2645,11 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const SceneDocument document = parse_scene_document(text);
     log.implemented("SetPendingScene::load_scene_header_pass", "0046df00");
     if (document.has_header && document.header.has_properties) {
-        if constexpr (bsp::kWireGoal4Chain516Bound) {
-            if (native_pictures)
-                remap_scene_names.emplace(scene_path,
-                    scene_remap_names(vfs, remap_schema, document.header.properties));
-        } else {
-        }
-        if constexpr (kWireGoal2Chain176Bound) {
-            // 00551440 loads authored/default idle shots; OFF keeps the partial header apply below.
-            load_mission_idle_camera_shots(*this, document.header.properties);
-        } else {
-            // The existing header host did not retain idle-camera shots.
-        }
+        if (native_pictures)
+            remap_scene_names.emplace(scene_path,
+                scene_remap_names(vfs, remap_schema, document.header.properties));
+        // 00551440 loads authored/default idle shots; OFF keeps the partial header apply below.
+        load_mission_idle_camera_shots(*this, document.header.properties);
         const auto table = bsp::read_scene_record_slot_table_004f1d70(document.header.properties);
         // Packet cc9_stage_init_chunk_errors: 004F1D70's `GameStageScript` /
         // `StageScript` arm into record+968h, slot 8 of the +928h table. The
@@ -3255,7 +3109,7 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
             direct ? "direct child" : "nested (chained lookup)");
     }
 
-    if constexpr (kWireGoal4Chain387Bound) {
+    {
         MainMenuScrollerLayoutHost layout(host.frontend);
         const auto child = [](GuiLayoutWidget* parent, const char* name) {
             return parent ? find_child_by_name_00aa7e00(*parent, name) : nullptr;
@@ -3316,7 +3170,6 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
         } else {
             host.log.unimplemented("MainMenuScreen::attach_mission_scroller_missing_layout", "005874c3");
         }
-    } else {
     }
 
     // +124h: 005861B0 stores the three floats 00AA6750 returns, which 0059A68E
@@ -3326,7 +3179,7 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
         const GuiWidgetPoint point = resolved_position(backdrop->transform);
         host.backdrop = {point.x, point.y, point.z};
     }
-    if constexpr (kWireGoal4Chain432Bound) {
+    {
         // 00586F8A binds the selection companion from this same world-map
         // root. Do not clone it or substitute a numbered mission point.
         host.widgets[0x338] = find_child_by_name_00aa7e00(root, "selector_Icon");
@@ -3341,7 +3194,6 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
             geometry.backdrop_extent = {extent.width, extent.height};
             geometry.backdrop_position = host.backdrop; //00587A9D
         }
-    } else {
     }
     host.log.notef("main-menu layout bound: %zu pages, %zu widgets, %zu missing",
         host.summary.detail_pages_loaded, host.summary.detail_widgets_bound,
@@ -3463,21 +3315,13 @@ void GameMissionHost::Impl::finish_scene_load() {
     // The previous frame and its children borrow the previous Lua owner.
     // Destroy those borrowers before replacing that owner on a later load.
     frame_host.reset();
-    if constexpr (bsp::kWireGoal4Chain484Bound) {
-        lua = std::make_unique<GameMissionLuaHost>(log, vfs,
-            native_pictures ? &native_pictures->class_icon_services : nullptr);
-    } else {
-    lua = std::make_unique<GameMissionLuaHost>(log, vfs);
-    }
+    lua = std::make_unique<GameMissionLuaHost>(log, vfs,
+        native_pictures ? &native_pictures->class_icon_services : nullptr);
     // Forward the retained live table; keep the independent copied language input.
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         locale, profiler, language, hud);
     if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);
-    if constexpr (kWireGoal4Chain316Bound) {
-        frame_host->bind_input_runtime(input_runtime);
-    } else {
-        // Previously the device-wait host injected its input sample.
-    }
+    frame_host->bind_input_runtime(input_runtime);
     // cc15 lane L2: the record commit 009205E0 writes [game+6B4h].
     if (GameMissionResultHost* result = lua->mission_result()) result->bind_profile(profile);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
@@ -3486,7 +3330,7 @@ void GameMissionHost::Impl::finish_scene_load() {
     lua->start_machine_00884be0();
     // Goal 4 chain 274: 004374F0's BSP_Chk_Save on the machine just built (see
     // refresh_checkpoints_after_machine_build for the labelled substitution).
-    if constexpr (kWireGoal4Chain274Bound) refresh_checkpoints_after_machine_build(log, *lua, profile);
+    refresh_checkpoints_after_machine_build(log, *lua, profile);
     // Milestone 2g: game+2198h, the key the record commit writes under, and the
     // frame the executable makes the script's end-movie call on.
     frame_host->set_mission_key(summary.selected_id);
@@ -3525,14 +3369,11 @@ void GameMissionHost::Impl::finish_scene_load() {
     log.note("the mission-detail page roots were hidden: 00686c90 destroys the main-menu "
         "screen, which releases the three layouts it holds at +2F0h, +244h and +248h");
     const auto participant_count = participant_scene_counts.find(record.scene_path);
-    if constexpr (bsp::kWireGoal4Chain516Bound) {
-        if (native_pictures) {
-            const auto remaps = remap_scene_names.find(record.scene_path);
-            if (remaps == remap_scene_names.end())
-                throw std::runtime_error("selected scene has no parsed colour-remap record");
-            frame_host->bind_native_scene_remaps(native_pictures->renderer, remaps->second);
-        }
-    } else {
+    if (native_pictures) {
+        const auto remaps = remap_scene_names.find(record.scene_path);
+        if (remaps == remap_scene_names.end())
+            throw std::runtime_error("selected scene has no parsed colour-remap record");
+        frame_host->bind_native_scene_remaps(native_pictures->renderer, remaps->second);
     }
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
         record.locale_table_list, record.mission_id, &record,
@@ -3669,25 +3510,17 @@ bool GameMissionHost::advance(float seconds) {
         host.frame_host->enter_mission_state_004da6c0();
         host.publish_frame_summary();
         if (!host.summary.mission_entered) {
-            if constexpr (kWireGoal4Chain316Bound) {
-                // 004E5046 runs 004DB920 again on each game move while +5D4
-                // stays 0Ch. Real input may be up on the first pass; retain
-                // SceneLoaded and let the application's next frame poll it.
-                if (host.summary.mission_game_state == bsp::kGameStateSceneReady
-                    && host.frame_host->entry_summary().device_wait_ran
-                    && !host.frame_host->entry_summary().player_count_arm)
-                    return true;
-                host.log.notef("the mission state was not entered; the run stops at state 0x%02X",
-                    host.summary.mission_game_state);
-                host.step = GameMissionStep::Stopped;
-                return false;
-            } else {
-                // OFF retains the one-pass synthetic device-wait behavior.
+            // 004E5046 runs 004DB920 again on each game move while +5D4
+            // stays 0Ch. Real input may be up on the first pass; retain
+            // SceneLoaded and let the application's next frame poll it.
+            if (host.summary.mission_game_state == bsp::kGameStateSceneReady
+                && host.frame_host->entry_summary().device_wait_ran
+                && !host.frame_host->entry_summary().player_count_arm)
+                return true;
             host.log.notef("the mission state was not entered; the run stops at state 0x%02X",
                 host.summary.mission_game_state);
             host.step = GameMissionStep::Stopped;
             return false;
-            }
         }
         host.step = GameMissionStep::InMission;
         return true;

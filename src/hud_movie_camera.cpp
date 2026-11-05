@@ -1,8 +1,5 @@
 #include "bsp/hud_movie_camera.hpp"
 #include "bsp/engine_seg43_45_cc13.hpp"
-#include "bsp/wire_goal2_chain112_switches.hpp"
-#include "bsp/wire_goal2_chain217_switches.hpp"
-#include "bsp/wire_goal4_chain306_switches.hpp"
 
 namespace bsp {
 void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float dt,
@@ -672,24 +669,14 @@ void movie_camera_seed_007a0860(HudMovieCamera& camera, const std::array<float, 
     camera.matrix_528 = world;                          // 007A0886 004134F0
     if (!camera.camera_498.keys.empty()) return;        // 007A0895
     auto make = [](bool is_camera) {
-        if constexpr (kWireGoal2Chain112Bound) {
-            // 00799B00 constructs the seed key; OFF keeps the HUD's member defaults.
-            auto k = make_movie_keyframe_from_native_defaults();
-            k->camera_28 = is_camera;
-            k->parent_attached_24 = false;
-            k->use_current_d8 = true;
-            k->blend_f4 = 0.0f;
-            k->start_f0 = 0.0f;
-            return k;
-        } else {
-            auto k = std::make_unique<MovieKeyframe>();
-            k->camera_28 = is_camera;
-            k->parent_attached_24 = false;
-            k->use_current_d8 = true;
-            k->blend_f4 = 0.0f;
-            k->start_f0 = 0.0f;
-            return k;
-        }
+        // 00799B00 constructs the seed key; OFF keeps the HUD's member defaults.
+        auto k = make_movie_keyframe_from_native_defaults();
+        k->camera_28 = is_camera;
+        k->parent_attached_24 = false;
+        k->use_current_d8 = true;
+        k->blend_f4 = 0.0f;
+        k->start_f0 = 0.0f;
+        return k;
     };
     append_007a0770(camera.camera_498, make(true), camera.clock_3b0);
     append_007a0770(camera.target_414, make(false), camera.clock_3b0);
@@ -712,42 +699,23 @@ int movie_camera_add_position_007a42c0(HudMovieCamera& camera, const MovieKeyfra
     int added = 0;
     bool built_camera = false;
     if (build_camera) {                                  // 007A4389
-        if constexpr (kWireGoal2Chain112Bound) {
-            // 00799B00 constructs the parsed camera key; OFF keeps the HUD's member defaults.
-            auto k = make_movie_keyframe_from_native_defaults();
-            k->camera_28 = true;
-            parse_007a0eb0(*k, camera, in, host);
-            if (k->camera_28 && k->use_current_d8) build_target = true;
-            append_007a0770(camera.camera_498, std::move(k), camera.clock_3b0);
-            built_camera = true;
-            ++added;
-        } else {
-            auto k = std::make_unique<MovieKeyframe>();
-            k->camera_28 = true;
-            parse_007a0eb0(*k, camera, in, host);
-            if (k->camera_28 && k->use_current_d8) build_target = true;
-            append_007a0770(camera.camera_498, std::move(k), camera.clock_3b0);
-            built_camera = true;
-            ++added;
-        }
+        // 00799B00 constructs the parsed camera key; OFF keeps the HUD's member defaults.
+        auto k = make_movie_keyframe_from_native_defaults();
+        k->camera_28 = true;
+        parse_007a0eb0(*k, camera, in, host);
+        if (k->camera_28 && k->use_current_d8) build_target = true;
+        append_007a0770(camera.camera_498, std::move(k), camera.clock_3b0);
+        built_camera = true;
+        ++added;
     }
     if (build_target) {
-        if constexpr (kWireGoal2Chain112Bound) {
-            // 00799B00 constructs the parsed look-at key; OFF keeps the HUD's member defaults.
-            auto k = make_movie_keyframe_from_native_defaults();
-            k->camera_28 = false;
-            static_cast<void>(built_camera);
-            parse_007a0eb0(*k, camera, in, host);
-            append_007a0770(camera.target_414, std::move(k), camera.clock_3b0);
-            ++added;
-        } else {
-            auto k = std::make_unique<MovieKeyframe>();
-            k->camera_28 = false;
-            static_cast<void>(built_camera);                 // the +20h/+DAh pairing is ids only
-            parse_007a0eb0(*k, camera, in, host);
-            append_007a0770(camera.target_414, std::move(k), camera.clock_3b0);
-            ++added;
-        }
+        // 00799B00 constructs the parsed look-at key; OFF keeps the HUD's member defaults.
+        auto k = make_movie_keyframe_from_native_defaults();
+        k->camera_28 = false;
+        static_cast<void>(built_camera);
+        parse_007a0eb0(*k, camera, in, host);
+        append_007a0770(camera.target_414, std::move(k), camera.clock_3b0);
+        ++added;
     }
     return added;
 }
@@ -799,25 +767,17 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     const Vec3 up = camera.camera_498.up_10;
     const float zoom = camera.camera_498.zoom_60;        // +4F8h
     // 0079B634..0079B6A8: +4FCh clear, so 0078FAF0 runs on the zero state.
-    if constexpr (kWireGoal4Chain306Bound) {
-        // Every +4FCh-clear path (0079B3B8/0079B3C5 JZ 0079B631, 0079B3E3 JZ
-        // 0079B634) sets the goal +520h only when dt > 0 (0079B63C JBE), then
-        // reaches 0079B684..0079B691: 0078FAF0(ECX = +51Ch, dt) on every frame,
-        // dt <= 0 included. The offset added at 0079B696..0079B6A8 is the +524h
-        // that step leaves.
-        if (dt > 0.0f) {
-            const float v = camera.ground_51c[0] + camera.ground_51c[0] + camera.ground_51c[2];
-            camera.ground_51c[1] = v > 0.0f ? static_cast<float>(-v * 0.6000000238418579) : -0.0f - v;
-        }
-        cc13cam2::movcam_approach_0078faf0(camera.ground_51c, dt);
-        pos[1] = camera.ground_51c[2] + pos[1];
-    } else {
+    // Every +4FCh-clear path (0079B3B8/0079B3C5 JZ 0079B631, 0079B3E3 JZ
+    // 0079B634) sets the goal +520h only when dt > 0 (0079B63C JBE), then
+    // reaches 0079B684..0079B691: 0078FAF0(ECX = +51Ch, dt) on every frame,
+    // dt <= 0 included. The offset added at 0079B696..0079B6A8 is the +524h
+    // that step leaves.
     if (dt > 0.0f) {
         const float v = camera.ground_51c[0] + camera.ground_51c[0] + camera.ground_51c[2];
         camera.ground_51c[1] = v > 0.0f ? static_cast<float>(-v * 0.6000000238418579) : -0.0f - v;
     }
+    cc13cam2::movcam_approach_0078faf0(camera.ground_51c, dt);
     pos[1] = camera.ground_51c[2] + pos[1];
-    }
     Vec3 f{};
     for (int i = 0; i < 3; ++i) {
         f[static_cast<std::size_t>(i)] = target[static_cast<std::size_t>(i)] - pos[static_cast<std::size_t>(i)];
@@ -862,37 +822,15 @@ int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
         // the index loop re-reads the size and the keyframes are heap objects.
         for (std::size_t n = 0; n < track->keys.size(); ++n) {
             MovieKeyframe& k = *track->keys[n];
-            if constexpr (kWireGoal2Chain112Bound) {
-                // 0078E630 ticks the real key event; OFF keeps the inline event check/fire.
-                const bool had_event = k.event_ec.has_value();
-                auto pending = std::move(k.event_ec);
-                k.event_ec.reset();
-                // Keep the event alive outside the camera: its script can destroy
-                // this key or append new keys. Only restore it when no script ran.
-                cc13cam::keyframe_tick_0078e630(k.state_f8, dt, pending, events);
-                if (pending) k.event_ec = std::move(pending);
-                else if (had_event) ++fired;
-            } else {
-            if (k.state_f8 == 0 || k.state_f8 == 3) continue;   // 00797F0A..00797F14
-            // 00797F2E 0078E630: dt > 0, a triggered event fires and is deleted.
-            // ORDER, labelled: the event is taken off the key before its script
-            // runs, because the script may tear the camera (and this key) down;
-            // the image fires first and deletes after (0078E540 with 0).
-            if (!(dt > 0.0f) || !k.event_ec || !cc13cam::keyframe_event_check(*k.event_ec, events)) {
-                continue;
-            }
-            cc13cam::KeyframeEvent ev = std::move(*k.event_ec);
-            if constexpr (kWireGoal2Chain217Bound) {
-                // 0078E540 calls the existing event replacement body; OFF keeps optional reset.
-                MovieKeyEventOwner owner(k.event_ec);
-                cc13cam2::movie_key_set_event_0078e540(
-                    cc13cam2::MovieKeyEventView{k.event_ec}, nullptr, owner);
-            } else {
+            // 0078E630 ticks the real key event; OFF keeps the inline event check/fire.
+            const bool had_event = k.event_ec.has_value();
+            auto pending = std::move(k.event_ec);
             k.event_ec.reset();
-            }
-            ++fired;
-            cc13cam::keyframe_event_fire_00791540(ev, events);
-            }
+            // Keep the event alive outside the camera: its script can destroy
+            // this key or append new keys. Only restore it when no script ran.
+            cc13cam::keyframe_tick_0078e630(k.state_f8, dt, pending, events);
+            if (pending) k.event_ec = std::move(pending);
+            else if (had_event) ++fired;
         }
     }
     return fired;

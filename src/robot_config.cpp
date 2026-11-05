@@ -3,7 +3,6 @@
 #include "bsp/cc13_front8.hpp"
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/save_settings_cc13.hpp"
-#include "bsp/wire_goal4_chain410_switches.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -778,17 +777,12 @@ std::pair<RobotConfigRegistry::iterator, bool> insert_robot_config_00901210(
 }
 
 RobotDescriptor* find_robot_config_00900af0(RobotConfigRegistry& registry, const char* name) {
-    if constexpr (kWireGoal4Chain410Bound) {
-        RobotConfigRegistry::iterator found;
-        {
-            RobotNameKey key(name); // 00900B10, caller's actual class-name pointer
-            found = registry.find(key.value.data);
-        } // 00900B3D destroys the borrowed wrapper before inspecting the iterator
-        return found == registry.end() ? nullptr : found->second;
-    } else {
-    const auto found = registry.find(name);
+    RobotConfigRegistry::iterator found;
+    {
+        RobotNameKey key(name); // 00900B10, caller's actual class-name pointer
+        found = registry.find(key.value.data);
+    } // 00900B3D destroys the borrowed wrapper before inspecting the iterator
     return found == registry.end() ? nullptr : found->second;
-    }
 }
 
 bool validate_robot_descriptor(RobotDescriptor& object) {
@@ -826,14 +820,10 @@ void register_robot_config_009013d0(RobotConfigRegistry& registry, RobotDescript
     (void)validate_robot_descriptor(object); // native ignores AL
     name = object.name_08; // reload after all virtual/read callbacks
     if (!name) name = "unnamed MBotClass";
-    if constexpr (kWireGoal4Chain410Bound) {
-        RobotNameKey key(name);                       // 0090158E
-        RobotNameKey pair_key(std::move(key));        // 009015A1
-        (void)insert_robot_config_00901210(registry, pair_key.value.data, &object);
-        // 009015C3 onward: pair key, then original key, before the Lua refs.
-    } else {
-    (void)insert_robot_config_00901210(registry, name, &object);
-    }
+    RobotNameKey key(name);                       // 0090158E
+    RobotNameKey pair_key(std::move(key));        // 009015A1
+    (void)insert_robot_config_00901210(registry, pair_key.value.data, &object);
+    // 009015C3 onward: pair key, then original key, before the Lua refs.
     // Native borrowed key wrappers own no bytes. The two live Lua refs release
     // in this scope's reverse order, after the unique map insertion.
 }

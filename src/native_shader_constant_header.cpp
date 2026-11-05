@@ -2,7 +2,6 @@
 #include "bsp/native_shader_constant_header.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_material_parameters.hpp"
-#include "bsp/wire_goal4_chain502_switches.hpp"
 #include <cstdio>
 #include <cstring>
 #include <exception>
@@ -111,18 +110,14 @@ void declaration(NativeMaterialProgramBuilderStorage& owner,
         a.suffix_data = data(&a.suffix);
         if (word(&a.temporary)) copy_bytes(a.suffix_data, data(&a.temporary), word(&a.suffix));
         at(a, Step::temporary_release, 0x00b38cfa); release_current(a);
-        if constexpr (kWireGoal4Chain502Bound) {
-            // Original B38D06..B38D0B pushes this signed register index and
-            // passes the actual stack string as ECX to 5F1840. Keep its
-            // one-shot acquisition frame alive if pooled storage throws.
-            at(a, Step::decimal_call, 0x00b38d0b);
-            a.decimal_child = std::make_unique<Frame>();
-            a.temporary_live = true;
-            construct_native_shader_decimal_005f1840(a.temporary, reg,
-                *a.context, *a.decimal_child);
-        } else {
-        a.temporary_live = true; decimal(a.temporary, reg, a);
-        }
+        // Original B38D06..B38D0B pushes this signed register index and
+        // passes the actual stack string as ECX to 5F1840. Keep its
+        // one-shot acquisition frame alive if pooled storage throws.
+        at(a, Step::decimal_call, 0x00b38d0b);
+        a.decimal_child = std::make_unique<Frame>();
+        a.temporary_live = true;
+        construct_native_shader_decimal_005f1840(a.temporary, reg,
+            *a.context, *a.decimal_child);
         append_suffix(a, 0x00b38d2d);
         at(a, Step::temporary_release, 0x00b38d5f); release_current(a);
         a.temporary_live = true;
@@ -212,18 +207,14 @@ void append_native_system_constant_header_00b38ff0(NativeMaterialProgramBuilderS
         while (current != end) {
             const auto index = a.cursor < context.actual_register_limit_00e13078 && flag ? a.cursor : 0xffffffffu;
             const auto& record = *reinterpret_cast<const NativeCompiledShaderConstantStorage*>(current);
-            if constexpr (kWireGoal4Chain502Bound) {
-                // B3902C..B39032 calls B38C60 with the current builder,
-                // captured actual row and signed DWORD register argument.
-                // The previous child is complete before another row starts.
-                a.record = &record;
-                at(a, Step::constant_call, 0x00b39032);
-                a.constant_child = std::make_unique<Frame>();
-                append_native_system_constant_00b38c60(owner, record, signed_word(index),
-                    context, *a.constant_child);
-            } else {
-            declaration(owner, record, signed_word(index), a);
-            }
+            // B3902C..B39032 calls B38C60 with the current builder,
+            // captured actual row and signed DWORD register argument.
+            // The previous child is complete before another row starts.
+            a.record = &record;
+            at(a, Step::constant_call, 0x00b39032);
+            a.constant_child = std::make_unique<Frame>();
+            append_native_system_constant_00b38c60(owner, record, signed_word(index),
+                context, *a.constant_child);
             at(a, Step::cursor, 0x00b39039);
             const auto second = native_system_constant_second_dimension_00b5b840(record);
             const auto count = native_system_constant_array_count_00b5b860(record);

@@ -1,10 +1,6 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal2_chain114_switches.hpp"
-#include "bsp/wire_goal4_chain309_switches.hpp"
-#include "bsp/wire_goal4_chain566_switches.hpp"
-#include "bsp/wire_goal4_chain572_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -265,14 +261,10 @@ void NativeMaterialPassPool::initialize_00b41090() {
     initialize_pool<NativeMaterialPassPool>(allocator_list_, storage_);
 }
 void* NativeMaterialPassPool::allocate_slot_00b41210() {
-    if constexpr (kWireGoal4Chain309Bound) {
-        // 00B41210's nonnull allocation arm calls 00B401D0 with the newly
-        // allocated 11C4h slab and the live, already-published first-free ID.
-        return allocate_slot<NativeMaterialPassPool,
-            &initialize_native_material_pass_slab_00b401d0>(storage_);
-    } else {
-        return allocate_slot<NativeMaterialPassPool>(storage_);
-    }
+    // 00B41210's nonnull allocation arm calls 00B401D0 with the newly
+    // allocated 11C4h slab and the live, already-published first-free ID.
+    return allocate_slot<NativeMaterialPassPool,
+        &initialize_native_material_pass_slab_00b401d0>(storage_);
 }
 void NativeMaterialPassPool::return_slot_00b40a40(void* slot) noexcept {
     return_slot<NativeMaterialPassPool>(storage_, slot);
@@ -281,15 +273,11 @@ void NativeMaterialPassPool::trim_empty_slabs_00b41170() {
     trim_empty_slabs<NativeMaterialPassPool>(storage_);
 }
 void NativeMaterialPassPool::destroy_00b40980() {
-    if constexpr (kWireGoal4Chain572Bound) {
-        // bsp.py show 00B40980 and 00B402B0 --asm: both release the current
-        // pool+28h table without clearing its pointer/count/capacity. Pass the
-        // actual table header after slab destruction and before CS/list teardown.
-        destroy_pool<NativeMaterialPassPool,
-            &destroy_native_material_pass_pool_table_00b402b0>(allocator_list_, storage_);
-    } else {
-    destroy_pool<NativeMaterialPassPool>(allocator_list_, storage_);
-    }
+    // bsp.py show 00B40980 and 00B402B0 --asm: both release the current
+    // pool+28h table without clearing its pointer/count/capacity. Pass the
+    // actual table header after slab destruction and before CS/list teardown.
+    destroy_pool<NativeMaterialPassPool,
+        &destroy_native_material_pass_pool_table_00b402b0>(allocator_list_, storage_);
 }
 void NativeMaterialPassPool::invoke_trim(void* context) {
     static_cast<NativeMaterialPassPool*>(context)->trim_empty_slabs_00b41170();
@@ -331,14 +319,10 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
 }
 void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
 void* NativeShaderStateListPool::allocate_slot_00b62630(){
-    if constexpr (kWireGoal4Chain309Bound) {
-        // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
-        // feed 00B620F0 before the slab table/count publication.
-        return allocate_slot<NativeShaderStateListPool,
-            &initialize_native_shader_state_list_slab_00b620f0>(storage_);
-    } else {
-        return allocate_slot<NativeShaderStateListPool>(storage_);
-    }
+    // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
+    // feed 00B620F0 before the slab table/count publication.
+    return allocate_slot<NativeShaderStateListPool,
+        &initialize_native_shader_state_list_slab_00b620f0>(storage_);
 }
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
@@ -347,14 +331,10 @@ void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
 }
 void NativeShaderStateListPool::trim_empty_slabs_00b62590(){trim_empty_slabs<NativeShaderStateListPool>(storage_);}
 void NativeShaderStateListPool::destroy_00b62500(){
-    if constexpr (kWireGoal4Chain572Bound) {
-        // bsp.py show 00B62500 and 00B621B0 --asm: the same nonnull table
-        // release, over this pool's retained +28h header, preserving stale fields.
-        destroy_pool<NativeShaderStateListPool,
-            &destroy_native_shader_state_list_pool_table_00b621b0>(allocator_list_, storage_);
-    } else {
-        destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);
-    }
+    // bsp.py show 00B62500 and 00B621B0 --asm: the same nonnull table
+    // release, over this pool's retained +28h header, preserving stale fields.
+    destroy_pool<NativeShaderStateListPool,
+        &destroy_native_shader_state_list_pool_table_00b621b0>(allocator_list_, storage_);
 }
 void NativeShaderStateListPool::invoke_trim(void* context){static_cast<NativeShaderStateListPool*>(context)->trim_empty_slabs_00b62590();}
 __declspec(noinline) void* initialize_native_shader_state_list_slab_00b620f0(void* raw,std::uint32_t index) noexcept {
@@ -369,11 +349,7 @@ void* allocate_static_native_shader_state_list_slot_00b62760(){return canonical_
 void return_static_native_shader_state_list_slot_00b623c0(NativeShaderDescriptorArray& slot){canonical_shader_state_list_pool->return_slot_00b62280(&slot);}
 void return_static_native_shader_state_list_slot_00b623c0(void* slot){
     // 00B623C0: forward raw storage to its typed view; OFF keeps the original global-pool call.
-    if constexpr (kWireGoal2Chain114Bound) {
-        return_static_native_shader_state_list_slot_00b623c0(*static_cast<NativeShaderDescriptorArray*>(slot));
-    } else {
-        canonical_shader_state_list_pool->return_slot_00b62280(slot);
-    }
+    return_static_native_shader_state_list_slot_00b623c0(*static_cast<NativeShaderDescriptorArray*>(slot));
 }
 int initialize_static_native_shader_state_list_pool_00cd7cc0(){
     canonical_shader_state_list_pool->initialize_00b623d0();return std::atexit(&destroy_static_native_shader_state_list_pool_00ce0d50);
@@ -428,14 +404,10 @@ void NativeGuiGroupPool::initialize_00ac7410() {
     initialize_pool<NativeGuiGroupPool>(allocator_list_,storage_);
 }
 void* NativeGuiGroupPool::allocate_00ac7590() {
-    if constexpr (kWireGoal4Chain309Bound) {
-        // bsp.py show 00AC7590: initialize the actual new 1E44h slab through
-        // 00AC6FF0, retaining the native lock, null arm and publication order.
-        return allocate_slot<NativeGuiGroupPool,
-            &initialize_native_gui_group_slab_00ac6ff0>(storage_);
-    } else {
-        return allocate_slot<NativeGuiGroupPool>(storage_);
-    }
+    // bsp.py show 00AC7590: initialize the actual new 1E44h slab through
+    // 00AC6FF0, retaining the native lock, null arm and publication order.
+    return allocate_slot<NativeGuiGroupPool,
+        &initialize_native_gui_group_slab_00ac6ff0>(storage_);
 }
 void NativeGuiGroupPool::return_00ac7260(void* slot) noexcept {
     return_slot<NativeGuiGroupPool>(storage_,slot);
@@ -444,16 +416,12 @@ void NativeGuiGroupPool::trim_00ac74f0() {
     trim_empty_slabs<NativeGuiGroupPool>(storage_);
 }
 void NativeGuiGroupPool::destroy_00ac71a0() {
-    if constexpr (kWireGoal4Chain566Bound) {
-        // bsp.py show 00AC71A0/00AC70D0: the destroy body's inline table
-        // free and the out-of-line helper both free only the current +28h
-        // pointer, preserving count/capacity and the dangling pointer. Pass
-        // the actual pool header after slab retirement, before CS/list teardown.
-        destroy_pool<NativeGuiGroupPool,
-            &free_native_gui_group_pool_table_00ac70d0>(allocator_list_,storage_);
-    } else {
-        destroy_pool<NativeGuiGroupPool>(allocator_list_,storage_);
-    }
+    // bsp.py show 00AC71A0/00AC70D0: the destroy body's inline table
+    // free and the out-of-line helper both free only the current +28h
+    // pointer, preserving count/capacity and the dangling pointer. Pass
+    // the actual pool header after slab retirement, before CS/list teardown.
+    destroy_pool<NativeGuiGroupPool,
+        &free_native_gui_group_pool_table_00ac70d0>(allocator_list_,storage_);
 }
 void NativeGuiGroupPool::invoke_trim(void* context) {
     static_cast<NativeGuiGroupPool*>(context)->trim_00ac74f0();

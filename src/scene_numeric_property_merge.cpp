@@ -4,7 +4,6 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_scene_property_enum_add.hpp"
-#include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/native_scene_property_bag_merge.hpp"
 #include "bsp/native_scene_property_bag_assign_existing.hpp"
 #include "bsp/native_scene_property_bag_reset.hpp"
@@ -22,17 +21,6 @@
 #include "bsp/native_string.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain307_switches.hpp"
-#include "bsp/wire_goal4_chain311_switches.hpp"
-#include "bsp/wire_goal4_chain321_switches.hpp"
-#include "bsp/wire_goal4_chain330_switches.hpp"
-#include "bsp/wire_goal4_chain345_switches.hpp"
-#include "bsp/wire_goal4_chain382_switches.hpp"
-#include "bsp/wire_goal4_chain390_switches.hpp"
-#include "bsp/wire_goal4_chain416_switches.hpp"
-#include "bsp/wire_goal4_chain421_switches.hpp"
-#include "bsp/wire_goal4_chain425_switches.hpp"
-#include "bsp/wire_goal4_chain559_switches.hpp"
 #include "bsp/cc13_seg59b.hpp"
 
 #include <algorithm>
@@ -76,89 +64,52 @@ public:
                 || has_child(source, value.key) || has_child(destination, value.key)) continue;
             const auto prior = std::find_if(destination.values.begin(), destination.values.end(),
                 [&](const SceneProperty& p) { return same_key(p.key, value.key); });
-            if constexpr (kWireGoal4Chain416Bound) {
-                if (prior != destination.values.end()) {
-                    if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
-                    insert_into(destination_, *prior);
-                    if constexpr (kWireGoal4Chain425Bound) {
-                        if (overwrite && same_key(value.type_letter, "FA")) {
-                            destination_.replace_float_array(value);
-                            selected_[i] = true;
-                            continue;
-                        }
-                    } else {
-                        // FA previously stayed on the host path.
-                    }
-                    if (overwrite && (same_key(value.type_letter, "V3A")
-                            || same_key(value.type_letter, "BIN") || value.type_letter == "IA")) {
-                        // The admitted same-tag overwrite has a complete,
-                        // sole-owned type-8/10/11 record. Replace its array once;
-                        // do not also put this key through 008F0700/008F54F0.
-                        destination_.replace_owned_array(value);
-                        selected_[i] = true;
-                        continue;
-                    }
-                } else {
-                    source_has_only_existing_keys = false;
-                }
-                if constexpr (kWireGoal4Chain421Bound) {
-                    if (prior != destination.values.end() && overwrite
-                            && scene_reference_kind(value.type_letter) >= 0) {
-                        // The same-tag admitted destination was inserted above.
-                        // Replace its owned reference once, then publish that
-                        // record rather than also assigning it through the merge.
-                        destination_.replace_reference(value);
-                        selected_[i] = true;
-                        continue;
-                    }
-                    insert_into(source_, value);
-                    selected_[i] = true;
-                    any = true;
-                } else {
-                insert_into(source_, value);
-                selected_[i] = true;
-                any = true;
-                }
-            } else {
             if (prior != destination.values.end()) {
                 if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
                 insert_into(destination_, *prior);
+                if (overwrite && same_key(value.type_letter, "FA")) {
+                    destination_.replace_float_array(value);
+                    selected_[i] = true;
+                    continue;
+                }
+                if (overwrite && (same_key(value.type_letter, "V3A")
+                        || same_key(value.type_letter, "BIN") || value.type_letter == "IA")) {
+                    // The admitted same-tag overwrite has a complete,
+                    // sole-owned type-8/10/11 record. Replace its array once;
+                    // do not also put this key through 008F0700/008F54F0.
+                    destination_.replace_owned_array(value);
+                    selected_[i] = true;
+                    continue;
+                }
             } else {
                 source_has_only_existing_keys = false;
+            }
+            if (prior != destination.values.end() && overwrite
+                    && scene_reference_kind(value.type_letter) >= 0) {
+                // The same-tag admitted destination was inserted above.
+                // Replace its owned reference once, then publish that
+                // record rather than also assigning it through the merge.
+                destination_.replace_reference(value);
+                selected_[i] = true;
+                continue;
             }
             insert_into(source_, value);
             selected_[i] = true;
             any = true;
-            }
         }
         if (any) {
-            if constexpr (kWireGoal4Chain390Bound) {
-                // bsp.py show 008F23E0 / 008F54F0: both hit arms assign
-                // through 008F0700. For this scalar-only projection, every
-                // selected key already existing and overwrite=true exclude
-                // the merge's clone/miss and keep branches. The raw61 owners
-                // and their payloads come from the same admitted parser data
-                // and canonical insertion context above. Assign exactly once;
-                // publication below still consumes the resulting native bag.
-                if (overwrite && source_has_only_existing_keys) {
-                    assign_existing_native_scene_property_bag_008f23e0(
-                        destination_.data(), source_.data(), context_.insertion());
-                } else if constexpr (kWireGoal4Chain382Bound) {
-                    copy_or_merge(destination_, source_, overwrite);
-                } else {
-                    merge_native_scene_property_bag_008f54f0(
-                        destination_.data(), source_.data(), overwrite ? 0u : 1u, context_);
-                }
+            // bsp.py show 008F23E0 / 008F54F0: both hit arms assign
+            // through 008F0700. For this scalar-only projection, every
+            // selected key already existing and overwrite=true exclude
+            // the merge's clone/miss and keep branches. The raw61 owners
+            // and their payloads come from the same admitted parser data
+            // and canonical insertion context above. Assign exactly once;
+            // publication below still consumes the resulting native bag.
+            if (overwrite && source_has_only_existing_keys) {
+                assign_existing_native_scene_property_bag_008f23e0(
+                    destination_.data(), source_.data(), context_.insertion());
             } else {
-            if constexpr (kWireGoal4Chain382Bound) {
                 copy_or_merge(destination_, source_, overwrite);
-            } else {
-            // 008F55FD..008F560D: keep byte zero assigns an existing scalar;
-            // 008F5614..008F563B: a miss clones/inserts the actual source record.
-            // The flag is the host's existing group/default precedence.
-            merge_native_scene_property_bag_008f54f0(destination_.data(), source_.data(),
-                overwrite ? 0u : 1u, context_);
-            }
             }
         }
     }
@@ -170,20 +121,16 @@ public:
         // map storage, constructor or destructor. ON constructs the optional's
         // index only when the first handled property actually needs it.
         return [&](auto& records) -> SceneProperty {
-        if constexpr (kWireGoal4Chain345Bound) {
-            // The constructor has finished the whole native merge. Enumerate
-            // its stable destination once; every result consumes the mapped
-            // native record below, with authored metadata supplying only the
-            // spelling/tokens. Neither bag is mutated during publication.
-            if (!merged_records_collected_) {
-                records.emplace();
-                records->collect(destination_.data());
-                merged_records_collected_ = true;
-            }
-            return read_value(authored_metadata, records->find(authored_metadata.key));
-        } else {
-        return read_value(authored_metadata, destination_.find(authored_metadata.key));
+        // The constructor has finished the whole native merge. Enumerate
+        // its stable destination once; every result consumes the mapped
+        // native record below, with authored metadata supplying only the
+        // spelling/tokens. Neither bag is mutated during publication.
+        if (!merged_records_collected_) {
+            records.emplace();
+            records->collect(destination_.data());
+            merged_records_collected_ = true;
         }
+        return read_value(authored_metadata, records->find(authored_metadata.key));
         }(merged_records_);
     }
 
@@ -199,16 +146,7 @@ public:
         Bag native_source(context_.insertion());
         if (destination != nullptr) attach_tree(native_destination, key, *destination);
         attach_tree(native_source, key, source);
-        if constexpr (kWireGoal4Chain382Bound) {
-            copy_or_merge(native_destination, native_source, overwrite_);
-        } else {
-        // bsp.py show 008F54F0: a destination type-6 hit recurses BEFORE the
-        // keep-byte test; a miss clones the whole child. No host value merge
-        // also runs on this path. Both bags and all children use the same
-        // retained string/node/heap domain and retire before context_.
-        merge_native_scene_property_bag_008f54f0(native_destination.data(),
-            native_source.data(), overwrite_ ? 0u : 1u, context_);
-        }
+        copy_or_merge(native_destination, native_source, overwrite_);
         result = read_tree(native_destination.child(key), destination, source);
         return true;
     }
@@ -291,163 +229,135 @@ private:
         const auto* record = static_cast<const std::byte*>(actual_record);
         std::uint32_t tag;
         std::memcpy(&tag, record + 4, sizeof(tag));
-        if constexpr (kWireGoal4Chain307Bound) {
-            switch (tag) {
-            case 0:
-                std::memcpy(&value.integer_value, record + 0x0c, sizeof(value.integer_value));
-                value.has_integer = true;
-                break;
-            case 1:
-                std::memcpy(&value.float_value, record + 0x0c, sizeof(value.float_value));
-                value.has_float = true;
-                break;
-            case 2: {
-                // bsp.py show 008F0700: native assignment frees/duplicates
-                // type-2 +0C, so publish the merged owner, not source tokens.
-                const char* text;
-                std::memcpy(&text, record + 0x0c, sizeof(text));
-                value.values.assign(1, text);
-                value.has_string = true;
-                break;
-            }
-            case 3:
-                std::memcpy(&value.boolean_value, record + 0x0c, sizeof(value.boolean_value));
-                value.has_boolean = true;
-                break;
-            case 4:
-                if constexpr (kWireGoal4Chain319Bound) {
-                    // 008F3A20 stores 0048E840's word at +0Ch and the CEnum at
-                    // +28h; 008F0700 (keep 0 hit) and the 008F4F60 clone (miss)
-                    // carry both. Consumers read the merged +0Ch, as the
-                    // executable's readers of a type-4 property do (006CB114).
-                    value.has_enum = authored_metadata.has_enum;
-                    std::memcpy(&value.enum_value, record + 0x0c, sizeof(value.enum_value));
-                    value.has_enum_value = true;
-                    break;
-                }
-                throw std::logic_error("unexpected merged scene property tag");
-            case 7:
-                // 008F3690 and 008F0700 copy the three +0C/+10/+14 words.
-                // Bit transport preserves signed zero without float math.
-                std::memcpy(value.vector3.data(), record + 0x0c, sizeof(value.vector3));
-                value.has_vector3 = true;
-                break;
-            case 5: {
-                if constexpr (kWireGoal4Chain311Bound) {
-                    // 008EF2B0 stores the owned duplicate at +1Ch; 008F0700's
-                    // type-5 arm copies the +18h/+1Ch payload through 008F0340
-                    // (keep 0 hit) and the 008F4F60 clone keeps it (miss). The
-                    // destination's +08h kind is retained; letters match here.
-                    const char* text;
-                    std::memcpy(&text, record + 0x1c, sizeof(text));
-                    if (text == nullptr) {
-                        throw std::logic_error("unexpected merged type-5 payload");
-                    }
-                    value.values.assign(1, text);
-                    value.has_reference = true;
-                    break;
-                }
-                throw std::logic_error("unexpected merged scene property tag");
-            }
-            case 8: {
-                if constexpr (kWireGoal4Chain321Bound) {
-                    // 008EF2F0 stores bytes at +20h and count at +24h.
-                    // 008F0700/008F4F60 assign/clone this owning pair; publish
-                    // the merged record before either temporary bag retires.
-                    const std::uint8_t* payload;
-                    std::uint32_t bytes;
-                    std::memcpy(&payload, record + 0x20, sizeof(payload));
-                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
-                    if (payload == nullptr || bytes == 0) {
-                        throw std::logic_error("unexpected merged type-8 payload");
-                    }
-                    value.byte_array.assign(payload, payload + bytes);
-                    value.has_byte_array = true;
-                } else {
-                    throw std::logic_error("unexpected merged scene property tag");
-                }
-                break;
-            }
-            case 9: {
-                if constexpr (kWireGoal4Chain425Bound) {
-                    // 008EF360 owns +20h and records 4*count at +24h.
-                    // Publish the merged native bytes before bag retirement;
-                    // no decimal conversion or float arithmetic occurs here.
-                    const void* payload;
-                    std::uint32_t bytes;
-                    std::memcpy(&payload, record + 0x20, sizeof(payload));
-                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
-                    if (payload == nullptr || bytes == 0 || bytes % 4 != 0)
-                        throw std::logic_error("unexpected merged type-9 payload");
-                    value.float_array.resize(bytes / 4);
-                    std::memcpy(value.float_array.data(), payload, bytes);
-                    value.has_float_array = true;
-                } else {
-                    throw std::logic_error("unexpected merged scene property tag");
-                }
-                break;
-            }
-            case 11: {
-                if constexpr (kWireGoal4Chain330Bound) {
-                    // 008EF460 records 12*count bytes at +24h. The native
-                    // 008F0700 assignment / 008F4F60 clone owns the resulting
-                    // payload. Publish its bytes before either bag retires.
-                    const std::array<float, 3>* triples;
-                    std::uint32_t bytes;
-                    static_assert(sizeof(*triples) == 12);
-                    std::memcpy(&triples, record + 0x20, sizeof(triples));
-                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
-                    if (triples == nullptr || bytes == 0 || bytes % 12 != 0) {
-                        throw std::logic_error("unexpected merged type-11 payload");
-                    }
-                    value.vector3_array.resize(bytes / 12);
-                    std::memcpy(value.vector3_array.data(), triples, bytes);
-                    value.has_vector3_array = true;
-                } else {
-                    throw std::logic_error("unexpected merged scene property tag");
-                }
-                break;
-            }
-            case 10: {
-                if constexpr (kWireGoal4Chain311Bound) {
-                    // 008EF3E0 stores the payload at +20h and 4*count at
-                    // +24h; 008F0700's array arm (keep 0 hit) and the
-                    // 008F4F60 record clone (miss) keep that pair. Publish
-                    // the merged native words, not the authored tokens.
-                    const std::int32_t* words;
-                    std::uint32_t bytes;
-                    std::memcpy(&words, record + 0x20, sizeof(words));
-                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
-                    if (words == nullptr || bytes == 0 || bytes % 4 != 0) {
-                        throw std::logic_error("unexpected merged type-10 payload");
-                    }
-                    value.integer_array.assign(words, words + bytes / 4);
-                    value.has_integer_array = true;
-                    break;
-                }
-                throw std::logic_error("unexpected merged scene property tag");
-            }
-            default:
-                throw std::logic_error("unexpected merged scene property tag");
-            }
-        } else {
         switch (tag) {
         case 0:
             std::memcpy(&value.integer_value, record + 0x0c, sizeof(value.integer_value));
             value.has_integer = true;
             break;
         case 1:
-            // Bit transport only: no extra float operation/rounding is added.
             std::memcpy(&value.float_value, record + 0x0c, sizeof(value.float_value));
             value.has_float = true;
             break;
+        case 2: {
+            // bsp.py show 008F0700: native assignment frees/duplicates
+            // type-2 +0C, so publish the merged owner, not source tokens.
+            const char* text;
+            std::memcpy(&text, record + 0x0c, sizeof(text));
+            value.values.assign(1, text);
+            value.has_string = true;
+            break;
+        }
         case 3:
             std::memcpy(&value.boolean_value, record + 0x0c, sizeof(value.boolean_value));
             value.has_boolean = true;
             break;
-        default:
-            throw std::logic_error("unexpected merged numeric property tag");
+        case 4:
+            // 008F3A20 stores 0048E840's word at +0Ch and the CEnum at
+            // +28h; 008F0700 (keep 0 hit) and the 008F4F60 clone (miss)
+            // carry both. Consumers read the merged +0Ch, as the
+            // executable's readers of a type-4 property do (006CB114).
+            value.has_enum = authored_metadata.has_enum;
+            std::memcpy(&value.enum_value, record + 0x0c, sizeof(value.enum_value));
+            value.has_enum_value = true;
+            break;
+            throw std::logic_error("unexpected merged scene property tag");
+        case 7:
+            // 008F3690 and 008F0700 copy the three +0C/+10/+14 words.
+            // Bit transport preserves signed zero without float math.
+            std::memcpy(value.vector3.data(), record + 0x0c, sizeof(value.vector3));
+            value.has_vector3 = true;
+            break;
+        case 5: {
+            {
+                // 008EF2B0 stores the owned duplicate at +1Ch; 008F0700's
+                // type-5 arm copies the +18h/+1Ch payload through 008F0340
+                // (keep 0 hit) and the 008F4F60 clone keeps it (miss). The
+                // destination's +08h kind is retained; letters match here.
+                const char* text;
+                std::memcpy(&text, record + 0x1c, sizeof(text));
+                if (text == nullptr) {
+                    throw std::logic_error("unexpected merged type-5 payload");
+                }
+                value.values.assign(1, text);
+                value.has_reference = true;
+                break;
+            }
+            throw std::logic_error("unexpected merged scene property tag");
         }
+        case 8: {
+            {
+                // 008EF2F0 stores bytes at +20h and count at +24h.
+                // 008F0700/008F4F60 assign/clone this owning pair; publish
+                // the merged record before either temporary bag retires.
+                const std::uint8_t* payload;
+                std::uint32_t bytes;
+                std::memcpy(&payload, record + 0x20, sizeof(payload));
+                std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                if (payload == nullptr || bytes == 0) {
+                    throw std::logic_error("unexpected merged type-8 payload");
+                }
+                value.byte_array.assign(payload, payload + bytes);
+                value.has_byte_array = true;
+            }
+            break;
+        }
+        case 9: {
+            {
+                // 008EF360 owns +20h and records 4*count at +24h.
+                // Publish the merged native bytes before bag retirement;
+                // no decimal conversion or float arithmetic occurs here.
+                const void* payload;
+                std::uint32_t bytes;
+                std::memcpy(&payload, record + 0x20, sizeof(payload));
+                std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                if (payload == nullptr || bytes == 0 || bytes % 4 != 0)
+                    throw std::logic_error("unexpected merged type-9 payload");
+                value.float_array.resize(bytes / 4);
+                std::memcpy(value.float_array.data(), payload, bytes);
+                value.has_float_array = true;
+            }
+            break;
+        }
+        case 11: {
+            {
+                // 008EF460 records 12*count bytes at +24h. The native
+                // 008F0700 assignment / 008F4F60 clone owns the resulting
+                // payload. Publish its bytes before either bag retires.
+                const std::array<float, 3>* triples;
+                std::uint32_t bytes;
+                static_assert(sizeof(*triples) == 12);
+                std::memcpy(&triples, record + 0x20, sizeof(triples));
+                std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                if (triples == nullptr || bytes == 0 || bytes % 12 != 0) {
+                    throw std::logic_error("unexpected merged type-11 payload");
+                }
+                value.vector3_array.resize(bytes / 12);
+                std::memcpy(value.vector3_array.data(), triples, bytes);
+                value.has_vector3_array = true;
+            }
+            break;
+        }
+        case 10: {
+            {
+                // 008EF3E0 stores the payload at +20h and 4*count at
+                // +24h; 008F0700's array arm (keep 0 hit) and the
+                // 008F4F60 record clone (miss) keep that pair. Publish
+                // the merged native words, not the authored tokens.
+                const std::int32_t* words;
+                std::uint32_t bytes;
+                std::memcpy(&words, record + 0x20, sizeof(words));
+                std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                if (words == nullptr || bytes == 0 || bytes % 4 != 0) {
+                    throw std::logic_error("unexpected merged type-10 payload");
+                }
+                value.integer_array.assign(words, words + bytes / 4);
+                value.has_integer_array = true;
+                break;
+            }
+            throw std::logic_error("unexpected merged scene property tag");
+        }
+        default:
+            throw std::logic_error("unexpected merged scene property tag");
         }
         return value;
     }
@@ -469,54 +379,34 @@ private:
     static bool supported(const SceneProperty& value) {
         if (std::any_of(value.key.begin(), value.key.end(),
                 [](unsigned char c) { return c == 0 || c >= 0x80; })) return false;
-        if constexpr (kWireGoal4Chain425Bound && kWireGoal4Chain307Bound) {
-            if (same_key(value.type_letter, "FA")) {
-                return value.has_float_array && !value.float_array.empty()
-                    && value.float_array.size() <= 0x3fffffffu;
-            }
-        } else {
-            // The prior projection leaves FA on the caller's host path.
+        if (same_key(value.type_letter, "FA")) {
+            return value.has_float_array && !value.float_array.empty()
+                && value.float_array.size() <= 0x3fffffffu;
         }
-        if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
-            if (same_key(value.type_letter, "V3A")) {
-                return value.has_vector3_array && !value.vector3_array.empty()
-                    && value.vector3_array.size() <= 0x15555555u;
-            }
-        } else {
-            // The prior projection leaves V3A on the caller's host path.
+        if (same_key(value.type_letter, "V3A")) {
+            return value.has_vector3_array && !value.vector3_array.empty()
+                && value.vector3_array.size() <= 0x15555555u;
         }
-        if constexpr (kWireGoal4Chain321Bound && kWireGoal4Chain307Bound) {
-            if (same_key(value.type_letter, "BIN")) {
-                return value.has_byte_array && !value.byte_array.empty()
-                    && value.byte_array.size() <= 0x7fffffffu;
-            }
-        } else {
-            // The prior projection leaves BIN on the caller's host path.
+        if (same_key(value.type_letter, "BIN")) {
+            return value.has_byte_array && !value.byte_array.empty()
+                && value.byte_array.size() <= 0x7fffffffu;
         }
-        if constexpr (kWireGoal4Chain311Bound && kWireGoal4Chain307Bound) {
-            // Type 10 admits count in [1,3FFFFFFFh] (008EF3E0, 008F4F60).
-            if (value.type_letter == "IA") {
-                return value.has_integer_array && !value.integer_array.empty()
-                    && value.integer_array.size() <= 0x3fffffffu;
-            }
-            if (scene_reference_kind(value.type_letter) >= 0) {
-                return value.has_reference && value.values.size() == 1
-                    && value.values.front().find('\0') == std::string::npos;
-            }
+        // Type 10 admits count in [1,3FFFFFFFh] (008EF3E0, 008F4F60).
+        if (value.type_letter == "IA") {
+            return value.has_integer_array && !value.integer_array.empty()
+                && value.integer_array.size() <= 0x3fffffffu;
         }
-        if constexpr (kWireGoal4Chain307Bound) {
-            return (value.type_letter == "I" && value.has_integer)
-                || (value.type_letter == "F" && value.has_float)
-                || (value.type_letter == "B" && value.has_boolean)
-                || (value.type_letter == "V3" && value.has_vector3)
-                || (value.type_letter == "S" && value.has_string
-                    && value.values.size() == 1
-                    && value.values.front().find('\0') == std::string::npos);
-        } else {
+        if (scene_reference_kind(value.type_letter) >= 0) {
+            return value.has_reference && value.values.size() == 1
+                && value.values.front().find('\0') == std::string::npos;
+        }
         return (value.type_letter == "I" && value.has_integer)
             || (value.type_letter == "F" && value.has_float)
-            || (value.type_letter == "B" && value.has_boolean);
-        }
+            || (value.type_letter == "B" && value.has_boolean)
+            || (value.type_letter == "V3" && value.has_vector3)
+            || (value.type_letter == "S" && value.has_string
+                && value.values.size() == 1
+                && value.values.front().find('\0') == std::string::npos);
     }
     static std::size_t occurrences(const ScenePropertyBlock& bag, const std::string& key) {
         return static_cast<std::size_t>(std::count_if(bag.values.begin(), bag.values.end(),
@@ -588,31 +478,19 @@ private:
             return child;
         }
         void insert(const SceneProperty& value) {
-            if constexpr (kWireGoal4Chain425Bound && kWireGoal4Chain307Bound) {
-                if (same_key(value.type_letter, "FA")) {
-                    insert_float_array(value);
-                    return;
-                }
-            } else {
-                // The prior projection has no native FA insertion.
+            if (same_key(value.type_letter, "FA")) {
+                insert_float_array(value);
+                return;
             }
-            if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
-                if (same_key(value.type_letter, "V3A")) {
-                    insert_vector3_array(value);
-                    return;
-                }
-            } else {
-                // The prior projection has no native V3A insertion.
+            if (same_key(value.type_letter, "V3A")) {
+                insert_vector3_array(value);
+                return;
             }
-            if constexpr (kWireGoal4Chain321Bound && kWireGoal4Chain307Bound) {
-                if (same_key(value.type_letter, "BIN")) {
-                    insert_byte_array(value);
-                    return;
-                }
-            } else {
-                // The prior projection has no native BIN insertion.
+            if (same_key(value.type_letter, "BIN")) {
+                insert_byte_array(value);
+                return;
             }
-            if constexpr (kWireGoal4Chain311Bound && kWireGoal4Chain307Bound) {
+            {
                 if (value.type_letter == "IA") {
                     insert_integer_array(value);
                     return;
@@ -629,42 +507,6 @@ private:
                     return;
                 }
             }
-            if constexpr (kWireGoal4Chain307Bound) {
-                if (value.type_letter == "I") {
-                    std::uint32_t bits;
-                    std::memcpy(&bits, &value.integer_value, sizeof(bits));
-                    add_native_scene_property_integer_word_008f3710(data(), value.key.c_str(), bits, context_);
-                } else if (value.type_letter == "F") {
-                    std::uint32_t bits;
-                    std::memcpy(&bits, &value.float_value, sizeof(bits));
-                    add_native_scene_property_float_bits_008f3770(data(), value.key.c_str(), bits, context_);
-                } else if (value.type_letter == "B") {
-                    add_native_scene_property_bool_byte_008f3940(
-                        data(), value.key.c_str(), value.boolean_value, context_);
-                } else if (value.type_letter == "S") {
-                    // bsp.py show 008F38A0: the whole producer duplicates
-                    // this borrowed decoded value into its owning type-2 root.
-                    add_native_scene_property_string_008f38a0(
-                        data(), value.key.c_str(), value.values.front().c_str(), context_);
-                } else {
-                    if constexpr (kWireGoal4Chain559Bound) {
-                        // Source API reuse of 008F37E0's by-value XYZ entry:
-                        // these are the same real parser-owned V3 lanes that
-                        // the pointer entry below consumed. Its result owns
-                        // the one record in this actual bag; merge/clone and
-                        // subsequent class readers consume that record.
-                        std::uint32_t bits[3];
-                        std::memcpy(bits, value.vector3.data(), sizeof(bits));
-                        cc13_seg59b::scene_property_bag_add_vec3_008f37e0(
-                            context_, data(), value.key.c_str(), bits[0], bits[1], bits[2]);
-                    } else {
-                    // bsp.py show 008F3690: native type 7 owns three inline
-                    // words copied from the parser's retained binary32 lanes.
-                    add_native_scene_property_three_word_008f3690(
-                        data(), value.key.c_str(), value.vector3.data(), context_);
-                    }
-                }
-            } else {
             if (value.type_letter == "I") {
                 std::uint32_t bits;
                 std::memcpy(&bits, &value.integer_value, sizeof(bits));
@@ -673,34 +515,43 @@ private:
                 std::uint32_t bits;
                 std::memcpy(&bits, &value.float_value, sizeof(bits));
                 add_native_scene_property_float_bits_008f3770(data(), value.key.c_str(), bits, context_);
-            } else {
+            } else if (value.type_letter == "B") {
                 add_native_scene_property_bool_byte_008f3940(
                     data(), value.key.c_str(), value.boolean_value, context_);
-            }
+            } else if (value.type_letter == "S") {
+                // bsp.py show 008F38A0: the whole producer duplicates
+                // this borrowed decoded value into its owning type-2 root.
+                add_native_scene_property_string_008f38a0(
+                    data(), value.key.c_str(), value.values.front().c_str(), context_);
+            } else {
+                // Source API reuse of 008F37E0's by-value XYZ entry:
+                // these are the same real parser-owned V3 lanes that
+                // the pointer entry below consumed. Its result owns
+                // the one record in this actual bag; merge/clone and
+                // subsequent class readers consume that record.
+                std::uint32_t bits[3];
+                std::memcpy(bits, value.vector3.data(), sizeof(bits));
+                cc13_seg59b::scene_property_bag_add_vec3_008f37e0(
+                    context_, data(), value.key.c_str(), bits[0], bits[1], bits[2]);
             }
         }
         // Chain 319. bsp.py show 008F5A00 --asm, 008F5F94..008F5FCF: a new
         // key's E arm passes (key, EDI = 0048E960's CEnum, the 008D9980 symbol)
         // to 008F3A20, which resolves the symbol through 0048E840 into +0Ch.
         void insert_enum(const SceneProperty& value, const void* enum_owner) {
-            if constexpr (kWireGoal4Chain382Bound) {
-                if (value.has_enum_value) {
-                    // bsp.py show 008F39B0: +28h is the real declaration and
-                    // +0Ch is the supplied word. A previously merged property
-                    // already owns that word: preserve it if a later library
-                    // declaration has changed the symbol's current mapping.
-                    std::uint32_t bits;
-                    std::memcpy(&bits, &value.enum_value, sizeof(bits));
-                    add_native_scene_property_enum_word_008f39b0(data(), value.key.c_str(),
-                        static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(enum_owner)),
-                        bits, context_);
-                } else {
-                    add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
-                        value.values[2].c_str(), game_native_string_process(), context_);
-                }
+            if (value.has_enum_value) {
+                // bsp.py show 008F39B0: +28h is the real declaration and
+                // +0Ch is the supplied word. A previously merged property
+                // already owns that word: preserve it if a later library
+                // declaration has changed the symbol's current mapping.
+                std::uint32_t bits;
+                std::memcpy(&bits, &value.enum_value, sizeof(bits));
+                add_native_scene_property_enum_word_008f39b0(data(), value.key.c_str(),
+                    static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(enum_owner)),
+                    bits, context_);
             } else {
-            add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
-                value.values[2].c_str(), game_native_string_process(), context_);
+                add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
+                    value.values[2].c_str(), game_native_string_process(), context_);
             }
         }
         void* find(const std::string& key) {
@@ -885,21 +736,17 @@ private:
     }
     // supported() plus, under chain 319, the closed known E form.
     bool admitted(const SceneProperty& value) const {
-        if constexpr (kWireGoal4Chain319Bound && kWireGoal4Chain307Bound) {
-            if (value.type_letter == "E") {
-                return !std::any_of(value.key.begin(), value.key.end(),
-                           [](unsigned char c) { return c == 0 || c >= 0x80; })
-                    && enum_owner(value) != nullptr;
-            }
+        if (value.type_letter == "E") {
+            return !std::any_of(value.key.begin(), value.key.end(),
+                       [](unsigned char c) { return c == 0 || c >= 0x80; })
+                && enum_owner(value) != nullptr;
         }
         return supported(value);
     }
     void insert_into(Bag& bag, const SceneProperty& value) {
-        if constexpr (kWireGoal4Chain319Bound && kWireGoal4Chain307Bound) {
-            if (value.type_letter == "E") {
-                bag.insert_enum(value, enum_owner(value));
-                return;
-            }
+        if (value.type_letter == "E") {
+            bag.insert_enum(value, enum_owner(value));
+            return;
         }
         bag.insert(value);
     }
@@ -997,8 +844,7 @@ private:
     std::vector<bool> selected_;
     SceneNativeEnumSource* enums_;
     bool overwrite_;
-    std::conditional_t<kWireGoal4Chain345Bound,
-        std::optional<MergedRecords>, std::nullptr_t> merged_records_{};
+    std::optional<MergedRecords> merged_records_{};
     bool merged_records_collected_{};
 };
 

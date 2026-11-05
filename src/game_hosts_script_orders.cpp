@@ -6,16 +6,10 @@
 
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/options_seg56_cc13.hpp"
-#include "bsp/wire_goal4_chain531_switches.hpp"
-#include "bsp/wire_goal4_chain525_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
-#include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/band_0071_cc13.hpp"
-#include "bsp/wire_goal4_chain460_switches.hpp"
-#include "bsp/wire_goal4_chain466_switches.hpp"
-#include "bsp/wire_goal2_chain180_switches.hpp"
 #include <stdexcept>
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
@@ -40,20 +34,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
-#include "bsp/wire_goal4_chain257_switches.hpp"
-#include "bsp/wire_goal4_chain270_switches.hpp"
-#include "bsp/wire_goal4_chain298_switches.hpp"
-#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/cc13_seg52.hpp"
-#include "bsp/wire_goal2_chain72_switches.hpp"
-#include "bsp/wire_goal2_chain127_switches.hpp"
-#include "bsp/wire_goal2_chain166_switches.hpp"
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
-#include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
-#include "bsp/wire_goal4_chain354_switches.hpp"
-#include "bsp/wire_goal4_chain365_switches.hpp"
 #include "bsp/cc13_left55_seg56b.hpp"   // goal 4 chain 365: 008AD540 / 008ACD10 bodies
-#include "bsp/wire_goal4_chain369_switches.hpp"  // goal 4 chain 369 (008522C0)
 #include "bsp/cc13_sweepB.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
@@ -552,28 +534,17 @@ public:
     void vehicle_class_get_or_create(int, bool) override {}
     void music_director_set_level(int level) override {
         // 00A788A0 calls the actual published manager's level body; OFF keeps the no-op.
-        if constexpr (kWireGoal2Chain180Bound) {
-            music_dialog().set_music_level(level);
-        } else {
-        }
+        music_dialog().set_music_level(level);
     }
     void session_send_music_level(int) override {}
     // SetParty's virtuals and local route. Chain 298 binds the kind query to
     // the created unit's class chain; OFF retains the previous direct arm.
     bool entity_vcall_5c(void* entity, int selector) override {
-        if constexpr (bsp::kWireGoal4Chain298Bound) {
-            // 008A8A83 queries IsKindOf(2). The created unit's recovered
-            // class chain supplies this virtual; a script entity is kind 3
-            // under kind 1 and continues through the direct +2Ch arm.
-            return static_cast<bsp::LuaBindingNavigatorHost&>(owner_)
-                .entity_is_kind_of(entity, selector);
-        } else {
-        static_cast<void>(entity);
-        static_cast<void>(selector);
-        owner_.record_unimplemented("LuaBindingCore::entity_party_query_vtable_5c",
-            "008a8a83");
-        return false;
-        }
+        // 008A8A83 queries IsKindOf(2). The created unit's recovered
+        // class chain supplies this virtual; a script entity is kind 3
+        // under kind 1 and continues through the direct +2Ch arm.
+        return static_cast<bsp::LuaBindingNavigatorHost&>(owner_)
+            .entity_is_kind_of(entity, selector);
     }
     void entity_vcall_2c(void* entity, int party, std::uint32_t field_58) override {
         static_cast<void>(field_58);
@@ -591,50 +562,35 @@ public:
             "008a8ae3");
     }
     void session_route_party_message(void* entity, int party) override {
-        if constexpr (bsp::kWireGoal4Chain298Bound) {
-            const auto* messages = commands_session_messages();
-            const int copy_party = messages != nullptr
-                ? static_cast<int>(messages->queue_vehicle_party_7f(
-                    static_cast<std::uint32_t>(party))) : party;
-            // 008A8AC4 routes flags 7 through the same local loopback used by
-            // formation orders. entity_object_id is this host's existing
-            // unit-index+1 handle. Capture the long-lived owner, not this
-            // temporary SetThinkCoreHost. The setter reads the current race
-            // and mirrors Lua at delivery (0095ABE0's 7Fh arm).
-            auto* owner = &owner_;
-            const auto id = static_cast<bsp::LuaCommandTargetSource&>(owner_)
-                .entity_object_id(entity);
-            if (id != 0 && commands_post_loopback_callback_0076e520(
-                    static_cast<std::size_t>(id) - 1u, [owner, entity, copy_party] {
-                        owner->set_unit_party_00928f50(entity, copy_party);
-                    })) return;
-            // As in formation delivery, a standalone host without a live
-            // commands queue retains its existing immediate setter.
-            owner_.set_unit_party_00928f50(entity, copy_party);
-        } else {
-        static_cast<void>(entity);
-        static_cast<void>(party);
-        owner_.record_unimplemented("LuaBindingCore::session_route_party_message",
-            "008a8ac4");
-        }
+        const auto* messages = commands_session_messages();
+        const int copy_party = messages != nullptr
+            ? static_cast<int>(messages->queue_vehicle_party_7f(
+                static_cast<std::uint32_t>(party))) : party;
+        // 008A8AC4 routes flags 7 through the same local loopback used by
+        // formation orders. entity_object_id is this host's existing
+        // unit-index+1 handle. Capture the long-lived owner, not this
+        // temporary SetThinkCoreHost. The setter reads the current race
+        // and mirrors Lua at delivery (0095ABE0's 7Fh arm).
+        auto* owner = &owner_;
+        const auto id = static_cast<bsp::LuaCommandTargetSource&>(owner_)
+            .entity_object_id(entity);
+        if (id != 0 && commands_post_loopback_callback_0076e520(
+                static_cast<std::size_t>(id) - 1u, [owner, entity, copy_party] {
+                    owner->set_unit_party_00928f50(entity, copy_party);
+                })) return;
+        // As in formation delivery, a standalone host without a live
+        // commands queue retains its existing immediate setter.
+        owner_.set_unit_party_00928f50(entity, copy_party);
     }
     void scoring_set_real_play_time_running(bool) override {}
     void scoring_set_final_scoring_function_name(const std::string& name) override {
         // 0090BFC0 stores the binding's name on its scoring owner; OFF keeps the no-op.
-        if constexpr (bsp::kWireGoal2Chain127Bound) {
-            owner_.set_final_scoring_function_name(name);
-        } else {
-        }
+        owner_.set_final_scoring_function_name(name);
     }
     void message_map_load(const std::string& name, int side) override {
         // 008C62F6..008C6308: 00706760 on [game+21DCh] with the two Lua
         // arguments; OFF keeps the no-op.
-        if constexpr (bsp::kWireGoal4Chain331Bound) {
-            owner_.load_mission_message_map(name, side);
-        } else {
-            static_cast<void>(name);
-            static_cast<void>(side);
-        }
+        owner_.load_mission_message_map(name, side);
     }
     void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
     void set_entity_message_suppression(void*, bool) override {}
@@ -643,10 +599,7 @@ public:
         // 0096BF70 (008D000A): ON calls game_warning_clear_waiting_queue, which
         // runs warning_manager_clear_waiting_0096bf70 over the mission frame's
         // pending warning queue; OFF keeps the no-op.
-        if constexpr (bsp::kWireGoal2Chain166Bound) {
-            game_warning_clear_waiting_queue();
-        } else {
-        }
+        game_warning_clear_waiting_queue();
     }
 
 private:
@@ -931,22 +884,13 @@ const ScriptOrderBinding* find_binding(const char* name) noexcept {
     for (const ScriptOrderBinding& row : kScriptOrderBindings) {
         if (std::strcmp(row.name, name) == 0) return &row;
     }
-    if constexpr (bsp::kWireGoal4Chain531Bound) {
-        if (std::strcmp(kSetRaceBinding.name, name) == 0) return &kSetRaceBinding;
-    } else {
+    if (std::strcmp(kSetRaceBinding.name, name) == 0) return &kSetRaceBinding;
+    if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
+    // Goal 4 chain 365: offered only ON; OFF leaves both unimplemented records.
+    if (std::strcmp(kFailureRepairEnableBinding.name, name) == 0) {
+        return &kFailureRepairEnableBinding;
     }
-    if constexpr (bsp::kWireGoal4Chain331Bound) {
-        if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
-    } else {
-    }
-    if constexpr (bsp::kWireGoal4Chain365Bound) {
-        // Goal 4 chain 365: offered only ON; OFF leaves both unimplemented records.
-        if (std::strcmp(kFailureRepairEnableBinding.name, name) == 0) {
-            return &kFailureRepairEnableBinding;
-        }
-        if (std::strcmp(kAddFireBinding.name, name) == 0) return &kAddFireBinding;
-    } else {
-    }
+    if (std::strcmp(kAddFireBinding.name, name) == 0) return &kAddFireBinding;
     return nullptr;
 }
 
@@ -1053,10 +997,7 @@ GameSoundDialogRuntime* GameScriptOrdersHost::bound_music_dialog_runtime() noexc
     return bound_music_dialog();
 }
 void GameScriptOrdersHost::bind_music_dialog(GameSoundDialogRuntime* runtime) noexcept {
-    if constexpr (kWireGoal2Chain180Bound) {
-        bound_music_dialog() = runtime;
-    } else {
-    }
+    bound_music_dialog() = runtime;
 }
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
@@ -1069,9 +1010,7 @@ GameScriptOrdersHost::~GameScriptOrdersHost() {
 }
 
 void GameScriptOrdersHost::set_final_scoring_function_name(const std::string& name) {
-    if constexpr (bsp::kWireGoal2Chain127Bound) {
-        scoring_name_owner_->set_final_scoring_function_name(name);
-    }
+    scoring_name_owner_->set_final_scoring_function_name(name);
 }
 
 void GameScriptOrdersHost::load_mission_message_map(const std::string& name, int side) {
@@ -1176,7 +1115,7 @@ void GameScriptOrdersHost::after_order_delivery(std::function<void()> fn) {
 bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     const ScriptOrderBinding* binding = find_binding(binding_name);
     if (binding == nullptr) return false;
-    if (std::strcmp(binding->name, "MusicFade") == 0) return kWireGoal2Chain180Bound;
+    if (std::strcmp(binding->name, "MusicFade") == 0) return true;
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
@@ -1338,44 +1277,21 @@ bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
         // length of (x, 0, z); zero when that length is not positive.
         float frame[16]{};
         if (units_.scene_marker_frame(static_cast<std::uint32_t>(marker.id), frame)) {
-            if constexpr (bsp::kWireGoal4Chain354Bound) {
-                // 006AC260 reads entity+EC/+F4 after refreshing its world pose.
-                // register_scene_marker_frame retains the actual authored world
-                // matrix; this view needs no synthetic entity or dirty flag.
-                struct MarkerFrameView final : bsp::EntityForwardXzView {
-                    explicit MarkerFrameView(const float* frame) : frame(frame) {}
-                    const float* current_world_cc() override { return frame; }
-                    float vector3_length_00419440(const float xyz[3]) override {
-                        return bsp::length_00419440({xyz[0], xyz[1], xyz[2]});
-                    }
-                    const float* frame;
-                } view(frame);
-                float facing[3];
-                bsp::cc13_sweepB_entity_forward_xz_006ac260(view, facing);
-                pad.facing_x = facing[0];
-                pad.facing_z = facing[2];
-            } else {
-            if constexpr (kPc24MissionLuaCc13Bound) {
-                // 006AC2A0 calls 00419440 on (x, 0, z): each square FSTP DWORD, the
-                // sums and 00BF7030's FSQRT at PC24, FSTP DWORD; 006AC2AC-006AC2C3:
-                // 1/len (FDIVRP, PC24) when len > 0, else +0; 006AC2D1/006AC2E2:
-                // inv * x and inv * z (FMUL, PC24).
-                const float xx = static_cast<float>(cc13x87::x87_mul24(frame[8], frame[8]));
-                const float zz = static_cast<float>(cc13x87::x87_mul24(frame[10], frame[10]));
-                const float len = static_cast<float>(cc13x87::x87_sqrt24(
-                    static_cast<float>(cc13x87::x87_add24(xx, zz))));
-                const float inv =
-                    len > 0.0f ? static_cast<float>(cc13x87::x87_div24(1.0, len)) : 0.0f;
-                pad.facing_x = static_cast<float>(cc13x87::x87_mul24(inv, frame[8]));
-                pad.facing_z = static_cast<float>(cc13x87::x87_mul24(inv, frame[10]));
-            } else {
-                const double len = std::sqrt(static_cast<double>(frame[8]) * frame[8]
-                    + static_cast<double>(frame[10]) * frame[10]);
-                const float inv = len > 0.0 ? static_cast<float>(1.0 / len) : 0.0f;
-                pad.facing_x = inv * frame[8];
-                pad.facing_z = inv * frame[10];
-            }
-            }
+            // 006AC260 reads entity+EC/+F4 after refreshing its world pose.
+            // register_scene_marker_frame retains the actual authored world
+            // matrix; this view needs no synthetic entity or dirty flag.
+            struct MarkerFrameView final : bsp::EntityForwardXzView {
+                explicit MarkerFrameView(const float* frame) : frame(frame) {}
+                const float* current_world_cc() override { return frame; }
+                float vector3_length_00419440(const float xyz[3]) override {
+                    return bsp::length_00419440({xyz[0], xyz[1], xyz[2]});
+                }
+                const float* frame;
+            } view(frame);
+            float facing[3];
+            bsp::cc13_sweepB_entity_forward_xz_006ac260(view, facing);
+            pad.facing_x = facing[0];
+            pad.facing_z = facing[2];
         }
         points.push_back(pad);
     }
@@ -1732,14 +1648,10 @@ std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
     record.owner_player = spawn.owner_player;
     record.bag_skill = spawn.skill;
     record.bag_skill_source = "Skill";
-    if constexpr (bsp::kWireGoal4Chain308Bound) {
-        record.resource_usage_304 = spawn.resource_usage;
-    }
-    if constexpr (bsp::kWireGoal4Chain270Bound) {
-        // The bag's Equipment when the caller's bag has one (MCatapult::Fire
-        // 006ECA20); the kamikaze bag has none and leaves the record's -1.
-        record.bag_equipment = spawn.equipment;
-    }
+    record.resource_usage_304 = spawn.resource_usage;
+    // The bag's Equipment when the caller's bag has one (MCatapult::Fire
+    // 006ECA20); the kamikaze bag has none and leaves the record's -1.
+    record.bag_equipment = spawn.equipment;
     record.created = true;
     for (int i = 0; i < 16; ++i) record.world[i] = spawn.world[static_cast<std::size_t>(i)];
 
@@ -1748,13 +1660,11 @@ std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
     request.type_class_id = spawn.plane_class;
     request.wing_count_present = true;
     request.wing_count_raw = 1;                       // 006FED63 PUSH 1, WingCount
-    if constexpr (bsp::kWireGoal4Chain270Bound) {
-        // The bag's Behaviour when the caller's bag has one (MCatapult::Fire
-        // 006ECA2F, 1); 007F47C7 stores it at +364h. The kamikaze bag has none,
-        // so -1 leaves the key absent and the constructor's -1 seed stands.
-        request.behaviour_present = spawn.behaviour >= 0;
-        request.behaviour = spawn.behaviour;
-    }
+    // The bag's Behaviour when the caller's bag has one (MCatapult::Fire
+    // 006ECA2F, 1); 007F47C7 stores it at +364h. The kamikaze bag has none,
+    // so -1 leaves the key absent and the constructor's -1 seed stands.
+    request.behaviour_present = spawn.behaviour >= 0;
+    request.behaviour = spawn.behaviour;
     const bsp::PlaneSquadronSpawnPlan plan = bsp::plane_squadron_plan_members_007f4580(request);
 
     const std::size_t before = units_.count();
@@ -2040,22 +1950,18 @@ bool GameScriptOrdersHost::argument_id_field_is_nil(int index) {
     const int slot = stack_slot(index);
     if (slot > argument_count_ || lua_type(state_, slot) != LUA_TTABLE) return true;
     // 00B67910 calls native_lua_get_by_literal_00b67910; OFF keeps lua_getfield.
-    if constexpr (bsp::kWireGoal2Chain72Bound) {
-        // The borrowed owner/view lives only for this lookup. The real positive
-        // argument slot and VM come from dispatch; get-by-name produces the
-        // tracked result, which is released before the host restores its stack.
-        // NativeLuaStateStorage has 50 tracked slots (index 0 is unused here).
-        if (lua_gettop(state_) < 49) {
-            ScriptOrdersLuaStackView table(state_, slot);
-            bsp::NativeLuaObjectStorage result{};
-            bsp::native_lua_get_by_literal_00b67910(table.object, result, "ID");
-            bsp::native_lua_release_00b67050(result, 0);
-            log_.implemented("LuaObject::GetByLiteral", "00b67910");
-        } else {
-            lua_getfield(state_, slot, "ID");
-        }
+    // The borrowed owner/view lives only for this lookup. The real positive
+    // argument slot and VM come from dispatch; get-by-name produces the
+    // tracked result, which is released before the host restores its stack.
+    // NativeLuaStateStorage has 50 tracked slots (index 0 is unused here).
+    if (lua_gettop(state_) < 49) {
+        ScriptOrdersLuaStackView table(state_, slot);
+        bsp::NativeLuaObjectStorage result{};
+        bsp::native_lua_get_by_literal_00b67910(table.object, result, "ID");
+        bsp::native_lua_release_00b67050(result, 0);
+        log_.implemented("LuaObject::GetByLiteral", "00b67910");
     } else {
-    lua_getfield(state_, slot, "ID");
+        lua_getfield(state_, slot, "ID");
     }
     const bool nil = lua_type(state_, -1) == LUA_TNIL;
     lua_settop(state_, argument_count_);
@@ -3549,13 +3455,11 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
             // director predicates 0071D560 / 0071D580, stored by the gunnery host.
             // The director fire-target release when a stance forbids fire (00836210
             // at 0083622B) is kDirectorFirePermissionClearBound.
-            if constexpr (bsp::kWireGoal4Chain257Bound) {
+            {
                 ScriptDirectorStanceHost director(false);
                 bsp::set_fire_stance_0071be80(director, static_cast<bsp::FireStance>(stance));
                 units_.gunnery()->store_director_stance_permissions(row.unit_index, stance,
                     director.allow_fire, director.allow_move);
-            } else {
-                units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
             }
             director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
             log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
@@ -3574,14 +3478,11 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
     const SquadronPermissions before = found != squadron_permissions_.end()
         ? found->second : squadron_permissions_0084d810(*squadron, fighter);
     SquadronPermissions after;
-    if constexpr (bsp::kWireGoal4Chain257Bound) {
+    {
         ScriptDirectorStanceHost director(true);
         bsp::set_fire_stance_0071be80(director, static_cast<bsp::FireStance>(stance));
         after.allow_fire = director.allow_fire;
         after.allow_move = director.allow_move;
-    } else {
-        after.allow_fire = stance == 1 || stance == 2;                  // 0084D910
-        after.allow_move = stance == 0 || stance == 2 || stance == 3;   // 0084D930
     }
     squadron_permissions_[squadron->name] = after;                  // 0071DA50/0071DAD0
     log_.notef("  UnitSetFireStance: squadron %s stance=%d allowFire %d->%d allowMove %d->%d "
@@ -3606,13 +3507,11 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
     if (squadron != nullptr) {
         // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
-        if constexpr (bsp::kWireGoal4Chain257Bound) {
+        {
             ScriptDirectorStanceHost director(true);
             bsp::hold_fire_0071bed0(director);
             squadron_permissions_[squadron->name] = SquadronPermissions{
                 director.allow_fire, director.allow_move};
-        } else {
-            squadron_permissions_[squadron->name] = SquadronPermissions{false, true};
         }
         log_.notef("  UnitHoldFire: squadron %s allowFire 0 allowMove 1 "
             "(008A6AC0 -> 007ECFD0 +348h -> 0071BED0)", squadron->name.c_str());
@@ -3626,13 +3525,11 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
                && units_.gunnery() != nullptr) {
         // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
         // 0071BE80 with stance 0 on the ship's director.
-        if constexpr (bsp::kWireGoal4Chain257Bound) {
+        {
             ScriptDirectorStanceHost director(false);
             bsp::hold_fire_0071bed0(director);
             units_.gunnery()->store_director_stance_permissions(row.unit_index, 0,
                 director.allow_fire, director.allow_move);
-        } else {
-            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
         }
         director_fire_permission_00836210(units_.ship_ai(), row.unit_index, 0);
         log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
@@ -3667,7 +3564,7 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
     if (squadron != nullptr) {
         // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
         SquadronPermissions after;
-        if constexpr (bsp::kWireGoal4Chain257Bound) {
+        {
             ScriptDirectorStanceHost director(true);
             if (order == bsp::ScriptFireOrder::kFreeAttack) {
                 bsp::free_attack_0071bf70(director);
@@ -3676,9 +3573,6 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
             }
             after.allow_fire = director.allow_fire;
             after.allow_move = director.allow_move;
-        } else {
-            after.allow_fire = stance == 1 || stance == 2;
-            after.allow_move = stance == 0 || stance == 2 || stance == 3;
         }
         squadron_permissions_[squadron->name] = after;
         log_.notef("  %s: squadron %s allowFire %d allowMove %d (+348h stance %d)", native,
@@ -3690,7 +3584,7 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
             "the wrapper (recorded, nothing done)", native, row.unit.c_str());
     } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
                && units_.gunnery() != nullptr) {
-        if constexpr (bsp::kWireGoal4Chain257Bound) {
+        {
             ScriptDirectorStanceHost director(false);
             if (order == bsp::ScriptFireOrder::kFreeAttack) {
                 bsp::free_attack_0071bf70(director);
@@ -3699,8 +3593,6 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
             }
             units_.gunnery()->store_director_stance_permissions(row.unit_index, stance,
                 director.allow_fire, director.allow_move);
-        } else {
-            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
         }
         director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
         log_.implemented(order == bsp::ScriptFireOrder::kFreeAttack
@@ -4334,35 +4226,21 @@ bool GameScriptOrdersHost::entity_command_is_available(void* entity,
 }
 
 int GameScriptOrdersHost::entity_route_slot(void* entity) {
-    if constexpr (bsp::kWireGoal4Chain466Bound) {
-        // 0077C904 reads entity+1ACh, the first CURRENT role assignment,
-        // not the +188h permission or the party. Borrow the table whose
-        // constructor/assignment receivers already retain that exact field.
-        std::int32_t slot = -1;
-        if (!units_.unit_current_role_slot(index_of(entity), 0, slot)) return -1;
-        log_.implemented("Formation::entity_route_slot", "0077c904");
-        return slot; // entity_join_formation keeps the native unsigned <8 gate.
-    } else {
-    static_cast<void>(entity);
-    // entity+1ACh, the index 00905300 counts against. No field of a created
-    // instance carries it, so the record answers outside the 0..7 bound 0077c90a
-    // tests, which is the value that skips the counter.
-    log_.unimplemented("Formation::entity_route_slot", "0077c904");
-    return -1;
-    }
+    // 0077C904 reads entity+1ACh, the first CURRENT role assignment,
+    // not the +188h permission or the party. Borrow the table whose
+    // constructor/assignment receivers already retain that exact field.
+    std::int32_t slot = -1;
+    if (!units_.unit_current_role_slot(index_of(entity), 0, slot)) return -1;
+    log_.implemented("Formation::entity_route_slot", "0077c904");
+    return slot; // entity_join_formation keeps the native unsigned <8 gate.
 }
 
 void GameScriptOrdersHost::slot_counter_increment(int slot) {
-    if constexpr (bsp::kWireGoal4Chain466Bound) {
-        // Phase5 attaches the SAME result/scoring owner before any mission
-        // script can issue JoinFormation; no detached counter is introduced.
-        if (scoring_name_owner_ == nullptr)
-            throw std::logic_error("formation-use scoring requires the mission scoring owner");
-        scoring_name_owner_->increment_formation_use(slot);
-    } else {
-    static_cast<void>(slot);
-    log_.unimplemented("Formation::slot_counter_increment", "00905300");
-    }
+    // Phase5 attaches the SAME result/scoring owner before any mission
+    // script can issue JoinFormation; no detached counter is introduced.
+    if (scoring_name_owner_ == nullptr)
+        throw std::logic_error("formation-use scoring requires the mission scoring owner");
+    scoring_name_owner_->increment_formation_use(slot);
 }
 
 // Packet cc9_formation_join_loopback (docs/SHIP_AI_OPEN_ITEMS.md section 92).
@@ -4396,41 +4274,21 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
         log_.unimplemented("Formation::route_join_message", "0077c964");
         return;
     }
-    if constexpr (kWireGoal4Chain260Bound) {
-        // Goal 4 chain 260: 0077C964 -> 0076E520 writes the 76h (0075C7C0) and
-        // the factory rebuilds it (0075A2E0, 0075C810 read); 0077FE80's arm
-        // resolves the copy's +20h, so the delivery joins the copy's leader.
-        const std::size_t copy_leader =
-            bsp::game::commands_formation_member_copy_0076e520(0x76, leader_index);
-        if (copy_leader >= units_.count()) {
-            log_.unimplemented("Formation::route_join_message", "0077c964");
-            return;
-        }
-        if constexpr (kFormationJoinLoopbackBound) {
-            ++summary_.formation_joins_posted;
-            const bool posted = bsp::game::commands_post_loopback_callback_0076e520(
-                follower_index, [this, follower_index, copy_leader] {
-                    ++summary_.formation_joins_delivered;
-                    if (units_.formation_join_0077f940(follower_index, copy_leader)) {
-                        ++summary_.formations_joined;
-                    }
-                });
-            if (posted) {
-                log_.implemented("Formation::route_join_message", "0077c964");
-                return;
-            }
-        }
-        if (units_.formation_join_0077f940(follower_index, copy_leader)) {
-            ++summary_.formations_joined;
-        }
-        log_.implemented("Formation::route_join_message", "0077c964");
-    } else {
+    // Goal 4 chain 260: 0077C964 -> 0076E520 writes the 76h (0075C7C0) and
+    // the factory rebuilds it (0075A2E0, 0075C810 read); 0077FE80's arm
+    // resolves the copy's +20h, so the delivery joins the copy's leader.
+    const std::size_t copy_leader =
+        bsp::game::commands_formation_member_copy_0076e520(0x76, leader_index);
+    if (copy_leader >= units_.count()) {
+        log_.unimplemented("Formation::route_join_message", "0077c964");
+        return;
+    }
     if constexpr (kFormationJoinLoopbackBound) {
         ++summary_.formation_joins_posted;
         const bool posted = bsp::game::commands_post_loopback_callback_0076e520(
-            follower_index, [this, follower_index, leader_index] {
+            follower_index, [this, follower_index, copy_leader] {
                 ++summary_.formation_joins_delivered;
-                if (units_.formation_join_0077f940(follower_index, leader_index)) {
+                if (units_.formation_join_0077f940(follower_index, copy_leader)) {
                     ++summary_.formations_joined;
                 }
             });
@@ -4439,11 +4297,10 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
             return;
         }
     }
-    if (units_.formation_join_0077f940(follower_index, leader_index)) {
+    if (units_.formation_join_0077f940(follower_index, copy_leader)) {
         ++summary_.formations_joined;
     }
     log_.implemented("Formation::route_join_message", "0077c964");
-    }
 }
 
 void GameScriptOrdersHost::entity_set_skill_level(void* entity, int level) {
@@ -4493,7 +4350,7 @@ void GameScriptOrdersHost::session_route_repair_enable_message(void* entity, boo
     // unit+A20h. The gunnery host holds the task.
     const std::size_t index = index_of(entity);
     GameGunneryHost* gunnery = units_.gunnery();
-    if constexpr (kWireGoal4Chain260Bound) {
+    {
         // Goal 4 chain 260: 0076E520's copy of the 9Fh (00760A50 construct,
         // 00760AE0 write, factory case 9Fh 00760A50, 00760B30 read); 00821E80's
         // 9Fh arm hands the copy's +1Ch to 00939FD0. UNCERTAIN, as for 79h:
@@ -4504,10 +4361,6 @@ void GameScriptOrdersHost::session_route_repair_enable_message(void* entity, boo
         if (gunnery != nullptr && index < units_.count()) {
             gunnery->set_hull_repair_enabled_00939fd0(index, copy_enabled);
         }
-    } else {
-    if (gunnery != nullptr && index < units_.count()) {
-        gunnery->set_hull_repair_enabled_00939fd0(index, enabled);
-    }
     }
     if constexpr (kHullRepairEnableRouteBound) {
         log_.implemented("Session::route_repair_enable_message", "008ad4cd");
@@ -4920,14 +4773,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             const GameGunneryHost* gunnery = units_.gunnery();
             const bool need_air = false;        // +1281h, LABELLED
             bool catapult = false;              // 008522C0
-            if constexpr (bsp::kWireGoal4Chain369Bound) {
-                // 0089422E: 008522C0 on the boat, over its catapult devices and
-                // the ship's catapult launch record (GameGunneryHost's adapter).
-                catapult = gunnery != nullptr
-                    && gunnery->submarine_catapult_wants_surface(index);
-            } else {
-                catapult = false;               // 008522C0, LABELLED
-            }
+            // 0089422E: 008522C0 on the boat, over its catapult devices and
+            // the ship's catapult launch record (GameGunneryHost's adapter).
+            catapult = gunnery != nullptr
+                && gunnery->submarine_catapult_wants_surface(index);
             const bool dead = gunnery != nullptr && gunnery->unit_dead(index);
             const bool kamikaze = false;        // class+510h/+514h, LABELLED
             if ((need_air || dead || catapult) && !kamikaze && level != 0) {
@@ -4951,15 +4800,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::size_t index = index_of(entity);
         ++squadron_planes_calls_;
         // 00B67930 calls native_lua_new_table_00b67930; OFF keeps lua_createtable.
-        if constexpr (bsp::kWireGoal2Chain72Bound) {
+        {
             // 0089CD70 creates an untracked result on this dispatch's real VM.
             // The temporary header borrows that stack value; no destructor pops it.
             ScriptOrdersLuaStackView frame(state_, 0);
             bsp::NativeLuaObjectStorage result{};
             bsp::native_lua_new_table_00b67930(frame.object, result);
             log_.implemented("LuaObject::NewTable", "00b67930");
-        } else {
-        lua_createtable(state_, 0, 0);
         }
         // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
         // still names its squadron (find_by_member_or_departed_unit).
@@ -5229,7 +5076,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             float air = 0.0f;
             if (subject != nullptr && row.unit_index < units_.count()
                 && units_.submarine_air_008938e0(row.unit_index, air)) {
-                if constexpr (bsp::kWireGoal4Chain525Bound) {
+                {
                     // Reuse the segment-56 core-argument forwarding adapter.
                     // The body asks only entity_at(0), so none of its extended
                     // repair-specific refusal paths can run here.
@@ -5241,9 +5088,6 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                         lua_get_submarine_air_supply_008938e0(args, view, view);
                     results = state_ != nullptr ? count : 0;
                     air = view.air();
-                } else {
-                push_number_float_00b66480(air);
-                results = state_ != nullptr ? 1 : 0;
                 }
                 log_.notef("  GetSubmarineAirSupply: %s air=%.6f (008938E0 <- +127Ch)",
                     row.unit.c_str(), static_cast<double>(air));
@@ -5275,14 +5119,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             path_name.empty() ? "?" : path_name.c_str(), count);
         if (state_ != nullptr) {
             // 00B67930 calls native_lua_new_table_00b67930; OFF keeps preallocated lua_createtable.
-            if constexpr (bsp::kWireGoal2Chain72Bound) {
+            {
                 // 0089A2B7: fresh table on the call frame's VM, before its points.
                 ScriptOrdersLuaStackView frame(state_, 0);
                 bsp::NativeLuaObjectStorage result{};
                 bsp::native_lua_new_table_00b67930(frame.object, result);
                 log_.implemented("LuaObject::NewTable", "00b67930");
-            } else {
-            lua_createtable(state_, static_cast<int>(count), 0);
             }
             for (std::size_t i = 0; i < count; ++i) {
                 push_vector3_table_0088ba30(authored->points_world[i].data());
@@ -5374,59 +5216,56 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         if (luainit_depth_ > 0) ++luainit_setparty_calls_;   // cc13-reconload, log-only
         results = bsp::lua_binding_set_party(*this, *this, core);
     } else if (std::strcmp(binding->name, "SetRace") == 0) {
-        if constexpr (bsp::kWireGoal4Chain531Bound) {
-            // bsp.py show 008A8720: read integer arg1 before resolving arg0;
-            // kind 2 uses route flags 7, others pass the current +54h to +2Ch.
-            // Preserve the host's existing partial 00923B80/00928F50 owner:
-            // fields and Lua mirror are concrete; native child propagation and
-            // observer notification remain outside that owner, as for SetParty.
-            auto party = [this](void* entity) {
-                if (const GameScriptEntity* script = script_entity(entity)) return script->party;
-                const GameUnitRow* row = units_.unit_row(index_of(entity));
-                if (row == nullptr) throw std::logic_error("SetRace: no entity owner");
-                return row->party;
-            };
-            auto apply = [this](void* entity, int current_party, int race) {
-                if (GameScriptEntity* script = script_entity(entity)) {
-                    script->party = current_party;
-                    script->race = race;
-                    write_script_identity_fields(*script, false);
-                } else {
-                    const std::size_t index = index_of(entity);
-                    if (index >= units_.count()) throw std::logic_error("SetRace: no unit owner");
-                    units_.set_unit_race(index, race);
-                    if (party_mirror_ != nullptr) party_mirror_(party_mirror_context_);
-                }
-                log_.implemented("SetRace::set_party_race_lua_mirror", "00928f50");
-            };
-            SetRaceBinding host(
-                [this](void* entity, int kind) { return entity_is_kind_of(entity, kind); },
-                party, apply,
-                [this, party, apply](void* entity,
-                    const bsp::seg56_options_cc13::IntValueMessage& posted) {
-                    const auto* messages = commands_session_messages();
-                    // A real unit route borrows the session codec already used
-                    // by SetParty. Its four-bit result, not the Lua integer,
-                    // reaches the receiver at the commands pump (0095ABE0/80h).
-                    if (messages == nullptr)
-                        throw std::logic_error("SetRace: no local session codec");
-                    const bsp::HostSessionMessages::VehicleRaceFields fields{
-                        posted.type, posted.word_18, posted.byte_1a,
-                        static_cast<std::uint32_t>(posted.value)};
-                    const int copied_race = static_cast<int>(
-                        messages->queue_vehicle_race_80(fields));
-                    const auto id = entity_object_id(entity);
-                    if (id == 0 || !commands_post_loopback_callback_0076e520(
-                        static_cast<std::size_t>(id) - 1u,
-                        [entity, copied_race, party, apply] {
-                            apply(entity, party(entity), copied_race);
-                        }))
-                        throw std::logic_error("SetRace: no local unit delivery queue");
-                });
-            RepairBindingArgs args(*this);
-            results = bsp::seg56_options_cc13::lua_set_race_008a8720(args, host, host);
-        } else {
-        }
+        // bsp.py show 008A8720: read integer arg1 before resolving arg0;
+        // kind 2 uses route flags 7, others pass the current +54h to +2Ch.
+        // Preserve the host's existing partial 00923B80/00928F50 owner:
+        // fields and Lua mirror are concrete; native child propagation and
+        // observer notification remain outside that owner, as for SetParty.
+        auto party = [this](void* entity) {
+            if (const GameScriptEntity* script = script_entity(entity)) return script->party;
+            const GameUnitRow* row = units_.unit_row(index_of(entity));
+            if (row == nullptr) throw std::logic_error("SetRace: no entity owner");
+            return row->party;
+        };
+        auto apply = [this](void* entity, int current_party, int race) {
+            if (GameScriptEntity* script = script_entity(entity)) {
+                script->party = current_party;
+                script->race = race;
+                write_script_identity_fields(*script, false);
+            } else {
+                const std::size_t index = index_of(entity);
+                if (index >= units_.count()) throw std::logic_error("SetRace: no unit owner");
+                units_.set_unit_race(index, race);
+                if (party_mirror_ != nullptr) party_mirror_(party_mirror_context_);
+            }
+            log_.implemented("SetRace::set_party_race_lua_mirror", "00928f50");
+        };
+        SetRaceBinding host(
+            [this](void* entity, int kind) { return entity_is_kind_of(entity, kind); },
+            party, apply,
+            [this, party, apply](void* entity,
+                const bsp::seg56_options_cc13::IntValueMessage& posted) {
+                const auto* messages = commands_session_messages();
+                // A real unit route borrows the session codec already used
+                // by SetParty. Its four-bit result, not the Lua integer,
+                // reaches the receiver at the commands pump (0095ABE0/80h).
+                if (messages == nullptr)
+                    throw std::logic_error("SetRace: no local session codec");
+                const bsp::HostSessionMessages::VehicleRaceFields fields{
+                    posted.type, posted.word_18, posted.byte_1a,
+                    static_cast<std::uint32_t>(posted.value)};
+                const int copied_race = static_cast<int>(
+                    messages->queue_vehicle_race_80(fields));
+                const auto id = entity_object_id(entity);
+                if (id == 0 || !commands_post_loopback_callback_0076e520(
+                    static_cast<std::size_t>(id) - 1u,
+                    [entity, copied_race, party, apply] {
+                        apply(entity, party(entity), copied_race);
+                    }))
+                    throw std::logic_error("SetRace: no local unit delivery queue");
+            });
+        RepairBindingArgs args(*this);
+        results = bsp::seg56_options_cc13::lua_set_race_008a8720(args, host, host);
     } else if (std::strcmp(binding->name, "SetWait") == 0) {
         results = bsp::lua_binding_set_wait(*this, *this);
     } else if (std::strcmp(binding->name, "ClearThink") == 0) {
@@ -5464,14 +5303,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         message_map_name_ = get_string(0);
         message_map_index_ = get_integer(1);
         results = bsp::lua_binding_load_message_map(*this, core);
-    } else if (bsp::kWireGoal4Chain331Bound
-               && std::strcmp(binding->name, "UnloadMessageMap") == 0) {
+    } else if (std::strcmp(binding->name, "UnloadMessageMap") == 0) {
         // Goal 4 chain 331: 008C6490's body; find_binding offers the row only ON.
         UnloadMessageMapArgs args(*this);
         UnloadMessageMapGlue glue(*this);
         results = bsp::cc13_seg56::lua_unload_message_map(args, glue);
-    } else if (bsp::kWireGoal4Chain365Bound
-               && std::strcmp(binding->name, "FailureRepairEnable") == 0) {
+    } else if (std::strcmp(binding->name, "FailureRepairEnable") == 0) {
         // Goal 4 chain 365: 008AD540's body; find_binding offers the row only ON.
         RepairBindingArgs args(*this);
         GameGunneryHost* const gunnery = units_.gunnery();
@@ -5489,7 +5326,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                 }
             });
         results = bsp::cc13_left55::seg56b::lua_failure_repair_enable(args, adapter);
-    } else if (bsp::kWireGoal4Chain365Bound && std::strcmp(binding->name, "AddFire") == 0) {
+    } else if (std::strcmp(binding->name, "AddFire") == 0) {
         // Goal 4 chain 365: 008ACD10's body reads its four arguments and stores
         // nothing (the image's AddFire is inert); no result.
         RepairBindingArgs args(*this);
@@ -5499,11 +5336,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_music_control_set_level(*this, core);
     } else if (std::strcmp(binding->name, "MusicFade") == 0) {
         // 008C7190 calls its existing Lua body and 00A77860; OFF keeps fallback dispatch.
-        if constexpr (kWireGoal2Chain180Bound) {
-            ScriptMusicFadeAdapter music;
-            results = bsp::cc13_seg56::lua_music_fade(*this, music);
-        } else {
-        }
+        ScriptMusicFadeAdapter music;
+        results = bsp::cc13_seg56::lua_music_fade(*this, music);
     } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);
@@ -5604,52 +5438,31 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
                std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0) {
-        if constexpr (bsp::kWireGoal4Chain460Bound) {
-            // Evidence: bsp.py show 008B0C10, 008B0D0A..008B0DAC. Reuse
-            // the body for argument selection and literal result count. Its
-            // append callback retains the actual Lua arguments in this owner's
-            // existing queue, consumed by run_narrative_update_00735100.
-            RepairBindingArgs args(*this);
-            NarrativePostBinding host([&](const std::string& text,
-                const std::string& callback, int extras_from) {
-                NarrativeEntry entry;
-                entry.text = text;
-                entry.callback = callback;
-                if (extras_from >= 0) {
-                    for (int index = extras_from; index < count(); ++index) {
-                        lua_pushvalue(state_, stack_slot(index));
-                        entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
-                    }
+        // Evidence: bsp.py show 008B0C10, 008B0D0A..008B0DAC. Reuse
+        // the body for argument selection and literal result count. Its
+        // append callback retains the actual Lua arguments in this owner's
+        // existing queue, consumed by run_narrative_update_00735100.
+        RepairBindingArgs args(*this);
+        NarrativePostBinding host([&](const std::string& text,
+            const std::string& callback, int extras_from) {
+            NarrativeEntry entry;
+            entry.text = text;
+            entry.callback = callback;
+            if (extras_from >= 0) {
+                for (int index = extras_from; index < count(); ++index) {
+                    lua_pushvalue(state_, stack_slot(index));
+                    entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
                 }
-                log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
-                    "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
-                    static_cast<double>(mission_clock_), entry.argument_refs.size(),
-                    narrative_queue_.size() + 1);
-                narrative_queue_.push_back(std::move(entry));
-                ++narrative_enqueues_;
-            });
-            results = bsp::cc13_seg56::lua_mission_narrative_post(
-                bsp::cc13_seg56::kNarrativePost, args, host);
-        } else {
-        // 008B0C10 (both rows): 00887120(-1, 4) reads the frame; argument 0 is the
-        // text (the variant at +8h), argument 1 the callback name when there are
-        // more than one (008B0D0A), arguments 2..n a new vector (008B0D50-
-        // 008B0D80); then 00734870 on [game+21E8h] (008B0DAC) appends the entry.
-        NarrativeEntry entry;
-        entry.text = get_string(0);
-        if (count() > 1) entry.callback = get_string(1);
-        for (int index = 2; index < count(); ++index) {
-            lua_pushvalue(state_, stack_slot(index));
-            entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
-        }
-        log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
-            "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
-            static_cast<double>(mission_clock_), entry.argument_refs.size(),
-            narrative_queue_.size() + 1);
-        narrative_queue_.push_back(std::move(entry));
-        ++narrative_enqueues_;
-        results = 0;  // 008B0E07, nothing pushed
-        }
+            }
+            log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
+                "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
+                static_cast<double>(mission_clock_), entry.argument_refs.size(),
+                narrative_queue_.size() + 1);
+            narrative_queue_.push_back(std::move(entry));
+            ++narrative_enqueues_;
+        });
+        results = bsp::cc13_seg56::lua_mission_narrative_post(
+            bsp::cc13_seg56::kNarrativePost, args, host);
     } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
         // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
         // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
@@ -5693,41 +5506,27 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         }
         results = 0;
     } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
-        if constexpr (bsp::kWireGoal4Chain460Bound) {
-            // 008B15B0 calls 00734FA0 once; its callback releases the same
-            // queued/showing registry references as the previous host arm.
-            NarrativeQueueBinding host([&] {
-                return bsp::band_0071_cc13::mission_narrative_size_00733260(
-                    static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
-            }, [&] {
-                narrative_clear_00734fa0();
-                ++narrative_clears_;
-            });
-            results = bsp::cc13_seg56::lua_mission_narrative_clear(host);
-        } else {
-        // 008B15B0 -> 00734FA0 on [game+21E8h].
-        narrative_clear_00734fa0();
-        ++narrative_clears_;
-        results = 0;
-        }
+        // 008B15B0 calls 00734FA0 once; its callback releases the same
+        // queued/showing registry references as the previous host arm.
+        NarrativeQueueBinding host([&] {
+            return bsp::band_0071_cc13::mission_narrative_size_00733260(
+                static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+        }, [&] {
+            narrative_clear_00734fa0();
+            ++narrative_clears_;
+        });
+        results = bsp::cc13_seg56::lua_mission_narrative_clear(host);
     } else if (std::strcmp(binding->name, "MissionNarrativeSize") == 0) {
-        if constexpr (bsp::kWireGoal4Chain460Bound) {
-            // 008B0AC0 -> 00733260 reads the retained queue count and the
-            // current showing byte, then uses the existing 00B664B0 writer.
-            NarrativeQueueBinding host([&] {
-                return bsp::band_0071_cc13::mission_narrative_size_00733260(
-                    static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
-            }, [&] {
-                narrative_clear_00734fa0();
-                ++narrative_clears_;
-            });
-            results = bsp::cc13_seg56::lua_mission_narrative_size(*this, host);
-        } else {
-        // 008B0AC0 -> 00733260: the list count +0Ch plus 1 while an entry shows.
-        lua_pushinteger(state_, static_cast<lua_Integer>(narrative_queue_.size() +
-                                                         (narrative_active_14_ ? 1u : 0u)));
-        results = state_ != nullptr ? 1 : 0;
-        }
+        // 008B0AC0 -> 00733260 reads the retained queue count and the
+        // current showing byte, then uses the existing 00B664B0 writer.
+        NarrativeQueueBinding host([&] {
+            return bsp::band_0071_cc13::mission_narrative_size_00733260(
+                static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+        }, [&] {
+            narrative_clear_00734fa0();
+            ++narrative_clears_;
+        });
+        results = bsp::cc13_seg56::lua_mission_narrative_size(*this, host);
     } else if (std::strcmp(binding->name, "EndScene") == 0) {
         // 008B01B0. RECORD, labelled: for a failed single-player mission it raises
         // the restart prompt (00531B00) and returns; otherwise it reaches
@@ -6815,14 +6614,10 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
             static_cast<double>(mission_clock_), static_cast<double>(narrative_fade_in_1c_),
             static_cast<double>(narrative_display_20_),
             static_cast<double>(narrative_fade_out_24_), narrative_callback_2c_.c_str());
-        if constexpr (bsp::kWireGoal4Chain482Bound) {
-            if (narrative_hud_ != nullptr && narrative_hud_->show_mission_narrative_text(narrative_text_)) {
-                // Source delivery is available; the native sizing/timing
-                // outputs of 005B7390 still need its measured text context.
-                log_.unimplemented("HudNarrative::show_text_layout", "005b7390");
-            } else {
-                log_.unimplemented("HudNarrative::show_text", "005b7390");
-            }
+        if (narrative_hud_ != nullptr && narrative_hud_->show_mission_narrative_text(narrative_text_)) {
+            // Source delivery is available; the native sizing/timing
+            // outputs of 005B7390 still need its measured text context.
+            log_.unimplemented("HudNarrative::show_text_layout", "005b7390");
         } else {
             log_.unimplemented("HudNarrative::show_text", "005b7390");
         }
@@ -6865,12 +6660,8 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     } else {
         narrative_alpha_28_ = 0.0f;
     }
-    if constexpr (bsp::kWireGoal4Chain482Bound) {
-        if (narrative_hud_ == nullptr || !narrative_hud_->query_mission_narrative_text_colour())
-            log_.unimplemented("HudNarrative::query_text", "005b5d20");
-    } else {
-        log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
-    }
+    if (narrative_hud_ == nullptr || !narrative_hud_->query_mission_narrative_text_colour())
+        log_.unimplemented("HudNarrative::query_text", "005b5d20");
     if (0.0f < narrative_alpha_28_) return;
     if (narrative_state_18_ == 2) narrative_finish_00734140();
 }
@@ -6880,12 +6671,8 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
 // zeroed; +14h is cleared on both arms (00734199, 0073419F). The name +2Ch is
 // not cleared here; it is overwritten by the next start.
 void GameScriptOrdersHost::narrative_finish_00734140() {
-    if constexpr (bsp::kWireGoal4Chain482Bound) {
-        if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
-            log_.unimplemented("HudNarrative::hide", "005b5d40");
-    } else {
+    if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
         log_.unimplemented("HudNarrative::hide", "005b5d40");
-    }
     narrative_active_14_ = false;
     std::vector<int> refs;
     refs.swap(narrative_refs_34_);
@@ -6938,12 +6725,8 @@ void GameScriptOrdersHost::narrative_clear_00734fa0() {
         }
     }
     narrative_queue_.clear();
-    if constexpr (bsp::kWireGoal4Chain482Bound) {
-        if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
-            log_.unimplemented("HudNarrative::hide", "005b5d40");
-    } else {
+    if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
         log_.unimplemented("HudNarrative::hide", "005b5d40");
-    }
     narrative_active_14_ = false;
     for (const int ref : narrative_refs_34_) {
         if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
@@ -7978,13 +7761,10 @@ void GameScriptOrdersHost::report() {
             kDialogSequencerBound ? 1 : 0, dialog_messages_, dialog_callbacks_, dialog_pauses_,
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
-        if constexpr (bsp::kWireGoal4Chain331Bound) {
-            log_.notef("summary message maps loaded=%llu unloaded=%llu without_manager=%llu "
-                "dialog records resolved=%llu (008C6308 00706760, 008C65D8 00706FC0, "
-                "00448416 00705E00, goal 4 chain 331)", message_maps_loaded_,
-                message_maps_unloaded_, message_maps_without_manager_, dialog_records_resolved_);
-        } else {
-        }
+        log_.notef("summary message maps loaded=%llu unloaded=%llu without_manager=%llu "
+            "dialog records resolved=%llu (008C6308 00706760, 008C65D8 00706FC0, "
+            "00448416 00705E00, goal 4 chain 331)", message_maps_loaded_,
+            message_maps_unloaded_, message_maps_without_manager_, dialog_records_resolved_);
         if (mission_end_.seen) {
             // Packet cc9_lua_mission_narrative: with the narrative bound the
             // callback fires, so the line says whether EndScene was reached.
@@ -8278,33 +8058,30 @@ std::pair<float, float> GameScriptOrdersHost::dialog_message_timing(const std::s
     std::pair<float, float> timing{0.0f, 0.0f};
     std::string voice;
     bool from_record = false;
-    if constexpr (bsp::kWireGoal4Chain331Bound) {
-        // 004483F0 (src/panel_sequence.cpp request_panel_voice_004483f0):
-        // 00448416 CALL 00705E00 on [game+21DCh] with the command's name and 0,
-        // over the records 00706760 loaded for LoadMessageMap and 007065E0 for
-        // Messages.lua. 005B94D0 (begin_panel_voice_record_005b94d0) then holds
-        // the row for keys.back().end_14 when the record has keys. A miss is
-        // 00705E00's own "<name>" record (kMessageRecordMissCc15Bound). The
-        // voice is the record's +0Ch, 00704590's "voice" with its "tutorials"
-        // language insert. LABELLED: a record with no keys takes 005B94D0's
-        // text/voice-poll arm, which this host does not model (hold 0, as the
-        // map-file read below gives for no subtitles). OFF, or with no manager,
-        // keeps the host's own read of the last-loaded map file.
-        if (message_manager_ != nullptr && message_manager_->constructed()) {
-            const bsp::VoiceClipRecord* record = message_manager_->resolve_record_00705e00(message);
-            if (record != nullptr) {
-                if (!record->timed_keys_34.empty()) {
-                    timing.second = record->timed_keys_34.back().end_14;
-                }
-                const NativeString& name = record->auxiliary_0c;
-                if (name.data() != nullptr && name.length() != 0) {
-                    voice.assign(name.data(), name.length());
-                }
-                from_record = true;
-                ++dialog_records_resolved_;
+    // 004483F0 (src/panel_sequence.cpp request_panel_voice_004483f0):
+    // 00448416 CALL 00705E00 on [game+21DCh] with the command's name and 0,
+    // over the records 00706760 loaded for LoadMessageMap and 007065E0 for
+    // Messages.lua. 005B94D0 (begin_panel_voice_record_005b94d0) then holds
+    // the row for keys.back().end_14 when the record has keys. A miss is
+    // 00705E00's own "<name>" record (kMessageRecordMissCc15Bound). The
+    // voice is the record's +0Ch, 00704590's "voice" with its "tutorials"
+    // language insert. LABELLED: a record with no keys takes 005B94D0's
+    // text/voice-poll arm, which this host does not model (hold 0, as the
+    // map-file read below gives for no subtitles). OFF, or with no manager,
+    // keeps the host's own read of the last-loaded map file.
+    if (message_manager_ != nullptr && message_manager_->constructed()) {
+        const bsp::VoiceClipRecord* record = message_manager_->resolve_record_00705e00(message);
+        if (record != nullptr) {
+            if (!record->timed_keys_34.empty()) {
+                timing.second = record->timed_keys_34.back().end_14;
             }
+            const NativeString& name = record->auxiliary_0c;
+            if (name.data() != nullptr && name.length() != 0) {
+                voice.assign(name.data(), name.length());
+            }
+            from_record = true;
+            ++dialog_records_resolved_;
         }
-    } else {
     }
     if (!from_record && state_ != nullptr && !message_map_name_.empty()) {
         std::string text;

@@ -3,7 +3,6 @@
 #include "bsp/lighting_configuration_apply.hpp"
 #include "bsp/foliage_setup_cc13.hpp"
 #include "bsp/scene_weather_cc13.hpp"
-#include "bsp/wire_goal4_chain522_switches.hpp"
 #include "bsp/mission_camera.hpp"
 #include "bsp/native_gui_scene_fields.hpp"
 #include "bsp/native_invalid_parameter_noinfo_call.hpp"

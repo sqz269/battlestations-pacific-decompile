@@ -1,6 +1,5 @@
 #include "bsp/native_node_parenting.hpp"
 #include "bsp/native_tagged_leaf_b6_16e.hpp"
-#include "bsp/wire_goal4_chain573_switches.hpp"
 #include <stdexcept>
 
 namespace bsp {
@@ -51,17 +50,13 @@ void prepend_native_node_child_00b6e010(NativeNodeDestructionRuntime& runtime,
     child.next_sibling = parent.first_child;
     child.previous_sibling = nullptr;
     if (parent.first_child) parent.first_child->previous_sibling = &child;
-    if constexpr (kWireGoal4Chain573Bound) {
-        // bsp.py show 00B6D980: MOV EAX,[ECX+38h]; RET. A bound view's
-        // count aliases that same actual node field (NativeNodeBinding /
-        // CameraTransformBacking), so replace only the read of B6E010's
-        // increment, after its scene/root callbacks and sibling stores.
-        if (const auto actual = parent.raw_node_key()) {
-            parent.child_count = bsp_tagged_b6_16e_00b6d980(
-                reinterpret_cast<const void*>(static_cast<std::uintptr_t>(actual))) + 1u;
-        } else {
-            ++parent.child_count;
-        }
+    // bsp.py show 00B6D980: MOV EAX,[ECX+38h]; RET. A bound view's
+    // count aliases that same actual node field (NativeNodeBinding /
+    // CameraTransformBacking), so replace only the read of B6E010's
+    // increment, after its scene/root callbacks and sibling stores.
+    if (const auto actual = parent.raw_node_key()) {
+        parent.child_count = bsp_tagged_b6_16e_00b6d980(
+            reinterpret_cast<const void*>(static_cast<std::uintptr_t>(actual))) + 1u;
     } else {
         ++parent.child_count;
     }

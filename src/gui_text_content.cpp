@@ -7,7 +7,6 @@
 #include "bsp/gui_text_style.hpp"
 #include "bsp/native_font_resources.hpp"
 #include "bsp/native_mesh_owner.hpp"
-#include "bsp/wire_goal4_chain549_switches.hpp"
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -224,15 +223,10 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
     if (e.fonts ? e.fonts->resolve(text.font).uppercase_only_48() : text.font->uppercase_only) {
         //00ABA91C/00A9EC30: repeat this even after ellipsis already uppercased.
         //The current sidecar mapping is not assumed to be idempotent.
-        if constexpr (kWireGoal4Chain549Bound) {
-            if (!(e.locale.sidecar_first().empty()
-                && e.locale_runtime.uppercase_ascii_text(copied.data(), copied.size()))) {
-                for (char16_t& code_unit : copied)
-                    code_unit = locale_uppercase_00a9eba0(e.locale, e.locale_runtime, code_unit);
-            }
-        } else {
-        for (char16_t& code_unit : copied)
-            code_unit = locale_uppercase_00a9eba0(e.locale, e.locale_runtime, code_unit);
+        if (!(e.locale.sidecar_first().empty()
+            && e.locale_runtime.uppercase_ascii_text(copied.data(), copied.size()))) {
+            for (char16_t& code_unit : copied)
+                code_unit = locale_uppercase_00a9eba0(e.locale, e.locale_runtime, code_unit);
         }
     }
     require_native_text_domain(text.text);

@@ -2,7 +2,6 @@
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/native_font_resources.hpp"
 #include "bsp/native_resource_hierarchy_pool.hpp"
-#include "bsp/wire_goal4_chain569_switches.hpp"
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -62,18 +61,12 @@ void set_native_material_shader_00b19210(NativeMaterialStorage& material,
         void* const parameter = material.parameters_80[static_cast<std::size_t>(index)];
         if (parameter) {
             destroy_native_string_header_0041dd20(parameter, access.parameter_names);
-            if constexpr (kWireGoal4Chain569Bound) {
-                // bsp.py show 00B19210: after releasing this parameter's name,
-                // the original calls 00B17AF0 on F8D3E4. Use that existing body
-                // with this material's SAME slot-return provider. It consumes
-                // the shared B193FA return algorithm once; the string is not
-                // destroyed twice and the current count is still reloaded.
-                return_native_hierarchy_pool_slot_00b17af0(access.parameter_slots, parameter);
-            } else {
-            //B17AF0 is the same F8D3E4/88h return algorithm reconstructed by
-            //the concrete parameter pool's B193FA inline-return entry.
-            access.parameter_slots.return_slot_00b193fa_fragment(parameter);
-            }
+            // bsp.py show 00B19210: after releasing this parameter's name,
+            // the original calls 00B17AF0 on F8D3E4. Use that existing body
+            // with this material's SAME slot-return provider. It consumes
+            // the shared B193FA return algorithm once; the string is not
+            // destroyed twice and the current count is still reloaded.
+            return_native_hierarchy_pool_slot_00b17af0(access.parameter_slots, parameter);
         }
     }
     material.parameter_count_100 = 0; //Negative native count also reaches zero.

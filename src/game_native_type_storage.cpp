@@ -1,6 +1,5 @@
 #include "bsp/game_native_type_storage.hpp"
 #include "bsp/native_fallback_resource_type_initializer.hpp"
-#include "bsp/wire_goal4_chain598_switches.hpp"
 
 #include <stdexcept>
 
@@ -126,16 +125,12 @@ void GameNativeTypeStorage::initialize_texture_source_types(
     // counter schedule as C30310/C30360 (bsp.py show for those addresses).
     // C30310 itself initializes the canonical F8D428 parent via B19C70.
     types.initialize_texture_source_00c30310(texture_source_0109e9c4_);
-    if constexpr (kWireGoal4Chain598Bound) {
-        // bsp.py show 00C30460 --asm: capture the actual descriptor, call
-        // C30360 once, return that same descriptor. Use the existing process
-        // target and type domain at its original bootstrap position; the
-        // caller does not consume the wrapper's returned address.
-        (void)initialize_native_animated_texture_source_type_00c30460(
-            animated_texture_0109e9d4_, types);
-    } else {
-        types.initialize_animated_texture_source_00c30360(animated_texture_0109e9d4_);
-    }
+    // bsp.py show 00C30460 --asm: capture the actual descriptor, call
+    // C30360 once, return that same descriptor. Use the existing process
+    // target and type domain at its original bootstrap position; the
+    // caller does not consume the wrapper's returned address.
+    (void)initialize_native_animated_texture_source_type_00c30460(
+        animated_texture_0109e9d4_, types);
 }
 
 } // namespace bsp::game

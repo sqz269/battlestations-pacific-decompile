@@ -1,7 +1,6 @@
 #include "bsp/directional_light_owner.hpp"
 #include "bsp/native_directional_light_construction.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain599_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -190,20 +189,16 @@ void* delete_native_directional_light_00b7c820(DirectionalLightOwner& owner,
     owner.node.storage.vtable_00 = 0x00d62fb0u;
     owner.node.scene_attachment.is_type = owner.directional_virtual_0c;
     destroy_native_light_00b7c5b0(owner);
-    if constexpr (kWireGoal4Chain599Bound) {
-        if (flags & 1u) {
-            // Same 00B7C835..00B7C83B pool return as the raw-storage caller;
-            // only the canonical 01090154 owner uses its static adapter.
-            // The mesh probe and other independently supplied pools retain
-            // their own direct-return path without rebinding process state.
-            if (owner.pool.is_static_binding()) {
-                return_directional_light_slot_00b7b610(actual_slot);
-            } else {
-                owner.pool.return_raw_slot_00b7b2f0(actual_slot);
-            }
+    if (flags & 1u) {
+        // Same 00B7C835..00B7C83B pool return as the raw-storage caller;
+        // only the canonical 01090154 owner uses its static adapter.
+        // The mesh probe and other independently supplied pools retain
+        // their own direct-return path without rebinding process state.
+        if (owner.pool.is_static_binding()) {
+            return_directional_light_slot_00b7b610(actual_slot);
+        } else {
+            owner.pool.return_raw_slot_00b7b2f0(actual_slot);
         }
-    } else {
-    if (flags & 1u) owner.pool.return_raw_slot_00b7b2f0(actual_slot);
     }
     return actual_slot;
 }

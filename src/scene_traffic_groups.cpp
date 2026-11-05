@@ -1,7 +1,6 @@
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/pool_pool10_cc13.hpp"
-#include "bsp/wire_goal4_chain431_switches.hpp"
 
 #include <cctype>
 #include <cstdio>
@@ -508,7 +507,7 @@ SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer
     // closing `}` expect reports it.
     while (at_token(lexer, kBrowserGroupKeyword)) {
         SceneBrowserGroupEntry entry;
-        if constexpr (kWireGoal4Chain431Bound) {
+        {
             // Evidence: bsp.py show 004694F0, calls 00469512..004695B4.
             // The original ECX is unused; its sole input is this live tokenizer.
             // This is a Source adapter, not the Original register/stack ABI.
@@ -520,34 +519,6 @@ SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer
                 result.error = error;
                 return result;
             }
-        } else {
-        // 004694F0: eleven ExpectToken calls in fixed order, no dispatch.
-        if (!expect_token(lexer, kBrowserGroupKeyword, error)
-            || !expect_token(lexer, "{", error)
-            || !expect_token(lexer, kBrowserGroupNameKey, error)
-            || !expect_token(lexer, "=", error)) {
-            result.error = error;
-            return result;
-        }
-        entry.group_name = read_any_token(lexer, error);
-        if (!expect_token(lexer, kBrowserGroupIdKey, error)
-            || !expect_token(lexer, "=", error)) {
-            result.error = error;
-            return result;
-        }
-        // The native writes this into the caller's dead argument slot and never
-        // reads it back; it is kept here so the grammar can be checked.
-        entry.group_id = read_int_token(lexer, error);
-        if (!expect_token(lexer, kBrowserGroupParentKey, error)
-            || !expect_token(lexer, "=", error)) {
-            result.error = error;
-            return result;
-        }
-        entry.parent = read_any_token(lexer, error);
-        if (!expect_token(lexer, "}", error)) {
-            result.error = error;
-            return result;
-        }
         }
         host.observe_browser_group(entry);
         result.entries.push_back(std::move(entry));

@@ -8,7 +8,6 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
-#include "bsp/wire_goal4_chain306_switches.hpp"
 #include "bsp/world_entity_update.hpp"
 
 #include <cmath>
@@ -351,7 +350,7 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         CameraMatrix16 rotation{};
         if (camera.mode_3f4 == 0) {
             // 00433085..004330BF: 0042D5A0 rows 2 and 1, then 0085DC80.
-            if constexpr (kWireGoal4Chain306Bound) {
+            {
                 // 00433085..004330BF: the forward local is {unit+ECh, 0.0 (004330AD
                 // XORPS, stored 004330B9), unit+F4h}, i.e. world[8], 0, world[10];
                 // the up argument is the image's 00F8758C (0043309E PUSH); ECX
@@ -361,14 +360,6 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
                 profile_seg2_cc13::matrix_set_forward_up_orthonormalize_0042d5a0(
                     profile_seg2_cc13::Raw{reinterpret_cast<std::uint8_t*>(camera.orient_2b8.data())},
                     forward, kWorldUp00f8758c.data(), orthonormalize);
-            } else {
-            camera.orient_2b8[8] = unit.world[8];
-            camera.orient_2b8[9] = 0.0f;
-            camera.orient_2b8[10] = unit.world[10];
-            camera.orient_2b8[4] = kWorldUp00f8758c[0];
-            camera.orient_2b8[5] = kWorldUp00f8758c[1];
-            camera.orient_2b8[6] = kWorldUp00f8758c[2];
-            orthonormalize_pose_matrix_0085dc80(camera.orient_2b8.data());
             }
             rot_y(rotation, kNegativeZero - camera.yaw_384);
             premultiply(camera.orient_2b8, rotation);

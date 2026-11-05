@@ -2,7 +2,6 @@
 #include "bsp/native_logical_texture_named_base.hpp"
 #include "bsp/native_volume_texture_base.hpp"
 #include "bsp/native_runtime_volume_texture_creation.hpp"
-#include "bsp/wire_goal4_chain600_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -160,19 +159,14 @@ void destroy_native_volume_texture_00b3eb70(void* owner,
 void* delete_native_volume_texture_00b3f430(void* owner,
     std::uint32_t flags, NativeVolumeTextureOwnerContext& context) {
     destroy_native_volume_texture_00b3eb70(owner, context);
-    if constexpr (kWireGoal4Chain600Bound) {
-        // B3F438..B3F445 returns the destroyed owner only for flags bit0,
-        // through B3D860 on actual 0108DBA8. B3DCF0..B3DCFB is the same
-        // selector (PUSH ECX / MOV ECX,0108DBA8 / CALL B3D860 / RET).
-        // Reuse that body with the SAME context pool and current owner;
-        // no second return, destruction, retain or registry operation.
-        if ((flags & 1u) != 0)
-            return_native_volume_texture_slot_00b3dcf0(
-                owner, context.actual_volume_pool_0108dba8);
-    } else {
-        if ((flags & 1u) != 0)
-            context.actual_volume_pool_0108dba8.return_raw_slot_00b3d860(owner);
-    }
+    // B3F438..B3F445 returns the destroyed owner only for flags bit0,
+    // through B3D860 on actual 0108DBA8. B3DCF0..B3DCFB is the same
+    // selector (PUSH ECX / MOV ECX,0108DBA8 / CALL B3D860 / RET).
+    // Reuse that body with the SAME context pool and current owner;
+    // no second return, destruction, retain or registry operation.
+    if ((flags & 1u) != 0)
+        return_native_volume_texture_slot_00b3dcf0(
+            owner, context.actual_volume_pool_0108dba8);
     return owner;
 }
 } // namespace bsp

@@ -3,7 +3,6 @@
 #include "bsp/sound_cc13.hpp"
 #include "bsp/sound_sample.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain455_switches.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -127,41 +126,22 @@ void load_sound_dialog_table_00a87060(void* table, const NativeString& filename,
                 else if (keyword(tokens, "51")) format = 3;
                 if (format) {
                     tokens.accept_00bee800();
-                    if constexpr (kWireGoal4Chain455Bound) {
-                        // 00A87060's inline mono/stereo/51 stores have exactly
-                        // A776B0's effect: record+10h = layout, +8h = E12EF0[layout].
-                        // Reuse that body on the scanner's actual temporary;
-                        // its count is consumed by the append and running total.
-                        DialogChannelLayoutBinding layout(context.format_counts_00e12ef0);
-                        cc13_sweepC::dialog_channel_record_set_speaker_layout_00a776b0(
-                            layout, temporary.bytes, static_cast<std::int32_t>(format));
-                    } else {
-                    const auto count = context.format_counts_00e12ef0[format];
-                    write(temporary.bytes, 0x10, format);
-                    write(temporary.bytes, 8, count);
-                    }
+                    // 00A87060's inline mono/stereo/51 stores have exactly
+                    // A776B0's effect: record+10h = layout, +8h = E12EF0[layout].
+                    // Reuse that body on the scanner's actual temporary;
+                    // its count is consumed by the append and running total.
+                    DialogChannelLayoutBinding layout(context.format_counts_00e12ef0);
+                    cc13_sweepC::dialog_channel_record_set_speaker_layout_00a776b0(
+                        layout, temporary.bytes, static_cast<std::int32_t>(format));
                 }
                 auto* const header = at(table, 8);
-                if constexpr (kWireGoal4Chain455Bound) {
-                    // show 00A87060 --asm, A8726C..A872B1: native header is
-                    // table+8 {data,count,capacity}; double/full, placement copy,
-                    // count++. A86FB0 (A86FCB..A8700E) is the same operation.
-                    // Retain the subsequent first-channel overwrite and total
-                    // update here, and let the existing RAII release the source.
-                    sound_cc13::append_dialog_channel_record_00a86fb0(header, temporary.bytes,
-                        context.strings, context.format_counts_00e12ef0);
-                } else {
-                if (read<std::uint32_t>(table, 0xc) == read<std::uint32_t>(table, 0x10)) {
-                    auto capacity = signed_word(read<std::uint32_t>(table, 0x10) * 2u);
-                    if (capacity <= 1) capacity = 1;
-                    reserve_sound_dialog_records_00a78dc0(header, capacity, context.strings,
-                        context.format_counts_00e12ef0);
-                }
-                auto* const row = at(read<void*>(header, 0), read<std::uint32_t>(header, 4) * 0x14u);
-                if (row) copy_sound_dialog_record_00a77ef0(row, temporary.bytes,
+                // show 00A87060 --asm, A8726C..A872B1: native header is
+                // table+8 {data,count,capacity}; double/full, placement copy,
+                // count++. A86FB0 (A86FCB..A8700E) is the same operation.
+                // Retain the subsequent first-channel overwrite and total
+                // update here, and let the existing RAII release the source.
+                sound_cc13::append_dialog_channel_record_00a86fb0(header, temporary.bytes,
                     context.strings, context.format_counts_00e12ef0);
-                write(header, 4, read<std::uint32_t>(header, 4) + 1u);
-                }
                 auto* const last = at(read<void*>(header, 0), read<std::uint32_t>(header, 4) * 0x14u - 0x14u);
                 write(last, 0xc, read<std::uint32_t>(table, 0x18));
                 write(table, 0x18, read<std::uint32_t>(table, 0x18) + read<std::uint32_t>(temporary.bytes, 8));

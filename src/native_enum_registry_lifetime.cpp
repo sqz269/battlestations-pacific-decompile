@@ -2,7 +2,6 @@
 #include "bsp/native_enum_map_lifetime.hpp"
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_enum_scalar_delete.hpp"
-#include "bsp/wire_goal4_chain430_switches.hpp"
 #include <cstdint>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -64,16 +63,11 @@ void destroy_native_scene_enum_registry_008f4f00(void* owner, void* table_pool,
     put(owner, 0, 0x00ce78bc);
     void* const receiver = at(owner, 4);
     clear_native_cenum_table_map_004d0760(receiver, table_pool, symbol_pool, strings);
-    if constexpr (kWireGoal4Chain430Bound) {
-        // bsp.py show 008F4F00 / 004D0EA0: the ordinary registry destructor
-        // clears first, then writes the nested CE7514 phase and clears again.
-        // The complete map destructor performs precisely that second phase
-        // on owner+4, with the same live pools and pooled-string process.
-        // Source reuse of the inlined phase, not an Original 008F4F00 CALL.
-        destroy_native_cenum_table_map_004d0ea0(receiver, table_pool, symbol_pool, strings);
-    } else {
-        put(receiver, 0, 0x00ce7514);
-        clear_native_cenum_table_map_004d0760(receiver, table_pool, symbol_pool, strings);
-    }
+    // bsp.py show 008F4F00 / 004D0EA0: the ordinary registry destructor
+    // clears first, then writes the nested CE7514 phase and clears again.
+    // The complete map destructor performs precisely that second phase
+    // on owner+4, with the same live pools and pooled-string process.
+    // Source reuse of the inlined phase, not an Original 008F4F00 CALL.
+    destroy_native_cenum_table_map_004d0ea0(receiver, table_pool, symbol_pool, strings);
 }
 } // namespace bsp

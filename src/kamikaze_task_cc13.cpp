@@ -14,7 +14,6 @@
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
-#include "bsp/wire_goal2_chain160_switches.hpp"
 
 namespace bsp {
 
@@ -194,13 +193,9 @@ void kamikaze_aim_error_009abf60(KamikazeApproach& ap, const KamikazeRobotRow& r
     // kKamikazeEnterPickCc13Bound both 009AC160 call sites (kamikaze_enter and
     // kz_install_009af720) call KamikazeTaskHost::pick_target_ref_009fa260 next,
     // which KzHost overrides, so the pick is made at enter as here.
-    if constexpr (kWireGoal2Chain160Bound) {
-        // 009AC092: 009FA380 approach_ref_set_aim_error_009fa380 stores the bias and
-        // the dirty byte (already 1 from 009AC03A); OFF keeps the inline bias store.
-        approach_target_ref_set_aim_error(s, {dh, 0.0f, dv});
-    } else {
-        s.bias_34 = {dh, 0.0f, dv};
-    }
+    // 009AC092: 009FA380 approach_ref_set_aim_error_009fa380 stores the bias and
+    // the dirty byte (already 1 from 009AC03A); OFF keeps the inline bias store.
+    approach_target_ref_set_aim_error(s, {dh, 0.0f, dv});
 }
 
 std::array<float, 3> kamikaze_aim_point_009aba30(const std::array<float, 3>& ref_point,
@@ -767,15 +762,10 @@ void drop_kamikaze_approach_seed_009abab0(DropKamikazeApproach& ap,
     ap.avoid_flag_bc = 0xFF;
     ap.has_ordnance_c1 = true;                                           // 009ABB7E
     // 009ABB84-009ABBA2: 009FA380(sub, 00F87574 = zero fill), dirty, spread 0.5.
-    if constexpr (kWireGoal2Chain160Bound) {
-        // 009ABB84: 009FA380 approach_ref_set_aim_error_009fa380 with the image's static
-        // zero vector 00F87574 stores the bias and the dirty byte; OFF keeps the two
-        // inline stores.
-        approach_target_ref_set_aim_error(ap.ref, {0.0f, 0.0f, 0.0f});
-    } else {
-        ap.ref.bias_34 = {0.0f, 0.0f, 0.0f};
-        ap.ref.dirty_41 = true;
-    }
+    // 009ABB84: 009FA380 approach_ref_set_aim_error_009fa380 with the image's static
+    // zero vector 00F87574 stores the bias and the dirty byte; OFF keeps the two
+    // inline stores.
+    approach_target_ref_set_aim_error(ap.ref, {0.0f, 0.0f, 0.0f});
     ap.ref.spread_48 = {0.5f, 0.5f, 0.5f};
 }
 

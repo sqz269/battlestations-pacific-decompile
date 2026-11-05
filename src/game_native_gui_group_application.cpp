@@ -9,7 +9,6 @@
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/native_resource_builtin_factories.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
-#include "bsp/wire_goal4_chain607_switches.hpp"
 #include <cstddef>
 #include <cstring>
 #include <limits>
@@ -122,7 +121,7 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
         "native GUI Group requires its same live unattached canonical Text Model");
     Impl::Entry entered(p);
     try {
-        if constexpr (kWireGoal4Chain607Bound) {
+        {
             // 00B86780 (D63220 slot04): B8F450 selects the actual 010902F4
             // pool, then B8F5E0 constructs the group with this caller's name.
             // Adopt that same completed slot; do not run B8F5E0 a second time.
@@ -139,15 +138,6 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
                 *reinterpret_cast<NativeGroupTailStorage*>(
                     reinterpret_cast<std::byte*>(constructed) + sizeof(NativeNodeStorage))};
             p.owner = std::make_unique<NativeGroupOwner>(storage, p.environment);
-        } else {
-        p.actual = p.environment.pool_010902f4.allocate_raw_slot_00b8f310();
-        require(p.actual != nullptr, "native GUI Group pool returned null");
-        p.admission = p.renderer.actual_owners().prepare_binding(p.actual);
-        p.owner = std::make_unique<NativeGroupOwner>(p.actual, NativeGroupPool::slot_bytes, p.environment);
-        p.name_entered = true;
-        p.name.assign_0041e870(p.environment.nodes.require_raw_name_pool(), name);
-        p.name_entered = false; p.name_live = true;
-        construct_native_group_00b8f5e0(*p.owner, &p.name, *p.environment.raw_node_constants);
         }
         p.name_live = false; p.name_release_entered = true;
         destroy_native_string_header_0041dd20(&p.name, p.environment.nodes.require_raw_name_pool());
@@ -162,11 +152,7 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
             p.actual, &model.storage.node);
         return *p.reference;
     } catch (...) {
-        if constexpr (kWireGoal4Chain607Bound) {
-            p.fail(p.child ? 0x00b6e680 : 0x00b86780);
-        } else {
-            p.fail(p.child ? 0x00b6e680 : 0x00b8f5e0);
-        }
+        p.fail(p.child ? 0x00b6e680 : 0x00b86780);
         throw;
     }
 }

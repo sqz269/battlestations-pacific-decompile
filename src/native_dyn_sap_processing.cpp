@@ -1,5 +1,4 @@
 #include "bsp/native_dyn_sap_processing.hpp"
-#include "bsp/wire_goal4_chain612_switches.hpp"
 #include <cstring>
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -31,12 +30,8 @@ void __fastcall decision_kernel(void*,void*,void*,U,U,Context*);
 // The public entry reuses decision_kernel, including all four x87 overlap
 // comparisons and the existing create/erase paths; neither arm runs twice.
 void __fastcall decision_dispatch(void* peer,void* manager,void* first,U add,U axis,Context* c) {
-    if constexpr (kWireGoal4Chain612Bound) {
-        decide_native_dyn_sap_pair_00c4bd60(manager,first,peer,axis,add,
-            c->memory,c->calls,c->progress);
-    } else {
-        decision_kernel(peer,manager,first,add,axis,c);
-    }
+    decide_native_dyn_sap_pair_00c4bd60(manager,first,peer,axis,add,
+        c->memory,c->calls,c->progress);
 }
 // Extra context word is consumed here; original stack arguments retain their offsets.
 __declspec(naked) void create_shim(){

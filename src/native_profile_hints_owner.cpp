@@ -3,7 +3,6 @@
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain363_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -78,18 +77,13 @@ void* get_native_profile_hints_owner_004c1e90(NativeProfileHintsOwnerContext& c,
         if(!c.actual_publication_00e17664){
             op.native_site=0x4c1eec;void* const allocation=c.calls.allocate_00bf681b();op.allocation=allocation;op.unwind_state=1;
             void* const result=[&]() -> void* {
-                if constexpr(kWireGoal4Chain363Bound){
-                    // 004C1E90 -> 00426250 (bsp.py show 004c1e90): the same
-                    // actual 50h allocation is constructed before publication.
-                    // Keep one operation so a failing constructor retains its
-                    // temporary alongside the getter's held guard/allocation.
-                    if(!allocation)return nullptr;
-                    op.phase=Op::Phase::constructor_pending;
-                    return construct_native_profile_hints_owner_00426250(allocation,c,op);
-                }else{
-                    void* const result=allocation?construct(allocation,c,op):nullptr;
-                    return result;
-                }
+                // 004C1E90 -> 00426250 (bsp.py show 004c1e90): the same
+                // actual 50h allocation is constructed before publication.
+                // Keep one operation so a failing constructor retains its
+                // temporary alongside the getter's held guard/allocation.
+                if(!allocation)return nullptr;
+                op.phase=Op::Phase::constructor_pending;
+                return construct_native_profile_hints_owner_00426250(allocation,c,op);
             }();
             op.unwind_state=0;c.actual_publication_00e17664=result;op.owner_published=true;
             op.native_site=0x4c1f16;void* const manager=c.calls.manager_00415350(c.strings);

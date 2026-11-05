@@ -1,30 +1,11 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
-#include "bsp/wire_goal4_chain565_switches.hpp"
-#include "bsp/wire_goal4_chain527_switches.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
-#include "bsp/wire_goal4_chain506_switches.hpp"
-#include "bsp/wire_goal4_chain514_switches.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
-#include "bsp/wire_goal4_chain415_switches.hpp"
-#include "bsp/wire_goal4_chain428_switches.hpp"
-#include "bsp/wire_goal4_chain440_switches.hpp"
-#include "bsp/wire_goal4_chain450_switches.hpp"
-#include "bsp/wire_goal4_chain478_switches.hpp"
-#include "bsp/wire_goal4_chain511_switches.hpp"
-#include "bsp/wire_goal4_chain509_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
-#include "bsp/wire_goal4_chain350_switches.hpp"
 #include "bsp/actions_seg5_cc13.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
-#include "bsp/wire_goal4_chain294_switches.hpp"
-#include "bsp/wire_goal4_chain298_switches.hpp"
-#include "bsp/wire_goal4_chain322_switches.hpp"
-#include "bsp/wire_goal4_chain326_switches.hpp"
-#include "bsp/wire_goal4_chain335_switches.hpp"
-#include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/cc13_seg41_land.hpp"
@@ -39,13 +20,10 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
 #include <stdexcept>
-#include "bsp/wire_goal4_chain260_switches.hpp"
-#include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
-#include "bsp/wire_goal4_chain356_switches.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstddef>
@@ -224,56 +202,28 @@ struct HostSessionMessages::Image {
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             // Only queue_plane_disappear_c7 constructs a C7h message.
             if (image_address == 0x00d0352cu) return slots_00d0352c;
-            if constexpr (kWireGoal4Chain343Bound) {
-                if (image_address == 0x00d033c4u) return slots_00d033c4;
-                if (image_address == 0x00d033d8u) return slots_00d033d8;
-                if (image_address == 0x00d033ecu) return slots_00d033ec;
-                if (image_address == 0x00d00518u) return slots_00d00518;
-                if (image_address == 0x00d03310u) return slots_00d03310;
-            } else {
-                // The previous binding had no 98h / 9Ah / 99h profile.
-            }
-            if constexpr (kWireGoal4Chain335Bound) {
-                if (image_address == 0x00d034c8u) return slots_00d034c8;
-                if (image_address == 0x00d0334cu) return slots_00d0334c;
-            } else {
-                // The previous binding had no 93h / 9Eh profile.
-            }
-            if constexpr (kWireGoal4Chain326Bound) {
-                if (image_address == 0x00cfadbcu) return slots_00cfadbc;
-                if (image_address == 0x00cfadd0u) return slots_00cfadd0;
-            } else {
-                // The previous binding had no D3h / D4h profile.
-            }
-            if constexpr (kWireGoal4Chain322Bound) {
-                if (image_address == 0x00cfaa20u) return slots_00cfaa20;
-            } else {
-                // The previous binding had no C6h profile.
-            }
-            if constexpr (kWireGoal4Chain298Bound) {
-                if (image_address == 0x00d032e8u) return slots_00d032e8;
-            } else {
-                // The previous binding had no 7Fh profile.
-            }
+            if (image_address == 0x00d033c4u) return slots_00d033c4;
+            if (image_address == 0x00d033d8u) return slots_00d033d8;
+            if (image_address == 0x00d033ecu) return slots_00d033ec;
+            if (image_address == 0x00d00518u) return slots_00d00518;
+            if (image_address == 0x00d03310u) return slots_00d03310;
+            if (image_address == 0x00d034c8u) return slots_00d034c8;
+            if (image_address == 0x00d0334cu) return slots_00d0334c;
+            if (image_address == 0x00cfadbcu) return slots_00cfadbc;
+            if (image_address == 0x00cfadd0u) return slots_00cfadd0;
+            if (image_address == 0x00cfaa20u) return slots_00cfaa20;
+            if (image_address == 0x00d032e8u) return slots_00d032e8;
             if (image_address == 0x00d032d0u) return slots_00d032d0;
             if (image_address == 0x00d03518u) {
-                if constexpr (kWireGoal4Chain294Bound) {
-                    return slots_00d03518;
-                } else {
-                    return nullptr;
-                }
+                return slots_00d03518;
             }
-            if constexpr (kWireGoal4Chain283Bound) {
-                if (image_address == 0x00d03504u) return slots_00d03504;
-            }
-            if constexpr (kWireGoal4Chain260Bound) {
-                if (image_address == 0x00d02d30u) return slots_00d02d30;
-                if (image_address == 0x00d02d44u) return slots_00d02d44;
-                if (image_address == 0x00d03360u) return slots_00d03360;
-                if (image_address == 0x00d034a0u) return slots_00d034a0;
-                if (image_address == 0x00d034dcu) return slots_00d034dc;
-                if (image_address == 0x00d03554u) return slots_00d03554;
-            }
+            if (image_address == 0x00d03504u) return slots_00d03504;
+            if (image_address == 0x00d02d30u) return slots_00d02d30;
+            if (image_address == 0x00d02d44u) return slots_00d02d44;
+            if (image_address == 0x00d03360u) return slots_00d03360;
+            if (image_address == 0x00d034a0u) return slots_00d034a0;
+            if (image_address == 0x00d034dcu) return slots_00d034dc;
+            if (image_address == 0x00d03554u) return slots_00d03554;
             return nullptr;
         }
     } seg42_vtables;
@@ -542,23 +492,8 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     write_native_session_message88_00764d40(&sent, &stream.out, image.target);
     destroy_native_session_message88_00764cf0(&sent);
     stream.begin_read();
-    if constexpr (kWireGoal4Chain428Bound) {
-        OwnedDecodedMessage<NativeSessionMessage88, delete_native_session_message88_00764d20> owner;
-        NativeSessionMessage88& queued = owner.get();
-        construct_native_session_message88_00764c80(&queued, image.target, image.profile88);
-        read_native_session_message88_00764e60(&queued, &stream.in, image.target);
-
-        EntityOrderMessage result = posted;
-        result.command_ordinal = queued.command_20;
-        result.flags = queued.flags_21;
-        std::memcpy(&result.target_kind, &queued.target_24.kind, sizeof result.target_kind);
-        result.target_id = queued.target_24.object_id;
-        result.target_object = queued.target_24.object;
-        std::memcpy(result.position, queued.target_24.position, sizeof result.position);
-        std::memcpy(&result.trailing, &queued.target_24.trailing, sizeof result.trailing);
-        return result; // owner runs 00764D20(1) once, after extracting the payload.
-    } else {
-    NativeSessionMessage88 queued{};
+    OwnedDecodedMessage<NativeSessionMessage88, delete_native_session_message88_00764d20> owner;
+    NativeSessionMessage88& queued = owner.get();
     construct_native_session_message88_00764c80(&queued, image.target, image.profile88);
     read_native_session_message88_00764e60(&queued, &stream.in, image.target);
 
@@ -570,11 +505,7 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     result.target_object = queued.target_24.object;
     std::memcpy(result.position, queued.target_24.position, sizeof result.position);
     std::memcpy(&result.trailing, &queued.target_24.trailing, sizeof result.trailing);
-    // The drain's delete (00764D20 -> 00764CF0) only restamps +0h, which the
-    // record does not carry, so ending the copy here is not observable.
-    destroy_native_session_message88_00764cf0(&queued);
-    return result;
-    }
+    return result; // owner runs 00764D20(1) once, after extracting the payload.
 }
 
 std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_point_5f(
@@ -586,7 +517,7 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
     // exceptional encodings keep its MOVSS payload construction below.
     const auto posted = gameplay_seg38_cc13::add_user_path_point_message_0071d340(
         {point[0], point[1], point[2]});
-    if constexpr (kWireGoal4Chain565Bound) {
+    {
         const float payload[3]{posted.point.x, posted.point.y, posted.point.z};
         // Evidence: bsp.py show 0071CC20 --asm, CC47..CC59, versus
         // 0071D340 --asm, D36A..D3A4. Both produce the same real 5Fh message,
@@ -618,18 +549,6 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
             std::memcpy(sent.vector_20, payload, sizeof payload);
             sent.present_2c = static_cast<std::uint8_t>(posted.add_2c);
         }
-    } else {
-    // The native header fields the semantic sender leaves to its transport:
-    // 0071D361 base construct, 0071D38B..39C extended header and profile.
-    construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
-    sent.header.sender_18 = 0;
-    sent.header.relay_1a = 0;
-    sent.header.flag_1c = 0;
-    sent.header.base.delivery_04 = 1;
-    sent.header.base.profile_00 = image.profile95.slots;
-    const float payload[3]{posted.point.x, posted.point.y, posted.point.z};
-    std::memcpy(sent.vector_20, payload, sizeof payload);
-    sent.present_2c = static_cast<std::uint8_t>(posted.add_2c);
     }
     LocalStream stream;
     write_native_session_message95_0071cca0(&sent, &stream.out, image.context95);
@@ -824,15 +743,11 @@ HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
     // vtable 00D034A0, +20h..+28h the point; 00761F60 is those stores
     // without the two arguments.
     seg42::ShipLeakMessage sent{};
-    if constexpr (kWireGoal4Chain350Bound) {
+    {
         UnitMessageConstructionBinding binding(image.session);
         cc13_sweepC::unit_message_hull_impact_construct_0080ff80(binding, &sent, count, point);
         // Relocate only the body's original vptr 00D034A0 to the existing host profile.
         sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d034a0u);
-    } else {
-    seg42::construct_ship_leak_00761f60(&sent, image.seg42);
-    sent.leak_1c = count;
-    for (int i = 0; i < 3; ++i) sent.vector_20[i] = point[i];
     }
 
     LocalStream stream;
@@ -907,24 +822,17 @@ HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_chang
     // vtable[8] at 0076A27B to 007629A0. These message lifetimes own no
     // references; the host keeps the two bytes read by 007CCFA0's C3h arm.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain506Bound) {
-        // 00769B70..00769B84 allocates 24h, then runs the same constructor.
-        // Keep that real decoded object until its payload has been copied;
-        // 00762920(1) then frees it once. The stack sender takes flags=0.
-        OwnedDecodedMessage<seg42::PlaneChangeStateMessage,
-            delete_plane_change_state_message_00762920> owner;
-        auto& queued = owner.get();
-        seg42::construct_plane_change_state_00762880(&queued, image.seg42);
-        seg42::read_plane_change_state_007629a0(&queued, &stream.in);
-        const PlaneChangeStateCopy copy{queued.state_20, queued.state_21};
-        delete_plane_change_state_message_00762920(&sent, 0u);
-        return copy;
-    } else {
-    seg42::PlaneChangeStateMessage queued{};
+    // 00769B70..00769B84 allocates 24h, then runs the same constructor.
+    // Keep that real decoded object until its payload has been copied;
+    // 00762920(1) then frees it once. The stack sender takes flags=0.
+    OwnedDecodedMessage<seg42::PlaneChangeStateMessage,
+        delete_plane_change_state_message_00762920> owner;
+    auto& queued = owner.get();
     seg42::construct_plane_change_state_00762880(&queued, image.seg42);
     seg42::read_plane_change_state_007629a0(&queued, &stream.in);
-    return PlaneChangeStateCopy{queued.state_20, queued.state_21};
-    }
+    const PlaneChangeStateCopy copy{queued.state_20, queued.state_21};
+    delete_plane_change_state_message_00762920(&sent, 0u);
+    return copy;
 }
 
 std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
@@ -945,25 +853,16 @@ std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
     // The reader reloads
     // the serialized type, sender and flag. The direct delivery retains the
     // posting plane's registry identity, as the other local message routes do.
-    if constexpr (kWireGoal4Chain506Bound) {
-        OwnedDecodedMessage<seg42::UnitMessage,
-            delete_plane_touchdown_message_00762b00> owner;
-        auto& queued = owner.get();
-        seg42::construct_plane_touchdown_00762a60(&queued, image.seg42);
-        cc13_seg5::session_bool_message_read_004645d0(codec,
-            reinterpret_cast<cc13_seg5::Object>(&queued),
-            reinterpret_cast<cc13_seg5::Object>(&stream.in));
-        const auto type = queued.h.base.type_10;
-        delete_plane_touchdown_message_00762b00(&sent, 0u);
-        return type; // 00762B00(1) releases the factory's 20h allocation.
-    } else {
-    seg42::UnitMessage queued{};
+    OwnedDecodedMessage<seg42::UnitMessage,
+        delete_plane_touchdown_message_00762b00> owner;
+    auto& queued = owner.get();
     seg42::construct_plane_touchdown_00762a60(&queued, image.seg42);
     cc13_seg5::session_bool_message_read_004645d0(codec,
         reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in));
-    return queued.h.base.type_10;
-    }
+    const auto type = queued.h.base.type_10;
+    delete_plane_touchdown_message_00762b00(&sent, 0u);
+    return type; // 00762B00(1) releases the factory's 20h allocation.
 }
 
 std::uint8_t HostSessionMessages::make_plane_takeoff_c6() const {
@@ -1000,31 +899,13 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
     // vtable[8] = 0071C6C0. 0071E370 frees the decoded allocation at this
     // bridge's value-consumer boundary; the OFF arm retains its stack copy.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain428Bound) {
-        OwnedDecodedMessage<NativeSessionMessage90, delete_native_session_message90_0071e370> owner;
-        NativeSessionMessage90& queued = owner.get();
-        construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
-        read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
-        const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
-        destroy_native_session_message90_0071c720(&sent);
-        return copy; // owner runs 0071E370(1); the sender stays a stack object.
-    } else {
-    NativeSessionMessage90 queued{};
+    OwnedDecodedMessage<NativeSessionMessage90, delete_native_session_message90_0071e370> owner;
+    NativeSessionMessage90& queued = owner.get();
     construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
     read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
-    if constexpr (kWireGoal4Chain373Bound) {
-        const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
-        // bsp.py show 0071C720: ECX=this, stamp CE4974, RET. The sender's
-        // cleanup funclet C85180 belongs to 0071DD30 (bsp.py callers 0071C720).
-        // Finish both real loopback objects after their payload was consumed.
-        // These host objects use stack storage, so use the non-deleting body.
-        destroy_native_session_message90_0071c720(&queued);
-        destroy_native_session_message90_0071c720(&sent);
-        return copy;
-    } else {
-        return DirectorSubKindCopy{queued.selector_20, queued.value_24};
-    }
-    }
+    const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
+    destroy_native_session_message90_0071c720(&sent);
+    return copy; // owner runs 0071E370(1); the sender stays a stack object.
 }
 
 HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5d(
@@ -1033,7 +914,7 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     // 0071C730..0071C75E: 0075B430(5Dh), +18h word 0, +1Ah 0, +1Ch 0, +20h =
     // the arm byte, +4h = 1, vtable 00CFD9D8 (profile93), +24h = the index.
     NativeSessionMessage93 sent{};
-    if constexpr (kWireGoal4Chain527Bound) {
+    {
         // bsp.py show 0071C730: the existing semantic body produces the 5Dh
         // type/arm/index; this transport supplies its recovered base/header
         // stores. Serialize that result, rather than repeating its payload
@@ -1048,15 +929,6 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
         sent.header.base.delivery_04 = 1;
         sent.header.base.profile_00 = image.profile93.slots;
         std::memcpy(&sent.value_24, &posted.field_24, sizeof sent.value_24);
-    } else {
-    construct_native_session_message_0075b430(&sent.header.base, 0x5d, image.session);
-    sent.header.sender_18 = 0;
-    sent.header.relay_1a = 0;
-    sent.header.flag_1c = 0;
-    sent.flag_20 = arm;
-    sent.header.base.delivery_04 = 1;
-    sent.header.base.profile_00 = image.profile93.slots;
-    sent.value_24 = index;
     }
 
     LocalStream stream;
@@ -1064,30 +936,13 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     // 00768530 case 5Dh: operator new(28h), 0075B030 at 00769D44; 0076A27B
     // vtable[8] = 0071C7E0 (00428D30 sign-extends the 5-bit index).
     stream.begin_read();
-    if constexpr (kWireGoal4Chain428Bound) {
-        OwnedDecodedMessage<NativeSessionMessage93, delete_native_session_message93_0071e390> owner;
-        NativeSessionMessage93& queued = owner.get();
-        construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
-        read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
-        const ClearCommandCopy copy{queued.flag_20, queued.value_24};
-        destroy_native_session_message93_0071c820(&sent);
-        return copy; // owner runs 0071E390(1); no second queued-object teardown.
-    } else {
-    NativeSessionMessage93 queued{};
+    OwnedDecodedMessage<NativeSessionMessage93, delete_native_session_message93_0071e390> owner;
+    NativeSessionMessage93& queued = owner.get();
     construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
     read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
-    if constexpr (kWireGoal4Chain373Bound) {
-        const ClearCommandCopy copy{queued.flag_20, queued.value_24};
-        // bsp.py show 0071C820: root-profile store only; C850C0/C850E0 are
-        // the clear-command senders' cleanup funclets. No payload is read
-        // after teardown, and stack storage must not take scalar-delete bit 0.
-        destroy_native_session_message93_0071c820(&queued);
-        destroy_native_session_message93_0071c820(&sent);
-        return copy;
-    } else {
-        return ClearCommandCopy{queued.flag_20, queued.value_24};
-    }
-    }
+    const ClearCommandCopy copy{queued.flag_20, queued.value_24};
+    destroy_native_session_message93_0071c820(&sent);
+    return copy; // owner runs 0071E390(1); no second queued-object teardown.
 }
 
 HostSessionMessages::CommandBuildingCopy HostSessionMessages::queue_command_building_set_owner_d3(
@@ -1151,7 +1006,7 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     // 00762220 makes the same header stores, so the sent message is 00762220
     // with the torque; 0077C2A0 at 00827329 (flags 7) takes the local route.
     seg42::ShipAddTorqueMessage sent{};
-    if constexpr (kWireGoal4Chain350Bound) {
+    {
         UnitMessageConstructionBinding binding(image.session);
         // 0080FFD0 copies stack DWORDs; preserve the caller's three float bit patterns.
         std::uint32_t bits[3];
@@ -1159,9 +1014,6 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
         cc13_sweepC::unit_message_add_hull_torque_construct_0080ffd0(
             binding, &sent, bits[0], bits[1], bits[2]);
         sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d034c8u);
-    } else {
-    seg42::construct_ship_addtorque_00762220(&sent.h, image.seg42);
-    for (int i = 0; i < 3; ++i) sent.torque_1c[i] = torque[i];
     }
 
     LocalStream stream;
@@ -1169,29 +1021,19 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     // 00768530 case 93h: operator new(28h), 00762220 at 0076942E; 0076A27B
     // vtable[8] = 00762340.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain511Bound) {
-        // 00768530 case 93h allocates the decoded 28h message. Keep that same
-        // allocation through consumption of the real serialized hull torque;
-        // 007626A0 then stamps the root profile and frees it once (flags=1).
-        // The shared RAII owner also covers a reader exception. The sender
-        // remains the existing stack object and never enters this deleting path.
-        OwnedDecodedMessage<seg42::ShipAddTorqueMessage,
-            seg42::delete_ship_addtorque_007626a0> owner;
-        auto& queued = owner.get();
-        seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
-        seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
-        ShipAddTorqueCopy copy;
-        for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
-        return copy;
-    } else {
-    seg42::ShipAddTorqueMessage queued{};
+    // 00768530 case 93h allocates the decoded 28h message. Keep that same
+    // allocation through consumption of the real serialized hull torque;
+    // 007626A0 then stamps the root profile and frees it once (flags=1).
+    // The shared RAII owner also covers a reader exception. The sender
+    // remains the existing stack object and never enters this deleting path.
+    OwnedDecodedMessage<seg42::ShipAddTorqueMessage,
+        seg42::delete_ship_addtorque_007626a0> owner;
+    auto& queued = owner.get();
     seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
     seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
-    // Neither message owns storage; 007626A0's scalar delete only restamps.
     ShipAddTorqueCopy copy;
     for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
     return copy;
-    }
 }
 
 HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_detonate_70(
@@ -1202,7 +1044,7 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     // 00761D90 makes the header stores (+1Ch cleared); the sent message is
     // 00761D90 with the id and the point.
     NativeSessionMessage112 sent{};
-    if constexpr (kWireGoal4Chain350Bound) {
+    {
         UnitMessageConstructionBinding binding(image.session);
         // Only entity+174h is read (bsp.py show 0080FF30). Project the supplied
         // real target handle; no other entity bytes are initialized or consumed.
@@ -1211,54 +1053,28 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
         cc13_sweepC::unit_message_kamikaze_detonate_construct_0080ff30(
             binding, &sent, entity_id_view, point);
         sent.base.profile_00 = image.profile112.slots;
-    } else {
-    construct_native_session_message112_00761d90(&sent, image.context112, image.profile112);
-    sent.value_1c = other_id;
-    for (int i = 0; i < 3; ++i) std::memcpy(&sent.float_bits_20[i], &point[i], sizeof point[i]);
     }
 
     LocalStream stream;
     write_native_session_message112_00761e20(&sent, &stream.out, image.context112);
     // 00768530 case 70h: 00761D90 at 00769026; 0076A27B vtable[8] = 00761EC0.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain478Bound) {
-        // 00768530 allocates the decoded 2Ch message; keep that allocation
-        // through payload consumption. bsp.py show 00762640: stamp CE4974,
-        // free with 00BF65AC iff flags&1. The existing owner uses its matching
-        // allocator and runs that body once, including on a decode exception.
-        OwnedDecodedMessage<NativeSessionMessage112,
-            delete_native_session_message112_00762640> owner;
-        NativeSessionMessage112& queued = owner.get();
-        construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
-        read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
-        KamikazeDetonateCopy copy;
-        copy.other_id = queued.value_1c;
-        for (int i = 0; i < 3; ++i) {
-            std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
-        }
-        if constexpr (kWireGoal4Chain373Bound) {
-            destroy_native_session_message112_00761e10(&sent);
-        }
-        return copy; // owner frees only the decoded object; sender remains on stack.
-    } else {
-    NativeSessionMessage112 queued{};
+    // 00768530 allocates the decoded 2Ch message; keep that allocation
+    // through payload consumption. bsp.py show 00762640: stamp CE4974,
+    // free with 00BF65AC iff flags&1. The existing owner uses its matching
+    // allocator and runs that body once, including on a decode exception.
+    OwnedDecodedMessage<NativeSessionMessage112,
+        delete_native_session_message112_00762640> owner;
+    NativeSessionMessage112& queued = owner.get();
     construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
     read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
     KamikazeDetonateCopy copy;
     copy.other_id = queued.value_1c;
-    for (int i = 0; i < 3; ++i) std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
-    if constexpr (kWireGoal4Chain373Bound) {
-        // bsp.py show 00761E10: root-profile store only. The original
-        // collision sender 008145B0 has two cleanup sites, C90C33/C90C3B.
-        // Run that same non-deleting teardown on the consumed stack objects.
-        destroy_native_session_message112_00761e10(&queued);
-        destroy_native_session_message112_00761e10(&sent);
-    } else {
-        // Neither message owns storage; the drain's 00762640 scalar delete only
-        // restamps the root profile.
+    for (int i = 0; i < 3; ++i) {
+        std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
     }
-    return copy;
-    }
+    destroy_native_session_message112_00761e10(&sent);
+    return copy; // owner frees only the decoded object; sender remains on stack.
 }
 
 HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_damage_9e(
@@ -1268,16 +1084,11 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     // +1Ah 0, +20h = the flag byte, +4h = 1, vtable 00D0334C, +1Ch = the
     // seconds, +24h = the channel. 007608E0 is the header stores.
     seg42::RepairAddDamageMessage sent{};
-    if constexpr (kWireGoal4Chain350Bound) {
+    {
         UnitMessageConstructionBinding binding(image.session);
         cc13_sweepC::unit_message_fire_or_water_damage_construct_0080fa50(
             binding, &sent, channel, seconds, add ? 1u : 0u);
         sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d0334cu);
-    } else {
-    seg42::construct_shiprepair_adddamage_007608e0(&sent, image.seg42);
-    sent.flag_20 = add ? 1u : 0u;
-    sent.amount_1c = seconds;
-    sent.section_24 = channel;
     }
 
     LocalStream stream;
@@ -1285,26 +1096,18 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     // 00768530 case 9Eh: 007608E0 at 007695EE; 0076A27B vtable[8] = 007609E0
     // (00428D30 sign-extends the 3-bit channel).
     stream.begin_read();
-    if constexpr (kWireGoal4Chain509Bound) {
-        // 007695DA..007695F5: factory case 9Eh allocates 28h and constructs
-        // 007608E0, then joins the real decoder at 0076A27B. Keep this owned
-        // receive object through projection and release it through its actual
-        // scalar-delete slot (00D0334C -> 00760BD0), flags=1. The sender stays
-        // stack-owned. Both paths read the same stream and return the same copy.
-        static_assert(sizeof(seg42::RepairAddDamageMessage) == 0x28);
-        OwnedDecodedMessage<seg42::RepairAddDamageMessage,
-            seg42::delete_shiprepair_adddamage_00760bd0> owner;
-        auto& queued = owner.get();
-        seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
-        seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
-        return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
-    } else {
-    seg42::RepairAddDamageMessage queued{};
+    // 007695DA..007695F5: factory case 9Eh allocates 28h and constructs
+    // 007608E0, then joins the real decoder at 0076A27B. Keep this owned
+    // receive object through projection and release it through its actual
+    // scalar-delete slot (00D0334C -> 00760BD0), flags=1. The sender stays
+    // stack-owned. Both paths read the same stream and return the same copy.
+    static_assert(sizeof(seg42::RepairAddDamageMessage) == 0x28);
+    OwnedDecodedMessage<seg42::RepairAddDamageMessage,
+        seg42::delete_shiprepair_adddamage_00760bd0> owner;
+    auto& queued = owner.get();
     seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
     seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
-    // Neither message owns storage; 00760BD0's scalar delete only restamps.
     return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
-    }
 }
 
 HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool steering) const {
@@ -1326,71 +1129,35 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         // 00761990, 006D2F20, 006D1550, 00761960, 004499C0).
         write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
         stream.begin_read();
-        if constexpr (kWireGoal4Chain440Bound) {
-            // 00768530 case 6Bh allocates 24h, constructs 007618E0 and reads
-            // the real stream. Retain that receive object until projection;
-            // 00761990 flags=1 stamps CE4974 and frees this same allocation.
-            OwnedDecodedMessage<NativeSessionMessage107,
-                delete_native_session_message107_00761990> owner;
-            auto& queued = owner.get();
-            construct_native_session_message107_007618e0(&queued, image.context98, image.profile107);
-            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
-            copy.type = queued.header.base.type_10;
-            answer(&native_session_message_is107_00761960);
-            if constexpr (kWireGoal4Chain373Bound) {
-                // The sender remains stack-owned; the decoded owner alone
-                // runs the scalar-deleting path. Neither object is run twice.
-                destroy_native_session_message107_00761950(&sent);
-            }
-        } else {
-        NativeSessionMessage107 queued{};
+        // 00768530 case 6Bh allocates 24h, constructs 007618E0 and reads
+        // the real stream. Retain that receive object until projection;
+        // 00761990 flags=1 stamps CE4974 and frees this same allocation.
+        OwnedDecodedMessage<NativeSessionMessage107,
+            delete_native_session_message107_00761990> owner;
+        auto& queued = owner.get();
         construct_native_session_message107_007618e0(&queued, image.context98, image.profile107);
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
         copy.type = queued.header.base.type_10;
         answer(&native_session_message_is107_00761960);
-        if constexpr (kWireGoal4Chain373Bound) {
-            // bsp.py show 00761950: root-profile store only; C90B56/C91930
-            // clean up the 6Bh messages of the real failure senders.
-            destroy_native_session_message107_00761950(&queued);
-            destroy_native_session_message107_00761950(&sent);
-        } else {
-            // The previous host ended these trivial storage objects directly.
-        }
-        }
+        // The sender remains stack-owned; the decoded owner alone
+        // runs the scalar-deleting path. Neither object is run twice.
+        destroy_native_session_message107_00761950(&sent);
     } else {
         // 00827D65 / 00813530: 007619B0 itself.
         NativeSessionMessage108 sent{};
         construct_native_session_message108_007619b0(&sent, image.context98, image.profile108);
         write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
         stream.begin_read();
-        if constexpr (kWireGoal4Chain440Bound) {
-            // 00768530 case 6Ch likewise allocates 24h for 007619B0;
-            // 00761A60 flags=1 releases the actual decoded message once.
-            OwnedDecodedMessage<NativeSessionMessage108,
-                delete_native_session_message108_00761a60> owner;
-            auto& queued = owner.get();
-            construct_native_session_message108_007619b0(&queued, image.context98, image.profile108);
-            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
-            copy.type = queued.header.base.type_10;
-            answer(&native_session_message_is108_00761a30);
-            if constexpr (kWireGoal4Chain373Bound) {
-                destroy_native_session_message108_00761a20(&sent);
-            }
-        } else {
-        NativeSessionMessage108 queued{};
+        // 00768530 case 6Ch likewise allocates 24h for 007619B0;
+        // 00761A60 flags=1 releases the actual decoded message once.
+        OwnedDecodedMessage<NativeSessionMessage108,
+            delete_native_session_message108_00761a60> owner;
+        auto& queued = owner.get();
         construct_native_session_message108_007619b0(&queued, image.context98, image.profile108);
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
         copy.type = queued.header.base.type_10;
         answer(&native_session_message_is108_00761a30);
-        if constexpr (kWireGoal4Chain373Bound) {
-            // bsp.py show 00761A20: same non-deleting teardown for 6Ch;
-            // its failure-sender cleanup funclets are C90B61/C91938.
-            destroy_native_session_message108_00761a20(&queued);
-            destroy_native_session_message108_00761a20(&sent);
-        } else {
-            // The previous host ended these trivial storage objects directly.
-        }
-        }
+        destroy_native_session_message108_00761a20(&sent);
     }
     // Payloads own no subobjects. With chain440, only the receive allocations
     // are freed; the sender storage still belongs to this stack frame.
@@ -1437,51 +1204,34 @@ HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     stream.begin_read();
     // 00768530 case 98h: 00761310 at 0076952E; case 9Ah: 007613B0. 0076A27B
     // vtable[8] = 004645D0.
-    if constexpr (kWireGoal4Chain514Bound) {
-        // The factory allocates a real 20h-byte message for either arm.
-        // Decode and route that object before releasing it through the
-        // profile's scalar delete. The sender is a stack object (flags=0).
-        // Evidence: bsp.py show 00768530, 007625C0 / 007625E0 --asm;
-        // profiles 00D033C4 / 00D033D8 above retain their original slot 0.
-        auto decode = [&](seg42::UnitMessage& queued) {
-            construct(&queued, image.seg42);
-            cc13_seg5::session_bool_message_read_004645d0(codec,
-                reinterpret_cast<cc13_seg5::Object>(&queued),
-                reinterpret_cast<cc13_seg5::Object>(&stream.in));
-            copy.type = queued.h.base.type_10;
-            copy.to_unit = copy_goes_to_unit_handler(explode_to_parts
-                ? &seg42::is_ship_explodetoparts_00761410 : &seg42::is_ship_wrecked_00761370);
-            copy.wrecked_98 = copy.to_unit && copy.type == 0x98;
-            copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
-        };
-        if (explode_to_parts) {
-            OwnedDecodedMessage<seg42::UnitMessage,
-                delete_ship_explode_to_parts_message_007625e0> owner;
-            decode(owner.get());
-            delete_ship_explode_to_parts_message_007625e0(&sent, 0u);
-        } else {
-            OwnedDecodedMessage<seg42::UnitMessage,
-                delete_ship_wrecked_message_007625c0> owner;
-            decode(owner.get());
-            delete_ship_wrecked_message_007625c0(&sent, 0u);
-        }
-        return copy;
+    // The factory allocates a real 20h-byte message for either arm.
+    // Decode and route that object before releasing it through the
+    // profile's scalar delete. The sender is a stack object (flags=0).
+    // Evidence: bsp.py show 00768530, 007625C0 / 007625E0 --asm;
+    // profiles 00D033C4 / 00D033D8 above retain their original slot 0.
+    auto decode = [&](seg42::UnitMessage& queued) {
+        construct(&queued, image.seg42);
+        cc13_seg5::session_bool_message_read_004645d0(codec,
+            reinterpret_cast<cc13_seg5::Object>(&queued),
+            reinterpret_cast<cc13_seg5::Object>(&stream.in));
+        copy.type = queued.h.base.type_10;
+        copy.to_unit = copy_goes_to_unit_handler(explode_to_parts
+            ? &seg42::is_ship_explodetoparts_00761410 : &seg42::is_ship_wrecked_00761370);
+        copy.wrecked_98 = copy.to_unit && copy.type == 0x98;
+        copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
+    };
+    if (explode_to_parts) {
+        OwnedDecodedMessage<seg42::UnitMessage,
+            delete_ship_explode_to_parts_message_007625e0> owner;
+        decode(owner.get());
+        delete_ship_explode_to_parts_message_007625e0(&sent, 0u);
     } else {
-    seg42::UnitMessage queued{};
-    construct(&queued, image.seg42);
-    cc13_seg5::session_bool_message_read_004645d0(codec,
-        reinterpret_cast<cc13_seg5::Object>(&queued),
-        reinterpret_cast<cc13_seg5::Object>(&stream.in));
-    copy.type = queued.h.base.type_10;
-    // The copy's own IsType answers the ladder (slot 3 of its table).
-    copy.to_unit = copy_goes_to_unit_handler(explode_to_parts
-        ? &seg42::is_ship_explodetoparts_00761410 : &seg42::is_ship_wrecked_00761370);
-    // 00821E80 switches on the copy's +10h.
-    copy.wrecked_98 = copy.to_unit && copy.type == 0x98;
-    copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
-    // Neither message owns storage; 007625C0 / 007625E0 only restamp.
-    return copy;
+        OwnedDecodedMessage<seg42::UnitMessage,
+            delete_ship_wrecked_message_007625c0> owner;
+        decode(owner.get());
+        delete_ship_wrecked_message_007625c0(&sent, 0u);
     }
+    return copy;
 }
 
 namespace {
@@ -1511,7 +1261,7 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
     // 0092CED0: 0075B430(99h), +18h word 0, +1Ah 0, +1Ch 0, +20h = the index,
     // +4h = 1, vtable 00D033EC; 00761450 makes the same header stores.
     seg42::ExplodeOnePartMessage sent{};
-    if constexpr (kWireGoal4Chain415Bound) {
+    {
         // Saved-program 0092CED0..0092CF02 (bsp.py show 0092ced0): the
         // sender constructor takes the destroyed segment index itself.
         // Gunnery supplies its live segment index; the session and 00D033EC
@@ -1522,9 +1272,6 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
         PartDestroyedMessageBinding binding(image.session, image.seg42_vtables);
         entity_mission_seg60_argon::unit_message_part_destroyed_construct_0092ced0(
             binding, &sent, native_part);
-    } else {
-        seg42::construct_ship_explodeonepart_00761450(&sent, image.seg42);
-        sent.part_20 = part;
     }
 
     LocalStream stream;
@@ -1851,69 +1598,34 @@ HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_6
     // 00768530 case 68h / 69h: operator new(24h), 00728F20 at 00768F26 /
     // 00728FA0 at 00768F46; 0076A27B vtable[8] = 006D1550.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain478Bound) {
-        // Both messages borrow the same live session/codec owners as before.
-        // Consume their decoded fields and receiver dispatch before releasing
-        // the native allocation. bsp.py show 00729050 / 00729070: CE4974 store,
-        // then 00BF65AC iff bit 0; neither payload owns further subobjects.
-        const auto consume = [&](NativeSessionMessage104& queued) {
-            construct(&queued);
-            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
-            GunDestroyedCopy copy;
-            copy.type = queued.header.base.type_10;
-            copy.to_entity = copy_goes_to_unit_handler(is_type);
-            if (copy.to_entity) {
-                GunMessageDispatch dispatch;
-                cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
-                copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
-                copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
-            }
-            if constexpr (kWireGoal4Chain373Bound) {
-                if (set) destroy_native_session_message104_00728f60(&sent);
-                else destroy_native_session_message105_00728fe0(&sent);
-            }
-            return copy;
-        };
-        if (set) {
-            OwnedDecodedMessage<NativeSessionMessage104,
-                delete_native_session_message104_00729050> owner;
-            return consume(owner.get());
-        } else {
-            OwnedDecodedMessage<NativeSessionMessage105,
-                delete_native_session_message105_00729070> owner;
-            return consume(owner.get());
+    // Both messages borrow the same live session/codec owners as before.
+    // Consume their decoded fields and receiver dispatch before releasing
+    // the native allocation. bsp.py show 00729050 / 00729070: CE4974 store,
+    // then 00BF65AC iff bit 0; neither payload owns further subobjects.
+    const auto consume = [&](NativeSessionMessage104& queued) {
+        construct(&queued);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        GunDestroyedCopy copy;
+        copy.type = queued.header.base.type_10;
+        copy.to_entity = copy_goes_to_unit_handler(is_type);
+        if (copy.to_entity) {
+            GunMessageDispatch dispatch;
+            cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
+            copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
+            copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
         }
+        if (set) destroy_native_session_message104_00728f60(&sent);
+        else destroy_native_session_message105_00728fe0(&sent);
+        return copy;
+    };
+    if (set) {
+        OwnedDecodedMessage<NativeSessionMessage104,
+            delete_native_session_message104_00729050> owner;
+        return consume(owner.get());
     } else {
-    NativeSessionMessage104 queued{};
-    construct(&queued);
-    read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
-    GunDestroyedCopy copy;
-    copy.type = queued.header.base.type_10;
-    copy.to_entity = copy_goes_to_unit_handler(is_type);
-    if (copy.to_entity) {
-        // The gun's slot 164h, 0072D830, over the copy; then the arm body's own
-        // IsType test on the request (0072B5A0 68h, 007280AC 69h).
-        GunMessageDispatch dispatch;
-        cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
-        copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
-        copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
-    }
-    if constexpr (kWireGoal4Chain373Bound) {
-        // bsp.py show 00728F60/00728FE0: stamp CE4974, retaining every other
-        // byte. Their cleanup funclets C85560/C85580 select the same class
-        // as the constructor above. Consume dispatch results before teardown;
-        // use non-deleting bodies because both host objects are on the stack.
-        if (set) {
-            destroy_native_session_message104_00728f60(&queued);
-            destroy_native_session_message104_00728f60(&sent);
-        } else {
-            destroy_native_session_message105_00728fe0(&queued);
-            destroy_native_session_message105_00728fe0(&sent);
-        }
-    } else {
-        // Neither message owns storage; 00729050 / 00729070 only restamp.
-    }
-    return copy;
+        OwnedDecodedMessage<NativeSessionMessage105,
+            delete_native_session_message105_00729070> owner;
+        return consume(owner.get());
     }
 }
 
@@ -1930,27 +1642,16 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     // 00768530 case C7h: operator new(24h), 00762B20 at 00769C04; 0076A27B
     // vtable[8] = 00762C30.
     stream.begin_read();
-    if constexpr (kWireGoal4Chain506Bound) {
-        OwnedDecodedMessage<seg42::PlaneDisappearMessage,
-            delete_plane_disappear_message_00762bc0> owner;
-        auto& queued = owner.get();
-        seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
-        seg42::read_plane_disappear_00762c30(&queued, &stream.in);
-        PlaneDisappearCopy copy;
-        copy.type = queued.u.h.base.type_10;
-        copy.holder_id = queued.id_20;
-        delete_plane_disappear_message_00762bc0(&sent, 0u);
-        return copy; // 00762BC0(1) releases the factory's 24h allocation.
-    } else {
-    seg42::PlaneDisappearMessage queued{};
+    OwnedDecodedMessage<seg42::PlaneDisappearMessage,
+        delete_plane_disappear_message_00762bc0> owner;
+    auto& queued = owner.get();
     seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
     seg42::read_plane_disappear_00762c30(&queued, &stream.in);
     PlaneDisappearCopy copy;
     copy.type = queued.u.h.base.type_10;
     copy.holder_id = queued.id_20;
-    // Neither message owns storage; 00762BC0 only restamps.
-    return copy;
-    }
+    delete_plane_disappear_message_00762bc0(&sent, 0u);
+    return copy; // 00762BC0(1) releases the factory's 24h allocation.
 }
 
 } // namespace bsp

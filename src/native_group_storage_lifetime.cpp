@@ -3,7 +3,6 @@
 #include "bsp/native_light_lifetime.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/system_lighting_owners.hpp"
-#include "bsp/wire_goal4_chain595_switches.hpp"
 #include <atomic>
 #include <cstring>
 #include <exception>
@@ -137,17 +136,13 @@ void* delete_native_group_storage_00b8f8c0(void* owner,
     destroy_native_group_storage_00b8f680(owner, frame, context, acquired);
     if ((*reinterpret_cast<const volatile unsigned char*>(&flags) & 1u) != 0) {
         acquired.active_call_site = 0x00b8f8d5;
-        if constexpr (kWireGoal4Chain595Bound) {
-            // bsp.py show 00B8F8C0 --asm: after destruction and the low-byte
-            // flags&1 test, B8F8CF..B8F8D5 returns this exact slot to 010902F4.
-            // B8EEB0 performs that same canonical-pool B8ED40 call. Validate
-            // the companion's pool identity before using its static adapter;
-            // neither the slot nor the pool is copied, rebound or returned twice.
-            pool.require_static_binding();
-            return_native_group_slot_00b8eeb0(owner);
-        } else {
-        pool.return_raw_slot_00b8ed40(owner);
-        }
+        // bsp.py show 00B8F8C0 --asm: after destruction and the low-byte
+        // flags&1 test, B8F8CF..B8F8D5 returns this exact slot to 010902F4.
+        // B8EEB0 performs that same canonical-pool B8ED40 call. Validate
+        // the companion's pool identity before using its static adapter;
+        // neither the slot nor the pool is copied, rebound or returned twice.
+        pool.require_static_binding();
+        return_native_group_slot_00b8eeb0(owner);
         acquired.pool_returned = true;
     }
     return owner;

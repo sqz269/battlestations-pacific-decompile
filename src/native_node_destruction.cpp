@@ -1,6 +1,5 @@
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/native_tagged_leaf_b6_16e.hpp"
-#include "bsp/wire_goal4_chain573_switches.hpp"
 #include "bsp/point_effect_matrix_setters.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/native_ref_counted.hpp"
@@ -118,16 +117,12 @@ void unlink_native_node_child_00b6d940(CameraTransform& parent, CameraTransform&
     if (previous) previous->next_sibling = child.next_sibling;
     if (child.next_sibling) child.next_sibling->previous_sibling = child.previous_sibling;
     if (parent.first_child == &child) parent.first_child = parent.first_child->next_sibling;
-    if constexpr (kWireGoal4Chain573Bound) {
-        // B6D980 reads the actual +38h count. Keep B6D940's read/write
-        // after all sibling/head updates, including unsigned DWORD wrap;
-        // diagnostic transforms have no actual node and keep their storage.
-        if (const auto actual = parent.raw_node_key()) {
-            parent.child_count = bsp_tagged_b6_16e_00b6d980(
-                reinterpret_cast<const void*>(static_cast<std::uintptr_t>(actual))) - 1u;
-        } else {
-            --parent.child_count;
-        }
+    // B6D980 reads the actual +38h count. Keep B6D940's read/write
+    // after all sibling/head updates, including unsigned DWORD wrap;
+    // diagnostic transforms have no actual node and keep their storage.
+    if (const auto actual = parent.raw_node_key()) {
+        parent.child_count = bsp_tagged_b6_16e_00b6d980(
+            reinterpret_cast<const void*>(static_cast<std::uintptr_t>(actual))) - 1u;
     } else {
         --parent.child_count;
     }

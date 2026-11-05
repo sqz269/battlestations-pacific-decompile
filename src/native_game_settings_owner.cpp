@@ -3,7 +3,6 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include "bsp/game_settings.hpp"
-#include "bsp/wire_goal4_chain328_switches.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <exception>
@@ -116,29 +115,16 @@ void* construct_native_game_settings_008d7710(void* p,NativeGameSettingsContext&
         op.unwind_state=1;byte(p,0xb0,0);byte(p,0xb1,0);byte(p,0xb2,1);op.native_site=0x008d77b4;
         construct_native_string_header_0041e870(at(p,0xb4),c.raw_strings,c.empty_00ce3a0c);
         const U audio=c.audio_bits_00ce3800;
-        if constexpr(kWireGoal4Chain328Bound) {
-            // bsp.py show 008D7710 --asm: 008D77C4..008D77D3 inlines 008D41F0's
-            // four audio stores. Call its existing body with the captured cell.
-            constructor_audio_defaults(p,audio);
-        } else {
-        word(p,0x20,audio);word(p,0x28,audio);word(p,0x2c,audio);word(p,0x30,audio);
-        }
+        // bsp.py show 008D7710 --asm: 008D77C4..008D77D3 inlines 008D41F0's
+        // four audio stores. Call its existing body with the captured cell.
+        constructor_audio_defaults(p,audio);
         const U video=c.video_bits_00ce7d20;
         byte(p,8,1);byte(p,9,0);word(p,0xc,2);byte(p,0x10,1);byte(p,0x4a,1);byte(p,0xb2,1);
-        if constexpr(kWireGoal4Chain328Bound) {
-            // 008D7801..008D7871 is 008D4520's complete store set with
-            // reset_resolution=true, keep_fullscreen=false. Keep +80h's
-            // gameplay store separate; no whole-owner copy or second run.
-            word(p,0x80,0);
-            constructor_video_defaults(p,video);
-        } else {
-        word(p,0x80,0);word(p,0x78,0);word(p,0x14,0x280);word(p,0x18,0x1e0);
-        word(p,0x5c,0);word(p,0x58,0);byte(p,0x60,1);word(p,0x64,0);word(p,0x68,2);
-        byte(p,0x1d,0);byte(p,0x1c,0);word(p,0x54,2);byte(p,0x84,1);byte(p,0x85,0);
-        byte(p,0x6c,1);word(p,0x70,0);byte(p,0x74,1);byte(p,0x7c,1);byte(p,0x8c,1);
-        byte(p,0x8d,1);word(p,0x90,1);byte(p,0x1e,1);word(p,0x34,video);
-        byte(p,0x86,1);word(p,0x88,1);
-        }
+        // 008D7801..008D7871 is 008D4520's complete store set with
+        // reset_resolution=true, keep_fullscreen=false. Keep +80h's
+        // gameplay store separate; no whole-owner copy or second run.
+        word(p,0x80,0);
+        constructor_video_defaults(p,video);
         byte(p,0x42,0);byte(p,0x43,0);byte(p,0x41,1);
         byte(p,0x40,0);byte(p,0x44,1);
         auto* const manager=c.profile.current_manager_00f8abe8;op.unwind_state=2;

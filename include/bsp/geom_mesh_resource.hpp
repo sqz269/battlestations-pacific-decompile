@@ -2,7 +2,6 @@
 #include "bsp/part_damage_reachability.hpp"
 #include "bsp/structured_reader.hpp"
 #include "bsp/structured_resource_registry.hpp"
-#include "bsp/wire_goal2_chain181_switches.hpp"
 #include <array>
 #include <cstdint>
 #include <memory>
@@ -104,7 +103,7 @@ struct GeomMeshEdge {
     std::uint32_t b{};
 };
 
-struct GeomMeshResourcePayload : detail::GeomMeshTreeOwner<kWireGoal2Chain181Bound> {
+struct GeomMeshResourcePayload : detail::GeomMeshTreeOwner<true> {
     // The element list in authored order, before the 00727704 merge pass.
     std::vector<GeomMeshElement> authored_elements;
     // The surviving elements after 00727704..00727A6D. This is the vector at

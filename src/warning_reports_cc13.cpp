@@ -3,7 +3,6 @@
 #include "bsp/engine_seg49_64_78_cc13.hpp" // WarningObject, base constructors
 #include "bsp/ship_ai_states.hpp" // party_relative_to_00803510
 #include "bsp/frontend_screens_cc13.hpp" // 005B7F60 observer_slot_set (chain 121)
-#include "bsp/wire_goal2_chain121_switches.hpp"
 
 #include <cstdint>
 
@@ -50,13 +49,9 @@ private:
 // (00975142) keeps set_slot.
 inline void set_slot_via_observer_body(WarningHost& host, void*& current, WarningSlot slot, WarningEntity entity)
 {
-    if constexpr (kWireGoal2Chain121Bound) {
-        // 005B7F60 cc13_fe1::observer_slot_set over the warning slot; OFF keeps set_slot inline.
-        WarningObserverSlotView view(host, current, slot);
-        cc13_fe1::observer_slot_set(view, const_cast<void*>(entity));
-    } else {
-        set_slot(host, current, slot, entity);
-    }
+    // 005B7F60 cc13_fe1::observer_slot_set over the warning slot; OFF keeps set_slot inline.
+    WarningObserverSlotView view(host, current, slot);
+    cc13_fe1::observer_slot_set(view, const_cast<void*>(entity));
 }
 
 // Kind suffix shared by several branches: ship / plane / other.

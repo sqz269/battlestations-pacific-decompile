@@ -1,9 +1,5 @@
 #include "bsp/native_vfs_extension_prefix.hpp"
 #include "bsp/engine_services_cc13.hpp"
-#include "bsp/wire_goal2_chain148_switches.hpp"
-#include "bsp/wire_goal2_chain208_switches.hpp"
-#include "bsp/wire_goal4_chain457_switches.hpp"
-#include "bsp/wire_goal4_chain602_switches.hpp"
 
 #include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -71,7 +67,7 @@ template<bool RegisteredPair = false> struct Pair {
             return;
         }
         // 00bdb7c0 calls the registered-pair destructor; OFF keeps local releases.
-        if constexpr (RegisteredPair && kWireGoal2Chain148Bound) {
+        if constexpr (RegisteredPair) {
             if (state >= 0) {
                 engine_services_cc13::destroy_string_pair_00bdb7c0(
                     engine_services_cc13::NativeStringPairView{
@@ -200,36 +196,14 @@ void* allocate_node(void* left, void* parent, void* right, const void* pair,
 
 void insert_pair(void* tree, const Pair<>& pair,
     ActualNativeStringPoolStorage& strings) {
-    if constexpr (kWireGoal4Chain457Bound) {
-        // bsp.py show 00BE0B90 / 00BE0370 / 00BDF700: extension-only
-        // descent, native 20h node construction, then RB insertion. Borrow
-        // the SAME manager+54h tree and normalized, pooled two-header pair;
-        // the earlier exact-pair lookup still owns duplicate suppression.
-        engine_services_cc13::InsertResult result{};
-        engine_services_cc13::prefix_tree_insert_equal_00be0b90(
-            *static_cast<engine_services_cc13::NativeContainerHeader*>(tree),
-            result, &pair.first, strings);
-    } else {
-    void* parent = Tree::head(tree);
-    void* current = Tree::parent(parent);
-    std::uint8_t insert_left = 1;
-    while (!Tree::sentinel(current)) {
-        parent = current;
-        insert_left = static_cast<std::uint8_t>(
-            compare(pair.first, header(current, 0x0c)) < 0);
-        current = insert_left ? Tree::left(current) : Tree::right(current);
-    }
-    std::byte result[12]; // BE0B90 publishes owner,node,success byte.
-    detail::link_tree_node<Tree>(tree, result, insert_left, parent, &pair.first,
-        0x0ffffffeu,
-        [&](void* left, void* parent_node, void* right, const void* source,
-            std::uint8_t color) {
-            return allocate_node(left, parent_node, right, source, color, strings);
-        },
-        [](void* owner, void* node) { rotate_native_physical_index_left_00bda090(owner, node); },
-        [](void* owner, void* node) { rotate_native_physical_index_right_00bd93e0(owner, node); },
-        [] { throw std::length_error("map/set<T> too long"); });
-    }
+    // bsp.py show 00BE0B90 / 00BE0370 / 00BDF700: extension-only
+    // descent, native 20h node construction, then RB insertion. Borrow
+    // the SAME manager+54h tree and normalized, pooled two-header pair;
+    // the earlier exact-pair lookup still owns duplicate suppression.
+    engine_services_cc13::InsertResult result{};
+    engine_services_cc13::prefix_tree_insert_equal_00be0b90(
+        *static_cast<engine_services_cc13::NativeContainerHeader*>(tree),
+        result, &pair.first, strings);
 }
 } // namespace
 
@@ -239,7 +213,7 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
     void* tree = at(manager, 0x54);
     void* const captured_head = Tree::head(tree);
     // 00bdc3f0 calls the native pair lookup; OFF keeps the local tree scan.
-    if constexpr (kWireGoal2Chain148Bound) {
+    {
         PrefixFindAdapter host(strings, callbacks);
         engine_services_cc13::NativeIterator result;
         engine_services_cc13::vfs_find_extension_prefix_pair_00bdc3f0(
@@ -247,19 +221,13 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
             *static_cast<const NativeString*>(extension),
             *static_cast<const NativeString*>(directory), strings, host);
         if (result.node != captured_head) return;
-    } else {
-        if (find_pair(tree, extension, directory, strings, callbacks) != captured_head) return;
     }
-    Pair<kWireGoal2Chain148Bound> normalized(strings);
+    Pair<true> normalized(strings);
     // 00BE14DC: 00bdcbb0 builds the extension-first pair; OFF keeps the local two-copy stand-in.
-    if constexpr (kWireGoal2Chain208Bound) {
-        normalized.construct_with_pair_constructor(extension, directory);
-    } else {
-        normalized.construct_extension_first(extension, directory);
-    }
+    normalized.construct_with_pair_constructor(extension, directory);
     normalized.lower_and_trail();
     Pair copied(strings);
-    if constexpr (kWireGoal4Chain602Bound) {
+    {
         // 00BE154D calls 00BDCEA0 with the normalized pair as its source.
         // Both headers stay in the actual temporary and use the manager's
         // existing string pool. BDCEA0 copies +0 then +8 (show 00bdcea0 --asm).
@@ -273,8 +241,6 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
         copied.state = 1;
         engine_services_cc13::copy_string_pair_00bdcea0(
             &copied.first, &normalized.first, strings);
-    } else {
-    copied.construct_extension_first(&normalized.first, &normalized.second);
     }
     insert_pair(tree, copied, strings);
 }

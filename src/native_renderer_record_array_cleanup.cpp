@@ -1,7 +1,6 @@
 #include "bsp/native_renderer_record_array_cleanup.hpp"
 #include "bsp/native_renderer_pointer_array_destroy.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain351_switches.hpp"
 
 namespace bsp {
 // Native instruction equivalence: destructors23, resizes80, reserves95 bytes,
@@ -21,34 +20,22 @@ void __fastcall resize_native_renderer_third_state_cache_00b22e90(
 }
 
 void __fastcall destroy_native_renderer_vertex_shader_registry_00b29b60(void* header) {
-    if constexpr (kWireGoal4Chain351Bound) {
-        // B29B65 calls B25CF0(header, 0), then B29B6A reloads the current data
-        // for BF6989. The renderer owns this actual +1AC4h array header.
-        resize_native_renderer_vertex_shader_registry_00b25cf0(header, 0, 0);
-        singleton_lifetime_free(reinterpret_cast<void*>(
-            *static_cast<volatile std::uint32_t*>(header)));
-    } else {
-        destroy_native_renderer_vertex_pointers_00b29b20(header);
-    }
+    // B29B65 calls B25CF0(header, 0), then B29B6A reloads the current data
+    // for BF6989. The renderer owns this actual +1AC4h array header.
+    resize_native_renderer_vertex_shader_registry_00b25cf0(header, 0, 0);
+    singleton_lifetime_free(reinterpret_cast<void*>(
+        *static_cast<volatile std::uint32_t*>(header)));
 }
 void __fastcall destroy_native_renderer_pixel_shader_registry_00b29b80(void* header) {
-    if constexpr (kWireGoal4Chain351Bound) {
-        // B29B85 -> B25D40, B29B8A reload, B29B8D -> BF6989; renderer+1AD0h.
-        resize_native_renderer_pixel_shader_registry_00b25d40(header, 0, 0);
-        singleton_lifetime_free(reinterpret_cast<void*>(
-            *static_cast<volatile std::uint32_t*>(header)));
-    } else {
-        destroy_native_renderer_vertex_pointers_00b29b20(header);
-    }
+    // B29B85 -> B25D40, B29B8A reload, B29B8D -> BF6989; renderer+1AD0h.
+    resize_native_renderer_pixel_shader_registry_00b25d40(header, 0, 0);
+    singleton_lifetime_free(reinterpret_cast<void*>(
+        *static_cast<volatile std::uint32_t*>(header)));
 }
 void __fastcall destroy_native_renderer_third_state_cache_00b28090(void* header) {
-    if constexpr (kWireGoal4Chain351Bound) {
-        // B28095 -> B22E90, B2809A reload, B2809D -> BF6989; renderer+1ADCh.
-        resize_native_renderer_third_state_cache_00b22e90(header, 0, 0);
-        singleton_lifetime_free(reinterpret_cast<void*>(
-            *static_cast<volatile std::uint32_t*>(header)));
-    } else {
-        destroy_native_renderer_vertex_pointers_00b29b20(header);
-    }
+    // B28095 -> B22E90, B2809A reload, B2809D -> BF6989; renderer+1ADCh.
+    resize_native_renderer_third_state_cache_00b22e90(header, 0, 0);
+    singleton_lifetime_free(reinterpret_cast<void*>(
+        *static_cast<volatile std::uint32_t*>(header)));
 }
 } // namespace bsp

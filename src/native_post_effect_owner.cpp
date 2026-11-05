@@ -5,7 +5,6 @@
 #include "bsp/native_logical_vertex_owner.hpp"
 #include "bsp/native_material_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain578_switches.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -112,14 +111,10 @@ void destroy_native_post_effect_owner_00b4e2f0(NativePostEffectOwner& owner) {
     auto& context = owner.context_;
     put(actual, 0, 0x00d61ec8u); // B4E310
     const Word stream = [&] {
-        if constexpr (kWireGoal4Chain578Bound) {
-            // B4E316 captures this actual 24h owner's +18 before B4E319's IAT
-            // read. B4EC50 is exactly MOV EAX,[ECX+18]; RET, without side effects.
-            // Evidence: bsp.py show 00b4e2f0 --asm / show 00b4ec50 --asm.
-            return native_post_effect_pass_raw_18_00b4ec50(actual);
-        } else {
-            return word(actual, 0x18); // B4E316, before IAT capture
-        }
+        // B4E316 captures this actual 24h owner's +18 before B4E319's IAT
+        // read. B4EC50 is exactly MOV EAX,[ECX+18]; RET, without side effects.
+        // Evidence: bsp.py show 00b4e2f0 --asm / show 00b4ec50 --asm.
+        return native_post_effect_pass_raw_18_00b4ec50(actual);
     }();
     const auto decrement = context.actual_decrement_00ce2220; // B4E319
     try { // Native state0 is armed at B4E323, after capture.

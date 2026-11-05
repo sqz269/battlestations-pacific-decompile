@@ -2,7 +2,6 @@
 #include "bsp/camera_plane_initialization.hpp"
 #include "bsp/system_fog_owner.hpp"
 #include "bsp/native_tagged_leaf_b6_16e.hpp"
-#include "bsp/wire_goal4_chain581_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -54,17 +53,13 @@ BSP_CAMERA_OFFSET(axis_x_44c, 0x44c);
 namespace {
 constexpr std::uint32_t camera_table = 0x00d62cf0;
 CameraAxis& direction_backing(NativeCameraStorageView& storage) noexcept {
-    if constexpr (kWireGoal4Chain581Bound) {
-        // bsp.py show 00b6fc60 --asm: LEA EAX,[ECX+1ACh]; RET.
-        // The actual camera starts at storage.node; the offset assertion above
-        // identifies its existing CameraAxis subobject. Bind that same object,
-        // without reading its pre-construction bytes or copying its state.
-        const auto base = static_cast<std::uint32_t>(
-            reinterpret_cast<std::uintptr_t>(&storage.node));
-        return *reinterpret_cast<CameraAxis*>(bsp_tagged_b6_16e_00b6fc60(base));
-    } else {
-        return storage.camera.direction_1ac;
-    }
+    // bsp.py show 00b6fc60 --asm: LEA EAX,[ECX+1ACh]; RET.
+    // The actual camera starts at storage.node; the offset assertion above
+    // identifies its existing CameraAxis subobject. Bind that same object,
+    // without reading its pre-construction bytes or copying its state.
+    const auto base = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(&storage.node));
+    return *reinterpret_cast<CameraAxis*>(bsp_tagged_b6_16e_00b6fc60(base));
 }
 void word(float& destination, std::uint32_t bits) noexcept {
     std::memcpy(&destination, &bits, 4);

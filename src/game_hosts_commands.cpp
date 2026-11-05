@@ -17,16 +17,10 @@
 // include/bsp/game_hosts_commands.hpp.
 
 #include "bsp/game_hosts_commands.hpp"
-#include "bsp/wire_goal4_chain527_switches.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_derived.hpp"
-#include "bsp/wire_goal4_chain357_switches.hpp"
-#include "bsp/wire_goal4_chain450_switches.hpp"
-#include "bsp/wire_goal4_chain475_switches.hpp"
-#include "bsp/wire_goal4_chain498_switches.hpp"
-#include "bsp/wire_goal4_chain524_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -45,18 +39,6 @@
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/cc13_seg33a.hpp"
-#include "bsp/wire_goal1_chain10_switches.hpp"
-#include "bsp/wire_goal2_chain42_switches.hpp"
-#include "bsp/wire_goal2_chain75_switches.hpp"
-#include "bsp/wire_goal2_chain158_switches.hpp"
-#include "bsp/wire_goal2_chain165_switches.hpp"
-#include "bsp/wire_goal4_chain248_switches.hpp"
-#include "bsp/wire_goal4_chain255_switches.hpp"
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
-#include "bsp/wire_goal4_chain276_switches.hpp"
-#include "bsp/wire_goal4_chain280_switches.hpp"
-#include "bsp/wire_goal4_chain292_switches.hpp"  // 0071EDD0 in the 0071DDB0 walk
-#include "bsp/wire_goal4_chain315_switches.hpp"
 #include "bsp/plane_squadron_host.hpp"           // plane+9D4h / +3D0h stand-in (chain 292)
 #include "bsp/gameplay_seg52_cc13.hpp"           // 00836040 / 0084DD20 (chain 292)
 #include "bsp/band_0071_cc13.hpp"                // 0071DEB0 (chain 292)
@@ -299,27 +281,23 @@ private:
     }
     int nearest_point_index_world_007b0900(const Component* path, const Vec3& position,
         float* distance) override {
-        if constexpr (bsp::kWireGoal4Chain357Bound) {
-            if (path != &component_ || !has_local_geometry_ || local_points_.empty())
-                throw std::logic_error("authored path nearest query has no retained local geometry");
-            // 007B0900: 007B092D obtains owner+110h through the 00B63D50
-            // inverse; 007B0974 calls 00B62D10 with (world XYZ,1), then
-            // 007B09A8..007B09CC divides by W before 007B09D0's 007AED10. Both
-            // frame and points are the scene loader's actual authored data,
-            // retained together for this source's lifetime. No identity-frame
-            // assumption, flattened Y, or second local-to-world transform.
-            bsp::CameraMatrix inverse;
-            bsp::derive_pose_affine_inverse_00b63d50(inverse, world_frame_);
-            const float query[4]{position.x, position.y, position.z, 1.0f}; // D7A24C
-            float homogeneous[4];
-            bsp::transform_native_vector4_00b62d10(query, homogeneous, inverse.data());
-            const auto local = bsp::gameplay_seg46_cc13::path_local_from_homogeneous_007b0900(
-                homogeneous);
-            return bsp::gameplay_seg46_cc13::nearest_point_index_007aed10(
-                local_points_.data(), static_cast<int>(local_points_.size()), local, distance);
-        } else {
-        throw std::logic_error("authored director count/point queries do not request nearest index");
-        }
+        if (path != &component_ || !has_local_geometry_ || local_points_.empty())
+            throw std::logic_error("authored path nearest query has no retained local geometry");
+        // 007B0900: 007B092D obtains owner+110h through the 00B63D50
+        // inverse; 007B0974 calls 00B62D10 with (world XYZ,1), then
+        // 007B09A8..007B09CC divides by W before 007B09D0's 007AED10. Both
+        // frame and points are the scene loader's actual authored data,
+        // retained together for this source's lifetime. No identity-frame
+        // assumption, flattened Y, or second local-to-world transform.
+        bsp::CameraMatrix inverse;
+        bsp::derive_pose_affine_inverse_00b63d50(inverse, world_frame_);
+        const float query[4]{position.x, position.y, position.z, 1.0f}; // D7A24C
+        float homogeneous[4];
+        bsp::transform_native_vector4_00b62d10(query, homogeneous, inverse.data());
+        const auto local = bsp::gameplay_seg46_cc13::path_local_from_homogeneous_007b0900(
+            homogeneous);
+        return bsp::gameplay_seg46_cc13::nearest_point_index_007aed10(
+            local_points_.data(), static_cast<int>(local_points_.size()), local, distance);
     }
 
     std::vector<Vec3> world_points_;
@@ -442,19 +420,15 @@ bsp::gameplay_seg38_cc13::DirectorQueue cc13_director_queue(const GameDirector& 
     if (director.slot_command[0] == bsp::gameplay_seg38_cc13::kCmdMoveOnPath
         && director.path_built) {
         q.paths[0].present = true;
-        if constexpr (bsp::kWireGoal4Chain524Bound) {
-            // bsp.py show 0071FC30: the retained DirectorPathObject's
-            // vtable[4] is MOV AL,1; it does not inspect its receiver. When
-            // the older authored-path projection has no retained object,
-            // keep that same binary constant rather than inventing storage.
-            q.paths[0].vt4_valid = director.user_path_object
-                ? bsp::director_geommesh_seg38_39_argon::triv_body_0071fc30(
-                    const_cast<bsp::gameplay_seg38_cc13::DirectorPathObject*>(
-                        &*director.user_path_object)) != 0
-                : true;
-        } else {
-        q.paths[0].vt4_valid = true;
-        }
+        // bsp.py show 0071FC30: the retained DirectorPathObject's
+        // vtable[4] is MOV AL,1; it does not inspect its receiver. When
+        // the older authored-path projection has no retained object,
+        // keep that same binary constant rather than inventing storage.
+        q.paths[0].vt4_valid = director.user_path_object
+            ? bsp::director_geommesh_seg38_39_argon::triv_body_0071fc30(
+                const_cast<bsp::gameplay_seg38_cc13::DirectorPathObject*>(
+                    &*director.user_path_object)) != 0
+            : true;
         q.paths[0].has_point_list = true;
         q.paths[0].point_count = static_cast<int>(director.path_points.size());
     }
@@ -770,30 +744,15 @@ struct GameCommandsHost::Impl {
     }
 
     int command_count(const GameDirector& director) const noexcept {
-        if constexpr (bsp::kWireGoal4Chain527Bound) {
-            // bsp.py show 0071BE60 --asm: EAX counts the +54h command words,
-            // stride 1Ch, stopping at the first null or ten slots. The export's
-            // void prototype loses that EAX result. Project only the words
-            // this body reads, avoiding unrelated target/path classification.
-            bsp::gameplay_seg38_cc13::DirectorQueue queue;
-            for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i)
-                queue.slots[i].command_class = director.slot_command[i];
-            return bsp::gameplay_seg38_cc13::filled_slot_count_0071be60(
-                queue);
-        } else {
-        // 0071E6D6..0071E6EE and 0071E56B..0071E57E, the unweighted walk from
-        // director+54h with stride 1Ch that stops at the first null command:
-        // the index of the first empty slot. This is what every site that wants
-        // a SLOT INDEX runs. The weighted 0071D780, whose `moveonpath` slots
-        // count as their point count, is the queue-full test alone and lives on
-        // DirectorBinding::command_count.
-        int index = 0;
-        while (index < bsp::kDirectorCommandSlotCount
-            && director.slot_command[index] != 0) {
-            ++index;
-        }
-        return index;
-        }
+        // bsp.py show 0071BE60 --asm: EAX counts the +54h command words,
+        // stride 1Ch, stopping at the first null or ten slots. The export's
+        // void prototype loses that EAX result. Project only the words
+        // this body reads, avoiding unrelated target/path classification.
+        bsp::gameplay_seg38_cc13::DirectorQueue queue;
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i)
+            queue.slots[i].command_class = director.slot_command[i];
+        return bsp::gameplay_seg38_cc13::filled_slot_count_0071be60(
+            queue);
     }
 
     // Packet cc9_set_command_queue_delay: the loopback vector session+24Ch
@@ -1484,80 +1443,69 @@ public:
         // target that resolves to the director's own endpoint at director+34h
         // and the command is `cruise` or `stop`. The endpoint is the session
         // owner's and is null here, so no descriptor resolves to it.
-        if constexpr (kWireGoal4Chain292Bound) {
-            // Goal 4 chain 292. director+34h is the director's OWN UNIT, not a
-            // session endpoint: 0071EE6C loads it and reads its +FCh pose, and the
-            // idle tail names it through 00465080 for `cruise` and `stop`
-            // (00836E6C / 00836E84, make_command_target_00465080 above). So the
-            // self test is 00521EA0 answering this unit's handle, and the slot
-            // runs per director class, which the unit's class decides through its
-            // vtable +9Ch builder:
-            //  - a push through the squadron controller (00D0BD98+14h = 00D0BDAC,
-            //    kSquadronSetCommandBound's 0071E6C0 arm): 0084DD20, where a self
-            //    `moveto` answers 1 unchanged and a self `stop` is emptied;
-            //  - the ship family (IsKindOf 6, the nine vtables whose +9Ch is
-            //    00810F60 -> 008366D0, docs/CC13_FIX12.md): the derived director
-            //    00D09F58, +14h = 00D09F6C = 00836040;
-            //  - anything else (airfield 006D0C80, command building / fort
-            //    00743E90 and 008429E0 build the base 00D09EC0): +14h = 00D09ED4 =
-            //    0071D540, XOR AL,AL / RET 8, so 0 and the descriptor untouched.
-            // 0071E73C/0071E742 then refuse the push into a filled queue. The zero
-            // point [00F87574..7C] is BSS: three zeroes at load
-            // (default_command_position).
-            if (!(kSquadronSetCommandBound && squadron_row_)
-                && !bsp::unit_kind_is_ship(chain_.unit.class_id)) {
-                chain_.owner.done("WeaponDirector::base_self_target_0071d540", 0x0071d540u);
-                return false;
-            }
-            namespace g52 = bsp::gameplay_seg52_cc13;
-            const bool own_unit = chain_.owner.resolve_target_00521ea0(target)
-                == static_cast<std::uint32_t>(chain_.unit.index) + 1u;
-            g52::SceneCommandTargetView view;
-            view.b0 = target.kind;
-            view.b1 = target.position_valid;
-            view.w2 = target.object_id;
-            view.d4 = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target.object));
-            view.point_08 = {target.position[0], target.position[1], target.position[2]};
-            view.f14 = target.trailing;
-            const g52::Vec3f zero_point_f87574{};
-            bool answer = false;
-            if (kSquadronSetCommandBound && squadron_row_) {
-                answer = g52::squadron_filter_self_target_command_0084dd20(command, view,
-                    own_unit, zero_point_f87574);
-                chain_.owner.done("WeaponDirector::squadron_self_target_0084dd20", 0x0084dd20u);
-            } else {
-                answer = g52::director_normalize_self_target_00836040(command, view,
-                    own_unit, zero_point_f87574);
-                chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
-            }
-            target.kind = view.b0;
-            target.position_valid = view.b1;
-            target.object_id = view.w2;
-            target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(view.d4));
-            target.position[0] = view.point_08.x;
-            target.position[1] = view.point_08.y;
-            target.position[2] = view.point_08.z;
-            target.trailing = view.f14;
-            if (answer) ++chain_.owner.summary.self_target_answers;
-            return answer;
-        } else {
-        chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
-        if (command != 0x00e08f70u && command != 0x00e08f88u) return false;
-        if (target.object == nullptr) return false;
-        return false;
+        // Goal 4 chain 292. director+34h is the director's OWN UNIT, not a
+        // session endpoint: 0071EE6C loads it and reads its +FCh pose, and the
+        // idle tail names it through 00465080 for `cruise` and `stop`
+        // (00836E6C / 00836E84, make_command_target_00465080 above). So the
+        // self test is 00521EA0 answering this unit's handle, and the slot
+        // runs per director class, which the unit's class decides through its
+        // vtable +9Ch builder:
+        //  - a push through the squadron controller (00D0BD98+14h = 00D0BDAC,
+        //    kSquadronSetCommandBound's 0071E6C0 arm): 0084DD20, where a self
+        //    `moveto` answers 1 unchanged and a self `stop` is emptied;
+        //  - the ship family (IsKindOf 6, the nine vtables whose +9Ch is
+        //    00810F60 -> 008366D0, docs/CC13_FIX12.md): the derived director
+        //    00D09F58, +14h = 00D09F6C = 00836040;
+        //  - anything else (airfield 006D0C80, command building / fort
+        //    00743E90 and 008429E0 build the base 00D09EC0): +14h = 00D09ED4 =
+        //    0071D540, XOR AL,AL / RET 8, so 0 and the descriptor untouched.
+        // 0071E73C/0071E742 then refuse the push into a filled queue. The zero
+        // point [00F87574..7C] is BSS: three zeroes at load
+        // (default_command_position).
+        if (!(kSquadronSetCommandBound && squadron_row_)
+            && !bsp::unit_kind_is_ship(chain_.unit.class_id)) {
+            chain_.owner.done("WeaponDirector::base_self_target_0071d540", 0x0071d540u);
+            return false;
         }
+        namespace g52 = bsp::gameplay_seg52_cc13;
+        const bool own_unit = chain_.owner.resolve_target_00521ea0(target)
+            == static_cast<std::uint32_t>(chain_.unit.index) + 1u;
+        g52::SceneCommandTargetView view;
+        view.b0 = target.kind;
+        view.b1 = target.position_valid;
+        view.w2 = target.object_id;
+        view.d4 = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target.object));
+        view.point_08 = {target.position[0], target.position[1], target.position[2]};
+        view.f14 = target.trailing;
+        const g52::Vec3f zero_point_f87574{};
+        bool answer = false;
+        if (kSquadronSetCommandBound && squadron_row_) {
+            answer = g52::squadron_filter_self_target_command_0084dd20(command, view,
+                own_unit, zero_point_f87574);
+            chain_.owner.done("WeaponDirector::squadron_self_target_0084dd20", 0x0084dd20u);
+        } else {
+            answer = g52::director_normalize_self_target_00836040(command, view,
+                own_unit, zero_point_f87574);
+            chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
+        }
+        target.kind = view.b0;
+        target.position_valid = view.b1;
+        target.object_id = view.w2;
+        target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(view.d4));
+        target.position[0] = view.point_08.x;
+        target.position[1] = view.point_08.y;
+        target.position[2] = view.point_08.z;
+        target.trailing = view.f14;
+        if (answer) ++chain_.owner.summary.self_target_answers;
+        return answer;
     }
     void store_slot(int slot_index, std::uint32_t command,
         const bsp::SceneCommandTarget& target) override {
         if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return;
         chain_.director.slot_command[slot_index] = command;
         // 0071DB50 copies the incoming target at 0071E76C; OFF keeps the host's slot assignment.
-        if constexpr (bsp::kWireGoal2Chain158Bound) {
-            bsp::director_geommesh_seg38_39_argon::bsp_weapon_director_assign_slot_target_0071db50(
-                chain_.director.slot_target[slot_index], target);
-        } else {
-            chain_.director.slot_target[slot_index] = target;
-        }
+        bsp::director_geommesh_seg38_39_argon::bsp_weapon_director_assign_slot_target_0071db50(
+            chain_.director.slot_target[slot_index], target);
         chain_.owner.done("WeaponDirector::store_slot", 0x0071e764u);
         if (chain_.row != nullptr) {
             chain_.row->slot_pushed = true;
@@ -1595,22 +1543,18 @@ public:
         }
         // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
         chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        if constexpr (bsp::kWireGoal4Chain280Bound) {
-            // bsp.py show 006e38e0 --asm: 006E38E0..006E38F7 reads only
-            // [ECX+F4h]. Project the live session word into that original
-            // layout; the opaque prefix is never consumed. The caller at
-            // 0071E7C9 supplies session = game+1EF0h before ending an override.
-            struct SessionModeView {
-                std::uint8_t opaque[0xf4];
-                std::int32_t mode;
-            } session;
-            static_assert(offsetof(SessionModeView, mode) == 0xf4);
-            session.mode = session_mode_1fe4();
-            return bsp::cc13_seg33a::session_mode_field_is_zero_or_one_006e38e0(
-                &session);
-        } else {
-            return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
-        }
+        // bsp.py show 006e38e0 --asm: 006E38E0..006E38F7 reads only
+        // [ECX+F4h]. Project the live session word into that original
+        // layout; the opaque prefix is never consumed. The caller at
+        // 0071E7C9 supplies session = game+1EF0h before ending an override.
+        struct SessionModeView {
+            std::uint8_t opaque[0xf4];
+            std::int32_t mode;
+        } session;
+        static_assert(offsetof(SessionModeView, mode) == 0xf4);
+        session.mode = session_mode_1fe4();
+        return bsp::cc13_seg33a::session_mode_field_is_zero_or_one_006e38e0(
+            &session);
     }
     void echo_command() override {
         if (!kAttackPushEndsOverrideBound) {
@@ -1621,14 +1565,8 @@ public:
         // then, outside session mode 2, 0071C730(0, 0) routed with flags 7.
         chain_.owner.done("WeaponDirector::echo_command", 0x0071e2e0u);
         // 0071E2E0 calls echo_clear_command_0071e2e0; OFF keeps the host's stage/session gate.
-        if constexpr (bsp::kWireGoal1Chain10Bound) {
-            if (!bsp::gameplay_seg38_cc13::echo_clear_command_0071e2e0(
-                    chain_.director.override_stage, session_mode_1fe4())) return;
-        } else {
-            if (chain_.director.override_stage >= 2) return;
-            chain_.director.override_stage = 2;
-            if (session_mode_1fe4() == 2) return;
-        }
+        if (!bsp::gameplay_seg38_cc13::echo_clear_command_0071e2e0(
+                chain_.director.override_stage, session_mode_1fe4())) return;
         ++chain_.owner.summary.override_push_echoes;
         if (chain_.owner.summary.override_push_echoes <= 12) {
             chain_.owner.log.notef("  override ended by a pushed attack order: %s, head `%s`, "
@@ -2076,13 +2014,8 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
         // 0071C830 reads the command object's +4h ordinal. A command this host
         // cannot class has no ordinal here and goes as the null command (0FFh).
         const bsp::EntityOrderCommandClass* klass = chain_.owner.class_of(command);
-        if constexpr (bsp::kWireGoal4Chain498Bound) {
-            posted.set_message_owner = chain_.owner.session_messages.queue_owned_set_command_92(
-                (command != 0u && klass != nullptr) ? klass->ordinal : -1, target, flag);
-        } else {
-        posted.set_message = chain_.owner.session_messages.queue_set_command_92(
+        posted.set_message_owner = chain_.owner.session_messages.queue_owned_set_command_92(
             (command != 0u && klass != nullptr) ? klass->ordinal : -1, target, flag);
-        }
         posted.set_message_bound = true;
         ++chain_.owner.setcmd_round_trips;
         chain_.owner.done("WeaponDirector::build_set_command_message", 0x0071c830u);
@@ -2186,21 +2119,17 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     // default-constructs only the new rows.
     const std::size_t kept = host.directors.size();
     host.directors.resize(host.units.size());
-    if constexpr (bsp::kWireGoal4Chain248Bound) {
-        for (std::size_t i = kept; i < host.directors.size(); ++i) {
-            GameDirector& director = host.directors[i];
-            // 0071FB90: the owner is this stable, deque-resident director.
-            // Its returned defaults now feed the live path follower, while
-            // its point vector is used by 0071FDE0 below. New typed ABI only.
-            director.user_path_object =
-                bsp::gameplay_seg38_cc13::director_path_object_construct_0071fb90(
-                    static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&director)));
-            director.path_follow_mode = director.user_path_object->follow_mode_08;
-            director.path_start_mode = director.user_path_object->start_mode_0c;
-            host.done("PathObject::construct", 0x0071fb90u);
-        }
-    } else {
-        // The in-class initializers retain the previous path defaults.
+    for (std::size_t i = kept; i < host.directors.size(); ++i) {
+        GameDirector& director = host.directors[i];
+        // 0071FB90: the owner is this stable, deque-resident director.
+        // Its returned defaults now feed the live path follower, while
+        // its point vector is used by 0071FDE0 below. New typed ABI only.
+        director.user_path_object =
+            bsp::gameplay_seg38_cc13::director_path_object_construct_0071fb90(
+                static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&director)));
+        director.path_follow_mode = director.user_path_object->follow_mode_08;
+        director.path_start_mode = director.user_path_object->start_mode_0c;
+        host.done("PathObject::construct", 0x0071fb90u);
     }
     if (kept != 0 && kept != host.units.size()) {
         ++host.summary.director_reregistrations;
@@ -2528,12 +2457,10 @@ void GameCommandsHost::Impl::run_loopback_list(std::vector<LoopbackMessage>& lis
             ++summary.loopback_delivered_queued;
         }
         deliver_loopback(message);
-        if constexpr (bsp::kWireGoal4Chain498Bound) {
-            // Release this queue entry after delivery, including an invalid
-            // receiver. The iteration's copy keeps it alive across insertion
-            // into this vector; the final owner invokes 0071E3B0 exactly once.
-            list[i].set_message_owner.reset();
-        }
+        // Release this queue entry after delivery, including an invalid
+        // receiver. The iteration's copy keeps it alive across insertion
+        // into this vector; the final owner invokes 0071E3B0 exactly once.
+        list[i].set_message_owner.reset();
     }
     loopback_active = outer;
     loopback_insert = outer_insert;
@@ -2571,7 +2498,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             const auto dispatch = [&](bsp::NativeSessionMessage92& queued) {
             const std::uint8_t ordinal = queued.command_21;
             // 007216D0 calls command_from_ordinal_007216d0; OFF keeps the host's registry search.
-            if constexpr (bsp::kWireGoal1Chain10Bound) {
+            {
                 std::vector<std::uint32_t> class_ordinals;
                 class_ordinals.reserve(bsp::kEntityOrderCommandCount);
                 for (const bsp::EntityOrderCommandClass& entry : bsp::kEntityOrderCommandClasses) {
@@ -2581,20 +2508,11 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                     ordinal, class_ordinals);
                 chain.pending_command = match
                     ? bsp::kEntityOrderCommandClasses[*match].object_address : 0u;
-            } else {
-                const bsp::EntityOrderCommandClass* klass
-                    = ordinal == bsp::kCruiseCommandNoOrdinal
-                        ? nullptr : bsp::entity_order_command_class_by_ordinal(ordinal);
-                chain.pending_command = klass != nullptr ? klass->object_address : 0u;
             }
             // 00721030 at 00721B11/B22/B47/B6C: bsp_game_unit_message_read_target_descriptor_00721030 copies the queued copy's +24h..+38h descriptor, which message_target_descriptor() answers at all four reads (the message is const between them); OFF keeps the struct copy of target_24.
-            if constexpr (bsp::kWireGoal2Chain42Bound) {
-                bsp::director_geommesh_seg38_39_argon::
-                    bsp_game_unit_message_read_target_descriptor_00721030(
-                        &queued, &chain.pending_target);
-            } else {
-                chain.pending_target = queued.target_24;
-            }
+            bsp::director_geommesh_seg38_39_argon::
+                bsp_game_unit_message_read_target_descriptor_00721030(
+                    &queued, &chain.pending_target);
             chain.pending_target.object = queued.target_24.kind != 0
                 ? const_cast<void*>(unit_object_of(message.target_handle,
                     message.set_target.object))
@@ -2629,14 +2547,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                 chain.pending_flag);
             done("GameUnitMessage::apply_set_command", 0x00721a40u);
             };
-            if constexpr (bsp::kWireGoal4Chain498Bound) {
-                dispatch(*message.set_message_owner);
-            } else {
-            bsp::NativeSessionMessage92 queued = message.set_message;
-            dispatch(queued);
-            // The drain's scalar delete (0071E3B0 -> 0071CB40) after the dispatch.
-            bsp::HostSessionMessages::free_set_command_92(queued);
-            }
+            dispatch(*message.set_message_owner);
             break;
         }
         chain.pending_command = message.set_command;
@@ -2654,7 +2565,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         apply_clear_command(message.unit, message.player, message.clear);
         break;
     case LoopbackKind::UserPathPoint:
-        if constexpr (bsp::kWireGoal4Chain450Bound) {
+        {
             const auto& queued = message.user_path_message;
             // 00721A40's 5Fh add arm reads the decoded +2Ch and XYZ. This
             // channel is 0071D340's add sender (+2Ch=1), not a clear sender.
@@ -2664,9 +2575,6 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                 apply_user_path_point_007207c0(message.unit, point,
                     message.user_outside_map);
             }
-        } else {
-        apply_user_path_point_007207c0(message.unit, message.user_point,
-                                       message.user_outside_map);
         }
         break;
     case LoopbackKind::Callback:
@@ -2690,223 +2598,31 @@ void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
     Impl& host = *impl_;
     if (unit_index >= host.units.size() || unit_index >= host.directors.size()) return;
     host.done("PathObject::send_user_path_point_0071d340", 0x0071d340u);
-    if constexpr (bsp::kWireGoal4Chain450Bound) {
-        auto queued = host.session_messages.queue_user_path_point_5f(point);
-        if (kSetCommandQueueDelayBound) {
-            Impl::LoopbackMessage message;
-            message.kind = Impl::LoopbackKind::UserPathPoint;
-            message.unit = unit_index;
-            message.user_path_message = std::move(queued);
-            message.user_outside_map = outside_map;
-            host.post_loopback(message);
-            return;
-        }
-        if (queued->present_2c != 0) {
-            float decoded_point[3];
-            std::memcpy(decoded_point, queued->vector_20, sizeof decoded_point);
-            host.apply_user_path_point_007207c0(unit_index, decoded_point, outside_map);
-        }
-    } else {
+    auto queued = host.session_messages.queue_user_path_point_5f(point);
     if (kSetCommandQueueDelayBound) {
         Impl::LoopbackMessage message;
         message.kind = Impl::LoopbackKind::UserPathPoint;
         message.unit = unit_index;
-        for (int i = 0; i < 3; ++i) message.user_point[i] = point[i];
+        message.user_path_message = std::move(queued);
         message.user_outside_map = outside_map;
         host.post_loopback(message);
         return;
     }
-    host.apply_user_path_point_007207c0(unit_index, point, outside_map);
+    if (queued->present_2c != 0) {
+        float decoded_point[3];
+        std::memcpy(decoded_point, queued->vector_20, sizeof decoded_point);
+        host.apply_user_path_point_007207c0(unit_index, decoded_point, outside_map);
     }
 }
 
 void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_index,
     const float point[3], bool outside_map) {
-    if constexpr (bsp::kWireGoal4Chain248Bound) {
-        namespace gp = bsp::gameplay_seg38_cc13;
-        namespace path46 = bsp::gameplay_seg46_cc13;
-        namespace path_storage = bsp::path_movcam_seg46_argon;
-        // The retained legacy body is also the fallback for unmodelled slot
-        // ownership. It executes once, and the OFF arm below stays unchanged.
-        auto legacy = [&]() {
-        GameDirector& director = directors[unit_index];
-        ++director.user_points_received;
-        const int count = command_count(director);
-        // 0071DC80: 1 (start a new path) for an empty queue, a last command that is
-        // not `moveonpath`, or one whose descriptor names an object of type 12h; 0
-        // (append) for a `moveonpath` with descriptor kind 0 (0071DCB4) or one whose
-        // object resolves to another type. LABELLED: a kind-1 `moveonpath` (an
-        // authored Path) is taken as a new path; its object type was not resolved.
-        bool start_new = true;
-        if (count > 0 && director.slot_command[count - 1] == 0x00e08f80u
-            && director.slot_target[count - 1].kind == 0) {
-            start_new = false;
-        }
-        std::array<float, 3> p{point[0], point[1], point[2]};
-        if (outside_map) {
-            // 0071FE9A..0071FF22: an out-of-map point also pushes the border
-            // crossing 004BBDD0 finds from the previous point. LABELLED: not
-            // reproduced, the point alone is pushed and the case is counted.
-            ++director.user_points_outside_map;
-            record("PathObject::user_point_outside_map_004bbdd0", 0x004bbdd0u);
-        }
-        ChainState chain{*this, units[unit_index], director, nullptr, nullptr, 0.0f,
-            bsp::SceneCommandTarget{}, 0u, 0u};
-        DirectorBinding binding(chain);
-        if (start_new) {
-            // 007207CC: director vtable[34h] 00835E90 must accept `moveonpath`.
-            if (!binding.command_accepted(0x00e08f80u)) {
-                record("WeaponDirector::user_path_refused_00835e90", 0x007207dcu);
-                return;
-            }
-            // 0071FDE0(point, 1, count): the slot object's vector is erased first.
-            director.user_points.clear();
-            director.user_points.push_back(p);
-            // 0071FFA5: director vtable[60h] 008358D0 with `moveonpath` and the
-            // zeroed descriptor (kind 0, no position, no object).
-            bsp::SceneCommandTarget empty{};
-            binding.director_set_command(0x00e08f80u, empty);
-            ++director.user_paths_queued;
-            done("GameUnitMessage::add_user_path_point_new_007207c0", 0x007207c0u);
-        } else {
-            // 0071FDE0(point, 0, count - 1): refused when more than 7 points already
-            // lie ahead of the slot's +18h.
-            const int ahead = static_cast<int>(director.user_points.size())
-                - (director.path_user ? director.path_cursor.index_08 : 0);
-            if (ahead > 7) {
-                ++director.user_points_dropped;
-                record("PathObject::user_point_dropped_0071fe24", 0x0071fe24u);
-                return;
-            }
-            director.user_points.push_back(p);
-            done("GameUnitMessage::add_user_path_point_append_007207c0", 0x0072081fu);
-        }
-        // 0071FF4D, 007B1FB0([slot+18h]): a followed path takes the new points.
-        if (director.path_user && director.path_begun && director.slot_command[0] == 0x00e08f80u) {
-            director.path_points = director.user_points;
-        }
-        // 0071FFBF..00720040: the session-mode echo (unit vtable[13Ch](2, 0) and a
-        // 57h message) is multiplayer bookkeeping.
-        record("PathObject::user_path_echo_57", 0x0071ffbfu);
-        };
-        GameDirector& director = directors[unit_index];
-        if (!user_path_world_bounds || !director.user_path_object
-            || user_path_live_owner == nullptr || unit_index >= user_path_live_owner->count()) {
-            legacy();
-            return;
-        }
-        const gp::DirectorQueue queue = cc13_director_queue(director);
-        int last = bsp::kDirectorCommandSlotCount - 1;
-        while (last >= 0 && queue.slots[last].command_class == 0) --last;
-        // Only slot 0 is owned here. Empty -> new slot 0, or append to the
-        // sole entity-free moveonpath: both select this same native path.
-        // Other occupied slots and the target+170h type interface remain
-        // unmodelled; retain the existing host policy for those branches.
-        if (last >= 0 && !(last == 0 && queue.slots[0].command_class == gp::kCmdMoveOnPath
-            && !queue.slots[0].target.has_entity_00)) {
-            legacy();
-            return;
-        }
-        // 0071FDE0 reads the owner's current +FCh XYZ through its +34h unit.
-        // Sample at message delivery: GameCommandUnit::position is only the
-        // registration snapshot. The guard above excludes the getter's
-        // out-of-range zero result before any path mutation or counters.
-        gp::Vec3f live_owner_position;
-        user_path_live_owner->unit_position_00fc(unit_index,
-            live_owner_position.x, live_owner_position.y, live_owner_position.z);
-        ++director.user_points_received;
-        const bool start_new = gp::last_command_needs_new_path_0071dc80(queue, std::nullopt);
-        done("WeaponDirector::last_command_needs_new_path", 0x0071dc80u);
-        ChainState chain{*this, units[unit_index], director, nullptr, nullptr, 0.0f,
-            bsp::SceneCommandTarget{}, 0u, 0u};
-        DirectorBinding binding(chain);
-        if (start_new && !binding.command_accepted(gp::kCmdMoveOnPath)) {
-            record("WeaponDirector::user_path_refused_00835e90", 0x007207dcu);
-            return;
-        }
-        if (start_new) {
-            // An empty queue has a fresh slot-0 path after the native clear
-            // cycle. Reconstruct that lifetime before accepting its new point.
-            director.user_path_object = gp::director_path_object_construct_0071fb90(
-                static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&director)));
-        }
-        auto& path = *director.user_path_object;
-        path.points_40.clear();
-        for (const auto& p : director.user_points) path.points_40.push_back({p[0], p[1], p[2]});
-        if (!start_new && director.path_user) path.cursor_18 = director.path_cursor.index_08;
-        const bsp::WorldMapBounds& bounds = *user_path_world_bounds;
-        const path46::WorldBounds711c erase_bounds{bounds.north_west[0], bounds.north_west[2],
-            bounds.south_east[0], bounds.south_east[2]};
-        const bsp::cc13_sys::WorldBoundsXZ clip_bounds{bounds.north_west[0], bounds.north_west[2],
-            bounds.south_east[0], bounds.south_east[2]};
-        gp::AddPointInputs input;
-        input.replace = start_new;
-        input.cursor_18 = path.cursor_18;
-        input.owner_position = live_owner_position;
-        input.session_mode = session_mode_1fe4();
-        // 0071FE60..0071FE95 preserves the first point before bounds erasure;
-        // the replacement path has already been cleared at that native site.
-        const gp::Vec3f first = start_new || path.points_40.empty()
-            ? gp::Vec3f{} : path.points_40.front();
-        const auto result = gp::director_path_add_point_0071fde0(path.points_40,
-            {point[0], point[1], point[2]}, input,
-            [&](std::vector<gp::Vec3f>& points) {
-                std::vector<path46::Vec3> view;
-                for (const auto& p : points) view.push_back({p.x, p.y, p.z});
-                path46::erase_points_outside_world_007b1ec0(view, &erase_bounds);
-                points.clear();
-                for (const auto& p : view) points.push_back({p.x, p.y, p.z});
-                done("PathObject::erase_outside_world", 0x007b1ec0u);
-            },
-            [&](const gp::Vec3f& p) {
-                const bool outside = bsp::point_outside_world_map_0071c4f0(bounds, {p.x, p.y, p.z});
-                if (outside) ++director.user_points_outside_map;
-                return outside;
-            },
-            [&](const gp::Vec3f& from, const gp::Vec3f& to) {
-                std::array<float, 3> end{to.x, to.y, to.z};
-                std::array<float, 3> out{first.x, first.y, first.z};
-                bsp::cc13_sys::game_clip_segment_to_world_bounds_004bbdd0(clip_bounds,
-                    {from.x, from.y, from.z}, end, out,
-                    [](const std::array<float, 3>& v) {
-                        std::array<float, 3> normal{};
-                        bsp::camera_vector_normalize_00419510(normal.data(), v.data(),
-                            &application_camera_axes_crt());
-                        return normal;
-                    });
-                done("PathObject::clip_segment_to_world", 0x004bbdd0u);
-                return std::array<gp::Vec3f, 2>{{{end[0], end[1], end[2]}, {out[0], out[1], out[2]}}};
-            },
-            [&](std::vector<gp::Vec3f>& points, int cursor) {
-                std::vector<path_storage::Vec3> view;
-                for (const auto& p : points) view.push_back({p.x, p.y, p.z});
-                // Original 00CE7D78 bytes: 00 00 00 42 (binary32 32.0f).
-                path_storage::point3_vector_prune_from_index_007b1fb0(view, cursor, 32.0f);
-                points.clear();
-                for (const auto& p : view) points.push_back({p.x, p.y, p.z});
-                done("PathObject::prune_from_index", 0x007b1fb0u);
-            });
-        if (result.rejected) {
-            ++director.user_points_dropped;
-            record("PathObject::user_point_dropped_0071fe24", 0x0071fe24u);
-            return;
-        }
-        director.user_points.clear();
-        for (const auto& p : path.points_40) director.user_points.push_back({p.x, p.y, p.z});
-        done("PathObject::add_point", 0x0071fde0u);
-        if (result.issued_moveonpath) {
-            bsp::SceneCommandTarget empty{};
-            binding.director_set_command(gp::kCmdMoveOnPath, empty);
-            ++director.user_paths_queued;
-            done("GameUnitMessage::add_user_path_point_new_007207c0", 0x007207c0u);
-        } else {
-            done("GameUnitMessage::add_user_path_point_append_007207c0", 0x0072081fu);
-        }
-        if (director.path_user && director.path_begun && director.slot_command[0] == gp::kCmdMoveOnPath)
-            director.path_points = director.user_points;
-        // The returned 57h echo request is session bookkeeping, as before.
-        if (result.sent_message_57) record("PathObject::user_path_echo_57", 0x0071ffbfu);
-    } else {
+    namespace gp = bsp::gameplay_seg38_cc13;
+    namespace path46 = bsp::gameplay_seg46_cc13;
+    namespace path_storage = bsp::path_movcam_seg46_argon;
+    // The retained legacy body is also the fallback for unmodelled slot
+    // ownership. It executes once, and the OFF arm below stays unchanged.
+    auto legacy = [&]() {
     GameDirector& director = directors[unit_index];
     ++director.user_points_received;
     const int count = command_count(director);
@@ -2966,7 +2682,124 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
     // 0071FFBF..00720040: the session-mode echo (unit vtable[13Ch](2, 0) and a
     // 57h message) is multiplayer bookkeeping.
     record("PathObject::user_path_echo_57", 0x0071ffbfu);
+    };
+    GameDirector& director = directors[unit_index];
+    if (!user_path_world_bounds || !director.user_path_object
+        || user_path_live_owner == nullptr || unit_index >= user_path_live_owner->count()) {
+        legacy();
+        return;
     }
+    const gp::DirectorQueue queue = cc13_director_queue(director);
+    int last = bsp::kDirectorCommandSlotCount - 1;
+    while (last >= 0 && queue.slots[last].command_class == 0) --last;
+    // Only slot 0 is owned here. Empty -> new slot 0, or append to the
+    // sole entity-free moveonpath: both select this same native path.
+    // Other occupied slots and the target+170h type interface remain
+    // unmodelled; retain the existing host policy for those branches.
+    if (last >= 0 && !(last == 0 && queue.slots[0].command_class == gp::kCmdMoveOnPath
+        && !queue.slots[0].target.has_entity_00)) {
+        legacy();
+        return;
+    }
+    // 0071FDE0 reads the owner's current +FCh XYZ through its +34h unit.
+    // Sample at message delivery: GameCommandUnit::position is only the
+    // registration snapshot. The guard above excludes the getter's
+    // out-of-range zero result before any path mutation or counters.
+    gp::Vec3f live_owner_position;
+    user_path_live_owner->unit_position_00fc(unit_index,
+        live_owner_position.x, live_owner_position.y, live_owner_position.z);
+    ++director.user_points_received;
+    const bool start_new = gp::last_command_needs_new_path_0071dc80(queue, std::nullopt);
+    done("WeaponDirector::last_command_needs_new_path", 0x0071dc80u);
+    ChainState chain{*this, units[unit_index], director, nullptr, nullptr, 0.0f,
+        bsp::SceneCommandTarget{}, 0u, 0u};
+    DirectorBinding binding(chain);
+    if (start_new && !binding.command_accepted(gp::kCmdMoveOnPath)) {
+        record("WeaponDirector::user_path_refused_00835e90", 0x007207dcu);
+        return;
+    }
+    if (start_new) {
+        // An empty queue has a fresh slot-0 path after the native clear
+        // cycle. Reconstruct that lifetime before accepting its new point.
+        director.user_path_object = gp::director_path_object_construct_0071fb90(
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&director)));
+    }
+    auto& path = *director.user_path_object;
+    path.points_40.clear();
+    for (const auto& p : director.user_points) path.points_40.push_back({p[0], p[1], p[2]});
+    if (!start_new && director.path_user) path.cursor_18 = director.path_cursor.index_08;
+    const bsp::WorldMapBounds& bounds = *user_path_world_bounds;
+    const path46::WorldBounds711c erase_bounds{bounds.north_west[0], bounds.north_west[2],
+        bounds.south_east[0], bounds.south_east[2]};
+    const bsp::cc13_sys::WorldBoundsXZ clip_bounds{bounds.north_west[0], bounds.north_west[2],
+        bounds.south_east[0], bounds.south_east[2]};
+    gp::AddPointInputs input;
+    input.replace = start_new;
+    input.cursor_18 = path.cursor_18;
+    input.owner_position = live_owner_position;
+    input.session_mode = session_mode_1fe4();
+    // 0071FE60..0071FE95 preserves the first point before bounds erasure;
+    // the replacement path has already been cleared at that native site.
+    const gp::Vec3f first = start_new || path.points_40.empty()
+        ? gp::Vec3f{} : path.points_40.front();
+    const auto result = gp::director_path_add_point_0071fde0(path.points_40,
+        {point[0], point[1], point[2]}, input,
+        [&](std::vector<gp::Vec3f>& points) {
+            std::vector<path46::Vec3> view;
+            for (const auto& p : points) view.push_back({p.x, p.y, p.z});
+            path46::erase_points_outside_world_007b1ec0(view, &erase_bounds);
+            points.clear();
+            for (const auto& p : view) points.push_back({p.x, p.y, p.z});
+            done("PathObject::erase_outside_world", 0x007b1ec0u);
+        },
+        [&](const gp::Vec3f& p) {
+            const bool outside = bsp::point_outside_world_map_0071c4f0(bounds, {p.x, p.y, p.z});
+            if (outside) ++director.user_points_outside_map;
+            return outside;
+        },
+        [&](const gp::Vec3f& from, const gp::Vec3f& to) {
+            std::array<float, 3> end{to.x, to.y, to.z};
+            std::array<float, 3> out{first.x, first.y, first.z};
+            bsp::cc13_sys::game_clip_segment_to_world_bounds_004bbdd0(clip_bounds,
+                {from.x, from.y, from.z}, end, out,
+                [](const std::array<float, 3>& v) {
+                    std::array<float, 3> normal{};
+                    bsp::camera_vector_normalize_00419510(normal.data(), v.data(),
+                        &application_camera_axes_crt());
+                    return normal;
+                });
+            done("PathObject::clip_segment_to_world", 0x004bbdd0u);
+            return std::array<gp::Vec3f, 2>{{{end[0], end[1], end[2]}, {out[0], out[1], out[2]}}};
+        },
+        [&](std::vector<gp::Vec3f>& points, int cursor) {
+            std::vector<path_storage::Vec3> view;
+            for (const auto& p : points) view.push_back({p.x, p.y, p.z});
+            // Original 00CE7D78 bytes: 00 00 00 42 (binary32 32.0f).
+            path_storage::point3_vector_prune_from_index_007b1fb0(view, cursor, 32.0f);
+            points.clear();
+            for (const auto& p : view) points.push_back({p.x, p.y, p.z});
+            done("PathObject::prune_from_index", 0x007b1fb0u);
+        });
+    if (result.rejected) {
+        ++director.user_points_dropped;
+        record("PathObject::user_point_dropped_0071fe24", 0x0071fe24u);
+        return;
+    }
+    director.user_points.clear();
+    for (const auto& p : path.points_40) director.user_points.push_back({p.x, p.y, p.z});
+    done("PathObject::add_point", 0x0071fde0u);
+    if (result.issued_moveonpath) {
+        bsp::SceneCommandTarget empty{};
+        binding.director_set_command(gp::kCmdMoveOnPath, empty);
+        ++director.user_paths_queued;
+        done("GameUnitMessage::add_user_path_point_new_007207c0", 0x007207c0u);
+    } else {
+        done("GameUnitMessage::add_user_path_point_append_007207c0", 0x0072081fu);
+    }
+    if (director.path_user && director.path_begun && director.slot_command[0] == gp::kCmdMoveOnPath)
+        director.path_points = director.user_points;
+    // The returned 57h echo request is session bookkeeping, as before.
+    if (result.sent_message_57) record("PathObject::user_path_echo_57", 0x0071ffbfu);
 }
 
 void GameCommandsHost::bind_user_path_world_bounds(const bsp::WorldMapBounds& bounds) {
@@ -2981,56 +2814,41 @@ bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     const GameDirector& director = host.directors[unit_index];
-    if constexpr (bsp::kWireGoal4Chain315Bound) {
-        // bsp.py show 0071D270 / 0071FC40: the identical native entries test
-        // source+14h and source->vtable[24h]() == path+40h. The host already
-        // represents that link: begin_current_command_00835c70 installs the
-        // source for a begun moveonpath, build_path_object_0071f600 publishes
-        // it, and path_user distinguishes the owner's list from an authored
-        // entity path. Keep those existing predicates; use the reconstructed
-        // query to decide the answer consumed by 007ADD70 / the AI route.
-        const bool source_present = [&]() {
-            if constexpr (bsp::kWireGoal4Chain524Bound) {
-                // bsp.py show 0071BDE0: require the slot's moveonpath class,
-                // a present path, and its vtable[4] result. The existing
-                // projection above borrows this director's built path and
-                // its point list; the follower still must have begun.
-                return bsp::gameplay_seg38_cc13::slot_moveonpath_path_0071bde0(
-                    cc13_director_queue(director), 0) >= 0 && director.path_begun;
-            } else {
-            return director.slot_command[0] == 0x00e08f80u
-                && director.path_begun && director.path_built;
-            }
-        }();
-        return bsp::gameplay_seg38_cc13::path_follower_attached_0071d270(
-            source_present, director.path_user);
-    } else {
-    return director.slot_command[0] == 0x00e08f80u && director.path_begun
-        && director.path_built && director.path_user;
-    }
+    // bsp.py show 0071D270 / 0071FC40: the identical native entries test
+    // source+14h and source->vtable[24h]() == path+40h. The host already
+    // represents that link: begin_current_command_00835c70 installs the
+    // source for a begun moveonpath, build_path_object_0071f600 publishes
+    // it, and path_user distinguishes the owner's list from an authored
+    // entity path. Keep those existing predicates; use the reconstructed
+    // query to decide the answer consumed by 007ADD70 / the AI route.
+    const bool source_present = [&]() {
+        // bsp.py show 0071BDE0: require the slot's moveonpath class,
+        // a present path, and its vtable[4] result. The existing
+        // projection above borrows this director's built path and
+        // its point list; the follower still must have begun.
+        return bsp::gameplay_seg38_cc13::slot_moveonpath_path_0071bde0(
+            cc13_director_queue(director), 0) >= 0 && director.path_begun;
+    }();
+    return bsp::gameplay_seg38_cc13::path_follower_attached_0071d270(
+        source_present, director.path_user);
 }
 
 int GameCommandsHost::user_path_remaining_0071d2a0(std::size_t unit_index) const {
     // 0071D2A0 -> 0071D2E0: [slot+18h] when attached, else -1. LABELLED: +18h
     // is taken as the follower's current index (the listener at +10h is how the
     // follower reports it; its body was not read).
-    if constexpr (bsp::kWireGoal4Chain315Bound) {
-        namespace gp = bsp::gameplay_seg38_cc13;
-        const bool attached = user_path_attached_0071fc40(unit_index);
-        // bsp.py show 0071D2A0 / 0071D2E0: only an attached source invokes
-        // virtual +14h; that body returns path+18h. Feed the same live cursor
-        // as the old arm. No source means no virtual call or director access.
-        int remaining = -1;
-        if (attached) {
-            const GameDirector& director = impl_->directors[unit_index];
-            remaining = gp::path_follower_remaining_0071d2e0(attached,
-                director.path_cursor.index_08, static_cast<int>(director.user_points.size()));
-        }
-        return gp::path_follower_remaining_or_minus_one_0071d2a0(attached, remaining);
-    } else {
-    if (!user_path_attached_0071fc40(unit_index)) return -1;
-    return impl_->directors[unit_index].path_cursor.index_08;
+    namespace gp = bsp::gameplay_seg38_cc13;
+    const bool attached = user_path_attached_0071fc40(unit_index);
+    // bsp.py show 0071D2A0 / 0071D2E0: only an attached source invokes
+    // virtual +14h; that body returns path+18h. Feed the same live cursor
+    // as the old arm. No source means no virtual call or director access.
+    int remaining = -1;
+    if (attached) {
+        const GameDirector& director = impl_->directors[unit_index];
+        remaining = gp::path_follower_remaining_0071d2e0(attached,
+            director.path_cursor.index_08, static_cast<int>(director.user_points.size()));
     }
+    return gp::path_follower_remaining_or_minus_one_0071d2a0(attached, remaining);
 }
 
 void GameCommandsHost::begin_loopback_drain_0076c600() {
@@ -3739,45 +3557,27 @@ bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
 bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
     bool player_controlled, const bsp::ClearCommandMessage& message) {
     if (unit_index >= units.size()) return false;
-    if constexpr (kWireGoal4Chain260Bound) {
-        // Goal 4 chain 260: 0077C2A0 -> 0076E520 queues the 5Dh's copy
-        // (0071C7A0 write, factory case 5Dh 0075B030, 0071C7E0 read), so the
-        // 5Dh arm reads the copy's +20h (1 bit) and +24h (5 signed bits).
-        bsp::ClearCommandMessage copy = message;
-        const bsp::HostSessionMessages::ClearCommandCopy wire =
-            session_messages.queue_clear_command_5d(message.arm, message.index);
-        copy.arm = wire.arm;
-        copy.index = wire.index;
-        ++summary.clear_messages;
-        ++summary.loopback_clear_posts;
-        if (!kSetCommandQueueDelayBound) {
-            ++summary.loopback_delivered_in_place;
-            return apply_clear_command(unit_index, player_controlled, copy);
-        }
-        LoopbackMessage posted;
-        posted.kind = LoopbackKind::Clear;
-        posted.unit = unit_index;
-        posted.player = player_controlled;
-        posted.clear = copy;
-        post_loopback(posted);
-        return false;
-    } else {
+    // Goal 4 chain 260: 0077C2A0 -> 0076E520 queues the 5Dh's copy
+    // (0071C7A0 write, factory case 5Dh 0075B030, 0071C7E0 read), so the
+    // 5Dh arm reads the copy's +20h (1 bit) and +24h (5 signed bits).
+    bsp::ClearCommandMessage copy = message;
+    const bsp::HostSessionMessages::ClearCommandCopy wire =
+        session_messages.queue_clear_command_5d(message.arm, message.index);
+    copy.arm = wire.arm;
+    copy.index = wire.index;
     ++summary.clear_messages;
     ++summary.loopback_clear_posts;
     if (!kSetCommandQueueDelayBound) {
         ++summary.loopback_delivered_in_place;
-        return apply_clear_command(unit_index, player_controlled, message);
+        return apply_clear_command(unit_index, player_controlled, copy);
     }
-    // Packet cc9_set_command_queue_delay: the 5Dh message waits for the drain,
-    // so the raising step's own later reads still see the finished command.
     LoopbackMessage posted;
     posted.kind = LoopbackKind::Clear;
     posted.unit = unit_index;
     posted.player = player_controlled;
-    posted.clear = message;
+    posted.clear = copy;
     post_loopback(posted);
     return false;
-    }
 }
 
 bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
@@ -3950,12 +3750,8 @@ struct DirectorPathObjectCopyView {
         // 007B1C05: the successor now shares the source, which is not its own +40h
         // vector; 007B1C2E..007B1C3E: the cursor's +8h/+0Ch/+10h.
         to.path_name = from.path_name;
-        if constexpr (bsp::kWireGoal4Chain276Bound) {
-            to.path_points = from.path_points;
-            to.authored_path = from.path_user ? nullptr : from.authored_path;
-        } else {
-            to.path_points = from.path_points;
-        }
+        to.path_points = from.path_points;
+        to.authored_path = from.path_user ? nullptr : from.authored_path;
         to.path_user = false;
         to.path_cursor = from.path_cursor;
     }
@@ -4146,12 +3942,8 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
             bool hostile;
             // 005457C0: cc13_sweepB_entity_is_hostile_to_party_005457c0 over the unit's
             // facts and the target's +54h side; OFF keeps the inline side compare.
-            if constexpr (bsp::kWireGoal2Chain75Bound) {
-                hostile = bsp::cc13_sweepB_entity_is_hostile_to_party_005457c0(
-                    CommandUnitPartyView{own}, facts.side_0054);
-            } else {
-                hostile = own.side_0054 != facts.side_0054 && facts.side_0054 != 2;
-            }
+            hostile = bsp::cc13_sweepB_entity_is_hostile_to_party_005457c0(
+                CommandUnitPartyView{own}, facts.side_0054);
             if (!hostile) {
                 raise = true;
                 why = "target not hostile (005457c0)";
@@ -4241,7 +4033,7 @@ bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
     Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     GameDirector& director = host.directors[unit_index];
-    if constexpr (bsp::kWireGoal4Chain475Bound) {
+    {
         namespace gp = bsp::gameplay_seg38_cc13;
         const gp::DirectorQueue queue = cc13_director_queue(director);
         // The host owns the actual slot-0 path constructed at registration.
@@ -4260,9 +4052,6 @@ bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
             director.path_follow_mode = follow_mode;
             director.path_start_mode = start_mode;
         }
-    } else {
-    director.path_follow_mode = follow_mode;   // 0071C1D2, [slot+8h]
-    director.path_start_mode = start_mode;     // 0071C1D8, [slot+0Ch]
     }
     host.done("Navigator::path_object_set_follow_mode", 0x0071c1b0u);
     return true;
@@ -4296,18 +4085,14 @@ bool GameCommandsHost::begin_current_command_00835c70(std::size_t unit_index,
         director.path_begun = false;
         return false;
     }
-    if constexpr (bsp::kWireGoal4Chain524Bound) {
-        // bsp.py show 0071DEE0: on the moveonpath arm selected above, an
-        // active order requires its path's vtable[8] list and positive count.
-        // These are the live built source and points already consumed by
-        // this method; queued slots and freshly begun paths keep their
-        // existing lifecycle below. No path is rebuilt by this query.
-        if (director.path_begun)
-            return bsp::gameplay_seg38_cc13::slot_has_active_order_0071dee0(
-                cc13_director_queue(director), 0);
-    } else {
-    if (director.path_begun) return director.path_built && !director.path_points.empty();
-    }
+    // bsp.py show 0071DEE0: on the moveonpath arm selected above, an
+    // active order requires its path's vtable[8] list and positive count.
+    // These are the live built source and points already consumed by
+    // this method; queued slots and freshly begun paths keep their
+    // existing lifecycle below. No path is rebuilt by this query.
+    if (director.path_begun)
+        return bsp::gameplay_seg38_cc13::slot_has_active_order_0071dee0(
+            cc13_director_queue(director), 0);
     if (director.slot_target[0].kind == 0 && !director.user_points.empty()) {
         // Packet cc9_director_moveonpath_route. 0071F6A5's descriptor-kind-0 arm:
         // slot 0's vtable[8] resets it, BSP_EntityPathSource_CreateForSlot wraps
@@ -4356,20 +4141,10 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // `path_built` therefore means "a build ran", and the empty test is separate.
     director.path_points = points;
     director.path_name = path_name;
-    if constexpr (bsp::kWireGoal4Chain357Bound) {
-        director.authored_path = director.path_user ? nullptr
-            : std::make_shared<DirectorAuthoredPath>(points,
-                scene_path_registry().find(path_name));
-        director.path_built = true;
-    } else {
-    if constexpr (bsp::kWireGoal4Chain276Bound) {
-        director.authored_path = director.path_user ? nullptr
-            : std::make_shared<DirectorAuthoredPath>(points);
-        director.path_built = true;
-    } else {
-        director.path_built = true;
-    }
-    }
+    director.authored_path = director.path_user ? nullptr
+        : std::make_shared<DirectorAuthoredPath>(points,
+            scene_path_registry().find(path_name));
+    director.path_built = true;
     director.path_advances = 0;
     director.path_travelled = 0.0f;
     director.path_last_valid = false;
@@ -4385,46 +4160,33 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // projection test that chooses between them (007B1263 onwards) is skipped and
     // the nearest is taken alone.
     int joined = [&]() {
-    if constexpr (bsp::kWireGoal4Chain357Bound) {
-        // 007B1C50 reaches authored source slot10 only for join modes 5/7/8;
-        // mode6 starts at zero, and the other modes retain the cursor index.
-        if (director.path_start_mode != 5 && director.path_start_mode != 7
-            && director.path_start_mode != 8) return 0;
-        const GameUnitsHost* const live = host.user_path_live_owner;
-        if (director.authored_path && director.authored_path->has_local_geometry()
-            && live != nullptr && unit_index < live->count()) {
-            // 0071F600 -> 007B1D30/007B1C50 -> authored source slot14.
-            // The command registry's position is a creation snapshot: obtain
-            // all three lanes from the actual owner when this command begins.
-            bsp::path_movcam_seg46_argon::Vec3 position;
-            live->unit_position_00fc(unit_index, position.x, position.y, position.z);
-            const int nearest = director.authored_path->nearest(position);
-            host.done("PathSource::nearest_local_point_007aed10", 0x007aed10u);
-            return nearest;
-        } else {
-            // User paths and compatibility callers have only world points;
-            // keep their existing nearest policy rather than invent a frame.
-            std::vector<float> flat;
-            flat.reserve(points.size() * 3);
-            for (const auto& point : points) {
-                flat.push_back(point[0]);
-                flat.push_back(point[1]);
-                flat.push_back(point[2]);
-            }
-            return bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
-                static_cast<int>(points.size()), unit_x, unit_z);
-        }
+    // 007B1C50 reaches authored source slot10 only for join modes 5/7/8;
+    // mode6 starts at zero, and the other modes retain the cursor index.
+    if (director.path_start_mode != 5 && director.path_start_mode != 7
+        && director.path_start_mode != 8) return 0;
+    const GameUnitsHost* const live = host.user_path_live_owner;
+    if (director.authored_path && director.authored_path->has_local_geometry()
+        && live != nullptr && unit_index < live->count()) {
+        // 0071F600 -> 007B1D30/007B1C50 -> authored source slot14.
+        // The command registry's position is a creation snapshot: obtain
+        // all three lanes from the actual owner when this command begins.
+        bsp::path_movcam_seg46_argon::Vec3 position;
+        live->unit_position_00fc(unit_index, position.x, position.y, position.z);
+        const int nearest = director.authored_path->nearest(position);
+        host.done("PathSource::nearest_local_point_007aed10", 0x007aed10u);
+        return nearest;
     } else {
-    std::vector<float> flat;
-    flat.reserve(points.size() * 3);
-    for (const std::array<float, 3>& point : points) {
-        flat.push_back(point[0]);
-        flat.push_back(point[1]);
-        flat.push_back(point[2]);
-    }
-    int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
-        static_cast<int>(points.size()), unit_x, unit_z);
-    return joined;
+        // User paths and compatibility callers have only world points;
+        // keep their existing nearest policy rather than invent a frame.
+        std::vector<float> flat;
+        flat.reserve(points.size() * 3);
+        for (const auto& point : points) {
+            flat.push_back(point[0]);
+            flat.push_back(point[1]);
+            flat.push_back(point[2]);
+        }
+        return bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
+            static_cast<int>(points.size()), unit_x, unit_z);
     }
     }();
     if (kPathJoinProjectionBound && director.path_start_mode >= 5
@@ -4468,7 +4230,7 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // which is what start modes 5 and 6 give anyway and what every USN04 call
     // asks for (the eight sites pass three arguments, so the start mode is the
     // 008A3734 default 5).
-    if constexpr (bsp::kWireGoal2Chain165Bound) {
+    {
         // 007B1D30 at 0071F86F (both arms of 0071F600 jump there): the thunk unpacks the
         // director's pair into 007B1C50; the OFF arm keeps ship_ai_path_cursor_start_007b1c50.
         namespace pm = bsp::path_movcam_seg46_argon;
@@ -4520,10 +4282,6 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         director.path_cursor.index_08 = cursor.index_08;
         director.path_cursor.follow_mode_0c = cursor.follow_mode_0c;
         director.path_cursor.forward_10 = cursor.forward_10;
-    } else {
-        bsp::ship_ai_path_cursor_start_007b1c50(director.path_cursor,
-            director.path_follow_mode, director.path_start_mode, joined,
-            /*random_forward=*/true);
     }
     director.path_start_index = director.path_cursor.index_08;
     director.path_visited.push_back(director.path_cursor.index_08);
@@ -4536,13 +4294,9 @@ bool GameCommandsHost::path_cursor_has_no_legs_007adc30(std::size_t unit_index) 
     if (unit_index >= host.directors.size()) return true;
     const GameDirector& director = host.directors[unit_index];
     // 007ADC30: no path object, or a point count that is not positive.
-    if constexpr (bsp::kWireGoal4Chain276Bound) {
-        if (director.authored_path && !director.path_user)
-            return !director.path_built || director.authored_path->count() <= 0;
-        return !director.path_built || director.path_points.empty();
-    } else {
-        return !director.path_built || director.path_points.empty();
-    }
+    if (director.authored_path && !director.path_user)
+        return !director.path_built || director.authored_path->count() <= 0;
+    return !director.path_built || director.path_points.empty();
 }
 
 bool GameCommandsHost::path_cursor_on_final_leg_007adc60(std::size_t unit_index) const {
@@ -4563,15 +4317,10 @@ bool GameCommandsHost::path_cursor_point(std::size_t unit_index, int leg,
     int index = leg < 0 ? director.path_cursor.index_08 : leg;
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
-    if constexpr (bsp::kWireGoal4Chain276Bound) {
-        if (director.authored_path && !director.path_user) {
-            const auto point = director.authored_path->point(index);
-            x = point.x;
-            z = point.z;
-        } else {
-            x = director.path_points[static_cast<std::size_t>(index)][0];
-            z = director.path_points[static_cast<std::size_t>(index)][2];
-        }
+    if (director.authored_path && !director.path_user) {
+        const auto point = director.authored_path->point(index);
+        x = point.x;
+        z = point.z;
     } else {
         x = director.path_points[static_cast<std::size_t>(index)][0];
         z = director.path_points[static_cast<std::size_t>(index)][2];
@@ -4586,31 +4335,23 @@ bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) 
     if (!director.path_built || director.path_points.empty()) return false;
     const int count = static_cast<int>(director.path_points.size());
     int index = [&]() {
-        if constexpr (bsp::kWireGoal4Chain315Bound) {
-            // For a follower attached to its own user list, 0071D2A0's
-            // virtual +14h query returns precisely this live cursor. Consume
-            // that answer here too: the campaign path-follow step runs even
-            // when the AI coordinator's cautious-route tick is not active.
-            // An authored entity path has a different source; keep its own
-            // cursor read rather than applying the user-list query to it.
-            return user_path_attached_0071fc40(unit_index)
-                ? user_path_remaining_0071d2a0(unit_index)
-                : director.path_cursor.index_08;
-        } else {
-            return director.path_cursor.index_08;
-        }
+        // For a follower attached to its own user list, 0071D2A0's
+        // virtual +14h query returns precisely this live cursor. Consume
+        // that answer here too: the campaign path-follow step runs even
+        // when the AI coordinator's cautious-route tick is not active.
+        // An authored entity path has a different source; keep its own
+        // cursor read rather than applying the user-list query to it.
+        return user_path_attached_0071fc40(unit_index)
+            ? user_path_remaining_0071d2a0(unit_index)
+            : director.path_cursor.index_08;
     }();
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
-    if constexpr (bsp::kWireGoal4Chain276Bound) {
-        if (director.authored_path && !director.path_user) {
-            const auto point = director.authored_path->point(index);
-            out[0] = point.x;
-            out[1] = point.y;
-            out[2] = point.z;
-        } else {
-            for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
-        }
+    if (director.authored_path && !director.path_user) {
+        const auto point = director.authored_path->point(index);
+        out[0] = point.x;
+        out[1] = point.y;
+        out[2] = point.z;
     } else {
         for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
     }
@@ -4625,15 +4366,11 @@ bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float o
     const GameDirector& director = host.directors[unit_index];
     if (!director.path_built || director.path_points.empty()) return false;
     if (director.path_cursor.follow_mode_0c != 1) return false;
-    if constexpr (bsp::kWireGoal4Chain276Bound) {
-        if (director.authored_path && !director.path_user) {
-            const auto point = director.authored_path->last_point();
-            out[0] = point.x;
-            out[1] = point.y;
-            out[2] = point.z;
-        } else {
-            for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
-        }
+    if (director.authored_path && !director.path_user) {
+        const auto point = director.authored_path->last_point();
+        out[0] = point.x;
+        out[1] = point.y;
+        out[2] = point.z;
     } else {
         for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
     }
@@ -5000,7 +4737,7 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                 ++host.summary.release_slot_kept;
             }
             if (!kDirectorTargetChecksBound) continue;
-            if constexpr (kWireGoal4Chain292Bound) {
+            {
                 // 0084DA60, slot 70h of the plane squadron command block (vtable
                 // 00D0BD98, which only 0084D810 builds, for a squadron) calls
                 // 0071EDD0 too (0084DA90) but answers 0 whenever the slot's
@@ -5031,29 +4768,19 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                     host.done("WeaponDirector::release_observed_target", 0x0071ddb0u);
                     continue;
                 }
-            } else {
-            target = bsp::SceneCommandTarget{};
-            target.kind = 0;
-            target.position_valid = 1;
-            for (int lane = 0; lane < 3; ++lane) target.position[lane] = released.position[lane];
-            host.done("WeaponDirector::release_retarget_0071edd0", 0x0071edd0u);
             }
             // 0071DE5D: [[00E188A8]+1FE4h] == 2 skips; this process is mode 1.
             const bool player = released.controlled_unit == d;
             bool slot_clearable = false;
-            if constexpr (kWireGoal4Chain292Bound) {
-                // 0071DE7B..0071DE8C, i > 0: director vtable[74h](command, i), which
-                // is 0071DEB0 BSP_WeaponDirector_SlotClearable in all four director
-                // vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C): the command's
-                // vtable[0Ch] category is 1 or 2 and the slot is above 0. The
-                // category is the class's own answer (class_of, as above).
-                if (i > 0) {
-                    slot_clearable = bsp::band_0071_cc13::weapon_director_slot_clearable_0071deb0(
-                        category, i);
-                    host.done("WeaponDirector::slot_clearable_0071deb0", 0x0071deb0u);
-                }
-            } else {
-                slot_clearable = category == 1 || category == 2;
+            // 0071DE7B..0071DE8C, i > 0: director vtable[74h](command, i), which
+            // is 0071DEB0 BSP_WeaponDirector_SlotClearable in all four director
+            // vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C): the command's
+            // vtable[0Ch] category is 1 or 2 and the slot is above 0. The
+            // category is the class's own answer (class_of, as above).
+            if (i > 0) {
+                slot_clearable = bsp::band_0071_cc13::weapon_director_slot_clearable_0071deb0(
+                    category, i);
+                host.done("WeaponDirector::slot_clearable_0071deb0", 0x0071deb0u);
             }
             if (i == 0) {
                 // 0071DE72 0071D810(2), monotonic, then the 5Dh round trip.
@@ -5096,7 +4823,7 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
     to.mode = from.mode;
     // 007204E3 0071E610 on dst: its override cleared, vtable[6Ch](0) when it ran.
     clear_override_in_place(host, dst);
-    if constexpr (bsp::kWireGoal4Chain255Bound) {
+    {
         namespace gp = bsp::gameplay_seg38_cc13;
         const GameUnitsHost* const live = host.user_path_live_owner;
         // 007205F1 queries the destination owner, not the dead source leader.
@@ -5171,25 +4898,8 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
                 ++host.summary.director_copy_land_kept;
             }
         }
-    } else {
-    // 007204E8..0072072B: the ten records, each with its descriptor (the
-    // observer pair moved with it; this host has no registry, 0071DDB0 walks
-    // every director) and its path object (0071FD10 at 00720714 per slot; this
-    // host carries slot 0's alone). NOT MODELLED: for a kind-6 owner (vt+5Ch(6)
-    // at 007205F1) a `land` (00E08FA0) becomes `attackmove` (00E08F78, 00720607)
-    // with its position zeroed, and 0071DB90 (00720617) picks the new target.
-    // Found: the record object byte is set and the target id taken (00720656..
-    // 00720660). None found: still attackmove, with a null target, the object
-    // byte cleared and the id zeroed (0072064C..00720650). Both arms need
-    // 0071DB90's world list, so a `land` is kept and counted.
-    for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
-        to.slot_command[i] = from.slot_command[i];
-        to.slot_target[i] = from.slot_target[i];
-        if (from.slot_command[i] == bsp::gameplay_seg38_cc13::kCmdLand)
-            ++host.summary.director_copy_land_kept;
     }
-    }
-    if constexpr (bsp::kWireGoal2Chain75Bound) {
+    {
         // 0071FD10 at 00720714: bsp_director_path_object_copy_from_0071fd10 over slot 0's
         // path fields (modes, source, cursor, points); OFF keeps the field-by-field copy.
         DirectorPathObjectCopyView path{to, from};
@@ -5208,31 +4918,6 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
             to.pending_path_name = from.pending_path_name;
             to.pending_path_valid = from.pending_path_valid;
         }
-    } else {
-    if (&to != &from) {
-        to.path_cursor = from.path_cursor;
-        if constexpr (bsp::kWireGoal4Chain276Bound) {
-            to.path_points = from.path_points;
-            to.authored_path = from.path_user ? nullptr : from.authored_path;
-        } else {
-            to.path_points = from.path_points;
-        }
-        to.path_name = from.path_name;
-        to.path_follow_mode = from.path_follow_mode;
-        to.path_start_mode = from.path_start_mode;
-        to.path_built = from.path_built;
-        to.path_start_index = from.path_start_index;
-        to.path_travelled = from.path_travelled;
-        to.path_last_x = from.path_last_x;
-        to.path_last_z = from.path_last_z;
-        to.path_last_valid = from.path_last_valid;
-        to.path_visited = from.path_visited;
-        to.pending_path_points = from.pending_path_points;
-        to.pending_path_name = from.pending_path_name;
-        to.pending_path_valid = from.pending_path_valid;
-        to.user_points = from.user_points;
-        to.path_user = from.path_user;
-    }
     }
     // The stage reset below makes the next step begin slot 0 again.
     to.path_begun = false;
@@ -5650,14 +5335,12 @@ void GameCommandsHost::report() {
         host.summary.release_head_ends, host.summary.release_slot_clears,
         host.summary.release_slot_kept, host.summary.release_plane_matches,
         host.summary.target_refusals);
-    if constexpr (kWireGoal4Chain292Bound) {
-        host.log.notef("summary mission director release retarget member=%llu point=%llu "
-            "squadron_blocks=%llu faults=%llu self_target_answers=%llu (0071EDD0 in "
-            "0071DDB0, 0084DA60 kept; 00836040 / 0084DD20 in 0071E6C0; goal 4 chain 292)",
-            host.summary.release_member_retargets, host.summary.release_point_retargets,
-            host.summary.release_squadron_blocks, host.summary.release_retarget_faults,
-            host.summary.self_target_answers);
-    }
+    host.log.notef("summary mission director release retarget member=%llu point=%llu "
+        "squadron_blocks=%llu faults=%llu self_target_answers=%llu (0071EDD0 in "
+        "0071DDB0, 0084DA60 kept; 00836040 / 0084DD20 in 0071E6C0; goal 4 chain 292)",
+        host.summary.release_member_retargets, host.summary.release_point_retargets,
+        host.summary.release_squadron_blocks, host.summary.release_retarget_faults,
+        host.summary.self_target_answers);
     host.log.notef("summary mission director extra tests bound=%d torpedo=%llu null=%llu kind=%llu "
         "fort_unread=%llu class_unknown=%llu path=%llu path_unit=%llu path_non_unit=%llu "
         "(0071D71F, 009229F0 / 007AC9D0, packet cc9_command_extra_tests)",

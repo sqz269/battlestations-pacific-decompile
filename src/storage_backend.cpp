@@ -1,6 +1,5 @@
 #include "bsp/storage_backend.hpp"
 #include "bsp/cc13_seg87.hpp"
-#include "bsp/wire_goal2_chain119_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -220,23 +219,14 @@ void PcStorageBackend::open_read_archive_00bd3470() {
     if (!state) throw std::logic_error("storage Lua owner returned no state");
     const int status = [&] {
     // 00B65EF0 executes the archive on its live owner; OFF keeps the loadbuffer/pcall sequence.
-    if constexpr (kWireGoal2Chain119Bound) {
-        // 00BD3470 opens the owner at +38h before this call. Only its state_04
-        // is read here; borrow that same interpreter for the duration of execution.
-        NativeLuaStateStorage owner;
-        construct_native_lua_state_00b66bd0(&owner);
-        owner.state_04 = state;
-        return native_lua_do_buffer_protected_00b65ef0(owner,
-            reinterpret_cast<const char*>(buffer_30_.data()),
-            static_cast<std::uint32_t>(buffer_30_.size()));
-    } else {
-    (void)lua_gettop(state);
-    int status = luaL_loadbuffer(state, reinterpret_cast<const char*>(buffer_30_.data()),
-        buffer_30_.size(), "DoBuffer");
-    if (status == 0) status = lua_pcall(state, 0, LUA_MULTRET, 0);
-    (void)lua_gettop(state); // 00b65ef0 retains results/error; it does not pop them.
-    return status;
-    }
+    // 00BD3470 opens the owner at +38h before this call. Only its state_04
+    // is read here; borrow that same interpreter for the duration of execution.
+    NativeLuaStateStorage owner;
+    construct_native_lua_state_00b66bd0(&owner);
+    owner.state_04 = state;
+    return native_lua_do_buffer_protected_00b65ef0(owner,
+        reinterpret_cast<const char*>(buffer_30_.data()),
+        static_cast<std::uint32_t>(buffer_30_.size()));
     }();
     if (status != 0) {
         error_20_ = true;

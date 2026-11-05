@@ -211,47 +211,11 @@ struct MissionShipLightingGraph {
   check(light.shadow_174==nullptr,"mission sun unexpectedly acquired a shadow owner");
  }
  void configure_owners() {
-  if constexpr(kWireGoal4Chain522Bound) {
-   configure_scene_owners();
-  } else {
-  void* const actual_ambient=get<void*>(resource,0x10);
-  check(actual_ambient && sun_owner,
-      "mission lighting requires current ambient and completed sun owners");
-  // Explicit source HDR illumination diagnostic for this linear backbuffer
-  // view: ON11 clear-air authored diffuse/AO remains very dark, so these
-  // genuine configuration inputs apply 8x the preceding ON10 illumination.
-  // These values are not original mission/world lighting. The
-  // installed ship shader decodes sRGB textures; the normal post20 exposure/
-  // display conversion has not been composed in this bounded ordinary path.
-  // These are real configuration inputs, not substitute constant-bank writes.
-  const auto ambient_color=color(8.00f,8.96f,10.24f);
-  std::array<SystemLightingWords4,6> cube;
-  for(auto& face:cube)face=ambient_color;
-  const auto diffuse=color(11.20f,10.88f,9.60f);
-  const auto specular=color(1.92f,1.92f,1.92f);
-  const U one=*graph.profiles(0xd7a24c);
-  const U yaw=float_bits(0.7853981634f),elevation=float_bits(0.6154797087f);
-  const LightingConfigurationFields configuration{ambient_color,ambient_color,cube,
-      diffuse,diffuse,specular,one,one,yaw,elevation};
-  LightingConfigurationGlobals global_fields{globals.half_guard,globals.half_color,
-      globals.diffuse_guard,globals.diffuse_color,globals.specular_guard,globals.specular_color,
-      fallback_direction,captured_scale_ambient,*graph.profiles(0xce3800),*graph.profiles(0xd7a24c)};
-  auto& light=sun_owner->light;
-  LightingDirectionalFields directional{light.diffuse_184,light.specular_194,
-      light.base_diffuse_1a4,light.diffuse_mode3_1b4,light.base_specular_1c4,
-      light.diffuse_scale_1d8,light.specular_scale_1dc,light.direction_1e0};
-  apply_lighting_configuration_004bacd0(
-      borrow_native_ambient_lighting_fields(actual_ambient,owners),directional,
-      &configuration,global_fields);
-  check(light.shadow_174==nullptr,"mission sun unexpectedly acquired a shadow owner");
-  }
+  configure_scene_owners();
  }
  void create_and_bind(void* actual_outer_scene) {
-  if constexpr(kWireGoal4Chain522Bound) {
-   check(scene_inputs && scene_inputs->authored,
-       "mission light binding requires a completely read authored Lights header");
-  } else {
-  }
+  check(scene_inputs && scene_inputs->authored,
+      "mission light binding requires a completely read authored Lights header");
   check(phase==Phase::prepared && actual_outer_scene &&
       get<U>(actual_outer_scene)==0xd62d48 && get<void*>(actual_outer_scene,0x1c)==nullptr,
       "mission lighting must bind after model roots on the native null-lighting scene");
@@ -300,15 +264,9 @@ struct MissionShipLightingGraph {
    sun_name_live=false;destroy_native_string_header_0041dd20(&sun_name,strings);
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
-   if constexpr(kWireGoal4Chain522Bound) {
-    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-        "configuration=004EA870->004BACD0 illumination=selected_scene authored=%u captured_scale_ambient=%u shadow=null",
-        outer,resource,get<void*>(resource,0x10),sun,unsigned(scene_inputs->authored),unsigned(captured_scale_ambient));
-   } else {
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-       "configuration=004BACD0 illumination=source_HDR_diagnostic captured_scale_ambient=%u ambient_cube=8.00,8.96,10.24 diffuse=11.20,10.88,9.60 specular=1.92,1.92,1.92 shadow=null",
-       outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
-   }
+       "configuration=004EA870->004BACD0 illumination=selected_scene authored=%u captured_scale_ambient=%u shadow=null",
+       outer,resource,get<void*>(resource,0x10),sun,unsigned(scene_inputs->authored),unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
  void begin_root_attachment() {

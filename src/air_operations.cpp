@@ -4,7 +4,6 @@
 #include "bsp/launch_ver_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/pool_pool13_cc13.hpp"
-#include "bsp/wire_goal2_chain182_switches.hpp"
 
 #include <cstring>
 
@@ -373,21 +372,12 @@ bool air_ops_is_ready_to_send_planes_00895d20(const AirOpsDeck& deck) noexcept {
     // test against 45h passes and the byte at entity+720h is set. Either one
     // failing falls through to 006BF620, so a mother ship never takes it.
     if (deck.is_airfield && deck.airfield_blocked) return false;
-    if constexpr (kWireGoal2Chain182Bound) {
-        // 00895E5F CALL 006BF620: the reconstructed body over the deck's block
-        // fields (+1Ch, +1Dh, owner +7Ch and its +5Dh, +38h); OFF keeps the
-        // inline copy of the same test below.
-        return pool_pool13_cc13::air_ops_block_is_ready_to_send_planes_006bf620(
-            pool_pool13_cc13::AirOpsBlockReadyView{deck.runway_failure, deck.hangar_failure,
-                deck.owner_present, deck.owner_blocked, deck.launch_in_progress});
-    } else {
-        // 006BF620, in its own order: the two failure bytes clear, the owner at
-        // block+7Ch non-null, its byte at +5Dh clear, and block+38h zero.
-        if (deck.runway_failure || deck.hangar_failure) return false;
-        if (!deck.owner_present) return false;
-        if (deck.owner_blocked) return false;
-        return deck.launch_in_progress == 0;
-    }
+    // 00895E5F CALL 006BF620: the reconstructed body over the deck's block
+    // fields (+1Ch, +1Dh, owner +7Ch and its +5Dh, +38h); OFF keeps the
+    // inline copy of the same test below.
+    return pool_pool13_cc13::air_ops_block_is_ready_to_send_planes_006bf620(
+        pool_pool13_cc13::AirOpsBlockReadyView{deck.runway_failure, deck.hangar_failure,
+            deck.owner_present, deck.owner_blocked, deck.launch_in_progress});
 }
 
 int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept {

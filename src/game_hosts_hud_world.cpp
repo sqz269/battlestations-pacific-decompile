@@ -27,9 +27,6 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/hud_heading_vtable50_cc13.hpp"  // packet cc13-hudhdg
-#include "bsp/wire_goal2_chain47_switches.hpp"
-#include "bsp/wire_goal4_chain376_switches.hpp"
-#include "bsp/wire_goal4_chain513_switches.hpp"
 #include "bsp/pool_pool02_cc13.hpp"
 #include "bsp/pool_pool09_cc13.hpp"
 #include "bsp/pool_pool13_cc13.hpp"
@@ -326,19 +323,14 @@ public:
             ? owner_.units->unit_class_id(owner_.index_of(unit)) : -1;
         switch (bsp::hud_minimap_unit_shows_body(class_id)) {
         case bsp::HudMinimapUnitShows::Always:
-            if constexpr (bsp::kWireGoal4Chain513Bound) {
-                // 005C1675 dispatches the current unit's +B8h slot. Evidence:
-                // bsp.py show 006d1fa0: MOV AL,1 / RET; ECX is unused, so the
-                // live minimap unit handle needs no native-layout adapter.
-                owner_.done("HudMinimap::unit_shows_on_minimap", bsp::kHudMinimapShowsAlwaysBody);
-                return bsp::pool_pool13_cc13::unit_shows_on_minimap_true_006d1fa0(
-                    static_cast<std::uint8_t*>(unit));
-            } else {
+            // 005C1675 dispatches the current unit's +B8h slot. Evidence:
+            // bsp.py show 006d1fa0: MOV AL,1 / RET; ECX is unused, so the
+            // live minimap unit handle needs no native-layout adapter.
             owner_.done("HudMinimap::unit_shows_on_minimap", bsp::kHudMinimapShowsAlwaysBody);
-            return true;
-            }
+            return bsp::pool_pool13_cc13::unit_shows_on_minimap_true_006d1fa0(
+                static_cast<std::uint8_t*>(unit));
         case bsp::HudMinimapUnitShows::Never:
-            if constexpr (bsp::kWireGoal4Chain513Bound) {
+            {
                 // The recovered most-derived vtables distinguish class35's
                 // 007001E0 from the 006F57D0 shared by land forts/command
                 // buildings. Both bodies are XOR AL,AL / RET and read no
@@ -348,10 +340,6 @@ public:
                 return body == bsp::kHudMinimapShowsClass35Body
                     ? bsp::cc13_pool09::class35_shows_on_minimap_007001e0()
                     : bsp::pool_pool02_cc13::land_fort_shows_on_minimap_006f57d0();
-            } else {
-            owner_.done("HudMinimap::unit_shows_on_minimap(fort)",
-                bsp::hud_minimap_unit_shows_address(class_id));
-            return false;
             }
         case bsp::HudMinimapUnitShows::PlayerQuery:
             // SUBSTITUTION: 0074DDF0 asks 008DDF00 on the local player's object at
@@ -387,24 +375,11 @@ public:
     void* create_icon_entry(void* unit) override {
         // 005C173A: 005BD590 builds the entry (white template by IsKindOf, colour by
         // unit+54h) via MinimapIconEntryBinding; OFF keeps the 00639990 group clone.
-        if constexpr (bsp::kWireGoal2Chain47Bound) {
-            owner_.record("HudMinimap::allocate_icon_entry", 0x00bf681bu);
-            GuiLayoutWidget* icon = owner_.create_icon_from_entry(unit);
-            owner_.record("HudMinimap::insert_icon_entry", 0x005c0700u);
-            owner_.record("HudMinimap::attach_icon_entry", 0x00694a60u);
-            return icon;
-        } else {
-        // 005C171C..005C1767: 00BF681B allocates 0Ch bytes, 005BD590 constructs
-        // the entry, 005C0700 inserts it and 00694A60 attaches it. None of the
-        // four is reconstructed (packet `hud_minimap_icon_entries`), so all four
-        // are records and what the executable creates instead is a clone of the
-        // page's own `item_ship_Icon` template.
         owner_.record("HudMinimap::allocate_icon_entry", 0x00bf681bu);
-        owner_.record("HudMinimap::construct_icon_entry", 0x005bd590u);
+        GuiLayoutWidget* icon = owner_.create_icon_from_entry(unit);
         owner_.record("HudMinimap::insert_icon_entry", 0x005c0700u);
         owner_.record("HudMinimap::attach_icon_entry", 0x00694a60u);
-        return owner_.create_icon(owner_.index_of(unit));
-        }
+        return icon;
     }
 
     void renderer_basis(float& y_component, float& x_component) override {
@@ -511,7 +486,7 @@ void GameHudMinimapHost::Impl::bind_page_005bec50() {
         if (colour_templates[slot] != nullptr) ++summary.colour_templates;
     }
     summary.groups_bound = summary.colour_templates > 0;
-    if constexpr (bsp::kWireGoal2Chain47Bound) bind_icon_entry_fields(root);
+    bind_icon_entry_fields(root);
     // The island map's own content. minimap_terrain.mshd is the two-sampler GUI
     // shader effect; `RadarMap` at texture register 0 is a render target the
     // renderer owner produces, and 005BED21 is where 005BEC50 takes the widget
@@ -1084,37 +1059,29 @@ public:
         owner_.marked.push_back(owner_.index_of(unit));
     }
     bool objective_container_contains(void* unit) override {
-        if constexpr (bsp::kWireGoal4Chain376Bound) {
-            // 00643145..00643183: ECX = [game+21A4h + 4*[game+18ECh]], the local
-            // player's objective set (game+18ECh is 0 in single player, as for the
-            // unit pick screen's grey arrow), then 008DDF90(unit). The set's +18h
-            // unit tree is GameObjectiveSets::units_in_slot, filled by the Lua
-            // objective bindings (src/game_hosts_lua.cpp).
-            const std::vector<std::size_t> set = game_objective_sets().units_in_slot(0);
-            bsp::ObjectiveSetQuery query;
-            query.set_size = set.size();                                         // [this+20h]
-            if (owner_.units != nullptr) {
-                const std::size_t subject = owner_.index_of(unit);
-                query.unit_is_vehicle = owner_.units->unit_is_kind_of(subject, 5);   // 008DDFA9
-                query.unit_is_squadron = !query.unit_is_vehicle
-                    && owner_.units->unit_is_kind_of(subject, 0x18);                 // 008DDFB8
-                if (query.unit_is_vehicle) {                                         // 008DDF00
-                    query.subject_in_set = std::find(set.begin(), set.end(), subject) != set.end();
-                } else if (query.unit_is_squadron) {
-                    // 008DDFC2 looks up the squadron's plane at +3D0h, which this
-                    // host does not expose (the grey arrow records the same gap).
-                    owner_.record("HudMarkers::objective_container_squadron", 0x008ddfc2u);
-                }
+        // 00643145..00643183: ECX = [game+21A4h + 4*[game+18ECh]], the local
+        // player's objective set (game+18ECh is 0 in single player, as for the
+        // unit pick screen's grey arrow), then 008DDF90(unit). The set's +18h
+        // unit tree is GameObjectiveSets::units_in_slot, filled by the Lua
+        // objective bindings (src/game_hosts_lua.cpp).
+        const std::vector<std::size_t> set = game_objective_sets().units_in_slot(0);
+        bsp::ObjectiveSetQuery query;
+        query.set_size = set.size();                                         // [this+20h]
+        if (owner_.units != nullptr) {
+            const std::size_t subject = owner_.index_of(unit);
+            query.unit_is_vehicle = owner_.units->unit_is_kind_of(subject, 5);   // 008DDFA9
+            query.unit_is_squadron = !query.unit_is_vehicle
+                && owner_.units->unit_is_kind_of(subject, 0x18);                 // 008DDFB8
+            if (query.unit_is_vehicle) {                                         // 008DDF00
+                query.subject_in_set = std::find(set.begin(), set.end(), subject) != set.end();
+            } else if (query.unit_is_squadron) {
+                // 008DDFC2 looks up the squadron's plane at +3D0h, which this
+                // host does not expose (the grey arrow records the same gap).
+                owner_.record("HudMarkers::objective_container_squadron", 0x008ddfc2u);
             }
-            owner_.done("HudMarkers::objective_container", 0x008ddf90u);
-            return bsp::objective_set_contains_008ddf90(query);
-        } else {
-        // 00643183 -> 008DDF90 against [00E188A8+21A4h+team*4]. The objective
-        // containers belong to the mission objective owner; none exists here.
-        static_cast<void>(unit);
-        owner_.record("HudMarkers::objective_container", 0x008ddf90u);
-        return false;
         }
+        owner_.done("HudMarkers::objective_container", 0x008ddf90u);
+        return bsp::objective_set_contains_008ddf90(query);
     }
     int marker_colour_index(void* unit) override {
         owner_.record("HudMarkers::marker_colour_index", 0x00639990u);

@@ -13,8 +13,6 @@
 #include "bsp/cc13_avoid1.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_a.hpp"
-#include "bsp/wire_goal2_chain78_switches.hpp"
-#include "bsp/wire_goal4_chain465_switches.hpp"
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -55,7 +53,7 @@ private:
 bsp::TerrainGridLayerRecord default_layer_00424680() {
     bsp::TerrainGridLayerRecord layer;
     layer.class_name = "TerrainGridLayer";
-    if constexpr (bsp::kWireGoal2Chain78Bound) {
+    {
         // 004246B4 00423960 terrain_layer_set_dimension_00423960(10) over the record; OFF keeps the inline stores.
         // The image's constants, as its bytes read: 00CE3968 463B8000h, 00CE3960
         // 40D7700000000000h, 00CE3958 40000000h, 00CE396C 45160000h (unread here).
@@ -67,14 +65,8 @@ bsp::TerrainGridLayerRecord default_layer_00424680() {
             extent_00ce3968, diameter_00ce3960, scale_00ce3958, default_width_00ce396c};
         TerrainGridLayerRecordDimensionFields fields(layer);
         bsp::oct18_tail_a::terrain_layer_set_dimension_00423960(fields, 10, constants);  // 004246AE PUSH 0Ah
-    } else {
-    layer.dimension = 10;
-    layer.half_extent = 12000.0f;
-    layer.cell_size = static_cast<float>(24000.0 / 10.0);
-    layer.file_scalar = 2.0f;
     }
     layer.slope_limit = static_cast<float>(std::tan(static_cast<double>(0.17453286f)));
-    if constexpr (!bsp::kWireGoal2Chain78Bound) layer.grid.assign(100, 0);
     return layer;
 }
 
@@ -292,23 +284,11 @@ private:
 };
 
 GameAvoidZoneRegistry::GameAvoidZoneRegistry() {
-    if constexpr (bsp::kWireGoal4Chain465Bound) {
-        native_ = new NativeRegistry(layers_);
-    } else {
-    if constexpr (kAvoidZoneRegistryImageLayoutBound) {
-        layers_.push_back(default_layer_00424680(0x3E32B8C3u));  // 0042476E-004247C2, 10 degrees
-        layers_.push_back(default_layer_00424680(0x3EB2B8C3u));  // 004247CD-0042481E, 20 degrees
-        layers_.push_back(default_layer_00424680(0x3F9C61ABu));  // 00424829-00424886, 70 degrees
-    } else {
-        layers_.push_back(default_layer_00424680());  // 0042476E-004247B7
-    }
-    }
+    native_ = new NativeRegistry(layers_);
 }
 
 GameAvoidZoneRegistry::~GameAvoidZoneRegistry() {
-    if constexpr (bsp::kWireGoal4Chain465Bound) {
-        delete native_;
-    }
+    delete native_;
 }
 
 GameAvoidZoneRegistry& GameAvoidZoneRegistry::instance() {
@@ -318,23 +298,12 @@ GameAvoidZoneRegistry& GameAvoidZoneRegistry::instance() {
 
 void GameAvoidZoneRegistry::load_scene_layers(
     const std::vector<bsp::TerrainGridLayerRecord>& file_layers) {
-    if constexpr (bsp::kWireGoal4Chain465Bound) {
-        native_->load(file_layers);
-        ++scene_loads_;
-    } else {
-    layers_.clear();
-    // 004248C1: 0041DED0 deletes every layer, the constructor's defaults
-    // included, before the file's layers are appended.
-    if constexpr (!kAvoidZoneRegistryImageLayoutBound) layers_.push_back(default_layer_00424680());
-    for (const bsp::TerrainGridLayerRecord& layer : file_layers) layers_.push_back(layer);
+    native_->load(file_layers);
     ++scene_loads_;
-    }
 }
 
 std::optional<float> GameAvoidZoneRegistry::max_cell_height() const noexcept {
-    if constexpr (bsp::kWireGoal4Chain465Bound) {
-        if (scene_loads_ != 0) return native_->max_cell_height();
-    }
+    if (scene_loads_ != 0) return native_->max_cell_height();
     return std::nullopt;
 }
 

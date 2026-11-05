@@ -3,7 +3,6 @@
 #include "bsp/band_0045_cc13.hpp"
 #include "bsp/cc13_seg95.hpp"
 #include "bsp/frontend_seg15_22_cc13.hpp"
-#include "bsp/wire_goal4_chain429_switches.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -309,7 +308,7 @@ void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& 
             writer.end_section();
         }
         const SettingsValue value = read_field(settings, key.offset);
-        if constexpr (kWireGoal4Chain429Bound) {
+        {
             // 008D64EB and the later omit-default sites call 00BD5680 with
             // the actual settings field and the binary's per-key default.
             // These table entries have matching Bool/Int tags. Preserve the
@@ -320,10 +319,6 @@ void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& 
                     native_settings_value(value), native_settings_value(key.default_value), equality)) {
                 continue;
             }
-        } else {
-        if (key.omit_when_default && value == key.default_value) {
-            continue; // 00bd5680 returned true
-        }
         }
         writer.write_field(key.name, value); // virtual +0Ch
     }
@@ -416,7 +411,7 @@ bool apply_all_settings_008d5b50(const GameSettingsBlock& settings,
     host.localization_load_table(lanfile.c_str()); // 008d5da1
 
     // 008d5dc8: rumble is on only when neither the game nor the setting blocks it.
-    if constexpr (kWireGoal4Chain429Bound) {
+    {
         SettingsEqualityHost equality;
         // 008D5DD6 compares the live settings+40h byte with literal zero.
         // Reuse 00BD5680's tag-3 byte equality for that predicate; this is a
@@ -428,8 +423,6 @@ bool apply_all_settings_008d5b50(const GameSettingsBlock& settings,
                 native_settings_value(SettingsValue::from_bool(settings.control.rumble_off_40)),
                 {3u, 0u}, equality);
         host.set_rumble_enabled(enabled);
-    } else {
-    host.set_rumble_enabled(!env.rumble_blocked_by_game && !settings.control.rumble_off_40);
     }
 
     if (env.downloadable_content_present) { // 008d5de7

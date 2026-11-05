@@ -5,7 +5,6 @@
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_post_effect_raw_access.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain579_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -104,16 +103,12 @@ void destroy_native_luminance_owner_00b50dd0(void* owner,NativeRenderEffectLifet
     void* first=pointer(word(at(owner,0x210)));
     const auto decrement=c.actual_decrement_00ce2220;
     for(Word offset:{0x210u,0x238u,0x23cu,0x214u,0x218u,0x21cu,0x220u,0x224u,0x248u,0x244u}) {
-        if constexpr(kWireGoal4Chain579Bound) {
-            // bsp.py show 00B4FFE0 --asm: MOV EAX,[ECX+23Ch]; RET.
-            // Reuse that exact load on this actual 250h luminance owner.
-            // B50DD0 captures +23Ch only AFTER releasing/clearing +238h;
-            // keep the late read, captured decrement, and single release.
-            if(offset==0x23c)first=pointer(native_post_effect_owner_raw_23c_00b4ffe0(owner));
-            else if(offset!=0x210)first=pointer(word(at(owner,offset)));
-        } else {
-        if(offset!=0x210)first=pointer(word(at(owner,offset)));
-        }
+        // bsp.py show 00B4FFE0 --asm: MOV EAX,[ECX+23Ch]; RET.
+        // Reuse that exact load on this actual 250h luminance owner.
+        // B50DD0 captures +23Ch only AFTER releasing/clearing +238h;
+        // keep the late read, captured decrement, and single release.
+        if(offset==0x23c)first=pointer(native_post_effect_owner_raw_23c_00b4ffe0(owner));
+        else if(offset!=0x210)first=pointer(word(at(owner,offset)));
         release_slot(owner,offset,first,decrement,c);
     }
     cleanup.armed=false;destroy_native_render_effect_base_00b0f5e0(owner,c);

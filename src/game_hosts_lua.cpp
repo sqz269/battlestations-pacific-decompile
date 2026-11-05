@@ -12,52 +12,23 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
-#include "bsp/wire_goal4_chain546_switches.hpp"
-#include "bsp/wire_goal4_chain484_switches.hpp"
-#include "bsp/wire_goal4_chain531_switches.hpp"
-#include "bsp/wire_goal4_chain490_switches.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/gameplay_tuning_lua_rows.hpp"
 #include "bsp/game_ship_depth_tables.hpp"
 #include "bsp/oct18_tail_b.hpp"
-#include "bsp/wire_goal4_chain523_switches.hpp"
-#include "bsp/wire_goal4_chain423_switches.hpp"
-#include "bsp/wire_goal4_chain424_switches.hpp"
 #include "bsp/band_004b_cc13.hpp"
 #include "bsp/session_participant_pools.hpp"
-#include "bsp/wire_goal4_chain420_switches.hpp"
 #include "bsp/cc15_g24c.hpp"
-#include "bsp/wire_goal4_chain408_switches.hpp"
-#include "bsp/wire_goal4_chain403_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
-#include "bsp/wire_goal4_chain395_switches.hpp"
-#include "bsp/wire_goal4_chain372_switches.hpp"
 #include "bsp/cc13_seg41_land.hpp"
-#include "bsp/wire_goal4_chain287_switches.hpp"
-#include "bsp/wire_goal4_chain334_switches.hpp"
-#include "bsp/wire_goal4_chain340_switches.hpp"
 #include "bsp/native_mission_lua_stack.hpp"
 #include "bsp/native_mission_lua_type.hpp"
 #include "bsp/native_mission_lua_predicates.hpp"
 #include "bsp/native_mission_lua_iteration.hpp"
-#include "bsp/wire_goal4_chain253_switches.hpp"
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/game_hosts_session_messages.hpp"
-#include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/cc13_left55.hpp"
-#include "bsp/wire_goal2_chain51_switches.hpp"
-#include "bsp/wire_goal2_chain69_switches.hpp"
-#include "bsp/wire_goal2_chain104_switches.hpp"
-#include "bsp/wire_goal2_chain119_switches.hpp"
-#include "bsp/wire_goal2_chain124_switches.hpp"
-#include "bsp/wire_goal2_chain130_switches.hpp"
-#include "bsp/wire_goal2_chain143_switches.hpp"
-#include "bsp/wire_goal2_chain152_switches.hpp"
-#include "bsp/wire_goal2_chain187_switches.hpp"
-#include "bsp/wire_goal2_chain195_switches.hpp"
-#include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
 #include "bsp/cc13_left61.hpp"        // 009481A0, chain 195
 #include "bsp/gui_lua_runtime.hpp"   // GuiLua51Host, GuiLuaReader (00BD68D0), chain 195
 #include "bsp/oct18_tail_c.hpp"
@@ -100,8 +71,6 @@
 #include "bsp/profile_checkpoint.hpp"   // packet cc9_lua49_checkpoint
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/game_native_string_process.hpp"
-#include "bsp/wire_goal4_chain368_switches.hpp"
-#include "bsp/wire_goal4_chain376_switches.hpp"
 #include "bsp/entity_lifecycle_tails.hpp"   // 008DC3E0, goal 4 chain 376
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
@@ -123,12 +92,10 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_tagged_leaf_b6_16e.hpp"
-#include "bsp/wire_goal4_chain458_switches.hpp"
 #include "bsp/lua_numeric.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/game_host_vehicle_class.hpp"
-#include "bsp/wire_goal3_chain234_switches.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/cc13_seg87.hpp"
@@ -151,23 +118,14 @@
 #include "bsp/settings_seg29_cc13.hpp"          // packet wire-lua, LuaMachine 006B8xxx
 #include "bsp/native_mission_lua_conversions.hpp"
 #include "bsp/native_mission_lua_to_string.hpp"
-#include "bsp/wire_goal4_chain293_switches.hpp"
-#include "bsp/wire_goal4_chain299_switches.hpp"
-#include "bsp/wire_goal4_chain388_switches.hpp"
-#include "bsp/wire_goal4_chain391_switches.hpp"
-#include "bsp/wire_goal4_chain443_switches.hpp"
 #include "bsp/native_mission_lua_scalar_push.hpp"
-#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/lua_listener_native_matchers.hpp" // goal 4 chain 286, 0096ACE0 / 00968FF0 / 00968440
-#include "bsp/wire_goal4_chain286_switches.hpp" // goal 4 chain 286 (kWireGoal4Chain286Bound)
-#include "bsp/wire_goal4_chain352_switches.hpp" // goal 4 chain 352 (kWireGoal4Chain352Bound)
 #include "bsp/object_handle_resolvers.hpp"      // goal 4 chain 352, 00888AA0
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
-#include "bsp/wire_goal1_chain20_switches.hpp"
 #include "bsp/landscape_lua_seg55_argon.hpp"
 
 extern "C" {
@@ -432,25 +390,17 @@ int objective_kind_008dbf40(const std::string& text) {
 }
 
 std::string objective_argument_string(lua_State* state, int index) {
-    if constexpr (bsp::kWireGoal4Chain287Bound) {
-        const int slot = index + 1;
-        if (slot > lua_gettop(state)) return std::string();
-        // 006B7E30 wraps the actual callback state at machine+4 and clears
-        // owns-state at +8. The MSVC Win32 LuaMachine layout is 0Ch bytes.
-        // 006B7F60's listing compares lua_type with 4, strictly excluding
-        // numbers even though lua_isstring would accept them.
-        bsp::cc13_seg29::LuaMachine machine(state);
-        if (bsp::is_string_native_mission_lua_006b7f60(&machine, slot) == 0)
-            return std::string();
-        const char* text = lua_tolstring(state, slot, nullptr);
-        return text != nullptr ? std::string(text) : std::string();
-    } else {
-        const int slot = index + 1;
-        if (slot > lua_gettop(state)) return std::string();
-        if (lua_type(state, slot) != LUA_TSTRING) return std::string();
-        const char* text = lua_tolstring(state, slot, nullptr);
-        return text != nullptr ? std::string(text) : std::string();
-    }
+    const int slot = index + 1;
+    if (slot > lua_gettop(state)) return std::string();
+    // 006B7E30 wraps the actual callback state at machine+4 and clears
+    // owns-state at +8. The MSVC Win32 LuaMachine layout is 0Ch bytes.
+    // 006B7F60's listing compares lua_type with 4, strictly excluding
+    // numbers even though lua_isstring would accept them.
+    bsp::cc13_seg29::LuaMachine machine(state);
+    if (bsp::is_string_native_mission_lua_006b7f60(&machine, slot) == 0)
+        return std::string();
+    const char* text = lua_tolstring(state, slot, nullptr);
+    return text != nullptr ? std::string(text) : std::string();
 }
 
 // 00888AA0's stand-in: the `ID` field 00928A00 seeds, minus one.
@@ -483,62 +433,36 @@ inline constexpr bool kObjectiveAddTargetWalkBound = true;
 // Positions (vector3 tables) carry no ID and add no unit, as before.
 void objective_argument_units(lua_State* state, int index,
                               std::vector<std::size_t>& out) {
-    if constexpr (bsp::kWireGoal4Chain287Bound) {
-        std::size_t unit = 0;
-        if (objective_argument_unit(state, index, unit)) {
-            out.push_back(unit);
-            return;
-        }
-        if (!kObjectiveAddTargetWalkBound) return;
-        const int slot = index + 1;
-        const int top = lua_gettop(state);
-        if (slot > top) return;
-        bsp::cc13_seg29::LuaMachine machine(state);
-        if (bsp::is_table_native_mission_lua_006b7f00(&machine, slot) == 0) return;
-        // 006B8130, 006B85B0 and 006B85F0 listings: push nil, pass the
-        // unchanged table index to lua_next, then settop(-1-count). Retain
-        // each live key while dropping its ID field and value exactly once.
-        bsp::push_nil_native_mission_lua_006b8130(&machine);
-        for (;;) {
-            const int more = bsp::next_native_mission_lua_006b85b0(&machine, slot);
-            if (more == 0) break;
-            if (bsp::is_table_native_mission_lua_006b7f00(&machine, -1) != 0) {
-                lua_getfield(state, -1, "ID");
-                const int type = bsp::type_native_mission_lua_006b7ec0(&machine, -1);
-                if (type == LUA_TNUMBER || type == LUA_TSTRING) {
-                    const int id = static_cast<int>(lua_tonumber(state, -1));
-                    if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
-                }
-                bsp::pop_native_mission_lua_006b85f0(&machine, 1);
+    std::size_t unit = 0;
+    if (objective_argument_unit(state, index, unit)) {
+        out.push_back(unit);
+        return;
+    }
+    if (!kObjectiveAddTargetWalkBound) return;
+    const int slot = index + 1;
+    const int top = lua_gettop(state);
+    if (slot > top) return;
+    bsp::cc13_seg29::LuaMachine machine(state);
+    if (bsp::is_table_native_mission_lua_006b7f00(&machine, slot) == 0) return;
+    // 006B8130, 006B85B0 and 006B85F0 listings: push nil, pass the
+    // unchanged table index to lua_next, then settop(-1-count). Retain
+    // each live key while dropping its ID field and value exactly once.
+    bsp::push_nil_native_mission_lua_006b8130(&machine);
+    for (;;) {
+        const int more = bsp::next_native_mission_lua_006b85b0(&machine, slot);
+        if (more == 0) break;
+        if (bsp::is_table_native_mission_lua_006b7f00(&machine, -1) != 0) {
+            lua_getfield(state, -1, "ID");
+            const int type = bsp::type_native_mission_lua_006b7ec0(&machine, -1);
+            if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+                const int id = static_cast<int>(lua_tonumber(state, -1));
+                if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
             }
             bsp::pop_native_mission_lua_006b85f0(&machine, 1);
         }
-        lua_settop(state, top);
-    } else {
-        std::size_t unit = 0;
-        if (objective_argument_unit(state, index, unit)) {
-            out.push_back(unit);
-            return;
-        }
-        if (!kObjectiveAddTargetWalkBound) return;
-        const int slot = index + 1;
-        const int top = lua_gettop(state);
-        if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
-        lua_pushnil(state);
-        while (lua_next(state, slot) != 0) {
-            if (lua_type(state, -1) == LUA_TTABLE) {
-                lua_getfield(state, -1, "ID");
-                const int type = lua_type(state, -1);
-                if (type == LUA_TNUMBER || type == LUA_TSTRING) {
-                    const int id = static_cast<int>(lua_tonumber(state, -1));
-                    if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
-                }
-                lua_pop(state, 1);
-            }
-            lua_pop(state, 1);
-        }
-        lua_settop(state, top);
+        bsp::pop_native_mission_lua_006b85f0(&machine, 1);
     }
+    lua_settop(state, top);
 }
 
 // Defined with the vector3 readers below.
@@ -920,16 +844,8 @@ public:
         for (std::size_t i = 0; i < sets_.slots[k].size(); ++i) {
             if (!objective_names_equal(sets_.slots[k][i].name, name)) continue;
             std::vector<bsp::ObjectiveUnitEntry>& entries = list(slot, i).entries;
-            if constexpr (kWireGoal4Chain420Bound) {
-                ObjectivePositionEraseList native(entries);
-                native.erase(entries, point);
-            } else {
-            entries.erase(std::remove_if(entries.begin(), entries.end(),
-                [&](const bsp::ObjectiveUnitEntry& e) {
-                    return e.unit == nullptr && e.position.x == point.x
-                        && e.position.y == point.y && e.position.z == point.z;
-                }), entries.end());
-            }
+            ObjectivePositionEraseList native(entries);
+            native.erase(entries, point);
         }
     }
     // 008DE6A0 at 008DF3D7: insert into the set's +18h tree (one node per unit).
@@ -1033,37 +949,27 @@ public:
           // The CRT conversion mode 00BF7420 selects, represented as the decal
           // and ship-depth readers in this file represent it.
           sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {
-        if constexpr (bsp::kWireGoal4Chain458Bound) {
-            // 008CDD60/008CE510 open a 00B679B0 frame before reading its
-            // argument count with 00B663F0. Its native +0Ch is a snapshot of
-            // lua_gettop, not the current top after temporary argument reads.
-            // Bind the same live interpreter as NativeBindingPushFrame above;
-            // this owner borrows it and the kind-3 frame is untracked.
-            bsp::construct_native_lua_state_00b66bd0(&frame_owner_);
-            frame_owner_.state_04 = state;
-            bsp::native_lua_call_frame_00b679b0(frame_owner_, &frame_);
-            top_ = static_cast<int>(frame_.opaque_0c);
-        } else {
-            top_ = lua_gettop(state);
-        }
+        // 008CDD60/008CE510 open a 00B679B0 frame before reading its
+        // argument count with 00B663F0. Its native +0Ch is a snapshot of
+        // lua_gettop, not the current top after temporary argument reads.
+        // Bind the same live interpreter as NativeBindingPushFrame above;
+        // this owner borrows it and the kind-3 frame is untracked.
+        bsp::construct_native_lua_state_00b66bd0(&frame_owner_);
+        frame_owner_.state_04 = state;
+        bsp::native_lua_call_frame_00b679b0(frame_owner_, &frame_);
+        top_ = static_cast<int>(frame_.opaque_0c);
     }
     ~ObjectiveLuaArguments() override {
-        if constexpr (bsp::kWireGoal4Chain458Bound) {
-            bsp::destroy_native_lua_object_00b67700(frame_);
-            bsp::close_native_lua_state_00b669a0(frame_owner_);
-        }
+        bsp::destroy_native_lua_object_00b67700(frame_);
+        bsp::close_native_lua_state_00b669a0(frame_owner_);
     }
     ObjectiveLuaArguments(const ObjectiveLuaArguments&) = delete;
     ObjectiveLuaArguments& operator=(const ObjectiveLuaArguments&) = delete;
 
     int count() override {
-        if constexpr (bsp::kWireGoal4Chain458Bound) {
-            // bsp.py show 00B663F0: MOV EAX,[ECX+0Ch]; RET. Use the real
-            // frame produced above; argument bounds share its same snapshot.
-            return static_cast<int>(bsp_tagged_b6_16e_00b663f0(&frame_));
-        } else {
-            return top_;
-        }
+        // bsp.py show 00B663F0: MOV EAX,[ECX+0Ch]; RET. Use the real
+        // frame produced above; argument bounds share its same snapshot.
+        return static_cast<int>(bsp_tagged_b6_16e_00b663f0(&frame_));
     }
     // 00B66A60: lua type 3 (00B66A7D), then bsp::gui_lua_is_integer_number_00b66a60
     // on the number: float32 spill, CVTTSS2SI and the ordered compare.
@@ -1165,17 +1071,13 @@ void objective_argument_targets(lua_State* state, int index,
 }
 
 GameMissionLuaHost* host_from_upvalue(lua_State* state) {
-    if constexpr (bsp::kWireGoal4Chain293Bound) {
-        // 006B80A0 reads the signed index and machine+4, then forwards the
-        // actual lua_touserdata result. 006B7E30 borrows this callback's live
-        // Source VM; owns-state is false, so leaving the wrapper keeps it live.
-        bsp::cc13_seg29::LuaMachine machine(state);
-        return static_cast<GameMissionLuaHost*>(
-            bsp::to_userdata_native_mission_lua_006b80a0(
-                &machine, lua_upvalueindex(1)));
-    } else {
-        return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
-    }
+    // 006B80A0 reads the signed index and machine+4, then forwards the
+    // actual lua_touserdata result. 006B7E30 borrows this callback's live
+    // Source VM; owns-state is false, so leaving the wrapper keeps it live.
+    bsp::cc13_seg29::LuaMachine machine(state);
+    return static_cast<GameMissionLuaHost*>(
+        bsp::to_userdata_native_mission_lua_006b80a0(
+            &machine, lua_upvalueindex(1)));
 }
 
 // One body for all 560 rows of 00e0b7b8. 006b8610 uses nup = 0 because every
@@ -1228,7 +1130,7 @@ constexpr bool kVehicleClassRowIdBound = true;
 // (GameMissionLuaVehicleClassBinding::load_descriptor), which is written only
 // when chain 234's 00964790 runs on a marked row.
 constexpr bool kVehicleClassBaseLoadBound =
-    bsp::kWireGoal4Chain391Bound && bsp::kWireGoal3Chain234Bound && kVehicleClassRowIdBound;
+    kVehicleClassRowIdBound;
 
 // Packet cc9_l63_entry_isfunction (docs/SQUADRON_LAND_TASK.md 5hv.7). 0045F440
 // and 0045F520 gate the entry-point call on 00B66200 (BSP_LuaObject_IsFunction:
@@ -1283,16 +1185,12 @@ struct ScopedMissionCheckpointRecord {
 bool movie_number(lua_State* state, int table, const char* key, std::optional<float>& out) {
     lua_getfield(state, table, key);
     const bool is = lua_type(state, -1) == LUA_TNUMBER;
-    if constexpr (bsp::kWireGoal4Chain293Bound) {
-        if (is) {
-            // 006B8020 listing: lua_tonumber, FSTP F32, FLD the same F32.
-            // The existing body retains that x87 boundary; consume its float
-            // directly as the authored keyframe's optional numeric field.
-            bsp::cc13_seg29::LuaMachine machine(state);
-            out = bsp::to_float32_native_mission_lua_006b8020(&machine, -1);
-        }
-    } else {
-        if (is) out = static_cast<float>(lua_tonumber(state, -1));
+    if (is) {
+        // 006B8020 listing: lua_tonumber, FSTP F32, FLD the same F32.
+        // The existing body retains that x87 boundary; consume its float
+        // directly as the authored keyframe's optional numeric field.
+        bsp::cc13_seg29::LuaMachine machine(state);
+        out = bsp::to_float32_native_mission_lua_006b8020(&machine, -1);
     }
     lua_pop(state, 1);
     return is;
@@ -1408,31 +1306,23 @@ bsp::cc13cam::ModifierLuaValue movie_lua_value(lua_State* state, int index, int 
 void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& in) {
     const int top = lua_gettop(state);
     lua_getfield(state, table, "postype");
-    if constexpr (bsp::kWireGoal4Chain293Bound) {
-        if (lua_type(state, -1) == LUA_TSTRING) {
-            // 006B8060 passes a null length sink to lua_tolstring. The actual
-            // field stays rooted on this stack until its borrowed text has
-            // been copied into the keyframe input, before the existing pop.
-            bsp::cc13_seg29::LuaMachine machine(state);
-            in.postype = bsp::to_string_native_mission_lua_006b8060(&machine, -1);
-        }
-    } else {
-        if (lua_type(state, -1) == LUA_TSTRING) in.postype = lua_tostring(state, -1);
+    if (lua_type(state, -1) == LUA_TSTRING) {
+        // 006B8060 passes a null length sink to lua_tolstring. The actual
+        // field stays rooted on this stack until its borrowed text has
+        // been copied into the keyframe input, before the existing pop.
+        bsp::cc13_seg29::LuaMachine machine(state);
+        in.postype = bsp::to_string_native_mission_lua_006b8060(&machine, -1);
     }
     lua_pop(state, 1);
     lua_getfield(state, table, "transformtype");
     if (lua_type(state, -1) == LUA_TSTRING) in.transformtype = std::string(lua_tostring(state, -1));
     lua_pop(state, 1);
     lua_getfield(state, table, "wanderer");
-    if constexpr (bsp::kWireGoal4Chain293Bound) {
-        if (lua_type(state, -1) == LUA_TBOOLEAN) {
-            // 006B8000 tests the full lua_toboolean result and returns bool.
-            // This value controls the existing keyframe's wanderer arm.
-            bsp::cc13_seg29::LuaMachine machine(state);
-            in.wanderer = bsp::to_boolean_native_mission_lua_006b8000(&machine, -1);
-        }
-    } else {
-        if (lua_type(state, -1) == LUA_TBOOLEAN) in.wanderer = lua_toboolean(state, -1) != 0;
+    if (lua_type(state, -1) == LUA_TBOOLEAN) {
+        // 006B8000 tests the full lua_toboolean result and returns bool.
+        // This value controls the existing keyframe's wanderer arm.
+        bsp::cc13_seg29::LuaMachine machine(state);
+        in.wanderer = bsp::to_boolean_native_mission_lua_006b8000(&machine, -1);
     }
     lua_pop(state, 1);
     lua_getfield(state, table, "position");
@@ -1527,24 +1417,15 @@ int binding_trampoline(lua_State* state) {
     // row keeps milestone 2l's record.
     const bsp::MissionLuaBinding& dispatch_row =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
-    if constexpr (bsp::kWireGoal4Chain490Bound) {
-        if (dispatch_row.address == 0x00a37b30u) {
-            if (host->error_replay()) return 0;
-            host->note_native_call(static_cast<std::size_t>(row), argc, true);
-            return host->run_ai_set_hint_weight(state);
-        }
-    } else {
-        // Previously AISetHintWeight continued into generic native dispatch.
+    if (dispatch_row.address == 0x00a37b30u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_ai_set_hint_weight(state);
     }
-    if constexpr (bsp::kWireGoal4Chain395Bound) {
-        if (dispatch_row.address == 0x0088dc10u) {
-            if (host->error_replay()) return 0;
-            host->note_native_call(static_cast<std::size_t>(row), argc, true);
-            return host->run_get_firepower(state);
-        }
-    } else {
-        // No dedicated GetFirepower arm before chain395: continue into the
-        // unchanged generic native dispatch below.
+    if (dispatch_row.address == 0x0088dc10u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_get_firepower(state);
     }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
@@ -1659,8 +1540,7 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008a1f40u;
     // Goal 2 chain 209: 008A28B0 SquadronSetForceRelease, the producer of the
     // squadron byte +3AEh that 009B7B10 / 009B7B40 and the aim tick read.
-    const bool force_release_row = bsp::kWireGoal2Chain209Bound
-        && dispatch_row.address == 0x008a28b0u;
+    const bool force_release_row = dispatch_row.address == 0x008a28b0u;
     // Packet cc13-fix5.
     const bool remove_all_stock_row = kLuaRemoveAllAirBasePlanesBound
         && dispatch_row.address == 0x008975b0u;
@@ -1868,48 +1748,42 @@ int binding_trampoline(lua_State* state) {
             int matched = 0;
             for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
                 if ((mask & (1u << k)) == 0u) continue;
-                if constexpr (bsp::kWireGoal4Chain376Bound) {
-                    // 008E20D0 / 008E2200 with their 008DFE50 walk run as the body.
-                    ObjectiveListHost list_host(sets, host->units_hooks());
-                    if (list_host.set_status(k, key, status)) ++matched;
-                } else {
-                if (sets.set_status(k, key, status)) ++matched;
-                }
+                // 008E20D0 / 008E2200 with their 008DFE50 walk run as the body.
+                ObjectiveListHost list_host(sets, host->units_hooks());
+                if (list_host.set_status(k, key, status)) ++matched;
             }
             static_cast<void>(matched);
             host->note_objective_binding(dispatch_row.name, key, mask, 0);
             return 0;
         }
         const bool is_remove = dispatch_row.address == 0x008ce510u;
-        if constexpr (bsp::kWireGoal4Chain376Bound) {
-            if (!is_add) {
-                // 008CDD60 / 008CE510 run as their bodies: arguments 0..2 through
-                // ObjectiveLuaArguments (00B66A60 for the party and the slot), the
-                // targets from argument 3 on in visit order. The slot mask is the
-                // body's (objective_target_slot_mask), not objective_slot_mask.
-                ObjectiveListHost list_host(sets, host->units_hooks());
-                std::vector<bsp::ObjectiveTarget> targets;
-                for (int arg = bsp::kObjectiveFirstTargetArgument; arg < argc; ++arg) {
-                    objective_argument_targets(state, arg, targets);
-                }
-                ObjectiveLuaArguments arguments(state);
-                if (is_remove) {
-                    bsp::lua_binding_objectives_remove_unit_008ce510(arguments, list_host, targets);
-                } else {
-                    bsp::lua_binding_objectives_add_unit_008cdd60(arguments, list_host, targets);
-                }
-                const int added = list_host.finish();
-                // DIAGNOSTIC: the mask the body built, recomputed for the log line.
-                const bool party_given = arguments.is_integer(0);
-                const bool slot_given = arguments.is_integer(1);
-                const unsigned int body_mask = bsp::objective_target_slot_mask(list_host,
-                    party_given, party_given ? arguments.get_integer(0) : 0,
-                    slot_given, slot_given ? arguments.get_integer(1) : 0);
-                host->note_objective_binding(dispatch_row.name,
-                    arguments.get_string(bsp::kObjectiveNameArgument), body_mask,
-                    is_remove ? list_host.units_removed : added);
-                return 0;
+        if (!is_add) {
+            // 008CDD60 / 008CE510 run as their bodies: arguments 0..2 through
+            // ObjectiveLuaArguments (00B66A60 for the party and the slot), the
+            // targets from argument 3 on in visit order. The slot mask is the
+            // body's (objective_target_slot_mask), not objective_slot_mask.
+            ObjectiveListHost list_host(sets, host->units_hooks());
+            std::vector<bsp::ObjectiveTarget> targets;
+            for (int arg = bsp::kObjectiveFirstTargetArgument; arg < argc; ++arg) {
+                objective_argument_targets(state, arg, targets);
             }
+            ObjectiveLuaArguments arguments(state);
+            if (is_remove) {
+                bsp::lua_binding_objectives_remove_unit_008ce510(arguments, list_host, targets);
+            } else {
+                bsp::lua_binding_objectives_add_unit_008cdd60(arguments, list_host, targets);
+            }
+            const int added = list_host.finish();
+            // DIAGNOSTIC: the mask the body built, recomputed for the log line.
+            const bool party_given = arguments.is_integer(0);
+            const bool slot_given = arguments.is_integer(1);
+            const unsigned int body_mask = bsp::objective_target_slot_mask(list_host,
+                party_given, party_given ? arguments.get_integer(0) : 0,
+                slot_given, slot_given ? arguments.get_integer(1) : 0);
+            host->note_objective_binding(dispatch_row.name,
+                arguments.get_string(bsp::kObjectiveNameArgument), body_mask,
+                is_remove ? list_host.units_removed : added);
+            return 0;
         }
         // 008CD65A for Add and 008CDFFA (kObjectiveNameArgument) for AddUnit
         // both read argument 2 as the objective name.
@@ -1928,10 +1802,8 @@ int binding_trampoline(lua_State* state) {
         int units_touched = 0;
         // Goal 4 chain 376: 008CD440's targets in visit order (008CD89D on).
         std::vector<bsp::ObjectiveTarget> add_targets;
-        if constexpr (bsp::kWireGoal4Chain376Bound) {
-            for (int arg = first_target; arg < argc; ++arg) {
-                objective_argument_targets(state, arg, add_targets);
-            }
+        for (int arg = first_target; arg < argc; ++arg) {
+            objective_argument_targets(state, arg, add_targets);
         }
         for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
             if ((mask & (1u << k)) == 0u) continue;
@@ -1943,49 +1815,19 @@ int binding_trampoline(lua_State* state) {
                     sets.add_objective(k, name);
                 }
             }
-            if constexpr (bsp::kWireGoal4Chain376Bound) {
-                // Only Add reaches here under this switch. Each target in visit order:
-                // a unit through 008DF2B0 (008DEE50's record, the +18h insert 008DE6A0),
-                // a point through 008DF5D0, both on the objective 008E1F80 just made
-                // or found.
-                ObjectiveListHost list_host(sets, host->units_hooks());
-                for (const bsp::ObjectiveTarget& target : add_targets) {
-                    if (target.is_unit) {
-                        bsp::objective_set_add_unit_008df2b0(list_host, k, name, target.unit);
-                    } else {
-                        bsp::objective_set_add_position_008df5d0(list_host, k, name, target.point);
-                    }
-                }
-                units_touched += list_host.finish();
-            } else {
-            // 008CDC56 (Add) / 008CE42D (AddUnit): 008DF5D0 objective_set_add_position_008df5d0
-            // for each position target, ahead of this host's add_unit, whose
-            // add_objective may create an objective 008DF2B0 never would. OFF keeps
-            // the host's rule: a position target adds nothing.
-            if constexpr (bsp::kWireGoal2Chain152Bound) {
-                if (!is_remove) {
-                    ObjectivePositionHost position_host(sets);
-                    for (int arg = first_target; arg < argc; ++arg) {
-                        std::vector<bsp::ObjectiveWorldPoint> points;
-                        objective_argument_positions(state, arg, points);
-                        for (const bsp::ObjectiveWorldPoint& point : points) {
-                            bsp::objective_set_add_position_008df5d0(position_host, k, name, point);
-                        }
-                    }
-                }
-            } else {
-                // Position targets are dropped (objective_argument_units reads entities only).
-            }
-            for (int arg = first_target; arg < argc; ++arg) {
-                std::vector<std::size_t> units;
-                objective_argument_units(state, arg, units);
-                for (const std::size_t unit : units) {
-                    const bool moved = is_remove ? sets.remove_unit(k, name, unit)
-                                                 : sets.add_unit(k, name, unit);
-                    if (moved) ++units_touched;
+            // Only Add reaches here under this switch. Each target in visit order:
+            // a unit through 008DF2B0 (008DEE50's record, the +18h insert 008DE6A0),
+            // a point through 008DF5D0, both on the objective 008E1F80 just made
+            // or found.
+            ObjectiveListHost list_host(sets, host->units_hooks());
+            for (const bsp::ObjectiveTarget& target : add_targets) {
+                if (target.is_unit) {
+                    bsp::objective_set_add_unit_008df2b0(list_host, k, name, target.unit);
+                } else {
+                    bsp::objective_set_add_position_008df5d0(list_host, k, name, target.point);
                 }
             }
-            }
+            units_touched += list_host.finish();
         }
         host->note_objective_binding(dispatch_row.name, name, mask, units_touched);
         return 0;
@@ -2526,15 +2368,13 @@ GameMissionLuaHost::~GameMissionLuaHost() {
         lua_close(state_);
         state_ = nullptr;
     }
-    if constexpr (bsp::kWireGoal4Chain484Bound) {
-        // End descriptor borrowers after Lua's finalizers, while the mission
-        // host still owns the native loader/renderer services. Each successful
-        // AA2B30 invocation contributes exactly one credit, including hits on
-        // a texture that an earlier class also acquired.
-        vehicle_class_base_fields_.clear();
-        for (void* texture : class_icon_references_)
-            bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
-    }
+    // End descriptor borrowers after Lua's finalizers, while the mission
+    // host still owns the native loader/renderer services. Each successful
+    // AA2B30 invocation contributes exactly one credit, including hits on
+    // a texture that an earlier class also acquired.
+    vehicle_class_base_fields_.clear();
+    for (void* texture : class_icon_references_)
+        bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
 }
 
 void* GameMissionLuaHost::preload_vehicle_class_icon(const char* path) {
@@ -2890,7 +2730,7 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
     if (table) {
         std::array<float, 5> tuning;
         std::string error;
-        if constexpr (bsp::kWireGoal4Chain423Bound) {
+        {
             auto settings = std::make_unique<bsp::GameplayTuningSettings>();
             // 00424A10's keyed defaults precede its 00424BFC loader call.
             // Keep the existing body's partial projection and original constants.
@@ -2900,14 +2740,9 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
                 log_.notef("keyed gameplay settings load failed: %s", error.c_str());
                 return false;
             }
-            if constexpr (bsp::kWireGoal4Chain523Bound) {
-                if (!read_ship_depth_tables_lua(*state_, *settings, sse2, error)) {
-                    log_.notef("gameplay depth tables load failed: %s", error.c_str());
-                    return false;
-                }
-            } else {
-                // Previously +80..15F remained unrepresented; class/draft
-                // readers below fetched their depths from Lua on every call.
+            if (!read_ship_depth_tables_lua(*state_, *settings, sse2, error)) {
+                log_.notef("gameplay depth tables load failed: %s", error.c_str());
+                return false;
             }
             // Preserve the established snapshots for other consumers, now from
             // the same load-time object that the neighbour walk borrows.
@@ -2923,28 +2758,6 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
             ship_avoidance_block_loaded_ = true;
             log_.implemented("GameSettings::constructor_defaults_projection", "00424a10");
             log_.implemented("GameSettings::load_keyed_tuning_projection", "0083b5e0");
-        } else {
-        if (!read_ship_avoidance_tuning_lua(*state_, tuning, error)) {
-            log_.notef("ship avoidance settings load failed: %s", error.c_str());
-            return false;
-        }
-        avoidance_tuning_ = tuning;
-        avoidance_tuning_loaded_ = true;
-        {
-            // Packet cc9_ship_neighbour_list: +190h..+1D8h for the neighbour list.
-            std::uint32_t offsets[19];
-            for (std::uint32_t i = 0; i < 19; ++i) offsets[i] = 0x190u + 4u * i;
-            std::array<float, 19> block{};
-            std::string block_error;
-            if (bsp::game::read_ship_ai_settings_offsets_lua(*state_, offsets, block.data(),
-                    block.size(), block_error)) {
-                ship_avoidance_block_ = block;
-                ship_avoidance_block_loaded_ = true;
-            } else {
-                log_.notef("ship avoidance block load failed: %s", block_error.c_str());
-            }
-        }
-        log_.implemented("GameSettings::load_avoidance_tuning_projection", "0083b5e0");
         }
         log_.notef("stored ship avoidance tuning 194=%.9g 1d4=%.9g 1d8=%.9g 214=%.9g 218=%.9g",
             tuning[0], tuning[1], tuning[2], tuning[3], tuning[4]);
@@ -3015,22 +2828,16 @@ public:
             // DoFile("unlocks.lua") - without it the constants script aborts
             // there, which leaves the DEG/KMH helpers defined (they are above
             // it) but everything below it undefined.
-            if constexpr (bsp::kWireGoal4Chain388Bound) {
-                // 00B65E20: owns+0 = 0, state+4 = the supplied interpreter,
-                // then DoFile is a closure with ZERO upvalues (00B65E27..46).
-                // Keep this adapter's VFS context in that interpreter's private
-                // registry, so the native registration needs no extra upvalue.
-                lua_pushlightuserdata(state_, &native_context_key_);
-                lua_pushlightuserdata(state_, this);
-                lua_rawset(state_, LUA_REGISTRYINDEX);
-                construct_native_lua_state_00b66bd0(&native_owner_);
-                construct_native_lua_owner_with_dofile_00b65e20(
-                    native_owner_, state_, &LuaGameTuningHost::native_dofile_trampoline);
-            } else {
+            // 00B65E20: owns+0 = 0, state+4 = the supplied interpreter,
+            // then DoFile is a closure with ZERO upvalues (00B65E27..46).
+            // Keep this adapter's VFS context in that interpreter's private
+            // registry, so the native registration needs no extra upvalue.
+            lua_pushlightuserdata(state_, &native_context_key_);
             lua_pushlightuserdata(state_, this);
-            lua_pushcclosure(state_, &LuaGameTuningHost::dofile_trampoline, 1);
-            lua_setfield(state_, LUA_GLOBALSINDEX, "DoFile");
-            }
+            lua_rawset(state_, LUA_REGISTRYINDEX);
+            construct_native_lua_state_00b66bd0(&native_owner_);
+            construct_native_lua_owner_with_dofile_00b65e20(
+                native_owner_, state_, &LuaGameTuningHost::native_dofile_trampoline);
         }
     }
     ~LuaGameTuningHost() override {
@@ -3150,24 +2957,13 @@ public:
         if (state_ == nullptr) return;
         push(handle);
         if (lua_type(state_, -1) == LUA_TTABLE) {
-            if constexpr (bsp::kWireGoal4Chain388Bound) {
-                // 007E2A20's NumberTriple keys call 00B67A80: elements 1..3
-                // use lua_tonumber and each result is stored as float32.
-                // The registry handle above pushes the actual PlaneGlobals
-                // value; tracked temporaries are removed by the native getter.
-                // Numeric strings now follow lua_tonumber, as in the image.
-                auto object = stack_object(native_owner_, lua_gettop(state_));
-                native_lua_get_vector3_00b67a80(object, out);
-            } else {
-            for (int i = 0; i < 3; ++i) {
-                lua_pushinteger(state_, i + 1);
-                lua_gettable(state_, -2);
-                if (lua_type(state_, -1) == LUA_TNUMBER) {
-                    out[i] = static_cast<float>(lua_tonumber(state_, -1));
-                }
-                lua_settop(state_, lua_gettop(state_) - 1);
-            }
-            }
+            // 007E2A20's NumberTriple keys call 00B67A80: elements 1..3
+            // use lua_tonumber and each result is stored as float32.
+            // The registry handle above pushes the actual PlaneGlobals
+            // value; tracked temporaries are removed by the native getter.
+            // Numeric strings now follow lua_tonumber, as in the image.
+            auto object = stack_object(native_owner_, lua_gettop(state_));
+            native_lua_get_vector3_00b67a80(object, out);
         }
         lua_settop(state_, lua_gettop(state_) - 1);
     }
@@ -4089,21 +3885,16 @@ bool GameMissionLuaHost::read_ship_depth_input(int type_id, std::int32_t session
     // loader. The pure reader accepts the borrowed conversion mode explicitly.
     const bool sse2_conversion =
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
-    if constexpr (bsp::kWireGoal4Chain523Bound) {
-        if (!gameplay_tuning_settings_) {
-            error = "ship depth requires the completed load-time gameplay settings";
-            return false;
-        }
-        GameShipNavigationInput loaded{};
-        if (!read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
-                false, loaded, error, gameplay_tuning_settings_.get())) return false;
-        output = {loaded.tuning.scalar, loaded.settings_block_offset,
-            loaded.tuning.scalar_source, loaded.class_key};
-        return true;
-    } else {
-    return read_ship_depth_input_lua(*state_, type_id, session_mode,
-        sse2_conversion, output, error);
+    if (!gameplay_tuning_settings_) {
+        error = "ship depth requires the completed load-time gameplay settings";
+        return false;
     }
+    GameShipNavigationInput loaded{};
+    if (!read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
+            false, loaded, error, gameplay_tuning_settings_.get())) return false;
+    output = {loaded.tuning.scalar, loaded.settings_block_offset,
+        loaded.tuning.scalar_source, loaded.class_key};
+    return true;
 }
 
 bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
@@ -4112,43 +3903,23 @@ bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
         error = "avoid-zone draft depths require the live mission Lua state";
         return false;
     }
-    if constexpr (bsp::kWireGoal4Chain523Bound) {
-        if (!gameplay_tuning_settings_) {
-            error = "avoid-zone draft depths require the completed load-time gameplay settings";
-            return false;
-        }
-        const auto selected = select_loaded_ship_depth_table(*gameplay_tuning_settings_, session_mode);
-        // 00424DDF..004253FF: same nine class scalars as the old Lua reader.
-        constexpr AvoidZoneDepthSlot slots[] = {AvoidZoneDepthSlot::kBattleShip,
-            AvoidZoneDepthSlot::kMotherShip, AvoidZoneDepthSlot::kDestroyer,
-            AvoidZoneDepthSlot::kTBoat, AvoidZoneDepthSlot::kLargeLandingShip,
-            AvoidZoneDepthSlot::kCargoShip, AvoidZoneDepthSlot::kLightCruiser,
-            AvoidZoneDepthSlot::kHeavyCruiser, AvoidZoneDepthSlot::kSubmarine};
-        for (std::size_t i = 0; i < output.size(); ++i) {
-            const auto word = selected.word(static_cast<std::uint32_t>(slots[i]));
-            std::memcpy(&output[i], &word, sizeof(word));
-        }
-        error.clear();
-        return true;
-    } else {
-    const bool sse2_conversion =
-        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
-    DraftDepthReadContext context{session_mode, &sse2_conversion, {}};
-    const int top = ::lua_gettop(state_);
-    ::lua_pushlightuserdata(state_, &context);
-    ::lua_pushcclosure(state_, &read_draft_depths_protected, 1);
-    const int status = ::lua_pcall(state_, 0, 0, 0);
-    if (status != 0) {
-        const char* message = ::lua_tolstring(state_, -1, nullptr);
-        error = message != nullptr ? message : "draft depth lookup raised a non-string Lua error";
-        ::lua_settop(state_, top);
+    if (!gameplay_tuning_settings_) {
+        error = "avoid-zone draft depths require the completed load-time gameplay settings";
         return false;
     }
-    ::lua_settop(state_, top);
-    output = context.result;
+    const auto selected = select_loaded_ship_depth_table(*gameplay_tuning_settings_, session_mode);
+    // 00424DDF..004253FF: same nine class scalars as the old Lua reader.
+    constexpr AvoidZoneDepthSlot slots[] = {AvoidZoneDepthSlot::kBattleShip,
+        AvoidZoneDepthSlot::kMotherShip, AvoidZoneDepthSlot::kDestroyer,
+        AvoidZoneDepthSlot::kTBoat, AvoidZoneDepthSlot::kLargeLandingShip,
+        AvoidZoneDepthSlot::kCargoShip, AvoidZoneDepthSlot::kLightCruiser,
+        AvoidZoneDepthSlot::kHeavyCruiser, AvoidZoneDepthSlot::kSubmarine};
+    for (std::size_t i = 0; i < output.size(); ++i) {
+        const auto word = selected.word(static_cast<std::uint32_t>(slots[i]));
+        std::memcpy(&output[i], &word, sizeof(word));
+    }
     error.clear();
     return true;
-    }
 }
 
 bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t session_mode,
@@ -4159,17 +3930,12 @@ bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t se
     }
     const bool sse2_conversion =
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
-    if constexpr (bsp::kWireGoal4Chain523Bound) {
-        if (!gameplay_tuning_settings_) {
-            error = "ship navigation requires the completed load-time gameplay settings";
-            return false;
-        }
-        return read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
-            true, output, error, gameplay_tuning_settings_.get());
-    } else {
-    return read_ship_navigation_input_lua(*state_, type_id, session_mode,
-        sse2_conversion, output, error);
+    if (!gameplay_tuning_settings_) {
+        error = "ship navigation requires the completed load-time gameplay settings";
+        return false;
     }
+    return read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
+        true, output, error, gameplay_tuning_settings_.get());
 }
 
 bool GameMissionLuaHost::read_ship_layer_timing_input(std::array<float, 6>& output,
@@ -4363,27 +4129,17 @@ std::size_t GameMissionLuaHost::mirror_party_race_00928f50() {
         }
         lua_pushinteger(state_, row->party);
         lua_setfield(state_, -2, "Party");
-        if constexpr (bsp::kWireGoal4Chain531Bound) {
-            // 00928FC7..00928FD9 mirrors the entity's actual +58h too.
-            // GameUnitRow now carries the scene value and SetRace's delivery.
-            lua_pushinteger(state_, row->race_58);
-            lua_setfield(state_, -2, "Race");
-        } else {
-        }
+        // 00928FC7..00928FD9 mirrors the entity's actual +58h too.
+        // GameUnitRow now carries the scene value and SetRace's delivery.
+        lua_pushinteger(state_, row->race_58);
+        lua_setfield(state_, -2, "Race");
         ::lua_settop(state_, ::lua_gettop(state_) - 1);
         ++mirrored;
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
     summary_.party_mirrors = mirrored;
     log_.implemented("MissionEntity::set_party_race_lua_mirror", "00928f50");
-    if constexpr (bsp::kWireGoal4Chain531Bound) {
-        log_.notef("thisTable: 00928f50's Party and Race mirror written on %zu slot(s)", mirrored);
-    } else {
-    log_.notef("thisTable: 00928f50's `Party` mirror written on %zu slot(s). Without it "
-        "commandhelpers.lua:330 `recon[targetUnit.Party][allegiance]` indexes a nil, which is "
-        "what reverted the GetSelectedUnit binding in packet cc8_ship_moveonpath; `Race` is "
-        "not written because this host does not carry one", mirrored);
-    }
+    log_.notef("thisTable: 00928f50's Party and Race mirror written on %zu slot(s)", mirrored);
     return mirrored;
 }
 
@@ -4737,41 +4493,25 @@ unsigned long long g_generate_object_record_only = 0;
 bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
     if (::lua_type(state, index) != LUA_TTABLE) return false;
     // 00B660F0 compares 00888760's iterated keys; OFF keeps the direct x/y/z field reads.
-    if constexpr (bsp::kWireGoal2Chain119Bound) {
-        const int table = index > 0 || index <= LUA_REGISTRYINDEX
-            ? index : ::lua_gettop(state) + index + 1;
-        NativeBindingPushFrame frame(state);
-        out[0] = out[1] = out[2] = 0.0f; // retain this host's documented missing-lane policy
-        bool found = false;
-        ::lua_pushnil(state);
-        while (::lua_next(state, table) != 0) {
-            const auto key = stack_object(frame.owner, ::lua_gettop(state) - 1);
-            int lane = -1;
-            if (bsp::native_lua_equals_cstring_00b660f0(key, "x")) lane = 0;
-            else if (bsp::native_lua_equals_cstring_00b660f0(key, "y")) lane = 1;
-            else if (bsp::native_lua_equals_cstring_00b660f0(key, "z")) lane = 2;
-            if (lane >= 0) {
-                out[lane] = static_cast<float>(::lua_tonumber(state, -1));
-                found = true;
-            }
-            ::lua_pop(state, 1);
+    const int table = index > 0 || index <= LUA_REGISTRYINDEX
+        ? index : ::lua_gettop(state) + index + 1;
+    NativeBindingPushFrame frame(state);
+    out[0] = out[1] = out[2] = 0.0f; // retain this host's documented missing-lane policy
+    bool found = false;
+    ::lua_pushnil(state);
+    while (::lua_next(state, table) != 0) {
+        const auto key = stack_object(frame.owner, ::lua_gettop(state) - 1);
+        int lane = -1;
+        if (bsp::native_lua_equals_cstring_00b660f0(key, "x")) lane = 0;
+        else if (bsp::native_lua_equals_cstring_00b660f0(key, "y")) lane = 1;
+        else if (bsp::native_lua_equals_cstring_00b660f0(key, "z")) lane = 2;
+        if (lane >= 0) {
+            out[lane] = static_cast<float>(::lua_tonumber(state, -1));
+            found = true;
         }
-        return found;
-    } else {
-    static const char* const kVectorKeys[3] = {"x", "y", "z"};
-    int found = 0;
-    for (int i = 0; i < 3; ++i) {
-        ::lua_getfield(state, index, kVectorKeys[i]);
-        if (::lua_type(state, -1) == LUA_TNUMBER) {
-            out[i] = static_cast<float>(::lua_tonumber(state, -1));
-            ++found;
-        } else {
-            out[i] = 0.0f;
-        }
-        ::lua_settop(state, ::lua_gettop(state) - 1);
+        ::lua_pop(state, 1);
     }
-    return found > 0;
-    }
+    return found;
 }
 
 // 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
@@ -4931,9 +4671,7 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         if (entry->carry_command_queued) {
             record.command = entry->carry_command;
             record.command_target = entry->carry_command_target;
-            if constexpr (bsp::kWireGoal2Chain51Bound) {
-                record.command_present = entry->carry_command_queued;
-            }
+            record.command_present = entry->carry_command_queued;
         }
         if (entry->carry_start_speed_present) {
             record.start_speed_present = true;
@@ -5349,43 +5087,30 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     }
 
     ::lua_getfield(state, 1, "excludeRadiusOverride");
-    if constexpr (bsp::kWireGoal2Chain195Bound) {
-        // 009481A0 (call 0094996D): ON reads a table override through the body, over the
-        // block 00949750 presets, so an omitted key keeps the image's preset; OFF keeps the
-        // host's five reads, with 0 for an omitted key. Presets (009498E1..0094994B):
-        // [00CE3D08] 100.0 for both own extents, [00CFFD60] 2000.0 enemyHorizontal,
-        // [00CE397C] 500.0 enemyVertical, 0.0 formationHorizontal, [00CE3D64] 10000.0 and
-        // [00D19914] 4000000.0 for the squares. A nil or string override leaves the image
-        // at those presets and a number or boolean raises in the first read, so the body
-        // runs for a table, as the host's `present` already requires; other values keep
-        // the OFF result. The host squares the extents where it uses them (00941D30), so
-        // the block's +14h/+18h are not carried over.
-        if (::lua_type(state, -1) == LUA_TTABLE) {
-            request.exclude.present = true;
-            bsp::cc13_left61::SpawnExcludeRadiusBlock block{100.0f, 2000.0f, 100.0f, 500.0f,
-                                                            0.0f, 10000.0f, 4000000.0f};
-            const bool crt_sse2_conversion =
-                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
-            bsp::GuiLua51Host lua(*state);
-            SpawnExcludeRadiusLuaReader reader(lua, ::lua_gettop(state), crt_sse2_conversion);
-            bsp::cc13_left61::spawn_request_read_exclude_radius_009481a0(block, reader);
-            request.exclude.own_horizontal = block.own_horizontal;
-            request.exclude.enemy_horizontal = block.enemy_horizontal;
-            request.exclude.own_vertical = block.own_vertical;
-            request.exclude.enemy_vertical = block.enemy_vertical;
-            request.exclude.formation_horizontal = block.formation_horizontal;
-        }
-    } else {
+    // 009481A0 (call 0094996D): ON reads a table override through the body, over the
+    // block 00949750 presets, so an omitted key keeps the image's preset; OFF keeps the
+    // host's five reads, with 0 for an omitted key. Presets (009498E1..0094994B):
+    // [00CE3D08] 100.0 for both own extents, [00CFFD60] 2000.0 enemyHorizontal,
+    // [00CE397C] 500.0 enemyVertical, 0.0 formationHorizontal, [00CE3D64] 10000.0 and
+    // [00D19914] 4000000.0 for the squares. A nil or string override leaves the image
+    // at those presets and a number or boolean raises in the first read, so the body
+    // runs for a table, as the host's `present` already requires; other values keep
+    // the OFF result. The host squares the extents where it uses them (00941D30), so
+    // the block's +14h/+18h are not carried over.
     if (::lua_type(state, -1) == LUA_TTABLE) {
-        const int block = ::lua_gettop(state);
         request.exclude.present = true;
-        request.exclude.own_horizontal = read_member_float(state, block, "ownHorizontal");
-        request.exclude.enemy_horizontal = read_member_float(state, block, "enemyHorizontal");
-        request.exclude.own_vertical = read_member_float(state, block, "ownVertical");
-        request.exclude.enemy_vertical = read_member_float(state, block, "enemyVertical");
-        request.exclude.formation_horizontal
-            = read_member_float(state, block, "formationHorizontal");
-    }
+        bsp::cc13_left61::SpawnExcludeRadiusBlock block{100.0f, 2000.0f, 100.0f, 500.0f,
+                                                        0.0f, 10000.0f, 4000000.0f};
+        const bool crt_sse2_conversion =
+            IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+        bsp::GuiLua51Host lua(*state);
+        SpawnExcludeRadiusLuaReader reader(lua, ::lua_gettop(state), crt_sse2_conversion);
+        bsp::cc13_left61::spawn_request_read_exclude_radius_009481a0(block, reader);
+        request.exclude.own_horizontal = block.own_horizontal;
+        request.exclude.enemy_horizontal = block.enemy_horizontal;
+        request.exclude.own_vertical = block.own_vertical;
+        request.exclude.enemy_vertical = block.enemy_vertical;
+        request.exclude.formation_horizontal = block.formation_horizontal;
     }
     ::lua_settop(state, ::lua_gettop(state) - 1);
 
@@ -5466,52 +5191,41 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     if (!queue.attempt_due(spawn_world_clock_, spawn_attempt_delay_0087f800())) return;
 
     std::size_t selected_index = 0;
-    if constexpr (bsp::kWireGoal4Chain424Bound) {
-        // 0094C4FA..0094C4FF takes a sole request without reading its party.
-        if (queue.size() > 1) {
-            // 0094C53C..0094C551 reads the CURRENT game+18CCh record, then
-            // tests +08h != 0 && +09h == 0: exactly 004B54F0's body (also
-            // called by this drain at 0094C69C). Reuse that body on the two
-            // real flag bytes; do not infer occupancy from scene Party/Race.
-            // Evidence: bsp.py show 0094c490 --asm, 004b54f0.
-            std::vector<bool> party_active(bsp::kSceneSlotRecordCount, false);
-            std::array<bool, bsp::kSceneSlotRecordCount> read{};
-            for (const bsp::SpawnNewRequest& pending : queue.requests()) {
-                if (pending.party < 0
-                    || static_cast<std::size_t>(pending.party) >= party_active.size()) continue;
-                const auto party = static_cast<std::size_t>(pending.party);
-                if (read[party]) continue;
-                if (spawn_participants_ == nullptr) return;
-                bsp::ParticipantRecordId identity;
-                bsp::ParticipantRecordBytes bytes;
-                if (!spawn_participants_->active_record(party, identity)
-                    || !spawn_participants_->read_record_bytes(identity, bytes)
-                    || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
-                    // The partial owner cannot answer this native read. Leave
-                    // the queue and attempt timestamp untouched for a retry.
-                    return;
-                }
-                bsp::cc13_band004b::ParticipantSlotRecord participant;
-                participant.occupied_08 = bytes.claimed_08.value;
-                participant.flag_09 = bytes.ai_held_09.value;
-                party_active[party] = bsp::cc13_band004b::
-                    participant_slot_is_occupied_human_004b54f0(participant);
-                read[party] = true;
-                // The native walk stops at its first human party. Do not
-                // require an available view of a later, unvisited record.
-                if (party_active[party]) break;
+    // 0094C4FA..0094C4FF takes a sole request without reading its party.
+    if (queue.size() > 1) {
+        // 0094C53C..0094C551 reads the CURRENT game+18CCh record, then
+        // tests +08h != 0 && +09h == 0: exactly 004B54F0's body (also
+        // called by this drain at 0094C69C). Reuse that body on the two
+        // real flag bytes; do not infer occupancy from scene Party/Race.
+        // Evidence: bsp.py show 0094c490 --asm, 004b54f0.
+        std::vector<bool> party_active(bsp::kSceneSlotRecordCount, false);
+        std::array<bool, bsp::kSceneSlotRecordCount> read{};
+        for (const bsp::SpawnNewRequest& pending : queue.requests()) {
+            if (pending.party < 0
+                || static_cast<std::size_t>(pending.party) >= party_active.size()) continue;
+            const auto party = static_cast<std::size_t>(pending.party);
+            if (read[party]) continue;
+            if (spawn_participants_ == nullptr) return;
+            bsp::ParticipantRecordId identity;
+            bsp::ParticipantRecordBytes bytes;
+            if (!spawn_participants_->active_record(party, identity)
+                || !spawn_participants_->read_record_bytes(identity, bytes)
+                || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
+                // The partial owner cannot answer this native read. Leave
+                // the queue and attempt timestamp untouched for a retry.
+                return;
             }
-            selected_index = queue.select_0094c508(party_active);
+            bsp::cc13_band004b::ParticipantSlotRecord participant;
+            participant.occupied_08 = bytes.claimed_08.value;
+            participant.flag_09 = bytes.ai_held_09.value;
+            party_active[party] = bsp::cc13_band004b::
+                participant_slot_is_occupied_human_004b54f0(participant);
+            read[party] = true;
+            // The native walk stops at its first human party. Do not
+            // require an available view of a later, unvisited record.
+            if (party_active[party]) break;
         }
-    } else {
-        // DEVIATION, labelled. 0094C508's walk prefers a record whose party is
-        // active in the table at `game+18CCh + party*4`. This process has no party
-        // table, so every party counts as active and the walk always answers the
-        // head - which is what the native itself does whenever the queue holds one
-        // record or none (0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B).
-        const std::vector<bool> party_active(8, true);
-        const std::size_t index = queue.select_0094c508(party_active);
-        selected_index = index;
+        selected_index = queue.select_0094c508(party_active);
     }
     const std::size_t index = selected_index;
     bsp::SpawnNewRequest request = queue.erase_009439b0(index);
@@ -5535,11 +5249,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
         return;
     }
     ++summary_.spawn_new_fulfilled;
-    if constexpr (kWireGoal2Chain130Bound) {
-        // 00947A30 already ran inside fulfil_spawn_request_009483d0 (009487A1).
-    } else {
-        complete_spawn_request_0094c777(request);
-    }
+    // 00947A30 already ran inside fulfil_spawn_request_009483d0 (009487A1).
 }
 
 namespace {
@@ -5976,7 +5686,6 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
         // VehicleClass[Type] from the installed table.
         // VehicleClass[Type] through read_vehicle_class_row; an absent key
         // reads as 0, as the class field's zero default does.
-        if constexpr (kWireGoal4Chain546Bound) {
         for (bsp::SpawnNewGroupMember& m : request.members) {
             m.surface_navigation_bound = false;
             const GameVehicleClassRow row = read_vehicle_class_row(m.type_class_id);
@@ -6001,21 +5710,10 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             m.surface_navigation_layer_560 = navigation.tuning.array[0];
             m.surface_navigation_bound = true;
         }
-        } else {
-        for (bsp::SpawnNewGroupMember& m : request.members) {
-            const GameVehicleClassRow row = read_vehicle_class_row(m.type_class_id);
-            if (!row.found) continue;
-            m.class_length_a0 = row.length;
-            m.class_width_a4 = row.width;
-            m.has_class_extents = true;
-        }
-        }
-        if constexpr (kWireGoal4Chain546Bound) {
+        {
             GameShipAiHost* const ai = units_hooks_ ? units_hooks_->ship_ai() : nullptr;
             placement_world.emplace(script_orders_->units(), world_border_bounds(),
                 ai ? ai->avoid_zone_runtime_mutable() : nullptr);
-        } else {
-        placement_world.emplace(script_orders_->units(), world_border_bounds());
         }
         bsp::set_spawn_placement_world(&*placement_world);
     }
@@ -6210,7 +5908,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
     }
     summary_.spawn_new_units += made.size();
     request.created = std::move(made);
-    if constexpr (kWireGoal2Chain130Bound) {
+    {
         // 009487A1: 00947A30 completes the request (callback over the created members) before +C0h; OFF keeps complete_spawn_request_0094c777 in the drain.
         SpawnCompletionLuaAdapter completion(state_, log_, summary_, *this, request);
         bsp::cc13_avoid1::cc13_spawn_request_complete_00947a30(completion.record(), completion);
@@ -6571,12 +6269,7 @@ public:
     }
 
     void* load_small_map_icon(const char* path) override {
-        if constexpr (bsp::kWireGoal4Chain484Bound) {
-            return owner_.preload_vehicle_class_icon(path);
-        } else {
-        log_.unimplemented("VehicleClassFields::load_small_map_icon", "00aa2b30");
-        return nullptr;
-        }
+        return owner_.preload_vehicle_class_icon(path);
     }
     void* load_cockpit_mesh(const char*) override {
         log_.unimplemented("VehicleClassFields::load_cockpit_mesh", "007188a0");
@@ -6796,7 +6489,7 @@ public:
     // resolves (mark_vehicle_class_device_bullets_00960230). No image field is
     // filled.
     void load_descriptor(bsp::VehicleClassDescriptor* descriptor) override {
-        if constexpr (bsp::kWireGoal4Chain391Bound) {
+        {
             // Goal 4 chain 391. vtable +8h is __thiscall(descriptor, LuaObject* row);
             // each kind's loader calls the base reader 00960230 first (006D0BA1,
             // 00700E63, 00749236, 0074D4C3, 007D1F9F, 0083186E; 008429C0 tail-jumps
@@ -6817,9 +6510,6 @@ public:
             descriptor->linked_class_index = fields.launched_class;
             owner_.vehicle_class_base_fields_[descriptor->class_index] = std::move(fields);
             ++owner_.vehicle_class_base_loads_;
-        } else {
-        descriptor->linked_class_index = owner_.read_vehicle_class_integer(
-            descriptor->class_index, "Catapult", "LaunchedClass", -1);
         }
         if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
             owner_.mark_vehicle_class_device_bullets_00960230(descriptor->class_index);
@@ -6857,85 +6547,24 @@ private:
 
 void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const char* site) {
     if (!kVehicleClassRowIdBound || state_ == nullptr || class_index < 0) return;
-    if constexpr (bsp::kWireGoal3Chain234Bound) {
-        // Goal 3 chain 234: 00964790 itself over the descriptor cache. The
-        // reconstructed body probes the cache (009647ED), pre-resolves a
-        // LandingShip, writes ID / Got, builds the kind's descriptor with its
-        // constructor (the 22 branches), runs the load and publishes it, then
-        // resolves a ship's linked class (vtable[18h](6), 00965166). The OFF
-        // arm keeps the marked-row set as the cache and the Type-string ship
-        // test. DL = 1 at every caller this routine serves.
-        if (!vehicle_class_cache_) {
-            vehicle_class_cache_ =
-                std::make_unique<GameVehicleClassDescriptorCache>(vfs_.raw_strings());
-        }
-        if (vehicle_class_cache_->cached(class_index) == nullptr) {
-            vehicle_class_mark_site_.emplace(class_index, site);
-        }
-        const int base = ::lua_gettop(state_);
-        GameMissionLuaVehicleClassBinding binding(*this);
-        bsp::resolve_vehicle_class_00964790(binding, class_index, true);
-        ::lua_settop(state_, base);
-    } else {
-        if (!vehicle_class_rows_marked_.insert(class_index).second) return;   // the cache hit
-        vehicle_class_mark_site_.emplace(class_index, site);
-        const int base = ::lua_gettop(state_);
-        lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
-        if (lua_istable(state_, -1)) {
-            lua_rawgeti(state_, -1, class_index);
-            if (lua_istable(state_, -1)) {
-                // 009648A0..009648E7: LandingShip (00CEB7BC) read as an integer; a
-                // non-zero value resolves that class first.
-                lua_getfield(state_, -1, "LandingShip");
-                const int landing = lua_isnumber(state_, -1)
-                    ? static_cast<int>(::lua_tointeger(state_, -1)) : 0;
-                ::lua_settop(state_, ::lua_gettop(state_) - 1);
-                if (landing != 0) {
-                    ::lua_settop(state_, base);
-                    mark_vehicle_class_row_00964790(landing);
-                    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
-                    lua_rawgeti(state_, -1, class_index);
-                }
-                if (lua_istable(state_, -1)) {
-                    if constexpr (kLuaObjectFieldSettersCc13Bound) {
-                        NativeLuaStateStorage owner;
-                        construct_native_lua_state_00b66bd0(&owner);
-                        owner.state_04 = state_;
-                        NativeLuaObjectStorage row = stack_object(owner, ::lua_gettop(state_));
-                        const ScopedNativeKey id("ID"), got("Got");
-                        native_lua_set_integer_00b67460(row, id.key, class_index);   // 0096490C
-                        native_lua_set_boolean_00b673a0(row, got.key, 1);            // 00964959
-                    } else {
-                        lua_pushinteger(state_, class_index);   // 0096490C 00B67460
-                        lua_setfield(state_, -2, "ID");
-                        lua_pushboolean(state_, 1);             // 00964959 00B673A0
-                        lua_setfield(state_, -2, "Got");
-                    }
-                    ++summary_.class_rows_marked;
-                }
-            }
-        }
-        ::lua_settop(state_, base);
-        if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
-            // cc15-vcp2: 00964790 step 14 (00965182). A ship descriptor
-            // (vtable[18h](6)) whose +0C0h, Catapult.LaunchedClass (009604AC,
-            // -1 when Catapult is not a table), is not -1 resolves that class
-            // too, with DL = 1. UNCERTAIN: the ship test is read as the eight
-            // ship-sized branches of the 22-way Type match, Destroyer to
-            // MotherShip.
-            static constexpr const char* kShipTypes[] = {"Destroyer", "Cruiser", "LandingShip",
-                "Cargo", "BattleShip", "Submarine", "TorpedoBoat", "MotherShip"};
-            const std::string type = read_vehicle_class_string(class_index, "Type");
-            bool ship = false;
-            for (const char* name : kShipTypes) ship = ship || type == name;
-            if (ship) {
-                const int launched = read_vehicle_class_integer(class_index, "Catapult",
-                    "LaunchedClass", -1);
-                if (launched != -1) mark_vehicle_class_row_00964790(launched, "00965182");
-            }
-            mark_vehicle_class_device_bullets_00960230(class_index);
-        }
+    // Goal 3 chain 234: 00964790 itself over the descriptor cache. The
+    // reconstructed body probes the cache (009647ED), pre-resolves a
+    // LandingShip, writes ID / Got, builds the kind's descriptor with its
+    // constructor (the 22 branches), runs the load and publishes it, then
+    // resolves a ship's linked class (vtable[18h](6), 00965166). The OFF
+    // arm keeps the marked-row set as the cache and the Type-string ship
+    // test. DL = 1 at every caller this routine serves.
+    if (!vehicle_class_cache_) {
+        vehicle_class_cache_ =
+            std::make_unique<GameVehicleClassDescriptorCache>(vfs_.raw_strings());
     }
+    if (vehicle_class_cache_->cached(class_index) == nullptr) {
+        vehicle_class_mark_site_.emplace(class_index, site);
+    }
+    const int base = ::lua_gettop(state_);
+    GameMissionLuaVehicleClassBinding binding(*this);
+    bsp::resolve_vehicle_class_00964790(binding, class_index, true);
+    ::lua_settop(state_, base);
 }
 
 const bsp::VehicleClassBaseFields* GameMissionLuaHost::loaded_vehicle_class_base_fields(
@@ -8449,10 +8078,10 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
     enum class Channel { none, kill, entity_killed, exit_zone, recon, hit, other };
     Channel channel = Channel::none;
     // Each channel only where the dispatcher that consumes it runs the value-model arm.
-    if (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound
+    if (kLuaKillAttackerBound
         && listener_key_equal(entry.channel, "kill")) {
         channel = Channel::kill;
-    } else if (bsp::kWireGoal4Chain286Bound && kLuaEntityKilledListenersBound
+    } else if (kLuaEntityKilledListenersBound
                && listener_key_equal(entry.channel, "entityKilled")) {
         channel = Channel::entity_killed;
     } else if (bsp::kWireLuaHostBound && kLuaExitZoneListenersBound
@@ -8460,7 +8089,7 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         channel = Channel::exit_zone;
     } else if (listener_key_equal(entry.channel, "recon")) {
         channel = Channel::recon;   // fire_recon_listeners_00980e50 has no OFF-gated arm
-    } else if (bsp::kWireGoal4Chain286Bound && kLuaHitFilterFieldsBound
+    } else if (kLuaHitFilterFieldsBound
                && kLuaHitAttackerPlayerIndexBound && listener_key_equal(entry.channel, "hit")) {
         channel = Channel::hit;     // the dispatcher arm that tests all eight keys
     } else {
@@ -8642,9 +8271,7 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
         // accepts (load_listener_subscription_native). OFF, an unknown channel, or a
         // load that threw keeps the host parse below.
         bool native_loaded = false;
-        if constexpr (bsp::kWireGoal4Chain352Bound) {
-            native_loaded = load_listener_subscription_native(state, entry);
-        }
+        native_loaded = load_listener_subscription_native(state, entry);
         if (!native_loaded) {
         ::lua_getfield(state, 3, "callback");   // 00972544, reader vtable[10h]
         if (::lua_type(state, -1) == LUA_TSTRING) {
@@ -8787,7 +8414,7 @@ int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argum
     const std::string channel = listener_string_argument(state, 1);
     const std::string id = listener_string_argument(state, 2);
     // 00980D30 removes the checked subscription; OFF keeps the tolerant vector search.
-    if constexpr (bsp::kWireGoal2Chain187Bound) {
+    {
         // 008C6AE7 passes the two Lua strings to 00980D30 (RET 8). The registry
         // is the existing 008C6760 -> 00980C10 producer, not a second manager.
         // Lua calls run serially on this host; no native critical section is owned.
@@ -8828,14 +8455,6 @@ int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argum
             ListenerEntry* subscription_{};
         } view(listeners_, channel, id);
         bsp::oct18_tail_c::warning_remove_listener_00980d30(view);
-    } else {
-    for (std::size_t i = 0; i < listeners_.size(); ++i) {
-        if (listener_key_equal(listeners_[i].channel, channel)
-            && listener_key_equal(listeners_[i].id, id)) {
-            listeners_.erase(listeners_.begin() + static_cast<std::ptrdiff_t>(i));
-            break;
-        }
-    }
     }
     log_.implemented("MissionLuaNative::RemoveListener", "008c6990");
     return 0;
@@ -8902,7 +8521,7 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
         const char* const kReason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
         // 0097B8C0 collects every matching callback first, then 00887E50 calls each.
         std::vector<std::string> callbacks;
-        if constexpr (bsp::kWireGoal4Chain286Bound) {
+        {
             // Goal 4 chain 286: each subscription's condition is its vtable[3]
             // 00968FF0 on the boxed (entity, killReason): the +0Ch id set, then
             // the +1Ch string set (_stricmp order); 0097B8C0 collects. The sets
@@ -8911,15 +8530,11 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
             namespace matchers = bsp::lua_listener_native_matchers;
             const seg64::EventParam entity_param = matchers::word_param(victim);
             seg64::EventParam reason_param;
-            if constexpr (bsp::kWireGoal4Chain352Bound) {
-                // Goal 4 chain 352. 009865EB 00426060 copies the reason NativeString
-                // (00E0CF04[entity+70h], built at 00986514) into the by-value argument
-                // and 009865F2 0096DC00 boxes it (0Ch, vtable 00D1AFE4): params[1], the
-                // NativeString at +4h that 00968FF0's killReason filter tests.
-                reason_param.text04 = seg64::construct_warning_event_record_0096dc00(kReason).name;
-            } else {
-                reason_param = matchers::text_param(kReason);
-            }
+            // Goal 4 chain 352. 009865EB 00426060 copies the reason NativeString
+            // (00E0CF04[entity+70h], built at 00986514) into the by-value argument
+            // and 009865F2 0096DC00 boxes it (0Ch, vtable 00D1AFE4): params[1], the
+            // NativeString at +4h that 00968FF0's killReason filter tests.
+            reason_param.text04 = seg64::construct_warning_event_record_0096dc00(kReason).name;
             const seg64::EventParams params{&entity_param, &reason_param};
             matchers::MatchesHost matches_host;
             std::vector<bsp::WarningSubscription> subscriptions;
@@ -8927,7 +8542,7 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
                 if (!listener_key_equal(entry.channel, "entityKilled") || entry.callback.empty()) {
                     continue;
                 }
-                if (bsp::kWireGoal4Chain352Bound && entry.native_entity_killed != nullptr) {
+                if (entry.native_entity_killed != nullptr) {
                     // Goal 4 chain 352: the subscription AddListener loaded (00972F00).
                     bsp::WarningSubscription collected;
                     collected.callback = entry.callback;
@@ -8945,23 +8560,6 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
                 subscriptions.push_back(std::move(collected));
             }
             callbacks = bsp::evaluate_warning_channel_0097b8c0(subscriptions);
-        } else {
-        for (const ListenerEntry& entry : listeners_) {
-            if (!listener_key_equal(entry.channel, "entityKilled")) continue;
-            if (!entry.entity_ids.empty()
-                && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
-                    == entry.entity_ids.end()) {
-                continue;
-            }
-            if (!entry.kill_reasons.empty()) {
-                bool reason = false;
-                for (const std::string& r : entry.kill_reasons) {
-                    if (listener_key_equal(r, kReason)) { reason = true; break; }
-                }
-                if (!reason) continue;
-            }
-            if (!entry.callback.empty()) callbacks.push_back(entry.callback);
-        }
         }
         for (const std::string& name : callbacks) {
             const int top = ::lua_gettop(state_);
@@ -9048,7 +8646,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 if (!listener_key_equal(entry.channel, "exitzone") || entry.callback.empty()) continue;
                 bsp::WarningSubscription subscription;
                 subscription.callback = entry.callback;
-                if (bsp::kWireGoal4Chain352Bound && entry.native_exit_zone != nullptr) {
+                if (entry.native_exit_zone != nullptr) {
                     // Goal 4 chain 352: the subscription AddListener loaded (009726D0),
                     // tested as 00968710 does: the +0Ch entity filter's slot 0 (00979140)
                     // on params[0], then, only when it held, the +1Ch exited filter's
@@ -9107,11 +8705,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
             if (kLuaListenerCallbackArgsBound) {
                 // 00884A90 the entity, 00884A30 the byte as a boolean.
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
-                if constexpr (bsp::kWireGoal4Chain253Bound) {
-                    push_listener_boolean(state_, exited != 0);
-                } else {
-                ::lua_pushboolean(state_, exited);
-                }
+                push_listener_boolean(state_, exited != 0);
                 pushed = 2;
             }
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
@@ -9184,18 +8778,8 @@ int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
     // 00B66270 on argument 4, FSTP float; 0074FF4E FMUL ST0,ST0 then FSTP float.
     const float range = static_cast<float>(::lua_tonumber(state, 5));
     trigger.radius_sq_5c = bsp::gameplay_seg41_cc13::trigger_radius_squared(range);
-    if constexpr (bsp::kWireGoal4Chain372Bound) {
-        read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
-        log_.implemented("LuaTrigger::set_callback_name", "00750790");
-    } else {
-    // 008C9350 on argument 1: nil leaves +24h clear.
-    if (!lua_isnoneornil(state, 2)) {
-        trigger.named_24 = true;
-        trigger.name_1c = listener_string_argument(state, 2);
-    }
-    // 00B662B0 on argument 2.
-    trigger.callback_28 = listener_string_argument(state, 3);
-    }
+    read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
+    log_.implemented("LuaTrigger::set_callback_name", "00750790");
     // 00888AA0 on argument 0, then vtable[60h]().
     const int id = air_ops_entity_id(state);
     if (units_hooks_ == nullptr || id <= 0
@@ -9332,18 +8916,8 @@ int GameMissionLuaHost::run_add_squad_ordnance_dropped_trigger_008c9a10(lua_Stat
     ++summary_.ordnance_trigger_adds;
     ProximityTrigger trigger;
     trigger.kind = ProximityTrigger::Kind::SquadOrdnanceDropped;
-    if constexpr (bsp::kWireGoal4Chain372Bound) {
-        read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
-        log_.implemented("LuaTrigger::set_callback_name", "00750790");
-    } else {
-    // 008C9350 on argument 1: nil leaves +24h clear.
-    if (!lua_isnoneornil(state, 2)) {
-        trigger.named_24 = true;
-        trigger.name_1c = listener_string_argument(state, 2);
-    }
-    // 00B662B0 on argument 2.
-    trigger.callback_28 = listener_string_argument(state, 3);
-    }
+    read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
+    log_.implemented("LuaTrigger::set_callback_name", "00750790");
     // 00888AA0 on argument 0, then vtable[60h]().
     const int id = air_ops_entity_id(state);
     bool squadron = false;
@@ -9752,7 +9326,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         }
         std::vector<std::string> callbacks;
         auto evaluate = [&](int attacker_id) {
-        if constexpr (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound) {
+        if constexpr (kLuaKillAttackerBound) {
             // Goal 4 chain 286: 0097B8C0 over the channel, each subscription's
             // condition its vtable[3] 0096ACE0 on the boxed (victim, lastAttacker,
             // +2D8h slot) against the entry's +0Ch / +1Ch / +2Ch sets, all three
@@ -9769,7 +9343,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
             std::vector<bsp::WarningSubscription> subscriptions;
             for (const ListenerEntry& entry : listeners_) {
                 if (!listener_key_equal(entry.channel, "kill")) continue;
-                if (bsp::kWireGoal4Chain352Bound && entry.native_kill != nullptr) {
+                if (entry.native_kill != nullptr) {
                     // Goal 4 chain 352: the subscription AddListener constructed
                     // (0097A450) and loaded (00972520).
                     const bool holds =
@@ -9874,11 +9448,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 if (attacker <= 0 || !push_resolved_entity_by_id(state_, attacker)) {
                     lua_pushnil(state_);
                 }
-                if constexpr (bsp::kWireGoal4Chain253Bound) {
-                    push_listener_integer(state_, attacker_slot);
-                } else {
-                ::lua_pushnumber(state_, static_cast<lua_Number>(attacker_slot));
-                }
+                push_listener_integer(state_, attacker_slot);
                 pushed = 3;
                 ++summary_.listener_args_pushed;
             }
@@ -9991,7 +9561,7 @@ void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, i
             std::vector<std::string> callbacks;
             for (const ListenerEntry& entry : listeners_) {
                 if (!listener_key_equal(entry.channel, "recon")) continue;
-                if (bsp::kWireGoal4Chain352Bound && entry.native_recon != nullptr) {
+                if (entry.native_recon != nullptr) {
                     // Goal 4 chain 352: the subscription AddListener loaded (00972450),
                     // tested as 00968470 does: slot 0 of the +0Ch entity filter (00979140)
                     // on the boxed unit, then +1Ch, +2Ch and +3Ch (00979320) on the old
@@ -10188,7 +9758,7 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
                     instance, bsp::recon_category_names_00e0b590[c]);
                 for (const int id : buckets[r][c]) {
                     std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, id);
-                    if constexpr (bsp::kWireGoal4Chain340Bound) {
+                    {
                         // 00805EA5 CALL 006B8120 and 00805EBA CALL 006B84D0(-3), both
                         // with ECX = the LuaInstance (EDI), here a non-owning 006B7E30
                         // view of state_. 00927BF0 between them stays the host's.
@@ -10199,13 +9769,6 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
                         ::lua_gettable(state_, -2);
                         ::lua_remove(state_, -2);
                         machine.set_table(-3);
-                    } else {
-                    ::lua_pushstring(state_, key);                              // 006B8120
-                    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);  // 00927BF0
-                    ::lua_pushstring(state_, key);
-                    ::lua_gettable(state_, -2);
-                    ::lua_remove(state_, -2);
-                    ::lua_settable(state_, -3);                                 // 006B84D0(-3)
                     }
                     ++summary_.recon_publish_entries;
                 }
@@ -10548,15 +10111,12 @@ void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
         const int top = ::lua_gettop(state);
         if (push_resolved_entity_by_id(state, static_cast<int>(unit_index + 1))) {
             // 00B67530 clears the killed entity's actual self.Ptr; OFF keeps pushlightuserdata/setfield.
-            if constexpr (bsp::kWireGoal2Chain119Bound) {
+            {
                 NativeBindingPushFrame frame(state);
                 auto self = stack_object(frame.owner, ::lua_gettop(state));
                 ScopedNativeKey key("Ptr"); // 00928CEF: 0041E870 from 00CFAD08
                 // 00928CF4 PUSH 0 is the binary's value, not a fabricated entity pointer.
                 bsp::native_lua_set_lightuserdata_00b67530(self, key.key, nullptr);
-            } else {
-            ::lua_pushlightuserdata(state, nullptr);
-            ::lua_setfield(state, -2, "Ptr");
             }
             ++summary_.truly_dead_ptr_nulled;
             if constexpr (kLuaLastPositionOnKilledBound) {
@@ -10843,7 +10403,7 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
         ++summary_.water_load_routed;
         float right[3], up[3], forward[3], origin[3];
         if (units->unit_pose(index, right, up, forward, origin)) {
-            if constexpr (kWireGoal4Chain260Bound) {
+            {
                 // Goal 4 chain 260: the receiver reads 0076E520's copy of the 90h
                 // (0080FF80 stores via 00761F60, 00761FF0 write, 00762090 read):
                 // its +1Ch count and its unit-local +20h point, which 004142E0
@@ -10864,15 +10424,6 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
                     world[lane] = ((across + lift) + along) + origin[lane];
                 }
                 applied = units->add_leak_0074f440(index, copy.count, world);
-            } else {
-            float world[3];
-            for (int lane = 0; lane < 3; ++lane) {
-                const float across = local_x * right[lane];
-                const float along = local_z * forward[lane];
-                const float lift = 0.0f * up[lane];
-                world[lane] = ((across + lift) + along) + origin[lane];
-            }
-            applied = units->add_leak_0074f440(index, static_cast<std::uint32_t>(count), world);
             }
             if (applied) ++summary_.water_load_applied;
         }
@@ -11024,7 +10575,7 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
             "slot (packet cc13-luawire)", id);
         return 0;
     }
-    if constexpr (kWireGoal4Chain260Bound) {
+    {
         // Goal 4 chain 260: 0071DD30's 5Ah reaches 0071C1E0 as 0076E520's copy
         // (0071C670 write: the sub-kind in 4 bits, a sub-kind-2 value in 9;
         // 0075AF60, 0071C6C0 read), so arm 2 stores the copy's 9-bit value.
@@ -11036,8 +10587,6 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
         if (copy.sub_kind == 2u) {
             director_player_commands_1cc_[director] = static_cast<std::int32_t>(copy.value);
         }
-    } else {
-    director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
     }
     ++summary_.player_commands_stored;
     const GameUnitRow* row = units->unit_row(director);
@@ -11112,12 +10661,8 @@ int GameMissionLuaHost::run_set_visibility_008a13d0(lua_State* state, int argume
     GameUnitsHost* units = units_hooks_;
     const int id = [&] {
         // 00888D20 selects Ptr for SetVisibility; OFF keeps the host's ID lookup.
-        if constexpr (kWireGoal1Chain20Bound) {
-            const auto pointer_id = plain_entity_table_pointer_id(state, log_);
-            return pointer_id ? *pointer_id : air_ops_entity_id(state);
-        } else {
-            return air_ops_entity_id(state);
-        }
+        const auto pointer_id = plain_entity_table_pointer_id(state, log_);
+        return pointer_id ? *pointer_id : air_ops_entity_id(state);
     }();
     if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
         ++summary_.visibility_unresolved;
@@ -11549,12 +11094,8 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
         for (const std::size_t u : snapshot) {
             if (units->unit_formation_group_0284(u) < 0) continue;
             if (!defer || !units->post_formation_leave_0077c980(u)) {
-                if constexpr (kWireGoal4Chain260Bound) {
-                    // Goal 4 chain 260: the 77h through 0076E520's copy first.
-                    units->leave_formation_message_0077c980(u);
-                } else {
-                units->leave_group_on_destroy_0077bd70(u);
-                }
+                // Goal 4 chain 260: the 77h through 0076E520's copy first.
+                units->leave_formation_message_0077c980(u);
             } else {
                 ++posted;
             }
@@ -11658,7 +11199,7 @@ int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
         return 0;
     }
     bsp::AirOpsLaunchSlotMessageResult message{};
-    if constexpr (kWireGoal4Chain260Bound) {
+    {
         // Goal 4 chain 260: the 83h is routed (00896964) before the +34h store
         // (00896972); 0076E520's copy (00763260 write, 007631A0, 007632C0 read)
         // is what 006CA8E0 receives: the copy's 6-bit slot and its flag.
@@ -11675,9 +11216,6 @@ int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
             // LABELLED: the image's receiver indexes the copy's slot unchecked.
             log_.unimplemented("AirOps::launch_slot_copy_out_of_range", "006ca8e0");
         }
-    } else {
-    deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
-    message = bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
     }
     log_.unimplemented("AirOps::launch_slot_peer_messages", "006bf150");
     if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
@@ -12409,12 +11947,8 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
     GameUnitsHost* units = units_hooks_;
     const int id = [&] {
         // 00888D20 selects Ptr for ShipUseCatapult; OFF keeps the host's ID lookup.
-        if constexpr (kWireGoal1Chain20Bound) {
-            const auto pointer_id = plain_entity_table_pointer_id(state, log_);
-            return pointer_id ? *pointer_id : air_ops_entity_id(state);
-        } else {
-            return air_ops_entity_id(state);
-        }
+        const auto pointer_id = plain_entity_table_pointer_id(state, log_);
+        return pointer_id ? *pointer_id : air_ops_entity_id(state);
     }();
     if (units == nullptr || script_orders_ == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
@@ -12452,7 +11986,7 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
     // on arm builds the whole bag through 006EC8E0.
     bsp::DummyKamikazeSpawn spawn;
     spawn.carrier = ship;
-    if constexpr (bsp::kWireGoal4Chain270Bound) {
+    {
         // Goal 4 chain 270: MCatapult::Fire's bag (006EC8E0, bsp show 006ec8e0 and its
         // listing 006EC8FF..006ECA3F) from the ship's own state:
         //  - 006EC8FF..006EC933: launched class = owner+530h, or class+C0h when
@@ -12500,9 +12034,7 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         spawn.skill = props.skill;
         spawn.owner_player = props.owner_player;
         spawn.equipment = props.equipment;
-        if constexpr (bsp::kWireGoal4Chain308Bound) {
-            spawn.resource_usage = props.resource_usage;
-        }
+        spawn.resource_usage = props.resource_usage;
         log_.notef("  ShipUseCatapult 00891d50: \"%s\" bag Type=%u Skill=%d Race=%d Party=%d "
             "OwnerPlayer=%d State=%d(7 hosted) PlaneParentID=%d Equipment=%d Behaviour=%d "
             "ResourceUsage=%.1f (006EC8E0, overrides +530h=%d +534h=%d)", row->name.c_str(),
@@ -12511,9 +12043,6 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
             static_cast<double>(props.resource_usage), row->launch_class_530,
             row->launch_equipment_534);
         log_.implemented("MCatapult::fire_spawn_properties", "006ec8e0");
-    } else {
-    spawn.plane_class = cls.launched_class;
-    spawn.party = row->party;
     }
     spawn.dummy_id = r->launches + 1u;
     const float yaw = static_cast<float>(static_cast<double>(row->heading_degrees) * 3.14159265358979 / 180.0);
@@ -12531,8 +12060,7 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         return 0;
     }
     // Chain 270: the class the bag created (the +530h override when authored).
-    const int created_class = bsp::kWireGoal4Chain270Bound ? spawn.plane_class
-                                                           : cls.launched_class;
+    const int created_class = spawn.plane_class;
     if constexpr (kSEntityInitAllBound) {
         route_push_squadron(static_cast<int>(entity), name, created_class, units_before);
     } else if (attach_created_entity_00928a00(static_cast<int>(entity), name, created_class)) {
@@ -12634,12 +12162,8 @@ int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argum
         const std::size_t u = static_cast<std::size_t>(id - 1);
         posted = units->formation_leave_waits_for_handover(u)
             && units->post_formation_leave_0077c980(u);
-        if constexpr (kWireGoal4Chain260Bound) {
-            // Goal 4 chain 260: the 77h through 0076E520's copy first.
-            if (!posted) units->leave_formation_message_0077c980(u);
-        } else {
-        if (!posted) units->leave_group_on_destroy_0077bd70(u);
-        }
+        // Goal 4 chain 260: the 77h through 0076E520's copy first.
+        if (!posted) units->leave_formation_message_0077c980(u);
         ++summary_.leave_formation_left;
     }
     const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
@@ -12705,7 +12229,7 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
     if (const bsp::game::SceneDirectorEnables* e = bsp::game::scene_director_enables_find(row->name)) {
         enables = *e;
     }
-    if constexpr (kWireGoal4Chain260Bound) {
+    {
         // Goal 4 chain 260: 0071E050 sends 5Ah sub-kind 4 with the MOVZX flag
         // (0071E076, 0071E09A); 0071C1E0 receives 0076E520's copy (0071C670
         // write, 1 value bit for sub-kind 4; 0075AF60, 0071C6C0 read).
@@ -12714,8 +12238,6 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
             copy = messages->queue_director_sub_kind_5a(4u, flag ? 1u : 0u);
         }
         if (copy.sub_kind == 4u) enables.anti_air = copy.value != 0;   // 0071C246, +221h
-    } else {
-    enables.anti_air = flag;                                   // 0071C246, +221h
     }
     bsp::game::scene_director_enables_set(row->name, enables);
     if (!flag) ++summary_.aa_enable_disables;
@@ -12838,12 +12360,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             namespace seg64 = bsp::cc13_seg49_64_78;
             namespace matchers = bsp::lua_listener_native_matchers;
             const bool target = [&]() {
-                if constexpr (bsp::kWireGoal4Chain403Bound) {
-                    return s.target.matches(hit_listener_target_key(victim));       // +0Ch
-                } else {
-            const bool target = s.target.matches(matchers::word_param(victim));      // +0Ch
-                    return target;
-                }
+                return s.target.matches(hit_listener_target_key(victim));       // +0Ch
             }();
             const bool attacker = s.attacker.matches(matchers::word_param(shooter)); // +2Ch
             if (target && attacker && !s.attack_type.values.empty()
@@ -12879,7 +12396,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
         auto evaluate = [&](int shooter) {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "hit")) continue;
-            if (bsp::kWireGoal4Chain352Bound && entry.native_hit != nullptr) {
+            if (entry.native_hit != nullptr) {
                 if (!native_hit_holds(*entry.native_hit, shooter)) continue;
                 if (!entry.callback.empty()) callbacks.push_back(entry.callback);
                 continue;
@@ -12909,7 +12426,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 }
                 if (!any) continue;
             }
-            if constexpr (bsp::kWireGoal4Chain286Bound) {
+            {
                 // Goal 4 chain 286: 009685B0's keys 5..7 go through each range
                 // filter's slot 0, 00968440 (ordered, inclusive; an unordered value
                 // fails), against the boxed damage, fire and leak: the hit record's
@@ -12939,27 +12456,6 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                         matchers::number_param(hit.leak_caused))) {
                     continue;
                 }
-            } else {
-            if (entry.damage_range.size() >= 2
-                && (hit.damage < entry.damage_range[0] || hit.damage > entry.damage_range[1])) {
-                continue;
-            }
-            // Packet cc9_hit_listener_filters. The host's hits carry no device entity,
-            // so a non-empty targetDevice set never holds the parameter; they start no
-            // fire and no leak, so fireCaused and leakCaused are 0.0 against the range
-            // (the same two-value bracket damageCaused takes).
-            if (entry.hit_device_filter) continue;
-            // Packet cc9_hit_attacker_player_index: [src+1Ch], the shot's stamped team
-            // (-1 with no ordnance, and for the host's torpedoes and depth charges).
-            if (!holds(entry.attacker_player_indices, hit.attacker_player_index)) continue;
-            if (entry.fire_range.size() >= 2
-                && (0.0f < entry.fire_range[0] || 0.0f > entry.fire_range[1])) {
-                continue;
-            }
-            if (entry.leak_range.size() >= 2
-                && (0.0f < entry.leak_range[0] || 0.0f > entry.leak_range[1])) {
-                continue;
-            }
             }
             if (entry.hit_filters_unmodelled) {
                 ++summary_.listener_hit_unmodelled;
@@ -13016,19 +12512,11 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);
                 // The attack-type name table 00E08E58 (char*[], read from the PE),
                 // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
-                if constexpr (bsp::kWireGoal4Chain253Bound) {
-                    push_listener_string(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
-                    push_listener_integer(state_, hit.attacker_player_index);
-                    push_listener_number(state_, hit.damage);
-                    push_listener_number(state_, hit.fire_caused);
-                    push_listener_number(state_, hit.leak_caused);
-                } else {
-                ::lua_pushstring(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
-                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
-                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
-                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
-                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.leak_caused));
-                }
+                push_listener_string(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
+                push_listener_integer(state_, hit.attacker_player_index);
+                push_listener_number(state_, hit.damage);
+                push_listener_number(state_, hit.fire_caused);
+                push_listener_number(state_, hit.leak_caused);
                 pushed = 8;
                 ++summary_.listener_args_pushed;
             }
@@ -13360,7 +12848,7 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
                    && failure_name_equals(name, "EngineJam")) {
             out = units->gunnery()->ship_jam_flag(index, false);
         // 00953E60 calls the reconstructed name/byte query; OFF keeps the host's name test.
-        } else if constexpr (bsp::kWireGoal2Chain69Bound) {
+        } else {
             // The units host's +720h producer is the inferior-failure message/destruction arm.
             const std::uint8_t byte_720 = units->inferior_failure_720(index) ? 1u : 0u;
             std::uint8_t result = 0;
@@ -13370,8 +12858,6 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
                 out = result != 0;
             }
             log_.implemented("MissionLuaNative::query_inferior_failure", "00953e60");
-        } else if (failure_name_equals(name, "InferiorFailure")) {
-            out = units->inferior_failure_720(index);
         }
     }
     if (out) ++summary_.get_failure_true;
@@ -13670,21 +13156,17 @@ int GameMissionLuaHost::run_support_manager_enable_0088cbb0(lua_State* state,
     std::vector<int>& list = support_panel_disabled_list_1f8_;
     if (enable) {
         // 0065BBA0 calls the reconstructed list dispatch; OFF keeps the host's erase/remove.
-        if constexpr (bsp::kWireGoal2Chain69Bound) {
-            struct SupportDisabledEntitiesAdapter final : bsp::seg27_cc13::SupportListRemoveHost {
-                void list_remove_0065b1f0(void* storage, void* const& entity) override {
-                    auto& disabled = *static_cast<std::vector<int>*>(storage);
-                    const int entity_id = static_cast<int>(reinterpret_cast<std::uintptr_t>(entity));
-                    disabled.erase(std::remove(disabled.begin(), disabled.end(), entity_id), disabled.end());
-                }
-            } adapter;
-            bsp::seg27_cc13::support_manager_list_remove_0065bba0(
-                bsp::seg27_cc13::SupportManagerListView<std::vector<int>>{list},
-                reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)), adapter);
-            log_.implemented("MissionLuaNative::support_disabled_list_remove", "0065bba0");
-        } else {
-        list.erase(std::remove(list.begin(), list.end(), id), list.end());  // 0065B1F0
-        }
+        struct SupportDisabledEntitiesAdapter final : bsp::seg27_cc13::SupportListRemoveHost {
+            void list_remove_0065b1f0(void* storage, void* const& entity) override {
+                auto& disabled = *static_cast<std::vector<int>*>(storage);
+                const int entity_id = static_cast<int>(reinterpret_cast<std::uintptr_t>(entity));
+                disabled.erase(std::remove(disabled.begin(), disabled.end(), entity_id), disabled.end());
+            }
+        } adapter;
+        bsp::seg27_cc13::support_manager_list_remove_0065bba0(
+            bsp::seg27_cc13::SupportManagerListView<std::vector<int>>{list},
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)), adapter);
+        log_.implemented("MissionLuaNative::support_disabled_list_remove", "0065bba0");
     } else {
         list.push_back(id);                                                  // 00665EF0
     }
@@ -14105,26 +13587,17 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
     for (int index = 0; index < stock_count; ++index) {
         const bsp::AirOpsStockEntry& entry = deck->stock[static_cast<std::size_t>(index)];
         // 00B66670 assigns each stock child before filling it; OFF keeps createtable/rawseti.
-        if constexpr (bsp::kWireGoal2Chain119Bound) {
-            const int parent = ::lua_gettop(state);
-            NativeBindingPushFrame frame(state);
-            auto table = stack_object(frame.owner, parent);
-            bsp::native_lua_set_new_table_at_00b66670(table, index + 1);
-            ::lua_pushinteger(state, index + 1);
-            ::lua_gettable(state, parent);
-            ::lua_pushinteger(state, static_cast<lua_Integer>(entry.vehicle_class));
-            ::lua_setfield(state, -2, "classid");
-            ::lua_pushinteger(state, static_cast<lua_Integer>(entry.count));
-            ::lua_setfield(state, -2, "count");
-            ::lua_pop(state, 1);
-        } else {
-        ::lua_createtable(state, 0, 2);
+        const int parent = ::lua_gettop(state);
+        NativeBindingPushFrame frame(state);
+        auto table = stack_object(frame.owner, parent);
+        bsp::native_lua_set_new_table_at_00b66670(table, index + 1);
+        ::lua_pushinteger(state, index + 1);
+        ::lua_gettable(state, parent);
         ::lua_pushinteger(state, static_cast<lua_Integer>(entry.vehicle_class));
         ::lua_setfield(state, -2, "classid");
         ::lua_pushinteger(state, static_cast<lua_Integer>(entry.count));
         ::lua_setfield(state, -2, "count");
-        ::lua_rawseti(state, -2, index + 1);
-        }
+        ::lua_pop(state, 1);
     }
     log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
     return 1;
@@ -14751,7 +14224,7 @@ bool GameMissionLuaHost::start_machine_00884be0() {
             kScriptReadMode, bytes) && !bytes.empty()) {
         set_phase("fundamentals");
         // 006B89F0 calls lua_machine_run_chunk_006b89f0; OFF keeps run_lua_chunk.
-        if constexpr (bsp::kWireGoal2Chain143Bound) {
+        {
             // Reuse 006B7E30's non-owning machine view: +4h is this host's
             // create_state() result and +8h is its constructor's owns=false.
             // The VFS bytes are already the host's 00884770 substitute above.
@@ -14765,11 +14238,6 @@ bool GameMissionLuaHost::start_machine_00884be0() {
             last_status_ = failed;
             last_chunk_ = bsp::kMissionLuaFundamentalsChunk;
             summary_.fundamentals_ran = failed == 0;
-        } else {
-        const bsp::LuaChunkResult result = bsp::run_lua_chunk(*this,
-            reinterpret_cast<const char*>(bytes.data()), static_cast<int>(bytes.size()),
-            bsp::kMissionLuaFundamentalsChunk, true, false, 2);
-        summary_.fundamentals_ran = result.status == bsp::LuaChunkStatus::Ok;
         }
         log_.implemented("MissionLua::fundamentals_chunk", "00884c94");
     } else {
@@ -15012,57 +14480,53 @@ bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_n
     log_.implemented("MissionLua::run_mission_script", "008860b0");
     const std::vector<bsp::LuaChunkResult> results = [this, &script_name]() {
         // 00885FB0 runs the base/override sequence; OFF keeps the host's loop.
-        if constexpr (bsp::kWireGoal2Chain124Bound) {
-            namespace lua_model = bsp::landscape_lua_seg55_argon;
-            class ScriptEnvironment final : public lua_model::MissionLuaScriptEnvironmentHost {
-            public:
-                explicit ScriptEnvironment(bsp::MissionLuaHostServices& services)
-                    : host_(services) {}
+        namespace lua_model = bsp::landscape_lua_seg55_argon;
+        class ScriptEnvironment final : public lua_model::MissionLuaScriptEnvironmentHost {
+        public:
+            explicit ScriptEnvironment(bsp::MissionLuaHostServices& services)
+                : host_(services) {}
 
-                bool read_vfs_file(const std::string& name, std::vector<char>& bytes) override {
-                    if (!host_.open_script(name)) {
-                        // Match run_script_file's outcome for an unavailable file.
-                        results.emplace_back();
-                        return false;
-                    }
-                    const int size = host_.script_size();
-                    bytes.resize(static_cast<std::size_t>(size < 0 ? 0 : size));
-                    host_.read_script(bytes.empty() ? nullptr : bytes.data(), size);
-                    return true;
+            bool read_vfs_file(const std::string& name, std::vector<char>& bytes) override {
+                if (!host_.open_script(name)) {
+                    // Match run_script_file's outcome for an unavailable file.
+                    results.emplace_back();
+                    return false;
                 }
+                const int size = host_.script_size();
+                bytes.resize(static_cast<std::size_t>(size < 0 ? 0 : size));
+                host_.read_script(bytes.empty() ? nullptr : bytes.data(), size);
+                return true;
+            }
 
-                void run_lua_chunk_006b89f0(void*, const char* data, std::size_t size,
-                    const char* name, lua_model::MissionLuaResultSink*,
-                    std::string&, int mode) override {
-                    bsp::LuaChunkResult result = bsp::run_lua_chunk(host_, size == 0 ? "" : data,
-                        host_.script_size(), name, true, false, mode);
-                    result.error_message.clear();
-                    result.error_message_captured = false;
-                    host_.close_script();
-                    results.push_back(std::move(result));
-                }
+            void run_lua_chunk_006b89f0(void*, const char* data, std::size_t size,
+                const char* name, lua_model::MissionLuaResultSink*,
+                std::string&, int mode) override {
+                bsp::LuaChunkResult result = bsp::run_lua_chunk(host_, size == 0 ? "" : data,
+                    host_.script_size(), name, true, false, mode);
+                result.error_message.clear();
+                result.error_message_captured = false;
+                host_.close_script();
+                results.push_back(std::move(result));
+            }
 
-                void append_lua_script_overrides_00bdef90(const std::string& name,
-                    std::vector<std::string>& variants) override {
-                    variants = host_.script_variant_names(name);
-                }
+            void append_lua_script_overrides_00bdef90(const std::string& name,
+                std::vector<std::string>& variants) override {
+                variants = host_.script_variant_names(name);
+            }
 
-                std::vector<bsp::LuaChunkResult> results;
-            private:
-                bsp::MissionLuaHostServices& host_;
-            } environment(*this);
+            std::vector<bsp::LuaChunkResult> results;
+        private:
+            bsp::MissionLuaHostServices& host_;
+        } environment(*this);
 
-            // 00886190: borrow this host's existing Lua services for the load's
-            // script phase. This typed receiver view owns no VM or call queue;
-            // the adapter runs chunks on state_ through the same host methods.
-            lua_model::MissionLuaHostState receiver;
-            receiver.lua_machine = this;
-            lua_model::mission_lua_host_run_script_with_variants_00885fb0(
-                receiver, summary_.mission_script_path.c_str(), true, environment);
-            return std::move(environment.results);
-        } else {
-            return bsp::run_mission_script(*this, script_name);
-        }
+        // 00886190: borrow this host's existing Lua services for the load's
+        // script phase. This typed receiver view owns no VM or call queue;
+        // the adapter runs chunks on state_ through the same host methods.
+        lua_model::MissionLuaHostState receiver;
+        receiver.lua_machine = this;
+        lua_model::mission_lua_host_run_script_with_variants_00885fb0(
+            receiver, summary_.mission_script_path.c_str(), true, environment);
+        return std::move(environment.results);
     }();
     summary_.mission_chunks_run = results.size();
     summary_.mission_chunk_ok = !results.empty()
@@ -15098,22 +14562,17 @@ int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) 
     const int top = ::lua_gettop(state);
     if (top >= 1 && ::lua_type(state, 1) == LUA_TTABLE) {
         bsp::CheckpointRecordFields record = [&] {
-            if constexpr (bsp::kWireGoal4Chain368Bound) {
-                ScopedMissionCheckpointRecord native;
-                bsp::CheckpointRecordFields fields;
-                fields.difficulty = native.value.difficulty;
-                fields.unlock_from = native.value.unlock_from;
-                fields.unlock_to = native.value.unlock_to;
-                if (native.value.unlock_name.data() != nullptr) {
-                    fields.unlock_name.assign(native.value.unlock_name.data(),
-                        native.value.unlock_name.length());
-                }
-                log_.implemented("MissionLuaNative::checkpoint_record", "00436690");
-                return fields;
-            } else {
-                bsp::CheckpointRecordFields record;   // 00436690's defaults
-                return record;
+            ScopedMissionCheckpointRecord native;
+            bsp::CheckpointRecordFields fields;
+            fields.difficulty = native.value.difficulty;
+            fields.unlock_from = native.value.unlock_from;
+            fields.unlock_to = native.value.unlock_to;
+            if (native.value.unlock_name.data() != nullptr) {
+                fields.unlock_name.assign(native.value.unlock_name.data(),
+                    native.value.unlock_name.length());
             }
+            log_.implemented("MissionLuaNative::checkpoint_record", "00436690");
+            return fields;
         }();
         record.difficulty = bsp::game::game_effective_difficulty_6ac();
         bsp::ArchiveStringSink sink;
@@ -15121,14 +14580,10 @@ int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) 
         output.buffered_0109cecc = &sink;
         bsp::ArchiveTextWriter writer(output);
         try {
-            if constexpr (bsp::kWireGoal4Chain299Bound) {
-                // The 00436C50 copy's string setter 00B674C0 falls back to the
-                // live 0108FF2C empty string for a null NativeString buffer.
-                bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true,
-                    game_native_lua_globals_process().empty_string_0108ff2c());
-            } else {
-                bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true);
-            }
+            // The 00436C50 copy's string setter 00B674C0 falls back to the
+            // live 0108FF2C empty string for a null NativeString buffer.
+            bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true,
+                game_native_lua_globals_process().empty_string_0108ff2c());
             // Beside the executable only: the build or export tree.
             char* program = nullptr;
             std::string path;   // empty: no executable path, nothing written
@@ -15441,24 +14896,20 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         return false;
     }
     // 00B678E0/00B663D0 look up and push the resolved entity; OFF keeps the direct field read.
-    if constexpr (bsp::kWireGoal2Chain119Bound) {
-        // 00B67800 tracks by absolute stack position in 50 slots. This local
-        // owner starts at offset zero (00B66BD0); preserve the old reader for
-        // stacks outside that body's storage contract.
-        if (::lua_gettop(state) < 49) {
-            NativeBindingPushFrame frame(state);
-            auto table = stack_object(frame.owner, ::lua_gettop(state));
-            ScopedNativeKey name(key); // entity id formatted above, as at 00898FA7
-            bsp::NativeLuaObjectStorage value;
-            bsp::native_lua_get_by_native_string_00b678e0(table, value, name.key);
-            bsp::native_lua_push_value_00b663d0(value);
-            // Remove the tracked original; the pushed result remains the same table.
-            bsp::native_lua_release_00b67050(value, 1);
-        } else {
-            lua_getfield(state, -1, key);
-        }
+    // 00B67800 tracks by absolute stack position in 50 slots. This local
+    // owner starts at offset zero (00B66BD0); preserve the old reader for
+    // stacks outside that body's storage contract.
+    if (::lua_gettop(state) < 49) {
+        NativeBindingPushFrame frame(state);
+        auto table = stack_object(frame.owner, ::lua_gettop(state));
+        ScopedNativeKey name(key); // entity id formatted above, as at 00898FA7
+        bsp::NativeLuaObjectStorage value;
+        bsp::native_lua_get_by_native_string_00b678e0(table, value, name.key);
+        bsp::native_lua_push_value_00b663d0(value);
+        // Remove the tracked original; the pushed result remains the same table.
+        bsp::native_lua_release_00b67050(value, 1);
     } else {
-    lua_getfield(state, -1, key);
+        lua_getfield(state, -1, key);
     }
     ::lua_remove(state, -2);
     if (lua_isnil(state, -1)) {
@@ -16218,14 +15669,10 @@ int GameMissionLuaHost::lua_gettop() {
 void GameMissionLuaHost::lua_settop(int index) {
     // Chain 104, 006B7E80: LuaMachine::set_top on a LuaMachine over state_ (006B7E30 wraps
     // without owning), as 00887750 does at 008879BF; OFF keeps lua_settop.
-    if constexpr (bsp::kWireGoal2Chain104Bound) {
-        if (state_ != nullptr) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            machine.set_top(index);
-            log_.implemented("MissionLua::lua_settop", "006b7e80");
-        }
-    } else {
-        if (state_ != nullptr) ::lua_settop(state_, index);
+    if (state_ != nullptr) {
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        machine.set_top(index);
+        log_.implemented("MissionLua::lua_settop", "006b7e80");
     }
 }
 
@@ -16308,27 +15755,19 @@ void GameMissionLuaHost::lua_gettable(int index) {
 }
 
 void GameMissionLuaHost::lua_remove(int index) {
-    if constexpr (bsp::kWireGoal4Chain287Bound) {
-        if (state_ != nullptr) {
-            // 006B7EA0 loads state from machine+4 after capturing the index;
-            // the borrowed 006B7E30 machine retains this host's live state.
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::remove_native_mission_lua_006b7ea0(&machine, index);
-        }
-    } else {
-        if (state_ != nullptr) ::lua_remove(state_, index);
+    if (state_ != nullptr) {
+        // 006B7EA0 loads state from machine+4 after capturing the index;
+        // the borrowed 006B7E30 machine retains this host's live state.
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::remove_native_mission_lua_006b7ea0(&machine, index);
     }
 }
 
 void GameMissionLuaHost::lua_pushvalue(int index) {
-    if constexpr (bsp::kWireGoal4Chain287Bound) {
-        if (state_ != nullptr) {
-            // 006B7E90 has the same machine+4/index forwarding contract.
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::push_value_native_mission_lua_006b7e90(&machine, index);
-        }
-    } else {
-        if (state_ != nullptr) ::lua_pushvalue(state_, index);
+    if (state_ != nullptr) {
+        // 006B7E90 has the same machine+4/index forwarding contract.
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::push_value_native_mission_lua_006b7e90(&machine, index);
     }
 }
 
@@ -16350,44 +15789,24 @@ public:
     }
     void lua_push_number_006b80e0(float value) override {
         // Native 006B80E0 receives float32, then widens to Lua's double.
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::push_number_native_mission_lua_006b80e0(&machine, &value);
-        } else {
-            ::lua_pushnumber(state_, static_cast<lua_Number>(value));
-        }
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::push_number_native_mission_lua_006b80e0(&machine, &value);
     }
     void lua_push_string_006b8120(const char* value) override {
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::push_string_native_mission_lua_006b8120(&machine, value);
-        } else {
-            ::lua_pushstring(state_, value);
-        }
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::push_string_native_mission_lua_006b8120(&machine, value);
     }
     void lua_push_boolean_006b80c0(bool value) override {
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::push_boolean_native_mission_lua_006b80c0(&machine, value);
-        } else {
-            ::lua_pushboolean(state_, value);
-        }
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::push_boolean_native_mission_lua_006b80c0(&machine, value);
     }
     void lua_push_nil_006b8130() override {
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::push_nil_native_mission_lua_006b8130(&machine);
-        } else {
-            ::lua_pushnil(state_);
-        }
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        bsp::push_nil_native_mission_lua_006b8130(&machine);
     }
     void lua_create_table_006b84b0() override {
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            machine.create_table_006b84b0();
-        } else {
-            ::lua_createtable(state_, 0, 0);
-        }
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        machine.create_table_006b84b0();
     }
     void lua_push_entity_from_this_table(std::int16_t entity_id) override {
         char key[16];
@@ -16396,11 +15815,9 @@ public:
         ::lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
         // Retain the host's existing missing-thisTable guard: leave its nil
         // on the stack. 00885DA0 itself supplies nil for the zero-id arm.
-        if constexpr (bsp::kWireGoal4Chain287Bound) {
+        {
             bsp::cc13_seg29::LuaMachine machine(state_);
             if (bsp::is_nil_native_mission_lua_006b7ee0(&machine, -1) != 0) return;
-        } else {
-            if (lua_isnil(state_, -1)) return;
         }
         ::lua_getfield(state_, -1, key);
         ::lua_remove(state_, -2);
@@ -16411,29 +15828,21 @@ public:
         // to wire the separate raw-map 00885A70 reconstruction.
         if (pair.key_kind != 0 || pair.value == nullptr)
             throw std::logic_error("mission argument array requires an integer key and value");
-        if constexpr (bsp::kWireGoal4Chain443Bound) {
-            // 00885A70 -> 006B82A0/006B8320: integer-key number/string
-            // entries. These are the real dense argument table and projected
-            // record, not a fabricated native VariantMap. Each parent was just
-            // created by 00885DA0 and has no metatable. Keep other tags on the
-            // existing recursive path (including the tag-4 stack guard).
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            if (pair.value->tag == 0) {
-                machine.set_number_number_006b82a0(
-                    static_cast<float>(pair.int_key), pair.value->num_val);
-            } else if (pair.value->tag == 1) {
-                machine.set_number_string_006b8320(
-                    static_cast<float>(pair.int_key), pair.value->str_val.c_str());
-            } else {
-                const int top = ::lua_gettop(state_);
-                bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
-                if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
-            }
+        // 00885A70 -> 006B82A0/006B8320: integer-key number/string
+        // entries. These are the real dense argument table and projected
+        // record, not a fabricated native VariantMap. Each parent was just
+        // created by 00885DA0 and has no metatable. Keep other tags on the
+        // existing recursive path (including the tag-4 stack guard).
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        if (pair.value->tag == 0) {
+            machine.set_number_number_006b82a0(
+                static_cast<float>(pair.int_key), pair.value->num_val);
+        } else if (pair.value->tag == 1) {
+            machine.set_number_string_006b8320(
+                static_cast<float>(pair.int_key), pair.value->str_val.c_str());
         } else {
             const int top = ::lua_gettop(state_);
             bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
-            // Tag 4 pushes nothing. It must not let rawseti consume the parent
-            // table (the old recursive host path did so for a skipped member).
             if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
         }
     }
@@ -16470,59 +15879,8 @@ private:
 
 void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) {
     if (state_ == nullptr) return;
-    if constexpr (bsp::kWireGoal4Chain334Bound) {
-        LiveMissionArgumentPush push(state_);
-        push.push(argument);
-    } else {
-    switch (argument.type) {
-    case bsp::MissionLuaArgumentType::Number:
-        lua_pushnumber(state_, static_cast<lua_Number>(argument.number));
-        return;
-    case bsp::MissionLuaArgumentType::String:
-        ::lua_pushstring(state_, argument.text.c_str());
-        return;
-    case bsp::MissionLuaArgumentType::Boolean:
-        lua_pushboolean(state_, argument.boolean ? 1 : 0);
-        return;
-    case bsp::MissionLuaArgumentType::EntityId: {
-        // thisTable[format("%d", id)], or nil for a zero id. The self table is
-        // packet cc_mission_natives'; without it the lookup answers nil, which
-        // is the same value a missing entity produces.
-        if (argument.entity_id == 0) {
-            lua_pushnil(state_);
-            return;
-        }
-        char key[16];
-        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
-            static_cast<int>(argument.entity_id));
-        lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
-        if constexpr (bsp::kWireGoal4Chain287Bound) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            // 006B7EE0 returns 1 only for type 0; leave that actual nil on
-            // the stack as the argument, including the missing-self case.
-            if (bsp::is_nil_native_mission_lua_006b7ee0(&machine, -1) != 0) return;
-        } else {
-            if (lua_isnil(state_, -1)) return;  // the nil stays as the argument
-        }
-        lua_getfield(state_, -1, key);
-        ::lua_remove(state_, -2);
-        return;
-    }
-    case bsp::MissionLuaArgumentType::Skipped:
-        return;
-    case bsp::MissionLuaArgumentType::Table:
-        lua_createtable(state_, static_cast<int>(argument.elements.size()), 0);
-        for (std::size_t i = 0; i < argument.elements.size(); ++i) {
-            push_argument(argument.elements[i]);
-            lua_rawseti(state_, -2, static_cast<int>(i) + 1);
-        }
-        return;
-    case bsp::MissionLuaArgumentType::Nil:
-    default:
-        lua_pushnil(state_);
-        return;
-    }
-    }
+    LiveMissionArgumentPush push(state_);
+    push.push(argument);
 }
 
 bool GameMissionLuaHost::global_is_defined(const char* name) {

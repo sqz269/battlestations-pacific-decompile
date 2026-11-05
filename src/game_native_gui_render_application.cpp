@@ -38,9 +38,6 @@
 #include "bsp/system_fog_owner.hpp"
 #include "bsp/native_renderer_indexed_draw.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
-#include "bsp/wire_goal4_chain493_switches.hpp"
-#include "bsp/wire_goal4_chain549_switches.hpp"
-#include "bsp/wire_goal4_chain605_switches.hpp"
 #include <d3d9.h>
 #include <d3dx9shader.h>
 #include <clocale>
@@ -296,29 +293,21 @@ struct LiteralTextLocale final : LocaleTextRuntimeHost {
         throw std::logic_error("standalone native Text has no current Lua-context binding");
     }
     char16_t crt_uppercase_00c0391c(char16_t value) override {
-        if constexpr (bsp::kWireGoal4Chain493Bound) {
-            // Same live-code-unit/C-locale contract as GameLocaleTextRuntime.
-            // 004F9AB0's byte operation is established by its signed compares
-            // and MOVSX in bsp.py show 004f9ab0 --asm.
-            if (value <= 0x7f) {
-                const char* const locale = std::setlocale(LC_CTYPE, nullptr);
-                if (locale && locale[0] == 'C' && locale[1] == '\0') {
-                    const char byte = static_cast<char>(value);
-                    return static_cast<char16_t>(
-                        bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
-                }
+        // Same live-code-unit/C-locale contract as GameLocaleTextRuntime.
+        // 004F9AB0's byte operation is established by its signed compares
+        // and MOVSX in bsp.py show 004f9ab0 --asm.
+        if (value <= 0x7f) {
+            const char* const locale = std::setlocale(LC_CTYPE, nullptr);
+            if (locale && locale[0] == 'C' && locale[1] == '\0') {
+                const char byte = static_cast<char>(value);
+                return static_cast<char16_t>(
+                    bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
             }
-            return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
-        } else {
-        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
         }
+        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
     }
     bool uppercase_ascii_text(char16_t* text, std::size_t length) override {
-        if constexpr (kWireGoal4Chain549Bound) {
-            return uppercase_ascii_text_with_current_c_locale(text, length);
-        } else {
-            return false;
-        }
+        return uppercase_ascii_text_with_current_c_locale(text, length);
     }
 };
 // Every identity comes from the mission frame's existing command graph. The
@@ -563,7 +552,7 @@ struct GameNativeGuiRenderApplication::Impl {
         auto& environment = renderer.camera_environment();
         camera_name_live = true;
         camera_name.assign_0041e870(raw.strings, "GuiCam_NativeText");
-        if constexpr (kWireGoal4Chain605Bound) {
+        {
             struct Calls final : cc13_sweepC::CameraPoolFactoryHost {
                 Impl& app;
                 NativeCameraEnvironment& environment;
@@ -597,18 +586,6 @@ struct GameNativeGuiRenderApplication::Impl {
             camera_reference = std::make_unique<NativeCameraReference>(*camera,
                 NativeCameraCompanionDisposal{this, &retire_camera});
             renderer.actual_owners().publish(std::move(calls.admission), *camera_reference);
-        } else {
-        camera_raw = environment.pool_0108ffb0.allocate_raw_slot_00b71770();
-        require(camera_raw, "native GUI camera pool returned null");
-        auto admission = renderer.actual_owners().prepare_binding(camera_raw);
-        auto viewport = renderer.viewport_registry().admit(viewport_record);
-        camera = std::make_unique<NativeCameraOwner>(camera_raw, NativeCameraPool::slot_bytes,
-            environment);
-        construct_native_camera_00b71a80(*camera, &camera_name, renderer.node_constants(),
-            std::move(viewport));
-        camera_reference = std::make_unique<NativeCameraReference>(*camera,
-            NativeCameraCompanionDisposal{this, &retire_camera});
-        renderer.actual_owners().publish(std::move(admission), *camera_reference);
         }
         camera_name.release_to(raw.strings);
         camera_name_live = false;

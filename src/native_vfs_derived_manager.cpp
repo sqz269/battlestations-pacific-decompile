@@ -3,7 +3,6 @@
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_vfs_factory_registration.hpp"
 #include "bsp/native_vfs_manager_lifetime.hpp"
-#include "bsp/wire_goal4_chain577_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -33,18 +32,12 @@ void* construct_native_vfs_derived_manager_00beda60(void* owner,
 
 void* delete_native_vfs_derived_manager_00bedac0(void* owner, std::uint32_t flags,
     NativeVfsManagerLifetimeContext& manager) {
-    if constexpr (kWireGoal4Chain577Bound) {
-        // Evidence: bsp.py show 00bedac0 --asm and 00be25c0 --asm.
-        // Both entries perform BE1F60(owner), test the incoming flags bit0,
-        // optionally BF65AC(owner), and return the captured owner / RET4.
-        // Reuse the existing base deleting body on the same actual allocation
-        // and lifetime context; it owns the entire sequence exactly once.
-        return delete_native_vfs_manager_00be25c0(owner, flags, manager);
-    } else {
-        destroy_native_vfs_manager_00be1f60(owner, manager);
-        if ((flags & 1u) != 0) singleton_lifetime_free(owner);
-        return owner;
-    }
+    // Evidence: bsp.py show 00bedac0 --asm and 00be25c0 --asm.
+    // Both entries perform BE1F60(owner), test the incoming flags bit0,
+    // optionally BF65AC(owner), and return the captured owner / RET4.
+    // Reuse the existing base deleting body on the same actual allocation
+    // and lifetime context; it owns the entire sequence exactly once.
+    return delete_native_vfs_manager_00be25c0(owner, flags, manager);
 }
 
 } // namespace bsp

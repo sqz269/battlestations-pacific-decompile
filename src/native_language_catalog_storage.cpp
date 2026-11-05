@@ -3,7 +3,6 @@
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain379_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -87,11 +86,7 @@ void reserve(void* p,I requested,NativeStringRawPoolContext& strings,
         void* const row=at(candidate,index<<5);op.unwind_state=0;
         if(row) {
             const void* const source=at(get<void*>(p),index<<5);op.native_site=0x8d5a3d;
-            if constexpr(kWireGoal4Chain379Bound) {
-                call_row_constructor(row,source,strings,op);
-            } else {
-                copy_row(row,source,strings,op);
-            }
+            call_row_constructor(row,source,strings,op);
         }
         ++index;op.copied_rows=index;op.unwind_state=-1;
     }
@@ -131,11 +126,7 @@ void append_native_language_catalog_008d6af0(void* p,const void* source,NativeSt
         void* const row=at(get<void*>(p),get(p,4)<<5);op.unwind_state=0;
         if(row){
             op.native_site=0x8d6b44;
-            if constexpr(kWireGoal4Chain379Bound) {
-                call_row_constructor(row,source,strings,op);
-            } else {
-                copy_row(row,source,strings,op);
-            }
+            call_row_constructor(row,source,strings,op);
         }
         put(p,4,get(p,4)+1);op.phase=Phase::complete;
     }catch(...){op.phase=Phase::failed;throw;}

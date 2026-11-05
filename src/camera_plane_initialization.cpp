@@ -1,6 +1,5 @@
 #include "bsp/camera_plane_initialization.hpp"
 #include "bsp/camera_clip_planes.hpp"
-#include "bsp/wire_goal4_chain471_switches.hpp"
 
 #include <cstddef>
 
@@ -52,14 +51,10 @@ CameraPlaneSet* construct_camera_plane_set_00b659d0(CameraPlaneSet& destination,
     initialize_camera_plane_records_00b652d0(destination, live_one_00d7a24c);
     // A second actual load follows all sixteen record writes and precedes count.
     const std::uint32_t diagonal_bits = live_one_00d7a24c;
-    if constexpr (kWireGoal4Chain471Bound) {
-        // bsp.py show 00B659D0: initialize the same actual plane set, reload
-        // D7A24C, then write the binary's count6 before extracting its planes.
-        // Reuse 00B65070's complete DWORD store on that canonical storage.
-        set_camera_plane_count_00b65070(destination, 6u);
-    } else {
-    static_cast<volatile std::uint32_t&>(destination.count) = 6;
-    }
+    // bsp.py show 00B659D0: initialize the same actual plane set, reload
+    // D7A24C, then write the binary's count6 before extracting its planes.
+    // Reuse 00B65070's complete DWORD store on that canonical storage.
+    set_camera_plane_count_00b65070(destination, 6u);
     CameraMatrix matrix;
     auto* matrix_words = matrix.data();
     __asm {

@@ -16,7 +16,6 @@
 #include "bsp/band_0067_cc13.hpp"
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/band_0080_cc13.hpp"
-#include "bsp/wire_goal4_chain427_switches.hpp"
 #include "bsp/band_0090_cc13.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
@@ -1474,9 +1473,7 @@ int main() {
         // precision model selected by the same bisection switch.
         unsigned int triangle_control;
         _controlfp_s(&triangle_control, 0, 0);
-        if constexpr (bsp::kWireGoal4Chain427Bound) {
-            _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
-        }
+        _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
         for (int i = 0; i < 2000; ++i) {
             auto v = [](float lo, float hi) { return Vec3f{uniform(lo, hi), uniform(lo, hi), uniform(lo, hi)}; };
             Vec3f a = v(-5, 5), b = v(-5, 5), c3 = v(-5, 5);

@@ -10,7 +10,6 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
 #include "bsp/native_physical_file_date.hpp"
-#include "bsp/wire_goal2_chain180_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -265,30 +264,24 @@ void GameSoundDialogRuntime::update(void* object, float dt) {
     update_sound_alternate_owner_00a789c0(*impl_->allocation, dt, impl_->bound().alternate);
 }
 void GameSoundDialogRuntime::set_music_level(std::int32_t level) {
-    if constexpr (kWireGoal2Chain180Bound) {
-        auto& self = *impl_;
-        auto* const current = self.globals.alternate_00f8bbcc;
-        self.check_owner(current);
-        Impl::MusicDirectorAdapter calls(self);
-        // 00A788A0 calls the existing level/row selection body; OFF keeps no service.
-        cc13_sweepC2::music_director_set_level_00a788a0(calls,
-            *static_cast<NativeSoundAlternateOwnerStorage*>(current), level);
-    } else {
-    }
+    auto& self = *impl_;
+    auto* const current = self.globals.alternate_00f8bbcc;
+    self.check_owner(current);
+    Impl::MusicDirectorAdapter calls(self);
+    // 00A788A0 calls the existing level/row selection body; OFF keeps no service.
+    cc13_sweepC2::music_director_set_level_00a788a0(calls,
+        *static_cast<NativeSoundAlternateOwnerStorage*>(current), level);
 }
 void GameSoundDialogRuntime::set_music_target_level(float level) {
-    if constexpr (kWireGoal2Chain180Bound) {
-        auto& self = *impl_;
-        void* const current = self.globals.alternate_00f8bbcc;
-        self.check_owner(current);
-        // A79230 produces these float words as 1,1,0; A789C0 updates +220h.
-        cc13_sweepC::StreamedDialogLevelView view{
-            cc13_sweepC::at<float>(current, 0x220), cc13_sweepC::at<float>(current, 0x224),
-            cc13_sweepC::at<float>(current, 0x228)};
-        // 00A77860 calls the existing fade target/rate body; OFF keeps no service.
-        cc13_sweepC::streamed_dialog_manager_set_target_level_00a77860(view, level);
-    } else {
-    }
+    auto& self = *impl_;
+    void* const current = self.globals.alternate_00f8bbcc;
+    self.check_owner(current);
+    // A79230 produces these float words as 1,1,0; A789C0 updates +220h.
+    cc13_sweepC::StreamedDialogLevelView view{
+        cc13_sweepC::at<float>(current, 0x220), cc13_sweepC::at<float>(current, 0x224),
+        cc13_sweepC::at<float>(current, 0x228)};
+    // 00A77860 calls the existing fade target/rate body; OFF keeps no service.
+    cc13_sweepC::streamed_dialog_manager_set_target_level_00a77860(view, level);
 }
 void GameSoundDialogRuntime::clear_channels() {
     auto& self = *impl_;

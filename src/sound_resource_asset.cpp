@@ -4,7 +4,6 @@
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/oct18_tail_c.hpp"
-#include "bsp/wire_goal4_chain548_switches.hpp"
 
 #include <cstring>
 #include <memory>
@@ -109,32 +108,16 @@ public:
 // or incomplete sources are outside its domain; native lacks those guards.
 FileBytes load_file_bytes_00bdc8b0_fragment(const NativeString& name,
     SoundResourceAssetContext& context) {
-    if constexpr (kWireGoal4Chain548Bound) {
-        SoundWholeFileRuntime runtime(context);
-        oct18_tail_c::WholeFileBindings bindings{};
-        bindings.runtime = &runtime;
-        std::uint32_t size;
-        auto* const bytes = static_cast<char*>(oct18_tail_c::vfs_load_whole_file_00bdc8b0(
-            &context.mounts, &name, &size, bindings));
-        // Transfer the very allocation returned by the recovered body only
-        // after its name cleanup succeeds; FMOD consumes these same bytes.
-        runtime.bytes.release();
-        return {std::unique_ptr<char[]>(bytes), size};
-    } else {
-    NativeString copy;
-    StringCleanup cleanup{copy, context.strings};
-    copy.copy_from_00be0a30_fragment(context.strings, name);
-    auto opened = open_resource_memory_00bdf310_fragment(context.mounts,
-        string_value(copy), 2);
-    if (!opened.stream || !opened.stream->fully_initialized())
-        throw std::runtime_error("Sound VFS source unavailable or incomplete");
-    const auto size = static_cast<std::uint32_t>(opened.stream->size_00bef600());
-    std::unique_ptr<char[]> bytes(new char[size]);
-    if (!opened.stream->read_00bef590(bytes.get(), size, nullptr))
-        throw std::runtime_error("Sound VFS memory-stream read failed");
-    opened.stream.reset();
-    return {std::move(bytes), size};
-    }
+    SoundWholeFileRuntime runtime(context);
+    oct18_tail_c::WholeFileBindings bindings{};
+    bindings.runtime = &runtime;
+    std::uint32_t size;
+    auto* const bytes = static_cast<char*>(oct18_tail_c::vfs_load_whole_file_00bdc8b0(
+        &context.mounts, &name, &size, bindings));
+    // Transfer the very allocation returned by the recovered body only
+    // after its name cleanup succeeds; FMOD consumes these same bytes.
+    runtime.bytes.release();
+    return {std::unique_ptr<char[]>(bytes), size};
 }
 
 std::uint32_t loop_point(float value) noexcept {

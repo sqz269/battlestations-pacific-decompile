@@ -1,6 +1,5 @@
 #include "bsp/native_material_pass_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain597_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -87,19 +86,15 @@ void destroy_native_material_pass_00b454e0(NativeMaterialPassStorage& pass,
 NativeMaterialPassStorage* delete_native_material_pass_00b46910(NativeMaterialPassStorage* pass,
     NativeMaterialPassDestructionAccess& access, std::uint32_t flags) {
     destroy_native_material_pass_00b454e0(*pass, access);
-    if constexpr (kWireGoal4Chain597Bound) {
-        if (flags & 1) {
-            // bsp.py show 00B46910 --asm: B4691F..25 pushes this same
-            // destroyed slot and calls B40A40 with ECX=0108FBF8. B41040
-            // performs that identical sequence. Renderer CompilerGraph's
-            // pass_lifetime borrows the pool bound by graphics startup.
-            if (is_static_native_material_pass_pool(access.pool))
-                return_static_native_material_pass_slot_00b41040(pass);
-            else
-                access.pool.return_slot_00b40a40(pass);
-        }
-    } else {
-        if (flags & 1) access.pool.return_slot_00b40a40(pass);
+    if (flags & 1) {
+        // bsp.py show 00B46910 --asm: B4691F..25 pushes this same
+        // destroyed slot and calls B40A40 with ECX=0108FBF8. B41040
+        // performs that identical sequence. Renderer CompilerGraph's
+        // pass_lifetime borrows the pool bound by graphics startup.
+        if (is_static_native_material_pass_pool(access.pool))
+            return_static_native_material_pass_slot_00b41040(pass);
+        else
+            access.pool.return_slot_00b40a40(pass);
     }
     return pass;
 }

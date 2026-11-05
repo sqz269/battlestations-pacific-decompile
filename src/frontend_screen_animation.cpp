@@ -1,7 +1,4 @@
 #include "bsp/frontend_screen_animation.hpp"
-#include "bsp/wire_goal4_chain397_switches.hpp"
-#include "bsp/wire_goal4_chain463_switches.hpp"
-#include "bsp/wire_goal4_chain486_switches.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_frontend_cc13.hpp"
@@ -124,20 +121,11 @@ float dragged_thumb_y(float thumb_base_y, float anchor_thumb_offset,
 {
     double delta;
     float y;
-    if constexpr (game::kWireGoal4Chain463Bound) {
-        // bsp.py show 00683820 --asm, 00683918..2D: FSUB cursor-anchor,
-        // FADDP ST2 base+offset, then FADDP those two results, each at PC24.
-        delta = cc13x87::x87_sub24(cursor_y, anchor_cursor_y);
-        y = static_cast<float>(cc13x87::x87_add24(
-            cc13x87::x87_add24(thumb_base_y, anchor_thumb_offset), delta));
-    } else {
-    // 00683918..0068392D: (cursor_y - anchor_cursor_y) added to
-    // (thumb_base_y + anchor_thumb_offset), the whole sum in one x87
-    // expression with a single store to a float slot.
-    delta = static_cast<double>(cursor_y) - anchor_cursor_y;
-    y = static_cast<float>(
-        (static_cast<double>(thumb_base_y) + anchor_thumb_offset) + delta);
-    }
+    // bsp.py show 00683820 --asm, 00683918..2D: FSUB cursor-anchor,
+    // FADDP ST2 base+offset, then FADDP those two results, each at PC24.
+    delta = cc13x87::x87_sub24(cursor_y, anchor_cursor_y);
+    y = static_cast<float>(cc13x87::x87_add24(
+        cc13x87::x87_add24(thumb_base_y, anchor_thumb_offset), delta));
     // FCOMI/JBE at 00683937, then FCOMIP/JBE at 0068395C.
     if (thumb_base_y > y) {
         y = thumb_base_y;
@@ -154,18 +142,11 @@ float scroll_offset_from_thumb_y(
 {
     // FSUBRP then FDIVP at 00683980, stored to a float slot at 00683984 and
     // reloaded: the fraction rounds to float before the multiply.
-    if constexpr (game::kWireGoal4Chain463Bound) {
-        // 00683980 FSUBRP, 00683982 FDIVP round separately at PC24; the
-        // 00683984 DWORD spill precedes FCHS/FMULP at 00683990..92.
-        const float fraction = static_cast<float>(cc13x87::x87_div24(
-            cc13x87::x87_sub24(thumb_y, thumb_base_y), travel));
-        return static_cast<float>(cc13x87::x87_mul24(-static_cast<double>(range), fraction));
-    } else {
-    const float fraction = static_cast<float>(
-        (static_cast<double>(thumb_y) - thumb_base_y) / travel);
-    // FCHS then FMULP at 00683990: -range * fraction.
-    return static_cast<float>(-static_cast<double>(range) * fraction);
-    }
+    // 00683980 FSUBRP, 00683982 FDIVP round separately at PC24; the
+    // 00683984 DWORD spill precedes FCHS/FMULP at 00683990..92.
+    const float fraction = static_cast<float>(cc13x87::x87_div24(
+        cc13x87::x87_sub24(thumb_y, thumb_base_y), travel));
+    return static_cast<float>(cc13x87::x87_mul24(-static_cast<double>(range), fraction));
 }
 
 AutoScrollCommand classify_scroll_axis(float axis) noexcept
@@ -238,16 +219,12 @@ void attach_content_00683790(FrontEndScreenScroller& scroller, void* content_wid
     scroller.scroll_offset = 0.0f;
     scroller.auto_scroll = ScrollDirection::kNone;
     scroller.auto_scroll_step = 0.0f;
-    if constexpr (kWireGoal4Chain397Bound) {
-        // bsp.py show 00683790: the reset clears native +48h between the
-        // +24h and +58h stores. 00683320 is exactly that byte store (bsp.py
-        // show 00683320). Reuse its existing body on this same retained
-        // scroller; this is a source call replacing the store, not a claim
-        // that the original 00683790 issued a CALL here.
-        end_thumb_drag_00683320(scroller);
-    } else {
-        scroller.dragging = false;
-    }
+    // bsp.py show 00683790: the reset clears native +48h between the
+    // +24h and +58h stores. 00683320 is exactly that byte store (bsp.py
+    // show 00683320). Reuse its existing body on this same retained
+    // scroller; this is a source call replacing the store, not a claim
+    // that the original 00683790 issued a CALL here.
+    end_thumb_drag_00683320(scroller);
     scroller.auto_scroll_overridden = false;
     scroller.drag_anchor_thumb_offset = 0.0f;
     push_content_position(scroller, host);
@@ -294,41 +271,29 @@ void set_scroll_range(FrontEndScreenScroller& scroller, float range,
     }
     const float thumb_alpha =
         scroller.scrollable ? kScrollActiveAlpha : kScrollThumbIdleAlpha;
-    if constexpr (kWireGoal4Chain486Bound) {
-        // Source reuse, not a native CALL claim: 006834A0's inline +4Ch
-        // dispatches are the same thumb/start/end operations as 00683330.
-        // bsp.py show 00683330 --asm confirms three independent float args
-        // (RET 0Ch) and the two optional-arrow checks. These are the retained
-        // scroller's widgets and the PE's active/idle alpha constants. The
-        // live MainMenuScrollerLayoutHost alpha provider only writes widget
-        // colour; it neither calls back nor changes scroller.scrollable.
-        if (host.alpha_writes_preserve_scroller()) {
-            const float arrow_alpha =
-                scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
-            set_widget_alphas_00683330(scroller, thumb_alpha, arrow_alpha, arrow_alpha, host);
-        } else {
-            // A generic callback may alter scrollable during the thumb write.
-            // Keep the original read boundary for hosts without the capability.
-            host.widget_set_alpha(scroller.thumb_widget, thumb_alpha);
-            const float arrow_alpha =
-                scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
-            if (scroller.arrow_start_widget != nullptr) {
-                host.widget_set_alpha(scroller.arrow_start_widget, arrow_alpha);
-            }
-            if (scroller.arrow_end_widget != nullptr) {
-                host.widget_set_alpha(scroller.arrow_end_widget, arrow_alpha);
-            }
-        }
+    // Source reuse, not a native CALL claim: 006834A0's inline +4Ch
+    // dispatches are the same thumb/start/end operations as 00683330.
+    // bsp.py show 00683330 --asm confirms three independent float args
+    // (RET 0Ch) and the two optional-arrow checks. These are the retained
+    // scroller's widgets and the PE's active/idle alpha constants. The
+    // live MainMenuScrollerLayoutHost alpha provider only writes widget
+    // colour; it neither calls back nor changes scroller.scrollable.
+    if (host.alpha_writes_preserve_scroller()) {
+        const float arrow_alpha =
+            scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
+        set_widget_alphas_00683330(scroller, thumb_alpha, arrow_alpha, arrow_alpha, host);
     } else {
-    host.widget_set_alpha(scroller.thumb_widget, thumb_alpha);
-    const float arrow_alpha =
-        scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
-    if (scroller.arrow_start_widget != nullptr) {
-        host.widget_set_alpha(scroller.arrow_start_widget, arrow_alpha);
-    }
-    if (scroller.arrow_end_widget != nullptr) {
-        host.widget_set_alpha(scroller.arrow_end_widget, arrow_alpha);
-    }
+        // A generic callback may alter scrollable during the thumb write.
+        // Keep the original read boundary for hosts without the capability.
+        host.widget_set_alpha(scroller.thumb_widget, thumb_alpha);
+        const float arrow_alpha =
+            scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
+        if (scroller.arrow_start_widget != nullptr) {
+            host.widget_set_alpha(scroller.arrow_start_widget, arrow_alpha);
+        }
+        if (scroller.arrow_end_widget != nullptr) {
+            host.widget_set_alpha(scroller.arrow_end_widget, arrow_alpha);
+        }
     }
 }
 

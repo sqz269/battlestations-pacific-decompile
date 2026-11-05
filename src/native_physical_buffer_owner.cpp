@@ -1,5 +1,4 @@
 #include "bsp/native_physical_buffer_owner.hpp"
-#include "bsp/wire_goal4_chain353_switches.hpp"
 
 #include <cstring>
 #include <type_traits>
@@ -176,19 +175,11 @@ __declspec(noinline) void destroy_native_physical_index_buffer_base_00b4b490(voi
 __declspec(noinline) void destroy_native_physical_vertex_buffer_base_00b4b530(void* owner) { destroy_base(owner); }
 __declspec(noinline) void destroy_native_physical_index_buffer_00b4b900(void* owner,
     NativePhysicalBufferOwnerContext& context) {
-    if constexpr (kWireGoal4Chain353Bound) {
-        destroy<true, true>(owner, 0x00d61e10u, context);
-    } else {
-        destroy(owner, 0x00d61e10u, context);
-    }
+    destroy<true, true>(owner, 0x00d61e10u, context);
 }
 __declspec(noinline) void destroy_native_physical_vertex_buffer_00b4bab0(void* owner,
     NativePhysicalBufferOwnerContext& context) {
-    if constexpr (kWireGoal4Chain353Bound) {
-        destroy<true, false>(owner, 0x00d61e34u, context);
-    } else {
-        destroy(owner, 0x00d61e34u, context);
-    }
+    destroy<true, false>(owner, 0x00d61e34u, context);
 }
 
 void* delete_native_private_index_buffer_00b4bb20(void* owner, std::uint32_t flags,

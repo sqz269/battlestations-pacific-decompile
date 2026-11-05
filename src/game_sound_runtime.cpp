@@ -6,7 +6,6 @@
 #include "bsp/cc13_census9.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
-#include "bsp/wire_goal4_chain449_switches.hpp"
 
 #include <atomic>
 #include <exception>
@@ -343,10 +342,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     }
     void destroy_manager(std::uint32_t flags) {
         if (!manager || manager_destroyed) return;
-        if constexpr (kWireGoal4Chain449Bound) {
-            destroy_gui_sound_set();
-        } else {
-        }
+        destroy_gui_sound_set();
         auto* object = manager.get();
         // The destructor owns native unregister and leaves dead +44/+48/+54
         // words. Do not dereference them or run it twice after this point.
@@ -361,12 +357,9 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     }
     void destroy_cache(std::uint32_t flags) {
         if (!cache || cache_destroyed) return;
-        if constexpr (kWireGoal4Chain449Bound) {
-            // A singleton drain may retire the auxiliary cache before the
-            // manager. Our owning refs must go while both are still live.
-            destroy_gui_sound_set();
-        } else {
-        }
+        // A singleton drain may retire the auxiliary cache before the
+        // manager. Our owning refs must go while both are still live.
+        destroy_gui_sound_set();
         auto* object = cache.get();
         cache_destroyed = true;
         if (flags & 1u) cache.release();

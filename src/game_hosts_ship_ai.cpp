@@ -15,16 +15,10 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
-#include "bsp/wire_goal4_chain539_switches.hpp"
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
-#include "bsp/wire_goal4_chain479_switches.hpp"
-#include "bsp/wire_goal4_chain532_switches.hpp"
-#include "bsp/wire_goal4_chain540_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
-#include "bsp/wire_goal4_chain272_switches.hpp"
-#include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gun_subobject_repair_cc13.hpp"
@@ -42,19 +36,7 @@
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (capture arm 3)
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/cc13_seg68.hpp"
-#include "bsp/wire_goal1_chain3_switches.hpp"
-#include "bsp/wire_goal2_chain71_switches.hpp"
-#include "bsp/wire_goal2_chain153_switches.hpp"
-#include "bsp/wire_goal2_chain218_switches.hpp"
-#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
-#include "bsp/wire_goal4_chain289_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
-#include "bsp/wire_goal4_chain326_switches.hpp"
-#include "bsp/wire_goal4_chain343_switches.hpp"
-#include "bsp/wire_goal4_chain375_switches.hpp"
-#include "bsp/wire_goal4_chain391_switches.hpp"
-#include "bsp/wire_goal4_chain423_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
@@ -97,7 +79,6 @@
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"      // 00852FF0 (chain 348)
-#include "bsp/wire_goal4_chain348_switches.hpp"
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/ship_ai_free_bearing.hpp"
 #include "bsp/gameplay_seg52_cc13.hpp"
@@ -1579,25 +1560,13 @@ struct GameShipAiHost::Impl {
     // filled (from the stored load, 0083B7AD..0083BCB8); nothing else is read
     // through this object.
     const bsp::GameplayTuningSettings& neighbour_settings() {
-        if constexpr (bsp::kWireGoal4Chain423Bound) {
-            // The same object filled at the ShipGlobals load, not a new read
-            // after mission scripts have had a chance to change that table.
-            const auto* settings = settings_owner != nullptr
-                ? settings_owner->gameplay_tuning_settings() : nullptr;
-            if (settings == nullptr)
-                throw std::logic_error("Ship avoidance settings have no established producer");
-            return *settings;
-        } else {
-        if (!neighbour_settings_loaded) {
-            std::array<float, 19> block;
-            if (!settings_owner || !settings_owner->read_ship_avoidance_block(block))
-                throw std::logic_error("Ship avoidance block has no established producer");
-            std::memcpy(reinterpret_cast<std::byte*>(&neighbour_settings_storage) + 0x190,
-                        block.data(), sizeof block);
-            neighbour_settings_loaded = true;
-        }
-        return neighbour_settings_storage;
-        }
+        // The same object filled at the ShipGlobals load, not a new read
+        // after mission scripts have had a chance to change that table.
+        const auto* settings = settings_owner != nullptr
+            ? settings_owner->gameplay_tuning_settings() : nullptr;
+        if (settings == nullptr)
+            throw std::logic_error("Ship avoidance settings have no established producer");
+        return *settings;
     }
     bsp::GameplayTuningSettings neighbour_settings_storage{};
     bool neighbour_settings_loaded{false};
@@ -2224,12 +2193,8 @@ struct GameShipAiHost::Impl {
             if (!units.unit_is_kind_of(member, 6)) continue;
             const auto& other = controllers[member];
             if (!other.leaf_tuning_loaded) continue;
-            if constexpr (bsp::kWireGoal4Chain348Bound) {
-                // 0070E48F: the member's own vtable[214h], 00852FD0 for a submarine.
-                best = std::max(best, unit_navigation_layer_v214(member, other.leaf_tuning));
-            } else {
-            best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
-            }
+            // 0070E48F: the member's own vtable[214h], 00852FD0 for a submarine.
+            best = std::max(best, unit_navigation_layer_v214(member, other.leaf_tuning));
         }
         return static_cast<std::int32_t>(best);
     }
@@ -2287,19 +2252,14 @@ struct GameShipAiHost::Impl {
         }
         const GameGunneryUnitRow* row = gunnery_unit_row(target);
         if (settings_owner != nullptr && row != nullptr && row->type_id >= 0) {
-            if constexpr (bsp::kWireGoal4Chain391Bound) {
-                // Goal 4 chain 391: class +A0h as the descriptor load 00960230 read
-                // it (Length, a plain number; nil reads 0). Without a loaded
-                // descriptor (load unbound) the direct read stands in.
-                const bsp::VehicleClassBaseFields* fields =
-                    settings_owner->loaded_vehicle_class_base_fields(row->type_id,
-                        "ship_ai_torpedo_threat_length");
-                in.class_length_00a0 = fields != nullptr ? fields->length
-                    : settings_owner->read_vehicle_class_number(row->type_id, "Length", 0.0f);
-            } else {
-            in.class_length_00a0 = settings_owner->read_vehicle_class_number(row->type_id,
-                "Length", 0.0f);
-            }
+            // Goal 4 chain 391: class +A0h as the descriptor load 00960230 read
+            // it (Length, a plain number; nil reads 0). Without a loaded
+            // descriptor (load unbound) the direct read stands in.
+            const bsp::VehicleClassBaseFields* fields =
+                settings_owner->loaded_vehicle_class_base_fields(row->type_id,
+                    "ship_ai_torpedo_threat_length");
+            in.class_length_00a0 = fields != nullptr ? fields->length
+                : settings_owner->read_vehicle_class_number(row->type_id, "Length", 0.0f);
         }
         int count = 0;
         const std::vector<GameGunneryHost::LiveTorpedo>& list = live_torpedoes();
@@ -2369,7 +2329,7 @@ struct GameShipAiHost::Impl {
         float threshold = 100.0f;
         if (settings_owner != nullptr && type_id >= 0) {
             armour = settings_owner->read_vehicle_class_number(type_id, "Armour", 0.0f);
-            if constexpr (bsp::kWireGoal4Chain391Bound) {
+            {
                 // Goal 4 chain 391: class +A0h from the descriptor load 00960230
                 // (nil reads 0); the direct read without a loaded descriptor.
                 const bsp::VehicleClassBaseFields* fields =
@@ -2377,8 +2337,6 @@ struct GameShipAiHost::Impl {
                         "ship_ai_target_block_length");
                 length = fields != nullptr ? fields->length
                     : settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
-            } else {
-            length = settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
             }
             underwater = settings_owner->read_vehicle_class_number(type_id,
                 "UnderwaterArmour", 0.0f);
@@ -2998,10 +2956,8 @@ struct GameShipAiHost::Impl {
         float ceiling = 9999999.0f;
         GameUnitGroupStorage* retained_group = nullptr;
         bool class_speed_refreshed = false;
-        if constexpr (bsp::kWireGoal4Chain532Bound) {
-            if constexpr (bsp::kWireGoal4Chain272Bound) {
-                retained_group = &formation_speed_groups[group];
-            }
+        {
+            retained_group = &formation_speed_groups[group];
             // Only ship groups have the exact class+500h producer here.
             // A non-ship needs the real unit+3D0h -> plane-class+188h chain;
             // the public plane-speed convenience lookup does not establish it.
@@ -3067,11 +3023,6 @@ struct GameShipAiHost::Impl {
             } else if (retained_group != nullptr) {
                 retained_group->publish_speed_ceiling(9999999.0f);
             }
-        } else {
-        if constexpr (bsp::kWireGoal4Chain272Bound) {
-            retained_group = &formation_speed_groups[group];
-            retained_group->publish_speed_ceiling(9999999.0f); // 00CFD6F4
-        }
         }
         // 0070E3C0: max of 0082E850 over the ship members other than the leader,
         // seeded 100.0f (00CE3D08).
@@ -3083,35 +3034,14 @@ struct GameShipAiHost::Impl {
                 const float slot = controllers[member].member_speed_30;
                 if (slot_min > slot) slot_min = slot;
             }
-            if constexpr (bsp::kWireGoal4Chain532Bound) {
-                if (!class_speed_refreshed) {
-                    const float max_speed = units.unit_class_max_speed_0500(member);
-                    if constexpr (bsp::kWireGoal4Chain272Bound) {
-                        if (retained_group->speed_ceiling() > max_speed) {
-                            retained_group->publish_speed_ceiling(max_speed);
-                        }
-                    } else {
-                        if (ceiling > max_speed) ceiling = max_speed;
-                    }
-                }
-            } else {
-            const float max_speed = units.unit_class_max_speed_0500(member);
-            if constexpr (bsp::kWireGoal4Chain272Bound) {
+            if (!class_speed_refreshed) {
+                const float max_speed = units.unit_class_max_speed_0500(member);
                 if (retained_group->speed_ceiling() > max_speed) {
                     retained_group->publish_speed_ceiling(max_speed);
                 }
-            } else {
-                if (ceiling > max_speed) ceiling = max_speed;
-            }
-            }
-            if constexpr (!bsp::kWireGoal2Chain71Bound) {
-                if (member != leader && units.unit_is_kind_of(member, 6)) {
-                    const float r = class_turn_radius_0082e850(member);
-                    if (!(group_turn > r)) group_turn = r;
-                }
             }
         }
-        if constexpr (bsp::kWireGoal2Chain71Bound) {
+        {
             // 0070E3C0 at 009F4EB5 / 009F503A: UnitGroup_GetMaxFollowerTurnRadius_0070e3c0 over
             // this formation group; the OFF arm keeps the host's in-loop maximum.
             // Adapts the units host's formation group (member list, leader) to the
@@ -3152,14 +3082,12 @@ struct GameShipAiHost::Impl {
             }
             slot_min = bsp::ship_ai_formation_speed_ceiling(records.data(), count);
         }
-        if constexpr (bsp::kWireGoal4Chain272Bound) {
-            // bsp.py show 0070D0F0 --asm: FLD [ECX+504h], RET. Its ST0
-            // value, rather than the former local reduction, feeds both
-            // leader and follower throttle arithmetic below. No native
-            // profile, unit pointer, class pointer or global is dereferenced.
-            ceiling = bsp::native_unit_group_retained_speed_0070d0f0(
-                retained_group->data(), nullptr);
-        }
+        // bsp.py show 0070D0F0 --asm: FLD [ECX+504h], RET. Its ST0
+        // value, rather than the former local reduction, feeds both
+        // leader and follower throttle arithmetic below. No native
+        // profile, unit pointer, class pointer or global is dereferenced.
+        ceiling = bsp::native_unit_group_retained_speed_0070d0f0(
+            retained_group->data(), nullptr);
         const float reference = units.throttle_ceiling_inputs(index).reference_speed; // 0080FC30
         const float own_turn = class_turn_radius_0082e850(index);
         if (leader == index) {
@@ -3785,13 +3713,8 @@ public:
         }
         owner_.done("ShipAiFollow::zone_set_218", 0x009df41au);
         ++owner_.summary.follow_zone_sets;
-        if constexpr (bsp::kWireGoal4Chain348Bound) {
-            // 009DF414 loads vtable[218h]: 00852FF0 for a submarine follower.
-            return owner_.unit_zone_group_v218(index_, owner_.controllers[index_].leaf_tuning);
-        } else {
-        return owner_.zones.group_for_layer(
-            owner_.controllers[index_].leaf_tuning.array[0]);   // [class+560h]
-        }
+        // 009DF414 loads vtable[218h]: 00852FF0 for a submarine follower.
+        return owner_.unit_zone_group_v218(index_, owner_.controllers[index_].leaf_tuning);
     }
     bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t zone_set,
                                                        bsp::ShipAiFollowLandXZ point,
@@ -3841,7 +3764,7 @@ public:
             owner_.record("ShipAiFollow::publish_member_speed", 0x0070d100u);
             return;
         }
-        if constexpr (bsp::kWireGoal4Chain540Bound) {
+        {
             const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
             const std::int32_t count = owner_.units.formation_member_count(group);
             bool admitted = group >= 0 && count > 0 && count <= 24;
@@ -3886,8 +3809,6 @@ public:
                 // layout. Preserve their previous controller publication.
                 owner_.controllers[index_].member_speed_30 = speed;
             }
-        } else {
-        owner_.controllers[index_].member_speed_30 = speed;
         }
         owner_.done("ShipAiFollow::publish_member_speed", 0x0070d100u);
     }
@@ -5569,20 +5490,16 @@ float torpedo_bot_fire_target_accuracy(int level) {
     static constexpr float kFireTargetAccuracy[6] = {0.03f, 0.35f, 0.055f, 0.04f, 0.045f,
                                                      0.055f};
     if (level < 0 || level > 5) level = 1;
-    if constexpr (kWireGoal4Chain250Bound) {
-        // Goal 4 chain 250: the TorpedoBot descriptor 00901610 registers
-        // ([00E1998C]) is kept by cc13_torp_goaway, so 008FB530 reads its
-        // level row; the table stands only when that load did not happen.
-        const bsp::cc13_torp_goaway::GunBotConfigs* bots =
-            bsp::cc13_torp_goaway::loaded_gun_bot_configs();
-        if (bots != nullptr && bots->torpedo_loaded) {
-            return bsp::gameplay_seg40_59_cc13::torpedo_bot_fire_target_accuracy_008fb530(
-                bots->torpedo, level);
-        }
-        return kFireTargetAccuracy[level];
-    } else {
-        return kFireTargetAccuracy[level];
+    // Goal 4 chain 250: the TorpedoBot descriptor 00901610 registers
+    // ([00E1998C]) is kept by cc13_torp_goaway, so 008FB530 reads its
+    // level row; the table stands only when that load did not happen.
+    const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+        bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+    if (bots != nullptr && bots->torpedo_loaded) {
+        return bsp::gameplay_seg40_59_cc13::torpedo_bot_fire_target_accuracy_008fb530(
+            bots->torpedo, level);
     }
+    return kFireTargetAccuracy[level];
 }
 
 // Packet cc9_torpedo_standoff. 0080DF40(unit): 00727D70(0.0) summed over the
@@ -5622,12 +5539,8 @@ public:
         }
         owner_.done("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
         ++owner_.summary.ring_probe_spaces;
-        if constexpr (bsp::kWireGoal4Chain348Bound) {
-            // 009E66E3 loads vtable[218h]: 00852FF0 for a submarine.
-            return owner_.unit_zone_group_v218(index_, ctl_.leaf_tuning);
-        } else {
-        return owner_.zones.group_for_layer(ctl_.leaf_tuning.array[0]);  // [class+560h]
-        }
+        // 009E66E3 loads vtable[218h]: 00852FF0 for a submarine.
+        return owner_.unit_zone_group_v218(index_, ctl_.leaf_tuning);
     }
     bool unit_pose_fresh_00c8() override {
         return owner_.units.unit_pose_valid_00c8(index_);
@@ -6456,28 +6369,16 @@ public:
         if (!owner_.units.unit_class_lands_troops_vtable_2c(index_)) return false;
         const auto it = owner_.transport_cooldown_1124.find(index_);
         if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
-        if constexpr (bsp::kWireGoal2Chain71Bound) {
-            // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
-            // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
-            BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
-                                     static_cast<int>(target - 1u)};
-            owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
-            if (bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) < 0) {
-                return false;
-            }
-            ++owner_.lander_accept_true;
-            return true;
-        } else {
-            const bsp::BuildingPadModel& pads = bsp::building_pad_model();
-            for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
-                const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
-                if (p != nullptr && p->occupant < 0) {
-                    ++owner_.lander_accept_true;
-                    return true;
-                }
-            }
+        // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
+        // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
+        BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
+                                 static_cast<int>(target - 1u)};
+        owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
+        if (bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) < 0) {
             return false;
         }
+        ++owner_.lander_accept_true;
+        return true;
     }
 
 private:
@@ -6631,7 +6532,7 @@ public:
         // level order robot_config.cpp:773 gives (Stun 0, SPNormal 1, SPVeteran 2,
         // MPNormal 3, MPVeteran 4, Elite 5), and the level is the units host's
         // skill level with its out-of-range fallback 1, as the throw path uses it.
-        if constexpr (kWireGoal4Chain250Bound) {
+        {
             // Goal 4 chain 250: the body runs when the descriptor is loaded.
             const bsp::cc13_torp_goaway::GunBotConfigs* bots =
                 bsp::cc13_torp_goaway::loaded_gun_bot_configs();
@@ -6640,8 +6541,6 @@ public:
             } else {
                 owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
             }
-        } else {
-            owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
         }
         return torpedo_bot_fire_target_accuracy(owner_.units.skill_level(index_));
     }
@@ -7077,7 +6976,7 @@ public:
         const bool target_known = t != 0u && t - 1u < owner_.units.count();
         const std::size_t target = target_known ? static_cast<std::size_t>(t - 1u) : 0u;
         bool class05_target;
-        if constexpr (bsp::kWireGoal2Chain71Bound) {
+        {
             // 008FE120 at 009F2400: entity_as_kind05_or_null_008fe120 on brain+B20h's target;
             // the OFF arm keeps the host's own kind-5 test.
             // Adapts a units-host handle (index + 1, 0 null) to the image entity pointer.
@@ -7094,8 +6993,6 @@ public:
             class05_target = bsp::cc13_seg59b::entity_as_kind05_or_null_008fe120(
                 view, target_known ? t : 0u) != 0u;
             owner_.done("ShipAiApproach::target_as_kind05_008fe120", 0x008fe120u);
-        } else {
-            class05_target = target_known && owner_.units.unit_is_kind_of(target, 5);
         }
         if (class05_target) {
             // 008FE120 answers the target; [[t+538h]+0A8h] is the class's
@@ -7346,26 +7243,20 @@ private:
             constexpr bool kLandAttackerStopByte = true;
             const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
             const bool ship_target = [&] {
-                if constexpr (bsp::kWireGoal4Chain289Bound) {
-                    // 009F275B tests +1208h before CALL 009E5E30 at 009F2772.
-                    // The accessor then reads [[nested]+B20h] and calls only
-                    // that endpoint's vt+5Ch(6), per the complete live listing.
-                    if (a.flag_1208) return false;
-                    const std::size_t target = static_cast<std::size_t>(handle - 1u);
-                    ApproachTargetBrainView brain;
-                    brain.target = handle != 0u && target < owner_.units.count()
-                        ? const_cast<GameUnitRow*>(owner_.units.unit_row(target)) : nullptr;
-                    void* brain_pointer = &brain;
-                    ApproachTargetBinding binding(owner_.units, target);
-                    const bool result = bsp::ship_ai_approach_target_is_kind_6_009e5e30(
-                        binding, &brain_pointer);
-                    owner_.done("ShipAiApproach::target_is_kind_6", 0x009e5e30u);
-                    return result;
-                } else {
-            const bool ship_target = handle != 0u && handle - 1u < owner_.units.count()
-                && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
-                    return ship_target;
-                }
+                // 009F275B tests +1208h before CALL 009E5E30 at 009F2772.
+                // The accessor then reads [[nested]+B20h] and calls only
+                // that endpoint's vt+5Ch(6), per the complete live listing.
+                if (a.flag_1208) return false;
+                const std::size_t target = static_cast<std::size_t>(handle - 1u);
+                ApproachTargetBrainView brain;
+                brain.target = handle != 0u && target < owner_.units.count()
+                    ? const_cast<GameUnitRow*>(owner_.units.unit_row(target)) : nullptr;
+                void* brain_pointer = &brain;
+                ApproachTargetBinding binding(owner_.units, target);
+                const bool result = bsp::ship_ai_approach_target_is_kind_6_009e5e30(
+                    binding, &brain_pointer);
+                owner_.done("ShipAiApproach::target_is_kind_6", 0x009e5e30u);
+                return result;
             }();
             const int side = a.flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1);
             if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
@@ -8073,21 +7964,12 @@ public:
         // kLandingCraftLaunchBound delivers it.
         const auto it = owner_.transport_cooldown_1124.find(c);
         if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
-        if constexpr (bsp::kWireGoal2Chain71Bound) {
-            // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
-            // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
-            BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
-                                     static_cast<int>(target - 1u)};
-            owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
-            return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) >= 0;
-        } else {
-            const bsp::BuildingPadModel& pads = bsp::building_pad_model();
-            for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
-                const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
-                if (p != nullptr && p->occupant < 0) return true;
-            }
-            return false;
-        }
+        // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
+        // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
+        BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
+                                 static_cast<int>(target - 1u)};
+        owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
+        return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) >= 0;
     }
     // 009F3598..009F35B3: 0064A820 builds message 94h (StartLanding) and
     // 0077C2A0(msg, 2, 0) routes it to the candidate: 00821F61 -> vt+238h,
@@ -8100,17 +7982,13 @@ public:
             return;
         }
         owner_.done("ShipAiApproach::route_start_landing_94h", 0x0077c2a0u);
-        if constexpr (bsp::kWireGoal4Chain343Bound) {
-            // Goal 4 chain 343: 009F3598 0064A820 builds 94h and 009F35B3 routes
-            // it (flags 2, local in a local session) through 0076E520's copy;
-            // 00780120 asks the copy's 0064A850 and 00821E80's 94h arm (00821F61)
-            // hands it to the candidate's vt+238h. With no session image the
-            // posted message is delivered.
-            if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
-                if (!messages->queue_start_landing_94().start_landing_94) return;
-            }
-        } else {
-            // The message was delivered as posted.
+        // Goal 4 chain 343: 009F3598 0064A820 builds 94h and 009F35B3 routes
+        // it (flags 2, local in a local session) through 0076E520's copy;
+        // 00780120 asks the copy's 0064A850 and 00821E80's 94h arm (00821F61)
+        // hands it to the candidate's vt+238h. With no session image the
+        // posted message is delivered.
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            if (!messages->queue_start_landing_94().start_landing_94) return;
         }
         const std::size_t c = static_cast<std::size_t>(candidate - 1u);
         GameShipAiHost* host = owner_.units.ship_ai();
@@ -8536,7 +8414,7 @@ public:
                     return;
                 }
                 owner.done("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
-                if constexpr (kWireGoal4Chain260Bound) {
+                {
                     // Goal 4 chain 260: the queue holds 0076E520's copy (009D66B0
                     // stores via 007623D0, 00762460 write, 007624B0 read). The
                     // observed unit's +174h is its index + 1 here (12 bits on
@@ -8554,15 +8432,10 @@ public:
                     } else {
                         owner.pass_side_queue.push_back({index, other, side});
                     }
-                } else {
-                owner.pass_side_queue.push_back(
-                    {index, NeighbourList::store(node_608(i)).unit, side});
                 }
-                if constexpr (bsp::kWireGoal4Chain539Bound) {
-                    // 0076E5BD..0076E5C6 reads 00F876B0 after the local copy
-                    // is decoded; 00782790 stores it at that copy's +0Ch.
-                    owner.pass_side_queue.back().send_tick = owner.local_message_tick();
-                }
+                // 0076E5BD..0076E5C6 reads 00F876B0 after the local copy
+                // is decoded; 00782790 stores it at that copy's +0Ch.
+                owner.pass_side_queue.back().send_tick = owner.local_message_tick();
             }
         } host(owner_, ctl_, index_, owner_.rows[index_]);
         const bsp::GameplayTuningSettings& settings = owner_.neighbour_settings();
@@ -9779,18 +9652,13 @@ public:
         return owner_.formation_navigation_layer_0070e450(index_);
     }
     std::uint32_t unit_navigation_layer_v214() override {
-        if constexpr (bsp::kWireGoal4Chain348Bound) {
-            // 009ECA60 loads vtable[214h]: 00852FD0 for a submarine.
-            if (owner_.submarine_row_1268(index_) != nullptr) {
-                owner_.done("ShipAiLayer::unit_layer_00852fd0", 0x00852fd0u);
-            } else {
-                owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
-            }
-            return owner_.unit_navigation_layer_v214(index_, ctl_.leaf_tuning);
+        // 009ECA60 loads vtable[214h]: 00852FD0 for a submarine.
+        if (owner_.submarine_row_1268(index_) != nullptr) {
+            owner_.done("ShipAiLayer::unit_layer_00852fd0", 0x00852fd0u);
         } else {
-        owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
-        return bsp::ship_ai_unit_navigation_layer_006dfd80(ctl_.leaf_tuning);
+            owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
         }
+        return owner_.unit_navigation_layer_v214(index_, ctl_.leaf_tuning);
     }
     bool unit_is_kind_v5c(std::uint32_t kind) override {
         return owner_.units.unit_is_kind_of(index_, static_cast<int>(kind));
@@ -10669,12 +10537,8 @@ public:
                || ctl_.active_state_ai_offset == kAiOffsetKamikaze;
     }
     int periscope_state_122c() override {
-        if constexpr (bsp::kWireGoal4Chain479Bound) {
-            // The failure and repair write the same unit+122Ch the AI reads.
-            return owner_.units.submarine_periscope_state_122c(index_);
-        } else {
-            return ctl_.periscope_state_122c;
-        }
+        // The failure and repair write the same unit+122Ch the AI reads.
+        return owner_.units.submarine_periscope_state_122c(index_);
     }
     void set_periscope_state_122c(int state) override {
         if (state != ctl_.periscope_state_122c) {
@@ -10752,17 +10616,11 @@ public:
             const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
                 static_cast<std::size_t>(std::max(row.barrel_num, 0)));
             bool loaded = false;
-            if constexpr (bsp::kWireGoal4Chain375Bound) {
-                // Native 009E9910/009E9A50 call 00727D30 with this gun's
-                // +414h timers, +448h count and the caller's readiness horizon.
-                // Keep the existing bounded view of that same live storage.
-                loaded = bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30(
-                    row.fire.barrel_timers.data(), static_cast<int>(barrels), horizon);
-            } else {
-            for (std::size_t b = 0; b < barrels; ++b) {
-                if (row.fire.barrel_timers[b] <= horizon) { loaded = true; break; }
-            }
-            }
+            // Native 009E9910/009E9A50 call 00727D30 with this gun's
+            // +414h timers, +448h count and the caller's readiness horizon.
+            // Keep the existing bounded view of that same live storage.
+            loaded = bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30(
+                row.fire.barrel_timers.data(), static_cast<int>(barrels), horizon);
             if (loaded && operational(row)) ++ready;
         }
         return ready;
@@ -10777,17 +10635,11 @@ public:
             float timer = 3600.0f;
             const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
                 static_cast<std::size_t>(std::max(row.barrel_num, 0)));
-            if constexpr (bsp::kWireGoal4Chain375Bound) {
-                // Native 009E99A0/009E9AE0 call 00729920. Its FCOMIP/JA
-                // (0072996F..0072997B) also replaces an unordered minimum;
-                // use the existing body rather than the host's <= loop.
-                timer = bsp::gameplay_seg40_59_cc13::gun_least_barrel_timer_00729920(
-                    row.fire.barrel_timers.data(), static_cast<int>(barrels));
-            } else {
-            for (std::size_t b = 0; b < barrels; ++b) {
-                if (row.fire.barrel_timers[b] <= timer) timer = row.fire.barrel_timers[b];
-            }
-            }
+            // Native 009E99A0/009E9AE0 call 00729920. Its FCOMIP/JA
+            // (0072996F..0072997B) also replaces an unordered minimum;
+            // use the existing body rather than the host's <= loop.
+            timer = bsp::gameplay_seg40_59_cc13::gun_least_barrel_timer_00729920(
+                row.fire.barrel_timers.data(), static_cast<int>(barrels));
             if (timer < least) least = timer;
         }
         return least;
@@ -10823,11 +10675,7 @@ public:
         owner_.done("ShipAiSubAttack::set_depth_level_008528b0", 0x008528b0u);
     }
     int periscope_state_122c() override {
-        if constexpr (bsp::kWireGoal4Chain479Bound) {
-            return owner_.units.submarine_periscope_state_122c(index_);
-        } else {
-            return ctl_.periscope_state_122c;
-        }
+        return owner_.units.submarine_periscope_state_122c(index_);
     }
     void set_periscope_state_122c(int state) override {
         if (state == 1 && ctl_.periscope_state_122c != 1) ++ctl_.sub_attack_periscope_raises;
@@ -12295,13 +12143,9 @@ public:
                     owner_.capture_clock, r != nullptr ? r->name.c_str() : "?",
                     static_cast<unsigned>(owner_.units.director_current_command_0071be40(index_)));
             }
-            if constexpr (kWireGoal4Chain260Bound) {
-                // Goal 4 chain 260: 0077C980's 77h (null other, PUSH 0 at
-                // 009F5DE9) through 0076E520's copy, then 0077BD70 here.
-                owner_.units.leave_formation_message_0077c980(index_);
-            } else {
-            owner_.units.leave_group_on_destroy_0077bd70(index_);
-            }
+            // Goal 4 chain 260: 0077C980's 77h (null other, PUSH 0 at
+            // 009F5DE9) through 0076E520's copy, then 0077BD70 here.
+            owner_.units.leave_formation_message_0077c980(index_);
             ++owner_.summary.autotarget_follower_leaves;
         }
         owner_.done("AutoTarget::release_controller", 0x0077c980u);
@@ -12413,15 +12257,9 @@ public:
         kinds.kind_09 = owner_.units.unit_is_kind_of(index_, 0x09);
         kinds.kind_0c = owner_.units.unit_is_kind_of(index_, 0x0c);
         const bsp::AutoTargetSearchConfig config = [&] {
-            if constexpr (kWireGoal1Chain3Bound) {
-                // Use the search state initialized by the ship director's constructor.
-                if (ctl_.constructed_target) return ctl_.constructed_target->search;
-                return bsp::auto_target_build_priority_009f65e0(kinds);
-            } else {
-                const bsp::AutoTargetSearchConfig config
-                    = bsp::auto_target_build_priority_009f65e0(kinds);
-                return config;
-            }
+            // Use the search state initialized by the ship director's constructor.
+            if (ctl_.constructed_target) return ctl_.constructed_target->search;
+            return bsp::auto_target_build_priority_009f65e0(kinds);
         }();
         owner_.done("AutoTarget::build_priority_list", 0x009f65e0u);
         // The list itself is the recon slot 008053C0 returns for the owner's
@@ -12683,29 +12521,17 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
             return;
         }
     }
-    if constexpr (kWireGoal1Chain3Bound) {
-        // The constructor's interval, phase and retained score are the tick's storage.
-        bsp::AutoTargetState& state = ctl_.constructed_target
-            ? ctl_.constructed_target->state : ctl_.target;
-        const float before = state.think_countdown;
-        TargetBinding target(owner_, ctl_, row_, index_);
-        bsp::auto_target_tick_009f5da0(target, state, nullptr, frame_delta);
-        owner_.done("AutoTarget::tick", 0x009f5da0u);
-        if (!(frame_delta < before)) {
-            ++row_.target_thinks;
-            ++owner_.summary.thinks;
-            if (plane_row) ++owner_.summary.plane_row_autotarget_thinks;
-        }
-    } else {
-    const float before = ctl_.target.think_countdown;
+    // The constructor's interval, phase and retained score are the tick's storage.
+    bsp::AutoTargetState& state = ctl_.constructed_target
+        ? ctl_.constructed_target->state : ctl_.target;
+    const float before = state.think_countdown;
     TargetBinding target(owner_, ctl_, row_, index_);
-    bsp::auto_target_tick_009f5da0(target, ctl_.target, nullptr, frame_delta);
+    bsp::auto_target_tick_009f5da0(target, state, nullptr, frame_delta);
     owner_.done("AutoTarget::tick", 0x009f5da0u);
     if (!(frame_delta < before)) {
         ++row_.target_thinks;
         ++owner_.summary.thinks;
         if (plane_row) ++owner_.summary.plane_row_autotarget_thinks;
-    }
     }
 }
 
@@ -13141,12 +12967,8 @@ void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene
         }
     }
     impl_->zones.rebuild(scene, mode, forced, session);
-    if constexpr (bsp::kWireGoal4Chain248Bound) {
-        // These are the loaded Map's native bounds, not a second default box.
-        impl_->units.commands().bind_user_path_world_bounds(impl_->zones.world_bounds());
-    } else {
-        // The command host previously had no world-bound owner.
-    }
+    // These are the loaded Map's native bounds, not a second default box.
+    impl_->units.commands().bind_user_path_world_bounds(impl_->zones.world_bounds());
     impl_->log.notef("ship AI path turn ramp knee=%.9g limit=%.9g addon=%.9g",
         impl_->path_turn_ramp.knee_x, impl_->path_turn_ramp.limit_x, impl_->path_turn_ramp.limit_y);
 }
@@ -13422,7 +13244,7 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
                                         record.distance_48};
     };
     for (const PassSideMessage& m : due) {
-        if constexpr (bsp::kWireGoal4Chain539Bound) {
+        {
             if (message_game_state == nullptr)
                 throw std::logic_error("Ship loopback requires the live mission game state");
             const auto game_state = static_cast<std::int32_t>(*message_game_state);
@@ -13457,10 +13279,6 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
                 continue;
             }
             if (decision.route != bsp::QueuedMessageRoute::kEntityGeneric) continue;
-        } else {
-        // 00780670: the addressee (msg+18h, the sender) must resolve; this host
-        // takes an inactive unit as unresolved and drops the message.
-        if (!units.unit_active(m.sender)) continue;
         }
         done("ShipAiNeighbour::pass_side_deliver_00821e80", 0x00822294u);
         // 00822298: 00521E30 resolves msg+1Ch, 00815010 keeps a kind-6 unit.
@@ -14036,12 +13854,8 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             b.level_timer_774 += seconds;                             // 006F757C
             if (!(b.level_timer_774 > static_cast<float>(b.level_up_seconds_76c))) continue;
             if (b.level_770 >= 3) continue;                           // 006F759D
-            if constexpr (bsp::kWireGoal4Chain326Bound) {
-                // 006F759F..006F75E6: D4h(+1Ch = level + 1, +20h = 0), flags 7.
-                deliver_set_level_d4(b, b.level_770 + 1, "level-up D4h 006F759F");
-            } else {
-            command_building_level_006f38e0(b, b.level_770 + 1, "level-up D4h 006F759F");
-            }
+            // 006F759F..006F75E6: D4h(+1Ch = level + 1, +20h = 0), flags 7.
+            deliver_set_level_d4(b, b.level_770 + 1, "level-up D4h 006F759F");
         }
     }
     if constexpr (kCaptureStatePartyFromUnitBound) {
@@ -14193,17 +14007,12 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         // +2D8h has no producer here, so the old owner's retake exemption never
         // applies (prior slot -1, 006F4FC2 JA).
         bsp::CommandBuildingFlipOutcome flip;
-        if constexpr (bsp::kWireGoal4Chain326Bound) {
-            // 006F727A..006F72DE: D3h(+1Ch = ESI, the slot; byte +20h = 0), flags
-            // 7. The receiver derives the party from the copy's slot; the slot
-            // came from the side's published record, so that is tick.side.
-            if (!deliver_set_owner_d3(b, static_cast<std::uint32_t>(slot), false, flip,
-                    "capture D3h 006F727A")) {
-                continue;
-            }
-        } else {
-        flip = bsp::command_building_flip_006f4d10(
-            b.state, slot, tick.side, -1);
+        // 006F727A..006F72DE: D3h(+1Ch = ESI, the slot; byte +20h = 0), flags
+        // 7. The receiver derives the party from the copy's slot; the slot
+        // came from the side's published record, so that is tick.side.
+        if (!deliver_set_owner_d3(b, static_cast<std::uint32_t>(slot), false, flip,
+                "capture D3h 006F727A")) {
+            continue;
         }
         const GameUnitRow* row = units.unit_row(b.unit);
         log.notef("command building capture: unit=%s flipped to party=%d side=%d slot=%d "
@@ -14244,12 +14053,8 @@ void GameShipAiHost::Impl::apply_capture_flip_006f4d10(CaptureBuilding& b,
         }
     }
     // 006F5362..006F53A4: D4h with level 0, after the repair.
-    if constexpr (bsp::kWireGoal4Chain326Bound) {
-        // +1Ch and +20h are both EBP (0) at 006F538A / 006F538E, flags 7.
-        if (kCommandBuildingLevelBound) deliver_set_level_d4(b, 0, "flip D4h 006F5362");
-    } else {
-    if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
-    }
+    // +1Ch and +20h are both EBP (0) at 006F538A / 006F538E, flags 7.
+    if (kCommandBuildingLevelBound) deliver_set_level_d4(b, 0, "flip D4h 006F5362");
 }
 
 bool GameShipAiHost::Impl::building_health_of(std::size_t unit, float& health,
@@ -14654,32 +14459,14 @@ bool GameShipAiHost::command_building_set_owner_player_006f4d10(std::size_t unit
     if (!host.capture_built) host.build_capture_buildings();
     Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
     if (b == nullptr) return false;
-    if constexpr (bsp::kWireGoal4Chain326Bound) {
-        // 008A8EE7..008A8F2A: D3h(+1Ch = EDI, the Lua player; byte +20h = 1),
-        // flags 7. The range substitution below now applies to the copy's
-        // 6-bit player, the value 006F4D10 indexes the slot records with.
-        bsp::CommandBuildingFlipOutcome flip;
-        if (!host.deliver_set_owner_d3(*b, static_cast<std::uint32_t>(player), true, flip,
-                "SetCommandBuildingOwnerPlayer D3h 008A8EE7")) {
-            return false;
-        }
-        const GameUnitRow* row = host.units.unit_row(b->unit);
-        host.log.notef("command building owner player: unit=%s player=%d -> party=%d repair=%d "
-            "(008A8D90 SetCommandBuildingOwnerPlayer -> D3h 006F4D10, packet cc13-fix13)",
-            row != nullptr ? row->name.c_str() : "?", player, flip.new_party,
-            flip.repair ? 1 : 0);
-        host.apply_capture_flip_006f4d10(*b, flip);
-        return true;
-    } else {
-    std::int32_t slot_party = 2;
-    if (player != 8 && player != 9) {
-        if (player < 0 || player > 7) return false;
-        slot_party = bsp::game::kLocalPartyFromSceneBound
-            ? bsp::game::scene_slot_party(player, -1) : player;
-        if (slot_party < 0) return false;
+    // 008A8EE7..008A8F2A: D3h(+1Ch = EDI, the Lua player; byte +20h = 1),
+    // flags 7. The range substitution below now applies to the copy's
+    // 6-bit player, the value 006F4D10 indexes the slot records with.
+    bsp::CommandBuildingFlipOutcome flip;
+    if (!host.deliver_set_owner_d3(*b, static_cast<std::uint32_t>(player), true, flip,
+            "SetCommandBuildingOwnerPlayer D3h 008A8EE7")) {
+        return false;
     }
-    const bsp::CommandBuildingFlipOutcome flip = bsp::command_building_flip_006f4d10(
-        b->state, player, slot_party, -1);
     const GameUnitRow* row = host.units.unit_row(b->unit);
     host.log.notef("command building owner player: unit=%s player=%d -> party=%d repair=%d "
         "(008A8D90 SetCommandBuildingOwnerPlayer -> D3h 006F4D10, packet cc13-fix13)",
@@ -14687,7 +14474,6 @@ bool GameShipAiHost::command_building_set_owner_player_006f4d10(std::size_t unit
         flip.repair ? 1 : 0);
     host.apply_capture_flip_006f4d10(*b, flip);
     return true;
-    }
 }
 
 // Packet cc9_cb_hit_gate_entry: see the header. The lander bleed
@@ -14915,12 +14701,8 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
         if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
         // 006F5362..006F53A4: D4h with level 0.
         if (kCommandBuildingLevelBound) {
-            if constexpr (bsp::kWireGoal4Chain326Bound) {
-                // 006F4D10's D4h, sent while it handles 006F2940's D3h slot 9.
-                host.deliver_set_level_d4(*b, 0, "neutralize D4h 006F5362");
-            } else {
-            host.command_building_level_006f38e0(*b, 0, "neutralize D4h 006F5362");
-            }
+            // 006F4D10's D4h, sent while it handles 006F2940's D3h slot 9.
+            host.deliver_set_level_d4(*b, 0, "neutralize D4h 006F5362");
         }
         const GameUnitRow* row = host.units.unit_row(unit_index);
         host.log.notef("command building capture: unit=%s neutralized (prior party=%d) at "
@@ -14934,69 +14716,55 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
     // 009F6A20 calls weapon_director_auto_target_construct_009f6a20; OFF keeps phase-only seeding.
-    if constexpr (kWireGoal1Chain3Bound) {
-        if (gunnery != nullptr) {
-            struct ShipDirectorTargetBinding final
-                : bsp::cc13_seg68::WeaponDirectorAutoTargetHost {
-                Impl& owner;
-                std::size_t index;
-                ShipDirectorTargetBinding(Impl& h, std::size_t i) : owner(h), index(i) {}
-                bsp::cc13_seg68::Handle director_unit_24c(
-                    bsp::cc13_seg68::Handle director) override {
-                    // As in TargetBinding, a semantic owner handle is unit index + 1.
-                    // 0083674D stores the unit in its own director's +24Ch.
-                    return director;
-                }
-                bsp::AutoTargetOwnerKinds owner_kinds_009f65e0(
-                    bsp::cc13_seg68::Handle unit) override {
-                    const std::size_t i = static_cast<std::size_t>(unit - 1u);
-                    bsp::AutoTargetOwnerKinds kinds{};
-                    kinds.kind_0e = owner.units.unit_is_kind_of(i, 0x0e);
-                    kinds.kind_07 = owner.units.unit_is_kind_of(i, 0x07);
-                    kinds.kind_0a = owner.units.unit_is_kind_of(i, 0x0a);
-                    kinds.kind_0d = owner.units.unit_is_kind_of(i, 0x0d);
-                    kinds.kind_08 = owner.units.unit_is_kind_of(i, 0x08);
-                    kinds.kind_0b = owner.units.unit_is_kind_of(i, 0x0b);
-                    kinds.kind_09 = owner.units.unit_is_kind_of(i, 0x09);
-                    kinds.kind_0c = owner.units.unit_is_kind_of(i, 0x0c);
-                    return kinds;
-                }
-                float random_uniform_00bd2f10(int stream, float lo, float hi) override {
-                    // The sole constructor site uses stream 1 and [0,1]. Preserve
-                    // the existing shared draw and its per-unit RNG census label.
-                    if (stream != 1 || lo != 0.0f || hi != 1.0f) std::terminate();
-                    return owner.gunnery_draws->auto_target_phase_draw_009f6a8f(index);
-                }
-            };
-            std::size_t seeded = 0;
-            for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
-                auto& ctl = impl_->controllers[i];
-                if (!ctl.nav_block_built) continue;
-                ShipDirectorTargetBinding binding(*impl_, i);
-                ctl.constructed_target =
-                    std::make_unique<bsp::cc13_seg68::WeaponDirectorAutoTarget>();
-                bsp::cc13_seg68::weapon_director_auto_target_construct_009f6a20(
-                    binding, *ctl.constructed_target,
-                    static_cast<bsp::cc13_seg68::Handle>(i + 1u));
-                impl_->done("AutoTarget::construct", 0x009f6a20u);
-                ++seeded;
+    if (gunnery != nullptr) {
+        struct ShipDirectorTargetBinding final
+            : bsp::cc13_seg68::WeaponDirectorAutoTargetHost {
+            Impl& owner;
+            std::size_t index;
+            ShipDirectorTargetBinding(Impl& h, std::size_t i) : owner(h), index(i) {}
+            bsp::cc13_seg68::Handle director_unit_24c(
+                bsp::cc13_seg68::Handle director) override {
+                // As in TargetBinding, a semantic owner handle is unit index + 1.
+                // 0083674D stores the unit in its own director's +24Ch.
+                return director;
             }
-            impl_->log.notef("ship ai auto-target constructors: %llu controllers seeded "
-                "(009F6A20, persistent search and think state)",
-                static_cast<unsigned long long>(seeded));
-        }
-    } else {
-    if (kAutoTargetPhaseDrawBound && gunnery != nullptr) {
+            bsp::AutoTargetOwnerKinds owner_kinds_009f65e0(
+                bsp::cc13_seg68::Handle unit) override {
+                const std::size_t i = static_cast<std::size_t>(unit - 1u);
+                bsp::AutoTargetOwnerKinds kinds{};
+                kinds.kind_0e = owner.units.unit_is_kind_of(i, 0x0e);
+                kinds.kind_07 = owner.units.unit_is_kind_of(i, 0x07);
+                kinds.kind_0a = owner.units.unit_is_kind_of(i, 0x0a);
+                kinds.kind_0d = owner.units.unit_is_kind_of(i, 0x0d);
+                kinds.kind_08 = owner.units.unit_is_kind_of(i, 0x08);
+                kinds.kind_0b = owner.units.unit_is_kind_of(i, 0x0b);
+                kinds.kind_09 = owner.units.unit_is_kind_of(i, 0x09);
+                kinds.kind_0c = owner.units.unit_is_kind_of(i, 0x0c);
+                return kinds;
+            }
+            float random_uniform_00bd2f10(int stream, float lo, float hi) override {
+                // The sole constructor site uses stream 1 and [0,1]. Preserve
+                // the existing shared draw and its per-unit RNG census label.
+                if (stream != 1 || lo != 0.0f || hi != 1.0f) std::terminate();
+                return owner.gunnery_draws->auto_target_phase_draw_009f6a8f(index);
+            }
+        };
         std::size_t seeded = 0;
         for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
-            if (!impl_->controllers[i].nav_block_built) continue;
-            impl_->controllers[i].target.think_countdown
-                = -gunnery->auto_target_phase_draw_009f6a8f(i);
+            auto& ctl = impl_->controllers[i];
+            if (!ctl.nav_block_built) continue;
+            ShipDirectorTargetBinding binding(*impl_, i);
+            ctl.constructed_target =
+                std::make_unique<bsp::cc13_seg68::WeaponDirectorAutoTarget>();
+            bsp::cc13_seg68::weapon_director_auto_target_construct_009f6a20(
+                binding, *ctl.constructed_target,
+                static_cast<bsp::cc13_seg68::Handle>(i + 1u));
+            impl_->done("AutoTarget::construct", 0x009f6a20u);
             ++seeded;
         }
-        impl_->log.notef("ship ai auto-target phase draws: %llu controllers seeded "
-            "(009F6A8F, stream 1)", static_cast<unsigned long long>(seeded));
-    }
+        impl_->log.notef("ship ai auto-target constructors: %llu controllers seeded "
+            "(009F6A20, persistent search and think state)",
+            static_cast<unsigned long long>(seeded));
     }
     if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
         impl_->seed_brain_draws_009f1160();
@@ -15124,16 +14892,13 @@ int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     }
     // 0074A540 006F2A50(site)(ship): the nearest pad whose occupant is null.
     int pad;
-    if constexpr (bsp::kWireGoal2Chain71Bound) {
+    {
         // 006F2A50 at 0074A540: command_building_take_landing_pad_006f2a50(site, ship) over the
         // pad model, which also stores the ship as the pad's occupant (006AC490) as the image
         // does before 0074A990; the OFF arm keeps the host's pick_006f2e60.
         BuildingPadSiteView view{pads, host.units, site};
         pad = bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, ship);
         host.done("LandingShip::take_landing_pad_006f2a50", 0x006f2a50u);
-    } else {
-        const float unit_pos[3] = {ux, uy, uz};
-        pad = pads.pick_006f2e60(site, ship, unit_pos, true);
     }
     if (pad < 0) {                                                   // 0074A547
         ++s.landing_requests_no_pad;
@@ -15413,7 +15178,7 @@ void transport_launch_ring_points_cc13(int ring, float ring_step, float spacing,
         out[1] = 0.0f;
         return out;
     };
-    if constexpr (bsp::kWireGoal2Chain153Bound) {
+    {
         // 0074D450 calls points_push_back_0074d2f0 for each real transformed corner; OFF keeps STL append.
         TransportLaunchPointAppend view(points);
         const auto p0 = to_world(cx0, cz0);
@@ -15424,11 +15189,6 @@ void transport_launch_ring_points_cc13(int ring, float ring_step, float spacing,
         bsp::cc13_seg41::points_push_back_0074d2f0(view, p2.data(), view);
         const auto p3 = to_world(cx0, cz1);
         bsp::cc13_seg41::points_push_back_0074d2f0(view, p3.data(), view);
-    } else {
-    points.push_back(to_world(cx0, cz0));
-    points.push_back(to_world(cx1, cz0));
-    points.push_back(to_world(cx1, cz1));
-    points.push_back(to_world(cx0, cz1));
     }
     for (int e = 0; e < 4; ++e) {
         const std::array<float, 3> a = points[static_cast<std::size_t>(e)];
@@ -15508,20 +15268,12 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
     bsp::BuildingPadModel& pads = bsp::building_pad_model();
     // 006F2A50(site)(0): the first pad of the vector whose +1F8h is null.
     auto first_free_pad = [&]() {
-        if constexpr (bsp::kWireGoal2Chain71Bound) {
-            // 006F2A50 at 00820844 / 00821BBB: command_building_take_landing_pad_006f2a50(site,
-            // null ship) over the pad model, the first free pad (its 006AC490(null) store leaves
-            // that pad free); the OFF arm keeps the host's scan.
-            BuildingPadSiteView view{pads, host.units, site};
-            host.done("TroopTransport::take_landing_pad_006f2a50", 0x006f2a50u);
-            return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1);
-        } else {
-            for (const int p : pads.pads_of(site)) {
-                const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
-                if (pad != nullptr && pad->occupant < 0) return p;
-            }
-            return -1;
-        }
+        // 006F2A50 at 00820844 / 00821BBB: command_building_take_landing_pad_006f2a50(site,
+        // null ship) over the pad model, the first free pad (its 006AC490(null) store leaves
+        // that pad free); the OFF arm keeps the host's scan.
+        BuildingPadSiteView view{pads, host.units, site};
+        host.done("TroopTransport::take_landing_pad_006f2a50", 0x006f2a50u);
+        return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1);
     };
     const GameUnitsHost::VehicleClassLaunchKeys craft_keys =
         host.class_launch_keys(ship_keys.landing_ship_078c);
@@ -15806,15 +15558,13 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
             }
             const std::size_t craft = before;
             ++s.crafts_created;
-            if constexpr (bsp::kWireGoal2Chain218Bound) {
+            {
                 // 009278A0 at 0077F2D8 (0077F0E0's vtable[144h] = 0077F2D0 with the bag's OwnerPlayer):
                 // unit_set_role_009278a0 stores +180h and runs vtable[148h](1FFh, owner); OFF keeps the
                 // +180h store alone.
                 UnitSetRoleSlotView role_view{host.units, craft};
                 bsp::cc13_seg49::unit_set_role_009278a0(role_view,
                                                         static_cast<std::uint32_t>(record.owner_player));
-            } else {
-                if constexpr (kLandingCraftOwnerPlayerBound) ai_set_unit_owner_player(craft, 8);
             }
             // 00821B4F 006AC490(pad)(craft); then the craft's InitAll 0074BEC0
             // (0074C57C..0074C618) runs 0074A990(pad, building) with SpawnPhase

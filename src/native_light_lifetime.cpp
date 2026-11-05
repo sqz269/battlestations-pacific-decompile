@@ -3,7 +3,6 @@
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/system_lighting_owners.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain599_switches.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstring>
@@ -189,19 +188,15 @@ void* delete_native_directional_light_storage_00b7c820(void* light,
     destroy_native_light_storage_00b7c5b0(light, frame, context, acquired);
     if ((*reinterpret_cast<const volatile unsigned char*>(&flags) & 1u) != 0) {
         acquired.active_call_site = 0x00b7c83b;
-        if constexpr (kWireGoal4Chain599Bound) {
-            // bsp.py show 00B7C820 --asm: B7C835..B7C83B returns this exact
-            // slot to 01090154 after teardown and the low-byte flags&1 test.
-            // 00B7B610..00B7B61B performs that same B7B2F0 call for the bound
-            // process pool. Independent supplied pools (including an unbound
-            // process adapter) must still return to their own allocator state.
-            if (pool.is_static_binding()) {
-                return_directional_light_slot_00b7b610(light);
-            } else {
-                pool.return_raw_slot_00b7b2f0(light);
-            }
+        // bsp.py show 00B7C820 --asm: B7C835..B7C83B returns this exact
+        // slot to 01090154 after teardown and the low-byte flags&1 test.
+        // 00B7B610..00B7B61B performs that same B7B2F0 call for the bound
+        // process pool. Independent supplied pools (including an unbound
+        // process adapter) must still return to their own allocator state.
+        if (pool.is_static_binding()) {
+            return_directional_light_slot_00b7b610(light);
         } else {
-        pool.return_raw_slot_00b7b2f0(light);
+            pool.return_raw_slot_00b7b2f0(light);
         }
         acquired.pool_returned = true;
     }

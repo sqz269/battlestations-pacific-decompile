@@ -5,7 +5,6 @@
 // Every name below is a hypothesis, not a recovered symbol. See
 // docs/APP_INIT_LOCALE.md for the evidence behind each claim.
 #include "bsp/native_locale_string_record.hpp"
-#include "bsp/wire_goal2_chain215_switches.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -177,7 +176,7 @@ public:
 
 private:
     struct Node {
-        std::conditional_t<kWireGoal2Chain215Bound, NativeLocaleKeyOwner, std::string> key;
+        NativeLocaleKeyOwner key;
         std::u16string text;
         Node* next = nullptr;
     };

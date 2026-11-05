@@ -5,7 +5,6 @@
 #include "bsp/native_string_ordering_wrappers.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/wire_goal4_chain596_switches.hpp"
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
@@ -87,16 +86,12 @@ template<Kind K> void rotate_right(void* tree,void* node) noexcept {
     A::right(pivot)=node;A::parent(node)=pivot;
 }
 bool less(const void* a,const void* b) noexcept {
-    if constexpr (kWireGoal4Chain596Bound) {
-        // bsp.py show --asm 00443CB0/00443D00: after native argument setup,
-        // these COMDAT copies have the same length-first, right-data-before-
-        // left-data _stricmp predicate. Use the existing C++ CB0 interface on
-        // the actual input key/node headers at every original comparison;
-        // keep the tree's comparison order and do not copy/normalize keys.
-        return less_native_string_headers_00443cb0(a,b);
-    } else {
-        return less_native_string_headers_00443d00(a,b);
-    }
+    // bsp.py show --asm 00443CB0/00443D00: after native argument setup,
+    // these COMDAT copies have the same length-first, right-data-before-
+    // left-data _stricmp predicate. Use the existing C++ CB0 interface on
+    // the actual input key/node headers at every original comparison;
+    // keep the tree's comparison order and do not copy/normalize keys.
+    return less_native_string_headers_00443cb0(a,b);
 }
 template<Kind K> void increment(Iterator& i) {
     using A=Access<K>;void* node=i.node;if(A::sentinel(node))invalid();

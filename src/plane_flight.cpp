@@ -1,7 +1,6 @@
 #include "bsp/plane_flight.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
 #include "bsp/unit_rudder.hpp"
-#include "bsp/wire_goal4_chain279_switches.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_flightrender_cc13.hpp"
 
@@ -756,34 +755,32 @@ float plane_thrust_accel_007d9050(const PlaneThrustAccelClass& cls,
 }
 
 float max_sustainable_climb_angle_007d98f0(const PlaneClimbAngleInputs& in) {
-    if constexpr (kWireGoal4Chain279Bound) {
-        if (in.trial_007d9360 != nullptr) {
-            // The image's constants, read from the PE: 00CF8858 float 3FB2B8C3 (and
-            // the double at 00D05A28, the same value widened), 00D06850 the double
-            // 3F26E05A80000000 (a float widened), 00CE3910 float 0.04f.
-            const float upper = 1.3962634801864624f;
-            const float tolerance = 0.0001745329354889691f;
-            const float probe = in.probe_speed;
-            float low = 0.0f;
-            float high = upper;
-            // 007D98F3..007D9924: never taken for these constants.
-            if (!(upper - 0.0f > tolerance)) return low;
-            float diff = 0.0f;
-            do {
-                // 007D9932..007D994B: FLD high, FADD low, FMUL 0.5, FSTP float.
-                const float mid = (high + low) * 0.5f;
-                const float speed_left =
-                    in.trial_007d9360(in.trial_context, mid, probe, 0.03999999910593033f, 10);
-                // 007D9977 FCOMIP / JC: less or unordered moves the upper bound.
-                if (!(speed_left >= probe)) {
-                    high = mid;
-                } else {
-                    low = mid;
-                }
-                diff = high - low;           // 007D9993 FSUBP, at 24 bits
-            } while (diff > tolerance);      // 007D99A1 JA
-            return low;
-        }
+    if (in.trial_007d9360 != nullptr) {
+        // The image's constants, read from the PE: 00CF8858 float 3FB2B8C3 (and
+        // the double at 00D05A28, the same value widened), 00D06850 the double
+        // 3F26E05A80000000 (a float widened), 00CE3910 float 0.04f.
+        const float upper = 1.3962634801864624f;
+        const float tolerance = 0.0001745329354889691f;
+        const float probe = in.probe_speed;
+        float low = 0.0f;
+        float high = upper;
+        // 007D98F3..007D9924: never taken for these constants.
+        if (!(upper - 0.0f > tolerance)) return low;
+        float diff = 0.0f;
+        do {
+            // 007D9932..007D994B: FLD high, FADD low, FMUL 0.5, FSTP float.
+            const float mid = (high + low) * 0.5f;
+            const float speed_left =
+                in.trial_007d9360(in.trial_context, mid, probe, 0.03999999910593033f, 10);
+            // 007D9977 FCOMIP / JC: less or unordered moves the upper bound.
+            if (!(speed_left >= probe)) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+            diff = high - low;           // 007D9993 FSUBP, at 24 bits
+        } while (diff > tolerance);      // 007D99A1 JA
+        return low;
     }
     // 00CF8858 float and 00D05A28 double are both 1.39626 = DEG(80).
     const float kUpper = 1.39626f;

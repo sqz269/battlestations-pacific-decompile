@@ -5,7 +5,6 @@
 
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/director_geommesh_seg38_39_argon.hpp"
-#include "bsp/wire_goal2_chain181_switches.hpp"
 
 #include <climits>
 #include <cmath>
@@ -162,13 +161,11 @@ GeomMeshBuild build_tree_node_007240e0(const GeomMesh& mesh, GeomMeshPart& part,
         }
         // 007230F0 picks 00722210 / 00722400 / 007225F0 for key column 0 / 1 / 2; the scratch
         // pointer [00E19BDC] is the fixed second half of the buffer, not offset by start.
-        if constexpr (kWireGoal2Chain181Bound) {
+        {
             // 007230F0 calls the native axis dispatcher; OFF keeps the direct radix sort.
             GeomMeshRadixSortAdapter sort(records.data(), records.data() + n);
             director_geommesh_seg38_39_argon::bsp_geom_mesh_radix_sort_by_axis_007230f0(
                 sort, axis, start, count);
-        } else {
-        band_0067_cc13::radix_sort_records16_00722210(records.data() + start, count, records.data() + n, axis);
         }
         const int half = count / 2; // CDQ, SUB EAX,EDX, SAR 1
         const GeomMeshBuild left = build_tree_node_007240e0(mesh, part, records, node * 2 + 1, start, half);

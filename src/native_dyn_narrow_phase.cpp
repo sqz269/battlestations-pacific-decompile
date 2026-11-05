@@ -3,7 +3,6 @@
 #include <Windows.h>
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_primitive_dispatch.hpp"
-#include "bsp/wire_goal4_chain614_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native narrow phase requires MSVC Win32 x87 assembly.
@@ -36,53 +35,34 @@ alignas(8) const std::uint64_t constant_00d7a280=0x3fe0000000000000ULL;
 alignas(8) const std::uint32_t constant_00d7a2d8=0x3b23d70bU;
 // Explicit context adapter; retain original argument offsets.
 __declspec(naked) void manifold_shim(){
-    if constexpr (kWireGoal4Chain614Bound) {
-        // bsp.py show 00C44090 --asm: 00C441C3..C5 passes the two actual
-        // bodies and EDI pool. Only EAX is consumed afterwards (EDI is reset
-        // at 00C441D6); the public body retains the same allocator/CS calls.
-        // Incoming stack: return, context, first, second. Translate once;
-        // the public entry calls the sole manifold_kernel below.
-        __asm {
-            push dword ptr [esp+0ch]
-            push dword ptr [esp+0ch]
-            push edi
-            push dword ptr [esp+10h]
-            call manifold_bridge
-            add esp,10h
-            ret 0ch
-        }
-    } else {
+    // bsp.py show 00C44090 --asm: 00C441C3..C5 passes the two actual
+    // bodies and EDI pool. Only EAX is consumed afterwards (EDI is reset
+    // at 00C441D6); the public body retains the same allocator/CS calls.
+    // Incoming stack: return, context, first, second. Translate once;
+    // the public entry calls the sole manifold_kernel below.
     __asm {
-        push dword ptr [esp+4]
+        push dword ptr [esp+0ch]
+        push dword ptr [esp+0ch]
+        push edi
         push dword ptr [esp+10h]
-        push dword ptr [esp+10h]
-        call manifold_kernel
+        call manifold_bridge
+        add esp,10h
         ret 0ch
-    }
     }
 }
 // Explicit context adapter; retain original argument offsets.
 __declspec(naked) void append_shim(){
-    if constexpr (kWireGoal4Chain614Bound) {
-        // bsp.py show 00C3F4D0 --asm: 00C3F622/00C3F62E append EBX to ESI's
-        // actual +74/+78/+7C vector, then reload ESI from manifold+D0 for
-        // the second call. No volatile result is live across either append.
-        // Incoming stack: return, context, manifold; ESI is the live body.
-        __asm {
-            push dword ptr [esp+8]
-            push esi
-            push dword ptr [esp+0ch]
-            call append_bridge
-            add esp,0ch
-            ret 8
-        }
-    } else {
+    // bsp.py show 00C3F4D0 --asm: 00C3F622/00C3F62E append EBX to ESI's
+    // actual +74/+78/+7C vector, then reload ESI from manifold+D0 for
+    // the second call. No volatile result is live across either append.
+    // Incoming stack: return, context, manifold; ESI is the live body.
     __asm {
-        push dword ptr [esp+4]
+        push dword ptr [esp+8]
+        push esi
         push dword ptr [esp+0ch]
-        call append_kernel
+        call append_bridge
+        add esp,0ch
         ret 8
-    }
     }
 }
 // Explicit context adapter; retain original argument offsets.
@@ -335,7 +315,7 @@ __declspec(naked) void insert_kernel(){
         ja l_00c3ffd0 // 00c3f7ab
         mov eax, esi // 00c3f7b1
     }
-    if constexpr (kWireGoal4Chain614Bound) {
+    {
         // bsp.py show 00C3F650 --asm: EAX manifold / EDI nine-float
         // candidate, EAX index. The x87 stack is empty after FCOMIP/FSTP
         // at 00C3F7A7/A9. The next instruction reloads ECX and CMP defines
@@ -346,10 +326,6 @@ __declspec(naked) void insert_kernel(){
             call match_native_dyn_contact_00c3f650
             add esp,8
         }
-    } else {
-    __asm {
-        call match_kernel // 00c3f7b3
-    }
     }
     __asm {
         mov ecx, dword ptr [esi + 0c8h] // 00c3f7b8

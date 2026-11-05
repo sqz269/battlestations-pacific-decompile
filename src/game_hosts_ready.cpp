@@ -8,7 +8,6 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq
-#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -19,7 +18,6 @@
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/native_spatial_index_publication.hpp"
 #include "bsp/spatial_index.hpp"
-#include "bsp/wire_goal4_chain396_switches.hpp"
 
 #include <cstddef>
 #include <cstdio>
@@ -47,34 +45,22 @@ public:
     SpatialRefreshBinding(GameHostLog& log, void* index) : log_(log), index_(index) {}
 
     void* first_root_node() override {
-        if constexpr (kWireGoal4Chain396Bound) {
-            // bsp.py show 0042D450 / 0098BDB0: constructor zeroes this head;
-            // the refresh reads it, rather than a host-authored empty list.
-            void* const root = *reinterpret_cast<void* volatile*>(
-                static_cast<std::byte*>(index_) + kSpatialIndexOffRootList);
-            return root;
-        } else {
-            return nullptr;
-        }
+        // bsp.py show 0042D450 / 0098BDB0: constructor zeroes this head;
+        // the refresh reads it, rather than a host-authored empty list.
+        void* const root = *reinterpret_cast<void* volatile*>(
+            static_cast<std::byte*>(index_) + kSpatialIndexOffRootList);
+        return root;
     }
     void* next_root_node(void* node) override {
-        if constexpr (kWireGoal4Chain396Bound) {
-            return *reinterpret_cast<void* volatile*>(
-                static_cast<std::byte*>(node) + kSpatialNodeOffRootNext);
-        } else {
-            static_cast<void>(node); return nullptr;
-        }
+        return *reinterpret_cast<void* volatile*>(
+            static_cast<std::byte*>(node) + kSpatialNodeOffRootNext);
     }
     bool node_is_static(void* node) override {
-        if constexpr (kWireGoal4Chain396Bound) {
-            const bool is_static = *reinterpret_cast<volatile std::uint8_t*>(
-                static_cast<std::byte*>(node) + kSpatialNodeOffStaticFlag) != 0;
-            if (!is_static)
-                throw std::logic_error("native spatial root refresh needs pose/cell providers");
-            return is_static;
-        } else {
-            static_cast<void>(node); return true;
-        }
+        const bool is_static = *reinterpret_cast<volatile std::uint8_t*>(
+            static_cast<std::byte*>(node) + kSpatialNodeOffStaticFlag) != 0;
+        if (!is_static)
+            throw std::logic_error("native spatial root refresh needs pose/cell providers");
+        return is_static;
     }
     void* node_owner_pose(void* node) override { static_cast<void>(node); return nullptr; }
     bool pose_world_valid(void* pose) override { static_cast<void>(pose); return true; }
@@ -576,7 +562,7 @@ void GameStepSubsystemsHost::attach_units(GameUnitsHost* units) noexcept {
 }
 
 void GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
-    if constexpr (kWireGoal4Chain396Bound) {
+    {
         // 00875E33: singleton getter immediately before the 0098BDB0 walk.
         // Use the same real lifetime manager that owns the application's other
         // native singletons; no fixture index or separate manager is created.
@@ -586,9 +572,6 @@ void GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
         if (index == nullptr) throw std::bad_alloc();
         SpatialRefreshBinding binding(log_, index);
         bsp::spatial_refresh_moved_nodes_0098bdb0(binding, step);
-    } else {
-    SpatialRefreshBinding binding(log_);
-    bsp::spatial_refresh_moved_nodes_0098bdb0(binding, step);
     }
     ++summary_.spatial_passes;
     if (!logged_empty_) {
@@ -687,13 +670,9 @@ void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
                 // Packet cc9_dead_member_group_removal: the destroy's 77h leave
                 // (0077D1A0 -> 0077C980), delivered here.
                 if constexpr (kDeadMemberLeavesGroupBound) {
-                    if constexpr (kWireGoal4Chain260Bound) {
-                        // Goal 4 chain 260: 0077C980(unit, 0) at 0077D236 builds
-                        // the 77h; 0076E520's copy first, then 0077BD70 here.
-                        units_->leave_formation_message_0077c980(unit);
-                    } else {
-                    units_->leave_group_on_destroy_0077bd70(unit);
-                    }
+                    // Goal 4 chain 260: 0077C980(unit, 0) at 0077D236 builds
+                    // the 77h; 0076E520's copy first, then 0077BD70 here.
+                    units_->leave_formation_message_0077c980(unit);
                 }
                 // 009263AE JMP [vt+7Ch], the ship's wreck handler 00824B60: the
                 // gunnery death route already does its physics writes.

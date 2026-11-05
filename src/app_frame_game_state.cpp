@@ -3,7 +3,6 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_misc_cc13.hpp"
 #include "bsp/engine_core_cc13.hpp"
-#include "bsp/wire_goal4_chain337_switches.hpp"
 
 #include <stdexcept>
 
@@ -71,38 +70,24 @@ void profiler_end_frame_slot_00be3660(ProfilerCounters& profiler, int slot,
     if (record == nullptr) {
         return;
     }
-    if constexpr (kWireGoal4Chain337Bound) {
-        class Clock final : public cc13_engine_core::PerfClockHost {
-        public:
-            explicit Clock(ProfilerClockHost& clock) : clock_(clock) {}
-            std::int64_t query_performance_counter() override {
-                return clock_.query_performance_counter();
-            }
-            // The record-end body only samples QPC. Reject an accidental new
-            // dependency rather than silently ignoring it in this adapter.
-            void sleep_ms(std::uint32_t) override {
-                throw std::logic_error("00BE32B0 has no Sleep call");
-            }
-        private:
-            ProfilerClockHost& clock_;
-        } binding(clock);
-        // 00BE3679..00BE36B2 is the inlined 00BE32B0 operation on this
-        // same +28h-stride record. Delegate the decrement and outermost sample
-        // together so neither the depth change nor the QPC query runs twice.
-        cc13_engine_core::end_counter_record_00be32b0(*record, binding);
-    } else {
-        // 00be3679, InterlockedDecrement(&depth) returns the new value; a nonzero
-        // one means an outer pair is still open.
-        record->depth -= 1;
-        if (record->depth != 0) {
-            return;
+    class Clock final : public cc13_engine_core::PerfClockHost {
+    public:
+        explicit Clock(ProfilerClockHost& clock) : clock_(clock) {}
+        std::int64_t query_performance_counter() override {
+            return clock_.query_performance_counter();
         }
-        const std::int64_t now = clock.query_performance_counter();
-        // 00be3699..00be36a9. The subtraction and the accumulate are one 64 bit
-        // SUB/SBB and ADD/ADC pair over the two halves.
-        record->accumulated_ticks += now - record->sample_start;
-        record->last_exit = now;
-    }
+        // The record-end body only samples QPC. Reject an accidental new
+        // dependency rather than silently ignoring it in this adapter.
+        void sleep_ms(std::uint32_t) override {
+            throw std::logic_error("00BE32B0 has no Sleep call");
+        }
+    private:
+        ProfilerClockHost& clock_;
+    } binding(clock);
+    // 00BE3679..00BE36B2 is the inlined 00BE32B0 operation on this
+    // same +28h-stride record. Delegate the decrement and outermost sample
+    // together so neither the depth change nor the QPC query runs twice.
+    cc13_engine_core::end_counter_record_00be32b0(*record, binding);
 }
 
 void profiler_set_slot_color(ProfilerCounters& profiler, int slot, std::uint32_t argb) noexcept {
@@ -134,18 +119,10 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_sl
         // ON: the main thread's x87 runs at PC24, so the 00be3532 FDIV rounds to a
         // 24-bit significand before the float store.
         float seconds;
-        if constexpr (kWireGoal4Chain337Bound) {
-            // Same FILD / FDIV / FSTP as 00BE3527..00BE353C. The existing
-            // body keeps the signed 64-bit tick input and caller's x87 PC.
-            seconds = cc13_engine_core::ticks_to_seconds_00be3360(
-                record->accumulated_ticks, tick_scale);
-        } else if constexpr (kPc24AppFrameCc13Bound) {
-            // The int64 ticks convert to double exactly below 2^53, as FILD qword does.
-            seconds = static_cast<float>(cc13x87::x87_div24(
-                static_cast<double>(record->accumulated_ticks), tick_scale));
-        } else {
-            seconds = static_cast<float>(static_cast<double>(record->accumulated_ticks) / tick_scale);
-        }
+        // Same FILD / FDIV / FSTP as 00BE3527..00BE353C. The existing
+        // body keeps the signed 64-bit tick input and caller's x87 PC.
+        seconds = cc13_engine_core::ticks_to_seconds_00be3360(
+            record->accumulated_ticks, tick_scale);
         profiler.history[offset] = seconds;
         // 00be354a, the current value is reloaded from the ring.
         profiler.current[slot] = profiler.history[offset];
@@ -153,15 +130,9 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_sl
         // 00be3556..00be3561, in native order: the hit count, the depth and both
         // halves of the accumulator. The two timestamps survive, which is what
         // lets the offsets below be taken after the clear.
-        if constexpr (kWireGoal4Chain337Bound) {
-            // 00BE3556..00BE3561 clears exactly the fields owned by 00BE3300;
-            // preserve first_entry and last_exit for the offset consumers below.
-            cc13_engine_core::reset_counter_record_00be3300(*record);
-        } else {
-            record->hit_count = 0;
-            record->depth = 0;
-            record->accumulated_ticks = 0;
-        }
+        // 00BE3556..00BE3561 clears exactly the fields owned by 00BE3300;
+        // preserve first_entry and last_exit for the offset consumers below.
+        cc13_engine_core::reset_counter_record_00be3300(*record);
 
         // 00be356d..00be35a6 and 00be35a9..00be35f4. Both offsets are measured
         // from the PERF_APP_UPDATE record's first entry (slot [0109d014], read

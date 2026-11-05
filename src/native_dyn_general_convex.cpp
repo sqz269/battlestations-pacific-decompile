@@ -1,6 +1,5 @@
 #include "bsp/native_dyn_general_convex.hpp"
 #include "bsp/native_dyn_convex_simplex.hpp"
-#include "bsp/wire_goal4_chain615_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native general convex intersection requires MSVC Win32 x87 assembly.
@@ -36,32 +35,21 @@ __declspec(naked) void sqrt_shim(){
 }
 // The extra final CRT argument leaves original locals/arguments in place.
 __declspec(naked) void intersect_shim(){
-    if constexpr (kWireGoal4Chain615Bound) {
-        // bsp.py show 00C535E0 --asm: C53619 supplies ECX=matrixA,
-        // EDX=shapeB, EAX=matrixB and stack work/result/shapeA. The
-        // reconstructed dispatcher also pushes its borrowed CRT at +4.
-        // Pass those same pointers through the existing C53010 entry once.
-        __asm {
-            push dword ptr [esp+4]
-            push eax
-            push edx
-            push ecx
-            push dword ptr [esp+20h]
-            push dword ptr [esp+20h]
-            push dword ptr [esp+20h]
-            call intersect_native_dyn_convex_00c53010
-            add esp,1ch
-            ret 10h
-        }
-    } else {
+    // bsp.py show 00C535E0 --asm: C53619 supplies ECX=matrixA,
+    // EDX=shapeB, EAX=matrixB and stack work/result/shapeA. The
+    // reconstructed dispatcher also pushes its borrowed CRT at +4.
+    // Pass those same pointers through the existing C53010 entry once.
     __asm {
         push dword ptr [esp+4]
-        push dword ptr [esp+14h]
-        push dword ptr [esp+14h]
-        push dword ptr [esp+14h]
-        call intersect_kernel
+        push eax
+        push edx
+        push ecx
+        push dword ptr [esp+20h]
+        push dword ptr [esp+20h]
+        push dword ptr [esp+20h]
+        call intersect_native_dyn_convex_00c53010
+        add esp,1ch
         ret 10h
-    }
     }
 }
 // bsp.py show 00C53010 --asm: calls C532A2/C533E0/C53556 have
@@ -70,41 +58,29 @@ __declspec(naked) void intersect_shim(){
 // only integer arguments; retain every floating instruction in the bodies.
 // The context-taking kernels consume their extra CRT DWORD with RET4.
 __declspec(naked) void search_reference(){
-    if constexpr (kWireGoal4Chain615Bound) {
-        __asm {
-            push dword ptr [esp+4]
-            push ecx
-            call search_native_dyn_convex_00c51ef0
-            add esp,8
-            ret 4
-        }
-    } else {
-        __asm { jmp search_kernel }
+    __asm {
+        push dword ptr [esp+4]
+        push ecx
+        call search_native_dyn_convex_00c51ef0
+        add esp,8
+        ret 4
     }
 }
 __declspec(naked) void direction_reference(){
-    if constexpr (kWireGoal4Chain615Bound) {
-        __asm {
-            push edi
-            call select_native_dyn_convex_direction_00c51c20
-            add esp,4
-            ret
-        }
-    } else {
-        __asm { jmp direction_kernel }
+    __asm {
+        push edi
+        call select_native_dyn_convex_direction_00c51c20
+        add esp,4
+        ret
     }
 }
 __declspec(naked) void result_reference(){
-    if constexpr (kWireGoal4Chain615Bound) {
-        __asm {
-            push dword ptr [esp+4]
-            push esi
-            call project_native_dyn_convex_contact_00c48be0
-            add esp,8
-            ret 4
-        }
-    } else {
-        __asm { jmp result_kernel }
+    __asm {
+        push dword ptr [esp+4]
+        push esi
+        call project_native_dyn_convex_contact_00c48be0
+        add esp,8
+        ret 4
     }
 }
 // Complete recovered instruction schedule; address comments are PE starts.

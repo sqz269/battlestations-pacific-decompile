@@ -152,8 +152,6 @@
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_render_resources_remap.hpp"
-#include "bsp/wire_goal4_chain516_switches.hpp"
-#include "bsp/wire_goal4_chain487_switches.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_vertex_position_read.hpp"
@@ -1136,15 +1134,12 @@ void GameNativeRendererApplication::prepare_mission_ship() {
     }
     try {
         p.mission_ship->prepare(*this, p.device_generation);
-        if constexpr (bsp::kWireGoal4Chain516Bound) {
-            // The native B14A10/B107F0 producer has now completed, before
-            // the first scene draw. Apply only actual pending record strings,
-            // once each and in 004D4F60's slot order. No construction replay.
-            for (std::size_t slot = 0; slot != p.pending_scene_remaps.size(); ++slot)
-                if (p.pending_scene_remaps[slot])
-                    (void)set_scene_remap_texture(slot, p.pending_scene_remap_names[slot]);
-        } else {
-        }
+        // The native B14A10/B107F0 producer has now completed, before
+        // the first scene draw. Apply only actual pending record strings,
+        // once each and in 004D4F60's slot order. No construction replay.
+        for (std::size_t slot = 0; slot != p.pending_scene_remaps.size(); ++slot)
+            if (p.pending_scene_remaps[slot])
+                (void)set_scene_remap_texture(slot, p.pending_scene_remap_names[slot]);
     }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
