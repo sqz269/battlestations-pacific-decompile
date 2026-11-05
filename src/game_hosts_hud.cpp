@@ -60,6 +60,9 @@
 #include "bsp/seg27_cc13.hpp"                // 006735D0
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
+#include "bsp/game_native_string_process.hpp"  // the leaf registers' string temporaries
+#include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/cc13_left61.hpp"               // 0093CB10, 00538E30's scene member
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -565,9 +568,10 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 
 // The leaf register overrides (+10h, kHudScreenLayouts) that run on their
 // blocks: each is 004F71D0 and at most one page load (bsp.py show <address>
-// --asm), and each page is the one kHudScreenLayouts lists for the slot.
-constexpr std::array<std::uint32_t, 5> kHudLeafScreenRegisters{{
-    0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u,
+// --asm; 0060D1C0 and 00565EE0 build the name in a native-string temporary),
+// and each page is the one kHudScreenLayouts lists for the slot.
+constexpr std::array<std::uint32_t, 7> kHudLeafScreenRegisters{{
+    0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -620,6 +624,76 @@ private:
     HudLeafRegisterContext& context_;
 };
 
+// The register overrides' native-string temporaries, over this process's
+// actual string pool: 0041DD40 and the 00419CC0/00BD1510 pair on the
+// 01090AA8/01090AA0/01090AA4 cells game_native_string_process() publishes,
+// as the menu host's 0090C5D0 binding does.
+struct HudLeafStringPool {
+    bsp::NativeStringRawPoolContext& strings{game_native_string_process().raw_context()};
+    void resize(void* header, std::uint32_t length, bool preserve) {
+        bsp::resize_native_string_header_0041dd40(header, strings, length, preserve);
+    }
+    void* pool() {
+        return bsp::native_string_pool_get_or_create_00419cc0(strings.actual_published_01090aa8,
+            strings.actual_manager_publication_01090aa0);
+    }
+    void give_back(void* pool, void* block, std::uint32_t size) {
+        bsp::return_native_string_pool_00bd1510(static_cast<bsp::NativeStringPoolStorage*>(pool),
+            block, size, strings.actual_small_returns_disabled_01090aa4);
+    }
+    // The eight-byte header 00AA5840 takes the name in: length +0h, data +4h.
+    static std::string_view name(const void* header) {
+        std::uint32_t length = 0;
+        const char* data = nullptr;
+        std::memcpy(&length, header, sizeof(length));
+        std::memcpy(&data, static_cast<const std::uint8_t*>(header) + 4, sizeof(data));
+        return data != nullptr ? std::string_view(data, length) : std::string_view();
+    }
+};
+// 0060D1C0. Its 004C12B0 is the registry owner that loads the page.
+class HudLeafPlaneSpawnRegisterBinding final : public bsp::seg25_cc13::PlaneSpawnRegisterHost {
+public:
+    explicit HudLeafPlaneSpawnRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void native_string_resize_0041dd40(bsp::seg25_cc13::NativeStr* s, std::uint32_t length,
+        std::int32_t flag) override { pool_.resize(s, length, flag != 0); }
+    void* pool_singleton_00419cc0() override { return pool_.pool(); }
+    void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, std::int32_t) override {
+        pool_.give_back(pool, block, size);  // the unused stack argument is 1
+    }
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_004c12b0() override { return &context_.menu; }
+    std::uint32_t gui_load_page_00aa5840(void* manager, const bsp::seg25_cc13::NativeStr* name,
+        std::int32_t, std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("0060D1C0 loaded its page through another GUI manager");
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(
+            context_.load_page(HudLeafStringPool::name(name))));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+};
+// 00565EE0. Its 00BD1510 runs on the 00419CC0 pool, both inside this service.
+class HudLeafLimboRegisterBinding final : public bsp::cc13_fe3::HudLimboRegisterHost {
+public:
+    explicit HudLeafLimboRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* gui_load_page_00aa5840(const void* name, std::uint32_t, std::uint32_t) override {
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+    void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t) override {
+        pool_.give_back(pool_.pool(), block, bytes);
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+};
+
 void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     std::uint8_t* const p = context.screen.data();
     const bsp::ingame_gui_cc13::Raw raw{p};
@@ -629,6 +703,8 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x005D38A0u: { HudLeafRegisterBinding b(context); bsp::frontend_seg15_22_cc13::pause_multi_register_005d38a0(raw, b); return; }
     case 0x005EE010u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_objectives_register_005ee010(p, b); return; }
     case 0x00604890u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_pause_cheat_register_00604890(p, b); return; }
+    case 0x0060D1C0u: { HudLeafPlaneSpawnRegisterBinding b(context); bsp::seg25_cc13::hud_plane_spawn_screen_register_0060d1c0(p, b); return; }
+    case 0x00565EE0u: { HudLeafLimboRegisterBinding b(context); bsp::cc13_fe3::hud_limbo_register_00565ee0(raw, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");

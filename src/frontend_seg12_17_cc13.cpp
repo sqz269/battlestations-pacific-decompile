@@ -1968,7 +1968,7 @@ void leaderboards_cycle_filter_005650c0(Raw s, Fe3ReadHost& host) {
     leaderboards_reset_rows_00564e70(s, host);
 }
 
-void hud_limbo_register_00565ee0(Raw s, Fe3ReadHost& host) {
+void hud_limbo_register_00565ee0(Raw s, HudLimboRegisterHost& host) {
     host.front_end_screen_register_004f71d0(s);
     std::uint8_t storage[8] = {};
     const Raw temp = raw(storage);

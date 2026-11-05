@@ -39,7 +39,23 @@ struct PowerupManagerConstructHost : FrontEndScreenConstructHost {
     virtual void* container_buy_head_node(std::uint32_t function, void* container) = 0;
 };
 
-struct Seg25Host : PowerupManagerConstructHost {
+// The inlined native-string temporary every page/widget name here is built in
+// (0041DD40, then 00419CC0/00BD1510 on release).
+struct NativeStringTempHost {
+    virtual ~NativeStringTempHost() = default;
+    virtual void native_string_resize_0041dd40(NativeStr* s, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    virtual void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, std::int32_t flag) = 0;
+};
+// 0060D1C0, 0068CC70's plane-spawn (41h) register override: 004F71D0 and the
+// GUI_plane_spawn page load. The HUD host binds it over its own screen block.
+struct PlaneSpawnRegisterHost : NativeStringTempHost {
+    virtual void frontend_register_004f71d0(void* screen) = 0;
+    virtual void* gui_manager_004c12b0() = 0;
+    virtual std::uint32_t gui_load_page_00aa5840(void* manager, const NativeStr* name, std::int32_t a, std::int32_t b) = 0;
+};
+
+struct Seg25Host : PowerupManagerConstructHost, PlaneSpawnRegisterHost {
     virtual ~Seg25Host() = default;
     // Address of an image global's storage (00E188A8, 00E198C4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -109,7 +125,7 @@ struct Seg25Host : PowerupManagerConstructHost {
 
 // ---- plane-spawn and please-wait screens ----
 void hud_plane_spawn_screen_destroy_0060d130(void* screen, Seg25Host& host);
-void hud_plane_spawn_screen_register_0060d1c0(void* screen, Seg25Host& host);
+void hud_plane_spawn_screen_register_0060d1c0(void* screen, PlaneSpawnRegisterHost& host);
 void hud_plane_spawn_screen_collect_children_0060d280(void* screen, void* children, Seg25Host& host);
 void* please_wait_screen_construct_0060d290(void* screen, Seg25Host& host);
 std::int32_t please_wait_screen_get_screen_id_0060d2b0() noexcept;

@@ -1129,7 +1129,18 @@ void leaderboards_begin_read_005635f0(Raw screen, Fe3BoardHost& host);
 // ---------------------------------------------------------------------------
 // Batch D (continued): leaderboard reads and the HUD limbo screen.
 // ---------------------------------------------------------------------------
-struct Fe3ReadHost {
+// 00565EE0, 0068CC70's limbo (32h) register override: 004F71D0 and the
+// GUI_limbo page load through its native-string temporary. The HUD host binds
+// it over its own screen block.
+struct HudLimboRegisterHost {
+    virtual ~HudLimboRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void* gui_load_page_00aa5840(const void* name, std::uint32_t one, std::uint32_t zero) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+};
+
+struct Fe3ReadHost : HudLimboRegisterHost {
     virtual ~Fe3ReadHost() = default;
     virtual void listbox_set_listener_00a9ac40(void* listbox, void* listener) = 0;
     virtual void listbox_clear_rows_00a9bec0(void* listbox) = 0;
@@ -1171,7 +1182,7 @@ void leaderboards_on_read_complete_00564f60(Raw screen, const void* results, Fe3
 // 00564E70.
 void leaderboards_cycle_filter_005650c0(Raw screen, Fe3ReadHost& host);
 // 00565EE0 BSP_HudLimboScreen_Register: 004F71D0; page "GUI_limbo" (00CEEBD4) -> +8h.
-void hud_limbo_register_00565ee0(Raw screen, Fe3ReadHost& host);
+void hud_limbo_register_00565ee0(Raw screen, HudLimboRegisterHost& host);
 // 00565FB0 BSP_HudLimboScreen_SetState, __thiscall(screen, state), RET 4: +14h = state; the
 // message is the global config string at +0A8h / +0B8h / +0D0h / +0C0h / +0B0h for states 1..5
 // (jump table 00566030), +0D8h otherwise ("" when null); shown on [+0Ch] while active (+5h).
