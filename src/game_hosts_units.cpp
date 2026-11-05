@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain564_switches.hpp"
+#include "bsp/local_player_unit_lists.hpp"
 #include "bsp/wire_goal4_chain539_switches.hpp"
 #include "bsp/wire_goal4_chain526_switches.hpp"
 #include "bsp/wire_goal4_chain535_switches.hpp"
@@ -2537,9 +2539,9 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // countdown 0 held as its expiry clock, +38Ch freeze, +398h, +3AAh lock).
     bool sq_attack_alt_set{false};
     float sq_alt_398{0.0f};
-    // Packet cc13-issuea0: +390h, which only the Lua native 008A1F40
-    // SquadronSetDropAllBombPercent writes (008A2091 FSTP float). It is 0.0
-    // from the memset at new(414h) until a script sets it.
+    // +390h: 007F2BD0 copies tuning+5F4h at construction (chain 564), then
+    // 008A1F40 SquadronSetDropAllBombPercent can replace it. OFF retains the
+    // old allocation-zero default until a script writes it.
     float sq_drop_all_bomb_percent_390{0.0f};
     bool sq_freeze_38c{false};
     bool sq_lock_3aa{false};
@@ -24355,6 +24357,53 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     for (const GameSceneEntityRecord& entity : entities) {
         if (!entity.created) continue;
         auto slot = std::make_unique<GameUnitSlot>();
+        if constexpr (bsp::kWireGoal4Chain564Bound) {
+            if (entity.class_id == bsp::kUnitClassPlaneSquadron) {
+                // bsp.py show 007F2BD0 --asm: 007F2D2B in the squadron ctor
+                // passes squadron+37Ch; +14h is its +390h, NOT allocation zero.
+                // load_gameplay_settings_0083b5e0 loads this real tuning block
+                // before scene units are created. Do not run on its zero preimage.
+                struct Tuning final : bsp::PilotBotSettingsInitHost {
+                    const GameMissionLuaHost& lua;
+                    explicit Tuning(const GameMissionLuaHost& source) : lua(source) {}
+                    const void* game_tuning_get_singleton_0042e740() override {
+                        if (!lua.plane_globals_loaded())
+                            throw std::logic_error("PilotBotSettings requires loaded PlaneGlobals");
+                        return &lua.plane_globals();
+                    }
+                } tuning(host.lua);
+                static_assert(offsetof(bsp::GameTuningBlock, pilot_general_cruising_alt) == 0x53c);
+                static_assert(offsetof(bsp::GameTuningBlock,
+                    pilot_general_drop_all_equipment_percent) == 0x5f4);
+                bsp::PilotBotSettingsNative defaults;
+                bsp::cc15_seg48_pilot_bot_settings_init_007f2bd0(&defaults, tuning);
+                // The slot fields are the live block used by the existing Lua
+                // setters, altitude/speed laws, avoidance and ordnance issue.
+                slot->sq_timer_expiry_37c = defaults.countdowns_00[0];
+                slot->sq_timer_expiry_380 = defaults.countdowns_00[1];
+                slot->sq_timer_expiry_384 = defaults.countdowns_00[2];
+                slot->sq_timer_expiry_388 = defaults.countdowns_00[3];
+                slot->sq_freeze_38c = defaults.frozen_10[0] != 0;
+                slot->sq_freeze_38d = defaults.frozen_10[1] != 0;
+                slot->sq_freeze_38e = defaults.frozen_10[2] != 0;
+                slot->sq_freeze_38f = defaults.frozen_10[3] != 0;
+                slot->sq_drop_all_bomb_percent_390 = defaults.drop_all_equipment_percent_14;
+                slot->sq_alt_394 = defaults.travel_altitude_18;
+                slot->sq_alt_398 = defaults.attack_altitude_1c;
+                slot->sq_alt_39c = defaults.release_altitude_20;
+                slot->sq_speed_3a0 = defaults.travel_speed_24;
+                slot->sq_avoid_3a4 = defaults.avoidance_mask_28;
+                slot->sq_lock_3a9 = defaults.locks_2d[0] != 0;
+                slot->sq_lock_3aa = defaults.locks_2d[1] != 0;
+                slot->sq_lock_3ab = defaults.locks_2d[2] != 0;
+                slot->sq_lock_3ac = defaults.locks_2d[3] != 0;
+                slot->sq_lua_alt_3ad = defaults.enable_altitude_randomization_31 == 0;
+                slot->set_force_release_3ae(defaults.force_release_32 != 0);
+                host.done("PlaneSquadron::pilot_settings_init", 0x007f2bd0u);
+            }
+        } else {
+            // The existing GameUnitSlot member defaults supply the old state.
+        }
         GameUnitRow& row = slot->row;
         row.name = entity.name;
         row.class_name = entity.class_name;
@@ -28511,11 +28560,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // ON (bsp::kPlaneIssueThresholdZeroCc13Bound, packet
                             // cc13-issuea0): 0079CD36 writes the camera that
                             // 0079CBD0 builds, not this block. The block is
-                            // memset at new(414h). The only writer of its +390h
-                            // is the Lua native 008A1F40
-                            // SquadronSetDropAllBombPercent (008A2091), so the
-                            // value is the squadron's authored percent, 0.0
-                            // unless a script sets it.
+                            // initialized at new(414h). Chain 564 now runs its
+                            // 007F2BD0 constructor, which seeds +390h from
+                            // tuning+5F4h (DropAllEquipmentPercent). 008A1F40
+                            // SquadronSetDropAllBombPercent (008A2091) then
+                            // replaces that value when a script requests it.
                             if constexpr (bsp::kPlaneIssueThresholdZeroCc13Bound) {
                                 const GameUnitSlot* const sq390 =
                                     owner_.squadron_slot_of(slot_.process_index);

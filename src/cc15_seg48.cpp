@@ -741,7 +741,7 @@ void cc15_seg48_plane_squadron_save_to_archive_007f1160(void* squadron, void* wr
 // (enablealtrnd) = 1, floats +0h..+Ch = -1.0 ([00D7A260]), bytes +10h..+13h = 0, float
 // +14h = tuning+5F4h (the tuning getter called again; FLD/FSTP), bytes +32h and +2Ch = 0.
 // ---------------------------------------------------------------------------
-void* cc15_seg48_pilot_bot_settings_init_007f2bd0(void* settings, Cc15Seg48Host& host) {
+void* cc15_seg48_pilot_bot_settings_init_007f2bd0(void* settings, PilotBotSettingsInitHost& host) {
     const std::uint32_t altitude = rd<std::uint32_t>(host.game_tuning_get_singleton_0042e740(), 0x53C);
     at<std::uint32_t>(settings, 0x20) = altitude;
     at<std::uint32_t>(settings, 0x18) = altitude;
