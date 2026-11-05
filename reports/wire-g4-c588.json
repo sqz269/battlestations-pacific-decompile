@@ -1,0 +1,104 @@
+{
+  "chain": 588,
+  "slot": "g4-w3",
+  "run": 1213,
+  "switch": "bsp::kWireGoal4Chain588Bound",
+  "picked": "Actual D619A0 surface name and saved-format accessors in destruction and reset",
+  "newly_wired": ["00b3ccf0", "00b3cd00"],
+  "rows": [
+    {
+      "native": "00b3ccf0",
+      "status": "wired",
+      "host_site": "src/native_surface_owner.cpp:destroy_native_surface_00b3f4e0 via actual_surface_name",
+      "evidence": "bsp.py show 00b3ccf0 returns receiver+10h. D619A0 vtable slot 4 points to this entry. bsp.py show 00b3f4e0 releases the two-word name at owner+10h after COM retirement; offsetof(NativeSurfaceOwnerStorage, name_10)==10h is asserted.",
+      "behavior": "Replace the existing normal and exception-path name selection with the existing accessor on the same actual owner. The returned pointer names the original live NativeString subobject; release still runs exactly once on each path and uses the same string domain. OFF arms retain the original calls.",
+      "abi": "Existing Win32 __fastcall uint32 receiver/address result interface matches the pointer-width arithmetic. This is source composition with the actual subobject, not new gameplay or foreign-unwind ABI proof."
+    },
+    {
+      "native": "00b3cd00",
+      "status": "wired",
+      "host_site": "src/native_surface_owner.cpp:recreate_native_surface_00b3d550",
+      "evidence": "bsp.py show 00b3cd00 reads receiver+18h. D619A0 vtable slot 6 points to this entry. bsp.py show 00b3d550 selects the device method using owner+30h and supplies the saved DWORD at +18h as D3DFORMAT; the exact field offset is asserted.",
+      "behavior": "Both render-target and depth/stencil reset branches obtain their existing saved format through the existing getter on the same surface owner. Width, height, multisample, method choice, COM output slot and binary constants are unchanged. The old direct-field implementation is preserved in the OFF arm.",
+      "abi": "Existing Win32 __fastcall const-void receiver and full DWORD result compose with the typed surface owner and D3DFORMAT. No layout projection or fabricated format is introduced."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_publication.cpp:published frame-clock consumers",
+      "reason": "No live consumer of the previous timestamp at clock+30h was established; publication currently consumes current and interval timestamps."
+    },
+    {
+      "native": "00b3ce90",
+      "status": "skipped",
+      "host_site": "src/native_texture_2d_owner.cpp:actual D61948 texture owner",
+      "reason": "No live semantic consumer of the D61948 owner+30h DWORD was established; a matching field offset alone does not establish a useful getter call."
+    },
+    {
+      "native": "00b3e370",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp:pool allocation candidate",
+      "reason": "The entry has no indexed original callers and its owning two-word record was not identified on a live path; do not substitute an unrelated array merely because the arithmetic matches."
+    },
+    {
+      "native": "00b3e380",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp:pool allocation candidate",
+      "reason": "No original callers or identified live owning record for the +4h decrement were established."
+    },
+    {
+      "native": "00b3d650",
+      "status": "skipped",
+      "host_site": "src/native_texture_loading_cache.cpp:cube texture creation",
+      "reason": "The live cache uses the distinct named cube constructor B3CED0; a real unnamed-cube production route is still missing and cannot replace that named lifetime."
+    },
+    {
+      "native": "00b3d720",
+      "status": "skipped",
+      "host_site": "src/native_runtime_volume_texture_creation.cpp:create_native_runtime_volume_texture_00b2a5a0",
+      "reason": "Its reconstructed runtime-volume caller already invokes the body, but that producer still needs a game-entry-reachable real volume request route."
+    },
+    {
+      "native": "00b34320",
+      "status": "skipped",
+      "host_site": "src/native_texture_loading_cache.cpp:logical texture candidate",
+      "reason": "No indexed original callers or proven live owner class for the +0Ch byte accessor were established."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:WeaponDirector::make_command_target",
+      "reason": "The body still embeds reads of original mutable absolute globals F87574/F87578/F8757C; live reconstructed backing and a real command-target output owner are missing."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:clear_movie_subtitles",
+      "reason": "The host uses a subtitle schedule rather than the actual raw movie owner and its subtitle containers/text bindings required by this body."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:scripted-name baseline",
+      "reason": "The live baseline adapter does not establish the raw game teardown tree/vector and full SweepA3Host Lua/string cleanup contract."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:check_multiplayer_player_count",
+      "reason": "Multiplayer player-count checking is outside the single-player wiring scope."
+    }
+  ],
+  "validation": {
+    "baseline_commit": "84c916dd1cae827c501b6f661383abdd9ea5fc47",
+    "baseline_readiness_wired": 9918,
+    "final_readiness_wired": 9920,
+    "call_sites": {"00b3ccf0": 1, "00b3cd00": 2},
+    "build": "scripts/build.ps1 passed all five test groups: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config and cc464_vfs_stream_reader.",
+    "graph": "Standard linked executable calls both entries from the changed surface code, with linker identical-code-folding aliases. call_graph.py --build additionally produced build/callgraph without inlining or identical-code folding: who reports exactly one reachable tail call to B3CCF0 from actual_surface_name and two reachable calls to B3CD00 from recreate_native_surface_00b3d550. Both path queries reach WinMainCRTStartup through the real surface destruction/device-reset routes.",
+    "readiness": "wire_readiness.py --standins reports both addresses state=wired and called=true, with 1 and 2 call sites respectively; it used the fresh build/callgraph executable.",
+    "float_math": "Unchanged; pc24_lint not applicable.",
+    "tests_added": 0,
+    "boundary": "Build, existing tests and static linked entry reachability only; the game was not launched and gameplay/visual/native foreign-unwind ABI equivalence is not claimed."
+  }
+}
