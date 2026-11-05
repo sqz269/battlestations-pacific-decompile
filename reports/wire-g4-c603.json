@@ -1,0 +1,103 @@
+{
+  "goal": 4,
+  "chain": 603,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain603Bound",
+  "rows": [
+    {
+      "native": "00be10a0",
+      "status": "wired",
+      "host_site": "src/native_vfs_search_groups.cpp: Payload::construct, called by register_native_vfs_search_group_value_00be2310",
+      "details": "Replace the inline construction of the actual 20h temporary payload with the existing constructor body, borrowing the normalized group header and the application's ActualNativeStringPoolStorage. The constructor allocates both real pooled-list sentinels, leaves list owner words untouched, and owns partial-construction cleanup. The outer payload guard acquires its members only after success."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_owner.cpp: delete_native_point_light_00b7c850; src/native_point_light_storage_lifetime.cpp: delete_native_point_light_storage_00b7c850",
+      "reason": "Missing linked entry-reachable PointLight deletion consumer: the trial built executable contained neither the return wrapper nor either scalar-deletion body; all PointLight trial edits were removed."
+    },
+    {
+      "native": "00b3dce0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_owner.cpp: delete_native_cube_texture_00b3f410",
+      "reason": "The CubeTexture file and addresses were leased concurrently by agent/g4-w4 for chain604; the claim was refused and no CubeTexture edits were made."
+    },
+    {
+      "native": "00bac2b0",
+      "status": "skipped",
+      "host_site": "src/native_tracer_lifetime.cpp: delete_native_tracer_00bacb90",
+      "reason": "The tracer lifetime file and addresses were leased by agent/g4-w4 during selection; no tracer edits were made."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_publication.cpp: published clock accessors",
+      "reason": "Missing actual previous-timestamp consumer: the inspected publication accessors consume current and interval timestamps, while the previous getter is only named in the profile table."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: metadata publication",
+      "reason": "Missing linked submission caller in the inspected path: a source call exists, but the metadata setter is absent from the built game executable."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp and camera query host candidates",
+      "reason": "Missing a bound original FOV-times-aspect consumer in the inspected live host paths; identified query sites remain abstract callbacks or unreachable shadow fitting."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ControlledUnit listener publication",
+      "reason": "Missing the exact driven-listener pointer and live renderer root binding; the inspected host only records a bool-based listener publication."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a single-player controller snapshot producer and routed snapshot consumer; the host mention is provenance for flattened flags."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "Missing the actual weapon-animation timed-entry owner; the available animation callback records an interval without a live GuiHudTickerRange."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/cc13_small1.cpp and src/frontend_seg19_21_cc13.cpp: renderer value224 callbacks",
+      "reason": "Missing a live implementation of the renderer value224 setter callback with the actual render-service receiver."
+    },
+    {
+      "native": "00b0ea70",
+      "status": "skipped",
+      "host_site": "src/scene_weather_cc13.cpp: underwater-wave parameters callback",
+      "reason": "Missing the live ScenePostProcessHost implementation and its actual render-service receiver."
+    },
+    {
+      "native": "00b17310",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB3.cpp and src/cc13_sweepB5.cpp: material_set_alpha_ref callback",
+      "reason": "Missing a live implementation of the inspected sweep host's material alpha-reference setter."
+    }
+  ],
+  "evidence": {
+    "constructor": "00BE10C7..00BE112B initializes and copies the actual name, then constructs sentinels/counts at +0C/+10 and +18/+1C without changing +8/+14.",
+    "original_call": "00BE2450 in the original registration body calls 00BE10A0 on the normalized group and actual temporary payload.",
+    "failure_cleanup": "EHHandler 00CC67D3 selects FuncInfo 00E00E70; unwind map 00E00E60 maps state1 to 00CC67C8 (+8 list -> 004D2640) and state0 to 00CC67C0 (base string -> 0041DD20). The prior callback-only constructor omitted these cleanups.",
+    "single_body": "The existing engine_services_cc13 constructor is reused and its C++ interface now accepts the raw source header and actual pooled storage; no second body was added."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed, with reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passing.",
+    "native_probe": "local/output/vfs_group_probe.exe passed using the reconstructed actual string pool: nonempty name deep-copy, distinct self-linked empty sentinels, preserved opaque owner words, payload teardown and pool shutdown.",
+    "probe_link": "MSVC x86 /MD, /link /MANIFEST:EMBED; local/output/vfs_group_probe.cpp and vfs_group_probe.rsp retain the focused probe source and command.",
+    "call_graph": "00BE10A0 is REACHABLE with one call site from register_native_vfs_search_group_value_00be2310 in the built bsp_game.exe.",
+    "entry_path": "WinMain -> application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> register_phase2_search_defaults -> 00738360 -> 00BE25E0 -> 00BE2310 -> 00BE10A0",
+    "wire_readiness": {"before": 9936, "after": 9937, "target_called": true, "target_call_sites": 1},
+    "float_math": "No float arithmetic changed; pc24_lint is not applicable.",
+    "limits": "Build, source/native-probe and executable call-graph evidence only. Allocation-failure behavior was checked against assembly/unwind metadata, not fault-injected. No game launch or native binary/SEH ABI compatibility claim."
+  },
+  "left": "PointLight needs a genuine linked owner lifecycle before its wrapper can count; remaining search-group copy construction still uses separate inline raw code. CubeTexture work belongs to chain604."
+}

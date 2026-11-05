@@ -1,7 +1,8 @@
 // Segments 96-97 leaves with a reviewed ledger name and no reconstruction record (cc13-files1).
 // Reconstructed and build-tested only: not ABI-compatible, not fixture- or game-validated, and not
 // wired except for the explicitly adopted stream-reference calls and
-// 00BDD520's flagged-mount query (chain 519).
+// 00BDD520's flagged-mount query (chain 519) and 00BE10A0's actual search-group
+// payload construction (chain 603).
 // See docs/CC13_FILES_1.md and the address notes in
 // bsp/engine_services_cc13.hpp.
 
@@ -13,6 +14,9 @@
 #include "bsp/native_vfs_mount_records.hpp"
 #include "bsp/native_string_byte_append.hpp"
 #include "bsp/native_string_vector_lookup.hpp"
+#include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_render_resource_record_construction.hpp"
+#include "bsp/native_vfs_request_list_lifetime.hpp"
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
@@ -23,6 +27,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <exception>
 #include <new>
 #include <stdexcept>
 
@@ -1146,13 +1151,32 @@ void filestore_pending_equal_range_00be5bb0(NativeContainerHeader& tree, NativeI
     result[1] = {&tree, hi};
 }
 
-void* construct_search_group_payload_00be10a0(void* payload, const NativeString& name, NativeStringStorage& strings,
-                                              EngineServiceCalls& calls) {
-    construct_string_copy(string_at(payload, 0), name, strings);
-    field<void*>(payload, 0x0C) = calls.allocate_pooled_string_list_head_004c3020();
-    field<std::uint32_t>(payload, 0x10) = 0;
-    field<void*>(payload, 0x18) = calls.allocate_pooled_string_list_head_004c3020();
-    field<std::uint32_t>(payload, 0x1C) = 0;
+void* construct_search_group_payload_00be10a0(void* payload, const void* name,
+                                              ActualNativeStringPoolStorage& strings) {
+    // BE10C7..BE10EF: initialize even on self-copy, then copy the actual
+    // header through the original resize/memcpy fragment. A copy failure
+    // precedes EH state 0 and does not release an incomplete base string.
+    field<std::uint32_t>(payload, 0) = 0;
+    field<void*>(payload, 4) = nullptr;
+    copy_native_string_header_00be0a30_fragment(payload, strings, name);
+    bool first_list_complete = false;
+    try {
+        field<void*>(payload, 0x0C) = allocate_native_render_alias_sentinel_004c3020();
+        field<std::uint32_t>(payload, 0x10) = 0;
+        first_list_complete = true; // BE1108 arms EH state 1.
+        field<void*>(payload, 0x18) = allocate_native_render_alias_sentinel_004c3020();
+        field<std::uint32_t>(payload, 0x1C) = 0;
+    } catch (...) {
+        // FuncInfo E00E70, unwind map E00E60: state1 -> CC67C8
+        // (first list), then state0 -> CC67C0 (base string). The old
+        // callback-only body omitted this constructor failure cleanup.
+        try {
+            if (first_list_complete)
+                destroy_native_vfs_string_list_004d2640(bytes(payload) + 8, strings);
+            destroy_native_string_header_0041dd20(payload, strings);
+        } catch (...) { std::terminate(); }
+        throw;
+    }
     return payload;
 }
 
