@@ -1,4 +1,5 @@
 #include "bsp/native_resource_pointer_array.hpp"
+#include "bsp/wire_goal4_chain571_switches.hpp"
 
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
@@ -77,7 +78,9 @@ void resize_native_resource_item_pointers_00b873c0(void* header,
     std::int32_t requested) {
     resize_pointers(header, requested);
 }
-void resize_native_hierarchy_item_pointers_00b87410(void* header,
+// Keep the native resize boundary visible to the built call graph; this body
+// now receives the live StructuredHierarchyItems triplet through its destructor.
+__declspec(noinline) void resize_native_hierarchy_item_pointers_00b87410(void* header,
     std::int32_t requested) {
     resize_pointers(header, requested);
 }
@@ -85,6 +88,14 @@ void destroy_native_resource_item_pointers_00b87b20(void* header) {
     destroy_pointers(header);
 }
 void destroy_native_hierarchy_item_pointers_00b87b40(void* header) {
-    destroy_pointers(header);
+    if constexpr (kWireGoal4Chain571Bound) {
+        // bsp.py show 00B87B40: call 00B87410(0), then free the current
+        // backing pointer. Pass the same actual header, including signed
+        // count/capacity and the resize-before-free behavior on negative capacity.
+        resize_native_hierarchy_item_pointers_00b87410(header, 0);
+        singleton_lifetime_free(reinterpret_cast<void*>(word(header)));
+    } else {
+        destroy_pointers(header);
+    }
 }
 } // namespace bsp
