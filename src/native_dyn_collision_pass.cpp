@@ -1,5 +1,6 @@
 #include "bsp/native_dyn_collision_pass.hpp"
 #include "bsp/dyn_task_manager.hpp"
+#include "bsp/wire_goal4_chain613_switches.hpp"
 #include <intrin.h>
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -8,9 +9,9 @@
 namespace bsp {
 namespace {
 using U=std::uint32_t;
-struct Context {const AvoidZoneDynHullMemory* memory;NativeDynCollisionPassCalls* calls;void* const* profile_slot;void* const* engine_slot;const AvoidZoneDynHullMemory* profile_memory;};
+struct Context {const AvoidZoneDynHullMemory* memory;NativeDynCollisionPassCalls* calls;void* const* profile_slot;void* const* engine_slot;const AvoidZoneDynHullMemory* profile_memory;const NativeDynCollisionPassContext* owner;};
 static_assert(std::is_standard_layout_v<Context> && offsetof(Context,profile_slot)==8 && offsetof(Context,engine_slot)==12);
-Context bind(const NativeDynCollisionPassContext& c){return {&c.memory,&c.calls,c.profile.profile_slot_0109e9f8,c.engine_slot_0109e9fc,&c.profile.memory};}
+Context bind(const NativeDynCollisionPassContext& c){return {&c.memory,&c.calls,c.profile.profile_slot_0109e9f8,c.engine_slot_0109e9fc,&c.profile.memory,&c};}
 void* __cdecl allocate_bridge(U site,Context* c,U size){return c->calls->allocate_00bf55be(site,size,*c->memory);}
 void __cdecl free_bridge(U site,Context* c,void* p){c->calls->free_00bf6989(site,p,*c->memory);}
 void* __cdecl append_bridge(Context* c,DynProfileNodeStorage* p,const char* name,U id){return dyn_profile_node_append_child_00c50390(*p,name,id,*c->profile_memory);}
@@ -48,6 +49,27 @@ __declspec(naked) void update_shim(){
         push dword ptr [esp+0ch]
         call update_kernel
         ret 8
+    }
+}
+// bsp.py show 00c57070 --asm: 00C5756C consumes [scene+B0h], and
+// 00C57827 consumes the scene itself. Preserve those actual records and
+// the caller's borrowed services. The private Context's new tail member
+// leaves every assembly-visible field offset unchanged.
+void __stdcall update_route(Context* c,void* pool){
+    if constexpr(kWireGoal4Chain613Bound){
+        update_native_dyn_manifolds_00c549d0(pool,*c->owner);
+    }else{
+        __asm {push pool}
+        __asm {push c}
+        __asm {call update_shim}
+    }
+}
+void __stdcall events_route(void* scene){
+    if constexpr(kWireGoal4Chain613Bound){
+        dispatch_native_dyn_contact_events_00c35480(scene);
+    }else{
+        __asm {push scene}
+        __asm {call events_kernel}
     }
 }
 __declspec(naked) void remove_shim(){
@@ -649,7 +671,7 @@ __declspec(naked) void pass_kernel(){
         mov eax, dword ptr [ebp + 0b0h] // 00c57565
         push eax // 00c5756b
         push dword ptr [esp+228] // Borrowed context; original frame offsets retained.
-        call update_shim // 00c5756c
+        call update_route // 00c5756c
         mov byte ptr [esp + 0d4h], 0 // 00c57571
         push dword ptr [esp+224] // Borrowed context; original frame offsets retained.
         call timestamp_00c57579 // 00c57579
@@ -904,7 +926,7 @@ __declspec(naked) void pass_kernel(){
         mov dword ptr [eax + 4], ecx // 00c57823
     l_00c57826:
         push ebp // 00c57826
-        call events_kernel // 00c57827
+        call events_route // 00c57827
         push dword ptr [esp+224] // Borrowed context; original frame offsets retained.
         call timestamp_00c5782c // 00c5782c
         sub eax, dword ptr [esp + 0b0h] // 00c5782e
@@ -1378,13 +1400,13 @@ void refresh_native_dyn_manifold_00c4b9b0(void* manifold){
     __asm {mov edx,manifold}
     __asm {call refresh_kernel}
 }
-void update_native_dyn_manifolds_00c549d0(void* pool,const NativeDynCollisionPassContext& c){
+__declspec(noinline) void update_native_dyn_manifolds_00c549d0(void* pool,const NativeDynCollisionPassContext& c){
     Context context=bind(c);auto* p=&context;
     __asm {push p}
     __asm {push pool}
     __asm {call update_kernel}
 }
-void dispatch_native_dyn_contact_events_00c35480(void* scene){
+__declspec(noinline) void dispatch_native_dyn_contact_events_00c35480(void* scene){
     __asm {push scene}
     __asm {call events_kernel}
 }
