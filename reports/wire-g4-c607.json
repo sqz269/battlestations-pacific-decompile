@@ -1,0 +1,130 @@
+{
+  "chain": 607,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain607Bound",
+  "rows": [
+    {
+      "native": "00b86780",
+      "status": "wired",
+      "host_site": "src/game_native_gui_group_application.cpp: GameNativeGuiGroupApplication::create_root",
+      "details": "Use the existing Group factory with the caller's actual native name, canonical 010902F4 pool and renderer-owned node constants; adopt its constructed node/tail into the existing canonical Group owner without rerunning B8F5E0. Preserve the original allocation/construction block in the switch else arm.",
+      "evidence": "bsp.py show 00b86780: D63220 slot04 factory -> B8F450 -> B8F5E0, null result on null slot; existing factory cleanup returns a constructor-failure slot through B8EEB0.",
+      "call_site": "103061e9 -> 104f4e90",
+      "entry_path": "WinMainCRTStartup -> GameStartupHost::application_initialize -> run_initialize_phases -> prepare_native_gui_text_resources -> GameNativeGuiRenderApplication::prepare_text_in_open_shader_cache -> GameNativeGuiGroupApplication::create_root -> create_native_resource_group_00b86780"
+    },
+    {
+      "native": "00b866c0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_model.inc: GameNativeMissionModel::Impl::materialize_bone_node / bind_matrix_bones",
+      "reason": "Already called from entry-reachable bind_matrix_bones before this packet; the readiness source-text state misses the included mission-model file, so no new wiring is needed."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: delete_native_point_light_storage_00b7c850 (candidate)",
+      "reason": "Missing an entry-reachable actual point-light construction/lifetime route; the existing raw pool-return body is absent from the compiled graph, and native B7B600 callers are constructor-unwind sites."
+    },
+    {
+      "native": "00b7c850",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: NativePointLightStorageReference::delete_scalar_00b7c850 (candidate)",
+      "reason": "Missing an entry-reachable producer of the actual point-light owner and its canonical storage context; this deletion address is not linked in the baseline game."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: delete_native_particle_model_00af7f40 (candidate)",
+      "reason": "Missing a reached native particle-model/effect producer and actual F8D2D0-backed owner; its original caller is the 008742A0 constructor-unwind path."
+    },
+    {
+      "native": "00af7f40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference lifetime (candidate)",
+      "reason": "Missing an entry-reachable native particle-model owner and lifetime access; the deletion address is not linked in the baseline game."
+    },
+    {
+      "native": "00b0b5d0",
+      "status": "skipped",
+      "host_site": "src/native_particle_tracer_state.cpp: tracer resource initialization (candidate)",
+      "reason": "Missing a reached tracer-state initializer with its actual tracer resource publication and pool; do not manufacture a resource owner merely to run the accessor."
+    },
+    {
+      "native": "00b7b610",
+      "status": "skipped",
+      "host_site": "src/native_light_lifetime.cpp: directional-light storage deletion",
+      "reason": "Already source-wired behind chain599 with canonical static-pool selection; no missing source edge is addressed by this Group-factory packet."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: set_native_directional_light_shadow_owner_00b7bdf0 (candidate)",
+      "reason": "Missing an entry-reachable shadow-owner construction/context route; this setter is not linked in the baseline game."
+    },
+    {
+      "native": "008740e0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: construct_effect_light_instance_008740e0 (candidate)",
+      "reason": "Missing a reached native effect-instance producer and same-owner point-light bindings; the constructor requires the real effect component and owning unit."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values / assign_native_animation_values_00b926e0 (candidate)",
+      "reason": "Missing a reached native skinned-animation-item producer owning the actual 30h-record vector; the existing reserve calls live in unreached native animation readers."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20 (candidate)",
+      "reason": "Missing a compiled call to the reserve body with the live distortion-record array; the source-level resize edge alone does not prove the reserve body executes."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_camera_store_owner.cpp: release_native_gui_scene_00b72250 (candidate)",
+      "reason": "Missing a reached caller supplying the required NativeGuiSceneOwner; the existing native GUI scene path uses a different ownership interface."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint (candidate)",
+      "reason": "Missing the pre-load checkpoint comparison/current-key owner; checkpoint_differs still returns false and cannot authorize clearing a real BSP_Chk_Save entry."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit screen reset (candidate)",
+      "reason": "Missing real producers and retained ownership for screen+30h selection mode, +C4h selection vector, and +C0h/+D4h reset fields."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target (candidate)",
+      "reason": "Missing publication of genuine writable F87574/F87578/F8757C command-target defaults required by the literal absolute-address body; semantic command targets cannot substitute those cells."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field / terrain and TGA RamImage consumers (candidate)",
+      "reason": "Missing a reached actual RamImage owner in the terrain/TGA consumers; calling the generic getter on unrelated storage would not wire the native pixel-buffer accessor."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed: MSVC Win32 Release and all five CTests",
+    "diff_check": "git diff --check passed",
+    "switch_off_preservation": "Original allocation/construction block compared byte-for-byte against HEAD and retained in else arm",
+    "called_before": 5011,
+    "called_after": 5012,
+    "newly_called": ["00b86780"],
+    "readiness_source_wired_before": 9940,
+    "readiness_source_wired_after": 9940,
+    "readiness_group_row": {
+      "state": "callees_done_no_wired_caller",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1,
+      "note": "The source-text reachability heuristic does not promote this native GUI application call; the compiled call graph proves the new edge."
+    },
+    "limits": "Compiled entry reachability only; no game run, original FH3 execution, or drop-in binary ABI claim. No floating-point arithmetic changed."
+  }
+}

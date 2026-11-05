@@ -7,7 +7,10 @@
 #include "bsp/game_native_type_storage.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_camera_owner.hpp"
+#include "bsp/native_resource_builtin_factories.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
+#include "bsp/wire_goal4_chain607_switches.hpp"
+#include <cstddef>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -119,6 +122,24 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
         "native GUI Group requires its same live unattached canonical Text Model");
     Impl::Entry entered(p);
     try {
+        if constexpr (kWireGoal4Chain607Bound) {
+            // 00B86780 (D63220 slot04): B8F450 selects the actual 010902F4
+            // pool, then B8F5E0 constructs the group with this caller's name.
+            // Adopt that same completed slot; do not run B8F5E0 a second time.
+            p.environment.pool_010902f4.require_static_binding();
+            p.name_entered = true;
+            p.name.assign_0041e870(p.environment.nodes.require_raw_name_pool(), name);
+            p.name_entered = false; p.name_live = true;
+            auto* const constructed = create_native_resource_group_00b86780(&p.name,
+                p.environment.nodes.require_raw_name_pool(), *p.environment.raw_node_constants);
+            p.actual = constructed;
+            require(p.actual != nullptr, "native GUI Group factory returned null");
+            p.admission = p.renderer.actual_owners().prepare_binding(p.actual);
+            NativeGroupStorageView storage{*constructed,
+                *reinterpret_cast<NativeGroupTailStorage*>(
+                    reinterpret_cast<std::byte*>(constructed) + sizeof(NativeNodeStorage))};
+            p.owner = std::make_unique<NativeGroupOwner>(storage, p.environment);
+        } else {
         p.actual = p.environment.pool_010902f4.allocate_raw_slot_00b8f310();
         require(p.actual != nullptr, "native GUI Group pool returned null");
         p.admission = p.renderer.actual_owners().prepare_binding(p.actual);
@@ -127,6 +148,7 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
         p.name.assign_0041e870(p.environment.nodes.require_raw_name_pool(), name);
         p.name_entered = false; p.name_live = true;
         construct_native_group_00b8f5e0(*p.owner, &p.name, *p.environment.raw_node_constants);
+        }
         p.name_live = false; p.name_release_entered = true;
         destroy_native_string_header_0041dd20(&p.name, p.environment.nodes.require_raw_name_pool());
         p.name_release_entered = false;
@@ -139,7 +161,14 @@ NativeGroupReference& GameNativeGuiGroupApplication::create_root(const char* nam
         p.log.notef("native GUI Group ready: group=%p text_model=%p pool=010902F4 constructor=B8F5E0",
             p.actual, &model.storage.node);
         return *p.reference;
-    } catch (...) { p.fail(p.child ? 0x00b6e680 : 0x00b8f5e0); throw; }
+    } catch (...) {
+        if constexpr (kWireGoal4Chain607Bound) {
+            p.fail(p.child ? 0x00b6e680 : 0x00b86780);
+        } else {
+            p.fail(p.child ? 0x00b6e680 : 0x00b8f5e0);
+        }
+        throw;
+    }
 }
 void GameNativeGuiGroupApplication::detach_text() {
     auto& p = *impl_;
