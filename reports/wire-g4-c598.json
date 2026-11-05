@@ -1,0 +1,149 @@
+{
+  "chain": 598,
+  "slot": "g4-w5",
+  "switch": "bsp::kWireGoal4Chain598Bound",
+  "summary": "Route the existing animated texture-source process bootstrap through the complete C30460 descriptor wrapper, using the same canonical target and type-ID domain.",
+  "baseline_head": "08f56d7d8c",
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed",
+    "built_reconstructed_addresses_called_before": 5003,
+    "built_reconstructed_addresses_called_after": 5004,
+    "readiness_text_wired_before": 9932,
+    "readiness_text_wired_after": 9932,
+    "readiness_new_row": "00c30460: called=true, call_sites=1, callers_live=1; text state remains callees_done_no_wired_caller because the text reachability model does not recognize this GameNativeTypeStorage bootstrap path",
+    "call_site": "104d7b01: GameNativeTypeStorage::initialize_texture_source_types -> initialize_native_animated_texture_source_type_00c30460",
+    "child_call_site": "105ce819: initialize_native_animated_texture_source_type_00c30460 -> NativeTextureSourceTypeIds::initialize_animated_texture_source_00c30360",
+    "entry_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> qualify_vfs_physical_read_owner -> GameNativeVfsApplication::initialize_core -> Impl::initialize_core -> GameNativeTypeStorage::initialize_texture_source_types -> C30460",
+    "float_math_changed": false,
+    "proof_boundary": "Build/tests and static entry-reachable calls only; no game execution or new original-caller ABI compatibility claim."
+  },
+  "rows": [
+    {
+      "native": "00c30460",
+      "status": "wired",
+      "host_site": "src/game_native_type_storage.cpp:GameNativeTypeStorage::initialize_texture_source_types",
+      "evidence": "bsp.py show 00c30460 --asm: PUSH ESI; MOV ESI,ECX; CALL C30360; MOV EAX,ESI; POP ESI; RET. The existing body captures the target, calls C30360 once and returns that same target after successful initialization.",
+      "state": "Uses the actual animated_texture_0109e9d4_ descriptor and the existing NativeTextureSourceTypeIds with the same live guards, parent descriptors, process counter and common-root bootstrap. Replaces the direct C30360 call at its original position, after texture-source initialization. The returned descriptor is unused here. The old direct call runs only in the OFF arm; no double initialization was added."
+    },
+    {
+      "native": "00c30310",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp:GameNativeTypeStorage::initialize_texture_source_types",
+      "reason": "Already called from the entry-reachable process bootstrap in the fresh baseline graph; no new wiring needed."
+    },
+    {
+      "native": "00c30360",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp:GameNativeTypeStorage::initialize_texture_source_types",
+      "reason": "Already entry-reachable at baseline; retained as the single child call of C30460 rather than claimed as another new address."
+    },
+    {
+      "native": "00b19c70",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_type_ids.cpp:NativeTextureSourceTypeIds::initialize_texture_source_00c30310",
+      "reason": "Already entry-reachable through the real texture-source initializers at baseline; no new wiring needed."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp:delete_native_gui_button_00aa3d10",
+      "reason": "The mapped GuiButtonPoolTraits free body already has a live call in baseline readiness; a new alias would not add execution."
+    },
+    {
+      "native": "00aad1c0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool<GuiMoviePoolTraits>::free",
+      "reason": "The mapped Movie pool free specialization already has a live call in baseline readiness; no missing wiring to replace."
+    },
+    {
+      "native": "00ab2150",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool<GuiIconPoolTraits>::free",
+      "reason": "The mapped Icon pool free specialization already has a live call in baseline readiness; no missing wiring to replace."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp:create_native_gui_button_default_00aa4440/create_native_gui_button_copy_00aa4440",
+      "reason": "The default/copy factories have no production caller; a live raw Button type-table factory dispatch is missing."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp:create_native_gui_scrollbar_default_00aa15c0/create_native_gui_scrollbar_copy_00aa15c0",
+      "reason": "The default/copy factories have no production caller; a live raw Scrollbar type-table factory dispatch is missing."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "The message reader already directly invokes this reserve; no live single-player message35 producer was established."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "The message reader already directly invokes this resize; no live single-player message35 producer was established."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp:append_values/assign_native_animation_values_00b926e0",
+      "reason": "The animation-value helpers already directly call this reserve; missing an established live skinned-animation-item parser/owner path."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:resize_native_distortion_records_00b4ee20",
+      "reason": "Resize already directly calls reserve, while its live destructor path requests zero; missing a real growing distortion-record producer."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:submit_native_main_scene_00b101c0",
+      "reason": "The reconstructed main-scene submission already directly invokes this body; no additional live submission producer was established."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:submit_native_main_scene_00b101c0",
+      "reason": "The reconstructed main-scene submission already directly invokes this body; no additional live submission producer was established."
+    },
+    {
+      "native": "00b197e0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_construction.cpp:construct_registry_body",
+      "reason": "B1AA70's original body stores D5E594 directly and has no D5E550 base-profile store; adding this constructor would introduce an extra native-state write."
+    },
+    {
+      "native": "00b197f0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_destroy.cpp:destroy_native_resource_registry_00b1b5f0",
+      "reason": "The live tree registry has distinct tree cleanup and reset semantics; no actual D5E550 base-only scalar-deletion caller was established."
+    },
+    {
+      "native": "00b1aa70",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_construction.cpp:construct_native_resource_registry_00b1b6e0",
+      "reason": "The live singleton wrapper already directly invokes this constructor; no missing call to add."
+    },
+    {
+      "native": "00b1b6e0",
+      "status": "skipped",
+      "host_site": "src/native_singleton_publication.cpp:get_native_resource_registry_00b1b730",
+      "reason": "Already wired by chain594 at the real singleton creation site; no new call to add."
+    },
+    {
+      "native": "00ba7180",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b9bb_16i.cpp:bsp_tagged_b9bb_00ba7180",
+      "reason": "The raw +30h getter has no source consumer; its actual owner and original live consumer were not established in this bounded investigation."
+    },
+    {
+      "native": "00bc3030",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_bcbd_16k.cpp:bsp_tagged_bcbd_16k_00bc3030",
+      "reason": "The raw +14h getter has no source consumer; its actual owner and original live consumer were not established in this bounded investigation."
+    }
+  ]
+}

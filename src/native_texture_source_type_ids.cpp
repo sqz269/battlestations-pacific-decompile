@@ -65,7 +65,8 @@ void NativeTextureSourceTypeIds::initialize_texture_source_00c30310(
     }
 }
 
-void NativeTextureSourceTypeIds::initialize_animated_texture_source_00c30360(
+// C30460 calls this complete body; retain that native call boundary too.
+__declspec(noinline) void NativeTextureSourceTypeIds::initialize_animated_texture_source_00c30360(
     volatile NativeShaderAnimatedTextureSourceTypeDescriptor& target) {
     if (storage_.animated_guard_0109e9c1 == 0) {
         storage_.animated_guard_0109e9c1 = 1;
@@ -78,7 +79,9 @@ void NativeTextureSourceTypeIds::initialize_animated_texture_source_00c30360(
     }
 }
 
-volatile NativeShaderAnimatedTextureSourceTypeDescriptor*
+// Preserve the complete existing wrapper as a distinct call from the process
+// bootstrap, including its capture-before-initialize/return-after-success order.
+__declspec(noinline) volatile NativeShaderAnimatedTextureSourceTypeDescriptor*
 initialize_native_animated_texture_source_type_00c30460(
     volatile NativeShaderAnimatedTextureSourceTypeDescriptor& target,
     NativeTextureSourceTypeIds& types) {
