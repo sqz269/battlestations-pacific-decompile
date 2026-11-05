@@ -1,0 +1,165 @@
+{
+  "goal": 4,
+  "chain": 552,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain552Bound",
+  "scope": "AI group command type projection at live initial-command and planner creation sites",
+  "rows": [
+    {
+      "native": "00a0fce0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::initial_command_for",
+      "evidence": "Existing NONCONTROL vt+4h leaf returns the native zero constant; actual group party and admission state select the profile, and cmd.type feeds the installed group command."
+    },
+    {
+      "native": "00a0fd80",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::initial_command_for",
+      "evidence": "Existing IDLE vt+4h leaf returns native class id 1; actual admitted party selects it, replacing the host enum assignment for the installed command."
+    },
+    {
+      "native": "00a0fe90",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_capture_group_00a1a720 and defend_issue_position_00a2be20",
+      "evidence": "bsp.py show 00A0FE90 and 00A2BE20: D22A38 DEFENDPOSITION profile, native vt+4h returns 11; the returned type replaces the host constant and feeds the installed command's tick and IsType consumers."
+    },
+    {
+      "native": "00a10470",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::issue_patrol_point_00a2c310, order_capture_group_00a1a720 and defend_issue_patrol_00a2c310",
+      "evidence": "bsp.py show 00A10470 and 00A2C310: D22B3C PATROLTO profile, native vt+4h returns 12; the return value selects the existing live tick for the actual group and destination."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Missing a live selecting producer: the only current caller passes ratio 1.0, so the stream-1 fraction cannot select CAUTIOUSMOVE; the temporary retained adapter was removed instead of claiming a static-only call."
+    },
+    {
+      "native": "00a10370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl command installation",
+      "reason": "No current producer installs REGROUPINGMOVE in this host; the inspected occurrences are command predicates and its tick consumer."
+    },
+    {
+      "native": "00a31000",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate CAUTIOUSMOVE producer",
+      "reason": "Debug-only group overlay has no rel32 caller or absolute reference and is outside the single-player wiring scope."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl planning records",
+      "reason": "Missing native-style score-list producer and consumer; current capture planning owns separate assignment vectors, so a parallel sorted table would not replace gameplay logic."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl planning records",
+      "reason": "Missing actual AiGroupScoreList entries consumed by group planning; marking a newly fabricated auxiliary list would have no gameplay consumer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall queue_call; src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing the frame-job-thread enqueue producer and its actual source LuaVariantRecord argument vector; current host named calls do not take that deferred arm."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director state bindings",
+      "reason": "Missing controller-state message transport and consumer; this host uses live director fields directly rather than constructing or routing ControllerStateMessage objects."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing actual ControllerStateMessage producer and routed ControllerSnapshotMessage consumer; copying current flattened flags into and back out of a temporary would only round-trip."
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage graphics state",
+      "reason": "Missing part-instance damage-state vector and its byte-length producer; the host damaged_gfx_level value is not the native +16C/+170 vector span."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit health initialization",
+      "reason": "Missing canonical class-part descriptor, live unit-part pointer vector, part-set/model ownership and required native dispatch providers; scalar host HP is insufficient for this complete initializer."
+    },
+    {
+      "native": "00b18b40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: register_matrices",
+      "reason": "The matching actual matrix sources exist, but their 00AF74A0 particle constructor is not linked from the current game entry; replacing its generic registration would only add an unreachable call."
+    },
+    {
+      "native": "00af74a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: construct_native_particle_model_00af74a0",
+      "reason": "Missing an entry-reachable application producer for this complete particle constructor and its required construction context."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_icon_application.cpp: register_parameter",
+      "reason": "Inspected live icon parameters have one or four words, not the required three-word source; no matching live float3 registration site was selected."
+    },
+    {
+      "native": "00b86390",
+      "status": "skipped",
+      "host_site": "src/native_mesh_section.cpp: destroy_section_body",
+      "reason": "The current destructor already executes the same clear_section_resources_body used by this wrapper; a wrapper-only reroute would not replace missing behavior."
+    },
+    {
+      "native": "00b33e50",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b3_06.cpp: candidate native texture getter",
+      "reason": "Its evidenced callers are ocean coverage/height upload/render-resource paths with no selected live application receiver; unrelated +14 field loads are not valid substitutes."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No matching entry-reachable caller consuming the actual camera FOV/aspect product was found; adding an unused getter call would not replace host work."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: close_sound_system_00a7e240",
+      "reason": "The existing typed close body already calls this cleanup, but that sound-owner runtime path is not linked in the baseline; no separate live retained-pointer replacement site was selected."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: destroy_sound_configured_group_storage_00a7bfe0",
+      "reason": "No new replacement site selected: existing raw sound-array destructor callers already implement this address; adding the typed alternative alongside them would duplicate destruction."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: destroy_sound_configured_type_storage_00a7c6c0",
+      "reason": "No new replacement site selected: existing raw sound-array destructor callers already implement this address; adding the typed alternative alongside them would duplicate destruction."
+    }
+  ],
+  "validation": {
+    "baseline_readiness_wired": 9878,
+    "final_readiness_wired": 9882,
+    "readiness_baseline": "Original HEAD source and final source recounted against the same refreshed index: all four selected rows changed from callees_done_no_wired_caller to wired, with called=true in the built final executable. The earlier stale-index initial count was 9879.",
+    "baseline_entry_reachable_reconstructed_addresses_called": 4961,
+    "final_entry_reachable_reconstructed_addresses_called": 4963,
+    "call_graph": {
+      "00a0fce0": "initial_command_for call 10058B10; reachable, folded with other identical zero-return leaves",
+      "00a0fd80": "initial_command_for call 10058AFD; reachable, folded with other identical one-return leaves",
+      "00a0fe90": "defend_issue_position_00a2be20 call 10053DD2; order_capture_group_00a1a720 call 1005B71A; reachable",
+      "00a10470": "defend_think_00a28a60 call 10055622; mode_think_apply call 10059FB0; order_capture_group_00a1a720 call 1005B801; reachable",
+      "folding_note": "Four newly named leaf bodies are called from changed source sites. The default optimized link folds the zero/one leaves with already reachable code, so its reconstructed-address-called total rises by two."
+    },
+    "build": "scripts/build.ps1 passed; all five existing CTest checks passed",
+    "float_math": "No float arithmetic changed; command owner, destination and route state are untouched.",
+    "abi": "Existing no-argument C++ projections of native thiscall leaves; native ECX is unused. No new body, object layout or binary replacement ABI.",
+    "runtime": "Game not run, as instructed; build call-graph evidence is static entry reachability, not observed gameplay."
+  }
+}

@@ -65,6 +65,7 @@
 #include "bsp/wire_goal4_chain474_switches.hpp"
 #include "bsp/wire_goal4_chain490_switches.hpp"
 #include "bsp/wire_goal4_chain544_switches.hpp"
+#include "bsp/wire_goal4_chain552_switches.hpp"
 #include "bsp/wire_goal4_chain541_switches.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_seg69.hpp"
@@ -2364,7 +2365,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     bsp::AiCommandObject initial_command_for(Group* g) const {
         bsp::AiCommandObject cmd;
         const int slot = g->party;
+        if constexpr (bsp::kWireGoal4Chain552Bound) {
+            // The group constructor chooses the native NONCONTROL/IDLE
+            // profile from this party's actual admission state (00A2E0F1..140).
+            // Project its vt+4h result with the existing class leaf. These
+            // leaves only return their binary constants; they never read ECX.
+            const auto type = bsp::ai_command_initial_type(slot, party_admitted(slot));
+            cmd.type = type == bsp::AiCommandType::Idle
+                ? bsp::ai_command_idle_get_type_00a0fd80()
+                : bsp::ai_command_non_control_get_type_00a0fce0();
+        } else {
         cmd.type = bsp::ai_command_initial_type(slot, party_admitted(slot));
+        }
         cmd.owner_group = g;
         return cmd;
     }
@@ -4463,6 +4475,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         return bsp::band009f::ai_team_weighted_centroid_00a1ca60(leaders);
     }
+    // Chain 552: the command-creation sites below project the selected native
+    // class through its original vt+4h leaf instead of storing a host enum.
+    // bsp.py show 00A0FE90 / 00A10470: MOV EAX,0Bh/0Ch; RET, no object read.
+    // 00A2BE20 installs D22A38 (DEFENDPOSITION), and 00A2C310 installs D22B3C
+    // (PATROLTO). The result feeds this group's existing command tick and
+    // IsType consumers. New C++ ABI; numeric image vtables are never invoked.
     // 00A2C310(group)(point): kept when 00A2C230 answers (PATROLTO within 1.0),
     // else a new PATROLTO (new(14h)) installed through 00A2BD00.
     void issue_patrol_point_00a2c310(Group* g, const float point[3]) {
@@ -4472,7 +4490,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
+        if constexpr (bsp::kWireGoal4Chain552Bound) {
+            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
+        } else {
         c.type = bsp::AiCommandType::PatrolTo;
+        }
         c.owner_group = g;
         for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
         if constexpr (bsp::kWireGoal4Chain544Bound) {
@@ -5328,7 +5350,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return 3;
             if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
             bsp::AiCommandObject c;
+            if constexpr (bsp::kWireGoal4Chain552Bound) {
+                c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
+            } else {
             c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
+            }
             c.owner_group = g;
             if constexpr (bsp::kWireGoal4Chain544Bound) {
                 replace_command(g, c);
@@ -5350,7 +5376,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
+        if constexpr (bsp::kWireGoal4Chain552Bound) {
+            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
+        } else {
         c.type = bsp::AiCommandType::PatrolTo;
+        }
         c.owner_group = g;
         c.target_position[0] = ex;
         c.target_position[1] = ey;
@@ -6003,7 +6033,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return;
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
+        if constexpr (bsp::kWireGoal4Chain552Bound) {
+            c.type = bsp::ai_command_defend_position_get_type_00a0fe90();
+        } else {
         c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
+        }
         c.owner_group = g;
         if constexpr (bsp::kWireGoal4Chain544Bound) {
             replace_command(g, c);
@@ -6029,7 +6063,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         units.unit_position_00fc(anchor, ex, ey, ez);
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
+        if constexpr (bsp::kWireGoal4Chain552Bound) {
+            c.type = bsp::ai_command_patrol_to_get_type_00a10470();
+        } else {
         c.type = bsp::AiCommandType::PatrolTo;   // vtable 00D22B3C
+        }
         c.owner_group = g;
         c.target_position[0] = ex;
         c.target_position[1] = ey;
