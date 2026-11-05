@@ -530,7 +530,7 @@ Raw hud_befogo_marker_construct_0063e950(Raw marker, void* page, HudScreenHost& 
 // 00640C80: the four marker-pool vectors (+34h, +4Ch, +5Ch, +6Ch: their
 // begin/end/capacity words cleared), the +90h vector, and the map at +A4h whose
 // head node (0063B110) is self-linked with its +11h "is nil" byte set.
-Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head) {
+Raw hud_markers_construct_00640c80(Raw s, HudScreenBaseHost& host, void* tree_head) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;
     for (std::size_t off : {0xCu, 0x10u, 0x14u}) s.at<std::uint32_t>(off) = 0;

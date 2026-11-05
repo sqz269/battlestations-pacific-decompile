@@ -400,7 +400,7 @@ void powerup_manager_refresh_second_rows_00619ae0(void* screen, Seg25Host& host)
 #pragma warning(pop)
 
 // 0061A480 __thiscall(screen), RET: powerup-manager constructor.
-void* powerup_manager_construct_0061a480(void* screen, Seg25Host& host) {
+void* powerup_manager_construct_0061a480(void* screen, PowerupManagerConstructHost& host) {
     Raw s = raw(screen);
     host.frontend_construct_004f7180(screen);
     s.at<std::uint32_t>(0x8) = 0x00CF4C3Cu;

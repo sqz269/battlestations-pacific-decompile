@@ -129,6 +129,60 @@
    "status": "wired",
    "host_site": "src/game_hosts_hud.cpp HudLeafFe5Binding::widget_quad_fade_construct_0064a4f0 (00608E60)",
    "body": "hud_widget_quad_fade_construct_0064a4f0 (00608E60 +16Ch member, HudLeafFe5Binding)"
+  },
+  {
+   "native": "00640c80",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "hud_markers_construct_00640c80 (tree head 0063B110 bought by the host)"
+  },
+  {
+   "native": "006735d0",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "support_manager_screen_construct_006735d0"
+  },
+  {
+   "native": "005c0810",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "hud_minimap_screen_construct_005c0810"
+  },
+  {
+   "native": "00538e30",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "hud_formation_construct_00538e30"
+  },
+  {
+   "native": "00540ba0",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "free_camera_construct_00540ba0"
+  },
+  {
+   "native": "005401f0",
+   "status": "wired",
+   "host_site": "src/frontend_seg15_22_cc13.cpp free_camera_construct_00540ba0 (from run_hud_leaf_screen_constructor in src/game_hosts_hud.cpp)",
+   "body": "free_camera_construct_effect_lists_005401f0 (from 00540BA0)"
+  },
+  {
+   "native": "005ce610",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "movie_camera_debug_construct_005ce610"
+  },
+  {
+   "native": "0061a480",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor (HudInitBinding::construct_screen under bsp::init_in_game_interface_0068cc70)",
+   "body": "powerup_manager_construct_0061a480"
+  },
+  {
+   "native": "0093cb10",
+   "status": "wired",
+   "host_site": "src/game_hosts_hud.cpp HudLeafSeg15Binding::simple_3d_scene_construct_0093cb10 (00538E30)",
+   "body": "simple_3d_scene_construct_0093cb10 (00538E30's +8h member)"
   }
  ]
 }

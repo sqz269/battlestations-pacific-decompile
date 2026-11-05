@@ -33,7 +33,13 @@ struct FrontEndScreenConstructHost {
     virtual void frontend_construct_004f7180(void* screen) = 0;
 };
 
-struct Seg25Host : FrontEndScreenConstructHost {
+// 0061A480, 0068CC70's powerup-manager leaf: the screen base and the
+// containers' head-node allocators.
+struct PowerupManagerConstructHost : FrontEndScreenConstructHost {
+    virtual void* container_buy_head_node(std::uint32_t function, void* container) = 0;
+};
+
+struct Seg25Host : PowerupManagerConstructHost {
     virtual ~Seg25Host() = default;
     // Address of an image global's storage (00E188A8, 00E198C4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -136,7 +142,7 @@ void powerup_manager_destroy_00618ea0(void* screen, Seg25Host& host);
 std::int32_t powerup_manager_get_screen_id_00619160() noexcept;
 void powerup_manager_collect_children_00619170(void* screen, void* children, Seg25Host& host);
 void powerup_manager_refresh_second_rows_00619ae0(void* screen, Seg25Host& host);
-void* powerup_manager_construct_0061a480(void* screen, Seg25Host& host);
+void* powerup_manager_construct_0061a480(void* screen, PowerupManagerConstructHost& host);
 void powerup_manager_tick_second_fade_0061aff0(void* screen, float dt, Seg25Host& host);
 void powerup_manager_on_listener_refresh_0061b840(void* listener, Seg25Host& host);
 void rewards_screen_on_widget_hover_0061c800(void* screen, void* widget, bool hovered, Seg25Host& host);

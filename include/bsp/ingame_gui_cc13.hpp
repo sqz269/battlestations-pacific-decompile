@@ -45,7 +45,8 @@ struct HudObserverReferenceHost {
 };
 
 // The leaf constructors 0068CC70 runs whose only call is the front-end screen
-// base 004F7180 (0067BE30, 00643DA0, 00650140, 00650B00). The HUD host binds
+// base 004F7180 (0067BE30, 00643DA0, 00650140, 00650B00, and 00640C80, whose
+// tree head 0063B110 its caller supplies). The HUD host binds
 // them over its own native screen storage without the GUI services.
 struct HudScreenBaseHost {
     virtual ~HudScreenBaseHost() = default;
@@ -402,7 +403,7 @@ struct HudMarkerCloneHost {
 };
 Raw hud_name_marker_construct_0063e1c0(Raw marker, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
 Raw hud_befogo_marker_construct_0063e950(Raw marker, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
-Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head);
+Raw hud_markers_construct_00640c80(Raw s, HudScreenBaseHost& host, void* tree_head);
 
 // ---------------------------------------------------------------------------
 // Observer references: an object whose +14h holds one observed pointer.

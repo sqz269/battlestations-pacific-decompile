@@ -1307,7 +1307,12 @@ void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host);
 // HUD map and minimap object pools (batch 3)
 // ---------------------------------------------------------------------------
 
-struct MapPoolHost {
+// 005C0810, 0068CC70's minimap leaf: the screen base and its tree head 005BDD40.
+struct MinimapConstructHost : FrontEndScreenConstructHost {
+    virtual void* tree_buy_head_node_005bdd40(void* tree) = 0;
+};
+
+struct MapPoolHost : MinimapConstructHost {
     virtual ~MapPoolHost() = default;
     virtual void invalid_iterator_00bf6713() = 0;
     virtual void delete_object(void* object) = 0;  // (*vtable[0])(1)
@@ -1340,7 +1345,7 @@ void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, 
 // the icon map at +F8h (head from 005BDD40, nil byte +15h, size +100h = 0); and
 // the vector/array words +108h..+110h, +118h..+120h, +128h..+130h,
 // +138h..+140h, +148h..+150h, +180h, +184h zeroed.
-void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host);
+void* hud_minimap_screen_construct_005c0810(void* screen, MinimapConstructHost& host);
 
 // Two-page registers (batch 3). Page names read from the image.
 //   005E1820 MultiGameLobby: "FE_lobby" (00CF242C) -> +14h, "FE_lobby_settings"

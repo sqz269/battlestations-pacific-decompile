@@ -1680,7 +1680,7 @@ void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, 
     host.update_unit_icon_005adda0(screen, *slot);
 }
 
-void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host) {
+void* hud_minimap_screen_construct_005c0810(void* screen, MinimapConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x08, 0x00CE3CD4u);
     for (std::size_t offset : {0x0Cu, 0x10u, 0x14u}) write_field<std::uint32_t>(screen, offset, 0);

@@ -57,6 +57,8 @@
 #include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
 #include "bsp/seg25_cc13.hpp"                // 0060FD90
 #include "bsp/view_seg14_cc13.hpp"           // 0051E950
+#include "bsp/seg27_cc13.hpp"                // 006735D0
+#include "bsp/cc13_left61.hpp"               // 0093CB10, 00538E30's scene member
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
 
@@ -325,6 +327,116 @@ private:
     HudLeafScreenStorage& screen_;
 };
 
+// The STL head-node allocators (_Buyheadnode) the leaf constructors call for
+// their embedded containers. Each row was read from its listing (bsp.py show
+// <routine> --asm): operator new(size) 00BF681B, then a list head stores its
+// own address at +0h/+4h, or a tree head clears +0h/+4h/+8h and stores 1 at
+// isnil-1 (colour) and 0 at isnil. The constructor then links a tree head to
+// itself and sets isnil, as the native _Tree constructor does.
+struct HudHeadNodeShape {
+    std::uint32_t routine;
+    std::uint8_t size;
+    std::uint8_t isnil;  // 0: a list head
+};
+constexpr HudHeadNodeShape kHudHeadNodeShapes[] = {
+    {0x0063B110u, 0x14, 0x11}, {0x006593A0u, 0x14, 0}, {0x00659B90u, 0x24, 0x21},
+    {0x00659B40u, 0x18, 0x15}, {0x00659480u, 0x0C, 0}, {0x00659550u, 0x0C, 0},
+    {0x006595C0u, 0x10, 0}, {0x00659350u, 0x14, 0}, {0x00659630u, 0x0C, 0},
+    {0x006596A0u, 0x1C, 0}, {0x0059FD60u, 0x0C, 0}, {0x004E79F0u, 0x14, 0},
+    {0x006596C0u, 0x0C, 0}, {0x004870F0u, 0x0C, 0}, {0x004C1630u, 0x0C, 0},
+    {0x00659760u, 0x1C, 0}, {0x00659EB0u, 0x18, 0x15}, {0x00659F40u, 0x20, 0x1D},
+    {0x005828E0u, 0x18, 0x15}, {0x00659F90u, 0x18, 0x15}, {0x005BDD40u, 0x18, 0x15},
+    {0x005359A0u, 0x18, 0x15}, {0x00535720u, 0x0C, 0}, {0x005356C0u, 0x0C, 0},
+    {0x0053DA70u, 0x3C, 0}, {0x005CC2E0u, 0x18, 0x15}, {0x005CC330u, 0x24, 0x21},
+    {0x00613AE0u, 0x1C, 0x19}, {0x00613B30u, 0x18, 0x15}, {0x00613860u, 0x0C, 0},
+};
+void* buy_hud_head_node(HudLeafScreenStorage& screen, std::uint32_t routine) {
+    for (const HudHeadNodeShape& shape : kHudHeadNodeShapes) {
+        if (shape.routine != routine) continue;
+        auto* const node = static_cast<std::uint8_t*>(screen.allocate_owned(shape.size));
+        if (shape.isnil == 0) {
+            std::memcpy(node, &node, sizeof(node));
+            std::memcpy(node + 4, &node, sizeof(node));
+        } else {
+            std::memset(node, 0, 0x0C);
+            node[shape.isnil - 1] = 1;
+            node[shape.isnil] = 0;
+        }
+        return node;
+    }
+    throw std::logic_error("HUD leaf screen head-node routine not read from its listing");
+}
+
+// 00640C80's tree head is bought by its caller here (the reconstruction takes
+// it as a parameter; natively 00640C80 calls 0063B110 itself at 00640D0D).
+void construct_hud_markers_leaf(HudLeafScreenStorage& screen) {
+    HudLeafGuiBaseBinding b(screen);
+    bsp::ingame_gui_cc13::hud_markers_construct_00640c80({screen.data()}, b,
+        buy_hud_head_node(screen, 0x0063B110u));
+}
+
+// 00538E30, 00540BA0 (with 005401F0) and 005CE610.
+class HudLeafSeg15Binding final : public bsp::frontend_seg15_22_cc13::Seg15LeafConstructHost {
+public:
+    explicit HudLeafSeg15Binding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void* operator_new_00bf681b(std::size_t bytes) override { return screen_.allocate_owned(bytes); }
+    void simple_3d_scene_construct_0093cb10(bsp::ingame_gui_cc13::Raw scene) override {
+        if (!screen_.contains(scene.p, 0x28))
+            throw std::logic_error("0093CB10 scene is not a member of this HUD screen");
+        bsp::cc13_left61::simple_3d_scene_construct_0093cb10({scene.p});
+    }
+    void* tree_buy_head_node_005359a0() override { return buy_hud_head_node(screen_, 0x005359A0u); }
+    void* list_buy_head_node(std::uint32_t routine) override { return buy_hud_head_node(screen_, routine); }
+    void* list_buy_head_node_0053da70() override { return buy_hud_head_node(screen_, 0x0053DA70u); }
+    void* tree_buy_head_node(std::uint32_t routine) override { return buy_hud_head_node(screen_, routine); }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 005C0810.
+class HudLeafMinimapBinding final : public bsp::cc13_fe1::MinimapConstructHost {
+public:
+    explicit HudLeafMinimapBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void* tree_buy_head_node_005bdd40(void* tree) override {
+        if (!screen_.contains(tree, 0x0C))
+            throw std::logic_error("005BDD40 tree is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, 0x005BDD40u);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 0061A480.
+class HudLeafPowerupBinding final : public bsp::seg25_cc13::PowerupManagerConstructHost {
+public:
+    explicit HudLeafPowerupBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void* container_buy_head_node(std::uint32_t function, void* container) override {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("0061A480 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, function);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 006735D0.
+class HudLeafSupportBinding final : public bsp::seg27_cc13::SupportScreenConstructHost {
+public:
+    explicit HudLeafSupportBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void* container_buy_head_node(std::uint32_t routine, void* container) override {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("006735D0 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, routine);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
     for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
         if (shape.construct == constructor) return shape;
@@ -332,11 +444,13 @@ const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t construc
 }
 
 // The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
-constexpr std::array<std::uint32_t, 20> kHudLeafScreenConstructors{{
-    0x0068A8A0u, 0x0051E950u, 0x005472F0u, 0x00608E60u, 0x00606470u,
-    0x0060CAE0u, 0x00650B00u, 0x00650140u, 0x0054F8C0u, 0x005CB0A0u,
+constexpr std::array<std::uint32_t, 27> kHudLeafScreenConstructors{{
+    0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005C0810u,
+    0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
+    0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CB0A0u,
     0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
-    0x00643DA0u, 0x0052B030u, 0x005EE440u, 0x005F9440u, 0x0067BE30u,
+    0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
+    0x005F9440u, 0x0067BE30u,
 }};
 bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
     return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
@@ -368,6 +482,13 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     case 0x00606470u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::plane_effects_construct_00606470(raw, b); return; }
     case 0x0060CAE0u:
     case 0x0068A8A0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::small_hud_screen_construct(small_hud_shape(constructor), raw, b); return; }
+    case 0x00640C80u: construct_hud_markers_leaf(screen); return;
+    case 0x00538E30u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::hud_formation_construct_00538e30(raw, b); return; }
+    case 0x00540BA0u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::free_camera_construct_00540ba0(raw, b); return; }
+    case 0x005CE610u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::movie_camera_debug_construct_005ce610(raw, b); return; }
+    case 0x005C0810u: { HudLeafMinimapBinding b(screen); bsp::cc13_fe1::hud_minimap_screen_construct_005c0810(p, b); return; }
+    case 0x0061A480u: { HudLeafPowerupBinding b(screen); bsp::seg25_cc13::powerup_manager_construct_0061a480(p, b); return; }
+    case 0x006735D0u: { HudLeafSupportBinding b(screen); bsp::seg27_cc13::support_manager_screen_construct_006735d0(raw, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");
