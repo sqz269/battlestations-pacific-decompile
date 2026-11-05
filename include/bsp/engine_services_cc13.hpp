@@ -31,6 +31,7 @@
 
 namespace bsp {
 class SingletonLifetimeDomain;
+class ActualNativeStringPoolStorage;
 }
 
 namespace bsp::engine_services_cc13 {
@@ -621,8 +622,10 @@ void filestore_pending_equal_range_00be5bb0(NativeContainerHeader& tree, NativeI
 // Search-group list (nodes 28h: next, prev, payload 20h = name string, two pooled string lists).
 // 00BE10A0 BSP_VfsSearchGroupPayload_Construct, __thiscall(ECX, const string*) RET 4: name copy, then
 // two list heads from 004C3020 at +0Ch and +18h with sizes +10h / +1Ch = 0.
-void* construct_search_group_payload_00be10a0(void* payload, const NativeString& name, NativeStringStorage& strings,
-                                              EngineServiceCalls& calls);
+// Actual eight-byte source header and actual pooled storage; owner words +8h
+// and +14h remain untouched. Failure unwinds only completed members.
+void* construct_search_group_payload_00be10a0(void* payload, const void* name,
+                                              ActualNativeStringPoolStorage& strings);
 // 00BE13E0 BSP_VfsSearchGroupPayload_CopyConstruct: name copy, then 004D48A0 on (+8h, src+8h) and
 // (+14h, src+14h).
 void* copy_search_group_payload_00be13e0(void* payload, const void* source, NativeStringStorage& strings,

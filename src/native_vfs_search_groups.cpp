@@ -1,4 +1,6 @@
 #include "bsp/native_vfs_search_groups.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/wire_goal4_chain603_switches.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_render_resource_alias_nodes.hpp"
@@ -69,16 +71,24 @@ struct Payload {
         if (state >= 0) destroy_native_string_header_0041dd20(bytes, strings);
     }
     void construct(const void* source) {
-        field<std::uint32_t>(bytes, 0) = 0;
-        field<char*>(bytes, 4) = nullptr;
-        copy_native_string_header_00be0a30_fragment(bytes, strings, source);
-        state = 0;
-        field<void*>(bytes, 0x0c) = allocate_native_render_alias_sentinel_004c3020();
-        field<std::uint32_t>(bytes, 0x10) = 0;
-        state = 1;
-        field<void*>(bytes, 0x18) = allocate_native_render_alias_sentinel_004c3020();
-        field<std::uint32_t>(bytes, 0x1c) = 0;
-        state = 2;
+        if constexpr (kWireGoal4Chain603Bound) {
+            // BE2450 calls BE10A0 on this actual temporary payload and the
+            // normalized group header. The constructor owns failure cleanup;
+            // this guard acquires all three members only after it returns.
+            engine_services_cc13::construct_search_group_payload_00be10a0(bytes, source, strings);
+            state = 2;
+        } else {
+            field<std::uint32_t>(bytes, 0) = 0;
+            field<char*>(bytes, 4) = nullptr;
+            copy_native_string_header_00be0a30_fragment(bytes, strings, source);
+            state = 0;
+            field<void*>(bytes, 0x0c) = allocate_native_render_alias_sentinel_004c3020();
+            field<std::uint32_t>(bytes, 0x10) = 0;
+            state = 1;
+            field<void*>(bytes, 0x18) = allocate_native_render_alias_sentinel_004c3020();
+            field<std::uint32_t>(bytes, 0x1c) = 0;
+            state = 2;
+        }
     }
 };
 
