@@ -2,8 +2,13 @@
   "run": 1281,
   "chain": 621,
   "branch": "agent/g4-w4",
-  "switch": "bsp::kWireGoal4Chain621Bound",
   "picked": "Material alpha-reference and parsed Effect priority stores on existing live owners",
+  "review": {
+    "run": 1285,
+    "round": 1,
+    "finding_1": "fixed: made both alpha-reference calls and the priority call unconditional; deleted fallback assignments, both switch includes, the switch header and obsolete report switch field.",
+    "checks": "scripts/build.ps1 and all four tests pass; rebuilt call graph confirms all three direct call sites remain reachable; wire_readiness.py --standins reports 9965 wired and called=true for both setters (two alpha-reference sites, one priority site). git diff --check and report JSON validation pass; no chain621 switch references remain."
+  },
   "wired_total": {
     "before": 9964,
     "after": 9965,
@@ -16,7 +21,7 @@
   },
   "validation": {
     "baseline": "Fresh index and scripts/build.ps1 passed, including all four tests; rebuilt call graph at base 7c2e41375d contained neither setter body.",
-    "build": "scripts/build.ps1 passed with all four tests after the changes.",
+    "build": "scripts/build.ps1 passed with all four tests after the initial wiring and again after review round 1 removed the switch and fallback assignments.",
     "call_graph": "Both existing reconstructed setter bodies have direct calls from entry-reachable production code in the rebuilt bsp_game.exe; readiness now reports called=true with two alpha-reference sites and one priority site.",
     "float_math": "No float arithmetic changed; raw DWORD copies preserve every source bit.",
     "limits": "Source interfaces over real Win32 owner storage; original binary ABI equivalence and live game behavior were not tested. No game was launched."

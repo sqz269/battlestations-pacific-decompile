@@ -4,7 +4,6 @@
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/scene_renderer_cc13.hpp"
-#include "bsp/wire_goal4_chain621_switches.hpp"
 #include <array>
 #include <charconv>
 #include <cstring>
@@ -152,18 +151,14 @@ std::uint8_t load_native_material_effect_programs_00b45ee0(NativeMaterialEffectS
     read_descriptor(frame, static_cast<NativeShaderDescriptorStorage*>(effect.descriptor_c4),
         name, 0x00b45f5e, context);
     auto& root = current_descriptor(effect);
-    if constexpr (kWireGoal4Chain621Bound) {
-        // 00B45F63..00B45F7B publishes descriptor+08 Priority to effect+B0
-        // before PipeID and any later mode-program work. 00B172E0 performs
-        // exactly that DWORD store on this same live effect. Keep raw bits
-        // across its signed source API. Evidence: bsp.py show 00b45ee0 /
-        // 00b172e0; descriptor is the actual just-read root, not a mode.
-        std::int32_t priority;
-        std::memcpy(&priority, &root.priority_08, sizeof(priority));
-        scene_renderer::set_effect_priority_00b172e0(&effect.base, priority);
-    } else {
-        effect.base.word_b0 = root.priority_08;
-    }
+    // 00B45F63..00B45F7B publishes descriptor+08 Priority to effect+B0
+    // before PipeID and any later mode-program work. 00B172E0 performs
+    // exactly that DWORD store on this same live effect. Keep raw bits
+    // across its signed source API. Evidence: bsp.py show 00b45ee0 /
+    // 00b172e0; descriptor is the actual just-read root, not a mode.
+    std::int32_t priority;
+    std::memcpy(&priority, &root.priority_08, sizeof(priority));
+    scene_renderer::set_effect_priority_00b172e0(&effect.base, priority);
     effect.base.word_ac = root.pipe_id_04;
     copy_native_string_header_00be0a30_fragment(&frame.stem, context.strings, name);
     const auto dot = reverse_find_native_string_bytes_004bcb80(frame.stem, ".", 0x7fffffff);
