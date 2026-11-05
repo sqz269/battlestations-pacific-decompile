@@ -104,6 +104,9 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
+#include "bsp/native_property_library_insert.hpp"
+#include "bsp/native_property_library_readers.hpp"
+#include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/wire_goal4_chain425_switches.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -2619,6 +2622,51 @@ int main() {
                 && untouched.blocks.size() == prior.blocks.size();
         }
         check(passed, "native child bags recurse for keep/overwrite, clone misses, retain empty children and reject raw leaves");
+    }
+
+    {
+        // Chain 620's ownership risk: replacing a library mapping must retire
+        // the old nested tree, retain the new one, and preserve a single node.
+        auto& pools = bsp::game::game_native_physical_pool_process();
+        pools.initialize_property_node_pool_once_00cc8a30();
+        pools.initialize_property_library_node_pool_once_00cc8a70();
+        auto& strings = bsp::game::game_native_string_process();
+        bsp::NativePropertyLibraryInsertContext insertion(strings, pools);
+        bsp::NativePropertyLibraryReaderContext readers(strings);
+        alignas(4) std::byte library[0x10c];
+        bsp::initialize_native_property_tree_library_storage_008f5670(library);
+        alignas(4) std::byte query[8];
+        bsp::construct_native_string_header_0041e870(query, strings.raw_context(), "Group");
+        bsp::game::SceneNumericPropertyMerge projection({}, {}, true);
+        std::vector<std::string> errors;
+        bsp::SceneLexer prior_text("{ Inner { Count = I 4 ; Text = S \"old\" ; } }");
+        bsp::SceneLexer next_text("{ Inner { Count = I 9 ; Text = S \"new\" ; } }");
+        const auto prior = bsp::parse_scene_property_block_008f5a00(prior_text, errors);
+        const auto next = bsp::parse_scene_property_block_008f5a00(next_text, errors);
+        void* first = projection.make_owned_complete_bag(prior);
+        void* second = projection.make_owned_complete_bag(next);
+        bool passed = errors.empty() && first != nullptr && second != nullptr && first != second;
+        passed = bsp::insert_or_replace_native_property_library_entry_008f29a0(
+            library + 4, query, first, insertion) == 1u && passed;
+        passed = bsp::insert_or_replace_native_property_library_entry_008f29a0(
+            library + 4, query, second, insertion) == 1u && passed;
+        void* mapped = reinterpret_cast<void*>(bsp::read_native_property_library_word_00469b60(
+            library, "gROUP", readers));
+        // Deliberately use old metadata: native mapped bytes must supply values.
+        const auto result = projection.read_complete_bag(mapped, prior);
+        passed = passed && mapped == second && result.blocks.size() == 1
+            && result.blocks[0].second.values.size() == 2
+            && result.blocks[0].second.values[0].integer_value == 9
+            && result.blocks[0].second.values[1].values == std::vector<std::string>{"new"};
+        auto unsupported = next;
+        unsupported.blocks[0].second.values[0].has_integer = false;
+        passed = projection.make_owned_complete_bag(unsupported) == nullptr && passed;
+        bsp::destroy_native_string_header_0041dd20(query, strings.raw_context());
+        bsp::destroy_native_property_tree_library_008f56a0(library, insertion.lifetime());
+        std::uint32_t count;
+        std::memcpy(&count, library + 8, sizeof(count));
+        check(passed && count == 0u,
+            "owning library replacement reads new native payloads, rejects raw trees and retires its map");
     }
 
     {

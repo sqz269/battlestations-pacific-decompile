@@ -1,0 +1,120 @@
+{
+  "goal": 4,
+  "chain": 620,
+  "slot": "g4-w1",
+  "base_head": "b49b34ac30",
+  "switch": "bsp::kWireGoal4Chain620Bound",
+  "scope": "Scene property-library group publication, native payload lookup and owning teardown",
+  "wired_total_before": 9954,
+  "wired_total_after": 9955,
+  "measurement_note": "wire_readiness states are lexical; all three selected native bodies have explicit entry-reachable calls in the Release exe. The aggregate lexical gain is one.",
+  "real_state": "The scene parser and parent merges supply each named group. Complete supported trees use existing native record producers in a fresh heap-owned 114h bag, the retained string process, E175B0 inner nodes, E17540 outer nodes and the real singleton CRT heap. Mapped native payloads are decoded for inheritance/entity defaults.",
+  "fallback": "Unsupported trees use parser-owned group data and never call owning insertion. A formerly supported tree remains owned but is marked unused after an unsupported reopening, until replacement or teardown. Non-ASCII group names retain source lookup.",
+  "validation": [
+    "./scripts/build.ps1: all 5 checks passed, including one focused native bag replacement/readback/cleanup case",
+    "python tools/call_graph.py: selected bodies REACHABLE from entry",
+    "python tools/call_graph.py who 008f29a0: LibraryOwningGroupNameIndex::publish call",
+    "python tools/call_graph.py who 008f56a0: owning library teardown",
+    "python tools/call_graph.py who 008f4c50: two calls from 008f56a0",
+    "git diff --check"
+  ],
+  "proof_boundary": "Built Win32 Release, fixture-tested and statically entry-reachable. No game run, original binary ABI, full parser coverage or gameplay parity claim.",
+  "rows": [
+    {
+      "native": "008f29a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryOwningGroupNameIndex::publish",
+      "evidence": "bsp.py show 008f29a0: root+4 map; replace retires old bag; insert copies key into E17540 slot. Input is a disjoint complete native bag derived from the actual group."
+    },
+    {
+      "native": "008f56a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryOwningGroupNameIndex::~LibraryOwningGroupNameIndex",
+      "evidence": "bsp.py show 008f56a0: root phase, owned map clear, member phase, second clear; index dies before its borrowed enum registry and process pools."
+    },
+    {
+      "native": "008f4c50",
+      "status": "wired",
+      "host_site": "src/native_property_tree_library_lifetime.cpp: destroy_native_property_tree_library_008f56a0, reached by owning group index teardown",
+      "evidence": "Existing clear body retires actual bag graphs, keys and E17540 nodes. Previously lexical wired; explicit reachable native-body calls now emitted."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit screen reset records",
+      "reason": "Missing actual HUD screen manager+CCh owner, C4h vector and input context adapter; current calls only record the reset."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list debug overlay",
+      "reason": "Missing single-player gameplay consumer; the documented candidate-list reader is the unreachable debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list debug overlay",
+      "reason": "Missing live gameplay-owned candidate-list entries and consumer; this list is documented as debug-only."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: weapon_animation / animation_interval",
+      "reason": "Missing actual weapon-animation timed-entry owner; weapon_animation returns zero and interval callback records only."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled-unit audio broadcast",
+      "reason": "Missing actual sound object and device-list state at unit+BBCh/+428h/+6B4h for the native broadcast."
+    },
+    {
+      "native": "00c56cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_local_matrix_006e00a0",
+      "reason": "Missing original-layout body/proxy/owner view in this pose path; current host publishes semantic motion rows rather than the required raw body."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: shape collision-mask route",
+      "reason": "Missing a concrete Cc13Dyn1Calls bridge for the actual shape/body world lock and manifold clearing; no shape bit-only substitution made."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "Missing identified live registration producer with the canonical world+1A0Ch Lua owner; existing wrapper alone does not establish entry wiring."
+    },
+    {
+      "native": "00af07e0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_manager.cpp: register_native_particle_model_00af0950",
+      "reason": "Missing identified live model-registration producer; changing its duplicated pointer append alone would leave that caller unlinked."
+    },
+    {
+      "native": "00c358a0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_convex_support.cpp: local_support_bridge",
+      "reason": "No missing call at this boundary: baseline call graph already reaches the canonical entry through chain611; no new wiring performed."
+    },
+    {
+      "native": "00c4c2a0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_sap_processing.cpp: process_native_dyn_sap_00c4c320",
+      "reason": "No missing source call at this boundary: pending processing already calls the canonical body, which is inlined in Release; no count-only noinline change made."
+    },
+    {
+      "native": "00c49a30",
+      "status": "skipped",
+      "host_site": "src/native_dyn_box_box.cpp: NativeDynBoxBoxRuntime::execute",
+      "reason": "Direct narrow-phase call is being handled under agent/g4-w3 chain622 ownership; existing runtime adapter already names the body."
+    },
+    {
+      "native": "00c44780",
+      "status": "skipped",
+      "host_site": "src/native_dyn_convex_ray.cpp: NativeDynConvexRayRuntime adapter",
+      "reason": "Missing an established new caller/state path beyond the existing runtime adapter in this packet; no duplicate ray body or count-only wrapper added."
+    }
+  ]
+}

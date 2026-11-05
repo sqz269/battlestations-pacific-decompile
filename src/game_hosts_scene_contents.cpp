@@ -13,6 +13,7 @@
 #include "bsp/wire_goal4_chain476_switches.hpp"
 #include "bsp/wire_goal4_chain480_switches.hpp"
 #include "bsp/wire_goal4_chain497_switches.hpp"
+#include "bsp/wire_goal4_chain620_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -40,6 +41,7 @@
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_property_library_lookup.hpp"
 #include "bsp/native_property_library_readers.hpp"
+#include "bsp/native_property_library_insert.hpp"
 #include "bsp/native_scene_name_node_holder.hpp"
 #include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
@@ -418,6 +420,109 @@ private:
     std::vector<void*> nodes_;
 };
 
+// Chain 620: the library name table now owns genuine native bags, rather than
+// placing host PropertyGroupDefinition pointers in a bag-owning operation.
+// Parser metadata supplies spelling/order and unsupported payloads; admitted
+// complete trees are read back from the mapped bag for inheritance/defaults.
+class LibraryOwningGroupNameIndex final {
+public:
+    LibraryOwningGroupNameIndex()
+        : strings_(game_native_string_process()), insertion_(strings_, pools()) {
+        initialize_native_property_tree_library_storage_008f5670(owner_);
+    }
+    ~LibraryOwningGroupNameIndex() {
+        // bsp.py show 008F56A0: whole root destruction clears map+4 twice.
+        // Retire bags/keys/nodes while both physical pools and strings survive.
+        destroy_native_property_tree_library_008f56a0(owner_, insertion_.lifetime());
+    }
+    LibraryOwningGroupNameIndex(const LibraryOwningGroupNameIndex&) = delete;
+    LibraryOwningGroupNameIndex& operator=(const LibraryOwningGroupNameIndex&) = delete;
+
+    static bool supports(const std::string& name) {
+        return name.size() < 0x7fffffffu && LibraryGroupNameIndex::supports(name);
+    }
+
+    void publish(PropertyGroupDefinition& group, SceneNativeEnumSource* enums) {
+        SceneNumericPropertyMerge projection({}, {}, true, enums);
+        std::unique_ptr<void, BagDeleter> incoming(
+            projection.make_owned_complete_bag(group.block),
+            BagDeleter{&insertion_.lifetime().bags()});
+        Query query(strings_, group.name.c_str());
+        if (!incoming) {
+            // A newly raw/unsupported group is read from the parser's record.
+            // Keep any previous admitted tree owned but unused until a later
+            // replacement or teardown; never publish a fabricated empty bag.
+            void* const node = find_node(query.bytes);
+            const auto previous = rows_.find(node);
+            if (previous != rows_.end()) previous->second.current = false;
+            return;
+        }
+        // These are the actual group's inherited/authored values. Consume
+        // native payloads before retaining host metadata for the readers.
+        group.block = projection.read_complete_bag(incoming.get(), group.block);
+        // bsp.py show 008F29A0: map is root+4; hit destroys the previous
+        // owning bag, miss allocates an E17540 node and copies the pooled key.
+        // The fresh graph is disjoint from the old mapping. Unsupported trees
+        // take the parser-owned path above, without calling this insertion.
+        // Source interface only; Original thiscall/RET8/FH3 is not asserted.
+        insert_or_replace_native_property_library_entry_008f29a0(
+            owner_ + 4, query.bytes, incoming.get(), insertion_);
+        incoming.release(); // The native map is now the sole bag owner.
+        void* const node = find_node(query.bytes);
+        if (node == nullptr) throw std::logic_error("published library group is missing");
+        rows_[node] = {group, true};
+    }
+
+    const PropertyGroupDefinition* find(const std::string& name,
+        SceneNativeEnumSource* enums) {
+        Query query(strings_, name.c_str());
+        void* const node = find_node(query.bytes);
+        if (node == nullptr) return nullptr;
+        auto found = rows_.find(node);
+        if (found == rows_.end()) throw std::logic_error("library group metadata is missing");
+        if (!found->second.current) return nullptr;
+        void* bag;
+        std::memcpy(&bag, static_cast<const std::byte*>(node) + 8, sizeof(bag));
+        SceneNumericPropertyMerge projection({}, {}, true, enums);
+        found->second.row.block = projection.read_complete_bag(bag, found->second.row.block);
+        return &found->second.row;
+    }
+
+private:
+    struct Query {
+        GameNativeStringProcess& strings;
+        alignas(4) std::byte bytes[8];
+        Query(GameNativeStringProcess& s, const char* text) : strings(s) {
+            construct_native_string_header_0041e870(bytes, strings.raw_context(), text);
+        }
+        ~Query() { destroy_native_string_header_0041dd20(bytes, strings.raw_context()); }
+    };
+    struct BagDeleter {
+        NativeScenePropertyLifetimeContext* lifetime;
+        void operator()(void* bag) const {
+            scalar_delete_native_scene_property_bag_008f59e0(bag, 1u, *lifetime);
+        }
+    };
+    static GameNativePhysicalPoolProcess& pools() {
+        auto& process = game_native_physical_pool_process();
+        process.initialize_property_node_pool_once_00cc8a30();
+        process.initialize_property_library_node_pool_once_00cc8a70();
+        return process;
+    }
+    void* find_node(const void* query) {
+        std::uint32_t bucket;
+        return find_native_property_library_node_00468ed0(owner_ + 4, query, bucket,
+            strings_.library_empty_00e18560(), strings_.query_empty_00e17654());
+    }
+
+    GameNativeStringProcess& strings_;
+    NativePropertyLibraryInsertContext insertion_;
+    alignas(4) std::byte owner_[0x10c];
+    // Stable node identities survive group-vector relocation and reopening.
+    struct Row { PropertyGroupDefinition row; bool current; };
+    std::map<void*, Row> rows_;
+};
+
 struct EnumTable {
     std::string name;
     std::map<std::string, int> symbols;
@@ -668,6 +773,18 @@ public:
     }
 
     const PropertyGroupDefinition* group(const std::string& name) const {
+        if constexpr (kWireGoal4Chain620Bound) {
+            if (LibraryOwningGroupNameIndex::supports(name)) {
+                if (owning_native_groups_ != nullptr) {
+                    if (const auto* row = owning_native_groups_->find(name, native_enum_source()))
+                        return row;
+                }
+            }
+            for (const PropertyGroupDefinition& row : groups_) {
+                if (equal_insensitive(row.name, name)) return &row;
+            }
+            return nullptr;
+        } else {
         if constexpr (kWireGoal4Chain476Bound) {
             if (LibraryGroupNameIndex::supports(name)) {
                 return native_groups_ != nullptr ? native_groups_->find(name) : nullptr;
@@ -682,6 +799,7 @@ public:
             if (equal_insensitive(row.name, name)) return &row;
         }
         return nullptr;
+        }
         }
     }
 
@@ -755,6 +873,8 @@ private:
     // Construct only in the ON library-load phase, not in the OFF host.
     std::unique_ptr<LibraryNativeEnums> native_enums_;
     std::unique_ptr<LibraryGroupNameIndex> native_groups_;
+    // Destroy owning bags before the enum registry whose type-4 records borrow it.
+    std::unique_ptr<LibraryOwningGroupNameIndex> owning_native_groups_;
 };
 
 // The bag an entity hands 0046c550 is built in two steps by 0046cf40. Step 6
@@ -927,11 +1047,19 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
         }
     }
     PropertyGroupDefinition* existing = nullptr;
+    if constexpr (kWireGoal4Chain620Bound) {
+        // The owning index returns stable snapshots decoded from its native
+        // bag. Reopening still updates the parser's original group record.
+        for (PropertyGroupDefinition& row : groups_) {
+            if (equal_insensitive(row.name, group.name)) { existing = &row; break; }
+        }
+    } else {
     if constexpr (kWireGoal4Chain476Bound) {
         existing = const_cast<PropertyGroupDefinition*>(this->group(group.name));
     } else {
     for (PropertyGroupDefinition& row : groups_) {
         if (equal_insensitive(row.name, group.name)) { existing = &row; break; }
+    }
     }
     }
     // 008F6A7F reopens the existing bag. 008F5AB3 captures each parent with
@@ -960,9 +1088,18 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
         group.block = std::move(captured);
         groups_.push_back(std::move(group));
     }
+    if constexpr (kWireGoal4Chain620Bound) {
+        auto& published = existing != nullptr ? *existing : groups_.back();
+        if (LibraryOwningGroupNameIndex::supports(published.name)) {
+            if (owning_native_groups_ == nullptr)
+                owning_native_groups_ = std::make_unique<LibraryOwningGroupNameIndex>();
+            owning_native_groups_->publish(published, native_enum_source());
+        }
+    } else {
     if constexpr (kWireGoal4Chain476Bound) {
         if (native_groups_ == nullptr) native_groups_ = std::make_unique<LibraryGroupNameIndex>();
         native_groups_->publish(groups_);
+    }
     }
 }
 

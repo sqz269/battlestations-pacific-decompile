@@ -213,6 +213,19 @@ public:
         return true;
     }
 
+    void* make_owned_complete_bag(const ScenePropertyBlock& source) {
+        if (!closed_tree(source)) return nullptr;
+        Bag root(context_.insertion(), true);
+        for (const auto& value : source.values) insert_into(root, value);
+        for (const auto& child : source.blocks) attach_tree(root, child.first, child.second);
+        return root.release_owned();
+    }
+
+    ScenePropertyBlock read_complete_bag(void* actual_bag,
+        const ScenePropertyBlock& metadata) {
+        return read_tree(actual_bag, nullptr, metadata);
+    }
+
 private:
     class MergedRecords final {
     public:
@@ -542,6 +555,12 @@ private:
         Bag(const Bag&) = delete;
         Bag& operator=(const Bag&) = delete;
         void* data() { return root_; }
+        void* release_owned() {
+            if (!owning_child_) throw std::logic_error("cannot transfer a stack scene bag");
+            void* result = root_;
+            root_ = nullptr;
+            return result;
+        }
         bool empty() const {
             // The genuine raw61 map starts at bag+4; its live count is +4.
             std::uint32_t count;
@@ -1001,6 +1020,15 @@ bool SceneNumericPropertyMerge::merge_child(const std::string& key,
     const ScenePropertyBlock* destination, const ScenePropertyBlock& source,
     ScenePropertyBlock& result) {
     return impl_->merge_child(key, destination, source, result);
+}
+
+void* SceneNumericPropertyMerge::make_owned_complete_bag(const ScenePropertyBlock& source) {
+    return impl_->make_owned_complete_bag(source);
+}
+
+ScenePropertyBlock SceneNumericPropertyMerge::read_complete_bag(void* actual_bag,
+    const ScenePropertyBlock& metadata) {
+    return impl_->read_complete_bag(actual_bag, metadata);
 }
 
 } // namespace bsp::game
