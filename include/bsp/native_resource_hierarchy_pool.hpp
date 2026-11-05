@@ -1,7 +1,7 @@
 #pragma once
+#include "bsp/native_material_pools.hpp"
 
 namespace bsp {
-class NativeMaterialParameterPool;
 
 // Bind the companion for the application's actual 38h hierarchy owner 109022C.
 // It must borrow THAT owner and the SAME AllocatorListDomain as other pools;
@@ -28,10 +28,13 @@ void destroy_static_native_hierarchy_pool_00ce0ed0() noexcept;
 
 // Complete B17AF0-B17B57, consuming the existing 88h return algorithm.
 // Original ECX initialized 38h pool, stack slot, RET 4. That entry also serves
-// material F8D3E4 callers; this explicit companion parameter preserves ownership.
+// material F8D3E4 callers; the explicit slot-return companion preserves ownership.
+// Borrow the same return provider already used by the caller's material lifetime
+// access. The application's provider is its concrete NativeMaterialParameterPool;
+// no second pool, parameter owner or payload cleanup is introduced here.
 // Lock BEFORE reading current slot+84; no field destructor or slab reclamation.
 void return_native_hierarchy_pool_slot_00b17af0(
-    NativeMaterialParameterPool& actual_initialized_pool, void* actual_slot) noexcept;
+    NativeMaterialParameterSlots& actual_initialized_pool, void* actual_slot);
 
 // New MSVC Win32 source interfaces. Companion references replace native raw
 // ECX/global selection; these are not binary ABI entry replacements. Require

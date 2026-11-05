@@ -1,0 +1,342 @@
+{
+  "chain": 569,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain569Bound",
+  "wired_before": 9895,
+  "wired_after": 9896,
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 5 tests before edits",
+    "build": "scripts/build.ps1 passed all 5 tests after edits",
+    "call_graph": "python tools/call_graph.py --build; analysis build with /Ob0 and /OPT:NOICF",
+    "native": "00b17af0",
+    "called": true,
+    "reachable_call_sites": 1,
+    "caller": "bsp::set_native_material_shader_00b19210",
+    "call_site": "106bc4d8",
+    "target": "106c9c10",
+    "entry_path": "WinMainCRTStartup -> GameStartupHost -> GameNativeGuiRenderApplication -> GameNativeTextApplication -> GUI text content -> set_native_material_shader_00b19210 -> return_native_hierarchy_pool_slot_00b17af0",
+    "readiness": "wire_readiness.py --standins: 9895 -> 9896 wired; 00b17af0 state=wired, called=true",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "evidence": [
+    "bsp.py show 00b19210: parameter name release precedes the original 00b17af0 call; loop reloads material+100h.",
+    "bsp.py show 00b17af0: lock the supplied initialized pool before reading slot+84h, then return the 88h slot.",
+    "game_native_gui_render_application.cpp constructs material lifetime access with game_native_material_process().parameter_pool_00f8d3e4().",
+    "Release linker folds the small return wrapper with unrelated thunks; the non-folded analysis build isolates the single material shader-reset call."
+  ],
+  "rows": [
+    {
+      "native": "00b17af0",
+      "status": "wired",
+      "host_site": "src/gui_text_material.cpp::set_native_material_shader_00b19210",
+      "reason": "Route the original 00B19210 shader-reset call through the existing 00B17AF0 entry using the same canonical F8D3E4 parameter-slot provider; the shared return algorithm executes once."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::mission teardown end-movie arm",
+      "reason": "Missing the native game/movie-screen owner and SoundLoadTransitionContext services for the five listener/update passes."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::PlaneFx reset_timer40 record",
+      "reason": "Missing a retained plane FX sub-block with the native +40 timer and its step consumer; the existing plane motion fields are a different object."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::WeaponDirector::make_command_target",
+      "reason": "Missing a live native command-target owner and mapped original absolute default-vector cells required by the literal entry."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::AirOpsBlock queue_squadron",
+      "reason": "Missing the complete native landing block, observer registrations and slot/message owners; the host uses a semantic landing sequencer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread named-call producer; this host executes mission Lua on the main thread and the deferred list is empty."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::run_class_table_resets_cc264",
+      "reason": "Missing a replacement class-cache reader: live Lua bindings still read StationaryClass lazily, so clearing it would remove their input."
+    },
+    {
+      "native": "0096ae90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::warning target cancellation",
+      "reason": "Missing the retained native proximity-effect handle and release provider; the host proximity record has only an effect_live flag."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::MissionEntry::check_multiplayer_player_count",
+      "reason": "The single-player entry does not provide the multiplayer participant/side-balance host and the original player-count gate excludes this path."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::PreloadBinding::push_effect_handle",
+      "reason": "Missing a live counted effect handle and vector owner: effect-name count is zero and acquire_effect_by_name remains unimplemented."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MenuUpdateBinding::mission_detail_back",
+      "reason": "Missing a concrete 00597870 mission-list builder with row/listbox services; page, campaign flags and selected mission alone cannot perform the effect."
+    },
+    {
+      "native": "00584f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MenuUpdateBinding::build_single_player_page",
+      "reason": "Missing the MainMenuListPageHost clone/listbox/command-bar services that publish real navigable rows."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SetSelectedUnit screen reset",
+      "reason": "Missing the native pick-screen selection-vector owner and selection-mode producer; the retained pick-screen model represents other fields."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group score-list path",
+      "reason": "Missing a gameplay candidate-score list owner and consumer; the documented image table reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group score-list path",
+      "reason": "Missing live candidate score-list entries to mark; the documented reader is a debug overlay."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp::gui_extent",
+      "reason": "The actual semantic inline gui_aspect_extent_00aa1fe0 is already called with live platform state; the readiness BSP_Gui_GetAspectExtent identifier is not a separate callable body."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::torpedo water-entry arm",
+      "reason": "Missing the native projectile visual shot owner and its retained effect handles; torpedo swimming state belongs to a different object."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::LibraryGroupNameIndex::publish",
+      "reason": "The current index maps borrowed PropertyGroupDefinition pointers, while this insertion body owns and deletes native property bags; their ownership contracts differ."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp::GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "Missing the canonical published native world Lua owner and a real enum registration caller for the existing wrapper."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane ground-state transition",
+      "reason": "Missing the native impulse vectors, matrix snapshot and active/timer owner; the current plane motion projection is not that impulse block."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "Missing the flak-alternate ammunition record producer, retained references and nested tree owner."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::unit command-building vector clear",
+      "reason": "Missing the native +660 vector owner and its 44-byte element lifetime services."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp::set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "Missing a live directional-light shadow-owner producer/caller in the application renderer path."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp::native_post_effect_pass_raw_08_00b4cb90",
+      "reason": "Missing a live native post-effect pass owner and original query consumer."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp::native_post_effect_pass_raw_18_00b4ec50",
+      "reason": "Missing a live native post-effect pass owner and original query consumer."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp::native_post_effect_owner_raw_23c_00b4ffe0",
+      "reason": "Missing a live native post-effect owner and original +23C query consumer."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp::collect_sorted_children_00aa5a00",
+      "reason": "The alphabetical snapshot serves the reflection/property descriptor writer; no live host descriptor-writing caller was found."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp::timed-entry update",
+      "reason": "The existing retained timed-entry owner already calls this body; activating the manager path requires concrete pointer/hit-test services."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp::timed-entry construction",
+      "reason": "The existing owner already delegates alpha construction; no new live manager producer was identified."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp::destroy_gui_timed_entry_profile",
+      "reason": "The existing profile destruction already delegates this reset; no additional lifetime call is justified."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp::set_pointer_activation_reader_00aa6be0",
+      "reason": "Missing a real F8BC84 callback publication owner and activation consumer in the current host."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp::set_selection_callback_00aab5e0",
+      "reason": "Missing a real F8BCFC callback publication owner and selection consumer in the current host."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp::movcam_set_zoom_0078e480",
+      "reason": "Missing a live MovCamZoom owner and original zoom-command adapter; the published mission camera uses another projection."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an original aspect-times-FOV query consumer with the actual CameraProjection; existing queries use different arithmetic."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::cockpit_screen_mode",
+      "reason": "Missing the plane-effects screen owner and +FC cockpit-mode producer; cockpit_screen_wanted currently returns false."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp::leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its only original caller is the debug flooded-water inspector, which is excluded from this assignment."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path receive path",
+      "reason": "Missing a presence-zero remove-message producer and retained path owners for every last-filled queue slot."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::path_drop_last_point_0071f570",
+      "reason": "Missing the live clear-user-path caller; current sender posts presence-one point additions only."
+    },
+    {
+      "native": "0071cb50",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_94_to97.cpp::construct_native_session_message96_value_0071cb50",
+      "reason": "Missing a live current-path-index message producer and receive consumer; existing host path-point messages use type95."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/hit_narrowphase.cpp::projectile_may_bind_006e6bb0",
+      "reason": "Missing an original projectile-binding host caller with the target scene-node flags and binding lifetime."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::FailureBinding::failure_side_effect",
+      "reason": "Missing per-player native scoring records, attacker player records and award-table providers."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scoring_record_repair_completed_00914100",
+      "reason": "Missing native scoring/award owners and the real repair-event player-record services."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::kamikaze_direct_hit_00819a20",
+      "reason": "Missing native scoring/player/award graph and the nested per-source and target-class score maps."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp::recon_relation_style_00803c20",
+      "reason": "Missing the original recon-style query consumer with the four live style tables and fallback owner."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp::support_site_squad_size_0084cf80",
+      "reason": "Missing the original support composition caller with both authored class lists; the current targeted launch path does not consume this query."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp::support_site_can_supply_class_0084d050",
+      "reason": "Missing the live support-manager screen filter, site list and owner-health binding."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp::impact_effect_slot_0084b8c0",
+      "reason": "Missing a concrete impact-effect acquisition consumer; the current gunnery impact path does not model that effect owner."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp::set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing the serialized Rudder reader or sinking-override producer that supplies this setter in the original."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::update_gui_manager_00aa4f80",
+      "reason": "The existing manager already delegates highlight reset; reaching that manager path requires its actual pointer/hit-test services."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::update_gui_manager_00aa4f80",
+      "reason": "The existing invisible-screen branch already calls this body; an extra call would repeat the check."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp::GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing the concrete AA2F10 hit-test provider sharing the actual device samples, cursor latches and widget globals."
+    },
+    {
+      "native": "00b87410",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC.cpp::hierarchy-item array clear",
+      "reason": "Missing a new reachable native hierarchy-pointer array clear caller; the live hierarchy parser uses the reserve/append path."
+    }
+  ]
+}
