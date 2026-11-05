@@ -2,6 +2,7 @@
 #include "bsp/structured_resource.hpp"
 #include "bsp/native_resource_hierarchy_append.hpp"
 #include "bsp/native_resource_pointer_array.hpp"
+#include "bsp/native_resource_root_dispatch.hpp"
 #include <cstring>
 #include <memory>
 #include <new>
@@ -9,6 +10,58 @@
 #include <utility>
 
 namespace bsp {
+StructuredResourceItems::~StructuredResourceItems() { release(); }
+
+StructuredResourceItems::StructuredResourceItems(StructuredResourceItems&& other) noexcept
+    : resource_fields_(std::exchange(other.resource_fields_, {})) {}
+
+StructuredResourceItems& StructuredResourceItems::operator=(StructuredResourceItems&& other) noexcept {
+    if (this != &other) {
+        release();
+        resource_fields_ = std::exchange(other.resource_fields_, {});
+    }
+    return *this;
+}
+
+DecodedStructuredResource** StructuredResourceItems::data() const noexcept {
+    static_assert(sizeof(void*) == 4);
+    DecodedStructuredResource** result;
+    std::memcpy(&result, resource_fields_.data() + 0x10, sizeof result);
+    return result;
+}
+
+std::size_t StructuredResourceItems::size() const noexcept {
+    std::uint32_t count;
+    std::memcpy(&count, resource_fields_.data() + 0x14, sizeof count);
+    return count;
+}
+
+DecodedStructuredResource& StructuredResourceItems::operator[](std::size_t index) noexcept {
+    return *data()[index];
+}
+const DecodedStructuredResource& StructuredResourceItems::operator[](std::size_t index) const noexcept {
+    return *data()[index];
+}
+
+void StructuredResourceItems::append_native(DecodedStructuredResource&& item) {
+    // bsp.py show 00B87AA0/00B872F0: the array stores the actual opaque
+    // pointer without class/refcount operations, growing by sixteen slots.
+    // Keep each decoded record stable while that backing array reallocates.
+    auto retained = std::make_unique<DecodedStructuredResource>(std::move(item));
+    append_native_resource_item_00b87aa0(resource_fields_.data(), retained.get());
+    retained.release();
+}
+
+void StructuredResourceItems::release() noexcept {
+    const auto count = size();
+    auto* const records = data();
+    for (std::size_t index = 0; index != count; ++index) delete records[index];
+    // bsp.py show 00B87B20: resize this SAME triplet to zero before freeing
+    // its backing. Source pointee destruction remains separate from raw slots.
+    destroy_native_resource_item_pointers_00b87b20(resource_fields_.data() + 0x10);
+    resource_fields_.fill(std::byte{});
+}
+
 StructuredHierarchyItems::~StructuredHierarchyItems() { release(); }
 
 StructuredHierarchyItems::StructuredHierarchyItems(StructuredHierarchyItems&& other) noexcept
@@ -159,8 +212,19 @@ bool dispatch_root_00b7f430(StructuredNode& root,
             output.root_order.push_back(child->tag());
             const char* tag = child->tag().c_str();
             if (_stricmp(tag, "Resource") == 0) {
-                if (!registry.dispatch_items_00b7e970(*child,
-                        output.resources, error)) return false;
+                const bool dispatched = [&](auto& output) {
+                    if constexpr (kWireGoal4Chain575Bound) {
+                        // Preserve native append-before-child-close and partial
+                        // output on failure; consumers use this same owner/order.
+                        auto sink = StructuredResourceOutput::native_items(output.resources);
+                        if (!registry.dispatch_items_00b7e970(*child, sink, error)) return false;
+                    } else {
+                        if (!registry.dispatch_items_00b7e970(*child,
+                                output.resources, error)) return false;
+                    }
+                    return true;
+                }(output);
+                if (!dispatched) return false;
             } else if (_stricmp(tag, "Hierarchy") == 0) {
                 if (!parse_hierarchy_00b7f100(*child, output, error)) return false;
             } else if (_stricmp(tag, "BoundingBox") == 0) {

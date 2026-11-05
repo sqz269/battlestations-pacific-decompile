@@ -4839,6 +4839,74 @@ int main() {
         check(retained, "00B87AE0/00B87350 retain 17 model records through muzzle extraction and teardown");
     }
 
+    if constexpr (bsp::kWireGoal4Chain575Bound) {
+        // One serialized ownership regression: cross sixteen resource slots,
+        // preserve an unsupported ordinal, then destroy the stream and moved-
+        // from model before reading the retained records through the real array.
+        auto word = [](std::vector<std::uint8_t>& bytes, std::uint32_t value) {
+            for (unsigned shift = 0; shift < 32; shift += 8)
+                bytes.push_back(static_cast<std::uint8_t>(value >> shift));
+        };
+        auto chunk = [&](const char* tag, const std::vector<std::uint8_t>& payload) {
+            std::vector<std::uint8_t> bytes;
+            const auto length = static_cast<std::uint32_t>(std::strlen(tag));
+            word(bytes, length);
+            bytes.insert(bytes.end(), tag, tag + length);
+            word(bytes, static_cast<std::uint32_t>(payload.size()));
+            bytes.insert(bytes.end(), payload.begin(), payload.end());
+            return bytes;
+        };
+        std::vector<std::uint8_t> resources;
+        for (std::uint32_t index = 0; index != 17; ++index) {
+            std::vector<std::uint8_t> payload;
+            word(payload, 0x3f000000u + index);
+            const auto item = chunk(index == 8 ? "Unsupported" : "GroupParams", payload);
+            resources.insert(resources.end(), item.begin(), item.end());
+        }
+        std::vector<std::uint8_t> root_payload;
+        word(root_payload, 14);
+        const auto section = chunk("Resource", resources);
+        root_payload.insert(root_payload.end(), section.begin(), section.end());
+        bsp::StructuredResourceStorage retained;
+        bool ordered = false;
+        {
+            const auto bytes = chunk("MMOD", root_payload);
+            auto stream = std::make_shared<bsp::MemoryStream>(
+                bsp::memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+            bsp::StructuredReader reader(stream);
+            auto root = reader.read_root_00bea700();
+            bsp::GroupParamsStructuredResourceParser parser;
+            bsp::StructuredResourceRegistry registry;
+            registry.register_parser(parser);
+            bsp::RendererRootHooks_00d5f0a8 hooks;
+            bsp::StructuredModel model;
+            std::string error;
+            ordered = root && bsp::dispatch_root_00b7f430(*root, registry, model, hooks, error)
+                && root->close() && model.resources.size() == 17;
+            if (ordered) {
+                const auto* first = &model.resources[0];
+                retained = std::move(model.resources);
+                ordered = model.resources.empty() && &retained[0] == first;
+            }
+        }
+        std::uint32_t index = 0;
+        for (const auto& item : retained) {
+            if (index == 8) {
+                ordered = ordered && item.type_name == "Unsupported" && !item.payload;
+            } else {
+                const auto* group = item.payload
+                    ? std::get_if<bsp::GroupParamsResourcePayload>(&*item.payload) : nullptr;
+                std::uint32_t bits = 0;
+                if (group) std::memcpy(&bits, &group->value, sizeof bits);
+                ordered = ordered && item.type_name == "GroupParams" && group
+                    && bits == 0x3f000000u + index;
+            }
+            ++index;
+        }
+        check(ordered && index == 17,
+            "00B87AA0/00B872F0 resource growth preserves ordinals, payloads and ownership after move");
+    }
+
     if constexpr (bsp::kWireGoal4Chain426Bound) {
         // Chain426 regression: a large nested ConvexObject still uses the
         // root's format version. Version 11 omits the optional first DWORD;

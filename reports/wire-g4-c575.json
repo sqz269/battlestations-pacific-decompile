@@ -1,0 +1,367 @@
+{
+  "assignment": {
+    "goal": 4,
+    "chain": 575,
+    "slot": "g4-w4",
+    "run": 1188
+  },
+  "switch": "bsp::kWireGoal4Chain575Bound",
+  "summary": {
+    "newly_wired": [
+      "00b87aa0",
+      "00b872f0",
+      "00b873c0",
+      "00b87b20"
+    ],
+    "wired_before": 9900,
+    "wired_after": 9902,
+    "built_called_before": 4984,
+    "built_called_after": 4985,
+    "count_note": "Readiness counts reachable source identifiers; all four target addresses now have entry-reachable built calls. The global called-symbol aggregate is optimizer-sensitive and is reported as measured.",
+    "build": "scripts/build.ps1 passed with switch ON and OFF; all four CTests passed in both configurations; final header restored ON.",
+    "regression": "One serialized 17-resource fixture covers native growth, an unsupported ordinal, move ownership, stable record identity and payload reads after source/model destruction.",
+    "installed_file_probe": "bsp_d3d9_probe.exe --structured-resource against the installed game passed: 3 resource records, mesh bytes/indices/subsets/LOD/group parameters and ordered registry dispatch matched.",
+    "runtime_validation": "Standalone installed-file traversal and built call graph verified; game was not run.",
+    "abi": "Existing source C++ interfaces reused. DecodedStructuredResource pointers are opaque stored identities, not native resource-item vtables/refcounts or an original resource ABI.",
+    "remaining": "Complete native resource-container manager/cache/item-reference lifetime and the separate dormant renderer/post-effect/shadow producers remain for later packets.",
+    "evidence": [
+      "bsp.py show 00b87aa0",
+      "bsp.py show 00b872f0",
+      "bsp.py show 00b873c0",
+      "bsp.py show 00b87b20",
+      "call_graph.py who 00b87aa0|00b872f0|00b873c0|00b87b20",
+      "call_graph.py path 00b87aa0: entry -> scene load -> ocean landscape coverage -> dispatch_root -> real-record append"
+    ],
+    "logs": [
+      "local/build-g4-c575-final.log",
+      "local/build-g4-c575-off.log",
+      "local/structured-g4-c575-installed-final.log",
+      "local/callgraph-g4-c575-final.log",
+      "local/readiness-g4-c575-after.log"
+    ]
+  },
+  "rows": [
+    {
+      "native": "00b87aa0",
+      "status": "wired",
+      "host_site": "src/structured_model.cpp: StructuredResourceItems::append_native",
+      "reason": "Append each real decoded model resource before its child closes; consumers index and iterate this same pointer array.",
+      "readiness": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "built_called_before": false,
+      "readiness_state_before": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "00b872f0",
+      "status": "wired",
+      "host_site": "src/native_resource_root_dispatch.cpp: append_native_resource_item_00b87aa0",
+      "reason": "Grow the actual model resource triplet by sixteen and retain the same decoded-record identities; existing reserve body is reused.",
+      "readiness": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      "built_called_before": false,
+      "readiness_state_before": "wired"
+    },
+    {
+      "native": "00b873c0",
+      "status": "wired",
+      "host_site": "src/native_resource_pointer_array.cpp: destroy_native_resource_item_pointers_00b87b20",
+      "reason": "Resize the same retained triplet to zero before backing release; conditional growth dispatch reuses B872F0.",
+      "readiness": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "built_called_before": false,
+      "readiness_state_before": "wired"
+    },
+    {
+      "native": "00b87b20",
+      "status": "wired",
+      "host_site": "src/structured_model.cpp: StructuredResourceItems::release",
+      "reason": "Destroy owned decoded pointees separately, then run the existing raw-array destructor once and retire the stale triplet.",
+      "readiness": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "built_called_before": false,
+      "readiness_state_before": "wired"
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: render_scene_00b156c0",
+      "reason": "Missing a rooted concrete post-effect pass graph supplying the real pass/frame-target object."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: render_scene_00b156c0",
+      "reason": "Missing a rooted concrete post-effect pass graph supplying the actual pass +18 field."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: render_scene_00b156c0",
+      "reason": "Missing the live luminance/post-effect owner and its +23C producer on the application renderer path."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "No reached constructor caller identified with the actual directional-light +174 field and complete shadow lifetime context."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: read_native_skinned_animation_item_00b92cd0",
+      "reason": "Missing a linked entry-reachable skinned-animation record reader supplying this actual value-array header."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "The complete source submission body is unlinked; missing its live main-scene service/camera/queue admission."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Missing the live main-scene submission producer; its D5E13C execution domain is also explicitly unadmitted."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "No single-player caller of the previous-timestamp vslot identified; adding an unused read would not wire behavior."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: resize_native_word_array_00529980",
+      "reason": "Missing a reached caller supplying the real WORD-array owner/header; existing body is unlinked."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30",
+      "reason": "Missing a reached WORD-array owning caller; cannot replace an unrelated semantic vector."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading work-item erase caller",
+      "reason": "Missing a rooted native loading-job work-vector producer and concrete front-end loader host."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading queue enqueue caller",
+      "reason": "Missing the actual loader/job owner and its entry-reachable front-end host."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_tick_gate_passes_0099c270",
+      "reason": "Missing the actual task +2F4 unit pointer and native per-side unit +9C2 bytes on the semantic unit path."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Group candidate scoring",
+      "reason": "Missing a persistent score-list owner consumed by actual group selection; current target-command references are a different collection."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Group candidate selection",
+      "reason": "Missing the same persistent native-style score-list records and key mapping used by the chosen-group consumer."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "Missing a real ambient SoundInstance/sample-options producer; current HUD method only records the request."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon publication",
+      "reason": "Missing actual recon-slot dirty bytes, world cache byte and player-context lvalues; current publication uses content comparison."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "Missing the actual weapon-animation/ticker owner; the current animation handle producer returns zero."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing application admission of this typed GUI pointer/frame service owner; it cannot be replaced by a fabricated cursor."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: alpha-entry allocation",
+      "reason": "Missing a reached typed timed-entry owner and borrowed live widget binding in this packet."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: destroy_gui_timed_entry_profile",
+      "reason": "Missing a reached typed timed-entry owner lifetime; no synthetic deletion was added."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing application admission of the typed manager/frame services and its actual timed-entry ownership domain."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0",
+      "reason": "Missing a reached ErrorContextNode/NativeContainerHeader owner; the existing iterator body is not linked."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "Missing a reached ErrorContextNode/NativeContainerHeader owner; the existing iterator body is not linked."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map balancing",
+      "reason": "Missing a reached ErrorContextNode tree owner and balancing caller; no stand-in tree was created."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map balancing",
+      "reason": "Missing a reached ErrorContextNode tree owner and balancing caller; no stand-in tree was created."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp: director_clear_user_path_points_0071f5d0",
+      "reason": "Missing the rooted 5F-message removal arm and last-filled-slot path mapping; existing body is only a slot-selection semantic fragment."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "Missing the rooted removal-message consumer; existing source body pops the last point and must not be substituted for clearing an entire vector."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command target initialization",
+      "reason": "Missing readable live native data at F87574/F87578/F8757C; loader zero-fill does not prove these writable runtime values are constant."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: fov_aspect_product_00b6fc30",
+      "reason": "Missing a reached original frustum/shadow/soldier caller supplying this live projection at the native read point."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: publish_listener",
+      "reason": "Missing the actual renderer +1C0/+30 field bindings and complete invalidation-owner domain."
+    },
+    {
+      "native": "00b4ec90",
+      "status": "skipped",
+      "host_site": "src/native_listener_renderer.cpp: update_native_listener_renderer_00b0d7b0",
+      "reason": "Missing canonical invalidation/root owners and actual root-list/node mappings on the controlled-unit renderer path."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp: initialize_native_game_grid_0070b330",
+      "reason": "Missing the actual world-grid allocation/descriptor producer on the application path; no grid dimensions or buffers were invented."
+    },
+    {
+      "native": "004845a0",
+      "status": "skipped",
+      "host_site": "src/native_unit_list_remove.cpp: remove_native_unit_list_payload_004845a0",
+      "reason": "Missing a reached accepted raw-list append producer and canonical current allocation/free domain for the semantic unit lists."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/cc13_front2.cpp: gamepad_force_clear_all_channels_00a95cb0",
+      "reason": "The raw native_gamepad_xinput implementation already covers this address; wiring the separate typed clear path needs a real device-table caller."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Missing a live leak-manager water/capacity owner and settings +404 binding at the original consumer."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "No reached command-menu collection with the original sortable keys identified."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group recon ratio consumer",
+      "reason": "Missing the live original member-recon query and count consumer; the current host has no corresponding ratio read."
+    },
+    {
+      "native": "005b66d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: interface_request_pending_005b66d0",
+      "reason": "Missing the actual pending-interface-request manager state; the local-player completion path currently publishes no unit."
+    },
+    {
+      "native": "00b7e970",
+      "status": "skipped",
+      "host_site": "src/structured_model.cpp: dispatch_root_00b7f430",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    },
+    {
+      "native": "00b87350",
+      "status": "skipped",
+      "host_site": "src/native_resource_hierarchy_append.cpp: append_native_hierarchy_item_00b87ae0",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    },
+    {
+      "native": "00b87410",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp: destroy_native_hierarchy_item_pointers_00b87b40",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    },
+    {
+      "native": "00b87b40",
+      "status": "skipped",
+      "host_site": "src/structured_model.cpp: StructuredHierarchyItems::release",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "Existing earlier-chain source call retained; this packet adds no new activation for this address."
+    }
+  ]
+}

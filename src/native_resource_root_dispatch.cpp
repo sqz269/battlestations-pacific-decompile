@@ -42,7 +42,9 @@ void invalid(NativeResourceRootDispatchContext& context) {
 }
 } // namespace
 
-void append_native_resource_item_00b87aa0(void* resource, void* item) {
+// Retain the native boundary so the real parsed-record call is visible in
+// the built graph; the raw body remains the existing single implementation.
+__declspec(noinline) void append_native_resource_item_00b87aa0(void* resource, void* item) {
     auto capacity = word(resource, 0x18);
     const auto count = word(resource, 0x14);
     auto* const header = at(resource, 0x10);
