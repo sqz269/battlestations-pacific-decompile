@@ -1,0 +1,132 @@
+{
+  "goal": 4,
+  "chain": 604,
+  "worker": "agent/g4-w4",
+  "base_head": "c56b3fd317",
+  "switch": "bsp::kWireGoal4Chain604Bound",
+  "selection": "Route live cube-texture scalar deletion through the existing canonical-pool return selector.",
+  "validation": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (4/4 tests).",
+    "built_reconstructed_addresses_called_before": 5009,
+    "readiness_text_wired_before": 9938,
+    "float_math_changed": false,
+    "proof_boundary": "Build/tests and static entry-reachable calls only. No game execution or new original-binary ABI compatibility claim.",
+    "built_reconstructed_addresses_called_after": 5010,
+    "readiness_text_wired_after": 9939,
+    "readiness_row": "00b3dce0: state=wired, called=true, call_sites=1, callers_live=1",
+    "direct_call": "105AAA08: delete_native_cube_texture_00b3f410 -> return_native_cube_texture_00b3dce0 at 105ABFA0",
+    "lower_call": "105ABFA9: return_native_cube_texture_00b3dce0 -> return_native_cube_texture_slot_00b3d940 at 105ABFC0",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost construction/initialize -> renderer FrameGraph::worker_finish -> end_native_renderer_frame_00b2d8e0 -> bind_native_renderer_texture_00b24710 -> delete_native_cube_texture_00b3f410 -> return_native_cube_texture_00b3dce0",
+    "diff_check": "git diff --check passed"
+  },
+  "rows": [
+    {
+      "native": "00b3dce0",
+      "status": "wired",
+      "host_site": "src/native_cube_texture_owner.cpp: bsp::delete_native_cube_texture_00b3f410",
+      "evidence": "bsp.py show --asm: B3DCE0 PUSH ECX; B3DCE1 MOV ECX,0108DB70; B3DCE6 CALL B3D940; RET. B3F41F..B3F425 returns the same original owner to the same canonical pool after complete destruction when flags bit0 is set.",
+      "real_state": "The existing owner and NativeCubeTextureOwnerContext::actual_cube_pool_0108db70 pass directly to the existing selector. The pool is borrowed from game_native_graphics_pool_process().cube_texture_pool_0108db70() in DestructionGraph, and the same pool allocates loaded cube-texture owners in native_texture_loading_cache.cpp.",
+      "behavior": "The selector replaces the prior direct lower-level return at the same point, preserving destructor-before-return ordering, flags bit0 gating, exception behavior and the returned owner address. The switch OFF arm retains the prior lower-level call.",
+      "call_boundary": "B3D940 is noinline to retain the native B3DCE0 -> B3D940 boundary within native_cube_texture_pool_allocate.cpp; neither body is duplicated.",
+      "abi": "Existing explicit-argument MSVC Win32 C++ interfaces retained; not an original-ABI replacement.",
+      "entry_reachable": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b3f410",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_owner.cpp: bsp::delete_native_cube_texture_00b3f410",
+      "reason": "Already entry-reachable at baseline through texture ownership and renderer binding; used as the changed caller rather than counted as another newly wired function."
+    },
+    {
+      "native": "00b3d940",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: bsp::return_native_cube_texture_00b3dce0",
+      "reason": "The lower pool-return body was already used by the reached scalar deleter; retained as a separate noinline call boundary, not counted as another newly wired address."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: bsp::delete_native_particle_model_00af7f40",
+      "reason": "No reached particle-model producer was established: the baseline executable contains neither this scalar deleter nor its AF60B0 lower pool-return body; a real model/manager ownership graph is still needed."
+    },
+    {
+      "native": "00af7f40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: bsp::NativeParticleModelReference terminal deletion",
+      "reason": "The baseline graph has no linked/reached scalar-deletion or AF6C50 destruction body; its actual runtime model/reference producer was not established."
+    },
+    {
+      "native": "00bac2b0",
+      "status": "skipped",
+      "host_site": "src/native_tracer_lifetime.cpp: bsp::delete_native_tracer_00bacb90",
+      "reason": "No reached tracer producer was established: the baseline executable contains neither this scalar deleter nor its BABF70 lower pool-return body; actual tracer ownership remains needed."
+    },
+    {
+      "native": "00bacb90",
+      "status": "skipped",
+      "host_site": "src/native_tracer_lifetime.cpp: bsp::NativeTracerReference terminal deletion",
+      "reason": "The baseline graph has no linked/reached scalar-deletion or BAC970 destruction body; the actual runtime tracer/reference producer was not established."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp: create_native_gui_scrollbar_default_00aa15c0 / create_native_gui_scrollbar_copy_00aa15c0",
+      "reason": "No reached native Scrollbar factory dispatch was established; the inspected page factory in game_native_gui_page_application.cpp admits only default Group/Icon, not this widget."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: native Button factory / page widget creation",
+      "reason": "No reached native Button factory dispatch was established; the inspected page factory admits only default Group/Icon and cannot supply this actual Button owner."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The current checkpoint_differs callback still returns a false substitution, so the pre-load checkpoint comparison and selected clear operation are not established."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The weapon-animation path still has no actual timed-entry owner; weapon_animation returns zero, leaving no real GuiHudTickerRange for this callback."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: NativeStreamTypeIds::initialize_memory_00cd8fc0 / initialize_physical_00cd9030",
+      "reason": "Both existing derived-file initializers already invoke this file-type initializer; no additional runtime operation requiring another initialization was established."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "The existing entry-reachable physical enumeration body already calls this join helper in source; no new host call is needed, and the optimized build does not retain its separate symbol."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060 / application clock consumers",
+      "reason": "The application owns an actual clock, but no reached consumer requiring the previous timestamp accessor was established; adding an unused read would not replace a real operation."
+    },
+    {
+      "native": "00bedae0",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: pause_native_frame_clock_00bedae0",
+      "reason": "No reached application-clock pause transition was established; wiring it would require evidence for the original pause event rather than inventing a state change."
+    },
+    {
+      "native": "00beddc0",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: resume_native_frame_clock_00beddc0",
+      "reason": "No reached application-clock resume transition was established; the corresponding real pause/resume event contract remains missing."
+    },
+    {
+      "native": "00bedb60",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: disable_fixed_native_frame_clock_00bedb60",
+      "reason": "No reached fixed-mode disabling operation was established; the existing clock construction/profile alone does not justify changing its mode."
+    }
+  ]
+}
