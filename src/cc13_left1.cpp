@@ -6,6 +6,7 @@
 #include "bsp/cc13_camera_controllers.hpp"
 
 #include <array>
+#include <cmath>
 
 namespace bsp::cc13_left1 {
 
@@ -110,6 +111,26 @@ void direction_angle_deltas_00605630(float* yaw, float* pitch, const float a[3],
         cc13cam::camera_direction_delta_00794750({a[0], a[1], a[2]}, {b[0], b[1], b[2]});
     *yaw = delta[1];
     *pitch = delta[0];
+}
+
+// 007BC7A0..007BC874, bsp.py show 007bc7a0 --asm (chain 553).
+// 007BC7CD COMISS 0,[descriptor+E0h] / JNC: a nonpositive rocket parameter
+// passes; an unordered comparison falls through. 007BC7EE / JBE passes
+// unordered pitch, and 007BC85D / JBE passes unordered bank or limit.
+// Live saved-program bytes at 00D05A28..37 are
+// 00 00 00 60 18 57 F6 3F 00 00 00 60 DE EC EB BF. Both double constants
+// are exactly widened float32 values. Thus their comparisons can use these
+// exact float values, and the one subtraction followed by FSTP32 is one
+// float32 operation (main-thread PC24); there is no unrounded float chain.
+bool bomb_release_attitude_gate_007bc7a0(float pitch_c64, float bank_c68,
+    const float* first_rocket_e0) noexcept {
+    if (first_rocket_e0 != nullptr && *first_rocket_e0 <= 0.0f) return true;
+    constexpr float kPitchThreshold = -0.872664630413055419921875f;
+    constexpr float kBankLimit = 1.39626348018646240234375f;
+    if (!(pitch_c64 > kPitchThreshold)) return true;
+    float limit = static_cast<float>(kBankLimit - std::fabs(pitch_c64));
+    if (limit < 0.0f) limit = 0.0f;
+    return !(std::fabs(bank_c68) > limit);
 }
 
 // ---------------------------------------------------------------------------

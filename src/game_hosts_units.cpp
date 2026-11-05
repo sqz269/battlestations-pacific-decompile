@@ -38,6 +38,8 @@
 #include "bsp/wire_goal4_chain419_switches.hpp"
 #include "bsp/wire_goal4_chain414_switches.hpp"
 #include "bsp/wire_goal4_chain556_switches.hpp"
+#include "bsp/wire_goal4_chain553_switches.hpp"
+#include "bsp/cc13_left1.hpp"
 #include "bsp/wire_goal4_chain412_switches.hpp"
 #include "bsp/wire_goal4_chain404_switches.hpp"
 #include "bsp/cc13_dyn1.hpp"
@@ -7714,6 +7716,33 @@ struct GameUnitsHost::Impl {
         }
         }
         }
+        // 007BC7A0 is the later release-site gate. Keep it outside the
+        // dive-only 007C7600 scope so level bombers still reach it too.
+        if constexpr (bsp::kWireGoal4Chain553Bound) {
+            if (!set.contains(0x33)) {
+                // The live rack-kind mask excludes every rocket here, so the
+                // actual first bomb class cannot answer IsKindOf(33h). Null
+                // represents that observed branch, not a fabricated +E0h.
+                // The angles are this plane's flight-state +C64h/+C68h.
+                if (!bsp::cc13_left1::bomb_release_attitude_gate_007bc7a0(
+                        pitch, bank, nullptr)) {
+                    r.reason = "007BC7A0: bank above 80 deg - |pitch|";
+                    return r;
+                }
+                done("Plane::bomb_release_attitude_gate_007bc7a0", 0x007bc7a0u);
+            } else {
+                // A mixed paratrooper/rocket loadout can reach this older
+                // path. Its first-rack descriptor +E0h is not retained here.
+                if (pitch > -0.87266463f) {
+                    float limit = 1.3962635f - std::fabs(pitch);
+                    if (limit < 0.0f) limit = 0.0f;
+                    if (std::fabs(bank) > limit) {
+                        r.reason = "007BC7A0: bank above 80 deg - |pitch|";
+                        return r;
+                    }
+                }
+            }
+        } else {
         // 0060876C 007BC7A0: above -50 deg of pitch ([00D05A30]) the bank must
         // be within max(0, 80 deg ([00D05A28]) - |pitch|). Its rocket arm
         // (007BC7BA-007BC7D4: ordnance 33h, then 007BC7CD COMISS 0,[desc+E0h] /
@@ -7729,6 +7758,7 @@ struct GameUnitsHost::Impl {
                 r.reason = "007BC7A0: bank above 80 deg - |pitch|";
                 return r;
             }
+        }
         }
         // 006087DC 007BB110: channel C of unit+DECh idle or at the top passes;
         // otherwise the per-slot byte unit+9C3h, which this host does not have

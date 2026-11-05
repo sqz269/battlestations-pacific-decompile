@@ -7,7 +7,8 @@
 //
 // Model: the bodies work on the original objects as raw bytes (Win32 layout, offsets as in the
 // image) and reach the engine through Left1Host, whose methods name the image routine they stand
-// for. New C++ interfaces, not drop-in binary replacements; nothing here is bound into bsp_game.
+// for. New C++ interfaces, not drop-in binary replacements. The 007BC7A0 attitude gate is
+// bound to the player's bomb-release path under kWireGoal4Chain553Bound.
 // Names are hypotheses, not recovered symbols. Marker: cc13_left1.
 
 #ifndef BSP_CC13_LEFT1_HPP
@@ -168,6 +169,14 @@ void* ambient_message_voice_construct_005b8810(Left1Host& host, void* object, Am
 // 00605630 BSP_Math_DirectionAngleDeltas, __fastcall(ECX = float* yaw, EDX = float* pitch;
 // a.xyz, b.xyz by value), RET 18h.
 void direction_angle_deltas_00605630(float* yaw, float* pitch, const float a[3], const float b[3]);
+
+// 007BC7A0: native ECX plane, AL result, RET 0. Typed observations of the same
+// plane's +C64h/+C68h. first_rocket_e0 is null exactly when 007B9510's first
+// bomb class is absent or does not answer IsKindOf(33h); otherwise it points
+// to that class's descriptor +E0h. The body tests the pointee before either angle.
+// This value interface does not reproduce the original register ABI/FP flags.
+bool bomb_release_attitude_gate_007bc7a0(float pitch_c64, float bank_c68,
+    const float* first_rocket_e0) noexcept;
 
 // 006D5220 BSP_AirField_ReadHangarAndMarkerProperties, __fastcall(ECX = airfield), RET; SEH
 // handler 00C81EEF. MAirfield vtable slot +0A4h. The scene record [airfield+0C0h] kind (+4h)

@@ -1,0 +1,250 @@
+{
+  "chain": 555,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain555Bound",
+  "rows": [
+    {
+      "native": "0092e250",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: SegmentBinding::entity_bounds",
+      "inputs": "The decoded hit mesh's mesh_box and a successful GameUnitsHost::unit_pose query for the same live unit; device-child bounds still enlarge the resulting AABB.",
+      "replacement": "The mesh-backed broad-phase path consumes the native body's six min/max outputs directly. It returns before the old box_of/centre-plus-half calculation. The OFF arm is unchanged; missing mesh or current pose keeps the old fallback.",
+      "evidence": [
+        "bsp.py ghidra decompile 0092e250 and disasm pages 0, 45, 125, 140: centre/half spills, nine absolute basis entries, 004142E0, PUSH 0 at 0092E42F before 0042D0D0, six final output stores",
+        "Existing transform_point_004142e0 and transform_native_effect_direction_0042d0d0_no_normalize supply the two math services; no substitute math implementation or unrelated Left61Host stubs",
+        "call_graph.py who/path 0092e250: one direct call from SegmentBinding::entity_bounds, reachable from WinMainCRTStartup through the mission-frame gunnery path"
+      ],
+      "qualification": "Source reuse of the complete existing box-transform body, with a smaller service interface. This host boundary is not an asserted original 0098A750-to-0092E250 edge. New C++ interface, not original object ABI or gameplay proof. Main-thread PC24 environment remains the caller's responsibility."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::kamikaze_direct_hit_00819a20 (candidate screened, unchanged)",
+      "reason": "projectile_may_bind_006e6bb0 implements only the torn-down guard; the complete native bind-owner body also needs attacker/observer-pair lifetime updates and the shot+94h store, so using that guard as the whole function would misstate coverage."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: publish_and_update (candidate screened, unchanged)",
+      "reason": "No new wire to add: existing chain521 already calls this complete body from the three entry-reachable retained-sound updates; the readiness ancestry classification needs reconciliation."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / SceneNumericPropertyMerge",
+      "reason": "No new wire to add: native graph already shows two reachable calls through SceneNumericPropertyMerge; readiness ancestry needs reconciliation.",
+      "screen_only": true
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneNumericPropertyMerge enum path",
+      "reason": "No new wire to add: native graph already shows reachable attach_tree and insert_into calls; readiness ancestry needs reconciliation.",
+      "screen_only": true
+    },
+    {
+      "native": "008f39b0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_enum_add.cpp: enum-word insertion (screen only)",
+      "reason": "No new caller with actual bag, enum declaration and insertion context was established during this bounded screen; selected the mesh-box subsystem.",
+      "screen_only": true
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The candidate method records no flak-alternate producer; the complete assignment also needs the retained-reference and tree owners, not a scalar ammo copy.",
+      "screen_only": true
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building vector-clear candidate (screen only)",
+      "reason": "No actual unit+660h vector and element-lifetime provider were established in the inspected host path; selected the mesh-box subsystem.",
+      "screen_only": true
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: scroller_bridge (screen only)",
+      "reason": "Existing chain407 already refreshes scroller-driven widget geometry; no additional live range-setting producer was established in this screen.",
+      "screen_only": true
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: camera-product candidate (screen only)",
+      "reason": "No live consumer requiring FOV-times-aspect over an actual CameraProjection was identified in the inspected paths.",
+      "screen_only": true
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-list candidate (screen only)",
+      "reason": "No live native command-class slot+10h menu-list producer was established; existing AI/member sorts are not that command-menu list.",
+      "screen_only": true
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: glyph-acceptance candidate (screen only)",
+      "reason": "No byte-input acceptance consumer was identified; text placement instead selects glyphs from decoded code units, so an arbitrary extra acceptance filter would alter that contract.",
+      "screen_only": true
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: close_result_gui (screen only)",
+      "reason": "A complete transition needs the actual game+7184/movie-screen state, listener/commit/input/cinematic services and five sound-update passes; this candidate site only records the close.",
+      "screen_only": true
+    },
+    {
+      "native": "00940dd0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp: GUI sound-set construction (screen only)",
+      "reason": "No GUI sound-set owner publication and lifetime integration were established in the inspected live hosts.",
+      "screen_only": true
+    },
+    {
+      "native": "00940ec0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp: GUI sound-set initialization (screen only)",
+      "reason": "No concrete GuiSoundSetHost binding for live GUI class/sample acquisition and retention was established in this screen.",
+      "screen_only": true
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp: GUI sound playback (screen only)",
+      "reason": "No live GUI sound-set publication, input-event slot producer and tracked-play binding were established in this screen.",
+      "screen_only": true
+    },
+    {
+      "native": "00950000",
+      "status": "skipped",
+      "host_site": "src/support_seg61_cc13.cpp: integer scene writer (screen only)",
+      "reason": "No live native writer/scratch-buffer/indent/output binding was identified; arbitrary host formatting is not that writer owner.",
+      "screen_only": true
+    },
+    {
+      "native": "00950050",
+      "status": "skipped",
+      "host_site": "src/support_seg61_cc13.cpp: unsigned scene writer (screen only)",
+      "reason": "No live native writer/format-static/indent/output binding was identified during the bounded screen.",
+      "screen_only": true
+    },
+    {
+      "native": "00950130",
+      "status": "skipped",
+      "host_site": "src/support_seg61_cc13.cpp: float scene writer (screen only)",
+      "reason": "No live native writer/scratch-buffer/format/indent/output binding was identified during the bounded screen.",
+      "screen_only": true
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: engine burning candidate (screen only, file not claimed)",
+      "reason": "No live PlaneEngineSlots list with the real engine burning-byte producer was identified; the unit host file was leased by another worker.",
+      "screen_only": true
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: engine stop-all candidate (screen only, file not claimed)",
+      "reason": "No live PlaneEngineSlots list and complete engine stop dispatch were identified; the unit host file was leased by another worker.",
+      "screen_only": true
+    },
+    {
+      "native": "007eb0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: engine destruction candidate (screen only, file not claimed)",
+      "reason": "No live PlaneEngineSlots list, engine index producer and Lua-self destruction-effect integration were established; the unit host file was leased.",
+      "screen_only": true
+    },
+    {
+      "native": "00401c20",
+      "status": "skipped",
+      "host_site": "src/math.cpp: double-vector cross candidate (screen only)",
+      "reason": "No live Vec3d consumer with the original reversed-cross operand/store contract was identified in the inspected float-based hosts.",
+      "screen_only": true
+    },
+    {
+      "native": "00401cb0",
+      "status": "skipped",
+      "host_site": "src/math.cpp: double-vector subtraction candidate (screen only)",
+      "reason": "No live Vec3d consumer with the reversed-subtraction contract was identified in the inspected float-based hosts.",
+      "screen_only": true
+    },
+    {
+      "native": "00401cd0",
+      "status": "skipped",
+      "host_site": "src/math.cpp: double-vector scale candidate (screen only)",
+      "reason": "No live Vec3d scaling consumer was identified in the inspected float-based hosts.",
+      "screen_only": true
+    },
+    {
+      "native": "00401cf0",
+      "status": "skipped",
+      "host_site": "src/math.cpp: double-vector length candidate (screen only)",
+      "reason": "No live Vec3d length consumer with the original y-square-first order was identified in the inspected float-based hosts.",
+      "screen_only": true
+    },
+    {
+      "native": "006dfe50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    },
+    {
+      "native": "006dfe90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    },
+    {
+      "native": "006eb230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    },
+    {
+      "native": "006fb3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    },
+    {
+      "native": "0074bc60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    },
+    {
+      "native": "00758510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native ship-kind candidate (screen only)",
+      "reason": "No owning native ship-profile dispatch over an actual receiver with the live +C4h field was established at the inspected semantic ship-AI boundary.",
+      "screen_only": true
+    }
+  ],
+  "assumptions": [
+    "A complete reconstructed value body may replace equivalent host work with real current inputs even when the host boundary was not an original binary call site; this is explicitly labeled source reuse.",
+    "The current decoded collision-mesh bounds and successful unit pose are the host's real geometric state. A missing pose must not invoke the new body using the old helper's identity fallback."
+  ],
+  "validation": {
+    "baseline_wired": 9882,
+    "build": "MSVC Win32 Release PASS; reconstructed_math, native_math_differential, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all PASS (5/5).",
+    "pc24": "Focused source lint: zero findings; committed diff lint recorded in final worker check.",
+    "native_graph": "One reachable direct call to 0092e250 from the modified host provider",
+    "gameplay": "Not run, as assigned",
+    "after_wired": 9883,
+    "called": true,
+    "call_sites": 1
+  },
+  "left": "Complete native projectile bind-owner reconstruction and readiness ancestry reconciliation for already-reachable sound volume scaling."
+}

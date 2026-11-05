@@ -21,8 +21,8 @@
       ],
       "called": true,
       "call_sites": 1,
-      "built_call_site": "10298970",
-      "built_target": "103B4A60",
+      "built_call_site": "10298F01",
+      "built_target": "103B4FF0",
       "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameUnitsHost::player_bomb_release_006082d0 -> Impl::player_bomb_release_006082d0 -> dive_drop_attitude_gate_007c7600"
     },
     {
@@ -79,7 +79,7 @@
     "build": "scripts/build.ps1 passed after the C++ changes: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
     "call_graph": "python tools/call_graph.py; who 007c7600; path 007c7600: production Win32 executable, one reachable call from the changed host function.",
     "readiness": "wire_readiness.py --standins: 9882 -> 9883 wired; 007c7600 state=wired, called=true, call_sites=1, callers_live=1; current Win32 graph stale=false.",
-    "pc24": "pc24_lint.py --staged: 0 findings across 4 source/header files; post-commit origin/main...HEAD check also required.",
+    "pc24": "Merged-source pc24_lint.py --staged: 0 findings across 10 files; original chain556 committed differential: 0 findings across 4 files.",
     "focused_fixture": "Ignored local/run_g4_c556_probe.py links the production bsp_core.lib with /MANIFEST:EMBED: 12 PC24 pitch/bank endpoint, NaN, rocket and bay-priority assertions passed. Fixture values are synthetic and are not supplied by the game path.",
     "switch_off": "Original gate block matches HEAD byte-for-byte after newline normalization; source contains exactly one new body call.",
     "ghidra": "Verified config project C:/Users/sqz269/bsp.gpr and live /battlestationspacific.exe; preserved name and prior comment, appended evidence through locked ghidra_annotate.py, saved project and refreshed 007c7600 export.",
@@ -88,5 +88,39 @@
   "left_for_others": [
     "007C7600 rack-tick caller adaptation, including native first bomb-class descriptor ordering for mixed rocket loadouts.",
     "Other HUD object producers/adapters described by the skipped rows."
-  ]
+  ],
+  "merge_validation": {
+    "origin_main": "c941968108a882770f4a74b9e45bf7bef33dde98",
+    "previous_head": "6e8909df4ea633d2d08d7d960e1c89fb8da548e7",
+    "resolution": "Merged origin/main in the worker tree. merge_resolve.py kept both pure-insertion conflicts in src/game_hosts_units.cpp; manual review and a scope comment preserve both headers and keep the chain553 release gate outside the chain556 dive-only scope. No ledger/CMake conflicts remained.",
+    "source_checks": "The complete needs_dive_gate block equals the pre-merge worker block, and the complete chain553 if-constexpr block equals origin/main. Exactly one source call to each body; no unresolved index entries or conflict markers.",
+    "build": "./scripts/build.ps1 passed all 5 checks after resolution.",
+    "on_build": "The verified Win32 Release build has kWireGoal4Chain553Bound=true and kWireGoal4Chain556Bound=true; both reconstructed bodies have one entry-reachable call from GameUnitsHost::Impl::player_bomb_release_006082d0.",
+    "wired_total": 9888,
+    "readiness": {
+      "007C7600": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "007BC7A0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "graph_stale": false
+    },
+    "production_call_sites": {
+      "007C7600": {
+        "site": "10298F01",
+        "target": "103B4FF0"
+      },
+      "007BC7A0": {
+        "site": "10298E04",
+        "target": "1049E2D0"
+      }
+    },
+    "focused_fixture": "Rebuilt and reran ignored local/run_g4_c556_probe.py against the merged production library: all 12 PC24 checks passed.",
+    "limits": "Historical wired_before/wired_after fields above retain the original chain556 baseline; wired_total here is the current merged tree. No game run or original ABI validation."
+  }
 }
