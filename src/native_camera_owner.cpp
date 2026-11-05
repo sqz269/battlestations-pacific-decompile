@@ -1,6 +1,8 @@
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/camera_plane_initialization.hpp"
 #include "bsp/system_fog_owner.hpp"
+#include "bsp/native_tagged_leaf_b6_16e.hpp"
+#include "bsp/wire_goal4_chain581_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -51,6 +53,19 @@ BSP_CAMERA_OFFSET(axis_x_44c, 0x44c);
 
 namespace {
 constexpr std::uint32_t camera_table = 0x00d62cf0;
+CameraAxis& direction_backing(NativeCameraStorageView& storage) noexcept {
+    if constexpr (kWireGoal4Chain581Bound) {
+        // bsp.py show 00b6fc60 --asm: LEA EAX,[ECX+1ACh]; RET.
+        // The actual camera starts at storage.node; the offset assertion above
+        // identifies its existing CameraAxis subobject. Bind that same object,
+        // without reading its pre-construction bytes or copying its state.
+        const auto base = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(&storage.node));
+        return *reinterpret_cast<CameraAxis*>(bsp_tagged_b6_16e_00b6fc60(base));
+    } else {
+        return storage.camera.direction_1ac;
+    }
+}
 void word(float& destination, std::uint32_t bits) noexcept {
     std::memcpy(&destination, &bits, 4);
 }
@@ -159,7 +174,7 @@ NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCamera
           storage.camera.near_1d4, storage.camera.far_1d8, storage.camera.projection_1e0,
           storage.camera.projection_cache_2a0, storage.camera.valid_flags_2f0}),
       camera(node.transform, projection, storage.camera.view_projection_220,
-          storage.camera.direction_1ac, storage.camera.target_1a0),
+          direction_backing(storage), storage.camera.target_1a0),
       frame(camera, frame_backing(storage.camera, access.viewport_views)),
       pose{this, pose_table, pose_slot, pose_position, pose_world} {
     node.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
