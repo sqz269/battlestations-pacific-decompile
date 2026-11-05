@@ -15,6 +15,9 @@
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/wire_goal4_chain426_switches.hpp"
+#include "bsp/wire_goal4_chain563_switches.hpp"
+#include "bsp/structured_model.hpp"
+#include "bsp/memory_stream.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
@@ -4782,6 +4785,58 @@ int main() {
               "unit+C20h and calls 007C0D90 on a countdown that has gone "
               "negative, and parks unit+C28h at 00CE69D0 even when a device "
               "answers vtable +1FCh true, because 007CEAEE precedes 007CEB00");
+    }
+
+    if constexpr (bsp::kWireGoal4Chain563Bound) {
+        // Retaining 17 authored records crosses the native 16-pointer growth
+        // boundary. The muzzle reader's value extraction must preserve their
+        // order after its temporary model and raw pointer backing are gone.
+        auto word = [](std::vector<std::uint8_t>& bytes, std::uint32_t value) {
+            for (unsigned shift = 0; shift < 32; shift += 8)
+                bytes.push_back(static_cast<std::uint8_t>(value >> shift));
+        };
+        auto chunk = [&](const char* tag, const std::vector<std::uint8_t>& payload) {
+            std::vector<std::uint8_t> bytes;
+            const auto length = static_cast<std::uint32_t>(std::strlen(tag));
+            word(bytes, length);
+            bytes.insert(bytes.end(), tag, tag + length);
+            word(bytes, static_cast<std::uint32_t>(payload.size()));
+            bytes.insert(bytes.end(), payload.begin(), payload.end());
+            return bytes;
+        };
+        std::vector<std::uint8_t> hierarchy;
+        for (std::uint32_t index = 0; index != 17; ++index) {
+            std::vector<std::uint8_t> parent;
+            word(parent, index);
+            const auto item = chunk("Item", chunk("Parent", parent));
+            hierarchy.insert(hierarchy.end(), item.begin(), item.end());
+        }
+        std::vector<std::uint8_t> root;
+        word(root, 14);
+        const auto section = chunk("Hierarchy", hierarchy);
+        root.insert(root.end(), section.begin(), section.end());
+        std::vector<bsp::HierarchyItem> items;
+        std::string error;
+        bool retained = false;
+        {
+            const auto bytes = chunk("MMOD", root);
+            auto stream = std::make_shared<bsp::MemoryStream>(
+                bsp::memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+            bsp::StructuredReader reader(stream);
+            auto model_root = reader.read_root_00bea700();
+            if (model_root && model_root->read_control_00be9a40()) {
+                auto hierarchy_node = model_root->read_child_00bea680();
+                bsp::StructuredModel model;
+                retained = hierarchy_node && bsp::parse_hierarchy_00b7f100(
+                    *hierarchy_node, model, error);
+                if (retained) items = std::move(model.hierarchy);
+                retained = retained && hierarchy_node->close() && model_root->close();
+            }
+        }
+        retained = retained && items.size() == 17;
+        for (std::size_t index = 0; retained && index != items.size(); ++index)
+            retained = items[index].parent == index;
+        check(retained, "00B87AE0/00B87350 retain 17 model records through muzzle extraction and teardown");
     }
 
     if constexpr (bsp::kWireGoal4Chain426Bound) {

@@ -1,14 +1,53 @@
 #pragma once
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/structured_resource_registry.hpp"
+#include "bsp/wire_goal4_chain563_switches.hpp"
+#include <cstddef>
+#include <type_traits>
 
 namespace bsp {
+// Source owner for the hierarchy pointer triplet at resource+1Ch. The append
+// body treats pointees as opaque identities: these are the actual retained
+// HierarchyItem values parsed from the model, not native 84h record images.
+// Readers use this triplet's count/order directly. No parallel pointer vector
+// or native resource/vtable/refcount is constructed.
+class StructuredHierarchyItems final {
+public:
+    StructuredHierarchyItems() noexcept = default;
+    ~StructuredHierarchyItems();
+    StructuredHierarchyItems(StructuredHierarchyItems&&) noexcept;
+    StructuredHierarchyItems& operator=(StructuredHierarchyItems&&) noexcept;
+    StructuredHierarchyItems(const StructuredHierarchyItems&) = delete;
+    StructuredHierarchyItems& operator=(const StructuredHierarchyItems&) = delete;
+
+    void append_native(HierarchyItem&&);
+    std::size_t size() const noexcept;
+    bool empty() const noexcept { return size() == 0; }
+    HierarchyItem& operator[](std::size_t) noexcept;
+    const HierarchyItem& operator[](std::size_t) const noexcept;
+    HierarchyItem& front() noexcept { return (*this)[0]; }
+    const HierarchyItem& front() const noexcept { return (*this)[0]; }
+    // The muzzle loader retains value records after its temporary model dies.
+    // Extract in the SAME native pointer order, then retire this owner once.
+    operator std::vector<HierarchyItem>() &&;
+
+private:
+    HierarchyItem** data() const noexcept;
+    void release() noexcept;
+    // Only +1Ch/+20h/+24h are accessed. The prefix is an unmodelled source
+    // view, not fabricated native resource state. 00B88260 zeros the triplet.
+    alignas(4) std::array<std::byte, 0x28> resource_fields_{};
+};
+
+using StructuredHierarchyStorage = std::conditional_t<kWireGoal4Chain563Bound,
+    StructuredHierarchyItems, std::vector<HierarchyItem>>;
+
 // Retained owning wire values, not the native 0x74-byte GameResource ABI.
 // Resource records preserve indices even for unsupported payloads (nullopt).
 // Hierarchy references remain serialized DWORDs, without graph resolution.
 struct StructuredModel {
     std::vector<DecodedStructuredResource> resources;
-    std::vector<HierarchyItem> hierarchy;
+    StructuredHierarchyStorage hierarchy;
     // Base constructor00b88260 initializes these six native words to zero.
     // Dispatch overwrites all six only after a complete BoundingBox read.
     std::array<float, 6> bounding_box{};
