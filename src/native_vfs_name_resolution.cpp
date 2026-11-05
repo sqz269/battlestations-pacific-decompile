@@ -1,6 +1,7 @@
 #include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_vfs_device_route.hpp"
 #include "bsp/native_vfs_lookup_routes.hpp"
+#include "bsp/native_vfs_lookup_leaves.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
@@ -9,6 +10,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain349_switches.hpp"
+#include "bsp/wire_goal4_chain593_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -311,7 +313,15 @@ bool paths(ResolutionState& s, const void* stem, const void* extension,
         if (node == pointer(checked_owner, 4)) invalid(s, sites.sentinel);
         if (first_full) {
             s.site = 0x00bddf5a;
+            if constexpr (kWireGoal4Chain593Bound) {
+                // BB5540 and 426060 have the same clear/identity/current-header
+                // copy schedule (bsp.py show 00bb5540 --asm / 00426060 --asm).
+                // Reuse the complete package copy with this actual prefix
+                // header and the resolver's owning pool, before arming cleanup.
+                copy_native_package_name_00bb5540(s.group_candidate.header(), at(node, 8), s.strings());
+            } else {
             copy_construct_native_string_header_00426060(s.group_candidate.header(), at(node, 8), s.strings());
+            }
             s.group_candidate.live = true;
         } else copy_temporary(s, s.group_candidate, at(node, 8), sites.copy, sites.copied);
         if (!first_full && (sites.probe == 0x00bde460 || sites.probe == 0x00bde88e)) {
@@ -439,7 +449,15 @@ bool resolve_candidates(ResolutionState& s) {
         if (!data) data = const_cast<char*>(s.context->empty_name_0109cef0);
         literal(s, s.extension, static_cast<const char*>(at(data, dot + 1u)), 0x00bddd88);
         s.site = 0x00bddd9a;
+        if constexpr (kWireGoal4Chain593Bound) {
+            // BDDD9A calls 426060 on the actual requested name. BB5540 is its
+            // equivalent full copy, with ECX unused and an explicit output.
+            // This is source body reuse, not an original BDDC80->BB5540 edge.
+            // Source ABI/pool remain explicit; no binary replacement is claimed.
+            copy_native_package_name_00bb5540(s.full_stem.header(), s.output, s.strings());
+        } else {
         copy_construct_native_string_header_00426060(s.full_stem.header(), s.output, s.strings());
+        }
         s.full_stem.live = true;
         resize_fill(s, s.basename, dot - static_cast<U>(slash) - 1u, 0x00bdddb6);
         resize_fill(s, s.full_stem, dot, 0x00bddde4);

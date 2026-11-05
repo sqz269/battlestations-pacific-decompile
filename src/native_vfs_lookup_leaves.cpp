@@ -65,7 +65,8 @@ __declspec(noinline) void* copy_native_file_store_name_00be6040(void* output, co
     return copy_construct_native_string_header_00426060(output, name, strings);
 }
 
-void* copy_native_package_name_00bb5540(void* output, const void* name,
+// Keep this reused native body visible in the built entry-reachability graph.
+__declspec(noinline) void* copy_native_package_name_00bb5540(void* output, const void* name,
     ActualNativeStringPoolStorage& strings) {
     return copy_construct_native_string_header_00426060(output, name, strings);
 }
