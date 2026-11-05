@@ -6,6 +6,7 @@
 #include "bsp/native_lua_field_setters.hpp"
 #include "bsp/native_lua_class_setters.hpp"
 #include "bsp/native_game_lua_globals_lifetime.hpp"
+#include "bsp/wire_goal4_chain549_switches.hpp"
 
 #include <cstring>
 #include <intrin.h>
@@ -1391,9 +1392,18 @@ void* delete_native_listbox_00a9e210(void* listbox, std::uint8_t flags,
 void uppercase_native_wide_string_00a9ec30(const LocaleTables& tables, LocaleTextRuntimeHost& host,
     NativeWideStringHeader& text)
 {
+    if constexpr (kWireGoal4Chain549Bound) {
+        if (tables.sidecar_first().empty()
+            && host.uppercase_ascii_text(text.data_04, text.length_00)) return;
+        for (std::uint32_t i = 0; i < text.length_00; ++i) {
+            char16_t* const unit = text.data_04 + i;
+            *unit = locale_uppercase_00a9eba0(tables, host, *unit);
+        }
+    } else {
     for (std::uint32_t i = 0; i < text.length_00; ++i) {
         char16_t* const unit = text.data_04 + i;
         *unit = locale_uppercase_00a9eba0(tables, host, *unit);
+    }
     }
 }
 

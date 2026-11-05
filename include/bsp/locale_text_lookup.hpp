@@ -2,6 +2,7 @@
 
 #include "bsp/locale_tables.hpp"
 
+#include <cstddef>
 #include <string>
 
 namespace bsp {
@@ -16,7 +17,16 @@ public:
     virtual ~LocaleTextRuntimeHost() = default;
     virtual std::string context_string_00b692c0(const std::string& path) = 0;
     virtual char16_t crt_uppercase_00c0391c(char16_t code_unit) = 0;
+    // Optional production binding for a span with no sidecar mappings. False
+    // leaves the span untouched and keeps the per-code-unit CRT contract.
+    virtual bool uppercase_ascii_text(char16_t*, std::size_t) { return false; }
 };
+
+// Borrow the resolved text through an eight-byte NativeString view after
+// proving that every unit is ASCII and the current CRT locale is C. The
+// existing 004FB1F0 body transforms the bytes; widen its actual result back.
+// Returns false without changing text outside that domain. Owns no game state.
+bool uppercase_ascii_text_with_current_c_locale(char16_t* text, std::size_t length);
 
 // Semantic 00a9eba0 projection: first sidecar mapping wins, otherwise the
 // supplied host provides uppercase conversion. A missing paired entry throws
