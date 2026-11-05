@@ -228,6 +228,11 @@ void bind_static_directional_light_pool_01090154(DirectionalLightPool& pool) {
     static_pool_01090154 = &pool;
 }
 
+void DirectionalLightPool::require_static_binding() const {
+    if (&require_static_pool() != this)
+        throw std::invalid_argument("directional return requires the SAME canonical 01090154 pool");
+}
+
 int initialize_static_directional_light_pool_00cd8080(DirectionalPoolAtexit register_atexit) {
     if (!register_atexit) throw std::invalid_argument("CRT atexit registration is required");
     require_static_pool().initialize_00b7b940();

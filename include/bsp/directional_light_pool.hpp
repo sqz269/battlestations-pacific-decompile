@@ -44,6 +44,8 @@ public:
     DirectionalLightPoolStorage& storage() noexcept { return storage_; }
     const DirectionalLightPoolStorage& storage() const noexcept { return storage_; }
     static std::uint32_t live_slab_index(const void* slot) noexcept;
+    // Admit the static-return adapter only for the canonical 01090154 companion.
+    void require_static_binding() const;
 
 private:
     AllocatorListDomain& allocator_list_;
@@ -62,6 +64,8 @@ int initialize_static_directional_light_pool_00cd8080(
     DirectionalPoolAtexit register_atexit = &std::atexit);
 void destroy_static_directional_light_pool_00ce0eb0();
 void* allocate_directional_light_slot_00b7bd40();
+// Native ECX=slot; the adapter calls 00B7B2F0 on the bound 01090154 pool.
+// This exposes a new C++ interface, not the original register ABI.
 void return_directional_light_slot_00b7b610(void* slot);
 
 } // namespace bsp

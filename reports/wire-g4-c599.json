@@ -1,0 +1,85 @@
+{
+  "chain": 599,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain599Bound",
+  "rows": [
+    {
+      "native": "00b7b610",
+      "status": "wired",
+      "host_site": "src/native_light_lifetime.cpp: delete_native_directional_light_storage_00b7c820; src/directional_light_owner.cpp: delete_native_directional_light_00b7c820",
+      "evidence": "Native 00B7C835..00B7C83B and 00B7B610..00B7B61B both push the same light slot and call 00B7B2F0 on 01090154. GameNativeResourcePoolProcess::initialize_directional_light_once_00cd8080 already binds this canonical companion. Both callers check that identity before invoking the existing wrapper; the previous direct return is retained unchanged in the disabled switch arm.",
+      "abi": "Existing ordinary C++ adapter; original wrapper takes the slot in ECX, binds ECX=01090154, calls 00B7B2F0, and RETs. No binary ABI compatibility claim."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: delete_native_point_light_storage_00b7c850",
+      "reason": "Missing game-linked PointLight pool producer and scalar-deletion path: the refreshed baseline graph contains neither 00B7B1D0 nor 00B7C850; no edits were made to this abandoned pick."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: class-part initialization provenance",
+      "reason": "Missing complete actual unit/class-part/model backing and callback bindings required by NativeUnitHealthPartsView; the inspected host reference is a provenance comment."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit screen reset",
+      "reason": "Missing retained native selection-vector and mode producers for screen+30 and +C4..+D0; current host records the reset without that state."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: Skill property provenance",
+      "reason": "Missing actual native property-bag owner and insertion context on the inspected Lua Skill path; a comment alone does not provide them."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp: existing sampler parameter write",
+      "reason": "No missing call identified: the mission-material refresh already calls this existing body; the readiness candidate came from an older local scan."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: existing command metadata write",
+      "reason": "Missing linked caller-chain proof for a new wiring packet; an existing reconstructed submission caller already invokes this body, so no redundant call was added."
+    },
+    {
+      "native": "00b6fe20",
+      "status": "skipped",
+      "host_site": "src/native_camera_configuration_leaves.cpp: existing clear-depth setter",
+      "reason": "No missing wiring: fresh readiness already reports an entry-reachable call despite its source classification, so no duplicate call was added."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: initialize_memory_00cd8fc0 / initialize_physical_00cd9030",
+      "reason": "No missing source call identified: both existing type initializers call this body and GameNativeTypeStorage invokes them; no additional type-ID consumption was introduced."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 9935,
+    "readiness_wired_after": 9936,
+    "entry_reachable_reconstructed_addresses_before": 5004,
+    "entry_reachable_reconstructed_addresses_after": 5005,
+    "new_wrapper_entry_reachable_call_sites": 2
+  },
+  "validation": {
+    "baseline_build": "Win32 Release build and all five CTests passed",
+    "final_build": "scripts/build.ps1 passed Win32 Release and all five CTests",
+    "final_readiness": "python tools/wire_readiness.py: 9936 wired (baseline 9935)",
+    "call_graph": "python tools/call_graph.py: 5005/5523 reconstructed addresses called, up from baseline 5004/5522",
+    "wrapper_callers": [
+      "104DC187: NativeDirectionalLightStorageReference::delete_scalar_00b7c820 (raw scalar body inlined)",
+      "1052151E: delete_native_directional_light_00b7c820"
+    ],
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameNativeRendererApplication::drain_singletons -> MissionShipGraph::after_native_drain -> DirectionalLightReference::release_zero_references -> delete_native_directional_light_00b7c820 -> return_directional_light_slot_00b7b610 (destructor/vtable/EH references are represented in the static graph)",
+    "native_evidence": [
+      "python tools/bsp.py show 00b7b610 --asm --lines 20",
+      "python tools/bsp.py show 00b7c820 --asm --lines 32"
+    ],
+    "limits": "Build and executable call-graph evidence only; the game was not run. No float arithmetic changed and no new address-suffixed body was created."
+  }
+}
