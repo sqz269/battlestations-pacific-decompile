@@ -18,9 +18,10 @@
     "graph": "tools/call_graph.py: 4977 reconstructed addresses called; who confirms one reachable call site for each newly called leaf",
     "command_camera_caller": "execute_native_render_command_00b1d950 -> get_native_scene_command_camera_00b1bf40",
     "camera_color_caller": "execute_native_camera_frame_command_00b71360 -> clear_native_renderer_camera_color -> clear_body_impl<true> -> get_native_camera_clear_color_00b6fe60",
-    "synthetic_probe": "local/g4_c567_camera_color_probe.cpp linked against the built bsp_core.lib with /MANIFEST:EMBED; camera_color_after_guard=pass calls=1 color=a1b2c3d4 depth=3ec00000 stencil=7 zero_flags=pass",
-    "switch_off": "Compiled the baseline camera command and the modified source using an overriding false switch header: both COFF code sections are byte-identical, 256 code bytes and three relocations.",
-    "probe_scope": "A worker waits on a real Win32 critical section; the fixture changes camera+190h before releasing it, and the fake COM Clear receives the new color while guard depth/nesting are one. After return both are zero. Zero flags accept null renderer/context/camera without dereferencing them. This is synthetic stack/guard/output evidence, not gameplay.",
+    "synthetic_probe": "tests/wire_g4_c567_camera_color_probe.cpp linked against the built bsp_core.lib with /MANIFEST:EMBED; camera_color_after_guard=pass device_identity=pass calls=1 color=a1b2c3d4 depth=3ec00000 stencil=7 zero_flags=pass",
+    "probe_build_command": "From an MSVC x86 developer prompt: cl /nologo /std:c++20 /EHsc /MD /O2 /I include tests\\wire_g4_c567_camera_color_probe.cpp /Fo:local\\output\\g4_c567_camera_color_probe.obj /Fe:local\\output\\g4_c567_camera_color_probe.exe build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib d3d9.lib user32.lib gdi32.lib ole32.lib advapi32.lib shell32.lib PowrProf.lib /link /OPT:REF /MANIFEST:EMBED; then run local\\output\\g4_c567_camera_color_probe.exe",
+    "switch_off": "Recompiled the baseline camera command and the modified source using an overriding false switch header: both COFF code sections and symbolic relocations are identical, 256 code bytes and three relocations.",
+    "probe_scope": "A worker waits on a real Win32 critical section; the fixture changes camera+190h before releasing it, and the fake COM Clear receives the actual fixture device pointer and new color while guard depth/nesting are one. After return both are zero. Zero flags accept null renderer/context/camera without dereferencing them. This is synthetic stack/guard/device/output evidence, not gameplay.",
     "evidence": [
       "bsp.py show 00B1BF40 --asm: MOV EAX,[ECX+28h]; MOV EAX,[EAX+8]; RET",
       "bsp.py show 00B6FE60 --asm: MOV ECX,[ECX+190h]; MOV EAX,[ESP+4]; MOV [EAX],ECX; RET4",
@@ -29,6 +30,17 @@
     ],
     "float_math": "No arithmetic changed. The pending x87 depth stays live across an integer-only raw getter, then spills at its original site.",
     "game_run": false
+  },
+  "review_round_1": {
+    "review_run": 1180,
+    "reviewed_head": "7a133445fd2b51d7fd51f9c8dd2a582700438599",
+    "finding": "P1: the color getter clobbered EAX's COM device with its output address, which outgoing.device then retained; the original probe ignored the COM device argument.",
+    "disposition": "fixed",
+    "change": "Save EAX before forming the color output address and restore it after the getter, alongside the existing ECX vtable preservation. Commit the focused probe and assert the exact device pointer received by Clear.",
+    "regression_before": "Strengthened probe against the reviewed library: camera_color_after_guard=pass device_identity=FAIL; exit 3.",
+    "regression_after": "Strengthened probe against the rebuilt library: camera_color_after_guard=pass device_identity=pass; exit 0.",
+    "executable_inspection": "Built clear_body_impl<true> saves EAX before forming the color output pointer, restores ECX/EAX after the getter, then stores the restored EAX to outgoing.device before the COM call.",
+    "checks": "Win32 Release build and all five CTests; focused guard/device/color probe; two getters remain entry-reachable; switch-off camera command identity rechecked. No game run."
   },
   "rows": [
     {"native":"00b1bf40","status":"wired","host_site":"src/native_render_command_execution.cpp: execute_native_render_command_00b1d950","body":"src/native_main_scene_execution_prefix.cpp: get_native_scene_command_camera_00b1bf40","called":true,"call_sites":1},

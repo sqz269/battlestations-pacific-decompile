@@ -180,13 +180,17 @@ void __cdecl clear_body_impl(void* renderer, const NativeRendererViewportClearCo
         // the existing camera leaf. Keep it after optional guard entry and
         // between the stencil load and depth spill. The raw leaf preserves
         // EDX and the pending x87 depth; its output is the COM Clear color.
+        // Preserve EAX's actual COM device as well as ECX's device vtable:
+        // the getter returns its output address in EAX, not the device.
         __asm {
+            push eax // actual COM device, saved before LEA changes EAX
             push ecx // current device vtable
             lea eax, outgoing.color
             push eax
             mov ecx, edx // actual camera, not a projected CameraView
             call get_native_camera_clear_color_00b6fe60 // RET4
             pop ecx
+            pop eax // restore the device for outgoing.device
             mov edx, outgoing.color
         }
     } else {
