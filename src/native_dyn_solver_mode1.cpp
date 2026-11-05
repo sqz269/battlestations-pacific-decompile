@@ -2881,12 +2881,22 @@ __declspec(naked) void abs_kernel(){
 }
 } // namespace
 std::uint64_t NativeDynSolverMode1Calls::read_timestamp(U) noexcept {_ReadWriteBarrier();const auto t=__rdtsc();_ReadWriteBarrier();return t;}
-void execute_native_dyn_solver_mode1_00403850(void* task,const DynProfileScopeContext& p,NativeDynSolverMode1Calls& calls,const CameraAxesCrtAccess& crt){
+__declspec(noinline) void execute_native_dyn_solver_mode1_00403850(void* task,const DynProfileScopeContext& p,NativeDynSolverMode1Calls& calls,const CameraAxesCrtAccess& crt){
     Context context{crt,&p.memory,&calls,p.profile_slot_0109e9f8};Context* c=&context;
     __asm {mov edx,c}
     __asm {mov ecx,task}
     __asm {call task_kernel}
 }
 NativeDynSolverMode1Runtime::NativeDynSolverMode1Runtime(const DynProfileScopeContext& p,NativeDynSolverMode1Calls& c,const CameraAxesCrtAccess& crt) noexcept:methods_{reinterpret_cast<std::uintptr_t>(&run)},profile_(p),calls_(&c),crt_(crt){static_assert(std::is_standard_layout_v<NativeDynSolverMode1Runtime>);}
+bool NativeDynSolverMode1Runtime::bind_task(void* task,TaskBinding& binding) noexcept{
+    // bsp.py show 00c375f0 --asm, 00C37644..00C3764A: the dequeued
+    // task is ECX and [task->table] is the only dispatch identity. Test the
+    // exact callback before interpreting the source table's owner/context.
+    const auto* table=*static_cast<const std::uintptr_t* const*>(task);
+    if(table[0]!=reinterpret_cast<std::uintptr_t>(&run)) return false;
+    auto* self=*static_cast<NativeDynSolverMode1Runtime**>(task);
+    binding={&self->profile_,self->calls_,&self->crt_};
+    return true;
+}
 void __fastcall NativeDynSolverMode1Runtime::run(void* task,void*){auto* self=*static_cast<NativeDynSolverMode1Runtime**>(task);execute_native_dyn_solver_mode1_00403850(task,self->profile_,*self->calls_,self->crt_);}
 } // namespace bsp
