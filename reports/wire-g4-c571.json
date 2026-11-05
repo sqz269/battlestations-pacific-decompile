@@ -1,0 +1,73 @@
+{
+  "assignment": {
+    "goal": 4,
+    "chain": 571,
+    "slot": "g4-w1",
+    "run": 1178
+  },
+  "switch": "bsp::kWireGoal4Chain571Bound",
+  "summary": {
+    "newly_wired": [
+      "00b87410"
+    ],
+    "wired_before": 9896,
+    "built_called_before": 4980,
+    "built_called_after": 4981,
+    "build": "scripts/build.ps1: passed; all 5 CTests passed",
+    "runtime_validation": "Not run; built executable call-graph evidence only.",
+    "abi": "Existing reconstructed C++ interfaces; no native ABI replacement claim.",
+    "remaining": "Resource-item array resize/destruction still lack an established entry-reachable resource-container lifetime path; not added to this hierarchy-only path.",
+    "wired_after": 9897,
+    "verification": [
+      "scripts/build.ps1: 5/5 tests passed",
+      "call_graph.py: 4980 -> 4981 reconstructed addresses called from entry",
+      "wire_readiness.py --standins: 9896 -> 9897 wired"
+    ]
+  },
+  "rows": [
+    {
+      "native": "00b87410",
+      "status": "wired",
+      "host_site": "src/native_resource_pointer_array.cpp: destroy_native_hierarchy_item_pointers_00b87b40",
+      "reason": "Original 00B87B40 calls 00B87410(0) before freeing the current backing pointer; replace the shared-helper path with this existing body for the same retained StructuredHierarchyItems header.",
+      "evidence": [
+        "bsp.py show 00b87b40",
+        "bsp.py show 00b87410",
+        "call_graph.py who 00b87410: REACHABLE, one call from destroy_native_hierarchy_item_pointers_00b87b40 at 1061ed1a",
+        "call_graph.py path 00b87410: WinMainCRTStartup -> mission model loading -> hierarchy release -> destructor -> resize"
+      ],
+      "wired_before": false,
+      "readiness": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    },
+    {
+      "native": "00b87b40",
+      "status": "wired",
+      "host_site": "src/structured_model.cpp: StructuredHierarchyItems::release",
+      "reason": "Already wired before this packet; this packet switches its existing cleanup to the native resize body, leaving old shared-helper cleanup in the else arm.",
+      "wired_before": true
+    },
+    {
+      "native": "00b87350",
+      "status": "wired",
+      "host_site": "src/native_resource_hierarchy_append.cpp: append_native_hierarchy_item_00b87ae0",
+      "reason": "Already wired before this packet; reserve body inspected to confirm the resize helper signed-capacity/minimum-16 allocation contract. No new reserve wiring claimed.",
+      "wired_before": true
+    },
+    {
+      "native": "00b873c0",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp: resize_native_resource_item_pointers_00b873c0",
+      "reason": "No entry-reachable resource-item container destruction or resize consumer established in this hierarchy-only packet; resource items use a separate raw triplet."
+    },
+    {
+      "native": "00b87b20",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp: resource-container constructor unwind",
+      "reason": "Resource-item pointer-array destruction is present in constructor unwind, but no entry-reachable complete resource-container lifetime was established in this packet."
+    }
+  ]
+}
