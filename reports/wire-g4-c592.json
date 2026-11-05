@@ -1,0 +1,83 @@
+{
+  "chain": 592,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain592Bound",
+  "assumption": "Reuse the dimension-copy body in the existing live mode comparison: the same lifecycle-locked renderer supplies the two presentation DWORDs, and the copied values determine the existing mode-change branch.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five existing tests passed",
+    "call_graph": "Built Win32 bsp_game.exe: one reachable call at 10529702 from change_native_renderer_presentation_mode_00b29e60 to copy_native_renderer_dimensions_00b21f10; path reaches WinMainCRTStartup",
+    "runtime": "Game was not run; built reachability does not establish gameplay execution or original ABI equivalence",
+    "wired_before": 9924,
+    "wired_after": 9926,
+    "new_wirings": 1,
+    "readiness_note": "00B21F10 is wired/called=true with one reachable call. Referencing its source also promotes the existing 00B20090 depth-getter row to textual wired; that getter already has unchanged reached resource-construction/init call sites, so no new wiring is claimed for it."
+  },
+  "rows": [
+    {
+      "native": "00b21f10",
+      "status": "wired",
+      "host_site": "src/native_renderer_presentation_mode.cpp: change_native_renderer_presentation_mode_00b29e60 mode comparison",
+      "evidence": "bsp.py show 00b21f10: copy actual renderer presentation DWORDs +1A28/+1A2C into output; the existing lifecycle section protects this same renderer. The returned dimensions replace the inline reads and decide whether to change presentation mode."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: existing vertex registry cleanup",
+      "reason": "Existing cleanup already calls the body; a newly reached shader-unregistration path is needed rather than another removal call."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: existing pixel registry cleanup",
+      "reason": "Existing cleanup already calls the body; a newly reached shader-unregistration path is needed rather than another removal call."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: distortion extent candidate",
+      "reason": "No reached distortion-pass extent consumer and concrete distortion Host were identified; prior skip evidence still names that missing contract."
+    },
+    {
+      "native": "00b58400",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader constant-list construction candidate",
+      "reason": "No reached constant-list Lua reader with its actual 10h list owner was identified in this candidate inspection."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "include/bsp/camera_configuration.hpp: camera product query candidate",
+      "reason": "A reached original aspect-times-FOV consumer with an actual CameraProjection is still missing; the inspected historical query consumers require different arithmetic."
+    },
+    {
+      "native": "00b20090",
+      "status": "skipped",
+      "host_site": "src/native_render_resource_init.cpp: depth-surface capture candidate",
+      "reason": "No distinct new depth-surface operation to replace: unchanged reached resource-construction/init paths already call this body; the new source dependency only promotes its textual readiness row."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_time.cpp: texture-source time propagation candidate",
+      "reason": "No reached texture-source time setter with the actual source tree and elapsed-time input was identified in the inspected texture-pool path."
+    },
+    {
+      "native": "00c303b0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_clear.cpp: texture-source child cleanup candidate",
+      "reason": "A reached owning texture-source lifetime with its canonical child owners is needed; the inspected texture-pool file did not supply that cleanup site."
+    },
+    {
+      "native": "00c30570",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_producer.cpp: texture-source producer candidate",
+      "reason": "A reached producer caller with the actual requested source name, payload, and complete producer context was not identified in the inspected texture-pool path."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_publication.cpp: previous-timestamp getter candidate",
+      "reason": "Reached publication consumers use current and interval timestamps; a consumer of the actual previous timestamp is missing."
+    }
+  ]
+}
