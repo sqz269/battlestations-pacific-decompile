@@ -2,6 +2,7 @@
 #include "bsp/native_cube_texture_base.hpp"
 #include "bsp/native_cube_texture_pool_allocate.hpp"
 #include "bsp/native_logical_texture_named_base.hpp"
+#include "bsp/wire_goal4_chain604_switches.hpp"
 
 #include <exception>
 
@@ -142,8 +143,16 @@ void destroy_native_cube_texture_00b3ead0(void* owner,
 void* delete_native_cube_texture_00b3f410(void* owner,
     std::uint32_t flags, NativeCubeTextureOwnerContext& context) {
     destroy_native_cube_texture_00b3ead0(owner, context);
-    if ((flags & 1u) != 0)
-        return_native_cube_texture_slot_00b3d940(context.actual_cube_pool_0108db70, owner);
+    if ((flags & 1u) != 0) {
+        if constexpr (kWireGoal4Chain604Bound) {
+            // B3DCE0 PUSH ECX; MOV ECX,0108DB70; CALL B3D940; RET.
+            // B3F41F..B3F425 selects that same pool after full destruction.
+            // Pass the original slot and its existing canonical pool once.
+            return_native_cube_texture_00b3dce0(owner, context.actual_cube_pool_0108db70);
+        } else {
+            return_native_cube_texture_slot_00b3d940(context.actual_cube_pool_0108db70, owner);
+        }
+    }
     return owner;
 }
 } // namespace bsp

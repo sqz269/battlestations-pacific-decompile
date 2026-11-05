@@ -136,7 +136,9 @@ void* allocate_native_cube_texture_slot_00b3f170(void* pool) {
     return slot;
 }
 
-void return_native_cube_texture_slot_00b3d940(void* pool, void* slot) {
+// Preserve the native B3DCE0 -> B3D940 call boundary when both bodies are
+// compiled in this translation unit; each remains independently identifiable.
+__declspec(noinline) void return_native_cube_texture_slot_00b3d940(void* pool, void* slot) {
     auto* const section = reinterpret_cast<CRITICAL_SECTION*>(at(pool, 0x0c));
     EnterCriticalSection(section);
     put(pool, 0x24, word(pool, 0x24) + 1u);
