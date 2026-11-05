@@ -3,6 +3,8 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/oct18_tail_c.hpp"
+#include "bsp/wire_goal4_chain548_switches.hpp"
 
 #include <cstring>
 #include <memory>
@@ -55,12 +57,70 @@ struct FileBytes {
     std::uint32_t size;
 };
 
+// BDC8B0's actual sound-resource caller already uses this canonical VFS
+// adapter (including native_access when present). Borrow its same string
+// pool and retain its unavailable/incomplete-source guards and RAII ownership.
+// Native has no stream/buffer unwind owner. No original numeric vtable is
+// executed on a projected stream.
+class SoundWholeFileRuntime final : public oct18_tail_c::WholeFileRuntime {
+public:
+    explicit SoundWholeFileRuntime(SoundResourceAssetContext& context) : context_(context) {}
+
+    void resize_string(void* header, std::uint32_t size, std::uint32_t preserve) override {
+        static_cast<NativeString*>(header)->resize_0041dd40(context_.strings, size, preserve != 0);
+    }
+    void release_string(void* data, std::uint32_t size, std::uint32_t) override {
+        context_.strings.release(static_cast<char*>(data), size);
+    }
+    void* allocate(std::uint32_t size) override {
+        bytes.reset(new char[size]);
+        return bytes.get();
+    }
+    void* open(void* manager, const void* name, std::uint32_t flags) override {
+        opened_ = open_resource_memory_00bdf310_fragment(*static_cast<VfsMountContext*>(manager),
+            string_value(*static_cast<const NativeString*>(name)), flags);
+        if (!opened_.stream || !opened_.stream->fully_initialized())
+            throw std::runtime_error("Sound VFS source unavailable or incomplete");
+        return opened_.stream.get();
+    }
+    std::uint32_t length(void* stream, std::uint32_t* high) override {
+        const auto size = static_cast<std::uint64_t>(static_cast<MemoryStream*>(stream)->size_00bef600());
+        *high = static_cast<std::uint32_t>(size >> 32);
+        return static_cast<std::uint32_t>(size);
+    }
+    void read(void* stream, void* output, std::uint32_t size, std::uint32_t* actual) override {
+        if (!static_cast<MemoryStream*>(stream)->read_00bef590(output, size, actual))
+            throw std::runtime_error("Sound VFS memory-stream read failed");
+    }
+    void release_stream(void*) override { opened_.stream.reset(); }
+
+private:
+    SoundResourceAssetContext& context_;
+    VfsMemoryOpen opened_;
+public:
+    // Last member: on failure the output allocation dies before the stream,
+    // as in the previous helper's byte-owner / opened-stream local order.
+    std::unique_ptr<char[]> bytes;
+};
+
 // 00BDC8B0 projected over the canonical VFS memory-stream adapter: name copy,
 // flags2 open, low size, exact allocation/read, release stream, publish size.
 // The adapter already establishes fully initialized host backing. Unavailable
 // or incomplete sources are outside its domain; native lacks those guards.
 FileBytes load_file_bytes_00bdc8b0_fragment(const NativeString& name,
     SoundResourceAssetContext& context) {
+    if constexpr (kWireGoal4Chain548Bound) {
+        SoundWholeFileRuntime runtime(context);
+        oct18_tail_c::WholeFileBindings bindings{};
+        bindings.runtime = &runtime;
+        std::uint32_t size;
+        auto* const bytes = static_cast<char*>(oct18_tail_c::vfs_load_whole_file_00bdc8b0(
+            &context.mounts, &name, &size, bindings));
+        // Transfer the very allocation returned by the recovered body only
+        // after its name cleanup succeeds; FMOD consumes these same bytes.
+        runtime.bytes.release();
+        return {std::unique_ptr<char[]>(bytes), size};
+    } else {
     NativeString copy;
     StringCleanup cleanup{copy, context.strings};
     copy.copy_from_00be0a30_fragment(context.strings, name);
@@ -74,6 +134,7 @@ FileBytes load_file_bytes_00bdc8b0_fragment(const NativeString& name,
         throw std::runtime_error("Sound VFS memory-stream read failed");
     opened.stream.reset();
     return {std::move(bytes), size};
+    }
 }
 
 std::uint32_t loop_point(float value) noexcept {
