@@ -3399,7 +3399,8 @@ void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_
     const WholeFileBindings& b) {
     NativeString copied{};
     if (&copied != name) {
-        b.string_resize_0041dd40(&copied, c_read<CWord>(name), 1);
+        if (b.runtime) b.runtime->resize_string(&copied, c_read<CWord>(name), 1);
+        else b.string_resize_0041dd40(&copied, c_read<CWord>(name), 1);
         if (c_read<CWord>(name) != 0)
             std::memcpy(c_read<void*>(&copied, 4), c_read<const void*>(name, 4), c_read<CWord>(&copied));
     }
@@ -3408,16 +3409,29 @@ void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_
         const WholeFileBindings& bindings;
         ~NameGuard() {
             void* const data = c_read<void*>(&value, 4);
-            if (data) bindings.release_string_00419cc0_00bd1510(data, c_read<CWord>(&value) + 1, 1);
+            if (data) {
+                if (bindings.runtime)
+                    bindings.runtime->release_string(data, c_read<CWord>(&value) + 1, 1);
+                else bindings.release_string_00419cc0_00bd1510(data, c_read<CWord>(&value) + 1, 1);
+            }
         }
     } cleanup{copied, b};
-    void* const stream = c_virtual<void*>(manager, 4, &copied, CWord{2});
+    // bsp.py show 00bdc8b0 --asm: BDC91E opens with flags2, BDC932
+    // reads low/high size, BDC94B reads once with actual=null, BDC951
+    // consumes the opened reference, and only BDC96D publishes low size.
+    // The optional Source transport preserves this single sequence for the
+    // live sound loader's canonical VFS MemoryStream ownership.
+    void* const stream = b.runtime ? b.runtime->open(manager, &copied, 2)
+        : c_virtual<void*>(manager, 4, &copied, CWord{2});
     CWord high_size = 0;
-    const CWord low_size = c_virtual<CWord>(stream, 0x2c, &high_size);
-    void* const bytes = b.allocate_00bf55be(low_size);
-    c_virtual<CWord>(stream, 0x24, bytes, low_size, static_cast<CWord*>(nullptr));
+    const CWord low_size = b.runtime ? b.runtime->length(stream, &high_size)
+        : c_virtual<CWord>(stream, 0x2c, &high_size);
+    void* const bytes = b.runtime ? b.runtime->allocate(low_size) : b.allocate_00bf55be(low_size);
+    if (b.runtime) b.runtime->read(stream, bytes, low_size, nullptr);
+    else c_virtual<CWord>(stream, 0x24, bytes, low_size, static_cast<CWord*>(nullptr));
     // Native has no stream/buffer unwind owner: only copied name is guarded.
-    if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(stream, 4))) == 0)
+    if (b.runtime) b.runtime->release_stream(stream);
+    else if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(stream, 4))) == 0)
         c_virtual<void>(stream, 0);
     *size_output = low_size;
     return bytes;

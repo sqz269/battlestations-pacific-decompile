@@ -176,10 +176,26 @@ public:
 };
 void warning_remove_listener_00980d30(WarningListenerRemovalView&);
 void warning_remove_listener_00980d30(void*, const void*, std::uint32_t, const WarningRemoveBindings&);
+// Source transport for owners whose current virtual operations already have
+// typed application bindings. Arguments still designate the actual manager,
+// copied name and opened stream; this does not create a second VFS domain.
+// The raw fallback below retains the original Win32 virtual-call contract.
+struct WholeFileRuntime {
+    virtual ~WholeFileRuntime() = default;
+    virtual void resize_string(void*, std::uint32_t, std::uint32_t) = 0;
+    virtual void release_string(void*, std::uint32_t, std::uint32_t) = 0;
+    virtual void* allocate(std::uint32_t) = 0;
+    virtual void* open(void*, const void*, std::uint32_t) = 0;
+    virtual std::uint32_t length(void*, std::uint32_t*) = 0;
+    virtual void read(void*, void*, std::uint32_t, std::uint32_t*) = 0;
+    // Consume the one reference obtained by open, including its zero callback.
+    virtual void release_stream(void*) = 0;
+};
 struct WholeFileBindings {
     void (__thiscall* string_resize_0041dd40)(void*, std::uint32_t, std::uint32_t);
     void (__cdecl* release_string_00419cc0_00bd1510)(void*, std::uint32_t, std::uint32_t);
     void* (__cdecl* allocate_00bf55be)(std::uint32_t);
+    WholeFileRuntime* runtime{};
 };
 void* vfs_load_whole_file_00bdc8b0(void*, const void*, std::uint32_t*, const WholeFileBindings&);
 } // namespace bsp::oct18_tail_c
