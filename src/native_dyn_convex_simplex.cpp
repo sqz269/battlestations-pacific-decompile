@@ -1,4 +1,6 @@
 #include "bsp/native_dyn_convex_simplex.hpp"
+#include "bsp/math.hpp"
+#include "bsp/wire_goal4_chain609_switches.hpp"
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native convex simplex reduction requires MSVC Win32 x87 assembly.
 #endif
@@ -6,6 +8,9 @@ namespace bsp {
 namespace {
 // Consumed existing game math leaf; not a new reconstruction claim.
 __declspec(naked) void cross_reference() noexcept {
+    if constexpr (kWireGoal4Chain609Bound) {
+        __asm { jmp cross_reversed_register_bridge }
+    } else {
     __asm {
         fld qword ptr [ecx + 010h] // 00401c20
         fmul qword ptr [edx + 8] // 00401c23
@@ -27,9 +32,13 @@ __declspec(naked) void cross_reference() noexcept {
         fstp qword ptr [eax + 010h] // 00401c4b
         ret  // 00401c4e
     }
+    }
 }
 // Consumed existing game math leaf; not a new reconstruction claim.
 __declspec(naked) void scale_reference() noexcept {
+    if constexpr (kWireGoal4Chain609Bound) {
+        __asm { jmp scale_register_bridge }
+    } else {
     __asm {
         fld qword ptr [eax] // 00401cd0
         fld qword ptr [esp + 4] // 00401cd2
@@ -42,6 +51,7 @@ __declspec(naked) void scale_reference() noexcept {
         fmul qword ptr [eax + 010h] // 00401ce4
         fstp qword ptr [eax + 010h] // 00401ce7
         ret 8 // 00401cea
+    }
     }
 }
 } // namespace

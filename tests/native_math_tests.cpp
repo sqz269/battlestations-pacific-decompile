@@ -124,6 +124,36 @@ int main() {
         const float reference = native_abs(f), rebuilt = abs_00401170(f);
         check(std::memcmp(&reference, &rebuilt, sizeof(float)) == 0);
     }
+    // Chain609: the register adapters must preserve the original arithmetic
+    // under both the main thread's PC24 and Dyn workers' PC53. Unlike the
+    // integer fixtures above, these values distinguish x87 from SSE rounding.
+    unsigned short saved_control;
+    __asm { fnstcw saved_control }
+    for (unsigned int precision : {0x0000u, 0x0200u}) {
+        unsigned short control = static_cast<unsigned short>((saved_control & ~0x0300u) | precision);
+        __asm { fldcw control }
+        const Vec3d a{1.23456789012345, -7.65432109876543, 0.3333333333333333};
+        const Vec3d b{-0.76543210987654, 3.141592653589793, 9.87654321098765};
+        Vec3d expected{}, actual{};
+        binary_op(cross.code, &expected, &a, &b);
+        binary_op(reinterpret_cast<void*>(&cross_reversed_register_bridge), &actual, &a, &b);
+        check(same(expected, actual));
+        expected = actual = a;
+        binary_op(cross.code, &expected, &expected, &b);
+        binary_op(reinterpret_cast<void*>(&cross_reversed_register_bridge), &actual, &actual, &b);
+        check(same(expected, actual));
+        binary_op(subtract.code, &expected, &a, &b);
+        binary_op(reinterpret_cast<void*>(&subtract_reversed_register_bridge), &actual, &a, &b);
+        check(same(expected, actual));
+        expected = actual = a;
+        scale(scaling.code, &expected, 1.0000000596046448);
+        scale(reinterpret_cast<void*>(&scale_register_bridge), &actual, 1.0000000596046448);
+        check(same(expected, actual));
+        unsigned short after_control;
+        __asm { fnstcw after_control }
+        check(after_control == control);
+    }
+    __asm { fldcw saved_control }
     // One focused regression case: exact seed state and 1500 outputs across refills.
     Reference seed_code(ref_00bf0cf0), refill_code(ref_00bf0d20);
     Reference next_code(ref_00ba2c20, refill_code.code, 0x25);

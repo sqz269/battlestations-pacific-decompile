@@ -1,0 +1,144 @@
+{
+  "chain": 609,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain609Bound",
+  "baseline": "9b1543eab4",
+  "rows": [
+    {
+      "native": "00401c20",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_ray.cpp:cross_reference; src/native_dyn_convex_simplex.cpp:cross_reference",
+      "evidence": "Entry-reachable Dyn ray/simplex calls tail-jump to cross_reversed_register_bridge, which directly calls the existing cross_reversed_00401c20 with the actual EAX/ECX/EDX vector pointers."
+    },
+    {
+      "native": "00401cb0",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_ray.cpp:subtract_reference",
+      "evidence": "Entry-reachable ray calls tail-jump to subtract_reversed_register_bridge; its direct call uses the original actual vector pointers."
+    },
+    {
+      "native": "00401cd0",
+      "status": "wired",
+      "host_site": "src/native_dyn_convex_ray.cpp:scale_reference; src/native_dyn_convex_simplex.cpp:scale_reference",
+      "evidence": "Entry-reachable ray/simplex calls tail-jump to scale_register_bridge, forwarding the actual EAX vector and unchanged stack-double factor with original RET 8 cleanup."
+    },
+    {
+      "native": "00401cf0",
+      "status": "skipped",
+      "host_site": "src/math.cpp:length_squared_00401cf0",
+      "reason": "No original squared-length call site was identified in the inspected ray/simplex helper adapters; an actual consumer remains needed."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_command.inc:finish_submission",
+      "reason": "Missing an original metadata-setting operation and its three source words in the inspected command submission; a nonempty real queue alone does not justify a metadata write."
+    },
+    {
+      "native": "00521f30",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_85_to87.cpp:construct_native_session_message87_00521f30",
+      "reason": "Missing a bound HUD unit-pick message87 production/send operation in the inspected host paths; the constructor alone supplies no live message consumer."
+    },
+    {
+      "native": "00411eb0",
+      "status": "skipped",
+      "host_site": "src/segs_0_9_11_cc13.cpp:scoped_lock_construct_00411eb0",
+      "reason": "Missing a reached original scoped-lock caller carrying its tracked critical-section owner; generic Windows locking sites do not establish that contract."
+    },
+    {
+      "native": "00407960",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn2.cpp:pool36_free_00407960",
+      "reason": "Missing a concrete pool36-backed edge-map producer in the inspected Dyn process; the raw slot and owning page table must be established before freeing."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:gun-bot selection",
+      "reason": "Missing an owned native tail-gunner bot allocation and complete 0072BBD0 base-constructor binding at the inspected selected-bot site."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:gun-bot selection",
+      "reason": "Missing an owned native torpedo bot allocation and complete 0072BBD0 base-constructor binding at the inspected selected-bot site."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:movie camera projection",
+      "reason": "Missing an original FOV-times-aspect consumer bound to the actual CameraProjection; the inspected HUD state uses a different projection view."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing a reached original clip-plane setter carrying its actual CameraClipPlaneState and source plane in the inspected renderer hosts."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing a reached original clip-plane clear operation bound to its actual CameraClipPlaneState in the inspected renderer hosts."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp:resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a reached native vehicle-class camera-array producer and resize request in the inspected host paths."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp:initialize_native_vehicle_camera_limits_0078e230",
+      "reason": "Missing an actual native camera-limits owner construction site in the inspected host paths."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_screen_scene_runtime.cpp:GuiScreenSceneRuntime::Shared",
+      "reason": "The existing runtime already directly calls this release body; missing a production owner of that runtime cannot be repaired by another release call."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart::write_checkpoint",
+      "reason": "Missing the pre-load checkpoint table/current mission comparison needed to replace the inspected unimplemented checkpoint-write site."
+    },
+    {
+      "native": "00858260",
+      "status": "skipped",
+      "host_site": "src/native_particle_tracer_state.cpp:node_construct_bridge",
+      "reason": "The existing node bridge already calls the reconstructed constructor; this inspection supplied no missing producer and adding another constructor call would double-run it."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp:GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "Missing a reached declaration caller with the actual native enum owner; the inspected wrapper already directly calls the body."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:director state consumers",
+      "reason": "Missing a controller snapshot producer and routed snapshot consumer in the inspected gunnery host; flattening current fields into a temporary would not supply them."
+    }
+  ],
+  "implementation": "Reuse the three existing address bodies through register adapters; switch ON replaces each local assembly stand-in, switch OFF retains the prior helper verbatim. Correct existing bodies to the original x87 instruction schedule. Preserve actual pointers, stack factor, GPRs, EFLAGS, current control word, and balanced x87 stack.",
+  "validation": {
+    "build": "scripts/build.ps1: all 5 checks passed",
+    "native_reference": "verify-seeds: all bytes match disk; native_math_tests: 466 comparisons, zero failures, including fractional PC24/PC53 adapter and alias checks",
+    "emitted_code": "Inspected three bodies/adapters from built bsp_game.exe with Capstone; x87 schedule and PUSHFD/PUSHAD/POPAD/POPFD and RET8 match intended ABI",
+    "call_graph": "All three bodies REACHABLE; one direct call site each from their register bridge. Ray and simplex kernels are entry-reachable.",
+    "game_run": "Not run; binary reachability and focused native fixture evidence only."
+  },
+  "wired_total_before": 9942,
+  "wired_total_after": 9945,
+  "new_entry_reachable_bodies": 3,
+  "readiness_after": {
+    "00401c20": {"state": "wired", "called": true, "call_sites": 1},
+    "00401cb0": {"state": "wired", "called": true, "call_sites": 1},
+    "00401cd0": {"state": "wired", "called": true, "call_sites": 1}
+  }
+}
