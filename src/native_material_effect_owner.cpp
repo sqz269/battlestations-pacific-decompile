@@ -2,7 +2,9 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_shadow_update_leaves.hpp"
 #include "bsp/wire_goal4_chain582_switches.hpp"
+#include "bsp/wire_goal4_chain591_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -105,12 +107,28 @@ void require_texture_construction_domain(NativeMaterialEffectConstructionAccess&
         throw std::invalid_argument("native effect texture construction requires one fresh frame and shared actual domains");
 }
 NativeMaterialEffectStorage* finish_derived(NativeMaterialEffectStorage* storage) {
+    if constexpr (kWireGoal4Chain591Bound) {
+        storage->descriptor_c4=nullptr;
+        storage->retained_138=nullptr;
+        // bsp.py show 00B407A0: the actual effect constructor writes byte
+        // +13C=0, installs D61A00, then clears all fourteen +140..+174 words.
+        // Reuse B400C0/B40820 for those same stores on this live allocation.
+        // Their assembly is MOV byte [ECX+13C],AL / MOVSS [ECX+EAX*4+140],XMM0
+        // with RET4/RET8. Zero is the binary's constant bit pattern; no float
+        // conversion or arithmetic occurs, and the old stores do not also run.
+        set_native_material_effect_byte_00b400c0(storage,nullptr,0);
+        storage->base.vtable_00=effect_table;
+        for (std::uint32_t index=0;index<storage->words_140.size();++index)
+            set_native_material_effect_float_bits_00b40820(storage,nullptr,index,0);
+        return storage;
+    } else {
     storage->descriptor_c4=nullptr;
     storage->retained_138=nullptr;
     storage->byte_13c=0;
     storage->base.vtable_00=effect_table;
     storage->words_140.fill(0);
     return storage;
+    }
 }
 } // namespace
 
