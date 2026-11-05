@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain555_switches.hpp"
+#include "bsp/material_effect_plane.hpp"
 #include "bsp/wire_goal4_chain543_switches.hpp"
 #include "bsp/game_recon_relation_lists.hpp"
 #include "bsp/wire_goal4_chain538_switches.hpp"
@@ -13072,6 +13074,73 @@ public:
             }
             const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
             if (landscape_entry(index) < 0) {
+                if constexpr (bsp::kWireGoal4Chain555Bound) {
+                    // Reuse the complete 0092E250 AABB transform over the real
+                    // decoded model bounds and this unit's current pose. This
+                    // is source reuse at the host broad-phase boundary, not a
+                    // claim that 0098A750 originally called 0092E250. Its
+                    // centre/difference spills (0092E250..0092E307), native
+                    // 004142E0/0042D0D0 math, and final min/max stores replace
+                    // the host's origin-first arithmetic on this path.
+                    float right[3], up[3], forward[3], origin[3];
+                    if (const auto* model = owner_.hit_mesh_of(index);
+                        model != nullptr && owner_.units.unit_pose(index, right, up, forward, origin)) {
+                        struct Math final : bsp::cc13_left61::BoxTransformHost {
+                            void transform_affine_point_004142e0(const float* in, float* out,
+                                const float* matrix) override {
+                                const std::array<float, 3> point{in[0], in[1], in[2]};
+                                bsp::CameraMatrix pose;
+                                std::copy_n(matrix, pose.size(), pose.begin());
+                                std::array<float, 3> result;
+                                bsp::transform_point_004142e0(point, pose, result);
+                                std::copy(result.begin(), result.end(), out);
+                            }
+                            void transform_direction_0042d0d0(float* out, const float* in,
+                                const float* matrix, char normalize) override {
+                                // 0092E42F pushes zero; the 12-float absolute
+                                // matrix has exactly the nine entries read by
+                                // the existing no-normalization native kernel.
+                                if (normalize != 0) throw std::logic_error("box transform normalized direction");
+                                bsp::transform_native_effect_direction_0042d0d0_no_normalize(out, in, matrix);
+                            }
+                        } math;
+                        const bsp::CameraMatrix pose{right[0], right[1], right[2], 0.0f,
+                            up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
+                            origin[0], origin[1], origin[2], 1.0f};
+                        float world[6];
+                        bsp::cc13_left61::transform_box_0092e250(model->mesh_box.data(), world, pose.data(), math);
+                        if (parent_offers_devices(index)) {
+                            for (const std::size_t row : owner_.device_children_of(index)) {
+                                if (!device_sphere(row, centre, radius)) continue;
+                                for (int k = 0; k < 3; ++k) {
+                                    world[k] = std::min(world[k], centre[k] - radius);
+                                    world[k + 3] = std::max(world[k + 3], centre[k] + radius);
+                                }
+                            }
+                        }
+                        bounds.min = {world[0], world[1], world[2]};
+                        bounds.max = {world[3], world[4], world[5]};
+                        return bounds;
+                    }
+                    // Keep the existing fallback when a real mesh or current
+                    // unit pose is unavailable; neither is invented for a call.
+                    float c[3], half[3];
+                    if (!box_of(index, c, half)) return bounds;
+                    float lo[3] = {c[0] - half[0], c[1] - half[1], c[2] - half[2]};
+                    float hi[3] = {c[0] + half[0], c[1] + half[1], c[2] + half[2]};
+                    if (parent_offers_devices(index)) {
+                        for (const std::size_t row : owner_.device_children_of(index)) {
+                            if (!device_sphere(row, centre, radius)) continue;
+                            for (int k = 0; k < 3; ++k) {
+                                lo[k] = std::min(lo[k], centre[k] - radius);
+                                hi[k] = std::max(hi[k], centre[k] + radius);
+                            }
+                        }
+                    }
+                    bounds.min = {lo[0], lo[1], lo[2]};
+                    bounds.max = {hi[0], hi[1], hi[2]};
+                    return bounds;
+                } else {
                 float c[3], half[3];
                 if (!box_of(index, c, half)) return bounds;
                 float lo[3] = {c[0] - half[0], c[1] - half[1], c[2] - half[2]};
@@ -13088,6 +13157,7 @@ public:
                 bounds.min = {lo[0], lo[1], lo[2]};
                 bounds.max = {hi[0], hi[1], hi[2]};
                 return bounds;
+                }
             }
         }
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;

@@ -32,7 +32,19 @@ constexpr std::size_t kVecFirst = 4;
 constexpr std::size_t kVecLast = 8;
 constexpr std::size_t kVecEnd = 0x0c;
 
-struct Left61Host {
+// The complete 0092E250 body needs only these two math services. Keep its
+// caller independent of the unrelated container/file services below.
+struct BoxTransformHost {
+    virtual ~BoxTransformHost() = default;
+    // 004142E0, ECX = source xyz; stack = destination xyz, matrix; RET 8.
+    virtual void transform_affine_point_004142e0(const float* source, float* destination,
+                                                 const float* matrix) = 0;
+    // 0042D0D0, ECX = out xyz, EDX = vector; stack = matrix, char normalize; RET 8.
+    virtual void transform_direction_0042d0d0(float* out, const float* vector, const float* matrix,
+                                              char normalize) = 0;
+};
+
+struct Left61Host : BoxTransformHost {
     virtual ~Left61Host() = default;
 
     // --- CRT ------------------------------------------------------------
@@ -41,14 +53,6 @@ struct Left61Host {
     // 00BF6885 _CxxThrowException(0, 0): the rethrow at the end of a catch block.
     // The image never returns from it; the reconstruction rethrows itself after the hook.
     virtual void cxx_rethrow_00bf6885() = 0;
-
-    // --- math -----------------------------------------------------------
-    // 004142E0, ECX = source xyz; stack = destination xyz, matrix; RET 8.
-    virtual void transform_affine_point_004142e0(const float* source, float* destination,
-                                                 const float* matrix) = 0;
-    // 0042D0D0, ECX = out xyz, EDX = vector; stack = matrix, char normalize; RET 8.
-    virtual void transform_direction_0042d0d0(float* out, const float* vector, const float* matrix,
-                                              char normalize) = 0;
 
     // --- MSVC9 vector helpers (target = the image's call target) ----------
     // _Buy's allocator: __fastcall(ECX = count, EDX = 0 hint), EAX = storage
@@ -289,9 +293,9 @@ struct Left61Host {
 // --- segment 61: unit parts and MSVC9 vector instantiations --------------
 
 // 0092E250, __thiscall(ECX = const float box[6] (min xyz, max xyz); float out[6],
-// const float matrix[12]), RET 8: the box transformed by an affine matrix as
+// const float matrix[16]), RET 8: the box transformed by an affine matrix as
 // centre and |matrix| * half extent.
-void transform_box_0092e250(const float* box, float* out, const float* matrix, Left61Host& host);
+void transform_box_0092e250(const float* box, float* out, const float* matrix, BoxTransformHost& host);
 
 // 0092FD50, __fastcall(ECX = element): the two-vector element destructor
 // (vectors at +0 and +10h; +14h storage freed first).
