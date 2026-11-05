@@ -1,4 +1,6 @@
 #include "bsp/native_dyn_convex_ray.hpp"
+#include "bsp/math.hpp"
+#include "bsp/wire_goal4_chain609_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native convex ray intersection requires MSVC Win32 x87 assembly.
@@ -22,6 +24,9 @@ __declspec(naked) void sqrt_shim(){
 }
 // Consumed existing native math leaf; no new library reconstruction claim.
 __declspec(naked) void cross_reference(){
+    if constexpr (kWireGoal4Chain609Bound) {
+        __asm { jmp cross_reversed_register_bridge }
+    } else {
     __asm {
         fld qword ptr [ecx + 010h] // 00401c20
         fmul qword ptr [edx + 8] // 00401c23
@@ -43,9 +48,13 @@ __declspec(naked) void cross_reference(){
         fstp qword ptr [eax + 010h] // 00401c4b
         ret  // 00401c4e
     }
+    }
 }
 // Consumed existing native math leaf; no new library reconstruction claim.
 __declspec(naked) void subtract_reference(){
+    if constexpr (kWireGoal4Chain609Bound) {
+        __asm { jmp subtract_reversed_register_bridge }
+    } else {
     __asm {
         fld qword ptr [edx] // 00401cb0
         fsub qword ptr [ecx] // 00401cb2
@@ -58,9 +67,13 @@ __declspec(naked) void subtract_reference(){
         fstp qword ptr [eax + 010h] // 00401cc5
         ret  // 00401cc8
     }
+    }
 }
 // Consumed existing native math leaf; no new library reconstruction claim.
 __declspec(naked) void scale_reference(){
+    if constexpr (kWireGoal4Chain609Bound) {
+        __asm { jmp scale_register_bridge }
+    } else {
     __asm {
         fld qword ptr [eax] // 00401cd0
         fld qword ptr [esp + 4] // 00401cd2
@@ -73,6 +86,7 @@ __declspec(naked) void scale_reference(){
         fmul qword ptr [eax + 010h] // 00401ce4
         fstp qword ptr [eax + 010h] // 00401ce7
         ret 8 // 00401cea
+    }
     }
 }
 // Complete recovered normal body; address comments are original PE starts.
