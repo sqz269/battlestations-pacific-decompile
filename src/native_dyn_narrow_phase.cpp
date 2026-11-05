@@ -4,7 +4,6 @@
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_primitive_dispatch.hpp"
 #include "bsp/wire_goal4_chain614_switches.hpp"
-#include "bsp/wire_goal4_chain618_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native narrow phase requires MSVC Win32 x87 assembly.
@@ -1305,16 +1304,9 @@ __declspec(naked) void range_kernel(){
         push edi // 00c44144
         lea eax, [esp + 040h] // 00c44145
         push eax // 00c44149
-    }
-    // Chain 618. Only the call target changes: ECX/EDX and all five native
-    // stack arguments above flow through unchanged; the bridge returns AL and
-    // pops 14h just like vslot 0. Unknown methods still run exactly once.
-    if constexpr(kWireGoal4Chain618Bound) {
-        __asm { call collision_dispatch_bridge }
-    } else {
-        __asm { call edx } // 00c4414a
-    }
-    __asm {
+        // Chain 618: preserve ECX/EDX and the five actual stack arguments;
+        // the bridge returns AL and pops 14h. Foreign methods run once there.
+        call collision_dispatch_bridge // 00c4414a
         test al, al // 00c4414c
         je l_00c44316 // 00c4414e
         movss xmm0, dword ptr [edi + 028h] // 00c44154
