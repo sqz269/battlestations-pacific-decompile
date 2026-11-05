@@ -1,0 +1,118 @@
+{
+  "chain": 619,
+  "slot": "g4-w5",
+  "base": "02de8d48c6",
+  "scope": "Route the live native world simulator's full and remainder substeps through the existing public 00C5BB30 body.",
+  "rows": [
+    {
+      "native": "00c5bb30",
+      "status": "wired",
+      "host_site": "src/native_dyn_world_step.cpp: simulate_kernel -> substep_route at original 00C5C66D and 00C5C6BD",
+      "body": "bsp::run_native_dyn_world_substep_00c5bb30",
+      "real_state": "The actual constructed game's world at game+18h reaches simulate_native_dyn_world_00c5c540 through GameNativeGameRuntime::simulate_physics_00875e0c. Both original call sites retain EDI world and the exact stored float timestep, forwarding the existing NativeDynWorldStepContext owner.",
+      "evidence": [
+        "bsp.py show 00c5c540 --asm --start 75 --lines 68: full-step pushes at 00C5C668..66D and remainder pushes at 00C5C6B8..6BD.",
+        "bsp.py show 00c5bb30 --asm --lines 32: stack world/timestep entry; existing body retains its original instruction schedule.",
+        "src/game_native_game_runtime.cpp: GameNativeGameRuntime::simulate_physics_00875e0c checks live constructed ownership and reads the actual game+18h world."
+      ],
+      "double_run_prevention": "Both existing call sites unconditionally call substep_route, which invokes the existing public body once. The replaced private substep_shim and chain619 switch were deleted; the single arithmetic body remains substep_kernel behind the public entry.",
+      "abi": "New source interface, not a binary replacement ABI. The adapter consumes the existing context/world/float stack triple via __stdcall; the public entry remains __cdecl and binds the same borrowed services. Native FH3 and fault/unwind behavior remain outside its existing normal-return contract."
+    },
+    {
+      "native": "00c5c540",
+      "status": "skipped",
+      "host_site": "src/game_native_game_runtime.cpp: GameNativeGameRuntime::simulate_physics_00875e0c",
+      "reason": "Already reachable before this packet; used as the real-state caller for the newly wired 00C5BB30 boundary."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading_queue_update_00509190",
+      "reason": "No concrete Fe3QueueHost/live native loader queue and job producer was identified; its typed raw work-item vector cannot be replaced with a substitute queue."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: library_preview_load_vehicle_model_0050aa10",
+      "reason": "No concrete host and actual native loader/package-name producer was identified for this interface; selection stopped before adapter work."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "The existing message reader already directly calls the reserve body; the missing live message-35 factory path cannot be supplied by duplicating that call."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "The native message-35 lifecycle already calls the resize body; its missing live producer was outside the selected world-step packet."
+    },
+    {
+      "native": "00c518d0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::sphere_sphere",
+      "reason": "The existing runtime thunk already calls the public body; worker agent/g4-w2 owns the separate direct narrow-phase dispatch integration."
+    },
+    {
+      "native": "00c48330",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::box_sphere",
+      "reason": "The existing runtime thunk already calls the public body; worker agent/g4-w2 owns the separate direct narrow-phase dispatch integration."
+    },
+    {
+      "native": "00c50740",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::sphere_ray",
+      "reason": "The runtime thunk already calls this public body; a separate live direct ray-dispatch caller was not investigated in the selected packet."
+    },
+    {
+      "native": "00c50dd0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::box_ray",
+      "reason": "The runtime thunk already calls this public body; a separate live direct ray-dispatch caller was not investigated in the selected packet."
+    }
+  ],
+  "counts": {
+    "built_reachable_reconstructed_before": 5032,
+    "built_reachable_reconstructed_after": 5033,
+    "built_reconstructed_addresses_before": 5550,
+    "built_reconstructed_addresses_after": 5551,
+    "readiness_text_wired_before": 9954,
+    "readiness_text_wired_after": 9955
+  },
+  "validation": {
+    "initial_build": "scripts/build.ps1: PASS; all five CTests passed.",
+    "changed_build": "Review round 1: scripts/build.ps1 PASS; all five CTests passed (10.72 seconds).",
+    "call_graph": "Review round 1 rebuilt EXE: 00C5BB30 remains REACHABLE with one direct call from unconditional substep_route at 1055B356. path reaches simulate_kernel, simulate_native_dyn_world_00c5c540, GameNativeGameRuntime, fixed-step host, mission/menu/frame/startup and WinMainCRTStartup. Reconstructed addresses called remain 5033/5551.",
+    "probe_sources": [
+      "local/c619_substep_probe.cpp",
+      "local/c619_substep_probe.cmd"
+    ],
+    "probe": "Unconditional dispatch probe compiled /O2 /W4 /WX with an embedded manifest and passed. The simulation caller executed full/full/remainder, explicitly checking dt words 3D4CCCCD,3D4CCCCD,3CCCCCCE and 21 timestamp service calls. Each step produced exactly one velocity/collision/create-groups/position/sleep sequence, using the same world, scene and borrowed contexts. ESP, EBX, ESI, EDI, EBP, CW=007F and TOP=0 passed; profile scopes balanced and accumulator reset. No alternate dispatch path or switch override is compiled.",
+    "probe_logs": [
+      "local/output/c619_substep_probe.txt"
+    ],
+    "float_math": "No arithmetic or rounding schedule changed; only an existing stored float argument crosses the adapter.",
+    "limits": "The probe uses a no-contact raw-world fixture with controlled phase services. It verifies the new dispatch boundary, not full solver/collision behavior, native ABI/FH3 compatibility, or gameplay. The game was not launched."
+  },
+  "left": "The original substep arithmetic and phase implementations are unchanged. Other ready rows still need their actual owners/producers or direct dispatch callers; reviewed physics/property files were left to their owners.",
+  "review_round_1": {
+    "review_run": 1284,
+    "reviewed_head": "fba847b7b7cc9e433110647b30a0bb40da9d5bd8",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "Made substep_route unconditional, deleted substep_shim and include/bsp/wire_goal4_chain619_switches.hpp, and removed switch-dependent probe/report behavior."
+      }
+    ],
+    "validation": {
+      "build": "PASS; five of five tests",
+      "unconditional_probe": "PASS",
+      "call_graph": "00C5BB30 reachable; 5033 reconstructed addresses called",
+      "source_check": "Deleted shim, chain619 conditional and header; no new kWireGoal switch.",
+      "readiness": "9955 wired; 00C5BB30 wired, called=true, call_sites=1, callers_live=1."
+    }
+  }
+}
