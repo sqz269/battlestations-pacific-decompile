@@ -1,0 +1,58 @@
+{
+  "chain": 584,
+  "slot": "g4-w3",
+  "run": 1205,
+  "switch": "bsp::kWireGoal4Chain584Bound",
+  "picked": "Real compiled-shader reflection-owner initialization at +74h and +84h",
+  "newly_wired": [
+    "00b343b0",
+    "00b343e0"
+  ],
+  "rows": [
+    {
+      "native": "00b343b0",
+      "status": "wired",
+      "host_site": "src/native_compiled_shader_owner.cpp:initialize_native_compiled_shader_00b3b3c0_fragment",
+      "evidence": "bsp.py show 00b343b0: single byte store at receiver+74h. bsp.py show 00b3b3c0 --start 435 --lines 39: both 88h allocations initialize that byte to the binary constant zero (B3B57C..B3B5B0 and B3B5D6..B3B60A). NativeCompiledShaderStorage asserts the exact offset.",
+      "behavior": "Replace the existing byte initialization with the existing setter on the same newly allocated reflection owner, before the constants array stores. No extra store or fabricated input; original assignment remains in the OFF arm.",
+      "abi": "Existing reconstructed Source interface uses ECX/EDX and returns the stored byte; native setter uses ECX plus stack argument and RET4. Return is discarded; this is source composition, not original binary ABI equivalence."
+    },
+    {
+      "native": "00b343e0",
+      "status": "wired",
+      "host_site": "src/native_compiled_shader_owner.cpp:initialize_native_compiled_shader_00b3b3c0_fragment",
+      "evidence": "bsp.py show 00b343e0: single DWORD store at receiver+84h. The two B3B3C0 reflection construction blocks set puVar6[0x21] to zero after the constants array and before memset(+08h, FFh, 36h). NativeCompiledShaderStorage asserts the exact offset.",
+      "behavior": "Replace the existing DWORD initialization with the existing setter using the same owner and original zero constant, at the original position. Original assignment remains in the OFF arm.",
+      "abi": "Existing reconstructed Source interface uses ECX/EDX and returns the stored DWORD; native setter uses ECX plus stack argument and RET4. Return is discarded; no binary ABI claim."
+    },
+    {
+      "native": "00b343d0",
+      "status": "skipped",
+      "host_site": "src/native_compiled_shader_owner.cpp:compiled-shader +84h state",
+      "reason": "No live consumer of the reflection owner +84h DWORD was established; only its constructor write exists, so adding a getter read would not serve game behavior."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp:get_raw_timer_previous_00bee060",
+      "reason": "No live host consumer of the clock +30h previous timestamp was established; the current raw update already uses its native register schedule."
+    }
+  ],
+  "validation": {
+    "baseline_commit": "68d9bccf22",
+    "baseline_readiness_wired": 9913,
+    "final_readiness_wired": 9915,
+    "baseline_call_graph_reconstructed_addresses_called": 4990,
+    "final_call_graph_reconstructed_addresses_called": 4992,
+    "call_sites": {
+      "00b343b0": 1,
+      "00b343e0": 1
+    },
+    "build": "scripts/build.ps1 passed: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (5/5).",
+    "graph": "call_graph.py rebuilt after the build; who reports exactly one reachable call site for each setter from initialize_native_compiled_shader_00b3b3c0_fragment; path reaches WinMainCRTStartup through the material compiler and startup GUI-effect application.",
+    "readiness": "wire_readiness.py --standins: both addresses state=wired, called=true, call_sites=1.",
+    "float_math": "Unchanged; pc24_lint not applicable.",
+    "tests_added": 0,
+    "boundary": "Build, existing tests and static entry-reachable linked call graph only; game not launched, gameplay and native ABI equivalence not claimed."
+  }
+}
