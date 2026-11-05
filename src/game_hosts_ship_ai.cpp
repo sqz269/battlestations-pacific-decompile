@@ -15,6 +15,7 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/wire_goal4_chain557_switches.hpp"
 #include "bsp/wire_goal4_chain539_switches.hpp"
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
@@ -14580,12 +14581,35 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
                 static_cast<float>(capture_clock), seconds)) {
             ++ramp_lowers;
             const GameUnitRow* row = units.unit_row(u);
+            if constexpr (bsp::kWireGoal4Chain557Bound) {
+                if (session_mode == static_cast<std::int32_t>(bsp::SessionMode::kLocal)) {
+                    const auto* messages = bsp::game::commands_session_messages();
+                    if (messages == nullptr || message_game_state == nullptr)
+                        throw std::logic_error("Landing-ship open requires the live mission session");
+                    bsp::SessionRouteInputs inputs;
+                    inputs.game_state = static_cast<std::int32_t>(*message_game_state);
+                    inputs.mode = static_cast<bsp::SessionMode>(session_mode);
+                    const auto route = messages->route_landing_ship_open_a6(inputs);
+                    if (route.routed)
+                        throw std::logic_error("Local flags-4 landing-ship open unexpectedly routed");
+                    done("LandingShip::construct_and_drop_ramp_message_0a6", 0x00749aa0u);
+                } else {
+                    record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+                }
+                log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d "
+                    "landed_capture_power=%d (0074A420; A6h 00749AA0 / 0077C2A0: %s)",
+                    row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200,
+                    u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0,
+                    session_mode == 0 ? "constructed, flags 4 dropped in local mode"
+                                      : "nonlocal route remains a record");
+            } else {
             log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d "
                 "landed_capture_power=%d (0074B080 0074A420; the 0A6h route 00749AA0 / "
                 "0077C2A0 is a record)", row != nullptr ? row->name.c_str() : "?",
                 capture_clock, l->pad_1200,
                 u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
             record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+            }
         }
         // Packet cc9_landing_unload_latch (section 106): every latch path reaches
         // 0074B0B0 and falls through to the ramp animation and the unload.

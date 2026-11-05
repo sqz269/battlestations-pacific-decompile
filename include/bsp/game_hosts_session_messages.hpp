@@ -28,6 +28,9 @@ struct GunAimMessage79;
 
 namespace bsp {
 
+struct SessionRouteInputs;
+struct SessionRouteDecision;
+
 // cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
 // 00954A10 (005489DA) and routes per group entry with 0077C2A0(flags 3) at
 // 00548A1F reaches 00959C20 as the copy 0076E520 rebuilds from its bits
@@ -355,6 +358,11 @@ public:
         bool start_landing_94{false};
     };
     StartLandingCopy queue_start_landing_94() const;
+    // 0074B089 constructs A6h after the local ramp has already opened.
+    // 0074B0A0 routes it with flags 4: 0077C30D..0077C323 drops that exact
+    // flag word outside a host session, before any codec or receive callback.
+    // This binding accepts the live single-player route state only.
+    SessionRouteDecision route_landing_ship_open_a6(const SessionRouteInputs& route) const;
     // Goal 4 chain 343. SHIP_SINK (92h): the wreck's leak redistribution
     // 0074EC50 inlines 0074EAB0's stores at 0074ED18..0074ED62 (0075B430(92h),
     // +18h word 0, +4h = 1, +1Ah 0, vtable 00D00518, +1Ch = the leak count,
