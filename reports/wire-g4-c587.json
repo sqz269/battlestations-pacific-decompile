@@ -1,0 +1,77 @@
+{
+  "chain": 587,
+  "worker": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain587Bound",
+  "rows": [
+    {
+      "native": "00b93000",
+      "status": "wired",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeIds::initialize_derived, inlined into initialize_skined_mesh_resource_00cd86f0 and initialize_matrix_mesh_resource_00cd87b0",
+      "evidence": "bsp.py show 00b93000: current DWORD 01090444; CD86F0/CD87B0 assembly CD875A/CD881A reads that same base own-ID before the two inherited IDs and descriptor stores.",
+      "real_state": "The existing GameNativeTypeStorage process descriptor storage_.mesh_01090444[0], initialized with the existing counter, root and scene bootstrap; no additional initialization, ID allocation or value sample.",
+      "change": "Replace one direct volatile read with the existing reconstructed getter; keep all old initialization-tail code unchanged in the disabled arm. Mark the existing getter noinline so the built call is inspectable."
+    },
+    {
+      "native": "00b93010",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: read_native_mesh_resource_name_00b93010",
+      "reason": "No reachable consumer of the current base mesh descriptor name word; startup assigns its binary name constant and never reads that word."
+    },
+    {
+      "native": "00b930d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "No reachable NativeMeshResourceTypeCalls adapter consumes the skined descriptor own-ID; its current predicate adapter has no production instantiation."
+    },
+    {
+      "native": "00b930e0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: read_native_mesh_resource_name_00b930e0",
+      "reason": "No reachable consumer of the current skined descriptor name word; startup only assigns its binary name constant."
+    },
+    {
+      "native": "00b931d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "No reachable NativeMeshResourceTypeCalls adapter consumes the matrix descriptor own-ID; its current predicate adapter has no production instantiation."
+    },
+    {
+      "native": "00b931e0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: read_native_mesh_resource_name_00b931e0",
+      "reason": "No reachable consumer of the current matrix descriptor name word; startup only assigns its binary name constant."
+    },
+    {
+      "native": "00b936b0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "Missing production instantiation of NativeMeshResourceTypeCalls connected to actual mesh resource item classification; changing this predicate alone cannot add a reachable call."
+    },
+    {
+      "native": "00b939c0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "Missing production instantiation of NativeMeshResourceTypeCalls connected to actual skined resource item classification; changing this predicate alone cannot add a reachable call."
+    },
+    {
+      "native": "00b93a40",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "Missing production instantiation of NativeMeshResourceTypeCalls connected to actual matrix resource item classification; changing this predicate alone cannot add a reachable call."
+    }
+  ],
+  "readiness_wired_before": 9916,
+  "readiness_wired_after": 9917,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all 5 existing tests passed",
+    "release_calls": [
+      "1053148C: initialize_skined_mesh_resource_00cd86f0 -> read_native_mesh_resource_type_00b93000",
+      "1053134C: initialize_matrix_mesh_resource_00cd87b0 -> read_native_mesh_resource_type_00b93000"
+    ],
+    "release_folding": "The getter folds with 11 other identical bodies. The two listed call sites come from the changed reachable startup callers; the 41-call folded aggregate and its generic path are not unique getter evidence.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed; /Ob0 and /OPT:NOICF",
+    "analysis_call": "1069F45E: NativeMeshResourceTypeIds::initialize_derived -> read_native_mesh_resource_type_00b93000 at 1069FC30; 1 reachable call site, no folded aliases",
+    "analysis_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> qualify_vfs_physical_read_owner -> GameNativeVfsApplication::initialize_core -> Impl::initialize_core -> GameNativeTypeStorage::initialize_resource_types -> initialize_skined_mesh_resource_00cd86f0 -> initialize_derived -> read_native_mesh_resource_type_00b93000"
+  },
+  "validation_scope": "Win32 compilation, existing build tests, and built-executable entry reachability; game was not launched and native ABI equivalence is not claimed."
+}
