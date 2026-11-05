@@ -1,11 +1,77 @@
 #include "bsp/structured_model.hpp"
 #include "bsp/structured_resource.hpp"
+#include "bsp/native_resource_hierarchy_append.hpp"
+#include "bsp/native_resource_pointer_array.hpp"
 #include <cstring>
+#include <memory>
 #include <new>
 #include <stdexcept>
 #include <utility>
 
 namespace bsp {
+StructuredHierarchyItems::~StructuredHierarchyItems() { release(); }
+
+StructuredHierarchyItems::StructuredHierarchyItems(StructuredHierarchyItems&& other) noexcept
+    : resource_fields_(std::exchange(other.resource_fields_, {})) {}
+
+StructuredHierarchyItems& StructuredHierarchyItems::operator=(StructuredHierarchyItems&& other) noexcept {
+    if (this != &other) {
+        release();
+        resource_fields_ = std::exchange(other.resource_fields_, {});
+    }
+    return *this;
+}
+
+HierarchyItem** StructuredHierarchyItems::data() const noexcept {
+    static_assert(sizeof(void*) == 4);
+    HierarchyItem** result;
+    std::memcpy(&result, resource_fields_.data() + 0x1c, sizeof result);
+    return result;
+}
+
+std::size_t StructuredHierarchyItems::size() const noexcept {
+    std::uint32_t count;
+    std::memcpy(&count, resource_fields_.data() + 0x20, sizeof count);
+    return count;
+}
+
+HierarchyItem& StructuredHierarchyItems::operator[](std::size_t index) noexcept {
+    return *data()[index];
+}
+const HierarchyItem& StructuredHierarchyItems::operator[](std::size_t index) const noexcept {
+    return *data()[index];
+}
+
+void StructuredHierarchyItems::append_native(HierarchyItem&& item) {
+    // bsp.py show 00B87AE0/00B87350: append the opaque record address, grow
+    // the actual triplet by 16, shallow-copy pointers, then increment count.
+    // Only this array owns encounter order; the retained C++ record is stable
+    // across array growth and is released if reserve throws before admission.
+    auto retained = std::make_unique<HierarchyItem>(std::move(item));
+    append_native_hierarchy_item_00b87ae0(resource_fields_.data(),
+        reinterpret_cast<std::uint32_t>(retained.get()));
+    retained.release();
+}
+
+void StructuredHierarchyItems::release() noexcept {
+    const auto count = size();
+    auto* const records = data();
+    for (std::size_t index = 0; index != count; ++index) delete records[index];
+    // bsp.py show 00B87B40/00B87410: pointee ownership is separate from the
+    // raw array. The existing destroy body resizes to zero then frees backing.
+    destroy_native_hierarchy_item_pointers_00b87b40(resource_fields_.data() + 0x1c);
+    resource_fields_.fill(std::byte{}); // retire stale fields after array lifetime
+}
+
+StructuredHierarchyItems::operator std::vector<HierarchyItem>() && {
+    std::vector<HierarchyItem> result;
+    result.reserve(size());
+    for (std::size_t index = 0; index != size(); ++index)
+        result.push_back(std::move((*this)[index]));
+    release();
+    return result;
+}
+
 void RendererRootHooks_00d5f0a8::begin_root() noexcept {
     // Complete native body00b1fe40: C3 (RET), followed by CC padding.
 }
@@ -34,7 +100,16 @@ bool parse_hierarchy_00b7f100(StructuredNode& container,
                 HierarchyItem item;
                 if (!parse_hierarchy_item_00b7eb90(*child, item, error)) return false;
                 // Native00b7eb90 appends before its caller releases the handle.
-                output.hierarchy.push_back(std::move(item));
+                // The dependent owner type preserves the original vector path
+                // when chain563 is OFF. ON uses the native pointer-array body
+                // for the real parsed records consumed by model/muzzle readers.
+                [&](auto& output) {
+                    if constexpr (kWireGoal4Chain563Bound) {
+                        output.hierarchy.append_native(std::move(item));
+                    } else {
+                        output.hierarchy.push_back(std::move(item));
+                    }
+                }(output);
             } else {
                 if (!child->skip_00be9c40()) {
                     error = "Could not skip unsupported Hierarchy payload.";
