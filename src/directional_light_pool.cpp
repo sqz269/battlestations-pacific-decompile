@@ -228,6 +228,10 @@ void bind_static_directional_light_pool_01090154(DirectionalLightPool& pool) {
     static_pool_01090154 = &pool;
 }
 
+bool DirectionalLightPool::is_static_binding() const noexcept {
+    return static_pool_01090154 == this;
+}
+
 int initialize_static_directional_light_pool_00cd8080(DirectionalPoolAtexit register_atexit) {
     if (!register_atexit) throw std::invalid_argument("CRT atexit registration is required");
     require_static_pool().initialize_00b7b940();
