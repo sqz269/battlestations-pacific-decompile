@@ -334,7 +334,12 @@ for s in plain_idents:
     else:
         defined_in[s] = set(files)
 
-roots = [p for p in srcs if p.suffix == '.cpp' and (p.name.startswith('game_host') or p.name in ('game_main.cpp', 'game_startup.cpp', 'game_app.cpp'))]
+# The private header of a file split into a family (include/bsp/<root>_internal.hpp, e.g.
+# game_hosts_units_internal.hpp) holds that file's code; it counts as one of its .cpp files.
+internal_hdrs = {p for p in srcs if p.suffix == '.hpp' and p.name.endswith('_internal.hpp')
+                 and p.parent == ROOT / 'include' / 'bsp'}
+roots = [p for p in srcs if (p.suffix == '.cpp' or p in internal_hdrs)
+         and (p.name.startswith('game_host') or p.name in ('game_main.cpp', 'game_startup.cpp', 'game_app.cpp'))]
 file_idents = {p: {m.group(1) for m in ident_re.finditer(t)} for p, t in srcs.items()}
 owner_files = collections.defaultdict(set)  # identifier -> files that define/declare it with a body or prototype
 for p, t in srcs.items():
@@ -358,7 +363,7 @@ host_files = set(roots)
 
 def wired(a):
     for ident in ident_by_addr.get(a, ()):
-        users = [f for f in defined_in.get(ident, ()) if f in reach and f.suffix == '.cpp']
+        users = [f for f in defined_in.get(ident, ()) if f in reach and (f.suffix == '.cpp' or f in internal_hdrs)]
         defs = owner_files.get(ident, set())
         if ident in plain_idents and len(def_files.get(ident, ())) > 1:
             # Common method names (dispatch, initialize, release...) must not borrow a
@@ -481,10 +486,29 @@ if cg_path.is_file():
     def obj_stem(o):
         return o.split(':')[-1].rsplit('.', 1)[0].lower()
 
+    # A file split into a family (include/bsp/<root>_internal.hpp shared by src/<root>.cpp and
+    # src/<root>_*.cpp, e.g. game_hosts_units): a record sourced anywhere in the family owns the bodies
+    # in any of its objects, since header bodies land in whichever object the linker keeps.
+    split_roots = sorted((p.stem[:-len('_internal')].lower()
+                          for p in (ROOT / 'include' / 'bsp').glob('*_internal.hpp')), key=len, reverse=True)
+
+    def family(stem):
+        for root in split_roots:
+            if stem == root or stem == root + '_internal' or stem.startswith(root + '_'):
+                return root
+        return None
+
+    def owns(stem, obj):
+        o = obj_stem(obj)
+        if o == stem:
+            return True
+        f = family(stem)
+        return f is not None and family(o) == f
+
     for r in rows:
         vas = cg['by_addr'].get(r['address']) or [v for i in r.get('ident') or [] for v in by_last.get(i, [])]
         stem = Path(r.get('implementation_source') or r['source'] or '').stem.lower()
-        own = [v for v in vas if obj_stem(cg_nodes[v][4]) == stem] or \
+        own = [v for v in vas if owns(stem, cg_nodes[v][4])] or \
               [v for v in vas if not host_obj.search(cg_nodes[v][4])]
         if not own:
             r['called'] = None
