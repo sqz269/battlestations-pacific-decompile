@@ -3,7 +3,9 @@
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_post_effect_raw_access.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain578_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -101,8 +103,17 @@ __declspec(naked) NativeSurfaceOwnerStorage* __fastcall native_render_holder_pri
 }
 void set_native_post_effect_color0_00b4cb70(void* post,NativeSurfaceOwnerStorage* surface,
     NativeFrameTargetOwnerContext& context) {
-    auto* const frame=static_cast<NativeFrameTargetOwnerStorage*>(pointer(word(post,8)));
-    set_native_frame_target_color_00b1fab0(*frame,0,surface,context);
+    if constexpr (kWireGoal4Chain578Bound) {
+        // B4CB74 reads this actual post+08. B4CB90's complete MOV EAX,[ECX+08];
+        // RET leaf performs the same single current read; no retain or cache.
+        // Evidence: bsp.py show 00b4cb70 --asm / show 00b4cb90 --asm.
+        auto* const frame=static_cast<NativeFrameTargetOwnerStorage*>(
+            pointer(native_post_effect_pass_raw_08_00b4cb90(post)));
+        set_native_frame_target_color_00b1fab0(*frame,0,surface,context);
+    } else {
+        auto* const frame=static_cast<NativeFrameTargetOwnerStorage*>(pointer(word(post,8)));
+        set_native_frame_target_color_00b1fab0(*frame,0,surface,context);
+    }
 }
 
 NativeRenderPassInitializationBlock::~NativeRenderPassInitializationBlock() noexcept {

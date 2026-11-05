@@ -1,0 +1,139 @@
+{
+  "chain": 578,
+  "slot": "g4-w3",
+  "run": 1194,
+  "switch": "kWireGoal4Chain578Bound",
+  "picked": "Native post-effect current-field reads during color-target binding and 24h owner destruction",
+  "wired_before": 9904,
+  "wired_after": 9905,
+  "compiled_functions_wired": 2,
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 5 existing tests before edits",
+    "build": "scripts/build.ps1 passed all 5 existing tests after code edits",
+    "diff_check": "git diff --check passed",
+    "call_graph": "python tools/call_graph.py --build; build/callgraph disables inlining and identical-code folding",
+    "readiness": "wire_readiness.py --standins: text-wired 9904 -> 9905; 00b4ec50 remains text-ready because its caller source is not text-reachable, while the compiled entry path reaches both bodies",
+    "readiness_rows": [
+      {"native": "00b4cb90", "state": "wired", "called": true, "call_sites": 1},
+      {"native": "00b4ec50", "state": "ready", "called": true, "call_sites": 1}
+    ],
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Existing native getters and actual storage; compilation, existing tests and static executable reachability, without new runtime/gameplay or drop-in ABI claims"
+  },
+  "compiled_calls": [
+    {
+      "native": "00b4cb90",
+      "called": true,
+      "reachable_call_sites": 1,
+      "caller": "bsp::set_native_post_effect_color0_00b4cb70",
+      "call_site": "1067e6a6",
+      "target": "10783830",
+      "entry_path": "WinMainCRTStartup -> GameStartupHost -> GameLoopCallbacks::frame -> GameDeviceHost::clear_and_present -> GameNativeRendererApplication::prepare_mission_ship -> MissionShipGraph::prepare -> MissionRenderResourcesGraph::construct_and_initialize -> initialize_native_render_resources_00b107f0 -> continue_native_render_resource_init_00b109bc_fragment -> set_native_post_effect_color0_00b4cb70 -> native_post_effect_pass_raw_08_00b4cb90"
+    },
+    {
+      "native": "00b4ec50",
+      "called": true,
+      "reachable_call_sites": 1,
+      "edge": "tail jump from the switch lambda called by the destructor",
+      "caller": "destroy_native_post_effect_owner_00b4e2f0::<lambda>",
+      "call_site": "10683f84",
+      "target": "10783840",
+      "entry_path": "WinMainCRTStartup -> GameStartupHost::destroy_singleton_lifetime_manager -> GameStartupHost::drain_native_singletons -> GameNativeRendererApplication::drain_singletons -> MissionShipGraph::after_native_drain -> MissionRenderResourcesGraph::after_native_drain -> NativeRenderResourceInitialization::close_children_after_host_quiescence -> post-effect companion retirement -> NativePostEffectParentFrame::ordinary_virtual_zero -> NativePostEffectParentFrame::scalar -> destroy_native_post_effect_owner_00b4e2f0 -> switch lambda -> native_post_effect_pass_raw_18_00b4ec50"
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00b4cb90 --asm: complete MOV EAX,[ECX+08]; RET leaf, no ownership or conversion",
+    "bsp.py show 00b4cb70 --asm: B4CB74 reads the supplied actual post-effect+08 before B1FAB0 color-slot0 binding",
+    "bsp.py show 00b4ec50 --asm: complete MOV EAX,[ECX+18]; RET leaf, no ownership or conversion",
+    "bsp.py show 00b4e2f0 --asm: publish D61EC8 at B4E310, capture actual owner+18 at B4E316 before IAT capture B4E319, then decrement/release/clear the same captured stream",
+    "These are equivalent replacements of existing inline field reads, not claims that the original B4CB70/B4E2F0 callers contained calls to these leaves",
+    "Release folds the two naked getters with unrelated identical leaves; only the non-folded analysis build supplies address-specific caller counts"
+  ],
+  "rows": [
+    {
+      "native": "00b4cb90",
+      "status": "wired",
+      "host_site": "src/native_render_pass_initializers.cpp::set_native_post_effect_color0_00b4cb70",
+      "reason": "Replace the actual post+08 current read with the existing ECX/EAX getter; use its unchanged result for the existing color-target setter, with no additional read or retain."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "wired",
+      "host_site": "src/native_post_effect_owner.cpp::destroy_native_post_effect_owner_00b4e2f0",
+      "reason": "Replace the actual 24h owner+18 stream capture with the existing ECX/EAX getter before the same IAT capture and release path; the compiled entry path reaches its single tail call despite text-readiness retaining state=ready."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::render_scene_00b156c0",
+      "reason": "Missing a rooted concrete luminance-measurement or scene-post-effect dispatch that consumes the actual luminance owner+23C value."
+    },
+    {
+      "native": "00b27b00",
+      "status": "skipped",
+      "host_site": "src/native_renderer_cache_clear.cpp::bind_native_renderer_material_third_states_00b27b00 (no reached caller)",
+      "reason": "Missing the runtime binding caller carrying the current genuine D61A3C material-state owner into renderer+38."
+    },
+    {
+      "native": "00b93000",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_type_00b93000 (no reached caller)",
+      "reason": "Missing a reached native mesh-resource virtual own-type dispatch borrowing its canonical current descriptor cell."
+    },
+    {
+      "native": "00b93010",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_name_00b93010 (no reached caller)",
+      "reason": "Missing a reached native mesh-resource virtual name dispatch consuming its canonical current descriptor name cell."
+    },
+    {
+      "native": "00b930d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_type_00b930d0 (no reached caller)",
+      "reason": "Missing a reached native skined-mesh virtual own-type dispatch borrowing its canonical current descriptor cell."
+    },
+    {
+      "native": "00b930e0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_name_00b930e0 (no reached caller)",
+      "reason": "Missing a reached native skined-mesh virtual name dispatch consuming its canonical current descriptor name cell."
+    },
+    {
+      "native": "00b931d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_type_00b931d0 (no reached caller)",
+      "reason": "Missing a reached native matrix-indexed-mesh virtual own-type dispatch borrowing its canonical current descriptor cell."
+    },
+    {
+      "native": "00b931e0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp::read_native_mesh_resource_name_00b931e0 (no reached caller)",
+      "reason": "Missing a reached native matrix-indexed-mesh virtual name dispatch consuming its canonical current descriptor name cell."
+    },
+    {
+      "native": "00b93bd0",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp::GameNativeTypeStorage::initialize_resource_types",
+      "reason": "Missing the runtime caller-target descriptor initialization path; this application already uses the separate CD8690 CRT mesh initializer."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::native hull collision-mask handling",
+      "reason": "Missing actual native shape storage and a concrete Cc13Dyn1Calls manifold-clear service in the semantic unit host."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::native hull collision-mask handling",
+      "reason": "Missing actual native shape storage and a concrete Cc13Dyn1Calls manifold-clear service in the semantic unit host."
+    },
+    {
+      "native": "00c357b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::native object-vector notification handling",
+      "reason": "Missing an actual native object+58 receiver and concrete Cc13Dyn1Calls notification dispatch in the semantic unit host."
+    }
+  ]
+}
