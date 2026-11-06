@@ -5088,6 +5088,14 @@ struct GameGunneryHost::Impl {
     // stored as a float (008791CE / 008791DE), so a float quotient is the same value.
     std::vector<GameGunneryHost::GameGunneryHpEvent> hp_events;   // drained per frame
     unsigned long long hp_events_queued{0};
+    // 006E4D50's tail (006E55FF..006E5633, bsp.py show 006e4d50 --asm): when the
+    // platform's parent (00923810(1)) answers vtable[5Ch](0Fh), a plane, 00984BA0 runs
+    // on that plane's squadron (+9D4h): the `ammoType` channel. One record per plane
+    // drop that left a round (bomb, paratrooper, torpedo); take_ammo_type_drops().
+    std::vector<std::size_t> ammo_type_drops;
+    void note_ammo_type_drop(std::size_t unit) {
+        if (units.unit_is_kind_of(unit, 0x0f)) ammo_type_drops.push_back(unit);
+    }
     void note_hp_event(std::size_t unit, float old_health) {
         if (unit >= unit_state.size()) return;
         const UnitState& state = unit_state[unit];
@@ -20606,6 +20614,12 @@ std::vector<GameGunneryHost::GameGunneryHpEvent> GameGunneryHost::take_hp_events
     return out;
 }
 
+std::vector<std::size_t> GameGunneryHost::take_ammo_type_drops() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ammo_type_drops);
+    return out;
+}
+
 // Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
 // 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
 // runs; this host makes that set at the first torpedo shot, so an unset unit
@@ -21449,6 +21463,7 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
+    h.note_ammo_type_drop(unit_index);   // a plane torpedo is an MBombPlatform (2Ah) round
     // Packet cc8_torpedo_breakoff: RESTORED, as half two of the spent-bomber
     // fix. A drop clears the owner's kind 2Bh bit, so approach+132h (== task+52Ah,
     // section 10.2) goes false on the next approach update.
@@ -21679,6 +21694,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         paratrooper->owner_side = h.units.unit_side_0054(unit_index);
         ++h.summary.paratrooper_releases;
         h.done("Rack::paratrooper_release_006e4d50", 0x006e4d50u);
+        h.note_ammo_type_drop(unit_index);
         return true;
     }
 
@@ -21734,6 +21750,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.bomb_drops;
+    h.note_ammo_type_drop(unit_index);
     // NOT DONE, deliberately: no kind 2Ah twin of the torpedo drop's 2Bh clear.
     // The torpedo side can clear its bit because one drop is its whole loadout;
     // a dive bomber's is a salvo of up to two per pass out of a stock this host

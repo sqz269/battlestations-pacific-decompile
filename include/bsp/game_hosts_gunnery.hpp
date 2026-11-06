@@ -1365,6 +1365,10 @@ public:
         float new_fraction;   // new +370h / +36Ch
     };
     std::vector<GameGunneryHpEvent> take_hp_events();
+    // The `ammoType` channel's input: the plane of each rack drop that left a round
+    // (release_bomb_drop's bomb and paratrooper arms, release_ordnance_drop), for
+    // 006E4D50's tail call 00984BA0 on the plane's squadron (006E55FF..006E5633).
+    std::vector<std::size_t> take_ammo_type_drops();
     void kill_unit_00926d90(std::size_t unit_index, int cause);
     // Packet cc9_airfield_destruction_rule: 006D41E6..006D41EF, the airfield's
     // destroy arm, vtable[70h](0) = 0077D1A0 BSP_UnitInstance_DestroyAndBroadcast
