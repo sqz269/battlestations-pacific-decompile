@@ -1228,6 +1228,13 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_attack_type_subkind_differs{0};  // cc13-atkkind, log-only
     unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
     unsigned long long listener_hit_second_pass_fires{0};
+    // hpEvent (00986B00): health changes drained from the gunnery host, those whose
+    // subscriptions passed 009690B0 and crossed +2Ch, the callbacks called, and the
+    // entries AddListener could not load natively (not evaluated).
+    unsigned long long listener_hp_events{0};
+    unsigned long long listener_hp_matches{0};
+    unsigned long long listener_hp_fires{0};
+    unsigned long long listener_hp_unloaded{0};
     // Goal 4 chain 352: AddListener blocks loaded by the native Load slot, and the
     // blocks whose load threw (an absent filter key) and fell back to the host parse.
     unsigned long long listener_native_loads{0};
@@ -2017,6 +2024,9 @@ public:
     };
     ReconPublishCounts publish_recon_slot_tables_00806b10(bool apply = true);
     void dispatch_hit_listeners_00988510();
+    // The `hpEvent` channel over the gunnery host's 00879070 tail records; the host
+    // substitution for 00986B00 (src/game_hosts_lua.cpp).
+    void dispatch_hp_event_listeners();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert

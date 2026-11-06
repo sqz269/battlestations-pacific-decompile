@@ -5081,6 +5081,22 @@ struct GameGunneryHost::Impl {
             ++invincibility_floored_writes;
         }
     }
+    // 00879070's tail (GameGunneryHpEvent, include/bsp/game_hosts_gunnery.hpp), run by
+    // each unit-health site after it stored the 00877B90 result; `old_health` is +370h
+    // as the site read it before 00879070. 0087917D: an equal pair returns, an
+    // unordered one dispatches. 008791CA FDIVP / 008791DA FDIVR: one division each,
+    // stored as a float (008791CE / 008791DE), so a float quotient is the same value.
+    std::vector<GameGunneryHost::GameGunneryHpEvent> hp_events;   // drained per frame
+    unsigned long long hp_events_queued{0};
+    void note_hp_event(std::size_t unit, float old_health) {
+        if (unit >= unit_state.size()) return;
+        const UnitState& state = unit_state[unit];
+        const float new_health = state.health;
+        if (old_health == new_health) return;
+        hp_events.push_back({unit, old_health > new_health, old_health / state.max_health,
+            new_health / state.max_health});
+        ++hp_events_queued;
+    }
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
@@ -14774,6 +14790,7 @@ public:
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
         dispatch_health_changed_ |= write.dispatch_health_changed;
         if (write.wrote) owner_.unit_state[victim_].health = write.stored_health;
+        owner_.note_hp_event(victim_, health.current_health);
         return true;
     }
 
@@ -17500,6 +17517,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     cf_explosion_damage += state.health - write.stored_health;
                     state.health = write.stored_health;
                 }
+                note_hp_event(unit, health.current_health);
             }
             state.row.health = state.health;
             done("Failure::explosion_damage_0081b630", 0x0081b630u);
@@ -17555,6 +17573,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
             dispatch_health_changed |= write.dispatch_health_changed;
             if (write.wrote) state.health = write.stored_health;
+            note_hp_event(i, health.current_health);
         };
         if constexpr (kShipHullRepairBound) {
             // 0093C770, then 00877B90(max) when the heal overshoots. 0093C776: a
@@ -18177,6 +18196,7 @@ void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, 
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        note_hp_event(master, health.current_health);
     }
     state.row.health = state.health;
     done("LandMaster::add_damage_0095da00", 0x0095da00u);
@@ -20580,6 +20600,12 @@ std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_even
     return out;
 }
 
+std::vector<GameGunneryHost::GameGunneryHpEvent> GameGunneryHost::take_hp_events() {
+    std::vector<GameGunneryHpEvent> out;
+    out.swap(impl_->hp_events);
+    return out;
+}
+
 // Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
 // 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
 // runs; this host makes that set at the first torpedo shot, so an unset unit
@@ -20641,6 +20667,7 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        host.note_hp_event(unit_index, health.current_health);
     }
     state.row.health = state.health;
     host.done("Unit::add_damage_0095da00", 0x0095da00u);

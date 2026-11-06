@@ -5166,6 +5166,9 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // Packet cc13-ver5, kKillListenerDeadFirstBound: `hit` first, as the image fires it
     // inside the hit (0077CE60 -> 00988510), ahead of the row-15 flush.
     if constexpr (kKillListenerDeadFirstBound) dispatch_hit_listeners_00988510();
+    // `hpEvent` (00986B00) next: 00879070 fires it inside the damage write, which
+    // precedes the death and the row-15 flush the channels below stand for.
+    dispatch_hp_event_listeners();
     // Packet cc13-ver5: `entityKilled` before `kill`, as 0077D1A0 fires it inside the
     // destroy, before the flush that reaches 009813A0.
     // Packet cc13-fix3: `exitzone` first of all, as 007F31E6 runs before 007F31A0's Kill(4).
@@ -8706,6 +8709,90 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 // 00884A90 the entity, 00884A30 the byte as a boolean.
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
                 push_listener_boolean(state_, exited != 0);
+                pushed = 2;
+            }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
+// The `hpEvent` channel: the host substitution for 00986B00, whose reconstructed body
+// (src/engine_seg11_35_66_cc13.cpp) walks the native manager's channel map, which this
+// host does not keep. 00879070 calls it inside the
+// damage write (008791EB); this host drains the gunnery host's records of those writes
+// once per mission frame. SUBSTITUTION, labelled, as for `hit` and `kill`: the callbacks
+// run at the frame, after the damage, not inside it. Per record, as 00986B00 does it
+// (bsp.py show 00986b00 --asm):
+//  - 00986B4E..00986B6D return for an entity whose parent (00923810(1)) is not the
+//    Landscape (vtable[5Ch](44h)). The gunnery host records unit health only; its units
+//    are the scene's top-level entities, and the gun sites are not recorded. LABELLED:
+//    this host keeps no entity tree, so a plane parented to its base is not told apart;
+//  - the parameter boxes are the entity (word [entity+174h], here the host id unit + 1)
+//    and the reason NativeString (0096DC00);
+//  - every subscription in the channel's order (here AddListener's) whose vtable[0Ch]
+//    009690B0 holds on those boxes and whose +2Ch threshold the pair crosses collects
+//    its callback name: with the reason "damage" (__stricmp 00BF7FBF) old > hp > new,
+//    with "repair" old < hp < new, both strict, so equality and NaN fail;
+//  - then each name is called with (entity 00884A90, reason 00884FC0) through 00887E50.
+// An entry whose native Load threw (AddListener's host-parse fallback) has no `hp` or
+// filter sets to test and is counted, not evaluated.
+void GameMissionLuaHost::dispatch_hp_event_listeners() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    const std::vector<GameGunneryHost::GameGunneryHpEvent> events = gunnery->take_hp_events();
+    if (!kLuaListenersBound) return;
+    namespace seg64 = bsp::cc13_seg49_64_78;
+    namespace matchers = bsp::lua_listener_native_matchers;
+    for (const GameGunneryHost::GameGunneryHpEvent& event : events) {
+        ++summary_.listener_hp_events;
+        const int entity = static_cast<int>(event.unit + 1);
+        const char* const reason = event.damage ? "damage" : "repair";  // 00CFD7C8 / 00CFD994
+        const seg64::EventParam entity_param = matchers::word_param(entity);
+        const seg64::EventParam reason_param = matchers::text_param(reason);
+        const seg64::EventParams params{&entity_param, &reason_param};
+        matchers::MatchesHost matches_host;
+        std::vector<std::string> callbacks;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "hpEvent")) continue;
+            if (entry.native_other == nullptr) {
+                ++summary_.listener_hp_unloaded;
+                continue;
+            }
+            // load_listener_subscription_native built this entry's subscription as a
+            // seg64::HpEventSubscription (00972FE0) for the channel tested above.
+            const auto& subscription =
+                static_cast<const seg64::HpEventSubscription&>(*entry.native_other);
+            if (!seg64::hp_event_matches_009690b0(subscription, params, matches_host)) continue;
+            const float hp = subscription.hp;   // +2Ch
+            const bool crossing = event.damage
+                ? (event.old_fraction > hp && hp > event.new_fraction)
+                : (event.old_fraction < hp && hp < event.new_fraction);
+            if (!crossing) continue;
+            ++summary_.listener_hp_matches;
+            callbacks.push_back(subscription.callback);   // node+14h -> +4h (00450540)
+        }
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_hp_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(event.unit);
+            log_.notef("  hpEvent listener 00986B00: entity \"%s\" %s %.3f -> %.3f -> %s()",
+                row != nullptr ? row->name.c_str() : "?", reason,
+                static_cast<double>(event.old_fraction), static_cast<double>(event.new_fraction),
+                name.c_str());
+            int pushed = 0;
+            if (kLuaListenerCallbackArgsBound) {
+                if (!push_resolved_entity_by_id(state_, entity)) lua_pushnil(state_);
+                ::lua_pushstring(state_, reason);
                 pushed = 2;
             }
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
@@ -15261,6 +15348,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
         summary_.listener_hit_unmodelled, summary_.listener_hit_attack_type_subkind_differs);
+    log_.notef("summary mission script hpEvent listeners events=%llu matched=%llu fires=%llu "
+        "unloaded=%llu (00879070 tail -> 00986B00, matcher 009690B0)",
+        summary_.listener_hp_events, summary_.listener_hp_matches, summary_.listener_hp_fires,
+        summary_.listener_hp_unloaded);
     log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
