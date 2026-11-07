@@ -30,6 +30,13 @@ namespace bsp::gameplay_seg41_cc13 {
 class LandingShipMessageHost;
 }
 
+namespace bsp::gameplay_seg47_cc13 {
+struct FailureMessage;
+struct PlaneFailureState;
+struct StateMessageEnv;
+struct StateMessageHost;
+}
+
 namespace bsp {
 
 // cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
@@ -507,6 +514,37 @@ public:
         bool clear_arm_69{false};    // 0072D830 -> vtable[1CCh] and IsType(69h)
     };
     GunDestroyedCopy queue_gun_destroyed_68_69(bool set) const;
+    // Goal 5 chain 641. The plane failure messages 007BBFA0 (the plane's
+    // vtable[194h], StartNamedEffect) routes with 0077C2A0 flags 7: 63h built
+    // inline at 007BC3EC..007BC424 (0075B430(63h), word +18h 0, byte +1Ah 0, +4h
+    // 1, byte +1Ch 0, vtable 00D02F6C, float +20h = unit+C10h: 0075C380's header
+    // stores with the timer in place of its -1.0f), 64h by 0075C450 itself
+    // (+20h its 256.0f), 65h by 007BA170, 66h by 007BA1C0, 67h by 007BA200.
+    // Flags 7 is not 4, so the local bit is taken and 0076E520 rebuilds the copy:
+    // 00768530 runs the type's constructor (0075C380 / 0075C450 / 0075A150 /
+    // 0075C570 / 0075A1F0) and vtable[8] reads it (006D1550 for 63h, 64h and
+    // 66h; 0075C540 for 65h; 0075C660 for 67h). 006D2F20 quantises +20h: at or
+    // below 0.1 it is absent and reads back as -1.0f; otherwise trunc(x * 4.0)
+    // clamped to 0..255, read as n * 0.25. So 1000.0f arrives as 63.75f. The
+    // plane's 007CCFA0 asks the copy's IsType for 62h (007CCFB0, the 0075C400 /
+    // 0075C4D0 / 0075A1A0 / 0075C5F0 / 0075A240 sets {own, 62h, 49h, 46h}) and
+    // hands it to vtable[208h], 007D0B80. Returned: the copy's fields.
+    struct PlaneFailureCopy {
+        std::uint8_t type{0};
+        bool to_state_handler{false};  // 00780120 -> session switch -> IsType(62h)
+        float value_20{0.0f};
+        std::uint32_t arg_24{0};       // 65h: the engine (2 bits); 67h: the side byte
+    };
+    PlaneFailureCopy queue_plane_failure_63_67(std::uint8_t type, float value_20,
+                                               std::uint32_t arg_24) const;
+    // One message of 007BBFA0's routed list as the plane receives it: its local
+    // copy (queue_plane_failure_63_67) and, when 007CCFA0 hands it on, 007D0B80
+    // over the copy's kind, +20h and +24h. Returns false when the copy does not
+    // reach 007D0B80. C8h (multiplayer only, session mode != 0) is refused.
+    bool deliver_plane_failure_message(const gameplay_seg47_cc13::FailureMessage& routed,
+        gameplay_seg47_cc13::PlaneFailureState& state,
+        const gameplay_seg47_cc13::StateMessageEnv& env,
+        const gameplay_seg47_cc13::StateMessageHost& host) const;
     // Goal 4 chain 356. MT_PLANE_DISAPPEAR (C7h): the plane's fixed step
     // 007CE040 at 007CE6FE..007CE74F makes 0075B430(C7h), +18h word 0, +1Ah 0,
     // +4h = 1, +1Ch 0, vtable 00D0352C (00762B20's stores) and +20h word = the
