@@ -237,24 +237,66 @@ void assign_string(void* entry, std::size_t offset, const Cc13SweepBNativeString
     }
 }
 
-// The two-text scale of 0052A100/0052A470: each text's +114h / 960.0 (double
-// 00CEC380), float-stored; the +24h value when it is greater (FCOMIP + JBE,
-// so a NaN takes the +28h value), then raised to 0.1f unless it is above the
-// double 0.1 at 00D7A3A0 (JA).
-float two_text_scale(void* entry) {
-    const float right = static_cast<float>(at<float>(widget(entry, 0x28), 0x114) / 960.0);
-    const float left = static_cast<float>(at<float>(widget(entry, 0x24), 0x114) / 960.0);
-    float scale = left > right ? left : right;
+// Each Text's +114h / 960.0 (double 00CEC380), +28h first: FLD +114h, FLD
+// double, FDIV ST1,ST0, FSTP float, then FDIVR float +114h of +24h and FSTP
+// float (0052A28B..0052A2A8, 0052A555..0052A572, 00529EFE..00529F1B); each
+// divide rounds once at PC24. The larger, the +24h value when it is greater
+// (FCOMIP + JBE, so a NaN takes the +28h value). Goal 5 chain 667: the field
+// reads go through the host, which owns the Text objects.
+float larger_text_scale(void* entry, Cc13SweepB4CounterScoreLayoutHost& host) {
+    const float right = static_cast<float>(
+        cc13x87::x87_div24(host.gui_text_measured_width_114(widget(entry, 0x28)), 960.0));
+    const float left = static_cast<float>(
+        cc13x87::x87_div24(host.gui_text_measured_width_114(widget(entry, 0x24)), 960.0));
+    return left > right ? left : right;
+}
+
+// The two-text scale of 0052A100/0052A470: larger_text_scale, then raised to
+// 0.1f (00D7A2F0) unless it is above the double 0.1 at 00D7A3A0 (JA).
+float two_text_scale(void* entry, Cc13SweepB4CounterScoreLayoutHost& host) {
+    float scale = larger_text_scale(entry, host);
     if (!(scale > f64_bits(0x3FB99999A0000000ull))) {
         scale = 0.1f;
     }
     return scale;
 }
 
-// (entry+30h - entry+3Ch) / entry+60h, float-stored.
+// FLD +30h, FSUB float +3Ch, FDIV float +60h, FSTP float (00529FBA..00529FD8,
+// 0052A30A..0052A328, 0052A5CE..0052A5FA): each op rounds once at PC24.
 float counter_fraction(void* entry) {
-    return static_cast<float>((static_cast<double>(at<float>(entry, 0x30)) - at<float>(entry, 0x3C)) /
-                              at<float>(entry, 0x60));
+    return static_cast<float>(cc13x87::x87_div24(
+        cc13x87::x87_sub24(at<float>(entry, 0x30), at<float>(entry, 0x3C)), at<float>(entry, 0x60)));
+}
+
+void assign_string(void* entry, std::size_t offset, const Cc13SweepBNativeString& source,
+                   Cc13SweepB4CounterScoreLayoutHost& host) {
+    auto* dest = static_cast<std::uint8_t*>(entry) + offset;
+    if (static_cast<const void*>(dest) == static_cast<const void*>(&source)) {
+        return;
+    }
+    host.native_string_resize_0041dd40(dest, source.length, 1);
+    if (source.length != 0) {
+        host.crt_memcpy_00bf7680(at<void*>(dest, 4), source.data, at<std::uint32_t>(dest, 0));
+    }
+}
+
+void release_string(Cc13SweepBNativeString& text, Cc13SweepB4CounterScoreLayoutHost& host) {
+    if (text.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
+    }
+}
+
+// Q.x - 0.02 (double 00D7A2F8): FLD, FSTP float, FLD, FSUB double, FSTP float
+// (0052A015..0052A03F, 0052A365..0052A38F, 0052A603..0052A62D).
+float minus_002(float qx) {
+    return static_cast<float>(cc13x87::x87_sub24(qx, f64_bits(0x3F947AE140000000ull)));
+}
+
+// width * fraction + 0.035 (double 00CED078): FLD, FMUL float, FADD double,
+// FSTP float (0052A3B9..0052A3E1, 0052A657..0052A67F).
+float bar_width(float width, float fraction) {
+    return static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(width, fraction),
+        f64_bits(0x3FA1EB8520000000ull)));
 }
 
 }  // namespace
@@ -272,9 +314,13 @@ float counter_fraction(void* entry) {
 // P.y, P.z}). h = 00AA6740(+2Ch)[1], then +2Ch->+58h({(float)(00AA6740(+0Ch)
 // [0] * f + 0.035 (double 00CED078)), h}). +8h/+4h/+0Ch hidden. a then b
 // released.
+// Goal 5 chain 667: the Text fields +100h / +0FCh / +114h go through the host,
+// and each x87 op rounds at PC24 (the listing's order, bsp.py show 0052a100
+// --asm); the order of every store and call is the image's.
 void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativeString a,
                                                     Cc13SweepBNativeString b, std::int32_t v0,
-                                                    std::int32_t v1, Cc13SweepB4Host& host) {
+                                                    std::int32_t v1,
+                                                    Cc13SweepB4CounterScoreLayoutHost& host) {
     at<std::int32_t>(entry, 0x9C) = 1;
     host.gui_widget_set_visibility_recursive_00aa6820(widget(entry, 0), 1);
     host.widget_vcall_34_set_visible(widget(entry, 0), 1);
@@ -287,20 +333,21 @@ void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativ
     assign_string(entry, 0x88, a, host);
     host.widget_vcall_88(widget(entry, 0x10), v0, 0, 1.0f);
     host.widget_vcall_58_set_pair(widget(entry, 0x24), half);
-    at<std::int32_t>(widget(entry, 0x24), 0x100) = 0;
-    at<std::uint8_t>(widget(entry, 0x24), 0xFC) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x24), 0);       // 0052A1DF
+    host.gui_text_store_multiline_fc(widget(entry, 0x24), 0);    // 0052A1EA
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x24), static_cast<std::uint8_t*>(entry) + 0x88, 1);
 
     assign_string(entry, 0x90, b, host);
     host.widget_vcall_88(widget(entry, 0x14), v1, 0, 1.0f);
     host.widget_vcall_58_set_pair(widget(entry, 0x28), half);
-    at<std::int32_t>(widget(entry, 0x28), 0x100) = 0;
-    at<std::uint8_t>(widget(entry, 0x28), 0xFC) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x28), 0);       // 0052A26E
+    host.gui_text_store_multiline_fc(widget(entry, 0x28), 0);    // 0052A279
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x28), static_cast<std::uint8_t*>(entry) + 0x90, 1);
 
-    const float scale = two_text_scale(entry);
+    const float scale = two_text_scale(entry, host);
     float* position = &at<float>(entry, 0x30);
-    *position = static_cast<float>(static_cast<double>(at<float>(entry, 0x54)) + scale);
+    // 0052A2EC FLD +54h, FADD float scale, FSTP float.
+    *position = static_cast<float>(cc13x87::x87_add24(at<float>(entry, 0x54), scale));
     host.gui_widget_set_local_position_00aa7dc0(widget(entry, 8), position);
     host.gui_widget_set_local_position_00aa7dc0(widget(entry, 0x2C), position);
     const float fraction[2] = {counter_fraction(entry), 1.0f};
@@ -311,12 +358,11 @@ void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativ
     float q_out[3];
     const float* q = host.widget_get_resolved_position_00aa6750(widget(entry, 0xC), q_out);
     const float qx = q[0];
-    const float moved[3] = {static_cast<float>(qx - f64_bits(0x3F947AE140000000ull)), p[1], p[2]};
+    const float moved[3] = {minus_002(qx), p[1], p[2]};
     host.widget_set_resolved_position_00aa8240(widget(entry, 0x2C), moved);
     const float height = host.gui_widget_get_size_00aa6740(widget(entry, 0x2C))[1];
     const float width = host.gui_widget_get_size_00aa6740(widget(entry, 0xC))[0];
-    const float size[2] = {
-        static_cast<float>(static_cast<double>(width) * fraction[0] + f64_bits(0x3FA1EB8520000000ull)), height};
+    const float size[2] = {bar_width(width, fraction[0]), height};
     host.widget_vcall_58_set_pair(widget(entry, 0x2C), size);
     host.widget_vcall_34_set_visible(widget(entry, 8), 0);
     host.widget_vcall_34_set_visible(widget(entry, 4), 0);
@@ -340,31 +386,36 @@ void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativ
 // 0.019 (double 00CED088)), P'.y, P'.z}), +2Ch->+58h({(float)(scale + 0.073
 // (double 00CED080)), 00AA6740(+2Ch)[1]}), and +8h/+4h/+0Ch hidden. a then b
 // released.
+// Goal 5 chain 667: 00CE3A0C is the image's empty literal (bytes 00 00 00 00),
+// passed as such; the Text fields go through the host and each x87 op rounds
+// at PC24 (bsp.py show 0052a470 --asm).
 void cc13_sweepB4_hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBNativeString a,
-                                                        Cc13SweepBNativeString b, Cc13SweepB4Host& host) {
-    const char* empty = static_cast<const char*>(host.image_global(0x00CE3A0C));
-    host.gui_text_set_localised_cstring_00abbe50(widget(entry, 0x24), empty, 1);
-    host.gui_text_set_localised_cstring_00abbe50(widget(entry, 0x28), empty, 1);
+                                                        Cc13SweepBNativeString b,
+                                                        Cc13SweepB4CounterScoreLayoutHost& host) {
+    static constexpr char kEmpty_00ce3a0c[] = "";
+    host.gui_text_set_localised_cstring_00abbe50(widget(entry, 0x24), kEmpty_00ce3a0c, 1);
+    host.gui_text_set_localised_cstring_00abbe50(widget(entry, 0x28), kEmpty_00ce3a0c, 1);
     assign_string(entry, 0x88, a, host);
     assign_string(entry, 0x90, b, host);
-    at<std::uint8_t>(widget(entry, 0x24), 0xFC) = 0;
-    at<std::uint8_t>(widget(entry, 0x28), 0xFC) = 0;
+    host.gui_text_store_multiline_fc(widget(entry, 0x24), 0);    // 0052A523
+    host.gui_text_store_multiline_fc(widget(entry, 0x28), 0);    // 0052A533
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x24), &a, 1);
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x28), &b, 1);
 
-    const float target = static_cast<float>(static_cast<double>(at<float>(entry, 0x54)) + two_text_scale(entry));
+    // 0052A5B6 FLD +54h, FADD float scale, FSTP float.
+    const float target = static_cast<float>(cc13x87::x87_add24(at<float>(entry, 0x54),
+        two_text_scale(entry, host)));
     float p[3];
     host.widget_get_resolved_position_00aa6750(widget(entry, 0x2C), p);
     const float fraction = counter_fraction(entry);
     float q_out[3];
     const float* q = host.widget_get_resolved_position_00aa6750(widget(entry, 0xC), q_out);
     const float qx = q[0];
-    const float moved[3] = {static_cast<float>(qx - f64_bits(0x3F947AE140000000ull)), p[1], p[2]};
+    const float moved[3] = {minus_002(qx), p[1], p[2]};
     host.widget_set_resolved_position_00aa8240(widget(entry, 0x2C), moved);
     const float height = host.gui_widget_get_size_00aa6740(widget(entry, 0x2C))[1];
     const float width = host.gui_widget_get_size_00aa6740(widget(entry, 0xC))[0];
-    const float size[2] = {
-        static_cast<float>(static_cast<double>(width) * fraction + f64_bits(0x3FA1EB8520000000ull)), height};
+    const float size[2] = {bar_width(width, fraction), height};
     host.widget_vcall_58_set_pair(widget(entry, 0x2C), size);
 
     float* position = &at<float>(entry, 0x30);
@@ -376,14 +427,18 @@ void cc13_sweepB4_hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBN
         host.widget_vcall_48_set_pair(widget(entry, 0xC), pair);
         float p2[3];
         host.widget_get_resolved_position_00aa6750(widget(entry, 0x2C), p2);
-        const float scale = two_text_scale(entry);
+        const float scale = two_text_scale(entry, host);
         float q2_out[3];
         const float* q2 = host.widget_get_resolved_position_00aa6750(widget(entry, 0xC), q2_out);
         const float q2x = q2[0];
-        const float moved2[3] = {static_cast<float>(q2x - f64_bits(0x3F9374BC60000000ull)), p2[1], p2[2]};
+        // 0052A775..0052A79F: FLD, FSTP float, FLD, FSUB double 00CED088, FSTP float.
+        const float moved2[3] = {static_cast<float>(cc13x87::x87_sub24(q2x,
+            f64_bits(0x3F9374BC60000000ull))), p2[1], p2[2]};
         host.widget_set_resolved_position_00aa8240(widget(entry, 0x2C), moved2);
         const float height2 = host.gui_widget_get_size_00aa6740(widget(entry, 0x2C))[1];
-        const float size2[2] = {static_cast<float>(scale + f64_bits(0x3FB2B020C0000000ull)), height2};
+        // 0052A7B6 FLD float scale, FADD double 00CED080, FSTP float.
+        const float size2[2] = {static_cast<float>(cc13x87::x87_add24(scale,
+            f64_bits(0x3FB2B020C0000000ull))), height2};
         host.widget_vcall_58_set_pair(widget(entry, 0x2C), size2);
         host.widget_vcall_34_set_visible(widget(entry, 8), 0);
         host.widget_vcall_34_set_visible(widget(entry, 4), 0);
@@ -571,8 +626,11 @@ void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root,
 // +2Ch; +0Ch->+48h({counter_fraction, 1.0f}); P = 00AA6750(+2Ch), Q =
 // 00AA6750(+0Ch); 00AA8240(+2Ch, {(float)(Q.x - 0.02), P.y, P.z});
 // +2Ch->+58h({s, 00AA6740(+2Ch)[1]}); +8h/+4h/+0Ch hidden. a then b released.
+// Goal 5 chain 667: the Text fields go through the host and each x87 op
+// rounds at PC24 (bsp.py show 00529d70 --asm).
 void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativeString a,
-                                                    Cc13SweepBNativeString b, Cc13SweepB4Host& host) {
+                                                    Cc13SweepBNativeString b,
+                                                    Cc13SweepB4CounterScoreLayoutHost& host) {
     at<std::int32_t>(entry, 0x9C) = 1;
     host.gui_widget_set_visibility_recursive_00aa6820(widget(entry, 0), 1);
     host.widget_vcall_34_set_visible(widget(entry, 0), 1);
@@ -586,22 +644,21 @@ void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativ
     assign_string(entry, 0x88, a, host);
     host.widget_set_local_x_00aa78d0(widget(entry, 0x24), 0.0f);
     host.widget_vcall_58_set_pair(widget(entry, 0x24), half);
-    at<std::int32_t>(widget(entry, 0x24), 0x100) = 1;
-    at<std::uint8_t>(widget(entry, 0x24), 0xFC) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x24), 1);       // 00529E51 (EBP = 1)
+    host.gui_text_store_multiline_fc(widget(entry, 0x24), 0);    // 00529E5B
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x24), static_cast<std::uint8_t*>(entry) + 0x88, 1);
     host.widget_vcall_34_set_visible(widget(entry, 0x14), 0);
 
     assign_string(entry, 0x90, b, host);
     host.widget_set_local_x_00aa78d0(widget(entry, 0x28), 0.0f);
     host.widget_vcall_58_set_pair(widget(entry, 0x28), half);
-    at<std::int32_t>(widget(entry, 0x28), 0x100) = 1;
-    at<std::uint8_t>(widget(entry, 0x28), 0xFC) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x28), 1);       // 00529EE1
+    host.gui_text_store_multiline_fc(widget(entry, 0x28), 0);    // 00529EEB
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x28), static_cast<std::uint8_t*>(entry) + 0x90, 1);
 
-    const float right = static_cast<float>(at<float>(widget(entry, 0x28), 0x114) / 960.0);
-    const float left = static_cast<float>(at<float>(widget(entry, 0x24), 0x114) / 960.0);
-    const float scale = left > right ? left : right;
-    const float width = static_cast<float>(scale + f64_bits(0x3F847AE140000000ull));
+    const float scale = larger_text_scale(entry, host);
+    // 00529F41 FLD float scale, FADD double 00D7A358 (0.01), FSTP float.
+    const float width = static_cast<float>(cc13x87::x87_add24(scale, f64_bits(0x3F847AE140000000ull)));
     const float pair24[2] = {width, 0.5f};
     host.widget_vcall_58_set_pair(widget(entry, 0x24), pair24);
     const float pair28[2] = {width, 0.5f};
@@ -620,7 +677,7 @@ void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativ
     float q_out[3];
     const float* q = host.widget_get_resolved_position_00aa6750(widget(entry, 0xC), q_out);
     const float qx = q[0];
-    const float moved[3] = {static_cast<float>(qx - f64_bits(0x3F947AE140000000ull)), p[1], p[2]};
+    const float moved[3] = {minus_002(qx), p[1], p[2]};
     host.widget_set_resolved_position_00aa8240(widget(entry, 0x2C), moved);
     const float size[2] = {width, host.gui_widget_get_size_00aa6740(widget(entry, 0x2C))[1]};
     host.widget_vcall_58_set_pair(widget(entry, 0x2C), size);

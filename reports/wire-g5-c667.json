@@ -1,0 +1,40 @@
+{
+  "chain": 667,
+  "slot": "g5-w3",
+  "goal": 5,
+  "picked": "HUD counters score display: Lua DisplayScores / HideScoreDisplay -> 0052B620 / 0052B780 / 0052B900 -> HUD message 23h -> 00772330 -> 0052CF60 -> score entries and their layouts 00529D70 / 0052A100, the tick's 0052A470",
+  "wired_before": 10363,
+  "wired_after": 10401,
+  "wired_note": "readiness text match: 4 rows of this path flipped (0052B620, 0052B780, 0052B900, 0052AF50; 00772330 / 0052CF60 / the layouts already counted by name); the other 34 flips (message 35 write/read/is, word-array helpers, session messages 23/24/25/33/34/53/77) are text-match artefacts of native_session_message35.cpp being reached, not wiring. called rows 5634 -> 5653.",
+  "review_round_1": [
+    {"finding": "src/game_hosts_script_orders.cpp: the old log-only substitute (score_lines_ copy, expand_score_references' lua_getfield expansion, the score-line summary) still ran beside the native senders", "outcome": "fixed: both lambdas keep only the display_score / hide_score calls and their log_.unimplemented fallback; expand_score_references, the summary and the four members (score_lines_, score_posts_, score_changes_, score_hides_) are deleted. No per-call note is kept: scripts such as luaDistanceCounter repost every update, and GameHudHost's done() already counts the calls."},
+    {"finding": "nit: HudScoreMessageImage duplicates HostSessionMessages::Image's zeroed [00E188A8] stand-in", "outcome": "not changed: that Image is a private nested struct of src/game_hosts_session_messages.cpp, outside this chain's files, and exposing it means a new accessor in another host's header; the copy is constant (zeroed game block, slot 0, null records), so it cannot drift."},
+    {"finding": "nit: widget_vcall_88 (00AB1710, flag-icon state) only logs, so the pair form's v0 / v1 flag states do not render", "outcome": "left for others (see left_for_others); no shipped mission script uses the six-argument DisplayScores."},
+    {"finding": "nit: set_widget_text_align / set_widget_text_multiline invalidated on every store, so the 0052A470 tick rebuilt the quad list each frame", "outcome": "fixed: an unchanged stored value now returns without dropping the cached run (that run was built with it). The tick's own 00ABBE50 / 00ABAED0 text resets still relayout each frame, as the image's do."}
+  ],
+  "left_for_others": [
+    "unit-HP counter: DisplayUnitHP / HideUnitHP (0052B400 / 0052B570), layout 0052BB10 and the tick's mode 0 need native unit objects (+174h ids, the 00F89A0C / 00F89A60 registries, +370h, +A20h getters 00939F70..00939FC0)",
+    "the score pair form's flag icons: virtual +88h (00AB1710) icon state select on flag_A_Icon / flag_B_Icon only logs; the sprite bridge draws a widget's first authored state, so v0 / v1 do not show"
+  ],
+  "rows": [
+    {"native": "0052b620", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::display_score (4 arguments), from src/game_hosts_script_orders.cpp DisplayScores arm (ScoreDisplayBinding show)"},
+    {"native": "0052b780", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::display_score (6 arguments, pair)"},
+    {"native": "0052b900", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::hide_score, from the HideScoreDisplay arm"},
+    {"native": "00772330", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudScoreMessageBinding::session_send_message35_00772330 (session mode game+1FE4h, local slot 0)"},
+    {"native": "0052af50", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudScoreMessageBinding::session_send_message35_00772330 (the 23h message's destroy, as 0052B71F)"},
+    {"native": "0052cf60", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudScoreSessionBinding::apply_counter_record_0052cf60"},
+    {"native": "0052c990", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_apply_counter_record_0052cf60 (kind 1; inlined into 0052CF60 in this build)"},
+    {"native": "0052cac0", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_apply_counter_record_0052cf60 (kind 1, pair; inlined)"},
+    {"native": "0052cf00", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_apply_counter_record_0052cf60 (kind 1, hide; inlined)"},
+    {"native": "0052c850", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_show_score_0052c990 / _pair_0052cac0"},
+    {"native": "0052cdc0", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_remove_entry_widget_0052cf00"},
+    {"native": "0052c0c0", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counter_entry_destroy_and_free_0052cdc0 (inlined); the clone root's +4h(1) is GameFrontendHost::destroy_runtime_widget"},
+    {"native": "00529d70", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCountersScoreBinding::counter_layout_timer_00529d70"},
+    {"native": "0052a100", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCountersScoreBinding::counter_layout_value_0052a100"},
+    {"native": "0052a470", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCounterTickBinding::hud_counter_layout_text_pair_0052a470 (0052B080 mode 1)"},
+    {"native": "0052aef0", "status": "skipped", "host_site": "none", "reason": "not on this path: the senders inline the 23h constructor (0052B64B 0075B430 + stores); 0052AEF0's only caller is the receive factory 00768530, and single player receives no session messages"},
+    {"native": "0052b400", "status": "skipped", "host_site": "src/game_hosts_lua.cpp DisplayUnitHP (GameMissionLuaHost)", "reason": "DisplayUnitHP's sender needs native units (+174h word ids) and its kind-0 apply reads the 00F89A0C/00F89A60 unit registries; units are host slots here, and game_hosts_lua.cpp is in review on agent/g5-w5"},
+    {"native": "0052b570", "status": "skipped", "host_site": "src/game_hosts_lua.cpp HideUnitHP (GameMissionLuaHost)", "reason": "the hide form of the unit-HP counter above; without 0052B400 there is no HP entry to hide"},
+    {"native": "0052bb10", "status": "skipped", "host_site": "src/game_hosts_hud.cpp HudCountersScoreBinding::counter_layout_score_0052bb10 (throws)", "reason": "the unit-HP layout fills the +70h 18h observer records with native unit pointers (00694A60) and reads unit +36Ch/+370h/+3CCh; no native unit objects exist for it"}
+  ]
+}

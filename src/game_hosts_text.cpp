@@ -556,7 +556,8 @@ GameTextHost::~GameTextHost() = default;
 const GameTextSummary& GameTextHost::summary() const noexcept { return impl_->summary; }
 
 bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& widget,
-    float origin_x, float origin_y, GameTextRun& run, const std::string* source_override) {
+    float origin_x, float origin_y, GameTextRun& run, const std::string* source_override,
+    const GameTextLayoutOverride* layout_override) {
     Impl& host = *impl_;
     ++host.summary.text_widgets;
     run = GameTextRun{};
@@ -592,6 +593,12 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     GameGuiTextBinding binding(host, run);
     binding.bind(*widget.source, text);
     if (source_override != nullptr) {
+        // Goal 5 chain 667: the fields a screen stored before its 00ABAED0
+        // (00529E51 / 00529E5B: +100h and +0FCh) are in place when it lays out.
+        if (layout_override != nullptr) {
+            if (layout_override->multiline) text.multiline = *layout_override->multiline;
+            if (layout_override->align) text.align = *layout_override->align;
+        }
         // The run-time setter, which is what 0058C010 performs at 0058C82C on
         // the mission-detail page's briefing text: the page's authored string
         // was resolved by the loader above, and this replaces it through the
