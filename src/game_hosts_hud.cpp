@@ -2925,6 +2925,9 @@ std::optional<HudCountersContext> hud_counters_context(GameHudHost::Impl& impl) 
     if (s.ptr(0x0C) == nullptr || s.ptr(0x10) == nullptr) return std::nullopt;  // 0052CBF0 not run
     const Win32PlatformState* const platform = active_platform_state();
     if (platform == nullptr) return std::nullopt;
+    // 0052A860 reads the Text widget's measured width (+114h), which only the
+    // text bridge lays out; a run without a device opens none.
+    if (!impl.menu.frontend().summary().text_bridge_open) return std::nullopt;
     HudCountersContext c{impl.menu.frontend(), *counters, {}, &platform->native_window_focus(),
         impl.counters_visibility_recurses};
     for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
