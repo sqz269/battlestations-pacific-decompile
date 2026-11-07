@@ -347,6 +347,12 @@ struct GameHudMinimapSummary {
     std::size_t units_culled{0};       // the last frame's VisibilityRange drops
     unsigned long long frames{0};
     float camera_heading{0.0f};        // radians, the stand-in basis
+    // The objective markers 005C1E00..005C22DE place (the local slot's shown,
+    // active objectives, each revealed entry that is not a local player unit).
+    std::size_t objective_markers_placed{0};      // the last frame's count
+    std::size_t objective_markers_created{0};     // pooled clones ever made
+    unsigned long long objective_entries_hidden{0};   // 008DACD0 answered false
+    unsigned long long objective_entries_own{0};      // 00645180 answered true
 };
 
 class GameHudMinimapHost {

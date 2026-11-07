@@ -2289,6 +2289,21 @@ int panic_trampoline(lua_State* state) {
 
 }  // namespace
 
+// The read side of objective_position_lists() for the HUD (the minimap's
+// objective markers, game_hosts_hud_world.cpp): the list ObjectiveListHost and
+// ObjectivePositionHost push into, in the same slot and index as
+// GameObjectiveSets::slots.
+const bsp::ObjectiveUnitList* game_objective_entry_list(int slot, std::size_t index) noexcept {
+    if (slot < 0 || slot >= static_cast<int>(GameObjectiveSets::kSlotCount)) return nullptr;
+    const std::vector<bsp::ObjectiveUnitList>& lists =
+        objective_position_lists().slots[static_cast<std::size_t>(slot)];
+    return index < lists.size() ? &lists[index] : nullptr;
+}
+
+std::size_t game_objective_entry_unit(const void* word) noexcept {
+    return objective_unit_index(word);
+}
+
 namespace {
 // Packet cc9_ai_plane_loadout_arm: the mission interpreter the process-wide
 // loadout reads go through, published by create_state, withdrawn on close.
