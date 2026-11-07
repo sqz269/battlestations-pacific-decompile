@@ -70,6 +70,16 @@
       "host_site": "src/game_hosts_script_orders.cpp TurnToPositionBinding::dyn_copy_matrix43_00c336c0 -> bsp::cc13_dyn1::transform_from_4x4_00c336c0 (the ship arm of 008A0F10)"
     },
     {
+      "native": "008a7780",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch (PilotStop arm), lua_pilot_stop over FixedCommandBinding -> entity_issue_command (0077D600, stop 00E08F88)"
+    },
+    {
+      "native": "008a1b70",
+      "status": "skipped",
+      "reason": "SquadronSetWandererMul writes plane+840h; the slot's PlaneWandererState holds it but the units host exposes no setter, and its files are in g5-w5's branch under review"
+    },
+    {
       "native": "008cf350",
       "status": "skipped",
       "reason": "GetGun pushes the Lua object of the index-th gun device under the unit; the host's gun rows have no Lua entity tables to push"

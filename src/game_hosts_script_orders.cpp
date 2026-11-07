@@ -497,6 +497,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"RemoveShipyardStock", 0x00896ee0u},
     // Goal 5 chain 655: EntityTurnToEntity's twin with a point for a target.
     {"EntityTurnToPosition", 0x008a0f10u},
+    // Goal 5 chain 655: NavigatorStop's pilot twin (jm12.lua 1724 / 1858).
+    {"PilotStop", 0x008a7780u},
     // Packet cc13-fix16: handled only with its own switch (kLuaPlaneForceReleaseBound,
     // kLuaSquadronForceReleaseBound, kLuaPilotBombBound, kLuaPlaneBombFallingTimeBound,
     // kLuaPlaneReloadBombPlatformsBound, kLuaGetPlaneIsReloadingBound).
@@ -1474,6 +1476,54 @@ private:
     unsigned char body_{};
     unsigned posed_{0};
     unsigned body_poses_{0};
+};
+
+// 008A7780 PilotStop through lua_pilot_stop (issue_fixed_command, src/cc13_left55_seg56a.cpp):
+// 008A787E 00888AA0 on argument 0, the zero descriptor with the vector at 00F87574
+// (008A7896 / 008A78A4 MOVSS), then 0077D600(entity, stop 00E08F88, &descriptor, 1) at
+// 008A78E9; nothing pushed. 0077D600 is the host's entity_issue_command, the same issue
+// NavigatorStop 008A7400 makes. 00F87574..7C is the BSS zero vector, read as zero, as
+// run_navigator_stop takes it.
+class FixedCommandBinding final : public bsp::cc13_left55::seg56a::Left55Seg56aHostUnreached,
+                                  public bsp::seg56_options_cc13::ImageAccess {
+public:
+    using Issue = std::function<void(void*, std::uint32_t, const bsp::SceneCommandTarget&, int)>;
+    explicit FixedCommandBinding(Issue issue) : issue_(std::move(issue)) {}
+
+    void entity_issue_command_0077d600(void* entity, void* command,
+        const bsp::SceneCommandTarget& target, std::int32_t flags) override {
+        issue_(entity, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(command)),
+            target, flags);
+        ++issued_;
+    }
+    std::int32_t global_i32(std::uint32_t address) override {
+        if (address != bsp::cc13_left55::seg56a::kZeroVectorGlobal
+            && address != bsp::cc13_left55::seg56a::kZeroVectorGlobal + 4u
+            && address != bsp::cc13_left55::seg56a::kZeroVectorGlobal + 8u) {
+            unit_query_unreached("a global other than the zero vector 00F87574");
+        }
+        return 0;
+    }
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    unsigned issued() const noexcept { return issued_; }
+
+private:
+    Issue issue_;
+    unsigned issued_{0};
 };
 
 // Goal 4 chain 460. These callbacks borrow the current script orders owner;
@@ -6703,6 +6753,26 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.unimplemented("LuaNative::EntityTurnToPosition(no poseable unit or no point)",
                 address);
         }
+    } else if (std::strcmp(binding->name, "PilotStop") == 0) {
+        // Goal 5 chain 655. 008A7780 PilotStop(unit) through lua_pilot_stop over
+        // FixedCommandBinding: 0077D600(entity, stop 00E08F88, zero target, 1), the issue
+        // NavigatorStop makes. Callers: jm12.lua 1724 / 1858 (both copies), prcpjm12.lua
+        // 766. LABELLED: an argument with no units-host slot issues nothing and is counted
+        // (the image calls 0077D600 with whatever 00888AA0 returned).
+        ++pilot_stop_calls_;
+        resolve_plane_squadron_members();
+        if (index_of(entity_at(0)) < units_.count()) {
+            RepairBindingArgs args(*this);
+            FixedCommandBinding command([this](void* entity, std::uint32_t command_object,
+                const bsp::SceneCommandTarget& target, int flags) {
+                entity_issue_command(entity, command_object, target, flags);
+            });
+            results = bsp::cc13_left55::seg56a::lua_pilot_stop(args, command, command);
+            pilot_stop_issued_ += command.issued();
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::PilotStop(entity without a unit slot)", address);
+        }
     } else if (std::strcmp(binding->name, "RemoveShipyardStock") == 0) {
         // Goal 5 chain 655. 00896EE0 RemoveShipyardStock(shipyard, class, count): 00888AA0
         // on argument 0 (00896FE3), 00B66290 class and count, then 008457E0(ECX =
@@ -9104,13 +9174,15 @@ void GameScriptOrdersHost::report() {
             direction_unresolved_);
     }
     if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0
-        || shipyard_stock_calls_ != 0 || turn_to_position_calls_ != 0) {
+        || shipyard_stock_calls_ != 0 || turn_to_position_calls_ != 0
+        || pilot_stop_calls_ != 0) {
         log_.notef("summary mission script unit queries role tables=%zu skill/crew=%zu "
             "air base plane limit=%zu shipyard stock=%zu turn to position=%zu (posed %zu) "
-            "unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / 008950D0 / 00897720 / "
-            "008978D0 / 00896EE0 / 008A0F10, goal 5 chain 655)", role_table_calls_,
-            skill_query_calls_, air_base_limit_calls_, shipyard_stock_calls_,
-            turn_to_position_calls_, turn_to_position_posed_, unit_query_unresolved_);
+            "pilot stop=%zu (issued %zu) unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / "
+            "008950D0 / 00897720 / 008978D0 / 00896EE0 / 008A0F10 / 008A7780, goal 5 "
+            "chain 655)", role_table_calls_, skill_query_calls_, air_base_limit_calls_,
+            shipyard_stock_calls_, turn_to_position_calls_, turn_to_position_posed_,
+            pilot_stop_calls_, pilot_stop_issued_, unit_query_unresolved_);
     }
     if (plane_force_release_calls_ != 0 || squadron_force_release_calls_ != 0 ||
         pilot_bomb_calls_ != 0 || bomb_falling_time_calls_ != 0 ||
