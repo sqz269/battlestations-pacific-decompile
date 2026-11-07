@@ -16,6 +16,7 @@
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/oct18_tail_a.hpp"                // 0054ED00
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/frontend_state_machine.hpp"
@@ -1019,13 +1020,16 @@ public:
     explicit MenuSetBindings(GameMenuHost::Impl& owner) : owner_(owner) {}
 
     bool screen_manages_own_visibility(int slot) override {
-        // Vtable +4h. The base 004f7570 is `xor al,al; ret` and no leaf this
-        // milestone builds overrides it, so the screen sets own every request.
-        // cc15-hint2: the hints screen 34h overrides it with 0054D670, which
-        // returns true (vtable 00CEE290 +4h).
+        // Vtable +4h. The base 004f7570 is `xor al,al; ret`, so the screen sets
+        // own every request. cc15-hint2: the hints screen 34h overrides it with
+        // 0054D670, which returns true (vtable 00CEE290 +4h).
         if constexpr (kHintTriggerPassesCc15Bound) {
             if (slot == 0x34) return true;
         }
+        // Goal 5 chain 646: a leaf's own +4h on its block (43h: 00643DD0, true).
+        bool self_managed = false;
+        if (owner_.hud != nullptr && owner_.hud->leaf_screen_self_managed(slot, self_managed))
+            return self_managed;
         static_cast<void>(slot);
         return front_end_screen_self_managed_004f7570();
     }
@@ -1657,7 +1661,9 @@ public:
             owner_.hud->exit_ship_view_screen_0064a490();
             return;
         }
-        // Every other leaf's +1Ch is its own routine; none is reconstructed.
+        // Goal 5 chain 646: the leaf +1Ch virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->exit_leaf_screen(slot)) return;
+        // Every other screen's +1Ch is its own routine, not run here.
         owner_.log.unimplemented("FrontEndScreen::exit", "004f75b0");
         owner_.log.notef("screen %d exit virtual %08lx", slot,
             screen != nullptr ? static_cast<unsigned long>(screen->exit_virtual) : 0ul);
@@ -1689,6 +1695,8 @@ public:
                 return;
             }
         }
+        // Goal 5 chain 646: the leaf +18h virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->enter_leaf_screen(slot)) return;
         owner_.log.unimplemented("FrontEndScreen::enter", "004f75a0");
         if (screen == nullptr) return;
         owner_.log.notef("screen %d (%s) enter virtual %08lx", slot, screen->name.c_str(),
@@ -1784,6 +1792,8 @@ public:
             owner_.log.implemented("FrontEndScreen::base_update", "004f75c0");
             return;
         }
+        // Goal 5 chain 646: the leaf +20h virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->update_leaf_screen(slot)) return;
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
     }
 
@@ -3189,7 +3199,16 @@ bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
             false);
     }();
     screen.enter_virtual = register_virtual;
-    register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    if (register_virtual == 0x0054ED00u) {
+        // Goal 5 chain 646: slot 2Ch's register virtual (kHudScreenLayouts) is
+        // 0054ED00, `JMP 004F71D0` (bsp.py ghidra disasm 0054ed00): the base
+        // store is the whole body.
+        bsp::oct18_tail_a::frontend_register_thunk_0054ed00(host.world.screens, *screen.flags,
+            slot);
+        host.log.implemented("FrontEndScreen::register_thunk", "0054ed00");
+    } else {
+        register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    }
     // cc15-hint2: 34h's register 0054D860 runs the base, builds its widgets,
     // and stores +4h = 1 last (0054D862), so the hints screen is wanted from
     // registration on and pumped every frame.

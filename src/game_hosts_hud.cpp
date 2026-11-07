@@ -52,6 +52,7 @@
 #include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"    // 0068CC70 leaf screens 005178B0, 00565D40
 #include "bsp/frontend_seg15_22_cc13.hpp"    // 0052B030, 005D3540
 #include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
@@ -770,10 +771,12 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // and each page is the one kHudScreenLayouts lists for the slot. 0067BE80,
 // 00650170 and 005F9FF0 also call the screen's +14h layout virtual
 // (run_hud_leaf_screen_layout). 005CCE70 (38h) loads its page and two children
-// and reads the platform object's widescreen byte.
-constexpr std::array<std::uint32_t, 12> kHudLeafScreenRegisters{{
+// and reads the platform object's widescreen byte. 00643E80 (43h) loads
+// GUI_spectator into +8h and then stores +4h = 1 (00643F26), the wanted byte of
+// the flags the registry borrows.
+constexpr std::array<std::uint32_t, 13> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
-    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u, 0x00643E80u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -1084,10 +1087,71 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
     case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
     case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
+    case 0x00643E80u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::spectator_register_00643e80(raw, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");
 }
+
+// Goal 5 chain 646: the leaf screens' own +4h (manages its own visibility),
+// +18h (enter), +1Ch (exit) and +20h (update) virtuals on their blocks, as
+// 004F7620 and the pump 004F8830 call them through the screen's vtable. Read
+// from the vtables (bsp.py ghidra bytes <vtable> --length 36):
+// - 00CF5998 (43h): +4h 00643DD0 (MOV AL,1), +18h 00643F40, +1Ch 00643DE0 (RET),
+//   +20h 00643DF0 (RET 4). Its register 00643E80 stores +4h = 1, so the screen is
+//   wanted from registration on and the set recompute never clears it.
+// - 00CF7A38 (27h): +18h 0067B400 and +1Ch 0067B410, both RET.
+// - 00CF61D4 (48h): +18h 00650190 (RET) and +1Ch the base 004F75B0 (RET).
+// - 00CF6D68 (49h): +18h 0067BEB0 (RET).
+// 0 leaves the slot's existing path: 27h's and 49h's +20h (0067BB50, 0067BF00)
+// run from their own hosts; 48h's +20h 00650450 reads the controlled
+// submarine's image fields (unit+1200h..+127Ch), which no host row carries;
+// 49h's +1Ch 0067BEC0 clears +8h, which FollowScreen49State holds for 0067BF00,
+// so running it on the block would split that field.
+struct HudLeafScreenVirtuals {
+    int slot;
+    std::uint32_t vtable;
+    std::uint32_t self_managed_04;
+    std::uint32_t enter_18;
+    std::uint32_t exit_1c;
+    std::uint32_t update_20;
+};
+constexpr std::array<HudLeafScreenVirtuals, 4> kHudLeafScreenVirtuals{{
+    {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
+        0x00643DF0u},
+    {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
+    {0x48, bsp::ingame_gui_cc13::kSubmarineScreenVtable, 0, 0x00650190u, 0x004F75B0u, 0},
+    {0x49, bsp::ingame_gui_cc13::kFollowScreenVtable, 0, 0x0067BEB0u, 0, 0},
+}};
+const HudLeafScreenVirtuals* hud_leaf_screen_virtuals(int slot) noexcept {
+    for (const HudLeafScreenVirtuals& v : kHudLeafScreenVirtuals) {
+        if (v.slot == slot) return &v;
+    }
+    return nullptr;
+}
+
+// 00643F40's services: 00AA7E00(name, 1) searches the page's descendants, and
+// vtable +34h is the menu's widget visibility setter. The image calls +34h with
+// no null test; a page without Spectator_Text is reported, not dereferenced.
+class HudLeafChildVisibilityBinding final
+    : public bsp::ingame_gui_cc13::HudScreenChildVisibilityHost {
+public:
+    HudLeafChildVisibilityBinding(GameMenuHost& menu, GameHostLog& log) : menu_(menu), log_(log) {}
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override {
+        if (parent == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(parent), name);
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        if (widget == nullptr) {
+            log_.notef("HUD leaf enter: widget vtable +34h on a child the page does not hold");
+            return;
+        }
+        menu_.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), visible);
+    }
+private:
+    GameMenuHost& menu_;
+    GameHostLog& log_;
+};
 
 // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md). True: 00526A40's
 // camera segment query 009043A0 runs over the gunnery host's units
@@ -6703,6 +6767,92 @@ void GameHudHost::update_unit_pick_screen_00527260(float seconds) {
     UnitPickBinding binding(impl);
     bsp::unit_pick_screen_update_00527260(impl.unit_pick, binding, seconds);
     impl.done("UnitPickScreen::update", 0x00527260u);
+}
+
+namespace {
+// The block kHudLeafScreenVirtuals' slot was constructed on, null when 0068CC70
+// built none. The vtable its constructor stored must be the one listed.
+HudLeafScreenStorage* hud_leaf_block(GameHudHost::Impl& impl, const HudLeafScreenVirtuals& v) {
+    const std::size_t index = bsp::in_game_hud_screen_index_for_slot(v.slot);
+    if (index >= kInGameHudScreenCount || !impl.leaf_screens[index]) return nullptr;
+    HudLeafScreenStorage& block = *impl.leaf_screens[index];
+    std::uint32_t vtable = 0;
+    std::memcpy(&vtable, block.data(), sizeof(vtable));
+    if (vtable != v.vtable)
+        throw std::logic_error("HUD leaf screen virtuals listed for a different vtable");
+    return &block;
+}
+}  // namespace
+
+bool GameHudHost::leaf_screen_self_managed(int slot, bool& self_managed) {
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->self_managed_04 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(*impl_, *v);
+    if (block == nullptr) return false;
+    switch (v->self_managed_04) {
+    case 0x00643DD0u:
+        self_managed = bsp::ingame_gui_cc13::hud_spectator_screen_is_self_managed_00643dd0(
+            {block->data()});
+        return true;
+    default: break;
+    }
+    throw std::logic_error("HUD leaf +4h virtual listed but not bound");
+}
+
+bool GameHudHost::enter_leaf_screen(int slot) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->enter_18 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    const bsp::ingame_gui_cc13::Raw raw{block->data()};
+    switch (v->enter_18) {
+    case 0x00643F40u: {
+        HudLeafChildVisibilityBinding binding(impl.menu, impl.log);
+        bsp::ingame_gui_cc13::spectator_enter_00643f40(raw, binding);
+        break;
+    }
+    case 0x0067B400u: bsp::ingame_gui_cc13::hud_common_overlay_screen_enter_0067b400(raw); break;
+    case 0x00650190u: bsp::ingame_gui_cc13::hud_submarine_screen_enter_00650190(raw); break;
+    case 0x0067BEB0u: bsp::ingame_gui_cc13::hud_follow_screen49_enter_0067beb0(raw); break;
+    default: throw std::logic_error("HUD leaf +18h virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::enter", v->enter_18);
+    return true;
+}
+
+bool GameHudHost::exit_leaf_screen(int slot) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->exit_1c == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    const bsp::ingame_gui_cc13::Raw raw{block->data()};
+    switch (v->exit_1c) {
+    case 0x00643DE0u: bsp::ingame_gui_cc13::hud_spectator_screen_exit_00643de0(raw); break;
+    case 0x0067B410u: bsp::ingame_gui_cc13::hud_common_overlay_screen_exit_0067b410(raw); break;
+    case 0x004F75B0u: bsp::engine_seg11_35_66_cc13::base_screen_exit_004f75b0(); break;
+    default: throw std::logic_error("HUD leaf +1Ch virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::exit", v->exit_1c);
+    return true;
+}
+
+bool GameHudHost::update_leaf_screen(int slot) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->update_20 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    switch (v->update_20) {
+    // RET 4: the pump's seconds argument is not read.
+    case 0x00643DF0u:
+        bsp::ingame_gui_cc13::hud_spectator_screen_update_00643df0({block->data()});
+        break;
+    default: throw std::logic_error("HUD leaf +20h virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::update", v->update_20);
+    return true;
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

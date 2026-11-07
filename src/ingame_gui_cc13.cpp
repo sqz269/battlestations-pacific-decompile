@@ -307,15 +307,16 @@ void spectator_destruct_00643e00(Raw s, HudScreenHost& host) {
 
 // 00643E80: base register, page "GUI_spectator" into +8h, then the screen is
 // wanted at once (+4h = 1).
-void spectator_register_00643e80(Raw s, HudScreenHost& host) {
+void spectator_register_00643e80(Raw s, HudScreenRegisterPageHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_spectator");
     s.at<std::uint8_t>(kWanted) = 1;
 }
 
-// 00643F40, enter: "Score_Text" into +0Ch, "Spectator_Text" into +10h (hidden).
-// The find calls take the page at +8h.
-void spectator_enter_00643f40(Raw s, HudScreenHost& host) {
+// 00643F40, enter: "Score_Text" (00CF59E0) into +0Ch, "Spectator_Text"
+// (00CF59D0) into +10h, then +10h's vtable +34h(0) (00644042..0064404B, no
+// null test). The find calls take the page at +8h.
+void spectator_enter_00643f40(Raw s, HudScreenChildVisibilityHost& host) {
     s.ptr(0xC) = host.gui_find_child_00aa7e00(s.ptr(0x8), "Score_Text");
     s.ptr(0x10) = host.gui_find_child_00aa7e00(s.ptr(0x8), "Spectator_Text");
     host.widget_set_visible_34(s.ptr(0x10), false);
