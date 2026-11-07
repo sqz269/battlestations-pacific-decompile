@@ -1450,6 +1450,11 @@ int binding_trampoline(lua_State* state) {
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_lua_init_all_00898610(state);
     }
+    if (dispatch_row.address == 0x0088e320u || dispatch_row.address == 0x0088e790u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_set_damage_setting(state, dispatch_row.address);
+    }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
     const bool objective_status_row = kObjectiveStatusBound
@@ -11437,6 +11442,119 @@ int GameMissionLuaHost::run_formation_role_query(lua_State* state, std::uint32_t
                             : "MissionLuaNative::IsFormationFollower",
                      leader ? "00899810" : "00899980");
     return count;
+}
+
+namespace {
+[[noreturn]] void damage_setting_unreached(const char* what) {
+    throw std::logic_error(std::string("SetFireDamage/SetWaterDamage: unreached ") + what);
+}
+
+// What 0088E320 / 0088E790 read from their frame (bsp.py show 0088e320 --asm):
+// 0088E41E 00888AA0 on argument 0; 0088E450 00B66270 on argument 1, stored by FSTP
+// float at 0088E455; 0088E470 00B663F0, the argument count; only when it is 3,
+// 0088E494 00B66250 on argument 2. Argument n is Lua stack slot n + 1. The entity is
+// the table's `ID` (the units-host index plus one) carried as the pointer-sized
+// handle the body passes on, as for the other segment-56 rows.
+class DamageSettingArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit DamageSettingArgs(lua_State* state) : state_(state) {}
+    void* entity_at(int index) override {
+        if (index != 0) damage_setting_unreached("00888AA0 past argument 0");
+        const int id = air_ops_entity_id(state_);
+        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+    }
+    int count() override { return ::lua_gettop(state_); }   // 00B663F0
+    double get_number(int index) override {
+        if (index != 1) damage_setting_unreached("00B66270 off argument 1");
+        return ::lua_tonumber(state_, 2);
+    }
+    bool get_boolean(int index) override {
+        if (index != 2) damage_setting_unreached("00B66250 off argument 2");
+        return ::lua_toboolean(state_, 3) != 0;
+    }
+    int get_integer(int) override { damage_setting_unreached("00B66290"); }
+    std::string get_string(int) override { damage_setting_unreached("00B662B0"); }
+    bool is_string(int) override { damage_setting_unreached("00B660A0"); }
+    bool is_nil(int) override { damage_setting_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { damage_setting_unreached("008889C0"); }
+    bool is_boolean(int) override { damage_setting_unreached("00B66000"); }
+    bool is_number(int) override { damage_setting_unreached("00B66050"); }
+    bool is_integer(int) override { damage_setting_unreached("00B66A60"); }
+    bool is_table(int) override { damage_setting_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { damage_setting_unreached("00888760"); }
+    bool is_vector3_table(int) override { damage_setting_unreached("0088B840"); }
+    void* to_userdata(int) override { damage_setting_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { damage_setting_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        damage_setting_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        damage_setting_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The body's one service, 0088E4FF 0077C2A0(ECX = entity; &message, 7, 0). Flags 7
+// carry the local bit, so the copy is delivered to the entity's own session switch;
+// GameGunneryHost::route_repair_damage_9e runs that delivery (the codec copy and
+// 00821E80's 9Eh arm) over the units host's slot. SUBSTITUTION (labelled): an
+// argument 0 with no units-host slot is counted and dropped, where 0077C2A0 would be
+// entered with a null ECX.
+class DamageSettingHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit DamageSettingHost(GameUnitsHost* units) : units_(units) {}
+    bool resolved{false};
+    bool applied{false};
+    std::size_t index{0};
+    void route_damage_message_0077c2a0(void* target,
+        const bsp::seg56_options_cc13::DamageSettingMessage& message, int flags,
+        int out) override {
+        if (flags != 7 || out != 0) damage_setting_unreached("0077C2A0 flags other than (7, 0)");
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(target);
+        if (units_ == nullptr || id == 0u || id > units_->count()) return;
+        resolved = true;
+        index = static_cast<std::size_t>(id - 1u);
+        GameGunneryHost* gunnery = units_->gunnery();
+        if (gunnery == nullptr) return;
+        // +24h the channel, +1Ch the seconds, +20h the add byte (SETZ of the flag).
+        applied = gunnery->route_repair_damage_9e(index, message.selector, message.value,
+                                                  message.flag_cleared);
+    }
+
+private:
+    GameUnitsHost* units_;
+};
+}  // namespace
+
+// Goal 5 chain 651. SetFireDamage(unit, seconds [, set]) 0088E320 and
+// SetWaterDamage 0088E790 over their body set_damage_setting (lua_set_fire_damage /
+// lua_set_water_damage, src/options_seg56_cc13.cpp): the 9Eh message with channel 0
+// (0088E343 XOR EBP,EBP) or 1 (0088E7AF MOV EBP,1). usn_04_defend_guadalcanal.lua
+// 1380 (luaUSN04_DummyDDBurning) adds 100 fire seconds to the dummy destroyer;
+// usn_09_leyte.lua 1552 and jm02.lua pass `true`, the set arm that zeroes the fire.
+// The body pushes no result (0088E518 00B66400 on an untouched frame).
+int GameMissionLuaHost::run_set_damage_setting(lua_State* state, std::uint32_t address) {
+    const bool water = address == 0x0088e790u;
+    DamageSettingArgs args(state);
+    DamageSettingHost host(units_hooks_);
+    const int results = water ? bsp::seg56_options_cc13::lua_set_water_damage(args, host)
+                              : bsp::seg56_options_cc13::lua_set_fire_damage(args, host);
+    if (!host.resolved) {
+        log_.notef("  %s %08lx: entity id %d has no units-host slot; nothing routed",
+            water ? "SetWaterDamage" : "SetFireDamage", static_cast<unsigned long>(address),
+            air_ops_entity_id(state));
+    } else if (!host.applied) {
+        log_.notef("  %s %08lx: unit %zu has no gunnery repair task (not a class-06 ship, "
+            "whose switch alone has the 9Eh arm, or no gunnery host)",
+            water ? "SetWaterDamage" : "SetFireDamage", static_cast<unsigned long>(address),
+            host.index);
+    }
+    log_.implemented(water ? "MissionLuaNative::SetWaterDamage"
+                           : "MissionLuaNative::SetFireDamage",
+                     water ? "0088e790" : "0088e320");
+    return results;
 }
 
 // Packet cc13-luawire, under kLuaAddWaterLoadBound. 00893380 AddWaterLoad(unit, side,

@@ -2172,6 +2172,10 @@ public:
     // Goal 5 chain 649: the Lua InitAll row on its body lua_init_all, whose
     // 00925F20(0) is run_sentity_init_all_00925f20.
     int run_lua_init_all_00898610(lua_State* state);
+    // Goal 5 chain 651: the SetFireDamage (0088E320) and SetWaterDamage (0088E790)
+    // rows on their segment-56 bodies, whose 9Eh message reaches the ship's repair
+    // task through GameGunneryHost::route_repair_damage_9e.
+    int run_set_damage_setting(lua_State* state, std::uint32_t address);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
