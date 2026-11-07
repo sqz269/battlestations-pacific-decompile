@@ -5088,6 +5088,18 @@ struct GameGunneryHost::Impl {
     // stored as a float (008791CE / 008791DE), so a float quotient is the same value.
     std::vector<GameGunneryHost::GameGunneryHpEvent> hp_events;   // drained per frame
     unsigned long long hp_events_queued{0};
+    // Goal 5 chain 634: the listener manager calls 009832F0 / 00983780 / 00982C50 this
+    // host makes (take_damage_channel_events). Each also runs its warning tail at once.
+    std::vector<GameGunneryHost::GameGunneryDamageChannelEvent> damage_channel_events;
+    void note_damage_channel(GameGunneryHost::DamageChannel channel, std::size_t unit,
+                             const std::string& kind, float seconds) {
+        damage_channel_events.push_back({channel, unit, kind, seconds});
+        if (channel == GameGunneryHost::DamageChannel::failure) {
+            game_warning_report_failure(unit, kind);
+        } else {
+            game_warning_report_damage(unit, channel == GameGunneryHost::DamageChannel::fire);
+        }
+    }
     // 006E4D50's tail (006E55FF..006E5633, bsp.py show 006e4d50 --asm): when the
     // platform's parent (00923810(1)) answers vtable[5Ch](0Fh), a plane, 00984BA0 runs
     // on that plane's squadron (+9D4h): the `ammoType` channel. One record per plane
@@ -17181,8 +17193,12 @@ public:
     void session_route_failure_started(std::uint32_t, int) override {
         owner_.record("Failure::section_state_message_0093a2c0", 0x0093a2c0u);
     }
-    void warning_fire_failure(std::uint32_t, const std::string&, float) override {
-        owner_.record("Failure::warning_manager_00982c50", 0x00982c50u);
+    // 0093C0B1..0093C0C2: 00982C50 on [00F8A0C4] with the task's entity [ESI], the
+    // failure's name and its duration. Goal 5 chain 634: queued for the `failure`
+    // channel's Lua listeners, and the failure warning runs at once.
+    void warning_fire_failure(std::uint32_t, const std::string& name, float duration) override {
+        owner_.note_damage_channel(GameGunneryHost::DamageChannel::failure, unit_, name,
+                                   duration);
     }
     void failure_side_effect(std::uint32_t, std::uint32_t, std::uint32_t) override {
         owner_.record("Failure::statistics_00913d80", 0x00913d80u);
@@ -17447,8 +17463,9 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     // +3Ch, +40h, +44h = task.reported_repaired, +45h/+46h the enables),
     // copied in and written back around the body. The two statistics calls
     // go to [00F8A0C4], the listener manager (00983780 "fire", 009832F0
-    // "leak"), which this host does not hold: recorded, as the 0090E6C0 tail
-    // into the scoring owner was before.
+    // "leak"), with the task's entity [task] (0093A477 MOV EAX,[ESI] / 0093A483
+    // PUSH EAX) and the amount: goal 5 chain 634 queues each for the channel's
+    // Lua listeners and runs its local damage warning (note_damage_channel).
     namespace g61 = bsp::gameplay_seg61_62_cc13;
     g61::RepairTask task;
     task.water_tick_2c = dc.water_tick;
@@ -17461,11 +17478,11 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     task.hull_repair_enabled_45 = dc.task.hull_repair_enabled;
     task.failure_repair_enabled_46 = dc.task.failure_repair_enabled;
     g61::RepairAddHost add_host;
-    add_host.warning_fire_channel_00983780 = [this](float) {
-        record("RepairTask::listener_manager_fire_00983780", 0x00983780u);
+    add_host.warning_fire_channel_00983780 = [this, unit](float amount) {
+        note_damage_channel(GameGunneryHost::DamageChannel::fire, unit, {}, amount);
     };
-    add_host.warning_leak_channel_009832f0 = [this](float) {
-        record("RepairTask::listener_manager_leak_009832f0", 0x009832f0u);
+    add_host.warning_leak_channel_009832f0 = [this, unit](float amount) {
+        note_damage_channel(GameGunneryHost::DamageChannel::leak, unit, {}, amount);
     };
     add_host.pending_exceeds_health_0090e6c0 = [this] {
         ++dc_doomed_notes;
@@ -17499,7 +17516,8 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
 // "not dead".
 void GameGunneryHost::Impl::run_damage_control(float dt) {
     // 0081B630 for every explosion object 008198A0 scheduled since the last
-    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]).
+    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]), then
+    // the "Explosion" failure call 00982C50 (0081B77D).
     if (!pending_explosions.empty()) {
         std::vector<std::pair<std::size_t, float>> due;
         due.swap(pending_explosions);
@@ -17542,6 +17560,13 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     static_cast<double>(clock_seconds));
                 kill_unit(unit);
             }
+            // 0081B734..0081B77D, after the damage (0081B729) and the object's retire
+            // (0081B732): 00982C50 on [00F8A0C4] with the owner EDI, "Explosion"
+            // (00D080C8, resize 9 + memcpy) and FLDZ, with no branch on the way. The
+            // `failure` channel's listeners and the "failureExplosion" warning (goal 5
+            // chain 634 review).
+            note_damage_channel(GameGunneryHost::DamageChannel::failure, unit, "Explosion",
+                                0.0f);
         }
     }
     // Packet cc9_live_hull_repair: the leak manager's two inputs, every step, for
@@ -19288,6 +19313,14 @@ void GameGunneryHost::Impl::inferior_failure_health_zero_00958a30(std::size_t vi
         // 00953DA0 (006D2210 for an airfield, which falls through to it) routes 7Dh,
         // and 0095AD0A sets +720h.
         units.set_inferior_failure_720(victim);
+        // 0095AD06..0095AD52, the rest of the 7Dh arm: an airfield (vtable[5Ch](45h)) or
+        // a shipyard (46h) reports 00982C50(entity, "InferiorFailure" 00CF0B74, +728h)
+        // to [00F8A0C4]. 00958AA1 sends 7Dh before 00958AF5 stores the new window, so
+        // the duration is +728h as it stood (goal 5 chain 634).
+        if (units.unit_is_kind_of(victim, 0x45) || units.unit_is_kind_of(victim, 0x46)) {
+            note_damage_channel(GameGunneryHost::DamageChannel::failure, victim,
+                                "InferiorFailure", s.inferior_timer_728);
+        }
         s.inferior_timer_728 = inferior_failure_seconds_00958ae8(victim, owner);
         ++inferior.first_breaks;
         log.notef("inferior failure: unit=%s owner=%s first break t=%.2f window=%.1f "
@@ -20617,6 +20650,13 @@ std::vector<GameGunneryHost::GameGunneryHpEvent> GameGunneryHost::take_hp_events
 std::vector<std::size_t> GameGunneryHost::take_ammo_type_drops() {
     std::vector<std::size_t> out;
     out.swap(impl_->ammo_type_drops);
+    return out;
+}
+
+std::vector<GameGunneryHost::GameGunneryDamageChannelEvent>
+GameGunneryHost::take_damage_channel_events() {
+    std::vector<GameGunneryDamageChannelEvent> out;
+    out.swap(impl_->damage_channel_events);
     return out;
 }
 

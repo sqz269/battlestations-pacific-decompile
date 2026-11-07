@@ -1,0 +1,117 @@
+{
+  "chain": 634,
+  "goal": 5,
+  "slot": "g5-w3",
+  "branch": "agent/g5-w3",
+  "picked": "Listener-manager calls the host recorded or skipped: leak / fire / failure (listener pass + local damage warning), the exitzone warning tail and matcher, and the recon warning tail",
+  "rows": [
+    {
+      "native": "00968810",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_damage_listeners",
+      "evidence": "Slot 3 of the failure subscription vtable 00D1B750 (bsp.py ghidra bytes 00d1b750: [1] 00972810 Load, [3] 00968810). Boxes (entity, failure name, seconds) as 00982C50 passes them; filters +0Ch entity, +1Ch failureType, +2Ch duration through ListenerSubscriptionMatch; 0097B8C0 collects, callbacks get (entity, name, seconds). Producer: GameGunneryHost FailureBinding::warning_fire_failure (0093C0C2, 0093C300's site) the 7Dh InferiorFailure arm (0095AD52) and 0081B630's magazine explosion (0081B767..0081B77D: owner EDI, \"Explosion\" 00D080C8, FLDZ; queued at the end of run_damage_control's pending-explosion step, after the damage and death). No shipped script subscribes to `failure`."
+    },
+    {
+      "native": "009688c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_damage_listeners",
+      "evidence": "Slot 3 of the leak subscription vtable 00D1B6CC ([1] 009728A0 Load). Boxes (entity, seconds); filters +0Ch, +1Ch. Producer: the repair task's water adder 0093A4F0 (0093A513, positive amounts only) in GameGunneryHost::Impl::damage_control_add_seconds. No shipped script subscribes to `leak`."
+    },
+    {
+      "native": "00968940",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_damage_listeners",
+      "evidence": "Slot 3 of the fire subscription vtable 00D1B6DC ([1] 00972920 Load). Boxes (entity, seconds). Producer: 0093A470's call at 0093A484 (every amount; listing 0093A477 MOV EAX,[ESI] / 0093A483 PUSH EAX = the task's entity). No shipped script subscribes to `fire`."
+    },
+    {
+      "native": "00968710",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_exit_zone_listeners_00982120",
+      "evidence": "New body exit_zone_subscription_matches_00968710 (src/cc13_sweepC.cpp), 00968710..00968781 read whole: the two-key shape (checked index, +0Ch slot 0, checked index, +1Ch slot 0). It replaces the dispatcher's inline copy of the two filter tests. Ledger row moved from existing_host_substitution_labelled to the body. call_graph: called from dispatch_exit_zone_listeners_00982120 (identical-code fold with the other two-key matchers)."
+    },
+    {
+      "native": "00975340",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp game_warning_report_exit_zone (from GameMissionLuaHost::note_exit_zone_00982120)",
+      "evidence": "00982120's tail 00982447..0098250F: byte 0 only (009824DB), shared guard, entity+54h == local party (009824C1..009824D9), then 00975340(entity, 0) + 009763E0. Record kind 5 (00D1B344 +10h = 00973E40), lifetimes 0096F220/30/40; activate 0097FBB0 = WarningActivate::exit_zone_80 (sounds for +80h, no relation test). Producer: the ship out-of-map countdown 00826E8F, already hosted. Ids exitzoneenter[player[ship]] are Warnings.lua exitzone.enter.*."
+    },
+    {
+      "native": "009741e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp game_warning_report_recon (from GameMissionLuaHost::dispatch_recon_listeners_00980e50 and the SetForcedReconLevel notify)",
+      "evidence": "00980E50's tail 00981202..0098134E: shared guard, party == local party, old < 2 and new >= 2, clock >= 4.5 (00D1B89C = 40900000h), IsKindOf(5), 00968370 relation not 0/2, not IsKindOf(19h), then 9Ch 009741E0(entity, old, new) + 009763E0. Record kind 2 (00D1B2A8 +10h = 00973CD0). The detector [entity+210h+side*34h] is the record's +28h observer, now carried in bsp::ReconLevelTransition at the delegate call (00805AF0 swaps it before reporting). The host returned early when no script subscribed to `recon`; the tail now runs for every live change. Review round 1: the record's +20h lifetime is 30.0 (00D1B2A8 +20h = 00973CE0, FLD [00CE38C8] = 41F00000h), now passed per class (15.0 stays for 00D1B26C / 00D1B344). The SetForcedReconLevel path reads 00805D02's old level before the force: the forced table entry (+10h/+8h) if any, else the record's +4h level, else 0, and warns only when it differs from the new level. Review round 2: 00805CF0 drops the +28h observer edge before its delegate (00805D07 LEA EDI,[ESI+14h]; 00805D11..00805D1F 006952A0 and MOV [EDI+14h],0; delegate at 00805D4E / 00805D65), so the forced path now passes no detector (+98h false, the plain key), and the pass clears the record's observer when it applies a forced-table entry, so the ClearForcedReconLevel (00803B50) transition carries the null detector too."
+    },
+    {
+      "native": "00974150",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp game_warning_entity_report (game_warning_report_damage / game_warning_report_failure)",
+      "evidence": "Already wired by the torpedo report; now also builds the leak / fire / failure (including failureExplosion from 0081B77D) warnings of report_local_damage_warning and the 00982C50 tail (local unit, or a plane through its +9D4h squadron; failure also airfield 45h / shipyard 46h, +180h == local slot, id failure+name / failureairfield / failureshipyard checked against the +108h map). Review nit fixed: a plane with a null +9D4h passes the local test only while [00E188D8] is null too (pointer compare)."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds",
+      "reason": "the Seg62Host body runs on the native warning manager's lock (+24h), channel map (+F8h) and dispatch flags (+104h/+105h), which the host does not keep; its listener pass and damage-warning tail now run as host substitutions (matcher 009688C0, game_warning_report_damage)"
+    },
+    {
+      "native": "00983780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds",
+      "reason": "as 009832F0: native manager channel map/lock not kept; listener pass (matcher 00968940) and warning tail run as host substitutions"
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::warning_fire_failure / GameGunneryHost::Impl::inferior_failure_health_zero_00958a30 / GameGunneryHost::Impl::run_damage_control (0081B77D)",
+      "reason": "as 009832F0: native manager channel map/lock and name-map iterator not kept; listener pass (matcher 00968810) and failure-warning tail run as host substitutions"
+    },
+    {
+      "native": "00984eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (shipyard order) / air ops stock adders",
+      "reason": "no shipped script registers a `stock` listener and the dispatcher has no warning tail; its four producers (006CA770, 006C7D10, 006C7B10, 00846D90) need the class category key (+70h) and the 006BF100 per-category stock total at each host site"
+    },
+    {
+      "native": "00968cd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "the `stock` matcher has no producer the host runs (see 00984EB0) and no shipped subscriber"
+    },
+    {
+      "native": "00968a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "the `zone` dispatcher 00983F50 has no callers in the image, so the channel is never produced"
+    },
+    {
+      "native": "009689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "`repair` (6 uses, jm03 luaJM3RepairPressed) fires on the player's HUD repair-priority input (0064A270 via 00821E80 A0h); no shipped script calls SetRepairPriority and an unattended host has no player input"
+    },
+    {
+      "native": "00968d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "`gui` listeners watch GUI_Map / GUI_repair / GUI_powerups / GUI_support_full; the producer is the GUI layer visibility hook (00AC4450 -> 00987090 -> 00985250) for screens the player opens, which the host never shows"
+    },
+    {
+      "native": "0097fbb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp warning_activate_cc15",
+      "reason": "the host's activate substitution (WarningActivate::exit_zone_80) runs this activate over its own +108h tables; the Raw body needs the native manager map and Seg62Host"
+    },
+    {
+      "native": "0097f7e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp warning_activate_cc15",
+      "reason": "as 0097FBB0 (WarningActivate::recon_80 arm, the id + player key)"
+    }
+  ],
+  "notes": [
+    "Wired total (wire_readiness): 10050 before (base 86826e512) -> 10055 after; 00968810, 009688C0, 00968940, 00975340 and 009741E0 changed state, 00968710 was already counted through its host-substitution row and now has a body.",
+    "Review round 1 (run 1326): (1) 0081B630's 00982C50(owner, \"Explosion\", 0.0f) at 0081B77D is now queued; (2) the recon warning's applied lifetime is 30.0 (00973CE0); (3) the SetForcedReconLevel warning uses the record's own old level. The recon listeners on that path keep their existing labelled substitute (the level this host last published), which is stale (0) with kReconDetectionRecordsBound; moving them to the record's level would change when the 219 shipped recon listeners fire and is left for a separate change.",
+    "Review round 2 (run 1331): the forced recon warning passed the pre-force observer; 00805CF0 zeroes +28h at 00805D1F before the delegate. Fixed in game_hosts_lua.cpp (kGunneryReconNoObserver on the forced path) and recon_sensor_pass.cpp (the rebuild clears the observer of a record it forces). The observer's only reader is 009741E0.",
+    "Labelled: all four tails run with +104h clear, as the kill block does (listeners run at the mission frame, not inline). The warning tails run synchronously at the producing call; the listener passes at the frame."
+  ]
+}

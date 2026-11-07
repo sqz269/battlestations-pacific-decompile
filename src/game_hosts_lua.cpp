@@ -5171,6 +5171,9 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // `hpEvent` (00986B00) next: 00879070 fires it inside the damage write, which
     // precedes the death and the row-15 flush the channels below stand for.
     dispatch_hp_event_listeners();
+    // `leak` / `fire` / `failure` (009832F0 / 00983780 / 00982C50): fired inside the
+    // repair task's adders and the failure roll, in the damage step as well.
+    dispatch_damage_listeners();
     // `ammoType` (00984BA0): fired at the end of a plane's rack drop (006E5633).
     dispatch_ammo_type_listeners();
     // `shipLanded` (00986820): fired inside the landing ship's update (0074AE79).
@@ -8599,13 +8602,73 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
     }
 }
 
+namespace {
+
+// bsp::cc13_sweepC::SubscriptionMatchHost over one host subscription, for the Matches
+// slots of src/cc13_sweepC.cpp. A slot only forms subscription + filter offset and hands
+// that address to the filter's vtable[0] with params[k]; `subscription()` is a base whose
+// offsets name this subscription's filters, so no image-shaped subscription is built and
+// nothing is read through it. `params()` is the native vector {proxy, begin +4h, end +8h,
+// end of storage} over 32-bit pointers to the boxed parameters, which the slot's checked
+// index reads as words (Win32 only: a box pointer is that word). The same frame serves
+// bsp::oct18_tail_b::SubscriptionFilterHost, the two calls of the four-key matcher
+// 00968470 in src/leftovers_cc13.cpp (goal 5 chain 631).
+class ListenerSubscriptionMatch final : public bsp::cc13_sweepC::SubscriptionMatchHost,
+                                        public bsp::oct18_tail_b::SubscriptionFilterHost {
+public:
+    using Param = bsp::cc13_seg49_64_78::EventParam;
+    using Filter = std::function<bool(const Param&)>;
+    ListenerSubscriptionMatch(std::vector<std::pair<std::size_t, Filter>> filters,
+                              const std::vector<const Param*>& params)
+        : filters_(std::move(filters)) {
+        static_assert(sizeof(void*) == 4, "the native parameter vector holds 32-bit pointers");
+        for (const Param* p : params) {
+            words_.push_back(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p)));
+        }
+        const auto begin = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(words_.data()));
+        const auto end = begin + static_cast<std::uint32_t>(words_.size() * sizeof(std::uint32_t));
+        vector_ = {0u, begin, end, end};
+    }
+    void* subscription() { return frame_.data(); }
+    void* params() { return vector_.data(); }
+    void invalid_iterator_00bf6713() override {
+        throw std::logic_error("listener match: 00BF6713 (short parameter vector)");
+    }
+    bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) override {
+        const std::size_t offset = static_cast<std::size_t>(
+            static_cast<unsigned char*>(filter) - frame_.data());
+        for (const auto& [at, accepts] : filters_) {
+            if (at != offset) continue;
+            return accepts(*reinterpret_cast<const Param*>(static_cast<std::uintptr_t>(parameter)));
+        }
+        throw std::logic_error("listener match: no filter at the slot's offset");
+    }
+    bool filter_vslot_00(void* filter, std::uint32_t parameter) override {
+        return filter_accepts_vslot_00(filter, parameter);
+    }
+    std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) override {
+        if (vector != vector_.data() || index >= words_.size()) {
+            throw std::logic_error("listener match: 009658B0 out of range");
+        }
+        return &words_[index];
+    }
+
+private:
+    std::vector<std::pair<std::size_t, Filter>> filters_;
+    std::vector<std::uint32_t> words_;
+    std::array<std::uint32_t, 4> vector_{};
+    std::array<unsigned char, 0x80> frame_{};
+};
+
+}  // namespace
+
 void GameMissionLuaHost::note_exit_zone_00982120(std::size_t unit, bool exited) {
     if constexpr (kLuaExitZoneListenersBound) {
         exit_zone_pending_.emplace_back(unit, exited);
-    } else {
-        static_cast<void>(unit);
-        static_cast<void>(exited);
     }
+    // Goal 5 chain 634: 00982120's warning tail runs at the call; its listener pass
+    // runs at the frame (dispatch_exit_zone_listeners_00982120).
+    game_warning_report_exit_zone(unit, exited);
 }
 
 // Packet cc13-fix3, under kLuaExitZoneListenersBound. 00982120's `exitzone` channel.
@@ -8658,18 +8721,26 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 bsp::WarningSubscription subscription;
                 subscription.callback = entry.callback;
                 if (entry.native_exit_zone != nullptr) {
-                    // Goal 4 chain 352: the subscription AddListener loaded (009726D0),
-                    // tested as 00968710 does: the +0Ch entity filter's slot 0 (00979140)
-                    // on params[0], then, only when it held, the +1Ch exited filter's
-                    // slot 0 (00979510) on params[1] (00968731..0096876D).
+                    // Goal 4 chain 352: the subscription AddListener loaded (009726D0).
+                    // Goal 5 chain 634: tested by 00968710 itself (vtable 00D1B69C slot
+                    // 3): the +0Ch entity filter's slot 0 (00979140) on params[0], then,
+                    // only when it held, the +1Ch exited filter's slot 0 (00979510) on
+                    // params[1] (00968731..0096876D).
                     namespace matchers = bsp::lua_listener_native_matchers;
                     const bsp::cc13_seg49_64_78::EventParam entity_param =
                         matchers::word_param(victim);
                     const bsp::cc13_seg49_64_78::EventParam exited_param =
                         matchers::word_param(exited);
+                    const auto& s = *entry.native_exit_zone;
+                    ListenerSubscriptionMatch match({
+                        {0x0c, [&s](const bsp::cc13_seg49_64_78::EventParam& p) {
+                            return s.entity.matches(p); }},
+                        {0x1c, [&s](const bsp::cc13_seg49_64_78::EventParam& p) {
+                            return s.exited.matches(p); }}},
+                        {&entity_param, &exited_param});
                     subscription.condition_holds =
-                        entry.native_exit_zone->entity.matches(entity_param)
-                        && entry.native_exit_zone->exited.matches(exited_param);
+                        bsp::cc13_sweepC::exit_zone_subscription_matches_00968710(
+                            match, match.subscription(), match.params()) != 0;
                     subscriptions.push_back(std::move(subscription));
                     continue;
                 }
@@ -8812,66 +8883,6 @@ void GameMissionLuaHost::dispatch_hp_event_listeners() {
     }
 }
 
-namespace {
-
-// bsp::cc13_sweepC::SubscriptionMatchHost over one host subscription, for the Matches
-// slots of src/cc13_sweepC.cpp. A slot only forms subscription + filter offset and hands
-// that address to the filter's vtable[0] with params[k]; `subscription()` is a base whose
-// offsets name this subscription's filters, so no image-shaped subscription is built and
-// nothing is read through it. `params()` is the native vector {proxy, begin +4h, end +8h,
-// end of storage} over 32-bit pointers to the boxed parameters, which the slot's checked
-// index reads as words (Win32 only: a box pointer is that word). The same frame serves
-// bsp::oct18_tail_b::SubscriptionFilterHost, the two calls of the four-key matcher
-// 00968470 in src/leftovers_cc13.cpp (goal 5 chain 631).
-class ListenerSubscriptionMatch final : public bsp::cc13_sweepC::SubscriptionMatchHost,
-                                        public bsp::oct18_tail_b::SubscriptionFilterHost {
-public:
-    using Param = bsp::cc13_seg49_64_78::EventParam;
-    using Filter = std::function<bool(const Param&)>;
-    ListenerSubscriptionMatch(std::vector<std::pair<std::size_t, Filter>> filters,
-                              const std::vector<const Param*>& params)
-        : filters_(std::move(filters)) {
-        static_assert(sizeof(void*) == 4, "the native parameter vector holds 32-bit pointers");
-        for (const Param* p : params) {
-            words_.push_back(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p)));
-        }
-        const auto begin = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(words_.data()));
-        const auto end = begin + static_cast<std::uint32_t>(words_.size() * sizeof(std::uint32_t));
-        vector_ = {0u, begin, end, end};
-    }
-    void* subscription() { return frame_.data(); }
-    void* params() { return vector_.data(); }
-    void invalid_iterator_00bf6713() override {
-        throw std::logic_error("listener match: 00BF6713 (short parameter vector)");
-    }
-    bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) override {
-        const std::size_t offset = static_cast<std::size_t>(
-            static_cast<unsigned char*>(filter) - frame_.data());
-        for (const auto& [at, accepts] : filters_) {
-            if (at != offset) continue;
-            return accepts(*reinterpret_cast<const Param*>(static_cast<std::uintptr_t>(parameter)));
-        }
-        throw std::logic_error("listener match: no filter at the slot's offset");
-    }
-    bool filter_vslot_00(void* filter, std::uint32_t parameter) override {
-        return filter_accepts_vslot_00(filter, parameter);
-    }
-    std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) override {
-        if (vector != vector_.data() || index >= words_.size()) {
-            throw std::logic_error("listener match: 009658B0 out of range");
-        }
-        return &words_[index];
-    }
-
-private:
-    std::vector<std::pair<std::size_t, Filter>> filters_;
-    std::vector<std::uint32_t> words_;
-    std::array<std::uint32_t, 4> vector_{};
-    std::array<unsigned char, 0x80> frame_{};
-};
-
-}  // namespace
-
 // The `ammoType` channel: the host substitution for 00984BA0, whose reconstructed body
 // (src/cc13_seg62_seg65.cpp) runs on the native manager's channel map. 006E4D50 calls it
 // at the end of a plane's rack drop (006E5633) with the plane's squadron (+9D4h); this
@@ -8940,6 +8951,114 @@ void GameMissionLuaHost::dispatch_ammo_type_listeners() {
                 ::lua_pushinteger(state_, kind);
                 pushed = 2;
             }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
+// Goal 5 chain 634. The `leak`, `fire` and `failure` channels: the host substitution for
+// the listener passes of 009832F0, 00983780 and 00982C50, whose reconstructed bodies
+// (src/cc13_seg62_seg65.cpp) run on the native manager's channel map. The repair task's
+// adders (0093A513 for a positive water amount, 0093A484 for every fire amount) and the
+// failure starts (0093C0C2, 0093C300's site, the airfield / shipyard 7Dh arm 0095AD52,
+// 0081B630's explosion at 0081B77D) call them; this host drains the gunnery host's records of those calls once per
+// mission frame. SUBSTITUTION, labelled, as for `hpEvent`: the callbacks run at the
+// frame, after the damage step, not inside it. The warning tail of each call has run
+// at the call (game_warning_report_damage / game_warning_report_failure). Per call, as
+// the shared dispatch body does it (bsp.py show 009832f0 / 00983780 / 00982c50):
+//  - the boxes are the entity (word [entity+174h], here unit + 1) and the seconds as a
+//    float (008849D0); `failure` puts the failure's name (00884FC0) between them;
+//  - 0097B8C0 collects the callback of every subscription of the channel whose
+//    vtable[0Ch] holds - 009688C0 (`leak`, vtable 00D1B6CC) and 00968940 (`fire`,
+//    00D1B6DC) test the entity filter +0Ch and the duration range +1Ch; 00968810
+//    (`failure`, 00D1B750) the entity +0Ch, the failureType set +1Ch and the
+//    duration range +2Ch - in the channel's order (here AddListener's);
+//  - each name is called with those values through 00887E50.
+// An entry whose native Load threw (AddListener's host-parse fallback) has no filter to
+// test and is skipped, as for `ammoType`.
+void GameMissionLuaHost::dispatch_damage_listeners() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    using Channel = GameGunneryHost::DamageChannel;
+    const std::vector<GameGunneryHost::GameGunneryDamageChannelEvent> events =
+        gunnery->take_damage_channel_events();
+    namespace seg64 = bsp::cc13_seg49_64_78;
+    namespace matchers = bsp::lua_listener_native_matchers;
+    for (const GameGunneryHost::GameGunneryDamageChannelEvent& event : events) {
+        ++summary_.listener_damage_events;
+        const char* const channel = event.channel == Channel::leak ? "leak"
+            : event.channel == Channel::fire ? "fire" : "failure";
+        const int entity = static_cast<int>(event.unit + 1);
+        const seg64::EventParam entity_param = matchers::word_param(entity);
+        const seg64::EventParam kind_param = matchers::text_param(event.kind.c_str());
+        const seg64::EventParam seconds_param = matchers::number_param(event.seconds);
+        const bool failure = event.channel == Channel::failure;
+        const std::vector<const seg64::EventParam*> params = failure
+            ? std::vector<const seg64::EventParam*>{&entity_param, &kind_param, &seconds_param}
+            : std::vector<const seg64::EventParam*>{&entity_param, &seconds_param};
+        std::vector<bsp::WarningSubscription> subscriptions;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, channel) || entry.native_other == nullptr) {
+                continue;
+            }
+            bsp::WarningSubscription collected;
+            if (failure) {
+                // load_listener_subscription_native built a seg64::FailureSubscription
+                // (Load 00972810) for this channel.
+                const auto& s = static_cast<const seg64::FailureSubscription&>(*entry.native_other);
+                ListenerSubscriptionMatch match({
+                    {0x0c, [&s](const seg64::EventParam& p) { return s.entity.matches(p); }},
+                    {0x1c, [&s](const seg64::EventParam& p) { return s.failure_type.matches(p); }},
+                    {0x2c, [&s](const seg64::EventParam& p) { return s.duration.matches(p); }}},
+                    params);
+                collected.callback = s.callback;
+                collected.condition_holds = bsp::cc13_sweepC::failure_subscription_matches_00968810(
+                    match, match.subscription(), match.params()) != 0;
+            } else {
+                // A seg64::LeakSubscription (Load 009728A0) or FireSubscription (Load
+                // 00972920), the same fields.
+                const auto& s = static_cast<const seg64::LeakSubscription&>(*entry.native_other);
+                ListenerSubscriptionMatch match({
+                    {0x0c, [&s](const seg64::EventParam& p) { return s.entity.matches(p); }},
+                    {0x1c, [&s](const seg64::EventParam& p) { return s.duration.matches(p); }}},
+                    params);
+                collected.callback = s.callback;
+                collected.condition_holds = (event.channel == Channel::leak
+                    ? bsp::cc13_sweepC::leak_subscription_matches_009688c0(
+                          match, match.subscription(), match.params())
+                    : bsp::cc13_sweepC::fire_subscription_matches_00968940(
+                          match, match.subscription(), match.params())) != 0;
+            }
+            if (collected.condition_holds) ++summary_.listener_damage_matches;
+            subscriptions.push_back(std::move(collected));
+        }
+        const std::vector<std::string> callbacks =
+            bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_damage_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(event.unit);
+            log_.notef("  %s listener: entity \"%s\" %s%s%.3f s -> %s()", channel,
+                row != nullptr ? row->name.c_str() : "?", event.kind.c_str(),
+                failure ? " " : "", static_cast<double>(event.seconds), name.c_str());
+            if (!push_resolved_entity_by_id(state_, entity)) lua_pushnil(state_);
+            int pushed = 1;
+            if (failure) {
+                ::lua_pushstring(state_, event.kind.c_str());
+                ++pushed;
+            }
+            ::lua_pushnumber(state_, static_cast<lua_Number>(event.seconds));
+            ++pushed;
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
                 const char* message = lua_tolstring(state_, -1, nullptr);
                 note_error(message != nullptr ? message : std::string("(no message)"));
@@ -9885,11 +10004,14 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
         // class-18h squadron list), so it notifies on a net change only; the own
         // arm's 00805AF0(1.0f) notifies once, 0 -> 2. Supersedes the reset-cycle
         // and own-step substitutions below.
-        if (!any_recon) return;
         for (const bsp::ReconLevelTransition& t : pass.transitions()) {
             if (t.unit >= count || gunnery->unit_dead(t.unit)) continue;   // 00980E50's live-unit gate
-            fire_recon_listeners_00980e50(t.unit, static_cast<int>(t.old_level),
-                                          static_cast<int>(t.new_level), t.party);
+            const int old = static_cast<int>(t.old_level);
+            const int now = static_cast<int>(t.new_level);
+            if (any_recon) fire_recon_listeners_00980e50(t.unit, old, now, t.party);
+            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, whether
+            // or not the channel has subscriptions, with the record's +28h observer.
+            game_warning_report_recon(t.unit, old, now, t.party, t.observer);
         }
         return;
     }
@@ -13164,32 +13286,60 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
         break;
     }
     if (targets.empty()) targets.push_back(index);
+    const GameGunneryHost* gunnery = units->gunnery();
     for (std::size_t unit : targets) {
+        // Goal 5 chain 634 review: 00805D02..00805D0F read the record's effective level
+        // before the force, +10h ? +8h : +4h. The forced table is the image's +10h / +8h
+        // (an entry exists exactly while +10h is set; ClearForcedReconLevel removes it at
+        // once), and the pass's persistent record holds +4h; a record the pass has not
+        // laid out yet is a fresh one, +4h = 0. 00805CF0 then drops the +28h observer
+        // edge before its delegate (00805D07 LEA EDI,[ESI+14h]; 00805D11..00805D1F
+        // 006952A0 and MOV [EDI+14h],0; the delegate calls are at 00805D4E / 00805D65),
+        // so 009741E0 reads a null detector here.
+        int record_old = 0;
+        if (party >= 0 && party < 3) {
+            const bsp::ReconDetectionRecord* record = gunnery != nullptr
+                ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
+            bsp::ReconDetectionLevel forced_old = bsp::ReconDetectionLevel::none;
+            if (bsp::forced_recon_level(party, unit, forced_old)) {
+                record_old = static_cast<int>(forced_old);
+            } else if (record != nullptr) {
+                record_old = static_cast<int>(record->level);
+            }
+        }
         bsp::set_forced_recon_level_00805cf0(unit, party, level);
         ++summary_.forced_recon_units;
         if (kForcedReconSyncNotifyBound && party >= 0 && party < 3) {
+            const int now = level <= 0 ? 0 : level == 1 ? 1 : 2;
+            // 00980E50's live-unit gate, as in the pass dispatch.
+            const bool dead = gunnery != nullptr && gunnery->unit_dead(unit);
             // 00805D02-00805D38: old = the effective level, new = the forced one; a
-            // change notifies at once. The effective level is the one the pass
-            // dispatch last published for (unit, party) (SUBSTITUTION, labelled).
+            // change notifies at once. For the listeners the effective level is the
+            // one this host last published for (unit, party) (SUBSTITUTION, labelled).
             const std::size_t count = units->count();
             if (recon_listener_levels_.size() < count * 3) {
                 recon_listener_levels_.resize(count * 3, 0);
             }
             int& last = recon_listener_levels_[unit * 3 + static_cast<std::size_t>(party)];
-            const int now = level <= 0 ? 0 : level == 1 ? 1 : 2;
-            if (now == last) continue;   // 00805D38 JE: no change, no notify
-            const int old = last;
-            last = now;
-            ++summary_.forced_recon_sync_notifies;
-            const GameGunneryHost* gunnery = units->gunnery();
-            bool any_recon = false;
-            for (const ListenerEntry& entry : listeners_) {
-                if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+            if (now != last) {   // 00805D38 JE: no change, no notify
+                const int old = last;
+                last = now;
+                ++summary_.forced_recon_sync_notifies;
+                bool any_recon = false;
+                for (const ListenerEntry& entry : listeners_) {
+                    if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+                }
+                if (!dead && kLuaListenersBound && kLuaReconListenersBound && any_recon
+                    && state_ != nullptr) {
+                    fire_recon_listeners_00980e50(unit, old, now, party);
+                }
             }
-            // 00980E50's live-unit gate, as in the pass dispatch.
-            if (!kLuaListenersBound || !kLuaReconListenersBound || !any_recon ||
-                state_ == nullptr || (gunnery != nullptr && gunnery->unit_dead(unit))) continue;
-            fire_recon_listeners_00980e50(unit, old, now, party);
+            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, on the
+            // record's own change (record_old above), not the listeners' substitute.
+            if (!dead && record_old != now) {
+                game_warning_report_recon(unit, record_old, now, party,
+                                          bsp::kGunneryReconNoObserver);   // +28h = 0 at 00805D1F
+            }
         }
     }
     const GameUnitRow* row = units->unit_row(index);
@@ -15875,6 +16025,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "fires=%llu (00984300, matcher 00968AF0)",
         summary_.listener_command_events, summary_.listener_command_matches,
         summary_.listener_command_fires);
+    log_.notef("summary mission script leak/fire/failure listeners calls=%llu matched=%llu "
+        "fires=%llu (009832F0 / 00983780 / 00982C50, matchers 009688C0 / 00968940 / 00968810)",
+        summary_.listener_damage_events, summary_.listener_damage_matches,
+        summary_.listener_damage_fires);
     log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
