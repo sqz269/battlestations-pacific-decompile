@@ -17665,6 +17665,11 @@ std::vector<bsp::ShipDeviceTerms> GameGunneryHost::ship_device_terms(std::size_t
     return devices;
 }
 
+bool GameGunneryHost::unit_class_repair_d0(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    return unit_index < host.class_repair_flags.size() && host.class_repair_flags[unit_index] != 0;
+}
+
 bsp::UnitFirepowerReport GameGunneryHost::ship_firepower_report(std::size_t unit_index) {
     if (!impl_->units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase))
         throw std::invalid_argument("GetFirepower requires a represented ship");

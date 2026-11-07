@@ -1179,6 +1179,9 @@ public:
     // +378h byte 0087BD19 sets), with the Function [dev+3F4h]+80h as the row's
     // category and +36Ch / +370h as its health.
     std::vector<bsp::ShipDeviceTerms> ship_device_terms(std::size_t unit_index) const;
+    // [unit+538h]+D0h, the VehicleClass `Repair` byte (nil -> 1) the ship
+    // screen tests at 0064E5F4; false for a unit this host has not built.
+    bool unit_class_repair_d0(std::size_t unit_index) const;
 
     // 0088DC10's current report, using initial +103Ch..+1048h totals and
     // current category lists, gun+3B8h flags and ship control factors.
