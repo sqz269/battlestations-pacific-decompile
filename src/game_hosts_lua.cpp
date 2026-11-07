@@ -11275,14 +11275,19 @@ namespace {
 }
 
 // What the scoring rows read from their frame: the count 00B663F0, integers
-// 00B66290 (lua_tonumber, then __ftol truncates), booleans 00B66250
-// (lua_toboolean, no type gate) and strings 00B662B0. Nothing else.
+// 00B66290 (lua_tonumber at 00B6629B, the float32 spill and reload
+// 00B662A0 FSTP float / 00B662A3 FLD float, then 00BF7420 __ftol truncates
+// the float: bsp::lua_number_integer_00b66290, so 0.7*10 reads 7), booleans
+// 00B66250 (lua_toboolean, no type gate) and strings 00B662B0. Nothing else.
 class ScoringRowArgs final : public bsp::cc13_seg56::LuaArgs {
 public:
-    explicit ScoringRowArgs(lua_State* state) : state_(state), top_(::lua_gettop(state)) {}
+    explicit ScoringRowArgs(lua_State* state)
+        : state_(state), top_(::lua_gettop(state)),
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
     int count() override { return top_; }
     int get_integer(int index) override {
-        return static_cast<int>(::lua_tonumber(state_, index + 1));
+        return bsp::lua_number_integer_00b66290(::lua_tonumber(state_, index + 1),
+                                                sse2_conversion_);
     }
     bool get_boolean(int index) override { return ::lua_toboolean(state_, index + 1) != 0; }
     // A value Lua cannot convert reads as "", as for the other string
@@ -11317,6 +11322,7 @@ public:
 private:
     lua_State* state_;
     int top_;
+    bool sse2_conversion_;   // the CRT conversion mode 00BF7420 takes, as at the other readers
 };
 
 // The three pushes the getters, Scoring_GetRealPlayTime and Scoring_IsUnlocked

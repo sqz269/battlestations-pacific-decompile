@@ -222,5 +222,13 @@
       "host_site": "src/game_hosts_units.cpp",
       "reason": "SetGuiName: entity vtable+0Ch is 0077D3F0, which stores the name at entity+15Ch; the units host keeps no gui-name field to store it in"
     }
-  ]
+  ],
+  "review_round_1": [
+    {
+      "finding": "ScoringRowArgs::get_integer dropped 00B66290 float32 spill (00B662A0 FSTP float / 00B662A3 FLD float) before __ftol",
+      "outcome": "fixed",
+      "change": "get_integer now returns bsp::lua_number_integer_00b66290(lua_tonumber(...), conversion mode from IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE)); comment describes the spill; rebuilt, tests pass, pc24_lint 0"
+    }
+  ],
+  "review_round_1_nits": "not changed: read_score_multipliers mirrors the existing Globals readers by design; the ScoringImage token buffer is per call and only addresses are used"
 }
