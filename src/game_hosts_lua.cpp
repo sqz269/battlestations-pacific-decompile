@@ -11245,6 +11245,156 @@ bool GameMissionLuaHost::squadron_force_gunner_mode_379(std::size_t unit_index) 
     return unit_index < force_gunner_379_.size() && force_gunner_379_[unit_index] != 0;
 }
 
+namespace {
+[[noreturn]] void seg56_row_unreached(const char* what) {
+    throw std::logic_error(std::string("segment-56 support/squadron row: unreached ") + what);
+}
+
+// Goal 5 chain 659. What 008A28B0 SquadronSetForceRelease, 0088C750
+// BannSupportmanager, 0088C8E0 PermitSupportmanager and 0088CBB0
+// SupportManagerEnable read from their frames (bsp.py ghidra disasm <row>): 00888AA0 on
+// argument 0 (008A29AE, 0088CCAE) and 00B66250 on argument 1 (008A29E0, 0088CCE0),
+// lua_toboolean with no type gate, so a missing or nil argument reads false. The
+// two ban rows read nothing. Argument n is Lua stack slot n + 1; the entity is the
+// table's `ID` (the units-host index plus one) carried as the pointer-sized handle
+// the bodies pass on, as for the other segment-56 rows (DamageSettingArgs).
+class Seg56RowArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit Seg56RowArgs(lua_State* state)
+        : state_(state),
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+    void* entity_at(int index) override {
+        if (index != 0) seg56_row_unreached("00888AA0 past argument 0");
+        const int id = air_ops_entity_id(state_);
+        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+    }
+    bool get_boolean(int index) override { return ::lua_toboolean(state_, index + 1) != 0; }
+    // 00B66290: lua_tonumber, the float32 spill and reload, then 00BF7420 __ftol
+    // (bsp::lua_number_integer_00b66290, as ScoringRowArgs reads it).
+    int get_integer(int index) override {
+        return bsp::lua_number_integer_00b66290(::lua_tonumber(state_, index + 1),
+                                                sse2_conversion_);
+    }
+    int count() override { seg56_row_unreached("00B663F0"); }
+    double get_number(int) override { seg56_row_unreached("00B66270"); }
+    std::string get_string(int) override { seg56_row_unreached("00B662B0"); }
+    bool is_string(int) override { seg56_row_unreached("00B660A0"); }
+    bool is_nil(int) override { seg56_row_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { seg56_row_unreached("008889C0"); }
+    bool is_boolean(int) override { seg56_row_unreached("00B66000"); }
+    bool is_number(int) override { seg56_row_unreached("00B66050"); }
+    bool is_integer(int) override { seg56_row_unreached("00B66A60"); }
+    bool is_table(int) override { seg56_row_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { seg56_row_unreached("00888760"); }
+    bool is_vector3_table(int) override { seg56_row_unreached("0088B840"); }
+    void* to_userdata(int) override { seg56_row_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { seg56_row_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        seg56_row_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        seg56_row_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+    bool sse2_conversion_;   // the CRT conversion mode 00BF7420 takes
+};
+
+// The one push of the boolean segment-56 queries (IsClassChanged 008CC5DA,
+// IsUnitSelectable 008AB6A4): 00B66450 over the call's state.
+class Seg56RowResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit Seg56RowResults(lua_State* state) : state_(state) {}
+    void push_boolean(bool value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    void push_number(int) override { seg56_row_unreached("00B664B0"); }
+    void push_float(float) override { seg56_row_unreached("00B66480"); }
+    void push_nil() override { seg56_row_unreached("00B66430"); }
+    void push_string(const std::string&) override { seg56_row_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        seg56_row_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { seg56_row_unreached("0088BA30"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        seg56_row_unreached("00B67930 vector fields");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The image reads and writes those four bodies make, over this process's state:
+//  * [00E188A8]+1FE4h, the session word send_support_manager_ban tests (0088C843
+//    CMP [EDX+1FE4h],EBX): bsp::session_context().session_word_1fe4, which a
+//    campaign run leaves 0.
+//  * [00E198C4]+BCh, the support panel SupportManagerEnable reads after both
+//    arguments (0088CD02 / 0088CD15): a token for the panel whose +1F8h list is
+//    support_panel_disabled_list_1f8_.
+//  * the squadron's byte +3AEh, SquadronSetForceRelease's MOV [ESI+3AEh],BL
+//    (008A29FC): GameUnitsHost::set_squadron_force_release on the squadron's slot.
+//    SUBSTITUTION (labelled): a handle with no units-host slot (the image would
+//    write past the null 00888AA0 returned) stores nothing and is counted.
+class Seg56RowImage final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    explicit Seg56RowImage(GameUnitsHost* units) : units_(units) {}
+    bool force_release_stored{false};
+    bool force_release_unresolved{false};
+    std::size_t force_release_index{0};
+    void* support_panel() noexcept { return &panel_; }
+
+    void* global_ptr(std::uint32_t address) override {
+        if (address == bsp::seg56_options_cc13::kGameGlobal) return &game_;
+        if (address == bsp::seg56_options_cc13::kInGameInterfaceGlobal) return &interface_;
+        seg56_row_unreached("global pointer");
+    }
+    std::int32_t read_i32(void* base, std::uint32_t offset) override {
+        if (base == &game_ && offset == bsp::seg56_options_cc13::kSessionModeOffset) {
+            return bsp::session_context().session_word_1fe4;
+        }
+        seg56_row_unreached("dword read");
+    }
+    void* read_ptr(void* base, std::uint32_t offset) override {
+        if (base == &interface_ && offset == 0xBCu) return support_panel();
+        seg56_row_unreached("pointer read");
+    }
+    void write_u8(void* base, std::uint32_t offset, std::uint8_t value) override {
+        if (offset != 0x3AEu) seg56_row_unreached("byte write other than +3AEh");
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(base);
+        if (units_ == nullptr || id == 0u || id > units_->count()) {
+            force_release_unresolved = true;
+            return;
+        }
+        force_release_index = static_cast<std::size_t>(id - 1u);
+        force_release_stored = units_->set_squadron_force_release(force_release_index, value != 0);
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { seg56_row_unreached("byte read"); }
+    float read_f32(void*, std::uint32_t) override { seg56_row_unreached("float read"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override {
+        seg56_row_unreached("dword write");
+    }
+    void write_f32(void*, std::uint32_t, float) override { seg56_row_unreached("float write"); }
+    std::uint16_t global_u16(std::uint32_t) override { seg56_row_unreached("global word"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        seg56_row_unreached("global byte write");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        seg56_row_unreached("global float write");
+    }
+    std::int32_t global_i32(std::uint32_t) override { seg56_row_unreached("global dword"); }
+
+private:
+    GameUnitsHost* units_;
+    // Identity tokens only: no field of these is read except through the arms above.
+    char game_{0};
+    char interface_{0};
+    char panel_{0};
+};
+}  // namespace
+
 // Packet cc9_is_class_changed. 008CC4B0 IsClassChanged(id): argument 0 as an integer
 // (00B66290, 008CC5AF), then 00437F50 and CMP [EAX+ESI*4+2010h],ESI / SETNZ
 // (008CC5CB..008CC5D6) into 00B66450 (lua_pushboolean). One result.
@@ -11256,26 +11406,69 @@ bool GameMissionLuaHost::squadron_force_gunner_mode_379(std::size_t unit_index) 
 // command is recorded unimplemented, so the map here is the identity and every answer
 // is false. An id outside the 800h entries answers false, where the image would read
 // past the map.
+namespace {
+// IsClassChanged's one ContentHost service, 00437F50's inverse map at +2010h (the CMP
+// [EAX+ESI*4+2010h],ESI at 008CC5CB), over the identity map described above. An id
+// outside the 800h entries answers itself (false), where the image would read past
+// the map. Every other ContentHost service belongs to another binding.
+class ClassChangedHost final : public bsp::cc13_seg56::ContentHost {
+public:
+    explicit ClassChangedHost(const bsp::VehicleClassIndexMap& map) : map_(map) {}
+    std::int32_t vehicle_class_remap(int class_id) override {
+        if (class_id < 0 || class_id >= bsp::kVehicleClassIndexMapSize) return class_id;
+        return map_.to_type_id(class_id);
+    }
+    int narrative_size() override { seg56_row_unreached("00733260"); }
+    void narrative_clear() override { seg56_row_unreached("00734FA0"); }
+    void localization_register_table_name(const std::string&) override {
+        seg56_row_unreached("00AA0D30");
+    }
+    void localization_reload_tables(int) override { seg56_row_unreached("00AA06D0"); }
+    void atmosphere_replace_sky_box(const std::string&) override {
+        seg56_row_unreached("00BBDF60");
+    }
+    void rain_set_drop_num_percent(float) override { seg56_row_unreached("008003B0"); }
+    void rain_settings_store_70(float) override { seg56_row_unreached("rain +70h"); }
+    void time_of_day_set(int, int, int, int) override { seg56_row_unreached("004439B0"); }
+    void time_of_day_split(int&, int&, int&) override { seg56_row_unreached("00443A30"); }
+    void light_store_float(std::size_t, float) override { seg56_row_unreached("lighting block"); }
+    void scene_ensure_default_lighting() override { seg56_row_unreached("004C9EC0"); }
+    void narrative_send_to_party(int, const std::string&) override {
+        seg56_row_unreached("00734B10");
+    }
+    void narrative_send_to_player(int, const std::string&) override {
+        seg56_row_unreached("00734BF0");
+    }
+    void dialog_break(const std::string&) override { seg56_row_unreached("00451B90"); }
+    void dialog_kill(const std::string&) override { seg56_row_unreached("004514A0"); }
+    void point_effect_stop_children(void*) override { seg56_row_unreached("00867B10"); }
+    void point_effect_set_byte9(void*) override { seg56_row_unreached("effect +9"); }
+    void effect_manager_stop_matching(void*) override { seg56_row_unreached("004D1100"); }
+
+private:
+    const bsp::VehicleClassIndexMap& map_;
+};
+}  // namespace
+
 int GameMissionLuaHost::run_is_class_changed_008cc4b0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
     ++summary_.class_changed_calls;
     static const bsp::VehicleClassIndexMap identity_map = [] {
         bsp::VehicleClassIndexMap m;
         m.reset_identity_00592652();
         return m;
     }();
-    const int id = argument_count >= 1 ? static_cast<int>(::lua_tonumber(state, 1)) : 0;
-    const bool in_range = id >= 0 && id < bsp::kVehicleClassIndexMapSize;
-    const bool changed = in_range && identity_map.to_type_id(id) != id;
-    if (changed) ++summary_.class_changed_true;
-    // 008CC5DA: 00B66450 native_lua_push_boolean over the call's state; OFF keeps lua_pushboolean.
-    if constexpr (bsp::kWireLuaHostBound) {
-        const NativeBindingPushFrame frame(state);
-        native_lua_push_boolean_00b66450(frame.object, changed ? 1 : 0);
-    } else {
-        ::lua_pushboolean(state, changed ? 1 : 0);
-    }
+    // Goal 5 chain 659: the body lua_is_class_changed (src/engine_seg56_cc13.cpp) reads
+    // argument 0 through 00B66290 (008CC5AF), asks the map and pushes the SETNE through
+    // 00B66450 (008CC5DA); one result.
+    Seg56RowArgs args(state);
+    Seg56RowResults results(state);
+    ClassChangedHost host(identity_map);
+    const int count = bsp::cc13_seg56::lua_is_class_changed(args, results, host);
+    const int id = args.get_integer(0);
+    if (host.vehicle_class_remap(id) != id) ++summary_.class_changed_true;
     log_.implemented("MissionLuaNative::IsClassChanged", "008cc4b0");
-    return 1;
+    return count;
 }
 
 // Packet cc9_lua_submarine_on_surface. 008942C0 GetSubmarineOnSurface(entity)
@@ -13761,122 +13954,6 @@ int GameMissionLuaHost::run_squadron_set_drop_all_bomb_percent_008a1f40(lua_Stat
     return 0;
 }
 
-namespace {
-[[noreturn]] void seg56_row_unreached(const char* what) {
-    throw std::logic_error(std::string("segment-56 support/squadron row: unreached ") + what);
-}
-
-// Goal 5 chain 659. What 008A28B0 SquadronSetForceRelease, 0088C750
-// BannSupportmanager, 0088C8E0 PermitSupportmanager and 0088CBB0
-// SupportManagerEnable read from their frames (bsp.py ghidra disasm <row>): 00888AA0 on
-// argument 0 (008A29AE, 0088CCAE) and 00B66250 on argument 1 (008A29E0, 0088CCE0),
-// lua_toboolean with no type gate, so a missing or nil argument reads false. The
-// two ban rows read nothing. Argument n is Lua stack slot n + 1; the entity is the
-// table's `ID` (the units-host index plus one) carried as the pointer-sized handle
-// the bodies pass on, as for the other segment-56 rows (DamageSettingArgs).
-class Seg56RowArgs final : public bsp::cc13_seg56::LuaArgs {
-public:
-    explicit Seg56RowArgs(lua_State* state) : state_(state) {}
-    void* entity_at(int index) override {
-        if (index != 0) seg56_row_unreached("00888AA0 past argument 0");
-        const int id = air_ops_entity_id(state_);
-        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
-    }
-    bool get_boolean(int index) override { return ::lua_toboolean(state_, index + 1) != 0; }
-    int count() override { seg56_row_unreached("00B663F0"); }
-    double get_number(int) override { seg56_row_unreached("00B66270"); }
-    int get_integer(int) override { seg56_row_unreached("00B66290"); }
-    std::string get_string(int) override { seg56_row_unreached("00B662B0"); }
-    bool is_string(int) override { seg56_row_unreached("00B660A0"); }
-    bool is_nil(int) override { seg56_row_unreached("00B65FB0"); }
-    bool is_entity_table(int) override { seg56_row_unreached("008889C0"); }
-    bool is_boolean(int) override { seg56_row_unreached("00B66000"); }
-    bool is_number(int) override { seg56_row_unreached("00B66050"); }
-    bool is_integer(int) override { seg56_row_unreached("00B66A60"); }
-    bool is_table(int) override { seg56_row_unreached("00B661B0"); }
-    bsp::cc13_seg56::Vec3 read_vector3(int) override { seg56_row_unreached("00888760"); }
-    bool is_vector3_table(int) override { seg56_row_unreached("0088B840"); }
-    void* to_userdata(int) override { seg56_row_unreached("00B662D0"); }
-    bool boolean_or(int, bool) override { seg56_row_unreached("00B662F0"); }
-    double table_field_element(int, const char*, int) override {
-        seg56_row_unreached("00B67800 element");
-    }
-    double table_field_number_or(int, const char*, double) override {
-        seg56_row_unreached("00B67800 number");
-    }
-
-private:
-    lua_State* state_;
-};
-
-// The image reads and writes those four bodies make, over this process's state:
-//  * [00E188A8]+1FE4h, the session word send_support_manager_ban tests (0088C843
-//    CMP [EDX+1FE4h],EBX): bsp::session_context().session_word_1fe4, which a
-//    campaign run leaves 0.
-//  * [00E198C4]+BCh, the support panel SupportManagerEnable reads after both
-//    arguments (0088CD02 / 0088CD15): a token for the panel whose +1F8h list is
-//    support_panel_disabled_list_1f8_.
-//  * the squadron's byte +3AEh, SquadronSetForceRelease's MOV [ESI+3AEh],BL
-//    (008A29FC): GameUnitsHost::set_squadron_force_release on the squadron's slot.
-//    SUBSTITUTION (labelled): a handle with no units-host slot (the image would
-//    write past the null 00888AA0 returned) stores nothing and is counted.
-class Seg56RowImage final : public bsp::seg56_options_cc13::ImageAccess {
-public:
-    explicit Seg56RowImage(GameUnitsHost* units) : units_(units) {}
-    bool force_release_stored{false};
-    bool force_release_unresolved{false};
-    std::size_t force_release_index{0};
-    void* support_panel() noexcept { return &panel_; }
-
-    void* global_ptr(std::uint32_t address) override {
-        if (address == bsp::seg56_options_cc13::kGameGlobal) return &game_;
-        if (address == bsp::seg56_options_cc13::kInGameInterfaceGlobal) return &interface_;
-        seg56_row_unreached("global pointer");
-    }
-    std::int32_t read_i32(void* base, std::uint32_t offset) override {
-        if (base == &game_ && offset == bsp::seg56_options_cc13::kSessionModeOffset) {
-            return bsp::session_context().session_word_1fe4;
-        }
-        seg56_row_unreached("dword read");
-    }
-    void* read_ptr(void* base, std::uint32_t offset) override {
-        if (base == &interface_ && offset == 0xBCu) return support_panel();
-        seg56_row_unreached("pointer read");
-    }
-    void write_u8(void* base, std::uint32_t offset, std::uint8_t value) override {
-        if (offset != 0x3AEu) seg56_row_unreached("byte write other than +3AEh");
-        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(base);
-        if (units_ == nullptr || id == 0u || id > units_->count()) {
-            force_release_unresolved = true;
-            return;
-        }
-        force_release_index = static_cast<std::size_t>(id - 1u);
-        force_release_stored = units_->set_squadron_force_release(force_release_index, value != 0);
-    }
-    std::uint8_t read_u8(void*, std::uint32_t) override { seg56_row_unreached("byte read"); }
-    float read_f32(void*, std::uint32_t) override { seg56_row_unreached("float read"); }
-    void write_i32(void*, std::uint32_t, std::int32_t) override {
-        seg56_row_unreached("dword write");
-    }
-    void write_f32(void*, std::uint32_t, float) override { seg56_row_unreached("float write"); }
-    std::uint16_t global_u16(std::uint32_t) override { seg56_row_unreached("global word"); }
-    void write_global_u8(std::uint32_t, std::uint8_t) override {
-        seg56_row_unreached("global byte write");
-    }
-    void write_global_f32(std::uint32_t, float) override {
-        seg56_row_unreached("global float write");
-    }
-    std::int32_t global_i32(std::uint32_t) override { seg56_row_unreached("global dword"); }
-
-private:
-    GameUnitsHost* units_;
-    // Identity tokens only: no field of these is read except through the arms above.
-    char game_{0};
-    char interface_{0};
-    char panel_{0};
-};
-}  // namespace
-
 // Goal 5 chain 659. 008A28B0 SquadronSetForceRelease(squadron, on) on its body
 // lua_squadron_set_force_release (src/options_seg56_cc13.cpp): argument 0 through
 // 00888AA0, argument 1 through 00B66250, then MOV [ESI+3AEh],BL (008A29FC) into
@@ -15555,29 +15632,49 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
 // inputs (selectable_inputs_00645060) already take the local player's team and a shut
 // spectator door, which is what 00645060 does with allowSpectate 1 while game+2194h is
 // clear (0064506A..0064507C). A null unit answers false at 00645082, as an unresolved
-// argument does here. LABELLED: with no HUD host attached nothing is pushed (nil), the
-// row's behaviour while unbound; the image always answers.
+// argument does here.
+namespace {
+// IsUnitSelectable's one Seg56Host service, 00645160 with DL = 1 (008AB696): the HUD's
+// 00645060 over the unit (bsp::game::hud_unit_selectable_00645060). A null unit answers
+// false at 00645082. SUBSTITUTION (labelled): with no HUD host attached the answer is
+// false and counted; the image always has its interface.
+class UnitSelectableHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    bool unresolved{false};
+    bool no_hud{false};
+    bool unit_is_selectable_00645160(void* unit, bool flag) override {
+        if (!flag) seg56_row_unreached("00645160 with DL = 0");
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(unit);
+        if (id == 0u) {
+            unresolved = true;
+            return false;   // 00645082
+        }
+        bool reached = false;
+        const bool selectable =
+            bsp::game::hud_unit_selectable_00645060(static_cast<std::size_t>(id - 1u), reached);
+        if (!reached) no_hud = true;
+        return reached && selectable;
+    }
+};
+}  // namespace
+
 int GameMissionLuaHost::run_is_unit_selectable_008ab580(lua_State* state, int argument_count) {
     (void)argument_count;
     ++summary_.unit_selectable_calls;
-    std::size_t unit = 0;
-    if (!objective_argument_unit(state, 0, unit)) {
+    // Goal 5 chain 659: the body lua_is_unit_selectable (src/options_seg56_cc13.cpp),
+    // argument 0 through 00888AA0 (008AB67F), 00645160 (008AB696) and the answer through
+    // 00B66450 (008AB6A4); one result.
+    Seg56RowArgs args(state);
+    Seg56RowResults results(state);
+    UnitSelectableHost host;
+    const int count = bsp::seg56_options_cc13::lua_is_unit_selectable(args, results, host);
+    if (host.unresolved) {
         ++summary_.unit_selectable_unresolved;
-        ::lua_pushboolean(state, 0);
-        log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
-        return 1;
-    }
-    bool reached = false;
-    const bool selectable = bsp::game::hud_unit_selectable_00645060(unit, reached);
-    if (!reached) {
+    } else if (host.no_hud) {
         ++summary_.unit_selectable_no_hud;
-        log_.unimplemented("MissionLuaNative::IsUnitSelectable", "008ab580");
-        return 0;
     }
-    if (selectable) ++summary_.unit_selectable_true;
-    ::lua_pushboolean(state, selectable ? 1 : 0);
     log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
-    return 1;
+    return count;
 }
 
 namespace {
@@ -15739,45 +15836,74 @@ int crew_level_skill_006e6210(int level) {
 // not set_skill_level_007b8ae0, whose registry fan-out re-skills a plane's siblings
 // and leaves a squadron's members alone (packet cc13-fix18b). LABELLED: an unresolved entity faults in the image and is
 // counted here; the session word is taken as 0 (single player). No RNG.
+namespace {
+// SetCrewLevel's two Seg56Host services:
+//  * 006E6210 (0089506C) is crew_level_skill_006e6210 above, the host's projection with
+//    the session word 0. LABELLED: the standalone body bsp::skill_from_crew_level_006e6210
+//    (src/cc13_seg33a.cpp) needs a Seg33aHost (210 services) this host does not have.
+//  * vtable[128h] (0089507C) on the entity, no null test: the squadron fan-out
+//    007ECF80, or 006D1EB0 on a ship or plane (GameUnitsHost::set_unit_skill_index_006d1eb0).
+class CrewLevelHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit CrewLevelHost(GameUnitsHost* units) : units_(units) {}
+    bool unresolved{false};
+    std::size_t index{0};
+    int skill{0};
+    std::size_t written{0};
+
+    std::int32_t skill_from_crew_level_006e6210(std::int32_t crew_level) override {
+        return crew_level_skill_006e6210(crew_level);
+    }
+    void entity_set_skill_vt128(void* entity, std::int32_t value) override {
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(entity);
+        if (units_ == nullptr || id == 0u || id > units_->count()) {
+            unresolved = true;
+            return;
+        }
+        index = static_cast<std::size_t>(id - 1u);
+        skill = value;
+        const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+                squadron = &r;
+                break;
+            }
+        }
+        if (squadron != nullptr) {
+            for (std::size_t member : squadron->member_units) {         // 007ECFAB
+                if (member == bsp::kPlaneSquadronNoUnit) continue;
+                if (units_->set_unit_skill_index_006d1eb0(member, value)) ++written;
+            }
+        } else if (units_->set_unit_skill_index_006d1eb0(index, value)) {
+            ++written;                                                  // 006D1EB0
+        }
+    }
+
+private:
+    GameUnitsHost* units_;
+};
+}  // namespace
+
 int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
     ++summary_.crew_level_calls;
-    const int level = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
-    GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
-    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+    // Goal 5 chain 659: the body lua_set_crew_level (src/options_seg56_cc13.cpp) reads
+    // argument 0 (00888AA0, 00895022) and argument 1 through 00B66290 (00895053), then
+    // 006E6210 and vtable[128h] over CrewLevelHost. No result (00895082 00B66400).
+    Seg56RowArgs args(state);
+    CrewLevelHost host(units_hooks_);
+    const int results = bsp::seg56_options_cc13::lua_set_crew_level(args, host);
+    if (host.unresolved) {
         ++summary_.crew_level_unresolved;
         log_.unimplemented("MissionLuaNative::SetCrewLevel", "00894f20");
-        return 0;
+        return results;
     }
-    const std::size_t index = static_cast<std::size_t>(id - 1);
-    const int skill = crew_level_skill_006e6210(level);             // 0089506C
-    // 0089507C vtable[128h]. The squadron (the registry record whose fused slot this
-    // is, as in run_clear_forced_recon_level_008aab90) takes 007ECF80: i < +3CCh,
-    // [+3D0h+4i]->vtable[128h](skill) (007ECF86-007ECFB9), and stores nothing on the
-    // squadron itself. A ship or a plane, a squadron member included, takes 006D1EB0
-    // on itself only.
-    std::size_t written = 0;
-    const bsp::PlaneSquadronHostRecord* squadron = nullptr;
-    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
-        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
-            squadron = &r;
-            break;
-        }
-    }
-    if (squadron != nullptr) {
-        for (std::size_t member : squadron->member_units) {         // 007ECFAB
-            if (member == bsp::kPlaneSquadronNoUnit) continue;
-            if (units->set_unit_skill_index_006d1eb0(member, skill)) ++written;
-        }
-    } else if (units->set_unit_skill_index_006d1eb0(index, skill)) {
-        ++written;                                                  // 006D1EB0
-    }
-    const GameUnitRow* row = units->unit_row(index);
+    const GameUnitRow* row = units_hooks_->unit_row(host.index);
     log_.notef("  SetCrewLevel 00894f20: \"%s\" level=%d skill=%d units=%zu (006E6210, "
-        "vtable[128h], packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", level,
-        skill, written);
+        "vtable[128h], goal 5 chain 659)", row != nullptr ? row->name.c_str() : "?",
+        args.get_integer(1), host.skill, host.written);
     log_.implemented("MissionLuaNative::SetCrewLevel", "00894f20");
-    return 0;
+    return results;
 }
 
 namespace {
