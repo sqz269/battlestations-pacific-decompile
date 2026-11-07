@@ -1580,11 +1580,12 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
 // ("fire") and 00982C50 ("failure" + kind), each operator_new(84h), 00974150, 009763E0
 // (bsp.py show 009832f0 / 00983780 / 00982c50; src/cc13_seg62_seg65.cpp
 // report_local_damage_warning and the 00982C50 body give the raw forms).
-// The record/report step is shared with the exit-zone warning (00975340, vtable
-// 00D1B344), an entity warning of the same base 00973BA0 with its own type and activate.
+// The record/report step is shared with the exit-zone (00975340, vtable 00D1B344) and
+// recon (009741E0, vtable 00D1B2A8) warnings, entity warnings of the same base 00973BA0
+// with their own type, +20h lifetime and activate.
 bsp::WarningReportResult game_warning_report_entity_based(GameMissionFrameHost::Impl& host,
     bsp::cc13_seg49_64_78::WarningObject& warning, std::size_t unit, std::uint32_t kind,
-    WarningActivate activate) {
+    float applied_lifetime, WarningActivate activate) {
     bsp::WarningRecord record;
     record.message_id = warning.id;
     record.applied_at = warning.validity_ref_time;  // +10h
@@ -1596,9 +1597,9 @@ bsp::WarningReportResult game_warning_report_entity_based(GameMissionFrameHost::
         reinterpret_cast<std::uintptr_t>(warning.reporter));
     record.target_id = static_cast<std::uint32_t>(unit);  // +80h, the host's unit as 00976F10 compares it
     record.kind = kind;             // vtable +10h
-    record.priority = 0.0f;         // +18h, 0096F220 (both classes)
-    record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
-    record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
+    record.priority = 0.0f;         // +18h, 0096F220 (all three classes)
+    record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850 (all three classes)
+    record.applied_lifetime = applied_lifetime;   // +20h, the class's slot
     WarningManagerBinding binding(host, warning, activate);
     const bsp::WarningReportResult result =
         bsp::report_warning_009763e0(host.warning(), binding, record, host.world_clock);
@@ -1612,8 +1613,10 @@ bsp::WarningReportResult game_warning_entity_report(GameMissionFrameHost::Impl& 
     WarningObjectHostBinding warning_host(host);
     bsp::cc13_seg49_64_78::construct_entity_warning_with_id_00974150(warning, warning_host,
         const_cast<void*>(warning_entity_of_unit(unit)), id);
-    // vtable 00D1B26C: +10h 00973C50 answers 1; vtable[3] 0097F490 is the plain activate.
-    return game_warning_report_entity_based(host, warning, unit, 1, WarningActivate::plain);
+    // vtable 00D1B26C: +10h 00973C50 answers 1, +20h 0096F240 15.0 (00CE5380); vtable[3]
+    // 0097F490 is the plain activate.
+    return game_warning_report_entity_based(host, warning, unit, 1, 15.0f,
+        WarningActivate::plain);
 }
 
 void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std::size_t unit) {
@@ -3747,17 +3750,18 @@ bool local_warning_entity_passes(GameMissionFrameHost::Impl& host, std::size_t u
 // its +9D4h, the plane's squadron (006E4D50 hands 00984BA0 the same field). The
 // controlled unit is the host's [00E188D8].
 bool damage_warning_entity_is_local(const GameUnitsHost& units, std::size_t unit) {
-    if (!units.controlled_bound()) return false;
+    // [00E188D8] is null while no unit is controlled; the test is a pointer compare.
+    const bool controlled = units.controlled_bound();
     std::size_t entity = unit;
     if (units.unit_is_kind_of(unit, bsp::kWarningKindPlane)) {
         const bsp::PlaneSquadronHostRecord* squadron =
             bsp::plane_squadron_registry().find_by_member_unit(unit);
         if (squadron == nullptr || squadron->squadron_unit == bsp::kPlaneSquadronNoUnit) {
-            return false;   // +9D4h null: never the local unit
+            return !controlled;   // a null +9D4h equals only a null [00E188D8]
         }
         entity = squadron->squadron_unit;
     }
-    return entity == units.controlled_index();
+    return controlled && entity == units.controlled_index();
 }
 
 constexpr std::int32_t kWarningKindShipyard = 0x46;   // 00982C50's second vtable[5Ch] test
@@ -3875,8 +3879,10 @@ void game_warning_report_exit_zone(std::size_t unit, bool exited) {
     ExitZoneWarningSubjectBinding subject(*host->units);
     bsp::construct_exit_zone_warning_00975340(warning, warning_host, subject,
         warning_entity_of_unit(unit), false);
-    // vtable 00D1B344: +10h 00973E40 answers 5; vtable[3] is 0097FBB0.
-    game_warning_report_entity_based(*host, warning, unit, 5, WarningActivate::exit_zone_80);
+    // vtable 00D1B344: +10h 00973E40 answers 5, +20h 0096F240 15.0 (00CE5380); vtable[3]
+    // is 0097FBB0.
+    game_warning_report_entity_based(*host, warning, unit, 5, 15.0f,
+        WarningActivate::exit_zone_80);
     host->done("WarningManager::report_exit_zone_warning_00982120", 0x00982120u);
 }
 
@@ -3912,8 +3918,10 @@ void game_warning_report_recon(std::size_t unit, int old_level, int new_level, i
     WarningObjectHostBinding warning_host(*host, observer);
     bsp::cc13_seg49_64_78::construct_recon_warning_009741e0(warning, warning_host,
         const_cast<void*>(warning_entity_of_unit(unit)), old_level, new_level);
-    // vtable 00D1B2A8: +10h 00973CD0 answers 2; vtable[3] is 0097F7E0.
-    game_warning_report_entity_based(*host, warning, unit, 2, WarningActivate::recon_80);
+    // vtable 00D1B2A8: +10h 00973CD0 answers 2; +20h (00D1B2C8) is 00973CE0, FLD [00CE38C8]
+    // = 30.0 (41F00000h), not the shared 0096F240; vtable[3] is 0097F7E0.
+    game_warning_report_entity_based(*host, warning, unit, 2, 30.0f,
+        WarningActivate::recon_80);
     host->done("WarningManager::report_recon_warning_00980e50", 0x00980e50u);
 }
 

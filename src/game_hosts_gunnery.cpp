@@ -17516,7 +17516,8 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
 // "not dead".
 void GameGunneryHost::Impl::run_damage_control(float dt) {
     // 0081B630 for every explosion object 008198A0 scheduled since the last
-    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]).
+    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]), then
+    // the "Explosion" failure call 00982C50 (0081B77D).
     if (!pending_explosions.empty()) {
         std::vector<std::pair<std::size_t, float>> due;
         due.swap(pending_explosions);
@@ -17559,6 +17560,13 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     static_cast<double>(clock_seconds));
                 kill_unit(unit);
             }
+            // 0081B734..0081B77D, after the damage (0081B729) and the object's retire
+            // (0081B732): 00982C50 on [00F8A0C4] with the owner EDI, "Explosion"
+            // (00D080C8, resize 9 + memcpy) and FLDZ, with no branch on the way. The
+            // `failure` channel's listeners and the "failureExplosion" warning (goal 5
+            // chain 634 review).
+            note_damage_channel(GameGunneryHost::DamageChannel::failure, unit, "Explosion",
+                                0.0f);
         }
     }
     // Packet cc9_live_hull_repair: the leak manager's two inputs, every step, for

@@ -1369,8 +1369,9 @@ public:
     // record per call this host makes where the image calls the listener manager
     // [00F8A0C4] - 009832F0 (entity, float seconds) at 0093A513 for a positive water
     // amount, 00983780 (entity, float seconds) at 0093A484 for every fire amount, and
-    // 00982C50 (entity, failure name, float seconds) at 0093C0C2 / 0093C300's site and
-    // at 0095AD52 (7Dh "InferiorFailure" of an airfield or shipyard, seconds +728h).
+    // 00982C50 (entity, failure name, float seconds) at 0093C0C2 / 0093C300's site, at
+    // 0095AD52 (7Dh "InferiorFailure" of an airfield or shipyard, seconds +728h) and at
+    // 0081B77D (0081B630's magazine explosion: "Explosion", 0.0f).
     // take_damage_channel_events() drains them for
     // GameMissionLuaHost::dispatch_damage_listeners. The warning tail of each call
     // runs at the call (game_warning_report_damage / game_warning_report_failure).

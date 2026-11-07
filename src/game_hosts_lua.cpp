@@ -8962,8 +8962,8 @@ void GameMissionLuaHost::dispatch_ammo_type_listeners() {
 // the listener passes of 009832F0, 00983780 and 00982C50, whose reconstructed bodies
 // (src/cc13_seg62_seg65.cpp) run on the native manager's channel map. The repair task's
 // adders (0093A513 for a positive water amount, 0093A484 for every fire amount) and the
-// failure starts (0093C0C2, 0093C300's site, the airfield / shipyard 7Dh arm 0095AD52)
-// call them; this host drains the gunnery host's records of those calls once per
+// failure starts (0093C0C2, 0093C300's site, the airfield / shipyard 7Dh arm 0095AD52,
+// 0081B630's explosion at 0081B77D) call them; this host drains the gunnery host's records of those calls once per
 // mission frame. SUBSTITUTION, labelled, as for `hpEvent`: the callbacks run at the
 // frame, after the damage step, not inside it. The warning tail of each call has run
 // at the call (game_warning_report_damage / game_warning_report_failure). Per call, as
@@ -13102,39 +13102,59 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
         break;
     }
     if (targets.empty()) targets.push_back(index);
+    const GameGunneryHost* gunnery = units->gunnery();
     for (std::size_t unit : targets) {
+        // Goal 5 chain 634 review: 00805D02..00805D0F read the record's effective level
+        // before the force, +10h ? +8h : +4h. The forced table is the image's +10h / +8h
+        // (an entry exists exactly while +10h is set; ClearForcedReconLevel removes it at
+        // once), and the pass's persistent record holds +4h; a record the pass has not
+        // laid out yet is a fresh one, +4h = 0. The +28h observer is the record's;
+        // 00805CF0 leaves it alone.
+        int record_old = 0;
+        std::size_t observer = bsp::kGunneryReconNoObserver;
+        if (party >= 0 && party < 3) {
+            const bsp::ReconDetectionRecord* record = gunnery != nullptr
+                ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
+            bsp::ReconDetectionLevel forced_old = bsp::ReconDetectionLevel::none;
+            if (bsp::forced_recon_level(party, unit, forced_old)) {
+                record_old = static_cast<int>(forced_old);
+            } else if (record != nullptr) {
+                record_old = static_cast<int>(record->level);
+            }
+            if (record != nullptr) observer = record->observer;
+        }
         bsp::set_forced_recon_level_00805cf0(unit, party, level);
         ++summary_.forced_recon_units;
         if (kForcedReconSyncNotifyBound && party >= 0 && party < 3) {
+            const int now = level <= 0 ? 0 : level == 1 ? 1 : 2;
+            // 00980E50's live-unit gate, as in the pass dispatch.
+            const bool dead = gunnery != nullptr && gunnery->unit_dead(unit);
             // 00805D02-00805D38: old = the effective level, new = the forced one; a
-            // change notifies at once. The effective level is the one the pass
-            // dispatch last published for (unit, party) (SUBSTITUTION, labelled).
+            // change notifies at once. For the listeners the effective level is the
+            // one this host last published for (unit, party) (SUBSTITUTION, labelled).
             const std::size_t count = units->count();
             if (recon_listener_levels_.size() < count * 3) {
                 recon_listener_levels_.resize(count * 3, 0);
             }
             int& last = recon_listener_levels_[unit * 3 + static_cast<std::size_t>(party)];
-            const int now = level <= 0 ? 0 : level == 1 ? 1 : 2;
-            if (now == last) continue;   // 00805D38 JE: no change, no notify
-            const int old = last;
-            last = now;
-            ++summary_.forced_recon_sync_notifies;
-            const GameGunneryHost* gunnery = units->gunnery();
-            bool any_recon = false;
-            for (const ListenerEntry& entry : listeners_) {
-                if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+            if (now != last) {   // 00805D38 JE: no change, no notify
+                const int old = last;
+                last = now;
+                ++summary_.forced_recon_sync_notifies;
+                bool any_recon = false;
+                for (const ListenerEntry& entry : listeners_) {
+                    if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+                }
+                if (!dead && kLuaListenersBound && kLuaReconListenersBound && any_recon
+                    && state_ != nullptr) {
+                    fire_recon_listeners_00980e50(unit, old, now, party);
+                }
             }
-            // 00980E50's live-unit gate, as in the pass dispatch.
-            if (gunnery != nullptr && gunnery->unit_dead(unit)) continue;
-            if (kLuaListenersBound && kLuaReconListenersBound && any_recon && state_ != nullptr) {
-                fire_recon_listeners_00980e50(unit, old, now, party);
+            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, on the
+            // record's own change (record_old above), not the listeners' substitute.
+            if (!dead && record_old != now) {
+                game_warning_report_recon(unit, record_old, now, party, observer);
             }
-            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, with
-            // the record's +28h observer (00805CF0 leaves it alone).
-            const bsp::ReconDetectionRecord* record = gunnery != nullptr
-                ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
-            game_warning_report_recon(unit, old, now, party,
-                record != nullptr ? record->observer : bsp::kGunneryReconNoObserver);
         }
     }
     const GameUnitRow* row = units->unit_row(index);

@@ -53,7 +53,8 @@ void game_warning_report_torpedo_00977690(std::size_t unit);
 //    0093A4F0 (0093A513) and 0093A470 (0093A484): the guards, then the local unit
 //    gets an 84h entity warning with that id through 00974150 and 009763E0;
 //  - 00982C50 "failure" with the failure's name, from 0093BED0 (0093C0C2),
-//    0093C300 and 0095ABE0's 7Dh arm (0095AD52, "InferiorFailure"): the same guards,
+//    0093C300, 0095ABE0's 7Dh arm (0095AD52, "InferiorFailure") and 0081B630's
+//    explosion (0081B77D, "Explosion"): the same guards,
 //    the local unit, an airfield or a shipyard; reported only for an entity whose
 //    +180h is the local slot, with id "failure" + kind (an airfield's
 //    "failureairfield", a shipyard's "failureshipyard") when the +108h map holds it.
