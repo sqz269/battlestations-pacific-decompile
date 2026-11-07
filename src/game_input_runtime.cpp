@@ -6,6 +6,7 @@
 #include "bsp/native_input_class_configuration.hpp"
 #include "bsp/native_input_action_listener_owner.hpp"
 #include "bsp/native_gamepad_rumble.hpp"
+#include "bsp/render_tail.hpp"
 #include <optional>
 #include <cstring>
 #include <stdexcept>
@@ -177,6 +178,13 @@ bool GameInputRuntime::poll_dynamic_button_edge() {
     const auto down = static_cast<std::uint8_t>(
         input_device_table_any_dynamic_device_button_down_00a91020(backend, *impl_));
     return cc13_band004b::press_start_poll_button_edge_004b43b0(backend[0xdd], down);
+}
+bool GameInputRuntime::select_sound_device_active_00941140() {
+    // 0094119B / 009411D1 MOV ESI,[F8BBF4]: the same published backend and the
+    // same +2Ch dispatch 00A91020 uses above, without a second device table.
+    const auto* const backend = static_cast<const std::uint8_t*>(impl_->bound.backend_00f8bbf4);
+    if (!backend) throw std::logic_error("00941140 slot-1 test requires the actual published backend");
+    return sound_request_select_device_active_00941140(backend, *impl_);
 }
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }
 void* GameInputRuntime::input_device(std::uint32_t device_class, std::uint32_t index) {

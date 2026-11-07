@@ -63,6 +63,10 @@ public:
     // Cached-state query: normal-frame callers must first update_backend with
     // that frame's real delta, as GameFrameHost::game_on_move does once.
     bool poll_dynamic_button_edge();
+    // 00941140's slot-1 test over the published [00F8BBF4] backend: the leading
+    // device of its first and third class vectors, each asked its virtual +2Ch
+    // by the current native profile. Cached state only, like the edge above.
+    bool select_sound_device_active_00941140();
     // Entry for a raw caller which already captured its receiver/profile.
     void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();

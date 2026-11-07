@@ -1,0 +1,62 @@
+{
+  "chain": 656,
+  "slot": "g5-w4",
+  "picked": "GUI sound set [00F89B34]: 00941140 apply and 00941070 play on the real owner, with an A7E490 tracked-sound factory in GameSoundRuntime",
+  "rows": [
+    {
+      "native": "00941070",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp GameSoundRuntime::apply_gui_sound_requests_00941140 (from src/game_hosts_mission_frame.cpp apply_sound_requests_00941140, 004E5496)"
+    },
+    {
+      "native": "00941140",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp apply_sound_requests_00941140 -> GameSoundRuntime::apply_gui_sound_requests_00941140; now drains the published owner's own request bytes instead of a never-written mission-frame queue, and calls 00941070 before the clear"
+    },
+    {
+      "native": "0094119b",
+      "status": "wired",
+      "host_site": "src/game_input_runtime.cpp GameInputRuntime::select_sound_device_active_00941140 (fragment of 00941140, the slot-1 device test; replaces the constant false)"
+    },
+    {
+      "native": "00a7e490",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp GuiSoundCalls::play_tracked_sound (00941070's CreateTrackedSound)"
+    },
+    {
+      "native": "00a7f640",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp TrackedSoundFactory::create_sound_vslot_0c -> SoundChannelRuntime::create_nonspatial"
+    },
+    {
+      "native": "00a7f710",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp TrackedSoundFactory::create_sound_vslot_10 -> SoundChannelRuntime::create_spatial"
+    },
+    {
+      "native": "00941250",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp request_gui_sound_00941250",
+      "reason": "No live host builds a GuiListboxRuntime (GuiTypeDispatchServices is never constructed), so the F8BC0C listbox sound callback has no caller; its queue getter would now be GameSoundRuntime::gui_sound_requests()."
+    },
+    {
+      "native": "004d92b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp MainMenuUpdate::action_fired",
+      "reason": "The front-end edge is a scripted stand-in whose pending_action is never armed, so no fired edge exists to raise the +19h..+1Bh sound bytes; needs the real 004D92B0 over the configured action records."
+    },
+    {
+      "native": "0054d680",
+      "status": "skipped",
+      "host_site": "src/game_hint_passes.cpp GameHintsScreen::cue_start_00a7e490",
+      "reason": "The typed GameHintsScreen holds no +0Ch/+10h cue samples or +14h/+18h tracked slots; 0054D680/0054D550 work on a raw 7Ch screen block with GUI page services this host lacks. The new A7E490 factory in GameSoundRuntime is what cue_start would call."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "No ambient sound instance (+104h) is created and camera_present() is false (no in-mission camera object), so 0068CAD9's volume arm cannot run."
+    }
+  ],
+  "notes": "No GUI sound request producer runs in this process yet (0068AC30's error arm needs EnableMap 0; the pause screens have no HudPauseHost; the menu edge is scripted), so 00941070 runs only when a request byte is set. The play path is complete: InPauseGUI class, the five sound/gui samples from OnInitOnce, type Normal via 00A7B0A0, and the created channel joins the manager's active list that the frame sound update already walks."
+}
