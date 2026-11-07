@@ -604,6 +604,12 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_scans{0};
     unsigned long long warning_torpedo_calls{0};
     unsigned long long warning_torpedo_accepted{0};
+    // Goal 5 chain 634: the damage tails of 009832F0 / 00983780 and 00982C50.
+    unsigned long long warning_damage_calls{0};
+    unsigned long long warning_damage_accepted{0};
+    unsigned long long warning_failure_calls{0};
+    unsigned long long warning_failure_accepted{0};
+    unsigned long long warning_failure_unknown_id{0};
     unsigned long long warning_effect_calls{0};
     unsigned long long warning_effects{0};
     unsigned long long warning_deadline_expiries{0};
@@ -1509,14 +1515,19 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     host.done("WarningManager::report_kill_warning", 0x00982096u);
 }
 
-// Packet cc15-wB4: 00977690's report, 0097777B..009777CE, past the guards the
-// entry already runs: operator_new(84h), 00974150(entity, "torpedo" 00CFB414),
-// 009763E0.
-void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std::size_t unit) {
+// The 84h entity warning (vtable 00D1B26C) built by 00974150(entity, id) and reported
+// through 009763E0. Packet cc15-wB4: 00977690's report, 0097777B..009777CE, past the
+// guards the entry already runs, with the id "torpedo" (00CFB414). Goal 5 chain 634:
+// the same object is the warning of the damage tails of 009832F0 ("leak"), 00983780
+// ("fire") and 00982C50 ("failure" + kind), each operator_new(84h), 00974150, 009763E0
+// (bsp.py show 009832f0 / 00983780 / 00982c50; src/cc13_seg62_seg65.cpp
+// report_local_damage_warning and dispatch_failure_00982c50 give the raw forms).
+bsp::WarningReportResult game_warning_entity_report(GameMissionFrameHost::Impl& host,
+    std::size_t unit, const char* id) {
     bsp::cc13_seg49_64_78::WarningObject warning;
     WarningObjectHostBinding warning_host(host);
     bsp::cc13_seg49_64_78::construct_entity_warning_with_id_00974150(warning, warning_host,
-        const_cast<void*>(warning_entity_of_unit(unit)), "torpedo");
+        const_cast<void*>(warning_entity_of_unit(unit)), id);
     bsp::WarningRecord record;
     record.message_id = warning.id;
     record.applied_at = warning.validity_ref_time;  // +10h
@@ -1535,6 +1546,11 @@ void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std:
     const bsp::WarningReportResult result =
         bsp::report_warning_009763e0(host.warning(), binding, record, host.world_clock);
     count_warning_report(host, record.message_id, result);
+    return result;
+}
+
+void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std::size_t unit) {
+    game_warning_entity_report(host, unit, "torpedo");
     host.done("WarningManager::report_torpedo_warning", 0x009763e0u);
 }
 
@@ -3629,6 +3645,101 @@ void game_warning_report_torpedo_00977690(std::size_t unit) {
     } else {
         host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
     }
+}
+
+namespace {
+
+// Goal 5 chain 634. The guard the damage tails of 009832F0 / 00983780 run whole and
+// 00982C50 runs up to its suppression byte (src/cc13_seg62_seg65.cpp
+// report_local_damage_warning / dispatch_failure_00982c50), inside the manager lock
+// after the channel's listener pass:
+//  - +104h, set only by 00979670 (Lua OverrideMessage) from a listener the dispatcher
+//    ran inline; the dispatcher cleared it on entry. LABELLED, as for the kill block
+//    (00981E07): this host runs the channel's listeners at the mission frame
+//    (GameMissionLuaHost::dispatch_damage_listeners), not inline, so it is clear here;
+//  - +D0h, the manager's suppression;
+//  - the local slot [game+18ECh] in 0..7: 0 in single player;
+//  - the clock [00F876A4] past 4.0 (00CE3D34, COMISS: unordered fails);
+//  - entity +5Ch set and +5Dh, +60h, +5Eh clear;
+//  - the entity's suppression byte (0077EDF0 on manager+D4h): this host holds no
+//    entries, as for the torpedo report.
+bool damage_warning_entity_passes(GameMissionFrameHost::Impl& host, std::size_t unit) {
+    if (host.warning().suppressed || !bsp::warning_report_clock_allows(host.world_clock)) {
+        return false;
+    }
+    const GameUnitsHost& units = *host.units;
+    bsp::SceneNodeFlags flags;
+    bool pending = false;
+    return units.unit_scene_node_flags(unit, flags) && units.unit_pending_destroy_0060(unit, pending)
+        && flags.active && !flags.torn_down && !pending && !flags.destroyed;
+}
+
+// The local-unit test of both tails (00982C50 and report_local_damage_warning):
+// [00E188D8] against the entity, or, when vtable[5Ch](0Fh) answers (a plane), against
+// its +9D4h, the plane's squadron (006E4D50 hands 00984BA0 the same field). The
+// controlled unit is the host's [00E188D8].
+bool damage_warning_entity_is_local(const GameUnitsHost& units, std::size_t unit) {
+    if (!units.controlled_bound()) return false;
+    std::size_t entity = unit;
+    if (units.unit_is_kind_of(unit, bsp::kWarningKindPlane)) {
+        const bsp::PlaneSquadronHostRecord* squadron =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        if (squadron == nullptr || squadron->squadron_unit == bsp::kPlaneSquadronNoUnit) {
+            return false;   // +9D4h null: never the local unit
+        }
+        entity = squadron->squadron_unit;
+    }
+    return entity == units.controlled_index();
+}
+
+constexpr std::int32_t kWarningKindShipyard = 0x46;   // 00982C50's second vtable[5Ch] test
+
+}  // namespace
+
+void game_warning_report_damage(std::size_t unit, bool fire) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr || host->units == nullptr) return;
+    const char* const id = fire ? "fire" : "leak";   // 00CE6798 / 00D0054C
+    ++host->warning_damage_calls;
+    if (!damage_warning_entity_passes(*host, unit)) return;
+    if (!damage_warning_entity_is_local(*host->units, unit)) return;
+    ++host->warning_damage_accepted;
+    game_warning_entity_report(*host, unit, id);
+    host->done(fire ? "WarningManager::report_fire_warning_00983780"
+                    : "WarningManager::report_leak_warning_009832f0",
+        fire ? 0x00983780u : 0x009832f0u);
+}
+
+void game_warning_report_failure(std::size_t unit, const std::string& kind) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr || host->units == nullptr) return;
+    ++host->warning_failure_calls;
+    if (!damage_warning_entity_passes(*host, unit)) return;
+    const GameUnitsHost& units = *host->units;
+    // 00982C50: an airfield (vtable[5Ch](45h)) or a shipyard (46h) passes as well as the
+    // local unit.
+    const bool airfield = units.unit_is_kind_of(unit, bsp::kWarningKindAirfield);
+    const bool shipyard = units.unit_is_kind_of(unit, kWarningKindShipyard);
+    if (!damage_warning_entity_is_local(units, unit) && !airfield && !shipyard) return;
+    // The id is "failure" (00D1B88C, resize 7 + memcpy) concatenated with the kind
+    // (004261A0). Only when the entity's +180h is the local slot (0) is anything
+    // reported: an airfield's id becomes "failureairfield", a shipyard's
+    // "failureshipyard" (00425F40), and the warning is built and reported when the id
+    // is a key of the manager's +108h map (008E65E0 against the head +10Ch).
+    if (ai_unit_owner_player(units, unit) != 0) return;
+    std::string id = "failure" + kind;
+    if (airfield) {
+        id = "failureairfield";
+    } else if (shipyard) {
+        id = "failureshipyard";
+    }
+    if (host->warning_tables().messages.find(id) == host->warning_tables().messages.end()) {
+        ++host->warning_failure_unknown_id;
+        return;
+    }
+    ++host->warning_failure_accepted;
+    game_warning_entity_report(*host, unit, id.c_str());
+    host->done("WarningManager::report_failure_warning_00982c50", 0x00982c50u);
 }
 
 void game_warning_report_loss_009813a0(std::size_t unit) {
@@ -6404,6 +6515,10 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.warning_loss_other, kLossWarningBound ? 1 : 0, host.warning_loss_text_uslost,
         host.warning_loss_text_japanlost, host.warning_loss_cancelled,
         host.warning_loss_proximity_erased);
+    host.log.notef("summary mission damage warnings leak_fire=%llu accepted=%llu failure=%llu "
+        "accepted=%llu unknown_id=%llu (009832f0 / 00983780 / 00982c50 tails, goal 5 chain 634)",
+        host.warning_damage_calls, host.warning_damage_accepted, host.warning_failure_calls,
+        host.warning_failure_accepted, host.warning_failure_unknown_id);
     if constexpr (kWarningMessageBankCc15Bound) {
         unsigned long long known = 0, unknown = 0;
         for (const auto& [id, counts] : host.warning_id_queries) {

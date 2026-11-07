@@ -5169,6 +5169,9 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // `hpEvent` (00986B00) next: 00879070 fires it inside the damage write, which
     // precedes the death and the row-15 flush the channels below stand for.
     dispatch_hp_event_listeners();
+    // `leak` / `fire` / `failure` (009832F0 / 00983780 / 00982C50): fired inside the
+    // repair task's adders and the failure roll, in the damage step as well.
+    dispatch_damage_listeners();
     // `ammoType` (00984BA0): fired at the end of a plane's rack drop (006E5633).
     dispatch_ammo_type_listeners();
     // `shipLanded` (00986820): fired inside the landing ship's update (0074AE79).
@@ -8938,6 +8941,114 @@ void GameMissionLuaHost::dispatch_ammo_type_listeners() {
                 ::lua_pushinteger(state_, kind);
                 pushed = 2;
             }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
+// Goal 5 chain 634. The `leak`, `fire` and `failure` channels: the host substitution for
+// the listener passes of 009832F0, 00983780 and 00982C50, whose reconstructed bodies
+// (src/cc13_seg62_seg65.cpp) run on the native manager's channel map. The repair task's
+// adders (0093A513 for a positive water amount, 0093A484 for every fire amount) and the
+// failure starts (0093C0C2, 0093C300's site, the airfield / shipyard 7Dh arm 0095AD52)
+// call them; this host drains the gunnery host's records of those calls once per
+// mission frame. SUBSTITUTION, labelled, as for `hpEvent`: the callbacks run at the
+// frame, after the damage step, not inside it. The warning tail of each call has run
+// at the call (game_warning_report_damage / game_warning_report_failure). Per call, as
+// the shared dispatch body does it (bsp.py show 009832f0 / 00983780 / 00982c50):
+//  - the boxes are the entity (word [entity+174h], here unit + 1) and the seconds as a
+//    float (008849D0); `failure` puts the failure's name (00884FC0) between them;
+//  - 0097B8C0 collects the callback of every subscription of the channel whose
+//    vtable[0Ch] holds - 009688C0 (`leak`, vtable 00D1B6CC) and 00968940 (`fire`,
+//    00D1B6DC) test the entity filter +0Ch and the duration range +1Ch; 00968810
+//    (`failure`, 00D1B750) the entity +0Ch, the failureType set +1Ch and the
+//    duration range +2Ch - in the channel's order (here AddListener's);
+//  - each name is called with those values through 00887E50.
+// An entry whose native Load threw (AddListener's host-parse fallback) has no filter to
+// test and is skipped, as for `ammoType`.
+void GameMissionLuaHost::dispatch_damage_listeners() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    using Channel = GameGunneryHost::DamageChannel;
+    const std::vector<GameGunneryHost::GameGunneryDamageChannelEvent> events =
+        gunnery->take_damage_channel_events();
+    namespace seg64 = bsp::cc13_seg49_64_78;
+    namespace matchers = bsp::lua_listener_native_matchers;
+    for (const GameGunneryHost::GameGunneryDamageChannelEvent& event : events) {
+        ++summary_.listener_damage_events;
+        const char* const channel = event.channel == Channel::leak ? "leak"
+            : event.channel == Channel::fire ? "fire" : "failure";
+        const int entity = static_cast<int>(event.unit + 1);
+        const seg64::EventParam entity_param = matchers::word_param(entity);
+        const seg64::EventParam kind_param = matchers::text_param(event.kind.c_str());
+        const seg64::EventParam seconds_param = matchers::number_param(event.seconds);
+        const bool failure = event.channel == Channel::failure;
+        const std::vector<const seg64::EventParam*> params = failure
+            ? std::vector<const seg64::EventParam*>{&entity_param, &kind_param, &seconds_param}
+            : std::vector<const seg64::EventParam*>{&entity_param, &seconds_param};
+        std::vector<bsp::WarningSubscription> subscriptions;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, channel) || entry.native_other == nullptr) {
+                continue;
+            }
+            bsp::WarningSubscription collected;
+            if (failure) {
+                // load_listener_subscription_native built a seg64::FailureSubscription
+                // (Load 00972810) for this channel.
+                const auto& s = static_cast<const seg64::FailureSubscription&>(*entry.native_other);
+                ListenerSubscriptionMatch match({
+                    {0x0c, [&s](const seg64::EventParam& p) { return s.entity.matches(p); }},
+                    {0x1c, [&s](const seg64::EventParam& p) { return s.failure_type.matches(p); }},
+                    {0x2c, [&s](const seg64::EventParam& p) { return s.duration.matches(p); }}},
+                    params);
+                collected.callback = s.callback;
+                collected.condition_holds = bsp::cc13_sweepC::failure_subscription_matches_00968810(
+                    match, match.subscription(), match.params()) != 0;
+            } else {
+                // A seg64::LeakSubscription (Load 009728A0) or FireSubscription (Load
+                // 00972920), the same fields.
+                const auto& s = static_cast<const seg64::LeakSubscription&>(*entry.native_other);
+                ListenerSubscriptionMatch match({
+                    {0x0c, [&s](const seg64::EventParam& p) { return s.entity.matches(p); }},
+                    {0x1c, [&s](const seg64::EventParam& p) { return s.duration.matches(p); }}},
+                    params);
+                collected.callback = s.callback;
+                collected.condition_holds = (event.channel == Channel::leak
+                    ? bsp::cc13_sweepC::leak_subscription_matches_009688c0(
+                          match, match.subscription(), match.params())
+                    : bsp::cc13_sweepC::fire_subscription_matches_00968940(
+                          match, match.subscription(), match.params())) != 0;
+            }
+            if (collected.condition_holds) ++summary_.listener_damage_matches;
+            subscriptions.push_back(std::move(collected));
+        }
+        const std::vector<std::string> callbacks =
+            bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_damage_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(event.unit);
+            log_.notef("  %s listener: entity \"%s\" %s%s%.3f s -> %s()", channel,
+                row != nullptr ? row->name.c_str() : "?", event.kind.c_str(),
+                failure ? " " : "", static_cast<double>(event.seconds), name.c_str());
+            if (!push_resolved_entity_by_id(state_, entity)) lua_pushnil(state_);
+            int pushed = 1;
+            if (failure) {
+                ::lua_pushstring(state_, event.kind.c_str());
+                ++pushed;
+            }
+            ::lua_pushnumber(state_, static_cast<lua_Number>(event.seconds));
+            ++pushed;
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
                 const char* message = lua_tolstring(state_, -1, nullptr);
                 note_error(message != nullptr ? message : std::string("(no message)"));
@@ -15691,6 +15802,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "fires=%llu (00984300, matcher 00968AF0)",
         summary_.listener_command_events, summary_.listener_command_matches,
         summary_.listener_command_fires);
+    log_.notef("summary mission script leak/fire/failure listeners calls=%llu matched=%llu "
+        "fires=%llu (009832F0 / 00983780 / 00982C50, matchers 009688C0 / 00968940 / 00968810)",
+        summary_.listener_damage_events, summary_.listener_damage_matches,
+        summary_.listener_damage_fires);
     log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,

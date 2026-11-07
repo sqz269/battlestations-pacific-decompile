@@ -1250,6 +1250,12 @@ struct GameMissionLuaSummary {
     unsigned long long listener_command_events{0};
     unsigned long long listener_command_matches{0};
     unsigned long long listener_command_fires{0};
+    // leak / fire / failure (009832F0 / 00983780 / 00982C50): calls drained from the
+    // gunnery host, the subscriptions 009688C0 / 00968940 / 00968810 held for, and the
+    // callbacks called (goal 5 chain 634).
+    unsigned long long listener_damage_events{0};
+    unsigned long long listener_damage_matches{0};
+    unsigned long long listener_damage_fires{0};
     // Goal 4 chain 352: AddListener blocks loaded by the native Load slot, and the
     // blocks whose load threw (an absent filter key) and fell back to the host parse.
     unsigned long long listener_native_loads{0};
@@ -2051,6 +2057,10 @@ public:
     // The `command` channel over the commands host's 00984300 reports; the host
     // substitution for 00984300's evaluation, matching with 00968AF0.
     void dispatch_command_listeners();
+    // Goal 5 chain 634. The `leak`, `fire` and `failure` channels over the gunnery
+    // host's listener-manager calls; the host substitution for the listener passes of
+    // 009832F0, 00983780 and 00982C50, matching with 009688C0, 00968940 and 00968810.
+    void dispatch_damage_listeners();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
