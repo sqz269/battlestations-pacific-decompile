@@ -31,6 +31,9 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_text.hpp"            // 00ABB877, the counters' Text Align
+#include "bsp/gui_widget.hpp"          // 00AA6750 / 00AA8240 arithmetic
+#include "bsp/band_0050_cc13.hpp"      // 005292E0 / 005290D0 / 00529350
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ocean_spectrum.hpp"
@@ -102,6 +105,8 @@
 #include <map>
 #include <memory>
 #include <new>
+#include <optional>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -281,6 +286,18 @@ public:
     void* allocate_owned(std::size_t bytes) {
         owned_.push_back(std::make_unique<std::uint8_t[]>(bytes));
         return owned_.back().get();
+    }
+    // 00BF6989 on a block allocate_owned handed out (the counters screen's
+    // pointer arrays grow through 00529700); _free(null) does nothing.
+    void release_owned(void* block) {
+        if (block == nullptr) return;
+        for (auto it = owned_.begin(); it != owned_.end(); ++it) {
+            if (it->get() == block) {
+                owned_.erase(it);
+                return;
+            }
+        }
+        throw std::logic_error("00BF6989 frees a block this HUD screen does not own");
     }
 
 private:
@@ -983,8 +1000,8 @@ private:
 // score panel the mission scripts drive. Its register 0052CBF0 (bsp.py show
 // 0052cbf0 --asm) is 004F71D0, GUI_counters (00CED190) through 00AA5840(name,
 // 1, 0) into +8h, then two 0ACh blocks, each operator new 00BF55BE and memset
-// 00BF79F0: +0Ch = 0052C1B0(page root, the twelve names) with EDI = the screen,
-// +10h = 0052C640(+0Ch). The widgets are the page's own GuiLayoutWidgets, as for
+// 00BF79F0: +0Ch = 0052C1B0(page root, the twelve names), +10h = 0052C640(+0Ch);
+// both leave their root widget hidden. The widgets are the page's own GuiLayoutWidgets, as for
 // the other leaves; the blocks are owned by the screen block, which the native
 // destructor 0052CDF0 frees them with.
 GuiLayoutWidget& hud_counters_widget(void* widget, const char* routine) {
@@ -1075,10 +1092,7 @@ public:
         for (std::size_t i = 0; i < 12; ++i) cnames[i] = names[i].data();  // image literals
         void* const entry = context_.screen.allocate_owned(kCounterEntryBytes);  // zeroed
         HudCounterEntryConstructBinding b(context_.menu.frontend());
-        // EDI at 0052CD2A is the register's ECX, the counters screen.
-        const auto edi = static_cast<std::int32_t>(
-            reinterpret_cast<std::uintptr_t>(context_.screen.data()));
-        bsp::cc13_sweepB4_hud_counter_entry_construct_0052c1b0(entry, page, cnames, edi, b);
+        bsp::cc13_sweepB4_hud_counter_entry_construct_0052c1b0(entry, page, cnames, b);
         return {static_cast<std::uint8_t*>(entry)};
     }
     bsp::ingame_gui_cc13::Raw counter_entry_clone_0052c640(bsp::ingame_gui_cc13::Raw source) override {
@@ -1093,6 +1107,230 @@ private:
     static constexpr std::size_t kCounterEntryBytes = 0xAC;  // 0052CC93 / 0052CD33 PUSH 0ACh
     HudLeafRegisterContext& context_;
     std::string page_;
+};
+
+// The countdown path on the same block: 0052B9B0 (Lua Countdown, 008B18B8) and
+// 0052AB90 (CountdownCancel, 008B1A92 / 008B1AA2), with 0052A860 and 00529A30 /
+// 00529810 under them. What they reach of the image: the entry widgets (the
+// page's GuiLayoutWidgets 0052C1B0 / 0052C640 stored), the counters block's own
+// visible list (+20h, 00529900 growing it with 00BF55BE / 00BF6989 blocks the
+// screen owns), [00E198C4] (this HUD's interface manager, as the image object:
+// +N is the leaf block 0068CC70 built for manager offset N, kInGameHudScreens),
+// and [0109CF04] (the platform object, +0Dh the widescreen byte).
+struct HudCountersContext {
+    GameFrontendHost& frontend;
+    HudLeafScreenStorage& counters;
+    std::array<std::uint8_t*, 0x40> manager_view{};      // [00E198C4]+0h..+FCh
+    const void* platform_object{nullptr};                 // [0109CF04]
+    std::set<const GuiLayoutWidget*>& visibility_recurses;  // widget +75h (00AA6820)
+};
+
+// 00AA8530 (widget +34h): the low byte is the request; with the widget's +75h
+// set, 00AA8450 hands every descendant the request as its own visibility
+// (apply_requested inherited), otherwise only this widget's own flag moves.
+void hud_counters_set_visible_00aa8530(HudCountersContext& c, GuiLayoutWidget& widget, bool visible) {
+    if (c.visibility_recurses.count(&widget) == 0) {
+        c.frontend.set_widget_visible(widget, visible);
+        return;
+    }
+    std::vector<GuiLayoutWidget*> walk{&widget};
+    while (!walk.empty()) {
+        GuiLayoutWidget* const w = walk.back();
+        walk.pop_back();
+        c.frontend.set_widget_visible(*w, visible);
+        for (const auto& child : w->children) {
+            if (child) walk.push_back(child.get());
+        }
+    }
+}
+
+// 00AA8240: the local translation that puts the widget at `world`
+// (local_position_for_resolved); +08h, the authored X, is not written.
+void hud_counters_set_resolved_00aa8240(HudCountersContext& c, GuiLayoutWidget& widget, const float* world) {
+    const GuiWidgetPoint local = local_position_for_resolved(widget.transform,
+        GuiWidgetPoint{world[0], world[1], world[2]});
+    const float authored_x = widget.transform.authored_x;
+    c.frontend.set_widget_local_position(widget, local.x, local.y, local.z);
+    widget.transform.authored_x = authored_x;
+    c.frontend.refresh_widget_geometry(widget);
+}
+
+void hud_counters_resolved_00aa6750(const GuiLayoutWidget& widget, float* out) {
+    const GuiWidgetPoint p = resolved_position(widget.transform);
+    out[0] = p.x;
+    out[1] = p.y;
+    out[2] = p.z;
+}
+
+// 00529A30 / 00529810 and the four passes under the occlusion step.
+class HudCountersLayoutBinding final : public bsp::frontend_seg15_22_cc13::HudCountersLayoutHost {
+public:
+    explicit HudCountersLayoutBinding(HudCountersContext& c) : c_(c) {}
+    bool widget_is_visible_38(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    const float* widget_local_position_00aa67f0(void* widget) override {
+        return &hud_counters_widget(widget, "00AA67F0").transform.position.x;
+    }
+    void widget_resolved_position_00aa6750(void* widget, float out[3]) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float xyz[3]) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), xyz);
+    }
+    const float* widget_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    bsp::ingame_gui_cc13::Raw global_object(std::uint32_t address) override {
+        if (address == bsp::frontend_seg15_22_cc13::kInterfaceGlobal)
+            return {reinterpret_cast<std::uint8_t*>(c_.manager_view.data())};
+        if (address == bsp::frontend_seg15_22_cc13::kDisplayModeGlobal) {
+            // Read only (+0Dh); the platform object is the published one.
+            return {static_cast<std::uint8_t*>(const_cast<void*>(c_.platform_object))};
+        }
+        throw std::logic_error("the HUD counters read an image global they do not use");
+    }
+    bool support_manager_mode_006529e0(bsp::ingame_gui_cc13::Raw manager) override {
+        // The support-manager screen 4Eh's own block (the interface update reads
+        // the same bytes, see camera_screen_spectating).
+        return bsp::cc13_front4::overlay_busy_006529e0({manager.p}) != 0;
+    }
+    void counters_restore_hidden_a7_005292e0(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::restore_hidden_a7_005292e0);
+    }
+    void counters_hide_all_a6_005290d0(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::hide_all_a6_005290d0);
+    }
+    void counters_restore_hidden_a6_00529350(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::restore_hidden_a6_00529350);
+    }
+private:
+    // src/band_0050_cc13.cpp's passes take the visible list (+20h, count +24h) as
+    // HudCounterEntryFlags: each entry's widget +38h and its bytes +A5h..+A8h.
+    // What a pass changes goes back as the image does it: widget +34h, the bytes.
+    void run_flag_pass(bsp::ingame_gui_cc13::Raw s,
+        void (*pass)(std::vector<bsp::cc13_band0050::HudCounterEntryFlags>&)) {
+        const std::int32_t count = s.at<std::int32_t>(0x24);
+        auto* const* const list = static_cast<std::uint8_t* const*>(s.ptr(0x20));
+        std::vector<bsp::cc13_band0050::HudCounterEntryFlags> flags(
+            static_cast<std::size_t>(count > 0 ? count : 0));
+        for (std::size_t i = 0; i < flags.size(); ++i) {
+            const bsp::ingame_gui_cc13::Raw e{list[i]};
+            flags[i].widget_visible = widget_is_visible_38(e.ptr(0x0));
+            flags[i].hidden_a5 = e.at<std::uint8_t>(0xA5) != 0;
+            flags[i].hidden_a6 = e.at<std::uint8_t>(0xA6) != 0;
+            flags[i].hidden_a7 = e.at<std::uint8_t>(0xA7) != 0;
+            flags[i].hidden_a8 = e.at<std::uint8_t>(0xA8) != 0;
+        }
+        std::vector<bsp::cc13_band0050::HudCounterEntryFlags> after = flags;
+        pass(after);
+        for (std::size_t i = 0; i < flags.size(); ++i) {
+            const bsp::ingame_gui_cc13::Raw e{list[i]};
+            if (after[i].widget_visible != flags[i].widget_visible)
+                widget_set_visible_34(e.ptr(0x0), after[i].widget_visible);
+            e.at<std::uint8_t>(0xA5) = after[i].hidden_a5 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA6) = after[i].hidden_a6 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA7) = after[i].hidden_a7 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA8) = after[i].hidden_a8 ? 1u : 0u;
+        }
+    }
+    HudCountersContext& c_;
+};
+
+// 0052A860's services on the countdown entry's widgets.
+class HudCounterCountdownLayoutBinding final : public bsp::Cc13SweepB4CounterCountdownLayoutHost {
+public:
+    explicit HudCounterCountdownLayoutBinding(HudCountersContext& c) : c_(c) {}
+    void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) override {
+        // 00AA6820 stores the byte +75h (src/gui_widgets_cc13.cpp).
+        const GuiLayoutWidget* const w = &hud_counters_widget(widget, "00AA6820");
+        if ((show & 0xFF) != 0) c_.visibility_recurses.insert(w);
+        else c_.visibility_recurses.erase(w);
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void widget_vcall_58_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_size(hud_counters_widget(widget, "widget +58h"), pair[0], pair[1]);
+    }
+    void widget_vcall_48_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_scale(hud_counters_widget(widget, "00AA7950"), pair[0], pair[1]);
+    }
+    void gui_text_store_align_100(void* text, std::int32_t align) override {
+        // The bridge lays a Text widget out with its authored Align (00ABB877);
+        // GUI_counters authors Left (0) on both texts this body stores 0 into.
+        const GuiLayoutWidget& w = hud_counters_widget(text, "Text +100h");
+        const GuiValue* const authored = w.source != nullptr ? w.source->find("Align") : nullptr;
+        const bsp::GuiTextAlign current = authored != nullptr && authored->kind() == GuiValue::Kind::String
+            ? bsp::parse_gui_text_align_00abb877(authored->string()) : bsp::GuiTextAlign::Left;
+        if (static_cast<std::int32_t>(current) != align)
+            throw std::logic_error("0052A860 stores a Text +100h the authored Align does not carry");
+    }
+    float gui_text_measured_width_114(void* text) override {
+        float width = 0.0f;
+        if (!c_.frontend.widget_text_width(hud_counters_widget(text, "Text +114h"), width))
+            throw std::logic_error("0052A860 reads Text +114h with no text layout to measure it");
+        return width;
+    }
+    void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("0052A860 passes 00ABAED0 its localise flag 1");
+        c_.frontend.set_widget_text_source(hud_counters_widget(widget, "00ABAED0"),
+            std::string(HudLeafStringPool::name(text)));
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) override {
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA7DC0");
+        c_.frontend.set_widget_local_position(w, position[0], position[1], position[2]);
+        c_.frontend.refresh_widget_geometry(w);
+    }
+    float* widget_get_resolved_position_00aa6750(void* widget, float* out) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+        return out;
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float* position) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), position);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+class HudCountersShowBinding final : public bsp::frontend_seg15_22_cc13::HudCountersShowHost {
+public:
+    explicit HudCountersShowBinding(HudCountersContext& c) : c_(c) {}
+    void* operator_new_00bf55be(std::size_t bytes) override { return c_.counters.allocate_owned(bytes); }
+    void free_00bf6989(void* block) override { c_.counters.release_owned(block); }
+    bool widget_is_visible_38(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    void counter_layout_countdown_0052a860(bsp::ingame_gui_cc13::Raw entry, std::string_view text,
+        float seconds) override {
+        // The by-value native string 0052A860 releases, built in the process pool.
+        const std::string copy(text);
+        bsp::Cc13SweepBNativeString value{};
+        bsp::construct_native_string_header_0041e870(&value, pool_.strings, copy.c_str());
+        HudCounterCountdownLayoutBinding b(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_countdown_0052a860(entry.p, value, seconds, b);
+    }
+    void counters_relayout_00529a30(bsp::ingame_gui_cc13::Raw screen) override {
+        HudCountersLayoutBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_relayout_00529a30(screen, b);
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
 };
 
 // The layout virtuals (+14h) those registers call through the screen's own
@@ -1436,6 +1674,8 @@ struct GameHudHost::Impl {
     // 0068CC70's blocks for the leaf screens kHudLeafScreenConstructors lists,
     // by kInGameHudScreens index; empty for every other screen.
     std::array<std::unique_ptr<HudLeafScreenStorage>, kInGameHudScreenCount> leaf_screens{};
+    // Widget +75h (00AA6820) of the counters' widgets, while it is set.
+    std::set<const GuiLayoutWidget*> counters_visibility_recurses;
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
@@ -2563,6 +2803,64 @@ bool GameHudHost::hide_mission_narrative_text() {
     // fields read. Native ABI is ECX=screen, RET; this is its source view.
     bsp::cc13_fe1::hud_narrative_hide_text_005b5d40(&view, binding);
     impl_->done("HudNarrative::hide", 0x005b5d40u);
+    return true;
+}
+
+namespace {
+// [00E198C4]+C8h, the counters block, once its register built both entries,
+// with the image objects the countdown path reads (HudCountersContext).
+std::optional<HudCountersContext> hud_counters_context(GameHudHost::Impl& impl) {
+    constexpr std::uint16_t kCountersOffset = 0xC8;  // kInGameHudScreens: 51h
+    const std::size_t index = bsp::in_game_hud_screen_index_at(kCountersOffset);
+    HudLeafScreenStorage* const counters = index < kInGameHudScreenCount
+        ? impl.leaf_screens[index].get() : nullptr;
+    if (counters == nullptr) return std::nullopt;
+    const bsp::ingame_gui_cc13::Raw s{counters->data()};
+    if (s.ptr(0x0C) == nullptr || s.ptr(0x10) == nullptr) return std::nullopt;  // 0052CBF0 not run
+    const Win32PlatformState* const platform = active_platform_state();
+    if (platform == nullptr) return std::nullopt;
+    HudCountersContext c{impl.menu.frontend(), *counters, {}, &platform->native_window_focus(),
+        impl.counters_visibility_recurses};
+    for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
+        if (!impl.leaf_screens[i]) continue;
+        const std::size_t slot = kInGameHudScreens[i].offset / 4u;
+        if (slot >= c.manager_view.size())
+            throw std::logic_error("kInGameHudScreens offset beyond the counters' manager view");
+        c.manager_view[slot] = impl.leaf_screens[i]->data();
+    }
+    // The screens 00529A30 / 00529810 read: +54h, +58h, +60h, +BCh, +C0h.
+    static constexpr std::array<std::uint16_t, 5> kRead{{0x54, 0x58, 0x60, 0xBC, 0xC0}};
+    for (const std::uint16_t offset : kRead) {
+        if (c.manager_view[offset / 4u] == nullptr) return std::nullopt;
+    }
+    return c;
+}
+}  // namespace
+
+bool GameHudHost::show_mission_countdown(const std::string& text, float seconds) {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::show_countdown", 0x0052b9b0u);
+        return false;
+    }
+    HudCountersShowBinding binding(*c);
+    bsp::frontend_seg15_22_cc13::hud_counters_show_countdown_0052b9b0(
+        {c->counters.data()}, text, seconds, binding);
+    impl_->done("HudCounters::show_countdown", 0x0052b9b0u);
+    return true;
+}
+
+bool GameHudHost::cancel_mission_countdown() {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::cancel_countdown", 0x0052ab90u);
+        return false;
+    }
+    HudCountersShowBinding binding(*c);
+    // 008B1A92 and 008B1AA2: two calls; the second finds the entry hidden.
+    bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
+    bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
+    impl_->done("HudCounters::cancel_countdown", 0x0052ab90u);
     return true;
 }
 

@@ -399,10 +399,8 @@ public:
 };
 
 // 0052C1B0 BSP_HudCounterEntry_Construct(entry, root, names[12]): returns
-// entry. caller_edi is the caller's EDI, which the image passes to the final
-// +0h->+34h call without pushing an argument (see the .cpp).
+// entry; the root widget ends hidden (+34h(0), the PUSH EBX at 0052C60E).
 void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root, const char* const* names,
-                                                        std::int32_t caller_edi,
                                                         Cc13SweepB4CounterEntryHost& host);
 
 // 00529D70 BSP_HudCounter_LayoutTimer(entry, a, b).
@@ -426,9 +424,34 @@ void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativ
 void cc13_sweepB4_hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBNativeString a,
                                                         Cc13SweepBNativeString b, Cc13SweepB4Host& host);
 
+// The services 0052A860 calls, with Cc13SweepB4Host's signatures (goal 5 chain
+// 662), plus the two Text widget fields the image touches directly: the dword
+// +100h (the Align, 0052A90B / 0052A94E store 0) and the float +114h (the width
+// the last layout measured, 0052A91D). Its one caller, the counters countdown
+// 0052B9B0, runs it on the HUD host's own counter entry.
+class Cc13SweepB4CounterCountdownLayoutHost {
+public:
+    virtual ~Cc13SweepB4CounterCountdownLayoutHost() = default;
+    virtual void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) = 0;
+    virtual void widget_vcall_34_set_visible(void* widget, std::int32_t show) = 0;
+    virtual void widget_vcall_58_set_pair(void* widget, const float* pair) = 0;
+    virtual void widget_vcall_48_set_pair(void* widget, const float* pair) = 0;
+    virtual void gui_text_store_align_100(void* text, std::int32_t align) = 0;
+    virtual float gui_text_measured_width_114(void* text) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) = 0;
+    virtual const float* gui_widget_get_size_00aa6740(void* widget) = 0;
+    virtual void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) = 0;
+    virtual float* widget_get_resolved_position_00aa6750(void* widget, float* out) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+};
+
 // 0052A860 BSP_HudCounter_LayoutCountdown(entry, text, seconds).
 void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBNativeString text,
-                                                        float seconds, Cc13SweepB4Host& host);
+                                                        float seconds,
+                                                        Cc13SweepB4CounterCountdownLayoutHost& host);
 
 // ---- segment 19 ----
 

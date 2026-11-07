@@ -1464,6 +1464,13 @@ void GameFrontendHost::set_widget_visible(GuiLayoutWidget& widget, bool visible)
     host.quads_built = false;
 }
 
+bool GameFrontendHost::widget_own_visible(const GuiLayoutWidget& widget) const {
+    // bridge_visible's test for one node, without its walk up the parents.
+    if (impl_->visibility_applied.count(&widget) != 0) return widget.visible;
+    if (widget.source != nullptr && widget.source->find("Visible") != nullptr) return widget.visible;
+    return true;
+}
+
 void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float g, float b,
     float a) {
     // Milestone 2d: a changed colour now changes what is drawn, because a Text widget's
@@ -1483,6 +1490,30 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.text_sources[&widget] = std::move(source);
     host.text_runs.erase(&widget);
     host.quads_built = false;
+}
+
+bool GameFrontendHost::widget_text_width(GuiLayoutWidget& widget, float& width) {
+    // The run widget_text_height builds or finds; measured_width is the layout's
+    // own result (src/game_hosts_text.cpp, from 00ABA270 / 00AB9FD0).
+    float height = 0.0f;
+    static_cast<void>(widget_text_height(widget, height));
+    const auto cached = impl_->text_runs.find(&widget);
+    if (cached == impl_->text_runs.end()) return false;
+    width = cached->second.measured_width;
+    return true;
+}
+
+void GameFrontendHost::set_widget_size(GuiLayoutWidget& widget, float width, float height) {
+    widget.transform.size.width = width;   // 00AA7974..00AA797C, FLD/FSTP float
+    widget.transform.size.height = height;
+    if (widget.type == GuiWidgetType::Text) impl_->text_runs.erase(&widget);  // 00ABBF3F 00ABB1D0
+    refresh_widget_geometry(widget);       // 00AA797F 00AA7220
+}
+
+void GameFrontendHost::set_widget_scale(GuiLayoutWidget& widget, float x, float y) {
+    widget.transform.scale_x = x;          // 00AA7950
+    widget.transform.scale_y = y;
+    refresh_widget_geometry(widget);
 }
 
 bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height) {

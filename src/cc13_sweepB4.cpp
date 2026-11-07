@@ -10,6 +10,7 @@
 // (local/sweepB4_dis.py decodes the DC/DE forms by the Intel encoding).
 
 #include "bsp/cc13_sweepB4.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -39,6 +40,11 @@ void release_string(Cc13SweepBNativeString& text, Cc13SweepBHost& host) {
     }
 }
 void release_string(Cc13SweepBNativeString& text, Cc13SweepB4CounterEntryHost& host) {
+    if (text.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
+    }
+}
+void release_string(Cc13SweepBNativeString& text, Cc13SweepB4CounterCountdownLayoutHost& host) {
     if (text.data != nullptr) {
         host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
     }
@@ -401,8 +407,12 @@ void cc13_sweepB4_hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBN
 // +2Ch->+58h({(float)(scale + 0.035), 00AA6740(+2Ch)[1]}); +8h/+4h/+0Ch
 // hidden. +98h = seconds; +0A0h = 0 when seconds >= 3600.0 (FCOMI + JB, so
 // NaN falls through), else 1 when seconds >= 60.0, else 2. text released.
+// Goal 5 chain 662: the three direct Text-field accesses (0052A90B, 0052A91D,
+// 0052A94E) go through the host, which owns the widget objects; the order of
+// every store and call is the image's.
 void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBNativeString text,
-                                                        float seconds, Cc13SweepB4Host& host) {
+                                                        float seconds,
+                                                        Cc13SweepB4CounterCountdownLayoutHost& host) {
     host.gui_widget_set_visibility_recursive_00aa6820(widget(entry, 0), 1);
     host.widget_vcall_34_set_visible(widget(entry, 0), 1);
     host.gui_widget_set_visibility_recursive_00aa6820(widget(entry, 0), 0);
@@ -415,24 +425,33 @@ void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBN
 
     const float half[2] = {0.5f, 0.5f};
     host.widget_vcall_58_set_pair(widget(entry, 0x24), half);
-    at<std::int32_t>(widget(entry, 0x24), 0x100) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x24), 0);              // 0052A90B
     host.gui_text_set_localised_source_00abaed0(widget(entry, 0x24), &text, 1);
-    float scale = static_cast<float>(at<float>(widget(entry, 0x24), 0x114) / 960.0);
+    // 0052A91D FLD float +114h, FDIV double 960.0 (00CEC380), FSTP float: one
+    // PC24 rounding on the main thread.
+    float scale = static_cast<float>(
+        cc13x87::x87_div24(host.gui_text_measured_width_114(widget(entry, 0x24)), 960.0));
     if (!(scale > 0.04f)) {
         scale = 0.04f;
     }
-    at<std::int32_t>(widget(entry, 0x28), 0x100) = 0;
+    host.gui_text_store_align_100(widget(entry, 0x28), 0);              // 0052A94E
     const float* size = host.gui_widget_get_size_00aa6740(widget(entry, 0x28));
     const float scaled[2] = {scale, size[1]};
     host.widget_vcall_58_set_pair(widget(entry, 0x28), scaled);
 
-    const double base = at<float>(entry, 0x54);
+    // 0052A99E..0052A9AC: base - +3Ch (FSUB), base + scale (FADDP ST2), their
+    // sum (FADDP), FSTP float; each x87 op rounds at PC24.
+    const float base = at<float>(entry, 0x54);
     float* position = &at<float>(entry, 0x30);
-    *position = static_cast<float>((base + scale) + (base - at<float>(entry, 0x3C)));
+    *position = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(base, scale),
+        cc13x87::x87_sub24(base, at<float>(entry, 0x3C))));
     host.gui_widget_set_local_position_00aa7dc0(widget(entry, 8), position);
     host.gui_widget_set_local_position_00aa7dc0(widget(entry, 0x2C), position);
     host.widget_vcall_34_set_visible(widget(entry, 0x2C), 1);
-    const float fraction[2] = {counter_fraction(entry), 1.0f};
+    // 0052A9C8..0052A9E6: (+30h FSUB +3Ch) FDIV +60h, FSTP float, at PC24.
+    const float fraction[2] = {static_cast<float>(cc13x87::x87_div24(
+        cc13x87::x87_sub24(at<float>(entry, 0x30), at<float>(entry, 0x3C)), at<float>(entry, 0x60))),
+        1.0f};
     host.widget_vcall_48_set_pair(widget(entry, 0xC), fraction);
 
     float p[3];
@@ -440,10 +459,14 @@ void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBN
     float q_out[3];
     const float* q = host.widget_get_resolved_position_00aa6750(widget(entry, 0xC), q_out);
     const float qx = q[0];
-    const float moved[3] = {static_cast<float>(qx + f64_bits(0x3F8A9FBE80000000ull)), p[1], p[2]};
+    // 0052AA36 FADD double 00CED090 and 0052AA68 FADD double 00CED078, each one
+    // PC24 rounding before its FSTP float.
+    const float moved[3] = {static_cast<float>(cc13x87::x87_add24(qx, f64_bits(0x3F8A9FBE80000000ull))),
+                            p[1], p[2]};
     host.widget_set_resolved_position_00aa8240(widget(entry, 0x2C), moved);
     const float* size2 = host.gui_widget_get_size_00aa6740(widget(entry, 0x2C));
-    const float scaled2[2] = {static_cast<float>(scale + f64_bits(0x3FA1EB8520000000ull)), size2[1]};
+    const float scaled2[2] = {static_cast<float>(cc13x87::x87_add24(scale, f64_bits(0x3FA1EB8520000000ull))),
+                              size2[1]};
     host.widget_vcall_58_set_pair(widget(entry, 0x2C), scaled2);
     host.widget_vcall_34_set_visible(widget(entry, 8), 0);
     host.widget_vcall_34_set_visible(widget(entry, 4), 0);
@@ -473,13 +496,13 @@ void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBN
 // names[6], +28h names[7] (that order). Then +3Ch..+44h = 00AA67F0(+4h),
 // +30h..+38h = 00AA67F0(+8h), +60h/+64h = 00AA6740(+0Ch), +68h/+6Ch =
 // 00AA6740(+18h), +48h..+50h = 00AA67F0(+18h), +54h..+5Ch = 00AA67F0(+24h).
-// Last, +0h->+34h is called with NO pushed argument (0052C61B-0052C622): the
-// callee takes [ESP], which is the caller's saved EDI (the prologue's last
-// push). The only caller 0052CBF0 has EDI = its own ECX (the counters
-// screen) at 0052CD2A, so the widget gets that pointer as its argument; the
-// mis-balanced RET 4 is absorbed by MOV ESP, EBP.
+// Last, +0h->+34h(EBX): its argument is the PUSH EBX at 0052C60E, ahead of the
+// last two FLD/FSTP copies and the vtable load (0052C612..0052C622), and EBX is
+// the 0 of 0052C1D2 (XOR EBX,EBX; nothing else writes it), so the root is
+// hidden. Goal 5 chain 662 corrected this from the earlier reading, which took
+// the call as argument-less and passed the caller's saved EDI (the screen);
+// with the push the callee's RET 4 balances the frame.
 void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root, const char* const* names,
-                                                        std::int32_t caller_edi,
                                                         Cc13SweepB4CounterEntryHost& host) {
     at<std::uint32_t>(entry, 0x70) = 0;
     at<std::uint32_t>(entry, 0x74) = 0;
@@ -532,7 +555,7 @@ void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root,
     copy2(0x68, host.gui_widget_get_size_00aa6740(widget(entry, 0x18)));
     copy3(0x48, host.gui_widget_get_local_position_00aa67f0(widget(entry, 0x18)));
     copy3(0x54, host.gui_widget_get_local_position_00aa67f0(widget(entry, 0x24)));
-    host.widget_vcall_34_set_visible(widget(entry, 0), caller_edi);
+    host.widget_vcall_34_set_visible(widget(entry, 0), 0);   // 0052C60E PUSH EBX (0)
     return entry;
 }
 

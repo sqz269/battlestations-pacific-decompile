@@ -175,6 +175,11 @@ public:
     bool show_mission_narrative_text(const std::string& source);
     // 00734140 / 00734FA0 -> reconstructed 005B5D40 on the live +ACh group.
     bool hide_mission_narrative_text();
+    // Goal 5 chain 662: Lua Countdown's 0052B9B0 (008B18B8) and CountdownCancel's
+    // 0052AB90 (008B1A92 and 008B1AA2) on the counters screen 51h, [00E198C4]+C8h.
+    // False until the counters register 0052CBF0 has built the entries.
+    bool show_mission_countdown(const std::string& text, float seconds);
+    bool cancel_mission_countdown();
     // 00735100 -> 005B5D20: query/discard the live text's colour (no alpha store).
     bool query_mission_narrative_text_colour();
     // 004cc460(20h, controlled unit). Milestone 2h applied the request Init

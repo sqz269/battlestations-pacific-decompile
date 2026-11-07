@@ -228,6 +228,11 @@ public:
     // A single element's vtable +34h and +50h, which the press-start update
     // calls on its prompt widget every frame.
     void set_widget_visible(GuiLayoutWidget& widget, bool visible);
+    // Widget vtable +38h, 00A9E0D0: the widget's own scene-node factor above 0,
+    // which 00AA8530 sets from the requested value. Here the per-widget half of
+    // the bridge's visibility rule: an applied flag answers, then an authored
+    // "Visible" key, else visible. Ancestors are not consulted (goal 5 chain 662).
+    bool widget_own_visible(const GuiLayoutWidget& widget) const;
     void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
     // 0043ABA0 on an authored digit icon. Uses its loaded atlas rectangle and
     // publishes the body's four vertex UVs to the next sprite-bridge draw.
@@ -241,6 +246,17 @@ public:
     // Obtain AB6BD0 height from the same cached layout the bridge renders.
     // Builds a not-yet-drawn run once; false leaves height untouched.
     bool widget_text_height(GuiLayoutWidget& widget, float& height);
+    // The Text widget's +114h, the width its last layout measured (font units of
+    // the 960-wide container), from the same cached run. False when no run can
+    // be built (no text bridge, not a Text widget, or not a page widget).
+    bool widget_text_width(GuiLayoutWidget& widget, float& width);
+    // Widget vtable +58h. The base 00AA7970 stores +20h/+24h and recomposes; a
+    // Text widget's is 00ABBF30, which then blanks the text (00ABB1D0) so the next
+    // layout rebuilds. Goal 5 chain 662.
+    void set_widget_size(GuiLayoutWidget& widget, float width, float height);
+    // Widget vtable +48h, 00AA7950: +28h/+2Ch, then the recompose. The sprite
+    // bridge draws no scale, so only the transform carries it.
+    void set_widget_scale(GuiLayoutWidget& widget, float x, float y);
     // Follow 006834A0's live thumb/arrow size and color in the sprite bridge.
     void bind_scroller_controls(const FrontEndScreenScroller& scroller);
     // Read the bound actual manager's cursor lanes (+5C/+60), never reinterpret

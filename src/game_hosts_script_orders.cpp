@@ -6759,9 +6759,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::string text = get_string(0);
         const float level = static_cast<float>(get_number(1));
         const float seconds = static_cast<float>(get_number(2));
-        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text and the seconds,
-        // and 00733FF0's first call 005BCA70 on [[00E198C4]+58h]: the HUD.
-        log_.unimplemented("HudCountdown::show_text", "0052b9b0");
+        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text (argument 0)
+        // and the seconds (argument 2), before 00733FF0 (goal 5 chain 662: the
+        // HUD's counters screen); 00733FF0's first call 005BCA70 on
+        // [[00E198C4]+58h] is next.
+        if (narrative_hud_ == nullptr || !narrative_hud_->show_mission_countdown(text, seconds))
+            log_.unimplemented("HudCountdown::show_text", "0052b9b0");
         log_.unimplemented("HudCountdown::begin", "005bca70");
         for (const int ref : countdown_.argument_refs_54) {
             if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
@@ -6784,9 +6787,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             countdown_.argument_refs_54.size());
         results = 0;  // 008B1990, nothing pushed
     } else if (std::strcmp(binding->name, "CountdownCancel") == 0) {
-        // 008B19A0: two 0052AB90 HUD calls, then 007340A0(&left) and
-        // 00B66480(left).
-        log_.unimplemented("HudCountdown::clear_text", "0052ab90");
+        // 008B19A0: two 0052AB90 HUD calls (008B1A92, 008B1AA2; goal 5 chain
+        // 662, the HUD's counters screen), then 007340A0(&left) and 00B66480(left).
+        if (narrative_hud_ == nullptr || !narrative_hud_->cancel_mission_countdown())
+            log_.unimplemented("HudCountdown::clear_text", "0052ab90");
         const float left = countdown_time_left();
         countdown_stop_007340a0();
         ++countdown_cancels_;
