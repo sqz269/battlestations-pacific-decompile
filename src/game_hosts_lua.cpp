@@ -15757,9 +15757,9 @@ int GameMissionLuaHost::run_support_manager_enable_0088cbb0(lua_State* state,
 
 // Packet cc13-fix11 (docs/CC13_FIX11.md), under kLuaSetDeadMeatBound. 008AC7B0
 // SetDeadMeat(entity), 008AC7B0-008AC9C2, a binding with no stack arguments (RET).
-// The standalone body is bsp::lua_set_dead_meat (src/options_seg56_cc13.cpp); its
-// Seg56Host has 86 pure methods this host does not implement, so its three arms
-// are carried here in the image's order:
+// Goal 5 chain 659: it runs its body bsp::lua_set_dead_meat (src/options_seg56_cc13.cpp)
+// over DeadMeatHost, a Seg56HostUnreached with the five services the three arms use,
+// in the image's order:
 //   008AC8AF 00888AA0 resolves argument 0 (no null or class test);
 //   008AC8CF vtable[5Ch](0Fh), a plane: 008AC8FB vtable[194h]("spinning" 00D059EC,
 //     0), the plane's 007BBFA0;
@@ -15791,45 +15791,103 @@ int GameMissionLuaHost::run_support_manager_enable_0088cbb0(lua_State* state,
 //   GameGunneryHost::destroy_unit_0077d1a0(index, 1), the host's death funnel; its
 //   own counter (summary "airfield destroy kills") includes these calls, and the
 //   0077D1E4 destroy message, +828h / +82Ch and the +740h release are not held.
+namespace {
+// The five Seg56Host services of lua_set_dead_meat over the units and gunnery hosts,
+// with the substitutions listed above. The handle is the units-host index plus one
+// (Seg56RowArgs::entity_at). The draw's unit is the slot the class-6 test resolved,
+// the one entity the body reads.
+class DeadMeatHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit DeadMeatHost(GameUnitsHost* units) : units_(units) {}
+    bool unresolved{false};
+    bool plane_unapplied{false};
+    bool sunk{false};
+    bool sink_refused{false};
+    bool destroyed{false};
+    float pivot_x{0.0f};
+    std::size_t index{0};
+
+    bool entity_is_class_vt5c(void* entity, std::int32_t class_id) override {
+        if (!resolve(entity)) return false;
+        return units_->unit_is_kind_of(index, class_id);   // 008AC8CF (0Fh) / 008AC92E (6)
+    }
+    void entity_set_failure_vt194(void* entity, const std::string& name,
+                                  std::int32_t value) override {
+        if (!resolve(entity) || name != bsp::seg56_options_cc13::kDeadMeatFailureName
+            || value != 0) {
+            bsp::seg56_options_cc13::seg56_unreached("vtable[194h] other than (\"spinning\", 0)");
+        }
+        plane_unapplied = true;   // 008AC8FB: counted, not applied (see above)
+    }
+    double random_uniform_00bd2f10(std::int32_t stream_ecx, float lo, float hi) override {
+        pivot_x = units_->gunnery()->death_mode_draw_00bd2f10(stream_ecx, index, lo, hi);
+        return pivot_x;   // 008AC94B
+    }
+    void unit_sink_008110f0(void* unit, const float*) override {
+        if (!resolve(unit)) return;
+        GameGunneryHost& gunnery = *units_->gunnery();
+        // 008110F0 never reads the pivot.
+        sink_refused = bsp::sink_is_refused_008110f0(gunnery.unit_dead(index),
+            gunnery.unit_invincibility(index));   // 008110F7 / 00811108
+        if (!sink_refused) {
+            gunnery.destroy_unit_0077d1a0(index, 1);   // 00811111
+            sunk = true;
+        }
+    }
+    void entity_kill_vt70(void* entity, std::int32_t mode) override {
+        if (!resolve(entity)) return;
+        units_->gunnery()->destroy_unit_0077d1a0(index, mode);   // 008AC97A
+        destroyed = true;
+    }
+
+private:
+    bool resolve(void* entity) {
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(entity);
+        if (units_ == nullptr || units_->gunnery() == nullptr || id == 0u
+            || id > units_->count()) {
+            unresolved = true;
+            return false;
+        }
+        index = static_cast<std::size_t>(id - 1u);
+        return true;
+    }
+    GameUnitsHost* units_;
+};
+}  // namespace
+
 int GameMissionLuaHost::run_set_dead_meat_008ac7b0(lua_State* state, int argument_count) {
     (void)argument_count;
     ++summary_.dead_meat_calls;
-    GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
-    if (units == nullptr || units->gunnery() == nullptr || id <= 0
-        || static_cast<std::size_t>(id) > units->count()) {
+    Seg56RowArgs args(state);
+    DeadMeatHost host(units_hooks_);
+    const int results = bsp::seg56_options_cc13::lua_set_dead_meat(args, host);   // 008AC980
+    if (host.unresolved) {
         ++summary_.dead_meat_unresolved;
         log_.notef("  SetDeadMeat 008ac7b0: entity id %d has no units-host slot, nothing run "
-            "(packet cc13-fix11)", id);
-        return 0;
+            "(goal 5 chain 659)", air_ops_entity_id(state));
+        return results;
     }
-    const std::size_t index = static_cast<std::size_t>(id - 1);
-    GameGunneryHost& gunnery = *units->gunnery();
-    const GameUnitRow* row = units->unit_row(index);
+    const GameUnitRow* row = units_hooks_->unit_row(host.index);
     const char* name = row != nullptr ? row->name.c_str() : "?";
-    if (units->unit_is_kind_of(index, 0x0F)) {                 // 008AC8CF
+    if (host.plane_unapplied) {
         ++summary_.dead_meat_plane_unapplied;
         log_.notef("  SetDeadMeat 008ac7b0: plane \"%s\" vtable[194h](\"spinning\", 0) not "
-            "applied, no host entry for 007BBFA0 on a live plane (packet cc13-fix11)", name);
-    } else if (units->unit_is_kind_of(index, 6)) {             // 008AC92E
-        const float pivot_x = gunnery.death_mode_draw_00bd2f10(1, index, -1.0f, 1.0f);  // 008AC94B
-        const bool refused = bsp::sink_is_refused_008110f0(gunnery.unit_dead(index),
-            gunnery.unit_invincibility(index));                // 008110F7 / 00811108
-        if (refused) {
+            "applied, no host entry for 007BBFA0 on a live plane (goal 5 chain 659)", name);
+    } else if (host.sunk || host.sink_refused) {
+        if (host.sink_refused) {
             ++summary_.dead_meat_sink_refused;
         } else {
-            gunnery.destroy_unit_0077d1a0(index, 1);           // 00811111
             ++summary_.dead_meat_sunk;
         }
-        log_.notef("  SetDeadMeat 008ac7b0: ship \"%s\" pivot_x=%.4f sink=%s (008110F0, packet "
-            "cc13-fix11)", name, static_cast<double>(pivot_x), refused ? "refused" : "destroyed");
-    } else {
-        gunnery.destroy_unit_0077d1a0(index, 1);               // 008AC97A
+        log_.notef("  SetDeadMeat 008ac7b0: ship \"%s\" pivot_x=%.4f sink=%s (008110F0, goal 5 "
+            "chain 659)", name, static_cast<double>(host.pivot_x),
+            host.sink_refused ? "refused" : "destroyed");
+    } else if (host.destroyed) {
         ++summary_.dead_meat_destroyed;
-        log_.notef("  SetDeadMeat 008ac7b0: \"%s\" vtable[70h](1) (packet cc13-fix11)", name);
+        log_.notef("  SetDeadMeat 008ac7b0: \"%s\" vtable[70h](1) (goal 5 chain 659)", name);
     }
     log_.implemented("MissionLuaNative::SetDeadMeat", "008ac7b0");
-    return 0;
+    return results;
 }
 
 // 00897A50 SetInvincible(entity, value) through its body lua_set_invincible_00897a50
