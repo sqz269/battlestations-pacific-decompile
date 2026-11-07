@@ -764,7 +764,10 @@ inline constexpr const char* kPlaneStartPosZKey = "PlaneStartPosZ";         // 0
 inline constexpr const char* kPlaneStartPosYKey = "PlaneStartPosY";         // 00CFA9DC
 void catapult_class_read_lua_fields_006eb6b0(Seg33aHost& host, void* cls, void* lua);
 float ratio_abs_dc_over_8c_006eb870(void* cls);
-void* vehicle_add_launched_message_construct_006eb9c0(Seg33aHost& host, void* message, void* entity);
+// Goal 5 chain 632: 006EB9C0 calls only 0075B430, so it takes the narrow message host
+// (Seg33aHost inherits it; every caller still passes its Seg33aHost).
+void* vehicle_add_launched_message_construct_006eb9c0(Seg33aGunFireMessageHost& host, void* message,
+                                                      void* entity);
 void* plane_takeoff_message_construct_006eba90(Seg33aHost& host, void* message, std::uint8_t value);
 void* catapult_fire_message_construct_006ebb90(Seg33aHost& host, void* message, void* entity, float heading);
 void catapult_turn_commit_angles_006ebcc0(Seg33aHost& host, void* turn);
@@ -812,7 +815,10 @@ float* bullet_velocity_006e7ca0(void* bullet, float* out);
 void* bullet_class_unavailable_create_006ea230(void* cls, std::uint32_t, std::uint32_t, std::uint32_t,
                                              std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
 void* bullet_class_unavailable_aux_006ea240(void* cls, std::uint32_t) noexcept;
-void vehicle_launched_message_read_006eba50(Seg33aHost&, void* message, void* stream);
+// Goal 5 chain 632: 006EBA20 (vtable 00CFAA0C slot 1, no Ghidra function: its 006EBA00
+// IsType body runs on over these bytes) and 006EBA50 take the narrow message host.
+void vehicle_add_launched_message_write_006eba20(Seg33aGunFireMessageHost&, void* message, void* cursor);
+void vehicle_launched_message_read_006eba50(Seg33aGunFireMessageHost&, void* message, void* stream);
 void plane_takeoff_message_write_006ebb10(Seg33aHost&, void* message, void* cursor);
 void plane_takeoff_message_read_006ebb40(Seg33aHost&, void* message, void* stream);
 void catapult_fire_message_write_006ebc10(Seg33aHost&, void* message, void* cursor);

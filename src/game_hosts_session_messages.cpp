@@ -220,8 +220,20 @@ struct HostSessionMessages::Image {
         // IsType, 004499C0. 00763320 (seg42) and 00656280 (seg27) store it.
         std::uint32_t slots_00cf64c4[5]{0x00656420u, 0x00656320u, 0x006563a0u, 0x006562f0u,
                                         0x004499c0u};
+        // Goal 5 chain 632. 7Bh 00CE53AC (bsp.py ghidra bytes 00CE53AC --length
+        // 20, bsp.gpr's /battlestationspacific.exe): 00464FE0 scalar delete,
+        // 004647D0 write, 00464810 read, 004647B0 IsType, 004499C0.
+        std::uint32_t slots_00ce53ac[5]{0x00464fe0u, 0x004647d0u, 0x00464810u, 0x004647b0u,
+                                        0x004499c0u};
+        // Goal 5 chain 632. 7Ch 00CFAA0C (bsp.py ghidra bytes 00CFAA0C --length
+        // 20): 006EC100 scalar delete, 006EBA20 write, 006EBA50 read, 006EBA00
+        // IsType, 004499C0.
+        std::uint32_t slots_00cfaa0c[5]{0x006ec100u, 0x006eba20u, 0x006eba50u, 0x006eba00u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if (image_address == 0x00cf64c4u) return slots_00cf64c4;
+            if (image_address == 0x00ce53acu) return slots_00ce53ac;
+            if (image_address == 0x00cfaa0cu) return slots_00cfaa0c;
             // Only queue_plane_disappear_c7 constructs a C7h message.
             if (image_address == 0x00d0352cu) return slots_00d0352c;
             if (image_address == 0x00d033c4u) return slots_00d033c4;
@@ -2124,6 +2136,154 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     copy.holder_id = queued.id_20;
     delete_plane_disappear_message_00762bc0(&sent, 0u);
     return copy; // 00762BC0(1) releases the factory's 24h allocation.
+}
+
+namespace {
+// Goal 5 chain 632. The 7Bh class: the 20h-byte unit message and the heading
+// at +20h, 24h bytes as 00768530 case 7Bh allocates it
+// (include/bsp/oct18_tail_a_factory.inc: {0x7b, 0x24, 0x007601a0, ...}).
+struct VehicleUnitLaunchMessage7B {
+    seg42::UnitMessage u;
+    float heading_20;
+};
+static_assert(sizeof(VehicleUnitLaunchMessage7B) == 0x24);
+static_assert(offsetof(VehicleUnitLaunchMessage7B, heading_20) == 0x20);
+static_assert(sizeof(VehicleUnitLaunchMessage7B)
+              == sizeof(HostSessionMessages::UnitKindSwitchCopy::bytes));
+
+// The six boundaries 004647D0 / 00464810 call, bound to the process's
+// bit-cursor bodies. The write receives the 10h cursor; the read receives the
+// 18h stream for the header and stream+4 (its cursor) for the fields.
+struct VehicleLaunchCodec final : cc13_seg5::VehicleLaunchWriteHost,
+                                  cc13_seg5::VehicleLaunchReadHost {
+    using Object = cc13_seg5::Object;
+    explicit VehicleLaunchCodec(const NativeBitNumericContext& numeric) : numeric_(numeric) {}
+    void write_extended_header_0075b480(Object message, Object cursor) override {
+        write_native_session_message_header_0075b480(message,
+            reinterpret_cast<NativeBitCursor*>(cursor));
+    }
+    void write_boolean_004290b0(Object cursor, std::uint8_t value) override {
+        write_native_bool_bit_004290b0(reinterpret_cast<NativeBitCursor*>(cursor), value);
+    }
+    void write_numeric_float_004295c0(Object cursor, float value, std::uint32_t mode,
+                                      std::uint32_t signed_mode, float maximum,
+                                      std::uint32_t bits) override {
+        std::uint32_t value_bits = 0;
+        std::uint32_t scale_bits = 0;
+        std::memcpy(&value_bits, &value, sizeof value_bits);
+        std::memcpy(&scale_bits, &maximum, sizeof scale_bits);
+        write_native_numeric_float_004295c0(reinterpret_cast<NativeBitCursor*>(cursor),
+            value_bits, mode, signed_mode, scale_bits, bits, numeric_);
+    }
+    void read_extended_header_0075b4c0(Object message, Object stream) override {
+        read_native_session_message_header_0075b4c0(message,
+            reinterpret_cast<NativeSessionReadStream*>(stream));
+    }
+    void read_boolean_00428d70(Object cursor, Object out) override {
+        read_native_bool_bit_00428d70(reinterpret_cast<NativeBitCursor*>(cursor),
+            reinterpret_cast<bool*>(out));
+    }
+    void read_numeric_float_004293f0(Object cursor, Object out, std::uint32_t mode,
+                                     std::uint32_t signed_mode, float maximum,
+                                     std::uint32_t bits) override {
+        // The destination is the message's own +20h cell, as 00464810 passes it.
+        std::uint32_t value_bits = 0;
+        std::uint32_t scale_bits = 0;
+        std::memcpy(&value_bits, out, sizeof value_bits);
+        std::memcpy(&scale_bits, &maximum, sizeof scale_bits);
+        read_native_numeric_float_004293f0(reinterpret_cast<NativeBitCursor*>(cursor),
+            &value_bits, mode, signed_mode, scale_bits, bits, numeric_);
+        std::memcpy(out, &value_bits, sizeof value_bits);
+    }
+
+private:
+    const NativeBitNumericContext& numeric_;
+};
+}  // namespace
+
+HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_launch_7b(
+    float heading) const {
+    const Image& image = *image_;
+    // 00891F05..00891F31: 007601A0's stores, then +20h the heading.
+    VehicleUnitLaunchMessage7B sent{};
+    seg42::construct_vehicle_unit_launch_007601a0(&sent.u, image.seg42);
+    sent.heading_20 = heading;
+
+    VehicleLaunchCodec codec(image.numeric);
+    LocalStream stream;
+    // 0076E575: vtable[4] = 004647D0 (header, the +1Ch bit, +20h on 004295C0's
+    // raw 32-bit path with the FLT_MAX scale).
+    cc13_seg5::vehicle_launch_message_write_004647d0(reinterpret_cast<cc13_seg5::Object>(&sent),
+        reinterpret_cast<cc13_seg5::Object>(&stream.out), codec);
+    // 00768530 case 7Bh: operator new(24h), 007601A0 at 00769186; 0076A27B
+    // vtable[8] = 00464810. The copy is host storage: its scalar delete
+    // 00464FE0 is the compiler's (it restamps 00CE4974 and frees) and the class
+    // owns no payload subobjects.
+    stream.begin_read();
+    VehicleUnitLaunchMessage7B queued{};
+    seg42::construct_vehicle_unit_launch_007601a0(&queued.u, image.seg42);
+    cc13_seg5::vehicle_launch_message_read_00464810(reinterpret_cast<cc13_seg5::Object>(&queued),
+        reinterpret_cast<cc13_seg5::Object>(&stream.in), codec);
+
+    UnitKindSwitchCopy copy;
+    // 00780120 over the copy's IsType, 004647B0 {7Bh, 49h, 46h}.
+    copy.to_unit = copy_goes_to_unit_handler([](std::uint32_t type) {
+        return cc13_seg5::session_message7b_is_kind_of_004647b0(static_cast<std::int32_t>(type));
+    });
+    std::memcpy(copy.bytes, &queued, sizeof queued);
+    return copy;
+}
+
+namespace {
+// Goal 5 chain 632. The 7Ch class: the 20h-byte unit message and the plane's
+// handle word at +20h, 24h bytes as 00768530 case 7Ch allocates it
+// (include/bsp/oct18_tail_a_factory.inc: {0x7c, 0x24, 0x00760200, ...}).
+struct VehicleAddLaunchedMessage7C {
+    seg42::UnitMessage u;
+    std::uint16_t plane_id_20;
+    std::uint16_t pad_22;
+};
+static_assert(sizeof(VehicleAddLaunchedMessage7C) == 0x24);
+static_assert(offsetof(VehicleAddLaunchedMessage7C, plane_id_20) == 0x20);
+}  // namespace
+
+HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_add_launched_7c(
+    std::uint16_t plane_id) const {
+    const Image& image = *image_;
+    // 006ED3E3..006ED3EF: 006EB9C0(stack message, plane). It reads only the
+    // plane's +174h word (006EB9E7 MOV CX,[EAX+174h]); its other service is 0075B430.
+    VehicleAddLaunchedMessage7C sent{};
+    GunFireMessageBinding codec(image.session);
+    {
+        PlaneHandleView174 plane{};
+        plane.handle_174 = plane_id;
+        cc13_seg33a::vehicle_add_launched_message_construct_006eb9c0(codec, &sent, &plane);
+        // Relocate only the body's image vptr 00CFAA0C to the host profile.
+        sent.u.h.base.profile_00 = image.seg42.vtables.vtable(0x00cfaa0cu);
+    }
+
+    LocalStream stream;
+    // 0076E575: vtable[4] = 006EBA20.
+    cc13_seg33a::vehicle_add_launched_message_write_006eba20(codec, &sent, &stream.out);
+    // 00768530 case 7Ch: operator new(24h), 00760200 at 007691A6; 0076A27B
+    // vtable[8] = 006EBA50. The copy is host storage: 006EC100, the scalar
+    // delete, only restamps 00CE4974 and frees, and the class owns no payload.
+    stream.begin_read();
+    VehicleAddLaunchedMessage7C queued{};
+    seg42::construct_vehicle_add_launched_00760200(&queued.u, image.seg42);
+    cc13_seg33a::vehicle_launched_message_read_006eba50(codec, &queued, &stream.in);
+
+    UnitKindSwitchCopy copy;
+    // 00780120 over the copy's IsType, 006EBA00 {7Ch, 49h, 46h}.
+    const band_006b_cc13::TypeIdRule* const is_add_launched =
+        band_006b_cc13::find_type_id_rule(0x006eba00u);
+    copy.to_unit = is_add_launched != nullptr
+        && copy_goes_to_unit_handler([is_add_launched](std::uint32_t type) {
+               return band_006b_cc13::type_id_rule_accepts(*is_add_launched,
+                                                          static_cast<std::int32_t>(type));
+           });
+    std::memcpy(copy.bytes, &queued, sizeof queued);
+    return copy;
 }
 
 } // namespace bsp
