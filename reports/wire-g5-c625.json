@@ -1,0 +1,302 @@
+{
+  "goal": 5,
+  "chain": 625,
+  "slot": "g5-w3",
+  "run": 1301,
+  "picked": "Native Page/Group visibility dispatch through the existing 00AA38E0 getter",
+  "base_head": "cb57fddfdfe584f9ec8576509c13feca5550cdb6",
+  "rows": [
+    {
+      "native": "00aa38e0",
+      "status": "wired",
+      "host_site": "src/game_native_gui_page_application.cpp: GameNativeGuiPageApplication::Impl::Widgets::call_visibility_38"
+    },
+    {
+      "native": "00417fa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: avoid_zone_world_to_cell_00417fa0",
+      "reason": "Already wired under the existing host identifier; no unwired host operation remains at this site."
+    },
+    {
+      "native": "0041bae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: avoid_zone_cell_height_0041bae0",
+      "reason": "Already wired under the existing host identifier; replacing it with the raw kernel would not add a new wired address."
+    },
+    {
+      "native": "0041bc20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: avoid_zone_sample_0041bc20",
+      "reason": "Already wired under the existing host identifier; replacing it with the raw kernel would not add a new wired address."
+    },
+    {
+      "native": "0041bd10",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_layer_normal.cpp: avoid_zone_layer_normal_0041bd10",
+      "reason": "Missing a live normal-query consumer in the inspected avoid-zone host."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::instance",
+      "reason": "Missing composition with the actual singleton lock, publication and lifetime-registration domain; the host currently owns a C++ static registry."
+    },
+    {
+      "native": "004218e0",
+      "status": "skipped",
+      "host_site": "src/native_avoid_singleton.cpp: get_native_avoid_manager_004218e0",
+      "reason": "Missing bindings for the actual manager/game/avoid publication cells and registered deletion context in the inspected host."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile_owns_content",
+      "reason": "Missing the actual profile content-ownership provider; the current callback returns false."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TailGunnerBot::set_skill_008fbef0",
+      "reason": "Existing host source already names the body; a new live caller of that host method was not identified in this inspection."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing the produced alternate ammunition record at ammo+48h; the host callback only records the operation."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint handling",
+      "reason": "Missing a concrete checkpoint-clear event and its profile-record/storage continuation bindings in the inspected host."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context map owner/caller; changing its generic tree_max call alone would leave this helper unlinked."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context map owner/caller; changing its generic tree_min call alone would leave this helper unlinked."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context map owner/caller; replacing generic rotations alone would not establish entry reach."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context map owner/caller; replacing generic rotations alone would not establish entry reach."
+    },
+    {
+      "native": "00bf2270",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270",
+      "reason": "Missing a live error-context map insertion caller; this address is absent from the baseline linked graph."
+    },
+    {
+      "native": "00bf26c0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context map erase caller; this address is absent from the baseline linked graph."
+    },
+    {
+      "native": "00bf1450",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a live error-context iterator consumer; the inspected erase parent is absent from the baseline linked graph."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: stop_retained_sound_pointers_00a7b9c0",
+      "reason": "Existing shutdown source already calls this helper; no distinct replacement operation was identified, and the baseline graph has no separate emitted entry."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "reason": "Already entry-reachable with two baseline call sites; readiness's ready state does not identify new work here."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_types_00a7fcc0_fragment",
+      "reason": "Existing shutdown source already calls this helper; no distinct unwired replacement was identified."
+    },
+    {
+      "native": "00a7f560",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: Impl::destroy_manager",
+      "reason": "Already entry-reachable through scalar_delete_sound_system_00a883b0 in the baseline graph."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp: clear_gamepad_force_requests_00a95890",
+      "reason": "Missing a live explicit force-clear event and its actual device/context binding in the inspected host paths."
+    },
+    {
+      "native": "0075a5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_gun_fire_ad",
+      "reason": "Missing a live B0h message queue; this constructor is for B0h and cannot replace the existing ADh constructor."
+    },
+    {
+      "native": "006e3940",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_gun_fire_ad",
+      "reason": "Already used for both real sender and decoded ADh message; no new unwired operation remains at this site."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Missing the bound 00D032FC profile and actual selected-player ownership; the existing codec-only path explicitly does not claim native construction."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live default-descriptor consumer; inserting it before a populated descriptor would add redundant work, as earlier skip records also note."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_build_00721090",
+      "reason": "Missing an identified live populated-descriptor caller; the baseline graph has no emitted entry for this address."
+    },
+    {
+      "native": "006f9ee0",
+      "status": "skipped",
+      "host_site": "src/hull_terrain_contact.cpp: HullTerrainContactSolver::hull_shape",
+      "reason": "Already entry-reachable from hull_shape in the baseline graph."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/pool_pool06_cc13.cpp: convex_object_compute_box_006f9ee0",
+      "reason": "Already entry-reachable from convex_object_compute_box_006f9ee0 in the baseline graph."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group scoring",
+      "reason": "Missing the produced sixteen score/label terms and actual scored-list ownership; the inspected host only models command-target references."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group scoring",
+      "reason": "Missing the actual scored-list records and chosen-record consumer in the inspected host."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_list_any_burning_007de5b0",
+      "reason": "Missing a bound live PlaneEngineSlots list in the inspected host; a predicate call over invented engines would not be valid wiring."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_list_stop_all_007de600",
+      "reason": "Missing a bound live PlaneEngineSlots list and concrete stop-all event in the inspected host."
+    },
+    {
+      "native": "007eb0b0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_list_destroy_at_007eb0b0",
+      "reason": "Missing a bound live PlaneEngineSlots list and its destruction/effect callbacks in the inspected host."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing concrete produced support-site lists and a live squad-size query in the inspected host."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing concrete support-site entry/state ownership and a live supply-class query in the inspected host."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: impact effects",
+      "reason": "Missing the actual impact-effect consumer/owner; the current host records presentation without creating those effects."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort fire handling",
+      "reason": "Missing the actual death-smoke effect owner and callbacks; the current host fire state models presentation success as a substitution."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort D1h fire synchronization",
+      "reason": "Missing a concrete D1h delivery/consumer path with actual message ownership; the current path records this presentation operation."
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane fixed-step terrain query",
+      "reason": "Missing a same-landscape height-field adapter for vslot+2Ch; the existing avoid-zone and manager height queries have different semantics."
+    },
+    {
+      "native": "007b95e0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: plane_is_leader_with_wingmen_007b95e0",
+      "reason": "Address and file already leased by agent/g5-w2; left to that worker without edits."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/cc13_moveto1.cpp: make_moveto_for_attackmove_009c3c40",
+      "reason": "Missing an identified live attack-move task creation site with its actual bot/descriptor/MoveToTaskCalls binding."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon_relation_style_00803c20",
+      "reason": "Missing an identified live consumer of the actual recon-style table in the inspected HUD host."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing a real frame-job-thread deferred-call producer; the current host runs mission Lua on the main thread."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline",
+      "reason": "Missing a concrete teardown integration for the actual added-global set; the inspected path only builds its load-time baseline."
+    }
+  ],
+  "evidence": {
+    "original": "bsp.py show 00aa38e0 and --asm: MOV AL,[ECX+F5h]; RET",
+    "replaced": "The same authenticated live Page/Group pointer and target check are retained; the inline +F5 byte load is deleted.",
+    "abi": "Existing MSVC Win32 fastcall getter: ECX actual widget, AL byte result, RET. No new body, shadow widget, state value, or feature switch.",
+    "before": "00AA38E0 absent from the baseline linked call graph.",
+    "after": "One entry-reachable call from GameNativeGuiPageApplication::Impl::Widgets::call_visibility_38.",
+    "limitation": "Static source/build/call-graph evidence; no game was launched."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, four of four existing CTests",
+    "changed_build": "scripts/build.ps1 passed, four of four existing CTests",
+    "call_graph_reconstructed_called_before": 5042,
+    "call_graph_reconstructed_called_after": 5043,
+    "readiness_wired_before": 9964,
+    "readiness_wired_after": 9965,
+    "float_math_changed": false
+  }
+}
