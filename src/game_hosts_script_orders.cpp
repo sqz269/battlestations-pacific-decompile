@@ -11,6 +11,8 @@
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/frontend_screen_sets.hpp"   // chain 648: GameInputContextManagerBinding
+#include "bsp/game_hosts_frontend.hpp"    // goal 5 chain 652: the GUI manager's pages
+#include "bsp/gui_layout_loader.hpp"      // goal 5 chain 652: GuiLayoutPage, 00AA7E00
 #include <cstring>
 #include <stdexcept>
 #include <string>
@@ -442,6 +444,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Chain 648: EnableInput's context 1Eh level on the application's input
     // manager. Handled only once bind_input_context_manager has run.
     {"EnableInput", 0x008afbd0u},
+    // Goal 5 chain 652: the GUI manager's page list. Handled only once
+    // bind_gui_frontend has run.
+    {"IsGUIActive", 0x008ca010u},
     // Packet cc9_lua_capture_percentage: JM05.lua:5178-5216. Handled only with
     // kLuaCapturePercentageBound.
     {"GetCapturePercentage", 0x0089b840u},
@@ -589,6 +594,101 @@ private:
     }
 
     bsp::GameInputContextManagerBinding& manager_;
+};
+
+// Goal 5 chain 652: the GUI manager 004C12B0 whose page list IsGUIActive
+// searches. The application's GameFrontendHost owns the one host manager and
+// its registry; bound in game_hosts.cpp beside the input manager.
+GameFrontendHost*& bound_gui_frontend() noexcept {
+    static GameFrontendHost* frontend = nullptr;
+    return frontend;
+}
+
+// The services of IsGUIActive 008CA010 (bsp.py show 008ca010): 008C9F80 twice
+// over argument 0 (00B662B0, then 008C8C20's dotted lookup), the widget's
+// vtable +38h, and 00B66450 for the answer. 008C8C20 resolves the first
+// segment with 00AA3140 on 004C12B0's page list and each further segment with
+// 00AA7E00 (src/engine_seg56_cc13.cpp gui_find_widget_by_dotted_path).
+// The base +38h is 00A9E0D0: node +4Ch null -> false, else node +ACh > 0.0.
+// 00AA8530 (vtable +34h) writes that factor as 1.0 or 0.0 at once; this host's
+// projection of +34h is GuiLayoutWidget::visible (GameFrontendHost::
+// set_widget_visible, and commit_page_visibility for a screen's pages, which
+// 004f83b0 drives from the screen's applied byte), so +38h reads it back.
+// A page root is the page's own widget (the GuiScreen 00AA3140 returns).
+// Every other InterfaceHost site belongs to another binding.
+class ScriptGuiQueryBinding final : public bsp::cc13_seg56::InterfaceHost,
+                                    public bsp::cc13_seg56::GuiTreeHost,
+                                    public bsp::cc13_seg56::LuaResults {
+public:
+    ScriptGuiQueryBinding(GameFrontendHost& frontend, std::function<void(bool)> push)
+        : frontend_(frontend), push_(std::move(push)) {}
+
+    // --- 008C9F80 / 008C8C20 ---
+    void* gui_find_widget(bsp::cc13_seg56::LuaArgs& args, int index) override {
+        return bsp::cc13_seg56::lua_gui_find_widget_from_string_arg(args, index, *this);
+    }
+    void* find_page(const std::string& name) override {
+        GuiLayoutPage* page = frontend_.find_page_00aa3140(name);   // 00AA3140
+        return page != nullptr ? page->root.get() : nullptr;
+    }
+    void* find_child(void* widget, const std::string& name) override {
+        // 00AA7E00 over the current widget's direct children.
+        return widget != nullptr
+            ? find_child_by_name_00aa7e00(*static_cast<GuiLayoutWidget*>(widget), name)
+            : nullptr;
+    }
+    bool gui_widget_vcall_38(void* widget) override {
+        return static_cast<const GuiLayoutWidget*>(widget)->visible;   // 00A9E0D0
+    }
+    // --- 00B66450 ---
+    void push_boolean(bool value) override { push_(value); }
+
+    void music_set_target_level(float) override { unreached("00A77860"); }
+    float map_cursor_x_554() override { unreached("map+554h"); }
+    float map_cursor_z_558() override { unreached("map+558h"); }
+    std::int32_t map_zoom_2c() override { unreached("map+2Ch"); }
+    void map_force_cursor_pos(const bsp::cc13_seg56::Vec3&) override { unreached("0059AD20"); }
+    void map_release_cursor_0059ad50() override { unreached("0059AD50"); }
+    void map_set_node_visible_by_name(const std::string&, bool) override { unreached("005A4020"); }
+    void map_set_unit_highlight(void*, bool) override { unreached("005AAAD0"); }
+    void music_set_channel_byte_4e(int, bool) override { unreached("00A77840"); }
+    void engine_movie_screen_black_bars(bool) override { unreached("005CB0F0"); }
+    void movie_screen_black_bars(bool) override { unreached("005CBC30"); }
+    void input_set_context_level(int, int) override { unreached("00A933F0"); }
+    bool input_record_enabled(int) override { unreached("input record +28h"); }
+    float input_record_value(int) override { unreached("input record +24h"); }
+    void options_save_input_modifiers() override { unreached("005F0B90"); }
+    bool interface_present() override { unreached("00E198C4"); }
+    bool limbo_screen_present() override { unreached("00E198C4+E8h"); }
+    bool limbo_screen_active_byte4() override { unreached("limbo+4h"); }
+    std::string gui_widget_raw_text(void*) override { unreached("widget+F4h"); }
+    void marker_add_gui_highlight(void*, bool, bool) override { unreached("006DAE20"); }
+    void marker_remove_gui_highlight(void*) override { unreached("006DC5A0"); }
+    void gui_load_page_and_show(const std::string&) override { unreached("00AA5840"); }
+    void objectives_toggle_disabled_byte(bool) override { unreached("00E198C4+60h"); }
+    void hud_counters_hide_unit_hp(int) override { unreached("0052B570"); }
+    void hud_counters_hide_score(int, int) override { unreached("0052B900"); }
+    void push_number(int) override { unreached("00B664B0"); }
+    void push_nil() override { unreached("00B66430"); }
+    void push_string(const std::string&) override { unreached("00B66710"); }
+    void push_float(float) override { unreached("00B66480"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unreached("integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unreached("vector3"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unreached("vector3 fields");
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScriptGuiQueryBinding: IsGUIActive does not reach ")
+                               + site);
+    }
+
+    GameFrontendHost& frontend_;
+    std::function<void(bool)> push_;
 };
 
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
@@ -1230,6 +1330,9 @@ void GameScriptOrdersHost::bind_input_context_manager(
     bsp::GameInputContextManagerBinding* manager) noexcept {
     bound_input_context_manager() = manager;
 }
+void GameScriptOrdersHost::bind_gui_frontend(GameFrontendHost* frontend) noexcept {
+    bound_gui_frontend() = frontend;
+}
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
     : log_(log), units_(units) {
@@ -1360,6 +1463,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "MusicFade") == 0) return true;
     if (std::strcmp(binding->name, "EnableInput") == 0) {
         return bound_input_context_manager() != nullptr;
+    }
+    if (std::strcmp(binding->name, "IsGUIActive") == 0) {
+        return bound_gui_frontend() != nullptr;
     }
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
@@ -5716,6 +5822,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         RepairBindingArgs args(*this);
         ScriptInputContextBinding input(*bound_input_context_manager());
         results = bsp::cc13_seg56::lua_enable_input(args, input);
+    } else if (std::strcmp(binding->name, "IsGUIActive") == 0) {
+        // 008CA010: 008C9F80 on argument 0; when it finds a widget, a second
+        // 008C9F80 and that widget's +38h; 00B66450 of the answer (false when
+        // nothing was found); one result.
+        RepairBindingArgs args(*this);
+        ScriptGuiQueryBinding gui(*bound_gui_frontend(), [this](bool value) {
+            push_boolean(value);
+        });
+        results = bsp::cc13_seg56::lua_is_gui_active(args, gui, gui);
     } else if (std::strcmp(binding->name, "Countdown") == 0) {
         // 008B17B2-008B17C3: 00887120(-1, 4) reads the frame into 14h-byte
         // variants: the text +8h (argument 0), +1Ch (1), +30h (2), and the name

@@ -764,6 +764,10 @@ public:
     // (008AFBD0) writes through 00A933F0; the application's input services own
     // it. Null until bound: EnableInput then stays an unimplemented record.
     static void bind_input_context_manager(bsp::GameInputContextManagerBinding*) noexcept;
+    // Goal 5 chain 652: the GUI manager 004C12B0's page list (the application's
+    // GameFrontendHost) that IsGUIActive (008CA010) searches through 008C9F80 /
+    // 008C8C20. Null until bound: IsGUIActive then stays an unimplemented record.
+    static void bind_gui_frontend(class GameFrontendHost*) noexcept;
     // The runtime bind_music_dialog published, or null (goal 4 chain 312: the
     // mission frame's session-teardown sound reset borrows it).
     static class GameSoundDialogRuntime* bound_music_dialog_runtime() noexcept;

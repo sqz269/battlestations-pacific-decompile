@@ -1442,6 +1442,12 @@ GuiLayoutWidget* GameFrontendHost::find_page_child(GuiLayoutPage& page,
     return find_child_by_name_00aa7e00(*page.root, name);
 }
 
+GuiLayoutPage* GameFrontendHost::find_page_00aa3140(std::string_view name) noexcept {
+    // The registry 00aa5840 registers every page into (Impl::load_page) is the
+    // manager's +14h vector; GuiPageRegistry::find_00aa3140 is its scan.
+    return impl_->registry.find_00aa3140(name);
+}
+
 void GameFrontendHost::commit_page_visibility(GuiLayoutPage& page, bool visible) {
     Impl& host = *impl_;
     if (!page.root) return;

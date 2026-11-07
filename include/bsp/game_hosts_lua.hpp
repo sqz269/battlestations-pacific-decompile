@@ -61,6 +61,7 @@ struct ShipClassCameraInputs;
 struct GameplayTuningSettings;
 struct MissionPictureTextureServices;
 struct ObjectiveUnitList;
+struct VehicleClassRegistry;
 }
 
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
@@ -1580,6 +1581,16 @@ public:
     void mark_scene_vehicle_class_row_00964790(int class_index, const char* site) {
         mark_vehicle_class_row_00964790(class_index, site);
     }
+    // Goal 5 chain 652: the vehicle class registry singleton 00437F50, whose
+    // per-party rows at +4010h 0095BA60 marks. GameSceneContentsHost owns it
+    // (Impl::vehicle_registry); its attach_lua lends it here and its destructor
+    // takes it back. Null before load_scene_contents.
+    void attach_vehicle_registry(bsp::VehicleClassRegistry* registry) noexcept {
+        vehicle_registry_ = registry;
+    }
+    bsp::VehicleClassRegistry* vehicle_registry() const noexcept { return vehicle_registry_; }
+    // PrepareClass 008C8F70 through lua_binding_prepare_class (src/lua_binding_core.cpp).
+    int run_prepare_class_008c8f70(lua_State* state);
     // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
     // the VehicleClass rows whose Got is not true. Later reads of those rows
     // through the read_vehicle_class_* readers are counted for the summary
@@ -2650,6 +2661,8 @@ private:
     // (bsp/game_host_vehicle_class.hpp). ON it is the cache in place of
     // vehicle_class_rows_marked_; OFF it is never created.
     std::unique_ptr<GameVehicleClassDescriptorCache> vehicle_class_cache_;
+    // Goal 5 chain 652: borrowed singleton 00437F50; see attach_vehicle_registry.
+    bsp::VehicleClassRegistry* vehicle_registry_{nullptr};
     // Chain 340: the non-owning 006B7E30 machine over state_ that the named-call
     // body makes its stack calls on (named_call_machine_006b7e30).
     std::unique_ptr<bsp::cc13_seg29::LuaMachine> named_call_machine_;

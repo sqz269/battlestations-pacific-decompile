@@ -79,6 +79,7 @@
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
 #include "bsp/scene_unit_creators.hpp"
+#include "bsp/lua_binding_core.hpp"   // goal 5 chain 652, PrepareClass 008C8F70
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/lua_spawn_cc13.hpp"
 #include "bsp/mission_lobby_settings.hpp"
@@ -1675,7 +1676,11 @@ int binding_trampoline(lua_State* state) {
         && mission_result != nullptr && dispatch_row.address == 0x008b8ad0u;
     const bool play_bink_movie_row = kLuaPlayBinkMovieBound
         && mission_result != nullptr && dispatch_row.address == 0x0089a480u;
-    const bool handled = set_mission_completed_row || play_bink_movie_row
+    // Goal 5 chain 652: PrepareClass 008C8F70 on its body, once the scene
+    // contents have lent the vehicle class registry 0095BA60 marks.
+    const bool prepare_class_row = dispatch_row.address == 0x008c8f70u
+        && host->vehicle_registry() != nullptr;
+    const bool handled = set_mission_completed_row || play_bink_movie_row || prepare_class_row
         || checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || is_invincible_row || set_failure_row || get_failure_row || dead_meat_row
@@ -1716,20 +1721,9 @@ int binding_trampoline(lua_State* state) {
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
         host->note_native_call(static_cast<std::size_t>(row), argc, handled);
-        if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
-            // cc15-vcp2: PrepareClass 008C8F70 (unrouted, see the orders
-            // table) ends each argument with 00964790(arg, DL=1) at 008C92BE,
-            // whose miss path marks the row's ID and Got. Only that mark is
-            // modelled here; the race/party half (resolve_global_integer) stays
-            // unbound. The registry map is the identity in this host.
-            if (dispatch_row.address == 0x008c8f70u) {
-                for (int index = 1; index <= argc; ++index) {
-                    if (lua_type(state, index) != LUA_TNUMBER) continue;
-                    host->mark_scene_vehicle_class_row_00964790(
-                        static_cast<int>(lua_tointeger(state, index)), "008C92BE");
-                }
-            }
-        }
+        // Goal 5 chain 652: the whole body, including the 00964790(arg, DL=1)
+        // at 008C92BE the cc15-vcp2 arm used to run alone here.
+        if (prepare_class_row) return host->run_prepare_class_008c8f70(state);
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
@@ -1756,6 +1750,8 @@ int binding_trampoline(lua_State* state) {
             if (name != nullptr) host->note_created_script(std::string(name));
         }
     }
+    // PrepareClass pushes nothing; its error replay does not run it again.
+    if (prepare_class_row) return 0;
     // The nineteen entity-returning rows of the table end in one recovered tail
     // (docs/LUA_BINDING_ENTITY.md): they push thisTable[key] for the entity they
     // resolved, or, at 0089903C, nil when the lookup produced nothing. This
@@ -6531,11 +6527,21 @@ public:
     void destroy_descriptor(bsp::VehicleClassDescriptor* descriptor) override {
         cache_.destroy_descriptor(descriptor);
     }
-    // 0095BA60 marks the party bitmap at singleton +4010h. This host keeps that
-    // bitmap as GameSceneContentsHost's VehicleClassRegistry::party_required,
-    // which this host cannot reach, so the mark is recorded, not applied.
-    void mark_party_requires_class(std::int32_t, int) override {
-        owner_.log_.unimplemented("VehicleClass::mark_party_requires_class", "0095ba60");
+    // 0095BA60 at 00964F46 marks the party rows at singleton +4010h. This host
+    // keeps them as GameSceneContentsHost's VehicleClassRegistry::party_required,
+    // which goal 5 chain 652 lends here (attach_vehicle_registry); the mark runs
+    // mark_party_requires_class_0095ba60 on it. ECX is [ESP+28h], the value the
+    // body also stores at +70h; the registry's +10h map is the identity here
+    // (type_to_class_index above), so the class index stands for it. Before
+    // load_scene_contents lends the registry the mark stays a record.
+    void mark_party_requires_class(std::int32_t class_index, int party) override {
+        bsp::VehicleClassRegistry* const registry = owner_.vehicle_registry();
+        if (registry == nullptr) {
+            owner_.log_.unimplemented("VehicleClass::mark_party_requires_class", "0095ba60");
+            return;
+        }
+        bsp::mark_party_requires_class_0095ba60(*registry, class_index, party);
+        owner_.log_.implemented("VehicleClass::mark_party_requires_class", "0095ba60");
     }
     bool descriptor_is_kind(bsp::VehicleClassDescriptor* descriptor, int kind) override {
         return cache_.descriptor_is_kind(descriptor, kind);
@@ -6633,6 +6639,141 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
     GameMissionLuaVehicleClassBinding binding(*this);
     bsp::resolve_vehicle_class_00964790(binding, class_index, true);
     ::lua_settop(state_, base);
+}
+
+namespace {
+[[noreturn]] void prepare_class_unreached(const char* what) {
+    throw std::logic_error(std::string("PrepareClass 008C8F70: unreached ") + what);
+}
+
+// What 008C8F70 reads from its frame (bsp.py show 008c8f70 --asm): the count
+// 00B663F0 (008C9066, re-read at 008C92EC) and 00B66290 on argument `index`
+// (008C908E, 008C90CB, 008C92B5). Nothing else.
+class PrepareClassArgs final : public bsp::LuaBindingArgumentReader {
+public:
+    explicit PrepareClassArgs(lua_State* state) noexcept
+        : state_(state), top_(lua_gettop(state)),
+          // 00BF7420's conversion mode, as ObjectiveLuaArguments represents it.
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+    // 00B663F0: the frame's +0Ch, the top snapshot taken when it was opened.
+    int count() override { return top_; }
+    // 00B66290: lua_tonumber, the float32 spill, then 00BF7420.
+    int get_integer(int index) override {
+        return bsp::lua_number_integer_00b66290(lua_tonumber(state_, index + 1), sse2_conversion_);
+    }
+    double get_number(int) override { prepare_class_unreached("00B66270"); }
+    bool get_boolean(int) override { prepare_class_unreached("00B66250"); }
+    std::string get_string(int) override { prepare_class_unreached("00B662B0"); }
+    bool is_string(int) override { prepare_class_unreached("00B660A0"); }
+    bool is_nil(int) override { prepare_class_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { prepare_class_unreached("008889C0"); }
+    void* entity_at(int) override { prepare_class_unreached("00888AA0"); }
+    bool sse2_conversion() const noexcept { return sse2_conversion_; }
+
+private:
+    lua_State* state_;
+    int top_;
+    bool sse2_conversion_;
+};
+
+// The four callees of 008C8F70 over this process's state:
+//  * 004254B0 at 008C9099, "Prepare class %d" (00D153E8): the host log.
+//  * 00B68D70 at 008C91BA over the globals object 00B67980 returns (game+1A0Ch,
+//    this host's live interpreter), then 00B66A60 at 008C9270 and 00B66290 at
+//    008C927D. The ok byte 00B68D70 writes ([ESP+17h]) is never tested.
+//  * 0095BA60 at 008C9297 on the registry the scene contents lend.
+//  * 00964790 at 008C92BE with DL = 1: mark_vehicle_class_row_00964790.
+class PrepareClassHost final : public bsp::LuaBindingCoreHost {
+public:
+    PrepareClassHost(GameMissionLuaHost& owner, GameHostLog& log, lua_State* state,
+        bsp::VehicleClassRegistry& registry, bool sse2_conversion) noexcept
+        : owner_(owner), log_(log), state_(state), registry_(registry),
+          sse2_conversion_(sse2_conversion) {}
+
+    void log_prepare_class(int class_id) override {
+        log_.notef("  Prepare class %d (008C9099 004254B0)", class_id);
+    }
+    bool resolve_global_integer(const std::string& path, int& value) override {
+        const int base = lua_gettop(state_);
+        lua_pushvalue(state_, LUA_GLOBALSINDEX);   // 00B67980
+        // 00B68D70 (src/cc13_front8.cpp lua_object_resolve_dot_path_00b68d70):
+        // split on the first '.'; an empty segment stops the walk; a segment
+        // met on a non-table leaves the value as it is; a nil by name is retried
+        // by index when atol gives non-zero or the segment is "0".
+        std::string rest = path;
+        while (!rest.empty()) {
+            const std::size_t pos = rest.find('.');
+            const std::string segment = pos == std::string::npos ? rest : rest.substr(0, pos);
+            rest = pos == std::string::npos ? std::string() : rest.substr(pos + 1);
+            if (segment.empty()) break;
+            if (!lua_istable(state_, -1)) continue;
+            lua_getfield(state_, -1, segment.c_str());           // 00B68100
+            if (lua_isnil(state_, -1)) {
+                const long n = std::atol(segment.c_str());       // 00BF8417
+                if (n != 0 || _stricmp(segment.c_str(), "0") == 0) {
+                    lua_pop(state_, 1);
+                    lua_rawgeti(state_, -1, static_cast<int>(n)); // 00B67720
+                }
+            }
+            lua_remove(state_, -2);
+        }
+        // 00B66A60: lua type 3, then the float32 integer test.
+        const bool integer = lua_type(state_, -1) == LUA_TNUMBER
+            && bsp::gui_lua_is_integer_number_00b66a60(lua_tonumber(state_, -1));
+        if (integer) {
+            value = bsp::lua_number_integer_00b66290(lua_tonumber(state_, -1), sse2_conversion_);
+        }
+        lua_settop(state_, base);
+        return integer;
+    }
+    void vehicle_class_mark_party_required(int class_id, int party) override {
+        bsp::mark_party_requires_class_0095ba60(registry_, class_id, party);
+        log_.implemented("PrepareClass::mark_party_requires_class", "0095ba60");
+    }
+    void vehicle_class_get_or_create(int class_id, bool read_race) override {
+        if (!read_race) prepare_class_unreached("00964790 with DL = 0");
+        owner_.mark_scene_vehicle_class_row_00964790(class_id, "008C92BE");
+    }
+
+    int game_non_campaign_flag() override { prepare_class_unreached("game+1FE4h"); }
+    int game_effective_difficulty() override { prepare_class_unreached("game+6ACh"); }
+    void music_director_set_level(int) override { prepare_class_unreached("00A788A0"); }
+    void session_send_music_level(int) override { prepare_class_unreached("music level message"); }
+    bool entity_vcall_5c(void*, int) override { prepare_class_unreached("entity +5Ch"); }
+    void entity_vcall_2c(void*, int, std::uint32_t) override { prepare_class_unreached("entity +2Ch"); }
+    void session_route_party_message(void*, int) override { prepare_class_unreached("party message"); }
+    void scoring_set_real_play_time_running(bool) override { prepare_class_unreached("00905340"); }
+    void scoring_set_final_scoring_function_name(const std::string&) override {
+        prepare_class_unreached("0090BFC0");
+    }
+    void message_map_load(const std::string&, int) override { prepare_class_unreached("00706760"); }
+    void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {
+        prepare_class_unreached("0088B6D0");
+    }
+    void entity_set_think_script_name(void*, const std::string&) override {
+        prepare_class_unreached("0088A330");
+    }
+    void set_entity_message_suppression(void*, bool) override { prepare_class_unreached("008CFFE9"); }
+    void set_global_message_suppression(bool) override { prepare_class_unreached("008CFFFC"); }
+    void message_system_drain_queue() override { prepare_class_unreached("0096BF70"); }
+
+private:
+    GameMissionLuaHost& owner_;
+    GameHostLog& log_;
+    lua_State* state_;
+    bsp::VehicleClassRegistry& registry_;
+    bool sse2_conversion_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_prepare_class_008c8f70(lua_State* state) {
+    if (vehicle_registry_ == nullptr)
+        throw std::logic_error("PrepareClass 008C8F70 requires the lent vehicle class registry");
+    PrepareClassArgs args(state);
+    PrepareClassHost host(*this, log_, state, *vehicle_registry_, args.sse2_conversion());
+    const int results = bsp::lua_binding_prepare_class(args, host);
+    log_.implemented("MissionLuaNative::PrepareClass", "008c8f70");
+    return results;
 }
 
 const bsp::VehicleClassBaseFields* GameMissionLuaHost::loaded_vehicle_class_base_fields(
