@@ -1069,6 +1069,10 @@ struct GameVehicleClassRow {
     // class with a non-zero value in free flight when it touches the water.
     // Packet cc9_water_surface_law.
     float min_water_spd{0.0f};
+    // desc+19Ch MaxWaterSpd (007D1F70 reads it after MinWaterSpd). 007CBA50's
+    // water-impact test (007CBAF9) splashes a dead aircraft faster than this.
+    // Goal 5 chain 645.
+    float max_water_spd{0.0f};
     // desc+268h TurnCircleRadius. The dive-bomb approach constructor 009C3EA0
     // multiplies it twice, at 009C3F86 into approach+B4h and at 009C3FB5 into
     // approach+B8h/+BCh. Packet cc8_dive_race.

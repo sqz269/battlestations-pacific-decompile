@@ -154,6 +154,26 @@ void raise_plane_named_effect(GameUnitsHost::Impl& host, GameUnitSlot& unit,
         : bsp::PlaneDeathMode::Explosion;
     unit.plane_raised_routed = std::move(r.routed);
 }
+
+// The dead aircraft's "splash" (007CC3C7 in the free-flight arm, 007CBB90 at the
+// water surface): vtable[194h](&"splash", 0), then unit+911h = 1 (007CC418 /
+// 007CBBE0) whatever 007BBFA0 did. +5Dh is set, so 007D0B80 keeps unit+C10h; its
+// 64h arm records 007BC4E0 and 007DE600 and sets +C39h. In the water state (6)
+// the free-flight gate is clear, so 007BBFA0 forces an explosion below 1 km/h
+// and the 63h arm's Kill takes the aircraft out. True when it was killed.
+bool raise_dead_plane_splash(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
+    const s47_effects::NamedEffectResult r = run_plane_named_effect(host, unit,
+        unit.process_index, s47_effects::NamedEffect::Splash);
+    const bool killed = deliver_plane_failure_messages(host, unit, r.routed, true);
+    unit.plane_splashed_911 = true;
+    if (killed) unit.plane_death_removed = true;
+    host.log.notef("plane splash: unit=%s t=%.2f state=%d y=%.2f forced=%d c39=%d removed=%d "
+        "(007BBFA0 \"splash\" -> 007D0B80, unit+911h set)", unit.row.name.c_str(),
+        static_cast<double>(host.summary.simulated_seconds), unit.plane_control_mode_900,
+        static_cast<double>(unit.world[13]), r.forced_explosion ? 1 : 0,
+        unit.plane_death_c39 ? 1 : 0, killed ? 1 : 0);
+    return killed;
+}
 }  // namespace
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
@@ -1499,6 +1519,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (!dead_5d) {
                                 owner_.plane_site_probe_007c5ac0(unit_, step);
                                 owner_.plane_touchdown_007cc440(unit_);
+                            }
+                        }
+                        // Goal 5 chain 645: 007CC375..007CC41F, the arm's dead branch
+                        // (bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0): a dead
+                        // aircraft (+5Dh, the touchdown block's test) whose +911h is
+                        // clear raises "splash" once it is below 3.0 m (00CE3854,
+                        // unit+100h after the 00414DB0 refresh, the published pose).
+                        // game+1FE4h is 0, so the session-2 exception does not apply.
+                        {
+                            const bool dead_5d = unit_.plane_death_c3a || unit_.plane_death_removed
+                                || (owner_.gunnery != nullptr
+                                    && owner_.gunnery->unit_dead(unit_.process_index));
+                            bsp::gameplay_seg47_cc13::FreeFlightTailInputs tail;
+                            tail.dead_5d = dead_5d && !unit_.plane_death_removed;
+                            tail.has_game_e188a8 = true;
+                            tail.session_mode_1fe4 = 0;
+                            tail.splashed_911 = unit_.plane_splashed_911;
+                            tail.pos_y_100 = unit_.world[13];
+                            if (bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0(tail)
+                                == bsp::gameplay_seg47_cc13::FreeFlightTail::DeadSplash) {
+                                owner_.done("Plane::free_flight_tail_007cc2f0", 0x007cc375u);
+                                if (raise_dead_plane_splash(owner_, unit_)) return;
                             }
                         }
                         // 007CC523-007CC562, the free-flight arm own water
@@ -21998,8 +22040,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // Packet cc9_plane_water_law: 007CBA50 (docs/PLANE_GROUND_OPS.md
                     // section 7, docs/WATER_SURFACE_LAW.md sections 10-11).
                     // SUBSTITUTIONS, labelled:
-                    // * step 2, the "splash" effect and its unit+911h latch, is not
-                    //   carried: it raises a presentation effect only;
+                    // * step 2 (goal 5 chain 645): the "splash" raise and its unit+911h
+                    //   latch are carried; its speed is vtable+204h, taken as below;
                     // * step 5's hull list desc+5BCh and unit+770h are not carried, so
                     //   unit+770h stands clear and the lift-off is the 1.5 m test alone;
                     // * vtable+204h is taken as the world speed, as vtable+38h is;
@@ -22026,6 +22068,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         refresh_attitude_007c1900();
                         pilot_think_and_commit(step);
                         owner_.plane_site_probe_007c5ac0(unit_, step);   // step 1, vtable[+1ECh]
+                        // Step 2, 007CBA90..007CBBE0 (bsp.py disasm-raw 007cba50): a dead
+                        // plane (unit+5Dh, as step 3 reads it) outside session mode 2
+                        // whose +911h is clear, below 3.0 m (00CE3854 COMISS/JBE against
+                        // unit+100h after 00414DB0, the published pose), raises "splash"
+                        // when 007CBB91's test holds (bsp::water_impact_is_splash_007cbb91):
+                        // speed (vtable+204h) above desc+19Ch MaxWaterSpd, unit+ACCh (world
+                        // vy) below -tuning+2B4h, unit+C64h below -tuning+2B8h or above
+                        // +2BCh, |unit+C68h| above +2C0h ([0042E740]+210h+A4h..+B0h).
+                        // Without the loaded tuning block the test is not run.
+                        if (unit_.plane_death_c3a && !unit_.plane_death_removed
+                            && !unit_.plane_splashed_911 && 3.0f > unit_.world[13]
+                            && owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& tg = owner_.lua.plane_globals();
+                            const float* const sv = unit_.plane_world_velocity;
+                            bsp::PlaneWaterImpactInputs wi;
+                            wi.speed = std::sqrt(sv[0] * sv[0] + sv[1] * sv[1] + sv[2] * sv[2]);
+                            wi.class_max_water_spd = unit_.plane_max_water_spd_19c;
+                            wi.vertical_rate = sv[1];
+                            wi.pitch = unit_.plane_pitch_angle_c64;
+                            wi.roll = unit_.plane_bank_angle_c68;
+                            wi.tuning_water_max_vspd = tg.dynamics_water_max_v_spd;
+                            wi.tuning_water_max_down_pitch = tg.dynamics_water_max_down_pitch;
+                            wi.tuning_water_max_up_pitch = tg.dynamics_water_max_up_pitch;
+                            wi.tuning_water_max_roll = tg.dynamics_water_max_roll;
+                            if (bsp::water_impact_is_splash_007cbb91(wi)) {
+                                owner_.done("Plane::water_impact_splash_007cbb91", 0x007cbb91u);
+                                if (raise_dead_plane_splash(owner_, unit_)) return;
+                            }
+                        }
                         // Step 3, 007CBBE7-007CBC14: a dying plane (unit+5Dh) whose
                         // ctl+94h is clear gets 007D8180(0) and unit+C10h = 99.0.
                         if (unit_.plane_death_c3a && !unit_.plane_ctl_94) {

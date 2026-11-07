@@ -700,6 +700,11 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     std::int32_t plane_c18{5};
     float plane_wheel_height_1fc{0.0f};       // classDesc+1FCh WheelHeight
     float plane_min_water_spd_198{0.0f};      // classDesc+198h MinWaterSpd
+    float plane_max_water_spd_19c{0.0f};      // classDesc+19Ch MaxWaterSpd
+    // unit+911h, the "splash" latch: set once a dead aircraft has raised
+    // "splash" (007CC418 in the free-flight arm, 007CBBE0 at the water
+    // surface), so it raises it once. Goal 5 chain 645.
+    bool plane_splashed_911{false};
     // DIAGNOSTIC counters for the probe and the touchdown test.
     unsigned long long td_probes{0}, td_contact_steps{0}, td_low_steps{0};
     unsigned long long td_refused_airborne{0}, td_refused_vy{0}, td_touchdowns{0};

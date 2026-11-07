@@ -8009,6 +8009,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // BSP_Memory_AllocZeroed (00470B80). This installation authors neither
             // for the P-40 or the P-38.
             slot->plane_min_water_spd_198 = lua_row.min_water_spd;
+            slot->plane_max_water_spd_19c = lua_row.max_water_spd;   // goal 5 chain 645
             if constexpr (Impl::kPlaneTouchdownBound) {
                 constexpr float kAbsent = -1.0e30f;
                 const float wh = host.lua.read_vehicle_class_number(row.type_id, "WheelHeight", kAbsent);
