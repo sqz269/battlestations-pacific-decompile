@@ -680,7 +680,7 @@ void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, Seg15Host& host) {
 
 // 0052CBF0, slot +10h: page GUI_counters into +8h; the HP entry (+0Ch) is built
 // from the page and the twelve names; the countdown entry (+10h) clones it.
-void hud_counters_register_0052cbf0(Raw s, Seg15Host& host) {
+void hud_counters_register_0052cbf0(Raw s, HudCountersRegisterHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_counters");
     static constexpr std::string_view kNames[12] = {

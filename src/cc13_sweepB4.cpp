@@ -38,6 +38,11 @@ void release_string(Cc13SweepBNativeString& text, Cc13SweepBHost& host) {
         host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
     }
 }
+void release_string(Cc13SweepBNativeString& text, Cc13SweepB4CounterEntryHost& host) {
+    if (text.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
+    }
+}
 
 // The inlined debug-checked iterator dereference: container {+0 proxy,
 // +4 head}; a null container or node == head calls 00BF6713, which may
@@ -474,7 +479,8 @@ void cc13_sweepB4_hud_counter_layout_countdown_0052a860(void* entry, Cc13SweepBN
 // screen) at 0052CD2A, so the widget gets that pointer as its argument; the
 // mis-balanced RET 4 is absorbed by MOV ESP, EBP.
 void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root, const char* const* names,
-                                                        std::int32_t caller_edi, Cc13SweepB4Host& host) {
+                                                        std::int32_t caller_edi,
+                                                        Cc13SweepB4CounterEntryHost& host) {
     at<std::uint32_t>(entry, 0x70) = 0;
     at<std::uint32_t>(entry, 0x74) = 0;
     at<std::uint32_t>(entry, 0x78) = 0;

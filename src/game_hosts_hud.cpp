@@ -97,6 +97,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstddef>
+#include <deque>
 #include <intrin.h>
 #include <map>
 #include <memory>
@@ -773,10 +774,11 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // (run_hud_leaf_screen_layout). 005CCE70 (38h) loads its page and two children
 // and reads the platform object's widescreen byte. 00643E80 (43h) loads
 // GUI_spectator into +8h and then stores +4h = 1 (00643F26), the wanted byte of
-// the flags the registry borrows.
-constexpr std::array<std::uint32_t, 13> kHudLeafScreenRegisters{{
+// the flags the registry borrows. 0052CBF0 (51h, goal 5 chain 662) loads
+// GUI_counters into +8h and builds its two counter entries.
+constexpr std::array<std::uint32_t, 14> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
-    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u, 0x00643E80u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u, 0x00643E80u, 0x0052CBF0u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -977,6 +979,122 @@ private:
     const void* platform_object_{nullptr};
 };
 
+// Goal 5 chain 662: the HUD counters screen (51h), the countdown / unit-HP /
+// score panel the mission scripts drive. Its register 0052CBF0 (bsp.py show
+// 0052cbf0 --asm) is 004F71D0, GUI_counters (00CED190) through 00AA5840(name,
+// 1, 0) into +8h, then two 0ACh blocks, each operator new 00BF55BE and memset
+// 00BF79F0: +0Ch = 0052C1B0(page root, the twelve names) with EDI = the screen,
+// +10h = 0052C640(+0Ch). The widgets are the page's own GuiLayoutWidgets, as for
+// the other leaves; the blocks are owned by the screen block, which the native
+// destructor 0052CDF0 frees them with.
+GuiLayoutWidget& hud_counters_widget(void* widget, const char* routine) {
+    if (widget == nullptr)
+        throw std::logic_error(std::string(routine) + " reached a widget GUI_counters lacks");
+    return *static_cast<GuiLayoutWidget*>(widget);
+}
+
+// 0052C1B0's services. Each name temporary is built in this process's actual
+// string pool (0041E870, bsp.py show 0041e870: a constructor, length and data
+// zeroed first) and returned to it; 00AA7E00 is the direct-child lookup.
+// 00AA67F0 is LEA EAX,[ECX+0Ch] and 00AA6740 hands out +20h: the widget's Pos and
+// Size (GuiWidgetTransform). Virtual +34h is 00AA8530, which tests only BL.
+class HudCounterEntryConstructBinding final : public bsp::Cc13SweepB4CounterEntryHost {
+public:
+    explicit HudCounterEntryConstructBinding(GameFrontendHost& frontend) : frontend_(frontend) {}
+    void* native_string_assign_0041e870(void* string, const char* text) override {
+        return bsp::construct_native_string_header_0041e870(string, pool_.strings, text);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        return bsp::find_child_by_name_00aa7e00(hud_counters_widget(widget, "00AA7E00"),
+            HudLeafStringPool::name(name));
+    }
+    const float* gui_widget_get_local_position_00aa67f0(void* widget) override {
+        return &hud_counters_widget(widget, "00AA67F0").transform.position.x;
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        frontend_.set_widget_visible(hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+private:
+    GameFrontendHost& frontend_;
+    HudLeafStringPool pool_;
+};
+
+// 0052C640's services. 00AAB4C0(widget, null) copies the subtree under the
+// source's parent (GameFrontendHost::clone_page_widget_subtree); virtual
+// +28h hands out the widget's own name, an eight-byte {length, data} header that
+// 00AA7E00 reads, which here points into the widget's key.
+class HudCounterEntryCloneBinding final : public bsp::Cc13SweepBCounterCloneHost {
+public:
+    HudCounterEntryCloneBinding(GameFrontendHost& frontend, std::string page)
+        : frontend_(frontend), page_(std::move(page)) {}
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        frontend_.set_widget_visible(hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void* widget_vcall_28_name(void* widget) override {
+        const GuiLayoutWidget& w = hud_counters_widget(widget, "widget +28h");
+        std::array<std::uint32_t, 2> header{static_cast<std::uint32_t>(w.key.size()),
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(w.key.c_str()))};
+        names_.push_back(header);
+        return names_.back().data();
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        return bsp::find_child_by_name_00aa7e00(hud_counters_widget(widget, "00AA7E00"),
+            HudLeafStringPool::name(name));
+    }
+    void* widget_clone_subtree_00aab4c0(void* widget, void* parent_clone) override {
+        if (parent_clone != nullptr)
+            throw std::logic_error("0052C640 passes 00AAB4C0 a null parent clone");
+        return frontend_.clone_page_widget_subtree(page_, hud_counters_widget(widget, "00AAB4C0"));
+    }
+private:
+    GameFrontendHost& frontend_;
+    std::string page_;
+    std::deque<std::array<std::uint32_t, 2>> names_;
+};
+
+class HudLeafCountersRegisterBinding final : public bsp::frontend_seg15_22_cc13::HudCountersRegisterHost {
+public:
+    explicit HudLeafCountersRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void* gui_load_page_00aa5840(std::string_view name) override {
+        page_ = std::string(name);
+        return context_.load_page(name);
+    }
+    bsp::ingame_gui_cc13::Raw counter_entry_construct_0052c1b0(void* page,
+        const std::string_view (&names)[12]) override {
+        const char* cnames[12];
+        for (std::size_t i = 0; i < 12; ++i) cnames[i] = names[i].data();  // image literals
+        void* const entry = context_.screen.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryConstructBinding b(context_.menu.frontend());
+        // EDI at 0052CD2A is the register's ECX, the counters screen.
+        const auto edi = static_cast<std::int32_t>(
+            reinterpret_cast<std::uintptr_t>(context_.screen.data()));
+        bsp::cc13_sweepB4_hud_counter_entry_construct_0052c1b0(entry, page, cnames, edi, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+    bsp::ingame_gui_cc13::Raw counter_entry_clone_0052c640(bsp::ingame_gui_cc13::Raw source) override {
+        if (source.p == nullptr)
+            throw std::logic_error("0052C640 clones a counter entry 0052C1B0 did not build");
+        void* const entry = context_.screen.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryCloneBinding b(context_.menu.frontend(), page_);
+        bsp::cc13_sweepB_counter_entry_construct_clone_0052c640(entry, source.p, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+private:
+    static constexpr std::size_t kCounterEntryBytes = 0xAC;  // 0052CC93 / 0052CD33 PUSH 0ACh
+    HudLeafRegisterContext& context_;
+    std::string page_;
+};
+
 // The layout virtuals (+14h) those registers call through the screen's own
 // vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
 // the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
@@ -1088,6 +1206,7 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
     case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
     case 0x00643E80u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::spectator_register_00643e80(raw, b); return; }
+    case 0x0052CBF0u: { HudLeafCountersRegisterBinding b(context); bsp::frontend_seg15_22_cc13::hud_counters_register_0052cbf0(raw, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");

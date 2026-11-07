@@ -543,7 +543,17 @@ void hud_counters_show_score_pair_0052cac0(Raw s, std::int32_t index, std::strin
                                            std::uint32_t v0, std::uint32_t v1, Seg15Host& host);
 void hud_counter_entry_destruct_0052c0c0(Raw entry, Seg15Host& host);
 void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, Seg15Host& host);
-void hud_counters_register_0052cbf0(Raw s, Seg15Host& host);
+// The four services 0052CBF0 calls, with Seg15Host's signatures (goal 5 chain
+// 662): the HUD host runs the register on its own counters block (slot 51h)
+// without the other Seg15Host services.
+struct HudCountersRegisterHost {
+    virtual ~HudCountersRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
+    virtual Raw counter_entry_construct_0052c1b0(void* page, const std::string_view (&names)[12]) = 0;
+    virtual Raw counter_entry_clone_0052c640(Raw source) = 0;
+};
+void hud_counters_register_0052cbf0(Raw s, HudCountersRegisterHost& host);
 void hud_counters_destruct_0052cdf0(Raw s, Seg15Host& host);
 // 0052CF00, __thiscall(screen, index), RET 4.
 void hud_counters_remove_entry_widget_0052cf00(Raw s, std::int32_t index, Seg15Host& host);

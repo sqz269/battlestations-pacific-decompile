@@ -381,11 +381,29 @@ void cc13_sweepB4_hud_formation_build_quad_model_00536310(void* screen, float si
 void cc13_sweepB4_free_camera_effect_update_0053ee00(void* effect, float dt, const void* camera,
                                                      Cc13SweepB4Host& host);
 
+// The seven services 0052C1B0 calls, with Cc13SweepBHost's / Cc13SweepB3Host's
+// signatures (goal 5 chain 662). Its one caller, the HUD counters screen
+// register 0052CBF0, runs it on the HUD host's own counters block without the
+// other sweep services.
+class Cc13SweepB4CounterEntryHost {
+public:
+    virtual ~Cc13SweepB4CounterEntryHost() = default;
+    virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+    virtual void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t unused) = 0;
+    virtual const float* gui_widget_get_local_position_00aa67f0(void* widget) = 0;
+    virtual const float* gui_widget_get_size_00aa6740(void* widget) = 0;
+    virtual void widget_vcall_34_set_visible(void* widget, std::int32_t show) = 0;
+};
+
 // 0052C1B0 BSP_HudCounterEntry_Construct(entry, root, names[12]): returns
 // entry. caller_edi is the caller's EDI, which the image passes to the final
 // +0h->+34h call without pushing an argument (see the .cpp).
 void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root, const char* const* names,
-                                                        std::int32_t caller_edi, Cc13SweepB4Host& host);
+                                                        std::int32_t caller_edi,
+                                                        Cc13SweepB4CounterEntryHost& host);
 
 // 00529D70 BSP_HudCounter_LayoutTimer(entry, a, b).
 void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativeString a,

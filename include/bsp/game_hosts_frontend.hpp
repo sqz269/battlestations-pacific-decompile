@@ -268,6 +268,14 @@ public:
     // stays visible in the report. `source` and `parent` must belong to `page`.
     GuiLayoutWidget* clone_runtime_widget(const std::string& page,
         const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key);
+    // 00AAB4C0 BSP_GuiWidget_CloneSubtree(widget, parent_clone = null), as 0052C640
+    // calls it (goal 5 chain 662): the subtree is copied under the source's own
+    // parent (+70h) with every widget's name, transform and visible flag, and each
+    // copy keeps its source's visibility standing (an applied flag stays applied,
+    // an authored one stays authored). Unlike clone_runtime_widget nothing is
+    // forced visible. The source must belong to `page` and have a parent.
+    GuiLayoutWidget* clone_page_widget_subtree(const std::string& page,
+        const GuiLayoutWidget& source);
     // 00aa7dc0 BSP_GuiWidget_SetLocalPositionAndBounds and the widget rotation
     // virtual +44h, as the two per-frame passes call them on an icon. Both
     // invalidate the quad list.

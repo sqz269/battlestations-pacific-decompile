@@ -1679,7 +1679,54 @@ void show_runtime_subtree(GameFrontendHost::Impl& host, GuiLayoutWidget& widget)
     }
 }
 
+// clone_widget_tree keeps the child order, so the two trees walk in step.
+void mirror_applied_visibility(GameFrontendHost::Impl& host, const GuiLayoutWidget& source,
+    const GuiLayoutWidget& clone) {
+    if (host.visibility_applied.count(&source) != 0) host.visibility_applied.insert(&clone);
+    std::size_t c = 0;
+    for (const auto& child : source.children) {
+        if (!child) continue;
+        if (c >= clone.children.size()) break;
+        mirror_applied_visibility(host, *child, *clone.children[c]);
+        ++c;
+    }
+}
+
+// 00AAB4C0's per-widget 00AA6560 builds each copy with its own scene node
+// (00AA6640: 00B74EB0 + 00B75030), which this process does not allocate. The
+// copies take the loader's diagnostic node ids instead, never zero, so a later
+// 00AA7E00 finds them by name as it finds the page's own widgets.
+void assign_clone_nodes(GameFrontendHost::Impl& host, GuiLayoutWidget& widget) {
+    host.log.unimplemented("GuiLayoutHost::allocate_model_slot", "00b74eb0");
+    host.log.unimplemented("GuiLayoutHost::create_widget_node", "00b75030");
+    widget.node_id = static_cast<std::uint32_t>(++host.node_counter);
+    for (const auto& child : widget.children) {
+        if (child) assign_clone_nodes(host, *child);
+    }
+}
+
 }  // namespace
+
+GuiLayoutWidget* GameFrontendHost::clone_page_widget_subtree(const std::string& page,
+    const GuiLayoutWidget& source) {
+    Impl& host = *impl_;
+    // 00AAB4C0 with a null parent_clone attaches the copy under the source's +70h
+    // (bsp.py show 00aab4c0, src/cc13_gui1.cpp); a parentless source would leave
+    // the copy detached, which no caller of this binding has.
+    if (source.parent == nullptr)
+        throw std::logic_error("00AAB4C0 clone of a widget with no parent");
+    GuiLayoutWidget& parent = *source.parent;
+    std::unique_ptr<GuiLayoutWidget> clone = clone_widget_tree(source, source.key);
+    clone->parent = &parent;
+    clone->transform.parent = &parent.transform;
+    GuiLayoutWidget* borrowed = clone.get();
+    parent.children.push_back(std::move(clone));
+    assign_clone_nodes(host, *borrowed);
+    mirror_applied_visibility(host, source, *borrowed);
+    host.record_widgets(page, *borrowed, 0, parent.key, true);
+    host.quads_built = false;
+    return borrowed;
+}
 
 GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,
     const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key) {
