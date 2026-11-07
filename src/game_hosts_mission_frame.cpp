@@ -984,12 +984,12 @@ enum class WarningActivate {
     kill_6c,  // 0097F970, the kill warning: victim +6Ch, relation test
     hit_80,   // 0097FA90, the hit warning: entity +80h, relation test
     // 0097FBB0, the exit-zone warning (00D1B344): sounds for entity +80h, then the
-    // message, with no relation test (src/cc13_seg62_seg65.cpp
-    // exit_zone_warning_activate_0097fbb0; goal 5 chain 634).
+    // message, with no relation test (the Raw form of 0097FBB0 in
+    // src/cc13_seg62_seg65.cpp; goal 5 chain 634).
     exit_zone_80,
     // 0097F7E0, the recon warning (00D1B2A8): the variants of id + "player" when +98h is
-    // set, sounds for entity +80h, the message with no relation test (src/cc13_seg62_seg65.cpp
-    // recon_warning_activate_0097f7e0; goal 5 chain 634).
+    // set, sounds for entity +80h, the message with no relation test (the Raw form of
+    // 0097F7E0 in src/cc13_seg62_seg65.cpp; goal 5 chain 634).
     recon_80,
 };
 void warning_activate_cc15(GameMissionFrameHost::Impl& host,
@@ -1579,7 +1579,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
 // the same object is the warning of the damage tails of 009832F0 ("leak"), 00983780
 // ("fire") and 00982C50 ("failure" + kind), each operator_new(84h), 00974150, 009763E0
 // (bsp.py show 009832f0 / 00983780 / 00982c50; src/cc13_seg62_seg65.cpp
-// report_local_damage_warning and dispatch_failure_00982c50 give the raw forms).
+// report_local_damage_warning and the 00982C50 body give the raw forms).
 // The record/report step is shared with the exit-zone warning (00975340, vtable
 // 00D1B344), an entity warning of the same base 00973BA0 with its own type and activate.
 bsp::WarningReportResult game_warning_report_entity_based(GameMissionFrameHost::Impl& host,
@@ -3718,7 +3718,7 @@ namespace {
 
 // Goal 5 chain 634. The guard the damage tails of 009832F0 / 00983780 run whole and
 // 00982C50 runs up to its suppression byte (src/cc13_seg62_seg65.cpp
-// report_local_damage_warning / dispatch_failure_00982c50), as does 00982120's
+// report_local_damage_warning / the 00982C50 body), as does 00982120's
 // exit-zone tail (00982447..009824BF), inside the manager lock after the channel's
 // listener pass:
 //  - +104h, set only by 00979670 (Lua OverrideMessage) from a listener the dispatcher
