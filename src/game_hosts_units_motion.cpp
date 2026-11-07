@@ -32,10 +32,12 @@ void stop_all_plane_engines(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
 // use, the startup RandomThreads' stream 1, and its count [unit+538h]+7Ch is the
 // class's NumEngines, the key +140h reads too.
 s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
-    GameUnitSlot& unit, std::size_t index, s47_effects::NamedEffect effect) {
+    GameUnitSlot& unit, std::size_t index, s47_effects::NamedEffect effect,
+    std::optional<std::int32_t> lua_engine_index = std::nullopt) {
     GameGunneryHost* const gh = host.gunnery.get();
     s47_effects::NamedEffectInputs ne;
     ne.effect = effect;
+    ne.lua_engine_index = lua_engine_index;
     ne.flight_state_900 = unit.plane_control_mode_900;
     ne.controller_gate_72c = [&unit] { return unit.plane_control_mode_900 == 7; };
     ne.cached_speed_b1c = bsp::plane_cached_speed_b1c_007d8020(unit.plane_world_velocity);
@@ -199,6 +201,43 @@ bool raise_dead_plane_splash(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
     return killed;
 }
 }  // namespace
+
+// Goal 5 chain 654. SetFailure (0088EFF0) on a plane: 007BBFA0(name, frame) at
+// 0088F14C. "enginefire" (LOMP 08_lightning_strike.lua and 09_samar.lua raise it
+// on flying squadron planes) takes the frame's argument 2 as the engine (00B66290,
+// truncated, 0 when absent), so it draws only for an explicit -1; its 65h copy
+// reaches 007D0B80, whose arm runs 007EB0B0 on the engine list and skips the death
+// tail. A forced explosion (state outside 4..7, or a slow plane off the controller
+// gate, 007BBFC7-007BC031) routes 63h instead, whose 007D0B80 arm kills the plane:
+// that Kill is 00926D90(unit, 1) (007D0CFD), taken through the gunnery host's
+// funnel as 007CE3A7's depth kill is. LABELLED, as for the other raises: the copy
+// is delivered at the call, not at the session drain. NOT APPLIED (counted by the
+// caller): the other names. None is raised on a plane by this installation's
+// scripts, and their 007D0B80 tails (C39h / C36h, then +C3Ah and vtable[70h](1))
+// would kill a plane the gunnery host still holds alive.
+bool GameUnitsHost::script_plane_set_failure(std::size_t index, const std::string& name,
+                                             std::int32_t engine_index, bool& applied) {
+    Impl& host = *impl_;
+    applied = false;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& unit = *host.slots[index];
+    if (unit.motion_dispatch.entry != 0x007ce040u) return false;
+    const s47_effects::NamedEffect effect = s47_effects::named_effect_from_name(name.c_str());
+    if (effect != s47_effects::NamedEffect::EngineFire) return true;
+    const s47_effects::NamedEffectResult r =
+        run_plane_named_effect(host, unit, index, effect, engine_index);
+    const bool dead_5d = unit.plane_death_c3a
+        || (unit.state != nullptr && unit.state->simulate != 0);   // unit+5Dh
+    const bool killed = deliver_plane_failure_messages(host, unit, r.routed, dead_5d);
+    if (killed && host.gunnery != nullptr) host.gunnery->kill_unit_00926d90(index, 1);
+    applied = true;
+    host.log.notef("plane SetFailure: unit=%s \"%s\" engine=%d t=%.2f forced=%d routed=%zu "
+        "killed=%d (0088EFF0 -> 007BBFA0 -> 007D0B80 -> 007EB0B0, goal 5 chain 654)",
+        unit.row.name.c_str(), name.c_str(), engine_index,
+        static_cast<double>(host.summary.simulated_seconds), r.forced_explosion ? 1 : 0,
+        r.routed.size(), killed ? 1 : 0);
+    return true;
+}
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;

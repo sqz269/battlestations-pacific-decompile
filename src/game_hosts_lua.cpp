@@ -14278,11 +14278,13 @@ constexpr int kFailureShipKindOfClassId = 4;
 //     clears the byte.
 //   "Periscope": 00813595 009373C0 on [unit+1018h] unless +122Ch == 2.
 // Other classes: 00953DA0 sends 7Dh for "InferiorFailure" (+720h); the airfield's
-// 006D2210 tests RunwayFailure / HangarFailure first.
+// 006D2210 tests RunwayFailure / HangarFailure first. Goal 5 chain 654: the plane
+// vtables' +194h is 007BBFA0, whose "enginefire" arm reads the frame's argument 2
+// (the third Lua argument) through 00B66290 (GameUnitsHost::script_plane_set_failure).
 // SUBSTITUTIONS (labelled): the ship test is IsKindOf(4) through the units host,
 // standing in for the eight vtables; the messages apply at the call, not on the
-// session pump; the Explosion keeps only msg+30h; the non-ship arms are counted
-// and not applied.
+// session pump; the Explosion keeps only msg+30h; the other non-ship arms, and the
+// plane's names other than "enginefire", are counted and not applied.
 int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_count) {
     ++summary_.set_failure_calls;
     const char* text = argument_count >= 2 ? ::lua_tostring(state, 2) : nullptr;
@@ -14320,6 +14322,17 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
         const float damage = argument_count >= 6
             ? static_cast<float>(::lua_tonumber(state, 6)) : 0.0f;
         arm = units->gunnery()->script_set_failure_008132c0(index, name, seconds, damage);
+    } else {
+        // 007BC0AA-007BC0D5: 00B677E0(frame, 2) then 00B66290, lua_tonumber
+        // truncated (a missing argument reads 0).
+        const bool conversion_mode =
+            IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+        const std::int32_t engine_index = argument_count >= 3
+            ? bsp::lua_number_integer_00b66290(::lua_tonumber(state, 3), conversion_mode)
+            : 0;
+        bool applied = false;
+        if (units->script_plane_set_failure(index, name, engine_index, applied) && applied)
+            arm = 20;
     }
     if (arm != 0) ++summary_.set_failure_applied;
     else ++summary_.set_failure_other;
