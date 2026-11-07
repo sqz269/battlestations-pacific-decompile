@@ -1907,9 +1907,21 @@ public:
     void hud_root_set_field_1c(std::uint32_t value) override {
         owner_.set_root_closed_value(static_cast<std::int32_t>(value));
     }
-    bool screen_2b_wanted() override { return false; }
-    void screen_2b_set_mode(bool) override {
-        owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+    // The free-camera screen 2Bh, ECX = [manager+90h], on its 00540BA0 leaf
+    // block: 0068C40E tests its +4h (the FrontEndScreen's wanted flag) inline,
+    // and 0068C440 / 0068C449 call 0053D290 with 0 or 1.
+    bool screen_2b_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFreeCameraScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2b_set_mode(bool mode) override {
+        std::uint8_t* const s = leaf_block_at(kFreeCameraScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::free_camera_screen_set_28", 0x0053d290u);
+        bsp::cc13_front5::dword_28_set_0053d290({s}, mode ? 1u : 0u);
     }
     bool screen_34_query() override {
         if constexpr (kHudHintsSecondsLeftBound) {
@@ -1928,8 +1940,16 @@ public:
             return record_false("0054d3c0", 0x0054d3c0u);
         }
     }
-    bool screen_2a_wanted() override { return false; }
-    void screen_2a_clear_wanted() override {}
+    // The formation screen 2Ah, [manager+5Ch], on its 00538E30 leaf block:
+    // 0068C6D4..0068C6E3 tests its +4h and clears it with MOV byte [EAX+4],0,
+    // the wanted flag the menu registry borrows, before 0068AB80(1, 1).
+    bool screen_2a_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2a_clear_wanted() override {
+        if (FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset)) f->wanted = false;
+    }
     // 0068C685..0068C698: ECX = [manager+64h], the order screen 3Bh that
     // 0068CC70 builds on its leaf block through 005F9440 (its register 005F9FF0
     // runs there too); CMP byte [EAX+81h] / [EAX+82h], inline.
@@ -1954,8 +1974,8 @@ public:
     // 0068C80B test its +4h inline: the FrontEndScreen flag the menu registry
     // sets when the screen is shown.
     bool map_screen_wanted() override {
-        const std::uint8_t* const s = leaf_block_at(kPowerupScreenOffset);
-        return s != nullptr && s[0x04] != 0;
+        const FrontEndScreen* const f = leaf_flags_at(kPowerupScreenOffset);
+        return f != nullptr && f->wanted;
     }
     // 00612DA0 starts on the widgets its register 00614170 loads (+B0h, +D4h,
     // +E4h..+ECh), and that register does not run on the leaf block (chain
@@ -2068,14 +2088,24 @@ public:
 
 private:
     // The manager slots the reads above dereference (src/ingame_interface.cpp).
-    static constexpr std::uint16_t kOrderScreenOffset = 0x64;    // screen 3Bh
-    static constexpr std::uint16_t kSupportScreenOffset = 0xBC;  // screen 4Eh
-    static constexpr std::uint16_t kPowerupScreenOffset = 0xC0;  // screen 4Fh
-    // [manager+offset] when 0068CC70 built that screen on a leaf block, else null.
-    std::uint8_t* leaf_block_at(std::uint16_t offset) const {
+    static constexpr std::uint16_t kFormationScreenOffset = 0x5C;   // screen 2Ah
+    static constexpr std::uint16_t kOrderScreenOffset = 0x64;       // screen 3Bh
+    static constexpr std::uint16_t kFreeCameraScreenOffset = 0x90;  // screen 2Bh
+    static constexpr std::uint16_t kSupportScreenOffset = 0xBC;     // screen 4Eh
+    static constexpr std::uint16_t kPowerupScreenOffset = 0xC0;     // screen 4Fh
+    // The leaf block 0068CC70 built for [manager+offset], or null.
+    HudLeafScreenStorage* leaf_at(std::uint16_t offset) const {
         const std::size_t index = bsp::in_game_hud_screen_index_at(offset);
-        if (index >= kInGameHudScreenCount || !owner_.leaf_screens[index]) return nullptr;
-        return owner_.leaf_screens[index]->data();
+        return index < kInGameHudScreenCount ? owner_.leaf_screens[index].get() : nullptr;
+    }
+    std::uint8_t* leaf_block_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? leaf->data() : nullptr;
+    }
+    // Its +4h/+5h, the FrontEndScreen the leaf constructed and the registry borrows.
+    FrontEndScreen* leaf_flags_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? &leaf->flags() : nullptr;
     }
     bool record_false(const char* suffix, std::uint32_t address) {
         char method[80];

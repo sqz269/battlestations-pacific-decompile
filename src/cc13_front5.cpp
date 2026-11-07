@@ -452,6 +452,7 @@ std::uint8_t byte_09_get_00652a20(Raw object) noexcept { return object.at<std::u
 void byte_08_set_00652a50(Raw object, std::uint8_t value) noexcept { object.at<std::uint8_t>(0x8) = value; }
 std::uint8_t byte_66_get_006529c0(Raw object) noexcept { return object.at<std::uint8_t>(0x66); }
 void byte_66_set_006529b0(Raw object, std::uint8_t value) noexcept { object.at<std::uint8_t>(0x66) = value; }
+void dword_28_set_0053d290(Raw object, std::uint32_t value) noexcept { object.at<std::uint32_t>(0x28) = value; }
 float ship_float_244_get_008356b0(Raw ship) noexcept { return ship.at<float>(0x244); }
 float ship_float_248_get_008356f0(Raw ship) noexcept { return ship.at<float>(0x248); }
 std::uint8_t ship_byte_243_get_008356c0(Raw ship) noexcept { return ship.at<std::uint8_t>(0x243); }

@@ -217,6 +217,10 @@ std::uint8_t byte_09_get_00652a20(Raw object) noexcept;
 void byte_08_set_00652a50(Raw object, std::uint8_t value) noexcept;
 std::uint8_t byte_66_get_006529c0(Raw object) noexcept;
 void byte_66_set_006529b0(Raw object, std::uint8_t value) noexcept;
+// 0053D290  MOV EAX,[ESP+4]; MOV [ECX+28h],EAX; RET 4   dword +28h = value.
+// 0068C1F0's free-camera toggle calls it on the free-camera screen 2Bh
+// ([manager+90h]) with 0 or 1 (0068C440 / 0068C449).
+void dword_28_set_0053d290(Raw object, std::uint32_t value) noexcept;
 // 008356B0 / 008356F0, __fastcall(ECX = ship) RET -> ST0 = float +244h / +248h.
 float ship_float_244_get_008356b0(Raw ship) noexcept;
 float ship_float_248_get_008356f0(Raw ship) noexcept;
