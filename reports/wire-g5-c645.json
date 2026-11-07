@@ -4,6 +4,17 @@
   "goal": 5,
   "picked": "the plane's 007BBFA0 failure messages 63h..67h delivered through their local copy to 007D0B80 at every host raise site (death-mode step, water contact, water drown, +C01h latch, 007CAF10's in-air explosion) and the dead plane's 'splash' raises (007CC2F0 tail, 007CBA50 step 2); the plane_death_modes.cpp duplicates of 007BBFA0 / 007D0B80 deleted",
   "handoff": "Left: the engine list unit+C98h (007DE600 stop all, 007EB0B0 destroy at, 007DE5B0 any burning) has no host object, so 007D0B80's engine calls are records and 007CAF10's 'enginefire' raise (007CB039) stays out; plane_death_step_007caf10 in plane_death_modes.cpp is still a partial model sharing 007CAF10 with clamp_control_axes_007caf10 (the real body also reads +C14h and the engine list). The presentation callees of 007D0B80 (007BC4E0 crash effect, 00498F80/0049A760 debris marker, 00868420 explosion effect, the wing-break block 007D0820/007CAAD0) need a host effect/part model. The copies are delivered at the raise step, not at the 0076C600 drain; commands_post_loopback_callback_0076e520 could move them to the drain.",
+  "review_round_1": {
+    "review_run": 1358,
+    "rows_counted_by_review": 18,
+    "note_on_count": "Of the 22 wired rows, 007BBFA0 (the old 007CE790 latch), 006D1550, 006D2F20 and 007CC2F0 by address were already called on main; the new calls are the other 18 plus the dead-branch body free_flight_tail_007cc2f0 behind 007CC2F0.",
+    "findings": [
+      {"finding": "007CC2F0's dead branch fell through to the 007CC523 water test", "outcome": "fixed", "detail": "free_flight_tail_007cc2f0's result is kept; the water-test block runs only on LiveBranch (007CC39C / 007CC3C1 jump to the epilogue 007CC567, the splash returns at 007CC42E; checked with bsp.py disasm-raw 007cc370 / 007cc560). No early return: the depth kill and done() still run. Because a dead plane now stays in state 7, the state-7 depth kill also takes a dead plane below -30 m (007CE313 tests only unit+61h, CMP [ESI-2AFh] with EDI = ESI-310h, then 007CE3A7 Kill), removing it as the water arm's wreck depth kill does; without that a dead powerlost plane would sink until 007CAF10's explosion at +C10h = 63.75 s."},
+      {"finding": "the dead branch's +5Dh stand-in also accepted gunnery unit_dead()", "outcome": "fixed", "detail": "tail.dead_5d = plane_death_c3a && !plane_death_removed, as the 007CAF10 block and the water arm's step 2 use."},
+      {"finding": "stale 'not wired' note and plane_death_flags_007d0b80 reference", "outcome": "fixed", "detail": "include/bsp/gameplay_seg47_cc13.hpp header note and adoption note, src/gameplay_seg47_cc13.cpp's file comment, docs/CONSTRUCT_WORLD.md row 007D0C75."},
+      {"finding": "nit: game+1FE4h hard-coded to 0", "outcome": "not changed", "detail": "Same labelled choice as the existing latch and the 007D0B80 delivery path; a skirmish session word of 1 would also route C8h (multiplayer DEADMEATROT), whose copy this host has no class for. Left for a session-context binding."}
+    ]
+  },
   "rows": [
     {"native": "007bbfa0", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp: run_plane_named_effect (death-mode step, raise_plane_named_effect at 007CB8DC / 007CBE02 / 007CE790, raise_dead_plane_splash, 007CAF10 explosion)"},
     {"native": "007d0b80", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp: deliver_plane_failure_messages -> HostSessionMessages::deliver_plane_failure_message"},

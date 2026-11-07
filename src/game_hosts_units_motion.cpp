@@ -1537,24 +1537,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // Goal 5 chain 645: 007CC375..007CC41F, the arm's dead branch
                         // (bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0): a dead
-                        // aircraft (+5Dh, the touchdown block's test) whose +911h is
-                        // clear raises "splash" once it is below 3.0 m (00CE3854,
-                        // unit+100h after the 00414DB0 refresh, the published pose).
-                        // game+1FE4h is 0, so the session-2 exception does not apply.
+                        // aircraft whose +911h is clear raises "splash" once it is below
+                        // 3.0 m (00CE3854, unit+100h after the 00414DB0 refresh, the
+                        // published pose). +5Dh is plane_death_c3a on a plane still in
+                        // the world, the stand-in the 007CAF10 block above and the
+                        // water arm's step 2 use: a plane killed earlier in this step
+                        // has not had its death-mode step deliver yet. game+1FE4h is 0,
+                        // so the session-2 exception does not apply. A dead plane never
+                        // reaches the live branch 007CC431: 007CC39C (+911h set) and
+                        // 007CC3C1 (y >= 3.0) jump to the epilogue 007CC567 and the
+                        // splash returns at 007CC42E, so the water test 007CC523 below
+                        // runs only for the live branch.
+                        bool live_branch_007cc431 = true;
                         {
-                            const bool dead_5d = unit_.plane_death_c3a || unit_.plane_death_removed
-                                || (owner_.gunnery != nullptr
-                                    && owner_.gunnery->unit_dead(unit_.process_index));
                             bsp::gameplay_seg47_cc13::FreeFlightTailInputs tail;
-                            tail.dead_5d = dead_5d && !unit_.plane_death_removed;
+                            tail.dead_5d = unit_.plane_death_c3a && !unit_.plane_death_removed;
                             tail.has_game_e188a8 = true;
                             tail.session_mode_1fe4 = 0;
                             tail.splashed_911 = unit_.plane_splashed_911;
                             tail.pos_y_100 = unit_.world[13];
-                            if (bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0(tail)
-                                == bsp::gameplay_seg47_cc13::FreeFlightTail::DeadSplash) {
+                            const bsp::gameplay_seg47_cc13::FreeFlightTail branch =
+                                bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0(tail);
+                            live_branch_007cc431 =
+                                branch == bsp::gameplay_seg47_cc13::FreeFlightTail::LiveBranch;
+                            if (branch == bsp::gameplay_seg47_cc13::FreeFlightTail::DeadSplash) {
                                 owner_.done("Plane::free_flight_tail_007cc2f0", 0x007cc375u);
-                                if (raise_dead_plane_splash(owner_, unit_)) return;
+                                raise_dead_plane_splash(owner_, unit_);
                             }
                         }
                         // 007CC523-007CC562, the free-flight arm own water
@@ -1579,7 +1587,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // and 0074E210's free-flight gate is unit+900h == 7, so
                         // the aircraft leaves this arm for the water surface law
                         // 007DCDD0. docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md.
-                        if (unit_.plane_control_mode_900 == 7) {
+                        // Goal 5 chain 645: live branch only (007CC431..007CC562).
+                        if (live_branch_007cc431 && unit_.plane_control_mode_900 == 7) {
                             OceanFieldBinding sea(owner_);
                             const float water = bsp::ocean_water_height_0078cf20(
                                 unit_.motion.position[0], unit_.motion.position[2], sea);
@@ -1754,6 +1763,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         static_cast<double>(unit_.motion.position[1]),
                                         static_cast<double>(kPlaneDepthKillLimit));
                                     gun_host->kill_unit_00926d90(self_index, 1);
+                                } else if (unit_.plane_death_c3a && !unit_.plane_death_removed) {
+                                    // Goal 5 chain 645: 007CE313 tests only unit+61h
+                                    // (CMP [ESI-2AFh] with EDI = ESI-310h), not +5Dh, so
+                                    // a dead plane below the limit takes 007CE3A7 too.
+                                    // A dead plane now stays in state 7 (the dead branch
+                                    // above skips the 007CC523 water test), so its Kill
+                                    // is taken here as the water arm's wreck depth kill
+                                    // takes it: the plane leaves the world.
+                                    unit_.plane_death_removed = true;
+                                    owner_.log.notef("plane wreck depth kill: unit=%s t=%.2f "
+                                        "alt=%.2f state 7 (007CE3A7 -> 00926D90 Kill(unit, 1), "
+                                        "removed)", unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(unit_.motion.position[1]));
                                 }
                                 owner_.record("Plane::depth_kill_007ce3a7", 0x007ce3a7u);
                             }

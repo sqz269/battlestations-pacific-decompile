@@ -255,7 +255,7 @@ row in `local\psm_on_usn04.log`:
 | --- | --- | --- | --- |
 | 00874D3A | 00874D00 `BSP_Game_RunExtraFixedStep`, from the Lua Spawn, GenerateObject and LaunchAirBaseSlot bindings and 0046B730 | re-running nine fan-out rows outside the driver | no: no host method calls 00874D00 |
 | 00534BCB | 00534BC0..00534BF7, **no Ghidra function**, slot 1 of vtable 00CED6E0 (installed by 00538A80 at 00538AB1) | with `this+D4h` set, calls `[this-64h]` slots 1Ch then 18h | no: the class is not built |
-| 007D0C75 | 007D0B80 `BSP_Plane_HandleStateMessageKinds` | with `unit+5Eh` clear, `00498F80(unit)` on the TrafficConfig `game+21D0h` | no: the host's `plane_death_flags_007d0b80` models the flags only and has no byte test |
+| 007D0C75 | 007D0B80 `BSP_Plane_HandleStateMessageKinds` | with `unit+5Eh` clear, `00498F80(unit)` on the TrafficConfig `game+21D0h` | the test only: since goal 5 chain 645 `bsp::gameplay_seg47_cc13::state_message_007d0b80` runs on each plane failure copy (`deliver_plane_failure_messages`, `src/game_hosts_units_motion.cpp`) with the byte taken as set, because the copy's drain runs inside the fan-out's world gate (00875E78); 00498F80 itself is a record, no host builds the debris marker |
 | 007F3A7A | 007F3A60 `BSP_PlaneSquadron_ReleaseControlledUnit` (vtable slot) | the release of the controlled squadron outside states 29h, 2Bh, 2Ch and 2Dh | no host binding |
 | 007F3B2A | 007F3B10 `BSP_Aircraft_OnDestroyed` | the kill report 009813A0 | no host binding |
 | 00806F12 | 00806F00..008073B9, **no Ghidra function**, slot 1 of the recon slot vtable 00D08E94 (installed by `BSP_Recon_ConstructSlot` 008050E0) | the whole body: a walk over the scanned classes 00806480 | no: the host's recon runs 008073C0 only |
