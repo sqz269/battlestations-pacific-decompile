@@ -90,6 +90,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/left55_seg56a_host_unreached.hpp"   // 008A0F10
 #include "bsp/left55_seg56c_host_unreached.hpp"   // 008BEBE0 (goal 5 chain 660)
 #include "bsp/cc13_left55_seg56a.hpp"             // 0089E850 / 008A54C0
+#include "bsp/unit_weapon_host_unreached.hpp"     // 0089A8B0 / 0089C590 / 0089C8F0
 #include "bsp/left55_seg56b_host_unreached.hpp"   // 008ABAC0 / 008ABF90
 #include "bsp/plane_squadron_entity.hpp"          // 007ECF70
 #include "bsp/seg56_host_unreached.hpp"           // 008953F0 / 008950D0 / 00890BB0
@@ -1900,7 +1901,118 @@ bool record_director_artillery_enable_0071c231(const std::string& name, bool ena
     scene_director_enables_set(name, enables);
     return changed;
 }
+
+// Goal 5 chain 660: SetFireTarget 0089A8B0, ArtilleryEnable 0089C590 and TorpedoEnable
+// 0089C8F0 run their bodies (src/unit_weapons.cpp) over this adapter, which binds only
+// the services those three reach and refuses the rest (UnitWeaponHostUnreached).
+// Entities are the dispatch's identities (00888AA0, the table's `ID`: the units-host
+// index plus one). The director handle vtable[114h] answers is the unit's own handle:
+// the host keeps each director's state by its unit (the ship AI host's fire target, the
+// scene director enables by name), and a null answer is the image's no-op arm, as a
+// plane's 0047F180 is. 0071DFD0 / 0071E0D0 are __thiscall on that director and route
+// the 5Ah message to [director+34h] (0071E026 MOV ECX,[ESI+34h] / 0071E035 CALL
+// 0077C2A0, ESI = ECX at 0071DFE9), the unit that owns it; the reconstructed builders
+// take no `this`, so the adapter routes to the director it last answered.
+class UnitWeaponBinding final : public bsp::UnitWeaponHostUnreached {
+public:
+    struct Calls {
+        std::function<void*(int)> entity_at;                       // 00888AA0
+        std::function<bool(int)> get_boolean;                      // 00B66250
+        std::function<bool(int)> is_nil;                           // the nil test
+        std::function<bool(int)> is_entity_table;                  // 008889C0
+        std::function<void(int, float*)> vector3;                  // 00888760
+        std::function<bool(void*)> has_director;                   // vtable[114h] non-null
+        std::function<void(void*, void*)> set_fire_target;         // 5Eh -> 00836240
+        std::function<void(void*, const float*)> set_fire_target_position;
+        std::function<void(void*, const bsp::WeaponEnableMessage&)> route_enable;  // 0077C2A0
+    };
+    explicit UnitWeaponBinding(Calls calls) : calls_(std::move(calls)) {}
+
+    bsp::NativeHandle entity_from_lua_argument(int index) override {
+        return reinterpret_cast<bsp::NativeHandle>(calls_.entity_at(index));
+    }
+    bool lua_argument_bool(int index) override { return calls_.get_boolean(index); }
+    bool lua_argument_is_nil(int index) override { return calls_.is_nil(index); }
+    bool lua_argument_is_entity(int index) override { return calls_.is_entity_table(index); }
+    void lua_argument_vector3(int index, float out[3]) override { calls_.vector3(index, out); }
+    // 00B66400: none of the three pushes a value.
+    int lua_result_count() override { return 0; }
+
+    bsp::NativeHandle weapon_director(bsp::NativeHandle unit) override {
+        director_ = calls_.has_director(entity(unit)) ? unit : 0;
+        return director_;
+    }
+    void director_clear_fire_target(bsp::NativeHandle director) override {
+        calls_.set_fire_target(owner(director), nullptr);
+    }
+    void director_set_fire_target_entity(bsp::NativeHandle director,
+                                         bsp::NativeHandle target) override {
+        calls_.set_fire_target(owner(director), entity(target));
+    }
+    void director_set_fire_target_position(bsp::NativeHandle director,
+                                           const float position[3]) override {
+        calls_.set_fire_target_position(owner(director), position);
+    }
+    void route_weapon_enable(const bsp::WeaponEnableMessage& message) override {
+        if (director_ == 0) unit_query_unreached("0077C2A0 with no director answered");
+        calls_.route_enable(owner(director_), message);
+    }
+
+private:
+    static void* entity(bsp::NativeHandle handle) { return reinterpret_cast<void*>(handle); }
+    void* owner(bsp::NativeHandle director) const {
+        if (director == 0 || director != director_) {
+            unit_query_unreached("a director other than the one vtable[114h] answered");
+        }
+        return entity(director);
+    }
+    Calls calls_;
+    bsp::NativeHandle director_{0};
+};
 }  // namespace
+
+// ArtilleryEnable 0089C590 / TorpedoEnable 0089C8F0 over UnitWeaponBinding. vtable[114h]
+// is null for a plane (0047F180) and for an argument this host cannot name; otherwise the
+// unit's director. The 5Ah message is applied where 0071C1E0 applies it, by the unit's
+// name: sub-kind 3 at director+220h (0071C231), sub-kind 5 at director+222h (0071C25B).
+// SUBSTITUTION, labelled (packet cc13-fix15): stored at the call, not delivered through
+// 0077C2A0.
+int GameScriptOrdersHost::run_weapon_enable_binding(const char* name) {
+    const bool artillery = std::strcmp(name, "ArtilleryEnable") == 0;
+    UnitWeaponBinding binding(UnitWeaponBinding::Calls{
+        [this](int i) { return entity_at(i); },
+        [this](int i) { return get_boolean(i); },
+        [this](int i) { return is_nil(i); },
+        [this](int i) { return is_entity_table(i); },
+        [](int, float*) { unit_query_unreached("00888760"); },
+        [this](void* unit) {
+            const std::size_t index = index_of(unit);
+            const bool plane = index < units_.count() && units_.unit_is_kind_of(index, 0x0f);
+            return unit != nullptr && !plane && !name_of(unit).empty();
+        },
+        [](void*, void*) { unit_query_unreached("00835860"); },
+        [](void*, const float*) { unit_query_unreached("00835860 position"); },
+        [this](void* unit, const bsp::WeaponEnableMessage& message) {
+            const std::string unit_name = name_of(unit);
+            if (message.sub_kind == bsp::kWeaponEnableSubKindTorpedo) {
+                const bool changed = scene_director_enables_set_torpedo(unit_name, message.enabled);
+                ++(message.enabled ? scene_director_torpedo_writes().lua_enables
+                                   : scene_director_torpedo_writes().lua_disables);
+                log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
+                    "-> 0071C25B)", unit_name.c_str(), message.enabled ? 1 : 0, changed ? 1 : 0);
+            } else if (message.sub_kind == bsp::kWeaponEnableSubKindArtillery) {
+                const bool changed =
+                    record_director_artillery_enable_0071c231(unit_name, message.enabled);
+                log_.notef("  ArtilleryEnable: %s director+220h=%d changed=%d (0089C590 -> "
+                    "0071DFD0 -> 0071C231)", unit_name.c_str(), message.enabled ? 1 : 0,
+                    changed ? 1 : 0);
+            } else {
+                unit_query_unreached("a 5Ah sub-kind other than 3 or 5");
+            }
+        }});
+    return artillery ? bsp::lua_artillery_enable_0089c590(binding)
+                     : bsp::lua_torpedo_enable_0089c8f0(binding);
+}
 
 GameSoundDialogRuntime* GameScriptOrdersHost::bound_music_dialog_runtime() noexcept {
     return bound_music_dialog();
@@ -5656,19 +5768,39 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // 0089A8B0: argument 0 through 00888AA0; argument 1 nil -> null, an
         // entity table -> that entity, a Vector3 -> a dummy entity (not modelled);
         // then entity->vtable[114h]()->00835860(target, 1), whose 5Eh message
-        // 00836240 stores. No result is pushed.
-        void* entity = entity_from_argument(0);
-        void* target = entity_from_argument(1);
-        const std::size_t index = index_of(entity);
-        const std::size_t target_index = index_of(target);
+        // 00836240 stores. No result is pushed. Goal 5 chain 660: the body
+        // lua_set_fire_target_0089a8b0 over UnitWeaponBinding. A plane's vtable[114h]
+        // is 0047F180 (null), so a plane is the image's no-op (0089A8E2 test); without
+        // the ship AI host there is no director store.
         GameShipAiHost* ai = units_.ship_ai();
-        if (entity != nullptr && index < units_.count() && ai != nullptr) {
+        const auto set_target = [this, ai, &row](void* unit, void* target) {
+            const std::size_t target_index = index_of(target);
             const std::size_t plus_one =
                 (target != nullptr && target_index < units_.count()) ? target_index + 1 : 0;
-            ai->store_fire_target_00836240(index, plus_one, true);
+            ai->store_fire_target_00836240(index_of(unit), plus_one, true);
             row.target = name_of(target);
-        }
-        results = 0;
+        };
+        UnitWeaponBinding weapons(UnitWeaponBinding::Calls{
+            [this](int i) { return entity_at(i); },
+            [this](int i) { return get_boolean(i); },
+            [this](int i) { return is_nil(i); },
+            [this](int i) { return is_entity_table(i); },
+            [this](int i, float* out) { static_cast<void>(argument_vector3(i, out)); },
+            [this, ai](void* unit) {
+                const std::size_t index = index_of(unit);
+                return ai != nullptr && index < units_.count()
+                    && !units_.unit_is_kind_of(index, 0x0f);
+            },
+            set_target,
+            [this, set_target](void* unit, const float*) {
+                // The image's dummy entity at the position is not modelled; the
+                // target is cleared, as this row did before it ran the body.
+                log_.unimplemented("SetFireTarget(position): the dummy target entity",
+                    "0089a8b0");
+                set_target(unit, nullptr);
+            },
+            [](void*, const bsp::WeaponEnableMessage&) { unit_query_unreached("0071DFD0"); }});
+        results = bsp::lua_set_fire_target_0089a8b0(weapons);
     } else if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) {
         // 008A3E70: the NavigatorMoveOnPath message without the speed half.
         ++pilot_move_on_path_calls_;
@@ -5715,31 +5847,17 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // and 0071C1E0 stores the flag at director+222h (0071C25B). A plane's
         // vtable[114h] is 0047F180 (null), so a plane is the image's no-op.
         // SUBSTITUTION: stored at the call, not delivered through 0077C2A0.
-        const bool enabled = argument_boolean(1);
-        const bool plane = row.unit_index < units_.count() &&
-            units_.unit_is_kind_of(row.unit_index, 0x0f);
-        if (subject != nullptr && !plane && !row.unit.empty()) {
-            const bool changed = scene_director_enables_set_torpedo(row.unit, enabled);
-            ++(enabled ? scene_director_torpedo_writes().lua_enables
-                       : scene_director_torpedo_writes().lua_disables);
-            log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
-                "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
-        }
+        // Goal 5 chain 660: the body lua_torpedo_enable_0089c8f0 over UnitWeaponBinding.
+        results = run_weapon_enable_binding(binding->name);
     } else if (std::strcmp(binding->name, "ArtilleryEnable") == 0) {
         // Packet cc13-fix15. 0089C590: argument 0 through 00888AA0, the
         // director through vtable[114h] (0089C6A8), argument 1 through 00B66250;
         // with a director, 0071DFD0 routes message 5Ah sub-kind 3, which
         // 0071C1E0 stores at director+220h (0071C231). A plane's vtable[114h]
         // (0047F180) is null, so a plane is the image's no-op. SUBSTITUTION:
-        // stored at the call, not delivered through 0077C2A0.
-        const bool enabled = argument_boolean(1);
-        const bool plane = row.unit_index < units_.count() &&
-            units_.unit_is_kind_of(row.unit_index, 0x0f);
-        if (subject != nullptr && !plane && !row.unit.empty()) {
-            const bool changed = record_director_artillery_enable_0071c231(row.unit, enabled);
-            log_.notef("  ArtilleryEnable: %s director+220h=%d changed=%d (0089C590 -> 0071DFD0 "
-                "-> 0071C231)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
-        }
+        // stored at the call, not delivered through 0077C2A0. Goal 5 chain 660: the
+        // body lua_artillery_enable_0089c590 over UnitWeaponBinding.
+        results = run_weapon_enable_binding(binding->name);
     } else if (std::strcmp(binding->name, "NavigatorForceTorpedo") == 0) {
         // 008A7200: argument 0 through 00888AA0; with more than one argument,
         // argument 1 through BSP_LuaObject_GetBoolean (008A7288..); then the

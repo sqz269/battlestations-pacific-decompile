@@ -1099,6 +1099,9 @@ private:
         std::size_t target_index, const char* label, unsigned long long& tasks);
     // Packet cc13-fix16: the six bomb-release natives (docs/CC13_FIX16.md).
     int run_bomb_release_native(GameScriptOrderRow& row, const char* name);
+    // Goal 5 chain 660: ArtilleryEnable 0089C590 / TorpedoEnable 0089C8F0 through
+    // their src/unit_weapons.cpp bodies.
+    int run_weapon_enable_binding(const char* name);
     const bsp::PlaneSquadronHostRecord* squadron_record_for_argument(std::size_t index);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
