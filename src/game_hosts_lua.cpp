@@ -1674,6 +1674,9 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kSetSelectedUnitBound && dispatch_row.address == 0x008ab260u;
     const bool movie_add_row
         = bsp::game::kMovieMoverBound && dispatch_row.address == 0x008b79f0u;
+    // Goal 5 chain 659: AddPositions 008B7850 on the same 007A44D0 store.
+    const bool movie_add_positions_row
+        = bsp::game::kMovieMoverBound && dispatch_row.address == 0x008b7850u;
     // Packet cc9_force_select_unit: ForceSelectUnit 008AAF30 takes no argument
     // and calls 006485A0 on [00E198C4]+40h (008AB014..008AB01F).
     const bool force_select_row
@@ -1725,7 +1728,7 @@ int binding_trampoline(lua_State* state) {
         || launch_row || generate_row || spawn_new_row || spawn_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
-        || select_unit_row || movie_add_row || force_select_row
+        || select_unit_row || movie_add_row || movie_add_positions_row || force_select_row
         || release_alt_row || land_and_kill_row || drop_all_bomb_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
@@ -2231,22 +2234,17 @@ int binding_trampoline(lua_State* state) {
     }
     // Packet cc9_movie_interface_and_reseed: every MovCamNew native starts with
     // 005CD240 on the movie screen (008B7941 AddPositions, 008B7AE1 AddPosition,
-    // 008B7C92 SetFOV). Only that call is bound; the rows stay UNIMPLEMENTED for
-    // the keyframe store and the FOV that follow it.
+    // 008B7C92 SetFOV). SetFOV binds only that call; its row stays UNIMPLEMENTED for
+    // the FOV store (+410h) that follows it.
     if ((bsp::game::kMovieInterfacePushBound || bsp::game::kMovieMoverBound)
-        && !host->error_replay()
-        && (dispatch_row.address == 0x008b7850u || dispatch_row.address == 0x008b79f0u
-            || dispatch_row.address == 0x008b7ba0u)) {
+        && !host->error_replay() && dispatch_row.address == 0x008b7ba0u) {
         bsp::game::hud_movie_screen_camera_005cd240();
     }
-    // Packet cc9_movie_camera_mover_bind: 008B7AE8, the table to 007A44D0.
-    if (movie_add_row) {
-        if (!host->error_replay() && argc >= 1 && lua_type(state, 1) == LUA_TTABLE) {
-            bsp::MovieKeyframeInput input;
-            parse_movie_keyframe(state, 1, input);
-            bsp::game::hud_movie_add_position_007a44d0(input);
-        }
-        return 0;
+    // Goal 5 chain 659: AddPosition (packet cc9_movie_camera_mover_bind's 007A44D0
+    // store) and AddPositions run their bodies, 005CD240 included.
+    if (movie_add_row || movie_add_positions_row) {
+        if (host->error_replay()) return 0;
+        return host->run_movcam_new_add_position(state, dispatch_row.address);
     }
     if (select_unit_row) {
         // 008AB260: BSP_ObjectHandle_FromLuaTable(argument 0), then 00647300.
@@ -13743,6 +13741,107 @@ int GameMissionLuaHost::run_squadron_set_force_release(lua_State* state, int arg
         image.force_release_stored ? 1 : 0,
         image.force_release_unresolved ? ", no units-host slot" : "");
     log_.implemented("MissionLuaNative::SquadronSetForceRelease", "008a28b0");
+    return results;
+}
+
+namespace {
+[[noreturn]] void movcam_new_unreached(const char* what) {
+    throw std::logic_error(std::string("MovCamNew_AddPosition(s): unreached ") + what);
+}
+
+// Goal 5 chain 659. The two CameraHost services of 008B7850 MovCamNew_AddPositions and
+// 008B79F0 MovCamNew_AddPosition (bsp.py ghidra disasm 008b7850 / 008b79f0):
+//  * 005CD240 on [[00E198C4]+9Ch] (008B7941 / 008B7AE1): bsp::game::
+//    hud_movie_screen_camera_005cd240, the HUD movie screen's own 005CD240 (the
+//    interface push the first call makes). The camera it answers is a token for the
+//    attached HUD. SUBSTITUTION (labelled): the camera-null test AddPosition makes at
+//    008B7AE8 (CMP ESI,EBP) is applied by GameHudHost::movie_add_position_007a44d0 on
+//    the host's movie camera (impl.movie_screen.camera), which this host cannot read.
+//  * 007A44D0 (008B7992 / 008B7B36) with a LuaObject copy of argument 0 (00B677E0,
+//    00B67690): parse_movie_keyframe over the table, then
+//    bsp::game::hud_movie_add_position_007a44d0, as the AddPosition arm did.
+//    SUBSTITUTION (labelled): an argument 0 that is not a table is not parsed (007A44D0
+//    reads its postype field), as that arm had it.
+class MovieCameraNewHost final : public bsp::cc13_seg56::CameraHost {
+public:
+    explicit MovieCameraNewHost(lua_State* state) : state_(state) {}
+    bool hud_attached{false};
+    int added{-1};
+
+    void* hud_movie_camera() override {
+        hud_attached = bsp::game::hud_movie_screen_camera_005cd240();
+        return hud_attached ? static_cast<void*>(&camera_) : nullptr;
+    }
+    void hud_movie_camera_add_positions(void* camera, bsp::cc13_seg56::LuaArgs&,
+                                        int index) override {
+        if (camera != &camera_) return;   // AddPositions has no null test; nothing to add to
+        const int slot = index + 1;
+        if (::lua_type(state_, slot) != LUA_TTABLE) return;
+        bsp::MovieKeyframeInput input;
+        parse_movie_keyframe(state_, slot, input);
+        added = bsp::game::hud_movie_add_position_007a44d0(input);
+    }
+    void hud_movie_camera_set_fov(void*, float) override { movcam_new_unreached("camera +410h"); }
+    void depth_of_field_set_range(float, float) override { movcam_new_unreached("00452A50"); }
+    bool free_camera_present() override { movcam_new_unreached("free camera"); }
+    void free_camera_set_position(const bsp::cc13_seg56::Vec3&) override {
+        movcam_new_unreached("free camera +A4h");
+    }
+    void free_camera_set_rotation_from_euler(float, float, float) override {
+        movcam_new_unreached("00467050");
+    }
+    void movcam_ensure_target() override { movcam_new_unreached("005CD160"); }
+    void movcam_set_zoom(float) override { movcam_new_unreached("0078E480"); }
+    void movcam_set_speed_limits(float, float) override { movcam_new_unreached("005CB900"); }
+    void movcam_reset_speed_limits() override { movcam_new_unreached("005CB970"); }
+    void movcam_set_accel_time(float) override { movcam_new_unreached("005CB940"); }
+    void movcam_reset_accel_time() override { movcam_new_unreached("005CB9C0"); }
+    void movcam_set_deviation_factor(float) override { movcam_new_unreached("005CAF90"); }
+    void movcam_reset_deviation_factor() override { movcam_new_unreached("005CAFB0"); }
+    void movcam_set_overview_height(float) override { movcam_new_unreached("005CAFA0"); }
+    void movcam_reset_overview_height() override { movcam_new_unreached("005CAFC0"); }
+    std::int32_t game_session_mode_1fe4() override { movcam_new_unreached("game+1FE4h"); }
+    void session_broadcast_movcam_deviation_factor(float) override {
+        movcam_new_unreached("0076D660");
+    }
+    void camera_shake_accumulate(float) override { movcam_new_unreached("0042C3D0"); }
+    void camera_set_shake_max(float) override { movcam_new_unreached("0042A940"); }
+    void camera_set_shake_base(float) override { movcam_new_unreached("0042A970"); }
+    void camera_set_shake_decay(float) override { movcam_new_unreached("0042A9A0"); }
+    bsp::cc13_seg56::Vec3 game_camera_world_position() override {
+        movcam_new_unreached("game camera +120h");
+    }
+    bsp::cc13_seg56::Vec3 game_camera_basis_angles() override {
+        movcam_new_unreached("0042D2E0");
+    }
+
+private:
+    lua_State* state_;
+    char camera_{0};   // identity token only
+};
+}  // namespace
+
+// Goal 5 chain 659. 008B79F0 MovCamNew_AddPosition(table) and 008B7850
+// MovCamNew_AddPositions(table) on their bodies lua_movcam_new_add_position /
+// lua_movcam_new_add_positions (src/engine_seg56_cc13.cpp): 005CD240, then (AddPosition
+// only behind the camera test) 007A44D0 with argument 0. Both return no value (008B799B /
+// 008B7B50 00B66400). Services: MovieCameraNewHost above. AddPositions used to run only
+// its 005CD240 and stay unimplemented; it now stores its keyframes as the image does.
+int GameMissionLuaHost::run_movcam_new_add_position(lua_State* state, std::uint32_t address) {
+    Seg56RowArgs args(state);   // the bodies hand the frame on; they read no argument
+    MovieCameraNewHost host(state);
+    const bool plural = address == 0x008b7850u;
+    const int results = plural ? bsp::cc13_seg56::lua_movcam_new_add_positions(args, host)
+                               : bsp::cc13_seg56::lua_movcam_new_add_position(args, host);
+    if (!host.hud_attached) {
+        log_.unimplemented(plural ? "MissionLuaNative::MovCamNew_AddPositions"
+                                  : "MissionLuaNative::MovCamNew_AddPosition",
+                           plural ? "008b7850" : "008b79f0");
+        return results;
+    }
+    log_.implemented(plural ? "MissionLuaNative::MovCamNew_AddPositions"
+                            : "MissionLuaNative::MovCamNew_AddPosition",
+                     plural ? "008b7850" : "008b79f0");
     return results;
 }
 
