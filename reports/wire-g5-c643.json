@@ -4,32 +4,176 @@
   "goal": 5,
   "picked": "the mission narrative object [game+21E8h]: its lifetime, native list and entries, and the MissionNarrativeUrgent/Override bindings",
   "rows": [
-    {"native": "00735030", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::GameScriptOrdersHost (004DFA75's construct)"},
-    {"native": "00733030", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::GameScriptOrdersHost (004DFA8D's reset)"},
-    {"native": "00735080", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::~GameScriptOrdersHost (00735420's destruct)"},
-    {"native": "00733e70", "status": "wired", "host_site": "src/cc13_seg40.cpp: cc13_seg40_mission_narrative_destruct_00735080 (+10h holder; inlined into 00735080 in the release build)"},
-    {"native": "00733f00", "status": "wired", "host_site": "src/cc13_seg40.cpp: cc13_seg40_mission_narrative_destruct_00735080 (+38h holder; inlined into 00735080 in the release build)"},
-    {"native": "00734870", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrative / MissionNarrativeEnqueue 008B0C10)"},
-    {"native": "007349c0", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrativeUrgent 008B0E10)"},
-    {"native": "00734e50", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrativeOverride 008B1010)"},
-    {"native": "00733c80", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::narrative_list_buy_node_007342b0 (each list writer's node insert)"},
-    {"native": "00733dc0", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices (list writers' temporary entry, clear 00734CE0, erase 00734D20)"},
-    {"native": "008b0e10", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, MissionNarrativeUrgent arm -> lua_mission_narrative_post(kNarrativePostUrgent); before this chain no host handled the binding"},
-    {"native": "008b1010", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, MissionNarrativeOverride arm -> lua_mission_narrative_post(kNarrativePostOverride); before this chain no host handled the binding"},
-    {"native": "00734d20", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::erase_00734d20 from GameScriptOrdersHost::run_narrative_update_00735100 (VC9 list erase, library row bound in the host; ledger row added)"},
-    {"native": "00734ce0", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::clear from narrative_clear_00734fa0, 00734E50 and 00735080 (VC9 list clear, library row bound in the host)"},
-    {"native": "008b1210", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (no MissionNarrativeParty arm)", "reason": "Needs 00734B10's inputs as host state: the session player records game+18CCh[8] (+9h, +28h party, +50h peer), the local slot game+18ECh and session +F4h for 00770BD0, plus the MISSIONINFO 35h message (00733B10 / 007336A0) as one model; no host has a session player-record table (SessionPlayerRecord is unused) and lua_mission_narrative_party takes the whole ContentHost."},
-    {"native": "008b13e0", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (no MissionNarrativePlayer arm)", "reason": "As 008B1210: 00734BF0 reads the slot's record +9h/+50h and the local slot game+18ECh, and sends MISSIONINFO through 00770B50; no host player-record table or narrow ContentHost base exists."},
-    {"native": "00734b10", "status": "skipped", "host_site": "src/cc13_seg48U.cpp: cc13_seg48U_mission_narrative_send_to_party_00734b10", "reason": "Reads the raw game object through image_global(00E188A8) (+18CCh records, +18ECh local slot, +1EF0h session); needs a typed player-record host and the 00733B10 message over the same model as destroy_native_session_message53_007336a0."},
-    {"native": "00734bf0", "status": "skipped", "host_site": "src/cc13_seg48U.cpp: cc13_seg48U_mission_narrative_send_to_player_00734bf0", "reason": "As 00734B10: raw game-object reads of the player records and local slot, with no host model of them."},
-    {"native": "007337a0", "status": "skipped", "host_site": "none", "reason": "Narrative checkpoint writer (archive sections status/titleList); the host runs no checkpoint archive writer to call it from."},
-    {"native": "00734460", "status": "skipped", "host_site": "none", "reason": "Narrative checkpoint reader (archive sections status/titleList); the host runs no checkpoint archive reader to call it from."},
-    {"native": "00734db0", "status": "skipped", "host_site": "none", "reason": "Receiver of the MISSIONINFO 35h message, which only 00734B10 / 00734BF0 send to remote peers: multiplayer only."},
-    {"native": "006b7e30", "status": "skipped", "host_site": "src/engine_seg56_cc13.cpp: lua_mission_narrative_post", "reason": "The LuaStateHolder that 008B0EC7 / 008B10C7 build has no C++ body under this identifier (readiness abi nodef); the post body reads the arguments through LuaArgs instead."},
-    {"native": "006b7e50", "status": "skipped", "host_site": "src/engine_seg56_cc13.cpp: lua_mission_narrative_post", "reason": "As 006B7E30: the holder's destructor has no C++ body under this identifier."},
-    {"native": "007a06d0", "status": "skipped", "host_site": "src/hud_movie_camera.cpp: parse_007a0eb0 (gamecamera/fpscamera modifier, still unsupported)", "reason": "The gamecamera modifier (007A06D0 / 007A3B20 / 00795EE0 / 0079CBD0) builds a game camera mover per parent class (0064B650, 006065D0, 00605130, 0078E830, 005176F0, 00650830) through GameCameraModifierHost; MovieKeyframe::modifier_e4 holds only a GoAroundModifier and no host builds those movers."},
-    {"native": "009c8c70", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: ScriptOrderAttackCommandHost::create_bot_task", "reason": "The BotTask_Make* factories (009C8C70, 009B9030, 009AB570, 009CD300, 009D4E30, ...) build tasks on a native pilot bot (Cc13Seg67bHost raw bot); the host keeps (unit, command, target) triples and has no native bot object."},
-    {"native": "0090ec40", "status": "skipped", "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost", "reason": "Seg59aHost bodies work on the raw scoring object (*(game+21A0h), 284h-byte slot records with bound STL maps); the host keeps a typed bsp::MissionScoring and no raw scoring object or Seg59aHost implementation."}
+    {
+      "native": "00735030",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::GameScriptOrdersHost (004DFA75's construct)"
+    },
+    {
+      "native": "00733030",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::GameScriptOrdersHost (004DFA8D's reset)",
+      "note": "Runs on the real object, but only on words the host does not read yet: the shown entry and the countdown (+10h..+54h) are still host members (review run 1353, finding 3)."
+    },
+    {
+      "native": "00735080",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::~GameScriptOrdersHost (00735420's destruct)"
+    },
+    {
+      "native": "00733e70",
+      "status": "wired",
+      "host_site": "src/cc13_seg40.cpp: cc13_seg40_mission_narrative_destruct_00735080 (+10h holder; inlined into 00735080 in the release build)",
+      "note": "Runs on the real object, but only on words the host does not read yet: the shown entry and the countdown (+10h..+54h) are still host members (review run 1353, finding 3)."
+    },
+    {
+      "native": "00733f00",
+      "status": "wired",
+      "host_site": "src/cc13_seg40.cpp: cc13_seg40_mission_narrative_destruct_00735080 (+38h holder; inlined into 00735080 in the release build)",
+      "note": "Runs on the real object, but only on words the host does not read yet: the shown entry and the countdown (+10h..+54h) are still host members (review run 1353, finding 3)."
+    },
+    {
+      "native": "00734870",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrative / MissionNarrativeEnqueue 008B0C10)"
+    },
+    {
+      "native": "007349c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrativeUrgent 008B0E10)"
+    },
+    {
+      "native": "00734e50",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::narrative_post (MissionNarrativeOverride 008B1010)"
+    },
+    {
+      "native": "00733c80",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::narrative_list_buy_node_007342b0 (each list writer's node insert)"
+    },
+    {
+      "native": "00733dc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices (list writers' temporary entry, clear 00734CE0, erase 00734D20)"
+    },
+    {
+      "native": "008b0e10",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, MissionNarrativeUrgent arm -> lua_mission_narrative_post(kNarrativePostUrgent); before this chain no host handled the binding"
+    },
+    {
+      "native": "008b1010",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, MissionNarrativeOverride arm -> lua_mission_narrative_post(kNarrativePostOverride); before this chain no host handled the binding"
+    },
+    {
+      "native": "00734d20",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::erase_00734d20 from GameScriptOrdersHost::run_narrative_update_00735100 (VC9 list erase, library row bound in the host; ledger row added)"
+    },
+    {
+      "native": "00734ce0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: NarrativeObjectServices::clear from narrative_clear_00734fa0, 00734E50 and 00735080 (VC9 list clear, library row bound in the host)"
+    },
+    {
+      "native": "008b1210",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (no MissionNarrativeParty arm)",
+      "reason": "Needs 00734B10's inputs as host state: the session player records game+18CCh[8] (+9h, +28h party, +50h peer), the local slot game+18ECh and session +F4h for 00770BD0, plus the MISSIONINFO 35h message (00733B10 / 007336A0) as one model; no host has a session player-record table (SessionPlayerRecord is unused) and lua_mission_narrative_party takes the whole ContentHost."
+    },
+    {
+      "native": "008b13e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (no MissionNarrativePlayer arm)",
+      "reason": "As 008B1210: 00734BF0 reads the slot's record +9h/+50h and the local slot game+18ECh, and sends MISSIONINFO through 00770B50; no host player-record table or narrow ContentHost base exists."
+    },
+    {
+      "native": "00734b10",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48U.cpp: cc13_seg48U_mission_narrative_send_to_party_00734b10",
+      "reason": "Reads the raw game object through image_global(00E188A8) (+18CCh records, +18ECh local slot, +1EF0h session); needs a typed player-record host and the 00733B10 message over the same model as destroy_native_session_message53_007336a0."
+    },
+    {
+      "native": "00734bf0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48U.cpp: cc13_seg48U_mission_narrative_send_to_player_00734bf0",
+      "reason": "As 00734B10: raw game-object reads of the player records and local slot, with no host model of them."
+    },
+    {
+      "native": "007337a0",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Narrative checkpoint writer (archive sections status/titleList); the host runs no checkpoint archive writer to call it from."
+    },
+    {
+      "native": "00734460",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Narrative checkpoint reader (archive sections status/titleList); the host runs no checkpoint archive reader to call it from."
+    },
+    {
+      "native": "00734db0",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Receiver of the MISSIONINFO 35h message, which only 00734B10 / 00734BF0 send to remote peers: multiplayer only."
+    },
+    {
+      "native": "006b7e30",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: lua_mission_narrative_post",
+      "reason": "The LuaStateHolder that 008B0EC7 / 008B10C7 build has no C++ body under this identifier (readiness abi nodef); the post body reads the arguments through LuaArgs instead."
+    },
+    {
+      "native": "006b7e50",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: lua_mission_narrative_post",
+      "reason": "As 006B7E30: the holder's destructor has no C++ body under this identifier."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: parse_007a0eb0 (gamecamera/fpscamera modifier, still unsupported)",
+      "reason": "The gamecamera modifier (007A06D0 / 007A3B20 / 00795EE0 / 0079CBD0) builds a game camera mover per parent class (0064B650, 006065D0, 00605130, 0078E830, 005176F0, 00650830) through GameCameraModifierHost; MovieKeyframe::modifier_e4 holds only a GoAroundModifier and no host builds those movers."
+    },
+    {
+      "native": "009c8c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptOrderAttackCommandHost::create_bot_task",
+      "reason": "The BotTask_Make* factories (009C8C70, 009B9030, 009AB570, 009CD300, 009D4E30, ...) build tasks on a native pilot bot (Cc13Seg67bHost raw bot); the host keeps (unit, command, target) triples and has no native bot object."
+    },
+    {
+      "native": "0090ec40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost",
+      "reason": "Seg59aHost bodies work on the raw scoring object (*(game+21A0h), 284h-byte slot records with bound STL maps); the host keeps a typed bsp::MissionScoring and no raw scoring object or Seg59aHost implementation."
+    }
   ],
-  "handoff": "The narrative object [game+21E8h] is now native in GameScriptOrdersHost (narrative_object_, NarrativeObjectServices in src/game_hosts_script_orders.cpp). Next on it: MissionNarrativeParty / MissionNarrativePlayer (008B1210 / 008B13E0, about 690 live script lines, the objective complete/fail lines in scripts/global/commandhelpers.lua). Give lua_mission_narrative_party/_player a narrow base (narrative_send_to_party/_player) split out of ContentHost, change 00734B10 / 00734BF0 to read the player records through typed hooks (record +9h, +28h = scene_slot_party / local_player_party, +50h peer, local slot game+18ECh = 0 in single player), and run 00770BD0 / 00770B50 through engine_seg43_45's SessionPlayerRecord bodies (session mode 1 in single player, game_hosts_commands.hpp). Their local echo (append_local_echo -> 00734870) should append to the same narrative_object_ through NarrativeObjectServices. The entry's +14h variant vector stays 0: the extras are Lua registry refs per node (narrative_node_refs_)."
+  "handoff": "The narrative object [game+21E8h] is now native in GameScriptOrdersHost (narrative_object_, NarrativeObjectServices in src/game_hosts_script_orders.cpp). Next on it: MissionNarrativeParty / MissionNarrativePlayer (008B1210 / 008B13E0, about 690 live script lines, the objective complete/fail lines in scripts/global/commandhelpers.lua). Give lua_mission_narrative_party/_player a narrow base (narrative_send_to_party/_player) split out of ContentHost, change 00734B10 / 00734BF0 to read the player records through typed hooks (record +9h, +28h = scene_slot_party / local_player_party, +50h peer, local slot game+18ECh = 0 in single player), and run 00770BD0 / 00770B50 through engine_seg43_45's SessionPlayerRecord bodies (session mode 1 in single player, game_hosts_commands.hpp). Their local echo (append_local_echo -> 00734870) should append to the same narrative_object_ through NarrativeObjectServices. The entry's +14h variant vector stays 0: the extras are Lua registry refs per node (narrative_node_refs_).",
+  "review_round_1": {
+    "run": 1353,
+    "findings": [
+      {
+        "finding": 1,
+        "outcome": "fixed",
+        "detail": "00735100 evidence now cites 00735258 JZ 007353A2, 007353C7 CALL 00733BB0 (before the erase), 007353CE MOV [EDI+1Ch],0 and 007353E3 CALL 00734D20 (listing re-read with bsp.py show 00735100 --asm). The adjacent older comment 0073528B was also wrong and now cites 007353EB MOV AL,1."
+      },
+      {
+        "finding": 2,
+        "outcome": "fixed",
+        "detail": "00734D20 is RET 0Ch (listing 00734D83 RET 0xc) in the host comment and in the ledger row original_abi; the ledger evidence cites 007353C7/007353CE/007353E3."
+      },
+      {
+        "finding": 3,
+        "outcome": "no_change_needed",
+        "detail": "Agreed, and noted on the 00733030 / 00733E70 / 00733F00 rows: they run on the real object, but only on words the host does not read until the shown entry and countdown move onto the object."
+      },
+      {
+        "finding": 4,
+        "outcome": "fixed",
+        "detail": "include/bsp/cc15_g24c.hpp now says 008DC500 and 007D05E0 are still not wired."
+      }
+    ]
+  }
 }

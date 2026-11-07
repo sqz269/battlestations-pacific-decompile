@@ -13,6 +13,7 @@
 // word). Goal 5 chain 643 wires the three narrative writers: the script orders
 // host's MissionNarrative / Urgent / Override bindings run them on its native
 // narrative object (src/game_hosts_script_orders.cpp, NarrativeObjectServices).
+// The file's other bodies (008DC500, 007D05E0) are still not wired.
 namespace bsp::cc15_g24c {
 
 // ---------------------------------------------------------------------------

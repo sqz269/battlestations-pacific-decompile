@@ -945,7 +945,8 @@ public:
         throw std::logic_error("narrative: checked list iterator failure (00BF6713)");
     }
 
-    // 00734D20, __thiscall(ECX = list; out iterator, container, where), RET 10h,
+    // 00734D20, __thiscall(ECX = list; out iterator, container, where), RET 0Ch
+    // (listing 00734D83),
     // as 00735100 calls it on the front node (container = the list itself):
     // unlink, 00733DC0 on +8h, _free, size -1.
     void erase_00734d20(std::uint8_t* list, std::uint8_t* where) {
@@ -6815,9 +6816,12 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
 
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     if (!narrative_active_14_) {
-        // 0073521F..00735279: with +0Ch non-zero, the front node (checked
-        // against the head) goes to 00733BB0 as (+0Ch text, +14h callback,
-        // +1Ch arguments); +1Ch is then zeroed and 00734D20 erases the front.
+        // 00735258 JZ 007353A2 (+14h clear), 007353A2..007353E3: with +0Ch
+        // non-zero, the front node (checked against the head, 007353AD) goes
+        // to 00733BB0 as (+0Ch text, +14h callback, +1Ch arguments) at
+        // 007353C7, before the erase; +1Ch is then zeroed (007353CE) and
+        // 00734D20 erases the front (007353E3). This host copies the two
+        // strings out first and starts the entry below, after the erase.
         if (narrative_queue_size() == 0) return;
         NarrativeObjectServices services([this](const void* node) { release_narrative_node_refs(node); });
         std::uint8_t* const list = narrative_object_ + 0x04;
@@ -6836,8 +6840,8 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
             head_refs = std::move(it->second);
             narrative_node_refs_.erase(it);
         }
-        NarrativeObjectServices::store<std::uint32_t>(front, 0x1C, 0u);    // 00735270
-        services.erase_00734d20(list, front);                             // 00735279
+        NarrativeObjectServices::store<std::uint32_t>(front, 0x1C, 0u);    // 007353CE
+        services.erase_00734d20(list, front);                             // 007353E3
         float fade = 0.5f, char_wait = 0.04f, wait_base = 1.0f;     // DialogGlobals.lua
         if (machine_state_ != nullptr) {
             const int top = lua_gettop(machine_state_);
@@ -6886,7 +6890,7 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
         } else {
             log_.unimplemented("HudNarrative::show_text", "005b7390");
         }
-        return;   // 0073528B: RET with 1 after the pop
+        return;   // 007353EB: MOV AL,1 and return after the pop
     }
     float top = 1.0f;   // 00D7A24C
     if (narrative_state_18_ == 0) {
