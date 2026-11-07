@@ -486,6 +486,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Goal 5 chain 655: the skill index SetSkillLevel / SetCrewLevel write.
     {"GetSkillLevel", 0x008953f0u},
     {"GetCrewLevel", 0x008950d0u},
+    // Goal 5 chain 655: the air-operations block's in-air plane limit (+58h).
+    {"SetAirBasePlaneLimit", 0x00897720u},
+    {"GetAirBasePlaneLimit", 0x008978d0u},
     // Packet cc13-fix16: handled only with its own switch (kLuaPlaneForceReleaseBound,
     // kLuaSquadronForceReleaseBound, kLuaPilotBombBound, kLuaPlaneBombFallingTimeBound,
     // kLuaPlaneReloadBombPlatformsBound, kLuaGetPlaneIsReloadingBound).
@@ -1028,6 +1031,27 @@ private:
     throw std::logic_error(std::string("segment-56 unit query: unreached ") + what);
 }
 
+// 006BCD20's block selection (bsp.py ghidra disasm 006bcd20): a null entity answers
+// null; 006BCD35 vtable[5Ch](9) gives owner+1188h, 006BCD4C vtable[5Ch](45h)
+// owner+72Ch, anything else null. `owner_class` says whether one of the two tests
+// held (the image's block is embedded in that owner); the deck is the block the
+// scene loaded for it, which the deck registry binds to the table's `ID` (the
+// units-host index plus one). Null when the scene loaded no deck for the owner.
+bsp::AirOpsDeck* unit_air_ops_deck_006bcd20(const GameUnitsHost& units, std::size_t index,
+    bool& owner_class) {
+    owner_class = false;
+    if (index >= units.count()) return nullptr;
+    std::uint32_t class_id = 0;
+    if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdMothership))) {
+        class_id = bsp::kAirOpsClassIdMothership;
+    } else if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdAirfield))) {
+        class_id = bsp::kAirOpsClassIdAirfield;
+    }
+    owner_class = bsp::air_ops_block_offset_006bcd20(class_id) != 0;
+    if (!owner_class) return nullptr;
+    return bsp::air_ops_decks().find_mutable_by_entity_id(static_cast<int>(index + 1u));
+}
+
 // The two pushes 008953F0 / 008950D0 (00B664B0 PushNumber) and 00890BB0 (00B66480
 // PushFloat) make, onto the dispatch's own Lua frame.
 class UnitQueryResults final : public bsp::cc13_seg56::LuaResults {
@@ -1107,7 +1131,37 @@ public:
         return units_.throttle_ceiling_inputs(slot_of(unit)).reference_speed;
     }
 
+    // 006BCD20(entity, DL) for SetAirBasePlaneLimit 00897720 / GetAirBasePlaneLimit
+    // 008978D0 (both pass DL = 0, XOR DL,DL at 00897839 / 008979E6), through
+    // unit_air_ops_deck_006bcd20. With DL set (006BCD5C) the block's +7Ch owner and
+    // the owner's +5Dh are the deck's owner_present / owner_blocked.
+    void* air_ops_block_006bcd20(void* entity, bool require_active) override {
+        bool owner_class = false;
+        bsp::AirOpsDeck* deck = unit_air_ops_deck_006bcd20(units_, slot_of(entity), owner_class);
+        if (!owner_class) return nullptr;
+        if (deck == nullptr) unit_query_unreached("a carrier or airfield with no loaded deck");
+        if (!bsp::air_ops_block_is_usable_006bcd20(require_active, deck->owner_present,
+                deck->owner_blocked)) {
+            return nullptr;
+        }
+        return deck;
+    }
+    // 006BA6C0: MOV EAX,[ECX+58h] / RET. 006BA6D0: MOV EAX,[ESP+4] / MOV [ECX+58h],EAX /
+    // RET 4 (bsp.py ghidra disasm). block+58h is the deck's max_in_air_planes. Neither
+    // accessor tests the block: the image faults on a null one, which the dispatch's
+    // pre-check keeps from happening.
+    std::int32_t air_ops_block_plane_limit_006ba6c0(void* block) override {
+        return deck_of(block).max_in_air_planes;
+    }
+    void air_ops_block_set_plane_limit_006ba6d0(void* block, std::int32_t limit) override {
+        deck_of(block).max_in_air_planes = limit;
+    }
+
 private:
+    static bsp::AirOpsDeck& deck_of(void* block) {
+        if (block == nullptr) unit_query_unreached("006BA6C0 / 006BA6D0 on a null block");
+        return *static_cast<bsp::AirOpsDeck*>(block);
+    }
     std::size_t slot_of(void* entity) const {
         const std::size_t index = index_of_(entity);
         if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
@@ -5024,6 +5078,8 @@ int GameScriptOrdersHost::run_seg56_unit_query(std::uint32_t address) {
     case 0x008953f0u: count = seg56::lua_get_skill_level(args, results, host); break;
     case 0x008950d0u: count = seg56::lua_get_crew_level(args, results, host); break;
     case 0x00890bb0u: count = seg56::lua_get_ship_max_speed(args, results, host); break;
+    case 0x00897720u: count = seg56::lua_set_air_base_plane_limit(args, host); break;
+    case 0x008978d0u: count = seg56::lua_get_air_base_plane_limit(args, results, host); break;
     default: unit_query_unreached("a row with no segment-56 unit query body");
     }
     return state_ != nullptr ? count : 0;
@@ -6364,6 +6420,34 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.unimplemented(binding->row_address == 0x008950d0u
                     ? "LuaNative::GetCrewLevel(entity without a unit slot)"
                     : "LuaNative::GetSkillLevel(entity without a unit slot)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "SetAirBasePlaneLimit") == 0 ||
+               std::strcmp(binding->name, "GetAirBasePlaneLimit") == 0) {
+        // Goal 5 chain 655. 00897720 SetAirBasePlaneLimit(base, limit): 006BCD20(base, 0),
+        // integer argument 1 (00B66290 at 0089785E), 006BA6D0 at 00897878; no result.
+        // 008978D0 GetAirBasePlaneLimit(base): 006BCD20(base, 0), 006BA6C0 at 008979F1,
+        // 00B664B0 PushNumber; one result. Bodies lua_set_air_base_plane_limit /
+        // lua_get_air_base_plane_limit (src/options_seg56_cc13.cpp) over
+        // UnitQuerySeg56Host: block+58h is the deck's max_in_air_planes, which the slot
+        // tick 006C0510, 006BD460's slot capacity, 006C0F00's fill and 006C5950's return
+        // read (src/air_operations.cpp). Callers: usn_04_defend_
+        // guadalcanal.lua 1658 (the Japanese carrier to 15), usn_10_battle_of_capeengano
+        // .lua 1447 / 1486 / 2529 (both copies), commandhelpers.lua 15237 (the getter).
+        // LABELLED: an argument that is not a carrier or airfield with a loaded deck
+        // runs nothing and is counted; the image hands 006BA6C0 / 006BA6D0 the null
+        // block 006BCD20 answers and faults.
+        ++air_base_limit_calls_;
+        bool owner_class = false;
+        const std::size_t base = index_of(entity_at(0));
+        if (state_ != nullptr && base < units_.count()
+            && unit_air_ops_deck_006bcd20(units_, base, owner_class) != nullptr) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented(binding->row_address == 0x00897720u
+                    ? "LuaNative::SetAirBasePlaneLimit(entity without an air-operations deck)"
+                    : "LuaNative::GetAirBasePlaneLimit(entity without an air-operations deck)",
                 address);
         }
     } else if (std::strcmp(binding->name, "GetShipMaxSpeed") == 0) {
@@ -8747,10 +8831,11 @@ void GameScriptOrdersHost::report() {
             ship_max_speed_unresolved_, kLuaGetDirectionBound ? 1 : 0, direction_calls_,
             direction_unresolved_);
     }
-    if (role_table_calls_ != 0 || skill_query_calls_ != 0) {
+    if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0) {
         log_.notef("summary mission script unit queries role tables=%zu skill/crew=%zu "
-            "unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / 008950D0, goal 5 chain 655)",
-            role_table_calls_, skill_query_calls_, unit_query_unresolved_);
+            "air base plane limit=%zu unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / "
+            "008950D0 / 00897720 / 008978D0, goal 5 chain 655)", role_table_calls_,
+            skill_query_calls_, air_base_limit_calls_, unit_query_unresolved_);
     }
     if (plane_force_release_calls_ != 0 || squadron_force_release_calls_ != 0 ||
         pilot_bomb_calls_ != 0 || bomb_falling_time_calls_ != 0 ||

@@ -40,6 +40,36 @@
       "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::entity_skill_vt12c (squadron arm, a PlaneSquadronEntity view of the registry record; template, inlined)"
     },
     {
+      "native": "00897720",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch SetAirBasePlaneLimit arm), lua_set_air_base_plane_limit over UnitQuerySeg56Host: 006BCD20 through unit_air_ops_deck_006bcd20, 006BA6D0 = the deck's max_in_air_planes"
+    },
+    {
+      "native": "008978d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetAirBasePlaneLimit arm), lua_get_air_base_plane_limit over UnitQuerySeg56Host (006BA6C0)"
+    },
+    {
+      "native": "00895ba0",
+      "status": "skipped",
+      "reason": "GetAirBaseStatus pushes 006BF5C0, which reads block+9Ch and the +4 tracked lock; AirOpsDeck models neither (its 006BF5C0 body takes a raw block)"
+    },
+    {
+      "native": "00896220",
+      "status": "skipped",
+      "reason": "GetAirBaseSlotStatus reads slot+2Ch through pointer arithmetic on [block+4Ch] (58h stride); it needs an ImageAccess view that maps the deck's slot vector onto that address space, not built"
+    },
+    {
+      "native": "0089e220",
+      "status": "skipped",
+      "reason": "SquadronSetHomeBase calls 007F1C00 mid-mission; the units host has no live squadron home-base field (set_squadron_scene_home_base only stages pass C's HomeBase key)"
+    },
+    {
+      "native": "008a8f90",
+      "status": "skipped",
+      "reason": "SetGuiName calls entity vtable+0Ch with the display name; the units/HUD hosts keep no per-unit GUI name for it to set"
+    },
+    {
       "native": "00890ef0",
       "status": "skipped",
       "reason": "GetShipSpeed needs the vtable+38h speed dispatch (ship 0092D730, plane 007B8E60, squadron 007ED470), which lives file-local in game_hosts_lua.cpp next to GetEntitySpeed (leased by g5-w5); route it there with a Seg56HostUnreached adapter"
