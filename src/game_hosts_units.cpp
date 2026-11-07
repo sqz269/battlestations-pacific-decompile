@@ -1,5 +1,9 @@
 #include "bsp/game_hosts_units_internal.hpp"
 
+extern "C" {
+#include <lua.h>   // goal 5 chain 668: 007CA790's thisTable store
+}
+
 #include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
 
 namespace bsp::game {  // namespace
@@ -4364,6 +4368,35 @@ void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
     // The poll stand-in's bookkeeping (wing_fold_notify_007c11e0), not the image's.
     if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = p.plane_control_mode_900;
     done("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+}
+
+// Goal 5 chain 668: 007CA790's Lua half (see the declaration).
+void GameUnitsHost::Impl::store_exit_zone_party_007ca790(std::size_t unit, std::int32_t party) {
+    lua_State* const state = lua.mission_lua_state();
+    if (state == nullptr || unit >= slots.size()) {
+        ++exit_zone_party_no_slot;
+        return;
+    }
+    const int base = lua_gettop(state);
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (lua_istable(state, -1)) {
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(unit + 1u));
+        lua_getfield(state, -1, key);
+        if (lua_istable(state, -1)) {
+            lua_pushinteger(state, static_cast<lua_Integer>(party));
+            lua_setfield(state, -2, "ExitZoneParty");
+            lua_settop(state, base);
+            ++exit_zone_party_stores;
+            log.notef("exit zone: plane \"%s\" self.ExitZoneParty = %d at %.2f s (007CA790)",
+                slots[unit]->row.name.c_str(), party,
+                static_cast<double>(summary.simulated_seconds));
+            return;
+        }
+    }
+    lua_settop(state, base);
+    ++exit_zone_party_no_slot;
 }
 
 // 007CC16C-007CC186: (+BF4h)->+4h->+3Ch vtable[38h](unit). A carrier's site is
