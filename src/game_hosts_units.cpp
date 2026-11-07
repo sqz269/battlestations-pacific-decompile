@@ -944,7 +944,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         // writes only when |v| > 0.1 (otherwise it keeps its value). In the
         // image that write is at 007CEE9C, after the think (007CE865) and the
         // motion, so think sees the previous step's C7C. The host's
-        // refresh_attitude_007c1900 runs before pilot_think_and_commit in each
+        // update_pose_derived_state_007c18b0 runs before pilot_think_and_commit in each
         // of its three arms (free flight, ground roll/deck, surface), from the
         // velocity the host holds at that point. In steady free flight that is
         // the velocity the previous step's motion left, so the values agree.
@@ -977,7 +977,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
     // DIAGNOSTIC (cc9-physics29): the ON arm would read C7Ch, which the writer in
-    // refresh_attitude_007c1900 now keeps in both modes (read only by this census
+    // update_pose_derived_state_007c18b0 now keeps in both modes (read only by this census
     // when OFF).
     ++uhd_pitch_calls;
     if (pitch != u.plane_velocity_elevation_c7c) {

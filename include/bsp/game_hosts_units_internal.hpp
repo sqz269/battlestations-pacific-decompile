@@ -795,15 +795,22 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float plane_live_controls[3]{0.0f, 0.0f, 0.0f};
     // unit+9F0h and +9F4h. 007CFEB0 sets the throttle to 1.0f at construction
     // and 007CFEA4 zeroes the air brake.
-    // unit+C64h pitch, +C68h bank, +C6Ch heading, all from 007C1900 over the
-    // live pose. Slot state rather than locals because the native leaves the
-    // heading and bank untouched when the forward axis is near vertical.
+    // unit+C64h pitch, +C68h bank, +C6Ch heading, all from 007C18B0 (its 007C1900
+    // block) over the live pose. Slot state rather than locals because the native
+    // leaves the heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
-    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written only
-    // under kUnitsHostDeviationsCc13Bound by refresh_attitude_007c1900 (all three
-    // of its host callers); kept when |v| <= 0.1. Starts at 0 (the constructor's
-    // value was not read; labelled).
+    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written by
+    // update_pose_derived_state_007c18b0 (all three of its host callers); kept when
+    // |v| <= 0.1. Starts at 0 (the constructor's value was not read; labelled).
     float plane_velocity_elevation_c7c{0.0f};
+    // Goal 5 chain 657: the rates 007C18B0 derives with dt > 0. +C70h the heading
+    // rate (only while |d| < 0.5), +C74h pitch, +C78h bank, +C80h the velocity
+    // elevation's and +C88h the path pitch's.
+    float plane_heading_rate_c70{0.0f};
+    float plane_pitch_rate_c74{0.0f};
+    float plane_bank_rate_c78{0.0f};
+    float plane_velocity_elevation_rate_c80{0.0f};
+    float plane_path_pitch_rate_c88{0.0f};
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
@@ -11770,9 +11777,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         a.pitch = u.plane_pitch_angle_c64;
         a.bank = u.plane_bank_angle_c68;
         a.heading = u.plane_heading_c6c;
-        // SUBSTITUTION, labelled: unit+C70h is not carried. Its only consumer
-        // here is rf_hdgV, authored 0/DEG(400), so the term is zero either way.
-        a.turn_c70 = 0.0f;
+        // unit+C70h, 007C18B0's heading rate (goal 5 chain 657).
+        a.turn_c70 = u.plane_heading_rate_c70;
         // vtable+38h 007B8E60 BSP_Unit_GetCachedSpeed: the world speed.
         if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
             // unit+B1Ch as 007D8020 caches it (per op, 1e-10 floor).

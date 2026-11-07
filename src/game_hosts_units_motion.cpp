@@ -1462,7 +1462,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007B9770 at 007CE96F, in that address order with the
                         // motion arm between, so the think and commit run first
                         // and control_step_007da710's latch runs last.
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         // Packet cc9_plane_death_modes: 007CAF10's death terms,
                         // called at 007CC322 before the controller step. The
@@ -20431,72 +20431,107 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // They feed both the control targets (sin(bank), cos(pitch))
                     // and the planner's yaw arm (cos(bank), |bank|, heading), so
                     // they are computed once per step and cached on the slot.
-                    void refresh_attitude_007c1900() {
-                        bsp::AdvanceMatrix pose{};
-                        const float* const rows[3] = {unit_.motion.pose_row0,
-                            unit_.motion.pose_row1, unit_.motion.pose_row2};
-                        for (int r = 0; r < 3; ++r) {
-                            for (int c = 0; c < 3; ++c) {
-                                pose.m[r * 4 + c] = rows[r][c];
+                    // Goal 5 chain 657: 007C18B0 BSP_Plane_UpdatePoseDerivedState runs as
+                    // itself (cc13_seg47b) where each arm refreshed the attitude: pitch,
+                    // bank, heading and their rates +C70h..+C78h, the velocity elevation
+                    // +C7Ch and the low-passed path pitch +C84h with their rates. The image
+                    // calls it at the end of 007CE040 (007CEE9C, dt = the fixed step);
+                    // SUBSTITUTION, labelled (as before): this host runs it at the head of
+                    // each arm, before the think, on the pose the previous step left. The
+                    // binding answers the body's plane offsets from this slot's fields and
+                    // its matrix calls with the recovered primitives (plane_advance_pose).
+                    class PoseDerivedStateBinding final
+                        : public bsp::cc13_seg47b::PlanePoseDerivedStateHost {
+                    public:
+                        explicit PoseDerivedStateBinding(PlaneBinding& plane) : plane_(plane) {
+                            const GameUnitSlot& u = plane.unit_;
+                            const float* const rows[3] = {u.motion.pose_row0, u.motion.pose_row1,
+                                u.motion.pose_row2};
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) pose_[r * 4 + c] = rows[r][c];
+                                pose_[r * 4 + 3] = 0.0f;
                             }
-                            pose.m[r * 4 + 3] = 0.0f;
+                            for (int c = 0; c < 3; ++c) pose_[12 + c] = u.motion.position[c];
+                            pose_[15] = 1.0f;
                         }
-                        pose.m[15] = 1.0f;
-                        bsp::NativeAdvanceMatrixOps ops;
-                        const bsp::PlaneAttitudeAngles a =
-                            bsp::plane_attitude_angles_007c1900(pose, ops);
-                        unit_.plane_pitch_angle_c64 = a.pitch;
-                        // The native leaves the previous heading and bank in
-                        // place when the forward axis is too near vertical, and
-                        // so does this - which is why they are slot state rather
-                        // than locals.
-                        if (a.heading_and_bank_written) {
-                            unit_.plane_heading_c6c = a.heading;
-                            unit_.plane_bank_angle_c68 = a.bank;
+                        ~PoseDerivedStateBinding() override = default;
+                        // LABELLED: this host's pose rows are always current; there is
+                        // no +C8h cache to refresh.
+                        void refresh_pose_if_stale_00414db0() override {}
+                        const float* pose_cc() override { return pose_; }
+                        float& plane_float(std::uint32_t offset) override {
+                            GameUnitSlot& u = plane_.unit_;
+                            switch (offset) {
+                            case 0xC64u: return u.plane_pitch_angle_c64;
+                            case 0xC68u: return u.plane_bank_angle_c68;
+                            case 0xC6Cu: return u.plane_heading_c6c;
+                            case 0xC70u: return u.plane_heading_rate_c70;
+                            case 0xC74u: return u.plane_pitch_rate_c74;
+                            case 0xC78u: return u.plane_bank_rate_c78;
+                            case 0xC7Cu: return u.plane_velocity_elevation_c7c;
+                            case 0xC80u: return u.plane_velocity_elevation_rate_c80;
+                            case 0xC84u: return u.plane_path_pitch_c84;
+                            case 0xC88u: return u.plane_path_pitch_rate_c88;
+                            case 0xAC8u: return u.plane_world_velocity[0];   // ctl+18h
+                            case 0xACCu: return u.plane_world_velocity[1];
+                            case 0xAD0u: return u.plane_world_velocity[2];
+                            case 0xAE0u: return u.plane_velocity_lp_30[0];   // ctl+30h
+                            case 0xAE4u: return u.plane_velocity_lp_30[1];
+                            case 0xAE8u: return u.plane_velocity_lp_30[2];
+                            default: break;
+                            }
+                            throw std::logic_error("007C18B0: plane float offset not mapped");
                         }
-                        {   // cc9-physics29: written in both modes; OFF reads it only
-                            // in the terrain_avoidance_0099f1c0 census (diagnostic).
-                            // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
-                            // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
-                            // stored, 0 at or below 1e-10 [00CE3820]; only when
-                            // |v| > 0.1 [00D7A3A0] (FCOMPI/JBE at 007C1C55, unordered
-                            // keeps it too) the horizontal sqrt(z*z + x*x) (same
-                            // floor) and C7Ch = atan2(y, horizontal) (00BF701A),
-                            // stored as a float; otherwise C7Ch keeps its value.
-                            using namespace bsp::cc13x87;
-                            const float* const v = unit_.plane_world_velocity;
-                            const double xx = x87_mul24(v[0], v[0]);
-                            const double yy = x87_mul24(v[1], v[1]);
-                            const double zz = x87_mul24(v[2], v[2]);
-                            const float s3 = static_cast<float>(x87_add24(x87_add24(yy, xx), zz));
-                            float len3 = 0.0f;
-                            if (s3 > 1.0e-10) len3 = static_cast<float>(std::sqrt(static_cast<double>(s3)));
-                            if (len3 > 0.10000000149011612) {
-                                const float s2 = static_cast<float>(x87_add24(zz, xx));
-                                float horiz = 0.0f;
-                                if (s2 > 1.0e-10) horiz = static_cast<float>(std::sqrt(static_cast<double>(s2)));
-                                unit_.plane_velocity_elevation_c7c = static_cast<float>(
-                                    std::atan2(static_cast<double>(v[1]), static_cast<double>(horiz)));
+                        const float* up_vector_00f8758c() override { return bsp::kWorldUp00f8758c.data(); }
+                        const float* vector3_cross_004f9b30(float* out, const float* a,
+                                                            const float* b) override {
+                            bsp::pc24_unitshost::cross_004f9b30(a, b, out);
+                            return out;
+                        }
+                        void matrix_rotate_by_angular_velocity_0085e4d0(float* out16, const float* in16,
+                                float wx, float wy, float wz, float dt) override {
+                            bsp::AdvanceMatrix in{};
+                            bsp::AdvanceMatrix out{};
+                            std::memcpy(in.m, in16, sizeof in.m);
+                            std::memcpy(out.m, out16, sizeof out.m);
+                            const float w[3] = {wx, wy, wz};
+                            // 00F87574, the zero vector (plane_advance_pose.hpp).
+                            static constexpr float eye_00f87574[3] = {0.0f, 0.0f, 0.0f};
+                            if (bsp::rotate_about_axis_0085e4d0(out, in, w, dt, eye_00f87574, ops_)) {
+                                std::memcpy(out16, out.m, sizeof out.m);
                             }
                         }
-                        if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
-                            // 007C1B85-007C1D05: only when |ctl+18h| > 0.1 (double
-                            // 00D7A3A0); the horizontal length is 0 unless its square
-                            // exceeds 1e-10 (00CE3820).
-                            const float* const v = unit_.plane_world_velocity;
-                            const float s2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-                            const float s = static_cast<double>(s2) > 1.0e-10
-                                ? std::sqrt(s2) : 0.0f;
-                            if (static_cast<double>(s) > 0.10000000149011612
-                                && unit_.plane_velocity_lp_valid) {
-                                const float* const lp = unit_.plane_velocity_lp_30;
-                                const float h2 = lp[0] * lp[0] + lp[2] * lp[2];
-                                const float h = static_cast<double>(h2) > 1.0e-10
-                                    ? std::sqrt(h2) : 0.0f;
-                                unit_.plane_path_pitch_c84 = static_cast<float>(std::atan2(
-                                    static_cast<double>(lp[1]), static_cast<double>(h)));
-                            }
+                        const float* matrix_build_rotation_y_00b646e0(float* out16,
+                                                                      const float* angle) override {
+                            bsp::AdvanceMatrix r{};
+                            ops_.build_rotation_y_00b646e0(r, *angle);
+                            std::memcpy(out16, r.m, sizeof r.m);
+                            return out16;
                         }
+                        void matrix_assign_004134f0(float* destination16, const float* source16) override {
+                            std::memmove(destination16, source16, 16 * sizeof(float));
+                        }
+                        const float* matrix_multiply_00413920(const float* left16, float* out16,
+                                                              const float* right16) override {
+                            bsp::AdvanceMatrix left{};
+                            bsp::AdvanceMatrix right{};
+                            bsp::AdvanceMatrix product{};
+                            std::memcpy(left.m, left16, sizeof left.m);
+                            std::memcpy(right.m, right16, sizeof right.m);
+                            ops_.multiply_00413920(product, left, right);
+                            std::memcpy(out16, product.m, sizeof product.m);
+                            return out16;
+                        }
+
+                    private:
+                        PlaneBinding& plane_;
+                        float pose_[16]{};
+                        bsp::NativeAdvanceMatrixOps ops_;
+                    };
+                    void update_pose_derived_state_007c18b0(float step) {
+                        PoseDerivedStateBinding binding(*this);
+                        bsp::cc13_seg47b::plane_update_pose_derived_state_007c18b0(binding, step);
+                        owner_.done("Plane::update_pose_derived_state_007c18b0", 0x007c18b0u);
                     }
 
                     // 009AC190's bearing into plan+2C0h, then 0099D300's yaw arm
@@ -21206,7 +21241,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (GameUnitsHost::Impl::kPlaneBankYawBound) {
                             // 007DA00C-007DA117, which runs whether or not the
                             // rotation applied. The pitch and bank are unit+C64h /
-                            // +C68h as refresh_attitude_007c1900 left them for this
+                            // +C68h as update_pose_derived_state_007c18b0 left them for this
                             // step, and ctl+7Ch is the forward speed this step's
                             // core law produced, the value the image's next wave-1
                             // pose step reads (007D80C0 copies it after the step).
@@ -21815,7 +21850,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pose (packet cc9_carrier_landing_deck_part2).
                             owner_.carrier_deck_carry_in(unit_);
                         }
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         // Step 1, 007CBFC3: the pre-pass 007C5AC0.
                         owner_.plane_site_probe_007c5ac0(unit_, step);
@@ -22264,7 +22299,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         ++unit_.plane_water_law_steps;
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         owner_.plane_site_probe_007c5ac0(unit_, step);   // step 1, vtable[+1ECh]
                         // Step 2, 007CBA90..007CBBE0 (bsp.py disasm-raw 007cba50): a dead
