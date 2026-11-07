@@ -3541,6 +3541,10 @@ struct GameUnitsHost::Impl {
     std::map<std::string, float> leave_warn_36c;
     unsigned long long leave_countdown_calls{0}, leave_counting_steps{0},
         leave_counting_not_retreat{0};
+    // Goal 5 chain 668: the 007C6D65 warnings (00982120(plane, 0)) and the 007CA790
+    // ExitZoneParty stores (made / without a border zone at the plane / no self slot).
+    unsigned long long leave_warnings_00982120{0}, exit_zone_party_stores{0},
+        exit_zone_party_no_zone{0}, exit_zone_party_no_slot{0};
     // BSP_MissionEntity_Kill's cause (00926D90's argument) for the kills this
     // host passes one other than 1; 00929800 names it from 00E0CF04.
     std::vector<int> kill_cause_by_unit;
@@ -12301,8 +12305,21 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return bsp::point_beyond_map_margin_0059c9b0(*b, p[0], p[2], margin);
         };
         h.local_player_role = [&] { return unit.current_roles_01ac[0] == kLocalPlayerSlot; };
+        // 007C6D5C..007C6D65: 00982120([00F8A0C4], plane, 0). 00982120 first takes
+        // entity->vtable[140h](), 007B97E0 for a plane (+9D4h, the squadron), so the
+        // hook gets the squadron's unit, the same entity the exit (plane, 1) events
+        // carry (dispatch_exit_zone_listeners_00982120), and the warning tail and the
+        // exitzone listeners (exited 0) run on it. A plane whose squadron has no unit
+        // slot is the plane itself there too.
         h.warn_exit_zone = [&] {
-            record("Plane::out_of_action_notice_00982120", 0x00982120u);
+            if (sq == nullptr) {
+                record("Plane::out_of_action_notice_00982120", 0x00982120u);
+                return;
+            }
+            lua.note_exit_zone_00982120(
+                sq->squadron_unit != bsp::kPlaneSquadronNoUnit ? sq->squadron_unit : m, false);
+            ++leave_warnings_00982120;
+            done("Plane::out_of_action_notice_00982120", 0x00982120u);
         };
         h.send_exit_zone = [&] { send = true; };
         bsp::gameplay_seg47_cc13::out_of_action_countdown_007c6c30(s, gun->unit_dead(m), step, t, h);
@@ -12333,16 +12350,20 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         done("Plane::out_of_action_countdown_007c6c30", 0x007c6c30u);
     }
     // 007EE410 -> message 50h -> 007CA790 -> 007F31A0 for a plane whose leave
-    // countdown ran out. PARTIAL, labelled: 00982120's HUD notices, the Lua
-    // ExitZoneParty stores (no script in this installation reads the key), the
-    // fire stance 0 and the moveto 007F340F re-issues to the survivors are not
-    // modelled; the survivors keep their retreat task instead.
+    // countdown ran out. 007CA790 runs on its body (run_exit_zone_007ca790: the Lua
+    // ExitZoneParty store, then 007F31A0). PARTIAL, labelled: 007F31A0's 007F31E6
+    // exitzone event is taken from the cause-4 death by the Lua host
+    // (dispatch_exit_zone_listeners_00982120); the fire stance 0 and the moveto
+    // 007F340F re-issues to the survivors are not modelled; the survivors keep
+    // their retreat task instead.
     void retreat_leave_map_007ee410(std::size_t m) {
         bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_registry().find_by_member_unit(m);
         GameGunneryHost* const gun = gunnery.get();
         if (gun == nullptr || m >= slots.size() || gun->unit_dead(m)) return;
         if (sq == nullptr) {
-            record("Plane::exit_zone_party_007ca790", 0x007ca790u);   // no 007F31A0
+            // No squadron record: 007EE410 runs on plane+9D4h, which this host
+            // cannot name, so neither 007CA790 nor 007F31A0 runs.
+            record("Plane::exit_zone_no_squadron_record", 0x007ee410u);
             return;
         }
         bool latched = false;
@@ -12354,24 +12375,49 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return;
         }
         ++retreat_exits;
+        // 007C6DAD..007C6DC1: 007EE410's third argument is 00489C40(game, plane+FCh),
+        // the border zone at the plane, and the message 50h it routes (flags 7, local
+        // in single player) carries that zone's +4h, its party (the dword
+        // SetBorderZoneParty stores at 008AEC7D). The message's handler is 007CA790.
+        // LABELLED: inside the map 00489C40 indexes with a stale value
+        // (border_zone_at_point_00489c40 answers null), so no party is recovered and
+        // 007CA790 is not run; 007F31A0's own work is.
+        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
+        const bsp::BorderZoneSet* zones = lua.world_border_zones();
+        const bsp::BorderZoneRecord* zone = nullptr;
+        if (bounds != nullptr && zones != nullptr) {
+            const float* pm = slots[m]->motion.position;
+            zone = bsp::border_zone_at_point_00489c40(*bounds, *zones, {pm[0], pm[1], pm[2]});
+        }
+        if (zone == nullptr) ++exit_zone_party_no_zone;
         std::vector<std::size_t> alive;
         for (const std::size_t u : sq->member_units) {
             if (u != bsp::kPlaneSquadronNoUnit && u < slots.size() && !gun->unit_dead(u))
                 alive.push_back(u);
         }
-        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
         std::size_t outside_killed = 0;
+        // 007F31A0 on the plane, reached from its 007CA790 (or directly, labelled above).
+        const auto left_map = [&] {
         if (alive.size() > 1) {
             std::size_t survivors = alive.size() - 1;
             if (m == leader && bounds != nullptr) {
                 // 007F3240-007F32B6: every other member already outside gets the
-                // same exit message, whose 007F31A0 kills it (non-leader arm).
+                // same exit message (007EDF50 with 007F31A0's own party argument,
+                // 0077C2A0 flags 7), whose 007CA790 stores that party and runs the
+                // member's 007F31A0, which kills it (non-leader arm).
                 for (const std::size_t u : alive) {
                     if (u == m) continue;
                     const float* p = slots[u]->motion.position;
                     if (bsp::point_outside_world_map_0071c4f0(*bounds, {p[0], p[1], p[2]})) {
-                        note_kill_cause(u, 4);
-                        gun->kill_unit_00926d90(u, 4);
+                        const auto member_left_map = [&](std::int32_t) {
+                            note_kill_cause(u, 4);
+                            gun->kill_unit_00926d90(u, 4);
+                        };
+                        if (zone != nullptr) {
+                            run_exit_zone_007ca790(u, zone->side, member_left_map);
+                        } else {
+                            member_left_map(0);   // unread: the kill takes no party
+                        }
                         ++retreat_exit_members;
                         ++outside_killed;
                         --survivors;
@@ -12402,7 +12448,36 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         gun->kill_unit_00926d90(m, 4);
         slots[m]->retreat_task_installed = false;
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
+        };
+        if (zone != nullptr) {
+            run_exit_zone_007ca790(m, zone->side, [&](std::int32_t) { left_map(); });
+        } else {
+            left_map();
+        }
     }
+    // 007CA790 BSP_Plane_OnExitZone, __thiscall(plane, party), RET 4, the handler of
+    // message 50h (bsp.py disasm-raw 007ca790): under the mission entity lock
+    // (004C1570's +4h critical section, 007CA7AD..007CA7CE), the plane's Lua
+    // self.ExitZoneParty = party (00927B40 at 007CA815, 00B67460 at 007CA82B, an
+    // integer), then 007CA862..007CA86E 007F31A0(ECX = plane+9D4h, plane, party) when
+    // +9D4h is set, which it is on every path here (007EE410 itself runs with ECX =
+    // plane+9D4h). The lock has no host counterpart: this host runs the mission on
+    // one thread.
+    void run_exit_zone_007ca790(std::size_t unit, std::int32_t party,
+                                const std::function<void(std::int32_t)>& left_map) {
+        bsp::gameplay_seg47_cc13::ExitZoneHost h;
+        h.set_lua_exit_zone_party = [&](std::int32_t p) {
+            store_exit_zone_party_007ca790(unit, p);
+        };
+        h.squadron_left_map = left_map;
+        bsp::gameplay_seg47_cc13::exit_zone_007ca790(true, party, h);
+        done("Plane::exit_zone_party_007ca790", 0x007ca790u);
+    }
+    // 007CA7D2..007CA82B: the key "ExitZoneParty" (00D05E00, copied into a native
+    // string through 0041DD40), 00927B40's thisTable slot of the plane (the units-host
+    // index plus one, kMissionLuaEntityKeyFormat), and 00B67460 stores the party there
+    // as an integer. A plane with no slot stores nothing.
+    void store_exit_zone_party_007ca790(std::size_t unit, std::int32_t party);
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit, float state_8c = 1.0f) {
         if constexpr (kFollowSightSearchBound) follow_sight_enter_009bed80(unit);
         // 009BFDA6-009BFDB2: the calling state's +8Ch. The follow state's is
