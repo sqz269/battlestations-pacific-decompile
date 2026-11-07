@@ -141,30 +141,31 @@ void* projectile_spawn_0072bf10(const ProjectileSpawnRequest& request, int sub_t
                                 ProjectileSpawnHost& host) {
     void* shot = host.create_projectile_006e8430(request);
     if (shot == nullptr) {
+        // Divergence: 0072C00B uses the factory result with no null test.
         return nullptr;
     }
 
-    // 006E8430 step 8, inside the factory: the medium is decided once, at the
-    // muzzle, and it is what picks the motion mode for the whole flight.
-    const float surface = host.water_height(request.position.x, request.position.z);
-    host.shot_set_medium(shot, request.position.y <= surface, 0);
-
-    host.store_ids(shot, request.gun_id, request.owner_id);
+    // The muzzle medium is not chosen here: it is step 8 of the generic factory
+    // 006E8430, inside the call above, and MTorpedo's factory 00856420 has none
+    // (see ProjectileSpawnHost::create_projectile_006e8430). 0072C008..0072C025
+    // run straight on to the ids.
+    host.store_ids(shot);
     host.gun_on_projectile_created(shot);
     host.stamp_fire_time();
 
     if (request.inherit_platform_velocity) {
         host.add_platform_velocity(shot, host.owner_velocity());
     }
-    if (request.shot_scale != 1.0f) {
-        host.shot_set_scale(shot, request.shot_scale);
+    if (request.scale_43c != 1) {
+        host.shot_set_scale(shot, static_cast<float>(request.scale_43c)); // 0072C09F CVTSI2SS
     }
     host.shot_set_appearance(shot);
     host.shot_set_team(shot, request.team_id);
 
-    // 0072C155 -> 009555A0: the owner binding and the director timestamp are
-    // the last thing the spawn does.
+    // 0072C155 -> 009555A0: the owner binding, the record ids and the director
+    // timestamp are the last thing the spawn does.
     host.bind_owner_006e6bb0(shot);
+    host.store_owner_record_ids(shot);
     host.stamp_director_fire_time(sub_type);
     return shot;
 }

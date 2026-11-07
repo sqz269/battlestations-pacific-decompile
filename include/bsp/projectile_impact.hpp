@@ -225,12 +225,13 @@ ProjectileImpactMode projectile_refine_impact_mode(ProjectileImpactMode mode,
 struct ProjectileSpawnRequest {
     TickPoint3 position;      // 0072F830's first argument
     TickPoint3 direction;     // the per-pellet perturbed direction
-    int owner_id = 0;         // [gun[+3F0h]+54h]
-    int gun_id = 0;           // [gun+58h]
     int team_id = 0;          // gun[+1ACh], or the owner's +1B0h when it is 8
     int spawn_flag = 0;       // 0072F830 step 6
     bool near_camera = false; // 0072BF10 step 1
-    float shot_scale = 1.0f;  // gun[+43Ch], applied only when it is not 1
+    // gun[+43Ch], an int: 0072C092 CMP EAX,1 skips the call for 1, else 0072C09F
+    // CVTSI2SS. The constructor stores 1 (0072E5EA / 0072E666); 00727E10 (from
+    // 009575D0, a plane's gun groups) stores the group size.
+    int scale_43c = 1;
     bool inherit_platform_velocity = false; // [gun[+3F4h]+95h]
 };
 
@@ -239,14 +240,19 @@ struct ProjectileSpawnHost {
     virtual ~ProjectileSpawnHost() = default;
 
     // 0072C006: classDesc->vtable[20h], seven stack arguments. Returns the shot
-    // interface, projectile+170h.
+    // interface, projectile+170h. The slot is the class's own factory: 006E8430
+    // for the generic classes (whose step 8 samples the water, 0078CF20, and
+    // picks the medium with the shot's vtable[24h]/[28h]), 00856420 for
+    // MTorpedo, which makes no medium choice. That choice is the factory's, so
+    // it belongs to this call and not to 0072BF10, whose only direct calls are
+    // 00414DB0, 004193E0 and 009555A0 (bsp.py show 0072bf10 --asm).
     virtual void* create_projectile_006e8430(const ProjectileSpawnRequest& request) = 0;
-    // 006E8430 step 8: BSP_GameWorld_SampleWaterHeight(pos.x, pos.z), and the
-    // shot's vtable[28h](0) at or below it, vtable[24h](0) above it.
-    virtual float water_height(float x, float z) = 0;
-    virtual void shot_set_medium(void* shot, bool submerged, int phase) = 0;
-    // 0072C013 and 0072C025, through the self-pointer.
-    virtual void store_ids(void* shot, int gun_id, int owner_id) = 0;
+    // 0072C008..0072C025, through the self-pointer [shot+0CCh]: record+58h =
+    // [gun+58h] and record+54h = [[gun+3F0h]+54h], read at the stores. An
+    // entity's +54h is its party and +58h its race (game_hosts_units.hpp, the
+    // convoy member notes), so these are the owner's party and the device's
+    // race, not entity ids.
+    virtual void store_ids(void* shot) = 0;
     // 0072C033: gun->vtable[1E4h](shot).
     virtual void gun_on_projectile_created(void* shot) = 0;
     // 0072C043: gun[+474h] = [00F876A4].
@@ -261,9 +267,12 @@ struct ProjectileSpawnHost {
     virtual void shot_set_appearance(void* shot) = 0;
     // 0072C0FB and 0072C14B.
     virtual void shot_set_team(void* shot, int team_id) = 0;
-    // 0072C155 -> 009555A0 -> 006E6BB0: bind the owner, then publish the
-    // director timestamp at [director + 1D0h + sub_type*4].
+    // 0072C155 -> 009555A0: 006E6BB0 binds the owner (009555B8), then the
+    // record ids shot+14h = (owner+170h)->vtable[0]() and shot+18h = owner+54h
+    // (009555BD..009555C9), then the director timestamp at
+    // [director + 1D0h + sub_type*4] (0095561B).
     virtual void bind_owner_006e6bb0(void* shot) = 0;
+    virtual void store_owner_record_ids(void* shot) = 0;
     virtual void stamp_director_fire_time(int sub_type) = 0;
 };
 
