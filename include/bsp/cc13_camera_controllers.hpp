@@ -1,5 +1,10 @@
 #pragma once
 
+namespace bsp::cc13cam2 {
+struct ObserverHost;              // bsp/engine_seg43_45_cc13.hpp
+struct KeyframeEventDestroyHost;  // bsp/engine_seg43_45_cc13.hpp
+}
+
 namespace bsp::cc13cam {
 // Modifier base/type-1 vtable slots +24h/+28h: RET4 with no effects.
 void modifier_write_noop_0078e730(void* cursor) noexcept;
@@ -314,16 +319,21 @@ struct KeyframeEventHost {
 // The event block of 007A0EB0. Read only when `event` is a table and the key
 // is a camera key (+28h) or the parse's named-key flag is set; an unknown
 // `type` makes no event. `function` and `depth` go through 00B662B0/00B66270.
+// The noentity, killed and sunk events take the parent through their class's
+// set-entity slot (007995F0 / 00799620 / 00799650), which registers the event's
+// observer on that entity through `observers`.
 bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t parent,
-                                   bool camera_or_named, KeyframeEvent& out);
+                                   bool camera_or_named, KeyframeEvent& out,
+                                   cc13cam2::ObserverHost& observers);
 bool keyframe_event_check(const KeyframeEvent& e, KeyframeEventHost& host);
 // 00791540: fired = 1, then the function when its name is non-empty.
 void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host);
 // 0078E630, the key tick (RET 4): the modifier's slot +14h (a no-op in all
 // four tables), then, for a key in state 1 or 2 with dt > 0, a triggered event
 // fires and is deleted (0078E540 SetEvent(null)).
+// The deletion runs the event class's destructor through `destroy`.
 void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
-                            KeyframeEventHost& host);
+                            KeyframeEventHost& host, cc13cam2::KeyframeEventDestroyHost& destroy);
 
 // ---------------------------------------------------------------------------
 // The path camera's per-frame parameter update, 007972F0 (ECX camera, RET; its

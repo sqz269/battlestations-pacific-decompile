@@ -762,22 +762,62 @@ cc13cam::KeyframeEvent keyframe_event_construct(cc13cam::KeyframeEventKind kind)
     return e;
 }
 
-void keyframe_event_set_entity_007995f0(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host) {
+namespace {
+// The shared code of the three event classes' set-entity slots. 007995F0,
+// 00799620 and 00799650 are byte-identical apart from the rel32 displacements,
+// which all resolve to 006952A0 and 00694A60 (bsp.py ghidra bytes, 30h each).
+void keyframe_event_set_entity_body(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host) {
     if (e.entity_24 == entity) return;
     const void* observer = &e;  // event+10h in the image
     if (e.entity_24 != 0) host.unregister_006952a0(e.entity_24, observer);
     e.entity_24 = entity;
     if (entity != 0) host.register_00694a60(entity, observer);
 }
+}  // namespace
+
+void keyframe_event_set_entity_007995f0(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host) {
+    keyframe_event_set_entity_body(e, entity, host);  // noentity (vtable 00D046F0)
+}
+
+void keyframe_event_set_entity_00799620(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host) {
+    keyframe_event_set_entity_body(e, entity, host);  // killed (vtable 00D046FC)
+}
+
+void keyframe_event_set_entity_00799650(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host) {
+    keyframe_event_set_entity_body(e, entity, host);  // sunk (vtable 00D04708)
+}
 
 void keyframe_event_set_function_0079c000(cc13cam::KeyframeEvent& e, const std::string& name) {
     if (&e.function_4 != &name) e.function_4 = name;
 }
 
-void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+namespace {
+// The shared code of the four event classes' destructors. 00799F30, 00799FD0,
+// 0079A070 and 0079A120 differ only in their EH state tables (PUSH 00C8AE58 /
+// 78 / 98 / B8) and rel32 displacements to the same 0042BCA0 / 00799580
+// (bsp.py ghidra bytes); each is reached from its class's scalar deleting
+// destructor, 0079CB50 / 0079CB70 / 0079CB90 / 0079CBB0 (vtable slot 0).
+void keyframe_event_destruct_body(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
     host.target_observer_destruct_0042bca0(e.entity_24, &e);
     e.function_4.clear();
     e.function_4.shrink_to_fit();
+}
+}  // namespace
+
+void keyframe_event_destruct_00799f30(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // noparent
+}
+
+void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // noentity
+}
+
+void keyframe_event_destruct_0079a070(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // killed
+}
+
+void keyframe_event_destruct_0079a120(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // sunk
 }
 
 // ---------------------------------------------------------------------------

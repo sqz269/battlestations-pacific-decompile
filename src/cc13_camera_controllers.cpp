@@ -632,18 +632,34 @@ GameCameraChoice gamecamera_choose_camera_0079cbd0(const GameCameraModifier& m,
 // keyframe events
 
 bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t parent,
-                                   bool camera_or_named, KeyframeEvent& out) {
+                                   bool camera_or_named, KeyframeEvent& out,
+                                   cc13cam2::ObserverHost& observers) {
     if (event.kind != ModifierLuaValue::Kind::Table || !camera_or_named) return false;
     const ModifierLuaValue& type = event.field("type");
     KeyframeEvent e{};
     const std::string& name = type.string;
     // 00799FA0/0079A040/0079A0E0 construct the Lua-selected event; OFF keeps inline defaults/kind.
-    if (name == "noparent") e.kind = KeyframeEventKind::NoParent;
-    else if (name == "noentity") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::NoEntity);
-    else if (name == "killed") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Killed);
-    else if (name == "sunk") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Sunk);
-    else return false;
-    e.entity_24 = parent;                          // 007A207F / 007A2126 / 007A21AC / 007A2236
+    // Each then takes the keyframe's +1Ch parent (bsp.py disasm-raw 007a2126 / 007a21ac /
+    // 007a2236: MOV EAX,[EBP+1Ch]; PUSH EAX; MOV ECX,ESI; CALL the class's set-entity).
+    // `noparent` has no constructor of its own; 007A207F..007A20A9 is the same
+    // unregister/store/register sequence written inline on the base event.
+    if (name == "noparent") {
+        e.kind = KeyframeEventKind::NoParent;
+        // The fresh event's +24h is 0 (007A2082 CMP, 007A208E skips the unregister).
+        e.entity_24 = parent;                                                  // 007A209B
+        if (parent != 0) observers.register_00694a60(parent, &e);              // 007A20A4
+    } else if (name == "noentity") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::NoEntity);
+        cc13cam2::keyframe_event_set_entity_007995f0(e, parent, observers);   // 007A212C
+    } else if (name == "killed") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Killed);
+        cc13cam2::keyframe_event_set_entity_00799620(e, parent, observers);   // 007A21B2
+    } else if (name == "sunk") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Sunk);
+        cc13cam2::keyframe_event_set_entity_00799650(e, parent, observers);   // 007A223C
+    } else {
+        return false;
+    }
     // 0079C000 assigns the Lua function name; OFF keeps the direct string assignment.
     cc13cam2::keyframe_event_set_function_0079c000(e, event.field("function").string);
     if (e.kind == KeyframeEventKind::Sunk) e.depth_28 = event.field("depth").number_f32();  // 007A22CB
@@ -672,12 +688,37 @@ void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host) {
     if (!e.function_4.empty()) host.run_script_00887e50(e.function_4);
 }
 
+namespace {
+// The old event's vtable[0](1) inside 0078E540: its class's scalar deleting
+// destructor (0079CB50 / 0079CB70 / 0079CB90 / 0079CBB0) runs the class
+// destructor, then 00BF65AC frees the block (bsp.py disasm-raw 0079cb50). The
+// free is the optional's reset that 0078E540's store of null makes.
+class KeyframeEventScalarDelete final : public cc13cam2::OwnedObjectHost {
+public:
+    explicit KeyframeEventScalarDelete(cc13cam2::KeyframeEventDestroyHost& destroy)
+        : destroy_(destroy) {}
+    void scalar_delete(std::uintptr_t object) override {
+        KeyframeEvent& e = *reinterpret_cast<KeyframeEvent*>(object);
+        switch (e.kind) {
+        case KeyframeEventKind::NoParent: cc13cam2::keyframe_event_destruct_00799f30(e, destroy_); break;
+        case KeyframeEventKind::NoEntity: cc13cam2::keyframe_event_destruct_00799fd0(e, destroy_); break;
+        case KeyframeEventKind::Killed: cc13cam2::keyframe_event_destruct_0079a070(e, destroy_); break;
+        case KeyframeEventKind::Sunk: cc13cam2::keyframe_event_destruct_0079a120(e, destroy_); break;
+        }
+    }
+private:
+    cc13cam2::KeyframeEventDestroyHost& destroy_;
+};
+}  // namespace
+
 void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
-                            KeyframeEventHost& host) {
+                            KeyframeEventHost& host, cc13cam2::KeyframeEventDestroyHost& destroy) {
     if (state_f8 == 0 || state_f8 == 3 || !(dt > 0.0f) || !event_ec) return;
-    if (!keyframe_event_check(*event_ec, host)) return;
-    keyframe_event_fire_00791540(*event_ec, host);
-    event_ec.reset();
+    if (!keyframe_event_check(*event_ec, host)) return;      // 0078E683, vtable +4h
+    keyframe_event_fire_00791540(*event_ec, host);           // 0078E694, vtable +8h
+    KeyframeEventScalarDelete owner(destroy);
+    cc13cam2::movie_key_set_event_0078e540(cc13cam2::MovieKeyEventView{event_ec}, nullptr,
+                                           owner);           // 0078E696..0078E69A
 }
 
 // ---------------------------------------------------------------------------
