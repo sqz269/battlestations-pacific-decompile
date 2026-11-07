@@ -312,8 +312,41 @@ struct PlaneTakeoffStartNotifyHost {
 };
 void plane_notify_takeoff_start_007c17d0(bool landed_904, std::int32_t state_900,
                                          bool session_is_client, PlaneTakeoffStartNotifyHost& host);
-// 007C18B0, __thiscall(ECX = plane; float dt), RET 4.
+// 007C18B0, __thiscall(ECX = plane; float dt), RET 4. The raw entry wraps the
+// typed one below over the plane image and Seg47bHost.
 void plane_update_pose_derived_state_007c18b0(Seg47bHost& host, Raw plane, float dt);
+// Goal 5 chain 657. Typed view of 007C18B0 over the caller's storage: the floats
+// it reads and writes, by plane offset, and its calls at their points (bsp.py
+// show 007c18b0 --asm).
+struct PlanePoseDerivedStateHost {
+    virtual ~PlanePoseDerivedStateHost() = default;
+    // The inline `if (!plane+C8h) 00414DB0(plane)` (007C18BA..007C18EE).
+    virtual void refresh_pose_if_stale_00414db0() = 0;
+    // plane+CCh, the 4x4 world pose (row 2, the forward axis, at +20h..+28h).
+    virtual const float* pose_cc() = 0;
+    // The plane floats the body touches: +C64h pitch, +C68h bank, +C6Ch heading,
+    // +C70h/+C74h/+C78h their rates, +C7Ch the velocity elevation and +C80h its
+    // rate, +C84h the low-passed path pitch and +C88h its rate; read only:
+    // +AC8h..+AD0h (ctl+18h, the world velocity) and +AE0h..+AE8h (ctl+30h, the
+    // low-passed velocity).
+    virtual float& plane_float(std::uint32_t offset) = 0;
+    // 00F8758C..00F87594, the up vector 004F9B30 crosses the forward row with.
+    virtual const float* up_vector_00f8758c() = 0;
+    // 004F9B30 BSP_Vector3f_Cross, __fastcall(ECX = out, EDX = a; const float* b), EAX = out.
+    virtual const float* vector3_cross_004f9b30(float* out, const float* a, const float* b) = 0;
+    // 0085E4D0 BSP_Matrix_RotateByAngularVelocity, __fastcall(ECX = out, EDX = in;
+    // wx, wy, wz, dt), RET 10h.
+    virtual void matrix_rotate_by_angular_velocity_0085e4d0(float* out16, const float* in16, float wx,
+                                                            float wy, float wz, float dt) = 0;
+    // 00B646E0 (ECX = out; const float* angle), EAX = out.
+    virtual const float* matrix_build_rotation_y_00b646e0(float* out16, const float* angle) = 0;
+    // 004134F0 (ECX = destination; const source*), the 4x4 copy.
+    virtual void matrix_assign_004134f0(float* destination16, const float* source16) = 0;
+    // 00413920 (ECX = left; out, right), EAX = out.
+    virtual const float* matrix_multiply_00413920(const float* left16, float* out16,
+                                                  const float* right16) = 0;
+};
+void plane_update_pose_derived_state_007c18b0(PlanePoseDerivedStateHost& host, float dt);
 // 007C2090 / 007C2130, __thiscall(ECX = plane), RET 0.
 void plane_request_flight_state_two_007c2090(Seg47bHost& host, Raw plane);
 // Typed view of 007C2090 over the caller's storage: +900h, then the session

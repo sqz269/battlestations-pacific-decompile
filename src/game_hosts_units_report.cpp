@@ -449,12 +449,11 @@ void GameUnitsHost::report() {
         1, host.stock_return_c7h_copies,
         host.stock_return_c7h_index_holder);
     host.log.notef("summary free flight stall force bound=%d steps=%llu kicks=%llu (007DC830 -> "
-        "007DAFD0, packet cc9_p14_stall_force)", Impl::kFreeFlightStallForceBound ? 1 : 0,
+        "007DAFD0, packet cc9_p14_stall_force)", 1,
         host.stall_force_steps, host.stall_force_kicks);
     host.log.notef("summary free flight dying spin bound=%d steps=%llu seeds=%llu wreck_lift_bound=%d "
         "wreck_lift_kicks=%llu (007DC830 007DCAF9 / 007DCB4B, packet p15_dying_spin)",
-        Impl::kFreeFlightDyingSpinBound ? 1 : 0, host.dying_spin_steps, host.dying_spin_seeds,
-        Impl::kFreeFlightWreckLiftBound ? 1 : 0, host.wreck_lift_kicks);
+        1, host.dying_spin_steps, host.dying_spin_seeds, 1, host.wreck_lift_kicks);
     host.log.notef("summary squadron free attack bound=%d census=%d ticks=%llu stops mode=%llu gate=%llu " 
         "no_target=%llu refused=%llu same=%llu not_air=%llu ordnance=%llu override=%llu sends=%llu installed=%llu " 
         "tasks=%llu stage_raises=%llu cleared=%llu restored=%llu moveto_self=%llu (009F8470, packet " 

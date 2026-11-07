@@ -2400,7 +2400,7 @@ matrix (`RotationAxisAngle`) followed by `orthonormalize_up_first_0085dad0`. A m
 way has no Euler singularity in its state and carries an aircraft through the vertical; the
 singularity lives only in the **derived** angles, and both sides guard it identically - the image
 skips the heading and bank writes when `|fwd x up|` falls under the 1.0842e-10 at `00CE3820` or
-`|cross|` under the 0.001f at `00D7A23C` (`007C19A9`, `007C19D4`), and `refresh_attitude_007c1900`
+`|cross|` under the 0.001f at `00D7A23C` (`007C19A9`, `007C19D4`), and `update_pose_derived_state_007c18b0`
 does the same. So the host can fly an aircraft through the vertical, and this is **not** where it
 diverges.
 
@@ -3416,7 +3416,7 @@ altitude `651 -> 273`. A barrel roll into the sea.
 
 **SUBSTITUTION, labelled:** the shallow arm's `pose->vtable[50h]` is stood in for by the cached
 Euler heading `pose+C6Ch` that `007C1900` writes. The steep arm is exact - `unit.motion.pose_row1`
-is the same row `plane_attitude_angles_007c1900` reads `m[8]`/`m[9]`/`m[10]` out of.
+is the same row `plane_update_pose_derived_state_007c18b0` (`src/cc13_seg47b.cpp`) reads `m[8]`/`m[9]`/`m[10]` out of.
 
 ## 4. What this does NOT fix, and is not claimed to
 
