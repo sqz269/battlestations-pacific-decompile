@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace bsp {
@@ -217,6 +218,10 @@ public:
     void release_screen_page(GuiLayoutPage* page);
     // 00aa7e00, the direct-child lookup a screen's enter virtual runs.
     GuiLayoutWidget* find_page_child(GuiLayoutPage& page, const std::string& name);
+    // 00AA3140 on the GUI manager's page list: every page 00aa5840 registered
+    // (title, screen-owned and in-game), matched case-insensitively by name.
+    // Null when none matches. Goal 5 chain 652, for 008C8C20's first segment.
+    GuiLayoutPage* find_page_00aa3140(std::string_view name) noexcept;
     // The per-child call 004f83b0 makes: the screen's applied byte +5h reaching
     // the page through the child's vtable +34h.
     void commit_page_visibility(GuiLayoutPage& page, bool visible);

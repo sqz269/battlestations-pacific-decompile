@@ -2672,6 +2672,7 @@ GameStartupHost::~GameStartupHost() {
     }
     delete menu_;
     menu_ = nullptr;
+    GameScriptOrdersHost::bind_gui_frontend(nullptr);   // before the frontend goes
     retire_native_input_configuration();
     if (page_frontend_phase_ != PageFrontendPhase::unselected) {
         retire_page_frontend_resources_before_drain();
@@ -3721,6 +3722,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Chain 648: EnableInput (008AFBD0) writes the same manager's context 1Eh.
     // The menu bind above has prepared its table.
     GameScriptOrdersHost::bind_input_context_manager(&input_->context_manager);
+    // Goal 5 chain 652: IsGUIActive (008CA010) searches the GUI manager's page
+    // list, which this frontend owns. Unbound with the menu, before any
+    // frontend delete.
+    GameScriptOrdersHost::bind_gui_frontend(frontend_);
     if (GameMissionHost* mission = menu_->mission())
         mission->bind_input_runtime(input_runtime_);
     // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game
@@ -4124,6 +4129,7 @@ void GameStartupHost::application_shutdown() {
     }
     delete menu_;
     menu_ = nullptr;
+    GameScriptOrdersHost::bind_gui_frontend(nullptr);   // before the frontend goes
     // Native reaches 004DCEB0 on game+3Ch from the game's destructor
     // (004DE270 -> 004DCF90, CALL at 004DD577), which still borrows the live
     // singleton manager (docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md), so
