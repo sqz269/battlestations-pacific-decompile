@@ -3,6 +3,7 @@
 #include <vector>
 
 namespace bsp::entity_mission_seg60_argon { struct Seg60Host; }
+namespace bsp { struct ActiveFailure; }
 
 namespace bsp::oct18_tail_b {
 // Address-suffixed, source-level interfaces over genuine Win32 object storage.
@@ -146,6 +147,9 @@ void gunbot_set_target_thunk_008fe790(void* bot, void* target, Host& host);
 bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host);
 
 float engine_jam_seconds_0093a3f0(const void* task, Host& host);
+// 0093A3F0's typed view: the same body over the ActiveFailure vector a host
+// keeps as its copy of the repair task's +18h failure records.
+float engine_jam_seconds_0093a3f0(const std::vector<ActiveFailure>& failures);
 void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host);
 // 0095C550's typed view: the same body over a std::vector a host keeps as its
 // copy of the census at 00F8A09C (dedupe scan, then append at last).

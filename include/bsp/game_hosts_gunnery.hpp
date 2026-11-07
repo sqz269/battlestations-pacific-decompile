@@ -102,6 +102,8 @@ namespace bsp {
 inline constexpr bool kGunneryPassByte7dBound = true;
 class ReconSensorPassState;
 struct UnitFirepowerReport;
+struct ShipRepairTaskTerms;
+struct ShipDeviceTerms;
 }
 
 namespace bsp::game {
@@ -1159,6 +1161,27 @@ public:
     // unit+9E4h (steering) or +9E5h (engine), what 008135C0 answers for the two
     // jam names and what 00826754 / 00826B2E read.
     bool ship_jam_flag(std::size_t unit_index, bool steering) const;
+    // Goal 5 chain 661: the repair task at unit+A20h as the ship screen's damage
+    // panel 0064F665 reads it: priority +24h (unit+A44h, 0064F6BD), the water
+    // and fire timers +34h / +38h over their divisors +40h / +3Ch (unit+A60h /
+    // +A5Ch; 0093A4F0 mirrors water into +40h, 0093A470 sums fire into +3Ch),
+    // and 0093A3F0 run on the task's +18h failure records (0064F9D2). False,
+    // with `out` untouched, for a unit this host keeps no repair task for.
+    bool ship_repair_task_terms(std::size_t unit_index, bsp::ShipRepairTaskTerms& out) const;
+    // GameSettings+3E4h, the ShipGlobals.Failures descriptors (14h stride) this
+    // host loads once: the +0Ch seconds of the last row named "EngineJam"
+    // (0064F8DA..0064F9C3), else 0.
+    float failure_descriptor_engine_jam_seconds() const;
+    // The unit+48h device list as the damage panel's worst-device loop
+    // 0064FBEC..0064FD22 reads it: this host's gun rows of the unit in build
+    // order (LABELLED, as repair_guns_0093c860 walks them: each gun row is a
+    // kind-20h child, answers IsKindOf(4) and not IsKindOf(0Fh), and keeps the
+    // +378h byte 0087BD19 sets), with the Function [dev+3F4h]+80h as the row's
+    // category and +36Ch / +370h as its health.
+    std::vector<bsp::ShipDeviceTerms> ship_device_terms(std::size_t unit_index) const;
+    // [unit+538h]+D0h, the VehicleClass `Repair` byte (nil -> 1) the ship
+    // screen tests at 0064E5F4; false for a unit this host has not built.
+    bool unit_class_repair_d0(std::size_t unit_index) const;
 
     // 0088DC10's current report, using initial +103Ch..+1048h totals and
     // current category lists, gun+3B8h flags and ship control factors.

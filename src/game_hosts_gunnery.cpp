@@ -143,6 +143,7 @@
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_crash_sweep.hpp"
 #include "bsp/unit_fire_flooding.hpp"
+#include "bsp/hud_ship_screen.hpp"   // ShipRepairTaskTerms (chain 661)
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/air_operations.hpp"
@@ -17612,6 +17613,61 @@ bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const
     if (unit_index >= host.damage_control.size()) return false;
     const Impl::DamageControl& dc = host.damage_control[unit_index];
     return steering ? dc.steering_jam_9e4 : dc.engine_jam_9e5;
+}
+
+// Goal 5 chain 661. The fields are this host's copies of the task cells the
+// adders and steps write: water +34h (0093A4F0, 0093C210), fire +38h
+// (0093A470, 0093C120), the fire sum +3Ch and the water mirror +40h (cleared by
+// 0093BCC0 and by the steps when their seconds run out), the priority +24h
+// (0093BCC0's 0; the 0064A2F0 setter is not hosted) and the failure vector
+// +18h (0093BED0 starts, 0093C520 counts down and retires).
+bool GameGunneryHost::ship_repair_task_terms(std::size_t unit_index,
+                                             bsp::ShipRepairTaskTerms& out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size()) return false;
+    const Impl::DamageControl& dc = host.damage_control[unit_index];
+    out.priority_24 = static_cast<int>(dc.task.priority);
+    out.seconds_34 = dc.water_seconds;
+    out.seconds_38 = dc.fire_seconds;
+    out.total_3c = dc.fire_total_3c;
+    out.total_40 = dc.water_last_40;
+    out.engine_jam_seconds = bsp::oct18_tail_b::engine_jam_seconds_0093a3f0(dc.task.failures);
+    return true;
+}
+
+// 0064F8DA..0064F9C3 walks GameSettings+3E4h through 00424C40 and keeps the
+// +0Ch of every row whose +8h name text _stricmp-matches 00CF6124 "EngineJam".
+// failure_rows is this host's copy of those rows in table order; its effect 3
+// is the same case-blind name test (the ShipGlobals flattener's
+// string.lower(FailureName) == 'enginejam'), and duration is row +0Ch.
+float GameGunneryHost::failure_descriptor_engine_jam_seconds() const {
+    float seconds = 0.0f;
+    for (const Impl::FailureRow& row : impl_->failure_rows) {
+        if (row.effect == 3) seconds = row.duration;
+    }
+    return seconds;
+}
+
+std::vector<bsp::ShipDeviceTerms> GameGunneryHost::ship_device_terms(std::size_t unit_index) const {
+    std::vector<bsp::ShipDeviceTerms> devices;
+    for (const GameGunRow& gun : impl_->guns) {
+        if (gun.unit_index != unit_index) continue;
+        bsp::ShipDeviceTerms d;
+        d.kind_04 = true;                     // 0064FC0A PUSH 4
+        d.kind_0f = false;                    // 0064FC19 PUSH 0Fh
+        d.kind_20 = true;                     // 0064FC28 PUSH 20h, kDeviceKindGun
+        d.config_80 = gun.category;           // 0064FC32 [dev+3F4h]+80h
+        d.byte_378 = true;                    // 0064FC40, 1 from 0087BD19
+        d.full_36c = gun.max_health_36c;      // 0064FC49
+        d.current_370 = gun.health_370;       // 0064FC59
+        devices.push_back(d);
+    }
+    return devices;
+}
+
+bool GameGunneryHost::unit_class_repair_d0(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    return unit_index < host.class_repair_flags.size() && host.class_repair_flags[unit_index] != 0;
 }
 
 bsp::UnitFirepowerReport GameGunneryHost::ship_firepower_report(std::size_t unit_index) {
