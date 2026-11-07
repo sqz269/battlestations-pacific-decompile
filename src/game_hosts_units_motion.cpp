@@ -1450,14 +1450,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     bsp::plane_death_step_007caf10(dsi);
                                 unit_.plane_lost_drag_timer_c3c = dso.dead_timer_c3c;
                                 if (dso.explode) {
+                                    // Goal 5 chain 645: 007CB0C1..007CB0F8 store
+                                    // unit+C10h = -1.0f (00D7A260), then vtable[194h]
+                                    // ("explosion", 0); its 63h copy reaches 007D0B80 on
+                                    // the dead plane, whose explosion arm's Kill
+                                    // (007D0CFD) takes it out of the world.
                                     unit_.plane_death_timer_c10 = -1.0f;
-                                    unit_.plane_death_removed = true;
+                                    const s47_effects::NamedEffectResult boom =
+                                        run_plane_named_effect(owner_, unit_,
+                                            unit_.process_index,
+                                            s47_effects::NamedEffect::Explosion);
+                                    if (deliver_plane_failure_messages(owner_, unit_,
+                                            boom.routed, true)) {
+                                        unit_.plane_death_removed = true;
+                                    }
                                     owner_.log.notef("plane death explosion: unit=%s "
-                                        "t=%.2f dead_for=%.2f (007CAF10 -> 007D0CFD Kill, "
-                                        "packet cc9_plane_death_modes)",
+                                        "t=%.2f dead_for=%.2f removed=%d (007CAF10 -> "
+                                        "007BBFA0 -> 007D0B80 007D0CFD Kill, packet "
+                                        "cc9_plane_death_modes)",
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
-                                        static_cast<double>(dso.dead_timer_c3c));
+                                        static_cast<double>(dso.dead_timer_c3c),
+                                        unit_.plane_death_removed ? 1 : 0);
                                 }
                                 if (dso.zero_throttle) {
                                     unit_.plane_live_throttle = 0.0f;
