@@ -60,6 +60,10 @@
 #include "bsp/seg27_cc13.hpp"                // 006735D0
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
+#include "bsp/cg_rebuild_b_cc13.hpp"         // 005BA7B0
+#include "bsp/gameplay_effect_sound.hpp"     // 005B9AF0, 005BA7B0's sample append
+#include "bsp/sound_sample_runtime.hpp"      // [00F8BBE8] for 005BA7B0
+#include "bsp/singleton_lifetime.hpp"        // 005B9D40's 00BF6989 on the 33h samples
 #include "bsp/cc13_sweepB6.hpp"              // 005FA0F0
 #include "bsp/game_native_string_process.hpp"  // the leaf registers' string temporaries
 #include "bsp/native_string_pool_owner.hpp"
@@ -90,6 +94,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstddef>
+#include <intrin.h>
 #include <map>
 #include <memory>
 #include <new>
@@ -239,6 +244,12 @@ private:
     GameMenuHost& menu_;
 };
 
+// Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
+// (GameHudHost::bind_sound_runtime), and the pool their temporary names use. Goal 5
+// chain 635: also [00F8BBE8], the sample cache screen 33h's constructor fills from.
+GameSoundRuntime* g_hud_sound_runtime = nullptr;
+NativeStringStorage* g_hud_sound_strings = nullptr;
+
 // 0068CC70's operator new(size) for a HUD screen whose leaf constructor is
 // reconstructed and needs only the 004F7180 base (plus, for 00606470 and
 // 00608E60, its own 00BF681B blocks and 0064A4F0). The block is this owner's
@@ -357,6 +368,8 @@ constexpr HudHeadNodeShape kHudHeadNodeShapes[] = {
     {0x00613AE0u, 0x1C, 0x19}, {0x00613B30u, 0x18, 0x15}, {0x00613860u, 0x0C, 0},
     {0x005FD1B0u, 0x1C, 0x19}, {0x00582280u, 0x0C, 0}, {0x004C3020u, 0x10, 0},
     {0x005A0220u, 0x14, 0x11}, {0x005A0270u, 0x18, 0x15},
+    // 005B7550: PUSH 0Ch, CALL 00BF681B, then [EAX] = EAX and [EAX+4] = EAX.
+    {0x005B7550u, 0x0C, 0},
 };
 void* buy_hud_head_node(HudLeafScreenStorage& screen, std::uint32_t routine) {
     for (const HudHeadNodeShape& shape : kHudHeadNodeShapes) {
@@ -506,6 +519,187 @@ private:
     HudLeafScreenStorage& screen_;
 };
 
+// 005BA7B0, screen 33h (narrative, manager +A4h, E8h bytes; goal 5 chain 635).
+// Its calls (bsp.py show 005ba7b0 --asm, src/cg_rebuild_b_cc13.cpp): the 004F7180
+// base; the EH constructor iterator over the one 18h voice slot at +8h (ctor
+// 005B7FA0, dtor 005B7FC0); 005B7550 on the list at +64h; then for each of the five
+// warning radio banks a pooled NativeString temporary (0041DD40 resize, 00BF7680
+// copy, 00419CC0/00BD1510 release), 00A83FD0 on [00F8BBE8] and 005B9AF0 onto the
+// retained samples at +A0h, dropping the cache's temporary reference
+// (InterlockedDecrement [00CE2220], vtable +0 at zero). The cache, the samples'
+// final release and the pool are this process's sound runtime (g_hud_sound_runtime,
+// the same [00F8BBE8] the message manager's 00704590 banks use) and the HUD's string
+// pool. The constructor runs no other host service.
+//
+// Lifetime: the five references stay in +A0h for the HUD's life, as on the native
+// screen. release_hud_narrative_leaf_samples drops them when the HUD dies, as the
+// destructor 005B9D40 does (see there).
+class HudLeafNarrativeBinding final : public bsp::cg_rebuild_b_cc13::CgRebuildBHost {
+public:
+    using NativeStringImage = bsp::cg_rebuild_b_cc13::NativeStringImage;
+    using CheckedIterImage = bsp::cg_rebuild_b_cc13::CheckedIterImage;
+
+    HudLeafNarrativeBinding(HudLeafScreenStorage& screen, GameSoundRuntime& sound,
+        NativeStringStorage& strings)
+        : screen_(screen), sound_(sound), strings_(strings) {}
+
+    void* global_ptr(std::uint32_t address) override {
+        // 005BA899: MOV ECX,[00F8BBE8], the current sample cache 00A83FD0 scans.
+        if (address == 0x00F8BBE8u) return &sound_.samples().current_sample_cache_00f8bbe8();
+        unused("an image global other than [00F8BBE8]");
+    }
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+    void eh_vector_constructor_iterator_00bf7cd1(void* first, std::uint32_t size,
+        std::uint32_t count, std::uint32_t ctor, std::uint32_t dtor) override {
+        // 005BA7E3..005BA7F5: PUSH 005B7FC0, PUSH 005B7FA0, PUSH 1, PUSH 18h, +8h.
+        if (ctor != 0x005B7FA0u || dtor != 0x005B7FC0u || size != 0x18 || count != 1
+            || !screen_.contains(first, size * count))
+            throw std::logic_error("005BA7B0 iterated an unexpected voice slot array");
+        // 005B7FA0 is noexcept, so the iterator's unwind (005B7FC0) never runs.
+        for (std::uint32_t i = 0; i != count; ++i)
+            bsp::cc13_fe1::record14_clear_005b7fa0(static_cast<std::uint8_t*>(first) + i * size);
+    }
+    void* list_buy_head_node_005b7550(void* list) override {
+        if (!screen_.contains(list, 0x0C))
+            throw std::logic_error("005B7550 list is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, 0x005B7550u);
+    }
+    void native_string_resize_0041dd40(NativeStringImage* string, std::uint32_t length,
+        std::int32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(string, strings_, length, preserve != 0);
+    }
+    void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t count) override {
+        std::memcpy(destination, source, count);
+    }
+    void* sized_pool_get_00419cc0() override { return &strings_; }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+        std::int32_t flag) override {
+        // The inlined NativeString release: length + 1 bytes back with flag 1.
+        if (pool != &strings_ || flag != 1)
+            throw std::logic_error("005BA7B0 returned a block to an unexpected pool");
+        strings_.release(static_cast<char*>(data), bytes);
+    }
+    void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out,
+        const NativeStringImage* name) override {
+        SoundSampleRuntime& samples = sound_.samples();
+        SoundAuxiliaryTreeOwner& current = samples.current_sample_cache_00f8bbe8();
+        if (cache != &current)
+            throw std::logic_error("00A83FD0 called on a cache other than [00F8BBE8]");
+        // NativeStringImage is the native {length, data} header NativeString owns.
+        static_assert(sizeof(NativeString) == sizeof(NativeStringImage));
+        return bsp::acquire_sound_sample_00a83fd0(current, *out,
+            *reinterpret_cast<const NativeString*>(name), samples.sample_cache_context());
+    }
+    void effect_sound_samples_append_005b9af0(void* samples, void** slot) override {
+        if (!screen_.contains(samples, 0x0C))
+            throw std::logic_error("005B9AF0 samples are not a member of this HUD screen");
+        bsp::append_effect_sound_sample_005b9af0(samples, slot, sound_.samples());
+    }
+    std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) override {
+        return _InterlockedDecrement(reinterpret_cast<volatile long*>(value));
+    }
+    void refcounted_vtable0_release(void* object) override {
+        // D5B074's vtable +0 (00A82E80): the sample's final release.
+        sound_.samples().zero_references_slot_00(object);
+    }
+
+    // Nothing else is reached from 005BA7B0.
+    void global_store_u32(std::uint32_t, std::uint32_t) override { unused("global_store_u32"); }
+    const char* image_cstring_table_entry(std::uint32_t) override { unused("an image string table"); }
+    void free_00bf65ac(void*) override { unused("00BF65AC"); }
+    void free_00bf6989(void*) override { unused("00BF6989"); }
+    void* operator_new_00bf681b(std::uint32_t) override { unused("00BF681B"); }
+    void invalid_parameter_00bf6713() override { unused("00BF6713"); }
+    void eh_vector_destructor_iterator_00bf7c6e(void*, std::uint32_t, std::uint32_t,
+        std::uint32_t) override { unused("00BF7C6E"); }
+    std::int32_t interlocked_increment_00ce221c(std::int32_t*) override { unused("[00CE221C]"); }
+    void leave_critical_section_00ce2210(void*) override { unused("[00CE2210]"); }
+    void delete_critical_section_00ce2214(void*) override { unused("[00CE2214]"); }
+    void stl_tree_erase_range(std::uint32_t, void*, CheckedIterImage*, CheckedIterImage,
+        CheckedIterImage) override { unused("an STL tree erase"); }
+    void stl_tree_iterator_increment(std::uint32_t, CheckedIterImage*) override {
+        unused("an STL tree iterator");
+    }
+    void object_vtable0_scalar_dtor(void*, std::uint32_t) override { unused("a scalar dtor"); }
+    void front_end_screen_destruct_004f71a0(void*) override { unused("004F71A0"); }
+    void* gui_manager_get_or_create_004c12b0() override { unused("004C12B0"); }
+    void gui_manager_remove_and_destroy_page_00aa31f0(void*, void*) override { unused("00AA31F0"); }
+    void node_list_clear_005234f0(void*) override { unused("005234F0"); }
+    void callback_owner_destroy_00695870(void*) override { unused("00695870"); }
+    void observer_endpoint_destruct_00695760(void*) override { unused("00695760"); }
+    void container_init_00525a10(void*) override { unused("00525A10"); }
+    std::uint32_t sound_manager_find_class_00a7acf0(void*, const NativeStringImage*) override {
+        unused("00A7ACF0");
+    }
+    std::uint32_t sound_manager_find_type_00a7b0a0(void*, const NativeStringImage*) override {
+        unused("00A7B0A0");
+    }
+    void owned_object_list_clear_005b7840(void*) override { unused("005B7840"); }
+    void list_tidy_005b7570(void*) override { unused("005B7570"); }
+    void list_clear_005b77f0(void*) override { unused("005B77F0"); }
+    void voice_slot_stop_007026f0(void*) override { unused("007026F0"); }
+    void effect_sound_samples_resize_005b8fa0(void*, std::uint32_t) override { unused("005B8FA0"); }
+    void debug_text_list_destroy_rows_00543e00(void*) override { unused("00543E00"); }
+    void member_teardown_00544a70(void*) override { unused("00544A70"); }
+    void debug_text_list_destruct_00590250(void*) override { unused("00590250"); }
+    void cheat_menu_destroy_members_0051f910(void*) override { unused("0051F910"); }
+    void list_tidy_005822a0(void*) override { unused("005822A0"); }
+    void text_listener_base_destroy_00a97140(void*) override { unused("00A97140"); }
+    void main_menu_release_mission_preview_005830a0(void*) override { unused("005830A0"); }
+    void native_string_range_destroy_00432050(void*, void*, void*, void*) override { unused("00432050"); }
+    void native_string_vector_resize_00427110(void*, std::uint32_t) override { unused("00427110"); }
+    void warning_manager_clear_waiting_queue_0096bf70(void*) override { unused("0096BF70"); }
+    void member_teardown_0097a190(void*) override { unused("0097A190"); }
+
+private:
+    [[noreturn]] static void unused(const char* what) {
+        throw std::logic_error(std::string("005BA7B0 does not reach ") + what);
+    }
+    HudLeafScreenStorage& screen_;
+    GameSoundRuntime& sound_;
+    NativeStringStorage& strings_;
+};
+
+// 0068CC70's leaf 33h needs the started sound runtime its samples come from; the
+// image's cache exists from the sound startup on, before any mission is built.
+void construct_hud_narrative_leaf(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    NativeStringStorage* const strings = g_hud_sound_strings;
+    if (sound == nullptr || strings == nullptr || !sound->started())
+        throw std::logic_error("005BA7B0 needs the started sound runtime that owns [00F8BBE8]");
+    HudLeafNarrativeBinding b(screen, *sound, *strings);
+    bsp::cg_rebuild_b_cc13::hud_narrative_screen_construct_005ba7b0(screen.data(), b);
+}
+
+// 005B9D40's sample release on the 33h block (005B9E02..005B9E19): 005B8FA0
+// resizes the samples at +A0h to 0, dropping each reference (D5B074's vtable +0,
+// 00A82E80, when one reaches zero), then 00BF6989 frees the data 0086E770's reserve
+// allocated (singleton_lifetime_allocate, so singleton_lifetime_free here). The
+// header is zeroed after, since the block outlives this call by a moment. The rest
+// of 005B9D40 (005B7840, 007026F0, the three page removals, the NativeStrings, the
+// +94h vector, the +54h/+64h lists, 005B7FC0, 004F71A0) is not run: the block's
+// +20h/+24h/+28h page slots were never filled (005BB130 stays generic) and its
+// lists and strings hold nothing the constructor did not leave empty.
+// The sound runtime is still bound and started here: the menu host owning this HUD
+// is deleted before the singleton drain retires the sample cache and the sound owner
+// (game_hosts.cpp: application_shutdown's `delete menu_` at 4121 runs before
+// destroy_singleton_lifetime_manager's drain at 4197, winmain_startup.cpp 231..233;
+// on the exceptional path `delete menu_` at 2673 precedes the drain at 2691,
+// bind_sound_runtime(nullptr) at 2744 and sound_.reset() at 2745).
+void release_hud_narrative_leaf_samples(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    if (sound == nullptr || !sound->started())
+        throw std::logic_error("005B9D40's sample release needs the sound runtime that owns [00F8BBE8]");
+    std::uint8_t* const samples = screen.data() + 0xA0;
+    bsp::resize_effect_sound_samples_005b8fa0(samples, 0, sound->samples());  // 005B9E11
+    void* data = nullptr;
+    std::memcpy(&data, samples, sizeof(data));
+    bsp::singleton_lifetime_free(data);                                       // 005B9E19
+    std::memset(samples, 0, 0x0C);
+}
+
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
     for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
         if (shape.construct == constructor) return shape;
@@ -513,14 +707,14 @@ const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t construc
 }
 
 // The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
-constexpr std::array<std::uint32_t, 30> kHudLeafScreenConstructors{{
+constexpr std::array<std::uint32_t, 31> kHudLeafScreenConstructors{{
     0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005AAEF0u, 0x005C0810u,
     0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
     0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CC120u,
     0x005CB0A0u, 0x005FFCB0u,
     0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
     0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
-    0x005F9440u, 0x0067BE30u,
+    0x005F9440u, 0x0067BE30u, 0x005BA7B0u,
 }};
 bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
     return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
@@ -562,6 +756,7 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     case 0x005CC120u: { HudLeafVoidBaseBinding<bsp::frontend_seg19_21_cc13::FrontEndScreenConstructHost> b(screen); bsp::frontend_seg19_21_cc13::hud_movie_screen_construct_005cc120(p, b); return; }
     case 0x005FFCB0u: { HudLeafPauseBinding b(screen); bsp::cc13_fe1::hud_pause_screen_construct_005ffcb0(p, b); return; }
     case 0x005AAEF0u: { HudLeafSweepB2Binding b(screen); bsp::cc13_sweepB2_ingame_interface_screen_construct_005aaef0(p, b); return; }
+    case 0x005BA7B0u: construct_hud_narrative_leaf(screen); return;
     default: break;
     }
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");
@@ -572,10 +767,11 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // --asm; 0060D1C0, 00565EE0 and 0051ED60 build the name in a native-string temporary),
 // and each page is the one kHudScreenLayouts lists for the slot. 0067BE80,
 // 00650170 and 005F9FF0 also call the screen's +14h layout virtual
-// (run_hud_leaf_screen_layout).
-constexpr std::array<std::uint32_t, 11> kHudLeafScreenRegisters{{
+// (run_hud_leaf_screen_layout). 005CCE70 (38h) loads its page and two children
+// and reads the platform object's widescreen byte.
+constexpr std::array<std::uint32_t, 12> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
-    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -715,6 +911,67 @@ private:
     HudLeafRegisterContext& context_;
 };
 
+// 005CCE70, screen 38h (goal 5 chain 635). Its three names are image strings
+// (bsp.py ghidra bytes 00cf1930 --length 28: 00CF1930 "down_Icon", 00CF193C
+// "up_Icon", 00CF1944 "GUI_movie") copied into native-string temporaries of the
+// process's string pool; its 004C12B0 manager is the registry owner that loads the
+// page; 00AA7E00(name, 1) searches the page's descendants. [0109CF04] is the
+// platform object 00BE2960 publishes (GameStartupHost's native platform, whose view
+// active_platform_state() returns): its +0h block is the window state and +0Dh
+// the widescreen byte the body reads for +1Ch.
+class HudLeafEngineMovieRegisterBinding final : public bsp::Cc13SweepB2EngineMovieRegisterHost {
+public:
+    explicit HudLeafEngineMovieRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void* image_global(std::uint32_t address) override {
+        static constexpr char kDownIcon[] = "down_Icon";  // 00CF1930
+        static constexpr char kUpIcon[] = "up_Icon";      // 00CF193C
+        static constexpr char kGuiMovie[] = "GUI_movie";  // 00CF1944
+        switch (address) {
+        case 0x00CF1930u: return const_cast<char*>(kDownIcon);
+        case 0x00CF193Cu: return const_cast<char*>(kUpIcon);
+        case 0x00CF1944u: return const_cast<char*>(kGuiMovie);
+        case 0x0109CF04u: {
+            const Win32PlatformState* const platform = active_platform_state();
+            if (platform == nullptr)
+                throw std::logic_error("005CCE70 read [0109CF04] with no published platform object");
+            static_assert(offsetof(NativePlatformObjectStorage, window) == 0);
+            static_assert(offsetof(NativePlatformWindowFocusStorage, widescreen_0d) == 0x0D);
+            platform_object_ = &platform->native_window_focus();
+            return &platform_object_;
+        }
+        default: break;
+        }
+        throw std::logic_error("005CCE70 read an image global it does not use");
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t size) override {
+        return std::memcpy(dest, source, size);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void frontend_screen_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_get_004c12b0() override { return &context_.menu; }
+    void* gui_manager_load_page_00aa5840(void* manager, const void* name, std::int32_t,
+        std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("005CCE70 loaded its page through another GUI manager");
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        if (widget == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(widget),
+            HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+    const void* platform_object_{nullptr};
+};
+
 // The layout virtuals (+14h) those registers call through the screen's own
 // vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
 // the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
@@ -824,15 +1081,11 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x0067BE80u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::follow_screen_register_0067be80(raw, b); return; }
     case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
     case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
+    case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");
 }
-
-// Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
-// (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
-GameSoundRuntime* g_hud_sound_runtime = nullptr;
-NativeStringStorage* g_hud_sound_strings = nullptr;
 
 // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md). True: 00526A40's
 // camera segment query 009043A0 runs over the gunnery host's units
@@ -916,6 +1169,19 @@ public:
 
 struct GameHudHost::Impl {
     Impl(GameHostLog& log_in, GameMenuHost& menu_in) : log(log_in), menu(menu_in) {}
+    // Before leaf_screens frees the blocks: screen 33h's retained samples go back
+    // as 005B9D40 returns them (release_hud_narrative_leaf_samples).
+    ~Impl() {
+        for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
+            if (!leaf_screens[i] || kInGameHudScreens[i].constructor != 0x005BA7B0u) continue;
+            try {
+                release_hud_narrative_leaf_samples(*leaf_screens[i]);
+                log.implemented("HudNarrative::release_samples", "005b9e11");
+            } catch (const std::exception& error) {
+                log.notef("HUD screen 33h samples not released: %s", error.what());
+            }
+        }
+    }
 
     GameHostLog& log;
     GameMenuHost& menu;

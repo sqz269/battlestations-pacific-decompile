@@ -1,5 +1,6 @@
-// Packet cc13-cgbuildB (see include/bsp/cg_rebuild_b_cc13.hpp). Build-only
-// reconstructions; nothing here is wired into a live host path.
+// Packet cc13-cgbuildB (see include/bsp/cg_rebuild_b_cc13.hpp). Goal 5 chain 635:
+// 005BA7B0 runs as 0068CC70's leaf 33h (game_hosts_hud.cpp, HudLeafNarrativeBinding);
+// the other bodies here are still build-only.
 #include "bsp/cg_rebuild_b_cc13.hpp"
 
 #include <cstring>
