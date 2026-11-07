@@ -3997,13 +3997,17 @@ struct GameGunneryHost::Impl {
     std::vector<std::size_t> land_master_738;
     std::vector<bool> land_master_is_airfield;
     bool land_masters_built{false};
-    // Goal 5 chain 639: the timers 007465E0 starts and the 00745F1E smoke arm runs,
-    // per MLandFort / MCommandBuilding that went through 00747170 (+740h fire, +744h
-    // smoke, +748h the shared time, +750h the secondary clock).
+    // Goal 5 chain 639: the timers 007465E0 starts and the 00745F1E smoke arm runs
+    // (+740h fire, +744h smoke, +748h the shared time, +750h the secondary clock), per
+    // MLandFort, or MCommandBuilding the ship AI host holds no capture building for,
+    // that went through 00747170. A held building's timers are that host's record.
     std::map<std::size_t, bsp::gameplay_seg41_cc13::FortTimers> land_fort_timers;
     struct LandFortDeathCounts {
         unsigned long long on_destroyed{0}, gated{0}, death_effects{0}, death_fires{0};
         unsigned long long smoke_starts{0}, smoke_extends{0}, smoke_draws{0}, smoke_stops{0};
+        unsigned long long building_fires{0};   // 007465E0 on a ship AI capture building
+        bool last_smoke_744{false};             // the last 007465E0's result, for the log
+        float last_time_748{0.0f};
     } land_fort_death;
     // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
     int explicit_kill_cause{0};
@@ -13192,13 +13196,14 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
 }
 
 bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
-    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
+    std::size_t exclude, std::size_t& hit_unit, float hit_point[3], bool pick_ray) const {
     // Integrator arbitration 2026-09-26: the HUD's one const query over
     // SegmentBinding (packet cc9_player_gun_seat_segment_query moved the body
     // into query_segment_units_impl so the seat shares it).
     bool land = false;
     const bool hit = query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point,
         &land);
+    if (!pick_ray) return hit;   // the trigger cast is not a HUD pick
     if constexpr (kLandscapeSpatialAttachBound) {
         note_land_hit_query(LandHitConsumer::PickRay, land);
         if (impl_->pick_rays_logged < 3) {
@@ -18345,10 +18350,34 @@ void GameGunneryHost::Impl::run_land_fort_on_destroyed(std::size_t victim) {
                 owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMin", 0.0f);
             cls.fire_duration_max_16c =
                 owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMax", 0.0f);
-            s41::FortTimers& timers = owner.land_fort_timers[victim];
+            // One copy of +740h..+750h: a CommandBuilding the ship AI host holds as a
+            // capture building keeps them there (its 00746320 fire and 00745BE0 arms
+            // read the same words), so 007465E0 stops and clears its burning +740h
+            // and its smoke time lands in the shared +748h. Every other fort keeps
+            // them in land_fort_timers.
+            GameShipAiHost::FortTimerFields held;
+            const bool building = owner.ship_ai != nullptr
+                && owner.ship_ai->command_building_fort_timers(victim, held);
+            s41::FortTimers copy;
+            if (building) {
+                copy.fire_740 = *held.fire_740;
+                copy.smoke_744 = *held.smoke_744;
+                copy.time_748 = *held.time_748;
+                copy.clock_750 = *held.clock_750;
+            }
+            s41::FortTimers& timers = building ? copy : owner.land_fort_timers[victim];
             const bool was_smoking = timers.smoke_744;
             FortDeathFire fire(owner, victim);
             s41::start_death_fire_007465e0(timers, cls, fire);
+            if (building) {
+                *held.fire_740 = copy.fire_740;
+                *held.smoke_744 = copy.smoke_744;
+                *held.time_748 = copy.time_748;
+                *held.clock_750 = copy.clock_750;
+                ++owner.land_fort_death.building_fires;
+            }
+            owner.land_fort_death.last_smoke_744 = timers.smoke_744;
+            owner.land_fort_death.last_time_748 = timers.time_748;
             if (was_smoking) ++owner.land_fort_death.smoke_extends;
             owner.done("LandFort::start_death_fire_007465e0", 0x007465e0u);
         }
@@ -18374,17 +18403,18 @@ void GameGunneryHost::Impl::run_land_fort_on_destroyed(std::size_t victim) {
         if (has_master) ++land_master.hand_offs_skipped_cause;
     }
     ++land_fort_death.on_destroyed;
+    const unsigned long long fires_before = land_fort_death.death_fires;
     FortDestroy host(*this, victim, master, type_id);
     s41::on_destroyed_00747170(in, host);
     done("LandFort::on_destroyed_00747170", 0x00747170u);
     if (land_fort_death.on_destroyed <= 4) {
-        const s41::FortTimers* t = land_fort_timers.count(victim) != 0
-            ? &land_fort_timers[victim] : nullptr;
+        const bool fired = land_fort_death.death_fires != fires_before;
         log.notef("land fort destroyed: unit=%s class=%Xh t=%.2f gate=%d master=%d "
-            "smoke=%d smoke_time=%.2f (00747170 -> 007465E0, goal 5 chain 639)",
+            "death_fire=%d smoke=%d smoke_time=%.2f (00747170 -> 007465E0, goal 5 chain 639)",
             unit_state[victim].row.name.c_str(), class_id, static_cast<double>(clock_seconds),
-            gate ? 1 : 0, has_master ? 1 : 0, t != nullptr && t->smoke_744 ? 1 : 0,
-            t != nullptr ? static_cast<double>(t->time_748) : 0.0);
+            gate ? 1 : 0, has_master ? 1 : 0, fired ? 1 : 0,
+            fired && land_fort_death.last_smoke_744 ? 1 : 0,
+            fired ? static_cast<double>(land_fort_death.last_time_748) : 0.0);
     }
 }
 
@@ -18453,10 +18483,12 @@ float GameGunneryHost::Impl::land_fort_stream0_draw(std::size_t unit, float low,
 }
 
 // 00745F1E..00745F9D, the +744h arm of the LandFort frame update 00745BE0, for every
-// fort 007465E0 set smoking. LABELLED order: once per gunnery step after the unit
-// passes, with the step's seconds (00745BE0 is the fort's own tick). A dead plain
-// fort's +740h arm has no producer here (00746320 runs for capture buildings, in
-// the ship AI host), so only the smoke arm runs for these timers.
+// fort in land_fort_timers that 007465E0 set smoking. LABELLED order: once per
+// gunnery step after the unit passes, with the step's seconds (00745BE0 is the
+// fort's own tick). These are the plain forts and unheld CommandBuildings: no host
+// starts a +740h fire on them (00746320 runs for the ship AI host's capture
+// buildings, whose 00745BE0 runs both arms on their own record), so only the smoke
+// arm runs here.
 void GameGunneryHost::Impl::run_land_fort_smoke_frames(float dt) {
     for (auto& entry : land_fort_timers) {
         if (!entry.second.smoke_744) continue;
@@ -22576,10 +22608,11 @@ void GameGunneryHost::report() {
                 c.kept_alive, kLandMasterDamageBound ? 1 : 0);
             const Impl::LandFortDeathCounts& f = host.land_fort_death;
             host.log.notef("summary mission gunnery land fort deaths on_destroyed=%llu "
-                "gated=%llu death_effects=%llu death_fires=%llu smoke_starts=%llu "
-                "smoke_extends=%llu smoke_draws=%llu smoke_stops=%llu (00747170 / 007465E0 / "
-                "00745F1E, goal 5 chain 639)", f.on_destroyed, f.gated, f.death_effects,
-                f.death_fires, f.smoke_starts, f.smoke_extends, f.smoke_draws, f.smoke_stops);
+                "gated=%llu death_effects=%llu death_fires=%llu building_fires=%llu "
+                "smoke_starts=%llu smoke_extends=%llu smoke_draws=%llu smoke_stops=%llu "
+                "(00747170 / 007465E0 / 00745F1E, goal 5 chain 639)", f.on_destroyed, f.gated,
+                f.death_effects, f.death_fires, f.building_fires, f.smoke_starts,
+                f.smoke_extends, f.smoke_draws, f.smoke_stops);
         }
         if (kReloadDrawBound) {
             host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "

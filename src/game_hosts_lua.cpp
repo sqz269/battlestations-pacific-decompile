@@ -9405,8 +9405,10 @@ int GameMissionLuaHost::run_add_line_of_sight_trigger_008c9460(lua_State* state,
 // and ignores its current leader, as the proximity check poses it; an entity target's
 // position is the unit's pose translation or the scene marker's authored position
 // (spawn_ref_entity_frame_008f8680). 0084B6B0's 0098B370 sweep of one segment is
-// 0098ADD0(from, to, ignore->vtable[B0h], record, 0), answered over this process's
-// units by GameGunneryHost::query_segment_units (no islands or terrain occlude).
+// 0098ADD0(from, to, ignore->vtable[B0h], record, 0), answered by
+// GameGunneryHost::query_segment_units over this process's units and, when the
+// landscape is attached (kLandscapeSpatialAttachBound), the land: a land hit answers
+// no unit, so it occludes as the image's record entity does.
 void GameMissionLuaHost::check_line_of_sight_trigger_00750230(std::size_t unit,
     ProximityTrigger& trigger, float step) {
     if (trigger.target_kind_44 == 0) return;   // see run_add_line_of_sight_trigger_008c9460
@@ -9431,7 +9433,7 @@ void GameMissionLuaHost::check_line_of_sight_trigger_00750230(std::size_t unit,
             const float b[3] = {to.x, to.y, to.z};
             std::size_t hit_unit = 0;
             float point[3] = {0.0f, 0.0f, 0.0f};
-            if (!gunnery.query_segment_units(a, b, ignore, hit_unit, point)) return false;
+            if (!gunnery.query_segment_units(a, b, ignore, hit_unit, point, false)) return false;
             hit = static_cast<std::uint32_t>(hit_unit);   // one-based, as the ignore
             return true;
         }

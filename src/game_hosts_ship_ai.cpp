@@ -1357,7 +1357,10 @@ struct GameShipAiHost::Impl {
         float fire_duration_max_16c{0.0f};    // class+16Ch SmokeFireDurationMax
         float secondary_mul_170{0.0f};        // class+170h SecondaryExplosionChanceMul
         bool fire_740{false};          // the fire effect pointer is set
-        float fire_time_748{0.0f};
+        // +744h, the death smoke effect pointer: set only by 007465E0 (the gunnery
+        // host's 00747170, goal 5 chain 639) through command_building_fort_timers.
+        bool smoke_744{false};
+        float fire_time_748{0.0f};     // +748h, shared by the fire and the smoke
         float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
         // Packet s52_cb_repair: 006F4360's class rates (RepairTime and the
         // garrison rates, 200 when absent).
@@ -1385,6 +1388,7 @@ struct GameShipAiHost::Impl {
     unsigned long long fire_starts{0};
     unsigned long long fire_extends{0};
     unsigned long long fire_stops{0};
+    unsigned long long smoke_stops{0};   // goal 5 chain 639, 00745F1E
     unsigned long long fire_secondary_rolls{0};
     unsigned long long fire_secondary_hits{0};
     unsigned long long fire_draws{0};
@@ -1422,6 +1426,7 @@ struct GameShipAiHost::Impl {
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
     void landfort_fire_roll_007470b0(CaptureBuilding& b, float amount);
     void landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds);
+    void landfort_smoke_arm(CaptureBuilding& b, float seconds);   // 00745F1E, chain 639
     // Packet cc9_landed_ship_remainder: class+80Ch LandedDamage per unit, and the
     // remainder's census.
     std::vector<std::int32_t> landed_damage_080c;
@@ -13486,6 +13491,19 @@ bool GameShipAiHost::command_building_armour_0368(std::size_t unit_index, float&
     return true;
 }
 
+bool GameShipAiHost::command_building_fort_timers(std::size_t unit_index,
+                                                  FortTimerFields& out) {
+    Impl& host = *impl_;
+    if (!host.capture_built) host.build_capture_buildings();
+    Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return false;
+    out.fire_740 = &b->fire_740;
+    out.smoke_744 = &b->smoke_744;
+    out.time_748 = &b->fire_time_748;
+    out.clock_750 = &b->secondary_clock_750;
+    return true;
+}
+
 bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.controllers.size()) return false;
@@ -13799,10 +13817,13 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         }
     }
     if (kLandFortFireRollBound) {
-        // 00745BE0, the LandFort frame update's fire arm (LABELLED order: here, at
-        // the head of the capture step).
+        // 00745BE0, the LandFort frame update (LABELLED order: here, at the head of
+        // the capture step): the +740h fire arm, then (it falls through at 00745F16)
+        // the +744h smoke arm 00745F1E, which only a dead building's 007465E0 sets
+        // (goal 5 chain 639, through command_building_fort_timers).
         for (CaptureBuilding& b : capture_buildings) {
             if (b.fire_740) landfort_fire_frame_00745be0(b, seconds);
+            if (b.smoke_744) landfort_smoke_arm(b, seconds);
         }
     }
     if (gunnery_draws != nullptr) {
@@ -14087,7 +14108,11 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     if (!(chance > draw)) return;                                       // 00747123
     ++fire_roll_hits;
     // 00746320. +744h (the smoke effect) is set only by 007465E0 (the death arm,
-    // 00747351) and the D1h handler; neither runs for a capture building here.
+    // 00747351) and the D1h handler. 007465E0 runs on this record for a dead
+    // building (the gunnery host's 00747170, goal 5 chain 639): it stops and clears
+    // +740h and writes the shared +748h. The D1h handler is the session replica and
+    // does not run in single player. 00746320 reads only +740h, so a smoking building
+    // starts a fire here as in the image.
     if (b.fire_740) {
         // 0074657E..007465C5: keep the larger duration.
         ++fire_draws;
@@ -14118,8 +14143,8 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     }
 }
 
-// 00745BE0 (body 00745BE0-00745F9F), the +740h arm only; packet
-// cc9_landfort_fire_roll. The +744h arm (00745F1E..) has no producer here.
+// 00745BE0 (body 00745BE0-00745F9F), the +740h arm; packet cc9_landfort_fire_roll.
+// The +744h arm (00745F1E..) is landfort_smoke_arm below (goal 5 chain 639).
 void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds) {
     // 00745C41..00745C6C: +748h -= dt (stored as a float), +750h += dt.
     b.fire_time_748 = static_cast<float>(static_cast<double>(b.fire_time_748)
@@ -14174,6 +14199,43 @@ void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, floa
                                           - static_cast<double>(back));
     b.secondary_clock_750 = -1.0f < next ? -1.0f : next;                // 00745EDE
     record("LandFort::secondary_sync_message_d1", 0x00745f06u);
+}
+
+// 00745F1E..00745F9D, the +744h arm of 00745BE0 for a capture building (goal 5 chain
+// 639), through bsp::gameplay_seg41_cc13::smoke_frame_00745f1e on this record's
+// +744h / +748h / +750h: +748h -= dt, +750h += dt, and the smoke stops at +748h <= 0.
+void GameShipAiHost::Impl::landfort_smoke_arm(CaptureBuilding& b, float seconds) {
+    namespace s41 = bsp::gameplay_seg41_cc13;
+    struct SmokeStop final : s41::LandFortHost {
+        explicit SmokeStop(Impl& owner_in) : owner(owner_in) {}
+        float uniform(int, float, float) override {
+            throw std::logic_error("00745F1E draws nothing");
+        }
+        void stop_fire_effect_740() override {
+            throw std::logic_error("00745F1E does not touch +740h");
+        }
+        bool create_death_smoke_effect() override {
+            throw std::logic_error("00745F1E creates nothing");
+        }
+        void send_effect_message_7(float) override {
+            throw std::logic_error("00745F1E sends nothing");
+        }
+        void stop_smoke_effect_744() override {   // 00745F73 00867B10, 00745F80 00484620(0)
+            ++owner.smoke_stops;
+            owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+        }
+        Impl& owner;
+    } host(*this);
+    s41::FortTimers t;
+    t.fire_740 = b.fire_740;
+    t.smoke_744 = b.smoke_744;
+    t.time_748 = b.fire_time_748;
+    t.clock_750 = b.secondary_clock_750;
+    s41::smoke_frame_00745f1e(t, seconds, host);
+    b.smoke_744 = t.smoke_744;
+    b.fire_time_748 = t.time_748;
+    b.secondary_clock_750 = t.clock_750;
+    done("LandFort::smoke_frame_00745f1e", 0x00745f1eu);
 }
 
 // 00803CE0, fastcall (ECX = side, EDX = target), complete: 3 when the target's
@@ -16399,11 +16461,12 @@ void GameShipAiHost::report() {
             host.timer_draws_standoff,
             kShipAiTimerDrawsBound ? 1 : 0);
         host.log.notef("summary mission landfort fire rolls=%llu roll_hits=%llu starts=%llu "
-            "extends=%llu stops=%llu secondary_rolls=%llu secondary_hits=%llu draws=%llu "
-            "bound=%d (007470B0 / 00746320 / 00745BE0, packet cc9_landfort_fire_roll)",
+            "extends=%llu stops=%llu smoke_stops=%llu secondary_rolls=%llu "
+            "secondary_hits=%llu draws=%llu bound=%d (007470B0 / 00746320 / 00745BE0, "
+            "packet cc9_landfort_fire_roll)",
             host.fire_rolls, host.fire_roll_hits, host.fire_starts, host.fire_extends,
-            host.fire_stops, host.fire_secondary_rolls, host.fire_secondary_hits,
-            host.fire_draws, kLandFortFireRollBound ? 1 : 0);
+            host.fire_stops, host.smoke_stops, host.fire_secondary_rolls,
+            host.fire_secondary_hits, host.fire_draws, kLandFortFireRollBound ? 1 : 0);
         host.log.notef("summary mission command building level ups=%llu resets=%llu "
             "unchanged=%llu bound=%d (006F7360 / 006F4D10 -> D4h 006F38E0, packet "
             "cc9_command_building_level)", host.level_ups, host.level_resets,

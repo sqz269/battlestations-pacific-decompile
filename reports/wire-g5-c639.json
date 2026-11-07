@@ -13,12 +13,12 @@
     {
       "native": "007465e0",
       "status": "wired",
-      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_on_destroyed, FortDestroy::start_death_fire (the 00747351 call), stream-0 SmokeFireDuration draw"
+      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_on_destroyed, FortDestroy::start_death_fire (the 00747351 call), stream-0 SmokeFireDuration draw; for a CommandBuilding the ship AI host holds, on that capture building's +740h..+750h through GameShipAiHost::command_building_fort_timers"
     },
     {
       "native": "00745f1e",
       "status": "wired",
-      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_land_fort_smoke_frames, from GameGunneryHost::fixed_step (the +744h arm of 00745BE0)"
+      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_smoke_frames from GameGunneryHost::fixed_step (plain forts, unheld CommandBuildings); src/game_hosts_ship_ai.cpp GameShipAiHost::Impl::landfort_smoke_arm from capture_step after the +740h arm (held capture buildings)"
     },
     {
       "native": "008c9460",
@@ -109,6 +109,23 @@
       "native": "00a2b950",
       "status": "skipped",
       "reason": "the AI group score list is read only by the debug overlay 00A2CDD0 (game_hosts_ai.cpp kAiGroupScoreListReleaseBound note)"
+    }
+  ],
+  "review_round_1": [
+    {
+      "finding": "two copies of +740h/+748h/+750h for MCommandBuilding (1Ch)",
+      "status": "fixed",
+      "how": "CaptureBuilding gains +744h (smoke_744); GameShipAiHost::command_building_fort_timers exposes its +740h/+744h/+748h/+750h; 007465E0 runs on that record for a held building (stops and clears a burning +740h, the smoke time lands in the shared +748h); the ship AI host's 00745BE0 now runs the +744h arm (00745F1E) after the +740h arm; land_fort_timers keeps only plain forts and unheld CommandBuildings; comments at the 00746320 fire roll, the +740h frame arm and the gunnery smoke frames updated"
+    },
+    {
+      "finding": "nit: line-of-sight casts counted as landscape-attach PickRay queries",
+      "status": "fixed",
+      "how": "query_segment_units takes pick_ray (default true); the trigger cast passes false. The trigger comment now says a land hit occludes (query_segment_units answers no unit for it), replacing the wrong \"no islands or terrain occlude\""
+    },
+    {
+      "finding": "integrator note: game_hosts_gunnery.cpp / game_hosts_lua.cpp also changed by agent/g5-w3",
+      "status": "no_change",
+      "how": "agent/g5-w3 has already landed on origin/main (6356c439a); its hunks there do not overlap these edits (checked with git diff HEAD origin/main before editing)"
     }
   ]
 }

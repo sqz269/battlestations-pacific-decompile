@@ -1104,8 +1104,10 @@ public:
     // is one-based (0 = none) and stands for ignore->vtable[B0h]. True with the
     // nearest hit's one-based unit and point. Read-only: the two trace counters
     // the binding bumps are restored, so no gunnery summary line moves.
+    // `pick_ray` false (goal 5 chain 639: the Lua line-of-sight trigger's 0084B6B0
+    // cast) leaves the landscape-attach PickRay census and its log lines alone.
     bool query_segment_units(const float from[3], const float to[3], std::size_t exclude,
-        std::size_t& hit_unit, float hit_point[3]) const;
+        std::size_t& hit_unit, float hit_point[3], bool pick_ray = true) const;
 
     // Packet cc9_landscape_segment_query: 00904400(kind, from, to, record, entity),
     // RET 14h, ECX set by callers but unread. Every caller (007C255E,
