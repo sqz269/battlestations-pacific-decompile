@@ -11351,11 +11351,14 @@ private:
 class Seg56RowImage final : public bsp::seg56_options_cc13::ImageAccess {
 public:
     explicit Seg56RowImage(GameUnitsHost* units) : units_(units) {}
-    bool force_release_stored{false};
-    bool force_release_unresolved{false};
-    std::size_t force_release_index{0};
+    bool slot_stored{false};
+    bool slot_unresolved{false};
+    std::size_t slot_index{0};
     std::function<void(std::size_t, std::uint8_t)> untouchable_1d4;
     float* reload_time_mul_00e08178{nullptr};
+    // float +390h of a squadron, SquadronSetDropAllBombPercent's FSTP (008A2091), when
+    // the caller sets it; the same substitution for a handle with no slot.
+    std::function<bool(std::size_t, float)> drop_all_bomb_percent_390;
     void* support_panel() noexcept { return &panel_; }
 
     void* global_ptr(std::uint32_t address) override {
@@ -11377,7 +11380,7 @@ public:
         const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(base);
         if (offset == 0x1D4u && untouchable_1d4) {
             if (units_ == nullptr || id == 0u || id > units_->count()) {
-                force_release_unresolved = true;
+                slot_unresolved = true;
                 return;
             }
             untouchable_1d4(static_cast<std::size_t>(id - 1u), value);
@@ -11385,18 +11388,27 @@ public:
         }
         if (offset != 0x3AEu) seg56_row_unreached("byte write other than +3AEh / +1D4h");
         if (units_ == nullptr || id == 0u || id > units_->count()) {
-            force_release_unresolved = true;
+            slot_unresolved = true;
             return;
         }
-        force_release_index = static_cast<std::size_t>(id - 1u);
-        force_release_stored = units_->set_squadron_force_release(force_release_index, value != 0);
+        slot_index = static_cast<std::size_t>(id - 1u);
+        slot_stored = units_->set_squadron_force_release(slot_index, value != 0);
     }
     std::uint8_t read_u8(void*, std::uint32_t) override { seg56_row_unreached("byte read"); }
     float read_f32(void*, std::uint32_t) override { seg56_row_unreached("float read"); }
     void write_i32(void*, std::uint32_t, std::int32_t) override {
         seg56_row_unreached("dword write");
     }
-    void write_f32(void*, std::uint32_t, float) override { seg56_row_unreached("float write"); }
+    void write_f32(void* base, std::uint32_t offset, float value) override {
+        if (offset != 0x390u || !drop_all_bomb_percent_390) seg56_row_unreached("float write");
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(base);
+        if (units_ == nullptr || id == 0u || id > units_->count()) {
+            slot_unresolved = true;
+            return;
+        }
+        slot_index = static_cast<std::size_t>(id - 1u);
+        slot_stored = drop_all_bomb_percent_390(slot_index, value);
+    }
     std::uint16_t global_u16(std::uint32_t) override { seg56_row_unreached("global word"); }
     void write_global_u8(std::uint32_t, std::uint8_t) override {
         seg56_row_unreached("global byte write");
@@ -13975,20 +13987,26 @@ int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
 // bsp::kPlaneIssueThresholdZeroCc13Bound, the reader's switch.
 int GameMissionLuaHost::run_squadron_set_drop_all_bomb_percent_008a1f40(lua_State* state,
     int argument_count) {
+    static_cast<void>(argument_count);
+    // Goal 5 chain 659: the body lua_squadron_set_drop_all_bomb_percent
+    // (src/options_seg56_cc13.cpp) stores the float through Seg56RowImage into
+    // GameUnitsHost::set_squadron_drop_all_bomb_percent_008a1f40.
     GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
-    const float percent = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
-    bool stored = false;
-    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
-        stored = units->set_squadron_drop_all_bomb_percent_008a1f40(
-            static_cast<std::size_t>(id - 1), percent);
-    }
-    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
-    log_.notef("  SquadronSetDropAllBombPercent 008a1f40: \"%s\" percent=%g stored=%d (packet "
-        "cc13-issuea0)", row != nullptr ? row->name.c_str() : "?",
+    Seg56RowArgs args(state);
+    Seg56RowImage image(units);
+    float percent = 0.0f;
+    image.drop_all_bomb_percent_390 = [&](std::size_t index, float value) {
+        percent = value;
+        return units->set_squadron_drop_all_bomb_percent_008a1f40(index, value);
+    };
+    const int results = bsp::seg56_options_cc13::lua_squadron_set_drop_all_bomb_percent(args, image);
+    const bool stored = image.slot_stored;
+    const GameUnitRow* row = stored ? units->unit_row(image.slot_index) : nullptr;
+    log_.notef("  SquadronSetDropAllBombPercent 008a1f40: \"%s\" percent=%g stored=%d (goal 5 "
+        "chain 659)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(percent), stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetDropAllBombPercent", "008a1f40");
-    return 0;
+    return results;
 }
 
 // Goal 5 chain 659. 008A28B0 SquadronSetForceRelease(squadron, on) on its body
@@ -14002,12 +14020,12 @@ int GameMissionLuaHost::run_squadron_set_force_release(lua_State* state, int arg
     Seg56RowImage image(units_hooks_);
     const int results = bsp::seg56_options_cc13::lua_squadron_set_force_release(args, image);
     GameUnitsHost* units = units_hooks_;
-    const GameUnitRow* row = image.force_release_stored
-        ? units->unit_row(image.force_release_index) : nullptr;
+    const GameUnitRow* row = image.slot_stored
+        ? units->unit_row(image.slot_index) : nullptr;
     log_.notef("  SquadronSetForceRelease 008a28b0: \"%s\" on=%d stored=%d%s (goal 5 chain 659)",
         row != nullptr ? row->name.c_str() : "?", ::lua_toboolean(state, 2) != 0 ? 1 : 0,
-        image.force_release_stored ? 1 : 0,
-        image.force_release_unresolved ? ", no units-host slot" : "");
+        image.slot_stored ? 1 : 0,
+        image.slot_unresolved ? ", no units-host slot" : "");
     log_.implemented("MissionLuaNative::SquadronSetForceRelease", "008a28b0");
     return results;
 }
