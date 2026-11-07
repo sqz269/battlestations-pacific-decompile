@@ -1,0 +1,154 @@
+{
+  "chain": 648,
+  "slot": "g5-w4",
+  "goal": 5,
+  "picked": "host stand-ins that reimplemented or dropped a reconstructed body: the 0095AC1D role-owner device walks, the 99h hull-segment detach, and the EnableInput Lua native",
+  "rows": [
+    {
+      "native": "00953f60",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::role_owner_device_walk_0095ac1d (route DeviceKindSet156; unit+1BCh as role 4 slot), from GameUnitsHost's 4Bh role message"
+    },
+    {
+      "native": "00954000",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::role_owner_device_walk_0095ac1d (route DeviceKindSet2346); the returned steps run the 00729F70 release, the vtable[154h] seat store and the 0072D5B0 record"
+    },
+    {
+      "native": "0080e440",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::apply_segment_damage_0092d1f0, the delivered 99h copy (00821FF0); SegmentDetachBinding's detach_part writes the destroyed-segment record"
+    },
+    {
+      "native": "008afbd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch EnableInput arm -> lua_enable_input -> ScriptInputContextBinding -> GameInputContextManagerBinding::set_level (00A933F0); bound from src/game_hosts.cpp"
+    },
+    {
+      "native": "007448b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp FortDeathFire::send_effect_message_7",
+      "reason": "The D1h effect message is routed by 0077C2A0 with flags 4, the session send that single player drops; building it would be a round trip with no effect."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp recon_record_for_class",
+      "reason": "Already called through resolve_sensor_class_00808f90 (call_graph called=True); the ready state is a text-match artifact, nothing to wire."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp player air ops launch",
+      "reason": "The loadout ring is the support manager screen's player GUI; the host takes the pick as harness input and builds no ring widgets."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp player air ops launch",
+      "reason": "As 00662020: player-GUI loadout ring, no ring widgets in this host."
+    },
+    {
+      "native": "0088b6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp call_0088b6d0_0076a9f0_00765590",
+      "reason": "LoadMessageMap's session branch runs only when the non-campaign flag (game+1FE4h) is 1: multiplayer only."
+    },
+    {
+      "native": "00877b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp set_damaged_gfx_level_00819cc0",
+      "reason": "The body reads raw unit+358h and game+1FE4h and calls 00876EC0 (model groups); the host keeps a typed damaged-gfx level and has no native unit image."
+    },
+    {
+      "native": "006fe530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp EntityOrder object_is_kind_of",
+      "reason": "006FE530 is one class's vtable+5Ch IsKindOf (the destroyer ancestry); the stand-in dispatches through an arbitrary target's vtable, so binding this body there would be wrong."
+    },
+    {
+      "native": "005b7390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp narrative show",
+      "reason": "Lays out the narrative screen's native widgets (+ACh/+B0h/+B4h, text +114h/+ECh, [[00E198C4]+A4h]); the narrative leaf's text widgets are not hosted natively."
+    },
+    {
+      "native": "0087f9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp torpedo/shell land impact",
+      "reason": "Its one effect is the terrain decal 007407C0 on the height field's render root; presentation with no default-run renderer."
+    },
+    {
+      "native": "00955970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_world.cpp MatrixInterpolator::entity_refresh",
+      "reason": "Publishes the pose to the entity's scene node; this host has no scene nodes for script entities."
+    },
+    {
+      "native": "00b0d080",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApply::renderer_set_old_film_effect",
+      "reason": "The [00F8D39C] render service exists only under the opt-in native renderer (BSP_NATIVE_MISSION_SHIP=1, prepare_mission_ship); default runs have no service to store +220h on."
+    },
+    {
+      "native": "00b0d580",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApply::renderer_set_motion_blur",
+      "reason": "As 00B0D080, plus a SceneRendererHost for the service's textures and targets (+44h/+48h/+50h/+58h/+64h)."
+    },
+    {
+      "native": "008c8f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp (no PrepareClass row)",
+      "reason": "Needs 0095BA60's per-party required-class bitmap, which is not hosted, and the 00964790 factory binding, which lives inside src/game_hosts_lua.cpp (in review on agent/g5-w5)."
+    },
+    {
+      "native": "008ca010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp (no IsGUIActive row)",
+      "reason": "008C9F80 -> 008C8C20 is a dotted widget lookup over the native GUI manager's pages; the host GUI is GuiLayoutPage/GuiLayoutWidget with no such lookup."
+    },
+    {
+      "native": "006cd810",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp air_ops_update_decks_006cdc70",
+      "reason": "Raw native deck block: AirOpsDeck has no AI-launch flag +F4h, next-tick +F8h or quota +E8h, and no writer of +F4h was found (byte scans of immediate stores came back empty)."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail Pass::candidate_attack_value",
+      "reason": "The air-support record's +0h is the faction block's vehicle class (+20h), not a unit; the host's 00A0C3C0/00A08460 model is keyed on unit weapon-facts rows, so a class attacker would only take the stand-in weight."
+    },
+    {
+      "native": "00643360",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp HudMarkers sweep_objectives",
+      "reason": "Projects through the real camera (game+1ED4h, 00638E50) and shows native colour-icon sets (00639230 on Fe10GuiHost); the marker host runs a stand-in orthographic camera over GuiLayoutWidget clones."
+    },
+    {
+      "native": "0052b9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp Countdown",
+      "reason": "The counters screen's +10h countdown entry and its widgets come from the register 0052CBF0, which is not run; the body would dereference a null entry."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp recon pass group fold",
+      "reason": "Publishes into each group unit's native detection record (unit + detection base + slot stride, observer pair, delegate); host recon records are semantic."
+    },
+    {
+      "native": "004842c0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp publish_bow_anchor / publish_stern_anchor",
+      "reason": "The anchor points come from 00413920's transform, which the host answers with an empty point; publishing them would publish nothing real."
+    },
+    {
+      "native": "0075a380",
+      "status": "skipped",
+      "host_site": "none (00768530 BSP_SessionMessage_CreateFromBitStream)",
+      "reason": "Segment 42's construct_for_read rows are reached only from the bitstream factory 00768530, which this build does not link (network receive path): multiplayer only."
+    }
+  ]
+}
