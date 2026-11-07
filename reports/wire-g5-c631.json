@@ -1,0 +1,87 @@
+{
+  "chain": 631,
+  "goal": 5,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "picked": "Lua listener channel matchers: hit / recon run their native matchers, shipLanded and command channels get dispatchers",
+  "rows": [
+    {
+      "native": "009685b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_hit_listeners_00988510 (native_hit_holds)",
+      "evidence": "Replaces the inline copy of the eight keys. Boxes in 00988510's order (00988B3F target, 00988B72 device, attacker, 00988BF7 attack type, player index, damage, fire, leak), through ListenerSubscriptionMatch. The device slot keeps the host's labelled hit_device_filter substitution. call_graph: called from the native_hit_holds lambda."
+    },
+    {
+      "native": "00968470",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::fire_recon_listeners_00980e50",
+      "evidence": "Replaces the inline four-filter test. The body now takes oct18_tail_b::SubscriptionFilterHost, a new narrow base of Host (about 70 virtuals, no implementation). Fixed: it passed the dword at subscription+0Ch+i*10h (the filter's vtable) as the filter. The listing at 00968498 is LEA ECX,[EDI+0Ch], so the receiver is the embedded filter. call_graph: called from fire_recon_listeners_00980e50."
+    },
+    {
+      "native": "00969070",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_ship_landed_listeners",
+      "evidence": "New body ship_landed_subscription_matches_00969070 (src/cc13_sweepC.cpp), slot 3 of vtable 00D1B72C: one-key checked index, then JMP into the +0Ch filter's slot 0. The producer is the ship AI host's landing unload (0074AD90 -> 00986820), queued by GameShipAiHost::take_ship_landed_events. Used by JM11, JM13 and USN07 (luaJM11ShipsLanded and others). The tag row was retagged from stl_instantiation to game_code, a ledger name was added, and the function was renamed in Ghidra. wire_readiness has no row for it until the next snapshot re-exports the name; call_graph shows it called from dispatch_ship_landed_listeners."
+    },
+    {
+      "native": "00968af0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_command_listeners",
+      "evidence": "GameCommandsHost::report_command_event_00984300 evaluated an always-empty host list through an unsuffixed duplicate model of 00968AF0 / 0097B8C0 (command_event_matches, now deleted). It now queues the four boxes. The Lua host tests each AddListener `command` subscription with 00968AF0 (tail into 00968470, same LEA ECX receiver at 00968B18) and calls back with (entity, target, command, status). The text filters are an exact _stricmp set find (0097BC70 -> 004C7F10), so the 13 shipped blocks with status {\"finish\"} never take the image's \"finished\" (00D09FD8)."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_ship_landed_listeners",
+      "reason": "Seg62Host body walks the native warning manager's channel map (+F8h) and lock (+24h), which the host does not keep; the host dispatcher substitutes for it and calls its matcher 00969070"
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp (begin command)",
+      "reason": "target channel producer is 0071F600's start reports (0071F7E8/0071F909) on command acceptance; the host has no general begin-command point (00835C70 note: where slot 78h runs in a frame is not established)"
+    },
+    {
+      "native": "00968bd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (no target dispatcher)",
+      "reason": "target matcher needs the 0071F600 start-report producer, which the host does not run; 2 shipped uses. The `retreat` command listeners (JM02, 4 uses) need the same start reports"
+    },
+    {
+      "native": "009689c0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp UnitMessageArm::SetRepairPriority",
+      "reason": "repair channel producer 0064A270 runs from 00821E80's A0h arm; no host implements set_repair_priority, and neither the HUD repair order nor Lua SetRepairPriority 008AD6F0 is hosted"
+    },
+    {
+      "native": "00982540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp pump_input_channel_00982540 (empty override)",
+      "reason": "input channel (50 shipped uses) needs the native input-action records in each subscription's nested list (+10h), filled by the player input system the host does not model"
+    },
+    {
+      "native": "00982990",
+      "status": "skipped",
+      "host_site": "src/mission_state_frame.cpp (004D87B0)",
+      "reason": "surrender channel is dispatched only by 004D87B0 BSP_Game_CheckMultiplayerPlayerCount: multiplayer"
+    },
+    {
+      "native": "00985590",
+      "status": "skipped",
+      "host_site": "none (0077FAD0 BSP_NetEntity_ReadReplicationState)",
+      "reason": "generate channel is dispatched only from net-entity replication: multiplayer"
+    },
+    {
+      "native": "00968d80",
+      "status": "skipped",
+      "host_site": "src/gui_type_dispatch.cpp visibility_hook_00f8bf4c",
+      "reason": "gui channel (19 uses) producer is the GUI visibility hook [00F8BF4C] (00987090 -> 00985250); in-game HUD screens are in game_hosts_hud.cpp, held by another lane this turn"
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp landfort fire roll",
+      "reason": "land fort death smoke: the body creates an effect (create_death_smoke_effect) and sends message 7; the host creates no effects and runs no fort death arm"
+    }
+  ]
+}

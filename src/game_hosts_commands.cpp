@@ -581,11 +581,10 @@ struct GameCommandsHost::Impl {
     unsigned long long rows_realloc_pending{0};
     void note_rows_push(const char* site);
     bsp::SceneCommandRegistry registry;
-    // Milestone 2q: the `command` event channel's subscriptions, the list
-    // 0097C8A0 builds for every `command` event block 0097E360 parses. That
-    // parser is not reconstructed and this mission authors no such block, so
-    // the list is empty and 00984300 takes its own early return at 009843D8.
-    std::vector<bsp::CommandEventSubscription> command_event_subscriptions;
+    // Goal 5 chain 631: the 00984300 reports since the last take, for the
+    // mission Lua host, which holds the `command` channel's subscriptions
+    // (AddListener's 0097C8A0 / 00972AB0 loads) and evaluates them.
+    std::vector<GameCommandsHost::CommandEvent> command_events;
     GameCommandsSummary summary{};
     bool logged_path{false};
     bool logged_block{false};
@@ -3641,26 +3640,26 @@ std::size_t GameCommandsHost::report_command_event_00984300(std::size_t unit_ind
     params.target_id = 0;
     params.command_name = (klass != nullptr) ? klass->name : "";
     params.status = (status != nullptr) ? status : "";
-    // 00984394..009843D8: the channel named `command` is looked up on the
-    // mission event director's map at reporter+F8h and the body returns at once
-    // when the channel holds no subscription. 0097E360, the parser that would
-    // put one there, is not reconstructed, and this mission authors none:
-    // usn_2_java.scn declares no event block and usn_2_java.lua registers no
-    // `command` handler. The lookup therefore finds an empty channel, which is
-    // the native's own early return, not a substitution for it.
-    host.record("MissionEvents::command_event_block", 0x0097e360u);
-    const std::vector<std::string> callbacks
-        = bsp::command_event_callbacks(host.command_event_subscriptions, params);
+    // Goal 5 chain 631. 00984394..009843D8 look the channel named `command` up
+    // on the mission event director's map at reporter+F8h; the subscriptions
+    // there are AddListener's (0097C8A0 / 00972AB0), which the mission Lua host
+    // holds. The four boxes (00984300: entity +174h, the resolved target's
+    // +174h, the class name, the status) are queued for that host, which runs
+    // 0097B8C0 with 00968AF0 per subscription and the callbacks (00887E50) at
+    // its frame. SUBSTITUTION, labelled: the evaluation runs at the frame, not
+    // inside the reporting step; the target box stays 0 as before (LABELLED,
+    // UNCERTAIN): the live report sites here (moveonpath, movetopos) aim at a
+    // path or a point, and this host does not run 00521EA0 on their 004F1830
+    // descriptors, so no target entity is resolved.
+    host.command_events.push_back(GameCommandsHost::CommandEvent{unit_index, params});
     host.done("MissionEvents::report_command", 0x00984300u);
-    host.summary.command_event_callbacks += callbacks.size();
-    if (!callbacks.empty()) {
-        // 00984710, 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe on the host
-        // at *(00E188A8)+1A08h. No subscription exists, so no name is ever
-        // queued; the hop is recorded with its address rather than being left
-        // unmentioned.
-        host.record("MissionEvents::call_named_threadsafe", 0x00887e50u);
-    }
-    return callbacks.size();
+    return 1;
+}
+
+std::vector<GameCommandsHost::CommandEvent> GameCommandsHost::take_command_events() {
+    std::vector<CommandEvent> out;
+    out.swap(impl_->command_events);
+    return out;
 }
 
 GameCommandCompletion GameCommandsHost::end_command_0071e430(std::size_t unit_index,
@@ -5323,10 +5322,10 @@ void GameCommandsHost::report() {
     // Milestone 2q: the completion round trip, counted at every hop.
     host.log.notef("summary mission director completion end_commands=%llu stage_raises=%llu "
         "clear_messages=%llu clear_receives=%llu queue_advances=%llu restarts=%llu "
-        "command_events=%llu event_callbacks=%llu",
+        "command_events=%llu (queued for the Lua host's `command` channel)",
         host.summary.end_commands, host.summary.stage_raises, host.summary.clear_messages,
         host.summary.clear_receives, host.summary.queue_advances, host.summary.restarts,
-        host.summary.command_events, host.summary.command_event_callbacks);
+        host.summary.command_events);
     host.log.notef("summary mission director release bound=%d deliveries=%llu "
         "slot_matches=%llu head_ends=%llu slot_clears=%llu slot_kept=%llu "
         "plane_matches=%llu refusals=%llu (packet cc9_director_target_checks, 0071DDB0 / "

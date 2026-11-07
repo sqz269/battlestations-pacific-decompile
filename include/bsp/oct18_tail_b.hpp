@@ -9,9 +9,23 @@ namespace bsp::oct18_tail_b {
 // Original receivers/stack cleanup are recorded in docs/OCT18_TAIL_B.md. These
 // interfaces are not binary replacements. Every dependency below is required;
 // this module supplies no fallback host and performs no game-host wiring.
-class Host {
+
+// The only two calls the four-key subscription matchers 00968470 / 00968AF0 make,
+// split out of Host so a listener dispatcher can run them without the rest.
+class SubscriptionFilterHost {
 public:
-    virtual ~Host() = default;
+    virtual ~SubscriptionFilterHost() = default;
+    // [filter]->vtable[0](ECX = filter, boxed parameter) -> AL; `filter` is the
+    // filter object embedded in the subscription (LEA ECX,[EDI+0Ch] at 00968498).
+    virtual bool filter_vslot_00(void* filter, std::uint32_t value) = 0;
+    // The original uses the canonical CRT invalid-iterator/range handler.
+    // Providers must not return from this call.
+    virtual void invalid_iterator_00bf6713() = 0;
+};
+
+class Host : public SubscriptionFilterHost {
+public:
+    ~Host() override = default;
     virtual void run_lua_006b8ad0(const char*, int, int, int) = 0;
     virtual bool is_kind_vslot_5c(void*, int) = 0;
     virtual void movie_reset_vslot_2c(void*) = 0;
@@ -22,7 +36,6 @@ public:
     virtual void visit_enables_00836510(void*, void*) = 0;
     virtual void visit_reference_vslot_10(void* visitor, const char* name,
                                          int type, void* value) = 0;
-    virtual bool filter_vslot_00(void* filter, std::uint32_t value) = 0;
     virtual void deliver_entity_vslot_18c(void*, void*) = 0;
     virtual void erase_peer_holder_0077d980(void* list, void* node) = 0;
     virtual void free_00bf65ac(void*) = 0;
@@ -73,9 +86,7 @@ public:
     virtual void erase_string_subtree_004cec60(void* set, void* root) = 0;
     virtual Iterator find_counter_004c8b80(void* map, const void* native_key) = 0;
     virtual std::int32_t* index_counter_005070c0(void* map, const void* native_key) = 0;
-    // The original uses the canonical CRT invalid-iterator/range handler.
-    // Providers must not return from this call.
-    virtual void invalid_iterator_00bf6713() = 0;
+    // invalid_iterator_00bf6713: SubscriptionFilterHost.
 };
 
 bool class60_is_kind_007810f0(const void*, int);
@@ -107,7 +118,7 @@ void director_visit_state_008367f0(void* director, void* visitor, Host&);
 void* stationary_part_scene_0084efe0(const void* stationary);
 bool consume_single_peer_flag_00784cd0(void* transport, Host&);
 bool recon_subscription_matches_00968470(const void* subscription,
-                                         const void* parameters, Host&);
+                                         const void* parameters, SubscriptionFilterHost&);
 
 void deliver_entity_sync_0077c710(void* entity, void* message, Host& host);
 void remove_peer_holder_0077da20(void* entity, void* record, Host& host);
@@ -143,7 +154,8 @@ void inherit_race_activate_thunk_009277e0(void* entity);
 std::uint8_t surface_target_thunk_00922dc0(void* entity,
                                           entity_mission_seg60_argon::Seg60Host& host);
 void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& host);
-bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host);
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters,
+                                         SubscriptionFilterHost& host);
 char* decode_scene_fragment_008ee670(const char* input, char* scratch);
 
 bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host);

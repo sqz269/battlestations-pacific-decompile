@@ -252,48 +252,6 @@ IdleTailTrace run_idle_tail_00836dc9(const CommandQueueState& state, int queued_
 }
 
 // ---------------------------------------------------------------------------
-// The `command` mission-event channel
-// ---------------------------------------------------------------------------
-
-namespace {
-
-template <typename T>
-bool filter_accepts(const std::vector<T>& filter, const T& value) {
-    // 0097C8A0 builds every container empty; an empty container cannot reject,
-    // so it is the accept-all case.
-    if (filter.empty()) {
-        return true;
-    }
-    return std::find(filter.begin(), filter.end(), value) != filter.end();
-}
-
-}  // namespace
-
-bool command_event_matches(const CommandEventSubscription& subscription,
-                           const CommandEventParameters& parameters) noexcept {
-    // 00968AF0: four filter->vtable[0] calls on the containers at +0Ch, +1Ch,
-    // +2Ch and +3Ch against params[0..3], short-circuiting on the first false.
-    return filter_accepts(subscription.unit_ids, parameters.unit_id) &&
-           filter_accepts(subscription.target_ids, parameters.target_id) &&
-           filter_accepts(subscription.command_names, parameters.command_name) &&
-           filter_accepts(subscription.statuses, parameters.status);
-}
-
-std::vector<std::string> command_event_callbacks(
-    const std::vector<CommandEventSubscription>& channel,
-    const CommandEventParameters& parameters) {
-    // 0097B8C0 walks the std::list in order and appends subscription+4h on a
-    // true answer.
-    std::vector<std::string> callbacks;
-    for (const CommandEventSubscription& subscription : channel) {
-        if (command_event_matches(subscription, parameters)) {
-            callbacks.push_back(subscription.callback);
-        }
-    }
-    return callbacks;
-}
-
-// ---------------------------------------------------------------------------
 // The shared finish block
 // ---------------------------------------------------------------------------
 

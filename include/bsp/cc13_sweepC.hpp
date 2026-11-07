@@ -608,6 +608,9 @@ std::uint32_t target_subscription_matches_00968bd0(SubscriptionMatchHost& host, 
 std::uint32_t ammo_type_subscription_matches_00968c50(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t gui_subscription_matches_00968d80(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t generate_subscription_matches_00968e00(SubscriptionMatchHost& host, void* subscription, void* params);
+// 00969070: the one-key matcher (+0Ch on params[0]) of the shipLanded subscription.
+std::uint32_t ship_landed_subscription_matches_00969070(SubscriptionMatchHost& host, void* subscription,
+                                                        void* params);
 std::uint32_t failure_subscription_matches_00968810(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t zone_subscription_matches_00968a40(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t stock_subscription_matches_00968cd0(SubscriptionMatchHost& host, void* subscription, void* params);

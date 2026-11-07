@@ -1193,6 +1193,16 @@ std::uint32_t generate_subscription_matches_00968e00(SubscriptionMatchHost& host
     return match_keys(host, subscription, params, 2);
 }
 
+// 00969070, the shipLanded matcher (vtable 00D1B72C slot 3; Ghidra's STL_inst_00969070 tag is
+// a misclassification), __thiscall(ECX = subscription, params), RET 4: the one-key shape. The
+// checked index on key 0 (00969075..00969089: a null begin or an empty vector reports through
+// 00BF6713), then a tail jump into the +0Ch entity filter's slot 0 with params[0]
+// (0096908E LEA ECX,[EDI+0Ch] .. 009690A1 JMP EDX), so AL is the filter's answer.
+std::uint32_t ship_landed_subscription_matches_00969070(SubscriptionMatchHost& host, void* subscription,
+                                                        void* params) {
+    return match_keys(host, subscription, params, 1);
+}
+
 // Three-key matchers (one 67-instruction shape: 00968810, 00968A40, 00968CD0): +0Ch, +1Ch, +2Ch.
 std::uint32_t failure_subscription_matches_00968810(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 3);

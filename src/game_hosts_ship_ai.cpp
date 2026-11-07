@@ -1478,6 +1478,8 @@ struct GameShipAiHost::Impl {
     unsigned long long ramp_ground_contacts{0};
     unsigned long long ramp_lowers{0};
     unsigned long long ramp_unloads{0};
+    // 0074AD90's 00986820 reports, for GameShipAiHost::take_ship_landed_events.
+    std::vector<std::size_t> ship_landed_events;
     unsigned long long capture_landed_adds{0};
     unsigned long long capture_paratrooper_adds{0};   // packet cc13-para2, arm 3
     unsigned long long capture_paratrooper_bad_side{0};
@@ -4057,13 +4059,13 @@ public:
     }
     void post_command_message_00984300(std::uint32_t command) override {
         // 009E595C, 00984300 on [00F8A0C4] with the `finished` literal the
-        // step assigned at 009E58EF.
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        // step assigned at 009E58EF. The mission Lua host evaluates the
+        // channel at its frame (goal 5 chain 631).
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveTo::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveTo::release_message_text", 0x00419cc0u);
@@ -4223,12 +4225,11 @@ public:
         owner_.record("ShipAiMoveOnPath::message_text_assign", 0x0041e870u);
     }
     void post_command_message_00984300(std::uint32_t command) override {
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveOnPath::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveOnPath::release_message_text", 0x00419cc0u);
@@ -14399,13 +14400,22 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
         ++ramp_unloads;
         pads.post_unload(static_cast<int>(u));
         const GameUnitRow* row = units.unit_row(u);
+        // Goal 5 chain 631: 0074AD90's 0074AE6E..0074AE79 report the ship on the
+        // `shipLanded` channel (00986820, [00F8A0C4] being the live warning manager)
+        // right after +118Ch = 1; queued for the mission Lua host's dispatcher.
+        ship_landed_events.push_back(u);
         log.notef("landing ship unload: unit=%s at t=%.2f pad=%d +118Bh=1 +118Ch=1 "
-            "LandingStarted=true LandingFinished=true queued (0074B164..0074B2EF, 0074AD90; "
-            "006AC370's troop paths and the shipLanded event 00986820 are records)",
+            "LandingStarted=true LandingFinished=true shipLanded queued (0074B164..0074B2EF, "
+            "0074AD90 -> 00986820; 006AC370's troop paths are a record)",
             row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200);
         record("LandingShip::pad_troop_paths_006ac370", 0x006ac370u);
-        record("MissionEvents::ship_landed_00986820", 0x00986820u);
     }
+}
+
+std::vector<std::size_t> GameShipAiHost::take_ship_landed_events() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ship_landed_events);
+    return out;
 }
 
 // Packet cc9_lua_capture_percentage: see the header.
@@ -16168,9 +16178,9 @@ void GameShipAiHost::report() {
                 static_cast<double>(row.station_limit_max));
         }
     }
-    host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
+    host.log.notef("summary mission ship ai command completion events=%llu "
         "end_commands=%llu queue_advances=%llu",
-        host.summary.command_events, host.summary.command_event_callbacks,
+        host.summary.command_events,
         host.summary.command_endings, host.summary.command_completions);
     host.log.notef("summary mission ship ai arm tail bodies=%llu latched=%llu stops=%llu "
         "arrival_latches=%llu",
