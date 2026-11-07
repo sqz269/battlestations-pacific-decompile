@@ -212,6 +212,30 @@ public:
     // 00769306 (006BC3E0), 006BC470 read. The receiver 006CD6C0's case 8 runs
     // 006C7490(copy slot, 0). Returns the copy's +20h slot.
     std::uint32_t queue_airbase_do_launch_slot_89(std::uint32_t slot) const;
+    // Goal 5 chain 636. MT_AIRBASE_CHANGESLOTSTATUS (82h), the player's order to
+    // an air-ops slot: the support manager builds it on its stack with
+    // 00656280(slot, order, target entity, player = game+18ECh) (00673A10 at
+    // 006748C0 / 0067491B, 00675C40 at 0067A5D1 / 0067A945) and routes it to
+    // the block's owner (+7Ch) with 0077C2A0(msg, 0, 0): flags 0 takes the
+    // default [00E0AF1C] (1 in the image, 0077C302), and a single-player
+    // session (game+1FE4h == 0) takes the local bit (0077C329..0077C333). Then
+    // 00656320 write (header, +1Ch bit, +20h in 6 bits, +24h in 3, a presence
+    // bit and +28h in 12, +2Ch in 4), 00768530 case 82h at 00769226
+    // (operator new(30h), 00763320), 006563A0 read, and the copy's scalar
+    // delete 00656420. The receiver 006CD6C0's 82h arm 006CD160 hands 006CCDA0
+    // the copy's slot +20h, order +24h, the target its +28h names and player
+    // +2Ch. `target_id` is the target's +174h word (0 for none); the player is
+    // the image game's +18ECh, as the sender reads it.
+    struct AirbaseSlotOrderCopy {
+        bool to_unit{false};      // 00780120's ladder reached the unit handler
+        std::uint8_t type{0};     // copy +10h
+        std::uint32_t slot{0};    // copy +20h
+        std::uint32_t order{0};   // copy +24h
+        std::uint16_t target_id{0};  // copy +28h
+        std::uint32_t player{0};  // copy +2Ch
+    };
+    AirbaseSlotOrderCopy queue_airbase_slot_order_82(std::uint32_t slot, std::uint32_t order,
+        std::uint16_t target_id) const;
     // Goal 5 chain 628. MT_MOTHERSHIP_ELEVATOR_MOVE (87h): 006D0600, the mother
     // ship's elevator site tick, calls 006CFFF0(flag, plane) at 006D071D (0, the
     // landed candidate or null) and 006D078E (1, the ready plane +18h), which

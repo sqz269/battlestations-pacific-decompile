@@ -28,6 +28,7 @@
 #include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
+#include "bsp/seg27_cc13.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstddef>
@@ -214,6 +215,11 @@ struct HostSessionMessages::Image {
         // 00762BE0 write, 00762C30 read, 00762B90 IsType, 004499C0.
         std::uint32_t slots_00d0352c[5]{0x00762bc0u, 0x00762be0u, 0x00762c30u, 0x00762b90u,
                                         0x004499c0u};
+        // Goal 5 chain 636. 82h 00CF64C4 (bsp.py ghidra bytes 00CF64C4 --length
+        // 24): 00656420 scalar delete, 00656320 write, 006563A0 read, 006562F0
+        // IsType, 004499C0. 00763320 (seg42) and 00656280 (seg27) store it.
+        std::uint32_t slots_00cf64c4[5]{0x00656420u, 0x00656320u, 0x006563a0u, 0x006562f0u,
+                                        0x004499c0u};
         // Goal 5 chain 632. 7Bh 00CE53AC (bsp.py ghidra bytes 00CE53AC --length
         // 20, bsp.gpr's /battlestationspacific.exe): 00464FE0 scalar delete,
         // 004647D0 write, 00464810 read, 004647B0 IsType, 004499C0.
@@ -225,6 +231,7 @@ struct HostSessionMessages::Image {
         std::uint32_t slots_00cfaa0c[5]{0x006ec100u, 0x006eba20u, 0x006eba50u, 0x006eba00u,
                                         0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if (image_address == 0x00cf64c4u) return slots_00cf64c4;
             if (image_address == 0x00ce53acu) return slots_00ce53ac;
             if (image_address == 0x00cfaa0cu) return slots_00cfaa0c;
             // Only queue_plane_disappear_c7 constructs a C7h message.
@@ -1591,8 +1598,10 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
 namespace {
 // Goal 4 chain 343. The boundaries of the table-driven segment 26/27 message
 // classes (ingame_gui_cc13), bound to the process's header and bit-cursor
-// bodies. Write calls receive the cursor itself, read calls stream+4.
-struct SessionMessageClassCodec final : ingame_gui_cc13::SessionMessageHost {
+// bodies. Write calls receive the cursor itself, read calls stream+4. Goal 5
+// chain 636: also the 82h class's (seg27_cc13), which adds the 12-bit word
+// write 00429120.
+struct SessionMessageClassCodec final : seg27_cc13::SessionMessage130Host {
     explicit SessionMessageClassCodec(const NativeSessionMessageContext& session)
         : session_(session) {}
     using Raw = ingame_gui_cc13::Raw;
@@ -1636,8 +1645,14 @@ struct SessionMessageClassCodec final : ingame_gui_cc13::SessionMessageHost {
         read_native_word_bits_00428e30(static_cast<NativeBitCursor*>(cursor), &out,
             static_cast<std::uint32_t>(bits));
     }
-    // Only the scalar deleting destructors free a block; no local copy calls one.
-    void free_block(void*) override { std::abort(); }
+    void write_word_bits_00429120(void* cursor, std::uint16_t value, int bits) override {
+        write_native_word_bits_00429120(static_cast<NativeBitCursor*>(cursor), value,
+            static_cast<std::uint32_t>(bits));
+    }
+    // Only the scalar deleting destructors free a block (flags bit 0, 00BF65AC);
+    // the one that does here is 00656420 on the 82h copy OwnedDecodedMessage
+    // took from singleton_lifetime_allocate, the matching pair.
+    void free_block(void* block) override { singleton_lifetime_free(block); }
 
 private:
     const NativeSessionMessageContext& session_;
@@ -1676,6 +1691,91 @@ HostSessionMessages::StartLandingCopy HostSessionMessages::queue_start_landing_9
     });
     copy.start_landing_94 = copy.to_unit && copy.type == 0x94;
     // Neither message owns storage; 0064AE00 is not run on these.
+    return copy;
+}
+
+namespace {
+// Goal 5 chain 636. The 82h class: the 20h-byte unit message (header, +1Ch
+// bool) and its four payload fields, 30h bytes as 00768530 case 82h allocates
+// it (00769212 PUSH 30h). 00656280 / 00656320 / 006563A0 name the offsets.
+struct AirbaseSlotOrderMessage82 {
+    seg42::UnitMessage u;
+    std::uint32_t slot_20{0};
+    std::uint32_t order_24{0};
+    std::uint16_t target_28{0};
+    std::uint16_t unread_2a{0};
+    std::uint32_t player_2c{0};
+};
+static_assert(sizeof(seg42::UnitMessage) == 0x20);
+static_assert(offsetof(AirbaseSlotOrderMessage82, slot_20) == 0x20);
+static_assert(offsetof(AirbaseSlotOrderMessage82, target_28) == 0x28);
+static_assert(offsetof(AirbaseSlotOrderMessage82, player_2c) == 0x2c);
+static_assert(sizeof(AirbaseSlotOrderMessage82) == 0x30);
+static_assert(offsetof(NativeSessionReadStream, cursor_04) == 4);
+}  // namespace
+
+HostSessionMessages::AirbaseSlotOrderCopy HostSessionMessages::queue_airbase_slot_order_82(
+    std::uint32_t slot, std::uint32_t order, std::uint16_t target_id) const {
+    Image& image = *image_;
+    SessionMessageClassCodec codec(image.session);
+    // The sender: 00656280 on the support manager's stack storage (006748B9
+    // LEA ECX,[ESP+164h]), with the target entity, of whose object only +174h
+    // is read (006562BC MOVZX word [ECX+174h], 0 for null), and the local
+    // player slot [[00E188A8]+18ECh] (0067489A..0067489F), which this image's
+    // game object holds. The first stack argument is unread.
+    EntityId174View target;
+    target.id_174 = target_id;
+    std::uint32_t player = 0;
+    std::memcpy(&player, image.game + 0x18ec, sizeof player);
+    AirbaseSlotOrderMessage82 sent{};
+    seg27_cc13::session_message130_construct_00656280(
+        seg27_cc13::Raw{reinterpret_cast<std::uint8_t*>(&sent)}, 0u, slot, order,
+        target_id != 0 ? &target : nullptr, player, codec);
+
+    // 0077C2A0's local bit (see the header): 0076E520 writes the message
+    // through its vtable[4], 00656320, into the cleared stream.
+    LocalStream stream;
+    seg27_cc13::session_message130_write_00656320(
+        seg27_cc13::Raw{reinterpret_cast<std::uint8_t*>(&sent)}, &stream.out, codec);
+    stream.begin_read();
+
+    // 00768530 case 82h: operator new(30h), 00763320 at 00769226, then
+    // 0076A27B vtable[8] = 006563A0 over the stream (fields at stream+4h).
+    // The receive side releases the copy with its vtable[0](1), 00656420.
+    void* const block = singleton_lifetime_allocate(
+        {SingletonAllocationKind::object, sizeof(AirbaseSlotOrderMessage82),
+         sizeof(AirbaseSlotOrderMessage82)});
+    auto* const queued = ::new (block) AirbaseSlotOrderMessage82{};
+    struct Release {
+        AirbaseSlotOrderMessage82* message;
+        SessionMessageClassCodec& codec;
+        ~Release() {
+            ingame_gui_cc13::session_message_scalar_delete(
+                ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(message)}, 1u, codec);
+        }
+    } release{queued, codec};
+    seg42::construct_airbase_changeslotstatus_00763320(&queued->u, image.seg42);
+    ingame_gui_cc13::session_message130_read_006563a0(
+        ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(queued)}, &stream.in, codec);
+
+    AirbaseSlotOrderCopy copy;
+    copy.type = queued->u.h.base.type_10;
+    copy.slot = queued->slot_20;
+    copy.order = queued->order_24;
+    copy.target_id = queued->target_28;
+    copy.player = queued->player_2c;
+    // 00780120's ladder over the copy's IsType 006562F0 {82h, 49h, 46h}: none
+    // is on the ladder, so the copy takes the owner's session-kind switch
+    // (006CD6C0 for an air-ops block; its 82h arm is 006CD160).
+    const ingame_gui_cc13::SessionMessageClass* const cls =
+        ingame_gui_cc13::find_session_message_class(0x82);
+    copy.to_unit = cls != nullptr && copy.type == 0x82
+        && copy_goes_to_unit_handler([cls](std::uint32_t type) {
+               return ingame_gui_cc13::session_message_is_type(*cls,
+                   static_cast<std::int32_t>(type));
+           });
+    // The sender is the support manager's stack object; 00673A10 / 00675C40
+    // run no destructor on it (pool_pool21_cc13.cpp launch_from_deck).
     return copy;
 }
 
