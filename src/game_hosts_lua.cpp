@@ -133,6 +133,8 @@
 #include "bsp/game_profile_owner.hpp"           // goal 5 chain 649, the hint tracker
 #include "bsp/gui_screens_3.hpp"                // goal 5 chain 649, HintLuaHost
 #include "bsp/unit_damage_host_unreached.hpp"   // goal 5 chain 649, UnitDamageHost
+#include "bsp/seg56_host_unreached.hpp"         // goal 5 chain 649, Seg56Host
+#include "bsp/ship_ai_path_corridor.hpp"        // goal 5 chain 649, 00778890
 
 extern "C" {
 #include "lauxlib.h"
@@ -1437,6 +1439,11 @@ int binding_trampoline(lua_State* state) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_hint_binding(state, dispatch_row.address);
+    }
+    if (dispatch_row.address == 0x00899810u || dispatch_row.address == 0x00899980u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_formation_role_query(state, dispatch_row.address);
     }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
@@ -11167,8 +11174,8 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
     return results;
 }
 
-// Goal 5 chain 649. The HintSystem rows of table 00E0B7B8 (00E0B7F0..00E0B830
-// and HideHint at 00E0B808), each __fastcall(lua_State*) returning 00B66400's
+// Goal 5 chain 649. The eight HintSystem rows of table 00E0B7B8, rows 7..14
+// (00E0B7F0..00E0B830), each __fastcall(lua_State*) returning 00B66400's
 // count; the bodies are src/gui_screens_3.cpp's.
 bool GameMissionLuaHost::is_hint_binding(std::uint32_t address) noexcept {
     switch (address) {
@@ -11275,6 +11282,135 @@ int GameMissionLuaHost::run_hint_binding(lua_State* state, std::uint32_t address
     std::snprintf(text, sizeof text, "%08lx", static_cast<unsigned long>(address));
     log_.implemented((std::string("MissionLuaNative::") + name).c_str(), text);
     return results;
+}
+
+namespace {
+[[noreturn]] void formation_query_unreached(const char* what) {
+    throw std::logic_error(std::string("IsFormationLeader/Follower: unreached ") + what);
+}
+
+// What 00899810 and 00899980 read from their frame: 0089990F / 00899A7F 00888AA0
+// on argument 0, nothing else. The entity is the table's `ID` (the units-host
+// index plus one) carried as the pointer-sized handle the bodies pass on.
+class FormationQueryArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit FormationQueryArgs(lua_State* state) : state_(state) {}
+    void* entity_at(int index) override {
+        if (index != 0) formation_query_unreached("00888AA0 past argument 0");
+        const int id = air_ops_entity_id(state_);
+        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+    }
+    int count() override { formation_query_unreached("00B663F0"); }
+    int get_integer(int) override { formation_query_unreached("00B66290"); }
+    double get_number(int) override { formation_query_unreached("00B66270"); }
+    bool get_boolean(int) override { formation_query_unreached("00B66250"); }
+    std::string get_string(int) override { formation_query_unreached("00B662B0"); }
+    bool is_string(int) override { formation_query_unreached("00B660A0"); }
+    bool is_nil(int) override { formation_query_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { formation_query_unreached("008889C0"); }
+    bool is_boolean(int) override { formation_query_unreached("00B66000"); }
+    bool is_number(int) override { formation_query_unreached("00B66050"); }
+    bool is_integer(int) override { formation_query_unreached("00B66A60"); }
+    bool is_table(int) override { formation_query_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { formation_query_unreached("00888760"); }
+    bool is_vector3_table(int) override { formation_query_unreached("0088B840"); }
+    void* to_userdata(int) override { formation_query_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { formation_query_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        formation_query_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        formation_query_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// 00899932 / 00899AA2 00B66450, the one push.
+class FormationQueryResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit FormationQueryResults(lua_State* state) : state_(state) {}
+    void push_boolean(bool value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    void push_number(int) override { formation_query_unreached("00B664B0"); }
+    void push_nil() override { formation_query_unreached("00B66430"); }
+    void push_float(float) override { formation_query_unreached("00B66480"); }
+    void push_string(const std::string&) override { formation_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        formation_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
+        formation_query_unreached("0088BA30");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        formation_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The two unit queries, over the unit group the units host keeps at +284h
+// (unit_formation_group_0284) and its leader +14h (formation_leader_0014).
+// SUBSTITUTION (labelled), as IsInFormation 008996A0 answers here: an entity
+// with no units-host slot answers false; the image would read its +284h.
+class FormationQueryHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit FormationQueryHost(const GameUnitsHost* units) : units_(units) {}
+    bool resolved{true};
+    // 00778890: the group's +14h is this unit.
+    bool unit_is_formation_leader_00778890(void* unit) override {
+        std::size_t index = 0;
+        if (!resolve(unit, index)) return false;
+        const std::int32_t group = units_->unit_formation_group_0284(index);
+        if (group < 0) return bsp::ship_ai_unit_group_leads_00778890(
+            static_cast<std::uint32_t>(index + 1u), 0u, 0u);
+        return bsp::ship_ai_unit_group_leads_00778890(static_cast<std::uint32_t>(index + 1u),
+            static_cast<std::uint32_t>(group) + 1u,
+            static_cast<std::uint32_t>(units_->formation_leader_0014(group) + 1u));
+    }
+    // 007788B0: in a group and not its leader.
+    bool unit_is_formation_follower_007788b0(void* unit) override {
+        std::size_t index = 0;
+        if (!resolve(unit, index)) return false;
+        return units_->unit_is_formation_follower_007788b0(index);
+    }
+
+private:
+    bool resolve(void* unit, std::size_t& index) {
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(unit);
+        if (units_ == nullptr || id == 0u || id > units_->count()) {
+            resolved = false;
+            return false;
+        }
+        index = static_cast<std::size_t>(id - 1u);
+        return true;
+    }
+    const GameUnitsHost* units_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_formation_role_query(lua_State* state, std::uint32_t address) {
+    FormationQueryArgs args(state);
+    FormationQueryResults results(state);
+    FormationQueryHost host(units_hooks_);
+    const bool leader = address == 0x00899810u;
+    const int count = leader
+        ? bsp::seg56_options_cc13::lua_is_formation_leader(args, results, host)
+        : bsp::seg56_options_cc13::lua_is_formation_follower(args, results, host);
+    if (!host.resolved) {
+        log_.notef("  %s %08lx: entity id %d has no units-host slot, answers false",
+            leader ? "IsFormationLeader" : "IsFormationFollower",
+            static_cast<unsigned long>(address), air_ops_entity_id(state));
+    }
+    log_.implemented(leader ? "MissionLuaNative::IsFormationLeader"
+                            : "MissionLuaNative::IsFormationFollower",
+                     leader ? "00899810" : "00899980");
+    return count;
 }
 
 // Packet cc13-luawire, under kLuaAddWaterLoadBound. 00893380 AddWaterLoad(unit, side,

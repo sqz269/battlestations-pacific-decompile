@@ -2161,12 +2161,14 @@ public:
     int run_has_fired_008be7e0(lua_State* state, int argument_count);
     int run_get_firepower(lua_State* state);
     int run_ai_set_hint_weight(lua_State* state);
-    // Goal 5 chain 649: the eight HintSystem wrappers (ShowHint 008D1F50,
-    // ShowHintForced 008D2190, AddStoredHint 008D24F0, RemoveStoredHint
-    // 008D2340, HideHint 0088CEC0, IsHintActive 008D2850, IsHintCritical
-    // 008D26A0, IsHintStored 008D2BB0) over the process's hint tracker.
+    // Goal 5 chain 649: the eight HintSystem wrappers (ShowHint, ShowHintForced,
+    // AddStoredHint, RemoveStoredHint, HideHint, IsHintActive, IsHintCritical and
+    // IsHintStored, rows 00E0B7F0..00E0B830) over the process's hint tracker.
     static bool is_hint_binding(std::uint32_t address) noexcept;
     int run_hint_binding(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 649: the IsFormationLeader and IsFormationFollower rows on
+    // their segment-56 bodies, which ask the unit for 00778890 / 007788B0.
+    int run_formation_role_query(lua_State* state, std::uint32_t address);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
