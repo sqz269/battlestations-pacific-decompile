@@ -11633,18 +11633,20 @@ private:
 // this process reads the byte.
 class ScoringRecords final : public bsp::ScoringBindingHost {
 public:
-    ScoringRecords(bsp::MissionResultHost& result, const std::vector<float>& multipliers,
+    using Multipliers = std::function<const std::vector<float>&()>;
+    ScoringRecords(bsp::MissionResultHost& result, const Multipliers& multipliers,
                    std::uint64_t& cache_clears)
         : result_(result), multipliers_(multipliers), cache_clears_(cache_clears) {}
     bool is_multiplayer() override { return result_.local_player_mode() != 0u; }
     int local_player_slot() override { return result_.game_local_player_slot(); }
     int campaign_difficulty() override { return bsp::game::game_effective_difficulty_6ac(); }
     float difficulty_score_multiplier(int difficulty_index) override {
-        if (!bsp::scoring_multiplier_index_in_range(difficulty_index, multipliers_.size())) {
+        const std::vector<float>& vector = multipliers_();
+        if (!bsp::scoring_multiplier_index_in_range(difficulty_index, vector.size())) {
             throw std::logic_error("Scoring_* row: difficulty " + std::to_string(difficulty_index)
                 + " past GlobalConfig+2Ch (00910436 -> 00BF6713)");
         }
-        return multipliers_[static_cast<std::size_t>(difficulty_index)];
+        return vector[static_cast<std::size_t>(difficulty_index)];
     }
     void invalidate_front_end_score_cache() override { ++cache_clears_; }
     int& score_map_entry(int slot, std::size_t record_offset, const std::string& key) override {
@@ -11676,7 +11678,7 @@ private:
         return record.score_maps[(record_offset - kFirst) / kStride];
     }
     bsp::MissionResultHost& result_;
-    const std::vector<float>& multipliers_;
+    const Multipliers& multipliers_;
     std::uint64_t& cache_clears_;
 };
 
@@ -11824,16 +11826,21 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
         return ::luaL_error(state, "Scoring_* row without the mission result ([game+21A0h])");
     }
     bsp::MissionResultHost& result = *mission_result_;
-    if (!score_multipliers_read_) {
-        score_multipliers_read_ = true;
-        read_score_multipliers(score_multipliers_);
-    }
+    // GlobalConfig+2Ch, read the first time an accessor asks for it (only the
+    // two mission-score accessors 009103F0 / 00910480 do).
+    const ScoringRecords::Multipliers multipliers = [this]() -> const std::vector<float>& {
+        if (!score_multipliers_read_) {
+            score_multipliers_read_ = true;
+            read_score_multipliers(score_multipliers_);
+        }
+        return score_multipliers_;
+    };
     GameProfileOwner* const owner = mission_result_->profile_owner();
     bsp::ProfileUnlockState* const unlocks
         = owner != nullptr ? &owner->profile().unlock_state : nullptr;
     ScoringRowArgs args(state);
     ScoringRowResults results(state);
-    ScoringRecords records(result, score_multipliers_, score_cache_clears_);
+    ScoringRecords records(result, multipliers, score_cache_clears_);
     ScoringImage image(result);
     using bsp::MissionScoreMap;
     namespace seg56b = bsp::cc13_left55::seg56b;
@@ -17205,6 +17212,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "checks=%llu casts=%llu fires=%llu (008C9460 / 00750230, goal 5 chain 639)",
         summary_.los_trigger_adds, summary_.los_trigger_unresolved,
         summary_.los_trigger_checks, summary_.los_trigger_casts, summary_.los_trigger_fires);
+    log_.notef("summary mission script scoring rows interface_cache_clears=%llu "
+        "score_multipliers=%u ([[00E198C4]+B8h]+14h counted, GlobalConfig+2Ch; goal 5 chain 653)",
+        static_cast<unsigned long long>(score_cache_clears_),
+        static_cast<unsigned>(score_multipliers_.size()));
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);
