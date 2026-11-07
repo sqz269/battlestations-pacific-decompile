@@ -462,7 +462,7 @@ void cc13_seg48_plane_neighbours_append_observed_007e0f20(void* buffer, void* ob
 // neighbours): with member = neighbours+9Ch, when [member+14h] (the observed
 // target, neighbours+B0h) is non-null, 006952A0(ECX = target, EDX = member)
 // and [member+14h] = 0. Bytes 007E2070-007E208D.
-void cc13_seg48_plane_neighbours_clear_target_observer_007e2070(void* neighbours, Cc13Seg48Host& host) {
+void cc13_seg48_plane_neighbours_clear_target_observer_007e2070(void* neighbours, PlaneNeighboursObserverHost& host) {
     auto* member = static_cast<std::uint8_t*>(neighbours) + 0x9C;
     void* target = at<void*>(member, 0x14);
     if (target != nullptr) {

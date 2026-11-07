@@ -5339,10 +5339,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return const_cast<GameUnitSlot*>(plane.df_finder_scan_007e2090(
                                 fp, threshold, filter, noise * 0.5f));
                         }
+                        // Goal 5 chain 650: 007B9740's tail 007E2070 runs as its body
+                        // (bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070)
+                        // over a shadow of the neighbours object whose member +9Ch's
+                        // +14h (neighbours+B0h) is the cached target, the slot
+                        // nb_found_plus_one names; the cleared pointer is written back.
+                        // The cache holds a slot identity, not a native observer
+                        // reference, so 006952A0 has no registration to drop.
                         void clear_gun_target(Raw) override {
-                            // The cache holds a slot identity, not a native
-                            // observer reference; no unregister is needed.
-                            plane.unit_.nb_found_plus_one = 0;
+                            struct Observers final : bsp::PlaneNeighboursObserverHost {
+                                void observer_unregister_pair_006952a0(void*, void*) override {}
+                            } observers;
+                            alignas(4) std::uint8_t neighbours[0xB4] = {};
+                            const std::size_t found = plane.unit_.nb_found_plus_one;
+                            void* cached = found != 0 && found - 1 < plane.owner_.slots.size()
+                                ? static_cast<void*>(plane.owner_.slots[found - 1].get()) : nullptr;
+                            std::memcpy(neighbours + 0xB0, &cached, sizeof(cached));
+                            bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070(
+                                neighbours, observers);
+                            std::memcpy(&cached, neighbours + 0xB0, sizeof(cached));
+                            if (cached == nullptr) plane.unit_.nb_found_plus_one = 0;
                         }
                     };
 
