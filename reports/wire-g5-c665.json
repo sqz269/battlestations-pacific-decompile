@@ -1,0 +1,68 @@
+{
+  "goal": 5,
+  "chain": 665,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "picked": "The scene header readers of 004F1D70 that the host read by hand or not at all: 004EE450 g_Environment (sky + lights) once at the native mission render prepare, and 004ED690 Sound (music tracks) on the instantiate header into the dialog owner's slots through 00A79480",
+  "rows": [
+    {
+      "native": "004ee450",
+      "status": "wired",
+      "host_site": "src/game_native_mission_lighting.inc MissionSceneEnvironment::load, from MissionShipGraph::prepare (src/game_native_mission_ship.inc)",
+      "note": "Runs once per prepared mission over the selected header's g_Environment group (004F1D70's 004F230B call). Its Lights block (+F48h..+1010h) feeds the lighting graph's 004BACD0 (it used to call 004EA870 directly) and its +B98h ReflCubemap feeds the ReflectionCubeMap publication (GameNativeMissionMaterialRefresh used to read the header and add HDR_ by hand). call_graph: MissionShipGraph::prepare <- GameNativeRendererApplication::prepare_mission_ship <- frame loop."
+    },
+    {
+      "native": "004ea870",
+      "status": "wired",
+      "host_site": "src/scene_weather_cc13.cpp read_sky (inside 004EE450), was MissionSceneLightInputs::load",
+      "note": "Already called before this chain; the call moved into 004EE450 at its 004EE4A3 position. The address-named entry is __declspec(noinline) so the call graph still sees it as its own function."
+    },
+    {
+      "native": "004ed690",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp read_scene_music_group, from SceneReaderBinding::publish_scene_root_properties on SceneFilePass::Instantiate",
+      "note": "00469BF0 hands 0046DF00's third argument ([EBP+10h], 0046E724) to 004F1D70 as its sound flag; only 004D4DF0's instantiate read pushes 1 (004D552B), so the Sound group is read on that header only. call_graph: run_load_scene_contents_004d4df0 <- run_scene_load_004dfb70 <- GameMissionHost::Impl::finish_scene_load."
+    },
+    {
+      "native": "004ed2d0",
+      "status": "wired",
+      "host_site": "src/scene_weather_cc13.cpp read_music_state (inside 004ED690)",
+      "note": "Inline helper of 004ED690; each Music state reaches 00A79480. Its SoundEffect arm (00A83FD0 on [00F8BBE8] then 004E7BB0 into record+DA8h + slot*18h) is logged unimplemented by SceneMusicBinding::assign_sound_effect: the host scene record has no +DA8h sample slots and the only static +DA8h reference is this writer. The 259 installed scenes leave SoundEffect empty."
+    },
+    {
+      "native": "00a79480",
+      "status": "wired",
+      "host_site": "src/game_sound_dialog_runtime.cpp GameSoundDialogRuntime::set_music_track (called by SceneMusicBinding::set_music_track_00a79480)",
+      "note": "Runs over the published owner [00F8BBCC] through the runtime's MusicDirectorAdapter, which now implements the new DialogSlotRecordHost (cc13_sweepC2.hpp: the seven services the body needs beyond DialogMusicHost, split out of SweepC2Host). The .def table is built by 00A79150 over 20h object storage, as the stream constructor 00A877D0 builds its own. Every Music FileName in the installed scenes has its sound/music .def."
+    },
+    {
+      "native": "004ee9e0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "g_Terrain reader with no consumer: its outputs (terrain shader globals 00E18808.., atlases, static shadow, LUT) are used through 004ED910's world parameters and the landscape materials, and the native mission render graph admits no landscape groups."
+    },
+    {
+      "native": "004ed910",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp (its ReflectionCubeMap + 00B24DD0 part)",
+      "reason": "Runs on the instantiate header after 004F1D70. Its ReflectionCubeMap publish and 00B24DD0 refresh are what GameNativeMissionMaterialRefresh does at render prepare. Missing: a live renderer at scene load for the eight other world parameters (needs 004EE9E0 and record+BA8h), the Ambient environment samples (00A83FD0 + 00A7F2F0), FileSystemLua aliases and 00AD60D0."
+    },
+    {
+      "native": "004e7220",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc MissionSceneEnvironment::load_cloud_areas (logs unimplemented)",
+      "reason": "Called inside 004EE450 at 004EE481 with the g_Environment bag; the renderer graph owns no cloud record (+C84h) or atmosphere/cloud entities. game_hosts_scene_contents.cpp:4749 says the header pass does not fill +C84h, but this call does when g_Environment has AreaNN entries."
+    },
+    {
+      "native": "004e8510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp scene_remap_names (Colorize strings only)",
+      "reason": "Full g_PostProcess body needs a ScenePostProcessHost over the renderer service [00F8D39C] (HDR/bloom parameter blocks) and the scene.props-merged header bag; the host projects only the four Colorize names."
+    }
+  ],
+  "left": [
+    "004ED910 (world parameters, Ambient environment loops, FileSystemLua aliases): needs the live renderer at scene-load time and 004EE9E0's terrain strings; would replace GameNativeMissionMaterialRefresh's ReflectionCubeMap publish.",
+    "004E7220 cloud areas from g_Environment and 004BA870 scatter: needs a scene-record cloud block and cloud entities; re-check the scene-contents claim that +C84h stays zero.",
+    "004ED2D0's SoundEffect samples into record+DA8h: no reader found yet."
+  ]
+}
