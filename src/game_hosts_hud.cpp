@@ -63,6 +63,7 @@
 #include "bsp/cg_rebuild_b_cc13.hpp"         // 005BA7B0
 #include "bsp/gameplay_effect_sound.hpp"     // 005B9AF0, 005BA7B0's sample append
 #include "bsp/sound_sample_runtime.hpp"      // [00F8BBE8] for 005BA7B0
+#include "bsp/singleton_lifetime.hpp"        // 005B9D40's 00BF6989 on the 33h samples
 #include "bsp/cc13_sweepB6.hpp"              // 005FA0F0
 #include "bsp/game_native_string_process.hpp"  // the leaf registers' string temporaries
 #include "bsp/native_string_pool_owner.hpp"
@@ -531,11 +532,8 @@ private:
 // pool. The constructor runs no other host service.
 //
 // Lifetime: the five references stay in +A0h for the HUD's life, as on the native
-// screen, which drops them only in its destructor 005B9D40. That destructor is not
-// run here: the HUD outlives the singleton drain that retires the sample cache and
-// the sound owner (game_hosts.cpp deletes the menu host after it), so dropping the
-// references at HUD teardown would reach a destroyed cache. They are reclaimed with
-// the sound system at shutdown instead.
+// screen. release_hud_narrative_leaf_samples drops them when the HUD dies, as the
+// destructor 005B9D40 does (see there).
 class HudLeafNarrativeBinding final : public bsp::cg_rebuild_b_cc13::CgRebuildBHost {
 public:
     using NativeStringImage = bsp::cg_rebuild_b_cc13::NativeStringImage;
@@ -673,6 +671,33 @@ void construct_hud_narrative_leaf(HudLeafScreenStorage& screen) {
         throw std::logic_error("005BA7B0 needs the started sound runtime that owns [00F8BBE8]");
     HudLeafNarrativeBinding b(screen, *sound, *strings);
     bsp::cg_rebuild_b_cc13::hud_narrative_screen_construct_005ba7b0(screen.data(), b);
+}
+
+// 005B9D40's sample release on the 33h block (005B9E02..005B9E19): 005B8FA0
+// resizes the samples at +A0h to 0, dropping each reference (D5B074's vtable +0,
+// 00A82E80, when one reaches zero), then 00BF6989 frees the data 0086E770's reserve
+// allocated (singleton_lifetime_allocate, so singleton_lifetime_free here). The
+// header is zeroed after, since the block outlives this call by a moment. The rest
+// of 005B9D40 (005B7840, 007026F0, the three page removals, the NativeStrings, the
+// +94h vector, the +54h/+64h lists, 005B7FC0, 004F71A0) is not run: the block's
+// +20h/+24h/+28h page slots were never filled (005BB130 stays generic) and its
+// lists and strings hold nothing the constructor did not leave empty.
+// The sound runtime is still bound and started here: the menu host owning this HUD
+// is deleted before the singleton drain retires the sample cache and the sound owner
+// (game_hosts.cpp: application_shutdown's `delete menu_` at 4121 runs before
+// destroy_singleton_lifetime_manager's drain at 4197, winmain_startup.cpp 231..233;
+// on the exceptional path `delete menu_` at 2673 precedes the drain at 2691,
+// bind_sound_runtime(nullptr) at 2744 and sound_.reset() at 2745).
+void release_hud_narrative_leaf_samples(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    if (sound == nullptr || !sound->started())
+        throw std::logic_error("005B9D40's sample release needs the sound runtime that owns [00F8BBE8]");
+    std::uint8_t* const samples = screen.data() + 0xA0;
+    bsp::resize_effect_sound_samples_005b8fa0(samples, 0, sound->samples());  // 005B9E11
+    void* data = nullptr;
+    std::memcpy(&data, samples, sizeof(data));
+    bsp::singleton_lifetime_free(data);                                       // 005B9E19
+    std::memset(samples, 0, 0x0C);
 }
 
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
@@ -1144,6 +1169,19 @@ public:
 
 struct GameHudHost::Impl {
     Impl(GameHostLog& log_in, GameMenuHost& menu_in) : log(log_in), menu(menu_in) {}
+    // Before leaf_screens frees the blocks: screen 33h's retained samples go back
+    // as 005B9D40 returns them (release_hud_narrative_leaf_samples).
+    ~Impl() {
+        for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
+            if (!leaf_screens[i] || kInGameHudScreens[i].constructor != 0x005BA7B0u) continue;
+            try {
+                release_hud_narrative_leaf_samples(*leaf_screens[i]);
+                log.implemented("HudNarrative::release_samples", "005b9e11");
+            } catch (const std::exception& error) {
+                log.notef("HUD screen 33h samples not released: %s", error.what());
+            }
+        }
+    }
 
     GameHostLog& log;
     GameMenuHost& menu;

@@ -6,7 +6,8 @@
   "wired_before": 10057,
   "wired_after": 10063,
   "called_before": 5379,
-  "called_after": 5385,
+  "called_after": 5387,
+  "review_round_1": "Run 1324's finding accepted: the HUD (menu host) is deleted before the singleton drain (game_hosts.cpp 4121 < 4197; 2673 < 2691/2744/2745), not after it. GameHudHost::Impl's destructor now releases screen 33h's +A0h samples as 005B9D40 does at 005B9E11/005B9E19 (005B8FA0 resize to 0, then the 0086E770 data freed with singleton_lifetime_free, header zeroed); the wrong lifetime comment is replaced and the 005b9d40/005b8fa0 rows corrected.",
   "rows": [
     {
       "native": "005ba7b0",
@@ -31,14 +32,13 @@
     {
       "native": "005b9d40",
       "status": "skipped",
-      "host_site": "src/game_hosts_hud.cpp HudLeafScreenStorage",
-      "reason": "Narrative destructor: the HUD outlives the singleton drain that retires the [00F8BBE8] sample cache and sound owner (menu host deleted after it), so dropping the +A0h references then would reach a destroyed cache; also needs 005B7840/005B7570/005B77F0/007026F0 and page removal."
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::Impl::~Impl (release_hud_narrative_leaf_samples runs its 005B9E02..005B9E19 sample release)",
+      "reason": "The full destructor needs 007026F0 (voice slot stop), 00AA31F0 page removals of +20h/+24h/+28h, which stay unfilled while 005BB130 is generic, and 005B7840/005B7570/005B77F0, 005B7FC0 and 004F71A0. Only its sample release runs, at HUD teardown, while the sound runtime is still started."
     },
     {
       "native": "005b8fa0",
-      "status": "skipped",
-      "host_site": "src/game_hosts_hud.cpp HudLeafNarrativeBinding",
-      "reason": "Narrative samples resize is reached only from the destructor 005B9D40 (see that row)."
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::Impl::~Impl -> release_hud_narrative_leaf_samples (005B9D40's call at 005B9E11 on screen 33h's +A0h)"
     },
     {
       "native": "005bb130",
