@@ -1445,6 +1445,11 @@ int binding_trampoline(lua_State* state) {
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_formation_role_query(state, dispatch_row.address);
     }
+    if (dispatch_row.address == 0x00898610u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_lua_init_all_00898610(state);
+    }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
     const bool objective_status_row = kObjectiveStatusBound
@@ -11393,6 +11398,27 @@ private:
     const GameUnitsHost* units_;
 };
 }  // namespace
+
+namespace {
+// Lua InitAll's one service: 008986EE XOR CL,CL / 008986F8 CALL 00925F20, the
+// host's SEntity::InitAll over the entities created since the last one.
+class LuaInitAllHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit LuaInitAllHost(std::function<void(bool)> init_all) : init_all_(std::move(init_all)) {}
+    void sentity_init_all_00925f20(bool flag) override { init_all_(flag); }
+
+private:
+    std::function<void(bool)> init_all_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_lua_init_all_00898610(lua_State* state) {
+    static_cast<void>(state);
+    LuaInitAllHost host([this](bool flag) { run_sentity_init_all_00925f20(flag, 0x008986f8u); });
+    const int results = bsp::seg56_options_cc13::lua_init_all(host);
+    log_.implemented("MissionLuaNative::InitAll", "00898610");
+    return results;
+}
 
 int GameMissionLuaHost::run_formation_role_query(lua_State* state, std::uint32_t address) {
     FormationQueryArgs args(state);

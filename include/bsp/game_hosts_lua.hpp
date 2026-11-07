@@ -2169,6 +2169,9 @@ public:
     // Goal 5 chain 649: the IsFormationLeader and IsFormationFollower rows on
     // their segment-56 bodies, which ask the unit for 00778890 / 007788B0.
     int run_formation_role_query(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 649: the Lua InitAll row on its body lua_init_all, whose
+    // 00925F20(0) is run_sentity_init_all_00925f20.
+    int run_lua_init_all_00898610(lua_State* state);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
