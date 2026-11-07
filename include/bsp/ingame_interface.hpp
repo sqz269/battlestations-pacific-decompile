@@ -264,9 +264,9 @@ struct InGameInterfaceHost {
     virtual void screen_receive_unit(std::uint16_t manager_offset) = 0;
 
     // 00689FE0 / 00689FA0 / 00689FC0 do the level-1 input contexts for 27h, 25h
-    // and 28h; they are already covered by set_level1_input_contexts, so the
-    // host only needs the extra work those arms do. 00689FE0 is called through
-    // this for INTF_TBOATHELMSMAN, and so on.
+    // and 28h. 0068ACA0 runs those bodies (cc13_fe5::set_unit_input_contexts),
+    // whose one service, 004D8A50, is set_level1_input_contexts above; their
+    // screen sets therefore carry no input list.
 
     // 00644230 on the registry slot 44h screen and the write-back at 0068B199.
     virtual int hud_root_screen_query() = 0;
