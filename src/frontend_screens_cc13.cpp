@@ -552,6 +552,11 @@ void hud_panel_set_pending_value_005bca80(void* panel, std::uint32_t value, std:
     write_field(panel, 0x174, extra);
 }
 
+// bsp.py show 005bcab0 --asm: 005BCAB0 MOV byte ptr [ECX+168h],0; 005BCAB7 RET.
+void hud_panel_clear_pending_005bcab0(void* panel) noexcept {
+    write_field<std::uint8_t>(panel, 0x168, 0);
+}
+
 void hud_map_force_cursor_pos_0059ad20(void* screen, const std::uint32_t* pos) noexcept {
     write_field<std::uint8_t>(screen, 0x5F0, 1);
     write_field(screen, 0x5F4, pos[0]);

@@ -143,7 +143,7 @@ bool cc13_sweepB_formation_drag_pick_00535f50(void* screen, Cc13SweepBHost& host
 // - Float copies (FLD/FSTP) of +3Ch..+44h, +30h..+38h, +60h..+6Ch, +48h..+5Ch.
 // - Finally the clone root's vtable +34h(0) hides it.
 void* cc13_sweepB_counter_entry_construct_clone_0052c640(void* entry, const void* source,
-                                                        Cc13SweepBHost& host) {
+                                                        Cc13SweepBCounterCloneHost& host) {
     for (std::size_t off : {0x70u, 0x74u, 0x78u, 0x7Cu, 0x80u, 0x88u, 0x8Cu, 0x90u, 0x94u}) {
         cc13_sweepB_at<std::uint32_t>(entry, off) = 0;
     }

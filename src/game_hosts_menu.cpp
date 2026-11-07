@@ -1793,7 +1793,7 @@ public:
             return;
         }
         // Goal 5 chain 646: the leaf +20h virtuals the HUD runs on their blocks.
-        if (owner_.hud != nullptr && owner_.hud->update_leaf_screen(slot)) return;
+        if (owner_.hud != nullptr && owner_.hud->update_leaf_screen(slot, seconds)) return;
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
     }
 

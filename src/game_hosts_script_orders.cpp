@@ -7222,9 +7222,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::string text = get_string(0);
         const float level = static_cast<float>(get_number(1));
         const float seconds = static_cast<float>(get_number(2));
-        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text and the seconds,
-        // and 00733FF0's first call 005BCA70 on [[00E198C4]+58h]: the HUD.
-        log_.unimplemented("HudCountdown::show_text", "0052b9b0");
+        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text (argument 0)
+        // and the seconds (argument 2), before 00733FF0 (goal 5 chain 662: the
+        // HUD's counters screen); 00733FF0's first call 005BCA70 on
+        // [[00E198C4]+58h] is next.
+        if (narrative_hud_ == nullptr || !narrative_hud_->show_mission_countdown(text, seconds))
+            log_.unimplemented("HudCountdown::show_text", "0052b9b0");
         log_.unimplemented("HudCountdown::begin", "005bca70");
         for (const int ref : countdown_.argument_refs_54) {
             if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
@@ -7247,9 +7250,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             countdown_.argument_refs_54.size());
         results = 0;  // 008B1990, nothing pushed
     } else if (std::strcmp(binding->name, "CountdownCancel") == 0) {
-        // 008B19A0: two 0052AB90 HUD calls, then 007340A0(&left) and
-        // 00B66480(left).
-        log_.unimplemented("HudCountdown::clear_text", "0052ab90");
+        // 008B19A0: two 0052AB90 HUD calls (008B1A92, 008B1AA2; goal 5 chain
+        // 662, the HUD's counters screen), then 007340A0(&left) and 00B66480(left).
+        if (narrative_hud_ == nullptr || !narrative_hud_->cancel_mission_countdown())
+            log_.unimplemented("HudCountdown::clear_text", "0052ab90");
         const float left = countdown_time_left();
         countdown_stop_007340a0();
         ++countdown_cancels_;
@@ -8473,7 +8477,8 @@ float GameScriptOrdersHost::countdown_time_left() const noexcept {
 }
 
 void GameScriptOrdersHost::countdown_stop_007340a0() {
-    log_.unimplemented("HudCountdown::end", "005bcab0");  // 007340E1
+    if (narrative_hud_ == nullptr || !narrative_hud_->clear_countdown_panel())
+        log_.unimplemented("HudCountdown::end", "005bcab0");  // 007340E1
     countdown_.active_3c = false;                           // 007340EF
     countdown_.callback_4c.clear();                         // 007340F3-0073410D
     for (const int ref : countdown_.argument_refs_54) {     // 00734110-0073412E
@@ -8855,12 +8860,17 @@ void GameScriptOrdersHost::run_countdown_update_00735100() {
     }
     // 00735181-00735194: expire when 0 > left, or when left <= [00D7A218] = 0.0f.
     if (left > 0.0f) {
-        // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h].
-        log_.unimplemented("HudCountdown::update", "005bca80");
+        // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h]:
+        // FST the left into the second argument, FDIVRP (left / duration, one
+        // PC24 rounding) FSTP float into the first (goal 5 chain 662).
+        const float fraction = static_cast<float>(cc13x87::x87_div24(left, countdown_.duration_44));
+        if (narrative_hud_ == nullptr || !narrative_hud_->set_countdown_panel(fraction, left))
+            log_.unimplemented("HudCountdown::update", "005bca80");
         return;
     }
     countdown_.active_3c = false;                          // 007351C6
-    log_.unimplemented("HudCountdown::end", "005bcab0");   // 007351D7
+    if (narrative_hud_ == nullptr || !narrative_hud_->clear_countdown_panel())
+        log_.unimplemented("HudCountdown::end", "005bcab0");   // 007351D7
     ++countdown_expiries_;
     if (countdown_.callback_4c.empty()) return;            // 007351E1
     // 007351E5-0073520A: copy the name, assign "" to +4Ch, take +54h and zero it.
