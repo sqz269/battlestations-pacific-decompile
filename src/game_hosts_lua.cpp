@@ -59,6 +59,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
+#include "bsp/cc13_left55_seg56c.hpp"   // goal 5 chain 639: 008C9460's body
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/land_convoy_dead_cc13.hpp"  // packet cc13-dead
 #include "bsp/ship_ai_attackmove_substates.hpp"
@@ -1481,6 +1482,8 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008c5fd0u;
     const bool ordnance_trigger_row
         = kLuaSquadOrdnanceDroppedTriggerBound && dispatch_row.address == 0x008c9a10u;
+    // Goal 5 chain 639.
+    const bool line_of_sight_trigger_row = dispatch_row.address == 0x008c9460u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
@@ -2078,6 +2081,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (ordnance_trigger_row) {
         if (!host->error_replay()) host->run_add_squad_ordnance_dropped_trigger_008c9a10(state, argc);
+        return 0;
+    }
+    if (line_of_sight_trigger_row) {
+        if (!host->error_replay()) host->run_add_line_of_sight_trigger_008c9460(state, argc);
         return 0;
     }
     if (aa_enable_row) {
@@ -7902,11 +7909,10 @@ private:
     bsp::NativeStringStorage& storage_;
 };
 
-void read_trigger_callback_names(lua_State* state, std::string& name, bool& named,
-    std::string& callback) {
-    const bool has_name = !lua_isnoneornil(state, 2);
-    const std::string source_name = has_name ? listener_string_argument(state, 2) : std::string();
-    const std::string source_callback = listener_string_argument(state, 3);
+// 00750790 over the trigger's name/callback words (+1Ch/+24h, +28h), from the two
+// strings a binding read (goal 5 chain 639 split it out for the 008C9460 body's host).
+void apply_trigger_callback_names_00750790(bool has_name, const std::string& source_name,
+    const std::string& source_callback, std::string& name, bool& named, std::string& callback) {
     const TriggerCallbackArgument name_argument{static_cast<std::uint32_t>(source_name.size()),
         source_name.c_str(), static_cast<std::uint8_t>(has_name)};
     const TriggerCallbackArgument callback_argument{static_cast<std::uint32_t>(source_callback.size()),
@@ -7921,6 +7927,15 @@ void read_trigger_callback_names(lua_State* state, std::string& name, bool& name
     name.assign(view.name.data() != nullptr ? view.name.data() : "", view.name.length());
     named = view.named != 0;
     callback.assign(view.callback.data() != nullptr ? view.callback.data() : "", view.callback.length());
+}
+
+void read_trigger_callback_names(lua_State* state, std::string& name, bool& named,
+    std::string& callback) {
+    const bool has_name = !lua_isnoneornil(state, 2);
+    const std::string source_name = has_name ? listener_string_argument(state, 2) : std::string();
+    const std::string source_callback = listener_string_argument(state, 3);
+    apply_trigger_callback_names_00750790(has_name, source_name, source_callback, name, named,
+        callback);
 }
 
 int listener_entity_id_at(lua_State* state, int index) {
@@ -9185,15 +9200,271 @@ int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
     return 0;
 }
 
+// Goal 5 chain 639. 008C9460 AddLineOfSightTrigger(entity, name?, callback, target,
+// range) runs its body, bsp::cc13_left55::seg56c::lua_add_line_of_sight_trigger: argument
+// 3 through 00888AA0 (an entity only, no Vector3 arm), argument 4 as a number (00B66270),
+// the trigger from 00750550 (operator new 50h, 007500E0: +44h = the target, +48h = range *
+// range as a float, +4Ch = 0, +11h = 1, +18h = 2, and 00694A60 registers the target
+// observer whose 00750190 retires it), the name from argument 1 (008C9350) and the
+// callback from argument 2 through 00750790, then argument 0's vtable[60h]() list through
+// 0074FAB0. Returns 0. The body reads only the core accessors and four host calls; every
+// other accessor of the two interfaces belongs to another binding and is refused.
+// SUBSTITUTIONS (labelled), those of the proximity binding above: an entity is its ID
+// (00888AA0 answers null without one, and for a target this host cannot place); the list
+// is this host's per-unit list keyed by the ID, and an entity that is not a unit of this
+// host is counted unresolved and nothing is stored. A null target is kept and its check
+// skipped: the image's 00750230 would read through the null +44h, so a mission never
+// passes one.
+[[noreturn]] void los_trigger_unreached(const char* what) {
+    throw std::logic_error(std::string("AddLineOfSightTrigger 008C9460: unreached ") + what);
+}
+
+int GameMissionLuaHost::run_add_line_of_sight_trigger_008c9460(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.los_trigger_adds;
+    class Args final : public bsp::cc13_seg56::LuaArgs {
+    public:
+        explicit Args(lua_State* s) : s_(s) {}
+        int count() override { return ::lua_gettop(s_); }
+        int get_integer(int index) override {
+            return static_cast<int>(::lua_tonumber(s_, index + 1));   // __ftol truncates
+        }
+        double get_number(int index) override { return ::lua_tonumber(s_, index + 1); }
+        bool get_boolean(int index) override { return ::lua_toboolean(s_, index + 1) != 0; }
+        std::string get_string(int index) override {
+            return listener_string_argument(s_, index + 1);
+        }
+        bool is_string(int index) override { return ::lua_isstring(s_, index + 1) != 0; }
+        bool is_nil(int index) override { return lua_isnoneornil(s_, index + 1); }
+        bool is_entity_table(int index) override {
+            return listener_entity_id_at(s_, index + 1) > 0;
+        }
+        void* entity_at(int index) override {
+            const int id = listener_entity_id_at(s_, index + 1);
+            return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+        }
+        bool is_boolean(int) override { los_trigger_unreached("00B66000"); }
+        bool is_number(int) override { los_trigger_unreached("00B66050"); }
+        bool is_integer(int) override { los_trigger_unreached("00B66A60"); }
+        bool is_table(int) override { los_trigger_unreached("00B661B0"); }
+        bsp::cc13_seg56::Vec3 read_vector3(int) override { los_trigger_unreached("00888760"); }
+        bool is_vector3_table(int) override { los_trigger_unreached("0088B840"); }
+        void* to_userdata(int) override { los_trigger_unreached("00B662D0"); }
+        bool boolean_or(int, bool) override { los_trigger_unreached("00B662F0"); }
+        double table_field_element(int, const char*, int) override {
+            los_trigger_unreached("00B67800 element");
+        }
+        double table_field_number_or(int, const char*, double) override {
+            los_trigger_unreached("00B67800 number");
+        }
+    private:
+        lua_State* s_;
+    } args(state);
+    class Host final : public bsp::cc13_left55::seg56c::Left55Seg56cHost {
+    public:
+        explicit Host(GameMissionLuaHost& owner) : owner_(owner) {}
+        // vtable[60h]: the entity's trigger list, here its units-host slot (index + 1).
+        void* entity_vcall_60(void* entity) override {
+            const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(entity);
+            if (owner_.units_hooks_ == nullptr || id == 0 || id > owner_.units_hooks_->count()) {
+                return nullptr;
+            }
+            return entity;
+        }
+        // 00750550 -> 007500E0.
+        void* line_of_sight_trigger_create_00750550(void* target, float range) override {
+            trigger_.kind = ProximityTrigger::Kind::LineOfSight;
+            const int id = static_cast<int>(reinterpret_cast<std::uintptr_t>(target));
+            float frame[16];
+            if (id > 0 && owner_.spawn_ref_entity_frame_008f8680(id, frame)) {
+                trigger_.target_kind_44 = 1;   // +44h, the entity
+                trigger_.target_id = id;
+            }
+            trigger_.range_sq_48 = bsp::gameplay_seg41_cc13::trigger_radius_squared(range);
+            trigger_.timer_4c = 0.0f;
+            range_ = range;
+            return &trigger_;
+        }
+        void trigger_set_callback_name_00750790(void*, const std::optional<std::string>& name,
+                                                const std::string& callback) override {
+            apply_trigger_callback_names_00750790(name.has_value(), name.value_or(std::string()),
+                callback, trigger_.name_1c, trigger_.named_24, trigger_.callback_28);
+            owner_.log_.implemented("LuaTrigger::set_callback_name", "00750790");
+        }
+        // 0074FAB0 -> vtable[4h] 0071C470 -> 00876020: priority 2, so appended.
+        void trigger_list_add_0074fab0(void* list, void*) override {
+            added_ = list != nullptr;
+            if (!added_) return;
+            unit_ = static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(list) - 1u);
+            owner_.proximity_triggers_[unit_].push_back(trigger_);
+        }
+        bool entity_vcall_5c(void*, int) override { los_trigger_unreached("entity_vcall_5c"); }
+        void entity_vcall_23c(void*) override { los_trigger_unreached("entity_vcall_23c"); }
+        void entity_vcall_f4(void*, float) override { los_trigger_unreached("entity_vcall_f4"); }
+        bool entity_subobject_310_vcall_38(void*) override { los_trigger_unreached("entity_subobject_310_vcall_38"); }
+        void lua_push_c_string_00b66710(const char*) override { los_trigger_unreached("lua_push_c_string_00b66710"); }
+        void push_this_table_entity_004260b0_00b663d0(std::uint16_t) override { los_trigger_unreached("push_this_table_entity_004260b0_00b663d0"); }
+        void* lua_new_table_00b67930(bsp::cc13_left55::seg56c::LuaFrame&) override { los_trigger_unreached("lua_new_table_00b67930"); }
+        void lua_table_set_object_at_index_00b666c0(void*, int, void*) override { los_trigger_unreached("lua_table_set_object_at_index_00b666c0"); }
+        void lua_table_set_new_table_at_index_00b66670(void*, int) override { los_trigger_unreached("lua_table_set_new_table_at_index_00b66670"); }
+        void* lua_table_get_by_index_00b67720(void*, int) override { los_trigger_unreached("lua_table_get_by_index_00b67720"); }
+        void lua_set_vector3_fields_0088ba30(void*, const bsp::cc13_left55::seg56c::Vec3&) override { los_trigger_unreached("lua_set_vector3_fields_0088ba30"); }
+        void* entity_lua_self_object_00927b40(void*) override { los_trigger_unreached("entity_lua_self_object_00927b40"); }
+        void* lua_argument_object_00b677e0(int) override { los_trigger_unreached("lua_argument_object_00b677e0"); }
+        void* lua_state_globals_00b67980() override { los_trigger_unreached("lua_state_globals_00b67980"); }
+        void* lua_object_get_by_name_00b67800(void*, const char*) override { los_trigger_unreached("lua_object_get_by_name_00b67800"); }
+        void* lua_object_construct_00b65f50() override { los_trigger_unreached("lua_object_construct_00b65f50"); }
+        void lua_iterate_first_00b67080(void*, void*, void*) override { los_trigger_unreached("lua_iterate_first_00b67080"); }
+        void lua_iterate_next_00b67190(void*, void*, void*) override { los_trigger_unreached("lua_iterate_next_00b67190"); }
+        bool lua_object_is_unbound_00b66420(void*, void*) override { los_trigger_unreached("lua_object_is_unbound_00b66420"); }
+        std::int32_t lua_object_get_integer_00b66290(void*) override { los_trigger_unreached("lua_object_get_integer_00b66290"); }
+        std::string lua_object_get_string_00b662b0(void*) override { los_trigger_unreached("lua_object_get_string_00b662b0"); }
+        void* lua_object_to_userdata_00b662d0(void*) override { los_trigger_unreached("lua_object_to_userdata_00b662d0"); }
+        bool lua_object_is_vector3_table_0088b840(void*) override { los_trigger_unreached("lua_object_is_vector3_table_0088b840"); }
+        bsp::cc13_left55::seg56c::Vec3 lua_object_read_vector3_00888760(void*) override { los_trigger_unreached("lua_object_read_vector3_00888760"); }
+        void lua_object_vector_push_back_00442220(std::vector<void*>&, void*) override { los_trigger_unreached("lua_object_vector_push_back_00442220"); }
+        void* lua_table_ptr_field_00888d20(int) override { los_trigger_unreached("lua_table_ptr_field_00888d20"); }
+        bsp::SceneCommandTarget read_command_target_0088a810(int) override { los_trigger_unreached("read_command_target_0088a810"); }
+        void objectives_refresh_00627960() override { los_trigger_unreached("objectives_refresh_00627960"); }
+        void objectives_refresh_00626c50() override { los_trigger_unreached("objectives_refresh_00626c50"); }
+        void objectives_screen_set_expanded_005ed5d0(void*, bool) override { los_trigger_unreached("objectives_screen_set_expanded_005ed5d0"); }
+        void hud_counter_set_value_00528be0(void*, float) override { los_trigger_unreached("hud_counter_set_value_00528be0"); }
+        void please_wait_screen_show_with_worker_0060d6e0(void*, bool) override { los_trigger_unreached("please_wait_screen_show_with_worker_0060d6e0"); }
+        bool weapon_controller_any_slot_answers_007b92e0(void*) override { los_trigger_unreached("weapon_controller_any_slot_answers_007b92e0"); }
+        void unit_send_role_transfer_0077c470(void*, std::int32_t, std::int32_t) override { los_trigger_unreached("unit_send_role_transfer_0077c470"); }
+        void unit_set_health_00877b90(void*, float) override { los_trigger_unreached("unit_set_health_00877b90"); }
+        void mission_entity_kill_00926d90(void*, std::int32_t) override { los_trigger_unreached("mission_entity_kill_00926d90"); }
+        void* unit_group_member_record_at_0070d070(void*, std::int32_t) override { los_trigger_unreached("unit_group_member_record_at_0070d070"); }
+        void gun_set_barrel_reload_timer_0072cf00(void*, std::int32_t, float, std::int32_t) override { los_trigger_unreached("gun_set_barrel_reload_timer_0072cf00"); }
+        void entity_pose_refresh_world_00414db0(void*) override { los_trigger_unreached("entity_pose_refresh_world_00414db0"); }
+        void* vehicle_class_get_or_create_00964790(std::int32_t, bool) override { los_trigger_unreached("vehicle_class_get_or_create_00964790"); }
+        bool vehicle_class_vcall_18(void*, int) override { los_trigger_unreached("vehicle_class_vcall_18"); }
+        void* scene_find_node_by_name_excluding_00b72300(void*, const std::string&, const std::string&) override { los_trigger_unreached("scene_find_node_by_name_excluding_00b72300"); }
+        void scene_node_set_visibility_factor_00b6da70(void*, float, bool) override { los_trigger_unreached("scene_node_set_visibility_factor_00b6da70"); }
+        const void* node_name_header_00b6d800(void*) override { los_trigger_unreached("node_name_header_00b6d800"); }
+        void* node_find_child_by_header_00b6e750(void*, const void*, bool) override { los_trigger_unreached("node_find_child_by_header_00b6e750"); }
+        void* node_find_child_by_name_00b6e750(void*, const std::string&, bool) override { los_trigger_unreached("node_find_child_by_name_00b6e750"); }
+        void shallow_water_apply_00880220(void*, const std::string&) override { los_trigger_unreached("shallow_water_apply_00880220"); }
+        void scoring_add_party_loss_0090ed90(void*, std::int32_t, const std::string&, std::int32_t) override { los_trigger_unreached("scoring_add_party_loss_0090ed90"); }
+        void scoring_ignored_kill_set_insert_0063f1e0(void*, void*) override { los_trigger_unreached("scoring_ignored_kill_set_insert_0063f1e0"); }
+        void sensitive_unit_set_insert_008caee0(void*, void*) override { los_trigger_unreached("sensitive_unit_set_insert_008caee0"); }
+        bool trigger_list_invoke_by_name_0074fbb0(void*, const std::string&) override { los_trigger_unreached("trigger_list_invoke_by_name_0074fbb0"); }
+        void* proximity_trigger_create_007505c0(const bsp::SceneCommandTarget&, float) override { los_trigger_unreached("proximity_trigger_create_007505c0"); }
+        void* squad_ordnance_trigger_create_00750660() override { los_trigger_unreached("squad_ordnance_trigger_create_00750660"); }
+        void* input_manager_singleton_004bec00() override { los_trigger_unreached("input_manager_singleton_004bec00"); }
+        void input_set_context_level_00a933f0(void*, int, int) override { los_trigger_unreached("input_set_context_level_00a933f0"); }
+        void warning_manager_clear_waiting_queue_0096bf70(void*) override { los_trigger_unreached("warning_manager_clear_waiting_queue_0096bf70"); }
+        void* recon_ensure_slot_008053c0(int) override { los_trigger_unreached("recon_ensure_slot_008053c0"); }
+        void game_pump_front_end_frame_004cac30(void*) override { los_trigger_unreached("game_pump_front_end_frame_004cac30"); }
+        void game_destroy_world_containers_004d2b10(void*) override { los_trigger_unreached("game_destroy_world_containers_004d2b10"); }
+        void game_set_cinematic_mode_004cd0f0(void*, bool, bool, bool) override { los_trigger_unreached("game_set_cinematic_mode_004cd0f0"); }
+        void interface_get_sound_listener_0068a670(void*, bsp::cc13_left55::seg56c::ListenerMatrix&, bsp::cc13_left55::seg56c::Vec3&) override { los_trigger_unreached("interface_get_sound_listener_0068a670"); }
+        void* effect_manager_singleton_004d1100() override { los_trigger_unreached("effect_manager_singleton_004d1100"); }
+        void effect_manager_update_00867ee0(void*, float, void*) override { los_trigger_unreached("effect_manager_update_00867ee0"); }
+        void listener_sink_vcall_04(void*, const bsp::cc13_left55::seg56c::ListenerMatrix&, bsp::cc13_left55::seg56c::Vec3) override { los_trigger_unreached("listener_sink_vcall_04"); }
+        void debug_trace_004254b0(const char*) override { los_trigger_unreached("debug_trace_004254b0"); }
+        bool native_string_equals_insensitive_00425850(const std::string&, const char*) override { los_trigger_unreached("native_string_equals_insensitive_00425850"); }
+        void sort_scored_entries_008c9e10(bsp::cc13_left55::ScoredEntry*, bsp::cc13_left55::ScoredEntry*, std::int32_t) override { los_trigger_unreached("sort_scored_entries_008c9e10"); }
+        void crt_invalid_parameter_00bf6713() override { los_trigger_unreached("crt_invalid_parameter_00bf6713"); }
+        ProximityTrigger trigger_;
+        float range_{0.0f};
+        bool added_{false};
+        std::size_t unit_{0};
+    private:
+        GameMissionLuaHost& owner_;
+    } host(*this);
+    bsp::cc13_left55::seg56c::lua_add_line_of_sight_trigger(args, host);
+    const ProximityTrigger& trigger = host.trigger_;
+    if (!host.added_) {
+        ++summary_.los_trigger_unresolved;
+        log_.notef("  AddLineOfSightTrigger 008c9460: entity id %d has no units-host slot; "
+            "trigger \"%s\" -> %s() not stored (goal 5 chain 639)", air_ops_entity_id(state),
+            trigger.name_1c.c_str(), trigger.callback_28.c_str());
+        return 0;
+    }
+    const GameUnitRow* row = units_hooks_->unit_row(host.unit_);
+    log_.notef("  AddLineOfSightTrigger 008c9460: \"%s\" name=%s%s%s -> %s() target=%s%d "
+        "range=%.1f (goal 5 chain 639)", row != nullptr ? row->name.c_str() : "?",
+        trigger.named_24 ? "\"" : "", trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+        trigger.named_24 ? "\"" : "", trigger.callback_28.c_str(),
+        trigger.target_kind_44 != 0 ? "entity " : "none ", trigger.target_id,
+        static_cast<double>(host.range_));
+    log_.implemented("MissionLuaNative::AddLineOfSightTrigger", "008c9460");
+    return 0;
+}
+
+// 00750230 (vtable 00D005AC slot 0Ch), __thiscall(trigger, float step), RET 4, through
+// bsp::gameplay_seg41_cc13::line_of_sight_check_00750230. The watched point is
+// (+4)->+28h's +FCh..+104h after the pose refresh (00750255..00750294), the target
+// the +44h entity's (0075027C..007502BE); in range, the +4Ch timer counts down and,
+// once below zero, gains 0.5 and the cast 0084B6B0 runs from the watched point to the
+// target, ignoring the watched entity, or its +3D0h lead when it IsKindOf(18h)
+// (007503A0..007503C7). The hit record's entity equal to +44h fires 0074FDD0.
+// SUBSTITUTIONS (labelled): a watched squadron (its fused wing-0 slot) is posed at
+// and ignores its current leader, as the proximity check poses it; an entity target's
+// position is the unit's pose translation or the scene marker's authored position
+// (spawn_ref_entity_frame_008f8680). 0084B6B0's 0098B370 sweep of one segment is
+// 0098ADD0(from, to, ignore->vtable[B0h], record, 0), answered over this process's
+// units by GameGunneryHost::query_segment_units (no islands or terrain occlude).
+void GameMissionLuaHost::check_line_of_sight_trigger_00750230(std::size_t unit,
+    ProximityTrigger& trigger, float step) {
+    if (trigger.target_kind_44 == 0) return;   // see run_add_line_of_sight_trigger_008c9460
+    float right[3], up[3], forward[3], watched[3];
+    std::size_t posed = unit;
+    if (const bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_live_fused_slot(unit)) {
+        posed = sq->flight_leader();
+    }
+    if (!units_hooks_->unit_pose(posed, right, up, forward, watched)) return;
+    float frame[16];
+    if (!spawn_ref_entity_frame_008f8680(trigger.target_id, frame)) return;
+    const GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    ++summary_.los_trigger_checks;
+    struct Cast final : bsp::gameplay_seg41_cc13::LineOfSightHost {
+        Cast(const GameGunneryHost& g, unsigned long long& casts) : gunnery(g), count(casts) {}
+        bool cast_0084b6b0(const bsp::gameplay_seg41_cc13::Vec3& from,
+                           const bsp::gameplay_seg41_cc13::Vec3& to, std::uint32_t ignore,
+                           std::uint32_t& hit) override {
+            ++count;
+            const float a[3] = {from.x, from.y, from.z};
+            const float b[3] = {to.x, to.y, to.z};
+            std::size_t hit_unit = 0;
+            float point[3] = {0.0f, 0.0f, 0.0f};
+            if (!gunnery.query_segment_units(a, b, ignore, hit_unit, point)) return false;
+            hit = static_cast<std::uint32_t>(hit_unit);   // one-based, as the ignore
+            return true;
+        }
+        const GameGunneryHost& gunnery;
+        unsigned long long& count;
+    } cast(*gunnery, summary_.los_trigger_casts);
+    bsp::gameplay_seg41_cc13::LineOfSightTrigger state;
+    state.range_sq_48 = trigger.range_sq_48;
+    state.timer_4c = trigger.timer_4c;
+    const bool fire = bsp::gameplay_seg41_cc13::line_of_sight_check_00750230(state, step,
+        bsp::gameplay_seg41_cc13::Vec3{watched[0], watched[1], watched[2]},
+        bsp::gameplay_seg41_cc13::Vec3{frame[12], frame[13], frame[14]},
+        static_cast<std::uint32_t>(posed + 1), static_cast<std::uint32_t>(trigger.target_id),
+        cast);
+    trigger.timer_4c = state.timer_4c;
+    if (!fire) return;
+    ++summary_.los_trigger_fires;
+    const GameUnitRow* row = units_hooks_->unit_row(unit);
+    log_.notef("  line-of-sight trigger 00750230: \"%s\" %s%s%s -> %s() target id %d "
+        "(goal 5 chain 639)", row != nullptr ? row->name.c_str() : "?",
+        trigger.named_24 ? "\"" : "", trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+        trigger.named_24 ? "\"" : "", trigger.callback_28.c_str(), trigger.target_id);
+    fire_lua_trigger_0074fdd0(unit, trigger);   // 007503ED
+}
+
 // 008C5FD0 RemoveTrigger(entity, name): list = entity(0)->vtable[60h]() (008C60ED),
 // name = 00B662B0 argument 1, then 0074FBB0 walks the list (+1Ch, next +0Ch): every
 // node whose vtable[8h](1) answers (the Lua trigger base 0074FCD0), whose name is
 // engaged (+24h) and equal (00435C40: same length, _stricmp) gets vtable[10h]
 // (0071C4A0: +10h = 1, +11h = 0). All matches are retired, not only the first. Pushes
 // whether any matched (00B66xxx boolean) and returns 1.
-// SUBSTITUTION (labelled): only the proximity and (packet cc13-fix19) squad-ordnance
-// triggers are this host's, each stored only while its switch is on; a line-of-sight
-// trigger of the same name (unbound) answers false here.
+// The proximity, (packet cc13-fix19) squad-ordnance and (goal 5 chain 639)
+// line-of-sight triggers share the per-unit lists, so all three kinds match here.
 int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argument_count) {
     static_cast<void>(argument_count);
     ++summary_.remove_trigger_calls;
@@ -9244,7 +9515,7 @@ int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argume
 // Kill (target_gone_notified_, the +5Eh stand-in), which also covers the up-to-one-
 // step window where gunnery counts every member dead before compaction.
 void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
-    static_cast<void>(step);   // 00750000 is RET 4 and never reads it
+    // 00750000 is RET 4 and never reads the step; 00750230 counts its timer down by it.
     if (units_hooks_ == nullptr || state_ == nullptr) return;
     for (auto& entry : proximity_triggers_) {
         const std::size_t unit = entry.first;
@@ -9264,9 +9535,12 @@ void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
         for (auto it = list.begin(); it != list.end();) {
             const auto next = std::next(it);
             if (it->enabled_11) {
-                // vtable[0Ch]: 00750000 (00D00580) or 007504F0 (00D005C0).
+                // vtable[0Ch]: 00750000 (00D00580), 007504F0 (00D005C0) or 00750230
+                // (00D005AC, goal 5 chain 639: the only one that reads the step).
                 if (it->kind == ProximityTrigger::Kind::SquadOrdnanceDropped) {
                     check_squad_ordnance_trigger_007504f0(unit, *it);
+                } else if (it->kind == ProximityTrigger::Kind::LineOfSight) {
+                    check_line_of_sight_trigger_00750230(unit, *it, step);
                 } else {
                     check_proximity_trigger_00750000(unit, *it);
                 }
@@ -9480,8 +9754,10 @@ void GameMissionLuaHost::target_gone_drain_009273a0() {
             for (auto& entry : proximity_triggers_) {
                 for (ProximityTrigger& trigger : entry.second) {
                     // 0074FFE0: notifier == 00521EA0(+44h). Only a proximity trigger
-                    // with an entity target registered the observer (0074FEE0).
-                    if (trigger.kind != ProximityTrigger::Kind::Proximity
+                    // with an entity target registered the observer (0074FEE0), and
+                    // (goal 5 chain 639) every line-of-sight trigger (007500E0's
+                    // 00694A60; 00750190 compares the notifier with +44h).
+                    if (trigger.kind == ProximityTrigger::Kind::SquadOrdnanceDropped
                         || trigger.target_kind_44 == 0 || trigger.target_id != gone_id) continue;
                     if (trigger.enabled_11) {
                         ++summary_.target_gone_retired;
@@ -15869,6 +16145,10 @@ void GameMissionLuaHost::report_mission_script_state() {
             summary_.ordnance_trigger_adds, summary_.ordnance_trigger_unresolved,
             summary_.ordnance_trigger_checks, summary_.ordnance_trigger_fires);
     }
+    log_.notef("summary mission script line-of-sight triggers adds=%llu unresolved=%llu "
+        "checks=%llu casts=%llu fires=%llu (008C9460 / 00750230, goal 5 chain 639)",
+        summary_.los_trigger_adds, summary_.los_trigger_unresolved,
+        summary_.los_trigger_checks, summary_.los_trigger_casts, summary_.los_trigger_fires);
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);

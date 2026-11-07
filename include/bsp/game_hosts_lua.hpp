@@ -1209,6 +1209,11 @@ struct GameMissionLuaSummary {
     unsigned long long ordnance_trigger_unresolved{0};
     unsigned long long ordnance_trigger_checks{0};
     unsigned long long ordnance_trigger_fires{0};
+    unsigned long long los_trigger_adds{0};              // goal 5 chain 639
+    unsigned long long los_trigger_unresolved{0};
+    unsigned long long los_trigger_checks{0};
+    unsigned long long los_trigger_casts{0};
+    unsigned long long los_trigger_fires{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8
@@ -2095,6 +2100,8 @@ public:
     }
     // Packet cc13-fix10, under kLuaProximityTriggersBound.
     int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
+    // Goal 5 chain 639: 008C9460 AddLineOfSightTrigger, stored in the same lists.
+    int run_add_line_of_sight_trigger_008c9460(lua_State* state, int argument_count);
     int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);
     // Wave 2's sub-list walk (00875B90 -> 008759B0) over the proximity triggers;
     // the mission frame calls it once per fixed step, after the motion step.
@@ -2480,8 +2487,12 @@ private:
         // Packet cc13-fix19: the record's vtable. 00D00580 = proximity (check
         // 00750000), 00D005C0 = squad ordnance dropped (check 007504F0); both
         // share the Lua trigger base fields below (+10h..+28h).
-        enum class Kind : std::uint8_t { Proximity, SquadOrdnanceDropped };
+        // Goal 5 chain 639: 00D005AC = line of sight (check 00750230, made by
+        // 00750550 -> 007500E0 with the entity target +44h, +48h and +4Ch below).
+        enum class Kind : std::uint8_t { Proximity, SquadOrdnanceDropped, LineOfSight };
         Kind kind{Kind::Proximity};
+        float range_sq_48{0.0f};   // line of sight: range * range (007500E0)
+        float timer_4c{0.0f};      // line of sight: the recheck timer, 0 at construction
         std::string name_1c;
         bool named_24{false};
         std::string callback_28;
@@ -2498,6 +2509,9 @@ private:
     void check_proximity_trigger_00750000(std::size_t unit, ProximityTrigger& trigger);
     // Packet cc13-fix19.
     void check_squad_ordnance_trigger_007504f0(std::size_t unit, ProximityTrigger& trigger);
+    // Goal 5 chain 639.
+    void check_line_of_sight_trigger_00750230(std::size_t unit, ProximityTrigger& trigger,
+                                              float step);
     void fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger);
     std::vector<std::size_t> target_gone_pending_;   // the kill list's notices, FIFO
     std::vector<bool> target_gone_notified_;         // +5Eh: pass K ran (00926D90 idempotence)

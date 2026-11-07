@@ -3,7 +3,7 @@
   "chain": 639,
   "slot": "g5-w4",
   "branch": "agent/g5-w4",
-  "picked": "Land fort death: 00747170 OnDestroyed, 007465E0 StartDeathFire and the 00745F1E smoke arm, in the gunnery kill path",
+  "picked": "Land fort death (00747170 OnDestroyed, 007465E0 StartDeathFire, the 00745F1E smoke arm) in the gunnery kill path, then the Lua AddLineOfSightTrigger (008C9460 / 00750230)",
   "rows": [
     {
       "native": "00747170",
@@ -19,6 +19,26 @@
       "native": "00745f1e",
       "status": "wired",
       "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_land_fort_smoke_frames, from GameGunneryHost::fixed_step (the +744h arm of 00745BE0)"
+    },
+    {
+      "native": "008c9460",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_add_line_of_sight_trigger_008c9460 (binding_trampoline row 008C9460) runs bsp::cc13_left55::seg56c::lua_add_line_of_sight_trigger over LuaArgs / Left55Seg56cHost adapters"
+    },
+    {
+      "native": "00750230",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::check_line_of_sight_trigger_00750230, from run_proximity_triggers_008759b0 (the per-step trigger walk); body fixed to per-op 24-bit rounding"
+    },
+    {
+      "native": "0084b6b0",
+      "status": "skipped",
+      "reason": "los_sweep_with_ignore_0084b6b0 (cc13_seg52b) takes a 105-method Seg52bHost over native segment/record memory; 00750230's cast is answered by GameGunneryHost::query_segment_units (the 0098ADD0 binding) instead"
+    },
+    {
+      "native": "0098b370",
+      "status": "skipped",
+      "reason": "raw native segment-list body; the single-segment case it reduces to (0098ADD0 kind filter 0) is what query_segment_units already answers"
     },
     {
       "native": "00747400",
