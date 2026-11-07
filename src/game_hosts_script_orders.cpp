@@ -2475,6 +2475,47 @@ namespace {
 // class changes. The mission Lua host, which holds the class table, sets it.
 int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
 // kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
+
+// Goal 5 chain 636. The support manager's slot order (00673A10 at 006748C0 /
+// 0067491B, 00675C40 at 0067A5D1 / 0067A945): 00656280 builds 82h {slot,
+// order, target+174h, game+18ECh} and 0077C2A0(msg, 0, 0) routes it to the
+// block's owner; the local copy reaches 006CD6C0's 82h arm 006CD160, which
+// hands 006CCDA0 the copy's slot, order, target and player. The values below
+// are the copy's. +174h is this process's unit index + 1 (entity_object_id);
+// LABELLED: a target whose id the copy's 12 bits cannot carry keeps the posted
+// one, as queue_gun_aim_79 keeps its target id. LABELLED, as before: the copy
+// is delivered in this step, where 0076E520 queues it for the session's
+// receive drain. A standalone host without a live commands queue keeps the
+// posted values, as the 89h serve does.
+struct SlotOrderDelivery {
+    bool delivered{false};
+    int slot{-1};
+    std::uint32_t order{0};
+    std::uint32_t target_plus_one{0};
+    std::uint32_t player{0};
+};
+SlotOrderDelivery deliver_air_ops_slot_order_82(int slot, std::uint32_t order,
+    std::uint32_t target_plus_one) {
+    SlotOrderDelivery out;
+    out.slot = slot;
+    out.order = order;
+    out.target_plus_one = target_plus_one;
+    const bsp::HostSessionMessages* const messages = commands_session_messages();
+    if (messages == nullptr) {
+        out.delivered = true;
+        return out;
+    }
+    const bsp::HostSessionMessages::AirbaseSlotOrderCopy copy =
+        messages->queue_airbase_slot_order_82(static_cast<std::uint32_t>(slot), order,
+            static_cast<std::uint16_t>(target_plus_one));
+    if (!copy.to_unit) return out;
+    out.delivered = true;
+    out.slot = static_cast<int>(copy.slot);
+    out.order = copy.order;
+    if (target_plus_one <= 0xfffu) out.target_plus_one = copy.target_id;
+    out.player = copy.player;
+    return out;
+}
 }  // namespace
 
 // Packet p20_squadron_helm (docs/OCEAN_WAVE_FIELD.md section 79). The player's
@@ -2613,13 +2654,19 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
             "slot+10h, 0067485D 006BA4B0; harness input)", base.c_str(), slot + 1, loadout);
     }
     // 006748C0 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
-    // 006748D7 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
-    // LABELLED: delivered at once; the player id is 0.
-    const int answer = bsp::air_ops_slot_command_006ccda0(*deck, slot, 3,
-        static_cast<std::uint32_t>(target_index + 1u), 0, true);
+    // 006748D7 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1)
+    // on the local copy (HostSessionMessages::queue_airbase_slot_order_82).
+    const SlotOrderDelivery delivery = deliver_air_ops_slot_order_82(slot, 3,
+        static_cast<std::uint32_t>(target_index + 1u));
+    if (!delivery.delivered) return refuse("the 82h copy did not reach the block's session-kind switch");
+    if (delivery.slot < 0 || static_cast<std::size_t>(delivery.slot) >= deck->slots.size())
+        return refuse("the 82h copy names no slot of this block");
+    const int answer = bsp::air_ops_slot_command_006ccda0(*deck, delivery.slot,
+        static_cast<int>(delivery.order), delivery.target_plus_one,
+        static_cast<int>(delivery.player), true);
     if (answer != 1) return refuse("006CCDA0 refused the attack order");
     out.accepted = true;
-    out.slot = slot;
+    out.slot = delivery.slot;
     ++player_launch_accepted_;
     log_.notef("player air ops launch: base=\"%s\" slot=%d class=%d count=%d->%d target=\"%s\" "
         "queued (0067A5A7 006C0F00, 0067A5E6 82h -> 006CCDA0 order 3 -> 006CA640, packet "
@@ -2631,7 +2678,8 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
 // Packet cc9_air_ops_held_slot_orders. 006CCDA0's state-3/4 arms for the player's
 // order to a held slot; the command is issued on the squadron (0077D600 with ECX =
 // slot+28h). SUBSTITUTIONS, labelled:
-//  - delivered at once (the 82h message is not queued), player id 0;
+//  - the 82h message takes its local copy (deliver_air_ops_slot_order_82) and is
+//    delivered in the same step;
 //  - 006BC5E0's "holding at the moveto point" is the flight leader's stored command
 //    class being moveto; its distance test (class+268h x [00CEC160]) is not read,
 //    which only matters for a moveto whose point is not the squadron's own;
@@ -2721,10 +2769,18 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
         if (leader < units_.count() && units_.plane_order_view(leader, st, landed, enabled, cls))
             holding = cls == bsp::kPilotOrderClassMoveTo;
     }
-    const std::uint32_t target_plus_one = target_index < units_.count()
+    const std::uint32_t posted_target_plus_one = target_index < units_.count()
         ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
-    const bsp::AirOpsHeldSlotOrder r = bsp::air_ops_held_slot_order_006ccda0(*deck, slot, order,
-        target_plus_one, holding, unstowed, true);
+    // Goal 5 chain 636: the order travels as 82h's local copy into 006CD160,
+    // which passes 006CCDA0 the copy's slot, order and target (the held-slot
+    // arms here read no player).
+    const SlotOrderDelivery delivery = deliver_air_ops_slot_order_82(slot,
+        static_cast<std::uint32_t>(order), posted_target_plus_one);
+    if (!delivery.delivered) return refuse("the 82h copy did not reach the block's session-kind switch");
+    if (delivery.slot != slot) return refuse("the 82h copy names another slot");
+    const std::uint32_t target_plus_one = delivery.target_plus_one;
+    const bsp::AirOpsHeldSlotOrder r = bsp::air_ops_held_slot_order_006ccda0(*deck, slot,
+        static_cast<int>(delivery.order), target_plus_one, holding, unstowed, true);
     out.answer = r.answer;
     out.state_after = static_cast<int>(s.state);
     if (r.answer == -1) return refuse("the slot is not in state 3 or 4 (the launch entry serves 1 and 5)");
