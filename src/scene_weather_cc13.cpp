@@ -368,7 +368,13 @@ void read_sky(const ScenePropertyBagModel& model, int bag, bool linearize, Scene
     host.read_cloud_areas_004e7220(model, bag);
     const ScenePropertyEntry* lights_entry = find(model, bag, "Lights");
     if (lights_entry != nullptr && lights_entry->value.type == ScenePropertyType::SubBag) {
-        read_lights(model, lights_entry->sub_bag, linearize, lights, host);
+        // 004EE4A3 CALL 004EA870 (ECX = Lights bag, EDX = record): through the
+        // one 004EA870 entry, its fault rethrown to this reader's guard.
+        std::string error;
+        if (!read_sun_light_properties_004ea870(model, lights_entry->sub_bag, linearize, lights,
+                                                host, error)) {
+            throw ReaderFault(error);
+        }
     } else {
         reset_lighting_configuration_004b6800(lights);
     }
@@ -935,8 +941,9 @@ bool read_weather_fog_and_cloud_lights_004eca30(const ScenePropertyBagModel& mod
     return guarded(error, [&] { read_weather(model, bag_index, linearize, out); });
 }
 
-bool read_sun_light_properties_004ea870(const ScenePropertyBagModel& model, int bag_index,
-                                        bool linearize, SceneLightsFields& out,
+// Kept out of line: 004EE450 calls it at 004EE4A3 as its own function.
+__declspec(noinline) bool read_sun_light_properties_004ea870(const ScenePropertyBagModel& model,
+                                        int bag_index, bool linearize, SceneLightsFields& out,
                                         SceneLightsHost& host, std::string& error) {
     return guarded(error, [&] { read_lights(model, bag_index, linearize, out, host); });
 }

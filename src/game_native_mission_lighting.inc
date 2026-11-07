@@ -2,19 +2,33 @@
 // B46A70 reads these genuine native owners; no fallback register words are
 // supplied. Include after the private renderer and mission-scene graph types.
 
-// The selected mission's lighting record, plus the foliage settings written
-// by 004EA870. These semantic fields do not advertise a native D5D270 derived
-// foliage owner. The existing mission graph admits no landscape/bush groups;
-// its genuine D5D220 base does own the normal-allowed byte read by B46A70.
-// Evidence: bsp.py show 004EA870 / 004EE450, especially the Lights call at
-// 004EE4A3. Original 004EA870 ABI is ECX=Lights bag, EDX=scene record, RET;
-// this adapter is a semantic C++ interface, not an Original ABI replacement.
-struct MissionSceneLightInputs final : scene_weather_cc13::SceneLightsHost {
+// The selected mission's g_Environment header, read once by the whole
+// 004EE450 body (BSP_SceneRecord_ReadSkyAndLights), the call 004F1D70 makes at
+// 004F230B when the header has a g_Environment group (004F22F1, type 6). Its
+// outputs are the scene record's sky strings (+B98h ReflCubemap, +BA0h ocean
+// cubemap, +C54h Skybox, +C5Ch/+C60h, +1044h Sun, +104Ch ThunderStorm) and the
+// lighting block +F48h..+1010h its Lights arm fills through 004EA870 (004EE4A3,
+// ECX = Lights bag, EDX = record), plus the foliage settings 004EA870 writes.
+// The lighting graph takes the Lights block (004BACD0 below) and the material
+// refresh publishes +B98h as ReflectionCubeMap; both used to read the header
+// by hand. The linearize flag is the byte [00F88A0C] 004EE450 tests at
+// 004EE4C4, which the init arguments' word00 captures.
+// Evidence: bsp.py show 004EE450 --asm 004EE475..004EE4C2 (ECX = bag in EBX,
+// EDX = record in EBP; 004E7220 first, then 008F2260 "Lights"). Original ABI
+// __fastcall(ECX = g_Environment bag, EDX = scene record), RET; this adapter is
+// a semantic C++ interface, not an Original ABI replacement. The semantic
+// fields do not advertise a native D5D270 derived foliage owner. The mission
+// graph admits no landscape/bush groups; its genuine D5D220 base does own the
+// normal-allowed byte read by B46A70.
+struct MissionSceneEnvironment final : scene_weather_cc13::SceneSkyHost {
+ GameHostLog& log;
  MissionShipFoliageGraph& foliage;
- scene_weather_cc13::SceneLightsFields fields;
- bool authored{};
+ scene_weather_cc13::SceneSkyFields sky;
+ scene_weather_cc13::SceneLightsFields lights;
+ bool lights_authored{};
 
- explicit MissionSceneLightInputs(MissionShipFoliageGraph& actual) : foliage(actual) {}
+ MissionSceneEnvironment(GameHostLog& output,MissionShipFoliageGraph& actual)
+  : log(output),foliage(actual) {}
  void set_bush_diffuse_factor_00ad7140(float factor) override {
   foliage.set_scene_bush_diffuse_factor(factor);
  }
@@ -24,26 +38,33 @@ struct MissionSceneLightInputs final : scene_weather_cc13::SceneLightsHost {
  void set_bush_normal_allowed_00ad5730(std::uint8_t allowed) override {
   foliage.set_scene_bush_normal_allowed(allowed);
  }
+ // 004EE481 CALL 004E7220 with the g_Environment bag (ECX) and the record
+ // (EDX): its AreaNN entries into record+C84h.., then the 004BA870 scatter tail
+ // (004E7403). This renderer graph owns no scene record cloud block and no
+ // atmosphere or cloud entities to scatter, so the areas are not loaded here.
+ void read_cloud_areas_004e7220(const ScenePropertyBagModel&,int) override {
+  log.unimplemented("MissionSceneEnvironment::load_cloud_areas","004e7220");
+ }
  void load(const ScenePropertyBlock& root,bool linearize) {
   const auto model=scene_weather_cc13::scene_bag_from_block(root);
   const auto* environment=scene_property_bag_find(model,0,"g_Environment");
-  const auto* lights=environment && environment->value.type==ScenePropertyType::SubBag
-      ? scene_property_bag_find(model,environment->sub_bag,"Lights") : nullptr;
-  if(lights && lights->value.type==ScenePropertyType::SubBag) {
-   std::string error;
-   // 004EE450's Lights arm at 004EE4A3. The wrapper owns the single existing
-   // 004EA870 body, including native type checks, alpha/luminance handling,
-   // PC24 arithmetic and scene angle conversion. Never fall back on failure.
-   if(!scene_weather_cc13::read_sun_light_properties_004ea870(
-       model,lights->sub_bag,linearize,fields,*this,error))
-    throw std::runtime_error("selected scene lighting: "+error);
-   authored=true;
-  } else {
-   // 004B6800 leaves +20h..+7Fh and +B8h untouched. This owner has no
-   // recovered prior values for that cube/specular state, so it cannot admit
-   // 004EE450's missing-Lights copy arm. Reject before creating/binding lights.
+  const bool group=environment && environment->value.type==ScenePropertyType::SubBag;
+  const auto* lights_entry=group ? scene_property_bag_find(model,environment->sub_bag,"Lights") : nullptr;
+  lights_authored=lights_entry && lights_entry->value.type==ScenePropertyType::SubBag;
+  // Without the group 004EE450 is not called; without Lights it copies the
+  // 004B6800 defaults over +F48h, and 004B6800 leaves +20h..+7Fh and +B8h
+  // untouched. This owner has no recovered prior values for that
+  // cube/specular state, so it admits neither. Reject before reading.
+  if(!lights_authored)
    throw std::runtime_error("selected scene lighting requires a g_Environment.Lights sub-bag");
-  }
+  std::string error;
+  // The single existing 004EE450 body, including 004EA870's native type
+  // checks, alpha/luminance handling, PC24 arithmetic and scene angle
+  // conversion, and the HDR_ prefixes. Never fall back on failure.
+  if(!scene_weather_cc13::read_sky_and_lights_004ee450(
+      model,environment->sub_bag,linearize,sky,lights,*this,error))
+   throw std::runtime_error("selected scene environment: "+error);
+  log.implemented("MissionSceneEnvironment::read_sky_and_lights","004ee450");
  }
 };
 
@@ -107,7 +128,8 @@ struct MissionShipLightingGraph {
  DirectionalLightPool* sun_pool{};
  std::unique_ptr<DirectionalLightOwner> sun_owner;
  std::unique_ptr<DirectionalLightReference> sun_reference;
- std::unique_ptr<MissionSceneLightInputs> scene_inputs;
+ // The record's +F48h..+1010h lighting block as 004EE450 left it.
+ std::optional<scene_weather_cc13::SceneLightsFields> scene_lights;
  volatile U published_resource{},null_resource{};
  Phase phase{Phase::prepared};
 
@@ -170,11 +192,12 @@ struct MissionShipLightingGraph {
  static SystemLightingWords4 color(float r,float g,float b) noexcept {
   return {float_bits(r),float_bits(g),float_bits(b),float_bits(1.0f)};
  }
- void load_scene_lights(const ScenePropertyBlock& root,MissionShipFoliageGraph& foliage) {
-  check(phase==Phase::prepared && !scene_inputs,
+ void load_scene_lights(const MissionSceneEnvironment& environment) {
+  check(phase==Phase::prepared && !scene_lights,
       "mission lighting can load its selected scene only once before creation");
-  scene_inputs=std::make_unique<MissionSceneLightInputs>(foliage);
-  scene_inputs->load(root,captured_scale_ambient!=0);
+  check(environment.lights_authored,
+      "mission lighting requires the selected scene's authored Lights block");
+  scene_lights=environment.lights;
  }
  static SystemLightingWords4 scene_color(const scene_weather_cc13::Rgba& value) {
   // Preserve the authored fourth word: 004BACD0 uses it as a multiplier.
@@ -182,9 +205,9 @@ struct MissionShipLightingGraph {
  }
  void configure_scene_owners() {
   void* const actual_ambient=get<void*>(resource,0x10);
-  check(actual_ambient && sun_owner && scene_inputs && scene_inputs->authored,
+  check(actual_ambient && sun_owner && scene_lights,
       "mission lighting requires its selected scene and current native light owners");
-  const auto& fields=scene_inputs->fields;
+  const auto& fields=*scene_lights;
   const auto ambient_words=scene_color(fields.ambient_f48);
   const auto underwater_ambient=scene_color(fields.ambient_mode3_f58);
   std::array<SystemLightingWords4,6> cube;
@@ -214,7 +237,7 @@ struct MissionShipLightingGraph {
   configure_scene_owners();
  }
  void create_and_bind(void* actual_outer_scene) {
-  check(scene_inputs && scene_inputs->authored,
+  check(scene_lights.has_value(),
       "mission light binding requires a completely read authored Lights header");
   check(phase==Phase::prepared && actual_outer_scene &&
       get<U>(actual_outer_scene)==0xd62d48 && get<void*>(actual_outer_scene,0x1c)==nullptr,
@@ -265,8 +288,8 @@ struct MissionShipLightingGraph {
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-       "configuration=004EA870->004BACD0 illumination=selected_scene authored=%u captured_scale_ambient=%u shadow=null",
-       outer,resource,get<void*>(resource,0x10),sun,unsigned(scene_inputs->authored),unsigned(captured_scale_ambient));
+       "configuration=004EE450->004BACD0 illumination=selected_scene authored=%u captured_scale_ambient=%u shadow=null",
+       outer,resource,get<void*>(resource,0x10),sun,unsigned(scene_lights.has_value()),unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
  void begin_root_attachment() {

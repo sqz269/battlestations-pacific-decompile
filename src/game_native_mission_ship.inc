@@ -55,6 +55,9 @@ struct MissionShipGraph final {
     std::unique_ptr<MissionShipShaderPreloadGraph> owned_preload;
     MissionShipShaderPreloadGraph* preload{};
     std::unique_ptr<MissionShipFoliageGraph> foliage;
+    // The selected header's 004EE450 outputs; after foliage, whose setters it
+    // drove, so it is destroyed first.
+    std::unique_ptr<MissionSceneEnvironment> environment;
     std::unique_ptr<MissionShipCameraGraph> camera;
     std::unique_ptr<MissionCommandGraph> commands;
     std::unique_ptr<MissionRenderResourcesGraph> resources;
@@ -203,10 +206,14 @@ struct MissionShipGraph final {
             bound_lua = source.lua;
             bound_root_properties = source.root_properties;
             GameNativeMissionUnits units(source, files);
+            // 004F230B: 004EE450 once over the selected header's g_Environment
+            // group. [00F88A0C] is a byte; word00 carries it zero-extended.
+            environment = std::make_unique<MissionSceneEnvironment>(log, *foliage);
+            environment->load(*source.root_properties, static_cast<std::uint8_t>(arguments.word_00) != 0);
             material_refresh = std::make_unique<GameNativeMissionMaterialRefresh>(application, graph.profiles.data);
             if (all_units) devices_visual = std::make_unique<GameNativeMissionDevices>(log, *source.units);
             load_new_unit_models(units);
-            material_refresh->publish_reflection_cubemap(*source.root_properties, arguments.word_00 != 0);
+            material_refresh->publish_reflection_cubemap(environment->sky.refl_cubemap_b98);
             material_refresh->refresh_after_model_load();
             check(model->drawable_count() != 0, "mission has no installed unit drawables");
             update_live_poses(0);
@@ -220,7 +227,7 @@ struct MissionShipGraph final {
             lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
                 owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00),
                 startup_domain ? &startup_domain->registry : nullptr);
-            lighting->load_scene_lights(*source.root_properties, *foliage);
+            lighting->load_scene_lights(*environment);
             lighting->create_and_bind(scene->raw());
             // Keep this SAME one-shot cache while late mission models can load.
             // B3B7F4/B34890 dereference it in the installed binary shader mode.
@@ -293,7 +300,7 @@ struct MissionShipGraph final {
                     census.gun_rows, census.physical_platforms, census.visible_instances);
             }
             if (load_new_unit_models(units) != 0) {
-                material_refresh->publish_reflection_cubemap(*source.root_properties, arguments.word_00 != 0);
+                material_refresh->publish_reflection_cubemap(environment->sky.refl_cubemap_b98);
                 material_refresh->refresh_after_model_load();
                 update_live_poses(0);
                 fit_camera();
