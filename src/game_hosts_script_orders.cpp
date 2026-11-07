@@ -513,6 +513,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"PlaneBombFallingTime", 0x008a54c0u},
     {"PlaneReloadBombPlatforms", 0x0089f080u},
     {"GetPlaneIsReloading", 0x008bebe0u},
+    // Goal 5 chain 660: scripts/global/commandhelpers.lua 5507 / 5581.
+    {"PilotGunFire", 0x008a50d0u},
+    {"PilotTorpedo", 0x008a5310u},
     // Packet cc13-fix21: usn_11_protecting_iowa.lua 1296/1533 (and its PRCPUS copy),
     // prcp_11_patrol.lua 1302/1539. Handled only with kLuaGetSquadTorpedoesBound.
     {"GetSquadTorpedoes", 0x008bef80u},
@@ -5876,6 +5879,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                std::strcmp(binding->name, "GetPlaneIsReloading") == 0) {
         // Packet cc13-fix16. handles() refuses each row while its switch is off.
         results = run_bomb_release_native(row, binding->name);
+    } else if (std::strcmp(binding->name, "PilotGunFire") == 0 ||
+               std::strcmp(binding->name, "PilotTorpedo") == 0) {
+        results = run_pilot_gun_fire_or_torpedo(binding->name);
     } else if (std::strcmp(binding->name, "PilotMoveTo") == 0) {
         // 008A4150: the PilotMoveToRange issue without the range argument.
         ++pilot_move_to_calls_;
@@ -9428,6 +9434,70 @@ private:
     Issue issue_;
 };
 
+// PilotGunFire 008A50D0 (lua_pilot_gun_fire) and PilotTorpedo 008A5310 (lua_pilot_torpedo).
+// GunFire's class tests run on the target object (008A5268): vtable[5Ch](18h) is a fused
+// squadron slot (fused_squadron_record, as TurnToPositionBinding answers it) and (0Fh) the
+// units host's kind test; neither gives dogfight 00E08F58. Otherwise [entity+3D0h] (the
+// ordered squadron's member slot 0, its first live member plus one) answers (17h): kamikaze
+// 00E08F50, else strafe 00E08F40 (docs/ATTACK_COMMANDS.md). 0077D600 is the host's issue.
+// The command target's reader 0088A810 gives kind 1 with a non-null object for every
+// entity target, so the handle-table read object_from_handle_inline is not reached.
+class PilotAttackBinding final : public bsp::seg56_options_cc13::Seg56HostUnreached,
+                                 public bsp::seg56_options_cc13::ImageAccess {
+public:
+    using Issue = std::function<void(void*, std::uint32_t, const bsp::SceneCommandTarget&, int)>;
+    PilotAttackBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        Issue issue)
+        : units_(units), index_of_(std::move(index_of)), issue_(std::move(issue)) {}
+
+    // --- Seg56Host ---
+    bool entity_is_class_vt5c(void* entity, std::int32_t class_id) override {
+        const std::size_t index = slot_of(entity);
+        if (class_id == 0x18) return fused_squadron_record(index) != nullptr;
+        if (class_id == 0x0F || class_id == 0x17) return units_.unit_is_kind_of(index, class_id);
+        unit_query_unreached("vtable[5Ch] with a class other than 18h, 0Fh or 17h");
+    }
+    void entity_issue_command_0077d600(void* entity, std::uint32_t command_object,
+        const bsp::SceneCommandTarget& target, std::int32_t flags) override {
+        issue_(entity, command_object, target, flags);
+    }
+
+    // --- ImageAccess: the ordered squadron's +3D0h slot 0 ---
+    void* read_ptr(void* squadron, std::uint32_t offset) override {
+        if (offset != 0x3D0u) unit_query_unreached("a pointer other than +3D0h");
+        const bsp::PlaneSquadronHostRecord* record = fused_squadron_record(slot_of(squadron));
+        if (record == nullptr) unit_query_unreached("+3D0h on an entity that is not a squadron");
+        const std::vector<std::size_t> live = squadron_live_members(*record);
+        if (live.empty()) return nullptr;
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(live.front() + 1u));
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("the handle tables"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("the handle tables"); }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    Issue issue_;
+};
+
 }  // namespace
 
 // Packet cc13-fix16 (docs/CC13_FIX16.md): PlaneForceRelease 0089EBA0,
@@ -9558,15 +9628,8 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
             // or the target: the order is issued whatever 007EEC50 would choose.
             const auto issue = [this](void* entity, std::uint32_t chosen,
                                       const bsp::SceneCommandTarget& target, int flags) {
-                const std::size_t index = index_of(entity);
-                const std::size_t target_index = target.object != nullptr
-                    ? index_of(target.object)
-                    : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                            : ~static_cast<std::size_t>(0));
-                entity_issue_command(entity, chosen, target, flags);
-                ++pilot_bomb_issued_;
-                install_pilot_attack_task_after_delivery(index, name_of(entity), chosen,
-                    target, target_index, "PilotBomb", pilot_bomb_tasks_);
+                issue_pilot_attack_order(entity, chosen, target, flags, "PilotBomb",
+                    pilot_bomb_issued_, pilot_bomb_tasks_);
                 log_.notef("  PilotBomb: unit=%s target_object_id=%u class=%08lx "
                     "drop_kamikaze=%d (008A4F00, packet cc13-fix16)", name_of(entity).c_str(),
                     static_cast<unsigned>(target.object_id), static_cast<unsigned long>(chosen),
@@ -9693,6 +9756,71 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
         return 0;
     }
     return 0;
+}
+
+void GameScriptOrdersHost::issue_pilot_attack_order(void* entity, std::uint32_t chosen,
+    const bsp::SceneCommandTarget& target, int flags, const char* label, std::size_t& issued,
+    unsigned long long& tasks) {
+    const std::size_t index = index_of(entity);
+    const std::size_t target_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    entity_issue_command(entity, chosen, target, flags);   // 0077D600
+    ++issued;
+    install_pilot_attack_task_after_delivery(index, name_of(entity), chosen, target,
+        target_index, label, tasks);
+}
+
+// Goal 5 chain 660. PilotGunFire 008A50D0 / PilotTorpedo 008A5310, __fastcall(ECX = the Lua
+// state), RET: 00888AA0 on argument 0, 0088A810 on argument 1, then 0077D600(unit, class,
+// &target, 1) at 008A52B6 / 008A5467; nothing pushed. Single-player callers:
+// scripts/global/commandhelpers.lua 5507 PilotGunFire(spawned, plane) (the interceptors
+// spawned against a far plane) and 5581 PilotTorpedo(this.Squad, enemyToAttack). The bodies
+// are src/options_seg56_cc13.cpp's; as for PilotBomb, the order is followed by the
+// receiver's 0099A170 install. LABELLED: an argument with no units-host slot, and a
+// GunFire target this host cannot resolve to a unit (a position: the image's class tests
+// then run on a null object, 008A5268), push nothing and are counted.
+int GameScriptOrdersHost::run_pilot_gun_fire_or_torpedo(const char* name) {
+    const bool gun_fire = std::strcmp(name, "PilotGunFire") == 0;
+    ++(gun_fire ? pilot_gun_fire_calls_ : pilot_torpedo_calls_);
+    resolve_plane_squadron_members();
+    void* unit = entity_at(0);
+    bool resolved = unit != nullptr && index_of(unit) < units_.count();
+    if (resolved && gun_fire) {
+        const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
+        const std::size_t target_index = index_of(target.object);
+        const bool aircraft_target = target.kind != 0 && target_index < units_.count()
+            && (fused_squadron_record(target_index) != nullptr
+                || units_.unit_is_kind_of(target_index, 0x0F));
+        // A surface target reads the ordered squadron's lead plane (008A527A).
+        const bsp::PlaneSquadronHostRecord* squadron = fused_squadron_record(index_of(unit));
+        resolved = target.kind != 0 && target_index < units_.count()
+            && (aircraft_target
+                || (squadron != nullptr && !squadron_live_members(*squadron).empty()));
+    }
+    if (!resolved) {
+        ++(gun_fire ? pilot_gun_fire_unresolved_ : pilot_torpedo_unresolved_);
+        log_.unimplemented(gun_fire ? "LuaNative::PilotGunFire(unresolved unit or target)"
+                                    : "LuaNative::PilotTorpedo(entity without a unit slot)",
+            gun_fire ? "008a50d0" : "008a5310");
+        return 0;
+    }
+    PilotAttackBinding binding(units_, [this](void* e) { return index_of(e); },
+        [this, gun_fire](void* entity, std::uint32_t chosen,
+                         const bsp::SceneCommandTarget& target, int flags) {
+            issue_pilot_attack_order(entity, chosen, target, flags,
+                gun_fire ? "PilotGunFire" : "PilotTorpedo",
+                gun_fire ? pilot_gun_fire_issued_ : pilot_torpedo_issued_,
+                gun_fire ? pilot_gun_fire_tasks_ : pilot_torpedo_tasks_);
+            log_.notef("  %s: unit=%s target_object_id=%u class=%08lx (%s, goal 5 chain 660)",
+                gun_fire ? "PilotGunFire" : "PilotTorpedo", name_of(entity).c_str(),
+                static_cast<unsigned>(target.object_id), static_cast<unsigned long>(chosen),
+                gun_fire ? "008A50D0" : "008A5310");
+        });
+    RepairBindingArgs args(*this);
+    return gun_fire ? bsp::seg56_options_cc13::lua_pilot_gun_fire(args, *this, binding, binding)
+                    : bsp::seg56_options_cc13::lua_pilot_torpedo(args, *this, binding);
 }
 
 void GameScriptOrdersHost::report() {
@@ -9992,6 +10120,14 @@ void GameScriptOrdersHost::report() {
             reload_bomb_platforms_calls_, reload_bomb_platforms_racks_,
             reload_bomb_platforms_unresolved_, plane_is_reloading_calls_,
             plane_is_reloading_true_, plane_is_reloading_unresolved_);
+    }
+    if (pilot_gun_fire_calls_ != 0 || pilot_torpedo_calls_ != 0) {
+        log_.notef("summary mission script pilot attack natives (goal 5 chain 660): "
+            "PilotGunFire 008A50D0 calls=%zu issued=%zu tasks=%llu unresolved=%zu | "
+            "PilotTorpedo 008A5310 calls=%zu issued=%zu tasks=%llu unresolved=%zu",
+            pilot_gun_fire_calls_, pilot_gun_fire_issued_, pilot_gun_fire_tasks_,
+            pilot_gun_fire_unresolved_, pilot_torpedo_calls_, pilot_torpedo_issued_,
+            pilot_torpedo_tasks_, pilot_torpedo_unresolved_);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "

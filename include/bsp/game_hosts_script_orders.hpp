@@ -1102,6 +1102,13 @@ private:
     // Goal 5 chain 660: ArtilleryEnable 0089C590 / TorpedoEnable 0089C8F0 through
     // their src/unit_weapons.cpp bodies.
     int run_weapon_enable_binding(const char* name);
+    // Goal 5 chain 660: a Pilot* attack body's 0077D600 (PilotBomb, PilotGunFire,
+    // PilotTorpedo): the issue, then the receiver's 0099A170 install after delivery.
+    void issue_pilot_attack_order(void* entity, std::uint32_t chosen,
+        const bsp::SceneCommandTarget& target, int flags, const char* label,
+        std::size_t& issued, unsigned long long& tasks);
+    // Goal 5 chain 660: PilotGunFire 008A50D0 and PilotTorpedo 008A5310.
+    int run_pilot_gun_fire_or_torpedo(const char* name);
     const bsp::PlaneSquadronHostRecord* squadron_record_for_argument(std::size_t index);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
@@ -1478,6 +1485,15 @@ private:
     std::size_t pilot_bomb_issued_{0};
     unsigned long long pilot_bomb_tasks_{0};
     std::size_t pilot_bomb_unresolved_{0};
+    // Goal 5 chain 660: PilotGunFire 008A50D0 / PilotTorpedo 008A5310.
+    std::size_t pilot_gun_fire_calls_{0};
+    std::size_t pilot_gun_fire_issued_{0};
+    unsigned long long pilot_gun_fire_tasks_{0};
+    std::size_t pilot_gun_fire_unresolved_{0};
+    std::size_t pilot_torpedo_calls_{0};
+    std::size_t pilot_torpedo_issued_{0};
+    unsigned long long pilot_torpedo_tasks_{0};
+    std::size_t pilot_torpedo_unresolved_{0};
     std::size_t bomb_falling_time_calls_{0};
     std::size_t bomb_falling_time_unresolved_{0};
     std::size_t reload_bomb_platforms_calls_{0};
