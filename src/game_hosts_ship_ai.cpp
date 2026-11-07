@@ -42,6 +42,7 @@
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
 #include "bsp/cc13_seg41_land.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"        // 0074B570 receiver (goal 5 chain 630)
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
 #include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
@@ -1413,6 +1414,9 @@ struct GameShipAiHost::Impl {
     bool deliver_set_owner_d3(CaptureBuilding& b, std::uint32_t player, bool flag,
                               bsp::CommandBuildingFlipOutcome& flip, const char* source);
     void deliver_set_level_d4(CaptureBuilding& b, std::int32_t level, const char* source);
+    // Goal 5 chain 630: the A5h landing order through 0077C2A0's local copy
+    // and the ship's receiver 0074B570, which runs 0074A990.
+    void deliver_land_at_pad_a5(std::size_t unit, int pad, int building, const char* source);
     unsigned long long command_building_d3_copies{0};
     unsigned long long command_building_d4_copies{0};
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
@@ -6892,26 +6896,10 @@ public:
             owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
             return;
         }
-        // 009F2304..009F2328: 00749D90 builds 0A5h (pad, building) and 0077C2A0
-        // routes it to the unit at class 7; 0074B570 runs 0074A990 on it.
-        // SUBSTITUTION, labelled: delivered at once rather than through the route.
-        owner_.record("LandingShip::vtable_148_on_0a5", 0x0074b5b0u);
-        const float draw = owner_.gunnery_draws != nullptr
-            ? owner_.gunnery_draws->ship_ai_draw(index_, 0.0f, 0.75f) : 0.0f;
-        // +1208h is the scene key SpawnPhase (00CFFCAC, 0074C5F4), which no scene
-        // in this installation authors: 0, the construct's value (0074BB90).
-        pads.begin_landing_0074a990(unit, pad, building, draw, 0);
-        owner_.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
-        // 0074A9FC..0074AA75: unless [game+1FE4h] == 2, 0077D600(ship)(land
-        // 00E08FA0, {kind 0, position valid, pad world position, 0.0f}, 1).
-        bsp::SceneCommandTarget target{};
-        target.kind = 0;
-        target.position_valid = 1;
-        target.position[0] = p->position[0];
-        target.position[1] = p->position[1];
-        target.position[2] = p->position[2];
-        owner_.units.issue_script_command(index_, 0x00e08fa0u, target, 1,
-            "0074A990 land at pad", "LandingPoint");
+        // 009F2304..009F2328: 00749D90(pad = EBX, building = [ESP+14h]) on a
+        // stack message, then 0077C2A0(ship, message, 7, 0); the local copy
+        // reaches the ship's 0074B570, whose A5h arm runs 0074A990.
+        owner_.deliver_land_at_pad_a5(index_, pad, building, "0074A990 land at pad");
         ++s.landing_begins;
         owner_.done("ShipAiApproach::landing_mode_3_begin", 0x0074a990u);
     }
@@ -14864,6 +14852,122 @@ bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const fl
     return true;
 }
 
+namespace {
+// Goal 5 chain 630. The landing ship's slot 164h, 0074B570, over this host:
+// the three calls of its A5h arm (bsp.py show 0074B570 --asm). The handles
+// are resolved against the +174h stand-ins the sender posted: a pad is its
+// scene marker id (BuildingPadModel::Pad::marker_id, the LandingPoint's id in
+// this host), a building its units-host index + 1 (the id
+// GameScriptOrdersHost::entity_object_id answers). LABELLED: a stand-in the
+// copy's 13 (pad) or 12 (building) bits cannot carry keeps the posted entity,
+// as the formation and gun-aim copies keep theirs; the load-time marker ids
+// count up from 50000, so a pad is in practice the posted one.
+class LandAtPadReceiver final : public bsp::gameplay_seg41_cc13::LandingShipMessageHost {
+public:
+    LandAtPadReceiver(GameShipAiHost::Impl& host, bsp::BuildingPadModel& pads, std::size_t unit,
+                      int pad, std::uint32_t pad_id, int building, std::uint32_t building_id,
+                      const char* source)
+        : host_(host), pads_(pads), unit_(unit), pad_(pad), pad_id_(pad_id),
+          building_(building), building_id_(building_id), source_(source) {}
+
+    void set_role_available_0077f360(std::uint32_t, std::uint32_t) override {
+        // 0074B59F..0074B5B0: vtable[148h](1FFh, 8), 0077F360 over the image
+        // unit's role table (00927D20) and the role manager map; no typed arm.
+        host_.record("LandingShip::vtable_148_on_0a5", 0x0074b5b0u);
+    }
+    void begin_landing_0074a990(std::uint16_t pad_handle,
+                                std::uint16_t building_handle) override {
+        // 0074B5B2..0074B616: +1Eh, then +1Ch, through the handle tables at
+        // 00F89A0C / 00F89A60.
+        int building = building_;
+        if (building_id_ <= 0xfffu) {
+            building = building_handle == 0 ? -1 : static_cast<int>(building_handle) - 1;
+        }
+        int pad = pad_;
+        if (pad_id_ <= 0x1fffu) {
+            pad = -1;
+            for (std::size_t i = 0; i < pads_.pad_count(); ++i) {
+                const bsp::BuildingPadModel::Pad* candidate = pads_.pad(static_cast<int>(i));
+                if (candidate != nullptr
+                    && static_cast<std::uint32_t>(candidate->marker_id) == pad_handle) {
+                    pad = static_cast<int>(i);
+                    break;
+                }
+            }
+        }
+        const bsp::BuildingPadModel::Pad* p = pad >= 0 ? pads_.pad(pad) : nullptr;
+        if (p == nullptr) throw std::logic_error("A5h copy names no landing pad");
+        // 0074B61A: 0074A990(pad, building). `draw` is 00BD2F10's uniform(0,
+        // 0.75f [00CEE07C]) inside 0074A990. +1208h is the scene key
+        // SpawnPhase (00CFFCAC, 0074C5F4), which no scene in this installation
+        // authors: 0, the construct's value (0074BB90).
+        const float draw = host_.gunnery_draws != nullptr
+            ? host_.gunnery_draws->ship_ai_draw(unit_, 0.0f, 0.75f) : 0.0f;
+        pads_.begin_landing_0074a990(static_cast<int>(unit_), pad, building, draw, 0);
+        host_.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
+        // 0074A9FC..0074AA75: unless [game+1FE4h] == 2, 0077D600(ship)(land
+        // 00E08FA0, {kind 0, position valid, pad world position, 0.0f}, 1).
+        bsp::SceneCommandTarget target{};
+        target.kind = 0;
+        target.position_valid = 1;
+        target.position[0] = p->position[0];
+        target.position[1] = p->position[1];
+        target.position[2] = p->position[2];
+        host_.units.issue_script_command(unit_, 0x00e08fa0u, target, 1, source_,
+                                         "LandingPoint");
+        began_ = true;
+    }
+    void hud_landing_prompt_if_selected() override {
+        // 0074B61F..0074B684: 00644A60 on [00E198C4]+40h against this ship,
+        // then 00566050 and the front-end request; presentation.
+        host_.record("LandingShip::hud_landing_prompt", 0x0074b61fu);
+    }
+    void lower_ramp_0074a420() override {
+        throw std::logic_error("A5h copy reached 0074B570's A6h arm");
+    }
+    bool base_handle_message_00821e80() override {
+        throw std::logic_error("A5h copy reached the ship base handler 00821E80");
+    }
+    bool began() const noexcept { return began_; }
+
+private:
+    GameShipAiHost::Impl& host_;
+    bsp::BuildingPadModel& pads_;
+    std::size_t unit_;
+    int pad_;
+    std::uint32_t pad_id_;
+    int building_;
+    std::uint32_t building_id_;
+    const char* source_;
+    bool began_{false};
+};
+}  // namespace
+
+void GameShipAiHost::Impl::deliver_land_at_pad_a5(std::size_t unit, int pad, int building,
+                                                  const char* source) {
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+    const std::uint32_t pad_id = p != nullptr ? static_cast<std::uint32_t>(p->marker_id) : 0u;
+    const std::uint32_t building_id =
+        building >= 0 ? static_cast<std::uint32_t>(building) + 1u : 0u;
+    LandAtPadReceiver receiver(*this, pads, unit, pad, pad_id, building, building_id, source);
+    bool handled = false;
+    if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+        handled = messages->deliver_land_at_pad_a5(static_cast<std::uint16_t>(pad_id),
+            static_cast<std::uint16_t>(building_id), receiver);
+        done("LandingShip::a5_local_copy_0075af00", 0x0075af00u);
+    } else {
+        // No commands host: 0074B570 over the posted message, as the direct
+        // call took it.
+        handled = bsp::gameplay_seg41_cc13::handle_message_0074b570(0xA5u,
+            static_cast<std::uint16_t>(pad_id), static_cast<std::uint16_t>(building_id),
+            receiver);
+        record("LandingShip::a5_local_copy_0075af00", 0x0075af00u);
+    }
+    if (!handled || !receiver.began())
+        throw std::logic_error("A5h: the copy did not reach 0074B570's landing arm");
+}
+
 int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     Impl& host = *impl_;
     GameShipAiSummary& s = host.summary;
@@ -14916,21 +15020,10 @@ int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     }
     const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
     if (p == nullptr) return -4;
-    // 0074A565 ship+1200h = pad; 0074A56B..0074A57F 0A5h (00749D90) routed at
-    // class 7; 0074B570 runs 0074A990. Delivered at the call (LABELLED).
-    const float draw = host.gunnery_draws != nullptr
-        ? host.gunnery_draws->ship_ai_draw(unit, 0.0f, 0.75f) : 0.0f;
-    pads.begin_landing_0074a990(ship, pad, site, draw, 0);
-    host.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
-    // 0074A9FC..0074AA75: 0077D600(ship)(land 00E08FA0, pad world position).
-    bsp::SceneCommandTarget target{};
-    target.kind = 0;
-    target.position_valid = 1;
-    target.position[0] = p->position[0];
-    target.position[1] = p->position[1];
-    target.position[2] = p->position[2];
-    host.units.issue_script_command(unit, 0x00e08fa0u, target, 1,
-        "0074A4C0 land at pad", "LandingPoint");
+    // 0074A565 ship+1200h = pad; 0074A55F..0074A57F 00749D90(pad = EAX,
+    // building = EDI) on a stack message and 0077C2A0(ship, message, 7, 0);
+    // the local copy reaches the ship's 0074B570, which runs 0074A990.
+    host.deliver_land_at_pad_a5(unit, pad, site, "0074A4C0 land at pad");
     ++s.landing_begins;
     ++s.landing_requests_begun;
     host.log.notef("  landing ship request (94h -> 0074A4C0): t=%.2f unit=%u pad=%d site=%d "

@@ -1,0 +1,33 @@
+{
+  "chain": 630,
+  "slot": "g5-w1",
+  "goal": 5,
+  "picked": "landing-ship 0A5h LANDINGSHIP_STARTLANDING local message round trip (00749D90 -> 00749E10 -> 0075AF00 -> 00749E40 -> receiver 0074B570)",
+  "rows": [
+    {"native": "00749d90", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::deliver_land_at_pad_a5 (from src/game_hosts_ship_ai.cpp landing sites 009F2304 / 0074A56B)"},
+    {"native": "00749e10", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::deliver_land_at_pad_a5"},
+    {"native": "0075af00", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::deliver_land_at_pad_a5"},
+    {"native": "00749e40", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::deliver_land_at_pad_a5"},
+    {"native": "0074b570", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::deliver_land_at_pad_a5 (receiver binding in src/game_hosts_ship_ai.cpp)"},
+    {"native": "00749aa0", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: landing ship ramp latch (0074B080..0074B0A0)", "reason": "0A6h LANDINGSHIP_OPEN is routed with 0077C2A0 flags 4 (0074B090), which 0077C2A0 drops unless game+1FE4h == 1 (host of a network session): multiplayer only."},
+    {"native": "00749ad0", "status": "skipped", "host_site": "none", "reason": "IsType of the 0A6h class; 0A6h is multiplayer only (flags 4 at 0074B090)."},
+    {"native": "0077f360", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: 0A5h receiver binding set_role_available_0077f360", "reason": "0074B5B0 vtable[148h](1FFh, 8) needs the raw unit image (+188h owner, +54h side, role manager +D4h map via 00927D20); the host role model has no typed 00927D20 arm, kept as a record."},
+    {"native": "00763140", "status": "skipped", "host_site": "none", "reason": "AIRBASE SETSLOT 81h sender is 006CD350 / 00895ED0 SetAirBaseSlot, which has no host binding; the typed AirOpsDeck model lacks 006CCDA0's order-2 arm on a ready slot (returns -1). Only chg_6_forcez.lua:90 calls SetAirBaseSlot."},
+    {"native": "006bd800", "status": "skipped", "host_site": "none", "reason": "Same as 00763140: SetAirBaseSlot (00895ED0) is not bound in the host Lua dispatch; files under review by agent/g5-w3 (session messages, Lua)."},
+    {"native": "0075ae10", "status": "skipped", "host_site": "src/game_hosts_units.cpp: SubmarineUnit::depth_message_a2", "reason": "A2h dip/rise sync is sent with 0077C7B0 BroadcastMessage, gated on game+1FE4h == 1 (0077C7B6..0077C7C0): multiplayer only."},
+    {"native": "007ba8d0", "status": "skipped", "host_site": "src/gameplay_seg47_cc13.cpp: named_effect_007bbfa0 route_dead_meat_rot", "reason": "C8h PLANE_DEADMEATROT is only routed when [00E188A8]+1FE4h != 0 (007BC17B etc.): multiplayer only."},
+    {"native": "00762c80", "status": "skipped", "host_site": "none", "reason": "Constructor of C8h DEADMEATROT, multiplayer only (see 007ba8d0)."},
+    {"native": "009052e0", "status": "skipped", "host_site": "src/game_hosts_hud.cpp: update_map_screen_005b45c0", "reason": "005B5A06 CMP [game+1FE4h],0 / JZ skips the 005B5A28 call in single player: multiplayer only."},
+    {"native": "00977da0", "status": "skipped", "host_site": "none", "reason": "report_capture_ship is multiplayer only (game+1FE4h guard, warning_reports_cc13.hpp)."},
+    {"native": "009781e0", "status": "skipped", "host_site": "none", "reason": "report_capture_point is multiplayer only (game+1FE4h guard, warning_reports_cc13.hpp)."},
+    {"native": "005bca80", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: run_countdown_update_00735100", "reason": "Countdown panel setter on HUD root +58h (screen 35h block, +168h/+170h/+174h); no reader of those fields was found in 005B8000..005C6000 and the native screen block is owned by game_hosts_hud.cpp (agent/g5-w4 in review)."},
+    {"native": "0052b9b0", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: Countdown binding (HudCountdown::show_text)", "reason": "Needs the HUD counters screen (51h) entries at +0Ch/+10h, which the 0052CBF0 register override creates; g5-w4 left that override (widget clone 00AAB4C0, +34h EDI quirk)."},
+    {"native": "0052ab90", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: CountdownCancel binding (HudCountdown::clear_text)", "reason": "Same as 0052b9b0: counters screen entries not built."},
+    {"native": "005b7390", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp: narrative show text", "reason": "Needs the narrative screen's native widgets +ACh/+B0h/+B4h (text measure 00AB6BD0, localised source 00ABAED0); the host delivers the text through its own narrative HUD."},
+    {"native": "007a06d0", "status": "skipped", "host_site": "src/hud_movie_camera.cpp: parse_007a0eb0 gamecamera modifier", "reason": "The gamecamera/fpscamera modifier needs a GameCameraModifierHost over game camera movers (0079CBD0 builds 00650830/0064B650/00605130/0078E830 movers); the host has no such mover objects."},
+    {"native": "007995f0", "status": "skipped", "host_site": "src/hud_movie_camera.cpp: keyframe_event_parse_007a1f94", "reason": "The keyframe event observer only matters when the entity is deleted; the host never deletes units (KeyframeEventBinding SUBSTITUTION), so registering the observer has no effect to carry."},
+    {"native": "0085d770", "status": "skipped", "host_site": "src/game_hosts_units.cpp: vehicle_avoidance_007df4f0", "reason": "The 007DF8D6 call is in the velocity-frame branch, which needs unit+B04h; that field has no writer in the image, so the branch never runs."},
+    {"native": "006b1190", "status": "skipped", "host_site": "none", "reason": "Mission save-data pickler; its entries 006B7710 / 006B5960 have no static reference in the image (no caller reaches the save/load)."},
+    {"native": "0090f860", "status": "skipped", "host_site": "src/command_building_capture.cpp", "reason": "The raw scoring bodies (cc13_seg59a/b) need the native 284h-stride scoring image with bound STL maps plus image-shaped unit views; the host keeps a typed MissionScoreRecord instead."}
+  ]
+}
