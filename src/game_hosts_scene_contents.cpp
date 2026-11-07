@@ -4793,7 +4793,13 @@ void SceneContentsBinding::scatter_clouds() {
 // ---------------------------------------------------------------------------
 
 void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
+    // Goal 5 chain 652: lend the 00437F50 registry this host owns, so the Lua
+    // host's 0095BA60 calls (PrepareClass 008C9297, 00964790 at 00964F46) mark
+    // the same party rows the registration pass and 0095BAB0 use. Taken back
+    // when the Lua host changes and by the destructor.
+    if (impl_->lua != nullptr && impl_->lua != lua) impl_->lua->attach_vehicle_registry(nullptr);
     impl_->lua = lua;
+    if (lua != nullptr) lua->attach_vehicle_registry(&impl_->vehicle_registry);
 }
 void GameSceneContentsHost::bind_native_scene_remaps(GameNativeRendererApplication& renderer,
     const std::array<std::string, 4>& names) {
@@ -4811,6 +4817,9 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameSceneContentsHost::~GameSceneContentsHost() {
+    // The mission frame holds the Lua host by reference, so it outlives this
+    // host; take the lent registry back before it goes.
+    if (impl_->lua != nullptr) impl_->lua->attach_vehicle_registry(nullptr);
     scene_path_sources().clear();
     if (g_live_scene_contents == this) g_live_scene_contents = nullptr;
 }
