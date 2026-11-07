@@ -171,6 +171,9 @@ public:
     // cc15 lane L2 (kProfileOwnerCc15Bound): read [game+6B4h] through the
     // profile owner at each use instead of progress_. The owner outlives this.
     void bind_profile(GameProfileOwner* profile) noexcept { profile_ = profile; }
+    // Goal 5 chain 653: the owner bind_profile lent (game+650h), or null, for the
+    // Scoring_IsUnlocked / Scoring_GrantUnlock rows.
+    GameProfileOwner* profile_owner() const noexcept { return profile_; }
 
 private:
     // --- bsp::MissionResultHost -------------------------------------------

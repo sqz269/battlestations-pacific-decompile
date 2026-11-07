@@ -23,18 +23,30 @@ int scoring_difficulty_index(ScoringBindingHost& host)
 
 } // namespace
 
+// Both accessors run on the main thread, whose x87 precision control is 24 bits, so each
+// arithmetic instruction rounds its result to a float mantissa (FILD itself is exact).
+// Goal 5 chain 653 put them on the Scoring_* Lua rows, so the chains round per operation:
+// the product of an int (31 bits) and a float (24 bits) is formed in double and rounded to
+// float, which differs from the x87's single rounding only on a double-rounding tie of a
+// product wider than 53 bits (|value| above 2^29), far beyond any mission score.
 int scoring_scaled_set_009103f0(int value, float multiplier) noexcept
 {
-    // FILD dword [value]; FMUL float [multiplier]; __ftol.
-    return ftol_00bf7420(static_cast<double>(value) * static_cast<double>(multiplier));
+    // 00910442 FILD dword [value]; 00910449 FMUL float [multiplier] (rounded to 24 bits);
+    // 0091044B __ftol.
+    const float product = static_cast<float>(static_cast<double>(value)
+                                             * static_cast<double>(multiplier));
+    return ftol_00bf7420(static_cast<double>(product));
 }
 
 int scoring_scaled_add_00910480(int current, int delta, float multiplier) noexcept
 {
     // FLD float [multiplier]; FIMUL dword [delta]; FIADD dword [current]; __ftol. One
-    // truncation over the whole expression, not two.
-    const double scaled = static_cast<double>(multiplier) * static_cast<double>(delta);
-    return ftol_00bf7420(scaled + static_cast<double>(current));
+    // truncation over the whole expression, not two; FIMUL and FIADD each round to 24 bits.
+    const float scaled = static_cast<float>(static_cast<double>(multiplier)
+                                            * static_cast<double>(delta));
+    const float sum = static_cast<float>(static_cast<double>(scaled)
+                                         + static_cast<double>(current));
+    return ftol_00bf7420(static_cast<double>(sum));
 }
 
 ScoringSlotSelection scoring_select_slot_variant_a(bool multiplayer, int local_player_slot,
