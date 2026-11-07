@@ -63,6 +63,19 @@ struct HudScreenRegisterHost {
 struct HudScreenRegisterPageHost : HudScreenRegisterHost {
     virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
 };
+// The leaf register overrides whose whole body is 004F71D0 and the screen's
+// own +14h virtual, ECX = screen (0067BE80; 00650170 then clears two fields).
+// The HUD host dispatches +14h by the slot's layout virtual.
+struct HudScreenRegisterLayoutHost : HudScreenRegisterHost {
+    virtual void screen_virtual_14(Raw screen) = 0;
+};
+// A layout virtual (+14h) that only loads its page (00AA5840 on the 004C12B0
+// manager) and binds children by name (00AA7E00(name, 1)): 00650B90.
+struct HudScreenPageChildHost {
+    virtual ~HudScreenPageChildHost() = default;
+    virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
+    virtual void* gui_find_child_00aa7e00(void* parent, std::string_view name) = 0;
+};
 
 // The scene-init constructor/register pair needs only these services. Keep
 // its live owner independent of unrelated camera, input and observer services.
@@ -317,7 +330,7 @@ void cursor_screen_enter_0067bd70(Raw s, HudScreenHost& host);
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kFollowScreenVtable = 0x00CF6D68;
 Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host);
-void follow_screen_register_0067be80(Raw s, HudScreenHost& host);
+void follow_screen_register_0067be80(Raw s, HudScreenRegisterLayoutHost& host);
 void follow_screen_exit_0067bec0(Raw s) noexcept;
 
 // ---------------------------------------------------------------------------
@@ -378,7 +391,7 @@ inline constexpr std::uint32_t kSubmarineScreenVtable = 0x00CF61D4;
 inline constexpr std::uint32_t kPeriscopeScreenVtable = 0x00CF639C;
 inline constexpr std::uint32_t kPeriscopeCallbackVtable = 0x00CF6384;
 Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host);
-void submarine_register_00650170(Raw s, HudScreenHost& host);
+void submarine_register_00650170(Raw s, HudScreenRegisterLayoutHost& host);
 void submarine_destruct_00650910(Raw s, HudScreenHost& host);
 void periscope_released_006502d0(Raw s, void* object) noexcept;
 void periscope_exit_00650810(Raw s, HudScreenHost& host);
@@ -603,7 +616,7 @@ void hud_root_destruct_00647db0(Raw s, ScreenTeardownHost& host, NativeStringHos
 void ship_status_exit_0064d8d0(Raw s, ScreenTeardownHost& host);
 void periscope_destruct_00650970(Raw s, ScreenTeardownHost& host);
 void periscope_load_layout_00651230(Raw s, HudScreenHost& host);
-void submarine_load_layout_00650b90(Raw s, HudScreenHost& host);
+void submarine_load_layout_00650b90(Raw s, HudScreenPageChildHost& host);
 
 // ---------------------------------------------------------------------------
 // Batch 2 hosts and routines.
