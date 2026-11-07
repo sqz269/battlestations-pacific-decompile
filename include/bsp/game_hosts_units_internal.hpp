@@ -4396,18 +4396,34 @@ struct GameUnitsHost::Impl {
     // delivered yet, in post order. Filled only with the switch ON.
     struct PendingShipSink92h {
         GameUnitSlot* slot{nullptr};
-        std::array<float, 6> rates{};
+        std::uint32_t count{0};          // msg+1Ch, the copy's count
+        std::array<float, 6> rates{};    // msg+20h
     };
     std::vector<PendingShipSink92h> pending_ship_sink_92h;
     // 0076C600 -> 0082220D -> 0074E860 for each: the message's rates overwrite
     // the manager's (+18h), so a leak 0074F440 added since the post is lost.
+    // bsp.py show 00821e80 --asm: 0082220D MOV EDX,[ESI+1Ch]; 00822210 LEA
+    // ECX,[ESI+20h]; PUSH ECX; PUSH EDX; LEA ECX,[EDI+10D4h]; CALL 0074E860.
+    // The slot's `leaks` are the manager's parallel arrays as one struct per
+    // zone, so the +18h array is projected into the body's view and back.
     std::size_t deliver_ship_sink_92h_0082220d() {
         if (pending_ship_sink_92h.empty()) return 0;
         std::vector<PendingShipSink92h> batch;
         batch.swap(pending_ship_sink_92h);
         for (const PendingShipSink92h& m : batch) {
+            bsp::gameplay_seg41_cc13::LeakManagerZones zones;
+            zones.leak_18.resize(m.slot->leaks.size());
             for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
-                m.slot->leaks[i].rate = m.rates[i];
+                zones.leak_18[i] = m.slot->leaks[i].rate;
+            if (!bsp::gameplay_seg41_cc13::load_zone_array_0074e860(
+                    zones, static_cast<std::int32_t>(m.count), m.rates.data())) {
+                // The image has no bound; a count past +14h would write past
+                // the manager's arrays. queue_ship_sink_92 posts the zone count.
+                throw std::logic_error("92h leak-rate count exceeds the leak manager's zones");
+            }
+            for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
+                m.slot->leaks[i].rate = zones.leak_18[i];
+            done("LeakManager::load_zone_array_0074e860", 0x0074e860u);
             done("ShipMessage::sink_92h_0082220d", 0x0082220du);
         }
         return batch.size();
@@ -4461,6 +4477,7 @@ struct GameUnitsHost::Impl {
                 if (copy.sink_92) {
                     for (std::size_t i = 0; i < message.rates.size(); ++i)
                         message.rates[i] = i < copy.count ? copy.rates[i] : 0.0f;
+                    message.count = copy.count;
                     pending_ship_sink_92h.push_back(message);
                 }
             }

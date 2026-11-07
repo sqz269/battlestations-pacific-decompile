@@ -159,7 +159,15 @@ def analyse(build_dir):
             for a, size, mn, ops in md.disasm_lite(code[off:], va + off):
                 last = a + size
                 n_insn += 1
-                if (mn == "call" or mn == "jmp") and ops.startswith("0x"):
+                # A conditional jump into another function is a conditional tail
+                # call (`test ecx,ecx / jne Impl::method` for `p ? p->method() : 0`);
+                # it is counted with the JMP tail calls.
+                if mn[0] == "j" and ops.startswith("0x"):
+                    tgt = int(ops, 16)
+                    dst, _ = node_of(tgt)
+                    if dst is not None and dst != va and is_func.get(dst):
+                        add(va, dst, "jmp", a)
+                elif mn == "call" and ops.startswith("0x"):
                     tgt = int(ops, 16)
                     dst, _ = node_of(tgt)
                     if dst is not None and dst != va and is_func.get(dst):
