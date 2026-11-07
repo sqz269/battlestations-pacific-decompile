@@ -26,14 +26,14 @@
     {
       "native": "004ed2d0",
       "status": "wired",
-      "host_site": "src/scene_weather_cc13.cpp read_music_state (inside 004ED690)",
-      "note": "Inline helper of 004ED690; each Music state reaches 00A79480. Its SoundEffect arm (00A83FD0 on [00F8BBE8] then 004E7BB0 into record+DA8h + slot*18h) is logged unimplemented by SceneMusicBinding::assign_sound_effect: the host scene record has no +DA8h sample slots and the only static +DA8h reference is this writer. The 259 installed scenes leave SoundEffect empty."
+      "host_site": "src/scene_weather_cc13.cpp read_music_track_004ed2d0 (out-of-line entry, called per music state by 004ED690 read_music)",
+      "note": "Own __declspec(noinline) address-named entry since review round 1; it was the anonymous helper read_music_state, which the call graph could not see. Ledger cpp_symbol updated. It hands 00A79480 the whole 18h music-state record record+D98h+slot*18h (EBP at 004ED307, pushed at 004ED512): +0 FileName, +8 Channel (004ED33E), +10h SoundEffect sample, +14h the 004C87D0 constructor word. Its SoundEffect arm (00A83FD0 on [00F8BBE8] then 004E7BB0) is logged unimplemented by SceneMusicBinding::assign_sound_effect: the host scene record has no sample slots and no reader is known. The 259 installed scenes leave SoundEffect empty."
     },
     {
       "native": "00a79480",
       "status": "wired",
       "host_site": "src/game_sound_dialog_runtime.cpp GameSoundDialogRuntime::set_music_track (called by SceneMusicBinding::set_music_track_00a79480)",
-      "note": "Runs over the published owner [00F8BBCC] through the runtime's MusicDirectorAdapter, which now implements the new DialogSlotRecordHost (cc13_sweepC2.hpp: the seven services the body needs beyond DialogMusicHost, split out of SweepC2Host). The .def table is built by 00A79150 over 20h object storage, as the stream constructor 00A877D0 builds its own. Every Music FileName in the installed scenes has its sound/music .def."
+      "note": "Runs over the published owner [00F8BBCC] through the runtime MusicDirectorAdapter, which implements the new DialogSlotRecordHost (cc13_sweepC2.hpp, split out of SweepC2Host). Its first argument is a full 18h record shaped like the scene record +D98h+slot*18h: path +0, Channel +8, null sample reference +10h (SoundEffect not acquired), and +14h = [00D7A24C] (1.0f). 004C87D0 stores that word and nothing else writes it (004DA2A0 -> 004CCB00 at 004DA3EB; vector at record+D5Ch+3Ch, 18h x 12h). Review round 0 passed an 8-byte string, which 00A78230 would have read past. 00A78230 copies the record into the owner +10h+slot*18h record. The path .def table is built by 00A79150 over 20h object storage, as 00A877D0 builds its own. Every Music FileName in the installed scenes has its sound/music .def."
     },
     {
       "native": "004ee9e0",
@@ -64,5 +64,10 @@
     "004ED910 (world parameters, Ambient environment loops, FileSystemLua aliases): needs the live renderer at scene-load time and 004EE9E0's terrain strings; would replace GameNativeMissionMaterialRefresh's ReflectionCubeMap publish.",
     "004E7220 cloud areas from g_Environment and 004BA870 scatter: needs a scene-record cloud block and cloud entities; re-check the scene-contents claim that +C84h stays zero.",
     "004ED2D0's SoundEffect samples into record+DA8h: no reader found yet."
-  ]
+  ],
+  "review_round_1": {
+    "finding_1": "fixed: GameSoundDialogRuntime::set_music_track(path, channel, party, state) builds SceneMusicStateRecord (18h: path, Channel, null +10h, +14h from globals.one_00d7a24c) and passes it to 00A79480. Both strings are released on the normal and exception paths. SceneMusicHost::set_music_track_00a79480 now receives the slot SceneMusicState, and SceneMusicBinding passes path_d98 and channel_da0. Comments corrected.",
+    "finding_2": "fixed: read_music_state became __declspec(noinline) read_music_track_004ed2d0; call_graph who 004ed2d0 shows the call from read_music (004ED690). Ledger row 004ed2d0 cpp_symbol updated in place.",
+    "checks": "build.ps1 4/4 tests; pc24_lint 0 findings; call_graph 5765/5805 reconstructed addresses called (5764 before this round); readiness wired 10329."
+  }
 }

@@ -195,8 +195,11 @@ struct SceneMusicHost {
     virtual ~SceneMusicHost() = default;
     // 00A83FD0 on [00F8BBE8] then 004E7BB0 into record+DA8h + slot*18h.
     virtual void assign_sound_effect(int slot, const std::string& name) = 0;
-    // 00A79480 on [00F8BBCC](&path, party, state): the manager's slot +1C0h + (party*9+state)*4.
-    virtual void set_music_track_00a79480(const std::string& path, int party, int state) = 0;
+    // 00A79480 on [00F8BBCC](&record+D98h+slot*18h, party, state) at 004ED513: the
+    // whole 18h music-state record (path +0, Channel +8, SoundEffect sample +10h,
+    // float +14h), copied by 00A78230 into the manager's +10h + slot*18h record;
+    // its .def table goes to +1C0h + slot*4.
+    virtual void set_music_track_00a79480(const SceneMusicState& music, int party, int state) = 0;
 };
 
 // 004ED690: __fastcall(ECX = Sound bag, EDX = scene record), RET; caller 004F22C0. Uses

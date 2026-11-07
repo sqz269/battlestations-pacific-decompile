@@ -446,8 +446,10 @@ void read_environment_sound(const ScenePropertyBagModel& model, int ambient_bag,
     }
 }
 
-// 004ED2D0.
-void read_music_state(const ScenePropertyBagModel& model, const ScenePropertyEntry* state, int party,
+// 004ED2D0 BSP_SceneMusicTrack_Read. Kept out of line: 004ED690 calls it per
+// music state as its own function.
+__declspec(noinline) void read_music_track_004ed2d0(const ScenePropertyBagModel& model,
+                      const ScenePropertyEntry* state, int party,
                       int index, SceneMusicFields& out, SceneMusicHost& host) {
     const int slot = party * kMusicStateCount + index;
     SceneMusicState& music = out.music[slot];
@@ -468,7 +470,8 @@ void read_music_state(const ScenePropertyBagModel& model, const ScenePropertyEnt
             host.assign_sound_effect(slot, effect->value.text);
         }
     }
-    host.set_music_track_00a79480(music.path_d98, party, index);
+    // 004ED502..004ED513: PUSH state, party, EBP = record+D98h+slot*18h.
+    host.set_music_track_00a79480(music, party, index);
 }
 
 void read_music(const ScenePropertyBagModel& model, int bag, SceneMusicFields& out, SceneMusicHost& host) {
@@ -495,8 +498,8 @@ void read_music(const ScenePropertyBagModel& model, int bag, SceneMusicFields& o
             continue;
         }
         for (int state = 0; state < kMusicStateCount; ++state) {
-            read_music_state(model, find(model, party_entry->sub_bag, kStates[state]), party, state, out,
-                             host);
+            read_music_track_004ed2d0(model, find(model, party_entry->sub_bag, kStates[state]), party,
+                                      state, out, host);
         }
     }
 }

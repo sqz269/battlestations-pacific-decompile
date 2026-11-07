@@ -298,30 +298,54 @@ void GameSoundDialogRuntime::set_music_level(std::int32_t level) {
     cc13_sweepC2::music_director_set_level_00a788a0(calls,
         *static_cast<NativeSoundAlternateOwnerStorage*>(current), level);
 }
-void GameSoundDialogRuntime::set_music_track(const std::string& path, std::int32_t party,
-    std::int32_t state) {
+namespace {
+// The scene record's 18h music-state record at +D98h + slot*18h, which
+// 004ED2D0 hands 00A79480 whole (EBP at 004ED307, pushed at 004ED512) and
+// 00A78230 copies field by field (+0, +8, +10h retained, +14h).
+// 004DA2A0 builds the 18 records at 004DA3EB through 004CCB00 (ECX =
+// record+D5Ch; the vector at +3Ch, size 18h, count 12h) with 004C87D0: two
+// empty strings, a null +10h reference and +14h = [00D7A24C]. 004ED2D0
+// writes +0 (FileName, cleared first), +8 (Channel at +DA0h, 004ED33E,
+// cleared first) and +10h (SoundEffect sample, 004E7BB0); nothing else in
+// the image writes +DACh, so +14h stays the constructor's word.
+struct SceneMusicStateRecord {
+    NativeString path;       // +0
+    NativeString channel;    // +8
+    void* sample{};          // +10h, null: the SoundEffect sample is not acquired
+    std::uint32_t word_14{}; // +14h, [00D7A24C]
+};
+static_assert(sizeof(NativeString) == 8 && sizeof(SceneMusicStateRecord) == 0x18);
+void assign_text(NativeString& out, NativeStringStorage& strings, const std::string& text) {
+    if (text.size() > 0xffffffffu)
+        throw std::length_error("Music state text exceeds the native string extent");
+    out.resize_0041dd40(strings, static_cast<std::uint32_t>(text.size()), false);
+    if (!text.empty()) std::memcpy(out.data(), text.data(), text.size());
+}
+} // namespace
+
+void GameSoundDialogRuntime::set_music_track(const std::string& path, const std::string& channel,
+    std::int32_t party, std::int32_t state) {
     auto& self = *impl_;
     void* const current = self.globals.alternate_00f8bbcc;
     self.check_owner(current);
     // 004ED2D0 stores slot party*9 + state of 2 x 9 (004ED690's loops).
     if (party < 0 || party > 1 || state < 0 || state > 8)
         throw std::out_of_range("Music track slot is outside the scene's 2 x 9 states");
-    if (path.size() > 0xffffffffu)
-        throw std::length_error("Music track path exceeds the native string extent");
     auto& strings = self.bound().table.strings;
-    // The record+D98h + slot*18h string 004ED2D0 hands 00A79480, built here
-    // from the reader's text (empty for a state with no FileName).
-    NativeString header;
-    header.resize_0041dd40(strings, static_cast<std::uint32_t>(path.size()), false);
-    if (!path.empty()) std::memcpy(header.data(), path.data(), path.size());
+    SceneMusicStateRecord record;
+    record.word_14 = self.globals.one_00d7a24c;  // 004C87D0 MOVSS from 00D7A24C
     Impl::MusicDirectorAdapter calls(self);
     try {
-        cc13_sweepC2::dialog_set_slot_record_00a79480(calls, current, &header, party, state);
+        assign_text(record.path, strings, path);
+        assign_text(record.channel, strings, channel);
+        cc13_sweepC2::dialog_set_slot_record_00a79480(calls, current, &record, party, state);
     } catch (...) {
-        header.release_to(strings);
+        record.channel.release_to(strings);
+        record.path.release_to(strings);
         throw;
     }
-    header.release_to(strings);
+    record.channel.release_to(strings);
+    record.path.release_to(strings);
 }
 void GameSoundDialogRuntime::set_music_target_level(float level) {
     auto& self = *impl_;

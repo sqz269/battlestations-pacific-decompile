@@ -2559,9 +2559,12 @@ struct SceneMusicBinding final : bsp::scene_weather_cc13::SceneMusicHost {
         ++sound_effects;
         log.unimplemented("SceneContents::scene_music_sound_effect", "004ed2d0");
     }
-    void set_music_track_00a79480(const std::string& path, int party, int state) override {
-        dialog.set_music_track(path, party, state);
-        if (!path.empty()) ++tracks;
+    void set_music_track_00a79480(const bsp::scene_weather_cc13::SceneMusicState& music,
+        int party, int state) override {
+        // The whole +D98h + slot*18h record: path, Channel, a null sample
+        // (above) and the constructor's +14h word.
+        dialog.set_music_track(music.path_d98, music.channel_da0, party, state);
+        if (!music.path_d98.empty()) ++tracks;
     }
 };
 
