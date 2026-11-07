@@ -62,7 +62,7 @@ struct GameHudScreenRecord {
 struct GameHudSummary {
     bool manager_built{false};       // the executable's registry records exist
     bool manager_global_published{false};  // 0068ccfe, the second write of 00e198c4
-    std::size_t screen_constructors{0};    // the 42 leaf constructors, all records
+    std::size_t screen_constructors{0};    // leaf constructors 0068cc70 called (run or recorded)
     std::size_t screens_built{0};    // of kInGameHudScreenCount
     std::size_t pages_requested{0};
     std::size_t pages_loaded{0};

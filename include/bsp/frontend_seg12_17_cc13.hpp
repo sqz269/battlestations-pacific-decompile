@@ -73,7 +73,7 @@ inline constexpr std::array<CollectChildrenSlot, 5> kCollectChildrenSlots{{
 // ---------------------------------------------------------------------------
 // Engine routines the packet's code calls. ECX-taking routines get the object first.
 // ---------------------------------------------------------------------------
-struct Fe3Host {
+struct Fe3Host : ingame_gui_cc13::HudScreenBaseHost, ingame_gui_cc13::HudScreenRegisterHost {
     virtual ~Fe3Host() = default;
     // Allocation.
     virtual void free_00bf65ac(void* block) = 0;
@@ -138,7 +138,7 @@ void owned_library_entry_delete_00501ce0(Raw holder, Fe3Host& host);
 void* loading_queue_deleting_destructor_0050ace0(Raw object, std::uint8_t flags, Fe3Host& host);
 void* frame_deleting_destructor_00517d60(Raw object, std::uint8_t flags, Fe3Host& host);
 // 005176A0 BSP_InGameScreen23_Register: 004F71D0, then +20h = 0.
-void in_game_screen_23_register_005176a0(Raw screen, Fe3Host& host);
+void in_game_screen_23_register_005176a0(Raw screen, ingame_gui_cc13::HudScreenRegisterHost& host);
 // 005176C0, __thiscall(observer, released), RET 4: clears whichever of +14h / +18h holds it
 // (the first match only).
 void in_game_screen_23_on_released_005176c0(Raw observer, void* released) noexcept;
@@ -190,7 +190,7 @@ std::int32_t leaderboards_selected_row_00561300(Raw screen, Fe3Host& host);
 // 00563400: 006833F0(+28h), then tail 006833F0(+0B0h).
 void leaderboards_listener_recapture_00563400(Raw listener, Fe3Host& host);
 // 00565D40 BSP_HudLimboScreen_Construct, EAX = screen: 004F7180, vtable 00CEEBAC.
-void* hud_limbo_construct_00565d40(Raw screen, Fe3Host& host);
+void* hud_limbo_construct_00565d40(Raw screen, ingame_gui_cc13::HudScreenBaseHost& host);
 // 00565D70 BSP_HudLimboScreen_Exit: +14h = 0.
 void hud_limbo_exit_00565d70(Raw screen) noexcept;
 // 00566050, __fastcall(screen): active (+5h) -> 00ABBE50(ECX = +0Ch; name, 1), name = the global
@@ -324,7 +324,7 @@ void* award_record_construct_00506270(Raw record, Fe3RecordHost& host);
 // ---------------------------------------------------------------------------
 // Batch B (continued): library queue and screens, input-settings tree templates.
 // ---------------------------------------------------------------------------
-struct Fe3TemplateHost {
+struct Fe3TemplateHost : ingame_gui_cc13::HudScreenBaseHost {
     virtual ~Fe3TemplateHost() = default;
     virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual void free_00bf65ac(void* block) = 0;
@@ -412,7 +412,7 @@ void hud_bomber_destruct_005193d0(Raw screen, Fe3TemplateHost& host);
 void in_game_screen_23_ensure_observer_00517730(Raw screen, Fe3TemplateHost& host);
 // 005178B0 BSP_InGameScreen23_Construct, EAX = screen: 004F7180, +8h = 00CE3CD4, +0Ch..+14h = 0,
 // +18h = 0, +1Ch = 0, vtables 00CEC194 / +8h 00CEC17C.
-void* in_game_screen_23_construct_005178b0(Raw screen, Fe3TemplateHost& host);
+void* in_game_screen_23_construct_005178b0(Raw screen, ingame_gui_cc13::HudScreenBaseHost& host);
 // 00517CB0, __fastcall(ECX = widget, EDX = rank): vtable +88h(clamp(rank - 1, 0, 13h), 0, 1.0f)
 // (a negative index uses 0).
 void set_player_rank_icon_frame_00517cb0(void* widget, std::int32_t rank, Fe3TemplateHost& host);
@@ -1129,7 +1129,18 @@ void leaderboards_begin_read_005635f0(Raw screen, Fe3BoardHost& host);
 // ---------------------------------------------------------------------------
 // Batch D (continued): leaderboard reads and the HUD limbo screen.
 // ---------------------------------------------------------------------------
-struct Fe3ReadHost {
+// 00565EE0, 0068CC70's limbo (32h) register override: 004F71D0 and the
+// GUI_limbo page load through its native-string temporary. The HUD host binds
+// it over its own screen block.
+struct HudLimboRegisterHost {
+    virtual ~HudLimboRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void* gui_load_page_00aa5840(const void* name, std::uint32_t one, std::uint32_t zero) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+};
+
+struct Fe3ReadHost : HudLimboRegisterHost {
     virtual ~Fe3ReadHost() = default;
     virtual void listbox_set_listener_00a9ac40(void* listbox, void* listener) = 0;
     virtual void listbox_clear_rows_00a9bec0(void* listbox) = 0;
@@ -1171,7 +1182,7 @@ void leaderboards_on_read_complete_00564f60(Raw screen, const void* results, Fe3
 // 00564E70.
 void leaderboards_cycle_filter_005650c0(Raw screen, Fe3ReadHost& host);
 // 00565EE0 BSP_HudLimboScreen_Register: 004F71D0; page "GUI_limbo" (00CEEBD4) -> +8h.
-void hud_limbo_register_00565ee0(Raw screen, Fe3ReadHost& host);
+void hud_limbo_register_00565ee0(Raw screen, HudLimboRegisterHost& host);
 // 00565FB0 BSP_HudLimboScreen_SetState, __thiscall(screen, state), RET 4: +14h = state; the
 // message is the global config string at +0A8h / +0B8h / +0D0h / +0C0h / +0B0h for states 1..5
 // (jump table 00566030), +0D8h otherwise ("" when null); shown on [+0Ch] while active (+5h).

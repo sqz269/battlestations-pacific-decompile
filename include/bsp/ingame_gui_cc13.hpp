@@ -44,9 +44,29 @@ struct HudObserverReferenceHost {
     virtual void observer_unregister_006952a0(void* observer, void* observed) = 0;
 };
 
+// The leaf constructors 0068CC70 runs whose only call is the front-end screen
+// base 004F7180 (0067BE30, 00643DA0, 00650140, 00650B00, and 00640C80, whose
+// tree head 0063B110 its caller supplies). The HUD host binds
+// them over its own native screen storage without the GUI services.
+struct HudScreenBaseHost {
+    virtual ~HudScreenBaseHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+};
+
+// The register overrides (+10h) of 0068CC70's leaves that need only the
+// registry's 004F71D0 (0067B3F0, 005176A0), or that and one page load
+// 00AA5840 (005D38A0). The HUD host binds them over its own screen blocks.
+struct HudScreenRegisterHost {
+    virtual ~HudScreenRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+};
+struct HudScreenRegisterPageHost : HudScreenRegisterHost {
+    virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
+};
+
 // The scene-init constructor/register pair needs only these services. Keep
 // its live owner independent of unrelated camera, input and observer services.
-struct HudSceneInitHost {
+struct HudSceneInitHost : HudScreenBaseHost, HudScreenRegisterPageHost {
     virtual ~HudSceneInitHost() = default;
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
@@ -296,7 +316,7 @@ void cursor_screen_enter_0067bd70(Raw s, HudScreenHost& host);
 // Screen 49h, the follow screen (vtable 00CF6D68): +8h is the followed unit.
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kFollowScreenVtable = 0x00CF6D68;
-Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host);
+Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host);
 void follow_screen_register_0067be80(Raw s, HudScreenHost& host);
 void follow_screen_exit_0067bec0(Raw s) noexcept;
 
@@ -328,7 +348,7 @@ void common_overlay_released_0067bc60(Raw s, void* object, HudScreenHost& host);
 // "Score_Text" at +0Ch, "Spectator_Text" at +10h, +14h a byte.
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kSpectatorScreenVtable = 0x00CF5998;
-Raw spectator_construct_00643da0(Raw s, HudScreenHost& host);
+Raw spectator_construct_00643da0(Raw s, HudScreenBaseHost& host);
 void spectator_destruct_00643e00(Raw s, HudScreenHost& host);
 void spectator_register_00643e80(Raw s, HudScreenHost& host);
 void spectator_enter_00643f40(Raw s, HudScreenHost& host);
@@ -357,12 +377,12 @@ float scene_init_pulse_alpha(float clock) noexcept;
 inline constexpr std::uint32_t kSubmarineScreenVtable = 0x00CF61D4;
 inline constexpr std::uint32_t kPeriscopeScreenVtable = 0x00CF639C;
 inline constexpr std::uint32_t kPeriscopeCallbackVtable = 0x00CF6384;
-Raw submarine_construct_00650140(Raw s, HudScreenHost& host);
+Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host);
 void submarine_register_00650170(Raw s, HudScreenHost& host);
 void submarine_destruct_00650910(Raw s, HudScreenHost& host);
 void periscope_released_006502d0(Raw s, void* object) noexcept;
 void periscope_exit_00650810(Raw s, HudScreenHost& host);
-Raw periscope_construct_00650b00(Raw s, HudScreenHost& host);
+Raw periscope_construct_00650b00(Raw s, HudScreenBaseHost& host);
 
 // ---------------------------------------------------------------------------
 // Screen 4Dh, the HUD markers, and its marker widget sets.
@@ -394,7 +414,7 @@ struct HudMarkerCloneHost {
 };
 Raw hud_name_marker_construct_0063e1c0(Raw marker, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
 Raw hud_befogo_marker_construct_0063e950(Raw marker, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
-Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head);
+Raw hud_markers_construct_00640c80(Raw s, HudScreenBaseHost& host, void* tree_head);
 
 // ---------------------------------------------------------------------------
 // Observer references: an object whose +14h holds one observed pointer.
@@ -1422,7 +1442,7 @@ void hud_cursor_screen_exit_0067b330(Raw) noexcept;
 // 0067B3F0 JMP 004F71D0 (E9 DB BD E7 FF; next byte CC). BSP_HudCommonOverlayScreen_Register.
 // Original ABI: __thiscall(ECX = this), the target's RET; tail call to 004F71D0
 // (HudScreenServices::front_end_screen_register_004f71d0).
-void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenServices& host);
+void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenRegisterHost& host);
 // 0067B400 RET (C3; next byte CC). BSP_HudCommonOverlayScreen_Enter. Original ABI:
 // __thiscall(ECX = this), RET.
 void hud_common_overlay_screen_enter_0067b400(Raw) noexcept;

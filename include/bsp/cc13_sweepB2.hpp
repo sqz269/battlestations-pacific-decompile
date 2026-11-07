@@ -24,7 +24,21 @@ struct Cc13SweepB2Descriptor {
     const void* pointer;
 };
 
-class Cc13SweepB2Host : public Cc13SweepBHost {
+// 005AAEF0, 0068CC70's screen-4Ch leaf: the screen base, its 0093CB10 scene
+// member and four containers' head-node allocators. The HUD host binds it over
+// its own native screen storage without the other sweepB services.
+class InGameInterfaceScreenConstructHost {
+public:
+    virtual ~InGameInterfaceScreenConstructHost() = default;
+    virtual void frontend_screen_construct_004f7180(void* screen) = 0;
+    virtual void simple3d_scene_construct_0093cb10(void* scene) = 0;
+    virtual void* stl_buy_head_node_005a0220(void* container) = 0;
+    virtual void* stl_buy_head_node_005356c0(void* container) = 0;
+    virtual void* stl_buy_head_node_005359a0(void* container) = 0;
+    virtual void* stl_buy_head_node_005a0270(void* container) = 0;
+};
+
+class Cc13SweepB2Host : public Cc13SweepBHost, public InGameInterfaceScreenConstructHost {
 public:
     // ---- CRT and Win32 ----
     // 00BF6713 _invalid_parameter_noinfo (checked-iterator failure; does not return in the image).
@@ -434,7 +448,7 @@ void cc13_sweepB2_session_browser_on_listbox_selection_changed_005787e0(void* li
 void cc13_sweepB2_main_menu_activate_top_level_item_00588a80(void* screen, Cc13SweepB2Host& host);
 
 // 005AAEF0 BSP_InGameInterfaceScreen_Construct_005aaef0(screen): returns screen.
-void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, Cc13SweepB2Host& host);
+void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, InGameInterfaceScreenConstructHost& host);
 
 // 005C5470 BSP_MissionRecordHeader_Assign(dest, source): returns dest.
 void* cc13_sweepB2_mission_record_header_assign_005c5470(void* dest, const void* source, Cc13SweepB2Host& host);

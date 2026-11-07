@@ -645,7 +645,7 @@ void* session_message188_scalar_delete_005f97d0(void* message, std::uint8_t flag
 // Screen registration, construction and destruction
 // ---------------------------------------------------------------------------
 
-void hud_objectives_register_005ee010(void* screen, ScreenLifetimeHost& host) {
+void hud_objectives_register_005ee010(void* screen, ScreenRegisterPageHost& host) {
     host.frontend_register_004f71d0(screen);
     write_field(screen, 0x10, host.load_page_00aa5840(kHudObjectivesPage));
     write_field<std::uint8_t>(screen, 0x64, 0);
@@ -671,7 +671,7 @@ void hud_order_register_005f9ff0(void* screen, ScreenLifetimeHost& host) {
     write_field<std::uint32_t>(screen, 0x70, 0);
 }
 
-void hud_pause_cheat_register_00604890(void* screen, ScreenLifetimeHost& host) {
+void hud_pause_cheat_register_00604890(void* screen, ScreenRegisterPageHost& host) {
     host.frontend_register_004f71d0(screen);
     write_field(screen, 0x08, host.load_page_00aa5840(kHudPauseCheatPage));
 }
@@ -714,7 +714,7 @@ void* multi_mode_selector_construct_005ea8c0(void* screen, ScreenLifetimeHost& h
     return construct_scroller_screen(screen, 0x00CF2B44u, 0x00CF2B30u, 0x00CF2B10u, host);
 }
 
-void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host) {
+void* hud_objectives_construct_005ee440(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF2D20u);
     write_field<std::uint32_t>(screen, 0x8, 0x00CF2D0Cu);
@@ -722,13 +722,13 @@ void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host) 
     return screen;
 }
 
-void* hud_order_construct_005f9440(void* screen, ScreenLifetimeHost& host) {
+void* hud_order_construct_005f9440(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF3B7Cu);
     return screen;
 }
 
-void* hud_pause_cheat_construct_00604780(void* screen, ScreenLifetimeHost& host) {
+void* hud_pause_cheat_construct_00604780(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF41A0u);
     return screen;
@@ -1680,7 +1680,7 @@ void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, 
     host.update_unit_icon_005adda0(screen, *slot);
 }
 
-void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host) {
+void* hud_minimap_screen_construct_005c0810(void* screen, MinimapConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x08, 0x00CE3CD4u);
     for (std::size_t offset : {0x0Cu, 0x10u, 0x14u}) write_field<std::uint32_t>(screen, offset, 0);
@@ -1789,7 +1789,7 @@ void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host) {
     write_field<std::uint32_t>(screen, 0x8, 0x00CEB0FCu);
     host.frontend_destruct(screen);
 }
-void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host) {
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF3EF4u);
     write_field<std::uint32_t>(screen, 0x8, 0x00CF3EE0u);

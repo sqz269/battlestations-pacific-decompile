@@ -119,7 +119,7 @@ void binoculars_reset_0051e8e0(Raw screen, ViewSeg14Hooks& hooks) {
     hooks.lens_flare_set_enabled_00452b80(reinterpret_cast<Raw>(kLensFlare), 0);
 }
 
-Raw binoculars_screen_construct_0051e950(Raw screen, ViewSeg14Hooks& hooks) {
+Raw binoculars_screen_construct_0051e950(Raw screen, FrontEndScreenBaseHooks& hooks) {
     hooks.front_end_screen_construct_004f7180(screen);
     put<std::uint32_t>(screen, 8, kCallbackBaseVtable);
     put<std::uint32_t>(screen, 0xc, 0);
@@ -147,7 +147,7 @@ void binoculars_screen_destruct_0051ea20(Raw screen, ViewSeg14Hooks& hooks) {
     hooks.front_end_screen_destruct_004f71a0(screen);
 }
 
-void binoculars_screen_register_0051ed60(Raw screen, ViewSeg14Hooks& hooks, NativeStringStorage& strings) {
+void binoculars_screen_register_0051ed60(Raw screen, BinocularsRegisterHooks& hooks, NativeStringStorage& strings) {
     hooks.front_end_screen_register_004f71d0(screen);
     put<std::uint8_t>(screen, 0x2c, 0);
     put<std::uint8_t>(screen, 0x2d, 0);

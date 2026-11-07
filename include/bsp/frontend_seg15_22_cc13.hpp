@@ -87,7 +87,25 @@ inline constexpr double kCounterScreenC0EdgeWide = 1.0520000457763672;  // 00CED
 // ---------------------------------------------------------------------------
 struct HudMessage35;
 
-struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
+// What 0068CC70's three Seg15 leaf constructors (00538E30, 00540BA0 with
+// 005401F0, 005CE610) call: the front-end screen base, operator new, the
+// 0093CB10 scene sub-object and the containers' head-node allocators. The HUD
+// host binds them over its own native screen storage without the other
+// Seg15Host services.
+struct Seg15LeafConstructHost {
+    virtual ~Seg15LeafConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void* operator_new_00bf681b(std::size_t bytes) = 0;
+    virtual void simple_3d_scene_construct_0093cb10(Raw scene) = 0;
+    virtual void* tree_buy_head_node_005359a0() = 0;
+    virtual void* list_buy_head_node(std::uint32_t routine) = 0;
+    virtual void* list_buy_head_node_0053da70() = 0;
+    virtual void* tree_buy_head_node(std::uint32_t routine) = 0;
+};
+
+struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices, Seg15LeafConstructHost {
+    // Declared in both bases; one service answers both.
+    void front_end_screen_construct_004f7180(Raw screen) override = 0;
     // Static storage of the image at that address (a global block, not a cell).
     virtual Raw global_block(std::uint32_t address) = 0;
     // *(address): the object a global pointer cell holds.
@@ -492,7 +510,7 @@ void hud_counters_hide_right_of_edge_00529120(Raw s, Seg15Host& host);
 void hud_counters_update_occlusion_00529810(Raw s, Seg15Host& host);
 void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host);
 void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host);
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host);
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 // 0052AD50 / 0052ADD0 / 0052AE60 / 0052C0A0: the 18h-byte observer-handle
 // record array (vtable 00CE75CC, observed pointer +14h, "set" byte +10h).
 void rec18_array_push_back_0052ad50(Raw array, Raw source, Seg15Host& host);
@@ -642,7 +660,7 @@ void hud_formation_listbox_selection_changed_00536100(Raw listener, void* list, 
 void hud_formation_collect_children_00538d20(Raw s, void* out, Seg15Host& host);
 // 00538D60, __thiscall(screen, map, member, float unused), RET 0Ch.
 void hud_formation_add_member_marker_00538d60(Raw s, void* map, std::uint32_t member, Seg15Host& host);
-Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host);
+Raw hud_formation_construct_00538e30(Raw s, Seg15LeafConstructHost& host);
 
 // ---------------------------------------------------------------------------
 // Frame statistics overlay (57h, vtable 00CEDA10) and its statistics object.
@@ -681,11 +699,11 @@ void free_camera_effect_list_clear_0053e850(Raw list, Seg15Host& host);
 // 0053FF10, __thiscall(vector, iterator, where, count, const record*), RET 10h.
 void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value,
                                                  Seg15Host& host);
-void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host);
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15LeafConstructHost& host);
 void free_camera_release_effects_00540260(Raw block, Seg15Host& host);
 void free_camera_destruct_005402d0(Raw s, Seg15Host& host);
 void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host);
-Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host);
+Raw free_camera_construct_00540ba0(Raw s, Seg15LeafConstructHost& host);
 
 // ---------------------------------------------------------------------------
 // Debug text lists and the command bar (STL instances over small elements).
@@ -732,7 +750,7 @@ std::uint8_t* vehicle_camera_array_at_005cd820(Raw array, std::int32_t index, Se
 // Movie camera debug screen (36h, vtables 00CF1968 / 00CF1950 at +8h).
 void movie_camera_debug_destruct_005ce4d0(Raw s, Seg15Host& host);
 void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& host);
-Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host);
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15LeafConstructHost& host);
 
 // Multiplayer chat screen (15h, vtables 00CF1998 / text listener 00CF19C0 at +8h).
 // Overlay line (18h): {dword, WideString +4, NativeString +0Ch, dword +14h};
@@ -803,11 +821,11 @@ void listener_focus_dim_typed_005d3440(void* widget, bool flag, Seg15Host& host)
 void listener_refresh_dim_typed_005d35a0(void* widget, Seg15Host& host);
 // 005D34E0, listener slot (unused, listbox), RET 8: 00E19550 = selected index.
 void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host);
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host);
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 void pause_multi_destroy_005d3710(Raw s, Seg15Host& host);
 // 005D3790, widget listener at screen+0Ch, RET 4.
 void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host);
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host);
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host);
 void pause_multi_exit_005d3960(Raw s, Seg15Host& host);
 void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host);
 

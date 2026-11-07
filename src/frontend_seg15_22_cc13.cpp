@@ -465,7 +465,7 @@ void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host) { remove_vis
 void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host) { remove_visible(s, 0x10, host); }
 
 // 0052B030: base constructor, vtable 00CED0AC, +0Ch..+28h zeroed.
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host) {
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kHudCountersVtable;
     for (std::size_t off = 0x14; off <= 0x28; off += 4) s.at<std::uint32_t>(off) = 0;
@@ -1219,7 +1219,7 @@ void hud_formation_add_member_marker_00538d60(Raw s, void* map, std::uint32_t me
 // 00538E30: base, the 3D scene sub-object at +8h, the listener bases at +64h
 // and +78h, this screen's vtables, two map heads (+114h, +120h), a vector
 // (+12Ch..+134h) and two list heads (+198h, +1A4h).
-Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host) {
+Raw hud_formation_construct_00538e30(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     host.simple_3d_scene_construct_0093cb10(Raw{s.p + 0x8});
     s.at<std::uint32_t>(0x64) = 0x00CE3CD4;
@@ -1526,7 +1526,7 @@ void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, s
 
 // 005401F0, __fastcall(block at screen+64h): vector +4h emptied (+8h..+10h),
 // list head +18h, size +1Ch, +20h..+28h cleared.
-void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host) {
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15LeafConstructHost& host) {
     block.at<std::uint32_t>(0x8) = 0;
     block.at<std::uint32_t>(0xC) = 0;
     block.at<std::uint32_t>(0x10) = 0;
@@ -1563,7 +1563,7 @@ void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host) {
 // cleared, the 44h settings block (+60h, bytes +0 and +1Ch cleared), the
 // effect lists (+64h), speed +2Ch 500.0, +30h 1.7453293 (100 degrees),
 // +34h 111.5, +38h..+48h and +54h..+5Ch cleared.
-Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host) {
+Raw free_camera_construct_00540ba0(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
     s.at<std::uint32_t>(0xC) = 0;
@@ -1791,7 +1791,7 @@ void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& h
 
 // 005CE610: base, callback owner at +8h, vtables, the two tree heads (+68h
 // nil byte +15h, +74h nil byte +21h), sizes, +30h cleared.
-Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host) {
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
     s.at<std::uint32_t>(0xC) = 0;
@@ -2290,7 +2290,7 @@ void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host) {
 }
 
 // 005D3540: base, listener bases, vtables 00CF1D70 / 00CF1D5C / 00CF1D3C, +24h cleared.
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host) {
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
@@ -2337,7 +2337,7 @@ void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& hos
 }
 
 // 005D38A0: page GUI_pause_multi into +10h.
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host) {
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x10) = host.gui_load_page_00aa5840("GUI_pause_multi");
 }

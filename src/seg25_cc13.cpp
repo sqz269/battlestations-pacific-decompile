@@ -17,7 +17,7 @@ void* global_ptr(Seg25Host& host, std::uint32_t address) {
 
 // The inlined pool release of a native-string buffer: 00419CC0 then
 // 00BD1510(buffer, length + 1, 1) when the buffer is non-null.
-void release_pool_block(Seg25Host& host, void* block, std::uint32_t length) {
+void release_pool_block(NativeStringTempHost& host, void* block, std::uint32_t length) {
     if (block != nullptr) {
         void* pool = host.pool_singleton_00419cc0();
         host.pool_return_block_00bd1510(pool, block, length + 1, 1);
@@ -25,7 +25,7 @@ void release_pool_block(Seg25Host& host, void* block, std::uint32_t length) {
 }
 
 // The inlined temporary: {0, null}, 0041DD40(length, 1), memcpy(length + 1).
-NativeStr build(Seg25Host& host, const char* text, std::uint32_t length) {
+NativeStr build(NativeStringTempHost& host, const char* text, std::uint32_t length) {
     NativeStr s{0, nullptr};
     host.native_string_resize_0041dd40(&s, length, 1);
     if (s.data != nullptr) std::memcpy(s.data, text, s.length + 1);
@@ -55,7 +55,7 @@ void hud_plane_spawn_screen_destroy_0060d130(void* screen, Seg25Host& host) {
 }
 
 // 0060D1C0 __thiscall(screen), RET: register, load GUI_plane_spawn into +28h.
-void hud_plane_spawn_screen_register_0060d1c0(void* screen, Seg25Host& host) {
+void hud_plane_spawn_screen_register_0060d1c0(void* screen, PlaneSpawnRegisterHost& host) {
     host.frontend_register_004f71d0(screen);
     NativeStr page = build(host, "GUI_plane_spawn", 0xF);
     raw(screen).at<std::uint32_t>(0x28) = host.gui_load_page_00aa5840(host.gui_manager_004c12b0(), &page, 1, 0);
@@ -162,7 +162,7 @@ void* hud_score_row_copy_construct_0060f020(void* self, const void* source, Seg2
 }
 
 // 0060FD90 __thiscall(screen), RET: HudScoringScreen constructor.
-void* hud_scoring_screen_construct_0060fd90(void* screen, Seg25Host& host) {
+void* hud_scoring_screen_construct_0060fd90(void* screen, FrontEndScreenConstructHost& host) {
     Raw s = raw(screen);
     host.frontend_construct_004f7180(screen);
     s.at<std::uint32_t>(0x8) = 0x00CEB0FCu;
@@ -400,7 +400,7 @@ void powerup_manager_refresh_second_rows_00619ae0(void* screen, Seg25Host& host)
 #pragma warning(pop)
 
 // 0061A480 __thiscall(screen), RET: powerup-manager constructor.
-void* powerup_manager_construct_0061a480(void* screen, Seg25Host& host) {
+void* powerup_manager_construct_0061a480(void* screen, PowerupManagerConstructHost& host) {
     Raw s = raw(screen);
     host.frontend_construct_004f7180(screen);
     s.at<std::uint32_t>(0x8) = 0x00CF4C3Cu;
