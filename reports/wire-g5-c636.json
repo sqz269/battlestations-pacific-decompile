@@ -1,0 +1,109 @@
+{
+  "chain": 636,
+  "slot": "g5-w5",
+  "summary": "Session message 82h (MT_AIRBASE_CHANGESLOTSTATUS, the player's air-ops slot order) takes its local copy: HostSessionMessages::queue_airbase_slot_order_82 builds the stack message with 00656280, writes it with 00656320, decodes it as 00768530 case 82h does (operator new(30h), 00763320, 006563A0) and releases the copy with 00656420; GameScriptOrdersHost::player_air_ops_launch and ::player_air_ops_order hand 006CCDA0 the copy's slot, order, target and player instead of delivering at once. The front-end pump's base-update arm now calls 004F75C0.",
+  "rows": [
+    {
+      "native": "00656280",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_slot_order_82 (from src/game_hosts_script_orders.cpp deliver_air_ops_slot_order_82, called by player_air_ops_launch and player_air_ops_order)"
+    },
+    {
+      "native": "00656320",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_slot_order_82"
+    },
+    {
+      "native": "00763320",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_slot_order_82"
+    },
+    {
+      "native": "006563a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_slot_order_82"
+    },
+    {
+      "native": "00656420",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_slot_order_82 (session_message_scalar_delete on the decoded copy, flags 1)"
+    },
+    {
+      "native": "004f75c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuScreenHost::screen_update (slots 26h/2Eh/3Eh); the body is an empty RET 4, so the linker folds the call and call_graph cannot show it"
+    },
+    {
+      "native": "00763140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "81h's senders are the Lua SetAirBaseSlot binding 00895ED0 (blocked on callees, game_hosts_lua.cpp) and 006CD350, which only that binding calls; no host path sends 81h."
+    },
+    {
+      "native": "00763380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "84h (006BD520) is published through 0077C7B0, which sends only when game+1FE4h == 1 (hosting); a single-player session sends nothing."
+    },
+    {
+      "native": "007633e0",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp air_base_stock_add_006ca770",
+      "reason": "85h (006BD9E0 from AddStock 006CA770 / ConsumeStock 006C7D10) is broadcast through 0077C7B0, which sends only when game+1FE4h == 1; single player constructs and drops it."
+    },
+    {
+      "native": "006bd9e0",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp air_base_stock_add_006ca770",
+      "reason": "Same as 007633E0: MP replication only (0077C7B0 gates on game+1FE4h == 1)."
+    },
+    {
+      "native": "007634a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "88h's only sender 006BF650 is called only by the Lua SetAirbaseOrders binding 008AE900, which no host implements (game_hosts_lua.cpp, another lane's file)."
+    },
+    {
+      "native": "0075ade0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "A1h (submarine dip/rise) is sent by 00650310 from the HUD unit view 00651800 on player input; the HUD host takes no input in this process."
+    },
+    {
+      "native": "00760b70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "A0h (repair priority) is sent by 0064A770 from the ship screen 45h update 0064DD30 on player input; no host input reaches it."
+    },
+    {
+      "native": "0052b9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp Countdown binding",
+      "reason": "Needs the HUD counters screen's +10h countdown entry, which its register builds from widgets in game_hosts_hud.cpp (another lane's in-review file); the countdown also drives 005BCA70/80/B0 on [[00E198C4]+58h]."
+    },
+    {
+      "native": "0052ab90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp CountdownCancel binding",
+      "reason": "Same HUD counters screen entries as 0052B9B0."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail",
+      "reason": "The power-up use pass needs 008EADA0 use-item (not linked; air support spawns a flight) and the scorer inputs; the coordinator runs only in skirmish, and a campaign manager lists no ready items (00E0C978 clear)."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp parse_007a0eb0",
+      "reason": "The gamecamera/fpscamera keyframe modifier's evaluator 00795EE0 drives a game camera mover that 0079CBD0 builds (ship captain, plane, fps cameras); the movie camera host has no camera movers."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp MissionStart::write_checkpoint",
+      "reason": "Clears BSP_Chk_Save and requests a profile save write through the storage pool (00BD3E10); not taken without a run."
+    }
+  ]
+}
