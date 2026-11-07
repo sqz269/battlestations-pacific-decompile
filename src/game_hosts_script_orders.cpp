@@ -1074,6 +1074,18 @@ const bsp::PlaneSquadronHostRecord* fused_squadron_record(std::size_t index) {
     return nullptr;
 }
 
+// The squadron's +3D0h array as the image holds it: 007F3970 compacts it at a death, so
+// it is the live planes in order, +3CCh of them. The record keeps a wing that never
+// became a unit (or left) as kPlaneSquadronNoUnit to keep the spawn stamps aligned, so
+// those are skipped here, as live_count() and flight_leader() skip them.
+std::vector<std::size_t> squadron_live_members(const bsp::PlaneSquadronHostRecord& squadron) {
+    std::vector<std::size_t> live;
+    for (const std::size_t unit : squadron.member_units) {
+        if (unit != bsp::kPlaneSquadronNoUnit) live.push_back(unit);
+    }
+    return live;
+}
+
 // The two pushes 008953F0 / 008950D0 (00B664B0 PushNumber) and 00890BB0 (00B66480
 // PushFloat) make, onto the dispatch's own Lua frame.
 class UnitQueryResults final : public bsp::cc13_seg56::LuaResults {
@@ -1123,17 +1135,16 @@ public:
         const std::size_t index = slot_of(entity);
         const bsp::PlaneSquadronHostRecord* squadron = fused_squadron_record(index);
         if (squadron == nullptr) return units_.skill_level(index);   // 006D1EC0
-        // 007ECF70 over the squadron's +3D0h array, in the record's member order.
+        // 007ECF70 over the squadron's +3D0h array (its live planes, squadron_live_members).
         bsp::PlaneSquadronEntity view;
-        view.live_count = squadron->live_count();
-        for (std::size_t i = 0; i < squadron->member_units.size()
-                 && i < bsp::kPlaneSquadronMaxWings; ++i) {
-            const std::size_t member = squadron->member_units[i];
-            view.members[i] = member == bsp::kPlaneSquadronNoUnit ? nullptr
-                : reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
+        const std::vector<std::size_t> live = squadron_live_members(*squadron);
+        view.live_count = static_cast<int>(live.size());
+        for (std::size_t i = 0; i < live.size() && i < bsp::kPlaneSquadronMaxWings; ++i) {
+            view.members[i] = reinterpret_cast<void*>(static_cast<std::uintptr_t>(live[i] + 1u));
         }
         const auto leader_skill_vt12c = [&](void* leader) {
-            // The image calls through a null slot 0 (no test at 007ECF70).
+            // The image calls through a null slot 0 (no test at 007ECF70); the dispatch
+            // refuses a squadron with no live plane first.
             if (leader == nullptr) unit_query_unreached("007ECF70 with an empty member slot 0");
             return units_.skill_level(slot_of(leader));               // 006D1EC0
         };
@@ -1438,14 +1449,10 @@ public:
         if (base == &parts_ && offset == 0x2Cu) return &body_;
         if (offset >= 0x3D0u && offset < 0x3D0u + 4u * bsp::kPlaneSquadronMaxWings
             && (offset & 3u) == 0u) {
-            const bsp::PlaneSquadronHostRecord& squadron = squadron_of(base);
+            const std::vector<std::size_t> live = squadron_live_members(squadron_of(base));
             const std::size_t slot = (offset - 0x3D0u) / 4u;
-            if (slot >= squadron.member_units.size()
-                || squadron.member_units[slot] == bsp::kPlaneSquadronNoUnit) {
-                return nullptr;
-            }
-            return reinterpret_cast<void*>(
-                static_cast<std::uintptr_t>(squadron.member_units[slot] + 1u));
+            if (slot >= live.size()) return nullptr;
+            return reinterpret_cast<void*>(static_cast<std::uintptr_t>(live[slot] + 1u));
         }
         unit_query_unreached("a pointer other than +3D0h's slots or [parts+2Ch]");
     }
@@ -6743,10 +6750,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // 007ECF70 on a squadron). Callers: commandhelpers.lua 3928..3942 and 4335
         // GetCrewLevel(SelectedUnit) / (unit), jm05.lua 4978 / 4989 GetSkillLevel(unit)
         // against SKILL_ELITE / SKILL_SPNORMAL. LABELLED: an argument with no units-host
-        // slot pushes nothing and is counted (the image calls through whatever 00888AA0
-        // returned).
+        // slot, or a squadron with no live plane, pushes nothing and is counted (the image
+        // calls through whatever 00888AA0 or +3D0h holds).
         ++skill_query_calls_;
-        if (state_ != nullptr && index_of(entity_at(0)) < units_.count()) {
+        resolve_plane_squadron_members();
+        const std::size_t unit = index_of(entity_at(0));
+        const bsp::PlaneSquadronHostRecord* squadron =
+            unit < units_.count() ? fused_squadron_record(unit) : nullptr;
+        // A squadron with no live plane has a null +3D0h, which 007ECF70 calls through.
+        if (state_ != nullptr && unit < units_.count()
+            && (squadron == nullptr || squadron->live_count() > 0)) {
             results = run_seg56_unit_query(binding->row_address);
         } else {
             ++unit_query_unresolved_;
