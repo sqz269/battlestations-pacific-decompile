@@ -71,7 +71,14 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include "bsp/mission_ver_cc13.hpp"   // packet cc9_l59_sq_avg_health
 #include "bsp/racked_round_entity_cc13.hpp"  // packet cc13-rackround
+#include "bsp/cc13_seg40.hpp"                // goal 5 chain 643: the narrative object
+#include "bsp/cc13_seg48U.hpp"
+#include "bsp/cc15_g24c.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/native_physical_file_date.hpp"  // 00435C40
+#include "bsp/native_string.hpp"
 #include <algorithm>
+#include <new>
 #include <cstdlib>
 #include <cstring>
 #include <list>
@@ -439,6 +446,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_lua_mission_narrative: handled only with kLuaMissionNarrativeBound.
     {"MissionNarrative", 0x008b0c10u},
     {"MissionNarrativeEnqueue", 0x008b0c10u},
+    // Goal 5 chain 643: the 007349C0 and 00734E50 posts.
+    {"MissionNarrativeUrgent", 0x008b0e10u},
+    {"MissionNarrativeOverride", 0x008b1010u},
     {"MissionNarrativeClear", 0x008b15b0u},
     {"MissionNarrativeSize", 0x008b0ac0u},
     {"EndScene", 0x008b01b0u},
@@ -832,18 +842,161 @@ private:
 
 class NarrativePostBinding final : public bsp::cc13_seg56::NarrativePostHost {
 public:
-    using Append = std::function<void(const std::string&, const std::string&, int)>;
-    explicit NarrativePostBinding(Append append) : append_(std::move(append)) {}
+    using Post = std::function<void(std::uint32_t, const std::string&, const std::string&, int)>;
+    explicit NarrativePostBinding(Post post) : post_(std::move(post)) {}
     void narrative_post(std::uint32_t entry_point, const std::string& text,
         const std::string& callback, bsp::cc13_seg56::LuaArgs&, int extras_from) override {
-        // 008B0DAC calls 00734870 for both registered aliases. Urgent and
-        // Override are separate native bindings, outside this adapter.
-        if (entry_point != bsp::cc13_seg56::kNarrativePost)
-            throw std::logic_error("MissionNarrative append received another queue entry point");
-        append_(text, callback, extras_from);
+        // 008B0DAC (MissionNarrative and its Enqueue alias) calls 00734870,
+        // 008B0FAC (Urgent) 007349C0 and 008B11AC (Override) 00734E50.
+        post_(entry_point, text, callback, extras_from);
     }
 private:
-    Append append_;
+    Post post_;
+};
+
+// Goal 5 chain 643. The services the narrative object [game+21E8h] reaches
+// through its own bodies: 00735030 / 00735080 / 00733C80 / 00733DC0 (the
+// MissionNarrativeObjectHost hooks, cc13_seg40.hpp) and the three list writers
+// 00734870 / 007349C0 / 00734E50 (cc15_g24c::NarrativeListHost). Native
+// strings go through the process's actual string pool (0041DD40, and 00419CC0
+// with 00BD1510 for the returns). 00733430, 007342B0, 007341B0, 00734CE0 and
+// 00734D20 are the VC9 std::list members (library rows, bound here) as their
+// listings show them: operator new(20h) 00BF681B is malloc with bad_alloc on
+// failure, and every node goes back through _free 00BF65AC.
+//
+// An entry's +14h (node +1Ch) is the Lua variant vector the binding builds
+// with 006EDF00 from the extra arguments. This host keeps those arguments as
+// Lua registry references instead (the substitution its narrative queue
+// already made), held per list node by the owner; the native word stays 0, so
+// 00733DC0's vector arm never runs, and `released` fires for every node
+// 00734CE0 / 00734D20 frees so the owner drops that node's references.
+class NarrativeObjectServices final : public bsp::MissionNarrativeObjectHost,
+                                      public bsp::cc15_g24c::NarrativeListHost {
+public:
+    using Released = std::function<void(const void* node)>;
+    explicit NarrativeObjectServices(Released released) : released_(std::move(released)) {}
+
+    // ---- MissionNarrativeObjectHost ----
+    void crt_free_00bf6989(void* block) override { std::free(block); }
+    void crt_free_00bf65ac(void* block) override { std::free(block); }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t keep) override {
+        bsp::resize_native_string_header_0041dd40(string, strings(), length, keep != 0);
+    }
+    void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t size) override {
+        std::memcpy(destination, source, size);
+    }
+    void* sized_pool_get_00419cc0() override { return &strings(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+                                          std::int32_t) override {
+        if (pool != &strings()) throw std::logic_error("narrative: 00BD1510 on another pool");
+        strings().release(static_cast<char*>(data), size);
+    }
+    void lua_variant_vector_resize_006b88e0(void*, std::int32_t) override {
+        throw std::logic_error("narrative: a native Lua variant vector reached 006B88E0");
+    }
+    void narrative_list_clear_00734ce0(void* list) override {
+        clear(static_cast<std::uint8_t*>(list));
+    }
+    // 00733430: operator new(20h), next = prev = the node itself.
+    void* narrative_list_buy_head_node_00733430(void*) override {
+        std::uint8_t* const node = operator_new_00bf681b(0x20);
+        store(node, 0x00, node);
+        store(node, 0x04, node);
+        return node;
+    }
+
+    // ---- cc15_g24c::NarrativeListHost ----
+    // 007342B0: operator new(20h), +0h next, +4h prev, then 00733C80 copies the
+    // entry into +8h; its EH state 1 (Catch_All 0073432B) frees the node and
+    // rethrows when the copy throws.
+    std::uint8_t* narrative_list_buy_node_007342b0(std::uint8_t*, std::uint8_t* next,
+                                                   std::uint8_t* prev,
+                                                   const std::uint8_t* entry) override {
+        std::uint8_t* const node = operator_new_00bf681b(0x20);
+        store(node, 0x00, next);
+        store(node, 0x04, prev);
+        try {
+            bsp::cc13_seg48U_narrative_entry_copy_construct_00733c80(node + 0x08, entry, *this);
+        } catch (...) {
+            std::free(node);
+            throw;
+        }
+        return node;
+    }
+    // 007341B0: length_error("list<T> too long") past 0AAAAAAAh, else +8h += count.
+    void narrative_list_incsize_007341b0(std::uint8_t* list, std::uint32_t count) override {
+        const std::uint32_t size = load<std::uint32_t>(list, 0x08);
+        if (0x0AAAAAAAu - size < count) throw std::length_error("list<T> too long");
+        store(list, 0x08, size + count);
+    }
+    void narrative_entry_destruct_00733dc0(std::uint8_t* entry) override {
+        bsp::cc13_seg40_narrative_entry_destruct_00733dc0(entry, *this);
+    }
+    void narrative_list_clear_00734ce0(std::uint8_t* list) override { clear(list); }
+    bool native_string_equals_insensitive_00435c40(const std::uint8_t* string,
+                                                   const void* other) override {
+        return bsp::equal_native_string_headers_00435c40(string, other);
+    }
+    void native_string_resize_0041dd40(std::uint8_t* string, std::uint32_t length,
+                                       std::int32_t flag) override {
+        bsp::resize_native_string_header_0041dd40(string, strings(), length, flag != 0);
+    }
+    void crt_invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("narrative: checked list iterator failure (00BF6713)");
+    }
+
+    // 00734D20, __thiscall(ECX = list; out iterator, container, where), RET 0Ch
+    // (listing 00734D83),
+    // as 00735100 calls it on the front node (container = the list itself):
+    // unlink, 00733DC0 on +8h, _free, size -1.
+    void erase_00734d20(std::uint8_t* list, std::uint8_t* where) {
+        if (where == load<std::uint8_t*>(list, 0x04)) crt_invalid_parameter_noinfo_00bf6713();
+        std::uint8_t* const next = load<std::uint8_t*>(where, 0x00);
+        std::uint8_t* const prev = load<std::uint8_t*>(where, 0x04);
+        store(prev, 0x00, next);
+        store(next, 0x04, prev);
+        bsp::cc13_seg40_narrative_entry_destruct_00733dc0(where + 0x08, *this);
+        if (released_) released_(where);
+        std::free(where);
+        store(list, 0x08, load<std::uint32_t>(list, 0x08) - 1u);
+    }
+
+    template <typename T>
+    static T load(const std::uint8_t* object, std::uint32_t offset) {
+        T value;
+        std::memcpy(&value, object + offset, sizeof value);
+        return value;
+    }
+    template <typename T>
+    static void store(std::uint8_t* object, std::uint32_t offset, T value) {
+        std::memcpy(object + offset, &value, sizeof value);
+    }
+
+private:
+    static bsp::NativeStringStorage& strings() { return game_native_string_process().strings(); }
+    static std::uint8_t* operator_new_00bf681b(std::size_t size) {
+        void* const block = std::malloc(size);
+        if (block == nullptr) throw std::bad_alloc();
+        return static_cast<std::uint8_t*>(block);
+    }
+    // 00734CE0 (listing 00734CE0..00734D1D): head self-linked and +8h = 0
+    // first, then each old node: 00733DC0 (ECX = node+8h), _free, until the
+    // re-read head.
+    void clear(std::uint8_t* list) {
+        std::uint8_t* const head = load<std::uint8_t*>(list, 0x04);
+        std::uint8_t* node = load<std::uint8_t*>(head, 0x00);
+        store(head, 0x00, head);
+        store(load<std::uint8_t*>(list, 0x04), 0x04, load<std::uint8_t*>(list, 0x04));
+        store<std::uint32_t>(list, 0x08, 0u);
+        while (node != load<std::uint8_t*>(list, 0x04)) {
+            std::uint8_t* const next = load<std::uint8_t*>(node, 0x00);
+            bsp::cc13_seg40_narrative_entry_destruct_00733dc0(node + 0x08, *this);
+            if (released_) released_(node);
+            std::free(node);
+            node = next;
+        }
+    }
+    Released released_;
 };
 
 // 008AD540's two callees. The class test's answer is discarded by the binding
@@ -1002,11 +1155,22 @@ void GameScriptOrdersHost::bind_music_dialog(GameSoundDialogRuntime* runtime) no
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
     : log_(log), units_(units) {
+    // Goal 5 chain 643. BSP_Game_ConstructWorld 004DE610 builds [game+21E8h]:
+    // operator new(58h), 00735030 (004DFA75), then 00733030 (004DFA8D). This
+    // host owns the narrative for the run, so the object lives as long as it.
+    NarrativeObjectServices services([this](const void* node) { release_narrative_node_refs(node); });
+    bsp::cc13_seg48U_mission_narrative_construct_00735030(narrative_object_, services);
+    bsp::cc13_seg48U_mission_narrative_reset_00733030(narrative_object_);
     g_live_script_orders = this;
 }
 
 GameScriptOrdersHost::~GameScriptOrdersHost() {
     if (g_live_script_orders == this) g_live_script_orders = nullptr;
+    // 00735420's 00735080. The queued nodes' references are dropped without
+    // luaL_unref, as the host always left the shown entry's: the machine state
+    // may already be closed.
+    NarrativeObjectServices services([this](const void* node) { narrative_node_refs_.erase(node); });
+    bsp::cc13_seg40_mission_narrative_destruct_00735080(narrative_object_, services);
 }
 
 void GameScriptOrdersHost::set_final_scoring_function_name(const std::string& name) {
@@ -1186,6 +1350,8 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
         std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0 ||
+        std::strcmp(binding->name, "MissionNarrativeUrgent") == 0 ||
+        std::strcmp(binding->name, "MissionNarrativeOverride") == 0 ||
         std::strcmp(binding->name, "MissionNarrativeClear") == 0 ||
         std::strcmp(binding->name, "MissionNarrativeSize") == 0 ||
         std::strcmp(binding->name, "EndScene") == 0) {
@@ -5505,32 +5671,44 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         push_number_float_00b66480(left);
         results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
-               std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0) {
-        // Evidence: bsp.py show 008B0C10, 008B0D0A..008B0DAC. Reuse
-        // the body for argument selection and literal result count. Its
-        // append callback retains the actual Lua arguments in this owner's
-        // existing queue, consumed by run_narrative_update_00735100.
+               std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0 ||
+               std::strcmp(binding->name, "MissionNarrativeUrgent") == 0 ||
+               std::strcmp(binding->name, "MissionNarrativeOverride") == 0) {
+        // Evidence: bsp.py show 008B0C10 / 008B0E10 / 008B1010: the same frame
+        // (variant 0 the text, variant 1 the callback, variants 2..n the
+        // extras), then 00734870 (008B0DAC), 007349C0 (008B0FAC) or 00734E50
+        // (008B11AC) on [game+21E8h]. The body selects the arguments and the
+        // literal result count; the post runs the entry point's own body on
+        // this owner's narrative object, consumed by run_narrative_update_00735100.
+        const std::uint32_t entry_point =
+            std::strcmp(binding->name, "MissionNarrativeUrgent") == 0
+                ? bsp::cc13_seg56::kNarrativePostUrgent
+                : std::strcmp(binding->name, "MissionNarrativeOverride") == 0
+                      ? bsp::cc13_seg56::kNarrativePostOverride
+                      : bsp::cc13_seg56::kNarrativePost;
         RepairBindingArgs args(*this);
-        NarrativePostBinding host([&](const std::string& text,
+        NarrativePostBinding host([&](std::uint32_t point, const std::string& text,
             const std::string& callback, int extras_from) {
-            NarrativeEntry entry;
-            entry.text = text;
-            entry.callback = callback;
+            std::vector<int> refs;
             if (extras_from >= 0) {
                 for (int index = extras_from; index < count(); ++index) {
                     lua_pushvalue(state_, stack_slot(index));
-                    entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+                    refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
                 }
             }
-            log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
-                "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
-                static_cast<double>(mission_clock_), entry.argument_refs.size(),
-                narrative_queue_.size() + 1);
-            narrative_queue_.push_back(std::move(entry));
+            const std::size_t extras = refs.size();
+            narrative_post(point, text, callback, std::move(refs));
+            log_.notef("  %s(\"%s\", \"%s\") at %.2f s, %zu more argument(s), queue %u "
+                "(%s -> %08X)", binding->name, text.c_str(), callback.c_str(),
+                static_cast<double>(mission_clock_), extras,
+                static_cast<unsigned>(narrative_queue_size()),
+                binding->row_address == 0x008b0e10u   ? "008B0E10"
+                : binding->row_address == 0x008b1010u ? "008B1010"
+                                                      : "008B0C10",
+                static_cast<unsigned>(point));
             ++narrative_enqueues_;
         });
-        results = bsp::cc13_seg56::lua_mission_narrative_post(
-            bsp::cc13_seg56::kNarrativePost, args, host);
+        results = bsp::cc13_seg56::lua_mission_narrative_post(entry_point, args, host);
     } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
         // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
         // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
@@ -5578,7 +5756,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // queued/showing registry references as the previous host arm.
         NarrativeQueueBinding host([&] {
             return bsp::band_0071_cc13::mission_narrative_size_00733260(
-                static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+                static_cast<std::int32_t>(narrative_queue_size()), narrative_active_14_);
         }, [&] {
             narrative_clear_00734fa0();
             ++narrative_clears_;
@@ -5589,7 +5767,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // current showing byte, then uses the existing 00B664B0 writer.
         NarrativeQueueBinding host([&] {
             return bsp::band_0071_cc13::mission_narrative_size_00733260(
-                static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+                static_cast<std::int32_t>(narrative_queue_size()), narrative_active_14_);
         }, [&] {
             narrative_clear_00734fa0();
             ++narrative_clears_;
@@ -6638,9 +6816,32 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
 
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     if (!narrative_active_14_) {
-        if (narrative_queue_.empty()) return;
-        NarrativeEntry head = std::move(narrative_queue_.front());
-        narrative_queue_.erase(narrative_queue_.begin());          // 00734D20
+        // 00735258 JZ 007353A2 (+14h clear), 007353A2..007353E3: with +0Ch
+        // non-zero, the front node (checked against the head, 007353AD) goes
+        // to 00733BB0 as (+0Ch text, +14h callback, +1Ch arguments) at
+        // 007353C7, before the erase; +1Ch is then zeroed (007353CE) and
+        // 00734D20 erases the front (007353E3). This host copies the two
+        // strings out first and starts the entry below, after the erase.
+        if (narrative_queue_size() == 0) return;
+        NarrativeObjectServices services([this](const void* node) { release_narrative_node_refs(node); });
+        std::uint8_t* const list = narrative_object_ + 0x04;
+        std::uint8_t* const head = NarrativeObjectServices::load<std::uint8_t*>(narrative_object_, 0x08);
+        std::uint8_t* const front = NarrativeObjectServices::load<std::uint8_t*>(head, 0x00);
+        if (front == head) services.crt_invalid_parameter_noinfo_00bf6713();
+        const auto native_text = [](const std::uint8_t* string) {
+            const auto length = NarrativeObjectServices::load<std::uint32_t>(string, 0x00);
+            const char* const data = NarrativeObjectServices::load<const char*>(string, 0x04);
+            return data != nullptr ? std::string(data, length) : std::string();
+        };
+        const std::string head_text = native_text(front + 0x0C);
+        const std::string head_callback = native_text(front + 0x14);
+        std::vector<int> head_refs;
+        if (const auto it = narrative_node_refs_.find(front); it != narrative_node_refs_.end()) {
+            head_refs = std::move(it->second);
+            narrative_node_refs_.erase(it);
+        }
+        NarrativeObjectServices::store<std::uint32_t>(front, 0x1C, 0u);    // 007353CE
+        services.erase_00734d20(list, front);                             // 007353E3
         float fade = 0.5f, char_wait = 0.04f, wait_base = 1.0f;     // DialogGlobals.lua
         if (machine_state_ != nullptr) {
             const int top = lua_gettop(machine_state_);
@@ -6661,21 +6862,21 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
         if constexpr (kPc24MissionLuaCc13Bound) {
             // 005B744E FILD, 005B7454 FMUL and 005B7457 FADD each round at PC24.
             narrative_display_20_ = static_cast<float>(cc13x87::x87_add24(
-                cc13x87::x87_mul24(static_cast<double>(head.text.size()), char_wait),
+                cc13x87::x87_mul24(static_cast<double>(head_text.size()), char_wait),
                 wait_base));
         } else {
             narrative_display_20_ = static_cast<float>(
-                static_cast<double>(head.text.size()) * char_wait + wait_base);
+                static_cast<double>(head_text.size()) * char_wait + wait_base);
         }
         narrative_fade_out_24_ = fade;
         narrative_state_18_ = 0;
         narrative_alpha_28_ = 0.0f;
-        narrative_text_ = head.text;
-        narrative_callback_2c_ = head.callback;
+        narrative_text_ = head_text;
+        narrative_callback_2c_ = head_callback;
         for (const int ref : narrative_refs_34_) {
             if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
         }
-        narrative_refs_34_ = std::move(head.argument_refs);
+        narrative_refs_34_ = std::move(head_refs);
         ++narrative_shown_;
         log_.notef("  narrative shows \"%s\" at %.2f s: fade-in %.3f display %.3f fade-out %.3f "
             "callback \"%s\" (00733BB0 / 005B7390)", narrative_text_.c_str(),
@@ -6689,7 +6890,7 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
         } else {
             log_.unimplemented("HudNarrative::show_text", "005b7390");
         }
-        return;   // 0073528B: RET with 1 after the pop
+        return;   // 007353EB: MOV AL,1 and return after the pop
     }
     float top = 1.0f;   // 00D7A24C
     if (narrative_state_18_ == 0) {
@@ -6787,12 +6988,10 @@ void GameScriptOrdersHost::narrative_finish_00734140() {
 // shown entry's arguments +34h are released. The name +2Ch stays (it never
 // fires: nothing is showing).
 void GameScriptOrdersHost::narrative_clear_00734fa0() {
-    for (NarrativeEntry& e : narrative_queue_) {
-        for (const int ref : e.argument_refs) {
-            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
-        }
-    }
-    narrative_queue_.clear();
+    // 00734FA7: 00734CE0 on the narrative object's list +4h; every freed node's
+    // argument references go with it.
+    NarrativeObjectServices services([this](const void* node) { release_narrative_node_refs(node); });
+    services.narrative_list_clear_00734ce0(narrative_object_ + 0x04);
     if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
         log_.unimplemented("HudNarrative::hide", "005b5d40");
     narrative_active_14_ = false;
@@ -6800,6 +6999,75 @@ void GameScriptOrdersHost::narrative_clear_00734fa0() {
         if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
     }
     narrative_refs_34_.clear();
+}
+
+// Goal 5 chain 643. The post bindings pass the text (variant 0's native string)
+// and a native copy of the callback by pointer, and the extras vector or null,
+// to the entry point's body on [game+21E8h]. The two temporaries here are
+// actual native strings in the process pool, released after the body has copied
+// them (00733C80) into its node. The body's value is 0 (see
+// NarrativeObjectServices); the extras' references attach to the node the body
+// wrote: back() for 00734870 and 00734E50, front() for 007349C0 when it grew
+// the list. 007349C0 inserts nothing when the front already holds this text and
+// callback (007349FC / 00734A1B), and those references are released.
+void GameScriptOrdersHost::narrative_post(std::uint32_t entry_point, const std::string& text,
+                                          const std::string& callback,
+                                          std::vector<int> argument_refs) {
+    bsp::NativeStringStorage& strings = game_native_string_process().strings();
+    struct NativeTemporaries {
+        bsp::NativeStringStorage& strings;
+        bsp::NativeString text;
+        bsp::NativeString callback;
+        ~NativeTemporaries() {
+            callback.release_to(strings);
+            text.release_to(strings);
+        }
+    } temporaries{strings, {}, {}};
+    temporaries.text.assign_0041e870(strings, text.c_str());
+    temporaries.callback.assign_0041e870(strings, callback.c_str());
+
+    NarrativeObjectServices services([this](const void* node) { release_narrative_node_refs(node); });
+    const std::uint32_t before = narrative_queue_size();
+    if (entry_point == bsp::cc13_seg56::kNarrativePost) {
+        bsp::cc15_g24c::narrative_list_append_00734870(narrative_object_, &temporaries.text,
+            &temporaries.callback, 0u, services);
+    } else if (entry_point == bsp::cc13_seg56::kNarrativePostUrgent) {
+        bsp::cc15_g24c::narrative_list_push_front_unless_same_007349c0(narrative_object_,
+            &temporaries.text, &temporaries.callback, 0u, services);
+    } else if (entry_point == bsp::cc13_seg56::kNarrativePostOverride) {
+        bsp::cc15_g24c::narrative_list_replace_all_00734e50(narrative_object_, &temporaries.text,
+            &temporaries.callback, 0u, services);
+    } else {
+        throw std::logic_error("MissionNarrative post: unknown queue entry point");
+    }
+
+    std::uint8_t* const head = NarrativeObjectServices::load<std::uint8_t*>(narrative_object_, 0x08);
+    const void* node = nullptr;
+    if (entry_point != bsp::cc13_seg56::kNarrativePostUrgent) {
+        node = NarrativeObjectServices::load<std::uint8_t*>(head, 0x04);        // back()
+    } else if (narrative_queue_size() != before) {
+        node = NarrativeObjectServices::load<std::uint8_t*>(head, 0x00);        // front()
+    }
+    if (node == nullptr) {
+        for (const int ref : argument_refs) {
+            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+        }
+        return;
+    }
+    if (!argument_refs.empty()) narrative_node_refs_[node] = std::move(argument_refs);
+}
+
+std::uint32_t GameScriptOrdersHost::narrative_queue_size() const noexcept {
+    return NarrativeObjectServices::load<std::uint32_t>(narrative_object_, 0x0C);
+}
+
+void GameScriptOrdersHost::release_narrative_node_refs(const void* node) {
+    const auto it = narrative_node_refs_.find(node);
+    if (it == narrative_node_refs_.end()) return;
+    for (const int ref : it->second) {
+        if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+    }
+    narrative_node_refs_.erase(it);
 }
 
 void GameScriptOrdersHost::run_countdown_update_00735100() {
@@ -7973,7 +8241,7 @@ void GameScriptOrdersHost::report() {
             kLuaMissionNarrativeBound ? 1 : 0, narrative_enqueues_, narrative_clears_,
             narrative_shown_, narrative_callbacks_,
             narrative_last_callback_.empty() ? "(none)" : narrative_last_callback_.c_str(),
-            narrative_queue_.size(), narrative_active_14_ ? 1 : 0);
+            static_cast<std::size_t>(narrative_queue_size()), narrative_active_14_ ? 1 : 0);
         log_.notef("summary mission scene end calls=%zu first_at=%.2f (008B01B0, recorded; "
             "the run continues, packet cc9_lua_mission_narrative)", end_scene_calls_,
             static_cast<double>(end_scene_first_at_));

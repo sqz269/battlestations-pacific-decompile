@@ -620,7 +620,7 @@ namespace {
 // string {size, data} at +name: when data is non-null, the sized pool takes it
 // back (00419CC0, 00BD1510(data, size + 1, 1)).
 void destroy_callback_holder(void* holder, std::uint32_t vtable, std::size_t args, std::size_t name,
-                             Cc13Seg40Host& host) {
+                             MissionNarrativeObjectHost& host) {
     at<std::uint32_t>(holder, 0) = vtable;
     void* vector = at<void*>(holder, args);
     if (vector != nullptr) {
@@ -640,13 +640,13 @@ void destroy_callback_holder(void* holder, std::uint32_t vtable, std::size_t arg
 
 // 00733E70 BSP_CountdownCallbackHolder_Destruct, __thiscall(ECX = holder), EH
 // frame 00C85CCB: vtable 00CFE964, vector +24h, string {+1Ch, +20h}.
-void cc13_seg40_countdown_callback_holder_destruct_00733e70(void* holder, Cc13Seg40Host& host) {
+void cc13_seg40_countdown_callback_holder_destruct_00733e70(void* holder, MissionNarrativeObjectHost& host) {
     destroy_callback_holder(holder, 0x00CFE964u, 0x24, 0x1C, host);
 }
 
 // 00733F00 BSP_NarrativeCallbackHolder_Destruct, __thiscall(ECX = holder), EH
 // frame 00C85CEB: vtable 00CFE968, vector +1Ch, string {+14h, +18h}.
-void cc13_seg40_narrative_callback_holder_destruct_00733f00(void* holder, Cc13Seg40Host& host) {
+void cc13_seg40_narrative_callback_holder_destruct_00733f00(void* holder, MissionNarrativeObjectHost& host) {
     destroy_callback_holder(holder, 0x00CFE968u, 0x1C, 0x14, host);
 }
 
@@ -654,7 +654,7 @@ void cc13_seg40_narrative_callback_holder_destruct_00733f00(void* holder, Cc13Se
 // 00C85CB6. Bytes 00733DC0-00733E60: the holder body with vtable 00CFE960,
 // vector +14h and string {+0Ch, +10h}; then the second string {+4h, +8h} goes
 // back to the pool the same way.
-void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, Cc13Seg40Host& host) {
+void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, MissionNarrativeObjectHost& host) {
     destroy_callback_holder(entry, 0x00CFE960u, 0x14, 0x0C, host);
     void* data = at<void*>(entry, 8);
     if (data != nullptr) {
@@ -667,7 +667,7 @@ void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, Cc13Seg40Host& ho
 // +38h); 00733E70(ECX = +10h); ADD ESI,4 at 007350C0, then 00734CE0(ECX =
 // narrative+4); _free (00BF65AC) of [narrative+8h] and [narrative+8h] = 0
 // (007350D2..007350E2, [ESI+4] with ESI = narrative+4).
-void cc13_seg40_mission_narrative_destruct_00735080(void* narrative, Cc13Seg40Host& host) {
+void cc13_seg40_mission_narrative_destruct_00735080(void* narrative, MissionNarrativeObjectHost& host) {
     auto* base = static_cast<std::uint8_t*>(narrative);
     at<std::uint32_t>(narrative, 0) = 0x00CFE9C0u;
     cc13_seg40_narrative_callback_holder_destruct_00733f00(base + 0x38, host);

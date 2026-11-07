@@ -273,7 +273,8 @@ void cc13_seg48U_gun_class_effect_record_destruct_007323e0(void* record, Cc13Seg
 // source size (0041DD40(.., size, 1)) and, when that size is non-zero, filled with
 // memcpy(data, source data, resized size); +14h is copied.
 // ---------------------------------------------------------------------------
-void* cc13_seg48U_narrative_entry_copy_construct_00733c80(void* entry, const void* source, Cc13Seg48UHost& host) {
+void* cc13_seg48U_narrative_entry_copy_construct_00733c80(void* entry, const void* source,
+                                                          MissionNarrativeObjectHost& host) {
     at<std::uint32_t>(entry, 0x0) = 0x00CFE960;
     for (const std::size_t offset : {std::size_t{0x4}, std::size_t{0xC}}) {
         std::uint8_t* const string = static_cast<std::uint8_t*>(entry) + offset;
@@ -1138,7 +1139,7 @@ void cc13_seg48U_mission_narrative_read_00734460(void* narrative, void* reader, 
 // narrative. Evidence: export listing 00735030..00735070. The 58h object at
 // game+21E8h (constructed at 004DFA75).
 // ---------------------------------------------------------------------------
-void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host) {
+void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, MissionNarrativeObjectHost& host) {
     std::uint8_t* const base = static_cast<std::uint8_t*>(narrative);
     at<std::uint32_t>(narrative, 0x00) = 0x00CFE9C0;
     at<void*>(narrative, 0x08) = host.narrative_list_buy_head_node_00733430(base + 0x4);  // 0073503F
