@@ -249,6 +249,10 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
 
     // 00805CF0's writes, kept in the forced table by SetForcedReconLevel: +10h = 1
     // and +8h = level. 00803B50 (above) is the one writer that clears +10h.
+    // 00805CF0 also drops the +28h observer edge (00805D11..00805D1F: 006952A0, then
+    // MOV [EDI+14h],0 with EDI = record+14h); a forced record skips the sensor pass,
+    // so it stays null until the force is cleared, and the 00803B50 transition above
+    // carries the null detector 009741E0 reads (goal 5 chain 634 review).
     for (int party = 0; party < 3; ++party) {
         for (std::size_t u = 0; u < count; ++u) {
             ReconDetectionLevel level = ReconDetectionLevel::none;
@@ -256,6 +260,7 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
             ReconDetectionRecord& r = *state.record(party, u);
             r.forced = true;
             r.forced_level = level;
+            r.observer = kGunneryReconNoObserver;   // 00805D1F
         }
     }
 

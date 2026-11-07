@@ -13108,10 +13108,11 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
         // before the force, +10h ? +8h : +4h. The forced table is the image's +10h / +8h
         // (an entry exists exactly while +10h is set; ClearForcedReconLevel removes it at
         // once), and the pass's persistent record holds +4h; a record the pass has not
-        // laid out yet is a fresh one, +4h = 0. The +28h observer is the record's;
-        // 00805CF0 leaves it alone.
+        // laid out yet is a fresh one, +4h = 0. 00805CF0 then drops the +28h observer
+        // edge before its delegate (00805D07 LEA EDI,[ESI+14h]; 00805D11..00805D1F
+        // 006952A0 and MOV [EDI+14h],0; the delegate calls are at 00805D4E / 00805D65),
+        // so 009741E0 reads a null detector here.
         int record_old = 0;
-        std::size_t observer = bsp::kGunneryReconNoObserver;
         if (party >= 0 && party < 3) {
             const bsp::ReconDetectionRecord* record = gunnery != nullptr
                 ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
@@ -13121,7 +13122,6 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
             } else if (record != nullptr) {
                 record_old = static_cast<int>(record->level);
             }
-            if (record != nullptr) observer = record->observer;
         }
         bsp::set_forced_recon_level_00805cf0(unit, party, level);
         ++summary_.forced_recon_units;
@@ -13153,7 +13153,8 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
             // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, on the
             // record's own change (record_old above), not the listeners' substitute.
             if (!dead && record_old != now) {
-                game_warning_report_recon(unit, record_old, now, party, observer);
+                game_warning_report_recon(unit, record_old, now, party,
+                                          bsp::kGunneryReconNoObserver);   // +28h = 0 at 00805D1F
             }
         }
     }
