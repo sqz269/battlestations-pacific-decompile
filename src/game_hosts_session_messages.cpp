@@ -22,6 +22,7 @@
 #include <stdexcept>
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
+#include "bsp/cc13_seg29U_trap_host.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include <cfloat>
@@ -144,6 +145,12 @@ struct HostSessionMessages::Image {
         // 83h 00D03554.
         std::uint32_t slots_00d03554[5]{0x00763240u, 0x00763260u, 0x007632c0u, 0x00763210u,
                                         0x004499c0u};
+        // Goal 5 chain 628. 86h 00CF864C (bsp.py ghidra bytes 00cf864c --length
+        // 24, bsp.gpr's /battlestationspacific.exe): 006BEDF0 scalar delete,
+        // 006BDB30 write, 006BDB60 read, 006BDB00 IsType, 006BDB90 (the +20h
+        // handle-table test in place of 004499C0).
+        std::uint32_t slots_00cf864c[5]{0x006bedf0u, 0x006bdb30u, 0x006bdb60u, 0x006bdb00u,
+                                        0x006bdb90u};
         // C3h 00D03504: native destructor, write, read, IsType, always true.
         // bsp.py ghidra bytes 00d03504 --length 20 (existing bsp.gpr program).
         std::uint32_t slots_00d03504[5]{0x00762920u, 0x00762940u, 0x007629a0u, 0x007628f0u,
@@ -224,6 +231,7 @@ struct HostSessionMessages::Image {
             if (image_address == 0x00d034a0u) return slots_00d034a0;
             if (image_address == 0x00d034dcu) return slots_00d034dc;
             if (image_address == 0x00d03554u) return slots_00d03554;
+            if (image_address == 0x00cf864cu) return slots_00cf864c;
             return nullptr;
         }
     } seg42_vtables;
@@ -1211,6 +1219,77 @@ bool copy_goes_to_unit_handler(IsType is_type) {
     return receiver_for_message_00780120(is_a) == EntityMessageReceiver::kSessionKindSwitch;
 }
 }  // namespace
+
+namespace {
+// Goal 5 chain 628. The 86h class: the 20h-byte unit message and the plane's
+// handle word at +20h, 24h bytes as 00768530 case 86h allocates it
+// (include/bsp/oct18_tail_a_factory.inc: {0x86, 0x24, 0x00763440, ...}).
+struct AppearReadyPlaneMessage86 {
+    seg42::UnitMessage u;
+    std::uint16_t plane_id_20;
+    std::uint16_t pad_22;
+};
+static_assert(sizeof(AppearReadyPlaneMessage86) == 0x24);
+static_assert(offsetof(AppearReadyPlaneMessage86, plane_id_20) == 0x20);
+
+// 006BDAC0 reads one word of the plane (bsp.py show 006bdac0 --asm: 006BDAEA
+// MOV CX,[EAX+174h], the handle-table ordinal); nothing else of the plane is
+// read, so this is that word's view.
+struct PlaneHandleView174 {
+    std::uint8_t unread_000[0x174];
+    std::uint16_t handle_174;
+};
+static_assert(offsetof(PlaneHandleView174, handle_174) == 0x174);
+
+// 006BDAC0's only service is the inlined base constructor 0075B430
+// (006BDAC8), over the session owner the other local codecs use; every other
+// segment-29 service traps.
+class AppearReadyPlaneConstructionBinding final : public cc13_seg29U::Seg29UTrapHost {
+public:
+    explicit AppearReadyPlaneConstructionBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_base_0075b430(void* message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+private:
+    const NativeSessionMessageContext& session_;
+};
+}  // namespace
+
+std::uint16_t HostSessionMessages::queue_airbase_appear_ready_plane_86(
+    std::uint16_t plane_id) const {
+    const Image& image = *image_;
+    // 006CF9AD..006CF9B2: 006BDAC0(plane) on the stack message at [ESP+8].
+    AppearReadyPlaneMessage86 sent{};
+    {
+        PlaneHandleView174 plane{};
+        plane.handle_174 = plane_id;
+        AppearReadyPlaneConstructionBinding binding(image.session);
+        cc13_seg29U::appear_ready_plane_message_construct_006bdac0(&sent, &plane, binding);
+    }
+
+    // 0076E575: vtable[4] = 006BDB30, the header, the +1Ch bit, +20h in 12 bits.
+    LocalStream stream;
+    band_006b_cc13::airbase_type86_write_006bdb30(&sent, &stream.out);
+    // 00768530 case 86h: operator new(24h), 00763440 at 007692A6; 0076A27B
+    // vtable[8] = 006BDB60.
+    stream.begin_read();
+    AppearReadyPlaneMessage86 queued{};
+    seg42::construct_airbase_appearreadyplane_00763440(&queued.u, image.seg42);
+    band_006b_cc13::airbase_type86_read_006bdb60(&queued, &stream.in);
+    // 00780120 asks the copy's IsType 006BDB00 (86h, 49h, 46h): none is on its
+    // ladder, so the copy takes the shared tail to the entity's session-kind
+    // switch, whose air-ops arm 006CD788 reads +20h.
+    if (!copy_goes_to_unit_handler(&band_006b_cc13::airbase_type86_is_type_006bdb00)
+        || !band_006b_cc13::airbase_type86_is_type_006bdb00(queued.u.h.base.type_10)) {
+        throw std::logic_error("AppearReadyPlane: decoded copy did not reach the kind switch");
+    }
+    // 006BEDF0, slot 0 of 00CF864C for both, restamps the root profile
+    // (00CE4974) and frees only for flags bit 0; neither message owns storage,
+    // so the copy ends here, as for 83h.
+    return queued.plane_id_20;
+}
 
 HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     bool explode_to_parts) const {

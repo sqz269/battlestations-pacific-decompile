@@ -173,6 +173,17 @@ public:
         bool now{false};
     };
     AirbaseLaunchSlotCopy queue_airbase_launch_slot_83(std::uint32_t slot, bool now) const;
+    // Goal 5 chain 628. MT_AIRBASE_APPEARREADYPLANE (86h): the airfield launch
+    // site's tick 006CF980 builds it on its stack with 006BDAC0(plane) at
+    // 006CF9B2 (0075B430(86h), +18h/+1Ah/+1Ch zero, +4h = 1, vtable 00CF864C,
+    // +20h word = plane+174h) and routes it to the airfield (site+44h) at
+    // 006CF9C7, 0077C2A0(msg, 5, 0), the local bit set; then 006BDB30 write
+    // (header, +1Ch bit, +20h in 12 bits), 00768530 case 86h at 007692A6
+    // (00763440), 006BDB60 read. The receiver 006CD6C0's 86h arm (006CD788)
+    // resolves the copy's +20h with 006BDBF0 and hands that plane to the
+    // site's vtable[14h] 006CF9F0. `plane_id` is the plane's +174h word;
+    // returns the copy's +20h.
+    std::uint16_t queue_airbase_appear_ready_plane_86(std::uint16_t plane_id) const;
     // Goal 4 chain 260. The weapon director's kind 5Ah (session message 90):
     // 0071DD30 (sub-kind 2) at 0071DD4B..0071DD81: 0075B430(5Ah), +18h word 0,
     // +1Ah 0, +4h = 1, +1Ch 0, vtable 00CFD9C4, +20h = the sub-kind, +24h =

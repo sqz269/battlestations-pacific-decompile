@@ -4334,7 +4334,24 @@ void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostR
 
 void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d) {
     if (d.site_ready_18 >= slots.size() || !slots[d.site_ready_18]) return;
-    GameUnitSlot& p = *slots[d.site_ready_18];
+    // Goal 5 chain 628. 006CF9AD..006CF9C7: the ready plane goes out as
+    // MT_AIRBASE_APPEARREADYPLANE (86h, 006BDAC0) through 0077C2A0(msg, 5, 0)'s
+    // local copy, and the receiver's 86h arm (006CD788) hands 006CF9F0 the plane
+    // the copy's +20h names (006BDBF0). +174h is this process's unit index + 1
+    // (GameScriptOrdersHost::entity_object_id). LABELLED: an index the copy's
+    // 12 bits cannot carry keeps the posted plane, as queue_gun_aim_79 keeps
+    // its target id; delivery stays in this step, as before.
+    std::size_t plane_index = d.site_ready_18;
+    if (d.site_ready_18 + 1u <= 0xfffu) {
+        const std::uint16_t copy = commands.session_messages().queue_airbase_appear_ready_plane_86(
+            static_cast<std::uint16_t>(d.site_ready_18 + 1u));
+        plane_index = copy == 0 ? slots.size() : static_cast<std::size_t>(copy) - 1u;
+    }
+    if (plane_index >= slots.size() || !slots[plane_index]) {
+        d.site_ready_18 = static_cast<std::size_t>(-1);                // 006CFA54
+        return;
+    }
+    GameUnitSlot& p = *slots[plane_index];
     const bool owner_alive = d.owner < slots.size() && slots[d.owner]
         && !(gunnery != nullptr && gunnery->unit_dead(d.owner));
     if (owner_alive && place_on_launch_spot_007c5f60(p, deck_index, d, true)) {
