@@ -4945,19 +4945,47 @@ void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const 
 // path over the host's slot.
 void GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0(GameUnitSlot& p) {
     ++takeoff_notify_calls;
-    if (!p.plane_landed_904) {
+    // Goal 5 chain 650: the body (bsp::cc13_seg47b, typed view) over the slot's
+    // +904h, +900h and the session context's game+1FE4h.
+    struct Exits final : bsp::cc13_seg47b::PlaneTakeoffStartNotifyHost {
+        GameUnitsHost::Impl& host;
+        GameUnitSlot& p;
+        bool posted{false};
+        Exits(GameUnitsHost::Impl& h, GameUnitSlot& s) : host(h), p(s) {}
+        void send_flight_state_c3(std::uint8_t current, std::uint8_t requested) override {
+            // 0076E520 writes 00762940; its C3h factory copy is constructed with
+            // 00762880 and read by 007629A0. The slot retains that copy until the
+            // existing row-9 delivery, with its recipient identity kept out of band.
+            const auto copy =
+                host.commands.session_messages().queue_plane_change_state_c3(current, requested);
+            p.takeoff_notify_c3h_pending = copy.requested == 4;
+            p.takeoff_notify_c3h_current = copy.current;
+            posted = true;
+        }
+        void set_flight_state_007c1430(std::int32_t wanted) override {
+            // 007C1897, a client session only (game+1FE4h == 2): 007C1430 on the
+            // slot, applied as 007C1570's direct arm applies it.
+            bsp::PlaneSetStateInputs si;
+            si.requested_state = wanted;
+            si.current_state = p.plane_control_mode_900;
+            si.airborne_clock = p.plane_airborne_908;
+            si.class_min_water_spd = p.plane_min_water_spd_198;
+            si.landed_after_flight = p.plane_landed_904;
+            const bsp::PlaneSetStateEffects fx = bsp::set_flight_state_007c1430(si);
+            p.plane_control_mode_900 = fx.state;
+            if (fx.write_state_change_stamp) p.plane_site_timer_c04 = -1.0f;
+            if (fx.write_landed_after_flight) p.plane_landed_904 = fx.landed_after_flight;
+            if (fx.write_state_enter_marker) p.plane_c18 = 3;
+            if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+                if (fx.changed) host.flight_state_notify_007c11e0(p);
+            }
+        }
+    } exits(*this, p);
+    bsp::cc13_seg47b::plane_notify_takeoff_start_007c17d0(p.plane_landed_904,
+        p.plane_control_mode_900, bsp::session_context().session_word_1fe4 == 2, exits);
+    if (!exits.posted) {
         done("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
         return;
-    }
-    {
-        // bsp.py show 007C17D0: +20h is the current +900h byte, +21h is 4.
-        // 0076E520 writes 00762940; its C3h factory copy is constructed with
-        // 00762880 and read by 007629A0. The slot retains that copy until the
-        // existing row-9 delivery, with its recipient identity kept out of band.
-        const auto copy = commands.session_messages().queue_plane_change_state_c3(
-            static_cast<std::uint8_t>(p.plane_control_mode_900), 4);
-        p.takeoff_notify_c3h_pending = copy.requested == 4;
-        p.takeoff_notify_c3h_current = copy.current;
     }
     ++takeoff_notify_posts;
     if (takeoff_notify_posts <= 10) {
