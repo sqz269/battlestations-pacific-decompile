@@ -2092,6 +2092,8 @@ public:
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
     // until that switch is on. docs/LUA_BINDING_MISSION.md.
     int run_set_invincible_00897a50(lua_State* state, int argument_count);
+    // Goal 5 chain 649. 00897CB0 IsInvincible, the +150h query, on its body.
+    int run_is_invincible_00897cb0(lua_State* state, int argument_count);
     int run_override_hp_008c1930(lua_State* state, int argument_count);
     // Packet cc9_forced_recon_level, under kForcedReconLevelBound.
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
@@ -2159,6 +2161,17 @@ public:
     int run_has_fired_008be7e0(lua_State* state, int argument_count);
     int run_get_firepower(lua_State* state);
     int run_ai_set_hint_weight(lua_State* state);
+    // Goal 5 chain 649: the eight HintSystem wrappers (ShowHint, ShowHintForced,
+    // AddStoredHint, RemoveStoredHint, HideHint, IsHintActive, IsHintCritical and
+    // IsHintStored, rows 00E0B7F0..00E0B830) over the process's hint tracker.
+    static bool is_hint_binding(std::uint32_t address) noexcept;
+    int run_hint_binding(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 649: the IsFormationLeader and IsFormationFollower rows on
+    // their segment-56 bodies, which ask the unit for 00778890 / 007788B0.
+    int run_formation_role_query(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 649: the Lua InitAll row on its body lua_init_all, whose
+    // 00925F20(0) is run_sentity_init_all_00925f20.
+    int run_lua_init_all_00898610(lua_State* state);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
