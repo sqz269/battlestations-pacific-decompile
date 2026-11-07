@@ -88,6 +88,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/cc13_seg33a.hpp"                    // 006E6270
 #include "bsp/shipyard_production.hpp"            // the shipyard registry
 #include "bsp/left55_seg56a_host_unreached.hpp"   // 008A0F10
+#include "bsp/left55_seg56c_host_unreached.hpp"   // 008BEBE0 (goal 5 chain 660)
+#include "bsp/cc13_left55_seg56a.hpp"             // 0089E850 / 008A54C0
 #include "bsp/left55_seg56b_host_unreached.hpp"   // 008ABAC0 / 008ABF90
 #include "bsp/plane_squadron_entity.hpp"          // 007ECF70
 #include "bsp/seg56_host_unreached.hpp"           // 008953F0 / 008950D0 / 00890BB0
@@ -8762,6 +8764,364 @@ float plane_bomb_fall_time_24bit_007bcc80(float height, float velocity_y) {
     return static_cast<float>(static_cast<double>(sum) / gravity);
 }
 
+// ---------------------------------------------------------------------------
+// Goal 5 chain 660: the packet cc13-fix16 natives run their bodies
+// (src/options_seg56_cc13.cpp, src/cc13_left55_seg56a.cpp, src/cc13_left55_seg56c.cpp,
+// src/air_operations.cpp) over the units host's slot state. As for the chain 655
+// unit queries, each adapter binds only what its body reaches and refuses the rest;
+// the dispatch keeps its slot checks, because the image reads whatever object it is
+// handed. Entities are the dispatch's identities: the table's `ID` (units-host index
+// plus one) that 00888AA0 (entity_at) resolves.
+
+// The image reads of PlaneForceRelease 0089EBA0 and SquadronForceRelease 0089E850.
+// [plane + 9C0h + 8 * word[00F876B8]] is the record 007CDC70 published for the step
+// slot, 007B9140(plane, 0): 1 for kind 17h (007B914A, MPlaneKamikaze), else some rack
+// holds a round. SUBSTITUTION, labelled, as the units host takes it at 009A85EF and
+// 009FA3F4 (game_hosts_units_motion.cpp): the host keeps no per-slot records and
+// computes the answer live, not one step late. This view therefore holds that one
+// record as its slot 0 and answers the slot word [00F876B8] (FixedStepClock::
+// previous_buffer) with it, so the body's +9C0h + 8 * slot lands on the record; the
+// word is an address into the view, not a game value the body passes on. The squadron
+// reads +3CCh / +3D0h are the dispatch's record as TurnToPositionBinding reads them:
+// its live members in order (squadron_live_members), each the member's index plus one.
+class BombReleaseView : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    BombReleaseView(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        void* argument, const bsp::PlaneSquadronHostRecord* squadron)
+        : units_(units), index_of_(std::move(index_of)), argument_(argument),
+          squadron_(squadron) {}
+
+    std::uint16_t global_u16(std::uint32_t address) override {
+        if (address != bsp::cc13_left55::seg56a::kLocalPlayerSlotGlobal) {
+            unit_query_unreached("a word global other than [00F876B8]");
+        }
+        return 0;
+    }
+    std::uint8_t read_u8(void* plane, std::uint32_t offset) override {
+        if (offset != 0x9C0u) unit_query_unreached("a byte other than the step record +9C0h");
+        const std::size_t index = slot_of(plane);
+        return (units_.unit_is_kind_of(index, 0x17)
+                || units_.plane_holds_rack_round_007b9140(index)) ? 1 : 0;
+    }
+    std::int32_t read_i32(void* squadron, std::uint32_t offset) override {
+        if (offset != 0x3CCu) unit_query_unreached("a dword other than squadron+3CCh");
+        return squadron_of(squadron).live_count();                       // 0089E96B
+    }
+    void* read_ptr(void* squadron, std::uint32_t offset) override {
+        if (offset < 0x3D0u || offset >= 0x3D0u + 4u * bsp::kPlaneSquadronMaxWings
+            || (offset & 3u) != 0u) {
+            unit_query_unreached("a pointer other than squadron+3D0h's slots");
+        }
+        const std::vector<std::size_t> live = squadron_live_members(squadron_of(squadron));
+        const std::size_t slot = (offset - 0x3D0u) / 4u;
+        if (slot >= live.size()) return nullptr;
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(live[slot] + 1u));
+    }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+    // 007BBBA0 on a plane: the units host's release request (packet cc13-fix16).
+    void request_release(void* plane) {
+        if (units_.request_ordnance_release_007bbba0(slot_of(plane))) ++requests_;
+    }
+    unsigned requests() const noexcept { return requests_; }
+
+protected:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    const bsp::PlaneSquadronHostRecord& squadron_of(void* entity) const {
+        if (squadron_ == nullptr || entity != argument_) {
+            unit_query_unreached("a squadron read on an entity other than the resolved argument");
+        }
+        return *squadron_;
+    }
+
+private:
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    void* argument_;
+    const bsp::PlaneSquadronHostRecord* squadron_;
+    unsigned requests_{0};
+};
+
+// 0089EBA0 PlaneForceRelease: lua_plane_force_release over BombReleaseView.
+class PlaneForceReleaseBinding final : public bsp::seg56_options_cc13::Seg56HostUnreached,
+                                       public BombReleaseView {
+public:
+    using BombReleaseView::BombReleaseView;
+    void unit_request_ordnance_release_007bbba0(void* plane) override { request_release(plane); }
+};
+
+// 0089E850 SquadronForceRelease: lua_squadron_force_release over BombReleaseView.
+class SquadronForceReleaseBinding final
+    : public bsp::cc13_left55::seg56a::Left55Seg56aHostUnreached, public BombReleaseView {
+public:
+    using BombReleaseView::BombReleaseView;
+    void unit_request_ordnance_release_007bbba0(void* plane) override { request_release(plane); }
+};
+
+// The pushes PlaneBombFallingTime (00B66480 PushFloat at 008A55FC) and
+// GetPlaneIsReloading (00B66450 PushBoolean) make onto the dispatch's own frame.
+class BombReleaseResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    BombReleaseResults(std::function<void(float)> push_float, std::function<void(bool)> push_boolean)
+        : push_float_(std::move(push_float)), push_boolean_(std::move(push_boolean)) {}
+    void push_float(float value) override { push_float_(value); }
+    void push_boolean(bool value) override { push_boolean_(value); }
+    void push_number(int) override { unit_query_unreached("00B664B0"); }
+    void push_nil() override { unit_query_unreached("00B66430"); }
+    void push_string(const std::string&) override { unit_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unit_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unit_query_unreached("0088BA30"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unit_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    std::function<void(float)> push_float_;
+    std::function<void(bool)> push_boolean_;
+};
+
+// 008A54C0 PlaneBombFallingTime: lua_plane_bomb_falling_time. +C8h is the pose-valid
+// byte (008A55D6), answered from entity_pose_stale_008a7c24 as GetDirection takes it, and
+// 00414DB0 is the host's refresh; +100h is the world translation y (unit_pose). 007BCC80's
+// vtable[34h] (007BBB70, 007BCC9F) is the world velocity unit+AC8h that unit_linear_velocity
+// answers, and the arithmetic is plane_bomb_fall_time_24bit_007bcc80 (24-bit order).
+class BombFallTimeBinding final : public bsp::cc13_left55::seg56a::Left55Seg56aHostUnreached,
+                                  public bsp::seg56_options_cc13::ImageAccess {
+public:
+    using PoseStale = std::function<bool(void*)>;
+    using PoseRefresh = std::function<void(void*)>;
+    BombFallTimeBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        PoseStale stale, PoseRefresh refresh)
+        : units_(units), index_of_(std::move(index_of)), stale_(std::move(stale)),
+          refresh_(std::move(refresh)) {}
+
+    // --- ImageAccess ---
+    std::uint8_t read_u8(void* plane, std::uint32_t offset) override {
+        if (offset != 0xC8u) unit_query_unreached("a byte other than +C8h");
+        static_cast<void>(slot_of(plane));
+        return stale_(plane) ? 0 : 1;
+    }
+    float read_f32(void* plane, std::uint32_t offset) override {
+        if (offset != 0x100u) unit_query_unreached("a float other than +100h");
+        float right[3], up[3], forward[3], position[3];
+        if (!units_.unit_pose(slot_of(plane), right, up, forward, position)) {
+            unit_query_unreached("+100h on a unit without a pose");
+        }
+        return position[1];
+    }
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+    // --- Left55Seg56aHost ---
+    void entity_pose_refresh_world_00414db0(void* entity) override { refresh_(entity); }
+    float weapon_drop_fall_time_007bcc80(void* plane, float height) override {
+        float velocity[3];
+        if (!units_.unit_linear_velocity(slot_of(plane), velocity)) {
+            unit_query_unreached("007BCC80 on a unit without a velocity");
+        }
+        return plane_bomb_fall_time_24bit_007bcc80(height, velocity[1]);
+    }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    PoseStale stale_;
+    PoseRefresh refresh_;
+};
+
+// 008BEBE0 GetPlaneIsReloading: lua_get_plane_is_reloading. vtable[5Ch](0Fh) is the
+// units host's kind test; [entity+3D0h] (008BED0E) is the squadron's slot 0, the record's
+// flight_leader() as the dispatch resolved it (null when that wing is gone); 007B92E0 is
+// plane_any_rack_empty_007b92e0. SUBSTITUTION, labelled, as before: a fused squadron
+// slot is its wing-0 plane, so it answers the 0Fh test as that plane.
+class PlaneIsReloadingBinding final
+    : public bsp::cc13_left55::seg56c::Left55Seg56cHostUnreached,
+      public bsp::seg56_options_cc13::ImageAccess {
+public:
+    PlaneIsReloadingBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        void* argument, const bsp::PlaneSquadronHostRecord* squadron)
+        : units_(units), index_of_(std::move(index_of)), argument_(argument),
+          squadron_(squadron) {}
+
+    // --- Left55Seg56cHost ---
+    bool entity_vcall_5c(void* entity, int class_id) override {
+        if (class_id != 0x0F) unit_query_unreached("vtable[5Ch] with a class other than 0Fh");
+        return units_.unit_is_kind_of(slot_of(entity), class_id);
+    }
+    bool weapon_controller_any_slot_answers_007b92e0(void* plane) override {
+        return units_.plane_any_rack_empty_007b92e0(slot_of(plane));
+    }
+
+    // --- ImageAccess ---
+    void* read_ptr(void* entity, std::uint32_t offset) override {
+        if (offset != 0x3D0u) unit_query_unreached("a pointer other than +3D0h");
+        if (squadron_ == nullptr || entity != argument_) {
+            unit_query_unreached("+3D0h on an entity other than the resolved squadron");
+        }
+        const std::size_t leader = squadron_->flight_leader();
+        if (leader == bsp::kPlaneSquadronNoUnit) return nullptr;
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(leader + 1u));
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    void* argument_;
+    const bsp::PlaneSquadronHostRecord* squadron_;
+};
+
+// 0089F080 PlaneReloadBombPlatforms -> 007ED650 at 0089F198: plane_reload_bomb_platforms_
+// 0089f080 walks the squadron's +3D0h planes (+3CCh of them, no slot cap) and calls
+// 007C1D80 on each (007ED667), which is the units host's plane_reload_bomb_platforms_
+// 007c1d80. The planes are the record's live members, each its index plus one.
+class ReloadBombPlatformsBinding final : public bsp::AirOperationsHost {
+public:
+    explicit ReloadBombPlatformsBinding(GameUnitsHost& units) : units_(units) {}
+
+    void reload_plane_bomb_platforms(std::uint32_t plane) override {
+        const std::size_t index = static_cast<std::size_t>(plane) - 1u;
+        if (plane == 0u || index >= units_.count()) {
+            unit_query_unreached("007C1D80 on a plane without a units-host slot");
+        }
+        const int changed = units_.plane_reload_bomb_platforms_007c1d80(index);
+        if (changed > 0) racks_ += static_cast<std::size_t>(changed);
+    }
+    std::size_t racks() const noexcept { return racks_; }
+
+    void release_squadron_slot(std::uint32_t, std::uint32_t) override {
+        unit_query_unreached("006C65B0");
+    }
+    void kill_plane(std::uint32_t, std::int32_t) override { unit_query_unreached("00926D90"); }
+    std::uint32_t build_stock_message(std::uint32_t, std::int32_t) override {
+        unit_query_unreached("the stock-change message");
+    }
+    void send_message_to_peers(std::uint32_t, std::uint32_t) override {
+        unit_query_unreached("0077C7B0");
+    }
+    void notify_stock_changed(std::uint32_t, std::uint32_t, std::int32_t) override {
+        unit_query_unreached("00984EB0");
+    }
+    void route_command_message(std::int32_t, std::int32_t, float, bool) override {
+        unit_query_unreached("0075B430 / 0077C2A0");
+    }
+    void run_air_ops_update(std::uint32_t) override { unit_query_unreached("006CDC70"); }
+    std::uint32_t create_plane_squadron(std::uint32_t, const char*, const float*,
+        const bsp::CatapultSpawnProperties&) override {
+        unit_query_unreached("004F0AD0");
+    }
+    void bind_launched_squadron(std::uint32_t, std::uint32_t) override {
+        unit_query_unreached("00694A60");
+    }
+    std::uint32_t attach_spawn_record(std::uint32_t, const bsp::CatapultSpawnProperties&) override {
+        unit_query_unreached("00922E20");
+    }
+    void set_barrel_reload_timer(std::uint32_t, float) override {
+        unit_query_unreached("BSP_Gun_SetBarrelReloadTimer");
+    }
+
+private:
+    GameUnitsHost& units_;
+    std::size_t racks_{0};
+};
+
+// 008A4F00 PilotBomb: lua_pilot_bomb. 007ED880(unit, 0) and the argument's vtable[5Ch](10h)
+// are answered as the inline arm answered them (packet cc13-fix16 / cc13-fix21): the
+// ordered unit's own ordnance OR its live squadron members' carries kind 2Fh, and a fused
+// squadron slot (007EFB00, vtable 00D087C0+5Ch, never 10h) is the squadron. 0077D600 is the
+// host's entity_issue_command, followed by the receiver's 0099A170 install.
+class PilotBombBinding final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    using DropKamikaze = std::function<bool(void*)>;
+    using IsSquadron = std::function<bool(void*)>;
+    using Issue = std::function<void(void*, std::uint32_t, const bsp::SceneCommandTarget&, int)>;
+    PilotBombBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        DropKamikaze drop_kamikaze, IsSquadron is_squadron, Issue issue)
+        : units_(units), index_of_(std::move(index_of)), drop_kamikaze_(std::move(drop_kamikaze)),
+          is_squadron_(std::move(is_squadron)), issue_(std::move(issue)) {}
+
+    bool unit_has_drop_kamikaze_ordnance_007ed880(void* unit, std::int32_t loadout) override {
+        if (loadout != 0) unit_query_unreached("007ED880 with a loadout other than 0");
+        static_cast<void>(slot_of(unit));
+        return drop_kamikaze_(unit);
+    }
+    bool entity_is_class_vt5c(void* entity, std::int32_t class_id) override {
+        if (class_id != 0x10) unit_query_unreached("vtable[5Ch] with a class other than 10h");
+        const std::size_t index = slot_of(entity);
+        return !is_squadron_(entity) && units_.unit_is_kind_of(index, class_id);
+    }
+    void entity_issue_command_0077d600(void* entity, std::uint32_t command_object,
+        const bsp::SceneCommandTarget& target, std::int32_t flags) override {
+        issue_(entity, command_object, target, flags);
+    }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    DropKamikaze drop_kamikaze_;
+    IsSquadron is_squadron_;
+    Issue issue_;
+};
+
 }  // namespace
 
 // Packet cc13-fix16 (docs/CC13_FIX16.md): PlaneForceRelease 0089EBA0,
@@ -8778,7 +9138,7 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
     if (std::strcmp(name, "PlaneForceRelease") == 0) {
         if constexpr (kLuaPlaneForceReleaseBound) {
             ++plane_force_release_calls_;
-            void* entity = entity_from_argument(0);
+            void* entity = entity_at(0);   // the body's own 00888AA0 read
             const std::size_t index = index_of(entity);
             if (entity == nullptr || index >= units_.count()) {
                 ++plane_force_release_unresolved_;
@@ -8786,16 +9146,17 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
                     "0089eba0");
                 return 0;
             }
-            // 0089ECBD: the step record byte +9C0h, 007B9140(plane, 0) as 007CDC70
-            // published it. SUBSTITUTION, labelled: taken live, not one step late;
-            // the flag-0 arm equals plane_holds_rack_round_007b9140's flag-1 answer
+            // Goal 5 chain 660: the body lua_plane_force_release (src/options_seg56_cc13.cpp)
+            // over BombReleaseView. 0089ECBD: the step record byte +9C0h, 007B9140(plane, 0)
+            // as 007CDC70 published it. SUBSTITUTION, labelled: taken live, not one step
+            // late; the flag-0 arm equals plane_holds_rack_round_007b9140's flag-1 answer
             // in single player ([00E17BF2] = 0 at 005E2FB2), and 007B914A's kind-17h
-            // arm (MPlaneKamikaze answers 1) is applied here.
-            const bool can_drop = units_.unit_is_kind_of(index, 0x17)
-                || units_.plane_holds_rack_round_007b9140(index);
-            if (can_drop && units_.request_ordnance_release_007bbba0(index)) {
-                ++plane_force_release_requests_;   // 0089ECC9
-            }
+            // arm (MPlaneKamikaze answers 1) is applied in the view.
+            RepairBindingArgs args(*this);
+            PlaneForceReleaseBinding binding(units_,
+                [this](void* e) { return index_of(e); }, entity, nullptr);
+            bsp::seg56_options_cc13::lua_plane_force_release(args, binding, binding);
+            plane_force_release_requests_ += binding.requests();   // 0089ECC9
         }
         return 0;   // 0089ECD2 00B66400: nothing pushed
     }
@@ -8814,19 +9175,17 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
                     "0089e850");
                 return 0;
             }
-            // 0089E967-0089E9B1: each +3CCh member in +3D0h order. SUBSTITUTION,
-            // labelled: the record's member_units stand for the compacted array
-            // (its kPlaneSquadronNoUnit holes skipped, as GetSquadronPlanes skips
-            // them); the byte is taken live, as for PlaneForceRelease.
-            const std::vector<std::size_t> members = record->member_units;
-            for (const std::size_t m : members) {
-                if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
-                const bool can_drop = units_.unit_is_kind_of(m, 0x17)
-                    || units_.plane_holds_rack_round_007b9140(m);
-                if (can_drop && units_.request_ordnance_release_007bbba0(m)) {
-                    ++squadron_force_release_requests_;   // 0089E9A0
-                }
-            }
+            // Goal 5 chain 660: the body lua_squadron_force_release (src/cc13_left55_
+            // seg56a.cpp) over BombReleaseView. 0089E967-0089E9B1: each +3CCh member in
+            // +3D0h order. SUBSTITUTION, labelled: the record's live member_units stand
+            // for the compacted array (its kPlaneSquadronNoUnit holes skipped, as
+            // GetSquadronPlanes skips them), and the record is the one this argument
+            // resolves to; the byte is taken live, as for PlaneForceRelease.
+            RepairBindingArgs args(*this);
+            SquadronForceReleaseBinding binding(units_,
+                [this](void* e) { return index_of(e); }, entity_at(0), record);
+            bsp::cc13_left55::seg56a::lua_squadron_force_release(args, binding, binding);
+            squadron_force_release_requests_ += binding.requests();   // 0089E9A0
         }
         return 0;   // 0089E9B7 00B66400: nothing pushed
     }
@@ -8837,33 +9196,36 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
             void* unit = argument_ptr_field(0);
             if (unit == nullptr) unit = entity_from_argument(0);
             const std::size_t unit_index = index_of(unit);
-            const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
             if (unit == nullptr || unit_index >= units_.count()) {
                 ++pilot_bomb_unresolved_;
                 log_.unimplemented("LuaNative::PilotBomb(entity without a unit slot)",
                     "008a4f00");
                 return 0;
             }
-            const std::size_t target_index = target.object != nullptr
-                ? index_of(target.object)
-                : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                        : ~static_cast<std::size_t>(0));
+            // Goal 5 chain 660: the body lua_pilot_bomb (src/options_seg56_cc13.cpp) reads
+            // argument 0 (00888AA0), the target (0088A810 through this host's
+            // LuaCommandTargetSource) and chooses the class; PilotBombBinding answers its
+            // three calls.
             // 008A504C 007ED880(unit, 0): any of the +3CCh members at +3D0h carries
             // kind 2Fh (007B93E0). SUBSTITUTION, labelled, as choose_attack_class_
             // 007eec50 answers it: the ordered unit's own ordnance OR its live
             // squadron members' (gunnery liveness stands for +3CCh membership).
-            bool drop_kamikaze = bsp::ordnance_has_drop_kamikaze_2fh(
-                bsp::OrdnanceKindSet{units_.unit_ordnance(unit_index)});
-            if (const bsp::PlaneSquadronHostRecord* sq =
-                    bsp::plane_squadron_registry().find_by_member_unit(unit_index)) {
-                auto* const gun = units_.gunnery();
-                for (const std::size_t m : sq->member_units) {
-                    if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
-                    if (gun != nullptr && gun->unit_dead(m)) continue;
-                    drop_kamikaze |= bsp::ordnance_has_drop_kamikaze_2fh(
-                        bsp::OrdnanceKindSet{units_.unit_ordnance(m)});
+            const auto drop_kamikaze = [this](void* entity) {
+                const std::size_t index = index_of(entity);
+                bool drop = bsp::ordnance_has_drop_kamikaze_2fh(
+                    bsp::OrdnanceKindSet{units_.unit_ordnance(index)});
+                if (const bsp::PlaneSquadronHostRecord* sq =
+                        bsp::plane_squadron_registry().find_by_member_unit(index)) {
+                    auto* const gun = units_.gunnery();
+                    for (const std::size_t m : sq->member_units) {
+                        if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
+                        if (gun != nullptr && gun->unit_dead(m)) continue;
+                        drop |= bsp::ordnance_has_drop_kamikaze_2fh(
+                            bsp::OrdnanceKindSet{units_.unit_ordnance(m)});
+                    }
                 }
-            }
+                return drop;
+            };
             // 008A5053-008A5070: dropkamikaze 00E08F30, else vtable[5Ch](10h) gives
             // levelbomb 00E08F28 and its refusal divebomb 00E08F20 (the ordered
             // unit's class answers, as for 007EEC50's self_is_level_bomber).
@@ -8875,36 +9237,46 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
             // record's squadron_unit) is taken as the squadron, so its wing-0
             // plane named on its own cannot be told apart from it here; any other
             // slot answers with its own class (the plane arm).
-            bool argument_is_squadron = false;
-            for (const bsp::PlaneSquadronHostRecord& r :
-                 bsp::plane_squadron_registry().records()) {
-                if (r.squadron_unit != bsp::kPlaneSquadronNoUnit
-                    && r.squadron_unit == unit_index) {
-                    argument_is_squadron = true;
-                    break;
+            const auto is_squadron = [this](void* entity) {
+                const std::size_t index = index_of(entity);
+                for (const bsp::PlaneSquadronHostRecord& r :
+                     bsp::plane_squadron_registry().records()) {
+                    if (r.squadron_unit != bsp::kPlaneSquadronNoUnit
+                        && r.squadron_unit == index) {
+                        return true;
+                    }
                 }
-            }
-            const bool level_bomber = !argument_is_squadron
-                && units_.unit_is_kind_of(unit_index, 0x10);
-            const std::uint32_t chosen = drop_kamikaze ? 0x00E08F30u
-                : (level_bomber ? 0x00E08F28u : 0x00E08F20u);
+                return false;
+            };
             // 008A507F 0077D600(unit, class, &target, 1), with no test of the class
             // or the target: the order is issued whatever 007EEC50 would choose.
-            entity_issue_command(unit, chosen, target, 1);
-            ++pilot_bomb_issued_;
-            install_pilot_attack_task_after_delivery(unit_index, name_of(unit), chosen,
-                target, target_index, "PilotBomb", pilot_bomb_tasks_);
-            log_.notef("  PilotBomb: unit=%s target_object_id=%u class=%08lx "
-                "drop_kamikaze=%d (008A4F00, packet cc13-fix16)", name_of(unit).c_str(),
-                static_cast<unsigned>(target.object_id), static_cast<unsigned long>(chosen),
-                drop_kamikaze ? 1 : 0);
+            const auto issue = [this](void* entity, std::uint32_t chosen,
+                                      const bsp::SceneCommandTarget& target, int flags) {
+                const std::size_t index = index_of(entity);
+                const std::size_t target_index = target.object != nullptr
+                    ? index_of(target.object)
+                    : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                            : ~static_cast<std::size_t>(0));
+                entity_issue_command(entity, chosen, target, flags);
+                ++pilot_bomb_issued_;
+                install_pilot_attack_task_after_delivery(index, name_of(entity), chosen,
+                    target, target_index, "PilotBomb", pilot_bomb_tasks_);
+                log_.notef("  PilotBomb: unit=%s target_object_id=%u class=%08lx "
+                    "drop_kamikaze=%d (008A4F00, packet cc13-fix16)", name_of(entity).c_str(),
+                    static_cast<unsigned>(target.object_id), static_cast<unsigned long>(chosen),
+                    chosen == bsp::seg56_options_cc13::kCommandObjectDropKamikaze ? 1 : 0);
+            };
+            RepairBindingArgs args(*this);
+            PilotBombBinding binding(units_, [this](void* e) { return index_of(e); },
+                drop_kamikaze, is_squadron, issue);
+            bsp::seg56_options_cc13::lua_pilot_bomb(args, *this, binding);
         }
         return 0;   // 008A5088 00B66400: nothing pushed
     }
     if (std::strcmp(name, "PlaneBombFallingTime") == 0) {
         if constexpr (kLuaPlaneBombFallingTimeBound) {
             ++bomb_falling_time_calls_;
-            void* entity = entity_from_argument(0);
+            void* entity = entity_at(0);
             const std::size_t index = index_of(entity);
             float right[3], up[3], forward[3], position[3];
             float velocity[3];
@@ -8916,13 +9288,20 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
                     "LuaNative::PlaneBombFallingTime(entity without a unit slot)", "008a54c0");
                 return 0;
             }
-            // 008A55D6 +C8h / 00414DB0, never stale in this host (as GetDirection).
-            if (entity_pose_stale_008a7c24(entity)) entity_pose_refresh_00414db0(entity);
-            // 008A55E6 [plane+100h], the world translation y; 007BCC95's vtable[34h]
-            // is the world velocity unit+AC8h, which unit_linear_velocity answers.
-            push_number_float_00b66480(
-                plane_bomb_fall_time_24bit_007bcc80(position[1], velocity[1]));
-            return state_ != nullptr ? 1 : 0;
+            // Goal 5 chain 660: the body lua_plane_bomb_falling_time (src/cc13_left55_
+            // seg56a.cpp) over BombFallTimeBinding. 008A55D6 +C8h / 00414DB0, never stale
+            // in this host (as GetDirection); 008A55E6 [plane+100h], the world translation
+            // y; 007BCC95's vtable[34h] is the world velocity unit+AC8h, which
+            // unit_linear_velocity answers.
+            RepairBindingArgs args(*this);
+            BombReleaseResults results([this](float value) { push_number_float_00b66480(value); },
+                [this](bool value) { push_boolean(value); });
+            BombFallTimeBinding binding(units_, [this](void* e) { return index_of(e); },
+                [this](void* e) { return entity_pose_stale_008a7c24(e); },
+                [this](void* e) { entity_pose_refresh_00414db0(e); });
+            const int pushed = bsp::cc13_left55::seg56a::lua_plane_bomb_falling_time(args,
+                results, binding, binding);
+            return state_ != nullptr ? pushed : 0;
         }
         return 0;
     }
@@ -8941,17 +9320,24 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
                     "0089f080");
                 return 0;
             }
-            // 007ED650: each +3CCh member at +3D0h (no slot cap), 007C1D80 on it.
-            // The closing byte squadron+3ECh = 1 (007ED67C) is not kept: a disp32
+            // Goal 5 chain 660: 007ED650 is plane_reload_bomb_platforms_0089f080
+            // (src/air_operations.cpp) over ReloadBombPlatformsBinding: each +3CCh member
+            // at +3D0h (no slot cap), 007C1D80 on it. The planes are the record's live
+            // member_units (holes skipped), each its index plus one. The closing byte
+            // squadron+3ECh = 1 (007ED67C) lands in a local and is not kept: a disp32
             // scan finds no byte reader of +3ECh in the squadron code (its other
             // writers are 007ED0D7, 007ED23E, 007ED6C9, 007F1D5D, 007F3A1D,
             // 007F4B6E), so no host state stands for it.
-            const std::vector<std::size_t> members = record->member_units;
-            for (const std::size_t m : members) {
+            std::vector<std::uint32_t> planes;
+            for (const std::size_t m : record->member_units) {
                 if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
-                const int changed = units_.plane_reload_bomb_platforms_007c1d80(m);
-                if (changed > 0) reload_bomb_platforms_racks_ += static_cast<std::size_t>(changed);
+                planes.push_back(static_cast<std::uint32_t>(m + 1u));
             }
+            ReloadBombPlatformsBinding binding(units_);
+            bool flag_3ec = false;
+            bsp::plane_reload_bomb_platforms_0089f080(binding, planes.data(),
+                static_cast<std::int32_t>(planes.size()), &flag_3ec);
+            reload_bomb_platforms_racks_ += binding.racks();
         }
         return 0;   // 0089F1A1 00B66400: nothing pushed
     }
@@ -8959,23 +9345,20 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
         if constexpr (kLuaGetPlaneIsReloadingBound) {
             ++plane_is_reloading_calls_;
             resolve_plane_squadron_members();
-            void* entity = entity_from_argument(0);
+            void* entity = entity_at(0);
             const std::size_t index = index_of(entity);
             // 008BED04 vtable[5Ch](0Fh): a plane answers for itself; otherwise the
             // squadron's +3D0h slot 0 when non-null (008BED0E-008BED16).
             // SUBSTITUTION, labelled: a fused squadron slot is its wing-0 plane,
             // so it answers as that plane; once that plane is gone the record's
-            // flight_leader() is not reached (the slot still answers 0Fh).
-            std::size_t plane = bsp::kPlaneSquadronNoUnit;
-            if (entity != nullptr && index < units_.count()) {
-                if (units_.unit_is_kind_of(index, 0x0F)) {
-                    plane = index;
-                } else if (const bsp::PlaneSquadronHostRecord* record =
-                               squadron_record_for_argument(index)) {
-                    plane = record->flight_leader();
-                } else {
-                    entity = nullptr;
-                }
+            // flight_leader() is not reached (the slot still answers 0Fh). The dispatch
+            // refuses an argument that is neither, where the image reads +3D0h of
+            // whatever object it was handed.
+            const bsp::PlaneSquadronHostRecord* record = nullptr;
+            if (entity != nullptr && index < units_.count()
+                && !units_.unit_is_kind_of(index, 0x0F)) {
+                record = squadron_record_for_argument(index);
+                if (record == nullptr) entity = nullptr;
             }
             if (entity == nullptr || index >= units_.count()) {
                 ++plane_is_reloading_unresolved_;
@@ -8984,12 +9367,22 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
                     "008bebe0");
                 return 0;
             }
-            // 008BECFF the result byte starts 0 (a null +3D0h pushes false).
-            const bool reloading = plane != bsp::kPlaneSquadronNoUnit && plane < units_.count()
-                && units_.plane_any_rack_empty_007b92e0(plane);
+            // Goal 5 chain 660: the body lua_get_plane_is_reloading (src/cc13_left55_
+            // seg56c.cpp) over PlaneIsReloadingBinding. 008BECFF the result byte starts 0
+            // (a null +3D0h pushes false).
+            RepairBindingArgs args(*this);
+            bool reloading = false;
+            BombReleaseResults results([](float) { unit_query_unreached("00B66480"); },
+                [this, &reloading](bool value) {
+                    reloading = value;
+                    push_boolean(value);
+                });
+            PlaneIsReloadingBinding binding(units_, [this](void* e) { return index_of(e); },
+                entity, record);
+            const int pushed = bsp::cc13_left55::seg56c::lua_get_plane_is_reloading(args,
+                results, binding, binding);
             if (reloading) ++plane_is_reloading_true_;
-            push_boolean(reloading);
-            return state_ != nullptr ? 1 : 0;
+            return state_ != nullptr ? pushed : 0;
         }
         return 0;
     }
