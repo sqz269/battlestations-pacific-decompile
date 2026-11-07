@@ -4992,6 +4992,101 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
     return cell_height_arm_00adb3a0<kPc24FlightRenderCc13Bound>(i, j);
 }
 
+// bsp.py show 00ADA890: SAR by [00D5D65C] for the tiles (00ADA8A0 / 00ADA8B4),
+// SHL / SUB for the locals (00ADA8BA..00ADA8CF), then CMP +38h / +3Ch with JL:
+// a tile at or past the grid is decremented and its local set to [00D5D658].
+void SceneTerrainHeightField::split_index_00ada890(int i, int j, int& tx, int& tz, int& lx,
+                                                   int& lz) const noexcept {
+    tx = i >> kTerrainTileShift;
+    tz = j >> kTerrainTileShift;
+    lx = i - (tx << kTerrainTileShift);
+    lz = j - (tz << kTerrainTileShift);
+    if (tx >= tiles_wide) { tx -= 1; lx = kTerrainTileCells; }
+    if (tz >= tiles_deep) { tz -= 1; lz = kTerrainTileCells; }
+}
+
+namespace {
+// The HeightFieldHost the slot 2Ch chain calls back, over this process's height
+// field (goal 5 chain 640). Slots 10h/14h are 00ADAC50 on the view's +38h/+3Ch,
+// 44h the split above, 48h the loaded grid height, 4Ch/50h the reconstructed
+// 00ADB550 / 00ADB620. The chain reaches nothing else: the node's +5Ch bit is set
+// (no 00B6DB70), and no tile is created or read here.
+class TerrainSlot2cHost final : public bsp::cc13_terrain::HeightFieldHost {
+public:
+    explicit TerrainSlot2cHost(const SceneTerrainHeightField& field) : field_(field) {}
+    void refresh_world_matrix_00b6db70(void*) override { unreached("00B6DB70"); }
+    void transform_affine_point_004142e0(const float*, float*, const void*) override {
+        unreached("004142E0");
+    }
+    std::int32_t slot10_samples_wide(void* view) override {
+        return bsp::cc13_terrain::height_field_samples_00adac50(view, false);
+    }
+    std::int32_t slot14_samples_deep(void* view) override {
+        return bsp::cc13_terrain::height_field_samples_00adac50(view, true);
+    }
+    void slot44_split_index(void*, std::int32_t* tx, std::int32_t* tz, std::int32_t* lx,
+                            std::int32_t* lz, std::int32_t i, std::int32_t j) override {
+        int a = 0, b = 0, c = 0, d = 0;
+        field_.split_index_00ada890(i, j, a, b, c, d);
+        *tx = a; *tz = b; *lx = c; *lz = d;
+    }
+    float slot48_grid_height(void*, float u, float v) override {
+        return field_.grid_height_00adb480(u, v);
+    }
+    float slot4c_sample(void* view, std::int32_t i, std::int32_t j) override {
+        return bsp::cc13_terrain::height_field_sample_at_00adb550(view, i, j, *this);
+    }
+    float slot50_sample_bilinear(void* view, float u, float v) override {
+        return bsp::cc13_terrain::height_field_sample_bilinear_00adb620(view, u, v, *this);
+    }
+    void* create_tile(void*, std::int32_t, std::int32_t) override { unreached("create_tile"); }
+    std::int32_t node_read_dword_00be99f0(void*) override { unreached("00BE99F0"); }
+    void tile_read_chunks_00adfeb0(void*, void*) override { unreached("00ADFEB0"); }
+    void tile_member_slot50(void*, std::uint32_t) override { unreached("tile +24h slot 50h"); }
+
+private:
+    [[noreturn]] static void unreached(const char* what) {
+        throw std::logic_error(std::string("terrain slot 2Ch chain reached ") + what);
+    }
+    const SceneTerrainHeightField& field_;
+};
+}  // namespace
+
+// Terrain slot 2Ch, 00ADA990 (bsp.py show 00ADA990: u and v as in 00ADA900, then
+// slot 50h at 00ADAA0B, slot 48h at 00ADAA2A, FADD double, FSTP float).
+float SceneTerrainHeightField::height_at_world_slot2c(float x, float z) const {
+    if (!native_height_view) {
+        auto view = std::make_unique<SceneTerrainNativeHeightView>();
+        view->node.x_120 = node_x;
+        view->node.y_124 = node_y;
+        view->node.z_128 = node_z;
+        view->zero_grid.assign(0x21 * 0x21, 0);
+        view->grids.resize(blocks.size());
+        view->tiles.resize(blocks.size());
+        for (std::size_t k = 0; k < blocks.size(); ++k) {
+            view->grids[k].data_28 = view->zero_grid.data();
+            view->tiles[k].block_1c = &view->grids[k];
+        }
+        view->tile_pointers.assign(block_index.size(), nullptr);
+        for (std::size_t k = 0; k < block_index.size(); ++k) {
+            if (block_index[k] >= 0) {
+                view->tile_pointers[k] = &view->tiles[static_cast<std::size_t>(block_index[k])];
+            }
+        }
+        view->field.cell_1c = kTerrainCellSize;
+        view->field.node_2c = &view->node;
+        view->field.tiles_wide_38 = tiles_wide;
+        view->field.tiles_deep_3c = tiles_deep;
+        view->field.tiles_40 = view->tile_pointers.data();
+        view->field.origin_x_80 = origin_x;
+        view->field.origin_z_84 = origin_z;
+        native_height_view = std::move(view);
+    }
+    TerrainSlot2cHost host(*this);
+    return bsp::cc13_terrain::height_field_height_at_world_00ada990(
+        &native_height_view->field, x, z, host);
+}
+
 template <bool kPc24Bound>
 float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noexcept {
     std::array<int, 2> sample_counts;
@@ -5017,10 +5112,8 @@ float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noex
     }
     const int wide = sample_counts[0], deep = sample_counts[1];
     if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
-    int tx = i >> kTerrainTileShift, lx = i - (tx << kTerrainTileShift);
-    int tz = j >> kTerrainTileShift, lz = j - (tz << kTerrainTileShift);
-    if (tx >= tiles_wide) { tx -= 1; lx = kTerrainTileCells; }
-    if (tz >= tiles_deep) { tz -= 1; lz = kTerrainTileCells; }
+    int tx = 0, tz = 0, lx = 0, lz = 0;
+    split_index_00ada890(i, j, tx, tz, lx, lz);
     const int index = block_index[static_cast<std::size_t>(tiles_wide) * tz + tx];
     if (index < 0) return kTerrainNoGround;
     const SceneTerrainBlock& block = blocks[static_cast<std::size_t>(index)];

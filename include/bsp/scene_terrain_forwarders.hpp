@@ -7,10 +7,11 @@
 
 namespace bsp::game {
 
-// A borrowed view of the Landscape's existing +3D0h terrain, for its three
-// height/normal forwarders only. No terrain, samples, origin or pose are copied.
-// The three bodies read only height_field_3d0; the other LandscapeState fields
-// are not a replacement Landscape and must not be passed to its other methods.
+// A borrowed view of the Landscape's existing +3D0h terrain, for its four
+// height/normal forwarders only (0087FA20, 0087FA50, 0087FB90, 0087FC60). No
+// terrain, samples, origin or pose are copied. The four bodies read only
+// height_field_3d0; the other LandscapeState fields are not a replacement
+// Landscape and must not be passed to its other methods.
 class SceneTerrainForwarders final {
 public:
     explicit SceneTerrainForwarders(const SceneTerrainHeightField& terrain)
@@ -51,17 +52,23 @@ private:
             return out;
         }
 
-        // This view lends only the three proven query slots. Reject accidental
+        // Slot 2Ch is 00ADA990 (dword 00D5D37C), which 0087FC60 dispatches to
+        // (goal 5 chain 640): the reconstructed chain over the height field's
+        // native view (SceneTerrainHeightField::height_at_world_slot2c).
+        float height_at_world_vslot2c(float x, float z) override {
+            return terrain_.height_at_world_slot2c(x, z);
+        }
+
+        // This view lends only the four proven query slots. Reject accidental
         // use by another Landscape body instead of supplying fabricated state.
         void get_world_bounds_vslot0c(Vec3&, Vec3&) override { unsupported(); }
         Vec2* local_grid_to_world_xz_vslot1c(Vec2*, float, float) override { unsupported(); }
-        float height_at_world_vslot2c(float, float) override { unsupported(); }
         bool trace_segment_vslot3c(const void*, const void*, Vec3&) override { unsupported(); }
         GeneratedModelNode* get_terrain_render_root_vslot40() override { unsupported(); }
 
     private:
         [[noreturn]] static void unsupported() {
-            throw std::logic_error("SceneTerrainForwarders only lends terrain slots 24h/28h/34h");
+            throw std::logic_error("SceneTerrainForwarders only lends terrain slots 24h/28h/2Ch/34h");
         }
         const SceneTerrainHeightField& terrain_;
     };

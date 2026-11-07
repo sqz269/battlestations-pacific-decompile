@@ -1409,6 +1409,8 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // read at 009A1963 under kLuaSquadronEnableVehicleAvoidanceBound.
     std::uint32_t sq_avoid_3a4{0xFFu};
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
+    // 007CE46A's +C01h = 2 stores (below a Landscape), counted (goal 5 chain 640).
+    unsigned long long plane_below_landscape_stores{0};
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
     // Packet cc9_land_park_done_test: which arm of 009B21D0 set done - the timer
@@ -2517,9 +2519,12 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // 007D0B80 set (unit+C39h power lost, +C36h spinning, +C3Ah message seen),
     // and whether the aircraft has been killed and left the world.
     bsp::PlaneDeathMode plane_death_mode{bsp::PlaneDeathMode::None};
-    // 007CB8DC / 007CBE02 raised "powerlost" on the water: the death-mode step
-    // takes PowerLost without 007CA8A0's draw (packet cc9_lua54_follow_altitude).
-    bool plane_water_powerlost_raised{false};
+    // A live plane's mode raised through vtable[194h] 007BBFA0 rather than
+    // chosen by SetHealth's 007CA8A0: "powerlost" on the water (007CB8DC /
+    // 007CBE02, packet cc9_lua54_follow_altitude) and the +C01h latch's
+    // "powerlost" or "explosion" (007CE790). The death-mode step takes it
+    // without 007CA8A0's draw. None: no effect was raised.
+    bsp::PlaneDeathMode plane_raised_death_mode{bsp::PlaneDeathMode::None};
     float plane_death_timer_c10{-1.0f};
     bool plane_death_c39{false};
     bool plane_death_c36{false};
