@@ -14419,11 +14419,13 @@ constexpr int kFailureShipKindOfClassId = 4;
 //     clears the byte.
 //   "Periscope": 00813595 009373C0 on [unit+1018h] unless +122Ch == 2.
 // Other classes: 00953DA0 sends 7Dh for "InferiorFailure" (+720h); the airfield's
-// 006D2210 tests RunwayFailure / HangarFailure first.
+// 006D2210 tests RunwayFailure / HangarFailure first. Goal 5 chain 654: the plane
+// vtables' +194h is 007BBFA0, whose "enginefire" arm reads the frame's argument 2
+// (the third Lua argument) through 00B66290 (GameUnitsHost::script_plane_set_failure).
 // SUBSTITUTIONS (labelled): the ship test is IsKindOf(4) through the units host,
 // standing in for the eight vtables; the messages apply at the call, not on the
-// session pump; the Explosion keeps only msg+30h; the non-ship arms are counted
-// and not applied.
+// session pump; the Explosion keeps only msg+30h; the other non-ship arms, and the
+// plane's names other than "enginefire", are counted and not applied.
 int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_count) {
     ++summary_.set_failure_calls;
     const char* text = argument_count >= 2 ? ::lua_tostring(state, 2) : nullptr;
@@ -14445,6 +14447,17 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
     const bsp::MothershipFailureArm carrier_arm = bsp::kCarrierRunwayFailureBound
         && units->unit_is_kind_of(index, bsp::kMothershipKindOfClassId)
         ? bsp::mothership_failure_arm(name) : bsp::MothershipFailureArm::none;
+    // Goal 5 chain 654: the nine plane vtables override +194h with 007BBFA0
+    // (vtable slot 101 at 00D00204 ... 00D1A46C), and IsKindOf(4) answers true for
+    // a plane too, so the plane test comes before the ship arm. 007BC0AA-007BC0D5:
+    // 00B677E0(frame, 2) then 00B66290, lua_tonumber truncated (a missing argument
+    // reads 0). Arm 20.
+    const bool conversion_mode =
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    const std::int32_t engine_index = argument_count >= 3
+        ? bsp::lua_number_integer_00b66290(::lua_tonumber(state, 3), conversion_mode)
+        : 0;
+    bool plane_applied = false;
     if (carrier_arm != bsp::MothershipFailureArm::none) {
         bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
         bsp::mothership_apply_failure_message(deck, carrier_arm, true);
@@ -14453,6 +14466,8 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
             "(packet p11_carrier_runway_failure)",
             carrier_arm == bsp::MothershipFailureArm::runway ? "72h runway" : "74h hangar",
             deck != nullptr ? "yes" : "none");
+    } else if (units->script_plane_set_failure(index, name, engine_index, plane_applied)) {
+        if (plane_applied) arm = 20;
     } else if (units->unit_is_kind_of(index, kFailureShipKindOfClassId)) {
         // 0093BD80: more than two arguments and argument 2 a number, else 1e10.
         const float seconds = argument_count >= 3 && ::lua_type(state, 3) == LUA_TNUMBER

@@ -4,6 +4,8 @@
 // pure rules. docs/PLANE_DEATH_MODES.md. Every name here is a hypothesis, not a
 // recovered symbol; nothing is ABI-compatible or game-validated.
 
+#include <functional>
+
 namespace bsp {
 
 // The mode 007CA8A0 raises through the plane's named-effect slot 007BBFA0.
@@ -58,13 +60,32 @@ struct PlaneDeathStepInputs {
     float dead_timer_c3c{0.0f};
     float step{0.0f};
     bool explosion_budget_ok{true};  // [00E186E8] <= [00E1873C] MaxExplosionNum
+    // Goal 5 chain 654: the engine block 007CAF47-007CB07E. A session client
+    // ([00E188A8]+1FE4h == 2, 007CAF4C/007CAF5E) jumps past it and the
+    // explosion block to 007CB13F.
+    bool session_client_1fe4{false};
+    bool controller_byte_94{false};  // 007D7A80(unit+AB0h), ctl+94h: skips the block
+    float engine_fire_timer_c14{-1.0f};  // unit+C14h: -1.0f from the constructor
+                                         // (docs/CC13_MISTAG.md), 007BCABB's draw once destroyed
+    int engine_count_140{0};         // [unit+538h]+140h NumEngines (007D204D)
+};
+// The engine block's calls on the engine list unit+C98h, in image order.
+struct PlaneDeathEngineCalls {
+    std::function<void()> stop_all_engines;    // 007DE600 (007CAFA9, 007CB075)
+    std::function<bool()> any_engine_burning;  // 007DE5B0 (007CB030)
+    // vtable[194h](&"enginefire" 00D05A04, 0) at 007CB060, which is 007BBFA0;
+    // answers unit+C10h afterwards, which the explosion block reads afresh
+    // (007CB084).
+    std::function<float()> raise_engine_fire;
 };
 struct PlaneDeathStepResult {
     float dead_timer_c3c{0.0f};
+    float engine_fire_timer_c14{-1.0f};  // unit+C14h on exit
     bool explode{false};            // raise "explosion": timer -> -1, Kill(1)
     bool zero_throttle{false};      // unit+9F0h and +BBCh = 0
     bool zero_air_brake{false};     // unit+9F4h and +BC0h = 0
 };
-PlaneDeathStepResult plane_death_step_007caf10(const PlaneDeathStepInputs& in) noexcept;
+PlaneDeathStepResult plane_death_step_007caf10(const PlaneDeathStepInputs& in,
+                                               const PlaneDeathEngineCalls& engines);
 
 }  // namespace bsp
