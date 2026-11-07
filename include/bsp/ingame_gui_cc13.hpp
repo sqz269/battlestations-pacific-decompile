@@ -77,9 +77,19 @@ struct HudScreenPageChildHost {
     virtual void* gui_find_child_00aa7e00(void* parent, std::string_view name) = 0;
 };
 
+// An enter virtual that only finds children of a page it already holds
+// (00AA7E00(name, 1), ECX = parent) and shows or hides one (widget vtable
+// +34h): 00643F40.
+struct HudScreenChildVisibilityHost {
+    virtual ~HudScreenChildVisibilityHost() = default;
+    virtual void* gui_find_child_00aa7e00(void* parent, std::string_view name) = 0;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+};
+
 // The scene-init constructor/register pair needs only these services. Keep
 // its live owner independent of unrelated camera, input and observer services.
-struct HudSceneInitHost : HudScreenBaseHost, HudScreenRegisterPageHost {
+struct HudSceneInitHost : HudScreenBaseHost, HudScreenRegisterPageHost,
+                          HudScreenChildVisibilityHost {
     virtual ~HudSceneInitHost() = default;
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
@@ -363,8 +373,11 @@ void common_overlay_released_0067bc60(Raw s, void* object, HudScreenHost& host);
 inline constexpr std::uint32_t kSpectatorScreenVtable = 0x00CF5998;
 Raw spectator_construct_00643da0(Raw s, HudScreenBaseHost& host);
 void spectator_destruct_00643e00(Raw s, HudScreenHost& host);
-void spectator_register_00643e80(Raw s, HudScreenHost& host);
-void spectator_enter_00643f40(Raw s, HudScreenHost& host);
+// 00643E80 and 00643F40 take only the services they call (bsp.py ghidra disasm):
+// the register 004F71D0 and one 00AA5840 page load; the enter two 00AA7E00
+// finds and one widget vtable +34h. HudScreenHost implements both.
+void spectator_register_00643e80(Raw s, HudScreenRegisterPageHost& host);
+void spectator_enter_00643f40(Raw s, HudScreenChildVisibilityHost& host);
 
 // ---------------------------------------------------------------------------
 // Screen 5Ah, the scene-init (loading) screen (vtable 00CF569C, callback owner

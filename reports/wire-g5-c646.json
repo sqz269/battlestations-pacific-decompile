@@ -1,0 +1,171 @@
+{
+  "chain": 646,
+  "slot": "g5-w1",
+  "goal": 5,
+  "picked": "HUD leaf screens' own vtable virtuals on their native blocks: screen 43h's register 00643E80 and its +4h/+18h/+1Ch/+20h, the +18h/+1Ch of 27h, 48h and 49h, and slot 2Ch's register thunk 0054ED00",
+  "wired_before": 10133,
+  "wired_after": 10144,
+  "called_before": 5433,
+  "called_after": 5444,
+  "notes": "The empty bodies (00643DE0, 00643DF0, 0067B400, 0067B410, 00650190, 004F75B0, 0067BEB0; and 00643DD0, MOV AL,1) are folded by /OPT:ICF with other identical bodies in the release link, so call_graph.py who reports the folded symbol's call sites for them; the direct calls are in GameHudHost::enter_leaf_screen / exit_leaf_screen / update_leaf_screen / leaf_screen_self_managed. 00643E80, 00643F40 and 0054ED00 show their own single call sites. Screen 43h is self-managed (00643DD0) and its register stores +4h = 1, so in the image it is wanted from registration and pumped every frame: GUI_spectator's page is committed visible, its Score_Text sits at x = 9999 with no text and the enter hides Spectator_Text (gui_spectator.lua). The host now follows that path.",
+  "handoff": "The leaf-virtual table kHudLeafScreenVirtuals (src/game_hosts_hud.cpp) takes more rows: one per slot, with its vtable and the +4h/+18h/+1Ch/+20h it binds; the menu's MenuScreenHost::screen_enter/exit/update and MenuSetBindings::screen_manages_own_visibility already ask it before their generic path. Gameplay-effect acquisition (00871BA0 -> 00871B50 -> 008700E0 -> 00870400) is what blocks the periscope 47h, plane 3Eh, plane effects 3Fh and free camera 2Bh registers and the scene PlaneRumble acquire.",
+  "rows": [
+    {
+      "native": "00643e80",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (kHudLeafScreenRegisters, HudLeafRegisterBinding), from InGameInterface register_screen"
+    },
+    {
+      "native": "00643f40",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::enter_leaf_screen (HudLeafChildVisibilityBinding), from src/game_hosts_menu.cpp MenuScreenHost::screen_enter"
+    },
+    {
+      "native": "00643de0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::exit_leaf_screen, from src/game_hosts_menu.cpp MenuScreenHost::screen_exit"
+    },
+    {
+      "native": "00643df0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::update_leaf_screen, from src/game_hosts_menu.cpp MenuScreenHost::screen_update"
+    },
+    {
+      "native": "00643dd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::leaf_screen_self_managed, from src/game_hosts_menu.cpp MenuSetBindings::screen_manages_own_visibility"
+    },
+    {
+      "native": "0067b400",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::enter_leaf_screen (27h), from MenuScreenHost::screen_enter"
+    },
+    {
+      "native": "0067b410",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::exit_leaf_screen (27h), from MenuScreenHost::screen_exit"
+    },
+    {
+      "native": "00650190",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::enter_leaf_screen (48h), from MenuScreenHost::screen_enter"
+    },
+    {
+      "native": "004f75b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::exit_leaf_screen (48h's +1Ch is the base), from MenuScreenHost::screen_exit"
+    },
+    {
+      "native": "0067beb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::enter_leaf_screen (49h), from MenuScreenHost::screen_enter"
+    },
+    {
+      "native": "0054ed00",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::register_in_game_screen, slot 2Ch's register virtual"
+    },
+    {
+      "native": "0067bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::exit_leaf_screen (49h)",
+      "reason": "Clears +8h, which FollowScreen49State.unit_08 holds for the hosted 0067BF00 update; running it on the leaf block would split that field. Move 0067BF00 onto the block first."
+    },
+    {
+      "native": "00650450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::update_leaf_screen (48h)",
+      "reason": "Reads the controlled submarine's image fields unit+1200h..+127Ch through [00E188D8]; no host unit row carries them."
+    },
+    {
+      "native": "00650e00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (47h)",
+      "reason": "Acquires the periscope effects through 00871BA0; no GameplayEffectAcquisitionContext is built (needs renderer slot 64h texture services, EffectSoundContext and readers for tracer/particle/flare/thunderstorm/water-tracer components)."
+    },
+    {
+      "native": "00606a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (3Eh)",
+      "reason": "Acquires PlaneRumble through 00871BA0, which has no acquisition context in this process."
+    },
+    {
+      "native": "00607be0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (3Fh)",
+      "reason": "Swaps in effects acquired through 00871BA0, which has no acquisition context in this process."
+    },
+    {
+      "native": "00540fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (2Bh)",
+      "reason": "00540D50 copies game settings +740h effect records and, when none, 0053E0E0 acquires test effects; both need gameplay-effect acquisition."
+    },
+    {
+      "native": "005468b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (2Eh)",
+      "reason": "The host keeps screen 2Eh as the typed weapon-group screen (WeaponGroupLayoutBinding/WeaponGroupScreenBinding over the menu's pages); running the raw register on the block would split it."
+    },
+    {
+      "native": "0052cbf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (51h)",
+      "reason": "Its 0052C640 clones the counter entry's widget subtree through 00AAB4C0; GuiLayoutWidget has no subtree clone."
+    },
+    {
+      "native": "00538f80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (2Ah)",
+      "reason": "Builds map-zone scene instances (00B80D70 factories, 00B6D890, 0093D2D0) and three render quads; no native scene graph owner for the HUD."
+    },
+    {
+      "native": "0066ea60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (4Eh)",
+      "reason": "Needs the sound sample cache 00A83FD0 for eight samples, the mission name at [game+5FCh]+90Ch, map bounds game+711Ch.. and its layout 0065DAA0 on the block."
+    },
+    {
+      "native": "00602280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (3Ch)",
+      "reason": "PauseRegisterHost needs the award tracker 00690CA0, the scroller 00683790/00683380 and list-box services, none bound on the leaf."
+    },
+    {
+      "native": "0060d740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (5Eh)",
+      "reason": "The body is typed on HudScoringScreenState, not the raw block 0060FD90 builds; it needs a raw-block form first."
+    },
+    {
+      "native": "00614170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (4Fh)",
+      "reason": "The body is typed on HudPowerupScreenState, not the raw block 0061A480 builds; it needs a raw-block form first."
+    },
+    {
+      "native": "005cdc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::enter_leaf_screen (38h)",
+      "reason": "Sets the game camera mover (004BC410) and parks the movie screens; the host's movie path owns that state."
+    },
+    {
+      "native": "005cdd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::exit_leaf_screen (38h)",
+      "reason": "Destroys the kind-4 cutscene player at game+38h and writes render value 224 (00B0D0B0); no host cutscene player object."
+    },
+    {
+      "native": "00871ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::acquire_effect (PlaneRumble)",
+      "reason": "GameplayEffectAcquisitionContext needs EffectComponentTextureServices (renderer [00F8D394] slot 64h), EffectSoundContext and component readers for tracer/particle/flare/thunderstorm/water tracer that GameplayEffectScalarComponentDispatcher leaves to 'remaining'."
+    },
+    {
+      "native": "006b7710",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Mission save-data writer has no static caller in the image (ledger: no static reference reaches the save/load entries)."
+    }
+  ]
+}
