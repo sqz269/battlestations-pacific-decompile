@@ -31,6 +31,7 @@ class SoundResourceRuntime;
 class SoundSampleRuntime;
 class SoundChannelRuntime;
 struct SoundRequestQueue;
+struct SoundRetainedSourceRecord;
 }
 
 namespace bsp::game {
@@ -109,6 +110,21 @@ public:
     // False, having done nothing, when no owner is published: nothing can have
     // written a request then, since every writer goes through the same queue.
     bool apply_gui_sound_requests_00941140(const std::function<bool()>& select_device_active);
+    // The scene record's three 14h environment sound slots at record+D5Ch +
+    // slot*14h (slot 0 Ocean, 1 Air, 2 Underwater), held here in place of the
+    // record at [00E188A8]+5FCh. 004ED530 (through 004ED690) writes the name
+    // at +4 and the floats at +0Ch/+10h; 004ED910 acquires the sample at +0
+    // through 00A83FD0 and passes the record to 00A7F2F0, whose retained
+    // channel copies it. Slot 0..2; anything else throws.
+    SoundRetainedSourceRecord& scene_environment_record(std::size_t slot);
+    // 004BFD70's release of the three sample references (+D5Ch, +D70h,
+    // +D84h: InterlockedDecrement of sample+4, vtable slot 0 at zero, the
+    // slot cleared), with each record's name returned to the pool, so the
+    // slots read as a newly constructed record (004DA2A0) again. This
+    // process has no session teardown, so a new scene header releases the
+    // previous scene's slots, and the manager/cache teardown releases them
+    // before FMOD closes. Idempotent.
+    void release_scene_environment_records() noexcept;
     void shutdown();
     bool started() const noexcept;
     GameSoundRuntimeSummary summary() const noexcept;
