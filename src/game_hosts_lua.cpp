@@ -12442,8 +12442,9 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
             result.scoring_slot(slot).player_kills_b4, bsp::kScoringPartyEnemy);
         results.push_number(total);
         count = 1;
-        log_.notef("  Scoring_GetPlayerShotDown 008bc9b0: slot %d -> %d (goal 5 chain 664)",
-            slot, total);
+        // BSM01 calls this every think pass: counted, reported once in the summary.
+        ++summary_.shot_down_reads;
+        summary_.shot_down_last = total;
         break;
     }
     case 0x008cc330u: {
@@ -18478,6 +18479,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         "score_multipliers=%u ([[00E198C4]+B8h]+14h counted, GlobalConfig+2Ch; goal 5 chain 653)",
         static_cast<unsigned long long>(score_cache_clears_),
         static_cast<unsigned>(score_multipliers_.size()));
+    log_.notef("summary mission script player shot down reads=%llu last=%d (008BC9B0 on "
+        "the record +B4h tree, goal 5 chain 664)", summary_.shot_down_reads,
+        summary_.shot_down_last);
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);

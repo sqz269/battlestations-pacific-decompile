@@ -1230,6 +1230,8 @@ struct GameMissionLuaSummary {
     unsigned long long los_trigger_checks{0};
     unsigned long long los_trigger_casts{0};
     unsigned long long los_trigger_fires{0};
+    unsigned long long shot_down_reads{0};               // goal 5 chain 664, 008BC9B0
+    int shot_down_last{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8

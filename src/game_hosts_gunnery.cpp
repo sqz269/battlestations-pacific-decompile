@@ -18269,13 +18269,24 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
         // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
         int local_player_side() override { return bsp::game::local_player_party(); }
-        // 0091BE29 0090C170: the victim's root entity (vtable[140h]) in the +1488h
-        // tree Scoring_IgnoreEntityKill fills; a hit abandons the kill at 0091BE3F.
-        // Every unit of this host is its own root (in.victim_is_root below), and its
-        // entity is its Lua ID, the slot + 1 the IgnoreEntityKill row stored.
+        // 0091BE01..0091BE0B: victim->vtable[140h](), the victim's root entity, then
+        // 0091BE29 0090C170 looks it up in the +1488h tree Scoring_IgnoreEntityKill
+        // fills; a hit abandons the kill at 0091BE3F. For a plane that root is its
+        // squadron (docs/CC13_AUDIT_LUA51_FLIPS.md, 0077D0E8..0077D128), which is
+        // what every IgnoreEntityKill caller passes. Here it is the squadron unit
+        // of plane_squadron_registry(), the mapping apply_hit uses for the same
+        // vtable[140h] at 0077D0E8; any other victim is its own root. The entity
+        // is its Lua ID, the slot + 1 the IgnoreEntityKill row stored.
+        // in.victim_is_root below is a different test, the IsKindOf(1Bh) fort
+        // gate at 0091BE4D.
         bool root_entity_already_scored() override {
+            std::size_t root = victim;
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit) root = sqn->squadron_unit;
+            }
             return scoring.scoring_manager().ignored_kill_entities_1488.count(
-                static_cast<int>(victim) + 1) != 0;
+                static_cast<int>(root) + 1) != 0;
         }
         // Not stored: the pass compares each slot's party [[game+18CCh+i*4]+28h]
         // (in.slot_sides), which this host does not hold.
@@ -18342,8 +18353,10 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     // gun; docs/CC13_AUDIT_LUA51_FLIPS.md item 1a). That is lua_kill_slot, not
     // attribution.credited_slot (the side stand-in), and 0091BF86 records only
     // slots 0..7, so AI kills leave the player's record alone. A victim no
-    // counted hit reached keeps -1 and records nothing (LABELLED: the image's
-    // +2D8h before any hit is its constructor value, unread).
+    // counted hit reached keeps -1 and records nothing, as in the image: the
+    // unit constructor 0077EED0 stores +2D8h = -1 (0077EFEF OR EAX,-1, EAX
+    // unchanged to 0077F012 MOV [ESI+2D8h],EAX; docs/CC13_AUDIT_LUA51_FLIPS.md,
+    // the constructor defaults).
     in.attribution.credited_slot = target.lua_kill_slot;
     in.attribution.originating_slot = target.attribution.origin_slot;
     in.attribution.attacker_class = target.attribution.attacker_class;
