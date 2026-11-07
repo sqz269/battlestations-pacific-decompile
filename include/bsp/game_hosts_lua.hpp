@@ -1566,6 +1566,12 @@ public:
     // -1). The same plain table lookup against the live interpreter.
     int read_vehicle_class_integer(int index, const char* key, const char* nested_key,
         int fallback);
+    // Goal 5 chain 639. The first value of the table `VehicleClass[index][key]` as
+    // 00B67080 (BSP_LuaObject_IterateFirst: a nil push, then lua_next) yields it, as an integer;
+    // `fallback` when the field is not a table, is empty, or its first value is not a
+    // number. 00749210 reads `SmokeFireEfx` this way (one step, no Next) into
+    // class+160h.
+    int read_vehicle_class_first_integer(int index, const char* key, int fallback);
 
     // The float twin of the reader above, for the `VehicleClass[index]` fields
     // 00960230 BSP_VehicleClass_ReadLuaFields stores as floats rather than

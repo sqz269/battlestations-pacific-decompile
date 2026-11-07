@@ -14229,6 +14229,30 @@ int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     return value;
 }
 
+int GameMissionLuaHost::read_vehicle_class_first_integer(int index, const char* key,
+    int fallback) {
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
+    const int top = ::lua_gettop(state_);
+    int value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_pushnil(state_);   // 00B67080: the first key/value pair
+                if (::lua_next(state_, -2) != 0 && ::lua_type(state_, -1) == LUA_TNUMBER) {
+                    value = static_cast<int>(::lua_tonumber(state_, -1));
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 float GameMissionLuaHost::read_vehicle_class_nested_number(int index, const char* key,
     const char* nested_key, float fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr || nested_key == nullptr) {

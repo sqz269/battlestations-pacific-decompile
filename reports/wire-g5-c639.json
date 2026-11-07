@@ -1,0 +1,74 @@
+{
+  "goal": 5,
+  "chain": 639,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "picked": "Land fort death: 00747170 OnDestroyed, 007465E0 StartDeathFire and the 00745F1E smoke arm, in the gunnery kill path",
+  "rows": [
+    {
+      "native": "00747170",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_land_fort_on_destroyed (from kill_unit), for a dead MLandFort 1Bh / MCommandBuilding 1Ch; replaces the inline master hand-off land_section_destroyed_00747170"
+    },
+    {
+      "native": "007465e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_on_destroyed, FortDestroy::start_death_fire (the 00747351 call), stream-0 SmokeFireDuration draw"
+    },
+    {
+      "native": "00745f1e",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_land_fort_smoke_frames, from GameGunneryHost::fixed_step (the +744h arm of 00745BE0)"
+    },
+    {
+      "native": "00747400",
+      "status": "skipped",
+      "reason": "the LandFort die rule needs the +50h eligibility byte and the +48h/+44h element chain, which no host carries"
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "reason": "needs the unit+360h model part instance (its damage-state vector); 00747170's callback answers its no-instance 0 and records"
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "reason": "the plane tick's landscape contact 007CE3B1..007CE46A calls the height field's slot 2Ch 00ADA2C0, which lies inside the mis-bounded 00ADA240 and has no body"
+    },
+    {
+      "native": "005c0930",
+      "status": "skipped",
+      "reason": "minimap objective/ping marker pass (005C1E00..005C2750) is raw native screen memory; the host minimap is a typed widget model without the +104h..+110h marker vector"
+    },
+    {
+      "native": "005c0bd0",
+      "status": "skipped",
+      "reason": "same minimap marker pass as 005C0930: no native screen +104h..+154h state in the host"
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "reason": "same minimap pass: the game+21C8h map ping list is not built by any host"
+    },
+    {
+      "native": "007d0b80",
+      "status": "skipped",
+      "reason": "state_message_007d0b80's callbacks need the plane engine list and debris/marker objects; the host's plane death is the typed plane_death_flags_007d0b80 model in game_hosts_units_motion.cpp"
+    },
+    {
+      "native": "00797af0",
+      "status": "skipped",
+      "reason": "provisional: called at 0079A685 inside 0079A3B0's key-input block (004C43C0 presses), which the host's movie camera update has no input path for"
+    },
+    {
+      "native": "0075eb40",
+      "status": "skipped",
+      "reason": "session-message constructors in session_message_cc13_seg42.cpp have the one caller 00768530 CreateFromBitStream (network read), not run in single player"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "reason": "the AI group score list is read only by the debug overlay 00A2CDD0 (game_hosts_ai.cpp kAiGroupScoreListReleaseBound note)"
+    }
+  ]
+}
