@@ -51,6 +51,26 @@
       "reason": "needs the unit+360h model part instance (its damage-state vector); 00747170's callback answers its no-instance 0 and records"
     },
     {
+      "native": "00744b30",
+      "status": "skipped",
+      "reason": "the fort's vtable[16Ch]; the only host asker (JoinFormation's entity_command_is_available) passes \"follow\", which 00744B30 refuses before any target test, so binding it changes no answer"
+    },
+    {
+      "native": "007470b0",
+      "status": "skipped",
+      "reason": "lead, not unwired: the host runs the SmokeFireChanceMul hit roll only for capture buildings (game_hosts_ship_ai.cpp landfort_fire_roll_007470b0); hits on plain MLandForts (most LandFort classes have the mul > 0) take no stream-1 roll and never start the 00746320 fire"
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "reason": "the 91h MT_SHIP_LEAKCHEATWATER arm; its only constructor 00762190 is called from 00768530 CreateFromBitStream (network read)"
+    },
+    {
+      "native": "0074cd30",
+      "status": "skipped",
+      "reason": "convoy damage pooling needs the LandConvoy state (+364h HP, +398h roster, +3B8h InitialSize); the host keeps a convoy only as a name"
+    },
+    {
       "native": "0087fc60",
       "status": "skipped",
       "reason": "the plane tick's landscape contact 007CE3B1..007CE46A calls the height field's slot 2Ch 00ADA2C0, which lies inside the mis-bounded 00ADA240 and has no body"
