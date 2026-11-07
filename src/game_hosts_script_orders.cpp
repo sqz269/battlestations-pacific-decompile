@@ -820,9 +820,8 @@ private:
 // read the arguments (00B66290 / 00B662B0) and call the HUD counters on
 // [[00E198C4]+C8h]: 0052B780 for six arguments (008C22DA), 0052B620 for four
 // (008C241A), 0052B900 to hide (008C25E5). Goal 5 chain 667: the dispatch's calls
-// run those senders on the HUD host's counters screen, and also keep this host's
-// per-id score lines for the log. Every other HudScoreHost / InterfaceHost site
-// belongs to another binding.
+// run those senders on the HUD host's counters screen. Every other HudScoreHost /
+// InterfaceHost site belongs to another binding.
 class ScoreDisplayBinding final : public bsp::cc13_seg56::HudScoreHost,
                                   public bsp::cc13_seg56::InterfaceHost {
 public:
@@ -6190,50 +6189,6 @@ void GameScriptOrdersHost::game_assign_party_player_slots(int value) {
 // The dispatch
 // ---------------------------------------------------------------------------
 
-// Packet cc9_lua47_display_scores. A score line's `#name.field#` references
-// read from the Lua globals at the call, for the log only (the HUD's own
-// expansion is unread); a reference that does not resolve to a string or a
-// number stays as written.
-static std::string expand_score_references(lua_State* state, const std::string& text) {
-    if (state == nullptr) return text;
-    std::string out;
-    std::size_t at = 0;
-    while (at < text.size()) {
-        const std::size_t open = text.find('#', at);
-        const std::size_t close = open == std::string::npos ? open : text.find('#', open + 1);
-        if (close == std::string::npos) {
-            out.append(text, at, std::string::npos);
-            break;
-        }
-        out.append(text, at, open - at);
-        const std::string path = text.substr(open + 1, close - open - 1);
-        const int top = lua_gettop(state);
-        bool resolved = !path.empty();
-        std::size_t start = 0;
-        for (bool first = true; resolved; first = false) {
-            const std::size_t dot = path.find('.', start);
-            const std::string part = path.substr(start, dot == std::string::npos ? dot : dot - start);
-            if (part.empty() || (!first && lua_type(state, -1) != LUA_TTABLE)) {
-                resolved = false;
-                break;
-            }
-            lua_getfield(state, first ? LUA_GLOBALSINDEX : -1, part.c_str());
-            if (dot == std::string::npos) break;
-            start = dot + 1;
-        }
-        const int type = resolved ? lua_type(state, -1) : LUA_TNIL;
-        if (type == LUA_TSTRING || type == LUA_TNUMBER) {
-            const char* value = lua_tolstring(state, -1, nullptr);
-            out += value != nullptr ? value : "";
-        } else {
-            out.append(text, open, close - open + 1);
-        }
-        lua_settop(state, top);
-        at = close + 1;
-    }
-    return out;
-}
-
 int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int argument_count) {
     const ScriptOrderBinding* binding = find_binding(binding_name);
@@ -7305,8 +7260,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // (008C241A), any other count posts nothing; HideScoreDisplay: 0052B900
         // (008C25E5). Both on [[00E198C4]+C8h], the HUD score message 23h through
         // 00772330. Neither pushes a result. Goal 5 chain 667: the senders run on
-        // the HUD host's counters screen (GameHudHost::display_score / hide_score);
-        // the per-id lines below are the log's.
+        // the HUD host's counters screen (GameHudHost::display_score / hide_score).
         ScoreDisplayBinding scores(ScoreDisplayBinding::Calls{
             [this](int id, int flag, const std::string& c, const std::string& d, bool pair,
                    int e, int f) {
@@ -7314,36 +7268,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                         static_cast<std::uint32_t>(id), static_cast<std::uint32_t>(flag), c, d, pair,
                         static_cast<std::uint32_t>(e), static_cast<std::uint32_t>(f)))
                     log_.unimplemented("HudCounters::display_score", pair ? "0052b780" : "0052b620");
-                const std::string line1 = expand_score_references(state_, c);
-                const std::string line2 = expand_score_references(state_, d);
-                ++score_posts_;
-                std::string shown = line1 + "\n" + line2;
-                if (pair) {
-                    char extra[48];
-                    std::snprintf(extra, sizeof(extra), "\n%d %d", e, f);
-                    shown += extra;
-                }
-                auto it = score_lines_.find(id);
-                if (it == score_lines_.end() || it->second != shown) {
-                    score_lines_[id] = shown;
-                    ++score_changes_;
-                    if (score_changes_ <= 400) {
-                        log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
-                            "(008C20D0 body -> %s, HUD message 23h)", id, flag, line1.c_str(),
-                            line2.c_str(), pair ? 6 : 4, static_cast<double>(mission_clock_),
-                            pair ? "0052B780" : "0052B620");
-                    }
-                }
             },
             [this](int id, int second) {
                 if (narrative_hud_ == nullptr || !narrative_hud_->hide_score(
                         static_cast<std::uint32_t>(id), static_cast<std::uint32_t>(second)))
                     log_.unimplemented("HudCounters::hide_score", "0052b900");
-                ++score_hides_;
-                if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
-                    log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 body -> "
-                        "0052B900)", id, second, static_cast<double>(mission_clock_));
-                }
             }});
         RepairBindingArgs args(*this);
         results = std::strcmp(binding->name, "DisplayScores") == 0
@@ -10526,16 +10455,6 @@ void GameScriptOrdersHost::report() {
             countdown_time_left_reads_, countdown_expiries_, countdown_callbacks_,
             countdown_last_callback_.empty() ? "(none)" : countdown_last_callback_.c_str(),
             countdown_.active_3c ? 1 : 0);
-    }
-    if (kLuaDisplayScoresBound) {
-        log_.notef("summary mission score display posts=%zu changes=%zu hides=%zu shown_at_end=%zu "
-            "(008C20D0 / 008C24B0, packet cc9_lua47_display_scores)", score_posts_,
-            score_changes_, score_hides_, score_lines_.size());
-        for (const auto& [id, lines] : score_lines_) {
-            std::string flat = lines;
-            for (char& c : flat) if (c == '\n') c = '|';
-            log_.notef("summary mission score display id=%d \"%s\"", id, flat.c_str());
-        }
     }
     if (kLuaMissionNarrativeBound || narrative_enqueues_ != 0 || end_scene_calls_ != 0) {
         log_.notef("summary mission narrative bound=%d enqueues=%zu clears=%zu shown=%zu "

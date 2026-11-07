@@ -6,6 +6,16 @@
   "wired_before": 10363,
   "wired_after": 10401,
   "wired_note": "readiness text match: 4 rows of this path flipped (0052B620, 0052B780, 0052B900, 0052AF50; 00772330 / 0052CF60 / the layouts already counted by name); the other 34 flips (message 35 write/read/is, word-array helpers, session messages 23/24/25/33/34/53/77) are text-match artefacts of native_session_message35.cpp being reached, not wiring. called rows 5634 -> 5653.",
+  "review_round_1": [
+    {"finding": "src/game_hosts_script_orders.cpp: the old log-only substitute (score_lines_ copy, expand_score_references' lua_getfield expansion, the score-line summary) still ran beside the native senders", "outcome": "fixed: both lambdas keep only the display_score / hide_score calls and their log_.unimplemented fallback; expand_score_references, the summary and the four members (score_lines_, score_posts_, score_changes_, score_hides_) are deleted. No per-call note is kept: scripts such as luaDistanceCounter repost every update, and GameHudHost's done() already counts the calls."},
+    {"finding": "nit: HudScoreMessageImage duplicates HostSessionMessages::Image's zeroed [00E188A8] stand-in", "outcome": "not changed: that Image is a private nested struct of src/game_hosts_session_messages.cpp, outside this chain's files, and exposing it means a new accessor in another host's header; the copy is constant (zeroed game block, slot 0, null records), so it cannot drift."},
+    {"finding": "nit: widget_vcall_88 (00AB1710, flag-icon state) only logs, so the pair form's v0 / v1 flag states do not render", "outcome": "left for others (see left_for_others); no shipped mission script uses the six-argument DisplayScores."},
+    {"finding": "nit: set_widget_text_align / set_widget_text_multiline invalidated on every store, so the 0052A470 tick rebuilt the quad list each frame", "outcome": "fixed: an unchanged stored value now returns without dropping the cached run (that run was built with it). The tick's own 00ABBE50 / 00ABAED0 text resets still relayout each frame, as the image's do."}
+  ],
+  "left_for_others": [
+    "unit-HP counter: DisplayUnitHP / HideUnitHP (0052B400 / 0052B570), layout 0052BB10 and the tick's mode 0 need native unit objects (+174h ids, the 00F89A0C / 00F89A60 registries, +370h, +A20h getters 00939F70..00939FC0)",
+    "the score pair form's flag icons: virtual +88h (00AB1710) icon state select on flag_A_Icon / flag_B_Icon only logs; the sprite bridge draws a widget's first authored state, so v0 / v1 do not show"
+  ],
   "rows": [
     {"native": "0052b620", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::display_score (4 arguments), from src/game_hosts_script_orders.cpp DisplayScores arm (ScoreDisplayBinding show)"},
     {"native": "0052b780", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::display_score (6 arguments, pair)"},

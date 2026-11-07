@@ -1528,11 +1528,6 @@ private:
     std::string narrative_callback_2c_;
     std::vector<int> narrative_refs_34_;
     std::size_t narrative_enqueues_{0};
-    // Packet cc9_lua47_display_scores: each score id's last logged lines.
-    std::map<int, std::string> score_lines_;
-    std::size_t score_posts_{0};
-    std::size_t score_changes_{0};
-    std::size_t score_hides_{0};
     std::size_t narrative_clears_{0};
     std::size_t narrative_shown_{0};
     std::size_t narrative_callbacks_{0};

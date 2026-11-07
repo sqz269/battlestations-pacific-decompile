@@ -1507,7 +1507,10 @@ void GameFrontendHost::set_widget_text_align(GuiLayoutWidget& widget, GuiTextAli
     if (widget.type != GuiWidgetType::Text)
         throw std::logic_error("Text +100h stored on a widget that is not a Text");
     Impl& host = *impl_;
-    host.text_layouts[&widget].align = align;
+    // An unchanged store leaves the cached run, which was built with it.
+    std::optional<GuiTextAlign>& stored = host.text_layouts[&widget].align;
+    if (stored == align) return;
+    stored = align;
     host.text_runs.erase(&widget);
     host.quads_built = false;
 }
@@ -1516,7 +1519,9 @@ void GameFrontendHost::set_widget_text_multiline(GuiLayoutWidget& widget, bool m
     if (widget.type != GuiWidgetType::Text)
         throw std::logic_error("Text +0FCh stored on a widget that is not a Text");
     Impl& host = *impl_;
-    host.text_layouts[&widget].multiline = multiline;
+    std::optional<bool>& stored = host.text_layouts[&widget].multiline;
+    if (stored == multiline) return;
+    stored = multiline;
     host.text_runs.erase(&widget);
     host.quads_built = false;
 }
