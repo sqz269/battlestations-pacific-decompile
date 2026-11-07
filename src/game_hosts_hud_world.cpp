@@ -32,6 +32,7 @@
 #include "bsp/pool_pool13_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"           // game_objective_sets, goal 4 chain 376
 #include "bsp/local_player_unit_lists.hpp"  // 008DDF90, goal 4 chain 376
+#include "bsp/cc13_seg41_land.hpp"          // 0074DDF0, the land vehicle's +B8h
 
 #include <algorithm>
 #include <cmath>
@@ -162,6 +163,30 @@ struct GameHudMinimapHost::Impl {
 };
 
 namespace {
+
+// bsp::cc13_seg41::LandVehicleObjectiveSetHost for 0074DDF0 on the minimap's
+// handle: game+18ECh is the local player slot (0 in single player, as for the
+// markers' objective container below), and 008DDF00's find runs over that
+// slot's +18h tree, GameObjectiveSets::units_in_slot (the members while
+// kObjectiveSetHiddenMembershipBound), in the units host's index space.
+class LandVehicleObjectiveSetBinding final : public bsp::cc13_seg41::LandVehicleObjectiveSetHost {
+public:
+    explicit LandVehicleObjectiveSetBinding(GameHudMinimapHost::Impl& owner) : owner_(owner) {}
+    std::int32_t local_player_slot_18ec() override { return 0; }
+    bool objective_set_find_008ddf00(std::int32_t slot, const void* vehicle) override {
+        owner_.done("HudMinimap::objective_set_find", 0x008ddf00u);
+        if (vehicle == nullptr || slot < 0
+            || slot >= static_cast<std::int32_t>(GameObjectiveSets::kSlotCount)) {
+            return false;
+        }
+        const std::size_t index = owner_.index_of(const_cast<void*>(vehicle));
+        const std::vector<std::size_t> set = game_objective_sets().units_in_slot(slot);
+        return std::find(set.begin(), set.end(), index) != set.end();
+    }
+
+private:
+    GameHudMinimapHost::Impl& owner_;
+};
 
 // bsp::HudMinimapHost, the boundary of src/hud_minimap.cpp. One native call site
 // per method, in the order 005C0F20 reaches them.
@@ -342,12 +367,20 @@ public:
                     : bsp::pool_pool02_cc13::land_fort_shows_on_minimap_006f57d0();
             }
         case bsp::HudMinimapUnitShows::PlayerQuery:
-            // SUBSTITUTION: 0074DDF0 asks 008DDF00 on the local player's object at
-            // [[00E188A8]+[..+18ECh]*4+21A4h], which is not reconstructed. The
-            // answer stays the pre-law true.
-            owner_.record("HudMinimap::land_vehicle_player_query",
-                bsp::kHudMinimapShowsLandVehicleQuery);
-            return true;
+            {
+                // MLandVehicle's +B8h is 0074DDF0 (00CFFE98): 008DDF00 on the local
+                // player slot's objective set [[00E188A8]+[..+18ECh]*4+21A4h], the
+                // find in its +18h unit tree. That tree is
+                // GameObjectiveSets::members, filled by Objectives_AddUnit and
+                // trimmed by Objectives_RemoveUnit / the status calls
+                // (src/game_hosts_lua.cpp), so a land vehicle is drawn only while
+                // it is a listed objective unit of slot 0 (game+18ECh in single
+                // player).
+                LandVehicleObjectiveSetBinding set(owner_);
+                owner_.done("HudMinimap::unit_shows_on_minimap(land vehicle)",
+                    bsp::kHudMinimapShowsLandVehicleBody);
+                return bsp::cc13_seg41::land_vehicle_in_local_objective_set_0074ddf0(unit, set);
+            }
         case bsp::HudMinimapUnitShows::NotAUnit:
             break;
         }

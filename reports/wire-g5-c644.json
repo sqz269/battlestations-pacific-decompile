@@ -1,0 +1,20 @@
+{
+  "chain": 644,
+  "slot": "g5-w4",
+  "goal": 5,
+  "picked": "minimap objective display: the land-vehicle minimap gate 0074DDF0 and the 005C0F20 objective-marker loop",
+  "rows": [
+    {
+      "native": "0074ddf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp MinimapBinding::unit_shows_on_minimap (PlayerQuery arm, 005C1675 -> MLandVehicle +B8h)",
+      "note": "Body fixed: it returns 008DDF00's membership answer (the old void body dropped AL). The set is GameObjectiveSets::units_in_slot(0); the former stand-in answered true."
+    },
+    {
+      "native": "0074ddd0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Body fixed alongside 0074DDF0 (byte-identical, +B4h), but its only reader 005B2F49 is the HUD map screen background (005B2D70), which no host runs."
+    }
+  ]
+}

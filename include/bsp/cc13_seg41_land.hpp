@@ -673,7 +673,6 @@ struct LandVehicleHost : RefCountedHost {
     virtual void kill_00926d90(std::uint8_t* unit, std::uint32_t value) = 0;
     virtual void unit_base_construct_0095cc90(std::uint8_t* unit, std::uint32_t row, std::uint32_t zero) = 0;
     virtual void unit_base_destruct_00959940(std::uint8_t* unit) = 0;
-    virtual void ai_query_008ddf00(std::uint32_t ai, std::uint8_t* unit) = 0;  // ECX ai
     virtual void unit_detach_base_006d3620(std::uint8_t* unit) = 0;
     virtual void list_erase_004837d0(std::uint8_t* list, std::uint8_t* node) = 0;
     virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
@@ -763,8 +762,22 @@ void land_vehicle_on_destroyed_0074db70(std::uint8_t* vehicle, void* const& game
 std::uint8_t* land_vehicle_construct_0074dcc0(std::uint8_t* vehicle, std::uint32_t row, LandVehicleHost& host);
 // 0074DD90, __thiscall(ECX unit, kind) RET 4: kind in {19h, 5, 4, 2, 1, 0} or kind == unit+C4h.
 bool land_vehicle_is_kind_of_0074dd90(const std::uint8_t* unit, std::uint32_t kind);
-// 0074DDD0, __fastcall(ECX vehicle): 008DDF00(ECX [game+21A4h + [game+18ECh]*4], vehicle).
-void land_vehicle_vslot_b4_0074ddd0(std::uint8_t* vehicle, void* const& game_00e188a8, LandVehicleHost& host);
+// 0074DDD0 (vtable 00CFFDE0 +B4h) and 0074DDF0 (+B8h) are byte-identical,
+// __fastcall(ECX vehicle), plain RET, the answer in AL: MOV EAX,ECX; ECX =
+// [00E188A8]; EDX = [ECX+18ECh]; ECX = [ECX+EDX*4+21A4h]; PUSH EAX; CALL
+// 008DDF00; RET (bsp.py ghidra disasm 0074ddd0 / 0074ddf0). 008DDF00 is
+// __thiscall(ECX set, unit) RET 4 returning (008DD310 find on the set's +18h
+// tree) != end, and 008DD310 is std::set::find (lower bound, then the key test
+// at 008DD34A..008DD34F), so the answer is "the vehicle is a member of the local
+// player slot's objective set". The image tables read these slots at 005C1675
+// (the minimap, +B8h) and 005B2F49 (the map screen background, +B4h).
+struct LandVehicleObjectiveSetHost {
+    virtual ~LandVehicleObjectiveSetHost() = default;
+    virtual std::int32_t local_player_slot_18ec() = 0;   // [[00E188A8]+18ECh]
+    // 008DDF00 with ECX = [[00E188A8]+21A4h+slot*4].
+    virtual bool objective_set_find_008ddf00(std::int32_t slot, const void* vehicle) = 0;
+};
+bool land_vehicle_vslot_b4_0074ddd0(const void* vehicle, LandVehicleObjectiveSetHost& host);
 // 0074DE50, __fastcall(ECX vehicle): 006D3620, then erase the vehicle's node
 // from [v+30h]+54h and from [v+30h]+144h (head +4, next +4, value +8).
 void land_vehicle_detach_0074de50(std::uint8_t* vehicle, LandVehicleHost& host);
@@ -1136,8 +1149,9 @@ void land_vehicle_message_write_0074cef0(const void*, NativeBitCursor*);
 void land_vehicle_message_read_0074cf00(void*, NativeSessionReadStream&);
 void land_vehicle_message_write_0074d000(const void*, NativeBitCursor*);
 void land_vehicle_message_read_0074d010(void*, NativeSessionReadStream&);
-// ECX=vehicle, RET; selected AI manager from game+21A4h+[game+18ECh]*4.
-void land_vehicle_register_ai_0074ddf0(std::uint8_t*, void* const& game_00e188a8, LandVehicleHost&);
+// 0074DDF0, vtable 00CFFDE0 +B8h: the body of 0074DDD0 above, copied (not a
+// thunk); the minimap's unit gate 005C1675 calls it.
+bool land_vehicle_in_local_objective_set_0074ddf0(const void* vehicle, LandVehicleObjectiveSetHost& host);
 // ECX=plane, RET, null maps to null; returns the interior observer +72Ch.
 std::uint8_t* plane_observer_0074e170(std::uint8_t*) noexcept;
 // ECX=plane, stack destination, RET 4, EAX=destination. Exactly sixteen

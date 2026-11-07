@@ -132,9 +132,6 @@ public:
     void unit_base_destruct_00959940(std::uint8_t*) override {
         unreached("unit_base_destruct_00959940", 0x00959940u);
     }
-    void ai_query_008ddf00(std::uint32_t, std::uint8_t*) override {
-        unreached("ai_query_008ddf00", 0x008ddf00u);
-    }
     void unit_detach_base_006d3620(std::uint8_t*) override {
         unreached("unit_detach_base_006d3620", 0x006d3620u);
     }
