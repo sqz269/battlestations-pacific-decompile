@@ -600,7 +600,7 @@ struct CameraStateResults {
 // One angle of GetCameraState: (float)(a + 131.9468994140625 (qword 00D13268)), fmod by
 // 6.2831854820251465 (qword 00CE3828), narrowed, then / pi (00CE3D28) * 180 (00CE3D20).
 float camera_state_degrees(float radians) noexcept;
-int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host);
+int lua_get_camera_state_008bf6a0(CameraStateResults& results, CameraStateHost& host);
 // GetDistFromCrosshair: offset = entity - camera (float per axis), (a, b) = 00794750, s =
 // a*a + b*b narrowed; 0 when s <= 1e-10 (qword 00CE3820, FCOMI / JBE), else sqrt narrowed;
 // pushed as s / camera FOV (00B66480).

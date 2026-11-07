@@ -725,6 +725,212 @@ private:
     std::function<void(bool)> push_;
 };
 
+// Goal 5 chain 663. StartDialog 008B0540, KillDialog 008B0940 and GetActDialogIDs
+// 008CB730 on their bodies lua_start_dialog / lua_kill_dialog / lua_get_act_dialog_ids
+// (src/engine_seg56_cc13.cpp). Their services are the dialog panel owner
+// [[00E188A8]+21E4h], which this host keeps as its active-dialog map and parsed
+// entries (the rows these bodies replace kept them the same way):
+//  * 00451A90 dialog_start_from_lua, after argument 0 (008B0660);
+//  * [00E188A8]+1FE4h, 0 in single player (game_session_mode), so the session
+//    message E1 (0044C970) is not reached;
+//  * 004514A0 dialog_kill;
+//  * 00450750 dialog_active_ids, then 00B672F0 per id into the one result table.
+// Every other ContentHost / PresentationHost site belongs to another binding.
+class ScriptDialogBinding final : public bsp::cc13_seg56::DialogStartHost,
+                                  public bsp::cc13_seg56::ContentHost,
+                                  public bsp::cc13_seg56::PresentationHost,
+                                  public bsp::cc13_seg56::LuaStringListResults {
+public:
+    struct Calls {
+        std::function<void(const std::string&, int)> start;           // 00451A90
+        std::function<std::int32_t()> session_mode;                     // game+1FE4h
+        std::function<void(const std::string&)> kill;                  // 004514A0
+        std::function<std::vector<std::string>()> active_ids;          // 00450750
+        std::function<void(const std::vector<std::string>&)> push_ids; // 00B672F0 table
+    };
+    explicit ScriptDialogBinding(Calls calls) : calls_(std::move(calls)) {}
+
+    // --- DialogStartHost ---
+    void dialog_start_from_lua(const std::string& name, bsp::cc13_seg56::LuaArgs&,
+                               int index) override {
+        calls_.start(name, index);
+    }
+    std::int32_t game_session_mode_1fe4() override { return calls_.session_mode(); }
+    void session_send_dialog_e1(const std::string&, bsp::cc13_seg56::LuaArgs&, int) override {
+        unreached("0044C970 (session message E1)");
+    }
+    // --- ContentHost ---
+    void dialog_kill(const std::string& name) override { calls_.kill(name); }
+    int narrative_size() override { unreached("00733260"); }
+    void narrative_clear() override { unreached("00734FA0"); }
+    void localization_register_table_name(const std::string&) override { unreached("00AA0D30"); }
+    void localization_reload_tables(int) override { unreached("00AA06D0"); }
+    void atmosphere_replace_sky_box(const std::string&) override { unreached("00BBDF60"); }
+    void rain_set_drop_num_percent(float) override { unreached("008003B0"); }
+    void rain_settings_store_70(float) override { unreached("rain settings +70h"); }
+    void time_of_day_set(int, int, int, int) override { unreached("004439B0"); }
+    void time_of_day_split(int&, int&, int&) override { unreached("00443A30"); }
+    void light_store_float(std::size_t, float) override { unreached("game+5FCh"); }
+    void scene_ensure_default_lighting() override { unreached("004C9EC0"); }
+    std::int32_t vehicle_class_remap(int) override { unreached("00437F50 +2010h"); }
+    void narrative_send_to_party(int, const std::string&) override { unreached("00734B10"); }
+    void narrative_send_to_player(int, const std::string&) override { unreached("00734BF0"); }
+    void dialog_break(const std::string&) override { unreached("00451B90"); }
+    void point_effect_stop_children(void*) override { unreached("00867B10"); }
+    void point_effect_set_byte9(void*) override { unreached("effect+9"); }
+    void effect_manager_stop_matching(void*) override { unreached("004D1100"); }
+    // --- PresentationHost ---
+    std::vector<std::string> dialog_active_ids() override { return calls_.active_ids(); }
+    float voice_current_level_d4() override { unreached("voice +D4h"); }
+    void voice_begin_sound_fade(float, float, const std::string&) override {
+        unreached("005B9760");
+    }
+    float global_config_default_fade_e0() override { unreached("00432650 +E0h"); }
+    void set_skip_movie_name(const std::string&) override { unreached("game+21E0h +19Ch"); }
+    void* lua_table_entity_ptr(bsp::cc13_seg56::LuaArgs&, int) override { unreached("00888D20"); }
+    void entity_set_force_3d_visible_2f0(void*, bool) override { unreached("entity+2F0h"); }
+    void listener_add(const std::string&, const std::string&, bsp::cc13_seg56::LuaArgs&,
+                      int) override {
+        unreached("00980C10");
+    }
+    void listener_remove(const std::string&, const std::string&) override {
+        unreached("00980D30");
+    }
+    bool listener_active(const std::string&, const std::string&) override {
+        unreached("00980E00");
+    }
+    std::int32_t game_loading_depth_644() override { unreached("game+644h"); }
+    void please_wait_screen_hide() override { unreached("0060D3E0"); }
+    void game_set_cinematic_mode(int, int, int) override { unreached("004CD0F0"); }
+    // --- LuaStringListResults ---
+    void push_string_array(const std::vector<std::string>& values) override {
+        calls_.push_ids(values);
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScriptDialogBinding: the dialog rows do not reach ")
+                               + site);
+    }
+    Calls calls_;
+};
+
+// Goal 5 chain 663. DisplayScores 008C20D0 and HideScoreDisplay 008C24B0 on their bodies
+// lua_display_scores / lua_hide_score_display (src/engine_seg56_cc13.cpp). The bodies
+// read the arguments (00B66290 / 00B662B0) and call the HUD counters on
+// [[00E198C4]+C8h]: 0052B780 for six arguments (008C22DA), 0052B620 for four
+// (008C241A), 0052B900 to hide (008C25E5). SUBSTITUTION, labelled, kept from the rows
+// these bodies replace: those three are this host's per-id score lines (the HUD
+// message 23h they post is logged, not drawn). Every other HudScoreHost /
+// InterfaceHost site belongs to another binding.
+class ScoreDisplayBinding final : public bsp::cc13_seg56::HudScoreHost,
+                                  public bsp::cc13_seg56::InterfaceHost {
+public:
+    struct Calls {
+        // 0052B620 (pair false) / 0052B780 (pair true, with e and f).
+        std::function<void(int, int, const std::string&, const std::string&, bool, int, int)>
+            show;
+        std::function<void(int, int)> hide;   // 0052B900
+    };
+    explicit ScoreDisplayBinding(Calls calls) : calls_(std::move(calls)) {}
+
+    // --- HudScoreHost ---
+    void display_score(int a, int b, const std::string& c, const std::string& d) override {
+        calls_.show(a, b, c, d, false, 0, 0);
+    }
+    void display_score_pair(int a, int b, const std::string& c, const std::string& d, int e,
+                            int f) override {
+        calls_.show(a, b, c, d, true, e, f);
+    }
+    std::vector<void*> entity_list_0088a900(bsp::cc13_seg56::LuaArgs&, int) override {
+        unreached("0088A900");
+    }
+    void display_unit_hp(int, const std::vector<void*>&, const std::string&) override {
+        unreached("0052B400");
+    }
+    // --- InterfaceHost ---
+    void hud_counters_hide_score(int first, int second) override { calls_.hide(first, second); }
+    void music_set_target_level(float) override { unreached("00A77860"); }
+    float map_cursor_x_554() override { unreached("map+554h"); }
+    float map_cursor_z_558() override { unreached("map+558h"); }
+    std::int32_t map_zoom_2c() override { unreached("map+2Ch"); }
+    void map_force_cursor_pos(const bsp::cc13_seg56::Vec3&) override { unreached("0059AD20"); }
+    void map_release_cursor_0059ad50() override { unreached("0059AD50"); }
+    void map_set_node_visible_by_name(const std::string&, bool) override { unreached("005A4020"); }
+    void map_set_unit_highlight(void*, bool) override { unreached("005AAAD0"); }
+    void music_set_channel_byte_4e(int, bool) override { unreached("00A77840"); }
+    void engine_movie_screen_black_bars(bool) override { unreached("005CB0F0"); }
+    void movie_screen_black_bars(bool) override { unreached("005CBC30"); }
+    void input_set_context_level(int, int) override { unreached("00A933F0"); }
+    bool input_record_enabled(int) override { unreached("input record +28h"); }
+    float input_record_value(int) override { unreached("input record +24h"); }
+    void options_save_input_modifiers() override { unreached("005F0B90"); }
+    bool interface_present() override { unreached("00E198C4"); }
+    bool limbo_screen_present() override { unreached("00E198C4+E8h"); }
+    bool limbo_screen_active_byte4() override { unreached("limbo+4h"); }
+    void* gui_find_widget(bsp::cc13_seg56::LuaArgs&, int) override { unreached("008C9F80"); }
+    bool gui_widget_vcall_38(void*) override { unreached("widget vtable+38h"); }
+    std::string gui_widget_raw_text(void*) override { unreached("widget+F4h"); }
+    void marker_add_gui_highlight(void*, bool, bool) override { unreached("006DAE20"); }
+    void marker_remove_gui_highlight(void*) override { unreached("006DC5A0"); }
+    void gui_load_page_and_show(const std::string&) override { unreached("00AA5840"); }
+    void objectives_toggle_disabled_byte(bool) override { unreached("00E198C4+60h"); }
+    void hud_counters_hide_unit_hp(int) override { unreached("0052B570"); }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScoreDisplayBinding: the score rows do not reach ")
+                               + site);
+    }
+    Calls calls_;
+};
+
+// Goal 5 chain 663. GetCameraState 008BF6A0 on its body lua_get_camera_state_008bf6a0
+// (src/engine_seg56_cc13.cpp) over the camera node the caller chose (the world matrix at
+// [game+19FCh]+F0h after 00B6DB70, bsp.py ghidra disasm 008bf6a0: 008BF799 / 008BF7BC):
+// +30h of it is the translation row (008BF7BC LEA EDX,[ESI+30h] into 0088BA30), 0042D2E0
+// gives the basis angles in radians, and Zoom is [00F889B4] / node+1C4h. The table is
+// built by `push`. Every other CameraStateHost site belongs to another binding.
+class CameraStateBinding final : public bsp::cc13_seg56::CameraStateHost,
+                                 public bsp::cc13_seg56::CameraStateResults {
+public:
+    CameraStateBinding(const bsp::CameraMatrix& world, float fov,
+                       std::function<void(const bsp::cc13_seg56::CameraStateResult&)> push)
+        : world_(world), fov_(fov), push_(std::move(push)) {}
+
+    bsp::cc13_seg56::Vec3 game_camera_vector_30() override {
+        return {world_[12], world_[13], world_[14]};
+    }
+    bsp::cc13_seg56::Vec3 game_camera_basis_angles() override {
+        bsp::CameraMatrix basis = world_;
+        bsp::cc13_seg56::Vec3 a;
+        bsp::extract_camera_matrix_angles_0042d2e0(basis, a.x, a.y, a.z);
+        return a;
+    }
+    float game_camera_fov_1c4() override { return fov_; }
+    float base_fov_00f889b4() override { return bsp::kFovDivisor00f889b4; }
+    void push_camera_state(const bsp::cc13_seg56::CameraStateResult& state) override {
+        push_(state);
+    }
+
+    bsp::cc13_seg56::Vec3 game_camera_world_position() override { unreached("+120h..+128h"); }
+    bsp::cc13_seg56::Vec3 game_camera_direction_110() override { unreached("+110h..+118h"); }
+    bsp::cc13_seg56::Vec3 entity_world_position(void*) override { unreached("entity +FCh"); }
+    std::array<float, 2> camera_direction_angle_delta(const bsp::cc13_seg56::Vec3&,
+                                                      const bsp::cc13_seg56::Vec3&) override {
+        unreached("00794750");
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("CameraStateBinding: GetCameraState does not reach ")
+                               + site);
+    }
+    bsp::CameraMatrix world_;
+    float fov_;
+    std::function<void(const bsp::cc13_seg56::CameraStateResult&)> push_;
+};
+
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
 public:
     explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
@@ -1048,6 +1254,102 @@ private:
 [[noreturn]] void unit_query_unreached(const char* what) {
     throw std::logic_error(std::string("segment-56 unit query: unreached ") + what);
 }
+
+// Goal 5 chain 663. The field stores of SetSubmarineAirSupply 00893A60 (FSTP float
+// [entity+127Ch], 00893BA1) and SquadronSetTravelSpeed 008A0630 (008A07E2 +388h =
+// float 00CE3800 0.5, 008A07F0 +38Fh the flag, 008A07FA +3A0h the speed, 008A0802
+// +3ACh = 1), from their bodies lua_set_submarine_air_supply_00893a60 (src/options_seg56_cc13.cpp)
+// and lua_squadron_set_travel_speed_008a0630 (src/cc13_left55_seg56a.cpp). ImageAccess is a
+// typed view of the units host's slot state, not a second image: +127Ch is the
+// submarine's air (set_submarine_air_00893a60, which stores nothing for a unit with no
+// seeded dive state), and the squadron's four fields are the ones
+// set_squadron_travel_speed_008a0630 keeps (its +388h is the 0.5 s countdown held as an
+// expiry, so any other +388h value is refused rather than mis-stored). The squadron
+// stores are committed together after the body returns. Every other access is refused.
+class UnitFieldStoreBinding final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    UnitFieldStoreBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of)
+        : units_(units), index_of_(std::move(index_of)) {}
+
+    void write_f32(void* entity, std::uint32_t offset, float value) override {
+        if (offset == 0x127Cu) {
+            stored_ = units_.set_submarine_air_00893a60(index(entity), value);
+            return;
+        }
+        if (offset == 0x388u && value == bsp::cc13_left55::seg56a::kTravelSpeedField388) {
+            bind_squadron(entity);
+            seen_ |= kSeen388;
+            return;
+        }
+        if (offset == 0x3A0u) {
+            bind_squadron(entity);
+            speed_ = value;
+            seen_ |= kSeen3A0;
+            return;
+        }
+        unit_query_unreached("a float store other than +127Ch, +388h = 0.5 or +3A0h");
+    }
+    void write_u8(void* entity, std::uint32_t offset, std::uint8_t value) override {
+        if (offset == 0x38Fu) {
+            bind_squadron(entity);
+            force_ = value != 0;
+            seen_ |= kSeen38F;
+            return;
+        }
+        if (offset == 0x3ACu && value == 1u) {
+            bind_squadron(entity);
+            seen_ |= kSeen3AC;
+            return;
+        }
+        unit_query_unreached("a byte store other than +38Fh or +3ACh = 1");
+    }
+    // SquadronSetTravelSpeed's four stores, as one units-host write. False when the
+    // body did not make all four or the slot has no squadron.
+    bool commit_squadron_travel_speed() {
+        if (seen_ != (kSeen388 | kSeen38F | kSeen3A0 | kSeen3AC)) return false;
+        stored_ = units_.set_squadron_travel_speed_008a0630(index(squadron_), speed_, force_);
+        return stored_;
+    }
+    bool stored() const noexcept { return stored_; }
+    float speed() const noexcept { return speed_; }
+    bool force() const noexcept { return force_; }
+
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+private:
+    static constexpr unsigned kSeen388 = 1u, kSeen38F = 2u, kSeen3A0 = 4u, kSeen3AC = 8u;
+    std::size_t index(void* entity) const {
+        const std::size_t i = entity != nullptr ? index_of_(entity) : ~static_cast<std::size_t>(0);
+        if (i >= units_.count()) unit_query_unreached("a store on no units-host slot");
+        return i;
+    }
+    void bind_squadron(void* entity) {
+        if (squadron_ != nullptr && squadron_ != entity) {
+            unit_query_unreached("squadron stores on two entities");
+        }
+        squadron_ = entity;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    void* squadron_{nullptr};
+    unsigned seen_{0};
+    float speed_{0.0f};
+    bool force_{false};
+    bool stored_{false};
+};
 
 // 006BCD20's block selection (bsp.py ghidra disasm 006bcd20): a null entity answers
 // null; 006BCD35 vtable[5Ch](9) gives owner+1188h, 006BCD4C vtable[5Ch](45h)
@@ -3231,17 +3533,11 @@ std::uint16_t GameScriptOrdersHost::entity_object_id(void* entity) {
 // scripts use more than any other - 1125 lines across 197 files - and the only
 // `Pilot*` row USN01 calls. docs/PILOT_ORDER_BINDINGS.md has the recovered body.
 //
-// This resolves the call and reports it. **It deliberately does not issue the
-// command**, and the reason is worth stating plainly rather than hiding behind a
-// partial implementation: the command class comes from `007EEC50`, whose
-// `AttackFeasibilityInputs` (include/bsp/attack_commands.hpp) need about a dozen
-// per-class capability answers - is the unit a level bomber, is the target a
-// submarine or bomb-excluded, does the unit carry ordnance of kinds 31h/2Ah/2Fh/
-// 2Bh - each of which is a `vt[5Ch](n)` query on a class object this process does
-// not build. Guessing them would produce orders that look like they work, which
-// is worse than none.
+// Goal 5 chain 663: the native runs its body pilot_set_target_008a4c90 over
+// GameScriptOrdersHost::PilotOrderBinding (beside run_pilot_set_target); the
+// command class is choose_attack_class_007eec50's 007EEC50 answer.
 //
-// What it does prove is the argument path, which was the open question: the
+// The argument path, which was the open question: the
 // native's `00888AA0` reads the Lua table's `Ptr` field and not its `ID`, and
 // this host seeds `Ptr` with the entity id (src/game_hosts_lua.cpp) and
 // represents an entity as that id cast to a pointer - so the native's own field
@@ -4379,6 +4675,120 @@ void GameScriptOrdersHost::install_pilot_attack_task_after_delivery(
     });
 }
 
+// Goal 5 chain 663. PilotSetTarget 008A4C90, PilotMoveTo 008A4150, PilotMoveToRange
+// 008A4590 and PilotLand 008A47B0 run their bodies (src/pilot_order_bindings.cpp) over
+// this adapter, one service per native call site the bodies name:
+//  * 00888AA0 unit_from_argument: the table's `Ptr` (00888D20's read, this host seeds
+//    `Ptr` with the entity's id). SUBSTITUTION, labelled, kept from the rows these
+//    bodies replace: a table whose `Ptr` is not a light userdata falls back to its
+//    `ID` field (entity_from_argument).
+//  * 0088A810 command_target_from_argument: bsp::lua_read_command_target.
+//  * 00B663F0 / 00B66290 / 00B66270: the frame's argument count, integer and number.
+//  * the +5Ch/+5Dh/+60h/+5Eh quartet (liveness): the units host's persistent cells, the
+//    same four 0043F080 reads GameUnitsHost::unit_alive_and_visible makes; unavailable
+//    state fails the gate. SUBSTITUTION, labelled, as packet
+//    cc9_squadron_observer_liveness reads it: a squadron's fused slot stands for the
+//    squadron entity, which 007F3970 kills (00926D90) only when +3CCh reaches 0, so while
+//    the registry record keeps a live plane the slot answers the squadron's live
+//    quartet after its own plane died.
+//  * 00521EA0 resolve_target_object: GameUnitsHost::resolve_command_target_00521ea0, the
+//    one-based handle this host's entities are. The +4h store caches the identity the
+//    descriptor already holds, so it is not repeated.
+//  * 007EEC50 choose_attack_command: choose_attack_class_007eec50.
+//  * 0077D600 issue_command: the row's own issue, which is entity_issue_command and then
+//    the receiver's side the image runs behind the delivery (0099A170's install, the
+//    007ECF80 squadron fan-out).
+//  * +C8h / 00414DB0: GameUnitsHost::unit_pose_valid_00c8 and entity_pose_refresh_00414db0.
+// PilotRetreat 008A4300's three services (+54h, +FCh, 004C7730) are not bound: its row
+// keeps run_pilot_retreat, because the 004C7730 zone corners are only reachable inside
+// GameUnitsHost::retreat_point_008a4300.
+class GameScriptOrdersHost::PilotOrderBinding final : public bsp::PilotOrderHost {
+public:
+    using Issue = std::function<void(void*, std::uint32_t, const bsp::SceneCommandTarget&, int)>;
+    PilotOrderBinding(GameScriptOrdersHost& host, const char* label, Issue issue)
+        : host_(host), label_(label), issue_(std::move(issue)) {}
+
+    int argument_count() override { return host_.argument_count_; }
+    void* unit_from_argument(int index) override {
+        void* unit = host_.argument_ptr_field(index);
+        if (unit == nullptr) unit = host_.entity_from_argument(index);
+        return unit;
+    }
+    bsp::SceneCommandTarget command_target_from_argument(int index) override {
+        return bsp::lua_read_command_target(host_, index);
+    }
+    int argument_as_int(int index) override { return host_.argument_integer(index); }
+    float argument_as_float(int index) override { return host_.argument_number(index); }
+
+    bsp::EntityLivenessBytes liveness(void* entity) override {
+        bsp::EntityLivenessBytes bytes;   // present clear: the quartet fails
+        const std::size_t index = host_.index_of(entity);
+        bsp::SceneNodeFlags node;
+        bool pending = false;
+        if (index >= host_.units_.count() || !host_.units_.unit_scene_node_flags(index, node)
+            || !host_.units_.unit_pending_destroy_0060(index, pending)) {
+            return bytes;
+        }
+        bytes.present = node.active;          // +5Ch
+        bytes.out_of_action = node.torn_down; // +5Dh
+        bytes.flag_60 = pending;              // +60h
+        bytes.flag_5e = node.destroyed;       // +5Eh
+        if (bytes.flag_5e || bytes.flag_60) {
+            const bsp::PlaneSquadronHostRecord* squadron = fused_squadron_record(index);
+            if (squadron != nullptr && squadron->live_count() > 0) {
+                bytes = bsp::EntityLivenessBytes{true, false, false, false};
+                ++squadron_holds_;
+            }
+        }
+        return bytes;
+    }
+    void* resolve_target_object(bsp::SceneCommandTarget& target) override {
+        const std::uint32_t handle = host_.units_.resolve_command_target_00521ea0(target);
+        resolved_ = reinterpret_cast<void*>(static_cast<std::uintptr_t>(handle));
+        return resolved_;
+    }
+    void* choose_attack_command(void* unit, void* target, bool prefer_ordnance,
+                                bool allow_guns) override {
+        const std::uint32_t chosen = host_.choose_attack_class_007eec50(host_.index_of(unit),
+            host_.index_of(target), prefer_ordnance, allow_guns, label_);
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(chosen));
+    }
+    void issue_command(void* unit, std::uint32_t command_class,
+                       const bsp::SceneCommandTarget& target, int flags) override {
+        issued_ = true;
+        issue_(unit, command_class, target, flags);
+    }
+    bool world_pose_valid(void* entity) override {
+        const std::size_t index = host_.index_of(entity);
+        return index >= host_.units_.count() || host_.units_.unit_pose_valid_00c8(index);
+    }
+    void refresh_world_pose(void* entity) override { host_.entity_pose_refresh_00414db0(entity); }
+    int entity_side(void*) override { unreached("+54h (PilotRetreat)"); }
+    const float* entity_world_position(void*) override { unreached("+FCh (PilotRetreat)"); }
+    bsp::PilotRetreatZoneCorners retreat_zone(const float*, int) override {
+        unreached("004C7730 (PilotRetreat)");
+    }
+
+    void* resolved() const noexcept { return resolved_; }
+    bool issued() const noexcept { return issued_; }
+    unsigned squadron_holds() const noexcept { return squadron_holds_; }
+
+private:
+    [[noreturn]] static void unreached(const char* what) {
+        throw std::logic_error(std::string("PilotOrderBinding: unreached ") + what);
+    }
+    GameScriptOrdersHost& host_;
+    const char* label_;
+    Issue issue_;
+    void* resolved_{nullptr};
+    bool issued_{false};
+    unsigned squadron_holds_{0};
+};
+
+// 008A4C90 on its body: the unit quartet, argument 1 (0088A810), the attack type
+// (008A4E0B) and flags (008A4E54), 00521EA0, 007EEC50, the target quartet, the repeated
+// 007EEC50 when the first answered null, then 0077D600(unit, class, &target, 1) at
+// 008A4EAC. The issue is followed by the receiver's 0099A170 install after delivery.
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     resolve_plane_squadron_members();
     void* unit = argument_ptr_field(0);
@@ -4386,32 +4796,39 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     row.unit_index = index_of(unit);
     row.unit = name_of(unit);
 
+    // The descriptor and attack type the body reads, for the log line only.
     const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
     const int attack_type = bsp::pilot_set_target_attack_type_008a4e0b(
         argument_count_, argument_integer(2));
     const bsp::PilotAttackSelectorFlags flags =
         bsp::pilot_attack_selector_flags_008a4e54(attack_type);
 
-    const std::size_t target_index = target.object != nullptr
-        ? index_of(target.object)
-        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                : ~static_cast<std::size_t>(0));
-    const std::uint32_t chosen = choose_attack_class_007eec50(row.unit_index, target_index,
-        flags.prefer_ordnance, flags.allow_guns, "PilotSetTarget");
-
-    // 008A4EAC: PilotSetTarget hands 0077D600 the command class 007EEC50 chose,
-    // the descriptor built from argument 1, and flags = 1. Issued only when a
-    // class was actually chosen - a zero is 007EEC50 declining, and forwarding
-    // it would be inventing an order the native would not give.
-    if (chosen != 0u && unit != nullptr) {
-        entity_issue_command(unit, chosen, target, 1);
-        ++pilot_set_target_issued_;
-        install_pilot_attack_task_after_delivery(row.unit_index, row.unit, chosen, target,
-            target_index, "PilotSetTarget", pilot_set_target_tasks_);
+    std::uint32_t chosen = 0;
+    PilotOrderBinding binding(*this, "PilotSetTarget",
+        [this, &chosen](void* entity, std::uint32_t cls, const bsp::SceneCommandTarget& issued,
+                        int issue_flags) {
+            chosen = cls;
+            const std::size_t unit_index = index_of(entity);
+            entity_issue_command(entity, cls, issued, issue_flags);   // 0077D600
+            ++pilot_set_target_issued_;
+            install_pilot_attack_task_after_delivery(unit_index, name_of(entity), cls, issued,
+                index_of(issued.object), "PilotSetTarget", pilot_set_target_tasks_);
+        });
+    const bsp::PilotSetTargetOutcome outcome = bsp::pilot_set_target_008a4c90(binding);
+    const char* outcome_text = "ISSUED";
+    switch (outcome) {
+    case bsp::PilotSetTargetOutcome::kUnitNotLive: outcome_text = "not issued (unit not live)"; break;
+    case bsp::PilotSetTargetOutcome::kTargetNotLive:
+        outcome_text = "not issued (target not live)";
+        break;
+    case bsp::PilotSetTargetOutcome::kNoCommandClass:
+        outcome_text = "not issued (007EEC50 declined)";
+        break;
+    case bsp::PilotSetTargetOutcome::kIssued: break;
     }
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
-        "-> %s",
+        "class=%08lx squadron_holds=%u -> %s (008A4C90 body, goal 5 chain 663)",
         row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
         static_cast<unsigned>(target.object_id),
         target.position_valid ? 1 : 0,
@@ -4419,7 +4836,7 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
         static_cast<double>(target.position[1]),
         static_cast<double>(target.position[2]),
         attack_type, flags.prefer_ordnance ? 1 : 0, flags.allow_guns ? 1 : 0,
-        chosen != 0u ? "ISSUED" : "not issued (007EEC50 declined)");
+        static_cast<unsigned long>(chosen), binding.squadron_holds(), outcome_text);
     ++pilot_set_target_calls_;
     if (!row.unit.empty()) ++pilot_set_target_unit_resolved_;
     if (target.object_id != 0 || target.position_valid) ++pilot_set_target_target_resolved_;
@@ -4440,6 +4857,12 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
 // the kind-7 task 009C3BE0 -> 009C3000. The squadron fan-out is the same
 // 007ECF80 route PilotSetTarget takes, so every member gets the order and its
 // own task. docs/PILOT_MOVETO_TASK.md.
+// Goal 5 chain 663: PilotMoveTo 008A4150 and PilotMoveToRange 008A4590 run their bodies
+// pilot_move_to_008a4150 / pilot_move_to_range_008a4590 over PilotOrderBinding. The
+// bodies read both arguments (and the range at 008A46DC), issue at 008A42A7 / 008A472A,
+// and PilotMoveToRange then tests +C8h (008A472F). The issue below is this host's
+// 0077D600 and the receiver's side behind it: the 007ECF80 fan-out and each order's
+// 0099A170 install after its delivery.
 int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     if constexpr (!bsp::kPilotMoveToTaskBound) {
         return 0;
@@ -4449,35 +4872,6 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     if (unit == nullptr) unit = entity_from_argument(0);
     row.unit_index = index_of(unit);
     row.unit = name_of(unit);
-    bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
-    // PilotMoveTo (008A4150) never reads argument 2: +14h keeps 0088A8C7's 0.
-    target.trailing = pilot_move_to_plain_
-        ? 0.0f
-        : bsp::pilot_move_to_range_008a46dc(argument_count_, argument_number(2));
-    const std::size_t target_index = target.object != nullptr
-        ? index_of(target.object)
-        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                : ~static_cast<std::size_t>(0));
-    const std::uint32_t target_token = target_index < units_.count()
-        ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
-    // Packet cc9_pilot_move_to: a target that is no unit but a scene marker
-    // (a NavPoint) steers the task to the marker's authored position, which is
-    // what 009BEBA0 reads off [approach+44h] in the image.
-    bool marker_goal = false;
-    float marker_world[3] = {0.0f, 0.0f, 0.0f};
-    if (kPilotMoveToBound && target_token == 0u) {
-        const int marker_id = target.object != nullptr
-            ? static_cast<int>(reinterpret_cast<std::uintptr_t>(target.object))
-            : static_cast<int>(target.object_id);
-        if (const SceneMarker* marker = marker_for_id(marker_id)) {
-            marker_goal = true;
-            marker_world[0] = marker->position[0];
-            marker_world[1] = marker->position[1];
-            marker_world[2] = marker->position[2];
-            ++pilot_marker_goals_;
-        }
-    }
-    const std::uint32_t cls = bsp::kPilotOrderClassMoveTo;
     // The log's task count is the installs made before this binding returns.
     // The continuation counts into the member, never into this frame: with
     // kSetCommandQueueDelayBound a direct order's continuation runs at the
@@ -4485,41 +4879,81 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     // pointer to a local here incremented a dead stack slot and corrupted
     // JM02's GenerateObject record, 0xC0000374).
     const unsigned long long tasks_before = pilot_move_to_tasks_;
-    auto order_one = [&](std::size_t index, void* handle) {
-        entity_issue_command(handle, cls, target, 1);
-        // Packet cc9_after_row9_continuation: the install follows the delivery
-        // (a queued order's at the drain), as in run_pilot_set_target.
-        after_order_delivery([this, index, cls, target, target_index, target_token,
-                              marker_goal, marker_world]() {
-            ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
-            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
-                static_cast<std::uint32_t>(index + 1u), bot_host);
-            if (task != 0u) {
-                units_.store_unit_attack_command_class(index, cls);
-                units_.store_unit_moveto_range(index, target.trailing);
-                units_.store_unit_moveto_target(index, target_index);
-                if (marker_goal) units_.store_unit_moveto_point(index, marker_world);
-                ++pilot_move_to_tasks_;
+    std::uint32_t logged_token = 0;
+    float logged_range = 0.0f;
+    const auto issue = [this, &logged_token, &logged_range](void* entity, std::uint32_t cls,
+                                                           const bsp::SceneCommandTarget& target,
+                                                           int flags) {
+        const std::size_t unit_index = index_of(entity);
+        const std::size_t target_index = target.object != nullptr
+            ? index_of(target.object)
+            : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                    : ~static_cast<std::size_t>(0));
+        const std::uint32_t target_token = target_index < units_.count()
+            ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+        logged_token = target_token;
+        logged_range = target.trailing;
+        // Packet cc9_pilot_move_to: a target that is no unit but a scene marker
+        // (a NavPoint) steers the task to the marker's authored position, which is
+        // what 009BEBA0 reads off [approach+44h] in the image.
+        bool marker_goal = false;
+        float marker_world[3] = {0.0f, 0.0f, 0.0f};
+        if (kPilotMoveToBound && target_token == 0u) {
+            const int marker_id = target.object != nullptr
+                ? static_cast<int>(reinterpret_cast<std::uintptr_t>(target.object))
+                : static_cast<int>(target.object_id);
+            if (const SceneMarker* marker = marker_for_id(marker_id)) {
+                marker_goal = true;
+                marker_world[0] = marker->position[0];
+                marker_world[1] = marker->position[1];
+                marker_world[2] = marker->position[2];
+                ++pilot_marker_goals_;
             }
-        });
-    };
-    if (unit != nullptr && row.unit_index < units_.count()) {
-        order_one(row.unit_index, unit);
+        }
+        auto order_one = [&](std::size_t index, void* handle) {
+            entity_issue_command(handle, cls, target, flags);
+            // Packet cc9_after_row9_continuation: the install follows the delivery
+            // (a queued order's at the drain), as in run_pilot_set_target.
+            after_order_delivery([this, index, cls, target, target_index, target_token,
+                                  marker_goal, marker_world]() {
+                ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
+                const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                    static_cast<std::uint32_t>(index + 1u), bot_host);
+                if (task != 0u) {
+                    units_.store_unit_attack_command_class(index, cls);
+                    units_.store_unit_moveto_range(index, target.trailing);
+                    units_.store_unit_moveto_target(index, target_index);
+                    if (marker_goal) units_.store_unit_moveto_point(index, marker_world);
+                    ++pilot_move_to_tasks_;
+                }
+            });
+        };
+        // The bodies issue without a null test; 0077D600 on no units-host slot does
+        // nothing here (entity_issue_command's own test), as before.
+        if (entity == nullptr || unit_index >= units_.count()) return;
+        order_one(unit_index, entity);
         bsp::PlaneSquadronHostRecord* squadron =
-            bsp::plane_squadron_registry().find_by_member_unit(row.unit_index);
+            bsp::plane_squadron_registry().find_by_member_unit(unit_index);
         if (squadron != nullptr) {
             for (const std::size_t member : squadron->member_units) {
-                if (member == bsp::kPlaneSquadronNoUnit || member == row.unit_index) continue;
+                if (member == bsp::kPlaneSquadronNoUnit || member == unit_index) continue;
                 order_one(member,
                           reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u)));
             }
         }
+    };
+    PilotOrderBinding binding(*this, pilot_move_to_plain_ ? "PilotMoveTo" : "PilotMoveToRange",
+                              issue);
+    if (pilot_move_to_plain_) {
+        bsp::pilot_move_to_008a4150(binding);         // never reads argument 2: +14h is 0
+    } else {
+        bsp::pilot_move_to_range_008a4590(binding);
     }
     log_.notef("  %s: unit=%s target_token=%u range=%.1f -> %zu moveto task(s) "
-        "(%s -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
+        "(%s body -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
         pilot_move_to_plain_ ? "PilotMoveTo" : "PilotMoveToRange",
         row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
-        static_cast<unsigned>(target_token), static_cast<double>(target.trailing),
+        static_cast<unsigned>(logged_token), static_cast<double>(logged_range),
         static_cast<std::size_t>(pilot_move_to_tasks_ - tasks_before),
         pilot_move_to_plain_ ? "008A4150" : "008A4590");
     return 0;  // the binding pushes nothing
@@ -4916,37 +5350,44 @@ int GameScriptOrdersHost::run_navigator_stop(GameScriptOrderRow& row) {
 // 0099A170 land arm 0099A3DD takes the site from the command target; the units
 // host installs at the delivery (the standing substitution of
 // docs/SENTITY_INIT_ATTACH_ORDER.md 22.7) and fans a squadron out itself.
+// Goal 5 chain 663: the body pilot_land_008a47b0 over PilotOrderBinding reads both
+// arguments and issues; the issue below is 0077D600 and the 0099A3DD intake after it.
 int GameScriptOrdersHost::run_pilot_land(GameScriptOrderRow& row) {
     resolve_plane_squadron_members();
     void* unit = argument_ptr_field(0);
     if (unit == nullptr) unit = entity_from_argument(0);
     row.unit_index = index_of(unit);
     row.unit = name_of(unit);
-    const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
-    const std::size_t site_index = target.object != nullptr
-        ? index_of(target.object)
-        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                : ~static_cast<std::size_t>(0));
     ++pilot_land_calls_;
-    if (unit == nullptr || row.unit_index >= units_.count()) {
-        log_.notef("  PilotLand: unit unresolved; nothing issued (008A47B0)");
-        return 0;
-    }
-    entity_issue_command(unit, bsp::kPilotOrderClassLand, target, 1);   // 008A4907
-    const std::size_t leader = row.unit_index;
-    const std::string name = row.unit;
-    after_order_delivery([this, leader, site_index, name]() {
-        if (site_index >= units_.count()) {
-            log_.notef("  PilotLand: %s: the target is no unit; no task", name.c_str());
+    const auto issue = [this](void* entity, std::uint32_t cls,
+                              const bsp::SceneCommandTarget& target, int flags) {
+        const std::size_t leader = index_of(entity);
+        if (entity == nullptr || leader >= units_.count()) {
+            log_.notef("  PilotLand: unit unresolved; nothing issued (008A47B0)");
             return;
         }
-        pilot_land_tasks_ += units_.land_at_site_0099a3dd(leader, site_index);
-    });
-    log_.notef("  PilotLand: %s -> %s (target object=%d id=%d position=%d; 008A47B0 -> "
-        "0077D600 00E08FA0 -> 0099A3DD)", name.c_str(),
-        site_index < units_.count() ? units_.unit_row(site_index)->name.c_str() : "(no unit)",
-        target.object != nullptr ? 1 : 0, static_cast<int>(target.object_id),
-        static_cast<int>(target.position_valid));
+        const std::size_t site_index = target.object != nullptr
+            ? index_of(target.object)
+            : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                    : ~static_cast<std::size_t>(0));
+        entity_issue_command(entity, cls, target, flags);   // 008A4907
+        const std::string name = name_of(entity);
+        after_order_delivery([this, leader, site_index, name]() {
+            if (site_index >= units_.count()) {
+                log_.notef("  PilotLand: %s: the target is no unit; no task", name.c_str());
+                return;
+            }
+            pilot_land_tasks_ += units_.land_at_site_0099a3dd(leader, site_index);
+        });
+        log_.notef("  PilotLand: %s -> %s (target object=%d id=%d position=%d; 008A47B0 body "
+            "-> 0077D600 00E08FA0 -> 0099A3DD)", name.c_str(),
+            site_index < units_.count() ? units_.unit_row(site_index)->name.c_str()
+                                        : "(no unit)",
+            target.object != nullptr ? 1 : 0, static_cast<int>(target.object_id),
+            static_cast<int>(target.position_valid));
+    };
+    PilotOrderBinding binding(*this, "PilotLand", issue);
+    bsp::pilot_land_008a47b0(binding);
     return 0;  // the binding pushes nothing
 }
 
@@ -6501,27 +6942,35 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // Packet cc13-fix17. 00893A60: argument 0 through 00888AA0, argument 1
         // through 00B66270 rounded to float (00893B95), stored at unit+127Ch
         // (00893BA1) with no class, null or range test. No result. LABELLED: a
-        // unit with no seeded submarine air state stores nothing.
-        const float air = argument_number(1);
+        // unit with no seeded submarine air state stores nothing; a null entity
+        // (the image faults) is dropped before the body.
+        // Goal 5 chain 663: the body lua_set_submarine_air_supply_00893a60 over
+        // UnitFieldStoreBinding.
         if (subject != nullptr && row.unit_index < units_.count()) {
-            const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
-            log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
-                row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
+            RepairBindingArgs args(*this);
+            UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
+            results = bsp::seg56_options_cc13::lua_set_submarine_air_supply_00893a60(args, image);
+            log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 body -> +127Ch)",
+                row.unit.c_str(), static_cast<double>(argument_number(1)),
+                image.stored() ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
         // Packet l68_travel_speed. 008A0630: argument 0 through 00888AA0, argument 1
         // through 00B66270 rounded to float (008A076C), argument 2 through 00B66250
         // only when exactly three arguments are passed (008A07BA), else false. No
         // class or null test before the four stores; a unit with no squadron slot
-        // stores nothing here. No result.
-        const float speed = argument_number(1);
-        const bool force = argument_count_ == 3 && argument_boolean(2);
+        // stores nothing here, and a null entity (the image faults) is dropped
+        // before the body. No result.
+        // Goal 5 chain 663: the body lua_squadron_set_travel_speed_008a0630 over
+        // UnitFieldStoreBinding, its four stores committed as one units-host write.
         if (subject != nullptr && row.unit_index < units_.count()) {
-            const bool stored =
-                units_.set_squadron_travel_speed_008a0630(row.unit_index, speed, force);
+            RepairBindingArgs args(*this);
+            UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
+            results = bsp::cc13_left55::seg56a::lua_squadron_set_travel_speed_008a0630(args, image);
+            const bool stored = image.commit_squadron_travel_speed();
             log_.notef("  SquadronSetTravelSpeed: %s speed=%.3f force=%d stored=%d "
-                "(008A0630 -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
-                static_cast<double>(speed), force ? 1 : 0, stored ? 1 : 0);
+                "(008A0630 body -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
+                static_cast<double>(image.speed()), image.force() ? 1 : 0, stored ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
         // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is
@@ -6682,59 +7131,73 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);
-    } else if (kMissionEndBound && std::strcmp(binding->name, "StartDialog") == 0) {
-        // Argument 1 the id (008B0660); argument 2 the dialog table, which the
-        // panel sequence plays (render and audio side, not modelled). The id is
-        // registered until KillDialog: nothing here plays a dialog to its end.
-        const std::string id = get_string(0);
-        if (!id.empty()) active_dialogs_[id] = mission_clock_;
-        ++dialog_starts_;
-        if (kDialogSequencerBound && !id.empty() && state_ != nullptr &&
-            lua_type(state_, stack_slot(1)) == LUA_TTABLE) {
-            // 00451A90: 00451920 looks the id up or inserts it, and 004507D0
-            // rebuilds the entry from the table.
-            DialogEntry entry;
-            dialog_parse_entry(stack_slot(1), entry);
-            dialog_entries_[id] = entry;
-            log_.notef("  dialog entry \"%s\" commands=%zu priority=%.1f default_pause=%.2f",
-                id.c_str(), entry.commands.size(), static_cast<double>(entry.priority),
-                static_cast<double>(entry.default_pause));
-        }
-        log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 -> 00451A90)", id.c_str(),
-            active_dialogs_.size());
-        results = 0;
-    } else if (kMissionEndBound && std::strcmp(binding->name, "KillDialog") == 0) {
-        const std::string id = get_string(0);
-        active_dialogs_.erase(id);
-        if (kDialogSequencerBound) {
-            dialog_entries_.erase(id);   // 004514A0
-            if (_stricmp(dialog_current_.c_str(), id.c_str()) == 0) dialog_current_.clear();
-        }
-        ++dialog_kills_;
-        log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 -> 004514A0)", id.c_str(),
-            active_dialogs_.size());
-        results = 0;
-    } else if (kMissionEndBound && std::strcmp(binding->name, "GetActDialogIDs") == 0) {
-        // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, key) per entry
-        // in map order; the table is the one result.
-        ++dialog_queries_;
-        if (state_ != nullptr) {
-            lua_createtable(state_, static_cast<int>(active_dialogs_.size()), 0);
-            int n = 0;
-            for (const auto& dialog : active_dialogs_) {
-                // 00B672F0 calls native_lua_set_lstring_at_00b672f0; OFF keeps rawseti.
-                if constexpr (kWireScriptOrdersHostBound) {
-                    ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
-                    ScriptOrdersNativeText value(dialog.first);
-                    bsp::native_lua_set_lstring_at_00b672f0(table.object, ++n, value.text);
-                } else {
-                lua_pushstring(state_, dialog.first.c_str());
-                lua_rawseti(state_, -2, ++n);
+    } else if (kMissionEndBound && (std::strcmp(binding->name, "StartDialog") == 0 ||
+                                    std::strcmp(binding->name, "KillDialog") == 0 ||
+                                    std::strcmp(binding->name, "GetActDialogIDs") == 0)) {
+        // Goal 5 chain 663: the three dialog rows on their bodies over ScriptDialogBinding.
+        ScriptDialogBinding dialogs(ScriptDialogBinding::Calls{
+            [this](const std::string& id, int index) {
+                // 00451A90. The id is registered until KillDialog; the dialog table
+                // (argument `index`) is what the panel sequence plays (render and
+                // audio side, not modelled), so nothing here plays it to its end.
+                if (!id.empty()) active_dialogs_[id] = mission_clock_;
+                ++dialog_starts_;
+                if (kDialogSequencerBound && !id.empty() && state_ != nullptr &&
+                    lua_type(state_, stack_slot(index)) == LUA_TTABLE) {
+                    // 00451920 looks the id up or inserts it, and 004507D0 rebuilds
+                    // the entry from the table.
+                    DialogEntry entry;
+                    dialog_parse_entry(stack_slot(index), entry);
+                    dialog_entries_[id] = entry;
+                    log_.notef("  dialog entry \"%s\" commands=%zu priority=%.1f "
+                        "default_pause=%.2f", id.c_str(), entry.commands.size(),
+                        static_cast<double>(entry.priority),
+                        static_cast<double>(entry.default_pause));
                 }
-            }
-            results = 1;
+                log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 body -> 00451A90)",
+                    id.c_str(), active_dialogs_.size());
+            },
+            [this]() { return static_cast<std::int32_t>(game_session_mode()); },
+            [this](const std::string& id) {
+                // 004514A0.
+                active_dialogs_.erase(id);
+                if (kDialogSequencerBound) {
+                    dialog_entries_.erase(id);
+                    if (_stricmp(dialog_current_.c_str(), id.c_str()) == 0) {
+                        dialog_current_.clear();
+                    }
+                }
+                ++dialog_kills_;
+                log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 body -> 004514A0)",
+                    id.c_str(), active_dialogs_.size());
+            },
+            [this]() {
+                // 00450750: the ids in map order.
+                ++dialog_queries_;
+                std::vector<std::string> ids;
+                ids.reserve(active_dialogs_.size());
+                for (const auto& dialog : active_dialogs_) ids.push_back(dialog.first);
+                return ids;
+            },
+            [this](const std::vector<std::string>& ids) {
+                // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, id) per id.
+                if (state_ == nullptr) return;
+                lua_createtable(state_, static_cast<int>(ids.size()), 0);
+                int n = 0;
+                for (const std::string& id : ids) {
+                    ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
+                    ScriptOrdersNativeText value(id);
+                    bsp::native_lua_set_lstring_at_00b672f0(table.object, ++n, value.text);
+                }
+            }});
+        RepairBindingArgs args(*this);
+        if (std::strcmp(binding->name, "StartDialog") == 0) {
+            results = bsp::cc13_seg56::lua_start_dialog(args, dialogs);
+        } else if (std::strcmp(binding->name, "KillDialog") == 0) {
+            results = bsp::cc13_seg56::lua_kill_dialog(args, dialogs);
         } else {
-            results = 0;
+            const int pushed = bsp::cc13_seg56::lua_get_act_dialog_ids(dialogs, dialogs);
+            results = state_ != nullptr ? pushed : 0;
         }
     } else if (std::strcmp(binding->name, "EnableInput") == 0) {
         // 008AFBD0: argument 0 the boolean, context 1Eh at level 0 (enable) or
@@ -6831,48 +7294,48 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             ++narrative_enqueues_;
         });
         results = bsp::cc13_seg56::lua_mission_narrative_post(entry_point, args, host);
-    } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
-        // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
-        // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
-        // arg3) (008C241A), both on [[00E198C4]+C8h], posting the HUD score
-        // message 23h through 00772330. Any other count posts nothing. No result.
-        const int n = count();
-        if (n == 6 || n == 4) {
-            const int id = static_cast<int>(argument_number(0));
-            const int flag = static_cast<int>(argument_number(1));
-            const std::string line1 = expand_score_references(state_, get_string(2));
-            const std::string line2 = expand_score_references(state_, get_string(3));
-            ++score_posts_;
-            std::string shown = line1 + "\n" + line2;
-            if (n == 6) {
-                char extra[48];
-                std::snprintf(extra, sizeof(extra), "\n%d %d",
-                    static_cast<int>(argument_number(4)), static_cast<int>(argument_number(5)));
-                shown += extra;
-            }
-            auto it = score_lines_.find(id);
-            if (it == score_lines_.end() || it->second != shown) {
-                score_lines_[id] = shown;
-                ++score_changes_;
-                if (score_changes_ <= 400) {
-                    log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
-                        "(008C20D0 -> %s, HUD message 23h)", id, flag, line1.c_str(),
-                        line2.c_str(), n, static_cast<double>(mission_clock_),
-                        n == 6 ? "0052B780" : "0052B620");
+    } else if (std::strcmp(binding->name, "DisplayScores") == 0 ||
+               std::strcmp(binding->name, "HideScoreDisplay") == 0) {
+        // Goal 5 chain 663: 008C20D0 / 008C24B0 on their bodies over ScoreDisplayBinding.
+        // DisplayScores: six arguments -> 0052B780 (008C22DA), four -> 0052B620
+        // (008C241A), any other count posts nothing; HideScoreDisplay: 0052B900
+        // (008C25E5). Both on [[00E198C4]+C8h], the HUD score message 23h through
+        // 00772330. Neither pushes a result.
+        ScoreDisplayBinding scores(ScoreDisplayBinding::Calls{
+            [this](int id, int flag, const std::string& c, const std::string& d, bool pair,
+                   int e, int f) {
+                const std::string line1 = expand_score_references(state_, c);
+                const std::string line2 = expand_score_references(state_, d);
+                ++score_posts_;
+                std::string shown = line1 + "\n" + line2;
+                if (pair) {
+                    char extra[48];
+                    std::snprintf(extra, sizeof(extra), "\n%d %d", e, f);
+                    shown += extra;
                 }
-            }
-        }
-        results = 0;
-    } else if (std::strcmp(binding->name, "HideScoreDisplay") == 0) {
-        // 008C24B0: two integer arguments -> 0052B900 (008C25E5), the same 23h
-        // message's hide form. No result.
-        const int id = static_cast<int>(argument_number(0));
-        ++score_hides_;
-        if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
-            log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 -> 0052B900)", id,
-                static_cast<int>(argument_number(1)), static_cast<double>(mission_clock_));
-        }
-        results = 0;
+                auto it = score_lines_.find(id);
+                if (it == score_lines_.end() || it->second != shown) {
+                    score_lines_[id] = shown;
+                    ++score_changes_;
+                    if (score_changes_ <= 400) {
+                        log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
+                            "(008C20D0 body -> %s, HUD message 23h)", id, flag, line1.c_str(),
+                            line2.c_str(), pair ? 6 : 4, static_cast<double>(mission_clock_),
+                            pair ? "0052B780" : "0052B620");
+                    }
+                }
+            },
+            [this](int id, int second) {
+                ++score_hides_;
+                if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
+                    log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 body -> "
+                        "0052B900)", id, second, static_cast<double>(mission_clock_));
+                }
+            }});
+        RepairBindingArgs args(*this);
+        results = std::strcmp(binding->name, "DisplayScores") == 0
+            ? bsp::cc13_seg56::lua_display_scores(args, scores)
+            : bsp::cc13_seg56::lua_hide_score_display(args, scores);
     } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
         // 008B15B0 calls 00734FA0 once; its callback releases the same
         // queued/showing registry references as the previous host arm.
@@ -8066,13 +8529,15 @@ void GameScriptOrdersHost::basis_degrees_0042d2e0(const bsp::CameraMatrix& world
 // host's mission camera publishes (bsp::mission_camera_publication, packet
 // cc9_mission_camera). SUBSTITUTION, labelled: when no pose has been
 // published (a controlled unit with no ship camera, such as JM08's HQ), the
-// controlled unit's own world matrix stands in, with Zoom 1.0; with no
-// controlled unit either, the identity at the origin.
+// controlled unit's own world matrix stands in, with Zoom 1.0 (its fov is taken as
+// [00F889B4] itself); with no controlled unit either, the identity at the origin.
+// Goal 5 chain 663: the position, the angles in degrees and the zoom are the body
+// lua_get_camera_state_008bf6a0's (CameraStateBinding); this function picks the node.
 int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
     if (state_ == nullptr) return 0;
     bsp::CameraMatrix world = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    float zoom = 1.0f;
+    float fov = bsp::kFovDivisor00f889b4;
     const char* source = "identity";
     bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
     if (node.ready) {
@@ -8080,8 +8545,7 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
             bsp::refresh_camera_world_00b6db70(node.state.transform);
         }
         world = node.state.transform.world;
-        const float fov = node.state.projection.fov;
-        zoom = static_cast<float>(static_cast<double>(bsp::kFovDivisor00f889b4) / fov);
+        fov = node.state.projection.fov;
         source = "camera";
         ++camera_state_from_camera_;
     } else if (units_.controlled_bound() && units_.controlled_index() < units_.count()) {
@@ -8097,25 +8561,28 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
         ++camera_state_stand_ins_;
     }
     ++camera_state_calls_;
-    const float position[3] = {world[12], world[13], world[14]};
-    float degrees[3];
-    basis_degrees_0042d2e0(world, degrees);
-    lua_newtable(state_);
-    push_vector3_table_0088ba30(position);
-    lua_setfield(state_, -2, "Position");
-    push_vector3_table_0088ba30(degrees);
-    lua_setfield(state_, -2, "Rotation");
-    lua_pushnumber(state_, static_cast<lua_Number>(zoom));
-    lua_setfield(state_, -2, "Zoom");                         // 00D14988
-    if (camera_state_calls_ <= 8) {
-        log_.notef("  GetCameraState at %.2f s: %s position=(%.1f, %.1f, %.1f) rotation=(%.1f, "
-            "%.1f, %.1f) zoom=%.3f (008BF6A0, packet cc9_lua_camera_state)",
-            static_cast<double>(mission_clock_), source, static_cast<double>(position[0]),
-            static_cast<double>(position[1]), static_cast<double>(position[2]),
-            static_cast<double>(degrees[0]), static_cast<double>(degrees[1]),
-            static_cast<double>(degrees[2]), static_cast<double>(zoom));
-    }
-    return 1;
+    CameraStateBinding camera(world, fov,
+        [this, source](const bsp::cc13_seg56::CameraStateResult& state) {
+            const float position[3] = {state.position.x, state.position.y, state.position.z};
+            const float degrees[3] = {state.rotation.x, state.rotation.y, state.rotation.z};
+            lua_newtable(state_);
+            push_vector3_table_0088ba30(position);
+            lua_setfield(state_, -2, "Position");                 // 00CE68B4
+            push_vector3_table_0088ba30(degrees);
+            lua_setfield(state_, -2, "Rotation");                 // 00D0D734
+            lua_pushnumber(state_, static_cast<lua_Number>(state.zoom));
+            lua_setfield(state_, -2, "Zoom");                     // 00D14988
+            if (camera_state_calls_ <= 8) {
+                log_.notef("  GetCameraState at %.2f s: %s position=(%.1f, %.1f, %.1f) "
+                    "rotation=(%.1f, %.1f, %.1f) zoom=%.3f (008BF6A0 body, packet "
+                    "cc9_lua_camera_state)", static_cast<double>(mission_clock_), source,
+                    static_cast<double>(position[0]), static_cast<double>(position[1]),
+                    static_cast<double>(position[2]), static_cast<double>(degrees[0]),
+                    static_cast<double>(degrees[1]), static_cast<double>(degrees[2]),
+                    static_cast<double>(state.zoom));
+            }
+        });
+    return bsp::cc13_seg56::lua_get_camera_state_008bf6a0(camera, camera);
 }
 
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {

@@ -289,7 +289,7 @@ int lua_is_in_position(LuaArgs& args, LuaResults& results, ImageAccess& image,
     Left55Seg56aHost& host);                                                                 // 0089ED20
 int lua_plane_set_movie_collision(LuaArgs& args, ImageAccess& image, Left55Seg56aHost& host); // 0089F360
 int lua_squadron_set_base_unsupported(LuaArgs& args, Left55Seg56aHost& host);                // 0089FAF0
-int lua_squadron_set_travel_speed(LuaArgs& args, ImageAccess& image);                        // 008A0630
+int lua_squadron_set_travel_speed_008a0630(LuaArgs& args, ImageAccess& image);                        // 008A0630
 int lua_entity_turn_to_position(LuaArgs& args, ImageAccess& image, Left55Seg56aHost& host);  // 008A0F10
 int lua_squadron_set_wanderer_mul(LuaArgs& args, ImageAccess& image, Left55Seg56aHost& host); // 008A1B70
 int lua_squadron_set_wanderer_enabled(LuaArgs& args, ImageAccess& image,
