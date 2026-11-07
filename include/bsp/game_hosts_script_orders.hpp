@@ -1452,10 +1452,14 @@ private:
     // Both take the row's address and answer the body's result count.
     int run_role_table_query(std::uint32_t address);
     int run_seg56_unit_query(std::uint32_t address);
+    // EntityTurnToPosition 008A0F10 (lua_entity_turn_to_position).
+    int run_turn_to_position();
     std::size_t role_table_calls_{0};
     std::size_t skill_query_calls_{0};
     std::size_t air_base_limit_calls_{0};
     std::size_t shipyard_stock_calls_{0};
+    std::size_t turn_to_position_calls_{0};
+    std::size_t turn_to_position_posed_{0};
     std::size_t unit_query_unresolved_{0};
     // Packet cc13-fix16, per native: calls, requests or rearms made, unresolved.
     std::size_t plane_force_release_calls_{0};
