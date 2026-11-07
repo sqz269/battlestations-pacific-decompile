@@ -14,6 +14,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -118,6 +119,14 @@ constexpr std::size_t mission_scoring_record_offset(std::size_t slot) noexcept
 struct MissionScoringManagerState {
     MissionScoreRecord slots[kMissionScoringSlotCount]{}; // +4h, stride 284h
     int commit_slot{0};                                   // +1424h
+    // +1488h, the entity tree 008CC330 Scoring_IgnoreEntityKill inserts its
+    // argument into (0063F1E0 on LEA ECX,[EAX+1488h]) and 0091BDA0 finds the
+    // victim's root entity in (0090C170 at 0091BE29; a hit returns at 0091BE3F,
+    // before any loss, kill tree or award). No other writer: 0063F1E0's other
+    // callers are on other trees. The image keys the entity pointer; this host
+    // keys the entity's Lua ID, the identity it gives an entity (a units-host
+    // slot + 1, as the Lua rows resolve it).
+    std::set<int> ignored_kill_entities_1488;
 };
 
 // 00906460. Writes the completion flag as a zero-extended byte and, only on the

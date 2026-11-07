@@ -118,6 +118,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -18245,8 +18246,16 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         if (!decision.reports_alternate) return;   // 0091BDA0 runs only when reported
     }
 
+    // Goal 5 chain 664. ECX at 00959512 is [[00E188A8]+21A0h], the scoring manager:
+    // here the mission result the frame host lent the Lua host (attach_mission_result,
+    // for the whole mission; the units, and this host with them, die first).
+    GameMissionResultHost* const scoring = lua.mission_result();
+    if (scoring == nullptr) {
+        throw std::logic_error("kill credit 0091BDA0 without the scoring manager [game+21A0h]");
+    }
     struct KillBinding final : bsp::KillCreditHost {
-        explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
+        KillBinding(Impl& owner_in, GameMissionResultHost& scoring_in, std::size_t victim_in)
+            : owner(owner_in), scoring(scoring_in), victim(victim_in) {}
         // game+1FE4h from the session context (packet cc13-mp2c). Campaign identity:
         // the OFF arm is the old literal 0.
         int session_mode() override {
@@ -18260,11 +18269,39 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
         // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
         int local_player_side() override { return bsp::game::local_player_party(); }
-        bool root_entity_already_scored() override { return false; }
+        // 0091BE29 0090C170: the victim's root entity (vtable[140h]) in the +1488h
+        // tree Scoring_IgnoreEntityKill fills; a hit abandons the kill at 0091BE3F.
+        // Every unit of this host is its own root (in.victim_is_root below), and its
+        // entity is its Lua ID, the slot + 1 the IgnoreEntityKill row stored.
+        bool root_entity_already_scored() override {
+            return scoring.scoring_manager().ignored_kill_entities_1488.count(
+                static_cast<int>(victim) + 1) != 0;
+        }
+        // Not stored: the pass compares each slot's party [[game+18CCh+i*4]+28h]
+        // (in.slot_sides), which this host does not hold.
         void add_loss(int, bool, const std::string&) override { ++losses; }
         void add_type_kill(int, std::size_t, int) override { ++type_kills; }
-        int& kill_tree_leaf(int, std::size_t, const bsp::ScoringKillKey&) override {
-            return leaf;
+        // 0091BF9D..0091C046: the record [game+21A0h]+4h+slot*284h, then +B4h
+        // (player_kills) when +2D8h == +2DCh else +C0h (party_kills), and the
+        // three chained operator[]s 0062C170 / 0062BB60 / 00625900 on the
+        // relative party, the attacker's class and the victim's class
+        // (docs/SCORING_BODIES.md section 6). These are the record's persisted
+        // trees: 004D7970's commit merges them into the mission progress (0091A080),
+        // and Scoring_GetPlayerShotDown (008BC9B0) reads +B4h.
+        int& kill_tree_leaf(int slot, std::size_t tree_offset,
+                            const bsp::ScoringKillKey& key) override {
+            bsp::MissionResultHost& manager = scoring;
+            bsp::MissionScoreRecord& record = manager.scoring_slot(slot);
+            bsp::MissionEnumCounterTriples* tree = nullptr;
+            if (tree_offset == bsp::kScoringPlayerKillsOffset) {
+                tree = &record.player_kills_b4;
+            } else if (tree_offset == bsp::kScoringPartyKillsOffset) {
+                tree = &record.party_kills_c0;
+            } else {
+                throw std::logic_error("kill credit 0091BDA0: not a kill tree offset");
+            }
+            ++leaf_writes;
+            return (*tree)[key.party][key.attacker_class][key.victim_class];
         }
         int add_named_counter(int, const std::string&) override { return ++counter; }
         int award_threshold(const std::string&) override {
@@ -18275,7 +18312,9 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         void update_kill_list(int, std::uint32_t, int, int, bool) override { ++entries; }
 
         Impl& owner;
-        int leaf{0};
+        GameMissionResultHost& scoring;
+        std::size_t victim;
+        int leaf_writes{0};
         int counter{0};
         int losses{0};
         int type_kills{0};
@@ -18283,7 +18322,7 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         int entries{0};
     };
 
-    KillBinding binding(*this);
+    KillBinding binding(*this, *scoring, victim);
     bsp::UnitKillInputs in;
     in.victim_name = target.row.name;
     in.victim_type_id = target.row.type_id;
