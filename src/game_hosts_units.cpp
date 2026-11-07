@@ -1,5 +1,7 @@
 #include "bsp/game_hosts_units_internal.hpp"
 
+#include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
+
 namespace bsp::game {  // namespace
 
 // Packet cc13-para2: 0084CB70 once per run. False when the datatable did not read.
@@ -4063,58 +4065,191 @@ void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
     wing_target_007b8dc0(u.actuator_block_dec, spread);
 }
 
-// Packet cc13-landc (kPlaneFlightStateNotifyCc13Bound, bsp/plane_land_chain_cc13.hpp):
-// 007C11E0(0) on the state the caller has just stored. 007EABC0 runs at the
-// plane's construction in the image, so the class read the poll makes lazily is
-// made first here, or it would later reset the targets this writes.
-// SUBSTITUTIONS, labelled (the same as the state-one copy this replaces): the
-// controller's +3Ch..+50h and 007D9C80 are the host's three velocity fields
-// zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the
-// +C98h sub-block's timer and effects) are recorded; +C0Ch has no host field
-// (007BB9A0's gate derives it from +900h); 007BC550 takes the Lua self +4A4h as
-// set, as the state-one copy does, and 00779C60(1.0f) is recorded; 007EB270
-// (007C12D6, the +C98h FX component's OnFlightState, given the vtable[38h] value of
-// +72Ch) is presentation only, draws no RNG, and is not carried.
+// Goal 5 chain 650. 007C11E0 and its tail 007BC550 run as their bodies
+// (bsp::cc13_front3_plane_notify_flight_state_007c11e0,
+// bsp::cc13_seg47::plane_sync_elevator_attachment_for_state_007bc550) over a
+// shadow of the plane image. The shadow holds only the offsets the two bodies
+// read or write; it is filled from the slot before the call and written back
+// after it, and every call the bodies make lands on the slot:
+//  * +5Ch, the scene node's active byte: the slot's state->active (row.active
+//    when no state object). 00922F30 / 00922F80 are the typed bodies on the
+//    slot's SceneNodeFlags (+5Ch..+5Fh) when the host models them; otherwise
+//    the active flags are written directly, as before.
+//  * +900h / +908h: plane_control_mode_900 / plane_airborne_908.
+//  * [+DECh]: the actuator block (+11h moving_any, +28h channel_b, +44h
+//    channel_a, offsets as bsp::PlaneActuatorChannel lays them out).
+//  * +9F0h: plane_live_throttle.
+//  * +AB0h, the flight controller: +3Ch..+50h are the body-frame linear and
+//    angular velocities the body zeroes from 00F87574; 007D9C80 is
+//    bsp::body_to_world_007d9c80 through the live pose, written back to
+//    plane_world_velocity (ctl+18h..+20h), plane_body_angular (ctl+48h..+50h)
+//    and motion.linear_velocity. Its 007D8020 tail call is not modelled, as in
+//    the motion step's own use of the body.
+//  * 00951F40 is bsp::gameplay_seg61_62_cc13::plane_set_visible_00951f40's plan; its attach/detach of
+//    the +360h part is plane_hit_node_detached.
+// LABELLED, as the inline copy this replaces: +4A4h (the node 007BC550 and
+// 00951F40 test) is taken as present; 007DDEA0 and 007EB380(0.0f) (the +C98h FX
+// sub-block's timer and effects) and 00779C60(1.0f) are records, the host has
+// none of those objects; +C0Ch has no host field (007BB9A0's gate derives it
+// from +900h). Every host caller passes immediate = 0 (PUSH 0 at 007C16E8,
+// 007CC7DE, 007CC853, 007CB6C0, 007CB72F, 007C6278; PUSH EBX after XOR EBX,EBX
+// at 007C1465 in 007C1430), so the immediate arm (+72Ch slot +38h, 007EB270)
+// is not reached from this host.
+namespace {
+class PlaneFlightStateNotifyBinding final : public bsp::PlaneNotifyFlightStateHost,
+                                            public bsp::cc13_seg47::PlaneAttachmentSyncHost {
+public:
+    PlaneFlightStateNotifyBinding(GameUnitsHost::Impl& host, GameUnitSlot& p)
+        : host_(host), p_(p) {}
+
+    void run() {
+        std::memset(plane_, 0, sizeof(plane_));
+        std::memset(block_, 0, sizeof(block_));
+        const bool active = p_.state != nullptr ? p_.state->active != 0 : p_.row.active;
+        put<std::uint8_t>(plane_, 0x5C, active ? 1u : 0u);
+        std::uint8_t* const node = plane_;   // +4A4h present (labelled above)
+        std::memcpy(plane_ + 0x4A4, &node, sizeof(node));
+        put<std::int32_t>(plane_, 0x900, p_.plane_control_mode_900);
+        put<float>(plane_, 0x908, p_.plane_airborne_908);
+        put<float>(plane_, 0x9F0, p_.plane_live_throttle);
+        std::uint8_t* const block = block_;
+        std::memcpy(plane_ + 0xDEC, &block, sizeof(block));
+        const bsp::PlaneActuatorBlock& b = p_.actuator_block_dec;
+        put<std::uint8_t>(block_, 0x11, b.moving_any ? 1u : 0u);
+        put_channel(0x28, b.channel_b);
+        put_channel(0x44, b.channel_a);
+
+        bsp::cc13_front3_plane_notify_flight_state_007c11e0(plane_, false, *this);
+
+        p_.plane_live_throttle = get<float>(plane_, 0x9F0);
+        bsp::PlaneActuatorBlock& out = p_.actuator_block_dec;
+        out.moving_any = get<std::uint8_t>(block_, 0x11) != 0;
+        get_channel(0x28, out.channel_b);
+        get_channel(0x44, out.channel_a);
+    }
+
+    // PlaneNotifyFlightStateHost.
+    const float* static_vector_00f87574() override { return kZero; }
+    std::uint32_t vcall_38_dword(void*) override {
+        throw std::logic_error("007C11E0: the immediate arm (+72Ch slot +38h) has no host caller");
+    }
+    void plane_sync_elevator_attachment_007bc550(void* plane) override {
+        bsp::cc13_seg47::plane_sync_elevator_attachment_for_state_007bc550(
+            *this, bsp::cc13_seg47::raw(plane));
+        host_.done("Plane::sync_elevator_attachment_007bc550", 0x007bc550u);
+    }
+    void flight_controller_body_to_world_velocity_007d9c80(void* controller) override {
+        std::uint8_t* const ctl = static_cast<std::uint8_t*>(controller);
+        bsp::ControllerVelocities v;
+        for (int i = 0; i < 3; ++i) {
+            v.linear_body[i] = get<float>(ctl, 0x3C + 4 * static_cast<std::size_t>(i));
+            v.angular_body[i] = get<float>(ctl, 0x48 + 4 * static_cast<std::size_t>(i));
+        }
+        bsp::AdvanceMatrix live{};
+        const float* const rows[3] = {p_.motion.pose_row0, p_.motion.pose_row1,
+                                      p_.motion.pose_row2};
+        for (int r = 0; r < 3; ++r) {
+            for (int c = 0; c < 3; ++c) live.m[r * 4 + c] = rows[r][c];
+            live.m[r * 4 + 3] = 0.0f;
+            live.m[12 + r] = p_.motion.position[r];
+        }
+        live.m[15] = 1.0f;
+        bsp::body_to_world_007d9c80(v, live);
+        for (int i = 0; i < 3; ++i) {
+            put<float>(ctl, 0x18 + 4 * static_cast<std::size_t>(i), v.linear_world[i]);
+            put<float>(ctl, 0x24 + 4 * static_cast<std::size_t>(i), v.angular_world[i]);
+            p_.plane_world_velocity[i] = v.linear_world[i];
+            p_.plane_body_angular[i] = v.angular_body[i];
+        }
+        p_.motion.linear_velocity = bsp::OceanVec3{v.linear_world[0], v.linear_world[1],
+                                                   v.linear_world[2]};
+        host_.done("PlaneFlightController::body_to_world_velocity_007d9c80", 0x007d9c80u);
+    }
+    void plane_sub_block_reset_timer40_007ddea0(void*) override {
+        host_.record("PlaneFx::reset_timer40_007ddea0", 0x007ddea0u);
+    }
+    void plane_fx_on_flight_state_007eb270(void*, std::uint32_t) override {
+        throw std::logic_error("007C11E0: 007EB270 is on the immediate arm, which has no host caller");
+    }
+    void plane_fx_step_007eb380(void*, float) override {
+        host_.record("PlaneFx::step_007eb380", 0x007eb380u);
+    }
+
+    // PlaneAttachmentSyncHost.
+    void unit_instance_detach_00951f40(bsp::cc13_seg47::Raw unit, std::int32_t value) override {
+        const bsp::gameplay_seg61_62_cc13::PlaneVisiblePlan plan =
+            bsp::gameplay_seg61_62_cc13::plane_set_visible_00951f40(unit.ptr(0x4A4) != nullptr, value != 0);
+        if (plan.acts) p_.plane_hit_node_detached = !plan.attach;   // 00710AD0 / 00710B80
+    }
+    void scene_node_disable_00922f80(bsp::cc13_seg47::Raw entity, std::int32_t) override {
+        set_scene_node_active(entity, false);
+    }
+    void scene_node_enable_00922f30(bsp::cc13_seg47::Raw entity, std::int32_t) override {
+        set_scene_node_active(entity, true);
+    }
+    void unit_update_owner_hud_state_00779c60(bsp::cc13_seg47::Raw, float) override {
+        host_.record("Unit::fade_00779c60", 0x00779c60u);
+    }
+
+private:
+    template <class T>
+    static void put(std::uint8_t* base, std::size_t offset, T value) noexcept {
+        std::memcpy(base + offset, &value, sizeof(T));
+    }
+    template <class T>
+    static T get(const std::uint8_t* base, std::size_t offset) noexcept {
+        T value;
+        std::memcpy(&value, base + offset, sizeof(T));
+        return value;
+    }
+    void put_channel(std::size_t at, const bsp::PlaneActuatorChannel& c) noexcept {
+        put<std::uint8_t>(block_, at + 0x0, c.enabled ? 1u : 0u);
+        put<std::uint8_t>(block_, at + 0x1, c.target ? 1u : 0u);
+        put<float>(block_, at + 0x4, c.value);
+        put<std::uint8_t>(block_, at + 0x8, c.moving ? 1u : 0u);
+    }
+    void get_channel(std::size_t at, bsp::PlaneActuatorChannel& c) const noexcept {
+        c.target = get<std::uint8_t>(block_, at + 0x1) != 0;
+        c.value = get<float>(block_, at + 0x4);
+        c.moving = get<std::uint8_t>(block_, at + 0x8) != 0;
+    }
+    void set_scene_node_active(bsp::cc13_seg47::Raw entity, bool enable) {
+        if (p_.scene_flags_available && p_.state != nullptr) {
+            bsp::SceneNodeFlags flags{p_.state->active != 0, p_.state->simulate != 0,
+                                      p_.scene_destroyed_005e != 0, p_.scene_removed_005f != 0};
+            if (enable) {
+                bsp::scene_node_enable_00922f30(flags);
+            } else {
+                bsp::scene_node_disable_00922f80(flags);
+            }
+            p_.state->active = flags.active ? 1 : 0;
+            p_.row.active = flags.active;
+        } else {
+            if (p_.state != nullptr) p_.state->active = enable ? 1 : 0;
+            p_.row.active = enable;
+        }
+        const bool active = p_.state != nullptr ? p_.state->active != 0 : p_.row.active;
+        entity.at<std::uint8_t>(0x5C) = active ? 1u : 0u;
+    }
+
+    static constexpr float kZero[3] = {0.0f, 0.0f, 0.0f};   // 00F87574, zero BSS
+    GameUnitsHost::Impl& host_;
+    GameUnitSlot& p_;
+    alignas(8) std::uint8_t plane_[0xDF0];
+    alignas(8) std::uint8_t block_[0x70];
+};
+}  // namespace
+
 void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
+    // 007EABC0 runs at the plane's construction in the image, so the class read
+    // the poll makes lazily is made first here, or it would later reset the
+    // targets the notify writes.
     if (!p.wing_fold_read) wing_fold_class_007eabc0(p);
     ++flight_state_notifies;
-    const std::int32_t s = p.plane_control_mode_900;
-    // 007C11E9-007C1208 (COMISS / JC: a NaN +908h takes a = 0).
-    const bool a = !(s == 6 || (s == 7 && !(5.0f >= p.plane_airborne_908)));
-    const bool b = s == 7 || s == 6 || s == 4 || s == 5;               // 007C120A-007C1223
-    bsp::PlaneActuatorBlock& block = p.actuator_block_dec;
-    if (block.channel_b.target != a) {                                 // 007C12E6, +29h
-        block.channel_b.target = a;
-        block.channel_b.moving = true;
-    }
-    if (block.channel_b.moving) block.moving_any = true;               // 007C12F8, +11h
-    if (block.channel_a.target != b) {                                 // 007C1302, +45h
-        block.channel_a.target = b;
-        block.channel_a.moving = true;
-    }
-    if (block.channel_a.moving) block.moving_any = true;               // 007C1314
-    if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = s;
-    if (s != 7 && s != 6 && s != 4 && s != 5 && s != 3) {              // 007C1318-007C1345
-        p.plane_live_throttle = 0.0f;                                  // 007C134E, +9F0h
-        for (int i = 0; i < 3; ++i) {                                  // 007C1356-007C13AB
-            p.plane_world_velocity[i] = 0.0f;
-            p.plane_body_angular[i] = 0.0f;
-        }
-        p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
-        record("PlaneFx::reset_timer40_007ddea0", 0x007ddea0u);
-        record("PlaneFx::step_007eb380", 0x007eb380u);
-    }
-    const bool active = p.state != nullptr ? p.state->active != 0 : p.row.active;
-    if (s == 1 || s == 0) {                                            // 007C1412 -> 007BC550
-        if (p.state != nullptr) p.state->active = 0;                   // 00922F80(0)
-        p.row.active = false;
-        p.plane_hit_node_detached = true;                              // 00951F40(0)
-    } else if (!active) {                                              // 007C141B, +5Ch clear
-        if (p.state != nullptr) p.state->active = 1;                   // 00922F30(0)
-        p.row.active = true;
-        p.plane_hit_node_detached = false;                             // 00951F40(1)
-        record("Unit::fade_00779c60", 0x00779c60u);
-    }
+    PlaneFlightStateNotifyBinding binding(*this, p);
+    binding.run();
+    // The poll stand-in's bookkeeping (wing_fold_notify_007c11e0), not the image's.
+    if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = p.plane_control_mode_900;
     done("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
 }
 

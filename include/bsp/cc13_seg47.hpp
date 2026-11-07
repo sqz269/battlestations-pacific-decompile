@@ -77,8 +77,22 @@ struct Seg47MessageHost {
     virtual void session_message_construct_0075b430(Raw message, std::uint32_t type) = 0;
 };
 
+// 007BC550 calls only these four (bsp.py show 007bc550 --asm: CALL 00922F30,
+// 00951F40, 00779C60 and 00922F80 at 007BC573 / 007BC57C / 007BC589 / 007BC592 /
+// 007BC59B). A host that runs the flight-state notify implements this slice.
+struct PlaneAttachmentSyncHost {
+    virtual ~PlaneAttachmentSyncHost() = default;
+    // 00951F40, __thiscall(ECX = unit; int), RET 4.
+    virtual void unit_instance_detach_00951f40(Raw unit, std::int32_t value) = 0;
+    // 00922F80 BSP_SceneNode_Disable / 00922F30 BSP_SceneNode_Enable, __thiscall(ECX = entity; int), RET 4.
+    virtual void scene_node_disable_00922f80(Raw entity, std::int32_t value) = 0;
+    virtual void scene_node_enable_00922f30(Raw entity, std::int32_t value) = 0;
+    // 00779C60 BSP_Unit_UpdateOwnerHudState, __thiscall(ECX = unit; float), RET 4.
+    virtual void unit_update_owner_hud_state_00779c60(Raw unit, float value) = 0;
+};
+
 struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost,
-                   Seg47MessageHost {
+                   Seg47MessageHost, PlaneAttachmentSyncHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -264,8 +278,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void ai_node_vcall_retire_10(Raw node) = 0;
     // 00951FB0 unit-instance retire (tail jump), __thiscall(ECX = unit).
     virtual void unit_instance_retire_00951fb0(Raw unit) = 0;
-    // 00951F40, __thiscall(ECX = unit; int), RET 4.
-    virtual void unit_instance_detach_00951f40(Raw unit, std::int32_t value) = 0;
+    // 00951F40: PlaneAttachmentSyncHost.
     // 007E2090 gun target finder scan, __thiscall(ECX = finder; f0..f4, int, float), RET 1Ch, EAX.
     virtual void* gun_target_finder_scan_007e2090(Raw finder, float f0, float f1, float f2, float f3, float f4,
                                                   std::int32_t n, float f6) = 0;
@@ -340,11 +353,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void vector3_transform_affine_point_00414d10(float* out, void* pose, const void* point) = 0;
 
     // --- plane helpers 007BC550-007BD3E0 ---------------------------------------------
-    // 00922F80 BSP_SceneNode_Disable / 00922F30 BSP_SceneNode_Enable, __thiscall(ECX = entity; int), RET 4.
-    virtual void scene_node_disable_00922f80(Raw entity, std::int32_t value) = 0;
-    virtual void scene_node_enable_00922f30(Raw entity, std::int32_t value) = 0;
-    // 00779C60 BSP_Unit_UpdateOwnerHudState, __thiscall(ECX = unit; float), RET 4.
-    virtual void unit_update_owner_hud_state_00779c60(Raw unit, float value) = 0;
+    // 00922F80 / 00922F30 / 00779C60: PlaneAttachmentSyncHost.
     // 00B3C650 BSP_CockpitHelper_SetAttachedNode, __thiscall(ECX = helper; node), RET 4.
     virtual void cockpit_helper_set_attached_node_00b3c650(Raw helper, void* node) = 0;
     // 006E3500 BSP_MBombPlatform_RoundCount / 006E3520, __thiscall(ECX = rack), EAX.
@@ -697,7 +706,7 @@ bool plane_is_grounded_on_owned_site_007bbc50(Seg47Host& host, Raw plane);
 
 
 // --- plane helpers 007BC550-007BD3E0, 007C7750 -------------------------------------------
-void plane_sync_elevator_attachment_for_state_007bc550(Seg47Host& host, Raw plane);
+void plane_sync_elevator_attachment_for_state_007bc550(PlaneAttachmentSyncHost& host, Raw plane);
 void plane_enter_cockpit_view_007bc610(Seg47Host& host, Raw plane);
 void plane_leave_cockpit_view_007bc690(Seg47Host& host, Raw plane);
 float weapon_controller_total_bomb_rounds_007bc8c0(Seg47Host& host, Raw plane);

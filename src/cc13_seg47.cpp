@@ -1745,7 +1745,7 @@ bool gun_subtype_156(Seg47Host& host, Raw child) {
 // state +900h 0 or 1 -> 00922F80(plane, 0) and 00951F40(plane, 0); any other
 // state -> 00922F30(plane, 0) when +5Ch is clear, 00951F40(plane, 1) and
 // 00779C60(plane, 1.0f).
-void plane_sync_elevator_attachment_for_state_007bc550(Seg47Host& host, Raw plane) {
+void plane_sync_elevator_attachment_for_state_007bc550(PlaneAttachmentSyncHost& host, Raw plane) {
     if (plane.ptr(0x4A4) == nullptr) return;
     const std::int32_t state = plane.at<std::int32_t>(0x900);
     if (state == 1 || state == 0) {
