@@ -1,0 +1,73 @@
+{
+  "chain": 668,
+  "slot": "g5-w1",
+  "goal": 5,
+  "picked": "plane leave-map exit 007C6C30 -> 007EE410 -> 007CA790 (ExitZoneParty + 007F31A0 arm) and 007C6C30's 00982120 leave warning",
+  "rows": [
+    {
+      "native": "007ca790",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp GameUnitsHost::Impl::retreat_leave_map_007ee410 -> run_exit_zone_007ca790 (the plane, and each member already outside in the leader arm); Lua half store_exit_zone_party_007ca790 in src/game_hosts_units.cpp"
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp GameUnitsHost::Impl::retreat_leave_map_007ee410 (007F31A0 survivor arm)",
+      "reason": "Only caller is 007F31A0's survivor arm (007F32E2..007F340F: +361h=1, 0071BE80(+348h,0), +370h=0, 0077C7B0 broadcast of 007EDF50(party), then moveto 00E08F68 flags 1 to the squadron at c+1.1*(p-c), y=p.y; bytes DE EA at 007F336F/007F3398 = p-c, 00CE3DF0 = 1.1f); the squadron stance lives in GameScriptOrdersHost::squadron_permissions_ (no public setter) and the host's squadron_unit may be the dying leader plane, so the moveto target entity is unresolved."
+    },
+    {
+      "native": "007f31a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp GameUnitsHost::Impl::retreat_leave_map_007ee410",
+      "reason": "blocked_on_callees: 00982120 has only the host fragment GameMissionLuaHost::note_exit_zone_00982120 (src/game_hosts_lua.cpp), no reconstructed body; its 007F31E6 event is derived from cause-4 deaths."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp MissionStartBinding::write_checkpoint",
+      "reason": "007F8D60 (checkpoint_differs) is a find of the mission key in profile+94h, filled only by 004374F0's archive import, whose 00BD3D70 read is not hosted (throws), so the map is empty in a fresh process; the rewrite 00437C60 -> 00437250 also needs a writable save root (the backend is read-only)."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp GameMessageManagerHost::Impl::collect_language_names; src/mission_scene_load.cpp installed_languages",
+      "reason": "Both callers use it only in the spoken-language/profile-hints mode 2 sweep (00706760 at 007068A5, 004E0FAD); the host keeps no profile-hints singleton 004C1E90 and answers mode 0, so the arm never runs."
+    },
+    {
+      "native": "00685170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp MenuFrameHost::update_logo_sequence",
+      "reason": "The host never enters game state 1: game_on_init 004E5540 (which creates the logo object) is not run, the menu host starts at title init; the logo advance also needs the 34h movie screen at 00E18D48."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp PlaneFlightStateNotifyBinding::plane_fx_step_007eb380",
+      "reason": "Needs the plane FX component +C98h's FMOD event at +58h (rpm/load/pass keys), the effect holders +48h/+74h/+A0h/+CCh and the listener at game+19FCh; the host builds only the engine list (chain 654) and plays no unit sound events."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp plane_fx_component_step_007eb380",
+      "reason": "Only caller 007EB380, unwired for the reason given there."
+    },
+    {
+      "native": "007a2cd0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp movie_camera_add_position_007a42c0",
+      "reason": "00798080's pair id (+DAh, camera +3C0h) has no single-player reader: 00797C60 find-by-id is in the editor arm that 0079A58A skips and otherwise the ids are written only by BSP_MovieKeyframe_WriteBits 00791360 (network)."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp parse_007a0eb0",
+      "reason": "The gamecamera mover for a ship parent needs a second ShipCaptainCamera bound through 0064DA40 to the keyframe's parent and stepped with update_ship_captain_00432ed0; that camera state and its target view live in src/game_hosts_hud.cpp (in review by agent/g5-w3)."
+    },
+    {
+      "native": "00852970",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp ShipMotionBinding::run_submarine_periscope_00854650",
+      "reason": "The periscope debris moves the periscope scene node (capture/apply world matrix); the host keeps only sub_mast_offset and no node pose, and no debris object (008533E0) is created on the killed path."
+    }
+  ]
+}
