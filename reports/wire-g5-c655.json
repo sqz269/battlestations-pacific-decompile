@@ -1,0 +1,98 @@
+{
+  "chain": 655,
+  "slot": "g5-w3",
+  "harness": "claude",
+  "summary": "Segment-56 unit query Lua natives run on their bodies in GameScriptOrdersHost: GetRoleAvailable / GetRoleOwner over a new Left55Seg56bHostUnreached base and the units host's role words, GetSkillLevel / GetCrewLevel over the skill index (007ECF70 for a squadron, 006E6270 over a narrow Seg33aSessionModeHost), and GetShipMaxSpeed's host push replaced by its body.",
+  "rows": [
+    {
+      "native": "008abac0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_role_table_query (dispatch GetRoleAvailable arm), lua_get_role_available over RoleTableBinding"
+    },
+    {
+      "native": "008abf90",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_role_table_query (dispatch GetRoleOwner arm), lua_get_role_owner over RoleTableBinding"
+    },
+    {
+      "native": "008953f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetSkillLevel arm), lua_get_skill_level over UnitQuerySeg56Host"
+    },
+    {
+      "native": "008950d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetCrewLevel arm), lua_get_crew_level over UnitQuerySeg56Host"
+    },
+    {
+      "native": "00890bb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetShipMaxSpeed arm; replaces the host's own push of throttle_ceiling_inputs().reference_speed)"
+    },
+    {
+      "native": "006e6270",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::crew_level_from_skill_006e6270 -> bsp::cc13_seg33a::crew_level_from_skill_006e6270 (now over Seg33aSessionModeHost)"
+    },
+    {
+      "native": "007ecf70",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::entity_skill_vt12c (squadron arm, a PlaneSquadronEntity view of the registry record; template, inlined)"
+    },
+    {
+      "native": "00890ef0",
+      "status": "skipped",
+      "reason": "GetShipSpeed needs the vtable+38h speed dispatch (ship 0092D730, plane 007B8E60, squadron 007ED470), which lives file-local in game_hosts_lua.cpp next to GetEntitySpeed (leased by g5-w5); route it there with a Seg56HostUnreached adapter"
+    },
+    {
+      "native": "0088fcc0",
+      "status": "skipped",
+      "reason": "GetDamagedGFXLevel reads unit+358h; the gunnery host keeps it only as a private vector written by SetDamagedGFXLevel, not by the damage-state raises (00877B00), and exposes no getter"
+    },
+    {
+      "native": "008901c0",
+      "status": "skipped",
+      "reason": "GetFormationShape reads group+500h; the units host's FormationGroup stores no shape index (reshape_formation_0070efd0 applies it and keeps nothing)"
+    },
+    {
+      "native": "008a5ef0",
+      "status": "skipped",
+      "reason": "IsPlayerControlled needs a Left55Seg56aHost adapter base and 00779B60 reads raw unit+1ACh, game+1FE4h and [[00E198C4]+54h]+5 (the map screen's applied byte, only inside GameHudHost); no typed view of those exists"
+    },
+    {
+      "native": "0088f8b0",
+      "status": "skipped",
+      "reason": "ActivateSpawnpoint's one-argument arm calls 0084CE60 on a SpawnPoint support site; the scene contents pass instantiates no SpawnPoint, so there is no site object"
+    },
+    {
+      "native": "0088fab0",
+      "status": "skipped",
+      "reason": "DeactivateSpawnpoint: as ActivateSpawnpoint, no SpawnPoint support-site object in this host"
+    },
+    {
+      "native": "0088fe30",
+      "status": "skipped",
+      "reason": "SetNumbering calls 008761E0, which stores unit+35Ch and sets the model's hull numbering; the units host has no numbering field and no model instance (+360h)"
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "reason": "The gamecamera / fpscamera movie modifier needs a modifier slot beside goaround in MovieKeyframe and 0079CBD0's game cameras; only the ShipCaptain mover exists (no plane chase or cockpit camera), and how 00795650 consumes the modifier's world pose was not traced"
+    },
+    {
+      "native": "007995f0",
+      "status": "skipped",
+      "reason": "The keyframe-event SetEntity bodies register an entity observer (00694A60 / 006952A0); the host has no entity deletion or observer registry, so a `noentity` event could never fire"
+    },
+    {
+      "native": "009ab570",
+      "status": "skipped",
+      "reason": "The BotTask_Make* factories (009AB570, 009B9030, 009BADB0, 009C8C70, 009CA2B0, 009CD300, 009D4E30, 009A6970) build native bot task objects; the host's create_bot_task hands out an index and no BotTask objects exist"
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "reason": "group_forward_command needs an AI group at entity+16Ch; its only producer is AICreateGroup (00A38A50), which no installed mission script calls, so entity_ai_group answers null"
+    }
+  ]
+}

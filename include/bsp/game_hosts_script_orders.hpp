@@ -1444,6 +1444,16 @@ private:
     std::size_t ship_max_speed_unresolved_{0};
     std::size_t direction_calls_{0};
     std::size_t direction_unresolved_{0};
+    // Goal 5 chain 655: the segment-56 unit queries run on their bodies.
+    // run_role_table_query is GetRoleAvailable 008ABAC0 / GetRoleOwner 008ABF90
+    // (fill_nine_integers); run_seg56_unit_query is GetSkillLevel 008953F0,
+    // GetCrewLevel 008950D0 and GetShipMaxSpeed 00890BB0. Both take the row's
+    // address and answer the body's result count.
+    int run_role_table_query(std::uint32_t address);
+    int run_seg56_unit_query(std::uint32_t address);
+    std::size_t role_table_calls_{0};
+    std::size_t skill_query_calls_{0};
+    std::size_t unit_query_unresolved_{0};
     // Packet cc13-fix16, per native: calls, requests or rearms made, unresolved.
     std::size_t plane_force_release_calls_{0};
     std::size_t plane_force_release_requests_{0};

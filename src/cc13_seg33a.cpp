@@ -1414,7 +1414,7 @@ void bomb_platform_load_saved_state_006e6010(Seg33aHost& host, void* rack) {
 
 // 006E6210, __fastcall(crew /*ECX*/), RET -> EAX: crew level to skill index, with mp = session mode
 // [[00E188A8]+1FE4h] != 0: 0 -> mp; 1 -> 1 + 2*mp; 2 -> 2 + 2*mp; 3 -> 5; anything else -> 1.
-std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew) {
+std::int32_t skill_from_crew_level_006e6210(Seg33aSessionModeHost& host, std::int32_t crew) {
     if (crew == 0) return host.session_mode_00e188a8_1fe4() != 0 ? 1 : 0;
     if (crew == 1) return host.session_mode_00e188a8_1fe4() != 0 ? 3 : 1;
     if (crew == 2) return host.session_mode_00e188a8_1fe4() != 0 ? 4 : 2;
@@ -1423,7 +1423,7 @@ std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew)
 
 // 006E6270, __fastcall(skill /*ECX*/), RET -> EAX: skill index to crew level, mp as above: 0 -> 0;
 // 1 -> !mp; 2 -> 2 - mp; 3 -> 2 - mp; 4 -> 3 - mp; 5 -> 3; anything else -> 1.
-std::int32_t crew_level_from_skill_006e6270(Seg33aHost& host, std::int32_t skill) {
+std::int32_t crew_level_from_skill_006e6270(Seg33aSessionModeHost& host, std::int32_t skill) {
     if (skill == 0) return 0;
     if (skill == 1) return host.session_mode_00e188a8_1fe4() == 0 ? 1 : 0;
     if (skill == 2) return host.session_mode_00e188a8_1fe4() != 0 ? 1 : 2;
