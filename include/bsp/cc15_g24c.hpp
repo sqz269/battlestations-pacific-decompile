@@ -10,7 +10,9 @@
 // interfaces; names are hypotheses, not recovered symbols. docs/CC15_G24C.md
 // records the original ABIs, evidence and limits. Raw object pointers need the
 // native Win32 layouts (VC9 std::list / std::vector with a leading proxy
-// word). No host is wired to any of these.
+// word). Goal 5 chain 643 wires the three narrative writers: the script orders
+// host's MissionNarrative / Urgent / Override bindings run them on its native
+// narrative object (src/game_hosts_script_orders.cpp, NarrativeObjectServices).
 namespace bsp::cc15_g24c {
 
 // ---------------------------------------------------------------------------

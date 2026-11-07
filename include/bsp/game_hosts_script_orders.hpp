@@ -638,7 +638,10 @@ inline constexpr bool kLuaGetSubmarineAirSupplyBound = true;
 // (00733BB0's fade-in 0.5 x DialogFadeTime, display length x TempCharWait +
 // TempWaitBase, fade-out DialogFadeTime) and 00734140 calls the entry's callback
 // when it has faded out; EndScene 008B01B0 is recorded (no freeze). False: the
-// natives stay unimplemented records and no callback ever fires.
+// natives stay unimplemented records and no callback ever fires. Goal 5 chain
+// 643 adds MissionNarrativeUrgent 008B0E10 (007349C0, push front unless the
+// front is the same text and callback) and MissionNarrativeOverride 008B1010
+// (00734E50, clear then append), all three over the native list.
 // Packet cc9_lua_camera_state (docs/MISSION_END.md 7.2). True: GetCameraState
 // 008BF6A0 answers {Position, Rotation, Zoom} from the published Operator
 // camera [game+19FCh] (a labelled stand-in, the controlled unit's pose, when
@@ -751,6 +754,9 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
     ~GameScriptOrdersHost();
+    // The narrative object's list nodes are owned through raw pointers.
+    GameScriptOrdersHost(const GameScriptOrdersHost&) = delete;
+    GameScriptOrdersHost& operator=(const GameScriptOrdersHost&) = delete;
     // Application phase5's existing dialog owner; no new manager lifetime.
     static void bind_music_dialog(class GameSoundDialogRuntime*) noexcept;
     // The runtime bind_music_dialog published, or null (goal 4 chain 312: the
@@ -1047,7 +1053,15 @@ private:
     std::size_t get_rotation_calls_{0};
     std::size_t get_rotation_unresolved_{0};
     void narrative_finish_00734140();
-    void narrative_clear_00734fa0();    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
+    void narrative_clear_00734fa0();
+    // Goal 5 chain 643: one post into the narrative object's list through the
+    // entry point's own body (00734870 / 007349C0 / 00734E50), the list's size
+    // word +0Ch, and a freed node's argument references.
+    void narrative_post(std::uint32_t entry_point, const std::string& text,
+                        const std::string& callback, std::vector<int> argument_refs);
+    std::uint32_t narrative_queue_size() const noexcept;
+    void release_narrative_node_refs(const void* node);
+    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
     float countdown_time_left() const noexcept;
     // 007340A0 past the time-left store: clear +3Ch and +4Ch, free +54h.
     void countdown_stop_007340a0();
@@ -1440,15 +1454,20 @@ private:
     std::size_t plane_is_reloading_calls_{0};
     std::size_t plane_is_reloading_true_{0};
     std::size_t plane_is_reloading_unresolved_{0};
-    // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
-    // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
-    // +14h..+34h.
-    struct NarrativeEntry {
-        std::string text;
-        std::string callback;
-        std::vector<int> argument_refs;
-    };
-    std::vector<NarrativeEntry> narrative_queue_;
+    // Goal 5 chain 643: the narrative object [game+21E8h] itself, 58h bytes
+    // (004DFA75 operator new(58h) and 00735030, then 004DFA8D 00733030; the
+    // scalar delete 00735420 runs 00735080). Its VC9 list +4h (head +8h, size
+    // +0Ch) is the queue the three post bindings write (00734870 / 007349C0 /
+    // 00734E50) and 00735100 consumes through 00734D20; a node is {next, prev,
+    // entry: vtable 00CFE960, text +0Ch, callback +14h, arguments +1Ch}. The
+    // shown entry +10h..+34h and the countdown +38h..+54h stay the members
+    // below; their native words keep 00735030's values.
+    alignas(4) std::uint8_t narrative_object_[0x58]{};
+    // A queued post's extra arguments as Lua registry references, by list
+    // node: this host's stand-in for the node's variant vector +1Ch, which
+    // stays 0. A node's references go when 00734CE0 / 00734D20 free it.
+    std::map<const void*, std::vector<int>> narrative_node_refs_;
+    // Packet cc9_lua_mission_narrative: the shown entry +14h..+34h.
     bool narrative_active_14_{false};
     int narrative_state_18_{0};
     float narrative_fade_in_1c_{0.0f};

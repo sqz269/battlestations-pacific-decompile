@@ -4,7 +4,9 @@
 // cc13-seg48U, docs/CC13_SEG48U.md): gun and gun-bot helpers, the mission
 // narrative object at game+21E8h, and plane/squadron helpers. Names are
 // hypotheses, not recovered symbols. These are new C++ interfaces over the
-// native records, not drop-in replacements. Nothing is wired. Same conventions
+// native records, not drop-in replacements. Goal 5 chain 643 wires the
+// narrative object's 00735030 / 00733030 / 00733C80 through the
+// MissionNarrativeObjectHost base (cc13_seg40.hpp); the rest is not. Same conventions
 // as cc13_seg40: raw byte blocks touched only at the offsets the image uses, and
 // one named host hook per native call, at the same point with the same arguments.
 
@@ -47,8 +49,9 @@ public:
     virtual void scene_node_clear_flags_recursive_00728340(void* node, std::uint32_t flags) = 0;
     // 00475E60 BSP_Node_OrFlagsRecursive, __thiscall(ECX = node, flags), RET 4.
     virtual void node_or_flags_recursive_00475e60(void* node, std::uint32_t flags) = 0;
-    // 00733430 BSP_MissionNarrativeList_BuyHeadNode, __thiscall(ECX = list), EAX = node.
-    virtual void* narrative_list_buy_head_node_00733430(void* list) = 0;
+    // 00733430 BSP_MissionNarrativeList_BuyHeadNode, __thiscall(ECX = list), EAX = node
+    // (also a MissionNarrativeObjectHost hook, cc13_seg40.hpp).
+    void* narrative_list_buy_head_node_00733430(void* list) override = 0;
     // 00733B10 BSP_SessionMessage_MISSIONINFO_Construct (cc13_seg40), __thiscall(ECX =
     // message, const native string* text), RET 4; EAX = message.
     virtual void* session_message_missioninfo_construct_00733b10(void* message, const void* text) = 0;
@@ -223,9 +226,10 @@ void cc13_seg48U_plane_squadron_build_debug_text_007f3e50(void* squadron, std::u
                                                           Cc13Seg48UHost& host);
 
 // ---- mission narrative (game+21E8h) ----
-void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host);
+void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, MissionNarrativeObjectHost& host);
 void cc13_seg48U_mission_narrative_reset_00733030(void* narrative);
-void* cc13_seg48U_narrative_entry_copy_construct_00733c80(void* entry, const void* source, Cc13Seg48UHost& host);
+void* cc13_seg48U_narrative_entry_copy_construct_00733c80(void* entry, const void* source,
+                                                          MissionNarrativeObjectHost& host);
 void cc13_seg48U_mission_narrative_write_007337a0(void* narrative, void* writer, Cc13Seg48UHost& host);
 void cc13_seg48U_mission_narrative_read_00734460(void* narrative, void* reader, Cc13Seg48UHost& host);
 void cc13_seg48U_mission_narrative_send_to_party_00734b10(void* narrative, std::int32_t party, const void* text,
