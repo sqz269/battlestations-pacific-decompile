@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace bsp {
 struct NativeSoundAlternateOwnerStorage;
@@ -62,6 +63,11 @@ public:
     // these batch services have no effect with kWireGoal2Chain180Bound OFF.
     void set_music_level(std::int32_t level);
     void set_music_target_level(float level);
+    // 00A79480 on the current published owner [00F8BBCC]: the scene header's
+    // music track for (party 0..1, state 0..8), the call 004ED2D0 makes for
+    // each Sound.Music state 004ED690 reads ("sound/music/" + FileName, or
+    // empty). Slot record +10h + slot*18h and its .def table at +1C0h.
+    void set_music_track(const std::string& path, std::int32_t party, std::int32_t state);
     // 00A77C10 on the current published owner [00F8BBCC], the call the session
     // teardown 004DA780 makes at 004DA85D (goal 4 chain 312).
     void clear_channels();

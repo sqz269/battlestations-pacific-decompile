@@ -93,7 +93,29 @@ struct DialogMusicHost {
     virtual void music_director_select_row_00a782e0(void* director, void* field) = 0;
 };
 
-struct SweepC2Host : DialogMusicHost {
+// The services 00A79480 adds to the music boundary: the slot record's path
+// copy, the ".def" stem and the 20h stream table it builds. Split out so the
+// dialog runtime can run the body without the unrelated sweep services.
+struct DialogSlotRecordHost : DialogMusicHost {
+    // 0041DD40, __thiscall(ECX = NativeString, length, keep), RET 8: resize.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length,
+                                               std::uint32_t keep) = 0;
+    // 00BF7680 memcpy (cdecl).
+    virtual void memcpy_00bf7680(void* dest, const void* src, std::uint32_t bytes) = 0;
+    // 00BF681B operator new.
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // 00469840 BSP_NativeString_Substring (ECX = string, out, start, count), RET 0Ch -> out.
+    virtual void* native_string_substring_00469840(void* string, void* out, std::uint32_t start,
+                                                   std::uint32_t count) = 0;
+    // 004261A0 BSP_NativeString_Concat (ECX = left, out, right), RET 8 -> out.
+    virtual void* native_string_concat_004261a0(void* left, void* out, const void* right) = 0;
+    // 0041E870 BSP_NativeString_Assign (ECX = string, const char*), RET 4.
+    virtual void native_string_assign_0041e870(void* string, const char* text) = 0;
+    // 00A79150 BSP_SoundStreamTable_Construct (ECX = memory, NativeString* filename), RET 4.
+    virtual void* sound_stream_table_construct_00a79150(void* memory, const void* filename) = 0;
+};
+
+struct SweepC2Host : DialogSlotRecordHost {
     virtual ~SweepC2Host() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The +18h recursion
@@ -155,11 +177,7 @@ struct SweepC2Host : DialogMusicHost {
     virtual void** point_effect_create_with_parent_matrix_008687c0(
         void** out_slot, void* parent, void* consumed_definition, float* matrix,
         std::uint32_t transform_word, std::uint32_t option_word, std::uint32_t tail_word) = 0;
-    // 0041DD40, __thiscall(ECX = NativeString, length, keep), RET 8: resize.
-    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length,
-                                               std::uint32_t keep) = 0;
-    // 00BF7680 memcpy (cdecl).
-    virtual void memcpy_00bf7680(void* dest, const void* src, std::uint32_t bytes) = 0;
+    // 0041DD40 resize and 00BF7680 memcpy: DialogSlotRecordHost.
     // 00419CC0(data, size, 1) answers the pool, then 00BD1510(ECX = pool) returns the block with
     // the same three stack arguments (as cc13_sweepC models it).
     virtual void string_pool_release_00419cc0_00bd1510(void* data, std::uint32_t size) = 0;
@@ -174,8 +192,7 @@ struct SweepC2Host : DialogMusicHost {
     virtual void elevator_platform_setup_006fc380(void* platform, const float* lift_point,
                                                   float first, float second,
                                                   void* consumed_effect) = 0;
-    // 00BF681B operator new.
-    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // 00BF681B operator new: DialogSlotRecordHost.
     // 006FBC20 BSP_OwnedPtrWithDefault_Assign (ECX = platform, object), RET 4.
     virtual void owned_ptr_assign_006fbc20(void* platform, void* object) = 0;
 
@@ -236,11 +253,7 @@ struct SweepC2Host : DialogMusicHost {
     // --- 0096EDD0 -------------------------------------------------------------------------
     // 00BF9A50 strcspn (cdecl).
     virtual std::uint32_t strcspn_00bf9a50(const char* text, const char* set) = 0;
-    // 00469840 BSP_NativeString_Substring (ECX = string, out, start, count), RET 0Ch -> out.
-    virtual void* native_string_substring_00469840(void* string, void* out, std::uint32_t start,
-                                                   std::uint32_t count) = 0;
-    // 004261A0 BSP_NativeString_Concat (ECX = left, out, right), RET 8 -> out.
-    virtual void* native_string_concat_004261a0(void* left, void* out, const void* right) = 0;
+    // 00469840 substring and 004261A0 concat: DialogSlotRecordHost.
 
     // --- 00A38DA0 -------------------------------------------------------------------------
     // 00652A50 / 00652A40 (ECX = (interface [00E198C4])+BCh, flag), RET 4: one-store setters.
@@ -264,8 +277,7 @@ struct SweepC2Host : DialogMusicHost {
                                                                std::uint32_t flags) = 0;
     // 00964790 (ECX = value, DL = 1) -> object.
     virtual void* resolve_00964790(void* value, std::uint8_t flag) = 0;
-    // 0041E870 BSP_NativeString_Assign (ECX = string, const char*), RET 4.
-    virtual void native_string_assign_0041e870(void* string, const char* text) = 0;
+    // 0041E870 BSP_NativeString_Assign: DialogSlotRecordHost.
     // 009FFF60 (ECX = object, 3, 0, NativeString*), RET 0Ch.
     virtual std::uint32_t object_query_009fff60(void* object, std::uint32_t a, std::uint32_t b,
                                                 void* name) = 0;
@@ -332,8 +344,7 @@ struct SweepC2Host : DialogMusicHost {
     virtual void dialog_channel_records_reserve_00a78dc0(void* records, std::int32_t count) = 0;
     // 00A77F80 BSP_DialogChannelRecord_Construct (ECX = record).
     virtual void dialog_channel_record_construct_00a77f80(void* record) = 0;
-    // 00A79150 BSP_SoundStreamTable_Construct (ECX = memory, NativeString* filename), RET 4.
-    virtual void* sound_stream_table_construct_00a79150(void* memory, const void* filename) = 0;
+    // 00A79150 BSP_SoundStreamTable_Construct: DialogSlotRecordHost.
 
     // --- seg 74 input / text listener -----------------------------------------------------
     // input device vtable +30h (ECX = device) -> the active control or -1; +24h (ECX = device,
@@ -547,7 +558,7 @@ void dialog_channel_records_resize_00a78ec0(SweepC2Host& host, void* records,
                                             std::int32_t count);
 // 00A79480 BSP_StreamedDialogManager_SetSlotRecord. __thiscall(ECX = manager, const
 // NativeString* path, party, state), RET 0Ch.
-void dialog_set_slot_record_00a79480(SweepC2Host& host, void* manager, const void* path,
+void dialog_set_slot_record_00a79480(DialogSlotRecordHost& host, void* manager, const void* path,
                                      std::int32_t party, std::int32_t state);
 
 // Segment 74.

@@ -858,7 +858,7 @@ namespace {
 
 // The inlined NativeString copy-assign: unless dest is src, resize(dest, src.length, 1), then
 // memcpy dest.length bytes when src is non-empty.
-void native_string_copy(SweepC2Host& host, void* dest, const void* src) {
+void native_string_copy(DialogSlotRecordHost& host, void* dest, const void* src) {
     if (dest == src) return;
     void* const source = const_cast<void*>(src);
     host.native_string_resize_0041dd40(dest, at<std::uint32_t>(source, 0x00), 1);
@@ -1031,7 +1031,7 @@ void dialog_channel_records_resize_00a78ec0(SweepC2Host& host, void* records,
 // (operator new, 00A79150; null when the allocation fails), the old handle is released and the
 // slot takes the new table without an add-ref. Temporaries are released as the image orders them.
 // ---------------------------------------------------------------------------
-void dialog_set_slot_record_00a79480(SweepC2Host& host, void* manager, const void* path,
+void dialog_set_slot_record_00a79480(DialogSlotRecordHost& host, void* manager, const void* path,
                                      std::int32_t party, std::int32_t state) {
     const std::int32_t slot = party * 9 + state;
     host.logical_dialog_record_assign_00a78230(add(manager, 0x10 + static_cast<std::size_t>(slot) * 0x18),
