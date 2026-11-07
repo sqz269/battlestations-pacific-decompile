@@ -187,27 +187,59 @@ public:
     virtual void achievement_record_0090f6c0(void* recorder, void* plane, std::int32_t kind) = 0;
 
     // ---- plane flight controller (007DC830) ----
+    // Moved to PlaneFreeFlightStepHost (goal 5 chain 657).
+};
+
+// Goal 5 chain 657. 007DC830's boundary, split out of Cc13Front3Host (which no
+// class implements) so the units host can run the free-flight step itself. The
+// host keeps no native controller (unit+AB0h), unit or class descriptor image,
+// so every offset the image reads or writes is a named method called at the
+// same point of the body, in the image's order (bsp.py show 007dc830 --asm).
+// The controller is ECX; "unit" is [ctl+8h], re-read where the image re-reads
+// it (007DC8D2, 007DCAF2, 007DCB58, 007DCBAC); "desc" is [ctl+0Ch].
+class PlaneFreeFlightStepHost {
+public:
+    virtual ~PlaneFreeFlightStepHost() = default;
+    // 007DC841: ctl+FCh = mode (0, the free-flight mode; the ground law 007DCCF0
+    // stores 1).
+    virtual void set_controller_mode_fc(std::uint32_t mode) = 0;
+    // 007DC84F..007DC86B: ctl+4h = unit+9F9h (turbo), ctl+5h = unit+9F8h (boost).
+    virtual void copy_turbo_boost_bytes_9f9_9f8() = 0;
+    // 007DB680 BSP_PlaneFlight_CoreLaw, __thiscall(ECX = controller; float step,
+    // float, float, int), RET 10h.
+    virtual void core_law_007db680(float step, float a, float b, std::int32_t c) = 0;
+    // 007D99C0 BSP_PlaneFlight_ForwardSpeed, __thiscall(ECX = controller), ST0.
+    virtual float forward_speed_007d99c0() = 0;
+    // desc+184h StallSpd and desc+17Ch StallRotAccel.
+    virtual float desc_stall_speed_184() = 0;
+    virtual float desc_stall_rot_accel_17c() = 0;
     // The float at an address of the Dynamics tuning mirror 00F872F0..00F873FC
     // (zero-filled .data past the raw size; filled at run time from Dynamics/*,
     // docs/PLANE_FLIGHT.md). `address` is the image address read.
     virtual float dynamics_mirror_float(std::uint32_t address) = 0;
-    // 007DB680 BSP_PlaneFlight_CoreLaw, __thiscall(ECX = controller; float step,
-    // float, float, int), RET 10h.
-    virtual void plane_flight_core_law_007db680(void* controller, float step, float a, float b,
-                                                std::int32_t c) = 0;
-    // 007D99C0 BSP_PlaneFlight_ForwardSpeed, __thiscall(ECX = controller), ST0.
-    virtual float plane_flight_forward_speed_007d99c0(void* controller) = 0;
-    // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), five stack floats, RET 14h, ST0.
-    virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+    // unit+5Dh, the dead-meat byte.
+    virtual bool unit_dead_5d() = 0;
+    // unit+C36h || unit+C37h || unit+C38h (007DC8E0..007DC8F9, 007DC97D..007DC996).
+    virtual bool unit_spinning_c36_c38() = 0;
+    // unit+C3Ch (the dead-meat timer), +C64h (pitch), +C68h (bank), +908h (airborne time).
+    virtual float unit_c3c() = 0;
+    virtual float unit_pitch_c64() = 0;
+    virtual float unit_bank_c68() = 0;
+    virtual float unit_airborne_908() = 0;
     // 007DAFD0 BSP_PlaneFlightController_ApplyForceAtPoint, __thiscall(ECX = controller;
     // const float* point, const float* direction, float force, float step, float k), RET 14h.
-    virtual void flight_controller_apply_force_at_point_007dafd0(void* controller, const float* point,
-                                                                 const float* direction, float force,
-                                                                 float step, float k) = 0;
-    // Plane slot +34h(float* out3), RET 4 (ECX = [controller+8h]).
-    virtual void vcall_34_vector(void* plane, float* out) = 0;
-    // 0042B2F0 BSP_Vector3_LengthFloatThreshold, __thiscall(ECX = float[3]), ST0.
-    virtual float vector3_length_threshold_0042b2f0(const float* v) = 0;
+    virtual void apply_force_at_point_007dafd0(const float point[3], const float direction[3],
+                                               float force, float step, float k) = 0;
+    // ctl+24h..2Ch (the world angular velocity, read and written in place) and
+    // ctl+F0h..F8h (the dying-spin rates 007D7EA0 draws).
+    virtual float* world_angular_24() = 0;
+    virtual const float* dying_spin_rates_f0() = 0;
+    // ctl+94h, the wreck-lift byte.
+    virtual bool wreck_lift_94() = 0;
+    // [ctl+8h] slot +34h(float* out3), RET 4: the world velocity.
+    virtual void unit_velocity_vcall_34(float out[3]) = 0;
+    // 007DCCD3: ctl+8Ch = 0.0f.
+    virtual void clear_controller_8c() = 0;
 };
 
 // Segment 40 (guns).
@@ -286,6 +318,6 @@ void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate,
 void cc13_front3_plane_on_water_contact_007cb7f0(void* plane, Cc13Front3Host& host);
 
 // Segment 48 (plane flight controller).
-void cc13_front3_plane_flight_free_flight_step_007dc830(void* controller, float step, Cc13Front3Host& host);
+void cc13_front3_plane_flight_free_flight_step_007dc830(float step, PlaneFreeFlightStepHost& host);
 
 }  // namespace bsp

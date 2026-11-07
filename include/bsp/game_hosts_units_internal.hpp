@@ -9320,31 +9320,16 @@ struct GameUnitsHost::Impl {
     // ammo 006E3C00 stored, 1. Both the 007B9140 answer and the release seed see it.
     // False: such a rack holds nothing. LABELLED: single racks only, as for bag 0.
     static constexpr bool kRackPositiveBagRoundBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 54.5)
-    // Packet cc9_p14_stall_force (docs/OCEAN_WAVE_FIELD.md 55). True: after the core
-    // law, the free-flight step 007DC830 (007CC2F0's arm and 007DCCF0's fallback) adds
-    // its stall block: r = 007D99C0 / StallSpd; when StallRangeMax > r or the plane is
-    // dead, m = 00419010(StallRangeMin, 1, StallRangeMax, 0, r) (a dead plane takes the
-    // DeadMeat StallMul or SpinStallMul ramp on +C3Ch when larger), g = 00419010(OnPitch,
-    // 1, OffPitch, 0, pitch), d = clamp(+908h - 1, 0, 1), and with f = g m d > 0 the
-    // 007DAFD0 kick at the nose (0,0,1) toward (0,-1,0) of f x StallRotAccel (desc+17Ch),
-    // limit 1.5. False: the core law alone. LABELLED: the dying spin ctl+F0h..F8h (its
-    // constructor draw is not hosted) and ctl+94h (the wreck/water gate) are not carried.
-    static constexpr bool kFreeFlightStallForceBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 55.4)
+    // Goal 5 chain 657: 007DC830 itself runs at both native sites (PlaneBinding::
+    // free_flight_step_007dc830): the stall block (packet cc9_p14_stall_force,
+    // docs/OCEAN_WAVE_FIELD.md 55), the dying spin and the wreck lift (packet
+    // p15_dying_spin, section 58). Counters for the report. LABELLED: the dying spin
+    // ctl+F0h..F8h is 007D7EA0's construction draw, U(+250h, +254h) (007D7F90; the
+    // loader fills both from Dynamics/DeadMeat/RotationMin, RotationMax is never
+    // read) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all on
+    // stream 1, drawn here from the plane's keyed stream (`name#ds_m`, `#ds_z`,
+    // `#ds_p`) at its first dying step, not at construction.
     unsigned long long stall_force_steps{0}, stall_force_kicks{0};
-    // Packet p15_dying_spin (docs/OCEAN_WAVE_FIELD.md section 58). True: inside the
-    // stall block's m > 0 arm, a dead plane (+5Dh re-read at 007DCAF2) adds
-    // step x ctl+F0h..F8h to its world angular velocity ctl+24h..2Ch (007DCAF9-
-    // 007DCB40, each product stored as a float first). ctl+F0h..F8h is 007D7EA0's
-    // construction draw: U(+250h, +254h) (007D7F90; the loader fills both from
-    // Dynamics/DeadMeat/RotationMin, RotationMax is never read) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all
-    // on stream 1. LABELLED: drawn from the plane's keyed stream (`name#ds_m`,
-    // `#ds_z`, `#ds_p`) at its first dying step, not at construction. False: no spin.
-    static constexpr bool kFreeFlightDyingSpinBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 58.4)
-    // Packet p15_dying_spin (section 58). True: 007DCB4B-007DCCCB, with ctl+94h set:
-    // v = the world velocity with y = 0, h = 00419010(0, 4, 69.444443, 20, |v|),
-    // u = max(0, 1 - |+C64h|), q = min(1, |+C68h| * 0.8 + 0.6), and the 007DAFD0 kick
-    // at (0,0,1) toward (0,-1,0) of q u h, limit 1000. False: not carried.
-    static constexpr bool kFreeFlightWreckLiftBound = true;   // ON by mechanism (OCEAN_WAVE_FIELD 58.4)
     unsigned long long dying_spin_steps{0}, dying_spin_seeds{0}, wreck_lift_kicks{0};
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {

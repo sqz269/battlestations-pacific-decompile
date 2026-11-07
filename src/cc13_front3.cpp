@@ -8,6 +8,10 @@
 
 #include "bsp/cc13_front3.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_unitshost_cc13.hpp"
+#include "bsp/unit_rudder.hpp"
+
 namespace bsp {
 
 namespace {
@@ -379,7 +383,7 @@ void cc13_front3_plane_on_water_contact_007cb7f0(void* plane, Cc13Front3Host& ho
 // through every push and the RET 14h of 00419010 / 007DAFD0.
 //   ctl+FCh = 0 (the free-flight mode), ctl+4h = unit+9F9h, ctl+5h =
 //   unit+9F8h, then 007DB680(ctl; step, 0.0f, 0.0f, 0).
-//   r = float(007D99C0(ctl) / desc([ctl+0Ch])+184h).
+//   r = 007D99C0(ctl) / desc([ctl+0Ch])+184h (FDIV float, FSTP float).
 //   Stall block when StallRangeMax [00F87310] > r (FCOMI/JA: ordered) or the
 //   dead-meat byte unit+5Dh is set:
 //     m = Interp(StallRangeMin [00F8730C], 1, StallRangeMax, 0, r).
@@ -393,51 +397,52 @@ void cc13_front3_plane_on_water_contact_007cb7f0(void* plane, Cc13Front3Host& ho
 //       00F87314) alive, (SpinStallMulOnPitch 00F87354, SpinStallMulOffPitch
 //       00F87358) spinning, (StallMulOnPitch 00F87364, StallMulOffPitch
 //       00F87368) otherwise;
-//       d = float(unit+908h - 1.0 (double 00D7A210)), clamped: 0 when 0 > d
-//       (FCOMI/JBE: a NaN d stays), else 1.0f when d > 1.0f (COMISS/JBE);
-//       f = float(g * m * d) on the x87 (products kept wide, one rounding);
+//       d = unit+908h - 1.0 (FSUB double 00D7A210, FSTP float), clamped: 0
+//       when 0 > d (FCOMI/JBE: a NaN d stays), else 1.0f when d > 1.0f
+//       (COMISS/JBE);
+//       f = (g * m) * d (007DCA6E FLD, 007DCA72 FMUL, 007DCA76 FMUL, FSTP);
 //       f > 0 (ordered): 007DAFD0(ctl; &{0, 0, 1}, &{0, -1.0f (00D7A260), 0},
-//         float(f * desc+17Ch), step, 1.5f (00CE380C)).
+//         f * desc+17Ch (007DCAB9 FMUL, FSTP), step, 1.5f (00CE380C)).
 //       Then, when unit+5Dh (re-read) is set: ctl+24h..2Ch += step * ctl+F0h..F8h
 //       (each product stored as a float first).
 //   ctl+94h set: v = unit slot +34h(&v), v.y = 0, len = 0042B2F0(&v),
 //     h = Interp(0, 4.0f (00CE3D34), 69.444443f (00D0688C, 250 km/h), 20.0f
 //     (00CE3930), len); u = 1 - |unit+C64h|, w = |unit+C68h| (the absolute
-//     value is -0.0f (00D7A208) - x when x is not > 0); p = float(w *
-//     0.800000011920929 (double 00CE3D40) + 0.6000000238418579 (double
-//     00CEFF98)); u = 0 when 0 > u (NaN stays); q = 1.0f when p > 1.0f, else p
-//     (NaN stays); 007DAFD0(ctl; &{0, 0, 1}, &{0, -1.0f, 0}, float(q * u * h),
+//     value is -0.0f (00D7A208) - x when x is not > 0); p = w *
+//     0.800000011920929 (double 00CE3D40, 007DCC0F FMUL) + 0.6000000238418579
+//     (double 00CEFF98, 007DCC15 FADD), FSTP float; u = 0 when 0 > u (NaN
+//     stays); q = 1.0f when p > 1.0f, else p (NaN stays); 007DAFD0(ctl;
+//     &{0, 0, 1}, &{0, -1.0f, 0}, (q * u) * h (007DCC88, 007DCC9E FMUL, FSTP),
 //     step, 1000.0f (00CE3804)). The image stores that force over its own
 //     step argument slot after loading step; the call gets the original step.
 //   ctl+8Ch = 0.0f.
-// Every read of [ctl+8h] matches a reload in the image (007DC8D2, 007DCAF2,
-// 007DCB58, 007DCBAC).
-void cc13_front3_plane_flight_free_flight_step_007dc830(void* controller, float step, Cc13Front3Host& host) {
-    at<std::uint32_t>(controller, 0xFC) = 0;                                 // 007DC841
-    void* unit = at<void*>(controller, 8);
-    at<std::uint8_t>(controller, 4) = at<std::uint8_t>(unit, 0x9F9);         // 007DC85D
-    at<std::uint8_t>(controller, 5) = at<std::uint8_t>(unit, 0x9F8);         // 007DC86B
-    host.plane_flight_core_law_007db680(controller, step, 0.0f, 0.0f, 0);    // 007DC86E
-    void* desc = at<void*>(controller, 0x0C);
-    const float r = static_cast<float>(
-        static_cast<double>(host.plane_flight_forward_speed_007d99c0(controller))
-        / static_cast<double>(at<float>(desc, 0x184)));                     // 007DC878-007DC886
+// Precision (goal 5 chain 657): the main thread runs the x87 at PC24, so each
+// FDIV/FSUB/FMUL/FADD above rounds to a 24-bit significand. The chains round
+// per operation through cc13x87 (the old body formed g*m*d, w*0.8+0.6 and
+// q*u*h in double and rounded once); f * desc+17Ch and the -1.0 subtraction are
+// single operations on floats, exact in double, so one rounding is the image's.
+// 0042B2F0 is pc24_unitshost::length3_0042b2f0 (sum of squares per op, the
+// 1e-10 cut, FSQRT); 00419010 is bsp::clamped_interpolate_00419010.
+void cc13_front3_plane_flight_free_flight_step_007dc830(float step, PlaneFreeFlightStepHost& host) {
+    namespace x8 = cc13x87;
+    host.set_controller_mode_fc(0);                                          // 007DC841
+    host.copy_turbo_boost_bytes_9f9_9f8();                                   // 007DC84F-007DC86B
+    host.core_law_007db680(step, 0.0f, 0.0f, 0);                             // 007DC86E
+    const float forward = host.forward_speed_007d99c0();                     // 007DC878
+    const float r = static_cast<float>(x8::x87_div24(forward, host.desc_stall_speed_184()));  // 007DC87D-007DC886
     const float stall_range_max = host.dynamics_mirror_float(0x00F87310u);
-    if (stall_range_max > r || at<std::uint8_t>(at<void*>(controller, 8), 0x5D) != 0) {  // 007DC894-007DC89F
-        float m = host.interpolate_clamped_00419010(host.dynamics_mirror_float(0x00F8730Cu), 1.0f,
-                                                    stall_range_max, 0.0f, r);  // 007DC8C9
-        unit = at<void*>(controller, 8);                                     // 007DC8D2
-        const bool dead = at<std::uint8_t>(unit, 0x5D) != 0;
-        const bool spinning = at<std::uint8_t>(unit, 0xC36) != 0 || at<std::uint8_t>(unit, 0xC37) != 0
-            || at<std::uint8_t>(unit, 0xC38) != 0;
+    if (stall_range_max > r || host.unit_dead_5d()) {                        // 007DC894-007DC89F
+        float m = clamped_interpolate_00419010(host.dynamics_mirror_float(0x00F8730Cu), 1.0f,
+                                               stall_range_max, 0.0f, r);    // 007DC8C9
+        const bool dead = host.unit_dead_5d();                               // 007DC8D2-007DC8D5
+        const bool spinning = dead && host.unit_spinning_c36_c38();          // 007DC8E0-007DC8F9
         if (dead) {
             const float t = spinning
-                ? host.interpolate_clamped_00419010(0.0f, 0.0f, host.dynamics_mirror_float(0x00F87350u),
-                                                    host.dynamics_mirror_float(0x00F8734Cu),
-                                                    at<float>(unit, 0xC3C))
-                : host.interpolate_clamped_00419010(0.0f, 0.0f, host.dynamics_mirror_float(0x00F87360u),
-                                                    host.dynamics_mirror_float(0x00F8735Cu),
-                                                    at<float>(unit, 0xC3C));  // 007DC944
+                ? clamped_interpolate_00419010(0.0f, 0.0f, host.dynamics_mirror_float(0x00F87350u),
+                                               host.dynamics_mirror_float(0x00F8734Cu), host.unit_c3c())
+                : clamped_interpolate_00419010(0.0f, 0.0f, host.dynamics_mirror_float(0x00F87360u),
+                                               host.dynamics_mirror_float(0x00F8735Cu),
+                                               host.unit_c3c());             // 007DC944
             if (!(m > t)) {                                                  // 007DC955-007DC961
                 m = t;
             }
@@ -445,67 +450,67 @@ void cc13_front3_plane_flight_free_flight_step_007dc830(void* controller, float 
         if (m > 0.0f) {                                                      // 007DC970-007DC973
             float g;
             if (!dead) {
-                g = host.interpolate_clamped_00419010(host.dynamics_mirror_float(0x00F87318u), 1.0f,
-                                                      host.dynamics_mirror_float(0x00F87314u), 0.0f,
-                                                      at<float>(unit, 0xC64));
-            } else if (spinning) {
-                g = host.interpolate_clamped_00419010(host.dynamics_mirror_float(0x00F87354u), 1.0f,
-                                                      host.dynamics_mirror_float(0x00F87358u), 0.0f,
-                                                      at<float>(unit, 0xC64));
+                g = clamped_interpolate_00419010(host.dynamics_mirror_float(0x00F87318u), 1.0f,
+                                                 host.dynamics_mirror_float(0x00F87314u), 0.0f,
+                                                 host.unit_pitch_c64());
+            } else if (host.unit_spinning_c36_c38()) {                       // 007DC97D-007DC996
+                g = clamped_interpolate_00419010(host.dynamics_mirror_float(0x00F87354u), 1.0f,
+                                                 host.dynamics_mirror_float(0x00F87358u), 0.0f,
+                                                 host.unit_pitch_c64());
             } else {
-                g = host.interpolate_clamped_00419010(host.dynamics_mirror_float(0x00F87364u), 1.0f,
-                                                      host.dynamics_mirror_float(0x00F87368u), 0.0f,
-                                                      at<float>(unit, 0xC64));
+                g = clamped_interpolate_00419010(host.dynamics_mirror_float(0x00F87364u), 1.0f,
+                                                 host.dynamics_mirror_float(0x00F87368u), 0.0f,
+                                                 host.unit_pitch_c64());
             }                                                                // 007DCA1A
-            float d = static_cast<float>(static_cast<double>(at<float>(unit, 0x908)) - 1.0);  // 007DCA2B-007DCA37
+            float d = static_cast<float>(x8::x87_sub24(host.unit_airborne_908(), 1.0));  // 007DCA2B-007DCA37
             if (0.0f > d) {                                                  // 007DCA41-007DCA45
                 d = 0.0f;
             } else if (d > 1.0f) {                                           // 007DCA58-007DCA5B
                 d = 1.0f;
             }
-            const float f = static_cast<float>(static_cast<double>(g) * m * d);  // 007DCA6E-007DCA7A
+            const float f = static_cast<float>(x8::x87_mul24(x8::x87_mul24(g, m), d));  // 007DCA6E-007DCA7A
             if (f > 0.0f) {                                                  // 007DCA82-007DCA86
-                const float force = static_cast<float>(static_cast<double>(f) * at<float>(desc, 0x17C));
+                const float force = static_cast<float>(
+                    x8::x87_mul24(f, host.desc_stall_rot_accel_17c()));       // 007DCAB9, FSTP 007DCAD1
                 const float point[3] = {0.0f, 0.0f, 1.0f};
                 const float direction[3] = {0.0f, -1.0f, 0.0f};
-                host.flight_controller_apply_force_at_point_007dafd0(controller, point, direction, force,
-                                                                     step, 1.5f);  // 007DCAE6
+                host.apply_force_at_point_007dafd0(point, direction, force, step, 1.5f);  // 007DCAE6
             }
-            if (at<std::uint8_t>(at<void*>(controller, 8), 0x5D) != 0) {     // 007DCAF2-007DCAF9
-                const float a = step * at<float>(controller, 0xF0);
-                const float b = at<float>(controller, 0xF4) * step;
-                const float c = step * at<float>(controller, 0xF8);
-                at<float>(controller, 0x24) = at<float>(controller, 0x24) + a;
-                at<float>(controller, 0x28) = b + at<float>(controller, 0x28);
-                at<float>(controller, 0x2C) = at<float>(controller, 0x2C) + c;  // 007DCB40
+            if (host.unit_dead_5d()) {                                       // 007DCAF2-007DCAF9
+                const float* const rates = host.dying_spin_rates_f0();
+                const float a = step * rates[0];                             // 007DCAFB-007DCB0B
+                const float b = rates[1] * step;                             // 007DCB0F-007DCB17
+                const float c = step * rates[2];                             // 007DCB1B-007DCB21
+                float* const w = host.world_angular_24();
+                w[0] = w[0] + a;                                             // 007DCB25-007DCB2C
+                w[1] = b + w[1];                                             // 007DCB2F-007DCB36
+                w[2] = w[2] + c;                                             // 007DCB39-007DCB40
             }
         }
     }
-    if (at<std::uint8_t>(controller, 0x94) != 0) {                           // 007DCB4B
+    if (host.wreck_lift_94()) {                                              // 007DCB4B
         float v[3];
-        host.vcall_34_vector(at<void*>(controller, 8), v);                   // 007DCB65
+        host.unit_velocity_vcall_34(v);                                      // 007DCB65
         v[1] = 0.0f;
-        const float len = host.vector3_length_threshold_0042b2f0(v);         // 007DCB74
-        const float h = host.interpolate_clamped_00419010(0.0f, 4.0f, 69.44444274902344f, 20.0f, len);  // 007DCBA3
-        unit = at<void*>(controller, 8);                                     // 007DCBAC
-        const float c64 = at<float>(unit, 0xC64);
+        const float len = pc24_unitshost::length3_0042b2f0(v[0], v[1], v[2]);  // 007DCB74
+        const float h = clamped_interpolate_00419010(0.0f, 4.0f, 69.44444274902344f, 20.0f, len);  // 007DCBA3
+        const float c64 = host.unit_pitch_c64();                             // 007DCBAC-007DCBAF
         const float t = c64 > 0.0f ? c64 : -0.0f - c64;
-        float u = 1.0f - t;                                                  // 007DCBEB-007DCBF3
-        const float c68 = at<float>(unit, 0xC68);
-        const float w = c68 > 0.0f ? c68 : -0.0f - c68;                      // 007DCBE8-007DCC05
-        const float p = static_cast<float>(static_cast<double>(w) * 0.800000011920929
-                                           + 0.6000000238418579);           // 007DCC0B-007DCC1B
+        float u = static_cast<float>(x8::x87_sub24(1.0f, t));                // 007DCBEB-007DCBF3
+        const float c68 = host.unit_bank_c68();
+        const float w = c68 > 0.0f ? c68 : -0.0f - c68;                      // 007DCBE0-007DCC05
+        const float p = static_cast<float>(x8::x87_add24(x8::x87_mul24(w, 0.800000011920929),
+                                                         0.6000000238418579));  // 007DCC0B-007DCC1B
         if (0.0f > u) {                                                      // 007DCC23-007DCC29
             u = 0.0f;
         }
         const float q = p > 1.0f ? 1.0f : p;                                 // 007DCC3F-007DCC53
-        const float force = static_cast<float>(static_cast<double>(q) * u * h);  // 007DCC80-007DCCB6
+        const float force = static_cast<float>(x8::x87_mul24(x8::x87_mul24(q, u), h));  // 007DCC80-007DCCB6
         const float point[3] = {0.0f, 0.0f, 1.0f};
         const float direction[3] = {0.0f, -1.0f, 0.0f};
-        host.flight_controller_apply_force_at_point_007dafd0(controller, point, direction, force, step,
-                                                             1000.0f);       // 007DCCCB
+        host.apply_force_at_point_007dafd0(point, direction, force, step, 1000.0f);  // 007DCCCB
     }
-    at<float>(controller, 0x8C) = 0.0f;                                      // 007DCCD3
+    host.clear_controller_8c();                                              // 007DCCD3
 }
 
 }  // namespace bsp

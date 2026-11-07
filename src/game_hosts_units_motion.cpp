@@ -2,6 +2,7 @@
 #include "bsp/game_hosts_units_internal.hpp"
 #include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
 #include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
+#include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
 
 namespace bsp::game {
 
@@ -1588,8 +1589,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.done("Plane::death_step_007caf10", 0x007caf10u);
                             }
                         }
-                        run_core_law_007db680(step, false);
-                        free_flight_stall_force_007dc830(step);   // 007DC830's tail
+                        free_flight_step_007dc830(step);   // 007CC332 CALL 007DC830
                         // 007C6500 BSP_PlaneTickElement_AdvancePose, tick-element
                         // slot +4h of all nine plane vtables, is where the native
                         // publishes a plane's pose, and it is a DIFFERENT element
@@ -21857,8 +21857,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // Diagnostic: where a landed plane loses contact.
                                 owner_.log_ground_contact_loss(unit_);
                             }
-                            run_core_law_007db680(step, false);
-                            free_flight_stall_force_007dc830(step);   // 007DCCF0 -> 007DC830
+                            free_flight_step_007dc830(step);   // 007DCD14: 007DCCF0 -> 007DC830
                         } else {
                             ++unit_.ground_law_steps;
                             run_core_law_007db680(step, true);
@@ -22421,161 +22420,157 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         return pose;
                     }
-                    // 007DD493-007DD9AA after the rate law, on the world angular
-                    // velocity ctl+24h. LABELLED: this host keeps the body rates
-                    // (ctl+48h) as the state, so the world vector is taken through
-                    // the pose rows and handed back the same way. The horizontal
-                    // speed (vtable[+34h]) is the world velocity with y zeroed;
-                    // unit+674h, the degenerate-axis fallback, is pose row 0.
-                    // 007DC878-007DCB40 (the block after 007DC86E's core law), packet
-                    // cc9_p14_stall_force. The x87 keeps g*m*d and f*desc+17Ch wide and
-                    // rounds each once (docs/CC13_FRONT3.md). The world angular velocity
-                    // ctl+24h is taken through the pose rows, as water_law_tail does.
-                    void free_flight_stall_force_007dc830(float step) {
-                        free_flight_stall_block_007dc894(step);
-                        if constexpr (GameUnitsHost::Impl::kFreeFlightWreckLiftBound) {
-                            if (unit_.plane_ctl_94) free_flight_wreck_lift_007dcb4b(step);
+                    // Goal 5 chain 657: 007DC830 BSP_PlaneFlight_FreeFlightStep runs as
+                    // itself (cc13_front3_plane_flight_free_flight_step_007dc830, packets
+                    // cc9_p14_stall_force and p15_dying_spin), core law included, at both
+                    // of its native sites (007CC332 in 007CC2F0, 007DCD14 in 007DCCF0).
+                    // The units host keeps no controller (unit+AB0h) image, so the
+                    // binding answers each offset the body reads from this plane's
+                    // fields. LABELLED: this host keeps the body rates (ctl+48h) as the
+                    // angular state, so the world vector ctl+24h..2Ch the body reads and
+                    // writes is taken through the pose rows at its first use (after the
+                    // core law) and handed back the same way once the body returns, as
+                    // water_law_tail does.
+                    class FreeFlightStepBinding final : public bsp::PlaneFreeFlightStepHost {
+                    public:
+                        explicit FreeFlightStepBinding(PlaneBinding& plane) : plane_(plane) {}
+                        ~FreeFlightStepBinding() override = default;
+                        // ctl+FCh: the ground law 007DCCF0 stores 1, this step 0; the
+                        // host's core law takes it as its `ground` argument.
+                        void set_controller_mode_fc(std::uint32_t mode) override { mode_fc_ = mode; }
+                        void copy_turbo_boost_bytes_9f9_9f8() override {
+                            // LABELLED: ctl+4h / +5h are read only inside 007DB680, and
+                            // the host's core law reads unit+9F9h / +9F8h
+                            // (plane_turbo_9f9 / plane_boost_9f8) at those uses.
                         }
-                    }
-                    // 007DCB4B-007DCCCB (packet p15_dying_spin, section 58).
-                    void free_flight_wreck_lift_007dcb4b(float step) {
-                        const float* const wv = unit_.plane_world_velocity;   // vtable[34h]
-                        const float v[3] = {wv[0], 0.0f, wv[2]};
-                        const float len = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);   // 0042B2F0
-                        const float h = bsp::clamped_interpolate_00419010(0.0f, 4.0f,
-                            69.44444274902344f, 20.0f, len);                               // 007DCBA3
-                        const float c64 = unit_.plane_pitch_angle_c64;
-                        const float t = c64 > 0.0f ? c64 : -0.0f - c64;
-                        float u = 1.0f - t;                                                // 007DCBEB
-                        const float c68 = unit_.plane_bank_angle_c68;
-                        const float aw = c68 > 0.0f ? c68 : -0.0f - c68;
-                        float p = 0.0f;
-                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                            // pc24w1-units-DE: 007DCC0F FMUL qword and 007DCC15 FADD
-                            // qword, each at PC24.
-                            namespace x8 = bsp::cc13x87;
-                            p = static_cast<float>(x8::x87_add24(
-                                x8::x87_mul24(aw, 0.800000011920929), 0.6000000238418579));
-                        } else {
-                            p = static_cast<float>(static_cast<double>(aw) * 0.800000011920929
-                                + 0.6000000238418579);                                     // 007DCC0B
+                        void core_law_007db680(float step, float a, float b, std::int32_t c) override {
+                            if (a != 0.0f || b != 0.0f || c != 0) {
+                                throw std::logic_error("007DB680: only 007DC830's (0, 0, 0) arguments are modelled");
+                            }
+                            plane_.run_core_law_007db680(step, mode_fc_ == 1u);
                         }
-                        if (0.0f > u) u = 0.0f;                                            // 007DCC23
-                        const float q = p > 1.0f ? 1.0f : p;                               // 007DCC3F
-                        float force = 0.0f;
-                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                            // pc24w1-units-DE: 007DCC88 and 007DCC9E FMUL, each at PC24.
-                            namespace x8 = bsp::cc13x87;
-                            force = static_cast<float>(x8::x87_mul24(x8::x87_mul24(q, u), h));
-                        } else {
-                            force = static_cast<float>(static_cast<double>(q) * u * h);    // 007DCC80
+                        float forward_speed_007d99c0() override {
+                            ++plane_.owner_.stall_force_steps;
+                            const float* const fr = plane_.unit_.motion.pose_row2;
+                            const float* const wv = plane_.unit_.plane_world_velocity;
+                            return plane_.owner_.plane_forward_speed_007d99c0(plane_.unit_,
+                                fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2]);
                         }
-                        const bsp::PlaneWaterPose pose = water_pose();
-                        float w[3];
-                        for (int c = 0; c < 3; ++c) {
-                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
-                                + pose.rows[1][c] * unit_.plane_body_angular[1]
-                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        float desc_stall_speed_184() override { return plane_.unit_.plane_stall_spd; }
+                        float desc_stall_rot_accel_17c() override {
+                            // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps
+                            // the descriptor's zero. Cached per class (LABELLED).
+                            static std::map<int, float> stall_rot_accel_by_class;
+                            const int type_id = plane_.unit_.row.type_id;
+                            auto it = stall_rot_accel_by_class.find(type_id);
+                            if (it == stall_rot_accel_by_class.end()) {
+                                it = stall_rot_accel_by_class.emplace(type_id,
+                                    plane_.owner_.lua.read_vehicle_class_number(type_id,
+                                        "StallRotAccel", 0.0f)).first;
+                            }
+                            return it->second;
                         }
-                        const float nose[3] = {0.0f, 0.0f, 1.0f};
-                        const float down[3] = {0.0f, -1.0f, 0.0f};
-                        bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1000.0f,
-                            pose.rows[0]);                                                  // 007DCCCB, 00CE3804
-                        for (int r2 = 0; r2 < 3; ++r2) {
-                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
-                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        // The Dynamics mirror is GameTuningBlock + (address - 00F870E0h):
+                        // StallRangeMin +22Ch is 00F8730C, StallMulOffPitch +288h is
+                        // 00F87368 (bsp/game_tuning_singleton.hpp).
+                        float dynamics_mirror_float(std::uint32_t address) override {
+                            const bsp::GameTuningBlock& g = plane_.owner_.lua.plane_globals();
+                            switch (address) {
+                            case 0x00F8730Cu: return g.dynamics_spd_multipliers_stall_range_min;
+                            case 0x00F87310u: return g.dynamics_spd_multipliers_stall_range_max;
+                            case 0x00F87314u: return g.dynamics_spd_multipliers_stall_off_pitch;
+                            case 0x00F87318u: return g.dynamics_spd_multipliers_stall_on_pitch;
+                            case 0x00F8734Cu: return g.dynamics_dead_meat_spin_stall_mul;
+                            case 0x00F87350u: return g.dynamics_dead_meat_spin_stall_mul_time;
+                            case 0x00F87354u: return g.dynamics_dead_meat_spin_stall_mul_on_pitch;
+                            case 0x00F87358u: return g.dynamics_dead_meat_spin_stall_mul_off_pitch;
+                            case 0x00F8735Cu: return g.dynamics_dead_meat_stall_mul;
+                            case 0x00F87360u: return g.dynamics_dead_meat_stall_mul_time;
+                            case 0x00F87364u: return g.dynamics_dead_meat_stall_mul_on_pitch;
+                            case 0x00F87368u: return g.dynamics_dead_meat_stall_mul_off_pitch;
+                            default: break;
+                            }
+                            throw std::logic_error("007DC830: Dynamics mirror address not mapped");
                         }
-                        ++owner_.wreck_lift_kicks;
-                    }
-                    // 007DC894-007DCB40: the stall block.
-                    void free_flight_stall_block_007dc894(float step) {
-                        if constexpr (!GameUnitsHost::Impl::kFreeFlightStallForceBound) {
-                            (void)step;
-                            return;
-                        } else {
-                        if (!owner_.lua.plane_globals_loaded() || !(unit_.plane_stall_spd > 0.0f)) return;
-                        const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
-                        const auto interp = bsp::clamped_interpolate_00419010;
-                        const float* const fr = unit_.motion.pose_row2;
-                        const float* const wv = unit_.plane_world_velocity;
-                        const float fwd = owner_.plane_forward_speed_007d99c0(unit_,
-                            fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2]);              // 007D99C0
-                        const float r = static_cast<float>(static_cast<double>(fwd) /
-                            static_cast<double>(unit_.plane_stall_spd));                  // 007DC878-007DC886
-                        const bool dead = unit_.plane_death_c3a
-                            || (unit_.state != nullptr && unit_.state->simulate != 0);      // unit+5Dh
-                        ++owner_.stall_force_steps;
-                        if (!(g.dynamics_spd_multipliers_stall_range_max > r) && !dead) return;   // 007DC894
-                        float m = interp(g.dynamics_spd_multipliers_stall_range_min, 1.0f,
-                            g.dynamics_spd_multipliers_stall_range_max, 0.0f, r);          // 007DC8C9
-                        const bool spinning = unit_.plane_death_c36 || unit_.plane_spin_right_c37;
-                        if (dead) {
-                            const float t = spinning
-                                ? interp(0.0f, 0.0f, g.dynamics_dead_meat_spin_stall_mul_time,
-                                         g.dynamics_dead_meat_spin_stall_mul, unit_.plane_lost_drag_timer_c3c)
-                                : interp(0.0f, 0.0f, g.dynamics_dead_meat_stall_mul_time,
-                                         g.dynamics_dead_meat_stall_mul, unit_.plane_lost_drag_timer_c3c);
-                            if (!(m > t)) m = t;                                           // 007DC955-007DC961
+                        // unit+5Dh: the death byte 007D0B80 sets, or the state's own
+                        // simulate flag.
+                        bool unit_dead_5d() override {
+                            const GameUnitSlot& u = plane_.unit_;
+                            return u.plane_death_c3a || (u.state != nullptr && u.state->simulate != 0);
                         }
-                        if (!(m > 0.0f)) return;                                           // 007DC970
-                        const float pitch = unit_.plane_pitch_angle_c64;
-                        float gp;
-                        if (!dead) {
-                            gp = interp(g.dynamics_spd_multipliers_stall_on_pitch, 1.0f,
-                                        g.dynamics_spd_multipliers_stall_off_pitch, 0.0f, pitch);   // 00F87318/00F87314
-                        } else if (spinning) {
-                            gp = interp(g.dynamics_dead_meat_spin_stall_mul_on_pitch, 1.0f,
-                                        g.dynamics_dead_meat_spin_stall_mul_off_pitch, 0.0f, pitch);
-                        } else {
-                            gp = interp(g.dynamics_dead_meat_stall_mul_on_pitch, 1.0f,
-                                        g.dynamics_dead_meat_stall_mul_off_pitch, 0.0f, pitch);
+                        // C36h (spinning, set by 007D0B80 for either wing) or C37h
+                        // (rightspinning); 007D104F's leftspinning C38h is not kept
+                        // apart from C36h here.
+                        bool unit_spinning_c36_c38() override {
+                            return plane_.unit_.plane_death_c36 || plane_.unit_.plane_spin_right_c37;
                         }
-                        float d = static_cast<float>(static_cast<double>(unit_.plane_airborne_908) - 1.0);  // 007DCA2B
-                        if (0.0f > d) d = 0.0f;
-                        else if (d > 1.0f) d = 1.0f;
-                        const float f = static_cast<float>(static_cast<double>(gp) * m * d);   // 007DCA6E
-                        const bool spin = GameUnitsHost::Impl::kFreeFlightDyingSpinBound && dead;
-                        if (!(f > 0.0f) && !spin) return;                                  // 007DCA82
-                        // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps the
-                        // descriptor's zero. Cached per class (LABELLED).
-                        static std::map<int, float> stall_rot_accel_by_class;
-                        auto it = stall_rot_accel_by_class.find(unit_.row.type_id);
-                        if (it == stall_rot_accel_by_class.end()) {
-                            it = stall_rot_accel_by_class.emplace(unit_.row.type_id,
-                                owner_.lua.read_vehicle_class_number(unit_.row.type_id,
-                                    "StallRotAccel", 0.0f)).first;
+                        float unit_c3c() override { return plane_.unit_.plane_lost_drag_timer_c3c; }
+                        float unit_pitch_c64() override { return plane_.unit_.plane_pitch_angle_c64; }
+                        float unit_bank_c68() override { return plane_.unit_.plane_bank_angle_c68; }
+                        float unit_airborne_908() override { return plane_.unit_.plane_airborne_908; }
+                        void apply_force_at_point_007dafd0(const float point[3], const float direction[3],
+                                                           float force, float step, float k) override {
+                            take_world_angular();
+                            // unit+674h, the degenerate-axis fallback, is pose row 0.
+                            bsp::water_angular_kick_007dafd0(w_, pose_, point, direction, force, step, k,
+                                                             pose_.rows[0]);
+                            if (k == 1000.0f) {
+                                ++plane_.owner_.wreck_lift_kicks;      // 007DCCCB
+                            } else {
+                                ++plane_.owner_.stall_force_kicks;     // 007DCAE6
+                            }
                         }
-                        const float force = static_cast<float>(static_cast<double>(f) * it->second);
-                        const bsp::PlaneWaterPose pose = water_pose();
-                        float w[3];
-                        for (int c = 0; c < 3; ++c) {
-                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
-                                + pose.rows[1][c] * unit_.plane_body_angular[1]
-                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        float* world_angular_24() override {
+                            take_world_angular();
+                            return w_;
                         }
-                        const float nose[3] = {0.0f, 0.0f, 1.0f};
-                        const float down[3] = {0.0f, -1.0f, 0.0f};                          // 00D7A260
-                        if (f > 0.0f) {
-                            bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1.5f,
-                                pose.rows[0]);                                              // 007DCAE6, 1.5f 00CE380C
-                            ++owner_.stall_force_kicks;
+                        const float* dying_spin_rates_f0() override {
+                            // 007D7EA0's draw, from the plane's keyed stream at first use.
+                            plane_.seed_dying_spin_007d7ea0(plane_.owner_.lua.plane_globals());
+                            ++plane_.owner_.dying_spin_steps;
+                            return plane_.unit_.dying_spin_f0;
                         }
-                        if (spin) {
-                            // 007DCAF2-007DCB40: ctl+24h..2Ch += step * ctl+F0h..F8h.
-                            seed_dying_spin_007d7ea0(g);
-                            const float a = step * unit_.dying_spin_f0[0];
-                            const float b = unit_.dying_spin_f0[1] * step;
-                            const float c = step * unit_.dying_spin_f0[2];
-                            w[0] = w[0] + a;
-                            w[1] = b + w[1];
-                            w[2] = w[2] + c;
-                            ++owner_.dying_spin_steps;
+                        bool wreck_lift_94() override { return plane_.unit_.plane_ctl_94; }
+                        // vtable[34h]: the world velocity.
+                        void unit_velocity_vcall_34(float out[3]) override {
+                            for (int i = 0; i < 3; ++i) out[i] = plane_.unit_.plane_world_velocity[i];
                         }
-                        for (int r2 = 0; r2 < 3; ++r2) {
-                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
-                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        void clear_controller_8c() override {
+                            // LABELLED: ctl+8Ch, the levelling input 007D9F60 reads; the
+                            // host's pose step keeps its own (packet cc9_plane_pose_first).
                         }
+                        // Hands ctl+24h back as body rates when the body used it.
+                        void hand_back_world_angular() {
+                            if (!have_world_) return;
+                            for (int r = 0; r < 3; ++r) {
+                                plane_.unit_.plane_body_angular[r] = pose_.rows[r][0] * w_[0]
+                                    + pose_.rows[r][1] * w_[1] + pose_.rows[r][2] * w_[2];
+                            }
+                            have_world_ = false;
                         }
+
+                    private:
+                        void take_world_angular() {
+                            if (have_world_) return;
+                            have_world_ = true;
+                            pose_ = plane_.water_pose();
+                            for (int c = 0; c < 3; ++c) {
+                                w_[c] = pose_.rows[0][c] * plane_.unit_.plane_body_angular[0]
+                                    + pose_.rows[1][c] * plane_.unit_.plane_body_angular[1]
+                                    + pose_.rows[2][c] * plane_.unit_.plane_body_angular[2];
+                            }
+                        }
+                        PlaneBinding& plane_;
+                        std::uint32_t mode_fc_{0};
+                        bool have_world_{false};
+                        bsp::PlaneWaterPose pose_{};
+                        float w_[3]{0.0f, 0.0f, 0.0f};
+                    };
+                    void free_flight_step_007dc830(float step) {
+                        FreeFlightStepBinding binding(*this);
+                        bsp::cc13_front3_plane_flight_free_flight_step_007dc830(step, binding);
+                        binding.hand_back_world_angular();
+                        owner_.done("PlaneFlight::free_flight_step_007dc830", 0x007dc830u);
                     }
                     // 007D7EA0's dying-spin draw (007D7F90, then 0043996D / 0043998D in
                     // 00439950), from the plane's keyed stream at first use.
@@ -22597,6 +22592,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.dying_spin_f0[2] = d[2] * m;   // 007D7FB6
                         ++owner_.dying_spin_seeds;
                     }
+                    // 007DD493-007DD9AA after the rate law, on the world angular
+                    // velocity ctl+24h. LABELLED: this host keeps the body rates
+                    // (ctl+48h) as the state, so the world vector is taken through
+                    // the pose rows and handed back the same way. The horizontal
+                    // speed (vtable[+34h]) is the world velocity with y zeroed;
+                    // unit+674h, the degenerate-axis fallback, is pose row 0.
                     void water_law_tail(float step, float forward_speed) {
                         const bsp::PlaneWaterPose pose = water_pose();
                         float w[3];
