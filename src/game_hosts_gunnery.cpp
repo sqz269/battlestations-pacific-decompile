@@ -19406,24 +19406,51 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
         const bsp::RoleOwnerRoute route =
             bsp::role_owner_route_0095ac1d(false, static_cast<int>(mask));
         const bool walk_156 = route == bsp::RoleOwnerRoute::DeviceKindSet156;
-        if (!walk_156 && route != bsp::RoleOwnerRoute::DeviceKindSet2346) {
-            return;   // 20h / 80h: the group 4/5 models
+        const bool walk_slots_7 = route == bsp::RoleOwnerRoute::GlobalCollectionA;
+        const bool walk_slots_89 = route == bsp::RoleOwnerRoute::GlobalCollectionB;
+        if (!walk_156 && !walk_slots_7 && !walk_slots_89
+            && route != bsp::RoleOwnerRoute::DeviceKindSet2346) {
+            return;   // no mask bit 04h, 10h, 20h or 80h (and mask != 8)
         }
-        // The unit's device list (this+48h, next +44h): its guns in gun order.
-        // Every row answers IsKindOf(20h); the descriptor's +80h kind is the
-        // Function, GameGunRow::category.
         std::vector<GameGunRow*> rows;
         std::vector<gp::RoleDevice> devices;
-        for (GameGunRow& gun : h.guns) {
-            if (gun.unit_index != unit) continue;
-            rows.push_back(&gun);
-            devices.push_back({true, gun.category});
+        if (walk_slots_7 || walk_slots_89) {
+            // Goal 5 chain 651. 009540D0 (mask 20h, slot table 00E0A520 = {7, 12})
+            // and 00954170 (mask 80h, 00E0A528 = {8, 9, 12}): 00952080 / 009520E0
+            // walk the unit's twelve typed device lists (unit+394h + Function * 0Ch,
+            // keyed by [[device+3F4h]+80h] as 00956BA0's erase shows), every device
+            // of the listed Functions, list by list in table order, with no
+            // IsKindOf test (bsp.py show 009540d0 --asm). Here: the unit's gun rows
+            // of those Functions (GameGunRow::category), Function by Function.
+            const auto collect = [&](int function) {
+                for (GameGunRow& gun : h.guns) {
+                    if (gun.unit_index == unit && gun.category == function) rows.push_back(&gun);
+                }
+            };
+            if (walk_slots_7) {
+                for (const std::int32_t f : gp::kSlotTable_00e0a520) collect(f);
+            } else {
+                for (const std::int32_t f : gp::kSlotTable_00e0a528) collect(f);
+            }
+        } else {
+            // The unit's device list (this+48h, next +44h): its guns in gun order.
+            // Every row answers IsKindOf(20h); the descriptor's +80h kind is the
+            // Function, GameGunRow::category.
+            for (GameGunRow& gun : h.guns) {
+                if (gun.unit_index != unit) continue;
+                rows.push_back(&gun);
+                devices.push_back({true, gun.category});
+            }
         }
         // msg+28h the slot, msg+2Ch 1 for take / 0 for release. The caller
         // passes its `take == 1` test, so any other +2Ch value arrives as 0.
         const gp::RoleOwnerMessage message{slot, take ? 1 : 0};
         std::vector<gp::RoleStep> steps;
-        if (walk_156) {
+        if (walk_slots_7 || walk_slots_89) {
+            // 009540F3 / 00954193 CMP [msg+2Ch],1: take vtable[154h](0, msg+28h);
+            // otherwise vtable[154h](0, 8) then vtable[1E8h](0).
+            steps = gp::role_owner_walk_slots_009540d0(rows.size(), message);
+        } else if (walk_156) {
             // 00953F74: [unit+1BCh] (role 4) against msg+28h.
             std::int32_t role4 = 8;
             if (!h.units.unit_current_role_slot(unit, 4, role4)) role4 = 8;
@@ -19440,8 +19467,10 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
                 ++h.seat_role_releases;
                 break;
             case gp::RoleAction::Assign_vtable154:
-                gun.seat_1ac = step.argument;                  // 00954056 vtable[154h](0, slot)
-                ++h.seat_role_takes;
+                // 00954056 / 0095410F vtable[154h](0, slot); 0095412D (0, 8) on a
+                // 009540D0 / 00954170 release, counted at its vtable[1E8h] below.
+                gun.seat_1ac = step.argument;
+                if (take) ++h.seat_role_takes;
                 break;
             case gp::RoleAction::SelectFireMode_0072d5b0:
                 // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
@@ -19449,11 +19478,16 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
                 h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
                 break;
             case gp::RoleAction::Activate_vtable1e8:
-                // Only 009540D0's release emits this; neither walk here does.
-                throw std::logic_error("0095AC1D: 00953F60 / 00954000 emitted vtable[1E8h]");
+                // 0095413C / 009541DC vtable[1E8h](0), the trigger argument the
+                // seat ray and the group 4 / 5 arms keep (00729F70's second call).
+                gun.seat_trigger = step.argument != 0;
+                ++h.seat_role_releases;
+                break;
             }
         }
-        if (walk_156) h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
+        if (walk_slots_7) h.done("PlayerGunSeat::role_owner_walk_slots_7", 0x009540d0u);
+        else if (walk_slots_89) h.done("PlayerGunSeat::role_owner_walk_slots_8_9", 0x00954170u);
+        else if (walk_156) h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
         else h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
     }
 }

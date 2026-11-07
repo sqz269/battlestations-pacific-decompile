@@ -3,9 +3,9 @@
   "slot": "g5-w3",
   "goal": 5,
   "base": "origin/main 97a4f9a8a (fast-forwarded twice; the branch had no commits of its own)",
-  "picked": "Mission Lua SetFireDamage / SetWaterDamage and the 9Eh repair-damage arm's set routes into the gunnery host's ship repair task",
+  "picked": "Mission Lua SetFireDamage / SetWaterDamage and the 9Eh repair-damage arm's set routes into the gunnery host's ship repair task; then the MT_ROLEOWNER device walks for masks 20h / 80h",
   "wired_before": 10190,
-  "wired_after": 10194,
+  "wired_after": 10196,
   "rows": [
     {
       "native": "0088e320",
@@ -26,6 +26,16 @@
       "native": "00939fa0",
       "status": "wired",
       "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_set_seconds, from apply_repair_damage_arm_9e (water channel, add byte 0)"
+    },
+    {
+      "native": "009540d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::role_owner_device_walk_0095ac1d (route GlobalCollectionA, mask 20h): role_owner_walk_slots_009540d0 over the unit's Function 7 gun rows (slot table 00E0A520 = {7})"
+    },
+    {
+      "native": "00954170",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::role_owner_device_walk_0095ac1d (route GlobalCollectionB, mask 80h): the same body role_owner_walk_slots_009540d0 over Function 8 then 9 (00E0A528 = {8, 9}); the call graph credits the shared body to 009540D0"
     },
     {
       "native": "006b1190",
@@ -116,12 +126,14 @@
     "GameGunneryHost::route_repair_damage_9e: a Lua-routed 9Eh copy through queue_repair_add_damage_9e and 00821E80's 9Eh arm, for class-06 ships",
     "GameGunneryHost::Impl::apply_repair_damage_arm_9e: the 9Eh arm over repair_damage_route_0082203d (add 0093A470 / 0093A4F0, set 00939F90 / 00939FA0); the ship-hit and Fire-failure copies now take it instead of their inline add-only test",
     "GameGunneryHost::Impl::damage_control_set_seconds: the set arms over the RepairTask view",
-    "DamageSettingArgs / DamageSettingHost (game_hosts_lua.cpp): LuaArgs and Seg56HostUnreached adapters for 0088E320 / 0088E790"
+    "DamageSettingArgs / DamageSettingHost (game_hosts_lua.cpp): LuaArgs and Seg56HostUnreached adapters for 0088E320 / 0088E790",
+    "GameGunneryHost::role_owner_device_walk_0095ac1d: masks 20h / 80h now walk the Function 7 and 8 / 9 rows (take: seat_1ac = slot; release: seat_1ac = 8 and seat_trigger = false, 009540D0's vtable[154h](0, 8) / vtable[1E8h](0)) instead of returning"
   ],
   "evidence": [
     "bsp.py show 00821e80 --asm 0082203D..008220C2: channel 0 -> CMP byte [msg+20h],0, JZ 008220BD CALL 00939F90 else CALL 0093A470; channel 1 -> JZ 00822076 CALL 00939FA0 else CALL 0093A4F0; other channels fall to 008220C2",
     "bsp.py show 0088e320 --asm: 00888AA0 arg 0, 00B66270 arg 1 FSTP float, 00B663F0 == 3 then 00B66250 arg 2, SETZ into +20h, 0077C2A0(ECX entity; &msg, 7, 0)",
-    "installed scripts: usn_04_defend_guadalcanal.lua:1380 SetFireDamage(Mission.JAP_DummyDD[1], 100); usn_09_leyte.lua:1552 and jm02.lua SetFireDamage(unit, 0, true); jm02.lua:3438 SetWaterDamage(Mission.FakePoW, 5000)"
+    "installed scripts: usn_04_defend_guadalcanal.lua:1380 SetFireDamage(Mission.JAP_DummyDD[1], 100); usn_09_leyte.lua:1552 and jm02.lua SetFireDamage(unit, 0, true); jm02.lua:3438 SetWaterDamage(Mission.FakePoW, 5000)",
+    "bsp.py show 009540d0 / 00954170 --asm: 00952080 / 009520E0 over slot tables 00E0A520 and 00E0A528; image bytes 00E0A520 = (7, 12), 00E0A528 = (8, 9, 12); 00956BA0 keys the typed lists unit+394h by [[gun+3F4h]+80h]"
   ],
   "left": "The scene database's +24h deferred records (004693C0 / 004697B0) need native property bags; the plane engine list at unit+C98h (007DE600, 007EB0B0, enginefire 007BA170 and its 65h message rows) needs the FX component 007EC5A0 and engine objects; the in-mission camera (game+19FCh) blocks the movie gamecamera modifier, the weapon-group orbit camera and the ambience volume."
 }

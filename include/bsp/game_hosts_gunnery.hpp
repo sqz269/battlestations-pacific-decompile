@@ -340,8 +340,11 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // host's gun rows: mask & 4 or mask == 8, 00953F60 (a release only: Function
 // 1/5/6 through 00729F70, keeping a Function 6 when [unit+1BCh] is the slot);
 // mask & 10h, 00954000 (Function 2/3/4/6: take vtable[154h](0, slot), plus
-// 0072D5B0(0, 0) on Function 6, a record; release 00729F70). Masks 20h and 80h
-// (009540D0 / 00954170) stay with the group 4/5 models. This is what puts the
+// 0072D5B0(0, 0) on Function 6, a record; release 00729F70). Goal 5 chain 651:
+// mask & 20h, 009540D0 over the Function 7 devices, and mask & 80h, 00954170 over
+// Function 8 then 9 (take vtable[154h](0, slot); release vtable[154h](0, 8) and
+// vtable[1E8h](0)); the group 4/5 fire models still seat their tubes and
+// launchers themselves when the harness fires a group. This is what puts the
 // player's artillery in the seat in single player: 0095A05B, the hand-over in
 // 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
 // True: the walk runs. False: role takes leave every gun AI-held.
