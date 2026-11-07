@@ -8591,11 +8591,12 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
 // Packet cc9_lua_listeners. 008C6760 AddListener(channel, id, block) -> 00980C10:
 // channel map (00980150), the id's slot (00978D60), the subscription 0097E360
 // builds. A re-add of the same (channel, id) replaces the slot.
-int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument_count) {
+void GameMissionLuaHost::add_listener_00980c10(lua_State* state, int argument_count,
+    const std::string& channel, const std::string& id) {
     ++summary_.listener_adds;
     ListenerEntry entry;
-    entry.channel = listener_string_argument(state, 1);
-    entry.id = listener_string_argument(state, 2);
+    entry.channel = channel;
+    entry.id = id;
     if (argument_count >= 3 && ::lua_type(state, 3) == LUA_TTABLE) {
         // Goal 4 chain 352: the native construct + Load for every channel 0097E360
         // accepts (load_listener_subscription_native). OFF, an unknown channel, or a
@@ -8727,7 +8728,7 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             && listener_key_equal(existing.id, entry.id)) {
             existing = entry;
             log_.implemented("MissionLuaNative::AddListener", "008c6760");
-            return 0;
+            return;
         }
     }
     log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" callback=\"%s\" entities=%zu "
@@ -8735,14 +8736,12 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
         entry.callback.c_str(), entry.entity_ids.size(), entry.attacker_filters_set ? 1 : 0);
     listeners_.push_back(std::move(entry));
     log_.implemented("MissionLuaNative::AddListener", "008c6760");
-    return 0;
+    return;
 }
 
-int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argument_count) {
-    static_cast<void>(argument_count);
+void GameMissionLuaHost::remove_listener_00980d30(const std::string& channel,
+    const std::string& id) {
     ++summary_.listener_removes;
-    const std::string channel = listener_string_argument(state, 1);
-    const std::string id = listener_string_argument(state, 2);
     // 00980D30 removes the checked subscription; OFF keeps the tolerant vector search.
     {
         // 008C6AE7 passes the two Lua strings to 00980D30 (RET 8). The registry
@@ -8787,31 +8786,186 @@ int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argum
         bsp::oct18_tail_c::warning_remove_listener_00980d30(view);
     }
     log_.implemented("MissionLuaNative::RemoveListener", "008c6990");
-    return 0;
 }
 
-// 008C6BB0 -> 00980E00, the result pushed with 00B66450 BSP_LuaObject_PushBoolean.
-int GameMissionLuaHost::run_is_listener_active_008c6bb0(lua_State* state, int argument_count) {
-    static_cast<void>(argument_count);
+// 00980E00 on [00F8A0C4]: whether (channel, id) is registered.
+bool GameMissionLuaHost::listener_active_00980e00(const std::string& channel,
+    const std::string& id) {
     ++summary_.listener_queries;
-    const std::string channel = listener_string_argument(state, 1);
-    const std::string id = listener_string_argument(state, 2);
-    bool active = false;
     for (const ListenerEntry& entry : listeners_) {
         if (listener_key_equal(entry.channel, channel) && listener_key_equal(entry.id, id)) {
-            active = true;
-            break;
+            return true;
         }
     }
-    // 008C6D11: 00B66450 native_lua_push_boolean over the call's state; OFF keeps lua_pushboolean.
-    if constexpr (bsp::kWireLuaHostBound) {
-        const NativeBindingPushFrame frame(state);
-        native_lua_push_boolean_00b66450(frame.object, active ? 1 : 0);
-    } else {
-        ::lua_pushboolean(state, active ? 1 : 0);
+    return false;
+}
+
+namespace {
+[[noreturn]] void listener_row_unreached(const char* what) {
+    throw std::logic_error(std::string("AddListener/RemoveListener/IsListenerActive: unreached ")
+                           + what);
+}
+
+// Goal 5 chain 659. What 008C6760 AddListener, 008C6990 RemoveListener and 008C6BB0
+// IsListenerActive read from their frames (src/engine_seg56_cc13.cpp): 00B662B0 on
+// argument 1, then on argument 0 (008C683D PUSH 1 first). A slot that is not a string
+// reads as "" (listener_string_argument, the reader the host arms used). AddListener's
+// table (argument 2) is handed to 00980C10 in place, which reads it at Lua slot 3.
+class ListenerRowArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit ListenerRowArgs(lua_State* state) : state_(state) {}
+    std::string get_string(int index) override {
+        if (index != 0 && index != 1) listener_row_unreached("00B662B0 past argument 1");
+        return listener_string_argument(state_, index + 1);
     }
+    int count() override { listener_row_unreached("00B663F0"); }
+    int get_integer(int) override { listener_row_unreached("00B66290"); }
+    double get_number(int) override { listener_row_unreached("00B66270"); }
+    bool get_boolean(int) override { listener_row_unreached("00B66250"); }
+    bool is_string(int) override { listener_row_unreached("00B660A0"); }
+    bool is_nil(int) override { listener_row_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { listener_row_unreached("008889C0"); }
+    void* entity_at(int) override { listener_row_unreached("00888AA0"); }
+    bool is_boolean(int) override { listener_row_unreached("00B66000"); }
+    bool is_number(int) override { listener_row_unreached("00B66050"); }
+    bool is_integer(int) override { listener_row_unreached("00B66A60"); }
+    bool is_table(int) override { listener_row_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { listener_row_unreached("00888760"); }
+    bool is_vector3_table(int) override { listener_row_unreached("0088B840"); }
+    void* to_userdata(int) override { listener_row_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { listener_row_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        listener_row_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        listener_row_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// IsListenerActive's one push: 00B66450 (008C6D11) over the call's state.
+class ListenerRowResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit ListenerRowResults(lua_State* state) : state_(state) {}
+    void push_boolean(bool value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    void push_number(int) override { listener_row_unreached("00B664B0"); }
+    void push_float(float) override { listener_row_unreached("00B66480"); }
+    void push_nil() override { listener_row_unreached("00B66430"); }
+    void push_string(const std::string&) override { listener_row_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        listener_row_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
+        listener_row_unreached("0088BA30");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        listener_row_unreached("00B67930 vector fields");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The three message-system services on [00F8A0C4]: 00980C10 add, 00980D30 remove and
+// 00980E00 query, the host's listener registry (listeners_) through the helpers
+// above. Every other PresentationHost service belongs to another binding.
+class ListenerRowHost final : public bsp::cc13_seg56::PresentationHost {
+public:
+    using Add = std::function<void(const std::string&, const std::string&)>;
+    using Remove = std::function<void(const std::string&, const std::string&)>;
+    using Active = std::function<bool(const std::string&, const std::string&)>;
+    ListenerRowHost(Add add, Remove remove, Active active)
+        : add_(std::move(add)), remove_(std::move(remove)), active_(std::move(active)) {}
+
+    void listener_add(const std::string& first, const std::string& second,
+                      bsp::cc13_seg56::LuaArgs&, int callback_index) override {
+        if (callback_index != 2) listener_row_unreached("00980C10 off argument 2");
+        add_(first, second);
+    }
+    void listener_remove(const std::string& first, const std::string& second) override {
+        remove_(first, second);
+    }
+    bool listener_active(const std::string& first, const std::string& second) override {
+        return active_(first, second);
+    }
+    float voice_current_level_d4() override { listener_row_unreached("voice +D4h"); }
+    void voice_begin_sound_fade(float, float, const std::string&) override {
+        listener_row_unreached("005B9760");
+    }
+    float global_config_default_fade_e0() override { listener_row_unreached("00432650 +E0h"); }
+    void set_skip_movie_name(const std::string&) override { listener_row_unreached("+19Ch"); }
+    void* lua_table_entity_ptr(bsp::cc13_seg56::LuaArgs&, int) override {
+        listener_row_unreached("00888D20");
+    }
+    void entity_set_force_3d_visible_2f0(void*, bool) override {
+        listener_row_unreached("entity +2F0h");
+    }
+    std::vector<std::string> dialog_active_ids() override { listener_row_unreached("00450750"); }
+    std::int32_t game_loading_depth_644() override { listener_row_unreached("game+644h"); }
+    void please_wait_screen_hide() override { listener_row_unreached("0060D3E0"); }
+    void game_set_cinematic_mode(int, int, int) override { listener_row_unreached("004CD0F0"); }
+
+private:
+    Add add_;
+    Remove remove_;
+    Active active_;
+};
+}  // namespace
+
+// Goal 5 chain 659. 008C6760 AddListener(channel, id, block) on its body lua_add_listener
+// (src/engine_seg56_cc13.cpp): argument 1, then argument 0 (00B662B0), then 00980C10 with
+// the LuaObject of argument 2 (008C68CC): add_listener_00980c10. No result.
+int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument_count) {
+    ListenerRowArgs args(state);
+    ListenerRowHost host(
+        [&](const std::string& channel, const std::string& id) {
+            add_listener_00980c10(state, argument_count, channel, id);
+        },
+        [](const std::string&, const std::string&) { listener_row_unreached("00980D30"); },
+        [](const std::string&, const std::string&) -> bool {
+            listener_row_unreached("00980E00");
+        });
+    return bsp::cc13_seg56::lua_add_listener(args, host);
+}
+
+// Goal 5 chain 659. 008C6990 RemoveListener(channel, id) on its body lua_remove_listener:
+// argument 1, then argument 0, then 00980D30 (008C6AE7): remove_listener_00980d30.
+int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ListenerRowArgs args(state);
+    ListenerRowHost host(
+        [](const std::string&, const std::string&) { listener_row_unreached("00980C10"); },
+        [this](const std::string& channel, const std::string& id) {
+            remove_listener_00980d30(channel, id);
+        },
+        [](const std::string&, const std::string&) -> bool {
+            listener_row_unreached("00980E00");
+        });
+    return bsp::cc13_seg56::lua_remove_listener(args, host);
+}
+
+// Goal 5 chain 659. 008C6BB0 IsListenerActive(channel, id) on its body
+// lua_is_listener_active: argument 1, then argument 0, 00980E00, and the answer pushed
+// with 00B66450 (008C6D11); one result.
+int GameMissionLuaHost::run_is_listener_active_008c6bb0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ListenerRowArgs args(state);
+    ListenerRowResults results(state);
+    ListenerRowHost host(
+        [](const std::string&, const std::string&) { listener_row_unreached("00980C10"); },
+        [](const std::string&, const std::string&) { listener_row_unreached("00980D30"); },
+        [this](const std::string& channel, const std::string& id) {
+            return listener_active_00980e00(channel, id);
+        });
+    const int count = bsp::cc13_seg56::lua_is_listener_active(args, results, host);
     log_.implemented("MissionLuaNative::IsListenerActive", "008c6bb0");
-    return 1;
+    return count;
 }
 
 // Packet cc13-ver5, under kLuaEntityKilledListenersBound. 00986480's `entityKilled`

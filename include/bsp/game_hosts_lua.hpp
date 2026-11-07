@@ -2072,6 +2072,12 @@ public:
     int run_add_listener_008c6760(lua_State* state, int argument_count);
     int run_remove_listener_008c6990(lua_State* state, int argument_count);
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
+    // Goal 5 chain 659: the three rows run their bodies (src/engine_seg56_cc13.cpp),
+    // whose message-system services on [00F8A0C4] are these.
+    void add_listener_00980c10(lua_State* state, int argument_count,
+                               const std::string& channel, const std::string& id);
+    void remove_listener_00980d30(const std::string& channel, const std::string& id);
+    bool listener_active_00980e00(const std::string& channel, const std::string& id);
     void dispatch_kill_listeners_009813a0();
     void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
     void dispatch_exit_zone_listeners_00982120();       // packet cc13-fix3
