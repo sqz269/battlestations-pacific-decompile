@@ -184,6 +184,15 @@ public:
     // site's vtable[14h] 006CF9F0. `plane_id` is the plane's +174h word;
     // returns the copy's +20h.
     std::uint16_t queue_airbase_appear_ready_plane_86(std::uint16_t plane_id) const;
+    // Goal 5 chain 628. MT_AIRBASE_DOLAUNCHSLOT (89h): 006C64B0, the queued
+    // slot wait, serves the head slot with 006BC8E0(slot) at 006C6502, which
+    // builds the 24h-byte message on its stack (0075B430(89h), +18h/+1Ah/+1Ch
+    // zero, +4h = 1, vtable 00CF85F0, +20h = slot) and routes it to the
+    // block's owner (+7Ch) with 0077C2A0(msg, 1, 0), the local bit; then
+    // 006BC440 write (header, +1Ch bit, +20h in 8 bits), 00768530 case 89h at
+    // 00769306 (006BC3E0), 006BC470 read. The receiver 006CD6C0's case 8 runs
+    // 006C7490(copy slot, 0). Returns the copy's +20h slot.
+    std::uint32_t queue_airbase_do_launch_slot_89(std::uint32_t slot) const;
     // Goal 4 chain 260. The weapon director's kind 5Ah (session message 90):
     // 0071DD30 (sub-kind 2) at 0071DD4B..0071DD81: 0075B430(5Ah), +18h word 0,
     // +1Ah 0, +4h = 1, +1Ch 0, vtable 00CFD9C4, +20h = the sub-kind, +24h =

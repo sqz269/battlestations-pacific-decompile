@@ -2822,9 +2822,21 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
     for (std::size_t d = 0; d < registry.size(); ++d) {
         bsp::AirOpsDeck* deck = registry.mutable_at(d);
         if (deck == nullptr) continue;
-        const int slot = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
+        int slot = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
         if (slot < 0) continue;
-        // 006BC8E0 routes 89h; 006CD6C0 case 8 runs 006C7490(slot, 0).
+        // 006C6502: 006BC8E0 routes 89h through 0076E520's local copy, and
+        // 006CD6C0 case 8 runs 006C7490(copy slot, 0). A standalone host
+        // without a live commands queue keeps the served slot.
+        if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+            const std::uint32_t copy =
+                messages->queue_airbase_do_launch_slot_89(static_cast<std::uint32_t>(slot));
+            if (copy >= deck->slots.size()) {
+                // LABELLED: the image's receiver indexes the copy's slot unchecked.
+                log_.unimplemented("AirOps::do_launch_slot_copy_out_of_range", "006c7490");
+                continue;
+            }
+            slot = static_cast<int>(copy);
+        }
         bsp::air_ops_launch_start_006c7490(*deck, slot);
         ++player_launch_started_;
         log_.notef("air ops queued launch: base=\"%s\" slot=%d squadron=%u target=%u "

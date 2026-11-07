@@ -1291,6 +1291,88 @@ std::uint16_t HostSessionMessages::queue_airbase_appear_ready_plane_86(
     return queued.plane_id_20;
 }
 
+namespace {
+// Goal 5 chain 628. The 89h class: the 20h-byte unit message and the slot
+// dword at +20h, 24h bytes (006BC8F5 SUB ESP,24h; 00768530 case 89h
+// allocates 24h, include/bsp/oct18_tail_a_factory.inc).
+struct DoLaunchSlotMessage89 {
+    seg42::UnitMessage u;
+    std::uint32_t slot_20;
+};
+static_assert(sizeof(DoLaunchSlotMessage89) == 0x24);
+static_assert(offsetof(DoLaunchSlotMessage89, slot_20) == 0x20);
+
+// 006BC8E0 reads one word of the block, the router at +7Ch (006BC937 MOV
+// ECX,[ESI+7Ch], the owner entity 0077C2A0 routes to). LABELLED: this process
+// delivers to the deck its caller served, so the router is not read past the
+// route below and the view carries none.
+struct AirOpsBlockRouterView {
+    std::uint8_t unread_00[0x7c];
+    void* router_7c;
+};
+static_assert(offsetof(AirOpsBlockRouterView, router_7c) == 0x7c);
+
+// 006BC8E0's two services: 0075B430 (006BC904) and 0077C2A0 (006BC93F). The
+// route runs 0077C44D's local copy, as 0076E520 does: the class writer, the
+// factory's 89h constructor 006BC3E0 (which takes the same 0075B430) and the
+// class reader. Every other segment-29 service traps.
+class DoLaunchSlotRouteBinding final : public cc13_seg29U::Seg29UTrapHost {
+public:
+    explicit DoLaunchSlotRouteBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_base_0075b430(void* message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+    void session_route_message_0077c2a0(void*, void* message, std::uint32_t flags,
+                                        std::uint32_t) override {
+        // 006BC92D PUSH 1: the local bit, so 0077C43A..0077C45A take 0076E520.
+        if ((flags & 1u) == 0u) {
+            throw std::logic_error("DoLaunchSlot: 006BC8E0 routed without the local bit");
+        }
+        // 0076E575: vtable[4] = 006BC440, the header, +1Ch bit, +20h in 8 bits.
+        LocalStream stream;
+        band_006b_cc13::airbase_do_launch_slot_write_006bc440(message, &stream.out);
+        // 00768530 case 89h: operator new(24h), 006BC3E0 at 00769306; 0076A27B
+        // vtable[8] = 006BC470.
+        stream.begin_read();
+        DoLaunchSlotMessage89 queued{};
+        cc13_seg29U::do_launch_slot_message_construct_006bc3e0(&queued, *this);
+        band_006b_cc13::airbase_do_launch_slot_read_006bc470(&queued, &stream.in);
+        copy_type = queued.u.h.base.type_10;
+        copy_slot = queued.slot_20;
+        routed = true;
+        // 006BEDB0, slot 0 of 00CF85F0 for both, only restamps the root
+        // profile and frees for flags bit 0: neither message owns storage.
+    }
+    bool routed{false};
+    std::uint8_t copy_type{0};
+    std::uint32_t copy_slot{0};
+private:
+    const NativeSessionMessageContext& session_;
+};
+}  // namespace
+
+std::uint32_t HostSessionMessages::queue_airbase_do_launch_slot_89(std::uint32_t slot) const {
+    const Image& image = *image_;
+    AirOpsBlockRouterView block{};
+    DoLaunchSlotRouteBinding binding(image.session);
+    cc13_seg29U::air_ops_route_do_launch_slot_006bc8e0(&block, slot, binding);
+    // 00780120 asks the copy's IsType 006BC410 (89h, 49h, 46h; the table rule
+    // band_006b_cc13 keeps for it): none is on its ladder, so the copy takes
+    // the shared tail to the owner's session-kind switch, case 8 of 006CD6C0.
+    const band_006b_cc13::TypeIdRule* const is_type =
+        band_006b_cc13::find_type_id_rule(0x006BC410u);
+    if (!binding.routed || binding.copy_type != 0x89 || is_type == nullptr
+        || !band_006b_cc13::type_id_rule_accepts(*is_type, binding.copy_type)
+        || !copy_goes_to_unit_handler([is_type](std::uint8_t id) {
+               return band_006b_cc13::type_id_rule_accepts(*is_type, id);
+           })) {
+        throw std::logic_error("DoLaunchSlot: decoded copy did not reach the kind switch");
+    }
+    return binding.copy_slot;
+}
+
 HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     bool explode_to_parts) const {
     const Image& image = *image_;

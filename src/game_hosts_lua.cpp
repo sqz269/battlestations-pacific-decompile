@@ -11446,7 +11446,20 @@ int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
     int served = -1;
     if (deck != nullptr) {
         served = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
-        if (served >= 0) bsp::air_ops_launch_start_006c7490(*deck, served);
+        // 006C6502: 006BC8E0 routes 89h through 0076E520's local copy, and
+        // 006CD6C0 case 8 runs 006C7490(copy slot, 0).
+        if (served >= 0) {
+            int launch = served;
+            if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+                const std::uint32_t copy =
+                    messages->queue_airbase_do_launch_slot_89(static_cast<std::uint32_t>(served));
+                // LABELLED: the image's receiver indexes the copy's slot unchecked.
+                launch = copy < deck->slots.size() ? static_cast<int>(copy) : -1;
+                if (launch < 0) log_.unimplemented("AirOps::do_launch_slot_copy_out_of_range",
+                                                   "006c7490");
+            }
+            if (launch >= 0) bsp::air_ops_launch_start_006c7490(*deck, launch);
+        }
     }
     if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
         extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x0089698au);
