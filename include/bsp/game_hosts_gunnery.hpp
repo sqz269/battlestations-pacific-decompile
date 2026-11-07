@@ -1444,6 +1444,15 @@ public:
     // 00939FE0 directly on unit+A20h (008AD69F), storing the flag at task+46h, which
     // 0093C520's failure step reads. No message is routed.
     void set_failure_repair_enabled_00939fe0(std::size_t unit_index, bool enabled);
+    // Goal 5 chain 651. A 9Eh MT_SHIPREPAIR_ADDDAMAGE message that a mission Lua
+    // binding routes to a ship with 0077C2A0 flags 7 (0088E320 SetFireDamage, 0088E790
+    // SetWaterDamage: +1Ch the seconds, +20h the add byte, +24h the channel). The
+    // local copy goes through the session codec, as the ship-hit sender's does, and
+    // 00821E80's 9Eh arm (0082203D) applies it to the repair task at unit+A20h:
+    // add (0093A470 / 0093A4F0) or set (00939F90 / 00939FA0). False when the unit has
+    // no repair task here (not a class-06 ship).
+    bool route_repair_damage_9e(std::size_t unit_index, std::int32_t channel, float seconds,
+                                bool add);
     // Chain 479: current repair-task priority for the submarine repair arm.
     bool periscope_repair_priority(std::size_t unit_index, int& priority) const;
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;

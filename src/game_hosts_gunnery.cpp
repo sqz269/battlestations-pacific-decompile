@@ -4964,6 +4964,9 @@ struct GameGunneryHost::Impl {
     bool dc_logged{false};
     unsigned long long dc_water_adds{0};
     unsigned long long dc_fire_adds{0};
+    // Goal 5 chain 651: the 9Eh set arms (00939FA0 water, 00939F90 fire).
+    unsigned long long dc_water_sets{0};
+    unsigned long long dc_fire_sets{0};
     unsigned long long dc_doomed_notes{0};   // 0090E6C0 tail calls
     unsigned long long dc_deaths{0};
     unsigned long long element_hits{0};
@@ -5140,6 +5143,10 @@ struct GameGunneryHost::Impl {
     void route_ship_jam_6b_6c(std::size_t unit, bool steering);
     bool mothership_failure_message(std::size_t unit, const std::string& name, bool set);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
+    void damage_control_set_seconds(std::size_t unit, bool water, float seconds);
+    // 00821E80's 9Eh arm (0082203D..008220C2) over a delivered 9Eh copy.
+    void apply_repair_damage_arm_9e(std::size_t unit,
+        const bsp::HostSessionMessages::RepairAddDamageCopy& copy);
     void run_damage_control(float dt);
     const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
                                   std::size_t target) const {
@@ -14741,8 +14748,9 @@ public:
             // queues 0076E520's copy (007608E0 stores, 00760970 write,
             // 00768530 case 9Eh 007608E0, 007609E0 read). 00821E80's 9Eh arm
             // reads the copy: +24h 0 fire / 1 water (any other channel does
-            // nothing), +20h set the add arm, +1Ch the seconds. The set arms
-            // (0082206C / 008220AB) have no host consumer and no sender here.
+            // nothing), +20h the add byte, +1Ch the seconds. Goal 5 chain 651:
+            // the arm is apply_repair_damage_arm_9e, the one the Lua
+            // setters' copies take too.
             // No live commands host keeps the posted values.
             const bsp::HostSessionMessages* messages = commands_session_messages();
             bsp::HostSessionMessages::RepairAddDamageCopy copy{
@@ -14751,9 +14759,7 @@ public:
                 copy = messages->queue_repair_add_damage_9e(
                     static_cast<std::int32_t>(channel), value, add);
             }
-            if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
-                owner_.damage_control_add_seconds(victim_, copy.channel == 1, copy.seconds);
-            }
+            owner_.apply_repair_damage_arm_9e(victim_, copy);
         }
     }
 
@@ -17385,9 +17391,7 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
             if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
                 copy = messages->queue_repair_add_damage_9e(0, fire_failure_seconds, true);
             }
-            if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
-                damage_control_add_seconds(unit, copy.channel == 1, copy.seconds);
-            }
+            apply_repair_damage_arm_9e(unit, copy);
         }
     } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
@@ -17569,6 +17573,89 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     dc.fire_total_3c = task.fire_total_3c;
     dc.water_last_40 = task.water_last_40;
     dc.task.reported_repaired = task.byte_44 != 0;
+}
+
+// Goal 5 chain 651. 00939F90 (fire, task+38h) / 00939FA0 (water, task+34h), the 9Eh
+// set arms' callees (00821E80 at 008220BD / 00822076, ECX = unit+A20h). Each is one
+// MOVSS of the float argument into the task and RET 4 (bsp.py show 00939f90 --asm):
+// no statistics call, no +44h clear and no health test, unlike the adders. The task
+// view is this host's +34h / +38h, copied in and written back.
+void GameGunneryHost::Impl::damage_control_set_seconds(std::size_t unit, bool water,
+    float seconds) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    DamageControl& dc = damage_control[unit];
+    namespace g61 = bsp::gameplay_seg61_62_cc13;
+    g61::RepairTask task;
+    task.water_seconds_34 = dc.water_seconds;
+    task.fire_seconds_38 = dc.fire_seconds;
+    if (water) {
+        g61::repair_set_water_seconds_00939fa0(task, seconds);
+        ++dc_water_sets;
+        done("DamageControl::set_water_seconds_00939fa0", 0x00939fa0u);
+    } else {
+        g61::repair_set_fire_seconds_00939f90(task, seconds);
+        ++dc_fire_sets;
+        done("DamageControl::set_fire_seconds_00939f90", 0x00939f90u);
+    }
+    dc.water_seconds = task.water_seconds_34;
+    dc.fire_seconds = task.fire_seconds_38;
+}
+
+// Goal 5 chain 651. 00821E80's 9Eh arm, 0082203D..008220C2 (bsp.py show 00821e80
+// --asm): MOV EAX,[msg+24h]; SUB EAX,0 / JZ 00822090 takes channel 0 (fire), SUB
+// EAX,1 / JNZ 008220C2 drops every channel above 1 into the return-true epilogue;
+// in both arms CMP byte [msg+20h] against zero picks the adder (0093A470 /
+// 0093A4F0) for a non-zero byte and the setter (00939F90 / 00939FA0) for zero, with
+// the +1Ch float pushed through FLD / FSTP float unchanged.
+void GameGunneryHost::Impl::apply_repair_damage_arm_9e(std::size_t unit,
+    const bsp::HostSessionMessages::RepairAddDamageCopy& copy) {
+    switch (bsp::repair_damage_route_0082203d(static_cast<int>(copy.channel), copy.add)) {
+    case bsp::RepairDamageRoute::AddFireSeconds:
+        damage_control_add_seconds(unit, false, copy.seconds);   // 008220A3
+        break;
+    case bsp::RepairDamageRoute::AddWaterSeconds:
+        damage_control_add_seconds(unit, true, copy.seconds);    // 0082205C
+        break;
+    case bsp::RepairDamageRoute::SetFireSeconds:
+        damage_control_set_seconds(unit, false, copy.seconds);   // 008220BD
+        break;
+    case bsp::RepairDamageRoute::SetWaterSeconds:
+        damage_control_set_seconds(unit, true, copy.seconds);    // 00822076
+        break;
+    case bsp::RepairDamageRoute::Ignored:
+        break;
+    }
+}
+
+// Goal 5 chain 651. The Lua setters' 9Eh message (0088E4AC..0088E4FF SetFireDamage,
+// 0088E919..0088E96B SetWaterDamage: 0075B430(9Eh), word +18h 0, byte +1Ah 0, +4h 1,
+// vtable 00D0334C, +1Ch the seconds, +20h the add byte, +24h the channel), routed
+// with 0077C2A0 flags 7. Single player takes the local bit: 0076E520 rebuilds the
+// copy from its bits through 00768530 (queue_repair_add_damage_9e, the codec the
+// ship-hit sender's copy takes; the stores are the same fields 0080FA50 makes), and
+// the class-06 ship's session switch 00821E80 runs its 9Eh arm. A unit that is not
+// a ship has no unit+A20h task and its own switch has no 9Eh arm (00878350's
+// fallback answers false for 9Eh), so nothing is applied. LABELLED, as for the
+// ship-hit copy: delivered in the routing call, not at the drain.
+bool GameGunneryHost::route_repair_damage_9e(std::size_t unit_index, std::int32_t channel,
+    float seconds, bool add) {
+    Impl& h = *impl_;
+    if (unit_index >= h.unit_state.size() || unit_index >= h.damage_control.size()
+        || !h.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) {
+        return false;
+    }
+    bsp::HostSessionMessages::RepairAddDamageCopy copy{channel, seconds, add};
+    if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+        copy = messages->queue_repair_add_damage_9e(channel, seconds, add);
+    }
+    h.apply_repair_damage_arm_9e(unit_index, copy);
+    const auto& dc = h.damage_control[unit_index];
+    h.log.notef("  repair damage 9Eh: unit %zu %s channel=%d seconds=%.2f add=%d -> "
+        "water_s=%.2f fire_s=%.2f (00821E80 0082203D)", unit_index,
+        h.unit_state[unit_index].row.name.c_str(), static_cast<int>(copy.channel),
+        static_cast<double>(copy.seconds), copy.add ? 1 : 0,
+        static_cast<double>(dc.water_seconds), static_cast<double>(dc.fire_seconds));
+    return true;
 }
 
 // 0093CA20 per ship, the call 00826B84 makes through vtable slot 1ECh

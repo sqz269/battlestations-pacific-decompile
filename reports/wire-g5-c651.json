@@ -1,0 +1,127 @@
+{
+  "chain": 651,
+  "slot": "g5-w3",
+  "goal": 5,
+  "base": "origin/main 97a4f9a8a (fast-forwarded twice; the branch had no commits of its own)",
+  "picked": "Mission Lua SetFireDamage / SetWaterDamage and the 9Eh repair-damage arm's set routes into the gunnery host's ship repair task",
+  "wired_before": 10190,
+  "wired_after": 10194,
+  "rows": [
+    {
+      "native": "0088e320",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_set_damage_setting (binding_trampoline row 0088E320) -> bsp::seg56_options_cc13::lua_set_fire_damage over DamageSettingArgs / DamageSettingHost"
+    },
+    {
+      "native": "0088e790",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_set_damage_setting (binding_trampoline row 0088E790) -> bsp::seg56_options_cc13::lua_set_water_damage"
+    },
+    {
+      "native": "00939f90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_set_seconds, from apply_repair_damage_arm_9e (00821E80's 9Eh arm 0082203D, fire channel, add byte 0)"
+    },
+    {
+      "native": "00939fa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_set_seconds, from apply_repair_damage_arm_9e (water channel, add byte 0)"
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Mission save encoder: reached only under 006B68C0 <- 006B7710 BSP_MissionSave_Write, which has no rel32 call and no absolute-dword pointer anywhere in the image (dead in the shipped game)."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Mission load decoder: reached only under 006B23E0 <- 006B5960 BSP_MissionLoad_Finish, which has no call or pointer in the image (rel32 + absolute-dword scan)."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "As 006B1190: the mission save tree under 006B7710 is unreferenced in the image."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "As 006B1190: the mission save tree under 006B7710 is unreferenced in the image."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "As 006B1190: the mission save tree under 006B7710 is unreferenced in the image."
+    },
+    {
+      "native": "009781e0",
+      "status": "skipped",
+      "host_site": "none (caller 006F4D10 command-building flip)",
+      "reason": "report_capture_point returns at capture_guard unless game+1FE4h (network session) is set: multiplayer only."
+    },
+    {
+      "native": "00977da0",
+      "status": "skipped",
+      "host_site": "none (caller 006F6760 command-building capture tick)",
+      "reason": "report_capture_ship is multiplayer only (game+1FE4h guard), as 009781E0."
+    },
+    {
+      "native": "004697b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp destroy_scene_database_pending",
+      "reason": "The +24h pending vector IS filled natively (0046C550 NoMultiType arm: 0046C634 ECX = this, 0046C647 ADD ECX,24h, 0046C64F CALL 0046C450, an earlier doc said nothing pushes it), but each 5Ch record holds a 008F41F0 clone of the entity's native property bag; this host's bags are ScenePropertyBlock, so the records cannot be built."
+    },
+    {
+      "native": "00438a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp SaveCheckpoint 008ACB70",
+      "reason": "Needs the native profile manager object (+4 LuaObject, +18h pending byte) and the storage gate 00A3E540 / 00BD3E10 continuation; the host saves through 00438020 directly."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "The in-game interface's ambient sound instance (+104h) and the game camera (game+19FCh) do not exist in this host; no sound runtime."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp parse_007a0eb0 (gamecamera / fpscamera modifier)",
+      "reason": "GameCameraModifierHost drives the game camera mover that 0079CBD0 builds; no in-mission camera object exists (camera_present() is false)."
+    },
+    {
+      "native": "00545270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp HudWeaponGroupScreen (typed screen 2Eh)",
+      "reason": "Raw Fe5Host body over the screen's camera movers at +20h / +2Ch (0042C940); the host keeps screen 2Eh typed and has no in-mission camera."
+    },
+    {
+      "native": "005452b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp HudWeaponGroupScreen (typed screen 2Eh)",
+      "reason": "As 00545270: camera mover at screen+2Ch, no in-mission camera."
+    },
+    {
+      "native": "009b9030",
+      "status": "skipped",
+      "host_site": "src/attack_commands.cpp bot_install_command_task_0099a170 (typed)",
+      "reason": "The bot_task_make_* factories (also 009CA2B0, 009C8C70, 009CD300, 009D4E30, 009A6970, 009AB570, 009BADB0) build native 520-byte task objects; the host's typed install path creates semantic tasks and nothing would run the native ones."
+    }
+  ],
+  "built": [
+    "GameGunneryHost::route_repair_damage_9e: a Lua-routed 9Eh copy through queue_repair_add_damage_9e and 00821E80's 9Eh arm, for class-06 ships",
+    "GameGunneryHost::Impl::apply_repair_damage_arm_9e: the 9Eh arm over repair_damage_route_0082203d (add 0093A470 / 0093A4F0, set 00939F90 / 00939FA0); the ship-hit and Fire-failure copies now take it instead of their inline add-only test",
+    "GameGunneryHost::Impl::damage_control_set_seconds: the set arms over the RepairTask view",
+    "DamageSettingArgs / DamageSettingHost (game_hosts_lua.cpp): LuaArgs and Seg56HostUnreached adapters for 0088E320 / 0088E790"
+  ],
+  "evidence": [
+    "bsp.py show 00821e80 --asm 0082203D..008220C2: channel 0 -> CMP byte [msg+20h],0, JZ 008220BD CALL 00939F90 else CALL 0093A470; channel 1 -> JZ 00822076 CALL 00939FA0 else CALL 0093A4F0; other channels fall to 008220C2",
+    "bsp.py show 0088e320 --asm: 00888AA0 arg 0, 00B66270 arg 1 FSTP float, 00B663F0 == 3 then 00B66250 arg 2, SETZ into +20h, 0077C2A0(ECX entity; &msg, 7, 0)",
+    "installed scripts: usn_04_defend_guadalcanal.lua:1380 SetFireDamage(Mission.JAP_DummyDD[1], 100); usn_09_leyte.lua:1552 and jm02.lua SetFireDamage(unit, 0, true); jm02.lua:3438 SetWaterDamage(Mission.FakePoW, 5000)"
+  ],
+  "left": "The scene database's +24h deferred records (004693C0 / 004697B0) need native property bags; the plane engine list at unit+C98h (007DE600, 007EB0B0, enginefire 007BA170 and its 65h message rows) needs the FX component 007EC5A0 and engine objects; the in-mission camera (game+19FCh) blocks the movie gamecamera modifier, the weapon-group orbit camera and the ambience volume."
+}
