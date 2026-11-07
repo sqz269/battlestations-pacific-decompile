@@ -1212,7 +1212,7 @@ inline constexpr std::uint32_t kRewardsVtable = 0x00CF50CC;
 inline constexpr std::uint32_t kRewardsCallbackVtable = 0x00CF50B8;
 inline constexpr std::uint32_t kRewardsListenerVtable = 0x00CF5098;
 inline constexpr std::uint32_t kWidgetListenerBaseVtable = 0x00CEB110;
-Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host) {
+Raw rewards_construct_00626630(Raw s, RewardsConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;

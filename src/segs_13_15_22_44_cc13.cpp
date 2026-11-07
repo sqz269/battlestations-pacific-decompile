@@ -346,7 +346,7 @@ void briefing_register_0051e280(Raw screen, SegBHost& host) {
 // listener vtables then the briefing vtables at +0h/+8h/+Ch, the zeroed fields, and the tree
 // at +12Ch: head node from 0051ACB0 (ECX = tree) marked as nil (+19h = 1) and linked to
 // itself, size +134h = 0.
-Raw briefing_construct_0051e4d0(Raw screen, SegBHost& host) {
+Raw briefing_construct_0051e4d0(Raw screen, BriefingConstructHost& host) {
     host.front_end_screen_construct_004f7180(screen);
     screen.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     screen.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;

@@ -740,7 +740,7 @@ void* leaderboard_row_copy_backward_00562e60(std::uint8_t* first, std::uint8_t* 
     return dest_begin;
 }
 
-void* leaderboards_construct_00563370(Raw s, Fe3ScreenHost& host) {
+void* leaderboards_construct_00563370(Raw s, ScrollerScreenConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(8) = 0x00CEB0FC;
     s.at<std::uint32_t>(0xC) = 0x00CEB110;
@@ -1731,7 +1731,7 @@ void* input_device_pair_construct_0055ba80(Raw pair, Raw key, const void* record
     return pair.p;
 }
 
-void* control_binding_construct_00555770(Raw s, Fe3InputHost& host) {
+void* control_binding_construct_00555770(Raw s, ScrollerScreenConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(8) = 0x00CEB0FC;
     s.at<std::uint32_t>(0xC) = 0x00CEB110;

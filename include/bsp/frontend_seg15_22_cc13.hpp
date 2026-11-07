@@ -91,7 +91,8 @@ struct HudMessage35;
 // 005401F0, 005CE610) call: the front-end screen base, operator new, the
 // 0093CB10 scene sub-object and the containers' head-node allocators. The HUD
 // host binds them over its own native screen storage without the other
-// Seg15Host services.
+// Seg15Host services. 006898C0's control layout constructor 00527D00 needs
+// only the 004F7180 base; the front-end menu host binds it the same way.
 struct Seg15LeafConstructHost {
     virtual ~Seg15LeafConstructHost() = default;
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
@@ -481,7 +482,7 @@ void rec18_array_reserve_00529c70(Raw array, std::int32_t n, Seg15Host& host);
 // 00527CB0, __thiscall(layout, out a, b, c, d), RET 10h: when +2Ch is set copy
 // the four bytes +28h..+2Bh out and clear +2Ch.
 bool control_layout_take_button_flags_00527cb0(Raw layout, std::uint8_t out[4]);
-Raw control_layout_construct_00527d00(Raw s, Seg15Host& host);
+Raw control_layout_construct_00527d00(Raw s, Seg15LeafConstructHost& host);
 void control_layout_destruct_00527da0(Raw s, Seg15Host& host);
 void control_layout_listener_current0c_00527d50(void* widget, Seg15Host& host);
 void control_layout_listbox_activate_00527e30(Seg15Host& host);
