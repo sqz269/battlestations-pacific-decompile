@@ -45,6 +45,7 @@
 #include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"   // goal 5 chain 639: 00747170 / 007465E0 / 00745F1E
 #include "bsp/bot_fire_target.hpp"
 #include "bsp/native_damageable_class_lua.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -3191,6 +3192,7 @@ struct GameGunneryHost::Impl {
         ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
         sink_leak = 35,       // 0074ECA5, 0074EC50's per-leak U(0, 1), stream 1, key (ship, 0)
         hull_aim_point = 36,  // 00816650 via 009FA260, the hull aim pick, stream 1, key (shooter, 0)
+        land_fort_death_fire = 37, // 0074672B / 0074679D, 007465E0's SmokeFireDuration draw, stream 0, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -3995,6 +3997,18 @@ struct GameGunneryHost::Impl {
     std::vector<std::size_t> land_master_738;
     std::vector<bool> land_master_is_airfield;
     bool land_masters_built{false};
+    // Goal 5 chain 639: the timers 007465E0 starts and the 00745F1E smoke arm runs
+    // (+740h fire, +744h smoke, +748h the shared time, +750h the secondary clock), per
+    // MLandFort, or MCommandBuilding the ship AI host holds no capture building for,
+    // that went through 00747170. A held building's timers are that host's record.
+    std::map<std::size_t, bsp::gameplay_seg41_cc13::FortTimers> land_fort_timers;
+    struct LandFortDeathCounts {
+        unsigned long long on_destroyed{0}, gated{0}, death_effects{0}, death_fires{0};
+        unsigned long long smoke_starts{0}, smoke_extends{0}, smoke_draws{0}, smoke_stops{0};
+        unsigned long long building_fires{0};   // 007465E0 on a ship AI capture building
+        bool last_smoke_744{false};             // the last 007465E0's result, for the log
+        float last_time_748{0.0f};
+    } land_fort_death;
     // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
     int explicit_kill_cause{0};
     // Packet cc13-jm08: the image phase of the kill in progress (the table at
@@ -5807,7 +5821,12 @@ struct GameGunneryHost::Impl {
     void build_land_masters_00744a20();
     void forward_land_master_damage_0074715a(std::size_t section, float amount);
     void land_master_add_damage_0095da00(std::size_t master, float amount);
-    void land_section_destroyed_00747170(std::size_t section);
+    // Goal 5 chain 639: 00747170 through bsp::gameplay_seg41_cc13 for a dead
+    // MLandFort (1Bh) / MCommandBuilding (1Ch); the master arm is its callback.
+    void run_land_fort_on_destroyed(std::size_t victim);
+    void run_land_master_die(std::size_t section, std::size_t master);
+    float land_fort_stream0_draw(std::size_t unit, float low, float high);
+    void run_land_fort_smoke_frames(float dt);
     // Packet cc9_ship_death_message (kShipDeathMessageBound).
     void ship_death_message_00827ab0(std::size_t victim);
     struct ShipDeathCounts {
@@ -13189,13 +13208,14 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
 }
 
 bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
-    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
+    std::size_t exclude, std::size_t& hit_unit, float hit_point[3], bool pick_ray) const {
     // Integrator arbitration 2026-09-26: the HUD's one const query over
     // SegmentBinding (packet cc9_player_gun_seat_segment_query moved the body
     // into query_segment_units_impl so the seat shares it).
     bool land = false;
     const bool hit = query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point,
         &land);
+    if (!pick_ray) return hit;   // the trigger cast is not a HUD pick
     if constexpr (kLandscapeSpatialAttachBound) {
         note_land_hit_query(LandHitConsumer::PickRay, land);
         if (impl_->pick_rays_logged < 3) {
@@ -18041,7 +18061,8 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
     ++summary.kill_credits;
     done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
-    if constexpr (kLandMasterDamageBound) land_section_destroyed_00747170(victim);
+    // vtable[7Ch] of MLandFort / MCommandBuilding (the master hand-off is its arm).
+    run_land_fort_on_destroyed(victim);
     if constexpr (kShipDeathMessageBound) {
         if (explicit_kill_cause == 0) ship_death_message_00827ab0(victim);
     }
@@ -18247,26 +18268,184 @@ void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, 
     }
 }
 
-// 00747170 (LandFort OnDestroyed, vtable[7Ch]): with +70h == 1 and the clock gate,
-// a non-null master takes vtable[1ACh](1e10) (007472A7's block), then vtable[1A8h]
-// while it is still live. The clock gate (DAT_00D7A24C < [00F876A4]) is read as true.
-void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section) {
-    if (section >= land_master_738.size()) return;
-    const std::size_t master = land_master_738[section];
-    if (master >= unit_state.size()) return;
-    ++land_master.section_deaths;
-    if (explicit_kill_cause != 0 && explicit_kill_cause != 1) {   // 0074718A, +70h == 1
-        ++land_master.hand_offs_skipped_cause;
-        return;
+// 00747170 BSP_LandFort_OnDestroyed, vtable[7Ch] of MLandFort (1Bh, 00CFF3F8 +7Ch =
+// 00CFF474) and MCommandBuilding (1Ch, 00CFB028 +7Ch = 00CFB0A4), run through
+// bsp::gameplay_seg41_cc13::on_destroyed_00747170 (goal 5 chain 639). The body gates
+// on +70h == 1 (0074718D) and the clock [00F876A4] above 1.0 (007471A2); then the
+// master arm (00747263..007472AD: vtable[1ACh](1e10), then vtable[1A8h] while live),
+// the ExplosionEfx effect (00747315), and 007465E0 (00747351) when class+164h
+// SmokeFireChanceMul is above 0.
+// Inputs, each from this host's state:
+// * +70h: the stored cause during an explicit kill; the health-zero paths are a
+//   harm death (cause 1), as 00959450's binding in kill_unit takes it;
+// * the clock: clock_seconds, the fixed-step clock this host advances;
+// * +738h: land_master_738 (00744A20's store, build_land_masters_00744a20);
+// * class+164h/+160h/+168h/+16Ch: the VehicleClass row 00749210 reads.
+// LABELLED: unit+360h (the model part instance) is not carried, so +19Ch's part
+// list is clear and 0072AB10 answers its no-instance 0 for the damaged-graphics
+// level; the +48h/+44h element chain is not carried either (empty). Both only feed
+// vtable[1B4h], a model state. The effects are presentation and are records.
+// LABELLED order: the host's 00959450 (the body's tail call, 007473E3) already ran
+// in kill_unit before the kill credit, so the tail is a record here.
+void GameGunneryHost::Impl::run_land_fort_on_destroyed(std::size_t victim) {
+    namespace s41 = bsp::gameplay_seg41_cc13;
+    if (victim >= unit_state.size()) return;
+    const int class_id = units.unit_class_id(victim);
+    if (class_id != 0x1B && class_id != 0x1C) return;   // the two vtables holding 00747170
+    const std::size_t master = victim < land_master_738.size()
+        ? land_master_738[victim] : static_cast<std::size_t>(-1);
+    const bool has_master = master < unit_state.size();
+    if (has_master) ++land_master.section_deaths;
+    const int type_id = unit_state[victim].row.type_id;
+
+    struct FortDeathFire final : s41::LandFortHost {
+        FortDeathFire(Impl& owner_in, std::size_t unit_in) : owner(owner_in), unit(unit_in) {}
+        float uniform(int stream, float low, float high) override {
+            // 00BD2F10 with ECX = stream; both 007465E0 draws are stream 0.
+            if (stream == 0) {
+                ++owner.land_fort_death.smoke_draws;
+                return owner.land_fort_stream0_draw(unit, low, high);
+            }
+            return owner.draw(Draw::death_mode, unit, 0, low, high);
+        }
+        void stop_fire_effect_740() override {
+            owner.record("LandFort::fire_effect_stop_00867b10", 0x007465fdu);
+        }
+        bool create_death_smoke_effect() override {
+            // 007466D0..007466E0: 008689C0 with class+160h. LABELLED: taken to
+            // succeed, as the fire start at 00746474 is (no effect system here).
+            ++owner.land_fort_death.smoke_starts;
+            owner.record("LandFort::death_smoke_effect_008689c0", 0x007466e0u);
+            return true;
+        }
+        void send_effect_message_7(float) override {
+            // 0074675A..0074676E: 007448B0(7, d) routed by 0077C2A0(m, 4, 0); route
+            // flags 4 are the session send, dropped in single player.
+            owner.record("LandFort::effect_message_d1_0077c2a0", 0x0074676eu);
+        }
+        void stop_smoke_effect_744() override {
+            ++owner.land_fort_death.smoke_stops;
+            owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+        }
+        Impl& owner;
+        std::size_t unit;
+    };
+
+    struct FortDestroy final : s41::FortDestroyHost {
+        FortDestroy(Impl& owner_in, std::size_t victim_in, std::size_t master_in, int type_in)
+            : owner(owner_in), victim(victim_in), master(master_in), type_id(type_in) {}
+        int last_damage_state_index_0072ab10(std::uint32_t) override {
+            owner.record("LandFort::last_damage_state_index_0072ab10", 0x007471b1u);
+            return 0;   // 0072AB10 without a unit+360h instance
+        }
+        void set_damaged_gfx_level(std::uint32_t, int) override {
+            owner.record("LandFort::set_damaged_gfx_level_vt1b4", 0x007471bfu);
+        }
+        void rebuild_part_render_list() override {
+            owner.record("LandFort::part_render_list_19c", 0x007471c1u);
+        }
+        void master_add_damage(float amount) override {
+            owner.log.notef("land master: section=%s died, master=%s takes 1e10 t=%.2f "
+                "(00747170, packet cc9_land_master_damage)",
+                owner.unit_state[victim].row.name.c_str(),
+                owner.unit_state[master].row.name.c_str(),
+                static_cast<double>(owner.clock_seconds));
+            const int saved_cause = owner.explicit_kill_cause;
+            owner.explicit_kill_cause = 0;   // the master's 0095DA00 is a health-zero path
+            owner.land_master_add_damage_0095da00(master, amount);   // 00747283
+            owner.explicit_kill_cause = saved_cause;
+        }
+        bool master_die_gate() override { return !owner.unit_state[master].dead; }   // 0074728B
+        void master_die() override { owner.run_land_master_die(victim, master); }   // 007472AD
+        void create_death_effect() override {
+            ++owner.land_fort_death.death_effects;
+            owner.record("LandFort::death_effect_008689c0", 0x00747315u);
+        }
+        void start_death_fire() override {
+            // 00747351 007465E0 over this fort's timers and its class row.
+            ++owner.land_fort_death.death_fires;
+            s41::FortClassRow cls;
+            // 00749379: class+160h holds the first SmokeFireEfx entry's effect.
+            // LABELLED: a non-zero id stands for the 00870CD0 handle, as for DeathEfx.
+            cls.smoke_fire_efx_160 =
+                owner.lua.read_vehicle_class_first_integer(type_id, "SmokeFireEfx", 0) != 0;
+            cls.smoke_fire_chance_mul_164 =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireChanceMul", 0.0f);
+            cls.fire_duration_min_168 =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMin", 0.0f);
+            cls.fire_duration_max_16c =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMax", 0.0f);
+            // One copy of +740h..+750h: a CommandBuilding the ship AI host holds as a
+            // capture building keeps them there (its 00746320 fire and 00745BE0 arms
+            // read the same words), so 007465E0 stops and clears its burning +740h
+            // and its smoke time lands in the shared +748h. Every other fort keeps
+            // them in land_fort_timers.
+            GameShipAiHost::FortTimerFields held;
+            const bool building = owner.ship_ai != nullptr
+                && owner.ship_ai->command_building_fort_timers(victim, held);
+            s41::FortTimers copy;
+            if (building) {
+                copy.fire_740 = *held.fire_740;
+                copy.smoke_744 = *held.smoke_744;
+                copy.time_748 = *held.time_748;
+                copy.clock_750 = *held.clock_750;
+            }
+            s41::FortTimers& timers = building ? copy : owner.land_fort_timers[victim];
+            const bool was_smoking = timers.smoke_744;
+            FortDeathFire fire(owner, victim);
+            s41::start_death_fire_007465e0(timers, cls, fire);
+            if (building) {
+                *held.fire_740 = copy.fire_740;
+                *held.smoke_744 = copy.smoke_744;
+                *held.time_748 = copy.time_748;
+                *held.clock_750 = copy.clock_750;
+                ++owner.land_fort_death.building_fires;
+            }
+            owner.land_fort_death.last_smoke_744 = timers.smoke_744;
+            owner.land_fort_death.last_time_748 = timers.time_748;
+            if (was_smoking) ++owner.land_fort_death.smoke_extends;
+            owner.done("LandFort::start_death_fire_007465e0", 0x007465e0u);
+        }
+        void base_on_destroyed_00959450() override {
+            owner.record("LandFort::base_on_destroyed_tail_007473e3", 0x007473e3u);
+        }
+        Impl& owner;
+        std::size_t victim;
+        std::size_t master;
+        int type_id;
+    };
+
+    s41::FortDestroyInput in;
+    in.self = static_cast<std::uint32_t>(victim);
+    in.state_70 = explicit_kill_cause == 0 ? 1 : explicit_kill_cause;
+    in.clock = clock_seconds;
+    in.part_list_19c = false;
+    in.master_738 = has_master;
+    in.smoke_fire_chance_mul_164 = lua.read_vehicle_class_number(type_id, "SmokeFireChanceMul", 0.0f);
+    const bool gate = in.state_70 == 1 && in.clock > 1.0f;   // 0074718D, 007471A2
+    if (!gate) {
+        ++land_fort_death.gated;
+        if (has_master) ++land_master.hand_offs_skipped_cause;
     }
-    log.notef("land master: section=%s died, master=%s takes 1e10 t=%.2f (00747170, "
-        "packet cc9_land_master_damage)", unit_state[section].row.name.c_str(),
-        unit_state[master].row.name.c_str(), static_cast<double>(clock_seconds));
-    const int saved_cause = explicit_kill_cause;
-    explicit_kill_cause = 0;   // the master's 0095DA00 is a health-zero path
-    land_master_add_damage_0095da00(master, 1.0e10f);
-    explicit_kill_cause = saved_cause;
-    if (unit_state[master].dead) return;   // 0074728B..007472A1
+    ++land_fort_death.on_destroyed;
+    const unsigned long long fires_before = land_fort_death.death_fires;
+    FortDestroy host(*this, victim, master, type_id);
+    s41::on_destroyed_00747170(in, host);
+    done("LandFort::on_destroyed_00747170", 0x00747170u);
+    if (land_fort_death.on_destroyed <= 4) {
+        const bool fired = land_fort_death.death_fires != fires_before;
+        log.notef("land fort destroyed: unit=%s class=%Xh t=%.2f gate=%d master=%d "
+            "death_fire=%d smoke=%d smoke_time=%.2f (00747170 -> 007465E0, goal 5 chain 639)",
+            unit_state[victim].row.name.c_str(), class_id, static_cast<double>(clock_seconds),
+            gate ? 1 : 0, has_master ? 1 : 0, fired ? 1 : 0,
+            fired && land_fort_death.last_smoke_744 ? 1 : 0,
+            fired ? static_cast<double>(land_fort_death.last_time_748) : 0.0);
+    }
+}
+
+// 00747295..007472AD, vtable[1A8h] of the dead section's master (its class's die
+// rule; land_master_is_airfield is per section).
+void GameGunneryHost::Impl::run_land_master_die(std::size_t section, std::size_t master) {
     ++land_master.die_calls;
     if (land_master_is_airfield[section]) {
         units.run_airfield_destruction_rule_006d40f0(master);   // 006D40F0
@@ -18318,6 +18497,48 @@ void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section)
             "packet g50_shipyard_rule)", unit_state[master].row.name.c_str(), slots.size(),
             host.arm, static_cast<double>(clock_seconds));
         done("LandMaster::die_shipyard_00845ac0", 0x00845ac0u);
+    }
+}
+
+// 00BD2F10 with ECX = 0 (007465E0's 0074672B / 0074679D), the primary stream as
+// death_mode_draw_00bd2f10(0, ...) takes it; its own key under the measurement option.
+float GameGunneryHost::Impl::land_fort_stream0_draw(std::size_t unit, float low, float high) {
+    if (rng_streams_enabled()) return draw(Draw::land_fort_death_fire, unit, 0, low, high);
+    return startup_random_range(bsp::RandomStream::primary, low, high);
+}
+
+// 00745F1E..00745F9D, the +744h arm of the LandFort frame update 00745BE0, for every
+// fort in land_fort_timers that 007465E0 set smoking. LABELLED order: once per
+// gunnery step after the unit passes, with the step's seconds (00745BE0 is the
+// fort's own tick). These are the plain forts and unheld CommandBuildings: no host
+// starts a +740h fire on them (00746320 runs for the ship AI host's capture
+// buildings, whose 00745BE0 runs both arms on their own record), so only the smoke
+// arm runs here.
+void GameGunneryHost::Impl::run_land_fort_smoke_frames(float dt) {
+    for (auto& entry : land_fort_timers) {
+        if (!entry.second.smoke_744) continue;
+        struct SmokeStop final : bsp::gameplay_seg41_cc13::LandFortHost {
+            explicit SmokeStop(Impl& owner_in) : owner(owner_in) {}
+            float uniform(int, float, float) override {
+                throw std::logic_error("00745F1E draws nothing");
+            }
+            void stop_fire_effect_740() override {
+                throw std::logic_error("00745F1E does not touch +740h");
+            }
+            bool create_death_smoke_effect() override {
+                throw std::logic_error("00745F1E creates nothing");
+            }
+            void send_effect_message_7(float) override {
+                throw std::logic_error("00745F1E sends nothing");
+            }
+            void stop_smoke_effect_744() override {   // 00745F73 00867B10, 00745F80 00484620(0)
+                ++owner.land_fort_death.smoke_stops;
+                owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+            }
+            Impl& owner;
+        } host(*this);
+        bsp::gameplay_seg41_cc13::smoke_frame_00745f1e(entry.second, dt, host);
+        done("LandFort::smoke_frame_00745f1e", 0x00745f1eu);
     }
 }
 
@@ -19950,6 +20171,7 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     for (std::size_t i = 0; i < host.unit_state.size(); ++i) {
         host.run_gunnery_pass(i, step_seconds);
     }
+    host.run_land_fort_smoke_frames(step_seconds);   // goal 5 chain 639
     if constexpr (kTorpedoSupplyTickBound) {
         // 00826182 in UpdateShipMotion 00825F20: every ship, every step.
         // LABELLED: run here, after the gunnery passes, not inside the motion
@@ -22424,6 +22646,13 @@ void GameGunneryHost::report() {
                 c.sections, c.masters, c.party_adoptions, c.forwards, c.section_deaths,
                 c.hand_offs_skipped_cause, c.die_calls, c.die_unhosted, c.master_kills,
                 c.kept_alive, kLandMasterDamageBound ? 1 : 0);
+            const Impl::LandFortDeathCounts& f = host.land_fort_death;
+            host.log.notef("summary mission gunnery land fort deaths on_destroyed=%llu "
+                "gated=%llu death_effects=%llu death_fires=%llu building_fires=%llu "
+                "smoke_starts=%llu smoke_extends=%llu smoke_draws=%llu smoke_stops=%llu "
+                "(00747170 / 007465E0 / 00745F1E, goal 5 chain 639)", f.on_destroyed, f.gated,
+                f.death_effects, f.death_fires, f.building_fires, f.smoke_starts,
+                f.smoke_extends, f.smoke_draws, f.smoke_stops);
         }
         if (kReloadDrawBound) {
             host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "

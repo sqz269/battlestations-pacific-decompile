@@ -942,6 +942,18 @@ public:
     // 007AB509's paratrooper bleed. False (out untouched) for a unit that is not
     // one of the capture buildings.
     bool command_building_armour_0368(std::size_t unit_index, float& out);
+    // Goal 5 chain 639: the LandFort timers of the capture building this host keeps
+    // for a CommandBuilding, the one copy of +740h (fire), +744h (smoke), +748h (the
+    // time both share) and +750h (the secondary clock). The gunnery host's 00747170
+    // runs 007465E0 on them, and this host's 00745BE0 runs both arms. Null fields
+    // (false) for a unit that is not one of the capture buildings.
+    struct FortTimerFields {
+        bool* fire_740{nullptr};
+        bool* smoke_744{nullptr};
+        float* time_748{nullptr};
+        float* clock_750{nullptr};
+    };
+    bool command_building_fort_timers(std::size_t unit_index, FortTimerFields& out);
     // Packet cc13-para2: the avoid-zone manager for 007ABB30's 0041B840 call,
     // which is a non-const query; null before load_avoid_zone_geometry.
     GameAvoidZoneRuntime* avoid_zone_runtime_mutable() noexcept;
