@@ -498,6 +498,24 @@ public:
         std::uint16_t holder_id{0};
     };
     PlaneDisappearCopy queue_plane_disappear_c7(std::uint16_t holder_id) const;
+    // Goal 5 chain 632. MT_VEHICLE_UNIT_LAUNCH (7Bh): ShipUseCatapult 00891D50
+    // makes it inline at 00891F05..00891F31 (0075B430(7Bh), word +18h = EBP 0,
+    // byte +1Ah 0, +4h = EDI 1, byte +1Ch 0, vtable 00CE53AC, float +20h = the
+    // heading) and routes it with 0077C2A0(ECX = the ship, &message, EBX = 2, EBP
+    // = 0) at 00891F48. Flags 2 is not 4, so with [00E188A8]+1FE4h == 0 the route
+    // takes the local bit (0077C30D..0077C333) and 0076E520 rebuilds the copy.
+    // Those stores are 007601A0's (the case-7Bh constructor 00768530 calls at
+    // 00769186 on a 24h-byte allocation), so both messages are built with it;
+    // 00CE53AC's slots are 00464FE0 scalar delete (restamps only), 004647D0
+    // write, 00464810 read, 004647B0 IsType {7Bh, 49h, 46h}, 004499C0. Returned:
+    // whether 00780120's ladder hands the copy to the entity's session-kind
+    // switch, and the copy's 24h bytes as 00464810 left them (what 00821E80
+    // reads: +10h kind, +14h sender, +20h heading).
+    struct VehicleUnitLaunchCopy {
+        bool to_unit{false};
+        std::uint8_t bytes[0x24]{};  // read through memcpy, so no alignment is needed
+    };
+    VehicleUnitLaunchCopy queue_vehicle_unit_launch_7b(float heading) const;
 
 private:
     struct Image;
