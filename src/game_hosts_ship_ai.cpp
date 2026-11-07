@@ -4059,13 +4059,13 @@ public:
     }
     void post_command_message_00984300(std::uint32_t command) override {
         // 009E595C, 00984300 on [00F8A0C4] with the `finished` literal the
-        // step assigned at 009E58EF.
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        // step assigned at 009E58EF. The mission Lua host evaluates the
+        // channel at its frame (goal 5 chain 631).
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveTo::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveTo::release_message_text", 0x00419cc0u);
@@ -4225,12 +4225,11 @@ public:
         owner_.record("ShipAiMoveOnPath::message_text_assign", 0x0041e870u);
     }
     void post_command_message_00984300(std::uint32_t command) override {
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveOnPath::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveOnPath::release_message_text", 0x00419cc0u);
@@ -16179,9 +16178,9 @@ void GameShipAiHost::report() {
                 static_cast<double>(row.station_limit_max));
         }
     }
-    host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
+    host.log.notef("summary mission ship ai command completion events=%llu "
         "end_commands=%llu queue_advances=%llu",
-        host.summary.command_events, host.summary.command_event_callbacks,
+        host.summary.command_events,
         host.summary.command_endings, host.summary.command_completions);
     host.log.notef("summary mission ship ai arm tail bodies=%llu latched=%llu stops=%llu "
         "arrival_latches=%llu",

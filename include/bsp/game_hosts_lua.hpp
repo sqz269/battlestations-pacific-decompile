@@ -1245,6 +1245,11 @@ struct GameMissionLuaSummary {
     unsigned long long listener_ship_landed_events{0};
     unsigned long long listener_ship_landed_matches{0};
     unsigned long long listener_ship_landed_fires{0};
+    // command (00984300): reports drained from the commands host, the subscriptions
+    // 00968AF0 held for, and the callbacks called.
+    unsigned long long listener_command_events{0};
+    unsigned long long listener_command_matches{0};
+    unsigned long long listener_command_fires{0};
     // Goal 4 chain 352: AddListener blocks loaded by the native Load slot, and the
     // blocks whose load threw (an absent filter key) and fell back to the host parse.
     unsigned long long listener_native_loads{0};
@@ -2043,6 +2048,9 @@ public:
     // The `shipLanded` channel over the ship AI host's 0074AD90 landings; the host
     // substitution for 00986820, matching with 00969070 (src/game_hosts_lua.cpp).
     void dispatch_ship_landed_listeners();
+    // The `command` channel over the commands host's 00984300 reports; the host
+    // substitution for 00984300's evaluation, matching with 00968AF0.
+    void dispatch_command_listeners();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert

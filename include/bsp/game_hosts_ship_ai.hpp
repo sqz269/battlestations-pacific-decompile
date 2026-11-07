@@ -586,7 +586,6 @@ struct GameShipAiSummary {
     unsigned long long nav_bearings{0};
     std::size_t units_with_path_point{0};
     unsigned long long command_events{0};
-    unsigned long long command_event_callbacks{0};
     unsigned long long command_endings{0};
     unsigned long long command_completions{0};
     unsigned long long arm_tails{0};

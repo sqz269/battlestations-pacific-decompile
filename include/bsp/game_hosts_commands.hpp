@@ -48,6 +48,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/command_completion.hpp"
 #include "bsp/cruise_command.hpp"
 #include "bsp/scene_deferred_refs.hpp"
 #include "bsp/ship_ai_states.hpp"
@@ -328,8 +329,7 @@ struct GameCommandsSummary {
     unsigned long long clear_messages{0};    // 0071C730 messages built and routed
     unsigned long long clear_receives{0};    // 00721A40's 5Dh arm bodies
     unsigned long long queue_advances{0};    // 00720850 bodies
-    unsigned long long command_events{0};    // 00984300 bodies
-    unsigned long long command_event_callbacks{0};  // Lua handlers the channel matched
+    unsigned long long command_events{0};    // 00984300 bodies (reports queued)
     unsigned long long restarts{0};          // 0071E430's arm D
     // Packet cc9_director_target_checks. Counted in both builds; OFF counts what
     // the bound path would have done.
@@ -624,9 +624,19 @@ public:
 
     // 00984300 BSP_MissionEvents_ReportCommand with the `finished` literal at
     // 00D09FD8, the call the state steps make at 009E595C just before they end
-    // the command. Returns how many Lua handlers the `command` channel matched.
+    // the command. Goal 5 chain 631: the report's four boxed parameters are
+    // queued for the mission Lua host, which evaluates the `command` channel at
+    // its frame (take_command_events). Returns the reports queued (1, or 0 for
+    // an index this host does not hold).
     std::size_t report_command_event_00984300(std::size_t unit_index,
         std::uint32_t command_object, const char* status);
+    // One queued 00984300 report: the reporting unit and the parameters the
+    // native boxes in 00968AF0's order.
+    struct CommandEvent {
+        std::size_t unit_index{0};
+        bsp::CommandEventParameters params{};
+    };
+    std::vector<CommandEvent> take_command_events();
 
     // Milestone 2p. 0071eb60 on the unit's own weapon director, the routine
     // 009f1420's brain pre-pass calls at 009f146b with ECX = [brain+0ab8h]:

@@ -5173,6 +5173,8 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     dispatch_ammo_type_listeners();
     // `shipLanded` (00986820): fired inside the landing ship's update (0074AE79).
     dispatch_ship_landed_listeners();
+    // `command` (00984300): fired inside the director / ship AI step that finishes it.
+    dispatch_command_listeners();
     // Packet cc13-ver5: `entityKilled` before `kill`, as 0077D1A0 fires it inside the
     // destroy, before the flush that reaches 009813A0.
     // Packet cc13-fix3: `exitzone` first of all, as 007F31E6 runs before 007F31A0's Kill(4).
@@ -9005,6 +9007,87 @@ void GameMissionLuaHost::dispatch_ship_landed_listeners() {
                 row != nullptr ? row->name.c_str() : "?", name.c_str());
             if (!push_resolved_entity_by_id(state_, entity)) lua_pushnil(state_);
             if (::lua_pcall(state_, 1, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
+// Goal 5 chain 631. The `command` channel: the host substitution for the evaluation
+// inside 00984300 (BSP_MissionEvents_ReportCommand), over the reports the commands host
+// queues (GameCommandsHost::take_command_events: the director's moveonpath finish and
+// the ship AI's movetopos / moveonpath finishes, each with the `finished` literal
+// 00D09FD8). SUBSTITUTION, labelled, as for `hpEvent`: the callbacks run at the frame,
+// not inside the reporting step. Per report, as 00984300 does it (bsp.py show 00984300):
+//  - the four boxes are the entity (word [entity+174h], unit + 1), the resolved target
+//    (its +174h, 0 when none), the class name (cls->vtable[4], 0096DC00) and the status
+//    (0096DC00);
+//  - 0097B8C0 collects the callback of every subscription whose vtable[0Ch] 00968AF0
+//    holds: +0Ch entity, +1Ch target, +2Ch command and +3Ch status, in that order;
+//  - each name is called with (entity 00884A90, target 00884A90, command 00884FC0,
+//    status 00884FC0) through 00887E50.
+// The text filters are exact (_stricmp set find 004C7F10 in 0097BC70), so a block whose
+// status set is {"finish"} does not take the image's "finished".
+void GameMissionLuaHost::dispatch_command_listeners() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    const std::vector<GameCommandsHost::CommandEvent> events =
+        units_hooks_->commands().take_command_events();
+    namespace seg64 = bsp::cc13_seg49_64_78;
+    namespace matchers = bsp::lua_listener_native_matchers;
+    using Param = seg64::EventParam;
+    for (const GameCommandsHost::CommandEvent& event : events) {
+        ++summary_.listener_command_events;
+        const bsp::CommandEventParameters& p = event.params;
+        const Param entity_param = matchers::word_param(p.unit_id);
+        const Param target_param = matchers::word_param(p.target_id);
+        Param command_param;
+        command_param.text04 = seg64::construct_warning_event_record_0096dc00(p.command_name).name;
+        Param status_param;
+        status_param.text04 = seg64::construct_warning_event_record_0096dc00(p.status).name;
+        std::vector<bsp::WarningSubscription> subscriptions;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "command") || entry.native_other == nullptr) {
+                continue;
+            }
+            // load_listener_subscription_native built a seg64::CommandEventSubscription
+            // (0097C8A0, Load 00972AB0) for this channel.
+            const auto& s = static_cast<const seg64::CommandEventSubscription&>(*entry.native_other);
+            ListenerSubscriptionMatch match({
+                {0x0c, [&s](const Param& v) { return s.entity.matches(v); }},
+                {0x1c, [&s](const Param& v) { return s.target.matches(v); }},
+                {0x2c, [&s](const Param& v) { return s.command.matches(v); }},
+                {0x3c, [&s](const Param& v) { return s.status.matches(v); }}},
+                {&entity_param, &target_param, &command_param, &status_param});
+            bsp::WarningSubscription collected;
+            collected.callback = s.callback;
+            collected.condition_holds = bsp::oct18_tail_b::event_subscription_matches_00968af0(
+                match.subscription(), match.params(), match);
+            if (collected.condition_holds) ++summary_.listener_command_matches;
+            subscriptions.push_back(std::move(collected));
+        }
+        const std::vector<std::string> callbacks =
+            bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_command_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(event.unit_index);
+            log_.notef("  command listener 00984300: \"%s\" %s %s -> %s()",
+                row != nullptr ? row->name.c_str() : "?", p.command_name.c_str(),
+                p.status.c_str(), name.c_str());
+            if (!push_resolved_entity_by_id(state_, p.unit_id)) lua_pushnil(state_);
+            if (p.target_id == 0 || !push_resolved_entity_by_id(state_, p.target_id)) {
+                lua_pushnil(state_);
+            }
+            ::lua_pushstring(state_, p.command_name.c_str());
+            ::lua_pushstring(state_, p.status.c_str());
+            if (::lua_pcall(state_, 4, 0, 0) != 0) {
                 const char* message = lua_tolstring(state_, -1, nullptr);
                 note_error(message != nullptr ? message : std::string("(no message)"));
             }
@@ -15591,6 +15674,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "fires=%llu (0074AD90 -> 00986820, matcher 00969070)",
         summary_.listener_ship_landed_events, summary_.listener_ship_landed_matches,
         summary_.listener_ship_landed_fires);
+    log_.notef("summary mission script command listeners reports=%llu matched=%llu "
+        "fires=%llu (00984300, matcher 00968AF0)",
+        summary_.listener_command_events, summary_.listener_command_matches,
+        summary_.listener_command_fires);
     log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
