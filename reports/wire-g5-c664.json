@@ -1,0 +1,22 @@
+{
+  "chain": 664,
+  "goal": 5,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "picked": "mission kill scoring: the 0091BDA0 kill credit writes the real [game+21A0h] score record (shot-team +2D8h, +B4h/+C0h trees, +1488h ignore set), and the Scoring_* Lua rows that read or feed it run their bodies",
+  "wired_before": 10326,
+  "wired_after": 10329,
+  "called_note": "readiness 'called' 5545 -> 5609 is not this branch's alone: the first readiness run read an older build (837cbf3e2d); the four rows below are the ones this branch made called",
+  "rows": [
+    {"native": "008cc330", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_IgnoreEntityKill) -> bsp::cc13_left55::seg56c::lua_scoring_ignore_entity_kill over ScoringIgnoreKillHost (0063F1E0 into MissionScoringManagerState::ignored_kill_entities_1488)"},
+    {"native": "008bc9b0", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_GetPlayerShotDown) -> bsp::scoring_sum_shot_down_008bc9b0 on the slot record's player_kills_b4; replaces the script-orders death-row count (removed in 4d0f9bcad)"},
+    {"native": "008bb770", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_GrantBonus) -> bsp::scoring_binding_grant_bonus_008bb770 over ScoringBonusHost (profile bonus_ac + new bonus_records_bc)"},
+    {"native": "007fc9f0", "status": "wired", "host_site": "src/scoring_bodies.cpp scoring_binding_grant_bonus_008bb770 -> scoring_bonus_record_007fc9f0 (reached from the Scoring_GrantBonus row)"},
+    {"native": "0091bda0", "status": "wired", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::kill_unit KillBinding -> bsp::kill_credit_record_unit_kill_0091bda0; already called before this chain, now on real state: kill_tree_leaf writes MissionScoreRecord +B4h/+C0h (merged into the mission progress by 0091A080), root_entity_already_scored reads +1488h, credited slot is the shot team (lua_kill_slot) instead of the side stand-in"},
+    {"native": "008b8ff0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "reads record+1E0h (totals_1c8[6]); nothing in this host writes the +1C8h..+1E0h totals live (the final-scoring pass is not run), so the row would answer 0"},
+    {"native": "008bbe00", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "Scoring_SetConditionMessage: MissionScoreRecord has no +254h string and its only reader, the debrief 00920A20, is a record in GameMissionResultHost"},
+    {"native": "008bc0c0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "Scoring_SetVictoryMessage: same as 008BBE00, no +25Ch string and no reader (debrief 00920A20 not built)"},
+    {"native": "008d0140", "status": "skipped", "host_site": "src/game_hosts_lua.cpp (not added)", "reason": "Scoring_GetUnitTypeShotDown reads the +1ECh/+1F8h loss maps, which 0091BDA0's loss pass cannot fill here: it needs each slot's party [[game+18CCh+i*4]+28h] (KillBinding::add_loss counts only); no script calls it"},
+    {"native": "00898e30", "status": "skipped", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::push_resolved_entity (FindEntity arm)", "reason": "lua_binding_find_entity is only the argument/push shell; the substance is 0088B1B0's world walk (mission_entity_find_by_name over a MissionEntityListView: per-kind buckets with the +5Ch..+60h gate bytes), which needs a world bucket view of the scene entities; the host's map lookup stands in. Not attempted on this hottest path without a game run"}
+  ]
+}
