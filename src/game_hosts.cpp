@@ -2737,6 +2737,7 @@ GameStartupHost::~GameStartupHost() {
         }
     }
     input_runtime_ = nullptr;
+    GameScriptOrdersHost::bind_input_context_manager(nullptr);   // before the manager goes
     input_.reset();
     {
         GameScriptOrdersHost::bind_music_dialog(nullptr);
@@ -3717,6 +3718,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
         options_.order_speed, options_.order_speed_set);
     menu_->bind_input_context_manager(input_->context_manager);
+    // Chain 648: EnableInput (008AFBD0) writes the same manager's context 1Eh.
+    // The menu bind above has prepared its table.
+    GameScriptOrdersHost::bind_input_context_manager(&input_->context_manager);
     if (GameMissionHost* mission = menu_->mission())
         mission->bind_input_runtime(input_runtime_);
     // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game

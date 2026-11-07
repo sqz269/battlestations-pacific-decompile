@@ -60,6 +60,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"   // goal 4 chain 365: the repair task at unit+A20h
+#include "bsp/unit_message_arms.hpp"        // chain 648: 0095AC1D's route for the role walks
 #include "bsp/ship_catapult_host.hpp"                 // chain 369: catapult launch record
 #include "bsp/pc24_unitshost_cc13.hpp"                // chain 369: 0042B2F0
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
@@ -15828,6 +15829,47 @@ float point_triangle_distance2_0085df60(const float p[3], const float v0[3],
     static_cast<void>(f);
     return q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
 }
+
+// Chain 648: the UnitHitPathHost 0080E440 reaches. Its one call (0080E467) is
+// 00934150 BSP_UnitParts_DetachPart through [unit+1018h] with the zero impulse
+// the body builds (0080E443..0080E461). The parts object is not hosted; the
+// detach is the destroyed-segment record this host keeps, the same record the
+// direct 00934150 call at 00935D16 writes. It carries no impulse. No other
+// UnitHitPathHost site is reached from 0080E440.
+class SegmentDetachBinding final : public bsp::UnitHitPathHost {
+public:
+    SegmentDetachBinding(std::vector<std::pair<int, float>>& destroyed, float clock)
+        : destroyed_(destroyed), clock_(clock) {}
+
+    void detach_part(std::uint32_t, int part_index, const float*) override {
+        destroyed_.emplace_back(part_index, clock_);
+    }
+
+    bool unit_is_kind_of(std::uint32_t, int) override { unreached("vtable+5Ch"); }
+    float unit_alternate_armour(std::uint32_t) override { unreached("[unit+354h]+24h"); }
+    float unit_armour(std::uint32_t) override { unreached("unit+368h"); }
+    float gameplay_modifier_product(int, std::uint32_t) override { unreached("008E6430"); }
+    bool gameplay_modifiers_enabled(int) override { unreached("00E0C978"); }
+    std::uint32_t unit_owner_scoped_unit(std::uint32_t) override { unreached("unit+3F0h"); }
+    void unit_add_damage(std::uint32_t, float) override { unreached("vtable+1ACh"); }
+    void write_applied_damage(std::uint32_t, float) override { unreached("hit+48h"); }
+    void unit_apply_damage(std::uint32_t, float) override { unreached("00879070"); }
+    void unit_set_health(std::uint32_t, float) override { unreached("00877B90"); }
+    bsp::RepairSettings game_settings() override { unreached("00424C40"); }
+    bsp::UnitHealth read_health(std::uint32_t) override { unreached("unit+36Ch"); }
+    int repairable_child_count(std::uint32_t) override { unreached("0093C860"); }
+    std::uint32_t repairable_child(std::uint32_t, int) override { unreached("0093C860"); }
+    bool unit_condition_flag(std::uint32_t) override { unreached("unit+378h"); }
+    void write_condition_reset(std::uint32_t) override { unreached("0080E422"); }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("SegmentDetachBinding: 0080E440 does not reach ") + site);
+    }
+
+    std::vector<std::pair<int, float>>& destroyed_;
+    float clock_;
+};
 }  // namespace
 
 void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int index,
@@ -15865,7 +15907,11 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
                 delivered = copy.explode_one_part_99;
                 part = static_cast<int>(copy.part);
             }
-            if (delivered) dc.destroyed_segments.emplace_back(part, clock_seconds);
+            if (delivered) {
+                // 00821FF0, the 99h arm: 0080E440(ECX = unit, copy+20h).
+                SegmentDetachBinding detach(dc.destroyed_segments, clock_seconds);
+                bsp::detach_part_0080e440(detach, static_cast<std::uint32_t>(unit), part);
+            }
         }
         log.notef("gunnery: hull segment %d of %s destroyed t=%.2f (0092D1F0 -> 99h -> "
             "0080E440)", index, unit_state[unit].row.name.c_str(),
@@ -19266,44 +19312,62 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
         static_cast<void>(take);
         return;
     } else {
+        namespace gp = bsp::gameplay_seg61_62_cc13;
         Impl& h = *impl_;
-        const bool walk_156 = (mask & 0x04u) != 0 || mask == 0x08u;   // 0095AC5D, 0095AC62
-        const bool walk_2346 = !walk_156 && (mask & 0x10u) != 0;      // 0095AC67
-        if (!walk_156 && !walk_2346) return;   // 20h / 80h: the group 4/5 models
-        auto in_156 = [](int k) { return k == 1 || k == 5 || k == 6; };
-        auto in_2346 = [](int k) { return k == 2 || k == 3 || k == 4 || k == 6; };
-        // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
-        auto release = [&](GameGunRow& gun) {
-            release_player_gun_control(h, gun);
-            ++h.seat_role_releases;
-        };
+        // 0095AC1D's mask tests (0095AC5D, 0095AC62, 0095AC67), msg+20h clear on
+        // this path: the first match wins.
+        const bsp::RoleOwnerRoute route =
+            bsp::role_owner_route_0095ac1d(false, static_cast<int>(mask));
+        const bool walk_156 = route == bsp::RoleOwnerRoute::DeviceKindSet156;
+        if (!walk_156 && route != bsp::RoleOwnerRoute::DeviceKindSet2346) {
+            return;   // 20h / 80h: the group 4/5 models
+        }
+        // The unit's device list (this+48h, next +44h): its guns in gun order.
+        // Every row answers IsKindOf(20h); the descriptor's +80h kind is the
+        // Function, GameGunRow::category.
+        std::vector<GameGunRow*> rows;
+        std::vector<gp::RoleDevice> devices;
+        for (GameGunRow& gun : h.guns) {
+            if (gun.unit_index != unit) continue;
+            rows.push_back(&gun);
+            devices.push_back({true, gun.category});
+        }
+        // msg+28h the slot, msg+2Ch 1 for take / 0 for release. The caller
+        // passes its `take == 1` test, so any other +2Ch value arrives as 0.
+        const gp::RoleOwnerMessage message{slot, take ? 1 : 0};
+        std::vector<gp::RoleStep> steps;
         if (walk_156) {
-            if (take) return;                                  // 00953F64: a release only
             // 00953F74: [unit+1BCh] (role 4) against msg+28h.
             std::int32_t role4 = 8;
             if (!h.units.unit_current_role_slot(unit, 4, role4)) role4 = 8;
-            const bool same_slot = role4 == slot;
-            for (GameGunRow& gun : h.guns) {
-                if (gun.unit_index != unit || !in_156(gun.category)) continue;
-                if (same_slot && in_2346(gun.category)) continue;   // 00953FAD
-                release(gun);
-            }
-            h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
-            return;
+            steps = gp::role_owner_walk_00953f60(devices, message, role4);
+        } else {
+            steps = gp::role_owner_walk_00954000(devices, message);
         }
-        for (GameGunRow& gun : h.guns) {                       // 00954000
-            if (gun.unit_index != unit || !in_2346(gun.category)) continue;
-            if (!take) {
-                release(gun);
-                continue;
+        for (const gp::RoleStep& step : steps) {
+            GameGunRow& gun = *rows.at(step.device);
+            switch (step.action) {
+            case gp::RoleAction::Release_00729f70:
+                // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
+                release_player_gun_control(h, gun);
+                ++h.seat_role_releases;
+                break;
+            case gp::RoleAction::Assign_vtable154:
+                gun.seat_1ac = step.argument;                  // 00954056 vtable[154h](0, slot)
+                ++h.seat_role_takes;
+                break;
+            case gp::RoleAction::SelectFireMode_0072d5b0:
+                // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
+                // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
+                h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
+                break;
+            case gp::RoleAction::Activate_vtable1e8:
+                // Only 009540D0's release emits this; neither walk here does.
+                throw std::logic_error("0095AC1D: 00953F60 / 00954000 emitted vtable[1E8h]");
             }
-            gun.seat_1ac = slot;                               // 00954056 vtable[154h](0, slot)
-            ++h.seat_role_takes;
-            // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
-            // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
-            if (gun.category == 6) h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
         }
-        h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
+        if (walk_156) h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
+        else h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
     }
 }
 
