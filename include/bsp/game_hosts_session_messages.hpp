@@ -26,6 +26,10 @@ namespace bsp::game {
 struct GunAimMessage79;
 }
 
+namespace bsp::gameplay_seg41_cc13 {
+class LandingShipMessageHost;
+}
+
 namespace bsp {
 
 // cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
@@ -140,6 +144,21 @@ public:
     // 00768530 case 9Fh at 0076960E (00760A50), 00760B30 read. Returns the
     // copy's +1Ch bool, the flag 00821E80's 9Fh arm hands 00939FD0.
     bool queue_repair_body_9f(bool enabled) const;
+    // Goal 5 chain 630. MT_LANDINGSHIP_STARTLANDING (A5h), a landing ship's
+    // order to land at a pad. 009F2304 (the ship AI approach, mode 3) and
+    // 0074A56B (0074A4C0, the 94h landing request) each run 00749D90(message,
+    // pad, building) on a stack message and route it to the ship with
+    // 0077C2A0 flags 7; in single player 0077C2A0 turns any flags but 4 into
+    // the local bit (game+1FE4h == 0). The copy: 00749E10 write (header, then
+    // the pad's +174h in 13 bits and the building's +174h in 12), 00768530
+    // case A5h (20h bytes, 0075AF00 at 007696E8), 00749E40 read. 00780120's
+    // ladder over IsType 00749DF0 {A5h, 46h} answers no ladder id, so the
+    // session-kind switch hands the copy to the ship's slot 164h, 0074B570,
+    // which runs here against `receiver` with the copy's kind and handles.
+    // `pad_id` and `building_id` are the host's +174h stand-ins. Returns
+    // 0074B570's AL, or false when the copy would not reach that handler.
+    bool deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint16_t building_id,
+                                gameplay_seg41_cc13::LandingShipMessageHost& receiver) const;
     // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
     // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
     // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local

@@ -9,6 +9,8 @@
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/cc13_seg41_land.hpp"
+#include "bsp/band_0071_cc13.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
@@ -743,6 +745,93 @@ std::uint32_t HostSessionMessages::queue_vehicle_race_80(
         throw std::logic_error("SetRace: decoded copy did not reach the unit race arm");
     // Codec storage owns no heap members and claims no native object lifetime.
     return queued.value_1c;
+}
+
+namespace {
+// Goal 5 chain 630. The A5h class table, outside Image's seg42 set: bsp.py
+// ghidra bytes 00CFF908 --length 20 (bsp.gpr, /battlestationspacific.exe)
+// reads 0074A1B0 scalar delete, 00749E10 write, 00749E40 read, 00749DF0
+// IsType, 004499C0. The sender 00749D90 and the factory's 0075AF00 both store
+// it; neither runs a slot, so the table is only the stored profile.
+constexpr std::uint32_t kLandAtPadSlots_00cff908[5]{0x0074a1b0u, 0x00749e10u, 0x00749e40u,
+                                                    0x00749df0u, 0x004499c0u};
+struct LandAtPadSenderProfile final : cc13_seg41::SessionMessageHost {
+    const std::uint32_t* vtable(std::uint32_t image_address) override {
+        if (image_address != 0x00cff908u)
+            throw std::logic_error("00749D90 stored an unexpected profile");
+        return kLandAtPadSlots_00cff908;
+    }
+    // 00749D90 runs no header codec; 00749E10 / 00749E40 call 0075B480 /
+    // 0075B4C0 directly.
+    void write_header_0075b480(const void*, NativeBitCursor*) override { unused(); }
+    void read_header_0075b4c0(void*, NativeSessionReadStream&) override { unused(); }
+    [[noreturn]] static void unused() {
+        throw std::logic_error("00749D90 has no header codec call");
+    }
+};
+struct LandAtPadReadProfile final : seg42::VtableBinding {
+    const std::uint32_t* vtable(std::uint32_t image_address) const override {
+        if (image_address != 0x00cff908u)
+            throw std::logic_error("0075AF00 stored an unexpected profile");
+        return kLandAtPadSlots_00cff908;
+    }
+};
+// 00749D90 reads one word of each non-null entity, +174h (00749DBB / 00749DD2
+// MOVZX word [EAX+174h]); nothing else of the object.
+struct EntityId174View {
+    std::uint8_t unread_000[0x174]{};
+    std::uint16_t id_174{0};
+};
+static_assert(offsetof(EntityId174View, id_174) == 0x174);
+}  // namespace
+
+bool HostSessionMessages::deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint16_t building_id,
+    gameplay_seg41_cc13::LandingShipMessageHost& receiver) const {
+    Image& image = *image_;
+    // 009F2304..009F2311 / 0074A55F..0074A56B: 00749D90(stack message, pad,
+    // building): 0075B430(A5h), +18h word 0, +4h = 1, +1Ah byte 0, vtable
+    // 00CFF908, +1Ch / +1Eh the two +174h words.
+    EntityId174View pad;
+    pad.id_174 = pad_id;
+    EntityId174View building;
+    building.id_174 = building_id;
+    LandAtPadSenderProfile sender_profile;
+    seg42::StartLandingMessage sent{};
+    static_assert(sizeof(seg42::StartLandingMessage) == 0x20);
+    cc13_seg41::land_at_pad_construct_00749d90(reinterpret_cast<std::uint8_t*>(&sent),
+        reinterpret_cast<std::uint8_t*>(&pad), reinterpret_cast<std::uint8_t*>(&building),
+        image.session, sender_profile);
+
+    // 0076E575: vtable[4], 00749E10.
+    LocalStream stream;
+    cc13_seg41::land_at_pad_write_00749e10(reinterpret_cast<const std::uint8_t*>(&sent),
+                                           &stream.out);
+    // 0076E5A4 -> 00768530: the type read and rewind, then case A5h
+    // (operator new(20h), 0075AF00 at 007696E8) and 0076A27B vtable[8],
+    // 00749E40. The decoded copy is host storage here: its scalar delete
+    // 0074A1B0 is the compiler's (library, out of scope) and the class owns
+    // no payload subobjects.
+    stream.begin_read();
+    LandAtPadReadProfile read_profile;
+    const seg42::Context read_context{image.current_game, read_profile};
+    seg42::StartLandingMessage queued{};
+    seg42::construct_for_read_landingship_startlanding_0075af00(&queued, read_context);
+    cc13_seg41::land_at_pad_read_00749e40(reinterpret_cast<std::uint8_t*>(&queued), stream.in);
+
+    // 00780120 over the copy's IsType, 00749DF0 {A5h, 46h}.
+    const band_006b_cc13::TypeIdRule* const is_land_at_pad =
+        band_0071_cc13::find_type_id_rule_0071(0x00749df0u);
+    if (is_land_at_pad == nullptr || !copy_goes_to_unit_handler([is_land_at_pad](std::uint32_t type) {
+            return band_006b_cc13::type_id_rule_accepts(*is_land_at_pad,
+                static_cast<std::int32_t>(type));
+        })) {
+        return false;
+    }
+    // The session-kind switch: the ship's vtable[164h], 0074B570, over the
+    // copy (+10h kind, +1Ch pad handle, +1Eh building handle; 0075AF00 names
+    // them zero_1c / zero_1e for its zeroing stores).
+    return gameplay_seg41_cc13::handle_message_0074b570(queued.h.base.type_10, queued.zero_1c,
+                                                        queued.zero_1e, receiver);
 }
 
 bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
