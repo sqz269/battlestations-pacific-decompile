@@ -206,6 +206,21 @@ void quad_fade_target_clear_0064a520(Raw object) noexcept;
 void quad_fade_target_set_0064a530(Raw object) noexcept;
 // 00652A30, __fastcall(ECX = object) RET -> AL = byte +8h.
 std::uint8_t byte_08_get_00652a30(Raw object) noexcept;
+// The other byte accessors of the support-manager screen 4Eh (manager +BCh)
+// that BSP_InGameInterface_Update 0068C1F0 calls; each body read whole:
+// 00652A20  MOV AL,[ECX+9]; RET                          -> AL = byte +9h.
+// 00652A50  MOV AL,[ESP+4]; MOV [ECX+8],AL; RET 4        byte +8h = value.
+// 006529C0  MOV AL,[ECX+66h]; RET                        -> AL = byte +66h.
+// 006529B0  MOV AL,[ESP+4]; MOV [ECX+66h],AL; RET 4      byte +66h = value.
+// The getters leave the upper bytes of EAX as they were; callers test AL.
+std::uint8_t byte_09_get_00652a20(Raw object) noexcept;
+void byte_08_set_00652a50(Raw object, std::uint8_t value) noexcept;
+std::uint8_t byte_66_get_006529c0(Raw object) noexcept;
+void byte_66_set_006529b0(Raw object, std::uint8_t value) noexcept;
+// 0053D290  MOV EAX,[ESP+4]; MOV [ECX+28h],EAX; RET 4   dword +28h = value.
+// 0068C1F0's free-camera toggle calls it on the free-camera screen 2Bh
+// ([manager+90h]) with 0 or 1 (0068C440 / 0068C449).
+void dword_28_set_0053d290(Raw object, std::uint32_t value) noexcept;
 // 008356B0 / 008356F0, __fastcall(ECX = ship) RET -> ST0 = float +244h / +248h.
 float ship_float_244_get_008356b0(Raw ship) noexcept;
 float ship_float_248_get_008356f0(Raw ship) noexcept;

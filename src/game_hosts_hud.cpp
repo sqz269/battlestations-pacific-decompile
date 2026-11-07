@@ -55,7 +55,9 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"    // 0068CC70 leaf screens 005178B0, 00565D40
 #include "bsp/frontend_seg15_22_cc13.hpp"    // 0052B030, 005D3540
 #include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
-#include "bsp/seg25_cc13.hpp"                // 0060FD90
+#include "bsp/seg25_cc13.hpp"                // 0060FD90, 00611750
+#include "bsp/cc13_front4.hpp"               // 006529E0
+#include "bsp/cc13_front5.hpp"               // 00652A30, 00652A20, 00652A50, 006529C0, 006529B0
 #include "bsp/view_seg14_cc13.hpp"           // 0051E950
 #include "bsp/seg27_cc13.hpp"                // 006735D0
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
@@ -1761,20 +1763,68 @@ public:
     bool session_flag_19c4() override { return false; }
     bool overlay_c_extra_gate() override { return false; }
 
-    bool camera_screen_spectating() override { return record_false("006529e0", 0x006529e0u); }
-    bool camera_screen_flag_09() override { return record_false("00652a20", 0x00652a20u); }
-    bool camera_screen_flag_08() override { return record_false("00652a30", 0x00652a30u); }
-    void camera_screen_set_flag_08(bool value) override {
-        static_cast<void>(value);
-        owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_08", 0x00652a50u);
+    // The "camera screen" of this interface is the support-manager screen 4Eh,
+    // ECX = [manager+BCh] at every site below (0068C237..0068C9AF); 0068CC70
+    // builds it on its leaf block through 006735D0. Its register 0066EA60 does
+    // not run on that block (chain 629), but it only zeroes +0Ah, +30h and +66h
+    // of what these read (bsp.py show 0066ea60), and the block starts zeroed,
+    // so each answer is the block's own byte. +4h is the screen's FrontEndScreen
+    // flag the menu registry sets. Before Init has built the block the answers
+    // stay the neutral records they were.
+    bool camera_screen_spectating() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("006529e0", 0x006529e0u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_04", 0x006529e0u);
+        return bsp::cc13_front4::overlay_busy_006529e0({s}) != 0;
     }
-    bool camera_screen_flag_0a() override { return false; }
-    void camera_screen_set_flag_0a(bool value) override { static_cast<void>(value); }
-    bool camera_screen_flag_30() override { return false; }
-    bool camera_screen_flag_66() override { return record_false("006529c0", 0x006529c0u); }
+    bool camera_screen_flag_09() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("00652a20", 0x00652a20u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_09", 0x00652a20u);
+        return bsp::cc13_front5::byte_09_get_00652a20({s}) != 0;
+    }
+    bool camera_screen_flag_08() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("00652a30", 0x00652a30u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_08", 0x00652a30u);
+        return bsp::cc13_front5::byte_08_get_00652a30({s}) != 0;
+    }
+    void camera_screen_set_flag_08(bool value) override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_08", 0x00652a50u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::support_screen_set_byte_08", 0x00652a50u);
+        bsp::cc13_front5::byte_08_set_00652a50({s}, value ? 1u : 0u);
+    }
+    // 0068C25B CMP byte [ECX+0Ah] and 0068C7D8 MOV byte [ECX+0Ah],1 are inline.
+    bool camera_screen_flag_0a() override {
+        const std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        return s != nullptr && s[0x0A] != 0;
+    }
+    void camera_screen_set_flag_0a(bool value) override {
+        if (std::uint8_t* const s = leaf_block_at(kSupportScreenOffset)) s[0x0A] = value ? 1u : 0u;
+    }
+    // 0068C7C0..0068C7CC: [[00E198C4]+BCh]+30h, the same screen through the global.
+    bool camera_screen_flag_30() override {
+        const std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        return s != nullptr && s[0x30] != 0;
+    }
+    bool camera_screen_flag_66() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("006529c0", 0x006529c0u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_66", 0x006529c0u);
+        return bsp::cc13_front5::byte_66_get_006529c0({s}) != 0;
+    }
     void camera_screen_set_flag_66(bool value) override {
-        static_cast<void>(value);
-        owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_66", 0x006529b0u);
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_66", 0x006529b0u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::support_screen_set_byte_66", 0x006529b0u);
+        bsp::cc13_front5::byte_66_set_006529b0({s}, value ? 1u : 0u);
     }
     void camera_screen_frame_step() override {
         owner_.record("InGameInterfaceUpdate::camera_screen_frame_step", 0x00673130u);
@@ -1857,9 +1907,21 @@ public:
     void hud_root_set_field_1c(std::uint32_t value) override {
         owner_.set_root_closed_value(static_cast<std::int32_t>(value));
     }
-    bool screen_2b_wanted() override { return false; }
-    void screen_2b_set_mode(bool) override {
-        owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+    // The free-camera screen 2Bh, ECX = [manager+90h], on its 00540BA0 leaf
+    // block: 0068C40E tests its +4h (the FrontEndScreen's wanted flag) inline,
+    // and 0068C440 / 0068C449 call 0053D290 with 0 or 1.
+    bool screen_2b_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFreeCameraScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2b_set_mode(bool mode) override {
+        std::uint8_t* const s = leaf_block_at(kFreeCameraScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::free_camera_screen_set_28", 0x0053d290u);
+        bsp::cc13_front5::dword_28_set_0053d290({s}, mode ? 1u : 0u);
     }
     bool screen_34_query() override {
         if constexpr (kHudHintsSecondsLeftBound) {
@@ -1878,20 +1940,58 @@ public:
             return record_false("0054d3c0", 0x0054d3c0u);
         }
     }
-    bool screen_2a_wanted() override { return false; }
-    void screen_2a_clear_wanted() override {}
-    bool screen_3b_block_a() override { return false; }
-    bool screen_3b_block_b() override { return false; }
+    // The formation screen 2Ah, [manager+5Ch], on its 00538E30 leaf block:
+    // 0068C6D4..0068C6E3 tests its +4h and clears it with MOV byte [EAX+4],0,
+    // the wanted flag the menu registry borrows, before 0068AB80(1, 1).
+    bool screen_2a_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2a_clear_wanted() override {
+        if (FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset)) f->wanted = false;
+    }
+    // 0068C685..0068C698: ECX = [manager+64h], the order screen 3Bh that
+    // 0068CC70 builds on its leaf block through 005F9440 (its register 005F9FF0
+    // runs there too); CMP byte [EAX+81h] / [EAX+82h], inline.
+    bool screen_3b_block_a() override {
+        const std::uint8_t* const s = leaf_block_at(kOrderScreenOffset);
+        return s != nullptr && s[0x81] != 0;
+    }
+    bool screen_3b_block_b() override {
+        const std::uint8_t* const s = leaf_block_at(kOrderScreenOffset);
+        return s != nullptr && s[0x82] != 0;
+    }
+    // 005FB080 reads the controlled unit's native fields (+3B0h on a squadron)
+    // and the manager's +20h/+40h/+60h, none of which this process has as
+    // native objects; it stays a record.
     void screen_3b_idle() override {
         owner_.record("InGameInterfaceUpdate::screen_3b_idle", 0x005fb080u);
     }
     bool screen_45_block_a() override { return false; }
     bool screen_45_block_b() override { return false; }
-    bool map_screen_wanted() override { return false; }
+    // The "map screen" is the powerup-manager screen 4Fh, ECX = [manager+C0h]
+    // (0068C784..0068C9C2), built on its leaf block by 0061A480. 0068C795 and
+    // 0068C80B test its +4h inline: the FrontEndScreen flag the menu registry
+    // sets when the screen is shown.
+    bool map_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPowerupScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    // 00612DA0 starts on the widgets its register 00614170 loads (+B0h, +D4h,
+    // +E4h..+ECh), and that register does not run on the leaf block (chain
+    // 629: it takes a typed state), so the step stays a record.
     void map_screen_frame_step() override {
         owner_.record("InGameInterfaceUpdate::map_screen_frame_step", 0x00612da0u);
     }
-    bool map_screen_busy() override { return record_false("00611750", 0x00611750u); }
+    // 0068C9C2..0068C9CE: 00611750 on the same block, +1F9h or +13Fh. The
+    // skipped register only clears +1F9h (00614170 at 006142EC, BL = 0), which
+    // the zeroed block already holds; the constructor stores +13Fh (0061A513).
+    bool map_screen_busy() override {
+        std::uint8_t* const s = leaf_block_at(kPowerupScreenOffset);
+        if (s == nullptr) return record_false("00611750", 0x00611750u);
+        owner_.done("InGameInterfaceUpdate::powerup_screen_scrolling", 0x00611750u);
+        return bsp::seg25_cc13::powerup_manager_is_scrolling_00611750(s);
+    }
     std::uint32_t map_screen_overlay_argument() override { return 0; }
     bool pause_screen_flag_05() override { return false; }
     bool pause_screen_flag_08() override { return false; }
@@ -1933,10 +2033,36 @@ public:
         owner_.record("InGameInterfaceUpdate::water_height", 0x0078cf20u);
         return 0.0f;
     }
-    bool cockpit_screen_wanted() override { return false; }
-    int cockpit_screen_mode() override { return record_false("00604f30", 0x00604f30u) ? 1 : 0; }
-    bool second_cockpit_screen_wanted() override { return false; }
-    int second_cockpit_screen_mode() override { return 0; }
+    // 0068CB4A..0068CB6D. First the plane-effects screen 3Fh ([manager+6Ch],
+    // the 00606470 leaf block): its +4h, then 00604F30 on it. 00604F30 answers
+    // 0 while the block's plane +B8h is null, which is the constructor's store
+    // (00606470) and stays so because the 0068ACA0 plane arm that binds one is
+    // a record here; only a bound plane would reach the kind query, which
+    // HudLeafFe5Binding leaves unreached. Then the periscope screen 47h
+    // ([manager+84h], the 00650B00 leaf block): its +4h and CMP dword [+74h],2.
+    bool cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPlaneEffectsScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int cockpit_screen_mode() override {
+        HudLeafScreenStorage* const leaf = leaf_at(kPlaneEffectsScreenOffset);
+        if (leaf == nullptr) return record_false("00604f30", 0x00604f30u) ? 1 : 0;
+        HudLeafFe5Binding binding(*leaf);
+        owner_.done("InGameInterfaceUpdate::plane_effects_cockpit_view", 0x00604f30u);
+        return static_cast<int>(
+            bsp::cc13_fe5::plane_screen_cockpit_view_flag_00604f30({leaf->data()}, binding));
+    }
+    bool second_cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPeriscopeScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int second_cockpit_screen_mode() override {
+        const std::uint8_t* const s = leaf_block_at(kPeriscopeScreenOffset);
+        if (s == nullptr) return 0;
+        std::int32_t mode = 0;
+        std::memcpy(&mode, s + 0x74, sizeof(mode));
+        return mode;
+    }
     bool controlled_unit_is_submarine() override {
         // 0068CC04: IsKindOf(8) on 00E188D8.
         if constexpr (kHudInterfaceControlledUnitBound) {
@@ -1987,6 +2113,28 @@ public:
     }
 
 private:
+    // The manager slots the reads above dereference (src/ingame_interface.cpp).
+    static constexpr std::uint16_t kFormationScreenOffset = 0x5C;   // screen 2Ah
+    static constexpr std::uint16_t kOrderScreenOffset = 0x64;       // screen 3Bh
+    static constexpr std::uint16_t kPlaneEffectsScreenOffset = 0x6C;  // screen 3Fh
+    static constexpr std::uint16_t kPeriscopeScreenOffset = 0x84;     // screen 47h
+    static constexpr std::uint16_t kFreeCameraScreenOffset = 0x90;  // screen 2Bh
+    static constexpr std::uint16_t kSupportScreenOffset = 0xBC;     // screen 4Eh
+    static constexpr std::uint16_t kPowerupScreenOffset = 0xC0;     // screen 4Fh
+    // The leaf block 0068CC70 built for [manager+offset], or null.
+    HudLeafScreenStorage* leaf_at(std::uint16_t offset) const {
+        const std::size_t index = bsp::in_game_hud_screen_index_at(offset);
+        return index < kInGameHudScreenCount ? owner_.leaf_screens[index].get() : nullptr;
+    }
+    std::uint8_t* leaf_block_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? leaf->data() : nullptr;
+    }
+    // Its +4h/+5h, the FrontEndScreen the leaf constructed and the registry borrows.
+    FrontEndScreen* leaf_flags_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? &leaf->flags() : nullptr;
+    }
     bool record_false(const char* suffix, std::uint32_t address) {
         char method[80];
         std::snprintf(method, sizeof(method), "InGameInterfaceUpdate::query_%s", suffix);
