@@ -3843,6 +3843,19 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_lead_ship{0}, seat_lead_other{0}, seat_lead_turned{0},
         seat_lead_adds_speed{0};
     std::map<int, bool> adds_speed_by_device;       // DeviceClass "AddsSpeed", desc+95h
+    // [[gun+3F4h]+95h], the DeviceClass "AddsSpeed" byte (00732BE9..00732C0E
+    // through 00B662F0), read once per device class.
+    bool device_adds_speed_95(int device_class) {
+        auto found = adds_speed_by_device.find(device_class);
+        if (found == adds_speed_by_device.end()) {
+            found = adds_speed_by_device.emplace(device_class,
+                lua.read_device_class_bool(device_class, "AddsSpeed", false)).first;
+        }
+        return found->second;
+    }
+    // Goal 5 chain 658: launches whose 0072BF10 added the owner's velocity
+    // (0072C04B, an AddsSpeed device).
+    unsigned long long spawn_platform_velocity_adds{0};
     void seat_artillery_lead_009578c3(const GameGunRow& gun, const UnitState& state,
         std::size_t unit, std::size_t target, const float right[3], const float up[3],
         const float forward[3], const float origin[3], float aim[3]);
@@ -12001,7 +12014,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (st.shot_range_min < 0.0f || r < st.shot_range_min) st.shot_range_min = r;
         }
         ++gun.shots;
-        gun.last_fire_seconds = clock_seconds;   // gun+474h
+        // gun+474h = [00F876A4] is 0072BF10's store (0072C043), made by its body
+        // at the spawn below (GunProjectileSpawn::stamp_fire_time).
         if constexpr (kUnitFireCooldownBound) {
             // 0072F830: 0072FB35..0072FB78 and 0072FB7E..0072FBA9.
             if (gun.category == 2 || gun.category == 3 || gun.category == 4
@@ -12192,11 +12206,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             bsp::gun_ring_muzzle_origin_006fe160(ring, direction);
             done("Gun::launcher_direction_cone_006fe160", 0x006fe160u);
         }
+        // The record the class factory (0072C006, classDesc->vtable[20h]) builds.
+        // Its owner, party and team are 0072BF10's own stores, made by the body
+        // at the spawn below.
         GameProjectileRow shot;
-        shot.gun_row = g;
-        shot.owner_unit = owner_unit + 1;
-        shot.owner_side = units.unit_side_0054(owner_unit);
-        shot.team_id_1c = shot_team_id_0072c0f2(gun, owner_unit);
         shot.bullet_class = gun.bullet_class;
         float launch_speed = gun.muzzle_speed;
         int launch_sub_type = 0;
@@ -12425,7 +12438,105 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
-        shots.push_back(shot);
+        {
+            // Goal 5 chain 658: 0072BF10 BSP_Gun_CreateProjectile runs on its body
+            // (bsp::projectile_spawn_0072bf10, src/projectile_impact.cpp; bsp.py
+            // show 0072bf10 --asm) over this host's rows. `shot` above is the
+            // record the class factory builds; the factory call is where it joins
+            // the live list, and the body then makes 0072BF10's stores in order.
+            struct GunProjectileSpawn final : bsp::ProjectileSpawnHost {
+                Impl& h;
+                GameGunRow& gun;
+                const std::size_t gun_row;
+                const std::size_t owner;
+                GameProjectileRow& built;
+                GunProjectileSpawn(Impl& host, GameGunRow& firing, std::size_t row,
+                                   std::size_t owner_unit, GameProjectileRow& record)
+                    : h(host), gun(firing), gun_row(row), owner(owner_unit), built(record) {}
+                static GameProjectileRow& at(void* shot) {
+                    return *static_cast<GameProjectileRow*>(shot);
+                }
+                void* create_projectile_006e8430(const bsp::ProjectileSpawnRequest&) override {
+                    // The factory's nearCamera and 0072F830 flag arguments select
+                    // presentation in the class factories; this host's record
+                    // reads neither. gun_row is the host's own back-reference.
+                    built.gun_row = gun_row;
+                    h.shots.push_back(built);
+                    return &h.shots.back();
+                }
+                void store_ids(void* shot) override {
+                    // 0072C025: record+54h = [owner+54h], the owner's party.
+                    // LABELLED: record+58h = [gun+58h] (0072C013), the device's
+                    // race, is not held; this host reads no race off a shot.
+                    at(shot).owner_side = h.units.unit_side_0054(owner);
+                }
+                void gun_on_projectile_created(void*) override {
+                    // 0072C033 gun->vtable[1E4h](shot): 006E3DE0 (RET 4) for the
+                    // plain gun classes, 008598B0 for the turning ones, which copies
+                    // gun+4A4h..+4B8h into shot+78h..+8Ch and sets +90h within 0.25 s
+                    // of gun+4A0h. LABELLED: the row has no +78h..+90h block.
+                    h.record("Gun::on_projectile_created_vtable1e4", 0x008598b0u);
+                }
+                void stamp_fire_time() override {
+                    gun.last_fire_seconds = h.clock_seconds;   // 0072C043, gun+474h
+                }
+                bsp::TickPoint3 owner_velocity() override {
+                    // 0072C064 owner->vtable[34h](): the units host's linear
+                    // velocity, the vtable[34h] reading the rocket fuze takes.
+                    // LABELLED: for a plane parented to a deck the image's +AC8h is
+                    // parent-local; this is the world velocity.
+                    float v[3] = {0.0f, 0.0f, 0.0f};
+                    if (!h.units.unit_linear_velocity(owner, v)) v[0] = v[1] = v[2] = 0.0f;
+                    return bsp::TickPoint3{v[0], v[1], v[2]};
+                }
+                void add_platform_velocity(void* shot, const bsp::TickPoint3& v) override {
+                    // 0072C066..0072C08F: FLD [shot+48h], FADD [shot+8h], FSTP per
+                    // axis, one float add each. LABELLED: the copy at shot+48h..+50h
+                    // is not held.
+                    bsp::TickPoint3& velocity = at(shot).flight.velocity;
+                    velocity.x = v.x + velocity.x;
+                    velocity.y = v.y + velocity.y;
+                    velocity.z = v.z + velocity.z;
+                    ++h.spawn_platform_velocity_adds;
+                }
+                void shot_set_scale(void*, float) override {
+                    // Unreached here: scale_43c is the constructor's 1 (below).
+                    h.record("Projectile::set_scale_vtable20", 0x0072c0aeu);
+                }
+                void shot_set_appearance(void*) override {
+                    // 0072C0F0 shot->vtable[34h](&{1,1,1}, &{0,0,0}): presentation.
+                    h.record("Projectile::set_appearance_vtable34", 0x0072c0f0u);
+                }
+                void shot_set_team(void* shot, int team) override {
+                    at(shot).team_id_1c = team;   // 0072C0FB / 0072C14B, shot+1Ch
+                }
+                void bind_owner_006e6bb0(void* shot) override {
+                    // 006E6BB0: shot+0C8h (projectile+238h) = the owner. LABELLED:
+                    // the observer pair and the +94h grace [00CE3854] are not kept.
+                    at(shot).owner_unit = owner + 1;
+                }
+                void store_owner_record_ids(void*) override {
+                    // 009555BD..009555C9: shot+18h = [owner+54h] is the party the
+                    // row's owner_side already holds (0072C025 above); LABELLED:
+                    // shot+14h, (owner+170h)->vtable[0](), is not held.
+                }
+                void stamp_director_fire_time(int) override {
+                    // 0095561B: [director + 1D0h + classDesc[+8h]*4] = [00F876A4].
+                    // LABELLED: this host keeps no director timestamps.
+                    h.record("Owner::director_fire_time_0095561b", 0x009555a0u);
+                }
+            };
+            GunProjectileSpawn spawn_host(*this, gun, g, owner_unit, shot);
+            bsp::ProjectileSpawnRequest request;
+            request.position = bsp::TickPoint3{spawn[0], spawn[1], spawn[2]};
+            request.direction = launch_direction;
+            request.team_id = shot_team_id_0072c0f2(gun, owner_unit);
+            // gun+43Ch: the constructor's 1 (0072E5EA / 0072E666). LABELLED: the
+            // plane gun-group size 009575D0 stores through 00727E10 is not hosted.
+            request.scale_43c = 1;
+            request.inherit_platform_velocity = device_adds_speed_95(gun.device_class);
+            bsp::projectile_spawn_0072bf10(request, gun.bullet_sub_type, spawn_host);
+        }
         ++summary.projectiles;
         done("Projectile::launch_velocity_006e8430", 0x006e8430u);
         done("Projectile::spawn_0072bf10", 0x0072bf10u);
@@ -19046,12 +19157,7 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
     // 0095790E..0095792F / 009579B2..009579D3: [dev+3F4h]+95h ("AddsSpeed",
     // 00732C0E) takes the unit's vtable[34h], else the zero vector 00F87574.
     float shooter_vel[3] = {0.0f, 0.0f, 0.0f};
-    auto found = adds_speed_by_device.find(gun.device_class);
-    if (found == adds_speed_by_device.end()) {
-        found = adds_speed_by_device.emplace(gun.device_class,
-            lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
-    }
-    if (found->second) {
+    if (device_adds_speed_95(gun.device_class)) {
         unit_velocity(unit, shooter_vel);
         ++seat_lead_adds_speed;
     }
@@ -19143,12 +19249,7 @@ bool GameGunneryHost::Impl::unit_adds_speed_04a0(std::size_t unit) {
               || gun.category == 6)) {
             continue;
         }
-        auto found = adds_speed_by_device.find(gun.device_class);
-        if (found == adds_speed_by_device.end()) {
-            found = adds_speed_by_device.emplace(gun.device_class,
-                lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
-        }
-        if (found->second) return true;
+        if (device_adds_speed_95(gun.device_class)) return true;
     }
     return false;
 }
@@ -22613,6 +22714,9 @@ void GameGunneryHost::report() {
             host.muzzle_offset_shots != 0
                 ? host.muzzle_shift_sum / static_cast<double>(host.muzzle_offset_shots) : 0.0,
             host.muzzle_shift_max, kMuzzleOffsetsBound ? 1 : 0);
+        host.log.notef("summary mission gunnery projectile spawn platform_velocity_adds=%llu "
+            "(0072BF10 0072C04B AddsSpeed, goal 5 chain 658)",
+            host.spawn_platform_velocity_adds);
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
