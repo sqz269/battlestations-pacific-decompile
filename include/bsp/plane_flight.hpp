@@ -436,17 +436,28 @@ struct PlaneNamedEffectLatchResult {
 PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
     const PlaneNamedEffectLatchInputs& in) noexcept;
 
-// 007CE3B1..007CE46A, the same tick's other +C01h store, reached in single
-// player when unit+61h is clear (007CE313): with (unit+72Ch)->vtable[38h]() true
-// (007CE3C0 / TEST AL,AL) and 30.0 (double 00CE7630) > unit+9B4h (007CE3D6
-// FCOMIP / JBE, so a NaN skips), each Landscape of the world list +348h
-// (node +4h next, +8h the Landscape) is asked 0087FC60 at the refreshed unit+FCh
-// / +104h; the first whose height is above unit+100h (007CE45B FCOMIP / JA, a NaN
-// is not above) stores +C01h = 2 at 007CE46A. True when that store happens.
+// 007CE3B1..007CE46A, the same tick's other +C01h store. It is reached only:
+//   with unit+520h clear: 007CE09C CMP byte [ESI+210h],0 / 007CE0B5 JNZ 007CE55B
+//     jumps over 007CE0BB..007CE55A (the x87 ops between leave the flags);
+//   in single player (007CE291 game+1FE4h == 2 -> 007CE471) with unit+61h clear
+//     (007CE313 -> 007CE471), both constants here (the host passes neither);
+//   when the depth kill does not fire: 007CE397 FLD limit / FCHS, 007CE39D
+//     FCOMIP -limit, unit+100h / 007CE3A1 JBE 007CE3B1; otherwise 007CE3A7 kills
+//     and 007CE3AC JMP 007CE471 skips the loop (a NaN y takes the loop).
+// Then, with (unit+72Ch)->vtable[38h]() true (007CE3C0 / TEST AL,AL) and 30.0
+// (double 00CE7630) > unit+9B4h (007CE3D6 FCOMIP / JBE, so a NaN skips), each
+// Landscape of the world list +348h (node +4h next, +8h the Landscape) is asked
+// 0087FC60 at the refreshed unit+FCh / +104h; the first whose height is above
+// unit+100h (007CE45B FCOMIP / JA, a NaN is not above) stores +C01h = 2 at
+// 007CE46A. True when that store happens.
 // `landscape_height_0087fc60(k, xz, height)` answers the k-th Landscape's
 // 0087FC60 and returns false once k is past the list; it is first called only
-// after both gates pass.
+// after every gate passes.
 struct PlaneLandscapeBelowInputs {
+    bool suppress_520{false};   // unit+520h ([ESI+210h]) at 007CE09C
+    // The depth kill's limit at 007CE397: 30.0f (00CE38C8), or the float +0Ch of
+    // (unit+360h)->+160h->+0Ch->vtable[48h]() when that chain exists.
+    float depth_kill_limit{30.0f};
     bool free_flight_gate_72c{false};
     float height_9b4{0.0f};     // unit+9B4h ([ESI+6A4h]), the previous tick's store
     float x_fc{0.0f};

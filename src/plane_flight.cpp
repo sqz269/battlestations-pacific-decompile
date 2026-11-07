@@ -220,6 +220,11 @@ PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
 bool plane_below_landscape_007ce3b1(const PlaneLandscapeBelowInputs& in,
     const std::function<bool(std::size_t landscape, const float xz[2], float& height)>&
         landscape_height_0087fc60) {
+    if (in.suppress_520) return false;                                // 007CE0B5 JNZ 007CE55B
+    // 007CE39B FCHS / 007CE39D FCOMIP ST0 = -limit, ST1 = y / 007CE3A1 JBE 007CE3B1:
+    // an ordered -limit > y is the depth kill's arm (007CE3A7), which 007CE3AC
+    // ends with JMP 007CE471 past the loop.
+    if (-in.depth_kill_limit > in.y_100) return false;
     if (!in.free_flight_gate_72c) return false;                       // 007CE3C4 JZ 007CE471
     if (!(30.0 > static_cast<double>(in.height_9b4))) return false;   // 007CE3DA JBE 007CE471
     const float xz[2] = {in.x_fc, in.z_104};                          // [ESP+18h], [ESP+1Ch]

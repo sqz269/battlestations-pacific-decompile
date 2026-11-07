@@ -138,5 +138,25 @@
       "host_site": "src/native_gui_curve_storage.cpp create_native_gui_curve_default_00aa1800 (no caller)",
       "reason": "The native widget factories (00AA1800 and siblings) are not called by any host GUI loader."
     }
-  ]
+  ],
+  "review_round_1": {
+    "run": 1344,
+    "round": 1,
+    "findings": [
+      {
+        "site": "src/game_hosts_units_motion.cpp PlaneBinding::named_effect_latch_007ce790 (the 007CE3B1 block)",
+        "finding": "Run the below-Landscape store only with unit+520h clear (007CE0B5 JNZ 007CE55B) and when the depth kill does not fire (007CE39D FCOMIP -limit, y / JBE; 007CE3AC JMP 007CE471).",
+        "outcome": "fixed: PlaneLandscapeBelowInputs carries suppress_520 and depth_kill_limit; the host passes the sequence's unit+520h and the depth kill's labelled 30.0f (00CE38C8). A NaN y takes the loop."
+      },
+      {
+        "site": "include/bsp/plane_flight.hpp plane_below_landscape_007ce3b1",
+        "finding": "Document or model both gates.",
+        "outcome": "fixed: modelled in the function (both gates are inputs) and listed in the comment with their addresses; the ledger row's evidence names them."
+      }
+    ],
+    "notes": [
+      "Withdrawn hand-off: the dying-plane branch's unit+C10h = 007BBFA0's own store is correct. 007D0B9D..007D0BBE copy the message's +20h only for a live plane or in session mode 2 (review run 1344), so it is not a task for the 007D0B80 receiver adapter.",
+      "Ordering risk to check on the first game run: a plane that becomes dead inside its own tick before the latch (e.g. the leave countdown 007EE410) can be removed by the dying-plane explosion branch before the death-mode block runs, skipping that block's squadron removal (007F3970) and C3Ah bookkeeping. Look for \"plane named effect latch\" lines."
+    ]
+  }
 }

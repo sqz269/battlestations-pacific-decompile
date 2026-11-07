@@ -21628,9 +21628,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::size_t self = unit_.process_index;
                         const bool bound = gh != nullptr && self < owner_.slots.size()
                             && owner_.slots[self].get() == &unit_;
-                        // 007CE3B1..007CE46A (bsp::plane_below_landscape_007ce3b1): game+1FE4h
-                        // is 0 (007CE291) and unit+61h has no writer (game_hosts_units.hpp),
-                        // so 007CE31A falls through to it. The world list +348h is the scene
+                        // 007CE3B1..007CE46A (bsp::plane_below_landscape_007ce3b1, which also
+                        // models its unit+520h gate 007CE0B5 and the depth kill's skip
+                        // 007CE3AC): game+1FE4h is 0 (007CE291) and unit+61h has no writer
+                        // (game_hosts_units.hpp), so 007CE31A falls through to it. The host's
+                        // own depth kill runs later in the tick (free-flight arm, state 7,
+                        // labelled there); this gate keeps a plane below -30 m from taking
+                        // the Landscape store the image skips. The world list +348h is the scene
                         // host's Landscape list, in list order; each is asked 0087FC60 through
                         // the borrowed terrain (slot 2Ch), and a Landscape whose +3D0h was not
                         // loaded answers 0087FC60's own -1.0. unit+FCh..+104h are the world
@@ -21640,6 +21644,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::game::scene_world_class_lists();
                             std::vector<std::size_t> landscapes;   // read once both gates pass
                             bsp::PlaneLandscapeBelowInputs below;
+                            // 007CE09C: the unit+520h the sequence read after 00953CC0.
+                            below.suppress_520 = suppress_520;
+                            // 007CE397: SUBSTITUTION, labelled (the depth kill's own,
+                            // "plane depth kill" above): the 30.0f fallback (00CE38C8);
+                            // the (unit+360h)->+160h->+0Ch->vtable[48h] chain is not carried.
+                            below.depth_kill_limit = 30.0f;
                             below.free_flight_gate_72c = free_flight_gate_00d06130_38();
                             below.height_9b4 = unit_.plane_height_above_surface_9b4;
                             const float* const p = unit_.world.data() + 12;
