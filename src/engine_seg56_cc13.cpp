@@ -1,6 +1,7 @@
 // Packet cc13-sys5: segment 56 bindings and helpers. See docs/CC13_SYS_5.md and the header for
 // addresses, ABI and evidence. Comments cite the instruction each statement stands for.
 #include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
@@ -1001,9 +1002,16 @@ int lua_unload_class(LuaArgs& args, GlueHost& host)
 
 float camera_state_degrees(float radians) noexcept
 {
-    const float shifted = narrow(static_cast<double>(radians) + 131.9468994140625); // 008BF874
+    // bsp.py ghidra disasm 008bf860: 008BF874 FADD double [00D13268] then 008BF87A FSTP
+    // float; 00BF857A fmod (exact) then 008BF88D FSTP float; 008BF8A3 FDIV double
+    // [00CE3D28] and 008BF8A9 FMUL double [00CE3D20] with no store between, then 008BF8AF
+    // FSTP float. GetCameraState runs on the main thread, whose precision control is
+    // 24-bit, so each of the three operations rounds to 24 bits (goal 5 chain 663: the
+    // division and product used to be rounded once, as a double chain).
+    const float shifted = static_cast<float>(cc13x87::x87_add24(radians, 131.9468994140625));
     const float wrapped = narrow(std::fmod(static_cast<double>(shifted), 6.2831854820251465));
-    return narrow((static_cast<double>(wrapped) / 3.1415927410125732) * 180.0); // 008BF8A3
+    return static_cast<float>(
+        cc13x87::x87_mul24(cc13x87::x87_div24(wrapped, 3.1415927410125732), 180.0));
 }
 
 int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host)

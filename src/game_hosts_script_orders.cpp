@@ -885,6 +885,52 @@ private:
     Calls calls_;
 };
 
+// Goal 5 chain 663. GetCameraState 008BF6A0 on its body lua_get_camera_state
+// (src/engine_seg56_cc13.cpp) over the camera node the caller chose (the world matrix at
+// [game+19FCh]+F0h after 00B6DB70, bsp.py ghidra disasm 008bf6a0: 008BF799 / 008BF7BC):
+// +30h of it is the translation row (008BF7BC LEA EDX,[ESI+30h] into 0088BA30), 0042D2E0
+// gives the basis angles in radians, and Zoom is [00F889B4] / node+1C4h. The table is
+// built by `push`. Every other CameraStateHost site belongs to another binding.
+class CameraStateBinding final : public bsp::cc13_seg56::CameraStateHost,
+                                 public bsp::cc13_seg56::CameraStateResults {
+public:
+    CameraStateBinding(const bsp::CameraMatrix& world, float fov,
+                       std::function<void(const bsp::cc13_seg56::CameraStateResult&)> push)
+        : world_(world), fov_(fov), push_(std::move(push)) {}
+
+    bsp::cc13_seg56::Vec3 game_camera_vector_30() override {
+        return {world_[12], world_[13], world_[14]};
+    }
+    bsp::cc13_seg56::Vec3 game_camera_basis_angles() override {
+        bsp::CameraMatrix basis = world_;
+        bsp::cc13_seg56::Vec3 a;
+        bsp::extract_camera_matrix_angles_0042d2e0(basis, a.x, a.y, a.z);
+        return a;
+    }
+    float game_camera_fov_1c4() override { return fov_; }
+    float base_fov_00f889b4() override { return bsp::kFovDivisor00f889b4; }
+    void push_camera_state(const bsp::cc13_seg56::CameraStateResult& state) override {
+        push_(state);
+    }
+
+    bsp::cc13_seg56::Vec3 game_camera_world_position() override { unreached("+120h..+128h"); }
+    bsp::cc13_seg56::Vec3 game_camera_direction_110() override { unreached("+110h..+118h"); }
+    bsp::cc13_seg56::Vec3 entity_world_position(void*) override { unreached("entity +FCh"); }
+    std::array<float, 2> camera_direction_angle_delta(const bsp::cc13_seg56::Vec3&,
+                                                      const bsp::cc13_seg56::Vec3&) override {
+        unreached("00794750");
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("CameraStateBinding: GetCameraState does not reach ")
+                               + site);
+    }
+    bsp::CameraMatrix world_;
+    float fov_;
+    std::function<void(const bsp::cc13_seg56::CameraStateResult&)> push_;
+};
+
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
 public:
     explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
@@ -8483,13 +8529,15 @@ void GameScriptOrdersHost::basis_degrees_0042d2e0(const bsp::CameraMatrix& world
 // host's mission camera publishes (bsp::mission_camera_publication, packet
 // cc9_mission_camera). SUBSTITUTION, labelled: when no pose has been
 // published (a controlled unit with no ship camera, such as JM08's HQ), the
-// controlled unit's own world matrix stands in, with Zoom 1.0; with no
-// controlled unit either, the identity at the origin.
+// controlled unit's own world matrix stands in, with Zoom 1.0 (its fov is taken as
+// [00F889B4] itself); with no controlled unit either, the identity at the origin.
+// Goal 5 chain 663: the position, the angles in degrees and the zoom are the body
+// lua_get_camera_state's (CameraStateBinding); this function picks the node.
 int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
     if (state_ == nullptr) return 0;
     bsp::CameraMatrix world = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    float zoom = 1.0f;
+    float fov = bsp::kFovDivisor00f889b4;
     const char* source = "identity";
     bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
     if (node.ready) {
@@ -8497,8 +8545,7 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
             bsp::refresh_camera_world_00b6db70(node.state.transform);
         }
         world = node.state.transform.world;
-        const float fov = node.state.projection.fov;
-        zoom = static_cast<float>(static_cast<double>(bsp::kFovDivisor00f889b4) / fov);
+        fov = node.state.projection.fov;
         source = "camera";
         ++camera_state_from_camera_;
     } else if (units_.controlled_bound() && units_.controlled_index() < units_.count()) {
@@ -8514,25 +8561,28 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
         ++camera_state_stand_ins_;
     }
     ++camera_state_calls_;
-    const float position[3] = {world[12], world[13], world[14]};
-    float degrees[3];
-    basis_degrees_0042d2e0(world, degrees);
-    lua_newtable(state_);
-    push_vector3_table_0088ba30(position);
-    lua_setfield(state_, -2, "Position");
-    push_vector3_table_0088ba30(degrees);
-    lua_setfield(state_, -2, "Rotation");
-    lua_pushnumber(state_, static_cast<lua_Number>(zoom));
-    lua_setfield(state_, -2, "Zoom");                         // 00D14988
-    if (camera_state_calls_ <= 8) {
-        log_.notef("  GetCameraState at %.2f s: %s position=(%.1f, %.1f, %.1f) rotation=(%.1f, "
-            "%.1f, %.1f) zoom=%.3f (008BF6A0, packet cc9_lua_camera_state)",
-            static_cast<double>(mission_clock_), source, static_cast<double>(position[0]),
-            static_cast<double>(position[1]), static_cast<double>(position[2]),
-            static_cast<double>(degrees[0]), static_cast<double>(degrees[1]),
-            static_cast<double>(degrees[2]), static_cast<double>(zoom));
-    }
-    return 1;
+    CameraStateBinding camera(world, fov,
+        [this, source](const bsp::cc13_seg56::CameraStateResult& state) {
+            const float position[3] = {state.position.x, state.position.y, state.position.z};
+            const float degrees[3] = {state.rotation.x, state.rotation.y, state.rotation.z};
+            lua_newtable(state_);
+            push_vector3_table_0088ba30(position);
+            lua_setfield(state_, -2, "Position");                 // 00CE68B4
+            push_vector3_table_0088ba30(degrees);
+            lua_setfield(state_, -2, "Rotation");                 // 00D0D734
+            lua_pushnumber(state_, static_cast<lua_Number>(state.zoom));
+            lua_setfield(state_, -2, "Zoom");                     // 00D14988
+            if (camera_state_calls_ <= 8) {
+                log_.notef("  GetCameraState at %.2f s: %s position=(%.1f, %.1f, %.1f) "
+                    "rotation=(%.1f, %.1f, %.1f) zoom=%.3f (008BF6A0 body, packet "
+                    "cc9_lua_camera_state)", static_cast<double>(mission_clock_), source,
+                    static_cast<double>(position[0]), static_cast<double>(position[1]),
+                    static_cast<double>(position[2]), static_cast<double>(degrees[0]),
+                    static_cast<double>(degrees[1]), static_cast<double>(degrees[2]),
+                    static_cast<double>(state.zoom));
+            }
+        });
+    return bsp::cc13_seg56::lua_get_camera_state(camera, camera);
 }
 
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
