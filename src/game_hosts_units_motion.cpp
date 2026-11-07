@@ -1,7 +1,160 @@
 // GameUnitsHost::motion_step_00825f20, the units fixed-step motion tick (split out of game_hosts_units.cpp).
 #include "bsp/game_hosts_units_internal.hpp"
+#include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
 
 namespace bsp::game {
+
+namespace {
+namespace s47_effects = bsp::gameplay_seg47_cc13;
+
+// Goal 5 chain 645. The plane's vtable[194h] 007BBFA0 BSP_Plane_StartNamedEffect
+// (bsp::gameplay_seg47_cc13::named_effect_007bbfa0) on a host plane: the death-mode
+// step's 007CA8A0 choice and the raises of the water contact (007CB8DC), the water
+// drown (007CBE02) and the +C01h latch (007CE790). Inputs, from bsp.py show
+// 007bbfa0 --asm: unit+900h the flight state; (unit+72Ch)->vtable[38h], 0074E210,
+// is unit+900h == 7; unit->vtable[38h] 007B8E60 the +B1Ch speed 007D8020 caches;
+// unit+C36h and the entry unit+C10h; game+1FE4h 0. LABELLED, as before: unit+DFCh
+// (rammed by a unit) is clear, since this host has no ram hit. The ECX = 0 draw
+// 007BC3C7 is 00BD2F10 on the gunnery host's stream 0; "enginefire" and
+// "spinning" (the arms that call 00BD2FC0 / draw on stream 1) are not raised here.
+s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
+    GameUnitSlot& unit, std::size_t index, s47_effects::NamedEffect effect) {
+    GameGunneryHost* const gh = host.gunnery.get();
+    s47_effects::NamedEffectInputs ne;
+    ne.effect = effect;
+    ne.flight_state_900 = unit.plane_control_mode_900;
+    ne.controller_gate_72c = [&unit] { return unit.plane_control_mode_900 == 7; };
+    ne.cached_speed_b1c = bsp::plane_cached_speed_b1c_007d8020(unit.plane_world_velocity);
+    ne.rammed_dfc = false;
+    ne.spinning_c36 = unit.plane_death_c36;
+    ne.timer_c10 = unit.plane_death_timer_c10;
+    ne.session_mode_1fe4 = 0;
+    // planepartclasses.lua ExplosionExplosionDelay, which 004A9BD0 stores at
+    // [00E18710] / [00E1870C]; read once, as the death-mode step read it.
+    static bool delay_read = false;
+    static float delay_pair[2] = {0.6f, 1.8f};
+    if (!delay_read) {
+        delay_read = true;
+        host.lua.read_global_number_pair("ExplosionExplosionDelay", delay_pair[0],
+            delay_pair[1]);
+    }
+    s47_effects::PlaneFailureGlobals g;
+    g.explosion_delay_a_e18710 = delay_pair[0];
+    g.explosion_delay_b_e1870c = delay_pair[1];
+    s47_effects::Rng rng;
+    rng.uniform = [gh, index](int stream, float lo, float hi) {
+        if (gh == nullptr) throw std::logic_error("007BBFA0: no gunnery host owns 00BD2F10");
+        return gh->death_mode_draw_00bd2f10(stream, index, lo, hi);
+    };
+    rng.next_u32 = [](int) -> std::uint32_t {
+        throw std::logic_error("007BBFA0: NextU32 is the enginefire arm's");
+    };
+    s47_effects::NamedEffectResult r = s47_effects::named_effect_007bbfa0(ne, g, rng);
+    unit.plane_death_timer_c10 = r.timer_c10;   // 007BBFA0's own unit+C10h store
+    host.done("Plane::start_named_effect_007bbfa0", 0x007bbfa0u);
+    return r;
+}
+
+// Goal 5 chain 645. Each message 007BBFA0 routed with 0077C2A0 flags 7: single
+// player takes the local bit, 0076E520 rebuilds the copy from its bits through
+// 00768530 and the drain hands it to the plane's session switch, whose 007CCFA0
+// passes IsType(62h) copies to vtable[208h] 007D0B80
+// (HostSessionMessages::deliver_plane_failure_message, then
+// bsp::gameplay_seg47_cc13::state_message_007d0b80). LABELLED, as the death-mode
+// step already was: the copy is delivered here, in the same step, not at the
+// drain. The plane's state in and out:
+//  * unit+C10h, +C36h, +C37h, +C39h, +C3Ah are the slot's; +5Dh is the caller's
+//    (`dead_5d`), +5Eh is plane_death_removed; unit+C68h the bank and +9E8h the
+//    live pitch control (plane_live_controls[1]), which the tail zeroes below
+//    10 degrees of bank (007D12FC..007D1331);
+//  * unit+C38h (the left wing) has no host reader, so it is not kept; unit+969h
+//    has no host writer (0);
+//  * the model [[unit+360h]+160h] is taken as present (EDI at 007D0BE6), as for
+//    the other plane model reads in this host; unit+100h is the world pose's y;
+//  * [[game+19CCh]+4ACh] is set: the drain runs only inside the fan-out's world
+//    gate (00875E78, rows 9..13, fixed_step_fanout.cpp);
+//  * the arms' presentation calls have no host object and are records: 007DE600
+//    (engine list unit+C98h), 007BC4E0 (crash effect), 00498F80 / 0049A760 (the
+//    debris marker, so +C4Ch stays clear), 00868420 (explosion effect) and the
+//    wing break block from 007D0DD7. vtable[70h](1) is the caller's +C3Ah
+//    handling. 00926D90(unit, 1), the explosion arm's Kill, is the return value.
+bool deliver_plane_failure_messages(GameUnitsHost::Impl& host, GameUnitSlot& unit,
+    const std::vector<s47_effects::FailureMessage>& routed, bool dead_5d) {
+    s47_effects::PlaneFailureState st;
+    st.timer_c10 = unit.plane_death_timer_c10;
+    st.dead_5d = dead_5d;
+    st.removed_5e = unit.plane_death_removed;
+    st.spinning_c36 = unit.plane_death_c36;
+    st.right_wing_c37 = unit.plane_spin_right_c37;
+    st.powerlost_c39 = unit.plane_death_c39;
+    st.death_raised_c3a = unit.plane_death_c3a;
+    st.bank_c68 = unit.plane_bank_angle_c68;
+    st.pitch_input_9e8 = unit.plane_live_controls[1];
+    s47_effects::StateMessageEnv env;
+    env.session_mode_1fe4 = 0;
+    env.has_model_360 = true;
+    env.controller_gate_72c = [&unit] { return unit.plane_control_mode_900 == 7; };
+    env.pos_y_100 = unit.world[13];
+    env.marker_service_on = true;
+    bool killed = false;
+    s47_effects::StateMessageHost arms;
+    arms.stop_all_engines = [&host] {
+        host.record("Plane::stop_all_engines_007de600", 0x007de600u);
+    };
+    arms.destroy_engine_at = [&host](std::uint32_t) {
+        host.record("Plane::destroy_engine_at_007eb0b0", 0x007eb0b0u);
+    };
+    arms.bind_crash_effect = [&host] {
+        host.record("Plane::bind_crash_effect_007bc4e0", 0x007bc4e0u);
+    };
+    arms.create_marker = [&host] {
+        host.record("Plane::debris_marker_00498f80", 0x00498f80u);
+        return false;
+    };
+    arms.update_marker = [&host] {
+        host.record("Plane::debris_marker_update_0049a760", 0x0049a760u);
+    };
+    arms.spawn_explosion_effect = [&host] {
+        host.record("Plane::explosion_effect_00868420", 0x00868420u);
+    };
+    arms.kill = [&killed] { killed = true; };
+    arms.break_wing = [&host](bool) {
+        host.record("Plane::break_wing_007d0dd7", 0x007d0dd7u);
+    };
+    arms.raise_dead = [] {};
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    for (const s47_effects::FailureMessage& m : routed) {
+        if (messages == nullptr) {
+            // No live commands host: the posted message stands for its copy.
+            s47_effects::state_message_007d0b80(st, m, env, arms);
+            continue;
+        }
+        if (!messages->deliver_plane_failure_message(m, st, env, arms)) {
+            throw std::logic_error("007D0B80: a plane failure copy missed the state handler");
+        }
+    }
+    unit.plane_death_timer_c10 = st.timer_c10;
+    unit.plane_death_c36 = st.spinning_c36;
+    unit.plane_spin_right_c37 = st.right_wing_c37;
+    unit.plane_death_c39 = st.powerlost_c39;
+    unit.plane_death_c3a = st.death_raised_c3a;
+    unit.plane_live_controls[1] = st.pitch_input_9e8;
+    host.done("Plane::state_message_007d0b80", 0x007d0b80u);
+    return killed;
+}
+
+// The raise: 007BBFA0 now, its messages kept for the death-mode step. The mode
+// the step reports is the effect the messages carry: a forced explosion (BL at
+// 007BC031) routes 63h with -1.0, whatever name was raised.
+void raise_plane_named_effect(GameUnitsHost::Impl& host, GameUnitSlot& unit,
+    std::size_t index, s47_effects::NamedEffect effect) {
+    s47_effects::NamedEffectResult r = run_plane_named_effect(host, unit, index, effect);
+    unit.plane_raised_death_mode = r.forced_explosion ? bsp::PlaneDeathMode::Explosion
+        : effect == s47_effects::NamedEffect::PowerLost ? bsp::PlaneDeathMode::PowerLost
+        : bsp::PlaneDeathMode::Explosion;
+    unit.plane_raised_routed = std::move(r.routed);
+}
+}  // namespace
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
@@ -294,28 +447,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             : raised
                             ? slot.plane_raised_death_mode
                             : bsp::plane_death_mode_007ca8a0(din);
-                        // planepartclasses.lua ExplosionExplosionDelay, which
-                        // 004A9BD0 stores at [00E18710] / [00E1870C].
-                        static bool delay_read = false;
-                        static float delay_pair[2] = {0.6f, 1.8f};
-                        if (!delay_read) {
-                            delay_read = true;
-                            host.lua.read_global_number_pair("ExplosionExplosionDelay",
-                                delay_pair[0], delay_pair[1]);
-                        }
-                        const float delayed = mode == bsp::PlaneDeathMode::ExplosionDelayed
-                            ? gun_host->death_mode_draw_00bd2f10(0, index, delay_pair[0],
-                                delay_pair[1]) : 0.0f;   // 007BBFA0, ECX = 0
+                        // Goal 5 chain 645: 007CA8A0's vtable[194h] call, 007BBFA0 on
+                        // the mode's name (a raised effect ran it at its raise), then
+                        // 007D0B80 over each routed message's local copy, which sets
+                        // +C10h, +C39h / +C36h / +C37h and, in its tail 007D12FC,
+                        // +C3Ah. +5Dh is clear at that delivery: the tail's
+                        // vtable[70h](1) is what raises it. A destroy-only Kill
+                        // reaches neither, so +C3Ah stays clear for it.
                         slot.plane_death_mode = mode;
-                        slot.plane_death_timer_c10 =
-                            bsp::plane_death_timer_c10_007bbfa0(mode, delayed);
-                        const bsp::PlaneDeathFlags flags = bsp::plane_death_flags_007d0b80(
-                            mode, slot.plane_death_timer_c10);
-                        slot.plane_death_c39 = flags.powerlost_c39;
-                        slot.plane_death_c36 = flags.spinning_c36;
-                        slot.plane_spin_right_c37 = flags.spinning_c36
-                            && mode == bsp::PlaneDeathMode::SpinRight;   // 007D0DD7
-                        slot.plane_death_c3a = !destroy_only;   // 007D12FC, not reached by a Kill
+                        bool killed_now = false;
+                        if (!destroy_only) {
+                            std::vector<bsp::gameplay_seg47_cc13::FailureMessage> routed;
+                            if (raised) {
+                                routed.swap(slot.plane_raised_routed);
+                            } else {
+                                routed = run_plane_named_effect(host, slot, index,
+                                    bsp::gameplay_seg47_cc13::named_effect_from_name(
+                                        bsp::plane_death_mode_name(mode))).routed;
+                            }
+                            killed_now = deliver_plane_failure_messages(host, slot, routed,
+                                false);
+                        }
                         slot.plane_death_seconds = host.summary.simulated_seconds;
                         // Packet cc9_plane_death_flags. The C3Ah tail's destroy sets
                         // +60h at once (00926CD5); this host has no 009273A0 flush,
@@ -412,7 +564,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 host.done("Squadron::remove_plane_007f3970", 0x007f3970u);
                             }
                         }
-                        if (flags.killed_now) {
+                        if (killed_now) {
                             slot.plane_death_removed = true;
                             host.log.notef("plane death explosion: unit=%s t=%.2f "
                                 "dead_for=0.00 (007D0CFD Kill, packet cc9_plane_death_modes)",
@@ -1458,16 +1610,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         && gun_host != nullptr
                                         && self_index < owner_.slots.size()
                                         && !gun_host->unit_dead(self_index)) {
-                                        unit_.plane_raised_death_mode = bsp::PlaneDeathMode::PowerLost;
+                                        // Goal 5 chain 645: 007BBFA0("powerlost") at
+                                        // 007CB8DC, before 007CB92C moves the state to 6.
+                                        raise_plane_named_effect(owner_, unit_, self_index,
+                                            s47_effects::NamedEffect::PowerLost);
                                         owner_.log.notef("plane water powerlost raised: unit=%s "
-                                            "t=%.2f alt=%.2f MinWaterSpd=%.3f up_y=%.4f "
+                                            "t=%.2f alt=%.2f MinWaterSpd=%.3f up_y=%.4f mode=%s "
                                             "(007CB8DC -> 007BBFA0 -> 007D0B80, packet "
                                             "cc9_lua54_follow_altitude)",
                                             unit_.row.name.c_str(),
                                             static_cast<double>(owner_.summary.simulated_seconds),
                                             static_cast<double>(unit_.motion.position[1]),
                                             static_cast<double>(min_water_spd),
-                                            static_cast<double>(unit_.motion.pose_row1[1]));
+                                            static_cast<double>(unit_.motion.pose_row1[1]),
+                                            bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
                                         // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                         // not 00926D90, so no funnel path tag (the
                                         // powerlost mode stays the death block's).
@@ -21618,12 +21774,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     //    path tag is suppressed for both names: the explosion arm's
                     //    00926D90 (007D0CFD) follows 007BBFA0's choice, so it is not the
                     //    destroy-only Kill the tag marks.
-                    //  * a dying plane (+5Dh set; the death-mode step has run): an
-                    //    explosion is unit+C10h = -1 and the plane leaves the world, as
-                    //    007CAF10's explosion does in the free-flight arm; a power loss
-                    //    stores unit+C10h and 007D0B80's EnginesLost arm sets +C39h.
+                    //  * a dying plane (+5Dh set; the death-mode step has run): the
+                    //    routed copies reach 007D0B80 at once (goal 5 chain 645), which
+                    //    keeps unit+C10h for a dead plane; its explosion arm's Kill
+                    //    (007D0CFD) takes the plane out of the world, its EnginesLost
+                    //    arm sets +C39h.
                     bool named_effect_latch_007ce790(bool suppress_520, bool frozen_9e0) override {
-                        namespace s47 = bsp::gameplay_seg47_cc13;
                         GameGunneryHost* const gh = owner_.gunnery.get();
                         const std::size_t self = unit_.process_index;
                         const bool bound = gh != nullptr && self < owner_.slots.size()
@@ -21706,43 +21862,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return false;
                         }
                         // 007CE7A6 / 007CE7D8: the name, then vtable[194h](&name, 0).
-                        s47::NamedEffectInputs ne;
-                        ne.effect = power ? s47::NamedEffect::PowerLost : s47::NamedEffect::Explosion;
-                        ne.flight_state_900 = unit_.plane_control_mode_900;
-                        // (unit+72Ch)->vtable[38h], 0074E210: unit+900h == 7.
-                        ne.controller_gate_72c = [this] { return unit_.plane_control_mode_900 == 7; };
-                        // unit->vtable[38h] 007B8E60, the +B1Ch that 007D8020 caches.
-                        ne.cached_speed_b1c = bsp::plane_cached_speed_b1c_007d8020(
-                            unit_.plane_world_velocity);
-                        ne.rammed_dfc = false;   // as the death-mode step: no ram hit here
-                        ne.spinning_c36 = unit_.plane_death_c36;
-                        ne.timer_c10 = unit_.plane_death_timer_c10;
-                        ne.session_mode_1fe4 = 0;
-                        // engine_count_7c / lua_engine_index are read by "enginefire" only.
-                        s47::PlaneFailureGlobals g;   // ExplosionExplosionDelay, 004A9BD0
-                        owner_.lua.read_global_number_pair("ExplosionExplosionDelay",
-                            g.explosion_delay_a_e18710, g.explosion_delay_b_e1870c);
-                        s47::Rng rng;
-                        // Neither name draws (only "explosion_delayed", "spinning" and
-                        // "enginefire" do); a draw would take the shared 00BD2F10 stream.
-                        rng.uniform = [gh, self](int stream, float lo, float hi) {
-                            return gh->death_mode_draw_00bd2f10(stream, self, lo, hi);
-                        };
-                        rng.next_u32 = [](int) -> std::uint32_t {
-                            throw std::logic_error("007BBFA0: NextU32 is the enginefire arm's");
-                        };
-                        const s47::NamedEffectResult r = s47::named_effect_007bbfa0(ne, g, rng);
-                        bool explosion = false, engines_lost = false;
-                        for (const s47::FailureMessage& m : r.routed) {
-                            if (m.kind == s47::FailureMessageKind::Explosion) explosion = true;
-                            if (m.kind == s47::FailureMessageKind::EnginesLost) engines_lost = true;
-                        }
+                        const s47_effects::NamedEffect effect = power
+                            ? s47_effects::NamedEffect::PowerLost : s47_effects::NamedEffect::Explosion;
                         owner_.done("Plane::named_effect_latch_007ce790", 0x007ce790u);
-                        owner_.done("Plane::start_named_effect_007bbfa0", 0x007bbfa0u);
                         const char* const name = power ? "powerlost" : "explosion";
                         if (in.dead_5d) {
-                            unit_.plane_death_timer_c10 = r.timer_c10;
-                            if (explosion) {
+                            const s47_effects::NamedEffectResult r =
+                                run_plane_named_effect(owner_, unit_, self, effect);
+                            const bool killed =
+                                deliver_plane_failure_messages(owner_, unit_, r.routed, true);
+                            if (killed) {
                                 unit_.plane_death_removed = true;
                                 owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u "
                                     "\"%s\" on a dying plane: explosion, removed (007CE790 -> "
@@ -21751,24 +21880,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     entry, name);
                                 return true;
                             }
-                            if (engines_lost) unit_.plane_death_c39 = true;   // 007D0B80, 66h
                             owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u "
-                                "\"%s\" on a dying plane: c10=%.1f c39=%d (007CE790 -> 007BBFA0 "
+                                "\"%s\" on a dying plane: c10=%.2f c39=%d (007CE790 -> 007BBFA0 "
                                 "-> 007D0B80)", unit_.row.name.c_str(),
                                 static_cast<double>(owner_.summary.simulated_seconds), entry,
-                                name, static_cast<double>(r.timer_c10),
+                                name, static_cast<double>(unit_.plane_death_timer_c10),
                                 unit_.plane_death_c39 ? 1 : 0);
                             return false;
                         }
-                        unit_.plane_raised_death_mode = explosion ? bsp::PlaneDeathMode::Explosion
-                                                                  : bsp::PlaneDeathMode::PowerLost;
+                        raise_plane_named_effect(owner_, unit_, self, effect);
                         owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u \"%s\" "
-                            "state=%d speed=%.2f forced=%d -> %s raised (007CE790 -> 007BBFA0 -> "
-                            "007D0B80)", unit_.row.name.c_str(),
+                            "state=%d -> %s raised (007CE790 -> 007BBFA0 -> 007D0B80)",
+                            unit_.row.name.c_str(),
                             static_cast<double>(owner_.summary.simulated_seconds), entry, name,
                             unit_.plane_control_mode_900,
-                            static_cast<double>(ne.cached_speed_b1c),
-                            r.forced_explosion ? 1 : 0,
                             bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
                         const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
                         gh->kill_unit_00926d90(self, 1);
@@ -21956,13 +22081,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (gh != nullptr && self < owner_.slots.size()
                                     && owner_.slots[self].get() == &unit_
                                     && !gh->unit_dead(self)) {
-                                    unit_.plane_raised_death_mode = bsp::PlaneDeathMode::PowerLost;
+                                    // Goal 5 chain 645: 007BBFA0("powerlost") at 007CBE02.
+                                    raise_plane_named_effect(owner_, unit_, self,
+                                        s47_effects::NamedEffect::PowerLost);
                                     owner_.log.notef("plane water powerlost raised: unit=%s "
-                                        "t=%.2f depth=%.2f (007CBE02 -> 007BBFA0 -> 007D0B80, "
-                                        "packet cc9_lua54_follow_altitude)",
+                                        "t=%.2f depth=%.2f mode=%s (007CBE02 -> 007BBFA0 -> "
+                                        "007D0B80, packet cc9_lua54_follow_altitude)",
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
-                                        static_cast<double>(depth));
+                                        static_cast<double>(depth),
+                                        bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
                                     // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                     // not 00926D90, so no funnel path tag.
                                     const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);

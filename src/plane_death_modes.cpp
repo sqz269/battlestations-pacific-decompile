@@ -36,44 +36,6 @@ PlaneDeathMode plane_death_mode_007ca8a0(const PlaneDeathModeInputs& in) noexcep
     return PlaneDeathMode::ExplosionDelayed;
 }
 
-float plane_death_timer_c10_007bbfa0(PlaneDeathMode mode, float delayed_draw) noexcept {
-    switch (mode) {
-    case PlaneDeathMode::Explosion: return -1.0f;        // 00D7A260
-    case PlaneDeathMode::ExplosionDelayed: return delayed_draw;
-    case PlaneDeathMode::PowerLost:
-    case PlaneDeathMode::SpinLeft:
-    case PlaneDeathMode::SpinRight: return 1000.0f;      // 00CE3804
-    case PlaneDeathMode::None: break;
-    }
-    return -1.0f;
-}
-
-PlaneDeathFlags plane_death_flags_007d0b80(PlaneDeathMode mode, float timer_c10) noexcept {
-    PlaneDeathFlags out;
-    switch (mode) {
-    case PlaneDeathMode::PowerLost:
-        out.powerlost_c39 = true;   // 007D0BEB 66h -> 007D12D6, 007D12E8
-        break;
-    case PlaneDeathMode::ExplosionDelayed:
-    case PlaneDeathMode::Explosion:
-        // 007D0BF9-007D0C2C: kind 63h with unit+C10h > 0 and the free-flight
-        // gate takes the same arm as 66h; otherwise 007D0C37's arm kills.
-        if (timer_c10 > 0.0f) {
-            out.powerlost_c39 = true;
-        } else {
-            out.killed_now = true;  // 007D0CFD BSP_MissionEntity_Kill(unit, 1)
-        }
-        break;
-    case PlaneDeathMode::SpinLeft:
-    case PlaneDeathMode::SpinRight:
-        out.spinning_c36 = true;    // kind 67h arm
-        break;
-    case PlaneDeathMode::None:
-        break;
-    }
-    return out;
-}
-
 PlaneDeathStepResult plane_death_step_007caf10(const PlaneDeathStepInputs& in) noexcept {
     PlaneDeathStepResult out;
     out.dead_timer_c3c = in.dead_timer_c3c;

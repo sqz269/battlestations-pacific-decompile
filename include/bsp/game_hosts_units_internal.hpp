@@ -2525,6 +2525,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // "powerlost" or "explosion" (007CE790). The death-mode step takes it
     // without 007CA8A0's draw. None: no effect was raised.
     bsp::PlaneDeathMode plane_raised_death_mode{bsp::PlaneDeathMode::None};
+    // Goal 5 chain 645: what that raise's own 007BBFA0 routed (0077C2A0 flags
+    // 7), kept for the death-mode step, which delivers each copy to 007D0B80.
+    // 007BBFA0 stores unit+C10h itself at the raise.
+    std::vector<bsp::gameplay_seg47_cc13::FailureMessage> plane_raised_routed;
     float plane_death_timer_c10{-1.0f};
     bool plane_death_c39{false};
     bool plane_death_c36{false};
