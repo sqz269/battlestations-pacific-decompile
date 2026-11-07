@@ -180,6 +180,14 @@ public:
     // False until the counters register 0052CBF0 has built the entries.
     bool show_mission_countdown(const std::string& text, float seconds);
     bool cancel_mission_countdown();
+    // Goal 5 chain 667: Lua DisplayScores' 0052B620 (four arguments, 008C241A) /
+    // 0052B780 (six, 008C22DA) and HideScoreDisplay's 0052B900 (008C25E5): the
+    // HUD message 23h built, 00772330 handing it to the local slot's 0052CF60 on
+    // the counters screen, and destroyed. False (nothing sent) until the counters
+    // register 0052CBF0 has built the entries.
+    bool display_score(std::uint32_t id, std::uint32_t owner, const std::string& a,
+        const std::string& b, bool pair, std::uint32_t v0, std::uint32_t v1);
+    bool hide_score(std::uint32_t id, std::uint32_t owner);
     // 00735100's 005BCA80(left / duration, left) and 005BCAB0 (00735100 at expiry,
     // 007340A0 at stop) on the minimap screen's block, [00E198C4]+58h. False
     // before 0068CC70 built that block.

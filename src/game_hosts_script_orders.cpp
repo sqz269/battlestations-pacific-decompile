@@ -819,10 +819,10 @@ private:
 // lua_display_scores / lua_hide_score_display (src/engine_seg56_cc13.cpp). The bodies
 // read the arguments (00B66290 / 00B662B0) and call the HUD counters on
 // [[00E198C4]+C8h]: 0052B780 for six arguments (008C22DA), 0052B620 for four
-// (008C241A), 0052B900 to hide (008C25E5). SUBSTITUTION, labelled, kept from the rows
-// these bodies replace: those three are this host's per-id score lines (the HUD
-// message 23h they post is logged, not drawn). Every other HudScoreHost /
-// InterfaceHost site belongs to another binding.
+// (008C241A), 0052B900 to hide (008C25E5). Goal 5 chain 667: the dispatch's calls
+// run those senders on the HUD host's counters screen, and also keep this host's
+// per-id score lines for the log. Every other HudScoreHost / InterfaceHost site
+// belongs to another binding.
 class ScoreDisplayBinding final : public bsp::cc13_seg56::HudScoreHost,
                                   public bsp::cc13_seg56::InterfaceHost {
 public:
@@ -7304,10 +7304,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // DisplayScores: six arguments -> 0052B780 (008C22DA), four -> 0052B620
         // (008C241A), any other count posts nothing; HideScoreDisplay: 0052B900
         // (008C25E5). Both on [[00E198C4]+C8h], the HUD score message 23h through
-        // 00772330. Neither pushes a result.
+        // 00772330. Neither pushes a result. Goal 5 chain 667: the senders run on
+        // the HUD host's counters screen (GameHudHost::display_score / hide_score);
+        // the per-id lines below are the log's.
         ScoreDisplayBinding scores(ScoreDisplayBinding::Calls{
             [this](int id, int flag, const std::string& c, const std::string& d, bool pair,
                    int e, int f) {
+                if (narrative_hud_ == nullptr || !narrative_hud_->display_score(
+                        static_cast<std::uint32_t>(id), static_cast<std::uint32_t>(flag), c, d, pair,
+                        static_cast<std::uint32_t>(e), static_cast<std::uint32_t>(f)))
+                    log_.unimplemented("HudCounters::display_score", pair ? "0052b780" : "0052b620");
                 const std::string line1 = expand_score_references(state_, c);
                 const std::string line2 = expand_score_references(state_, d);
                 ++score_posts_;
@@ -7330,6 +7336,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                 }
             },
             [this](int id, int second) {
+                if (narrative_hud_ == nullptr || !narrative_hud_->hide_score(
+                        static_cast<std::uint32_t>(id), static_cast<std::uint32_t>(second)))
+                    log_.unimplemented("HudCounters::hide_score", "0052b900");
                 ++score_hides_;
                 if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
                     log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 body -> "

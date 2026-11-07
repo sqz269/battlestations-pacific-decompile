@@ -403,9 +403,44 @@ public:
 void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root, const char* const* names,
                                                         Cc13SweepB4CounterEntryHost& host);
 
+// The services 00529D70, 0052A100 and 0052A470 call, with Cc13SweepB4Host's
+// signatures (goal 5 chain 667), plus the three Text widget fields the image
+// touches directly: the dword +100h (Align, stored), the byte +0FCh
+// (Multiline, stored 0, which selects the single-line builder 00ABA8D0 runs)
+// and the float +114h (the width the last layout measured). Their callers, the
+// counters score forms 0052C990 / 0052CAC0 and the tick 0052B080 (mode 1), run
+// them on the HUD host's own score entries.
+class Cc13SweepB4CounterScoreLayoutHost {
+public:
+    virtual ~Cc13SweepB4CounterScoreLayoutHost() = default;
+    virtual void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) = 0;
+    virtual void widget_vcall_34_set_visible(void* widget, std::int32_t show) = 0;
+    virtual void widget_vcall_58_set_pair(void* widget, const float* pair) = 0;
+    virtual void widget_vcall_48_set_pair(void* widget, const float* pair) = 0;
+    // Icon vtable +88h(state, 0, 1.0f): the state select (00AB1710).
+    virtual void widget_vcall_88(void* widget, std::int32_t state, std::int32_t arg, float weight) = 0;
+    virtual void widget_set_local_x_00aa78d0(void* widget, float x) = 0;
+    virtual void gui_text_store_align_100(void* text, std::int32_t align) = 0;
+    virtual void gui_text_store_multiline_fc(void* text, std::uint8_t multiline) = 0;
+    virtual float gui_text_measured_width_114(void* text) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* value, std::int32_t arg) = 0;
+    virtual const float* gui_widget_get_size_00aa6740(void* widget) = 0;
+    virtual void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) = 0;
+    virtual float* widget_get_resolved_position_00aa6750(void* widget, float* out) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    // The inlined native-string assignment (0041DD40 then memcpy) and release.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t bytes) = 0;
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+};
+
 // 00529D70 BSP_HudCounter_LayoutTimer(entry, a, b).
 void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativeString a,
-                                                    Cc13SweepBNativeString b, Cc13SweepB4Host& host);
+                                                    Cc13SweepBNativeString b,
+                                                    Cc13SweepB4CounterScoreLayoutHost& host);
 
 // The services 0052B080 calls, with Cc13SweepB4Host's signatures (goal 5 chain
 // 662), for its one caller the counters update 0052BAA0 on the HUD host's own
@@ -442,11 +477,13 @@ void cc13_sweepB4_hud_counter_layout_score_0052bb10(void* entry, const void* uni
 // by-value native strings the callee releases.
 void cc13_sweepB4_hud_counter_layout_value_0052a100(void* entry, Cc13SweepBNativeString a,
                                                     Cc13SweepBNativeString b, std::int32_t v0,
-                                                    std::int32_t v1, Cc13SweepB4Host& host);
+                                                    std::int32_t v1,
+                                                    Cc13SweepB4CounterScoreLayoutHost& host);
 
 // 0052A470 BSP_HudCounter_LayoutTextPair(entry, a, b) (hypothesis).
 void cc13_sweepB4_hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBNativeString a,
-                                                        Cc13SweepBNativeString b, Cc13SweepB4Host& host);
+                                                        Cc13SweepBNativeString b,
+                                                        Cc13SweepB4CounterScoreLayoutHost& host);
 
 // The services 0052A860 calls, with Cc13SweepB4Host's signatures (goal 5 chain
 // 662), plus the two Text widget fields the image touches directly: the dword

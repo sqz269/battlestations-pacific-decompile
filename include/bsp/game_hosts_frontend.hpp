@@ -40,6 +40,8 @@ struct GuiLayoutPage;
 struct GuiLayoutWidget;
 struct FrontEndScreenScroller;
 struct GuiWidgetPoint;
+// bsp/gui_text.hpp: the Text widget's +100h Align.
+enum class GuiTextAlign : std::int32_t;
 // bsp/locale_tables.hpp, milestone 2d: the tables the Text widgets resolve through.
 class LocaleTables;
 }  // namespace bsp
@@ -295,6 +297,20 @@ public:
     // forced visible. The source must belong to `page` and have a parent.
     GuiLayoutWidget* clone_page_widget_subtree(const std::string& page,
         const GuiLayoutWidget& source);
+    // Widget vtable +4h(1) on a clone clone_page_widget_subtree made, as 0052C0C0
+    // deletes a score entry's root (goal 5 chain 667): the base teardown 00AA9730
+    // detaches the widget from its parent and the subtree is freed. Every bridge
+    // record and per-widget cache of the subtree goes with it. Only run-time
+    // clones are destroyed this way; a page's authored widget throws.
+    void destroy_runtime_widget(GuiLayoutWidget& widget);
+    // The two Text fields a screen stores directly before its 00ABAED0 call
+    // (goal 5 chain 667, the HUD counter layouts 00529D70 / 0052A100 / 0052A470):
+    // +100h, the Align, and +0FCh, Multiline (0 selects the single-line builder
+    // 00ABA8D0 runs). The image lays the text out with them at the next
+    // 00ABAED0; here the next run built with a run-time source applies them over
+    // the authored values. The cached run is dropped.
+    void set_widget_text_align(GuiLayoutWidget& widget, GuiTextAlign align);
+    void set_widget_text_multiline(GuiLayoutWidget& widget, bool multiline);
     // 00aa7dc0 BSP_GuiWidget_SetLocalPositionAndBounds and the widget rotation
     // virtual +44h, as the two per-frame passes call them on an icon. Both
     // invalidate the quad list.

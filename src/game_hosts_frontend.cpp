@@ -283,6 +283,12 @@ struct GameFrontendHost::Impl {
     // Milestone 2e: the run-time 00ABAED0 sources a screen pushed into a Text
     // widget, which replace the page's authored DefaultText on the next build.
     std::map<const GuiLayoutWidget*, std::string> text_sources;
+    // Goal 5 chain 667: the +100h / +0FCh stores a screen made ahead of them.
+    std::map<const GuiLayoutWidget*, GameTextLayoutOverride> text_layouts;
+    const GameTextLayoutOverride* text_layout(const GuiLayoutWidget& widget) const {
+        const auto found = text_layouts.find(&widget);
+        return found != text_layouts.end() ? &found->second : nullptr;
+    }
     unsigned back_buffer_width{};
     unsigned back_buffer_height{};
     bool quads_built{false};
@@ -1148,7 +1154,7 @@ void GameFrontendHost::Impl::append_text_quads(GameWidgetRecord& record,
         GameTextRun run;
         const auto source = text_sources.find(&node);
         text_host->build_run(record.page, node, origin_x, origin_y, run,
-            source != text_sources.end() ? &source->second : nullptr);
+            source != text_sources.end() ? &source->second : nullptr, text_layout(node));
         cached = text_runs.emplace(&node, std::move(run)).first;
         summary.text_widgets = text_host->summary().text_widgets;
         summary.text_runs = text_host->summary().runs_built;
@@ -1497,6 +1503,24 @@ const std::string* GameFrontendHost::widget_text_source(const GuiLayoutWidget& w
     return found != impl_->text_sources.end() ? &found->second : nullptr;
 }
 
+void GameFrontendHost::set_widget_text_align(GuiLayoutWidget& widget, GuiTextAlign align) {
+    if (widget.type != GuiWidgetType::Text)
+        throw std::logic_error("Text +100h stored on a widget that is not a Text");
+    Impl& host = *impl_;
+    host.text_layouts[&widget].align = align;
+    host.text_runs.erase(&widget);
+    host.quads_built = false;
+}
+
+void GameFrontendHost::set_widget_text_multiline(GuiLayoutWidget& widget, bool multiline) {
+    if (widget.type != GuiWidgetType::Text)
+        throw std::logic_error("Text +0FCh stored on a widget that is not a Text");
+    Impl& host = *impl_;
+    host.text_layouts[&widget].multiline = multiline;
+    host.text_runs.erase(&widget);
+    host.quads_built = false;
+}
+
 bool GameFrontendHost::widget_text_width(GuiLayoutWidget& widget, float& width) {
     // The run widget_text_height builds or finds; measured_width is the layout's
     // own result (src/game_hosts_text.cpp, from 00ABA270 / 00AB9FD0).
@@ -1538,7 +1562,8 @@ bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height
         host.text_host->build_run(host.widget_records[index].page, widget,
             position.x - transform.pivot_x * transform.size.width,
             position.y - transform.pivot_y * transform.size.height, run,
-            source != host.text_sources.end() ? &source->second : nullptr);
+            source != host.text_sources.end() ? &source->second : nullptr,
+            host.text_layout(widget));
         cached = host.text_runs.emplace(&widget, std::move(run)).first;
         host.summary.text_widgets = host.text_host->summary().text_widgets;
         host.summary.text_runs = host.text_host->summary().runs_built;
@@ -1762,6 +1787,60 @@ GuiLayoutWidget* GameFrontendHost::clone_page_widget_subtree(const std::string& 
     host.record_widgets(page, *borrowed, 0, parent.key, true);
     host.quads_built = false;
     return borrowed;
+}
+
+void GameFrontendHost::destroy_runtime_widget(GuiLayoutWidget& widget) {
+    Impl& host = *impl_;
+    GuiLayoutWidget* const parent = widget.parent;
+    if (parent == nullptr)
+        throw std::logic_error("widget +4h(1) on a run-time widget with no parent");
+    const auto owned = std::find_if(parent->children.begin(), parent->children.end(),
+        [&widget](const auto& child) { return child.get() == &widget; });
+    if (owned == parent->children.end())
+        throw std::logic_error("widget +4h(1) on a widget its parent does not own");
+    std::set<const GuiLayoutWidget*> subtree;
+    std::vector<const GuiLayoutWidget*> walk{&widget};
+    while (!walk.empty()) {
+        const GuiLayoutWidget* const w = walk.back();
+        walk.pop_back();
+        subtree.insert(w);
+        for (const auto& child : w->children) {
+            if (child) walk.push_back(child.get());
+        }
+    }
+    // Every bridge row of the subtree must be a run-time clone's (record_widgets
+    // marks clone_page_widget_subtree's rows), checked before anything moves.
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        if (subtree.count(host.widget_nodes[i]) != 0 && !host.widget_records[i].runtime)
+            throw std::logic_error("widget +4h(1) on a page's authored widget");
+    }
+    std::vector<GameWidgetRecord> records;
+    std::vector<const GuiLayoutWidget*> nodes;
+    records.reserve(host.widget_records.size());
+    nodes.reserve(host.widget_nodes.size());
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        if (subtree.count(host.widget_nodes[i]) != 0) continue;
+        records.push_back(std::move(host.widget_records[i]));
+        nodes.push_back(host.widget_nodes[i]);
+    }
+    host.widget_records = std::move(records);
+    host.widget_nodes = std::move(nodes);
+    for (const GuiLayoutWidget* const w : subtree) {
+        host.digit_uvs.erase(w);
+        host.published_rotations.erase(w);
+        host.text_runs.erase(w);
+        host.text_sources.erase(w);
+        host.text_layouts.erase(w);
+        host.visibility_applied.erase(w);
+        host.published_local_z.erase(&w->transform);
+    }
+    // 00AA9730's detach (the 00AA83A0 list edit, src/gui_widget_detach.cpp): the
+    // parent drops the child, whose sole owner then frees the subtree.
+    auto& transforms = parent->transform.children;
+    transforms.erase(std::remove(transforms.begin(), transforms.end(), &widget.transform),
+        transforms.end());
+    parent->children.erase(owned);
+    host.quads_built = false;
 }
 
 GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,

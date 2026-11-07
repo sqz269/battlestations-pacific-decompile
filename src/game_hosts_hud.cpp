@@ -95,6 +95,10 @@
 #include "bsp/sound_manager_levels.hpp"
 #include "bsp/sound_class_ownership.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_pooled_string_substring.hpp"  // 00426060, the counters tick's copies
+#include "bsp/native_session_message35.hpp"        // HUD message 23h (0052B620 / 0052AF50)
+#include "bsp/engine_seg43_45_cc13.hpp"            // 00772330
+#include "bsp/cc13_sweepB4.hpp"                    // 00529D70 / 0052A100 / 0052A470
 #include "bsp/fmod_configuration_library.hpp"
 
 #include <algorithm>
@@ -104,6 +108,7 @@
 #include <cstring>
 #include <cstddef>
 #include <deque>
+#include <functional>
 #include <intrin.h>
 #include <map>
 #include <memory>
@@ -1126,6 +1131,8 @@ struct HudCountersContext {
     std::array<std::uint8_t*, 0x40> manager_view{};      // [00E198C4]+0h..+FCh
     const void* platform_object{nullptr};                 // [0109CF04]
     std::set<const GuiLayoutWidget*>& visibility_recurses;  // widget +75h (00AA6820)
+    // The HUD host's unimplemented-call log (GameHudHost::Impl::record).
+    std::function<void(const char*, std::uint32_t)> record{};
 };
 
 // 00AA8530 (widget +34h): the low byte is the request; with the widget's +75h
@@ -1358,10 +1365,119 @@ private:
     HudCountersContext& c_;
 };
 
+// Goal 5 chain 667: the services of the score layouts 00529D70 / 0052A100 and
+// the tick's text-pair layout 0052A470 on a score entry (a 0052C640 clone of
+// the HP entry). The widgets are the page's GuiLayoutWidgets, as for the
+// countdown; the Text fields the image stores directly (+100h, +0FCh) become
+// the text bridge's layout override, and +114h is the bridge's measured width.
+class HudCounterScoreLayoutBinding final : public bsp::Cc13SweepB4CounterScoreLayoutHost {
+public:
+    explicit HudCounterScoreLayoutBinding(HudCountersContext& c) : c_(c) {}
+    void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) override {
+        // 00AA6820 stores the byte +75h (src/gui_widgets_cc13.cpp).
+        const GuiLayoutWidget* const w = &hud_counters_widget(widget, "00AA6820");
+        if ((show & 0xFF) != 0) c_.visibility_recurses.insert(w);
+        else c_.visibility_recurses.erase(w);
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void widget_vcall_58_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_size(hud_counters_widget(widget, "widget +58h"), pair[0], pair[1]);
+    }
+    void widget_vcall_48_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_scale(hud_counters_widget(widget, "00AA7950"), pair[0], pair[1]);
+    }
+    void widget_vcall_88(void* widget, std::int32_t, std::int32_t, float) override {
+        // Virtual +88h on flag_A_Icon / flag_B_Icon, the icon state select
+        // (00AB1710); the sprite bridge draws a widget's first authored state only.
+        static_cast<void>(hud_counters_widget(widget, "00AB1710"));
+        if (c_.record) c_.record("HudCounters::score_flag_icon_state", 0x00ab1710u);
+    }
+    void widget_set_local_x_00aa78d0(void* widget, float x) override {
+        // 00AA78D0 (bsp.py show 00aa78d0): MOVSS the argument into +0Ch (the
+        // local X), then 00AA7220; +08h, the authored X, is not written.
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA78D0");
+        const float authored_x = w.transform.authored_x;
+        c_.frontend.set_widget_local_position(w, x, w.transform.position.y, w.transform.position.z);
+        w.transform.authored_x = authored_x;
+    }
+    void gui_text_store_align_100(void* text, std::int32_t align) override {
+        if (align < 0 || align > 2) throw std::logic_error("Text +100h stored outside Left..Right");
+        c_.frontend.set_widget_text_align(hud_counters_widget(text, "Text +100h"),
+            static_cast<bsp::GuiTextAlign>(align));
+    }
+    void gui_text_store_multiline_fc(void* text, std::uint8_t multiline) override {
+        c_.frontend.set_widget_text_multiline(hud_counters_widget(text, "Text +0FCh"), multiline != 0);
+    }
+    float gui_text_measured_width_114(void* text) override {
+        float width = 0.0f;
+        if (!c_.frontend.widget_text_width(hud_counters_widget(text, "Text +114h"), width))
+            throw std::logic_error("a score layout reads Text +114h with no text layout to measure it");
+        return width;
+    }
+    void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("the score layouts pass 00ABAED0 its localise flag 1");
+        c_.frontend.set_widget_text_source(hud_counters_widget(widget, "00ABAED0"),
+            std::string(HudLeafStringPool::name(text)));
+    }
+    void gui_text_set_localised_cstring_00abbe50(void* text, const char* value, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("0052A470 passes 00ABBE50 its localise flag 1");
+        // 00ABBE50's case-insensitive gate on the cached source (+F4h), as the
+        // countdown's HudCounterFormatTimeBinding models it.
+        GuiLayoutWidget& w = hud_counters_widget(text, "00ABBE50");
+        const std::string_view v(value);
+        const std::string* const cached = c_.frontend.widget_text_source(w);
+        if (cached != nullptr && cached->size() == v.size()
+            && _strnicmp(cached->data(), v.data(), v.size()) == 0) {
+            return;
+        }
+        c_.frontend.set_widget_text_source(w, std::string(v));
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) override {
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA7DC0");
+        c_.frontend.set_widget_local_position(w, position[0], position[1], position[2]);
+        c_.frontend.refresh_widget_geometry(w);
+    }
+    float* widget_get_resolved_position_00aa6750(void* widget, float* out) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+        return out;
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float* position) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), position);
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t flag) override {
+        pool_.resize(string, length, flag != 0);
+    }
+    void crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t bytes) override {
+        std::memcpy(dest, source, bytes);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+// The by-value native string a layout takes and releases, built in the process
+// pool from a 0052CF60 copy (00426060 there, from the same text).
+bsp::Cc13SweepBNativeString hud_counter_string_argument(HudLeafStringPool& pool, std::string_view text) {
+    const std::string copy(text);
+    bsp::Cc13SweepBNativeString value{};
+    bsp::construct_native_string_header_0041e870(&value, pool.strings, copy.c_str());
+    return value;
+}
+
 // 0052B080's services. The countdown entry is mode 2 (0052A860 stores it); the
-// HP entry stays mode 3 (0052C1B0), which ticks nothing. Modes 0 and 1 are the
-// unit-HP and score layouts 0052BB10 / 00529D70 / 0052A100 store, which no path
-// here runs, so their services fail loudly rather than answer.
+// HP entry stays mode 3 (0052C1B0), which ticks nothing; a score entry is mode
+// 1 (00529D70 / 0052A100 store it), whose tick re-lays out its two texts through
+// 0052A470 (goal 5 chain 667). Mode 0 is the unit-HP layout 0052BB10 stores,
+// which no path here runs, so its services fail loudly rather than answer.
 class HudCounterTickBinding final : public bsp::Cc13SweepB4CounterTickHost {
 public:
     explicit HudCounterTickBinding(HudCountersContext& c) : c_(c) {}
@@ -1383,9 +1499,14 @@ public:
         bsp::frontend_seg15_22_cc13::hud_counter_format_time_00528b00(
             {static_cast<std::uint8_t*>(entry)}, seconds, b);
     }
-    void native_string_copy_construct_00426060(void*, const void*) override { unbuilt("00426060"); }
-    void hud_counter_layout_text_pair_0052a470(void*, bsp::Cc13SweepBNativeString,
-        bsp::Cc13SweepBNativeString) override { unbuilt("0052A470"); }
+    void native_string_copy_construct_00426060(void* dest, const void* source) override {
+        bsp::copy_construct_native_string_header_00426060(dest, source, pool_.strings);
+    }
+    void hud_counter_layout_text_pair_0052a470(void* entry, bsp::Cc13SweepBNativeString a,
+        bsp::Cc13SweepBNativeString b) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_text_pair_0052a470(entry, a, b, binding);
+    }
     void counter_units_remove_at_0052add0(void*, std::int32_t) override { unbuilt("0052ADD0"); }
     bool object_vcall_5c_is_kind(void*, std::int32_t) override { unbuilt("+5Ch"); }
     double getter_38_00939f70(void*) override { unbuilt("00939F70"); }
@@ -1396,9 +1517,10 @@ public:
 private:
     [[noreturn]] static void unbuilt(const char* routine) {
         throw std::logic_error(std::string("0052B080 reached ") + routine
-            + " on a unit-HP or score counter entry, which no HUD path builds");
+            + " on a unit-HP counter entry, which no HUD path builds");
     }
     HudCountersContext& c_;
+    HudLeafStringPool pool_;
 };
 
 // 0052BAA0 (+20h) and 00528C40 / 00528C50 (+18h / +1Ch) on the counters block.
@@ -1418,6 +1540,197 @@ public:
         bsp::frontend_seg15_22_cc13::hud_counters_update_occlusion_00529810({c_.counters.data()}, b);
     }
 private:
+    HudCountersContext& c_;
+};
+
+// Goal 5 chain 667: 0052CF60's services on the counters block, for the score
+// forms (kind 1) the Lua DisplayScores / HideScoreDisplay messages carry. A
+// score entry is a zeroed 0ACh block the screen owns holding a 0052C640 clone
+// of the HP entry (the page's own widgets, copied under New_Group's parent);
+// 0052C0C0 deletes that clone's root (+A4h is 1 on a clone) and releases the
+// entry's strings in the process pool. The 18h-record array (+70h) and the
+// unit registry are the unit-HP form's (kind 0, 0052BB10), which no message
+// here carries, so those services fail loudly.
+class HudCountersScoreBinding final : public bsp::frontend_seg15_22_cc13::HudCountersScoreHost {
+public:
+    explicit HudCountersScoreBinding(HudCountersContext& c) : c_(c), show_(c) {}
+    void* operator_new_00bf55be(std::size_t bytes) override { return c_.counters.allocate_owned(bytes); }
+    void free_00bf6989(void* block) override { c_.counters.release_owned(block); }
+    bool widget_is_visible_38(void* widget) override { return show_.widget_is_visible_38(widget); }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        show_.widget_set_visible_34(widget, visible);
+    }
+    void counter_layout_countdown_0052a860(bsp::ingame_gui_cc13::Raw entry, std::string_view text,
+        float seconds) override {
+        show_.counter_layout_countdown_0052a860(entry, text, seconds);
+    }
+    void counters_relayout_00529a30(bsp::ingame_gui_cc13::Raw screen) override {
+        show_.counters_relayout_00529a30(screen);
+    }
+    void object_delete_04(void* object) override {
+        // 0052C0C0 on a score entry: the clone root, vtable +4h(1).
+        GuiLayoutWidget& root = hud_counters_widget(object, "widget +4h(1)");
+        std::vector<const GuiLayoutWidget*> walk{&root};
+        while (!walk.empty()) {
+            const GuiLayoutWidget* const w = walk.back();
+            walk.pop_back();
+            c_.visibility_recurses.erase(w);
+            for (const auto& child : w->children) {
+                if (child) walk.push_back(child.get());
+            }
+        }
+        c_.frontend.destroy_runtime_widget(root);
+    }
+    std::uint32_t object_virtual_arg(bsp::ingame_gui_cc13::Raw, std::uint16_t, std::uint32_t) override {
+        unbuilt("an 18h record's slot 0");
+    }
+    void observer_handle_copy_00523480(bsp::ingame_gui_cc13::Raw, bsp::ingame_gui_cc13::Raw) override {
+        unbuilt("00523480");
+    }
+    void native_string_release(bsp::ingame_gui_cc13::Raw string) override {
+        bsp::destroy_native_string_header_0041dd20(string.p, pool_.strings);
+    }
+    std::string native_string_value(bsp::ingame_gui_cc13::Raw string) override {
+        return std::string(HudLeafStringPool::name(string.p));
+    }
+    bsp::ingame_gui_cc13::Raw global_block(std::uint32_t) override { unbuilt("the unit registry"); }
+    bsp::ingame_gui_cc13::Raw counter_entry_clone_0052c640(bsp::ingame_gui_cc13::Raw source) override {
+        if (source.p == nullptr)
+            throw std::logic_error("0052C850 clones an HP entry 0052CBF0 did not build");
+        void* const entry = c_.counters.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryCloneBinding b(c_.frontend, kCountersPage);
+        bsp::cc13_sweepB_counter_entry_construct_clone_0052c640(entry, source.p, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+    void counter_layout_timer_00529d70(bsp::ingame_gui_cc13::Raw entry, std::string_view a,
+        std::string_view b) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_timer_00529d70(entry.p,
+            hud_counter_string_argument(pool_, a), hud_counter_string_argument(pool_, b), binding);
+    }
+    void counter_layout_value_0052a100(bsp::ingame_gui_cc13::Raw entry, std::string_view a,
+        std::string_view b, std::uint32_t v0, std::uint32_t v1) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_value_0052a100(entry.p,
+            hud_counter_string_argument(pool_, a), hud_counter_string_argument(pool_, b),
+            static_cast<std::int32_t>(v0), static_cast<std::int32_t>(v1), binding);
+    }
+    void counter_layout_score_0052bb10(bsp::ingame_gui_cc13::Raw, std::uint32_t, std::string_view) override {
+        unbuilt("0052BB10");
+    }
+private:
+    static constexpr std::size_t kCounterEntryBytes = 0xAC;  // as 0052CBF0's two entries
+    static constexpr const char* kCountersPage = "GUI_counters";  // 0052CBF0's page
+    [[noreturn]] static void unbuilt(const char* routine) {
+        throw std::logic_error(std::string("0052CF60 reached ") + routine
+            + ", the unit-HP form's, which no HUD message here carries");
+    }
+    HudCountersContext& c_;
+    HudCountersShowBinding show_;
+    HudLeafStringPool pool_;
+};
+
+// 00772330's services with ECX = [00E188A8]+1EF0h. The record addressed to the
+// local slot goes to 0052CF60 on [[00E198C4]+C8h]; this single-player process
+// has no peers (every record's +50h is null), so nothing is sent or broadcast.
+class HudScoreSessionBinding final : public bsp::cc13cam2::SessionSendHost {
+public:
+    explicit HudScoreSessionBinding(HudCountersContext& c) : c_(c) {}
+    void broadcast_except_00784790(const bsp::cc13cam2::SessionMessageOut&) override { unreached("00784790"); }
+    void flush_peer_buffers_007848f0() override { unreached("007848F0"); }
+    void send_to_peer_00770b50(std::uintptr_t, std::uintptr_t) override { unreached("00770B50"); }
+    void kick_peer_00784b10(std::uintptr_t, int) override { unreached("00784B10"); }
+    void apply_counter_record_0052cf60(std::uintptr_t message) override {
+        HudCountersScoreBinding binding(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_apply_counter_record_0052cf60({c_.counters.data()},
+            {reinterpret_cast<std::uint8_t*>(message)}, binding);
+    }
+    void broadcast_message_00784830(std::uintptr_t) override { unreached("00784830"); }
+    void scalar_delete(std::uintptr_t) override { unreached("the scalar delete"); }
+private:
+    [[noreturn]] static void unreached(const char* routine) {
+        throw std::logic_error(std::string("00772330 reached ") + routine
+            + ", which needs a peer this single-player session does not have");
+    }
+    HudCountersContext& c_;
+};
+
+// The message image 0075B430 reads: [00E188A8], whose local slot (+18ECh) and
+// eight player records (+18CCh) give the base its owner +14h. As for
+// HostSessionMessages, this process keeps no player records, so the slot is 0
+// over null records. 00E17669 is the empty string the 23h writer falls back to
+// (bytes 00 00 00 00); the profile carries the five CED098 slots.
+struct HudScoreMessageImage {
+    alignas(4) std::uint8_t game[0x18f0]{};
+    void* volatile current_game{game};
+    bsp::NativeSessionMessageContext session{current_game};
+    const char fallback_00e17669[1]{};
+    bsp::NativeSessionMessage35Profile profile{game_native_string_process().raw_context(), fallback_00e17669};
+};
+HudScoreMessageImage& hud_score_message_image() {
+    static HudScoreMessageImage image;
+    return image;
+}
+
+// 0052B620 / 0052B780 / 0052B900's one service: the 23h message on the stack
+// (0052B64B 0075B430(23h), 0052B652 +4h = 1, 0052B656 vtable 00CED098, the
+// strings, the two value dwords and the word array zeroed, both flags 0; then
+// the sender's fields, the strings through 0041DD40(length, 1) and memcpy),
+// 00772330 on [00E188A8]+1EF0h (0052B711) and 0052AF50 (0052B71F).
+class HudScoreMessageBinding final : public bsp::frontend_seg15_22_cc13::HudMessage35SendHost {
+public:
+    explicit HudScoreMessageBinding(HudCountersContext& c) : c_(c) {}
+    void session_send_message35_00772330(const bsp::frontend_seg15_22_cc13::HudMessage35& m) override {
+        HudScoreMessageImage& image = hud_score_message_image();
+        bsp::NativeStringRawPoolContext& strings = *image.profile.strings;
+        bsp::NativeSessionMessage35 message{};
+        bsp::construct_native_session_message_0075b430(&message.base, 0x23, image.session);
+        message.base.delivery_04 = 1;
+        message.base.profile_00 = image.profile.slots;
+        // The image's EH frame 00C6B938 runs 0052AF50 on unwind too.
+        try {
+            send(m, message, strings);
+        } catch (...) {
+            bsp::destroy_native_session_message35_0052af50(&message, strings, image.profile);
+            throw;
+        }
+        bsp::destroy_native_session_message35_0052af50(&message, strings, image.profile);
+    }
+private:
+    void send(const bsp::frontend_seg15_22_cc13::HudMessage35& m, bsp::NativeSessionMessage35& message,
+        bsp::NativeStringRawPoolContext& strings) {
+        message.value_18 = m.value_18;
+        message.value_1c = m.value_1c;
+        message.subtype_20 = m.subtype_20;
+        message.flag_24 = m.hide_24;
+        message.flag_25 = m.pair_25;
+        auto assign = [&strings](std::uint32_t* header, std::string_view text) {
+            bsp::resize_native_string_header_0041dd40(header, strings,
+                static_cast<std::uint32_t>(text.size()), true);
+            if (!text.empty()) {
+                char* data = nullptr;
+                std::memcpy(&data, reinterpret_cast<std::uint8_t*>(header) + 4, sizeof(data));
+                std::memcpy(data, text.data(), text.size());
+            }
+        };
+        assign(&message.length_28, m.text_28);
+        assign(&message.length_30, m.text_30);
+        message.values_38[0] = m.values_38[0];
+        message.values_38[1] = m.values_38[1];
+        if (m.unit_count_40 != 0 || !m.text_4c.empty())
+            throw std::logic_error("the HUD score senders carry no unit-HP words or text");
+        std::array<bsp::cc13cam2::SessionPlayerRecord, 8> records{};
+        // 0077236A indexes game+18CCh by +1Ch, the 3-bit slot the 23h writer
+        // packs (005294F0); a script owner outside 0..7 would read past it.
+        if (message.value_1c >= records.size())
+            throw std::logic_error("a HUD 23h message addressed beyond the eight player slots");
+        HudScoreSessionBinding session(c_);
+        // ECX = [00E188A8]+1EF0h: +F4h is game+1FE4h; the local slot game+18ECh.
+        bsp::cc13cam2::session_send_to_player_slot_00772330(bsp::session_context().session_word_1fe4,
+            static_cast<std::int32_t>(message.value_1c), kLocalPlayerSlot, records,
+            reinterpret_cast<std::uintptr_t>(&message), session);
+    }
+    static constexpr int kLocalPlayerSlot = 0;  // game+18ECh, single player
     HudCountersContext& c_;
 };
 
@@ -2942,6 +3255,7 @@ std::optional<HudCountersContext> hud_counters_context(GameHudHost::Impl& impl) 
     for (const std::uint16_t offset : kRead) {
         if (c.manager_view[offset / 4u] == nullptr) return std::nullopt;
     }
+    c.record = [&impl](const char* method, std::uint32_t address) { impl.record(method, address); };
     return c;
 }
 }  // namespace
@@ -2970,6 +3284,36 @@ bool GameHudHost::cancel_mission_countdown() {
     bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
     bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
     impl_->done("HudCounters::cancel_countdown", 0x0052ab90u);
+    return true;
+}
+
+bool GameHudHost::display_score(std::uint32_t id, std::uint32_t owner, const std::string& a,
+    const std::string& b, bool pair, std::uint32_t v0, std::uint32_t v1) {
+    const std::uint32_t sender = pair ? 0x0052b780u : 0x0052b620u;
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::display_score", sender);
+        return false;
+    }
+    HudScoreMessageBinding binding(*c);
+    if (pair) {
+        bsp::frontend_seg15_22_cc13::hud_send_display_score_pair_0052b780(id, owner, a, b, v0, v1, binding);
+    } else {
+        bsp::frontend_seg15_22_cc13::hud_send_display_score_0052b620(id, owner, a, b, binding);
+    }
+    impl_->done("HudCounters::display_score", sender);
+    return true;
+}
+
+bool GameHudHost::hide_score(std::uint32_t id, std::uint32_t owner) {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::hide_score", 0x0052b900u);
+        return false;
+    }
+    HudScoreMessageBinding binding(*c);
+    bsp::frontend_seg15_22_cc13::hud_send_hide_score_0052b900(id, owner, binding);
+    impl_->done("HudCounters::hide_score", 0x0052b900u);
     return true;
 }
 
