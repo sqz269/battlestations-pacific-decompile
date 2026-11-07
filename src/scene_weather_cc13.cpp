@@ -365,7 +365,7 @@ std::string strip_extension(const std::string& name) {
 
 void read_sky(const ScenePropertyBagModel& model, int bag, bool linearize, SceneSkyFields& sky,
               SceneLightsFields& lights, SceneSkyHost& host) {
-    host.read_cloud_areas_004e7220(model, bag);
+    host.load_cloud_areas(model, bag);  // 004EE481 CALL 004E7220
     const ScenePropertyEntry* lights_entry = find(model, bag, "Lights");
     if (lights_entry != nullptr && lights_entry->value.type == ScenePropertyType::SubBag) {
         // 004EE4A3 CALL 004EA870 (ECX = Lights bag, EDX = record): through the

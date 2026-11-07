@@ -157,8 +157,11 @@ struct SceneSkyFields {
 };
 
 struct SceneSkyHost : SceneLightsHost {
-    // 004E7220 with the header bag and the record (cloud areas, gui_screens_3.hpp).
-    virtual void read_cloud_areas_004e7220(const ScenePropertyBagModel& model, int bag_index) = 0;
+    // 004EE481 CALL 004E7220 with the g_Environment bag (ECX) and the record
+    // (EDX): the cloud areas (gui_screens_3.hpp scene_load_cloud_areas_004e7220).
+    // Named without the callee's address so an adapter that does not run that
+    // body is not mistaken for it.
+    virtual void load_cloud_areas(const ScenePropertyBagModel& model, int bag_index) = 0;
 };
 
 // 004EE450: __fastcall(ECX = g_Environment bag, EDX = scene record), RET; caller 004F230B.

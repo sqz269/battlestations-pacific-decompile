@@ -42,7 +42,7 @@ struct MissionSceneEnvironment final : scene_weather_cc13::SceneSkyHost {
  // (EDX): its AreaNN entries into record+C84h.., then the 004BA870 scatter tail
  // (004E7403). This renderer graph owns no scene record cloud block and no
  // atmosphere or cloud entities to scatter, so the areas are not loaded here.
- void read_cloud_areas_004e7220(const ScenePropertyBagModel&,int) override {
+ void load_cloud_areas(const ScenePropertyBagModel&,int) override {
   log.unimplemented("MissionSceneEnvironment::load_cloud_areas","004e7220");
  }
  void load(const ScenePropertyBlock& root,bool linearize) {
