@@ -2,7 +2,7 @@
   "chain": 640,
   "slot": "g5-w5",
   "branch": "agent/g5-w5",
-  "piece": "The plane's pending named effect unit+C01h inside 007CE040: the 007CE55D store, the 007CE6CA/007CE6D7 gates and the 007CE790 consumer, which raises \"powerlost\" or \"explosion\" through 007BBFA0. The host's four plane_c01 writers (007B9000 x2, 007B9010, 007CC2AD) were dead stores before this.",
+  "piece": "The plane's pending named effect unit+C01h inside 007CE040: the 007CE3B1 terrain-below store (0087FC60 over each Landscape, terrain slot 2Ch 00ADA990 through a native view of the loaded height field), the 007CE55D store, the 007CE6CA/007CE6D7 gates and the 007CE790 consumer, which raises \"powerlost\" or \"explosion\" through 007BBFA0. The host's four plane_c01 writers (007B9000 x2, 007B9010, 007CC2AD) were dead stores before this.",
   "rows": [
     {
       "native": "007bbfa0",
@@ -15,16 +15,44 @@
       "host_site": "src/plane_flight.cpp run_plane_fixed_step_007ce040 -> PlaneFlightHost::named_effect_latch_007ce790 -> bsp::plane_named_effect_latch_007ce790 (fragment of 007CE040, 007CE55D..007CE82E)"
     },
     {
+      "native": "007ce3b1",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::named_effect_latch_007ce790 -> bsp::plane_below_landscape_007ce3b1 (fragment of 007CE040, 007CE3B1..007CE46A)"
+    },
+    {
       "native": "0087fc60",
-      "status": "skipped",
-      "host_site": "src/game_hosts_units_motion.cpp PlaneBinding (007CE3B1..007CE46A, the terrain-below test that stores +C01h = 2)",
-      "reason": "Terrain slot 2Ch 00ADA990 adds 00ADB620's bilinear of a per-block byte layer (00ADB550/00ADB1D0 at block+20h/+28h, byte/255*60) that the host's TDT reader (00ADDA60, U16 only) does not build; no LandscapeState lends slot 2Ch."
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::named_effect_latch_007ce790 (the 007CE44A loop over the scene Landscape list) -> landscape_height_at_world_or_default_0087fc60"
     },
     {
       "native": "00ada990",
-      "status": "skipped",
-      "host_site": "include/bsp/scene_terrain_forwarders.hpp (slot 2Ch is unsupported())",
-      "reason": "Raw native height field (+1Ch, +2Ch node, +80h/+84h, slots 48h/50h); the host SceneTerrainHeightField has no byte layer for slot 4Ch 00ADB550."
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp SceneTerrainHeightField::height_at_world_slot2c (SceneTerrainForwarders slot 2Ch) -> cc13_terrain::height_field_height_at_world_00ada990 over the native view"
+    },
+    {
+      "native": "00adb620",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp TerrainSlot2cHost::slot50_sample_bilinear -> cc13_terrain::height_field_sample_bilinear_00adb620"
+    },
+    {
+      "native": "00adb550",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp TerrainSlot2cHost::slot4c_sample -> cc13_terrain::height_field_sample_at_00adb550"
+    },
+    {
+      "native": "00adb1d0",
+      "status": "wired",
+      "host_site": "src/terrain_particles_cc13.cpp height_field_sample_at_00adb550 -> block_byte_layer_sample_00adb1d0 (inlined), reached from the slot 2Ch chain"
+    },
+    {
+      "native": "00adea70",
+      "status": "wired",
+      "host_site": "src/terrain_particles_cc13.cpp height_field_sample_at_00adb550 -> tile_block_00adea70 (inlined), reached from the slot 2Ch chain"
+    },
+    {
+      "native": "00ada890",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp SceneTerrainHeightField::split_index_00ada890, called by cell_height_arm_00adb3a0 and TerrainSlot2cHost::slot44_split_index"
     },
     {
       "native": "00941070",

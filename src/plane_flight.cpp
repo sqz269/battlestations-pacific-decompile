@@ -217,6 +217,20 @@ PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
     return out;
 }
 
+bool plane_below_landscape_007ce3b1(const PlaneLandscapeBelowInputs& in,
+    const std::function<bool(std::size_t landscape, const float xz[2], float& height)>&
+        landscape_height_0087fc60) {
+    if (!in.free_flight_gate_72c) return false;                       // 007CE3C4 JZ 007CE471
+    if (!(30.0 > static_cast<double>(in.height_9b4))) return false;   // 007CE3DA JBE 007CE471
+    const float xz[2] = {in.x_fc, in.z_104};                          // [ESP+18h], [ESP+1Ch]
+    float h = 0.0f;
+    // 007CE435..007CE466: node +4h, the Landscape at +8h, until the node is null.
+    for (std::size_t k = 0; landscape_height_0087fc60(k, xz, h); ++k) {
+        if (h > in.y_100) return true;                                // 007CE45F JA 007CE46A
+    }
+    return false;
+}
+
 PlaneMotionArm select_motion_arm_007ce040(const PlaneMotionDispatchInputs& in) {
     if (in.control_mode_gate) {
         return PlaneMotionArm::FreeFlight;  // 007CEC43 JZ, so a true answer takes this arm

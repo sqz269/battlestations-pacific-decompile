@@ -1,5 +1,7 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
+#include <functional>
 
 // Projection of the plane flight controller: the object at unit+AB0h, the pilot control
 // block at unit+9E4h, the fixed-step motion dispatch inside 007CE040, and the three pilot
@@ -433,6 +435,27 @@ struct PlaneNamedEffectLatchResult {
 // with the returned effect (and before reading the stored byte again).
 PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
     const PlaneNamedEffectLatchInputs& in) noexcept;
+
+// 007CE3B1..007CE46A, the same tick's other +C01h store, reached in single
+// player when unit+61h is clear (007CE313): with (unit+72Ch)->vtable[38h]() true
+// (007CE3C0 / TEST AL,AL) and 30.0 (double 00CE7630) > unit+9B4h (007CE3D6
+// FCOMIP / JBE, so a NaN skips), each Landscape of the world list +348h
+// (node +4h next, +8h the Landscape) is asked 0087FC60 at the refreshed unit+FCh
+// / +104h; the first whose height is above unit+100h (007CE45B FCOMIP / JA, a NaN
+// is not above) stores +C01h = 2 at 007CE46A. True when that store happens.
+// `landscape_height_0087fc60(k, xz, height)` answers the k-th Landscape's
+// 0087FC60 and returns false once k is past the list; it is first called only
+// after both gates pass.
+struct PlaneLandscapeBelowInputs {
+    bool free_flight_gate_72c{false};
+    float height_9b4{0.0f};     // unit+9B4h ([ESI+6A4h]), the previous tick's store
+    float x_fc{0.0f};
+    float y_100{0.0f};
+    float z_104{0.0f};
+};
+bool plane_below_landscape_007ce3b1(const PlaneLandscapeBelowInputs& in,
+    const std::function<bool(std::size_t landscape, const float xz[2], float& height)>&
+        landscape_height_0087fc60);
 
 struct PlaneMotionDispatchInputs {
     bool control_mode_gate{false};  // (*(unit+72Ch))->vtable[+38h]() at 007CEC3F

@@ -21628,6 +21628,56 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::size_t self = unit_.process_index;
                         const bool bound = gh != nullptr && self < owner_.slots.size()
                             && owner_.slots[self].get() == &unit_;
+                        // 007CE3B1..007CE46A (bsp::plane_below_landscape_007ce3b1): game+1FE4h
+                        // is 0 (007CE291) and unit+61h has no writer (game_hosts_units.hpp),
+                        // so 007CE31A falls through to it. The world list +348h is the scene
+                        // host's Landscape list, in list order; each is asked 0087FC60 through
+                        // the borrowed terrain (slot 2Ch), and a Landscape whose +3D0h was not
+                        // loaded answers 0087FC60's own -1.0. unit+FCh..+104h are the world
+                        // pose's translation (00414DB0 refreshed), as at 007CE92A.
+                        {
+                            const bsp::game::SceneWorldClassLists& lists =
+                                bsp::game::scene_world_class_lists();
+                            std::vector<std::size_t> landscapes;   // read once both gates pass
+                            bsp::PlaneLandscapeBelowInputs below;
+                            below.free_flight_gate_72c = free_flight_gate_00d06130_38();
+                            below.height_9b4 = unit_.plane_height_above_surface_9b4;
+                            const float* const p = unit_.world.data() + 12;
+                            below.x_fc = p[0];
+                            below.y_100 = p[1];
+                            below.z_104 = p[2];
+                            const bool hit = bsp::plane_below_landscape_007ce3b1(below,
+                                [&lists, &landscapes](std::size_t k, const float xz[2], float& h) {
+                                    namespace l55 = bsp::landscape_lua_seg55_argon;
+                                    if (k == 0) landscapes = lists.list(bsp::game::kSceneLandscapeClassId);
+                                    if (k >= landscapes.size()) return false;
+                                    const bsp::game::SceneWorldObject& object =
+                                        lists.objects()[landscapes[k]];
+                                    if (!object.terrain) {
+                                        const l55::LandscapeState none{};
+                                        h = l55::landscape_height_at_world_or_default_0087fc60(none, xz);
+                                        return true;
+                                    }
+                                    const SceneTerrainForwarders terrain(*object.terrain);
+                                    h = l55::landscape_height_at_world_or_default_0087fc60(
+                                        terrain.landscape(), xz);
+                                    return true;
+                                });
+                            if (hit) {
+                                unit_.plane_c01 = 2;                                   // 007CE46A
+                                ++unit_.plane_below_landscape_stores;
+                                if (unit_.plane_below_landscape_stores == 1) {
+                                    owner_.log.notef("plane below a Landscape: unit=%s t=%.2f "
+                                        "pos=(%.1f %.1f %.1f) h9b4=%.2f; +C01h = 2 (007CE44A "
+                                        "0087FC60 -> 007CE46A)", unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(p[0]), static_cast<double>(p[1]),
+                                        static_cast<double>(p[2]),
+                                        static_cast<double>(below.height_9b4));
+                                }
+                                owner_.done("Plane::below_landscape_007ce3b1", 0x007ce46au);
+                            }
+                        }
                         bsp::PlaneNamedEffectLatchInputs in;
                         in.c01 = unit_.plane_c01;
                         in.session_mode_1fe4 = 0;

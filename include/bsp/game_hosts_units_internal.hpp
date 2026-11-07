@@ -1409,6 +1409,8 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // read at 009A1963 under kLuaSquadronEnableVehicleAvoidanceBound.
     std::uint32_t sq_avoid_3a4{0xFFu};
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
+    // 007CE46A's +C01h = 2 stores (below a Landscape), counted (goal 5 chain 640).
+    unsigned long long plane_below_landscape_stores{0};
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
     // Packet cc9_land_park_done_test: which arm of 009B21D0 set done - the timer
