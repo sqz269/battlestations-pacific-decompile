@@ -139,6 +139,8 @@
 #include "bsp/scoring_bindings.hpp"             // goal 5 chain 653, the keyed Scoring_* rows
 #include "bsp/cc13_left55_seg56b_host_unreached.hpp"  // goal 5 chain 653, Left55Seg56bHost
 #include "bsp/profile_unlock.hpp"               // goal 5 chain 653, 007FC4C0
+#include "bsp/left55_seg56c_host_unreached.hpp" // goal 5 chain 664, 008CC330
+#include "bsp/scoring_bodies.hpp"               // goal 5 chain 664, 008BC9B0 / 008BB770
 
 extern "C" {
 #include "lauxlib.h"
@@ -11853,6 +11855,9 @@ bool GameMissionLuaHost::is_scoring_record_binding(std::uint32_t address) noexce
     case 0x008bb530u:  // Scoring_SetActionMedal
     case 0x008bbc40u:  // Scoring_IsUnlocked
     case 0x008cb920u:  // Scoring_GrantUnlock
+    case 0x008bc9b0u:  // Scoring_GetPlayerShotDown (goal 5 chain 664)
+    case 0x008cc330u:  // Scoring_IgnoreEntityKill (goal 5 chain 664)
+    case 0x008bb770u:  // Scoring_GrantBonus (goal 5 chain 664)
         return true;
     default:
         return false;
@@ -11930,13 +11935,30 @@ public:
         return text != nullptr ? std::string(text, length) : std::string();
     }
     double get_number(int) override { scoring_row_unreached("00B66270"); }
-    bool is_string(int) override { scoring_row_unreached("00B660A0"); }
+    // Goal 5 chain 664 (Scoring_GrantBonus). 00B660A0: lua_type is exactly
+    // LUA_TSTRING (4); a number is not a string here.
+    bool is_string(int index) override {
+        const int slot = index + 1;
+        return slot <= top_ && lua_type(state_, slot) == LUA_TSTRING;
+    }
     bool is_nil(int) override { scoring_row_unreached("00B65FB0"); }
     bool is_entity_table(int) override { scoring_row_unreached("008889C0"); }
-    void* entity_at(int) override { scoring_row_unreached("00888AA0"); }
+    // Goal 5 chain 664 (Scoring_IgnoreEntityKill). 00888AA0 on the argument: the
+    // entity the table names, here its ID (the identity listener_entity_id_at
+    // gives the other Lua rows), null without one.
+    void* entity_at(int index) override {
+        const int id = listener_entity_id_at(state_, index + 1);
+        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+    }
     bool is_boolean(int) override { scoring_row_unreached("00B66000"); }
     bool is_number(int) override { scoring_row_unreached("00B66050"); }
-    bool is_integer(int) override { scoring_row_unreached("00B66A60"); }
+    // Goal 5 chain 664 (Scoring_GetPlayerShotDown). 00B66A60: lua type 3, then
+    // bsp::gui_lua_is_integer_number_00b66a60 on the number.
+    bool is_integer(int index) override {
+        const int slot = index + 1;
+        return slot <= top_ && lua_type(state_, slot) == LUA_TNUMBER
+            && bsp::gui_lua_is_integer_number_00b66a60(::lua_tonumber(state_, slot));
+    }
     bool is_table(int) override { scoring_row_unreached("00B661B0"); }
     bsp::cc13_seg56::Vec3 read_vector3(int) override { scoring_row_unreached("00888760"); }
     bool is_vector3_table(int) override { scoring_row_unreached("0088B840"); }
@@ -12195,6 +12217,84 @@ private:
     ScoringImage& image_;
     bsp::ProfileUnlockState* unlocks_;
 };
+
+// Goal 5 chain 664. The one Left55Seg56cHost service Scoring_IgnoreEntityKill
+// (008CC330) reaches: 0063F1E0, the unique tree insert, on [game+21A0h]+1488h,
+// the set the kill credit 0091BDA0 tests the victim's root against (0091BE29).
+class ScoringIgnoreKillHost final : public bsp::cc13_left55::seg56c::Left55Seg56cHostUnreached {
+public:
+    ScoringIgnoreKillHost(ScoringImage& image, bsp::MissionScoringManagerState& manager)
+        : image_(image), manager_(manager) {}
+    void scoring_ignored_kill_set_insert_0063f1e0(void* tree, void* entity) override {
+        if (tree != static_cast<std::uint8_t*>(image_.scoring()) + 0x1488u) {
+            scoring_row_unreached("0063F1E0 off [game+21A0h]+1488h");
+        }
+        // A null entity (00888AA0 found none) is inserted as the image inserts
+        // it; ID 0 names no unit, so the kill credit never matches it.
+        manager_.ignored_kill_entities_1488.insert(
+            static_cast<int>(reinterpret_cast<std::uintptr_t>(entity)));
+    }
+
+private:
+    ScoringImage& image_;
+    bsp::MissionScoringManagerState& manager_;
+};
+
+// Goal 5 chain 664. The ScoringBodiesHost services Scoring_GrantBonus (008BB770)
+// reaches: 007FC9F0 / 007FCBC0 on the profile [game+650h] (008BB982 / 008BBB34,
+// ECX = [00E188A8]+650h), here the profile owner's ProfileResetState: the
+// granted-key vector +ACh (bonus_ac, which the archive writes as "Bonus") and
+// the 1Ch record vector +BCh. Every other service belongs to another row.
+class ScoringBonusHost final : public bsp::ScoringBodiesHost {
+public:
+    explicit ScoringBonusHost(bsp::ProfileResetState& profile) : profile_(profile) {}
+    // 007FCA32..007FCAA9 (007FCBF3..007FCC5x in 007FCBC0): each +ACh name against
+    // the key, equal lengths then __stricmp (00BF7FBF), so an empty name matches
+    // only an empty key.
+    bool profile_has_granted_bonus(const std::string& key) override {
+        for (const std::string& granted : profile_.bonus_ac) {
+            if (granted.size() == key.size() && _stricmp(granted.c_str(), key.c_str()) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // 00450540, the push_back on +ACh.
+    void profile_record_granted_bonus(const std::string& key) override {
+        profile_.bonus_ac.push_back(key);
+    }
+    // 007FC940, the push_back of the 007F8B40 record on +BCh.
+    void profile_append_bonus(const bsp::ScoringBonusRecord& record) override {
+        profile_.bonus_records_bc.push_back(record);
+    }
+    int session_mode() override { scoring_row_unreached("008BB770 game+1FE4h"); }
+    float difficulty_score_multiplier(int) override {
+        scoring_row_unreached("008BB770 GlobalConfig+2Ch");
+    }
+    int& kill_tree_leaf(int, std::size_t, const bsp::ScoringKillKey&) override {
+        scoring_row_unreached("008BB770 kill tree");
+    }
+    void clear_slot_record(int) override { scoring_row_unreached("008BB770 00915760"); }
+    int slot_difficulty(int) override { scoring_row_unreached("008BB770 record+08h"); }
+    int slot_used_slot(int) override { scoring_row_unreached("008BB770 record+250h"); }
+    void set_slot_difficulty(int, int) override { scoring_row_unreached("008BB770 record+08h"); }
+    void set_slot_used_slot(int, int) override { scoring_row_unreached("008BB770 record+250h"); }
+    void set_slot_cleared_flag(int, bool) override {
+        scoring_row_unreached("008BB770 manager+14B0h");
+    }
+    int commit_slot() override { scoring_row_unreached("008BB770 004B4750"); }
+    void set_condition_message(int, const std::string&) override {
+        scoring_row_unreached("008BB770 0090BDA0");
+    }
+    void set_victory_message(int, const std::string&) override {
+        scoring_row_unreached("008BB770 0090BE30");
+    }
+    void clear_all_mission_records() override { scoring_row_unreached("008BB770 007FD510"); }
+    void reset_all_player_records() override { scoring_row_unreached("008BB770 00916980"); }
+
+private:
+    bsp::ProfileResetState& profile_;
+};
 }  // namespace
 
 int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32_t address) {
@@ -12321,6 +12421,69 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
         name = "Scoring_GrantUnlock";
         ScoringGrantUnlockHost host(image, unlocks);
         count = bsp::seg56_options_cc13::lua_scoring_grant_unlock(args, image, host);
+        break;
+    }
+    case 0x008bc9b0u: {
+        // Goal 5 chain 664. 008BC9B0: with exactly one argument that 00B66A60
+        // takes for an integer (008BCAAE..008BCAD0), the slot is 00B66380 on it
+        // (008BCAF7; the same float32 spill and 00BF7420 as 00B66290), else 0
+        // (not game+18ECh). Then the record's +B4h tree, level-1 key 1, every
+        // level-2 key, the leaves of level-3 keys 7..0Ch (008BCB17..008BCCC5),
+        // pushed through 00B664B0. The trees are the kill credit's
+        // (0091BDA0, the gunnery host's kill binding). SUBSTITUTION (labelled):
+        // the image indexes slot*284h unchecked; a slot outside the eight
+        // records throws here.
+        name = "Scoring_GetPlayerShotDown";
+        const int slot = args.count() == 1 && args.is_integer(0) ? args.get_integer(0) : 0;
+        if (slot < 0 || static_cast<std::size_t>(slot) >= bsp::kMissionScoringSlotCount) {
+            scoring_row_unreached("008BC9B0 slot outside the eight [game+21A0h] records");
+        }
+        const int total = bsp::scoring_sum_shot_down_008bc9b0(
+            result.scoring_slot(slot).player_kills_b4, bsp::kScoringPartyEnemy);
+        results.push_number(total);
+        count = 1;
+        // BSM01 calls this every think pass: counted, reported once in the summary.
+        ++summary_.shot_down_reads;
+        summary_.shot_down_last = total;
+        break;
+    }
+    case 0x008cc330u: {
+        // Goal 5 chain 664. 008CC330 runs its body: 00888AA0 on argument 0, the
+        // manager [game+21A0h], 0063F1E0 into +1488h. Returns 0.
+        name = "Scoring_IgnoreEntityKill";
+        ScoringIgnoreKillHost host(image, mission_result_->scoring_manager());
+        count = bsp::cc13_left55::seg56c::lua_scoring_ignore_entity_kill(args, image, host);
+        log_.notef("  Scoring_IgnoreEntityKill 008cc330: entity id %d ignored (goal 5 chain "
+            "664)", listener_entity_id_at(state, 1));
+        break;
+    }
+    case 0x008bb770u: {
+        // Goal 5 chain 664. 008BB770 runs its body, scoring_binding_grant_bonus_008bb770.
+        // 00B660A0 on argument 3 picks the form: a string calls 007FCBC0 (008BB982)
+        // with arguments 0..3 read through 00B662B0; otherwise 007FC9F0 (008BBB34)
+        // with arguments 0..2 as strings and argument 3 through 00B66290. Argument 0
+        // is the dedupe key only. ECX is the profile [game+650h]. Returns the
+        // result count, 0.
+        name = "Scoring_GrantBonus";
+        if (owner == nullptr) scoring_row_unreached("008BB770 without the profile (game+650h)");
+        bsp::ScoringGrantBonusArguments bonus;
+        bonus.third_is_string = args.is_string(3);
+        bonus.key = args.get_string(0);
+        bonus.text_a = args.get_string(1);
+        bonus.text_b = args.get_string(2);
+        if (bonus.third_is_string) {
+            bonus.text_c = args.get_string(3);
+        } else {
+            bonus.value = args.get_integer(3);
+        }
+        bsp::ProfileResetState& profile = owner->profile();
+        const std::size_t before = profile.bonus_records_bc.size();
+        ScoringBonusHost host(profile);
+        bsp::scoring_binding_grant_bonus_008bb770(host, bonus);
+        count = 0;
+        log_.notef("  Scoring_GrantBonus 008bb770: \"%s\" %s (records %zu; goal 5 chain 664)",
+            bonus.key.c_str(), profile.bonus_records_bc.size() > before ? "granted" : "already held",
+            profile.bonus_records_bc.size());
         break;
     }
     default:
@@ -18316,6 +18479,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         "score_multipliers=%u ([[00E198C4]+B8h]+14h counted, GlobalConfig+2Ch; goal 5 chain 653)",
         static_cast<unsigned long long>(score_cache_clears_),
         static_cast<unsigned>(score_multipliers_.size()));
+    log_.notef("summary mission script player shot down reads=%llu last=%d (008BC9B0 on "
+        "the record +B4h tree, goal 5 chain 664)", summary_.shot_down_reads,
+        summary_.shot_down_last);
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);

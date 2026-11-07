@@ -118,6 +118,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -2902,6 +2903,12 @@ struct GameGunneryHost::Impl {
         // kLuaKillBoxFromHitBound: +2C8h (one based) and +2D8h as 009813A0 boxes them.
         std::size_t lua_kill_attacker{0};
         int lua_kill_slot{-1};
+        // Goal 5 chain 664: +2D8h as 0077CFC5 stores it on this unit itself, the
+        // slot 0091BDA0 credits. lua_kill_slot also takes the squadron copy
+        // (0077D0E8..0077D128) of a hit on any wing, because this host fuses the
+        // squadron with wing 0; the kill credit must not see that copy. -1 is the
+        // constructor's value (0077EFEF / 0077F012).
+        int own_kill_slot_2d8{-1};
         // The per-step scratch the pass fills.
         std::vector<bsp::GunneryCandidate> candidates;
         std::vector<int> order;
@@ -3879,6 +3886,7 @@ struct GameGunneryHost::Impl {
     unsigned long long death_route_child_triggers{0};
     unsigned long long loss_reports[2]{0, 0};        // by side, 009813A0's own guard passed
     unsigned long long loss_report_calls{0};         // every 009813A0 call
+    unsigned long long kill_credits_skipped_70{0};   // 0091BDA0 not run: unit+70h != 1
     unsigned long long limbo_pages{0};
     // Packet cc13-limbo: what the image's controlled-unit arm would do (always
     // counted) and what kUnitDeathLimboPushCc13Bound applied.
@@ -15381,6 +15389,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
             attacker, kamikaze, true);
         target.last_attacker = shooter + 1;
+        // Goal 5 chain 664: this victim's own +2D8h (0077CFC5), for 0091BDA0.
+        target.own_kill_slot_2d8 = team_id;   // +180h = 9, so [src+1Ch]
         if (kLuaKillBoxFromHitBound) {
             target.lua_kill_attacker = shooter + 1;
             target.lua_kill_slot = team_id;   // +180h = 9, so [src+1Ch]
@@ -18170,17 +18180,23 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         }
     }
 
+    bool credits_kill = true;   // 00959450's report gate, set below
     if constexpr (kUnitDeathRouteBound) {
         // 00959450 BSP_Unit_OnDestroyed, reached from 00825271 (OnWrecked) for
         // a ship and 007BCAD9 (Plane_OnDestroyed) for a plane.
-        // SUBSTITUTIONS: unit+70h is 1 (every gunnery kill is a harm death,
-        // docs/KILL_CREDIT.md); world+4ACh is 1 (set at the construct_world
-        // load step and never cleared in this host, docs/CONSTRUCT_WORLD.md
-        // section 9); the controller flags +C41h / +100Ah are not held here,
-        // so the loss report is never skipped.
+        // unit+70h is the cause 00926D90 stored: explicit_kill_cause during an
+        // explicit kill, 1 (a harm death) on the health-zero paths, the mapping
+        // the fort destroy and the Lua kill listener use. 00959475 CMP [EDI+70h],1
+        // / JNZ 0095951E skips 009813A0, the child-trigger pass and 00959519 CALL
+        // 0091BDA0, so a plane landing back on its deck (cause 5), Lua Kill(x,
+        // true) and a landed remainder (cause 2) report and credit nothing.
+        // SUBSTITUTIONS: world+4ACh is 1 (set at the construct_world load step
+        // and never cleared in this host, docs/CONSTRUCT_WORLD.md section 9);
+        // the controller flags +C41h / +100Ah are not held here, so the loss
+        // report is never skipped.
         bsp::UnitDeathInputs death{};
         death.mission_clock = clock_seconds;
-        death.unit_party_70 = 1;
+        death.unit_party_70 = explicit_kill_cause == 0 ? 1 : explicit_kill_cause;
         death.world_gate_4ac = true;
         death.is_controlled_unit = units.controlled_bound() && units.controlled_index() == victim;
         // Packet cc13-limbo. SUBSTITUTION: the front end idle ([00E198C4]+4h ==
@@ -18298,11 +18314,19 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
                 decision.retargets_front_end ? 1 : 0, keeps ? 0 : 1,
                 kUnitDeathLimboPushCc13Bound ? 1 : 0);
         }
-        if (!decision.reports_alternate) return;   // 0091BDA0 runs only when reported
+        // 0091BDA0 runs only when reported (00959468 clock, 00959475 +70h == 1,
+        // 0095948A world+4ACh). The host's tail below, the fort hand-off (its own
+        // path, 00747170, which tail-calls 00959450) and the 9Ah message, is not
+        // inside that gate; it keeps the clock and world gates it had.
+        credits_kill = decision.reports_alternate;
+        if (!(death.mission_clock > bsp::kUnitDeathReportGraceSeconds && death.world_gate_4ac)) {
+            return;
+        }
     }
 
     struct KillBinding final : bsp::KillCreditHost {
-        explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
+        KillBinding(Impl& owner_in, GameMissionResultHost& scoring_in, std::size_t victim_in)
+            : owner(owner_in), scoring(scoring_in), victim(victim_in) {}
         // game+1FE4h from the session context (packet cc13-mp2c). Campaign identity:
         // the OFF arm is the old literal 0.
         int session_mode() override {
@@ -18316,11 +18340,50 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
         // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
         int local_player_side() override { return bsp::game::local_player_party(); }
-        bool root_entity_already_scored() override { return false; }
+        // 0091BE01..0091BE0B: victim->vtable[140h](), the victim's root entity, then
+        // 0091BE29 0090C170 looks it up in the +1488h tree Scoring_IgnoreEntityKill
+        // fills; a hit abandons the kill at 0091BE3F. For a plane that root is its
+        // squadron (docs/CC13_AUDIT_LUA51_FLIPS.md, 0077D0E8..0077D128), which is
+        // what every IgnoreEntityKill caller passes. Here it is the squadron unit
+        // of plane_squadron_registry(), the mapping apply_hit uses for the same
+        // vtable[140h] at 0077D0E8; any other victim is its own root. The entity
+        // is its Lua ID, the slot + 1 the IgnoreEntityKill row stored.
+        // in.victim_is_root below is a different test, the IsKindOf(1Bh) fort
+        // gate at 0091BE4D.
+        bool root_entity_already_scored() override {
+            std::size_t root = victim;
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit) root = sqn->squadron_unit;
+            }
+            return scoring.scoring_manager().ignored_kill_entities_1488.count(
+                static_cast<int>(root) + 1) != 0;
+        }
+        // Not stored: the pass compares each slot's party [[game+18CCh+i*4]+28h]
+        // (in.slot_sides), which this host does not hold.
         void add_loss(int, bool, const std::string&) override { ++losses; }
         void add_type_kill(int, std::size_t, int) override { ++type_kills; }
-        int& kill_tree_leaf(int, std::size_t, const bsp::ScoringKillKey&) override {
-            return leaf;
+        // 0091BF9D..0091C046: the record [game+21A0h]+4h+slot*284h, then +B4h
+        // (player_kills) when +2D8h == +2DCh else +C0h (party_kills), and the
+        // three chained operator[]s 0062C170 / 0062BB60 / 00625900 on the
+        // relative party, the attacker's class and the victim's class
+        // (docs/SCORING_BODIES.md section 6). These are the record's persisted
+        // trees: 004D7970's commit merges them into the mission progress (0091A080),
+        // and Scoring_GetPlayerShotDown (008BC9B0) reads +B4h.
+        int& kill_tree_leaf(int slot, std::size_t tree_offset,
+                            const bsp::ScoringKillKey& key) override {
+            bsp::MissionResultHost& manager = scoring;
+            bsp::MissionScoreRecord& record = manager.scoring_slot(slot);
+            bsp::MissionEnumCounterTriples* tree = nullptr;
+            if (tree_offset == bsp::kScoringPlayerKillsOffset) {
+                tree = &record.player_kills_b4;
+            } else if (tree_offset == bsp::kScoringPartyKillsOffset) {
+                tree = &record.party_kills_c0;
+            } else {
+                throw std::logic_error("kill credit 0091BDA0: not a kill tree offset");
+            }
+            ++leaf_writes;
+            return (*tree)[key.party][key.attacker_class][key.victim_class];
         }
         int add_named_counter(int, const std::string&) override { return ++counter; }
         int award_threshold(const std::string&) override {
@@ -18331,7 +18394,9 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         void update_kill_list(int, std::uint32_t, int, int, bool) override { ++entries; }
 
         Impl& owner;
-        int leaf{0};
+        GameMissionResultHost& scoring;
+        std::size_t victim;
+        int leaf_writes{0};
         int counter{0};
         int losses{0};
         int type_kills{0};
@@ -18339,28 +18404,53 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         int entries{0};
     };
 
-    KillBinding binding(*this);
-    bsp::UnitKillInputs in;
-    in.victim_name = target.row.name;
-    in.victim_type_id = target.row.type_id;
-    in.victim_owning_slot = target.row.side;
-    in.victim_is_root = true;
-    in.has_attacker = target.last_attacker != 0;
-    in.attacker_is_ship_base = true;
-    in.ordnance_kind = target.attribution.ordnance_kind;
-    in.sole_attacker = target.attribution.sole_attacker;
-    if (target.last_attacker != 0) {
-        in.attacker_type_id = unit_state[target.last_attacker - 1].row.type_id;
+    if (credits_kill) {
+        // Goal 5 chain 664. ECX at 00959512 is [[00E188A8]+21A0h], the scoring
+        // manager: here the mission result the frame host lent the Lua host
+        // (attach_mission_result, for the whole mission; the units, and this host
+        // with them, die first).
+        GameMissionResultHost* const scoring = lua.mission_result();
+        if (scoring == nullptr) {
+            throw std::logic_error("kill credit 0091BDA0 without the scoring manager [game+21A0h]");
+        }
+        KillBinding binding(*this, *scoring, victim);
+        bsp::UnitKillInputs in;
+        in.victim_name = target.row.name;
+        in.victim_type_id = target.row.type_id;
+        in.victim_owning_slot = target.row.side;
+        in.victim_is_root = true;
+        in.has_attacker = target.last_attacker != 0;
+        in.attacker_is_ship_base = true;
+        in.ordnance_kind = target.attribution.ordnance_kind;
+        in.sole_attacker = target.attribution.sole_attacker;
+        if (target.last_attacker != 0) {
+            in.attacker_type_id = unit_state[target.last_attacker - 1].row.type_id;
+        }
+        in.attribution.attacker_side = target.attribution.attacker_side;
+        // Goal 5 chain 664. +2D8h as 0077CE60 writes it: attacker+180h is 9 for
+        // every unit whose scene authors no OwnerPlayer, so 0077CFC2 takes the
+        // shot's team stamp [src+1Ch] = gun+1ACh (0 on a gun the player's seat
+        // holds, 8 on an AI gun; docs/CC13_AUDIT_LUA51_FLIPS.md item 1a), not
+        // attribution.credited_slot (the side stand-in). 0091BF86 records only
+        // slots 0..7, so AI kills leave the player's record alone. It is the
+        // victim's own stamp (own_kill_slot_2d8), not lua_kill_slot: the latter
+        // also takes the squadron copy of a hit on another wing, and this host
+        // fuses the squadron with wing 0. A victim no counted hit reached keeps
+        // -1 and records nothing, as in the image: the unit constructor 0077EED0
+        // stores +2D8h = -1 (0077EFEF OR EAX,-1, EAX unchanged to 0077F012
+        // MOV [ESI+2D8h],EAX; docs/CC13_AUDIT_LUA51_FLIPS.md, the constructor
+        // defaults).
+        in.attribution.credited_slot = target.own_kill_slot_2d8;
+        in.attribution.originating_slot = target.attribution.origin_slot;
+        in.attribution.attacker_class = target.attribution.attacker_class;
+        in.attribution.victim_class = units.unit_class_id(victim);
+        in.attribution.victim_side = target.row.side;
+        bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
+        ++summary.kill_credits;
+        done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
+    } else {
+        ++kill_credits_skipped_70;
     }
-    in.attribution.attacker_side = target.attribution.attacker_side;
-    in.attribution.credited_slot = target.attribution.credited_slot;
-    in.attribution.originating_slot = target.attribution.origin_slot;
-    in.attribution.attacker_class = target.attribution.attacker_class;
-    in.attribution.victim_class = units.unit_class_id(victim);
-    in.attribution.victim_side = target.row.side;
-    bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
-    ++summary.kill_credits;
-    done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
     // vtable[7Ch] of MLandFort / MCommandBuilding (the master hand-off is its arm).
     run_land_fort_on_destroyed(victim);
     if constexpr (kShipDeathMessageBound) {
@@ -20873,6 +20963,7 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
     s.last_attacker = 0;
     s.lua_kill_attacker = 0;
     s.lua_kill_slot = -1;
+    s.own_kill_slot_2d8 = -1;
     s.fire_target = 0;
     s.command_target = 0;
     s.attribution = {};
@@ -22627,11 +22718,13 @@ void GameGunneryHost::report() {
             host.seat_target_messages, host.seat_target_unresolved, host.seat_target_aims,
             host.seat_target_adds_speed, kPlayerGunSeatTargetInterceptBound ? 1 : 0);
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
+            "not_harm_70=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route) "
             "limbo_push=%llu/%llu retarget=%llu ctrl_cleared=%llu/%llu ctrl_kept_plane=%llu "
             "limbo_bound=%d (cc13-limbo, applied/would)",
-            host.death_route_calls, host.death_route_reported, host.death_route_child_triggers,
+            host.death_route_calls, host.death_route_reported, host.kill_credits_skipped_70,
+            host.death_route_child_triggers,
             host.loss_report_calls, host.loss_reports[0], host.loss_reports[1], host.limbo_pages,
             kUnitDeathRouteBound ? 1 : 0, host.limbo_push_applied, host.limbo_push_would,
             host.limbo_retarget_would, host.ctrl_cleared_applied, host.ctrl_clear_would,
