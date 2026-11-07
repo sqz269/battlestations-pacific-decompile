@@ -10,6 +10,7 @@
 #include "bsp/audio_online_startup.hpp"
 #include "bsp/input_action_classifier.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/render_tail.hpp"
 #include "bsp/sound_class_ownership.hpp"
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_manager_levels.hpp"
@@ -335,8 +336,9 @@ inline constexpr const char* kGuiSoundTypeName = "Normal";      // 00CECD20 (009
 
 struct GuiSoundSetState {
     void* samples[5]{};             // +4h..+14h, refcounted
-    std::uint8_t requested[6]{};    // +18h..+1Dh
-    std::int32_t forced_slot{6};    // +20h
+    // +18h..+1Dh request bytes and +20h forced slot (constructor value 6): the
+    // queue 004C1B90 hands to its writers and 00941140 drains.
+    SoundRequestQueue requests{};
     void* sound_class{nullptr};     // +24h, not set by the constructor
 };
 

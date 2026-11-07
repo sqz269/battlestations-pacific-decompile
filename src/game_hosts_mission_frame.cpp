@@ -542,7 +542,6 @@ struct GameMissionFrameHost::Impl {
     bsp::InputTickState input{};
     bsp::GameFrameControlState control{};
     bsp::MenuInterfaceState menus{};
-    bsp::SoundRequestQueue sound_requests{};
     bsp::ParticleClock particle_clock{};
     bsp::MissionCounterState mission_counters{};
     bsp::AudioSettings audio{};
@@ -3281,8 +3280,21 @@ public:
         owner_.record("MissionFrame::pump_peer_queues", 0x00776230u);
     }
     void apply_sound_requests_00941140() override {
-        static_cast<void>(bsp::apply_sound_request_00941140(owner_.sound_requests, false));
-        owner_.done("MissionFrame::apply_sound_requests", 0x00941140u);
+        // 004E548F 004C1B90 then 004E5496 00941140: the GUI sound owner
+        // [00F89B34] OnInitOnce built in the application's sound core (the
+        // core reset_session_sound_004da824 reaches), its own request bytes,
+        // and 00941070 on the slot it picks. The slot-1 test reads the actual
+        // input backend [00F8BBF4], only when slot 1 is the pick.
+        GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+        GameSoundRuntime* const core = dialog != nullptr ? dialog->attached_core() : nullptr;
+        if (core == nullptr) throw std::logic_error("00941140 requires the application's sound core");
+        const bool applied = core->apply_gui_sound_requests_00941140([this] {
+            if (!owner_.input_runtime)
+                throw std::logic_error("00941140's slot-1 test requires the bound input runtime");
+            return owner_.input_runtime->select_sound_device_active_00941140();
+        });
+        if (applied) owner_.done("MissionFrame::apply_sound_requests", 0x00941140u);
+        else owner_.record("MissionFrame::apply_sound_requests (no [00F89B34] owner)", 0x00941140u);
     }
     void update_front_end_screens_004d8620() override {
         owner_.record("MissionFrame::update_front_end_screens", 0x004d8620u);

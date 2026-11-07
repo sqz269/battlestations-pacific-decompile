@@ -6,8 +6,12 @@
 #include "bsp/cc13_census9.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
+#include "bsp/sound_instance.hpp"
+#include "bsp/voice_slot_start.hpp"
+#include "bsp/render_tail.hpp"
 
 #include <atomic>
+#include <cstring>
 #include <exception>
 #include <filesystem>
 #include <mutex>
@@ -45,8 +49,9 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     };
     static_assert(sizeof(GuiSoundOwner) == 0x28);
     static_assert(offsetof(GuiSoundOwner, state) == 4);
-    static_assert(offsetof(cc13_audio::GuiSoundSetState, requested) == 0x14);
-    static_assert(offsetof(cc13_audio::GuiSoundSetState, forced_slot) == 0x1c);
+    static_assert(offsetof(cc13_audio::GuiSoundSetState, requests) == 0x14);
+    static_assert(offsetof(SoundRequestQueue, requested) == 0);
+    static_assert(offsetof(SoundRequestQueue, forced_slot) == 8);
     static_assert(offsetof(cc13_audio::GuiSoundSetState, sound_class) == 0x20);
     std::unique_ptr<GuiSoundOwner> gui_sounds;
     GuiSoundOwner* gui_sound_publication{}; // semantic [00F89B34], host-scoped
@@ -75,6 +80,35 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     std::optional<FmodResult> event_release_result;
     std::mutex file_error_mutex;
     std::exception_ptr file_error;
+
+    // 00A7E490's two dispatches over this runtime's real manager and channel
+    // services. bsp.py show 00A7E490: the sample's options word (00A81860,
+    // sample+8h) 0 calls manager vtable +0Ch, 1 calls +10h. bsp.py ghidra bytes
+    // 00D5B000 / 00D5B448: both manager profiles hold 00A7F640 at +0Ch and
+    // 00A7F710 at +10h, which SoundChannelRuntime's factories run.
+    struct TrackedSoundFactory final : SoundFactoryHost {
+        Impl& runtime;
+        explicit TrackedSoundFactory(Impl& value) : runtime(value) {}
+        static void require_manager_profile(const SoundSystemOwner& owner) {
+            if (owner.native_vtable_00 != 0x00d5b000u && owner.native_vtable_00 != 0x00d5b44cu)
+                throw std::logic_error("Tracked sound creation requires a D5B000/D5B44C manager");
+        }
+        std::int32_t resource_kind_08(void* sample) override {
+            std::int32_t kind;
+            std::memcpy(&kind, sound_sample_options_00a81860(sample), sizeof kind);
+            return kind;
+        }
+        SoundLevelEntry* create_sound_vslot_0c(SoundSystemOwner& owner, void* sample,
+            std::int32_t class_index, std::int32_t type_index, bool flag) override {
+            require_manager_profile(owner);
+            return runtime.channels.create_nonspatial(owner, sample, class_index, type_index, flag);
+        }
+        SoundLevelEntry* create_sound_vslot_10(SoundSystemOwner& owner, void* sample,
+            std::int32_t class_index, std::int32_t type_index, bool flag) override {
+            require_manager_profile(owner);
+            return runtime.channels.create_spatial(owner, sample, class_index, type_index, flag);
+        }
+    };
 
     struct GuiSoundCalls final : cc13_audio::GuiSoundSetHost,
         cc13_census9::Census9Host, GlobalConfigEffects {
@@ -113,10 +147,31 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
             catch (...) { std::terminate(); }
         }
         void stop_slot_08(void*, std::uint32_t) noexcept override { std::terminate(); }
-        void play_tracked_sound(void*, void*, const char*, bool) override {
-            // Init/destruction never call this. Playback still needs the
-            // shared 00941250 request producer (F8BC0C), not a synthetic cue.
-            throw std::logic_error("GUI sound request producer is not bound");
+        void play_tracked_sound(void* sample, void* sound_class, const char* type_name,
+            bool flag) override {
+            // bsp.py show 00941070 --asm: 0094109A..009410A3 assign "Normal",
+            // 009410A8 ECX = [00F8BBD8] (kept in EBX for the create), 009410AE
+            // the slot's sample, 009410C3 00A7B0A0 on that manager, 009410C8
+            // class = owner+24h, then 00A7E490(manager; &result, sample, class,
+            // type, 1) at 009410D5. 009410DA..009410FA release the string,
+            // 009410FF..00941125 then the returned reference (InterlockedDecrement
+            // and vtable[0] at zero, which SoundChannelRuntime's release is).
+            if (!runtime.running || !runtime.current_owner)
+                throw std::logic_error("GUI sound playback requires the running sound owner");
+            if (sample == nullptr)
+                throw std::logic_error("GUI sound slot holds no sample (00941070 reads +8h of it)");
+            SoundSystemOwner& owner = *runtime.current_owner;
+            SoundLevelEntry* sound{};
+            {
+                Name type(runtime.services.strings, type_name);
+                const std::int32_t type_index =
+                    find_sound_type_00a7b0a0(owner.configuration, type.value, runtime.library);
+                TrackedSoundFactory factory(runtime);
+                sound = create_voice_sound_00a7e490(owner, sample,
+                    static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(sound_class)),
+                    type_index, flag, runtime.channels, factory);
+            }
+            if (sound) runtime.channels.release_reference(sound);
         }
         void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t stride,
             std::uint32_t count, std::uint32_t dtor) override {
@@ -430,6 +485,19 @@ GameSoundRuntime::~GameSoundRuntime() {
     try { impl_->shutdown(); } catch (...) { std::terminate(); }
 }
 void GameSoundRuntime::initialize_gui_sound_set() { impl_->initialize_gui_sound_set(); }
+SoundRequestQueue* GameSoundRuntime::gui_sound_requests() noexcept {
+    auto* const owner = impl_->gui_sound_publication;
+    return owner ? &owner->state.requests : nullptr;
+}
+bool GameSoundRuntime::apply_gui_sound_requests_00941140(
+    const std::function<bool()>& select_device_active) {
+    auto* const owner = impl_->gui_sound_publication;   // ECX = [00F89B34] at 004E5496
+    if (!owner) return false;
+    Impl::GuiSoundCalls calls(*impl_);
+    static_cast<void>(apply_sound_request_00941140(owner->state.requests, select_device_active,
+        [&](int slot) { cc13_audio::play_gui_sound_00941070(owner->state, slot, calls); }));
+    return true;
+}
 void GameSoundRuntime::startup(bool disabled) {
     auto& self = *impl_;
     if (self.attempted) throw std::logic_error("Game sound startup is one-shot");

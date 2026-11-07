@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <functional>
 
 // Frame tail of GGame::OnMove (004e4a40): everything between the last simulation
 // call and BSP_Game_Render (004ca440). See docs/GAME_RENDER_TAIL.md for the
@@ -178,9 +179,25 @@ struct SoundRequestDecision {
 // 00941140, __fastcall(this), RET. A forced slot wins outright; otherwise the
 // highest set request wins, and slot 1 falls back to slot 0 unless one of the
 // two leading entries of the lists at 00f8bbf4+70h and +B8h answers true to its
-// virtual +2Ch.
+// virtual +2Ch. `slot_one_condition` is that test; it runs only when slot 1 is
+// the highest set request (00941190 CMP EBP,1), as in the native.
+// `play_00941070` receives the chosen slot (0094114D / 00941236) before the
+// queue is cleared, as in the native.
 SoundRequestDecision apply_sound_request_00941140(SoundRequestQueue& queue,
-    bool slot_one_condition);
+    const std::function<bool()>& slot_one_condition,
+    const std::function<void(int)>& play_00941070);
+
+class DynamicInputButtonQueryHost;
+// 0094119B..0094122F, the slot-1 test of 00941140 over the input backend
+// [00F8BBF4] (`backend`): the leading element of its first device vector
+// (+70h begin, +74h end; 009411A1..009411CF) and then that of its third (+B8h
+// begin, +BCh end; 009411D7..0094120B), the same checked vectors 00A91020
+// walks. A null begin or an empty vector gives no element (009411B5 /
+// 009411F1); the repeated test before 00BF6713 (009411B9 / 009411F5) cannot
+// fail after the first. True when the first element's virtual +2Ch answers
+// true (00941218), else when the second one's does (00941229).
+bool sound_request_select_device_active_00941140(const std::uint8_t* backend,
+    DynamicInputButtonQueryHost& host);
 
 // ---------------------------------------------------------------------------
 // GUI visibility policy (004c6c70)
