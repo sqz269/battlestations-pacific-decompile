@@ -132,6 +132,7 @@
 #include "bsp/landscape_lua_seg55_argon.hpp"
 #include "bsp/game_profile_owner.hpp"           // goal 5 chain 649, the hint tracker
 #include "bsp/gui_screens_3.hpp"                // goal 5 chain 649, HintLuaHost
+#include "bsp/unit_damage_host_unreached.hpp"   // goal 5 chain 649, UnitDamageHost
 
 extern "C" {
 #include "lauxlib.h"
@@ -1453,6 +1454,8 @@ int binding_trampoline(lua_State* state) {
     const bool listener_active_row = kLuaListenersBound && dispatch_row.address == 0x008c6bb0u;
     // Packet cc9_set_invincible_native.
     const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
+    // Goal 5 chain 649.
+    const bool is_invincible_row = dispatch_row.address == 0x00897cb0u;
     // Packet cc9_override_hp.
     const bool override_hp_row = dispatch_row.address == 0x008c1930u;
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
@@ -1658,7 +1661,7 @@ int binding_trampoline(lua_State* state) {
     const bool handled = set_mission_completed_row || play_bink_movie_row
         || checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
-        || set_failure_row || get_failure_row || dead_meat_row
+        || is_invincible_row || set_failure_row || get_failure_row || dead_meat_row
         || unit_selectable_row || entity_speed_row
         || clear_forced_recon_row || crew_level_row
         || support_manager_bann_row || support_manager_permit_row || support_manager_enable_row
@@ -2117,6 +2120,10 @@ int binding_trampoline(lua_State* state) {
     if (set_invincible_row) {
         if (!host->error_replay()) host->run_set_invincible_00897a50(state, argc);
         return 0;
+    }
+    if (is_invincible_row) {
+        if (host->error_replay()) return 0;
+        return host->run_is_invincible_00897cb0(state, argc);
     }
     if (add_listener_row) {
         if (!host->error_replay()) host->run_add_listener_008c6760(state, argc);
@@ -13367,28 +13374,109 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
     return 0;
 }
 
-// Packet cc9_lua_add_damage. 0088E000 AddDamage(entity, amount); returns no value.
-// SUBSTITUTION (labelled): an entity with no units-host slot is not reached.
-int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_count) {
-    ++summary_.add_damage_calls;
-    const float amount = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
-    GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
-    if (units == nullptr || units->gunnery() == nullptr || id <= 0
-        || static_cast<std::size_t>(id) > units->count()) {
-        ++summary_.add_damage_unresolved;
-        log_.notef("  AddDamage 0088e000: entity id %d has no units-host slot (packet "
-            "cc9_lua_add_damage)", id);
-        return 0;
+namespace {
+// Goal 5 chain 649. The UnitDamageHost services that AddDamage 0088E000,
+// SetInvincible 00897A50 and IsInvincible 00897CB0 reach (src/unit_damage.cpp),
+// over the call's Lua stack and the units and gunnery hosts. Every other
+// service is UnitDamageHostUnreached's loud failure. The entity is 00888AA0's
+// answer for argument 0, the table's `ID`: the units-host index plus one.
+// SUBSTITUTION (labelled), as before these rows ran their bodies: an entity
+// with no units-host slot (a script entity, a path, a marker) reaches neither
+// dispatch, and IsInvincible reads its +150h as 0; the image would read and
+// write that entity's own fields.
+class LuaUnitDamageBinding final : public bsp::UnitDamageHostUnreached {
+public:
+    LuaUnitDamageBinding(lua_State* state, GameUnitsHost* units) : state_(state), units_(units) {}
+
+    // The two vtable dispatches, as each handler's host method runs them.
+    std::function<void(std::size_t unit, float amount)> add_damage_1ac;
+    std::function<void(std::size_t unit, float value)> set_invincible_f4;
+    std::function<void(std::uint32_t id)> unresolved;
+
+    std::uint32_t entity_from_lua_table(int argument_index) override {   // 00888AA0
+        if (argument_index != 0) throw std::logic_error("00888AA0 asked for an argument past 0");
+        const int id = air_ops_entity_id(state_);
+        return id > 0 ? static_cast<std::uint32_t>(id) : 0u;
     }
-    const std::size_t index = static_cast<std::size_t>(id - 1);
-    units->gunnery()->apply_script_damage_0095da00(index, amount);   // 0088E15B vtable[1ACh]
-    ++summary_.add_damage_units;
-    const GameUnitRow* row = units->unit_row(index);
-    log_.notef("  AddDamage 0088e000: \"%s\" amount=%.1f (packet cc9_lua_add_damage)",
-        row != nullptr ? row->name.c_str() : "?", static_cast<double>(amount));
-    log_.implemented("MissionLuaNative::AddDamage", "0088e000");
-    return 0;
+    float lua_number_argument(int index) override {                      // 00B66270
+        if (index + 1 > ::lua_gettop(state_)) return 0.0f;   // nil reads as 0
+        return bsp::lua_number_float32_00b66270(::lua_tonumber(state_, index + 1));
+    }
+    bool lua_argument_is_boolean(int index) override {                   // 00B66000
+        return index + 1 <= ::lua_gettop(state_) && ::lua_type(state_, index + 1) == LUA_TBOOLEAN;
+    }
+    bool lua_boolean_argument(int index) override {                      // 00B66250
+        return index + 1 <= ::lua_gettop(state_) && ::lua_toboolean(state_, index + 1) != 0;
+    }
+    void lua_push_boolean(bool value) override {                         // 00B66450
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    // IsInvincible's only read is +150h (00897DC6 MOVSS XMM0,[ESI+150h]); the
+    // snapshot's +36Ch and +370h are not read on these three paths.
+    bsp::UnitHealth read_health(std::uint32_t entity) override {
+        bsp::UnitHealth health{};
+        std::size_t unit = 0;
+        if (resolve(entity, unit)) {
+            health.invincibility = units_->gunnery()->unit_invincibility(unit);
+        } else if (unresolved) {
+            unresolved(entity);
+        }
+        return health;
+    }
+    void dispatch_add_damage(std::uint32_t entity, float amount) override {     // 0088E15B
+        std::size_t unit = 0;
+        if (resolve(entity, unit)) {
+            if (!add_damage_1ac) throw std::logic_error("0088E15B vtable[1ACh] not bound");
+            add_damage_1ac(unit, amount);
+        } else if (unresolved) {
+            unresolved(entity);
+        }
+    }
+    void dispatch_set_invincible(std::uint32_t entity, float value) override {  // 00897C63
+        std::size_t unit = 0;
+        if (resolve(entity, unit)) {
+            if (!set_invincible_f4) throw std::logic_error("00897C63 vtable[F4h] not bound");
+            set_invincible_f4(unit, value);
+        } else if (unresolved) {
+            unresolved(entity);
+        }
+    }
+
+private:
+    bool resolve(std::uint32_t entity, std::size_t& unit) const {
+        if (units_ == nullptr || units_->gunnery() == nullptr || entity == 0u
+            || entity > units_->count()) {
+            return false;
+        }
+        unit = static_cast<std::size_t>(entity - 1u);
+        return true;
+    }
+    lua_State* state_;
+    GameUnitsHost* units_;
+};
+}  // namespace
+
+// Packet cc9_lua_add_damage. 0088E000 AddDamage(entity, amount) through its body
+// lua_add_damage_0088e000 (goal 5 chain 649); returns no value.
+int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.add_damage_calls;
+    LuaUnitDamageBinding binding(state, units_hooks_);
+    binding.add_damage_1ac = [&](std::size_t index, float amount) {
+        units_hooks_->gunnery()->apply_script_damage_0095da00(index, amount);   // vtable[1ACh]
+        ++summary_.add_damage_units;
+        const GameUnitRow* row = units_hooks_->unit_row(index);
+        log_.notef("  AddDamage 0088e000: \"%s\" amount=%.1f (packet cc9_lua_add_damage)",
+            row != nullptr ? row->name.c_str() : "?", static_cast<double>(amount));
+        log_.implemented("MissionLuaNative::AddDamage", "0088e000");
+    };
+    binding.unresolved = [&](std::uint32_t id) {
+        ++summary_.add_damage_unresolved;
+        log_.notef("  AddDamage 0088e000: entity id %u has no units-host slot (packet "
+            "cc9_lua_add_damage)", static_cast<unsigned>(id));
+    };
+    return bsp::lua_add_damage_0088e000(binding);
 }
 
 // Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp). 0088F710
@@ -14412,46 +14500,55 @@ int GameMissionLuaHost::run_set_dead_meat_008ac7b0(lua_State* state, int argumen
     return 0;
 }
 
+// 00897A50 SetInvincible(entity, value) through its body lua_set_invincible_00897a50
+// (goal 5 chain 649): a boolean reads as 1.0 / 0.0, anything else as a fraction
+// of maximum health; returns no value.
 int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
     ++summary_.invincible_calls;
-    float value = 0.0f;
-    if (argument_count >= 2 && ::lua_type(state, 2) == LUA_TBOOLEAN) {
-        value = ::lua_toboolean(state, 2) != 0 ? 1.0f : 0.0f;
-    } else if (argument_count >= 2) {
-        value = static_cast<float>(::lua_tonumber(state, 2));
-    }
-    GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
-    if (units == nullptr || units->gunnery() == nullptr || id <= 0
-        || static_cast<std::size_t>(id) > units->count()) {
-        // SUBSTITUTION (labelled): an entity with no units-host slot is not
-        // reached; the image would store its +150h too.
-        ++summary_.invincible_unresolved;
-        log_.notef("  SetInvincible 00897a50: entity id %d has no units-host slot (packet "
-            "cc9_set_invincible_native)", id);
-        return 0;
-    }
-    const std::size_t index = static_cast<std::size_t>(id - 1);
-    GameGunneryHost& gunnery = *units->gunnery();
-    std::vector<std::size_t> targets{index};
-    // 0042ED80's fan-out: a squadron's fused slot carries its live members.
-    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
-        if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
-        for (std::size_t member : r.member_units) {
-            if (member != bsp::kPlaneSquadronNoUnit && member != index) targets.push_back(member);
+    LuaUnitDamageBinding binding(state, units_hooks_);
+    // 00897C63 vtable[F4h], 0042ED80: +150h, fanned out to the children; a
+    // squadron's fused slot carries its live members.
+    binding.set_invincible_f4 = [&](std::size_t index, float value) {
+        GameGunneryHost& gunnery = *units_hooks_->gunnery();
+        std::vector<std::size_t> targets{index};
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
+            for (std::size_t member : r.member_units) {
+                if (member != bsp::kPlaneSquadronNoUnit && member != index) targets.push_back(member);
+            }
+            break;
         }
-        break;
-    }
-    for (std::size_t unit : targets) {
-        gunnery.set_unit_invincibility(unit, value);
-        ++summary_.invincible_units;
-    }
-    const GameUnitRow* row = units->unit_row(index);
-    log_.notef("  SetInvincible 00897a50: \"%s\" value=%.3f units=%zu (packet "
-        "cc9_set_invincible_native)", row != nullptr ? row->name.c_str() : "?", value,
-        targets.size());
-    log_.implemented("MissionLuaNative::SetInvincible", "00897a50");
-    return 0;
+        for (std::size_t unit : targets) {
+            gunnery.set_unit_invincibility(unit, value);
+            ++summary_.invincible_units;
+        }
+        const GameUnitRow* row = units_hooks_->unit_row(index);
+        log_.notef("  SetInvincible 00897a50: \"%s\" value=%.3f units=%zu (packet "
+            "cc9_set_invincible_native)", row != nullptr ? row->name.c_str() : "?", value,
+            targets.size());
+        log_.implemented("MissionLuaNative::SetInvincible", "00897a50");
+    };
+    binding.unresolved = [&](std::uint32_t id) {
+        ++summary_.invincible_unresolved;
+        log_.notef("  SetInvincible 00897a50: entity id %u has no units-host slot (packet "
+            "cc9_set_invincible_native)", static_cast<unsigned>(id));
+    };
+    return bsp::lua_set_invincible_00897a50(binding);
+}
+
+// 00897CB0 IsInvincible(entity) through its body lua_is_invincible_00897cb0 (goal 5
+// chain 649): one boolean, +150h > 0 (00897DC6 COMISS, 00897DE5 00B66450).
+int GameMissionLuaHost::run_is_invincible_00897cb0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    LuaUnitDamageBinding binding(state, units_hooks_);
+    binding.unresolved = [&](std::uint32_t id) {
+        log_.notef("  IsInvincible 00897cb0: entity id %u has no units-host slot, reads 0",
+            static_cast<unsigned>(id));
+    };
+    const int results = bsp::lua_is_invincible_00897cb0(binding);
+    log_.implemented("MissionLuaNative::IsInvincible", "00897cb0");
+    return results;
 }
 
 // Packet cc9_lua_kill. 008AC5C0 Kill(entity [, hard]); returns no value (the
