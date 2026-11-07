@@ -497,7 +497,7 @@ int lua_squadron_set_base_unsupported(LuaArgs& args, Left55Seg56aHost& host)
 }
 
 // 008A0630 SquadronSetTravelSpeed. The optional boolean defaults to false (008A07BA).
-int lua_squadron_set_travel_speed(LuaArgs& args, ImageAccess& image)
+int lua_squadron_set_travel_speed_008a0630(LuaArgs& args, ImageAccess& image)
 {
     void* squadron = args.entity_at(0);
     const float speed = static_cast<float>(args.get_number(1)); // FSTP float 008A076C

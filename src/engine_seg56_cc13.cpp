@@ -1014,7 +1014,7 @@ float camera_state_degrees(float radians) noexcept
         cc13x87::x87_mul24(cc13x87::x87_div24(wrapped, 3.1415927410125732), 180.0));
 }
 
-int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host)
+int lua_get_camera_state_008bf6a0(CameraStateResults& results, CameraStateHost& host)
 {
     CameraStateResult state;
     state.position = host.game_camera_vector_30(); // LEA EDX,[ESI+30h] into 0088BA30

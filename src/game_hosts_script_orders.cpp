@@ -885,7 +885,7 @@ private:
     Calls calls_;
 };
 
-// Goal 5 chain 663. GetCameraState 008BF6A0 on its body lua_get_camera_state
+// Goal 5 chain 663. GetCameraState 008BF6A0 on its body lua_get_camera_state_008bf6a0
 // (src/engine_seg56_cc13.cpp) over the camera node the caller chose (the world matrix at
 // [game+19FCh]+F0h after 00B6DB70, bsp.py ghidra disasm 008bf6a0: 008BF799 / 008BF7BC):
 // +30h of it is the translation row (008BF7BC LEA EDX,[ESI+30h] into 0088BA30), 0042D2E0
@@ -1258,8 +1258,8 @@ private:
 // Goal 5 chain 663. The field stores of SetSubmarineAirSupply 00893A60 (FSTP float
 // [entity+127Ch], 00893BA1) and SquadronSetTravelSpeed 008A0630 (008A07E2 +388h =
 // float 00CE3800 0.5, 008A07F0 +38Fh the flag, 008A07FA +3A0h the speed, 008A0802
-// +3ACh = 1), from their bodies lua_set_submarine_air_supply (src/options_seg56_cc13.cpp)
-// and lua_squadron_set_travel_speed (src/cc13_left55_seg56a.cpp). ImageAccess is a
+// +3ACh = 1), from their bodies lua_set_submarine_air_supply_00893a60 (src/options_seg56_cc13.cpp)
+// and lua_squadron_set_travel_speed_008a0630 (src/cc13_left55_seg56a.cpp). ImageAccess is a
 // typed view of the units host's slot state, not a second image: +127Ch is the
 // submarine's air (set_submarine_air_00893a60, which stores nothing for a unit with no
 // seeded dive state), and the squadron's four fields are the ones
@@ -6944,12 +6944,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // (00893BA1) with no class, null or range test. No result. LABELLED: a
         // unit with no seeded submarine air state stores nothing; a null entity
         // (the image faults) is dropped before the body.
-        // Goal 5 chain 663: the body lua_set_submarine_air_supply over
+        // Goal 5 chain 663: the body lua_set_submarine_air_supply_00893a60 over
         // UnitFieldStoreBinding.
         if (subject != nullptr && row.unit_index < units_.count()) {
             RepairBindingArgs args(*this);
             UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
-            results = bsp::seg56_options_cc13::lua_set_submarine_air_supply(args, image);
+            results = bsp::seg56_options_cc13::lua_set_submarine_air_supply_00893a60(args, image);
             log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 body -> +127Ch)",
                 row.unit.c_str(), static_cast<double>(argument_number(1)),
                 image.stored() ? 1 : 0);
@@ -6961,12 +6961,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // class or null test before the four stores; a unit with no squadron slot
         // stores nothing here, and a null entity (the image faults) is dropped
         // before the body. No result.
-        // Goal 5 chain 663: the body lua_squadron_set_travel_speed over
+        // Goal 5 chain 663: the body lua_squadron_set_travel_speed_008a0630 over
         // UnitFieldStoreBinding, its four stores committed as one units-host write.
         if (subject != nullptr && row.unit_index < units_.count()) {
             RepairBindingArgs args(*this);
             UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
-            results = bsp::cc13_left55::seg56a::lua_squadron_set_travel_speed(args, image);
+            results = bsp::cc13_left55::seg56a::lua_squadron_set_travel_speed_008a0630(args, image);
             const bool stored = image.commit_squadron_travel_speed();
             log_.notef("  SquadronSetTravelSpeed: %s speed=%.3f force=%d stored=%d "
                 "(008A0630 body -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
@@ -8532,7 +8532,7 @@ void GameScriptOrdersHost::basis_degrees_0042d2e0(const bsp::CameraMatrix& world
 // controlled unit's own world matrix stands in, with Zoom 1.0 (its fov is taken as
 // [00F889B4] itself); with no controlled unit either, the identity at the origin.
 // Goal 5 chain 663: the position, the angles in degrees and the zoom are the body
-// lua_get_camera_state's (CameraStateBinding); this function picks the node.
+// lua_get_camera_state_008bf6a0's (CameraStateBinding); this function picks the node.
 int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
     if (state_ == nullptr) return 0;
     bsp::CameraMatrix world = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -8582,7 +8582,7 @@ int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
                     static_cast<double>(state.zoom));
             }
         });
-    return bsp::cc13_seg56::lua_get_camera_state(camera, camera);
+    return bsp::cc13_seg56::lua_get_camera_state_008bf6a0(camera, camera);
 }
 
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {

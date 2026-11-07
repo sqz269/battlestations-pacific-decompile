@@ -287,7 +287,7 @@ int lua_get_submarine_air_supply_008938e0(LuaArgs& args, LuaResults& results, Im
     return 1;
 }
 
-int lua_set_submarine_air_supply(LuaArgs& args, ImageAccess& image)
+int lua_set_submarine_air_supply_00893a60(LuaArgs& args, ImageAccess& image)
 {
     void* submarine = args.entity_at(0);
     const float value = static_cast<float>(args.get_number(1)); // FSTP float [ESP+10h]
