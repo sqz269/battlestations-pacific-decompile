@@ -9098,9 +9098,14 @@ bool GameUnitsHost::begin_submarine_periscope_failure(std::size_t unit_index, fl
     // The existing model reader applies 009396BA..009399BF's periszkop and
     // kamikaze gates. This is its actual retained shape, not the AI's old
     // assumed-present node. Do not synthesize an absent shape to run a body.
-    if (!hull.ok || !hull.box.periscope_merged) return false;
-    const auto broken = bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009327f0(
-        clock, settings->submarine_periscope_repair_time);
+    // bsp.py show 009373c0 --asm: ECX = the controller, ESI = [controller+1Ch]
+    // the unit; 009373C4 CMP [EDI+394h],0 / JZ is the periscope-shape gate, then
+    // the +122Ch/+125Ch/+1258h/+1254h stores. Its callers are 008132C0 (SetFailure)
+    // and 009377E0 (contact). 009327F0 repeats those stores but nothing in the
+    // image calls it, so the outer body runs here.
+    const auto broken = bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009373c0(
+        hull.ok && hull.box.periscope_merged, clock, settings->submarine_periscope_repair_time);
+    if (!broken.acts) return false;
     slot.sub_periscope_state_122c = broken.state_122c;
     slot.sub_periscope_repair = {broken.deadline_1254, broken.clock_1258, broken.clock_fast_125c};
     slot.sub_periscope_node_1214 = hull.box.periscope_node;
@@ -9108,11 +9113,14 @@ bool GameUnitsHost::begin_submarine_periscope_failure(std::size_t unit_index, fl
     // failure may precede the first AI writer that normally binds this value.
     slot.sub_periscope_move_range = host.lua.read_vehicle_class_number(
         slot.row.type_id, "PeriscopeMoveRange", 10.0f);
-    host.done("SubmarineUnit::common_periscope_break", 0x009327f0u);
-    // This deliberately binds only 009327F0's common stores. The outer
-    // 009373C0 has additional 00B6DA70 and 00C47FC0 calls and stays unbound
-    // until per-instance mast and Dyn shape owners are available.
-    host.record("SubmarineUnit::periscope_mast_shape_break_unbound", 0x009373c0u);
+    host.done("SubmarineUnit::periscope_break_009373c0", 0x009373c0u);
+    // The plan's other two effects need owners this host does not have: the
+    // mast node hide (009373DF 00B6DA70(0.0, 0) on unit+1214h) and the shape's
+    // collision bits (00937430 00C47FC0(2) on controller+394h).
+    if (broken.hide_mast_node_1214)
+        host.record("SubmarineUnit::periscope_mast_hide_00b6da70", 0x009373dfu);
+    if (broken.shape_collision_c47fc0_2)
+        host.record("SubmarineUnit::periscope_shape_collision_00c47fc0", 0x00937430u);
     return true;
 }
 
