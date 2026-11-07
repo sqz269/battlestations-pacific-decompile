@@ -563,10 +563,13 @@ void movie_camera_time_span_00798e70(const MovieTrackKeys& camera_track_498, boo
 // 28h), 0079A0E0 (sunk, 00D04708, 2Ch; depth -10.0 from 00CE6848): fastcall,
 // every word zero but the observer flag; `NoParent` has no constructor here.
 cc13cam::KeyframeEvent keyframe_event_construct(cc13cam::KeyframeEventKind kind);
-// 007995F0 / 00799620 / 00799650 (one body per class): ECX event, stack
-// entity, RET 4. On change: unregister the old entity, store, register the
-// new one; the observer is event+10h.
+// 007995F0 / 00799620 / 00799650 (one body per class, byte-identical): ECX
+// event, stack entity, RET 4. On change: unregister the old entity, store,
+// register the new one; the observer is event+10h. 007A1F94's parse calls
+// the noentity, killed and sunk slot respectively (007A212C, 007A21B2, 007A223C).
 void keyframe_event_set_entity_007995f0(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host);
+void keyframe_event_set_entity_00799620(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host);
+void keyframe_event_set_entity_00799650(cc13cam::KeyframeEvent& e, std::size_t entity, ObserverHost& host);
 // 0079C000: ECX event, stack const NativeString*, RET 4: +4h = the name
 // (0041DD40 resize and _memcpy; self-assignment skipped).
 void keyframe_event_set_function_0079c000(cc13cam::KeyframeEvent& e, const std::string& name);

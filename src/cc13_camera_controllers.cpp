@@ -632,18 +632,34 @@ GameCameraChoice gamecamera_choose_camera_0079cbd0(const GameCameraModifier& m,
 // keyframe events
 
 bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t parent,
-                                   bool camera_or_named, KeyframeEvent& out) {
+                                   bool camera_or_named, KeyframeEvent& out,
+                                   cc13cam2::ObserverHost& observers) {
     if (event.kind != ModifierLuaValue::Kind::Table || !camera_or_named) return false;
     const ModifierLuaValue& type = event.field("type");
     KeyframeEvent e{};
     const std::string& name = type.string;
     // 00799FA0/0079A040/0079A0E0 construct the Lua-selected event; OFF keeps inline defaults/kind.
-    if (name == "noparent") e.kind = KeyframeEventKind::NoParent;
-    else if (name == "noentity") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::NoEntity);
-    else if (name == "killed") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Killed);
-    else if (name == "sunk") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Sunk);
-    else return false;
-    e.entity_24 = parent;                          // 007A207F / 007A2126 / 007A21AC / 007A2236
+    // Each then takes the keyframe's +1Ch parent (bsp.py disasm-raw 007a2126 / 007a21ac /
+    // 007a2236: MOV EAX,[EBP+1Ch]; PUSH EAX; MOV ECX,ESI; CALL the class's set-entity).
+    // `noparent` has no constructor of its own; 007A207F..007A20A9 is the same
+    // unregister/store/register sequence written inline on the base event.
+    if (name == "noparent") {
+        e.kind = KeyframeEventKind::NoParent;
+        // The fresh event's +24h is 0 (007A2082 CMP, 007A208E skips the unregister).
+        e.entity_24 = parent;                                                  // 007A209B
+        if (parent != 0) observers.register_00694a60(parent, &e);              // 007A20A4
+    } else if (name == "noentity") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::NoEntity);
+        cc13cam2::keyframe_event_set_entity_007995f0(e, parent, observers);   // 007A212C
+    } else if (name == "killed") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Killed);
+        cc13cam2::keyframe_event_set_entity_00799620(e, parent, observers);   // 007A21B2
+    } else if (name == "sunk") {
+        e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Sunk);
+        cc13cam2::keyframe_event_set_entity_00799650(e, parent, observers);   // 007A223C
+    } else {
+        return false;
+    }
     // 0079C000 assigns the Lua function name; OFF keeps the direct string assignment.
     cc13cam2::keyframe_event_set_function_0079c000(e, event.field("function").string);
     if (e.kind == KeyframeEventKind::Sunk) e.depth_28 = event.field("depth").number_f32();  // 007A22CB
