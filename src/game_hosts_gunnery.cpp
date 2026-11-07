@@ -17648,6 +17648,23 @@ float GameGunneryHost::failure_descriptor_engine_jam_seconds() const {
     return seconds;
 }
 
+std::vector<bsp::ShipDeviceTerms> GameGunneryHost::ship_device_terms(std::size_t unit_index) const {
+    std::vector<bsp::ShipDeviceTerms> devices;
+    for (const GameGunRow& gun : impl_->guns) {
+        if (gun.unit_index != unit_index) continue;
+        bsp::ShipDeviceTerms d;
+        d.kind_04 = true;                     // 0064FC0A PUSH 4
+        d.kind_0f = false;                    // 0064FC19 PUSH 0Fh
+        d.kind_20 = true;                     // 0064FC28 PUSH 20h, kDeviceKindGun
+        d.config_80 = gun.category;           // 0064FC32 [dev+3F4h]+80h
+        d.byte_378 = true;                    // 0064FC40, 1 from 0087BD19
+        d.full_36c = gun.max_health_36c;      // 0064FC49
+        d.current_370 = gun.health_370;       // 0064FC59
+        devices.push_back(d);
+    }
+    return devices;
+}
+
 bsp::UnitFirepowerReport GameGunneryHost::ship_firepower_report(std::size_t unit_index) {
     if (!impl_->units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase))
         throw std::invalid_argument("GetFirepower requires a represented ship");

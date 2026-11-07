@@ -103,6 +103,7 @@ inline constexpr bool kGunneryPassByte7dBound = true;
 class ReconSensorPassState;
 struct UnitFirepowerReport;
 struct ShipRepairTaskTerms;
+struct ShipDeviceTerms;
 }
 
 namespace bsp::game {
@@ -1171,6 +1172,13 @@ public:
     // host loads once: the +0Ch seconds of the last row named "EngineJam"
     // (0064F8DA..0064F9C3), else 0.
     float failure_descriptor_engine_jam_seconds() const;
+    // The unit+48h device list as the damage panel's worst-device loop
+    // 0064FBEC..0064FD22 reads it: this host's gun rows of the unit in build
+    // order (LABELLED, as repair_guns_0093c860 walks them: each gun row is a
+    // kind-20h child, answers IsKindOf(4) and not IsKindOf(0Fh), and keeps the
+    // +378h byte 0087BD19 sets), with the Function [dev+3F4h]+80h as the row's
+    // category and +36Ch / +370h as its health.
+    std::vector<bsp::ShipDeviceTerms> ship_device_terms(std::size_t unit_index) const;
 
     // 0088DC10's current report, using initial +103Ch..+1048h totals and
     // current category lists, gun+3B8h flags and ship control factors.
