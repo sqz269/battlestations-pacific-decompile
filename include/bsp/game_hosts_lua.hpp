@@ -2180,6 +2180,16 @@ public:
     // Goal 5 chain 649: the IsFormationLeader and IsFormationFollower rows on
     // their segment-56 bodies, which ask the unit for 00778890 / 007788B0.
     int run_formation_role_query(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 653: the keyed Scoring_* rows (Set/Get/Add of the mission,
+    // action, ship, plane and command maps, the two medal setters) and the
+    // Scoring_IsUnlocked / Scoring_GrantUnlock rows, on their bodies over the
+    // mission result's eight [game+21A0h] records and the profile's unlocks.
+    static bool is_scoring_record_binding(std::uint32_t address) noexcept;
+    int run_scoring_record_binding(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 653: Globals.Difficulty.ScoreMultipliers as the global-config
+    // loader 0087D7B0 reads it into GlobalConfig+2Ch, one float per index while
+    // HPMultipliers[index] is not nil (0087DBEB..0087DC3E).
+    bool read_score_multipliers(std::vector<float>& out);
     // Goal 5 chain 649: the Lua InitAll row on its body lua_init_all, whose
     // 00925F20(0) is run_sentity_init_all_00925f20.
     int run_lua_init_all_00898610(lua_State* state);
@@ -2458,6 +2468,11 @@ private:
     // two squadron entries (the orders host hands out a const view only).
     GameUnitsHost* units_hooks_{nullptr};
     GameMissionResultHost* mission_result_{nullptr};  // packet cc13-fix20
+    // Goal 5 chain 653: GlobalConfig+2Ch, read on the first scoring row that
+    // needs it, and the count of [[00E198C4]+B8h]+14h clears the accessors make.
+    std::vector<float> score_multipliers_;
+    bool score_multipliers_read_{false};
+    std::uint64_t score_cache_clears_{0};
     // Packet cc13-smbind. The byte global 00F8AB6A that 00A38DA0 stores (1 banned, 0
     // permitted), and the panel list at ([00E198C4]+BCh)+1F8h that SupportManagerEnable
     // edits, held as entity ids (unit index + 1). Nothing in this process reads either.

@@ -136,6 +136,9 @@
 #include "bsp/unit_damage_host_unreached.hpp"   // goal 5 chain 649, UnitDamageHost
 #include "bsp/seg56_host_unreached.hpp"         // goal 5 chain 649, Seg56Host
 #include "bsp/ship_ai_path_corridor.hpp"        // goal 5 chain 649, 00778890
+#include "bsp/scoring_bindings.hpp"             // goal 5 chain 653, the keyed Scoring_* rows
+#include "bsp/cc13_left55_seg56b_host_unreached.hpp"  // goal 5 chain 653, Left55Seg56bHost
+#include "bsp/profile_unlock.hpp"               // goal 5 chain 653, 007FC4C0
 
 extern "C" {
 #include "lauxlib.h"
@@ -1435,6 +1438,14 @@ int binding_trampoline(lua_State* state) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_get_firepower(state);
+    }
+    // Goal 5 chain 653. Without the frame host's mission result there are no
+    // [game+21A0h] records, and the row keeps the record below.
+    if (GameMissionLuaHost::is_scoring_record_binding(dispatch_row.address)
+        && host->mission_result() != nullptr) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_scoring_record_binding(state, dispatch_row.address);
     }
     if (GameMissionLuaHost::is_hint_binding(dispatch_row.address)) {
         if (host->error_replay()) return 0;
@@ -11325,6 +11336,520 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
     return results;
 }
 
+// Goal 5 chain 653. The keyed Scoring_* rows of table 00E0B7B8 and the two
+// profile-unlock rows, each __fastcall(lua_State*) returning 00B66400's count,
+// on their bodies: src/scoring_bindings.cpp (Set/Get of every map, AddMission,
+// the medal setters), src/cc13_left55_seg56b.cpp (Add of the action, ship,
+// plane and command maps, Scoring_GetRealPlayTime, Scoring_SetRanking and
+// Scoring_IsUnlocked) and src/options_seg56_cc13.cpp
+// (Scoring_GrantUnlock). The records are the mission result's eight
+// [game+21A0h]+4h records (scoring_slot), the ones 004D7970's commit 009205E0
+// merges into the mission progress; the unlock sets are the profile owner's
+// (game+650h, ProfileResetState::unlock_state).
+bool GameMissionLuaHost::is_scoring_record_binding(std::uint32_t address) noexcept {
+    switch (address) {
+    case 0x008b8970u:  // Scoring_GetRealPlayTime
+    case 0x008b8ca0u:  // Scoring_SetRanking
+    case 0x008b9190u:  // Scoring_SetMissionScore
+    case 0x008b93c0u:  // Scoring_GetMissionScore
+    case 0x008b95c0u:  // Scoring_AddMissionScore
+    case 0x008b97f0u:  // Scoring_SetMissionMedal
+    case 0x008b9a30u:  // Scoring_SetActionScore
+    case 0x008b9c90u:  // Scoring_GetActionScore
+    case 0x008b9e90u:  // Scoring_AddActionScore
+    case 0x008ba0f0u:  // Scoring_SetShipScore
+    case 0x008ba350u:  // Scoring_GetShipScore
+    case 0x008ba550u:  // Scoring_AddShipScore
+    case 0x008ba7b0u:  // Scoring_SetPlaneScore
+    case 0x008baa10u:  // Scoring_GetPlaneScore
+    case 0x008bac10u:  // Scoring_AddPlaneScore
+    case 0x008bae70u:  // Scoring_SetCommandScore
+    case 0x008bb0d0u:  // Scoring_GetCommandScore
+    case 0x008bb2d0u:  // Scoring_AddCommandScore
+    case 0x008bb530u:  // Scoring_SetActionMedal
+    case 0x008bbc40u:  // Scoring_IsUnlocked
+    case 0x008cb920u:  // Scoring_GrantUnlock
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool GameMissionLuaHost::read_score_multipliers(std::vector<float>& out) {
+    out.clear();
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        set_phase("global config");
+        bsp::run_script_file(*this, kGlobalConfigScriptPath);
+        lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    }
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "Difficulty");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "HPMultipliers");
+            ::lua_getfield(state_, -2, "ScoreMultipliers");   // 00D0E50C, 0087DA93
+            // 0087DB08..0087DDB3: while HPMultipliers[index] is not nil, the
+            // vector at config+2Ch takes ScoreMultipliers[index]: 0087DBEB
+            // 00B67720, 0087DBFA 00B66270, 0087DBFF FSTP float, then the
+            // push_back on config+2Ch (0087DC08 LEA EBP,[ESI+2Ch]).
+            if (lua_type(state_, -2) == LUA_TTABLE && lua_type(state_, -1) == LUA_TTABLE) {
+                for (int index = 1;; ++index) {
+                    ::lua_rawgeti(state_, -2, index);
+                    const bool present = lua_type(state_, -1) != LUA_TNIL;
+                    ::lua_pop(state_, 1);
+                    if (!present) break;
+                    ::lua_rawgeti(state_, -1, index);
+                    out.push_back(static_cast<float>(::lua_tonumber(state_, -1)));
+                    ::lua_pop(state_, 1);
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    log_.notef("scoring: Globals[\"Difficulty\"][\"ScoreMultipliers\"] read %u value(s) "
+        "from %s (GlobalConfig+2Ch)", static_cast<unsigned>(out.size()),
+        kGlobalConfigScriptPath);
+    return !out.empty();
+}
+
+namespace {
+[[noreturn]] void scoring_row_unreached(const char* what) {
+    throw std::logic_error(std::string("Scoring_* row: unreached ") + what);
+}
+
+// What the scoring rows read from their frame: the count 00B663F0, integers
+// 00B66290 (lua_tonumber at 00B6629B, the float32 spill and reload
+// 00B662A0 FSTP float / 00B662A3 FLD float, then 00BF7420 __ftol truncates
+// the float: bsp::lua_number_integer_00b66290, so 0.7*10 reads 7), booleans
+// 00B66250 (lua_toboolean, no type gate) and strings 00B662B0. Nothing else.
+class ScoringRowArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit ScoringRowArgs(lua_State* state)
+        : state_(state), top_(::lua_gettop(state)),
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+    int count() override { return top_; }
+    int get_integer(int index) override {
+        return bsp::lua_number_integer_00b66290(::lua_tonumber(state_, index + 1),
+                                                sse2_conversion_);
+    }
+    bool get_boolean(int index) override { return ::lua_toboolean(state_, index + 1) != 0; }
+    // A value Lua cannot convert reads as "", as for the other string
+    // arguments this host reads (the HintSystem rows).
+    std::string get_string(int index) override {
+        const int slot = index + 1;
+        if (slot > top_ || !::lua_isstring(state_, slot)) return {};
+        std::size_t length = 0;
+        const char* text = ::lua_tolstring(state_, slot, &length);
+        return text != nullptr ? std::string(text, length) : std::string();
+    }
+    double get_number(int) override { scoring_row_unreached("00B66270"); }
+    bool is_string(int) override { scoring_row_unreached("00B660A0"); }
+    bool is_nil(int) override { scoring_row_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { scoring_row_unreached("008889C0"); }
+    void* entity_at(int) override { scoring_row_unreached("00888AA0"); }
+    bool is_boolean(int) override { scoring_row_unreached("00B66000"); }
+    bool is_number(int) override { scoring_row_unreached("00B66050"); }
+    bool is_integer(int) override { scoring_row_unreached("00B66A60"); }
+    bool is_table(int) override { scoring_row_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { scoring_row_unreached("00888760"); }
+    bool is_vector3_table(int) override { scoring_row_unreached("0088B840"); }
+    void* to_userdata(int) override { scoring_row_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { scoring_row_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        scoring_row_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        scoring_row_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+    int top_;
+    bool sse2_conversion_;   // the CRT conversion mode 00BF7420 takes, as at the other readers
+};
+
+// The three pushes the getters, Scoring_GetRealPlayTime and Scoring_IsUnlocked
+// make: 00B664B0 (an int as a Lua number), 00B66480 (a float as a Lua number,
+// as GameScriptOrdersHost::push_number_float_00b66480 pushes it) and 00B66450.
+class ScoringRowResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit ScoringRowResults(lua_State* state) : state_(state) {}
+    void push_number(int value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_integer_00b664b0(frame.object, value);
+    }
+    void push_boolean(bool value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    void push_float(float value) override {
+        lua_pushnumber(state_, static_cast<lua_Number>(value));
+    }
+    void push_nil() override { scoring_row_unreached("00B66430"); }
+    void push_string(const std::string&) override { scoring_row_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        scoring_row_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
+        scoring_row_unreached("0088BA30");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        scoring_row_unreached("00B67930 vector fields");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The manager methods' view of [game+21A0h], over the mission result.
+//  - game+1FE4h and game+18ECh are the result's local_player_mode() and
+//    game_local_player_slot() (0 in this single-player process), the same
+//    values Scoring_SetMissionCompleted reads;
+//  - game+6ACh is the effective difficulty the mission start stored
+//    (game_effective_difficulty_6ac);
+//  - GlobalConfig+2Ch is Globals.Difficulty.ScoreMultipliers
+//    (read_score_multipliers), bounds-checked as 00910436 does: CMP / JC, else
+//    00BF6713, which does not return, so an out-of-range index throws;
+//  - 005070C0 / 004C8B80 run on the record's own maps, which are the
+//    case-insensitive NativeString maps the progress archive persists. The
+//    record arithmetic manager + slot*284h + offset + 4 is unchecked in the
+//    image; here a slot outside 0..7 or an offset that is not one of the seven
+//    map offsets throws instead of indexing past the records.
+// SUBSTITUTION (labelled): [[00E198C4]+B8h]+14h = 0, the in-game interface
+// cache byte every score accessor clears (009103FE, 0090F14F), is counted, not
+// stored. This host builds no object at the interface's +B8h, so nothing in
+// this process reads the byte.
+class ScoringRecords final : public bsp::ScoringBindingHost {
+public:
+    using Multipliers = std::function<const std::vector<float>&()>;
+    ScoringRecords(bsp::MissionResultHost& result, const Multipliers& multipliers,
+                   std::uint64_t& cache_clears)
+        : result_(result), multipliers_(multipliers), cache_clears_(cache_clears) {}
+    bool is_multiplayer() override { return result_.local_player_mode() != 0u; }
+    int local_player_slot() override { return result_.game_local_player_slot(); }
+    int campaign_difficulty() override { return bsp::game::game_effective_difficulty_6ac(); }
+    float difficulty_score_multiplier(int difficulty_index) override {
+        const std::vector<float>& vector = multipliers_();
+        if (!bsp::scoring_multiplier_index_in_range(difficulty_index, vector.size())) {
+            throw std::logic_error("Scoring_* row: difficulty " + std::to_string(difficulty_index)
+                + " past GlobalConfig+2Ch (00910436 -> 00BF6713)");
+        }
+        return vector[static_cast<std::size_t>(difficulty_index)];
+    }
+    void invalidate_front_end_score_cache() override { ++cache_clears_; }
+    int& score_map_entry(int slot, std::size_t record_offset, const std::string& key) override {
+        return score_map(slot, record_offset)[key];
+    }
+    const int* score_map_find_004c8b80(int slot, std::size_t record_offset,
+                                       const std::string& key) override {
+        const bsp::UnlockCounterMap& map = score_map(slot, record_offset);
+        const auto found = map.find(key);
+        return found != map.end() ? &found->second : nullptr;
+    }
+    // 008B912A, Scoring_GetTotalMissionScore's inline read, is not one of the
+    // rows this adapter runs.
+    int slot_total_score(int) override { scoring_row_unreached("008B912A record+1E0h"); }
+
+private:
+    bsp::UnlockCounterMap& score_map(int slot, std::size_t record_offset) {
+        if (slot < 0 || static_cast<std::size_t>(slot) >= bsp::kMissionScoringSlotCount) {
+            throw std::logic_error("Scoring_* row: slot " + std::to_string(slot)
+                + " outside the eight [game+21A0h] records");
+        }
+        constexpr std::size_t kFirst = bsp::kScoringMapOffsetMission;   // +18h
+        constexpr std::size_t kStride = bsp::kScoringMapOffsetAction - kFirst;   // 0Ch
+        if (record_offset < kFirst || (record_offset - kFirst) % kStride != 0u
+            || (record_offset - kFirst) / kStride >= 7u) {
+            throw std::logic_error("Scoring_* row: record offset is not a keyed map");
+        }
+        bsp::MissionScoreRecord& record = result_.scoring_slot(slot);
+        return record.score_maps[(record_offset - kFirst) / kStride];
+    }
+    bsp::MissionResultHost& result_;
+    const Multipliers& multipliers_;
+    std::uint64_t& cache_clears_;
+};
+
+// The image reads the seg56b / seg56 option bodies make on these rows, as a
+// typed view: the game object (00E188A8) and the scoring manager ([game+21A0h])
+// are tokens, game+18ECh and game+1FE4h the result's slot and mode, the
+// manager's +14A0h the frame host's bot-scheduler accumulator (the field
+// 00914EF0 adds the scaled delta into and 0091C560 zeroes), and the profile
+// (game+650h) and its pending set (game+6CCh, profile+7Ch) addresses inside the
+// game token. Every other read or write throws.
+class ScoringImage final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    explicit ScoringImage(bsp::MissionResultHost& result) : result_(result) {}
+    void* game() noexcept { return game_; }
+    void* scoring() noexcept { return &scoring_; }
+    void* profile() noexcept { return game_ + 0x650u; }
+    void* pending_unlocks() noexcept { return game_ + 0x6CCu; }
+    void* global_ptr(std::uint32_t address) override {
+        if (address == bsp::seg56_options_cc13::kGameGlobal) return game();
+        scoring_row_unreached("global pointer");
+    }
+    std::int32_t read_i32(void* base, std::uint32_t offset) override {
+        if (base == game() && offset == bsp::cc13_left55::seg56b::kLocalSlotOffset) {
+            return result_.game_local_player_slot();
+        }
+        if (base == game() && offset == bsp::seg56_options_cc13::kSessionModeOffset) {
+            return static_cast<std::int32_t>(result_.local_player_mode());
+        }
+        scoring_row_unreached("dword read");
+    }
+    void* read_ptr(void* base, std::uint32_t offset) override {
+        if (base == game() && offset == bsp::cc13_left55::seg56b::kScoringManagerOffset) {
+            return scoring();
+        }
+        scoring_row_unreached("pointer read");
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { scoring_row_unreached("byte read"); }
+    float read_f32(void* base, std::uint32_t offset) override {
+        float seconds = 0.0f;
+        if (base == scoring() && offset == 0x14A0u
+            && game_scoring_real_play_time_14a0(seconds)) {
+            return seconds;
+        }
+        scoring_row_unreached("float read");
+    }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override {
+        scoring_row_unreached("byte write");
+    }
+    void write_i32(void*, std::uint32_t, std::int32_t) override {
+        scoring_row_unreached("dword write");
+    }
+    void write_f32(void*, std::uint32_t, float) override { scoring_row_unreached("float write"); }
+    std::uint16_t global_u16(std::uint32_t) override { scoring_row_unreached("global word"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        scoring_row_unreached("global byte write");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        scoring_row_unreached("global float write");
+    }
+    std::int32_t global_i32(std::uint32_t) override { scoring_row_unreached("global dword"); }
+
+private:
+    bsp::MissionResultHost& result_;
+    alignas(4) std::uint8_t game_[0x21A4]{};   // the game object's extent through +21A0h
+    std::uint32_t scoring_{0};
+};
+
+// The seg56b services the four Add rows, Scoring_SetRanking and
+// Scoring_IsUnlocked reach: the manager's adders 0090F140 / 0090F1A0 /
+// 0090F200 / 0090F260 (scoring_add_slot_keyed_score over the same records),
+// the ranking store 00905350 and 007FC4C0 on the profile's unlock state.
+class ScoringSeg56bHost final : public bsp::cc13_left55::seg56b::Left55Seg56bHostUnreached {
+public:
+    ScoringSeg56bHost(ScoringImage& image, ScoringRecords& records,
+                      bsp::MissionResultHost& result, const bsp::ProfileUnlockState* unlocks)
+        : image_(image), records_(records), result_(result), unlocks_(unlocks) {}
+    // 00905350 is one store, MOV [slot*284h + manager + 8], ranking (0090535E),
+    // which is record+4h, the field the record projection persists as
+    // ranking_04. Its body in src/cc13_seg59a.cpp addresses the raw manager, so
+    // the store lands on the projection's field; the slot is range-checked
+    // where the image indexes past the eight records unchecked.
+    void scoring_set_slot_ranking_00905350(void* scoring, int slot, int ranking) override {
+        if (scoring != image_.scoring()) scoring_row_unreached("00905350 off [game+21A0h]");
+        if (slot < 0 || static_cast<std::size_t>(slot) >= bsp::kMissionScoringSlotCount) {
+            scoring_row_unreached("00905350 slot outside the eight records");
+        }
+        result_.scoring_slot(slot).ranking_04 = ranking;
+    }
+    void scoring_add_action_score_0090f140(void* scoring, int slot, const std::string& key,
+                                           int value) override {
+        add(scoring, bsp::MissionScoreMap::Action, slot, key, value);
+    }
+    void scoring_add_ship_score_0090f1a0(void* scoring, int slot, const std::string& key,
+                                         int value) override {
+        add(scoring, bsp::MissionScoreMap::Ship, slot, key, value);
+    }
+    void scoring_add_plane_score_0090f200(void* scoring, int slot, const std::string& key,
+                                          int value) override {
+        add(scoring, bsp::MissionScoreMap::Plane, slot, key, value);
+    }
+    void scoring_add_command_score_0090f260(void* scoring, int slot, const std::string& key,
+                                            int value) override {
+        add(scoring, bsp::MissionScoreMap::Command, slot, key, value);
+    }
+    bool profile_is_unlock_satisfied_007fc4c0(void* profile,
+                                              const std::string& expression) override {
+        if (profile != image_.profile()) scoring_row_unreached("007FC4C0 off game+650h");
+        if (unlocks_ == nullptr) scoring_row_unreached("007FC4C0 without the profile owner");
+        return bsp::is_unlock_expression_satisfied_007fc4c0(*unlocks_, expression);
+    }
+
+private:
+    void add(void* scoring, bsp::MissionScoreMap map, int slot, const std::string& key,
+             int value) {
+        if (scoring != image_.scoring()) scoring_row_unreached("adder off [game+21A0h]");
+        bsp::scoring_add_slot_keyed_score(records_, map, slot, key, value);
+    }
+    ScoringImage& image_;
+    ScoringRecords& records_;
+    bsp::MissionResultHost& result_;
+    const bsp::ProfileUnlockState* unlocks_;
+};
+
+// The one Seg56Host service Scoring_GrantUnlock reaches: 004D0640, the
+// NativeString set insert, on game+6CCh = the profile's pending_unlocks
+// (profile+7Ch, the set the debriefing 0062C2C0 lists).
+class ScoringGrantUnlockHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    ScoringGrantUnlockHost(ScoringImage& image, bsp::ProfileUnlockState* unlocks)
+        : image_(image), unlocks_(unlocks) {}
+    void string_set_insert_004d0640(void* set, const std::string& key) override {
+        if (set != image_.pending_unlocks()) scoring_row_unreached("004D0640 off game+6CCh");
+        if (unlocks_ == nullptr) scoring_row_unreached("004D0640 without the profile owner");
+        unlocks_->pending_unlocks.insert(key);
+    }
+
+private:
+    ScoringImage& image_;
+    bsp::ProfileUnlockState* unlocks_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32_t address) {
+    if (mission_result_ == nullptr) {
+        return ::luaL_error(state, "Scoring_* row without the mission result ([game+21A0h])");
+    }
+    bsp::MissionResultHost& result = *mission_result_;
+    // GlobalConfig+2Ch, read the first time an accessor asks for it (only the
+    // two mission-score accessors 009103F0 / 00910480 do).
+    const ScoringRecords::Multipliers multipliers = [this]() -> const std::vector<float>& {
+        if (!score_multipliers_read_) {
+            score_multipliers_read_ = true;
+            read_score_multipliers(score_multipliers_);
+        }
+        return score_multipliers_;
+    };
+    GameProfileOwner* const owner = mission_result_->profile_owner();
+    bsp::ProfileUnlockState* const unlocks
+        = owner != nullptr ? &owner->profile().unlock_state : nullptr;
+    ScoringRowArgs args(state);
+    ScoringRowResults results(state);
+    ScoringRecords records(result, multipliers, score_cache_clears_);
+    ScoringImage image(result);
+    using bsp::MissionScoreMap;
+    namespace seg56b = bsp::cc13_left55::seg56b;
+    int count = 0;
+    const char* name = "?";
+    switch (address) {
+    case 0x008b8970u:
+        name = "Scoring_GetRealPlayTime";
+        count = seg56b::lua_scoring_get_real_play_time(results, image);
+        break;
+    case 0x008b9190u:
+        name = "Scoring_SetMissionScore";
+        count = bsp::lua_binding_scoring_set_mission_score_008b9190(args, records);
+        break;
+    case 0x008b93c0u:
+        name = "Scoring_GetMissionScore";
+        count = bsp::lua_binding_scoring_get_mission_score_008b93c0(args, results, records);
+        break;
+    case 0x008b95c0u:
+        name = "Scoring_AddMissionScore";
+        count = bsp::lua_binding_scoring_add_mission_score_008b95c0(args, records);
+        break;
+    case 0x008b97f0u:
+        name = "Scoring_SetMissionMedal";
+        count = bsp::lua_binding_scoring_set_medal_008b97f0(args, records,
+            MissionScoreMap::MissionMedals);
+        break;
+    case 0x008bb530u:
+        name = "Scoring_SetActionMedal";
+        count = bsp::lua_binding_scoring_set_medal_008b97f0(args, records,
+            MissionScoreMap::ActionMedals);
+        break;
+    case 0x008b9a30u:
+        name = "Scoring_SetActionScore";
+        count = bsp::lua_binding_scoring_set_keyed_score_variant_b(args, records,
+            MissionScoreMap::Action);
+        break;
+    case 0x008ba0f0u:
+        name = "Scoring_SetShipScore";
+        count = bsp::lua_binding_scoring_set_keyed_score_variant_b(args, records,
+            MissionScoreMap::Ship);
+        break;
+    case 0x008ba7b0u:
+        name = "Scoring_SetPlaneScore";
+        count = bsp::lua_binding_scoring_set_keyed_score_variant_b(args, records,
+            MissionScoreMap::Plane);
+        break;
+    case 0x008bae70u:
+        name = "Scoring_SetCommandScore";
+        count = bsp::lua_binding_scoring_set_keyed_score_variant_b(args, records,
+            MissionScoreMap::Command);
+        break;
+    case 0x008b9c90u:
+        name = "Scoring_GetActionScore";
+        count = bsp::lua_binding_scoring_get_keyed_score_variant_a(args, results, records,
+            MissionScoreMap::Action);
+        break;
+    case 0x008ba350u:
+        name = "Scoring_GetShipScore";
+        count = bsp::lua_binding_scoring_get_keyed_score_variant_a(args, results, records,
+            MissionScoreMap::Ship);
+        break;
+    case 0x008baa10u:
+        name = "Scoring_GetPlaneScore";
+        count = bsp::lua_binding_scoring_get_keyed_score_variant_a(args, results, records,
+            MissionScoreMap::Plane);
+        break;
+    case 0x008bb0d0u:
+        name = "Scoring_GetCommandScore";
+        count = bsp::lua_binding_scoring_get_keyed_score_variant_a(args, results, records,
+            MissionScoreMap::Command);
+        break;
+    case 0x008b9e90u:
+    case 0x008ba550u:
+    case 0x008bac10u:
+    case 0x008bb2d0u:
+    case 0x008bbc40u:
+    case 0x008b8ca0u: {
+        ScoringSeg56bHost host(image, records, result, unlocks);
+        if (address == 0x008b8ca0u) {
+            name = "Scoring_SetRanking";
+            count = seg56b::lua_scoring_set_ranking(args, image, host);
+        } else if (address == 0x008b9e90u) {
+            name = "Scoring_AddActionScore";
+            count = seg56b::lua_scoring_add_action_score(args, image, host);
+        } else if (address == 0x008ba550u) {
+            name = "Scoring_AddShipScore";
+            count = seg56b::lua_scoring_add_ship_score(args, image, host);
+        } else if (address == 0x008bac10u) {
+            name = "Scoring_AddPlaneScore";
+            count = seg56b::lua_scoring_add_plane_score(args, image, host);
+        } else if (address == 0x008bb2d0u) {
+            name = "Scoring_AddCommandScore";
+            count = seg56b::lua_scoring_add_command_score(args, image, host);
+        } else {
+            name = "Scoring_IsUnlocked";
+            count = seg56b::lua_scoring_is_unlocked(args, results, image, host);
+        }
+        break;
+    }
+    case 0x008cb920u: {
+        name = "Scoring_GrantUnlock";
+        ScoringGrantUnlockHost host(image, unlocks);
+        count = bsp::seg56_options_cc13::lua_scoring_grant_unlock(args, image, host);
+        break;
+    }
+    default:
+        scoring_row_unreached("a row outside is_scoring_record_binding");
+    }
+    char method[64];
+    std::snprintf(method, sizeof(method), "MissionLuaNative::%s", name);
+    char site[16];
+    std::snprintf(site, sizeof(site), "%08lx", static_cast<unsigned long>(address));
+    log_.implemented(method, site);
+    return count;
+}
+
 // Goal 5 chain 649. The eight HintSystem rows of table 00E0B7B8, rows 7..14
 // (00E0B7F0..00E0B830), each __fastcall(lua_State*) returning 00B66400's
 // count; the bodies are src/gui_screens_3.cpp's.
@@ -16967,6 +17492,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "checks=%llu casts=%llu fires=%llu (008C9460 / 00750230, goal 5 chain 639)",
         summary_.los_trigger_adds, summary_.los_trigger_unresolved,
         summary_.los_trigger_checks, summary_.los_trigger_casts, summary_.los_trigger_fires);
+    log_.notef("summary mission script scoring rows interface_cache_clears=%llu "
+        "score_multipliers=%u ([[00E198C4]+B8h]+14h counted, GlobalConfig+2Ch; goal 5 chain 653)",
+        static_cast<unsigned long long>(score_cache_clears_),
+        static_cast<unsigned>(score_multipliers_.size()));
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);
