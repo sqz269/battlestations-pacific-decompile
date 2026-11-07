@@ -86,5 +86,11 @@
       "reason": "Debug-only: the group score list's only reader is the text overlay 00A2CDD0 <- 00A2D580 <- 00A31000, which nothing reaches (also 00A2BCC0)."
     }
   ],
-  "left": "007C18B0's other native callers keep host substitutes: the squadron placement 007F2920 and launch spot 007C5F60 run 007C18B0(0) natively but sit in GameUnitsHost::Impl, outside PlaneBinding where the binding lives; moving PoseDerivedStateBinding to namespace scope would let them call it. plane_attitude_angles_007c1900 (src/plane_attitude_angles.cpp, the 007C1900 fragment inside 007C18B0) is no longer called and can be retired by whoever owns that file. include/bsp/units_host_deviations_cc13.hpp still names refresh_attitude_007c1900 in a comment. The recon carry-over/publish bodies need a native detection record per unit before they can replace GameReconRelationLists."
+  "left": "007C18B0's other native callers keep host substitutes: the squadron placement 007F2920 and launch spot 007C5F60 run 007C18B0(0) natively but sit in GameUnitsHost::Impl, outside PlaneBinding where the binding lives; moving PoseDerivedStateBinding to namespace scope would let them call it. The recon carry-over/publish bodies need a native detection record per unit before they can replace GameReconRelationLists.",
+  "review_round_1": [
+    "fixed: deleted the uncalled 007C1900 fragment copy plane_attitude_angles_007c1900 and its constants kCrossLengthSquaredFloor / kCrossLengthFloor / kFloatHalfPi (src/plane_attitude_angles.cpp; the now-unused unit_rudder.hpp include went with it); plane_bearing_to_target_009ac190 and its kBearing* constants stay",
+    "fixed: deleted struct PlaneAttitudeAngles and the plane_attitude_angles_007c1900 declaration (include/bsp/plane_attitude_angles.hpp); the header keeps the 009AC190 declaration and points at 007C18B0 for the angles",
+    "fixed: include/bsp/units_host_deviations_cc13.hpp names 007C18B0 itself (update_pose_derived_state_007c18b0) as the C7Ch writer",
+    "fixed: docs/DIVE_BOMB_TASK.md points at plane_update_pose_derived_state_007c18b0 (src/cc13_seg47b.cpp) at 3419, and the same stale refresh_attitude_007c1900 name at 2403; build.ps1 4/4 tests pass, call_graph.py still shows both bodies REACHABLE"
+  ]
 }
