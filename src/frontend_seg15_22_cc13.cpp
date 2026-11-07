@@ -4,6 +4,7 @@
 // ECX, a stack argument, x87 or a store order mattered.
 
 #include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/segs_13_15_22_44_cc13.hpp"
 
 #include <cstdarg>
@@ -3620,9 +3621,13 @@ void hud_counters_relayout_00529a30(Raw s, HudCountersLayoutHost& host) {
         pos[0] = x;
         host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
         const float* const size = host.widget_size_00aa6740(entry(i).ptr(0x2C));
-        x = static_cast<float>((size[0] + kCounterRowGap) + x);
+        // 00529BD4..00529BE2: FLD float size, FADD double 00CED060, FADD float x,
+        // FSTP float (bytes dc 05 / d8 44 24 10); each FADD rounds at PC24 on the
+        // main thread (goal 5 chain 662 review).
+        x = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(size[0], kCounterRowGap), x));
         if (parked) {
-            pos[0] = static_cast<float>(pos[0] - kCounterWrapAdd);
+            // 00529BE8..00529BFA: FLD float, FSUB double 00CE47A0 (dc 25), FSTP float.
+            pos[0] = static_cast<float>(cc13x87::x87_sub24(pos[0], kCounterWrapAdd));
             host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
         }
     }

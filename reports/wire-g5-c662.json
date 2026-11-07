@@ -5,6 +5,9 @@
   "picked": "HUD counters screen 51h: the mission countdown display (register, entries, show/cancel, layout, relayout/occlusion, per-frame tick) and the minimap countdown panel",
   "wired_before": 10319,
   "wired_after": 10338,
+  "review_round_1": [
+    {"finding": "src/frontend_seg15_22_cc13.cpp 00529A30 x advance rounded once in double", "outcome": "fixed: x87_add24(x87_add24(size[0], kCounterRowGap), x), and the wrap as x87_sub24(pos[0], kCounterWrapAdd); bytes dc 05 / d8 44 24 10 / d9 5c and dc 25 confirmed. pc24_lint still reports 0 findings for the old form, so the lint misses this pattern."}
+  ],
   "rows": [
     {"native": "0052cbf0", "status": "wired", "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_register (HudLeafCountersRegisterBinding), from 0068CC70's register_screen"},
     {"native": "0052c1b0", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudLeafCountersRegisterBinding::counter_entry_construct_0052c1b0 (body fixed: last +34h takes PUSH EBX = 0 at 0052C60E)"},
@@ -12,7 +15,7 @@
     {"native": "0052b9b0", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::show_mission_countdown, from src/game_hosts_script_orders.cpp Lua Countdown (008B18B8)"},
     {"native": "0052ab90", "status": "wired", "host_site": "src/game_hosts_hud.cpp GameHudHost::cancel_mission_countdown (twice), from src/game_hosts_script_orders.cpp Lua CountdownCancel (008B1A92, 008B1AA2)"},
     {"native": "0052a860", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCountersShowBinding::counter_layout_countdown_0052a860 (Text +100h/+114h through the host; PC24 per-op)"},
-    {"native": "00529a30", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCountersShowBinding::counters_relayout_00529a30"},
+    {"native": "00529a30", "status": "wired", "host_site": "src/game_hosts_hud.cpp HudCountersShowBinding::counters_relayout_00529a30 (review round 1: x advance and wrap now round per x87 op at PC24, 00529BD4..00529BFA)"},
     {"native": "00529810", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_relayout_00529a30 and src/game_hosts_hud.cpp HudCountersUpdateBinding::finish_00529810"},
     {"native": "00528f70", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_update_occlusion_00529810 (inlined there)"},
     {"native": "00529200", "status": "wired", "host_site": "src/frontend_seg15_22_cc13.cpp hud_counters_update_occlusion_00529810 (inlined there)"},
