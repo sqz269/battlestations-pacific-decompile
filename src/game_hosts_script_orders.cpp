@@ -1969,6 +1969,172 @@ private:
     Calls calls_;
     bsp::NativeHandle director_{0};
 };
+
+// GetDirection 008A7CB0 (lua_get_direction): 008A7DD4 CMP byte [ESI+0C8h],0 / JNE past
+// 008A7DE7 00414DB0, then 008A7DF9 0088BA30 with EDX = ESI+0CCh+20h, the world matrix's
+// forward row +ECh..+F4h. SUBSTITUTION, labelled (packet cc13-fix14b): the row is
+// GameUnitsHost::unit_pose's forward row for the entity's slot; the refresh is the host's
+// 00414DB0 behind its +C8h test (the host's poses are never stale, so it is not reached).
+class DirectionQueryBinding final : public bsp::cc13_seg56::QueryHost {
+public:
+    DirectionQueryBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        std::function<void(void*)> refresh_if_stale)
+        : units_(units), index_of_(std::move(index_of)),
+          refresh_if_stale_(std::move(refresh_if_stale)) {}
+
+    bsp::cc13_seg56::Vec3 entity_world_row_ec(void* entity) override {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("+ECh on an entity without a slot");
+        refresh_if_stale_(entity);                                       // 008A7DD4..008A7DE7
+        float right[3], up[3], forward[3], position[3];
+        if (!units_.unit_pose(index, right, up, forward, position)) {
+            unit_query_unreached("+ECh on an entity without a units-host pose");
+        }
+        return {forward[0], forward[1], forward[2]};                     // 008A7DF9
+    }
+    bool world_ground_height_at(const bsp::cc13_seg56::Vec3&, float&) override {
+        unit_query_unreached("00903860");
+    }
+    bool spatial_query_segment(const bsp::cc13_seg56::Vec3&, const bsp::cc13_seg56::Vec3&,
+        bool&, float&) override {
+        unit_query_unreached("0098ADD0");
+    }
+    float entity_vcall_38_speed(void*) override { unit_query_unreached("vtable[38h]"); }
+    bsp::cc13_seg56::Vec3 entity_local_to_world(void*, const bsp::cc13_seg56::Vec3&) override {
+        unit_query_unreached("004142E0");
+    }
+    void entity_bounding_box(void*, bsp::cc13_seg56::Vec3&, bsp::cc13_seg56::Vec3&) override {
+        unit_query_unreached("+360h box");
+    }
+
+private:
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    std::function<void(void*)> refresh_if_stale_;
+};
+
+// GetDirection's one push, 0088BA30's {x, y, z} table on the dispatch's frame.
+class DirectionResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit DirectionResults(std::function<void(const bsp::cc13_seg56::Vec3&)> push)
+        : push_(std::move(push)) {}
+    void push_vector3(const bsp::cc13_seg56::Vec3& value) override { push_(value); }
+    void push_number(int) override { unit_query_unreached("00B664B0"); }
+    void push_float(float) override { unit_query_unreached("00B66480"); }
+    void push_boolean(bool) override { unit_query_unreached("00B66450"); }
+    void push_nil() override { unit_query_unreached("00B66430"); }
+    void push_string(const std::string&) override { unit_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unit_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unit_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    std::function<void(const bsp::cc13_seg56::Vec3&)> push_;
+};
+
+// GetCommandBuildingLevel 0089B6D0 (lua_get_command_building_level): 0089B7E6 MOV
+// ESI,[ESI+770h], 0089B7F1 00B664B0. SUBSTITUTION, labelled (packet cc13-fix13): +770h is
+// the ship-AI host's capture record (as 006F2780 and 006F38E0 keep it); before the
+// records exist, the units host's scene Level (the constructor's value, 0 for a unit that
+// is not a CommandBuilding).
+class CommandBuildingLevelView final : public bsp::seg56_options_cc13::ImageAccess,
+                                       public bsp::cc13_seg56::LuaResults {
+public:
+    CommandBuildingLevelView(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        std::function<void(int)> push_integer)
+        : units_(units), index_of_(std::move(index_of)), push_integer_(std::move(push_integer)) {}
+
+    std::int32_t read_i32(void* entity, std::uint32_t offset) override {
+        if (offset != 0x770u) unit_query_unreached("a dword other than +770h");
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("+770h on an entity without a slot");
+        std::int32_t level = 0;
+        GameShipAiHost* ai = units_.ship_ai();
+        if (ai == nullptr || !ai->command_building_level_0770(index, level)) {
+            level = units_.command_building_level_0770(index);
+        }
+        return level;
+    }
+    void push_number(int value) override { push_integer_(value); }   // 00B664B0
+
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+    void push_float(float) override { unit_query_unreached("00B66480"); }
+    void push_boolean(bool) override { unit_query_unreached("00B66450"); }
+    void push_nil() override { unit_query_unreached("00B66430"); }
+    void push_string(const std::string&) override { unit_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unit_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unit_query_unreached("0088BA30"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unit_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    std::function<void(int)> push_integer_;
+};
+
+// SetCommandBuildingOwnerPlayer 008A8D90 (lua_set_command_building_owner_player):
+// 008A8EE1 vtable[5Ch](1Ch), then message D3h routed by 008A8F2A 0077C2A0(&message, 7, 0)
+// with ECX the entity. SUBSTITUTIONS, labelled (packet cc13-fix13): the CommandBuilding
+// test is the ship-AI host's capture-record lookup, and the message is applied at the call
+// through the ship-AI host's D3h (command_building_set_owner_player_006f4d10).
+class CommandBuildingOwnerBinding final
+    : public bsp::cc13_left55::seg56b::Left55Seg56bHostUnreached {
+public:
+    CommandBuildingOwnerBinding(GameShipAiHost& ai, std::size_t units,
+        std::function<std::size_t(void*)> index_of)
+        : ai_(ai), units_(units), index_of_(std::move(index_of)) {}
+
+    bool entity_vcall_5c(void* entity, int class_id) override {
+        if (class_id != 0x1C) unit_query_unreached("vtable[5Ch] with a class other than 1Ch");
+        std::int32_t level = 0;
+        return ai_.command_building_level_0770(slot_of(entity), level);
+    }
+    void route_message_0077c2a0(void* target,
+        const bsp::cc13_left55::seg56b::CommandBuildingOwnerMessage& message, int flags,
+        int out) override {
+        if (flags != bsp::cc13_left55::seg56b::kRouteFlags || out != 0) {
+            unit_query_unreached("a D3h route other than (7, 0)");
+        }
+        if (ai_.command_building_set_owner_player_006f4d10(slot_of(target), message.player)) {
+            ++applied_;
+        }
+    }
+    unsigned applied() const noexcept { return applied_; }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    GameShipAiHost& ai_;
+    std::size_t units_;
+    std::function<std::size_t(void*)> index_of_;
+    unsigned applied_{0};
+};
 }  // namespace
 
 // ArtilleryEnable 0089C590 / TorpedoEnable 0089C8F0 over UnitWeaponBinding. vtable[114h]
@@ -6811,17 +6977,24 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // not a CommandBuilding). An entity with no units-host slot answers 0, where
         // the image would read +770h of a null or foreign object.
         ++command_building_level_calls_;
-        void* entity = entity_from_argument(0);
+        void* entity = entity_at(0);   // the body's own 00888AA0 read
         const std::size_t index = index_of(entity);
-        std::int32_t level = 0;
-        GameShipAiHost* ai = units_.ship_ai();
         if (entity == nullptr || index >= units_.count()) {
             ++command_building_level_unresolved_;
-        } else if (ai == nullptr || !ai->command_building_level_0770(index, level)) {
-            level = units_.command_building_level_0770(index);
+            if (state_ != nullptr) lua_pushinteger(state_, 0);
+            results = state_ != nullptr ? 1 : 0;
+        } else {
+            // Goal 5 chain 660: the body lua_get_command_building_level
+            // (src/options_seg56_cc13.cpp) over CommandBuildingLevelView.
+            RepairBindingArgs args(*this);
+            CommandBuildingLevelView view(units_, [this](void* e) { return index_of(e); },
+                [this](int value) {
+                    if (state_ != nullptr) lua_pushinteger(state_, static_cast<lua_Integer>(value));
+                });
+            const int count = bsp::seg56_options_cc13::lua_get_command_building_level(args,
+                view, view);
+            results = state_ != nullptr ? count : 0;
         }
-        if (state_ != nullptr) lua_pushinteger(state_, static_cast<lua_Integer>(level));
-        results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "SetCommandBuildingOwnerPlayer") == 0) {
         // Packet cc13-fix13. 008A8D90 (__fastcall, ECX the Lua state, RET): 00888AA0 on
         // argument 0, 008A8EC1 00B66290 argument 1 as an integer, 008A8EE1
@@ -6833,15 +7006,20 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // CommandBuilding test is the host's capture-record lookup; an entity with
         // no units-host slot does nothing, where the image's vtable call would fault.
         ++command_building_owner_calls_;
-        void* entity = entity_from_argument(0);
+        void* entity = entity_at(0);   // the body's own 00888AA0 read
         const std::size_t index = index_of(entity);
-        const int player = get_integer(1);
         GameShipAiHost* ai = units_.ship_ai();
-        if (entity != nullptr && index < units_.count() && ai != nullptr &&
-            ai->command_building_set_owner_player_006f4d10(index, player)) {
-            ++command_building_owner_applied_;
-        }
         results = 0;
+        if (entity != nullptr && index < units_.count() && ai != nullptr) {
+            // Goal 5 chain 660: the body lua_set_command_building_owner_player
+            // (src/cc13_left55_seg56b.cpp) over CommandBuildingOwnerBinding.
+            RepairBindingArgs args(*this);
+            CommandBuildingOwnerBinding owner(*ai, units_.count(),
+                [this](void* e) { return index_of(e); });
+            results = bsp::cc13_left55::seg56b::lua_set_command_building_owner_player(args,
+                owner);
+            command_building_owner_applied_ += owner.applied();
+        }
     } else if (std::strcmp(binding->name, "GetRoleAvailable") == 0 ||
                std::strcmp(binding->name, "GetRoleOwner") == 0) {
         // Goal 5 chain 655. 008ABAC0 GetRoleAvailable / 008ABF90 GetRoleOwner, their
@@ -7044,14 +7222,24 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // UNIMPLEMENTED, where the image reads +ECh of whatever object it is handed.
         if constexpr (kLuaGetDirectionBound) {
             ++direction_calls_;
-            void* entity = entity_from_argument(0);
+            void* entity = entity_at(0);   // the body's own 00888AA0 read
             const std::size_t index = index_of(entity);
             float right[3], up[3], forward[3], position[3];
             if (entity != nullptr && index < units_.count() &&
                 units_.unit_pose(index, right, up, forward, position)) {
-                if (entity_pose_stale_008a7c24(entity)) entity_pose_refresh_00414db0(entity);
-                push_vector3_table_0088ba30(forward);
-                results = state_ != nullptr ? 1 : 0;
+                // Goal 5 chain 660: the body lua_get_direction (src/engine_seg56_cc13.cpp)
+                // over DirectionQueryBinding; its push is 0088BA30's {x, y, z} table.
+                RepairBindingArgs args(*this);
+                DirectionQueryBinding query(units_, [this](void* e) { return index_of(e); },
+                    [this](void* e) {
+                        if (entity_pose_stale_008a7c24(e)) entity_pose_refresh_00414db0(e);
+                    });
+                DirectionResults pushed([this](const bsp::cc13_seg56::Vec3& v) {
+                    const float xyz[3] = {v.x, v.y, v.z};
+                    push_vector3_table_0088ba30(xyz);
+                });
+                const int count = bsp::cc13_seg56::lua_get_direction(args, pushed, query);
+                results = state_ != nullptr ? count : 0;
             } else {
                 ++direction_unresolved_;
                 log_.unimplemented("LuaNative::GetDirection(entity without a unit slot)",
