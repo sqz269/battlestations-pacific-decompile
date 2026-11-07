@@ -63,6 +63,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/cc13_seg29U.hpp"
+#include "bsp/cc13_seg29U_trap_host.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
@@ -584,64 +585,7 @@ struct PlaneOrdnanceRack {
 // Adapter for the single-threaded landing-assignment snapshot. The body can
 // only report an invalid index: there is no host lock at block+8h. All other
 // segment services trap rather than provide unrelated placeholder behavior.
-class LandingAssignmentLookupHost : public bsp::cc13_seg29U::Seg29UHost {
-    using NativeStr = bsp::cc13_seg29U::NativeStr;
-public:
-    void* global_pointer(std::uint32_t) override { std::abort(); }
-    void* global_address(std::uint32_t) override { std::abort(); }
-    void invalid_parameter_00bf6713() override { std::abort(); }
-    void free_00bf65ac(void*) override { std::abort(); }
-    void* operator_new_00bf681b(std::uint32_t) override { std::abort(); }
-    void entity_pose_refresh_00414db0(void*) override { std::abort(); }
-    void* matrix_multiply_00413920(void*,  void*,  void*) override { std::abort(); }
-    void matrix_copy_004134f0(void*,  void*) override { std::abort(); }
-    void matrix_inverse_00b63d50(void*,  void*) override { std::abort(); }
-    void* transform_point_004142e0(void*,  void*,  void*) override { std::abort(); }
-    void object_vslot_04(void*,  std::uint32_t,  void*) override { std::abort(); }
-    void path_derive_knots_007af150(void*) override { std::abort(); }
-    void game_21d0_register_0048ca60(void*,  void*,  std::int32_t) override { std::abort(); }
-    void observer_unregister_pair_006952a0(void*,  void*) override { std::abort(); }
-    void callback_owner_destroy_00695870(void*) override { std::abort(); }
-    void game_entity_destruct_009287b0(void*) override { std::abort(); }
-    void entity_default_slot_a4_009295b0(void*) override { std::abort(); }
-    NativeStr* native_string_from_int_004260b0(NativeStr*,  std::int32_t) override { std::abort(); }
-    void native_string_resize_0041dd40(NativeStr*,  std::uint32_t,  char) override { std::abort(); }
-    void memcpy_00bf7680(void*,  const void*,  std::uint32_t) override { std::abort(); }
-    void native_string_concat_004261a0(const NativeStr*,  NativeStr*,  const NativeStr*) override { std::abort(); }
-    void* sized_pool_00419cc0() override { std::abort(); }
-    void sized_pool_return_00bd1510(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
-    void* property_bag_find_008f2260(void*,  const char*) override { std::abort(); }
-    const char* property_string_value_008f0df0(void*) override { std::abort(); }
-    void* entity_registry_find_00925a90(void*,  const char*) override { std::abort(); }
-    bool entity_is_kind_of_5c(void*,  std::int32_t) override { std::abort(); }
-    void list_push_back_006acd80(void*,  void* const*) override { std::abort(); }
-    void object_vslot_08_float(void*,  float) override { std::abort(); }
-    std::int32_t object_vslot_0c(void*) override { std::abort(); }
-    double object_vslot_10_x87(void*) override { std::abort(); }
-    void* object_vslot_18(void*) override { std::abort(); }
-    const float* object_vslot_34(void*,  float*) override { std::abort(); }
-    void object_vslot_44(void*,  float*) override { std::abort(); }
-    void* object_vslot_114(void*) override { std::abort(); }
-    void enter_critical_section(void*) override { std::abort(); }
-    void leave_critical_section(void*) override { std::abort(); }
-    void free_00bf6989(void*) override { std::abort(); }
-    void session_message_construct_base_0075b430(void*,  std::uint32_t) override { std::abort(); }
-    void session_route_message_0077c2a0(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
-    std::uint32_t vehicle_class_registry_id_0095b9c0(void*) override { std::abort(); }
-    std::uint32_t current_command_0071be40(void*) override { std::abort(); }
-    void* active_target_descriptor_0071eb60(void*,  void*) override { std::abort(); }
-    const float* target_descriptor_position_006f7dd0(void*) override { std::abort(); }
-    float vector3_length_0042b2f0(const float*) override { std::abort(); }
-    std::int32_t squadron_airborne_count_007ee5c0(void*) override { std::abort(); }
-    void observer_ref_destruct_00653400(void*) override { std::abort(); }
-    void observer_member_cleanup_00653390(void*) override { std::abort(); }
-    float add_wrapped_angle_00438aa0(float,  float) override { std::abort(); }
-    double sqrt_00bf7030(double) override { std::abort(); }
-    double atan2_00bf701a(double,  double) override { std::abort(); }
-    void format_to_buffer32_00467310(char*,  const char*,  std::int32_t) override { std::abort(); }
-    void vehicle_class_mark_party_required_0095ba60(void*,  std::uint32_t) override { std::abort(); }
-    void register_hidden_stock_unit_0046be90(void*,  void*) override { std::abort(); }
-    void* landing_vector_at_006ba7b0(void*,  std::int32_t) override { std::abort(); }
+class LandingAssignmentLookupHost : public bsp::cc13_seg29U::Seg29UTrapHost {
 };
 
 // Goal 2 chain 209 (kWireGoal2Chain209Bound): the squadron block's byte +3AEh.
@@ -3941,6 +3885,11 @@ struct GameUnitsHost::Impl {
     bool carrier_site_has_free_runway_006d0530(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
     void carrier_elevator_raise_plane_006fc810(LandingDeck& d, GameUnitSlot& p);
+    // Goal 5 chain 628. 006CFFF0(flag, plane), the reconstructed body run by
+    // HostSessionMessages::queue_mothership_elevator_move_87 through the 87h
+    // message's local copy, then the carrier's receiver 006D0050 on the copy.
+    // `plane` is a slot index or SIZE_MAX for null.
+    void route_carrier_elevator_message_87(LandingDeck& d, bool flag, std::size_t plane);
     unsigned long long base_launch_lift_down{0}, base_launch_lift_up{0};
     unsigned long long base_launch_lift_top{0}, base_launch_lift_blocked{0};
     unsigned long long base_launch_placed{0}, base_launch_place_refused{0};
@@ -11397,16 +11346,44 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
         return active;
     }
+    // Goal 5 chain 628: the predicate is the reconstructed 007B95E0 body
+    // (src/band_007a_cc13.cpp; CMP [ECX+9D8h],0 / JNE, TEST squadron / JE,
+    // CMP [EAX+3BCh],0 / JLE). Its three inputs come from this host's squadron
+    // record: +9D4h is the record found for the unit; +9D8h is the unit's live
+    // seat among the occupied members, so the first occupied seat,
+    // flight_leader(), is index 0; +3BCh is the 007EE790 recount described above.
+    // Evidence for +9D8h: bsp.py show 007ed260 --asm, 007ED290..007ED2B4 walks
+    // +3D0h for +3CCh members with 007ED292 MOV [ESI+9D8h],EAX, EAX the walk
+    // index; 007F4BFA runs it in the spawn tail and 007ED610 after promoting the
+    // leader to slot 0. So PlaneSquadronHostRecord::member_spawn_index (the
+    // 007F4B43 stamp, which this host never rewrites) is not +9D8h once 007ED260
+    // has run. UNCERTAIN: between a 007F3970 compaction and the next 007ED260 the
+    // image's +9D8h can lag the live seat; this host, as before, answers the
+    // live seat.
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
-        if (sq == nullptr || sq->flight_leader() != unit.process_index) return false;
-        if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
-            const auto it = wingmen_recount_.find(sq->name);
-            return it != wingmen_recount_.end() && it->second.count_3bc > 0;  // +3BCh
-        } else {
-            return count_following_wingmen_007ee790(*sq) > 0;
+        std::int32_t seat_9d8 = -1;      // 007CFE72's constructor stamp: no squadron
+        std::int32_t wingmen_3bc = 0;
+        if (sq != nullptr) {
+            std::int32_t live = 0;
+            for (const std::size_t m : sq->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                if (m == unit.process_index) {
+                    seat_9d8 = live;
+                    break;
+                }
+                ++live;
+            }
+            if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+                const auto it = wingmen_recount_.find(sq->name);
+                wingmen_3bc = it != wingmen_recount_.end() ? it->second.count_3bc : 0;  // +3BCh
+            } else {
+                wingmen_3bc = count_following_wingmen_007ee790(*sq);
+            }
         }
+        return bsp::band_007a_cc13::plane_is_leader_with_wingmen_007b95e0(
+            seat_9d8, sq != nullptr, wingmen_3bc);
     }
     // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
     // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store

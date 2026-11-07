@@ -22,6 +22,8 @@
 #include <stdexcept>
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
+#include "bsp/cc13_seg29U_trap_host.hpp"
+#include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include <cfloat>
@@ -144,6 +146,17 @@ struct HostSessionMessages::Image {
         // 83h 00D03554.
         std::uint32_t slots_00d03554[5]{0x00763240u, 0x00763260u, 0x007632c0u, 0x00763210u,
                                         0x004499c0u};
+        // Goal 5 chain 628. 86h 00CF864C (bsp.py ghidra bytes 00cf864c --length
+        // 24, bsp.gpr's /battlestationspacific.exe): 006BEDF0 scalar delete,
+        // 006BDB30 write, 006BDB60 read, 006BDB00 IsType, 006BDB90 (the +20h
+        // handle-table test in place of 004499C0).
+        std::uint32_t slots_00cf864c[5]{0x006bedf0u, 0x006bdb30u, 0x006bdb60u, 0x006bdb00u,
+                                        0x006bdb90u};
+        // Goal 5 chain 628. 87h 00D01870 (bsp.py ghidra bytes 00d01870 --length
+        // 20): 00758CD0 scalar delete, 00758C20 write, 00758C70 read, 00758BF0
+        // IsType, 004499C0.
+        std::uint32_t slots_00d01870[5]{0x00758cd0u, 0x00758c20u, 0x00758c70u, 0x00758bf0u,
+                                        0x004499c0u};
         // C3h 00D03504: native destructor, write, read, IsType, always true.
         // bsp.py ghidra bytes 00d03504 --length 20 (existing bsp.gpr program).
         std::uint32_t slots_00d03504[5]{0x00762920u, 0x00762940u, 0x007629a0u, 0x007628f0u,
@@ -224,6 +237,8 @@ struct HostSessionMessages::Image {
             if (image_address == 0x00d034a0u) return slots_00d034a0;
             if (image_address == 0x00d034dcu) return slots_00d034dc;
             if (image_address == 0x00d03554u) return slots_00d03554;
+            if (image_address == 0x00cf864cu) return slots_00cf864c;
+            if (image_address == 0x00d01870u) return slots_00d01870;
             return nullptr;
         }
     } seg42_vtables;
@@ -1212,6 +1227,159 @@ bool copy_goes_to_unit_handler(IsType is_type) {
 }
 }  // namespace
 
+namespace {
+// Goal 5 chain 628. The 86h class: the 20h-byte unit message and the plane's
+// handle word at +20h, 24h bytes as 00768530 case 86h allocates it
+// (include/bsp/oct18_tail_a_factory.inc: {0x86, 0x24, 0x00763440, ...}).
+struct AppearReadyPlaneMessage86 {
+    seg42::UnitMessage u;
+    std::uint16_t plane_id_20;
+    std::uint16_t pad_22;
+};
+static_assert(sizeof(AppearReadyPlaneMessage86) == 0x24);
+static_assert(offsetof(AppearReadyPlaneMessage86, plane_id_20) == 0x20);
+
+// 006BDAC0 reads one word of the plane (bsp.py show 006bdac0 --asm: 006BDAEA
+// MOV CX,[EAX+174h], the handle-table ordinal); nothing else of the plane is
+// read, so this is that word's view.
+struct PlaneHandleView174 {
+    std::uint8_t unread_000[0x174];
+    std::uint16_t handle_174;
+};
+static_assert(offsetof(PlaneHandleView174, handle_174) == 0x174);
+
+// 006BDAC0's only service is the inlined base constructor 0075B430
+// (006BDAC8), over the session owner the other local codecs use; every other
+// segment-29 service traps.
+class AppearReadyPlaneConstructionBinding final : public cc13_seg29U::Seg29UTrapHost {
+public:
+    explicit AppearReadyPlaneConstructionBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_base_0075b430(void* message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+private:
+    const NativeSessionMessageContext& session_;
+};
+}  // namespace
+
+std::uint16_t HostSessionMessages::queue_airbase_appear_ready_plane_86(
+    std::uint16_t plane_id) const {
+    const Image& image = *image_;
+    // 006CF9AD..006CF9B2: 006BDAC0(plane) on the stack message at [ESP+8].
+    AppearReadyPlaneMessage86 sent{};
+    {
+        PlaneHandleView174 plane{};
+        plane.handle_174 = plane_id;
+        AppearReadyPlaneConstructionBinding binding(image.session);
+        cc13_seg29U::appear_ready_plane_message_construct_006bdac0(&sent, &plane, binding);
+    }
+
+    // 0076E575: vtable[4] = 006BDB30, the header, the +1Ch bit, +20h in 12 bits.
+    LocalStream stream;
+    band_006b_cc13::airbase_type86_write_006bdb30(&sent, &stream.out);
+    // 00768530 case 86h: operator new(24h), 00763440 at 007692A6; 0076A27B
+    // vtable[8] = 006BDB60.
+    stream.begin_read();
+    AppearReadyPlaneMessage86 queued{};
+    seg42::construct_airbase_appearreadyplane_00763440(&queued.u, image.seg42);
+    band_006b_cc13::airbase_type86_read_006bdb60(&queued, &stream.in);
+    // 00780120 asks the copy's IsType 006BDB00 (86h, 49h, 46h): none is on its
+    // ladder, so the copy takes the shared tail to the entity's session-kind
+    // switch, whose air-ops arm 006CD788 reads +20h.
+    if (!copy_goes_to_unit_handler(&band_006b_cc13::airbase_type86_is_type_006bdb00)
+        || !band_006b_cc13::airbase_type86_is_type_006bdb00(queued.u.h.base.type_10)) {
+        throw std::logic_error("AppearReadyPlane: decoded copy did not reach the kind switch");
+    }
+    // 006BEDF0, slot 0 of 00CF864C for both, restamps the root profile
+    // (00CE4974) and frees only for flags bit 0; neither message owns storage,
+    // so the copy ends here, as for 83h.
+    return queued.plane_id_20;
+}
+
+namespace {
+// Goal 5 chain 628. The 89h class: the 20h-byte unit message and the slot
+// dword at +20h, 24h bytes (006BC8F5 SUB ESP,24h; 00768530 case 89h
+// allocates 24h, include/bsp/oct18_tail_a_factory.inc).
+struct DoLaunchSlotMessage89 {
+    seg42::UnitMessage u;
+    std::uint32_t slot_20;
+};
+static_assert(sizeof(DoLaunchSlotMessage89) == 0x24);
+static_assert(offsetof(DoLaunchSlotMessage89, slot_20) == 0x20);
+
+// 006BC8E0 reads one word of the block, the router at +7Ch (006BC937 MOV
+// ECX,[ESI+7Ch], the owner entity 0077C2A0 routes to). LABELLED: this process
+// delivers to the deck its caller served, so the router is not read past the
+// route below and the view carries none.
+struct AirOpsBlockRouterView {
+    std::uint8_t unread_00[0x7c];
+    void* router_7c;
+};
+static_assert(offsetof(AirOpsBlockRouterView, router_7c) == 0x7c);
+
+// 006BC8E0's two services: 0075B430 (006BC904) and 0077C2A0 (006BC93F). The
+// route runs 0077C44D's local copy, as 0076E520 does: the class writer, the
+// factory's 89h constructor 006BC3E0 (which takes the same 0075B430) and the
+// class reader. Every other segment-29 service traps.
+class DoLaunchSlotRouteBinding final : public cc13_seg29U::Seg29UTrapHost {
+public:
+    explicit DoLaunchSlotRouteBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_base_0075b430(void* message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+    void session_route_message_0077c2a0(void*, void* message, std::uint32_t flags,
+                                        std::uint32_t) override {
+        // 006BC92D PUSH 1: the local bit, so 0077C43A..0077C45A take 0076E520.
+        if ((flags & 1u) == 0u) {
+            throw std::logic_error("DoLaunchSlot: 006BC8E0 routed without the local bit");
+        }
+        // 0076E575: vtable[4] = 006BC440, the header, +1Ch bit, +20h in 8 bits.
+        LocalStream stream;
+        band_006b_cc13::airbase_do_launch_slot_write_006bc440(message, &stream.out);
+        // 00768530 case 89h: operator new(24h), 006BC3E0 at 00769306; 0076A27B
+        // vtable[8] = 006BC470.
+        stream.begin_read();
+        DoLaunchSlotMessage89 queued{};
+        cc13_seg29U::do_launch_slot_message_construct_006bc3e0(&queued, *this);
+        band_006b_cc13::airbase_do_launch_slot_read_006bc470(&queued, &stream.in);
+        copy_type = queued.u.h.base.type_10;
+        copy_slot = queued.slot_20;
+        routed = true;
+        // 006BEDB0, slot 0 of 00CF85F0 for both, only restamps the root
+        // profile and frees for flags bit 0: neither message owns storage.
+    }
+    bool routed{false};
+    std::uint8_t copy_type{0};
+    std::uint32_t copy_slot{0};
+private:
+    const NativeSessionMessageContext& session_;
+};
+}  // namespace
+
+std::uint32_t HostSessionMessages::queue_airbase_do_launch_slot_89(std::uint32_t slot) const {
+    const Image& image = *image_;
+    AirOpsBlockRouterView block{};
+    DoLaunchSlotRouteBinding binding(image.session);
+    cc13_seg29U::air_ops_route_do_launch_slot_006bc8e0(&block, slot, binding);
+    // 00780120 asks the copy's IsType 006BC410 (89h, 49h, 46h; the table rule
+    // band_006b_cc13 keeps for it): none is on its ladder, so the copy takes
+    // the shared tail to the owner's session-kind switch, case 8 of 006CD6C0.
+    const band_006b_cc13::TypeIdRule* const is_type =
+        band_006b_cc13::find_type_id_rule(0x006BC410u);
+    if (!binding.routed || binding.copy_type != 0x89 || is_type == nullptr
+        || !band_006b_cc13::type_id_rule_accepts(*is_type, binding.copy_type)
+        || !copy_goes_to_unit_handler([is_type](std::uint8_t id) {
+               return band_006b_cc13::type_id_rule_accepts(*is_type, id);
+           })) {
+        throw std::logic_error("DoLaunchSlot: decoded copy did not reach the kind switch");
+    }
+    return binding.copy_slot;
+}
+
 HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     bool explode_to_parts) const {
     const Image& image = *image_;
@@ -1429,6 +1597,88 @@ private:
     const seg42::VtableBinding& vtables_;
 };
 }  // namespace
+
+namespace {
+// 006CFFF0 reads one word of the site, the carrier at +B8h (006D001E MOV
+// ECX,[ESI+0B8h], the entity 0077C2A0 routes to). LABELLED: this process
+// delivers to the deck its caller ticks, so the carrier is not read past the
+// route below and the view carries none.
+struct MotherShipSiteCarrierView {
+    std::uint8_t unread_00[0xb8];
+    void* carrier_b8;
+};
+static_assert(offsetof(MotherShipSiteCarrierView, carrier_b8) == 0xb8);
+
+// 006CFFF0's two services: 00758B90 (006D0019) and 0077C2A0 (006D0031). The
+// route runs 0077C44D's local copy, as 0076E520 does: the class writer, the
+// factory's 87h constructor 00763500 and the class reader. Every other
+// SweepCHost service traps.
+class ElevatorMoveRouteBinding final : public cc13_sweepC::SweepCTrapHost {
+public:
+    ElevatorMoveRouteBinding(const NativeSessionMessageContext& session,
+                             const seg42::Context& seg42, Seg41MessageHost& seg41)
+        : session_(session), seg42_(seg42), seg41_(seg41) {}
+    void* elevator_message_construct_00758b90(void* message, std::uint32_t flag,
+                                              void* plane) override {
+        // 006D0013..006D0019 PUSH EAX (flag), PUSH ECX (plane): 00758B90(plane, flag).
+        return cc13_seg41::elevator_move_construct_00758b90(static_cast<std::uint8_t*>(message),
+            static_cast<std::uint8_t*>(plane), static_cast<std::uint8_t>(flag), session_, seg41_);
+    }
+    void session_route_message_0077c2a0(void*, void* message, std::uint32_t channel,
+                                        std::uint32_t) override {
+        // 006D0026 PUSH 5: the local bit, so 0077C43A..0077C45A take 0076E520.
+        if ((channel & 1u) == 0u) {
+            throw std::logic_error("ElevatorMove: 006CFFF0 routed without the local bit");
+        }
+        // 0076E575: vtable[4] = 00758C20, the header, the +1Ch/+22h/+23h bits
+        // and +20h in 12 bits when +23h.
+        LocalStream stream;
+        cc13_seg41::elevator_move_write_00758c20(static_cast<const std::uint8_t*>(message),
+                                                 &stream.out, seg41_);
+        // 00768530 case 87h: operator new(24h), 00763500 at 007692C6; 0076A27B
+        // vtable[8] = 00758C70 (which zeroes +20h without +23h).
+        stream.begin_read();
+        alignas(4) std::uint8_t queued[0x24]{};
+        seg42::construct_mothership_elevator_move_00763500(
+            reinterpret_cast<seg42::UnitMessage*>(queued), seg42_);
+        cc13_seg41::elevator_move_read_00758c70(queued, stream.in, seg41_);
+        type = reinterpret_cast<const NativeSessionMessageStorage*>(queued)->type_10;
+        copy.flag = queued[0x22] != 0;
+        copy.has_plane = queued[0x23] != 0;
+        std::memcpy(&copy.plane_id, queued + 0x20, sizeof copy.plane_id);
+        routed = true;
+        // 00758CD0, slot 0 of 00D01870 for both, owns no storage.
+    }
+    bool routed{false};
+    std::uint8_t type{0};
+    HostSessionMessages::ElevatorMoveCopy copy;
+private:
+    const NativeSessionMessageContext& session_;
+    const seg42::Context& seg42_;
+    Seg41MessageHost& seg41_;
+};
+}  // namespace
+
+HostSessionMessages::ElevatorMoveCopy HostSessionMessages::queue_mothership_elevator_move_87(
+    bool flag, bool has_plane, std::uint16_t plane_id) const {
+    const Image& image = *image_;
+    Seg41MessageHost seg41(image.seg42_vtables);
+    ElevatorMoveRouteBinding binding(image.session, image.seg42, seg41);
+    // 00758B90 reads only the plane's +174h word (id_or_zero) and tests it for
+    // null (the +23h presence byte).
+    PlaneHandleView174 plane{};
+    plane.handle_174 = plane_id;
+    MotherShipSiteCarrierView site{};
+    cc13_sweepC::mothership_site_route_elevator_message_006cfff0(binding, &site,
+        flag ? 1u : 0u, has_plane ? static_cast<void*>(&plane) : nullptr);
+    // 00780120 asks IsType 00758BF0 (87h, 49h, 46h): none is on its ladder,
+    // so the copy reaches the carrier's kind switch, whose arm is 006D0050.
+    if (!binding.routed || binding.type != 0x87
+        || !copy_goes_to_unit_handler(&cc13_seg41::elevator_move_is_type_00758bf0)) {
+        throw std::logic_error("ElevatorMove: decoded copy did not reach the kind switch");
+    }
+    return binding.copy;
+}
 
 HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
     const float* rates, std::uint32_t count) const {

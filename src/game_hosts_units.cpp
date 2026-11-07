@@ -4334,7 +4334,24 @@ void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostR
 
 void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d) {
     if (d.site_ready_18 >= slots.size() || !slots[d.site_ready_18]) return;
-    GameUnitSlot& p = *slots[d.site_ready_18];
+    // Goal 5 chain 628. 006CF9AD..006CF9C7: the ready plane goes out as
+    // MT_AIRBASE_APPEARREADYPLANE (86h, 006BDAC0) through 0077C2A0(msg, 5, 0)'s
+    // local copy, and the receiver's 86h arm (006CD788) hands 006CF9F0 the plane
+    // the copy's +20h names (006BDBF0). +174h is this process's unit index + 1
+    // (GameScriptOrdersHost::entity_object_id). LABELLED: an index the copy's
+    // 12 bits cannot carry keeps the posted plane, as queue_gun_aim_79 keeps
+    // its target id; delivery stays in this step, as before.
+    std::size_t plane_index = d.site_ready_18;
+    if (d.site_ready_18 + 1u <= 0xfffu) {
+        const std::uint16_t copy = commands.session_messages().queue_airbase_appear_ready_plane_86(
+            static_cast<std::uint16_t>(d.site_ready_18 + 1u));
+        plane_index = copy == 0 ? slots.size() : static_cast<std::size_t>(copy) - 1u;
+    }
+    if (plane_index >= slots.size() || !slots[plane_index]) {
+        d.site_ready_18 = static_cast<std::size_t>(-1);                // 006CFA54
+        return;
+    }
+    GameUnitSlot& p = *slots[plane_index];
     const bool owner_alive = d.owner < slots.size() && slots[d.owner]
         && !(gunnery != nullptr && gunnery->unit_dead(d.owner));
     if (owner_alive && place_on_launch_spot_007c5f60(p, deck_index, d, true)) {
@@ -5329,17 +5346,17 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
             cand = oi;
         }
         if (cand < slots.size()) {
-            carrier_elevator_take_006fc720(d, *slots[cand]);
+            // 006D0703..006D071D: 006CFFF0(0, cand) -> 006D0050 -> 006FC720.
+            route_carrier_elevator_message_87(d, false, cand);
         } else if constexpr (kBaseLaunchChainBound) {
             // Packet cc9_base_launch_deck_arms, 006D0707-006D071D: no landed
             // candidate, a ready plane +18h and 006D02F0 false: 006CFFF0(0, 0) ->
-            // 006D0050 -> 006FC640, the empty platform goes down. LABELLED: the
-            // message to the carrier (0077C2A0 with 5) is delivered at once.
+            // 006D0050 -> 006FC640, the empty platform goes down.
             if (d.site_ready_18 < slots.size()) {
                 if (carrier_elevator_blocked_006d02f0(d)) {
                     ++base_launch_lift_blocked;
                 } else {
-                    carrier_elevator_send_empty_down_006fc640(d);
+                    route_carrier_elevator_message_87(d, false, static_cast<std::size_t>(-1));
                 }
             }
         }
@@ -5363,28 +5380,61 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
     }
     const bsp::GameTuningBlock& g = lua.plane_globals();
     if (e.timer_9c > g.pilot_landing_lift_delay && e.plane_34 >= slots.size()) {
+        // 006D0786..006D07A1: 006CFFF0(1, +18h), then +9Ch = 0. Packet
+        // cc9_base_launch_deck_arms: with the ready plane, 006D0050's flag-1 arm
+        // places and raises it; +18h stays set until the top (006D0667).
+        std::size_t ready = static_cast<std::size_t>(-1);
         if constexpr (kBaseLaunchChainBound) {
-            // Packet cc9_base_launch_deck_arms: 006CFFF0(1, +18h) -> 006D0050
-            // flag 1 with the ready plane: 007C5F60(plane, carrier+1188h), then
-            // 006FC810 brings it up. +18h stays set until the top (006D0667).
-            if (d.site_ready_18 < slots.size() && slots[d.site_ready_18]) {
-                GameUnitSlot& p = *slots[d.site_ready_18];
-                const std::size_t di = static_cast<std::size_t>(&d - landing_decks.data());
-                if (place_on_launch_spot_007c5f60(p, di, d, false)) {
-                    carrier_elevator_raise_plane_006fc810(d, p);
-                }
-                e.timer_9c = 0.0f;
-                return;
-            }
+            if (d.site_ready_18 < slots.size() && slots[d.site_ready_18]) ready = d.site_ready_18;
         }
-        // 006CFFF0(1, ready +18h) -> 006D0050 flag 1 with no plane -> 006FC6B0:
-        // the empty platform goes up.
-        ++e.unfed_relaunch;
-        e.p18 = e.depth_48 + e.p1c;
-        e.mode_50 = 1;
-        ++e.empty_up;
+        if (ready >= slots.size()) ++e.unfed_relaunch;
+        route_carrier_elevator_message_87(d, true, ready);
         e.timer_9c = 0.0f;
     }
+}
+
+void GameUnitsHost::Impl::route_carrier_elevator_message_87(LandingDeck& d, bool flag,
+                                                         std::size_t plane) {
+    // 006CFFF0 (its body, cc13_sweepC, runs inside the queue call): 00758B90
+    // (plane, flag) on the stack, 0077C2A0(msg, 5, 0) to the carrier
+    // (site+B8h); the local bit sends it through 0076E520's copy, and the
+    // carrier's kind switch runs 006D0050 on it. +174h is this process's
+    // unit index + 1 (GameScriptOrdersHost::entity_object_id). LABELLED: the
+    // copy is delivered in this step, as the direct calls it replaces were; an
+    // index the copy's 12 bits cannot carry keeps the posted plane.
+    bool copy_flag = flag;
+    std::size_t copy_plane = plane < slots.size() ? plane : static_cast<std::size_t>(-1);
+    if (copy_plane >= slots.size() || copy_plane + 1u <= 0xfffu) {
+        const bool has_plane = copy_plane < slots.size();
+        const bsp::HostSessionMessages::ElevatorMoveCopy copy =
+            commands.session_messages().queue_mothership_elevator_move_87(flag, has_plane,
+                static_cast<std::uint16_t>(has_plane ? copy_plane + 1u : 0u));
+        copy_flag = copy.flag;
+        // 00758CF0: the +20h entity when +23h, else null.
+        copy_plane = copy.has_plane && copy.plane_id != 0
+            ? static_cast<std::size_t>(copy.plane_id) - 1u : static_cast<std::size_t>(-1);
+    }
+    CarrierElevator& e = d.elevator;
+    if (copy_plane >= slots.size() || !slots[copy_plane]) {
+        if (!copy_flag) {
+            carrier_elevator_send_empty_down_006fc640(d);              // 006FC640
+        } else {
+            // 006FC6B0: the empty platform goes up.
+            e.p18 = e.depth_48 + e.p1c;
+            e.mode_50 = 1;
+            ++e.empty_up;
+        }
+    } else if (!copy_flag) {
+        carrier_elevator_take_006fc720(d, *slots[copy_plane]);         // 006FC720
+    } else {
+        // 007C5F60(plane, carrier+1188h), then 006FC810 brings it up.
+        GameUnitSlot& p = *slots[copy_plane];
+        const std::size_t di = static_cast<std::size_t>(&d - landing_decks.data());
+        if (place_on_launch_spot_007c5f60(p, di, d, false)) {
+            carrier_elevator_raise_plane_006fc810(d, p);
+        }
+    }
+    // 006D0050's tail 006FBCE0 runs only for a client (game+1FE4h == 2).
 }
 
 // 006FC480 (through 006CFE40, slot +8h, when dt != 0 and the owner exists).
