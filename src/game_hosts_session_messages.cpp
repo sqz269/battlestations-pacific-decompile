@@ -23,6 +23,7 @@
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
 #include "bsp/cc13_seg29U_trap_host.hpp"
+#include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include <cfloat>
@@ -151,6 +152,11 @@ struct HostSessionMessages::Image {
         // handle-table test in place of 004499C0).
         std::uint32_t slots_00cf864c[5]{0x006bedf0u, 0x006bdb30u, 0x006bdb60u, 0x006bdb00u,
                                         0x006bdb90u};
+        // Goal 5 chain 628. 87h 00D01870 (bsp.py ghidra bytes 00d01870 --length
+        // 20): 00758CD0 scalar delete, 00758C20 write, 00758C70 read, 00758BF0
+        // IsType, 004499C0.
+        std::uint32_t slots_00d01870[5]{0x00758cd0u, 0x00758c20u, 0x00758c70u, 0x00758bf0u,
+                                        0x004499c0u};
         // C3h 00D03504: native destructor, write, read, IsType, always true.
         // bsp.py ghidra bytes 00d03504 --length 20 (existing bsp.gpr program).
         std::uint32_t slots_00d03504[5]{0x00762920u, 0x00762940u, 0x007629a0u, 0x007628f0u,
@@ -232,6 +238,7 @@ struct HostSessionMessages::Image {
             if (image_address == 0x00d034dcu) return slots_00d034dc;
             if (image_address == 0x00d03554u) return slots_00d03554;
             if (image_address == 0x00cf864cu) return slots_00cf864c;
+            if (image_address == 0x00d01870u) return slots_00d01870;
             return nullptr;
         }
     } seg42_vtables;
@@ -1590,6 +1597,88 @@ private:
     const seg42::VtableBinding& vtables_;
 };
 }  // namespace
+
+namespace {
+// 006CFFF0 reads one word of the site, the carrier at +B8h (006D001E MOV
+// ECX,[ESI+0B8h], the entity 0077C2A0 routes to). LABELLED: this process
+// delivers to the deck its caller ticks, so the carrier is not read past the
+// route below and the view carries none.
+struct MotherShipSiteCarrierView {
+    std::uint8_t unread_00[0xb8];
+    void* carrier_b8;
+};
+static_assert(offsetof(MotherShipSiteCarrierView, carrier_b8) == 0xb8);
+
+// 006CFFF0's two services: 00758B90 (006D0019) and 0077C2A0 (006D0031). The
+// route runs 0077C44D's local copy, as 0076E520 does: the class writer, the
+// factory's 87h constructor 00763500 and the class reader. Every other
+// SweepCHost service traps.
+class ElevatorMoveRouteBinding final : public cc13_sweepC::SweepCTrapHost {
+public:
+    ElevatorMoveRouteBinding(const NativeSessionMessageContext& session,
+                             const seg42::Context& seg42, Seg41MessageHost& seg41)
+        : session_(session), seg42_(seg42), seg41_(seg41) {}
+    void* elevator_message_construct_00758b90(void* message, std::uint32_t flag,
+                                              void* plane) override {
+        // 006D0013..006D0019 PUSH EAX (flag), PUSH ECX (plane): 00758B90(plane, flag).
+        return cc13_seg41::elevator_move_construct_00758b90(static_cast<std::uint8_t*>(message),
+            static_cast<std::uint8_t*>(plane), static_cast<std::uint8_t>(flag), session_, seg41_);
+    }
+    void session_route_message_0077c2a0(void*, void* message, std::uint32_t channel,
+                                        std::uint32_t) override {
+        // 006D0026 PUSH 5: the local bit, so 0077C43A..0077C45A take 0076E520.
+        if ((channel & 1u) == 0u) {
+            throw std::logic_error("ElevatorMove: 006CFFF0 routed without the local bit");
+        }
+        // 0076E575: vtable[4] = 00758C20, the header, the +1Ch/+22h/+23h bits
+        // and +20h in 12 bits when +23h.
+        LocalStream stream;
+        cc13_seg41::elevator_move_write_00758c20(static_cast<const std::uint8_t*>(message),
+                                                 &stream.out, seg41_);
+        // 00768530 case 87h: operator new(24h), 00763500 at 007692C6; 0076A27B
+        // vtable[8] = 00758C70 (which zeroes +20h without +23h).
+        stream.begin_read();
+        alignas(4) std::uint8_t queued[0x24]{};
+        seg42::construct_mothership_elevator_move_00763500(
+            reinterpret_cast<seg42::UnitMessage*>(queued), seg42_);
+        cc13_seg41::elevator_move_read_00758c70(queued, stream.in, seg41_);
+        type = reinterpret_cast<const NativeSessionMessageStorage*>(queued)->type_10;
+        copy.flag = queued[0x22] != 0;
+        copy.has_plane = queued[0x23] != 0;
+        std::memcpy(&copy.plane_id, queued + 0x20, sizeof copy.plane_id);
+        routed = true;
+        // 00758CD0, slot 0 of 00D01870 for both, owns no storage.
+    }
+    bool routed{false};
+    std::uint8_t type{0};
+    HostSessionMessages::ElevatorMoveCopy copy;
+private:
+    const NativeSessionMessageContext& session_;
+    const seg42::Context& seg42_;
+    Seg41MessageHost& seg41_;
+};
+}  // namespace
+
+HostSessionMessages::ElevatorMoveCopy HostSessionMessages::queue_mothership_elevator_move_87(
+    bool flag, bool has_plane, std::uint16_t plane_id) const {
+    const Image& image = *image_;
+    Seg41MessageHost seg41(image.seg42_vtables);
+    ElevatorMoveRouteBinding binding(image.session, image.seg42, seg41);
+    // 00758B90 reads only the plane's +174h word (id_or_zero) and tests it for
+    // null (the +23h presence byte).
+    PlaneHandleView174 plane{};
+    plane.handle_174 = plane_id;
+    MotherShipSiteCarrierView site{};
+    cc13_sweepC::mothership_site_route_elevator_message_006cfff0(binding, &site,
+        flag ? 1u : 0u, has_plane ? static_cast<void*>(&plane) : nullptr);
+    // 00780120 asks IsType 00758BF0 (87h, 49h, 46h): none is on its ladder,
+    // so the copy reaches the carrier's kind switch, whose arm is 006D0050.
+    if (!binding.routed || binding.type != 0x87
+        || !copy_goes_to_unit_handler(&cc13_seg41::elevator_move_is_type_00758bf0)) {
+        throw std::logic_error("ElevatorMove: decoded copy did not reach the kind switch");
+    }
+    return binding.copy;
+}
 
 HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
     const float* rates, std::uint32_t count) const {

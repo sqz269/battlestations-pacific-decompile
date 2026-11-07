@@ -193,6 +193,23 @@ public:
     // 00769306 (006BC3E0), 006BC470 read. The receiver 006CD6C0's case 8 runs
     // 006C7490(copy slot, 0). Returns the copy's +20h slot.
     std::uint32_t queue_airbase_do_launch_slot_89(std::uint32_t slot) const;
+    // Goal 5 chain 628. MT_MOTHERSHIP_ELEVATOR_MOVE (87h): 006D0600, the mother
+    // ship's elevator site tick, calls 006CFFF0(flag, plane) at 006D071D (0, the
+    // landed candidate or null) and 006D078E (1, the ready plane +18h), which
+    // builds the 24h-byte message with 00758B90 (0075B430(87h), +18h/+1Ah/+1Ch
+    // zero, +4h = 1, vtable 00D01870, +22h = flag, +23h = plane present, +20h =
+    // plane+174h or 0) and routes it to the carrier (site+B8h) with
+    // 0077C2A0(msg, 5, 0), the local bit; then 00758C20 write (header, the
+    // +1Ch/+22h/+23h bits, +20h in 12 bits when +23h), 00768530 case 87h at
+    // 007692C6 (00763500), 00758C70 read. The receiver 006D0050 runs on the
+    // copy's flag and the plane its +20h names when +23h (00758CF0).
+    struct ElevatorMoveCopy {
+        bool flag{false};
+        bool has_plane{false};
+        std::uint16_t plane_id{0};
+    };
+    ElevatorMoveCopy queue_mothership_elevator_move_87(bool flag, bool has_plane,
+                                                       std::uint16_t plane_id) const;
     // Goal 4 chain 260. The weapon director's kind 5Ah (session message 90):
     // 0071DD30 (sub-kind 2) at 0071DD4B..0071DD81: 0075B430(5Ah), +18h word 0,
     // +1Ah 0, +4h = 1, +1Ch 0, vtable 00CFD9C4, +20h = the sub-kind, +24h =

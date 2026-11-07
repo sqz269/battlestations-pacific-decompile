@@ -3885,6 +3885,11 @@ struct GameUnitsHost::Impl {
     bool carrier_site_has_free_runway_006d0530(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
     void carrier_elevator_raise_plane_006fc810(LandingDeck& d, GameUnitSlot& p);
+    // Goal 5 chain 628. 006CFFF0(flag, plane), the reconstructed body run by
+    // HostSessionMessages::queue_mothership_elevator_move_87 through the 87h
+    // message's local copy, then the carrier's receiver 006D0050 on the copy.
+    // `plane` is a slot index or SIZE_MAX for null.
+    void route_carrier_elevator_message_87(LandingDeck& d, bool flag, std::size_t plane);
     unsigned long long base_launch_lift_down{0}, base_launch_lift_up{0};
     unsigned long long base_launch_lift_top{0}, base_launch_lift_blocked{0};
     unsigned long long base_launch_placed{0}, base_launch_place_refused{0};
