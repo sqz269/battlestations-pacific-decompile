@@ -1,0 +1,83 @@
+{
+  "goal": 5,
+  "chain": 658,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "summary": "0072BF10 BSP_Gun_CreateProjectile runs on its body at the gunnery host's projectile spawn (run_gun_aim_and_fire), through a ProjectileSpawnHost over the host's gun, owner and shot rows. The body lost its water-medium step: 0072BF10's only direct calls are 00414DB0, 004193E0 and 009555A0; the medium is 006E8430 step 8 (0078CF20 at 006E8680), and MTorpedo's factory 00856420 has no 0078CF20 call. The record ids are the owner's party (+54h) and the device's race (+58h), not entity ids. The inline owner, party, team and gun+474h stores are gone. The AddsSpeed platform velocity (0072C04B..0072C08F) now applies; the census line is 'summary mission gunnery projectile spawn platform_velocity_adds'.",
+  "rows": [
+    {
+      "native": "0072bf10",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_gun_aim_and_fire (GunProjectileSpawn -> bsp::projectile_spawn_0072bf10)"
+    },
+    {
+      "native": "0084bf00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_projectiles",
+      "reason": "The host's sweep interleaves the 0098ADD0 entity query, the kamikaze-squadron and own-base drops, the landscape arm and apply_hit in one loop, and the water crossing runs before it. A ProjectileImpactHost would have to split all of that out, plus the unresolved impact_kills_projectile gate."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_projectiles",
+      "reason": "run_projectiles ticks every round kind in one loop. BombTickHost needs the record's own vtable[19Ch]/[1A0h]/[1A4h] advance slots and the 0084C430 step sweep, and GameProjectileRow does not separate them."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp note_damage_channel",
+      "reason": "The listener-manager dispatch bodies (00982C50/009832F0/00983780/00984BA0/00984EB0) need a Seg62Host over the native manager at [00F8A0C4]. No host implements Seg62Host, and the manager's lock and channel memory is never built."
+    },
+    {
+      "native": "0075a380",
+      "status": "skipped",
+      "reason": "Segment 42's ready rows are session-message construct-for-read bodies. Their only caller is 00768530 BSP_SessionMessage_CreateFromBitStream, the multiplayer receive path, which single player never runs."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp kAiGroupScoreListReleaseBound note",
+      "reason": "AiGroupScoreList::insert_sorted (and 00A2BCC0 mark_chosen) feed only the debug text overlay 00A2CDD0 <- 00A2D580 <- 00A31000, which nothing in the image reaches. Debug-only."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "reason": "leak_manager_flooded_fraction's only caller is 006FB750 BSP_UnitDebugInspector_PrintFlooded. Debug-only."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp SetControlledUnit::set_unit_controlled_audio",
+      "reason": "The controlled-unit audio flag drives the ship engine emitter at unit+BBCh and each gun's 0072B540 audio mix; no host keeps per-unit engine emitters or gun sound instances."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp HudRootRows::animation_interval",
+      "reason": "The HUD weapon-row animation (00AA8B00/00AA8B80/00AC2F20) needs a GuiHudTickerRange on an animated widget; the host GUI bridge builds no weapon animation objects."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp MissionStart::write_checkpoint",
+      "reason": "Reached only when checkpoint_differs (007F8D60) answers true, and the host leaves that unimplemented (false). The native also rewrites the profile save through 00437C60 -> 00437250."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp / src/game_hosts_ship_ai.cpp",
+      "reason": "The point-effect creators (008689C0, 00868420) need the live effect manager (00866440) and render command references. Even the text-wired siblings 008685E0/008687C0 are not called in the built exe."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "reason": "The support-manager loadout rows (00662020, 00662210, 00665F30, 00666DC0, 0066B6C0) are called from 0066D020. Only Big1NullHost's vtable reaches 0066D020, and no host implements SupportSelectionHost over a real screen block."
+    },
+    {
+      "native": "00a410a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp FrontEndShell::grant_award",
+      "reason": "Xbox Live award queueing (sign-in slot state); online service."
+    }
+  ]
+}
