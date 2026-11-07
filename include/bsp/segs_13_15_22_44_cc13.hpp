@@ -80,10 +80,20 @@ inline constexpr std::size_t kPacketStatsStringOffset = 0x7649AC;   // NativeStr
 // Ocean environment (0078D5D0).
 inline constexpr std::uint32_t kRefCountedVtable_d04390 = 0x00D04390;
 
+// What the briefing constructor 0051E4D0 calls (bsp.py show 0051e4d0 --asm):
+// the 004F7180 base and the 0051ACB0 head node of its tree at +12Ch. The
+// front-end menu host binds them over the leaf's own native block without the
+// rest of SegBHost.
+struct BriefingConstructHost {
+    virtual ~BriefingConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void* tree_buy_head_node_0051acb0(Raw tree) = 0;
+};
+
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine or virtual slot it stands for.
 // ---------------------------------------------------------------------------
-struct SegBHost {
+struct SegBHost : BriefingConstructHost {
     virtual ~SegBHost() = default;
     // Globals the routines dereference (named by address).
     virtual Raw game_e188a8() = 0;
@@ -104,8 +114,8 @@ struct SegBHost {
     // 00432050, ECX = first, EDX = last, (vector, owner): destroy a NativeString range.
     virtual void native_string_range_destroy_00432050(void* first, void* last, Raw vector) = 0;
 
-    // Front-end screen base (src/frontend_state_machine.cpp).
-    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    // Front-end screen base (src/frontend_state_machine.cpp); 004F7180 is
+    // BriefingConstructHost's.
     virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
     // 004CC460, ECX = front-end manager, (request, 0), RET 8.
@@ -138,7 +148,6 @@ struct SegBHost {
     virtual void pointer_vector_push_back_004d6790(void* vector, void* const& element) = 0;
     // Briefing-specific engine routines.
     virtual void briefing_load_objective_pages_0051dda0(Raw screen) = 0;
-    virtual void* tree_buy_head_node_0051acb0(Raw tree) = 0;
     virtual void tree_iter_inc_0051a850(void*& node) = 0;
     // 0051CA90, ECX = tree, (result*, first, last): erase [first, last).
     virtual void tree_erase_range_0051ca90(Raw tree, void* first, void* last) = 0;
@@ -170,7 +179,7 @@ struct SegBHost {
     // 0077D600, ECX = entity, (descriptor, message*, 1).
     virtual void entity_issue_command_0077d600(void* entity, std::uint32_t descriptor,
                                                const void* message, std::int32_t flag) = 0;
-    virtual void interface_collapse_overlays_0068ab80(Raw interface, std::int32_t a,
+    virtual void interface_collapse_overlays_0068ab80(Raw in_game_interface, std::int32_t a,
                                                       std::int32_t b) = 0;  // (1, 1)
     // Widget vtable +88h(int state, int, float).
     virtual void widget_virtual_88(void* widget, std::int32_t state, std::int32_t arg,
@@ -223,7 +232,7 @@ void briefing_destruct_0051e050(Raw screen, SegBHost& host);
 int briefing_screen_id_0051e250();
 void briefing_collect_children_0051e270(Raw screen, void* out_vector, SegBHost& host);
 void briefing_register_0051e280(Raw screen, SegBHost& host);
-Raw briefing_construct_0051e4d0(Raw screen, SegBHost& host);
+Raw briefing_construct_0051e4d0(Raw screen, BriefingConstructHost& host);
 void binoculars_add_clamped_pitch_0051e650(Raw mover, float delta);
 void binoculars_apply_fov_0051e6e0(Raw screen, SegBHost& host);
 

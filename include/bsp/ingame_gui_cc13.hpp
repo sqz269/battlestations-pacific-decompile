@@ -543,7 +543,18 @@ void vector_tidy_destroy(Raw vector, std::size_t element_size, void (*destroy)(R
 // +0Ch (vtable 00CF5098). Complements src/ingame_gui.cpp (update/enter).
 // ---------------------------------------------------------------------------
 inline constexpr float kRewardsAutoScrollSpeed = 0.004f;  // 00CEC178
-struct RewardsScreenHost : HudScreenHost {
+// What the constructor 00626630 calls (bsp.py show 00626630 --asm): the
+// 004F7180 base and 00683610 on the three scroller blocks +68h, +128h and
+// +19Ch. The front-end menu host binds them over the leaf's own native block
+// without the rest of the rewards screen's services.
+struct RewardsConstructHost {
+    virtual ~RewardsConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void scroller_construct_00683610(Raw block) = 0;
+};
+struct RewardsScreenHost : HudScreenHost, RewardsConstructHost {
+    // Declared in both bases; one service answers both.
+    void front_end_screen_construct_004f7180(Raw screen) override = 0;
     virtual void handle_release(void* handle) = 0;          // InterlockedDecrement(+4h), slot 0 at zero
     virtual void sound_stop_08(void* sound) = 0;            // vtable +8h(0)
     virtual std::int32_t widget_type_5c(void* widget) = 0;  // vtable +5Ch
@@ -586,7 +597,7 @@ struct RewardsScreenHost : HudScreenHost {
     virtual void rewards_play_test_speech_0061f9d0(void* file) = 0;  // ECX = *(*00E198AC + 60h)
     // 004FC150 (file-store factory), 00BE80B0(file) then 00BE7130.
     virtual void file_store_remove_00be7130(void* file) = 0;
-    virtual void scroller_construct_00683610(Raw block) = 0;
+    void scroller_construct_00683610(Raw block) override = 0;
     virtual void record10_destroy_range_006243c0(Raw vector) = 0;  // ECX begin, EDX end, (vector, screen)
     virtual void score_row_vector_tidy_00625a00(Raw vector) = 0;
 };
@@ -944,7 +955,7 @@ Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost&
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
 void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);
-Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host);
+Raw rewards_construct_00626630(Raw s, RewardsConstructHost& host);
 void rewards_destruct_00626770(Raw s, RewardsScreenHost& host, NativeStringHost& strings);
 void rewards_widget_release_0061d770(Raw listener, void* widget, RewardsScreenHost& host);
 void rewards_widget_press_0062b3b0(Raw listener, void* widget, RewardsScreenHost& host);

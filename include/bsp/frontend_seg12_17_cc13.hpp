@@ -494,7 +494,18 @@ void int_scalar_map_copy_body_0055b300(Raw map, Raw source, Fe3TemplateHost& hos
 // ---------------------------------------------------------------------------
 // Batch B (end): control binding prompts, leaderboards, HUD limbo, colours.
 // ---------------------------------------------------------------------------
-struct Fe3ScreenHost {
+// What the two scroller-owning screen constructors 00563370 (leaderboards) and
+// 00555770 (control binding) call (bsp.py show <address> --asm): the 004F7180
+// base and 00683610 on their embedded 5Ch scroller blocks. The front-end menu
+// host binds them over the leaf's own native block without the rest of either
+// screen's services.
+struct ScrollerScreenConstructHost {
+    virtual ~ScrollerScreenConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void gui_scroller_construct_00683610(void* scroller) = 0;
+};
+
+struct Fe3ScreenHost : ScrollerScreenConstructHost {
     virtual ~Fe3ScreenHost() = default;
     virtual void free_00bf65ac(void* block) = 0;
     virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
@@ -509,9 +520,7 @@ struct Fe3ScreenHost {
         std::uint32_t zero) = 0;
     virtual void leaderboards_show_board_name_00561660(Raw screen) = 0;
     virtual void leaderboard_row_assign_005625a0(void* to, const void* from) = 0;
-    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
     virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
-    virtual void gui_scroller_construct_00683610(void* scroller) = 0;
     virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
     virtual void hud_limbo_poll_respawn_input_00565d80(Raw screen) = 0;                 // cc9 (see the doc)
     virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;        // vtable +34h
@@ -537,7 +546,7 @@ void* leaderboard_row_copy_backward_00562e60(std::uint8_t* first, std::uint8_t* 
     Fe3ScreenHost& host);
 // 00563370 BSP_LeaderboardsScreen_Construct, EAX = screen: 004F7180; +8h = 00CEB0FC, +0Ch =
 // 00CEB110; vtables 00CEE9CC / +8h 00CEE9B8 / +0Ch 00CEE998; +14h..+1Ch = 0; scrollers +34h, +0BCh.
-void* leaderboards_construct_00563370(Raw screen, Fe3ScreenHost& host);
+void* leaderboards_construct_00563370(Raw screen, ScrollerScreenConstructHost& host);
 // 00565E00 BSP_HudLimboScreen_Update, __thiscall(screen, float dt), RET 4: 00565D80; timer +18h >
 // 0 (COMISS) -> t -= dt, stored; t <= 0 (FCOMI, NaN keeps waiting) -> +18h = 0 and tail [+10h]
 // vtable +34h(1).
@@ -949,7 +958,7 @@ void frame_collect_children_00518e00(Raw frame, void* out, Fe3PageHost& host);
 // ---------------------------------------------------------------------------
 // Batch D: control binding screen, input-settings trees (continued), HUD pilot/bomber.
 // ---------------------------------------------------------------------------
-struct Fe3InputHost {
+struct Fe3InputHost : ScrollerScreenConstructHost {
     virtual ~Fe3InputHost() = default;
     virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual void free_00bf65ac(void* block) = 0;
@@ -962,11 +971,9 @@ struct Fe3InputHost {
     virtual void int_scalar_tree_erase_range_005572f0(void* tree, void* result, void* first_node, void* last_node) = 0;
     virtual void vector_length_error_00556c90() = 0;
     virtual void* allocate_16_00553300(std::uint32_t count) = 0;                        // ECX = count, EDX = 0
-    // Screens.
-    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    // Screens (004F7180 and 00683610 are ScrollerScreenConstructHost's).
     virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
-    virtual void gui_scroller_construct_00683610(void* scroller) = 0;
     virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
     virtual void* gui_load_page_00aa5840(const void* name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
     virtual void screen_virtual_14(Raw screen) = 0;
@@ -1038,7 +1045,7 @@ void* input_device_pair_construct_0055ba80(Raw pair, Raw key, const void* record
 // 00555770 BSP_ControlBindingScreen_Construct, EAX: 004F7180; +8h/+0Ch = 00CEB0FC/00CEB110, then
 // vtables 00CEE524 / +8h 00CEE510 / +0Ch 00CEE4F0; strings +3Ch and +184h = {0, 0}; scroller
 // +1A0h; +0E4h = 0; +0E0h = 10.
-void* control_binding_construct_00555770(Raw screen, Fe3InputHost& host);
+void* control_binding_construct_00555770(Raw screen, ScrollerScreenConstructHost& host);
 // 00555820 Destruct: vtables as above; pages +14h, +18h removed; strings +184h, +3Ch to the pool;
 // +8h = 00CEB0FC; 004F71A0.
 void control_binding_destruct_00555820(Raw screen, Fe3InputHost& host);

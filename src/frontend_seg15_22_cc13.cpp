@@ -186,7 +186,7 @@ bool control_layout_take_button_flags_00527cb0(Raw layout, std::uint8_t out[4]) 
 
 // 00527D00, __thiscall(screen) -> EAX: base constructor, the two listener bases
 // at +8h / +Ch, then this screen's three vtables.
-Raw control_layout_construct_00527d00(Raw s, Seg15Host& host) {
+Raw control_layout_construct_00527d00(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
