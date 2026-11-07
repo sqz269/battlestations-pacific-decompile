@@ -222,7 +222,7 @@ int hud_minimap_place_unit_icons_005c154e(int team_index, HudMinimapHost& host,
 enum class HudMinimapUnitShows {
     Always,        // 006D1FA0
     Never,         // 006F57D0, 007001E0
-    PlayerQuery,   // 0074DDF0 -> 008DDF00, not reconstructed
+    PlayerQuery,   // 0074DDF0 -> 008DDF00 (cc13_seg41_land.hpp), objective-set membership
     NotAUnit,      // IsKindOf(5) is false: the walk never reaches +B8h
 };
 inline constexpr std::uint32_t kHudMinimapShowsAlwaysBody = 0x006D1FA0u;

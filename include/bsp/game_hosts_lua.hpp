@@ -60,6 +60,7 @@ struct ShipCameraSettings;
 struct ShipClassCameraInputs;
 struct GameplayTuningSettings;
 struct MissionPictureTextureServices;
+struct ObjectiveUnitList;
 }
 
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
@@ -74,6 +75,16 @@ struct ExitZoneSubscription;
 }
 
 namespace bsp::game {
+
+// The +20h entry list of objective `index` in the objective set of player slot
+// `slot` ([game+21A4h+slot*4]), units and positions in the order 008DEE50 and
+// 008DEEB0 pushed them, as the Objectives bindings keep it; null when nothing
+// was ever pushed to that objective. Name, kind and state are refreshed only
+// when a binding touches the list: GameObjectiveSets holds the current ones.
+const bsp::ObjectiveUnitList* game_objective_entry_list(int slot, std::size_t index) noexcept;
+// The host unit index an entry's +0h word names (the word is the index plus
+// one, so a position entry's word stays 0, as 008DEEC9 stores it).
+std::size_t game_objective_entry_unit(const void* word) noexcept;
 
 // Packet cc9_wing_construction_lua (docs/WING_CONSTRUCTION_LUA.md, section 15.4 of
 // docs/SENTITY_INIT_ATTACH_ORDER.md), committed OFF. Effective only together

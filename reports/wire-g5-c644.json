@@ -1,0 +1,67 @@
+{
+  "chain": 644,
+  "slot": "g5-w4",
+  "goal": 5,
+  "picked": "minimap objective display: the land-vehicle minimap gate 0074DDF0 and the 005C0F20 objective-marker loop (005C1E00..005C22DE)",
+  "rows": [
+    {
+      "native": "0074ddf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp MinimapBinding::unit_shows_on_minimap (PlayerQuery arm, 005C1675 -> MLandVehicle +B8h)",
+      "note": "Body fixed: it returns 008DDF00's membership answer (the old void body dropped AL). The set is GameObjectiveSets::units_in_slot(0); the former stand-in answered true."
+    },
+    {
+      "native": "0074ddd0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Body fixed alongside 0074DDF0 (byte-identical, +B4h), but its only reader 005B2F49 is the HUD map screen background (005B2D70), which no host runs."
+    },
+    {
+      "native": "008dacd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp place_objective_markers_005c1e00 (005C1EE7)",
+      "note": "Renamed objective_entry_is_revealed_to_local_side_008dacd0 (noinline). The rows are the recon pass's persistent records (party = local_player_party())."
+    },
+    {
+      "native": "008dad30",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp place_objective_markers_005c1e00 (005C1F21)",
+      "note": "Renamed objective_entry_position_008dad30 (noinline). vtable +C4h is 0042BA00 for every unit class: the unit pose translation."
+    },
+    {
+      "native": "00645180",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp place_objective_markers_005c1e00 (005C1F0D), over GameHudHost::unit_selectable_00645060"
+    },
+    {
+      "native": "005c0930",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp GameHudMinimapHost::Impl::acquire_objective_marker (labelled stand-in)",
+      "reason": "Raw body over the native minimap screen's pool vectors (+104h + k*10h) and cursors (+154h), through Seg20Host's 52 virtuals, none implemented; the screen keeps its own clone pools under unit_marker_Group instead."
+    },
+    {
+      "native": "005c0bd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp GameHudMinimapHost::Impl::hide_unused_objective_markers (labelled stand-in)",
+      "reason": "Raw body deletes the native pools' surplus; the frontend bridge has no run-time clone removal, so the host pool hides the surplus instead."
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Map-ping prune on [game+21C8h]; its only producers are the HUD map screen (005B45C0 -> 008E2EE0) and the session, neither hosted, so there is no ping list (recorded at 005C22EA)."
+    },
+    {
+      "native": "00927880",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "The minimap's displayed self unit [ESP+5Ch] is entity vtable +114h -> +18h (the controlled unit's director target), which the units host does not model; it stays the minimap's existing null record, so the objective marker's white colour arm is taken only by a plane without a squadron record."
+    },
+    {
+      "native": "00643360",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "The world markers' objective arm (006435D0 -> 00643360) needs 00638E50 projection/clip, 00640860 marker acquisition and 00639230, none of which the markers host (GameHudMarkersHost) builds; its sweep_objectives stays a record."
+    }
+  ]
+}

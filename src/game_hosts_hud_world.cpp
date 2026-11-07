@@ -32,6 +32,15 @@
 #include "bsp/pool_pool13_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"           // game_objective_sets, goal 4 chain 376
 #include "bsp/local_player_unit_lists.hpp"  // 008DDF90, goal 4 chain 376
+#include "bsp/cc13_seg41_land.hpp"          // 0074DDF0, the land vehicle's +B8h
+#include "bsp/band_0085_cc13.hpp"           // 008DA130 / 008DA140
+#include "bsp/engine_seg56_cc13.hpp"        // 008DACD0 / 008DAD30
+#include "bsp/game_hosts_gunnery.hpp"       // the recon pass records
+#include "bsp/game_hosts_hud.hpp"           // 00645060
+#include "bsp/ingame_gui_cc13.hpp"          // 00645180
+#include "bsp/objective_units.hpp"          // the +20h entry records
+#include "bsp/plane_squadron_host.hpp"      // vtable +140h of a plane
+#include "bsp/recon_sensor_pass.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -120,6 +129,28 @@ struct GameHudMinimapHost::Impl {
     bool entry_colour_bound[3]{};
     bool logged_entry_body{false};
 
+    // The objective markers of 005C1E00..005C22DE. 005BE240 also binds the white
+    // group's item_marker_Icon into +7Ch (005BE553) and the colours the loop
+    // hands virtual +50h: white +D0h (005BE58A, +6Ch's virtual +54h), yellow
+    // +A0h (005BE9EA) and silver +B0h (005BEB02), each the group's item_ship_Icon.
+    GuiLayoutWidget* objective_marker_template{nullptr};   // +7Ch
+    float objective_colours[3][4]{};                       // yellow, silver, white
+    bool objective_colour_bound[3]{};
+    // 005C0930's five pools, screen +104h + k*10h with the used cursors
+    // +154h + k*4h: k = 0 an entry without a unit (+7Ch), 1 IsKindOf(8) (+74h
+    // sub), 2 IsKindOf(6) (+6Ch ship), 3 IsKindOf(0Fh) (+70h plane), 4 any other
+    // unit (+78h building), the order 005C0930 and 005BCAC0 test.
+    std::vector<GuiLayoutWidget*> objective_markers[5];
+    std::int32_t objective_marker_cursor[5]{-1, -1, -1, -1, -1};
+    // How many leading markers of each pool are visible. 005C0BD0 deletes the
+    // markers past the cursor (vtable +0h(1)) and shrinks the vector to cursor
+    // + 1 (005C0390); the frontend bridge cannot remove a run-time clone, so
+    // SUBSTITUTION (labelled): the surplus is hidden and kept for the next
+    // acquire, which shows it again where 005BCAC0's fresh marker is visible
+    // (005BCB6C virtual +34h(1)).
+    std::size_t objective_marker_shown[5]{};
+    bool logged_objective_marker{false};
+
     // The per-unit icon map at screen +F8h, as this process holds it: one
     // run-time clone of the colour template per unit index.
     std::map<std::size_t, GuiLayoutWidget*> icons;
@@ -159,9 +190,42 @@ struct GameHudMinimapHost::Impl {
     // Chain 47: the 005BE240 binds above, and the icon 005BD590 builds.
     void bind_icon_entry_fields(GuiLayoutWidget& root);
     GuiLayoutWidget* create_icon_from_entry(void* unit);
+    // STAND-IN (labelled) for 005C0930 / 005BCAC0, the next marker of pool k,
+    // cloned on first use. The reconstructed bodies (src/frontend_seg20_cc13.cpp)
+    // run over the native screen's pool vectors +104h and cursors +154h, which
+    // this screen does not have; these pools are the screen's own clones under
+    // unit_marker_Group, like the unit icons.
+    GuiLayoutWidget* acquire_objective_marker(std::size_t k);
+    // STAND-IN (labelled) for 005C0BD0 (src/cc13_sweepB3.cpp) over the same
+    // pools after the objective loop.
+    void hide_unused_objective_markers();
 };
 
 namespace {
+
+// bsp::cc13_seg41::LandVehicleObjectiveSetHost for 0074DDF0 on the minimap's
+// handle: game+18ECh is the local player slot (0 in single player, as for the
+// markers' objective container below), and 008DDF00's find runs over that
+// slot's +18h tree, GameObjectiveSets::units_in_slot (the members while
+// kObjectiveSetHiddenMembershipBound), in the units host's index space.
+class LandVehicleObjectiveSetBinding final : public bsp::cc13_seg41::LandVehicleObjectiveSetHost {
+public:
+    explicit LandVehicleObjectiveSetBinding(GameHudMinimapHost::Impl& owner) : owner_(owner) {}
+    std::int32_t local_player_slot_18ec() override { return 0; }
+    bool objective_set_find_008ddf00(std::int32_t slot, const void* vehicle) override {
+        owner_.done("HudMinimap::objective_set_find", 0x008ddf00u);
+        if (vehicle == nullptr || slot < 0
+            || slot >= static_cast<std::int32_t>(GameObjectiveSets::kSlotCount)) {
+            return false;
+        }
+        const std::size_t index = owner_.index_of(const_cast<void*>(vehicle));
+        const std::vector<std::size_t> set = game_objective_sets().units_in_slot(slot);
+        return std::find(set.begin(), set.end(), index) != set.end();
+    }
+
+private:
+    GameHudMinimapHost::Impl& owner_;
+};
 
 // bsp::HudMinimapHost, the boundary of src/hud_minimap.cpp. One native call site
 // per method, in the order 005C0F20 reaches them.
@@ -342,12 +406,20 @@ public:
                     : bsp::pool_pool02_cc13::land_fort_shows_on_minimap_006f57d0();
             }
         case bsp::HudMinimapUnitShows::PlayerQuery:
-            // SUBSTITUTION: 0074DDF0 asks 008DDF00 on the local player's object at
-            // [[00E188A8]+[..+18ECh]*4+21A4h], which is not reconstructed. The
-            // answer stays the pre-law true.
-            owner_.record("HudMinimap::land_vehicle_player_query",
-                bsp::kHudMinimapShowsLandVehicleQuery);
-            return true;
+            {
+                // MLandVehicle's +B8h is 0074DDF0 (00CFFE98): 008DDF00 on the local
+                // player slot's objective set [[00E188A8]+[..+18ECh]*4+21A4h], the
+                // find in its +18h unit tree. That tree is
+                // GameObjectiveSets::members, filled by Objectives_AddUnit and
+                // trimmed by Objectives_RemoveUnit / the status calls
+                // (src/game_hosts_lua.cpp), so a land vehicle is drawn only while
+                // it is a listed objective unit of slot 0 (game+18ECh in single
+                // player).
+                LandVehicleObjectiveSetBinding set(owner_);
+                owner_.done("HudMinimap::unit_shows_on_minimap(land vehicle)",
+                    bsp::kHudMinimapShowsLandVehicleBody);
+                return bsp::cc13_seg41::land_vehicle_in_local_objective_set_0074ddf0(unit, set);
+            }
         case bsp::HudMinimapUnitShows::NotAUnit:
             break;
         }
@@ -453,7 +525,334 @@ private:
     std::vector<std::size_t> union_;
 };
 
+// 00CF142C (00 00 10 C1), the depth 005C221F loads for an objective of kind 0.
+constexpr float kMinimapObjectiveDepthKind0 = -9.0f;
+
+// bsp::ingame_gui_cc13::UnitSelectHost for 00645180 on an objective entry's
+// unit (005C1F0D). The unit word is the address of a host unit index: in
+// single player the body only hands it to 00645060 (its +54h read is the
+// session arm, game+1FE4h != 0, which this process never takes).
+class ObjectiveOwnUnitBinding final : public bsp::ingame_gui_cc13::UnitSelectHost {
+public:
+    explicit ObjectiveOwnUnitBinding(GameHudMinimapHost::Impl& owner) : owner_(owner) {}
+    bool unit_selectable_00645060(void* unit, std::int32_t slot, int flag) override {
+        // 00645060(unit, slot, flag): BL takes the flag only when game+2194h is
+        // set (0064506F..0064507E), and slot 0 is the local player's record, so
+        // the call is GameHudHost::unit_selectable_00645060 (game_hosts_hud.cpp).
+        static_cast<void>(slot);
+        static_cast<void>(flag);
+        bool reached = false;
+        const bool selectable =
+            hud_unit_selectable_00645060(*static_cast<const std::size_t*>(unit), reached);
+        if (reached) {
+            owner_.done("HudMinimap::objective_unit_selectable", 0x00645060u);
+        } else {
+            owner_.record("HudMinimap::objective_unit_selectable", 0x00645060u);
+        }
+        return selectable;
+    }
+    std::int32_t local_player_slot() override { return 0; }   // game+18ECh, single player
+    std::int32_t local_player_record_28() override { return local_player_party(); }
+    std::int32_t session_mode() override { return 0; }        // game+1FE4h, single player
+
+private:
+    GameHudMinimapHost::Impl& owner_;
+};
+
+// bsp::cc13_seg56::ObjectiveEntityHost for 008DAD30's vtable +C4h. Every unit
+// class installs 0042BA00 there (00CFC494 and 00CFFEA4 both hold 0042BA00):
+// 00414DB0 while +C8h is clear, then +FCh..+104h, the world translation the
+// minimap's world_position reads through 00427EB0.
+class ObjectiveEntityPositionBinding final : public bsp::cc13_seg56::ObjectiveEntityHost {
+public:
+    explicit ObjectiveEntityPositionBinding(GameHudMinimapHost::Impl& owner) : owner_(owner) {}
+    bsp::cc13_seg56::Vec3 entity_vcall_c4_position(void* entity) override {
+        bsp::cc13_seg56::Vec3 out{};
+        const std::size_t index = *static_cast<const std::size_t*>(entity);
+        float right[3] = {0.0f, 0.0f, 0.0f};
+        float up[3] = {0.0f, 0.0f, 0.0f};
+        float forward[3] = {0.0f, 0.0f, 0.0f};
+        float translation[3] = {0.0f, 0.0f, 0.0f};
+        if (owner_.units == nullptr
+            || !owner_.units->unit_pose(index, right, up, forward, translation)) {
+            owner_.record("HudMinimap::objective_entity_position", 0x0042ba00u);
+            return out;
+        }
+        owner_.done("HudMinimap::objective_entity_position", 0x0042ba00u);
+        out.x = translation[0];
+        out.y = translation[1];
+        out.z = translation[2];
+        return out;
+    }
+
+private:
+    GameHudMinimapHost::Impl& owner_;
+};
+
+// 005C1E00..005C22DE, the objective markers, run after the unit icon pass and
+// only when that pass ran (005C1567..005C1578 leave through 005C27C5 without a
+// camera unit). The five 005C0930 cursors go to -1 (005C1E00..005C1E1B); the
+// local player slot's objective list (008DA180 on [game+21A4h+[game+18ECh]*4])
+// is walked, and each objective that 008DA140 shows and 008DA130 finds active
+// walks its +20h entries. 008DACD0 must reveal the entry; an entry with a unit
+// is skipped when 00645180 finds the unit's vtable +140h answer (the unit, or a
+// plane's squadron) to be a local player unit; 008DAD30 gives the point.
+// 005C1F26..005C2143 then repeat the unit icon's rim clamp and transform
+// (hud_minimap_icon_position_005c1b62) at depth -9.0f (00CF142C) for an
+// objective of kind 0, -8.0f (00CE3CC8) otherwise. The marker 005C0930 returns
+// for the entry's unit takes virtual +88h(d2 > range*range, 0, 1.0f), +50h with
+// white +D0h when the unit is the displayed self unit [ESP+5Ch] or a plane whose
+// +9D4h squadron is that unit, else yellow +A0h for kind 0 and silver +B0h,
+// 00AA7DC0 the position, and +44h pi/2 - (unit +50h heading + icon heading), 0
+// without a unit. 008E2BF0 then prunes the ping list [game+21C8h] and 005C0BD0
+// drops each pool's surplus.
+//
+// The entries are the +20h list the Objectives bindings keep
+// (game_objective_entry_list, src/game_hosts_lua.cpp): 008DEE50's unit records
+// and 008DEEB0's position records (unit word 0, revealed by 008DACD0's first
+// test, pool 0, item_marker_Icon) in push order. Kind and state come from
+// GameObjectiveSets, which the status bindings write. A dead unit stays listed:
+// the set's observer detach 008DF1E0 is not built (the Lua host's
+// ObjectiveListHost labels that), so its marker goes when the script completes
+// or fails the objective or removes the unit.
+void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBinding& binding) {
+    void* camera = binding.camera_unit();
+    if (camera == nullptr || host.units == nullptr) return;
+    binding.refresh_pose(camera);
+    const bsp::HudMinimapWorldPoint camera_pos = binding.world_position(camera);
+    const float range = binding.minimap_range();
+    // [ESP+5Ch], 00927880 on 00E188D8 at 005C15F2 (the walk's own record).
+    void* const self_handle = binding.displayed_self_unit(nullptr);
+    const std::size_t self = self_handle != nullptr ? host.index_of(self_handle)
+                                                    : bsp::kPlaneSquadronNoUnit;
+
+    for (std::int32_t& cursor : host.objective_marker_cursor) cursor = -1;   // 005C1E00..005C1E1B
+
+    const int party = local_player_party();   // [[game+18CCh+slot*4]+28h], the record row
+    const GameGunneryHost* gunnery = host.units->gunnery();
+    ObjectiveOwnUnitBinding own(host);
+    ObjectiveEntityPositionBinding entity_position(host);
+    std::size_t placed = 0;
+    // One +20h entry: an 008DEE50 record names a unit, an 008DEEB0 record has a
+    // null unit word and the point at +4h..+0Ch (005C1EDE..005C22A4).
+    const auto place_entry = [&](const GameObjectiveSets::Objective& objective, bool has_unit,
+                                 std::size_t unit, const bsp::ObjectiveWorldPoint& stored) {
+        // 005C1EE7 008DACD0: true without a unit; otherwise entity+1E8h +
+        // party*34h, +8h when the force byte +10h is set, else +4h, above 1. The
+        // record is the recon pass's persistent one (kReconDetectionRecordsBound);
+        // a unit no pass has laid out yet holds the zero record its constructor
+        // wrote.
+        bsp::cc13_seg56::ObjectiveRevealView reveal;
+        reveal.has_entity = has_unit;
+        reveal.local_side = 0;
+        reveal.side_party_row = party;
+        const bsp::ReconDetectionRecord* record = has_unit && gunnery != nullptr
+            ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
+        if (record != nullptr) {
+            reveal.row_selector_byte = record->forced;
+            reveal.row_value_plus4 = static_cast<std::int32_t>(record->level);
+            reveal.row_value_plus8 = static_cast<std::int32_t>(record->forced_level);
+        }
+        const bool revealed =
+            bsp::cc13_seg56::objective_entry_is_revealed_to_local_side_008dacd0(reveal);
+        if (!revealed) {
+            ++host.summary.objective_entries_hidden;
+            return;
+        }
+        host.done("HudMinimap::objective_entry_revealed", 0x008dacd0u);
+        // 005C1EF4..005C1F14, only with a unit: vtable +140h (0047F320, the unit
+        // itself; a plane answers its squadron, the plane registry's record),
+        // then 00645180 with ECX = [00E198C4]+40h, which the body does not read.
+        const bsp::PlaneSquadronHostRecord* squadron =
+            has_unit ? bsp::plane_squadron_registry().find_by_member_unit(unit) : nullptr;
+        if (has_unit) {
+            std::size_t owner = unit;
+            if (squadron != nullptr && squadron->squadron_unit != bsp::kPlaneSquadronNoUnit) {
+                owner = squadron->squadron_unit;
+            }
+            if (bsp::ingame_gui_cc13::unit_is_local_player_unit_00645180(
+                    bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(&owner)}, own)) {
+                ++host.summary.objective_entries_own;
+                return;
+            }
+            host.done("HudMinimap::objective_unit_is_local", 0x00645180u);
+        }
+        // 005C1F21 008DAD30 into [ESP+48h]: the unit's vtable +C4h, or the
+        // record's stored point.
+        std::size_t entity_word = unit;
+        bsp::cc13_seg56::ObjectiveEntryView entry;
+        entry.entity = has_unit ? &entity_word : nullptr;
+        entry.stored_position = bsp::cc13_seg56::Vec3{stored.x, stored.y, stored.z};
+        const bsp::cc13_seg56::Vec3 at =
+            bsp::cc13_seg56::objective_entry_position_008dad30(entry, entity_position);
+        host.done("HudMinimap::objective_entry_position", 0x008dad30u);
+        const bsp::HudMinimapWorldPoint point{at.x, at.y, at.z};
+
+        // 005C1F26..005C1F86: d2 from camera minus point, (x*x + y*y) + z*z,
+        // against range*range ([ESP+58h], squared once at 005C15B1).
+        const float dx = camera_pos.x - point.x;
+        const float dy = camera_pos.y - point.y;
+        const float dz = camera_pos.z - point.z;
+        const float d2 = (dx * dx + dy * dy) + dz * dz;
+        const bool outside = d2 > range * range;
+        const float depth = objective.kind == 0 ? kMinimapObjectiveDepthKind0
+                                                : bsp::kHudMinimapDepthCapture;
+        const bsp::HudGuiPoint position = bsp::hud_minimap_icon_position_005c1b62(point,
+            camera_pos, range, host.icon_heading, depth);
+
+        // 005C2143 005C0930(screen, [entry]): the pool by the unit's kind, 0
+        // without a unit.
+        std::size_t k = 0;
+        if (has_unit) {
+            k = 4;
+            if (host.units->unit_is_kind_of(unit, 0x08)) {
+                k = 1;
+            } else if (host.units->unit_is_kind_of(unit, 0x06)) {
+                k = 2;
+            } else if (host.units->unit_is_kind_of(unit, 0x0F)) {
+                k = 3;
+            }
+        }
+        GuiLayoutWidget* marker = host.acquire_objective_marker(k);
+        if (marker == nullptr) return;
+        ++placed;
+        // 005C214D..005C2176 virtual +88h(outside, 0, 1.0f), the icon's state.
+        // The sprite bridge draws a widget's first authored state only.
+        static_cast<void>(outside);
+        host.record("HudMinimap::objective_marker_state", 0x005c2176u);
+        // 005C2178..005C2213 virtual +50h.
+        std::size_t colour = objective.kind == 0 ? 0 : 1;   // yellow +A0h, silver +B0h
+        bool white = false;
+        if (!has_unit) {
+            white = false;                     // 005C217C..005C21A0
+        } else if (self != bsp::kPlaneSquadronNoUnit && unit == self) {
+            white = true;                      // 005C21A2..005C21AC, a non-null self
+        } else if (host.units->unit_is_kind_of(unit, 0x0F)) {
+            // 005C21AE..005C21C7: the plane's +9D4h squadron against self.
+            // +9D4h is the registry's record of the plane (null without one); a
+            // record without a unit slot is a native squadron this host cannot
+            // name, which a null self never equals.
+            white = squadron == nullptr
+                ? self == bsp::kPlaneSquadronNoUnit
+                : self != bsp::kPlaneSquadronNoUnit && squadron->squadron_unit == self;
+        }
+        if (white) colour = 2;   // white +D0h
+        if (host.objective_colour_bound[colour]) {
+            const float* rgba = host.objective_colours[colour];
+            host.menu.frontend().set_widget_color(*marker, rgba[0], rgba[1], rgba[2], rgba[3]);
+        } else {
+            host.record("HudMinimap::objective_marker_colour_unbound", 0x005be240u);
+        }
+        // 005C2269 00AA7DC0.
+        host.menu.frontend().set_widget_local_position(*marker, position.x, position.y,
+            position.z);
+        // 005C226E..005C22A4 virtual +44h: 0 without a unit (005C2297 FLDZ).
+        float rotation = 0.0f;
+        if (has_unit) {
+            float unit_heading = 0.0f;
+            if constexpr (bsp::kHudHeadingVtable50Cc13Bound) {
+                unit_heading = host.units->unit_heading_vtable50(unit);   // 005C227E vtable +50h
+            } else {
+                const GameUnitRow* row = host.units->unit_row(unit);
+                unit_heading = row != nullptr ? row->heading_degrees * 3.1415927f / 180.0f : 0.0f;
+            }
+            rotation = bsp::hud_minimap_icon_rotation_005c1ca1(unit_heading, host.icon_heading);
+        }
+        host.menu.frontend().set_widget_rotation(*marker, rotation);
+    };
+
+    // 008DA180([game+21A4h + 4*[game+18ECh]]), slot 0 in single player.
+    const std::vector<GameObjectiveSets::Objective>& objectives = game_objective_sets().slots[0];
+    for (std::size_t i = 0; i < objectives.size(); ++i) {
+        const GameObjectiveSets::Objective& objective = objectives[i];
+        if (!bsp::cc13_band0085::objective_is_shown_008da140(objective.kind, objective.state)) continue;
+        if (!bsp::cc13_band0085::objective_is_active_008da130(objective.state)) continue;
+        // The +20h list (005C1EA1..005C1EC5), as the Objectives bindings keep
+        // it; an objective no binding pushed into has the unit projection only.
+        if (const bsp::ObjectiveUnitList* list = game_objective_entry_list(0, i)) {
+            for (const bsp::ObjectiveUnitEntry& e : list->entries) {
+                if (e.unit != nullptr) {
+                    place_entry(objective, true, game_objective_entry_unit(e.unit), {});
+                } else {
+                    place_entry(objective, false, 0, e.position);
+                }
+            }
+        } else {
+            for (const std::size_t unit : objective.units) place_entry(objective, true, unit, {});
+        }
+    }
+    // 005C22DE..005C22EA 008E2BF0 on [game+21C8h]: the map pings come only
+    // from the HUD map screen (005B45C0 -> 008E2EE0) and the session, neither
+    // of which runs here, so the list is empty and the prune has nothing to do.
+    host.record("HudMinimap::map_ping_prune", 0x008e2bf0u);
+    host.hide_unused_objective_markers();
+    host.summary.objective_markers_placed = placed;
+    if (placed > 0 && !host.logged_objective_marker) {
+        host.logged_objective_marker = true;
+        host.log.notef("minimap objective markers: %zu placed (slot 0, party %d; 008dacd0 "
+            "hid %llu entries, 00645180 skipped %llu own units so far)", placed, party,
+            host.summary.objective_entries_hidden, host.summary.objective_entries_own);
+    }
+}
+
 }  // namespace
+
+GuiLayoutWidget* GameHudMinimapHost::Impl::acquire_objective_marker(std::size_t k) {
+    // 005C0930: ++cursor[k] (+154h + k*4h); a pool element at that index is
+    // returned (005C09D6..005C09EE for k = 0, 005BCBD0 for the others),
+    // otherwise 005BCAC0 builds one and 005C0790 appends it. 005BCAC0 clones the
+    // kind's template (00AAB4C0(template, 0)), makes it a child of +F0h
+    // (00AAA5A0) and shows it (virtual +34h(1)).
+    if (k >= 5) return nullptr;
+    std::vector<GuiLayoutWidget*>& pool = objective_markers[k];
+    const std::int32_t index = ++objective_marker_cursor[k];
+    const std::size_t i = static_cast<std::size_t>(index);
+    if (i < pool.size()) {
+        GuiLayoutWidget* marker = pool[i];
+        if (marker != nullptr && i >= objective_marker_shown[k]) {
+            menu.frontend().set_widget_visible(*marker, true);
+        }
+        if (i >= objective_marker_shown[k]) objective_marker_shown[k] = i + 1;
+        done("HudMinimap::acquire_objective_marker", 0x005c0930u);
+        return marker;
+    }
+    // 005BCAC0's template slots: +7Ch item_marker, +74h sub, +6Ch ship, +70h
+    // plane, +78h building (entry_templates is ship, plane, sub, building).
+    GuiLayoutWidget* const templates[5] = {objective_marker_template, entry_templates[2],
+        entry_templates[0], entry_templates[1], entry_templates[3]};
+    GuiLayoutWidget* templ = templates[k];
+    GuiLayoutWidget* marker = nullptr;
+    if (templ != nullptr && page != nullptr && marker_group != nullptr) {
+        char key[64];
+        std::snprintf(key, sizeof(key), "objective_marker_%zu_%zu", k, i);
+        marker = menu.frontend().clone_runtime_widget(page->name, *templ, *marker_group, key);
+    }
+    if (marker != nullptr) {
+        menu.frontend().set_widget_visible(*marker, true);   // 005BCB6C virtual +34h(1)
+        ++summary.objective_markers_created;
+        done("HudMinimap::construct_objective_marker", 0x005bcac0u);
+    } else {
+        record("HudMinimap::construct_objective_marker", 0x005bcac0u);
+    }
+    pool.push_back(marker);   // 005C0790, the marker object even when its clone failed
+    objective_marker_shown[k] = pool.size();
+    return marker;
+}
+
+void GameHudMinimapHost::Impl::hide_unused_objective_markers() {
+    // 005C0BD0: past each cursor every marker is deleted and the vector cut to
+    // cursor + 1. Here the surplus is hidden (see objective_marker_shown).
+    for (std::size_t k = 0; k < 5; ++k) {
+        const std::size_t keep = static_cast<std::size_t>(objective_marker_cursor[k] + 1);
+        for (std::size_t i = keep; i < objective_marker_shown[k] && i < objective_markers[k].size(); ++i) {
+            if (objective_markers[k][i] != nullptr) {
+                menu.frontend().set_widget_visible(*objective_markers[k][i], false);
+            }
+        }
+        if (objective_marker_shown[k] > keep) objective_marker_shown[k] = keep;
+    }
+    record("HudMinimap::release_unused_markers", 0x005c0bd0u);   // hidden, not deleted
+}
 
 void GameHudMinimapHost::Impl::bind_page_005bec50() {
     if (bound_attempted) return;
@@ -652,6 +1051,23 @@ void GameHudMinimapHost::Impl::bind_icon_entry_fields(GuiLayoutWidget& root) {
         entry_colour_bound[slot] = true;
         ++colours_bound;
     }
+    // 005BE52F..005BE553: item_marker_Icon of the white group into +7Ch; then
+    // the three colours the objective loop uses: +D0h from +6Ch's virtual +54h
+    // (005BE579..005BE58A), +A0h and +B0h from the yellow and silver groups'
+    // item_ship_Icon (005BE9EA, 005BEB02).
+    if (white != nullptr) {
+        objective_marker_template = bsp::find_child_by_name_00aa7e00(*white, "item_marker_Icon");
+    }
+    const GuiLayoutWidget* objective_colour_icons[3] = {
+        colour_templates[4], colour_templates[5], entry_templates[0]};   // yellow, silver, white
+    for (std::size_t slot = 0; slot < 3; ++slot) {
+        const GuiLayoutWidget* icon = objective_colour_icons[slot];
+        if (icon == nullptr) continue;
+        for (std::size_t lane = 0; lane < 4; ++lane) {
+            objective_colours[slot][lane] = icon->color[lane];
+        }
+        objective_colour_bound[slot] = true;
+    }
     log.notef("minimap icon entry fields (005be240): %zu of 4 white-group templates, "
         "%zu of 3 side colours (red %.3f %.3f %.3f %.3f, blue %.3f %.3f %.3f %.3f, "
         "grey %.3f %.3f %.3f %.3f)", templates_bound, colours_bound,
@@ -777,6 +1193,8 @@ void GameHudMinimapHost::update_005c0f20(float seconds) {
         binding.set_icon_rotation(entry.second,
             bsp::hud_minimap_icon_rotation_005c1ca1(unit_heading, headings.icon));
     }
+    // 005C1E00..005C22DE, after the unit loop: the objective markers.
+    place_objective_markers_005c1e00(host, binding);
     // 005C1872, the direction wedge: SetRotation(camera->vtable[C8h]() -
     // icon_heading + pi/2). The camera object is the renderer owner's, so the
     // heading it would return is recorded and the controlled unit's own is used.
@@ -844,6 +1262,10 @@ void GameHudMinimapHost::report() {
         host.summary.range_from_data ? 1 : 0, host.summary.icons_created,
         host.summary.icons_placed, host.summary.units_culled, host.summary.frames,
         static_cast<double>(host.summary.camera_heading));
+    host.log.notef("summary mission minimap objectives markers_placed=%zu markers_created=%zu "
+        "entries_hidden=%llu own_units_skipped=%llu (005c1e00: 008dacd0 / 00645180 / 008dad30)",
+        host.summary.objective_markers_placed, host.summary.objective_markers_created,
+        host.summary.objective_entries_hidden, host.summary.objective_entries_own);
 }
 
 // ===========================================================================

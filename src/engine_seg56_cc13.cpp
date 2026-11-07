@@ -1754,7 +1754,9 @@ Rgba color_blend_from_black_by_index(int index) noexcept
     return out;
 }
 
-bool objective_entry_is_revealed(const ObjectiveRevealView& view) noexcept
+// noinline keeps 008DACD0 and 008DAD30 visible in the Release call graph for
+// their live caller, the minimap's objective markers (game_hosts_hud_world.cpp).
+__declspec(noinline) bool objective_entry_is_revealed_to_local_side_008dacd0(const ObjectiveRevealView& view) noexcept
 {
     if (!view.has_entity) {
         return true;
@@ -1766,7 +1768,8 @@ bool objective_entry_is_revealed(const ObjectiveRevealView& view) noexcept
     return value > 1;
 }
 
-Vec3 objective_entry_position(const ObjectiveEntryView& entry, ObjectiveEntityHost& host)
+__declspec(noinline) Vec3 objective_entry_position_008dad30(const ObjectiveEntryView& entry,
+                                                   ObjectiveEntityHost& host)
 {
     if (entry.entity != nullptr) {
         return host.entity_vcall_c4_position(entry.entity);
