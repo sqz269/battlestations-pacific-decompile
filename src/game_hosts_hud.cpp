@@ -60,6 +60,7 @@
 #include "bsp/seg27_cc13.hpp"                // 006735D0
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
+#include "bsp/cc13_sweepB6.hpp"              // 005FA0F0
 #include "bsp/game_native_string_process.hpp"  // the leaf registers' string temporaries
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -569,10 +570,12 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // The leaf register overrides (+10h, kHudScreenLayouts) that run on their
 // blocks: each is 004F71D0 and at most one page load (bsp.py show <address>
 // --asm; 0060D1C0, 00565EE0 and 0051ED60 build the name in a native-string temporary),
-// and each page is the one kHudScreenLayouts lists for the slot.
-constexpr std::array<std::uint32_t, 8> kHudLeafScreenRegisters{{
+// and each page is the one kHudScreenLayouts lists for the slot. 0067BE80,
+// 00650170 and 005F9FF0 also call the screen's +14h layout virtual
+// (run_hud_leaf_screen_layout).
+constexpr std::array<std::uint32_t, 11> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
-    0x0051ED60u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -712,6 +715,100 @@ private:
     HudLeafRegisterContext& context_;
 };
 
+// The layout virtuals (+14h) those registers call through the screen's own
+// vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
+// the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
+// bytes: 00CF6D68+14h = 0067BEA0, 00CF61D4+14h = 00650B90).
+struct HudLeafLayoutVirtual {
+    std::uint32_t layout_virtual;
+    std::uint32_t vtable;
+};
+constexpr std::array<HudLeafLayoutVirtual, 3> kHudLeafLayoutVirtuals{{
+    {0x0067BEA0u, bsp::ingame_gui_cc13::kFollowScreenVtable},
+    {0x00650B90u, bsp::ingame_gui_cc13::kSubmarineScreenVtable},
+    {0x005FA0F0u, 0x00CF3B7Cu},  // order 3Bh (005F9440 stores it; 00CF3B90 = 005FA0F0)
+}};
+// 00650B90's page and children: its 00AA5840 is the registry owner's page
+// load for the slot; 00AA7E00(name, 1) searches the page's descendants and
+// returns null for a name the page lacks.
+class HudLeafPageChildBinding final : public bsp::ingame_gui_cc13::HudScreenPageChildHost {
+public:
+    explicit HudLeafPageChildBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void* gui_load_page_00aa5840(std::string_view name) override { return context_.load_page(name); }
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override {
+        if (parent == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(parent), name);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+// 005FA0F0's twenty name temporaries live in this process's actual string
+// pool, as the register overrides' names do; its 00AA7E00 searches the
+// GUI_order page 005F9FF0 stored at +8h.
+class HudLeafOrderLayoutBinding final : public bsp::Cc13SweepB6OrderLayoutHost {
+public:
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        if (widget == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(widget),
+            HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafStringPool pool_;
+};
+void run_hud_leaf_screen_layout(HudLeafRegisterContext& context) {
+    std::uint8_t* const p = context.screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    const auto entry = std::find_if(kHudLeafLayoutVirtuals.begin(), kHudLeafLayoutVirtuals.end(),
+        [&](const HudLeafLayoutVirtual& e) { return e.layout_virtual == context.layout_virtual; });
+    if (entry == kHudLeafLayoutVirtuals.end() || raw.at<std::uint32_t>(0) != entry->vtable)
+        throw std::logic_error("HUD leaf +14h virtual does not match the screen's vtable");
+    switch (context.layout_virtual) {
+    case 0x0067BEA0u: bsp::ingame_gui_cc13::hud_follow_screen49_bind_layout_0067bea0(raw); return;
+    case 0x00650B90u: { HudLeafPageChildBinding b(context); bsp::ingame_gui_cc13::submarine_load_layout_00650b90(raw, b); return; }
+    case 0x005FA0F0u: { HudLeafOrderLayoutBinding b; bsp::cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(p, b); return; }
+    default: break;
+    }
+    throw std::logic_error("HUD leaf layout virtual listed but not bound");
+}
+// 0067BE80 / 00650170: 004F71D0 on the block, then its +14h virtual.
+class HudLeafLayoutRegisterBinding final : public bsp::ingame_gui_cc13::HudScreenRegisterLayoutHost {
+public:
+    explicit HudLeafLayoutRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void screen_virtual_14(bsp::ingame_gui_cc13::Raw screen) override {
+        if (screen.p != context_.screen.data())
+            throw std::logic_error("+14h virtual called on a different HUD screen");
+        run_hud_leaf_screen_layout(context_);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+// 005F9FF0: 004F71D0, GUI_order into +8h, then its +14h virtual.
+class HudLeafPageLayoutRegisterBinding final : public bsp::cc13_fe1::ScreenRegisterLayoutHost {
+public:
+    explicit HudLeafPageLayoutRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    std::uint32_t load_page_00aa5840(std::string_view name) override {
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(context_.load_page(name)));
+    }
+    void screen_bind_layout(void* screen) override {
+        if (screen != context_.screen.data())
+            throw std::logic_error("+14h virtual called on a different HUD screen");
+        run_hud_leaf_screen_layout(context_);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
 void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     std::uint8_t* const p = context.screen.data();
     const bsp::ingame_gui_cc13::Raw raw{p};
@@ -724,6 +821,9 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x0060D1C0u: { HudLeafPlaneSpawnRegisterBinding b(context); bsp::seg25_cc13::hud_plane_spawn_screen_register_0060d1c0(p, b); return; }
     case 0x00565EE0u: { HudLeafLimboRegisterBinding b(context); bsp::cc13_fe3::hud_limbo_register_00565ee0(raw, b); return; }
     case 0x0051ED60u: { HudLeafBinocularsRegisterBinding b(context); bsp::cc13_seg14::binoculars_screen_register_0051ed60(p, b, game_native_string_process().strings()); return; }
+    case 0x0067BE80u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::follow_screen_register_0067be80(raw, b); return; }
+    case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
+    case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");

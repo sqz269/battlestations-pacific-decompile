@@ -653,7 +653,7 @@ void hud_objectives_register_005ee010(void* screen, ScreenRegisterPageHost& host
     write_field<std::uint8_t>(screen, 0x0C, 0);
 }
 
-void hud_order_register_005f9ff0(void* screen, ScreenLifetimeHost& host) {
+void hud_order_register_005f9ff0(void* screen, ScreenRegisterLayoutHost& host) {
     host.frontend_register_004f71d0(screen);
     write_field(screen, 0x08, host.load_page_00aa5840(kHudOrderPage));
     host.screen_bind_layout(screen);

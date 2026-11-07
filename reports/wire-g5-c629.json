@@ -1,0 +1,186 @@
+{
+  "chain": 629,
+  "slot": "g5-w4",
+  "rows": [
+    {
+      "native": "0067be80",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 49h follow, on its 0067BE30 leaf block)"
+    },
+    {
+      "native": "0067bea0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout via HudLeafLayoutRegisterBinding::screen_virtual_14 (vtable 00CF6D68 +14h)"
+    },
+    {
+      "native": "00650170",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 48h submarine, on its 00650140 leaf block)"
+    },
+    {
+      "native": "00650b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout (vtable 00CF61D4 +14h; GUI_sub and its four widgets)"
+    },
+    {
+      "native": "005f9ff0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 3Bh order, on its 005F9440 leaf block)"
+    },
+    {
+      "native": "005fa0f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout via HudLeafPageLayoutRegisterBinding::screen_bind_layout (vtable 00CF3B7C +14h)"
+    },
+    {
+      "native": "00650e00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 47h periscope)",
+      "reason": "Register acquires four effects through 00871BA0; no host builds the GameplayEffectAcquisitionContext (scene contents logs 00871ba0 unimplemented)."
+    },
+    {
+      "native": "00651230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout",
+      "reason": "Periscope +14h layout is reached only from 00650E00, which is blocked on the 00871BA0 effect acquisition."
+    },
+    {
+      "native": "0054ed00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::register_in_game_screen",
+      "reason": "Screen 2Ch register is JMP 004F71D0; register_in_game_screen already runs that base registration, so calling the thunk too would register twice. Needs the menu registry to route the base call through it."
+    },
+    {
+      "native": "0060d740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 5Eh scoring)",
+      "reason": "Body takes a typed HudScoringScreenState, not the native 0060FD90 leaf block the HUD builds; needs a typed view over that block."
+    },
+    {
+      "native": "00614170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 4Fh powerup)",
+      "reason": "Body takes a typed HudPowerupScreenState, not the native 0061A480 leaf block; needs a typed view over that block."
+    },
+    {
+      "native": "0052cbf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 51h counters)",
+      "reason": "0052C1B0 passes the caller EDI (the screen pointer) as the +34h bool, so visibility would follow the heap block low byte; the clone needs 00AAB4C0 over GuiLayoutWidget, and no 51h update or 0052B9B0 consumer runs yet."
+    },
+    {
+      "native": "0052c1b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: counters register binding",
+      "reason": "Reached only from 0052CBF0 (see that row); also needs a narrow host for the 0xAC-byte entry (string pool, find child, local position/size, +34h)."
+    },
+    {
+      "native": "0052c640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: counters register binding",
+      "reason": "Reached only from 0052CBF0; needs widget_clone_subtree_00aab4c0 and widget vtable +28h name over host GuiLayoutWidget."
+    },
+    {
+      "native": "00528c60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout",
+      "reason": "Counters +14h is empty and 0052CBF0 does not call it; nothing on the HUD init path reaches it."
+    },
+    {
+      "native": "005468b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 2Eh weapon group)",
+      "reason": "Host keeps typed HudWeaponGroupScreenState and runs its own 00546A20 layout through WeaponGroupLayoutBinding; the native register would lay out a second copy on the leaf block."
+    },
+    {
+      "native": "00606a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 3Eh plane)",
+      "reason": "Register acquires the plane rumble effect through 00871BA0; no effect manager composition in any host."
+    },
+    {
+      "native": "00606c60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout",
+      "reason": "Plane screen +14h is reached only from 00606A90, blocked on 00871BA0."
+    },
+    {
+      "native": "00607be0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 3Fh plane effects)",
+      "reason": "Register releases and acquires sound/effect handles and unregisters a native observer; no effect or sound acquisition binding for the HUD."
+    },
+    {
+      "native": "005cc770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 36h)",
+      "reason": "Movie-camera debug screen register: debug-only."
+    },
+    {
+      "native": "00602280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 3Ch pause)",
+      "reason": "Writes raw listbox byte +78h and listener fields into widgets (GuiLayoutWidget is not the native widget layout) and clears the award tracker hint history."
+    },
+    {
+      "native": "00538f80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 2Ah formation)",
+      "reason": "Builds the 3D formation map scene (0093DE10 quads, 00B80D70 factory instances, mshd materials) through the renderer; no render scene host."
+    },
+    {
+      "native": "005ab190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 4Ch map)",
+      "reason": "Builds map scene quads and loads models/textures (00B80D70, texture manager) through the renderer; no render scene host."
+    },
+    {
+      "native": "0066ea60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_register (screen 4Eh support manager)",
+      "reason": "Acquires eight FSB environment samples and drives support-manager state the host models separately; needs the sound sample binding."
+    },
+    {
+      "native": "0065daa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: run_hud_leaf_screen_layout",
+      "reason": "Support-manager +14h is reached only from 0066EA60 (blocked)."
+    },
+    {
+      "native": "00645f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD root register (screen 44h)",
+      "reason": "Its 006463E0 layout writes byte +FCh into unit_name_Text (a raw write into a host GuiLayoutWidget) and the host keeps its own hud_root_row_widgets lookups; needs a native widget view first."
+    },
+    {
+      "native": "006463e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD root layout",
+      "reason": "See 00645F10: raw +FCh widget write and a host-side copy of the row widgets."
+    },
+    {
+      "native": "005be240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMinimapHost::bind_page_005bec50",
+      "reason": "Minimap +14h runs only from the native 005BEC50 register; the minimap host binds its page through its own typed bind_page_005bec50."
+    },
+    {
+      "native": "005f9dd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: screen_update",
+      "reason": "Order update returns unless +82h is set; nothing opens the order menu yet, so it would run only the early return."
+    },
+    {
+      "native": "005fad70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: screen_enter",
+      "reason": "Order enter reads native unit fields +738h/+284h/+348h of the controlled unit; host units are typed."
+    },
+    {
+      "native": "005fc620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenBinding::repair_menu_open",
+      "reason": "Called at 0064E635 inside the 0064E62C..0064F30C repair-menu region, which is still one recorded stand-in."
+    }
+  ]
+}

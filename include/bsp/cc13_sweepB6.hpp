@@ -203,10 +203,24 @@ void cc13_sweepB6_options_screen_build_settings_page_005f24d0(void* screen, cons
                                                               const std::int32_t* row_kinds, bool list_pages,
                                                               Cc13SweepB6Host& host);
 
+// 005FA0F0's only services: each name's native-string temporary (0041DD40
+// resize, then the 00419CC0/00BD1510 pool release) and 00AA7E00(page, &name,
+// 1). The image literals the names are copied from are carried as their
+// text; the copy itself is the CRT memcpy 00BF7680.
+class Cc13SweepB6OrderLayoutHost {
+public:
+    virtual ~Cc13SweepB6OrderLayoutHost() = default;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) = 0;
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+    virtual void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t unused) = 0;
+};
+
 // 005FA0F0 BSP_HudOrderScreen_BindLayout: __thiscall(ECX = order screen),
 // RET. Binds the twenty order-screen widgets +0Ch..+58h to the named
 // children of the page +8h (vtable 00CF3B7C slot +14h).
-void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6Host& host);
+void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6OrderLayoutHost& host);
 
 // ---------------------------------------------------------------------------
 // Segment 27

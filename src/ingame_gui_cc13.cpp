@@ -169,7 +169,7 @@ Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host) {
 }
 
 // 0067BE80: base register, then the screen's +14h virtual (0067BEA0, empty).
-void follow_screen_register_0067be80(Raw s, HudScreenHost& host) {
+void follow_screen_register_0067be80(Raw s, HudScreenRegisterLayoutHost& host) {
     host.front_end_screen_register_004f71d0(s);
     host.screen_virtual_14(s);
 }
@@ -407,7 +407,7 @@ Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host) {
 
 // 00650170: base register, the +14h virtual (00650B90, the layout), then +1Ch
 // byte and +20h float cleared.
-void submarine_register_00650170(Raw s, HudScreenHost& host) {
+void submarine_register_00650170(Raw s, HudScreenRegisterLayoutHost& host) {
     host.front_end_screen_register_004f71d0(s);
     host.screen_virtual_14(s);
     s.at<std::uint8_t>(0x1C) = 0;
@@ -1170,7 +1170,7 @@ void periscope_load_layout_00651230(Raw s, HudScreenHost& host) {
 
 // 00650B90, submarine layout (+14h): page "GUI_sub" into +8h and its depth and
 // air widgets into +0Ch..+18h.
-void submarine_load_layout_00650b90(Raw s, HudScreenHost& host) {
+void submarine_load_layout_00650b90(Raw s, HudScreenPageChildHost& host) {
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_sub");
     s.ptr(0xC) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_depht_arrow_dest_Icon");
     s.ptr(0x10) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_depth_arrow_Icon");
