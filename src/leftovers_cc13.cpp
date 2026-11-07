@@ -485,7 +485,7 @@ template<class T> void put(void* p, std::size_t offset, T value) {
 void* at(void* p, std::size_t offset) {
     return static_cast<std::byte*>(p) + offset;
 }
-[[noreturn]] void invalid(Host& host) {
+[[noreturn]] void invalid(SubscriptionFilterHost& host) {
     host.invalid_iterator_00bf6713();
     throw std::logic_error("non-returning CRT provider returned");
 }
@@ -606,15 +606,20 @@ bool consume_single_peer_flag_00784cd0(void* transport, Host& host) {
 }
 // 00968470: __thiscall(subscription,parameter-vector), RET 4, EAX 0/1.
 // Keep lazy bounds checks: a rejecting earlier filter does not inspect later
-// parameters. Re-read the vector and filter pointers after each virtual call.
+// parameters. Re-read the vector after each virtual call.
+// Goal 5 chain 631 fix: the receiver of each filter call is the filter object
+// embedded at subscription+0Ch+i*10h, not the dword stored there (that dword is
+// the filter's vtable, read only to fetch slot 0): 00968491 MOV EDX,[EDI+0Ch],
+// 00968496 MOV EDX,[EDX], 00968498 LEA ECX,[EDI+0Ch], 0096849C CALL EDX; the
+// same LEA ECX,[EDI+1Ch] at 009684CC (bsp.py show 00968470 --asm).
 bool recon_subscription_matches_00968470(const void* subscription,
-                                         const void* parameters, Host& host) {
+                                         const void* parameters, SubscriptionFilterHost& host) {
     for (std::uint32_t i = 0; i != 4; ++i) {
         const auto begin = get<std::uintptr_t>(parameters, 4);
         const auto end = get<std::uintptr_t>(parameters, 8);
         if (begin == 0 || ((end - begin) >> 2) < i + 1) invalid(host);
         const auto value = get<std::uint32_t>(reinterpret_cast<void*>(begin), i * 4);
-        void* filter = get<void*>(subscription, 0xc + i * 0x10);
+        void* filter = at(const_cast<void*>(subscription), 0xc + i * 0x10);
         if (!host.filter_vslot_00(filter, value)) return false;
     }
     return true;
@@ -1798,7 +1803,8 @@ void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& h
 }
 // 00968AF0 and 00968470 have identical raw filter/parameter layouts and
 // ordered short-circuit checks. Reuse the complete checked storage body.
-bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host) {
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters,
+                                         SubscriptionFilterHost& host) {
     return recon_subscription_matches_00968470(subscription, parameters, host);
 }
 } // namespace bsp::oct18_tail_b

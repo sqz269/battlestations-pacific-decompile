@@ -913,6 +913,11 @@ public:
     // when the unit is not one of the capture buildings (out untouched).
     bool command_building_capture_fraction_006f1f90(std::size_t unit_index,
                                                     float& out) const;
+    // Goal 5 chain 631: the landing ships that finished landing (0074AD90, which
+    // reports the `shipLanded` channel through 00986820) since the last take, in
+    // order. The mission Lua host drains it once per frame and evaluates the
+    // channel's subscriptions there.
+    std::vector<std::size_t> take_ship_landed_events();
     // Packet cc13-fix13 (GetCommandBuildingLevel 0089B6D0): the building's current
     // +770h Level as this host keeps it (006F2780's scene value, then 006F38E0's
     // level-ups and resets). Read-only; false when the unit is not one of the

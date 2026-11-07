@@ -1478,6 +1478,8 @@ struct GameShipAiHost::Impl {
     unsigned long long ramp_ground_contacts{0};
     unsigned long long ramp_lowers{0};
     unsigned long long ramp_unloads{0};
+    // 0074AD90's 00986820 reports, for GameShipAiHost::take_ship_landed_events.
+    std::vector<std::size_t> ship_landed_events;
     unsigned long long capture_landed_adds{0};
     unsigned long long capture_paratrooper_adds{0};   // packet cc13-para2, arm 3
     unsigned long long capture_paratrooper_bad_side{0};
@@ -14399,13 +14401,22 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
         ++ramp_unloads;
         pads.post_unload(static_cast<int>(u));
         const GameUnitRow* row = units.unit_row(u);
+        // Goal 5 chain 631: 0074AD90's 0074AE6E..0074AE79 report the ship on the
+        // `shipLanded` channel (00986820, [00F8A0C4] being the live warning manager)
+        // right after +118Ch = 1; queued for the mission Lua host's dispatcher.
+        ship_landed_events.push_back(u);
         log.notef("landing ship unload: unit=%s at t=%.2f pad=%d +118Bh=1 +118Ch=1 "
-            "LandingStarted=true LandingFinished=true queued (0074B164..0074B2EF, 0074AD90; "
-            "006AC370's troop paths and the shipLanded event 00986820 are records)",
+            "LandingStarted=true LandingFinished=true shipLanded queued (0074B164..0074B2EF, "
+            "0074AD90 -> 00986820; 006AC370's troop paths are a record)",
             row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200);
         record("LandingShip::pad_troop_paths_006ac370", 0x006ac370u);
-        record("MissionEvents::ship_landed_00986820", 0x00986820u);
     }
+}
+
+std::vector<std::size_t> GameShipAiHost::take_ship_landed_events() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ship_landed_events);
+    return out;
 }
 
 // Packet cc9_lua_capture_percentage: see the header.
