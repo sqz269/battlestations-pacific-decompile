@@ -130,6 +130,8 @@
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
 #include "bsp/landscape_lua_seg55_argon.hpp"
+#include "bsp/game_profile_owner.hpp"           // goal 5 chain 649, the hint tracker
+#include "bsp/gui_screens_3.hpp"                // goal 5 chain 649, HintLuaHost
 
 extern "C" {
 #include "lauxlib.h"
@@ -1429,6 +1431,11 @@ int binding_trampoline(lua_State* state) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_get_firepower(state);
+    }
+    if (GameMissionLuaHost::is_hint_binding(dispatch_row.address)) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_hint_binding(state, dispatch_row.address);
     }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
@@ -11150,6 +11157,116 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
     } binding(state);
     const int results = bsp::lua_binding_ai_set_hint_weight_00a37b30(binding);
     log_.implemented("MissionLuaNative::AISetHintWeight", "00a37b30");
+    return results;
+}
+
+// Goal 5 chain 649. The HintSystem rows of table 00E0B7B8 (00E0B7F0..00E0B830
+// and HideHint at 00E0B808), each __fastcall(lua_State*) returning 00B66400's
+// count; the bodies are src/gui_screens_3.cpp's.
+bool GameMissionLuaHost::is_hint_binding(std::uint32_t address) noexcept {
+    switch (address) {
+    case 0x008d1f50u: case 0x008d2190u: case 0x008d24f0u: case 0x008d2340u:
+    case 0x0088cec0u: case 0x008d2850u: case 0x008d26a0u: case 0x008d2bb0u:
+        return true;
+    default:
+        return false;
+    }
+}
+
+int GameMissionLuaHost::run_hint_binding(lua_State* state, std::uint32_t address) {
+    // 004E1CA0, which every wrapper calls for [00E198D0]: it builds the tracker
+    // on first use. The slot is the menu host's; a process without one has no
+    // GGame for the wrappers to read.
+    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+    if (slot == nullptr)
+        return ::luaL_error(state, "HintSystem binding without the hint tracker slot (004E1CA0)");
+    GameHintTracker& tracker = slot->get_004e1ca0();
+    struct Binding final : bsp::HintLuaHost {
+        Binding(lua_State* lua, GameHintTracker& hints)
+            : state(lua), tracker(hints), original_top(::lua_gettop(lua)) {}
+        std::int32_t argument_count_00b663f0() override { return original_top; }
+        // 00B677E0 then 00B662B0. A value Lua cannot convert reads as "", as
+        // for the other string arguments this host reads (00945923).
+        std::string argument_string(std::int32_t index) override {
+            const int slot_index = index + 1;
+            if (slot_index > original_top || !::lua_isstring(state, slot_index)) return {};
+            std::size_t length = 0;
+            const char* text = ::lua_tolstring(state, slot_index, &length);
+            return text != nullptr ? std::string(text, length) : std::string();
+        }
+        // game+624h. Its writer is the session's game-closed arm 0076D0E0
+        // (src/session_teardown_latches.cpp, 0076D0F0); a single-player game
+        // has no session to close it, so it holds its zero, as the mission
+        // frame's 004DB9xx inputs read it (game_hosts_mission_frame.cpp).
+        std::int32_t game_termination_reason_624() override { return 0; }
+        void tracker_trigger_hint_00690fd0(const std::string& name, bool requested) override {
+            tracker.trigger_hint_00690fd0(name, requested);
+        }
+        void tracker_trigger_forced_00692fb0(const std::string& name) override {
+            tracker.trigger_forced_hint_00692fb0(name);
+        }
+        void tracker_add_stored_00690b20(const std::string& name) override {
+            tracker.add_stored_hint_00690b20(name);
+        }
+        void tracker_remove_stored_00690c30(const std::string& name) override {
+            tracker.remove_stored_hint_00690c30(name);
+        }
+        std::string tracker_active_hint_0068e5b0() override { return tracker.active_hint_60(); }
+        bool tracker_definition_critical_00690b00(const std::string& name) override {
+            return tracker.hint_blocking_00690b00(name);
+        }
+        bool tracker_has_been_shown_0068e600(const std::string& name) override {
+            return tracker.has_been_shown_0068e600(name);
+        }
+        // 00770870 ECX = game+1EF0h: 0077088B CMP [ESI+F4h],1 / JNZ 007708C9.
+        // session+F4h is game+1FE4h, 0 in this single-player process
+        // (game_hosts_fixed_step.cpp), so the hint message 22h is never built.
+        void session_send_hint_00770870(const std::string&) override {}
+        void hints_dismiss_0054e610() override { tracker.hints_dismiss_0054e610(); }
+        std::int32_t hints_seconds_left_0054d3c0() override {
+            return tracker.hints_seconds_left_0054d3c0();
+        }
+        void push_boolean(bool value) override {
+            const NativeBindingPushFrame frame(state);
+            native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+        }
+        void push_integer(std::int32_t value) override {
+            const NativeBindingPushFrame frame(state);
+            native_lua_push_integer_00b664b0(frame.object, value);
+        }
+        // 008D29D2 00B67930 (a table on the stack), "HintID" = the name
+        // (008D29EC 0068E5B0), "duration" = 008D2A50 0054D3C0's seconds through
+        // the integer setter (a number, as 00B664B0 pushes it).
+        void push_hint_table(const std::string& id, std::int32_t duration) override {
+            ::lua_createtable(state, 0, 0);
+            ::lua_pushlstring(state, id.data(), id.size());
+            ::lua_setfield(state, -2, "HintID");
+            ::lua_pushnumber(state, static_cast<lua_Number>(duration));
+            ::lua_setfield(state, -2, "duration");
+        }
+        std::int32_t result_count_00b66400() override {
+            return ::lua_gettop(state) - original_top;
+        }
+        lua_State* state;
+        GameHintTracker& tracker;
+        int original_top;
+    } binding(state, tracker);
+    int results = 0;
+    const char* name = "";
+    switch (address) {
+    case 0x008d1f50u: results = bsp::lua_show_hint_008d1f50(binding); name = "ShowHint"; break;
+    case 0x008d2190u: results = bsp::lua_show_hint_forced_008d2190(binding); name = "ShowHintForced"; break;
+    case 0x008d24f0u: results = bsp::lua_add_stored_hint_008d24f0(binding); name = "AddStoredHint"; break;
+    case 0x008d2340u: results = bsp::lua_remove_stored_hint_008d2340(binding); name = "RemoveStoredHint"; break;
+    case 0x0088cec0u: results = bsp::lua_hide_hint_0088cec0(binding); name = "HideHint"; break;
+    case 0x008d2850u: results = bsp::lua_is_hint_active_008d2850(binding); name = "IsHintActive"; break;
+    case 0x008d26a0u: results = bsp::lua_is_hint_critical_008d26a0(binding); name = "IsHintCritical"; break;
+    case 0x008d2bb0u: results = bsp::lua_is_hint_stored_008d2bb0(binding); name = "IsHintStored"; break;
+    default: throw std::logic_error("run_hint_binding: not a HintSystem row");
+    }
+    char text[16];
+    std::snprintf(text, sizeof text, "%08lx", static_cast<unsigned long>(address));
+    log_.implemented((std::string("MissionLuaNative::") + name).c_str(), text);
     return results;
 }
 
