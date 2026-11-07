@@ -564,4 +564,16 @@ struct VehicleLaunchReadHost {
 };
 // ECX message, stack stream, RET 4. Vtable 00CE53AC slot 2, message 7Bh.
 void vehicle_launch_message_read_00464810(Object message, Object stream, VehicleLaunchReadHost& host);
+struct VehicleLaunchWriteHost {
+    virtual ~VehicleLaunchWriteHost() = default;
+    virtual void write_extended_header_0075b480(Object message, Object cursor) = 0;
+    virtual void write_boolean_004290b0(Object cursor, std::uint8_t value) = 0;
+    virtual void write_numeric_float_004295c0(Object cursor, float value, std::uint32_t mode,
+                                              std::uint32_t signed_mode, float maximum,
+                                              std::uint32_t bits) = 0;
+};
+// 004647D0, ECX message, the 10h bit cursor on the stack, RET 4. Vtable 00CE53AC
+// slot 1 (bsp.py ghidra bytes 00CE53AC --length 20), message 7Bh. Ghidra has no
+// function here: its 004647B0 IsKindOf body runs on over these bytes.
+void vehicle_launch_message_write_004647d0(Object message, Object cursor, VehicleLaunchWriteHost& host);
 }

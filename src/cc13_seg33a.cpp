@@ -2324,7 +2324,8 @@ float ratio_abs_dc_over_8c_006eb870(void* cls) {
 
 // 006EB9C0, __thiscall(message, entity), RET 4. 0075B430(message, 7Ch); word +18h = 0, +1Ah = +1Ch
 // = 0, +4h = 1, vtable 00CFAA0C, word +20h = entity+174h. Returns message.
-void* vehicle_add_launched_message_construct_006eb9c0(Seg33aHost& host, void* message, void* entity) {
+void* vehicle_add_launched_message_construct_006eb9c0(Seg33aGunFireMessageHost& host, void* message,
+                                                      void* entity) {
     host.session_message_construct_base_0075b430(message, 0x7C);
     at<std::uint16_t>(message, 0x18) = 0;
     at<std::uint8_t>(message, 0x1A) = 0;
@@ -2824,7 +2825,14 @@ void* bullet_class_unavailable_create_006ea230(void*, std::uint32_t, std::uint32
 void* bullet_class_unavailable_aux_006ea240(void*, std::uint32_t) noexcept { return nullptr; }
 
 // 006EBA50..006EBC60: ECX message, cursor/stream, RET4. Header precedes all fields.
-void vehicle_launched_message_read_006eba50(Seg33aHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
+// 006EBA20..006EBA4A (bsp.py disasm-raw 006eba00 --length 0x50): 0075B480 on the cursor,
+// 004290B0 with MOVZX [ESI+1Ch], 00429120 with MOVZX word [ESI+20h] in 0Ch bits, RET 4.
+void vehicle_add_launched_message_write_006eba20(Seg33aGunFireMessageHost& h, void* m, void* c) {
+    late_write_bool_word(h, m, c);
+}
+void vehicle_launched_message_read_006eba50(Seg33aGunFireMessageHost& h, void* m, void* s) {
+    late_read_bool_word(h, m, s);
+}
 void plane_takeoff_message_write_006ebb10(Seg33aHost& h, void* m, void* c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x1C));

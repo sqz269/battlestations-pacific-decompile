@@ -1903,6 +1903,16 @@ TrackTimeIterator* entity_track_find_time_00455a80(Object track, TrackTimeIterat
     }
     return out;
 }
+// 004647D0..0046480A (bsp.py disasm-raw 004647b0 --length 0x60): EDI = the
+// cursor ([ESP+0Ch]), ESI = ECX; 0075B480(cursor) on the message; 004290B0 on the
+// cursor with MOVZX [ESI+1Ch]; then 004295C0(cursor, [ESI+20h], 0, 1, [00D7A248],
+// 20h), the two floats moved through FLD/FSTP dword (exact for a float). RET 4.
+void vehicle_launch_message_write_004647d0(Object message, Object cursor, VehicleLaunchWriteHost& host) {
+    host.write_extended_header_0075b480(message, cursor);
+    host.write_boolean_004290b0(cursor, native_at<std::uint8_t>(message, 0x1c));
+    host.write_numeric_float_004295c0(cursor, native_at<float>(message, 0x20), 0, 1,
+                                      0x1.fffffep+127f, 32);
+}
 void vehicle_launch_message_read_00464810(Object message, Object stream, VehicleLaunchReadHost& host) {
     host.read_extended_header_0075b4c0(message, stream);
     Object cursor = stream + 4;
