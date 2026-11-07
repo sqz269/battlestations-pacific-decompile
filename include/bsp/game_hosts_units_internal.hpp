@@ -2547,6 +2547,24 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float plane_path_pitch_c84{0.0f};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
+    // Goal 5 chain 654. unit+C14h, the dead-engine fire delay: -1.0f from the
+    // constructor (docs/CC13_MISTAG.md), then 007BCAA0's 007BCABB draw
+    // (DeadEngineFireDelay) when the plane is destroyed; 007CAF10's engine block
+    // reads it and stores -1.0f again once the engine fire is raised.
+    float plane_engine_fire_timer_c14{-1.0f};
+    // The engine list at unit+C98h (+8h data, +0Ch count), as 007EC5A0 fills it
+    // from the class at spawn (build_plane_engine_list). Empty for a
+    // ship or a class without NumEngines. plane_num_engines_140 is the class's
+    // NumEngines as 007D204D stores it at +140h (007BBFA0 reads the same key's
+    // +7Ch copy).
+    std::int32_t plane_num_engines_140{0};
+    std::vector<std::unique_ptr<bsp::gameplay_seg48_cc13::PlaneEngineSlots>> plane_engines_c98;
+    std::vector<bsp::gameplay_seg48_cc13::PlaneEngineSlots*> plane_engine_list_c98() const {
+        std::vector<bsp::gameplay_seg48_cc13::PlaneEngineSlots*> list;
+        list.reserve(plane_engines_c98.size());
+        for (const auto& engine : plane_engines_c98) list.push_back(engine.get());
+        return list;
+    }
     // Packet cc13-limbo3: the squadron's live count (+3CCh, this plane included)
     // stamped by the stock return just before it clears the member seat; -1
     // otherwise. Read only by plane_squadron_live_count_3cc.
@@ -3846,6 +3864,10 @@ struct GameUnitsHost::Impl {
     // Packet cc13-landc.
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
     unsigned long long combat_death_destroy_draws{0};
+    // Goal 5 chain 654: the plane engine lists (007EC5A0) and their calls.
+    unsigned long long plane_engine_lists_built{0}, plane_engines_built{0};
+    unsigned long long plane_engine_stop_alls{0}, plane_engine_fires_raised{0};
+    unsigned long long plane_engines_destroyed{0};
     unsigned long long ground_state_dead_tail_skips{0};
     unsigned long long funnel_kill_destroy_only{0};
     // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
@@ -3854,19 +3876,23 @@ struct GameUnitsHost::Impl {
     float dead_engine_fire_delay[2]{3.0f, 5.0f};
     // The destroy flush's vtable[7Ch] for a plane is 007BCAA0 (00D19D28+7Ch);
     // its first act is 00BD2F10(ECX = 0, [00E18718], [00E18714]) at 007BCABB,
-    // stored at +C14h (no host field: nothing the host runs reads it). Takes
-    // that stream-0 draw through the gunnery host; false without one.
-    bool plane_on_destroyed_draw_007bcabb(std::size_t index) {
+    // stored at +C14h (007BCAC0), which 007CAF10's engine block reads (goal 5
+    // chain 654). Takes that stream-0 draw through the gunnery host; false
+    // without one.
+    bool plane_on_destroyed_draw_007bcabb(GameUnitSlot& plane, std::size_t index) {
         if (gunnery == nullptr) return false;
         if (!dead_engine_fire_delay_read) {
             dead_engine_fire_delay_read = true;
             lua.read_global_number_pair("DeadEngineFireDelay", dead_engine_fire_delay[0],
                 dead_engine_fire_delay[1]);
         }
-        gunnery->death_mode_draw_00bd2f10(0, index, dead_engine_fire_delay[0],
-            dead_engine_fire_delay[1]);
+        plane.plane_engine_fire_timer_c14 = gunnery->death_mode_draw_00bd2f10(0, index,
+            dead_engine_fire_delay[0], dead_engine_fire_delay[1]);
         return true;
     }
+    // Goal 5 chain 654: the engine list 007EC5A0 builds at unit+C98h for a new
+    // plane (BSP_Plane_ReadPropertyBag, 007D6327). game_hosts_units.cpp.
+    void build_plane_engine_list(GameUnitSlot& plane);
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};

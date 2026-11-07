@@ -297,6 +297,119 @@ float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
     }
 }
 
+// Goal 5 chain 654. 007EC5A0 BSP_PlaneFxComponent_LoadFromClass, called from
+// BSP_Plane_ReadPropertyBag at 007D6327 (ECX = unit+C98h, plane, active 0): the
+// engine list (007ECB41-007ECC85), one engine per class+140h NumEngines (007D204D:
+// 00B66270, then the CRT float-to-int, a truncation), a base engine (00D08640)
+// when class+144h JetEngines (007D208B, 00B662F0 with a false default) is set,
+// else a rotor (00D0865C), each initialised through its slot 0 at 007ECC85.
+// LABELLED, not modelled: the component's effect slots, levels and class loops
+// (007EC5D9-007EC9CC) and the rotor's Init 007EBF10. Their effects are scene-node
+// visibility and spin scalars no host code reads, and their draws (the speed
+// spread 007ECA23 / 007ECA41 / 007ECADD and 007EBF10's 007EC10F, all stream 1)
+// are the ones docs/CC13_RNG_STREAM_CENSUS.md section 11 reclassifies as
+// PRESENTATION; they are not taken, so the shared stream is as before. A rotor
+// therefore keeps operator new's state (007ECBC4-007ECBD6). Its Reset (007E1C60,
+// reached from Restart and from 007B97F0's ResetAll, neither of which this host
+// runs) would draw 007E1CCF on stream 1; that draw has no host site, so it throws.
+// The base engine's Init 007E1BA0 reads none of its arguments and runs.
+namespace {
+namespace s48 = bsp::gameplay_seg48_cc13;
+
+// The two engine objects 007EC5A0 pushes: the base engine (0Ch bytes, vtable
+// 00D08640) and the rotor (40h bytes, vtable 00D0865C), over the slot bodies in
+// src/gameplay_seg48_cc13.cpp. operator new's stores 007ECBC4-007ECBD6: +4h = 0,
+// +9h = 0, +8h = 0. The interface's burning_8 / stopped_9 are the object's own
+// +8h / +9h; stopped_9 is copied from the body state after each slot call, and
+// burning_8 is written only by 007E23E0 through the interface.
+class PlaneBaseEngine final : public s48::PlaneEngineSlots {
+public:
+    // Slot 0, 007E1BA0 (the call at 007ECC85; its four arguments are unread).
+    void init() noexcept { s48::engine_base_init_007e1ba0(state_); sync(); }
+    void restart(bool running) override {
+        s48::engine_base_restart_007ddeb0(state_, running);
+        sync();
+    }
+    void reset() override { s48::engine_base_reset_007e1c00(state_); sync(); }
+    void stop_engine() override { s48::engine_base_mark_stopped_007ddf00(state_); sync(); }
+    void step_rpm(float target, float dt) override { s48::engine_step_rpm_noop_007e23b0(target, dt); }
+    void apply_spin(float dt) override { s48::engine_apply_spin_noop_007e23c0(dt); }
+    void blur_blend() override { s48::engine_blur_blend_noop_007e23d0(); }
+
+private:
+    void sync() noexcept { stopped_9 = state_.stopped_9; }
+    s48::PlaneEngineBase state_;
+};
+
+// The rotor. The node visibility its slots return is dropped: this host has no
+// rotor scene nodes ("rotor<i>", "rotor_still<i>", "rotor_still_dam<i>").
+class PlaneRotorEngine final : public s48::PlaneEngineSlots {
+public:
+    PlaneRotorEngine(const s48::RotorTuning& tuning, s48::Rng rng)
+        : tuning_(tuning), rng_(std::move(rng)) {}
+    void restart(bool running) override {
+        static_cast<void>(s48::rotor_restart_007ddec0(rotor_, running, tuning_, rng_));
+        sync();
+    }
+    void reset() override {
+        static_cast<void>(s48::rotor_reset_007e1c60(rotor_, rng_));
+        sync();
+    }
+    void stop_engine() override {
+        static_cast<void>(s48::rotor_stop_engine_007ddf10(rotor_));
+        sync();
+    }
+    void step_rpm(float target, float dt) override {
+        s48::rotor_step_rpm_007ec180(rotor_, target, dt, tuning_);
+    }
+    void apply_spin(float dt) override { static_cast<void>(s48::rotor_apply_spin_007ec1f0(rotor_, dt)); }
+    void blur_blend() override { static_cast<void>(s48::rotor_blur_blend_007ec3b0(rotor_, tuning_)); }
+
+private:
+    void sync() noexcept { stopped_9 = rotor_.stopped_9; }
+    s48::PlaneRotor rotor_;
+    s48::RotorTuning tuning_;
+    s48::Rng rng_;
+};
+}  // namespace
+
+void GameUnitsHost::Impl::build_plane_engine_list(GameUnitSlot& plane) {
+    plane.plane_engines_c98.clear();
+    const int type = plane.row.type_id;
+    const std::int32_t count = static_cast<std::int32_t>(
+        lua.read_vehicle_class_number(type, "NumEngines", 0.0f));
+    plane.plane_num_engines_140 = count;
+    const bool jet_engines = lua.read_vehicle_class_boolean(type, "JetEngines", false);
+    s48::RotorTuning tuning;
+    if (lua.plane_globals_loaded()) {
+        const bsp::GameTuningBlock& g = lua.plane_globals();
+        tuning.speed_base_160 = g.rotor_speed_base;
+        tuning.speed_random_168 = g.rotor_speed_random;
+        tuning.still_only_speed_16c = g.rotor_still_only_speed;
+        tuning.blurred_only_speed_170 = g.rotor_blurred_only_speed;
+        tuning.rotor_speed_change_17c = g.rotor_rotor_speed_change;
+    }
+    s48::Rng no_reset_draw;
+    no_reset_draw.uniform = [](int, float, float) -> float {
+        throw std::logic_error("007E1C60: the rotor Reset's 007E1CCF draw has no host site");
+    };
+    no_reset_draw.next_u32 = [](int) -> std::uint32_t {
+        throw std::logic_error("007E1C60: the rotor Reset draws no NextU32");
+    };
+    for (std::int32_t i = 0; i < count; ++i) {
+        if (jet_engines) {
+            auto engine = std::make_unique<PlaneBaseEngine>();
+            engine->init();   // 007ECC85 -> 007E1BA0
+            plane.plane_engines_c98.push_back(std::move(engine));
+        } else {
+            plane.plane_engines_c98.push_back(
+                std::make_unique<PlaneRotorEngine>(tuning, no_reset_draw));
+        }
+    }
+    ++plane_engine_lists_built;
+    plane_engines_built += plane.plane_engines_c98.size();
+}
+
 // 007E2010 / 007E11D0 for the +30h copy: the +7Ch clock advanced by dt and, when it
 // reaches +88h = 3.0, members at or beyond R = 1080 dropped and every world entity
 // answering IsKindOf(6) or (0Fh) within R and not yet listed appended. "In the world
@@ -5342,7 +5455,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
     if constexpr (bsp::kPlaneRetireOnDestroyedDrawCc13Bound) {
-        if (plane_on_destroyed_draw_007bcabb(p.process_index)) ++stock_return_destroy_draws;
+        if (plane_on_destroyed_draw_007bcabb(p, p.process_index)) ++stock_return_destroy_draws;
     }
     if constexpr (kStockReturnDestroyBytesBound) {
         // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
@@ -8314,6 +8427,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 slot->plane_world_velocity[0], slot->plane_world_velocity[1],
                 slot->plane_world_velocity[2]};
             slot->plane_velocity_seeded = true;
+            host.build_plane_engine_list(*slot);   // 007D6327
             host.log.notef("plane spawn: unit=%s heading=%.2f deg forward=(%.4f %.4f %.4f)"
                 " seed=(%.2f %.2f %.2f)", row.name.c_str(),
                 static_cast<double>(row.heading_degrees),

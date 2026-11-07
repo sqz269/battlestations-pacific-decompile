@@ -477,6 +477,11 @@ void GameUnitsHost::report() {
     host.log.notef("summary plane combat death draw bound=%d draws=%llu (007BCABB after "
         "the death flush, packet cc13-landc)",
         bsp::kPlaneCombatDeathRetireDrawCc13Bound ? 1 : 0, host.combat_death_destroy_draws);
+    host.log.notef("summary plane engines lists=%llu engines=%llu stop_alls=%llu "
+        "fires_raised=%llu destroy_calls=%llu (007EC5A0 list; 007CAF10 engine block "
+        "007DE600 / 007DE5B0 / \"enginefire\"; 007D0B80 -> 007EB0B0, goal 5 chain 654)",
+        host.plane_engine_lists_built, host.plane_engines_built, host.plane_engine_stop_alls,
+        host.plane_engine_fires_raised, host.plane_engines_destroyed);
     host.log.notef("summary plane ground state dead tail bound=%d skips=%llu "
         "(007CA50F, packet cc13-landc)",
         bsp::kPlaneGroundStateDeadTailCc13Bound ? 1 : 0, host.ground_state_dead_tail_skips);

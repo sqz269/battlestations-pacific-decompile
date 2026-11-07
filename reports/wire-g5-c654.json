@@ -1,0 +1,33 @@
+{
+  "chain": 654,
+  "slot": "g5-w5",
+  "goal": 5,
+  "picked": "the plane engine list unit+C98h (007EC5A0's engines) and 007CAF10's engine-fire block",
+  "rows": [
+    {"native": "007caf10", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::free_flight_007cc2f0 -> bsp::plane_death_step_007caf10 (src/plane_death_modes.cpp)", "note": "body fixed: the engine block 007CAF64-007CB07E was missing (stop-all at 2*C3C > C14, then C14 = -1, enginefire unless an engine burns, stop-all)"},
+    {"native": "007de600", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp stop_all_plane_engines (007CAF10 engine block x2; 007D0B80 EnginesLost / Explosion-power-lost / Splash arms)"},
+    {"native": "007de5b0", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::free_flight_007cc2f0 engines.any_engine_burning (007CB030)"},
+    {"native": "007eb0b0", "status": "wired", "host_site": "src/game_hosts_units_motion.cpp deliver_plane_failure_messages arms.destroy_engine_at (007D0B80 message 65h arm)"},
+    {"native": "007e23e0", "status": "wired", "host_site": "src/gameplay_seg48_cc13.cpp engine_list_destroy_at_007eb0b0 (from the 007D0B80 arm above)"},
+    {"native": "007ddf00", "status": "wired", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::stop_engine (slot +0Ch, from 007DE600 and 007E23E0)"},
+    {"native": "007ddf10", "status": "wired", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::stop_engine (slot +0Ch, from 007DE600 and 007E23E0)"},
+    {"native": "007e1ba0", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::build_plane_engine_list (plane spawn, 007ECC85 slot 0 of a JetEngines class)"},
+    {"native": "007ec5a0", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::build_plane_engine_list", "reason": "Only its engine list is built; the raw body needs a native plane image, and its effect slots/levels/class loops plus the speed-spread and rotor Init draws are presentation (CC13_RNG_STREAM_CENSUS section 11)."},
+    {"native": "007ebf10", "status": "skipped", "host_site": "src/game_hosts_units.cpp build_plane_engine_list", "reason": "Rotor Init is scene-node visibility and spin scalars nothing reads, plus a stream-1 U(0, 2pi) the census reclassifies as presentation; not run, so no draw is taken."},
+    {"native": "007ddeb0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::restart", "reason": "Slot +4h has no host caller: 007EB270/007EB350 (fx component flight state / restart) are not built."},
+    {"native": "007ddec0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::restart", "reason": "Slot +4h has no host caller (fx component 007EB270/007EB350 not built); its Reset draw 007E1CCF has no host site."},
+    {"native": "007e1c00", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::reset", "reason": "Slot +8h is reached only from 007DE630 ResetAll (007B97F0 RestoreFullHealth) and Restart; neither runs in this host."},
+    {"native": "007e1c60", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::reset", "reason": "Same callers as 007E1C00 (not run); its stream-1 draw 007E1CCF has no host site, so the slot throws if reached."},
+    {"native": "007de630", "status": "skipped", "host_site": "none", "reason": "Only caller is 007B97F0 RestoreFullHealth (restore_full_health_007b97f0), which no host code calls."},
+    {"native": "007de5e0", "status": "skipped", "host_site": "none", "reason": "Only caller is 007BBDC0 SetControlFactor (set_control_factor_007bbdc0), which no host code calls."},
+    {"native": "007de540", "status": "skipped", "host_site": "none", "reason": "Called by 007C6500 AdvancePose; rotors are not Init'd (presentation) and have no scene nodes, so the spin has no reader."},
+    {"native": "007de580", "status": "skipped", "host_site": "none", "reason": "Same as 007DE540 (007C6500 AdvancePose blur blend, presentation only)."},
+    {"native": "007ec180", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::step_rpm", "reason": "Slot +10h is called by the fx component step 007EB380, which is not built."},
+    {"native": "007ec1f0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::apply_spin", "reason": "Slot +14h is reached only through 007DE540 (not run, see above)."},
+    {"native": "007ec3b0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneRotorEngine::blur_blend", "reason": "Slot +18h is reached only through 007DE580 / Restart (not run)."},
+    {"native": "007e23b0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::step_rpm", "reason": "Empty base slot +10h; its callers (fx step 007EB380) are not built."},
+    {"native": "007e23c0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::apply_spin", "reason": "Empty base slot +14h; reached only through 007DE540 (not run)."},
+    {"native": "007e23d0", "status": "skipped", "host_site": "src/game_hosts_units.cpp PlaneBaseEngine::blur_blend", "reason": "Empty base slot +18h; reached only through 007DE580 (not run)."},
+    {"native": "007de490", "status": "skipped", "host_site": "none", "reason": "Engine sound step; its only caller is the fx component step 007EB380, which is not built (no sound objects at component+10h)."}
+  ]
+}

@@ -1,11 +1,21 @@
 // GameUnitsHost::motion_step_00825f20, the units fixed-step motion tick (split out of game_hosts_units.cpp).
 #include "bsp/game_hosts_units_internal.hpp"
 #include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
+#include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
 
 namespace bsp::game {
 
 namespace {
 namespace s47_effects = bsp::gameplay_seg47_cc13;
+namespace s48_engines = bsp::gameplay_seg48_cc13;
+
+// Goal 5 chain 654. 007DE600 BSP_PlaneEngineList_StopAll on the plane's list at
+// unit+C98h: slot +0Ch on each engine (007DDF00 base, 007DDF10 rotor).
+void stop_all_plane_engines(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
+    s48_engines::engine_list_stop_all_007de600(unit.plane_engine_list_c98());
+    ++host.plane_engine_stop_alls;
+    host.done("Plane::stop_all_engines_007de600", 0x007de600u);
+}
 
 // Goal 5 chain 645. The plane's vtable[194h] 007BBFA0 BSP_Plane_StartNamedEffect
 // (bsp::gameplay_seg47_cc13::named_effect_007bbfa0) on a host plane: the death-mode
@@ -15,8 +25,12 @@ namespace s47_effects = bsp::gameplay_seg47_cc13;
 // is unit+900h == 7; unit->vtable[38h] 007B8E60 the +B1Ch speed 007D8020 caches;
 // unit+C36h and the entry unit+C10h; game+1FE4h 0. LABELLED, as before: unit+DFCh
 // (rammed by a unit) is clear, since this host has no ram hit. The ECX = 0 draw
-// 007BC3C7 is 00BD2F10 on the gunnery host's stream 0; "enginefire" and
-// "spinning" (the arms that call 00BD2FC0 / draw on stream 1) are not raised here.
+// 007BC3C7 is 00BD2F10 on the gunnery host's stream 0. "spinning" (the arm that
+// draws on stream 1) is not raised here. Goal 5 chain 654: "enginefire" is raised
+// (007CAF10's engine block); its 007BC0FC NextU32 (ECX = EDI + 2 = 1) is
+// 00BD2FC0 on the shared stream-1 generator the gunnery host's 00BD2F10 draws
+// use, the startup RandomThreads' stream 1, and its count [unit+538h]+7Ch is the
+// class's NumEngines, the key +140h reads too.
 s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
     GameUnitSlot& unit, std::size_t index, s47_effects::NamedEffect effect) {
     GameGunneryHost* const gh = host.gunnery.get();
@@ -28,6 +42,7 @@ s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
     ne.rammed_dfc = false;
     ne.spinning_c36 = unit.plane_death_c36;
     ne.timer_c10 = unit.plane_death_timer_c10;
+    ne.engine_count_7c = unit.plane_num_engines_140;
     ne.session_mode_1fe4 = 0;
     // planepartclasses.lua ExplosionExplosionDelay, which 004A9BD0 stores at
     // [00E18710] / [00E1870C]; read once, as the death-mode step read it.
@@ -46,8 +61,10 @@ s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
         if (gh == nullptr) throw std::logic_error("007BBFA0: no gunnery host owns 00BD2F10");
         return gh->death_mode_draw_00bd2f10(stream, index, lo, hi);
     };
-    rng.next_u32 = [](int) -> std::uint32_t {
-        throw std::logic_error("007BBFA0: NextU32 is the enginefire arm's");
+    rng.next_u32 = [gh](int stream) -> std::uint32_t {
+        if (gh == nullptr) throw std::logic_error("007BBFA0: no gunnery host owns the shared stream");
+        return require_startup_random().next_00bd2fc0(
+            stream == 1 ? bsp::RandomStream::secondary : bsp::RandomStream::primary);
     };
     s47_effects::NamedEffectResult r = s47_effects::named_effect_007bbfa0(ne, g, rng);
     unit.plane_death_timer_c10 = r.timer_c10;   // 007BBFA0's own unit+C10h store
@@ -73,11 +90,15 @@ s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
 //    the other plane model reads in this host; unit+100h is the world pose's y;
 //  * [[game+19CCh]+4ACh] is set: the drain runs only inside the fan-out's world
 //    gate (00875E78, rows 9..13, fixed_step_fanout.cpp);
-//  * the arms' presentation calls have no host object and are records: 007DE600
-//    (engine list unit+C98h), 007BC4E0 (crash effect), 00498F80 / 0049A760 (the
-//    debris marker, so +C4Ch stays clear), 00868420 (explosion effect) and the
-//    wing break block from 007D0DD7. vtable[70h](1) is the caller's +C3Ah
-//    handling. 00926D90(unit, 1), the explosion arm's Kill, is the return value.
+//  * goal 5 chain 654: 007DE600 and 007EB0B0 run on the plane's engine list
+//    unit+C98h (Impl::build_plane_engine_list); 007E23E0's point effect of the
+//    class +220h, gated on the scene node +4A4h (taken as present, as the model
+//    +360h is), is presentation and a record;
+//  * the arms' other presentation calls have no host object and are records:
+//    007BC4E0 (crash effect), 00498F80 / 0049A760 (the debris marker, so +C4Ch
+//    stays clear), 00868420 (explosion effect) and the wing break block from
+//    007D0DD7. vtable[70h](1) is the caller's +C3Ah handling. 00926D90(unit, 1),
+//    the explosion arm's Kill, is the return value.
 bool deliver_plane_failure_messages(GameUnitsHost::Impl& host, GameUnitSlot& unit,
     const std::vector<s47_effects::FailureMessage>& routed, bool dead_5d) {
     s47_effects::PlaneFailureState st;
@@ -98,11 +119,14 @@ bool deliver_plane_failure_messages(GameUnitsHost::Impl& host, GameUnitSlot& uni
     env.marker_service_on = true;
     bool killed = false;
     s47_effects::StateMessageHost arms;
-    arms.stop_all_engines = [&host] {
-        host.record("Plane::stop_all_engines_007de600", 0x007de600u);
-    };
-    arms.destroy_engine_at = [&host](std::uint32_t) {
-        host.record("Plane::destroy_engine_at_007eb0b0", 0x007eb0b0u);
+    arms.stop_all_engines = [&host, &unit] { stop_all_plane_engines(host, unit); };
+    arms.destroy_engine_at = [&host, &unit](std::uint32_t engine_index) {
+        // 007D0D49-007D0D57: 007EB0B0(unit+C98h, the message's +24h index).
+        const bool effect = s48_engines::engine_list_destroy_at_007eb0b0(
+            unit.plane_engine_list_c98(), static_cast<std::int32_t>(engine_index), true);
+        ++host.plane_engines_destroyed;
+        host.done("Plane::destroy_engine_at_007eb0b0", 0x007eb0b0u);
+        if (effect) host.record("PlaneEngine::fire_effect_007e2419", 0x007e2419u);
     };
     arms.bind_crash_effect = [&host] {
         host.record("Plane::bind_crash_effect_007bc4e0", 0x007bc4e0u);
@@ -508,7 +532,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // flush is taken here (as the +5Dh store above), so across two
                         // planes dying in one step the stream-0 order interleaves.
                         if constexpr (bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
-                            if (host.plane_on_destroyed_draw_007bcabb(index)) {
+                            if (host.plane_on_destroyed_draw_007bcabb(slot, index)) {
                                 ++host.combat_death_destroy_draws;
                             }
                         }
@@ -516,7 +540,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // The Kill's own flush: 007BCAA0's 007BCABB draw, and the
                             // plane leaves (no mode, so nothing else removes it).
                             if constexpr (!bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
-                                host.plane_on_destroyed_draw_007bcabb(index);
+                                host.plane_on_destroyed_draw_007bcabb(slot, index);
                             }
                             slot.plane_death_removed = true;
                             ++host.funnel_kill_destroy_only;
@@ -1446,9 +1470,50 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 dsi.timer_c10 = unit_.plane_death_timer_c10;
                                 dsi.dead_timer_c3c = unit_.plane_lost_drag_timer_c3c;
                                 dsi.step = step;
+                                // Goal 5 chain 654: the engine block. Single player:
+                                // [00E188A8]+1FE4h is not 2. ctl+94h is 007D7A80's byte.
+                                dsi.session_client_1fe4 = false;
+                                dsi.controller_byte_94 = unit_.plane_ctl_94;
+                                dsi.engine_fire_timer_c14 = unit_.plane_engine_fire_timer_c14;
+                                dsi.engine_count_140 = unit_.plane_num_engines_140;
+                                bsp::PlaneDeathEngineCalls engines;
+                                engines.stop_all_engines = [this] {
+                                    stop_all_plane_engines(owner_, unit_);
+                                };
+                                engines.any_engine_burning = [this] {
+                                    owner_.done("Plane::any_engine_burning_007de5b0", 0x007de5b0u);
+                                    return s48_engines::engine_list_any_burning_007de5b0(
+                                        unit_.plane_engine_list_c98());
+                                };
+                                engines.raise_engine_fire = [this] {
+                                    // 007CB039-007CB06E: vtable[194h](&"enginefire", 0),
+                                    // 007BBFA0 with no Lua args, so the engine is drawn;
+                                    // its 65h copy reaches 007D0B80 on the dead plane.
+                                    const s47_effects::NamedEffectResult fire =
+                                        run_plane_named_effect(owner_, unit_,
+                                            unit_.process_index,
+                                            s47_effects::NamedEffect::EngineFire);
+                                    if (deliver_plane_failure_messages(owner_, unit_,
+                                            fire.routed, true)) {
+                                        unit_.plane_death_removed = true;
+                                    }
+                                    ++owner_.plane_engine_fires_raised;
+                                    owner_.log.notef("plane engine fire: unit=%s t=%.2f "
+                                        "dead_for=%.2f engines=%d forced=%d routed=%zu "
+                                        "removed=%d (007CAF10 -> 007BBFA0 \"enginefire\" "
+                                        "-> 007D0B80 -> 007EB0B0, goal 5 chain 654)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(unit_.plane_lost_drag_timer_c3c),
+                                        unit_.plane_num_engines_140,
+                                        fire.forced_explosion ? 1 : 0, fire.routed.size(),
+                                        unit_.plane_death_removed ? 1 : 0);
+                                    return unit_.plane_death_timer_c10;
+                                };
                                 const bsp::PlaneDeathStepResult dso =
-                                    bsp::plane_death_step_007caf10(dsi);
+                                    bsp::plane_death_step_007caf10(dsi, engines);
                                 unit_.plane_lost_drag_timer_c3c = dso.dead_timer_c3c;
+                                unit_.plane_engine_fire_timer_c14 = dso.engine_fire_timer_c14;
                                 if (dso.explode) {
                                     // Goal 5 chain 645: 007CB0C1..007CB0F8 store
                                     // unit+C10h = -1.0f (00D7A260), then vtable[194h]
