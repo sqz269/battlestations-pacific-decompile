@@ -725,6 +725,166 @@ private:
     std::function<void(bool)> push_;
 };
 
+// Goal 5 chain 663. StartDialog 008B0540, KillDialog 008B0940 and GetActDialogIDs
+// 008CB730 on their bodies lua_start_dialog / lua_kill_dialog / lua_get_act_dialog_ids
+// (src/engine_seg56_cc13.cpp). Their services are the dialog panel owner
+// [[00E188A8]+21E4h], which this host keeps as its active-dialog map and parsed
+// entries (the rows these bodies replace kept them the same way):
+//  * 00451A90 dialog_start_from_lua, after argument 0 (008B0660);
+//  * [00E188A8]+1FE4h, 0 in single player (game_session_mode), so the session
+//    message E1 (0044C970) is not reached;
+//  * 004514A0 dialog_kill;
+//  * 00450750 dialog_active_ids, then 00B672F0 per id into the one result table.
+// Every other ContentHost / PresentationHost site belongs to another binding.
+class ScriptDialogBinding final : public bsp::cc13_seg56::DialogStartHost,
+                                  public bsp::cc13_seg56::ContentHost,
+                                  public bsp::cc13_seg56::PresentationHost,
+                                  public bsp::cc13_seg56::LuaStringListResults {
+public:
+    struct Calls {
+        std::function<void(const std::string&, int)> start;           // 00451A90
+        std::function<std::int32_t()> session_mode;                     // game+1FE4h
+        std::function<void(const std::string&)> kill;                  // 004514A0
+        std::function<std::vector<std::string>()> active_ids;          // 00450750
+        std::function<void(const std::vector<std::string>&)> push_ids; // 00B672F0 table
+    };
+    explicit ScriptDialogBinding(Calls calls) : calls_(std::move(calls)) {}
+
+    // --- DialogStartHost ---
+    void dialog_start_from_lua(const std::string& name, bsp::cc13_seg56::LuaArgs&,
+                               int index) override {
+        calls_.start(name, index);
+    }
+    std::int32_t game_session_mode_1fe4() override { return calls_.session_mode(); }
+    void session_send_dialog_e1(const std::string&, bsp::cc13_seg56::LuaArgs&, int) override {
+        unreached("0044C970 (session message E1)");
+    }
+    // --- ContentHost ---
+    void dialog_kill(const std::string& name) override { calls_.kill(name); }
+    int narrative_size() override { unreached("00733260"); }
+    void narrative_clear() override { unreached("00734FA0"); }
+    void localization_register_table_name(const std::string&) override { unreached("00AA0D30"); }
+    void localization_reload_tables(int) override { unreached("00AA06D0"); }
+    void atmosphere_replace_sky_box(const std::string&) override { unreached("00BBDF60"); }
+    void rain_set_drop_num_percent(float) override { unreached("008003B0"); }
+    void rain_settings_store_70(float) override { unreached("rain settings +70h"); }
+    void time_of_day_set(int, int, int, int) override { unreached("004439B0"); }
+    void time_of_day_split(int&, int&, int&) override { unreached("00443A30"); }
+    void light_store_float(std::size_t, float) override { unreached("game+5FCh"); }
+    void scene_ensure_default_lighting() override { unreached("004C9EC0"); }
+    std::int32_t vehicle_class_remap(int) override { unreached("00437F50 +2010h"); }
+    void narrative_send_to_party(int, const std::string&) override { unreached("00734B10"); }
+    void narrative_send_to_player(int, const std::string&) override { unreached("00734BF0"); }
+    void dialog_break(const std::string&) override { unreached("00451B90"); }
+    void point_effect_stop_children(void*) override { unreached("00867B10"); }
+    void point_effect_set_byte9(void*) override { unreached("effect+9"); }
+    void effect_manager_stop_matching(void*) override { unreached("004D1100"); }
+    // --- PresentationHost ---
+    std::vector<std::string> dialog_active_ids() override { return calls_.active_ids(); }
+    float voice_current_level_d4() override { unreached("voice +D4h"); }
+    void voice_begin_sound_fade(float, float, const std::string&) override {
+        unreached("005B9760");
+    }
+    float global_config_default_fade_e0() override { unreached("00432650 +E0h"); }
+    void set_skip_movie_name(const std::string&) override { unreached("game+21E0h +19Ch"); }
+    void* lua_table_entity_ptr(bsp::cc13_seg56::LuaArgs&, int) override { unreached("00888D20"); }
+    void entity_set_force_3d_visible_2f0(void*, bool) override { unreached("entity+2F0h"); }
+    void listener_add(const std::string&, const std::string&, bsp::cc13_seg56::LuaArgs&,
+                      int) override {
+        unreached("00980C10");
+    }
+    void listener_remove(const std::string&, const std::string&) override {
+        unreached("00980D30");
+    }
+    bool listener_active(const std::string&, const std::string&) override {
+        unreached("00980E00");
+    }
+    std::int32_t game_loading_depth_644() override { unreached("game+644h"); }
+    void please_wait_screen_hide() override { unreached("0060D3E0"); }
+    void game_set_cinematic_mode(int, int, int) override { unreached("004CD0F0"); }
+    // --- LuaStringListResults ---
+    void push_string_array(const std::vector<std::string>& values) override {
+        calls_.push_ids(values);
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScriptDialogBinding: the dialog rows do not reach ")
+                               + site);
+    }
+    Calls calls_;
+};
+
+// Goal 5 chain 663. DisplayScores 008C20D0 and HideScoreDisplay 008C24B0 on their bodies
+// lua_display_scores / lua_hide_score_display (src/engine_seg56_cc13.cpp). The bodies
+// read the arguments (00B66290 / 00B662B0) and call the HUD counters on
+// [[00E198C4]+C8h]: 0052B780 for six arguments (008C22DA), 0052B620 for four
+// (008C241A), 0052B900 to hide (008C25E5). SUBSTITUTION, labelled, kept from the rows
+// these bodies replace: those three are this host's per-id score lines (the HUD
+// message 23h they post is logged, not drawn). Every other HudScoreHost /
+// InterfaceHost site belongs to another binding.
+class ScoreDisplayBinding final : public bsp::cc13_seg56::HudScoreHost,
+                                  public bsp::cc13_seg56::InterfaceHost {
+public:
+    struct Calls {
+        // 0052B620 (pair false) / 0052B780 (pair true, with e and f).
+        std::function<void(int, int, const std::string&, const std::string&, bool, int, int)>
+            show;
+        std::function<void(int, int)> hide;   // 0052B900
+    };
+    explicit ScoreDisplayBinding(Calls calls) : calls_(std::move(calls)) {}
+
+    // --- HudScoreHost ---
+    void display_score(int a, int b, const std::string& c, const std::string& d) override {
+        calls_.show(a, b, c, d, false, 0, 0);
+    }
+    void display_score_pair(int a, int b, const std::string& c, const std::string& d, int e,
+                            int f) override {
+        calls_.show(a, b, c, d, true, e, f);
+    }
+    std::vector<void*> entity_list_0088a900(bsp::cc13_seg56::LuaArgs&, int) override {
+        unreached("0088A900");
+    }
+    void display_unit_hp(int, const std::vector<void*>&, const std::string&) override {
+        unreached("0052B400");
+    }
+    // --- InterfaceHost ---
+    void hud_counters_hide_score(int first, int second) override { calls_.hide(first, second); }
+    void music_set_target_level(float) override { unreached("00A77860"); }
+    float map_cursor_x_554() override { unreached("map+554h"); }
+    float map_cursor_z_558() override { unreached("map+558h"); }
+    std::int32_t map_zoom_2c() override { unreached("map+2Ch"); }
+    void map_force_cursor_pos(const bsp::cc13_seg56::Vec3&) override { unreached("0059AD20"); }
+    void map_release_cursor_0059ad50() override { unreached("0059AD50"); }
+    void map_set_node_visible_by_name(const std::string&, bool) override { unreached("005A4020"); }
+    void map_set_unit_highlight(void*, bool) override { unreached("005AAAD0"); }
+    void music_set_channel_byte_4e(int, bool) override { unreached("00A77840"); }
+    void engine_movie_screen_black_bars(bool) override { unreached("005CB0F0"); }
+    void movie_screen_black_bars(bool) override { unreached("005CBC30"); }
+    void input_set_context_level(int, int) override { unreached("00A933F0"); }
+    bool input_record_enabled(int) override { unreached("input record +28h"); }
+    float input_record_value(int) override { unreached("input record +24h"); }
+    void options_save_input_modifiers() override { unreached("005F0B90"); }
+    bool interface_present() override { unreached("00E198C4"); }
+    bool limbo_screen_present() override { unreached("00E198C4+E8h"); }
+    bool limbo_screen_active_byte4() override { unreached("limbo+4h"); }
+    void* gui_find_widget(bsp::cc13_seg56::LuaArgs&, int) override { unreached("008C9F80"); }
+    bool gui_widget_vcall_38(void*) override { unreached("widget vtable+38h"); }
+    std::string gui_widget_raw_text(void*) override { unreached("widget+F4h"); }
+    void marker_add_gui_highlight(void*, bool, bool) override { unreached("006DAE20"); }
+    void marker_remove_gui_highlight(void*) override { unreached("006DC5A0"); }
+    void gui_load_page_and_show(const std::string&) override { unreached("00AA5840"); }
+    void objectives_toggle_disabled_byte(bool) override { unreached("00E198C4+60h"); }
+    void hud_counters_hide_unit_hp(int) override { unreached("0052B570"); }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScoreDisplayBinding: the score rows do not reach ")
+                               + site);
+    }
+    Calls calls_;
+};
+
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
 public:
     explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
@@ -6821,59 +6981,73 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);
-    } else if (kMissionEndBound && std::strcmp(binding->name, "StartDialog") == 0) {
-        // Argument 1 the id (008B0660); argument 2 the dialog table, which the
-        // panel sequence plays (render and audio side, not modelled). The id is
-        // registered until KillDialog: nothing here plays a dialog to its end.
-        const std::string id = get_string(0);
-        if (!id.empty()) active_dialogs_[id] = mission_clock_;
-        ++dialog_starts_;
-        if (kDialogSequencerBound && !id.empty() && state_ != nullptr &&
-            lua_type(state_, stack_slot(1)) == LUA_TTABLE) {
-            // 00451A90: 00451920 looks the id up or inserts it, and 004507D0
-            // rebuilds the entry from the table.
-            DialogEntry entry;
-            dialog_parse_entry(stack_slot(1), entry);
-            dialog_entries_[id] = entry;
-            log_.notef("  dialog entry \"%s\" commands=%zu priority=%.1f default_pause=%.2f",
-                id.c_str(), entry.commands.size(), static_cast<double>(entry.priority),
-                static_cast<double>(entry.default_pause));
-        }
-        log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 -> 00451A90)", id.c_str(),
-            active_dialogs_.size());
-        results = 0;
-    } else if (kMissionEndBound && std::strcmp(binding->name, "KillDialog") == 0) {
-        const std::string id = get_string(0);
-        active_dialogs_.erase(id);
-        if (kDialogSequencerBound) {
-            dialog_entries_.erase(id);   // 004514A0
-            if (_stricmp(dialog_current_.c_str(), id.c_str()) == 0) dialog_current_.clear();
-        }
-        ++dialog_kills_;
-        log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 -> 004514A0)", id.c_str(),
-            active_dialogs_.size());
-        results = 0;
-    } else if (kMissionEndBound && std::strcmp(binding->name, "GetActDialogIDs") == 0) {
-        // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, key) per entry
-        // in map order; the table is the one result.
-        ++dialog_queries_;
-        if (state_ != nullptr) {
-            lua_createtable(state_, static_cast<int>(active_dialogs_.size()), 0);
-            int n = 0;
-            for (const auto& dialog : active_dialogs_) {
-                // 00B672F0 calls native_lua_set_lstring_at_00b672f0; OFF keeps rawseti.
-                if constexpr (kWireScriptOrdersHostBound) {
-                    ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
-                    ScriptOrdersNativeText value(dialog.first);
-                    bsp::native_lua_set_lstring_at_00b672f0(table.object, ++n, value.text);
-                } else {
-                lua_pushstring(state_, dialog.first.c_str());
-                lua_rawseti(state_, -2, ++n);
+    } else if (kMissionEndBound && (std::strcmp(binding->name, "StartDialog") == 0 ||
+                                    std::strcmp(binding->name, "KillDialog") == 0 ||
+                                    std::strcmp(binding->name, "GetActDialogIDs") == 0)) {
+        // Goal 5 chain 663: the three dialog rows on their bodies over ScriptDialogBinding.
+        ScriptDialogBinding dialogs(ScriptDialogBinding::Calls{
+            [this](const std::string& id, int index) {
+                // 00451A90. The id is registered until KillDialog; the dialog table
+                // (argument `index`) is what the panel sequence plays (render and
+                // audio side, not modelled), so nothing here plays it to its end.
+                if (!id.empty()) active_dialogs_[id] = mission_clock_;
+                ++dialog_starts_;
+                if (kDialogSequencerBound && !id.empty() && state_ != nullptr &&
+                    lua_type(state_, stack_slot(index)) == LUA_TTABLE) {
+                    // 00451920 looks the id up or inserts it, and 004507D0 rebuilds
+                    // the entry from the table.
+                    DialogEntry entry;
+                    dialog_parse_entry(stack_slot(index), entry);
+                    dialog_entries_[id] = entry;
+                    log_.notef("  dialog entry \"%s\" commands=%zu priority=%.1f "
+                        "default_pause=%.2f", id.c_str(), entry.commands.size(),
+                        static_cast<double>(entry.priority),
+                        static_cast<double>(entry.default_pause));
                 }
-            }
-            results = 1;
+                log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 body -> 00451A90)",
+                    id.c_str(), active_dialogs_.size());
+            },
+            [this]() { return static_cast<std::int32_t>(game_session_mode()); },
+            [this](const std::string& id) {
+                // 004514A0.
+                active_dialogs_.erase(id);
+                if (kDialogSequencerBound) {
+                    dialog_entries_.erase(id);
+                    if (_stricmp(dialog_current_.c_str(), id.c_str()) == 0) {
+                        dialog_current_.clear();
+                    }
+                }
+                ++dialog_kills_;
+                log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 body -> 004514A0)",
+                    id.c_str(), active_dialogs_.size());
+            },
+            [this]() {
+                // 00450750: the ids in map order.
+                ++dialog_queries_;
+                std::vector<std::string> ids;
+                ids.reserve(active_dialogs_.size());
+                for (const auto& dialog : active_dialogs_) ids.push_back(dialog.first);
+                return ids;
+            },
+            [this](const std::vector<std::string>& ids) {
+                // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, id) per id.
+                if (state_ == nullptr) return;
+                lua_createtable(state_, static_cast<int>(ids.size()), 0);
+                int n = 0;
+                for (const std::string& id : ids) {
+                    ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
+                    ScriptOrdersNativeText value(id);
+                    bsp::native_lua_set_lstring_at_00b672f0(table.object, ++n, value.text);
+                }
+            }});
+        RepairBindingArgs args(*this);
+        if (std::strcmp(binding->name, "StartDialog") == 0) {
+            results = bsp::cc13_seg56::lua_start_dialog(args, dialogs);
+        } else if (std::strcmp(binding->name, "KillDialog") == 0) {
+            results = bsp::cc13_seg56::lua_kill_dialog(args, dialogs);
         } else {
-            results = 0;
+            const int pushed = bsp::cc13_seg56::lua_get_act_dialog_ids(dialogs, dialogs);
+            results = state_ != nullptr ? pushed : 0;
         }
     } else if (std::strcmp(binding->name, "EnableInput") == 0) {
         // 008AFBD0: argument 0 the boolean, context 1Eh at level 0 (enable) or
@@ -6970,48 +7144,48 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             ++narrative_enqueues_;
         });
         results = bsp::cc13_seg56::lua_mission_narrative_post(entry_point, args, host);
-    } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
-        // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
-        // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
-        // arg3) (008C241A), both on [[00E198C4]+C8h], posting the HUD score
-        // message 23h through 00772330. Any other count posts nothing. No result.
-        const int n = count();
-        if (n == 6 || n == 4) {
-            const int id = static_cast<int>(argument_number(0));
-            const int flag = static_cast<int>(argument_number(1));
-            const std::string line1 = expand_score_references(state_, get_string(2));
-            const std::string line2 = expand_score_references(state_, get_string(3));
-            ++score_posts_;
-            std::string shown = line1 + "\n" + line2;
-            if (n == 6) {
-                char extra[48];
-                std::snprintf(extra, sizeof(extra), "\n%d %d",
-                    static_cast<int>(argument_number(4)), static_cast<int>(argument_number(5)));
-                shown += extra;
-            }
-            auto it = score_lines_.find(id);
-            if (it == score_lines_.end() || it->second != shown) {
-                score_lines_[id] = shown;
-                ++score_changes_;
-                if (score_changes_ <= 400) {
-                    log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
-                        "(008C20D0 -> %s, HUD message 23h)", id, flag, line1.c_str(),
-                        line2.c_str(), n, static_cast<double>(mission_clock_),
-                        n == 6 ? "0052B780" : "0052B620");
+    } else if (std::strcmp(binding->name, "DisplayScores") == 0 ||
+               std::strcmp(binding->name, "HideScoreDisplay") == 0) {
+        // Goal 5 chain 663: 008C20D0 / 008C24B0 on their bodies over ScoreDisplayBinding.
+        // DisplayScores: six arguments -> 0052B780 (008C22DA), four -> 0052B620
+        // (008C241A), any other count posts nothing; HideScoreDisplay: 0052B900
+        // (008C25E5). Both on [[00E198C4]+C8h], the HUD score message 23h through
+        // 00772330. Neither pushes a result.
+        ScoreDisplayBinding scores(ScoreDisplayBinding::Calls{
+            [this](int id, int flag, const std::string& c, const std::string& d, bool pair,
+                   int e, int f) {
+                const std::string line1 = expand_score_references(state_, c);
+                const std::string line2 = expand_score_references(state_, d);
+                ++score_posts_;
+                std::string shown = line1 + "\n" + line2;
+                if (pair) {
+                    char extra[48];
+                    std::snprintf(extra, sizeof(extra), "\n%d %d", e, f);
+                    shown += extra;
                 }
-            }
-        }
-        results = 0;
-    } else if (std::strcmp(binding->name, "HideScoreDisplay") == 0) {
-        // 008C24B0: two integer arguments -> 0052B900 (008C25E5), the same 23h
-        // message's hide form. No result.
-        const int id = static_cast<int>(argument_number(0));
-        ++score_hides_;
-        if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
-            log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 -> 0052B900)", id,
-                static_cast<int>(argument_number(1)), static_cast<double>(mission_clock_));
-        }
-        results = 0;
+                auto it = score_lines_.find(id);
+                if (it == score_lines_.end() || it->second != shown) {
+                    score_lines_[id] = shown;
+                    ++score_changes_;
+                    if (score_changes_ <= 400) {
+                        log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
+                            "(008C20D0 body -> %s, HUD message 23h)", id, flag, line1.c_str(),
+                            line2.c_str(), pair ? 6 : 4, static_cast<double>(mission_clock_),
+                            pair ? "0052B780" : "0052B620");
+                    }
+                }
+            },
+            [this](int id, int second) {
+                ++score_hides_;
+                if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
+                    log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 body -> "
+                        "0052B900)", id, second, static_cast<double>(mission_clock_));
+                }
+            }});
+        RepairBindingArgs args(*this);
+        results = std::strcmp(binding->name, "DisplayScores") == 0
+            ? bsp::cc13_seg56::lua_display_scores(args, scores)
+            : bsp::cc13_seg56::lua_hide_score_display(args, scores);
     } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
         // 008B15B0 calls 00734FA0 once; its callback releases the same
         // queued/showing registry references as the previous host arm.
