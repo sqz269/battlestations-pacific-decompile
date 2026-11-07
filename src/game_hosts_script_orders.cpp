@@ -10,7 +10,10 @@
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/band_0071_cc13.hpp"
+#include "bsp/frontend_screen_sets.hpp"   // chain 648: GameInputContextManagerBinding
+#include <cstring>
 #include <stdexcept>
+#include <string>
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
 #include "bsp/strafe_task.hpp"
@@ -436,6 +439,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"Countdown", 0x008b16e0u},
     {"CountdownCancel", 0x008b19a0u},
     {"CountdownTimeLeft", 0x008b1b40u},
+    // Chain 648: EnableInput's context 1Eh level on the application's input
+    // manager. Handled only once bind_input_context_manager has run.
+    {"EnableInput", 0x008afbd0u},
     // Packet cc9_lua_capture_percentage: JM05.lua:5178-5216. Handled only with
     // kLuaCapturePercentageBound.
     {"GetCapturePercentage", 0x0089b840u},
@@ -515,6 +521,74 @@ public:
     void music_set_target_level(float level) override {
         music_dialog().set_music_target_level(level);
     }
+};
+
+// Chain 648: the application's input context manager (GameInputContextManagerBinding,
+// the same native owner and configuration the action poll uses).
+bsp::GameInputContextManagerBinding*& bound_input_context_manager() noexcept {
+    static bsp::GameInputContextManagerBinding* manager = nullptr;
+    return manager;
+}
+
+// The InterfaceHost of EnableInput 008AFBD0, whose one host call (bsp.py show
+// 008afbd0) is 00A933F0 on 004BEC00's input manager with context 1Eh. The
+// manager's table at owner+10h (count +14h) holds slot 1Eh once the input
+// configuration has loaded: 00698A10's action parse ends by configuring action
+// 128h in context 1Eh, and 00A93C80 grows the table to it. 00A933F0 itself
+// writes base + index*4 unchecked, so a smaller table is refused here rather
+// than written past. Every other InterfaceHost site belongs to another binding.
+class ScriptInputContextBinding final : public bsp::cc13_seg56::InterfaceHost {
+public:
+    explicit ScriptInputContextBinding(bsp::GameInputContextManagerBinding& manager)
+        : manager_(manager) {}
+
+    void input_set_context_level(int context, int level) override {
+        void* const owner = manager_.current_owner();   // 004BEC00
+        const auto* const raw = static_cast<const std::uint8_t*>(owner);
+        std::int32_t count = 0;
+        std::memcpy(&count, raw + 0x14, sizeof count);
+        if (context < 0 || context >= count) {
+            throw std::logic_error("EnableInput: the input context table has no slot "
+                                   + std::to_string(context));
+        }
+        manager_.set_level(owner, static_cast<std::uint32_t>(context),
+                           static_cast<std::uint32_t>(level));   // 00A933F0
+    }
+
+    void music_set_target_level(float) override { unreached("00A77860"); }
+    float map_cursor_x_554() override { unreached("map+554h"); }
+    float map_cursor_z_558() override { unreached("map+558h"); }
+    std::int32_t map_zoom_2c() override { unreached("map+2Ch"); }
+    void map_force_cursor_pos(const bsp::cc13_seg56::Vec3&) override { unreached("0059AD20"); }
+    void map_release_cursor_0059ad50() override { unreached("0059AD50"); }
+    void map_set_node_visible_by_name(const std::string&, bool) override { unreached("005A4020"); }
+    void map_set_unit_highlight(void*, bool) override { unreached("005AAAD0"); }
+    void music_set_channel_byte_4e(int, bool) override { unreached("00A77840"); }
+    void engine_movie_screen_black_bars(bool) override { unreached("005CB0F0"); }
+    void movie_screen_black_bars(bool) override { unreached("005CBC30"); }
+    bool input_record_enabled(int) override { unreached("input record +28h"); }
+    float input_record_value(int) override { unreached("input record +24h"); }
+    void options_save_input_modifiers() override { unreached("005F0B90"); }
+    bool interface_present() override { unreached("00E198C4"); }
+    bool limbo_screen_present() override { unreached("00E198C4+E8h"); }
+    bool limbo_screen_active_byte4() override { unreached("limbo+4h"); }
+    void* gui_find_widget(bsp::cc13_seg56::LuaArgs&, int) override { unreached("008C9F80"); }
+    bool gui_widget_vcall_38(void*) override { unreached("widget vtable+38h"); }
+    std::string gui_widget_raw_text(void*) override { unreached("widget+F4h"); }
+    void marker_add_gui_highlight(void*, bool, bool) override { unreached("006DAE20"); }
+    void marker_remove_gui_highlight(void*) override { unreached("006DC5A0"); }
+    void gui_load_page_and_show(const std::string&) override { unreached("00AA5840"); }
+    void objectives_toggle_disabled_byte(bool) override { unreached("00E198C4+60h"); }
+    void hud_counters_hide_unit_hp(int) override { unreached("0052B570"); }
+    void hud_counters_hide_score(int, int) override { unreached("0052B900"); }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("ScriptInputContextBinding: EnableInput does not reach ")
+                               + site);
+    }
+
+    bsp::GameInputContextManagerBinding& manager_;
 };
 
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
@@ -1152,6 +1226,10 @@ GameSoundDialogRuntime* GameScriptOrdersHost::bound_music_dialog_runtime() noexc
 void GameScriptOrdersHost::bind_music_dialog(GameSoundDialogRuntime* runtime) noexcept {
     bound_music_dialog() = runtime;
 }
+void GameScriptOrdersHost::bind_input_context_manager(
+    bsp::GameInputContextManagerBinding* manager) noexcept {
+    bound_input_context_manager() = manager;
+}
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
     : log_(log), units_(units) {
@@ -1280,6 +1358,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     const ScriptOrderBinding* binding = find_binding(binding_name);
     if (binding == nullptr) return false;
     if (std::strcmp(binding->name, "MusicFade") == 0) return true;
+    if (std::strcmp(binding->name, "EnableInput") == 0) {
+        return bound_input_context_manager() != nullptr;
+    }
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
@@ -5629,6 +5710,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         } else {
             results = 0;
         }
+    } else if (std::strcmp(binding->name, "EnableInput") == 0) {
+        // 008AFBD0: argument 0 the boolean, context 1Eh at level 0 (enable) or
+        // 5 (disable) through 004BEC00 / 00A933F0; nothing is pushed.
+        RepairBindingArgs args(*this);
+        ScriptInputContextBinding input(*bound_input_context_manager());
+        results = bsp::cc13_seg56::lua_enable_input(args, input);
     } else if (std::strcmp(binding->name, "Countdown") == 0) {
         // 008B17B2-008B17C3: 00887120(-1, 4) reads the frame into 14h-byte
         // variants: the text +8h (argument 0), +1Ch (1), +30h (2), and the name

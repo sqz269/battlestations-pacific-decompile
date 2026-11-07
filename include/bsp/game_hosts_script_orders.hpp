@@ -63,6 +63,7 @@
 
 namespace bsp {
 struct DummyKamikazeSpawn;
+struct GameInputContextManagerBinding;
 }
 
 struct lua_State;
@@ -759,6 +760,10 @@ public:
     GameScriptOrdersHost& operator=(const GameScriptOrdersHost&) = delete;
     // Application phase5's existing dialog owner; no new manager lifetime.
     static void bind_music_dialog(class GameSoundDialogRuntime*) noexcept;
+    // Chain 648: the input manager 004BEC00 whose context table EnableInput
+    // (008AFBD0) writes through 00A933F0; the application's input services own
+    // it. Null until bound: EnableInput then stays an unimplemented record.
+    static void bind_input_context_manager(bsp::GameInputContextManagerBinding*) noexcept;
     // The runtime bind_music_dialog published, or null (goal 4 chain 312: the
     // mission frame's session-teardown sound reset borrows it).
     static class GameSoundDialogRuntime* bound_music_dialog_runtime() noexcept;
