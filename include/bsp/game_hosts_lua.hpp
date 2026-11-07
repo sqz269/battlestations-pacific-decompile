@@ -1591,6 +1591,12 @@ public:
     bsp::VehicleClassRegistry* vehicle_registry() const noexcept { return vehicle_registry_; }
     // PrepareClass 008C8F70 through lua_binding_prepare_class (src/lua_binding_core.cpp).
     int run_prepare_class_008c8f70(lua_State* state);
+    // Goal 5 chain 659: Scoring_RealPlayTimeRunning 008B87F0 through
+    // lua_binding_scoring_real_play_time_running (src/lua_binding_core.cpp).
+    int run_scoring_real_play_time_running_008b87f0(lua_State* state);
+    // Goal 5 chain 659: MovCamNew_AddPosition 008B79F0 / MovCamNew_AddPositions 008B7850
+    // through lua_movcam_new_add_position(s) (src/engine_seg56_cc13.cpp).
+    int run_movcam_new_add_position(lua_State* state, std::uint32_t address);
     // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
     // the VehicleClass rows whose Got is not true. Later reads of those rows
     // through the read_vehicle_class_* readers are counted for the summary
@@ -2066,6 +2072,12 @@ public:
     int run_add_listener_008c6760(lua_State* state, int argument_count);
     int run_remove_listener_008c6990(lua_State* state, int argument_count);
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
+    // Goal 5 chain 659: the three rows run their bodies (src/engine_seg56_cc13.cpp),
+    // whose message-system services on [00F8A0C4] are these.
+    void add_listener_00980c10(lua_State* state, int argument_count,
+                               const std::string& channel, const std::string& id);
+    void remove_listener_00980d30(const std::string& channel, const std::string& id);
+    bool listener_active_00980e00(const std::string& channel, const std::string& id);
     void dispatch_kill_listeners_009813a0();
     void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
     void dispatch_exit_zone_listeners_00982120();       // packet cc13-fix3
