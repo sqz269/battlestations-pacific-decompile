@@ -298,6 +298,20 @@ void plane_request_flight_state_007c1570(std::int32_t state_900, bool session_is
 }
 // 007C17D0, __thiscall(ECX = plane), RET 0.
 void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane);
+// Goal 5 chain 650. Typed view of 007C17D0 over the caller's storage: the three
+// values the body reads (+904h at 007C17EB, +900h at 007C17F9, the session test
+// [[00E188A8]+1FE4h] == 2 at 007C180E / 007C181A) and its two exits. The raw
+// entry above wraps it. Out of line, so the Release call graph sees the call.
+struct PlaneTakeoffStartNotifyHost {
+    virtual ~PlaneTakeoffStartNotifyHost() = default;
+    // The C3h message 007C1823..007C1869 builds (0075B430(C3h), +20h = current,
+    // +21h = requested) and routes through 0077C2A0(plane; message, 7, 0).
+    virtual void send_flight_state_c3(std::uint8_t current, std::uint8_t requested) = 0;
+    // 007C1897: 007C1430(plane, state), the client arm.
+    virtual void set_flight_state_007c1430(std::int32_t state) = 0;
+};
+void plane_notify_takeoff_start_007c17d0(bool landed_904, std::int32_t state_900,
+                                         bool session_is_client, PlaneTakeoffStartNotifyHost& host);
 // 007C18B0, __thiscall(ECX = plane; float dt), RET 4.
 void plane_update_pose_derived_state_007c18b0(Seg47bHost& host, Raw plane, float dt);
 // 007C2090 / 007C2130, __thiscall(ECX = plane), RET 0.

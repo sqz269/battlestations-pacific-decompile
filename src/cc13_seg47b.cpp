@@ -113,16 +113,34 @@ void plane_request_flight_state_007c1570(Seg47bHost& host, Raw plane, std::int32
 // 007C17D0, __thiscall(ECX = plane), RET 0, SEH frame. Only when byte +904h
 // is set: cur = +900h; return when cur == 2 in session mode 2. Mode != 2: the
 // C3h message (cur, 4). Mode 2: 007C1430(plane, 4) when cur is 7/6/4/5.
-void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane) {
-    if (plane.at<std::uint8_t>(0x904) == 0) return;
-    const std::int32_t cur = plane.at<std::int32_t>(0x900);
-    const bool client = session_is_client(host);
-    if (cur == 2 && client) return;
-    if (!client) {
-        send_flight_state_message(host, plane, static_cast<std::uint8_t>(cur), 4);
+void plane_notify_takeoff_start_007c17d0(bool landed_904, std::int32_t state_900,
+                                         bool session_is_client, PlaneTakeoffStartNotifyHost& host) {
+    if (!landed_904) return;                                   // 007C17F3
+    const std::int32_t cur = state_900;
+    const bool client = session_is_client;
+    if (cur == 2 && client) return;                            // 007C180C / 007C1814
+    if (!client) {                                             // 007C1820
+        host.send_flight_state_c3(static_cast<std::uint8_t>(cur), 4);
         return;
     }
-    if (state_in_7645(cur)) host.plane_set_flight_state_007c1430(plane, 4);
+    if (state_in_7645(cur)) host.set_flight_state_007c1430(4); // 007C187F..007C1897
+}
+
+void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane) {
+    struct RawExits final : PlaneTakeoffStartNotifyHost {
+        Seg47bHost& host;
+        Raw plane;
+        RawExits(Seg47bHost& h, Raw p) : host(h), plane(p) {}
+        void send_flight_state_c3(std::uint8_t current, std::uint8_t requested) override {
+            send_flight_state_message(host, plane, current, requested);
+        }
+        void set_flight_state_007c1430(std::int32_t state) override {
+            host.plane_set_flight_state_007c1430(plane, state);
+        }
+    } exits(host, plane);
+    plane_notify_takeoff_start_007c17d0(plane.at<std::uint8_t>(0x904) != 0,
+                                        plane.at<std::int32_t>(0x900), session_is_client(host),
+                                        exits);
 }
 
 // 007C18B0, __thiscall(ECX = plane; float dt), RET 4: the attitude angles and

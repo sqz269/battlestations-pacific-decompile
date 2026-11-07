@@ -5339,10 +5339,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return const_cast<GameUnitSlot*>(plane.df_finder_scan_007e2090(
                                 fp, threshold, filter, noise * 0.5f));
                         }
+                        // Goal 5 chain 650: 007B9740's tail 007E2070 runs as its body
+                        // (bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070)
+                        // over a shadow of the neighbours object whose member +9Ch's
+                        // +14h (neighbours+B0h) is the cached target, the slot
+                        // nb_found_plus_one names; the cleared pointer is written back.
+                        // The cache holds a slot identity, not a native observer
+                        // reference, so 006952A0 has no registration to drop.
                         void clear_gun_target(Raw) override {
-                            // The cache holds a slot identity, not a native
-                            // observer reference; no unregister is needed.
-                            plane.unit_.nb_found_plus_one = 0;
+                            struct Observers final : bsp::PlaneNeighboursObserverHost {
+                                void observer_unregister_pair_006952a0(void*, void*) override {}
+                            } observers;
+                            alignas(4) std::uint8_t neighbours[0xB4] = {};
+                            const std::size_t found = plane.unit_.nb_found_plus_one;
+                            void* cached = found != 0 && found - 1 < plane.owner_.slots.size()
+                                ? static_cast<void*>(plane.owner_.slots[found - 1].get()) : nullptr;
+                            std::memcpy(neighbours + 0xB0, &cached, sizeof(cached));
+                            bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070(
+                                neighbours, observers);
+                            std::memcpy(&cached, neighbours + 0xB0, sizeof(cached));
+                            if (cached == nullptr) plane.unit_.nb_found_plus_one = 0;
                         }
                     };
 
@@ -21858,6 +21874,49 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     //    keeps unit+C10h for a dead plane; its explosion arm's Kill
                     //    (007D0CFD) takes the plane out of the world, its EnginesLost
                     //    arm sets +C39h.
+                    // Goal 5 chain 650. 007CE598..007CE618 (bsp::plane_landed_flag_tick_007ce598)
+                    // on the slot's +904h (plane_landed_904). +9D4h is the squadron record
+                    // found for the unit and +9D8h its live seat among the occupied members
+                    // (-1 with none, 007CFE72's stamp), as plane_is_leader_with_wingmen_007b95e0
+                    // reads them. Squadron +3B0h is always 0: tools/store_census.py 0x3b0
+                    // finds two byte writers, 007EFB69 (DL = 0 at 007EFB60) and 007F2DD3 (BL,
+                    // with EBX = 0 from 007F2C91 in the squadron constructor).
+                    void landed_flag_tick_007ce598() override {
+                        const bsp::PlaneSquadronHostRecord* sq =
+                            bsp::plane_squadron_registry().find_by_member_unit(unit_.process_index);
+                        std::int32_t seat_9d8 = -1;
+                        if (sq != nullptr) {
+                            std::int32_t live = 0;
+                            for (const std::size_t m : sq->member_units) {
+                                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                                if (m == unit_.process_index) {
+                                    seat_9d8 = live;
+                                    break;
+                                }
+                                ++live;
+                            }
+                        }
+                        bsp::PlaneLandedFlagTickInputs in;
+                        in.session_mode_1fe4 = bsp::session_context().session_word_1fe4;
+                        in.landed_904 = unit_.plane_landed_904;
+                        in.control_mode_900 = unit_.plane_control_mode_900;
+                        in.squadron_seat_9d8 = seat_9d8;
+                        in.has_squadron_9d4 = sq != nullptr;
+                        in.squadron_3b0 = false;
+                        switch (bsp::plane_landed_flag_tick_007ce598(in)) {
+                        case bsp::PlaneLandedFlagTickArm::InlineClear_007ce611:
+                            unit_.plane_landed_904 = false;                    // 007CE611
+                            owner_.done("Plane::landed_flag_tick_007ce611", 0x007ce611u);
+                            break;
+                        case bsp::PlaneLandedFlagTickArm::ClearFlag904_007b8450:
+                            bsp::cc13_seg47::plane_clear_flag_904_007b8450(unit_.plane_landed_904);
+                            owner_.done("Plane::clear_flag_904_007b8450", 0x007b8450u);
+                            break;
+                        case bsp::PlaneLandedFlagTickArm::None:
+                            break;
+                        }
+                    }
+
                     bool named_effect_latch_007ce790(bool suppress_520, bool frozen_9e0) override {
                         GameGunneryHost* const gh = owner_.gunnery.get();
                         const std::size_t self = unit_.process_index;

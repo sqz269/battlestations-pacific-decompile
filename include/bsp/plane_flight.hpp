@@ -436,6 +436,29 @@ struct PlaneNamedEffectLatchResult {
 PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
     const PlaneNamedEffectLatchInputs& in) noexcept;
 
+// Goal 5 chain 650. 007CE598..007CE618, the same tick's +904h clear, between the
+// +C01h store above and the latch's gates (bsp.py show 007ce040 --asm, ESI =
+// unit+310h): 007CE59E CMP [game+1FE4h],ECX (ECX = 2 from 007CE562) / JZ 007CE61D
+// skips it in a client session; 007CE5A6 CMP byte [unit+904h],0 / JZ ends it with
+// +904h clear. Then on +900h: 7 or 6 -> 007CE611 clears +904h inline; 4 with
+// unit+9D8h != 0 (007CE5CC, not the flight leader's seat), unit+9D4h set
+// (007CE5DF) and byte [[unit+9D4h]+3B0h] clear (007CE5E7) -> 007CE5FA
+// 007B8450(unit), whose body clears the same byte; anything else leaves it.
+struct PlaneLandedFlagTickInputs {
+    std::int32_t session_mode_1fe4{0};
+    bool landed_904{false};
+    std::int32_t control_mode_900{0};
+    std::int32_t squadron_seat_9d8{-1};
+    bool has_squadron_9d4{false};
+    bool squadron_3b0{false};
+};
+enum class PlaneLandedFlagTickArm {
+    None,
+    InlineClear_007ce611,
+    ClearFlag904_007b8450,
+};
+PlaneLandedFlagTickArm plane_landed_flag_tick_007ce598(const PlaneLandedFlagTickInputs& in) noexcept;
+
 // 007CE3B1..007CE46A, the same tick's other +C01h store. It is reached only:
 //   with unit+520h clear: 007CE09C CMP byte [ESI+210h],0 / 007CE0B5 JNZ 007CE55B
 //     jumps over 007CE0BB..007CE55A (the x87 ops between leave the flags);
@@ -523,6 +546,10 @@ public:
         (void)frozen_9e0;
         return false;
     }
+
+    // 007CE598..007CE618 (plane_landed_flag_tick_007ce598) on the unit's own
+    // +904h. No-op unless the host binds it.
+    virtual void landed_flag_tick_007ce598() {}
 
     // Observation points the sequence reads rather than calls.
     virtual bool airborne_time_frozen() = 0;  // unit+9E0h

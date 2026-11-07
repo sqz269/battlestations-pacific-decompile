@@ -233,7 +233,7 @@ void cc13_front3_scene_path_load_source_holder_007b34f0(void* path, void* holder
 // Tail (state re-read at 007C13CB): s in {7, 6, 3} -> byte +C0Ch = 1 (the
 // image's SETE over a constant 0; the 4/+904h arm is unreachable there). Then
 // s == 1, s == 0 or byte +5Ch == 0 -> 007BC550(ECX = plane).
-void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate, Cc13Front3Host& host) {
+void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate, PlaneNotifyFlightStateHost& host) {
     std::int32_t s = at<std::int32_t>(plane, 0x900);
     const bool a = !(s == 6 || (s == 7 && !(5.0f >= at<float>(plane, 0x908))));  // 007C11E9-007C1208
     const bool b = s == 7 || s == 6 || s == 4 || s == 5;                    // 007C120A-007C1223

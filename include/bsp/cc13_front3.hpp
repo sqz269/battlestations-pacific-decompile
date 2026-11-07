@@ -85,8 +85,33 @@ public:
     virtual void gun_select_fire_mode_0072d5b0(void* gun, std::uint32_t mode, std::uint32_t flag) = 0;
 };
 
+// Goal 5 chain 650. Everything 007C11E0 calls (bsp.py show 007c11e0 --asm: the
+// +72Ch slot +38h at 007C12CD, CALL 007EB270 / 007D9C80 / 007DDEA0 / 007EB380 /
+// 007BC550 at 007C12D6 / 007C13AB / 007C13B8 / 007C13C5 / 007C1423, and the
+// 00F87574 loads), split out of Cc13Front3Host with the declarations and
+// comments moved verbatim, so the units host can run the notify without the
+// whole boundary.
+class PlaneNotifyFlightStateHost {
+public:
+    virtual ~PlaneNotifyFlightStateHost() = default;
+    // 00F87574..00F8757C, the static zero vector (BSS; three floats).
+    virtual const float* static_vector_00f87574() = 0;
+    // Plane sub-object +72Ch slot +38h(), EAX (ECX = plane+72Ch).
+    virtual std::uint32_t vcall_38_dword(void* object) = 0;
+    // 007BC550 BSP_Plane_SyncElevatorAttachmentForState, __thiscall(ECX = plane).
+    virtual void plane_sync_elevator_attachment_007bc550(void* plane) = 0;
+    // 007D9C80 BSP_PlaneFlightController_BodyToWorldVelocity, __thiscall(ECX = plane+AB0h).
+    virtual void flight_controller_body_to_world_velocity_007d9c80(void* controller) = 0;
+    // 007DDEA0 BSP_PlaneSubBlock_ResetTimer40, __thiscall(ECX = plane+C98h).
+    virtual void plane_sub_block_reset_timer40_007ddea0(void* block) = 0;
+    // 007EB270 BSP_PlaneFxComponent_OnFlightState, __thiscall(ECX = plane+C98h; dword), RET 4.
+    virtual void plane_fx_on_flight_state_007eb270(void* fx, std::uint32_t value) = 0;
+    // 007EB380 BSP_PlaneFxComponent_Step, __thiscall(ECX = plane+C98h; float), RET 4.
+    virtual void plane_fx_step_007eb380(void* fx, float step) = 0;
+};
+
 class Cc13Front3Host : public ScenePathSourceHost, public GunPlayerControlReleaseHost,
-                       public GunNetworkMessageHost {
+                       public GunNetworkMessageHost, public PlaneNotifyFlightStateHost {
 public:
     virtual ~Cc13Front3Host() = default;
 
@@ -98,8 +123,7 @@ public:
     virtual std::int32_t interlocked_decrement(volatile std::int32_t* value) = 0;
     // [00E188A8], the game object.
     virtual void* game_00e188a8() = 0;
-    // 00F87574..00F8757C, the static zero vector (BSS; three floats).
-    virtual const float* static_vector_00f87574() = 0;
+    // 00F87574: PlaneNotifyFlightStateHost.
 
     // ---- native strings ----
     // 0041E870 BSP_NativeString_Assign, __thiscall(ECX = 8-byte {length, data}; const char*), RET 4.
@@ -120,8 +144,7 @@ public:
     virtual void vcall_194_named(void* plane, void* name, std::int32_t zero) = 0;
     // Plane slot +204h(), float in ST0.
     virtual float vcall_204_float(void* plane) = 0;
-    // Plane sub-object +72Ch slot +38h(), EAX (ECX = plane+72Ch).
-    virtual std::uint32_t vcall_38_dword(void* object) = 0;
+    // Plane sub-object +72Ch slot +38h: PlaneNotifyFlightStateHost.
     // Gun slots +1C8h / +1CCh / +1DCh: GunNetworkMessageHost.
 
     // ---- segment 3 / gun helpers ----
@@ -155,18 +178,10 @@ public:
     virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
     // 007BC5B0 BSP_Plane_IsDownOrHumanHeld, __thiscall(ECX = plane), AL.
     virtual bool plane_is_down_or_human_held_007bc5b0(void* plane) = 0;
-    // 007BC550 BSP_Plane_SyncElevatorAttachmentForState, __thiscall(ECX = plane).
-    virtual void plane_sync_elevator_attachment_007bc550(void* plane) = 0;
+    // 007BC550: PlaneNotifyFlightStateHost.
     // 007C1430 BSP_Plane_SetFlightState, __thiscall(ECX = plane; state), RET 4.
     virtual void plane_set_flight_state_007c1430(void* plane, std::int32_t state) = 0;
-    // 007D9C80 BSP_PlaneFlightController_BodyToWorldVelocity, __thiscall(ECX = plane+AB0h).
-    virtual void flight_controller_body_to_world_velocity_007d9c80(void* controller) = 0;
-    // 007DDEA0 BSP_PlaneSubBlock_ResetTimer40, __thiscall(ECX = plane+C98h).
-    virtual void plane_sub_block_reset_timer40_007ddea0(void* block) = 0;
-    // 007EB270 BSP_PlaneFxComponent_OnFlightState, __thiscall(ECX = plane+C98h; dword), RET 4.
-    virtual void plane_fx_on_flight_state_007eb270(void* fx, std::uint32_t value) = 0;
-    // 007EB380 BSP_PlaneFxComponent_Step, __thiscall(ECX = plane+C98h; float), RET 4.
-    virtual void plane_fx_step_007eb380(void* fx, float step) = 0;
+    // 007D9C80, 007DDEA0, 007EB270 and 007EB380: PlaneNotifyFlightStateHost.
     // 0090F6C0 (unnamed; strings SA_OC / SA_IM, the achievement recorder),
     // __thiscall(ECX = [game+21A0h]; plane, kind), RET 8.
     virtual void achievement_record_0090f6c0(void* recorder, void* plane, std::int32_t kind) = 0;
@@ -267,7 +282,7 @@ void cc13_front3_scene_path_load_source_holder_007b34f0(
     }
 }
 
-void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate, Cc13Front3Host& host);
+void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate, PlaneNotifyFlightStateHost& host);
 void cc13_front3_plane_on_water_contact_007cb7f0(void* plane, Cc13Front3Host& host);
 
 // Segment 48 (plane flight controller).
