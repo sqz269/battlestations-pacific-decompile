@@ -42,23 +42,10 @@ struct PlaneDeathModeInputs {
 //   otherwise                      -> ExplosionDelayed
 PlaneDeathMode plane_death_mode_007ca8a0(const PlaneDeathModeInputs& in) noexcept;
 
-// 007BBFA0: the explosion timer unit+C10h each mode stores before it routes
-// its session message. Explosion -1.0f (00D7A260, immediate); ExplosionDelayed
-// the draw 00BD2F10(stream 0, [00E18710], [00E1870C]); PowerLost and the two
-// spins 1000.0f (00CE3804). `delayed_draw` is used only for ExplosionDelayed.
-float plane_death_timer_c10_007bbfa0(PlaneDeathMode mode, float delayed_draw) noexcept;
-
-// 007D0B80's arms for the mode's message: which of unit+C39h (power lost) and
-// unit+C36h (spinning) the handler sets. Every arm reaches the tail 007D12FC,
-// which sets unit+C3Ah and calls vtable[70h](1), so the aircraft is dead
-// (unit+5Dh) from the message on. An immediate Explosion also calls
-// BSP_MissionEntity_Kill(unit, 1) at 007D0CFD.
-struct PlaneDeathFlags {
-    bool powerlost_c39{false};
-    bool spinning_c36{false};
-    bool killed_now{false};
-};
-PlaneDeathFlags plane_death_flags_007d0b80(PlaneDeathMode mode, float timer_c10) noexcept;
+// The mode's name is what 007CA8A0 hands vtable[194h] 007BBFA0; that body and
+// 007D0B80, which reads the message it routes, are
+// bsp::gameplay_seg47_cc13::named_effect_007bbfa0 and state_message_007d0b80
+// (goal 5 chain 645 removed this file's mode-keyed copies of both).
 
 // 007CAF10's death terms, run from the free-flight arm at 007CC322 (and from
 // the other arms' vtable[1ECh] call).

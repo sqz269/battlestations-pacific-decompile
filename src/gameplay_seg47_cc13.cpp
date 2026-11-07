@@ -1,6 +1,7 @@
 // Segment 47 reference models: plane damage and crash. Packet cc13-gpr47;
 // docs/CC13_GPR_47.md. Each function cites the listing it was read from.
-// Hypothesis names; build-tested only, not wired, not game-run.
+// Hypothesis names; build-tested, not game-run. Which bodies are wired is in
+// include/bsp/gameplay_seg47_cc13.hpp's header note.
 
 #include "bsp/gameplay_seg47_cc13.hpp"
 

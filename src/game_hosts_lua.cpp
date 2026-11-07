@@ -2555,6 +2555,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.drop_angle = number("DropAngle");
             row.swim_height = number("SwimHeight");
             row.min_water_spd = number("MinWaterSpd");
+            row.max_water_spd = number("MaxWaterSpd");
             row.turn_circle_radius = number("TurnCircleRadius");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
