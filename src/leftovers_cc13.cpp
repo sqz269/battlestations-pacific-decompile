@@ -1697,21 +1697,63 @@ bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host) {
 } // namespace bsp::oct18_tail_b
 
 #include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/unit_fire_flooding.hpp"   // ActiveFailure, the typed 0093A3F0 view
 namespace bsp::oct18_tail_b {
 // 0093A3F0, ECX=task, RET, ST0 float. Last matching record wins; compare
-// through the canonical CRT binding. Listing is MOVSS/FLD, with no x87 math.
-float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
-    float seconds = 0.0f;
-    for (std::uint32_t index = 0;; ++index) {
-        void* begin = get<void*>(task, 0x18);
-        if (begin == nullptr || index >=
-            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16) break;
-        void* record = at(begin, index * 16);
-        const char* name = get<const char*>(record, 8);
-        if (name != nullptr && host.compare_case_insensitive_00bf7fbf(name, "EngineJam") == 0)
-            seconds = get<float>(record, 0xc);
+// through the canonical CRT binding 00BF7FBF (_stricmp) against 00CF6124
+// "EngineJam" (0093A439..0093A44E). Listing is MOVSS/FLD, with no x87 math.
+// One body over a failure-vector view: the raw entry reads the task's
+// +18h/+1Ch words (16-byte records, name text +8h, seconds +0Ch) and re-reads
+// them on every pass as 0093A404/0093A40B do; the typed entry reads the
+// ActiveFailure vector a host keeps as its copy of task+18h (the same records:
+// id +0h, name +4h/+8h, seconds +0Ch). An empty typed name stands for the
+// image's null text pointer; neither matches "EngineJam".
+namespace {
+template <class FailureView>
+float engine_jam_seconds_body(const FailureView& failures) {
+    float seconds = 0.0f;                                           // 0093A3FC
+    for (std::uint32_t index = 0; index < failures.count(); ++index) {
+        const char* name = failures.name(index);                    // 0093A42F
+        if (name != nullptr && failures.compare(name, "EngineJam") == 0)
+            seconds = failures.seconds(index);                      // 0093A450
     }
     return seconds;
+}
+
+struct RawFailureVector {
+    const void* task;
+    Host& host;
+    std::uint32_t count() const {
+        void* begin = get<void*>(task, 0x18);
+        if (begin == nullptr) return 0;
+        return static_cast<std::uint32_t>(
+            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16);
+    }
+    const void* record(std::uint32_t index) const { return at(get<void*>(task, 0x18), index * 16); }
+    const char* name(std::uint32_t index) const { return get<const char*>(record(index), 8); }
+    float seconds(std::uint32_t index) const { return get<float>(record(index), 0xc); }
+    int compare(const char* a, const char* b) const {
+        return host.compare_case_insensitive_00bf7fbf(a, b);
+    }
+};
+
+struct ActiveFailureVector {
+    const std::vector<ActiveFailure>& failures;
+    std::uint32_t count() const { return static_cast<std::uint32_t>(failures.size()); }
+    const char* name(std::uint32_t index) const { return failures[index].name.c_str(); }
+    float seconds(std::uint32_t index) const { return failures[index].seconds_remaining; }
+    static int compare(const char* a, const char* b) { return _stricmp(a, b); }
+};
+} // namespace
+
+float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
+    const RawFailureVector view{task, host};
+    return engine_jam_seconds_body(view);
+}
+
+float engine_jam_seconds_0093a3f0(const std::vector<ActiveFailure>& failures) {
+    const ActiveFailureVector view{failures};
+    return engine_jam_seconds_body(view);
 }
 // 0095C550, ECX=class id, RET. Supplied actual vector is 00F8A09C, not
 // an independent census. Keep the duplicate scan and capacity fast append.
