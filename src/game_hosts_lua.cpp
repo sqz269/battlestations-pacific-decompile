@@ -1438,6 +1438,14 @@ int binding_trampoline(lua_State* state) {
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_get_firepower(state);
     }
+    // Goal 5 chain 653. Without the frame host's mission result there are no
+    // [game+21A0h] records, and the row keeps the record below.
+    if (GameMissionLuaHost::is_scoring_record_binding(dispatch_row.address)
+        && host->mission_result() != nullptr) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_scoring_record_binding(state, dispatch_row.address);
+    }
     if (GameMissionLuaHost::is_hint_binding(dispatch_row.address)) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
@@ -1452,14 +1460,6 @@ int binding_trampoline(lua_State* state) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
         return host->run_lua_init_all_00898610(state);
-    }
-    // Goal 5 chain 653. Without the frame host's mission result there are no
-    // [game+21A0h] records, and the row keeps the record below.
-    if (GameMissionLuaHost::is_scoring_record_binding(dispatch_row.address)
-        && host->mission_result() != nullptr) {
-        if (host->error_replay()) return 0;
-        host->note_native_call(static_cast<std::size_t>(row), argc, true);
-        return host->run_scoring_record_binding(state, dispatch_row.address);
     }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
@@ -11190,266 +11190,6 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
     return results;
 }
 
-// Goal 5 chain 649. The eight HintSystem rows of table 00E0B7B8, rows 7..14
-// (00E0B7F0..00E0B830), each __fastcall(lua_State*) returning 00B66400's
-// count; the bodies are src/gui_screens_3.cpp's.
-bool GameMissionLuaHost::is_hint_binding(std::uint32_t address) noexcept {
-    switch (address) {
-    case 0x008d1f50u: case 0x008d2190u: case 0x008d24f0u: case 0x008d2340u:
-    case 0x0088cec0u: case 0x008d2850u: case 0x008d26a0u: case 0x008d2bb0u:
-        return true;
-    default:
-        return false;
-    }
-}
-
-int GameMissionLuaHost::run_hint_binding(lua_State* state, std::uint32_t address) {
-    // 004E1CA0, which every wrapper calls for [00E198D0]: it builds the tracker
-    // on first use. The slot is the menu host's; a process without one has no
-    // GGame for the wrappers to read.
-    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
-    if (slot == nullptr)
-        return ::luaL_error(state, "HintSystem binding without the hint tracker slot (004E1CA0)");
-    GameHintTracker& tracker = slot->get_004e1ca0();
-    struct Binding final : bsp::HintLuaHost {
-        Binding(lua_State* lua, GameHintTracker& hints)
-            : state(lua), tracker(hints), original_top(::lua_gettop(lua)) {}
-        std::int32_t argument_count_00b663f0() override { return original_top; }
-        // 00B677E0 then 00B662B0. A value Lua cannot convert reads as "", as
-        // for the other string arguments this host reads (00945923).
-        std::string argument_string(std::int32_t index) override {
-            const int slot_index = index + 1;
-            if (slot_index > original_top || !::lua_isstring(state, slot_index)) return {};
-            std::size_t length = 0;
-            const char* text = ::lua_tolstring(state, slot_index, &length);
-            return text != nullptr ? std::string(text, length) : std::string();
-        }
-        // game+624h. Its writer is the session's game-closed arm 0076D0E0
-        // (src/session_teardown_latches.cpp, 0076D0F0); a single-player game
-        // has no session to close it, so it holds its zero, as the mission
-        // frame's 004DB9xx inputs read it (game_hosts_mission_frame.cpp).
-        std::int32_t game_termination_reason_624() override { return 0; }
-        void tracker_trigger_hint_00690fd0(const std::string& name, bool requested) override {
-            tracker.trigger_hint_00690fd0(name, requested);
-        }
-        void tracker_trigger_forced_00692fb0(const std::string& name) override {
-            tracker.trigger_forced_hint_00692fb0(name);
-        }
-        void tracker_add_stored_00690b20(const std::string& name) override {
-            tracker.add_stored_hint_00690b20(name);
-        }
-        void tracker_remove_stored_00690c30(const std::string& name) override {
-            tracker.remove_stored_hint_00690c30(name);
-        }
-        std::string tracker_active_hint_0068e5b0() override { return tracker.active_hint_60(); }
-        bool tracker_definition_critical_00690b00(const std::string& name) override {
-            return tracker.hint_blocking_00690b00(name);
-        }
-        bool tracker_has_been_shown_0068e600(const std::string& name) override {
-            return tracker.has_been_shown_0068e600(name);
-        }
-        // 00770870 ECX = game+1EF0h: 0077088B CMP [ESI+F4h],1 / JNZ 007708C9.
-        // session+F4h is game+1FE4h, 0 in this single-player process
-        // (game_hosts_fixed_step.cpp), so the hint message 22h is never built.
-        void session_send_hint_00770870(const std::string&) override {}
-        void hints_dismiss_0054e610() override { tracker.hints_dismiss_0054e610(); }
-        std::int32_t hints_seconds_left_0054d3c0() override {
-            return tracker.hints_seconds_left_0054d3c0();
-        }
-        void push_boolean(bool value) override {
-            const NativeBindingPushFrame frame(state);
-            native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
-        }
-        void push_integer(std::int32_t value) override {
-            const NativeBindingPushFrame frame(state);
-            native_lua_push_integer_00b664b0(frame.object, value);
-        }
-        // 008D29D2 00B67930 (a table on the stack), "HintID" = the name
-        // (008D29EC 0068E5B0), "duration" = 008D2A50 0054D3C0's seconds through
-        // the integer setter (a number, as 00B664B0 pushes it).
-        void push_hint_table(const std::string& id, std::int32_t duration) override {
-            ::lua_createtable(state, 0, 0);
-            ::lua_pushlstring(state, id.data(), id.size());
-            ::lua_setfield(state, -2, "HintID");
-            ::lua_pushnumber(state, static_cast<lua_Number>(duration));
-            ::lua_setfield(state, -2, "duration");
-        }
-        std::int32_t result_count_00b66400() override {
-            return ::lua_gettop(state) - original_top;
-        }
-        lua_State* state;
-        GameHintTracker& tracker;
-        int original_top;
-    } binding(state, tracker);
-    int results = 0;
-    const char* name = "";
-    switch (address) {
-    case 0x008d1f50u: results = bsp::lua_show_hint_008d1f50(binding); name = "ShowHint"; break;
-    case 0x008d2190u: results = bsp::lua_show_hint_forced_008d2190(binding); name = "ShowHintForced"; break;
-    case 0x008d24f0u: results = bsp::lua_add_stored_hint_008d24f0(binding); name = "AddStoredHint"; break;
-    case 0x008d2340u: results = bsp::lua_remove_stored_hint_008d2340(binding); name = "RemoveStoredHint"; break;
-    case 0x0088cec0u: results = bsp::lua_hide_hint_0088cec0(binding); name = "HideHint"; break;
-    case 0x008d2850u: results = bsp::lua_is_hint_active_008d2850(binding); name = "IsHintActive"; break;
-    case 0x008d26a0u: results = bsp::lua_is_hint_critical_008d26a0(binding); name = "IsHintCritical"; break;
-    case 0x008d2bb0u: results = bsp::lua_is_hint_stored_008d2bb0(binding); name = "IsHintStored"; break;
-    default: throw std::logic_error("run_hint_binding: not a HintSystem row");
-    }
-    char text[16];
-    std::snprintf(text, sizeof text, "%08lx", static_cast<unsigned long>(address));
-    log_.implemented((std::string("MissionLuaNative::") + name).c_str(), text);
-    return results;
-}
-
-namespace {
-[[noreturn]] void formation_query_unreached(const char* what) {
-    throw std::logic_error(std::string("IsFormationLeader/Follower: unreached ") + what);
-}
-
-// What 00899810 and 00899980 read from their frame: 0089990F / 00899A7F 00888AA0
-// on argument 0, nothing else. The entity is the table's `ID` (the units-host
-// index plus one) carried as the pointer-sized handle the bodies pass on.
-class FormationQueryArgs final : public bsp::cc13_seg56::LuaArgs {
-public:
-    explicit FormationQueryArgs(lua_State* state) : state_(state) {}
-    void* entity_at(int index) override {
-        if (index != 0) formation_query_unreached("00888AA0 past argument 0");
-        const int id = air_ops_entity_id(state_);
-        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
-    }
-    int count() override { formation_query_unreached("00B663F0"); }
-    int get_integer(int) override { formation_query_unreached("00B66290"); }
-    double get_number(int) override { formation_query_unreached("00B66270"); }
-    bool get_boolean(int) override { formation_query_unreached("00B66250"); }
-    std::string get_string(int) override { formation_query_unreached("00B662B0"); }
-    bool is_string(int) override { formation_query_unreached("00B660A0"); }
-    bool is_nil(int) override { formation_query_unreached("00B65FB0"); }
-    bool is_entity_table(int) override { formation_query_unreached("008889C0"); }
-    bool is_boolean(int) override { formation_query_unreached("00B66000"); }
-    bool is_number(int) override { formation_query_unreached("00B66050"); }
-    bool is_integer(int) override { formation_query_unreached("00B66A60"); }
-    bool is_table(int) override { formation_query_unreached("00B661B0"); }
-    bsp::cc13_seg56::Vec3 read_vector3(int) override { formation_query_unreached("00888760"); }
-    bool is_vector3_table(int) override { formation_query_unreached("0088B840"); }
-    void* to_userdata(int) override { formation_query_unreached("00B662D0"); }
-    bool boolean_or(int, bool) override { formation_query_unreached("00B662F0"); }
-    double table_field_element(int, const char*, int) override {
-        formation_query_unreached("00B67800 element");
-    }
-    double table_field_number_or(int, const char*, double) override {
-        formation_query_unreached("00B67800 number");
-    }
-
-private:
-    lua_State* state_;
-};
-
-// 00899932 / 00899AA2 00B66450, the one push.
-class FormationQueryResults final : public bsp::cc13_seg56::LuaResults {
-public:
-    explicit FormationQueryResults(lua_State* state) : state_(state) {}
-    void push_boolean(bool value) override {
-        const NativeBindingPushFrame frame(state_);
-        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
-    }
-    void push_number(int) override { formation_query_unreached("00B664B0"); }
-    void push_nil() override { formation_query_unreached("00B66430"); }
-    void push_float(float) override { formation_query_unreached("00B66480"); }
-    void push_string(const std::string&) override { formation_query_unreached("00B66710"); }
-    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
-        formation_query_unreached("00B67930 integer fields");
-    }
-    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
-        formation_query_unreached("0088BA30");
-    }
-    void push_vector3_fields(
-        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
-        formation_query_unreached("00B67930 vector fields");
-    }
-
-private:
-    lua_State* state_;
-};
-
-// The two unit queries, over the unit group the units host keeps at +284h
-// (unit_formation_group_0284) and its leader +14h (formation_leader_0014).
-// SUBSTITUTION (labelled), as IsInFormation 008996A0 answers here: an entity
-// with no units-host slot answers false; the image would read its +284h.
-class FormationQueryHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
-public:
-    explicit FormationQueryHost(const GameUnitsHost* units) : units_(units) {}
-    bool resolved{true};
-    // 00778890: the group's +14h is this unit.
-    bool unit_is_formation_leader_00778890(void* unit) override {
-        std::size_t index = 0;
-        if (!resolve(unit, index)) return false;
-        const std::int32_t group = units_->unit_formation_group_0284(index);
-        if (group < 0) return bsp::ship_ai_unit_group_leads_00778890(
-            static_cast<std::uint32_t>(index + 1u), 0u, 0u);
-        return bsp::ship_ai_unit_group_leads_00778890(static_cast<std::uint32_t>(index + 1u),
-            static_cast<std::uint32_t>(group) + 1u,
-            static_cast<std::uint32_t>(units_->formation_leader_0014(group) + 1u));
-    }
-    // 007788B0: in a group and not its leader.
-    bool unit_is_formation_follower_007788b0(void* unit) override {
-        std::size_t index = 0;
-        if (!resolve(unit, index)) return false;
-        return units_->unit_is_formation_follower_007788b0(index);
-    }
-
-private:
-    bool resolve(void* unit, std::size_t& index) {
-        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(unit);
-        if (units_ == nullptr || id == 0u || id > units_->count()) {
-            resolved = false;
-            return false;
-        }
-        index = static_cast<std::size_t>(id - 1u);
-        return true;
-    }
-    const GameUnitsHost* units_;
-};
-}  // namespace
-
-namespace {
-// Lua InitAll's one service: 008986EE XOR CL,CL / 008986F8 CALL 00925F20, the
-// host's SEntity::InitAll over the entities created since the last one.
-class LuaInitAllHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
-public:
-    explicit LuaInitAllHost(std::function<void(bool)> init_all) : init_all_(std::move(init_all)) {}
-    void sentity_init_all_00925f20(bool flag) override { init_all_(flag); }
-
-private:
-    std::function<void(bool)> init_all_;
-};
-}  // namespace
-
-int GameMissionLuaHost::run_lua_init_all_00898610(lua_State* state) {
-    static_cast<void>(state);
-    LuaInitAllHost host([this](bool flag) { run_sentity_init_all_00925f20(flag, 0x008986f8u); });
-    const int results = bsp::seg56_options_cc13::lua_init_all(host);
-    log_.implemented("MissionLuaNative::InitAll", "00898610");
-    return results;
-}
-
-int GameMissionLuaHost::run_formation_role_query(lua_State* state, std::uint32_t address) {
-    FormationQueryArgs args(state);
-    FormationQueryResults results(state);
-    FormationQueryHost host(units_hooks_);
-    const bool leader = address == 0x00899810u;
-    const int count = leader
-        ? bsp::seg56_options_cc13::lua_is_formation_leader(args, results, host)
-        : bsp::seg56_options_cc13::lua_is_formation_follower(args, results, host);
-    if (!host.resolved) {
-        log_.notef("  %s %08lx: entity id %d has no units-host slot, answers false",
-            leader ? "IsFormationLeader" : "IsFormationFollower",
-            static_cast<unsigned long>(address), air_ops_entity_id(state));
-    }
-    log_.implemented(leader ? "MissionLuaNative::IsFormationLeader"
-                            : "MissionLuaNative::IsFormationFollower",
-                     leader ? "00899810" : "00899980");
-    return count;
-}
-
 // Goal 5 chain 653. The keyed Scoring_* rows of table 00E0B7B8 and the two
 // profile-unlock rows, each __fastcall(lua_State*) returning 00B66400's count,
 // on their bodies: src/scoring_bindings.cpp (Set/Get of every map, AddMission,
@@ -11955,6 +11695,266 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
     char site[16];
     std::snprintf(site, sizeof(site), "%08lx", static_cast<unsigned long>(address));
     log_.implemented(method, site);
+    return count;
+}
+
+// Goal 5 chain 649. The eight HintSystem rows of table 00E0B7B8, rows 7..14
+// (00E0B7F0..00E0B830), each __fastcall(lua_State*) returning 00B66400's
+// count; the bodies are src/gui_screens_3.cpp's.
+bool GameMissionLuaHost::is_hint_binding(std::uint32_t address) noexcept {
+    switch (address) {
+    case 0x008d1f50u: case 0x008d2190u: case 0x008d24f0u: case 0x008d2340u:
+    case 0x0088cec0u: case 0x008d2850u: case 0x008d26a0u: case 0x008d2bb0u:
+        return true;
+    default:
+        return false;
+    }
+}
+
+int GameMissionLuaHost::run_hint_binding(lua_State* state, std::uint32_t address) {
+    // 004E1CA0, which every wrapper calls for [00E198D0]: it builds the tracker
+    // on first use. The slot is the menu host's; a process without one has no
+    // GGame for the wrappers to read.
+    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+    if (slot == nullptr)
+        return ::luaL_error(state, "HintSystem binding without the hint tracker slot (004E1CA0)");
+    GameHintTracker& tracker = slot->get_004e1ca0();
+    struct Binding final : bsp::HintLuaHost {
+        Binding(lua_State* lua, GameHintTracker& hints)
+            : state(lua), tracker(hints), original_top(::lua_gettop(lua)) {}
+        std::int32_t argument_count_00b663f0() override { return original_top; }
+        // 00B677E0 then 00B662B0. A value Lua cannot convert reads as "", as
+        // for the other string arguments this host reads (00945923).
+        std::string argument_string(std::int32_t index) override {
+            const int slot_index = index + 1;
+            if (slot_index > original_top || !::lua_isstring(state, slot_index)) return {};
+            std::size_t length = 0;
+            const char* text = ::lua_tolstring(state, slot_index, &length);
+            return text != nullptr ? std::string(text, length) : std::string();
+        }
+        // game+624h. Its writer is the session's game-closed arm 0076D0E0
+        // (src/session_teardown_latches.cpp, 0076D0F0); a single-player game
+        // has no session to close it, so it holds its zero, as the mission
+        // frame's 004DB9xx inputs read it (game_hosts_mission_frame.cpp).
+        std::int32_t game_termination_reason_624() override { return 0; }
+        void tracker_trigger_hint_00690fd0(const std::string& name, bool requested) override {
+            tracker.trigger_hint_00690fd0(name, requested);
+        }
+        void tracker_trigger_forced_00692fb0(const std::string& name) override {
+            tracker.trigger_forced_hint_00692fb0(name);
+        }
+        void tracker_add_stored_00690b20(const std::string& name) override {
+            tracker.add_stored_hint_00690b20(name);
+        }
+        void tracker_remove_stored_00690c30(const std::string& name) override {
+            tracker.remove_stored_hint_00690c30(name);
+        }
+        std::string tracker_active_hint_0068e5b0() override { return tracker.active_hint_60(); }
+        bool tracker_definition_critical_00690b00(const std::string& name) override {
+            return tracker.hint_blocking_00690b00(name);
+        }
+        bool tracker_has_been_shown_0068e600(const std::string& name) override {
+            return tracker.has_been_shown_0068e600(name);
+        }
+        // 00770870 ECX = game+1EF0h: 0077088B CMP [ESI+F4h],1 / JNZ 007708C9.
+        // session+F4h is game+1FE4h, 0 in this single-player process
+        // (game_hosts_fixed_step.cpp), so the hint message 22h is never built.
+        void session_send_hint_00770870(const std::string&) override {}
+        void hints_dismiss_0054e610() override { tracker.hints_dismiss_0054e610(); }
+        std::int32_t hints_seconds_left_0054d3c0() override {
+            return tracker.hints_seconds_left_0054d3c0();
+        }
+        void push_boolean(bool value) override {
+            const NativeBindingPushFrame frame(state);
+            native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+        }
+        void push_integer(std::int32_t value) override {
+            const NativeBindingPushFrame frame(state);
+            native_lua_push_integer_00b664b0(frame.object, value);
+        }
+        // 008D29D2 00B67930 (a table on the stack), "HintID" = the name
+        // (008D29EC 0068E5B0), "duration" = 008D2A50 0054D3C0's seconds through
+        // the integer setter (a number, as 00B664B0 pushes it).
+        void push_hint_table(const std::string& id, std::int32_t duration) override {
+            ::lua_createtable(state, 0, 0);
+            ::lua_pushlstring(state, id.data(), id.size());
+            ::lua_setfield(state, -2, "HintID");
+            ::lua_pushnumber(state, static_cast<lua_Number>(duration));
+            ::lua_setfield(state, -2, "duration");
+        }
+        std::int32_t result_count_00b66400() override {
+            return ::lua_gettop(state) - original_top;
+        }
+        lua_State* state;
+        GameHintTracker& tracker;
+        int original_top;
+    } binding(state, tracker);
+    int results = 0;
+    const char* name = "";
+    switch (address) {
+    case 0x008d1f50u: results = bsp::lua_show_hint_008d1f50(binding); name = "ShowHint"; break;
+    case 0x008d2190u: results = bsp::lua_show_hint_forced_008d2190(binding); name = "ShowHintForced"; break;
+    case 0x008d24f0u: results = bsp::lua_add_stored_hint_008d24f0(binding); name = "AddStoredHint"; break;
+    case 0x008d2340u: results = bsp::lua_remove_stored_hint_008d2340(binding); name = "RemoveStoredHint"; break;
+    case 0x0088cec0u: results = bsp::lua_hide_hint_0088cec0(binding); name = "HideHint"; break;
+    case 0x008d2850u: results = bsp::lua_is_hint_active_008d2850(binding); name = "IsHintActive"; break;
+    case 0x008d26a0u: results = bsp::lua_is_hint_critical_008d26a0(binding); name = "IsHintCritical"; break;
+    case 0x008d2bb0u: results = bsp::lua_is_hint_stored_008d2bb0(binding); name = "IsHintStored"; break;
+    default: throw std::logic_error("run_hint_binding: not a HintSystem row");
+    }
+    char text[16];
+    std::snprintf(text, sizeof text, "%08lx", static_cast<unsigned long>(address));
+    log_.implemented((std::string("MissionLuaNative::") + name).c_str(), text);
+    return results;
+}
+
+namespace {
+[[noreturn]] void formation_query_unreached(const char* what) {
+    throw std::logic_error(std::string("IsFormationLeader/Follower: unreached ") + what);
+}
+
+// What 00899810 and 00899980 read from their frame: 0089990F / 00899A7F 00888AA0
+// on argument 0, nothing else. The entity is the table's `ID` (the units-host
+// index plus one) carried as the pointer-sized handle the bodies pass on.
+class FormationQueryArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit FormationQueryArgs(lua_State* state) : state_(state) {}
+    void* entity_at(int index) override {
+        if (index != 0) formation_query_unreached("00888AA0 past argument 0");
+        const int id = air_ops_entity_id(state_);
+        return id > 0 ? reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)) : nullptr;
+    }
+    int count() override { formation_query_unreached("00B663F0"); }
+    int get_integer(int) override { formation_query_unreached("00B66290"); }
+    double get_number(int) override { formation_query_unreached("00B66270"); }
+    bool get_boolean(int) override { formation_query_unreached("00B66250"); }
+    std::string get_string(int) override { formation_query_unreached("00B662B0"); }
+    bool is_string(int) override { formation_query_unreached("00B660A0"); }
+    bool is_nil(int) override { formation_query_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { formation_query_unreached("008889C0"); }
+    bool is_boolean(int) override { formation_query_unreached("00B66000"); }
+    bool is_number(int) override { formation_query_unreached("00B66050"); }
+    bool is_integer(int) override { formation_query_unreached("00B66A60"); }
+    bool is_table(int) override { formation_query_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { formation_query_unreached("00888760"); }
+    bool is_vector3_table(int) override { formation_query_unreached("0088B840"); }
+    void* to_userdata(int) override { formation_query_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { formation_query_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        formation_query_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        formation_query_unreached("00B67800 number");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// 00899932 / 00899AA2 00B66450, the one push.
+class FormationQueryResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    explicit FormationQueryResults(lua_State* state) : state_(state) {}
+    void push_boolean(bool value) override {
+        const NativeBindingPushFrame frame(state_);
+        native_lua_push_boolean_00b66450(frame.object, value ? 1 : 0);
+    }
+    void push_number(int) override { formation_query_unreached("00B664B0"); }
+    void push_nil() override { formation_query_unreached("00B66430"); }
+    void push_float(float) override { formation_query_unreached("00B66480"); }
+    void push_string(const std::string&) override { formation_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        formation_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
+        formation_query_unreached("0088BA30");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        formation_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    lua_State* state_;
+};
+
+// The two unit queries, over the unit group the units host keeps at +284h
+// (unit_formation_group_0284) and its leader +14h (formation_leader_0014).
+// SUBSTITUTION (labelled), as IsInFormation 008996A0 answers here: an entity
+// with no units-host slot answers false; the image would read its +284h.
+class FormationQueryHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit FormationQueryHost(const GameUnitsHost* units) : units_(units) {}
+    bool resolved{true};
+    // 00778890: the group's +14h is this unit.
+    bool unit_is_formation_leader_00778890(void* unit) override {
+        std::size_t index = 0;
+        if (!resolve(unit, index)) return false;
+        const std::int32_t group = units_->unit_formation_group_0284(index);
+        if (group < 0) return bsp::ship_ai_unit_group_leads_00778890(
+            static_cast<std::uint32_t>(index + 1u), 0u, 0u);
+        return bsp::ship_ai_unit_group_leads_00778890(static_cast<std::uint32_t>(index + 1u),
+            static_cast<std::uint32_t>(group) + 1u,
+            static_cast<std::uint32_t>(units_->formation_leader_0014(group) + 1u));
+    }
+    // 007788B0: in a group and not its leader.
+    bool unit_is_formation_follower_007788b0(void* unit) override {
+        std::size_t index = 0;
+        if (!resolve(unit, index)) return false;
+        return units_->unit_is_formation_follower_007788b0(index);
+    }
+
+private:
+    bool resolve(void* unit, std::size_t& index) {
+        const std::uintptr_t id = reinterpret_cast<std::uintptr_t>(unit);
+        if (units_ == nullptr || id == 0u || id > units_->count()) {
+            resolved = false;
+            return false;
+        }
+        index = static_cast<std::size_t>(id - 1u);
+        return true;
+    }
+    const GameUnitsHost* units_;
+};
+}  // namespace
+
+namespace {
+// Lua InitAll's one service: 008986EE XOR CL,CL / 008986F8 CALL 00925F20, the
+// host's SEntity::InitAll over the entities created since the last one.
+class LuaInitAllHost final : public bsp::seg56_options_cc13::Seg56HostUnreached {
+public:
+    explicit LuaInitAllHost(std::function<void(bool)> init_all) : init_all_(std::move(init_all)) {}
+    void sentity_init_all_00925f20(bool flag) override { init_all_(flag); }
+
+private:
+    std::function<void(bool)> init_all_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_lua_init_all_00898610(lua_State* state) {
+    static_cast<void>(state);
+    LuaInitAllHost host([this](bool flag) { run_sentity_init_all_00925f20(flag, 0x008986f8u); });
+    const int results = bsp::seg56_options_cc13::lua_init_all(host);
+    log_.implemented("MissionLuaNative::InitAll", "00898610");
+    return results;
+}
+
+int GameMissionLuaHost::run_formation_role_query(lua_State* state, std::uint32_t address) {
+    FormationQueryArgs args(state);
+    FormationQueryResults results(state);
+    FormationQueryHost host(units_hooks_);
+    const bool leader = address == 0x00899810u;
+    const int count = leader
+        ? bsp::seg56_options_cc13::lua_is_formation_leader(args, results, host)
+        : bsp::seg56_options_cc13::lua_is_formation_follower(args, results, host);
+    if (!host.resolved) {
+        log_.notef("  %s %08lx: entity id %d has no units-host slot, answers false",
+            leader ? "IsFormationLeader" : "IsFormationFollower",
+            static_cast<unsigned long>(address), air_ops_entity_id(state));
+    }
+    log_.implemented(leader ? "MissionLuaNative::IsFormationLeader"
+                            : "MissionLuaNative::IsFormationFollower",
+                     leader ? "00899810" : "00899980");
     return count;
 }
 
