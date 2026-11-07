@@ -791,10 +791,33 @@ void keyframe_event_set_function_0079c000(cc13cam::KeyframeEvent& e, const std::
     if (&e.function_4 != &name) e.function_4 = name;
 }
 
-void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+namespace {
+// The shared code of the four event classes' destructors. 00799F30, 00799FD0,
+// 0079A070 and 0079A120 differ only in their EH state tables (PUSH 00C8AE58 /
+// 78 / 98 / B8) and rel32 displacements to the same 0042BCA0 / 00799580
+// (bsp.py ghidra bytes); each is reached from its class's scalar deleting
+// destructor, 0079CB50 / 0079CB70 / 0079CB90 / 0079CBB0 (vtable slot 0).
+void keyframe_event_destruct_body(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
     host.target_observer_destruct_0042bca0(e.entity_24, &e);
     e.function_4.clear();
     e.function_4.shrink_to_fit();
+}
+}  // namespace
+
+void keyframe_event_destruct_00799f30(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // noparent
+}
+
+void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // noentity
+}
+
+void keyframe_event_destruct_0079a070(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // killed
+}
+
+void keyframe_event_destruct_0079a120(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host) {
+    keyframe_event_destruct_body(e, host);  // sunk
 }
 
 // ---------------------------------------------------------------------------

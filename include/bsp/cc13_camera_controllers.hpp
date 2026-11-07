@@ -1,7 +1,8 @@
 #pragma once
 
 namespace bsp::cc13cam2 {
-struct ObserverHost;  // bsp/engine_seg43_45_cc13.hpp
+struct ObserverHost;              // bsp/engine_seg43_45_cc13.hpp
+struct KeyframeEventDestroyHost;  // bsp/engine_seg43_45_cc13.hpp
 }
 
 namespace bsp::cc13cam {
@@ -330,8 +331,9 @@ void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host);
 // 0078E630, the key tick (RET 4): the modifier's slot +14h (a no-op in all
 // four tables), then, for a key in state 1 or 2 with dt > 0, a triggered event
 // fires and is deleted (0078E540 SetEvent(null)).
+// The deletion runs the event class's destructor through `destroy`.
 void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
-                            KeyframeEventHost& host);
+                            KeyframeEventHost& host, cc13cam2::KeyframeEventDestroyHost& destroy);
 
 // ---------------------------------------------------------------------------
 // The path camera's per-frame parameter update, 007972F0 (ECX camera, RET; its

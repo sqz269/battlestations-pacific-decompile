@@ -689,10 +689,19 @@ void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host) {
 }
 
 void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
-                            KeyframeEventHost& host) {
+                            KeyframeEventHost& host, cc13cam2::KeyframeEventDestroyHost& destroy) {
     if (state_f8 == 0 || state_f8 == 3 || !(dt > 0.0f) || !event_ec) return;
     if (!keyframe_event_check(*event_ec, host)) return;
     keyframe_event_fire_00791540(*event_ec, host);
+    // 0078E540(null): the old +ECh event's vtable[0](1), the class's scalar
+    // deleting destructor (0079CB50 / 0079CB70 / 0079CB90 / 0079CBB0), runs its
+    // destructor and then 00BF65AC frees it; the reset is that free.
+    switch (event_ec->kind) {
+    case KeyframeEventKind::NoParent: cc13cam2::keyframe_event_destruct_00799f30(*event_ec, destroy); break;
+    case KeyframeEventKind::NoEntity: cc13cam2::keyframe_event_destruct_00799fd0(*event_ec, destroy); break;
+    case KeyframeEventKind::Killed: cc13cam2::keyframe_event_destruct_0079a070(*event_ec, destroy); break;
+    case KeyframeEventKind::Sunk: cc13cam2::keyframe_event_destruct_0079a120(*event_ec, destroy); break;
+    }
     event_ec.reset();
 }
 

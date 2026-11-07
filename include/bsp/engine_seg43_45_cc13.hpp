@@ -575,12 +575,16 @@ void keyframe_event_set_entity_00799650(cc13cam::KeyframeEvent& e, std::size_t e
 void keyframe_event_set_function_0079c000(cc13cam::KeyframeEvent& e, const std::string& name);
 // 00799F30 / 00799FD0 / 0079A070 / 0079A120: fastcall event. 0042BCA0 on the
 // observer +10h, then 00799580 (base vtable, the name returned to the sized
-// pool 00419CC0 / 00BD1510).
+// pool 00419CC0 / 00BD1510). The noparent, noentity, killed and sunk class
+// destructors, one entry point each over the same code.
 struct KeyframeEventDestroyHost {
     virtual ~KeyframeEventDestroyHost() = default;
     virtual void target_observer_destruct_0042bca0(std::size_t entity, const void* observer) = 0;
 };
+void keyframe_event_destruct_00799f30(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host);
 void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host);
+void keyframe_event_destruct_0079a070(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host);
+void keyframe_event_destruct_0079a120(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host);
 
 // ---------------------------------------------------------------------------
 // Keyframe linking and insertion (104h-byte keys; camera tracks +414h
