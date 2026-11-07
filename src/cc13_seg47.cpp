@@ -2481,7 +2481,7 @@ void plane_issue_land_on_touchdown_007c3ea0(Seg47Host& host, Raw plane) {
 // 007C7430, __thiscall(ECX = plane). Session mode 2 with +900h not 4/5 ->
 // 007C71E0(plane). Then +904h cleared when set; +910h = 0; +908h = 0.0f; when
 // +BF8h is clear and +900h == 5, +900h = 4.
-void plane_remote_touchdown_to_state4_007c7430(Seg47Host& host, Raw plane) {
+void plane_remote_touchdown_to_state4_007c7430(PlaneRemoteTouchdownHost& host, Raw plane) {
     const Raw game = raw(host.global_pointer(0x00E188A8u));
     if (game.at<std::int32_t>(0x1FE4) == 2) {
         const std::int32_t state = plane.at<std::int32_t>(0x900);

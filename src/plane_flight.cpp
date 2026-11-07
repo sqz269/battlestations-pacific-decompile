@@ -217,6 +217,18 @@ PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
     return out;
 }
 
+PlaneLandedFlagTickArm plane_landed_flag_tick_007ce598(const PlaneLandedFlagTickInputs& in) noexcept {
+    if (in.session_mode_1fe4 == 2) return PlaneLandedFlagTickArm::None;   // 007CE5A4 JZ 007CE61D
+    if (!in.landed_904) return PlaneLandedFlagTickArm::None;              // 007CE5AD JZ 007CE6C7
+    const std::int32_t m = in.control_mode_900;                           // 007CE5B3
+    if (m == 7 || m == 6) return PlaneLandedFlagTickArm::InlineClear_007ce611;   // 007CE5BC / 007CE5C1
+    if (m != 4) return PlaneLandedFlagTickArm::None;                      // 007CE5C6 JNZ 007CE6C7
+    if (in.squadron_seat_9d8 == 0) return PlaneLandedFlagTickArm::None;   // 007CE5D3 JZ
+    if (!in.has_squadron_9d4) return PlaneLandedFlagTickArm::None;        // 007CE5E1 JZ
+    if (in.squadron_3b0) return PlaneLandedFlagTickArm::None;             // 007CE5EE JNZ
+    return PlaneLandedFlagTickArm::ClearFlag904_007b8450;                 // 007CE5FA
+}
+
 bool plane_below_landscape_007ce3b1(const PlaneLandscapeBelowInputs& in,
     const std::function<bool(std::size_t landscape, const float xz[2], float& height)>&
         landscape_height_0087fc60) {
@@ -261,6 +273,11 @@ PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step) 
         // 007CE09C-007CE0D2: with unit+520h clear, the wanderer (single player).
         host.wanderer_fixed_step_007be060(step);
     }
+
+    // 007CE598..007CE618, the +904h clear. In the image it sits between the latch's
+    // +C01h store (007CE592) and its gates (007CE6CA); it reads and writes only
+    // +904h, which the latch neither reads nor writes, so it runs first here.
+    host.landed_flag_tick_007ce598();
 
     // 007CE55D..007CE82E: unit+C01h, ahead of the 007CE835 vtable[1DCh] call and
     // the arms. An effect that took the unit out of the world ends the tick:

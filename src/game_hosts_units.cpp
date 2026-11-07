@@ -5025,16 +5025,42 @@ void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
     }
     if (p.plane_control_mode_900 == 4 || p.plane_control_mode_900 == 5) {   // 0042A7E0
         ++takeoff_notify_arm_7c7430;
-        // 007C7460 is the same conditional +904h clear as 007B8450.
-        // Borrow the live flag used by taxi, touchdown and takeoff; the
-        // original native 007B8450 call site is 007CE5FA, not this receive.
-        bsp::cc13_seg47::plane_clear_flag_904_007b8450(p.plane_landed_904);
-        p.plane_taxi_queue_910 = false;                                  // 007C746F
-        p.plane_airborne_908 = 0.0f;                                     // 007C7475
-        if (!p.plane_ground_contact_bf8 && p.plane_control_mode_900 == 5) {
-            p.plane_control_mode_900 = 4;                                // 007C7488
-            ++takeoff_notify_5_to_4;
-        }
+        // Goal 5 chain 650: 007C7430's body
+        // (bsp::cc13_seg47::plane_remote_touchdown_to_state4_007c7430) over a shadow
+        // of the five plane bytes it touches (+900h, +904h, +908h, +910h, +BF8h)
+        // and of the game object's +1FE4h (the session context's word), written
+        // back after the call. 007B8450 runs at its own site now (the plane
+        // tick's 007CE5FA, bsp::plane_landed_flag_tick_007ce598).
+        struct RemoteTouchdown final : bsp::cc13_seg47::PlaneRemoteTouchdownHost {
+            std::uint8_t game[0x1FE8] = {};   // 4-aligned after the vptr; +1FE4h is a dword
+            void* global_pointer(std::uint32_t address) override {
+                if (address != 0x00E188A8u) {
+                    throw std::logic_error("007C7430 reads only the game object [00E188A8]");
+                }
+                return game;
+            }
+            void plane_touchdown_007c71e0(bsp::cc13_seg47::Raw) override {
+                // 007C7447..007C744F: only +900h other than 4 and 5 reaches 007C7451,
+                // and this arm runs for 4 or 5 alone.
+                throw std::logic_error("007C7430: 007C71E0 is unreachable from the 0042A7E0 arm");
+            }
+        } touchdown;
+        const std::int32_t session = bsp::session_context().session_word_1fe4;
+        std::memcpy(touchdown.game + 0x1FE4, &session, sizeof(session));
+        alignas(8) std::uint8_t plane[0xBFC] = {};
+        const std::int32_t before = p.plane_control_mode_900;
+        std::memcpy(plane + 0x900, &before, sizeof(before));
+        plane[0x904] = p.plane_landed_904 ? 1u : 0u;
+        std::memcpy(plane + 0x908, &p.plane_airborne_908, sizeof(float));
+        plane[0x910] = p.plane_taxi_queue_910 ? 1u : 0u;
+        plane[0xBF8] = p.plane_ground_contact_bf8 ? 1u : 0u;
+        bsp::cc13_seg47::plane_remote_touchdown_to_state4_007c7430(touchdown,
+                                                                   bsp::cc13_seg47::raw(plane));
+        std::memcpy(&p.plane_control_mode_900, plane + 0x900, sizeof(std::int32_t));
+        p.plane_landed_904 = plane[0x904] != 0;
+        std::memcpy(&p.plane_airborne_908, plane + 0x908, sizeof(float));
+        p.plane_taxi_queue_910 = plane[0x910] != 0;
+        if (before == 5 && p.plane_control_mode_900 == 4) ++takeoff_notify_5_to_4;
         done("Plane::remote_touchdown_to_state4_007c7430", 0x007c7430u);
         return;
     }

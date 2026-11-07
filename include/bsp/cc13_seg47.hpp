@@ -91,13 +91,23 @@ struct PlaneAttachmentSyncHost {
     virtual void unit_update_owner_hud_state_00779c60(Raw unit, float value) = 0;
 };
 
+// 007C7430 reads [[00E188A8]+1FE4h] (007C7430 / 007C7435) and calls only
+// 007C71E0 (007C7451), bsp.py show 007c7430 --asm. Goal 5 chain 650.
+struct PlaneRemoteTouchdownHost {
+    virtual ~PlaneRemoteTouchdownHost() = default;
+    // The pointer stored at the image global `address`.
+    virtual void* global_pointer(std::uint32_t address) = 0;
+    // 007C71E0, __thiscall(ECX = plane): the touchdown arm.
+    virtual void plane_touchdown_007c71e0(Raw plane) = 0;
+};
+
 struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost,
-                   Seg47MessageHost, PlaneAttachmentSyncHost {
+                   Seg47MessageHost, PlaneAttachmentSyncHost, PlaneRemoteTouchdownHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
     virtual void* global_address(std::uint32_t address) = 0;
-    virtual void* global_pointer(std::uint32_t address) = 0;
+    // global_pointer: PlaneRemoteTouchdownHost.
 
     // --- CRT --------------------------------------------------------------
     // 00BF681B operator new(size), __cdecl (the allocator the path sources use).
@@ -447,8 +457,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void entity_set_state_0077c470(Raw entity, std::int32_t a, std::int32_t b) = 0;
     // 0077C2A0 BSP_Session_RouteMessage, __thiscall(ECX = entity; message, int, int), RET 0Ch.
     virtual void session_route_message_0077c2a0(Raw entity, void* message, std::int32_t a, std::int32_t b) = 0;
-    // 007C71E0, __thiscall(ECX = plane): the touchdown arm.
-    virtual void plane_touchdown_007c71e0(Raw plane) = 0;
+    // 007C71E0: PlaneRemoteTouchdownHost.
     // 0042C1B0, __thiscall(ECX = camera+428h).
     virtual void camera_shake_start_0042c1b0(Raw shake) = 0;
     // 007C78A0 BSP_Plane_SetFlightStateUnguarded, __thiscall(ECX = plane; state, int), RET 8.
@@ -795,7 +804,7 @@ void plane_slot4c_point_event_007c0c60(Seg47Host& host, Raw plane, const float* 
                                        float d);
 void plane_step_countdown_964_007c3cb0(Seg47Host& host, Raw plane, float dt);
 void plane_issue_land_on_touchdown_007c3ea0(Seg47Host& host, Raw plane);
-void plane_remote_touchdown_to_state4_007c7430(Seg47Host& host, Raw plane);
+void plane_remote_touchdown_to_state4_007c7430(PlaneRemoteTouchdownHost& host, Raw plane);
 void plane_sync_cockpit_camera_gun_shake_007c7800(Seg47Host& host, Raw plane, Raw camera);
 void plane_remote_enter_flight_state6_007cb9e0(Seg47Host& host, Raw plane);
 void plane_control_mode_on_water_contact_007cc2d0(Seg47Host& host, Raw mode, void* arg);
