@@ -509,13 +509,24 @@ public:
     // 00CE53AC's slots are 00464FE0 scalar delete (restamps only), 004647D0
     // write, 00464810 read, 004647B0 IsType {7Bh, 49h, 46h}, 004499C0. Returned:
     // whether 00780120's ladder hands the copy to the entity's session-kind
-    // switch, and the copy's 24h bytes as 00464810 left them (what 00821E80
-    // reads: +10h kind, +14h sender, +20h heading).
-    struct VehicleUnitLaunchCopy {
+    // switch, and the copy's 24h bytes as its read left them (what 00821E80
+    // reads: +10h kind, +14h sender, +20h the payload).
+    struct UnitKindSwitchCopy {
         bool to_unit{false};
         std::uint8_t bytes[0x24]{};  // read through memcpy, so no alignment is needed
     };
-    VehicleUnitLaunchCopy queue_vehicle_unit_launch_7b(float heading) const;
+    UnitKindSwitchCopy queue_vehicle_unit_launch_7b(float heading) const;
+    // Goal 5 chain 632. MT_VEHICLE_ADD_LAUNCHED (7Ch): the catapult's fixed step
+    // 006ED1C0 calls 006EB9C0(stack message, plane) at 006ED3EF (0075B430(7Ch),
+    // word +18h 0, +1Ah 0, +1Ch 0, +4h = 1, vtable 00CFAA0C, word +20h =
+    // plane+174h) and routes it to the device's owner ([ESI+0E0h]) with
+    // 0077C2A0 flags 7 at 006ED409, the local bit in single player. 00768530
+    // case 7Ch allocates 24h bytes and calls 00760200 (007691A6); 00CFAA0C's
+    // slots: 006EC100 scalar delete (restamps only), 006EBA20 write (header,
+    // the +1Ch bit, +20h in 12 bits), 006EBA50 read, 006EBA00 IsType {7Ch, 49h,
+    // 46h}, 004499C0. 00821E80's 7Ch arm resolves the copy's +20h (00521E30)
+    // and hands a non-null entity to 00957450.
+    UnitKindSwitchCopy queue_vehicle_add_launched_7c(std::uint16_t plane_id) const;
 
 private:
     struct Image;

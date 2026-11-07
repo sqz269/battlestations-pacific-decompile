@@ -12342,15 +12342,20 @@ bsp::ShipCatapultRecord* GameMissionLuaHost::catapult_record(std::size_t unit,
 namespace {
 // Goal 5 chain 632. 00821E80 (the class-06 ship's session-kind switch; the
 // carrier's 00758EB0 reaches it after its 72h..75h / 87h tests and the air-ops
-// switch 006CD6C0) over the decoded 7Bh copy. The copy's bytes answer the
-// message reads; a 7Bh kind selects only the UnitLaunchVirtual arm (00821F12:
-// 0080F710(message) and the float +20h to vtable[208h], 008141E0), which runs
-// `launch`. No other arm is reachable for that kind, so each throws.
-class VehicleUnitLaunchArms final : public bsp::UnitMessageArmHost {
+// switch 006CD6C0) over a decoded local copy. The copy's bytes answer the
+// message reads. The arms this host runs are the callbacks below: 7Bh's
+// UnitLaunchVirtual (00821F12: 0080F710(message) and the float +20h to
+// vtable[208h], 008141E0) and 7Ch's AddLaunchedChild (00821F37: 00521E30 on
+// the copy's +20h word, then 00957450 with a non-null entity). An arm whose
+// callback is empty, and every other arm, is unreachable for the kinds routed
+// here, so it throws.
+class UnitKindSwitchArms final : public bsp::UnitMessageArmHost {
 public:
-    using Launch = std::function<void(int player, float heading)>;
-    VehicleUnitLaunchArms(const std::uint8_t (&copy)[0x24], Launch launch)
-        : copy_(copy), launch_(std::move(launch)) {}
+    explicit UnitKindSwitchArms(const std::uint8_t (&copy)[0x24]) : copy_(copy) {}
+    std::function<void(int player, float value)> unit_launch_00821f12;
+    // True when the handle names a live entity (00521E30's non-null answer).
+    std::function<bool(std::uint16_t id)> resolve_entity_00521e30;
+    std::function<void(std::uint16_t id)> add_launched_child_00957450;
 
     std::uint8_t message_kind() override { return copy_[0x10]; }
     int message_stamp() override { return static_cast<int>(dword(0x0C)); }
@@ -12376,16 +12381,27 @@ public:
     std::uint8_t message_byte(std::size_t off) override { return *at(off, 1); }
     const void* message_payload(std::size_t off) override { return at(off, 1); }
 
-    void unit_launch_virtual(int slot, float value) override { launch_(slot, value); }
+    void unit_launch_virtual(int slot, float value) override {
+        if (!unit_launch_00821f12) unreached("vtable[208h]");
+        unit_launch_00821f12(slot, value);
+    }
+    void* resolve_entity(std::uint16_t id) override {
+        if (!resolve_entity_00521e30) unreached("00521E30");
+        if (!resolve_entity_00521e30(id)) return nullptr;
+        resolved_ = id;
+        return &resolved_;
+    }
+    void add_launched_child(void* entity) override {
+        if (!add_launched_child_00957450 || entity != &resolved_) unreached("00957450");
+        add_launched_child_00957450(resolved_);
+    }
 
     bool base_handle_message() override { unreached("0095ABE0"); }
     void set_failure_virtual() override { unreached("vtable[220h]"); }
     void clear_failure_virtual() override { unreached("vtable[224h]"); }
     void apply_repair_settings() override { unreached("0080DC10"); }
-    void* resolve_entity(std::uint16_t) override { unreached("00521E30"); }
     void kamikaze_detonate(void*) override { unreached("00819A20"); }
     void set_shipyard_launch_state(int) override { unreached("0082227B"); }
-    void add_launched_child(void*) override { unreached("00957450"); }
     int unit_helm_station() override { unreached("+1B0h"); }
     void backfill_helm_order() override { unreached("008141A0"); }
     void* checked_cast_class6(void*) override { unreached("00815010"); }
@@ -12424,7 +12440,7 @@ public:
 private:
     const std::uint8_t* at(std::size_t off, std::size_t size) const {
         if (off > sizeof copy_ || size > sizeof copy_ - off) {
-            throw std::logic_error("VehicleUnitLaunchArms: read past the 24h-byte 7Bh copy");
+            throw std::logic_error("UnitKindSwitchArms: read past the 24h-byte copy");
         }
         return copy_ + off;
     }
@@ -12434,10 +12450,10 @@ private:
         return value;
     }
     [[noreturn]] static void unreached(const char* site) {
-        throw std::logic_error(std::string("00821E80 over a 7Bh copy reached ") + site);
+        throw std::logic_error(std::string("00821E80 over a local copy reached ") + site);
     }
     const std::uint8_t (&copy_)[0x24];
-    Launch launch_;
+    std::uint16_t resolved_{0};
 };
 }  // namespace
 
@@ -12482,11 +12498,12 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
     // copy this host makes. Without a commands host the direct call stands.
     bool launch_arm = true;
     if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
-        const bsp::HostSessionMessages::VehicleUnitLaunchCopy copy =
+        const bsp::HostSessionMessages::UnitKindSwitchCopy copy =
             messages->queue_vehicle_unit_launch_7b(heading);
         launch_arm = false;
         if (copy.to_unit && units->unit_is_kind_of(ship, 0x06)) {
-            VehicleUnitLaunchArms arms(copy.bytes, [&](int, float) { launch_arm = true; });
+            UnitKindSwitchArms arms(copy.bytes);
+            arms.unit_launch_00821f12 = [&](int, float) { launch_arm = true; };
             bsp::dispatch_unit_message_00821e80(arms);
         }
         if (launch_arm) log_.implemented("ShipUnit::vehicle_unit_launch_7b_copy", "00821e80");
@@ -12611,7 +12628,32 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
     } else if (attach_created_entity_00928a00(static_cast<int>(entity), name, created_class)) {
         attach_wing_member_tables(units_before, entity, created_class);
     }
-    const int slot = bsp::ShipCatapultRegistry::add_child_00957450(*r, entity);
+    // Goal 5 chain 632. 006ED3E3..006ED409: the catapult's timeline sends
+    // VEHICLE_ADD_LAUNCHED (7Ch, 006EB9C0 with the plane) to the device's owner
+    // with flags 7, and the ship's 00821E80 7Ch arm resolves the copy's +20h
+    // (00521E30) and hands that entity to 00957450. The entity id (unit index +
+    // 1) stands in for +174h; an id wider than the copy's 12 bits keeps the
+    // posted id, as for 86h. Delivered at this call, 1 s early (LABELLED in
+    // bsp/ship_catapult_host.hpp). Without a commands host the direct call stands.
+    int slot = -1;
+    const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
+    if (messages != nullptr && entity <= 0xFFFu) {
+        const bsp::HostSessionMessages::UnitKindSwitchCopy copy =
+            messages->queue_vehicle_add_launched_7c(static_cast<std::uint16_t>(entity));
+        if (copy.to_unit) {
+            UnitKindSwitchArms arms(copy.bytes);
+            arms.resolve_entity_00521e30 = [&](std::uint16_t handle) {
+                return handle != 0u && handle <= units->count();
+            };
+            arms.add_launched_child_00957450 = [&](std::uint16_t handle) {
+                slot = bsp::ShipCatapultRegistry::add_child_00957450(*r, handle);
+            };
+            bsp::dispatch_unit_message_00821e80(arms);
+            log_.implemented("ShipUnit::vehicle_add_launched_7c_copy", "00821e80");
+        }
+    } else {
+        slot = bsp::ShipCatapultRegistry::add_child_00957450(*r, entity);
+    }
     ++r->launches;
     ++summary_.use_catapult_launches;
     log_.notef("  ShipUseCatapult 00891d50: \"%s\" launched %s (class %d) slot %d, stock now %d "
