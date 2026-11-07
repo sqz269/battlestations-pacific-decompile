@@ -114,6 +114,12 @@ inline constexpr bool kBotSchedulerWritersBound = true;
 // A no-op before a mission frame host exists.
 void game_scoring_set_real_play_time_running_00905340(bool running);
 
+// Goal 5 chain 653: the float at [game+21A0h]+14A0h, the real play time the bot
+// scheduler 00914EF0 accumulates while +14A4h is set (0091505A..0091507A) and
+// 0091C560 zeroes at each mission (0091C62F), as Scoring_GetRealPlayTime reads
+// it. False, with `seconds` untouched, before a mission frame host exists.
+bool game_scoring_real_play_time_14a0(float& seconds);
+
 // Goal 2 chain 166 (kWireGoal2Chain166Bound): 0096BF70
 // BSP_WarningManager_ClearWaitingQueue on [00F8A0C4], as EnableMessages(false)
 // with no entity calls it (008D000A): every queued warning of the +E0h list is

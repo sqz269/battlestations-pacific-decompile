@@ -4180,6 +4180,13 @@ void game_scoring_set_real_play_time_running_00905340(bool running) {
     host->done("MissionScoring::set_real_play_time_running", 0x00905340u);
 }
 
+bool game_scoring_real_play_time_14a0(float& seconds) {
+    const GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr) return false;
+    seconds = host->world.bots.active_time;   // +14A0h
+    return true;
+}
+
 void game_warning_torpedo_effect_00977820(std::size_t unit) {
     GameMissionFrameHost::Impl* host = g_warning_owner;
     if (host == nullptr) return;
