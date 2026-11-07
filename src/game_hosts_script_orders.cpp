@@ -490,9 +490,11 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Goal 5 chain 655: the skill index SetSkillLevel / SetCrewLevel write.
     {"GetSkillLevel", 0x008953f0u},
     {"GetCrewLevel", 0x008950d0u},
-    // Goal 5 chain 655: the air-operations block's in-air plane limit (+58h).
+    // Goal 5 chain 655: the air-operations block's in-air plane limit (+58h) and a
+    // slot's state (+4Ch slot +2Ch).
     {"SetAirBasePlaneLimit", 0x00897720u},
     {"GetAirBasePlaneLimit", 0x008978d0u},
+    {"GetAirBaseSlotStatus", 0x00896220u},
     // Goal 5 chain 655: the shipyard's stock records (+774h).
     {"RemoveShipyardStock", 0x00896ee0u},
     // Goal 5 chain 655: EntityTurnToEntity's twin with a point for a target.
@@ -1206,6 +1208,52 @@ private:
     const GameUnitsHost& units_;
     std::function<std::size_t(void*)> index_of_;
     std::function<std::int32_t()> session_mode_;
+};
+
+// GetAirBaseSlotStatus 00896220's two image reads (bsp.py show 00896220 --asm: 00896369
+// SUB ESI,1 / 00896378 IMUL ESI,ESI,58h / 0089637B MOV EDI,[EDI+4Ch] / 0089637E MOV
+// ESI,[ESI+EDI+2Ch], then 00B664B0): the block's slot array at +4Ch, stride 58h, and a
+// slot's state at +2Ch. The array is the deck's `slots` vector. This view answers +4Ch
+// with the base of an address range of 58h bytes per slot, sized to that vector and
+// never read, and +2Ch at slot k of the range with slots[k].state (the AirOpsSlotState
+// values 006C0510 and the launch rule test). The dispatch has checked the 1-based index
+// against the deck, so every address the body forms lies in the range.
+class AirSlotStateView final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    void* read_ptr(void* block, std::uint32_t offset) override {
+        if (offset != 0x4Cu || block == nullptr) unit_query_unreached("a pointer other than block+4Ch");
+        deck_ = static_cast<const bsp::AirOpsDeck*>(block);
+        range_.assign(deck_->slots.size() * kSlotStride, 0u);
+        return range_.data();
+    }
+    std::int32_t read_i32(void* slot, std::uint32_t offset) override {
+        if (offset != 0x2Cu || deck_ == nullptr) unit_query_unreached("a dword other than slot+2Ch");
+        const std::ptrdiff_t at = static_cast<const std::uint8_t*>(slot) - range_.data();
+        if (at < 0 || at % static_cast<std::ptrdiff_t>(kSlotStride) != 0
+            || static_cast<std::size_t>(at) / kSlotStride >= deck_->slots.size()) {
+            unit_query_unreached("a slot outside the deck's slot array");
+        }
+        return static_cast<std::int32_t>(deck_->slots[static_cast<std::size_t>(at) / kSlotStride].state);
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+private:
+    static constexpr std::size_t kSlotStride = 0x58;
+    const bsp::AirOpsDeck* deck_{nullptr};
+    std::vector<std::uint8_t> range_;
 };
 
 // 008ABAC0 / 008ABF90 over fill_nine_integers (bsp.py show 008abac0 --asm: 00888AA0 on
@@ -5360,6 +5408,11 @@ int GameScriptOrdersHost::run_seg56_unit_query(std::uint32_t address) {
     case 0x00897720u: count = seg56::lua_set_air_base_plane_limit(args, host); break;
     case 0x008978d0u: count = seg56::lua_get_air_base_plane_limit(args, results, host); break;
     case 0x00896ee0u: count = seg56::lua_remove_shipyard_stock(args, host); break;
+    case 0x00896220u: {
+        AirSlotStateView slots;
+        count = seg56::lua_get_air_base_slot_status(args, results, slots, host);
+        break;
+    }
     default: unit_query_unreached("a row with no segment-56 unit query body");
     }
     return state_ != nullptr ? count : 0;
@@ -6728,6 +6781,30 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.unimplemented(binding->row_address == 0x00897720u
                     ? "LuaNative::SetAirBasePlaneLimit(entity without an air-operations deck)"
                     : "LuaNative::GetAirBasePlaneLimit(entity without an air-operations deck)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "GetAirBaseSlotStatus") == 0) {
+        // Goal 5 chain 655. 00896220 GetAirBaseSlotStatus(base, slot): 00888AA0 on argument
+        // 0 (00896322), 006BCD20(base, 0) (XOR DL,DL at 00896339), 00B66290 on argument 1
+        // (0089635E), then [[block+4Ch] + (slot - 1) * 58h + 2Ch] pushed by 00B664B0; one
+        // result. Body lua_get_air_base_slot_status over AirSlotStateView and
+        // UnitQuerySeg56Host's 006BCD20. Callers: jm07.lua 1189 / 1195, jm11.lua 1006,
+        // jm12.lua 867 (== 5, kReady) and the PRCPIJN copies, commandhelpers.lua 18905.
+        // LABELLED: a base with no loaded deck, or a slot outside 1..its slot count, pushes
+        // nothing and is counted; the image reads past the array (or faults on a null
+        // block).
+        ++air_base_slot_calls_;
+        bool owner_class = false;
+        const std::size_t base = index_of(entity_at(0));
+        const bsp::AirOpsDeck* deck = base < units_.count()
+            ? unit_air_ops_deck_006bcd20(units_, base, owner_class) : nullptr;
+        const int slot = deck != nullptr ? get_integer(1) : 0;
+        if (state_ != nullptr && deck != nullptr && slot >= 1
+            && static_cast<std::size_t>(slot) <= deck->slots.size()) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::GetAirBaseSlotStatus(no deck or no such slot)",
                 address);
         }
     } else if (std::strcmp(binding->name, "EntityTurnToPosition") == 0) {
@@ -9175,14 +9252,15 @@ void GameScriptOrdersHost::report() {
     }
     if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0
         || shipyard_stock_calls_ != 0 || turn_to_position_calls_ != 0
-        || pilot_stop_calls_ != 0) {
+        || pilot_stop_calls_ != 0 || air_base_slot_calls_ != 0) {
         log_.notef("summary mission script unit queries role tables=%zu skill/crew=%zu "
-            "air base plane limit=%zu shipyard stock=%zu turn to position=%zu (posed %zu) "
-            "pilot stop=%zu (issued %zu) unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / "
-            "008950D0 / 00897720 / 008978D0 / 00896EE0 / 008A0F10 / 008A7780, goal 5 "
-            "chain 655)", role_table_calls_, skill_query_calls_, air_base_limit_calls_,
-            shipyard_stock_calls_, turn_to_position_calls_, turn_to_position_posed_,
-            pilot_stop_calls_, pilot_stop_issued_, unit_query_unresolved_);
+            "air base plane limit=%zu slot status=%zu shipyard stock=%zu turn to position=%zu "
+            "(posed %zu) pilot stop=%zu (issued %zu) unresolved=%zu (008ABAC0 / 008ABF90 / "
+            "008953F0 / 008950D0 / 00897720 / 008978D0 / 00896220 / 00896EE0 / 008A0F10 / "
+            "008A7780, goal 5 chain 655)", role_table_calls_, skill_query_calls_,
+            air_base_limit_calls_, air_base_slot_calls_, shipyard_stock_calls_,
+            turn_to_position_calls_, turn_to_position_posed_, pilot_stop_calls_,
+            pilot_stop_issued_, unit_query_unresolved_);
     }
     if (plane_force_release_calls_ != 0 || squadron_force_release_calls_ != 0 ||
         pilot_bomb_calls_ != 0 || bomb_falling_time_calls_ != 0 ||

@@ -1462,6 +1462,7 @@ private:
     std::size_t turn_to_position_posed_{0};
     std::size_t pilot_stop_calls_{0};
     std::size_t pilot_stop_issued_{0};
+    std::size_t air_base_slot_calls_{0};
     std::size_t unit_query_unresolved_{0};
     // Packet cc13-fix16, per native: calls, requests or rearms made, unresolved.
     std::size_t plane_force_release_calls_{0};

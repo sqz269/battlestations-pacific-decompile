@@ -96,8 +96,8 @@
     },
     {
       "native": "00896220",
-      "status": "skipped",
-      "reason": "GetAirBaseSlotStatus reads slot+2Ch through pointer arithmetic on [block+4Ch] (58h stride); it needs an ImageAccess view that maps the deck's slot vector onto that address space, not built"
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetAirBaseSlotStatus arm), lua_get_air_base_slot_status over AirSlotStateView (the deck's slots as the +4Ch / 58h-stride array, slot+2Ch = AirOpsSlot::state)"
     },
     {
       "native": "0089e220",
