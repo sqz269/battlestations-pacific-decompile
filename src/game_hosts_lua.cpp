@@ -14306,6 +14306,17 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
     const bsp::MothershipFailureArm carrier_arm = bsp::kCarrierRunwayFailureBound
         && units->unit_is_kind_of(index, bsp::kMothershipKindOfClassId)
         ? bsp::mothership_failure_arm(name) : bsp::MothershipFailureArm::none;
+    // Goal 5 chain 654: the nine plane vtables override +194h with 007BBFA0
+    // (vtable slot 101 at 00D00204 ... 00D1A46C), and IsKindOf(4) answers true for
+    // a plane too, so the plane test comes before the ship arm. 007BC0AA-007BC0D5:
+    // 00B677E0(frame, 2) then 00B66290, lua_tonumber truncated (a missing argument
+    // reads 0). Arm 20.
+    const bool conversion_mode =
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    const std::int32_t engine_index = argument_count >= 3
+        ? bsp::lua_number_integer_00b66290(::lua_tonumber(state, 3), conversion_mode)
+        : 0;
+    bool plane_applied = false;
     if (carrier_arm != bsp::MothershipFailureArm::none) {
         bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
         bsp::mothership_apply_failure_message(deck, carrier_arm, true);
@@ -14314,6 +14325,8 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
             "(packet p11_carrier_runway_failure)",
             carrier_arm == bsp::MothershipFailureArm::runway ? "72h runway" : "74h hangar",
             deck != nullptr ? "yes" : "none");
+    } else if (units->script_plane_set_failure(index, name, engine_index, plane_applied)) {
+        if (plane_applied) arm = 20;
     } else if (units->unit_is_kind_of(index, kFailureShipKindOfClassId)) {
         // 0093BD80: more than two arguments and argument 2 a number, else 1e10.
         const float seconds = argument_count >= 3 && ::lua_type(state, 3) == LUA_TNUMBER
@@ -14322,17 +14335,6 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
         const float damage = argument_count >= 6
             ? static_cast<float>(::lua_tonumber(state, 6)) : 0.0f;
         arm = units->gunnery()->script_set_failure_008132c0(index, name, seconds, damage);
-    } else {
-        // 007BC0AA-007BC0D5: 00B677E0(frame, 2) then 00B66290, lua_tonumber
-        // truncated (a missing argument reads 0).
-        const bool conversion_mode =
-            IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
-        const std::int32_t engine_index = argument_count >= 3
-            ? bsp::lua_number_integer_00b66290(::lua_tonumber(state, 3), conversion_mode)
-            : 0;
-        bool applied = false;
-        if (units->script_plane_set_failure(index, name, engine_index, applied) && applied)
-            arm = 20;
     }
     if (arm != 0) ++summary_.set_failure_applied;
     else ++summary_.set_failure_other;
