@@ -365,10 +365,16 @@ std::string strip_extension(const std::string& name) {
 
 void read_sky(const ScenePropertyBagModel& model, int bag, bool linearize, SceneSkyFields& sky,
               SceneLightsFields& lights, SceneSkyHost& host) {
-    host.read_cloud_areas_004e7220(model, bag);
+    host.load_cloud_areas(model, bag);  // 004EE481 CALL 004E7220
     const ScenePropertyEntry* lights_entry = find(model, bag, "Lights");
     if (lights_entry != nullptr && lights_entry->value.type == ScenePropertyType::SubBag) {
-        read_lights(model, lights_entry->sub_bag, linearize, lights, host);
+        // 004EE4A3 CALL 004EA870 (ECX = Lights bag, EDX = record): through the
+        // one 004EA870 entry, its fault rethrown to this reader's guard.
+        std::string error;
+        if (!read_sun_light_properties_004ea870(model, lights_entry->sub_bag, linearize, lights,
+                                                host, error)) {
+            throw ReaderFault(error);
+        }
     } else {
         reset_lighting_configuration_004b6800(lights);
     }
@@ -440,8 +446,10 @@ void read_environment_sound(const ScenePropertyBagModel& model, int ambient_bag,
     }
 }
 
-// 004ED2D0.
-void read_music_state(const ScenePropertyBagModel& model, const ScenePropertyEntry* state, int party,
+// 004ED2D0 BSP_SceneMusicTrack_Read. Kept out of line: 004ED690 calls it per
+// music state as its own function.
+__declspec(noinline) void read_music_track_004ed2d0(const ScenePropertyBagModel& model,
+                      const ScenePropertyEntry* state, int party,
                       int index, SceneMusicFields& out, SceneMusicHost& host) {
     const int slot = party * kMusicStateCount + index;
     SceneMusicState& music = out.music[slot];
@@ -462,7 +470,8 @@ void read_music_state(const ScenePropertyBagModel& model, const ScenePropertyEnt
             host.assign_sound_effect(slot, effect->value.text);
         }
     }
-    host.set_music_track_00a79480(music.path_d98, party, index);
+    // 004ED502..004ED513: PUSH state, party, EBP = record+D98h+slot*18h.
+    host.set_music_track_00a79480(music, party, index);
 }
 
 void read_music(const ScenePropertyBagModel& model, int bag, SceneMusicFields& out, SceneMusicHost& host) {
@@ -489,8 +498,8 @@ void read_music(const ScenePropertyBagModel& model, int bag, SceneMusicFields& o
             continue;
         }
         for (int state = 0; state < kMusicStateCount; ++state) {
-            read_music_state(model, find(model, party_entry->sub_bag, kStates[state]), party, state, out,
-                             host);
+            read_music_track_004ed2d0(model, find(model, party_entry->sub_bag, kStates[state]), party,
+                                      state, out, host);
         }
     }
 }
@@ -935,8 +944,9 @@ bool read_weather_fog_and_cloud_lights_004eca30(const ScenePropertyBagModel& mod
     return guarded(error, [&] { read_weather(model, bag_index, linearize, out); });
 }
 
-bool read_sun_light_properties_004ea870(const ScenePropertyBagModel& model, int bag_index,
-                                        bool linearize, SceneLightsFields& out,
+// Kept out of line: 004EE450 calls it at 004EE4A3 as its own function.
+__declspec(noinline) bool read_sun_light_properties_004ea870(const ScenePropertyBagModel& model,
+                                        int bag_index, bool linearize, SceneLightsFields& out,
                                         SceneLightsHost& host, std::string& error) {
     return guarded(error, [&] { read_lights(model, bag_index, linearize, out, host); });
 }

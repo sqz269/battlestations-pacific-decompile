@@ -38,7 +38,10 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/scene_weather_cc13.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -2529,6 +2532,66 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag,
     return authored;
 }
 
+// 004ED690 BSP_SceneRecord_ReadMusicAndAmbience over the header's Sound group:
+// 004F1D70 finds the group at 004F229C and calls 004ED690 at 004F22C0 when its
+// sound flag is set. 00469BF0 passes 0046DF00's third argument ([EBP+10h] at
+// 0046E724) as that flag, and only 004D4DF0's instantiate read pushes 1 there
+// (004D552B; the registration read at 004D54D3 and both 004E1D70 header-only
+// reads push 0). Each Music state reaches 00A79480 on the published dialog
+// owner [00F8BBCC] through 004ED2D0, which is what the Music_Control levels
+// later select from. Evidence: bsp.py show 00469bf0 / 0046df00 --asm /
+// 004d4df0 --asm; docs/CC13_SCENE_WEATHER.md.
+struct SceneMusicBinding final : bsp::scene_weather_cc13::SceneMusicHost {
+    GameHostLog& log;
+    GameSoundDialogRuntime& dialog;
+    std::size_t tracks{};
+    std::size_t sound_effects{};
+
+    SceneMusicBinding(GameHostLog& output, GameSoundDialogRuntime& runtime)
+        : log(output), dialog(runtime) {}
+    void assign_sound_effect(int slot, const std::string& name) override {
+        // 004ED2D0's SoundEffect arm: 00A83FD0 on [00F8BBE8], then 004E7BB0
+        // into record+DA8h + slot*18h. This host's scene record keeps no
+        // +DA8h sample slots, and the only static reference to +DA8h is this
+        // writer, so the sample is not acquired.
+        static_cast<void>(slot);
+        static_cast<void>(name);
+        ++sound_effects;
+        log.unimplemented("SceneContents::scene_music_sound_effect", "004ed2d0");
+    }
+    void set_music_track_00a79480(const bsp::scene_weather_cc13::SceneMusicState& music,
+        int party, int state) override {
+        // The whole +D98h + slot*18h record: path, Channel, a null sample
+        // (above) and the constructor's +14h word.
+        dialog.set_music_track(music.path_d98, music.channel_da0, party, state);
+        if (!music.path_d98.empty()) ++tracks;
+    }
+};
+
+void read_scene_music_group(GameHostLog& log, const ScenePropertyBlock& header) {
+    GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+    const bsp::ScenePropertyBagModel model = bsp::scene_weather_cc13::scene_bag_from_block(header);
+    // 004F229C..004F22C0: 008F2260 "Sound" then the type 6 test.
+    const bsp::ScenePropertyEntry* sound = bsp::scene_property_bag_find(model, 0, "Sound");
+    if (sound == nullptr || sound->value.type != bsp::ScenePropertyType::SubBag) return;
+    if (dialog == nullptr || !dialog->started()) {
+        // Without a started dialog owner there is no [00F8BBCC] to take the
+        // tracks; the native always has one after application startup.
+        log.note("scene music: the header's Sound group has no started dialog owner to take it");
+        return;
+    }
+    SceneMusicBinding binding(log, *dialog);
+    bsp::scene_weather_cc13::SceneMusicFields fields;
+    std::string error;
+    if (!bsp::scene_weather_cc13::read_music_and_ambience_004ed690(model, sound->sub_bag,
+            fields, binding, error)) {
+        throw std::runtime_error("scene Sound group: " + error);
+    }
+    log.implemented("SceneContents::read_music_and_ambience", "004ed690");
+    log.notef("scene music: 004ED690 set %zu music track(s) on the dialog owner through "
+        "00A79480; %zu SoundEffect name(s) not acquired", binding.tracks, binding.sound_effects);
+}
+
 class SceneReaderBinding final : public SceneFileReaderHost {
 public:
     SceneReaderBinding(GameSceneContentsHost::Impl& owner, SceneFilePass pass,
@@ -2587,6 +2650,8 @@ public:
         root_properties_ = block.values.size();
         owner_.root_properties = block;
         owner_.log.implemented("SceneContents::publish_scene_root_properties", "00469b60");
+        // 00469D45 004F1D70 with the sound flag set: the instantiate read only.
+        if (pass_ == SceneFilePass::Instantiate) read_scene_music_group(owner_.log, block);
     }
     void publish_scene_precache(const ScenePropertyBlock& block) override {
         precache_properties_ = block.values.size();
