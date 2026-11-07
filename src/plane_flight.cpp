@@ -196,6 +196,27 @@ PlaneCruiseAltitudeResult cruise_altitude_command_009fba50(const PlaneCruiseAlti
     return out;
 }
 
+PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
+    const PlaneNamedEffectLatchInputs& in) noexcept {
+    PlaneNamedEffectLatchResult out;
+    out.c01 = in.c01;
+    // 007CE55D..007CE592: CMP [game+1FE4h],2 / JZ, then the four JZ on unit+900h
+    // and CMP [ESI-2B3h],0 / JZ; MOV [ESI+8F1h],CL with CL = 2 (007CE562).
+    if (in.session_mode_1fe4 != 2) {
+        const int m = in.control_mode_900;
+        if (m != 7 && m != 6 && m != 4 && m != 5 && in.dead_5d) out.c01 = 2;
+    }
+    // 007CE6CA / 007CE6D7: CMP byte [ESI+6D0h],0 and [ESI+210h],0, JNZ 007CE835.
+    if (in.frozen_9e0 || in.suppress_520) return out;
+    // 007CE790..007CE798: TEST AL,AL / JLE, a signed byte.
+    if (static_cast<std::int8_t>(out.c01) <= 0) return out;
+    // 007CE79E CMP AL,1 / JNZ 007CE7D8: 1 is "powerlost", any other value "explosion".
+    out.effect = out.c01 == 1 ? PlaneNamedEffectLatchEffect::PowerLost
+                              : PlaneNamedEffectLatchEffect::Explosion;
+    out.c01 = 0;  // 007CE82E MOV byte [ESI+8F1h],0
+    return out;
+}
+
 PlaneMotionArm select_motion_arm_007ce040(const PlaneMotionDispatchInputs& in) {
     if (in.control_mode_gate) {
         return PlaneMotionArm::FreeFlight;  // 007CEC43 JZ, so a true answer takes this arm
@@ -220,6 +241,13 @@ PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step) 
         host.out_of_action_countdown_007c6c30(step);  // 00953D98, vtable[+1D8h]
         // 007CE09C-007CE0D2: with unit+520h clear, the wanderer (single player).
         host.wanderer_fixed_step_007be060(step);
+    }
+
+    // 007CE55D..007CE82E: unit+C01h, ahead of the 007CE835 vtable[1DCh] call and
+    // the arms. An effect that took the unit out of the world ends the tick:
+    // 007CE856 JNZ 007CF0D3 skips the arms, the pose commit and the latch.
+    if (host.named_effect_latch_007ce790(suppress_slot_1d8, host.airborne_time_frozen())) {
+        return PlaneMotionArm::None;
     }
 
     PlaneMotionDispatchInputs dispatch;

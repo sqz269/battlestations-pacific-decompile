@@ -393,6 +393,47 @@ enum class PlaneMotionArm {
     Surface,     // 007CECAF 007CBA50, unit+5F0h == 6
 };
 
+// ---------------------------------------------------------------------------
+// unit+C01h, the plane's pending named effect, inside 007CE040 (ESI = unit+310h,
+// so the listing's [ESI+8F1h]). Writers outside the tick store it for the next
+// one: 007B9000 stores 2, 007B9010 stores 1, 007CC2AD stores 2. The tick:
+//   007CE55D..007CE592  with game+1FE4h != 2, unit+900h not 7, 6, 4 or 5 and
+//                       unit+5Dh (dead) set: +C01h = 2 (MOV [ESI+8F1h],CL, CL 2);
+//   007CE6C7..007CE6DE  unit+9E0h ([ESI+6D0h]) or unit+520h ([ESI+210h]) set:
+//                       JNZ 007CE835, past the consumer;
+//   007CE790..007CE798  MOV AL,[ESI+8F1h] / TEST / JLE: a signed byte <= 0 is
+//                       no effect;
+//   007CE79E..007CE7D6  1: "powerlost" (00D059F8), else "explosion" (00D05A18),
+//                       each through unit->vtable[194h] (007BBFA0) with args 0;
+//                       its AL is not read;
+//   007CE82E            +C01h = 0.
+// Evidence: bsp.py show 007CE040 --asm --start 365 / --start 432.
+// ---------------------------------------------------------------------------
+enum class PlaneNamedEffectLatchEffect {
+    None,
+    PowerLost,  // "powerlost", +C01h == 1
+    Explosion,  // "explosion", any other positive +C01h
+};
+
+struct PlaneNamedEffectLatchInputs {
+    std::uint8_t c01{0};          // unit+C01h on entry
+    int session_mode_1fe4{0};     // game+1FE4h
+    int control_mode_900{0};      // unit+900h ([ESI+5F0h])
+    bool dead_5d{false};          // unit+5Dh ([ESI-2B3h])
+    bool frozen_9e0{false};       // unit+9E0h ([ESI+6D0h])
+    bool suppress_520{false};     // unit+520h ([ESI+210h])
+};
+
+struct PlaneNamedEffectLatchResult {
+    std::uint8_t c01{0};          // unit+C01h on exit
+    PlaneNamedEffectLatchEffect effect{PlaneNamedEffectLatchEffect::None};
+};
+
+// 007CE55D..007CE82E without the named-effect call itself, which the host makes
+// with the returned effect (and before reading the stored byte again).
+PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
+    const PlaneNamedEffectLatchInputs& in) noexcept;
+
 struct PlaneMotionDispatchInputs {
     bool control_mode_gate{false};  // (*(unit+72Ch))->vtable[+38h]() at 007CEC3F
     int ground_water_mode{0};       // unit+900h
@@ -437,6 +478,18 @@ public:
     // game+1FE4h == 0 (docs/PLANE_WANDERER.md). No-op unless the host binds it.
     virtual void wanderer_fixed_step_007be060(float step) { (void)step; }
 
+    // 007CE55D..007CE82E, unit+C01h's store, gates and consumer
+    // (plane_named_effect_latch_007ce790) with the 007BBFA0 call it makes. The
+    // sequence passes the unit+520h it already holds and unit+9E0h. Returns
+    // true when the effect took the unit out of the world, so that the rest of
+    // the tick is not run (007CE856 CMP [unit+5Eh],0 / JNZ 007CF0D3). No-op
+    // unless the host binds it.
+    virtual bool named_effect_latch_007ce790(bool suppress_520, bool frozen_9e0) {
+        (void)suppress_520;
+        (void)frozen_9e0;
+        return false;
+    }
+
     // Observation points the sequence reads rather than calls.
     virtual bool airborne_time_frozen() = 0;  // unit+9E0h
     virtual int ground_water_mode() = 0;      // unit+900h
@@ -445,8 +498,9 @@ public:
 
 // The ordered part of 007CE040 this packet read: the level-4 tick and its two
 // virtual arms, then the motion dispatch, then the pose commit and the latch.
-// Everything between 007CE094 and 007CEC30 (damage, effects, collision, sound)
-// is not in the sequence: coverage is partial by construction.
+// Of everything between 007CE094 and 007CEC30 (damage, effects, collision,
+// sound) only the +C01h named-effect latch (007CE55D..007CE82E) is in the
+// sequence: coverage is partial by construction.
 PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step);
 
 // ---------------------------------------------------------------------------
