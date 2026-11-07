@@ -1591,6 +1591,9 @@ public:
     bsp::VehicleClassRegistry* vehicle_registry() const noexcept { return vehicle_registry_; }
     // PrepareClass 008C8F70 through lua_binding_prepare_class (src/lua_binding_core.cpp).
     int run_prepare_class_008c8f70(lua_State* state);
+    // Goal 5 chain 659: Scoring_RealPlayTimeRunning 008B87F0 through
+    // lua_binding_scoring_real_play_time_running (src/lua_binding_core.cpp).
+    int run_scoring_real_play_time_running_008b87f0(lua_State* state);
     // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
     // the VehicleClass rows whose Got is not true. Later reads of those rows
     // through the read_vehicle_class_* readers are counted for the summary
