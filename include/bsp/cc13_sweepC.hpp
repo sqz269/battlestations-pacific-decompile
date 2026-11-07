@@ -85,16 +85,29 @@ struct CameraPoolFactoryHost {
     virtual void* camera_construct_00b71a80(void* block, std::uint32_t arg) = 0;
 };
 
+// The only calls the subscription Matches slots below (00968710..00968E00, 009685B0)
+// make. A host that evaluates listener subscriptions implements these three alone.
+struct SubscriptionMatchHost {
+    virtual ~SubscriptionMatchHost() = default;
+    // 00BF6713, the checked-iterator failure report (debug STL range checks).
+    virtual void invalid_iterator_00bf6713() = 0;
+    // A subscription filter: [filter]->vtable[0](ECX = filter, boxed parameter) -> AL.
+    virtual bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) = 0;
+    // 009658B0, __thiscall(ECX = vector, index), RET 4 -> &element (checked operator[]; a
+    // vendor STL instantiation).
+    virtual std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) = 0;
+};
+
 struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayoutHost,
-                    CameraPoolFactoryHost {
+                    CameraPoolFactoryHost, SubscriptionMatchHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
     // lock adds the +18h recursion counter around them; the bodies here do that part.
     virtual void enter_critical_section(void* section) = 0;
     virtual void leave_critical_section(void* section) = 0;
-    // 00BF6713, the checked-iterator failure report (debug STL range checks).
-    virtual void invalid_iterator_00bf6713() = 0;
+    // invalid_iterator_00bf6713, filter_accepts_vslot_00 and vector_at_009658b0 come from
+    // SubscriptionMatchHost.
     // 00BF55BE operator new / 00BF6989 operator delete.
     virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
     virtual void operator_delete_00bf6989(void* block) = 0;
@@ -267,11 +280,6 @@ struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayo
     // [object]->vtable[1Ch] / [20h](ECX = object) -> ST0 (kept as double: the x87 value).
     virtual double object_vslot_1c_double(void* object) = 0;
     virtual double object_vslot_20_double(void* object) = 0;
-    // A subscription filter: [filter]->vtable[0](ECX = filter, boxed parameter) -> AL.
-    virtual bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) = 0;
-    // 009658B0, __thiscall(ECX = vector, index), RET 4 -> &element (checked operator[]; a
-    // vendor STL instantiation).
-    virtual std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) = 0;
 
     // [00CE2220] InterlockedDecrement(&counter) -> the new count.
     virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* counter) = 0;
@@ -593,17 +601,17 @@ std::uint32_t unit_is_current_player_or_ally_009683a0(SweepCHost& host, void* un
 // The subscription matchers (vtable slot 3, __thiscall(ECX = subscription, params vector),
 // RET 4 -> EAX). Two-key: exit zone is hosted elsewhere; leak, fire, repair, target, ammoType,
 // gui, generate. Three-key: failure, zone, stock. hit tests eight parameters.
-std::uint32_t leak_subscription_matches_009688c0(SweepCHost& host, void* subscription, void* params);
-std::uint32_t fire_subscription_matches_00968940(SweepCHost& host, void* subscription, void* params);
-std::uint32_t repair_subscription_matches_009689c0(SweepCHost& host, void* subscription, void* params);
-std::uint32_t target_subscription_matches_00968bd0(SweepCHost& host, void* subscription, void* params);
-std::uint32_t ammo_type_subscription_matches_00968c50(SweepCHost& host, void* subscription, void* params);
-std::uint32_t gui_subscription_matches_00968d80(SweepCHost& host, void* subscription, void* params);
-std::uint32_t generate_subscription_matches_00968e00(SweepCHost& host, void* subscription, void* params);
-std::uint32_t failure_subscription_matches_00968810(SweepCHost& host, void* subscription, void* params);
-std::uint32_t zone_subscription_matches_00968a40(SweepCHost& host, void* subscription, void* params);
-std::uint32_t stock_subscription_matches_00968cd0(SweepCHost& host, void* subscription, void* params);
-std::uint32_t hit_subscription_matches_009685b0(SweepCHost& host, void* subscription, void* params);
+std::uint32_t leak_subscription_matches_009688c0(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t fire_subscription_matches_00968940(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t repair_subscription_matches_009689c0(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t target_subscription_matches_00968bd0(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t ammo_type_subscription_matches_00968c50(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t gui_subscription_matches_00968d80(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t generate_subscription_matches_00968e00(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t failure_subscription_matches_00968810(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t zone_subscription_matches_00968a40(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t stock_subscription_matches_00968cd0(SubscriptionMatchHost& host, void* subscription, void* params);
+std::uint32_t hit_subscription_matches_009685b0(SubscriptionMatchHost& host, void* subscription, void* params);
 
 // ---------------------------------------------------------------------------
 // Segment 71.

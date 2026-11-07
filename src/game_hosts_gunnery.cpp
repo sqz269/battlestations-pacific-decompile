@@ -5081,6 +5081,30 @@ struct GameGunneryHost::Impl {
             ++invincibility_floored_writes;
         }
     }
+    // 00879070's tail (GameGunneryHpEvent, include/bsp/game_hosts_gunnery.hpp), run by
+    // each unit-health site after it stored the 00877B90 result; `old_health` is +370h
+    // as the site read it before 00879070. 0087917D: an equal pair returns, an
+    // unordered one dispatches. 008791CA FDIVP / 008791DA FDIVR: one division each,
+    // stored as a float (008791CE / 008791DE), so a float quotient is the same value.
+    std::vector<GameGunneryHost::GameGunneryHpEvent> hp_events;   // drained per frame
+    unsigned long long hp_events_queued{0};
+    // 006E4D50's tail (006E55FF..006E5633, bsp.py show 006e4d50 --asm): when the
+    // platform's parent (00923810(1)) answers vtable[5Ch](0Fh), a plane, 00984BA0 runs
+    // on that plane's squadron (+9D4h): the `ammoType` channel. One record per plane
+    // drop that left a round (bomb, paratrooper, torpedo); take_ammo_type_drops().
+    std::vector<std::size_t> ammo_type_drops;
+    void note_ammo_type_drop(std::size_t unit) {
+        if (units.unit_is_kind_of(unit, 0x0f)) ammo_type_drops.push_back(unit);
+    }
+    void note_hp_event(std::size_t unit, float old_health) {
+        if (unit >= unit_state.size()) return;
+        const UnitState& state = unit_state[unit];
+        const float new_health = state.health;
+        if (old_health == new_health) return;
+        hp_events.push_back({unit, old_health > new_health, old_health / state.max_health,
+            new_health / state.max_health});
+        ++hp_events_queued;
+    }
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
@@ -14774,6 +14798,7 @@ public:
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
         dispatch_health_changed_ |= write.dispatch_health_changed;
         if (write.wrote) owner_.unit_state[victim_].health = write.stored_health;
+        owner_.note_hp_event(victim_, health.current_health);
         return true;
     }
 
@@ -17500,6 +17525,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     cf_explosion_damage += state.health - write.stored_health;
                     state.health = write.stored_health;
                 }
+                note_hp_event(unit, health.current_health);
             }
             state.row.health = state.health;
             done("Failure::explosion_damage_0081b630", 0x0081b630u);
@@ -17555,6 +17581,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
             dispatch_health_changed |= write.dispatch_health_changed;
             if (write.wrote) state.health = write.stored_health;
+            note_hp_event(i, health.current_health);
         };
         if constexpr (kShipHullRepairBound) {
             // 0093C770, then 00877B90(max) when the heal overshoots. 0093C776: a
@@ -18177,6 +18204,7 @@ void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, 
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        note_hp_event(master, health.current_health);
     }
     state.row.health = state.health;
     done("LandMaster::add_damage_0095da00", 0x0095da00u);
@@ -20580,6 +20608,18 @@ std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_even
     return out;
 }
 
+std::vector<GameGunneryHost::GameGunneryHpEvent> GameGunneryHost::take_hp_events() {
+    std::vector<GameGunneryHpEvent> out;
+    out.swap(impl_->hp_events);
+    return out;
+}
+
+std::vector<std::size_t> GameGunneryHost::take_ammo_type_drops() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ammo_type_drops);
+    return out;
+}
+
 // Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
 // 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
 // runs; this host makes that set at the first torpedo shot, so an unset unit
@@ -20641,6 +20681,7 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        host.note_hp_event(unit_index, health.current_health);
     }
     state.row.health = state.health;
     host.done("Unit::add_damage_0095da00", 0x0095da00u);
@@ -21422,6 +21463,7 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
+    h.note_ammo_type_drop(unit_index);   // a plane torpedo is an MBombPlatform (2Ah) round
     // Packet cc8_torpedo_breakoff: RESTORED, as half two of the spent-bomber
     // fix. A drop clears the owner's kind 2Bh bit, so approach+132h (== task+52Ah,
     // section 10.2) goes false on the next approach update.
@@ -21652,6 +21694,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         paratrooper->owner_side = h.units.unit_side_0054(unit_index);
         ++h.summary.paratrooper_releases;
         h.done("Rack::paratrooper_release_006e4d50", 0x006e4d50u);
+        h.note_ammo_type_drop(unit_index);
         return true;
     }
 
@@ -21707,6 +21750,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.bomb_drops;
+    h.note_ammo_type_drop(unit_index);
     // NOT DONE, deliberately: no kind 2Ah twin of the torpedo drop's 2Bh clear.
     // The torpedo side can clear its bit because one drop is its whole loadout;
     // a dive bomber's is a salvo of up to two per pass out of a stock this host
