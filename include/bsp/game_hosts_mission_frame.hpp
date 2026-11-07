@@ -64,6 +64,13 @@ void game_warning_report_failure(std::size_t unit, const std::string& kind);
 // `exited`: with the byte 0, the same guards and a unit on the local player's party,
 // an 84h exit-zone warning through 00975340(entity, 0) and 009763E0.
 void game_warning_report_exit_zone(std::size_t unit, bool exited);
+// 00980E50's tail (00981202..0098134E), for a recon record change of `unit` seen by
+// `party` (old -> new), with the record's +28h `observer` (kGunneryReconNoObserver
+// for none): for the local party, a change from below 2 to 2 or more at or past 4.5 s
+// of an IsKindOf(5) enemy or unknown entity that is not IsKindOf(19h), a 9Ch recon
+// warning through 009741E0(entity, old, new) and 009763E0.
+void game_warning_report_recon(std::size_t unit, int old_level, int new_level, int party,
+    std::size_t observer);
 // 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);

@@ -10002,11 +10002,14 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
         // class-18h squadron list), so it notifies on a net change only; the own
         // arm's 00805AF0(1.0f) notifies once, 0 -> 2. Supersedes the reset-cycle
         // and own-step substitutions below.
-        if (!any_recon) return;
         for (const bsp::ReconLevelTransition& t : pass.transitions()) {
             if (t.unit >= count || gunnery->unit_dead(t.unit)) continue;   // 00980E50's live-unit gate
-            fire_recon_listeners_00980e50(t.unit, static_cast<int>(t.old_level),
-                                          static_cast<int>(t.new_level), t.party);
+            const int old = static_cast<int>(t.old_level);
+            const int now = static_cast<int>(t.new_level);
+            if (any_recon) fire_recon_listeners_00980e50(t.unit, old, now, t.party);
+            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, whether
+            // or not the channel has subscriptions, with the record's +28h observer.
+            game_warning_report_recon(t.unit, old, now, t.party, t.observer);
         }
         return;
     }
@@ -13122,9 +13125,16 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
                 if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
             }
             // 00980E50's live-unit gate, as in the pass dispatch.
-            if (!kLuaListenersBound || !kLuaReconListenersBound || !any_recon ||
-                state_ == nullptr || (gunnery != nullptr && gunnery->unit_dead(unit))) continue;
-            fire_recon_listeners_00980e50(unit, old, now, party);
+            if (gunnery != nullptr && gunnery->unit_dead(unit)) continue;
+            if (kLuaListenersBound && kLuaReconListenersBound && any_recon && state_ != nullptr) {
+                fire_recon_listeners_00980e50(unit, old, now, party);
+            }
+            // Goal 5 chain 634: 00980E50's warning tail, after its listener pass, with
+            // the record's +28h observer (00805CF0 leaves it alone).
+            const bsp::ReconDetectionRecord* record = gunnery != nullptr
+                ? gunnery->recon_sensor_pass_state().record(party, unit) : nullptr;
+            game_warning_report_recon(unit, old, now, party,
+                record != nullptr ? record->observer : bsp::kGunneryReconNoObserver);
         }
     }
     const GameUnitRow* row = units->unit_row(index);

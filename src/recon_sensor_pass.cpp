@@ -165,6 +165,11 @@ ReconDetectionRecord* ReconSensorPassState::record(int party, std::size_t unit) 
     return &records_[static_cast<std::size_t>(party) * record_unit_count_ + unit];
 }
 
+const ReconDetectionRecord* ReconSensorPassState::record(int party, std::size_t unit) const noexcept {
+    if (party < 0 || party >= 3 || unit >= record_unit_count_) return nullptr;
+    return &records_[static_cast<std::size_t>(party) * record_unit_count_ + unit];
+}
+
 namespace {
 
 // 00806840's view of the state: the records, the delegate and the payload level.
@@ -180,7 +185,9 @@ public:
     }
     void level_changed(std::size_t unit, int slot, ReconDetectionLevel old_level,
                        ReconDetectionLevel new_level) override {
-        transitions_.push_back({unit, slot, old_level, new_level});
+        const ReconDetectionRecord* r = state_.record(slot, unit);
+        transitions_.push_back({unit, slot, old_level, new_level,
+                                r != nullptr ? r->observer : kGunneryReconNoObserver});
     }
     void publish_level(std::size_t, ReconDetectionLevel) override {}
 
@@ -234,6 +241,7 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
             t.party = c.first;
             t.old_level = old;
             t.new_level = r->level;
+            t.observer = r->observer;
             state.transitions_.push_back(t);
         }
     }
@@ -294,7 +302,8 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
                 recon_record_accumulate_00805af0(*r, 1.0f, true, kGunneryReconNoObserver);
             ++state.record_own_refreshes;
             if (change.changed) {
-                state.transitions_.push_back({u, slot, change.old_level, change.new_level});
+                state.transitions_.push_back({u, slot, change.old_level, change.new_level,
+                                              r->observer});
             }
         }
 
