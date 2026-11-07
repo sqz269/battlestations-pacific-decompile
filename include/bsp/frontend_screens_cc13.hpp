@@ -481,6 +481,10 @@ void hud_map_hide_unused_arrow_widgets_0059f9b0(void* screen, WidgetHost& host);
 
 // 005BCA80 HUD panel pending value: +170h = value, +168h = 1, +174h = extra.
 void hud_panel_set_pending_value_005bca80(void* panel, std::uint32_t value, std::uint32_t extra) noexcept;
+// 005BCAB0, __thiscall(ECX = panel), RET: +168h = 0 (MOV byte ptr [ECX+168h],0;
+// RET). The panel is the minimap screen at [00E198C4]+58h; callers 007340A0
+// (007340E1) and 00735100 (007351D7), the mission countdown's stop and expiry.
+void hud_panel_clear_pending_005bcab0(void* panel) noexcept;
 // 0059AD20: +5F0h = 1, +5F4h = pos[0], +5F8h = pos[2] (the forced cursor x/z).
 void hud_map_force_cursor_pos_0059ad20(void* screen, const std::uint32_t* pos) noexcept;
 

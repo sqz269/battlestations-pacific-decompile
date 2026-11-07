@@ -8014,7 +8014,8 @@ float GameScriptOrdersHost::countdown_time_left() const noexcept {
 }
 
 void GameScriptOrdersHost::countdown_stop_007340a0() {
-    log_.unimplemented("HudCountdown::end", "005bcab0");  // 007340E1
+    if (narrative_hud_ == nullptr || !narrative_hud_->clear_countdown_panel())
+        log_.unimplemented("HudCountdown::end", "005bcab0");  // 007340E1
     countdown_.active_3c = false;                           // 007340EF
     countdown_.callback_4c.clear();                         // 007340F3-0073410D
     for (const int ref : countdown_.argument_refs_54) {     // 00734110-0073412E
@@ -8392,12 +8393,17 @@ void GameScriptOrdersHost::run_countdown_update_00735100() {
     }
     // 00735181-00735194: expire when 0 > left, or when left <= [00D7A218] = 0.0f.
     if (left > 0.0f) {
-        // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h].
-        log_.unimplemented("HudCountdown::update", "005bca80");
+        // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h]:
+        // FST the left into the second argument, FDIVRP (left / duration, one
+        // PC24 rounding) FSTP float into the first (goal 5 chain 662).
+        const float fraction = static_cast<float>(cc13x87::x87_div24(left, countdown_.duration_44));
+        if (narrative_hud_ == nullptr || !narrative_hud_->set_countdown_panel(fraction, left))
+            log_.unimplemented("HudCountdown::update", "005bca80");
         return;
     }
     countdown_.active_3c = false;                          // 007351C6
-    log_.unimplemented("HudCountdown::end", "005bcab0");   // 007351D7
+    if (narrative_hud_ == nullptr || !narrative_hud_->clear_countdown_panel())
+        log_.unimplemented("HudCountdown::end", "005bcab0");   // 007351D7
     ++countdown_expiries_;
     if (countdown_.callback_4c.empty()) return;            // 007351E1
     // 007351E5-0073520A: copy the name, assign "" to +4Ch, take +54h and zero it.

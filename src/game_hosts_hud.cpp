@@ -2970,6 +2970,42 @@ bool GameHudHost::cancel_mission_countdown() {
     return true;
 }
 
+namespace {
+// [00E198C4]+58h, the minimap screen 35h's leaf block (005C0810).
+std::uint8_t* hud_minimap_block(GameHudHost::Impl& impl) {
+    const std::size_t index = bsp::in_game_hud_screen_index_at(0x58);
+    return index < kInGameHudScreenCount && impl.leaf_screens[index]
+        ? impl.leaf_screens[index]->data() : nullptr;
+}
+}  // namespace
+
+bool GameHudHost::set_countdown_panel(float fraction, float left) {
+    std::uint8_t* const panel = hud_minimap_block(*impl_);
+    if (panel == nullptr) {
+        impl_->record("HudCountdown::update", 0x005bca80u);
+        return false;
+    }
+    // The two stack floats are stored with MOVSS (bit copies).
+    std::uint32_t value = 0;
+    std::uint32_t extra = 0;
+    std::memcpy(&value, &fraction, sizeof(value));
+    std::memcpy(&extra, &left, sizeof(extra));
+    bsp::cc13_fe1::hud_panel_set_pending_value_005bca80(panel, value, extra);
+    impl_->done("HudCountdown::update", 0x005bca80u);
+    return true;
+}
+
+bool GameHudHost::clear_countdown_panel() {
+    std::uint8_t* const panel = hud_minimap_block(*impl_);
+    if (panel == nullptr) {
+        impl_->record("HudCountdown::end", 0x005bcab0u);
+        return false;
+    }
+    bsp::cc13_fe1::hud_panel_clear_pending_005bcab0(panel);
+    impl_->done("HudCountdown::end", 0x005bcab0u);
+    return true;
+}
+
 bool GameHudHost::query_mission_narrative_text_colour() {
     auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");
     if (page == nullptr || !page->root) return false;

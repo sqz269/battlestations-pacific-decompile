@@ -180,6 +180,11 @@ public:
     // False until the counters register 0052CBF0 has built the entries.
     bool show_mission_countdown(const std::string& text, float seconds);
     bool cancel_mission_countdown();
+    // 00735100's 005BCA80(left / duration, left) and 005BCAB0 (00735100 at expiry,
+    // 007340A0 at stop) on the minimap screen's block, [00E198C4]+58h. False
+    // before 0068CC70 built that block.
+    bool set_countdown_panel(float fraction, float left);
+    bool clear_countdown_panel();
     // 00735100 -> 005B5D20: query/discard the live text's colour (no alpha store).
     bool query_mission_narrative_text_colour();
     // 004cc460(20h, controlled unit). Milestone 2h applied the request Init
