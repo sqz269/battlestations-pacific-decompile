@@ -11397,16 +11397,37 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
         return active;
     }
+    // Goal 5 chain 628: the predicate is the reconstructed 007B95E0 body
+    // (src/band_007a_cc13.cpp; CMP [ECX+9D8h],0 / JNE, TEST squadron / JE,
+    // CMP [EAX+3BCh],0 / JLE). Its three inputs come from this host's squadron
+    // record: +9D4h is the record found for the unit; +9D8h is the unit's live
+    // seat among the occupied members (007ED292 re-indexes to the live walk
+    // order, 007ED610 promotes the leader to seat 0), so the first occupied seat,
+    // flight_leader(), is index 0; +3BCh is the 007EE790 recount described above.
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
-        if (sq == nullptr || sq->flight_leader() != unit.process_index) return false;
-        if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
-            const auto it = wingmen_recount_.find(sq->name);
-            return it != wingmen_recount_.end() && it->second.count_3bc > 0;  // +3BCh
-        } else {
-            return count_following_wingmen_007ee790(*sq) > 0;
+        std::int32_t seat_9d8 = -1;      // 007CFE72's constructor stamp: no squadron
+        std::int32_t wingmen_3bc = 0;
+        if (sq != nullptr) {
+            std::int32_t live = 0;
+            for (const std::size_t m : sq->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                if (m == unit.process_index) {
+                    seat_9d8 = live;
+                    break;
+                }
+                ++live;
+            }
+            if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+                const auto it = wingmen_recount_.find(sq->name);
+                wingmen_3bc = it != wingmen_recount_.end() ? it->second.count_3bc : 0;  // +3BCh
+            } else {
+                wingmen_3bc = count_following_wingmen_007ee790(*sq);
+            }
         }
+        return bsp::band_007a_cc13::plane_is_leader_with_wingmen_007b95e0(
+            seat_9d8, sq != nullptr, wingmen_3bc);
     }
     // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
     // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store
