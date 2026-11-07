@@ -1171,6 +1171,15 @@ std::uint32_t match_keys(SubscriptionMatchHost& host, void* subscription, void* 
 
 // Two-key matchers (one 48-instruction shape, checked by stripping addresses: 00968710,
 // 009688C0, 00968940, 009689C0, 00968BD0, 00968C50, 00968D80, 00968E00): filters +0Ch, +1Ch.
+// 00968710, the exitzone matcher (vtable 00D1B69C slot 3), 00968710..00968781 read whole
+// (goal 5 chain 634): the checked index on key 0 (0096871D..00968729), the +0Ch entity
+// filter's slot 0 with params[0] (00968731..0096873C); only when it holds, the checked
+// index on key 1 (00968742..00968756) and the +1Ch exited filter's slot 0 with params[1]
+// (0096875B..0096876D); AL 1 when both hold. RET 4.
+std::uint32_t exit_zone_subscription_matches_00968710(SubscriptionMatchHost& host, void* subscription,
+                                                      void* params) {
+    return match_keys(host, subscription, params, 2);
+}
 std::uint32_t leak_subscription_matches_009688c0(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }

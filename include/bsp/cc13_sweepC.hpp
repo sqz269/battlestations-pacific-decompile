@@ -601,6 +601,8 @@ std::uint32_t unit_is_current_player_or_ally_009683a0(SweepCHost& host, void* un
 // The subscription matchers (vtable slot 3, __thiscall(ECX = subscription, params vector),
 // RET 4 -> EAX). Two-key: exit zone is hosted elsewhere; leak, fire, repair, target, ammoType,
 // gui, generate. Three-key: failure, zone, stock. hit tests eight parameters.
+std::uint32_t exit_zone_subscription_matches_00968710(SubscriptionMatchHost& host, void* subscription,
+                                                      void* params);
 std::uint32_t leak_subscription_matches_009688c0(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t fire_subscription_matches_00968940(SubscriptionMatchHost& host, void* subscription, void* params);
 std::uint32_t repair_subscription_matches_009689c0(SubscriptionMatchHost& host, void* subscription, void* params);

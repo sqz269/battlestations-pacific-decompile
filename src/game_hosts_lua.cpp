@@ -8600,13 +8600,73 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
     }
 }
 
+namespace {
+
+// bsp::cc13_sweepC::SubscriptionMatchHost over one host subscription, for the Matches
+// slots of src/cc13_sweepC.cpp. A slot only forms subscription + filter offset and hands
+// that address to the filter's vtable[0] with params[k]; `subscription()` is a base whose
+// offsets name this subscription's filters, so no image-shaped subscription is built and
+// nothing is read through it. `params()` is the native vector {proxy, begin +4h, end +8h,
+// end of storage} over 32-bit pointers to the boxed parameters, which the slot's checked
+// index reads as words (Win32 only: a box pointer is that word). The same frame serves
+// bsp::oct18_tail_b::SubscriptionFilterHost, the two calls of the four-key matcher
+// 00968470 in src/leftovers_cc13.cpp (goal 5 chain 631).
+class ListenerSubscriptionMatch final : public bsp::cc13_sweepC::SubscriptionMatchHost,
+                                        public bsp::oct18_tail_b::SubscriptionFilterHost {
+public:
+    using Param = bsp::cc13_seg49_64_78::EventParam;
+    using Filter = std::function<bool(const Param&)>;
+    ListenerSubscriptionMatch(std::vector<std::pair<std::size_t, Filter>> filters,
+                              const std::vector<const Param*>& params)
+        : filters_(std::move(filters)) {
+        static_assert(sizeof(void*) == 4, "the native parameter vector holds 32-bit pointers");
+        for (const Param* p : params) {
+            words_.push_back(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p)));
+        }
+        const auto begin = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(words_.data()));
+        const auto end = begin + static_cast<std::uint32_t>(words_.size() * sizeof(std::uint32_t));
+        vector_ = {0u, begin, end, end};
+    }
+    void* subscription() { return frame_.data(); }
+    void* params() { return vector_.data(); }
+    void invalid_iterator_00bf6713() override {
+        throw std::logic_error("listener match: 00BF6713 (short parameter vector)");
+    }
+    bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) override {
+        const std::size_t offset = static_cast<std::size_t>(
+            static_cast<unsigned char*>(filter) - frame_.data());
+        for (const auto& [at, accepts] : filters_) {
+            if (at != offset) continue;
+            return accepts(*reinterpret_cast<const Param*>(static_cast<std::uintptr_t>(parameter)));
+        }
+        throw std::logic_error("listener match: no filter at the slot's offset");
+    }
+    bool filter_vslot_00(void* filter, std::uint32_t parameter) override {
+        return filter_accepts_vslot_00(filter, parameter);
+    }
+    std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) override {
+        if (vector != vector_.data() || index >= words_.size()) {
+            throw std::logic_error("listener match: 009658B0 out of range");
+        }
+        return &words_[index];
+    }
+
+private:
+    std::vector<std::pair<std::size_t, Filter>> filters_;
+    std::vector<std::uint32_t> words_;
+    std::array<std::uint32_t, 4> vector_{};
+    std::array<unsigned char, 0x80> frame_{};
+};
+
+}  // namespace
+
 void GameMissionLuaHost::note_exit_zone_00982120(std::size_t unit, bool exited) {
     if constexpr (kLuaExitZoneListenersBound) {
         exit_zone_pending_.emplace_back(unit, exited);
-    } else {
-        static_cast<void>(unit);
-        static_cast<void>(exited);
     }
+    // Goal 5 chain 634: 00982120's warning tail runs at the call; its listener pass
+    // runs at the frame (dispatch_exit_zone_listeners_00982120).
+    game_warning_report_exit_zone(unit, exited);
 }
 
 // Packet cc13-fix3, under kLuaExitZoneListenersBound. 00982120's `exitzone` channel.
@@ -8659,18 +8719,26 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 bsp::WarningSubscription subscription;
                 subscription.callback = entry.callback;
                 if (entry.native_exit_zone != nullptr) {
-                    // Goal 4 chain 352: the subscription AddListener loaded (009726D0),
-                    // tested as 00968710 does: the +0Ch entity filter's slot 0 (00979140)
-                    // on params[0], then, only when it held, the +1Ch exited filter's
-                    // slot 0 (00979510) on params[1] (00968731..0096876D).
+                    // Goal 4 chain 352: the subscription AddListener loaded (009726D0).
+                    // Goal 5 chain 634: tested by 00968710 itself (vtable 00D1B69C slot
+                    // 3): the +0Ch entity filter's slot 0 (00979140) on params[0], then,
+                    // only when it held, the +1Ch exited filter's slot 0 (00979510) on
+                    // params[1] (00968731..0096876D).
                     namespace matchers = bsp::lua_listener_native_matchers;
                     const bsp::cc13_seg49_64_78::EventParam entity_param =
                         matchers::word_param(victim);
                     const bsp::cc13_seg49_64_78::EventParam exited_param =
                         matchers::word_param(exited);
+                    const auto& s = *entry.native_exit_zone;
+                    ListenerSubscriptionMatch match({
+                        {0x0c, [&s](const bsp::cc13_seg49_64_78::EventParam& p) {
+                            return s.entity.matches(p); }},
+                        {0x1c, [&s](const bsp::cc13_seg49_64_78::EventParam& p) {
+                            return s.exited.matches(p); }}},
+                        {&entity_param, &exited_param});
                     subscription.condition_holds =
-                        entry.native_exit_zone->entity.matches(entity_param)
-                        && entry.native_exit_zone->exited.matches(exited_param);
+                        bsp::cc13_sweepC::exit_zone_subscription_matches_00968710(
+                            match, match.subscription(), match.params()) != 0;
                     subscriptions.push_back(std::move(subscription));
                     continue;
                 }
@@ -8812,66 +8880,6 @@ void GameMissionLuaHost::dispatch_hp_event_listeners() {
         }
     }
 }
-
-namespace {
-
-// bsp::cc13_sweepC::SubscriptionMatchHost over one host subscription, for the Matches
-// slots of src/cc13_sweepC.cpp. A slot only forms subscription + filter offset and hands
-// that address to the filter's vtable[0] with params[k]; `subscription()` is a base whose
-// offsets name this subscription's filters, so no image-shaped subscription is built and
-// nothing is read through it. `params()` is the native vector {proxy, begin +4h, end +8h,
-// end of storage} over 32-bit pointers to the boxed parameters, which the slot's checked
-// index reads as words (Win32 only: a box pointer is that word). The same frame serves
-// bsp::oct18_tail_b::SubscriptionFilterHost, the two calls of the four-key matcher
-// 00968470 in src/leftovers_cc13.cpp (goal 5 chain 631).
-class ListenerSubscriptionMatch final : public bsp::cc13_sweepC::SubscriptionMatchHost,
-                                        public bsp::oct18_tail_b::SubscriptionFilterHost {
-public:
-    using Param = bsp::cc13_seg49_64_78::EventParam;
-    using Filter = std::function<bool(const Param&)>;
-    ListenerSubscriptionMatch(std::vector<std::pair<std::size_t, Filter>> filters,
-                              const std::vector<const Param*>& params)
-        : filters_(std::move(filters)) {
-        static_assert(sizeof(void*) == 4, "the native parameter vector holds 32-bit pointers");
-        for (const Param* p : params) {
-            words_.push_back(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p)));
-        }
-        const auto begin = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(words_.data()));
-        const auto end = begin + static_cast<std::uint32_t>(words_.size() * sizeof(std::uint32_t));
-        vector_ = {0u, begin, end, end};
-    }
-    void* subscription() { return frame_.data(); }
-    void* params() { return vector_.data(); }
-    void invalid_iterator_00bf6713() override {
-        throw std::logic_error("listener match: 00BF6713 (short parameter vector)");
-    }
-    bool filter_accepts_vslot_00(void* filter, std::uint32_t parameter) override {
-        const std::size_t offset = static_cast<std::size_t>(
-            static_cast<unsigned char*>(filter) - frame_.data());
-        for (const auto& [at, accepts] : filters_) {
-            if (at != offset) continue;
-            return accepts(*reinterpret_cast<const Param*>(static_cast<std::uintptr_t>(parameter)));
-        }
-        throw std::logic_error("listener match: no filter at the slot's offset");
-    }
-    bool filter_vslot_00(void* filter, std::uint32_t parameter) override {
-        return filter_accepts_vslot_00(filter, parameter);
-    }
-    std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) override {
-        if (vector != vector_.data() || index >= words_.size()) {
-            throw std::logic_error("listener match: 009658B0 out of range");
-        }
-        return &words_[index];
-    }
-
-private:
-    std::vector<std::pair<std::size_t, Filter>> filters_;
-    std::vector<std::uint32_t> words_;
-    std::array<std::uint32_t, 4> vector_{};
-    std::array<unsigned char, 0x80> frame_{};
-};
-
-}  // namespace
 
 // The `ammoType` channel: the host substitution for 00984BA0, whose reconstructed body
 // (src/cc13_seg62_seg65.cpp) runs on the native manager's channel map. 006E4D50 calls it

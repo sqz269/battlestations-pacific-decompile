@@ -60,6 +60,10 @@ void game_warning_report_torpedo_00977690(std::size_t unit);
 // Both are no-ops before a mission frame host exists.
 void game_warning_report_damage(std::size_t unit, bool fire);
 void game_warning_report_failure(std::size_t unit, const std::string& kind);
+// 00982120's tail (00982447..0098250F), for the `exitzone` call on `unit` with the byte
+// `exited`: with the byte 0, the same guards and a unit on the local player's party,
+// an 84h exit-zone warning through 00975340(entity, 0) and 009763E0.
+void game_warning_report_exit_zone(std::size_t unit, bool exited);
 // 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);
