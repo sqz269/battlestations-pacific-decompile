@@ -50,6 +50,16 @@
       "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetAirBasePlaneLimit arm), lua_get_air_base_plane_limit over UnitQuerySeg56Host (006BA6C0)"
     },
     {
+      "native": "00896ee0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch RemoveShipyardStock arm), lua_remove_shipyard_stock over UnitQuerySeg56Host"
+    },
+    {
+      "native": "008457e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::shipyard_consume_stock_008457e0 -> bsp::cc13_band0080::shipyard_consume_stock_008457e0 over a {class, count} view of the registry's ShipyardState::stock, counts written back"
+    },
+    {
       "native": "00895ba0",
       "status": "skipped",
       "reason": "GetAirBaseStatus pushes 006BF5C0, which reads block+9Ch and the +4 tracked lock; AirOpsDeck models neither (its 006BF5C0 body takes a raw block)"

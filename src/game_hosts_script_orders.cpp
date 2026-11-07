@@ -83,7 +83,9 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/native_physical_file_date.hpp"  // 00435C40
 #include "bsp/native_string.hpp"
 // Goal 5 chain 655: the segment-56 unit queries.
+#include "bsp/band_0080_cc13.hpp"                 // 008457E0
 #include "bsp/cc13_seg33a.hpp"                    // 006E6270
+#include "bsp/shipyard_production.hpp"            // the shipyard registry
 #include "bsp/left55_seg56b_host_unreached.hpp"   // 008ABAC0 / 008ABF90
 #include "bsp/plane_squadron_entity.hpp"          // 007ECF70
 #include "bsp/seg56_host_unreached.hpp"           // 008953F0 / 008950D0 / 00890BB0
@@ -489,6 +491,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Goal 5 chain 655: the air-operations block's in-air plane limit (+58h).
     {"SetAirBasePlaneLimit", 0x00897720u},
     {"GetAirBasePlaneLimit", 0x008978d0u},
+    // Goal 5 chain 655: the shipyard's stock records (+774h).
+    {"RemoveShipyardStock", 0x00896ee0u},
     // Packet cc13-fix16: handled only with its own switch (kLuaPlaneForceReleaseBound,
     // kLuaSquadronForceReleaseBound, kLuaPilotBombBound, kLuaPlaneBombFallingTimeBound,
     // kLuaPlaneReloadBombPlatformsBound, kLuaGetPlaneIsReloadingBound).
@@ -1155,6 +1159,28 @@ public:
     }
     void air_ops_block_set_plane_limit_006ba6d0(void* block, std::int32_t limit) override {
         deck_of(block).max_in_air_planes = limit;
+    }
+
+    // 008457E0 for RemoveShipyardStock 00896EE0 (0089705F, ECX the entity 00888AA0
+    // answered, then the class and count integers). Its records are the shipyard's
+    // +774h stock vector (stride 20h; class [rec+4h]+70h, count +8h), which this
+    // process keeps as the registry's ShipyardState::stock for the shipyard the scene
+    // attached (bound to the table's `ID`). The body runs over a {class, count} view
+    // of those records, and the counts it leaves are written back, so its first-match
+    // clamp is the one rule applied to the host's own stock.
+    void shipyard_consume_stock_008457e0(void* shipyard, std::int32_t class_id,
+        std::int32_t count) override {
+        bsp::ShipyardState* state = bsp::shipyards().find_mutable_by_entity_id(
+            static_cast<int>(slot_of(shipyard) + 1u));
+        if (state == nullptr) unit_query_unreached("008457E0 on an entity with no shipyard");
+        std::vector<bsp::cc13_band0080::ShipyardStockRecord> view(state->stock.size());
+        for (std::size_t i = 0; i < view.size(); ++i) {
+            view[i].class_id = static_cast<std::int32_t>(state->stock[i].class_id);
+            view[i].count = state->stock[i].count;
+        }
+        bsp::cc13_band0080::shipyard_consume_stock_008457e0(view.data(), view.size(),
+            class_id, count);
+        for (std::size_t i = 0; i < view.size(); ++i) state->stock[i].count = view[i].count;
     }
 
 private:
@@ -5080,6 +5106,7 @@ int GameScriptOrdersHost::run_seg56_unit_query(std::uint32_t address) {
     case 0x00890bb0u: count = seg56::lua_get_ship_max_speed(args, results, host); break;
     case 0x00897720u: count = seg56::lua_set_air_base_plane_limit(args, host); break;
     case 0x008978d0u: count = seg56::lua_get_air_base_plane_limit(args, results, host); break;
+    case 0x00896ee0u: count = seg56::lua_remove_shipyard_stock(args, host); break;
     default: unit_query_unreached("a row with no segment-56 unit query body");
     }
     return state_ != nullptr ? count : 0;
@@ -6448,6 +6475,25 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.unimplemented(binding->row_address == 0x00897720u
                     ? "LuaNative::SetAirBasePlaneLimit(entity without an air-operations deck)"
                     : "LuaNative::GetAirBasePlaneLimit(entity without an air-operations deck)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "RemoveShipyardStock") == 0) {
+        // Goal 5 chain 655. 00896EE0 RemoveShipyardStock(shipyard, class, count): 00888AA0
+        // on argument 0 (00896FE3), 00B66290 class and count, then 008457E0(ECX =
+        // entity, class, count) at 0089705F and 00B66400; no result, no session route.
+        // Body lua_remove_shipyard_stock (src/options_seg56_cc13.cpp) over
+        // UnitQuerySeg56Host's 008457E0. Callers: usn_04_defend_guadalcanal.lua 3265..3270
+        // (class 27 from both USN shipyards), jm08.lua 1638..1668 (classes 77 and 174,
+        // both copies). LABELLED: an argument with no shipyard state runs nothing and is
+        // counted; the image would walk +774h of whatever entity it was handed.
+        ++shipyard_stock_calls_;
+        const std::size_t yard = index_of(entity_at(0));
+        if (state_ != nullptr && yard < units_.count()
+            && bsp::shipyards().find_mutable_by_entity_id(static_cast<int>(yard + 1u)) != nullptr) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::RemoveShipyardStock(entity without a shipyard)",
                 address);
         }
     } else if (std::strcmp(binding->name, "GetShipMaxSpeed") == 0) {
@@ -8831,11 +8877,13 @@ void GameScriptOrdersHost::report() {
             ship_max_speed_unresolved_, kLuaGetDirectionBound ? 1 : 0, direction_calls_,
             direction_unresolved_);
     }
-    if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0) {
+    if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0
+        || shipyard_stock_calls_ != 0) {
         log_.notef("summary mission script unit queries role tables=%zu skill/crew=%zu "
-            "air base plane limit=%zu unresolved=%zu (008ABAC0 / 008ABF90 / 008953F0 / "
-            "008950D0 / 00897720 / 008978D0, goal 5 chain 655)", role_table_calls_,
-            skill_query_calls_, air_base_limit_calls_, unit_query_unresolved_);
+            "air base plane limit=%zu shipyard stock=%zu unresolved=%zu (008ABAC0 / 008ABF90 "
+            "/ 008953F0 / 008950D0 / 00897720 / 008978D0 / 00896EE0, goal 5 chain 655)",
+            role_table_calls_, skill_query_calls_, air_base_limit_calls_,
+            shipyard_stock_calls_, unit_query_unresolved_);
     }
     if (plane_force_release_calls_ != 0 || squadron_force_release_calls_ != 0 ||
         pilot_bomb_calls_ != 0 || bomb_falling_time_calls_ != 0 ||
