@@ -1,0 +1,104 @@
+{
+  "goal": 5,
+  "chain": 661,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "picked": "HUD ship-screen damage panel repair circles (0064F665 in 0064DD30) over the gunnery host's damage-control repair task, with 0093A3F0 on the task's failure records",
+  "rows": [
+    {
+      "native": "0093a3f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp ShipScreenBinding::controlled_repair_task -> GameGunneryHost::ship_repair_task_terms (src/game_hosts_gunnery.cpp)",
+      "note": "One body (src/leftovers_cc13.cpp) over a raw task+18h view and a typed std::vector<ActiveFailure> view; the HUD's 0064F9D2 call reads the controlled ship's dc.task.failures, which 0093BED0 starts and 0093C520 counts down. call_graph path: WinMain ... GameHudHost::update_ship_screen_0064dd30 -> ShipScreenBinding::controlled_repair_task -> ship_repair_task_terms -> 0093A3F0. The same panel (0064F665) now also reads the task's priority and water/fire timers, the GameSettings+3E4h EngineJam seconds, the unit+48h gun devices (circle 4) and the class Repair byte from the gunnery host instead of zero stand-ins."
+    },
+    {
+      "native": "00914390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp WorldTickBinding::bot_slot_prepare_00914390; src/game_hosts_mission_result.cpp debrief_bringup_00920a20",
+      "reason": "Both callers run, and the typed MissionScoreRecord has the score maps, but the kernels need the scoring tunables block (+1424h..+14B0h: map1428, map1434, map1440, the +144Ch..+1478h scalars, config[index]), which has no host model and no writer found; the badge map +6Ch is not in the typed record."
+    },
+    {
+      "native": "00910570",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Score-table kernel of 00914390 and the rewards page; needs the scoring tunables block +1424h..+14B0h (no host model)."
+    },
+    {
+      "native": "00911c00",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Kill-points kernel; needs map1434 and the +144Ch/+1458h/+1474h/+1478h scalars of the scoring tunables block (no host model)."
+    },
+    {
+      "native": "00911ce0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Damage-points kernel; needs map1440 and the +1454h/+1460h scalars of the scoring tunables block (no host model)."
+    },
+    {
+      "native": "00914270",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Badge score per name over the record's +6Ch award map, which the typed MissionScoreRecord does not keep (award grants are host records)."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::failure_side_effect",
+      "reason": "Seg59bHost body over the raw native scoring object [game+21A0h]; the host keeps typed MissionScoreRecords and no Seg59bHost adapter exists."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp CaptureScoreHost::available_resources",
+      "reason": "Capture planner runs only with an AI coordinator, which a single-player campaign never builds (004E17FD gate); a skirmish binding needs the world+19CCh+58h live-unit walk with unit+304h costs and [00E0CFB4] = 2 * lobby option 5 (005E3262) for lobby modes."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp Pass::candidate_attack_value",
+      "reason": "Air-support power-up flight block (class+0Ch/+44h, its +20h plane class) scored through 00A0C650, which this host keys on unit weapon facts; no class-keyed composer."
+    },
+    {
+      "native": "00977da0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Capture-ship warning report: capture_guard requires a network session (game+1FE4h); multiplayer only."
+    },
+    {
+      "native": "004a4520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp TrafficConfig::launch_pad_troops record",
+      "reason": "Raw native landing-troop manager (critical section, pad multimap at +28h, 004A0410 groups); the host's pad model has no landing-troop manager."
+    },
+    {
+      "native": "006b68c0",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Mission save-data Lua pickler family (006B0020..006B5BF0): no static reference reaches 006B7710 BSP_MissionSave_Write or 006B5960 BSP_MissionLoad_Finish."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "Cloud manager under BSP_Atmosphere_Construct 00BBDFF0 <- BSP_Game_ConstructWorld 004DE610, neither linked; the host world has no native atmosphere."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp parse_007a0eb0 (host.unsupported gamecamera modifier)",
+      "reason": "The gamecamera/fpscamera keyframe modifier needs the game-camera mover 0079CBD0 builds (ShipCaptain / plane / fps cameras) as a movie-camera parent; the HUD movie camera has none."
+    },
+    {
+      "native": "0079a3b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::Impl::step_movie_camera",
+      "reason": "Already called (call_graph: movie_camera_update_0079a3b0 reachable); readiness lists it as ready only because the ledger name HudMovieCamera_Update does not match the identifier. Same for 00798C80."
+    }
+  ],
+  "left": [
+    "The ship screen's submarine circle (0064F7E6..0064F82E): unit+125Ch and GameSettings+4C4h are not modelled by any host.",
+    "The damage panel's device list is the unit's gun rows in build order (the labelled walk repair_guns_0093c860 makes); whether a gun killed by DamagedGFXRemove (00926C80) leaves unit+48h is not modelled.",
+    "The repair menu, order route, warning pulse and repair-mode panel blocks of 0064DD30 stay records; with the Repair byte now real they are reached only under the repair input (EFh)."
+  ]
+}

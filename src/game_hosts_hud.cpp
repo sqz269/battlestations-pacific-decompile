@@ -4604,11 +4604,11 @@ public:
         return controlled_present();
     }
     bool controlled_class_repair() override {
-        // [unit+538h]+D0h, the VehicleClass `Repair` byte (00962E16), not
-        // loaded by the host. Both answers reach the same path with no input
-        // (0064E5FB and 0064E626 both end at 0064F496), so it is recorded.
-        owner_.record("HudShipScreen::class_repair_flag", 0x00962e16u);
-        return false;
+        // 0064E5E8..0064E5FB: [unit+538h]+D0h, the VehicleClass `Repair` byte
+        // (00962E16), as the gunnery host keeps it (goal 5 chain 661).
+        const GameGunneryHost* gunnery = ship_gunnery();
+        return gunnery != nullptr && controlled_present()
+            && gunnery->unit_class_repair_d0(owner_.units->controlled_index());
     }
     bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
     bool input_held(int action) override { return owner_.menu.input_action_held(action); }
@@ -4676,19 +4676,22 @@ public:
         owner_.menu.frontend().set_widget_color(*w, rgba[0], rgba[1], rgba[2], rgba[3]);
     }
     bsp::ShipRepairTaskTerms controlled_repair_task() override {
-        // SUBSTITUTION: the repair task at unit+A20h (priority +24h, the two
-        // timers +34h/+38h, their divisors unit+A5Ch/+A60h and 0093A3F0's
-        // EngineJam record) has no producer in this host
-        // (docs/UNIT_FIRE_AND_REPAIR.md; its constructor is unread). Every
-        // term reads zero: +150h = -1 and the three task circles hide.
-        owner_.record("HudShipScreen::repair_task", 0x0064f6bdu);
-        return {};
+        // Goal 5 chain 661: the repair task at unit+A20h of the controlled
+        // ship as the gunnery host's damage control keeps it: priority +24h
+        // (0064F6BD), water +34h over +40h (0064FA7E), fire +38h over +3Ch
+        // (0064FB38), and 0093A3F0 on its +18h failure records (0064F9D2).
+        bsp::ShipRepairTaskTerms terms{};
+        const GameGunneryHost* gunnery = ship_gunnery();
+        if (gunnery != nullptr && controlled_present()) {
+            gunnery->ship_repair_task_terms(owner_.units->controlled_index(), terms);
+        }
+        return terms;
     }
     float settings_engine_jam_seconds() override {
-        // SUBSTITUTION: GameSettings+3E4h, the failure descriptor vector, is
-        // not loaded by this host; the loop finds no EngineJam and answers 0.
-        owner_.record("HudShipScreen::settings_failure_descriptors", 0x0064f8e7u);
-        return 0.0f;
+        // 0064F8DA..0064F9C3 over GameSettings+3E4h, the ShipGlobals.Failures
+        // rows the gunnery host loads (goal 5 chain 661).
+        const GameGunneryHost* gunnery = ship_gunnery();
+        return gunnery != nullptr ? gunnery->failure_descriptor_engine_jam_seconds() : 0.0f;
     }
     float settings_4c4() override {
         // Recorded with controlled_float_125c, the submarine arm's other term.
@@ -4701,14 +4704,19 @@ public:
         return 0.0f;
     }
     int controlled_device_count() override {
-        // SUBSTITUTION: the device list unit+48h with the damage fields
-        // +36Ch/+370h/+378h is not modelled; the list reads empty.
-        owner_.record("HudShipScreen::device_list", 0x0064fbecu);
-        return 0;
+        // Goal 5 chain 661: 0064FBEC..0064FC7A walks the unit+48h devices; the
+        // gunnery host gives the controlled ship's gun rows (kind 20h) with
+        // their Function and health, read once per damage-panel pass.
+        devices_.clear();
+        const GameGunneryHost* gunnery = ship_gunnery();
+        if (gunnery != nullptr && controlled_present()) {
+            devices_ = gunnery->ship_device_terms(owner_.units->controlled_index());
+        }
+        return static_cast<int>(devices_.size());
     }
     bsp::ShipDeviceTerms controlled_device(int index) override {
-        static_cast<void>(index);
-        return {};
+        if (index < 0 || static_cast<std::size_t>(index) >= devices_.size()) return {};
+        return devices_[static_cast<std::size_t>(index)];
     }
     void circle_progress(bsp::ShipScreenWidget widget, float ratio, bool snap) override {
         static_cast<void>(widget);
@@ -4789,7 +4797,13 @@ public:
     }
 
 private:
+    const GameGunneryHost* ship_gunnery() const {
+        return owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+    }
+
     GameHudHost::Impl& owner_;
+    // The damage panel's device list for this pass (controlled_device_count).
+    std::vector<bsp::ShipDeviceTerms> devices_;
 };
 }  // namespace
 
