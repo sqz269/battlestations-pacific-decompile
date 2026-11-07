@@ -1089,8 +1089,10 @@ private:
     // The `ID` field 00928a00 seeds, turned into a created instance. Null when
     // the argument is not one of this process's entity tables.
     void* entity_from_argument(int index);
-    // 008A4C90 PilotSetTarget. Resolves and reports; see the definition for why
-    // it does not yet issue.
+    // Goal 5 chain 663: bsp::PilotOrderHost over this host, for the pilot order
+    // bodies of src/pilot_order_bindings.cpp (defined beside run_pilot_set_target).
+    class PilotOrderBinding;
+    // 008A4C90 PilotSetTarget on its body pilot_set_target_008a4c90.
     int run_pilot_set_target(GameScriptOrderRow& row);
     // Packet cc13-fix16: the receiver's side of PilotSetTarget, shared with
     // PilotBomb. `label` names the native in the log lines.
