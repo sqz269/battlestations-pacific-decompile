@@ -2033,10 +2033,36 @@ public:
         owner_.record("InGameInterfaceUpdate::water_height", 0x0078cf20u);
         return 0.0f;
     }
-    bool cockpit_screen_wanted() override { return false; }
-    int cockpit_screen_mode() override { return record_false("00604f30", 0x00604f30u) ? 1 : 0; }
-    bool second_cockpit_screen_wanted() override { return false; }
-    int second_cockpit_screen_mode() override { return 0; }
+    // 0068CB4A..0068CB6D. First the plane-effects screen 3Fh ([manager+6Ch],
+    // the 00606470 leaf block): its +4h, then 00604F30 on it. 00604F30 answers
+    // 0 while the block's plane +B8h is null, which is the constructor's store
+    // (00606470) and stays so because the 0068ACA0 plane arm that binds one is
+    // a record here; only a bound plane would reach the kind query, which
+    // HudLeafFe5Binding leaves unreached. Then the periscope screen 47h
+    // ([manager+84h], the 00650B00 leaf block): its +4h and CMP dword [+74h],2.
+    bool cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPlaneEffectsScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int cockpit_screen_mode() override {
+        HudLeafScreenStorage* const leaf = leaf_at(kPlaneEffectsScreenOffset);
+        if (leaf == nullptr) return record_false("00604f30", 0x00604f30u) ? 1 : 0;
+        HudLeafFe5Binding binding(*leaf);
+        owner_.done("InGameInterfaceUpdate::plane_effects_cockpit_view", 0x00604f30u);
+        return static_cast<int>(
+            bsp::cc13_fe5::plane_screen_cockpit_view_flag_00604f30({leaf->data()}, binding));
+    }
+    bool second_cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPeriscopeScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int second_cockpit_screen_mode() override {
+        const std::uint8_t* const s = leaf_block_at(kPeriscopeScreenOffset);
+        if (s == nullptr) return 0;
+        std::int32_t mode = 0;
+        std::memcpy(&mode, s + 0x74, sizeof(mode));
+        return mode;
+    }
     bool controlled_unit_is_submarine() override {
         // 0068CC04: IsKindOf(8) on 00E188D8.
         if constexpr (kHudInterfaceControlledUnitBound) {
@@ -2090,6 +2116,8 @@ private:
     // The manager slots the reads above dereference (src/ingame_interface.cpp).
     static constexpr std::uint16_t kFormationScreenOffset = 0x5C;   // screen 2Ah
     static constexpr std::uint16_t kOrderScreenOffset = 0x64;       // screen 3Bh
+    static constexpr std::uint16_t kPlaneEffectsScreenOffset = 0x6C;  // screen 3Fh
+    static constexpr std::uint16_t kPeriscopeScreenOffset = 0x84;     // screen 47h
     static constexpr std::uint16_t kFreeCameraScreenOffset = 0x90;  // screen 2Bh
     static constexpr std::uint16_t kSupportScreenOffset = 0xBC;     // screen 4Eh
     static constexpr std::uint16_t kPowerupScreenOffset = 0xC0;     // screen 4Fh
