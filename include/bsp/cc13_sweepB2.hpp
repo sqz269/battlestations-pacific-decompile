@@ -497,8 +497,30 @@ void cc13_sweepB2_interface_view_draw_ground_ortho_0059d7b0(void* view, Cc13Swee
 
 // ---- segment 21 ----
 
+// 005CCE70, screen 38h's register override (vtable +10h): the 004F71D0 base, three
+// image-string temporaries in the sized pool, the 004C12B0 manager's page load,
+// two child lookups and [[0109CF04]+0Dh]. Goal 5 chain 635: the HUD host binds it
+// over its own leaf block without the other sweepB services; the signatures are
+// Cc13SweepBHost's / Cc13SweepB2Host's.
+class Cc13SweepB2EngineMovieRegisterHost {
+public:
+    virtual ~Cc13SweepB2EngineMovieRegisterHost() = default;
+    virtual void* image_global(std::uint32_t address) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) = 0;
+    virtual void* crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t size) = 0;
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    virtual void* gui_manager_get_004c12b0() = 0;
+    virtual void* gui_manager_load_page_00aa5840(void* manager, const void* name, std::int32_t a,
+                                                 std::int32_t b) = 0;
+    virtual void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t unused) = 0;
+};
+
 // 005CCE70 BSP_HudEngineMovieScreen_Register(screen).
-void cc13_sweepB2_hud_engine_movie_screen_register_005cce70(void* screen, Cc13SweepB2Host& host);
+void cc13_sweepB2_hud_engine_movie_screen_register_005cce70(void* screen,
+    Cc13SweepB2EngineMovieRegisterHost& host);
 
 // ---- segment 22 ----
 

@@ -742,10 +742,11 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // --asm; 0060D1C0, 00565EE0 and 0051ED60 build the name in a native-string temporary),
 // and each page is the one kHudScreenLayouts lists for the slot. 0067BE80,
 // 00650170 and 005F9FF0 also call the screen's +14h layout virtual
-// (run_hud_leaf_screen_layout).
-constexpr std::array<std::uint32_t, 11> kHudLeafScreenRegisters{{
+// (run_hud_leaf_screen_layout). 005CCE70 (38h) loads its page and two children
+// and reads the platform object's widescreen byte.
+constexpr std::array<std::uint32_t, 12> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
-    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -885,6 +886,67 @@ private:
     HudLeafRegisterContext& context_;
 };
 
+// 005CCE70, screen 38h (goal 5 chain 635). Its three names are image strings
+// (bsp.py ghidra bytes 00cf1930 --length 28: 00CF1930 "down_Icon", 00CF193C
+// "up_Icon", 00CF1944 "GUI_movie") copied into native-string temporaries of the
+// process's string pool; its 004C12B0 manager is the registry owner that loads the
+// page; 00AA7E00(name, 1) searches the page's descendants. [0109CF04] is the
+// platform object 00BE2960 publishes (GameStartupHost's native platform, whose view
+// active_platform_state() returns): its +0h block is the window state and +0Dh
+// the widescreen byte the body reads for +1Ch.
+class HudLeafEngineMovieRegisterBinding final : public bsp::Cc13SweepB2EngineMovieRegisterHost {
+public:
+    explicit HudLeafEngineMovieRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void* image_global(std::uint32_t address) override {
+        static constexpr char kDownIcon[] = "down_Icon";  // 00CF1930
+        static constexpr char kUpIcon[] = "up_Icon";      // 00CF193C
+        static constexpr char kGuiMovie[] = "GUI_movie";  // 00CF1944
+        switch (address) {
+        case 0x00CF1930u: return const_cast<char*>(kDownIcon);
+        case 0x00CF193Cu: return const_cast<char*>(kUpIcon);
+        case 0x00CF1944u: return const_cast<char*>(kGuiMovie);
+        case 0x0109CF04u: {
+            const Win32PlatformState* const platform = active_platform_state();
+            if (platform == nullptr)
+                throw std::logic_error("005CCE70 read [0109CF04] with no published platform object");
+            static_assert(offsetof(NativePlatformObjectStorage, window) == 0);
+            static_assert(offsetof(NativePlatformWindowFocusStorage, widescreen_0d) == 0x0D);
+            platform_object_ = &platform->native_window_focus();
+            return &platform_object_;
+        }
+        default: break;
+        }
+        throw std::logic_error("005CCE70 read an image global it does not use");
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t size) override {
+        return std::memcpy(dest, source, size);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void frontend_screen_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_get_004c12b0() override { return &context_.menu; }
+    void* gui_manager_load_page_00aa5840(void* manager, const void* name, std::int32_t,
+        std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("005CCE70 loaded its page through another GUI manager");
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        if (widget == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(widget),
+            HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+    const void* platform_object_{nullptr};
+};
+
 // The layout virtuals (+14h) those registers call through the screen's own
 // vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
 // the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
@@ -994,6 +1056,7 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x0067BE80u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::follow_screen_register_0067be80(raw, b); return; }
     case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
     case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
+    case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf register listed but not bound");
