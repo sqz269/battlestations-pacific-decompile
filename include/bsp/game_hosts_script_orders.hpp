@@ -202,19 +202,6 @@ inline constexpr bool kFillPathPointsBound = true;
 // live, shown marker), else to the first row as before. False: the first row.
 inline constexpr bool kHarnessTargetPrefersLiveBound = true;   // ON: SQUADRON_LAND_TASK 5gl
 
-// Packet cc9_bsm01_think_natives (docs/LUA_BINDING_MISSION.md,
-// "Scoring_GetPlayerShotDown and PutTo"). True: Scoring_GetPlayerShotDown
-// (008BC9B0) answers slot argument 0's (default 0) count of enemy aircraft
-// kills credited to that player slot's own kill tree (record+B4h, level-1 key
-// ENEMY, level-3 keys 7..0Ch; docs/SCORING_BODIES.md section 6). False: the
-// native stays an unimplemented record and answers nothing.
-// LABELLED SUBSTITUTION: this process keeps no scoring record. The count is
-// taken from the gunnery host's death rows: a sunk unit of the plane family
-// (IsKindOf(0Fh)) whose killer is the controlled unit (player slot 0; no
-// other unit carries a player slot in this process) and whose side is ENEMY
-// to the killer's (00803510). Other slots answer 0.
-inline constexpr bool kScoringPlayerShotDownBound = true;
-
 // Packet cc9_bsm01_think_natives. True: PutTo (008A9F90) places a unit through
 // its vtable slot +118h (008193A0, GameUnitsHost::place_at_world_position_008193a0)
 // in the single-player arm ([00E188A8]+1FE4h == 0, 008AA164..008AA16F).
@@ -1284,8 +1271,6 @@ private:
     unsigned long long fill_path_points_calls_{0};
     unsigned long long fill_path_points_empty_{0};
     // Packet cc9_bsm01_think_natives.
-    unsigned long long shot_down_calls_{0};
-    int shot_down_last_{0};
     unsigned long long put_to_calls_{0};
     // Packet cc9_submarine_depth_level.
     // Packet cc9_recon_level_table.

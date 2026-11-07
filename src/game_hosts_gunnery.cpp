@@ -18336,7 +18336,15 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         in.attacker_type_id = unit_state[target.last_attacker - 1].row.type_id;
     }
     in.attribution.attacker_side = target.attribution.attacker_side;
-    in.attribution.credited_slot = target.attribution.credited_slot;
+    // Goal 5 chain 664. +2D8h as 0077CE60 writes it: attacker+180h is 9 for every
+    // unit whose scene authors no OwnerPlayer, so 0077CFC2 takes the shot's team
+    // stamp [src+1Ch] = gun+1ACh (0 on a gun the player's seat holds, 8 on an AI
+    // gun; docs/CC13_AUDIT_LUA51_FLIPS.md item 1a). That is lua_kill_slot, not
+    // attribution.credited_slot (the side stand-in), and 0091BF86 records only
+    // slots 0..7, so AI kills leave the player's record alone. A victim no
+    // counted hit reached keeps -1 and records nothing (LABELLED: the image's
+    // +2D8h before any hit is its constructor value, unread).
+    in.attribution.credited_slot = target.lua_kill_slot;
     in.attribution.originating_slot = target.attribution.origin_slot;
     in.attribution.attacker_class = target.attribution.attacker_class;
     in.attribution.victim_class = units.unit_class_id(victim);

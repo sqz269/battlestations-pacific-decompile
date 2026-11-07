@@ -385,9 +385,6 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // usn_2_java.lua:867 (luaShowPath, never called) and five commandhelpers
     // helpers. Handled only with kFillPathPointsBound.
     {"FillPathPoints", 0x0089a190u},
-    // Packet cc9_bsm01_think_natives: bsm_01_stationed_at_pearl.lua:681, every
-    // think pass. Handled only with kScoringPlayerShotDownBound.
-    {"Scoring_GetPlayerShotDown", 0x008bc9b0u},
     // Packet cc9_bsm01_think_natives: bsm_01_stationed_at_pearl.lua 1849..1858,
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
@@ -2357,9 +2354,6 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) return kReloadTorpedoesBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
-    if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
-        return kScoringPlayerShotDownBound;
-    }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
     if (std::strcmp(binding->name, "PutRelTo") == 0) return kPutRelToBound;
     if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) return kGetSquadronPlanesBound;
@@ -6292,43 +6286,6 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             static_cast<double>(pos[0]), static_cast<double>(pos[1]),
             static_cast<double>(pos[2]), shape, placed ? 1 : 0);
         results = 0;
-    } else if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
-        // 008BC9B0: slot = argument 0 as an integer, 0 when absent (not
-        // game+18ECh); record slot*284h+4h, tree +B4h, level-1 key 1 (ENEMY),
-        // every level-2 key, level-3 keys 7..0Ch summed at 008BCCBF; one result.
-        const int slot = argument_count_ >= 1 ? argument_integer(0) : 0;
-        int count = 0;
-        const GameGunneryHost* gunnery = units_.gunnery();
-        if (slot == 0 && gunnery != nullptr && units_.controlled_bound()) {
-            const std::size_t player = units_.controlled_index();
-            const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
-            const GameGunneryUnitRow* killer_row = nullptr;
-            for (const GameGunneryUnitRow& r : rows) {
-                if (r.unit_index == player) { killer_row = &r; break; }
-            }
-            if (killer_row != nullptr) {
-                for (const GameGunneryUnitRow& r : rows) {
-                    if (!r.sunk || r.killed_by != killer_row->name) continue;
-                    if (r.unit_index >= units_.count() ||
-                        !units_.unit_is_kind_of(r.unit_index, bsp::kUnitGunneryKindPlaneBase)) {
-                        continue;
-                    }
-                    if (bsp::scoring_relative_party_00803510(killer_row->side, r.side)
-                            != bsp::kScoringPartyEnemy) {
-                        continue;
-                    }
-                    ++count;
-                }
-            }
-        }
-        ++shot_down_calls_;
-        shot_down_last_ = count;
-        if (state_ != nullptr) {
-            lua_pushnumber(state_, static_cast<lua_Number>(count));
-            results = 1;
-        } else {
-            results = 0;
-        }
     } else if (std::strcmp(binding->name, "GetSquadTorpedoes") == 0) {
         // Packet cc13-fix21, PARTIAL. 008BEF80: 008BF0E9 00B67930 NewTable is
         // unconditional (every path, nil or non-squadron argument included, answers
@@ -9867,9 +9824,6 @@ void GameScriptOrdersHost::report() {
             "(007EDC30, packet cc9_l59_sq_avg_health)", kSquadronAverageHealthBound ? 1 : 0,
             health_reads_squadron_);
     }
-    log_.notef("summary mission script player shot down bound=%d calls=%llu last=%d "
-        "(008BC9B0, packet cc9_bsm01_think_natives)", kScoringPlayerShotDownBound ? 1 : 0,
-        shot_down_calls_, shot_down_last_);
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
