@@ -67,7 +67,18 @@ struct PlaneGunTargetHost {
     virtual void clear_gun_target(Raw finder) = 0;
 };
 
-struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost {
+// The failure-message constructors 007BA170 / 007BA1C0 / 007BA200 call nothing
+// but 0075B430 (bsp.py show each: one CALL, then the header, vptr and payload
+// stores). A host that only builds messages implements this one slot instead of
+// the whole Seg47Host.
+struct Seg47MessageHost {
+    virtual ~Seg47MessageHost() = default;
+    // 0075B430 session message base constructor, __thiscall(ECX = message; type), RET 4.
+    virtual void session_message_construct_0075b430(Raw message, std::uint32_t type) = 0;
+};
+
+struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost,
+                   Seg47MessageHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -270,8 +281,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void* matrix_multiply_00413920(Raw left, void* out, const void* right) = 0;
     // 004134F0 matrix assign, __thiscall(ECX = matrix; const matrix*), RET 4, EAX = matrix.
     virtual void* matrix_assign_004134f0(Raw matrix, const void* source) = 0;
-    // 0075B430 session message base constructor, __thiscall(ECX = message; type), RET 4.
-    virtual void session_message_construct_0075b430(Raw message, std::uint32_t type) = 0;
+    // 0075B430: inherited from Seg47MessageHost.
     // entity->vtable[5Ch](kind), __thiscall, RET 4, AL.
     virtual bool entity_vcall_is_kind_5c(Raw entity, std::int32_t kind) = 0;
     // 0087FA50 landscape height, __thiscall(ECX = landscape; x, z), RET 8, ST0.
@@ -638,9 +648,9 @@ void plane_neighbours_clear_target_007b9740(PlaneGunTargetHost& host, Raw unit);
 void* plane_get_squadron_007b97e0(Raw plane);
 void firing_gun_registry_destruct_unwind_007b98a0(Seg47Host& host, Raw registry);
 Raw matrix_multiply_in_place_007ba020(Seg47Host& host, Raw matrix, const void* other);
-Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, std::int32_t index, float value);
-Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message, float value);
-Raw session_message_spinning_construct_007ba200(Seg47Host& host, Raw message, std::uint8_t side, float value);
+Raw session_message_enginefire_construct_007ba170(Seg47MessageHost& host, Raw message, std::int32_t index, float value);
+Raw session_message_engineslost_construct_007ba1c0(Seg47MessageHost& host, Raw message, float value);
+Raw session_message_spinning_construct_007ba200(Seg47MessageHost& host, Raw message, std::uint8_t side, float value);
 float landscape_height_at_007ba340(Seg47Host& host, Raw game, float x, float z);
 std::int32_t unit_is_gun_of_subtype156_007ba3e0(Seg47Host& host, Raw unit);
 float max3_007ba450(const float* a, const float* b, const float* c);

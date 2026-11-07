@@ -1144,7 +1144,7 @@ Raw matrix_multiply_in_place_007ba020(Seg47Host& host, Raw matrix, const void* o
 namespace {
 // The session-message head every constructor here writes after 0075B430(type):
 // +18h word, +1Ah and +1Ch bytes = 0, +4 = 1, then the vptr.
-void message_head(Seg47Host& host, Raw message, std::uint32_t type) {
+void message_head(Seg47MessageHost& host, Raw message, std::uint32_t type) {
     host.session_message_construct_0075b430(message, type);
     message.at<std::uint16_t>(0x18) = 0;
     message.at<std::uint8_t>(0x1A) = 0;
@@ -1154,7 +1154,7 @@ void message_head(Seg47Host& host, Raw message, std::uint32_t type) {
 
 // 007BA170 ENGINEFIREFAILURE, __thiscall(ECX = message; int index, float value),
 // RET 8, EAX: type 65h; +24h = index; +4 = 1; vptr 00D02CF4; +20h = value.
-Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, std::int32_t index, float value) {
+Raw session_message_enginefire_construct_007ba170(Seg47MessageHost& host, Raw message, std::int32_t index, float value) {
     message_head(host, message, 0x65);
     message.at<std::int32_t>(0x24) = index;
     message.at<std::uint32_t>(4) = 1;
@@ -1165,7 +1165,7 @@ Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, 
 
 // 007BA1C0 ENGINESLOSTFAILURE, __thiscall(ECX = message; float), RET 4, EAX:
 // type 66h; +4 = 1; vptr 00D02F94; +20h = value.
-Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message, float value) {
+Raw session_message_engineslost_construct_007ba1c0(Seg47MessageHost& host, Raw message, float value) {
     message_head(host, message, 0x66);
     message.at<std::uint32_t>(4) = 1;
     message.at<std::uint32_t>(0) = 0x00D02F94u;
@@ -1175,7 +1175,7 @@ Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message,
 
 // 007BA200 SPINNINGFAILURE, __thiscall(ECX = message; char side, float), RET 8,
 // EAX: type 67h; +24h = side; +4 = 1; vptr 00D02D08; +20h = value.
-Raw session_message_spinning_construct_007ba200(Seg47Host& host, Raw message, std::uint8_t side, float value) {
+Raw session_message_spinning_construct_007ba200(Seg47MessageHost& host, Raw message, std::uint8_t side, float value) {
     message_head(host, message, 0x67);
     message.at<std::uint8_t>(0x24) = side;
     message.at<std::uint32_t>(4) = 1;

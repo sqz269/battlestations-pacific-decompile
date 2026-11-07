@@ -28,6 +28,8 @@
 #include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg33a.hpp"
+#include "bsp/cc13_seg47.hpp"
+#include "bsp/gameplay_seg47_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include <cfloat>
 #include <cmath>
@@ -116,6 +118,13 @@ struct HostSessionMessages::Image {
     NativeSessionMessage103To106Context context104{context98, &maximum_00d7a248};
     NativeSessionMessage104Profile profile104{context104};
     NativeSessionMessage105Profile profile105{context104};
+    // Goal 5 chain 641: the plane failure classes 63h..67h (sessions 99..103),
+    // the same scalar codec (103 with the 103..106 context).
+    NativeSessionMessage99Profile profile99{context98};
+    NativeSessionMessage100Profile profile100{context98};
+    NativeSessionMessage101Profile profile101{context98};
+    NativeSessionMessage102Profile profile102{context98};
+    NativeSessionMessage103Profile profile103{context104};
 
     // Goal 4 chain 450. Message 95 (5Fh) uses the existing session owner,
     // numeric codec and binary constant 00D7A248 (FLT_MAX, raw float mode).
@@ -2111,6 +2120,154 @@ HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_6
             delete_native_session_message105_00729070> owner;
         return consume(owner.get());
     }
+}
+
+namespace {
+// Goal 5 chain 641. 007BA170 / 007BA1C0 / 007BA200 call nothing but 0075B430
+// (bsp.py show each); the session owner and selected record are Image's, as for
+// UnitMessageConstructionBinding.
+class Seg47MessageConstructionBinding final : public cc13_seg47::Seg47MessageHost {
+public:
+    explicit Seg47MessageConstructionBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_0075b430(cc13_seg47::Raw message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            reinterpret_cast<NativeSessionMessageStorage*>(message.p), type, session_);
+    }
+private:
+    const NativeSessionMessageContext& session_;
+};
+
+std::uint32_t plane_failure_float_bits(float value) {
+    std::uint32_t bits = 0;
+    std::memcpy(&bits, &value, sizeof bits);
+    return bits;
+}
+
+float plane_failure_bits_float(std::uint32_t bits) {
+    float value = 0.0f;
+    std::memcpy(&value, &bits, sizeof value);
+    return value;
+}
+
+template <class Message>
+cc13_seg47::Raw plane_failure_raw(Message& message) {
+    return cc13_seg47::Raw{reinterpret_cast<std::uint8_t*>(&message)};
+}
+}  // namespace
+
+HostSessionMessages::PlaneFailureCopy HostSessionMessages::queue_plane_failure_63_67(
+    std::uint8_t type, float value_20, std::uint32_t arg_24) const {
+    const Image& image = *image_;
+    Seg47MessageConstructionBinding binding(image.session);
+    LocalStream stream;
+    // The sender's stack message is not destroyed on 007BBFA0's normal path (its
+    // 0075C3F0 / 0075C4C0 / 0075A190 / 0075C5E0 / 0075A230 calls sit in the unwind
+    // funclets); it goes out of scope here. The copy is 00768530's allocation,
+    // read and then released by its scalar delete, as for queue_gun_destroyed_68_69.
+    const auto scalar_copy = [](const NativeSessionMessage98ScalarStorage& queued,
+                                bool (*is_type)(std::uint32_t)) {
+        PlaneFailureCopy copy;
+        copy.type = queued.header.base.type_10;
+        copy.value_20 = plane_failure_bits_float(queued.value_20);
+        // 00780120's ladder, then 007CCFA0's vtable[0Ch](62h) at 007CCFB4.
+        copy.to_state_handler = copy_goes_to_unit_handler(is_type) && is_type(0x62);
+        return copy;
+    };
+    switch (type) {
+    case 0x63: {
+        NativeSessionMessage99 sent{};
+        construct_native_session_message99_0075c380(&sent, image.context98, image.profile99);
+        sent.value_20 = plane_failure_float_bits(value_20);           // 007BC424
+        write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        OwnedDecodedMessage<NativeSessionMessage99,
+            delete_native_session_message99_0075c430> owner;
+        NativeSessionMessage99& queued = owner.get();
+        construct_native_session_message99_0075c380(&queued, image.context98, image.profile99);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        return scalar_copy(queued, &native_session_message_is99_0075c400);
+    }
+    case 0x64: {
+        // 007BC06F: 0075C450 is the sender; its +20h is the 256.0f default.
+        NativeSessionMessage100 sent{};
+        construct_native_session_message100_0075c450(&sent, image.context98, image.profile100);
+        write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        OwnedDecodedMessage<NativeSessionMessage100,
+            delete_native_session_message100_0075c500> owner;
+        NativeSessionMessage100& queued = owner.get();
+        construct_native_session_message100_0075c450(&queued, image.context98, image.profile100);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        return scalar_copy(queued, &native_session_message_is100_0075c4d0);
+    }
+    case 0x65: {
+        NativeSessionMessage101 sent{};
+        cc13_seg47::session_message_enginefire_construct_007ba170(binding,
+            plane_failure_raw(sent), static_cast<std::int32_t>(arg_24), value_20);   // 007BC11D
+        // Relocate only the body's original vptr 00D02CF4 to the host profile.
+        sent.scalar.header.base.profile_00 = image.profile101.slots;
+        write_native_session_message101_0075c520(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        OwnedDecodedMessage<NativeSessionMessage101,
+            delete_native_session_message101_0075a1d0> owner;
+        NativeSessionMessage101& queued = owner.get();
+        construct_native_session_message101_0075a150(&queued, image.context98, image.profile101);
+        read_native_session_message101_0075c540(&queued, &stream.in, image.context98);
+        PlaneFailureCopy copy = scalar_copy(queued.scalar, &native_session_message_is101_0075a1a0);
+        copy.arg_24 = queued.value_24;
+        return copy;
+    }
+    case 0x66: {
+        NativeSessionMessage102 sent{};
+        cc13_seg47::session_message_engineslost_construct_007ba1c0(binding,
+            plane_failure_raw(sent), value_20);                                       // 007BC162
+        sent.header.base.profile_00 = image.profile102.slots;   // vptr 00D02F94
+        write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        OwnedDecodedMessage<NativeSessionMessage102,
+            delete_native_session_message102_0075c620> owner;
+        NativeSessionMessage102& queued = owner.get();
+        construct_native_session_message102_0075c570(&queued, image.context98, image.profile102);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        return scalar_copy(queued, &native_session_message_is102_0075c5f0);
+    }
+    case 0x67: {
+        NativeSessionMessage103 sent{};
+        cc13_seg47::session_message_spinning_construct_007ba200(binding,
+            plane_failure_raw(sent), static_cast<std::uint8_t>(arg_24), value_20);   // 007BC220..
+        sent.scalar.header.base.profile_00 = image.profile103.slots;   // vptr 00D02D08
+        write_native_session_message103_0075c640(&sent, &stream.out, image.context104);
+        stream.begin_read();
+        OwnedDecodedMessage<NativeSessionMessage103,
+            delete_native_session_message103_0075a270> owner;
+        NativeSessionMessage103& queued = owner.get();
+        construct_native_session_message103_0075a1f0(&queued, image.context104, image.profile103);
+        read_native_session_message103_0075c660(&queued, &stream.in, image.context104);
+        PlaneFailureCopy copy = scalar_copy(queued.scalar, &native_session_message_is103_0075a240);
+        copy.arg_24 = queued.flag_24;
+        return copy;
+    }
+    default:
+        // C8h (007BA8D0) is routed only when [00E188A8]+1FE4h != 0 (multiplayer).
+        throw std::logic_error("queue_plane_failure_63_67: not a single-player failure kind");
+    }
+}
+
+bool HostSessionMessages::deliver_plane_failure_message(
+    const gameplay_seg47_cc13::FailureMessage& routed, gameplay_seg47_cc13::PlaneFailureState& state,
+    const gameplay_seg47_cc13::StateMessageEnv& env,
+    const gameplay_seg47_cc13::StateMessageHost& host) const {
+    const PlaneFailureCopy copy = queue_plane_failure_63_67(
+        static_cast<std::uint8_t>(routed.kind), routed.value_20, routed.arg_24);
+    if (!copy.to_state_handler) return false;
+    // 007D0B80 reads the copy: its kind byte +10h, float +20h and +24h.
+    gameplay_seg47_cc13::FailureMessage received;
+    received.kind = static_cast<gameplay_seg47_cc13::FailureMessageKind>(copy.type);
+    received.value_20 = copy.value_20;
+    received.arg_24 = copy.arg_24;
+    gameplay_seg47_cc13::state_message_007d0b80(state, received, env, host);
+    return true;
 }
 
 HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappear_c7(
