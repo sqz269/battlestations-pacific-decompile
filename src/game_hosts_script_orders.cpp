@@ -1209,6 +1209,102 @@ private:
     throw std::logic_error(std::string("segment-56 unit query: unreached ") + what);
 }
 
+// Goal 5 chain 663. The field stores of SetSubmarineAirSupply 00893A60 (FSTP float
+// [entity+127Ch], 00893BA1) and SquadronSetTravelSpeed 008A0630 (008A07E2 +388h =
+// float 00CE3800 0.5, 008A07F0 +38Fh the flag, 008A07FA +3A0h the speed, 008A0802
+// +3ACh = 1), from their bodies lua_set_submarine_air_supply (src/options_seg56_cc13.cpp)
+// and lua_squadron_set_travel_speed (src/cc13_left55_seg56a.cpp). ImageAccess is a
+// typed view of the units host's slot state, not a second image: +127Ch is the
+// submarine's air (set_submarine_air_00893a60, which stores nothing for a unit with no
+// seeded dive state), and the squadron's four fields are the ones
+// set_squadron_travel_speed_008a0630 keeps (its +388h is the 0.5 s countdown held as an
+// expiry, so any other +388h value is refused rather than mis-stored). The squadron
+// stores are committed together after the body returns. Every other access is refused.
+class UnitFieldStoreBinding final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    UnitFieldStoreBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of)
+        : units_(units), index_of_(std::move(index_of)) {}
+
+    void write_f32(void* entity, std::uint32_t offset, float value) override {
+        if (offset == 0x127Cu) {
+            stored_ = units_.set_submarine_air_00893a60(index(entity), value);
+            return;
+        }
+        if (offset == 0x388u && value == bsp::cc13_left55::seg56a::kTravelSpeedField388) {
+            bind_squadron(entity);
+            seen_ |= kSeen388;
+            return;
+        }
+        if (offset == 0x3A0u) {
+            bind_squadron(entity);
+            speed_ = value;
+            seen_ |= kSeen3A0;
+            return;
+        }
+        unit_query_unreached("a float store other than +127Ch, +388h = 0.5 or +3A0h");
+    }
+    void write_u8(void* entity, std::uint32_t offset, std::uint8_t value) override {
+        if (offset == 0x38Fu) {
+            bind_squadron(entity);
+            force_ = value != 0;
+            seen_ |= kSeen38F;
+            return;
+        }
+        if (offset == 0x3ACu && value == 1u) {
+            bind_squadron(entity);
+            seen_ |= kSeen3AC;
+            return;
+        }
+        unit_query_unreached("a byte store other than +38Fh or +3ACh = 1");
+    }
+    // SquadronSetTravelSpeed's four stores, as one units-host write. False when the
+    // body did not make all four or the slot has no squadron.
+    bool commit_squadron_travel_speed() {
+        if (seen_ != (kSeen388 | kSeen38F | kSeen3A0 | kSeen3AC)) return false;
+        stored_ = units_.set_squadron_travel_speed_008a0630(index(squadron_), speed_, force_);
+        return stored_;
+    }
+    bool stored() const noexcept { return stored_; }
+    float speed() const noexcept { return speed_; }
+    bool force() const noexcept { return force_; }
+
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+private:
+    static constexpr unsigned kSeen388 = 1u, kSeen38F = 2u, kSeen3A0 = 4u, kSeen3AC = 8u;
+    std::size_t index(void* entity) const {
+        const std::size_t i = entity != nullptr ? index_of_(entity) : ~static_cast<std::size_t>(0);
+        if (i >= units_.count()) unit_query_unreached("a store on no units-host slot");
+        return i;
+    }
+    void bind_squadron(void* entity) {
+        if (squadron_ != nullptr && squadron_ != entity) {
+            unit_query_unreached("squadron stores on two entities");
+        }
+        squadron_ = entity;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    void* squadron_{nullptr};
+    unsigned seen_{0};
+    float speed_{0.0f};
+    bool force_{false};
+    bool stored_{false};
+};
+
 // 006BCD20's block selection (bsp.py ghidra disasm 006bcd20): a null entity answers
 // null; 006BCD35 vtable[5Ch](9) gives owner+1188h, 006BCD4C vtable[5Ch](45h)
 // owner+72Ch, anything else null. `owner_class` says whether one of the two tests
@@ -6800,27 +6896,35 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // Packet cc13-fix17. 00893A60: argument 0 through 00888AA0, argument 1
         // through 00B66270 rounded to float (00893B95), stored at unit+127Ch
         // (00893BA1) with no class, null or range test. No result. LABELLED: a
-        // unit with no seeded submarine air state stores nothing.
-        const float air = argument_number(1);
+        // unit with no seeded submarine air state stores nothing; a null entity
+        // (the image faults) is dropped before the body.
+        // Goal 5 chain 663: the body lua_set_submarine_air_supply over
+        // UnitFieldStoreBinding.
         if (subject != nullptr && row.unit_index < units_.count()) {
-            const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
-            log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
-                row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
+            RepairBindingArgs args(*this);
+            UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
+            results = bsp::seg56_options_cc13::lua_set_submarine_air_supply(args, image);
+            log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 body -> +127Ch)",
+                row.unit.c_str(), static_cast<double>(argument_number(1)),
+                image.stored() ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
         // Packet l68_travel_speed. 008A0630: argument 0 through 00888AA0, argument 1
         // through 00B66270 rounded to float (008A076C), argument 2 through 00B66250
         // only when exactly three arguments are passed (008A07BA), else false. No
         // class or null test before the four stores; a unit with no squadron slot
-        // stores nothing here. No result.
-        const float speed = argument_number(1);
-        const bool force = argument_count_ == 3 && argument_boolean(2);
+        // stores nothing here, and a null entity (the image faults) is dropped
+        // before the body. No result.
+        // Goal 5 chain 663: the body lua_squadron_set_travel_speed over
+        // UnitFieldStoreBinding, its four stores committed as one units-host write.
         if (subject != nullptr && row.unit_index < units_.count()) {
-            const bool stored =
-                units_.set_squadron_travel_speed_008a0630(row.unit_index, speed, force);
+            RepairBindingArgs args(*this);
+            UnitFieldStoreBinding image(units_, [this](void* e) { return index_of(e); });
+            results = bsp::cc13_left55::seg56a::lua_squadron_set_travel_speed(args, image);
+            const bool stored = image.commit_squadron_travel_speed();
             log_.notef("  SquadronSetTravelSpeed: %s speed=%.3f force=%d stored=%d "
-                "(008A0630 -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
-                static_cast<double>(speed), force ? 1 : 0, stored ? 1 : 0);
+                "(008A0630 body -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
+                static_cast<double>(image.speed()), image.force() ? 1 : 0, stored ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
         // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is
