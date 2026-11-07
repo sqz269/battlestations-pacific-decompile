@@ -82,6 +82,16 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_physical_file_date.hpp"  // 00435C40
 #include "bsp/native_string.hpp"
+// Goal 5 chain 655: the segment-56 unit queries.
+#include "bsp/band_0080_cc13.hpp"                 // 008457E0
+#include "bsp/cc13_dyn1.hpp"                      // 00C336C0
+#include "bsp/cc13_seg33a.hpp"                    // 006E6270
+#include "bsp/shipyard_production.hpp"            // the shipyard registry
+#include "bsp/left55_seg56a_host_unreached.hpp"   // 008A0F10
+#include "bsp/left55_seg56b_host_unreached.hpp"   // 008ABAC0 / 008ABF90
+#include "bsp/plane_squadron_entity.hpp"          // 007ECF70
+#include "bsp/seg56_host_unreached.hpp"           // 008953F0 / 008950D0 / 00890BB0
+#include "bsp/unit_instance_layout.hpp"           // kUnitRoleTableEntries
 #include <algorithm>
 #include <new>
 #include <cstdlib>
@@ -354,6 +364,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // jm07, jm08, jm11. Handled only with kReloadTorpedoesBound.
     {"ReloadTorpedoes", 0x008c3ce0u},
     {"SetRoleAvailable", 0x008ab850u},
+    // Goal 5 chain 655: the two role tables SetRoleAvailable and the role
+    // bookkeeping write, through fill_nine_integers.
+    {"GetRoleAvailable", 0x008abac0u},
+    {"GetRoleOwner", 0x008abf90u},
     // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
     // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
     // and, for SetThink, src/lua_binding_core.cpp.
@@ -473,6 +487,20 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kLuaGetDirectionBound.
     {"GetShipMaxSpeed", 0x00890bb0u},
     {"GetDirection", 0x008a7cb0u},
+    // Goal 5 chain 655: the skill index SetSkillLevel / SetCrewLevel write.
+    {"GetSkillLevel", 0x008953f0u},
+    {"GetCrewLevel", 0x008950d0u},
+    // Goal 5 chain 655: the air-operations block's in-air plane limit (+58h) and a
+    // slot's state (+4Ch slot +2Ch).
+    {"SetAirBasePlaneLimit", 0x00897720u},
+    {"GetAirBasePlaneLimit", 0x008978d0u},
+    {"GetAirBaseSlotStatus", 0x00896220u},
+    // Goal 5 chain 655: the shipyard's stock records (+774h).
+    {"RemoveShipyardStock", 0x00896ee0u},
+    // Goal 5 chain 655: EntityTurnToEntity's twin with a point for a target.
+    {"EntityTurnToPosition", 0x008a0f10u},
+    // Goal 5 chain 655: NavigatorStop's pilot twin (jm12.lua 1724 / 1858).
+    {"PilotStop", 0x008a7780u},
     // Packet cc13-fix16: handled only with its own switch (kLuaPlaneForceReleaseBound,
     // kLuaSquadronForceReleaseBound, kLuaPilotBombBound, kLuaPlaneBombFallingTimeBound,
     // kLuaPlaneReloadBombPlatformsBound, kLuaGetPlaneIsReloadingBound).
@@ -999,6 +1027,558 @@ private:
     std::function<std::size_t(void*)> index_of_;
     std::function<void(float)> push_;
     float air_{};
+};
+
+// ---------------------------------------------------------------------------
+// Goal 5 chain 655: the segment-56 unit queries GetRoleAvailable 008ABAC0,
+// GetRoleOwner 008ABF90, GetSkillLevel 008953F0, GetCrewLevel 008950D0 and
+// GetShipMaxSpeed 00890BB0 run their bodies (src/cc13_left55_seg56b.cpp,
+// src/options_seg56_cc13.cpp) over the units host's slot state. Each adapter
+// binds only the operations its body reaches and refuses the rest, so a path
+// nobody read fails at once instead of answering an invented value. Argument 0
+// is the body's own 00888AA0 (entity_at): the table's `ID`, the units-host index
+// plus one. The dispatch checks the slot before it calls a body, because the
+// image reads whatever object it is handed and faults on a null one.
+[[noreturn]] void unit_query_unreached(const char* what) {
+    throw std::logic_error(std::string("segment-56 unit query: unreached ") + what);
+}
+
+// 006BCD20's block selection (bsp.py ghidra disasm 006bcd20): a null entity answers
+// null; 006BCD35 vtable[5Ch](9) gives owner+1188h, 006BCD4C vtable[5Ch](45h)
+// owner+72Ch, anything else null. `owner_class` says whether one of the two tests
+// held (the image's block is embedded in that owner); the deck is the block the
+// scene loaded for it, which the deck registry binds to the table's `ID` (the
+// units-host index plus one). Null when the scene loaded no deck for the owner.
+bsp::AirOpsDeck* unit_air_ops_deck_006bcd20(const GameUnitsHost& units, std::size_t index,
+    bool& owner_class) {
+    owner_class = false;
+    if (index >= units.count()) return nullptr;
+    std::uint32_t class_id = 0;
+    if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdMothership))) {
+        class_id = bsp::kAirOpsClassIdMothership;
+    } else if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdAirfield))) {
+        class_id = bsp::kAirOpsClassIdAirfield;
+    }
+    owner_class = bsp::air_ops_block_offset_006bcd20(class_id) != 0;
+    if (!owner_class) return nullptr;
+    return bsp::air_ops_decks().find_mutable_by_entity_id(static_cast<int>(index + 1u));
+}
+
+// The squadron whose entity the slot is. This process fuses the squadron's slot with
+// its wing-0 plane (PlaneSquadronHostRecord::squadron_unit), so an argument naming that
+// slot is the squadron, as GetEntitySpeed, SetCrewLevel and EntityTurnToEntity read it.
+const bsp::PlaneSquadronHostRecord* fused_squadron_record(std::size_t index) {
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) return &r;
+    }
+    return nullptr;
+}
+
+// The squadron's +3D0h array as the image holds it: 007F3970 compacts it at a death, so
+// it is the live planes in order, +3CCh of them. The record keeps a wing that never
+// became a unit (or left) as kPlaneSquadronNoUnit to keep the spawn stamps aligned, so
+// those are skipped here, as live_count() and flight_leader() skip them.
+std::vector<std::size_t> squadron_live_members(const bsp::PlaneSquadronHostRecord& squadron) {
+    std::vector<std::size_t> live;
+    for (const std::size_t unit : squadron.member_units) {
+        if (unit != bsp::kPlaneSquadronNoUnit) live.push_back(unit);
+    }
+    return live;
+}
+
+// The two pushes 008953F0 / 008950D0 (00B664B0 PushNumber) and 00890BB0 (00B66480
+// PushFloat) make, onto the dispatch's own Lua frame.
+class UnitQueryResults final : public bsp::cc13_seg56::LuaResults {
+public:
+    UnitQueryResults(std::function<void(int)> push_number, std::function<void(float)> push_float)
+        : push_number_(std::move(push_number)), push_float_(std::move(push_float)) {}
+    void push_number(int value) override { push_number_(value); ++pushed_; }
+    void push_float(float value) override { push_float_(value); ++pushed_; }
+    void push_boolean(bool) override { unit_query_unreached("00B66450"); }
+    void push_nil() override { unit_query_unreached("00B66430"); }
+    void push_string(const std::string&) override { unit_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unit_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unit_query_unreached("0088BA30"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unit_query_unreached("00B67930 vector fields");
+    }
+    int pushed() const noexcept { return pushed_; }
+
+private:
+    std::function<void(int)> push_number_;
+    std::function<void(float)> push_float_;
+    int pushed_{0};
+};
+
+// 008953F0 / 008950D0 / 00890BB0 through Seg56Host. Slot 12Ch (bsp.py show 006d1ec0:
+// MOV EAX,[ECX+390h] / RET) is the unit's +390h skill index on every ship and plane
+// vtable that carries 006D1EC0; the squadron's slot (00D088EC, bsp.py show 007ecf70:
+// MOV ECX,[ECX+3D0h] / JMP [vtable+12Ch]) forwards to the wing in member slot 0.
+// The host keeps +390h as the slot's pilot_skill_index (GameUnitsHost::skill_level,
+// the index SetSkillLevel / SetCrewLevel write through 006D1EB0), and its squadron is
+// the registry record whose fused slot the argument is, as GetEntitySpeed and
+// SetCrewLevel treat it. 006E6270 reads the session word, the 0 this host reports
+// for single player (GameScriptOrdersHost::game_session_mode). 0080FC30 is the
+// units host's reference speed, unit+9C0h (the class MaxSpeed SetShipMaxSpeed moves)
+// times the power-up scale (GameUnitsHost::throttle_ceiling_inputs).
+class UnitQuerySeg56Host final : public bsp::seg56_options_cc13::Seg56HostUnreached,
+                                 public bsp::cc13_seg33a::Seg33aSessionModeHost {
+public:
+    UnitQuerySeg56Host(const GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        std::function<std::int32_t()> session_mode)
+        : units_(units), index_of_(std::move(index_of)), session_mode_(std::move(session_mode)) {}
+
+    std::int32_t entity_skill_vt12c(void* entity) override {
+        const std::size_t index = slot_of(entity);
+        const bsp::PlaneSquadronHostRecord* squadron = fused_squadron_record(index);
+        if (squadron == nullptr) return units_.skill_level(index);   // 006D1EC0
+        // 007ECF70 over the squadron's +3D0h array (its live planes, squadron_live_members).
+        bsp::PlaneSquadronEntity view;
+        const std::vector<std::size_t> live = squadron_live_members(*squadron);
+        view.live_count = static_cast<int>(live.size());
+        for (std::size_t i = 0; i < live.size() && i < bsp::kPlaneSquadronMaxWings; ++i) {
+            view.members[i] = reinterpret_cast<void*>(static_cast<std::uintptr_t>(live[i] + 1u));
+        }
+        const auto leader_skill_vt12c = [&](void* leader) {
+            // The image calls through a null slot 0 (no test at 007ECF70); the dispatch
+            // refuses a squadron with no live plane first.
+            if (leader == nullptr) unit_query_unreached("007ECF70 with an empty member slot 0");
+            return units_.skill_level(slot_of(leader));               // 006D1EC0
+        };
+        return bsp::plane_squadron_leader_slot12c_007ecf70(view, leader_skill_vt12c);
+    }
+    std::int32_t crew_level_from_skill_006e6270(std::int32_t skill) override {
+        return bsp::cc13_seg33a::crew_level_from_skill_006e6270(*this, skill);
+    }
+    std::int32_t session_mode_00e188a8_1fe4() override { return session_mode_(); }
+    double unit_reference_speed_0080fc30(void* unit) override {
+        return units_.throttle_ceiling_inputs(slot_of(unit)).reference_speed;
+    }
+
+    // 006BCD20(entity, DL) for SetAirBasePlaneLimit 00897720 / GetAirBasePlaneLimit
+    // 008978D0 (both pass DL = 0, XOR DL,DL at 00897839 / 008979E6), through
+    // unit_air_ops_deck_006bcd20. With DL set (006BCD5C) the block's +7Ch owner and
+    // the owner's +5Dh are the deck's owner_present / owner_blocked.
+    void* air_ops_block_006bcd20(void* entity, bool require_active) override {
+        bool owner_class = false;
+        bsp::AirOpsDeck* deck = unit_air_ops_deck_006bcd20(units_, slot_of(entity), owner_class);
+        if (!owner_class) return nullptr;
+        if (deck == nullptr) unit_query_unreached("a carrier or airfield with no loaded deck");
+        if (!bsp::air_ops_block_is_usable_006bcd20(require_active, deck->owner_present,
+                deck->owner_blocked)) {
+            return nullptr;
+        }
+        return deck;
+    }
+    // 006BA6C0: MOV EAX,[ECX+58h] / RET. 006BA6D0: MOV EAX,[ESP+4] / MOV [ECX+58h],EAX /
+    // RET 4 (bsp.py ghidra disasm). block+58h is the deck's max_in_air_planes. Neither
+    // accessor tests the block: the image faults on a null one, which the dispatch's
+    // pre-check keeps from happening.
+    std::int32_t air_ops_block_plane_limit_006ba6c0(void* block) override {
+        return deck_of(block).max_in_air_planes;
+    }
+    void air_ops_block_set_plane_limit_006ba6d0(void* block, std::int32_t limit) override {
+        deck_of(block).max_in_air_planes = limit;
+    }
+
+    // 008457E0 for RemoveShipyardStock 00896EE0 (0089705F, ECX the entity 00888AA0
+    // answered, then the class and count integers). Its records are the shipyard's
+    // +774h stock vector (stride 20h; class [rec+4h]+70h, count +8h), which this
+    // process keeps as the registry's ShipyardState::stock for the shipyard the scene
+    // attached (bound to the table's `ID`). The body runs over a {class, count} view
+    // of those records, and the counts it leaves are written back, so its first-match
+    // clamp is the one rule applied to the host's own stock.
+    void shipyard_consume_stock_008457e0(void* shipyard, std::int32_t class_id,
+        std::int32_t count) override {
+        bsp::ShipyardState* state = bsp::shipyards().find_mutable_by_entity_id(
+            static_cast<int>(slot_of(shipyard) + 1u));
+        if (state == nullptr) unit_query_unreached("008457E0 on an entity with no shipyard");
+        std::vector<bsp::cc13_band0080::ShipyardStockRecord> view(state->stock.size());
+        for (std::size_t i = 0; i < view.size(); ++i) {
+            view[i].class_id = static_cast<std::int32_t>(state->stock[i].class_id);
+            view[i].count = state->stock[i].count;
+        }
+        bsp::cc13_band0080::shipyard_consume_stock_008457e0(view.data(), view.size(),
+            class_id, count);
+        for (std::size_t i = 0; i < view.size(); ++i) state->stock[i].count = view[i].count;
+    }
+
+private:
+    static bsp::AirOpsDeck& deck_of(void* block) {
+        if (block == nullptr) unit_query_unreached("006BA6C0 / 006BA6D0 on a null block");
+        return *static_cast<bsp::AirOpsDeck*>(block);
+    }
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    const GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    std::function<std::int32_t()> session_mode_;
+};
+
+// GetAirBaseSlotStatus 00896220's two image reads (bsp.py show 00896220 --asm: 00896369
+// SUB ESI,1 / 00896378 IMUL ESI,ESI,58h / 0089637B MOV EDI,[EDI+4Ch] / 0089637E MOV
+// ESI,[ESI+EDI+2Ch], then 00B664B0): the block's slot array at +4Ch, stride 58h, and a
+// slot's state at +2Ch. The array is the deck's `slots` vector. This view answers +4Ch
+// with the base of an address range of 58h bytes per slot, sized to that vector and
+// never read, and +2Ch at slot k of the range with slots[k].state (the AirOpsSlotState
+// values 006C0510 and the launch rule test). The dispatch has checked the 1-based index
+// against the deck, so every address the body forms lies in the range.
+class AirSlotStateView final : public bsp::seg56_options_cc13::ImageAccess {
+public:
+    void* read_ptr(void* block, std::uint32_t offset) override {
+        if (offset != 0x4Cu || block == nullptr) unit_query_unreached("a pointer other than block+4Ch");
+        deck_ = static_cast<const bsp::AirOpsDeck*>(block);
+        range_.assign(deck_->slots.size() * kSlotStride, 0u);
+        return range_.data();
+    }
+    std::int32_t read_i32(void* slot, std::uint32_t offset) override {
+        if (offset != 0x2Cu || deck_ == nullptr) unit_query_unreached("a dword other than slot+2Ch");
+        const std::ptrdiff_t at = static_cast<const std::uint8_t*>(slot) - range_.data();
+        if (at < 0 || at % static_cast<std::ptrdiff_t>(kSlotStride) != 0
+            || static_cast<std::size_t>(at) / kSlotStride >= deck_->slots.size()) {
+            unit_query_unreached("a slot outside the deck's slot array");
+        }
+        return static_cast<std::int32_t>(deck_->slots[static_cast<std::size_t>(at) / kSlotStride].state);
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+private:
+    static constexpr std::size_t kSlotStride = 0x58;
+    const bsp::AirOpsDeck* deck_{nullptr};
+    std::vector<std::uint8_t> range_;
+};
+
+// 008ABAC0 / 008ABF90 over fill_nine_integers (bsp.py show 008abac0 --asm: 00888AA0 on
+// argument 0 at 008ABBC1, 00B67930 at 008ABBE1, then 008ABBF6..008ABC0E nine 00B665D0
+// stores of keys 1..9 from [entity+188h+4i], and 00B66400 at 008ABC14; 008ABF90 is the
+// same body over +1ACh). +188h is the role permission word 00927D20 writes per role
+// (the host's role_permission_0188, which SetRoleAvailable reaches through
+// set_role_availability_00927d20) and +1ACh the role's current holder slot
+// (current_roles_01ac). The table is built on the dispatch's real Lua stack by the
+// native LuaObject bodies 00B67930 / 00B665D0; 00B66400 is the frame's growth.
+class RoleTableBinding final : public bsp::cc13_left55::seg56b::Left55Seg56bHostUnreached,
+                               public bsp::seg56_options_cc13::ImageAccess,
+                               public bsp::seg56_options_cc13::LuaFrame {
+public:
+    RoleTableBinding(lua_State* state, const GameUnitsHost& units,
+        std::function<std::size_t(void*)> index_of)
+        : stack_(state, 0), units_(units), index_of_(std::move(index_of)),
+          original_top_(lua_gettop(state)) {}
+
+    // --- Left55Seg56bHost: the two LuaObject calls ---
+    bsp::cc13_left55::seg56b::LuaRef frame_new_table_00b67930(
+        bsp::seg56_options_cc13::LuaFrame&) override {
+        bsp::native_lua_new_table_00b67930(stack_.object, table_);
+        return &table_;
+    }
+    void table_set_integer_at_index_00b665d0(bsp::cc13_left55::seg56b::LuaRef table, int key,
+        int value) override {
+        bsp::native_lua_set_integer_at_00b665d0(
+            *static_cast<bsp::NativeLuaObjectStorage*>(table), key, value);
+    }
+
+    // --- ImageAccess: the nine words at +188h or +1ACh ---
+    std::int32_t read_i32(void* entity, std::uint32_t offset) override {
+        constexpr std::uint32_t kWords = static_cast<std::uint32_t>(bsp::kUnitRoleTableEntries);
+        const bool permission = offset >= 0x188u && offset < 0x188u + 4u * kWords;
+        const bool holder = offset >= 0x1ACu && offset < 0x1ACu + 4u * kWords;
+        if ((!permission && !holder) || (offset & 3u) != 0u) {
+            unit_query_unreached("a unit read outside +188h..+1CFh");
+        }
+        const std::size_t index = index_of_(entity);
+        const std::int32_t role =
+            static_cast<std::int32_t>((offset - (permission ? 0x188u : 0x1ACu)) / 4u);
+        std::int32_t value = 0;
+        const bool read = permission ? units_.unit_role_permission(index, role, value)
+                                     : units_.unit_current_role_slot(index, role, value);
+        if (!read) unit_query_unreached("an entity without a units-host slot");
+        return value;
+    }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+    // --- LuaFrame: 00B66400, and no direct pushes ---
+    int result_count() override { return lua_gettop(stack_.owner.state_04) - original_top_; }
+    void push_number(int) override { unit_query_unreached("00B664B0"); }
+    void push_boolean(bool) override { unit_query_unreached("00B66450"); }
+    void push_nil() override { unit_query_unreached("00B66430"); }
+    void push_float(float) override { unit_query_unreached("00B66480"); }
+    void push_string(const std::string&) override { unit_query_unreached("00B66710"); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override {
+        unit_query_unreached("00B67930 integer fields");
+    }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unit_query_unreached("0088BA30"); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        unit_query_unreached("00B67930 vector fields");
+    }
+
+private:
+    // The table object borrows stack_.owner, so both live as long as the binding.
+    ScriptOrdersLuaStackView stack_;
+    bsp::NativeLuaObjectStorage table_{};
+    const GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    int original_top_;
+};
+
+// What 008A0F10 EntityTurnToPosition reads from its frame (bsp.py show 008a0f10 --asm):
+// 008A101F 00888AA0 on argument 0, 008A1059 00888760 (a Vector3 table) on argument 1,
+// 008A10C7 00B663F0 the count and, only when it is 3, 008A10F1 00B66250 on argument 2.
+class TurnToPositionArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    using Vector3 = std::function<bool(int, float (&)[3])>;
+    TurnToPositionArgs(bsp::LuaBindingArgumentReader& core, Vector3 vector3)
+        : core_(core), vector3_(std::move(vector3)) {}
+    void* entity_at(int index) override { return core_.entity_at(index); }
+    int count() override { return core_.count(); }
+    bool get_boolean(int index) override { return core_.get_boolean(index); }
+    bsp::cc13_seg56::Vec3 read_vector3(int index) override {
+        float p[3] = {};
+        if (!vector3_(index, p)) unit_query_unreached("00888760 on a value that is no Vector3");
+        return bsp::cc13_seg56::Vec3{p[0], p[1], p[2]};
+    }
+    int get_integer(int) override { unit_query_unreached("00B66290"); }
+    double get_number(int) override { unit_query_unreached("00B66270"); }
+    std::string get_string(int) override { unit_query_unreached("00B662B0"); }
+    bool is_string(int) override { unit_query_unreached("00B660A0"); }
+    bool is_nil(int) override { unit_query_unreached("00B65FB0"); }
+    bool is_entity_table(int) override { unit_query_unreached("008889C0"); }
+    bool is_boolean(int) override { unit_query_unreached("00B66000"); }
+    bool is_number(int) override { unit_query_unreached("00B66050"); }
+    bool is_integer(int) override { unit_query_unreached("00B66A60"); }
+    bool is_table(int) override { unit_query_unreached("00B661B0"); }
+    bool is_vector3_table(int) override { unit_query_unreached("0088B840"); }
+    void* to_userdata(int) override { unit_query_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { unit_query_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        unit_query_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        unit_query_unreached("00B67800 number");
+    }
+
+private:
+    bsp::LuaBindingArgumentReader& core_;
+    Vector3 vector3_;
+};
+
+// 008A0F10's services and image reads over the units host (lua_entity_turn_to_position,
+// src/cc13_left55_seg56a.cpp). The single-player arms only: [[00E188A8]+1FE4h] is the
+// session word (CMP at 008A11B7, zero JZ 008A121E past the session-message arm), the
+// 0 GameScriptOrdersHost::game_session_mode reports. A squadron (vtable[5Ch](18h) at
+// 008A1227, the slot fused with its wing 0) re-poses each member at the member's own
+// +FCh through vtable[88h] (008A1294); a ship (5Ch(6)) takes vtable[88h] at 008A1301,
+// then 00C336C0 and 00C56CF0 on [0080E490()+2Ch], the physics body; anything else takes
+// vtable[88h] alone (008A1378). vtable[88h] is 006E00A0 on a ship (the units host's
+// set_local_matrix_006e00a0) and 007C9540 on a plane (set_unit_world_basis_007c9540),
+// the two setters EntityTurnToEntity already uses.
+class TurnToPositionBinding final : public bsp::cc13_left55::seg56a::Left55Seg56aHostUnreached,
+                                    public bsp::seg56_options_cc13::ImageAccess {
+public:
+    TurnToPositionBinding(GameUnitsHost& units, std::function<std::size_t(void*)> index_of,
+        std::function<std::int32_t()> session_mode)
+        : units_(units), index_of_(std::move(index_of)), session_mode_(std::move(session_mode)) {}
+
+    // --- ImageAccess ---
+    // [00E188A8]: the binding reads only +1FE4h through it, so the address is a stand-in
+    // the session word answers for.
+    void* global_ptr(std::uint32_t address) override {
+        if (address != bsp::cc13_left55::seg56a::kGameGlobal) {
+            unit_query_unreached("a global other than [00E188A8]");
+        }
+        return &game_;
+    }
+    std::int32_t read_i32(void* base, std::uint32_t offset) override {
+        if (base == &game_ && offset == bsp::cc13_left55::seg56a::kSessionModeOffset) {
+            return session_mode_();
+        }
+        if (offset == 0x3CCu) return squadron_of(base).live_count();   // 008A122D / 008A129C
+        unit_query_unreached("a dword other than game+1FE4h or squadron+3CCh");
+    }
+    // +C8h, the pose-valid byte 00414DB0 sets. LABELLED, as GetDirection and GetPosition
+    // take it: the units host's poses are never stale, so the refresh is not reached.
+    std::uint8_t read_u8(void* entity, std::uint32_t offset) override {
+        if (offset != 0xC8u) unit_query_unreached("a byte other than +C8h");
+        static_cast<void>(slot_of(entity));
+        return 1;
+    }
+    // +FCh..+104h, the world position (GameUnitsHost::unit_position_00fc).
+    float read_f32(void* entity, std::uint32_t offset) override {
+        float p[3] = {};
+        units_.unit_position_00fc(slot_of(entity), p[0], p[1], p[2]);
+        if (offset == 0xFCu) return p[0];
+        if (offset == 0x100u) return p[1];
+        if (offset == 0x104u) return p[2];
+        unit_query_unreached("a float other than +FCh..+104h");
+    }
+    // +3D0h + 4i, the squadron's member slots, and [parts+2Ch], the physics body.
+    void* read_ptr(void* base, std::uint32_t offset) override {
+        if (base == &parts_ && offset == 0x2Cu) return &body_;
+        if (offset >= 0x3D0u && offset < 0x3D0u + 4u * bsp::kPlaneSquadronMaxWings
+            && (offset & 3u) == 0u) {
+            const std::vector<std::size_t> live = squadron_live_members(squadron_of(base));
+            const std::size_t slot = (offset - 0x3D0u) / 4u;
+            if (slot >= live.size()) return nullptr;
+            return reinterpret_cast<void*>(static_cast<std::uintptr_t>(live[slot] + 1u));
+        }
+        unit_query_unreached("a pointer other than +3D0h's slots or [parts+2Ch]");
+    }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    std::int32_t global_i32(std::uint32_t) override { unit_query_unreached("global_i32"); }
+
+    // --- Left55Seg56aHost ---
+    bool entity_vcall_5c(void* entity, std::int32_t class_id) override {
+        const std::size_t index = slot_of(entity);
+        if (class_id == 0x18) return fused_squadron_record(index) != nullptr;
+        return units_.unit_is_kind_of(index, class_id);
+    }
+    void entity_vcall_88(void* entity, const float* matrix) override {
+        const std::size_t index = slot_of(entity);
+        bool posed = false;
+        if (units_.unit_is_kind_of(index, 6)) {
+            posed = units_.set_local_matrix_006e00a0(index, matrix);            // 006E00A0
+        } else if (units_.unit_is_kind_of(index, 0x0F)) {
+            posed = units_.set_unit_world_basis_007c9540(index, &matrix[0], &matrix[4],
+                &matrix[8]);                                                  // 007C9540
+        } else {
+            unit_query_unreached("vtable[88h] on a class this host does not pose");
+        }
+        if (posed) ++posed_;
+    }
+    void matrix_orthonormalize_basis_rows_0085dc80(float* matrix) override {
+        bsp::orthonormalize_pose_matrix_0085dc80(matrix);
+    }
+    void dyn_copy_matrix43_00c336c0(float out[12], const float* matrix) override {
+        bsp::cc13_dyn1::transform_from_4x4_00c336c0(out, matrix);
+    }
+    void* unit_parts_object_0080e490(void* unit) override {
+        static_cast<void>(slot_of(unit));
+        return &parts_;
+    }
+    // SUBSTITUTION, labelled, as EntityTurnToEntity's ship arm takes it: the ship's
+    // physics body is the units host's motion state, which vtable[88h] (006E00A0) has
+    // just set from the same matrix (008A1301), so the 4x3 00C336C0 built is that pose
+    // and nothing further is stored.
+    void dyn_body_set_transform_00c56cf0(void* body, const float* transform) override {
+        if (body != &body_) unit_query_unreached("00C56CF0 on a body other than [parts+2Ch]");
+        static_cast<void>(transform);
+        ++body_poses_;
+    }
+
+    unsigned posed() const noexcept { return posed_; }
+    unsigned body_poses() const noexcept { return body_poses_; }
+
+private:
+    std::size_t slot_of(void* entity) const {
+        const std::size_t index = index_of_(entity);
+        if (index >= units_.count()) unit_query_unreached("an entity without a units-host slot");
+        return index;
+    }
+    const bsp::PlaneSquadronHostRecord& squadron_of(void* entity) const {
+        const bsp::PlaneSquadronHostRecord* squadron = fused_squadron_record(slot_of(entity));
+        if (squadron == nullptr) unit_query_unreached("a squadron read on a non-squadron");
+        return *squadron;
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    std::function<std::int32_t()> session_mode_;
+    // Stand-in addresses for the three objects the binding only hands back: the game
+    // object, the parts object and its physics body.
+    unsigned char game_{};
+    unsigned char parts_{};
+    unsigned char body_{};
+    unsigned posed_{0};
+    unsigned body_poses_{0};
+};
+
+// 008A7780 PilotStop through lua_pilot_stop (issue_fixed_command, src/cc13_left55_seg56a.cpp):
+// 008A787E 00888AA0 on argument 0, the zero descriptor with the vector at 00F87574
+// (008A7896 / 008A78A4 MOVSS), then 0077D600(entity, stop 00E08F88, &descriptor, 1) at
+// 008A78E9; nothing pushed. 0077D600 is the host's entity_issue_command, the same issue
+// NavigatorStop 008A7400 makes. 00F87574..7C is the BSS zero vector, read as zero, as
+// run_navigator_stop takes it.
+class FixedCommandBinding final : public bsp::cc13_left55::seg56a::Left55Seg56aHostUnreached,
+                                  public bsp::seg56_options_cc13::ImageAccess {
+public:
+    using Issue = std::function<void(void*, std::uint32_t, const bsp::SceneCommandTarget&, int)>;
+    explicit FixedCommandBinding(Issue issue) : issue_(std::move(issue)) {}
+
+    void entity_issue_command_0077d600(void* entity, void* command,
+        const bsp::SceneCommandTarget& target, std::int32_t flags) override {
+        issue_(entity, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(command)),
+            target, flags);
+        ++issued_;
+    }
+    std::int32_t global_i32(std::uint32_t address) override {
+        if (address != bsp::cc13_left55::seg56a::kZeroVectorGlobal
+            && address != bsp::cc13_left55::seg56a::kZeroVectorGlobal + 4u
+            && address != bsp::cc13_left55::seg56a::kZeroVectorGlobal + 8u) {
+            unit_query_unreached("a global other than the zero vector 00F87574");
+        }
+        return 0;
+    }
+    std::int32_t read_i32(void*, std::uint32_t) override { unit_query_unreached("read_i32"); }
+    std::uint8_t read_u8(void*, std::uint32_t) override { unit_query_unreached("read_u8"); }
+    float read_f32(void*, std::uint32_t) override { unit_query_unreached("read_f32"); }
+    void* read_ptr(void*, std::uint32_t) override { unit_query_unreached("read_ptr"); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unit_query_unreached("write_u8"); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unit_query_unreached("write_i32"); }
+    void write_f32(void*, std::uint32_t, float) override { unit_query_unreached("write_f32"); }
+    std::uint16_t global_u16(std::uint32_t) override { unit_query_unreached("global_u16"); }
+    void* global_ptr(std::uint32_t) override { unit_query_unreached("global_ptr"); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override {
+        unit_query_unreached("write_global_u8");
+    }
+    void write_global_f32(std::uint32_t, float) override {
+        unit_query_unreached("write_global_f32");
+    }
+    unsigned issued() const noexcept { return issued_; }
+
+private:
+    Issue issue_;
+    unsigned issued_{0};
 };
 
 // Goal 4 chain 460. These callbacks borrow the current script orders owner;
@@ -4797,6 +5377,54 @@ int GameScriptOrdersHost::game_session_mode() {
     return 0;
 }
 
+// Goal 5 chain 655. The dispatch has checked that argument 0 names a units-host slot.
+int GameScriptOrdersHost::run_role_table_query(std::uint32_t address) {
+    if (state_ == nullptr) return 0;
+    RepairBindingArgs args(*this);
+    RoleTableBinding binding(state_, units_, [this](void* entity) { return index_of(entity); });
+    namespace seg56b = bsp::cc13_left55::seg56b;
+    return address == 0x008abf90u
+        ? seg56b::lua_get_role_owner(args, binding, binding, binding)       // 008ABF90
+        : seg56b::lua_get_role_available(args, binding, binding, binding);  // 008ABAC0
+}
+
+// Goal 5 chain 655. The dispatch has checked the unit and the point.
+int GameScriptOrdersHost::run_turn_to_position() {
+    TurnToPositionArgs args(*this,
+        [this](int index, float (&out)[3]) { return argument_vector3(index, out); });
+    TurnToPositionBinding binding(units_, [this](void* entity) { return index_of(entity); },
+        [this] { return static_cast<std::int32_t>(game_session_mode()); });
+    const int results = bsp::cc13_left55::seg56a::lua_entity_turn_to_position(args, binding,
+        binding);
+    turn_to_position_posed_ += binding.posed();
+    return state_ != nullptr ? results : 0;
+}
+
+int GameScriptOrdersHost::run_seg56_unit_query(std::uint32_t address) {
+    RepairBindingArgs args(*this);
+    UnitQueryResults results([this](int value) { push_number(value); },
+        [this](float value) { push_number_float_00b66480(value); });
+    UnitQuerySeg56Host host(units_, [this](void* entity) { return index_of(entity); },
+        [this] { return static_cast<std::int32_t>(game_session_mode()); });
+    namespace seg56 = bsp::seg56_options_cc13;
+    int count = 0;
+    switch (address) {
+    case 0x008953f0u: count = seg56::lua_get_skill_level(args, results, host); break;
+    case 0x008950d0u: count = seg56::lua_get_crew_level(args, results, host); break;
+    case 0x00890bb0u: count = seg56::lua_get_ship_max_speed(args, results, host); break;
+    case 0x00897720u: count = seg56::lua_set_air_base_plane_limit(args, host); break;
+    case 0x008978d0u: count = seg56::lua_get_air_base_plane_limit(args, results, host); break;
+    case 0x00896ee0u: count = seg56::lua_remove_shipyard_stock(args, host); break;
+    case 0x00896220u: {
+        AirSlotStateView slots;
+        count = seg56::lua_get_air_base_slot_status(args, results, slots, host);
+        break;
+    }
+    default: unit_query_unreached("a row with no segment-56 unit query body");
+    }
+    return state_ != nullptr ? count : 0;
+}
+
 int GameScriptOrdersHost::game_effective_game_mode() {
     // 004bca50 at 008ab9de. game+614h and game+61Ch resolve a single-player
     // campaign load to 8, which is the value the scene contents pass already
@@ -6094,6 +6722,166 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             ++command_building_owner_applied_;
         }
         results = 0;
+    } else if (std::strcmp(binding->name, "GetRoleAvailable") == 0 ||
+               std::strcmp(binding->name, "GetRoleOwner") == 0) {
+        // Goal 5 chain 655. 008ABAC0 GetRoleAvailable / 008ABF90 GetRoleOwner, their
+        // body fill_nine_integers (src/cc13_left55_seg56b.cpp) over RoleTableBinding:
+        // {[1..9] = entity+188h} / {[1..9] = entity+1ACh}, one result. Single-player
+        // callers: commandhelpers.lua 19250 / 19264 read GetRoleAvailable(unit)[1], and
+        // jm05.lua 3021 GetRoleOwner(unit); the multiplayer scripts make the other
+        // calls of the 97 in the installed scripts. LABELLED: an
+        // argument with no units-host slot pushes nothing and is counted, where the
+        // image reads +188h of whatever object 00888AA0 returned.
+        ++role_table_calls_;
+        if (state_ != nullptr && index_of(entity_at(0)) < units_.count()) {
+            results = run_role_table_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented(binding->row_address == 0x008abf90u
+                    ? "LuaNative::GetRoleOwner(entity without a unit slot)"
+                    : "LuaNative::GetRoleAvailable(entity without a unit slot)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "GetSkillLevel") == 0 ||
+               std::strcmp(binding->name, "GetCrewLevel") == 0) {
+        // Goal 5 chain 655. 008953F0 GetSkillLevel pushes entity->vtable[12Ch]();
+        // 008950D0 GetCrewLevel pushes 006E6270 of it, the crew level SetCrewLevel's
+        // 006E6210 maps back. Both through UnitQuerySeg56Host (006D1EC0 on a unit,
+        // 007ECF70 on a squadron). Callers: commandhelpers.lua 3928..3942 and 4335
+        // GetCrewLevel(SelectedUnit) / (unit), jm05.lua 4978 / 4989 GetSkillLevel(unit)
+        // against SKILL_ELITE / SKILL_SPNORMAL. LABELLED: an argument with no units-host
+        // slot, or a squadron with no live plane, pushes nothing and is counted (the image
+        // calls through whatever 00888AA0 or +3D0h holds).
+        ++skill_query_calls_;
+        resolve_plane_squadron_members();
+        const std::size_t unit = index_of(entity_at(0));
+        const bsp::PlaneSquadronHostRecord* squadron =
+            unit < units_.count() ? fused_squadron_record(unit) : nullptr;
+        // A squadron with no live plane has a null +3D0h, which 007ECF70 calls through.
+        if (state_ != nullptr && unit < units_.count()
+            && (squadron == nullptr || squadron->live_count() > 0)) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented(binding->row_address == 0x008950d0u
+                    ? "LuaNative::GetCrewLevel(entity without a unit slot)"
+                    : "LuaNative::GetSkillLevel(entity without a unit slot)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "SetAirBasePlaneLimit") == 0 ||
+               std::strcmp(binding->name, "GetAirBasePlaneLimit") == 0) {
+        // Goal 5 chain 655. 00897720 SetAirBasePlaneLimit(base, limit): 006BCD20(base, 0),
+        // integer argument 1 (00B66290 at 0089785E), 006BA6D0 at 00897878; no result.
+        // 008978D0 GetAirBasePlaneLimit(base): 006BCD20(base, 0), 006BA6C0 at 008979F1,
+        // 00B664B0 PushNumber; one result. Bodies lua_set_air_base_plane_limit /
+        // lua_get_air_base_plane_limit (src/options_seg56_cc13.cpp) over
+        // UnitQuerySeg56Host: block+58h is the deck's max_in_air_planes, which the slot
+        // tick 006C0510, 006BD460's slot capacity, 006C0F00's fill and 006C5950's return
+        // read (src/air_operations.cpp). Callers: usn_04_defend_
+        // guadalcanal.lua 1658 (the Japanese carrier to 15), usn_10_battle_of_capeengano
+        // .lua 1447 / 1486 / 2529 (both copies), commandhelpers.lua 15237 (the getter).
+        // LABELLED: an argument that is not a carrier or airfield with a loaded deck
+        // runs nothing and is counted; the image hands 006BA6C0 / 006BA6D0 the null
+        // block 006BCD20 answers and faults.
+        ++air_base_limit_calls_;
+        bool owner_class = false;
+        const std::size_t base = index_of(entity_at(0));
+        if (state_ != nullptr && base < units_.count()
+            && unit_air_ops_deck_006bcd20(units_, base, owner_class) != nullptr) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented(binding->row_address == 0x00897720u
+                    ? "LuaNative::SetAirBasePlaneLimit(entity without an air-operations deck)"
+                    : "LuaNative::GetAirBasePlaneLimit(entity without an air-operations deck)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "GetAirBaseSlotStatus") == 0) {
+        // Goal 5 chain 655. 00896220 GetAirBaseSlotStatus(base, slot): 00888AA0 on argument
+        // 0 (00896322), 006BCD20(base, 0) (XOR DL,DL at 00896339), 00B66290 on argument 1
+        // (0089635E), then [[block+4Ch] + (slot - 1) * 58h + 2Ch] pushed by 00B664B0; one
+        // result. Body lua_get_air_base_slot_status over AirSlotStateView and
+        // UnitQuerySeg56Host's 006BCD20. Callers: jm07.lua 1189 / 1195, jm11.lua 1006,
+        // jm12.lua 867 (== 5, kReady) and the PRCPIJN copies, commandhelpers.lua 18905.
+        // LABELLED: a base with no loaded deck, or a slot outside 1..its slot count, pushes
+        // nothing and is counted; the image reads past the array (or faults on a null
+        // block).
+        ++air_base_slot_calls_;
+        bool owner_class = false;
+        const std::size_t base = index_of(entity_at(0));
+        const bsp::AirOpsDeck* deck = base < units_.count()
+            ? unit_air_ops_deck_006bcd20(units_, base, owner_class) : nullptr;
+        const int slot = deck != nullptr ? get_integer(1) : 0;
+        if (state_ != nullptr && deck != nullptr && slot >= 1
+            && static_cast<std::size_t>(slot) <= deck->slots.size()) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::GetAirBaseSlotStatus(no deck or no such slot)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "EntityTurnToPosition") == 0) {
+        // Goal 5 chain 655. 008A0F10 EntityTurnToPosition(entity, point [, keep_pitch]):
+        // d = point - entity+FCh, d.y zeroed unless a third argument is true, rows
+        // (1,0,0), (0,1,0), d through 0085DC80, then the single-player arms of
+        // TurnToPositionBinding. Callers: usn_01_battle_of_eastern_solomons.lua 1265 /
+        // 1339 / 1420, usn_05_guadalcanal_1st_battle.lua 1542 / 1561 (and the PRCPUS
+        // copies), usn_06_guadalcanal_2nd_battle.lua 2294, prcp_06_2ndbattle.lua 2383.
+        // LABELLED: an argument that is not a ship, a plane or a squadron, or a point that
+        // is no Vector3 (jm09.lua 1984 passes only the point), runs nothing and is
+        // counted; the image would call vtable[88h] of whatever it was handed.
+        ++turn_to_position_calls_;
+        resolve_plane_squadron_members();
+        const std::size_t unit = index_of(entity_at(0));
+        float point[3] = {};
+        const bool poseable = unit < units_.count() && (fused_squadron_record(unit) != nullptr
+            || units_.unit_is_kind_of(unit, 6) || units_.unit_is_kind_of(unit, 0x0F));
+        if (state_ != nullptr && poseable && argument_vector3(1, point)) {
+            results = run_turn_to_position();
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::EntityTurnToPosition(no poseable unit or no point)",
+                address);
+        }
+    } else if (std::strcmp(binding->name, "PilotStop") == 0) {
+        // Goal 5 chain 655. 008A7780 PilotStop(unit) through lua_pilot_stop over
+        // FixedCommandBinding: 0077D600(entity, stop 00E08F88, zero target, 1), the issue
+        // NavigatorStop makes. Callers: jm12.lua 1724 / 1858 (both copies), prcpjm12.lua
+        // 766. LABELLED: an argument with no units-host slot issues nothing and is counted
+        // (the image calls 0077D600 with whatever 00888AA0 returned).
+        ++pilot_stop_calls_;
+        resolve_plane_squadron_members();
+        if (index_of(entity_at(0)) < units_.count()) {
+            RepairBindingArgs args(*this);
+            FixedCommandBinding command([this](void* entity, std::uint32_t command_object,
+                const bsp::SceneCommandTarget& target, int flags) {
+                entity_issue_command(entity, command_object, target, flags);
+            });
+            results = bsp::cc13_left55::seg56a::lua_pilot_stop(args, command, command);
+            pilot_stop_issued_ += command.issued();
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::PilotStop(entity without a unit slot)", address);
+        }
+    } else if (std::strcmp(binding->name, "RemoveShipyardStock") == 0) {
+        // Goal 5 chain 655. 00896EE0 RemoveShipyardStock(shipyard, class, count): 00888AA0
+        // on argument 0 (00896FE3), 00B66290 class and count, then 008457E0(ECX =
+        // entity, class, count) at 0089705F and 00B66400; no result, no session route.
+        // Body lua_remove_shipyard_stock (src/options_seg56_cc13.cpp) over
+        // UnitQuerySeg56Host's 008457E0. Callers: usn_04_defend_guadalcanal.lua 3265..3270
+        // (class 27 from both USN shipyards), jm08.lua 1638..1668 (classes 77 and 174,
+        // both copies). LABELLED: an argument with no shipyard state runs nothing and is
+        // counted; the image would walk +774h of whatever entity it was handed.
+        ++shipyard_stock_calls_;
+        const std::size_t yard = index_of(entity_at(0));
+        if (state_ != nullptr && yard < units_.count()
+            && bsp::shipyards().find_mutable_by_entity_id(static_cast<int>(yard + 1u)) != nullptr) {
+            results = run_seg56_unit_query(binding->row_address);
+        } else {
+            ++unit_query_unresolved_;
+            log_.unimplemented("LuaNative::RemoveShipyardStock(entity without a shipyard)",
+                address);
+        }
     } else if (std::strcmp(binding->name, "GetShipMaxSpeed") == 0) {
         // Packet cc13-fix14b. 00890BB0 (__fastcall, ECX the Lua state, RET): 00890CAF
         // 00888AA0 on argument 0, no null or class test, 00890CC8 0080FC30 with ECX the
@@ -6107,15 +6895,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // 00890B51). An entity with no units-host slot (a scene marker, or none)
         // pushes nothing and records UNIMPLEMENTED, where the image reads +9C0h of
         // whatever object it is handed (and faults on a null one).
+        // Goal 5 chain 655: the push is the body lua_get_ship_max_speed
+        // (src/options_seg56_cc13.cpp) over UnitQuerySeg56Host's 0080FC30.
         // handles() already refuses the row while the switch is off.
         if constexpr (kLuaGetShipMaxSpeedBound) {
             ++ship_max_speed_calls_;
-            void* entity = entity_from_argument(0);
+            void* entity = entity_at(0);
             const std::size_t index = index_of(entity);
             if (entity != nullptr && index < units_.count()) {
-                push_number_float_00b66480(
-                    units_.throttle_ceiling_inputs(index).reference_speed);
-                results = state_ != nullptr ? 1 : 0;
+                results = run_seg56_unit_query(binding->row_address);
             } else {
                 ++ship_max_speed_unresolved_;
                 log_.unimplemented("LuaNative::GetShipMaxSpeed(entity without a unit slot)",
@@ -8474,6 +9262,18 @@ void GameScriptOrdersHost::report() {
             "cc13-fix14b)", kLuaGetShipMaxSpeedBound ? 1 : 0, ship_max_speed_calls_,
             ship_max_speed_unresolved_, kLuaGetDirectionBound ? 1 : 0, direction_calls_,
             direction_unresolved_);
+    }
+    if (role_table_calls_ != 0 || skill_query_calls_ != 0 || air_base_limit_calls_ != 0
+        || shipyard_stock_calls_ != 0 || turn_to_position_calls_ != 0
+        || pilot_stop_calls_ != 0 || air_base_slot_calls_ != 0) {
+        log_.notef("summary mission script unit queries role tables=%zu skill/crew=%zu "
+            "air base plane limit=%zu slot status=%zu shipyard stock=%zu turn to position=%zu "
+            "(posed %zu) pilot stop=%zu (issued %zu) unresolved=%zu (008ABAC0 / 008ABF90 / "
+            "008953F0 / 008950D0 / 00897720 / 008978D0 / 00896220 / 00896EE0 / 008A0F10 / "
+            "008A7780, goal 5 chain 655)", role_table_calls_, skill_query_calls_,
+            air_base_limit_calls_, air_base_slot_calls_, shipyard_stock_calls_,
+            turn_to_position_calls_, turn_to_position_posed_, pilot_stop_calls_,
+            pilot_stop_issued_, unit_query_unresolved_);
     }
     if (plane_force_release_calls_ != 0 || squadron_force_release_calls_ != 0 ||
         pilot_bomb_calls_ != 0 || bomb_falling_time_calls_ != 0 ||

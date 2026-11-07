@@ -1,0 +1,168 @@
+{
+  "chain": 655,
+  "slot": "g5-w3",
+  "harness": "claude",
+  "summary": "Segment-56 unit query Lua natives run on their bodies in GameScriptOrdersHost: GetRoleAvailable / GetRoleOwner over a new Left55Seg56bHostUnreached base and the units host's role words, GetSkillLevel / GetCrewLevel over the skill index (007ECF70 for a squadron, 006E6270 over a narrow Seg33aSessionModeHost), and GetShipMaxSpeed's host push replaced by its body.",
+  "rows": [
+    {
+      "native": "008abac0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_role_table_query (dispatch GetRoleAvailable arm), lua_get_role_available over RoleTableBinding"
+    },
+    {
+      "native": "008abf90",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_role_table_query (dispatch GetRoleOwner arm), lua_get_role_owner over RoleTableBinding"
+    },
+    {
+      "native": "008953f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetSkillLevel arm), lua_get_skill_level over UnitQuerySeg56Host"
+    },
+    {
+      "native": "008950d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetCrewLevel arm), lua_get_crew_level over UnitQuerySeg56Host"
+    },
+    {
+      "native": "00890bb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetShipMaxSpeed arm; replaces the host's own push of throttle_ceiling_inputs().reference_speed)"
+    },
+    {
+      "native": "006e6270",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::crew_level_from_skill_006e6270 -> bsp::cc13_seg33a::crew_level_from_skill_006e6270 (now over Seg33aSessionModeHost)"
+    },
+    {
+      "native": "007ecf70",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::entity_skill_vt12c (squadron arm, a PlaneSquadronEntity view of the registry record; template, inlined)"
+    },
+    {
+      "native": "00897720",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch SetAirBasePlaneLimit arm), lua_set_air_base_plane_limit over UnitQuerySeg56Host: 006BCD20 through unit_air_ops_deck_006bcd20, 006BA6D0 = the deck's max_in_air_planes"
+    },
+    {
+      "native": "008978d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetAirBasePlaneLimit arm), lua_get_air_base_plane_limit over UnitQuerySeg56Host (006BA6C0)"
+    },
+    {
+      "native": "00896ee0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch RemoveShipyardStock arm), lua_remove_shipyard_stock over UnitQuerySeg56Host"
+    },
+    {
+      "native": "008457e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp UnitQuerySeg56Host::shipyard_consume_stock_008457e0 -> bsp::cc13_band0080::shipyard_consume_stock_008457e0 over a {class, count} view of the registry's ShipyardState::stock, counts written back"
+    },
+    {
+      "native": "008a0f10",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_turn_to_position (dispatch EntityTurnToPosition arm), lua_entity_turn_to_position over TurnToPositionArgs and TurnToPositionBinding (new include/bsp/left55_seg56a_host_unreached.hpp base); vtable[88h] = set_local_matrix_006e00a0 / set_unit_world_basis_007c9540"
+    },
+    {
+      "native": "00c336c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp TurnToPositionBinding::dyn_copy_matrix43_00c336c0 -> bsp::cc13_dyn1::transform_from_4x4_00c336c0 (the ship arm of 008A0F10)"
+    },
+    {
+      "native": "008a7780",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch (PilotStop arm), lua_pilot_stop over FixedCommandBinding -> entity_issue_command (0077D600, stop 00E08F88)"
+    },
+    {
+      "native": "008a1b70",
+      "status": "skipped",
+      "reason": "SquadronSetWandererMul writes plane+840h; the slot's PlaneWandererState holds it but the units host exposes no setter, and its files are in g5-w5's branch under review"
+    },
+    {
+      "native": "008cf350",
+      "status": "skipped",
+      "reason": "GetGun pushes the Lua object of the index-th gun device under the unit; the host's gun rows have no Lua entity tables to push"
+    },
+    {
+      "native": "008cbad0",
+      "status": "skipped",
+      "reason": "ForceEnableInput edits the game+5B0h suppression set; that set is GameMissionFrameHost's InputTickState, whose action records the host never fills (live input runs on game_input_runtime's native records), so the reset 004E4E6C applies would change nothing"
+    },
+    {
+      "native": "00895ba0",
+      "status": "skipped",
+      "reason": "GetAirBaseStatus pushes 006BF5C0, which reads block+9Ch and the +4 tracked lock; AirOpsDeck models neither (its 006BF5C0 body takes a raw block)"
+    },
+    {
+      "native": "00896220",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::run_seg56_unit_query (dispatch GetAirBaseSlotStatus arm), lua_get_air_base_slot_status over AirSlotStateView (the deck's slots as the +4Ch / 58h-stride array, slot+2Ch = AirOpsSlot::state)"
+    },
+    {
+      "native": "0089e220",
+      "status": "skipped",
+      "reason": "SquadronSetHomeBase calls 007F1C00 mid-mission; the units host has no live squadron home-base field (set_squadron_scene_home_base only stages pass C's HomeBase key)"
+    },
+    {
+      "native": "008a8f90",
+      "status": "skipped",
+      "reason": "SetGuiName calls entity vtable+0Ch with the display name; the units/HUD hosts keep no per-unit GUI name for it to set"
+    },
+    {
+      "native": "00890ef0",
+      "status": "skipped",
+      "reason": "GetShipSpeed needs the vtable+38h speed dispatch (ship 0092D730, plane 007B8E60, squadron 007ED470), which lives file-local in game_hosts_lua.cpp next to GetEntitySpeed (leased by g5-w5); route it there with a Seg56HostUnreached adapter"
+    },
+    {
+      "native": "0088fcc0",
+      "status": "skipped",
+      "reason": "GetDamagedGFXLevel reads unit+358h; the gunnery host keeps it only as a private vector written by SetDamagedGFXLevel, not by the damage-state raises (00877B00), and exposes no getter"
+    },
+    {
+      "native": "008901c0",
+      "status": "skipped",
+      "reason": "GetFormationShape reads group+500h; the units host's FormationGroup stores no shape index (reshape_formation_0070efd0 applies it and keeps nothing)"
+    },
+    {
+      "native": "008a5ef0",
+      "status": "skipped",
+      "reason": "IsPlayerControlled needs a Left55Seg56aHost adapter base and 00779B60 reads raw unit+1ACh, game+1FE4h and [[00E198C4]+54h]+5 (the map screen's applied byte, only inside GameHudHost); no typed view of those exists"
+    },
+    {
+      "native": "0088f8b0",
+      "status": "skipped",
+      "reason": "ActivateSpawnpoint's one-argument arm calls 0084CE60 on a SpawnPoint support site; the scene contents pass instantiates no SpawnPoint, so there is no site object"
+    },
+    {
+      "native": "0088fab0",
+      "status": "skipped",
+      "reason": "DeactivateSpawnpoint: as ActivateSpawnpoint, no SpawnPoint support-site object in this host"
+    },
+    {
+      "native": "0088fe30",
+      "status": "skipped",
+      "reason": "SetNumbering calls 008761E0, which stores unit+35Ch and sets the model's hull numbering; the units host has no numbering field and no model instance (+360h)"
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "reason": "The gamecamera / fpscamera movie modifier needs a modifier slot beside goaround in MovieKeyframe and 0079CBD0's game cameras; only the ShipCaptain mover exists (no plane chase or cockpit camera), and how 00795650 consumes the modifier's world pose was not traced"
+    },
+    {
+      "native": "007995f0",
+      "status": "skipped",
+      "reason": "The keyframe-event SetEntity bodies register an entity observer (00694A60 / 006952A0); the host has no entity deletion or observer registry, so a `noentity` event could never fire"
+    },
+    {
+      "native": "009ab570",
+      "status": "skipped",
+      "reason": "The BotTask_Make* factories (009AB570, 009B9030, 009BADB0, 009C8C70, 009CA2B0, 009CD300, 009D4E30, 009A6970) build native bot task objects; the host's create_bot_task hands out an index and no BotTask objects exist"
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "reason": "group_forward_command needs an AI group at entity+16Ch; its only producer is AICreateGroup (00A38A50), which no installed mission script calls, so entity_ai_group answers null"
+    }
+  ]
+}

@@ -91,11 +91,19 @@ struct Seg33aGunFireMessageHost {
     virtual void session_message_read_header_0075b4c0(void* message, void* stream) = 0;
 };
 
+// The one read 006E6210 and 006E6270 make, [[00E188A8]+1FE4h] (the session word, 0 in single
+// player), separately bindable without the rest of Seg33aHost (goal 5 chain 655: the Lua
+// GetCrewLevel 008950D0 runs 006E6270 over the script-orders host). Seg33aHost keeps it.
+struct Seg33aSessionModeHost {
+    virtual ~Seg33aSessionModeHost() = default;
+    virtual std::int32_t session_mode_00e188a8_1fe4() = 0;
+};
+
 // ---------------------------------------------------------------------------
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
 // address; the comment gives the original register ABI.
 // ---------------------------------------------------------------------------
-struct Seg33aHost : Seg33aGunFireMessageHost {
+struct Seg33aHost : Seg33aGunFireMessageHost, Seg33aSessionModeHost {
     virtual ~Seg33aHost() = default;
 
     // Image data the routines read.
@@ -243,11 +251,10 @@ struct Seg33aHost : Seg33aGunFireMessageHost {
     virtual void* sized_storage_pool_00419cc0() = 0;
     virtual void sized_storage_pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size,
                                                           std::int32_t flag) = 0;
-    // [[00E188A8]+19CCh], [[00E188A8]+19F0h], [[00E188A8]+1FE4h], [00E188A8]+1A0Ch, and the empty
-    // string 00E19982.
+    // [[00E188A8]+19CCh], [[00E188A8]+19F0h], [00E188A8]+1A0Ch, and the empty string 00E19982.
+    // [[00E188A8]+1FE4h] is Seg33aSessionModeHost's session_mode_00e188a8_1fe4.
     virtual void* scene_root_00e188a8_19cc() = 0;
     virtual void* game_world_00e188a8_19f0() = 0;
-    virtual std::int32_t session_mode_00e188a8_1fe4() = 0;
     virtual void* lua_state_owner_00e188a8_1a0c() = 0;
     virtual const char* empty_string_00e19982() = 0;
     // 0042ED50, __fastcall(node /*ECX*/): invalidate the subtree pose.
@@ -648,8 +655,8 @@ inline constexpr const char* kSkillLevelKey = "skilllevel";  // 00CF9CD8
 inline constexpr const char* kIdKey = "id";                  // 00CF16BC
 void* entity_child_local_frame_006e5a80(Seg33aHost& host, void* entity, std::int32_t index);
 void bomb_platform_load_saved_state_006e6010(Seg33aHost& host, void* rack);
-std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew);
-std::int32_t crew_level_from_skill_006e6270(Seg33aHost& host, std::int32_t skill);
+std::int32_t skill_from_crew_level_006e6210(Seg33aSessionModeHost& host, std::int32_t crew);
+std::int32_t crew_level_from_skill_006e6270(Seg33aSessionModeHost& host, std::int32_t skill);
 void skill_level_read_006e6360(Seg33aHost& host, void* skill, void* reader);
 void skill_level_write_006e63a0(Seg33aHost& host, void* skill, void* archive);
 void projectile_shot_set_air_mode_006e6410(Seg33aHost& host, void* shot, void* unused);
