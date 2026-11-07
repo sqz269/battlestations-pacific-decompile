@@ -34,6 +34,9 @@
 #include "bsp/gui_text.hpp"            // 00ABB877, the counters' Text Align
 #include "bsp/gui_widget.hpp"          // 00AA6750 / 00AA8240 arithmetic
 #include "bsp/band_0050_cc13.hpp"      // 005292E0 / 005290D0 / 00529350
+#include "bsp/hud_counters_screen.hpp" // 0052BAA0 / 00528C40 / 00528C50
+#include "bsp/session_context_cc13.hpp"
+#include "bsp/world_ocean.hpp"         // 004B6260
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ocean_spectrum.hpp"
@@ -1333,6 +1336,104 @@ private:
     HudLeafStringPool pool_;
 };
 
+// 00528B00's calls: +34h, and 00ABBE50(text, 1), whose case-insensitive gate on
+// the cached source (+F4h, bsp.py show 00abbe50) returns before 00ABAED0 when
+// the time string is unchanged.
+class HudCounterFormatTimeBinding final : public bsp::frontend_seg15_22_cc13::HudCounterFormatTimeHost {
+public:
+    explicit HudCounterFormatTimeBinding(HudCountersContext& c) : c_(c) {}
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    void text_set_localised_00abbe50(void* text, std::string_view value) override {
+        GuiLayoutWidget& w = hud_counters_widget(text, "00ABBE50");
+        const std::string* const cached = c_.frontend.widget_text_source(w);
+        if (cached != nullptr && cached->size() == value.size()
+            && _strnicmp(cached->data(), value.data(), value.size()) == 0) {
+            return;
+        }
+        c_.frontend.set_widget_text_source(w, std::string(value));
+    }
+private:
+    HudCountersContext& c_;
+};
+
+// 0052B080's services. The countdown entry is mode 2 (0052A860 stores it); the
+// HP entry stays mode 3 (0052C1B0), which ticks nothing. Modes 0 and 1 are the
+// unit-HP and score layouts 0052BB10 / 00529D70 / 0052A100 store, which no path
+// here runs, so their services fail loudly rather than answer.
+class HudCounterTickBinding final : public bsp::Cc13SweepB4CounterTickHost {
+public:
+    explicit HudCounterTickBinding(HudCountersContext& c) : c_(c) {}
+    bool widget_vcall_38_is_visible(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    bool session_counts_mission_start_004b6260() override {
+        // 004B6260 on [00E188A8]+1EF0h: session+F4h (game+1FE4h) and +29Ch
+        // (game+218Ch), the session context the mission frame reads.
+        const bsp::SessionContext& session = bsp::session_context();
+        return bsp::session_counts_mission_004b6260(session.session_word_1fe4 != 0,
+            session.skirmish_218c);
+    }
+    void hud_counter_format_time_00528b00(void* entry, float seconds) override {
+        HudCounterFormatTimeBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counter_format_time_00528b00(
+            {static_cast<std::uint8_t*>(entry)}, seconds, b);
+    }
+    void native_string_copy_construct_00426060(void*, const void*) override { unbuilt("00426060"); }
+    void hud_counter_layout_text_pair_0052a470(void*, bsp::Cc13SweepBNativeString,
+        bsp::Cc13SweepBNativeString) override { unbuilt("0052A470"); }
+    void counter_units_remove_at_0052add0(void*, std::int32_t) override { unbuilt("0052ADD0"); }
+    bool object_vcall_5c_is_kind(void*, std::int32_t) override { unbuilt("+5Ch"); }
+    double getter_38_00939f70(void*) override { unbuilt("00939F70"); }
+    double getter_34_00939f80(void*) override { unbuilt("00939F80"); }
+    double getter_30_00939fc0(void*) override { unbuilt("00939FC0"); }
+    double getter_2c_00939fb0(void*) override { unbuilt("00939FB0"); }
+    void hud_counter_update_bar_00528e90(void*, float, float) override { unbuilt("00528E90"); }
+private:
+    [[noreturn]] static void unbuilt(const char* routine) {
+        throw std::logic_error(std::string("0052B080 reached ") + routine
+            + " on a unit-HP or score counter entry, which no HUD path builds");
+    }
+    HudCountersContext& c_;
+};
+
+// 0052BAA0 (+20h) and 00528C40 / 00528C50 (+18h / +1Ch) on the counters block.
+class HudCountersUpdateBinding final : public bsp::HudCountersHost {
+public:
+    explicit HudCountersUpdateBinding(HudCountersContext& c) : c_(c) {}
+    void widget8_virtual_34(std::int32_t arg) override {
+        void* const page = bsp::ingame_gui_cc13::Raw{c_.counters.data()}.ptr(0x8);
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(page, "counters +8h"), (arg & 0xFF) != 0);
+    }
+    void counter_tick_0052b080(std::uintptr_t counter, float seconds) override {
+        HudCounterTickBinding b(c_);
+        bsp::cc13_sweepB4_hud_counter_tick_0052b080(reinterpret_cast<void*>(counter), seconds, b);
+    }
+    void finish_00529810() override {
+        HudCountersLayoutBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_update_occlusion_00529810({c_.counters.data()}, b);
+    }
+private:
+    HudCountersContext& c_;
+};
+
+// 0052BAA0's view of the block: +0Ch, +10h and the +14h array (count +18h).
+bsp::HudCountersState hud_counters_state(const HudLeafScreenStorage& counters) {
+    const bsp::ingame_gui_cc13::Raw s{counters.data()};
+    bsp::HudCountersState state;
+    state.counter_0c = reinterpret_cast<std::uintptr_t>(s.ptr(0x0C));
+    state.counter_10 = reinterpret_cast<std::uintptr_t>(s.ptr(0x10));
+    const std::int32_t count = s.at<std::int32_t>(0x18);
+    auto* const* const slots = static_cast<void* const*>(s.ptr(0x14));
+    for (std::int32_t i = 0; i < count; ++i)
+        state.counters_14.push_back(reinterpret_cast<std::uintptr_t>(slots[i]));
+    return state;
+}
+
 // The layout virtuals (+14h) those registers call through the screen's own
 // vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
 // the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
@@ -1473,12 +1574,17 @@ struct HudLeafScreenVirtuals {
     std::uint32_t exit_1c;
     std::uint32_t update_20;
 };
-constexpr std::array<HudLeafScreenVirtuals, 4> kHudLeafScreenVirtuals{{
+// - 00CED0AC (51h, goal 5 chain 662): +4h 0052B070 (MOV AL,1), +18h 00528C40 and
+//   +1Ch 00528C50 (the page root +8h's +34h(1) / (0)), +20h 0052BAA0 (the
+//   counter ticks and 00529810). bsp.py ghidra bytes 00ced0ac --length 40.
+constexpr std::array<HudLeafScreenVirtuals, 5> kHudLeafScreenVirtuals{{
     {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
         0x00643DF0u},
     {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
     {0x48, bsp::ingame_gui_cc13::kSubmarineScreenVtable, 0, 0x00650190u, 0x004F75B0u, 0},
     {0x49, bsp::ingame_gui_cc13::kFollowScreenVtable, 0, 0x0067BEB0u, 0, 0},
+    {0x51, bsp::frontend_seg15_22_cc13::kHudCountersVtable, 0x0052B070u, 0x00528C40u, 0x00528C50u,
+        0x0052BAA0u},
 }};
 const HudLeafScreenVirtuals* hud_leaf_screen_virtuals(int slot) noexcept {
     for (const HudLeafScreenVirtuals& v : kHudLeafScreenVirtuals) {
@@ -7211,6 +7317,10 @@ bool GameHudHost::leaf_screen_self_managed(int slot, bool& self_managed) {
         self_managed = bsp::ingame_gui_cc13::hud_spectator_screen_is_self_managed_00643dd0(
             {block->data()});
         return true;
+    case 0x0052B070u:
+        self_managed = bsp::frontend_seg15_22_cc13::hud_counters_screen_is_self_managed_0052b070(
+            {block->data()});
+        return true;
     default: break;
     }
     throw std::logic_error("HUD leaf +4h virtual listed but not bound");
@@ -7232,6 +7342,13 @@ bool GameHudHost::enter_leaf_screen(int slot) {
     case 0x0067B400u: bsp::ingame_gui_cc13::hud_common_overlay_screen_enter_0067b400(raw); break;
     case 0x00650190u: bsp::ingame_gui_cc13::hud_submarine_screen_enter_00650190(raw); break;
     case 0x0067BEB0u: bsp::ingame_gui_cc13::hud_follow_screen49_enter_0067beb0(raw); break;
+    case 0x00528C40u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_enter_00528c40(binding);
+        break;
+    }
     default: throw std::logic_error("HUD leaf +18h virtual listed but not bound");
     }
     impl.done("HudLeafScreen::enter", v->enter_18);
@@ -7249,13 +7366,20 @@ bool GameHudHost::exit_leaf_screen(int slot) {
     case 0x00643DE0u: bsp::ingame_gui_cc13::hud_spectator_screen_exit_00643de0(raw); break;
     case 0x0067B410u: bsp::ingame_gui_cc13::hud_common_overlay_screen_exit_0067b410(raw); break;
     case 0x004F75B0u: bsp::engine_seg11_35_66_cc13::base_screen_exit_004f75b0(); break;
+    case 0x00528C50u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_exit_00528c50(binding);
+        break;
+    }
     default: throw std::logic_error("HUD leaf +1Ch virtual listed but not bound");
     }
     impl.done("HudLeafScreen::exit", v->exit_1c);
     return true;
 }
 
-bool GameHudHost::update_leaf_screen(int slot) {
+bool GameHudHost::update_leaf_screen(int slot, float seconds) {
     Impl& impl = *impl_;
     const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
     if (v == nullptr || v->update_20 == 0) return false;
@@ -7266,6 +7390,14 @@ bool GameHudHost::update_leaf_screen(int slot) {
     case 0x00643DF0u:
         bsp::ingame_gui_cc13::hud_spectator_screen_update_00643df0({block->data()});
         break;
+    // __thiscall(screen, float seconds), RET 4: the pump's seconds.
+    case 0x0052BAA0u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_update_0052baa0(hud_counters_state(*block), seconds, binding);
+        break;
+    }
     default: throw std::logic_error("HUD leaf +20h virtual listed but not bound");
     }
     impl.done("HudLeafScreen::update", v->update_20);

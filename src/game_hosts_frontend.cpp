@@ -1492,6 +1492,11 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.quads_built = false;
 }
 
+const std::string* GameFrontendHost::widget_text_source(const GuiLayoutWidget& widget) const {
+    const auto found = impl_->text_sources.find(const_cast<GuiLayoutWidget*>(&widget));
+    return found != impl_->text_sources.end() ? &found->second : nullptr;
+}
+
 bool GameFrontendHost::widget_text_width(GuiLayoutWidget& widget, float& width) {
     // The run widget_text_height builds or finds; measured_width is the layout's
     // own result (src/game_hosts_text.cpp, from 00ABA270 / 00AB9FD0).

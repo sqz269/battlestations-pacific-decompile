@@ -259,7 +259,7 @@ public:
     bool leaf_screen_self_managed(int slot, bool& self_managed);
     bool enter_leaf_screen(int slot);
     bool exit_leaf_screen(int slot);
-    bool update_leaf_screen(int slot);
+    bool update_leaf_screen(int slot, float seconds);
 
     // One summary line for the run log.
     void report();

@@ -785,13 +785,13 @@ void cc13_sweepB4_hud_counter_layout_score_0052bb10(void* entry, const void* uni
 //    Then count 0 -> +0h->+34h(0); else 00528E90(entry, (float)(sumB / +84h),
 //    (float)(sumA / +84h)).
 // Other modes: nothing. No RNG draws.
-void cc13_sweepB4_hud_counter_tick_0052b080(void* entry, float seconds, Cc13SweepB4Host& host) {
+void cc13_sweepB4_hud_counter_tick_0052b080(void* entry, float seconds, Cc13SweepB4CounterTickHost& host) {
     const std::int32_t mode = at<std::int32_t>(entry, 0x9C);
     if (mode == 2) {
         if (!host.widget_vcall_38_is_visible(widget(entry, 0)) && at<std::uint8_t>(entry, 0xA6) == 0 &&
             at<std::uint8_t>(entry, 0xA5) == 0 && at<std::uint8_t>(entry, 0xA8) == 0 &&
             at<std::uint8_t>(entry, 0xA7) == 0 && at<std::uint8_t>(entry, 0xA9) == 0 &&
-            !host.session_counts_mission_start_004b6260(static_cast<std::uint8_t*>(host.global_00e188a8()) + 0x1EF0)) {
+            !host.session_counts_mission_start_004b6260()) {   // ECX = [00E188A8]+1EF0h
             return;
         }
         host.hud_counter_format_time_00528b00(entry, seconds);
@@ -805,7 +805,7 @@ void cc13_sweepB4_hud_counter_tick_0052b080(void* entry, float seconds, Cc13Swee
         host.native_string_copy_construct_00426060(&b_copy, static_cast<std::uint8_t*>(entry) + 0x90);
         Cc13SweepBNativeString a_copy;
         host.native_string_copy_construct_00426060(&a_copy, static_cast<std::uint8_t*>(entry) + 0x88);
-        cc13_sweepB4_hud_counter_layout_text_pair_0052a470(entry, a_copy, b_copy, host);
+        host.hud_counter_layout_text_pair_0052a470(entry, a_copy, b_copy);
         return;
     }
     if (mode != 0) {

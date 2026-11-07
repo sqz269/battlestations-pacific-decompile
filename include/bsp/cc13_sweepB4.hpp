@@ -407,8 +407,32 @@ void* cc13_sweepB4_hud_counter_entry_construct_0052c1b0(void* entry, void* root,
 void cc13_sweepB4_hud_counter_layout_timer_00529d70(void* entry, Cc13SweepBNativeString a,
                                                     Cc13SweepBNativeString b, Cc13SweepB4Host& host);
 
+// The services 0052B080 calls, with Cc13SweepB4Host's signatures (goal 5 chain
+// 662), for its one caller the counters update 0052BAA0 on the HUD host's own
+// counters block. Two differ in form: 004B6260 takes no argument, the host
+// owning ECX = [00E188A8]+1EF0h (the session), and the mode-1 layout 0052A470
+// is the host's, so a binding can run that body over its own services.
+class Cc13SweepB4CounterTickHost {
+public:
+    virtual ~Cc13SweepB4CounterTickHost() = default;
+    virtual bool widget_vcall_38_is_visible(void* widget) = 0;
+    virtual void widget_vcall_34_set_visible(void* widget, std::int32_t show) = 0;
+    virtual bool session_counts_mission_start_004b6260() = 0;
+    virtual void hud_counter_format_time_00528b00(void* entry, float seconds) = 0;
+    virtual void native_string_copy_construct_00426060(void* dest, const void* source) = 0;
+    virtual void hud_counter_layout_text_pair_0052a470(void* entry, Cc13SweepBNativeString a,
+                                                       Cc13SweepBNativeString b) = 0;
+    virtual void counter_units_remove_at_0052add0(void* array, std::int32_t index) = 0;
+    virtual bool object_vcall_5c_is_kind(void* object, std::int32_t kind) = 0;
+    virtual double getter_38_00939f70(void* object) = 0;
+    virtual double getter_34_00939f80(void* object) = 0;
+    virtual double getter_30_00939fc0(void* object) = 0;
+    virtual double getter_2c_00939fb0(void* object) = 0;
+    virtual void hud_counter_update_bar_00528e90(void* entry, float a, float b) = 0;
+};
+
 // 0052B080 BSP_HudCounter_Tick(entry, seconds).
-void cc13_sweepB4_hud_counter_tick_0052b080(void* entry, float seconds, Cc13SweepB4Host& host);
+void cc13_sweepB4_hud_counter_tick_0052b080(void* entry, float seconds, Cc13SweepB4CounterTickHost& host);
 
 // 0052BB10 BSP_HudCounter_LayoutScore(entry, units {data, count}, text).
 void cc13_sweepB4_hud_counter_layout_score_0052bb10(void* entry, const void* units,

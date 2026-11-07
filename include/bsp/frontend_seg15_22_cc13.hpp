@@ -533,8 +533,15 @@ struct HudCountersLayoutHost {
     virtual void counters_hide_all_a6_005290d0(Raw screen) = 0;
     virtual void counters_restore_hidden_a6_00529350(Raw screen) = 0;
 };
-// 00528B00, __thiscall(entry, float seconds), RET 4.
-void hud_counter_format_time_00528b00(Raw entry, float seconds, Seg15Host& host);
+// 00528B00, __thiscall(entry, float seconds), RET 4. Its two calls, with
+// Seg15Host's signatures (goal 5 chain 662: the counters tick 0052B080 reaches
+// it on the HUD host's countdown entry).
+struct HudCounterFormatTimeHost {
+    virtual ~HudCounterFormatTimeHost() = default;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+    virtual void text_set_localised_00abbe50(void* text, std::string_view value) = 0;
+};
+void hud_counter_format_time_00528b00(Raw entry, float seconds, HudCounterFormatTimeHost& host);
 // 00528BE0, __thiscall(counter, float value), RET 4.
 void hud_counter_set_value_00528be0(Raw counter, float value);
 // 00528E90, __thiscall(counter, float a, float b), RET 8.

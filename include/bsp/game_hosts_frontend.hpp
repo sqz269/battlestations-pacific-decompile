@@ -243,6 +243,9 @@ public:
     // cached run is dropped so the next draw resolves and lays out the new
     // source through the same path an authored string takes.
     void set_widget_text_source(GuiLayoutWidget& widget, std::string source);
+    // The source the last set_widget_text_source gave this widget, or null. A
+    // caller modelling 00ABAED0's cached-source gate (+F4h) compares against it.
+    const std::string* widget_text_source(const GuiLayoutWidget& widget) const;
     // Obtain AB6BD0 height from the same cached layout the bridge renders.
     // Builds a not-yet-drawn run once; false leaves height untouched.
     bool widget_text_height(GuiLayoutWidget& widget, float& height);

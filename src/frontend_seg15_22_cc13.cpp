@@ -294,7 +294,7 @@ void control_layout_collect_children_00528a60(Raw s, void* out, Seg15Host& host)
 // hide the entry widget (+0h, +34h(0)); otherwise format by +A0h (0 h:m:s,
 // 1 m:s, 2 s) into the text at +28h. Any other mode leaves the 128-byte buffer
 // uninitialised in the image; this model passes "".
-void hud_counter_format_time_00528b00(Raw entry, float seconds, Seg15Host& host) {
+void hud_counter_format_time_00528b00(Raw entry, float seconds, HudCounterFormatTimeHost& host) {
     const float left = entry.at<float>(0x98) - seconds;
     entry.at<float>(0x98) = left;
     if (!(0.0f < left)) {
