@@ -56,6 +56,10 @@
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
+#include "bsp/band_0080_cc13.hpp"         // 00828EC0, the power-up unit score
+#include "bsp/cc13_powerup.hpp"           // 008EA0C0's items, 00A179E0
+#include "bsp/game_hosts_powerups.hpp"
+#include "bsp/powerup_config.hpp"
 
 namespace bsp::game {
 
@@ -2895,35 +2899,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             ++summary.weight_fort_targets;
             if (!in.target_is_command_building) ++summary.weight_non_command_targets;
         }
-        // 00A0F8CE 00923BE0(target), subtracted from 2.0. The routine is read
-        // in full now (docs/AI_TARGET_WEIGHT_TERMS.md): the torn-down byte
-        // +5Dh answers 0, otherwise the class fraction is clamped into [0, 1]
-        // and cached at +164h. This process reaches the torn-down byte through
-        // the scene node flags, but not the fraction, which is
-        // `unit+370h / unit+36Ch` and lives with the gunnery host; so a live
-        // candidate takes the full-health value 1.0f and the term is 1.0, not
-        // the 2.0 an earlier reading of this packet left. Labelled: the clamp
-        // and the torn-down arm are the native's, the fraction is not.
-        bsp::SceneNodeFlags target_node;
-        const bool have_node = units.unit_scene_node_flags(target, target_node);
-        // Packet cc9_ai_target_weight_health (SHIP_AI_OPEN_ITEMS section 139): with
-        // kAiTargetWeightHealthBound the fraction is the gunnery host's health over
-        // max_health, which is what 00876260 divides (FLD [+370h] / FDIV [+36Ch]).
-        // LABELLED: a row with no max_health keeps the full-health 1.0.
-        float fraction = 0.0f;
-        bool fraction_available = false;
-        if (kAiTargetWeightHealthBound) {
-            const GameGunneryHost* gunnery = units.gunnery();
-            if (gunnery != nullptr && target < gunnery->unit_rows().size()) {
-                const GameGunneryUnitRow& hp = gunnery->unit_rows()[target];
-                if (hp.max_health > 0.0f) {
-                    fraction = hp.health / hp.max_health;
-                    fraction_available = true;
-                }
-            }
-        }
-        in.target_term = bsp::ai_unit_health_00923be0(
-            have_node && target_node.torn_down, fraction, fraction_available);
+        // 00A0F8CE 00923BE0(target), subtracted from 2.0.
+        in.target_term = unit_health_term(target);
         if (in.target_term > 0.0f && in.target_term < 1.0f) ++summary.weight_damaged_targets;
         // The torn-down arm cannot actually be reached from here: 00A13B60's
         // candidate loop already drops a candidate that fails
@@ -3186,6 +3163,97 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     int close_own_team(void* group) override {
         Group* g = group_at(group);
         return g != nullptr ? g->team : 0;
+    }
+
+    // 00923BE0 on a unit. The routine is read in full (docs/AI_TARGET_WEIGHT_TERMS.md):
+    // the torn-down byte +5Dh answers 0, otherwise the class fraction is clamped
+    // into [0, 1] and cached at +164h. This process reaches the torn-down byte
+    // through the scene node flags. Packet cc9_ai_target_weight_health
+    // (SHIP_AI_OPEN_ITEMS section 139): with kAiTargetWeightHealthBound the
+    // fraction is the gunnery host's health over max_health, which is what
+    // 00876260 divides (FLD [+370h] / FDIV [+36Ch]). LABELLED: a row with no
+    // max_health keeps the full-health 1.0, as does an index with no unit row
+    // (a squadron).
+    float unit_health_term(std::size_t unit) const {
+        bsp::SceneNodeFlags node;
+        const bool have_node = units.unit_scene_node_flags(unit, node);
+        float fraction = 0.0f;
+        bool fraction_available = false;
+        if (kAiTargetWeightHealthBound) {
+            const GameGunneryHost* gunnery = units.gunnery();
+            if (gunnery != nullptr && unit < gunnery->unit_rows().size()) {
+                const GameGunneryUnitRow& hp = gunnery->unit_rows()[unit];
+                if (hp.max_health > 0.0f) {
+                    fraction = hp.health / hp.max_health;
+                    fraction_available = true;
+                }
+            }
+        }
+        return bsp::ai_unit_health_00923be0(have_node && node.torn_down, fraction,
+                                            fraction_available);
+    }
+
+    // 00A04240(entity) for a group member, against [00E0E344], the party the
+    // think published (current_party; a live party think supplies the valid
+    // index the native reader requires). Lua Ptr is this host's creation ID
+    // (unit index+1); a squadron's creation entity survives leader promotion.
+    float member_hint_weight(std::size_t member) const {
+        const Squadron* const squadron = squadron_of(member);
+        const auto hint_entity = squadron != nullptr ? squadron->hint_entity_handle
+            : static_cast<std::uint32_t>(member + 1u);
+        return bsp::cc13_front6::ai_hint_weight_entity_multiplier_00a04240(
+            hint_entity, current_party, bsp::process_ai_hint_weights());
+    }
+
+    // vtable+5Ch(kind) on a group member. A squadron entity answers its own
+    // class id 18h only (its +0C4h, as unit_class_weight and
+    // group_matches_009fe0b0 take it).
+    bool member_is_kind_of(std::size_t member, int kind) const {
+        if (is_squadron(member)) return kind == static_cast<int>(bsp::kPlaneSquadronClassId);
+        return units.unit_is_kind_of(member, kind);
+    }
+
+    // 00828EC0 on [unit+538h], with the inputs the gunnery host's 008FC010
+    // binding gives it: class kind 0Eh, then 0Ch with +808h clear, and +500h.
+    bool torpedo_proof_small_craft(std::size_t unit) {
+        if (is_squadron(unit)) {
+            throw std::logic_error("00828EC0 on a squadron's [+538h] class not modelled");
+        }
+        return bsp::cc13_band0080::torpedo_proof_small_craft_00828ec0(
+            units.unit_is_kind_of(unit, 0x0E),
+            units.unit_is_kind_of(unit, 0x0C), big_landing_ship_0808(unit),
+            units.unit_class_max_speed_0500(unit));
+    }
+
+    // 00A046C0 BSP_AiPowerup_ScoreForUnit for a group member. The image reads a
+    // unit field only in the case of a multiplier that is not exactly 1.0f
+    // (00A046F1 UCOMISS, so a NaN is read too), so each input is taken only
+    // there: 00923BE0 (cases 2 and 3, 00A0473E / 00A04755), 00828EC0 (4 and 5,
+    // 00A0476E), IsKindOf 6 then [[unit+538h]+804h] (10, 00A04792 / 00A0479E),
+    // IsKindOf 1Ch (11, 00A047BA). 00A047EE..00A04812 then scale the sum by
+    // 00A04240(unit) x 009FDF30([unit+C4h]).
+    float powerup_unit_score(std::size_t member,
+                             const bsp::gameplay_seg69_70_cc13::PowerupClassView& cls) {
+        const auto reads = [&cls](int index) {
+            return !(cls.multipliers_08c[static_cast<std::size_t>(index)] == 1.0f);
+        };
+        bsp::gameplay_seg69_70_cc13::PowerupUnitInputs in;
+        if (reads(2) || reads(3)) in.health = unit_health_term(member);
+        if (reads(4) || reads(5)) in.torpedo_proof_small = torpedo_proof_small_craft(member);
+        if (reads(10)) {
+            in.is_kind_06 = member_is_kind_of(member, 0x06);
+            if (in.is_kind_06) {
+                const GameShipAiHost* ship_ai = units.ship_ai();
+                if (ship_ai == nullptr) {
+                    throw std::logic_error("00A0479E class+804h without the ship AI host");
+                }
+                in.class_804 = ship_ai->unit_class_capture_power_0804(member);
+            }
+        }
+        if (reads(11)) in.is_kind_1c = member_is_kind_of(member, 0x1C);
+        in.hint_multiplier = member_hint_weight(member);
+        in.class_weight = unit_class_weight(member);
+        return bsp::gameplay_seg69_70_cc13::ai_powerup_score_for_unit_00a046c0(cls, in);
     }
 
     // 009FDF30 alone, without 009FFD80's ship and group-class multipliers.
@@ -6039,12 +6107,129 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (current_party >= 0) ++party_row(current_party).groups_claimed;
         done("AiParties::planner_claim_group", 0x00a22750u);
     }
-    void party_brain_plan_tail(void* brain) override {
-        // 00A179E0, the brain's engagement pass. contract: unread, body
-        // 00A179E0-00A18195.
-        (void)brain;
-        record("AiParties::party_brain_plan_tail", 0x00a179e0u);
+    // 00A17A7E / 00A17A9A: the 00A17960 snapshot of g_aiGroupsByTeam[team], in
+    // list order. Per group, what the pairing loop reads: +5644h, +5634h, the
+    // first member's +FCh / +104h after 00414DB0 (00A17BBC..00A17BF8) and
+    // 00A2C4C0 (00A17C3B / 00A17C60). A destroyed group has left the native list.
+    std::vector<bsp::gameplay_seg69_70_cc13::EngagementGroup> engagement_groups(int team) {
+        std::vector<bsp::gameplay_seg69_70_cc13::EngagementGroup> out;
+        if (team < 0 || team >= static_cast<int>(by_team.size())) return out;
+        for (Group* g : by_team[static_cast<std::size_t>(team)]) {
+            if (g == nullptr || g->destroyed) continue;
+            bsp::gameplay_seg69_70_cc13::EngagementGroup e;
+            e.id = g;
+            e.population_5644 = static_cast<std::uint32_t>(g->members.size());
+            e.party_5634 = g->party;
+            if (const float* p = group_leader_position(g)) {
+                e.leader_x = p[0];
+                e.leader_z = p[2];
+            }
+            e.strength = group_total_leader_weight_00a2c4c0(g);
+            for (const std::size_t m : g->members) e.members.push_back(handle(m));
+            out.push_back(std::move(e));
+        }
+        return out;
     }
+
+    void party_brain_plan_tail(void* brain) override {
+        // 00A179E0 BSP_AiPartyBrain_EngagementPass, __fastcall(brain), the tail
+        // 00A181A0 jumps to (bsp.py show 00a179e0): an AI party's power-up use.
+        namespace gp = bsp::gameplay_seg69_70_cc13;
+        namespace pw = bsp::game_powerups;
+        Brain* const b = static_cast<Brain*>(brain);
+        if (b == nullptr) return;
+        const int party = b->party_slot;   // brain+20h
+        const int team = b->world_set;     // brain+24h
+        ++powerup_pass_calls;
+        // 00A17A2F: 008EA0C0(brain+20h) fills the ready entries; empty returns
+        // at 00A17A3A / 00A17A49 before the team lists are copied.
+        std::vector<gp::PowerupReadyEntry> entries;
+        for (const bsp::cc13_powerup::PowerupItem* item : pw::ready_items_for_slot(party)) {
+            if (item->cls == nullptr) {
+                throw std::logic_error("00A17D5A read [entry+4] of an item with no class");
+            }
+            gp::PowerupReadyEntry e;
+            e.entry = item;
+            e.cls.id = item->cls;
+            e.cls.kind_008 = item->cls->group_08;
+            e.cls.scope_084 = item->cls->target_type_84;
+            e.cls.multipliers_08c = item->cls->multipliers_8c;
+            entries.push_back(e);
+        }
+        std::vector<gp::EngagementGroup> own_team;
+        std::vector<gp::EngagementGroup> enemy_team;
+        std::vector<gp::PowerupWorldUnit> world;
+        if (!entries.empty()) {
+            ++powerup_pass_ready;
+            own_team = engagement_groups(team);
+            enemy_team = engagement_groups(team == 0 ? 1 : 0);  // (brain+24h == 0) * 0Ch
+            // 00A04860 / 00A04910 walk world list 2, [[00E188A8]+19CCh]+34h.
+            for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+                const std::size_t u = units.world_list_entry(2, i);
+                if (u >= units.count()) continue;
+                world.push_back({handle(u), unit_owner_player_0180(u), units.unit_side_0054(u)});
+            }
+        }
+
+        // 008E35F0's kind answers for one member or target.
+        struct Kinds final : pw::PowerupUnitKindQuery {
+            const Impl& self;
+            std::size_t member;
+            Kinds(const Impl& s, std::size_t m) : self(s), member(m) {}
+            bool is_kind_of_5c(int kind) const override {
+                return self.member_is_kind_of(member, kind);
+            }
+            bool static_installation_009fe0b0() const override {
+                return bsp::ai_entity_class_matches_009fe0b0(self.member_is_kind_of(member, 0x1B),
+                    self.member_is_kind_of(member, 0x45), self.member_is_kind_of(member, 0x46));
+            }
+        };
+        struct Pass final : gp::PowerupScoreHost, gp::PowerupUseHost {
+            Impl& self;
+            explicit Pass(Impl& s) : self(s) {}
+            static std::size_t member_of(const void* entity) {
+                return Impl::unit_index_of(const_cast<void*>(entity));
+            }
+            static const bsp::PowerupClassConfig& config(const gp::PowerupClassView& cls) {
+                return *static_cast<const bsp::PowerupClassConfig*>(cls.id);
+            }
+            bool scope_accepts(const void* unit, const gp::PowerupClassView& cls) override {
+                if (unit == nullptr) return pw::class_scope_accepts_unit_008e35f0(config(cls), false);
+                const Kinds kinds(self, member_of(unit));
+                return pw::class_scope_accepts_unit_008e35f0(config(cls), true, &kinds);
+            }
+            float unit_score(const void* unit, const gp::PowerupClassView& cls) override {
+                return self.powerup_unit_score(member_of(unit), cls);
+            }
+            float candidate_attack_value(const void*, const gp::PowerupClassView&) override {
+                // 00A0F680 scores the class's flight block (class+0Ch / +44h, its
+                // +20h plane class) through 00A0C650's pair value, which this host
+                // keys on a unit's weapon facts; a power-up flight class has none.
+                // Reached only for an air-support entry (kind 1).
+                throw std::logic_error("00A0F680 air-support flight value not modelled");
+            }
+            void use_item(const void* entry, int slot, const void* target) override {
+                const auto& item = *static_cast<const bsp::cc13_powerup::PowerupItem*>(entry);
+                ++self.powerup_pass_uses;
+                if (target == nullptr) {
+                    pw::use_ready_item_for_ai(item, slot, std::nullopt, nullptr);
+                    return;
+                }
+                const std::size_t member = member_of(target);
+                const Kinds kinds(self, member);
+                pw::use_ready_item_for_ai(item, slot, member, &kinds);
+            }
+        } pass(*this);
+        // [00E188A8]+1FE4h and [[game+18CCh + 4*[game+18ECh]]+28h] for 00A04893.
+        const std::uint32_t session_word =
+            static_cast<std::uint32_t>(bsp::session_context().session_word_1fe4);
+        gp::ai_party_brain_engagement_pass_00a179e0(party, team, entries, own_team, enemy_team,
+            world, session_word, local_player_party(), pass, pass);
+        done("AiParties::party_brain_engagement_pass", 0x00a179e0u);
+    }
+    unsigned long long powerup_pass_calls{0};   // 00A179E0 entered
+    unsigned long long powerup_pass_ready{0};   // 008EA0C0 listed a ready item
+    unsigned long long powerup_pass_uses{0};    // 00A180C9 reached 008EADA0
 
     // --- AiPlannerHost ------------------------------------------------------
 
@@ -6187,12 +6372,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // supplies the valid party index the native reader requires.
         if (current_party >= 0 && current_party < 8) {
             const float class_weight = unit_class_weight(member);
-            const Squadron* const squadron = squadron_of(member);
-            const auto hint_entity = squadron != nullptr ? squadron->hint_entity_handle
-                : static_cast<std::uint32_t>(member + 1u);
-            const float hint_weight = bsp::cc13_front6::ai_hint_weight_entity_multiplier_00a04240(
-                hint_entity, current_party,
-                bsp::process_ai_hint_weights());
+            const float hint_weight = member_hint_weight(member);
             r.fix_weight = class_weight * hint_weight;
         } else {
             // Preserve the host's non-party observation calls; the image's
@@ -7712,6 +7892,9 @@ void GameAiCoordinatorHost::report() {
         "local_slot_groups=%llu other_slot_groups=%llu (009FFE50 unforced arm, packet "
         "cc9_ai_party_gate)", kAiPartyGateUnforcedBound ? 1 : 0, host.slot_team(0),
         host.slot_team(4), host.party_gate_local_groups, host.party_gate_other_groups);
+    host.log.notef("summary mission ai powerup pass calls=%llu ready=%llu uses=%llu "
+        "(00A179E0 / 008EA0C0 / 008EADA0)", host.powerup_pass_calls, host.powerup_pass_ready,
+        host.powerup_pass_uses);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",

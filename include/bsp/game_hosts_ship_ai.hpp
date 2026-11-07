@@ -950,6 +950,9 @@ public:
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
     // for a unit that is not a loaded LandingShip. Read-only.
     bool unit_big_landing_ship_0808(std::size_t unit_index) const;
+    // [[unit+538h]+804h], the class's `CapturePower` (an integer or 10, CVTSI2SS at
+    // 00834547) as the capture tick reads it: 10.0f for a unit no class row loaded.
+    float unit_class_capture_power_0804(std::size_t unit_index) const;
     // Packet cc9_avoid_zone_draft_bodies: the avoid-zone manager's geometry (004218E0),
     // for 00424DDF..00425487's draft bodies; null before load_avoid_zone_geometry.
     const GameAvoidZoneRuntime* avoid_zone_runtime() const noexcept;

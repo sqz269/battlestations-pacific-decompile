@@ -13469,6 +13469,12 @@ bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
     return impl_->big_landing_ship_of(unit_index);
 }
 
+float GameShipAiHost::unit_class_capture_power_0804(std::size_t unit_index) const {
+    // The same read as the capture tick's (the `power` it scales).
+    const std::vector<float>& power = impl_->capture_power_0804;
+    return unit_index < power.size() ? power[unit_index] : 10.0f;
+}
+
 const GameAvoidZoneRuntime* GameShipAiHost::avoid_zone_runtime() const noexcept {
     return impl_->zones.ready() ? &impl_->zones : nullptr;
 }
