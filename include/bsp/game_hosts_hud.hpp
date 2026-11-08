@@ -243,6 +243,9 @@ public:
     // interface through 005CD1A0 (the reseed of streams 1 and 0, then
     // 004CC460(2Ch, [00E188D8])), later calls only run 005CC170.
     void movie_screen_camera_005cd240();
+    // Ordinary MovCam Lua resets on screen 36h, HUD+98h. The screen's
+    // 005CC770 registration supplies all defaults before mission Lua runs.
+    bool reset_movie_camera_limits(std::uint32_t address);
     // Packet cc9_movie_camera_mover_bind: 007A44D0 on the movie camera, the
     // keyframe store MovCamNew_AddPosition calls after 005CD240.
     int movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
@@ -408,6 +411,7 @@ inline constexpr bool kMovieInterfacePushBound = true;
 inline constexpr bool kMovieReseedBound = true;
 // Returns false when no HUD is attached.
 bool hud_movie_screen_camera_005cd240();
+bool hud_reset_movie_camera_limits(std::uint32_t address);
 
 // Switch 3, committed OFF (93e87be80), ON after the 46h observer read and the
 // USN01/USN04 pairs (docs/HUD_PICK_SEGMENT_QUERY.md 8.7): 005CC170 builds the 570h movie camera and installs

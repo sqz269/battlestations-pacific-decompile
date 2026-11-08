@@ -1693,6 +1693,11 @@ int binding_trampoline(lua_State* state) {
     // Goal 5 chain 659: AddPositions 008B7850 on the same 007A44D0 store.
     const bool movie_add_positions_row
         = bsp::game::kMovieMoverBound && dispatch_row.address == 0x008b7850u;
+    // 008B6FC2/008B7272/008B7552/008B7802: the original limits owner is
+    // [HUD+98h], independently of MovCamNew's [HUD+9Ch] mover.
+    const bool movie_reset_row = dispatch_row.address == 0x008b6ed0u
+        || dispatch_row.address == 0x008b7180u || dispatch_row.address == 0x008b7460u
+        || dispatch_row.address == 0x008b7710u;
     // Packet cc9_force_select_unit: ForceSelectUnit 008AAF30 takes no argument
     // and calls 006485A0 on [00E198C4]+40h (008AB014..008AB01F).
     const bool force_select_row
@@ -1744,7 +1749,7 @@ int binding_trampoline(lua_State* state) {
         || launch_row || generate_row || spawn_new_row || spawn_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
-        || select_unit_row || movie_add_row || movie_add_positions_row || force_select_row
+        || select_unit_row || movie_add_row || movie_add_positions_row || movie_reset_row || force_select_row
         || release_alt_row || land_and_kill_row || drop_all_bomb_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
@@ -2267,6 +2272,10 @@ int binding_trampoline(lua_State* state) {
     if (movie_add_row || movie_add_positions_row) {
         if (host->error_replay()) return 0;
         return host->run_movcam_new_add_position(state, dispatch_row.address);
+    }
+    if (movie_reset_row) {
+        if (host->error_replay()) return 0;
+        return host->run_movcam_reset(state, dispatch_row.address);
     }
     if (select_unit_row) {
         // 008AB260: BSP_ObjectHandle_FromLuaTable(argument 0), then 00647300.
@@ -14665,13 +14674,21 @@ public:
     void movcam_ensure_target() override { movcam_new_unreached("005CD160"); }
     void movcam_set_zoom(float) override { movcam_new_unreached("0078E480"); }
     void movcam_set_speed_limits(float, float) override { movcam_new_unreached("005CB900"); }
-    void movcam_reset_speed_limits() override { movcam_new_unreached("005CB970"); }
+    void movcam_reset_speed_limits() override {
+        hud_attached = bsp::game::hud_reset_movie_camera_limits(0x005cb970u);
+    }
     void movcam_set_accel_time(float) override { movcam_new_unreached("005CB940"); }
-    void movcam_reset_accel_time() override { movcam_new_unreached("005CB9C0"); }
+    void movcam_reset_accel_time() override {
+        hud_attached = bsp::game::hud_reset_movie_camera_limits(0x005cb9c0u);
+    }
     void movcam_set_deviation_factor(float) override { movcam_new_unreached("005CAF90"); }
-    void movcam_reset_deviation_factor() override { movcam_new_unreached("005CAFB0"); }
+    void movcam_reset_deviation_factor() override {
+        hud_attached = bsp::game::hud_reset_movie_camera_limits(0x005cafb0u);
+    }
     void movcam_set_overview_height(float) override { movcam_new_unreached("005CAFA0"); }
-    void movcam_reset_overview_height() override { movcam_new_unreached("005CAFC0"); }
+    void movcam_reset_overview_height() override {
+        hud_attached = bsp::game::hud_reset_movie_camera_limits(0x005cafc0u);
+    }
     std::int32_t game_session_mode_1fe4() override { movcam_new_unreached("game+1FE4h"); }
     void session_broadcast_movcam_deviation_factor(float) override {
         movcam_new_unreached("0076D660");
@@ -14714,6 +14731,34 @@ int GameMissionLuaHost::run_movcam_new_add_position(lua_State* state, std::uint3
     log_.implemented(plural ? "MissionLuaNative::MovCamNew_AddPositions"
                             : "MissionLuaNative::MovCamNew_AddPosition",
                      plural ? "008b7850" : "008b79f0");
+    return results;
+}
+
+// Each reconstructed binding returns its empty call frame's result count.
+// The reset itself neither creates a mover nor pushes a movie interface:
+// 008B753E..008B7552 loads HUD+98h and calls 005CAFB0 directly.
+int GameMissionLuaHost::run_movcam_reset(lua_State* state, std::uint32_t address) {
+    MovieCameraNewHost host(state);
+    int results = 0;
+    const char* name = nullptr;
+    const char* native = nullptr;
+    switch (address) {
+    case 0x008b6ed0u:
+        results = bsp::cc13_seg56::lua_movcam_reset_speed_limits(host);
+        name = "MissionLuaNative::MovCam_ResetSpeedLimits"; native = "008b6ed0"; break;
+    case 0x008b7180u:
+        results = bsp::cc13_seg56::lua_movcam_reset_accel_time(host);
+        name = "MissionLuaNative::MovCam_ResetAccelTime"; native = "008b7180"; break;
+    case 0x008b7460u:
+        results = bsp::cc13_seg56::lua_movcam_reset_deviation_factor(host);
+        name = "MissionLuaNative::MovCam_ResetDeviationFactor"; native = "008b7460"; break;
+    case 0x008b7710u:
+        results = bsp::cc13_seg56::lua_movcam_reset_overview_height(host);
+        name = "MissionLuaNative::MovCam_ResetOverviewHeight"; native = "008b7710"; break;
+    default: throw std::logic_error("MovCam reset called with an unrelated binding");
+    }
+    if (host.hud_attached) log_.implemented(name, native);
+    else log_.unimplemented(name, native);
     return results;
 }
 

@@ -1,0 +1,76 @@
+{
+  "run": 2199,
+  "chain": 991,
+  "owner": "agent/g6-w1",
+  "candidate": "game_hosts_lua.cpp",
+  "tier": 1,
+  "rows": [
+    {
+      "native": "005cafb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_movcam_reset -> MovieCameraNewHost::movcam_reset_deviation_factor; src/game_hosts_hud.cpp: GameHudHost::reset_movie_camera_limits",
+      "reason": "Existing reset body receives the retained screen 36h image; 005CC770 supplies +58h from MovieCamera.DefaultDeviationFactor and the reset copies it to +54h."
+    },
+    {
+      "native": "005cafc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_movcam_reset -> MovieCameraNewHost::movcam_reset_overview_height; src/game_hosts_hud.cpp: GameHudHost::reset_movie_camera_limits",
+      "reason": "Existing reset body receives the retained screen 36h image; 005CC770 supplies +60h from MovieCamera.OverviewModeDefaultHeight and the reset copies it to +5Ch."
+    },
+    {
+      "native": "005cb970",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_movcam_reset -> MovieCameraNewHost::movcam_reset_speed_limits; src/game_hosts_hud.cpp: GameHudHost::reset_movie_camera_limits",
+      "reason": "Existing reset body uses the screen's Lua-produced defaults +3Ch/+40h and current acceleration time +44h, writing +34h/+38h/+4Ch/+50h."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_movcam_reset -> MovieCameraNewHost::movcam_reset_accel_time; src/game_hosts_hud.cpp: GameHudHost::reset_movie_camera_limits",
+      "reason": "Existing reset body uses the screen's Lua-produced default time +48h and current speed limits +34h/+38h, writing +44h/+4Ch/+50h."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "HUD screen 36h / HUD+98h MovieCamera limits owner (MovieCameraLimitsImage, 84h bytes)",
+      "where": "src/game_hosts_hud.cpp:1400",
+      "image_layout": "include/bsp/frontend_seg19_21_cc13.hpp:54; size and consumed float offsets statically asserted",
+      "constructor": "005ce610, already called at 0068D2AB by the existing 0068CC70 host",
+      "fields": [
+        "+34h float32 current linear limit",
+        "+38h float32 current angular limit",
+        "+3Ch float32 default linear limit <- MovieCamera.MoveSpeedDefaultLimit",
+        "+40h float32 default angular limit <- MovieCamera.RotationSpeedDefaultLimit",
+        "+44h float32 current acceleration time",
+        "+48h float32 default acceleration time <- MovieCamera.GeneralAccelerationDefaultTime",
+        "+4Ch float32 derived linear acceleration",
+        "+50h float32 derived angular acceleration",
+        "+54h float32 current deviation factor",
+        "+58h float32 default deviation factor <- MovieCamera.DefaultDeviationFactor",
+        "+5Ch float32 current overview height",
+        "+60h float32 default overview height <- MovieCamera.OverviewModeDefaultHeight"
+      ],
+      "producers": [
+        "0068CC70 allocates the 84h leaf and calls existing 005CE610; the existing HUD leaf owner retains and releases the block and its tree allocations.",
+        "005CC770 now replaces the generic page-only registration at the same screen-registration phase; it loads GUI_moviecamera_debug and Scripts\\datatables\\MovieCamera.lua plus native overrides, initializes each current/default pair, and derives +4Ch/+50h.",
+        "HudLeafMovieCameraRegisterBinding borrows GameScriptHost's existing GameNativeLuaServices, native string pool, GUI registry and page. The existing 00B66BD0/00B6A020/00B69D40/00B67980/00B67800/00B66270/00B67700/00B669A0 bodies operate on the initializer's native 4C8h/14h scratch objects.",
+        "008B6ED0/008B7180/008B7460/008B7710 Lua dispatches now reach their existing reconstructed binding bodies and the four reset bodies on the same retained screen block. No host duplicate of its defaults/current values exists."
+      ],
+      "rows": ["005cafb0", "005cafc0", "005cb970", "005cb9c0"],
+      "climb": [
+        "005CAFB0/005CAFC0/005CB970/005CB9C0 need screen 36h +34h..+60h <- 005CC770 MovieCamera.lua registration <- 005CE610 constructor at 0068D2AB <- existing 0068CC70 / GameHudHost::build_manager_0068a990 mission-load root.",
+        "005CC770 native Lua owner <- existing GameNativeLuaServices bootstrap, VFS/override and string services retained by GameScriptHost <- existing application startup. Climb completed.",
+        "0079F480 was inspected as a caller of the resets, but the Lua reset sites directly load [HUD+98h] (for example 008B753E..008B7552); no mover construction, debug interface activation or editor path is needed."
+      ]
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; 4/4 existing tests passed; local/g6-c991-build.log",
+    "call_graph": "python tools/call_graph.py and who for all four gaps plus 005cc770: each REACHABLE with one call site from changed host code",
+    "before": {"called_reconstructed_addresses": 5742, "reachable_functions": 43532, "selected_gaps_called": 0},
+    "after": {"called_reconstructed_addresses": 5747, "reachable_functions": 43557, "selected_gaps_called": 4},
+    "additional_producer_called": "005cc770",
+    "new_tests": 0,
+    "limits": "Build/test and executable reachability verified; no game run, gameplay result or original register-ABI compatibility claimed. Existing floating-point bodies reused without arithmetic changes."
+  }
+}

@@ -47,7 +47,54 @@ struct FrontEndScreenConstructHost {
     virtual void frontend_construct_004f7180(void* screen) = 0;
 };
 
-struct Seg19_21Host : LoadingScreenConfigHost, FrontEndScreenConstructHost {
+// Screen 36h is also the limits owner used by the ordinary MovCam Lua
+// bindings (008B7544 loads [HUD+98h]); its debug widgets are not required by
+// those bindings. 005CE610 constructs this 84h block, then 005CC770 fills the
+// current/default pairs from MovieCamera.lua during HUD registration.
+struct MovieCameraLimitsImage {
+    std::byte prefix_00[0x34];
+    float linear_34, angular_38, default_linear_3c, default_angular_40;
+    float accel_time_44, default_accel_time_48, linear_accel_4c, angular_accel_50;
+    float deviation_54, default_deviation_58, overview_5c, default_overview_60;
+    std::byte suffix_64[0x20];
+};
+static_assert(sizeof(MovieCameraLimitsImage) == 0x84);
+static_assert(sizeof(float) == 4);
+static_assert(offsetof(MovieCameraLimitsImage, linear_34) == 0x34);
+static_assert(offsetof(MovieCameraLimitsImage, angular_38) == 0x38);
+static_assert(offsetof(MovieCameraLimitsImage, default_linear_3c) == 0x3c);
+static_assert(offsetof(MovieCameraLimitsImage, default_angular_40) == 0x40);
+static_assert(offsetof(MovieCameraLimitsImage, accel_time_44) == 0x44);
+static_assert(offsetof(MovieCameraLimitsImage, default_accel_time_48) == 0x48);
+static_assert(offsetof(MovieCameraLimitsImage, linear_accel_4c) == 0x4c);
+static_assert(offsetof(MovieCameraLimitsImage, angular_accel_50) == 0x50);
+static_assert(offsetof(MovieCameraLimitsImage, deviation_54) == 0x54);
+static_assert(offsetof(MovieCameraLimitsImage, default_deviation_58) == 0x58);
+static_assert(offsetof(MovieCameraLimitsImage, overview_5c) == 0x5c);
+static_assert(offsetof(MovieCameraLimitsImage, default_overview_60) == 0x60);
+
+struct MovieCameraStringHost {
+    virtual ~MovieCameraStringHost() = default;
+    virtual void native_string_resize_0041dd40(NativeStr*, std::uint32_t, std::int32_t) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    virtual void pool_return_block_00bd1510(void*, void*, std::uint32_t, std::int32_t) = 0;
+};
+// The complete 005CC770 dependency surface, independent of mover/debug input.
+struct MovieCameraRegisterHost : MovieCameraStringHost {
+    virtual void frontend_register_004f71d0(void*) = 0;
+    virtual void* gui_manager_004c12b0() = 0;
+    virtual std::uint32_t gui_load_page_00aa5840(void*, const NativeStr*, std::int32_t, std::int32_t) = 0;
+    virtual void lua_owner_construct_00b66bd0(void*) = 0;
+    virtual void lua_owner_open_00b6a020(void*, std::int32_t) = 0;
+    virtual void lua_run_script_00b69d40(void*, const NativeStr*, std::int32_t) = 0;
+    virtual void lua_get_globals_00b67980(void*, void*) = 0;
+    virtual void lua_get_by_name_00b67800(void*, void*, const char*) = 0;
+    virtual double lua_get_number_00b66270(void*) = 0;
+    virtual void lua_object_destruct_00b67700(void*) = 0;
+    virtual void lua_owner_close_00b669a0(void*) = 0;
+};
+
+struct Seg19_21Host : LoadingScreenConfigHost, FrontEndScreenConstructHost, MovieCameraRegisterHost {
     virtual ~Seg19_21Host() = default;
     // Address of an image global's storage (00E198C4, 00E188A8, 00E194B4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -167,7 +214,7 @@ struct Seg19_21Host : LoadingScreenConfigHost, FrontEndScreenConstructHost {
 };
 
 // ---- native string helpers (the inlined 0041DD40 + memcpy build and the 005CC750 release) ----
-NativeStr native_string_build(Seg19_21Host& host, const char* text, std::uint32_t length);
+NativeStr native_string_build(MovieCameraStringHost& host, const char* text, std::uint32_t length);
 void native_string_release_storage_005cc750(NativeStr& s, Seg19_21Host& host);
 
 // ---- segment 19: session browser ----
@@ -274,7 +321,7 @@ void* hud_movie_screen_construct_005cc120(void* screen, FrontEndScreenConstructH
 void movie_camera_debug_enter_005cc590(Seg19_21Host& host);
 void movie_camera_show_mode_text_005cc5e0(void* screen, NativeStr text, Seg19_21Host& host);
 void* vehicle_camera_array_construct_005cc700(void* self, Seg19_21Host& host);
-void movie_camera_debug_register_005cc770(void* screen, Seg19_21Host& host);
+void movie_camera_debug_register_005cc770(void* screen, MovieCameraRegisterHost& host);
 void movie_camera_debug_bind_widgets_005cca80(void* screen, Seg19_21Host& host);
 void hud_movie_screen_register_005cccb0(void* screen, Seg19_21Host& host);
 

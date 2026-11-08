@@ -198,7 +198,11 @@ public:
     LuaScriptRuntime& runtime() noexcept { return runtime_; }
     LuaRuntimeGlobals& globals() noexcept { return globals_; }
     const LuaRuntimeGlobals& globals() const noexcept { return globals_; }
+    // Borrow the same native bootstrap/VFS services for temporary table owners
+    // such as screen 36h's 005CC770 registration; this creates no interpreter.
+    GameNativeLuaServices& native_lua_services() noexcept { return lua_; }
 private:
+    GameNativeLuaServices& lua_;
     LuaRuntimeGlobals& globals_; // canonical process cells, borrowed through all Lua closes
     VfsLuaScriptFiles files_;
     LuaScriptRuntime runtime_;

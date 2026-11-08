@@ -20,7 +20,7 @@ void* global_ptr(Seg19_21Host& host, std::uint32_t address) {
 
 // The inlined pool release every native-string temporary ends with: when the
 // buffer is non-null, 00419CC0 then 00BD1510(buffer, length + 1, 1).
-void release_pool_block(Seg19_21Host& host, void* block, std::uint32_t length) {
+void release_pool_block(MovieCameraStringHost& host, void* block, std::uint32_t length) {
     if (block != nullptr) {
         void* pool = host.pool_singleton_00419cc0();
         host.pool_return_block_00bd1510(pool, block, length + 1, 1);
@@ -72,7 +72,7 @@ constexpr std::uint32_t kStringNpos = 0xFFFFFFFFu;
 
 // The build every caller inlines: a zeroed {0, null}, 0041DD40(length, 1), and
 // when a buffer came back, memcpy(buffer, text, length + 1).
-NativeStr native_string_build(Seg19_21Host& host, const char* text, std::uint32_t length) {
+NativeStr native_string_build(MovieCameraStringHost& host, const char* text, std::uint32_t length) {
     NativeStr s{0, nullptr};
     host.native_string_resize_0041dd40(&s, length, 1);
     if (s.data != nullptr) std::memcpy(s.data, text, s.length + 1);
@@ -820,7 +820,7 @@ void* vehicle_camera_array_construct_005cc700(void* self, Seg19_21Host& host) {
 // +1Ch, run Scripts\datatables\MovieCamera.lua and read the MovieCamera table
 // into the current/default pairs (+34h/+3Ch, +38h/+40h, +44h/+48h, +54h/+58h,
 // +5Ch/+60h), then derive +4Ch/+50h. The Lua objects are opaque stack buffers.
-void movie_camera_debug_register_005cc770(void* screen, Seg19_21Host& host) {
+void movie_camera_debug_register_005cc770(void* screen, MovieCameraRegisterHost& host) {
     Raw s = raw(screen);
     host.frontend_register_004f71d0(screen);
     NativeStr page = native_string_build(host, "GUI_moviecamera_debug", 0x15);   // 00CF18C8
