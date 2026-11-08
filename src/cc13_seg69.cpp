@@ -847,7 +847,7 @@ void ai_command_attack_describe_lua_00a13a60(Seg69Host& host, Raw command, void*
 // 00A1F890), each 38h bytes and alone; any other mode Defend (+0h, 00A1EFC0, 38h), Attack
 // (+4h, 00A1F0F0, 38h), Sell (+8h, 00A1F220, 38h) and Capture (+0Ch, 00A1F390, 44h). Each
 // constructor is __thiscall(ECX = memory)(brain); a failed allocation stores null.
-Raw ai_party_brain_construct_00a15a70(Seg69Host& host, Raw brain, int party_slot)
+Raw ai_party_brain_construct_00a15a70(PartyBrainConstructionHost& host, Raw brain, int party_slot)
 {
     brain.at<std::int32_t>(0x20) = party_slot;
     brain.at<std::int32_t>(0x24) = host.player_slot_team_009ffd60(party_slot);

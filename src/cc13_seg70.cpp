@@ -246,7 +246,7 @@ float party_aggressive_ratio_00a184f0(Seg70Host& host, int party) {
 // Planner objects.
 // ---------------------------------------------------------------------------
 
-void* planner_construct_base_00a1ee50(Seg70Host& host, Raw planner, Raw brain) {
+void* planner_construct_base_00a1ee50(PlannerConstructionHost& host, Raw planner, Raw brain) {
     planner.at<std::uint32_t>(0x04) = 0;
     planner.at<std::uint32_t>(0x08) = 0;
     planner.at<std::uint32_t>(0x0C) = 0;
@@ -268,7 +268,7 @@ std::uint32_t planner_construct_address(PlannerConstructKind kind) noexcept { re
 std::uint32_t planner_vtable(PlannerConstructKind kind) noexcept { return row_of(kind).vtable; }
 const char* planner_literal_name(PlannerConstructKind kind) noexcept { return row_of(kind).name; }
 
-void* planner_construct_00a1efc0_family(Seg70Host& host, PlannerConstructKind kind, Raw planner, Raw brain) {
+void* planner_construct_00a1efc0_family(PlannerConstructionHost& host, PlannerConstructKind kind, Raw planner, Raw brain) {
     const PlannerKindRow& row = row_of(kind);
     planner_construct_base_00a1ee50(host, planner, brain);
     planner.at<std::uint32_t>(0) = row.vtable;

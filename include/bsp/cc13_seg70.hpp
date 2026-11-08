@@ -170,7 +170,17 @@ struct CommandTypeQueryHost {
     virtual bool command_is_type_08(void* command, int type) = 0;
 };
 
-struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost {
+// The base and eight derived planner constructors need only their retained
+// list sentinel, NativeString storage and memcpy. No coordinator/debug seam.
+struct PlannerConstructionHost {
+    virtual ~PlannerConstructionHost() = default;
+    virtual void* list_buy_head_node_00a168a0(void* list) = 0;
+    virtual void native_string_resize_0041dd40(NativeStringRaw& string, std::uint32_t length, int keep) = 0;
+    virtual void memcpy_00bf7680(void* destination, const void* source, std::size_t size) = 0;
+    virtual void pool_return_00bd1510(void* data, std::uint32_t size) = 0;
+};
+
+struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost, PlannerConstructionHost {
     virtual ~Seg70Host() = default;
 
     // Image globals: the memory at that image address.
@@ -181,13 +191,9 @@ struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost {
     virtual void* operator_new_00bf55be(std::size_t size) = 0;
     virtual void free_00bf65ac(void* block) = 0;
     virtual void free_00bf6989(void* block) = 0;
-    virtual void memcpy_00bf7680(void* destination, const void* source, std::size_t size) = 0;
 
     // Native strings and the sized pool.
-    virtual void native_string_resize_0041dd40(NativeStringRaw& string, std::uint32_t length, int keep) = 0;
     virtual void native_string_construct_0041e870(NativeStringRaw& string, const char* text) = 0;
-    // 00419CC0 (pool singleton) then its 00BD1510(data, size, 1).
-    virtual void pool_return_00bd1510(void* data, std::uint32_t size) = 0;
 
     // Object virtuals, ECX = object.
     virtual void scalar_deleting_destructor_0(void* object, int flags) = 0;   // vtable +0
@@ -198,7 +204,6 @@ struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost {
     virtual void command_fill_lua_18(void* command, LuaObjectRaw* table) = 0; // command vtable +18h
 
     // std::list helpers (ECX = the list object).
-    virtual void* list_buy_head_node_00a168a0(void* list) = 0;
     virtual void* list_buy_head_node_004c1630(void* list) = 0;
     virtual void* list_buy_node_00a16ab0(void* list, void* next, void* prev, void* const* value) = 0;
     virtual void* list_buy_node_004c2220(void* list, void* next, void* prev, void* const* value) = 0;
@@ -285,13 +290,13 @@ float party_aggressive_ratio_00a184f0(Seg70Host& host, int party);
 // Planner objects.
 // ---------------------------------------------------------------------------
 // 00A1EE50 BSP_AiPlanner_ConstructBase, __thiscall(planner)(brain), RET 4. Returns the planner.
-void* planner_construct_base_00a1ee50(Seg70Host& host, Raw planner, Raw brain);
+void* planner_construct_base_00a1ee50(PlannerConstructionHost& host, Raw planner, Raw brain);
 
 enum class PlannerConstructKind { Defend, Attack, Sell, Capture, Duel, Escort, Siege, Competitive };
 // 00A1EFC0 / 00A1F0F0 / 00A1F220 / 00A1F390 / 00A1F500 / 00A1F630 / 00A1F760 / 00A1F890, the eight
 // planner constructors, __thiscall(planner)(brain), RET 4. Each runs 00A1EE50, installs its vtable
 // and copies its literal name into planner+14h; Capture also clears +38h/+3Ch and sets +40h = -1.0.
-void* planner_construct_00a1efc0_family(Seg70Host& host, PlannerConstructKind kind, Raw planner, Raw brain);
+void* planner_construct_00a1efc0_family(PlannerConstructionHost& host, PlannerConstructKind kind, Raw planner, Raw brain);
 std::uint32_t planner_construct_address(PlannerConstructKind kind) noexcept;
 std::uint32_t planner_vtable(PlannerConstructKind kind) noexcept;
 const char* planner_literal_name(PlannerConstructKind kind) noexcept;
