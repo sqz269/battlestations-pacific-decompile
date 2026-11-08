@@ -4,6 +4,7 @@
 #include "bsp/avoid_zone_clearance_distance.hpp"
 #include "bsp/avoid_zone_manager_queries.hpp"
 #include "bsp/avoid_zone_query_binding.hpp"
+#include "bsp/avoid_zone_pointer_and_intersection.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -17,6 +18,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <map>
+#include <new>
 #include <stdexcept>
 
 namespace bsp::game {
@@ -32,10 +34,25 @@ const AvoidZoneAllocationAccess allocation{nullptr, &allocate_record, &allocate_
     &free_storage, &free_storage};
 
 struct ZoneOwner {
-    AvoidZoneNativeStorage native{};
+    // 0041D212..0041D233: the scene-path producer allocates a separate 24h
+    // zone before 0041CCD0. Keep this owner cell outside that allocation so
+    // 0041C490 can free the actual zone, then null the still-live cell.
+    ZoneOwner() : native(::new (allocate_record(nullptr, sizeof(AvoidZoneNativeStorage)))
+                            AvoidZoneNativeStorage) {}
+    ZoneOwner(const ZoneOwner&) = delete;
+    ZoneOwner& operator=(const ZoneOwner&) = delete;
+    AvoidZoneNativeStorage* native;
     bool constructed{};
     AvoidZoneManagerZone identity;
-    ~ZoneOwner() { if (constructed) avoid_zone_release_owned_storage(native, allocation); }
+    ~ZoneOwner() {
+        if (constructed) {
+            avoid_zone_owner_destroy_0041c490(native, allocation);
+        } else {
+            // 0041CCD0 owns its constructor unwind. A path/constructor failure
+            // leaves only the separate object allocation for this caller.
+            allocation.free_record_00bf65ac(allocation.context, native);
+        }
+    }
 };
 
 // The retained world matrix is the result of the scene reader's authored
@@ -167,23 +184,23 @@ void GameAvoidZoneRuntime::rebuild(const GameSceneContentsHost& scene,
         }
         auto owner = std::make_unique<ZoneOwner>();
         ScenePath path(record, parent);
-        avoid_zone_construct_from_scene_path_0041ccd0(owner->native, path,
+        avoid_zone_construct_from_scene_path_0041ccd0(*owner->native, path,
             static_cast<std::uint32_t>(layer), self.bounds.clip_minimum(),
             self.bounds.clip_maximum(), allocation, self.crt);
         owner->constructed = true;
         source_points += record.path_points_local.size();
         //0041D23E..0041D24B: zero-corner owners are destroyed, not appended.
-        if (owner->native.corners.count == 0) {
+        if (owner->native->corners.count == 0) {
             self.log.notef("avoid-zone geometry name=%s source=%zu clipped_empty=1",
                 record.name.c_str(), record.path_points_local.size());
             continue;
         }
-        surviving += static_cast<std::size_t>(owner->native.corners.count);
-        associated += owner->native.associated_entity != nullptr ? 1u : 0u;
+        surviving += static_cast<std::size_t>(owner->native->corners.count);
+        associated += owner->native->associated_entity != nullptr ? 1u : 0u;
         self.log.notef("avoid-zone geometry name=%s party=%d layer=%d source=%zu corners=%d parent=%zu associated=%d",
             record.name.c_str(), record.party, layer, record.path_points_local.size(),
-            owner->native.corners.count, record.parent_scene_id,
-            owner->native.associated_entity != nullptr ? 1 : 0);
+            owner->native->corners.count, record.parent_scene_id,
+            owner->native->associated_entity != nullptr ? 1 : 0);
         self.owners.push_back(std::move(owner));
     }
     avoid_zone_group_find_or_create_00417ca0(self.table, 0);
@@ -191,14 +208,14 @@ void GameAvoidZoneRuntime::rebuild(const GameSceneContentsHost& scene,
     for (std::size_t i = 0; i < self.owners.size(); ++i) {
         auto& owner = *self.owners[i];
         const auto g = avoid_zone_group_for_layer_004120d0(self.table,
-            static_cast<std::int32_t>(owner.native.layer));
+            static_cast<std::int32_t>(owner.native->layer));
         auto& group = self.table.groups.at(g);
         owner.identity = {g, static_cast<std::int32_t>(group.zones.size())};
-        group.zones.push_back(avoid_zone_polygon_snapshot(owner.native));
-        self.groups[g].native.push_back(&owner.native);
+        group.zones.push_back(avoid_zone_polygon_snapshot(*owner.native));
+        self.groups[g].native.push_back(owner.native);
         self.groups[g].handles.push_back(static_cast<std::uint32_t>(i + 1));
-        for (std::int32_t c = 0; c < owner.native.corners.count; ++c) {
-            auto* ptr = owner.native.corners.records[c];
+        for (std::int32_t c = 0; c < owner.native->corners.count; ++c) {
+            auto* ptr = owner.native->corners.records[c];
             self.corners.emplace(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(ptr)), ptr);
         }
     }
@@ -245,7 +262,7 @@ std::uint32_t GameAvoidZoneRuntime::group_for_layer(std::uint32_t layer) const {
 std::array<float, 2> GameAvoidZoneRuntime::push_out(std::uint32_t token,
     const std::array<float, 2>& point, float margin) const {
     const auto& zone = impl_->zone(token);
-    return avoid_zone_point_offset_00417580(zone.native, impl_->polygon(zone), point, margin);
+    return avoid_zone_point_offset_00417580(*zone.native, impl_->polygon(zone), point, margin);
 }
 std::array<float, 2> GameAvoidZoneRuntime::nearest(std::uint32_t group,
     const std::array<float, 2>& point, float slack, float push) {
@@ -322,12 +339,12 @@ const WorldMapBounds& GameAvoidZoneRuntime::world_bounds() const {
     impl_->require_ready(); return impl_->bounds;
 }
 std::uint32_t GameAvoidZoneRuntime::corner(std::uint32_t token, std::int32_t index) const {
-    auto* value = ship_ai_lateral_record_at_00417610(impl_->zone(token).native.corners, index);
+    auto* value = ship_ai_lateral_record_at_00417610(impl_->zone(token).native->corners, index);
     return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value));
 }
 void GameAvoidZoneRuntime::ensure_clearance(std::uint32_t zone, std::uint32_t corner) {
     auto* record = impl_->corners.at(corner);
-    avoid_zone_ensure_corner_clearance_00423190(impl_->zone(zone).native, *record,
+    avoid_zone_ensure_corner_clearance_00423190(*impl_->zone(zone).native, *record,
         *impl_, allocation, impl_->crt);
 }
 float GameAvoidZoneRuntime::corner_clearance(std::uint32_t corner) const {

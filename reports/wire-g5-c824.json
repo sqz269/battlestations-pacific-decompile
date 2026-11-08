@@ -1,0 +1,125 @@
+{
+  "goal": 5,
+  "chain": 824,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "base": "56d16d0656",
+  "picked": "Real avoidance-zone heap ownership and reconstructed teardown",
+  "rows": [
+    {
+      "native": "0041c490",
+      "status": "wired",
+      "host_site": "src/game_avoid_zone_runtime.cpp: ZoneOwner::~ZoneOwner",
+      "evidence": "Actual scene-path zones now use separate 0x24-byte allocations; all polygon, group and corner consumers borrow those same objects. Successful ownership teardown calls the existing destroy-and-null body; failed construction frees only the object after the constructor's own unwind. The owner cell remains outside freed storage.",
+      "called": true,
+      "call_sites": 3
+    },
+    {
+      "native": "0041a1e0",
+      "status": "wired",
+      "host_site": "src/avoid_zone_pointer_and_intersection.cpp: avoid_zone_owner_destroy_0041c490, reached from ZoneOwner::~ZoneOwner",
+      "evidence": "Existing body releases counted corner records and their pointer buffer before 0041C490 frees the actual zone object. Replaces the host's previous direct semantic cleanup.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the live 009D7050 refresh path; only an out-of-line symbol is absent after optimization, so no missing behavior was established."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the live 009D7050 refresh path; only an out-of-line symbol is absent after optimization, so no missing behavior was established."
+    },
+    {
+      "native": "00421500",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::Impl",
+      "reason": "Missing a native manager owner whose group slots, hull list and vector are the authoritative runtime state; the current runtime uses a semantic table and separate tracked section."
+    },
+    {
+      "native": "0041d1e0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::rebuild",
+      "reason": "Missing backed raw entity/path/vtable/world-pointer storage required by the complete raw group-add body; this runtime currently borrows semantic scene-path records."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080 / landscape_build_shore_mask_00880420",
+      "reason": "Missing live shore-mask/propagation ownership and the Left55Host provider for the column grid in the inspected host paths."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_capture_fraction_006f1f90",
+      "reason": "Already entry-reachable in the baseline with the real capture-building state; no missing behavior to wire."
+    },
+    {
+      "native": "008162b0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_states.cpp: ship_ai_command_available_008162b0",
+      "reason": "Missing a live ShipAiCommandAvailabilityHost binding for may-follow, command registry and target-specific virtual predicates."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie bridge",
+      "reason": "Missing backed movie subtitle Text ownership and native 0x14/0x24 subtitle/extratitle vectors in the inspected movie bridge."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie bridge",
+      "reason": "Missing backed movie node, player textures and material sampler ownership in the inspected movie bridge."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live text-input acceptance consumer in the inspected text host paths; ordinary text layout is not this input-filter operation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an original camera-product query consumer with an actual CameraProjection in the inspected host paths."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-detail set_scroll_range",
+      "reason": "Existing mission-detail host already calls bsp::set_scroll_range with its real scroller and measured text height; no missing behavior established."
+    }
+  ],
+  "totals": {
+    "entry_reachable_reconstructed_addresses": {"before": 5529, "after": 5531},
+    "readiness_text_wired": {"before": 10674, "after": 10674},
+    "note": "The text-reachability heuristic does not classify the runtime's owner call as wired; readiness called/call_sites and the executable graph confirm both added addresses."
+  },
+  "checks": [
+    "python tools/bsp.py index --if-stale: fresh",
+    "Initial ./scripts/build.ps1: passed, all four test groups",
+    "Post-change ./scripts/build.ps1: passed, all four test groups",
+    "tests/wire_g5_c824_zone_owner_probe.cmd: passed; production ZoneOwner, intercepted heap boundary, ordered record/array/object frees and failed-construction object-only free",
+    "python tools/call_graph.py: 5531 entry-reachable reconstructed addresses, baseline 5529",
+    "python tools/call_graph.py who 0041c490: reachable, three call sites from ZoneOwner cleanup and GameAvoidZoneRuntime::rebuild",
+    "python tools/call_graph.py who 0041a1e0: reachable, one call site from 0041C490",
+    "python tools/call_graph.py path 0041c490: entry-rooted runtime/mission ownership teardown chain",
+    "python tools/wire_readiness.py --standins: called=true for both added bodies",
+    "git diff --check: passed"
+  ],
+  "original_evidence": [
+    "bsp.py show 0041d1e0: operator new(0x24), 0041CCD0, retained pointer append or empty-owner cleanup",
+    "bsp.py show 0041c490: capture owner, clear records, free pointer buffer, free object, null external owner cell",
+    "bsp.py lookup 0041a1e0 and existing reconstruction: preserve capacity/metadata while releasing counted records and pointer buffer"
+  ],
+  "limits": [
+    "No game run or native ABI compatibility claim; these remain the existing reconstructed C++ interfaces.",
+    "Raw scene-entity/group construction and authoritative native manager ownership remain separate work.",
+    "No float arithmetic changed; PC24 arithmetic lint was not required."
+  ]
+}
