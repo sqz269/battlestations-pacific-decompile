@@ -1,4 +1,5 @@
 #include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/attack_target_classify.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/native_deferred_entity_lock.hpp"
@@ -134,16 +135,20 @@ bool entity_predicate_true_008fb780() noexcept { return true; }
 
 // 0x00922b10: BSP_Entity_IsAirborneTarget
 // Original ABI: int __fastcall(ECX = entity), RET 0.
-std::int32_t entity_is_airborne_target_00922b10(Seg60Host& host, void* entity) {
-  if (entity == nullptr) {
+// Goal 5 chain 929, bsp.py show 00922b10: null / byte +5Dh gate, then
+// vtable+5Ch kinds 0Fh and 18h. GameUnitsHost and ScriptOrdersHost already
+// obtain these facts from the selected live unit (unit_flag_005d and
+// unit_is_kind_of). Consume that existing view here; no raw entity or defaults
+// are manufactured, and the duplicate inline predicate has been removed.
+// This typed C++ interface is not a drop-in original-register-ABI replacement.
+std::int32_t entity_is_airborne_target_00922b10(const EntityTargetFacts& entity) {
+  if (!entity.present) {
     return 0;
   }
-  Raw r{static_cast<std::uint8_t*>(entity)};
-  if (r.at<std::uint8_t>(0x5d) != 0) {
+  if (entity.not_engageable) {
     return 0;
   }
-  if (!host.vcall_is_kind_of_slot5c(entity, 0x0f) &&
-      !host.vcall_is_kind_of_slot5c(entity, 0x18)) {
+  if (!entity.is_plane && !entity.is_plane_squadron) {
     return 0;
   }
   return 1;

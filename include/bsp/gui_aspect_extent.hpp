@@ -21,8 +21,12 @@ inline constexpr double kGuiAspectBase = 1.3333333730697632;  // 00CF5750 (doubl
 // a / 4/3 by FDIVR against the double; out[1] = a / active aspect by FDIV of
 // the float field; each FSTP float. The x87 quotient at the default 53-bit
 // precision control rounds as the double division here does.
-inline GuiAspectExtent gui_aspect_extent_00aa1fe0(bool widescreen,
-                                                  float active_aspect) noexcept {
+// Keep the sole address body callable in the game executable. MarkerRuntimeBinding
+// and UnitPickBinding supply the current platform's +0Dh/+10h fields;
+// otherwise /O2 folds this whole body into both callers. This preserves their
+// existing state/operation order and adds no second aspect calculation.
+__declspec(noinline) inline GuiAspectExtent gui_aspect_extent_00aa1fe0(bool widescreen,
+                                                                    float active_aspect) noexcept {
     const double a = widescreen ? kGuiAspectWide : kGuiAspectNarrow;
     GuiAspectExtent out;
     out.width = static_cast<float>(a / kGuiAspectBase);

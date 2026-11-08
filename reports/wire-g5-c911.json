@@ -10,14 +10,14 @@
       "native": "00ac7f40",
       "status": "wired",
       "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_reserve_00ac81a0",
-      "built_site": "10504375 -> 10504380 (merged analysis/no ICF)",
+      "built_site": "105045b5 -> 105045c0 (second merged analysis/no ICF)",
       "state_owner": "Actual GuiScrollbarPoolTraits process owner F8C004; retained vector at +28h"
     },
     {
       "native": "00ac81a0",
       "status": "wired",
       "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize; src/game_main.cpp::WinMain",
-      "built_site": "106c5916 -> 10504360 (merged analysis/no ICF)",
+      "built_site": "106c5d16 -> 105045a0 (second merged analysis/no ICF)",
       "state_owner": "CD7510-equivalent startup reserves 32 pointers on actual F8C004+28h"
     },
     {
@@ -285,34 +285,45 @@
   },
   "remaining": "Bind a genuine Scrollbar factory/allocation consumer before claiming AC8110/AC7F90 as game-reachable. No game, runtime ABI, GUI or post-update stability validation asserted.",
   "merge_revalidation": {
-    "merged_origin_main": "81b61b7e0b96384e6f063b1fa56bb5978e5ee203",
-    "previous_worker_head": "57e43c6567d547f08ab7bc4c89be5655c0248c68",
-    "conflict": "src/native_material_pools.cpp: adjacent Scrollbar and Section includes; both retained. All ledger shards and cmake/startup.cmake merged cleanly; merge_resolve verified/preserved pure insertions.",
-    "scope_check": "Diff against merged origin/main remains limited to the original eight Scrollbar files; the report now includes this repair validation. All incoming pool specializations and Model cleanup retained.",
-    "default_build": "./scripts/build.ps1: exit0, all4 CTests passed; local/c911-merge-build.log",
-    "on_build": "Both kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily true. ./scripts/build.ps1 -BuildDir build/callgraph -NoInline: exit0, all4 CTests passed; local/c911-merge-on-build.log",
+    "repair": 2,
+    "merged_origin_main": "35a39459e785aebaf3a85756cae6d9d4b8c74746",
+    "previous_worker_head": "0a13c3eb7c0706077e271ce6a6795c60f1e23375",
+    "conflicts": [
+      "src/game_main.cpp: retained both startup blocks, with CD7510 Scrollbar before CD7580 Grid and CD75F0 Model.",
+      "src/native_gui_widget_pools_cc13.cpp: retained the entire incoming Grid/process implementation; moved the unchanged Scrollbar definitions to a final namespace block and placed its include after the physical-pool include."
+    ],
+    "ledger_and_cmake_merge": "All ledger shards and cmake/startup.cmake merged cleanly. After manual source resolutions were staged, tools/merge_resolve.py reported0 unresolved conflicts.",
+    "semantic_preservation": {
+      "incoming_main_retained_unchanged": true,
+      "incoming_widget_code_retained_unchanged": true,
+      "scrollbar_before_grid": true,
+      "scrollbar_bodies_unchanged_sha256": "1a62cc99aef1a1c8e8b84408620310a0a363b5ac5c045e245b8b247cbe94de96"
+    },
+    "scope_check": "Against the exact merged parent, only the original eight Scrollbar files differ, including the report; no incoming code was removed.",
+    "default_build": "./scripts/build.ps1: exit0, all4 CTests passed; local/c911-merge2-build.log",
+    "on_build": "Both kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily true. ./scripts/build.ps1 -BuildDir build/callgraph -NoInline: exit0, all4 CTests passed; local/c911-merge2-on-build.log",
     "on_header_restoration": [
       {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\game_hosts_units_internal.hpp",
         "restored": true,
-        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\air_operations.hpp",
-        "sha256": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+        "sha256": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
       },
       {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\air_operations.hpp",
         "restored": true,
-        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\game_hosts_units_internal.hpp",
-        "sha256": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+        "sha256": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
       }
     ],
-    "default_analysis_rebuilt": "./scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests: exit0 after restoring both headers; local/c911-merge-analysis-build.log",
-    "focused_probe": "Recompiled and passed 529-slot growth/trim/teardown scenario against merged default bsp_core.lib; local/c911-merge-probe.log",
+    "default_analysis_rebuilt": "./scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests: exit0 after restoring both headers; local/c911-merge2-analysis-build.log",
+    "focused_probe": "Recompiled and passed 529-slot growth/trim/teardown scenario against merged default bsp_core.lib; local/c911-merge2-probe.log",
     "float_math_changed": false,
     "game_launched": false,
     "call_graph": {
       "command": "python tools/call_graph.py --build-dir build/callgraph",
-      "reachable_functions": 135099,
-      "linked_functions": 135382,
-      "called_reconstructed_addresses": 7528,
-      "linked_reconstructed_addresses": 7578,
+      "reachable_functions": 135126,
+      "linked_functions": 135409,
+      "called_reconstructed_addresses": 7534,
+      "linked_reconstructed_addresses": 7584,
       "entry_reachable": [
         "00ac81a0",
         "00ac7f40"
@@ -326,16 +337,72 @@
     "readiness": {
       "command": "python tools/wire_readiness.py --standins",
       "exit_code": 0,
-      "log": "local/c911-merge-readiness.log",
+      "log": "local/c911-merge2-readiness.log",
       "summary": {
-        "wired": 10808,
-        "callees_done_no_wired_caller": 8465,
-        "ready": 1201,
+        "wired": 10812,
+        "callees_done_no_wired_caller": 8464,
+        "ready": 1198,
         "blocked_on_callees": 51,
         "unknown_no_identifier": 200
       },
-      "index_built_utc": "2026-11-08T17:26:57.583026+00:00",
+      "index_built_utc": "2026-11-08T17:46:02.552055+00:00",
       "selected_addresses_present_in_scope": []
     }
-  }
+  },
+  "merge_revalidation_history": [
+    {
+      "merged_origin_main": "81b61b7e0b96384e6f063b1fa56bb5978e5ee203",
+      "previous_worker_head": "57e43c6567d547f08ab7bc4c89be5655c0248c68",
+      "conflict": "src/native_material_pools.cpp: adjacent Scrollbar and Section includes; both retained. All ledger shards and cmake/startup.cmake merged cleanly; merge_resolve verified/preserved pure insertions.",
+      "scope_check": "Diff against merged origin/main remains limited to the original eight Scrollbar files; the report now includes this repair validation. All incoming pool specializations and Model cleanup retained.",
+      "default_build": "./scripts/build.ps1: exit0, all4 CTests passed; local/c911-merge-build.log",
+      "on_build": "Both kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily true. ./scripts/build.ps1 -BuildDir build/callgraph -NoInline: exit0, all4 CTests passed; local/c911-merge-on-build.log",
+      "on_header_restoration": [
+        {
+          "restored": true,
+          "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\air_operations.hpp",
+          "sha256": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+        },
+        {
+          "restored": true,
+          "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w1\\include\\bsp\\game_hosts_units_internal.hpp",
+          "sha256": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+        }
+      ],
+      "default_analysis_rebuilt": "./scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests: exit0 after restoring both headers; local/c911-merge-analysis-build.log",
+      "focused_probe": "Recompiled and passed 529-slot growth/trim/teardown scenario against merged default bsp_core.lib; local/c911-merge-probe.log",
+      "float_math_changed": false,
+      "game_launched": false,
+      "call_graph": {
+        "command": "python tools/call_graph.py --build-dir build/callgraph",
+        "reachable_functions": 135099,
+        "linked_functions": 135382,
+        "called_reconstructed_addresses": 7528,
+        "linked_reconstructed_addresses": 7578,
+        "entry_reachable": [
+          "00ac81a0",
+          "00ac7f40"
+        ],
+        "not_linked": [
+          "00ac8110",
+          "00ac7f90"
+        ],
+        "identical_code_folding": false
+      },
+      "readiness": {
+        "command": "python tools/wire_readiness.py --standins",
+        "exit_code": 0,
+        "log": "local/c911-merge-readiness.log",
+        "summary": {
+          "wired": 10808,
+          "callees_done_no_wired_caller": 8465,
+          "ready": 1201,
+          "blocked_on_callees": 51,
+          "unknown_no_identifier": 200
+        },
+        "index_built_utc": "2026-11-08T17:26:57.583026+00:00",
+        "selected_addresses_present_in_scope": []
+      }
+    }
+  ]
 }

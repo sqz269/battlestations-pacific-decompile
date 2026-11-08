@@ -1,6 +1,7 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
+#include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
@@ -88,7 +89,8 @@ void destroy_section(NativeMaterialPoolStorage& storage) noexcept {
     }
     DeleteCriticalSection(section(storage));
 }
-template<class Pool, auto Reserve = &native_gui_pool_table_reserve_00aa7740> void initialize_pool(
+template<class Pool, auto Reserve = &native_gui_pool_table_reserve_00aa7740,
+    void (*FreeTable)(void*) noexcept = nullptr> void initialize_pool(
     AllocatorListDomain& list, NativeMaterialPoolStorage& storage) {
     list.prepend_base_element(storage.allocator_00);
     storage.allocator_00.native_vtable_00 = Pool::native_vtable;
@@ -111,7 +113,10 @@ template<class Pool, auto Reserve = &native_gui_pool_table_reserve_00aa7740> voi
         Reserve(native_gui_pool_slab_table(storage), 32);
     } __finally {
         if (AbnormalTermination()) {
-            if (unwind_state >= 2) free_table(storage);
+            if (unwind_state >= 2) {
+                if constexpr (FreeTable != nullptr) FreeTable(&storage.slabs_28);
+                else free_table(storage);
+            }
             if (unwind_state >= 1) destroy_section(storage);
             list.unlink_base_element_00403970(storage.allocator_00);
         }
@@ -554,7 +559,8 @@ template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize() {
     // 00ABC570 inlines 00ABC500's reserve(32) in unwind state 2.
     // CD7280 constructs this same F8BE5C process owner, never a side table.
     initialize_pool<GuiCurvePoolTraits,
-        &native_gui_curve_pool_table_reserve_00abc500>(allocator_list_, storage_);
+        &native_gui_curve_pool_table_reserve_00abc500,
+        &free_native_gui_curve_pool_table_00abc180>(allocator_list_, storage_);
 }
 
 template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
@@ -563,6 +569,14 @@ template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
     return allocate_slot<GuiCurvePoolTraits,
         &NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize_slab,
         &native_gui_curve_pool_table_push_back_00abc480>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::destroy() {
+    // ABC290 inlines ABC180's table release after freeing its slabs. ABC570's
+    // state-2 cleanup (CB8293 -> ABC180) uses the same real F8BE5C+28h header.
+    // Source reuse of that leaf replaces the inline free, before CS/list teardown.
+    destroy_pool<GuiCurvePoolTraits,
+        &free_native_gui_curve_pool_table_00abc180>(allocator_list_, storage_);
 }
 
 // Evidence: bsp.py show 00ABEE60/00ABEAA0 and 00ABE9D0/00ABEA00/00ABED30.
@@ -685,6 +699,14 @@ template<> void* NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate() {
         &append_native_gui_sound_pool_table_00acd430>(storage_);
 }
 
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
+    // ACD2F0 inlines ACD1D0 on the retained F8C0EC+28h table after freeing
+    // its slabs. Reuse that one body before CS/list teardown; keep the native
+    // dangling header words and replace the common free on this path once.
+    destroy_pool<GuiSoundPoolTraits, &free_native_gui_sound_pool_table_00acd1d0>(
+        allocator_list_, storage_);
+}
+
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.
@@ -792,6 +814,20 @@ template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate() {
     return allocate_slot<GuiListboxPoolTraits,
         &NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize_slab,
         &push_native_listbox_pool_slab_00a9b250>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::initialize() {
+    // AC9B30 inlines AC9870's reserve(32) on the actual pool+28h table,
+    // inside native unwind state 2. Keep the shared engine's unwind order.
+    initialize_pool<GuiGridPoolTraits,
+        &native_gui_grid_pool_table_reserve_00ac9870>(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
+    // AC9C10 at AC9C58..AC9CBF inlines AC97F0 after the genuine 12A4h
+    // slab initialization under this pool's existing critical section.
+    return allocate_slot<GuiGridPoolTraits,
+        &NativeGuiWidgetPool<GuiGridPoolTraits>::initialize_slab,
+        &native_gui_grid_pool_table_push_back_00ac97f0>(storage_);
 }
 
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
