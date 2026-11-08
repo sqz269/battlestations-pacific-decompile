@@ -490,7 +490,7 @@ void* game_singleton_construct_base_004bf9a0(Segs0911Host& host, Raw self) {
 // 004C2C80, ECX = list {count +0, head +4, tail +8}, stack payload RET 4. Node {prev +0, next +4,
 // payload +8} from operator new(0Ch); no null test after the zeroing branch (a failed allocation
 // writes through null, as in the image).
-void scene_record_list_push_back_004c2c80(Segs0911Host& host, Raw list, void* payload) {
+void scene_record_list_push_back_004c2c80(SceneRecordListHost& host, Raw list, void* payload) {
     void* const block = host.operator_new_00bf681b(0xC);
     Raw node = raw(block);
     if (block != nullptr) {

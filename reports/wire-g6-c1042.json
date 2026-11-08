@@ -1,0 +1,69 @@
+{
+  "run": 2256,
+  "chain": 1042,
+  "owner": "agent/g6-w9",
+  "candidate": "game_hosts_mission_result.cpp",
+  "tier": 1,
+  "rows": [
+    {
+      "native": "004c2c80",
+      "status": "wired",
+      "host_site": "src/mission_load_path.cpp:51 NativeSceneRecordList::push_back, inlined into run_build_scene_record_004e1d70; live MissionStartBinding::set_pending_scene calls run_set_pending_scene_004e2770",
+      "reason": "Replaced MissionLoadPathState's scene-record vector with the canonical 12-byte native list header and 12-byte nodes. The existing 004C2C80 body receives the actual loaded SceneRecord pointer; selection and all existing host front/empty consumers read this same list. Built call graph proves two reachable call sites from run_build_scene_record_004e1d70."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp / src/game_hosts.cpp GuiLayerHost::page_has_live_entries_00aa7ef0 candidate",
+      "reason": "lease: src/game_hosts.cpp held by agent/g6-w12; initial shared GUI-layer candidate claim refused before inspection or edits, so selected the available mission scene-record list candidate instead."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "SceneRecordList (NativeSceneRecordList)",
+      "where": "include/bsp/game_host_scene_records.hpp:41; include/bsp/mission_load_path.hpp:367; src/mission_load_path.cpp:51",
+      "type": "NativeSceneRecordListImage plus owned NativeSceneRecordNode allocations; existing semantic SceneRecord payloads",
+      "constructor": "004DDB90 initializes the inline game+5F0h header at 004DDCAB/004DDCB1/004DDCB7; there is no standalone native list constructor. The same zero/null constants initialize the typed subobject when the existing live MissionLoadPathState is constructed.",
+      "fields": [
+        {"owner": "list (game+5F0h)", "offset": "00h", "width": 4, "name": "count"},
+        {"owner": "list (game+5F0h)", "offset": "04h", "width": 4, "name": "head"},
+        {"owner": "list (game+5F0h)", "offset": "08h", "width": 4, "name": "tail"},
+        {"owner": "node", "offset": "00h", "width": 4, "name": "previous"},
+        {"owner": "node", "offset": "04h", "width": 4, "name": "next"},
+        {"owner": "node", "offset": "08h", "width": 4, "name": "SceneRecord payload"}
+      ],
+      "producers": [
+        "004DDB90: empty header stores reproduced as the typed subobject's binary constant initializers; static_assert checks all offsets and extents.",
+        "Existing live GameMissionHost::Impl owns MissionLoadPathState before mission selection; no changes to the separately leased game_hosts_mission.cpp were necessary.",
+        "MissionStartBinding::set_pending_scene -> 004E2770 -> 004E1D70 Create arm: allocate the real semantic record, set its scene path, fill it through the existing 0046DF00 header-pass host, then append through 004C2C80 at native site 004E21C1.",
+        "004E1D70 ReuseExisting arm retains its duplicate/VFS/header behavior and uses the same existing append body for its equivalent inline node operation at 004E20DF.",
+        "004BF930, reused through the concrete payload/CRT adapter, releases each record before unlink/free on 004E2770 replacement and remaining records on owner teardown. The previous vector destruction path was removed."
+      ],
+      "rows": ["004c2c80"],
+      "climb": [
+        "004C2C80 needs {count,head,tail} and owned nodes <- 004E1D70 loaded SceneRecord producer, site 004E21C1 <- 004E2770 SetPendingScene <- live MissionStartBinding::set_pending_scene / GameMissionHost::Impl::start_skirmish (reached existing host mission-selection phase).",
+        "SceneRecordList empty state <- inline 004DDB90 stores at 004DDCAB/004DDCB1/004DDCB7 <- existing live MissionLoadPathState construction; native list storage replaces the semantic vector rather than mirroring it."
+      ]
+    }
+  ],
+  "evidence": [
+    "bsp.py show 004c2c80: allocates 0Ch, stores payload+8, links previous/next, updates count/head/tail.",
+    "bsp.py callers 004c2c80 --sites: sole binary caller 004E1D70 at 004E21C1.",
+    "bsp.py show 004e1d70 --start 90: Create arm allocates the record, fills its path, invokes 0046DF00, then 004C2C80.",
+    "bsp.py show 004ddb90 --asm --start 50 --lines 45: zero stores to game+5F0h/+5F4h/+5F8h at 004DDCAB/004DDCB1/004DDCB7. The offered +60Ch description was the selected index, not the list."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 4 existing tests passed before changes",
+    "build": "scripts/build.ps1 passed after code changes; all 4 existing tests passed",
+    "focused_probe": "tests/wire_g6_c1042_scene_records_probe.cpp linked against the built Win32 Release bsp_core/bsp_lua511/bsp_zlib121 libraries; passed empty initialization, append links, retained payload identity, duplicate rejection, index==count selection, replacement callback order, and final clear",
+    "probe_compile": "MSVC x86: cl /nologo /EHsc /std:c++17 /O2 /MD /Gy /Iinclude tests/wire_g6_c1042_scene_records_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib /Folocal/output/c1042-scene-records-probe.obj /link /OPT:REF /MANIFEST:EMBED /OUT:local/output/c1042-scene-records-probe.exe",
+    "call_graph": "python tools/call_graph.py: 5753 reconstructed addresses called; who 004c2c80: REACHABLE, 2 call sites from changed run_build_scene_record_004e1d70, target VA 105C8C60, first call VA 104C31D5",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> Impl::start_skirmish -> MissionStartBinding::set_pending_scene -> run_set_pending_scene_004e2770 -> run_build_scene_record_004e1d70 -> scene_record_list_push_back_004c2c80",
+    "wired_total": {"scope": "claimed gap 004C2C80, built entry-reachable call proof", "before": 0, "after": 1},
+    "wire_readiness": {"address": "004c2c80", "state": "wired", "called": true, "call_sites": 2, "callers_live": 1},
+    "source_wired_total": {"before": 10864, "after": 10865},
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "remaining": "Shared GUI-layer candidate was left after lease refusal. SceneRecord payloads keep their existing semantic interfaces; this change supplies the actual native list storage, not the entire raw GGame or 109Ch SceneRecord image. No uncommitted producer step remains for 004C2C80."
+}
