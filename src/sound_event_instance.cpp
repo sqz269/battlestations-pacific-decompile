@@ -1,4 +1,5 @@
 #include "bsp/sound_event_instance.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <new>
@@ -151,10 +152,21 @@ void stop_sound_event_00a89170(SpatialSoundEventInstance& s, std::uint8_t immedi
     if (loop_parameter) c.fmod.event_parameter_key_off(loop_parameter);
 }
 bool refresh_spatial_sound_event_ended_00a89340(SpatialSoundEventInstance& s, SoundEventInstanceContext& c) {
-    if (s.stopped_15) { s.ended_8c = 1; return true; }
-    if (!s.event_54) { s.ended_8c = 0; return false; }
-    std::uint32_t state = 0; c.fmod.event_get_state(s.event_54, &state);
-    s.ended_8c = (state & 8u) == 0; return s.ended_8c != 0;
+    // bsp.py show 00A89340 / 00A89210: the same stopped/null/getState query;
+    // 00A89340 additionally stores the result in +8Ch. Share that query over
+    // this live instance's fields, not a raw-layout cast or a copied header.
+    class StateBinding final : public cc13_audio::SoundEventStateHost {
+    public:
+        explicit StateBinding(SoundEventFmodHost& fmod) : fmod_(fmod) {}
+        FmodResult event_get_state(void* event, std::uint32_t* state) override {
+            return fmod_.event_get_state(event, state); // ignored by 00A89210
+        }
+    private:
+        SoundEventFmodHost& fmod_;
+    } binding(c.fmod);
+    s.ended_8c = cc13_audio::sound_event_is_completed_00a89210(
+        cc13_audio::SoundEventCompletionView{s.stopped_15, s.event_54}, binding);
+    return s.ended_8c != 0;
 }
 void SpatialSoundEventVirtuals::refresh_slot10(SpatialSoundEventInstance& s, SoundEventInstanceContext& c) {
     if (s.native_vtable_00 != 0x00d5b4c8) throw std::logic_error("Unbound event instance profile");
