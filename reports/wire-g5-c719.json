@@ -1,0 +1,213 @@
+{
+  "goal": 5,
+  "chain": 719,
+  "run": 1538,
+  "owner": "agent/g5-w7",
+  "base_sha": "7cbfad7dcf",
+  "picked": "Original receiver type routing for ten locally decoded single-player combat messages",
+  "rows": [
+    {
+      "native": "0075ffd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_gun_aim_79",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 0075ffd0: REACHABLE, one direct call from queue_gun_aim_79",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "007602c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_vehicle_party_7f",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 007602c0: REACHABLE, one direct call from queue_vehicle_party_7f",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00760940",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_repair_add_damage_9e",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00760940: REACHABLE, one direct call from queue_repair_add_damage_9e",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00760ab0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_repair_body_9f",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00760ab0: REACHABLE, one direct call from queue_repair_body_9f",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00761df0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_kamikaze_detonate_70",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00761df0: REACHABLE, one direct call from queue_kamikaze_detonate_70",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00761fc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_leak_90",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00761fc0: REACHABLE, one direct call from queue_ship_leak_90",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00762280",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_add_torque_93",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00762280: REACHABLE, one direct call from queue_ship_add_torque_93",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "007628f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_plane_change_state_c3",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 007628f0: REACHABLE, one direct call from queue_plane_change_state_c3",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00762ad0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_plane_touchdown_c5",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00762ad0: REACHABLE, one direct call from queue_plane_touchdown_c5",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "00762b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_plane_disappear_c7",
+      "real_state": "The current decoded receive allocation and serialized +10h kind; existing whole predicate answers the original 00780120 receiver-ladder queries before payload publication.",
+      "proof": "call_graph.py who 00762b90: REACHABLE, one direct call from queue_plane_disappear_c7",
+      "readiness_state": "wired",
+      "built_called": true
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp / prospective formation-vector consumer",
+      "reason": "Native miss-arm DATA at 00F87574/78/7C and its live NetEntityCreate serialization caller remain unbound; no single-player hit-only vector consumer was established."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp::Impl::profile_owns_content",
+      "reason": "The manager has no retained native profile content list at +D0h; its false seam supplies no genuine list to traverse."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Actual registered native job groups and shared frame-job owner are not attached; the host entry logs unimplemented."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Actual registered native job groups and shared frame-job owner are not attached; the host entry logs unimplemented."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Actual registered native job groups and shared frame-job owner are not attached; the host entry logs unimplemented."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Actual registered native job groups and shared frame-job owner are not attached; the host entry logs unimplemented."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp::air-support spawn seam",
+      "reason": "The seam lacks real world approach query, spawn-member property bag and spawn-manager queue adapters; another worker owns game_hosts_powerups.cpp."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::clear_movie_subtitles",
+      "reason": "The host owns a schedule projection, without the native movie text widget and owning subtitle/extratitle vectors required by this body."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::bind_movie_textures",
+      "reason": "A real decoder and video texture owners are absent; the movie bridge still records the boundary."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::register_generated_units",
+      "reason": "The typed controller does not yet provide the actual 2268h brain image and complete constructor/lifetime host required by allocation."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::FirepowerBinding::ammo_select_flak_alternate",
+      "reason": "No actual ammunition +48h flak-alternate record producer is bound; retained references and the owning tree cannot be invented."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp / command-building vector-clear seam",
+      "reason": "A genuine native unit+660h vector and its 44h element ownership/resize adapter were not established."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No missing runtime call: baseline graph already reaches this enum-symbol producer through owning bag construction; readiness text label is stale/incomplete."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No new wiring selected: existing owning property-merge implementation already calls this body; ready label alone is insufficient evidence of an unwired path."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all four CTests passed",
+    "diff_check": "git diff --check passed",
+    "call_graph": {
+      "before_called": 5371,
+      "after_called": 5381,
+      "before_recon_addresses": 5973,
+      "after_recon_addresses": 5983,
+      "new_direct_calls": 10
+    },
+    "readiness": {
+      "before_wired": 10467,
+      "after_wired": 10477
+    },
+    "float_math": "No float arithmetic changed; pc24_lint not required",
+    "new_tests": "None; existing build/tests plus per-address built call-site checks",
+    "game_validated": false
+  },
+  "evidence": [
+    "python tools/bsp.py show 00780120 --lines 90",
+    "python tools/bsp.py show <each wired address> --lines 24",
+    "python tools/call_graph.py; python tools/call_graph.py who <each wired address>",
+    "local/output/g5-c719-call_graph-before.json and local/output/call_graph.json"
+  ],
+  "decisions": [
+    "Reuse the existing receiver ladder and whole reconstructed class predicates, then require the serialized kind to select the matching payload consumer. No duplicate payload route or new native body.",
+    "A mismatched receiver/kind throws before consuming the payload: these synchronous host APIs have no alternate receiver result, and each matching local class writer supplies the expected kind.",
+    "Static entry reach and build/test proof only; the game was not launched."
+  ]
+}
