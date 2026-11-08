@@ -6,6 +6,7 @@
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
+#include "bsp/native_gui_clip_box_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -707,6 +708,62 @@ template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
 }
 
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
+// ClipBox's out-of-line vector operations also replace the identical inline
+// copies in ACE750/ACE8D0/ACE3E0, over the retained pool's actual +28h header.
+// Source reuse preserves the constructor unwind and allocator lock scopes.
+__declspec(noinline) void free_native_gui_clip_box_pool_table_00ace310(
+    void* actual_table) noexcept {
+    // ACE310 and CB9043: free only current [ECX], retaining all three words.
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void set_native_gui_clip_box_pool_table_capacity_00ace340(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // ACE340 has the same capacity-before-new, live entry copy, free/adopt
+    // schedule as AA6FA0. Reuse that complete body on the real header.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void grow_native_gui_clip_box_pool_table_00ace390(
+    NativeGuiPoolSlabTable& table) {
+    set_native_gui_clip_box_pool_table_capacity_00ace340(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void push_native_gui_clip_box_pool_slab_00ace520(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) grow_native_gui_clip_box_pool_table_00ace390(table);
+    // ACE520 reads the caller's current slab after growth; its real caller
+    // supplies a local pointer whose storage survives table reallocation.
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void reserve_native_gui_clip_box_pool_table_00ace5b0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        set_native_gui_clip_box_pool_table_capacity_00ace340(table, capacity);
+}
+
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize() {
+    initialize_pool<GuiClipBoxPoolTraits,
+        &reserve_native_gui_clip_box_pool_table_00ace5b0,
+        &free_native_gui_clip_box_pool_table_00ace310>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate() {
+    return allocate_slot<GuiClipBoxPoolTraits,
+        &NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize_slab,
+        &push_native_gui_clip_box_pool_slab_00ace520>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy() {
+    destroy_pool<GuiClipBoxPoolTraits,
+        &free_native_gui_clip_box_pool_table_00ace310>(allocator_list_, storage_);
+}
+
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.
 __declspec(noinline) void set_native_gui_button_pool_table_capacity_00aab8e0(

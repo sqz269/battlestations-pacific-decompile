@@ -1,0 +1,234 @@
+{
+  "goal": 5,
+  "chain": 938,
+  "slot": "g5-w8",
+  "base_head": "2cee01fd75",
+  "picked": "ClipBox retained F8C13C slab-table lifecycle and CRT startup",
+  "rows": [
+    {
+      "native": "00ace310",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy and initialize_pool unwind",
+      "evidence": "NOICF 106c8890: two reachable calls, from ClipBox destroy_pool and initialize_pool; canonical F8C13C+28h table."
+    },
+    {
+      "native": "00ace340",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: reserve_native_gui_clip_box_pool_table_00ace5b0",
+      "evidence": "NOICF 106c9020: reachable tail call from ClipBox reserve at106c8e95; actual startup table."
+    },
+    {
+      "native": "00ace5b0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp: WinMain -> GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize",
+      "evidence": "NOICF 106c8e80: reachable call at106c5496 from ClipBox initialize_pool; reserve32 runs once on retained storage."
+    },
+    {
+      "native": "00ace390",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate -> push_native_gui_clip_box_pool_slab_00ace520",
+      "reason": "The ClipBox payload factory has no reached production caller; grow is prepared and fixture-tested but stripped from both game builds.",
+      "prepared": true
+    },
+    {
+      "native": "00ace520",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate",
+      "reason": "Missing a reached ClipBox payload factory consumer; startup reserves the table without allocating a widget slab, so append remains prepared only.",
+      "prepared": true
+    },
+    {
+      "native": "00ab14f0",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_icon_pool_table.hpp",
+      "reason": "Already completed by agent/g5-w6 in chain937; overlapping claim released immediately without edits."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state message discussion",
+      "reason": "No retained ControllerStateMessage producer and descriptor/flags transport consumer was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: snapshot candidate",
+      "reason": "Missing retained ControllerSnapshotMessage storage and a snapshot transport consumer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The inspected interpreter runs on the main thread; no frame-job-thread deferred-call producer supplies a real LuaVariantRecord argument vector."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp: remove_native_vfs_content_package_00bdd020",
+      "reason": "The native remove-content caller still needs a reached package-retirement event; the inspected phase2 VFS path scans and mounts packages."
+    },
+    {
+      "native": "00bdd020",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp: scan_phase2_packages",
+      "reason": "Missing a reached active-content-package removal request; startup scanning is not a removal operation."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: erase_native_soldier_loop_iterator_00444490",
+      "reason": "A reached partial-erasure consumer for the string/float map was not established; existing input cleanup operates its separate scale-map specialization."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: erase_native_soldier_loop_iterator_00444490",
+      "reason": "A reached partial-erasure consumer for the string/float map was not established; generic registry delegation alone does not call this address body."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp: UnwrittenPostTickCallback",
+      "reason": "The inspected application owns only the input-configuration span and retains an unwritten post-tick cell; no actual game clock/deadline-map callback owner was established."
+    },
+    {
+      "native": "0064b5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: obstacle initialization projection",
+      "reason": "The inspected host uses an obstacle projection; no native obstacle-node callback registration and event consumer was established."
+    },
+    {
+      "native": "00af5af0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference",
+      "reason": "No reached particle-model type-id virtual consumer was established; the current reference adapter exposes its separate is_type operation."
+    },
+    {
+      "native": "00af5b00",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference",
+      "reason": "No reached particle-model type-name virtual consumer was established."
+    },
+    {
+      "native": "00b197e0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_construction.cpp: construct_native_resource_registry_00b1aa70",
+      "reason": "The base D5E550 leaf has no recovered native caller; the inspected concrete registry constructor uses a different profile, so no matching live base construction was established."
+    },
+    {
+      "native": "00be31e0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_lifetime.cpp: primary owner destruction",
+      "reason": "The retained frame-job primary destroys its embedded secondary without deleting it; no separately allocated standalone secondary-pool deletion owner was established."
+    },
+    {
+      "native": "004bfaa0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_execution.cpp: NativeFrameJobExecution",
+      "reason": "No reached virtual14 optional-callback invocation exists in the inspected native dispatch/drain loops."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support item path",
+      "reason": "Missing native spawn-manager request state, raw member/property records and flight enqueue consumer; the host currently throws for this unmodelled flight spawn."
+    },
+    {
+      "native": "007f9020",
+      "status": "skipped",
+      "host_site": "src/native_game_profile_lifetime.cpp: profile bonus record copy",
+      "reason": "No reached producer that appends or relocates actual three-string bonus records was established."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "The existing enumeration body already calls join_native_physical_enumerated_name_00bee520; the pool row uses an older name, so no replacement was needed."
+    },
+    {
+      "native": "004fe700",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00501720",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00504850",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "005048f0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    }
+  ],
+  "built": "ClipBox table free/capacity/grow/append/reserve bodies reuse the existing Mit vector engine; specialize initialize/allocate/destroy on actual pool storage; restore CD76D0-equivalent startup between Sound and FrameBox and retain the existing process atexit cleanup.",
+  "readiness": {
+    "wired_before": 10806,
+    "wired_after": 10813,
+    "note": "Text-based readiness count; exact new executable reachability is three helpers.",
+    "summary_after": {
+      "wired": 10813,
+      "callees_done_no_wired_caller": 8463,
+      "ready": 1198,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    }
+  },
+  "call_graph": {
+    "release_before": 5684,
+    "release_after": 5686,
+    "note": "Release identical-code folding obscures distinct identities; do not interpret this delta as the three-function attribution proof.",
+    "analysis_reachable_reconstructed": 7535,
+    "analysis_linked_reconstructed": 7585,
+    "analysis_flags": "/O2 /Ob0 /OPT:REF /OPT:NOICF",
+    "new_exact_reachable": [
+      "00ace310",
+      "00ace340",
+      "00ace5b0"
+    ],
+    "prepared_unlinked": [
+      "00ace390",
+      "00ace520"
+    ]
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; four of four CTests passed",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/wire-analysis -NoInline -Target bsp_game -SkipTests passed",
+    "probe": "local/c938-probe.cpp: 513 slots /33 slabs; table32->66; real metadata and slot addresses; free all/trim/unlink; freed table header retained. MSVC Win32 and /MANIFEST:EMBED; passed.",
+    "float_math": "No float arithmetic changed.",
+    "diff_check": "passed",
+    "game_run": false,
+    "native_abi": false
+  },
+  "evidence": {
+    "exports": [
+      "00ace310",
+      "00ace340",
+      "00ace390",
+      "00ace520",
+      "00ace5b0",
+      "00ace750",
+      "00ace8d0",
+      "00ace3e0"
+    ],
+    "live_ghidra": "Existing bsp project /battlestationspacific.exe: CD76D0 initializes F8C13C via ACE750 and registers CE0B30 -> ACE3E0; CRT slot CE34CC between Sound CE34C4 and FrameBox CE34D4; CB9043 passes actual pool+28h to ACE310.",
+    "annotations": "Applied and saved five hypothesis names/comments; prior annotations local/ghidra-annotations-20261108T180854Z.json; affected exports refreshed."
+  },
+  "left": "Wire a real ClipBox payload factory/consumer to reach the prepared append/grow path. Native ABI/FH3 and gameplay remain unvalidated.",
+  "coordination": "Icon overlap discovered through mail before edits and released; shared source/main and AC shards coordinated with w3/w4/w7; source/main edits frozen and leases released after passing build; no merge, push, rebase, game run or subagents."
+}
