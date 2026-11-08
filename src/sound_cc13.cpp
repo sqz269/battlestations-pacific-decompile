@@ -9,6 +9,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_dialog_table.hpp"
 #include "bsp/sound_sample.hpp"
+#include "bsp/sound_resource_cache.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/scene_graph2_cc13.hpp"
@@ -955,21 +956,18 @@ void* sound_cache_record_construct_00a84280(void* record, const SoundCacheRecord
     return record;
 }
 
-void* sound_cache_record_copy_construct_00a843a0(void* record, const void* source, NativeStringStorage& strings,
-                                                 const SoundCacheRecordCalls& calls) {
-    l2_field<std::uint32_t>(record, 0x00) = 0;
-    l2_field<char*>(record, 0x04) = nullptr;
-    if (record != source) {
-        resize_native_string_header_0041dd40(record, strings, l2_field<std::uint32_t>(source, 0), true);
-        if (l2_field<std::uint32_t>(source, 0) != 0) {
-            std::memcpy(l2_field<char*>(record, 4), l2_field<char*>(source, 4), l2_field<std::uint32_t>(record, 0));
-        }
-    }
-    calls.copy_construct_list_004d48a0(static_cast<unsigned char*>(record) + 8,
-                                       static_cast<const unsigned char*>(source) + 8);
-    for (std::size_t offset = 0x14; offset <= 0x28; offset += 4) {
-        l2_field<std::uint32_t>(record, offset) = l2_field<std::uint32_t>(source, offset);
-    }
+// Retain the reconstructed entry boundary in the optimized game build.
+__declspec(noinline) SoundResourceCacheRecord& sound_cache_record_copy_construct_00a843a0(
+    SoundResourceCacheRecord& record, const SoundResourceCacheRecord& source) {
+    // bsp.py show 00A843A0: name copy, independent pooled-string list copy,
+    // then six scalar DWORD copies through the borrowed resource at +28h.
+    // This binds that one body to the loader's existing C++ record model;
+    // source and the fresh destination are distinct on the reserve path.
+    record.name_00 = source.name_00;
+    record.field_08 = source.field_08; // preserve this projection's opaque word
+    record.aliases_0c = source.aliases_0c;
+    record.metadata_14 = source.metadata_14;
+    record.resource_28 = source.resource_28;
     return record;
 }
 
@@ -980,26 +978,30 @@ void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const Sou
     header.count = header.count - 1;
 }
 
-void sound_cache_records_reserve_00a84450(NativePointerArray& header, std::int32_t requested,
-                                          NativeStringStorage& strings, const SoundCacheRecordCalls& calls) {
+void sound_cache_records_reserve_00a84450(SoundResourceOwner& owner,
+    std::int32_t requested) {
     if (requested < 0x40) requested = 0x40;
-    if (header.capacity >= requested) return;
-    auto* const fresh = static_cast<unsigned char*>(
-        calls.operator_new_00bf55be(static_cast<std::uint32_t>(requested) * 0x2Cu));
-    auto* const old = reinterpret_cast<unsigned char*>(header.data);
-    for (std::int32_t i = 0; i < header.count; ++i) {
-        unsigned char* const destination = fresh + static_cast<std::uint32_t>(i) * 0x2Cu;
-        if (destination != nullptr) {
-            sound_cache_record_copy_construct_00a843a0(destination, old + static_cast<std::uint32_t>(i) * 0x2Cu,
-                                                       strings, calls);
-        }
+    if (owner.capacity_0c >= requested) return;
+    // bsp.py show 00A84450: allocate/copy ALL live records before destroying
+    // any old one, then publish the replacement block and native capacity.
+    // Bind this one body to the loader's actual SoundResourceOwner rather
+    // than retaining an unused raw-only entry plus a second inline reserve.
+    // Copy construction keeps names, alias order, metadata and borrowed
+    // resource identities; it never changes a game resource's refcount.
+    std::vector<SoundResourceCacheRecord> fresh;
+    fresh.reserve(static_cast<std::uint32_t>(requested));
+    for (const auto& record : owner.records_04) {
+        fresh.emplace_back();
+        sound_cache_record_copy_construct_00a843a0(fresh.back(), record);
     }
-    for (std::int32_t i = 0; i < header.count; ++i) {
-        calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) + static_cast<std::uint32_t>(i) * 0x2Cu);
+    for (auto& record : owner.records_04) {
+        clear_sound_resource_cache_record_storage_00a842e0(record);
     }
-    calls.free_00bf6989(header.data);
-    header.data = reinterpret_cast<std::uint32_t*>(fresh);
-    header.capacity = requested;
+    // Release the old block before publishing the new one, as the native
+    // _free precedes its two header stores. No host callback runs here.
+    std::vector<SoundResourceCacheRecord>{}.swap(owner.records_04);
+    owner.records_04.swap(fresh);
+    owner.capacity_0c = requested;
 }
 
 void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,

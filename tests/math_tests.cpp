@@ -8,6 +8,9 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/sound_cc13.hpp"
+#include "bsp/sound_resource_cache.hpp"
+#include "bsp/sound_resource_asset.hpp"
 #include "bsp/scene_weather_cc13.hpp"
 #include "bsp/scoring_bodies.hpp"
 #include "bsp/cc13_seg67b.hpp"
@@ -5489,6 +5492,38 @@ int main() {
             && scene_word(fields.horizontal_angle_1004) == 0x3f1c61abu
             && scene_word(fields.vertical_angle_1008) == 0x3f1c61abu,
             "chain522 scene luminance and 35-degree angles round each native PC24 operation");
+    }
+
+    {
+        // c688: cross the native cache's first occupied growth boundary.
+        // Resource ownership must not change while record-owned lists move.
+        bsp::SoundResourceOwner owner;
+        bsp::SoundOwnedResource resource;
+        resource.references_04 = 7;
+        for (std::uint32_t i = 0; i != 65; ++i) {
+            bsp::SoundResourceCacheRecord record;
+            record.name_00 = "bank-" + std::to_string(i);
+            record.aliases_0c = {record.name_00, "request-" + std::to_string(i)};
+            record.field_08 = i;
+            record.metadata_14 = {i, i + 1, i + 2, i + 3, i + 4};
+            record.resource_28 = &resource;
+            bsp::append_sound_resource_cache_record_00a84530(owner, record);
+        }
+        bool preserved = owner.capacity_0c == 128 && owner.records_04.size() == 65
+            && resource.references_04 == 7;
+        for (std::uint32_t i = 0; i != owner.records_04.size(); ++i) {
+            const auto& record = owner.records_04[i];
+            preserved = preserved && record.name_00 == "bank-" + std::to_string(i)
+                && record.aliases_0c == std::list<std::string>{record.name_00,
+                    "request-" + std::to_string(i)}
+                && record.field_08 == i
+                && record.metadata_14 == std::array<std::uint32_t, 5>{i, i + 1, i + 2, i + 3, i + 4}
+                && record.resource_28 == &resource;
+        }
+        const auto* const data = owner.records_04.data();
+        bsp::sound_cc13::sound_cache_records_reserve_00a84450(owner, 1);
+        check(preserved && owner.records_04.data() == data && owner.capacity_0c == 128,
+            "c688 sound-cache growth preserves aliases, metadata and borrowed resource ownership");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
