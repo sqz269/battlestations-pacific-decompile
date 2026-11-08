@@ -47,6 +47,7 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
+#include "bsp/main_menu_command_owner.hpp"
 #include "bsp/native_render_queue_destruction.hpp"
 #include "bsp/press_start_screen.hpp"
 #include "bsp/render_queue_seg83_cc13.hpp"
@@ -884,6 +885,9 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
     FrontEndWorld world{};
     GameFrontEndFrameState frame_state{};
     std::map<int, MenuScreen> screens;
+    // 00E1930C's command widgets. The page registry owns their layouts; this
+    // owner borrows the same widgets that the frontend renders.
+    std::unique_ptr<MainMenuCommandOwner> command_widgets;
     // Layout handles the press-start host hands back. Index 0 is reserved
     // because the native treats a null layout handle as absent.
     std::vector<GuiLayoutPage*> layout_handles{nullptr};
@@ -1068,6 +1072,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
         std::uint32_t update_virtual, bool is_press_start);
     // 00aa5840 for a screen's own layout, with the byte 004f83b0 would publish.
     void attach_page(MenuScreen& screen, const std::string& layout_name);
+    void initialize_command_widgets();
     void pump(float raw_delta);
     void advance_path(float raw_delta);
 };
@@ -3089,6 +3094,67 @@ void GameMenuHost::Impl::attach_page(MenuScreen& screen, const std::string& layo
     frontend.commit_page_visibility(*page, screen.flags != nullptr && screen.flags->active);
 }
 
+namespace {
+class MenuCommandWidgetReset final : public MainMenuCommandResetHost {
+public:
+    MenuCommandWidgetReset(MainMenuCommandOwner& owner, GameFrontendHost& frontend)
+        : owner_(owner), frontend_(frontend) {}
+    void set_widget_visible(std::uint16_t offset, bool visible) override {
+        auto* const widget = owner_.widget_at(offset);
+        if (widget == nullptr)
+            throw std::logic_error("command reset requires its loaded page widget");
+        frontend_.set_widget_visible(*widget, visible);
+    }
+private:
+    MainMenuCommandOwner& owner_;
+    GameFrontendHost& frontend_;
+};
+}
+
+void GameMenuHost::Impl::initialize_command_widgets() {
+    if (command_widgets) return;
+    // 004E3E27 constructs 00E1930C; OnInit publishes it and invokes its +10h
+    // before title entry. Admit its page/widget ownership here, before this
+    // host's first title entry. This is the page/reset subset of 0054C050,
+    // not a claim that its text-code/listener setup is implemented.
+    constexpr int slot = 0x58; // 0054A960, the command owner's registry ID
+    if (screen_at(slot) != nullptr)
+        throw std::logic_error("command widgets require their own registry slot");
+    auto owner = std::make_unique<MainMenuCommandOwner>();
+    auto& screen = add_screen(slot, "main_menu_commands", nullptr,
+        0x00549fc0u, 0x00549570u, 0x00549580u, false);
+    register_front_end_screen_004f71d0(world.screens, *screen.flags, slot);
+    ++summary.screens_registered;
+    attach_page(screen, "FE_helpline");
+    if (screen.pages.size() != 1)
+        throw std::logic_error("command widgets require FE_helpline");
+    owner->help_page_24 = screen.pages.back();
+    attach_page(screen, "_Buttonhelp");
+    if (screen.pages.size() != 2)
+        throw std::logic_error("command widgets require _Buttonhelp");
+    owner->button_page_28 = screen.pages.back();
+    auto* const frame = frontend.find_page_child(*owner->button_page_28, "button_FrameBox");
+    if (frame == nullptr)
+        throw std::logic_error("command widgets require button_FrameBox");
+    frontend.set_widget_visible(*frame, false); // 0054C050, before widget binding
+    for (std::size_t i = 0; i != main_menu_command_widget_bindings().size(); ++i) {
+        const auto& binding = main_menu_command_widget_bindings()[i];
+        auto* const page = binding.page_offset == 0x24
+            ? owner->help_page_24 : owner->button_page_28;
+        owner->widgets[i] = frontend.find_page_child(*page, std::string(binding.name));
+        if (owner->widgets[i] == nullptr)
+            throw std::logic_error("command widgets require their authored binding");
+    }
+    // 0054C050's final empty 0054B530 call starts with these two resets.
+    // Supply the actual retained widgets, not temporary visibility facts.
+    MenuCommandWidgetReset reset(*owner, frontend);
+    hide_main_menu_alternate_widgets_005495e0(reset);
+    hide_main_menu_glyph_widgets_005495a0(reset);
+    command_widgets = std::move(owner);
+    log.implemented("MainMenuCommandBar::hide_alternate_widgets", "005495e0");
+    log.implemented("MainMenuCommandBar::hide_glyph_widgets", "005495a0");
+}
+
 void GameMenuHost::Impl::pump(float raw_delta) {
     MenuCommitHost commit(*this);
     MenuPressStartHost press(*this);
@@ -3510,6 +3576,7 @@ bool GameMenuHost::mission_exit_finished() const noexcept {
 
 void GameMenuHost::run_title_init_004c9a70() {
     Impl& host = *impl_;
+    host.initialize_command_widgets();
     MenuCommitHost commit(host);
     MenuPressStartHost press(host);
     MenuFrameLayoutHost layouts(host);
