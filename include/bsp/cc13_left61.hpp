@@ -13,6 +13,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 
 namespace bsp::cc13_left61 {
 
@@ -44,8 +45,24 @@ struct BoxTransformHost {
                                               char normalize) = 0;
 };
 
-struct Left61Host : BoxTransformHost {
+// 00946FC0 needs only these services. The visitor supplies eligible units in
+// world-list order, with flight leaders replaced by their +9D4h squadron.
+// This is a Source interface, not the original register ABI or a raw overlay.
+struct TeamResourceBudgetHost {
+    virtual ~TeamResourceBudgetHost() = default;
+    virtual float support_points_total_00e0cfb4() = 0;
+    virtual void visit_live_resource_units(
+        const std::function<void(std::int32_t team, float resource_usage)>& visit) = 0;
+    virtual float queued_resource_usage_for_team_009469f0(std::int32_t team) = 0;
+};
+
+struct Left61Host : BoxTransformHost, TeamResourceBudgetHost {
     virtual ~Left61Host() = default;
+
+    float support_points_total_00e0cfb4() override;
+    void visit_live_resource_units(
+        const std::function<void(std::int32_t, float)>& visit) override;
+    float queued_resource_usage_for_team_009469f0(std::int32_t team) override;
 
     // --- CRT ------------------------------------------------------------
     // 00BF65AC operator delete(void*).
@@ -565,7 +582,7 @@ void spawn_member_pop_heap_00946ec0(std::uint8_t* first, std::uint8_t* last, Lef
 float player_support_points_00946f00(std::int32_t player, Left61Host& host);
 // 00946FC0 BSP_AiParty_AvailableResources, __fastcall(ECX = team), ST0: [00E0CFB4] * 0.5
 // minus +304h of every live unit of the team, minus 009469F0(team).
-float team_available_resources_00946fc0(std::int32_t team, Left61Host& host);
+float team_available_resources_00946fc0(std::int32_t team, TeamResourceBudgetHost& host);
 
 // 009473B0, __fastcall(ECX = std::pair<member*, member*>* out, EDX = first; last, pred),
 // RET 8: MSVC9 _Unguarded_partition with pred(a, b) = key(a) > key(b), key = class+0B0h.

@@ -3,6 +3,7 @@
 // address, the original ABI and every simplification next to it.
 
 #include "bsp/cc13_left61.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cstring>
 #include <string.h>
@@ -1313,18 +1314,39 @@ float player_support_points_00946f00(std::int32_t player, Left61Host& host) {
     return points - host.spawn_manager_player_usage_00946970(manager, player);
 }
 
-// 00946FC0. The cost test is UCOMISS/LAHF/TEST AH,44h/JNP: it skips only an
-// exact 0 (NaN is subtracted). The team is unit+54h.
-float team_available_resources_00946fc0(std::int32_t team, Left61Host& host) {
+float Left61Host::support_points_total_00e0cfb4() {
     float total;
-    const std::uint32_t bits = host.global_u32(kSupportPointsTotal);
+    const std::uint32_t bits = global_u32(kSupportPointsTotal);
     std::memcpy(&total, &bits, sizeof total);
-    float points = static_cast<float>(total * kHalf);
-    walk_live_units(host, [&](Raw unit) {
-        const float cost = unit.at<float>(0x304);
-        if (cost != 0.0f && unit.at<std::int32_t>(0x54) == team) points = points - cost;
+    return total;
+}
+
+void Left61Host::visit_live_resource_units(
+    const std::function<void(std::int32_t, float)>& visit) {
+    walk_live_units(*this, [&](Raw unit) {
+        visit(unit.at<std::int32_t>(0x54), unit.at<float>(0x304));
     });
-    return points - queued_resource_usage_for_team_009469f0(team, host);
+}
+
+float Left61Host::queued_resource_usage_for_team_009469f0(std::int32_t team) {
+    return cc13_left61::queued_resource_usage_for_team_009469f0(team, *this);
+}
+
+// 00946FC0..00947084, bsp.py show 00946fc0 --asm (Goal 5 chain 705).
+// The cost test is UCOMISS/LAHF/TEST AH,44h/JNP: it skips only exact zero
+// (NaN is subtracted). FSTP32 follows the initial multiply, every subtraction,
+// and the final FSUBR. The visitor narrows the former raw world-list service;
+// the body and the raw Left61 adapter still share this one accumulator.
+__declspec(noinline) float team_available_resources_00946fc0(
+    std::int32_t team, TeamResourceBudgetHost& host) {
+    float points = static_cast<float>(cc13x87::x87_mul24(
+        host.support_points_total_00e0cfb4(), kHalf));
+    host.visit_live_resource_units([&](std::int32_t unit_team, float cost) {
+        if (cost != 0.0f && unit_team == team)
+            points = static_cast<float>(cc13x87::x87_sub24(points, cost));
+    });
+    return static_cast<float>(cc13x87::x87_sub24(
+        points, host.queued_resource_usage_for_team_009469f0(team)));
 }
 
 // 009473B0. Written from the MSVC9 <algorithm> source, checked against the

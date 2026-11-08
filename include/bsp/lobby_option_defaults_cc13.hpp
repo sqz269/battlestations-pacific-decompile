@@ -103,9 +103,13 @@ void lobby_option_defaults_005e3290(const LobbyOptionRegistry& registry, const M
 }
 
 // The lobby state the image holds in globals and game fields. Only a --skirmish run under
-// kSkirmishSessionCc13Bound writes it, apart from 00E0C978 (below).
+// kSkirmishSessionCc13Bound writes it, apart from the scene-published
+// 00E0CFB4 and 00E0C978 fields below.
 struct LobbySessionState {
     LobbyOptionRegistry registry;
+    // Image .data starts at 2400; 005E2F00 publishes the current budget on
+    // every scene load, including the campaign arm that publishes no table.
+    float command_points_00e0cfb4{kLobbySettingsDefaultCommandPoints};
     // 00E1955C..00E19590, BSS: zero until a lobby writes it.
     std::array<std::int32_t, kLobbySettingsStoredOptionCount> stored_options_00e1955c{};
     std::int32_t selected_map_00e19594{0};  // 005E57DD: game+60Ch

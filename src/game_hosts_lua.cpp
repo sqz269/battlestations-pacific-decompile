@@ -17642,6 +17642,7 @@ public:
     }
     void publish_command_points(float value) override {
         command_points_ = value;
+        bsp::lobby_session_state().command_points_00e0cfb4 = value;
         log_.implemented("MissionLua::lobby_settings_command_points", "00e0cfb4");
     }
 
