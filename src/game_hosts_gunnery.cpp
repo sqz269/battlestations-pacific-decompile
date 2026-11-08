@@ -166,6 +166,7 @@
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
+#include "bsp/cc13_seg59b.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
@@ -19859,7 +19860,18 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
         for (int i = 0; i < 3; ++i) out[i] = target_pos[i] + rel_v[i] * t;
         done("GunBot::intercept_solution_00901c20", 0x00901c20u);
     };
-    if (units.unit_is_kind_of(target, 6)) {
+    // 008FE140 (bsp.py show): null -> null, otherwise vt[5Ch](6) decides
+    // whether the same entity is a ship. The body treats its entity as opaque;
+    // this view borrows the resolved live target index and the units host's
+    // recovered kind query. Its result replaces the inline kind-6 branch.
+    struct SeatTargetKindAccess final : bsp::cc13_seg59b::EntityKindAccess {
+        const GameUnitsHost& units;
+        explicit SeatTargetKindAccess(const GameUnitsHost& value) : units(value) {}
+        bool entity_is_kind_of_vt5c(void* entity, std::int32_t kind) override {
+            return units.unit_is_kind_of(*static_cast<const std::size_t*>(entity), kind);
+        }
+    } target_kinds(units);
+    if (bsp::cc13_seg59b::entity_as_kind06_or_null_008fe140(target_kinds, &target) != nullptr) {
         // 0095790E..009579AD: 00902290, then 00427C90 (hit - target), 004142E0
         // by the out matrix, and lead + that at 00957991..009579AD.
         struct LeadHost final : bsp::ShipTurnLeadHost {
