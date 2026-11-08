@@ -1,0 +1,68 @@
+{
+  "chain": 887,
+  "worker": "agent/g5-w2",
+  "base_head": "4301b06ffb843dfed252396e36dab0c414e8e947",
+  "picked": "Group pool 010902f4 slab-table capacity, reserve, grow and append over the canonical live +28h header",
+  "rows": [
+    {
+      "native": "00b8e8e0",
+      "status": "wired",
+      "host_site": "src/native_group_pool.cpp: reserve_native_group_pool_table_00b8ee50 and grow_native_group_pool_table_00b8e930, reached from NativeGroupPool::initialize_00b8f190 and allocate_raw_slot_00b8f310",
+      "original_abi": "ECX=three-DWORD table header; stack capacity; RET 4",
+      "called": true,
+      "note": "Newly reconstructed template-tagged helper; production ICF folds this with the equivalent Camera helper. The changed Group grow helper calls this address."
+    },
+    {
+      "native": "00b8e930",
+      "status": "wired",
+      "host_site": "src/native_group_pool.cpp: append_native_group_pool_table_00b8edc0 on the full-table branch of NativeGroupPool::allocate_raw_slot_00b8f310",
+      "original_abi": "ECX=three-DWORD table header; no stack arguments; RET 0",
+      "called": true,
+      "note": "Specializes the existing shared-shape grow reconstruction; the legacy scene_graph2 dispatcher delegates to this single implementation."
+    },
+    {
+      "native": "00b8edc0",
+      "status": "wired",
+      "host_site": "src/native_group_pool.cpp: NativeGroupPool::allocate_raw_slot_00b8f310, replacing its inline slab-table grow/copy/append",
+      "original_abi": "ECX=three-DWORD table header; stack pointer to slab-pointer cell; RET 4",
+      "called": true,
+      "note": "Specializes the existing shared-shape append reconstruction. The optimized executable exposes the changed call from allocate_native_group_slot_00b8f450 after inlining the raw-slot member."
+    },
+    {
+      "native": "00b8ee50",
+      "status": "wired",
+      "host_site": "src/native_group_pool.cpp: NativeGroupPool::initialize_00b8f190, replacing its inline reserve of the binary's constant 32 pointer entries",
+      "original_abi": "ECX=three-DWORD table header; stack unsigned capacity; RET 4",
+      "called": true,
+      "note": "Newly reconstructed template-tagged helper; production ICF folds this with the equivalent Camera helper. The changed Group constructor calls this address."
+    }
+  ],
+  "real_state": {
+    "owner": "Existing GameNativeResourcePoolProcess::group_pool_010902f4, shared by GUI Group, Node and Page consumers",
+    "header": "Borrowed bytes of NativeGroupPoolStorage::slabs_28, slab_count_2c and table_capacity_30; no copied header or second owner",
+    "producer": "Existing initialize_static_native_group_pool_00cd8460 and NativeGroupPool::initialize_00b8f190",
+    "allocation_path": "GUI page load -> allocate_native_group_slot_00b8f450 -> allocate_raw_slot_00b8f310 -> append -> grow -> capacity",
+    "preserved": "Capacity publication before CRT new-handler allocation; wrapped DWORD allocation sizes; live count/data after allocator reentrancy; old table free before pointer publication; append source-cell read after growth; count increment after copy; existing lock and unwind boundaries",
+    "removed": "The old inline constructor reserve and allocator grow/copy/append operations"
+  },
+  "verification": {
+    "strict_win32_build": "scripts/build.ps1 passed; all four CTests passed",
+    "focused_local_probe": "local/c887-table-probe.cpp compiled with MSVC Win32 /W4 /WX and /MANIFEST:EMBED; passed no-shrink reserve, growth from 32 to 66 slab entries, preservation of all 1025 slot slab identities, capacity-before-allocation failure observed by the CRT new handler, slot returns, slab trim and allocator-list teardown",
+    "call_graph": "python tools/call_graph.py and who for all four addresses: REACHABLE with calls from changed Group functions; capacity/reserve have equivalent Camera ICF aliases",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost application initialization -> GameFrontendHost raw startup -> GameNativeGuiPageApplication::load_page_00aa5840 -> allocate_native_group_slot_00b8f450 -> append_native_group_pool_table_00b8edc0",
+    "readiness_before": 10739,
+    "readiness_after": 10741,
+    "readiness_note": "Two existing reconstructed grow/append rows moved to wired. The two newly recovered capacity/reserve functions retain their template tags and are omitted from the scored readiness pool; all four have entry-reachable executable calls.",
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "evidence": [
+    "bsp.py show and --asm for 00b8e8e0, 00b8e930, 00b8edc0 and 00b8ee50",
+    "bsp.py show 00b8f190 and 00b8f310 for inline reserve/append host replacements",
+    "Local skips search found no previous skips for the four selected addresses",
+    "Ghidra /battlestationspacific.exe verified by live proto queries; reviewed names and comments applied under the write lock, previous annotations recorded in local/ghidra-annotations-20261108T145040Z.json; project saved and four affected exports refreshed"
+  ],
+  "coordination": "Group files and addresses leased; scene_graph2 shared dispatcher queued behind PointLight, Model and Mesh edits. Changes there are confined to a Group header include and Group-only dispatcher delegation.",
+  "left": "No additional Group table implementation required. Original register ABI, full retail execution and gameplay remain unvalidated; no game launch was performed under the worker contract."
+}
