@@ -1,0 +1,263 @@
+{
+  "goal": 5,
+  "chain": 688,
+  "slot": "g5-w2",
+  "base": "eef20bf4087d2d350544b71784b9f88d4e952eb6",
+  "summary": "Route live sound-cache append growth through the sole 00A84450 reserve body and its existing 00A843A0 copy body, adapting both C++ interfaces to actual SoundResourceOwner records.",
+  "rows": [
+    {
+      "native": "00a843a0",
+      "status": "wired",
+      "host_site": "src/sound_cc13.cpp::sound_cache_records_reserve_00a84450",
+      "evidence": "Call 105F3700 from the actual occupied cache-growth loop; reconstructed entry kept out of line in the optimized game build."
+    },
+    {
+      "native": "00a84450",
+      "status": "wired",
+      "host_site": "src/sound_resource_cache.cpp::append_sound_resource_cache_record_00a84530 (inlined in load_sound_resource_00a84740)"
+    },
+    {
+      "native": "00a845a0",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cleanup.cpp::shrink_sound_resource_cache_records_00a845a0_fragment",
+      "reason": "The live owner already uses the shrink-only reconstruction; the native grow arm has no caller in this teardown path."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp::gui_text_accepts_input_char_00ab6d30",
+      "reason": "No concrete live input-character GuiLeafHost consumer with its text-context font was established; constant probe bytes do not supply game input state."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::order_cautious_move_00a2ccf0",
+      "reason": "Its only current host caller passes ratio=1.0, which cannot select CAUTIOUSMOVE; a genuine producer selecting that command arm is missing."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::make_command_target",
+      "reason": "The literal command-target initializer needs genuine runtime publication of writable native cells F87574/F87578/F8757C; the host uses semantic SceneCommandTarget state."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::capture planning",
+      "reason": "No native candidate score-table owner and gameplay consumer was established; the earlier documented table reader is a debug overlay, excluded from this task."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::capture planning",
+      "reason": "No live native score-list entries exist here to mark as chosen, independently of the excluded debug-overlay table."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::defend member collection",
+      "reason": "The host already calls this body on the real member-kind and objective-set state; adding a repeated call would not be new wiring."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg69.cpp::ai_command_find_nearest_enemy_group_00a13080",
+      "reason": "No live group_recon_ratio_00a2c3d0 adapter with real per-member recon values was established for this raw command graph."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_report.cpp::collision reporting",
+      "reason": "The chosen host callback has no admitted native shape/owning-body/world-lock binding for this raw mask-and-manifold operation in this packet."
+    },
+    {
+      "native": "00c4b9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_report.cpp::collision reporting",
+      "reason": "A real native manifold record and its collision-pass ownership were not established at this host site in this packet."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::LandFort fire effects",
+      "reason": "The host records D1h synchronization but no retained native message context and dispatch/serialization owner was established for the full constructor."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "The live firepower adapter explicitly has no producer of the native ammo+48h alternate record."
+    },
+    {
+      "native": "00815010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::pass-side neighbour delivery",
+      "reason": "This host uses unit registry identities and unit_is_kind_of; an actual native entity with a callable class interface for the raw narrowing body was not established."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "Mission Lua runs on the main thread; there is no frame-job-thread deferred node or real source LuaVariantRecord argument vector to copy."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::Lua global baseline capture",
+      "reason": "This site captures the pre-script baseline with 004D30F0; the 004D32A0 occurrence is a teardown comment, not a replacement call site."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::deferred entity event drain",
+      "reason": "This file drains events and does not supply the original raw event-queue insertion storage/producer; its address occurrence is explanatory."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::WeaponDirector initialization",
+      "reason": "The native owner+28h endpoint and tick-parent/controller backing required by the base constructor were not established for the semantic host director."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::ai_group_forward_command",
+      "reason": "The entity-order adapter currently has no AI group, so its forwarding callback has no live native group+564Ch command owner."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::notify_command_target/report_target_event",
+      "reason": "The adapter records these events without the Seg62Host reporter/channel/observed-entity dispatch ownership needed by the reconstructed reporter."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/mission_scene_load.cpp::gui_set_enabled epilogue",
+      "reason": "No admitted animated-value owner/current and forward/backward endpoint binding was established for the stop-and-reselect operation."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB10.cpp::HUD map pointer state",
+      "reason": "No admitted current animated-value object and target/notification virtual-call binding was established at the host pointer-state site."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/net_entity_create_cc13.cpp::entity-create serialization",
+      "reason": "Its identified original consumer is replication entity-create construction; no single-player consumer of the member+4h XYZ lanes was established, and its miss arm requires unbound native DATA."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship initialization",
+      "reason": "The native caller reads Rudder from a saved-entity kind-3 Lua record; this host creation path supplies a kind-1 property bag, so that genuine saved-rudder producer remains missing."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp::engine_sound_step_007de490",
+      "reason": "A live plane-engine sound instance/channel owner with genuine pitch/volume targets and rates was not established in this packet."
+    },
+    {
+      "native": "007f0f80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp::dogfight approach observer member initialization",
+      "reason": "No live native dogfight member owner, endpoint publication cells and retained observer lifetime were established at this caller."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path message handling",
+      "reason": "The live sender supplies presence-one additions; a presence-zero removal producer and retained per-director-slot path owners are still needed."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "No live descriptor initialization site with the genuine ordinal publication cell was established during this packet."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/pool_pool06_cc13.cpp::convex_object_compute_box_006f9ee0",
+      "reason": "The baseline built graph already reports a reachable call from convex_object_compute_box_006f9ee0; no new wiring was needed."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp / src/avoid_zone_geometry.cpp",
+      "reason": "The baseline graph already reports reachable calls from ship_ai_avoid_query_refresh_009d7050 and avoid_zone_point_offset_00417580."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp::publish_and_update",
+      "reason": "The existing retained-sound update already calls this body with the live channel, retained sample and computed gain; duplicating it would not replace logic."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp::place_marker",
+      "reason": "The current marker path culls centers against the same clip rectangle before a clamp could act; an appropriate unclipped-marker producer was not established."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::mission camera",
+      "reason": "The live mission camera is a different projection; no MovCamZoom owner and original zoom-command producer were established."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::mission camera",
+      "reason": "No live MovCamAngles owner and original wrap/clamp caller adapter were established."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp::command_menu_sort_006f7c20",
+      "reason": "No live command-menu key-list owner and consumer were established in this packet."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "The baseline graph already reports this existing live parsed-property insertion call; no new wiring was needed."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "The existing insertion dispatcher already calls this body with the parsed integer payload; no duplicate producer was added."
+    },
+    {
+      "native": "008f38a0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "The existing insertion dispatcher already calls this body with the decoded string; no duplicate producer was added."
+    },
+    {
+      "native": "008f3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "The existing insertion dispatcher already calls this body with the parsed boolean byte; no duplicate producer was added."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release passed; all 4 CTest checks passed, including one focused occupied-cache growth regression.",
+    "call_graph": "00A84450 reachable: call 10669BBE from load_sound_resource_00a84740 after append inlining. 00A843A0 reachable: call 105F3700 from sound_cache_records_reserve_00a84450. Both paths reach GameStartupHost through GameSoundRuntime.",
+    "baseline_text_wired": 10444,
+    "baseline_entry_reachable_addresses": 5345,
+    "after_text_wired": 10445,
+    "after_entry_reachable_addresses": 5346,
+    "float_math_changed": false,
+    "game_launched": false
+  },
+  "limits": [
+    "Normal-value standard-container projection; not native 2Ch memory layout, allocator/OOM/overflow/FH3 or original ABI proof.",
+    "No game runtime validation; executable call graph and synthetic growth fixture only."
+  ],
+  "left": "Raw default/pop/erase record APIs retain their separate native-storage contracts. Native allocator/OOM/FH3/ABI equivalence and saved-game/other host producer gaps remain for later packets."
+}
