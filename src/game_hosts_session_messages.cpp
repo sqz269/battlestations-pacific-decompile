@@ -444,6 +444,31 @@ static_assert(offsetof(CommandBuildingMessage24, value_20) == 0x20);
 cc13_seg33b::Object command_building_object(CommandBuildingMessage24& message) noexcept {
     return reinterpret_cast<cc13_seg33b::Object>(&message);
 }
+
+// 00780120 asks the decoded object's vtable[0Ch] in this order. Keep the
+// predicate's first match as the receiver decision, rather than assuming the
+// receiver from the sender API. 00780636's 59h arm enters 00721A40, whose
+// mutable +10h kind then selects the director payload arm.
+template <class IsType>
+EntityMessageReceiver local_message_receiver(IsType is_type) {
+    static constexpr std::uint8_t kLadder[] = {0x4B, 0x4C, 0x57, 0x4E, 0x4F, 0x50,
+                                               0x51, 0x52, 0x97, 0x58, 0x59};
+    MessageIsATest is_a{};
+    for (const std::uint8_t id : kLadder) {
+        if (!is_type(id)) continue;
+        is_a.ids[is_a.count++] = id;
+        break;
+    }
+    return receiver_for_message_00780120(is_a);
+}
+
+template <class IsType>
+void require_local_director_route(std::uint8_t decoded_type, std::uint8_t expected_type,
+    IsType is_type) {
+    if (local_message_receiver(is_type) != EntityMessageReceiver::kWeaponDirector
+        || decoded_type != expected_type)
+        throw std::logic_error("decoded message did not select its weapon-director arm");
+}
 }  // namespace
 
 HostSessionMessages::HostSessionMessages() : image_(std::make_unique<Image>()) {}
@@ -620,6 +645,11 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
         [](NativeSessionMessage95* message) { delete_native_session_message95_0071e3f0(message, 1u); });
     construct_native_session_message95_0075b100(queued.get(), image.context95, image.profile95);
     read_native_session_message95_0071cd30(queued.get(), &stream.in, image.context95);
+    // Evidence: bsp.py show 0071CC70 and 00780120. The actual 5Fh class
+    // accepts the ladder's 59h; only that receiver may consume its +2Ch/XYZ.
+    require_local_director_route(queued->header.base.type_10, 0x5f, [](std::uint32_t type) {
+        return native_session_message_is95_0071cc70(type);
+    });
     return queued;
 }
 
@@ -1235,6 +1265,10 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
     NativeSessionMessage90& queued = owner.get();
     construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
     read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
+    // 0071C640's class predicate selects 00780120's 59h director receiver.
+    require_local_director_route(queued.header.base.type_10, 0x5a, [](std::uint32_t type) {
+        return native_session_message_is90_0071c640(type);
+    });
     const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
     destroy_native_session_message90_0071c720(&sent);
     return copy; // owner runs 0071E370(1); the sender stays a stack object.
@@ -1272,6 +1306,10 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     NativeSessionMessage93& queued = owner.get();
     construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
     read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
+    // 0071C770's class predicate selects 00780120's 59h director receiver.
+    require_local_director_route(queued.header.base.type_10, 0x5d, [](std::uint32_t type) {
+        return native_session_message_is93_0071c770(type);
+    });
     const ClearCommandCopy copy{queued.flag_20, queued.value_24};
     destroy_native_session_message93_0071c820(&sent);
     return copy; // owner runs 0071E390(1); no second queued-object teardown.
@@ -1513,14 +1551,7 @@ namespace {
 // function's, in its order.
 template <class IsType>
 bool copy_goes_to_unit_handler(IsType is_type) {
-    static constexpr std::uint8_t kLadder[] = {0x4B, 0x4C, 0x57, 0x4E, 0x4F, 0x50,
-                                               0x51, 0x52, 0x97, 0x58, 0x59};
-    MessageIsATest is_a{};
-    for (const std::uint8_t id : kLadder) {
-        if (!is_type(id)) continue;
-        if (is_a.count < static_cast<int>(sizeof is_a.ids)) is_a.ids[is_a.count++] = id;
-    }
-    return receiver_for_message_00780120(is_a) == EntityMessageReceiver::kSessionKindSwitch;
+    return local_message_receiver(is_type) == EntityMessageReceiver::kSessionKindSwitch;
 }
 }  // namespace
 
