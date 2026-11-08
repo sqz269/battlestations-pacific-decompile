@@ -7,6 +7,7 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/cc13_powerup.hpp"
 #include "bsp/powerup_seg58_argon.hpp"
+#include "bsp/multiplayer_session_cc13.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -66,6 +67,8 @@ struct HostSessionMessages::Image {
     // bsp.gpr /battlestationspacific.exe, 00E17669: initial NUL byte.
     // The power-up profiles borrow this fallback; a zero-peer send runs no codec.
     const char powerup_empty_00e17669{};
+    // Distinct fallback role; original F1AF25 starts with NUL as well.
+    const char scene_empty_00f1af25{};
     const SessionParticipantPools* vehicle_race_participants{};
     const std::size_t* vehicle_race_local_slot{};
 
@@ -539,6 +542,28 @@ private:
     const std::uint32_t* profile_;
     bool string_started_{};
 };
+}
+
+void HostSessionMessages::broadcast_scene_index(std::uint32_t index, std::string_view name,
+    std::uint64_t content_mask, const SessionParticipantPools& participants,
+    const std::size_t& local_slot) const {
+    Image& image = *image_;
+    NativeSessionMessageParticipantOwner selected(participants, local_slot);
+    const NativeSessionMessageContext session{image.current_game, &selected};
+    auto& process = game::game_native_string_process();
+    const NativeSessionMessage09Profile profile(process.raw_context(), &image.scene_empty_00f1af25);
+    const mp_cc13::SceneIndexBuildContext context{session, process.strings(), profile};
+    const mp_cc13::SceneIndexNameView header{static_cast<std::uint32_t>(name.size()), name.data()};
+    NativeSessionMessage09 message;
+    // 00772390 reads the authoritative scene selection and game+2060h/+2064h,
+    // calls 00771190, then owns this stack packet through 007662A0. The native
+    // +24h retained DWORD and base padding remain uninitialized, as in the image.
+    mp_cc13::build_scene_index_00771190(message, index, &header,
+        static_cast<std::uint32_t>(content_mask), static_cast<std::uint32_t>(content_mask >> 32),
+        context);
+    // The existing host-only transport has no recipients; no read/receive or
+    // local scene-selection replay belongs to this broadcast.
+    destroy_native_session_message09_007662a0(&message, process.raw_context(), profile);
 }
 
 bool HostSessionMessages::broadcast_powerup_item(std::int32_t slot,

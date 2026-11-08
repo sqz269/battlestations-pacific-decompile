@@ -9,6 +9,7 @@
 #include "bsp/native_smoothed_remainder_triplet.hpp"
 #include "bsp/net_entity_create_cc13.hpp"
 #include "bsp/session_message_dispatch.hpp"
+#include "bsp/native_session_message_tags_09_10_11.hpp"
 
 // Multiplayer session plumbing in partition segment 43 (0076AA00..00787040):
 // the session receive ladder 00777850, the message-type name table 00E0AB68,
@@ -22,8 +23,9 @@
 // handler here is __thiscall with ECX = session. Names are hypotheses, except
 // the MT_* identifiers, which are read from the image's own table 00E0AB68.
 //
-// These are valid-state projections over a host interface, not native layouts
-// or drop-in ABI replacements; only VoiceMuteTable is a byte-exact layout.
+// Most types are valid-state projections over a host interface. VoiceMuteTable
+// and SceneIndexMessage have native layouts; these are still C++ service APIs,
+// not drop-in original ABI replacements.
 namespace bsp::mp_cc13 {
 
 // ---------------------------------------------------------------------------
@@ -788,15 +790,23 @@ SceneNameMessage build_scene_name_00770ff0(std::uint32_t index, const std::strin
 
 // 00771190 __thiscall(msg, index, &name, word_28, word_2c), RET 10h:
 // MT_SCENEIDX, name at +18h, index at +20h, words at +28h/+2Ch.
-struct SceneIndexMessage {
-    std::uint32_t vtable{kVtableSceneIdx09};
-    std::string name_18;
-    std::uint32_t index_20{0};
-    std::uint32_t word_28{0};
-    std::uint32_t word_2c{0};
+using SceneIndexMessage = NativeSessionMessage09;
+// Borrowed native 8h header. No independent name buffer or string lifetime.
+struct SceneIndexNameView {
+    std::uint32_t length;
+    const char* data;
 };
-SceneIndexMessage build_scene_index_00771190(std::uint32_t index, const std::string& name,
-                                             std::uint32_t word_28, std::uint32_t word_2c);
+static_assert(sizeof(SceneIndexNameView) == 8);
+static_assert(offsetof(SceneIndexNameView, data) == 4);
+struct SceneIndexBuildContext {
+    const NativeSessionMessageContext& session;
+    // Must borrow the same raw publication cells as profile.strings.
+    NativeStringStorage& strings;
+    const NativeSessionMessage09Profile& profile;
+};
+SceneIndexMessage& build_scene_index_00771190(SceneIndexMessage&, std::uint32_t index,
+    const void* actual_name_header, std::uint32_t word_28, std::uint32_t word_2c,
+    const SceneIndexBuildContext&);
 
 // The scene list as 007717A0 walks it: game+5F0h entries of the list at
 // game+5F4h (node+4h next, node+8h record), record+90Ch name, +920h second.
@@ -814,6 +824,7 @@ struct SceneListView {
 };
 struct RefreshSceneHost {
     virtual ~RefreshSceneHost() = default;
+    virtual const SceneIndexBuildContext& scene_index_build_context() = 0;
     // 00770B50 then the inline destructor (BSP_SessionMessage08/09_Destroy).
     virtual void send_scene_name(void* peer, const SceneNameMessage& message) = 0;
     virtual void send_scene_index(void* peer, const SceneIndexMessage& message) = 0;

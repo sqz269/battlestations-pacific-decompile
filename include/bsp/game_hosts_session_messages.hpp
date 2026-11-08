@@ -21,6 +21,7 @@
 #include "bsp/native_session_message_tags_94_to97.hpp"
 #include <cstdint>
 #include <memory>
+#include <string_view>
 
 namespace bsp::game {
 struct GunAimMessage79;
@@ -85,6 +86,11 @@ public:
         std::int32_t operation, const SessionParticipantPools&, const std::size_t& local_slot) const;
     bool broadcast_powerup_modifier(const game_powerups::PowerupModifier&,
         std::int32_t operation, const SessionParticipantPools&, const std::size_t& local_slot) const;
+    // 005D62B0 -> 00772390 builds 00771190 on the stack, broadcasts to the
+    // host-only transport's zero peers, then destroys the native owned name.
+    void broadcast_scene_index(std::uint32_t index, std::string_view name,
+        std::uint64_t content_mask, const SessionParticipantPools&,
+        const std::size_t& local_slot) const;
 
     // MT_GAMEUNIT_SETCMD: 0071C830 at 0071ED6C over a stack message, then
     // 0076E520's local copy (0071C930 write, 00768530 type byte and rewind,
