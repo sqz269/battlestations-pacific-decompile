@@ -891,7 +891,7 @@ struct GameCommandsHost::Impl {
     bool apply_clear_command(std::size_t unit_index, bool player_controlled,
                              const bsp::ClearCommandMessage& message);
     // 00721A40's 5Fh arm with the presence byte set, 007207C0.
-    void apply_user_path_point_007207c0(std::size_t unit_index, const float point[3],
+    void apply_user_path_point(std::size_t unit_index, const float point[3],
                                         bool outside_map);
 };
 
@@ -2616,7 +2616,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             if (queued && queued->present_2c != 0) {
                 float point[3];
                 std::memcpy(point, queued->vector_20, sizeof point);
-                apply_user_path_point_007207c0(message.unit, point,
+                apply_user_path_point(message.unit, point,
                     message.user_outside_map);
             }
         }
@@ -2655,11 +2655,11 @@ void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
     if (queued->present_2c != 0) {
         float decoded_point[3];
         std::memcpy(decoded_point, queued->vector_20, sizeof decoded_point);
-        host.apply_user_path_point_007207c0(unit_index, decoded_point, outside_map);
+        host.apply_user_path_point(unit_index, decoded_point, outside_map);
     }
 }
 
-void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_index,
+void GameCommandsHost::Impl::apply_user_path_point(std::size_t unit_index,
     const float point[3], bool outside_map) {
     namespace gp = bsp::gameplay_seg38_cc13;
     namespace path46 = bsp::gameplay_seg46_cc13;
@@ -2758,11 +2758,21 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
     ChainState chain{*this, units[unit_index], director, nullptr, nullptr, 0.0f,
         bsp::SceneCommandTarget{}, 0u, 0u};
     DirectorBinding binding(chain);
-    if (start_new && !binding.command_accepted(gp::kCmdMoveOnPath)) {
+    // bsp.py show 007207c0 --asm: 007207CC..007207DC queries vtable[34h]
+    // only for a new path; 0072080B..00720816 passes replace=1 and the first
+    // empty slot, while 0072083F..00720846 appends to the last occupied slot.
+    // command_accepted reads this director without changing its queue. The
+    // ownership guard above makes either selected path slot 0, whose retained
+    // object and live owner position are used by 0071FDE0 below.
+    const bool can_push = start_new && binding.command_accepted(gp::kCmdMoveOnPath);
+    const auto plan = gp::apply_add_user_path_point_007207c0(
+        queue, start_new, can_push);
+    done("WeaponDirector::apply_add_user_path_point", 0x007207c0u);
+    if (!plan.add) {
         record("WeaponDirector::user_path_refused_00835e90", 0x007207dcu);
         return;
     }
-    if (start_new) {
+    if (plan.replace) {
         // An empty queue has a fresh slot-0 path after the native clear
         // cycle. Reconstruct that lifetime before accepting its new point.
         director.user_path_object = gp::director_path_object_construct_0071fb90(
@@ -2771,20 +2781,20 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
     auto& path = *director.user_path_object;
     path.points_40.clear();
     for (const auto& p : director.user_points) path.points_40.push_back({p[0], p[1], p[2]});
-    if (!start_new && director.path_user) path.cursor_18 = director.path_cursor.index_08;
+    if (!plan.replace && director.path_user) path.cursor_18 = director.path_cursor.index_08;
     const bsp::WorldMapBounds& bounds = *user_path_world_bounds;
     const path46::WorldBounds711c erase_bounds{bounds.north_west[0], bounds.north_west[2],
         bounds.south_east[0], bounds.south_east[2]};
     const bsp::cc13_sys::WorldBoundsXZ clip_bounds{bounds.north_west[0], bounds.north_west[2],
         bounds.south_east[0], bounds.south_east[2]};
     gp::AddPointInputs input;
-    input.replace = start_new;
+    input.replace = plan.replace;
     input.cursor_18 = path.cursor_18;
     input.owner_position = live_owner_position;
     input.session_mode = session_mode_1fe4();
     // 0071FE60..0071FE95 preserves the first point before bounds erasure;
     // the replacement path has already been cleared at that native site.
-    const gp::Vec3f first = start_new || path.points_40.empty()
+    const gp::Vec3f first = plan.replace || path.points_40.empty()
         ? gp::Vec3f{} : path.points_40.front();
     const auto result = gp::director_path_add_point_0071fde0(path.points_40,
         {point[0], point[1], point[2]}, input,
