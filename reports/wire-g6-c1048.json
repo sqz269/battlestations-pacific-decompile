@@ -1,0 +1,89 @@
+{
+  "goal": 6,
+  "chain": 1048,
+  "owner": "agent/g6-w1",
+  "candidate": "game_hosts_mission.cpp",
+  "tier": 1,
+  "result": "partial_object_built; offered gaps remain unwired",
+  "rows": [
+    {
+      "native": "00584f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::build_single_player_page",
+      "reason": "climb: 00584F50 needs MainMenuScreen +1B8h Listbox/+238h Text row template <- FE_main_listbox loaded by 005861B0 <- main-menu screen registration; page/widget producer and +414h text helper are now built, but this partial climb has not yet supplied canonical Listbox/Text row construction, 005966F0 selection callbacks and the 00E1930C command-bar bridge. The existing callback remains explicitly unimplemented."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::mission_detail_back",
+      "reason": "climb: 00599340 needs 00597870 mission-list builder <- same +1B8h Listbox/+238h Text row owner <- FE_main_listbox/005861B0 registration; retained page/widget producer is now built, but canonical row/selection/profile bindings for Cc13SweepB8Host remain unfinished. Its point-vector producer 004215D0 is only an analyzed library contract, with no address-named reconstruction."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: LobbyEventHost briefing_set_mission_data_0051dce0; no concrete host",
+      "reason": "climb: 0051DCE0 needs the distinct BriefingScreenState at manager+64h <- 005C5600 mission-tree launch <- 005C57D0 activation, neither a reached launch host nor a consumer of the chosen main-menu list object. The other caller 005E4490 belongs to multiplayer lobby handling. Examined and excluded from this shared-object climb; no stand-in call was added."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "MainMenuScreen FE_main_listbox page and embedded text-layout owner",
+      "where": "src/game_hosts_mission.cpp:979",
+      "type": "GuiLayoutPage borrowed from GameFrontendHost; MainMenuTextLayout typed view of screen+414h",
+      "constructor": "005902E0 is the original 578h screen constructor; 005861B0 produces its page/widget bindings; existing 00543710 initializes the retained embedded text helper",
+      "producers": [
+        "0058621C: 00AA5840 loads FE_main_listbox into screen+470h before the world-map and briefing pages; GameMissionHost::bind_main_menu_layout_005861b0 now performs that load",
+        "00587B0A..00587DE7: existing 00AA7E00 direct-child lookup binds the list groups, Main_Listbox/Sub_Listbox and their own MainListbox_Text templates from the same authored GUI graph",
+        "00587D80: existing resolved_position reads the actual Main_Listbox position into the retained +558h/+55Ch/+560h view",
+        "00588241: existing initialize_main_menu_text_00543710 receives TextBox_Group, TextBox_Text, 32 and the binary's gray/white/dark color quartets",
+        "005905E0: the menu screen collector borrows the same loaded +470h page instead of collecting the separate FE_main background",
+        "0058CD9E..0058CE05: the existing mission-detail caller now reads and restores the actual bound listbox transform instead of returning zero and logging its movement",
+        "00686C90 main-menu destruction at the existing mission-load handoff hides +470h together with the existing +2F0h/+244h/+248h roots"
+      ],
+      "native_fields": [
+        {"offset": "470h", "width": 4, "meaning": "FE_main_listbox page pointer"},
+        {"offset": "1B8h", "width": 4, "meaning": "Main_Listbox pointer"},
+        {"offset": "238h", "width": 4, "meaning": "Main_Listbox/MainListbox_Text row template pointer"},
+        {"offset": "23Ch", "width": 4, "meaning": "Sub_Listbox pointer"},
+        {"offset": "240h", "width": 4, "meaning": "Sub_Listbox/MainListbox_Text pointer"},
+        {"offset": "3BCh", "width": 4, "meaning": "ListBox_Group pointer"},
+        {"offset": "3C0h", "width": 4, "meaning": "SmallListBox_Group pointer"},
+        {"offset": "3DCh", "width": 4, "meaning": "embedded +3C4h list helper's group pointer; row cloning remains unfinished"},
+        {"offset": "41Ch", "width": 4, "meaning": "embedded +414h text helper's TextBox_Group pointer"},
+        {"offset": "420h", "width": 4, "meaning": "embedded text helper's TextBox_Text pointer"},
+        {"offset": "558h/55Ch/560h", "width": 4, "meaning": "three captured float32 position components"},
+        {"offset": "row+D8h", "width": 4, "meaning": "00584F50 row command index; canonical row producer still required"},
+        {"offset": "row+77h", "width": 1, "meaning": "00584F50 hidden flag; canonical row producer still required"},
+        {"offset": "Listbox+104h", "width": 4, "meaning": "native row count; no second semantic count was invented"},
+        {"offset": "Listbox+149h/14Ah", "width": 1, "meaning": "page-builder flags; canonical Listbox field owner still required"}
+      ],
+      "rows": ["00584f50", "00599340"],
+      "climb": [
+        "00584F50 <- Main_Listbox and Text row template <- FE_main_listbox/005861B0 <- MenuManagerHost::register_screen (reached host phase; page and embedded text helper built)",
+        "00599340 <- 00597870 <- same Listbox/Text row owner <- FE_main_listbox/005861B0 (page built; native row and selection/profile adapters unfinished)",
+        "MainMenuTextLayout +414h <- existing 00543710 <- 00588241 in layout binding <- reached menu registration (complete initializer call, new C++ interface only)"
+      ],
+      "remaining": [
+        "Actual Listbox companion constructed by existing 00A9DF40 and property-bound by existing read_native_listbox_properties_00A9E400, with the same GUI owners/rows and no copied list count",
+        "Actual Text row default/copy factory through 00AA1380/00ABB2C0 and 00AAB4C0, with real text/model/lifetime providers; do not substitute clone_runtime_widget or manufactured native bytes",
+        "00541B80 list-helper row cloning and native count/spacing initialization; only its already-produced group pointer was bound here",
+        "005966F0 selection listener and 00E1930C command-bar services over the existing GameMenuHost command owner",
+        "Concrete 00597870 Cc13SweepB8Host mission/profile/vector producers before wiring 00599340"
+      ]
+    }
+  ],
+  "verification": {
+    "baseline": "dd3b00472d; index fresh; scripts/build.ps1 passed all four checks",
+    "build": "scripts/build.ps1 passed all four checks after the object changes",
+    "call_graph_before": {"called": 5761, "reconstructed": 6475},
+    "call_graph_after": {"called": 5762, "reconstructed": 6476},
+    "offered_gaps_wired": 0,
+    "new_reached_initializer": "00543710: call_graph.py who shows one reachable call from GameMissionHost::bind_main_menu_layout_005861b0; path reaches WinMainCRTStartup through MenuManagerHost::register_screen",
+    "runtime": "No game run; build/call-graph evidence only. Canonical native Text/Listbox ownership and original ABI are not claimed."
+  },
+  "coordination": {
+    "packet": "g6-w1",
+    "dependency_lease": "src/game_hosts_menu.cpp was initially held by agent/g6-w12; foreground retry succeeded before any edits to that file",
+    "integration": "Worker branch only; no merge, rebase or push"
+  }
+}

@@ -260,10 +260,12 @@ public:
     // this host. See NativeMissionPictureLoader in game_hosts_mission.cpp.
     void bind_native_mission_pictures(GameNativeRendererApplication&);
     void load_mission_tree_005caaf0();
-    // 005861b0, the main-menu screen's slot +14h override: FE_worldmap_historical,
-    // FE_briefing_grid and FE_briefing, and the fourteen widget handles 0058c010
-    // drives. `page` is the screen's own FE_main, already loaded by the caller.
+    // 005861b0, the main-menu screen's slot +14h override: retains FE_main_listbox,
+    // FE_worldmap_historical, FE_briefing_grid and FE_briefing and their widget
+    // bindings. `page` is the separate FE_main background loaded by the caller.
     void bind_main_menu_layout_005861b0(GuiLayoutPage* main_page);
+    // Borrow the same screen+470h page for 005905E0's active-page collector.
+    GuiLayoutPage* main_menu_listbox_page() const noexcept;
     // 00584ae0's seven list entries, with the locale text of each label id.
     void build_top_level_page_00584ae0();
 
