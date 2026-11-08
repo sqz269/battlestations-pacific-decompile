@@ -1,0 +1,223 @@
+{
+  "run": 1724,
+  "goal": 5,
+  "chain": 802,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "base_head": "e8a980ad4c",
+  "picked": "Deferred-hit queue lazy native lock, exception cleanup, and registered shutdown retirement",
+  "rows": [
+    {
+      "native": "00924990",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::queue_deferred_hit -> NativeDeferredEntityEventQueueGuard"
+    },
+    {
+      "native": "00924200",
+      "status": "wired",
+      "host_site": "src/entity_mission_seg60_argon.cpp: ProcessDeferredEventLockServices::deferred_entity_event_lock_construct_00924200"
+    },
+    {
+      "native": "00923680",
+      "status": "wired",
+      "host_site": "src/cc13_seg49_seg60.cpp: deferred_entity_event_lock_construct_00924200 C++ exception cleanup"
+    },
+    {
+      "native": "00925740",
+      "status": "wired",
+      "host_site": "src/native_singleton_destruction.cpp: delete_legacy_current_profile D190C8 -> retire_native_deferred_entity_lock"
+    },
+    {
+      "native": "00925710",
+      "status": "wired",
+      "host_site": "src/cc13_seg49_seg60.cpp: deferred_entity_event_lock_scalar_delete_00925740"
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::queue_deferred_hit",
+      "reason": "The live producers/drain retain DeferredHit and HitRecord projections, not the full native 54h hit record, 10h part entries and linked-list nodes required by this body; only its real lock acquisition was replaced."
+    },
+    {
+      "native": "00925050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: DeferredHit producers",
+      "reason": "No complete native hit-record producer was established; HitPartEntry omits the native entry's +8h word and HitRecord omits native record fields copied by this body."
+    },
+    {
+      "native": "006e2e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile activation",
+      "reason": "No native bomb record and concrete Seg33a activation/effect host was established in this packet."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile water transition",
+      "reason": "The shot's native +24h/+28h effect owners and lifecycle services were not established; changing only the retained water flag would omit the body's effect operations."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: powerup flight spawn",
+      "reason": "The flight-spawn manager, resolved vehicle class and spawn property-bag providers were not established during inspection."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The inspected host callbacks retain no concrete group+564Ch command with a real vtable+24h forwarding consumer."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "The existing loading-screen host already invokes this body with its retained screen; no new missing consumer was established."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "The existing mission-detail path already calls set_scroll_range with the measured briefing range and retained scroller; no additional wiring was needed."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: UserPathPoint receive",
+      "reason": "A live presence-zero clear-message producer and retained path owners for every selectable director slot were not established; the current sender supplies additions."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live empty-descriptor construction consumer with the actual class-ordinal publication was established; populated descriptor_build is a different operation."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "No live parser-owned per-mode ClassPairRow table and scoring consumer was established."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "No live group-spawn caller supplying its actual weight, threat-record count and source count was established."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "No live native-group member recon-value producer and ratio consumer was established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No input-character admission consumer with the active text-context font was established; complete-string layout is a separate operation."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GUI pointer update",
+      "reason": "No bridge from the production GUI-manager owner and live input services to the projected pointer runtime was established during inspection."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: GUI child collection",
+      "reason": "No live property-description caller requiring per-parent name-sorted children was established; the frontend render order is a different operation."
+    },
+    {
+      "native": "004eb9b0",
+      "status": "skipped",
+      "host_site": "src/scene_record_side_blocks.cpp: scene header application",
+      "reason": "The baseline readiness graph already reported this body entry-reachable; replacing an unrelated parser call would not add a new wiring."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane death routing",
+      "reason": "The existing C8h DeadMeatRot path is explicitly multiplayer-only and is excluded from this single-player assignment."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: mission Lua calls",
+      "reason": "The main-thread mission interpreter has no frame-job-thread deferred-call producer with a real LuaVariantRecord source argument vector."
+    },
+    {
+      "native": "008162b0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_states.cpp: ship_ai_command_available_008162b0",
+      "reason": "No reached concrete availability host supplying entity+168h command offers and the target/child acceptance callbacks was established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: camera FOV/aspect product",
+      "reason": "No reached original product-query consumer with the actual camera projection was established; GUI orthographic projection does not consume this product."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_anim_class_004722d0",
+      "reason": "No live animation-class lookup caller with a retained NamedSceneClassRegistry and its Lua class row was established."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_buoy_class_00475710",
+      "reason": "No live buoy-class lookup caller with a retained NamedSceneClassRegistry and its Lua class row was established."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_manager_construct_00bbda50",
+      "reason": "No live cloud-manager owner/group-node producer and renderer consumer was established during inspection."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "No live CloudInstanceC owner and original alpha-setting consumer was established during inspection."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: impact effect selection",
+      "reason": "No live descriptor effect-slot spawn consumer with actual impact mode and shot medium was established; an unused slot calculation would not deliver an effect."
+    }
+  ],
+  "built": [
+    "Live queue_deferred_hit acquires the existing 00924990 body via a captured native tracked-section guard.",
+    "One loader-zero process F899EC publication, using the application's canonical GameNativeStringProcess 01090AA0 manager; no private lifetime manager or host teardown drain.",
+    "Narrow existing lock-only host interfaces preserve the original constructor/getter/destructor bodies and avoid unrelated entity/Lua stubs.",
+    "00925740 source scalar-delete body reuses 00925710; raw D190C8 singleton dispatch retires the actual popped owner and clears the same publication.",
+    "Native FH3 evidence restored constructor base reset and getter allocation/manager-section cleanup on source C++ exceptions."
+  ],
+  "wired_total": {
+    "measurement": "wire_readiness.py summary.wired (text reachability; all five claimed bodies separately verified in built call graph)",
+    "before": 10642,
+    "after": 10644
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: passed; 4/4 existing CTests passed",
+    "focused_probe": "tests/wire_g5_c802_deferred_lock_probe.cpp: passed, real recursive lazy acquisition, canonical registration, C++ exception unlock, actual registered-owner drain, and injected constructor failure cleanup",
+    "probe_build": "MSVC x86 cl /std:c++17 /EHsc /O2 /MD /I include /Gy tests/wire_g5_c802_deferred_lock_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib /link /OPT:REF /MANIFEST:EMBED",
+    "call_graph": "Fresh built bsp_game.exe: getter, constructor, unwind base reset, nondeleting destructor and scalar-delete body are entry-reachable; live queue acquisition and D190C8 shutdown calls inspected with who/path.",
+    "graph_reconstructed_addresses_called": 5495,
+    "float_lint": "Not applicable: no float arithmetic changed.",
+    "ghidra": "Verified /battlestationspacific.exe function count; preserved correct CG scalar name, appended constructor/getter/unwind and scalar evidence through ghidra_annotate --apply under write lock, saved project, refreshed affected exports.",
+    "annotation_receipts": ["local/ghidra-annotations-20261108T112311Z.json", "local/ghidra-annotations-20261108T112814Z.json"]
+  },
+  "limits": [
+    "Source compilation, static entry reachability and focused host-probe evidence only; the game was not run.",
+    "Original thiscall/FH3/SEH/hardware-fault ABI compatibility is not claimed.",
+    "Full native hit-record enqueue 00926E80 remains unwired; native hit payload and part-array retention must precede that replacement.",
+    "Existing host producer/drain scheduling remains main-threaded; no new cross-thread queue contract is claimed."
+  ],
+  "assumptions": [
+    "Used the existing permanent GameNativeStringProcess manager publication as the canonical application lifetime authority, consistent with the live singleton host and other raw singleton providers."
+  ]
+}

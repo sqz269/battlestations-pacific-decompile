@@ -478,7 +478,15 @@ std::uint32_t entity_path_type_code_0080d780() noexcept;
 
 inline constexpr std::uint32_t kSpawnDescriptorVtable = 0x00D03D94;
 
-struct Seg60Host {
+struct DeferredEventLockLifetimeHost {
+    virtual ~DeferredEventLockLifetimeHost() = default;
+    virtual void* critical_section_create_00bd1860() = 0;
+    virtual void critical_section_destroy_owned_0041cc80(void* owner) = 0;
+    virtual void*& global_pointer(std::uint32_t address) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+};
+
+struct Seg60Host : DeferredEventLockLifetimeHost {
     virtual ~Seg60Host() = default;
 
     // Object virtuals, ECX = object.
@@ -608,7 +616,7 @@ void pointer_vector_grow_00923230(Seg60Host& host, Raw vector);
 void* vec16_copy_construct_00923420(Seg60Host& host, Raw self, Raw source);
 void vec16_reserve_009234d0(Seg60Host& host, Raw self, std::uint32_t capacity);
 void singleton_reset_base_0109ce90_00923620(Seg60Host& host, Raw singleton);
-void singleton_reset_base_00f899ec_00923680(Seg60Host& host, Raw singleton);
+void singleton_reset_base_00f899ec_00923680(DeferredEventLockLifetimeHost& host, Raw singleton);
 void pointer_vector_push_back_00923760(Seg60Host& host, Raw vector, const std::uint32_t* value);
 void* entity_ancestor_00923810(Raw entity, int levels) noexcept;
 void entity_place_and_commit_00923870(Seg60Host& host, void* entity, std::uint32_t a, std::uint32_t b, std::uint32_t c);
@@ -616,7 +624,7 @@ void* hit_record_reset_self_00923990(Seg60Host& host, void* record);
 void* think_record_copy_construct_00923ed0(Seg60Host& host, Raw self, Raw source);
 void vec16_reserve_at_least_00923fd0(Seg60Host& host, Raw self, std::uint32_t capacity);
 inline constexpr std::uint32_t kDeferredEventLockVtable = 0x00D190C8;
-void* deferred_entity_event_lock_construct_00924200(Seg60Host& host, Raw self);
+void* deferred_entity_event_lock_construct_00924200(DeferredEventLockLifetimeHost& host, Raw self);
 void entity_adjust_world_list_counters_009245a0(Seg60Host& host, Raw entity, int delta_b8, int delta_b4);
 void entity_set_local_frame_00924610(Seg60Host& host, Raw entity, const float* translation, const float* row2,
                                      const float* row1);
@@ -634,7 +642,10 @@ inline constexpr std::uint32_t kPendingInitLockVtable = 0x00D190C0;
 void weak_owner_mutex_destruct_00925400(Seg60Host& host, Raw self);
 bool observer_link_bound_009255f0(Seg60Host& host, Raw link);
 void pending_init_lock_destruct_00925630(Seg60Host& host, Raw self);
-void deferred_entity_event_lock_destruct_00925710(Seg60Host& host, Raw self);
+void deferred_entity_event_lock_destruct_00925710(DeferredEventLockLifetimeHost& host, Raw self);
+// 00925740: ECX owner, stack flags DWORD, RET4, EAX captured owner.
+void* deferred_entity_event_lock_scalar_delete_00925740(
+    DeferredEventLockLifetimeHost& host, Raw self, std::uint32_t flags);
 void* stl_list_construct_00925af0(Seg60Host& host, Raw list);
 void* sentinel_list_construct_00925b10(Seg60Host& host, Raw list);
 void hit_record_list_clear_00925bd0(Seg60Host& host, Raw list);
