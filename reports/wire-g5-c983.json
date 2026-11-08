@@ -1,0 +1,252 @@
+{
+  "chain": 983,
+  "goal": 5,
+  "slot": "g5-w6",
+  "branch": "agent/g5-w6",
+  "base": "c6cb8084d2",
+  "picked": "Native Lua DoFile publication through existing global-registration body",
+  "rows": [
+    {
+      "native": "006b8610",
+      "status": "wired",
+      "host_site": "src/native_lua_bootstrap.cpp: open_native_lua_state_00b6a020; src/native_lua_objects.cpp: construct_native_lua_borrowed_state_00b66c00",
+      "body": "src/native_mission_lua_register.cpp: register_native_mission_lua_global_006b8610",
+      "evidence": "Existing body replaces both direct lua_pushcclosure/lua_setfield pairs over actual owner+4h and supplied executable DoFile callback; original paths deleted. call_graph who reports two entry-reachable call sites."
+    },
+    {
+      "native": "006b84d0",
+      "status": "skipped",
+      "host_site": "src/settings_seg29_cc13.cpp: LuaMachine::set_table",
+      "reason": "Overlapping agent/g5-w1 lease; that worker wired the live recon publication caller independently, and no overlapping edit was made."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing retained movie-camera debug-screen deviation owner and gameplay consumer; debug-only admission is excluded."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing retained movie-camera debug-screen overview height owner and gameplay consumer; debug-only admission is excluded."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing retained movie-camera debug-screen speed limits owner and gameplay consumer; debug-only admission is excluded."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing retained movie-camera debug-screen acceleration time owner and gameplay consumer; debug-only admission is excluded."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera zoom callback",
+      "reason": "Missing retained MovCamZoom state and camera-FOV consumer; current callback explicitly aborts."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-state setup",
+      "reason": "Existing source already calls this body with the camera frame and extra-plane storage; adding another call would duplicate the operation."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing a reached extra-plane removal operation over the retained camera owner; setup alone does not establish a clear request."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reached query-refresh source already calls this body over the live list/cache/access; a second invocation would duplicate behavior."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reached query-refresh source already calls this body over the live list/cache/access; a second invocation would duplicate behavior."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: voice_begin_sound_fade",
+      "reason": "Missing retained VoicePlaybackManager, mixer-level source and fade lifecycle bindings; callback remains explicitly unreached."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: PowerupThinkBinding::candidate_attack_value",
+      "reason": "Missing flight-class candidate block and its class-pair composition consumer; current air-support callback throws."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing gameplay score-list consumer; the established native list reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing gameplay score-list consumer; the established native list reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend_think_00a28a60",
+      "reason": "Existing source already calls the canonical candidate predicate; no missing caller replacement was identified."
+    },
+    {
+      "native": "0090eb80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: mission scoring event bodies",
+      "reason": "Missing native slot-record/map lifetime adapters and gameplay event publication into those records; current result owner retains typed MissionScoreRecord slots."
+    },
+    {
+      "native": "0090ebf0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: mission scoring event bodies",
+      "reason": "Missing native slot-record/map lifetime adapters and gameplay event publication into those records; current result owner retains typed MissionScoreRecord slots."
+    },
+    {
+      "native": "0090ec40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: mission scoring event bodies",
+      "reason": "Missing native slot-record/map lifetime adapters and gameplay event publication into those records; current result owner retains typed MissionScoreRecord slots."
+    },
+    {
+      "native": "0090ed40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: mission scoring event bodies",
+      "reason": "Missing native slot-record/map lifetime adapters and gameplay event publication into those records; current result owner retains typed MissionScoreRecord slots."
+    },
+    {
+      "native": "00915760",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: mission_score_record_clear_00915760",
+      "reason": "Owned by agent/g5-w9 score-reset packet; no overlapping edit was made."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: checkpoint_record_copy_construct_00437490",
+      "reason": "Missing reached raw checkpoint-copy output consumer; current profile getter returns a typed record and is itself absent from the linked call graph."
+    },
+    {
+      "native": "007fc490",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: checkpoint_get_copy_007fc490",
+      "reason": "Missing reached profile checkpoint getter implementation; the current build has no linked symbol/caller for this typed wrapper."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: reserve_native_vehicle_pointer_array_00546630",
+      "reason": "Missing reached native vehicle-class pointer-array activation caller; the current build has no linked body for this reserve path."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon_relation_style_00803c20",
+      "reason": "Missing retained relation-style table producer and gameplay style consumer; the current build has no linked body."
+    },
+    {
+      "native": "007f7cd0",
+      "status": "skipped",
+      "host_site": "src/band_0079_cc13.cpp: player_record_has_recent_camera_state_007f7cd0",
+      "reason": "Missing reached PlayerCameraState timestamp producer and camera-update consumer."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing native ammunition record and +48h alternate with retained references/tree ownership; current ammunition handle identifies a semantic gun row."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing live unit+660h vector of 44h records and matching Seg62Host element-lifetime services."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint_differs/write_checkpoint",
+      "reason": "Missing actual checkpoint-difference decision and clear/rewrite storage continuation; callbacks return false or log."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: publish_recon_slot_tables_00806b10",
+      "reason": "Missing slot+25h dirty-byte owner, player-context mapping and world+193Ch cache consumer; publication currently compares rebuilt contents."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp: initialize_native_command_target_004f1830",
+      "reason": "Missing actual readable native absolute F87574/F87578/F8757C runtime globals for the literal register-ABI body; semantic command facts do not supply them."
+    },
+    {
+      "native": "00866c60",
+      "status": "skipped",
+      "host_site": "src/live_effect_update.cpp: native effect dispatch",
+      "reason": "Existing reconstructed live-effect update already calls the dispatch body; missing higher-level live-effect manager admission was not built in this packet."
+    },
+    {
+      "native": "00867320",
+      "status": "skipped",
+      "host_site": "src/point_effect_controls.cpp: stop_point_effect_00867b10",
+      "reason": "Existing stop body already calls the auxiliary-entry append; missing higher-level live effect owner admission was not built in this packet."
+    },
+    {
+      "native": "00867d00",
+      "status": "skipped",
+      "host_site": "src/live_effect_update.cpp: point-effect advancement",
+      "reason": "Existing live-effect update already calls this body; missing higher-level actual effect admission was not built in this packet."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission consumer with its retained font; complete-string glyph layout is a different operation."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing live Curve widget admission and loaded geometry continuation; retained page child factory admits only default Group/Icon."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/bomb_torpedo_tick.cpp: bomb_family_tick_006e1300",
+      "reason": "Missing retained launch-delay, active, arming and pose-valid producers with complete owner-grace/expiry/sweep lifecycle."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10838,
+    "readiness_wired_after": 10839,
+    "entry_reachable_reconstructed_before": 5725,
+    "entry_reachable_reconstructed_after": 5726,
+    "new_address_call_sites": 2
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed all five CTest checks; local/c983-build.log",
+    "call_graph": "local/c983-graph-before.log; local/c983-graph-after.log; local/c983-who-after.log",
+    "path": "WinMainCRTStartup -> startup -> native renderer construction -> renderer Lua owner -> open_native_lua_state_00b6a020 -> register_native_mission_lua_global_006b8610",
+    "focused_probe": "local/c983-probe.cpp (local diagnostic, not committed): both owned and borrowed VM DoFile publication preserves exact executable callback, zero upvalues, stack contents and VM ownership; PASS in local/c983-probe.log",
+    "native_evidence": [
+      "bsp.py show 006b8610 --asm",
+      "bsp.py show 00b66c00"
+    ],
+    "limitations": "Source/build/call-graph/fixture verified; no game run or original binary ABI replacement claim."
+  },
+  "remaining": "Mission binding registration uses its existing two-upvalue semantic trampoline; adapting it requires a genuine zero-upvalue callback mapping. Other surveyed producer gaps are listed per row."
+}
