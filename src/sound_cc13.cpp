@@ -972,11 +972,14 @@ __declspec(noinline) SoundResourceCacheRecord& sound_cache_record_copy_construct
     return record;
 }
 
-void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const SoundCacheRecordCalls& calls) {
-    if (header.count == 0) return;
-    calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) +
-                                  static_cast<std::uint32_t>(header.count) * 0x2Cu - 0x2Cu);
-    header.count = header.count - 1;
+__declspec(noinline) void sound_cache_records_pop_back_00a84380(
+    SoundResourceOwner& owner) noexcept {
+    // bsp.py show 00A84380 --asm: test count, destroy the captured tail's
+    // name/list at A84393, then decrement count at A84398. This is the live
+    // cache owner's storage projection, not a fabricated raw array header.
+    if (owner.records_04.empty()) return;
+    clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
+    owner.records_04.pop_back();
 }
 
 void sound_cache_records_reserve_00a84450(SoundResourceOwner& owner,
@@ -1005,14 +1008,16 @@ void sound_cache_records_reserve_00a84450(SoundResourceOwner& owner,
     owner.capacity_0c = requested;
 }
 
-void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,
-                                                  const SoundCacheRecordCalls& calls) {
-    auto* const data = reinterpret_cast<unsigned char*>(header.data);
-    unsigned char* const last = data + static_cast<std::uint32_t>(header.count - 1) * 0x2Cu;
-    if (*where != last) calls.assign_record_00a84680(*where, last);
-    calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) +
-                                  static_cast<std::uint32_t>(header.count) * 0x2Cu - 0x2Cu);
-    header.count = header.count - 1;
+__declspec(noinline) void sound_cache_records_erase_swap_last_00a84d20(
+    SoundResourceOwner& owner, SoundResourceCacheRecord& record) {
+    // bsp.py show 00A84D20 --asm: ECX=*where at A84D2C; compare with the
+    // current tail, assign at A84D43, reload data/count at A84D48..50 before
+    // destroying at A84D54, then count-- at A84D59. Assignment preserves
+    // record/list allocator identity (+08) and borrows the resource (+28).
+    if (&record != &owner.records_04.back())
+        copy_sound_resource_cache_record_00a84680(record, owner.records_04.back());
+    clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
+    owner.records_04.pop_back();
 }
 
 void sound_manager_debug_dump_entries_00a7ea30(void* manager, NativeStringStorage& strings,

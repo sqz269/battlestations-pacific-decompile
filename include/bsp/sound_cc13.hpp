@@ -386,8 +386,10 @@ void* sound_cache_record_construct_00a84280(void* record, const SoundCacheRecord
 // As for reserve below, this is not native storage, allocation failure or ABI.
 SoundResourceCacheRecord& sound_cache_record_copy_construct_00a843a0(
     SoundResourceCacheRecord& record, const SoundResourceCacheRecord& source);
-// 00A84380 pop back, __fastcall(ECX header): when count != 0 destroy the last record (00A842E0), count--.
-void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const SoundCacheRecordCalls& calls);
+// 00A84380 pop back, native __fastcall(ECX=&owner+4): when count != 0,
+// destroy the last record's storage (00A842E0), then count--. Bound to the
+// same standard-container projection as reserve below; no resource release.
+void sound_cache_records_pop_back_00a84380(SoundResourceOwner& owner) noexcept;
 // 00A84450 reserve, native __thiscall(ECX=&owner+4, n), RET 4: n raised to 64;
 // when capacity < n, allocate, copy-construct live records in order, destroy
 // the old record storage, free the old block, publish data and capacity.
@@ -397,10 +399,12 @@ void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const Sou
 // Not the raw 2Ch layout, native allocator/OOM/overflow/FH3 behavior or ABI.
 void sound_cache_records_reserve_00a84450(SoundResourceOwner& owner,
     std::int32_t requested);
-// 00A84D20 erase-swap-last, __thiscall(ECX header, record** where) RET 4: when *where is not the last
-// record, assign the last over it (00A84680); destroy the last (00A842E0); count--.
-void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,
-                                                  const SoundCacheRecordCalls& calls);
+// 00A84D20 erase-swap-last, native __thiscall(ECX header, record** where),
+// RET 4: assign last over *where unless it is last (00A84680), destroy last
+// (00A842E0), then count--. The reference must identify a live owner record.
+// Same storage/ABI limits as reserve; borrowed resources are never released.
+void sound_cache_records_erase_swap_last_00a84d20(SoundResourceOwner& owner,
+    SoundResourceCacheRecord& record);
 
 // 00A7EA30 BSP_SoundManager_DebugDumpEntries_Provisional, __fastcall(ECX manager). No reference in the image.
 // For each object in the pointer array +8Ch (count +90h): over = BYTE +15h, a = vtable +0Ch(), b = BYTE

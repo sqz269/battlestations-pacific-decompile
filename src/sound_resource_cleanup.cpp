@@ -1,6 +1,7 @@
 #include "bsp/sound_resource_cleanup.hpp"
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/sound_resource_cache.hpp"
+#include "bsp/sound_cc13.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -107,8 +108,7 @@ void shrink_sound_resource_cache_records_00a845a0_fragment(SoundResourceOwner& o
         // Do not move the std::list-bearing record: MSVC list move construction
         // can allocate a sentinel during teardown. Native count-before-free
         // observability is outside this standard-container storage projection.
-        clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
-        owner.records_04.pop_back();
+        sound_cc13::sound_cache_records_pop_back_00a84380(owner);
     }
 }
 
@@ -119,10 +119,7 @@ void clear_sound_resource_cache_00a84c90(SoundResourceOwner& owner,
         owner.total_resource_size_10 -= size;
         // Reload the current tail before release and again after it returns.
         release_sound_resource_00a854e0(*owner.records_04.back().resource_28, context);
-        if (!owner.records_04.empty()) {
-            clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
-            owner.records_04.pop_back();
-        }
+        sound_cc13::sound_cache_records_pop_back_00a84380(owner);
     }
     shrink_sound_resource_cache_records_00a845a0_fragment(owner, 0);
 }
