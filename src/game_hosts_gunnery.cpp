@@ -9879,11 +9879,18 @@ namespace {
 
 // Everything 008048A0 and 00806840 read, answered out of the gunnery host's own
 // unit state. One method per native read; nothing is defaulted silently.
-class GunneryReconSensorPassHost final : public bsp::ReconSensorPassHost {
+class GunneryReconSensorPassHost final : public bsp::ReconSensorPassHost,
+                                        public bsp::cc13_seg49::ReconEntrySensorHost {
 public:
     explicit GunneryReconSensorPassHost(GameGunneryHost::Impl& owner) : owner_(owner) {}
 
     std::size_t unit_count() override { return owner_.units.count(); }
+
+    int recon_unit_sensor_class_index(std::size_t index) override {
+        // The same live +1E4h getter used by the detection pass, with the
+        // binary's 0..6 category values (sensor_tables.hpp).
+        return static_cast<int>(unit_sensor_category(index));
+    }
 
     bool unit_present(std::size_t index) override {
         // Rule (b), the same 0043F080 gate bytes the contact sweep uses, plus
@@ -10247,13 +10254,13 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                     const bsp::ReconRelation rel = bsp::recon_relation_for_008065ff(side,
                         units.unit_side_0054(u));
                     if (rel == bsp::ReconRelation::own) {
-                        relations->refresh(id, 0, u, 2); // 00804E70's own-level constant
+                        relations->refresh(id, 0, u, 2, host); // 00804E70's own-level constant
                         continue;
                     }
                     const bsp::ReconDetectionLevel level = recon_pass.level(side, u);
                     const int lv = level == bsp::ReconDetectionLevel::identified ? 2
                         : level == bsp::ReconDetectionLevel::blip ? 1 : 0;
-                    relations->refresh(id, rel == bsp::ReconRelation::enemy ? 1 : 2, u, lv);
+                    relations->refresh(id, rel == bsp::ReconRelation::enemy ? 1 : 2, u, lv, host);
                     if (id == 0x19) ++recon_convoy_members_seen;
                 }
                 relations->retire_unscanned(id);

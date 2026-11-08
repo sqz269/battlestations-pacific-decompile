@@ -5,13 +5,13 @@
 // (009222E0..0092DFE0): the entity / party / think framework. docs/CC13_SEG49.md carries the
 // evidence and the status of every routine.
 //
-// Model: every routine works on the original object as raw bytes (Win32 layout, offsets as in
-// the image) and reaches the engine through Seg49Host, whose methods name the image routine or
+// Model: most routines work on the original object as raw bytes (Win32 layout, offsets as in
+// the image) and reach the engine through Seg49Host, whose methods name the image routine or
 // virtual slot they stand for. Routines the cc9 gameplay hosts already implement by behaviour
 // (00806840 and the other 008073C0 steps, 00805CF0) are recorded ledger-only and are not
 // reconstructed again here. New C++ interfaces, not drop-in binary replacements; nothing here is
-// bound into bsp_game except the node-only clear/push/copy operations, whose
-// allocation boundary is supplied by the chain-538 published recon-list owner.
+// bound into bsp_game except the typed live entry constructor and list operations,
+// whose allocation boundary is supplied by the published recon-list owners.
 
 #ifndef BSP_CC13_SEG49_HPP
 #define BSP_CC13_SEG49_HPP
@@ -274,6 +274,24 @@ struct ReconList {
     ReconNode* tail;
 };
 
+// Typed live entry. The unit field is the world registry's stable host index,
+// not an original Unit* or an index encoded as a pointer. native_vtable records
+// the image's type identity; it is never used as an executable process vtable.
+// The members list belongs to this entry, as native +10h does.
+struct ReconEntry {
+    std::uint32_t native_vtable{};
+    std::size_t unit{};
+    int sensor_class_index{};
+    int level{};
+    ReconList members{};
+};
+
+struct ReconEntrySensorHost {
+    virtual ~ReconEntrySensorHost() = default;
+    // The live unit's +1E4h vtable[1] getter, through its typed state owner.
+    virtual int recon_unit_sensor_class_index(std::size_t unit) = 0;
+};
+
 // ---------------------------------------------------------------------------
 // Segment 49: 00801200..00803F30
 // ---------------------------------------------------------------------------
@@ -302,7 +320,8 @@ void recon_list_push_back_00804c30(ReconListStorageHost& host, ReconList& self, 
 void recon_list_destroy_payloads_00804d20(Seg49Host& host, ReconList& self);
 void recon_list_copy_append_00804e10(ReconListStorageHost& host, ReconList& self, const ReconList& source);
 inline constexpr std::uint32_t kReconEntryVtable = 0x00D08E78;
-void* recon_entry_construct_00804e70(Seg49Host& host, Raw entry, void* unit, int level);
+ReconEntry& recon_entry_construct_00804e70(ReconEntrySensorHost& host, ReconEntry& entry,
+                                          std::size_t unit, int level);
 void recon_detection_set_read_archive_00804f10(Seg49Host& host, Raw set, void* archive);
 void recon_detection_set_write_archive_00805020(Seg49Host& host, Raw set, void* archive);
 void recon_retire_carry_over_class_00805430(Seg49Host& host, Raw slot, int class_id);

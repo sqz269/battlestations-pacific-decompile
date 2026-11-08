@@ -418,16 +418,20 @@ void recon_list_copy_append_00804e10(ReconListStorageHost& host, ReconList& self
 // 00804E70, ABI: __thiscall(ECX = entry, unit, level) RET 8 -> EAX = entry. The 1Ch recon
 // entry: vtable 00D08E78, an empty {count, head, tail} member list at +10h, level +0Ch, unit
 // +4h, and +8h = unit+1E4h vtable[1]() (the sensor class index).
-void* recon_entry_construct_00804e70(Seg49Host& host, Raw entry, void* unit, int level)
+// Evidence: bsp.py show 00804e70, the constructor's ordered field stores. The typed interface
+// borrows the live world's unit index and getter instead of manufacturing a
+// native unit byte image. Store order (including the getter last) is preserved.
+ReconEntry& recon_entry_construct_00804e70(ReconEntrySensorHost& host, ReconEntry& entry,
+                                          std::size_t unit, int level)
 {
-    entry.at<std::uint32_t>(0x00) = kReconEntryVtable;
-    entry.at<std::uint32_t>(0x10) = 0;
-    entry.at<std::uint32_t>(0x14) = 0;
-    entry.at<std::uint32_t>(0x18) = 0;
-    entry.at<int>(0x0C) = level;
-    entry.ptr(0x04) = unit;
-    entry.at<int>(0x08) = host.sensor_class_index_1e4_4(static_cast<std::uint8_t*>(unit) + 0x1E4);
-    return entry.p;
+    entry.native_vtable = kReconEntryVtable;
+    entry.members.count = 0;
+    entry.members.head = nullptr;
+    entry.members.tail = nullptr;
+    entry.level = level;
+    entry.unit = unit;
+    entry.sensor_class_index = host.recon_unit_sensor_class_index(unit);
+    return entry;
 }
 
 namespace {
