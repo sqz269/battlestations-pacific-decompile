@@ -1,0 +1,241 @@
+{
+  "chain": 735,
+  "slot": "g5-w10",
+  "baseline": "b823600007",
+  "picked": "Ambient RGBA channel saturation through the existing signed integer clamp",
+  "rows": [
+    {
+      "native": "00412f60",
+      "status": "wired",
+      "host_site": "src/native_ambient_color.cpp: clamp_ambient_channel, called for R/G/B/A by convert_native_float_rgba_to_argb_004fb850",
+      "reason": "Replaces the converter's four inline signed 0..255 clamps with the existing body, using each actual CRT conversion's low EAX and the binary's own bounds."
+    },
+    {
+      "native": "004fb850",
+      "status": "skipped",
+      "host_site": "src/native_ambient_color.cpp: convert_native_float_rgba_to_argb_004fb850",
+      "reason": "Already entry-reachable at baseline; only its integer saturation is replaced, with no second converter execution."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing gameplay score-list consumer; the native table's documented reader is a debug overlay, excluded by the assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing live candidate-table owner and gameplay consumer; its documented native reader is a debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-member candidate filtering",
+      "reason": "Existing host code already calls the predicate with member-kind and objective-set state; no additional call is justified."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land and attack MoveTo states",
+      "reason": "Missing actual same-root MoveTo storage and native observer lifetime required by the complete constructor; projected ranges alone do not satisfy that contract."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: converging-leg manager records",
+      "reason": "Missing live path-leg-manager owner and its producer; existing host sites record this operation."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight target selection and threat checks",
+      "reason": "Missing the plane+DF4 pilot's published per-step target bank; current dogfight/command target projections cannot be relabelled as that bank."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: landing request common tail",
+      "reason": "The existing landing sequencer already queues the squadron through its projected LandingDeck queue; a native landing-queue owner is still missing."
+    },
+    {
+      "native": "006c6540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: air-operations deck update",
+      "reason": "Missing the native D8h ready-list, C0h queue container and +24h observer pair; calling with the projected deck would supply incompatible storage."
+    },
+    {
+      "native": "004a5620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneTrafficRecorder::commit_traffic_records",
+      "reason": "Missing live traffic-manager runtime map, path runtime and spawner owner; the scene recorder currently retains parsed records only."
+    },
+    {
+      "native": "004a50d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: traffic block commit",
+      "reason": "Missing real path-runtime construction and runtime spawner state/consumer required by this constructor."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing off-main-thread deferred-call producer and its actual LuaVariantRecord argument vector; this host runs the mission interpreter on the main thread."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: publish_and_update",
+      "reason": "Already entry-reachable at baseline from all three retained-sound updates, confirmed by call_graph.py who; no new wiring is needed."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "Missing application-owned MarkerClassContext and its class-loading/mesh-resource producer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing live input-character caller and concrete GuiLeafHost carrying the text-context font; this accessor itself has no application caller."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing original property-descriptor writer 00AAAED0; rendering's child ordering is a different operation."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI pointer transport",
+      "reason": "Missing bound GuiPointerRuntimeServices with actual resource owner, shared input latches and AA2F10 hit-test dispatch."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: write_checkpoint override",
+      "reason": "Missing pre-load checkpoint-state owner and current-mission checkpoint test; the present checkpoint_differs substitution is false."
+    },
+    {
+      "native": "007f8d60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint_differs",
+      "reason": "Missing pre-load profile checkpoint-key tree and its native iterator domain; this is a key-existence operation, not a guessed mission comparison."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: LoopbackKind::UserPathPoint",
+      "reason": "Missing real 5Fh clear-point sender; the existing 0071D340 channel always produces the add-point presence byte."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp: movie-camera follow host",
+      "reason": "Missing concrete live caller supplying the actual AimCameraView, AimTargetView and configured lead scale."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: mover_build_frustum_planes_0042e180",
+      "reason": "Missing live mover-frustum consumer bound to an actual camera projection; other camera FOV operations do not require this product."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing parser-owned per-mode class-pair rows and their live scoring consumer; synthetic scores are not acceptable."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-group gate",
+      "reason": "Missing native request weight, target-record vector and support-site list; the current quick-spawn path does not produce them."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group recon-ratio query",
+      "reason": "Missing member recon-record values and a live original recon-ratio consumer; group membership alone is insufficient."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: init_map_scene_zoom_0093ccc0",
+      "reason": "Missing application strategic-map scene owner and registration caller; no detached state object was introduced just to run the initializer."
+    },
+    {
+      "native": "009f9980",
+      "status": "skipped",
+      "host_site": "src/native_land_task_constructor.cpp: construct_native_land_task_009b3240",
+      "reason": "Missing application-owned actual land-task command/gun/control storage required by the complete same-root constructor view."
+    },
+    {
+      "native": "004eb9b0",
+      "status": "skipped",
+      "host_site": "src/ocean_spectrum.cpp: ocean_scene_waves_from_header",
+      "reason": "Already entry-reachable at baseline from ocean_scene_waves_from_header, confirmed by call_graph.py who."
+    },
+    {
+      "native": "007f7cd0",
+      "status": "skipped",
+      "host_site": "src/band_0079_cc13.cpp: player_record_has_recent_camera_state_007f7cd0",
+      "reason": "Original consumer is replication sync-delta construction, outside the single-player wiring scope."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reconstructed query already calls this body for both cache corners; no duplicate containment calls were added."
+    },
+    {
+      "native": "00415010",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_geometry.cpp: avoid-zone bounds producers",
+      "reason": "Already entry-reachable at baseline from scene-path construction and corner-clearance expansion, confirmed by call_graph.py who."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Already entry-reachable at baseline through the live avoid-zone runtime, confirmed by call_graph.py who."
+    },
+    {
+      "native": "0042b3c0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_rotation_x_0042b3c0",
+      "reason": "No live rotation-X consumer was identified in this packet; no replacement with real matrix/angle storage was made."
+    },
+    {
+      "native": "008d5b50",
+      "status": "skipped",
+      "host_site": "src/game_settings.cpp: apply_all_settings_008d5b50 foliage-detail clamp",
+      "reason": "Already wired, and its title-time application caller has no foliage owner; that conditional clamp cannot establish real new body execution here."
+    }
+  ],
+  "wiring": {
+    "kind": "source-level semantic reuse, not restoration of an original direct call edge",
+    "original_helper_callers": 0,
+    "real_state": "Current actual ambient RGBA storage, existing x87 multiply and runtime-selected CRT truncation, signed low-EAX result, original literal bounds 0 and 255.",
+    "no_double_run": "All four old inline integer clamp blocks are deleted; the existing converter and its floating-point operations still run once.",
+    "original_abi": "00412F60: ECX int* value, EDX int* low, stack int* high, EAX signed int, RET4.",
+    "source_abi": "Existing cdecl int_clamp_00412f60 is called by an integer-only fastcall bridge; original binary ABI equivalence is not claimed."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 PASS; all four configured CTests pass",
+    "readiness_wired_before": 10502,
+    "readiness_wired_after": 10503,
+    "executable_reconstructed_called_before": 5405,
+    "executable_reconstructed_called_after": 5406,
+    "new_body_call_sites": 1,
+    "converter_bridge_call_sites": 4,
+    "call_graph": "00412F60 is entry-reachable through clamp_ambient_channel <- convert_native_float_rgba_to_argb_004fb850 <- color_abi <- prepare_camera <- prepare_native_renderer_camera_00b285a0.",
+    "generated_code": "dumpbin confirms both bridge and existing clamp use integer instructions only, with no x87/SSE instructions or floating-point-state changes.",
+    "focused_probe": "local/output/c735-color-probe.cpp, linked against this worktree's built core library with /MANIFEST:EMBED: [-0.25,0.5,2,1] -> FF007FFF for both conversion modes; x87 TOP 3800/3800, CW 007F/007F, unrelated live ST0 value 1 preserved.",
+    "float_math": "Unchanged: source FLD/FMUL sequence, conversion calls, borrowed scale/mode pointers and byte-store order are retained.",
+    "scope": "Build, generated-code and synthetic probe evidence only; game was not launched and gameplay/visual parity is not claimed."
+  },
+  "left": "Surveyed owners and caller contracts remain as recorded in skipped rows; no changes were made to other workers' files."
+}
