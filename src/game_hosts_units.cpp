@@ -5,6 +5,7 @@ extern "C" {
 }
 
 #include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
+#include "bsp/flak_note_seg36_37_argon.hpp"
 
 namespace bsp::game {  // namespace
 
@@ -1784,6 +1785,14 @@ GameUnitsHost::~GameUnitsHost() {
         std::terminate();
     }
     std::size_t destroyed = 0;
+    // Groups borrow the same actual observed endpoints as directors. Retire
+    // their stable callback bases before freeing any unit endpoint arrays.
+    for (auto& group : host.formation_groups) {
+        if (!group.observes_units) continue;
+        host.observer_runtime->lifetime().destroy_callback_owner_00695870(
+            group.native_members->observer_owner());
+        group.observes_units = false;
+    }
     for (const auto& slot : host.slots) {
         // Withdraw lookup before lifetime callbacks can re-enter this host.
         // Already borrowed aliases expire here; native array frees retain bytes.
@@ -11011,16 +11020,16 @@ bool GameUnitsHost::set_formation_member_offset_0070d080(std::size_t leader,
     // 0070D081..0070D0A1: a linear search of group+18h for the entity, stride 34h.
     const std::uint32_t handle = static_cast<std::uint32_t>(member + 1u);
     bsp::ShipAiUnitGroupMember* record = nullptr;
-    if (group.native_members.capture_members(group.members)) {
+    if (group.native_members->capture_members(group.members)) {
         // bsp.py show 0070D080 and 00A11690 @00A1193E: the first
         // matching record controls the formation-offset write. Refresh
         // the live records, then map the returned record to its mutable
         // host owner; no registry identity is dereferenced as a pointer.
         const void* const found = bsp::native_unit_group_member_record_0070d080(
-            group.native_members.data(), reinterpret_cast<const void*>(handle));
+            group.native_members->data(), reinterpret_cast<const void*>(handle));
         if (found != nullptr) {
             const auto offset = static_cast<const std::byte*>(found)
-                - static_cast<const std::byte*>(group.native_members.data()) - 0x18;
+                - static_cast<const std::byte*>(group.native_members->data()) - 0x18;
             record = &group.members[static_cast<std::size_t>(offset) / 0x34u];
         }
     } else {
@@ -11120,7 +11129,7 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
         }
     }
     slot.formation_group = -1;                                    // 0070E54x, +284h
-    host.record("UnitGroup::observer_unregister_00694a60", 0x0070e548u);
+    host.unregister_formation_observer(fg, index);
     for (std::size_t i = 0; i < fg.members.size(); ++i) {       // 0070E591 compaction
         if (fg.members[i].entity == static_cast<std::uint32_t>(index + 1u)) {
             fg.members.erase(fg.members.begin() + static_cast<std::ptrdiff_t>(i));
@@ -11326,7 +11335,7 @@ std::size_t GameUnitsHost::formation_member_unit(std::int32_t group,
     if (slot < 0 || static_cast<std::size_t>(slot) >= members.size()) {
         return static_cast<std::size_t>(-1);
     }
-    auto& native = host.formation_groups[static_cast<std::size_t>(group)].native_members;
+    auto& native = *host.formation_groups[static_cast<std::size_t>(group)].native_members;
     // bsp.py show 0070D060: return record[index].entity without a unit
     // dereference. Bounds above and capture's 24-record limit admit the
     // raw indexed load; membership is refreshed at this read boundary.
@@ -11362,12 +11371,12 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
             // This composition supplies the same record as the native
             // 0070D2A1 call to 0070D080, with no added unit dereference.
             // These bodies never dereference the registry identity word.
-            if (group.native_members.capture_members(group.members)) {
+            if (group.native_members->capture_members(group.members)) {
                 const std::int32_t member_index = bsp::native_unit_group_member_index_0070d030(
-                    group.native_members.data(), reinterpret_cast<const void*>(handle));
+                    group.native_members->data(), reinterpret_cast<const void*>(handle));
                 if (member_index >= 0) {
                     const void* const native_record = bsp::native_unit_group_record_at_0070d070(
-                        group.native_members.data(), nullptr, static_cast<std::uint32_t>(member_index));
+                        group.native_members->data(), nullptr, static_cast<std::uint32_t>(member_index));
                     std::memcpy(&projected_record, native_record, sizeof(projected_record));
                     record = &projected_record;
                 }
@@ -11433,6 +11442,8 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         host.record("UnitGroup::member_slots_settings_unavailable", 0x0070ed30u);
         return false;
     }
+    if (host.observer_runtime == nullptr || !host.observer_runtime->has_live_dispatch_owner())
+        throw std::logic_error("formation join requires the application observer runtime");
 
     // Packet cc8_ship_station: 0077F940's merge arm, read whole from the listing
     // (126 instructions, body 0077F940-0077FAC8, RET 4). USN01 reaches it - the
@@ -11514,6 +11525,8 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         for (const bsp::ShipAiUnitGroupMember& member : members) {
             if (member.entity != old_handle) kept.push_back(member);
         }
+        host.unregister_formation_observer(
+            host.formation_groups[static_cast<std::size_t>(old_group)], unit);
         members.swap(kept);
         host.slots[unit]->formation_group = -1;
     }
@@ -11527,16 +11540,17 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         Impl::FormationGroup& created = host.formation_groups.back();
         // 0070DB20's fresh group's existing whole 0070DAB0 producer.
         // No call through the constructor's original profile is admitted.
-        created.native_members.initialize();
+        created.native_members->initialize();
         // Publish this mission unit's existing one-based identity into
         // the fresh native group, then use its +14h result as the host
         // leader. Only the null-previous arm of 0070D0C0 is admitted.
-        created.leader = created.native_members.initialize_first_leader(
+        created.leader = created.native_members->initialize_first_leader(
             static_cast<std::uint32_t>(leader + 1u)) - 1u;
         bsp::ShipAiUnitGroupMember record;
         record.entity = static_cast<std::uint32_t>(leader + 1u);
         created.members.push_back(record);
         host.slots[leader]->formation_group = group;       // leader+284h = group
+        host.register_formation_observer(created, leader);
         ++host.formation_creates;
     } else {
         // "otherwise redirects to other's leader": the group the leader already
@@ -11546,18 +11560,10 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
 
     Impl::FormationGroup& target = host.formation_groups[static_cast<std::size_t>(group)];
     const std::uint32_t handle = static_cast<std::uint32_t>(follower + 1u);
-    for (const bsp::ShipAiUnitGroupMember& member : target.members) {
-        if (member.entity == handle) {
-            // 0070EF30 with an entity that is already a member: only the observer
-            // pair is added, no record is appended and the count does not move.
-            ++host.formation_rejoins;
-            return false;
-        }
-    }
-    // 0070EF38 writes entity+284h before any test.
-    host.slots[follower]->formation_group = group;
-    bsp::ShipAiUnitGroupMember record;
-    record.entity = handle;
+    std::int32_t member_count = static_cast<std::int32_t>(target.members.size());
+    // Supply writable record[count] without publishing it to the recovered
+    // join's walkers. 0070EF8D, after slot production, owns the count change.
+    target.members.resize(static_cast<std::size_t>(member_count) + 1u);
     {
         // bsp.py show 0070EF30: 0070EF85 calls the existing 0070ED30 body
         // with the JOIN index, before count changes. Its inputs below borrow
@@ -11626,26 +11632,87 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
                 }
             }
         } binding{host, *host.lua.gameplay_tuning_settings()};
-        bsp::ShipAiFormationMemberSlots slots;
-        bsp::ship_ai_formation_produce_member_slots(binding,
-            static_cast<std::uint32_t>(target.leader + 1u), handle,
-            target.members.size(), slots);
-        std::memcpy(record.field_04.data(), slots.relative, sizeof(slots.relative));
-        record.lateral = slots.columns.across;
-        record.axial = slots.columns.along;
-        // 0070EF78..0070EF85 copies CF4888's FLOAT 999.0, not integer 999.
-        bsp::ship_ai_formation_set_member_speed(record, bsp::kShipAiFormationMemberSpeedUnset);
-        host.done("UnitGroup::produce_member_slots", 0x0070ed30u);
+        struct Join final : bsp::ShipAiFormationJoinHost,
+            bsp::flak_note_seg36_37_argon::UnitGroupSpeedCeilingView {
+            Impl& h;
+            GameUnitsHost& units;
+            Impl::FormationGroup& target;
+            std::int32_t& count;
+            bsp::ShipAiFormationSlotHost& slots;
+            std::uint32_t entity;
+            Join(Impl& owner, GameUnitsHost& facade, Impl::FormationGroup& group,
+                std::int32_t& published_count, bsp::ShipAiFormationSlotHost& slot_host,
+                std::uint32_t member)
+                : h(owner), units(facade), target(group), count(published_count),
+                  slots(slot_host), entity(member) {}
+            bool observer_pair_registered(std::uint32_t, std::uint32_t member) override {
+                return bsp::observer_pair_registered_00694af0(
+                    h.slots.at(member - 1u)->observer_prefix.observed_00,
+                    target.native_members->observer_owner(), h.observer_runtime->lifetime());
+            }
+            void observer_register_pair(std::uint32_t, std::uint32_t member) override {
+                h.register_formation_observer(target, member - 1u);
+            }
+            void set_entity_group_284(std::uint32_t member, std::uint32_t group) override {
+                h.slots.at(member - 1u)->formation_group = static_cast<std::int32_t>(group - 1u);
+            }
+            void produce_member_slots_0070ed30(std::size_t index) override {
+                bsp::ShipAiFormationMemberSlots produced;
+                bsp::ship_ai_formation_produce_member_slots(slots,
+                    static_cast<std::uint32_t>(target.leader + 1u), entity, index, produced);
+                auto& record = target.members.at(index);
+                std::memcpy(record.field_04.data(), produced.relative, sizeof(produced.relative));
+                record.lateral = produced.columns.across;
+                record.axial = produced.columns.along;
+                h.done("UnitGroup::produce_member_slots", 0x0070ed30u);
+            }
+            void refresh_speed_ceiling_0070da00() override {
+                bsp::flak_note_seg36_37_argon::UnitGroup_RefreshSpeedCeiling_0070da00(*this);
+                target.native_members->capture_members(target.members);
+            }
+            float seed_00cfd6f4() const override { return bsp::kShipAiFormationSpeedSeed; }
+            float unset_00cf4888() const override { return bsp::kShipAiFormationMemberSpeedUnset; }
+            std::int32_t member_count_04f8() const override { return count; }
+            bool member_present(std::int32_t index) const override {
+                return target.members.at(static_cast<std::size_t>(index)).entity != 0;
+            }
+            float member_class_speed(std::int32_t index) const override {
+                const auto member = target.members.at(static_cast<std::size_t>(index)).entity - 1u;
+                return units.unit_is_kind_of(member, 6)
+                    ? units.unit_class_max_speed_0500(member)
+                    : units.plane_class_max_speed_0188(member);
+            }
+            void set_missing_member_speed_30(std::int32_t index, float value) override {
+                bsp::ship_ai_formation_set_member_speed(
+                    target.members.at(static_cast<std::size_t>(index)), value);
+            }
+            float ceiling_0504() const override { return target.native_members->speed_ceiling(); }
+            void set_ceiling_0504(float value) override {
+                target.native_members->publish_speed_ceiling(value);
+            }
+        } join{host, *this, target, member_count, binding, handle};
+        // Evidence: bsp.py show 0070EF30. One complete call replaces the old
+        // append/slot writes, using actual unit/group identities and the
+        // application observer graph. Numeric identities are never dispatched.
+        std::int32_t added;
+        try {
+            added = bsp::ship_ai_formation_add_member(join, target.members.data(), member_count,
+                static_cast<std::uint32_t>(group + 1), handle);
+        } catch (...) {
+            target.members.resize(static_cast<std::size_t>(member_count));
+            throw;
+        }
+        target.members.resize(static_cast<std::size_t>(member_count));
+        if (added < 0) {
+            ++host.formation_rejoins;
+            return false;
+        }
     }
-    target.members.push_back(record);
+    host.done("UnitGroup::add_member_0070ef30", 0x0070ef30u);
     ++host.formation_joins;
     // 007788B0 / 007788D0 are read by 00836920's idle re-issue, which lives in
     // the commands host and has no route to the group, so the pair is pushed.
     host.commands.set_unit_formation(follower, true, leader);
-    // 0070DA00's speed ceiling over the new membership is NOT run: nothing reads
-    // group+504h yet. Columns 1, 2 and 3 are not produced either - they are the
-    // canned LINE / COLUMN / DIAMOND tables, which only a type-78h reshape
-    // selects and which this packet's across convention cannot be trusted for.
 
     // 0077FA81's loop over the rest of the list. Each one has already been
     // detached above, so it leads nothing and brings only itself: the recursion

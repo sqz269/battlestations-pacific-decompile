@@ -187,6 +187,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
+#include "bsp/observer_edges.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/squadron_free_attack.hpp"            // packet p15_free_attack_tick
 #include "bsp/recon_sensor_pass.hpp"               // packet cc13-fapick
@@ -4052,7 +4053,11 @@ struct GameUnitsHost::Impl {
     struct FormationGroup {
         std::size_t leader{0};                               // group+14h
         std::vector<bsp::ShipAiUnitGroupMember> members;     // group+18h, 34h each
-        mutable GameUnitGroupStorage native_members;        // chain272 read projection
+        // Stable actual callback prefix, also used by the existing member
+        // read projections. FormationGroup itself moves as the vector grows.
+        mutable std::unique_ptr<GameUnitGroupStorage> native_members{
+            std::make_unique<GameUnitGroupStorage>()};
+        bool observes_units{false};                         // native callback-owner edges live
         std::int32_t column{0};                              // group+500h, the
                                                              // pattern index the
                                                              // constructor leaves 0
@@ -4060,6 +4065,19 @@ struct GameUnitsHost::Impl {
                                                              // ship leader (0070D82F)
     };
     std::vector<FormationGroup> formation_groups;
+    void register_formation_observer(FormationGroup& group, std::size_t unit) {
+        if (observer_runtime == nullptr || !observer_runtime->has_live_dispatch_owner()
+            || !slots.at(unit)->observer_prefix_ready)
+            throw std::logic_error("formation join requires the live unit observer endpoint");
+        bsp::register_observer_pair_00694a60(slots[unit]->observer_prefix.observed_00,
+            group.native_members->observer_owner(), observer_runtime->lifetime());
+        group.observes_units = true;
+    }
+    void unregister_formation_observer(FormationGroup& group, std::size_t unit) {
+        if (!group.observes_units) return;
+        observer_runtime->lifetime().unregister_pair_006952a0(
+            slots.at(unit)->observer_prefix.observed_00, group.native_members->observer_owner());
+    }
     unsigned long long formation_joins{0};
     unsigned long long formation_creates{0};
     unsigned long long formation_rejoins{0};
