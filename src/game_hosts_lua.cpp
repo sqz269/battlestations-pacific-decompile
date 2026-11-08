@@ -6484,7 +6484,7 @@ private:
 class GameMissionLuaShipLeafFieldBinding final : public bsp::ShipLeafFieldHost {
 public:
     GameMissionLuaShipLeafFieldBinding(bsp::GameplayTuningSettings& settings,
-        std::int32_t mode) : settings_(settings), mode_(mode) {}
+        std::int32_t mode, lua_State* state) : settings_(settings), mode_(mode), state_(state) {}
 
     std::uint32_t tuning_block_dword(std::uint32_t offset) override {
         return select_loaded_ship_depth_table(settings_, mode_).word(offset);
@@ -6494,7 +6494,17 @@ public:
     void register_landing_troop_soldier(const char*) override { unavailable(); }
     void register_landing_troop_vehicle(std::int32_t) override { unavailable(); }
     bsp::GuiLuaRef landing_troop_classes(std::int32_t) override { unavailable(); }
-    void store_deck_camera_basis(const bsp::DeckCameraAngles&) override { unavailable(); }
+    void read_deck_camera_position(const bsp::GuiLuaRef& position, float out[3]) override {
+        NativeLuaStateStorage owner;
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state_;
+        const int ref = static_cast<int>(position.id) - 3;
+        if (ref > 0) lua_rawgeti(state_, LUA_REGISTRYINDEX, ref);
+        else lua_pushnil(state_);
+        auto object = stack_object(owner, ::lua_gettop(state_));
+        native_lua_get_vector3_00b67a80(object, out);
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    }
 
 private:
     [[noreturn]] static void unavailable() {
@@ -6502,6 +6512,7 @@ private:
     }
     bsp::GameplayTuningSettings& settings_;
     std::int32_t mode_;
+    lua_State* state_;
 };
 
 // 00831840's value model stores effect IDs, not native ref-counted pointers
@@ -6783,7 +6794,8 @@ private:
         const auto kind = bsp::kVehicleClassDescriptorTable[index].kind;
         using Kind = bsp::VehicleClassKind;
         if (kind != Kind::BattleShip && kind != Kind::Cargo
-            && kind != Kind::Cruiser && kind != Kind::Destroyer) return;
+            && kind != Kind::Cruiser && kind != Kind::Destroyer
+            && kind != Kind::MotherShip) return;
 
         // 00424C40 is lazy in the image as well. Resolve its real ShipGlobals
         // producer if this class is the first settings borrower in this run.
@@ -6792,7 +6804,7 @@ private:
         if (!owner_.gameplay_tuning_settings_)
             throw std::runtime_error("ship leaf load requires completed gameplay settings");
         const auto mode = bsp::session_context().session_word_1fe4;
-        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode);
+        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode, state_);
         bsp::ShipLeafFields fields;
         // Evidence: bsp.py show 006e00f0 / 006eb4a0 / 006fb550 / 006fe6a0.
         // Original ABI: descriptor in ECX, LuaObject* row on stack, RET 4.
@@ -6814,6 +6826,14 @@ private:
         case Kind::Destroyer:
             bsp::read_destroyer_class_fields_006fe6a0(settings, fields);
             owner_.log_.implemented("VehicleClass::load_destroyer_leaf", "006fe6a0");
+            break;
+        case Kind::MotherShip:
+            // 00759590, descriptor ECX / LuaObject* row / RET 4. The existing
+            // semantic descriptor owns these results beside its base fields;
+            // read_ship_navigation_input/read_ship_depth_input consume this
+            // same retained tuning instead of re-reading the Lua class type.
+            bsp::read_mothership_class_fields_00759590(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_mothership_leaf", "00759590");
             break;
         default: return;
         }
@@ -16986,6 +17006,11 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     const char* nested_key, int fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (nested_key == nullptr && leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership
+        && std::strcmp(key, "MaxLandingPlanesOnBoard") == 0)
+        return leaf->second.fields.max_landing_planes;
     note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     int value = fallback;
@@ -17103,6 +17128,14 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     // the result; this reader does not, because the Lua field is the modifier
     // and class+B8h is its square.
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership) {
+        // 00759120's carrier deck borrows the loaded class+820h/+824h, not a
+        // second lookup of the mutable Lua row (00759590 has already run).
+        if (std::strcmp(key, "RunwayWidth") == 0) return leaf->second.fields.runway_width;
+        if (std::strcmp(key, "RunwayLength") == 0) return leaf->second.fields.runway_length;
+    }
     const auto loaded = vehicle_class_ship_base_fields_.find(index);
     if (loaded != vehicle_class_ship_base_fields_.end()) {
         const auto& ship = loaded->second;
@@ -17136,6 +17169,11 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
 bool GameMissionLuaHost::read_vehicle_class_boolean(int index, const char* key,
     bool fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership
+        && std::strcmp(key, "CarrierEscort") == 0)
+        return leaf->second.fields.is_carrier_escort;
     const int top = ::lua_gettop(state_);
     bool value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
