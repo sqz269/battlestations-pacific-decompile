@@ -217,18 +217,8 @@ void* bsp_weapon_director_fire_target_0071f150(Seg38_39Host& host, void* self) {
   return host.command_target_resolve_object_00521ea0(target_desc);
 }
 
-// 0071f3b0: BSP_RefCountedPtr_Release
-// Original ABI: __fastcall(ECX=self), RET 0.
-void bsp_ref_counted_ptr_release_0071f3b0(Seg38_39Host& host, void* self) {
-  Raw s = raw_of(self);
-  void* held = s.ptr(0x00);
-  if (held != nullptr) {
-    if (host.interlocked_decrement_00ce2220(&raw_of(held).at<std::int32_t>(0x04)) == 0) {
-      host.vcall_00(held);
-    }
-    s.ptr(0x00) = nullptr;
-  }
-}
+// The canonical 0071F3B0 body is compiled with the core resource-reference
+// owners in native_resource_reader_references.cpp; its borrowed API is here.
 
 // 0071f460: BSP_RefHolderDB04_Destruct
 // Original ABI: __fastcall(ECX=self), RET 0.

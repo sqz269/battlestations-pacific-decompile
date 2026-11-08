@@ -26,7 +26,15 @@ struct GeomMeshRadixSortHost {
   virtual void geom_mesh_radix_sort_key8_007225f0(std::uint32_t* records, std::int32_t count, std::uint32_t* scratch) = 0;
 };
 
-struct Seg38_39Host : GeomMeshRadixSortHost {
+// 0071F3B0 only needs the two operations below. Borrow the actual pointer
+// slot and its owner's +4h count; no director object or replacement owner.
+struct RefCountedSlotReleaseHost {
+  virtual ~RefCountedSlotReleaseHost() = default;
+  virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* addend) = 0;
+  virtual void vcall_00(void* obj) = 0;
+};
+
+struct Seg38_39Host : GeomMeshRadixSortHost, RefCountedSlotReleaseHost {
   virtual ~Seg38_39Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -187,7 +195,7 @@ void* bsp_ref_ptr_release_0071ea60(Seg38_39Host& host, void* self);
 void bsp_ref_ptr_release_0071f0e0(Seg38_39Host& host, void* self);
 void bsp_ref_ptr_assign_0071f110(Seg38_39Host& host, void* self, void* const* src_slot);
 void* bsp_weapon_director_fire_target_0071f150(Seg38_39Host& host, void* self);
-void bsp_ref_counted_ptr_release_0071f3b0(Seg38_39Host& host, void* self);
+void bsp_ref_counted_ptr_release_0071f3b0(RefCountedSlotReleaseHost& host, void* self);
 void bsp_ref_holder_db04_destruct_0071f460(Seg38_39Host& host, void* self);
 void bsp_ref_holder_db04_destruct_0071f530(Seg38_39Host& host, void* self);
 void* bsp_vec3_vector_assign_0071f9f0(Seg38_39Host& host, void* self, const void* other);
