@@ -7,13 +7,13 @@
       "native": "009251f0",
       "status": "wired",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity (FindEntity)",
-      "state": "Names and authored hierarchy come from live_scene_entities(); the result must still resolve to an existing findable scene_entity_ids_ entry and thisTable slot."
+      "state": "Names and authored hierarchy come only from generated && created live_scene_entities() records; the result must still resolve to an existing findable scene_entity_ids_ entry and thisTable slot."
     },
     {
       "native": "00467f30",
       "status": "wired",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity::SceneNameNode::child_at",
-      "state": "Typed sibling links/counts are derived from live scene_id/parent_scene_id and record visit order; the existing cc13_sys::scene_node_child_at_00467f30 body walks them."
+      "state": "Typed sibling links/counts are derived from instantiated records' scene_id/parent_scene_id and visit order; unavailable parents are absent from the node map, so links cannot pass through them. The existing cc13_sys::scene_node_child_at_00467f30 body walks the links."
     },
     {
       "native": "007214c0",
@@ -103,20 +103,32 @@
   "validation": {
     "build": "scripts/build.ps1: Win32 Release passed; all four CTest groups passed.",
     "probe": "tests/wire_g5_c987_find_entity_probe.cpp: PASS on rebuilt game objects; read-only original-data bootstrap, no original code/game loop.",
-    "probe_coverage": "Exact-name priority, case-folded map order, second sibling in a qualified path, unfindable child, missing child/prefix, runtime-only fallback, ambiguous duplicate-name rejection.",
+    "probe_coverage": "Exact-name priority, case-folded map order, second sibling in a qualified path, unfindable child, missing child/prefix, runtime-only fallback, ambiguous duplicate-name rejection, and an unspawned intermediate with a real findable descendant Lua id.",
     "entry_reachable_reconstructed_addresses_before": 5729,
     "entry_reachable_reconstructed_addresses_after": 5731,
     "call_sites": {
-      "009251f0": "10168f06 from GameMissionLuaHost::push_resolved_entity",
+      "009251f0": "10168f26 from GameMissionLuaHost::push_resolved_entity",
       "00467f30": "1014d038 from GameMissionLuaHost::push_resolved_entity::SceneNameNode::child_at"
     },
     "readiness_source_wired_before": 10841,
     "readiness_source_wired_after": 10842
   },
+  "review_round_1": {
+    "review_run": 2193,
+    "finding": "P2: authored gate-rejected/Hidden templates were traversable intermediates despite lacking instantiated scene nodes.",
+    "status": "fixed",
+    "change": "Require both generated and created before constructing a node or adding it to the parent-id/name maps. Missing intermediate nodes cannot contribute child links.",
+    "evidence": "GameSceneEntityRecord::generated records instantiate-pass admission; created records a creator result. SceneReaderBinding::instantiate_entity retains gate-rejected and Hidden templates with generated=false and no instance (3964/4007).",
+    "regression": "Fixture records now set realistic generated/created flags. RootCarrier -> HeldBack(false,false) -> LiveDescendant(true,true) must not resolve as a qualified path even though direct FindEntity(LiveDescendant) resolves to its attached Lua id 109.",
+    "regression_before_fix": "The updated focused fixture exited 1 against the e644fdee31 rebuilt objects before changing the host.",
+    "regression_after_fix": "The updated focused fixture passed against the rebuilt corrected host.",
+    "checks": "Win32 Release build and all four CTest groups passed; call_graph still confirms both claimed addresses are entry-reachable (2/2), with 5731 reconstructed addresses called.",
+    "boundary": "Generated-only marker records conservatively retain whole-name lookup; they do not establish hierarchy membership without creator-result evidence."
+  },
   "limitations": [
     "The Lua name index retains exact-hit priority and map-order case-folded ties, rather than the native registry bucket order.",
     "Runtime-only entries and duplicate authored names retain the existing whole-name lookup because a unique scene-node-to-Lua-id identity is unavailable; qualified duplicate aliases are rejected.",
-    "The sibling view borrows live scene records for each lookup; it is a source adapter, not a native scene-node allocation or binary ABI replacement.",
+    "The sibling view borrows only generated && created scene records for each lookup; generated-only marker records retain whole-name fallback. It is a source adapter, not a native scene-node allocation or binary ABI replacement.",
     "No game was run; frame performance, gameplay and native ABI compatibility remain unvalidated."
   ]
 }

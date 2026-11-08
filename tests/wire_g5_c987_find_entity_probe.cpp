@@ -54,11 +54,14 @@ int main(int argc, char** argv) {
         // Fixture injection into the real scene owner. Production fills these
         // fields in SceneReaderBinding::instantiate_entity, before Lua attach.
         auto& records = const_cast<std::vector<GameSceneEntityRecord>&>(scene.entities());
-        const auto add_record = [&](const char* name, std::size_t id, std::size_t parent) {
+        const auto add_record = [&](const char* name, std::size_t id, std::size_t parent,
+            bool generated = true, bool created = true) {
             GameSceneEntityRecord record;
             record.name = name;
             record.scene_id = id;
             record.parent_scene_id = parent;
+            record.generated = generated;
+            record.created = created;
             records.push_back(std::move(record));
         };
         add_record("RootCarrier", 10, 0);
@@ -69,13 +72,19 @@ int main(int argc, char** argv) {
         add_record("AIRFIELD", 15, 0);
         add_record("SharedName", 16, 10);
         add_record("SharedName", 17, 0);
+        // Hidden/gate-rejected records are retained as authored templates,
+        // without an instantiated node. A live/findable leaf is insufficient
+        // evidence for traversing its unavailable intermediate parent.
+        add_record("HeldBack", 18, 10, false, false);
+        add_record("LiveDescendant", 19, 18);
         mission.create_state();
         mission.create_self_table_004e0305();
         const std::vector<GameMissionLuaHost::SceneEntity> entities{
             {"RootCarrier", 101, -1, true}, {"Decoy", 102, -1, true},
             {"Turret", 103, -1, true}, {"Secret", 104, -1, false},
             {"airFIELD", 105, -1, true}, {"AIRFIELD", 106, -1, true},
-            {"RuntimeOnly", 107, -1, true}, {"SharedName", 108, -1, true}
+            {"RuntimeOnly", 107, -1, true}, {"SharedName", 108, -1, true},
+            {"LiveDescendant", 109, -1, true}
         };
         if (mission.attach_scene_entities_00928a00(entities) != entities.size())
             throw std::runtime_error("entity attach failed");
@@ -100,6 +109,8 @@ int main(int argc, char** argv) {
         check("runtimeonly", 107);         // no authored scene-node source
         check("SharedName", 108);          // retain the existing flat-name identity
         check("RootCarrier\\SharedName", 0); // duplicate scene names lack a unique Lua id
+        check("LiveDescendant", 109);       // the descendant really has a findable Lua id
+        check("RootCarrier\\HeldBack\\LiveDescendant", 0);
         std::cout << "PASS: c987 FindEntity scene hierarchy, sibling walk, lookup priority, visibility and runtime fallback\n";
     } catch (const std::exception& error) {
         std::cerr << "FAIL: " << error.what() << '\n';

@@ -18652,6 +18652,12 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         if (const auto* records = live_scene_entities()) {
             nodes.reserve(records->size());
             for (const auto& record : *records) {
+                // instantiate_entity retains gate-rejected and Hidden rows
+                // (3964/4007) without an instance. Only admitted creator
+                // results establish hierarchy membership; a descendant's
+                // Lua id cannot make an unavailable intermediate traversable.
+                // Generated-only marker rows keep the whole-name fallback.
+                if (!record.generated || !record.created) continue;
                 nodes.emplace_back(record);
                 auto* node = &nodes.back(); // reserve above keeps all sibling pointers stable
                 if (record.scene_id != 0) by_scene_id.emplace(record.scene_id, node);
