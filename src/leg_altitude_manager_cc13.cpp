@@ -3,11 +3,19 @@
 
 #include "bsp/leg_altitude_manager_cc13.hpp"
 #include "bsp/cc13_seg68.hpp"
+#include "bsp/cc13_seg67b.hpp"
+#include "bsp/native_singleton_publication.hpp"
+#include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstddef>
 #include <cstring>
+#include <new>
+#include <optional>
 #include <type_traits>
+
+#define NOMINMAX
+#include <windows.h>
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -18,17 +26,79 @@
 
 namespace bsp {
 
+namespace {
+// The getter's exact raw manager/section services. F8A720 is borrowed from the
+// process, not cached here; the second getter and publication reload in the
+// existing 009BD400 body still determine the registered pointer.
+class PathLegLifetime final : public PathLegManagerLifetimeCalls {
+public:
+    explicit PathLegLifetime(LegAltitudeSingletonDomain domain) : domain_(domain) {}
+    void* path_leg_manager_00f8a720() override { return domain_.path_leg_manager_00f8a720; }
+    void set_path_leg_manager_00f8a720(void* manager) override {
+        domain_.path_leg_manager_00f8a720 = manager;
+    }
+    void* singleton_manager_00415350() override {
+        return get_native_singleton_manager_00415350(domain_.manager_01090aa0);
+    }
+    void enter_critical_section_ce2218(void* section) override {
+        EnterCriticalSection(static_cast<CRITICAL_SECTION*>(section));
+    }
+    void leave_critical_section_ce2210(void* section) override {
+        LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(section));
+    }
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+    }
+    void* bot_path_leg_manager_construct_009faa40(void* memory) override {
+        auto* const manager = ::new (memory) cc13_seg68::LegManager;
+        cc13_seg68::leg_manager_construct_009faa40(*manager);
+        return manager;
+    }
+    void singleton_register_00bd0c30(void* manager, void* instance) override {
+        register_native_singleton_object_00bd0c30(manager, nullptr, instance);
+    }
+private:
+    LegAltitudeSingletonDomain domain_;
+};
+} // namespace
+
 // Chain 494: this 10h image owns the actual records read and updated by the
 // existing live algorithms. The record's unit word retains their established
-// host unit identity (slot+1); no raw Unit ABI or singleton/lock is asserted.
+// host unit identity (slot+1); no raw Unit ABI is asserted. Chain 832 supplies
+// the application's process publication and shared lifetime for the live path.
 // Evidence: bsp.py show 009FAA40, 009F9B60, 009FA430, 009F9AD0. The latter
 // three use the same pointer/count/capacity and 10h copies as 009FC0EA..157.
 // Allocator callbacks throw on failure and use the process CRT free boundary.
 struct LegAltitudeRecords::Native final : cc13_seg68::LegArrayStorageCalls {
-    cc13_seg68::LegManager manager;
-    Native() { cc13_seg68::leg_manager_construct_009faa40(manager); }
+    // Local storage remains available to independent semantic fixtures. The
+    // application overload instead borrows the registered raw10h owner.
+    std::optional<cc13_seg68::LegManager> local_manager;
+    std::optional<LegAltitudeSingletonDomain> domain;
+    cc13_seg68::LegManager* actual_manager;
+    Native() : local_manager(std::in_place), actual_manager(&*local_manager) {
+        cc13_seg68::leg_manager_construct_009faa40(*actual_manager);
+    }
+    explicit Native(LegAltitudeSingletonDomain borrowed)
+        : domain(borrowed) {
+        PathLegLifetime lifetime(borrowed);
+        actual_manager = static_cast<cc13_seg68::LegManager*>(
+            bot_path_leg_manager_get_body_009bd400(lifetime));
+    }
     ~Native() {
-        cc13_seg68::free_owned_buffer_009f9ad0(*this, manager.records_04.data_00);
+        // The borrowed application owner is freed by D21C80 dispatch. This
+        // view may outlive that drain, so its destructor never touches it.
+        if (local_manager)
+            cc13_seg68::free_owned_buffer_009f9ad0(*this, local_manager->records_04.data_00);
+    }
+    cc13_seg68::LegManager& manager() noexcept { return *actual_manager; }
+    const cc13_seg68::LegManager& manager() const noexcept { return *actual_manager; }
+    void clear() noexcept {
+        // Explicit mission retirement drops slot+1 unit identities before
+        // they can be reused. After a drain/replacement, never touch the old
+        // receiver or recreate a singleton just to retire a view.
+        if (domain && (actual_manager == nullptr ||
+            domain->path_leg_manager_00f8a720 != actual_manager)) return;
+        actual_manager->records_04.count_04 = 0;
     }
     cc13_seg68::Handle operator_new(std::uint32_t bytes) override {
         return reinterpret_cast<cc13_seg68::Handle>(singleton_lifetime_allocate(
@@ -41,7 +111,7 @@ struct LegAltitudeRecords::Native final : cc13_seg68::LegArrayStorageCalls {
         std::memcpy(reinterpret_cast<void*>(destination), reinterpret_cast<const void*>(source), 0x10);
     }
     LegAltitudeRecord* data() const noexcept {
-        return reinterpret_cast<LegAltitudeRecord*>(manager.records_04.data_00);
+        return reinterpret_cast<LegAltitudeRecord*>(manager().records_04.data_00);
     }
 };
 static_assert(sizeof(void*) == 4);
@@ -53,12 +123,14 @@ static_assert(std::is_trivially_copyable_v<LegAltitudeRecord>);
 LegAltitudeRecords::LegAltitudeRecords(LegAltitudeStorage storage) {
     if (storage == LegAltitudeStorage::native) native_ = std::make_unique<Native>();
 }
+LegAltitudeRecords::LegAltitudeRecords(LegAltitudeSingletonDomain domain)
+    : native_(std::make_unique<Native>(domain)) {}
 LegAltitudeRecords::~LegAltitudeRecords() = default;
 std::size_t LegAltitudeRecords::size() const noexcept {
-    return native_ ? native_->manager.records_04.count_04 : projected_.size();
+    return native_ ? native_->manager().records_04.count_04 : projected_.size();
 }
 std::size_t LegAltitudeRecords::capacity() const noexcept {
-    return native_ ? native_->manager.records_04.capacity_08 : projected_.capacity();
+    return native_ ? native_->manager().records_04.capacity_08 : projected_.capacity();
 }
 LegAltitudeRecord& LegAltitudeRecords::operator[](std::size_t i) noexcept {
     return native_ ? native_->data()[i] : projected_[i];
@@ -67,17 +139,17 @@ const LegAltitudeRecord& LegAltitudeRecords::operator[](std::size_t i) const noe
     return native_ ? native_->data()[i] : projected_[i];
 }
 void LegAltitudeRecords::pop_back() noexcept {
-    if (native_) --native_->manager.records_04.count_04;
+    if (native_) --native_->manager().records_04.count_04;
     else projected_.pop_back();
 }
 void LegAltitudeRecords::push_back(const LegAltitudeRecord& record) {
     if (native_) {
-        cc13_seg68::array16_push_back_009fa430(*native_, native_->manager.records_04,
+        cc13_seg68::array16_push_back_009fa430(*native_, native_->manager().records_04,
             reinterpret_cast<cc13_seg68::Handle>(&record));
     } else projected_.push_back(record);
 }
 void LegAltitudeRecords::clear() noexcept {
-    if (native_) native_->manager.records_04.count_04 = 0;
+    if (native_) native_->clear();
     else projected_.clear();
 }
 LegAltitudeRecordView LegAltitudeRecords::view() const noexcept {

@@ -329,6 +329,9 @@ struct NativeSingletonDeletionBindings {
     const frontend_seg19_21_cc13::LoadingScreenDeletionBinding* loading_screen{};
     // CE417C: appended so every recovered assembly binding offset stays fixed.
     VehicleClassRegistryRetirementBinding* vehicle_class_registry{};
+    // D21C80 ->009FAA90; same actual cell 009BD400 published. Append only,
+    // preserving every existing assembly-consumed binding offset.
+    void* volatile* actual_path_leg_manager_publication_00f8a720{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -368,7 +371,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, texture_atlas) == 228);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_spatial_index_publication_00f8a0d8) == 232);
 static_assert(offsetof(NativeSingletonDeletionBindings, loading_screen) == 236);
 static_assert(offsetof(NativeSingletonDeletionBindings, vehicle_class_registry) == 240);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 244);
+static_assert(offsetof(NativeSingletonDeletionBindings, actual_path_leg_manager_publication_00f8a720) == 244);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 248);
 
 // Exception paragraph below is the legacy/default contract. A selected prepared
 // raw edge still armed on an unknown Source escape instead retains/rethrows

@@ -40,6 +40,8 @@ GameSingletonHost::GameSingletonHost(GameHostLog& log)
     // process cell and this dispatch table both survive normal/fallback drain.
     deletion_bindings_.actual_spatial_index_publication_00f8a0d8 =
         &game_native_string_process().spatial_index_00f8a0d8();
+    deletion_bindings_.actual_path_leg_manager_publication_00f8a720 =
+        &game_native_string_process().path_leg_manager_00f8a720();
 }
 
 GameSingletonHost::~GameSingletonHost() {

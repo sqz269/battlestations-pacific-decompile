@@ -3500,6 +3500,12 @@ private:
 struct GameUnitsHost::Impl {
     Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
         : log(log_in), lua(lua_in), commands(log_in) {}
+    ~Impl() {
+        // Source mission retirement: the process singleton outlives these
+        // slot+1 unit identities. Retire their records before slots are freed;
+        // clear() also admits a shared drain that already destroyed the owner.
+        leg_manager_cc13_.clear();
+    }
 
     GameHostLog& log;
     GameMissionLuaHost& lua;
@@ -10181,12 +10187,12 @@ struct GameUnitsHost::Impl {
         }
         const Impl& h_;
     };
-    bsp::LegAltitudeManager leg_manager_cc13_{[] {
-        // The same actual aircraft/goal records now live in 009FAA40's
-        // pointer/count/capacity array; growth, append and teardown call
-        // 009F9B60 / 009FA430 / 009F9AD0 rather than a vector mirror.
-        return bsp::LegAltitudeManager(bsp::LegAltitudeStorage::native);
-    }()};
+    // 009BD400 supplies the SAME raw10h owner to all live aircraft/goal
+    // consumers. The shared singleton drain runs 009FAA90 and clears F8A720;
+    // this mission-side view owns no second manager or record array.
+    bsp::LegAltitudeManager leg_manager_cc13_{bsp::LegAltitudeSingletonDomain{
+        game_native_string_process().manager_01090aa0(),
+        game_native_string_process().path_leg_manager_00f8a720()}};
     LegUnits leg_units_cc13_{*this};
     void squadron_leave_on_death_007bcaa0() {
         for (const auto& owned : slots) {

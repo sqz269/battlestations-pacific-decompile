@@ -16,6 +16,8 @@ public:
     // Permanent Source authority for Original F8A0D8. Cell access creates no
     // index; 0042E630 publishes it and 0042D4B0 clears the SAME cell at drain.
     void* volatile& spatial_index_00f8a0d8() noexcept { return spatial_index_00f8a0d8_; }
+    // 009BD400/009FAA90 share this process cell through the canonical drain.
+    void* volatile& path_leg_manager_00f8a720() noexcept { return path_leg_manager_00f8a720_; }
     // Actual pending-registry publication shares this retained process lifetime.
     // Accessing the cell does not construct or register a registry owner.
     void* volatile& pending_registry_00f878cc() noexcept;
@@ -98,6 +100,8 @@ private:
     // Append after established authorities. Scene/root/node consumers must
     // borrow this cell rather than create a second registry or manager.
     void* volatile spatial_index_00f8a0d8_{};
+    // Append after all established process authorities.
+    void* volatile path_leg_manager_00f8a720_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

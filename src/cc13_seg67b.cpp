@@ -3,6 +3,9 @@
 // Hypothesis names, build-tested only, nothing wired.
 
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/cc13_seg68.hpp"
+#include "bsp/leg_altitude_manager_cc13.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
 #include "bsp/ship_ai_state_steps.hpp"
@@ -1891,25 +1894,52 @@ void bot_approach_refresh_target_009beba0(Cc13Seg67bHost& host, void* a) {
 // (009BD481), 00BD0C30(ECX = 00415350(), m) (009BD494). When cs: cs+18h -= 1 and
 // LeaveCriticalSection(cs) (import 00CE2210, 009BD4A2). Returns [00F8A720].
 // The guard local's vtable 00CE37FC (009BD430) has no other effect.
-void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host) {
+void* bot_path_leg_manager_get_body_009bd400(PathLegManagerLifetimeCalls& host) {
     if (host.path_leg_manager_00f8a720() != nullptr) return host.path_leg_manager_00f8a720();
     void* const cs = ptr_at(host.singleton_manager_00415350(), 0x10);
     if (cs != nullptr) {
         host.enter_critical_section_ce2218(cs);
-        at<std::int32_t>(cs, 0x18) += 1;
+        at<std::uint32_t>(cs, 0x18) += 1u;
     }
-    if (host.path_leg_manager_00f8a720() == nullptr) {
-        void* m = host.operator_new_00bf681b(0x10);
-        m = m != nullptr ? host.bot_path_leg_manager_construct_009faa40(m) : nullptr;
-        host.set_path_leg_manager_00f8a720(m);
-        host.singleton_register_00bd0c30(host.singleton_manager_00415350(),
-                                         host.path_leg_manager_00f8a720());
+    const auto release_section = [&]() {
+        if (cs != nullptr) {
+            at<std::uint32_t>(cs, 0x18) -= 1u;
+            host.leave_critical_section_ce2210(cs);
+        }
+    };
+    // EHHandler00CAF623 uses FuncInfo00DE463C: state0 unwind00CAF610
+    // tail-calls guard destructor00411EE0 (decrement captured section+18,
+    // then Leave). The old source omitted that cleanup when allocation or
+    // registration threw. 009FAA40 is nonthrowing in this live adapter.
+    try {
+        if (host.path_leg_manager_00f8a720() == nullptr) {
+            void* m = host.operator_new_00bf681b(0x10);
+            m = m != nullptr ? host.bot_path_leg_manager_construct_009faa40(m) : nullptr;
+            host.set_path_leg_manager_00f8a720(m);
+            host.singleton_register_00bd0c30(host.singleton_manager_00415350(),
+                                             host.path_leg_manager_00f8a720());
+        }
+    } catch (...) {
+        release_section();
+        throw;
     }
-    if (cs != nullptr) {
-        at<std::int32_t>(cs, 0x18) -= 1;
-        host.leave_critical_section_ce2210(cs);
-    }
+    release_section();
     return host.path_leg_manager_00f8a720();
+}
+
+// Evidence: bsp.py show 009FAA90: free captured+4, clear CURRENT F8A720,
+// restore CE3818, then free captured when low flag bit is set. This scalar
+// target inlines 009FAA60 in the image too; it does not unregister or reload
+// the receiver. The manager drain already popped the registered pointer.
+void* delete_native_leg_manager_009faa90(void* captured, std::uint32_t flags,
+    void* volatile& publication) {
+    auto& manager = *static_cast<cc13_seg68::LegManager*>(captured);
+    if (manager.records_04.data_00 != 0)
+        singleton_lifetime_free(reinterpret_cast<void*>(manager.records_04.data_00));
+    publication = nullptr;
+    manager.vtable_00 = cc13_seg68::kSingletonBaseVtable;
+    if ((flags & 1u) != 0) singleton_lifetime_free(captured);
+    return captured;
 }
 
 // ---------------------------------------------------------------------------

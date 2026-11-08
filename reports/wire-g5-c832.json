@@ -1,0 +1,167 @@
+{
+  "goal": 5,
+  "chain": 832,
+  "slot": "g5-w8",
+  "run": 1793,
+  "picked": "Canonical path-leg manager owner/getter and scalar-deletion lifetime for live converging-leg altitude records",
+  "rows": [
+    {
+      "native": "009bd400",
+      "status": "wired",
+      "host_site": "src/leg_altitude_manager_cc13.cpp: LegAltitudeRecords::Native(LegAltitudeSingletonDomain), constructed by GameUnitsHost::Impl during scene load",
+      "details": "Narrow lifetime contract supplies the actual canonical 01090AA0 manager, process F8A720 publication, raw10h 009FAA40 owner, actual captured critical section and real BD0C30 registration. All live register/remove/altitude consumers use that owner array. State0 exception cleanup restored from native unwind metadata."
+    },
+    {
+      "native": "009faa90",
+      "status": "wired",
+      "host_site": "src/native_singleton_destruction.cpp: delete_legacy_current_profile D21C80 branch",
+      "details": "New complete scalar target frees captured records, clears current F8A720, restores CE3818 and conditionally frees captured owner. Shared drain uses the same retained process cell as construction."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already called from reachable code at baseline; no new wiring was needed."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "A retained ControllerSnapshotMessage owner and snapshot transport consumer were not established."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene-property projection",
+      "reason": "Already called at baseline through the owning native scene-property projection; ready text classification is not new wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native scene-property merge",
+      "reason": "Already called at baseline through native scene-property merge; ready text classification is not new wiring."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message delivery",
+      "reason": "A presence-zero clear-message producer and retained last-selected-slot path owners were not established."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land MoveTo state",
+      "reason": "The inspected host retains typed land state; a same-root raw3Ch MoveTo receiver and its observer endpoint binding were not established."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::run_projectiles",
+      "reason": "The full persistent BombTickState and BombTickHost owner-grace, launch/arming and effect/sweep lifecycle adapter were not established in this packet."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp: native grid owner candidate",
+      "reason": "A live raw84h grid receiver, descriptor preimage and source resource/render callbacks were not established in this packet."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-start write_checkpoint",
+      "reason": "The mission-start site still records the request; complete profile/storage erase-and-rewrite integration was not established."
+    },
+    {
+      "native": "007b3d60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp: random_timer_construct_007b3d60",
+      "reason": "Native evidence marks this constructor unreferenced; no legitimate single-player caller was established."
+    },
+    {
+      "native": "0071ba20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: collect_children_by_prefix_0071ba20",
+      "reason": "A live native child-entry vector and model-note predicate caller were not established."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path owner",
+      "reason": "The inspected director uses typed path state; a same-root director+1A4h pointer table for this raw getter was not established."
+    },
+    {
+      "native": "009faa40",
+      "status": "skipped",
+      "host_site": "src/leg_altitude_manager_cc13.cpp: PathLegLifetime::bot_path_leg_manager_construct_009faa40",
+      "reason": "Already called at baseline by the native record owner; the new getter reuses that existing constructor body."
+    },
+    {
+      "native": "009faa60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp: leg_manager_destruct_009faa60",
+      "reason": "Native scalar target 009FAA90 inlines this cleanup; no separate 009FAA60 native call site was established for the shared drain."
+    },
+    {
+      "native": "00411ee0",
+      "status": "skipped",
+      "host_site": "src/native_diagnostic_sink_lifetime.cpp: destroy_native_singleton_guard_00411ee0",
+      "reason": "Existing reconstructed guard body supplied unwind evidence; no new separate caller was needed for this packet."
+    }
+  ],
+  "implementation": [
+    "Added stable process F8A720 publication; live record views borrow the canonical raw manager and share its sole record array.",
+    "Added D21C80 deletion binding after existing fields, preserving every established binding offset; shared drain owns the raw allocation.",
+    "Retired host slot+1 unit identities in GameUnitsHost::Impl teardown; retirement and view destruction safely admit an already completed drain.",
+    "Extracted the getter-only host contract and restored captured-section release on allocation/registration exceptions; DWORD depth arithmetic wraps as native.",
+    "Retained existing projected/local-native library interfaces for independent fixtures; the application path directly selects the shared owner."
+  ],
+  "wired_total": {
+    "before": 10681,
+    "after": 10682,
+    "delta": 1,
+    "metric": "wire_readiness summary wired",
+    "note": "Getter adds one measured row; the new scalar deleting target is additionally verified as compiled entry-reachable."
+  },
+  "validation": {
+    "setup": "bsp.py brief; index --if-stale; baseline scripts/build.ps1 passed all 4 tests",
+    "build": "Final scripts/build.ps1 passed all 4 tests; log local/c832-build.log",
+    "focused_probe": "cmd /c tests\\wire_g5_c832_leg_owner_probe.cmd passed: allocation-failure captured-lock cleanup, two views sharing one raw array, one registration, mission identity retirement, D21C80 drain, safe post-drain retirement/destruction",
+    "compiled_calls": {
+      "009bd400": "REACHABLE; one call at 103975e5 from LegAltitudeRecords::LegAltitudeRecords; body 1042b140",
+      "009faa90": "REACHABLE; one call at 103cc1c5 from delete_legacy_current_profile; body 1042b390"
+    },
+    "game_run": false,
+    "original_abi_compatible": false,
+    "float_math": "No float arithmetic changed; existing register/remove/altitude arithmetic and precision remain intact."
+  },
+  "evidence": [
+    "bsp.py show 009BD400 decompilation and assembly: capture manager+10 section, enter/depth++, recheck F8A720, allocate10h, 009FAA40, publish, second manager getter/current publication registration, depth--/leave, final reload.",
+    "Live Ghidra FuncInfo00DE463C bytes and unwind map00DE462C: state0 ->00CAF610 ->00411EE0; state1 ->00CAF618 frees a failed-constructor allocation. Live constructor adapter 009FAA40 is nonthrowing.",
+    "bsp.py show 009FAA90: complete captured-receiver scalar target, current-publication clear, optional free; no unregister.",
+    "bsp.py show 009FAA40/009FAA60 and existing native array bodies establish the sole raw10h owner layout and cleanup.",
+    "call_graph.py path 009BD400 reaches scene load and GameUnitsHost construction; path 009FAA90 reaches GameSingletonHost::shutdown."
+  ],
+  "ghidra": {
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "annotated": [
+      "009bd400",
+      "009faa90"
+    ],
+    "previous_scalar_name": "CG_scalar_deleting_dtor_009faa90",
+    "new_scalar_name": "BSP_BotPathLegManager_ScalarDelete",
+    "receipt": "local/ghidra-annotations-20261108T124126Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "choices_and_limits": [
+    "Getter is resolved when the existing native record view is constructed during scene load; the current host had already constructed its previous local owner at this boundary.",
+    "Host aircraft identities remain the existing typed slot+1 IDs. This change does not claim original Unit-pointer ABI compatibility.",
+    "Existing typed record algorithms remain the consumers. Per-operation native leg-lock singleton 009FB010 plumbing is left for a separate packet.",
+    "No game was launched; build, focused fixture and compiled reachability are the validation levels."
+  ],
+  "left_for_others": [
+    "Native per-operation leg-lock singleton plumbing (009FB010 and its consumers).",
+    "Separate raw/native land-state and snapshot transport owner integrations listed in skipped rows."
+  ]
+}
