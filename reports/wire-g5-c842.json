@@ -1,0 +1,67 @@
+{
+  "goal": 5,
+  "chain": 842,
+  "run": 1821,
+  "owner": "agent/g5-w2",
+  "picked": "Canonical sound-resource cache resize over the loader's live owner",
+  "rows": [
+    {
+      "native": "00a845a0",
+      "status": "wired",
+      "host_site": "src/sound_resource_cleanup.cpp: clear_sound_resource_cache_00a84c90 and destroy_sound_resource_cache_storage_00a84d00",
+      "body": "src/engine_seg11_35_66_cc13.cpp: bsp::oct18_tail_c::sound_cache_resize_00a845a0",
+      "real_state": "The actual SoundResourceOwner populated by SoundResourceRuntime's VFS/FMOD loader; requested zero is the native teardown constant.",
+      "change": "Adapt the existing canonical body to the established standard-container owner; remove its unused raw-binding interface and the separate shrink-only fragment. Keep native reserve threshold, added-record construction and reverse record-storage destruction. No resource release or cache-accounting update is introduced.",
+      "before": "The complete canonical body had no reachable compiled call; teardown called shrink_sound_resource_cache_records_00a845a0_fragment instead.",
+      "after": "wire_readiness: state=wired, called=true, call_sites=2, callers_live=2. call_graph who resolves the canonical body at 10409980, with calls from destroy_sound_resource_cache_storage_00a84d00 and the inlined clear path in destroy_sound_resource_owner_base_00a85500.",
+      "evidence": "bsp.py show 00a845a0; --asm A845C0..CA reserve above capacity, A845CF..A84633 added-record construction, A84640..56 reverse storage destruction. call_graph.py who/path 00a845a0 proves entry reachability through the retained sound runtime."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp via src/scene_numeric_property_merge.cpp",
+      "reason": "Already entry-reachable at baseline through the owning native scene-property projection; no missing wiring was found."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp via src/scene_numeric_property_merge.cpp",
+      "reason": "Already entry-reachable at baseline through the owning native scene-property projection; no missing wiring was found."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate-score bookkeeping",
+      "reason": "Missing a gameplay score-list owner/consumer; the host documents the native list reader as the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate-score bookkeeping",
+      "reason": "Missing gameplay candidate-score records and a gameplay consumer; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: ai_defend_member_is_candidate_00a2def0 call",
+      "reason": "Already compiled and entry-reachable at baseline; the ready text classification does not identify missing wiring."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before changes and after implementation, MSVC Win32 Release; all four CTests passed.",
+    "focused_check": "One case added to existing reconstructed_math coverage: spare-capacity growth, reserve growth, retained names/aliases/resource identities, partial shrink and clear, with unchanged resource references and cache bytes.",
+    "wire_readiness": {"before": 10692, "after": 10693},
+    "reachable_reconstructed_addresses": {"before": 5553, "after": 5554},
+    "call_graph": "The new canonical body has two reachable call sites. Its path reaches WinMainCRTStartup through SoundResourceRuntime and GameSoundRuntime construction/vtable ownership.",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "The live wiring covers native resize-to-zero teardown; nonzero growth is verified by the focused fixture, not a new live growth caller.",
+    "This retains the existing C++ string/list/vector projection. It does not claim native 2Ch layout, stale unwritten +08/+28 values, native allocator/FH3 failure behavior, or native count-store observability during destruction.",
+    "C++ growth initializes the projection's otherwise-indeterminate fields and publishes vector size as records are constructed; original intermediate-count and exception semantics remain unproved.",
+    "Build, fixture and compiled reachability evidence do not establish original ABI compatibility or gameplay validation."
+  ],
+  "left_for_others": "Raw cache-storage/allocator and original ABI parity, native failure/unwind observability, and gameplay validation. Debug-only score-list work remains excluded."
+}

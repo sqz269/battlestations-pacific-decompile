@@ -2,6 +2,7 @@
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/sound_resource_cache.hpp"
 #include "bsp/sound_cc13.hpp"
+#include "bsp/oct18_tail_c.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -10,7 +11,6 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
-#include <cassert>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Sound resource cleanup requires MSVC Win32.
@@ -101,17 +101,6 @@ SoundOwnedResource* delete_sound_resource_00a85ac0(SoundOwnedResource* resource,
     return resource;
 }
 
-void shrink_sound_resource_cache_records_00a845a0_fragment(SoundResourceOwner& owner,
-    std::uint32_t requested) noexcept {
-    assert(requested <= owner.records_04.size());
-    while (requested < owner.records_04.size()) {
-        // Do not move the std::list-bearing record: MSVC list move construction
-        // can allocate a sentinel during teardown. Native count-before-free
-        // observability is outside this standard-container storage projection.
-        sound_cc13::sound_cache_records_pop_back_00a84380(owner);
-    }
-}
-
 void clear_sound_resource_cache_00a84c90(SoundResourceOwner& owner,
     SoundResourceCleanupContext& context) {
     while (!owner.records_04.empty()) {
@@ -121,11 +110,11 @@ void clear_sound_resource_cache_00a84c90(SoundResourceOwner& owner,
         release_sound_resource_00a854e0(*owner.records_04.back().resource_28, context);
         sound_cc13::sound_cache_records_pop_back_00a84380(owner);
     }
-    shrink_sound_resource_cache_records_00a845a0_fragment(owner, 0);
+    oct18_tail_c::sound_cache_resize_00a845a0(owner, 0);
 }
 
 void destroy_sound_resource_cache_storage_00a84d00(SoundResourceOwner& owner) noexcept {
-    shrink_sound_resource_cache_records_00a845a0_fragment(owner, 0);
+    oct18_tail_c::sound_cache_resize_00a845a0(owner, 0);
     std::vector<SoundResourceCacheRecord>{}.swap(owner.records_04);
 }
 

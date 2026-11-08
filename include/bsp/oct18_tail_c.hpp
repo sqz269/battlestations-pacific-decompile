@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <functional>
 
-namespace bsp { struct NativeMpkgArchiveContext; }
+namespace bsp { struct NativeMpkgArchiveContext; struct SoundResourceOwner; }
 
 // Exact-address lane tC leaves. Names describe hypotheses, not recovered symbols.
 // Raw getters borrow the original 32-bit storage. Callback setters receive the
@@ -130,12 +130,12 @@ struct FontRegistryBindings {
 };
 void* font_registry_construct_00ac3690(void*, const FontRegistryBindings&);
 void font_registry_destroy_00ac36f0(void*, std::uint32_t& image_f8bf44, const FontRegistryBindings&);
-struct SoundCacheBindings {
-    void (__thiscall* reserve_00a84450)(void*, std::int32_t);
-    void* (__thiscall* sentinel_004c3020)(void*);
-    RawThis destroy_record_00a842e0;
-};
-void sound_cache_resize_00a845a0(void*, std::int32_t, const SoundCacheBindings&);
+// Native ECX=&owner+4, signed count stack, RET4. The one canonical body uses
+// the live cache's standard-container projection and existing reserve/storage
+// destructors. Domain: nonnegative requested count. No resource release or
+// accounting changes; capacity is retained on shrink. This is not raw 2Ch
+// record storage, allocator-failure/FH3 behavior or a drop-in native ABI.
+void sound_cache_resize_00a845a0(SoundResourceOwner&, std::int32_t requested);
 struct GuiListVisibilityBindings {
     void (__thiscall* base_visible_00aa8530)(void*, std::uint32_t);
     void* (__cdecl* manager_004c12b0)();
