@@ -9,20 +9,24 @@
     {
       "native": "00b621e0",
       "status": "wired",
-      "host_site": "src/native_material_pools.cpp: native_shader_state_list_pool_table_reserve_00b62360 / native_shader_state_list_pool_table_grow_00b62230",
+      "host_site": "src/native_shader_state_list_pool_table.cpp: native_shader_state_list_pool_table_reserve_00b62360 / native_shader_state_list_pool_table_grow_00b62230",
       "operation": "SetCapacity",
       "evidence": "bsp.py show 00b621e0; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
       "called": true,
-      "call_sites": 2
+      "call_sites": 2,
+      "latest_call_sites": 2,
+      "release_icf_with_icon": true
     },
     {
       "native": "00b62230",
       "status": "wired",
-      "host_site": "src/native_material_pools.cpp: native_shader_state_list_pool_table_push_back_00b622e0",
+      "host_site": "src/native_shader_state_list_pool_table.cpp: native_shader_state_list_pool_table_push_back_00b622e0",
       "operation": "Grow",
       "evidence": "bsp.py show 00b62230; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
       "called": true,
-      "call_sites": 1
+      "call_sites": 1,
+      "latest_call_sites": 1,
+      "release_icf_with_icon": true
     },
     {
       "native": "00b622e0",
@@ -31,7 +35,9 @@
       "operation": "PushBack",
       "evidence": "bsp.py show 00b622e0; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
       "called": true,
-      "call_sites": 1
+      "call_sites": 1,
+      "latest_call_sites": 2,
+      "release_icf_with_icon": true
     },
     {
       "native": "00b62360",
@@ -40,7 +46,9 @@
       "operation": "Reserve",
       "evidence": "bsp.py show 00b62360; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
       "called": true,
-      "call_sites": 1
+      "call_sites": 1,
+      "latest_call_sites": 1,
+      "release_icf_with_icon": false
     },
     {
       "native": "008f3a20",
@@ -318,5 +326,40 @@
       "local/output/c871-merge-readiness.log"
     ],
     "diff_check": "git diff --check and cached diff check passed; no unresolved files"
+  },
+  "implementation_source": "src/native_shader_state_list_pool_table.cpp",
+  "merge_repair_2": {
+    "merged_origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "conflicts": [
+      "native_material_pools.cpp: competing private header insertions",
+      "native_material_pools.cpp: competing Icon and ShaderStateList helpers appended at end of file"
+    ],
+    "resolution": "Retained the incoming Icon include, appender traits and helper definitions. Moved all four unchanged ShaderStateList helpers into one dedicated compiled source file; kept the same real pool member calls. Placed its private include after standard includes to avoid the shared top insertion point.",
+    "source_relocation_check": "All four function bodies compared equal after stripping comments/whitespace; exactly one definition per address remains.",
+    "cmake": "Added one DEFER target_sources registration for the dedicated source. Incoming ledger merged without conflict; no CMake merge conflict.",
+    "default_build": "Final scripts/build.ps1 passed; 4/4 CTests after source relocation and include-placement change",
+    "on_build": "scripts/build.ps1 with BSP_NATIVE_GUI_TEXT=1 passed; 4/4 CTests. GUI code is compiled unconditionally.",
+    "compiled_graph": "5623/6263 reconstructed addresses called after merging main. All four Shader helpers remain reachable; ShaderStateList allocate calls PushBack, its initialize_pool calls Reserve, and those enter Grow/SetCapacity.",
+    "wire_readiness": {
+      "completed": true,
+      "summary": {
+        "wired": 10739,
+        "callees_done_no_wired_caller": 8533,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "shader_scope": "Native template classification retained; the four helpers stay outside game-only readiness rows. Compiled graph verifies their real ShaderStateList pool call chain."
+    },
+    "pc24_lint": "0 findings, 0 allowed, 2 C++ files, using --diff origin/main",
+    "game_run": false,
+    "compiler_folding": "Release ICF shares the first three helper bodies with the identical Icon versions. The ShaderStateList pool call sites to PushBack and Reserve, plus the helper chain, remain entry-reachable. This is shared-code reachability, not exclusive caller attribution.",
+    "checks_logs": [
+      "local/output/c871-merge2-final-build.log",
+      "local/output/c871-merge2-on-build.log",
+      "local/output/c871-merge2-call-graph.log",
+      "local/output/c871-merge2-readiness.log"
+    ],
+    "diff_check": "git diff --check passed; no unresolved files"
   }
 }
