@@ -1,0 +1,137 @@
+{
+  "goal": 5,
+  "chain": 826,
+  "slot": "g5-w1",
+  "base": "4ee31b3975",
+  "branch": "agent/g5-w1",
+  "picked": "Consolidate 007EE8F0 attack feasibility into one typed body called by the live chooser and pilot retest.",
+  "rows": [
+    {
+      "native": "007ee8f0",
+      "status": "wired",
+      "host_site": "src/attack_commands.cpp: attack_command_choose (called by GameScriptOrdersHost::choose_attack_class_007eec50); attack_command_applies facade (GameUnitsHost pilot retest)",
+      "real_state": "The established AttackFeasibilityInputs from the live ordered unit, selected loadout, squadron members and target; no fabricated raw object or new default state.",
+      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade.",
+      "original_abi": "thiscall ECX=squadron; class, target, surface byte, loadout; AL; RET 10h",
+      "evidence": "bsp.py show 007ee8f0 --asm (007EE8F0..007EEBFB); assembly 007EEB36 selects E08F50 kamikaze, 007EEB94 selects E08F40 strafe. Correct the old raw comments, which reversed these names.",
+      "built_call_graph": {
+        "reachable": true,
+        "call_sites": 4,
+        "callers": [
+          "attack_command_choose (3 calls)",
+          "attack_command_applies (1 tail jump)"
+        ]
+      }
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: wreck collision-mask path",
+      "reason": "Missing an admitted actual shape/body/manifold owner for the Cc13Dyn1Calls boundary; a mask-only substitute would omit manifold clearing."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: voice_begin_sound_fade",
+      "reason": "Missing the live VoicePlaybackManager and sound-level/callback binding at this unimplemented voice hook."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0 and fit_shadow_cascade_00a8bd20",
+      "reason": "Missing an entry-reachable shadow-fit consumer; the current live GUI projection is orthographic and does not consume the product."
+    },
+    {
+      "native": "004bb8a0",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: game_session_local_side_check_004bb8a0",
+      "reason": "Its meaningful consumers are multiplayer platform-session/pause paths; outside the single-player assignment."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: BSP_MarkerClasses_Clear",
+      "reason": "Missing the live marker-class registry and deleting descriptor owners at a game teardown consumer."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: pre-load checkpoint path",
+      "reason": "Missing the actual pre-load checkpoint comparison, BSP_Chk_Save Lua owner/current mission key and storage continuation."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp: clamp_to_screen_margins_00638b90",
+      "reason": "Missing the live marker projection consumer and its current screen-margin globals/wide-screen state."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing a live character-admission consumer with its text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field (RamImage_GetData)",
+      "reason": "Missing an actual RAM-image pixel-buffer consumer at this original getter site."
+    },
+    {
+      "native": "0042d510",
+      "status": "skipped",
+      "host_site": "src/native_node_construction.cpp: native-node world/view initialization",
+      "reason": "Owned and wired by g5-w7 chain 817 in its separate branch; awaiting that branch landing, so no duplicate edit."
+    },
+    {
+      "native": "004f9d30",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: color_static_white_004f9d30",
+      "reason": "Missing the live tactical-library entry-detail widget colour consumer."
+    },
+    {
+      "native": "004897b0",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp: scene_node_set_matrix_and_invalidate_004897b0",
+      "reason": "Missing a live entity-node owner with the original +74h/+C8h/+10Ch layout; the native render-node transform uses a different layout."
+    },
+    {
+      "native": "0093efc0",
+      "status": "skipped",
+      "host_site": "src/cc13_large61.cpp: map-scene world/view comparison hook",
+      "reason": "Missing an entry-reachable original map/periscope comparison consumer; unrelated scene-frame comparisons do not supply this site."
+    },
+    {
+      "native": "007ed830",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_unit_has_level_bomb_ordnance_007ed830",
+      "reason": "Missing an admitted live raw squadron/loadout Cc13Seg48Host consumer; its only textual call was in the deleted unused raw feasibility body."
+    },
+    {
+      "native": "007ed970",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_unit_has_rocket_ordnance_007ed970",
+      "reason": "Missing an admitted live raw squadron/loadout Cc13Seg48Host consumer; its only textual call was in the deleted unused raw feasibility body."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS, 4/4 CTests",
+    "final_build": "scripts/build.ps1 PASS, 4/4 CTests",
+    "exact_move_check": "PASS: all nine arm helpers and the typed dispatch match the previous live predicate exactly, apart from the address-suffixed function name.",
+    "baseline_readiness_wired": 10674,
+    "baseline_built_reconstructed_addresses_called": 5529,
+    "final_built_reconstructed_addresses_called": 5530,
+    "call_graph_path": "WinMainCRTStartup -> startup/frame/menu/mission -> GameMissionFrameHost::run_mission_frame_004e4a40 -> script_orders_squadron_intake_007f1940 -> GameScriptOrdersHost::squadron_intake_007f1940 -> choose_attack_class_007eec50 -> attack_command_choose -> cc15_seg48_unit_attack_command_applies_007ee8f0",
+    "game_run": false,
+    "final_readiness_wired": 10673,
+    "readiness_note": "The text-based wired total drops by one: +007EE8F0, minus 007ED830 and 007ED970 whose only source references were deleted with the unused raw body. Neither raw helper is linked in the built executable. Built entry-reachable reconstructed-address coverage increases by one.",
+    "existing_behavior_tests": "tests/math_tests.cpp: 007EEC50 preference order and allow_guns cases now exercise the one address-suffixed predicate through attack_command_choose.",
+    "pc24_lint": "python tools/pc24_lint.py --diff HEAD: PASS, zero findings (no new floating arithmetic)."
+  },
+  "limitations": [
+    "This consolidates existing live semantic behavior; it does not add a new attack mode or claim additional gameplay coverage.",
+    "The new typed boundary is not an original-ABI replacement; the existing host squadron-membership/liveness projections remain.",
+    "No game was run; validation is build/test/source-comparison and built-executable reachability."
+  ],
+  "left_for_others": "Other raw segment-48 bodies and missing original consumers listed in rows; genuine native-object ownership remains separate."
+}

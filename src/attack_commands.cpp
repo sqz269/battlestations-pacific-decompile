@@ -2,6 +2,7 @@
 // and reports/attack_commands.json; every address named in a comment here is
 // repeated there with its role.
 #include "bsp/attack_commands.hpp"
+#include "bsp/cc15_seg48.hpp"
 #include "bsp/native_pilot_bot_command_producer.hpp"
 
 namespace bsp {
@@ -81,128 +82,6 @@ constexpr AttackCommandEffects kRows[kAttackCommandRowCount] = {
      kOrderIconNone, -1, 0u, 0u, 0u},
 };
 
-bool level_bomb_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EE946..007EE9C2. BL is the IsKindOf(10h) answer taken once at
-    // 007EE95C; the two halves differ only in which ordnance they accept and
-    // which target kind they then demand.
-    if (!in.target_is_surface) {
-        return false;
-    }
-    if (!in.self_is_level_bomber) {
-        return false;
-    }
-    if (in.has_level_bomb_ordnance) {
-        return in.target_is_structure; // 007EE980, vt[5Ch](1Ch)
-    }
-    if (!in.has_general_bomb_ordnance) {
-        return false; // 007EE9A4, 007ED7E0
-    }
-    return !in.target_is_bomb_excluded; // 007EE9B2, vt[5Ch](0Eh)
-}
-
-bool dive_bomb_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EE9C5..007EEA1D, the exact complement of the level-bomber gate.
-    if (!in.target_is_surface) {
-        return false;
-    }
-    if (in.self_is_level_bomber) {
-        return false; // 007EE9E6, a level bomber never dive bombs
-    }
-    if (!in.has_general_bomb_ordnance) {
-        return false;
-    }
-    return !in.target_is_bomb_excluded;
-}
-
-bool rocket_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEA20..007EEA3E, which joins divebomb's tail at 007EE9FA.
-    if (!in.target_is_surface) {
-        return false;
-    }
-    if (!in.has_rocket_ordnance) {
-        return false;
-    }
-    return !in.target_is_bomb_excluded;
-}
-
-bool torpedo_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEA40..007EEAAE. The depth-band test only narrows the surface case:
-    // a torpedo that runs at the surface cannot be used on a target the caller
-    // did not classify as a surface vessel.
-    if (!in.has_torpedo_ordnance) {
-        return false;
-    }
-    if (!in.target_is_surface && in.torpedo_runs_at_surface) {
-        return false; // 007EEA94..007EEA9D
-    }
-    return !in.torpedo_target_blocked; // 007EEAA9, 00828EC0 must answer 0
-}
-
-bool depth_charge_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEAB3..007EEAE9. The only arm that never looks at the surface flag.
-    if (!in.target_is_submarine) {
-        return false;
-    }
-    return in.has_depth_charge_ordnance;
-}
-
-bool dogfight_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEAEC..007EEB31.
-    if (!in.target_is_air) {
-        return false; // 007EEAF5, 00922B10
-    }
-    if (!in.guns_available) {
-        return false; // 007EEB08, controller+C24h
-    }
-    if (in.self_is_dogfight_excluded) {
-        return false; // 007EEB1A, vt[5Ch](16h)
-    }
-    return !in.guns_suppressed; // 007EEB2C, 0047B850 must answer 0
-}
-
-bool kamikaze_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEB36..007EEB91.
-    if (!in.target_is_surface) {
-        return false;
-    }
-    if (!in.self_is_kamikaze_capable) {
-        return false; // 007EEB53, vt[5Ch](17h)
-    }
-    if (in.target_is_kamikaze_ship && in.kamikaze_ship_blocked) {
-        return false; // 007EEB6E..007EEB8A
-    }
-    return true;
-}
-
-bool strafe_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEB94..007EEBC7. Unlike every ordnance arm, a non-surface target is
-    // not fatal: it only has to answer IsKindOf(41h).
-    if (!in.target_is_surface && !in.target_is_strafe_fallback) {
-        return false; // 007EEBA7
-    }
-    if (!in.guns_available) {
-        return false;
-    }
-    return !in.guns_suppressed;
-}
-
-bool drop_kamikaze_applies(const AttackFeasibilityInputs& in) noexcept
-{
-    // 007EEBCC..007EEBE8, the shortest arm.
-    if (!in.target_is_surface) {
-        return false;
-    }
-    return in.has_drop_kamikaze_ordnance;
-}
-
 } // namespace
 
 const AttackCommandEffects* attack_command_row(int index) noexcept
@@ -267,44 +146,7 @@ bool attack_command_target_side_allows(bool unit_has_weapon_controller,
 bool attack_command_applies(std::uint32_t command,
                             const AttackFeasibilityInputs& in) noexcept
 {
-    if (!attack_command_target_side_allows(in.unit_has_weapon_controller,
-                                           in.target_present,
-                                           in.target_is_structure,
-                                           in.unit_side,
-                                           in.target_side)) {
-        return false;
-    }
-    if (command == kCommandAttackMove) {
-        return true; // 007EE938, the one arm with no condition
-    }
-    if (command == kAttackCmdLevelBomb) {
-        return level_bomb_applies(in);
-    }
-    if (command == kAttackCmdDiveBomb) {
-        return dive_bomb_applies(in);
-    }
-    if (command == kAttackCmdRocket) {
-        return rocket_applies(in);
-    }
-    if (command == kAttackCmdTorpedo) {
-        return torpedo_applies(in);
-    }
-    if (command == kAttackCmdDepthCharge) {
-        return depth_charge_applies(in);
-    }
-    if (command == kAttackCmdDogfight) {
-        return dogfight_applies(in);
-    }
-    if (command == kAttackCmdKamikaze) {
-        return kamikaze_applies(in);
-    }
-    if (command == kAttackCmdStrafe) {
-        return strafe_applies(in);
-    }
-    if (command == kAttackCmdDropKamikaze) {
-        return drop_kamikaze_applies(in);
-    }
-    return false; // 007EEBF6, every class the chain does not name
+    return cc15_seg48_unit_attack_command_applies_007ee8f0(command, in);
 }
 
 std::uint32_t attack_command_choose(const AttackFeasibilityInputs& in,
@@ -330,7 +172,7 @@ std::uint32_t attack_command_choose(const AttackFeasibilityInputs& in,
             kAttackCmdDepthCharge,
         };
         for (std::uint32_t candidate : order) {
-            if (attack_command_applies(candidate, in)) {
+            if (cc15_seg48_unit_attack_command_applies_007ee8f0(candidate, in)) {
                 ordnance = candidate;
                 break;
             }
@@ -342,9 +184,9 @@ std::uint32_t attack_command_choose(const AttackFeasibilityInputs& in,
     }
 
     std::uint32_t guns = 0u;
-    if (attack_command_applies(kAttackCmdDogfight, in)) {
+    if (cc15_seg48_unit_attack_command_applies_007ee8f0(kAttackCmdDogfight, in)) {
         guns = kAttackCmdDogfight;
-    } else if (attack_command_applies(kAttackCmdStrafe, in)) {
+    } else if (cc15_seg48_unit_attack_command_applies_007ee8f0(kAttackCmdStrafe, in)) {
         guns = kAttackCmdStrafe;
     }
     if (!allow_guns) {

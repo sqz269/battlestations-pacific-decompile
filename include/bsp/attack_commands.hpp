@@ -194,7 +194,8 @@ struct AttackFeasibilityInputs {
     bool kamikaze_ship_blocked = false;    // 00827F70(target+538h) and 00604A50
 };
 
-// 007EE8F0. True when the named class may be issued against this target.
+// Compatibility facade for cc15_seg48_unit_attack_command_applies_007ee8f0.
+// True when the named class may be issued against this target.
 // A class with no arm (anything outside the eleven the routine names) is false,
 // which is 007EEBF6's fall-through.
 bool attack_command_applies(std::uint32_t command,
