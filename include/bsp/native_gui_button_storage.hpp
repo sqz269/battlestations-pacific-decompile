@@ -4,6 +4,7 @@
 #include "bsp/native_live_effect_manager.hpp"
 #include "bsp/native_string.hpp"
 #include <cstdint>
+#include <mutex>
 
 namespace bsp {
 // Same actual EC..FB tail; EC/F0 are borrowed DWORDs, F4/F8 the actual pooled
@@ -82,4 +83,28 @@ void destroy_native_gui_button_00aac530(void* actual_button, NativeGuiButtonLife
 // Explicit scalar deletion has no count decrement or count test.
 void* delete_native_gui_button_00aa3d10(void* actual_button,
     const volatile std::uint32_t& actual_flags_slot, NativeGuiButtonLifetimeContext&);
+
+namespace game {
+// Sole source counterpart of the process-static F8BD38 list and F8BCF8 focus
+// DWORD. CD70C0 owns the sentinel and registers CE0A40; Button contexts borrow
+// these same fields. Neither a Page nor a Button creates a private registry.
+class GameNativeGuiButtonRegistryProcess final {
+public:
+    GameNativeGuiButtonRegistryProcess(const GameNativeGuiButtonRegistryProcess&) = delete;
+    GameNativeGuiButtonRegistryProcess& operator=(const GameNativeGuiButtonRegistryProcess&) = delete;
+    int initialize_once_00cd70c0();
+    NativeGuiButtonRegistryBinding initialized_binding();
+private:
+    friend GameNativeGuiButtonRegistryProcess& game_native_gui_button_registry_process();
+    GameNativeGuiButtonRegistryProcess() = default;
+    static void destroy_00ce0a40() noexcept;
+    enum class State { unattempted, entered, returned, retired };
+    NativeEffectDeletionListStorage list_00f8bd38_{};
+    volatile std::uint32_t focused_00f8bcf8_{};
+    std::mutex startup_mutex_;
+    State state_{State::unattempted};
+    int registration_status_{};
+};
+GameNativeGuiButtonRegistryProcess& game_native_gui_button_registry_process();
+} // namespace game
 } // namespace bsp

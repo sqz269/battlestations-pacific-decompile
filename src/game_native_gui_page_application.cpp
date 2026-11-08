@@ -12,6 +12,7 @@
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_gui_group_factory.hpp"
 #include "bsp/native_gui_group_identity.hpp"
+#include "bsp/native_gui_button_storage.hpp"
 #include "bsp/native_gui_icon_identity.hpp"
 #include "bsp/native_gui_icon_constructed_storage.hpp"
 #include "bsp/native_gui_icon_loaded_storage.hpp"
@@ -897,6 +898,11 @@ struct GameNativeGuiPageApplication::Impl {
     NativeGuiWidgetVisibilityContext visibility;
     NativeGuiWidgetTransformBindings transform;
     NativeGuiWidgetLifetimeContext widget_lifetime;
+    // Process-owned Button list/focus, bound to this Page's actual base and
+    // string lifetime domains. Child admission still requires Button's raw
+    // property/current-slot services; constructing this dependency grants none.
+    NativeGuiButtonRegistryBinding button_registry;
+    NativeGuiButtonLifetimeContext button_lifetime;
     NativeGuiCameraStoreRemoveLiterals remove_literals;
     Layers layers;
     NativeGuiLayerLifetimeContext layer_lifetime;
@@ -1025,6 +1031,8 @@ struct GameNativeGuiPageApplication::Impl {
           widget_lifetime{app.camera_environment().nodes, table(mapped, 0x00d5c130, 0x24),
               game_native_gui_text_process().element_lineage_00f8bc88(),
               game_native_gui_text_process().text_lineage_00f8be28()[0], widgets},
+          button_registry(game_native_gui_button_registry_process().initialized_binding()),
+          button_lifetime{widget_lifetime, strings, button_registry},
           remove_literals{literal(mapped, 0x00d5bf80, 1), literal(mapped, 0x00d5bf54, 1),
               globals.widget_empty_00f8bc60()}, layers(*this),
           layer_lifetime{widget_lifetime, strings, layers, scene_domain.node.scenes.decrement_00ce2220},

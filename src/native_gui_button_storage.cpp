@@ -3,9 +3,52 @@
 #include "bsp/native_gui_widget_child_links.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include <cstddef>
+#include <cstdlib>
 #include <exception>
 #include <stdexcept>
+
+namespace bsp::game {
+GameNativeGuiButtonRegistryProcess& game_native_gui_button_registry_process() {
+    static GameNativeGuiButtonRegistryProcess process;
+    return process;
+}
+
+__declspec(noinline) int GameNativeGuiButtonRegistryProcess::initialize_once_00cd70c0() {
+    std::lock_guard lock(startup_mutex_);
+    if (state_ == State::returned) return registration_status_;
+    if (state_ != State::unattempted)
+        throw std::logic_error("GUI Button registry startup cannot replay an entered or retired lifetime");
+    state_ = State::entered;
+    // Native CD70C0..CD70E4 (live listing): ECX=F8BD38, AAC180, publish
+    // F8BD3C, zero F8BD40, atexit(CE0A40). The allocator word and focus are
+    // untouched BSS; the sentinel's payload is not initialized. The once/state
+    // guard is source ownership metadata, outside that native store schedule.
+    list_00f8bd38_.head_04 = static_cast<NativeEffectDeletionNode*>(
+        gui_widgets_cc13::msvc9_containers::list_buy_sentinel_00aac180());
+    list_00f8bd38_.count_08 = 0;
+    registration_status_ = std::atexit(&GameNativeGuiButtonRegistryProcess::destroy_00ce0a40);
+    state_ = State::returned;
+    return registration_status_;
+}
+
+NativeGuiButtonRegistryBinding GameNativeGuiButtonRegistryProcess::initialized_binding() {
+    initialize_once_00cd70c0();
+    std::lock_guard lock(startup_mutex_);
+    if (state_ != State::returned)
+        throw std::logic_error("GUI Button binding requires its initialized process registry");
+    return {list_00f8bd38_, focused_00f8bcf8_};
+}
+
+void GameNativeGuiButtonRegistryProcess::destroy_00ce0a40() noexcept {
+    auto& process = game_native_gui_button_registry_process();
+    // Native CE0A40/CE0A45: ECX=F8BD38; tail jump AAC3B0. Reuse that
+    // existing destructor: free list nodes/sentinel, never Button payloads.
+    gui_widgets_cc13::msvc9_containers::list_destroy_00aac3b0(&process.list_00f8bd38_);
+    process.state_ = State::retired;
+}
+} // namespace bsp::game
 
 namespace bsp {
 namespace {
