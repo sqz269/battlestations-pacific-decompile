@@ -1,0 +1,126 @@
+{
+  "packet": "g5-w6",
+  "chain": 742,
+  "base": "805f7e73f2",
+  "scope": "D3D9 surface pool slab free-list specialization",
+  "rows": [
+    {
+      "native": "00b3d160",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::allocate_raw_slot_00b3ed40",
+      "call_sites": 1
+    },
+    {
+      "native": "00b3d190",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::return_raw_slot_00b3d860 (also compiler-inlined into return_d3d9_surface_slot_00b3dcc0)",
+      "call_sites": 2
+    },
+    {
+      "native": "00b3d1d0",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::allocate_raw_slot_00b3ed40 and trim_empty_slabs_00b3e390 (inlined into invoke_trim)",
+      "call_sites": 3
+    },
+    {
+      "native": "00b3e340",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::trim_empty_slabs_00b3e390 (inlined into invoke_trim)",
+      "call_sites": 1
+    },
+    {
+      "native": "00b3e360",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::trim_empty_slabs_00b3e390 (inlined into invoke_trim)",
+      "call_sites": 1
+    },
+    {
+      "native": "004084d0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: pool36_allocate_004077f0",
+      "reason": "Missing live <36,128> pool owner and caller of pool36_allocate_004077f0; the built executable does not link that allocator."
+    },
+    {
+      "native": "0040da40",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: pool20_allocate_0040d860",
+      "reason": "Missing live <20,128> pool owner and caller of pool20_allocate_0040d860; the built executable does not link that allocator."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: edge_map_find_00407a50",
+      "reason": "Missing live EdgeHashMap owner and call path; current edge-map bodies have no host callers."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: edge_map_find_or_insert_00407af0",
+      "reason": "Missing live EdgeHashMap and <20,128> allocator owners; no host calls the reconstructed map operations."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost mission teardown arm",
+      "reason": "Missing captured movie-screen transition context and native sound/input bindings; current close-result-GUI record is not a sound-transition owner."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target",
+      "reason": "Missing native command-target allocation and binding for the naked body absolute globals 00F87574 et al.; host currently returns a zero handle."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live byte-input validation caller with the selected FontData owner; rendering glyph lookup alone does not establish that call site."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing live extra-plane producer and CameraClipPlaneState binding; the generic typed state is not the native camera owner."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing live extra-plane lifetime caller and CameraClipPlaneState binding paired with the setter."
+    },
+    {
+      "native": "00b8fb50",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: mit_pool_init_block",
+      "reason": "Missing live MitBlockModel producer; native slab owners use raw storage, not this vector-backed block model."
+    }
+  ],
+  "implementation": "Five address entries specialize the existing shared cc13_render1 slab bodies at stride 0x38. Actual owned surface slab pointers pass directly; duplicate inline pop/push/scan/stamp operations were removed. No second implementation of the behavior was introduced.",
+  "native_evidence": [
+    "bsp.py show 00b3d160",
+    "bsp.py show 00b3d190 --asm",
+    "bsp.py show 00b3d1d0",
+    "bsp.py show 00b3e340",
+    "bsp.py show 00b3e360",
+    "bsp.py show 00b3ed40",
+    "bsp.py show 00b3d860",
+    "bsp.py show 00b3e390"
+  ],
+  "assumptions": [
+    "Unreferenced in historical names describes the original image. Equivalent inline operations in the live reconstructed pool can call these shared bodies."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed MSVC Win32 Release and all four CTests",
+    "call_graph": "Five entries are reachable, with 8 direct call sites from the modified pool; compiled trim caller is invoke_trim.",
+    "reconstructed_addresses_called_before": 5417,
+    "reconstructed_addresses_called_after": 5422,
+    "readiness_wired_before": 10540,
+    "pc24_lint": "Not required: no float math changed.",
+    "runtime": "Game was not run; no ABI-equivalence or game-validation claim.",
+    "readiness_wired_after": 10560,
+    "readiness_note": "Text readiness rises 10540 -> 10560 through shared-file propagation; 00B3E360 remains text-classified callees_done_no_wired_caller despite its verified direct call. Built call graph confirms exactly five newly called reconstructed addresses, 5417 -> 5422.",
+    "tests_added": false,
+    "entry_path_example": "surface_slab_all_free_00b3e360 <- D3D9SurfacePool::invoke_trim <- D3D9SurfacePool constructor <- game_native_surface_pool_process <- WinMain <- WinMainCRTStartup"
+  },
+  "remaining": "Other slab specializations still use inline pool operations; no changes to those owners in this packet."
+}

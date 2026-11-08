@@ -1,4 +1,5 @@
 #include "bsp/d3d9_surface_pool.hpp"
+#include "bsp/render_fx_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -123,14 +124,16 @@ void* D3D9SurfacePool::allocate_raw_slot_00b3ed40() {
         ++storage_.slab_count_2c;
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
-    const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);
-    write<std::uint16_t>(slab + free_count, count);
-    auto* slot = slab + read<std::uint16_t>(slab + free_indices + count * 2u) * slot_bytes;
-    if (count == 0) {
+    // 00B3ED40 inlines the same operations as the recovered surface leaves.
+    auto* slot = cc13_render1::surface_slab_pop_00b3d160(
+        reinterpret_cast<std::uint8_t*>(slab));
+    if (cc13_render1::surface_slab_has_no_free_00b3d1d0(
+            reinterpret_cast<const std::uint8_t*>(slab))) {
         auto index = storage_.first_free_slab_34 + 1u;
         storage_.first_free_slab_34 = no_free_slab;
         for (; index < storage_.slab_count_2c; ++index) {
-            if (read<std::uint16_t>(storage_.slabs_28[index] + free_count) != 0) {
+            if (!cc13_render1::surface_slab_has_no_free_00b3d1d0(
+                    reinterpret_cast<const std::uint8_t*>(storage_.slabs_28[index]))) {
                 storage_.first_free_slab_34 = index;
                 break;
             }
@@ -150,19 +153,9 @@ void D3D9SurfacePool::return_raw_slot_00b3d860(void* slot) {
     adjust_recursion(storage_, 1);
     const auto slab_index = live_slab_index(slot);
     auto* slab = storage_.slabs_28[slab_index];
-    // Assembly's signed magic multiply is exact signed division by 0x38.
-    // Preserve the low-32-bit subtraction; valid slots belong to this slab.
-    const auto offset_bits = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(slot)
-        - reinterpret_cast<std::uintptr_t>(slab));
-    std::int32_t offset;
-    std::memcpy(&offset, &offset_bits, sizeof(offset));
-    const auto index = static_cast<std::uint16_t>(offset / static_cast<std::int32_t>(slot_bytes));
-    const auto count = read<std::uint16_t>(slab + free_count);
-    write<std::uint16_t>(slab + free_indices + count * 2u, index);
-    // Native increments the memory word after the index store. Read it again
-    // rather than imposing different alias behavior on malformed free stacks.
-    write<std::uint16_t>(slab + free_count,
-        static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) + 1u));
+    // 00B3D860's inlined push has the same signed quotient and write order.
+    cc13_render1::surface_slab_push_00b3d190(reinterpret_cast<std::uint8_t*>(slab),
+        static_cast<const std::uint8_t*>(slot));
     if (slab_index < storage_.first_free_slab_34) storage_.first_free_slab_34 = slab_index;
     adjust_recursion(storage_, 0xffffffffu);
     LeaveCriticalSection(section(storage_));
@@ -172,7 +165,8 @@ void D3D9SurfacePool::trim_empty_slabs_00b3e390() {
     std::uint32_t index = 0;
     while (index < storage_.slab_count_2c) {
         auto* slab = storage_.slabs_28[index];
-        if (read<std::uint16_t>(slab + free_count) != 32) {
+        if (!cc13_render1::surface_slab_all_free_00b3e360(
+                reinterpret_cast<const std::uint8_t*>(slab))) {
             ++index;
             continue;
         }
@@ -182,14 +176,15 @@ void D3D9SurfacePool::trim_empty_slabs_00b3e390() {
         --storage_.slab_count_2c;
         if (index < storage_.slab_count_2c) {
             auto* moved = storage_.slabs_28[index];
-            for (std::uint32_t slot = 0; slot < 32; ++slot)
-                write<std::uint32_t>(moved + slot * slot_bytes + slot_slab_index_offset, index);
+            cc13_render1::surface_slab_stamp_index_00b3e340(
+                reinterpret_cast<std::uint8_t*>(moved), index);
         }
         // Retry this same index: the replacement can also be fully empty.
     }
     storage_.first_free_slab_34 = no_free_slab;
     for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i) {
-        if (read<std::uint16_t>(storage_.slabs_28[i] + free_count) != 0) {
+        if (!cc13_render1::surface_slab_has_no_free_00b3d1d0(
+                reinterpret_cast<const std::uint8_t*>(storage_.slabs_28[i]))) {
             storage_.first_free_slab_34 = i;
             break;
         }
