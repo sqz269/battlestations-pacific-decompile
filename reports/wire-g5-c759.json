@@ -1,0 +1,98 @@
+{
+  "goal": 5,
+  "chain": 759,
+  "slot": "g5-w10",
+  "run": 1632,
+  "branch": "agent/g5-w10",
+  "summary": "Reuse the complete 004DCAA0 record-array clear body for existing resize-to-zero operations on the actual particle-clock record vector.",
+  "rows": [
+    {
+      "native": "004dcaa0",
+      "status": "wired",
+      "host_site": "src/native_particle_clock_shutdown.cpp:clear_native_particle_clock_records_004dda40, destroy_native_particle_record_array_004ddaa0, destroy_native_particle_clock_records_004de290",
+      "reason": "Each existing resize(actual_vector, actual_resize_context, 0) becomes one call to the existing PUSH0/CALL004DC410/RET body; actual vector, context, record cleanup and free ordering are preserved."
+    },
+    {
+      "native": "004dda40",
+      "status": "skipped",
+      "host_site": "src/native_particle_clock_shutdown.cpp:clear_native_particle_clock_records_004dda40",
+      "reason": "Already entry-reachable before the change; it supplies the real vector and context to the newly wired clear body, so no additional release-all invocation is needed."
+    },
+    {
+      "native": "004ddaa0",
+      "status": "skipped",
+      "host_site": "src/native_particle_clock_shutdown.cpp:destroy_native_particle_record_array_004ddaa0",
+      "reason": "No separately emitted Release symbol; its existing inlined ArrayCleanup path supplies the new clear-body call and retains the subsequent current-data free."
+    },
+    {
+      "native": "004de290",
+      "status": "skipped",
+      "host_site": "src/native_particle_clock_shutdown.cpp:destroy_native_particle_clock_records_004de290",
+      "reason": "No separately emitted Release symbol; its existing inlined scalar-delete path supplies the new clear-body call after disarming array cleanup."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call; src/game_hosts_fixed_step.cpp:drain_queued_lua_calls_00888230",
+      "reason": "Missing the frame-job-thread deferred-call producer and its real source LuaVariantRecord vector; the main-thread interpreter's queue_call remains unimplemented."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:camera zoom bindings",
+      "reason": "Missing a live MovCamZoom owner and original zoom-command adapter; the existing mission camera projection cannot supply that state."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:helm-control message application",
+      "reason": "Missing a reached helm-control message application with real sender authority, timestamp and backfill consumer; the earlier c750 review remains applicable."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a host-owned actual NativeBotStateRegistryStorage and reached approach/state-machine constructor binding."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp:destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing the same live registry owner and its destruction binding; constructing a temporary registry would invent state."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp:get_raw_timer_previous_00bee060",
+      "reason": "Missing a live consumer of the original previous-timestamp field; the source search found only the existing getter and method-table inventory."
+    }
+  ],
+  "measurements": {
+    "wire_readiness_wired_before": 10602,
+    "wire_readiness_wired_after": 10603,
+    "call_graph_recon_called_after": 5450,
+    "clear_body_called": true,
+    "clear_body_call_sites": 3,
+    "clear_body_reachable_callers": [
+      "bsp::?A0x8b871be5::ArrayCleanup::~ArrayCleanup at 105d4411",
+      "bsp::clear_native_particle_clock_records_004dda40 at 105d45b1",
+      "bsp::?A0x8b871be5::delete_native_particle_clock_impl at 105d47d1"
+    ],
+    "before_call_graph_note": "The initial who query used an older cached graph; no current baseline aggregate called count is claimed. The post-build graph was regenerated."
+  },
+  "validation": [
+    "Baseline and post-change ./scripts/build.ps1 passed all four existing tests.",
+    "python tools/call_graph.py refreshed the Release executable graph after the successful build.",
+    "python tools/call_graph.py who 004dcaa0 reports REACHABLE, three call sites, three live callers and zero unreachable callers.",
+    "python tools/call_graph.py path 004dcaa0 reaches the body through singleton-manager destruction and GameSingletonHost::shutdown from WinMain.",
+    "python tools/wire_readiness.py --standins reports 004dcaa0 state=wired, called=true, call_sites=3.",
+    "git diff --check passed."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 004dcaa0 --asm: original inclusive 004DCAA0..004DCAA7 is PUSH0/CALL004DC410/RET, actual vector ECX and no original stack arguments.",
+    "python tools/bsp.py show 004dda40, 004ddaa0 and 004de290: all three original cleanup sites resize the actual record vector to zero at the replaced operation.",
+    "src/game_native_renderer_application.cpp: NativeParticleClockShutdownContext borrows the real string/record services, decrement import, particle-clock publication, current native cache profiles and resource-owner domain, and is attached to host.native_deletion_bindings().particle_clock."
+  ],
+  "scope": "Source composition through the existing body, not a newly established original caller: the original cleanup sites call resize directly. No new address-suffixed implementation, ledger row, storage, float arithmetic, switch or test case was added. Each replaced resize runs once through the wrapper.",
+  "limits": "Build-tested and static entry/call-site verified. The game was not run. Runtime teardown coverage, native mixed-frame exception behavior and whole-process binary parity are unvalidated."
+}
