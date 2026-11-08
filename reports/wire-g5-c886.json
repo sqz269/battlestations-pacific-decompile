@@ -1,0 +1,97 @@
+{
+  "chain": 886,
+  "slot": "g5-w6",
+  "scope": "Canonical F8C288 Traceline pool process storage and original CRT startup/exit",
+  "rows": [
+    {
+      "native": "00cd77f0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp:WinMain -> src/game_native_traceline_pool.cpp:GameNativeTracelinePoolProcess::initialize_once"
+    },
+    {
+      "native": "00af3170",
+      "status": "wired",
+      "host_site": "src/native_traceline_pool.cpp:initialize_static_native_traceline_pool_00cd77f0"
+    },
+    {
+      "native": "00ce0b70",
+      "status": "wired",
+      "host_site": "src/native_traceline_pool.cpp:initialize_static_native_traceline_pool_00cd77f0 registers real CRT atexit callback"
+    },
+    {
+      "native": "00af1c70",
+      "status": "wired",
+      "host_site": "src/native_traceline_pool.cpp:destroy_static_native_traceline_pool_00ce0b70"
+    },
+    {
+      "native": "00af1ac0",
+      "status": "wired",
+      "host_site": "src/native_traceline_pool.cpp:destroy_native_traceline_pool_00af1c70 and AF3170 constructor unwind"
+    },
+    {
+      "native": "00af3250",
+      "status": "wired",
+      "host_site": "src/native_traceline_pool.cpp:invoke_trim via bind_static_native_traceline_pool_00f8c288 and the application's E188B4 allocator list"
+    },
+    {
+      "native": "00af19d0",
+      "status": "skipped",
+      "host_site": "src/native_traceline_pool.cpp:initialize_native_traceline_slab_00af19d0",
+      "reason": "Startup constructs an empty real pool; a live Traceline allocation consumer is still missing."
+    },
+    {
+      "native": "00af32f0",
+      "status": "skipped",
+      "host_site": "src/native_traceline_pool.cpp:allocate_native_traceline_slot_00af32f0",
+      "reason": "A live Traceline payload producer that borrows the canonical F8C288 owner is still missing."
+    },
+    {
+      "native": "00af1d30",
+      "status": "skipped",
+      "host_site": "src/native_traceline_pool.cpp:return_native_traceline_slot_00af1d30",
+      "reason": "A live allocated Traceline and its matching payload retirement path are still missing."
+    },
+    {
+      "native": "00af1ea0",
+      "status": "skipped",
+      "host_site": "src/native_traceline_pool.cpp:return_native_traceline_00af1ea0",
+      "reason": "A live Traceline destructor or constructor-unwind caller using the canonical F8C288 owner is still missing."
+    }
+  ],
+  "evidence": {
+    "original": [
+      "bsp.py show 00CD77F0: AF3170(F8C288), then atexit(CE0B70); original no-argument cdecl startup returns registration status.",
+      "bsp.py show 00CE0B70: same F8C288 owner passed to AF1C70.",
+      "Original installed PE CRT table: CE34E4=CD77F0, CE34E8=CD7810, CE34EC=CD7830; startup restores this entry before the existing particle-model subset.",
+      "docs/NATIVE_TRACELINE_POOL.md: actual 38h owner, E188B4 domain, native critical section, table fields and virtual0 profile; existing bodies are reused unchanged."
+    ],
+    "real_state": "One process-owned 38h Source projection of F8C288; existing application E188B4 list; native AF3170 produces all pool fields, critical section and 32-pointer table; real std::atexit registers the existing CE0B70 body. No payload or slab is fabricated.",
+    "once_contract": "Source wrapper caches the first returned status, including registration failure; a thrown attempt cannot retry or roll back partial native publication. Process/domain construction precedes cleanup registration, and C++ destruction does no native drain.",
+    "baseline": {
+      "source_wired": 10739,
+      "optimized_graph_called": 5622
+    },
+    "after": {
+      "source_wired": 10739,
+      "optimized_graph_called": 5626,
+      "analysis_graph_called": 7411,
+      "new_native_paths_confirmed": 6
+    },
+    "metric_note": "The source-text wired total is unchanged: these existing native bodies were already text-matched. The optimized aggregate adds three native routine symbols (CD77F0, CE0B70, AF3170) and the existing F8C288 host-binding symbol, which the graph also counts by its address suffix. AF1AC0, AF1C70 and AF3250 are inlined there. The no-inline analysis build independently proves all six reported native paths reachable. Analysis and optimized totals are different build modes and are not compared to one another.",
+    "graph_checks": [
+      "CD77F0: call from GameNativeTracelinePoolProcess::initialize_once; AF3170: call from CD77F0.",
+      "CE0B70: callback reference from CD77F0; AF1C70: call from CE0B70.",
+      "AF1AC0: three call sites from AF3170 and AF1C70; AF3250: tail jump from the real invoke_trim binding.",
+      "call_graph.py path AF1AC0 and AF3250 both lead through the new process startup and WinMain to WinMainCRTStartup.",
+      "All four skipped allocation/return functions remain absent from the no-inline game graph."
+    ],
+    "validation": [
+      "Baseline scripts/build.ps1: five existing CTests passed.",
+      "Final scripts/build.ps1: five existing CTests passed after separate source registration and tracked probe creation.",
+      "python tools/call_graph.py: optimized executable 5622 -> 5626 called reconstructed addresses; call_graph.py --build succeeded and who/path checked all six claimed native paths.",
+      "Focused tests/wire_g5_c886_traceline_owner_probe.cpp, built with MSVC Win32 /W4 /WX /O2 /MD /fp:strict and /link /MANIFEST:EMBED: cold borrow rejected; actual shared-list/profile/table initialization checked; repeated startup preserves storage and table; actual virtual trim binding checked; real CRT callback restored shared-list head on normal process exit. Compiled and passed again against the final bsp_core.lib.",
+      "git diff --check and JSON report parsing passed."
+    ],
+    "limits": "No game run, Traceline payload consumer, original ABI replacement, allocation-failure injection or concurrent allocator-list mutation is claimed. Source wrappers use new C++ interfaces."
+  }
+}

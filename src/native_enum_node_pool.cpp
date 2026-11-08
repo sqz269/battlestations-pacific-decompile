@@ -1,4 +1,5 @@
 #include "bsp/native_enum_node_pool.hpp"
+#include "bsp/segs_0_9_11_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
 #include <cstring>
@@ -164,7 +165,8 @@ void* allocate_native_enum_node_004e7c00(void* pool) {
         if (has_later_slab) {
             auto* cursor = at(pointer(word(pool, 0x28)), next * 4u);
             for (;;) {
-                if (half(pointer(word(cursor)), 0x580) != 0) {
+                if (!segs_0_9_11_cc13::node_page_count_is_zero_00410b20(
+                        segs_0_9_11_cc13::raw(pointer(word(cursor))))) {
                     put(pool, 0x34, next);
                     break;
                 }
@@ -199,20 +201,23 @@ void return_native_enum_node_0043b0a0(void* pool, void* slot) {
 }
 
 void trim_native_enum_node_pool_00410cd0(void* pool) noexcept {
+    // 00410CD0 inlines the same page operations as 00410AF0/B10/B20:
+    // compare the actual free-count WORD, rewrite all 64 moved-page IDs,
+    // then find the first page with a nonzero free count (saved exports).
+    // Borrow the pool's pages directly; these helpers replace those operations.
     for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
         auto* const page = pointer(word(pointer(word(pool, 0x28)), index * 4u));
-        if (half(page, 0x580) != 64u) continue;
+        if (!segs_0_9_11_cc13::node_page_count_is_64_00410b10(
+                segs_0_9_11_cc13::raw(page))) continue;
         singleton_lifetime_free(page);
         auto* const table = pointer(word(pool, 0x28));
         const auto last = word(pool, 0x2c) - 1u;
         put(table, index * 4u, word(table, last * 4u));
         put(pool, 0x2c, word(pool, 0x2c) - 1u);
         if (index < word(pool, 0x2c)) {
-            auto* slot_id = at(pointer(word(pointer(word(pool, 0x28)), index * 4u)), 0x10);
-            for (std::uint32_t slot = 0; slot < 64; ++slot) {
-                put(slot_id, 0, index);
-                slot_id = at(slot_id, 0x14);
-            }
+            auto* const moved_page = pointer(word(pointer(word(pool, 0x28)), index * 4u));
+            segs_0_9_11_cc13::node_page_fill_slot_field_10_00410af0(
+                segs_0_9_11_cc13::raw(moved_page), index);
         }
         --index; // retry the moved page, including a hole at zero
     }
@@ -222,7 +227,8 @@ void trim_native_enum_node_pool_00410cd0(void* pool) noexcept {
         auto* cursor = pointer(word(pool, 0x28));
         std::uint32_t index = 0;
         do {
-            if (half(pointer(word(cursor)), 0x580) != 0) {
+            if (!segs_0_9_11_cc13::node_page_count_is_zero_00410b20(
+                    segs_0_9_11_cc13::raw(pointer(word(cursor))))) {
                 put(pool, 0x34, index);
                 break;
             }
