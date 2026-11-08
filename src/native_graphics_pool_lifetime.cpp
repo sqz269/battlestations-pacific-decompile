@@ -1,4 +1,5 @@
 #include "bsp/native_graphics_pool_lifetime.hpp"
+#include "bsp/native_logical_vertex_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <Windows.h>
 #include <cstring>
@@ -71,7 +72,10 @@ NativeGraphicsPoolStorage& NativeGraphicsPoolLifetime::initialize() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = 0xffffffffu;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
+        if (kind_ == NativeGraphicsPoolKind::logical_vertex) {
+            // B4ADA0 inlines B4A850 reserve(32) over this actual pool+28h.
+            reserve_native_logical_vertex_pool_table_00b4a850(&storage_.slabs_28, 32);
+        } else if (storage_.table_capacity_30 < 32) {
             storage_.table_capacity_30 = 32;
             auto** replacement = static_cast<std::byte**>(singleton_lifetime_allocate(
                 {SingletonAllocationKind::pointer_slots, 0x80, 0x80}));
