@@ -1,4 +1,5 @@
 #include "bsp/native_scene_property_record_assignment.hpp"
+#include "bsp/cc13_seg59b.hpp"
 #include "bsp/native_reference_payload_copy.hpp"
 #include "bsp/native_scene_property_assignment_storage.hpp"
 #include "bsp/native_string_duplicate.hpp"
@@ -60,7 +61,10 @@ __declspec(noinline) void* assign_native_scene_property_record_008f0700(
     case 0:
     case 4: {
         const auto value = load_word(actual_source, 0x0c);
-        store_word(actual_destination, 0x0c, value);
+        // 008F0716..008F071D copies the source DWORD to the actual destination
+        // record+0Ch. Reuse 008EF7C0's identical MOV [receiver+0Ch],value
+        // operation (008EF7C0..008EF7C9) with those same records and bits.
+        cc13_seg59b::scene_property_set_field0c_008ef7c0(actual_destination, value);
         break;
     }
     case 1:
