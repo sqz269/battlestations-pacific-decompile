@@ -1,0 +1,105 @@
+{
+  "goal": 5,
+  "chain": 713,
+  "slot": "g5-w6",
+  "rows": [
+    {
+      "native": "00815010",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_pass_side_messages",
+      "evidence": "Original 00815010..0081502B: ECX entity, null guard, vtable+5Ch query 6, EAX entity/null. Uses GameUnitsHost::unit_identity and the same live unit_is_kind_of query formerly inline; no duplicate run."
+    },
+    {
+      "native": "0089b840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCapturePercentage binding",
+      "reason": "Ledger labels the existing host substitution; no separate address-suffixed reconstructed Lua binding body was found to wire."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "The host explicitly has no ammo+48h flak-alternate producer or native retained-reference/tree record required by this assignment body."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building unit state",
+      "reason": "This packet did not establish the live unit+660h 44h-element vector and its resize/destruction services."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: live unit initialization",
+      "reason": "The health/parts initializer requires the native class-part descriptor vector, model-part owner and saved-property producers, not just scalar host health fields."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: construct_gui_timed_entry_alpha_00ac2ed0",
+      "reason": "The timed-entry constructor and source file are leased to agent/g5-w3; an independent ownership lease is unavailable."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: reset_gui_timed_entry_base_00ad3990",
+      "reason": "The timed-entry source file is leased to agent/g5-w3; an independent ownership lease is unavailable."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "No live input-byte/font-context host implementation was established; current direct checks are probe constants."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The HUD volume callback records only; it has no retained ambient SoundInstance/sample producer to supply this body."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: update_frame_and_instances_00bbd310 boundary",
+      "reason": "The real atmosphere+3Ch cloud manager, reference-node axis and cloud-instance update producers were not established; the OceanState adapter is only partial."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane setup",
+      "reason": "An existing source call is present but the Release graph has no matching body; its live submission reachability and possible inlining need separate investigation."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane clear",
+      "reason": "An existing source call is present but the Release graph has no matching body; its live submission reachability and possible inlining need separate investigation."
+    },
+    {
+      "native": "007b6830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rocket-task host area",
+      "reason": "The native rocket-approach allocation and target/state-registry bindings were not established in this packet."
+    },
+    {
+      "native": "007b7fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rocket-task host area",
+      "reason": "The native bot task owner/allocation boundary and its rocket-approach constructor services were not established in this packet."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest tests passed",
+    "call_graph": "00815010 reachable, one call site from GameShipAiHost::Impl::deliver_pass_side_messages; path reaches WinMainCRTStartup",
+    "float_math": "No floating-point arithmetic changed",
+    "runtime": "Game not run; static build/call-graph evidence only",
+    "readiness": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "wired_total_before": 10461,
+  "wired_total_after": 10462
+}

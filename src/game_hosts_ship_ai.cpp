@@ -41,6 +41,7 @@
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
+#include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"        // 0074B570 receiver (goal 5 chain 630)
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
@@ -13275,8 +13276,25 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
             if (decision.route != bsp::QueuedMessageRoute::kEntityGeneric) continue;
         }
         done("ShipAiNeighbour::pass_side_deliver_00821e80", 0x00822294u);
-        // 00822298: 00521E30 resolves msg+1Ch, 00815010 keeps a kind-6 unit.
-        if (m.other >= controllers.size() || !units.unit_is_kind_of(m.other, 6)) continue;
+        if (m.other >= controllers.size()) continue;
+        // 00822298..008222A4: resolve msg+1Ch, then run the checked cast at
+        // 00815010 (ECX=entity, EAX=entity/null; show --asm 00815010). Borrow
+        // the same canonical identity carried by the neighbour nodes. The
+        // body owns null/kind-6 selection; its sole virtual boundary queries
+        // the referenced live unit's class rather than a fabricated image.
+        struct NarrowUnit final : bsp::cc13_sweepC::SweepCTrapHost {
+            GameUnitsHost& units;
+            std::size_t index;
+            NarrowUnit(GameUnitsHost& units_, std::size_t index_)
+                : units(units_), index(index_) {}
+            bool object_is_kind_of_vslot_5c(void* entity, std::uint32_t kind) override {
+                if (entity != units.unit_identity(index))
+                    throw std::logic_error("Ship pass-side cast lost its canonical unit identity");
+                return units.unit_is_kind_of(index, static_cast<int>(kind));
+            }
+        } narrow{units, m.other};
+        if (bsp::cc13_sweepC::entity_narrow_to_class6_00815010(
+                narrow, const_cast<void*>(units.unit_identity(m.other))) == nullptr) continue;
         // 009F3E30: this ship's node for the other, then the other ship's ai
         // (unit+740h) and its node for this ship.
         NeighbourNodeStore* n1 = find(m.sender, m.other);
