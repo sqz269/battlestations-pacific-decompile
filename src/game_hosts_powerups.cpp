@@ -1,7 +1,8 @@
 // Packet cc13-powerup-bind: the power-up category lists and their product. See
 // include/bsp/game_hosts_powerups.hpp. Re-derived from the image bytes
 // (disasm-raw); the corresponding modifier copies in powerup_seg58_argon.cpp
-// were a cross-check only. Chain 339 below calls its active-item collector.
+// were a cross-check only. Chain 339 calls its active-item collector; chain
+// 743 calls its modifier storage bodies through powerup_modifier_storage.cpp.
 // Names are hypotheses, not recovered symbols.
 
 #include "bsp/game_hosts_powerups.hpp"
@@ -785,7 +786,9 @@ void insert_modifier_008ea250(cp::PowerupRuntime& runtime, std::int32_t category
     float multiplier, const PowerupClassConfig& cls, cp::PowerupItem* item,
     std::int32_t slot, const PowerupUnitView& unit) {
     // 008EA27B..008EA2FB: the template record appended to the category's list
-    // (008E8480 links it before the head, so after the last record).
+    // (008E8480 links it before the head, so after the last record). The
+    // temporary now uses 008E6AC0's same constants/string constructor and
+    // the actual list element is initialized by 008E72B0, including +20h.
     std::list<PowerupModifier>& list =
         runtime.category_lists.at(static_cast<std::size_t>(category));
     list.push_back(PowerupModifier{});
@@ -793,7 +796,7 @@ void insert_modifier_008ea250(cp::PowerupRuntime& runtime, std::int32_t category
     record->category = category;                     // 008EA353
     record->multiplier = multiplier;                 // 008EA362
     record->owner_slot = slot;                       // 008EA367
-    record->cls = &cls;                              // 008EA35D..008EA38D, the name
+    record->bind_class(cls);                         // 008EA35D..008EA38D, the name
     // 008EA390..008EA3AE: an active class ends `duration` after the clock (one
     // FADD, FSTP float); every other class at the 1.0e10 double 00D16220.
     if (cls.group_08 == 2) {

@@ -6,8 +6,9 @@
 // the category list's size, then multiplies by 008E6430's product or takes the
 // 1.0f at 00D7A24C. The bodies here are re-derived from the image bytes; the
 // earlier src/powerup_seg58_argon.cpp copies of those modifier routines served
-// only as a cross-check and are not called. Chain 339 does call that file's
-// existing active-item collector. Names are hypotheses, not recovered symbols.
+// only as a cross-check. Chain 339 calls that file's active-item collector;
+// chain 743 uses its existing constructor/copy for retained modifier storage.
+// Names are hypotheses, not recovered symbols.
 //
 // Phase 1: the store, 008E6430 and 008E4680, and every host reader routed
 // through powerup_site_product.
@@ -38,6 +39,8 @@
 // Follow-up (option ii): a shared stream-0 generator for the host, which the
 // gunnery and HUD stream-0 consumers would draw on too, would replace this
 // stand-in; until then those consumers and this one do not share a sequence.
+
+#include "bsp/native_string.hpp"
 
 #include <array>
 #include <cstddef>
@@ -88,17 +91,30 @@ inline constexpr int kPowerupCategoryCount = 16;  // 008EB14E, 16 lists
 // One modifier, the value at list node+8h, with 008EA250's template values
 // (008EA27F..008EA2CA). 008E4680 reads +8h..+10h and 008E6430 multiplies by +14h.
 struct PowerupModifier {
-    cc13_powerup::PowerupItem* item{nullptr};  // +0h, the using item (null once released)
-    std::int32_t category{16};      // +4h
-    std::int32_t party{3};          // +8h, compared with unit+54h when below 2
-    std::uint16_t unit_id{0};       // +0Ch, unit vtable[140h]()+174h; 0 = none
-    std::uint16_t centre_id{0};     // +0Eh, the binding building's id; 0 = none
-    std::int32_t slot{-1};          // +10h, compared with 009FFD20(unit); -1 = none
-    float multiplier{1.0f};         // +14h
-    float end_time{1.0e10f};        // +18h, 008EB110 expires it once the clock passes
-    std::int32_t owner_slot{-1};    // +1Ch, the using slot
-    const PowerupClassConfig* cls{nullptr};  // +20h holds the class name; its class here
+    PowerupModifier();
+    PowerupModifier(const PowerupModifier&);
+    PowerupModifier& operator=(const PowerupModifier&);
+    ~PowerupModifier();
+    void bind_class(const PowerupClassConfig&);
+
+    // Actual 28h native prefix. The existing 008E6AC0/008E72B0 bodies own
+    // initialization and copying, including the independently owned name.
+    cc13_powerup::PowerupItem* item;  // +0h, the using item (null once released)
+    std::int32_t category;          // +4h
+    std::int32_t party;             // +8h, compared with unit+54h when below 2
+    std::uint16_t unit_id;          // +0Ch, unit vtable[140h]()+174h; 0 = none
+    std::uint16_t centre_id;        // +0Eh, the binding building's id; 0 = none
+    std::int32_t slot;              // +10h, compared with 009FFD20(unit); -1 = none
+    float multiplier;              // +14h
+    float end_time;                // +18h, 008EB110 expires it once the clock passes
+    std::int32_t owner_slot;        // +1Ch, the using slot
+    NativeString name_20;          // +20h, pooled class name (initially "0")
+    const PowerupClassConfig* cls{nullptr};  // host metadata outside the native prefix
 };
+static_assert(offsetof(PowerupModifier, item) == 0);
+static_assert(offsetof(PowerupModifier, multiplier) == 0x14);
+static_assert(offsetof(PowerupModifier, name_20) == 0x20);
+static_assert(offsetof(PowerupModifier, cls) == 0x28);
 
 using PowerupCategoryLists = std::array<std::list<PowerupModifier>, kPowerupCategoryCount>;
 

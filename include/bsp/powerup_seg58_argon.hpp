@@ -29,6 +29,16 @@ struct PowerupSlotClockHost {
   virtual float& global_f32(std::uint32_t address) = 0;
 };
 
+// The modifier's actual 28h storage needs only the two image constants and
+// pooled-string construction/copy. Live category lists need no Lua/network
+// callbacks to use 008E6AC0 and 008E72B0.
+struct PowerupModifierStorageHost : PowerupSlotClockHost {
+  virtual void* native_string_from_int_004260b0(void* str, std::int32_t value) = 0;
+  virtual void native_string_resize_0041dd40(void* str, std::uint32_t length,
+                                           std::uint8_t preserve) = 0;
+  virtual void* memcpy_00bf7680(void* dst, const void* src, std::uint32_t bytes) = 0;
+};
+
 // The collector only needs globals, checked dword-vector operations and the
 // per-player cooldown map. Keep that contract usable without fabricating the
 // unrelated Lua/network callbacks of the whole segment.
@@ -71,7 +81,8 @@ struct PowerupApplicabilityHost {
   virtual bool target_applies(const void* record, void* unit) = 0;
 };
 
-struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost, PowerupApplicabilityHost {
+struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost, PowerupApplicabilityHost,
+                   PowerupModifierStorageHost {
   virtual ~Seg58Host() = default;
   bool target_applies(const void* record, void* unit) override;
 
@@ -238,7 +249,7 @@ void native_string_release_storage_008e6400(Seg58Host& host, void* modifier);
 void native_string_insert_at_008e64a0(
     Seg58Host& host, void* dst_str, const void* src_str, std::uint32_t pos);
 void* powerup_item_construct_008e6a80(Seg58Host& host, void* item);
-void* powerup_modifier_construct_008e6ac0(Seg58Host& host, void* modifier);
+void* powerup_modifier_construct_008e6ac0(PowerupModifierStorageHost& host, void* modifier);
 void powerup_modifier_init_from_message68_008e6b10(
     Seg58Host& host, void* modifier, const void* msg68);
 void* fun_008e6cb0(Seg58Host& host, void* manager, const void* name_str);
@@ -266,7 +277,7 @@ void* cg_scalar_deleting_dtor_008e7240(Seg58Host& host, void* self,
 void* cg_scalar_deleting_dtor_008e7270(Seg58Host& host, void* self,
                                        std::uint8_t flags);
 
-void* powerup_modifier_copy_construct_008e72b0(Seg58Host& host, void* self,
+void* powerup_modifier_copy_construct_008e72b0(PowerupModifierStorageHost& host, void* self,
                                                const void* src);
 
 void powerup_item_load_lua_008e7820(Seg58Host& host, void* self, void* reader);
