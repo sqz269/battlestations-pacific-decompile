@@ -1,0 +1,460 @@
+{
+  "chain": 858,
+  "goal": 5,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "base": "587c592bdb499fa95c37fb0709979ec502da72c8",
+  "scope": "GUI Group pool retained slab-pointer table; newly reconstructed concrete Mit template instantiations replace Widget-table dispatch only on Group paths.",
+  "rows": [
+    {
+      "native": "00ac7100",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_group_pool_table_grow_00ac7150 / native_gui_group_pool_table_reserve_00ac7370"
+    },
+    {
+      "native": "00ac7150",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_group_pool_table_push_back_00ac72e0"
+    },
+    {
+      "native": "00ac72e0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiGroupPool::allocate_00ac7590 -> allocate_slot<Group>"
+    },
+    {
+      "native": "00ac7370",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiGroupPool::initialize_00ac7410 -> initialize_pool<Group>"
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull/periscope collision filters",
+      "reason": "Missing retained native DYN shapes and manifold-invalidation/world-lock providers; semantic booleans are not shape owners."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull/periscope collision filters",
+      "reason": "Missing retained native DYN shapes and manifold-invalidation/world-lock providers; semantic booleans are not shape owners."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull/periscope collision filters",
+      "reason": "Missing retained native DYN shapes and manifold-invalidation/world-lock providers; semantic booleans are not shape owners."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TailGunnerBot skill notification",
+      "reason": "The live caller already invokes the typed skill body; no actual raw turret-bot owner was established for the separate Seg59b interface."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing native ammo+48h alternate record, retained reference slots and tree-copy owner; the device handle identifies a semantic gun row."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command_building_set_owner_player_006f4d10",
+      "reason": "Missing actual unit+660h vector of 44h records and its Seg62Host cleanup provider."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: entity impulse reset",
+      "reason": "No matching actual Seg62 entity owner and dynamics-reset provider was established in the brief inspection."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: helmsman-control application",
+      "reason": "Missing reached helm-message application with its real timestamp, sender authority and backfill consumer."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: native land approach registry",
+      "reason": "Missing reached actual land-approach allocation/construction and lifetime owner; standalone registry storage would not supply its same-root member states."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: native land approach registry",
+      "reason": "Missing reached actual land-approach allocation/construction and lifetime owner; standalone registry storage would not supply its same-root member states."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: native land approach registry",
+      "reason": "Missing reached actual land-approach allocation/construction and lifetime owner; standalone registry storage would not supply its same-root member states."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon dirty publication",
+      "reason": "Missing authoritative recon-slot dirty bytes and current-world unit-list-built owner; the host currently compares semantic publications."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: integer property insertion",
+      "reason": "An existing native merge calls the body, but no new reached bag producer/owner was established at the inspected Lua stand-in."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing reached native TDT writer owner; the original callers write terrain node chunks."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00bf1450",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00bf16b0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error reporter map iteration",
+      "reason": "Missing reached error-context map owner and input/consumer path; the apparent wired callers are source-text matches without built calls."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record lifetime",
+      "reason": "Missing reached actual distortion owner and its retained record array; source lifecycle callers alone are not game wiring."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record lifetime",
+      "reason": "Missing reached actual distortion owner and its retained record array; source lifecycle callers alone are not game wiring."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam commands",
+      "reason": "Missing live MovCamZoom/MovCamAngles owner; the published mission camera is a different projection and the Lua overrides are unreached."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam commands",
+      "reason": "Missing live MovCamZoom/MovCamAngles owner; the published mission camera is a different projection and the Lua overrides are unreached."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing reached editable-text owner, selected-row identity and input-action publication/tick adapter in the frontend."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its only native caller is the debug inspector; debug-only work is excluded."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn group gate",
+      "reason": "Missing exact spawn request weight, candidate threats and source-count producers for this gate."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: nearest-group reconnaissance ratio",
+      "reason": "Missing exact per-member 00779D00 hold-value provider and reached original consumer; agent/g5-w3 is examining this stream."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: spawn composition class-pair value",
+      "reason": "Missing concrete class_pair_value provider and a reached composition-caller path."
+    },
+    {
+      "native": "00759f40",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: session_message_from_bitstream_00768530",
+      "reason": "Missing reached receive-factory services for these specific messages; no single-player producer/consumer was found in the existing local queues."
+    },
+    {
+      "native": "00733720",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: session_message_from_bitstream_00768530",
+      "reason": "Missing reached receive-factory services for these specific messages; no single-player producer/consumer was found in the existing local queues."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The preceding checkpoint comparison remains false; missing pre-load BSP_Chk_Save owner/current mission key and real storage continuation."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b68c0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "006b0020",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission Lua encode/decode",
+      "reason": "Missing reached mission savedata serialization/load owner and entity-reference hooks; internal source calls are not built entry calls."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/vfs_candidates.cpp: resolve_resource_candidates_00bddc80",
+      "reason": "The live raw VFS already implements native name resolution; no matching typed candidate-registration owner was established for this older projection."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing reached native GUI manager-frame bridge with complete pointer-hit-test/frame services; these source bodies do not yet have built calls."
+    },
+    {
+      "native": "00aa4f80",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing reached native GUI manager-frame bridge with complete pointer-hit-test/frame services; these source bodies do not yet have built calls."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing reached native GUI manager-frame bridge with complete pointer-hit-test/frame services; these source bodies do not yet have built calls."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing reached native GUI manager-frame bridge with complete pointer-hit-test/frame services; these source bodies do not yet have built calls."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera extra clip plane",
+      "reason": "Missing reached main-scene/shadow-submission owner at the inspected source callers."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera extra clip plane",
+      "reason": "Missing reached main-scene/shadow-submission owner at the inspected source callers."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_win32_platform_00becda0",
+      "reason": "The live native platform already calls the raw canonical constructor; the readiness row names an older alternate interface, so no second constructor run was added."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: queue_plane_failure_63_67",
+      "reason": "C8h DeadMeatRot is guarded to multiplayer by native session mode; excluded from this single-player assignment."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director state/snapshot",
+      "reason": "Missing native controller snapshot producer, retained message and routed consumer; copying current flattened flags out and back would add no native behavior."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director state/snapshot",
+      "reason": "Missing native controller snapshot producer, retained message and routed consumer; copying current flattened flags out and back would add no native behavior."
+    },
+    {
+      "native": "00877b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damaged graphics level",
+      "reason": "Missing actual tickable-entity/model-group owner and presentation provider; existing semantic damage flags do not supply those native fields."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: PlayerGunSeat function-6 handover",
+      "reason": "Missing 0072D5B0 selected-mode owner, retained per-mode ammo buffers and round-consumption provider."
+    },
+    {
+      "native": "00a8fd30",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_construction.cpp: allocate_native_directional_shadow_owner_00a8fd30",
+      "reason": "No matching reached actual light owner and admitted shadow-construction context was established."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: marker_rebind_unit",
+      "reason": "Missing native marker slot ownership, per-unit keep flags and registered observer pair; SzurkeNyil markers are not produced here."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: accepts_text_byte",
+      "reason": "Missing live input-character consumer with its text-context font; existing concrete uses are probe-only constants."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "Missing authored native screen-margin globals and matching HUD marker owner; current map projection margin is explicitly a host stand-in."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant map header",
+      "reason": "Missing authoritative native variant-tree owner, insertion and cleanup consumers; semantic LuaVariantRecord is not that header."
+    },
+    {
+      "native": "0084b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile impact owner cast",
+      "reason": "The host retains a known unit index rather than the actual kind-2A native object; no downcast/dispatch consumer was established."
+    },
+    {
+      "native": "0075b860",
+      "status": "skipped",
+      "host_site": "src/native_session_message_base.cpp: construct_native_session_message_zero_0075b860",
+      "reason": "Missing reached mode-zero message producer/factory arm; ConstructForRead prologues cannot substitute for its session-reading constructor."
+    },
+    {
+      "native": "0075ea30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: music/blackout messages",
+      "reason": "No matching single-player message transport was established; Music_Control_SetLevel sends only in session mode 1 and the SP path already applies its local operation."
+    },
+    {
+      "native": "0075eb40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: music/blackout messages",
+      "reason": "No matching single-player message transport was established; Music_Control_SetLevel sends only in session mode 1 and the SP path already applies its local operation."
+    },
+    {
+      "native": "006f3210",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: command-building local queue cleanup",
+      "reason": "Only compiler-glue classifications exist for these addresses; no existing reconstructed body is available to reuse in this packet."
+    },
+    {
+      "native": "006f3230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: command-building local queue cleanup",
+      "reason": "Only compiler-glue classifications exist for these addresses; no existing reconstructed body is available to reuse in this packet."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: format_string_1024_0040cfc0",
+      "reason": "Its native callers format an entity debug tree and profiling report; debug-only work is excluded."
+    },
+    {
+      "native": "00ac6ff0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiGroupPool::allocate_00ac7590",
+      "reason": "Already entry-reachable through the existing Group slab initializer; no additional wiring was needed."
+    }
+  ],
+  "wired_total": {
+    "before": 10709,
+    "after": 10709,
+    "scope_note": "wire_readiness excludes original names prefixed TMPL_ (progress_board.LIBRARY_NAME_PREFIXES); all four new template bodies are therefore absent from its game rows. No scope/name filter was changed to inflate this metric."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: passed, all 5 CTests passed",
+    "focused_probe": "tests/wire_g5_c858_group_table_probe.cpp: 1025 actual Group slots, 33 slabs, capacity32->66, preserved slab identities/hiddenIDs/lock state and retirement passed",
+    "probe_command": "cmd /c local/c858-probe.cmd; cl /link /MANIFEST:EMBED",
+    "call_graph": "call_graph.py --build: no inlining and no ICF; all four unique Group bodies entry reachable with the intended Group reserve/append callers",
+    "call_graph_evidence": "local/c858-callgraph-evidence.txt",
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false,
+    "focused_probe_sha256": "b3e31d521cf7734222323f2151adf424196a1dc512aa1097930cc5e88b9a5eaa",
+    "unique_noicf_call_sites": {
+      "00ac7100": 2,
+      "00ac7150": 1,
+      "00ac72e0": 1,
+      "00ac7370": 1
+    },
+    "readiness_inputs": "local/output/wire_readiness.json, no_inline=true"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "native_template_names_preserved": true,
+    "annotations_applied_and_saved": true,
+    "prior_values_receipt": "local/ghidra-annotations-20261108T134639Z.json",
+    "affected_exports_refreshed": true
+  },
+  "assumptions": [
+    "Source reuse of equivalent inline pointer-array schedules is admitted; this does not assert that native 00AC7410/00AC7590 CALL the out-of-line member addresses.",
+    "Existing real Group slot allocation/owner and CRT allocator remain authoritative; no fake owner or second table was introduced."
+  ],
+  "remaining": [
+    "Other GUI pool instantiations still use the shared Widget table engine; change only after establishing their live allocation owner.",
+    "No retail gameplay or binary-ABI validation was performed."
+  ],
+  "new_entry_reachable_template_bodies": 4
+}
