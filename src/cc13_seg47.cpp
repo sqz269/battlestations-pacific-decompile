@@ -973,15 +973,17 @@ bool weapon_controller_has_ordnance_of_kind_007b91c0(Seg47Host& host, Raw plane,
 }
 
 // 007B9230, __thiscall(ECX = plane), EAX: racks > 0 ? rack0->vtable[220h](1) : 0.
-void* weapon_controller_first_slot_descriptor_007b9230(Seg47Host& host, Raw plane) {
-    if (rack_count(plane) <= 0) return nullptr;
-    return host.rack_vcall_descriptor_220(rack(plane, 0), 1).p;
+void* weapon_controller_first_slot_descriptor_007b9230(WeaponRackQueryHost& host, Raw plane) {
+    // bsp.py show 007b9230: count first, only element zero, query flag 1.
+    if (host.weapon_rack_count(plane) <= 0) return nullptr;
+    return host.rack_vcall_descriptor_220(host.weapon_rack(plane, 0), 1).p;
 }
 
 // 007B92E0, __thiscall(ECX = plane), AL: some rack->vtable[20Ch]() answers.
-bool weapon_controller_any_slot_answers_20c_007b92e0(Seg47Host& host, Raw plane) {
-    for (std::int32_t i = 0; i < rack_count(plane); ++i)
-        if (host.rack_vcall_20c(rack(plane, i))) return true;
+bool weapon_controller_any_slot_answers_20c_007b92e0(WeaponRackQueryHost& host, Raw plane) {
+    // bsp.py show 007b92e0: stop at the first true slot; re-read the count.
+    for (std::int32_t i = 0; i < host.weapon_rack_count(plane); ++i)
+        if (host.rack_vcall_20c(host.weapon_rack(plane, i))) return true;
     return false;
 }
 

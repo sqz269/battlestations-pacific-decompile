@@ -7,8 +7,8 @@
 // Objects are reached through Raw (byte offsets into the Win32 layout). Every
 // call the image makes goes through a Seg47Host method named for its target and
 // is invoked at the binary's point with the binary's arguments. Descriptive
-// names are hypotheses, not recovered symbols. Nothing here is wired; nothing
-// is ABI-compatible.
+// names are hypotheses, not recovered symbols. Process adapters wire individual
+// bodies; these source interfaces are not ABI-compatible replacements.
 
 #include <cstddef>
 #include <cstdint>
@@ -101,8 +101,24 @@ struct PlaneRemoteTouchdownHost {
     virtual void plane_touchdown_007c71e0(Raw plane) = 0;
 };
 
+// The two read-only rack queries need only this slice. Raw callers use the
+// native inline rack array/count; a process owner can borrow its retained rack
+// collection without fabricating a native plane or callable image vtable.
+struct WeaponRackQueryHost {
+    virtual ~WeaponRackQueryHost() = default;
+    virtual std::int32_t weapon_rack_count(Raw plane) {
+        return plane.at<std::int32_t>(0x994);
+    }
+    virtual Raw weapon_rack(Raw plane, std::int32_t index) {
+        return plane.deref(0x974 + 4 * static_cast<std::size_t>(index));
+    }
+    virtual Raw rack_vcall_descriptor_220(Raw rack, std::int32_t loadout) = 0;
+    virtual bool rack_vcall_20c(Raw rack) = 0;
+};
+
 struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost,
-                   Seg47MessageHost, PlaneAttachmentSyncHost, PlaneRemoteTouchdownHost {
+                   Seg47MessageHost, PlaneAttachmentSyncHost, PlaneRemoteTouchdownHost,
+                   WeaponRackQueryHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -279,8 +295,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     // Rack virtuals: +218h(kind) -> EAX, +220h(loadout) -> EAX descriptor,
     // +20Ch() -> AL; descriptor +08h(kind) -> AL. All __thiscall, RET 4 / RET.
     virtual void* rack_vcall_218(Raw rack, std::int32_t kind) = 0;
-    virtual Raw rack_vcall_descriptor_220(Raw rack, std::int32_t loadout) = 0;
-    virtual bool rack_vcall_20c(Raw rack) = 0;
+    // rack_vcall_descriptor_220 / rack_vcall_20c: WeaponRackQueryHost.
     virtual bool descriptor_vcall_is_kind_08(Raw descriptor, std::int32_t kind) = 0;
 
     // --- plane helpers 007B9590-007BB110 ---------------------------------------------
@@ -642,8 +657,8 @@ void* weapon_controller_first_bomb_class_007b9100(Seg47Host& host, Raw plane);
 void* weapon_controller_first_bomb_class_007b9510(Seg47Host& host, Raw plane);
 bool weapon_controller_has_ordnance_of_kind_007b91c0(Seg47Host& host, Raw plane, std::int32_t kind,
                                                      std::int32_t loadout);
-void* weapon_controller_first_slot_descriptor_007b9230(Seg47Host& host, Raw plane);
-bool weapon_controller_any_slot_answers_20c_007b92e0(Seg47Host& host, Raw plane);
+void* weapon_controller_first_slot_descriptor_007b9230(WeaponRackQueryHost& host, Raw plane);
+bool weapon_controller_any_slot_answers_20c_007b92e0(WeaponRackQueryHost& host, Raw plane);
 bool weapon_controller_has_general_bomb_ordnance_007b9320(Seg47Host& host, Raw plane, std::int32_t loadout);
 bool weapon_controller_has_drop_kamikaze_ordnance_007b93e0(Seg47Host& host, Raw plane, std::int32_t loadout);
 bool weapon_controller_has_torpedo_ordnance_007b93f0(Seg47Host& host, Raw plane, std::int32_t loadout);
