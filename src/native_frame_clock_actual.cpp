@@ -55,7 +55,8 @@ std::int64_t __stdcall fixed_increment(std::int64_t frequency, std::int32_t mill
 } // namespace
 
 // BEDC30: exact original stack layout, DWORD schedule, x87 spill and branch.
-// Only the QPC import and five timestamp-subtract calls are relocated.
+// QPC/timestamp calls are relocated; previous storage is obtained through the
+// existing raw BEE060 accessor, with its surrounding native register/flag state.
 __declspec(naked) void __fastcall update_native_frame_clock_00bedc30(void*) {
     __asm {
         SUB ESP,0x28 // 00bedc30
@@ -89,7 +90,18 @@ __declspec(naked) void __fastcall update_native_frame_clock_00bedc30(void*) {
         PUSH EBX // 00bedc7c
         PUSH EDI // 00bedc7d
         LEA EDI,[ESI + 0x20] // 00bedc7e
-        LEA EBX,[ESI + 0x30] // 00bedc81
+        // BEDC81 obtains the same actual clock+30h returned by BEE060
+        // (bsp.py show 00bedc30 --asm; bsp.py show 00bee060 --asm).
+        // EAX/ECX still hold current timestamp words for BEDC84/89; EDX
+        // and the BEDC78 flags must reach BEDC8C/92 unchanged. The naked
+        // getter is only LEA EAX,[ECX+30h]; RET, so it preserves both.
+        PUSH EAX
+        PUSH ECX
+        MOV ECX,ESI
+        CALL get_raw_timer_previous_00bee060
+        MOV EBX,EAX
+        POP ECX
+        POP EAX
         MOV dword ptr [EBX],EAX // 00bedc84
         MOV EAX,dword ptr [EDI + 0xc] // 00bedc86
         MOV dword ptr [EBX + 0x4],ECX // 00bedc89
