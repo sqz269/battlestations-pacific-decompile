@@ -1,0 +1,94 @@
+{
+  "goal": 5,
+  "chain": 903,
+  "run": 1989,
+  "branch": "agent/g5-w7",
+  "picked": "Logical index-buffer pool slab-table capacity, growth, append and startup reserve",
+  "rows": [
+    {
+      "native": "00b49800",
+      "status": "wired",
+      "host_site": "src/native_logical_index_owner.cpp: grow_native_logical_index_pool_table_00b49850 and reserve_native_logical_index_pool_table_00b4a770",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00b49850",
+      "status": "wired",
+      "host_site": "src/native_logical_index_owner.cpp: append_native_logical_index_pool_table_00b4a6f0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b4a6f0",
+      "status": "wired",
+      "host_site": "src/native_logical_index_owner.cpp: allocate_native_logical_index_slot_00b4b0a0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b4a770",
+      "status": "wired",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: NativeGraphicsPoolLifetime::initialize, logical_index profile",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller",
+      "readiness_note": "The source-text/native-caller classifier does not see this newly selected original inline-template copy as wired; the built executable independently shows a reachable call from NativeGraphicsPoolLifetime::initialize."
+    },
+    {
+      "native": "00b6dea0",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: allocate_pointer_array candidate",
+      "reason": "No actual table owner/caller was established for this candidate; the bounded caller query returned no sites."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp: begin_native_scene_property_hash_008eeb10 candidate",
+      "reason": "This packet did not establish an actual native property-hash owner and iterator view for a retained host caller."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp: next_native_scene_property_hash_008eeb60 candidate",
+      "reason": "This packet did not establish an actual native property-hash owner and iterator view for a retained host caller."
+    }
+  ],
+  "changes": [
+    "Extracted the four existing generic render_fx table descriptors into one dedicated body per address; removed their old descriptors.",
+    "Replaced the real logical-index allocator's inline table append/growth and the logical-index startup reserve path with calls using the actual pool+28h header and local slab cell.",
+    "Preserved unsigned modulo32 sizes, capacity-before-allocation, live count/source reloads, destination null guards, free-before-publication, and borrowed-source read ordering.",
+    "Superseded the four reconstruction ledger entries; kept original ABI information and explicit uncertainty about binary ABI compatibility."
+  ],
+  "evidence": [
+    "bsp.py show 00B49800, 00B49850, 00B4A6F0 and 00B4A770 pseudocode",
+    "bsp.py show 00B4A6F0 --asm: source-cell read after growth/free/publication and guarded store, then live count increment",
+    "bsp.py show 00B4B0A0 --asm: B4B0FC..B4B14B confirms matching actual pool header operations and returning-free fallthrough B4B136/B4B139",
+    "bsp.py show 00B4AFC0: actual logical-index startup reserve32 in FH3 state2"
+  ],
+  "checks": {
+    "initial_index": "First attempt found the old index held open; retry succeeded without changing the old index on failure.",
+    "build": "scripts/build.ps1 passed; all four existing CTests passed after final C++ changes.",
+    "focused_probe": "Production-library integration probe passed: actual logical-index lifetime plus 1025 raw slots; 33 slabs, capacity32->66, all slot payloads and slab indices preserved, recursion zero, allocator list unlinked on destroy.",
+    "probe_link": "Initial probe link omitted the production Lua/zlib/Windows dependencies; adding the same dependencies as bsp_game resolved it. Probe embeds its manifest.",
+    "call_graph": "All four new dedicated bodies are reachable from the executable entry; append is called by the actual logical-index slot allocator and reserve by the actual pool lifetime.",
+    "float_math": "No float arithmetic changed."
+  },
+  "wired_total": {
+    "metric": "entry_reachable_reconstructed_addresses from call_graph.py",
+    "before": 5653,
+    "after": 5657,
+    "gain": 4
+  },
+  "source_text_readiness": {
+    "before": 10753,
+    "after": 10771,
+    "note": "Coarse source-file/text classification also reclassifies other rows. The independent compiled-call gain is exactly four, not eighteen. Refreshed index and final standins scan completed."
+  },
+  "coordination": "Shared lifetime/render_fx/B4 ledger edits are small and disjoint from w8 physical-buffer and w9 logical-vertex changes; shared leases released immediately after validation. Plane landing must preserve all profile branches and descriptor removals.",
+  "left": [
+    "Sibling logical-vertex table work belongs to agent/g5-w9; declaration table belongs to agent/g5-w5.",
+    "Original native template bodies are unreferenced copies with equivalent inlined operations; descriptive ownership names remain hypotheses.",
+    "C++ interfaces are explicit-argument replacements, not original ABI shims; no game run or gameplay validation was performed."
+  ]
+}
