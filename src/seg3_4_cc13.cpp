@@ -193,7 +193,7 @@ void die_if_depleted(void* entity, DeviceEntityHost& host) {
     if (read_field<float>(entity, 0x370) <= 0.0f) host.entity_die_70(entity, 1);
 }
 
-void release_reference(void* slot, DeviceEntityHost& host) {
+void release_reference(void* slot, ReferenceSlotHost& host) {
     void* object = read_field<void*>(slot, 0x0);
     if (object == nullptr) return;
     if (host.interlocked_decrement_ce2220(at(object, 0x4)) == 0) host.object_destroy_00(object);
@@ -231,7 +231,7 @@ void* device_class_construct_00440770(void* device_class, DeviceEntityHost& host
     return device_class;
 }
 
-void ref_slot_release_00440a30(void* slot, DeviceEntityHost& host) { release_reference(slot, host); }
+void ref_slot_release_00440a30(void* slot, ReferenceSlotHost& host) { release_reference(slot, host); }
 
 void device_class_destruct_004420d0(void* device_class, DeviceEntityHost& host) {
     write_field<std::uint32_t>(device_class, 0x0, kDeviceClassVtable);

@@ -1,0 +1,258 @@
+{
+  "goal": 5,
+  "chain": 975,
+  "slot": "g5-w3",
+  "owner": "agent/g5-w3",
+  "baseline_head": "bef4d40450",
+  "picked": "Canonical counted-reference release in the reached native GUI scene-resource setter",
+  "rows": [
+    {
+      "native": "00440a30",
+      "status": "wired",
+      "host_site": "src/native_gui_scene_fields.cpp: set_native_gui_scene_resource_00b723f0",
+      "reason": "Replaces the identical inline old-resource release at 00B7240D..00B72425 with the existing canonical body; borrows the actual old pointer, actual +4 atomic and current terminal-owner dispatch."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the constructed movie-camera screen and actual current/default deviation fields; the callback remains unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the constructed movie-camera screen and retained current/default overview-height fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_reset_speed_limits_005cb970",
+      "reason": "Missing a live movie-camera screen limit owner and its Lua-to-camera consumer."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_reset_accel_time_005cb9c0",
+      "reason": "Missing the actual movie-camera acceleration-time owner and live consumer."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::report_target_event",
+      "reason": "Missing the Seg62Host mission-event reporter/channel/observed-entity dispatch composition; the adapter currently only records the event."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate_attack_value",
+      "reason": "Missing the resolved air-support flight-class blocks and pair-value provider; the reached kind-1 arm currently throws."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing the live mode-indexed class-pair row producer and matching AI scoring consumer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list commentary",
+      "reason": "Only the excluded debug overlay reads the candidate score records; no single-player gameplay consumer is established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list commentary",
+      "reason": "Only the excluded debug overlay reads the marked candidate score records; no single-player gameplay consumer is established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established native consumer is the excluded debug inspector; no gameplay consumer was established."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing the actual cloud-manager owner and reference-node frame/dirty-state continuation; the historical ocean name is misleading."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing a reached typed manager/pointer frame bridge over the same resource owner and actual hit-test provider."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: manager frame composition",
+      "reason": "Missing the reached typed resource-manager frame composition over actual widget/highlight owners."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: manager frame composition",
+      "reason": "Missing the reached typed manager frame with its same-domain screen timed-entry arrays."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: child snapshot sorting",
+      "reason": "Missing a live matching widget child-snapshot consumer; an unrelated host collection is not this operation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing an off-main-thread enqueue producer carrying an actual LuaVariantRecord source vector."
+    },
+    {
+      "native": "00710ad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit_instance_detach_00951f40",
+      "reason": "Missing the complete native unit-part spatial owner, actual virtual dispatch and spatial-index attachment composition."
+    },
+    {
+      "native": "006fbce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: air-operations path",
+      "reason": "The native caller requires session-client mode 2; the single-player path does not invoke this adjustment."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow-fit consumers",
+      "reason": "Missing an entry-reachable original FOV-times-aspect consumer; the reached GUI projection is orthographic."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing an input-character admission consumer with its retained text-context font; full-string layout is different."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PreloadHost::push_effect_handle",
+      "reason": "Missing a counted-effect acquisition producer and native handle-vector owner; the current effect-name count is zero."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing the live command-menu linked-list item collection and its ordering consumer."
+    },
+    {
+      "native": "0064a270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: set_repair_priority",
+      "reason": "Missing the reached native repair-task owner and priority-message application composition; the override remains unreached."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing the saved-entity Lua restoration producer for toTurn or the established sinking-rudder producer; the ring alone is insufficient."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support use-item arm",
+      "reason": "Missing the concrete flight-spawn manager and resolved air-support vehicle-class provider; activation currently throws."
+    },
+    {
+      "native": "004db190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: front-end manager teardown",
+      "reason": "Missing the reset-to-title/platform-session teardown trigger and continuation; ordinary shutdown is a different operation."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/native_game_lifetime.cpp: destroy_native_game_004dcf90",
+      "reason": "Missing the complete native game owner and shared NativeGameLifetimeContext subsystem destruction composition."
+    },
+    {
+      "native": "004da2a0",
+      "status": "skipped",
+      "host_site": "src/pool_pool17_cc13.cpp: scene_record_construct_004da2a0",
+      "reason": "Missing the genuine native scene-record owner and its child-constructor/string/tree/service composition; scene contents is currently a separate projection."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ground_state_from_locked_007ca3f0",
+      "reason": "Missing the native entity impulse block and its pose/physics consumers; the current plane projection cannot be passed as raw entity storage."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: backfill_helm_order",
+      "reason": "Missing reached helm-control message application with sender authority, actual timestamp and history consumer."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing the native support-site stock-list producer and matching support-order/spawn-composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing the support-site availability-list owner, actual owner health and matching support-menu consumer."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "Missing the depth-filter render consumer of the screen-sized nine-sample kernel; the live CPU wave-field update is different."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: strip_table_names_006b1190",
+      "reason": "The encompassing mission-state save/load path has no established live consumer here and the cleanup stream was already taken by agent/g5-w11."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: strip_visit_marks_006b1490",
+      "reason": "The encompassing mission-state save/load path has no established live consumer here and the cleanup stream was already taken by agent/g5-w11."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the actual checkpoint-difference decision and clear/rewrite storage continuation; the decision still returns false."
+    }
+  ],
+  "existing_caller": {
+    "native": "00b723f0",
+    "already_entry_reachable": true,
+    "newly_credited": false
+  },
+  "wired_total_before": 10835,
+  "assumptions": [
+    "00440A30 is reused for the equivalent native inline release sequence; 00B723F0 did not originally CALL 00440A30.",
+    "The captured old scene reference is the consumed local slot; its final clear must not overwrite scene+1Ch after a terminal callback."
+  ],
+  "validation": {
+    "baseline_build": "local/output/c975-baseline-build.log",
+    "final_build": "local/output/c975-build.log",
+    "original_byte_probe": "tests/wire_g5_c975_reference_release_probe.cpp",
+    "probe_result": "PASS: original 41-byte routine agrees for null, surviving and terminal references; terminal mutates the slot before the required final clear.",
+    "probe_log": "local/output/c975-probe.log",
+    "call_graph": "local/output/c975-who-after.log",
+    "entry_reachable_call_sites": 1,
+    "native_abi_claim": false,
+    "game_run": false,
+    "float_math_changed": false,
+    "build_tests": "4/4 passed; strict Win32 Release",
+    "graph_comparison_note": "Baseline readiness carried stale graph results for some unrelated addresses; this change credits only the new 00440A30 call site, and wired source total rises by one."
+  },
+  "left": "Other counted-slot callers may reuse the minimal ReferenceSlotHost contract; the inspected producer/consumer gaps remain listed per row.",
+  "wired_total_after": 10836
+}
