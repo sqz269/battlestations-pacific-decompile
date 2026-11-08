@@ -9,7 +9,7 @@
       "native": "004ed910",
       "status": "wired",
       "host_site": "src/game_hosts_scene_contents.cpp apply_scene_terrain_texture_header (from SceneReaderBinding::publish_scene_root_properties, instantiate pass, via read_scene_header_sound_and_terrain)",
-      "note": "Runs once per instantiate header read, after 004ED690, as 00469D53 does. Environment-sound arm real; world parameters (00B1B830), the 00B24DD0 refresh, the 00BDF940 alias clear and 00AD60D0 bush refresh are labelled records (no renderer Lua owner / alias writer / foliage system reachable from the scene read). +B98h/+BA8h are the record constructor's empty strings here (004EE450 runs only in the OFF-default native mission ship; +BA8h has no writer) and reach only the recorded arm. call_graph: REACHABLE from apply_scene_terrain_texture_header."
+      "note": "Runs once per instantiate header read, after 004ED690, as 00469D53 does. Environment-sound arm real; world parameters (00B1B830), the 00B24DD0 refresh, the 00BDF940 alias clear and 00AD60D0 bush refresh are labelled records (no renderer Lua owner / alias writer / foliage system reachable from the scene read). 004DA2A0 -> 004CB420 initializes the texture strings and TerrainLUT to white.tga before optional properties. +B98h/+BA8h retain white.tga here (004EE450 runs only in the OFF-default native mission ship; +BA8h has no writer) and reach only the recorded arm. call_graph: REACHABLE from apply_scene_terrain_texture_header."
     },
     {
       "native": "004ee9e0",
@@ -108,5 +108,21 @@
     "004EE9E0's terrain scalars/colours/subtypes (globals E18808..E18990): no host consumer yet.",
     "004BFD70 proper: this process has no session teardown, so the scene slots are released on the next header and at sound teardown instead."
   ],
-  "checks": "build.ps1 4/4 tests; pc24_lint 0 findings; call_graph 5814/5854 reconstructed addresses called (5804/5844 before); readiness wired 10363 -> 10374, called 5637 -> 5648. Offline probe over the 259 installed scenes (004ED690 + 004EE9E0 + 004ED910 with recording hosts): 258 terrain reads, 774 environment acquires, 0 alias scripts, 0 failures. Not game-run."
+  "checks": "build.ps1 4/4 tests; pc24_lint 0 findings; call_graph 5814/5854 reconstructed addresses called (5804/5844 before); readiness wired 10363 -> 10374, called 5637 -> 5648. Offline probe over the 259 installed scenes (004ED690 + 004EE9E0 + 004ED910 with recording hosts): 258 terrain reads, 774 environment acquires, 0 alias scripts, 0 failures. Not game-run.",
+  "review_round_1": {
+    "review_run": 1426,
+    "worker_run": 1435,
+    "base_head": "6a71ad17492440ebf00460fed7de022deabeace3",
+    "finding_1": "fixed: apply_scene_terrain_texture_header seeds all seven texture inputs and TerrainLUT with 004DA2A0 -> 004CB420's white.tga defaults. Its SceneTerrainFields view inherits those defaults before 004EE9E0 applies optional properties, preserving unauthored textures. Authored strings, including empty strings, still override. The initial TerrainLUT survives an absent g_Terrain group or a declined LUT rule. Nearby comments and the 004ED910 row now state the correct defaults.",
+    "evidence": "bsp.py show 004da2a0: 004DA342 constructs record+990h through 004CB420. bsp.py show 004cb420: white.tga into block+208h, +218h, +234h, +23Ch, +244h, +24Ch, +254h and global 00E18990; corroborated by scene_environment_block_construct_004cb420 in src/engine_seg4_6_9_cc13.cpp. read_terrain in src/scene_weather_cc13.cpp only assigns texture fields for present properties; terrain_lut_name_004ee9e0 returns false for an empty scene path.",
+    "checks": "Fresh index; baseline and repaired build.ps1 both passed 4/4 tests. pc24_lint.py --diff origin/main...HEAD: 0 findings (no float math changed). call_graph.py regenerated after the repaired build; who confirms all eight claimed rows remain REACHABLE, including 004ED910 and 004EE9E0 directly from apply_scene_terrain_texture_header. git diff --check and report JSON validation passed. Original offline scene probe was not rerun; no game run.",
+    "rows_claimed": 8,
+    "rows_counted": 8,
+    "wired_total_before": 10374,
+    "wired_total_after": 10374,
+    "readiness_called_before": 5648,
+    "readiness_called_after": 5648,
+    "call_graph_reconstructed_called_before": 5814,
+    "call_graph_reconstructed_called_after": 5814
+  }
 }

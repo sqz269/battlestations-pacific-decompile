@@ -2626,13 +2626,14 @@ bool read_scene_music_group(GameHostLog& log, const bsp::ScenePropertyBagModel& 
 //    one throws rather than being skipped.
 //  * 00AD60D0 bush textures: a RECORD; the foliage system is the native
 //    mission ship's.
-// Inputs: the g_Terrain strings and TerrainLUT are 004EE9E0's (004F1D70's
-// 004F2310 arm, run here over the header's g_Terrain group, with the
-// record's +90Ch scene path); FileSystemLua is the header string 004F1D91
-// assigns to +918h. +B98h (ReflCubemap) is written by 004EE450, which runs
-// only in the native mission ship, and +BA8h (CloudShadowMap) has no writer
-// in this process, so both are the record constructor's (004DA2A0) empty
-// strings here; they reach only the recorded world-parameter arm.
+// Inputs: 004DA2A0 -> 004CB420 initializes the texture strings and TerrainLUT
+// to "white.tga". 004EE9E0's optional g_Terrain strings and scene-path LUT rule
+// override those defaults (004F1D70's 004F2310 arm, run here over the header's
+// g_Terrain group, with the record's +90Ch scene path); FileSystemLua is the
+// header string 004F1D91 assigns to +918h. +B98h (ReflCubemap) is written by
+// 004EE450, which runs only in the native mission ship, and +BA8h
+// (CloudShadowMap) has no writer in this process, so both retain "white.tga"
+// here; they reach only the recorded world-parameter arm.
 struct SceneTerrainTextureHeaderBinding final : bsp::scene_weather_cc13::TerrainTextureHeaderHost {
     GameHostLog& log;
     GameSoundRuntime* core;
@@ -2707,10 +2708,29 @@ void apply_scene_terrain_texture_header(GameHostLog& log, const bsp::SceneProper
     const std::string& scene_path_90c, const bsp::scene_weather_cc13::SceneMusicFields& sound) {
     namespace sw = bsp::scene_weather_cc13;
     sw::TerrainTextureHeaderInputs in;
+    // Native constructor defaults, before optional header properties:
+    // 004DA342 calls 004CB420 on record+990h. Its +208h/+218h/+234h..+254h
+    // strings and global 00E18990 are "white.tga" (bsp.py show 004cb420).
+    in.refl_cubemap_b98 = "white.tga";
+    in.cloud_shadow_map_ba8 = "white.tga";
+    in.diff_atlas_bc4 = "white.tga";
+    in.norm_atlas_bcc = "white.tga";
+    in.mask_texture_bd4 = "white.tga";
+    in.noise_texture_bdc = "white.tga";
+    in.static_shadow_texture_be4 = "white.tga";
+    in.terrain_lut_e18990 = "white.tga";
     // 004F2310: 008F2260 "g_Terrain" then the type 6 test, then 004EE9E0.
     const bsp::ScenePropertyEntry* terrain = bsp::scene_property_bag_find(model, 0, "g_Terrain");
     if (terrain != nullptr && terrain->value.type == bsp::ScenePropertyType::SubBag) {
         sw::SceneTerrainFields fields;
+        // 004EE9E0 leaves unauthored texture fields unchanged. Seed its view
+        // from the constructed record so copying it back preserves defaults.
+        fields.diff_atlas_bc4 = in.diff_atlas_bc4;
+        fields.norm_atlas_bcc = in.norm_atlas_bcc;
+        fields.mask_texture_bd4 = in.mask_texture_bd4;
+        fields.noise_texture_bdc = in.noise_texture_bdc;
+        fields.static_shadow_texture_be4 = in.static_shadow_texture_be4;
+        fields.terrain_lut_e18990 = in.terrain_lut_e18990;
         std::string error;
         if (!sw::read_static_shadow_and_shader_textures_004ee9e0(model, terrain->sub_bag,
                 scene_path_90c, fields, error))
