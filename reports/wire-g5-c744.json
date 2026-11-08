@@ -1,0 +1,213 @@
+{
+  "run": 1604,
+  "chain": 744,
+  "owner": "agent/g5-w4",
+  "wired_total_before": 10551,
+  "wired_total_after": 10552,
+  "validation": {
+    "build": "scripts/build.ps1 passed all four checks, including the added PC24 squared-length regression",
+    "graph": "00401cf0 REACHABLE: one call at 1012d718 from ShipViewInputBinding::helm_aim_track_target; entry path confirmed",
+    "readiness": "00401cf0 state=wired, called=true, call_sites=1, callers_live=1",
+    "limits": "Static entry reachability and fixture proof; no game run or original register-ABI replacement claim"
+  },
+  "rows": [
+    {
+      "native": "00401cf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::helm_aim_track_target",
+      "detail": "Replaces the planar squared-distance expression with the existing Vec3d body on the live camera-to-target delta; repairs its SSE expression to the original x87 schedule and corrects its stale ledger identifier. Y=0 is the existing horizontal projection. This is host composition, not a recovered original call site."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator candidate scoring",
+      "reason": "No native score-list owner or gameplay consumer; the documented image reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator candidate scoring",
+      "reason": "No live native score-list entries to mark; adding a parallel auxiliary list would not replace gameplay state."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: publish_and_update",
+      "reason": "Baseline readiness already reports three reachable call sites; no additional wiring is needed despite state=ready."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: native platform construction",
+      "reason": "An existing raw constructor already represents this address; wiring the older semantic duplicate would violate one-body ownership."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp: resource candidate resolution",
+      "reason": "Baseline readiness already reports a reachable call; the raw VFS name resolver also has its own established representation."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "No actual submitted native loading-work record was identified for removal; the queue update alone supplies no record or removal index."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "The required native loading-job/work-item submission producer is absent from the inspected frame update path."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "The current companion stores a std::function instead of the raw DWORD callback at +144; the raw body cannot operate on that layout."
+    },
+    {
+      "native": "00a9bb30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "No raw native listbox paging header or complete NativeGuiListboxCalls adapter exists in the inspected companion."
+    },
+    {
+      "native": "00a9bb70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "The companion owns typed rows rather than the raw child-list layout and virtual-call adapter required by this body."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::clear_rows_00a9bec0",
+      "reason": "The raw +FC list, native iterator words and listener slots are not the current typed companion storage."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime selection",
+      "reason": "The typed row list has no raw +100 sentinel or +108/+10C iterator storage for this body."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::select_index_00a9c7c0",
+      "reason": "The raw +114 listener slot and NativeGuiListboxCalls adapter are not present in the typed companion."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime selection",
+      "reason": "The existing raw selection helper cannot use the companion's typed iterator and separately stored listener."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime fields",
+      "reason": "No GuiListboxHooks adapter maps this raw-offset helper to the current companion without a second body or mirrored state."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime highlight",
+      "reason": "The helper's raw listbox layout and complete NativeGuiListboxCalls adapter are missing from the typed companion."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime paging",
+      "reason": "Raw paging/list iterator storage is not shared with the typed companion; an owner adaptation is required first."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB10.cpp: gui_manager_set_pointer_state_00aa0e60 callback",
+      "reason": "No actual animated-value target producer and complete target/notify callback adapter was identified."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "A live input-character caller with the actual FontData owner is still missing."
+    },
+    {
+      "native": "00b0d580",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp: renderer_set_motion_blur",
+      "reason": "Quick-settings has no complete SceneRendererHost adapter for the real device query and texture/target sample changes."
+    },
+    {
+      "native": "00b0ea70",
+      "status": "skipped",
+      "host_site": "src/scene_weather_cc13.cpp: ScenePostProcessHost::set_underwater_wave_params_00b0ea70",
+      "reason": "The inspected post-effects parse path lacks its live ScenePostProcessHost implementation and actual service binding."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "No owned live submission adapter supplies the actual last queue command and three source words; renderer integration is outside this packet."
+    },
+    {
+      "native": "00b8fb50",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: mit_pool_init_block",
+      "reason": "No live MitBlockModel pool owner was identified; the separate MitBlockPool uses a different representation."
+    },
+    {
+      "native": "00b90800",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: MitBlockPool::allocate",
+      "reason": "No application-owned MitBlockPool producer and consumer were identified in the inspected render path."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ship order-ring integration",
+      "reason": "The serialized Rudder and sinking-override input producers remain missing from the inspected ring integration."
+    },
+    {
+      "native": "008f0420",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: reference-property merge",
+      "reason": "Baseline readiness already reports a reachable call using the existing raw property record; no new wiring is needed."
+    },
+    {
+      "native": "00711be0",
+      "status": "skipped",
+      "host_site": "src/native_model_numbering.cpp: set_native_model_numbering_00711be0",
+      "reason": "No live numbering-name producer and complete model-numbering services binding were identified in the mission model path."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc: MissionShipLightingGraph",
+      "reason": "The live mission-light graph explicitly admits only null shadow owners; there is no incoming shadow-owner producer to assign."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: return_failed_slot",
+      "reason": "Baseline readiness already reports a reachable GuiButtonPoolTraits free call; no additional wiring is needed."
+    },
+    {
+      "native": "00440a30",
+      "status": "skipped",
+      "host_site": "src/seg3_4_cc13.cpp: ref_slot_release_00440a30",
+      "reason": "No actual DeviceEntityHost and corresponding native reference-slot runtime owner were identified in the inspected paths."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp: scene remap retirement",
+      "reason": "Claim refused because agent/g5-w9 already owns the same reset-remap wiring and renderer file; no edits made."
+    },
+    {
+      "native": "00b4cba0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp: reset_native_render_remap_textures_00b0feb0",
+      "reason": "This helper belongs to agent/g5-w9's claimed remap-reset packet; left to that owner."
+    }
+  ]
+}

@@ -67,9 +67,26 @@ __declspec(noinline) void scale_00401cd0(Vec3d& value, double factor) {
     }
 }
 
-double length_squared_00401cf0(const Vec3d& value) {
-    // Assembly adds y^2 + x^2 first, then z^2. Pseudocode reassociated this.
-    return (value.y * value.y + value.x * value.x) + value.z * value.z;
+__declspec(naked) double length_squared_00401cf0(const Vec3d&) {
+    // bsp.py show 00401CF0 --asm, 00401CF0..00401D08. The old C++
+    // expression used SSE double arithmetic and ignored the caller's x87
+    // precision control. Keep the original stack schedule and ST0 result;
+    // only loading the C++ reference from the stack differs from EAX input.
+    __asm {
+        mov eax, [esp + 4]
+        fld qword ptr [eax + 8]
+        fld qword ptr [eax]
+        fld qword ptr [eax + 10h]
+        fld st(1)
+        fmulp st(2), st(0)
+        fld st(2)
+        fmulp st(3), st(0)
+        fxch st(1)
+        faddp st(2), st(0)
+        fmul st(0), st(0)
+        faddp st(1), st(0)
+        ret
+    }
 }
 
 // PUSHFD/PUSHAD protect everything the original arithmetic-only leaves left
