@@ -1,0 +1,113 @@
+{
+  "goal": 5,
+  "chain": 924,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "baseline_head": "256d72bf4fdb0be41fe6c44d310683ec372b1ef6",
+  "summary": "Route the canonical Curve pool's normal table release and constructor-unwind cleanup through the sole reconstructed 00ABC180 body.",
+  "rows": [
+    {
+      "native": "00abc180",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: initialize_pool<GuiCurvePoolTraits> and NativeGuiWidgetPool<GuiCurvePoolTraits>::destroy",
+      "source": "src/native_gui_curve_storage.cpp: bsp::free_native_gui_curve_pool_table_00abc180",
+      "real_state": "The table header at canonical Curve pool 00F8BE5C+28h, initialized by the existing GameNativeGuiWidgetPoolProcess<GuiCurvePoolTraits>::initialize_once CRT route and released by its registered destroy_at_exit callback.",
+      "evidence": "00ABC180 assembly loads [ECX] once and conditionally calls BF6989 without modifying the table. ABC570 state-2 funclet CB8293 tailjumps ABC180; ABC290 inlines the same release after the slabs, before critical-section/list teardown.",
+      "compiled_proof": "With /OPT:NOICF, leaf 106B2F10 in native_gui_curve_storage.obj has exactly two reachable call sites: Curve initialize_pool at 105A4D61 and Curve destroy at 105A6CB4. The constructor chain reaches WinMainCRTStartup. local/c924-who-unfolded.log.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "00abc570",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize",
+      "reason": "The canonical Curve constructor was already entry reachable at baseline; this change replaces only its state-2 table cleanup with ABC180, so no new constructor wiring is claimed."
+    },
+    {
+      "native": "00abc290",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiCurvePoolTraits>::destroy",
+      "reason": "The canonical Curve destructor already ran through its CRT exit callback; this change replaces only its inline table free, so no new destructor wiring is claimed."
+    },
+    {
+      "native": "00abc500",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize",
+      "reason": "Already compiled and entry reachable at baseline through the real Curve pool's reserve32; it is reused without a second reserve."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp: add_native_scene_property_integer_word_008f3710",
+      "reason": "Baseline readiness already reports a reachable compiled call; the ready text state does not identify missing wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene-property projection",
+      "reason": "Baseline readiness already reports three reachable compiled call sites; the ready text state does not identify missing wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native scene-property merge",
+      "reason": "Baseline readiness already reports two reachable compiled call sites; the ready text state does not identify missing wiring."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "A live producer/caller for the actual directional-light+174h shadow-owner slot and its full lifetime context was not established; a detached host light cannot replace it."
+    },
+    {
+      "native": "00a8fd30",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_construction.cpp: allocate_native_directional_shadow_owner_00a8fd30",
+      "reason": "The actual light producer and a live application caller supplying its construction bindings were not established; the separate depth-target owner is a different native object."
+    },
+    {
+      "native": "00be31e0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_lifetime.cpp: delete_native_frame_job_pool_00be31e0",
+      "reason": "No standalone frame-pool producer needing this scalar-delete entry was found; the live singleton embeds its pool at owner+4h and correctly calls the nondeleting destructor."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp: initialize_native_lua_variant_header_006eeaf0",
+      "reason": "The function has no Source caller and a canonical live native Lua-variant tree-header producer was not established."
+    },
+    {
+      "native": "006edea0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp: initialize_native_lua_variant_header_006eeaf0",
+      "reason": "Its reconstructed header-initializer caller remains disconnected; a live native Lua-variant header producer is required."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/native_gui_movie_default_storage.cpp: construct_native_gui_movie_default_00aafe20",
+      "reason": "No live Movie factory caller supplying its actual allocated widget storage was established; pool construction alone does not construct a Movie widget."
+    }
+  ],
+  "counts": {
+    "readiness_text_wired_before": 10803,
+    "readiness_text_wired_after": 10804,
+    "readiness_note": "ABC180 is absent from the readiness rows snapshot after its tag-only promotion; use the independent compiled graph for the new leaf's call attribution.",
+    "compiled_reconstructed_called_before": 5674,
+    "compiled_reconstructed_called_after": 5675,
+    "compiled_reconstructed_addresses_before": 6362,
+    "compiled_reconstructed_addresses_after": 6363,
+    "newly_called_addresses": ["00abc180"]
+  },
+  "validation": {
+    "default_build": "scripts/build.ps1 passed before and after the temporary unfolded relink; four existing CTests passed, zero compiler/linker diagnostics.",
+    "focused_probe": "local/c924-probe.cpp passed null-leaf header retention, actual Curve reserve32, 65 slots across two slabs, normal teardown, unchanged table fields and allocator unlink. No permanent test suite was added.",
+    "unfolded_graph": "Temporary optimized /OPT:NOICF relink proved the actual leaf's two callers separately from identical free helpers. Original CMAKE_EXE_LINKER_FLAGS_RELEASE=/INCREMENTAL:NO restored, then default build/tests and graph regenerated.",
+    "floating_point": "No floating-point operations changed; pc24 lint not applicable.",
+    "ghidra": "Verified /battlestationspacific.exe, renamed ABC180 descriptively, preserved prior annotations in local/ghidra-annotations-20261108T171321Z.json, saved project and refreshed export.",
+    "scope": "Source wiring, build, fixture and compiled entry-reachability proof. No game run, failure-injected constructor unwind or original register-ABI compatibility claim."
+  },
+  "coordination": "Shared material file was queued behind Grid/ClipBox, claimed only while editing and released before the build. AnimIcon worker received the exact optional FreeTable callback interface; scrollbar landing worker was warned to preserve it.",
+  "left": "Live game and failure-injected unwind validation; remaining pool work stays with its respective owners."
+}

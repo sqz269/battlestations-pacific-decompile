@@ -13,6 +13,7 @@ public:
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/native_gui_widget_load_hooks.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstddef>
 #include <exception>
@@ -22,6 +23,14 @@ public:
 #error Native GUI Curve storage requires MSVC Win32.
 #endif
 namespace bsp {
+__declspec(noinline) void free_native_gui_curve_pool_table_00abc180(
+    void* actual_table) noexcept {
+    // bsp.py show 00ABC180 --asm: MOV EAX,[ECX]; TEST; conditional BF6989;
+    // RET. Capture only the current data word; retain all three header words.
+    void* const data = *static_cast<void* const volatile*>(actual_table);
+    if (data) singleton_lifetime_free(data);
+}
+
 namespace {
 using Word = std::uint32_t;
 static_assert(GuiCurvePoolTraits::object_bytes == 0x140);
