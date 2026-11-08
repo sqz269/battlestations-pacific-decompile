@@ -11465,15 +11465,21 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     sw.h += sw.rh * dt;
                     sw.v += sw.rv * dt;
                     const float limit = bsp::gun_bot_lead_error_limit_00902920(distance);  // 00CE3880
+                    // Reuse the recovered symmetric clamp for the live wander
+                    // angles. Evidence: bsp.py show 009c6220 --asm, 009C624B..
+                    // 009C6266 returns the selected float in ST0 (the old
+                    // decompiler's void prototype loses that return). This
+                    // caller has distance > 0, hence limit = 25 / distance >= 0;
+                    // the existing fabs guards exclude unordered comparisons.
                     if (std::fabs(sw.h) > limit) {
-                        sw.h = std::max(-limit, std::min(limit, sw.h));
+                        sw.h = bsp::math_clamp_symmetric_009c6220(&sw.h, &limit);
                         sw.timer = 1.0f;
                         sw.rh = -0.5f * sw.h;
                         sw.rv = -0.5f * sw.v;
                         ++aa_gunner_clamps;
                     }
                     if (std::fabs(sw.v) > limit) {
-                        sw.v = std::max(-limit, std::min(limit, sw.v));
+                        sw.v = bsp::math_clamp_symmetric_009c6220(&sw.v, &limit);
                         sw.timer = 1.0f;
                         sw.rh = -0.5f * sw.h;
                         sw.rv = -0.5f * sw.v;
