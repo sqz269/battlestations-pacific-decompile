@@ -1,0 +1,247 @@
+{
+  "chain": 737,
+  "goal": 5,
+  "slot": "g5-w1",
+  "base": "2b391a1aaa",
+  "picked": "AI party-brain and planner construction",
+  "rows": [
+    {
+      "native": "00a15a70",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::create_party_brain",
+      "evidence": "bsp.py show 00a15a70 and register-input listing; built call_graph who: create_party_brain call 10054842 -> ai_party_brain_construct_00a15a70 at 103f5510; actual party/mode/team inputs and retained 0x28-byte destination"
+    },
+    {
+      "native": "00a1efc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Defend",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f0f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Attack",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f220",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Sell",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f390",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Capture",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f500",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Duel",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f630",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Escort",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f760",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Siege",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1f890",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain::Construction::planner_construct",
+      "kind": "Competitive",
+      "evidence": "Existing shared planner_construct_00a1efc0_family body; actual 00A15A70-selected constructor address, allocation size and retained destination; entry-reachable call at 1005df23 -> shared family at 103f5730; readiness resolves the family aliases to this one call, not eight distinct linked symbols"
+    },
+    {
+      "native": "00a1ee50",
+      "status": "skipped",
+      "host_site": "src/cc13_seg70.cpp: planner_construct_00a1efc0_family",
+      "reason": "Already text-wired before this packet; constructor base now executes inside the linked family but is compiler-inlined, so no separate new address call is credited."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing actual readable mutable native globals 00F87574/78/7C and a live command-target owner on this host path; literal raw entry cannot use guessed zero values."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "Debug-only score list has no gameplay reader in this build; excluded from single-player wiring."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "Debug-only chosen score flag has no gameplay reader in this build; excluded from single-player wiring."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: order_cautious_move_00a2ccf0",
+      "reason": "Missing a live caller selecting CAUTIOUSMOVE: the current producer always passes ratio=1.0 and selects MOVETO."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/global_subsystems.cpp: construct_global_subsystems_004dc6a0",
+      "reason": "Missing a live MarkerClassContext/MarkerClassRegistry owner and mesh-resource acquisition binding; the source loader call alone does not produce a hosted registry."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing native checkpoint/profile-record removal and persistent-write continuation binding; the existing body implements only the Lua portion."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support use arm",
+      "reason": "Missing the live spawn-manager raw owner, player/vehicle-class views and Large61Host spawn-member/enqueue services."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: deferred event drain",
+      "reason": "Missing a Seg60Host adapter over the existing gunnery event producer and its native hit-record storage; drain-side stand-in is not the producer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread named-call producer; this process currently invokes mission Lua on the main thread."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: gui_update",
+      "reason": "Missing the live GuiResourceOwner/widget-owner frame-service path at the menu GUI update hook."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing a live manager-frame binding over actual registered timed-entry owners; manager update remains recorded in menu host."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: gui_update",
+      "reason": "Missing live GuiPointerRuntime services over the current manager cursor and input device; menu GUI update remains recorded."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: rendering order",
+      "reason": "Missing a gameplay child-snapshot caller; alphabetical child sorting is not the authored-Z render order and cannot replace it."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_named_value_array_push_back_00ab4990",
+      "reason": "Missing a live delayed-load registry array owner and its producer; unrelated GUI property vectors are not this array."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live text-byte acceptance caller using the decoded FontData owner; font probing alone is not that caller."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: unit-group creation stand-in",
+      "reason": "Missing a host allocator/constructor interface: current raw factory dispatches original absolute 00BF681B/0070DAB0 addresses."
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg41_cc13.cpp: clear_all_zones_0074e830",
+      "reason": "Missing the real MT_SHIP_LEAKCHEATWATER dispatch into a LeakManagerZones owner; no unrelated clear path substituted."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search",
+      "reason": "Existing reconstructed query-refresh source already calls this helper; missing separate emitted-call proof under its address because it is not a standalone linked function in this build."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search",
+      "reason": "Existing reconstructed query-refresh source already calls this helper; no additional host replacement identified in the selected packet."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: render_004ca440",
+      "reason": "Missing actual screen/depth-target render state at the live ocean render-job hook for the depth-sample-kernel fragment."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp: direction_angle_deltas_00605630",
+      "reason": "Missing the sole plane-HUD bomb/fire update caller and its actual aim vectors; unrelated camera angle arithmetic is a different native address."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MoviePlayer texture binding",
+      "reason": "Missing actual movie decoder/player textures, material node and raw movie-widget storage."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Missing raw movie-widget subtitle owner compatible with +104/+108/+10C arrays; current typed subtitle schedule is not that owner."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown close_result_gui",
+      "reason": "Missing actual raw game/movie-screen sound transition context and its screen callbacks."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: replicate_objective_state",
+      "reason": "Missing live session-message owner and objective replication delivery; no message fabricated for the recorded hook."
+    }
+  ],
+  "implementation": [
+    "Narrowed existing constructor dependency interfaces; no new address-suffixed body or ledger row.",
+    "Retained actual 0x28 brain destination, constructor-selected 0x38/0x44 planner allocations, self-linked list sentinels and owned native name headers.",
+    "Replaced manual planner creation dispatch; constructor outputs supply live party/team, installed planner kinds, replan flag, Capture slot and Capture timers.",
+    "Later planner ticks retain the existing typed Planner state; birth bytes are retained construction destinations, not a parallel mutable planner model.",
+    "NativeString allocation/release uses existing CRT-backed host storage; original sized-pool identity, original exception ABI and gameplay execution are not claimed."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS; 4/4 CTests",
+    "final_build": "scripts/build.ps1 PASS; 4/4 CTests (local/output/g5-c737-build-final.log)",
+    "wire_readiness_before": 10525,
+    "wire_readiness_after": 10534,
+    "call_graph_recon_called_before": 5409,
+    "call_graph_recon_called_after": 5410,
+    "call_graph_note": "Address counter recognizes suffix-address identifiers; the _00a1efc0_family body is directly reachable by symbol but is shared by eight readiness aliases. Base 00A1EE50 is inlined into the family.",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 5 files; no arithmetic changed.",
+    "runtime_scope": "Existing real local-skirmish/forced coordinator creation path. Campaign load can omit the coordinator. No gate enabled and no game run.",
+    "proof_boundary": "Build/tests and static entry-reachable direct-call evidence, not runtime/gameplay validation."
+  },
+  "left_for_others": "Native party-brain/planner destructor dispatch remains a host record; full planner native-layout tick/list ownership remains projected by the existing typed planners. Marker classes still need their live registry and resource producer."
+}
