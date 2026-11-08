@@ -1708,7 +1708,10 @@ public:
     // through 00b67980 / 00b67800 at 0083b721 / 0083b73d. The executable has one
     // Lua state, the mission machine's, so it runs the file through the
     // recovered file runner 00885110 on that state and records 00b69d40.
-    // Returns true when the global is a table afterwards.
+    // Shared, idempotent initialization for descriptor loads and units setup:
+    // after a successful settings load, later borrowers reuse that same object
+    // and ShipGlobals table without executing the script again. Failed loads
+    // remain retryable. Units setup still performs its remaining tuning reads.
     bool load_ship_globals_0083b6e6();
 
     // 007E2A20 BSP_GameTuning_LoadFromPlaneGlobals, driven by the reconstruction
@@ -2704,6 +2707,14 @@ private:
     // fields (class +C0h..+CCh Catapult, +124h Cost, +134h DefaultEquipment...),
     // written when 00964790 loads the class and kept after the row is purged.
     std::map<int, bsp::VehicleClassBaseFields> vehicle_class_base_fields_;
+    // 006E00F0 / 006EB4A0 / 006FB550 / 006FE6A0, at the same descriptor load.
+    // The native leaves store tuning at +560h..+570h once; keep that result
+    // with its class, including the selected settings block, after Lua purge.
+    struct LoadedShipLeaf {
+        bsp::ShipLeafFields fields;
+        std::uint32_t settings_block_offset;
+    };
+    std::map<int, LoadedShipLeaf> vehicle_class_ship_leaf_fields_;
     std::size_t vehicle_class_base_loads_{0};
     std::size_t vehicle_class_base_lazy_resolves_{0};
     // cc15-vcp1: the rows the last census found unmarked, with the reads
