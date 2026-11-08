@@ -2,6 +2,7 @@
 #include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/native_camera_pool_table.hpp"
+#include "bsp/native_group_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -121,6 +122,10 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
         grow_native_camera_pool_table_00b70040({reinterpret_cast<std::byte*>(&a)});
         return;
     }
+    if (address == 0x00B8E930) {
+        grow_native_group_pool_table_00b8e930({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
     if (address == 0x00B745C0) grow_native_model_pool_table_00b745c0(&a);
     else if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
 }
@@ -132,6 +137,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
     }
     if (address == 0x00B71260) {
         append_native_camera_pool_table_00b71260({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
+    if (address == 0x00B8EDC0) {
+        append_native_group_pool_table_00b8edc0({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
     }
     if (address == 0x00B747D0) {
