@@ -4025,9 +4025,13 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
             (units_.unit_is_kind_of(target_index, 0x0c) && !big);
         if (small_target) {
             ++kamikaze_small_targets_;
-            // 00604A58 (17h, held above), 00604A60 [plane+C24h] == 0.
+            // 007EEB74 calls 00604A50 on the same slot-0 plane. Goal 5 chain
+            // 865: its canonical body consumes the retained kind-17h answer
+            // and the live PilotFires byte (00604A58 / 00604A60).
             const bool uncommitted_kamikaze =
-                !units_.plane_pilot_fires_0c24(unit_index);
+                bsp::cc13_sweepB_entity_kind17_ready_00604a50(
+                    in.self_is_kamikaze_capable,
+                    static_cast<std::uint8_t>(units_.plane_pilot_fires_0c24(unit_index)));
             const bool blocked = !uncommitted_kamikaze;
             if (blocked) ++kamikaze_blocked_;
             log_.notef("  %s kamikaze small-ship test: target class %d small, "

@@ -787,13 +787,17 @@ bool cc13_sweepB_interface_allows_input_00604a20(const void* screen) {
     return cc13_sweepB_interface_allows_input_00604a20(mode, cc13_sweepB_at<std::uint8_t>(s, 0x904));
 }
 
-// 00604A50 (hypothesis; ledger FUN_00604A50). ABI: __thiscall(ECX entity),
+// 00604A50 (hypothesis; ledger FUN_00604A50). Native input: ECX entity,
 // RET, EAX 0/1. Callers 0060ABD0 and 007EE8F0 BSP_Unit_AttackCommandApplies
 // (game_hosts_script_orders.hpp describes the same test). Evidence
 // 00604A50..00604A73: vtable +5Ch(17h) non-zero and byte +C24h clear.
-bool cc13_sweepB_entity_kind17_ready_00604a50(void* entity, Cc13SweepBHost& host) {
-    if (!host.entity_vcall_5c_is_kind(entity, 0x17)) return false;
-    return cc13_sweepB_at<std::uint8_t>(entity, 0xC24) == 0;
+// Goal 5 chain 865: expose the same two reads as semantic inputs. The live
+// script-orders owner retains the class query and PilotFires state separately.
+// Verified with bsp.py ghidra decompile 00604a50: kind(17h) && byte[C24h] == 0.
+bool cc13_sweepB_entity_kind17_ready_00604a50(bool entity_is_kind17,
+    std::uint8_t pilot_fires_c24) noexcept {
+    if (!entity_is_kind17) return false;
+    return pilot_fires_c24 == 0;
 }
 
 // ===========================================================================
