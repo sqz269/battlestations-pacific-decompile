@@ -11,6 +11,7 @@
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/game_hosts_powerups.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
+#include "bsp/unit_damage.hpp"
 #include "bsp/math.hpp"
 
 #include "bsp/game_hosts.hpp"
@@ -7481,17 +7482,24 @@ public:
         return unit_health(unit);
     }
     long double unit_health(std::uint32_t unit) override {
-        // 00923BE0 (ai_unit_health_00923be0): the +5Dh arm, else the fraction
-        // +370h / +36Ch clamped into [0, 1]; the gunnery host keeps both
-        // halves, as ShipAiTorpedoStandoff::own_health_00923be0 reads them.
+        // 00923BE0: the +5Dh arm, else the unit's +110h provider and clamp.
         const GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
         if (unit == 0 || gunnery == nullptr) return 0.0L;
         const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
         if (unit - 1 >= rows.size()) return 0.0L;
         const GameGunneryUnitRow& row = rows[unit - 1];
-        return bsp::ai_unit_health_00923be0(gunnery->unit_dead(unit - 1),
-            row.max_health > 0.0f ? row.health / row.max_health : 0.0f,
-            row.max_health > 0.0f);
+        const bool torn_down = gunnery->unit_dead(unit - 1);
+        const bool fraction_available = row.max_health > 0.0f;
+        bsp::UnitHealth health;
+        health.current_health = row.health;
+        health.max_health = row.max_health;
+        // bsp.py show 00876260 --asm: FLD +370h / FDIV +36Ch / FSTP / FLD.
+        // Adapt the live gunnery pair to the existing numeric body, preserving
+        // its ambient x87 precision and float spill. 00923BE4 skips the provider
+        // on torn-down units; the unavailable-model fallback remains the host's.
+        const float fraction = !torn_down && fraction_available
+            ? bsp::health_fraction_00876260(health) : 0.0f;
+        return bsp::ai_unit_health_00923be0(torn_down, fraction, fraction_available);
     }
     void widget_width(bsp::HudRowWidget widget, float, float) override {
         // Virtual +48h, the scale pair; no bridge operation.
