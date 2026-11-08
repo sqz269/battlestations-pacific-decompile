@@ -1,0 +1,49 @@
+{
+  "chain": 822,
+  "slot": "g5-w8",
+  "rows": [
+    {"native":"00415660","status":"wired","host_site":"src/game_hosts_avoid_zones.cpp: bsp::game::avoid_zone_cell_height_0041bae0","detail":"Replaces both existing signed integer clamps of actual terrain sample coordinates ix/iz using zero and layer.dimension - 1, before indexing the real layer grid. The generic recovered helper is reused at this C++ site; the original 0041BAE0 inlines these comparisons, so this is not a claimed original binary call edge."},
+    {"native":"008f3a20","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp","reason":"Already called at baseline: readiness reports called=true and three reachable call sites; no new wiring is needed."},
+    {"native":"008f54f0","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp","reason":"Already called at baseline: readiness reports called=true and two reachable call sites; no new wiring is needed."},
+    {"native":"00437c70","status":"skipped","host_site":"src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint","reason":"Missing a real pre-load checkpoint comparison, checkpoint Lua owner/current mission key and write continuation; checkpoint_differs still returns false."},
+    {"native":"0095cf80","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate","reason":"The live device handle lacks the native ammunition record, retained references and ammo+48h alternate producer required by assignment."},
+    {"native":"0095d3c0","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp","reason":"Missing the native unit+660h 44h-element vector owner and Seg62Host lifetime adapter at a live clear operation."},
+    {"native":"00887560","status":"skipped","host_site":"src/game_hosts_ready.cpp: NamedCallBinding::queue_call","reason":"The main-thread interpreter has no frame-job-thread deferred-node producer with the actual LuaVariantRecord argument vector to copy."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/font_data.cpp: font_accepts_text_byte_00ab6d00","reason":"Missing a live input-character admission consumer with its retained text-context font; complete-string layout is a different operation."},
+    {"native":"00bbd310","status":"skipped","host_site":"src/world_ocean.cpp: ocean_orthonormalize_00bbd310","reason":"Missing the actual cloud-manager owner and reference-node dirty/world-axis producer; the corrected identity is a cloud update, not an ocean-frame consumer."},
+    {"native":"0094bff0","status":"skipped","host_site":"src/game_hosts_powerups.cpp","reason":"Missing the native spawn manager, player/game views and allocation/scene-reference callbacks needed by the full spawn-request body."},
+    {"native":"00ab00c0","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: clear_movie_subtitles","reason":"The semantic subtitle schedule lacks the native subtitle/extratitle vectors and owned Text-child/string lifetime needed by the recovered destructor."},
+    {"native":"004cd610","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: mission teardown","reason":"The teardown only records this operation and lacks its actual game receiver and movie-screen SoundLoadTransitionContext owner."},
+    {"native":"008dda20","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: replicate_state","reason":"Peer-owned objective replication is outside this single-player assignment."},
+    {"native":"00b6fc30","status":"skipped","host_site":"src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30","reason":"Missing a reached consumer of the perspective FOV-aspect product; the inspected live GUI projection is orthographic."},
+    {"native":"0085d770","status":"skipped","host_site":"src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770","reason":"Missing the actual nonzero unit+B04h correction producer that admits the alternate-frame consumer branch."},
+    {"native":"0085e8c0","status":"skipped","host_site":"src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0","reason":"Missing a reached WeaponViewHost rotation adapter with the live weapon-view pose, pivot and axis."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0","reason":"Missing a presence-zero clear-message producer and retained per-slot director path owners; the current live sender supplies point additions."},
+    {"native":"00721070","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: descriptor_init_00721070","reason":"Missing a reached empty command-target descriptor owner with the actual class-ordinal publication; populated descriptor construction is a different operation."},
+    {"native":"00aa8f30","status":"skipped","host_site":"src/gui_manager_cc13.cpp: rect_from_widget_00aa8f30","reason":"Missing a reached rectangle-copy consumer and its actual GuiWidgetTransform source; original consumers are control-binding and leaderboard row construction."},
+    {"native":"00aa7ef0","status":"skipped","host_site":"src/gui_manager_frame.cpp","reason":"Missing a live typed timed-entry owner/consumer for the screen live-entry query."},
+    {"native":"00aa5a00","status":"skipped","host_site":"src/game_hosts_frontend.cpp","reason":"The flattened render list lacks the original per-parent name-sorted GuiSnapshotChild producer needed by this collector."},
+    {"native":"00411e20","status":"skipped","host_site":"src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20","reason":"Missing a reached actual native approach/registry owner whose state lookup uses this storage; constructing a parallel registry would add unused state."},
+    {"native":"004116d0","status":"skipped","host_site":"src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0","reason":"Missing a reached native registry lifetime owner and its constructor path."},
+    {"native":"009af9a0","status":"skipped","host_site":"src/native_land_state_registry.cpp: register_native_land_states_009af9a0","reason":"Missing the reached actual approach+B8h registry, eight embedded native state identities and their construction/lifetime path."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp","reason":"The candidate-score list has no gameplay owner/consumer; the documented native reader is the excluded debug overlay."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp","reason":"Missing actual candidate-score records to mark and a gameplay consumer; adding a parallel unused list would not wire gameplay."},
+    {"native":"00b999a0","status":"skipped","host_site":"src/cc13_sweepC.cpp: plane_signed_distance_00b999a0","reason":"No original callers or reached matching plane-distance consumer were established."}
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00415660",
+    "python tools/bsp.py show 00415660 --asm --lines 25",
+    "Baseline call_graph.py who 00415660: no function linked.",
+    "Baseline call_graph.py who avoid_zone_cell_height_0041bae0: reachable, four calls from avoid_zone_sample_0041bc20.",
+    "Baseline call_graph.py who avoid_zone_sample_0041bc20: reachable, ten calls including real aircraft terrain avoidance, surface height, height-rate and takeoff paths."
+  ],
+  "baseline": {"readiness_wired":10671},
+  "after": {"readiness_wired":10672,"native_called":true,"native_call_sites":2},
+  "validation": {
+    "build":"scripts/build.ps1 passed; all four CTests passed.",
+    "call_graph":"00415660 reachable with two direct calls from avoid_zone_cell_height_0041bae0; path traverses actual mission-frame motion and terrain sampling.",
+    "arithmetic":"Only signed integer clamps changed; float arithmetic is unchanged. Below-minimum and above-maximum branches preserve their original order, including when dimension - 1 is negative.",
+    "diff_check":"git diff --check passed."
+  },
+  "limitations": "C++ semantic reuse of the existing recovered helper, not an original-call-edge or binary-ABI claim. No game run requested or performed."
+}
