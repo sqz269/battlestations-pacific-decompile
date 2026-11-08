@@ -263,12 +263,36 @@ float math_max_float_int_006f22f0(std::int32_t bound, float v) noexcept {
 }
 
 void vec3_add_scaled_in_place_006e0540(float v[3], const float d[3], float s) noexcept {
-    band_0067_cc13::Vec3 vv{v[0], v[1], v[2]};
-    const band_0067_cc13::Vec3 dd{d[0], d[1], d[2]};
-    band_0067_cc13::vec3_add_scaled_in_place_00709b60(vv, dd, s);
-    v[0] = vv.x;
-    v[1] = vv.y;
-    v[2] = vv.z;
+    // bsp.py show 006E0540 --asm: retain 006E0547..057E, including all
+    // three product spills before the first destination write. The former
+    // 00709B60 software-model delegation changed exceptional float bits;
+    // use the native x87 operations under the caller's precision control
+    // (PC24 on the game thread), preserving NaN payloads and underflow.
+    float products[3];
+    __asm {
+        mov eax, d
+        fld dword ptr [eax]
+        fld s
+        fld st(0)
+        fmulp st(2), st(0)
+        fxch st(1)
+        fstp products[0]
+        fld dword ptr [eax + 4]
+        fmul st(0), st(1)
+        fstp products[4]
+        fmul dword ptr [eax + 8]
+        fstp products[8]
+        mov ecx, v
+        fld dword ptr [ecx]
+        fadd products[0]
+        fstp dword ptr [ecx]
+        fld products[4]
+        fadd dword ptr [ecx + 4]
+        fstp dword ptr [ecx + 4]
+        fld dword ptr [ecx + 8]
+        fadd products[8]
+        fstp dword ptr [ecx + 8]
+    }
 }
 
 float* matrix4x4_transpose_in_place_006fdd00(float m[16]) noexcept {
