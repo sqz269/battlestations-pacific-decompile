@@ -1,0 +1,207 @@
+{
+  "chain": 866,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "picked": "Use the canonical channel audibility query in the live nonspatial channel update",
+  "rows": [
+    {
+      "native": "00a7a710",
+      "status": "wired",
+      "host_site": "src/sound_instance.cpp:update_sound_channel_00a7af10",
+      "reason": "Replaces the existing direct FMOD audibility query using the same live SoundChannelInstance and SoundInstanceContext; its result is discarded and FMOD is queried once."
+    },
+    {
+      "native": "00a7af10",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::update_slot30",
+      "reason": "Already called at baseline; this existing caller is modified to invoke 00A7A710 and is not counted as new wiring."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and a snapshot transport consumer."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:owning enum property projection",
+      "reason": "Already connected by the owning scene-property projection; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:owning property merge",
+      "reason": "Already connected by the owning scene-property projection; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::write_checkpoint",
+      "reason": "Missing the preceding real checkpoint comparison, which remains a false substitution, and the pre-load checkpoint storage continuation."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp:skip_balanced_block",
+      "reason": "SceneLexer is a projected scanner; the native tokenizer owner and NativeSceneTokenValueContext are missing at this skip site."
+    },
+    {
+      "native": "00c30210",
+      "status": "skipped",
+      "host_site": "src/native_resource_cache_leaves.cpp:construct_native_texture_source_00c30470",
+      "reason": "00C30470 correctly calls 00B19980 directly; it is not an original caller of this distinct base constructor, and no live base-only owner was identified."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp:UnwrittenPostTickCallback",
+      "reason": "Missing the native game clock owner, deadline map, and OnInitOnce writer of the callback publication."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp:NativeFontResources::accepts_text_byte",
+      "reason": "The candidate wrapper has no production caller; missing live input-character admission cannot be supplied by complete-string rendering."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp:GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing the production bridge to the projected GUI pointer owner and its complete live input and hit-test services."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_retreat_00bf16b0",
+      "reason": "The error-context family is absent from this built executable; a production error-reporter map owner and caller are missing."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_advance_00bf1450",
+      "reason": "The error-context family is absent from this built executable; a production error-reporter map owner and caller are missing."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_insert_at_00bf2270",
+      "reason": "Missing a production error-reporter map caller; changing unused generic rebalance helpers would not establish entry reachability."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_insert_at_00bf2270",
+      "reason": "Missing a production error-reporter map caller; changing unused generic rebalance helpers would not establish entry reachability."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp:collect_language_lanfiles",
+      "reason": "No production language-list consumer of this projected LanguageEntry collection was identified."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landing-ship unload notification",
+      "reason": "The host queues a unit-index event; the native warning-manager object and callback-dispatch contract were not established."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "Missing the actual ammo alternate-record producer and its owning tree-copy services."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp:unit_clear_vector660_0095d3c0",
+      "reason": "Missing the live command-building unit's native +660h record-vector owner at the D3 message handler."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The candidate shadow-fit callers are absent from the current executable; a production shadow-owner bridge is missing."
+    },
+    {
+      "native": "0042b120",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:st_ref70_destroyed_009faf90",
+      "reason": "The host polls a killed-target mirror rather than dispatching the distinct destroy slot; the actual selected slot-08 notification site is missing."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MainMenuScreenUpdateHost::mission_detail_back",
+      "reason": "The page and selected mission exist, but the concrete 00597870 mission-list builder and its retained listbox services are missing."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost user-path management",
+      "reason": "No live remove-last-user-point command path was identified; the inspected path-follow setter performs a different operation."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp:cc13_seg48_command_target_pair_construct_007ecf00",
+      "reason": "The original pair constructors are absent from the current executable; a retained production command-target-pair owner is missing."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB10.cpp:cc13_sweepB10_hud_map_screen_update_005b45c0",
+      "reason": "The production HUD map update remains a record; the guarded player map-usage timer update and its live scoring-slot binding are missing."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp:get_or_create_anim_class_004722d0",
+      "reason": "No live consumer of the projected animation-class registry and its named-class resource reader was identified."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp:get_or_create_buoy_class_00475710",
+      "reason": "No live consumer of the projected buoy-class registry and its named-class resource reader was identified."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::progress_slot20",
+      "reason": "The progress wrapper has no production caller; a live progress-query consumer is missing."
+    },
+    {
+      "native": "00a818d0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:sound_sample_has_resource_word08_00a818d0",
+      "reason": "No production caller requiring the resource word-08 predicate was established; FMOD-sound presence is a different query."
+    },
+    {
+      "native": "0057d430",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp:game_is_loading_state_0057d430",
+      "reason": "No production loading-screen consumer of this specific 00E08874 state predicate was identified."
+    }
+  ],
+  "evidence": {
+    "original": [
+      "bsp.py show 00a7af10: final FMOD getAudibility is after setPaused and before virtual-state publication; the returned output is unused",
+      "bsp.py show 00a7a710 --asm: channel+54h, initialize local audibility to one, one FMOD call, reload scalar into ST0"
+    ],
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph_before": {
+      "reconstructed_addresses_called": 5586,
+      "00a7a710": "not linked"
+    },
+    "call_graph_after": {
+      "reconstructed_addresses_called": 5587,
+      "00a7a710": "entry-reachable; one call at 105f8d6e from update_sound_channel_00a7af10"
+    },
+    "entry_path": "WinMain -> GameStartupHost -> GameSoundRuntime -> SoundChannelRuntime::update_slot30 -> update_sound_channel_00a7af10 -> sound_channel_audibility_00a7a710",
+    "readiness_before": 10717,
+    "readiness_after": 10718,
+    "limitations": "Build and static call-graph verification only; no game run, audible-output validation, or original binary ABI claim."
+  }
+}
