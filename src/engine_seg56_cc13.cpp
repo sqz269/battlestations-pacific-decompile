@@ -1519,7 +1519,12 @@ int lua_is_ship(LuaArgs& args, LuaResults& results, QueryHost& host)
     return 1;
 }
 
-int lua_do_vector3(LuaArgs& args, LuaResults& results)
+// 00899300: bsp.py show 00899300 --asm, 008993DD..008994A7. Read args 0, 1,
+// 2 in order, spill each number to binary32, then return one {x,y,z} table.
+// Goal 5 chain 678: the core argument reader is the live VM's reader; this
+// body needs none of LuaArgs' entity/table extensions. Keep this address-bearing
+// boundary out of line so its game dispatcher call is visible in the exe.
+__declspec(noinline) int lua_do_vector3_00899300(LuaBindingArgumentReader& args, LuaResults& results)
 {
     Vec3 v;
     v.x = narrow(args.get_number(0));

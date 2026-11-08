@@ -487,6 +487,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kLuaGetDirectionBound.
     {"GetShipMaxSpeed", 0x00890bb0u},
     {"GetDirection", 0x008a7cb0u},
+    // Goal 5 chain 678: three live numeric arguments, one vector table.
+    {"DoVector3", 0x00899300u},
     // Goal 5 chain 655: the skill index SetSkillLevel / SetCrewLevel write.
     {"GetSkillLevel", 0x008953f0u},
     {"GetCrewLevel", 0x008950d0u},
@@ -2314,7 +2316,30 @@ private:
     std::function<void(void*)> refresh_if_stale_;
 };
 
-// GetDirection's one push, 0088BA30's {x, y, z} table on the dispatch's frame.
+// DoVector3's original number reader (00B66270 -> lua_tonumber) also converts
+// numeric strings. Keep this policy local: the shared host get_number reader
+// intentionally accepts only LUA_TNUMBER for its existing callers.
+class Vector3NumberArgs final : public bsp::LuaBindingArgumentReader {
+public:
+    Vector3NumberArgs(bsp::LuaBindingArgumentReader& core, lua_State* state)
+        : core_(core), state_(state) {}
+    int count() override { return core_.count(); }
+    int get_integer(int index) override { return core_.get_integer(index); }
+    double get_number(int index) override {
+        return state_ != nullptr ? lua_tonumber(state_, index + 1) : 0.0;
+    }
+    bool get_boolean(int index) override { return core_.get_boolean(index); }
+    std::string get_string(int index) override { return core_.get_string(index); }
+    bool is_string(int index) override { return core_.is_string(index); }
+    bool is_nil(int index) override { return core_.is_nil(index); }
+    bool is_entity_table(int index) override { return core_.is_entity_table(index); }
+    void* entity_at(int index) override { return core_.entity_at(index); }
+private:
+    bsp::LuaBindingArgumentReader& core_;
+    lua_State* state_;
+};
+
+// GetDirection / DoVector3's one push, 0088BA30's {x, y, z} table on the dispatch's frame.
 class DirectionResults final : public bsp::cc13_seg56::LuaResults {
 public:
     explicit DirectionResults(std::function<void(const bsp::cc13_seg56::Vec3&)> push)
@@ -6251,7 +6276,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding->name);
     log_.implemented(method, address);
 
-    void* subject = entity_from_argument(0);
+    // DoVector3 reads numbers only. A table converts to zero without reading
+    // ID (lua_getfield would invoke a user-defined __index metamethod).
+    void* subject = std::strcmp(binding->name, "DoVector3") == 0
+        ? nullptr : entity_from_argument(0);
     if (subject == nullptr && std::strcmp(binding->name, "SetRoleAvailable") == 0) {
         subject = argument_ptr_field(0);
     }
@@ -6976,6 +7004,17 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_delete_script(*this, *this, nullptr);
     } else if (std::strcmp(binding->name, "GetHpPercentage") == 0) {
         results = bsp::lua_binding_get_hp_percentage(*this, *this);
+    } else if (std::strcmp(binding->name, "DoVector3") == 0) {
+        // 00899300 takes only the Lua call frame, so there is no unit/class
+        // precondition. The reconstructed body performs all three reads and
+        // float stores; its result is pushed onto this same VM, not a record.
+        DirectionResults pushed([this](const bsp::cc13_seg56::Vec3& v) {
+            const float xyz[3] = {v.x, v.y, v.z};
+            push_vector3_table_0088ba30(xyz);
+        });
+        Vector3NumberArgs args(*this, state_);
+        const int count = bsp::cc13_seg56::lua_do_vector3_00899300(args, pushed);
+        results = state_ != nullptr ? count : 0;
     } else if (std::strcmp(binding->name, "GetPosition") == 0) {
         results = bsp::lua_binding_get_position(*this, *this);
     } else if (std::strcmp(binding->name, "GetMeasure") == 0) {

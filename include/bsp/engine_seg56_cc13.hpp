@@ -880,7 +880,7 @@ int lua_is_landscape(LuaArgs& args, LuaResults& results, QueryHost& host);
 inline constexpr float kIsShipProbeHeight = 50.0f;
 int lua_is_ship(LuaArgs& args, LuaResults& results, QueryHost& host);
 // DoVector3 00899300: {x = arg0, y = arg1, z = arg2}.
-int lua_do_vector3(LuaArgs& args, LuaResults& results);
+int lua_do_vector3_00899300(LuaBindingArgumentReader& args, LuaResults& results);
 // GetEntitySpeed 008C0820: the entity's vtable+38h float.
 int lua_get_entity_speed(LuaArgs& args, LuaResults& results, QueryHost& host);
 // GetDirection 008A7CB0: the world-matrix row at +ECh as {x, y, z}.

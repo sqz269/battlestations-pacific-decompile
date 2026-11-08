@@ -1,0 +1,72 @@
+{
+  "goal": 5,
+  "chain": 678,
+  "owner": "agent/g5-w5",
+  "picked": "DoVector3 mission Lua binding",
+  "wired_total_before": 10419,
+  "wired_total_after": 10420,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTest checks passed",
+    "call_graph": "Review round 1 rebuild: 00899300 called=true, one reachable call at 10206D1A from GameScriptOrdersHost::dispatch; entry path includes the mission binding trampoline",
+    "probe": "tests/wire_g5_c678_vector3_probe.cpp passed through the actual registered mission binding trampoline and GameScriptOrdersHost::dispatch: numeric string 1.5 converts to 1.5, numeric string 16777217 narrows to binary32 16777216, and a table with throwing __index returns x=0 without invoking it. The linked probe uses real host/VM objects and read-only original PE data in a controlled child; no game startup or loop runs. Compiled against the rebuilt bsp_game objects except game_main.obj plus the usual core/Lua/zlib/Windows libraries with /MANIFEST:EMBED; local/output/run_vector3_dispatch_probe.ps1 is the local runner.",
+    "limits": "New C++ interface, not original fastcall/class ABI; no game execution or visual validation"
+  },
+  "review_round_1": {
+    "review_run": 1458,
+    "findings": [
+      {"id": 1, "status": "fixed", "detail": "DoVector3 now uses its own lua_tonumber-compatible Vector3NumberArgs adapter; the shared strict reader is unchanged. The existing reconstructed body still narrows each result to binary32. Registered-binding probe verifies numeric-string conversion and narrowing."},
+      {"id": 2, "status": "fixed", "detail": "DoVector3 bypasses entity resolution in GameScriptOrdersHost::dispatch and the earlier diagnostic ID lookup in binding_trampoline. Registered-binding probe verifies that a table's throwing __index is never invoked and x is zero."}
+    ]
+  },
+  "rows": [
+    {
+      "native": "00899300",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, DoVector3 arm",
+      "evidence": "Original 008993DD..008994A7 reads args 0,1,2, FSTP32 at 00899407/0089943A/0089946C, then NewTable and 0088BA30. Reuses the existing body, renamed lua_do_vector3_00899300, with the dispatch's actual numeric arguments and same-VM vector-table writer. Review 1458: original 00B66270 -> 00A67770 -> 00A6D190 accepts numeric strings, now preserved by Vector3NumberArgs; both entity-ID preflights are bypassed for this numeric-only binding. Registered trampoline/dispatch probe passes both requested regression cases and float32 narrowing."
+    },
+    {"native":"007214c0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: controller state-message producer absent","reason":"Missing retained controller snapshot producer and transport; copying flattened enable flags into a snapshot and back would add no consumer."},
+    {"native":"008fbef0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: existing tail-gunner skill notification","reason":"Already directly called with the loaded descriptor, actual skill notification and shared stream-one draw; no second call added."},
+    {"native":"00915f20","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: hit attribution","reason":"Missing native per-source scoring/player records, target-class score maps and award graph required by the complete hit-damage recorder."},
+    {"native":"0094bff0","status":"skipped","host_site":"src/game_hosts_powerups.cpp: power-up grant/activation boundary","reason":"Missing active-use spawn-request caller and support-manager request/descriptor ownership; the present inventory grant path does not produce this request."},
+    {"native":"007ba8d0","status":"skipped","host_site":"src/game_hosts_session_messages.cpp: plane dead-meat rotation message producer absent","reason":"Missing actual plane BA0h..BA8h rotation state and C8h message route; the death-spin projection is a different field."},
+    {"native":"008e2bf0","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: minimap map_ping_prune site","reason":"Missing retained game+21C8h map-ping list and producer; the minimap currently records this operation."},
+    {"native":"008e2ee0","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: map ping input path absent","reason":"Missing live ping input operation, retained ping list and send/receive route."},
+    {"native":"00411e20","status":"skipped","host_site":"src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20","reason":"Missing live land-approach owner/constructor binding with the genuine state objects registered by this registry."},
+    {"native":"004116d0","status":"skipped","host_site":"src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0","reason":"No live matching registry construction/lifetime established in this packet; standalone cleanup would not replace an owned game object."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/game_hosts_text.cpp: text-context input-character consumer absent","reason":"Missing live input-character caller with its text-context font; rendering text is not the original character-acceptance operation."},
+    {"native":"00ac2ed0","status":"skipped","host_site":"src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner::create_by_index_00ad3a80","reason":"The live page application uses the existing raw native timed-entry construction path; this separate semantic owner has no live producer."},
+    {"native":"00ad3990","status":"skipped","host_site":"src/gui_timed_entry_types.cpp: destroy_gui_timed_entry_profile","reason":"Missing live semantic GuiTimedEntryStorage lifetime; the page runtime already destroys its different raw native entry owners."},
+    {"native":"00ad39a0","status":"skipped","host_site":"src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner::update_entries_00aa87b0_fragment","reason":"Missing live semantic GuiTimedEntryOwner frame binding; the raw page runtime is a separate ownership domain."},
+    {"native":"00a03900","status":"skipped","host_site":"src/gameplay_seg69_70_cc13.cpp: spawn composition class_pair_value seam","reason":"Missing live class-pair value rows and concrete composition caller supplying the mode and both class identities."},
+    {"native":"00a2c3d0","status":"skipped","host_site":"src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0","reason":"Missing live group member reconnaissance-value producer/consumer corresponding to group+5644h; no ratio query found in the host."},
+    {"native":"00721070","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: descriptor_init_00721070","reason":"Missing live controller-message descriptor constructor with the actual class ordinal; host command targets do not retain this descriptor object."},
+    {"native":"00721280","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: state_message_build_00721280","reason":"Missing controller state-message producer and consumer retaining both native target descriptors."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/game_hosts_commands.cpp: user path message handling","reason":"Missing user-point undo/clear message route; the live host owns add-point and follow-mode operations but no matching clear-points delivery."},
+    {"native":"0071f570","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: path_drop_last_point_0071f570","reason":"Missing clear-user-path message caller selecting the retained path; adding a drop on the existing add-point route would change behavior."},
+    {"native":"00c32d20","status":"skipped","host_site":"src/hull_terrain_contact.cpp: existing hull vertex-count consumers","reason":"Existing terrain-contact/draft bodies already call this accessor; no additional live caller established in the scoped host survey."},
+    {"native":"00b6fc30","status":"skipped","host_site":"src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30","reason":"Missing concrete live camera-product query caller; the surveyed host code exposes no equivalent product operation to replace."},
+    {"native":"00b70410","status":"skipped","host_site":"src/native_main_scene_submission.cpp: existing extra clip-plane setter call","reason":"Existing scene-submission body already calls the setter; its missing game submission/frame root was not established by this packet."},
+    {"native":"00b70470","status":"skipped","host_site":"src/native_main_scene_submission.cpp: existing extra clip-plane clearer call","reason":"Existing scene-submission body already calls the clearer; its missing game submission/frame root was not established by this packet."},
+    {"native":"00414f50","status":"skipped","host_site":"src/avoid_zone_manager_queries.cpp: existing point-in-bounds query","reason":"Existing manager-query/search bodies already call this predicate; no new live query root established in this packet."},
+    {"native":"00425c20","status":"skipped","host_site":"src/profile_manager.cpp: get_profile_manager_00425c20","reason":"Missing application binding that makes ProfileManagerOwner the retained profile state used by current host consumers."},
+    {"native":"004db190","status":"skipped","host_site":"src/game_hosts_menu.cpp: front-end state transition/teardown","reason":"Missing binding from the transition to a complete FrontEndManagerSet and its destruction/lowering services; current menu teardown owns separate screen records."},
+    {"native":"005495a0","status":"skipped","host_site":"src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530","reason":"Missing live MainMenuCommandResetHost mapping the native glyph/label fields to retained command-bar widgets."},
+    {"native":"005495e0","status":"skipped","host_site":"src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530","reason":"Missing live MainMenuCommandResetHost mapping the alternate fields to retained command-bar widgets."},
+    {"native":"00549620","status":"skipped","host_site":"src/main_menu_command_owner.cpp: set_main_menu_help_variant_00549620","reason":"Missing concrete live command-owner help-variant/reset binding; no host-side equivalent operation found to replace."},
+    {"native":"004b5510","status":"skipped","host_site":"src/game_hosts_ai.cpp: participant AI admission","reason":"Missing retained ParticipantSlotRecord with genuine occupied/AI/active bytes; existing party-AI enable flags are a different record."},
+    {"native":"008e4b00","status":"skipped","host_site":"src/game_hosts_powerups.cpp: active-use cooldown start","reason":"Missing active-use activation caller and retained cooldown slot; passive grant processing does not reach this tail."},
+    {"native":"0074fa80","status":"skipped","host_site":"src/dummy_depth_seg34_argon.cpp: unit debug inspector","reason":"Only identified original consumer is debug inspection, excluded by this assignment."},
+    {"native":"00412f60","status":"skipped","host_site":"src/cc13_sweepA.cpp: int_clamp_00412f60","reason":"No indexed original caller or matching live host clamp operation found; no new unrelated clamp operation introduced."},
+    {"native":"0057d430","status":"skipped","host_site":"src/frontend_seg19_21_cc13.cpp: game_is_loading_state_0057d430","reason":"Identified original caller is AutoTest_Step, excluded debug/autotest work."},
+    {"native":"00867320","status":"skipped","host_site":"src/point_effect_entry_array.cpp: append_point_effect_entry_array_00867320","reason":"Missing live native point-effect entry-array owner/producer in the surveyed game host paths."},
+    {"native":"00866e60","status":"skipped","host_site":"src/point_effect_lookup.cpp: find_point_effect_child_by_type_00866e60","reason":"Missing live native point-effect child-list owner and lookup caller in this packet."},
+    {"native":"008d8f40","status":"skipped","host_site":"src/scene_file.cpp: semantic property-token parsing","reason":"The semantic SceneLexer is not the raw 838h tokenizer/context required by the complete native lookahead body; no synthetic tokenizer added."},
+    {"native":"0080fe10","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: set_torpedo_stock_0081f8b0","reason":"Current Lua stock setter applies the direct original setter; missing real session stock-message posting/codec consumer for this separate constructor."},
+    {"native":"0080fec0","status":"skipped","host_site":"src/game_hosts_session_messages.cpp: ship repair-settings message producer absent","reason":"Missing retained native ship+1134h..1148h repair-settings fields and matching message route."},
+    {"native":"00662020","status":"skipped","host_site":"src/game_hosts_script_orders.cpp: loadout selection projection","reason":"Missing live radial loadout-ring widget owner and highlight consumer; the host explicitly retains only the selected loadout."},
+    {"native":"00665f30","status":"skipped","host_site":"src/game_hosts_script_orders.cpp: loadout selection projection","reason":"Missing live radial loadout-ring widget/object producer; current selection projection does not build the ring."},
+    {"native":"0059c920","status":"skipped","host_site":"src/frontend_screens_cc13.cpp: game_world_bounds_center_0059c920","reason":"Original function is recorded as unreferenced; no matching live world-box-center operation found to replace."},
+    {"native":"008ee5f0","status":"skipped","host_site":"src/band_0080_cc13.cpp: escape_scene_text_008ee5f0","reason":"Missing live scene-text writer/export caller consuming escaped text; no arbitrary string-escaping use added."}
+  ]
+}
