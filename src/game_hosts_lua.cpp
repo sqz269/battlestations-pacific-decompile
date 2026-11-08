@@ -12222,10 +12222,10 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
     return results;
 }
 
-// Goal 5 chain 653. The keyed Scoring_* rows of table 00E0B7B8 and the two
+// Goal 5 chain 653 (total getter added by chain 857). The Scoring_* rows of table 00E0B7B8 and the two
 // profile-unlock rows, each __fastcall(lua_State*) returning 00B66400's count,
 // on their bodies: src/scoring_bindings.cpp (Set/Get of every map, AddMission,
-// the medal setters), src/cc13_left55_seg56b.cpp (Add of the action, ship,
+// the medal setters and total getter), src/cc13_left55_seg56b.cpp (Add of the action, ship,
 // plane and command maps, Scoring_GetRealPlayTime, Scoring_SetRanking and
 // Scoring_IsUnlocked) and src/options_seg56_cc13.cpp
 // (Scoring_GrantUnlock). The records are the mission result's eight
@@ -12236,6 +12236,7 @@ bool GameMissionLuaHost::is_scoring_record_binding(std::uint32_t address) noexce
     switch (address) {
     case 0x008b8970u:  // Scoring_GetRealPlayTime
     case 0x008b8ca0u:  // Scoring_SetRanking
+    case 0x008b8ff0u:  // Scoring_GetTotalMissionScore
     case 0x008b9190u:  // Scoring_SetMissionScore
     case 0x008b93c0u:  // Scoring_GetMissionScore
     case 0x008b95c0u:  // Scoring_AddMissionScore
@@ -12456,9 +12457,17 @@ public:
         const auto found = map.find(key);
         return found != map.end() ? &found->second : nullptr;
     }
-    // 008B912A, Scoring_GetTotalMissionScore's inline read, is not one of the
-    // rows this adapter runs.
-    int slot_total_score(int) override { scoring_row_unreached("008B912A record+1E0h"); }
+    int slot_total_score(int slot) override {
+        if (slot < 0 || static_cast<std::size_t>(slot) >= bsp::kMissionScoringSlotCount) {
+            throw std::logic_error("Scoring_GetTotalMissionScore: slot " + std::to_string(slot)
+                + " outside the eight [game+21A0h] records");
+        }
+        // bsp.py show 008B8FF0 --asm: 008B911E..008B912A loads
+        // [game+21A0h] + slot*284h + 1E4h, i.e. record+1E0h.
+        // Read the same owned record that mission-result commit persists;
+        // the getter neither sums the keyed maps nor applies a multiplier.
+        return result_.scoring_slot(slot).totals_1c8[6];
+    }
 
 private:
     bsp::UnlockCounterMap& score_map(int slot, std::size_t record_offset) {
@@ -12671,6 +12680,10 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
     case 0x008b8970u:
         name = "Scoring_GetRealPlayTime";
         count = seg56b::lua_scoring_get_real_play_time(results, image);
+        break;
+    case 0x008b8ff0u:
+        name = "Scoring_GetTotalMissionScore";
+        count = bsp::lua_binding_scoring_get_total_mission_score_008b8ff0(args, results, records);
         break;
     case 0x008b9190u:
         name = "Scoring_SetMissionScore";
