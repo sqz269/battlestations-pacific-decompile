@@ -2,8 +2,51 @@
 // Evidence and ABIs: docs/CC13_RENDER_SPRITES_AND_SHADOW_PASSES.md.
 
 #include "bsp/render_sprites_cc13.hpp"
+#include "bsp/native_hardware_layout_owner_table.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
+
+namespace bsp {
+namespace {
+static_assert(sizeof(void*) == 4);
+volatile std::uint32_t& layout_table_word(void* header, std::uint32_t offset) {
+    return *reinterpret_cast<volatile std::uint32_t*>(
+        static_cast<std::uint8_t*>(header) + offset);
+}
+void* volatile& layout_table_pointer(void* header, std::uint32_t offset = 0) {
+    return *reinterpret_cast<void* volatile*>(static_cast<std::uint8_t*>(header) + offset);
+}
+} // namespace
+
+__declspec(noinline) void set_native_hardware_layout_owner_table_capacity_00b47b60(
+    void* header, std::uint32_t capacity) {
+    // Evidence: bsp.py show 00B47B60. Publish capacity before wrapped DWORD
+    // capacity*4 allocation. A real new-handler may change data/count: reload
+    // both while copying, free the current old data, then publish replacement.
+    // This replaces the former render_fx PodArray spec, not a second body.
+    layout_table_word(header, 8) = capacity;
+    const auto bytes = capacity * 4u;
+    void* const replacement = singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes});
+    for (std::uint32_t i = 0; i < layout_table_word(header, 4); ++i) {
+        void* const destination = reinterpret_cast<void*>(
+            reinterpret_cast<std::uintptr_t>(replacement) + i * 4u);
+        if (destination)
+            layout_table_pointer(destination) = layout_table_pointer(layout_table_pointer(header), i * 4u);
+    }
+    void* const previous = layout_table_pointer(header);
+    if (previous) singleton_lifetime_free(previous);
+    layout_table_pointer(header) = replacement;
+}
+
+__declspec(noinline) void reserve_native_hardware_layout_owner_table_00b482d0(
+    void* header, std::uint32_t capacity) {
+    // 00B482D0 uses unsigned capacity comparison, without a minimum or shrink.
+    if (layout_table_word(header, 8) < capacity)
+        set_native_hardware_layout_owner_table_capacity_00b47b60(header, capacity);
+}
+} // namespace bsp
 
 namespace bsp::cc13_render_sprites {
 

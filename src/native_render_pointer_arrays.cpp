@@ -101,21 +101,16 @@ void destroy_native_render_command_pointers_00b1d590(NativeRenderPointerArraySto
     singleton_lifetime_free(actual.data_00);
 }
 
-void append_native_render_group_pointer_00b1cbe0(
+__declspec(noinline) void append_native_render_group_pointer_00b1cbe0(
     NativeRenderPointerArrayStorage& array, const void* source_pointer_cell) {
-    if (array.count_04 == array.capacity_08) {
-        std::int32_t capacity = array.capacity_08 * 2;
-        if (capacity < 2) capacity = 1;
-        reserve_pointers(array, capacity);
-    }
-    void** const destination = array.data_00 + array.count_04;
-    void* value;
-    std::memcpy(&value, source_pointer_cell, sizeof(value));
-    *destination = value;
-    ++array.count_04;
+    // B1CBEB doubles a DWORD before its signed minimum-one comparison.
+    // B1CC05..11 skips BOTH the source load and store for a null destination,
+    // then increments the current count. Share the sibling's raw append order.
+    // Evidence: bsp.py show 00b1cbe0 --asm; no second address body.
+    append_pointer(array, source_pointer_cell, reserve_native_render_group_pointers_00b1c660);
 }
 
-void append_native_instance_entry_pointer_00b1cb80(
+__declspec(noinline) void append_native_instance_entry_pointer_00b1cb80(
     NativeRenderPointerArrayStorage& array, const void* source_pointer_cell) {
     append_pointer(array, source_pointer_cell, reserve_native_instance_entry_pointers_00b1c500);
 }

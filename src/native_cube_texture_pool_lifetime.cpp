@@ -1,4 +1,5 @@
 #include "bsp/native_cube_texture_pool_lifetime.hpp"
+#include "bsp/native_cube_texture_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -60,18 +61,10 @@ void* initialize_native_cube_texture_pool_00b3f090(
         word(pool, 0x30) = 0;
         word(pool, 0x34) = 0xffffffffu;
         unwind_state = 2;
-        if (word(pool, 0x30) < 32u) {
-            word(pool, 0x30) = 32;
-            auto* const replacement = singleton_lifetime_allocate(
-                {SingletonAllocationKind::pointer_slots, 0x80, 0x80});
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                auto* const destination = static_cast<unsigned char*>(replacement) + index * 4u;
-                if (destination) pointer(destination, 0) = pointer(pointer(pool, 0x28), index * 4u);
-            }
-            free_native_cube_texture_pool_table_00b3d3f0(
-                static_cast<unsigned char*>(pool) + 0x28);
-            pointer(pool, 0x28) = replacement;
-        }
+        // B3F100..B3F14C inline B3EA40's reserve(32), including its partial
+        // state on allocation failure. Retain the existing FH3 cleanup scope.
+        native_cube_texture_pool_table_reserve_00b3ea40(
+            static_cast<unsigned char*>(pool) + 0x28, 32u);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) {

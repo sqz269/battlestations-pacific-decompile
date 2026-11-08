@@ -1,0 +1,102 @@
+{
+  "goal": 5,
+  "chain": 918,
+  "slot": "g5-w6",
+  "owner": "agent/g5-w6",
+  "base": "60497ce857d893e5703f02a37df759158ccceef5",
+  "picked": "Canonical Listbox F8BC10 pool construction and CRT shutdown",
+  "wired_before": 10795,
+  "wired_after": 10797,
+  "rows": [
+    {
+      "native": "00a9b4a0",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: GameNativeGuiWidgetPoolProcess<GuiListboxPoolTraits>::initialize_once via construct_process_pool",
+      "state": "The existing process companion over retained F8BC10 storage and the shared E188B4 allocator-list domain; replaces its direct generic initialize call exactly once.",
+      "called": true,
+      "call_sites": 1,
+      "built_address": "1041b160",
+      "built_caller_site": "103b639a",
+      "evidence": "bsp.py show 00a9b4a0; live CD6FF0 disassembly: ECX=F8BC10, CALL A9B4A0, register CE0A00. Existing address body initializes the real list node, CS, fields and reserve(32)."
+    },
+    {
+      "native": "00a9afd0",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: GameNativeGuiWidgetPoolProcess<GuiListboxPoolTraits>::destroy_at_exit via destroy_process_pool",
+      "state": "The same process companion used at startup, passed by reference from its existing CRT atexit callback; replaces its direct generic destroy call exactly once.",
+      "called": true,
+      "call_sites": 1,
+      "built_address": "1041b210",
+      "built_caller_site": "103b5f2b",
+      "evidence": "bsp.py show 00ce0a00 and 00a9afd0: destroy slabs/table, drain positive lock recursion, delete CS and unlink the allocator node. Existing engine and stale-field semantics retained."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text-context input admission",
+      "reason": "Missing a live character-admission consumer with its retained context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: existing metadata submission at line 305",
+      "reason": "Already called directly with the real metadata queue; its missing standalone optimized graph symbol is not a missing wiring site, and another invocation would double-run it."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values / assign_native_animation_values_00b926e0",
+      "reason": "Missing an established entry-reachable producer of the native animation-record values vector; local parsing helpers alone do not supply a live caller."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: enum library declaration",
+      "reason": "Missing the canonical published world with its constructed Lua owner at +1A0C and a corresponding Lua declaration-table producer; the active enum reader consumes lexer tokens."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target override",
+      "reason": "Missing a live native 18-byte command-target owner and the actual readable runtime cells F87574/F87578/F8757C required by this literal-address body."
+    },
+    {
+      "native": "007f0f80",
+      "status": "skipped",
+      "host_site": "src/native_observer_member_initializer.cpp: initialize_native_observer_member_007f0f80",
+      "reason": "Missing a concrete producer/consumer of the native callback member with its real +10 flag, +14 endpoint and retained observer lifetime."
+    },
+    {
+      "native": "00807b40",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding lifetime",
+      "reason": "Missing the raw sensor-registry singleton and F874E4 publication; the active typed record map cannot stand in for that native base object."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all five CTests passed",
+    "changed_build": "scripts/build.ps1 passed; all five CTests passed in 16.76 seconds",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "call_graph": "Default Win32 Release executable; each claimed body has one reachable direct caller from the modified process file, at distinct executable addresses. who and path both passed.",
+    "readiness": "Both claimed rows changed from callees_done_no_wired_caller/called=null to wired/called=true/call_sites=1.",
+    "ghidra": "Configured C:/Users/sqz269/bsp.gpr, active /battlestationspacific.exe, live count 77632 matches snapshot.",
+    "logs": [
+      "local/c918-baseline-build.log",
+      "local/c918-build.log",
+      "local/c918-callgraph.log",
+      "local/c918-readiness-before.log",
+      "local/c918-readiness-after.log"
+    ],
+    "artifacts": {
+      "build\\win32\\Release\\bsp_game.exe": "58e177e8a0e331f2547906a144bafd26359c9fd006c1b4fb2181ffa8d28c368a",
+      "build\\win32\\bsp_game.map": "452e9aa1a923f4b648449cb1dbd2eff8e15a37fc53ffca86be7c3f5877450242"
+    }
+  },
+  "assumptions": [
+    "Retain the existing guarded process startup and std::atexit registration as the current-CRT adaptation of CD6FF0/CE0A00.",
+    "Compile-time overload selection routes only the Listbox lifecycle through its existing reconstructed entries; no runtime gate or duplicate pool is introduced."
+  ],
+  "limits": "Build and executable reachability proof only; no game was run and no original register-ABI or gameplay equivalence is claimed.",
+  "left": "Listbox payload creation, allocation/free and trim address entries remain separate work; this packet wires only the existing canonical process lifecycle."
+}

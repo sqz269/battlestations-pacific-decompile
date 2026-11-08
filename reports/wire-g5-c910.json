@@ -1,0 +1,69 @@
+{
+  "goal": 5,
+  "chain": 910,
+  "slot": "g5-w6",
+  "owner": "agent/g5-w6",
+  "base": "0224ad8af7ccbdeae38704414b50161f370268be",
+  "picked": "Actual c3dNode slab table at process pool 0108FF58+28h, also used by the existing model-base pool initializer",
+  "implementation": "Specialize the existing four shared-shape bodies in scene_graph2_cc13.cpp and forward their legacy dispatchers. Replace the matching inlined reserve32 and append2*capacity+2 schedules in the actual pool constructor and raw-slot allocator. Borrow live table bytes; preserve capacity publication, current count/data reloads, conditional placement stores, DWORD wrapping, free-before-pointer publication and the surrounding held-lock/failure state.",
+  "evidence": [
+    "bsp.py show 00b6dea0, 00b6def0, 00b6e580, 00b6e610; 00b6dea0 --asm",
+    "bsp.py show 00b6e980 and 00b6eb00: original pool callers inline the same table schedules; the standalone table entries have no original static references",
+    "game_main.cpp calls initialize_plain_node_once_00cd7d10; game_native_resource_pools.cpp binds the actual process0108FF58 owner",
+    "call_graph path 00b6e580: WinMainCRTStartup -> game startup -> frame -> native mission model materialization -> bind_matrix_bones -> create_native_plain_node_00b866c0 -> allocate_native_node_00b6ed70 -> allocate_native_node_pool_slot_00b6eb00 -> append_native_node_pool_table_00b6e580"
+  ],
+  "metrics": {
+    "readiness_wired_before": 10779,
+    "readiness_wired_after": 10783,
+    "compiled_reconstructed_addresses_called_before": 5667,
+    "compiled_reconstructed_addresses_called_after": 5671,
+    "new_reachable_addresses": 4
+  },
+  "validation": [
+    "Fresh baseline: index --if-stale and scripts/build.ps1 passed all five CTests",
+    "Changed build: scripts/build.ps1 passed all five CTests",
+    "Win32 /W4 /WX focused probe linked with /MANIFEST:EMBED: 1025 actual raw slots grow table32->66, preserve all32 old slab pointers and every trailing slab ID/slot identity, balance lock depth, retain published capacity/count/old pointer on bad_alloc, then return slots, trim all slabs and unlink the pool",
+    "call_graph who confirms all four new bodies reachable: allocate has two sites from grow/reserve; grow has one from append; append has one from real raw-slot allocation; reserve has one from real pool initialization",
+    "git diff --check passed; no float arithmetic changed"
+  ],
+  "limits": "Source/build/fixture/compiled-entry-reachability proof only. Original register/exception ABI and live gameplay were not tested. No game was launched.",
+  "probe_command": "From a VS Win32 developer prompt: cl /nologo /std:c++17 /EHsc /W4 /WX /MD /I include tests/wire_g5_c910_node_table_probe.cpp /Fo:local/c910-node-table-probe.obj /Fe:local/c910-node-table-probe.exe build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib advapi32.lib ole32.lib shell32.lib winmm.lib d3d9.lib PowrProf.lib; then run local/c910-node-table-probe.exe",
+  "landing_repair": {
+    "merged_origin_main": "03ed3fdb8ffd61e8a122611acac25002bd8846d8",
+    "resolution": "Retain both node B6DEF0/B6E580 and incoming point-light B7AE30/B7B410 early-return dispatcher arms in scene_graph2_cc13.cpp. All ledger shards and cmake/startup.cmake merged cleanly; merge_resolve.py reports0 of0 remaining conflicts.",
+    "default_build": "scripts/build.ps1 passed all5 CTests; local/c910-merge-default-build.log",
+    "on_build": "off_switch_on_build.py --names kAutoAttackAllMembersBound kPlaneFormationPlacementEnabled --log local/c910-merge-on-build.log -- -BuildDir build/c910-on passed all5 CTests with zero compiler diagnostics",
+    "on_headers_restored": true,
+    "restored_header_sha256": {
+      "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+      "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+    },
+    "node_table_probe": "Recompiled against merged default bsp_core.lib; growth, slot identities, failure publication, trim and teardown passed",
+    "pc24_lint": "0 findings,0 allowed,5 files",
+    "readiness_wired_total": 10791,
+    "compiled_reconstructed_addresses_called_total": 5668,
+    "called_target_sites": {"00b6dea0": 2, "00b6def0": 1, "00b6e580": 1, "00b6e610": 1},
+    "readiness": "All four targets state=wired and called=true after header restoration; local/c910-merge-readiness.log",
+    "note": "Original metrics above describe the initial packet baseline; these totals include the fetched main changes. No live game or original register/EH ABI validation."
+  },
+  "rows": [
+    {"native": "00b6dea0", "status": "wired", "host_site": "src/scene_graph2_cc13.cpp: grow_native_node_pool_table_00b6def0 and reserve_native_node_pool_table_00b6e610"},
+    {"native": "00b6def0", "status": "wired", "host_site": "src/scene_graph2_cc13.cpp: append_native_node_pool_table_00b6e580"},
+    {"native": "00b6e580", "status": "wired", "host_site": "src/native_node_pool_allocation.cpp: allocate_native_node_pool_slot_00b6eb00"},
+    {"native": "00b6e610", "status": "wired", "host_site": "src/native_node_pool_owner.cpp: initialize_native_node_pool_00b6e980"},
+    {"native": "00b6e980", "status": "skipped", "host_site": "src/native_node_pool_owner.cpp: initialize_native_node_pool_00b6e980", "reason": "Already reachable at baseline; its duplicate table reserve is replaced here to supply the newly wired callees."},
+    {"native": "00b6eb00", "status": "skipped", "host_site": "src/native_node_pool_allocation.cpp: allocate_native_node_pool_slot_00b6eb00", "reason": "Already reachable at baseline; its duplicate table append is replaced here to supply the newly wired callees."},
+    {"native": "008fbef0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification", "reason": "Already called at baseline with loaded descriptor, actual skill notification and shared random stream; no additional wiring is missing."},
+    {"native": "008f3a20", "status": "skipped", "host_site": "src/scene_numeric_property_merge.cpp: existing scene-property projection", "reason": "Already called at baseline through native scene-property projection; no additional wiring is missing."},
+    {"native": "008f54f0", "status": "skipped", "host_site": "src/scene_numeric_property_merge.cpp: existing scene-property merge", "reason": "Already called at baseline through the owning native scene-property projection; no additional wiring is missing."},
+    {"native": "00a2b950", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: AI candidate-score list", "reason": "Missing gameplay score-list owner/consumer; the documented native reader is the excluded debug overlay."},
+    {"native": "00a2bcc0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: AI candidate-score list", "reason": "Missing gameplay score records and consumer to mark; the documented reader is the excluded debug overlay."},
+    {"native": "00521f10", "status": "skipped", "host_site": "src/game_hosts_hud.cpp: UnitPickBinding lock branch", "reason": "Missing real34h-stride lock-row container and selection consumer; the corresponding input producer remains unestablished."},
+    {"native": "00521fd0", "status": "skipped", "host_site": "src/game_hosts_hud.cpp: UnitPickBinding expired-lock branch", "reason": "Missing actual lock entry owning cached position+F0h/valid+FCh and the corresponding action/countdown producer."},
+    {"native": "009035d0", "status": "skipped", "host_site": "src/native_world_constant_byte.cpp: native world virtual slot2", "reason": "Missing actual CE7784 world-vtable owner and a reachable virtual-slot2 consumer; constant return alone does not establish gameplay wiring."},
+    {"native": "00874e60", "status": "skipped", "host_site": "src/game_hosts_fixed_step.cpp: tick sublist removal", "reason": "Missing actual native0Ch sublist/10h node ownership and publication on the inspected fixed-step host path."},
+    {"native": "00876020", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: tick subnode reparenting", "reason": "Missing actual raw tick receiver, incoming node owner and registry/lifetime publications; current triggers are semantic host vectors."},
+    {"native": "008f0800", "status": "skipped", "host_site": "src/scene_file.cpp: skip_balanced_block", "reason": "Missing native838h tokenizer/context at this lexical host site; its generic brace skip is not the native assignment-aware virtual skip-group schedule."},
+    {"native": "00829180", "status": "skipped", "host_site": "src/cg_rebuild_a_cc13.cpp: indexed_points_reserve_00829180", "reason": "Missing production CgRebuildAHost root and actual indexed-point array owner; no host consumer was established in this packet."}
+  ]
+}

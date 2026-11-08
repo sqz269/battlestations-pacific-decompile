@@ -1,0 +1,167 @@
+{
+  "goal": 5,
+  "chain": 916,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "base_head": "03ed3fdb8ffd61e8a122611acac25002bd8846d8",
+  "picked": "Four renderer pointer-array clear bodies on actual member-destructor cleanup headers",
+  "implementation": {
+    "state": "Borrow the existing actual 0Ch {data,count,capacity} renderer header; no new storage or synthetic values. Zero is the immediate operand in all four native clear bodies.",
+    "replacement": "Each corresponding member destructor replaces its existing resize(header,0) with the single clear body, which calls that same resize exactly once; current-data load and free remain afterward. Remove the four old generic kClearViaResize rows from render_fx_cc13.cpp.",
+    "lifecycle_scope": "Entry-reachable renderer constructor and destructor cleanup/unwind paths. The normal parent destructor's inline cleanup schedules are unchanged. No exception was injected and the game was not run.",
+    "abi": "Original clear ABI is ECX=actual header, no stack arguments, plain RET, void; source uses MSVC Win32 fastcall. Original binary ABI, private frame and SEH compatibility are not asserted. Descriptive names remain hypotheses."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four CTests; local/c916-baseline-build.log",
+    "modified_build": "scripts/build.ps1 passed all four CTests; local/c916-build.log",
+    "native_evidence": "bsp.py show 00b27fb0/00b28000/00b282f0/00b28300 --asm: entire eight-byte PUSH0/CALL corresponding resize/RET bodies. B29B20/B29B40/B29B60/B29B80 --asm/source confirm resize0 before current-data load/free.",
+    "call_graph": "python tools/call_graph.py --build succeeded with /Ob0 and /OPT:NOICF; all four who queries identify one direct reachable call from the changed corresponding member destructor, with zero unreachable callers.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> run_initialize_phases -> GameNativeRendererApplication::construct -> construct_native_renderer_00b32410 -> source exception cleanup -> unwind_parent -> corresponding member destructor -> clear body.",
+    "analysis_build_summary": {
+      "reachable_functions": 134930,
+      "functions": 135213,
+      "called_reconstructed_addresses": 7500,
+      "reconstructed_addresses": 7550
+    },
+    "readiness_before": {
+      "wired": 10787,
+      "callees_done_no_wired_caller": 8486,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "readiness_after": {
+      "wired": 10791,
+      "callees_done_no_wired_caller": 8482,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "float_math_changed": false,
+    "new_tests": 0,
+    "game_validated": false,
+    "readiness_measurement": "Before was remeasured with all five owned code/header files restored byte-for-byte from HEAD while retaining the refreshed address index; own edits were restored in finally. After is the fresh edited-source run. The four old metadata descriptors were superseded by the four source functions; their indexed spelling does not affect other rows. Exactly four additional rows are wired.",
+    "final_build": "scripts/build.ps1 passed after restoring edited source: Win32 Release build and all4 CTests (12.10 seconds), local/c916-final-build.log"
+  },
+  "rows": [
+    {
+      "native": "00b27fb0",
+      "status": "wired",
+      "host_site": "src/native_renderer_pointer_array_destroy.cpp: destroy_native_renderer_vertex_pointers_00b29b20",
+      "actual_state": "Renderer vertex-pointer member header passed unchanged by existing constructor/destructor cleanup callers, including renderer+19B0h and +1AACh.",
+      "built_site": "build/callgraph: 108300E3 -> clear 108300A0; one reachable direct call",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "00b28000",
+      "status": "wired",
+      "host_site": "src/native_renderer_pointer_array_destroy.cpp: destroy_native_renderer_index_pointers_00b29b40",
+      "actual_state": "Renderer index-pointer member header passed unchanged by existing constructor/destructor cleanup callers, including renderer+19C4h and +1AB8h.",
+      "built_site": "build/callgraph: 108300B3 -> clear 10830090; one reachable direct call",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "00b282f0",
+      "status": "wired",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: destroy_native_renderer_vertex_shader_registry_00b29b60",
+      "actual_state": "Actual renderer+1AC4h vertex-shader registry header from existing member cleanup callers.",
+      "built_site": "build/callgraph: 10830233 -> clear 108301E0; one reachable direct call",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "00b28300",
+      "status": "wired",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: destroy_native_renderer_pixel_shader_registry_00b29b80",
+      "actual_state": "Actual renderer+1AD0h pixel-shader registry header from existing member cleanup callers.",
+      "built_site": "build/callgraph: 108301F3 -> clear 108301D0; one reachable direct call",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing the live native movie-camera owner and its captured default +58h; the host still reports this operation unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing the live native movie-camera owner and its captured default +60h; the host still reports this operation unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing the native movie-camera owner carrying real default limits +3Ch/+40h and acceleration time +44h."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing the native movie-camera owner carrying real saved acceleration time +48h and current speed limits."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: failure_side_effect",
+      "reason": "Missing a bound native scoring record owner and the raw unit/hit providers required beyond the current statistics log call."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Missing a bound native scoring record owner and its award/list services; the repair notification remains unreached."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate direct-hit scoring log",
+      "reason": "Missing the native scoring owner and corresponding native target/hit record providers; the current path only logs the address."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: push_effect_handle",
+      "reason": "Missing a live counted effect producer and native handle-vector owner; acquisition remains unimplemented and the inspected effect-name accessor returns empty."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an identified live original camera-product consumer bound to this CameraProjection; a detached projection must not be invented."
+    },
+    {
+      "native": "00b349f0",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp: clear_inline_pointer_array candidate",
+      "reason": "Missing a matching min-six pointer-array owner; the inspected resource-container arrays use minimum16 and cannot use this clear's resize."
+    },
+    {
+      "native": "00b34c10",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp: clear_inline_pointer_array candidate",
+      "reason": "Missing a matching min-ten pointer-array owner; the inspected resource-container arrays use minimum16 and cannot use this clear's resize."
+    },
+    {
+      "native": "00b4a770",
+      "status": "skipped",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: NativeGraphicsPoolLifetime::initialize logical-index branch",
+      "reason": "No missing call to add: the existing logical-index startup already invokes this reserve on the actual pool+28h header with native capacity32."
+    },
+    {
+      "native": "00b4a850",
+      "status": "skipped",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: NativeGraphicsPoolLifetime::initialize logical-vertex branch",
+      "reason": "No missing call to add: the existing logical-vertex startup already invokes this reserve on the actual pool+28h header with native capacity32."
+    }
+  ],
+  "left": "Normal renderer parent destructor inline cleanup remains intact; other inspected candidates need their real movie-camera, scoring, counted-effect or matching container owners."
+}
