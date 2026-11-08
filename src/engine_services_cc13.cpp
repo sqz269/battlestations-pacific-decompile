@@ -292,7 +292,7 @@ void free_owned_block(void** slot) noexcept {
     }
 }
 
-std::int64_t query_performance_counter_00be3240() noexcept {
+__declspec(noinline) std::int64_t query_performance_counter_00be3240() noexcept {
     LARGE_INTEGER value;
     QueryPerformanceCounter(&value);
     return value.QuadPart;

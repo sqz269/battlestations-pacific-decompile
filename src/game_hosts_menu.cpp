@@ -11,6 +11,7 @@
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/engine_core_cc13.hpp"
+#include "bsp/engine_services_cc13.hpp"
 #include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
@@ -419,9 +420,11 @@ GameFrameProfiler::GameFrameProfiler(GameHostLog& log, int slot_count)
 
 std::int64_t GameFrameProfiler::query_performance_counter() {
     ++samples_;
-    LARGE_INTEGER counter{};
-    QueryPerformanceCounter(&counter);
-    return static_cast<std::int64_t>(counter.QuadPart);
+    // Chain 851: the running profiler consumes the actual Win32 counter through
+    // the one reconstructed query body. bsp.py show 00BE3240: QPC into a local,
+    // return its full EDX:EAX value. This replaces the host's direct API query;
+    // calibration and frame slots still take exactly one sample per request.
+    return engine_services_cc13::query_performance_counter_00be3240();
 }
 
 const ProfilerCounterRecord& GameFrameProfiler::frame_record() const noexcept {
