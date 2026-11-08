@@ -1,0 +1,67 @@
+{
+  "chain": 819,
+  "slot": "g5-w9",
+  "rows": [
+    {
+      "native": "00878350",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::route_repair_damage_9e",
+      "scope": "The actual Lua-produced repair-damage message's 9Eh kind reaches the entity fallback when the resolved target is not a ship; its handled return replaces the handwritten false. The 56h/D2h side-effect arms are not used at this site."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: apply_director_stance_008624c0",
+      "reason": "Missing retained ControllerSnapshotMessage owner and transport consumer; scene enables alone cannot supply a complete native snapshot."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message receiver",
+      "reason": "Missing presence-zero remove-message producer and retained per-slot path owners; the current host supports path additions."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: df_pilot_targets_us / wingmate target census",
+      "reason": "Missing retained pilot+98h target publication for the current F876B8 step slot; dogfight and command targets remain substitutes."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "No new wiring needed: the current host already calls set_scroll_range with its retained briefing scroller and layout binding."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing actual checkpoint-difference producer and mission Lua checkpoint owner at this pre-load site."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text layout",
+      "reason": "Missing live input-character admission consumer with its text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "004704e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile direct-hit ownership",
+      "reason": "The hit owner is currently flattened to shooter identity; no retained hit+4h projectile owner view with its vtable[108h] and +ACh chain was established."
+    }
+  ],
+  "validation": {
+    "baseline_build": "Passed; all four CTests passed.",
+    "changed_build": "Passed; all four CTests passed.",
+    "diff_check": "Passed.",
+    "call_graph": "00878350 is REACHABLE; direct call at 100e2a0d from GameGunneryHost::route_repair_damage_9e; 2 reachable call sites total.",
+    "caller_graph": "route_repair_damage_9e is REACHABLE; direct call at 1016ff9b from DamageSettingHost::route_damage_message_0077c2a0.",
+    "called_reconstructed_total": 5526,
+    "wired_before": 10669,
+    "wired_after": 10670,
+    "readiness_row": { "state": "wired", "called": true, "call_sites": 2 },
+    "float_math_changed": false,
+    "game_run": false
+  }
+}

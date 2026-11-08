@@ -18328,9 +18328,16 @@ void GameGunneryHost::Impl::apply_repair_damage_arm_9e(std::size_t unit,
 bool GameGunneryHost::route_repair_damage_9e(std::size_t unit_index, std::int32_t channel,
     float seconds, bool add) {
     Impl& h = *impl_;
-    if (unit_index >= h.unit_state.size() || unit_index >= h.damage_control.size()
-        || !h.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) {
+    if (unit_index >= h.unit_state.size() || unit_index >= h.damage_control.size()) {
         return false;
+    }
+    if (!h.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) {
+        // Native 00821E80 -> 0095ABE0 -> 00878350: 9Eh has no non-ship
+        // receiver arm. Use the entity fallback's handled result for the
+        // actual repair message, rather than duplicating its default return.
+        // bsp.py show 00878350: only 4Bh/4Ch/56h/D2h return true; 9Eh
+        // performs no entity side effects and returns false.
+        return bsp::entity_message_fallback_00878350(0x9eu);
     }
     bsp::HostSessionMessages::RepairAddDamageCopy copy{channel, seconds, add};
     if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
