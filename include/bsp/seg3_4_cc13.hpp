@@ -139,7 +139,15 @@ void dialog_command_pause_write_0044c2f0(void* command, void* writer, DialogComm
 // ===========================================================================
 // Device entity virtuals and the device class lifetime.
 // ===========================================================================
-struct DeviceEntityHost : PropertyStreamHost {
+// 00440A30 is a generic counted-slot destructor, also used for render objects.
+// Its two services do not require a device entity or property-stream owner.
+struct ReferenceSlotHost {
+    // [00CE2220] InterlockedDecrement(&object+4h) -> EAX.
+    virtual std::int32_t interlocked_decrement_ce2220(void* counter) = 0;
+    virtual void object_destroy_00(void* object) = 0; // object vtable +00h
+};
+
+struct DeviceEntityHost : PropertyStreamHost, ReferenceSlotHost {
     virtual void entity_die_70(void* entity, std::int32_t arg) = 0;              // entity vtable +70h
     virtual void unit_init_health_and_parts_0087bcc0(void* entity) = 0;          // __thiscall
     virtual void* decal_list_00e1aea0() = 0;                                     // [00E1AEA0]
@@ -155,9 +163,6 @@ struct DeviceEntityHost : PropertyStreamHost {
     virtual void* device_class_registry_00441780() = 0;
     // 00440180 __thiscall(slots = registry+4h, count) RET 4.
     virtual void device_class_registry_resize_00440180(void* slots, std::int32_t count) = 0;
-    // [00CE2220] InterlockedDecrement(&object+4h) -> EAX.
-    virtual std::int32_t interlocked_decrement_ce2220(void* counter) = 0;
-    virtual void object_destroy_00(void* object) = 0;                            // object vtable +00h
 };
 
 inline constexpr std::uint32_t kDeviceClassVtable = 0x00CE4480u;
@@ -181,7 +186,7 @@ void device_write_state_0043fea0(void* entity, void* writer, DeviceEntityHost& h
 void* device_class_construct_00440770(void* device_class, DeviceEntityHost& host);
 // 00440A30 __fastcall(slot): a counted reference release: when [slot] is set,
 // InterlockedDecrement(+4h) reaching 0 destroys it (vtable +0h), then [slot] = 0.
-void ref_slot_release_00440a30(void* slot, DeviceEntityHost& host);
+void ref_slot_release_00440a30(void* slot, ReferenceSlotHost& host);
 // 004420D0 __fastcall(class): vtable 00CE4480; the registry slot +6Ch is
 // cleared (the registry grows to +6Ch + 1 first when +6Ch >= its count); the
 // platform reference +70h is released as in 00440A30; then 0087C700.

@@ -1,4 +1,5 @@
 #include "bsp/native_gui_scene_fields.hpp"
+#include "bsp/seg3_4_cc13.hpp"
 #include <stdexcept>
 #include <cstring>
 #include <intrin.h>
@@ -19,26 +20,38 @@ void* pointer(const void* p, Word offset) noexcept {
 void put(void* p, Word offset, void* value) noexcept {
     _ReadWriteBarrier(); std::memcpy(at(p, offset), &value, 4); _ReadWriteBarrier();
 }
+
+class SceneResourceRelease final : public seg3_4_cc13::ReferenceSlotHost {
+public:
+    explicit SceneResourceRelease(NativeGuiSceneFieldsContext& context) : context_(context) {}
+    std::int32_t interlocked_decrement_ce2220(void* counter) override {
+        return context_.decrement_00ce2220(static_cast<volatile long*>(counter));
+    }
+    void object_destroy_00(void* object) override {
+        auto& reference = context_.owners.resolve_actual(object);
+        if (static_cast<void*>(&reference.reference_count) != at(object, 4))
+            throw std::logic_error("scene field terminal requires captured owner's actual count");
+        reference.release_zero_references();
+    }
+private:
+    NativeGuiSceneFieldsContext& context_;
+};
 }
 
 void set_native_gui_scene_resource_00b723f0(void* scene,
     const volatile Word& argument, NativeGuiSceneFieldsContext& context) {
     void* const requested = reinterpret_cast<void*>(argument); // B723F0
-    void* const old = pointer(scene, 0x1c); // B723F5
+    void* old = pointer(scene, 0x1c); // B723F5
     if (old == requested) return;
     put(scene, 0x1c, requested);
     if (requested)
         context.increment_00ce221c(static_cast<volatile long*>(at(requested, 4)));
-    if (old) {
-        const long count = context.decrement_00ce2220(
-            static_cast<volatile long*>(at(old, 4)));
-        if (count == 0) {
-            auto& reference = context.owners.resolve_actual(old);
-            if (static_cast<void*>(&reference.reference_count) != at(old, 4))
-                throw std::logic_error("scene field terminal requires captured owner's actual count");
-            reference.release_zero_references();
-        }
-    }
+    // B7240D..B72425 inline the same old+4 decrement / virtual0 sequence as
+    // 00440A30 (bsp.py show 00440a30). Reuse that body on the captured former
+    // scene reference. Its final null store affects this local slot only:
+    // scene+1C already owns requested and terminal callbacks may change it.
+    SceneResourceRelease release(context);
+    seg3_4_cc13::ref_slot_release_00440a30(&old, release);
 }
 
 void prepend_native_gui_scene_node_00b721f0(void* scene, void* node) noexcept {
