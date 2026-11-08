@@ -1,0 +1,76 @@
+{
+  "goal": 5,
+  "chain": 927,
+  "slot": "g5-w8",
+  "baseline_head": "3e26f5323495c3d4af94a7115716552ed54a44e0",
+  "summary": "Use the existing plane-base IsKindOf body for the inherited tail of actual plane descriptor queries, retaining subtype comparisons and replacing the generic tail on that path.",
+  "rows": [
+    {
+      "native": "007cfd00",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::descriptor_is_kind",
+      "real_state": "Resolve the actual cached descriptor image's vtable to its existing IsKindOf row; compare its subtype prefix, then pass the actual requested kind to the recovered plane-base predicate for the exact 0Fh/5/4 tail.",
+      "replaced": "The generic is_kind_of loop no longer runs for that plane-descriptor tail; subtype matches return before the inherited predicate, including both recon subtype IDs.",
+      "native_abi": "007CFD00..007CFD1F: thiscall, ECX unused, stack DWORD query, RET4, EAX boolean; the source function retains its explicit C++ interface and is not a binary ABI replacement.",
+      "evidence": [
+        "python tools/bsp.py show 007cfd00 --asm --lines 36: exact comparisons 0Fh, 5, 4",
+        "src/gameplay_seg61_62_cc13.cpp: kIsKindOfRows contains the exact plane-leaf prefixes and common inherited tail",
+        "python tools/bsp.py show 00953740 --asm --lines 40: small recon checks 15h, 14h, 0Fh, 5, 4 in that order",
+        "python tools/call_graph.py who 007cfd00: body 103AC740, direct reachable call at 103AC466 from descriptor_is_kind",
+        "python tools/call_graph.py path 007cfd00: mission Lua descriptor processing, run_scene_load_004dfb70, menu/frame and WinMainCRTStartup"
+      ],
+      "called_before": false,
+      "called_after": true,
+      "call_sites_after": 1
+    },
+    {
+      "native": "0075a840",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: path_replicator_send_path_set_007ad5c0",
+      "reason": "Missing an active PathReplicatorHost and local D9h message producer/consumer; the current user-path queue carries the distinct 5Fh message."
+    },
+    {
+      "native": "0075a8b0",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: path_replicator_send_path_add_007ad660",
+      "reason": "Missing an active PathReplicatorHost and local DAh receive allocation/consumer; the current user-path queue carries the distinct 5Fh message."
+    },
+    {
+      "native": "0075a920",
+      "status": "skipped",
+      "host_site": "include/bsp/path_movcam_seg46_argon.hpp: PathReplicatorHost::route_path_insert_db",
+      "reason": "Missing an active path-replicator owner and DBh message route to produce and consume the native receive object."
+    },
+    {
+      "native": "0075a990",
+      "status": "skipped",
+      "host_site": "include/bsp/path_movcam_seg46_argon.hpp: PathReplicatorHost",
+      "reason": "Missing an active path-replicator owner and DCh message route to produce and consume the native receive object."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp: construct_native_game_grid_0070bd70",
+      "reason": "Missing built entry reachability for the native grid constructor; replacing its private initialization helper alone would leave this body unreachable."
+    },
+    {
+      "native": "0070bd70",
+      "status": "skipped",
+      "host_site": "src/native_game_construction.cpp: NativeGameConstructionCalls::call_0070bd70",
+      "reason": "Missing a linked entry-reachable native game-construction path; call_graph who 0070bd70 finds no matching function in the default executable."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1: Win32 Release, all four CTests passed",
+    "final_build": "scripts/build.ps1: Win32 Release, all four CTests passed",
+    "wire_readiness_wired_before": 10805,
+    "wire_readiness_wired_after": 10806,
+    "compiled_address_suffix_total_before": 5676,
+    "compiled_address_suffix_total_after": 5676,
+    "compiled_total_note": "The default graph aggregate is unchanged; the target itself now has the verified reachable call site recorded above. Readiness and compiled graph aggregates use different address attribution.",
+    "float_math_changed": false,
+    "new_tests": false,
+    "game_run": false,
+    "limits": "Source wiring, build/tests and static executable reachability verified; no live gameplay or original binary ABI claim."
+  }
+}
