@@ -49,6 +49,7 @@
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
+#include "bsp/game_native_traceline_pool.hpp"
 #include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_surface_pool.hpp"
@@ -1167,6 +1168,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_pool_atexit = gui_group_process.initialize_once_00cd7440();
         log.notef("native GUI Group pool CRT CD7440: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", group_pool_atexit, sizeof(bsp::NativeGuiGroupPoolStorage));
+        // Original CRT table CE34E4 selects CD77F0, before the particle
+        // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
+        auto& traceline_pool = bsp::game::game_native_traceline_pool_process();
+        const int traceline_atexit = traceline_pool.initialize_once();
+        log.notef("native Traceline pool CRT CD77F0: atexit=%d storage=process_actual38h",
+            traceline_atexit);
         auto& particle_pools = bsp::game::game_native_particle_pool_process();
         const int model_atexit = particle_pools.initialize_model_once_00cd7830();
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();

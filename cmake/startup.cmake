@@ -123,6 +123,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_scene_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_surface_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_texture_owner_services.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_texture_pool.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_traceline_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_type_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_constants.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_runtime.cpp)
