@@ -1,5 +1,7 @@
 #include "bsp/native_node_construction.hpp"
 #include "bsp/native_unit_part_entries.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <new>
@@ -47,6 +49,13 @@ void initialize_identity(CameraMatrix& destination) {
     const CameraMatrix identity{1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
     copy_camera_matrix_004134f0(destination, identity);
 }
+class NodeIdentityMatrixCopy final : public profile_seg2_cc13::MatrixCopyHost {
+public:
+    void matrix_copy_004134f0(profile_seg2_cc13::Raw destination,
+        const profile_seg2_cc13::Mat16& source) override {
+        copy_native_camera_matrix_004134f0(destination.p, nullptr, source.m);
+    }
+};
 CameraTransformBacking transform_backing(NativeNodeStorage& node) noexcept {
     return {node.parent_30, node.first_child_34, node.child_count_38,
         node.next_sibling_3c, node.previous_sibling_40, node.root_list_a4,
@@ -194,12 +203,18 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
         CameraMatrix local_identity;
         raw_node_identity(&local_identity, &constants.one_00d7a24c, &node);
         copy_camera_matrix_004134f0(node.local_b0, local_identity);
-        CameraMatrix world_identity;
-        raw_node_identity(&world_identity, &constants.one_00d7a24c, nullptr);
-        copy_camera_matrix_004134f0(node.world_f0, world_identity);
-        CameraMatrix view_identity;
-        raw_node_identity(&view_identity, &constants.one_00d7a24c, nullptr);
-        copy_camera_matrix_004134f0(node.view_60, view_identity);
+        // B6F6FE..B6F82E (bsp.py show 00b6f5a0 --asm): each destination
+        // receives a fresh identity built from one current D7A24C capture,
+        // followed by 004134F0. Reuse the complete shared 0042D510 operation
+        // on the actual node matrices; the local-B0 block above also writes
+        // +4C/+AC/+5C and therefore retains its separate native schedule.
+        NodeIdentityMatrixCopy matrix_copy;
+        profile_seg2_cc13::matrix_set_identity_0042d510(
+            {reinterpret_cast<std::uint8_t*>(node.world_f0.data())}, matrix_copy,
+            constants.one_00d7a24c);
+        profile_seg2_cc13::matrix_set_identity_0042d510(
+            {reinterpret_cast<std::uint8_t*>(node.view_60.data())}, matrix_copy,
+            constants.one_00d7a24c);
         raw_node_finish(&node, &constants.negative_bound_00ce4adc,
             &constants.positive_bound_00ce4970);
     } catch (...) {
