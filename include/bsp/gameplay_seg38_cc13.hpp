@@ -194,12 +194,16 @@ bool command_accepts_target_0071d6d0(const CommandSlot& command, const CommandTa
 bool slot_target_matches_0071e200(const CommandTarget& a, const CommandTarget& b,
                                   bool same_resolved_object) noexcept;
 
+// The same three +240h..+242h bytes owned by a command director. Keep bytes,
+// not bools: 00720E50 stores each argument's low byte without normalization.
+using DirectorAvoidanceBytes = std::array<std::uint8_t, 3>;
+
 // Director byte/dword fields written by the small setters.
 struct DirectorFlags {
     bool flag_3c = false;                         // 0071D5D0
     std::uint32_t flags_1cc = 0;                  // 0071C0A0, message sub-kind 2
     std::array<bool, 4> enables_220{};            // 00720DE0, sub-kinds 3..6
-    std::array<bool, 3> avoidance_240{};          // 00720E50; +242h read by 00720E40
+    std::array<bool, 3> avoidance_240{};          // semantic full-director snapshot
     bool snapshot_243 = false;                    // 007219C0
     float snapshot_244 = 0.0f;
     float snapshot_248 = 0.0f;
@@ -207,8 +211,11 @@ struct DirectorFlags {
 void store_flag_3c_0071d5d0(DirectorFlags& d, bool v) noexcept;
 void set_flags_1cc_0071c0a0(DirectorFlags& d, std::uint32_t v) noexcept;
 void set_enables_220_00720de0(DirectorFlags& d, bool a, bool b, bool c, bool e) noexcept;
-void set_avoidance_240_00720e50(DirectorFlags& d, bool a, bool b, bool c) noexcept;
-bool land_collision_avoidance_00720e40(const DirectorFlags& d) noexcept;
+// New C++ field-view interfaces, not thiscall replacements. 00720E50 is ECX
+// director, three stack DWORDs, RET 0Ch; 00720E40 returns the raw +242h byte in AL.
+void set_avoidance_240_00720e50(DirectorAvoidanceBytes& bytes,
+    std::uint8_t torpedo, std::uint8_t ship, std::uint8_t land) noexcept;
+std::uint8_t land_collision_avoidance_00720e40(const DirectorAvoidanceBytes& bytes) noexcept;
 
 // 0071C060 __fastcall(uint mask, Unit* unit): unit->vtable[114h]() is the
 // director; no director answers true, else flags_1cc & mask.

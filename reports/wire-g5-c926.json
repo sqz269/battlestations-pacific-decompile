@@ -1,0 +1,196 @@
+{
+  "goal": 5,
+  "chain": 926,
+  "worker": "agent/g5-w6",
+  "base_head": "3e26f5323495c3d4af94a7115716552ed54a44e0",
+  "picked": "Sound pool retained slab-table cleanup",
+  "rows": [
+    {
+      "native": "00acd1d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy -> destroy_pool<GuiSoundPoolTraits, free_native_gui_sound_pool_table_00acd1d0>; retained canonical GameNativeGuiWidgetPoolProcess<GuiSoundPoolTraits>::destroy_at_exit",
+      "state": "Actual canonical F8C0EC pool's +28h table, after its slabs are freed and before its critical section and E188B4 allocator-list links are retired.",
+      "evidence": "bsp.py show 00acd1d0; live proto/comments/disasm verified battlestationspacific.exe and exact 00ACD1D0..00ACD1DD listing. Seven instructions: capture [ECX], test, conditional BF6989 free, RET. ACD2F0 inlines this same schedule. Header words remain unchanged; common free no longer runs on this Sound path.",
+      "original_abi": "ECX actual pointer-table header; RET. Reconstructed entry uses a new ordinary C++ void* interface.",
+      "default_call_site": "10533a64 in reachable GuiSoundPoolTraits destroy; helper at 10533cb0 is folded with other identical table frees by /OPT:ICF."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing a gameplay consumer for native candidate-score records; the established reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing a live candidate-score owner whose chosen bytes affect gameplay; the documented consumer is debug-only."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: air-support attack-value adapter",
+      "reason": "Missing resolved plane-class weapon-value facts for the live air-support composition callback."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a retained native land-bot task/registry owner in the semantic gameplay hosts."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing the live native task/registry allocation and lifetime whose vector this destructor must retire."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp: skip_native_scene_group_008f0800",
+      "reason": "Missing a native scoped-group skip consumer; current scene parsing uses a different tokenizer representation, while settings' native tokenizer does not establish this group path."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp: release_native_enum_symbol_node_holder_008f3d80",
+      "reason": "Missing a live detached enum-symbol node holder from the canonical E17578 pool and its payload/link retirement path."
+    },
+    {
+      "native": "008f3dc0",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp: release_native_property_library_node_holder_008f3dc0",
+      "reason": "Missing a live detached property-library node holder from the canonical E17540 pool and its payload/link retirement path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller-state snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage producer and routed snapshot consumer; copying current semantic flags into a temporary and back would add no gameplay route."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision filter",
+      "reason": "Missing actual DYN hull-shape storage and the required world-lock/manifold-invalidation bindings."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision filter",
+      "reason": "Missing actual DYN hull-shape storage and the required filter-change manifold invalidation service."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope mast collision group",
+      "reason": "Missing the native periscope shape owner and manifold-invalidation callback; the recorded boolean is not a native shape."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak-manager flooded fraction",
+      "reason": "Missing a gameplay consumer; the established original caller is the excluded debug inspector."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition",
+      "reason": "Missing the parser-owned per-mode class-pair table and corresponding live composition-scoring consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn group gate",
+      "reason": "Missing the native request weight, threat-record vector and support-site list required by the original gate."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: reconnaissance group scoring",
+      "reason": "Missing live per-member reconnaissance values and the corresponding group-scoring consumer."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: SceneCommandTarget descriptors",
+      "reason": "Missing genuine mutable native F87574/F87578/F8757C publications read by the literal initializer; semantic target defaults do not establish those cells."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: native group member-vector query",
+      "reason": "Missing the native net-entity-create consumer and genuine mutable F87574/F87578/F8757C fallback publications."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: language catalog",
+      "reason": "Missing the original profile-hints-mode language-sweep consumer; an unrelated catalog-reader substitution would not establish that route."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/mission_tree_screens.cpp: set_briefing_mission_0051dce0",
+      "reason": "Missing a retained BriefingScreenState owner and the corresponding selected-record/side callback route."
+    },
+    {
+      "native": "005b6960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: mission blackout callbacks",
+      "reason": "Missing the actual blackout GUI widget and the interface-only caller's native blackout trigger."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "No new wiring is missing at the source edge: the already-live physical enumeration body calls this join; a second join was not added."
+    },
+    {
+      "native": "00bf47e0",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp: native physical enumeration binding",
+      "reason": "No new wiring is missing: the baseline already reports this physical enumeration body called from reachable code."
+    },
+    {
+      "native": "00b3dbb0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_lifetime.cpp: cube texture table reserve",
+      "reason": "No source substitution is missing: the previously landed CubeTexture packet already routes the real reserve/append header through these helpers."
+    },
+    {
+      "native": "00b3dc00",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: cube texture table append",
+      "reason": "Missing a new production growth consumer beyond the already-landed CubeTexture table routing; no duplicate growth or forced allocation was added."
+    },
+    {
+      "native": "00aace40",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_movie_pool_table.hpp: native_gui_movie_pool_table_push_back_00aad450",
+      "reason": "Missing an entry-reachable Movie allocation/growth consumer; the existing append already calls this sole grow body."
+    },
+    {
+      "native": "00acd250",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_sound_pool_table.hpp: append_native_gui_sound_pool_table_00acd430",
+      "reason": "Missing an entry-reachable Sound allocation/growth consumer; the existing append already calls this sole grow body and the existing focused pool probe covers it."
+    }
+  ],
+  "implementation": {
+    "body": "Promoted the prior tmpl_shape free-pointer row to the sole address-suffixed noinline body in the existing Sound table header.",
+    "replacement": "Sound-only destroy specialization passes the retained pool+28h table to the recovered free body through destroy_pool's existing FreeTable parameter; generic cleanup no longer frees it on this path.",
+    "ownership": "Claimed Sound header/address; queued and acquired native_material_pools.cpp and AC ledger shards, froze the small Sound-only specialization, then released shared files to the next workers after the build passed.",
+    "ghidra": "Renamed prior TMPL_FreePointer_00acd1d0 to BSP_GuiSoundPool_FreeTable; preserved prior annotations in local/ghidra-annotations-20261108T173106Z.json, saved bsp project, refreshed export, rebuilt index.",
+    "tests_added": 0,
+    "float_math_changed": false
+  },
+  "validation": {
+    "default_build": "scripts/build.ps1 passed all five CTests after final C++ changes; local/c926-build.log.",
+    "existing_sound_probe": "Recompiled existing tests/wire_g5_c912_sound_table_probe.cpp against the current Win32 libraries, /MD /fp:strict /link /MANIFEST:EMBED. PASS: 513 Sound slots, 33 slabs, table 32 -> 66, payload/trailer retention, lock depth, trim, teardown; local/c926-probe.log.",
+    "default_graph": "Helper reachable at 10533cb0; reachable Sound destroy calls it at 10533a64. /OPT:ICF folds this address with six identical functions, so the distinct Sound boundary is additionally checked without ICF.",
+    "analysis_graph": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed. call_graph.py --build-dir build/callgraph who 00acd1d0: distinct helper at 106c7590 REACHABLE, one direct call at 106c4484 from Sound destroy_pool at 106c4450. That Sound specialization is called once at 106c7405 from NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy. path reaches WinMainCRTStartup through the canonical Sound process's registered destroy_at_exit callback; no ICF ambiguity for this edge. local/c926-analysis-build.log and local/c926-analysis-graph.json.",
+    "readiness": "wire_readiness.py --standins: textual wired total 10805 -> 10805. The new helper is omitted because the immutable function snapshot still names the old TMPL_FreePointer_00acd1d0, which the readiness game's library-name filter excludes; the saved Ghidra name and added reconstruction/name ledgers are updated. No tool/manifest/counting change was made. Default graph reconstructed addresses 6364 -> 6365 and edges 224258 -> 224259; its called total stays5676 because ICF folds the new identical free. Independent no-inline/no-ICF graph proves the single new Sound helper call.",
+    "limits": "Source/storage/build/fixture and executable-entry reachability evidence only. No game run, original binary ABI, native FH3/SEH or retail gameplay validation. No forced Sound allocation, extra startup, replacement pool or additional runtime free."
+  }
+}

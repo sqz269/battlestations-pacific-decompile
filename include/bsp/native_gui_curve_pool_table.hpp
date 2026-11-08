@@ -14,7 +14,11 @@ void native_gui_curve_pool_table_push_back_00abc480(
     NativeGuiPoolSlabTable& table, std::byte* const& slab);
 void native_gui_curve_pool_table_reserve_00abc500(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+// ECX points to the original pool+28h table. Releases only its current data;
+// the pointer, count and capacity remain unchanged, including during unwind.
+void free_native_gui_curve_pool_table_00abc180(void* actual_table) noexcept;
 
 template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize();
 template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate();
+template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::destroy();
 } // namespace bsp

@@ -1078,14 +1078,24 @@ void* initialize_native_listbox_pool_slab_00a9acd0(void* raw, std::uint32_t inde
     return NativeGuiListboxPool::initialize_slab(raw, index);
 }
 
-void destroy_native_listbox_pool_00a9afd0(NativeGuiListboxPool& pool)
+__declspec(noinline) void destroy_native_listbox_pool_00a9afd0(NativeGuiListboxPool& pool)
 {
     pool.destroy();
 }
 
-void trim_native_listbox_pool_00a9b0b0(NativeGuiListboxPool& pool)
+__declspec(noinline) void trim_native_listbox_pool_00a9b0b0(NativeGuiListboxPool& pool)
 {
     pool.trim();
+}
+
+template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::invoke_trim(void* context)
+{
+    // bsp.py show 00A9B4A0 / 00A9B0B0: F8BC10 installs D5BBA4, whose
+    // virtual0 trims THIS pool's actual slab table. The shared E188B4 list
+    // retains this context from pool construction and calls it at 004B46B0.
+    // Replace the generic callback's trim call once; A9B0B0 retains the
+    // existing compaction/free-count/slot-trailer engine and its no-lock ABI.
+    trim_native_listbox_pool_00a9b0b0(*static_cast<NativeGuiListboxPool*>(context));
 }
 
 void free_native_listbox_pool_slot_00a9b150(NativeGuiListboxPool& pool, void* slot) noexcept
@@ -1098,7 +1108,7 @@ void free_native_listbox_slot_thunk_00a9b330(NativeGuiListboxPool& pool_00f8bc10
     free_native_listbox_pool_slot_00a9b150(pool_00f8bc10, slot);
 }
 
-void construct_native_listbox_pool_00a9b4a0(NativeGuiListboxPool& pool)
+__declspec(noinline) void construct_native_listbox_pool_00a9b4a0(NativeGuiListboxPool& pool)
 {
     pool.initialize();
 }

@@ -58,7 +58,7 @@ int main() {
     // Fixture-only repair of the deliberately interrupted reserve.
     storage.table_capacity_30 = 66;
     for (void* slot : slots) pool.free(slot);
-    pool.trim();
+    domain.trim_all_004b46b0(); // Dispatch F8BC10's real virtual0 to 00A9B0B0.
     assert(storage.slab_count_2c == 0 && storage.first_free_slab_34 == 0xffffffffu);
     pool.destroy();
     assert(head == nullptr && storage.slabs_28 == old_table && storage.table_capacity_30 == 66);

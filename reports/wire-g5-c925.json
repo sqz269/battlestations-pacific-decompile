@@ -91,5 +91,51 @@
       "analysis_compiled_reconstructed_called": 7523
     },
     "note": "Readiness output contains the two lifecycle rows and omits the newly reconstructed table-helper addresses; the three table-helper calls are verified directly with call_graph. Default Release totals include linker identical-code folding. Independent /Ob0 /OPT:NOICF checks identify all five AnimIcon callers directly."
+  },
+  "merge_repair": {
+    "origin_main": "2cee01fd755e63c72aae407b95bb3a26ab2d9c61",
+    "conflict": "src/game_main.cpp concurrent FrameBox and AnimIcon startup insertions",
+    "resolution": "Ran merge_resolve.py for the merge, then manually placed FrameBox CD7740 before AnimIcon CD77B0 before Traceline CD77F0. Kept both pools and the incoming cleanup specializations; shared material-pool helper remains single.",
+    "default_build": "local/c925-merge-build.log; passed all four CTests",
+    "on_build": "local/c925-merge-on-build.log; passed all four CTests, zero distinct diagnostics",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "on_header_receipt": {
+      "on_exit_code": 0,
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "origin_main": "2cee01fd755e63c72aae407b95bb3a26ab2d9c61",
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      }
+    },
+    "probe": "local/c925-merge-probe.log; 129 slots, 33 slabs, 32->66 capacity, payload/trailer retention, trim and teardown passed",
+    "call_graph": "local/c925-merge-callers.log; all five original wired entries remain reachable, including actual AnimIcon constructor-unwind and destructor calls to AD2F20",
+    "compiled_reconstructed_called": 5688,
+    "metrics_qualification": "Post-merge totals include incoming origin/main work; the original c925 contribution and skipped rows are unchanged.",
+    "game_run": false,
+    "readiness_wired": 10815,
+    "readiness_called": 6126,
+    "readiness_log": "local/c925-merge-readiness.log",
+    "lifecycle_rows": [
+      {
+        "address": "00ad31f0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00ad36a0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    ]
   }
 }

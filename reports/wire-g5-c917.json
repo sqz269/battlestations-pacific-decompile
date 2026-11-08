@@ -1,0 +1,196 @@
+{
+  "goal": 5,
+  "chain": 917,
+  "slot": "g5-w12",
+  "run": 2037,
+  "branch": "agent/g5-w12",
+  "base": "3fc7c96455bf508ab831f622e63675c07debe09f",
+  "picked": "GUI Model pool table retirement on retained F8C09C process storage",
+  "rows": [
+    {
+      "native": "00acbdd0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::destroy -> destroy_pool<GuiModelPoolTraits, free_native_gui_model_pool_table_00acbdd0>",
+      "detail": "New reconstruction of existing tagged FreePointer entry replaces the inline table free on the same process-owned F8C09C+28h header after slab retirement and before critical-section destruction/list unlink. Data is captured once; null data is ignored; all header fields survive unchanged. No additional free or new pool.",
+      "called": true,
+      "call_site": "106c3d94",
+      "call_site_build": "build/callgraph, NoInline and OPT:NOICF",
+      "original_abi": "ECX=table header, plain RET; source API is not register ABI compatible"
+    },
+    {
+      "native": "00b930d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: matches_native_mesh_resource_type_00b939c0",
+      "reason": "Missing a production NativeMeshResourceTypeCalls instance; wiring its first descriptor load would remain unreachable."
+    },
+    {
+      "native": "00b931d0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: matches_native_mesh_resource_type_00b93a40",
+      "reason": "Missing a production NativeMeshResourceTypeCalls instance; wiring its first descriptor load would remain unreachable."
+    },
+    {
+      "native": "00b939c0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "Missing an entry-reachable resource-item type dispatch composition using this existing adapter."
+    },
+    {
+      "native": "00b93a40",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeCalls::matches_type",
+      "reason": "Missing an entry-reachable resource-item type dispatch composition using this existing adapter."
+    },
+    {
+      "native": "00b93bd0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeIds::initialize_mesh_resource_00b93bd0",
+      "reason": "Missing an actual lazy mesh-descriptor initialization consumer; CRT initialization is a separate existing entry."
+    },
+    {
+      "native": "00acbe50",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::allocate -> ACC0D0",
+      "reason": "Missing an entry-reachable GUI Model factory allocation consumer; the existing grow call already covers the source allocation path."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted",
+      "reason": "Only the unreached debug overlay reads these score records; debug-only wiring is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen",
+      "reason": "Only the unreached debug overlay reads these score records; debug-only wiring is excluded."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner defend candidate pass",
+      "reason": "No new call is missing: the existing host already calls this body under kDefendThinkImageBound=true; earlier skips document its coordinator load gate."
+    },
+    {
+      "native": "00a799b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::completed_slot0c",
+      "reason": "No new call is missing: baseline call graph already shows this body reachable from completed_slot0c."
+    },
+    {
+      "native": "00a7a570",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::stop_slot08",
+      "reason": "An existing reconstructed caller already invokes this body; no additional single-player host replacement was established in this chain."
+    },
+    {
+      "native": "00a7af10",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::update_slot30",
+      "reason": "Existing reconstructed callers already invoke this body; no additional single-player host replacement was established in this chain."
+    },
+    {
+      "native": "00a7f640",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::create_nonspatial",
+      "reason": "An existing reconstructed caller already invokes this body; no additional single-player host replacement was established in this chain."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_particle_object_state.cpp / src/native_particle_sprite_state.cpp: construction-failure cleanup",
+      "reason": "Missing a verified entry-reachable particle-state initializer and canonical static point-pool binding for the thin global return wrapper."
+    },
+    {
+      "native": "00af32f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_tracer_state.cpp: allocate_native_traceline_slot_00af3430",
+      "reason": "Missing an entry-reachable Traceline state producer; the canonical pool allocation call already exists inside the state adapter."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: unit_pick_row_value_00521f10",
+      "reason": "Missing a borrowed native 34h-row buffer or a direct accessor over the live HUD selection rows; no fabricated native-layout buffer was added."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: unit_pick_read_position_00521fd0",
+      "reason": "Missing a live native selection-entry position/validity view at F0h..FCh."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message provenance",
+      "reason": "Missing a retained controller-state message producer with both live command descriptors, mode and flag fields."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and transport consumer."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map score update provenance",
+      "reason": "Missing a verified projection of the scoring receiver plus slot*284h+18h; persisted MissionScoreRecord+18h is a map and cannot be used as that float counter."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp: declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "Missing a verified live NativeEnumLuaDeclarationContext connecting the actual enum owner, string domain and Lua table."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed with all four CTests",
+    "focused_fixture": "Existing tests/wire_g5_c883_gui_model_table_probe.cpp passed: 257 slots, 33 slabs, table 32 -> 66, payloads, trailers, lock depth, trim and teardown. Linked MSVC Win32 with MANIFEST:EMBED.",
+    "call_graph": "python tools/call_graph.py --build rebuilt NoInline/NOICF build/callgraph; who and path 00acbdd0 show one direct reachable body call at 106c3d94.",
+    "entry_path": [
+      "WinMainCRTStartup",
+      "WinMain",
+      "GameNativeGuiWidgetPoolProcess<GuiModelPoolTraits>::initialize_once (atexit registration)",
+      "GameNativeGuiWidgetPoolProcess<GuiModelPoolTraits>::destroy_at_exit",
+      "NativeGuiWidgetPool<GuiModelPoolTraits>::destroy",
+      "destroy_pool<GuiModelPoolTraits, free_native_gui_model_pool_table_00acbdd0>",
+      "free_native_gui_model_pool_table_00acbdd0"
+    ],
+    "evidence": [
+      "bsp.py show 00acbdd0 --asm: ACBDD0 captures data, ACBDD2/4 tests, ACBDD7 frees, ACBDDD RET; no header stores",
+      "bsp.py show 00acbf70: slab cleanup, table cleanup, section teardown, allocator-list unlink"
+    ],
+    "float_math_changed": false,
+    "native_abi_compatible": false,
+    "game_run": false,
+    "readiness_row": null
+  },
+  "counts": {
+    "readiness_wired_before": 10791,
+    "before_graph_stale": true,
+    "new_entry_reachable_bodies": 1,
+    "readiness_wired_after": 10791,
+    "readiness_delta": 0,
+    "after_call_graph": {
+      "build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w12\\build\\callgraph",
+      "map_mtime": 1794157614.9424608,
+      "exe_mtime": 1794157614.9066901,
+      "head": "3fc7c96455bf508ab831f622e63675c07debe09f",
+      "no_inline": true,
+      "seconds": 7.2,
+      "orphan_contributions": {},
+      "stale": false,
+      "counts": {
+        "called": 7056,
+        "called_not_wired": 461,
+        "wired_not_called": 61,
+        "not_in_binary": 13608
+      }
+    },
+    "note": "Only the new ACBDD0 direct body call is credited. Broader graph count changes reflect refreshing the stale pre-run analysis graph with a NoInline/NOICF build.",
+    "inventory_coverage_note": "The new ACBDD0 ledger/body is absent from wire_readiness rows in this snapshot, so its source wired total remains 10791. The fresh NoInline/NOICF executable directly confirms the one new body call; no broader count increase is claimed."
+  },
+  "remaining": "GUI Model allocation still needs a production factory consumer; skined/matrix mesh predicates need a production NativeMeshResourceTypeCalls composition.",
+  "coordination": "Released src/native_material_pools.cpp and AC reconstruction shard after validation for g5-w10 landing repair; changes are confined to Model table cleanup."
+}

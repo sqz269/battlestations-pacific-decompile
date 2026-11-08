@@ -1,0 +1,232 @@
+{
+  "goal": 5,
+  "chain": 919,
+  "slot": "g5-w11",
+  "run": 2045,
+  "branch": "agent/g5-w11",
+  "base": "52b4129e25f0b0e3d6c5089ee678940eb73b7b95",
+  "picked": "Canonical Grid F8C050 pool startup and retained slab-table entries AC9320/AC9370/AC97F0/AC9870",
+  "rows": [
+    {
+      "native": "00ac9320",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_grid_pool_table_reserve_00ac9870",
+      "evidence": "NOICF executable: one reachable tail jump at10503F75 from AC9870 into the sole AC9320 body at10503F80."
+    },
+    {
+      "native": "00ac9870",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiGridPoolTraits>::initialize; src/game_main.cpp::WinMain",
+      "evidence": "NOICF executable: initialize_pool<GuiGridPoolTraits> calls the sole AC9870 body at10503F60 from106C4AD6; complete entry chain recorded in local/c919-callgraph.txt."
+    },
+    {
+      "native": "00ac9b30",
+      "status": "wired",
+      "host_site": "src/game_main.cpp::WinMain -> GameNativeGuiWidgetPoolProcess<GuiGridPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiGridPoolTraits>::initialize",
+      "evidence": "Restored canonical F8C050 process startup at original CE34B4/CD7580 position; actual E188B4 allocator-list and retained +28h header. Existing body mapping is a C++ template, without an address suffix; analysis entry chain verifies its Grid specialization."
+    },
+    {
+      "native": "00ac94c0",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::GameNativeGuiWidgetPoolProcess<GuiGridPoolTraits>::destroy_at_exit, registered by initialize_once from WinMain",
+      "evidence": "Canonical Grid startup registers the existing destruction callback on that same process object; original CD7580 registers CE0B00 -> AC94C0. No game run or observed shutdown claimed."
+    },
+    {
+      "native": "00ac9370",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_grid_pool_table_push_back_00ac97f0",
+      "reason": "Missing a production Grid default/copy factory caller; its allocator and append/grow path are absent from the NOICF game executable, although the 513-slot fixture reaches them."
+    },
+    {
+      "native": "00ac97f0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiGridPoolTraits>::allocate",
+      "reason": "Missing a production Grid default/copy factory caller; specialization and table body are built and fixture-tested, but the NOICF game link discards this path."
+    },
+    {
+      "native": "00ac9c10",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiGridPoolTraits>::allocate",
+      "reason": "Missing a live Grid widget factory bridge; the canonical pool is initialized but no production Grid slot allocation consumer was established."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movie-camera Lua callbacks",
+      "reason": "Missing the actual movie-camera screen owner and current/default limit fields; existing callbacks retain only a camera identity token."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movie-camera Lua callbacks",
+      "reason": "Missing the actual movie-camera screen owner and current/default limit fields; existing callbacks retain only a camera identity token."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movie-camera Lua callbacks",
+      "reason": "Missing the actual movie-camera screen owner and current/default limit fields; existing callbacks retain only a camera identity token."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movie-camera Lua callbacks",
+      "reason": "Missing the actual movie-camera screen owner and current/default limit fields; existing callbacks retain only a camera identity token."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp::font host / src/font_data.cpp::font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live character-admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp::update_native_loading_queue_00509190",
+      "reason": "Missing live loading-job submission/retirement and FileStore callback bindings; the actual queue update currently supports only its empty state."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp::update_native_loading_queue_00509190",
+      "reason": "Missing live loading-job submission/retirement and FileStore callback bindings; the actual queue update currently supports only its empty state."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp::update_native_loading_queue_00509190",
+      "reason": "Missing live loading-job submission/retirement and FileStore callback bindings; the actual queue update currently supports only its empty state."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp::update_native_loading_queue_00509190",
+      "reason": "Missing live loading-job submission/retirement and FileStore callback bindings; the actual queue update currently supports only its empty state."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp::update_native_loading_queue_00509190",
+      "reason": "Missing live loading-job submission/retirement and FileStore callback bindings; the actual queue update currently supports only its empty state."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_dispatch.cpp::NativeSkinnedAnimationResourceCalls::parse_item",
+      "reason": "Missing an application instance of the existing skinned-animation dispatch wrapper; adding its table operation alone leaves the parser unreachable."
+    },
+    {
+      "native": "00b92f20",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_dispatch.cpp::NativeSkinnedAnimationResourceCalls::parse_item",
+      "reason": "Missing an application instance of the existing skinned-animation dispatch wrapper; adding its table operation alone leaves the parser unreachable."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp::set_native_last_render_command_metadata_00b1cb50",
+      "reason": "Missing an established live original consumer supplying the actual last command and three metadata words."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp::set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "Missing the live directional-light shadow-assignment consumer and its actual reference/lifetime context."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp::camera target calculation / src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an entry-reachable consumer of the FOV/aspect product; the inspected GUI projection uses an orthographic camera."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_pool.cpp::return_point_light_slot_00b7b600",
+      "reason": "Missing a live original constructor-unwind consumer; the inspected ordinary point-light deletion correctly calls B7B1D0 directly instead of this wrapper."
+    },
+    {
+      "native": "00af5af0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp::particle-model type getters",
+      "reason": "Missing a live current-profile virtual getter consumer over the actual particle-model type descriptor."
+    },
+    {
+      "native": "00af5b00",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp::particle-model type getters",
+      "reason": "Missing a live current-profile virtual getter consumer over the actual particle-model type descriptor."
+    },
+    {
+      "native": "00b88180",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp::destroy_native_resource_container_00b88430",
+      "reason": "Missing an entry-reachable native resource-container retirement owner; substituting the field cleanup alone would leave this path unreachable."
+    },
+    {
+      "native": "00b88320",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp::destroy_native_resource_container_00b88430",
+      "reason": "Missing an entry-reachable native resource-container retirement owner; substituting the field cleanup alone would leave this path unreachable."
+    },
+    {
+      "native": "00b9a030",
+      "status": "skipped",
+      "host_site": "src/native_system_parameter_slots.cpp::system-parameter setters",
+      "reason": "Missing a retained actual raw owner and live setter consumer for its owner fields and the canonical 0108FC30 parameter storage."
+    },
+    {
+      "native": "00b9a080",
+      "status": "skipped",
+      "host_site": "src/native_system_parameter_slots.cpp::system-parameter setters",
+      "reason": "Missing a retained actual raw owner and live setter consumer for its owner fields and the canonical 0108FC30 parameter storage."
+    },
+    {
+      "native": "00b9a0d0",
+      "status": "skipped",
+      "host_site": "src/native_system_parameter_slots.cpp::system-parameter setters",
+      "reason": "Missing a retained actual raw owner and live setter consumer for its owner fields and the canonical 0108FC30 parameter storage."
+    },
+    {
+      "native": "00b8a060",
+      "status": "skipped",
+      "host_site": "src/native_resource_extra_item_profile.cpp::NativeResourceExtraItemProfileCalls::item_type_token",
+      "reason": "No separate body to wire: the existing reconstruction explicitly reuses B931B0 with the current animation type cell; this was left unchanged."
+    }
+  ],
+  "measurements": {
+    "source_wired_before": 10795,
+    "source_wired_after": 10795,
+    "readiness_note": "The four new helpers are still excluded by the existing template/library inventory classification. Readiness source total stays unchanged; no tool, tag, snapshot or identifier override was added to change the score.",
+    "new_helper_addresses_production_called_noicf": [
+      "00ac9320",
+      "00ac9870"
+    ],
+    "new_helper_addresses_not_linked_noicf": [
+      "00ac9370",
+      "00ac97f0"
+    ]
+  },
+  "built": {
+    "default_win32": "./scripts/build.ps1: passed all5 CTests",
+    "analysis_win32": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests: passed, /Ob0 and /OPT:NOICF",
+    "focused_fixture": "513 Grid slots,33 slabs, table32->66; retained payloads/trailers, correct lock depth, free/trim/list teardown: PASS",
+    "probe_recipe": "local/c919-probe.cmd; cl MSVC Win32 /MD /O2 /W4 /WX; /link /MANIFEST:EMBED",
+    "float_math_changed": false,
+    "diff_check": "git diff --check: passed"
+  },
+  "binary_evidence": [
+    "bsp.py show AC9320/AC9370/AC97F0/AC9870",
+    "bsp.py show AC9B30/AC9C10; AC9C10 --asm",
+    "ghidra disasm CD7580: ECX=F8C050, CALL AC9B30, atexit(CE0B00)",
+    "ghidra bytes CE34AC length28: CD7580 atCE34B4, before Model CD75F0 atCE34BC",
+    "bsp.py show CE0B00: Grid destructor AC94C0"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotations": "Four reviewed Grid table names/comments saved; old values retained in local/ghidra-annotations-20261108T171628Z.json and ledger evidence. All four affected exports refreshed."
+  },
+  "remaining": "Implement the real Grid default/copy factory with actual widget lifetime/name/context owners; this will make AC9C10 -> AC97F0 -> AC9370 production-reachable. No runtime/game/ABI replacement validation performed.",
+  "coordination": "Shared main/material/AC reconstruction leases released after build; names/source lease released after annotation/export. Other workers notified; no merges, rebase, push, game run, or subagents."
+}
