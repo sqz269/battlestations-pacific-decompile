@@ -77,8 +77,18 @@ struct ReconListStorageHost {
     virtual void free_00bf65ac(void* block) = 0;
 };
 
-struct Seg49Host : ReconListStorageHost {
+// 00803DC0 needs only the observing party's effective detection record and
+// the unit's +14h name virtual. This boundary also admits the game's retained
+// typed records without manufacturing a native unit-shaped byte buffer.
+struct ReconDisplayNameHost {
+    virtual ~ReconDisplayNameHost() = default;
+    virtual int display_name_detection_level(int party, void* unit) = 0;
+    virtual const char* unit_name_14(void* unit) = 0;
+};
+
+struct Seg49Host : ReconListStorageHost, ReconDisplayNameHost {
     virtual ~Seg49Host() = default;
+    int display_name_detection_level(int party, void* unit) override;
 
     // Globals the routines dereference (named by address).
     virtual Raw game_e188a8() = 0;
@@ -251,7 +261,7 @@ int detection_effective_level(Raw record) noexcept;
 void recon_detection_clear_forced_level_00803b50(Seg49Host& host, Raw record);
 std::uint8_t party_relative_to_local_player_00803be0(Seg49Host& host, int party);
 void* recon_filter_undetected_unit_00803d40(Seg49Host& host, int party, void* unit);
-const char* recon_display_name_for_party_00803dc0(Seg49Host& host, int party, void* unit);
+const char* recon_display_name_for_party_00803dc0(ReconDisplayNameHost& host, int party, void* unit);
 void recon_slot_send_detection_levels_to_peer_00803e40(Seg49Host& host, Raw slot, int peer_index);
 float unit_max_sensor_range_against_00803f30(Seg49Host& host, Raw unit, Raw target);
 void recon_list_splice_node_008040e0(ReconList& self, ReconList& source, ReconNode* node) noexcept;

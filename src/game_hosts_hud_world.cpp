@@ -41,6 +41,7 @@
 #include "bsp/objective_units.hpp"          // the +20h entry records
 #include "bsp/plane_squadron_host.hpp"      // vtable +140h of a plane
 #include "bsp/recon_sensor_pass.hpp"
+#include "bsp/cc13_seg49.hpp"
 #include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/cc13_sweepB3.hpp"
 
@@ -1418,10 +1419,40 @@ struct GameHudMarkersHost::Impl {
 
     void bind_page_0063e280();
     void fit_stand_in_camera();
+    const char* display_name_for_unit(std::size_t index);
+    void set_marker_name(GuiLayoutWidget& marker, std::size_t index);
     void place_marker(std::size_t index, const bsp::HudMarkerScreenBounds& bounds);
 };
 
 namespace {
+
+class MarkerReconNameBinding final : public bsp::cc13_seg49::ReconDisplayNameHost {
+public:
+    explicit MarkerReconNameBinding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
+
+    int display_name_detection_level(int party, void* unit) override {
+        const auto* gunnery = owner_.units->gunnery();
+        const auto* record = gunnery != nullptr
+            ? gunnery->recon_sensor_pass_state().record(party, owner_.index_of(unit)) : nullptr;
+        // A newly created unit's unlaid-out detection record is zero, just as
+        // the objective reveal binding above handles it. Do not use level(),
+        // whose permissive pre-pass fallback would reveal an unobserved name.
+        return record != nullptr
+            ? static_cast<int>(bsp::recon_record_effective_level(*record))
+            : static_cast<int>(bsp::ReconDetectionRecord{}.level);
+    }
+
+    const char* unit_name_14(void* unit) override {
+        // The host currently retains the default display-name producer:
+        // [unit+538h]+54h is VehicleClass[Type].Name, loaded into this row.
+        // The optional +15Ch/+160h custom-name owner is not implemented here.
+        // Its absence is not the entity's scene/instance name (+10h).
+        return owner_.units->unit_row(owner_.index_of(unit))->class_row_name.c_str();
+    }
+
+private:
+    GameHudMarkersHost::Impl& owner_;
+};
 
 // bsp::HudMarkersRuntimeHost, the boundary of src/hud_markers_runtime.cpp.
 // Packet cc13-fix24: the Front6Host the 0077A2F0 body needs. It reaches only
@@ -1658,10 +1689,7 @@ public:
         owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
     }
     const char* unit_class_name(void* unit) override {
-        owner_.record("HudMarkers::unit_class_name", 0x00803dc0u);
-        if (owner_.units == nullptr) return "";
-        const GameUnitRow* row = owner_.units->unit_row(owner_.index_of(unit));
-        return row != nullptr ? row->type_symbol.c_str() : "";
+        return owner_.display_name_for_unit(owner_.index_of(unit));
     }
     float unit_health(void* unit) override {
         static_cast<void>(unit);
@@ -2025,6 +2053,38 @@ void GameHudMarkersHost::Impl::fit_stand_in_camera() {
         static_cast<double>(summary.camera_half_extent));
 }
 
+const char* GameHudMarkersHost::Impl::display_name_for_unit(std::size_t index) {
+    if (units == nullptr || index >= handles.size()) return nullptr;
+    const auto* row = units->unit_row(index);
+    // A stationary/unresolved class has no retained +538h descriptor. Keep
+    // that unsupported case out of the +14h callback rather than invent a key.
+    if (row == nullptr || !row->class_row_found) return nullptr;
+    MarkerReconNameBinding binding(*this);
+    const char* name = bsp::cc13_seg49::recon_display_name_for_party_00803dc0(
+        binding, local_player_party(), &handles[index]);
+    done("HudMarkers::unit_class_name", 0x00803dc0u);
+    return name;
+}
+
+void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::size_t index) {
+    auto* text = bsp::find_child_by_name_00aa7e00(marker, bsp::kHudMarkerWidgetUnitName);
+    if (text == nullptr) return;
+    const char* name = display_name_for_unit(index);
+    // An unsupported descriptor must not inherit another unit's label when
+    // this widget comes from the shared marker pool.
+    menu.frontend().set_widget_visible(*text, name != nullptr);
+    if (name == nullptr) return;
+    // 006422F0 -> 00803DC0; 0063D751 -> 00ABBE50. The latter is the
+    // C-string overload of the LOCALIZED source setter (cc13_pkt642.cpp), so
+    // the bridge can consume the returned class key or globals.unknown.
+    // Refresh on pool reuse and recon changes, not just when a clone is made.
+    const auto* previous = menu.frontend().widget_text_source(*text);
+    if (previous == nullptr || *previous != name) {
+        menu.frontend().set_widget_text_source(*text, name);
+    }
+    done("HudMarkers::find_child", 0x00aa7e00u);
+}
+
 void GameHudMarkersHost::Impl::place_marker(std::size_t index,
     const bsp::HudMarkerScreenBounds& bounds) {
     if (page == nullptr || sidemarker == nullptr || type_icon == nullptr) return;
@@ -2051,11 +2111,10 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
             if (marker == nullptr) return;
             pool_a.push_back(marker);
             ++summary.markers_created;
-            record("HudMarkers::set_unit_name_text", 0x00abbe50u);
         }
         ++pool_cursor_a;
         menu.frontend().set_widget_visible(*marker, true);
-        static_cast<void>(index);
+        set_marker_name(*marker, index);
         const float offset_x = type_icon->transform.position.x
             - sidemarker->transform.pivot_x * sidemarker->transform.size.width;
         const float offset_y = type_icon->transform.position.y
@@ -2075,17 +2134,8 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
         if (marker == nullptr) return;
         markers.emplace(index, marker);
         ++summary.markers_created;
-        // 0063D1E0 binds `Unit_name_Text` by name and fills it at 0063D751
-        // through 00ABBE50, the plain C-string setter, not the localisation id
-        // setter 00ABAED0 at 0063D694. A unit's instance name is not a locale
-        // id, and the executable's text path only carries ids, so the label
-        // keeps the page's authored `Unit Name` and the C-string setter is a
-        // record. Nothing invents a string here.
-        record("HudMarkers::set_unit_name_text", 0x00abbe50u);
-        if (bsp::find_child_by_name_00aa7e00(*marker, "Unit_name_Text") != nullptr) {
-            done("HudMarkers::find_child", 0x00aa7e00u);
-        }
     }
+    set_marker_name(*marker, index);
     // The authored template puts `type_Icon` at its own offset inside the group,
     // so the group is moved by the difference rather than to the point itself.
     const float offset_x = type_icon->transform.position.x

@@ -177,10 +177,19 @@ void* recon_filter_undetected_unit_00803d40(Seg49Host& host, int party, void* un
 
 // 00803DC0, ABI: __fastcall(ECX = party, EDX = unit) RET -> EAX. No null check on the unit, as
 // the image. Level >= 2 tail-jumps to unit vtable +14h.
-const char* recon_display_name_for_party_00803dc0(Seg49Host& host, int party, void* unit)
-{
+int Seg49Host::display_name_detection_level(int party, void* unit) {
     Raw record{static_cast<std::uint8_t*>(unit) + kUnitDetectionBase + party * kDetectionStride};
-    if (detection_effective_level(record) < 2) {
+    return detection_effective_level(record);
+}
+
+const char* recon_display_name_for_party_00803dc0(ReconDisplayNameHost& host, int party, void* unit)
+{
+    // Listing checked, bsp.py show 00803dc0 --asm (chain 685): +10h selects
+    // +8h over +4h, CMP/JGE 2, then JMP [unit.vtable+14h]. Keep the name
+    // callback lazy: an unidentified unit never reaches its name producer.
+    // New typed host interface; original ECX=party, EDX=unit ABI is unchanged
+    // as evidence, not claimed as this C++ function's calling convention.
+    if (host.display_name_detection_level(party, unit) < 2) {
         return kGlobalsUnknown;
     }
     return host.unit_name_14(unit);
