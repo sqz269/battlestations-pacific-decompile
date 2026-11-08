@@ -8,6 +8,7 @@
 #include <float.h>
 
 #include "bsp/avoid_zone_dyn_hull.hpp"
+#include "bsp/cc13_dyn1.hpp"
 #include "bsp/dyn_collision_pass.hpp"
 #include "bsp/dyn_body_creation.hpp"
 #include "bsp/dyn_contact_solver.hpp"
@@ -240,7 +241,15 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
                                                    static_cast<std::uint32_t>(centred.size()), memory);
         }
         const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(handle);
-        for (std::uint32_t i = 0; i < n; ++i) local.push_back(handle.data->vertices[i].point);
+        // Goal 5 chain 708: 00C32CE0 exports the first three DWORDs of each
+        // 10h-byte native hull vertex into packed XYZ storage (saved listing
+        // 00C32CE0..00C32D18). Borrow this collision hull's actual +00 pointer;
+        // its output replaces the host copy and feeds the body-space shape.
+        static_assert(sizeof(OceanVec3) == 3 * sizeof(float));
+        local.resize(n);
+        cc13_dyn1::hull_copy_vertices_00c32ce0(
+            reinterpret_cast<void* const*>(&handle.data),
+            reinterpret_cast<float*>(local.data()));
         ++census_.hull_shapes;
         census_.raw_points += raw.size();
         census_.hull_vertices += n;
