@@ -6,7 +6,10 @@
 #include "bsp/native_lua_service_bindings.hpp"
 #include "bsp/native_material_texture_refresh.hpp"
 #include "bsp/native_sampler_parameter_write.hpp"
+#include "bsp/native_sampler_parameter_record.hpp"
 #include "bsp/platform_renderer_activation.hpp"
+#include "bsp/scene_weather_cc13.hpp"
+#include <cstddef>
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -36,6 +39,13 @@ struct GameNativeMissionMaterialRefresh::Impl {
         ~ParameterWrite() { if (key_live || value_live) std::terminate(); }
     };
     std::vector<std::unique_ptr<ParameterWrite>> publications;
+    struct RecordWrite {
+        NativeString key;
+        NativeSamplerParameterRecordOperation operation;
+        bool key_live{};
+        ~RecordWrite() { if (key_live) std::terminate(); }
+    };
+    std::vector<std::unique_ptr<RecordWrite>> record_publications;
     bool running{}, failed{};
 
     Impl(GameNativeRendererApplication& renderer, GameNativeReadOnlyData& data)
@@ -96,6 +106,42 @@ struct GameNativeMissionMaterialRefresh::Impl {
         }
     }
 
+    void publish_water_tracer(const scene_weather_cc13::Rgba& record_color) {
+        // bsp.py show 004DE610, 004DF59B..004DF5B7: the key is the image's
+        // WaterTracerColor literal (00CE7D64), the record is scene+C44h, and
+        // the receiver is the current 00F8D434 renderer Lua publication.
+        // 004EE450 -> 004EA870 already parsed/linearized these SAME fields.
+        // B1B890 performs its four late x87 loads directly from that owner;
+        // no second color conversion, copied record or Lua table writer runs.
+        using Color = scene_weather_cc13::Rgba;
+        static_assert(sizeof(Color) == 16 && offsetof(Color, r) == 0
+            && offsetof(Color, g) == 4 && offsetof(Color, b) == 8 && offsetof(Color, a) == 12);
+        if (running || failed)
+            throw std::logic_error("Mission color publication cannot reenter or replay failed work");
+        auto publication = std::make_unique<RecordWrite>();
+        auto* const current = publication.get();
+        record_publications.push_back(std::move(publication));
+        running = true;
+        try {
+            (void)ready_renderer();
+            current->key_live = true;
+            current->key.assign_0041e870(context.cache.strings, "WaterTracerColor");
+            NativeLuaServiceBindings::Activation activation(application.lua_service_binding());
+            void* const receiver = context.current_lua_owner_00f8d434;
+            if (!receiver)
+                throw std::logic_error("WaterTracerColor requires the current native renderer Lua owner");
+            set_native_sampler_parameter_record_00b1b890(receiver, current->operation,
+                &current->key, &record_color);
+            destroy_native_string_header_0041dd20(&current->key, context.cache.strings);
+            current->key_live = false;
+            running = false;
+        } catch (...) {
+            failed = true;
+            running = false;
+            throw;
+        }
+    }
+
     void refresh() {
         if (running || failed)
             throw std::logic_error("Mission material texture refresh cannot reenter or replay failed work");
@@ -120,6 +166,10 @@ struct GameNativeMissionMaterialRefresh::Impl {
             if (publication->key_live || publication->value_live
                 || publication->operation.phase != NativeSamplerParameterWriteOperation::Phase::complete)
                 return true;
+        for (const auto& publication : record_publications)
+            if (publication->key_live
+                || publication->operation.phase != NativeSamplerParameterRecordOperation::Phase::complete)
+                return true;
         for (const auto& operation : operations)
             if (operation->phase != NativeRendererMaterialTextureRefreshOperation::Phase::complete)
                 return true;
@@ -136,6 +186,10 @@ GameNativeMissionMaterialRefresh::~GameNativeMissionMaterialRefresh() noexcept {
 void GameNativeMissionMaterialRefresh::publish_reflection_cubemap(
     const std::string& record_refl_cubemap_b98) {
     impl_->publish_reflection(record_refl_cubemap_b98);
+}
+void GameNativeMissionMaterialRefresh::publish_water_tracer_color(
+    const scene_weather_cc13::Rgba& record_color_c44) {
+    impl_->publish_water_tracer(record_color_c44);
 }
 void GameNativeMissionMaterialRefresh::refresh_after_model_load() {
     impl_->refresh();
