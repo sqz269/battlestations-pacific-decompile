@@ -463,10 +463,10 @@ void render_shadow_single_view_00a8e180(void* owner, const void* settings_00f8bb
     render_shadow_view(owner, settings_00f8bbf0, argument, camera, a, b, false, host);
 }
 
-bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionBinding>& bindings) noexcept
+__declspec(noinline) bool any_input_binding_forces_unit_scale_00a92050(InputBindingUnitScaleView bindings) noexcept
 {
-    for (const auto& binding : bindings)
-        if (binding.force_unit_scale) return true;
+    for (std::size_t index = 0; index < bindings.size(); ++index)
+        if (bindings.force_unit_scale_at(index)) return true;
     return false;
 }
 

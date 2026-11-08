@@ -1,0 +1,61 @@
+{
+  "goal": 5,
+  "chain": 946,
+  "slot": "g5-w6",
+  "base": "426d2eb93c076a174c348de35edf627ad4e2b880",
+  "summary": "Reuse the sole 00A92050 force-unit-scale scan in the application's native input-action poll and the existing typed poll, replacing both duplicate loops.",
+  "rows": [
+    {
+      "native": "00a92050",
+      "status": "wired",
+      "host_site": "src/native_input_action_binding_runtime.cpp: bsp::poll_native_input_action_00a92370; src/input_binding_poll.cpp: bsp::poll_input_action_bindings_00a92370",
+      "real_state": "GameInputActions::Impl::call_00a92370 passes the actual configured action. After 00A92090's device callbacks, its current +10h pointer and +14h count are borrowed; the existing body reads each actual 34h binding's +14h flag, including unresolved bindings. The typed caller borrows its existing vector.",
+      "effect": "The returned flag selects the existing one_00d7a24c versus the binding's actual scale in the poll. Both old scans are deleted; there is one address body and no new owner, binding values, allocations or device callbacks.",
+      "abi": "Existing ordinary C++ source interface generalized to a borrowed typed/native view; not an original register-ABI replacement. Native rows require a stable valid count*34h allocation during the scan.",
+      "original_evidence": [
+        "bsp.py show 00a92050 --asm: 00A92050..00A92082, +10h/+14h vector and byte +14h with stride 34h, early true on any nonzero byte",
+        "bsp.py show 00a92370 --asm: 00A92390 calls the relative query; 00A92395..00A923C5 then inlines the same scan over all rows"
+      ],
+      "call_graph": {
+        "before": "No function in the fresh Win32 build matches 00a92050.",
+        "after": "REACHABLE; 2 call sites, from poll_native_input_action_00a92370 and poll_input_action_bindings_00a92370.",
+        "entry_path": "WinMainCRTStartup -> GameStartupHost initialization -> GameNativeInputConfigurationApplication -> GameInputActions -> call_00a92370 -> poll_native_input_action_00a92370 -> any_input_binding_forces_unit_scale_00a92050"
+      }
+    },
+    {"native":"009c2ac0","status":"skipped","host_site":"src/game_hosts_units_motion.cpp: land moveto construction","reason":"Missing a genuine retained land-moveto root and its complete observer/task lifetime contract; the host currently flattens the state."},
+    {"native":"007bbc10","status":"skipped","host_site":"src/game_hosts_units_motion.cpp: pilot target query","reason":"Missing retained pilot+98h target publication; approach and command targets do not establish that field."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp: AI candidate score list","reason":"Debug-only score records have no single-player decision consumer; excluded by assignment."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp: AI candidate score list","reason":"Debug-only chosen markers have no single-player decision consumer; excluded by assignment."},
+    {"native":"005cafb0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor","reason":"Missing a retained movie-camera screen owner and its actual current/default deviation fields at this callback."},
+    {"native":"005cafc0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height","reason":"Missing a retained movie-camera screen owner and its actual current/default overview fields at this callback."},
+    {"native":"005cb970","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits","reason":"Missing a retained movie-camera screen with the current/default speed limits and acceleration time at this callback."},
+    {"native":"005cb9c0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time","reason":"Missing a retained movie-camera screen with the current/default acceleration time at this callback."},
+    {"native":"00aacdf0","status":"skipped","host_site":"include/bsp/native_gui_movie_pool_table.hpp: native_gui_movie_pool_table_reserve_00aad4d0","reason":"No missing source caller: the existing reserve already calls the per-address set-capacity body; the overview identifier is an alias."},
+    {"native":"00b3dbb0","status":"skipped","host_site":"include/bsp/native_cube_texture_pool_table.hpp: grow/reserve","reason":"No missing caller: baseline graph already reports reachable calls from the retained cube table's grow and reserve bodies."},
+    {"native":"00b3dc00","status":"skipped","host_site":"include/bsp/native_cube_texture_pool_table.hpp: native_cube_texture_pool_table_push_back_00b3e9c0","reason":"No missing source caller: the retained cube-table append already calls its per-address grow body."},
+    {"native":"00a0f680","status":"skipped","host_site":"src/game_hosts_ai.cpp: power-up candidate_attack_value","reason":"Missing the air-support flight class's weapon facts and pair-value composition; the existing callback explicitly rejects that domain."},
+    {"native":"004f1830","status":"skipped","host_site":"src/game_hosts_commands.cpp: WeaponDirector make_command_target","reason":"Missing genuine current native mutable F87574/78/7C publications required by the literal initializer; semantic default zeros are insufficient."},
+    {"native":"008f3a20","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: actual property-bag enum insertion","reason":"No missing caller: fresh baseline graph already reports three reachable calls through actual native property-bag producers."},
+    {"native":"00568290","status":"skipped","host_site":"src/game_native_gui_page_icon_services_application.cpp: retained icon services","reason":"Missing an identified live UV-edit operation and its actual virtual88 provider; construction services alone do not authorize an extra UV mutation."},
+    {"native":"0057bec0","status":"skipped","host_site":"src/game_hosts_menu.cpp: Impl::report_loading_progress_0057bec0","reason":"No missing source caller: the existing host already calls report_loading_progress on the retained loading-screen singleton and its actual CRT access."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/game_hosts_commands.cpp: user path editing","reason":"Missing a reached drop-last input operation with a retained selected path slot; the existing follow-mode path is a different operation."},
+    {"native":"00437c70","status":"skipped","host_site":"src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint","reason":"Missing the live checkpoint-difference decision and full profile/checkpoint rewrite contract; the current decision callback always returns false."},
+    {"native":"00aa0e60","status":"skipped","host_site":"src/game_hosts_frontend.cpp: GuiManagerCursorSwitch","reason":"Missing a reached cursor-target operation and virtual88/notify04 providers; the current binding implements only the distinct cursor switch."},
+    {"native":"008eeb10","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: property hash enumeration","reason":"No missing source caller: the actual bag projection already calls the iterator begin body."},
+    {"native":"008eeb60","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: property hash enumeration","reason":"No missing source caller: the actual bag projection already calls the iterator next body."},
+    {"native":"008f23e0","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: actual bag assignment","reason":"No missing source caller: the existing native bag projection already invokes the assignment body."},
+    {"native":"008f0580","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: actual vector payload reassignment","reason":"No missing source caller: the existing native bag projection already invokes the twelve-byte-group reassignment body."}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all 5 existing CTests passed.",
+    "focused_probe": "local/c946-probe.cpp linked /MD with /MANIFEST:EMBED and passed. A device-relative callback changes an unresolved second row's +14h flag to 0x80 before the scan: the resolved first row then yields 0.25 at unit scale; with the flag clear, configured scale 2 yields 0.5. Previous hold/down publication is preserved and relative/value/down callbacks each run exactly once.",
+    "readiness_before": {"wired":10815,"callees_done_no_wired_caller":8461,"ready":1198},
+    "readiness_after": {"wired":10816,"callees_done_no_wired_caller":8460,"ready":1198},
+    "target_readiness_after": {"state":"wired","called":true,"call_sites":2,"callers_live":2},
+    "win32_call_graph_reconstructed_addresses_before": 5696,
+    "win32_call_graph_reconstructed_addresses_after": 5697,
+    "float_math": "No floating expression or x87 schedule changed; only the integer/byte flag scan was factored.",
+    "scope": "Build, focused fixture and static entry-reachability evidence. Game was not run; no gameplay or original-ABI compatibility claim. No Ghidra writes or new address-suffixed body."
+  },
+  "left": "Other native input leaves remain independent. Movie-camera ownership and AI air-support flight-class composition need separate packets. Existing ready-row aliases should not be counted again as new wiring."
+}

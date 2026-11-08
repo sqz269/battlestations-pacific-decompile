@@ -318,7 +318,29 @@ void render_shadow_single_view_00a8e180(void* owner, const void* settings_00f8bb
 // 00A92050, ECX 30h action, RET, AL. True when any binding (vector +10h,
 // count +14h, stride 34h) has byte +14h (force_unit_scale) set. Sibling of
 // 00A92090. Callers: HUD unit-order controls and 0060ABD0.
-bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionBinding>& bindings) noexcept;
+// Borrow either the existing typed bindings or the actual native vector's
+// rows. Native rows must form a stable, valid count*34h allocation for this
+// scan; only their +14h bytes are read. No projected binding objects or
+// default device/scale fields are manufactured for the raw caller.
+class InputBindingUnitScaleView {
+public:
+    InputBindingUnitScaleView(const std::vector<InputActionBinding>& bindings) noexcept
+        : typed_(&bindings), native_(nullptr), count_(bindings.size()) {}
+    static InputBindingUnitScaleView native_rows(const void* rows, std::uint32_t count) noexcept {
+        return {static_cast<const volatile std::uint8_t*>(rows), count};
+    }
+    std::size_t size() const noexcept { return count_; }
+    bool force_unit_scale_at(std::size_t index) const noexcept {
+        return typed_ ? (*typed_)[index].force_unit_scale : native_[index * 0x34u + 0x14u] != 0;
+    }
+private:
+    InputBindingUnitScaleView(const volatile std::uint8_t* rows, std::uint32_t count) noexcept
+        : typed_(nullptr), native_(rows), count_(count) {}
+    const std::vector<InputActionBinding>* typed_;
+    const volatile std::uint8_t* native_;
+    std::size_t count_;
+};
+bool any_input_binding_forces_unit_scale_00a92050(InputBindingUnitScaleView bindings) noexcept;
 
 // 00A92910, __thiscall(manager, int first, int second), RET 8, AL. Actions are
 // manager+4 + index*30h. True when some binding of the first action and some
