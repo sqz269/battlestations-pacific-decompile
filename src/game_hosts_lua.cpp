@@ -1762,9 +1762,12 @@ int binding_trampoline(lua_State* state) {
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
-        // DoVector3's argument is numeric, including Lua's table-to-zero case.
-        // Its diagnostic subject lookup must not call an ID __index metamethod.
+        // These numeric bindings accept Lua's table-to-zero conversion (and
+        // GetDayTime ignores arguments). Diagnostic ID lookup must not invoke
+        // an entity __index before their actual bodies run.
         if (std::strcmp(dispatch_row.name, "DoVector3") != 0
+            && std::strcmp(dispatch_row.name, "SetDayTime") != 0
+            && std::strcmp(dispatch_row.name, "GetDayTime") != 0
             && argc >= 1 && lua_type(state, 1) == LUA_TTABLE) {
             lua_getfield(state, 1, "ID");
             // `ID` is the key text (00928BA5 through 00B67630's lua_pushlstring).

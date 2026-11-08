@@ -731,7 +731,7 @@ int lua_set_rain_drop_num_percent(LuaArgs& args, ContentHost& host)
     return 0;
 }
 
-int lua_set_day_time(LuaArgs& args, ContentHost& host)
+int lua_set_day_time_008b1cc0(LuaArgs& args, TimeOfDayHost& host)
 {
     const int hours = args.get_integer(0);
     const int minutes = args.count() < 2 ? 0 : args.get_integer(1);
@@ -740,7 +740,7 @@ int lua_set_day_time(LuaArgs& args, ContentHost& host)
     return 0;
 }
 
-int lua_get_day_time(LuaResults& results, ContentHost& host)
+int lua_get_day_time_008b1ec0(LuaResults& results, TimeOfDayHost& host)
 {
     int hours = 0;
     int minutes = 0;
