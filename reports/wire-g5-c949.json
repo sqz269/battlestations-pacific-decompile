@@ -1,0 +1,113 @@
+{
+  "chain": 949,
+  "run": 2112,
+  "owner": "agent/g5-w10",
+  "picked": "Existing AD3A80 timed-entry factory on the live frontend/HUD alpha-animation path",
+  "rows": [
+    {
+      "native": "00ad3a80",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::widget_alpha_animation",
+      "detail": "Replace direct 14h allocation and AC2ED0 construction with the sole existing cc13_gui1 factory. Borrow the actual HUD layout and requested slot 0/1; use the same source CRT and image 1.0f constant. Adopt the returned entry in the existing alpha_entries slot; existing updates publish its alpha to the rendered widget and existing deletion returns it once."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail binding set_scroll_range",
+      "reason": "No missing call to add: the host already calls set_scroll_range on its retained briefing scroller when real layout measurements exist."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: registry singleton lifetime",
+      "reason": "Missing a distinct address-specific body to wire: this nodef getter is represented by an existing shared lazy-singleton table row."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No missing producer call: the existing owning property projection already invokes this integer insertion body with its real pooled bag/key/payload."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No missing call: baseline call_graph who confirms the float-bit producer is already entry-reachable from Bag::insert."
+    },
+    {
+      "native": "008f3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No missing producer call: the existing owning property projection already invokes this boolean insertion body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No missing producer call: the current enum projection already passes its actual enum owner and authored symbol to this body."
+    },
+    {
+      "native": "00bf47e0",
+      "status": "skipped",
+      "host_site": "src/native_vfs_provider_enumeration_bindings.cpp: NativeVfsProviderEnumerationBindings::enumerate_entry",
+      "reason": "No missing call: refreshed baseline call_graph who confirms this physical-directory enumeration body is already entry-reachable."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "No missing consumer call: the already-reachable physical enumeration calls this name-join body; Release has no separate symbol, consistent with inlining."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: movie-camera interface",
+      "reason": "Missing a retained MovCamZoom owner and original zoom-command/FOV consumer; the current published mission-camera projection is separate."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: movie-camera interface",
+      "reason": "Missing a retained MovCamAngles owner and its original frame-update clamp call site."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::scoring_slot",
+      "reason": "Missing the original HUD player-timer call site and a native 284h-stride scoring owner; the current scoring interface exposes projected MissionScoreRecord values."
+    },
+    {
+      "native": "0041d1e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: retained registry binding",
+      "reason": "Missing a verified live actual entity/path-interface insertion call site; the existing registry lifetime/cleanup binding alone does not provide it."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_world.cpp: world binding",
+      "reason": "Missing a verified consumer for native World vtable slot 2; its constant AL=1 cannot safely replace a differently defined world gate."
+    }
+  ],
+  "validation": {
+    "setup": "bsp.py brief; bsp.py index --if-stale; baseline scripts/build.ps1 passed all 6 tests",
+    "evidence": "bsp.py show 00ad3a80: indices 0/1 allocate 14h and call AC2ED0; source factory already provides captured-allocation constructor cleanup",
+    "build": "scripts/build.ps1 passed all 6 tests after the change; includes existing timed-entry constructor/update/deletion checks",
+    "call_graph": "AD3A80 was absent as a standalone callable before; after build it has one entry-reachable call at 1009363d from GameFrontendHost::widget_alpha_animation",
+    "entry_path": "WinMain -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameHudHost::update_hud_root_screen_00649860 -> HudRootRowsBinding::weapon_animation -> GameFrontendHost::widget_alpha_animation -> AD3A80",
+    "wired_text_before": 10818,
+    "wired_text_after": 10818,
+    "called_reconstructed_addresses_before": 5700,
+    "called_reconstructed_addresses_after": 5701,
+    "readiness_target_before": {"state": "wired", "called": null},
+    "readiness_target_after": {"state": "wired", "called": true, "call_sites": 1},
+    "count_note": "The readiness source-text state already counted this identifier before the actual factory was linked. The built-executable call graph proves the new invocation; no text-count gain is claimed.",
+    "pc24": "No float arithmetic changed; construction still calls the same AC2ED0 body with the same retained image constant.",
+    "logs": ["local/output/c949-build.log", "local/output/c949-graph-before.log", "local/output/c949-graph-after.log", "local/output/c949-who-after.log", "local/output/c949-readiness-after.log"]
+  },
+  "remaining": [
+    "Frontend bridge continues to admit alpha indices 0/1 only; Section index 2 requires its existing canonical widget/section owner.",
+    "GuiTimedEntryOwner's separate partial projection remains unchanged; no native backing array or second widget tree was introduced.",
+    "Build and call-graph validated, not a drop-in native ABI replacement and not game-validated; the game was not run."
+  ]
+}

@@ -5,6 +5,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_sweepA2.hpp"
 #include "bsp/cc13_seg87.hpp"
+#include "bsp/cc13_gui1.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
@@ -75,6 +76,33 @@ struct BridgeAlphaEntryDelete {
     }
 };
 using BridgeAlphaEntry = std::unique_ptr<GuiTimedEntryStorage, BridgeAlphaEntryDelete>;
+
+// AD3A80's indices 0/1 use the bridge's real borrowed layout and the same
+// AC2ED0 constructor/CRT domain as the retained alpha owner. This adapter
+// supplies operations only; the already-created owner slot adopts the result.
+class BridgeAlphaEntryFactory final : public cc13_gui1::GuiTimedEntryHooks {
+public:
+    void timed_entry_array_resize_00aa77b0(void*, std::int32_t) override {
+        throw std::logic_error("Alpha factory has no native timed-entry array");
+    }
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+    }
+    void* timed_entry_construct_00ac2ed0(void* block, void* widget) override {
+        auto* entry = ::new (block) GuiTimedEntryStorage;
+        return &construct_gui_timed_entry_alpha_00ac2ed0(
+            *entry, *static_cast<GuiLayoutWidget*>(widget), kTimedOne);
+    }
+    void free_failed_constructor_00bf65ac(void* block) noexcept override {
+        singleton_lifetime_free(block);
+    }
+    void timed_entry_construction_returned(void* entry) noexcept override {
+        completed_ = static_cast<GuiTimedEntryStorage*>(entry);
+    }
+    GuiTimedEntryStorage* completed() const noexcept { return completed_; }
+private:
+    GuiTimedEntryStorage* completed_{};
+};
 
 // The same two D3DX9 entry points the font resources use, imported once for the sprite
 // bridge. This is executable plumbing, not a native routine.
@@ -1586,10 +1614,15 @@ GuiTimedEntryStorage* GameFrontendHost::widget_alpha_animation(GuiLayoutWidget& 
         throw std::logic_error("Bridge alpha animation requires native index 0 or 1");
     auto& entry = host.alpha_entries[&widget][slot];
     if (!entry) {
-        void* allocation = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x14, 0x14});
-        if (!allocation) throw std::bad_alloc();
-        auto* created = ::new (allocation) GuiTimedEntryStorage;
-        construct_gui_timed_entry_alpha_00ac2ed0(*created, widget, kTimedOne);
+        // bsp.py show 00AD3A80: indices 0/1 allocate 14h, call AC2ED0,
+        // free the captured block on constructor failure and return the entry.
+        // Replace the former inline producer; subsequent updates/deletion still
+        // consume this sole entry through the existing bridge owner.
+        BridgeAlphaEntryFactory factory;
+        auto* created = static_cast<GuiTimedEntryStorage*>(
+            cc13_gui1::gui_timed_entry_create_by_index_00ad3a80(factory, slot, &widget));
+        if (!created) throw std::bad_alloc();
+        if (factory.completed() != created) std::terminate();
         entry.reset(created);
     }
     return entry.get();
