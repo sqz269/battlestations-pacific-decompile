@@ -162,7 +162,7 @@ void singleton_reset_base_0109ce90_00923620(Seg60Host& host, Raw singleton)
 }
 
 // 00923680, ABI: __fastcall(ECX = singleton) RET. As 00923620 for 00F899EC.
-void singleton_reset_base_00f899ec_00923680(Seg60Host& host, Raw singleton)
+void singleton_reset_base_00f899ec_00923680(DeferredEventLockLifetimeHost& host, Raw singleton)
 {
     host.global_pointer(0x00F899EC) = nullptr;
     singleton.at<std::uint32_t>(0x0) = kSingletonBaseVtable;
@@ -240,10 +240,17 @@ void vec16_reserve_at_least_00923fd0(Seg60Host& host, Raw self, std::uint32_t ca
 
 // 00924200, ABI: __fastcall(ECX = self) RET -> EAX. vtable 00D190C8 and +4h = 00BD1860() (a
 // tracked critical section).
-void* deferred_entity_event_lock_construct_00924200(Seg60Host& host, Raw self)
+void* deferred_entity_event_lock_construct_00924200(DeferredEventLockLifetimeHost& host, Raw self)
 {
     self.at<std::uint32_t>(0x0) = kDeferredEventLockVtable;
-    self.ptr(0x4) = host.critical_section_create_00bd1860();
+    try {
+        self.ptr(0x4) = host.critical_section_create_00bd1860();
+    } catch (...) {
+        // CA6B08 -> DD9D10/DD9D08 -> CA6B00 -> 00923680: clear
+        // F899EC and stamp CE3818; do not release the +4h preimage.
+        singleton_reset_base_00f899ec_00923680(host, self);
+        throw;
+    }
     return self.p;
 }
 
@@ -519,12 +526,25 @@ void pending_init_lock_destruct_00925630(Seg60Host& host, Raw self)
 
 // 00925710, ABI: __fastcall(ECX = self) RET. As 00925400 with vtable 00D190C8 and 00F899EC
 // (the destructor of 00924200's object).
-void deferred_entity_event_lock_destruct_00925710(Seg60Host& host, Raw self)
+__declspec(noinline) void deferred_entity_event_lock_destruct_00925710(
+    DeferredEventLockLifetimeHost& host, Raw self)
 {
     self.at<std::uint32_t>(0x0) = kDeferredEventLockVtable;
     host.critical_section_destroy_owned_0041cc80(self.p + 0x4);
     host.global_pointer(0x00F899EC) = nullptr;
     self.at<std::uint32_t>(0x0) = kSingletonBaseVtable;
+}
+
+// bsp.py show 00925740: stamp D190C8; 0041CC80(self+4); clear F899EC;
+// stamp CE3818; free captured self iff flags&1; return captured self.
+// New source interface, not the native thiscall/RET4 ABI or callable vtable.
+void* deferred_entity_event_lock_scalar_delete_00925740(
+    DeferredEventLockLifetimeHost& host, Raw self, std::uint32_t flags)
+{
+    void* const captured = self.p;
+    deferred_entity_event_lock_destruct_00925710(host, self);
+    if ((flags & 1u) != 0) host.free_00bf65ac(captured);
+    return captured;
 }
 
 // 00925AF0, ABI: __fastcall(ECX = list) RET -> EAX. +4h = 00924A50(), +8h = 0.

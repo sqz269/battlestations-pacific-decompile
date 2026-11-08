@@ -1071,6 +1071,31 @@ std::int32_t air_ops_slot_capacity_006bd460(const AirOpsDeck& deck, int slot_ind
     return capacity;
 }
 
+namespace {
+// Goal 5 chain 804: a borrowed view of the SAME deck/class/counts that the
+// 006C0F00 caller already uses. The opaque Object arguments identify typed
+// host storage (AirOpsDeck and its class-key argument), not native layouts.
+// No class or stock record is manufactured and no second stock walk is run.
+class DeckStockAvailableHost final : public pool_pool13_cc13::AirOpsStockAvailableHost {
+public:
+    explicit DeckStockAvailableHost(const std::int32_t* launched_counts) noexcept
+        : launched_counts_(launched_counts) {}
+
+    std::int32_t* air_ops_stock_available_006bf230(pool_pool13_cc13::Object block,
+        std::int32_t* out, pool_pool13_cc13::Object vehicle_class) override {
+        const auto& deck = *reinterpret_cast<const AirOpsDeck*>(block);
+        const auto key = *reinterpret_cast<const std::uint32_t*>(vehicle_class);
+        const AirOpsStockAvailable stock = bsp::air_ops_stock_available_006bf230(
+            deck, key, launched_counts_);
+        out[0] = stock.available;
+        out[1] = stock.total;
+        return out;
+    }
+private:
+    const std::int32_t* launched_counts_;
+};
+} // namespace
+
 // 006C0F00, __thiscall(ECX = block, slot, class, count), RET 0Ch.
 // DOCUMENTED DEVIATIONS (cc13-D2):
 // - The slot-index guard is a host guard; every caller passes a valid index.
@@ -1097,8 +1122,13 @@ std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
     // 006C0F6B-006C0FFD: the stock not held by idle slots, plus this slot's own
     // count when it already holds the class; while short, take from the other
     // idle slots of the class, last slot first.
-    std::int32_t free_stock = air_ops_stock_available_006bf230(
-        deck, vehicle_class, launched_plane_counts).available;
+    // bsp.py show 006bf330: the entire accessor returns word zero from the
+    // 006BF230 pair. Use that existing body for 006C0F70's available-only
+    // query; the total query above and all three clamp orders stay intact.
+    DeckStockAvailableHost stock_host(launched_plane_counts);
+    std::int32_t free_stock = pool_pool13_cc13::air_ops_free_stock_for_class_006bf330(
+        stock_host, reinterpret_cast<pool_pool13_cc13::Object>(&deck),
+        reinterpret_cast<pool_pool13_cc13::Object>(&vehicle_class));
     if (old_class == vehicle_class) free_stock += slot.assigned_count;
     for (int i = static_cast<int>(deck.slots.size()) - 1; i >= 0 && free_stock < count; --i) {
         AirOpsSlot& s = deck.slots[static_cast<std::size_t>(i)];

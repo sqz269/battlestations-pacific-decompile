@@ -1,0 +1,314 @@
+{
+  "run": 1712,
+  "harness": "codex",
+  "chain": 795,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "base": "643635eb1e",
+  "picked": "AISetCommand Lua producer and retained CAUTIOUSMOVE/REGROUPINGMOVE command owners",
+  "rows": [
+    {
+      "native": "00a102d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::replace_command via NativeMoveCommand",
+      "detail": "Retained CAUTIOUSMOVE construction from the current group and Lua targetPos; constructor fields feed the existing command tick."
+    },
+    {
+      "native": "00a10310",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:NativeMoveCommand::state",
+      "detail": "Select the existing type leaf from the constructor's actual D22AEC vtable result."
+    },
+    {
+      "native": "00a10370",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::replace_command via NativeMoveCommand",
+      "detail": "Retained REGROUPINGMOVE construction from the current group and Lua targetPos; constructor fields feed the existing command tick."
+    },
+    {
+      "native": "00a103a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:NativeMoveCommand::state",
+      "detail": "Select the existing type leaf from the constructor's actual D22B14 vtable result."
+    },
+    {
+      "native": "00a13340",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_ai_set_command::Binding::ai_command_from_table",
+      "detail": "Existing ai_tail_command_recipe class-selection projection now consumes real commandType; the host decodes actual targetPos/target and the existing install path constructs the selected command."
+    },
+    {
+      "native": "00a37a00",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:binding_trampoline -> GameMissionLuaHost::run_ai_set_command",
+      "detail": "Existing lua_binding_ai_set_command sequence resolves the actual entity group, consumes the mission Lua command table, and replaces the group command once."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing actual movie-camera limit storage and its live consumer; the existing callback aborts."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing actual movie-camera limit storage and its live consumer; the existing callback aborts."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing retained native speed-limit screen owner and its live consumer."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing retained native acceleration-limit screen owner and its live consumer."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing retained MovCamZoom fields and original camera-FOV consumer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score list",
+      "reason": "Missing live score-list owner and gameplay consumer; documented debug-overlay consumer is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score list",
+      "reason": "Missing live candidate score-list entries and gameplay chosen-byte consumer; debug overlay is excluded."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:compose_against_group",
+      "reason": "Missing resolved plane-class weapon-value facts for the air-support flight block."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:defend think",
+      "reason": "Existing source already calls the predicate; this packet established no additional reached caller."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/global_subsystems.cpp:marker-class lifecycle",
+      "reason": "Missing concrete live MarkerClassContext owner at the session-teardown call site."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp:scalar delete",
+      "reason": "Already called by reachable code before this packet; no new wiring required."
+    },
+    {
+      "native": "00ab2150",
+      "status": "skipped",
+      "host_site": "src/native_gui_icon_storage.cpp:scalar delete",
+      "reason": "Already called by reachable code before this packet; no new wiring required."
+    },
+    {
+      "native": "00acf610",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_lifetime.cpp:scalar delete",
+      "reason": "Already called by reachable code before this packet; no new wiring required."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp:factory",
+      "reason": "Already called by reachable code before this packet; no new wiring required."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp:character admission",
+      "reason": "Missing live input-character consumer with its retained text-context font."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp:curve construction",
+      "reason": "Missing constructed Curve widget and its authored-point tessellation/render consumer."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp:marker placement",
+      "reason": "Missing matching original projection/margin producer; the host camera substitute pre-culls the centre."
+    },
+    {
+      "native": "007c3ea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_report.cpp:human-pilot touchdown census",
+      "reason": "Missing human-pilot command/retire/control-resume callback path; current site reports it as not carried."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp:initialize_first_leader",
+      "reason": "Missing native InitWithLeader member attachment and leader-unit callbacks; retained group uses registry identities."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:wreck terrain step",
+      "reason": "Missing actual DYN shape-chain storage and manifold-clear/world-lock callbacks."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile water entry",
+      "reason": "Missing shot effect slots +24h/+28h and their complete lifecycle providers."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:clear_bot_fire_target_00728000",
+      "reason": "Missing admitted raw bot target-record/observer storage and observer-detach binding."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile tick",
+      "reason": "Missing launch-delay/active/arming producers and the complete BombTickHost lifecycle."
+    },
+    {
+      "native": "0084bf00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile impact",
+      "reason": "Missing complete native decal/presentation/effect contracts for the reconstructed impact host."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:director path owner",
+      "reason": "Missing original-layout director path-slot array; current path ownership is semantic and commands files are in review."
+    },
+    {
+      "native": "00b65710",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp:camera_classify_aabb_00b71590",
+      "reason": "Missing live concrete CameraServices adapter with the actual plane-set storage/count and input AABB."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp:hide_main_menu_glyph_widgets_005495a0",
+      "reason": "Missing concrete production command-bar widget owner and reset host."
+    },
+    {
+      "native": "005495e0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp:hide_main_menu_alternate_widgets_005495e0",
+      "reason": "Missing concrete production command-bar widget owner and reset host."
+    },
+    {
+      "native": "00549620",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_owner.cpp:set_main_menu_help_variant_00549620",
+      "reason": "Missing live command-owner help-page producer and concrete reset callback binding."
+    },
+    {
+      "native": "005b6960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:blackout overlay",
+      "reason": "Missing live blackout GUI widget and established original blackout trigger."
+    },
+    {
+      "native": "009be050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:follow hold arm",
+      "reason": "Address/file ownership belongs to agent/g5-w7 during this packet; no concurrent edit made."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:order-ring restoration",
+      "reason": "Missing evidenced Lua-restoration toTurn input; normal StartSpeed initialization is not that producer."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp:plane engine sound components",
+      "reason": "Missing live engine-sound component holders and corresponding sound-parameter consumer."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp:support_site_squad_size_0084cf80",
+      "reason": "Missing live support-site stock owner and original support-menu/spawn-composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp:support_site_can_supply_class_0084d050",
+      "reason": "Missing live support-site inventory filter and owner-health input provider."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp:scene multiline writer",
+      "reason": "Missing concrete reached Seg59bHost multiline-writer caller."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/file_store_cc13.cpp:RamImage",
+      "reason": "Missing raw RamImage pixel-buffer field storage; current typed image owns pixels in std::vector."
+    },
+    {
+      "native": "00bbb890",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp:MSAR TOC reader",
+      "reason": "Missing live MSAR archive-byte producer and TOC consumer in the inspected VFS path."
+    }
+  ],
+  "wired_total": {
+    "before": 10636,
+    "after": 10642,
+    "delta": 6,
+    "measure": "wire_readiness.py summary.wired"
+  },
+  "built": [
+    "Registered AISetCommand trampoline using the existing binding sequence and class-selection recipe.",
+    "Resolved current coordinator entity groups, including the retained PlaneSquadronGen creation identity.",
+    "Retained constructor output and decoded its type, owner and destination for existing command ticks.",
+    "Mapped CAUTIOUSMOVE route state to native +18h/+1Ch and published route tick mutations back to retained bytes.",
+    "Kept ATTACK construction and observer retirement on the existing common replacement path."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all 4 tests",
+    "final_build": "scripts/build.ps1 passed all 4 tests; local/output/c795_build.log",
+    "focused_probe": "tests/wire_g5_c795_ai_move_probe.cmd passed constructor/type/destination/route-state and binding-sequence checks; synthetic fixture, no game execution",
+    "call_graph": "Both constructors and type getters REACHABLE with one call site each from GameAiCoordinatorHost::Impl::replace_command; lua_binding_ai_set_command and ai_tail_command_recipe each REACHABLE from the actual Lua adapter.",
+    "call_chain": "WinMainCRTStartup -> mission Lua binding registration/trampoline -> run_ai_set_command -> ai_install_group_command -> replace_command -> existing native constructors/type leaves",
+    "pc24": "No float arithmetic changed; precommit pc24_lint --diff origin/main reported zero findings. Exact committed-range check follows commit.",
+    "whitespace": "git diff --check passed"
+  },
+  "evidence": [
+    "bsp.py show 00a102d0",
+    "bsp.py show 00a10370",
+    "bsp.py show 00a10310",
+    "bsp.py show 00a103a0",
+    "bsp.py show 00a37a00",
+    "bsp.py show 00a13340 --start 90 --lines 90",
+    "bsp.py show 00888760",
+    "bsp.py ghidra proto verified battlestationspacific.exe"
+  ],
+  "limitations": [
+    "Source adapter and reconstructed C++ ABI, not native binary replacement or gameplay proof; game was not run.",
+    "AISetCommand requires an existing live coordinator group. Invalid entity/group inputs raise a Lua error instead of supplying invented state.",
+    "targetPos requires numeric x/y/z; native missing-lane behavior is undefined, so the new adapter rejects incomplete vectors.",
+    "00A13340 remains the existing class-selection projection; the host supplies actual Lua payload decoding and command installation, not a new complete native allocation/EH reconstruction.",
+    "The existing planner ratio=1 path still cannot select CAUTIOUSMOVE; the independent actual Lua binding supplies the dynamic producer."
+  ]
+}

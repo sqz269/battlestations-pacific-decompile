@@ -1471,8 +1471,20 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
         // 0077C470's gate: game+5D4h > 0Ch (in mission) and session mode 0.
         role_message_4b_00780162(plus_one - 1, mask, kLocalPlayerSlot, take);
     };
-    if (controlled_plus_one == 0 ||
-        !bsp::unit_is_kind_of(slots[controlled_plus_one - 1]->class_id, 2)) {
+    // 00523580 (bsp.py show --asm): null receiver -> null; otherwise ask
+    // vslot 5Ch for kind 2 and retain that same receiver on success. Bind
+    // only this kind slot to the controlled unit's live class identity.
+    struct UnitKind final : bsp::cc13_seg14::EntityKindHooks {
+        bool object_is_kind_virtual_5c(void* object, std::uint32_t kind) override {
+            return bsp::unit_is_kind_of(static_cast<GameUnitSlot*>(object)->class_id,
+                static_cast<int>(kind));
+        }
+    } kinds;
+    auto* const controlled_slot = controlled_plus_one != 0
+        ? slots[controlled_plus_one - 1].get() : nullptr;
+    auto* const role_owner = static_cast<GameUnitSlot*>(
+        bsp::cc13_seg14::entity_cast_if_kind_00523580(controlled_slot, kinds));
+    if (role_owner == nullptr) {
         if (role_screen_unit_plus_one != 0) {                    // 0067BC2C..0067BC37
             send(role_screen_unit_plus_one, 1u, 0);
             role_screen_unit_plus_one = 0;
@@ -1487,7 +1499,7 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     // 0067BBC8: game+18ECh in [0, 7]; 0067BBE0: page byte +4h set (both always
     // hold on the pump path, see above).
     if (holds(controlled_plus_one, 0)) return;
-    GameUnitSlot& c = *slots[controlled_plus_one - 1];
+    GameUnitSlot& c = *role_owner;
     // 0059BBD0: native_unit_role_open_to_slot_0059bbd0(role 0, the local slot) over the
     // unit's +188h policy table; OFF keeps the inline test.
     if (bsp::native_unit_role_open_to_slot_0059bbd0(c.role_permission_0188, 0u,

@@ -58,7 +58,10 @@
 #include <string>
 #include <vector>
 
-namespace bsp { struct SceneCommandTarget; }
+namespace bsp {
+struct SceneCommandTarget;
+struct AiCommandObject;
+}
 
 namespace bsp::game {
 
@@ -522,9 +525,13 @@ bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader
 // The live coordinator owns entity+16Ch membership and group+564Ch commands.
 // Borrowed group identities last only until group removal/coordinator teardown;
 // callers resolve them for synchronous 0077D600 -> 00A2BD90 notifications.
-void* ai_group_for_unit(std::size_t unit) noexcept;
 void ai_forward_group_member_command(void* group, void* scene_command,
     const bsp::SceneCommandTarget& target);
+// AISetCommand's 00A37250/00A2BD00 boundary: current entity+16Ch group,
+// then a replacement consumed by that group's existing command tick.
+// The EntityOrder path shares this creation-identity-preserving lookup.
+void* ai_group_for_entity(std::size_t unit) noexcept;
+bool ai_install_group_command(void* group, const bsp::AiCommandObject& command);
 
 class GameAiCoordinatorHost {
 public:

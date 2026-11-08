@@ -4809,6 +4809,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // [game+21DCh] for the LoadMessageMap binding (008C62FC). Null until
             // construct_world builds it; that step attaches it as well.
             host.script_orders->attach_message_manager(host.messages.get());
+            host.script_orders->attach_global_subsystems(host.global_subsystems.get());
             for (const GameSceneMarkerSeed& marker : markers) {
                 // Packet cc9_building_pad_model: the class id lets the pad model
                 // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).
@@ -4990,6 +4991,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.warning_tables_error.clear();
                 if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
                 host.global_subsystems->build_weather();
+                if (host.script_orders != nullptr)
+                    host.script_orders->attach_global_subsystems(host.global_subsystems.get());
                 const auto& owners = host.global_subsystems->summary();
                 host.log.notef("global subsystems built: traffic=%d panel=%d warnings=%d "
                     "weather=%d loads traffic=%llu dialog=%llu weather=%llu failures=%llu%s%s "

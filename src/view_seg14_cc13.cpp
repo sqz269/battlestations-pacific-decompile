@@ -462,7 +462,7 @@ Raw cast_if_kind(Raw entity, std::uint32_t kind, EntityKindHooks& hooks) {
 
 Raw entity_cast_if_kind_00523540(Raw entity, ViewSeg14Hooks& hooks) { return cast_if_kind(entity, 1, hooks); }
 __declspec(noinline) Raw entity_cast_if_kind_00523560(Raw entity, EntityKindHooks& hooks) { return cast_if_kind(entity, 0x18, hooks); }
-Raw entity_cast_if_kind_00523580(Raw entity, ViewSeg14Hooks& hooks) { return cast_if_kind(entity, 2, hooks); }
+__declspec(noinline) Raw entity_cast_if_kind_00523580(Raw entity, EntityKindHooks& hooks) { return cast_if_kind(entity, 2, hooks); }
 
 // ---------------------------------------------------------------------------------------------
 // Control-layout listeners

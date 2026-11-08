@@ -1,8 +1,100 @@
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/native_deferred_entity_lock.hpp"
+#include "bsp/native_renderer_worker_lifetime.hpp"
+#include "bsp/native_tracked_critical_section_release.hpp"
+#include "bsp/native_singleton_publication.hpp"
+#include "bsp/native_singleton_vector_registration_wrappers.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cmath>
 #include <cstring>
+#include <stdexcept>
+
+namespace bsp {
+namespace {
+void* deferred_lock_publication_00f899ec{};
+
+class ProcessDeferredEventLockServices final
+    : public entity_mission_seg60_argon::DeferredEventLockAccess,
+      public cc13_seg49::DeferredEventLockLifetimeHost {
+public:
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address != 0x00f899ec) throw std::logic_error("deferred lock publication address");
+        static_assert(sizeof(void*) == sizeof(std::uint32_t));
+        return reinterpret_cast<std::uint32_t&>(deferred_lock_publication_00f899ec);
+    }
+    void*& global_pointer(std::uint32_t address) override {
+        if (address != 0x00f899ec) throw std::logic_error("deferred lock publication address");
+        return deferred_lock_publication_00f899ec;
+    }
+    void* singleton_lifetime_get_manager_00415350() override {
+        return get_native_singleton_manager_00415350(
+            game::game_native_string_process().manager_01090aa0());
+    }
+    void enter_critical_section_00ce2218(void* cs) override {
+        EnterCriticalSection(static_cast<CRITICAL_SECTION*>(cs));
+    }
+    void leave_critical_section_00ce2210(void* cs) override {
+        LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(cs));
+    }
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+    }
+    void free_00bf6989(void* allocation) override { singleton_lifetime_free(allocation); }
+    void free_00bf65ac(void* allocation) override { singleton_lifetime_free(allocation); }
+    void* deferred_entity_event_lock_construct_00924200(void* mem) override {
+        return cc13_seg49::deferred_entity_event_lock_construct_00924200(
+            *this, cc13_seg49::Raw{static_cast<std::uint8_t*>(mem)});
+    }
+    void singleton_lifetime_register_00bd0c30(void* manager, void* instance) override {
+        register_native_singleton_object_00bd0c30(manager, nullptr, instance);
+    }
+    void* critical_section_create_00bd1860() override {
+        return create_native_tracked_critical_section_00bd1860();
+    }
+    void critical_section_destroy_owned_0041cc80(void* owner_slot) override {
+        release_native_tracked_critical_section_0041cc80(
+            static_cast<TrackedCriticalSection**>(owner_slot));
+    }
+};
+ProcessDeferredEventLockServices& process_deferred_lock_services() {
+    // No state or owned allocation; safe through late registered-owner drains.
+    static auto* const services = new ProcessDeferredEventLockServices;
+    return *services;
+}
+} // namespace
+
+void*& process_native_deferred_entity_lock_publication() noexcept {
+    return deferred_lock_publication_00f899ec;
+}
+
+void retire_native_deferred_entity_lock(void* captured_owner, std::uint32_t flags) {
+    cc13_seg49::deferred_entity_event_lock_scalar_delete_00925740(
+        process_deferred_lock_services(),
+        cc13_seg49::Raw{static_cast<std::uint8_t*>(captured_owner)}, flags);
+}
+
+NativeDeferredEntityEventQueueGuard::NativeDeferredEntityEventQueueGuard() {
+    auto* const owner = static_cast<std::uint8_t*>(
+        entity_mission_seg60_argon::deferred_entity_event_lock_get_00924990(
+            process_deferred_lock_services()));
+    captured_ = *reinterpret_cast<TrackedCriticalSection**>(owner + 4);
+    if (captured_ != nullptr) {
+        EnterCriticalSection(&captured_->native);
+        ++captured_->depth;
+    }
+}
+
+NativeDeferredEntityEventQueueGuard::~NativeDeferredEntityEventQueueGuard() {
+    if (captured_ != nullptr) {
+        --captured_->depth;
+        LeaveCriticalSection(&captured_->native);
+    }
+}
+} // namespace bsp
 
 namespace bsp::entity_mission_seg60_argon {
 
@@ -271,7 +363,7 @@ float* scene_property_copy_float16_00924280(
 
 // 0x00924990: BSP_DeferredEntityEventLock_Get
 // Original ABI: void* __cdecl(), RET 0.
-void* deferred_entity_event_lock_get_00924990(Seg60Host& host) {
+void* deferred_entity_event_lock_get_00924990(DeferredEventLockAccess& host) {
   if (host.global_u32(0x00f899ec) == 0) {
     void* mgr = host.singleton_lifetime_get_manager_00415350();
     void* cs = Raw{static_cast<std::uint8_t*>(mgr)}.ptr(0x10);
@@ -279,11 +371,30 @@ void* deferred_entity_event_lock_get_00924990(Seg60Host& host) {
       host.enter_critical_section_00ce2218(cs);
       Raw{static_cast<std::uint8_t*>(cs)}.at<std::int32_t>(0x18) += 1;
     }
+    // Original FH3 DD9DE0/DD9DD0: state0 CA6B80 releases this captured
+    // manager section via 00411EE0. Source C++ exceptions take the same cleanup.
+    struct CapturedManagerSection {
+      DeferredEventLockAccess& host;
+      void* section;
+      ~CapturedManagerSection() {
+        if (section != nullptr) {
+          Raw{static_cast<std::uint8_t*>(section)}.at<std::int32_t>(0x18) -= 1;
+          host.leave_critical_section_00ce2210(section);
+        }
+      }
+    } guard{host, cs};
     if (host.global_u32(0x00f899ec) == 0) {
       void* mem = host.operator_new_00bf681b(8);
       void* constructed = nullptr;
       if (mem != nullptr) {
-        constructed = host.deferred_entity_event_lock_construct_00924200(mem);
+        try {
+          constructed = host.deferred_entity_event_lock_construct_00924200(mem);
+        } catch (...) {
+          // state1 CA6B88 frees the captured raw8 before state0 cleanup;
+          // its BF65AC and the host's BF6989 use the same CRT backing.
+          host.free_00bf6989(mem);
+          throw;
+        }
       }
       host.global_u32(0x00f899ec) = reinterpret_cast<std::uint32_t>(constructed);
       void* reg_mgr = host.singleton_lifetime_get_manager_00415350();
@@ -291,10 +402,6 @@ void* deferred_entity_event_lock_get_00924990(Seg60Host& host) {
           reg_mgr,
           reinterpret_cast<void*>(host.global_u32(0x00f899ec))
       );
-    }
-    if (cs != nullptr) {
-      Raw{static_cast<std::uint8_t*>(cs)}.at<std::int32_t>(0x18) -= 1;
-      host.leave_critical_section_00ce2210(cs);
     }
   }
   return reinterpret_cast<void*>(host.global_u32(0x00f899ec));

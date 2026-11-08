@@ -3,6 +3,19 @@
   "goal": 5,
   "chain": 809,
   "owner": "agent/g5-w5",
+  "landing_repair": {
+    "merged_main": "56d16d06565bdcc570bf3506ed14fdb319dc4f69",
+    "conflicts_resolved": ["include/bsp/game_hosts_ai.hpp", "src/game_hosts_ai.cpp"],
+    "resolution": "Retained main's AISetCommand installation and squadron creation-identity lookup. EntityOrderBinding now shares ai_group_for_entity; retained the forwarding adapter and both required forward declarations. Removed the redundant ai_group_for_unit lookup.",
+    "ledger_or_startup_conflicts": false,
+    "normal_build": "MSVC Win32 Release build and all four existing CTest checks passed, both before the ON check and after restoring the original switch settings.",
+    "on_build": "python tools/off_switch_on_build.py passed with both default switches ON, zero diagnostics and all four CTest checks passing.",
+    "on_headers_restored_sha256": true,
+    "wired_total_after_merge": 10675,
+    "readiness": {"state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "compiled_called_after_merge": 5530,
+    "forwarding_call": "One entry-reachable call at 1004AF2D from ai_forward_group_member_command to group_forward_command_00a2bd90 at 10402FE0."
+  },
   "rows": [
     {
       "native": "00803ba0",

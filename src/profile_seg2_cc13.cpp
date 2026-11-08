@@ -358,7 +358,7 @@ void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host) {
 // the same with angle = -0.0f - angle (SUBSS, single precision). The third
 // sibling 0042B4D0 already exists as rotation_z_0042b4d0 in
 // src/marker_manager_cc13.cpp and is not duplicated here.
-Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, Seg2Host& host) {
+Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegatedRotationHost& host) {
     Mat16 temp{};
     const float negated = kNegativeZero - angle;
     host.build_rotation_x_00b64640(temp, negated);
@@ -366,7 +366,7 @@ Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, Seg2Host& ho
     return matrix;
 }
 
-Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, Seg2Host& host) {
+Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host) {
     Mat16 temp{};
     const float negated = kNegativeZero - angle;
     host.build_rotation_y_00b646e0(temp, negated);

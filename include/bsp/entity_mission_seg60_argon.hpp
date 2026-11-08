@@ -48,7 +48,21 @@ struct UnitMessageConstructionHost {
   virtual void* session_message_construct_base_0075b430(void* msg, std::uint8_t msg_type) = 0;
 };
 
-struct Seg60Host : UnitMessageConstructionHost {
+// The lazy deferred-hit lock needs no entity, Lua or hit-record services.
+// Keep its real process publication and lifetime manager usable independently.
+struct DeferredEventLockAccess {
+  virtual ~DeferredEventLockAccess() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void* singleton_lifetime_get_manager_00415350() = 0;
+  virtual void enter_critical_section_00ce2218(void* cs) = 0;
+  virtual void leave_critical_section_00ce2210(void* cs) = 0;
+  virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+  virtual void free_00bf6989(void* ptr) = 0;
+  virtual void* deferred_entity_event_lock_construct_00924200(void* mem) = 0;
+  virtual void singleton_lifetime_register_00bd0c30(void* manager, void* instance) = 0;
+};
+
+struct Seg60Host : UnitMessageConstructionHost, DeferredEventLockAccess {
   virtual ~Seg60Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -400,7 +414,7 @@ float* scene_property_copy_float16_00924280(
     void* prop_record,
     float* dst16
 ) noexcept;
-void* deferred_entity_event_lock_get_00924990(Seg60Host& host);
+void* deferred_entity_event_lock_get_00924990(DeferredEventLockAccess& host);
 void* hit_record_assign_00925050(Seg60Host& host, void* dst_record, const void* src_record);
 void entity_destruct_base_00925780(Seg60Host& host, void* entity);
 void* cg_adjustor_thunk_009258d0(Seg60Host& host, void* subobj_at_24, std::int32_t flags);

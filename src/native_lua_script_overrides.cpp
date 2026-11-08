@@ -1,6 +1,7 @@
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
 #include <cstring>
 #include <Windows.h>
 #include <intrin.h>
@@ -58,15 +59,13 @@ void append_candidate(void* manager,const NativeString& stem,const NativeString&
 }
 void append_native_lua_script_overrides_00bdef90(void* manager,const NativeString& path,NativeStringVectorStorage& output,NativeStringStorage& strings,NativeLuaVfsDispatch& dispatch){
     const auto slash=reverse_find_native_string_bytes_004bcb80(path,"/",0x7fffffff);
-    auto start=slash==0xffffffffu?0u:slash;std::uint32_t dot=0xffffffffu;
-    const char* const data=path.data();
-    if(data && path.length()){
-        if(static_cast<std::int32_t>(start)<0)start=0;
-        if(start<=path.length()){
-            const auto found=start+static_cast<std::uint32_t>(std::strcspn(data+start,"."));
-            if(found!=path.length())dot=found;
-        }
-    }
+    const auto start=slash==0xffffffffu?0u:slash;
+    // Chain 807: BDEF90's inlined first-of scan is the same operation as
+    // 005B69B0 (bsp.py show 00bdef90 / 005b69b0). Reuse its body on the
+    // caller's actual owned header; this is source reuse, not an original
+    // BDEF90 -> 005B69B0 call edge or a native ABI replacement.
+    const auto dot=static_cast<std::uint32_t>(cc13_fe1::native_string_find_first_of_005b69b0(
+        &path,".",static_cast<std::int32_t>(start)));
     NativeString stem;
     __try {
         NativeString extension;

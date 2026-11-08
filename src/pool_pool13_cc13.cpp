@@ -33,7 +33,7 @@ void line(Pool13Host& host, const Point& p0, const Point& p1, const float (&colo
 // EAX = [returned pointer] (the pair's first word, the available count).
 // No EH frame. Callers 006CCDA0, 006CD350.
 // ---------------------------------------------------------------------------
-std::int32_t air_ops_free_stock_for_class_006bf330(Pool13Host& host, Object block, Object vehicle_class) {
+std::int32_t air_ops_free_stock_for_class_006bf330(AirOpsStockAvailableHost& host, Object block, Object vehicle_class) {
     std::int32_t pair[2];
     return *host.air_ops_stock_available_006bf230(block, pair, vehicle_class);
 }
