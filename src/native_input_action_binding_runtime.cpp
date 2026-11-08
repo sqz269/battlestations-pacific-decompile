@@ -1,4 +1,5 @@
 #include "bsp/native_input_action_binding_runtime.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
 #include <cstdlib>
 #include <cstring>
 
@@ -292,11 +293,13 @@ void poll_native_input_action_00a92370(void* actual_action, NativeInputActionBin
     }
     const auto any_relative = query_native_input_action_relative_00a92090(actual_action, context.devices);
     const auto first = read(header);
-    const auto scan_end = first + read(header, 4) * 0x34u;
-    bool unit_scale = false;
-    for (auto row = first; row != scan_end; row += 0x34u) {
-        if (read<std::uint8_t>(row, 0x14)) { unit_scale = true; break; }
-    }
+    // bsp.py show 00A92370 --asm, 00A92395..00A923C5: the image inlines
+    // 00A92050's same +14h scan over ALL bindings, including unresolved ones.
+    // Reuse that sole reconstructed body on the real action's current rows,
+    // captured after 00A92090's device callbacks. This is a Source substitution
+    // for the inlined scan, not an original call edge or register-ABI adapter.
+    const bool unit_scale = cc13_audio::any_input_binding_forces_unit_scale_00a92050(
+        cc13_audio::InputBindingUnitScaleView::native_rows(pointer(first), read(header, 4)));
     auto binding = first;
     while (binding != array_end(header, 0x34)) {
         if (read<std::uint8_t>(binding) && modifiers_allow(binding + 0x18u, false, context.devices)

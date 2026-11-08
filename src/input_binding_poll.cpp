@@ -1,5 +1,6 @@
 #include "bsp/input_binding_poll.hpp"
 #include "bsp/input_tick.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
 
 #include <cstring>
 
@@ -143,13 +144,7 @@ void poll_input_action_bindings_00a92370(InputActionRecord& record,
     InputBindingPollHost& host) {
     begin_action_frame_00a92370(record);
     const bool any_device_query = any_input_binding_query_00a92090(record.bindings, host);
-    bool force_unit_scale = false;
-    for (const auto& binding : record.bindings) {
-        if (binding.force_unit_scale) {
-            force_unit_scale = true;
-            break;
-        }
-    }
+    const bool force_unit_scale = cc13_audio::any_input_binding_forces_unit_scale_00a92050(record.bindings);
     for (const auto& binding : record.bindings) {
         if (!binding.resolved) continue;
         bool accepted = true;
