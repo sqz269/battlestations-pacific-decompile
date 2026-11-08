@@ -413,6 +413,9 @@ static_assert(GuiListboxPoolTraits::free_count_offset == 0x1820);
 static_assert(GuiListboxPoolTraits::slab_bytes == 0x1824);
 template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize();
 template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate();
+// F8BC10's allocator-list binding must enter its address-named virtual0,
+// rather than bypassing it through the common trim engine.
+template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::invoke_trim(void*);
 extern template class NativeGuiWidgetPool<GuiListboxPoolTraits>;
 namespace game { extern template class GameNativeGuiWidgetPoolProcess<GuiListboxPoolTraits>; }
 extern template void* allocate_gui_widget_pool_slot<GuiListboxPoolTraits>();
