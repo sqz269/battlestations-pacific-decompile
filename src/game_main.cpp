@@ -1202,6 +1202,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Section pool CRT CD72F0: atexit=%d storage_bytes=%zu",
             section_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3490/CD7360: ECX=F8BEFC, CALL AC2160, atexit(CE0AC0).
+        // Start Line's retained process pool after Section and before Group,
+        // sharing the E188B4 allocator-list domain with the other GUI pools.
+        auto& gui_line_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiLinePoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int line_pool_atexit = gui_line_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Line pool CRT CD7360: atexit=%d storage_bytes=%zu",
+            line_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();

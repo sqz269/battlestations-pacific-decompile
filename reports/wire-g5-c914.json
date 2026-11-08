@@ -1,0 +1,137 @@
+{
+  "goal": 5,
+  "chain": 914,
+  "slot": "g5-w4",
+  "owner": "agent/g5-w4",
+  "base": "e42e58c43c8a20c75e4e1b0810390fa0a35d2a2a",
+  "picked": "Actual GUI Line F8BEFC slab-table lifetime and CRT startup",
+  "rows": [
+    {
+      "native": "00ac1ce0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiLinePoolTraits>::destroy -> free_native_gui_line_pool_table_00ac1ce0",
+      "evidence": "call_graph.py who: REACHABLE, one call from the real process pool destroy; path through destroy_at_exit and initialize_once to WinMain."
+    },
+    {
+      "native": "00ac1d10",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: reserve_native_gui_line_pool_table_00ac2020 -> set_native_gui_line_pool_table_capacity_00ac1d10",
+      "evidence": "call_graph.py who: REACHABLE, one tail jump from the Line reserve body; actual process table from initialize_pool."
+    },
+    {
+      "native": "00ac2020",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiLinePoolTraits>::initialize -> initialize_pool -> reserve_native_gui_line_pool_table_00ac2020",
+      "evidence": "call_graph.py who/path: REACHABLE, one call from the Line initialize_pool; GameNativeGuiWidgetPoolProcess<GuiLinePoolTraits>::initialize_once called by WinMain."
+    },
+    {
+      "native": "00ac1d60",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: push_native_gui_line_pool_slab_00ac1fa0 -> grow_native_gui_line_pool_table_00ac1d60",
+      "reason": "Built the actual-table grow entry, but the production GUI Line factory consumer is missing; the default executable does not link this function."
+    },
+    {
+      "native": "00ac1fa0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiLinePoolTraits>::allocate -> push_native_gui_line_pool_slab_00ac1fa0",
+      "reason": "Built the actual allocator dispatch, but the production GUI Line factory consumer is missing; the default executable does not link this function."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller flags provenance",
+      "reason": "Missing a retained controller-state message producer and consumer carrying both descriptors, mode and flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a retained controller snapshot owner and transport consumer; flattened flags alone do not establish this operation."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the native movie-camera screen owner and its current/default deviation fields; the host has only an identity token."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the native movie-camera screen owner and retained current/default overview-height fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the native movie-camera speed-limit storage and live Lua-to-screen consumer."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the native movie-camera acceleration-limit storage and live Lua-to-screen consumer."
+    },
+    {
+      "native": "00b56200",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MshdLayerPointers reserve routine row",
+      "reason": "Missing a live host owner for the original MSHD layer pointer array; a metadata dispatch row does not supply real state."
+    },
+    {
+      "native": "00b56260",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MshdRenderModePointers reserve routine row",
+      "reason": "Missing a live host owner for the original MSHD render-mode pointer array."
+    },
+    {
+      "native": "00b562c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MshdVersionPointers reserve routine row",
+      "reason": "Missing a live host owner for the original MSHD version pointer array."
+    },
+    {
+      "native": "00b56320",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MshdLodPhasePointers reserve routine row",
+      "reason": "Missing a live host owner for the original MSHD LOD-phase pointer array."
+    },
+    {
+      "native": "00aace40",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_movie_pool_table.hpp: native_gui_movie_pool_table_push_back_00aad450",
+      "reason": "An existing actual-table caller already exists, but its Movie factory allocation path is not entry-reachable; no new wiring performed."
+    }
+  ],
+  "built": [
+    "Line-only initialize/allocate/destroy specializations reuse the existing Mit pool/vector engine and actual NativeGuiWidgetPoolStorage.",
+    "WinMain starts the retained Line process pool at verified CE3490/CD7360, after Section and before Group; the existing process registers its actual destroy_at_exit.",
+    "Five address entries share the existing allocator and table, without a second owner, synthetic slab allocation, or old-path double execution."
+  ],
+  "validation": {
+    "baseline_build": "./scripts/build.ps1: passed all four CTests",
+    "final_build": "./scripts/build.ps1: passed all four CTests",
+    "call_graph": "python tools/call_graph.py then who/path: AC1CE0, AC1D10, AC2020 reachable; AC1D60 and AC1FA0 absent from default executable",
+    "new_tests": 0,
+    "float_math_changed": false,
+    "game_run": false,
+    "original_abi_compatible": false
+  },
+  "evidence": [
+    "bsp.py show AC1CE0/AC1D10/AC1D60/AC1FA0/AC2020/AC2160/AC2240",
+    "bsp.py ghidra disasm CD7360: MOV ECX,F8BEFC; CALL AC2160; PUSH CE0AC0; CALL BF6FF5",
+    "bsp.py ghidra bytes CE3488: Section CD72F0, Line CD7360 at CE3490, Group CD7440 follows at CE34A0"
+  ],
+  "counts": {
+    "readiness_wired_before": 10782,
+    "readiness_called_rows_before": 6062,
+    "new_executable_reachable_address_entries": 3,
+    "readiness_wired_after": 10782,
+    "readiness_called_rows_after": 6070,
+    "measurement_note": "Readiness static wired summary is unchanged. Existing readiness called rows increase by eight from real Line startup. The five newly recorded template addresses are absent from readiness rows; independent executable who/path verifies three of those entries (free, capacity, reserve) and no linked append/grow."
+  },
+  "assumptions": [
+    "Used the existing original CRT subset ordering and process lifetime; did not synthesize a Line widget just to exercise append/grow."
+  ],
+  "left": "Connect a production native GUI Line factory/derived-storage consumer to make AC1FA0/AC1D60 reachable; table ownership/startup is now available."
+}
