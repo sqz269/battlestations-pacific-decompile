@@ -484,8 +484,24 @@ __declspec(noinline) void native_gui_group_pool_table_reserve_00ac7370(
 // GUI widget pool family (cc13-gui1, docs/CC13_GUI_1.md): fourteen more instances
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
 #include "bsp/terrain_bush_pool_cc13.hpp"
+#include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
+template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize() {
+    // 00ABC570 inlines 00ABC500's reserve(32) in unwind state 2.
+    // CD7280 constructs this same F8BE5C process owner, never a side table.
+    initialize_pool<GuiCurvePoolTraits,
+        &native_gui_curve_pool_table_reserve_00abc500>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
+    // 00ABC650 appends its initialized slab at +28h while the lock is held.
+    // Replace that inline append with its existing out-of-line equivalent.
+    return allocate_slot<GuiCurvePoolTraits,
+        &NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize_slab,
+        &native_gui_curve_pool_table_push_back_00abc480>(storage_);
+}
+
 namespace {
 template<class T> struct WidgetSlabInitializer {
     static constexpr auto entry = &NativeGuiWidgetPool<T>::initialize_slab;

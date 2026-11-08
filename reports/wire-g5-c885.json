@@ -1,0 +1,133 @@
+{
+  "goal": 5,
+  "chain": 885,
+  "worker": "g5-w3",
+  "branch": "agent/g5-w3",
+  "base_head": "59864a655e14d3043e9bfc1fd51e53ac2de5443b",
+  "picked": "Curve process pool CRT producer and retained slab-table members",
+  "rows": [
+    {
+      "native": "00abc500",
+      "status": "wired",
+      "host_site": "src/game_main.cpp:WinMain -> GameNativeGuiWidgetPoolProcess<GuiCurvePoolTraits>::initialize_once -> src/native_material_pools.cpp:NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize",
+      "evidence": "Built entry-reachable initialize_pool<GuiCurvePoolTraits> calls native_gui_curve_pool_table_reserve_00abc500 on the actual pool+28h header with the original constructor capacity 32."
+    },
+    {
+      "native": "00abc1e0",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp:native_gui_curve_pool_table_reserve_00abc500",
+      "evidence": "Built entry-reachable reserve tail-calls native_gui_curve_pool_table_set_capacity_00abc1e0; it reuses the existing identical AA6FA0 allocation/copy/free body on the same retained table."
+    },
+    {
+      "native": "00abc480",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate",
+      "reason": "Prepared and fixture-tested, but the production GUI path still lacks a live Curve widget factory consumer; the game binary does not link the Curve allocator or append body."
+    },
+    {
+      "native": "00abc230",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp:native_gui_curve_pool_table_push_back_00abc480",
+      "reason": "Prepared and fixture-tested, but it needs the missing live Curve widget factory to reach append and grow; startup reserve alone does not call it."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already called before this change through the live scene-property owner; no additional wiring was missing despite its ready classification."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::attach_tree/insert_into/make_owned_complete_bag",
+      "reason": "Already called before this change through three live scene-property projection sites; no additional wiring was missing despite its ready classification."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Impl/merge_child",
+      "reason": "Already called before this change through the live scene-property merge owner; no additional wiring was missing despite its ready classification."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list policy near kAiGroupScoreListReleaseBound",
+      "reason": "The only record reader is the excluded debug text overlay; no gameplay consumer reads this score list and the live planner intentionally retains no list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list policy near kAiGroupScoreListReleaseBound",
+      "reason": "The chosen byte has only the excluded debug overlay reader; a gameplay consumer and live score-list owner are absent by the documented host policy."
+    }
+  ],
+  "implementation": {
+    "owner": "Existing GameNativeGuiWidgetPoolProcess<GuiCurvePoolTraits>; original global F8BE5C, table F8BE84; same owner used by the existing AA1800 Curve factory source.",
+    "startup": "CE3480 contains CD7280. Disassembly: ECX=F8BE5C; CALL ABC570; atexit(CE0AA0). CE0AA0 tail-jumps ABC290. The new production startup call follows Text CD71F0 and precedes Group CD7440.",
+    "replacement": "Curve initialize/allocate specializations select the address-specific reserve/append bodies in the existing common engine. The old generic reserve/append no longer run for Curve; no second table or artificial widget allocation was added.",
+    "failure_boundary": "Curve initializer interruption joins both existing interrupted-pool retention catches; normal atexit registration status is preserved.",
+    "abi": "Source interfaces preserve actual Win32 pointer/count/capacity fields and modulo32 growth. They are not binary ABI replacement thunks. Names remain hypotheses."
+  },
+  "verification": {
+    "build": "./scripts/build.ps1 passed after the final C++ edits; all four CTests passed.",
+    "probe": "cmd /c local/c885-probe.cmd passed. Existing process owner initialized once, 2049 slots across 33 slabs, capacity 32->66, native slab IDs/pointers, unlocked recursion count, reverse free, trim and reallocation checked. Probe linked with /MANIFEST:EMBED as local/c885_curve_probe.exe.",
+    "compiled_called_before": 5619,
+    "compiled_called_after": 5621,
+    "compiled_newly_called": [
+      "00abc500",
+      "00abc1e0"
+    ],
+    "call_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> GameNativeGuiWidgetPoolProcess<GuiCurvePoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize -> initialize_pool<GuiCurvePoolTraits> -> reserve_00abc500 -> set_capacity_00abc1e0",
+    "readiness_text_before": 10735,
+    "readiness_text_after": 10735,
+    "readiness_note": "wire_readiness.py excludes these template/library-classified original entries from rows. Its text inventory is unchanged; call_graph.py independently confirms the two new entry-reachable bodies.",
+    "float_math_changed": false,
+    "game_run": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "evidence": "bsp.py show ABC1E0/ABC230/ABC480/ABC500/ABC570/ABC650; ghidra disasm CD7280/CE0AA0; bytes CE3480.",
+    "annotations": "Four Curve table names/evidence applied through ghidra_annotate.py write lock, existing comments preserved, project saved, affected exports refreshed.",
+    "prior_values": "local/ghidra-annotations-20261108T145034Z.json"
+  },
+  "left": "Bind the real Curve payload factory and its consumers before claiming ABC480/ABC230 as production-called. Live game execution and native binary ABI remain unvalidated.",
+  "merge_repair": {
+    "attempt": 2,
+    "origin_main": "95530694178e18f0607bbecf1ec47eec5fe7fec8",
+    "conflicts": [
+      "src/game_main.cpp"
+    ],
+    "resolution": "Accept current main GUI widget/Text/Group diagnostic wording in both interruption catches; it also covers Curve. Preserve the common startup flag and all incoming Button/Movie/Icon/Text/Group blocks. The complete startup delta against this parent is only the ten-line Curve initialization block.",
+    "automatic_merges": "Native material pool implementations, ledger shards and cmake/startup.cmake are conflict-free; merge_resolve.py was not needed.",
+    "normal_build": "scripts/build.ps1 passed all four CTests after resolving the new merge.",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c885-merge2-on-build.log",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "ctests_passed": 4,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_restored_exactly_by_sha256": true,
+      "backup_directory_remaining": false
+    },
+    "restored_normal_build": "scripts/build.ps1 passed all four CTests after exact ON header restoration; final normal PE rebuilt.",
+    "curve_probe": "Rebuilt local/c885-probe.cmd passed against merged objects: actual once-only process owner, 2049 slots / 33 slabs, capacity 32->66, native slab identities, free/trim/reallocate.",
+    "compiled_called_final_normal": 5651,
+    "wire_readiness": {
+      "wired": 10756,
+      "callees_done_no_wired_caller": 8516,
+      "ready": 1202,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200,
+      "stage": "Final restored-normal build before merge commit",
+      "graph_stale": false
+    },
+    "icf_note": "Production ICF aliases reserve/capacity wrappers with other pools. who 00abc500 specifically confirms the reachable initialize_pool<GuiCurvePoolTraits> call. ABC480/ABC230 remain absent from the production map.",
+    "headers_restored_against_merge_index": true,
+    "game_run": false
+  }
+}
