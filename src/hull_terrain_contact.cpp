@@ -768,12 +768,20 @@ HullTerrainContactSolver::HullShape* HullTerrainContactSolver::hull_convex(
         h.convex_ready = true;
     }
     std::memcpy(h.convex + 0x28, &friction, 4);
-    std::memcpy(h.body + 0x08, body.row0, 12);
-    std::memcpy(h.body + 0x14, body.row1, 12);
-    std::memcpy(h.body + 0x20, body.row2, 12);
-    std::memcpy(h.body + 0x2C, body.position, 12);
     const void* owner = h.body;
     std::memcpy(h.convex + 0x04, &owner, sizeof(owner));
+    // Goal 5 chain 715: 00C32490 (bsp.py show 00c32490) returns the
+    // actual shape+4 owning body. Follow that owner for the current frame
+    // instead of bypassing the shape through HullShape::body. hull_convex
+    // publishes this retained backing object above; 00C535E0 consumes its
+    // +08h..+37h transform through the same shape pointer below. This reuses
+    // the reconstructed C++ accessor, not the original register ABI.
+    auto* const native_body = static_cast<std::uint8_t*>(
+        cc13_dyn1::shape_body_00c32490(h.convex));
+    std::memcpy(native_body + 0x08, body.row0, 12);
+    std::memcpy(native_body + 0x14, body.row1, 12);
+    std::memcpy(native_body + 0x20, body.row2, 12);
+    std::memcpy(native_body + 0x2C, body.position, 12);
     return &h;
 }
 
