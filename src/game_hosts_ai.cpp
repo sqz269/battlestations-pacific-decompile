@@ -5456,7 +5456,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Selling)) continue;
             if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
             bsp::AiCommandObject c;
-            c.type = bsp::AiCommandType::Selling;
+            // 00A0FD30, the SELLING command's vt+4h leaf: MOV EAX,0Eh;
+            // RET (bsp.py show 00a0fd30). Publish its binary class constant
+            // into the live replacement consumed by command_tick.
+            c.type = bsp::ai_command_selling_get_type_00a0fd30();
             c.owner_group = g;
             replace_command(g, c);
             ++sell_orders;
