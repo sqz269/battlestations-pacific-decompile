@@ -1437,7 +1437,9 @@ void* copy_construct_native_string_record_00a9f460(void* fresh, const NativeStri
         *static_cast<NativeLocaleStringRecord*>(fresh), source, strings);
 }
 
-void restart_native_gui_animated_value_00aa0e20(void* value, std::uint8_t forward,
+// bsp.py show 00AA0E20 --asm: ECX=manager, stack byte, RET4. The +34h
+// visibility call precedes the +54h/+58h reload and the +50h publication.
+__declspec(noinline) void restart_native_gui_animated_value_00aa0e20(void* value, std::uint8_t forward,
     NativeGuiAnimatedValueCalls& calls)
 {
     calls.stop_vcall_34(pointer(value, 0x50), 0);

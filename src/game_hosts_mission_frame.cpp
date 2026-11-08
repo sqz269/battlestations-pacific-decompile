@@ -39,6 +39,7 @@
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
 #include "bsp/game_hosts_global_subsystems.hpp"
 #include "bsp/warning_owner.hpp"
@@ -4290,7 +4291,7 @@ void GameMissionFrameHost::bind_native_scene_remaps(GameNativeRendererApplicatio
 void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path,
     const std::string& script_name, const std::string& locale_tables,
     std::int32_t mission_id, const bsp::SceneRecord* scene_record,
-    const std::int32_t* participant_count) {
+    const std::int32_t* participant_count, GameFrontendHost& frontend) {
     Impl& host = *impl_;
     if (scene_record && !participant_count) {
         throw std::logic_error("Scene participant count is unavailable from its header properties");
@@ -4870,6 +4871,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "apply_in_game_interface") {
+            // 004E1861..004E186A: PUSH 0; 004C12B0; 00AA0E20. Select the
+            // actual GUI cursor before 004E1873, without changing enabled+48h.
+            frontend.select_gui_cursor(false);
+            host.done("MissionLoad::select_gui_cursor", 0x00aa0e20u);
             // 004c9ca0(1) at 004e1873, the load's own row: the arm that puts the
             // loading element up. It exists here so the entry's 004c9ca0(0) has
             // the element the native teardown reads without a null check.

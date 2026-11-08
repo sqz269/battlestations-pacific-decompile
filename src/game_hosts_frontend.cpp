@@ -4,6 +4,7 @@
 #include "bsp/frontend_scroller_bridge.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_sweepA2.hpp"
+#include "bsp/cc13_seg87.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
@@ -258,7 +259,7 @@ struct GameFrontendHost::Impl {
         std::size_t stores{};
     };
     struct RawPointerCall {
-        enum class Kind { getter, enabled, visible };
+        enum class Kind { getter, enabled, visible, cursor };
         Kind kind;bool requested{};
         void* manager{};void* pointer{};
         bool entered{},getter_returned{},enabled_store_entered{},enabled_stored{},visibility_entered{},normal_returned{};
@@ -686,6 +687,34 @@ struct GuiManagerPointerSlot final : GuiPointerHost {
     }
 };
 
+// 00AA0E20 calls only current+34h(0). Use the same visibility provider as
+// 00AA0E00/50, on the captured current cursor; the body then reloads the chosen
+// +54h/+58h slot after that call. These are the manager's actual owning-domain
+// slots, not a temporary cursor selection copied out before the callback.
+struct GuiManagerCursorSwitch final : NativeGuiAnimatedValueCalls {
+    GameFrontendHost::Impl& owner;
+    GameFrontendHost::Impl::RawPointerCall* history;
+    explicit GuiManagerCursorSwitch(GameFrontendHost::Impl& o,
+        GameFrontendHost::Impl::RawPointerCall* h = nullptr) : owner(o), history(h) {}
+    void stop_vcall_34(void* current, std::uint32_t flag) override {
+        if (!current) throw std::logic_error("cursor switch requires the actual current widget");
+        if (history) {
+            history->pointer = current;
+            history->visibility_entered = true;
+            owner.raw_transport->pages.set_widget_visibility_00aa8530(current, static_cast<std::uint8_t>(flag));
+        } else {
+            apply_gui_resource_visibility(owner, current, flag != 0);
+            owner.quads_built = false;
+        }
+    }
+    void set_target_vcall_88(void*, std::uint32_t, std::uint32_t, float) override {
+        throw std::logic_error("cursor switch does not call virtual88");
+    }
+    void notify_04(std::uint32_t, void*, std::uint8_t) override {
+        throw std::logic_error("cursor switch does not call manager+4");
+    }
+};
+
 // GuiStartupHost for 0073bae0.
 class GameGuiStartupHost final : public GuiStartupHost {
 public:
@@ -932,16 +961,22 @@ void* GameFrontendHost::Impl::run_raw_pointer(GameFrontendHost& frontend,RawPoin
         call.entered=true;call.site=0x004c12b0;call.manager=raw.manager.get_004c12b0();call.getter_returned=true;
         if(kind!=RawPointerCall::Kind::getter) {
             raw.manager.admit_pointer_operation(frontend,call.manager); // BEFORE any pointer Native effect.
-            if(kind==RawPointerCall::Kind::enabled) {
-                call.enabled_store_entered=true;
-                call.site=0x00aa0e06;GameNativeGuiManagerApplication::store_enabled_48(call.manager,value?1:0);
-                call.enabled_stored=true;
-            }
-            if(kind==RawPointerCall::Kind::visible || !value) {
-                call.site=kind==RawPointerCall::Kind::visible?0x00aa0e50:0x00aa0e0b;
-                call.pointer=GameNativeGuiManagerApplication::current_resource_slot(call.manager,0x50);
-                call.visibility_entered=true;
-                raw.pages.set_widget_visibility_00aa8530(call.pointer,kind==RawPointerCall::Kind::visible && value?1:0);
+            if(kind==RawPointerCall::Kind::cursor) {
+                call.site=0x00aa0e2d;
+                GuiManagerCursorSwitch binding(*this,&call);
+                restart_native_gui_animated_value_00aa0e20(call.manager,value?1:0,binding);
+            } else {
+                if(kind==RawPointerCall::Kind::enabled) {
+                    call.enabled_store_entered=true;
+                    call.site=0x00aa0e06;GameNativeGuiManagerApplication::store_enabled_48(call.manager,value?1:0);
+                    call.enabled_stored=true;
+                }
+                if(kind==RawPointerCall::Kind::visible || !value) {
+                    call.site=kind==RawPointerCall::Kind::visible?0x00aa0e50:0x00aa0e0b;
+                    call.pointer=GameNativeGuiManagerApplication::current_resource_slot(call.manager,0x50);
+                    call.visibility_entered=true;
+                    raw.pages.set_widget_visibility_00aa8530(call.pointer,kind==RawPointerCall::Kind::visible && value?1:0);
+                }
             }
         }
         call.normal_returned=true;raw.pointer_active=false;return call.manager;
@@ -1841,6 +1876,17 @@ void GameFrontendHost::gui_manager_set_pointer_visible_00aa0e50(bool visible) {
     gui_manager_get_or_create_004c12b0(*impl_);
     GuiManagerPointerSlot slot(*impl_);
     bsp::gui_manager_set_pointer_visible_00aa0e50(slot, visible);
+}
+
+void GameFrontendHost::select_gui_cursor(bool frontend_cursor) {
+    if (impl_->raw_transport) {
+        impl_->run_raw_pointer(*this, Impl::RawPointerCall::Kind::cursor, frontend_cursor);
+        return;
+    }
+    gui_manager_get_or_create_004c12b0(*impl_);
+    GuiManagerCursorSwitch binding(*impl_);
+    restart_native_gui_animated_value_00aa0e20(
+        impl_->manager.fields, frontend_cursor ? 1 : 0, binding);
 }
 
 // ---------------------------------------------------------------------------
