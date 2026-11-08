@@ -1,0 +1,233 @@
+{
+  "goal": 5,
+  "chain": 912,
+  "run": 2015,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "base": "2ca3f269a4",
+  "picked": "GUI Sound F8C0EC process pool and its actual slab pointer table",
+  "rows": [
+    {
+      "native": "00acd200",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize -> initialize_pool -> reserve_native_gui_sound_pool_table_00acd4c0",
+      "detail": "The canonical process pool's actual +28h table reaches capacity through reserve(32); the existing AA6FA0 allocation/copy/free body is reused once.",
+      "call_site": "106c6975",
+      "call_site_build": "build/callgraph; /Ob0 /OPT:NOICF",
+      "called": true
+    },
+    {
+      "native": "00acd4c0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp: WinMain -> GameNativeGuiWidgetPoolProcess<GuiSoundPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize -> initialize_pool",
+      "detail": "Restore original CD7660/CE34C4 CRT producer with the existing canonical process owner; reserve the actual F8C0EC+28h table in constructor unwind state 2.",
+      "call_site": "106c43b6",
+      "call_site_build": "build/callgraph; /Ob0 /OPT:NOICF",
+      "called": true
+    },
+    {
+      "native": "00acd250",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate -> append_native_gui_sound_pool_table_00acd430",
+      "reason": "Missing an entry-reachable GUI Sound factory allocation consumer; existing grow body is reused and fixture-tested but absent from the production executable.",
+      "prepared": true
+    },
+    {
+      "native": "00acd430",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate",
+      "reason": "Missing an entry-reachable GUI Sound factory allocation consumer; the existing locked allocator now calls this append body, reached only by the standalone fixture.",
+      "prepared": true
+    },
+    {
+      "native": "00acd6b0",
+      "status": "skipped",
+      "host_site": "src/native_gui_sound_storage.cpp: existing allocate_gui_widget_pool_slot<GuiSoundPoolTraits> factory path",
+      "reason": "Missing an entry-reachable Sound factory consumer; CRT startup reserves pointer slots without inventing widget allocations."
+    },
+    {
+      "native": "00acd530",
+      "status": "skipped",
+      "host_site": "src/game_main.cpp: WinMain -> GameNativeGuiWidgetPoolProcess<GuiSoundPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize",
+      "reason": "No separate address-suffixed ACD530 symbol is available for numeric credit; its existing template constructor now supplies actual retained state to the two credited entries.",
+      "supporting_state_restored": true
+    },
+    {
+      "native": "00acd2f0",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: GameNativeGuiWidgetPoolProcess<GuiSoundPoolTraits>::destroy_at_exit -> NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy",
+      "reason": "No separate address-suffixed ACD2F0 symbol is available for numeric credit; the original exit producer now registers the existing canonical pool's destructor.",
+      "supporting_state_restored": true
+    },
+    {
+      "native": "00cd7660",
+      "status": "skipped",
+      "host_site": "src/game_main.cpp: WinMain native pool startup",
+      "reason": "No standalone address-suffixed CD7660 body exists to credit; its evidenced construct/atexit schedule is restored using the existing process owner.",
+      "supporting_state_restored": true
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message provenance",
+      "reason": "Missing a retained controller-state message producer/consumer carrying both descriptors, mode and flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a retained controller snapshot owner and transport consumer; flattened facts do not establish the native operation."
+    },
+    {
+      "native": "00526720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: unit-pick flags store",
+      "reason": "Missing the native HUD cycle list, selected index and owner/refresh providers."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: flattened render order",
+      "reason": "Missing the native per-parent name-sorted child/property-description consumer; flattened render sorting is a different operation."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: effect acquisition",
+      "reason": "Missing a live counted-effect producer and its native effect-handle vector owner."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the actual movie-camera debug-screen owner and default/current deviation fields; excluded debug-only code."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the actual movie-camera debug-screen owner and default/current overview-height fields; excluded debug-only code."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the actual movie-camera debug-screen speed-limit block; excluded debug-only code."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the actual movie-camera debug-screen acceleration-limit owner; excluded debug-only code."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp: construct_native_game_grid_0070bd70",
+      "reason": "The live constructor already runs initialize_grid_body inline; the separate entry also begins a grid operation and cannot simply replace it without a new operation-lifetime contract."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing a gameplay score-list consumer; the documented native reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing gameplay-owned candidate records whose chosen byte feeds a planner; the documented reader is an excluded debug overlay."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values/assign_native_animation_values_00b926e0",
+      "reason": "Existing body is already called in source, but no production executable caller was present; a live skinned-animation owner path was not established in this packet."
+    },
+    {
+      "native": "00aace40",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_movie_pool_table.hpp: existing Movie append",
+      "reason": "Movie CRT reserve is already wired; missing an entry-reachable Movie factory allocation consumer for growth."
+    },
+    {
+      "native": "00b4a770",
+      "status": "skipped",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: existing logical-index initialization",
+      "reason": "The address-specific reserve is already dispatched by the existing logical-index constructor; no additional wiring is needed here."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_anim_class_004722d0",
+      "reason": "A retained AnimClass registry owner and live class-creation caller were not established in this packet."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_buoy_class_00475710",
+      "reason": "A retained BuoyClass registry owner and live class-creation caller were not established in this packet."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record storage",
+      "reason": "A live distortion-record producer requiring this reserve was not established in this packet."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: resize_native_vehicle_pointer_array_005471b0",
+      "reason": "The source resize already dispatches reserve; an entry-reachable owner of that actual vehicle-pointer array was not established in this packet."
+    },
+    {
+      "native": "00829180",
+      "status": "skipped",
+      "host_site": "src/native_ship_indexed_point_array.cpp: reserve_native_ship_indexed_point_array_00829180",
+      "reason": "An entry-reachable owner/caller supplying the actual ship indexed-point header was not established in this packet."
+    },
+    {
+      "native": "00b605b0",
+      "status": "skipped",
+      "host_site": "src/native_hardware_layout_pool_allocate.cpp: allocate_native_hardware_layout_slot_00b605b0",
+      "reason": "This reconstructed allocator already dispatches its address-specific table append; no additional wiring was selected."
+    },
+    {
+      "native": "00b60350",
+      "status": "skipped",
+      "host_site": "src/native_hardware_layout_pool_trim.cpp: trim_native_hardware_layout_pool_00b60350",
+      "reason": "This trim body already has an allocator-list virtual binding; no additional wiring was selected."
+    }
+  ],
+  "real_state": {
+    "owner": "GameNativeGuiWidgetPoolProcess<GuiSoundPoolTraits>::instance()",
+    "native_pool": "00f8c0ec",
+    "table_offset": "0x28",
+    "native_crt_table_entry": "00ce34c4",
+    "native_crt_initializer": "00cd7660",
+    "native_exit_stub": "00ce0b20",
+    "evidence": "Verified live project/program /battlestationspacific.exe via bsp.py ghidra count. CD7660: MOV ECX,F8C0EC; CALL ACD530; PUSH CE0B20; CALL BF6FF5. CE0B20: MOV ECX,F8C0EC; JMP ACD2F0. Xref CE34C4 and bytes CE34B8 establish original order after Model CE34BC. bsp.py show ACD200/ACD250/ACD430/ACD4C0/ACD530/ACD6B0 establish table schedule and constructor state.",
+    "failure_handling": "Existing WinMain incomplete-startup flag is set before Sound initialization and cleared after normal return, preserving both existing failure catch guards. Constructor retains unwind state 2 and allocator-list/critical-section lifetime. Allocation retains first-free publication, lock scope and partial-failure state."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed all 5 CTests after final C++ edits",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed",
+    "focused_probe": "MSVC Win32 /link /MANIFEST:EMBED: 513 Sound slots, 33 slabs, table 32 -> 66, payload/trailer retention, lock depth, trim and teardown passed",
+    "probe_command": "cl /nologo /std:c++17 /EHsc /O2 /MD /fp:strict /Iinclude tests\\wire_g5_c912_sound_table_probe.cpp /Folocal\\c912-sound-probe.obj /Felocal\\c912-sound-probe.exe build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF user32.lib d3d9.lib PowrProf.lib shell32.lib",
+    "normal_call_graph": "ACD4C0 and ACD200 reachable; normal linker folds these identical helpers. Sound-specific initialize_pool directly calls the reserve address.",
+    "analysis_call_graph": "No-inline/no-ICF build proves distinct reserve ACD4C0 at 106C6960, called by Sound initialize_pool at 106C43B6; capacity ACD200 at 106C6AB0, reached by reserve's tail jump at 106C6975. Both paths reach WinMainCRTStartup. ACD430/ACD250 absent from both production builds.",
+    "float_math": "No float arithmetic changed; pc24 lint is not applicable.",
+    "abi_compatible": false,
+    "game_validated": false,
+    "game_run": false
+  },
+  "metrics": {
+    "readiness_wired_before": 10771,
+    "readiness_wired_after": 10781,
+    "credited_distinct_bodies": 2,
+    "normal_graph_called_before": 5667,
+    "normal_graph_called_after": 5668,
+    "interpretation": "Readiness is a coarse source-identifier measure; its +10 change is not ten credited functions. Normal linked-address counts also fold identical bodies. Credit only the two distinct table entries independently verified in the /Ob0 /OPT:NOICF analysis executable. The readiness rows omit the newly added header entries; ledger lookup and numeric who/path queries establish their bodies and callers."
+  },
+  "coordination": "Shared host files and SweepC contract released as soon as edits froze. In-review changes in those files were coordinated with w10/w12/w4. Landing should union Sound startup after Model with w10 FrameBox startup after Sound, w12 Listbox before Button, and w4 Line before Model. Keep both narrow ACD250 and ACEFC0 PointerTableAllocationHost contracts. No merge, rebase, push, subagent or game run performed."
+}

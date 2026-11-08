@@ -3,6 +3,7 @@
 #include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
+#include "bsp/native_gui_sound_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -576,6 +577,18 @@ template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
 template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
     return allocate_slot<GuiMoviePoolTraits, WidgetSlabInitializer<GuiMoviePoolTraits>::entry,
         &native_gui_movie_pool_table_push_back_00aad450>(storage_);
+}
+
+// ACD530/ACD6B0 inline ACD4C0/ACD430 on this same retained F8C0EC+28h
+// header. Preserve constructor unwind state 2 and the allocator's existing
+// lock/first-free publications; the generic reserve/append no longer run here.
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize() {
+    initialize_pool<GuiSoundPoolTraits, &reserve_native_gui_sound_pool_table_00acd4c0>(
+        allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate() {
+    return allocate_slot<GuiSoundPoolTraits, WidgetSlabInitializer<GuiSoundPoolTraits>::entry,
+        &append_native_gui_sound_pool_table_00acd430>(storage_);
 }
 
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
