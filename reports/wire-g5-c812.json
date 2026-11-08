@@ -1,0 +1,237 @@
+{
+  "goal": 5,
+  "chain": 812,
+  "slot": "g5-w6",
+  "base_head": "f74224fcfde64fe9c173ea32e667e8c1c948fc8b",
+  "summary": "Reuse the existing 006BC030 body for the director host's command-category checks, with the actual registered command class as the C++ receiver.",
+  "real_state": "CommandCategoryHost reads EntityOrderCommandClass::category, the recovered constant-returning vtable+0Ch result for the command selected by class_of(command). The returned predicate controls the existing command_allowed branch and release-slot diagnostic; the old inline comparisons were removed.",
+  "abi": "Existing C++ reconstruction interface with an explicit registry-row receiver adapter; not an original binary entry replacement.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all 5 existing CTest checks passed",
+    "readiness_wired_before": 10653,
+    "readiness_wired_after": 10654,
+    "entry_reachable_reconstructed_addresses_before": 5506,
+    "entry_reachable_reconstructed_addresses_after": 5507,
+    "called": true,
+    "call_sites": [
+      "10074219: DirectorBinding::command_allowed -> entity_kind_is_1_or_2_006bc030",
+      "1007dbe5: GameCommandsHost::release_observed_target_0071ddb0 -> entity_kind_is_1_or_2_006bc030"
+    ],
+    "evidence": [
+      "bsp.py show 006bc030: one vtable+0Ch read followed by category 1/2 comparisons",
+      "bsp.py show 0071d6d0: the same category predicate gates target resolution",
+      "include/bsp/entity_orders.hpp: command category is its registered constant-returning virtual result",
+      "call_graph.py who 006bc030: REACHABLE, two calls from changed host code",
+      "wire_readiness.py --standins: 006bc030 state=wired, called=true, call_sites=2"
+    ],
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "coordination": "The initial units.cpp claim was refused by g5-w4; no edits were made there. The successful lease covers commands.cpp and this report. g5-w5 was told that its EntityOrderBinding forwarding methods are untouched.",
+  "rows": [
+    {
+      "native": "006bc030",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::command_allowed; GameCommandsHost::release_observed_target_0071ddb0; GameCommandsHost::command_accepts_target_0071d6d0",
+      "reason": "Actual current-command registry category replaces inline 1/2 tests through the existing body; two compiled entry-reachable calls."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum property insertion",
+      "reason": "An existing production projection already calls this body with its enum owner; no missing call was found at the inspected site."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property-bag merge",
+      "reason": "The existing merge projection already directly calls this body; the ready text classification does not identify a missing binding here."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: preload push_effect_handle",
+      "reason": "Effect acquisition still returns null and no owning native counted-effect vector is supplied by this host."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: PowerupHost::candidate_attack_value",
+      "reason": "Air-support flight blocks lack resolved plane-class weapon-value facts for compose_against_group; the current callback throws."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: selling_tick_00a11ff0",
+      "reason": "The sell-message arm is still a record and supplies no native unit/list graph or consumer for the friendly-capture predicate."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane_ground_state_from_locked_007ca3f0",
+      "reason": "The semantic plane has no native impulse block at +4A8h..+4E0h and no retained reset-matrix consumer."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight target selection",
+      "reason": "The recorded target change lacks the native pilot/approach observer and +2Ch target-reference lifetime graph required by the body."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: path-leg-manager access",
+      "reason": "No concrete Cc13Seg67bHost registration/critical-section adapter and retained native path-leg-manager owner was established."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: support information panel update",
+      "reason": "The inspected host does not supply the required native support-screen flags, available-entry state and panel/widget pointers."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen::advance_ticker",
+      "reason": "Only a recorded callback exists; the live native award queue, owned strings and ticker-entry producer remain missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp: GUI camera configuration",
+      "reason": "No product-query consumer was established on the orthographic GUI camera path; the body cannot replace a different projection operation."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: pilot target checks",
+      "reason": "The semantic target does not establish the native pilot+98h target publication selected by the current F876B8 slot."
+    },
+    {
+      "native": "007bbc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane landing-site probe",
+      "reason": "The inspected host lacks the native plane/holder/owner graph and Seg47Host pose-transform boundary required by this predicate."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane debris path",
+      "reason": "No per-part visual record, node translation and debris-dynamics consumer was established for the reconstructed debris spec."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: page construction",
+      "reason": "No live native listbox input-filter publication site was found in the inspected page application."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "No live listbox owner and NativeGuiListboxCalls selection callback binding was established."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: scroll_native_listbox_to_item_00a9d360",
+      "reason": "No live native listbox owner, scroll request and NativeGuiListboxCalls binding was established."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: animated-value target update",
+      "reason": "The inspected host does not provide the actual animated-value owner, target virtual88 dispatch and notification callback."
+    },
+    {
+      "native": "00b6fe20",
+      "status": "skipped",
+      "host_site": "src/native_cockpit_helper_construction.cpp: construct_native_cockpit_helper_00b3c800",
+      "reason": "The native cockpit constructor already calls this leaf with its actual camera and depth word; no missing call was found."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: get_native_soldier_registry_004b1330",
+      "reason": "No live SoldierClass registry acquisition consumer was established in the inspected game host files."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "Existing main-scene submission already uses this metadata operation; no additional missing production call was established."
+    },
+    {
+      "native": "0076c4a0",
+      "status": "skipped",
+      "host_site": "src/native_session_transport_countdown.cpp: tick_native_session_transport_countdowns_0076c4a0",
+      "reason": "No live single-player native session+188h/+18Ch transport owner and countdown-step publication was established."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "The literal body requires genuine writable absolute F87574/F87578/F8757C publications, unavailable to the semantic descriptor site."
+    },
+    {
+      "native": "00924100",
+      "status": "skipped",
+      "host_site": "src/game_native_entity_registry_process.cpp: pending_lock",
+      "reason": "The existing pending-lock getter already invokes this constructor; no missing constructor call was found."
+    },
+    {
+      "native": "00928080",
+      "status": "skipped",
+      "host_site": "src/game_native_entity_registry_process.cpp: scene_lock",
+      "reason": "The existing scene-lock getter already invokes this constructor; no missing constructor call was found."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: objective-unit marker removal",
+      "reason": "The inspected host does not supply the marker slot object, per-entry keep flags, observer pair and release consumer required by this projection."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score list",
+      "reason": "This list is used only by the gated debug overlay and is intentionally absent from gameplay decisions."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score list",
+      "reason": "Chosen flags are read only by the gated debug overlay; debug-only work is outside this assignment."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: camera-row initialization",
+      "reason": "The array-resize body already invokes this initializer; no live vehicle-camera-array producer was established in the inspected game hosts."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "No actual text-editor owner with platform/input-action/string bindings was established in a live inspected screen."
+    },
+    {
+      "native": "00761710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: native message 106",
+      "reason": "The inspected local message host has 107/108 jam queues but no message106 explosion-send/decode consumer to supply this constructor."
+    },
+    {
+      "native": "00759e40",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_69_75_76.cpp: native message75 constructor",
+      "reason": "No local single-player type75 send/decode consumer was established in the inspected message host."
+    },
+    {
+      "native": "00759ec0",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_69_75_76.cpp: native message76 constructor",
+      "reason": "No local single-player type76 send/decode consumer was established in the inspected message host."
+    }
+  ]
+}
