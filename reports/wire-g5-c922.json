@@ -1,0 +1,132 @@
+{
+  "run": 2050,
+  "goal": 5,
+  "chain": 922,
+  "owner": "agent/g5-w7",
+  "picked": "Retain the sole GUI aspect-extent body at the existing live HUD call sites",
+  "change": "Prevent complete inlining of gui_aspect_extent_00aa1fe0 and align its reconstruction ledger name with its existing cpp_symbol. Its existing arithmetic and live-platform callers are unchanged.",
+  "rows": [
+    {
+      "native": "00aa1fe0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::project_0043a660; src/game_hosts_hud_world.cpp: MarkerRuntimeBinding::gui_extent and MarkersUpdateBinding::gui_extent",
+      "evidence": "Default Win32 executable has the sole bsp::gui_aspect_extent_00aa1fe0 body and three entry-reachable calls at 10115a07, 1012845e and 1012854f; body at 1010e850. Before the change, who 00aa1fe0 found no emitted function.",
+      "real_state": "The existing callers read widescreen and active_aspect from active_platform_state(), the current process platform owner. The helper retains the binary's 4:3 and 16:9 constants. No scratch owner, added call, second calculation or replacement state is introduced.",
+      "scope": "Retained executable call boundary for an already connected source calculation; no new runtime behavior. This is a C++ interface, not the original ECX-output ABI. No game execution or visual validation."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::mission_detail_back",
+      "reason": "The retained page, flags and selected mission exist, but the concrete 00597870 mission-list builder, listbox rows and builder services remain missing."
+    },
+    {
+      "native": "00597870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::mission_detail_back -> mission list builder",
+      "reason": "No real raw main-menu screen/listbox-row producer or complete widget/profile services exist for the reconstructed raw-screen builder."
+    },
+    {
+      "native": "00583e50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::commit_page_state",
+      "reason": "Native objective-list owners and their row/header deletion services are missing; a temporary empty screen would invent state."
+    },
+    {
+      "native": "005902e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl construction",
+      "reason": "The host retains typed menu state rather than the required complete native 578h screen and its front-end-screen/list-sentinel constructor services."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list producer",
+      "reason": "The score list serves an unreachable debug overlay rather than a single-player gameplay consumer; debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list selection",
+      "reason": "The score list serves an unreachable debug overlay rather than a single-player gameplay consumer; debug-only work is excluded."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "The existing body covers only the Lua-table portion; full profile-record erase and persistent storage-write continuation services are missing."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp and src/game_hosts_lua.cpp: voice fade callbacks",
+      "reason": "No retained live VoicePlaybackManager, global sound-level owner and fade-completion binding reach these callbacks."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: controlled-squadron target order",
+      "reason": "The semantic order path lacks the actual native unit-pick screen and complete target-finder, descriptor and sound services required by SweepA2Host."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte-grid propagation callbacks",
+      "reason": "No production Left55Host and live column-pointer byte-grid producer are bound to these reconstructed callers."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: skip_balanced_block",
+      "reason": "The scene path uses SceneLexer rather than the required live raw tokenizer and matching NativeSceneTokenValueContext."
+    },
+    {
+      "native": "00c30210",
+      "status": "skipped",
+      "host_site": "src/native_resource_cache_leaves.cpp: construct_native_texture_source_00c30470",
+      "reason": "There is no original caller; C30470 calls B19980 directly and does not store C30210's intermediate D79AEC profile, so substituting it would add an unsupported native write."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "native World profile 00ce7784 slot 2",
+      "reason": "The constant-byte body is known, but its virtual-slot meaning and a genuine production slot consumer remain unidentified."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_pool.cpp: return_point_light_slot_00b7b600",
+      "reason": "No production native point-light allocation/lifetime consumer currently supplies a genuine live 200h slot to this return wrapper."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/registered_model_effect.cpp: return_model_slot_00af62f0 unwind callback",
+      "reason": "The registered-model-effect path lacks a production allocation/construction adapter retaining the real model slot and same canonical pool."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four CTests",
+    "final_build": "scripts/build.ps1 passed all four CTests after forcing recompilation following the exact baseline header restoration; final graph comparison passed",
+    "native_evidence": "bsp.py show 00aa1fe0 and --asm: AA1FE0..AA201A, current platform +0Dh/+10h and original constants",
+    "call_graph": "call_graph.py who/path 00aa1fe0: three reachable call sites from HUD paths to the sole body",
+    "float_math": "No arithmetic expression changed; no new tests were added.",
+    "game_run": false,
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 1 file"
+  },
+  "totals": {
+    "source_wired_before": 10798,
+    "source_wired_after": 10799,
+    "target_emitted_reachable_bodies_before": 0,
+    "target_emitted_reachable_bodies_after": 1,
+    "target_reachable_call_sites_after": 3,
+    "call_graph_recon_called_before": 5673,
+    "call_graph_recon_called_after": 5673,
+    "note": "The source total gains one because the ledger now names the real C++ identifier. An exact header-baseline rebuild confirms AA1FE0 is the sole added native-address mapping and no mappings disappear. The aggregate reconstructed-address metric remains 5673; who/path proves the three actual target calls.",
+    "call_graph_native_address_mappings_added": [
+      "00aa1fe0"
+    ],
+    "call_graph_native_address_mappings_removed": []
+  },
+  "left": "Concrete mission-list builder and objective-list owners/services; no main-menu host code was changed."
+}
