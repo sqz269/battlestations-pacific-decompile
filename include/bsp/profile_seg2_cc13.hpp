@@ -60,6 +60,16 @@ struct MatrixNegatedRotationHost : MatrixCopyHost {
     virtual void build_rotation_y_00b646e0(Mat16& out, const float& angle) = 0;
 };
 
+// 0042B420 needs only the Z builder and copy. This separate contract lets a
+// live matrix producer reuse it without the rest of the segment-2 services.
+// Keep MatrixCopyHost out of this inheritance path: Seg2Host already owns
+// that base through MatrixNegatedRotationHost.
+struct MatrixZRotationHost {
+    virtual ~MatrixZRotationHost() = default;
+    virtual void build_rotation_z_00b64780(Mat16& out, const float& angle) = 0;
+    virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
+};
+
 // 00437E10 needs only the party-row reserve provider.
 struct VehicleClassRegistryConstructionHost {
     virtual ~VehicleClassRegistryConstructionHost() = default;
@@ -67,7 +77,7 @@ struct VehicleClassRegistryConstructionHost {
 };
 
 struct Seg2Host : MatrixOrthonormalizeHost, MatrixNegatedRotationHost,
-                  VehicleClassRegistryConstructionHost {
+                  MatrixZRotationHost, VehicleClassRegistryConstructionHost {
     virtual ~Seg2Host() = default;
     // Image globals (dword storage at a fixed address) and image data addresses.
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -91,9 +101,9 @@ struct Seg2Host : MatrixOrthonormalizeHost, MatrixNegatedRotationHost,
     // 00BF701A _CIatan2 on (ST1 = y, ST0 = x).
     virtual double ciatan2_00bf701a(double y, double x) = 0;
     // Matrix builders: __fastcall(ECX = out, EDX = &angle), EAX = out.
-    // The X/Y builders come from MatrixNegatedRotationHost.
-    virtual void build_rotation_z_00b64780(Mat16& out, const float& angle) = 0;
-    // matrix_copy_004134f0 comes from MatrixCopyHost.
+    // The X/Y and Z builders come from their narrow matrix interfaces.
+    // One implementation supplies the copy operation in both interfaces.
+    void matrix_copy_004134f0(Raw destination, const Mat16& source) override = 0;
     // 0085DC80 matrix_orthonormalize_0085dc80 comes from MatrixOrthonormalizeHost.
     // Camera copy bodies (__thiscall(this, other), RET 4).
     virtual void ship_camera_copy_state_0042dc20(Raw camera, Raw other) = 0;
@@ -160,7 +170,7 @@ float* vector3_subtract_in_place_0042aee0(float v[3], const float w[3]) noexcept
 float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept;
 void matrix_set_rotation_x_0042b3c0(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, MatrixNegatedRotationHost& host);
-void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host);
+void matrix_set_rotation_z_0042b420(Raw matrix, float angle, MatrixZRotationHost& host);
 Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, MatrixCopyHost& host);
@@ -169,7 +179,7 @@ Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host);
 // and use only the native matrix-copy service. New source interface, not ABI.
 Raw matrix_set_identity_0042d510(Raw matrix, MatrixCopyHost& host,
                                const volatile std::uint32_t& one_00d7a24c);
-Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host);
+Raw matrix_set_identity_0042e8c0(Raw matrix, MatrixCopyHost& host);
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
                                                   MatrixOrthonormalizeHost& host);
 float* transform_get_world_matrix_0042aff0(Raw node, Seg2Host& host);

@@ -147,6 +147,85 @@
       }
     ]
   },
-  "left_for_others": "Connect canonical Button payload factory/default/copy lifetime to real GUI Button creation, then the prepared append/grow entries become production-reachable. No online/debug wiring, game run, main merge, rebase or push performed.",
-  "coordination": "Released AA ledger shard for w7 and both shared pool source/header files after compilation; released game_main.cpp after final build/graph verification. Notified w2/w7/w1 of disjoint specializations and Button CRT subset/interruption flag for landing."
+  "left_for_others": "Connect canonical Button payload factory/default/copy lifetime to real GUI Button creation, then prepared append/grow entries become production-reachable. origin/main was merged into the worker branch for landing repair; no merge into main, rebase, push or game run performed.",
+  "coordination": "Released AA ledger shard for w7 and both shared pool source/header files after compilation; released game_main.cpp after final build/graph verification. Notified w2/w7/w1 of disjoint specializations and Button CRT subset/interruption flag for landing.",
+  "landing_repair": {
+    "previous_head": "7cf5516f201b0d9e326416aad3e37febc5100425",
+    "merged_origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "conflicts": {
+      "src/native_material_pools.cpp": "The only conflict was adjacent Button/Icon table header includes; retained both. Main Icon appender trait dispatch and all Icon table bodies coexist with Button explicit initialize/allocate and four Button entries."
+    },
+    "ledger_or_startup_cmake_conflicts": false,
+    "checks": {
+      "build": "scripts/build.ps1 passed; all 4 CTests passed; local/c879-merge-build.log",
+      "on_build": {
+        "status": "not_applicable",
+        "command": "python tools/off_switch_on_build.py --pattern ^kWireGoal5 --log local/c879-merge-on-build.log",
+        "exit_code": 2,
+        "output": "no OFF switches selected",
+        "reason": "c879 adds no compile-time switch or OFF path; the Button wiring is unconditional and compiled by the passing normal and no-inline builds. The unrelated mission-clock switch was not changed.",
+        "log": "local/c879-merge-on-check.log"
+      },
+      "analysis_build": "python tools/call_graph.py --build passed; build/callgraph uses /Ob0 and /OPT:NOICF; local/c879-merge-analysis-build.log",
+      "analysis_graph": {
+        "reconstructed_called": 7409,
+        "reconstructed_addresses": 7459,
+        "reachable_functions": 134626,
+        "edges": 395433,
+        "button_capacity": "00AAB8E0 at 106C4E00 reachable, called by reserve_00AABD00 at 106C4CE5 without code folding",
+        "button_reserve": "00AABD00 at 106C4CD0 reachable, called by initialize_pool<Button> at 106C2C06",
+        "icon_append": "00AB23A0 at 106C4C90 reachable, called by allocate_slot<Icon> at 106C20A3",
+        "button_append_grow": "00AABC70/00AAB930 remain unlinked, so original skips stand"
+      },
+      "release_graph": {
+        "reconstructed_called": 5625,
+        "reconstructed_addresses": 6261,
+        "reachable_functions": 43056,
+        "edges": 223507,
+        "targets_reachable": [
+          "00aab8e0",
+          "00aabd00",
+          "00ab23a0"
+        ],
+        "note": "Release folds identical Button/Icon capacity functions; separate Button identity/caller is verified in the no-ICF analysis build."
+      },
+      "focused_probe": "Re-ran local/c879-button-probe.cmd against merged bsp_core.lib: PASS 2049 Button slots, 33 slabs, capacity 32->66; identity/payload/trailer/lock/trim/teardown.",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 4 files",
+      "game_run": false,
+      "readiness_summary": {
+        "wired": 10741,
+        "callees_done_no_wired_caller": 8531,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "readiness_rows": [
+        {
+          "address": "00aab930",
+          "state": "callees_done_no_wired_caller",
+          "called": null,
+          "call_sites": null
+        },
+        {
+          "address": "00aabc70",
+          "state": "callees_done_no_wired_caller",
+          "called": null,
+          "call_sites": null
+        },
+        {
+          "address": "00aab8e0",
+          "state": "wired",
+          "called": true,
+          "call_sites": 2
+        },
+        {
+          "address": "00aabd00",
+          "state": "wired",
+          "called": true,
+          "call_sites": 2
+        }
+      ]
+    },
+    "coordination": "Reclaimed leases before merging; waited for w9 material-source release; released source/header to w5/w3 after passing merged compilation. No new reconstruction scope."
+  }
 }

@@ -7,7 +7,7 @@ namespace bsp {
 // storage operations. The existing interface remains a consumer/fixture seam;
 // this provider invokes reconstructed source, with no original code callbacks.
 // Borrowed strings service must outlive this object and its consuming contexts.
-class NativeInputKeyboardStorage final : public NativeInputKeyboardLibrary {
+class NativeInputKeyboardStorage : public NativeInputKeyboardLibrary {
 public:
     explicit NativeInputKeyboardStorage(NativeStringStorage& strings) noexcept : strings_(strings) {}
     void* device_0055c110(void*, const void*) override;
