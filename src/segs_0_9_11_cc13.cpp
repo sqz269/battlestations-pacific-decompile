@@ -362,12 +362,14 @@ bool node_page_count_is_zero_00410b20(Raw page) { return page.at<std::int16_t>(0
 
 // 00411EB0, ECX = guard, stack owner RET 4, returns guard. Vtable first, then owner, then (only for
 // a non-null owner) EnterCriticalSection and ++depth.
-void* scoped_lock_construct_00411eb0(Segs0911Host& host, Raw guard, void* owner) {
+void* scoped_lock_construct_00411eb0(ScopedCriticalSectionHost& host, Raw guard, void* owner) {
     guard.at<std::uint32_t>(0) = 0x00CE37FCu;
     guard.ptr(4) = owner;
     if (owner != nullptr) {
         host.enter_critical_section(owner);
-        raw(owner).at<std::int32_t>(0x18) += 1;
+        // bsp.py show 00411EB0 --asm: 00411ECC is ADD DWORD [ESI+18h],1.
+        // Unsigned storage preserves the instruction's wrapping depth update.
+        raw(owner).at<std::uint32_t>(0x18) += 1u;
     }
     return guard.p;
 }

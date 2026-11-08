@@ -4,6 +4,7 @@
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_removal_reorder.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
+#include "bsp/segs_0_9_11_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -18,15 +19,22 @@ static_assert(sizeof(Guard)==8 && sizeof(CRITICAL_SECTION)==0x18);
 void store(void* owner,std::size_t offset,std::uint32_t value) noexcept {
     *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::byte*>(owner)+offset)=value;
 }
-volatile std::uint32_t& depth(CRITICAL_SECTION* section) noexcept {
-    return *reinterpret_cast<volatile std::uint32_t*>(reinterpret_cast<std::byte*>(section)+0x18);
-}
+struct GuardCalls final : segs_0_9_11_cc13::ScopedCriticalSectionHost {
+    void enter_critical_section(void* section) override {
+        EnterCriticalSection(static_cast<CRITICAL_SECTION*>(section));
+    }
+};
 Guard enter_first_manager(NativeFrameClockLifetimeContext& context) {
     void* const manager=get_native_singleton_manager_00415350(context.actual_manager_publication_01090aa0);
     CRITICAL_SECTION* captured;
     std::memcpy(&captured,static_cast<std::byte*>(manager)+0x10,4);
-    Guard guard{0x00ce37fcu,captured};
-    if(captured) {EnterCriticalSection(captured);depth(captured)=depth(captured)+1u;}
+    Guard guard;
+    GuardCalls calls;
+    // BEDE00/BEDEA0 inline the same captured-section entry as 00411EB0.
+    // Reuse its profile/owner stores and entry/depth ordering on this actual
+    // manager section; GuardCleanup still retires this one captured guard.
+    segs_0_9_11_cc13::scoped_lock_construct_00411eb0(
+        calls,segs_0_9_11_cc13::raw(&guard),captured);
     return guard;
 }
 struct RootCleanup final {

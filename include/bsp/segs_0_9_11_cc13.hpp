@@ -37,7 +37,14 @@ struct NativeStr {
     char* data;
 };
 
-struct Segs0911Host {
+// The guard constructor needs only this import. Native lifetime owners can
+// supply the real critical section without implementing unrelated game calls.
+struct ScopedCriticalSectionHost {
+    virtual ~ScopedCriticalSectionHost() = default;
+    virtual void enter_critical_section(void* cs) = 0; // [00CE2218]
+};
+
+struct Segs0911Host : ScopedCriticalSectionHost {
     virtual ~Segs0911Host() = default;
     // Address of an image global's storage (00E198C4, 00E19894, 00E17628, 00E18680).
     virtual void* global(std::uint32_t address) = 0;
@@ -47,7 +54,6 @@ struct Segs0911Host {
     virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
     virtual void free_00bf65ac(void* block) = 0;
     virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
-    virtual void enter_critical_section(void* cs) = 0;      // [00CE2218]
     virtual void leave_critical_section(void* cs) = 0;      // [00CE2210]
     // 00411860, the vector length error (_Xlen). The image never returns from it.
     virtual void vector_length_error_00411860() = 0;
@@ -221,7 +227,7 @@ bool node_page_count_is_64_00410b10(Raw page);                               // 
 bool node_page_count_is_zero_00410b20(Raw page);                             // ECX
 // 00411EB0 __thiscall(guard, owner) RET 4 and its scalar deleting destructor 00411F00 (vtable
 // 00CE37FC). owner is a CRITICAL_SECTION followed by a dword depth at +18h.
-void* scoped_lock_construct_00411eb0(Segs0911Host& host, Raw guard, void* owner);
+void* scoped_lock_construct_00411eb0(ScopedCriticalSectionHost& host, Raw guard, void* owner);
 void* scoped_lock_scalar_delete_00411f00(Segs0911Host& host, Raw guard, std::uint32_t flags);
 void float_record5_defaults_00411f40(float* record);                         // ECX
 void float_record4_defaults_00411f80(float* record);                         // ECX
