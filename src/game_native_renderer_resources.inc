@@ -23,6 +23,10 @@ struct RenderResourcesGraph {
  // Borrowed metadata only: no Native allocation, texture load or release.
  std::optional<NativeRenderResourcesRemapContext> remap;
  bool attempted{};
+ // Host identity only, assigned after the enclosing application is constructed.
+ // Both public resource construction and the native mission producer use this
+ // same graph; neither route gets a separate native publication or listener.
+ GameNativeRendererApplication* listener_application_owner{};
 
  RenderResourcesGraph(DestructionGraph& g,DeviceGraph& devices,CameraGraph& camera,TextureLoadingGraph& loading,
      GameSingletonHost& host,NativeStringRawPoolContext& raw,GameNativeVfsRawServices& vfs,
@@ -77,6 +81,11 @@ struct RenderResourcesGraph {
    // completed native storage if this admission throws; never replay cleanup.
    void* helper=get<void*>(owner,0x34);
    if(helper)texture_reference.emplace(helper,texture_lifetime,registration);
+   check(listener_application_owner!=nullptr,
+       "render-resource listener binding requires its enclosing application");
+   check(!listener_application || listener_application==listener_application_owner,
+       "another renderer application owns the live listener service");
+   listener_application=listener_application_owner;
   }
   return owner;
  }
