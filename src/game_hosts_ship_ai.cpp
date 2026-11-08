@@ -1648,6 +1648,21 @@ struct GameShipAiHost::Impl {
     unsigned long long cruise_latches{}, cruise_latch_resends{}, cruise_latch_sentinels{};
     std::int32_t session_mode{};
 
+    struct DirectorTargetDeleter {
+        void operator()(bsp::cc13_seg68::WeaponDirectorAutoTarget* target) const noexcept {
+            if (target == nullptr) return;
+            // 009F60C0: release the selector's priority vector and restore its
+            // base vtable before freeing the enclosing object. This is the
+            // same selector built by 009F6A20 below and read by TargetBinding
+            // and auto_target_tick_009F5DA0, not a separate teardown record.
+            // The owning pointer covers replacement, controllers.clear() at
+            // mission load, and Impl destruction; vector moves transfer it.
+            // Evidence: bsp.py show 009f60c0, derived 00D21B48 -> base 00D21B40.
+            bsp::cc13_seg68::weapon_director_auto_target_destruct_009f60c0(*target);
+            delete target;
+        }
+    };
+
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
     // whole of this record: the timers are ai+0B14h / ai+0B18h, the block is
     // ai+60h, and the order slots live on the unit rather than on the AI.
@@ -1667,7 +1682,8 @@ struct GameShipAiHost::Impl {
             }
         } order{};
         bsp::AutoTargetState target{};          // director+38h
-        std::unique_ptr<bsp::cc13_seg68::WeaponDirectorAutoTarget> constructed_target;
+        std::unique_ptr<bsp::cc13_seg68::WeaponDirectorAutoTarget,
+            DirectorTargetDeleter> constructed_target;
         // ai+2264h. 009F3C0D..009F3C27 (the controller constructor 009F3BA0):
         // the current state starts as ai+0BC8h, brain+0B70h, the `cruise` leaf,
         // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
@@ -14838,8 +14854,7 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
             auto& ctl = impl_->controllers[i];
             if (!ctl.nav_block_built) continue;
             ShipDirectorTargetBinding binding(*impl_, i);
-            ctl.constructed_target =
-                std::make_unique<bsp::cc13_seg68::WeaponDirectorAutoTarget>();
+            ctl.constructed_target.reset(new bsp::cc13_seg68::WeaponDirectorAutoTarget{});
             bsp::cc13_seg68::weapon_director_auto_target_construct_009f6a20(
                 binding, *ctl.constructed_target,
                 static_cast<bsp::cc13_seg68::Handle>(i + 1u));
