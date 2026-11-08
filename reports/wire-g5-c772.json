@@ -1,0 +1,170 @@
+{
+  "chain": 772,
+  "slot": "g5-w12",
+  "base": "4c8d1e4d64",
+  "wired_before": 10616,
+  "wired_after": 10617,
+  "rows": [
+    {
+      "native": "006de3d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::marker_bind_on_add_stub",
+      "evidence": "008DF2B0 calls this exact body at 008DF39E after adding a live unit to an eligible objective. The original body is one RET 8 and reads no receiver or arguments; the new source-only signature omits those unused ABI inputs. The existing ObjectiveListHost callback now invokes it only for the nonnull unit token; the position callback remains separate. No marker binding effect is claimed."
+    },
+    {
+      "native": "0074c630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: load_surface_ship_leaf",
+      "reason": "LandingTroopClass[LandingTroopType].Classes contains real Soldier entries, but the leaf adapter lacks the 004B1400 soldier-class resolver and 00964790/0047B3C0 vehicle preload closure; emptying that table or ignoring registrations would change the body."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Its only current caller passes ratio 1.0, so the stream fraction cannot select CautiousMove; no real alternate selecting command producer was established."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: df_pilot_targets_us and wingmate target counting",
+      "reason": "The host retains commanded and dogfight targets but not the pilot+98h local-slot target record selected through unit+DF4h and 00F876B8; those host targets are not interchangeable native inputs."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: run_land_moveto_tick_009c18c0",
+      "reason": "Missing retained same-root 3Ch MoveTo state, its callback endpoint and complete owner/lifetime integration; current glide inputs are flattened host fields and constants."
+    },
+    {
+      "native": "009b2e50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "reason": "The composite needs a native land approach, registry and complete state objects; the installer currently owns a flattened land-task projection."
+    },
+    {
+      "native": "009afe70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "reason": "The lower constructor requires a constructed approach plus the original AirOps block/queue record and ordered pose/geometry services, not only the host's landing-site indices."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick screen reset callbacks",
+      "reason": "The inspected pick-screen state lacks the selection-mode producer at +30h and the owned selection vector at +C4h needed by the reset body."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: camera_screen_frame_step",
+      "reason": "The callback records a camera step, whereas this body needs the support-screen entry availability and real information-panel widgets."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "No retained ambient SoundInstance and its native volume producer were established in this record-only callback."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "The recorded callback has no bound engine emitter or live child-gun audio traversal required for the native broadcast."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "No matching original marker projection and margin publication was established; the host marker camera culls its coordinates before placement."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No live text-edit byte-input producer and matching font-context acceptance consumer was found; existing constant-byte probe calls are insufficient."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "The current native Page integration lacks the constructed Curve widget with authored point vectors and a corresponding tessellation/render consumer."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class pair scoring",
+      "reason": "The inspected pair scoring uses weapon facts; no live mode-indexed native class-pair row owner and matching 00A0D1D0 consumer was established."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path handling",
+      "reason": "The live sender produces add-point messages, while this body requires a genuine clear-message producer and the last filled command slot's owned path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No original product-query consumer with a bound CameraProjection was established in the inspected live camera paths."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its sole original caller is the debug inspector's flooded-value printer; excluded as debug-only work."
+    },
+    {
+      "native": "004b5510",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: participant_slot_is_active_ai_004b5510",
+      "reason": "The original party-AI predicate uses this helper in its multiplayer arm; excluded from single-player work."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The host has a hull-filter boolean but lacks the native shape chain, body manifolds and world-lock services required by the filter update."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::tick_issue_clearorders",
+      "reason": "The literal initializer reads actual absolute globals 00F87574/78/7C; no runtime publication of those mutable native data cells is bound here."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::selling_tick_00a11ff0",
+      "reason": "The current selling host lacks the native unit/list read adapter and sell-message consumer that would use this capture-radius predicate."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance queries",
+      "reason": "Missing the member 00779D00 recon-record-value producer and a live 00A13080/00A2EEE0 query consumer; membership or visibility cannot substitute."
+    },
+    {
+      "native": "00851580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::read_stationary_class_string",
+      "reason": "The mesh-only host lookup has no owned stationary descriptor with the native LuaReader, named effect lookup and retained effect-handle lifecycle."
+    },
+    {
+      "native": "0070c030",
+      "status": "skipped",
+      "host_site": "src/flak_note_seg36_37_argon.cpp: FlakBulletClass_ReadLuaFields_0070c030",
+      "reason": "The flak class loader and its range consumer are owned by agent/g5-w10's active c776 packet."
+    }
+  ],
+  "checks": {
+    "baseline_and_final_build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed",
+    "readiness": "wire_readiness.py --standins: 006de3d0 changed from ready to wired; total 10616 -> 10617; called=true",
+    "compiled_caller": "Release ObjectiveListHost::marker_bind_on_add_stub at 1015D400 tests the actual unit argument and calls 10004750 at 1015D409 only when nonnull; bsp_game.map binds that target to marker_manager_bind_unit_marker_stub_006de3d0",
+    "folding": "The empty source leaf is RET 0 and ICF-folded with other empty bodies. call_graph.py who reports aggregate alias call sites, not new calls from this packet; the specific new callback call was separately checked in the executable bytes.",
+    "entry_path": "call_graph.py path marker_bind_on_add_stub@ObjectiveListHost reaches binding_trampoline through the ObjectiveListHost vtable and the game entry",
+    "single_player_producer": "Installed mission scripts use luaObj_Add with actual unit targets, including scripts/missions/usn/usn_sibuyan.lua:707/709; the live Add loop calls objective_set_add_unit_008df2b0 for unit targets",
+    "float_math": "No floating-point math changed; pc24 lint not required",
+    "game_execution": "Not run, as instructed; compiled call and entry reachability are static evidence, not gameplay validation"
+  },
+  "left": "Landing-ship class loading needs genuine soldier/vehicle preload owners. Marker updates 006DE3F0/006DE4C0 still need their real marker objects; this packet only binds the original empty add-unit leaf."
+}
