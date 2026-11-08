@@ -1,0 +1,185 @@
+{
+  "goal": 5,
+  "chain": 761,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "base": "d9af814267",
+  "summary": "Wire the inherited entity invincibility setter into Lua SetInvincible and replace its host fanout. Fix child-head capture and per-child parent-value reread to match the listing.",
+  "rows": [
+    {
+      "native": "0042ed80",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_set_invincible_00897a50 and UnitInvincibilityBinding::dispatch_set_invincible",
+      "reason": "Replaces the old host fanout with the existing reconstructed setter over live gunnery invincibility values and squadron member slots; no duplicate old path."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_set_linear_speed_limit_005cb9f0",
+      "reason": "Missing a live native MovCam mover owner and the speed-limit callback from a reached interpolator/path-mode caller."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_set_angular_speed_limit_005cba20",
+      "reason": "Missing a live native MovCam mover owner and the angular-limit callback from a reached interpolator/look-at caller."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: shape collision paths",
+      "reason": "Missing actual shape storage and the Cc13Dyn1Calls world-lock/manifold provider on this host path."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: shape collision paths",
+      "reason": "Missing actual shape storage and the Cc13Dyn1Calls world-lock/manifold provider on this host path."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope_shape_collision record",
+      "reason": "Missing actual shape storage and the world-lock/manifold provider; the inspected host site only records the action."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp: native land approach registry",
+      "reason": "Missing an entry-reached native land-approach producer; its existing registry constructor is not linked into the game."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp: native land approach cleanup",
+      "reason": "Missing an entry-reached native land-approach owner whose actual registry lifetime reaches destruction."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/band_0040_cc13.cpp: byte_grid_sample_neighbor_00412070",
+      "reason": "Missing an entry-reached shore-mask/falloff caller and its real byte-grid owner."
+    },
+    {
+      "native": "00880080",
+      "status": "skipped",
+      "host_site": "src/landscape-related caller of 00412070: byte_grid_propagate_falloff_00880080",
+      "reason": "Missing a production byte-grid/shore-mask owner; no matching function is linked in the baseline executable."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "Missing a live distortion record growth producer; the reached lifetime path only shrinks the array to zero."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing a production NativeGuiListboxCalls implementation and the native listbox selection owner."
+    },
+    {
+      "native": "00b854d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: construct_native_debug_render_flags_00b854d0",
+      "reason": "Missing a gameplay consumer of the debug-render flag singleton; debug-only work is excluded."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: set_native_last_render_command_metadata_00b1cb50 call",
+      "reason": "Missing an entry-reached main-scene submission owner; the existing native caller already forwards the actual queue."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a reached frustum/soldier/shadow caller bound to the actual camera projection; adding an unused getter call would not supply one."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list path",
+      "reason": "Missing a gameplay consumer for the native candidate score list; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list path",
+      "reason": "Missing actual candidate score-list entries with a gameplay consumer whose chosen byte is read."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: initialize_native_vehicle_camera_limits_0078e230",
+      "reason": "Missing an entry-reached native vehicle-camera array owner; its existing resize path already calls this initializer."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a reached native vehicle-camera producer/MovCam callback over the actual array header."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: reserve_native_animation_values_00b92440",
+      "reason": "Missing an entry-reached native skinned-animation item parser/append producer; existing array helpers already call this reserve."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing a production OceanState owner for this typed transform path."
+    },
+    {
+      "native": "00731040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: current bullet accessor",
+      "reason": "Deferred because agent/g5-w3 owns this address and host file; missing exclusive ownership for this worker."
+    },
+    {
+      "native": "00731050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: current mode accessor",
+      "reason": "Deferred because agent/g5-w3 owns this address and host file; missing exclusive ownership for this worker."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing a reached structured-stream writer callback and its real writer/remaining-count state."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_window_platform_base_00be2ac0",
+      "reason": "An existing separate native implementation owns the actual platform construction; missing a justified unification contract for the legacy engine-services projection."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0042ed80 (saved pseudocode)",
+    "bsp.py show 0042ed80 --asm --lines 50: 0042ED8A child head before 0042ED8F store; 0042EDA2 reloads parent+150h; 0042EDB6 reads next sibling after dispatch.",
+    "bsp.py ghidra proto 0042ed80: program battlestationspacific.exe, body 0042ed80-0042edc1.",
+    "Baseline call_graph.py: 5450/6059 reconstructed addresses called; who 0042ed80 had no linked match.",
+    "Post-change call_graph.py: 5451/6060 reconstructed addresses called; 0042ed80 REACHABLE with two calls from game_hosts_lua.obj (root lambda and recursive dispatch)."
+  ],
+  "abi": "Original ECX entity, stack float, RET4, vtable+F4. Existing reconstruction uses UnitDamageHost& and a host entity handle (unit index plus one); not a binary drop-in.",
+  "counts": {
+    "readiness_wired_before": 10603,
+    "readiness_wired_after": 10604,
+    "compiled_called_before": 5450,
+    "compiled_called_after": 5451
+  },
+  "validation": {
+    "baseline_build": "passed; four CTests",
+    "final_build": "passed; all four CTests including the new focused invincibility setter case",
+    "regression": "One case in existing math_tests: capture child head before store and reload changed parent value between two child callbacks.",
+    "pc24_lint": "python tools/pc24_lint.py --staged: 0 findings over the three changed C++ files"
+  },
+  "limitations": [
+    "Preserves the existing host projection: the squadron and wing zero share a unit slot; other live registry member slots are the health-bearing children. Gun components have no separate host health.",
+    "Script entities without a units-host slot retain the existing unresolved behavior.",
+    "No game was run; compiled entry reachability and fixture checks do not prove in-game execution or original binary ABI compatibility."
+  ]
+}

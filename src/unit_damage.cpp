@@ -570,11 +570,13 @@ void unit_react_to_health_change_00958a30(UnitDamageHost& host, std::uint32_t en
 
 // 0042ED80, 00CE6290+F4h and 00CFC3D0+F4h. __thiscall(this, float), RET 4.
 void entity_set_invincible_0042ed80(UnitDamageHost& host, std::uint32_t entity, float value) {
+    // 0042ED8A captures +48h before the +150h store; 0042EDA2 reloads the
+    // parent's stored value before EACH child call (bsp.py show 0042ed80 --asm).
+    std::uint32_t child = host.first_child(entity);
     host.write_invincibility(entity, value);  // 0042ED8F
-    for (std::uint32_t child = host.first_child(entity); child != 0;
-         child = host.next_sibling(child)) {
+    for (; child != 0; child = host.next_sibling(child)) {
         // 0042EDB4: the stored float is re-read for each child, not the argument.
-        host.dispatch_set_invincible(child, value);
+        host.dispatch_set_invincible(child, host.read_health(entity).invincibility);
     }
 }
 

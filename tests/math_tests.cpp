@@ -157,6 +157,7 @@
 #include "bsp/scene_record_map.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/unit_damage.hpp"
+#include "bsp/unit_damage_host_unreached.hpp"
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
@@ -3693,6 +3694,36 @@ int main() {
                   && !bsp::lobby_settings_slot_is_published(9, 5),
             "005D5500 offers TimeLimit_IC in Island Capture and TimeLimit in mode 4, "
             "and PlayerCount and GameMode publish in every mode");
+    }
+
+    {
+        // 0042ED8A captures the child head before the store. A child's virtual
+        // setter can change the parent; 0042EDA2 must reload it for the next one.
+        struct InvincibilityTrace final : bsp::UnitDamageHostUnreached {
+            bsp::UnitHealth parent{};
+            bool head_before_write{};
+            std::vector<std::pair<std::uint32_t, float>> delivered;
+            std::uint32_t first_child(std::uint32_t) override {
+                head_before_write = parent.invincibility == 0.0f;
+                return 2;
+            }
+            void write_invincibility(std::uint32_t, float value) override {
+                parent.invincibility = value;
+            }
+            bsp::UnitHealth read_health(std::uint32_t) override { return parent; }
+            std::uint32_t next_sibling(std::uint32_t child) override {
+                return child == 2 ? 3u : 0u;
+            }
+            void dispatch_set_invincible(std::uint32_t child, float value) override {
+                delivered.emplace_back(child, value);
+                if (child == 2) parent.invincibility = 0.75f;
+            }
+        } host;
+        bsp::entity_set_invincible_0042ed80(host, 1, 0.25f);
+        check(host.head_before_write && host.delivered.size() == 2
+                  && host.delivered[0] == std::make_pair(2u, 0.25f)
+                  && host.delivered[1] == std::make_pair(3u, 0.75f),
+            "0042ED80 captures the child head before writing and reloads parent invincibility per child");
     }
 
     {
