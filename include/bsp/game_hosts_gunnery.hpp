@@ -87,6 +87,10 @@
 #include "bsp/rocket_proximity_fuze_cc13.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
+namespace bsp::path_movcam_seg46_argon {
+struct ParatrooperClassResidue;
+}
+
 namespace bsp {
 // Packet cc9_gunnery_pass_byte_7d, docs/GUNNERY_OPEN_ITEMS.md section 103. The
 // gunnery pass byte +7Dh (ctor 1 at 008645D6) that 00865809..00865820 reads: the
@@ -1264,6 +1268,10 @@ public:
         std::size_t unit_index, int category) const noexcept;
     // The authored Bullets row a gun fires, by GameGunRow::bullet_class.
     const GameBulletClassRow* bullet_class_row(int id) const noexcept;
+    // Goal 5 chain 696: the MParatrooper block 007AC780 read into Bullets[id]'s
+    // class descriptor (built on first use, as 006EA910 builds it); null when
+    // the row's Type is not Paratrooper.
+    const bsp::path_movcam_seg46_argon::ParatrooperClassResidue* paratrooper_class(int id);
     // Packet cc8_torpedo_release_spawn. The air drop: put one torpedo-capable
     // round of this unit into the air with the plane's own pose and speed.
     //

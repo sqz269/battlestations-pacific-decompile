@@ -1,0 +1,229 @@
+{
+  "chain": 696,
+  "goal": 5,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "picked": "Bullet-class descriptor loading: Bullets[id] built once per id the way 006EA910's miss path builds it (Type, Got, 006E8320 constructor, the kind's vtable[18h] Lua reader), feeding every Bullets field the gunnery and units hosts read",
+  "wired_before": 10445,
+  "wired_after": 10449,
+  "called_before": 5707,
+  "called_after": 5711,
+  "rows": [
+    {
+      "native": "006e8320",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::bullet_class_descriptor",
+      "note": "weapon_class_constructed_defaults; +54h FlyTime fixed to [00D7A248] = FLT_MAX (was 1.0f)"
+    },
+    {
+      "native": "006e8770",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::bullet_class_descriptor -> load_weapon_class_fields",
+      "note": "load_weapon_class_base_fields over LuaBulletClassRow (live mission Lua Bullets[id])"
+    },
+    {
+      "native": "006e1be0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields; ParatrooperClassRowReader::read_bomb_class_lua_fields_006e1be0",
+      "note": "load_bomb_class_fields, inlined into load_weapon_class_fields in the Release build"
+    },
+    {
+      "native": "008566b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (Torpedo)",
+      "note": "load_torpedo_class_fields (inlined); feeds the torpedo row's MaxWaterHitVel/MaxFall/HeadingTurn/Homing and 006E9890's WaterTravelSpeed"
+    },
+    {
+      "native": "006fd400",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (DepthCharge); depth_charge_activate_006fd9b0; DcHost::weapon_sink_rate",
+      "note": "load_depth_charge_class_fields (inlined); DiveMinDepth/DiveMaxDepth default fixed to FLT_MAX (006FD507/006FD544)"
+    },
+    {
+      "native": "00809cb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (Rocket)",
+      "note": "load_rocket_class_fields (inlined); VMax/Acceleration/IgnitionDelay/AntiAir of the rocket row"
+    },
+    {
+      "native": "007ac780",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (Paratrooper); read by src/game_hosts_units.cpp GameUnitsHost::Impl::para_class_fields via GameGunneryHost::paratrooper_class",
+      "note": "SoldierClass (004B1400) / SoldierAnim (004FE080) handles unresolved and counted"
+    },
+    {
+      "native": "0085f500",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (WaterMine)",
+      "note": "block kept beside the descriptor; no host consumer of the mine block yet"
+    },
+    {
+      "native": "0070c030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_flak_class_fields",
+      "reason": "the ledger body FlakBulletClass_ReadLuaFields_0070c030 (flak_note_seg36_37_argon.cpp) calls image addresses through fn_at; the typed load_flak_class_fields runs for Flak rows instead"
+    },
+    {
+      "native": "006ea910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (typed stand-in for the miss path)",
+      "reason": "bullet_class_get_or_create_006ea910 (cc13_seg33a.cpp) needs LuaObject wrappers and the image's refcounted native class blocks, which this process does not model"
+    },
+    {
+      "native": "006ff170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp dkz_release_007bbba0 (reads KamikazePlaneClass/OpenAfterTime directly)",
+      "reason": "no reconstructed body (only host text); the reader resolves KamikazePlaneClass through BSP_VehicleClass_GetOrCreate 00964790, a vehicle class registry the host lacks"
+    },
+    {
+      "native": "00701060",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "dummy_target_bullet_class_read_lua_fields_00701060 takes a raw native class block and Pool09Host; no host consumer of DummyTarget fields"
+    },
+    {
+      "native": "00700050",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "dummy_submarine_class_read_lua_fields_00700050 takes a raw native class block and Pool09Host; no host consumer of DummySubmarine fields"
+    }
+  ],
+  "left": [
+    "Effect, payload-icon and decal handles in the descriptor stay unresolved: no gameplay effect manager (00870CD0 -> 008700E0), GUI texture atlas resolution or decal library in this process",
+    "FireChance is still copied by the BSPGun flatten because GameBulletClassRow keeps the authored percentage; moving it to the descriptor (+C4h = FireChance/100) needs weapon_fire_chance's divide removed",
+    "006FF170 (DummyKamikazePlane reader) has no body; units_motion reads its two keys directly"
+  ],
+  "review_round_1": {
+    "review_run": 1522,
+    "fix_run": 1531,
+    "base_head": "23ad28e59c2bd4758f59eed86855e77244b63942",
+    "scope": "Only the two numeric-reader corrections; no new wiring rows or native-address bodies.",
+    "findings": [
+      {
+        "id": "P2-numeric-string-coercion",
+        "status": "fixed",
+        "change": "WeaponClassRowView now separates coercing number_value (plain 00B66270) from exact-LUA_TNUMBER float_value (00B66330) and integer_value (00B66380). Class-reader call sites were separated by native accessor, including Blast, torpedo, depth-charge, rocket, paratrooper and water-mine reads.",
+        "evidence": [
+          "bsp.py show 00b66330",
+          "bsp.py show 00b66380",
+          "bsp.py show 006e8770 --start 516 --lines 106",
+          "bsp.py show 008566b0",
+          "bsp.py show 006fd400",
+          "bsp.py show 00809cb0",
+          "bsp.py show 0085f500"
+        ],
+        "regression": "FlyTime=\"2\" retains FLT_MAX; DamageMax=\"9\" retains numeric DamageMin=7; BlastRange=\"3\" and BlastDamageMin=\"4\" still coerce, while BlastDamageMax=\"8\" retains 4. Integer numeric strings retain the supplied fallback.",
+        "round_2_correction": "The separate read_number_field_007003b0 callback for CloseDuration was missed in round 1; review_round_2 corrects it and extends the focused probe to exercise the actual paratrooper reader."
+      },
+      {
+        "id": "P2-integer-conversion",
+        "status": "fixed",
+        "change": "Removed lua_tointeger; reuse lua_number_integer_00b66290 for the float32 spill/reload and native 00BF7420 truncation tail. Float reads also reuse lua_number_float32_00b66270.",
+        "evidence": [
+          "bsp.py show 00b66380 --asm: FSTP float at 00B663AE, FLD at 00B663B2, CALL 00BF7420 at 00B663B6",
+          "bsp.py show 00bf7420 --asm",
+          "src/lua_numeric.cpp"
+        ],
+        "regression": "Under nearest rounding MinRange=1.75 becomes 1, -1.75 becomes -1, and 0.99999999 becomes 1 after float32 rounding. Under upward rounding 1.75 still truncates to 1."
+      }
+    ],
+    "validation": {
+      "baseline_build": "./scripts/build.ps1 passed, 4/4 CTest groups",
+      "fixed_build": "./scripts/build.ps1 passed, 4/4 CTest groups; local/review1-build.log",
+      "pc24_lint_staged": "0 findings, 3 files",
+      "pc24_lint_branch_before_commit": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files; staged check above covers the repair",
+      "numeric_probe": "PASS: local/review1_numeric_probe.exe uses LuaBulletClassRow extracted verbatim from the fixed host source, linked to the built projectile-class readers and Lua 5.1.1; /fp:strict and /MANIFEST:EMBED. Checks both findings, per-kind accessor selection and Lua stack restoration.",
+      "numeric_probe_source_sha256": "2d2f05709a2bbc5281c5ea07287de97c51319575aa474fa0fc0a3330a85590a7",
+      "call_graph": "Refreshed after fixed build: 41772/41926 functions reachable; 5348/5944 reconstructed addresses called. These address-only totals differ from wire_readiness identifier totals.",
+      "entry_reachability": [
+        "load_weapon_class_fields: REACHABLE, call from GameGunneryHost::Impl::bullet_class_descriptor at 100BA457",
+        "007AC780: REACHABLE, call from bullet_class_descriptor at 100BA37F",
+        "0085F500: REACHABLE, call from bullet_class_descriptor at 100BA82B",
+        "006E8320 and 006E8770 remain inlined in Release; no standalone address-suffixed symbols. Run 1522 confirmed entry-reachable implementations for all eight claimed readers, including inlined readers."
+      ],
+      "readiness_before": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_after": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_logs": [
+        "local/review1-readiness-before.log",
+        "local/review1-readiness-after.log"
+      ],
+      "game_run": "Not performed; build, fixture and executable call-graph evidence only."
+    },
+    "choice": "The CRT SSE2 conversion selector is projected from IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE), following the existing mission Lua and decal hosts. The supplied helper retains both native conversion tails.",
+    "left": "The original report left/skipped items remain; no new rows were selected."
+  },
+  "review_round_2": {
+    "review_run": 1581,
+    "base_head": "ac65d94cc66a0607e6c88f49f378d840338bbe9a",
+    "finding": {
+      "id": "P2-close-duration-numeric-string-coercion",
+      "status": "fixed",
+      "change": "ParatrooperClassRowReader::read_number_field_007003b0 now calls row_.number_value(field_name), preserving plain GetNumber coercion for CloseDuration.",
+      "evidence": "bsp.py show 007003b0: GetByName then coercing 00B66270, storing the float result. src/path_movcam_seg46_argon.cpp:1417 selects this callback for CloseDuration.",
+      "regression": "Extended the focused numeric probe with ParatrooperClassRowReader extracted verbatim from the host source and a call to the built mparatrooper_class_read_lua_fields_007ac780. With CloseDuration=\"2\", the probe failed before the fix (observed 0), then passed after the fix (observed 2)."
+    },
+    "validation": {
+      "build": "./scripts/build.ps1 passed, including all 4 CTest groups; local/review2-build.log confirms game_hosts_gunnery.cpp compiled.",
+      "numeric_probe": "PASS: local/review2_numeric_probe.exe, built with /fp:strict and /MANIFEST:EMBED. Preserves the round 1 checks and adds CloseDuration=\"2\" -> 2 through the actual paratrooper class reader and its 007003B0 adapter. Lua stack restoration still passes.",
+      "numeric_probe_source": "local/review2_numeric_probe.cpp",
+      "numeric_probe_generator": "local/review2_make_probe.py extends the round 1 probe and extracts both host adapter classes verbatim from the current source.",
+      "numeric_probe_source_sha256": "5c58886e3bfa2eef5cc26fcfe80ab9baa790ec0b9a8b4f4ca23c2b1f71777e89",
+      "pc24_lint_staged": "0 findings, 1 source file",
+      "call_graph": "Refreshed after the fixed build: 41772/41926 functions reachable; 5348/5944 reconstructed addresses called; 216783 edges.",
+      "entry_reachability": [
+        "007AC780: REACHABLE, call from GameGunneryHost::Impl::bullet_class_descriptor at 100BA37F",
+        "ParatrooperClassRowReader::read_number_field_007003b0 at 100D2840: REACHABLE via the actual reader vtable reference at 10711238",
+        "Independent review 1581 confirmed all eight claimed rows entry-reachable, including inlined implementations, and accepted the round 1 integer-conversion fix."
+      ],
+      "readiness_before": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_after": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_log": "local/review2-readiness.log",
+      "game_run": "Not performed; build, focused probe and executable call-graph evidence only."
+    },
+    "scope": "One callback correction and report update; no new rows or native-address bodies. Original skipped rows and unresolved resources remain."
+  },
+  "merge_origin_main": {
+    "previous_worker_head": "0a594d8ed074afd2d93c807c11b4d080be0e5477",
+    "upstream_merged": "805f7e73f22b67312e56d63edc0c3c9c83808050",
+    "conflicts": [
+      "src/game_hosts_units.cpp: adjacent include additions"
+    ],
+    "resolution": "Keep both bsp/path_movcam_seg46_argon.hpp for this chain and bsp/flak_note_seg36_37_argon.hpp for upstream formation member-add. The branch paratrooper descriptor consumer and main formation-join implementation are both retained.",
+    "ledger_and_cmake_conflicts": "None; no merge_resolve.py intervention required.",
+    "validation": {
+      "regular_build": "./scripts/build.ps1 passed with all 4 CTest groups; local/merge-main-build.log",
+      "on_build": "./scripts/build.ps1 -Target bsp_game passed with all 4 CTest groups; local/merge-main-on-build.log. This chain has no switch and runs unconditionally. off_switch_on_build.py --pattern WireGoal5 --list reported no OFF switches selected (exit 2), so there is no distinct Goal 5 ON configuration; the extra build validates the same always-enabled paths. No switches were changed, and kWireGoal3Chain242Bound remains false.",
+      "numeric_probe": "PASS after merging main: regenerated both adapters verbatim and ran the extended round 2 Lua numeric probe, including CloseDuration=\"2\" -> 2 and native integer-conversion checks.",
+      "numeric_probe_source_sha256": "5c58886e3bfa2eef5cc26fcfe80ab9baa790ec0b9a8b4f4ca23c2b1f71777e89",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files before merge commit.",
+      "call_graph": "Refreshed after the enabled-code build: 42253/42407 functions entry-reachable; 5419/6027 reconstructed addresses called; 219177 edges.",
+      "entry_reachability": [
+        "007AC780: REACHABLE, one call from GameGunneryHost::Impl::bullet_class_descriptor at 100BBC6F",
+        "ship_ai_formation_add_member (0070EF30): REACHABLE, one call from GameUnitsHost::formation_join_0077f940 at 102920D5"
+      ],
+      "worker_readiness_before_upstream_merge": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "merged_readiness": {
+        "wired": 10544,
+        "called": 5789
+      },
+      "readiness_log": "local/merge-main-readiness.log",
+      "scope": "Totals include the newly merged upstream work; no additional wiring rows are claimed by this merge-only repair.",
+      "game_run": "Not performed; build, focused probe and executable graph evidence only."
+    }
+  }
+}

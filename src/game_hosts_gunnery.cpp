@@ -51,6 +51,7 @@
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/projectile_helpers.hpp"
+#include "bsp/lua_numeric.hpp"
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
@@ -176,6 +177,13 @@
 // A C++ fmod pointer has stack arguments and cannot satisfy this raw binding.
 extern "C" double __cdecl _CIfmod();
 
+extern "C" {
+#include <lua.h>
+}
+// lua.h's lua_getglobal is a function-like macro; this file calls
+// GameMissionLuaHost::lua_getglobal, the mission stack's own member.
+#undef lua_getglobal
+
 namespace bsp::game {
 namespace {
 
@@ -202,6 +210,224 @@ bool device_descriptor_type_is_kind(const std::string& type, std::int32_t kind) 
     if (_stricmp(type.c_str(), "Catapult") == 0)
         return classes::catapult_class_is_kind_of_00443010(kind);
     return false; // 00443090 also has no class for an unknown Type.
+}
+
+// Goal 5 chain 696. `Bullets[id]` (and its `Blast` / `Decals` sub-tables) in
+// the live mission Lua state, as the reader 006E8770 and its per-kind
+// extensions see it through BSP_LuaObject_GetByName and the typed accessor
+// after it. GetNumber (00B66270) is lua_tonumber, 0 for a non-number;
+// Get*OrDefault return the fallback for a value of the wrong type. Every
+// accessor re-indexes the globals, as GameMissionLuaHost's bullet-class
+// readers do, so no Lua reference outlives the call.
+class LuaBulletClassRow final : public bsp::WeaponClassRowView {
+public:
+    LuaBulletClassRow(lua_State* state, int id) : state_(state), id_(id) {}
+
+    // Bullets[id] is a table (006EA9B8's GetByIndex found a row).
+    bool present() const { return with_value(nullptr, [](lua_State*) {}); }
+    // 006EA9D6: BSP_LuaObject_SetBoolean(row, "Got", 1). No script in this
+    // installation reads `Got`; it is written because the image writes it.
+    void mark_got() const {
+        if (state_ == nullptr) return;
+        const int top = ::lua_gettop(state_);
+        if (push_table()) {
+            ::lua_pushboolean(state_, 1);
+            ::lua_setfield(state_, -2, "Got");
+        }
+        ::lua_settop(state_, top);
+    }
+
+    bool has_key(const char* key) const override {
+        bool present = false;
+        with_value(key, [&](lua_State* s) { present = !lua_isnil(s, -1); });
+        return present;
+    }
+    std::string string_value(const char* key, const char* fallback) const override {
+        std::string value = fallback != nullptr ? fallback : "";
+        with_value(key, [&](lua_State* s) {
+            if (::lua_type(s, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(s, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        });
+        return value;
+    }
+    float number_value(const char* key) const override {
+        float value = 0.0f;
+        with_value(key, [&](lua_State* s) {
+            value = bsp::lua_number_float32_00b66270(::lua_tonumber(s, -1));
+        });
+        return value;
+    }
+    float float_value(const char* key, float fallback) const override {
+        float value = fallback;
+        with_value(key, [&](lua_State* s) {
+            // bsp.py show 00b66330: exact type 3, then a float32 spill.
+            if (::lua_type(s, -1) == LUA_TNUMBER)
+                value = bsp::lua_number_float32_00b66270(::lua_tonumber(s, -1));
+        });
+        return value;
+    }
+    int integer_value(const char* key, int fallback) const override {
+        int value = fallback;
+        with_value(key, [&](lua_State* s) {
+            // bsp.py show 00b66380 --asm: 00B663AE spills float32;
+            // 00B663B6 calls 00BF7420, which truncates independently of RC.
+            if (::lua_type(s, -1) == LUA_TNUMBER) {
+                const double number = ::lua_tonumber(s, -1);
+                // Project the CRT's 0109EEA4 selector from this processor,
+                // as the mission Lua and decal hosts do.
+                const bool sse2_conversion =
+                    IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+                value = bsp::lua_number_integer_00b66290(number, sse2_conversion);
+            }
+        });
+        return value;
+    }
+    bool boolean_value(const char* key, bool fallback) const override {
+        bool value = fallback;
+        with_value(key, [&](lua_State* s) {
+            if (::lua_type(s, -1) == LUA_TBOOLEAN) value = ::lua_toboolean(s, -1) != 0;
+        });
+        return value;
+    }
+    const bsp::WeaponClassRowView* sub_table(const char* key) const override {
+        if (key == nullptr || !sub_.empty()) return nullptr;   // only one level is read
+        bool table = false;
+        with_value(key, [&](lua_State* s) { table = ::lua_type(s, -1) == LUA_TTABLE; });
+        if (!table) return nullptr;
+        for (const auto& child : children_) {
+            if (child->sub_ == key) return child.get();
+        }
+        children_.push_back(std::unique_ptr<LuaBulletClassRow>(
+            new LuaBulletClassRow(state_, id_, key)));
+        return children_.back().get();
+    }
+
+private:
+    LuaBulletClassRow(lua_State* state, int id, std::string sub)
+        : state_(state), id_(id), sub_(std::move(sub)) {}
+    // Pushes Bullets[id] (then [sub_]) and answers whether the top is a table.
+    bool push_table() const {
+        ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+        if (::lua_type(state_, -1) != LUA_TTABLE) return false;
+        ::lua_pushinteger(state_, id_);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) != LUA_TTABLE) return false;
+        if (sub_.empty()) return true;
+        ::lua_getfield(state_, -1, sub_.c_str());
+        return ::lua_type(state_, -1) == LUA_TTABLE;
+    }
+    // Runs `read` with row[key] on the top (or, for a null key, with the row
+    // itself); false, without calling `read`, when the row is not a table.
+    template<class Read>
+    bool with_value(const char* key, Read&& read) const {
+        if (state_ == nullptr || id_ < 0) return false;
+        const int top = ::lua_gettop(state_);
+        const bool table = push_table();
+        if (table) {
+            if (key != nullptr) ::lua_getfield(state_, -1, key);
+            read(state_);
+        }
+        ::lua_settop(state_, top);
+        return table;
+    }
+
+    lua_State* state_;
+    int id_;
+    std::string sub_;   // empty: the row itself
+    mutable std::vector<std::unique_ptr<LuaBulletClassRow>> children_;
+};
+
+// The reader's three resolvers. LABELLED, contracts not run: this process has
+// no gameplay effect manager (00870CD0 -> 008700E0, the ten Expl*/Travel*
+// lookups from 006E87F1), no GUI texture resolution for the payload icons
+// (BSP_GUI_ResolveTextureAndAtlasUV at 006E8AFF / 006E8B4E) and no decal
+// library (006E8C6D / 006E8CD9). Each lookup leaves the descriptor field
+// unresolved - a null effect reference, a null icon texture, no decal (-1) -
+// and is counted. Nothing in this host reads those fields; the zero tests of
+// 006E8A0C / 006E8A9B then copy the null reference, as they would copy a
+// missing one.
+class UnresolvedBulletClassResources final : public bsp::WeaponClassLoadHost {
+public:
+    std::uint32_t acquire_effect(int effect_id) override {
+        if (effect_id != 0) ++effects;
+        return 0u;
+    }
+    std::uint32_t resolve_payload_icon(const std::string&, float*) override {
+        ++icons;
+        return 0u;
+    }
+    int resolve_decal(const std::string&) override {
+        ++decals;
+        return -1;
+    }
+    unsigned long long effects{0};
+    unsigned long long icons{0};
+    unsigned long long decals{0};
+};
+
+// 007AC780's table accessors over the same row. Its first call is its parent
+// reader 006E1BE0 (007AC7A3), which fills the shared descriptor block. The
+// number readers 007AAE50 / 007AAED0 / 007AAF50 / 007AAFD0 / 007003B0 are
+// GetByName + GetNumber (00B66270, lua_tonumber: 0 for an absent key).
+// LABELLED, contracts not run: SoldierClass resolves through 004B1400 and
+// SoldierAnim through 004FE080 into handles; the soldier is not a host entity
+// (GameUnitsHost::Impl::para_class_fields), so both stay 0 and are counted.
+class ParatrooperClassRowReader final : public bsp::path_movcam_seg46_argon::LuaTableReaderHost {
+public:
+    ParatrooperClassRowReader(const LuaBulletClassRow& row, bsp::WeaponClassLoadHost& resources,
+                              bsp::WeaponClassDescriptor& descriptor)
+        : row_(row), resources_(resources), descriptor_(descriptor) {}
+    double get_number_by_name(const char* field_name) override {
+        return row_.number_value(field_name);
+    }
+    const char* get_string_by_name(const char* field_name) override {
+        string_ = row_.string_value(field_name, "");
+        return string_.c_str();
+    }
+    void read_bomb_class_lua_fields_006e1be0() override {
+        bsp::load_bomb_class_fields(row_, resources_, descriptor_);
+    }
+    void read_number_field_007003b0(const char* field_name, float& out) override {
+        // bsp.py show 007003b0: plain 00B66270 coerces numeric strings.
+        out = row_.number_value(field_name);
+    }
+    void read_string_field_004fe080(const char*, std::uint32_t& out_handle) override {
+        ++unresolved_handles;
+        out_handle = 0u;
+    }
+    std::uint32_t get_or_load_soldier_class_004b1400(const char*) override {
+        ++unresolved_handles;
+        return 0u;
+    }
+    unsigned long long unresolved_handles{0};
+
+private:
+    const LuaBulletClassRow& row_;
+    bsp::WeaponClassLoadHost& resources_;
+    bsp::WeaponClassDescriptor& descriptor_;
+    std::string string_;
+};
+
+// 006E9890's inputs are fields of the descriptor the reader filled: +8h, +68h,
+// +50h, +54h, +5Ch, +ACh, +B4h, the +10h Name, +E4h / +E0h (MTorpedo) and +58h
+// (MFlakBullet). A kind whose reader does not write a field leaves the
+// constructor's value, as the image's block does.
+bsp::WeaponClassFinaliseInput weapon_class_finalise_input(const bsp::WeaponClassDescriptor& d) {
+    bsp::WeaponClassFinaliseInput fin;
+    fin.sub_type = d.sub_type;
+    fin.range = d.range;
+    fin.muzzle_speed = d.muzzle_speed;
+    fin.fly_time = d.fly_time;
+    fin.time_scale = d.time_scale;
+    fin.damage_min = d.damage_min;
+    fin.blast_damage_min = d.blast_damage_min;
+    fin.name = d.name;
+    fin.water_travel_speed = d.water_travel_speed;
+    fin.max_fall = d.max_fall;
+    fin.flak_min_range = d.flak_min_range;
+    return fin;
 }
 
 // Chain 518: the constructor-owned portion of a real, cached DeviceClass.
@@ -5778,6 +6004,25 @@ struct GameGunneryHost::Impl {
     bool blast_shape_entries(std::size_t i, const float centre[3], float range,
                              std::vector<bsp::HitPartEntry>& out);
     const GameBulletClassRow* plane_crash_bullet(int id);
+    // Goal 5 chain 696: the projectile class descriptor of Bullets[id], built
+    // once per id by the image's constructor and Lua reader (006EA910's miss
+    // path); bullet_class_descriptor has the steps.
+    struct BulletClassDescriptorEntry {
+        std::string type;          // Bullets[id].Type, 006EA9B8 (00CE4780), "" when absent
+        bool row_present{false};   // Bullets[id] is a table
+        bool class_found{false};   // the Type matched one of 006EA910's thirteen names
+        bsp::WeaponClassDescriptor descriptor;
+        // MParatrooper's own block (+D8h..+FCh), 007AC780; read for that kind only.
+        bool paratrooper_read{false};
+        bsp::path_movcam_seg46_argon::ParatrooperClassResidue paratrooper;
+        // MWaterMine's own block (+D8h..+E8h), 0085F500; read for that kind only.
+        bool water_mine_read{false};
+        bsp::gameplay_seg53_cc13::WaterMineClassFields water_mine;
+    };
+    std::map<int, BulletClassDescriptorEntry> bullet_class_descriptors;
+    UnresolvedBulletClassResources bullet_class_resources;
+    unsigned long long bullet_class_descriptor_loads{0};
+    const BulletClassDescriptorEntry& bullet_class_descriptor(int id);
     struct PlaneCrashPrev {
         bool valid{false};
         float points[3][3]{};
@@ -6727,22 +6972,12 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         // named installation still reads.
         "              local BT = type(Bullets) == 'table' and Bullets\n"
         "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
+        // Goal 5 chain 696: every other Bullets field is read from the class
+        // descriptor (bullet_class_descriptor, 006EA910's reader); only the
+        // authored FireChance percentage is still copied here.
         "              local bc = BT and BT[b1.Bullet] or nil\n"
         "              if type(bc) == 'table' then\n"
-        "                f[q .. 'v0'] = num(bc.V0, 1000) or 0\n"
-        "                f[q .. 'range'] = num(bc.Range, 1000) or 0\n"
-        "                f[q .. 'dmin'] = num(bc.DamageMin, 1000) or 0\n"
-        "                f[q .. 'dmax'] = num(bc.DamageMax, 1000) or 0\n"
-        "                f[q .. 'wdmg'] = num(bc.WaterDamage, 1000) or 0\n"
-        "                f[q .. 'fdmg'] = num(bc.FireDamage, 1000) or 0\n"
         "                f[q .. 'fchance'] = num(bc.FireChance, 1000) or 0\n"
-        "                f[q .. 'mass'] = num(bc.Mass, 1000) or 0\n"
-        "                f[q .. 'nograv'] = (bc.NoGravity == true) and 1000 or 0\n"
-        "                if type(bc.Blast) == 'table' then\n"
-        "                  f[q .. 'bdmin'] = num(bc.Blast.BlastDamageMin, 1000) or 0\n"
-        "                  f[q .. 'bdmax'] = num(bc.Blast.BlastDamageMax, 1000) or 0\n"
-        "                  f[q .. 'brange'] = num(bc.Blast.BlastRange, 1000) or 0\n"
-        "                end\n"
         "              end\n"
         "            end\n"
         "            local b2 = nil\n"
@@ -6756,20 +6991,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "              f[q .. '2reload'] = num(rt2, 1000) or 0\n"
         "              f[q .. '2bdelay'] = num(b2.BarrelDelayTime, 1000) or 0\n"
         "              f[q .. '2throw'] = num(b2.Throw, 1000000) or 0\n"
-        "              local BT2 = type(Bullets) == 'table' and Bullets\n"
-        "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
-        "              local bc2 = BT2 and BT2[b2.Bullet] or nil\n"
-        "              if type(bc2) == 'table' then\n"
-        "                f[q .. '2v0'] = num(bc2.V0, 1000) or 0\n"
-        "                f[q .. '2dmin'] = num(bc2.DamageMin, 1000) or 0\n"
-        "                f[q .. '2dmax'] = num(bc2.DamageMax, 1000) or 0\n"
-        "                f[q .. '2nograv'] = (bc2.NoGravity == true) and 1000 or 0\n"
-        "                if type(bc2.Blast) == 'table' then\n"
-        "                  f[q .. '2bdmin'] = num(bc2.Blast.BlastDamageMin, 1000) or 0\n"
-        "                  f[q .. '2bdmax'] = num(bc2.Blast.BlastDamageMax, 1000) or 0\n"
-        "                  f[q .. '2brange'] = num(bc2.Blast.BlastRange, 1000) or 0\n"
-        "                end\n"
-        "              end\n"
         "            end\n"
         "            local wn = 0\n"
         "            if type(p.Windows) == 'table' then\n"
@@ -7246,8 +7467,18 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.throw_amount = flat_scaled(type_id, make("throw"), kAngleScale, 0.0f);
             gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
-            gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
-            gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            // Goal 5 chain 696: V0 (+50h) and Range (+68h) of the class
+            // descriptor, which the flatten's milli-scaled copies (rounded to
+            // 1/1000, no authored value finer) used to carry.
+            if (gun.bullet_class >= 0) {
+                const bsp::WeaponClassDescriptor& gun_class =
+                    bullet_class_descriptor(gun.bullet_class).descriptor;
+                gun.muzzle_speed = gun_class.muzzle_speed;
+                gun.max_range = gun_class.range;
+            } else {
+                gun.muzzle_speed = 0.0f;
+                gun.max_range = 0.0f;
+            }
             if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
                 // Packet cc13-gunB: 0087BCC0 (0043F7B0's first call) seeds +368h from
                 // class +4Ch "Armour" (0087BCF4) and +36Ch / +370h from class +48h
@@ -7280,34 +7511,25 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             // constructor's and the reader's, so filling only what the row
             // authored reproduces native state. `FlyTime` defaults to FLT_MAX.
             if (gun.bullet_class >= 0) {
-                bsp::WeaponClassFinaliseInput fin;
-                const std::string bullet_type =
-                    lua.read_bullet_class_string(gun.bullet_class, "Type");
-                fin.sub_type = bsp::weapon_class_sub_type_for_lua_type(bullet_type);
+                // Goal 5 chain 696: 007313E0 takes the class through 006EA910
+                // (at 00731955); the descriptor's reader filled every field the
+                // hook reads. WaterTravelSpeed and MaxFall now come only from
+                // the MTorpedo / MDepthCharge readers and MinRange only from
+                // the flak reader (as an integer), which is the only kind that
+                // authors them in this installation's two Bullets tables.
+                const BulletClassDescriptorEntry& bullet_class =
+                    bullet_class_descriptor(gun.bullet_class);
+                const std::string& bullet_type = bullet_class.type;
+                bsp::WeaponClassFinaliseInput fin =
+                    weapon_class_finalise_input(bullet_class.descriptor);
                 // docs/ORDNANCE_KIND_IDENTITY.md: the Type string names the
                 // projectile descriptor whose vtable[8] the 007ED7E0 family
                 // queries, and its answer set is the entity class-id space.
                 gun.ordnance = bsp::ordnance_kinds_for_bullet_type(bullet_type.c_str());
-                fin.range = lua.read_bullet_class_number(
-                    gun.bullet_class, "Range", 0.0f);
-                fin.muzzle_speed = lua.read_bullet_class_number(
-                    gun.bullet_class, "V0", 0.0f);
-                fin.fly_time = lua.read_bullet_class_number(
-                    gun.bullet_class, "FlyTime", bsp::kWeaponClassFlyTimeDefault);
-                fin.damage_min = lua.read_bullet_class_number(
-                    gun.bullet_class, "DamageMin", 0.0f);
-                fin.blast_damage_min = kBulletBlastDamageMinNestedBound
-                    ? lua.read_bullet_class_nested_number(gun.bullet_class, "Blast",
-                          "BlastDamageMin", 0.0f)
-                    : lua.read_bullet_class_number(
-                          gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
-                fin.name = lua.read_bullet_class_string(gun.bullet_class, "Name");
-                fin.water_travel_speed = lua.read_bullet_class_number(
-                    gun.bullet_class, "WaterTravelSpeed", 0.0f);
-                fin.max_fall = lua.read_bullet_class_number(
-                    gun.bullet_class, "MaxFall", 0.0f);
-                fin.flak_min_range = lua.read_bullet_class_number(
-                    gun.bullet_class, "MinRange", 0.0f);
+                if (!kBulletBlastDamageMinNestedBound) {
+                    fin.blast_damage_min = lua.read_bullet_class_number(
+                        gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
+                }
                 bullet_min_range[gun.bullet_class] = fin.flak_min_range;
                 const bsp::WeaponClassFinaliseResult finalised =
                     bsp::weapon_class_derive_engagement_range(fin);
@@ -7348,20 +7570,19 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 if (b2 >= 0) {
                     SecondAmmo second;
                     second.bullet_class = b2;
-                    second.muzzle_speed = flat_scaled(type_id, make("2v0"), kMilliScale, 0.0f);
-                    bsp::WeaponClassFinaliseInput fin2;
-                    const std::string type2 = lua.read_bullet_class_string(b2, "Type");
-                    fin2.sub_type = bsp::weapon_class_sub_type_for_lua_type(type2);
-                    fin2.range = lua.read_bullet_class_number(b2, "Range", 0.0f);
-                    fin2.muzzle_speed = lua.read_bullet_class_number(b2, "V0", 0.0f);
-                    fin2.fly_time = lua.read_bullet_class_number(b2, "FlyTime",
-                        bsp::kWeaponClassFlyTimeDefault);
-                    fin2.damage_min = lua.read_bullet_class_number(b2, "DamageMin", 0.0f);
-                    fin2.blast_damage_min = kBulletBlastDamageMinNestedBound
-                        ? lua.read_bullet_class_nested_number(b2, "Blast", "BlastDamageMin", 0.0f)
-                        : lua.read_bullet_class_number(b2, "Blast.BlastDamageMin", 0.0f);
-                    fin2.name = lua.read_bullet_class_string(b2, "Name");
-                    fin2.flak_min_range = lua.read_bullet_class_number(b2, "MinRange", 0.0f);
+                    // Goal 5 chain 696: the second class's descriptor, as 006EA910
+                    // builds it (MinRange from the flak reader, an integer); V0
+                    // is its +50h, which the flatten's `2v0` copied.
+                    const BulletClassDescriptorEntry& second_class =
+                        bullet_class_descriptor(b2);
+                    second.muzzle_speed = second_class.descriptor.muzzle_speed;
+                    const std::string& type2 = second_class.type;
+                    bsp::WeaponClassFinaliseInput fin2 =
+                        weapon_class_finalise_input(second_class.descriptor);
+                    if (!kBulletBlastDamageMinNestedBound) {
+                        fin2.blast_damage_min =
+                            lua.read_bullet_class_number(b2, "Blast.BlastDamageMin", 0.0f);
+                    }
                     const bsp::WeaponClassFinaliseResult r2 =
                         bsp::weapon_class_derive_engagement_range(fin2);
                     second.max_range = r2.engagement_range > 0.0f ? r2.engagement_range
@@ -7383,12 +7604,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                         r.type = type2;
                         r.muzzle_speed = second.muzzle_speed;
                         r.range = second.max_range;
-                        r.damage_min = flat_scaled(type_id, make("2dmin"), kMilliScale, 0.0f);
-                        r.damage_max = flat_scaled(type_id, make("2dmax"), kMilliScale, 0.0f);
-                        r.blast_damage_min = flat_scaled(type_id, make("2bdmin"), kMilliScale, 0.0f);
-                        r.blast_damage_max = flat_scaled(type_id, make("2bdmax"), kMilliScale, 0.0f);
-                        r.blast_range = flat_scaled(type_id, make("2brange"), kMilliScale, 0.0f);
-                        r.no_gravity = flat_scaled(type_id, make("2nograv"), kMilliScale, 0.0f) > 0.5f;
+                        const bsp::WeaponClassDescriptor& d2 = second_class.descriptor;
+                        r.damage_min = d2.damage_min;               // +ACh
+                        r.damage_max = d2.damage_max;               // +B0h
+                        r.blast_damage_min = d2.blast_damage_min;   // +B4h
+                        r.blast_damage_max = d2.blast_damage_max;   // +B8h
+                        r.blast_range = d2.blast_range;             // +70h
+                        r.no_gravity = d2.no_gravity;               // +20h
                         bullets.push_back(r);
                         log.notef("gunnery: bullet class %d Type=%s V0=%.1f range=%.0f "
                             "NoGravity=%d (second ammunition of category %d)", r.id,
@@ -7412,47 +7634,49 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 b.range = gun.max_range;
                 b.water_travel_speed = gun.water_travel_speed;
                 b.swim_speed = gun.swim_speed;
-                // 008568E0's two water-entry limits, read from the same Bullets
-                // row the range derivation above reads. docs/TORPEDO_TICK.md.
-                b.max_water_hit_vel = lua.read_bullet_class_number(
-                    gun.bullet_class, "MaxWaterHitVel", 0.0f);
-                b.max_fall = lua.read_bullet_class_number(
-                    gun.bullet_class, "MaxFall", 0.0f);
-                b.heading_turn = lua.read_bullet_class_number(
-                    gun.bullet_class, "HeadingTurn", 0.0f);
-                b.homing_horz_turn_speed = lua.read_bullet_class_number(
-                    gun.bullet_class, "HomingHorzTurnSpeed", 0.0f);     // 008566B0
-                b.homing_vert_turn_speed = lua.read_bullet_class_number(
-                    gun.bullet_class, "HomingVertTurnSpeed", 0.0f);
-                {
-                    // Packet cc13-homing1: classDesc+E0h/+D8h/+DCh for 0080A000. Read
-                    // for every class; only a released rocket uses them.
-                    b.ignition_delay = lua.read_bullet_class_number(
-                        gun.bullet_class, "IgnitionDelay", 0.0f);
-                    b.rocket_vmax = lua.read_bullet_class_number(gun.bullet_class, "VMax", 0.0f);
-                    b.rocket_acceleration = lua.read_bullet_class_number(
-                        gun.bullet_class, "Acceleration", 0.0f);
-                    // Packet cc13-rocketfuze: class +E4h (00809D9F), 0080A563. Read in
-                    // both builds; the value is used only under kRocketProximityFuzeCc13Bound.
-                    b.anti_air = lua.read_bullet_class_bool(gun.bullet_class, "AntiAir", false);
-                }
-                b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
-                b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
-                b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
-                b.fire_damage = flat_scaled(type_id, make("fdmg"), kMilliScale, 0.0f);
+                // Goal 5 chain 696: the class descriptor's per-kind fields, as
+                // 006EA910's reader wrote them (the same build the range
+                // derivation above used).
+                const bsp::WeaponClassDescriptor& desc =
+                    bullet_class_descriptor(gun.bullet_class).descriptor;
+                // 008568E0's two water-entry limits: MTorpedo +DCh / +E0h
+                // (008566B0) and MDepthCharge +ECh / +F4h (006FD400).
+                // docs/TORPEDO_TICK.md.
+                b.max_water_hit_vel = desc.max_water_hit_vel;
+                b.max_fall = desc.max_fall;
+                b.heading_turn = desc.heading_turn;                       // 008566B0 +E8h
+                b.homing_horz_turn_speed = desc.homing_horz_turn_speed;   // +F0h
+                b.homing_vert_turn_speed = desc.homing_vert_turn_speed;   // +F4h
+                // Packet cc13-homing1: MRocket +E0h/+D8h/+DCh (00809CB0) for
+                // 0080A000; only a released rocket uses them.
+                b.ignition_delay = desc.ignition_delay;
+                b.rocket_vmax = desc.v_max;
+                b.rocket_acceleration = desc.acceleration;
+                // Packet cc13-rocketfuze: class +E4h (00809D9F), 0080A563; used
+                // only under kRocketProximityFuzeCc13Bound.
+                b.anti_air = desc.anti_air;
+                // The 006E8770 block: DamageMin +ACh, DamageMax +B0h (defaults to
+                // DamageMin), WaterDamage +BCh, FireDamage +C0h, Mass +4Ch.
+                b.damage_min = desc.damage_min;
+                b.damage_max = desc.damage_max;
+                b.water_damage = desc.water_damage;
+                b.fire_damage = desc.fire_damage;
+                // The row keeps the authored percentage (weapon_fire_chance
+                // divides); the descriptor holds +C4h = FireChance / 100.0
+                // (006E8C0A), so this one value still comes from the flatten.
                 b.fire_chance = flat_scaled(type_id, make("fchance"), kMilliScale, 0.0f);
-                b.mass = flat_scaled(type_id, make("mass"), kMilliScale, 0.0f);
+                b.mass = desc.mass;
                 // Packet cc9_gun_ballistics: the row's Type string (the same one
-                // the finaliser above maps to a sub-type) and NoGravity.
-                b.type = lua.read_bullet_class_string(gun.bullet_class, "Type");
-                b.no_gravity = flat_scaled(type_id, make("nograv"), kMilliScale, 0.0f) > 0.5f;
+                // the finaliser above maps to a sub-type) and NoGravity (+20h).
+                b.type = bullet_class_descriptor(gun.bullet_class).type;
+                b.no_gravity = desc.no_gravity;
                 log.notef("gunnery: bullet class %d \"%s\" Type=%s V0=%.1f range=%.0f "
                     "NoGravity=%d (first used by category %d)", b.id, b.name.c_str(),
                     b.type.c_str(), static_cast<double>(b.muzzle_speed),
                     static_cast<double>(b.range), b.no_gravity ? 1 : 0, gun.category);
-                b.blast_damage_min = flat_scaled(type_id, make("bdmin"), kMilliScale, 0.0f);
-                b.blast_damage_max = flat_scaled(type_id, make("bdmax"), kMilliScale, 0.0f);
-                b.blast_range = flat_scaled(type_id, make("brange"), kMilliScale, 0.0f);
+                b.blast_damage_min = desc.blast_damage_min;   // +B4h
+                b.blast_damage_max = desc.blast_damage_max;   // +B8h
+                b.blast_range = desc.blast_range;             // +70h
                 bullets.push_back(b);
             }
             if (gun.device_class >= 0 && device(gun.device_class) == nullptr) {
@@ -11726,8 +11950,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     return have ? static_cast<void*>(this) : nullptr;
                 }
                 float weapon_sink_rate() override {
-                    const float s = h.lua.read_bullet_class_number(h.guns[g].bullet_class,
-                        "DiveSpeed", 0.0f);                          // desc+DCh, 006FD4E3
+                    // desc+DCh, 006FD4E3 (goal 5 chain 696: the descriptor's).
+                    const float s = h.guns[g].bullet_class >= 0
+                        ? h.bullet_class_descriptor(h.guns[g].bullet_class)
+                              .descriptor.dive_speed
+                        : 0.0f;
                     return s > 0.0f ? s : 1.0f;
                 }
                 std::array<float, 3> owner_world_position() override {
@@ -13442,20 +13669,22 @@ void GameGunneryHost::Impl::depth_charge_activate_006fd9b0(GameProjectileRow& sh
     const GameBulletClassRow* const dc = bullet(shot.bullet_class);
     if (!is_depth_charge_class(dc)) return;
     shot.depth_charge = true;
-    const float f = lua.read_bullet_class_number(shot.bullet_class, "V0RandomFactor", 0.0f);
+    // Goal 5 chain 696: MDepthCharge's +D8h / +DCh / +E0h / +E4h as 006FD400
+    // read them into the class descriptor (006EA910).
+    const bsp::WeaponClassDescriptor& dc_class =
+        bullet_class_descriptor(shot.bullet_class).descriptor;
+    const float f = dc_class.v0_random_factor;
     const float scale = draw(Draw::depth_charge_launch, gun_row, 0, 1.0f - f, 1.0f + f);
     shot.flight.velocity.x *= scale;
     shot.flight.velocity.y *= scale;
     shot.flight.velocity.z *= scale;
-    const float dive_speed = lua.read_bullet_class_number(shot.bullet_class, "DiveSpeed", 0.0f);
+    const float dive_speed = dc_class.dive_speed;
     float drag = static_cast<float>(9.8100004196167 / static_cast<double>(dive_speed));
     drag *= draw(Draw::depth_charge_launch, gun_row, 1, 0.9f, 1.1f);
     shot.depth_charge_drag = drag;
     // 006FD51B / 006FD558: both depths default to FLT_MAX (00D7A248).
-    const float lo = lua.read_bullet_class_number(shot.bullet_class, "DiveMinDepth",
-        std::numeric_limits<float>::max());
-    const float hi = lua.read_bullet_class_number(shot.bullet_class, "DiveMaxDepth",
-        std::numeric_limits<float>::max());
+    const float lo = dc_class.dive_min_depth;
+    const float hi = dc_class.dive_max_depth;
     shot.depth_charge_depth = draw(Draw::depth_charge_launch, gun_row, 2, lo, hi);
     ++dc_launches;
     done("DepthCharge::activate_006fd9b0", 0x006fd9b0u);
@@ -16102,24 +16331,122 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
     return out;
 }
 
+// Goal 5 chain 696. 006EA910 BSP_BulletClass_GetOrCreate's miss path for
+// Bullets[id] (docs/WEAPON_CLASS_DESCRIPTOR.md, "006EA910"): the Type key
+// (006EA9B8, default ""), `Got` = true (006EA9D6), the thirteen-name chain
+// (006EAAE6..006EACE0, projectile_class_for_lua_type), the class constructor
+// (006E8320 and the derived +8h sub-type), the Lua reader vtable[18h] at
+// 006EACFD (006E8770, 006E1BE0, 008566B0, 006FD400, 00809CB0, 0070C030 by
+// kind through load_weapon_class_fields; 007AC780 for a Paratrooper; the
+// other dummy / water-mine readers keep their 006E1BE0 parent, as
+// load_weapon_class_fields has them) and +0Ch = id (006EAD86). The
+// map stands in for the 006E9B70 cache: one build per id, later lookups hit.
+// The descriptor is a typed value, not the image's refcounted 0D4h..100h
+// block: 006EA910's own body (bullet_class_get_or_create_006ea910,
+// cc13_seg33a.cpp) allocates those blocks through LuaObject and native-class
+// host calls, which this process does not model, so it stays unrun and this
+// host composes the typed constructor and readers in its order instead.
+// LABELLED: a Type outside the thirteen names leaves 006EA910 with no class to
+// read; here it keeps the base reader on the constructor's block and
+// sub-type 0, which is what weapon_class_sub_type_for_lua_type answered for
+// such a row before. No row in this installation has one.
+const GameGunneryHost::Impl::BulletClassDescriptorEntry&
+GameGunneryHost::Impl::bullet_class_descriptor(int id) {
+    const auto found = bullet_class_descriptors.find(id);
+    if (found != bullet_class_descriptors.end()) return found->second;   // 006EA9A5
+    BulletClassDescriptorEntry entry;
+    const LuaBulletClassRow row(lua.mission_lua_state(), id);
+    entry.row_present = row.present();
+    entry.type = row.string_value("Type", "");
+    row.mark_got();
+    const bsp::ProjectileClassInfo* const info = bsp::projectile_class_for_lua_type(entry.type);
+    entry.class_found = info != nullptr;
+    entry.descriptor = bsp::weapon_class_constructed_defaults();          // 006E8320
+    bsp::ProjectileKind kind = bsp::ProjectileKind::Unknown;
+    if (info != nullptr) {
+        entry.descriptor.sub_type = info->sub_type;                       // derived ctor +8h
+        kind = info->kind;
+    } else {
+        entry.descriptor.sub_type = 0;
+    }
+    if (kind == bsp::ProjectileKind::Paratrooper) {
+        // MParatrooper's vtable[18h] is 007AC780 (kClassTable), which chains
+        // 006E1BE0 first and then reads its own keys.
+        ParatrooperClassRowReader reader(row, bullet_class_resources, entry.descriptor);
+        bsp::path_movcam_seg46_argon::mparatrooper_class_read_lua_fields_007ac780(
+            entry.paratrooper, reader);
+        entry.paratrooper_read = true;
+        log.notef("gunnery: paratrooper class %d (007AC780): power=%.2f slow=%.2f/%.2f "
+            "open=%.2f close=%.2f capture=%.2f damage=%.2f, %llu soldier handles unresolved",
+            id, static_cast<double>(entry.paratrooper.capture_power_d8),
+            static_cast<double>(entry.paratrooper.slow_factor_closed_dc),
+            static_cast<double>(entry.paratrooper.slow_factor_opened_e0),
+            static_cast<double>(entry.paratrooper.open_duration_e4),
+            static_cast<double>(entry.paratrooper.close_duration_e8),
+            static_cast<double>(entry.paratrooper.capture_duration_f8),
+            static_cast<double>(entry.paratrooper.damage_fc), reader.unresolved_handles);
+    } else {
+        bsp::load_weapon_class_fields(kind, row, bullet_class_resources, entry.descriptor);
+    }
+    if (kind == bsp::ProjectileKind::WaterMine) {
+        // MWaterMine's vtable[18h] is 0085F500: 006E1BE0 (0085F523, run by
+        // load_weapon_class_fields above), then V0RandomFactor and DiveSpeed
+        // (GetNumber), WaterSplashEfx (00B66380 + 00870CD0, unresolved like
+        // every effect here) and FloatingDepth / TriggerRadius with defaults.
+        bsp::gameplay_seg53_cc13::WaterMineClassRow mine_row;
+        mine_row.number = [&row](const char* key) { return row.number_value(key); };
+        mine_row.number_or = [&row](const char* key, float fallback) {
+            return row.float_value(key, fallback);
+        };
+        mine_row.effect_present = [&](const char* key) {
+            return bullet_class_resources.acquire_effect(row.integer_value(key, 0)) != 0u;
+        };
+        bsp::gameplay_seg53_cc13::water_mine_read_class_fields_0085f500(mine_row, entry.water_mine);
+        entry.water_mine.blast_damage_min_b4 = entry.descriptor.blast_damage_min;
+        entry.water_mine.blast_damage_max_b8 = entry.descriptor.blast_damage_max;
+        entry.water_mine_read = true;
+    }
+    entry.descriptor.bullet_id = id;                                      // 006EAD86
+    ++bullet_class_descriptor_loads;
+    log.notef("gunnery: bullet class %d descriptor Type=%s sub-type %d (006EA910 -> %08X): "
+        "V0=%.1f FlyTime=%g Range=%.0f damage=%.0f..%.0f blast=%.0f..%.0f r=%.0f "
+        "(unresolved effects %llu icons %llu decals %llu)", id, entry.type.c_str(),
+        entry.descriptor.sub_type, info != nullptr ? info->read_lua_fields : 0u,
+        static_cast<double>(entry.descriptor.muzzle_speed),
+        static_cast<double>(entry.descriptor.fly_time),
+        static_cast<double>(entry.descriptor.range),
+        static_cast<double>(entry.descriptor.damage_min),
+        static_cast<double>(entry.descriptor.damage_max),
+        static_cast<double>(entry.descriptor.blast_damage_min),
+        static_cast<double>(entry.descriptor.blast_damage_max),
+        static_cast<double>(entry.descriptor.blast_range), bullet_class_resources.effects,
+        bullet_class_resources.icons, bullet_class_resources.decals);
+    return bullet_class_descriptors.emplace(id, std::move(entry)).first->second;
+}
+
 // Packet cc9_lua53_kamikaze_impact: the plane's crash class (unit+730h, class
 // +210h KamikazeBulletClass) as 0084BF00's shot class. Its row is not one a
-// gun loads, so the Bullets row is read here on first use.
+// gun loads, so the Bullets row is read here on first use: 007D1F70 resolves
+// the id through 006EA910 at 007D2BFF, so the fields are that descriptor's
+// (goal 5 chain 696; DamageMax and Blast.BlastDamageMax now default to their
+// minimums, 006E8770, where they read 0 before).
 const GameBulletClassRow* GameGunneryHost::Impl::plane_crash_bullet(int id) {
     if (id < 0) return nullptr;
     for (const GameBulletClassRow& row : crash_bullets) {
         if (row.id == id) return &row;
     }
+    const BulletClassDescriptorEntry& crash = bullet_class_descriptor(id);
+    const bsp::WeaponClassDescriptor& desc = crash.descriptor;
     GameBulletClassRow row;
     row.id = id;
-    row.type = lua.read_bullet_class_string(id, "Type");
-    row.name = lua.read_bullet_class_string(id, "Name");
+    row.type = crash.type;
+    row.name = desc.name;
     row.found = !row.type.empty();
-    row.damage_min = lua.read_bullet_class_number(id, "DamageMin", 0.0f);
-    row.damage_max = lua.read_bullet_class_number(id, "DamageMax", 0.0f);
-    row.blast_damage_min = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMin", 0.0f);
-    row.blast_damage_max = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMax", 0.0f);
-    row.blast_range = lua.read_bullet_class_nested_number(id, "Blast", "BlastRange", 0.0f);
+    row.damage_min = desc.damage_min;
+    row.damage_max = desc.damage_max;
+    row.blast_damage_min = desc.blast_damage_min;
+    row.blast_damage_max = desc.blast_damage_max;
+    row.blast_range = desc.blast_range;
     crash_bullets.push_back(row);
     log.notef("gunnery: plane crash class %d \"%s\" Type=%s damage=%.0f..%.0f blast=%.0f..%.0f "
         "range=%.0f (007C0910 [unit+730h], packet cc9_lua53_kamikaze_impact)", id,
@@ -20790,6 +21117,13 @@ const std::vector<std::size_t>* GameGunneryHost::unit_category_guns(
 
 const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexcept {
     return impl_->bullet(id);
+}
+
+const bsp::path_movcam_seg46_argon::ParatrooperClassResidue*
+GameGunneryHost::paratrooper_class(int id) {
+    if (id < 0) return nullptr;
+    const Impl::BulletClassDescriptorEntry& entry = impl_->bullet_class_descriptor(id);
+    return entry.paratrooper_read ? &entry.paratrooper : nullptr;
 }
 
 const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
