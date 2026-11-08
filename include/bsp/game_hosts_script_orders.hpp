@@ -1094,6 +1094,9 @@ private:
     // The `ID` field 00928a00 seeds, turned into a created instance. Null when
     // the argument is not one of this process's entity tables.
     void* entity_from_argument(int index);
+    // 0089B840: the existing capture-fraction Lua entry over this dispatch's
+    // borrowed VM and live capture-building owner; retains the labelled fallbacks.
+    int lua_get_capture_percentage_0089b840();
     // Goal 5 chain 663: bsp::PilotOrderHost over this host, for the pilot order
     // bodies of src/pilot_order_bindings.cpp (defined beside run_pilot_set_target).
     class PilotOrderBinding;
