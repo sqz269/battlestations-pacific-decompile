@@ -3,6 +3,24 @@
   "goal": 5,
   "chain": 809,
   "owner": "agent/g5-w5",
+  "review_round_1": {
+    "review_run": 1791,
+    "finding_1": {
+      "status": "fixed",
+      "site": "src/game_hosts_commands.cpp::EntityIssueBinding::entity_controller/controller_owner",
+      "change": "Bind the source controller identity to the retained formation leader cell when formation_follower is set, and resolve its current leader to the actual GameCommandUnit. Followers now fail the existing owner==entity gate before forwarding/accounting; leaders and units with no controller retain the admitted null arm.",
+      "native_evidence": "0077D791 loads unit+284h; 0077D799 admits null; 0077D79B compares controller+14h with the commanded entity and 0077D7A3 skips forwarding when unequal.",
+      "state_producer": "GameCommandsHost::set_unit_formation receives join, departure and leader-change publications from the units host; the adapter borrows this existing state without a temporary native-group image."
+    },
+    "normal_build": "MSVC Win32 Release and all four existing CTest checks passed before ON and again after restoring the default switches.",
+    "focused_probe": "tests/wire_g5_c809_formation_gate_probe.cpp passed against the actual private adapter and recovered gate: no controller, follower, changed leader, self leader and withdrawn controller.",
+    "probe_command": "cmd /c local/c809-formation-gate-probe.cmd; link rebuilt game objects except game_main.obj/game_hosts_commands.obj, core/lua/zlib and Windows libraries, with /MANIFEST:EMBED. The probe includes the production command adapter directly; no game loop runs.",
+    "on_build": "Both default switches ON: build and all four CTest checks passed with zero diagnostics. Both original header SHA-256 hashes verified after restoration.",
+    "compiled_called": 5530,
+    "readiness": {"wired_total": 10675, "state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "forwarding_call": "00A2BD90 remains entry-reachable at one call site, 1004AF2D -> 10403040. Its body and argument forwarding are unchanged; the real formation gate now controls that call and its existing accounting.",
+    "game_validation": "Not run; source-interface fixture and executable graph evidence only."
+  },
   "landing_repair": {
     "merged_main": "56d16d06565bdcc570bf3506ed14fdb319dc4f69",
     "conflicts_resolved": ["include/bsp/game_hosts_ai.hpp", "src/game_hosts_ai.cpp"],
@@ -364,7 +382,7 @@
     "built_called_after": 5500,
     "validation": "MSVC Win32 build and all four existing CTest checks passed; call_graph.py who/path shows one reachable call site at 1004AECD from ai_forward_group_member_command to 104011E0; readiness reports wired, called=true, call_sites=1.",
     "entry_path": "WinMain -> mission frame -> issue_player_command -> issue_command_object -> EntityIssueBinding::ai_group_forward_command -> ai_forward_group_member_command -> group_forward_command_00a2bd90",
-    "remaining": "The separate session-endpoint subject/controller binding and target-event reporter remain incomplete. Existing direct-entity controller-null substitution is unchanged; no native ABI compatibility or runtime gameplay proof is asserted.",
+    "remaining": "The separate session-endpoint subject/controller binding and target-event reporter remain incomplete. The direct-entity formation gate is bound in review round 1; no native ABI compatibility or runtime gameplay proof is asserted.",
     "float_math": "No floating-point arithmetic changed; pc24 lint is not applicable to this packet.",
     "game_validation": "Not run; assignment prohibits launching the game."
   }

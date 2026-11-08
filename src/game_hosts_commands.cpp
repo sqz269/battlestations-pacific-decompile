@@ -1085,12 +1085,19 @@ public:
         return unit != nullptr ? ai_group_for_entity(unit->index) : nullptr;
     }
     void* entity_controller(void* entity) override {
-        static_cast<void>(entity);
-        return nullptr;
+        // Listing 0077D791..0077D7A3: a formation member forwards only when
+        // its group's +14h leader is itself. set_unit_formation publishes the
+        // live follower/leader pair on join, leave and leader replacement.
+        // Borrow that retained leader cell as this source adapter's opaque
+        // controller identity; leaders and ungrouped units take the null arm.
+        auto* unit = static_cast<GameCommandUnit*>(entity);
+        return unit != nullptr && unit->formation_follower
+            ? &unit->formation_leader : nullptr;
     }
     void* controller_owner(void* controller) override {
-        static_cast<void>(controller);
-        return nullptr;
+        if (controller == nullptr) return nullptr;
+        const std::size_t leader = *static_cast<const std::size_t*>(controller);
+        return leader < chain_.owner.units.size() ? &chain_.owner.units[leader] : nullptr;
     }
     // 00A2BD90 at 0077D7A3, after the same 0077D600 group/controller gates.
     void ai_group_forward_command(void* ai_group, void* command,
