@@ -1141,6 +1141,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     bsp::game::GameNativeGuiTextProcess* text_pool_process = nullptr;
     bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;
     bool icon_pool_startup_incomplete = false;
+    bool curve_pool_startup_incomplete = false;
     try {
         // CE3468/CD7180 starts the SAME F8BDA0 process pool used by AA1410.
         // No Icon allocation or Page factory is entered by pool startup.
@@ -1160,6 +1161,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native GUI Text pool CRT CD71F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1 type_bootstrap=pending_canonical_vfs",
             text_pool_atexit, sizeof(bsp::NativeGuiTextPoolStorage));
+        // CE3480/CD7280: ECX=F8BE5C, CALL ABC570, atexit(CE0AA0).
+        // Start the SAME Curve process owner used by AA1800 after Text and
+        // before Group; its constructor reserves the actual pool+28h table.
+        auto& gui_curve_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiCurvePoolTraits>::instance();
+        curve_pool_startup_incomplete = true;
+        const int curve_pool_atexit = gui_curve_process.initialize_once();
+        curve_pool_startup_incomplete = false;
+        log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
+            curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
@@ -1252,14 +1263,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Dyn convex pool CRT CC89C0: atexit=%d storage=process_actual38h",
             convex_atexit);
     } catch (const std::exception& failure) {
-        if (icon_pool_startup_incomplete ||
+        if (icon_pool_startup_incomplete || curve_pool_startup_incomplete ||
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
                 log.notef("native pool startup failed: %s", failure.what());
-                log.note("interrupted GUI Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("interrupted GUI pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
@@ -1267,13 +1278,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.close();
         return 1;
     } catch (...) {
-        if (icon_pool_startup_incomplete ||
+        if (icon_pool_startup_incomplete || curve_pool_startup_incomplete ||
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
-                log.note("unknown interrupted GUI Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("unknown interrupted GUI pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.

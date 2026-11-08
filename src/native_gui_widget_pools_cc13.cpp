@@ -2,9 +2,11 @@
 // The pool members themselves are instantiated in src/native_material_pools.cpp
 // over the shared native engine.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 
 #include <cstdlib>
+#include <new>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -51,6 +53,37 @@ void GameNativeGuiWidgetPoolProcess<T>::destroy_at_exit() noexcept {
 } // namespace bsp::game
 
 namespace bsp {
+__declspec(noinline) void native_gui_curve_pool_table_set_capacity_00abc1e0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // Evidence: bsp.py show 00ABC1E0. Reuse the existing identical AA6FA0
+    // capacity-before-allocation, null-tested copy, free, adopt schedule.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_curve_pool_table_grow_00abc230(
+    NativeGuiPoolSlabTable& table) {
+    // 00ABC230 inlines the same body with modulo32 capacity*2+2.
+    native_gui_curve_pool_table_set_capacity_00abc1e0(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_curve_pool_table_push_back_00abc480(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // Evidence: bsp.py show 00ABC480 and 00ABC650. Called with the actual
+    // newly initialized slab, after first-free publication, under its lock.
+    if (table.count == table.capacity) native_gui_curve_pool_table_grow_00abc230(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_curve_pool_table_reserve_00abc500(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // 00ABC570's constructor inlines this unsigned reserve in unwind state 2.
+    if (table.capacity < capacity)
+        native_gui_curve_pool_table_set_capacity_00abc1e0(table, capacity);
+}
+
 __declspec(noinline) void reserve_native_gui_icon_pool_table_00ab2420(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     // Evidence: bsp.py show 00AB2420 and 00AB2850. The Icon constructor's
