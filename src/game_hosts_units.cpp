@@ -1,4 +1,5 @@
 #include "bsp/game_hosts_units_internal.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
 
 extern "C" {
 #include <lua.h>   // goal 5 chain 668: 007CA790's thisTable store
@@ -6893,7 +6894,8 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                 in.unit_side = unit_side_0054(leader);              // 007EE917
                 in.target_side = unit_side_0054(t);                 // 007EE912
                 in.target_is_surface = surface;                     // the byte argument
-                in.target_is_air = bsp::entity_is_airborne_00922b10(tf);    // 007EEAF5
+                in.target_is_air = bsp::entity_mission_seg60_argon::
+                    entity_is_airborne_target_00922b10(tf) != 0;          // 007EEAF5
                 in.target_is_strafe_fallback = unit_is_kind_of(t, 0x41);    // 007EEBA7
                 in.guns_available = plane_pilot_fires_0c24(leader);         // 007EEB08/007EEBB7
                 in.self_is_dogfight_excluded = unit_is_kind_of(leader, 0x16); // 007EEB1A

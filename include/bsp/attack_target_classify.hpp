@@ -40,13 +40,6 @@ inline constexpr float kSubmarineSurfaceFraction = 0.25f;
 // 00922D77's threshold, the double 50.0 at 00CE3938.
 inline constexpr float kDummyTargetSurfaceHeight = 50.0f;
 
-// 00922B10. `!entity ? false : +5Dh ? false : (plane || plane squadron)`.
-inline bool entity_is_airborne_00922b10(const EntityTargetFacts& e) {
-    if (!e.present) return false;
-    if (e.not_engageable) return false;
-    return e.is_plane || e.is_plane_squadron;
-}
-
 // 00922C80 reaches a call this host cannot make - 008DDF90
 // BSP_SzurkeNyil_ContainsUnit, over a set selected through a singleton path that
 // was never read. That branch sits AFTER the ship family, airfield, shipyard and
