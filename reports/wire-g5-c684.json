@@ -1,0 +1,134 @@
+{
+  "run": 1459,
+  "goal": 5,
+  "chain": 684,
+  "worker": "agent/g5-w6",
+  "base_head": "1099076ec003b5a4dc2159a0d2a975c6e6e90c48",
+  "picked": "Apply the real profile old-film setting to the existing native render-service owner",
+  "rows": [
+    {
+      "native": "00b0d080",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: GameNativeRendererApplication::set_old_film_effect, called by QuickSettingsApplyHost::renderer_set_old_film_effect via GameStartupHost's retained sink and by prepare_mission_ship for a pending request",
+      "state": "Settings_ApplyAll 008D610D passes the real settings+90h DWORD; the existing RenderResourcesGraph publishes the actual F8D39C service. The existing body writes only service+220h.",
+      "lifetime": "If no service exists, retain the latest actual requested DWORD without invoking the body. After existing mission B14A10/B107F0 preparation succeeds, apply it before the first draw and clear the pending request. A later settings application uses the current publication directly.",
+      "evidence": [
+        "bsp.py show 00b0d080: ECX render service, stacked DWORD, RET4; single +220h store",
+        "src/game_settings.cpp: Settings_ApplyAll sends presentation.old_film_effect_90 at 008D610D",
+        "src/game_native_mission_resources.inc: construct_and_initialize uses the existing shared_resources owner and native initializer",
+        "src/game_native_mission_ship.inc: prepare completes resource initialization and scene setup before Stage::ready; draw is separate"
+      ]
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already has one entry-reachable body call with the real skill/config/random providers; no additional invocation is needed."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a real ControllerSnapshotMessage producer, transport and consumer; current flattened scene flags cannot justify a copy-and-copy-back call."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime::set_all_paused",
+      "reason": "Already has one entry-reachable call on the current raw dialog manager; the mission-frame record covers only the absent-owner path."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: pre-load MissionStart write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save/current mission owner and genuine checkpoint-diff predicate; current write_checkpoint is behind a false substitution."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: pre-script namespace baseline",
+      "reason": "This host mention documents later teardown; it is not a teardown call site with authority to nil the mission namespace."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: power-up spawn request",
+      "reason": "Missing the raw spawn-manager/game/player/class/property-bag owner graph needed by the existing 0094BFF0 body."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cleanup.cpp: SoundResourceOwner cache storage",
+      "reason": "The live sound cache uses C++ records in a standard vector; reserve requires an actual native 2Ch-record array and matching native string/list lifetime providers."
+    },
+    {
+      "native": "00a845a0",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cleanup.cpp: shrink_sound_resource_cache_records_00a845a0_fragment",
+      "reason": "The full resize body requires a native array header, 2Ch stride and native record construction/destruction; the current standard-container projection cannot be passed to it."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080 and landscape_build_shore_mask_00880420",
+      "reason": "Missing a live shore-mask/falloff column-grid producer and reachable caller; replacing the dormant callback alone would not wire this body."
+    },
+    {
+      "native": "00880080",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: landscape_build_shore_mask_00880420",
+      "reason": "Missing live shore-mask columns and its terrain-source owner; the text-wired status does not provide a built entry-reachable falloff caller."
+    },
+    {
+      "native": "00880420",
+      "status": "skipped",
+      "host_site": "src/native_zone_leaf_00423640.cpp: shore-mask provider",
+      "reason": "Missing the live native contour/terrain-source and column-grid binding required to run the shore-mask producer."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder::ai_group_forward_command and EntityCommand::director_ai_group_forward",
+      "reason": "Missing a real native AI group current-command object at group+564Ch and its vtable+24h provider on these host command paths."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 and fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing a reachable native shadow-slice submission path and borrowed CameraProjection view; the inspected cascade callers are not linked into the game build."
+    },
+    {
+      "native": "00b6fe70",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_set_194_00b6fe70",
+      "reason": "Missing a live CameraView binding for the scene-renderer's native +194h setter; a detached typed camera copy would not update its owner."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: cinematic black-bar updates",
+      "reason": "Missing the live cinematic screen/update binding that supplies +0Ch to the current raw render service; old-film settings do not supply this independent operand."
+    },
+    {
+      "native": "00b0d580",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp: QuickSettingsApplyHost::renderer_set_motion_blur",
+      "reason": "Missing SceneRendererHost providers for the actual device query, texture sample setters and shadow texture holder; the film setter needs none of those."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "python tools/call_graph.py --build passed using the no-inlining analysis executable",
+    "body_call": "00B0D080 REACHABLE: one call at 10475409 from GameNativeRendererApplication::set_old_film_effect",
+    "entry_path": "WinMainCRTStartup -> GameStartupHost -> GameLoopCallbacks::frame -> GameDeviceHost::clear_and_present -> prepare_mission_ship -> set_old_film_effect -> set_film_effect_00b0d080",
+    "called_addresses_before": 7072,
+    "called_addresses_after": 7073,
+    "wire_readiness_before": 10437,
+    "wire_readiness_after": 10438,
+    "wire_readiness_called_after": 6620,
+    "wire_readiness_row": "00B0D080: wired, called=true, call_sites=1, callers_live=1; graph_stale=false",
+    "float_math": "No float arithmetic changed; pc24 diff lint not required",
+    "runtime": "No game run. This native render-service consumer uses the existing opt-in native mission renderer; sprite-only rendering retains the setting and has no native old-film consumer. Build/call-graph proof is not visual, game-validation or original-ABI proof."
+  },
+  "left": "Motion-blur device/texture/shadow providers and actual cinematic black-bar caller binding remain; no new renderer/service owner, feature switch, body duplicate or inline fallback was added."
+}

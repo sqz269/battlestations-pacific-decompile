@@ -77,6 +77,10 @@ struct GameProfileSettingsSinks {
     // recreation graph. Empty before chain 445 or without a renderer owner.
     std::function<bool(int width, int height, bool fullscreen, int sample_count,
         bool vsync, bool force)> change_renderer_presentation_mode;
+    // 008D610D -> 00B0D080 on the actual F8D39C service. False means this
+    // request was retained until that service's existing initialization;
+    // sprite-only rendering has no native old-film consumer.
+    std::function<bool(std::uint32_t mode)> store_renderer_old_film_effect;
     // 008D5686/008D5C85: 004C1710's get-or-create of the 18h media manager 00F8AEF8.
     std::function<void*()> media_manager;
     // Chain 144 borrows the already initialized sound/configuration owners.
