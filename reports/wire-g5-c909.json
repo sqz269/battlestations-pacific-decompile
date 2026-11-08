@@ -107,5 +107,37 @@
     "abi_compatible": false,
     "game_validated": false
   },
-  "remaining": "Older pool raw-slot allocation remains unreferenced; no game run or native binary ABI claim."
+  "remaining": "Older pool raw-slot allocation remains unreferenced; no game run or native binary ABI claim.",
+  "landing_repair": {
+    "merged_origin_main": "03ed3fdb8ffd61e8a122611acac25002bd8846d8",
+    "resolution": "Preserve both adjacent includes in native_graphics_pool_lifetime.cpp and both startup branches; incoming logical-vertex and existing logical-index reserve paths remain intact alongside the hardware-layout reserve. Ledger and startup CMake changes merged without conflict; merge_resolve.py completed and no unmerged paths remain.",
+    "default_build": "scripts/build.ps1 passed all four CTests on the merged tree",
+    "focused_probe": "production hardware-layout owner reserve/copy/no-shrink/allocation-failure probe passed again",
+    "call_graph": "Both B47B60 and B482D0 remain entry-reachable in the rebuilt merged executable; B482D0 has a call from NativeGraphicsPoolLifetime::initialize",
+    "wire_readiness": {
+      "wired": 10788,
+      "00b47b60_called": true,
+      "00b482d0_called": true
+    },
+    "on_build": {
+      "status": "passed",
+      "ctests_passed": 4,
+      "distinct_diagnostics": 0,
+      "headers_after": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "headers_restored": true,
+      "headers_before": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "build_dir": "build/c909-on",
+      "exit_code": 0,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ]
+    }
+  }
 }
