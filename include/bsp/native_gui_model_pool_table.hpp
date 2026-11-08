@@ -4,6 +4,11 @@
 
 namespace bsp {
 
+// 00ACBDD0: __fastcall(ECX=table header), RET. Capture its current data
+// pointer and free it when nonnull; leave data/count/capacity unchanged.
+// This is a source interface, not a register-ABI thunk.
+void free_native_gui_model_pool_table_00acbdd0(void* actual_table) noexcept;
+
 // Source interfaces over the actual F8C09C+28h slab table, not native ABI
 // thunks. Evidence: bsp.py show 00ACBE00/00ACBE50/00ACC0D0/00ACC160;
 // 00ACC1D0 reserves 20h entries and 00ACC350 appends under the pool lock.
