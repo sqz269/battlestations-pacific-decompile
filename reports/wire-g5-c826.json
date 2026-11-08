@@ -10,8 +10,8 @@
       "native": "007ee8f0",
       "status": "wired",
       "host_site": "src/attack_commands.cpp: attack_command_choose (called by GameScriptOrdersHost::choose_attack_class_007eec50); attack_command_applies facade (GameUnitsHost pilot retest)",
-      "real_state": "The live unit/target/loadout feasibility inputs. Review1800 additionally binds the current flight leader first-rack descriptor (current Equipment and held-round state) and actual target class kind, +808h BigLandingShip and +500h max speed.",
-      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade. Review1800 round1 adds bind_attack_torpedo_inputs, a first-rack projectile-id read seam on GameUnitsHost, and access to the existing retained projectile descriptor on GameGunneryHost.",
+      "real_state": "The live unit/target/loadout feasibility inputs. Review1800 additionally binds the current flight leader first-rack descriptor (current Equipment and held-round state) and actual target class kind, +808h BigLandingShip and +500h max speed. Empty first racks additionally query live 00E17BF2 and retain the configured descriptor only when it exists and answers IsKindOf(2Ah); SP mode does not determine the flag.",
+      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade. Review1800 round1 adds bind_attack_torpedo_inputs, a first-rack projectile-id read seam on GameUnitsHost, and access to the existing retained projectile descriptor on GameGunneryHost. Review1819 round2 implements the reload-enabled empty-rack fallback and corrects the SP flag assumption.",
       "original_abi": "thiscall ECX=squadron; class, target, surface byte, loadout; AL; RET 10h",
       "evidence": "bsp.py show 007ee8f0 --asm (007EE8F0..007EEBFB); assembly 007EEB36 selects E08F50 kamikaze, 007EEB94 selects E08F40 strafe. Correct the old raw comments, which reversed these names. Review1800: 007EEA61 initializes BL=1; absent/non-0Ah first descriptor preserves it, 007EEA82 COMISS/JA and 007EEA87 COMISS/JC clear it with their original unordered behavior. 00828EC0 listing uses class kind0E/0C, byte808 and speed500 COMISS/JB.",
       "built_call_graph": {
@@ -124,19 +124,25 @@
       "native": "007b9230",
       "status": "skipped",
       "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
-      "reason": "The existing raw body requires the native +974h/+994h weapon-controller owner; this packet uses the current BSPGun-order rack owner without fabricating a raw object."
+      "reason": "The raw native +974h/+994h owner remains absent; the first-rack read uses the existing BSPGun owner, including its loaded or reload-enabled configured descriptor."
     },
     {
       "native": "006e4060",
       "status": "skipped",
       "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
-      "reason": "The raw child-list owner is not reconstructed here; the established single-rack equipment/ammo projection supplies the loaded descriptor identity."
+      "reason": "The raw child-list owner is absent; the host uses current loaded-round state plus the configured retained descriptor fallback gated by live 00E17BF2 and IsKindOf(2Ah), without claiming a call to the raw body."
     },
     {
       "native": "006e4640",
       "status": "skipped",
       "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
       "reason": "Native multi-rack per-round slots are absent; this packet retains the existing authored multi-rack count projection and claims no call to the raw body."
+    },
+    {
+      "native": "006d1f40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The raw vslot leaf is not called; the established lua_device_reload_enabled_00e17bf2 publication supplies the same live mission-controlled byte."
     }
   ],
   "validation": {
@@ -155,7 +161,7 @@
   },
   "limitations": [
     "Typed host-value API is not an original-ABI replacement. The review fixes intentionally change torpedo acceptance for non-surface targets and immune small craft.",
-    "Rack order uses the existing BSPGun projection, equipment and current single-rack ammo. Native child-list topology and multi-rack per-round slots are not reconstructed by this packet; multi racks retain their established authored-count projection.",
+    "Rack order uses the existing BSPGun projection, equipment and current single-rack ammo; empty-rack configured-descriptor fallback uses the live mission reload flag and native bomb-family kind answer. Native child-list topology and multi-rack per-round slots remain unreconstructed; multi racks retain their authored-count projection.",
     "The focused fixture exercises the production binder plus chooser/predicate, not a live retail rack. No game run or original-ABI equivalence is claimed."
   ],
   "left_for_others": "Other raw segment-48 bodies and missing original consumers listed in rows; genuine native-object ownership remains separate.",
@@ -167,7 +173,7 @@
         "id": 1,
         "status": "fixed",
         "summary": "Bind torpedo_runs_at_surface from the actual current leader first rack, preserving absent-slot/subtype defaults and both native SSE comparisons.",
-        "producer": "GameScriptOrdersHost resolves plane_squadron_registry().find_by_member_unit(unit_index)->flight_leader(); GameUnitsHost::plane_first_rack_bullet_id reads racks.front(), resolves that platform current Equipment device, maps the single-rack identity to live ammo, and returns only that slot loaded projectile id. GameGunneryHost::weapon_class_descriptor returns the stable mission-owned descriptor. A missing rack/round yields null, not a search for another torpedo rack or member.",
+        "producer": "GameScriptOrdersHost resolves plane_squadron_registry().find_by_member_unit(unit_index)->flight_leader(); GameUnitsHost::plane_first_rack_bullet_id reads racks.front(), resolves that platform current Equipment device, maps the single-rack identity to live ammo, and returns only that slot loaded projectile id. GameGunneryHost::weapon_class_descriptor returns the stable mission-owned descriptor. A missing first rack yields null. An empty existing rack now uses the round2 reload-enabled configured-descriptor fallback; it never searches another rack or member.",
         "comparison": "Null or sub_type != 0Ah -> true. For type0Ah, !(homing_horz_turn_speed > 0.001f) && 0.001f >= homing_vert_turn_speed. The +F0h/+F4h fields are homing turn rates, despite historical depth-band shorthand."
       },
       {
@@ -199,5 +205,45 @@
   },
   "claimed_new_addresses": [
     "007ee8f0"
-  ]
+  ],
+  "review_round_2": {
+    "review_run": 1819,
+    "reviewed_head": "6985618f1ef3cb0a8c224a1ca3be1fc4bf38c417",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "summary": "Implement empty-first-rack configured bomb-family descriptor fallback using live 00E17BF2; retain null when any fallback gate fails.",
+        "native_evidence": "006E4086 checks the flag-1 query; 006E409B calls owner vslot1E4 (006D1F40 reads 00E17BF2); 006E40A7/006E40AB require current record and configured descriptor; 006E40C4 tests IsKindOf(2Ah), returning configured +3F8h/+34h at 006E40D2.",
+        "implementation": "plane_first_rack_bullet_id keeps the attached-round return first. Otherwise it samples lua_device_reload_enabled_00e17bf2 for every query and asks GameGunneryHost::weapon_class_descriptor(id,0x2a). The optional kind filter uses the retained descriptor cached Type and existing OrdnanceKindSet native answer table. A missing owner/record/descriptor or failed kind test returns -1/null through empty_rack_configured_bullet_id.",
+        "corrected_assumption": "Single player does not imply 00E17BF2 is clear. It is written by mission SetDeviceReloadEnabled and settings publication. The installed usn_19_coralus.lua:64 calls SetDeviceReloadEnabled(true). Corrected both rack API comments and the prior report producer description."
+      }
+    ],
+    "installed_evidence": {
+      "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "mission": "scripts/missions/usn/usn_19_coralus.lua:64: SetDeviceReloadEnabled(true)",
+      "fido": [
+        "scripts/datatables/classtables/arcade/bulletclasses.lua: ArcadeTable[4]",
+        "scripts/datatables/classtables/realistic/bulletclasses.lua: RealisticTable[4]"
+      ],
+      "fido_fields": {
+        "Type": "Torpedo",
+        "HomingHorzTurnSpeed": 0.5,
+        "HomingVertTurnSpeed": 0.5
+      }
+    },
+    "checks": {
+      "build": "scripts/build.ps1 PASS, all 4 CTests",
+      "focused_probe": "cmd /c local/c826-torpedo-probe.cmd PASS. Same production empty-rack admission and torpedo binder/chooser: exhausted Fido reload OFF -> null/refused non-surface target; ON -> class4 retained/accepted; OFF again -> null. Missing record/descriptor, non-bomb-family Bullet and unknown Type remain null. Win32 /MANIFEST:EMBED probe.",
+      "call_graph": "007EE8F0 remains REACHABLE at 4 sites. plane_first_rack_bullet_id remains REACHABLE from the live chooser. 5530 reconstructed addresses called; no extra coverage claimed.",
+      "game_run": false,
+      "readiness": {
+        "wired": 10673,
+        "007ee8f0_called": true,
+        "007ee8f0_call_sites": 4,
+        "built_reconstructed_addresses_called": 5530
+      },
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: PASS, 0 findings, 12 files."
+    }
+  }
 }

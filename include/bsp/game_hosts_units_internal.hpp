@@ -5637,8 +5637,10 @@ struct GameUnitsHost::Impl {
     }
 
     // slot->vtable[220h](1): 006E4060 (single) answers the hanging child's
-    // descriptor while a round is attached; with [00E17BF2] clear (single
-    // player) there is no loadout arm, so an empty rack answers null. 006E4640
+    // descriptor while a round is attached. With live [00E17BF2] set, it may
+    // instead return its configured bomb-family descriptor; SP missions can
+    // enable this. This helper projects ATTACHED rounds only; the first-slot
+    // descriptor query handles the reload fallback separately. 006E4640
     // (multi) also answers its +514h entries. LABELLED: a rack holds a round
     // while its ammo +484h is above 0 - for a single rack the host's own count
     // (rack_ammo_per_rack, else rack_ammo) once the issue has seeded it, before

@@ -9367,11 +9367,17 @@ int GameUnitsHost::plane_first_rack_bullet_id(std::size_t unit_index) {
     } else {
         throw std::logic_error("first rack current equipment is not a supported rack");
     }
-    // 006E4060(1), and 006E4640's multi-rack extension, return null without an
-    // attached round in SP. The existing owner projects that identity from its
-    // live per-rack ammo (multi racks retain the existing authored-count limit).
-    if (!host.plane_rack_holds_round(unit, first)) return -1;
-    return host.read_device_bullet_id(device);
+    const int bullet_id = host.read_device_bullet_id(device);
+    if (host.plane_rack_holds_round(unit, first)) return bullet_id;
+    // bsp.py show 006e4060 --asm, 006E4086..006E40D7: query flag 1 admits
+    // the configured +3F8h/+34h descriptor when owner slot1E4 (006D1F40's
+    // LIVE 00E17BF2) is set and descriptor vslot8 answers 2Ah. SP missions
+    // can enable this flag (usn_19_coralus.lua:64); do not infer it from mode.
+    const bool reload = lua_device_reload_enabled_00e17bf2();
+    GameGunneryHost* const owner = reload ? gunnery() : nullptr;
+    const bool bomb_family = owner != nullptr
+        && owner->weapon_class_descriptor(bullet_id, 0x2a) != nullptr;
+    return empty_rack_configured_bullet_id(reload, bullet_id, bomb_family);
 }
 
 int GameUnitsHost::plane_reload_bomb_platforms_007c1d80(std::size_t unit_index) {

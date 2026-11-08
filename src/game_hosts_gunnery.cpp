@@ -21311,10 +21311,14 @@ const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexce
     return impl_->bullet(id);
 }
 
-const bsp::WeaponClassDescriptor* GameGunneryHost::weapon_class_descriptor(int id) {
+const bsp::WeaponClassDescriptor* GameGunneryHost::weapon_class_descriptor(int id, int required_kind) {
     if (id < 0) return nullptr;
     const Impl::BulletClassDescriptorEntry& entry = impl_->bullet_class_descriptor(id);
-    return entry.row_present && entry.class_found ? &entry.descriptor : nullptr;
+    if (!entry.row_present || !entry.class_found) return nullptr;
+    if (required_kind >= 0
+        && !bsp::ordnance_kinds_for_bullet_type(entry.type.c_str()).contains(required_kind))
+        return nullptr;
+    return &entry.descriptor;
 }
 
 const bsp::path_movcam_seg46_argon::ParatrooperClassResidue*

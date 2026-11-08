@@ -5,6 +5,8 @@
 #include "bsp/cc15_seg48.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/projectile_kinds.hpp"
+#include "bsp/ordnance_kinds.hpp"
+#include "bsp/plane_rack_census_admission.hpp"
 #include <cmath>
 #include <cstdio>
 #include <limits>
@@ -58,5 +60,28 @@ int main() {
     check(accepts(&slot, true, false, false, false, speed), "speed alone does not confer immunity");
     check(accepts(&slot, true, true, false, false, std::numeric_limits<float>::quiet_NaN()),
         "00828EC0 COMISS/JB rejects unordered speed from immunity");
-    std::puts("c826 review1800 torpedo input/chooser regression: PASS");
+    // Review1819: the installed arcade/realistic Bullets[4] is Fido, Type
+    // Torpedo, with both Homing*TurnSpeed fields 0.5. No attached round remains
+    // here: exercise the SAME empty-rack admission used by the live first-slot
+    // read, then carry its descriptor through the production binder and chooser.
+    bsp::WeaponClassDescriptor fido;
+    fido.bullet_id = 4;
+    fido.sub_type = 0x0a;
+    fido.homing_horz_turn_speed = fido.homing_vert_turn_speed = 0.5f;
+    const auto exhausted = [](bool reload, int configured_id, const char* type) {
+        return bsp::game::empty_rack_configured_bullet_id(reload, configured_id,
+            bsp::ordnance_kinds_for_bullet_type(type).contains(0x2a));
+    };
+    const int reload_off = exhausted(false, 4, "Torpedo");
+    const int reload_on = exhausted(true, 4, "Torpedo");
+    check(reload_off == -1 && reload_on == 4, "exhausted Fido descriptor follows live reload flag");
+    check(!accepts(reload_off == 4 ? &fido : nullptr, false),
+        "exhausted Fido with reload OFF has no homing descriptor for a non-surface target");
+    check(accepts(reload_on == 4 ? &fido : nullptr, false),
+        "exhausted Fido with reload ON retains homing descriptor for a non-surface target");
+    check(exhausted(false, 4, "Torpedo") == -1, "disabling reload invalidates the fallback immediately");
+    check(exhausted(true, -1, "Torpedo") == -1, "missing configured record/descriptor remains null");
+    check(exhausted(true, 4, "Bullet") == -1, "configured descriptor must answer IsKindOf(2Ah)");
+    check(exhausted(true, 4, "") == -1, "unknown configured descriptor preserves null");
+    std::puts("c826 reviews1800/1819 torpedo input and exhausted-Fido chooser regression: PASS");
 }
