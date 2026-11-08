@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/cc13_left1.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
@@ -6545,24 +6546,34 @@ public:
         const double dz = static_cast<double>(tz) - world[14];
         const double flat = std::sqrt(dx * dx + dz * dz);
         if (!(flat > 1.0e-3)) return false;
-        constexpr double kPi = 3.141592653589793;
-        double e_heading = std::atan2(dx, dz) - std::atan2(world[8], world[10]);
-        while (e_heading > kPi) e_heading -= 2.0 * kPi;
-        while (e_heading <= -kPi) e_heading += 2.0 * kPi;
-        yaw = static_cast<float>(owner_.camera.yaw_384 - e_heading);
+        // Goal 5 chain 730: reuse the existing direction-error body on the
+        // published camera forward row and this live target's aim direction.
+        // bsp.py show 00605630 --asm, 00605630..006057DA: normalize both
+        // vectors, wrap target-current yaw and negate target-current pitch.
+        // Its existing 00794750 delegate has the same arithmetic (see
+        // cc13_left1.cpp); the helm's pitch convention therefore subtracts
+        // that output too. This replaces the hand-written atan2/asin path.
+        // The aim-unit input/target-height policy above remains a host policy;
+        // no original plane-HUD receiver or camera ABI is implied by reuse.
+        const float forward[3]{world[8], world[9], world[10]};
+        const float direction[3]{static_cast<float>(dx), static_cast<float>(dy),
+            static_cast<float>(dz)};
+        float e_heading, e_pitch;
+        bsp::cc13_left1::direction_angle_deltas_00605630(
+            &e_heading, &e_pitch, forward, direction);
+        yaw = static_cast<float>(static_cast<double>(owner_.camera.yaw_384) - e_heading);
         if (has_pitch) {
             pitch = fixed_pitch;
         } else {
-            const double fy = std::max(-1.0, std::min(1.0, static_cast<double>(world[9])));
-            pitch = static_cast<float>(owner_.camera.pitch_388
-                + (std::atan2(dy, flat) - std::asin(fy)));
+            pitch = static_cast<float>(static_cast<double>(owner_.camera.pitch_388) - e_pitch);
         }
         // Every one of a track's first 10 frames (a 2-frame oscillation shows),
         // then every 200th.
         const unsigned long long frame = owner_.aim_track_frames++;
         if (frame < 10 || frame % 200 == 0) {
             owner_.log.notef("helm aim unit: row %zu heading error %.4f rad, target pitch %.4f "
-                "rad, range %.0f", unit, e_heading, static_cast<double>(pitch), flat);
+                "rad, range %.0f", unit, static_cast<double>(e_heading),
+                static_cast<double>(pitch), flat);
         }
         return true;
     }

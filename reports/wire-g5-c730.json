@@ -1,0 +1,299 @@
+{
+  "run": 1564,
+  "goal": 5,
+  "chain": 730,
+  "worker": "agent/g5-w9",
+  "base_head": "fec3356bda3a58364ee31555dc5cee291e5f7b65",
+  "picked": "Reuse the reconstructed direction-error pair for live helm aim-unit tracking",
+  "rows": [
+    {
+      "native": "00605630",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::helm_aim_track_target",
+      "state": "The published, refreshed mission camera world row 2 and the direction from its translation to the selected live unit's existing aim point.",
+      "replacement": "Deletes the manual atan2/asin angle-error calculation; subtracts the returned yaw and negated pitch errors from the same retained helm angles.",
+      "built_call_site": "1010a24f -> 1043eb40"
+    },
+    {
+      "native": "00794750",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::helm_aim_track_target -> src/cc13_left1.cpp: direction_angle_deltas_00605630",
+      "state": "The same real camera-forward and target-direction vectors, through 00605630's existing arithmetic delegate.",
+      "replacement": "The pre-existing delegate runs once; no second implementation or parallel legacy calculation was added.",
+      "built_call_site": "1043eba0 -> 105f78c0"
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameStartupHost teardown",
+      "reason": "Missing a genuine raw game receiver and the complete destructor service/lifetime contexts in the inspected host teardown."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder/EntityCommand ai_group_forward_command callbacks",
+      "reason": "Missing a produced AI-group receiver and its retained +564Ch command; the inspected entity adapter supplies no group."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land move-to construction candidate",
+      "reason": "Missing the actual same-root native move-to storage, observer endpoints and NativeObserverLifetime required by the constructor view."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: landing-task state ownership candidate",
+      "reason": "Missing a same-root native approach with live state subobjects and the required original name identities; registering a detached shadow registry would not bind those states."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: land registry construction candidate",
+      "reason": "Missing a real registry consumer in the current typed landing-state owner; constructing an unused empty registry would not wire the subsystem."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: land registry retirement candidate",
+      "reason": "Missing a live registry owner whose real allocation and borrowed state identities can reach this retirement path."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing retained ammunition-record receivers, the +48h alternate source and their reference/tree ownership; the current handle names a gun row."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building owner change",
+      "reason": "Missing the command building's actual +660h vector and the resize service contract; the existing owner-change path explicitly omits that vector."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops loadout selection",
+      "reason": "Missing a live radial-screen owner and selection backend; the inspected path receives a requested loadout index directly."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops loadout selection",
+      "reason": "Missing the radial-screen owner, widget population services and real ring lifecycle required to build a loadout ring."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: PresentationHost::voice_begin_sound_fade",
+      "reason": "Missing a live voice/sound owner and its fade state; the inspected callback remains explicitly unreached."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 air-support arm",
+      "reason": "Missing the air-support spawn-request owner, completion callback domain and retained flight producer used by this arm."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing an off-main-thread deferred-call producer and its actual source LuaVariantRecord vector; the inspected main-thread host never takes that enqueue arm."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: descriptor ownership survey",
+      "reason": "Missing the native command-target-pair receiver used by this initializer's original callers; generic descriptor value initialization is not that lifecycle."
+    },
+    {
+      "native": "0071d3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: UserPathPoint loopback producer",
+      "reason": "Missing a real clear-point input producer; the currently hosted 0071D340 route only posts add-point messages with presence set."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: UserPathPoint loopback delivery",
+      "reason": "Missing the clear-point message producer and owned non-slot-0 path receivers; adding a dormant clear branch alone would not produce a real clear operation."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path tail removal candidate",
+      "reason": "Missing the clear-point producer selecting the live path; no point-removal operation is currently issued by the inspected add-only loopback."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing an entry-reachable mission Lua save path; the root encode body is not linked in the measured game build."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "Missing a hosted mission Lua restore lifecycle reaching the decoder's visit-mark cleanup."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: name_table_tree / save root",
+      "reason": "Missing an entry-reachable save root and its in-place table-naming lifecycle."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_table_tree / save root",
+      "reason": "Missing the hosted save lifecycle that owns the live Lua rewrite and subsequent restoration."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: mission-root encoding",
+      "reason": "Missing an entry-reachable mission save root supplying the actual named globals and restore lifetime."
+    },
+    {
+      "native": "006b0020",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_table_tree",
+      "reason": "Missing a hosted mission restore producer; renaming an internal walker call alone does not connect this save/load subsystem."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "reason": "No new wiring is missing: the baseline binary already calls this constructor from the real sensor-class allocation path despite readiness state ready."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::load_from_row_00809147",
+      "reason": "No new loader hookup was identified: the inspected retained sensor-class registry already delegates to this body."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::gui_range_rows_00808786",
+      "reason": "No new wiring is missing: the baseline call graph already reaches the existing Color-table call using the real Lua object view."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_screen_scene_runtime.cpp: scene ownership / retirement survey",
+      "reason": "Missing a new live companion-owner release site; the inspected owner already calls this semantic helper while other live GUI paths use a separate raw-storage release interface."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: GUI curve control-point candidate",
+      "reason": "Missing a hosted curve owner and authored-point consumer reaching this semantic control-point buffer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: text-byte acceptance candidate",
+      "reason": "Missing a live text-edit admission path that owns this FontData view; glyph rendering alone is not the input-byte acceptance operation."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 consumed-active tail",
+      "reason": "Missing the preceding 0090F5A0 GA_AE scoring-award owner/map and active-item lifecycle; calling cooldown first would omit or reorder that required effect."
+    },
+    {
+      "native": "0090f5a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: consumed-active scoring prerequisite",
+      "reason": "Missing the live native slot +70h award map and award-grant service domain in the inspected mission scoring owner."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI-group recon ratio candidate",
+      "reason": "Missing a bound member census feeding this group's actual 00779D00 recon values; the file also moved under another worker's AI birth packet during selection."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair weight candidate",
+      "reason": "Missing a verified adapter from the live tuning-mode class-pair rows; src/game_hosts_ai.cpp became leased by g5-w1 before this candidate was developed."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-group gate candidate",
+      "reason": "Missing a verified live threat/source-vector adapter for this gate; the shared AI host became leased by g5-w1 during selection."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile impact-effect candidate",
+      "reason": "Missing the weapon-class effect-slot ownership and render-effect submission path; the inspected hull impact callbacks implement leak effects instead."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support-site supply predicate candidate",
+      "reason": "Missing a verified live support-site supply-entry adapter; no new supply caller was bound in this packet."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: map-scene zoom initialization candidate",
+      "reason": "Missing a live MapSceneZoomState owner/consumer; constructing diagnostic state would not initialize the rendered map scene."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: scene-text escaping candidate",
+      "reason": "Missing an entry-reachable scene-text writer; the existing scene reader does not supply this export operation."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: collision-band basis candidate",
+      "reason": "Missing the hosted 007DF4F0 collision-band owner; the inspected motion path uses a different basis-orthonormalization body."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Missing an entry-reachable shadow-fit caller; the measured build does not link 00A8BD20, and no live frustum/soldier callback override was found."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::helm_aim_track_target candidate",
+      "reason": "Missing the native camera-position lead divisor/default scale/local-point state; the live fixed-point direction only supplies the smaller direction-error contract wired here."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00605630 and --asm: normalization, finite checks, wrapped yaw and negated wrapped pitch; existing cc13_left1.cpp documents the byte-equivalent 00794750 delegate.",
+    "call_graph.py who 00605630: one entry-reachable call from ShipViewInputBinding::helm_aim_track_target at 1010a24f.",
+    "call_graph.py who 00794750: one entry-reachable call from direction_angle_deltas_00605630 at 1043eba0.",
+    "call_graph.py path 00605630 reaches the ship-view input vtable, HUD/menu frame, startup and WinMainCRTStartup."
+  ],
+  "totals": {
+    "readiness_wired_before": 10491,
+    "readiness_wired_after": 10492,
+    "entry_reachable_reconstructed_before": 5397,
+    "entry_reachable_reconstructed_after": 5399,
+    "note": "00794750 was text-wired before this change but absent from the baseline linked graph; both existing address bodies are now actually called. Totals are measured in this worktree's default Win32 Release build."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four suites",
+    "changed_build": "scripts/build.ps1 passed all four suites",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD",
+    "focused_probe": "local/probes/wire-g5-c730/build/Release/wire_g5_c730_angle_probe.exe passed normalized nonunit-forward pitch/sign and +pi/-pi yaw wrap under PC24; synthetic standalone fixture with an embedded manifest",
+    "game_run": false
+  },
+  "assumptions_and_limits": [
+    "Reuse is intentional: this is the existing aim-unit host input path, not reconstruction of the original 006082D0 plane-HUD receiver.",
+    "Both inputs come from live state. The existing target-height policy and fixed-pitch input remain host policies; no lead scale, divisor, task receiver or world value was manufactured.",
+    "The body normalizes both vectors and applies native-style finite/wrap behavior instead of the old hand-written double angle math. Host steering subtracts both outputs because the body's pitch error is negated.",
+    "Execution is conditional on the existing aim-unit input, a ready camera, a live visible target and the existing horizontal-range guard. Static entry reach and synthetic numeric checks do not prove an in-game tracking run or original binary ABI compatibility.",
+    "No source edits were made in surveyed subsystems. The abandoned powerup lease was released and its missing award-map prerequisite was sent to g5-w8."
+  ]
+}
