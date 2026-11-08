@@ -2498,15 +2498,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return member;
     }
     void* director_target_descriptor(void* director) override {
-        // 0071EB60. The descriptor is read for its side effect on the census
-        // only; the notification that would consume it is discarded natively.
+        // 0071EB60. Retain the actual command target projection for the
+        // synchronous notification, rather than returning the director's
+        // identity as a substitute descriptor pointer. No notification
+        // retains this address; 00A0FC90 does not inspect the descriptor.
         const std::size_t unit = unit_index_of(director);
-        bsp::SceneCommandTarget target;
         int mode = 0;
-        if (!units.active_command_descriptor_0071eb60(unit, target, mode)) return nullptr;
+        if (!units.active_command_descriptor_0071eb60(
+                unit, member_notification_descriptor, mode)) return nullptr;
         ++summary.member_descriptors;
-        return director;
+        return &member_notification_descriptor;
     }
+    bsp::SceneCommandTarget member_notification_descriptor;
     void* director_current_command(void* director) override {
         const std::size_t unit = unit_index_of(director);  // 0071BE40
         const std::uint32_t command = units.director_current_command_0071be40(unit);
@@ -2515,12 +2518,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     void command_notify_member(void* command, void* current_command,
                                void* target_descriptor) override {
-        // vtable[+24h] is 00A0FC90, `RET 8`, in every one of the sixteen
-        // vtables between 00D22968 and 00D22C68. Nothing is done with either
-        // argument, natively or here.
-        (void)command;
-        (void)current_command;
-        (void)target_descriptor;
+        // bsp.py show 00A0FC90; 00A2C82B dispatches the current group's
+        // command. Forward the host's current-command identity and actual
+        // target projection as opaque arguments; no native director/object
+        // ABI is claimed. All sixteen classes share this RET 8 body.
+        bsp::ai_command_notify_member_00a0fc90(command, current_command,
+            target_descriptor);
     }
     void command_tick(void* command) override {
         // vtable[+0Ch]. The five bodies packet cc8_ai_command_tick read run

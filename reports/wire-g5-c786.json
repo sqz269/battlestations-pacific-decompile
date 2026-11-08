@@ -1,0 +1,114 @@
+{
+  "chain": 786,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "baseline_head": "71f8ac47931383b2e1808fd9ed95296cabed9267",
+  "wired_before": 10630,
+  "rows": [
+    {
+      "native": "00a0fc90",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::command_notify_member"
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Missing live CAUTIOUSMOVE producer: the only current planner caller passes ratio=1.0, so its stream-1 fraction cannot select the cautious constructor; no live Lua command factory was found."
+    },
+    {
+      "native": "00a10310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Missing live CAUTIOUSMOVE object producer; its type getter cannot be used as an unconditional replacement for MOVETO."
+    },
+    {
+      "native": "00a10370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::replace_command",
+      "reason": "Missing REGROUPINGMOVE command producer: the host has an IsType reader but no reached Lua command factory or live installer of this class."
+    },
+    {
+      "native": "00a103a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::replace_command",
+      "reason": "Missing live REGROUPINGMOVE construction; calling its constant type getter from a generic command path would misclassify that command."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290",
+      "reason": "Missing corresponding live net-entity-create producer/consumer for member+04h vector; the existing formation reader consumes different lateral/axial columns, and the miss path also lacks native F87574/78/7C ownership."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "Missing native scoring award-map and 0090F5A0/0090EDE0 providers in the consumed-active tail before cooldown; the newly reached AI activation path still throws there."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail host set_scroll_range",
+      "reason": "No additional splice needed at this site: the existing host already calls set_scroll_range with measured text height and live clip height; its identifier lacks an address suffix and Release may inline it."
+    },
+    {
+      "native": "006833f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost",
+      "reason": "Missing reached resolution-change listener with the correct screen-owned scroller; attaching controls already captures their bases and is not the native recapture event."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Missing native movie-widget 14h subtitle and 24h extratitle vector ownership/consumers; the current host keeps a separate typed subtitle schedule."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown close_result_gui",
+      "reason": "The complete native game/movie-screen/listener sound-transition context was not established for this recorded result-teardown site."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart host write_checkpoint",
+      "reason": "Missing reached checkpoint-diff gate and full profile-record erasure/storage rewrite continuation; the existing reconstruction covers only the Lua-table clear."
+    },
+    {
+      "native": "00876ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit model-group state",
+      "reason": "No reached consumer with the complete native unit descriptor/model and point-announcement context was established; the routine cannot be applied to an unrelated host unit projection."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 air-support arm",
+      "reason": "Missing live native flight-spawn manager and full class/unit/scene-matrix/callback providers; the current air-support activation arm stops before this producer."
+    }
+  ],
+  "change": "Replace the unused notification-discard predicate with the existing native-address void operation and call it from the live AI member pass. Retain the actual SceneCommandTarget projection instead of returning a unit identity as a descriptor pointer. No game launch or native director/object ABI claim.",
+  "validation": {
+    "build": "scripts/build.ps1: final full Win32 Release build PASS; all4 CTests PASS (reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader).",
+    "call_graph": "python tools/call_graph.py --build: /Ob0 /OPT:NOICF analysis build PASS; who 00a0fc90 reports reachable body 10039af0, exactly1 call at10082b4c from GameAiCoordinatorHost::Impl::command_notify_member; path reaches WinMainCRTStartup. Release folds identical RET bodies, so its merged callers are not individual-body proof.",
+    "readiness": {
+      "wired_before": 10630,
+      "wired_after": 10631,
+      "native": "00a0fc90",
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    "float_math": "No float arithmetic changed; pc24 lint not applicable.",
+    "runtime": "Not run, per worker instruction; static reach is not gameplay or original ABI validation."
+  },
+  "wired_after": 10631,
+  "assumptions": [
+    "The existing active-unit director admission remains the host projection; this work does not reconstruct a native director object.",
+    "The native notification ignores all three pointers. Current-command identity and the retained actual SceneCommandTarget are forwarded opaquely; no invented descriptor or native object layout is consumed.",
+    "The original command classes all share the RET8 notification leaf; replacing the unused boolean predicate preserves one body for00A0FC90."
+  ]
+}

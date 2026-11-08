@@ -81,11 +81,12 @@ AiCommandType ai_command_initial_type(int ai_party_slot, bool party_slot_admitte
 // pointer is stored. True when the caller must destroy the outgoing object.
 bool ai_command_install_deletes_previous(bool group_has_command) noexcept;
 
-// vt+24h is 00A0FC90 (`RET 8`) in every one of the sixteen vtables between
-// 00D22968 and 00D22C68, so no class acts on a member notification. This
-// closes docs/AI_GROUP_THINK.md's "whether any class in the block overrides
-// the slot was not settled".
-bool ai_command_notification_is_discarded(AiCommandType type) noexcept;
+// 00A0FC90, original __thiscall(ECX = command, current_command, descriptor),
+// RET 8. Every vt+24h slot between 00D22968 and 00D22C68 selects this body.
+// All three pointers are opaque: the native body never reads them and has
+// no return value. This C++ interface adds an explicit receiver argument.
+void ai_command_notify_member_00a0fc90(void* command, void* current_command,
+    void* target_descriptor) noexcept;
 
 // ---------------------------------------------------------------------------
 // 00A2C600, the extra equality the IDLE merge override adds
