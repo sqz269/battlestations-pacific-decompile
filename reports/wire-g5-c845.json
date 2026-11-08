@@ -16,7 +16,7 @@
       "native": "0051e6e0",
       "status": "wired",
       "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::binoculars_apply_fov_0051e6e0 and raised_view",
-      "state": "Retained binocular zoom/mode/mover, existing 004DC940 projection/FOV path, same ShipCaptain zoom flag, pitch and yaw."
+      "state": "Retained binocular zoom/mode/mover, existing 004DC940 projection/FOV path, same ShipCaptain zoom flag, pitch and yaw. The FOV provider now updates the already-published Operator projection through the native cache-invalidating setters; pipe-sight publication preserves active binocular zoom."
     },
     {
       "native": "0051e7e0",
@@ -99,10 +99,10 @@
   ],
   "validation": {
     "build": "./scripts/build.ps1: Win32 Release and all four existing tests pass",
-    "fixture": "tests/wire_g5_c845_binocular_probe.cpp: raise/quarter-zoom/lower and analog PC24 bit regression, plus raise -> overlay reset and raise -> screen exit; both reset mode/FOV/limit and disable the same mover zoom flag",
+    "fixture": "tests/wire_g5_c845_binocular_probe.cpp: original lifecycle and analog PC24 regression, overlay/screen-exit resets, plus real 004DC940 -> shared FOV setter -> published CameraState projection; pipe sight enabled, warm view-projection cache, immediate cache invalidation/rebuild and preserved active zoom across pose publication",
     "fixture_recipe": "local/c845-probe.cmd; reproducible cl/library inputs are also documented at the top of the committed fixture",
     "pc24": "python tools/pc24_lint.py --staged and --diff origin/main...HEAD",
-    "compiled_calls": "python tools/call_graph.py followed by who 0051e650, who 0051e6e0, who 0051e7e0, who 0051eaa0 and path 0051eaa0; who 0051e8e0 and who 0051e9b0 confirm the review cleanup calls",
+    "compiled_calls": "python tools/call_graph.py followed by who 0051e650, who 0051e6e0, who 0051e7e0, who 0051eaa0 and path 0051eaa0; who 0051e8e0 and who 0051e9b0 confirm the review cleanup calls; who publish_ship_view_mission_camera and who set_mission_camera_fov confirm the shared publication/FOV integration",
     "readiness_wired_before": 10697,
     "readiness_wired_after": 10699,
     "readiness_called_before": 5937,
@@ -145,6 +145,32 @@
       "folding_note": "Release /OPT:ICF folds the byte-identical reset/exit bodies at 10469B10; the two distinct source call sites and fixture validate the intended operations. All original four claimed bodies remain entry-reachable.",
       "readiness_wired_after": 10699,
       "readiness_called_after": 5962
+    }
+  },
+  "review_round_2": {
+    "review_run": 1870,
+    "reviewed_head": "112593820c009a3c6177a41d07b070115ce1a39c",
+    "findings": [
+      {
+        "priority": "P2",
+        "status": "fixed",
+        "finding": "Binocular FOV was stale in the published camera and pipe-sight scale 1 overwrote it before publication",
+        "changes": [
+          "HudViewFovBinding now calls the shared set_mission_camera_fov service. It updates the retained terms and, when ready, the CameraState projection that readers actually consume, using the existing 00B6FBB0/00B6FBD0/00B6FBF0/00B6FC10 setters and their native cache mask.",
+          "The binocular near-plane provider uses the same projection synchronization. Projection-only updates preserve the published pose and publication count; no second camera tick or camera_last_frame invalidation is introduced.",
+          "Extract the live ship-view publication tail into publish_ship_view_mission_camera. It applies the existing pipe-sight default only when binoculars are down, keeping the original 004DC940 gates and FOV math. HudViewFovBinding retains the prior 1A04 index when that default is skipped.",
+          "The fixture replaces its standalone scale variable with the actual 004DC940 body, shared FOV setter, production ship-view publication tail and mission_camera_publication().state. With pipe sight enabled it warms the actual 00B70490 cache, raises zoom, checks immediate published FOV/near-plane and cache invalidation without republishing the pose, then checks preserved zoom after publication and default published FOV after overlay reset/screen exit."
+        ]
+      }
+    ],
+    "validation": {
+      "build": "./scripts/build.ps1: Win32 Release and all four existing tests pass",
+      "fixture": "cmd /c local\\c845-probe.cmd: published pipe-sight projection/cache, lifecycle, overlay reset, screen exit and analog PC24 cases pass",
+      "pc24_staged": "0 findings across four changed code files",
+      "compiled_publication": "publish_ship_view_mission_camera is called from GameHudHost::Impl::publish_ship_view_camera; set_mission_camera_fov is called from HudViewFovBinding::camera_set_fov_00b6fbb0. All six claimed original bodies remain entry-reachable.",
+      "readiness_wired_after": 10699,
+      "readiness_called_after": 5962,
+      "boundary": "Source integration fixture through the actual publication and cached projection reader; no game or original register-ABI validation."
     }
   }
 }

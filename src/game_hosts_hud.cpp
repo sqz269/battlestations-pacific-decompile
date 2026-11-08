@@ -2581,6 +2581,7 @@ struct GameHudHost::Impl {
     // 004DC940 BSP_Game_SetViewFov(scale, index) for the callers the HUD runs (the
     // leaf screen virtuals below), over this camera's projection.
     void set_view_fov(float scale, std::int32_t index);
+    void publish_ship_view_camera(const bsp::CameraMatrix16& world);
     // Packet cc9_ship_screen_update: screen 45h's fields and its widgets.
     bsp::ShipScreenState ship_screen{};
     std::size_t ship_screen_unit{0};
@@ -4732,17 +4733,7 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     for (int i = 0; i < 5; ++i) record("MissionCamera::collision_ray", 0x0098b370u);
     if (!published) return;
     done("MissionCamera::publish_pose", 0x004329d0u);
-    // Screen 45h's update (0064DD30) sets the fov every frame while its unit is
-    // bound and pipe sight is enabled: 004DC940(1 - zoom_rate * [00E197F4], 1).
-    // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
-    // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
-    // spring and drag never move it off zero without them, so it is 0.0f.
-    if (kMissionFovBound && camera_pipe_sight_read &&
-        camera_pipe_sight_enabled) {
-        const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
-        set_view_fov(scale, 1);
-    }
-    bsp::publish_mission_camera(world, camera_projection);
+    publish_ship_view_camera(world);
 }
 
 namespace {
@@ -4764,6 +4755,7 @@ public:
         at<std::uint8_t>(game_.data(), 0x634) =
             owner_.cinematic_hidden_634 != nullptr && *owner_.cinematic_hidden_634;
         at<std::int32_t>(game_.data(), 0x1FE4) = session.session_word_1fe4;
+        at<std::int32_t>(game_.data(), 0x1A04) = owner_.view_fov_index_1a04;
         at<Object>(game_.data(), 0x19FC) = reinterpret_cast<Object>(&owner_.camera_projection);
         at<Object>(manager_.data(), 0xA8) = hints_.data();
         // The virtual receiver is resolved by vcall_38_bool to the actual hint
@@ -4809,7 +4801,7 @@ public:
     void camera_set_fov_00b6fbb0(Object camera, float fov) override {
         if (camera != reinterpret_cast<Object>(&owner_.camera_projection))
             throw std::logic_error("004DC940 set another Operator camera");
-        owner_.camera_projection.fov = fov;
+        bsp::set_mission_camera_fov(owner_.camera_projection, fov);
         owner_.done("MissionCamera::view_fov", 0x004dc940u);
     }
     ~HudViewFovBinding() override {
@@ -4828,6 +4820,18 @@ private:
 void GameHudHost::Impl::set_view_fov(float scale, std::int32_t index) {
     HudViewFovBinding binding(*this);
     bsp::cc13_seg10::game_set_view_fov_004dc940(binding, binding.game_00e188a8(), scale, index);
+}
+
+void GameHudHost::Impl::publish_ship_view_camera(const bsp::CameraMatrix16& world) {
+    // Screen 45h's 0064DD30 pipe-sight FOV is the unraised default. A raised
+    // screen 26h has already set the same Operator FOV via 0051E6E0/004DC940.
+    // Existing substitution: [00E197F4] remains zero without the unhosted
+    // 0064DFDE gun-fire adds, so the pipe-sight spring has not moved it.
+    const bsp::MissionCameraFovFrame frame{
+        kMissionFovBound && camera_pipe_sight_read && camera_pipe_sight_enabled,
+        binoculars.mode_30 == 1, camera_pipe_sight_zoom_rate, 0.0f};
+    HudViewFovBinding binding(*this);
+    bsp::publish_ship_view_mission_camera(world, camera_projection, frame, binding);
 }
 
 namespace {
@@ -7202,6 +7206,7 @@ public:
     void camera_set_near_plane_00b6fbf0(void* camera, float value) override {
         if (camera != &owner_.camera_projection) throw std::logic_error("binoculars set another camera");
         owner_.camera_projection.near_plane = value;
+        bsp::update_mission_camera_projection(owner_.camera_projection);
     }
     void binoculars_apply_fov_0051e6e0(void* raw_screen) override {
         bsp::segs_13_15_22_44_cc13::binoculars_apply_fov_0051e6e0(
