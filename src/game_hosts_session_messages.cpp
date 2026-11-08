@@ -891,7 +891,12 @@ bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
     // 00768530 case 9Fh: operator new(20h), 00760A50 at 0076960E; 0076A27B
     // vtable[8] = 00760B30.
     stream.begin_read();
-    seg42::RepairBodyMessage queued{};
+    // 00768530 case 9Fh owns the received 20h allocation. Its actual
+    // 00D03360 slot0 (00760BF0, flags1) releases it once after projection.
+    static_assert(sizeof(seg42::RepairBodyMessage) == 0x20);
+    OwnedDecodedMessage<seg42::RepairBodyMessage,
+        seg42::delete_shiprepair_bodyrepair_00760bf0> owner;
+    auto& queued = owner.get();
     seg42::construct_shiprepair_bodyrepair_00760a50(&queued, image.seg42);
     seg42::read_shiprepair_bodyrepair_00760b30(&queued, &stream.in);
     return queued.flag_1c != 0;
@@ -916,7 +921,11 @@ HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
     // 00768530 case 90h: operator new(2Ch), 00761F60 at 0076946E; 0076A27B
     // vtable[8] = 00762090.
     stream.begin_read();
-    seg42::ShipLeakMessage queued{};
+    // The decoder owns this 2Ch block through extraction of the live leak
+    // count and point. 00D034A0 slot0 00762660 frees that same block once.
+    static_assert(sizeof(seg42::ShipLeakMessage) == 0x2c);
+    OwnedDecodedMessage<seg42::ShipLeakMessage, seg42::delete_ship_leak_00762660> owner;
+    auto& queued = owner.get();
     seg42::construct_ship_leak_00761f60(&queued, image.seg42);
     seg42::read_ship_leak_00762090(&queued, &stream.in, image.numeric);
     ShipLeakCopy copy;
@@ -940,7 +949,12 @@ HostSessionMessages::ShipAvoidSideCopy HostSessionMessages::queue_ship_avoid_sid
     // 00768530 case 8Fh: operator new(24h), 007623D0 at 0076944E; 0076A27B
     // vtable[8] = 007624B0 (00428D30 sign-extends the 3-bit side).
     stream.begin_read();
-    seg42::ShipAvoidSideMessage queued{};
+    // 00768530's 8Fh receive allocation is 24h. Retain it through the
+    // signed-side projection, then release with its 00D034DC slot0.
+    static_assert(sizeof(seg42::ShipAvoidSideMessage) == 0x24);
+    OwnedDecodedMessage<seg42::ShipAvoidSideMessage,
+        seg42::delete_ship_avoidside_007626c0> owner;
+    auto& queued = owner.get();
     seg42::construct_ship_avoidside_007623d0(&queued, image.seg42);
     seg42::read_ship_avoidside_007624b0(&queued, &stream.in);
     return ShipAvoidSideCopy{queued.other_id_1c, queued.side_20};
@@ -1592,7 +1606,12 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
     seg42::write_ship_explodeonepart_007614f0(&sent, &stream.out);
     // 00768530 case 99h: 00761450 at 0076954E; 0076A27B vtable[8] = 00761540.
     stream.begin_read();
-    seg42::ExplodeOnePartMessage queued{};
+    // 00768530 case 99h allocates 24h. The receive owner keeps that block
+    // through routing and segment-index extraction, then calls 00762600(1).
+    static_assert(sizeof(seg42::ExplodeOnePartMessage) == 0x24);
+    OwnedDecodedMessage<seg42::ExplodeOnePartMessage,
+        seg42::delete_ship_explodeonepart_00762600> owner;
+    auto& queued = owner.get();
     seg42::construct_ship_explodeonepart_00761450(&queued, image.seg42);
     seg42::read_ship_explodeonepart_00761540(&queued, &stream.in);
     ExplodeOnePartCopy copy;
@@ -1600,7 +1619,6 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
     copy.to_unit = copy_goes_to_unit_handler(&seg42::is_ship_explodeonepart_007614b0);
     copy.explode_one_part_99 = copy.to_unit && copy.type == 0x99;
     copy.part = queued.part_20;
-    // Neither message owns storage; 00762600 only restamps.
     return copy;
 }
 

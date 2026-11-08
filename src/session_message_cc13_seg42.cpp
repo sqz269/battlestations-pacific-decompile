@@ -236,17 +236,57 @@ __declspec(noinline) RepairAddDamageMessage* delete_shiprepair_adddamage_00760bd
     return message;
 }
 RepairBodyMessage* construct_shiprepair_bodyrepair_00760a50(RepairBodyMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x9F, 1, 0x00D03360u, c); }
+__declspec(noinline) RepairBodyMessage* delete_shiprepair_bodyrepair_00760bf0(
+    RepairBodyMessage* message, std::uint32_t flags) {
+    // bsp.gpr /battlestationspacific.exe, bsp.py show 00760bf0 --asm:
+    // 00760BF0..00760C0C TEST flags bit0; capture ECX; stamp CE4974;
+    // conditional BF65AC free; return captured this; RET4. Profile 00D03360 slot0.
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 HeaderedMessage* construct_shiprepair_repairpriority_00760b70(HeaderedMessage* m, const Context& c) { return construct_headered(m, m, 0xA0, 1, 0x00CF5C38u, c); }
 LandingShipsLaunchedMessage* construct_ship_landingshipslaunched_00760e90(LandingShipsLaunchedMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x95, 1, 0x00D03388u, c); }
 TorpedoGenerateMessage* construct_ship_torpedogenerate_hack_00760fd0(TorpedoGenerateMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x9D, 1, 0x00D0339Cu, c); }
 SetTorpedoStockMessage* construct_ship_set_torpedostock_007611d0(SetTorpedoStockMessage* m, const Context& c) { return construct_unit(m, &m->u, 0x96, 0x00D033B0u, c); }
 UnitMessage* construct_ship_explodetoparts_007613b0(UnitMessage* m, const Context& c) { return construct_unit(m, m, 0x9A, 0x00D033D8u, c); }
 ExplodeOnePartMessage* construct_ship_explodeonepart_00761450(ExplodeOnePartMessage* m, const Context& c) { return construct_unit(m, &m->u, 0x99, 0x00D033ECu, c); }
+__declspec(noinline) ExplodeOnePartMessage* delete_ship_explodeonepart_00762600(
+    ExplodeOnePartMessage* message, std::uint32_t flags) {
+    // bsp.py show 00762600 --asm, same saved program: 00762600..0076261C
+    // captures this, stamps CE4974, frees iff flags bit0, returns this, RET4.
+    // Live bytes 00D033EC identify this as the 99h profile's slot0.
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 SectionFailureMessage* construct_ship_sectionfailureefx_00761590(SectionFailureMessage* m, const Context& c) { return construct_unit(m, &m->u, 0x9B, 0x00D03400u, c); }
 ShipLeakMessage* construct_ship_leak_00761f60(ShipLeakMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x90, 1, 0x00D034A0u, c); }
+__declspec(noinline) ShipLeakMessage* delete_ship_leak_00762660(
+    ShipLeakMessage* message, std::uint32_t flags) {
+    // bsp.py show 00762660 --asm, same saved program: 00762660..0076267C
+    // captures this, stamps CE4974, frees iff flags bit0, returns this, RET4.
+    // Live bytes 00D034A0 identify this as the 90h profile's slot0.
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 HeaderedMessage* construct_ship_sink_00762130(HeaderedMessage* m, const Context& c) { return construct_headered(m, m, 0x92, 1, 0x00D00518u, c); }
 HeaderedMessage* construct_ship_leakcheatwater_00762190(HeaderedMessage* m, const Context& c) { return construct_headered(m, m, 0x91, 1, 0x00D034B4u, c); }
 ShipAvoidSideMessage* construct_ship_avoidside_007623d0(ShipAvoidSideMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x8F, 1, 0x00D034DCu, c); }
+__declspec(noinline) ShipAvoidSideMessage* delete_ship_avoidside_007626c0(
+    ShipAvoidSideMessage* message, std::uint32_t flags) {
+    // bsp.py show 007626c0 --asm, same saved program: 007626C0..007626DC
+    // captures this, stamps CE4974, frees iff flags bit0, returns this, RET4.
+    // Live bytes 00D034DC identify this as the 8Fh profile's slot0.
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 PlaneSyncAckMessage* construct_plane_sync_ack_007626e0(PlaneSyncAckMessage* m, const Context& c) {
     construct_plain(m, &m->base, 0xC2, 0, 0x00D034F0u, c);
     m->count_18 = 0;
