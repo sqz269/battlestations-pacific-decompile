@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/dummy_depth_seg34_argon.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/material_effect_plane.hpp"
@@ -3380,6 +3381,43 @@ struct GameGunneryHost::Impl {
     }
     std::vector<GameBulletClassRow> bullets;
     std::vector<GameProjectileRow> shots;
+    std::optional<bool> projectile_owner_destroyed(std::size_t unit) const {
+        bsp::SceneNodeFlags flags;
+        return units.unit_scene_node_flags(unit, flags)
+            ? std::optional<bool>{flags.destroyed} : std::nullopt;
+    }
+    void bind_projectile_owner(GameProjectileRow& shot, std::size_t owner) {
+        const void* const identity = units.unit_identity(owner);
+        if (identity == nullptr) {
+            if (shot.observed_owner)
+                shot.observed_owner->target_gone(shot.observed_owner->identity());
+            shot.observed_owner.reset();
+            return;
+        }
+        // 006E6BB0 -> 006E1B90 binds the attacker member at shot-base+98h.
+        // Keep its mutable +14h separate from owner_unit's source/accounting
+        // identity. Capturing actual notice state also permits a native rebind
+        // after an earlier notification without inventing another notification.
+        const auto destroyed = projectile_owner_destroyed(owner);
+        const bool delivered = lua.target_gone_notice_delivered(owner);
+        if (shot.observed_owner)
+            shot.observed_owner->bind(owner, identity, destroyed, delivered);
+        else
+            shot.observed_owner = std::make_shared<GameProjectileObservedOwner>(
+                owner, identity, destroyed, delivered);
+    }
+    std::optional<std::size_t> resolve_projectile_owner(const GameProjectileOwnerRef& observer) {
+        if (!observer) return std::nullopt;
+        const auto unit = observer->unit();
+        if (!unit) return std::nullopt;
+        // Apply 006E17D0's target-gone clear before 004704E0 is read. Canonical
+        // +5Eh covers immediate removals; the existing pass-K delivery state
+        // covers queued host notifications. Queued notices, health zero and
+        // Destroy/+5Dh alone do not clear this slot04 observer.
+        observer->refresh(units.unit_identity(*unit), projectile_owner_destroyed(*unit),
+            lua.target_gone_notice_delivered(*unit));
+        return observer->unit();
+    }
     // Packet cc8_torpedo_closest_approach: one row per swimming round, kept
     // after the round is erased.
     std::vector<GameTorpedoApproachRow> torpedo_approaches;
@@ -5087,7 +5125,8 @@ struct GameGunneryHost::Impl {
         std::vector<DeviceBlastMount>& out);
     void push_device_blast_records(std::size_t shooter, std::size_t gun_row, std::size_t unit,
         int team_id, const float point[3], const float direction[3],
-        const bsp::HitRecord& base, std::vector<DeviceBlastMount>& mounts);
+        const bsp::HitRecord& base, std::vector<DeviceBlastMount>& mounts,
+        const GameProjectileOwnerRef& observed_owner);
     void device_blast_dispatch_009239a0(std::size_t gun_row, std::size_t unit,
         std::size_t device_row, const bsp::HitRecord& hit);
     // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): the unit of each
@@ -5252,6 +5291,7 @@ struct GameGunneryHost::Impl {
     struct DeferredHit {
         bool gunless{false};       // apply_gunless_blast_hit (a shot-0 record)
         std::size_t shooter{0};
+        GameProjectileOwnerRef observed_owner; // shared shot observer, NOT a target snapshot
         std::size_t gun_row{0};
         std::size_t victim{0};     // record+0h, the drain's subject
         float point[3]{};
@@ -6080,7 +6120,7 @@ struct GameGunneryHost::Impl {
     // coordinator holds. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
     void publish_ai_weapon_facts();
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
-        const float point[3], const float direction[3],
+        const float point[3], const float direction[3], const GameProjectileOwnerRef& observed_owner,
         const bsp::HitRecord* blast_record = nullptr, int team_id = -1);
     // Packet cc9_kaiten_contact_detonation.
     void run_kamikaze_contacts(float dt);
@@ -6230,7 +6270,8 @@ struct GameGunneryHost::Impl {
     // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
     // ignore_falloff is 0084BAD0's [ESP+8] byte, copied into record+2Ch.
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
-        const float point[3], const float direction[3], bool ignore_falloff = false);
+        const float point[3], const float direction[3], const GameProjectileOwnerRef& observed_owner,
+        bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
     // Packet cc9_g51_inferior_failure (kInferiorFailureArmBound).
     void inferior_failure_health_zero_00958a30(std::size_t victim, std::size_t owner);
@@ -12931,9 +12972,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     at(shot).team_id_1c = team;   // 0072C0FB / 0072C14B, shot+1Ch
                 }
                 void bind_owner_006e6bb0(void* shot) override {
-                    // 006E6BB0: shot+0C8h (projectile+238h) = the owner. LABELLED:
-                    // the observer pair and the +94h grace [00CE3854] are not kept.
+                    // 006E6BB0 also binds the nullable attacker observer read by
+                    // 004704E0. The +94h grace [00CE3854] remains unmodelled.
                     at(shot).owner_unit = owner + 1;
+                    h.bind_projectile_owner(at(shot), owner);
                 }
                 void store_owner_record_ids(void*) override {
                     // 009555BD..009555C9: shot+18h = [owner+54h] is the party the
@@ -13932,7 +13974,8 @@ bool GameGunneryHost::Impl::depth_charge_advance_006fcd20(GameProjectileRow& sho
         static_cast<double>(shot.life));
     shot.fate = 3;
     round_bullet_class = shot.bullet_class;
-    apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, no_dir);
+    apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, no_dir,
+        shot.observed_owner);
     round_bullet_class = -1;
     done("DepthCharge::advance_in_water_006fcd20", 0x006fcd20u);
     shot.alive = false;
@@ -14343,7 +14386,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     // 0084BC60 passes buffer+20h = record+4 (the rocket) as the shot,
                     // so the blast prices with the rocket's class (round_bullet_class).
                     apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
-                        no_dir);
+                        no_dir, shot.observed_owner);
                     round_bullet_class = -1;
                     done("Rocket::proximity_fuze_0080a55d", 0x0080a55du);
                     shot.alive = false;
@@ -14526,7 +14569,8 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             }
             this->record("Landscape::on_hit_0087f9a0", 0x0087f9a0u);
             round_bullet_class = shot.bullet_class;
-            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction,
+                shot.observed_owner);
             round_bullet_class = -1;
             shot.alive = false;
             continue;
@@ -14599,7 +14643,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 }
             }
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
-                direction, nullptr, shot.team_id_1c);
+                direction, shot.observed_owner, nullptr, shot.team_id_1c);
             impact_shape_kind = 0x0A;
             impact_hull_segment = kDirectHitHullSegment;
             if constexpr (bsp::kGunDeviceHitDamageCc13Bound) impact_device_gun = -1;
@@ -14612,7 +14656,8 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             // bursts on this step, and this loop carries bombs and shells too.
             // apply_impact_blast returns without doing anything when the row
             // has no Blast, which is that same gate.
-            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction,
+                shot.observed_owner);
             round_bullet_class = -1;
             shot.alive = false;
             continue;
@@ -14682,7 +14727,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 shot.fate = 5;
                 round_bullet_class = shot.bullet_class;
                 apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
-                    no_dir, true);
+                    no_dir, shot.observed_owner, true);
                 round_bullet_class = -1;
                 done("FlakProjectile::expiry_detonate_0070c3c8", 0x0070c3c8u);
                 shot.alive = false;
@@ -14774,7 +14819,8 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                             ++flak_bursts;
                             shot.fate = 3;
                             round_bullet_class = shot.bullet_class;
-                            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, burst, no_dir);
+                            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, burst,
+                                no_dir, shot.observed_owner);
                             round_bullet_class = -1;
                             done("FlakProjectile::detonate_0070c210", 0x0070c210u);
                             shot.alive = false;
@@ -15148,9 +15194,10 @@ namespace {
 
 class ShipHitBinding final : public bsp::ShipHitRecordHost {
 public:
-    ShipHitBinding(GameGunneryHost::Impl& owner, std::size_t victim, std::size_t shooter,
+    ShipHitBinding(GameGunneryHost::Impl& owner, std::size_t victim,
+        GameProjectileOwnerRef hit_owner,
         const GameBulletClassRow* weapon, const float direction[3])
-        : owner_(owner), victim_(victim), shooter_(shooter), weapon_(weapon) {
+        : owner_(owner), victim_(victim), hit_owner_(hit_owner), weapon_(weapon) {
         for (int i = 0; i < 3; ++i) direction_[i] = direction[i];
     }
 
@@ -15382,14 +15429,25 @@ public:
         }
     }
 
-    bool is_local_players_unit() override { return false; }
+    bool is_local_players_unit() override {
+        // 00827455 compares the victim to 00E188D8, maintained by 004C0890.
+        return owner_.units.controlled_bound()
+            && owner_.units.controlled_index() == victim_;
+    }
     bool shooter_world_position(float out[3]) override {
+        // bsp.py show 00826F10 --asm, 0082745F..00827481: 004704E0
+        // must resolve an owner before its pose is refreshed. A present shot
+        // (notably the direct kamikaze unit) need not have a +108h owner.
+        const auto unit = owner_.resolve_projectile_owner(hit_owner_);
+        if (!unit) return false;
         float right[3], up[3], forward[3], origin[3];
-        owner_.unit_pose(shooter_, right, up, forward, origin);
+        owner_.unit_pose(*unit, right, up, forward, origin);
         for (int i = 0; i < 3; ++i) out[i] = origin[i];
         return true;
     }
-    void push_damage_direction(const float[3]) override {}
+    void push_damage_direction(const float point[3]) override {
+        hud_register_ship_damage_direction(point);
+    }
     // R10 (0082749C..0082757B, 0080FF80 at 0082755F) and R11c (00827663..,
     // the inline 90h build): message 90h MT_SHIP_LEAK, whose receiver is the
     // units host's add_leak_0074f440 (packet cc9_live_hull_leak). The count is
@@ -15514,7 +15572,7 @@ public:
 private:
     GameGunneryHost::Impl& owner_;
     std::size_t victim_;
-    std::size_t shooter_;
+    GameProjectileOwnerRef hit_owner_; // live nullable 004704E0 relationship, not a snapshot
     const GameBulletClassRow* weapon_;
     float direction_[3]{};
     bsp::HitRecord hit_{};
@@ -15545,6 +15603,9 @@ void GameGunneryHost::Impl::queue_deferred_hit(DeferredHit&& node) {
 // had at the push (the round's class and the impact element), on the node's
 // own copy of the record and its part array.
 void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
+    // A source may have delivered target-gone since this hit was enqueued.
+    // Clear the SAME shared attacker member before entering any hit handler.
+    resolve_projectile_owner(node.observed_owner);
     const int saved_class = round_bullet_class;
     const int saved_kind = impact_shape_kind;
     const int saved_segment = impact_hull_segment;
@@ -15577,7 +15638,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
             static_cast<std::size_t>(node.blast_device_gun), record);
     } else {
         apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
-            node.has_blast ? &record : nullptr, node.team_id);
+            node.observed_owner, node.has_blast ? &record : nullptr, node.team_id);
     }
     if (summary.dispatched_hits == hull_before) {   // log only: where the node ended
         if (device_blast_dispatched != blast_before) ++undispatched_device_blast;
@@ -15605,8 +15666,9 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
 
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     std::size_t victim, const float point[3], const float direction[3],
-    const bsp::HitRecord* blast_record, int team_id) {
+    const GameProjectileOwnerRef& observed_owner, const bsp::HitRecord* blast_record, int team_id) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
+    resolve_projectile_owner(observed_owner);
     UnitState& target = unit_state[victim];
     // Packet cc13-hitq. ON, a call from a funnel is 00926E80 (0084BE20 for the
     // direct hit, 0084BBF9 for each blast record): draw the record's damage and
@@ -15627,6 +15689,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
             }
             DeferredHit node;
             node.shooter = shooter;
+            node.observed_owner = observed_owner;
             node.gun_row = gun_row;
             node.victim = victim;
             for (int i = 0; i < 3; ++i) {
@@ -15807,7 +15870,10 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
-    ShipHitBinding binding(*this, victim, shooter, weapon, direction);
+    // Source/accounting uses shooter; 004704E0 reads the separate LIVE attacker
+    // observer shared with the projectile and every deferred record. Its owner
+    // can have been cleared by 006E17D0 after launch or after queue insertion.
+    ShipHitBinding binding(*this, victim, observed_owner, weapon, direction);
     binding.set_hit(hit);
     const float before = target.health;
     notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
@@ -16276,8 +16342,8 @@ void GameGunneryHost::Impl::kamikaze_direct_hit_00819a20(std::size_t unit, std::
 // The tail of apply_hit for a record with no gun and no shot (0084BAD0 with
 // shot 0): the queue, the dispatch 00826F10, the health write and the death.
 // No attribution: with shot 0 the record's +4h is null and 0077CE60's source
-// record does not resolve. The kamikaze stands in as the ShipHitBinding's
-// shooter only for the shooter position.
+// record does not resolve. The source is retained for queue/accounting only;
+// it must not stand in for 004704E0's null owning-unit result.
 //
 // Packet cc13-kzdirect: with `unit_shot` the record's +4h is the kamikaze unit
 // (00819A20's direct record). 00826F10 then sees a shot that is neither a
@@ -16331,7 +16397,10 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     hit_event_leak = 0.0f;
     const float no_shot_direction[3] = {0.0f, 1.0f, 0.0f};
     const float* direction = unit_shot != nullptr ? unit_shot->direction : no_shot_direction;
-    ShipHitBinding binding(*this, victim, source, nullptr, direction);
+    // 004704E0 returns null both for shot0 and for a direct kamikaze unit:
+    // its +108h virtual is 0042BB30 (XOR EAX,EAX). A valid source index or
+    // hull segment does not supply an owner for the damage-direction flash.
+    ShipHitBinding binding(*this, victim, {}, nullptr, direction);
     binding.set_hit(hit);
     const float before = target.health;
     notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
@@ -17103,7 +17172,7 @@ void GameGunneryHost::Impl::gather_device_blast_mounts(std::size_t unit,
 void GameGunneryHost::Impl::push_device_blast_records(std::size_t shooter,
     std::size_t gun_row, std::size_t unit, int team_id, const float point[3],
     const float direction[3], const bsp::HitRecord& base,
-    std::vector<DeviceBlastMount>& mounts) {
+    std::vector<DeviceBlastMount>& mounts, const GameProjectileOwnerRef& observed_owner) {
     for (DeviceBlastMount& mount : mounts) {
         bsp::HitRecord record = base;
         record.part_hits = mount.entries.data();
@@ -17116,7 +17185,7 @@ void GameGunneryHost::Impl::push_device_blast_records(std::size_t shooter,
             static_cast<double>(nearest));
         if constexpr (kHitDeferredDispatchCc13Bound) {
             blast_device_gun = static_cast<long long>(mount.row);
-            apply_hit(shooter, gun_row, unit, point, direction, &record, team_id);
+            apply_hit(shooter, gun_row, unit, point, direction, observed_owner, &record, team_id);
             blast_device_gun = -1;
         } else {
             static_cast<void>(shooter);
@@ -17590,7 +17659,7 @@ void GameGunneryHost::Impl::device_blast_dispatch_gunless(std::size_t unit,
 
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, int team_id, const float point[3], const float direction[3],
-    bool ignore_falloff) {
+    const GameProjectileOwnerRef& observed_owner, bool ignore_falloff) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
     const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
@@ -17659,6 +17728,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         struct DeviceBlastFlush {
             GameGunneryHost::Impl* host{nullptr};
             std::size_t shooter{0};
+            GameProjectileOwnerRef observed_owner;
             std::size_t gun_row{0};
             std::size_t unit{0};
             int team_id{-1};
@@ -17669,7 +17739,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
             ~DeviceBlastFlush() noexcept(false) {
                 if (host != nullptr && !mounts.empty() && std::uncaught_exceptions() == 0) {
                     host->push_device_blast_records(shooter, gun_row, unit, team_id, point,
-                        direction, base, mounts);
+                        direction, base, mounts, observed_owner);
                 }
             }
         } device_flush;
@@ -17678,6 +17748,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
             if (!device_flush.mounts.empty()) {
                 device_flush.host = this;
                 device_flush.shooter = shooter;
+                device_flush.observed_owner = observed_owner;
                 device_flush.gun_row = gun_row;
                 device_flush.unit = i;
                 device_flush.team_id = team_id;
@@ -17821,7 +17892,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
 
         const float before = state.health;
         const unsigned long long queued_before = deferred_hits_queued;
-        apply_hit(shooter, gun_row, i, point, direction, &blast, team_id);
+        apply_hit(shooter, gun_row, i, point, direction, observed_owner, &blast, team_id);
         if constexpr (kHitDeferredDispatchCc13Bound) {
             // Packet cc13-tooklog: a queued hit has not moved health yet; its
             // dispatch adds the element damage instead.
@@ -22620,6 +22691,7 @@ bool GameGunneryHost::release_rocket_0080aa20(std::size_t unit_index,
     GameProjectileRow shot;
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
+    h.bind_projectile_owner(shot, unit_index);
     shot.owner_side = h.units.unit_side_0054(unit_index);
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
@@ -22734,6 +22806,7 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     GameProjectileRow shot;
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
+    h.bind_projectile_owner(shot, unit_index);
     shot.owner_side = h.units.unit_side_0054(unit_index);
     // Packet cc9_projectile_team_id: the torpedo / depth-charge drop's team
     // stamp is not traced, so team_id_1c stays -1 (labelled). Under
@@ -23050,6 +23123,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     GameProjectileRow shot;
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
+    h.bind_projectile_owner(shot, unit_index);
     shot.owner_side = h.units.unit_side_0054(unit_index);
     {
         // 006E4D50's bomb stamp at 006E5527: [plane+1B0h], the plane's role-1

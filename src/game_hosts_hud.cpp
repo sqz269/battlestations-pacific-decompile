@@ -1,6 +1,11 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/camera_affine.hpp"
+#include "bsp/camera_decomposition.hpp"
+#include "bsp/camera_position_modes.hpp"
+#include "bsp/material_transform_constants.hpp"
+#include "bsp/native_ref_counted_handle_initialize.hpp"
 #include "bsp/game_host_bomb_view.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_left1.hpp"
@@ -1261,6 +1266,29 @@ void release_hud_unit_pick_leaf_samples(HudLeafScreenStorage& screen) {
     }
 }
 
+class HudLeafShipStatusBinding final : public bsp::cg_rebuild_c_cc13::ShipStatusConstructHost {
+public:
+    explicit HudLeafShipStatusBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+        // Establish the typed member's lifetime without writes. 0064B780
+        // supplies every widget, timer and enable field immediately afterward.
+        ::new (static_cast<void*>(screen_.data() + 0x18C)) bsp::HudDamageDirectionStorage;
+    }
+    void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size,
+        std::uint32_t count, std::uint32_t constructor, std::uint32_t destructor) override {
+        if (first != screen_.data() + 0xC || size != 4 || count != 4
+            || constructor != 0x00415680u || destructor != 0x0041DE40u)
+            throw std::logic_error("0064B780 requested another member constructor");
+        // BF7CD1's four nonthrowing slot constructors, in image order.
+        for (std::uint32_t i = 0; i < count; ++i)
+            bsp::raw_initialize_native_ref_counted_handle_00415680(
+                static_cast<std::uint8_t*>(first) + i * size);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
     for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
         if (shape.construct == constructor) return shape;
@@ -1268,14 +1296,14 @@ const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t construc
 }
 
 // The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
-constexpr std::array<std::uint32_t, 33> kHudLeafScreenConstructors{{
+constexpr std::array<std::uint32_t, 34> kHudLeafScreenConstructors{{
     0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005AAEF0u, 0x005C0810u,
     0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
     0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CC120u,
     0x005CB0A0u, 0x005FFCB0u,
     0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
     0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
-    0x005F9440u, 0x0067BE30u, 0x005BA7B0u, 0x006821C0u, 0x00525A90u,
+    0x005F9440u, 0x0067BE30u, 0x005BA7B0u, 0x006821C0u, 0x00525A90u, 0x0064B780u,
 }};
 bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
     return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
@@ -1320,6 +1348,7 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     case 0x005BA7B0u: construct_hud_narrative_leaf(screen); return;
     case 0x006821C0u: construct_hud_warning_leaf(screen); return;
     case 0x00525A90u: construct_hud_unit_pick_leaf(screen); return;
+    case 0x0064B780u: { HudLeafShipStatusBinding b(screen); bsp::cg_rebuild_c_cc13::vt_cf5e30_construct_0064b780(p, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");
@@ -2698,6 +2727,14 @@ struct GameHudHost::Impl {
     bool ship_screen_widgets_bound{false};
     std::map<int, GuiLayoutWidget*> ship_screen_widgets;
     GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
+    bsp::HudDamageDirectionStorage* ship_damage_direction() {
+        const std::size_t i = bsp::in_game_hud_screen_index_at(0x78);
+        auto* const fade = i < kInGameHudScreenCount && leaf_screens[i]
+            ? reinterpret_cast<bsp::HudDamageDirectionStorage*>(leaf_screens[i]->data() + 0x18C)
+            : nullptr;
+        ship_screen.damage_direction = fade;
+        return fade;
+    }
     // 0064AE20 through the Big1Host adapter (kHudShipScreenApplyUnitBound).
     void apply_ship_screen_unit_0064ae20();
     void bind_ship_screen_unit_0064d590(std::size_t unit);
@@ -5004,6 +5041,11 @@ bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached) {
     return hud->set_selected_unit_00647300(unit);
 }
 
+bool hud_register_ship_damage_direction(const float world_point[3]) {
+    GameHudHost* const hud = attached_hud_for_selection();
+    return hud != nullptr && hud->register_ship_damage_direction(world_point);
+}
+
 bool hud_force_select_unit_006485a0() {
     GameHudHost* hud = attached_hud_for_selection();
     if (hud == nullptr) return false;
@@ -6206,7 +6248,14 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
                 found = bsp::find_descendant_by_name(*page->root, entry.second);
                 if (found != nullptr) break;
             }
-            ship_screen_widgets[entry.first] = found;
+            if (entry.first >= 0x18C && entry.first <= 0x198) {
+                // 0064C0F0's four Villanas*_Icon stores. The raw fade member
+                // is the only owner of these bindings and their intensities.
+                if (auto* fade = ship_damage_direction())
+                    fade->widgets[(entry.first - 0x18C) / 4] = found;
+            } else {
+                ship_screen_widgets[entry.first] = found;
+            }
         }
         if constexpr (kHudShipScreenApplyUnitWidgetsBound) {
             // Packet cc13-wire2: the widgets 0064AE20 drives (addresses at the switch).
@@ -6239,7 +6288,13 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
                 bsp::find_descendant_by_name(*page->root, "ship_speed_num2_Icon");
         }
     }
-    auto it = ship_screen_widgets.find(static_cast<int>(widget));
+    const int offset = static_cast<int>(widget);
+    if (offset >= 0x18C && offset <= 0x198) {
+        auto* const fade = ship_damage_direction();
+        return fade != nullptr
+            ? static_cast<GuiLayoutWidget*>(fade->widgets[(offset - 0x18C) / 4]) : nullptr;
+    }
+    auto it = ship_screen_widgets.find(offset);
     return it != ship_screen_widgets.end() ? it->second : nullptr;
 }
 
@@ -6350,10 +6405,9 @@ public:
         return row != nullptr ? row->throttle : 0.0f;              // unit+980h
     }
     bool flash_view_mode_is_1() override {
-        // SUBSTITUTION: [[00E198C4]+4Ch]+30h is on an interface object this
-        // process does not build; the enable reads clear.
-        owner_.record("HudShipScreen::flash_view_mode", 0x0064e31au);
-        return false;
+        // 0064E31A: manager+4Ch is screen26, whose +30h is the existing
+        // binoculars mode. 0051EF00/0051E7E0 update this canonical state.
+        return owner_.binoculars.mode_30 == 1;
     }
     void relation_slide_block() override {
         owner_.record("HudShipScreen::relation_slide", 0x0064dd6du);
@@ -6581,10 +6635,61 @@ private:
 
 void GameHudHost::update_ship_screen_0064dd30(float seconds, bool active) {
     Impl& impl = *impl_;
+    impl.ship_damage_direction();
+    impl.ship_screen_widget(bsp::ShipScreenWidget::Flash0);
     impl.ship_screen.active_05 = active;
     ShipScreenBinding binding(impl);
     bsp::ship_screen_update_0064dd30(impl.ship_screen, binding, seconds);
     impl.done("HudShipScreen::update", 0x0064dd30u);
+}
+
+bool GameHudHost::register_ship_damage_direction(const float world_point[3]) {
+    Impl& impl = *impl_;
+    bsp::HudDamageDirectionStorage* const fade = impl.ship_damage_direction();
+    bsp::MissionCameraPublication& camera = bsp::mission_camera_publication();
+    if (fade == nullptr || !camera.ready) return false;
+
+    class Calls final : public bsp::HudDamageDirectionCalls {
+    public:
+        explicit Calls(bsp::MissionCameraPublication& camera) : camera_(camera) {}
+        void* damage_direction_camera() override { return &camera_.state; }
+        float damage_direction_camera_fov() override { return camera_.state.projection.fov; }
+        const float* node_inverse_world_matrix_00b6e0d0(void* node) override {
+            if (node != &camera_.state) throw std::logic_error("damage direction queried another camera");
+            return bsp::get_transform_inverse_world_00b6e0d0(camera_.state.transform).data();
+        }
+        void vector3_transform_affine_point_004142e0(
+            const float* point, float* out, const float* matrix) override {
+            const std::array<float, 3> source{point[0], point[1], point[2]};
+            std::array<float, 3> result;
+            bsp::transform_point_004142e0(source,
+                *reinterpret_cast<const bsp::CameraMatrix*>(matrix), result);
+            std::copy(result.begin(), result.end(), out);
+        }
+        void geometry_normalize_with_floor_0042b260(float* xyz) override {
+            std::array<float, 3> value{xyz[0], xyz[1], xyz[2]};
+            bsp::normalize_camera_basis_0042b260(value);
+            std::copy(value.begin(), value.end(), xyz);
+        }
+        float geometry_asin_clamped_0042cf10(float value) override {
+            return bsp::camera_asin_clamped_0042cf10(value);
+        }
+        double crt_atan2_00bf701a(double y, double x) override {
+            // Bind the current CRT, as the existing camera math does. Original
+            // CRT dispatch globals/diagnostics are not a native-ABI claim.
+            return std::atan2(y, x);
+        }
+    private:
+        bsp::MissionCameraPublication& camera_;
+    } calls(camera);
+
+    // 00827455 gates the call on the actual controlled victim; 00827497
+    // supplies the shooter's refreshed world translation. The screen owner
+    // was constructed by 0064B780 at 0068CC70's slot78 creation site. Its
+    // +18Ch member is also the live 0064ABD0 fade-updater input, never a copy.
+    bsp::cc13_sweepB2_hud_damage_direction_register_0064b170(fade, world_point, calls);
+    impl.done("HudShipScreen::damage_direction", 0x0064b170u);
+    return true;
 }
 
 namespace {

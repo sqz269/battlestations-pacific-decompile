@@ -3,7 +3,8 @@
 // cc13_sweepB2: continuation of the segment 15-51 leftover sweep (packet
 // cc13-sweepB2, docs/CC13_SWEEPB2.md). Every name is a hypothesis, not a
 // recovered symbol. These are new C++ interfaces over the native records, not
-// drop-in replacements of the original ABI. Nothing here is wired into the game.
+// drop-in replacements of the original ABI. Narrow host adapters bind selected
+// bodies, including 0064B170's live screen-45h fade member.
 //
 // Same conventions as cc13_sweepB: native objects are raw byte blocks touched
 // only at the offsets the image reads or writes, and every call the image
@@ -12,6 +13,7 @@
 // (image_global, global_00e188a8, the CRT hooks, ...) are reused as they are.
 
 #include "bsp/cc13_sweepB.hpp"
+#include "bsp/hud_damage_direction.hpp"
 
 #include <cstdint>
 
@@ -38,8 +40,14 @@ public:
     virtual void* stl_buy_head_node_005a0270(void* container) = 0;
 };
 
-class Cc13SweepB2Host : public Cc13SweepBHost, public InGameInterfaceScreenConstructHost {
+class Cc13SweepB2Host : public Cc13SweepBHost, public InGameInterfaceScreenConstructHost,
+    public HudDamageDirectionCalls {
 public:
+    void* damage_direction_camera() override;
+    float damage_direction_camera_fov() override;
+    // One override satisfies both the sweep-B and narrow damage-direction views.
+    virtual void vector3_transform_affine_point_004142e0(
+        const float* point, float* out, const float* matrix) override = 0;
     // ---- CRT and Win32 ----
     // 00BF6713 _invalid_parameter_noinfo (checked-iterator failure; does not return in the image).
     virtual void crt_invalid_parameter_noinfo_00bf6713() = 0;
@@ -565,7 +573,7 @@ void cc13_sweepB2_hud_unit_view_ensure_submarine_camera_00651370(void* view, Cc1
 
 // 0064B170 BSP_HudDamageDirection_Register(widget, world_point).
 void cc13_sweepB2_hud_damage_direction_register_0064b170(void* widget, const float* world_point,
-                                                         Cc13SweepB2Host& host);
+                                                         HudDamageDirectionCalls& host);
 
 // ---- segment 29 ----
 

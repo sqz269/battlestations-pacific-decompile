@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bsp/hud_damage_direction.hpp"
+
 namespace bsp {
 
 // The screen's own fields part 1 reads and writes.
@@ -25,8 +27,9 @@ struct ShipScreenState {
                                   // 0064A902, which part 1 does not reach
     float stick_44{-1.0f};        // +44h, the eased throttle; the enter stores -1.0 (0064BD7C)
     // +18Ch..+1ACh, the flash group 0064ABD0 walks.
-    float flash_intensity[4]{};   // +19Ch..+1A8h
-    bool flash_enabled_1ac{false};// +1ACh
+    // Borrows screen 45h's actual +18Ch member after 0064B780. No second
+    // intensity array or enable flag is kept in the semantic screen state.
+    HudDamageDirectionStorage* damage_direction{nullptr};
     float turn_timer_160{-1.0f};  // +160h, the enter stores -1.0 (0064BE44)
     bool pick_pending_156{false}; // +156h
     bool repair_mode_157{false};  // +157h

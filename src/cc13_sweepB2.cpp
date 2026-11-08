@@ -1124,6 +1124,14 @@ void cc13_sweepB2_hud_unit_view_ensure_submarine_camera_00651370(void* view, Cc1
     at<std::uint8_t>(view, 0x78) = 0;
 }
 
+void* Cc13SweepB2Host::damage_direction_camera() {
+    return at<void*>(global_00e188a8(), 0x19FC);
+}
+
+float Cc13SweepB2Host::damage_direction_camera_fov() {
+    return at<float>(at<void*>(global_00e188a8(), 0x19FC), 0x1C4);
+}
+
 // 0064B170 BSP_HudDamageDirection_Register (hypothesis, ledger name).
 // ABI: __thiscall(ECX widget)(const float world_point[3]), RET 4. Callers
 // 007BBCF0 and 00826F10. Evidence: disk bytes 0064B170..0064B313; x87
@@ -1139,8 +1147,8 @@ void cc13_sweepB2_hud_unit_view_ensure_submarine_camera_00651370(void* view, Cc1
 //   else -hf > pitch -> +14h = 1.5f.
 // - Else the same test on yaw: yaw > hf -> +1Ch = 1.5f; -hf > yaw -> +18h = 1.5f.
 void cc13_sweepB2_hud_damage_direction_register_0064b170(void* widget, const float* world_point,
-                                                         Cc13SweepB2Host& host) {
-    void* camera = at<void*>(host.global_00e188a8(), 0x19FC);
+                                                         HudDamageDirectionCalls& host) {
+    void* camera = host.damage_direction_camera();
     const float* inverse = host.node_inverse_world_matrix_00b6e0d0(camera);
     float v[3];
     host.vector3_transform_affine_point_004142e0(world_point, v, inverse);
@@ -1163,7 +1171,7 @@ void cc13_sweepB2_hud_damage_direction_register_0064b170(void* widget, const flo
     };
     const bool use_pitch = magnitude(pitch) > magnitude(yaw);
     const float angle = use_pitch ? pitch : yaw;
-    const float fov = at<float>(at<void*>(host.global_00e188a8(), 0x19FC), 0x1C4);
+    const float fov = host.damage_direction_camera_fov();
     const float half = static_cast<float>(fov * 0.5);
     const float one_and_half = cc13_sweepB_f32(0x3FC00000u);
     if (angle > half) {

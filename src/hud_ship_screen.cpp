@@ -92,9 +92,10 @@ void ship_screen_relation_icon_0064a960(ShipScreenState& screen, ShipScreenHost&
 }
 
 void ship_screen_flashes_0064abd0(ShipScreenState& screen, ShipScreenHost& host, float dt) {
+    if (screen.damage_direction == nullptr || screen.damage_direction->widgets[0] == nullptr) return;
     // 0064ABDD: a clear enable zeroes all four intensities first.
-    if (!screen.flash_enabled_1ac) {
-        for (float& v : screen.flash_intensity) v = 0.0f;
+    if (!screen.damage_direction->enabled) {
+        for (float& v : screen.damage_direction->intensity) v = 0.0f;
     }
     // 0064ABFA..0064AC0C: one factor, float-stored.
     float factor = 0.0f;
@@ -104,9 +105,9 @@ void ship_screen_flashes_0064abd0(ShipScreenState& screen, ShipScreenHost& host,
     } else {
         factor = static_cast<float>(1.0 - static_cast<double>(dt) * kFlashDecayRate);
     }
-    for (float& v : screen.flash_intensity) v = v * factor;         // 0064AC10..0064AC3F
+    for (float& v : screen.damage_direction->intensity) v = v * factor; // 0064AC10..0064AC3F
     for (int i = 0; i < 4; ++i) {
-        const float v = screen.flash_intensity[i];
+        const float v = screen.damage_direction->intensity[i];
         if (kFlashHideBelow > static_cast<double>(v)) {             // 0064AC42 and siblings
             host.set_visible(kFlashWidgets[i], false);
             continue;
@@ -238,7 +239,8 @@ void ship_screen_update_0064dd30(ShipScreenState& screen, ShipScreenHost& host, 
     if (screen.slide_pending_119) host.relation_slide_block();        // 0064DD5F
     host.pipe_sight_block(dt);                                        // 0064DE92
     ship_screen_relation_icon_0064a960(screen, host);                 // 0064E30E
-    screen.flash_enabled_1ac = host.flash_view_mode_is_1();           // 0064E31A..0064E335
+    if (screen.damage_direction != nullptr)
+        screen.damage_direction->enabled = host.flash_view_mode_is_1(); // 0064E31A..0064E335
     ship_screen_flashes_0064abd0(screen, host, dt);                   // 0064E33B
     if (!screen.active_05 || !screen.has_unit) return;                // 0064E340..0064E352
     screen.stick_44 = ship_screen_ease_stick_0064e358(screen.stick_44, host.unit_throttle());

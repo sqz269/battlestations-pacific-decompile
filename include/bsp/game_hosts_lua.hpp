@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/game_projectile_owner.hpp"
 // bsp_game.exe milestone 2f: the mission Lua machine as a process binding.
 //
 // Addresses: 00884be0 (BSP_MissionLuaHost_Initialize, called at 004dd627 from
@@ -2166,6 +2167,13 @@ public:
     // Row 15 (009273A0) of the fixed-step fan-out: each queued unit's notice runs
     // 0074FFE0 on every trigger whose entity target it is.
     void target_gone_drain_009273a0();
+    // Observe the existing pass-K delivery state without consuming notices.
+    // A mark still in the pending list has NOT delivered 00696330/slot04 yet.
+    // The drain swaps that list before delivering its non-reentrant callbacks.
+    bool target_gone_notice_delivered(std::size_t unit_index) const noexcept {
+        return projectile_owner_notice_delivered(unit_index,
+            target_gone_notified_, target_gone_pending_);
+    }
     // Packet cc13-dead, under kLandConvoyDeadWired (include/bsp/land_convoy_dead_cc13.hpp):
     // 00929800 on the LandConvoy marker named `convoy`, reached through 0077D270 ->
     // 00929B60 when the convoy's destroy is flushed: `Dead` = true and `KillReason` =

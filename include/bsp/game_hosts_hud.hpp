@@ -266,6 +266,8 @@ public:
     // Packet cc9_ship_screen_update: screen 45h's update 0064DD30. `active`
     // is the screen's applied byte +5h as the registry holds it.
     void update_ship_screen_0064dd30(float seconds, bool active);
+    // 00827497: register the shooter's world position on screen45+18Ch.
+    bool register_ship_damage_direction(const float world_point[3]);
     // Packet cc9_screen_50h: screen 50h's update 00683020.
     void update_warning_screen_00683020(float seconds);
     // Packet cc9_screen_49h: screen 49h's update 0067BF00.
@@ -328,6 +330,7 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // while a world is attached (attach_world_2k / detach_world_2k). Returns false
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
+bool hud_register_ship_damage_direction(const float world_point[3]);
 // Packet cc13-releasegun: arms the attached HUD's map toggle for the plan's
 // `releasegun` line. Returns false with `reached` false when no HUD is attached.
 bool hud_arm_release_gun_map_toggle(bool& reached);
