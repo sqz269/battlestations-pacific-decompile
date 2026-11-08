@@ -75,6 +75,10 @@ public:
     // pointer; this does not assign a unit role or copy any Party field.
     bool publish_active_record(std::size_t slot, ParticipantRecordId record) noexcept;
     bool active_record(std::size_t slot, ParticipantRecordId& out) const noexcept;
+    // Borrow the selected record's canonical storage identity. This aliases
+    // this owner's pool element; it is not a copy or a native-layout pointer.
+    // Valid until this owner is moved/destroyed, even after slot republication.
+    const void* active_record_identity(std::size_t slot) const noexcept;
 
     // Partial 004BB630: only its first current-pointer store (ECX game,
     // record and slot stack args, RET8); +20/+24/+28 are not represented.

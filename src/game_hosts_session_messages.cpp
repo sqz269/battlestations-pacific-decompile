@@ -1,5 +1,6 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/native_session_message_participant_owner.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
 #include "bsp/native_gun_control_message_lifetime.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
@@ -910,21 +911,27 @@ bool HostSessionMessages::deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint
 }
 
 bool HostSessionMessages::post_landing_ship_open_a6(std::int32_t game_state,
-    std::int32_t session_mode) const {
+    std::int32_t session_mode, const SessionParticipantPools& participants,
+    const std::size_t& local_slot) const {
     // Only the single-player sender is bound here. Preserve the existing
     // record for host/client transport rather than manufacture a peer send.
     if (session_mode != static_cast<std::int32_t>(SessionMode::kLocal)) return false;
-    const Image& image = *image_;
+    Image& image = *image_;
     seg42::HeaderedMessage sent{};
     LandingShipSenderProfile profile;
+    NativeSessionMessageParticipantOwner selected(participants, local_slot);
+    // The selected-participant view bypasses the legacy raw-game reference
+    // in 0075B430. Only the canonical pool identity and the borrowed current
+    // slot are read. No state is copied into Image::game.
+    const NativeSessionMessageContext live_session{image.current_game, &selected};
     // bsp.py show 0074AF50: 0074B080 lowers the ramp BEFORE 00749AA0 and the
     // flags-4 route at 0074B0A0. The native 1Ch message has no payload or owned
     // subobjects. Keep its real constructor/context, not a synthesized header.
     cc13_seg41::landing_ship_open_construct_00749aa0(
-        reinterpret_cast<std::uint8_t*>(&sent), image.session, profile);
+        reinterpret_cast<std::uint8_t*>(&sent), live_session, profile);
 
     SessionRouteInputs route;
-    route.session_object_present = image.current_game != nullptr;
+    route.session_object_present = true;  // The caller supplies its retained mission owner.
     route.game_state = game_state;
     route.mode = static_cast<SessionMode>(session_mode);
     route.flags_override = kRouteFlagToPeers;  // PUSH 4 at 0074B090

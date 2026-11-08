@@ -1594,6 +1594,7 @@ struct GameShipAiHost::Impl {
     std::vector<PassSideMessage> pass_side_queue;
     const std::uint32_t* message_game_state{};
     const std::uint32_t* message_step_count{};
+    const std::size_t* message_local_slot{};
     std::uint32_t local_message_tick() const {
         if (message_step_count == nullptr)
             throw std::logic_error("Ship loopback requires the live mission step counter");
@@ -12951,9 +12952,10 @@ void GameShipAiHost::bind_session_participants(
 }
 
 void GameShipAiHost::bind_local_message_clock(const std::uint32_t& game_state,
-    const std::uint32_t& step_count) noexcept {
+    const std::uint32_t& step_count, const std::size_t& local_slot) noexcept {
     impl_->message_game_state = &game_state;
     impl_->message_step_count = &step_count;
+    impl_->message_local_slot = &local_slot;
 }
 
 const bsp::SessionParticipantPools* GameShipAiHost::session_participants() const noexcept {
@@ -14483,8 +14485,10 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
                 u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
             const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
             if (messages != nullptr && message_game_state != nullptr
+                && session_participants != nullptr && message_local_slot != nullptr
                 && messages->post_landing_ship_open_a6(
-                    static_cast<std::int32_t>(*message_game_state), session_mode)) {
+                    static_cast<std::int32_t>(*message_game_state), session_mode,
+                    *session_participants, *message_local_slot)) {
                 // 0074AF50 sends this notification after its local ramp change;
                 // 0077C2A0 drops flags 4 in single player. No second ramp call.
                 done("LandingShip::construct_open_message", 0x00749aa0u);

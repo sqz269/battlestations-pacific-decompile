@@ -39,6 +39,8 @@ struct StateMessageHost;
 
 namespace bsp {
 
+class SessionParticipantPools;
+
 // cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
 // 00954A10 (005489DA) and routes per group entry with 0077C2A0(flags 3) at
 // 00548A1F reaches 00959C20 as the copy 0076E520 rebuilds from its bits
@@ -171,10 +173,12 @@ public:
     // LANDINGSHIP_OPEN with 00749AA0, then routes it with flags 4 at 0074B0A0.
     // 0077C30D..0077C323 drops exactly flags 4 outside host mode: a local
     // session neither serializes this message nor lowers the ramp again.
-    // Build the stack notification from this session's context and evaluate
-    // that gate using the live mission state/mode. True means the local send
+    // Build the stack notification using the borrowed mission participant
+    // owner and local-slot cell, not Image's legacy zeroed game projection.
+    // Evaluate that gate using the live mission state/mode. True means the local send
     // was handled; false leaves non-local transport to the caller's record.
-    bool post_landing_ship_open_a6(std::int32_t game_state, std::int32_t session_mode) const;
+    bool post_landing_ship_open_a6(std::int32_t game_state, std::int32_t session_mode,
+        const SessionParticipantPools& participants, const std::size_t& local_slot) const;
     // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
     // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
     // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local

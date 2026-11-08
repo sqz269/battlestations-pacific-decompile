@@ -35,6 +35,10 @@ const U* native_session_message_two_profile_00d02efc(){return two_profile;}
 NativeSessionMessageStorage* construct_native_session_message_0075b430(M* message,U type,const NativeSessionMessageContext& c){
     volatile auto& m=*message;
     m.delivery_04=3;m.field_08=0;m.field_0c=0;m.profile_00=base_profile;m.type_10=static_cast<B>(type);
+    // 0075B454..0075B47B selects current[local_slot]. This alternative view
+    // reads the retained mission owner directly; no independent table/slot
+    // copy is consulted. The raw ABI-facing context remains the other arm.
+    if(c.selected_participant){m.selected_owner_14=c.selected_participant->selected_owner_14();return message;}
     auto* game=static_cast<B*>(c.current_game_00e188a8);
     const auto index=*reinterpret_cast<const volatile std::int32_t*>(game+0x18ec);
     if(index>=0&&index<=7)m.selected_owner_14=*reinterpret_cast<void* const volatile*>(game+0x18cc+static_cast<U>(index)*4);
