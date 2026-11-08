@@ -141,6 +141,9 @@ void NativeInputDeviceRuntime::delete_vslot04(void* d, std::uint32_t p, std::uin
 
 void* NativeInputDeviceRuntime::call_00a95d70(void* d) { return construct_native_gamepad_00a95d70(d, gamepad_); }
 void NativeInputDeviceRuntime::call_00a95a80(void* d) { destroy_native_gamepad_00a95a80(d, gamepad_); }
+void NativeInputDeviceRuntime::clear_force_requests(void* d) {
+    clear_native_gamepad_force_00a95890(d, gamepad_);
+}
 float NativeInputDeviceRuntime::call_device_vslot24(void* d, std::uint32_t p, std::uint32_t code) {
     return value_vslot24(d, p, code);
 }

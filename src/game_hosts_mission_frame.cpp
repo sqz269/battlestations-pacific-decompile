@@ -2700,6 +2700,16 @@ public:
             } else {
                 owner_.record("MissionTeardown::session_sound_reset", 0x004da824u);
             }
+            // bsp.py ghidra instruction-context 004DAD15 / 004DA7A0:
+            // 004DA780's non-front-end path calls A95CB0 unconditionally at
+            // 004DAD15, after its sound reset and before AD52's clock reset.
+            // A95CB0 borrows the current backend+B8 active gamepad vector;
+            // A95890 deletes its real raw requests then pumps zero with the
+            // derived XInput/joystick output still live. No device poll here.
+            if (!owner_.input_runtime)
+                throw std::logic_error("mission teardown requires the live input runtime");
+            owner_.input_runtime->clear_gamepad_forces();
+            owner_.done("MissionTeardown::clear_gamepad_forces", 0x004dad15u);
         }
         if constexpr (bsp::kWireGoal3Chain242Bound) {
             // 00874640 @004DAD52 resets A4..B4 in 004DA780. Its outer gate

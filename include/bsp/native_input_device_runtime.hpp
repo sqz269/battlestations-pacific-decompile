@@ -93,6 +93,9 @@ public:
 
     void* call_00a95d70(void*) override;
     void call_00a95a80(void*) override;
+    // Clear the SAME live raw +20Ch request tree while its derived output
+    // profile is still installed. No reset, disable, device release or poll.
+    void clear_force_requests(void* actual_gamepad);
     float call_device_vslot24(void*, std::uint32_t captured_profile, std::uint32_t code) override;
     const ClockTimestamp& call_clock_01090ab0_vslot14() override;
     HWND call_00bec230() override;
