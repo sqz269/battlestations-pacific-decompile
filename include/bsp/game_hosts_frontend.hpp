@@ -166,7 +166,7 @@ public:
     // Borrow the application's one queried Source capability. Its owner must
     // outlive this frontend, its layouts and every retained conversion user.
     GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-        GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen,
+        GameFontHost& fonts, IDirect3DDevice9& device, const bool& widescreen,
         const bool& gui_sse2_conversion);
     ~GameFrontendHost();
 
@@ -292,6 +292,10 @@ public:
     // 00AA0E20: hide the current cursor, then select manager+54h (true) or
     // manager+58h (false). Does not alter the manager's enabled byte at +48h.
     void select_gui_cursor(bool frontend_cursor);
+    // 004DD72A..004DD734: the already-loaded manager frames and its sole
+    // +84h shown latch. The caller reads actual settings+ B1h (00F88A31).
+    // The borrowed platform widescreen byte must outlive this frontend.
+    void set_safe_zone_visible(bool visible);
 
     // ---- milestone 2k: run-time clones of a page's own template ------------
     // The native per-unit minimap icon entry (005bd590 constructs it, 005c0700

@@ -1,0 +1,43 @@
+{
+  "chain": 1002,
+  "owner": "agent/g6-w12",
+  "candidate": "game_hosts_frontend.cpp",
+  "rows": [
+    {
+      "native": "00aa2110",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::run_raw_pointer / GameFrontendHost::set_safe_zone_visible; src/game_hosts.cpp: GameStartupHost::run_initialize_phases",
+      "reason": "004DD734's OnInitOnce call now reads the authoritative settings+B1 byte and invokes the existing body over actual manager+84, current +7C/+80 frames, and the same live platform+0D byte; no copied raw shown latch or second resource initialization."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GuiSafeZoneManagerImage (borrowed view of the existing 88h GuiManager)",
+      "where": "src/game_hosts_frontend.cpp:63",
+      "constructor": "00aa5d70 (existing construct_native_gui_manager_00aa5d70)",
+      "fields": [
+        {"offset": "7c", "width": 4, "name": "safezone_43_FrameBox"},
+        {"offset": "80", "width": 4, "name": "safezone_169_FrameBox"},
+        {"offset": "84", "width": 1, "name": "shown latch"}
+      ],
+      "producers": [
+        "0073BC19 -> existing 004C12B0 -> 00AA5D70 actual manager construction",
+        "00AA5E20: existing Page loads/find-child calls publish +7C at 00AA6251 and +80 at 00AA62C8; 00AA6305 clears +84",
+        "00CD2D80 -> existing 008D7710 initializes settings+B1; existing 008D8190 fills ShowSafeArea from options",
+        "004DD72A..004DD734: hosted OnInitOnce phase reads actual 00F88980+B1 and passes it to 00AA2110"
+      ],
+      "rows": ["00aa2110"],
+      "climb": [
+        "00AA2110 <- manager+7C/+80/+84 <- existing 00AA5E20 resources <- existing 00AA5D70/004C12B0 <- hosted 0073BAE0 phase",
+        "00AA2110 show argument <- actual settings+B1 (00F88A31) <- existing 008D8190 <- existing 008D7710/CD2D80 <- hosted startup settings phase"
+      ]
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS; four existing CTests PASS",
+    "call_graph": "00aa2110 reachable with direct calls from GameFrontendHost::Impl::run_raw_pointer and GameFrontendHost::set_safe_zone_visible",
+    "reconstructed_addresses_called_before": 5742,
+    "reconstructed_addresses_called_after": 5743,
+    "runtime": "Not run; this worker does not run the game."
+  }
+}
