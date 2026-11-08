@@ -1,0 +1,167 @@
+{
+  "goal": 5,
+  "chain": 844,
+  "slot": "g5-w3",
+  "baseline_head": "a838068cdc",
+  "picked": "Canonical vector3 assignment for the live ship-captain camera translation publication",
+  "rows": [
+    {
+      "native": "00414220",
+      "status": "wired",
+      "host_site": "src/mission_camera.cpp: bsp::update_ship_captain_00432ed0",
+      "details": "Replaces the three translation stores with one call using the live camera matrix and its computed position vector. Each component is already a subtraction result, so signalling NaNs have been quieted before the copy. The existing complete source body preserves all other encodings and the sequential component order. The original camera inlines MOVSS copies here; this is reuse of a shared operation, not a claim that the binary calls 00414220 at this site."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target construction",
+      "reason": "Missing genuine current F87574/F87578/F8757C publications and a native target receiver for the literal absolute-address initializer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scoring",
+      "reason": "Missing a live native score-list owner and gameplay consumer; the documented reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate selection",
+      "reason": "Missing live native candidate-score records whose chosen byte feeds gameplay; the documented reader is debug-only."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: mission-camera update candidate",
+      "reason": "Missing the retained MovCamAngles owner and its original frame-update consumer; the ship-captain camera is a distinct camera projection."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement candidate",
+      "reason": "No original marker margin publication and corresponding projection consumer were established for this packet."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Missing an established gameplay consumer; the identified original consumer is the excluded debug inspector."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing live support-site stock lists and their corresponding support-order or spawn-composition consumer."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: plane sound component update",
+      "reason": "No bridge from the four retained plane-engine sound holders to a live FMOD pitch/volume consumer was established."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing a live command-menu key collection and ordering consumer corresponding to the original linked-list operation."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: widget child collector candidate",
+      "reason": "No original per-parent child/name-order producer and consumer were established; the live flattened render list is a different collection."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp: FrameBox factory candidate",
+      "reason": "The existing factory already names the canonical pool allocation operation, but an entry-reachable active factory path was not established; the built graph has no matching function."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: get_native_soldier_registry_004b1330",
+      "reason": "Missing a production construction-access owner supplying the same native registry publication, string context and lifetime registration."
+    },
+    {
+      "native": "004bb8a0",
+      "status": "skipped",
+      "host_site": "src/session_polls.cpp: leave-session warning candidate",
+      "reason": "Missing a single-player caller requiring the local-side predicate; the identified original callers are platform-session polling and multiplayer pause confirmation."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene-text serialization candidate",
+      "reason": "No connected live serialization callback supplying this native escape operation to a scene-text writer was established."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading-queue update candidate",
+      "reason": "Missing the retained native loading-job owner and concrete queue callback supplying its actual filename and FileBlock context."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading work-vector retirement candidate",
+      "reason": "Missing an entry-reachable loading-queue update with its actual job+8h string-owning work vector."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing a live native loader queue owner and package-loading caller; an unrelated host queue cannot supply the required string ownership."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path editing candidate",
+      "reason": "Missing the presence-zero clear-message producer and retained path ownership for the last selected director slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty-descriptor constructor callback with the actual current class-ordinal publication."
+    },
+    {
+      "native": "0042e8c0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: matrix identity candidate",
+      "reason": "No live caller requiring this identity alias was established; the selected camera operation publishes computed translation rather than constructing an identity matrix."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: retained sound updates",
+      "reason": "No new wiring is needed: the baseline built graph already has three entry-reachable calls from retained-sound updates."
+    },
+    {
+      "native": "0075af90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: message91 factory candidate",
+      "reason": "No live single-player producer and receiver for message91's WORD20/2-bit24/4-bit28 payload were established."
+    }
+  ],
+  "evidence": {
+    "native_abi": "00414220: original __thiscall, ECX destination, stack source, EAX destination, RET 4; reconstructed C++ source interface is not a drop-in ABI replacement.",
+    "primitive_listing": "bsp.py show 00414220 --asm: 00414226..00414233 sequential FLD/FSTP component copies.",
+    "camera_listing": "bsp.py show 00432ed0 --asm --start 380 --lines 25: 004334E7..00433510 sequential MOVSS component copies.",
+    "real_inputs": "camera.orient_2b8.data()+12 is the retained camera's translation row; position is computed from the real target pivot and class/settings offset immediately before publication.",
+    "called_before": 5554,
+    "called_after": 5555,
+    "readiness_wired_before": 10692,
+    "readiness_wired_after": 10693,
+    "new_call_sites": 1,
+    "built_caller": "bsp::update_ship_captain_00432ed0 at call site 10399841",
+    "entry_path": "WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> menu screen update -> GameHudHost::update_minimap_screen_005c0f20 -> GameHudHost::Impl::step_mission_camera -> update_ship_captain_00432ed0 -> vector3_assign_00414220"
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 4 checks passed",
+    "changed_build": "scripts/build.ps1 passed; all 4 checks passed",
+    "call_graph": "call_graph.py who 00414220 reports REACHABLE, one call from the changed camera caller; path confirms the game-entry chain",
+    "pc24_lint_worktree": "python tools/pc24_lint.py --diff origin/main: 0 findings; no floating arithmetic changed",
+    "runtime_boundary": "Build and static entry-reachability verified. The game was not run, as instructed."
+  }
+}
