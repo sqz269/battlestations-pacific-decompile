@@ -135,6 +135,14 @@ bool slab_all_slots_free(const std::uint8_t* slab, std::size_t slot_size) noexce
 // StampSlabIndex: every slot's last dword = index.
 void slab_stamp_index(std::uint8_t* slab, std::size_t slot_size, std::uint32_t index) noexcept;
 
+// Address entries for the surface specialization of the shared bodies above.
+// These use the owning pool's actual 744h-byte slab, without copying its state.
+std::uint8_t* surface_slab_pop_00b3d160(std::uint8_t* slab) noexcept;
+void surface_slab_push_00b3d190(std::uint8_t* slab, const std::uint8_t* slot) noexcept;
+bool surface_slab_has_no_free_00b3d1d0(const std::uint8_t* slab) noexcept;
+void surface_slab_stamp_index_00b3e340(std::uint8_t* slab, std::uint32_t index) noexcept;
+bool surface_slab_all_free_00b3e360(const std::uint8_t* slab) noexcept;
+
 // ---------------------------------------------------------------------------
 // Reference counting. Engine ref-counted objects keep the count at +04h; reaching zero
 // calls vtable slot 0 with ECX = object and no stack argument.

@@ -217,6 +217,35 @@ void slab_stamp_index(std::uint8_t* slab, std::size_t s, std::uint32_t index) no
     for (std::size_t i = 0; i < 32; ++i) std::memcpy(slab + i * s + s - 4, &index, 4);
 }
 
+// The kRows surface entries below already map these addresses to the shared
+// slab bodies. Keep one implementation and expose its 38h specialization to
+// the real pool. noinline preserves each native identity in the built graph.
+// Evidence: bsp.py show 00B3D160/190/1D0 and 00B3E340/360. 00B3D190 --asm
+// confirms signed division by 38h and the count reload after the stack store.
+// Native ECX/RET conventions are documented in the ledger; these C++ adapters
+// use the host ABI and do not claim binary replacement compatibility.
+__declspec(noinline) std::uint8_t* surface_slab_pop_00b3d160(std::uint8_t* slab) noexcept {
+    return slab_pop_free_slot(slab, 0x38);
+}
+
+__declspec(noinline) void surface_slab_push_00b3d190(std::uint8_t* slab,
+    const std::uint8_t* slot) noexcept {
+    slab_push_free_slot(slab, 0x38, slot);
+}
+
+__declspec(noinline) bool surface_slab_has_no_free_00b3d1d0(const std::uint8_t* slab) noexcept {
+    return slab_has_no_free_slot(slab, 0x38);
+}
+
+__declspec(noinline) void surface_slab_stamp_index_00b3e340(std::uint8_t* slab,
+    std::uint32_t index) noexcept {
+    slab_stamp_index(slab, 0x38, index);
+}
+
+__declspec(noinline) bool surface_slab_all_free_00b3e360(const std::uint8_t* slab) noexcept {
+    return slab_all_slots_free(slab, 0x38);
+}
+
 // ---------------------------------------------------------------------------
 // Reference counting.
 
