@@ -1734,34 +1734,6 @@ void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name) {
 
 namespace {
 
-// One std::map / std::set clear as 00915760 inlines it: root = head->parent, the _Erase
-// instantiation `callee`(tree, root), then head->parent = head, size = 0, head->left = head,
-// head->right = head (tree = {allocator, head +4, size +8}).
-void clear_tree_inline(Seg59bHost& host, void* record, std::uint32_t offset, std::uint32_t callee) {
-    void* const tree = add(record, offset);
-    host.stl_tree_erase_subtree(callee, tree, ptr(ptr(tree, 0x04), 0x04));
-    void* const head = ptr(tree, 0x04);
-    at<void*>(head, 0x04) = head;
-    at<std::uint32_t>(tree, 0x08) = 0;
-    at<void*>(head, 0x00) = head;
-    at<void*>(head, 0x08) = head;
-}
-
-// vector<16-bit>::erase(begin, end) as 00915760 inlines it, with both checked-iterator tests.
-void clear_short_vector_inline(Seg59bHost& host, void* record, std::uint32_t first_offset) {
-    std::uint8_t* const last = static_cast<std::uint8_t*>(ptr(record, first_offset + 4));
-    if (static_cast<std::uint8_t*>(ptr(record, first_offset)) > last) host.checked_iterator_failure_00bf6713();
-    std::uint8_t* const first = static_cast<std::uint8_t*>(ptr(record, first_offset));
-    if (first > static_cast<std::uint8_t*>(ptr(record, first_offset + 4))) host.checked_iterator_failure_00bf6713();
-    if (first == last) return;
-    const std::int32_t count =
-        static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(record, first_offset + 4)) - last) >> 1;
-    const std::uint32_t bytes = static_cast<std::uint32_t>(count) * 2u;
-    std::uint8_t* const new_last = first + bytes;
-    if (count > 0) host.memmove_s_00bf67a7(first, bytes, last, bytes);
-    at<void*>(record, first_offset + 4) = new_last;
-}
-
 // NativeString assign from another header as 00915760 inlines it: 0041DD40(dst, src.size, 1),
 // then memcpy(dst.data, src.data, dst.size) when src.size != 0.
 void assign_native_string_inline(Seg59bHost& host, void* dst, void* src) {
@@ -1786,45 +1758,62 @@ void assign_native_string_inline(Seg59bHost& host, void* dst, void* src) {
 // 0); data non-null -> 00915EB2 memcpy(data, "" CE3A0C, size); +25Ch = +264h (00915ECB,
 // 00915EE0); +254h = +25Ch (00915EFA, 00915F0F).
 // ---------------------------------------------------------------------------
-void mission_score_record_clear_00915760(Seg59bHost& host, void* record) {
-    at<std::uint32_t>(record, 0x08) = 0;
-    at<std::uint32_t>(record, 0x04) = 0;
-    at<std::uint32_t>(record, 0x00) = 0;
-    at<float>(record, 0x14) = 0.0f;
-    at<float>(record, 0x10) = 0.0f;
-    at<float>(record, 0x0C) = 0.0f;
-    static constexpr std::uint32_t kScalars[] = {0x1E0, 0x1DC, 0x1D8, 0x1D4, 0x1D0, 0x1CC, 0x1C8, 0x17C,
-                                                 0x178, 0x1E8, 0x1E4, 0x250, 0x18C, 0x188, 0x184, 0x180,
-                                                 0x16C, 0x168, 0x174, 0x170, 0x190, 0x194};
-    for (const std::uint32_t offset : kScalars) at<std::uint32_t>(record, offset) = 0;
-    struct TreeClear { std::uint32_t offset; std::uint32_t callee; };
-    static constexpr TreeClear kFirst[] = {
-        {0x018, 0x0058B520}, {0x024, 0x0058B520}, {0x030, 0x0058B520}, {0x03C, 0x0058B520},
-        {0x048, 0x0058B520}, {0x054, 0x0058B520}, {0x060, 0x0058B520}, {0x204, 0x0058BCD0},
-        {0x210, 0x0058BCD0}, {0x21C, 0x0058BCD0}, {0x228, 0x0058BCD0}, {0x234, 0x0058BCD0},
-        {0x240, 0x0058BCD0}, {0x1EC, 0x0058B520}, {0x1F8, 0x0058B520}, {0x0CC, 0x005914B0},
-        {0x0D8, 0x00582B00}, {0x09C, 0x00592A20}, {0x0B4, 0x00592EA0}, {0x0A8, 0x00592A20},
-        {0x0C0, 0x00592EA0}};
-    for (const TreeClear& clear : kFirst) clear_tree_inline(host, record, clear.offset, clear.callee);
-    clear_short_vector_inline(host, record, 0x130);
-    static constexpr TreeClear kSecond[] = {
-        {0x15C, 0x00582C00}, {0x198, 0x00582C80}, {0x1A4, 0x00582C80}, {0x1BC, 0x00582D00},
-        {0x1B0, 0x00582C80}, {0x078, 0x0058B520}, {0x120, 0x0058B520}, {0x06C, 0x0058B520},
-        {0x084, 0x0058B520}, {0x090, 0x0058B520}};
-    for (const TreeClear& clear : kSecond) clear_tree_inline(host, record, clear.offset, clear.callee);
-    clear_short_vector_inline(host, record, 0x140);
-    static constexpr TreeClear kThird[] = {
-        {0x114, 0x00582B80}, {0x0E4, 0x00582B00}, {0x0F0, 0x00582B00}, {0x0FC, 0x00582B00},
-        {0x108, 0x00582B00}};
-    for (const TreeClear& clear : kThird) clear_tree_inline(host, record, clear.offset, clear.callee);
-    at<std::uint8_t>(record, 0x24C) = 0;
-    void* const text = add(record, 0x264);
-    host.native_string_resize_0041dd40(text, 0, 0);
-    if (ptr(text, 0x04) != nullptr) {
-        host.memcpy_00bf7680(ptr(text, 0x04), host.image_pointer(kEmptyString), at<std::uint32_t>(text, 0x00));
-    }
-    assign_native_string_inline(host, add(record, 0x25C), text);
-    assign_native_string_inline(host, add(record, 0x254), add(record, 0x25C));
+void mission_score_record_clear_00915760(MissionScoringManagerState& manager, std::size_t slot) {
+    // Goal 5 c984: source-interface port of the existing body, not a second
+    // native-address implementation. These are the live Lua/commit records.
+    // Owned std::map/vector/string operations replace the native STL helpers;
+    // no native sentinel, checked-iterator or FH3 ABI claim is made.
+    MissionScoreRecord& record = manager.slots[slot];
+    MissionScoreRuntimeRecord& runtime = manager.runtime_slots[slot];
+    record.difficulty_08 = 0;
+    record.ranking_04 = 0;
+    record.mission_completed_00 = 0;
+    record.map_usage_14 = 0.0f;
+    record.completion_time_10 = 0.0f;
+    record.play_time_0c = 0.0f;
+    record.totals_1c8.fill(0);
+    runtime.counters_178.fill(0);
+    record.japanese_party_1e8 = 0;
+    record.allied_party_1e4 = 0;
+    record.used_slot_250 = 0;
+    record.checkpoint_counters_168.fill(0);
+    record.winner_mode_194 = 0;
+
+    // 00915813..00915B63: first 21 trees, in the native destruction order.
+    for (auto& tree : record.score_maps) tree.clear();
+    for (auto& tree : record.objectives_204) tree.clear();
+    for (auto& tree : record.losses_1ec) tree.clear();
+    record.unit_remaining_cc.clear();
+    record.unit_suicide_d8.clear();
+    record.player_damages_9c.clear();
+    record.player_kills_b4.clear();
+    record.party_damages_a8.clear();
+    record.party_kills_c0.clear();
+    runtime.unit_ids[0].clear();
+
+    // 00915BB7..00915D5D: the next ten trees. Runtime awards at +6Ch
+    // already belong to the real manager (0090F5A0/0090EDE0); do not shadow it.
+    runtime.times_15c.clear();
+    runtime.scalar_trees[4].clear(); // +198h
+    runtime.scalar_trees[5].clear(); // +1A4h
+    runtime.kill_records_1bc.clear();
+    runtime.scalar_trees[6].clear(); // +1B0h
+    runtime.string_counters[0].clear(); // +78h
+    runtime.string_counters[3].clear(); // +120h
+    manager.runtime_awards[slot].clear(); // +6Ch
+    runtime.string_counters[1].clear(); // +84h
+    runtime.string_counters[2].clear(); // +90h
+    runtime.unit_ids[1].clear();
+
+    // 00915DB1..00915F1C: the last five trees, flag and string assignments.
+    record.unit_usage_114.clear();
+    for (std::size_t i = 0; i != 4; ++i) runtime.scalar_trees[i].clear();
+    record.checkpoint_pending_24c = false;
+    runtime.messages[2].clear();
+    runtime.messages[1] = runtime.messages[2];
+    runtime.messages[0] = runtime.messages[1];
+    // No writes to +26Ch/+278h arrays, extended +284h count, or manager
+    // +1424h commit slot: the original body does not clear those fields.
 }
 
 namespace {

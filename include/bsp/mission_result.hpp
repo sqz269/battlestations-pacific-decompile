@@ -14,6 +14,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <optional>
 #include <set>
 #include <string>
@@ -114,16 +115,33 @@ constexpr std::size_t mission_scoring_record_offset(std::size_t slot) noexcept
     return kMissionScoringArrayBase + slot * kMissionScoringRecordStride;
 }
 
-// The runtime half of the manager: the eight records plus the index 004d7970
-// commits. The record itself is mission_progress.hpp's MissionScoreRecord;
-// nothing is re-declared here.
+// Fields cleared by 00915760 which the persisted MissionScoreRecord omits.
+// Offsets are native evidence labels, not this source struct's layout. The
+// scalar trees retain raw 32-bit keys/values: their gameplay interpretation is
+// provisional. 00912D13 reads the +1BCh tree's key at node+C and its 2Ch-byte
+// value at node+10h; preserve that value without inventing its field meanings.
+struct MissionScoreRuntimeRecord {
+    std::array<UnlockCounterMap, 4> string_counters; // +78h,+84h,+90h,+120h
+    std::array<std::map<std::uint32_t, std::uint32_t>, 7> scalar_trees;
+        // +E4h,+F0h,+FCh,+108h,+198h,+1A4h,+1B0h
+    std::map<std::uint32_t, float> times_15c;
+    std::map<std::uint32_t, std::array<std::byte, 0x2c>> kill_records_1bc;
+    std::array<std::vector<std::uint16_t>, 2> unit_ids; // +130h,+140h
+    std::array<std::uint32_t, 7> counters_178{}; // +178h..+190h
+    std::array<std::string, 3> messages; // +254h,+25Ch,+264h
+};
+
+// The runtime half of the manager. The persisted portion of each record stays
+// in mission_progress.hpp's MissionScoreRecord, shared with Lua and commit.
 struct MissionScoringManagerState {
     MissionScoreRecord slots[kMissionScoringSlotCount]{}; // +4h, stride 284h
     // Runtime award/counter trees: manager + slot*284h +70h (006b8da0 is
     // the separate definition registry). 0090F5A0/0090EDE0 retain GA_AE here;
     // these are not the persisted score-category trees in MissionScoreRecord.
     UnlockCounterMap runtime_awards[kMissionScoringSlotCount];
+    MissionScoreRuntimeRecord runtime_slots[kMissionScoringSlotCount];
     int commit_slot{0};                                   // +1424h
+    bool pending_1484{false}; // 009169A2 clears this byte; meaning provisional
     // +1488h, the entity tree 008CC330 Scoring_IgnoreEntityKill inserts its
     // argument into (0063F1E0 on LEA ECX,[EAX+1488h]) and 0091BDA0 finds the
     // victim's root entity in (0090C170 at 0091BE29; a hit returns at 0091BE3F,
