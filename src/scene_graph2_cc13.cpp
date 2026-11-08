@@ -1,7 +1,9 @@
 #include "bsp/scene_graph2_cc13.hpp"
 #include "bsp/directional_light_pool_table.hpp"
+#include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/native_camera_pool_table.hpp"
+#include "bsp/native_group_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -97,6 +99,10 @@ void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t
             {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
         return;
     }
+    if (address == 0x00B7ADE0) {
+        allocate_native_point_light_pool_table_00b7ade0({&a}, static_cast<std::uint32_t>(n));
+        return;
+    }
     if (address == 0x00B72900) {
         allocate_native_mesh_pool_table_00b72900(
             {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
@@ -126,6 +132,10 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
         grow_native_camera_pool_table_00b70040({reinterpret_cast<std::byte*>(&a)});
         return;
     }
+    if (address == 0x00B8E930) {
+        grow_native_group_pool_table_00b8e930({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
     if (address == 0x00B745C0) grow_native_model_pool_table_00b745c0(&a);
     else if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
 }
@@ -143,6 +153,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
         append_native_camera_pool_table_00b71260({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
     }
+    if (address == 0x00B8EDC0) {
+        append_native_group_pool_table_00b8edc0({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
     if (address == 0x00B747D0) {
         auto* const slab = static_cast<std::byte*>(value);
         append_native_model_pool_slab_00b747d0(&a, slab);
@@ -152,6 +166,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
     if (address == 0x00B7B5A0) {
         reserve_directional_light_pool_table_00b7b5a0({reinterpret_cast<std::byte*>(&a)}, n);
+        return;
+    }
+    if (address == 0x00B7B4A0) {
+        reserve_native_point_light_pool_table_00b7b4a0({&a}, n);
         return;
     }
     if (address == 0x00B72F10) {

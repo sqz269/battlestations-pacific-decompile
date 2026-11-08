@@ -129,5 +129,56 @@
     "No game was launched; evidence is source, strict Win32 build, focused host-storage probe and entry call graph, not gameplay validation.",
     "No original-native ABI or exhaustive native fault/SEH equivalence claim.",
     "No float arithmetic changed, so pc24_lint was not applicable."
-  ]
+  ],
+  "landing_repair": {
+    "merge_parent": "95530694178e18f0607bbecf1ec47eec5fe7fec8",
+    "original_branch_head": "9697665e2892563aae13a8253ac632f10da60eeb",
+    "resolver": "tools/merge_resolve.py combined scene-graph insertions; ledger shard was left unresolved and resolved by address ownership.",
+    "ledger_resolution": "Proved branch records outside four owned addresses equal merge-base; retained every incoming non-target line exactly, replacing only four owned directional records.",
+    "scene_resolution": "Compared against merge parent: only directional include and four first-forwarding branches added; main point/group pool intent retained.",
+    "implementation_unchanged": true,
+    "default_build": "pass; all four CTests",
+    "on_build": "pass; zero distinct diagnostics; all four CTests",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "on_headers_exactly_restored": true,
+    "restored_default_build": "pass; all four CTests",
+    "focused_directional_probe": "pass again on merged default library",
+    "release_graph_recon_called": 5648,
+    "analysis_graph_recon_called": 7459,
+    "readiness_wired_total": 10760,
+    "directional_rows": [
+      {
+        "native": "00b7ae80",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2,
+        "source": "src/directional_light_pool.cpp"
+      },
+      {
+        "native": "00b7aed0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/directional_light_pool.cpp"
+      },
+      {
+        "native": "00b7b510",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/directional_light_pool.cpp"
+      },
+      {
+        "native": "00b7b5a0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/directional_light_pool.cpp"
+      }
+    ],
+    "evidence_scope": "Build, ON build, focused host storage probe and distinct entry-reachable /Ob0 /OPT:NOICF analysis; no game launch."
+  }
 }

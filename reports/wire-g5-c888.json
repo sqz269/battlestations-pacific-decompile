@@ -1,0 +1,98 @@
+{
+  "goal": 5,
+  "chain": 888,
+  "worker": "agent/g5-w10",
+  "base_head": "137dd62b029eb05ef93b67e95458b011c1b64d40",
+  "rows": [
+    {
+      "native": "007207c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::apply_user_path_point",
+      "details": "The existing slot-0 user-path adapter now calls gameplay_seg38_cc13::apply_add_user_path_point_007207c0 with the live director queue, 0071DC80 result and vtable-34 permission result. Its add/replace outputs drive rejection, path lifetime and 0071FDE0 inputs. The permission query is short-circuited on append, as in the image.",
+      "evidence": "bsp.py show 007207c0 --asm: 007207C3, 007207CC-007207DC, 0072080B-00720816, 0072083F-00720846. The queue ownership guard selects slot 0 for both supported branches.",
+      "real_state": "GameCommandsHost directors/slot_command/slot_target; retained per-director user_path_object constructed at register_units; current owner position from GameUnitsHost; loaded map bounds bound by GameShipAiHost::load_avoid_zone_geometry.",
+      "limits": "Existing fallback remains for unowned slots and entity-backed authored paths. This uses the existing semantic C++ interface, not the original binary ABI. No game was launched."
+    },
+    {
+      "native": "0071bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: indexed director path/cursor accessors",
+      "reason": "Needs an audited mapping from the native indexed path-pointer return to the host's slot-0 cursor ownership before replacing a getter."
+    },
+    {
+      "native": "0071ebf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: cc13_director_queue / newest target access",
+      "reason": "The current queue projection omits command-class categories, and the native override/neutral target return path still needs a real-state adapter."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path point ownership",
+      "reason": "No matching live drop-last-point operation was identified; the existing vector clears replace the whole path and cannot be substituted with this body."
+    },
+    {
+      "native": "004e4000",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuShellHost",
+      "reason": "Raw reconstruction requires a native game-object receiver and the exact 28-byte configuration stack preimage; the existing typed shell services do not provide them."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message producer",
+      "reason": "No live controller-state producer with all native flag/getter inputs was established in this packet."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot producer",
+      "reason": "No single-player snapshot producer carrying the native director extension fields was established in this packet."
+    },
+    {
+      "native": "0071cdd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: path-index message routing",
+      "reason": "The host has no identified live cursor-index message producer and delivery route for this constructor."
+    },
+    {
+      "native": "0071d3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message routing",
+      "reason": "The host has no identified live clear-user-point message producer and corresponding receiver path."
+    },
+    {
+      "native": "0071d5a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director stance query",
+      "reason": "No live native stance-field query site was identified; adding a comparison call without a consumer would not wire gameplay behavior."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all six existing checks passed on the final source",
+    "call_graph": {
+      "before_called": 5632,
+      "after_called": 5633,
+      "target": "bsp::gameplay_seg38_cc13::apply_add_user_path_point_007207c0",
+      "reachable": true,
+      "caller": "bsp::game::GameCommandsHost::Impl::apply_user_path_point",
+      "caller_object": "game_hosts_commands.obj",
+      "target_object": "gameplay_seg38_cc13.obj",
+      "call_site": "1007292d",
+      "reachable_call_sites": 1
+    },
+    "wire_readiness": {
+      "after_wired": 10739,
+      "target_state": "wired",
+      "target_called": true,
+      "target_call_sites": 1,
+      "count_basis": "Use the directly measured built-call-graph before/after totals above; the initial readiness scan preceded creation of the local call graph, so its source-only total is not comparable."
+    },
+    "float_math": "No float arithmetic changed; pc24 lint is not applicable.",
+    "game_validation": "Not run, as instructed."
+  },
+  "notes": [
+    "Renamed the private host helper to remove the native-address suffix; the built call graph now identifies the reconstructed body unambiguously.",
+    "No new address-suffixed body, ledger edit, stand-in value, goal switch, or test framework was added."
+  ]
+}

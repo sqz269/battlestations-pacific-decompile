@@ -1,4 +1,5 @@
 #include "bsp/native_group_pool.hpp"
+#include "bsp/native_group_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -47,13 +48,6 @@ std::byte* initialize_slab_00b8e7d0(void* raw, std::uint32_t index) noexcept {
     }
     return bytes;
 }
-std::byte** allocate_table(std::uint32_t capacity) {
-    // Native 00BF55BE jumps to the same 00BF681B new-handler allocator.
-    const auto native_bytes = capacity * 4u;
-    return static_cast<std::byte**>(singleton_lifetime_allocate({
-        SingletonAllocationKind::pointer_slots, native_bytes,
-        static_cast<std::size_t>(capacity) * sizeof(std::byte*)}));
-}
 NativeGroupPool* static_pool_010902f4;
 NativeGroupPool& require_static_pool() {
     if (!static_pool_010902f4)
@@ -61,6 +55,47 @@ NativeGroupPool& require_static_pool() {
     return *static_pool_010902f4;
 }
 } // namespace
+
+// Chain 887: specialize the existing shared-shape grow/append bodies over the
+// live pool header. 00B8F190 and 00B8F310 inline these reserve/append operations;
+// replacing those copies keeps one execution of each operation. See bsp.py show
+// 00B8E8E0/00B8E930/00B8EDC0/00B8EE50 and their listings: capacity is stored
+// before allocation, the old table survives copying, and data is published last.
+__declspec(noinline) void allocate_native_group_pool_table_00b8e8e0(
+    NativeGroupPoolTableView table, std::uint32_t capacity) {
+    table.capacity(capacity);
+    const std::uint32_t bytes = capacity * 4u;
+    auto* fresh = static_cast<std::byte*>(singleton_lifetime_allocate({
+        SingletonAllocationKind::pointer_slots, bytes, bytes}));
+    // 00BF55BE is the throwing 00BF681B new-handler allocator, so fresh is
+    // nonnull on return. Reload the live count/data after possible reentrancy.
+    for (std::uint32_t i = 0; i < table.count(); ++i)
+        std::memcpy(fresh + i * 4u, table.data() + i * 4u, 4);
+    if (table.data()) singleton_lifetime_free(table.data());
+    table.data(fresh);
+}
+
+__declspec(noinline) void grow_native_group_pool_table_00b8e930(
+    NativeGroupPoolTableView table) {
+    allocate_native_group_pool_table_00b8e8e0(table, table.capacity() * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_group_pool_table_00b8edc0(
+    NativeGroupPoolTableView table, const void* pointer_cell) {
+    if (table.count() == table.capacity()) grow_native_group_pool_table_00b8e930(table);
+    // The native placement-copy tests the computed destination, then reads the
+    // source cell AFTER any growth. Do not snapshot an aliased source earlier.
+    auto* destination = reinterpret_cast<void*>(
+        reinterpret_cast<std::uintptr_t>(table.data()) + table.count() * 4u);
+    if (destination) std::memcpy(destination, pointer_cell, 4);
+    table.count(table.count() + 1u);
+}
+
+__declspec(noinline) void reserve_native_group_pool_table_00b8ee50(
+    NativeGroupPoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity)
+        allocate_native_group_pool_table_00b8e8e0(table, capacity);
+}
 
 NativeGroupPool::NativeGroupPool(AllocatorListDomain& list,
     NativeGroupPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -85,14 +120,8 @@ void NativeGroupPool::initialize_00b8f190() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        reserve_native_group_pool_table_00b8ee50(
+            {reinterpret_cast<std::byte*>(&storage_.slabs_28)}, 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b8e8b0();
@@ -111,16 +140,8 @@ void* NativeGroupPool::allocate_raw_slot_00b8f310() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b8e7d0(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        append_native_group_pool_table_00b8edc0(
+            {reinterpret_cast<std::byte*>(&storage_.slabs_28)}, &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);

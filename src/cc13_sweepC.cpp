@@ -1626,7 +1626,7 @@ void gui_type_id_init(SweepCHost& host, void* descriptor, std::uint32_t guard, s
 // 00AACE40's shape (data +0h, count +4h, capacity +8h): capacity = 2 x capacity + 2; a new
 // block of capacity x 4 bytes (00BF55BE) takes the elements (each store skipped for a null
 // destination, as tested); the old block is freed (00BF6989) when non-null; +0h = the new block.
-void pointer_table_grow(SweepCHost& host, void* table) {
+void pointer_table_grow(PointerTableAllocationHost& host, void* table) {
     const std::uint32_t capacity = at<std::uint32_t>(table, 0x08) * 2 + 2;
     at<std::uint32_t>(table, 0x08) = capacity;
     auto* const fresh = static_cast<void**>(host.operator_new_00bf55be(capacity * 4));
@@ -1918,7 +1918,9 @@ float plane_signed_distance_00b999a0(const void* plane, const float* point) {
 }
 
 // 00AACE40, 00ACBE50, 00ACD250, 00ACEFC0: one 35-instruction shape (address-stripped compare).
-void pointer_table_grow_00aace40(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
+__declspec(noinline) void pointer_table_grow_00aace40(PointerTableAllocationHost& host, void* table) {
+    pointer_table_grow(host, table);
+}
 void pointer_table_grow_00acbe50(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acd250(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acefc0(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
