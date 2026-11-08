@@ -1,5 +1,6 @@
 #include "bsp/flak_note_seg36_37_argon.hpp"
 #include "bsp/projectile_kinds.hpp"
+#include "bsp/bullet_engagement_range.hpp"
 
 #include <cmath>
 #include <cstdlib>
@@ -238,11 +239,26 @@ __declspec(noinline) void FlakBulletClass_ReadLuaFields_0070c030(
 
 // [0x0070c0b0] BSP_FlakBulletClass_DeriveEngagementRange
 // Original ABI: __thiscall (ECX = self), RET.
-void FlakBulletClass_DeriveEngagementRange_0070c0b0(void* self) {
-    const std::uint8_t ok = fn_at<std::uint8_t(__thiscall*)(void*)>(0x006e9890)(self);
-    if (ok == 1u) {
-        field_at<float>(self, 0xd8) = field_at<float>(self, 0x58) / field_at<float>(self, 0x50);
+// Evidence: bsp.py show 0070c0b0 --asm, all ten instructions C0B0..C0C9.
+// Typed descriptor/result projection; original allocation/vtable ABI and
+// exceptional inputs are not claimed as a native object replacement.
+__declspec(noinline) WeaponClassFinaliseResult FlakBulletClass_DeriveEngagementRange_0070c0b0(
+    const WeaponClassFinaliseInput& input, bool already_finalised) noexcept {
+    auto result = weapon_class_derive_base_engagement_range(input, already_finalised);
+    if (result.accepted) { // 0070C0B8: base AL == 1, including a latched base
+        const float min_range = input.flak_min_range;
+        const float speed = result.muzzle_speed;
+        float fuse_time;
+        // Preserve C0BC..C0C2 and the ambient x87 control word. In particular,
+        // do not replace this with an extended double division/late cast.
+        __asm {
+            fld min_range
+            fdiv speed
+            fstp fuse_time
+        }
+        result.flak_fuse_time = fuse_time;
     }
+    return result;
 }
 
 // [0x0070c0f0] BSP_FlakBullet_WriteState

@@ -1,4 +1,5 @@
 #include "bsp/bullet_engagement_range.hpp"
+#include "bsp/flak_note_seg36_37_argon.hpp"
 
 #include <cmath>
 
@@ -44,7 +45,7 @@ int weapon_class_refined_sub_type(const WeaponClassFinaliseInput& in) noexcept {
     return in.sub_type;
 }
 
-WeaponClassFinaliseResult weapon_class_derive_engagement_range(
+WeaponClassFinaliseResult weapon_class_derive_base_engagement_range(
     const WeaponClassFinaliseInput& in, bool already_finalised) noexcept {
     WeaponClassFinaliseResult out;
     out.muzzle_speed = in.muzzle_speed;
@@ -96,6 +97,19 @@ WeaponClassFinaliseResult weapon_class_derive_engagement_range(
     out.sub_type = weapon_class_refined_sub_type(in);
     out.accepted = true;  // 006E99DB / 006E9A0D / 006E9A2D / 006E9A41: AL = 1
 
+    return out;
+}
+
+WeaponClassFinaliseResult weapon_class_derive_engagement_range(
+    const WeaponClassFinaliseInput& in, bool already_finalised) noexcept {
+    if (in.sub_type == kProjectileSubTypeFlak) {
+        return flak_note_seg36_37_argon::FlakBulletClass_DeriveEngagementRange_0070c0b0(
+            in, already_finalised);
+    }
+    auto out = weapon_class_derive_base_engagement_range(in, already_finalised);
+    if (already_finalised) return out;
+
+    const int kind = in.sub_type;
     if (kind == kProjectileSubTypeTorpedo) {
         // 00855A90 runs the base first (which has just put 3000.0f in +60h,
         // torpedoes taking the default arm) and then overwrites it. The
@@ -112,13 +126,6 @@ WeaponClassFinaliseResult weapon_class_derive_engagement_range(
                                        kWeaponClassGravity);
         out.terminal_fall_speed = store_float(std::sqrt(static_cast<double>(fall)));
         out.accepted = out.accepted && out.terminal_fall_speed > 0.0f;  // 00855AD1
-    } else if (kind == kProjectileSubTypeFlak) {
-        // 0070C0B0 calls the base, checks AL == 1 and derives the fuse time
-        // from the flak reader's MinRange. It does not touch +60h.
-        if (out.accepted) {
-            out.flak_fuse_time =
-                store_float(static_cast<double>(in.flak_min_range) / in.muzzle_speed);
-        }
     }
     return out;
 }
