@@ -1,0 +1,96 @@
+{
+  "chain": 696,
+  "goal": 5,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "picked": "Bullet-class descriptor loading: Bullets[id] built once per id the way 006EA910's miss path builds it (Type, Got, 006E8320 constructor, the kind's vtable[18h] Lua reader), feeding every Bullets field the gunnery and units hosts read",
+  "wired_before": 10445,
+  "wired_after": 10449,
+  "called_before": 5707,
+  "called_after": 5711,
+  "rows": [
+    {
+      "native": "006e8320",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::bullet_class_descriptor",
+      "note": "weapon_class_constructed_defaults; +54h FlyTime fixed to [00D7A248] = FLT_MAX (was 1.0f)"
+    },
+    {
+      "native": "006e8770",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::bullet_class_descriptor -> load_weapon_class_fields",
+      "note": "load_weapon_class_base_fields over LuaBulletClassRow (live mission Lua Bullets[id])"
+    },
+    {
+      "native": "006e1be0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields; ParatrooperClassRowReader::read_bomb_class_lua_fields_006e1be0",
+      "note": "load_bomb_class_fields, inlined into load_weapon_class_fields in the Release build"
+    },
+    {
+      "native": "008566b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (Torpedo)",
+      "note": "load_torpedo_class_fields (inlined); feeds the torpedo row's MaxWaterHitVel/MaxFall/HeadingTurn/Homing and 006E9890's WaterTravelSpeed"
+    },
+    {
+      "native": "006fd400",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (DepthCharge); depth_charge_activate_006fd9b0; DcHost::weapon_sink_rate",
+      "note": "load_depth_charge_class_fields (inlined); DiveMinDepth/DiveMaxDepth default fixed to FLT_MAX (006FD507/006FD544)"
+    },
+    {
+      "native": "00809cb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_weapon_class_fields (Rocket)",
+      "note": "load_rocket_class_fields (inlined); VMax/Acceleration/IgnitionDelay/AntiAir of the rocket row"
+    },
+    {
+      "native": "007ac780",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (Paratrooper); read by src/game_hosts_units.cpp GameUnitsHost::Impl::para_class_fields via GameGunneryHost::paratrooper_class",
+      "note": "SoldierClass (004B1400) / SoldierAnim (004FE080) handles unresolved and counted"
+    },
+    {
+      "native": "0085f500",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (WaterMine)",
+      "note": "block kept beside the descriptor; no host consumer of the mine block yet"
+    },
+    {
+      "native": "0070c030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor -> load_flak_class_fields",
+      "reason": "the ledger body FlakBulletClass_ReadLuaFields_0070c030 (flak_note_seg36_37_argon.cpp) calls image addresses through fn_at; the typed load_flak_class_fields runs for Flak rows instead"
+    },
+    {
+      "native": "006ea910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_class_descriptor (typed stand-in for the miss path)",
+      "reason": "bullet_class_get_or_create_006ea910 (cc13_seg33a.cpp) needs LuaObject wrappers and the image's refcounted native class blocks, which this process does not model"
+    },
+    {
+      "native": "006ff170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp dkz_release_007bbba0 (reads KamikazePlaneClass/OpenAfterTime directly)",
+      "reason": "no reconstructed body (only host text); the reader resolves KamikazePlaneClass through BSP_VehicleClass_GetOrCreate 00964790, a vehicle class registry the host lacks"
+    },
+    {
+      "native": "00701060",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "dummy_target_bullet_class_read_lua_fields_00701060 takes a raw native class block and Pool09Host; no host consumer of DummyTarget fields"
+    },
+    {
+      "native": "00700050",
+      "status": "skipped",
+      "host_site": "",
+      "reason": "dummy_submarine_class_read_lua_fields_00700050 takes a raw native class block and Pool09Host; no host consumer of DummySubmarine fields"
+    }
+  ],
+  "left": [
+    "Effect, payload-icon and decal handles in the descriptor stay unresolved: no gameplay effect manager (00870CD0 -> 008700E0), GUI texture atlas resolution or decal library in this process",
+    "FireChance is still copied by the BSPGun flatten because GameBulletClassRow keeps the authored percentage; moving it to the descriptor (+C4h = FireChance/100) needs weapon_fire_chance's divide removed",
+    "006FF170 (DummyKamikazePlane reader) has no body; units_motion reads its two keys directly"
+  ]
+}
