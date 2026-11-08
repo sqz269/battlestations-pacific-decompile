@@ -1,0 +1,80 @@
+{
+  "goal": 6,
+  "chain": 1035,
+  "owner": "agent/g6-w10",
+  "candidate": "game_hosts_units_internal.hpp",
+  "tier": 1,
+  "base_head": "1ad36300eaf4806cc0811b2efccfea5c286f0938",
+  "rows": [
+    {
+      "native": "00b0d7b0",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp:SetControlledUnitBinding::publish_listener -> src/game_native_renderer_application.cpp:GameNativeRendererApplication::clear_controlled_listener",
+      "scope": "Exact 004C090C..004C0924 null-listener branch, including controlled-unit clear and resolved units without a listener target, when the application's native render-resource service exists. The unresolved driven-unit virtual+18 branch remains recorded and never supplies its bool as a native handle.",
+      "reason": "Reuses the existing B14A10/B107F0 service, B4F0C0/B4F560 distortion owner and B724E0 scene storage through borrowed raw views; B0D7B0 publishes the exact null pointer and B4EC90 drains the actual root+0C list using the existing B6D890 null-request entry."
+    },
+    {
+      "native": "00b0daa0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:stats_overlay_00b151e0",
+      "reason": "climb: 00B0DAA0 needs native 12Ch records/name headers +124h/+128h <- 00B13790 median <- 00B148E0 sort <- 00B151E0 renderer diagnostics overlay; records are produced by 00B16F80 only under service byte +681h (stopped: diagnostic statistics path; B14A10 sets +681h=0 at B14CAC and no host gameplay producer enables or consumes this overlay)."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "Borrowed raw listener/render-resource and distortion root-list binding",
+      "where": "src/game_native_renderer_application.cpp:569",
+      "type": "Existing actual 6ACh RenderResources allocation, existing actual 26Ch distortion owner and actual 24h scene outer; NativeListenerRendererView/NativeListenerInvalidationView borrow their cells without a typed layout overlay.",
+      "constructor": "00b14a10; distortion child 00b4f0c0; scene outer 00b724e0",
+      "fields": [
+        {"owner": "RenderResources", "offset": "0x1c0", "width": 4, "meaning": "actual listener pointer; B14D6C initializes null, B0D7B4 publishes supplied handle"},
+        {"owner": "RenderResources", "offset": "0x30", "width": 4, "meaning": "actual distortion pointer; B14D2D initializes null, B107F0 distortion stage publishes the constructed child"},
+        {"owner": "distortion", "offset": "0x3c", "width": 4, "meaning": "actual scene storage pointer produced by B4F560 calling B724E0 at B4FD19"},
+        {"owner": "distortion", "offset": "0x250", "width": 1, "meaning": "invalidation byte initialized zero by B4F0C0, set one by B4EC96"},
+        {"owner": "scene outer", "offset": "0x0c", "width": 4, "meaning": "real root-list head; B724E0 initializes and existing B721F0/B72220 root operations maintain it"},
+        {"owner": "node", "offset": "0x30/0x34/0x3c/0x40/0xa4", "width": 4, "meaning": "existing parent, child head, next, previous and root registration fields consumed by B6D890(nullptr)"}
+      ],
+      "producers": [
+        "0073D410 at 0073DF01 -> construct_native_render_resources_00b14a10, already hosted by RenderResourcesGraph::construct; shared bridge registration covers both GameNativeRendererApplication::construct_render_resources and MissionRenderResourcesGraph's direct construction route",
+        "00B107F0 at 00B11E62/00B11E79 -> existing construct_native_distortion_owner_00b4f0c0/initialize_native_distortion_00b4f560; native_render_resource_init_distortion.cpp publishes service+30",
+        "00B4F560 at 00B4FD19 -> existing construct_native_gui_scene_00b724e0; native_distortion_initializer.cpp publishes the exact scene storage at distortion+3C",
+        "004C0890 no-target/null arm -> SetControlledUnitBinding::publish_listener -> existing renderer application -> update_native_listener_renderer_00b0d7b0",
+        "00B4EC90 -> existing clear_native_raw_node_root_00b6d890_null, with actual root unlinking and child recursion"
+      ],
+      "rows": ["00b0d7b0"],
+      "climb": [
+        "00B0D7B0 <- actual F8D39C service <- ctor 00B14A10 <- 0073D410/0073DF01 (reached existing application construction phase; supplied the missing raw binding, no duplicate owner)",
+        "00B4EC90 <- service+30 distortion <- ctor 00B4F0C0/init 00B4F560 <- 00B107F0/00B11E62/00B11E79 (existing native mission resource producer)",
+        "distortion+3C root outer <- ctor 00B724E0 <- 00B4F560/00B4FD19 (existing scene producer); root+0C drained by existing B6D890 null-request body"
+      ],
+      "lifetime": "Application-owned binding borrows existing native storage. The process bridge stores only the application identity after successful B14A10 construction, reads the same current resource publication on each call, and unbinds before application/provider destruction. Absent native resources produce no synthetic owner or queued listener value."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "final_build": "scripts/build.ps1 passed; all four existing CTests passed; local/g6-c1035-build.log",
+    "raw_fixture": "local/g6_c1035_probe.bat passed: exact null slot publication, invalidation flag before root reads, live owner reread across two actual raw root unlinks and child registration propagation; linked with /MANIFEST:EMBED",
+    "call_graph": {
+      "command": "python tools/call_graph.py; python tools/call_graph.py who 00b0d7b0",
+      "before_called": 5750,
+      "after_called": 5751,
+      "before_linked_reconstructed_addresses": 6463,
+      "after_linked_reconstructed_addresses": 6464,
+      "target": "update_native_listener_renderer_00b0d7b0 REACHABLE, one direct call site from GameNativeRendererApplication::clear_controlled_listener",
+      "host_path": "GameUnitsHost::clear_controlled_unit_004c0890 -> SetControlledUnitBinding::publish_listener -> clear_game_native_controlled_listener -> GameNativeRendererApplication::clear_controlled_listener -> update_native_listener_renderer_00b0d7b0",
+      "helper": "00B4EC90 is inlined into the linked B0D7B0 body in this Release build"
+    },
+    "evidence": [
+      "bsp.py show 004c0890, 00b0d7b0, 00b0daa0, 00b13790 and 00b151e0; assembly checked for 00b0d7b0 and 00b4ec90",
+      "bsp.py callers 00b14a10, 00b4f0c0, 00b4f560 and 00b724e0 --sites",
+      "Existing constructor/initializer source stores, docs/NATIVE_LISTENER_RENDERER.md, docs/CC13_SCENE_RENDERER.md and docs/NATIVE_MATERIAL_DIAGNOSTICS_DRAW_CN.md"
+    ],
+    "float_math_changed": false,
+    "game_run": false,
+    "limits": "Source build, focused raw fixture and static entry reach only. No new original-byte differential, drop-in ABI, gameplay or non-null driven-unit listener validation."
+  },
+  "left": [
+    "Driven-unit virtual+18 actual listener producer/native owner is still absent in GameUnitSlot. The bool-only semantic callback is explicitly excluded from native pointer publication.",
+    "00B0DAA0 remains on the disabled renderer diagnostics path; no diagnostic enable value or record producer was invented."
+  ]
+}

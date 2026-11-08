@@ -356,6 +356,9 @@ public:
     // ordinary destruction (B14A10 leaves +70 unwritten). Normal startup is
     // still gated on that B107F0 integration; this is the shared provider API.
     void* construct_render_resources();
+    // Exact null operand of 004C091F, applied to this application's existing
+    // service and distortion root list. No pending value or native owner copy.
+    bool clear_controlled_listener();
     NativeRenderResourcesLifetimeContext& render_resources_lifetime() noexcept;
     // Ready-only remap providers borrowing this SAME texture cache, canonical
     // owners, decrement import and mapped renderer profile. This constructs no
