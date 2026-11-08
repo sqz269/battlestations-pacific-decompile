@@ -1,8 +1,8 @@
 #include "bsp/native_property_library_lookup.hpp"
 
 #include "bsp/entity_identity.hpp"
+#include "bsp/band_0040_cc13.hpp"
 
-#include <cctype>
 #include <cstddef>
 
 namespace bsp {
@@ -43,18 +43,11 @@ __forceinline void* load_pointer(const void* root,
 std::uint32_t native_property_library_key_bucket_004689d0(
     const void* actual_query_header, const char* actual_empty_00e18560) {
     const char* data = static_cast<const char*>(load_pointer(actual_query_header, 4));
-    std::uint32_t hash = load_word(actual_query_header, 0);
-    const std::uint32_t step = (hash | 0x20u) >> 5;
-    std::uint32_t remaining = hash;
+    const std::uint32_t length = load_word(actual_query_header, 0);
     if (!data) data = actual_empty_00e18560;
-    while (remaining >= step) {
-        const auto character = static_cast<unsigned char>(
-            std::toupper(static_cast<signed char>(*data)));
-        hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
-        remaining -= step;
-        ++data;
-    }
-    return hash & 0x3fu;
+    // 004689D0 uses the same signed-byte CRT hash as 0043B700, with its
+    // library-specific E18560 fallback and final six-bit bucket mask.
+    return cc13_band0040::hash_upper_case_0043b700(length, data) & 0x3fu;
 }
 
 void* find_native_property_library_node_00468ed0(const void* actual_map,

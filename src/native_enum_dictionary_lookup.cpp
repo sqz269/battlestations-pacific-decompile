@@ -1,9 +1,9 @@
 #include "bsp/native_enum_dictionary_lookup.hpp"
 
 #include "bsp/entity_identity.hpp"
+#include "bsp/band_0040_cc13.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/native_enum_node_pool.hpp"
-#include <cctype>
 #include <cstring>
 
 namespace bsp {
@@ -30,24 +30,14 @@ const char* read_property_data(const void* owner) {
     return reinterpret_cast<const char*>(read_property_word(owner, 4));
 }
 
-signed char read_property_byte(const char* data) {
-    return *reinterpret_cast<const volatile signed char*>(data);
-}
-
 std::uint32_t bucket_for(const NativeString& key, const char* empty) {
     const char* data = key.data();
-    std::uint32_t hash = key.length();
-    const std::uint32_t step = (hash | 0x20u) >> 5;
-    std::uint32_t remaining = hash;
+    const std::uint32_t length = key.length();
     if (!data) data = empty;
-    while (remaining >= step) {
-        const auto character = static_cast<unsigned char>(
-            std::toupper(static_cast<signed char>(*data)));
-        hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
-        remaining -= step;
-        ++data; // Native advances one byte even when step is greater than one.
-    }
-    return hash & 0x3fu;
+    // 004895B0/00489610 inline the same recurrence as 0043B700, then AND
+    // 3Fh. Use its single body on this query's captured data/length; it keeps
+    // consecutive byte reads even when the subtraction step exceeds one.
+    return cc13_band0040::hash_upper_case_0043b700(length, data) & 0x3fu;
 }
 
 const void* find_node(const void* receiver, const NativeString& key,
@@ -73,19 +63,11 @@ const void* find_node(const void* receiver, const NativeString& key,
 std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,
     const char* actual_empty_00e177e4) {
     const char* data = read_property_data(actual_key_header);
-    std::uint32_t hash = read_property_word(actual_key_header, 0);
-    const std::uint32_t step = (hash | 0x20u) >> 5;
-    std::uint32_t remaining = hash;
+    const std::uint32_t length = read_property_word(actual_key_header, 0);
     if (!data) data = actual_empty_00e177e4;
-    while (remaining >= step) {
-        const auto character = static_cast<unsigned char>(
-            std::toupper(read_property_byte(data)));
-        hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
-        remaining -= step;
-        data = reinterpret_cast<const char*>(
-            reinterpret_cast<std::uintptr_t>(data) + 1u);
-    }
-    return hash & 0x3fu;
+    // bsp.py show 0043B760: same B700 hash followed by AND 3Fh. Keep this
+    // entry's data-before-length header loads and its actual E177E4 fallback.
+    return cc13_band0040::hash_upper_case_0043b700(length, data) & 0x3fu;
 }
 
 std::uint32_t native_enum_symbol_bucket_004895b0(const NativeString& key,
