@@ -1,5 +1,6 @@
 #include "bsp/sound_sample.hpp"
 #include "bsp/sound_sample_cache.hpp"
+#include "bsp/sound_cc13.hpp"
 #include "bsp/gameplay_effect_definition.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
@@ -119,8 +120,14 @@ void copy_resource_timing(void* sample, SoundOwnedResource& resource) {
 void destroy_members(void* sample, NativeStringStorage& strings) {
     // Constructor EH states5..0 at DEBF50 and destructor member sequence.
     // Resource78 is a raw pointer, not an owning subobject in this unwind map.
-    resize_sound_sample_pointers_00a7b3d0(at(sample, 0x6c), 0);
-    singleton_lifetime_free(get<void*>(sample, 0x6c));
+    // 00A7BF20..00A7BF36: ECX is the actual +6Ch array header; resize(0),
+    // then free(data). The sample's native unwind funclets 00CB5BC4/00CB5EB4
+    // use this body, and normal 00A82C60 cleanup inlines the same sequence.
+    // Reuse it for both normal destruction and constructor cleanup; no copy
+    // of the header or second free may survive on either path.
+    static_assert(sizeof(sound_cc13::NativePointerArray) == 0x0c);
+    sound_cc13::destroy_sound_sample_pointers_00a7bf20(
+        *static_cast<sound_cc13::NativePointerArray*>(at(sample, 0x6c)));
     for (auto offset : {0x60u, 0x58u, 0x50u}) destroy_native_string_header_0041dd20(at(sample, offset), strings);
     resize_sound_sample_parameters_0093f950(at(sample, 0x44), 0);
     singleton_lifetime_free(get<void*>(sample, 0x44));

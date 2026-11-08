@@ -1,0 +1,168 @@
+{
+  "chain": 704,
+  "owner": "agent/g5-w7",
+  "baseline_commit": "d98eb873ff",
+  "rows": [
+    {
+      "native": "00a7bf20",
+      "status": "wired",
+      "host_site": "src/sound_sample.cpp: destroy_members, called by construct_sound_sample_00a84d70 and destroy_sound_sample_00a82c60",
+      "evidence": "00A7BF20..00A7BF36 takes ECX=array header, calls 00A7B3D0 with zero, then frees its data. Native sample unwind funclets 00CB5BC4/00CB5EB4 use it; normal 00A82C60 inlines the identical sequence.",
+      "state": "The actual sample+6C data/count/capacity header replaces the old inline resize/free; no copied header, synthetic input, second cleanup or additional owner.",
+      "validation": "Win32 build and all four existing tests pass. Built body 105F4530 has one reachable call at 105EF82D from destroy_members; entry path runs through GameSoundRuntime::Impl::shutdown and SoundSampleRuntime::zero_references_slot_00."
+    },
+    {
+      "native": "00a7ba80",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: destroy_sound_sample_pointers_00a7ba80",
+      "reason": "No original caller or matching live array owner was found; +6C sample cleanup belongs to 00A7BF20 instead."
+    },
+    {
+      "native": "00a7bb20",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: destroy_sound_sample_pointers_00a7bb20",
+      "reason": "No original caller or matching live array owner was found; +6C sample cleanup belongs to 00A7BF20 instead."
+    },
+    {
+      "native": "00a7a850",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7a8b0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7a930",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7b2d0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7b310",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7b7a0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7b830",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp / src/sound_configuration_shutdown.cpp: configured DSP arrays",
+      "reason": "Owned by agent/g5-w1 under its current lease; that worker is replacing the configured DSP vector paths."
+    },
+    {
+      "native": "00a7b390",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: append_sound_sample_pointer_00a7b390",
+      "reason": "No live sample+6C pointer-array append producer was established in this packet; destruction uses the existing actual header without inventing entries."
+    },
+    {
+      "native": "00a7a9e0",
+      "status": "skipped",
+      "host_site": "src/sound_sample.cpp: native sample pointer-array storage",
+      "reason": "Source-wired at baseline, but no separate built body is linked (inlined callers); zero-count destruction does not require reserve and no new reserve call is claimed."
+    },
+    {
+      "native": "00a7b3d0",
+      "status": "wired",
+      "host_site": "src/sound_cc13.cpp: resize_sound_samples, called by destroy_sound_sample_pointers_00a7bf20",
+      "evidence": "The actual sample+6C array header is passed through the existing destructor body to the existing resize body with count=0.",
+      "validation": "Baseline readiness called=false; rebuilt graph now has one reachable call at 105F453A from 00A7BF20. Previously the sample destructor resize was inlined."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp / src/game_hosts_lua.cpp: retained scene property bags",
+      "reason": "Already called from entry-reachable code in the baseline readiness graph; no additional call is needed."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp / src/game_hosts_lua.cpp: retained scene property bags",
+      "reason": "Already called from entry-reachable code in the baseline readiness graph; no additional call is needed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp / src/game_hosts_lua.cpp: retained scene property bags",
+      "reason": "Already called from entry-reachable code in the baseline readiness graph; no additional call is needed."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear producer",
+      "reason": "Owned by agent/g5-w10, which announced the director user-path remove/clear producer review while this packet was choosing work."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live default-descriptor consumer was established; adding it before the populated descriptor builder would perform redundant initialization."
+    },
+    {
+      "native": "00903f30",
+      "status": "skipped",
+      "host_site": "src/entity_lifecycle_tails.cpp: chain_unlink_00903f30",
+      "reason": "No live IntrusiveChain owner and node-index mapping was established for this projected container in this packet."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate attack scoring",
+      "reason": "No real per-group CandidateAttackBlock producer and consuming CandidateAttackHost was established in this packet."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: SpawnGroup gate",
+      "reason": "Missing established native request weight, candidate-record vector and support-site list; quick_spawn_named_group does not supply those inputs."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: native candidate score list",
+      "reason": "No live native score-list owner and gameplay consumer was established; prior evidence identifies the separate debug overlay reader."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: native candidate score list",
+      "reason": "No live native score-list owner and gameplay consumer was established; prior evidence identifies the separate debug overlay reader."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "No real per-group member recon-value producer was connected to this vector-based body in this packet."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "python tools/call_graph.py; who 00a7bf20; path 00a7bf20",
+    "float_math": "No floating-point operations changed; pc24 lint not required",
+    "runtime": "Static executable reachability only; game was not run"
+  },
+  "counts_before": {
+    "readiness_wired": 10452,
+    "readiness_rows_called": 5707
+  },
+  "counts_after": {
+    "readiness_wired": 10453,
+    "readiness_rows_called": 5717
+  }
+}
