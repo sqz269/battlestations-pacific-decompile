@@ -402,7 +402,7 @@ void* powerup_item_construct_008e6a80(Seg58Host& host, void* item) {
 }
 
 // [0x008e6ac0] BSP_PowerupModifier_Construct
-void* powerup_modifier_construct_008e6ac0(Seg58Host& host, void* modifier) {
+void* powerup_modifier_construct_008e6ac0(PowerupModifierStorageHost& host, void* modifier) {
   const Raw mod{static_cast<std::uint8_t*>(modifier)};
   const float default_mult = host.global_f32(0x00d7a24c);
   mod.at<std::uint32_t>(0x00) = 0u;
@@ -727,7 +727,7 @@ void* cg_scalar_deleting_dtor_008e7270(Seg58Host& host, void* self,
 
 // [008e72b0] BSP_PowerupModifier_CopyConstruct
 // Original ABI: __thiscall(void* self, const void* src) -> void* (RET 0x4)
-void* powerup_modifier_copy_construct_008e72b0(Seg58Host& host, void* self,
+void* powerup_modifier_copy_construct_008e72b0(PowerupModifierStorageHost& host, void* self,
                                                const void* src) {
   raw(self).at<std::uint32_t>(0x00) = raw(src).at<std::uint32_t>(0x00);
   raw(self).at<std::uint32_t>(0x04) = raw(src).at<std::uint32_t>(0x04);
@@ -735,8 +735,17 @@ void* powerup_modifier_copy_construct_008e72b0(Seg58Host& host, void* self,
   raw(self).at<std::uint16_t>(0x0c) = raw(src).at<std::uint16_t>(0x0c);
   raw(self).at<std::uint16_t>(0x0e) = raw(src).at<std::uint16_t>(0x0e);
   raw(self).at<std::uint32_t>(0x10) = raw(src).at<std::uint32_t>(0x10);
-  raw(self).at<float>(0x14) = raw(src).at<float>(0x14);
-  raw(self).at<float>(0x18) = raw(src).at<float>(0x18);
+  // bsp.py show 008E72B0 --asm, 008E72DE..008E72EB: these are FLD/FSTP
+  // pairs, not bit copies. Preserve their x87 NaN/status effects as the body
+  // becomes live; there is no arithmetic or precision-control change here.
+  __asm {
+    mov eax, src
+    mov edx, self
+    fld dword ptr [eax + 0x14]
+    fstp dword ptr [edx + 0x14]
+    fld dword ptr [eax + 0x18]
+    fstp dword ptr [edx + 0x18]
+  }
   raw(self).at<std::uint32_t>(0x1c) = raw(src).at<std::uint32_t>(0x1c);
 
   void* dst_name = add_bytes(self, 0x20);
