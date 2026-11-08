@@ -1,5 +1,6 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/cc13_seg87.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include <limits>
 #include <cmath>
 #include <cstring>
@@ -288,6 +289,31 @@ NativeString* GuiLua51Host::to_display_string(const GuiLuaRef& object,
     owner.state_04 = impl_->state;
     const NativeLuaObjectStorage view{&owner, 2, lua_gettop(impl_->state), 0, 0, {}};
     return native_lua_to_display_string_00b68630(view, fresh, calls);
+}
+
+std::array<float, 4> GuiLua51Host::to_vector4_or(const GuiLuaRef& object,
+    const std::array<float, 4>& fallback) {
+    if (impl_->refs.find(object.id) == impl_->refs.end()) return fallback;
+    const int top = lua_gettop(impl_->state);
+    impl_->push(object);
+    // Borrow the SAME retained value at its actual positive stack index. The
+    // native owner tracks only this operation's temporary, so its offset maps
+    // that temporary to slot 1 even when the outer stack has over 50 entries.
+    // B67720/B66DE0 both use owner+0Ch + object.index for their tracking index.
+    NativeLuaStateStorage owner;
+    construct_native_lua_state_00b66bd0(&owner);
+    owner.state_04 = impl_->state;
+    const int index = lua_gettop(impl_->state);
+    owner.stack_offset_0c = -index;
+    NativeLuaObjectStorage view{&owner, 2, index, 0, 0, {}};
+    std::array<float, 4> result;
+    // bsp.py show 00B67D40: index-5 nil gate, then reads/releases 1..4,
+    // binary32 conversions, and publication after release 4. As with the old
+    // get_by_index projection, Lua errors propagate to the enclosing pcall;
+    // no destructor-bearing local crosses that nonlocal transfer here.
+    oct18_tail_c::lua_vector4_or_00b67d40(&view, result.data(), fallback.data());
+    lua_settop(impl_->state, top);
+    return result;
 }
 
 const char* GuiLua51Host::to_string(const GuiLuaRef& object) {
