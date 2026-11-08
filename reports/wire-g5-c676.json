@@ -1,0 +1,155 @@
+{
+  "goal": 5,
+  "chain": 676,
+  "slot": "g5-w5",
+  "run": 1440,
+  "base": "a987aa42b9",
+  "picked": "AI SELLING command type dispatch",
+  "summary": "The live Sell planner now publishes the existing 00A0FD30 GetType body's result into the command installed by replace_command, replacing its direct enum assignment.",
+  "selection_note": "Skip reasons identify gaps in the investigated host paths; they do not prove that no alternative producer can be built.",
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release and all four CTests passed after the final C++ change",
+    "source_wired_before": 10417,
+    "source_wired_after": 10418,
+    "entry_reachable_reconstructed_before": 5315,
+    "entry_reachable_reconstructed_after": 5316,
+    "call_graph": "00A0FD30 has one reachable call from GameAiCoordinatorHost::Impl::planner_tick at built address 1005D700; body 10030A80 in ai_planners.obj. call_graph.py path 00a0fd30 reaches WinMainCRTStartup.",
+    "native_evidence": "bsp.py show 00a0fd30: MOV EAX,0Eh; RET, SELLING command vt+4h. The body already exists in src/ai_planners.cpp.",
+    "float_math": "No float expressions changed; pc24_lint not required.",
+    "limits": "Build, existing tests and static entry reachability only. Game not run. Existing semantic C++ command interfaces are not original binary ABI replacements. A trial call to the existing pure notification no-op was optimized away and removed; it is not counted."
+  },
+  "rows": [
+    {
+      "native": "00a0fd30",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::sell_think_00a22800 (compiled into planner_tick)",
+      "state": "Recovered binary type constant 14 becomes c.type for the actual owned group; replace_command installs this command and command_tick consumes it. The previous direct Selling enum assignment is deleted."
+    },
+    {
+      "native": "00a0fc90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::command_notify_member",
+      "reason": "Existing pure ai_command_notification_is_discarded call is optimized away; a surviving executable body call is missing, so the trial change was removed."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "A selectable CAUTIOUSMOVE producer is missing: the sole current caller passes ratio=1.0 and always selects MOVETO; the other original callers are the unbound Lua factory and a debug overlay."
+    },
+    {
+      "native": "00a10310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "A real CAUTIOUSMOVE command producer is missing, so its GetType dispatch cannot run on the current order path."
+    },
+    {
+      "native": "00a10370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::replace_command",
+      "reason": "A live REGROUPINGMOVE construction path is missing; the host only tests that type and does not produce it."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::powerup pass Pass::candidate_attack_value",
+      "reason": "Air-support flight-block class and weapon facts required by the pair-value scorer are missing; the existing host rejects this unmodelled path."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "The live scoring projection lacks the native class-pointer/record adapter consumed by this constructor; a disconnected scratch record would not replace the actual scoring state."
+    },
+    {
+      "native": "00a04560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "Already wired before this chain; the missing 00A00020 class-pointer/record adapter prevents the investigated constructor integration."
+    },
+    {
+      "native": "00a15a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::create_party_brain",
+      "reason": "Native brain/planner construction and lifetime adapters are missing; the host currently owns eight semantic Planner records and a projected capture slot."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl planner spawning",
+      "reason": "The existing body covers only a gate; native support-source collection, sorting and composition integration are missing from that interface."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl group scoring",
+      "reason": "A live member-recon-value adapter and consuming group-score call site are missing for the existing vector-based ratio body."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command callbacks",
+      "reason": "The entity+16Ch AI-group producer is missing on these command-host paths; both return no group and never reach the forward."
+    },
+    {
+      "native": "00a31000",
+      "status": "skipped",
+      "host_site": "No single-player host site",
+      "reason": "Debug-only overlay is excluded; it cannot supply the missing single-player CAUTIOUSMOVE producer."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target initialization",
+      "reason": "A verified address-space binding for native absolute globals 00F87574/78/7C is missing from the investigated command-target path; the literal body reads those addresses."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "The native movie-camera screen-state adapter is missing; this host callback still rejects the operation as unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "The native movie-camera screen-state adapter is missing; this host callback still rejects the operation as unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "The native movie-camera screen-state adapter is missing; this host callback still rejects the operation as unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "The native movie-camera screen-state adapter is missing; this host callback still rejects the operation as unreached."
+    },
+    {
+      "native": "00aa4f80",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "The game host lacks a bound GuiManagerFrameServices caller with the actual widget-frame and pointer runtime owners."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80 -> reset_gui_manager_highlights_00aa0f70",
+      "reason": "The enclosing native GUI-manager frame caller and actual widget-owner binding are missing from the game host."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80 -> GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "The enclosing native GUI-manager frame caller and actual pointer-runtime service binding are missing from the game host."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80 -> gui_widget_has_live_entries_00aa7ef0",
+      "reason": "The enclosing native GUI-manager frame caller and actual timed-entry owner binding are missing from the game host."
+    }
+  ]
+}
