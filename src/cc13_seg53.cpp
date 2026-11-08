@@ -1260,10 +1260,10 @@ void registered_model_effect_set_emitter_value_00871ff0(Seg53Host& host, Object 
 // 0..18, or 13h on no match. Per table entry: a null string ptr matches a null or empty entry;
 // with a string, a null entry matches size 0 and otherwise CRT _stricmp (00BF7FBF) == 0.
 // ---------------------------------------------------------------------------
-std::int32_t recon_category_index_from_name_0085bce0(Seg53Host& host, Object name) {
+std::int32_t recon_category_index_from_name_0085bce0(const char* const* category_names, Object name) {
     for (std::int32_t index = 0; index < 0x13; ++index) {
         const char* text = reinterpret_cast<const char*>(field<std::uintptr_t>(name, 0x4));
-        const char* entry = host.recon_category_name_00e0b590(index);
+        const char* entry = category_names[index];
         if (text == nullptr) {
             if (entry == nullptr || std::strlen(entry) == 0) {
                 return index;

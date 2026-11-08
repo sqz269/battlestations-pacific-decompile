@@ -1,0 +1,207 @@
+{
+  "chain": 864,
+  "worker": "agent/g5-w1",
+  "picked": "Recon-category decoding of real mission-progress archive keys",
+  "wired_before": 10713,
+  "wired_after": 10714,
+  "built_called_before": 5582,
+  "built_called_after": 5583,
+  "implementation": "Reuse the sole 0085BCE0 body with the existing literal category-name table instead of the broad Seg53Host. Mission-progress enum_index borrows each actual archive key through a size/pointer view and replaces its old local lookup loop. No new original-address body, feature switch, synthetic key, or duplicate lookup path.",
+  "evidence": [
+    "python tools/bsp.py show 0085bce0: native fastcall NativeString pointer; table 00E0B590; 19 case-insensitive comparisons; return 19 on miss.",
+    "Original PE from config/target.json: decoded all 19 pointers at 00E0B590 and asserted every string equals the pre-existing mission-progress constants.",
+    "Initial graph: 0085BCE0 absent; 00916A00 already reachable through signed-in profile loading.",
+    "Final graph: 0085BCE0 has six reachable call sites from read_mission_score_record_00916a00 and two inlined archive-key visitor functions.",
+    "Path: WinMainCRTStartup -> startup -> menu frame -> signed-in profile load -> read_mission_progress_00920000 -> read_mission_score_record_00916a00 -> 0085BCE0."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed after final C++ edits",
+    "tests": "All four existing CTests passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "diff_check": "git diff --check passed",
+    "call_graph": "42907/43063 functions entry-reachable; 5583/6205 reconstructed addresses called",
+    "float_math": "No floating-point arithmetic changed; pc24 lint not applicable",
+    "live_game": "Not run, as instructed; build/static call-graph evidence only"
+  },
+  "rows": [
+    {
+      "native": "0085bce0",
+      "status": "wired",
+      "host_site": "src/mission_progress.cpp::enum_index, called by read_mission_score_record_00916a00 and its archive-key visitors"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group score-list bookkeeping",
+      "reason": "Debug-overlay-only score list; excluded by the single-player/debug-only rule."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group score-list bookkeeping",
+      "reason": "Debug-overlay-only chosen marker; excluded by the single-player/debug-only rule."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::make_command_target",
+      "reason": "Needs the live absolute defaults at 00F87574/78/7C and a retained command-descriptor consumer; this host still returns zero."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::land_request_006c54c0",
+      "reason": "Needs the native landing-queue block, observer/slot storage and serialized-message providers; current deck queue is a semantic vector."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::sunk-hull terrain-mask path",
+      "reason": "Needs actual shape storage and manifold-clear/lock providers; inspected host path currently changes a per-unit semantic flag."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::render_004ca440",
+      "reason": "Existing candidate is only a depth-sample-kernel fragment; no live depth-sampling shader consumer was established in this packet."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::candidate_attack_value",
+      "reason": "Needs air-support flight-class weapon facts and compose-against-group adapter; current host explicitly throws, and the file was claimed by g5-w3."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::write_checkpoint",
+      "reason": "Needs the real checkpoint-difference/start guard and profile rewrite path; calling the clear-only projection alone would not implement the native operation."
+    },
+    {
+      "native": "00778860",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::route_unit",
+      "reason": "Director/path-object adapter was not established before g5-w3 claimed the AI host file."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::return-to-base capture-radius checks",
+      "reason": "Native unit/capture-list views and Small2Host adapter were not established before g5-w3 claimed the AI host file."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "Needs the flak alternate ammo+48h record producer, retained fields and copied tree; host explicitly records no producer."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command_building_set_owner_player_006f4d10",
+      "reason": "Needs the real unit+660h vector storage/lifetime binding before the capture-owner change can clear it."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp::engine_sound_step_007de490",
+      "reason": "No live engine-sound parameter producer and sound-slot consumer were established in this packet."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp::retained sound updates",
+      "reason": "Already has three reachable calls from retained sound updates in the initial built graph; no missing wiring here."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_and_submit_shadow_slice_00a8ecb0 and fit_shadow_cascade_00a8bd20",
+      "reason": "The duplicate FOV products are in shadow callers absent from this build; their live caller chain must be established first."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "No linked function or live shadow-fit caller was found by the initial built graph."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20",
+      "reason": "No linked function or live shadow-fit caller was found by the initial built graph."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::extra clip-plane submission",
+      "reason": "Existing source caller is absent from the initial linked graph; needs a live scene-submission caller chain."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::extra clip-plane clearing",
+      "reason": "Live scene-submission caller chain was not established; no speculative clip-plane call added."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp::GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Needs the actual AA2F10 hit-test provider and shared pointer globals before this existing runtime can replace the application path."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::update_gui_manager frame path",
+      "reason": "Needs a live manager-frame binding with its actual highlight owners; candidate absent from initial linked graph."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::update_gui_manager frame path",
+      "reason": "Needs the live manager-frame caller and actual timed-entry owner binding; candidate absent from initial linked graph."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp::collect_sorted_children_00aa5a00",
+      "reason": "Alphabetical child snapshot is outside the draw path; no single-player live caller was established."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp::gui_curve_control_points_00abca10",
+      "reason": "Needs a live authored-curve/control-point owner and renderer caller; candidate absent from initial linked graph."
+    },
+    {
+      "native": "00aa3bd0",
+      "status": "skipped",
+      "host_site": "src/gui_layer.cpp::create_kind_00aa3bd0",
+      "reason": "Candidate projects only the default/copy choice; complete layer allocation/construction caller binding was not established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp::NativeFontResources::accepts_text_byte",
+      "reason": "A live caller of the semantic acceptance method was not established; g5-w12 subsequently claimed this work and received the finding."
+    },
+    {
+      "native": "00bbb890",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_read_toc_00bbb890",
+      "reason": "No real archive/TOC consumer was established for this candidate during selection."
+    },
+    {
+      "native": "007ed830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::squadron ordnance query",
+      "reason": "Owned by g5-w9 c862; left untouched."
+    },
+    {
+      "native": "007ed970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::squadron ordnance query",
+      "reason": "Owned by g5-w9 c862; left untouched."
+    }
+  ],
+  "remaining": "No remaining work in the selected category-name lookup. Other surveyed candidates retain the dependencies or ownership recorded above. Native register ABI and live game behavior were not validated."
+}
