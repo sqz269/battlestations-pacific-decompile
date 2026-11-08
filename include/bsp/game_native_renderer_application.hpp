@@ -363,6 +363,10 @@ public:
     // retain the current scene's request; apply it before its first native
     // draw. True means applied now. Sprite-only rendering owns no service.
     bool set_scene_remap_texture(std::size_t slot, const std::string& name);
+    // 004BFD79 retires the session's remaps through 00B0FEB0 before the
+    // renderer/service is destroyed. Also discard requests retained before
+    // F8D39C construction when replacing a scene. False means no service exists.
+    bool reset_scene_remap_textures();
     // Profile settings+90h (008D610D), preserving the complete DWORD. Applies
     // 00B0D080 to the same actual F8D39C service; before its construction,
     // retain only the latest setting and apply it after native mission
