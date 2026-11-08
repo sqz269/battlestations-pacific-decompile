@@ -209,19 +209,31 @@ struct PowerUpTimer {
     float expires_at{}; // value+18h, compared against the clock at 00f876a4
 };
 
-// One element of the +14Ch per-player list.
+// The value in the +14Ch per-player map, excluding the tree node's +8h header.
+// 008E3710 resets these six native fields; 008E4B40/60/80 and 008E9AF0 borrow
+// the same retained record. The host-only cached class cooldown follows the
+// native 18h prefix and is never passed off as a native field.
 struct PowerUpSlot {
-    bool notified{}; // value+8h, latched to 1 once the slot becomes ready
-    bool relative_deadline{}; // value+1Ch; selects which expiry is used
-    float absolute_expiry{}; // value+18h, used when relative_deadline is false
-    // value+10h, the source object; its +80h float is added to the clock when
+    bool notified{}; // record+0h, latched once the slot becomes ready
+    std::uint8_t padding_01[3]{};
+    void* subject{}; // record+4h, cleared by reset/start-cooldown
+    // record+8h, the source class; its +80h float is added to the clock when
     // relative_deadline is set, which re-derives the deadline every frame.
     void* source{};
-    float source_offset{}; // *(source+80h)
-    // Record+0Ch, retained for 008E9AF0's fifth output vector. 008E3710
-    // explicitly zeroes it; later cooldown writers must retain their start here.
-    float absolute_start{};
+    float absolute_start{}; // record+0Ch, 008E9AF0's fifth output vector
+    float absolute_expiry{}; // record+10h, used for an absolute deadline
+    bool relative_deadline{}; // record+14h
+    std::uint8_t padding_15[3]{};
+    float source_offset{}; // host cache of *(source+80h), outside the native prefix
 };
+static_assert(sizeof(void*) == 4);
+static_assert(offsetof(PowerUpSlot, notified) == 0x00);
+static_assert(offsetof(PowerUpSlot, subject) == 0x04);
+static_assert(offsetof(PowerUpSlot, source) == 0x08);
+static_assert(offsetof(PowerUpSlot, absolute_start) == 0x0c);
+static_assert(offsetof(PowerUpSlot, absolute_expiry) == 0x10);
+static_assert(offsetof(PowerUpSlot, relative_deadline) == 0x14);
+static_assert(offsetof(PowerUpSlot, source_offset) == 0x18);
 
 struct PowerUpManagerState {
     // 16 channels at +84h. The sweep does not erase: it only calls 008e8c30.

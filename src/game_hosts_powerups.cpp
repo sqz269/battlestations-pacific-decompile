@@ -64,21 +64,12 @@ struct CollectionGame {
     std::array<CollectionPlayer*, 8> players{};
     std::int32_t local_slot{};
 };
-struct CollectionCooldown {
-    std::uint32_t notified{};
-    std::uint32_t unused{};
-    void* source{};
-    float start{};
-    float end{};
-    std::uint8_t relative{};
-};
 static_assert(sizeof(void*) == 4);
 static_assert(offsetof(CollectionNode, word) == 8);
 static_assert(offsetof(CollectionNode, uses) == 0x14);
 static_assert(sizeof(CollectionList) == 0x0c);
 static_assert(offsetof(CollectionManager, maps) == 0x14c);
 static_assert(offsetof(CollectionGame, local_slot) == 0x18ec);
-static_assert(offsetof(CollectionCooldown, relative) == 0x14);
 static_assert(offsetof(PowerupClassConfig, group_08) == 8);
 
 // Live uint32_t objects occupy the native capacity, so direct stores by the
@@ -233,16 +224,13 @@ public:
             if (map != manager_.maps[slot].data()) continue;
             const PowerupClassConfig* cls;
             std::memcpy(&cls, key, sizeof(cls));
-            const PowerUpSlot& record = cc13_powerup::slot_record_00617030(
+            PowerUpSlot& record = cc13_powerup::slot_record_00617030(
                 runtime_, static_cast<std::int32_t>(slot), cls);
-            cooldown_.notified = record.notified ? 1u : 0u;
-            cooldown_.source = record.source;
-            cooldown_.start = record.absolute_start;
-            cooldown_.end = record.absolute_expiry;
-            cooldown_.relative = record.relative_deadline ? 1u : 0u;
             if (record.relative_deadline && record.source == nullptr)
                 throw std::logic_error("008E9AF0 relative cooldown without source");
-            return &cooldown_;
+            // 008E9AF0 borrows the map value until the next lookup. Its
+            // native +0/+8/+0C/+10/+14 fields now are the retained slot itself.
+            return &record;
         }
         throw std::logic_error("008E9AF0 foreign cooldown map");
     }
@@ -308,7 +296,6 @@ private:
     std::vector<CollectionNode> copy_nodes_;
     void* copy_list_{};
     bool copy_live_{};
-    CollectionCooldown cooldown_;
     std::uint32_t game_word_{};
     std::uint8_t enabled_{};
     float clock_{};

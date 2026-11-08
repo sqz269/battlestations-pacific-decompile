@@ -125,6 +125,8 @@
 #include "bsp/session_polls.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
+#include "bsp/powerup_seg58_argon.hpp"
+#include "bsp/powerup_config.hpp"
 #include "bsp/mission_events.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/mission_load_hosts.hpp"
@@ -282,6 +284,39 @@ private:
 }
 
 int main() {
+    {
+        // Chain683: raw native readers borrow the retained slot directly.
+        // A stale host cache must not replace the live class+7C/+80 fields.
+        bsp::PowerUpSlot slot;
+        bsp::PowerupClassConfig cls{};
+        slot.source_offset = 91.0f;
+        struct Clock final : bsp::powerup_seg58_argon::PowerupSlotClockHost {
+            float now{20.0f};
+            float& global_f32(std::uint32_t address) override {
+                check(address == 0x00f876a4u, "chain683 reads the mission clock");
+                return now;
+            }
+        } clock;
+        slot.absolute_start = 3.0f;
+        slot.absolute_expiry = 30.0f;
+        const auto reads = [&] {
+            return std::array<float, 2>{
+                bsp::powerup_seg58_argon::powerup_slot_record_get_ready_time_008e4b60(clock, &slot),
+                bsp::powerup_seg58_argon::powerup_slot_record_get_end_time_008e4b80(clock, &slot)};
+        };
+        check(reads() == std::array<float, 2>{3.0f, 30.0f},
+            "chain683 native readers borrow the retained absolute times");
+        slot.source = &cls;
+        slot.relative_deadline = true;
+        cls.duration_7c = 4.0f;
+        cls.cooldown_80 = 8.0f;
+        check(reads() == std::array<float, 2>{24.0f, 28.0f} &&
+            bsp::powerup_seg58_argon::powerup_slot_record_is_cooldown_expired_008e4b40(clock, &slot) == 0u,
+            "chain683 deferred readers use the current descriptor and clock");
+        cls.cooldown_80 = 9.0f;
+        check(reads()[1] == 29.0f,
+            "chain683 borrowed descriptor updates remain visible without a projection refresh");
+    }
     {
         // Chain675: both Lua forms write the same profile containers and
         // dedupe across forms. One fixture catches repeated/partial appends.
