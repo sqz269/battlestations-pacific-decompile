@@ -442,18 +442,11 @@ inline constexpr bool kKillListenerHarmOnlyBound = true;  // ON: lead pair, six 
 // not 9; 007C6C30 fires (plane, 0) at 007C6D65 (the leave warning); 0081BEB0 and 00826D70
 // are the ship out-of-map countdown, not hosted. This installation has 36 subscriptions;
 // the host never delivered one.
-// True: AddListener keeps the two sets, and each host plane death of cause 4 ("exitzone",
-// the units host's 007F31A0 Kill(4)) fires (squadron, true) once, before `entityKilled`
-// and `kill`, as 007F31E6 runs ahead of 007F3418. note_exit_zone_00982120 is the hook for
-// the ship producer (its entity is the ship) and for the plane warning.
-// SUBSTITUTIONS (labelled): the event is taken from the host's destroyed-unit rows on the
-// next mission frame, not inside 007F31A0; the +361h latch is not held by this host, so
-// only the first batch of a squadron's exits (the deaths at the clock of its first
-// cause-4 death: the arm's caller and the members its leader arm sends out) fires, and
-// later exits of the same squadron count as latched; the state-9 gate is not modelled
-// (the host never runs state 9 inside a mission); the warning (plane, 0) has no host
-// producer yet, and no subscription in this installation watches a plane with
-// exited = false. The HUD warning 00982120 builds for exited = 0 is not modelled.
+// True: AddListener keeps the two sets. 007F31A0 queues (squadron, true) at its
+// 007F31E6 warning call, before Kill(4), using the live units-host +361h latch
+// and effective-mode gate. The next mission frame delivers queued producer events
+// before entityKilled/kill. note_exit_zone_00982120 also takes ship events and
+// the plane countdown's (squadron, false) warning. No event is inferred from death.
 // False: exitzone subscriptions are stored and never fire, as before.
 inline constexpr bool kLuaExitZoneListenersBound = true;  // ON: lead pair, six wins identical (2026-10-13)
 
@@ -1212,7 +1205,6 @@ struct GameMissionLuaSummary {
     unsigned long long listener_entity_killed_deaths{0};   // packet cc13-ver5
     unsigned long long listener_entity_killed_fires{0};
     unsigned long long listener_exit_zone_events{0};      // packet cc13-fix3
-    unsigned long long listener_exit_zone_latched{0};
     unsigned long long listener_exit_zone_fires{0};
     unsigned long long proximity_trigger_adds{0};          // packet cc13-fix10
     unsigned long long proximity_trigger_unresolved{0};
@@ -2571,10 +2563,7 @@ private:
     std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;
     std::vector<bool> listener_death_seen_;
     std::vector<bool> listener_entity_killed_seen_;   // packet cc13-ver5
-    // Packet cc13-fix3: cause-4 deaths already taken, each squadron's first exit clock,
-    // and the producer events waiting for the next frame (entity unit, exited).
-    std::vector<bool> listener_exit_zone_seen_;
-    std::map<std::size_t, float> exit_zone_first_clock_;
+    // Producer events waiting for the next frame (entity unit, exited).
     std::vector<std::pair<std::size_t, bool>> exit_zone_pending_;
     // Packet cc13-fix10: one 0074FEE0 trigger, the fields 00750000, 0074FDD0 and
     // 0074FBB0 read, under the image offsets.
