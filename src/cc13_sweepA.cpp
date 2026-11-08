@@ -2061,7 +2061,7 @@ Raw unit_distance_record_set_00522860(Raw record, void* unit, SweepAHost& host) 
 // the two checked-iterator tests (first > last -> 00BF6713); +D4h = -1; when
 // +30h is 4, 5 or 6 the input manager (004BEC00) gets 00A933F0(4, 1) then
 // (0Eh, 1); +30h = 0.
-void hud_screen_reset_selection_005251c0(Raw screen, SweepAHost& host) {
+void hud_screen_reset_selection_005251c0(Raw screen, HudUnitPickResetHost& host) {
     screen.at<std::uint32_t>(0xc0) = 0;
     const Raw vector{screen.field(0xc4)};
     void* const last = vector.ptr(8);

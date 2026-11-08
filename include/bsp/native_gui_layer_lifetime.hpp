@@ -7,14 +7,11 @@ struct NativeStringRawPoolContext;
 
 using NativeGuiLayerReferenceDecrement = long (__stdcall*)(volatile long*);
 
-// Required calls over the SAME actual manager/store/scene identities. No
-// typed GuiLayerImage, GuiLayoutPage, SceneResource or default owner is used.
-class NativeGuiLayerLifetimeBindings {
+// The B72250 leaf borrows only the current scene table and its zero terminal.
+// It does not require a Layer, widget cleanup, string pool or camera store.
+class NativeGuiSceneReleaseBindings {
 public:
-    virtual ~NativeGuiLayerLifetimeBindings() = default;
-    virtual void* manager_004c12b0() = 0;
-    virtual void remove_camera_store_00aa4b30(void* actual_manager,
-        void* actual_store) = 0;
+    virtual ~NativeGuiSceneReleaseBindings() = default;
     // Side-effect-free metadata lookup, not an Original call. Resolve the
     // captured numeric CURRENT profile to its SAME live table (>=1 DWORD).
     // The returned table and these bindings must survive terminal retirement.
@@ -24,6 +21,20 @@ public:
         std::uint32_t captured_target) = 0;
 };
 
+struct NativeGuiSceneReleaseContext {
+    NativeGuiSceneReleaseBindings& bindings;
+    NativeGuiLayerReferenceDecrement const volatile& actual_decrement_00ce2220;
+};
+
+// Required calls over the SAME actual manager/store/scene identities. No
+// typed GuiLayerImage, GuiLayoutPage, SceneResource or default owner is used.
+class NativeGuiLayerLifetimeBindings : public NativeGuiSceneReleaseBindings {
+public:
+    virtual void* manager_004c12b0() = 0;
+    virtual void remove_camera_store_00aa4b30(void* actual_manager,
+        void* actual_store) = 0;
+};
+
 struct NativeGuiLayerLifetimeContext {
     NativeGuiWidgetLifetimeContext& widgets;
     NativeStringRawPoolContext& strings;
@@ -31,6 +42,10 @@ struct NativeGuiLayerLifetimeContext {
     // Borrow the actual stdcall LONG decrement target cell; read it only at
     // the reached native CE2220 call. No host import/default is supplied.
     NativeGuiLayerReferenceDecrement const volatile& actual_decrement_00ce2220;
+
+    operator NativeGuiSceneReleaseContext() const noexcept {
+        return {bindings, actual_decrement_00ce2220};
+    }
 };
 
 // Whole B72250[28B]: ECX nonnull actual scene, no stack args; current CE2220
@@ -41,7 +56,7 @@ struct NativeGuiLayerLifetimeContext {
 // C++ return/call/exception ABI does not promise the Original tail-jump ABI.
 // This leaf adds no cleanup; failure propagates to its caller's cleanup state.
 void release_native_gui_scene_storage_00b72250(void* actual_scene,
-    NativeGuiLayerLifetimeContext&);
+    NativeGuiSceneReleaseContext);
 
 // Whole AC5480[213B]: ECX actual124h page, no stack args, RET. Requires its
 // genuinely constructed raw base/containers and initialized reached derived

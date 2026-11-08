@@ -1,4 +1,6 @@
 #include "bsp/flak_note_seg36_37_argon.hpp"
+#include "bsp/projectile_kinds.hpp"
+#include "bsp/bullet_engagement_range.hpp"
 
 #include <cmath>
 #include <cstdlib>
@@ -215,27 +217,48 @@ void* FlagModel_Construct_0070bfc0(void* self, void* arg0, const void* params) {
 
 // [0x0070c030] BSP_FlakBulletClass_ReadLuaFields
 // Original ABI: __thiscall (ECX = self, stack [ESP+4] = lua_node), RET 4.
-void FlakBulletClass_ReadLuaFields_0070c030(void* self, void* lua_node) {
-    fn_at<void(__thiscall*)(void*, void*)>(0x006e8770)(self, lua_node);
-    field_at<std::uint32_t>(self, 0xd4) = 0u;
-    std::uint8_t temp_lua_val[20]{};
-    void* val = fn_at<void*(__thiscall*)(void*, void*, const char*)>(0x00b67800)(
-        lua_node,
-        temp_lua_val,
-        reinterpret_cast<const char*>(0x00cfd510)
-    );
-    const std::int32_t int_val = fn_at<std::int32_t(__thiscall*)(void*)>(0x00b66290)(val);
-    field_at<float>(self, 0x58) = static_cast<float>(int_val);
-    fn_at<void(__thiscall*)(void*)>(0x00b67700)(temp_lua_val);
+// Evidence: bsp.py show 0070c030 --asm, 0070C051..0070C095. Replace the
+// original-image calls with the live row/base-reader contracts. The typed
+// descriptor is the caller's cached Bullets[id] object, not raw DCh storage.
+__declspec(noinline) void FlakBulletClass_ReadLuaFields_0070c030(
+    const WeaponClassRowView& row, WeaponClassLoadHost& host,
+    WeaponClassDescriptor& descriptor) {
+    load_weapon_class_base_fields(row, host, descriptor); // 0070C051 -> 006E8770
+    descriptor.effects.time_out = 0;                     // 0070C062, +D4h
+    const int min_range = row.plain_integer_value("MinRange"); // 0070C07B -> 00B66290
+    // 0070C080 CVTSI2SS uses MXCSR, independently of the main x87 control
+    // word. Keep the single native conversion even for nonexact integers.
+    float converted;
+    __asm {
+        mov eax, min_range
+        cvtsi2ss xmm0, eax
+        movss converted, xmm0
+    }
+    descriptor.flak_min_range = converted;               // 0070C088, +58h
 }
 
 // [0x0070c0b0] BSP_FlakBulletClass_DeriveEngagementRange
 // Original ABI: __thiscall (ECX = self), RET.
-void FlakBulletClass_DeriveEngagementRange_0070c0b0(void* self) {
-    const std::uint8_t ok = fn_at<std::uint8_t(__thiscall*)(void*)>(0x006e9890)(self);
-    if (ok == 1u) {
-        field_at<float>(self, 0xd8) = field_at<float>(self, 0x58) / field_at<float>(self, 0x50);
+// Evidence: bsp.py show 0070c0b0 --asm, all ten instructions C0B0..C0C9.
+// Typed descriptor/result projection; original allocation/vtable ABI and
+// exceptional inputs are not claimed as a native object replacement.
+__declspec(noinline) WeaponClassFinaliseResult FlakBulletClass_DeriveEngagementRange_0070c0b0(
+    const WeaponClassFinaliseInput& input, bool already_finalised) noexcept {
+    auto result = weapon_class_derive_base_engagement_range(input, already_finalised);
+    if (result.accepted) { // 0070C0B8: base AL == 1, including a latched base
+        const float min_range = input.flak_min_range;
+        const float speed = result.muzzle_speed;
+        float fuse_time;
+        // Preserve C0BC..C0C2 and the ambient x87 control word. In particular,
+        // do not replace this with an extended double division/late cast.
+        __asm {
+            fld min_range
+            fdiv speed
+            fstp fuse_time
+        }
+        result.flak_fuse_time = fuse_time;
     }
+    return result;
 }
 
 // [0x0070c0f0] BSP_FlakBullet_WriteState

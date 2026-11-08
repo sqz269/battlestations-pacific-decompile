@@ -1,5 +1,6 @@
 #include "bsp/dummy_depth_seg34_argon.hpp"
 #include "bsp/native_lua_objects.hpp"
+#include "bsp/gui_lua_reader.hpp"
 
 #include <cmath>
 #include <cstddef>
@@ -61,6 +62,12 @@ struct ByValPair8 {
 
 struct ByValLuaObj20 {
     std::uint32_t w[5];
+};
+
+struct OwnedNumberLuaRef {
+    GuiLuaHost& host;
+    GuiLuaRef value;
+    ~OwnedNumberLuaRef() { host.release(value); }
 };
 
 inline void detach_from_intrusive_list(void* list_head_base, std::ptrdiff_t head_ptr_offset, void* entity) {
@@ -851,22 +858,26 @@ void DummyKamikazePlaneClass_ResolveLinkedClass_006fe730(void* self) {
 void LuaTable_ReadNumberOrDefault_006fe780(
     const char* key_name,
     float* out_val,
-    void* lua_table_by_val,
+    GuiLuaHost& host,
+    GuiLuaRef lua_table_by_val,
     float default_val
 ) {
-    ByValLuaObj20 sub_obj{};
-    fn_at<void*(__thiscall*)(void*, void*, const char*)>(0x00b67800)(
-        lua_table_by_val,
-        &sub_obj,
-        key_name
-    );
+    // bsp.py show 006FE780 --asm: B67800 lookup, B65FB0 nil test,
+    // B66270 plain GetNumber (numeric strings coerce), FSTP32 at 006FE7D5,
+    // output store, then B67700 on the value and by-value table, in that order.
+    // Registry handles replace the original 14h LuaObject ABI; the references
+    // still belong to the caller's actual interpreter and retain its row.
+    OwnedNumberLuaRef table{host, lua_table_by_val};
+    OwnedNumberLuaRef sub_obj{host, host.get_by_name(lua_table_by_val, key_name)};
     float result = default_val;
-    if (fn_at<std::uint8_t(__thiscall*)(void*)>(0x00b65fb0)(&sub_obj) == 0u) {
-        result = static_cast<float>(fn_at<double(__thiscall*)(void*)>(0x00b66270)(&sub_obj));
+    if (!gui_lua_is_nil_00b65fb0(host, sub_obj.value)) {
+        const double number = host.to_number(sub_obj.value);
+        __asm {
+            fld qword ptr [number]
+            fstp dword ptr [result]
+        }
     }
     *out_val = result;
-    fn_at<void(__thiscall*)(void*)>(0x00b67700)(&sub_obj);
-    fn_at<void(__thiscall*)(void*)>(0x00b67700)(lua_table_by_val);
 }
 
 // [0x006fe820] BSP_DummyKamikazePlane_InitAll

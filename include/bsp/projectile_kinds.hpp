@@ -283,6 +283,9 @@ struct WeaponClassRowView {
     virtual float number_value(const char* key) const = 0;
     virtual float float_value(const char* key, float fallback) const = 0;
     virtual int integer_value(const char* key, int fallback) const = 0;
+    // Plain 00B66290: lua_tonumber (including numeric strings/missing=0),
+    // float32 spill, then the live CRT integer-conversion path. No type gate.
+    virtual int plain_integer_value(const char* key) const = 0;
     virtual bool boolean_value(const char* key, bool fallback) const = 0;
     // "Blast" and "Decals" are sub-tables; null when the key is nil.
     virtual const WeaponClassRowView* sub_table(const char* key) const = 0;

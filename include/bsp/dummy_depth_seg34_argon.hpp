@@ -13,7 +13,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace bsp { struct NativeLuaObjectStorage; }
+namespace bsp { struct NativeLuaObjectStorage; struct GuiLuaHost; struct GuiLuaRef; }
 
 namespace bsp::dummy_depth_seg34_argon {
 
@@ -70,10 +70,14 @@ void* SingleTurningGun_Construct_006fdfc0(void* self, void* arg0);
 
 // --- DummyKamikazePlane & Dummy2D (0x006fe730..0x006ff570) ---
 void DummyKamikazePlaneClass_ResolveLinkedClass_006fe730(void* self);
+// New C++ projection of the native fastcall/RET18 helper. Consumes one owned
+// table reference, as the original destroys its by-value LuaObject after the
+// looked-up value. Nil alone takes the default; other values use GetNumber.
 void LuaTable_ReadNumberOrDefault_006fe780(
     const char* key_name,
     float* out_val,
-    void* lua_table_by_val,
+    GuiLuaHost& host,
+    GuiLuaRef lua_table_by_val,
     float default_val
 );
 void DummyKamikazePlane_InitAll_006fe820(void* self);

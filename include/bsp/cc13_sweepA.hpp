@@ -56,7 +56,20 @@ struct DirectionPitchYawHost {
     virtual float geometry_asin_clamped_0042cf10(float value) = 0;
 };
 
-struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost, DirectionPitchYawHost {
+// Complete provider surface of 005251C0. The selection screen's live reset
+// needs only its checked vector erase and the shared input-context manager.
+struct HudUnitPickResetHost {
+    virtual ~HudUnitPickResetHost() = default;
+    virtual void invalid_parameter_noinfo_00bf6713() = 0;
+    virtual void vector_erase_range_00524dc0(Raw vector, void* ret, void* first_vec, void* first,
+                                             void* last_vec, void* last) = 0;
+    virtual void* input_manager_get_singleton_004bec00() = 0;
+    virtual void input_manager_set_context_level_00a933f0(void* manager, std::int32_t context,
+                                                          std::int32_t level) = 0;
+};
+
+struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost, DirectionPitchYawHost,
+                    HudUnitPickResetHost {
     virtual ~SweepAHost() = default;
 
     // Existing raw-layout callers retain the original WORD load. Typed live
@@ -662,7 +675,7 @@ std::uint32_t unit_pick_row_value_00521f10(Raw rows, std::int32_t index);
 std::uint8_t unit_pick_read_position_00521fd0(Raw entry, float* out);
 const void* unit_pick_attackmove_color_00522680(void* entity, std::uint32_t arg, SweepAHost& host);
 Raw unit_distance_record_set_00522860(Raw record, void* unit, SweepAHost& host);
-void hud_screen_reset_selection_005251c0(Raw screen, SweepAHost& host);
+void hud_screen_reset_selection_005251c0(Raw screen, HudUnitPickResetHost& host);
 void control_layout_screen_set_payload_00527c80(Raw screen, std::uint8_t a, std::uint8_t b,
                                                 std::uint8_t c, std::uint8_t d);
 std::int32_t camera_project_world_to_screen_xy_0043a870(const float* world, float* out_xy,

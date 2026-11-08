@@ -318,8 +318,9 @@ const ShipLeafFieldSpec* ship_leaf_find_field(ShipLeafClass leaf,
 
 bool submarine_reads_swim_depth1(float periscope_depth_slot) noexcept {
     // COMISS XMM0(0.0f), [ESI+810h] then JBE skips the SwimDepth1 read, so the
-    // read happens only when zero is above the slot.
-    return !(0.0F <= periscope_depth_slot);
+    // read happens only when zero is above the slot. Unordered sets CF/ZF,
+    // so JBE also skips the alias for NaN (00854335..0085433C).
+    return 0.0F > periscope_depth_slot;
 }
 
 LandingShipSubType landing_ship_sub_type(const char* sub_type) noexcept {

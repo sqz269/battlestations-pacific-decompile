@@ -165,6 +165,8 @@ public:
     // Borrow the application's actual input-action owner/configuration before
     // the first menu publication. It outlives the menu and the raw manager drain.
     void bind_input_context_manager(GameInputContextManagerBinding&);
+    // The same borrowed raw owner/configuration used by menu publications.
+    GameInputContextManagerBinding& input_context_manager();
     void bind_native_renderer(GameNativeRendererApplication&);
     // Goal 4 chain 302: the application's embedded input configuration
     // (game+3Ch), which the press-start commits load through 00698A10.

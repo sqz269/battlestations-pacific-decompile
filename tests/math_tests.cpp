@@ -3467,6 +3467,8 @@ int main() {
         const float periscope_depth = bsp::vehicle_class_number_or_00b66330(
             absent, bsp::ShipLeafDefaults::kAbsentDepth);
         const bool alias_taken = bsp::submarine_reads_swim_depth1(periscope_depth);
+        check(!bsp::submarine_reads_swim_depth1(std::numeric_limits<float>::quiet_NaN()),
+            "0085433C JBE skips SwimDepth1 for an unordered periscope depth");
         const float after_alias = alias_taken
             ? bsp::vehicle_class_number_or_00b66330(absent,
                                                     bsp::ShipLeafDefaults::kAbsentDepth)

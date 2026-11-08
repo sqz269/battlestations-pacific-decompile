@@ -41,6 +41,32 @@
     "This is an explicit C++ Source interface, not the original by-value register/stack ABI or a proof of original private SEH/nonlocal Lua-error equivalence.",
     "Only the generic number reader is changed; deferred class/resource/physics owners listed below remain missing."
   ],
+  "integration_retry": {
+    "merged_origin_main": "f79dd3bc136c2d678cf6d52fb450e5b0826430ea",
+    "resolution": "Hand-unioned the native LuaObject and GuiLuaHost/GuiLuaRef forward declarations, and both corresponding includes. Kept main's 006FE780 default-reader body and this branch's 00700330 plain-number body. The gunnery merge was clean. No ledger shard or cmake/startup.cmake conflicts occurred.",
+    "normal_build": "scripts/build.ps1 passed all four test groups both before and after the temporary ON build; the final executable uses the restored normal switches",
+    "on_build": "tools/off_switch_on_build.py --log local/c780-on-build.log passed all four test groups, exit 0, zero distinct compiler/linker diagnostics",
+    "on_switches": ["kAutoAttackAllMembersBound", "kPlaneFormationPlacementEnabled"],
+    "restoration": "Both toggled headers restored byte-for-byte, verified with before/after SHA-256; the mission-clock switch was not changed",
+    "header_sha256": {
+      "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+      "include/bsp/game_hosts_units_internal.hpp": "801ED5CCB0831C608EE547037AC9BDA4B30CD868787F6A0DD3EC12AE740FD867"
+    },
+    "focused_probes": "Both tests/wire_g5_c780_number_reader_probe.cpp and main's tests/wire_g5_c777_number_default_probe.cpp passed against the merged helper source and real linked Lua 5.1 library",
+    "normal_call_graph": {
+      "reconstructed_addresses_called": 5481,
+      "00700330": "one reachable direct call from LuaBulletClassRow::number_value at 100D03E7 to 1003A140",
+      "006fe780": "one reachable direct call from PlaneBinding::dkz_release_007bbba0 at 102D9E14 to 1003A1E0"
+    },
+    "wire_readiness": {
+      "wired": 10634,
+      "called": 5866,
+      "00700330": {"state":"wired", "called":true, "call_sites":1, "callers_live":1},
+      "006fe780": {"state":"wired", "called":true, "call_sites":1, "callers_live":1}
+    },
+    "pc24_lint": "0 findings across four files for origin/main...HEAD",
+    "count_scope": "The original before/after counts above describe chain 780 before integration; retry totals include the newly merged main changes."
+  },
   "rows": [
     {"native":"00700330","status":"wired","host_site":"src/game_hosts_gunnery.cpp: LuaBulletClassRow::number_value"},
     {"native":"00759120","status":"skipped","host_site":"src/game_hosts_units.cpp: Impl::carrier_runway_class_00759120","reason":"The raw mothership binder also needs the complete ship model/buoyancy owner and native named-point model, beyond the existing Aux-point projection."},

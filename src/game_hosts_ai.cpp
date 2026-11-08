@@ -1348,7 +1348,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         std::vector<NativeAttackCommand*> commands;
     };
 
-    struct NativeAttackCommand final : bsp::cc13_seg69::AttackCommandObserverHost {
+    struct NativeAttackCommand final : bsp::cc13_seg69::AttackCommandObserverHost,
+        bsp::cc13_seg69::CommandObserverDestructionHost {
         alignas(4) std::array<std::uint8_t, 0x2c> bytes{};
         std::shared_ptr<AttackObserverEndpoint> endpoint;
 
@@ -1375,8 +1376,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
 
         ~NativeAttackCommand() override {
-            // 00A10790/00A10A20/00A10AC0 -> 00695870: remove the outgoing
-            // command's registration when 00A2BD00 replaces that command.
+            // bsp.py show 00A108F0 --asm: 00A10917/1A passes this+8 to
+            // 00695870, then 00A10923 stores the base vtable. The normal
+            // flow is shared by the ATTACK destructor twins 00A10A20 and
+            // 00A10B40. Use the constructor's retained bytes and endpoint;
+            // replacement and target-destroyed IDLE installs both retire
+            // their actual registration here. Native EH ABI is not modelled.
+            bsp::cc13_seg69::ai_command_destruct_observer_body_00a108f0(
+                *this, bsp::cc13_seg69::Raw{bytes.data()});
+        }
+
+        void callback_owner_destroy_00695870(void* observer) override {
+            if (observer != bytes.data() + 8)
+                throw std::logic_error("ATTACK observer destruction does not match its command");
             auto& commands = endpoint->commands;
             commands.erase(std::remove(commands.begin(), commands.end(), this), commands.end());
         }

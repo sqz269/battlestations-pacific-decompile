@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_scene_post_process.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"
@@ -7805,6 +7806,111 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             impl.entities.size() - before, before);
         impl.pending_squadron_members.clear();
     }
+}
+
+// One parsed scene record. Enumeration must not apply an unselected scene's
+// renderer parameters. Retain 004E8510's actual output until mission selection.
+struct GameScenePostProcessRecord::Impl final : bsp::scene_weather_cc13::ScenePostProcessHost {
+    bsp::scene_weather_cc13::ScenePostProcessFields fields;
+    std::optional<bsp::scene_weather_cc13::ScenePostProcessHdr> hdr;
+    std::optional<bsp::scene_weather_cc13::ScenePostProcessMotionBlur> blur;
+    std::optional<bsp::scene_weather_cc13::ScenePostProcessUnderwaterWave> wave;
+    void set_hdr_params_00b0e9b0(const bsp::scene_weather_cc13::ScenePostProcessHdr& value) override {
+        hdr = value;
+    }
+    void set_motion_blur_params_00b0ea20(
+        const bsp::scene_weather_cc13::ScenePostProcessMotionBlur& value) override { blur = value; }
+    void set_underwater_wave_params_00b0ea70(
+        const bsp::scene_weather_cc13::ScenePostProcessUnderwaterWave& value) override { wave = value; }
+    std::array<std::string, 4> remap_names() const {
+        return {fields.texture_name_c24, fields.texture_name_uw_c2c,
+            fields.texture_name_old_film_c34, fields.texture_name_old_film_uw_c3c};
+    }
+    void publish_parameters(bsp::scene_weather_cc13::ScenePostProcessHost& host) const {
+        if (hdr) host.set_hdr_params_00b0e9b0(*hdr);
+        if (blur) host.set_motion_blur_params_00b0ea20(*blur);
+        if (wave) host.set_underwater_wave_params_00b0ea70(*wave);
+    }
+};
+
+// 00469BF0 instantiates SceneRootProps before applying authored assignments.
+// Project those same named values/sub-bags, including explicit empty strings
+// and scalar replacements of a sub-bag. This is not a new native bag owner.
+void overlay_post_process_properties(ScenePropertyBlock& destination, const ScenePropertyBlock& source) {
+    const auto same = [](const std::string& left, const std::string& right) {
+        return _stricmp(left.c_str(), right.c_str()) == 0;
+    };
+    for (const auto& value : source.values) {
+        destination.blocks.erase(std::remove_if(destination.blocks.begin(), destination.blocks.end(),
+            [&](const auto& child) { return same(child.first, value.key); }), destination.blocks.end());
+        auto found = std::find_if(destination.values.begin(), destination.values.end(),
+            [&](const auto& entry) { return same(entry.key, value.key); });
+        if (found == destination.values.end()) destination.values.push_back(value);
+        else *found = value;
+    }
+    for (const auto& child : source.blocks) {
+        destination.values.erase(std::remove_if(destination.values.begin(), destination.values.end(),
+            [&](const auto& value) { return same(value.key, child.first); }), destination.values.end());
+        auto found = std::find_if(destination.blocks.begin(), destination.blocks.end(),
+            [&](const auto& entry) { return same(entry.first, child.first); });
+        if (found == destination.blocks.end()) destination.blocks.push_back(child);
+        else overlay_post_process_properties(found->second, child.second);
+    }
+}
+
+
+namespace {
+const ScenePropertyBlock* post_process_child(const ScenePropertyBlock* root, const char* name) {
+    for (const auto& child : root->blocks)
+        if (_stricmp(child.first.c_str(), name) == 0) return &child.second;
+    return nullptr;
+}
+} // namespace
+
+std::array<std::string, 4> GameScenePostProcessRecord::remap_names() const {
+    return values_->remap_names();
+}
+void GameScenePostProcessRecord::publish_parameters(
+    bsp::scene_weather_cc13::ScenePostProcessHost& host) const {
+    values_->publish_parameters(host);
+}
+void GameScenePostProcessRecord::apply(GameNativeRendererApplication& renderer) const {
+    struct Publisher final : bsp::scene_weather_cc13::ScenePostProcessHost {
+        GameNativeRendererApplication& renderer;
+        explicit Publisher(GameNativeRendererApplication& value) : renderer(value) {}
+        void set_hdr_params_00b0e9b0(const bsp::scene_weather_cc13::ScenePostProcessHdr& value) override {
+            (void)renderer.set_scene_hdr(value);
+        }
+        void set_motion_blur_params_00b0ea20(
+            const bsp::scene_weather_cc13::ScenePostProcessMotionBlur& value) override {
+            (void)renderer.set_scene_motion_blur(value);
+        }
+        void set_underwater_wave_params_00b0ea70(
+            const bsp::scene_weather_cc13::ScenePostProcessUnderwaterWave& value) override {
+            (void)renderer.set_scene_underwater_wave(value);
+        }
+    } publisher(renderer);
+    publish_parameters(publisher);
+}
+GameScenePostProcessRecord read_scene_post_process_record(
+    const ScenePropertyBlock& schema, const ScenePropertyBlock& header) {
+    auto values = std::make_shared<GameScenePostProcessRecord::Impl>();
+    auto& result = *values;
+    // 00469D23 preserves an authored scalar; 004F233F skips 004E8510
+    // unless the resulting property type is 6. Scalar assignments live in
+    // values, not blocks, and must suppress the schema's default child bag.
+    if (header.find("g_PostProcess") != nullptr)
+        return GameScenePostProcessRecord{std::move(values)};
+    const auto* authored = post_process_child(&header, "g_PostProcess");
+    const auto* defaults = post_process_child(&schema, "g_PostProcess");
+    if (!authored && !defaults) return GameScenePostProcessRecord{std::move(values)};
+    ScenePropertyBlock post = defaults ? *defaults : ScenePropertyBlock{};
+    if (authored) overlay_post_process_properties(post, *authored);
+    const auto model = bsp::scene_weather_cc13::scene_bag_from_block(post);
+    std::string error;
+    if (!bsp::scene_weather_cc13::read_post_process_004e8510(model, 0, result.fields, result, error))
+        throw std::runtime_error("scene post-processing properties: " + error);
+    return GameScenePostProcessRecord{std::move(values)};
 }
 
 }  // namespace bsp::game

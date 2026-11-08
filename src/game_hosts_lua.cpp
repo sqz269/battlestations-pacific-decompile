@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/airfield_marker_seg31_32_argon.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/cc13_seg69.hpp"
@@ -792,8 +793,14 @@ public:
     // registry here, so the pair is answered unregistered and registered nowhere.
     bool observer_pair_registered(bsp::ObjectiveUnitList&, void*) override { return false; }
     void observer_register_pair(bsp::ObjectiveUnitList&, void*) override {}
-    // 006DE3D0 at 008DF39E and 006DE3E0 at 008DF5D0's tail: bare RET 8.
-    void marker_bind_on_add_stub(const std::string&, void*) override {}
+    void marker_bind_on_add_stub(const std::string&, void* unit) override {
+        // 008DF2B0 calls 006DE3D0 at 008DF39E after inserting this live unit.
+        // Its whole body is RET 8 (bsp.py show 006de3d0 --asm), so the source
+        // interface drops the unread manager/name/unit ABI inputs. The shared
+        // position callback passes null and belongs to the separate 006DE3E0.
+        if (unit != nullptr)
+            bsp::airfield_marker_seg31_32_argon::marker_manager_bind_unit_marker_stub_006de3d0();
+    }
     // 006DE3F0 / 006DE4C0 on the marker manager at game+21D4h. The SzurkeNyil
     // markers are not built in this process (LABELLED; the HUD marker host records
     // its objective arm), so nothing is rebound or cleared.
@@ -2575,27 +2582,24 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
                     ::lua_settop(state_, ::lua_gettop(state_) - 1);
                 }
             }
-            // Packet cc9_submarine_dive: 00854230's NumberOr keys, each keeping
-            // its literal default when the row does not author it.
-            const auto number_or = [&](const char* key, float fallback) -> float {
-                ::lua_getfield(state_, -1, key);
-                const float value = ::lua_type(state_, -1) == LUA_TNUMBER
-                    ? static_cast<float>(::lua_tonumber(state_, -1)) : fallback;
-                ::lua_settop(state_, ::lua_gettop(state_) - 1);
-                return value;
-            };
-            row.sub_periscope_depth = number_or("PeriscopeDepth", -1.0f);
-            if (row.sub_periscope_depth < 0.0f) {
-                row.sub_periscope_depth = number_or("SwimDepth1", row.sub_periscope_depth);
+            const auto* row_kind = bsp::vehicle_class_kind_row(row.type.c_str());
+            if (row_kind != nullptr && row_kind->kind == bsp::VehicleClassKind::Submarine) {
+                // Goal 5 chain 771: 00854230 owns +810h..+83Ch once the actual
+                // descriptor loads. Dive/air initialization consumes that same
+                // retained result, rather than re-reading its mutable Lua row.
+                if (vehicle_class_ship_leaf_fields_.find(index) == vehicle_class_ship_leaf_fields_.end())
+                    mark_vehicle_class_row_00964790(index);
+                const auto& fields = vehicle_class_ship_leaf_fields_.at(index).fields;
+                row.sub_periscope_depth = fields.periscope_depth;
+                row.sub_swim_depth2 = fields.swim_depth2;
+                row.sub_swim_depth3 = fields.swim_depth3;
+                row.sub_up_down_accel = fields.up_down_accel;
+                row.sub_up_down_stop_time = fields.up_down_stop_time;
+                row.sub_up_speed = fields.up_speed;
+                row.sub_down_speed = fields.down_speed;
+                row.sub_air_run_out_time = fields.air_run_out_time;
+                row.sub_air_reload_time = fields.air_reload_time;
             }
-            row.sub_swim_depth2 = number_or("SwimDepth2", -1.0f);
-            row.sub_swim_depth3 = number_or("SwimDepth3", -1.0f);
-            row.sub_up_down_accel = number_or("UpDownAccel", 0.25f);
-            row.sub_up_down_stop_time = number_or("UpDownStopTime", 5.0f);
-            row.sub_up_speed = number_or("UpSpeed", 1.2f);
-            row.sub_down_speed = number_or("DownSpeed", 1.2f);
-            row.sub_air_run_out_time = number_or("AirRunOutTime", 120.0f);
-            row.sub_air_reload_time = number_or("AirReloadTime", 5.0f);
             // 007D20C6 scales Accel in place by tuning+31Ch * tuning+320h when
             // the second is above 1.0 and leaves it raw otherwise
             // (src/plane_class_fields.cpp:207-219). The raw value is read here:
@@ -6478,9 +6482,10 @@ private:
     std::deque<std::string> strings_;
 };
 
-// The surface leaves borrow the actual settings singleton's selected tuning
-// dwords. Landing-ship class registration and submarine effect resolution
-// remain unavailable in this binding.
+// Ship leaves borrow the actual settings singleton's selected tuning dwords.
+// The submarine body represents its effect handle by the authored ID, as the
+// ship-base field model does; native refcounted effect ownership is unbound.
+// Landing-ship class registration remains unavailable in this binding.
 class GameMissionLuaShipLeafFieldBinding final : public bsp::ShipLeafFieldHost {
 public:
     GameMissionLuaShipLeafFieldBinding(bsp::GameplayTuningSettings& settings,
@@ -6490,7 +6495,7 @@ public:
         return select_loaded_ship_depth_table(settings_, mode_).word(offset);
     }
     std::int32_t session_mode() override { return mode_; }
-    std::int32_t make_effect_handle(std::int32_t) override { unavailable(); }
+    std::int32_t make_effect_handle(std::int32_t id) override { return id; }
     void register_landing_troop_soldier(const char*) override { unavailable(); }
     void register_landing_troop_vehicle(std::int32_t) override { unavailable(); }
     bsp::GuiLuaRef landing_troop_classes(std::int32_t) override { unavailable(); }
@@ -6732,6 +6737,7 @@ public:
             bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
             load_ship_base(descriptor, lua, row, fields.length);
             load_surface_ship_leaf(descriptor, lua, row);
+            load_submarine_leaf(descriptor, lua, row);
             lua.release(row);
             descriptor->linked_class_index = fields.launched_class;
             owner_.vehicle_class_base_fields_[descriptor->class_index] = std::move(fields);
@@ -6847,6 +6853,29 @@ private:
         }
         owner_.vehicle_class_ship_leaf_fields_.insert_or_assign(descriptor->class_index,
             GameMissionLuaHost::LoadedShipLeaf{std::move(fields), ship_tuning_block_offset(mode)});
+    }
+
+    void load_submarine_leaf(bsp::VehicleClassDescriptor* descriptor,
+        GameMissionLuaVehicleClassFieldBinding& lua, const bsp::GuiLuaRef& row) {
+        const int index = descriptor->kind_index;
+        if (index < 0 || index >= bsp::kVehicleClassDescriptorCount
+            || bsp::kVehicleClassDescriptorTable[index].kind != bsp::VehicleClassKind::Submarine)
+            return;
+        if (!owner_.gameplay_tuning_settings_) owner_.load_ship_globals_0083b6e6();
+        if (!owner_.gameplay_tuning_settings_)
+            throw std::runtime_error("submarine leaf load requires completed gameplay settings");
+        const auto mode = bsp::session_context().session_word_1fe4;
+        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode, state_);
+        bsp::ShipLeafFields fields;
+        // bsp.py show 00854230: descriptor ECX, LuaObject* row on stack, RET 4.
+        // The existing Source body receives the actual class row and selected
+        // settings. Retain all thirteen fields and the four distinct tuning
+        // slots beside this descriptor; the row/depth/navigation readers use
+        // these stores. This is the C++ field model, not the original ABI.
+        bsp::read_submarine_class_fields_00854230(lua, settings, row, fields);
+        owner_.vehicle_class_ship_leaf_fields_.insert_or_assign(descriptor->class_index,
+            GameMissionLuaHost::LoadedShipLeaf{std::move(fields), ship_tuning_block_offset(mode)});
+        owner_.log_.implemented("VehicleClass::load_submarine_leaf", "00854230");
     }
 
     bsp::GuiLuaRef take() {
@@ -17207,6 +17236,21 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
         // second lookup of the mutable Lua row (00759590 has already run).
         if (std::strcmp(key, "RunwayWidth") == 0) return leaf->second.fields.runway_width;
         if (std::strcmp(key, "RunwayLength") == 0) return leaf->second.fields.runway_length;
+    }
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Submarine) {
+        const auto& fields = leaf->second.fields;
+        if (std::strcmp(key, "PeriscopeDepth") == 0) return fields.periscope_depth;
+        if (std::strcmp(key, "SwimDepth2") == 0) return fields.swim_depth2;
+        if (std::strcmp(key, "SwimDepth3") == 0) return fields.swim_depth3;
+        if (std::strcmp(key, "PeriscopeMoveRange") == 0) return fields.periscope_move_range;
+        if (std::strcmp(key, "UpDownAccel") == 0) return fields.up_down_accel;
+        if (std::strcmp(key, "UpDownRotation") == 0) return fields.up_down_rotation;
+        if (std::strcmp(key, "UpDownStopTime") == 0) return fields.up_down_stop_time;
+        if (std::strcmp(key, "UpSpeed") == 0) return fields.up_speed;
+        if (std::strcmp(key, "DownSpeed") == 0) return fields.down_speed;
+        if (std::strcmp(key, "AirRunOutTime") == 0) return fields.air_run_out_time;
+        if (std::strcmp(key, "AirReloadTime") == 0) return fields.air_reload_time;
     }
     if (leaf != vehicle_class_ship_leaf_fields_.end()
         && leaf->second.fields.leaf == bsp::ShipLeafClass::TorpedoBoat) {
