@@ -1,0 +1,300 @@
+{
+  "run": 1745,
+  "goal": 5,
+  "chain": 810,
+  "owner": "agent/g5-w10",
+  "base_head": "ae39b5685729b0a000c99433e57f898fb51066d4",
+  "picked": "Retained squadron travel-speed refresh on the pilot head-task transition",
+  "wired_before": 10647,
+  "wired_after": 10648,
+  "entry_reachable_reconstructed_before": 5500,
+  "entry_reachable_reconstructed_after": 5501,
+  "implementation": [
+    "Replace the host refresh condition and lock mutation with the single existing 007ED5D0 body through a typed view of retained squadron state.",
+    "Resolve the real squadron registry record and fused wing-0 slot; do not treat the standalone-plane fallback block as a native squadron.",
+    "Retain one binary32 +388h countdown, initialized from 007F2BD0 and reset to the native 0.5f by the script setter; read it directly only after the frozen gate.",
+    "Advance the retained countdown once per squadron at the group-3 phase after all pilot reads and before recount, with ordered positive-step and freeze gates and the shared native x87 FSUB/FSTP kernel.",
+    "Read the genuine loaded class TravelSpeed/NewTravelSpeedMul only after the negative-countdown and clear-lock gates.",
+    "Preserve the native FLD/FSTP class-speed store and publish its result to the movement readers through sq_speed_refreshed.",
+    "Remove the old >= expiry comparison: native COMISS/JBE excludes zero and unordered countdowns. Frozen state preserves the lock; the unfrozen path clears it."
+  ],
+  "evidence": [
+    "bsp.py show 007ED5D0 and --asm: 007ED5D0..007ED607; frozen gate, ordered strict-negative comparison, class+190h FLD/FSTP, lock clear.",
+    "bsp.py show 007F3BA0 --asm: 007F3BAA/B5 gates on positive step, 007F3BE1/E5 gates on freeze, and 007F3BE7..007F3BEC subtracts the step from +388h with x87 FSUB/FSTP after group-1 pilot reads.",
+    "game_hosts_units.cpp set_squadron_travel_speed_008a0630 resets the real retained float countdown and supplies the freeze, speed and lock state.",
+    "plane_squadron.cpp 007F45B0 spawn plan resolves Type to the plane class at squadron+35Ch; PlaneSquadronHostRecord retains the same type and fused wing-0 identity.",
+    "game_hosts_units_internal.hpp moveto_speed_009c1850 documents class+190h as class TravelSpeed times tuning+334h NewTravelSpeedMul.",
+    "call_graph.py who 007ED5D0: core body @10505EB0, reachable direct call @102EFB7E from PlaneBinding::pilot_think_and_commit in game_hosts_units_motion.obj."
+  ],
+  "validation": {
+    "baseline": "index --if-stale fresh; scripts/build.ps1 passed all six CTest groups",
+    "final_build": "scripts/build.ps1 passed all six CTest groups after final C++ changes",
+    "focused_probe": "tests/wire_g5_c810_travel_speed_probe.cpp compiled with MSVC Win32 /MD /O2 /fp:strict and /link /MANIFEST:EMBED at PC24; native gates plus shared host adapter reset/freeze/nonpositive-step/NaN-step and tenth/eleventh-step boundary checks passed",
+    "probe_command": "cmd /c local\\c810-travel-speed-probe.cmd",
+    "float_lint": "python tools/pc24_lint.py --staged: 0 findings across 8 C++ files; repeat --diff origin/main...HEAD after commit",
+    "call_graph": "42582/42736 functions reachable; 5501/6117 reconstructed addresses called; target core body has one reachable call site",
+    "readiness": "wire_readiness.py --standins: 007ED5D0 wired, called=true, call_sites=1; total 10647 -> 10648",
+    "whitespace": "git diff --check passed"
+  },
+  "limitations": [
+    "The squadron remains fused with wing 0; the class speed is derived from its loaded class/tuning values rather than dereferencing an original binary descriptor.",
+    "This is a new C++ typed interface and bookkeeping result, not the original __thiscall ABI.",
+    "No game execution, gameplay validation or native timer differential proof was performed."
+  ],
+  "review_rounds": [
+    {
+      "review_run": 1766,
+      "round": 1,
+      "reviewed_head": "79105ad5ef63346930594971c9ad9dbd7bf51257",
+      "finding": "P2 include/bsp/game_hosts_units_internal.hpp:12179: expiry subtraction restores class speed before the native group-3 decrement phase",
+      "disposition": "fixed",
+      "agreement": "The finding is correct: simulated_seconds advances before pilot think, so expiry subtraction both changes the phase and loses native per-operation float rounding and freeze behavior.",
+      "changes": "Removed sq_timer_expiry_388 entirely. Its replacement is one float sq_countdown_388, reset by the production setter adapter and decremented after all pilot reads by the production group-3 adapter. Both it and the existing 007F3BA0 body share one x87 subtraction kernel.",
+      "regression": "The focused probe uses the same PlaneSquadronTravelSpeedHostCountdown as the actual setter, RefreshView and group-3 traversal. Starting at 0.5f, step 1 clears the lock; after nine 0.05f decrements step 10 reads 0x3D4CCCC3 (+0.0499999635), so a head-task change preserves the override. Group 3 then stores 0xB3200000 (-3.7252903e-8), and step 11 restores class speed. Frozen, reset and nonpositive/unordered-step checks also pass.",
+      "validation": "Win32 scripts/build.ps1 and all six CTest groups passed; focused shared-host-adapter probe passed; staged PC24 lint reported zero findings across eight C++ files; call graph confirms one entry-reachable call to the original claimed body.",
+      "scope": "No additional reconstructed address is claimed wired by the timer-fragment repair."
+    }
+  ],
+  "rows": [
+    {
+      "native": "007ed5d0",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::refresh_travel_speed_007ed5d0, called by src/game_hosts_units_motion.cpp PlaneBinding::pilot_think_and_commit",
+      "reason": "The existing body now reads the retained float countdown before its group-3 decrement, runs on the squadron override block, and publishes its class-speed store to actual movement readers."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land-moveto state construction",
+      "reason": "Missing constructed native land-moveto object and complete approach/task service contract; the inspected host retains flattened motion state."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane pilot-target query",
+      "reason": "Missing retained pilot+98h target publication for the current F876B8 slot; dogfight/command targets do not establish that field."
+    },
+    {
+      "native": "009f9ce0",
+      "status": "skipped",
+      "host_site": "src/native_bot_approach_head.cpp: NativeBotApproachHeadHost::construct_speed_reference",
+      "reason": "No entry-reachable complete approach constructor with its actual unit and descriptor-row context was established in the inspected motion hosts."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The inspected command adapter returns null for entity+16Ch and has no retained group command; agent/g5-w5 c809 subsequently claimed the producer/forwarding work."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "No concrete entry-reachable selected-row input editor owner and platform activation binding was established."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "No concrete host stream-writer object with the required native vslot54 write contract was established."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "No live producer of this stream-writer chunk array and its EngineServiceCalls binding was established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text/input consumer",
+      "reason": "Missing live byte-admission input consumer with its text-context font; complete-string text layout is a different operation."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_light_shadow_owner_lifetime.cpp: readiness source entry",
+      "reason": "The readiness-named source file is absent in this checkout; no body or live light+174h owner setter was available to wire here."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: reserve_native_animation_values_00b92440",
+      "reason": "The source has assignment/append callers, but no entry-reachable animation-value owner feeding those callers was established."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown close_result_gui",
+      "reason": "Missing same-domain native game+7184h receiver, movie-screen state and complete sound-transition context for the recorded teardown call."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/native_gui_movie_default_storage.cpp: construct_native_gui_movie_default_00aafe20",
+      "reason": "No actual GUI Movie default-factory allocation consumer was established; the existing movie decoder/player factory owns different objects."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: powerup spawn-request adapter",
+      "reason": "Missing same-domain spawn manager object and the complete native spawn-request service/state contract."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The main-thread mission interpreter produces no off-main-thread deferred node with a real source LuaVariantRecord argument vector."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "No complete entry-reachable approach constructor publishing a genuine NativeBotStateRegistryStorage was established."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp: registry teardown",
+      "reason": "Missing the live constructed registry/approach owner and its corresponding destruction path."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear command",
+      "reason": "Missing presence-zero clear-message producer and retained per-slot path owners; the inspected live sender adds path points."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No concrete original empty-descriptor constructor caller with its current class-ordinal publication was established."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: get_profile_manager_00425c20",
+      "reason": "No concrete host caller retaining this ProfileManagerOwner publication/lifetime domain was established in the inspected profile adapters."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: get_native_soldier_registry_004b1330",
+      "reason": "No entry-reachable soldier-class registry caller with the actual registry publication and construction-access lifetime was established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "No concrete host consumer with the leak manager water/capacity and loaded settings+404h state was established."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: collision-mask handling",
+      "reason": "Missing actual DYN shape-chain storage plus manifold-clear/world-lock callbacks; a hull-filter boolean does not provide them."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing live support-menu filter caller with actual support-site class availability entries and owner health."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing the retained support-site stock lists and a support-menu order or spawn-composition consumer."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: sub_update_008252c0",
+      "reason": "The inspected unit sub-update owns the RPM smoother but not the engine sound emitter objects/pitch-volume state this body needs."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane debris/death path",
+      "reason": "Missing per-part visual record/node translation, record+14h vector and the corresponding live debris dynamics consumer."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene-text multiline writer",
+      "reason": "No entry-reachable scene-text save/writer owner invoking the original multiline writer was established."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: active-use completion",
+      "reason": "The inspected active-use completion still needs scoring award-map/providers before cooldown publication; agent/g5-w8 c815 subsequently claimed this continuation."
+    },
+    {
+      "native": "0095ba30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: class_registry_clear_0095ba30",
+      "reason": "No concrete world-container teardown caller owning this ClassRegistryModel and its party rows was established."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "No live loader work-item-vector consumer reaching this removal operation was established in the inspected queue owner."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "No complete entry-reachable native loading-job submission binding with name/callback ownership was established."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing the concrete live native job producer and loader worker/retirement path in the inspected host."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing a proven live queued job plus the complete acquired/retire context for the original queue-front operation."
+    },
+    {
+      "native": "00aa7d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_local_position",
+      "reason": "No original authored-X-only consumer was established; adding this body to the local-position path would recompose/publish bounds a second time."
+    },
+    {
+      "native": "00aa6b10",
+      "status": "skipped",
+      "host_site": "src/gui_manager_cc13.cpp: contains_point_00aa6b10",
+      "reason": "No concrete original hit-test input consumer was established in the inspected sprite-bridge frontend."
+    },
+    {
+      "native": "00481510",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp: box_corners_from_bounds_00481510",
+      "reason": "No same-domain native box construction consumer with its bounds input was established; inspected host corner arrays serve different operations."
+    },
+    {
+      "native": "007ed590",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_plane_squadron_reset_travel_speed_007ed590",
+      "reason": "Inspected as refresh evidence only; the restore-travel-speed Lua caller is not wired by this packet."
+    },
+    {
+      "native": "007f1fe0",
+      "status": "skipped",
+      "host_site": "src/cc15_seg48.cpp: cc15_seg48_plane_squadron_begin_from_creation_record_007f1fe0",
+      "reason": "Inspected as class-speed producer evidence only; a complete native begin/activation object and callback contract remains outside this packet."
+    },
+    {
+      "native": "007f3ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: post-pilot squadron group-3 phase; src/tick_element_overrides.cpp: shared countdown subtraction",
+      "reason": "Review repair integrates only the retained +388h countdown fragment; the full tick body's complete SquadronTickHost callback/state contract is not claimed wired."
+    }
+  ]
+}

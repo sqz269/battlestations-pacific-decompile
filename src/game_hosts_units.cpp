@@ -8203,7 +8203,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->sq_timer_expiry_37c = defaults.countdowns_00[0];
             slot->sq_timer_expiry_380 = defaults.countdowns_00[1];
             slot->sq_timer_expiry_384 = defaults.countdowns_00[2];
-            slot->sq_timer_expiry_388 = defaults.countdowns_00[3];
+            slot->sq_countdown_388 = defaults.countdowns_00[3];
             slot->sq_freeze_38c = defaults.frozen_10[0] != 0;
             slot->sq_freeze_38d = defaults.frozen_10[1] != 0;
             slot->sq_freeze_38e = defaults.frozen_10[2] != 0;
@@ -9616,7 +9616,8 @@ bool GameUnitsHost::set_squadron_travel_speed_008a0630(std::size_t unit_index, f
     Impl& host = *impl_;
     GameUnitSlot* sq = host.squadron_slot_of(unit_index);
     if (sq == nullptr) return false;
-    sq->sq_timer_expiry_388 = host.summary.simulated_seconds + 0.5;  // +388h = [00CE3800]
+    bsp::PlaneSquadronTravelSpeedHostCountdown{
+        sq->sq_countdown_388, sq->sq_freeze_38f}.reset_script_override(); // +388h = [00CE3800]
     sq->sq_freeze_38f = force;                                        // +38Fh
     sq->sq_speed_3a0 = speed;                                         // +3A0h
     sq->sq_lock_3ac = true;                                           // +3ACh = 1

@@ -166,6 +166,11 @@ void unit_tick_advance_sim_00953cc0(UnitTickAdvanceState& state, float step,
 inline constexpr int kSquadronTickTimerCount = 4;
 inline constexpr float kSquadronTickMoraleRate = 0.25f; // 00D7A348, a double
 
+// The single FSUB/FSTP operation shared by 007F3BA0's four countdowns and
+// the live host's group-3 timer projection. Call only after its step/freeze
+// gates. Uses the current x87 precision (PC24 on the game's main thread).
+void subtract_squadron_tick_step(float& countdown, float step) noexcept;
+
 struct SquadronTickTimers {
     // node+6Ch/70h/74h/78h, each gated by the byte at node+7Ch/7Dh/7Eh/7Fh.
     // A set gate byte freezes its timer. Listing order is 70h, 6Ch, 74h, 78h.

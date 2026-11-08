@@ -396,7 +396,36 @@ bool cc13_seg48_plane_squadron_any_ready_rocket_007ed9c0(void* squadron, std::ui
 std::uint32_t cc13_seg48_plane_squadron_get_ai_command_block_007ecfd0(void* squadron);
 std::uint32_t cc13_seg48_plane_squadron_current_command_token_007ed580(void* squadron, Cc13Seg48Host& host);
 void cc13_seg48_plane_squadron_reset_travel_speed_007ed590(void* squadron);
-void cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(void* squadron);
+// The production adapter shared by the Lua setter, pilot refresh and group-3
+// phase. The reference is one retained binary32 +388h countdown, not a clock
+// difference. The setter resets it; group 3 advances it AFTER pilot think.
+struct PlaneSquadronTravelSpeedHostCountdown {
+    float& value_388;
+    const bool& frozen_38f;
+    void reset_script_override() const noexcept;
+    void advance_group3(float step) const noexcept;
+    float read() const noexcept { return value_388; }
+};
+
+// Live semantic view of the script override block.
+// The speed and lock references are the same storage the script setters and
+// movement readers use. class_speed_190 is the loaded class TravelSpeed times
+// the authored NewTravelSpeedMul. No native layout or vtable is fabricated.
+struct PlaneSquadronTravelSpeedView {
+    PlaneSquadronTravelSpeedView(const bool& frozen, bool& locked, float& speed)
+        : frozen_38f(frozen), locked_3ac(locked), speed_3a0(speed) {}
+    const bool& frozen_38f;
+    bool& locked_3ac;
+    float& speed_3a0;
+    virtual float countdown_388() const = 0;
+    // Read only on the native restore branch, after both gates. The semantic
+    // host derives the same class field from the loaded class/tuning values.
+    virtual const float& class_speed_190() const = 0;
+};
+// Original __thiscall(squadron), RET. The added result reports the class-speed
+// store for host bookkeeping; it is not an original return-value contract.
+bool cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(
+    const PlaneSquadronTravelSpeedView& squadron);
 void cc13_seg48_plane_squadron_re_equip_all_007ed690(void* squadron, std::uint32_t ammo_type, Cc13Seg48Host& host);
 void cc13_seg48_plane_squadron_stow_members_inside_007ed6e0(void* squadron, Cc13Seg48Host& host);
 bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(void* squadron, Cc13Seg48Host& host);

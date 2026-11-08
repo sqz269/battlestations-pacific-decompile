@@ -7,6 +7,7 @@
 #include "bsp/cc13_seg48.hpp"
 #include "bsp/band_007a_cc13.hpp"
 #include "bsp/gameplay_seg48_cc13.hpp"
+#include "bsp/tick_element_overrides.hpp"
 
 #include <cstring>
 #include <cmath>
@@ -938,19 +939,43 @@ void cc13_seg48_plane_squadron_reset_travel_speed_007ed590(void* squadron) {
     at<std::uint8_t>(squadron, 0x38F) = 0;
 }
 
+void PlaneSquadronTravelSpeedHostCountdown::reset_script_override() const noexcept {
+    value_388 = 0.5f; // 008A07E2, native 00CE3800 word 3F000000.
+}
+
+void PlaneSquadronTravelSpeedHostCountdown::advance_group3(float step) const noexcept {
+    // 007F3BAA/B5 gates every timer behind ordered step > 0, then
+    // 007F3BE1/E5 tests +38Fh before the +388h FSUB/FSTP.
+    if (step > 0.0f && !frozen_38f)
+        subtract_squadron_tick_step(value_388, step);
+}
+
 // 007ED5D0 BSP_PlaneSquadron_RefreshTravelSpeed, __thiscall(ECX = squadron).
 // Bytes 007ED5D0-007ED607: only when byte +38Fh is 0: `COMISS 0.0, [+388h]`
 // then JBE skips, so the copy runs when 0.0 > [+388h] (ordered; a NaN skips)
 // and byte +3ACh is 0: +3A0h = [[+35Ch]+190h] (FLD/FSTP float). Then byte
 // +3ACh = 0 (inside the +38Fh test).
-void cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(void* squadron) {
-    if (at<std::uint8_t>(squadron, 0x38F) != 0) {
-        return;
+bool cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(
+    const PlaneSquadronTravelSpeedView& squadron) {
+    // bsp.py show 007ED5D0 --asm: COMISS/JBE at 007ED5DC..007ED5E3
+    // skips both zero and unordered countdowns. A frozen block preserves its
+    // lock; otherwise even a still-positive countdown clears the lock.
+    if (squadron.frozen_38f) return false;
+    bool restored = false;
+    if (0.0f > squadron.countdown_388() && !squadron.locked_3ac) {
+        // 007ED5F4/FA are FLD/FSTP DWORD, not an integer payload copy.
+        const volatile float* source = &squadron.class_speed_190();
+        volatile float* destination = &squadron.speed_3a0;
+        __asm {
+            mov eax, source
+            fld dword ptr [eax]
+            mov ecx, destination
+            fstp dword ptr [ecx]
+        }
+        restored = true;
     }
-    if (0.0f > at<float>(squadron, 0x388) && at<std::uint8_t>(squadron, 0x3AC) == 0) {
-        at<float>(squadron, 0x3A0) = at<float>(at<void*>(squadron, 0x35C), 0x190);
-    }
-    at<std::uint8_t>(squadron, 0x3AC) = 0;
+    squadron.locked_3ac = false;
+    return restored;
 }
 
 // 007ED690 BSP_PlaneSquadron_ReEquipAll, __thiscall(ECX = squadron, int ammo
