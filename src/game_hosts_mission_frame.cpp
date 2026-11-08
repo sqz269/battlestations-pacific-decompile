@@ -4810,7 +4810,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
             host.ship_ai->bind_local_message_clock(
-                host.entry_state.game_state, host.fixed_clock.step_count);
+                host.entry_state.game_state, host.fixed_clock.step_count,
+                host.entry_state.local_slot_index);
             host.ship_ai->bind_session_participants(host.participants);
             host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());

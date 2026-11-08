@@ -8,6 +8,7 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/native_session_message_participant_owner.hpp"
 #include "bsp/sound_cc13.hpp"
 #include "bsp/sound_resource_cache.hpp"
 #include "bsp/sound_resource_asset.hpp"
@@ -5711,6 +5712,40 @@ int main() {
         bsp::sound_cc13::sound_cache_records_reserve_00a84450(owner, 1);
         check(preserved && owner.records_04.data() == data && owner.capacity_0c == 128,
             "c688 sound-cache growth preserves aliases, metadata and borrowed resource ownership");
+    }
+
+    {
+        // c732 review: a message must follow the retained mission selection,
+        // even when a context predates slot publication/selection changes.
+        bsp::SessionParticipantPools participants(
+            bsp::ParticipantPoolInitialization::ZeroedGameAllocation);
+        bsp::ParticipantRecordId claimed;
+        const bool initialized = participants.reset_and_claim_local_flags(true, 2, claimed)
+            == bsp::ParticipantClaimResult::Claimed;
+        const void* const player = participants.active_record_identity(0);
+        const void* const mission = participants.active_record_identity(1);
+        std::size_t local_slot = 0;
+        bsp::NativeSessionMessageParticipantOwner selected(participants, local_slot);
+        // Deliberately unusable: the typed context must never fall back to a
+        // second raw game image while the retained owner is supplied.
+        void* volatile no_raw_game = nullptr;
+        const bsp::NativeSessionMessageContext context{no_raw_game, &selected};
+        bsp::NativeSessionMessageStorage message{};
+        bsp::construct_native_session_message_0075b430(&message, 0xa6, context);
+        bool follows_owner = initialized && player != nullptr && mission != nullptr
+            && player != mission && message.selected_owner_14 == player;
+        follows_owner = participants.publish_active_record(0, {bsp::ParticipantPool::Mission, 1})
+            && follows_owner;
+        bsp::construct_native_session_message_0075b430(&message, 0xa6, context);
+        follows_owner = follows_owner && message.selected_owner_14 == mission;
+        follows_owner = participants.publish_active_record(1, claimed) && follows_owner;
+        local_slot = 1;
+        bsp::construct_native_session_message_0075b430(&message, 0xa6, context);
+        follows_owner = follows_owner && message.selected_owner_14 == player;
+        local_slot = bsp::kSceneSlotRecordCount;
+        bsp::construct_native_session_message_0075b430(&message, 0xa6, context);
+        check(follows_owner && message.selected_owner_14 == nullptr,
+            "c732 message owner borrows current mission slot and canonical participant identity");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

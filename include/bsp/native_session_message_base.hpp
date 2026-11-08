@@ -24,7 +24,19 @@ struct NativeSessionReadStream {
     std::uint8_t reserved_15[3];
 };
 static_assert(sizeof(NativeSessionReadStream)==0x18);
-struct NativeSessionMessageContext {void* volatile& current_game_00e188a8;};
+// A typed owner may expose the same selected participant without making a
+// second raw game image. The result is borrowed identity, not a native record
+// layout; consumers that dereference record fields still require a raw owner.
+struct NativeSessionMessageOwnerView {
+    virtual ~NativeSessionMessageOwnerView() = default;
+    virtual void* selected_owner_14() const noexcept = 0;
+};
+struct NativeSessionMessageContext {
+    void* volatile& current_game_00e188a8;
+    // Used by the common 0075B430 body instead of its raw +18EC/+18CC reads.
+    // Null preserves the existing raw-memory interface for every older caller.
+    const NativeSessionMessageOwnerView* selected_participant{};
+};
 
 // Actual translated tables: root has three slots; each concrete profile has
 // five (scalar delete,write,read,type equality,always true). The virtual-entry

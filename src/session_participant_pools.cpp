@@ -35,6 +35,11 @@ const ParticipantRecordBytes* SessionParticipantPools::record_bytes(ParticipantR
     return nullptr;
 }
 
+const void* SessionParticipantPools::active_record_identity(std::size_t slot) const noexcept {
+    ParticipantRecordId selected;
+    return active_record(slot, selected) ? record_bytes(selected) : nullptr;
+}
+
 bool SessionParticipantPools::adopt_record_bytes(ParticipantRecordId record,
     const ParticipantRecordBytes& bytes) noexcept {
     ParticipantRecordBytes* target = record_bytes(record);
