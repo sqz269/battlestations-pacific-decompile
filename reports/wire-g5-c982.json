@@ -1,0 +1,71 @@
+{
+  "chain": 982,
+  "slot": "g5-w10",
+  "base": "c6cb8084d2d466bf9314663bd4347fa45adcc466",
+  "picked": "Ship-screen bomb-platform count over retained live gunnery children",
+  "rows": [
+    {
+      "native": "00852350",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenApplyUnitAdapter::unit_count_bomb_platform_children_00852350",
+      "evidence": "bsp.py show 00852350 counts child IsKindOf(25h) without health/ammunition gates; show 0064ae20 lines 108-136 consumes the count for submarine gauge+104h and visibility. The callback now calls the existing gameplay_seg53_cc13 body with the selected unit's retained GameGunRow::device_bomb_platform values. The load producer in game_hosts_gunnery.cpp sets bp from DeviceClass Type BombPlatform/MultiBombPlatform and retains it on each actual gun row.",
+      "call_graph": "Canonical gameplay_seg53_cc13 body is REACHABLE with one direct call at 1012114c from the changed ShipScreenApplyUnitAdapter callback; the baseline linked only the same-named zero-return host callback. Entry path runs through mission frame/interface update -> screen_receive_unit -> apply_ship_screen_unit_0064ae20.",
+      "scope": "Current runtime device domain is one retained Gun[1] row per authored platform, matching the firing/AI owners. No missing devices are synthesized or multiplied by platform_gun_count. Missing gunnery ownership retains the existing logged unavailable boundary; it does not call the body with fabricated children. No new native ABI or game validation is claimed."
+    },
+    {
+      "native": "00818300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenApplyUnitAdapter::unit_torpedo_barrel_count_00818300",
+      "reason": "Missing a verified runtime kind-20h child classification and native child-chain adapter; category and barrel fields alone do not establish the body's first virtual-kind gate."
+    },
+    {
+      "native": "006bdc30",
+      "status": "skipped",
+      "host_site": "src/cc13_big1.cpp: support-manager enter at 00675AB0",
+      "reason": "Missing the live support-manager enter/update adapter that supplies its selected unit's real air-ops block; the linked ShipScreenApplyUnitAdapter merely inherits an unused NullHost slot."
+    },
+    {
+      "native": "0059cb90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenApplyUnitAdapter::unit_hud_icon_index_0059cb90",
+      "reason": "Missing the retained descriptor subclass/flag inputs required by the canonical icon selector at this ship-screen callback."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage::capture_members",
+      "reason": "Missing the original net-entity-create member-vector consumer and genuine mutable F87574/78/7C globals; capture_members copies formation records and is a different operation."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::clear_movie_subtitles",
+      "reason": "Missing an actual movie widget, subtitle Text child and owned native subtitle/extratitle vectors; the live callback clears only a schedule projection and opens no movie page or decoder."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list integration boundary",
+      "reason": "Missing a gameplay consumer of native score-list records; current host evidence identifies the only record reader as an unreachable debug overlay excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list integration boundary",
+      "reason": "Missing live candidate records whose chosen byte feeds gameplay; marking an unused auxiliary debug list would not wire a gameplay path."
+    }
+  ],
+  "validation": {
+    "baseline": "Index refreshed; scripts/build.ps1 passed all six checks before edits.",
+    "build": "scripts/build.ps1 passed all six checks after the code change.",
+    "binary_reachable_reconstructed_addresses_before": 5725,
+    "binary_reachable_reconstructed_addresses_after": 5726,
+    "readiness_text_wired_before": 10838,
+    "readiness_text_wired_after": 10838,
+    "readiness_called_rows_before": 6144,
+    "readiness_called_rows_after": 6145,
+    "readiness_note": "The text-based wired total already counted the same-named host stand-in; the new canonical body call is proven by call_graph.py who/path.",
+    "float_math": "No float arithmetic changed.",
+    "game": "Not run, as instructed. Static reachability and build checks do not prove a live submarine HUD update."
+  }
+}
