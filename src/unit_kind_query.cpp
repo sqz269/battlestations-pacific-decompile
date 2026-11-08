@@ -11,6 +11,9 @@
 #include "bsp/native_ship_kind.hpp"
 #include "bsp/native_entity_root_kind.hpp"
 #include "bsp/native_entity_kind_4c_4e.hpp"
+#include "bsp/native_entity_base_kind.hpp"
+#include "bsp/native_entity_class03_kind.hpp"
+#include "bsp/native_plane_squadron_kind.hpp"
 #include "bsp/native_plane_kind.hpp"
 #include "bsp/native_plane_derived_kind.hpp"
 
@@ -384,6 +387,33 @@ bool unit_is_kind_of(int class_id, int literal) noexcept {
             return native_entity_is_kind_0042c010(&receiver, nullptr, query) != 0;
         case 0x4e:
             return native_entity_is_kind_004351e0(&receiver, nullptr, query) != 0;
+        }
+    }
+    // Chain747: use the complete base-entity / squadron leaves for these
+    // remaining owning ids, with the same call-scoped field view as above.
+    // Evidence: bsp.py show 004F1750/006D1610/006D1650/007EFB00/00888EA0
+    // --asm: each accepts exactly kAccept02/04/05/18/03 respectively,
+    // then reads only DWORD [ECX+C4h]; ECX receiver, stack query, EAX 0/1,
+    // RET 4. The owning class id comes from this API's gameplay caller;
+    // it is already one of that leaf's fixed accepts. Its dynamic compare
+    // therefore preserves the old table answer for every query DWORD.
+    // The unused prefix is never read, and no whole-object ABI is claimed.
+    if (class_id == 0x02 || class_id == 0x03 || class_id == 0x04 ||
+        class_id == 0x05 || class_id == 0x18) {
+        ShipKindReceiver receiver;
+        receiver.class_id_c4 = class_id;
+        const auto query = static_cast<std::uint32_t>(literal);
+        switch (class_id) {
+        case 0x02:
+            return native_entity_base_is_kind_004f1750(&receiver, nullptr, query) != 0;
+        case 0x03:
+            return native_entity_class03_is_kind_00888ea0(&receiver, nullptr, query) != 0;
+        case 0x04:
+            return native_entity_base_is_kind_006d1610(&receiver, nullptr, query) != 0;
+        case 0x05:
+            return native_entity_base_is_kind_006d1650(&receiver, nullptr, query) != 0;
+        case 0x18:
+            return native_plane_squadron_is_kind_007efb00(&receiver, nullptr, query) != 0;
         }
     }
     const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
