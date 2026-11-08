@@ -1,0 +1,178 @@
+{
+  "chain": 816,
+  "goal": 5,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "baseline": "ffbb9d04a9",
+  "picked": "StationaryClass reset and source-host table lifetime",
+  "rows": [
+    {
+      "native": "0084eb60",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp:run_class_table_resets_cc264 (mission load 004E0AAA and movie stop 0045F6D0)",
+      "reason": "Existing reset body runs through the mission Lua machine after retaining the actual StationaryClass table for both lazy host readers; source adapter, not native class-cache ABI."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:movie subtitle clear",
+      "reason": "Native subtitle/extratitle vectors and owned text widgets are not established; clearing only the schedule would not run the full body."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:sound transition",
+      "reason": "Captured screen, listener, input-context and cinematic host dependencies remain unbound."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_reset_speed_limits",
+      "reason": "MovCam receiver and its authored defaults/acceleration fields remain unbound."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:path leg manager",
+      "reason": "Actual converging-path-leg manager owner and its producer are not established on this host path."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:hull shape collision-mask clear",
+      "reason": "Native shape/body ownership and manifold-clearing physics world are missing from the current host substitution."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Error-context erase is not linked in this build; a real entry-reachable error-context map owner is missing."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_advance_00bf1450",
+      "reason": "Entry-reachable native error-context map owner and caller are missing."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Entry-reachable native error-context map owner and caller are missing."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Entry-reachable native error-context map owner and caller are missing."
+    },
+    {
+      "native": "00bf26c0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "reason": "Not linked in the built game; native error-context map runtime producer remains missing."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:stream_writer_write_dword_00bf0340",
+      "reason": "A real entry-reachable terrain chunk writer and its remaining-byte owner were not established in this chain."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:ai_group_forward_command",
+      "reason": "Owned and implemented concurrently by agent/g5-w5; no duplicate wiring attempted."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp:collect_language_names",
+      "reason": "Profile hints mode and language switching/file-block services are still unbound, so the language-sweep path does not run."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:sound-volume scaling",
+      "reason": "Already entry-reachable at three baseline call sites; no new wiring required."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:ocean render-frame update",
+      "reason": "The spectrum update already runs, but the depth-kernel fragment needs its camera/material render inputs before a coherent additional call."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "Live owning native approach and state-registry lifetime were not established in this chain."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp:destroy_native_bot_state_registry_004116d0",
+      "reason": "Live owning native approach and state-registry lifetime were not established in this chain."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp:unit_pick_row_value_00521f10",
+      "reason": "The host does not expose the required native pick-row array/record producer on the surveyed path."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp:unit_pick_read_position_00521fd0",
+      "reason": "The native pick-entry owner was not established on the surveyed host path."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:Bag::insert",
+      "reason": "Existing real scene-property insertion already calls this body; no replacement needed."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp:score_record_add_field18_009052e0",
+      "reason": "The native scoring-buffer and slot producer were not established in this chain."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp:construct_native_window_platform_base_00be2ac0",
+      "reason": "A canonical native platform constructor already exists; no second constructor/body or alternate publication added."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed all 4 CTests",
+    "focused_probe": "tests/wire_g5_c816_stationary_reset_probe.cpp passed: global nil, retained lookup through GC/repeated reset, replacement collection, stack preserved",
+    "call_graph": {
+      "before_called": 5517,
+      "after_called": 5518,
+      "before_total": 6133,
+      "after_total": 6134,
+      "new_call_site": "10396560 <- run_class_table_resets_cc264 at 101b7691; entry reachable via run_scene_load_004dfb70"
+    },
+    "readiness": {
+      "before_wired": 10661,
+      "after_wired": 10662,
+      "target": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    },
+    "game_run": false,
+    "float_math_changed": false,
+    "probe_link": "Rebuilt bsp_game objects except game_main.obj + bsp_core/lua511/zlib121 and game Windows libraries; /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO; argv[1] is the installed PE read only."
+  },
+  "limitations": [
+    "Retained actual Lua table adapts source-host lazy class readers; native class-cache ABI is not supplied.",
+    "DeviceClass reset and Bullets reload remain records because their host readers/cache producers remain unbound.",
+    "No game or original executable code was run."
+  ],
+  "coordination": "Lua source acquired after g5-w12 released it; edits are confined to StationaryClass helpers/readers, separate from its registry getter change."
+}
