@@ -441,6 +441,15 @@ __declspec(noinline) void free_native_gui_group_pool_table_00ac70d0(void* header
 #include "bsp/terrain_bush_pool_cc13.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
+namespace {
+template<class T> struct WidgetSlabInitializer {
+    static constexpr auto entry = &NativeGuiWidgetPool<T>::initialize_slab;
+};
+template<> struct WidgetSlabInitializer<GuiIconPoolTraits> {
+    static constexpr auto entry = &initialize_native_gui_icon_slab_00ab1340;
+};
+} // namespace
+
 template<class T> NativeGuiWidgetPool<T>::NativeGuiWidgetPool(AllocatorListDomain& list,
     NativeGuiWidgetPoolStorage& storage) : allocator_list_(list), storage_(storage) {
     list.bind_virtual0(storage.allocator_00, {T::native_vtable, T::native_virtual0, this, &invoke_trim});
@@ -452,7 +461,12 @@ template<class T> void NativeGuiWidgetPool<T>::initialize() {
     initialize_pool<T>(allocator_list_, storage_);
 }
 template<class T> void* NativeGuiWidgetPool<T>::allocate() {
-    return allocate_slot<T>(storage_);
+    // bsp.py show 00AB2930 / 00AB1340: the Icon allocator initializes the
+    // actual newly allocated slab with its current first-free slab index.
+    // Use the existing traits-bound member (64 trailer stores at +138h,
+    // descending free stack at +4F00h, count +4F80h for Icon), rather than
+    // bypassing that reconstructed body through the common engine helper.
+    return allocate_slot<T, WidgetSlabInitializer<T>::entry>(storage_);
 }
 template<class T> void NativeGuiWidgetPool<T>::free(void* slot) noexcept {
     return_slot<T>(storage_, slot);
@@ -463,8 +477,14 @@ template<class T> void NativeGuiWidgetPool<T>::trim() {
 template<class T> void NativeGuiWidgetPool<T>::destroy() {
     destroy_pool<T>(allocator_list_, storage_);
 }
-template<class T> void* NativeGuiWidgetPool<T>::initialize_slab(void* raw, std::uint32_t index) noexcept {
+template<class T> __declspec(noinline) void* NativeGuiWidgetPool<T>::initialize_slab(
+    void* raw, std::uint32_t index) noexcept {
     return bsp::initialize_slab<T>(raw, index); // the engine's, not this member
+}
+__declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
+    void* raw, std::uint32_t index) noexcept {
+    // Address entry only: reuse the one pre-existing Icon member body.
+    return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
 }
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
