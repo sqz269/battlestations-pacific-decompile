@@ -679,6 +679,14 @@ template<> void* NativeGuiWidgetPool<GuiModelPoolTraits>::allocate() {
     return allocate_slot<GuiModelPoolTraits, WidgetSlabInitializer<GuiModelPoolTraits>::entry,
         &native_gui_model_pool_table_push_back_00acc0d0>(storage_);
 }
+
+template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::destroy() {
+    // 00ACBF70's inline table free is 00ACBDD0's exact load/null-test/free.
+    // Use the same retained F8C09C+28h header after slab release and before
+    // critical-section destruction/unlink; the generic free no longer runs.
+    destroy_pool<GuiModelPoolTraits,
+        &free_native_gui_model_pool_table_00acbdd0>(allocator_list_, storage_);
+}
 #define BSP_GUI_WIDGET_POOL_INSTANCE(T)                                                     \
     static_assert(T::free_count_offset + 4 == T::slab_bytes);                               \
     static_assert(T::slots_per_slab <= 0xffffu);                                            \
@@ -735,6 +743,14 @@ __declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
 
 // ACBE00/ACBE50/ACC0D0/ACC160 and the inlined Model pool copies operate on
 // the retained F8C09C+28h table. Evidence and original ABI are in the header.
+__declspec(noinline) void free_native_gui_model_pool_table_00acbdd0(
+    void* actual_table) noexcept {
+    // bsp.py show 00acbdd0 --asm: BDD0 captures [ECX] once, BDD2/4
+    // tests that captured pointer, BDD7 calls BF6989. No header stores.
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
 __declspec(noinline) void native_gui_model_pool_table_set_capacity_00acbe00(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     // Same native allocation/copy/free shape as the existing AA6FA0 body.
