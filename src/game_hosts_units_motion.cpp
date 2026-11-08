@@ -885,12 +885,89 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                         owner_.wanderer_displacement_total += d;
                     }
+                    void publish_free_flight_pose(float step) {
+                        // 007C66F4..007C670D selects 007D9F60 with +520h clear.
+                        // This owner keeps an unparented plane's boundary pose in
+                        // motion and the previous core-law outputs in the slot.
+                        // Ground/carrier steps still use their separate adapter below.
+                        // Evidence: bsp.py show 007d9f60, assembly 007D9F6E..007DA369.
+                        bsp::PlaneAdvanceInputs input;
+                        input.step = step;
+                        float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                input.committed_pose.m[r * 4 + c] = rows[r][c];
+                            }
+                            input.committed_pose.m[12 + r] = unit_.motion.position[r];
+                            input.linear_velocity[r] = unit_.plane_world_velocity[r];
+                            input.external_velocity[r] = unit_.wanderer.offset[r];
+                        }
+                        input.committed_pose.m[15] = 1.0f;
+                        bsp::ControllerVelocities velocity;
+                        for (int i = 0; i < 3; ++i) {
+                            velocity.angular_body[i] = unit_.plane_body_angular[i];
+                        }
+                        bsp::body_to_world_007d9c80(velocity, input.committed_pose);
+                        for (int i = 0; i < 3; ++i) {
+                            input.angular_velocity[i] = velocity.angular_world[i];
+                        }
+                        input.bank_angle = unit_.plane_bank_angle_c68;
+                        input.pitch_angle = unit_.plane_pitch_angle_c64;
+                        input.level_blend_input = unit_.plane_forward_speed_7c;
+                        input.bank_yaw_gain = unit_.plane_class_turn_roll_spd;
+                        input.blend_curve_x0 = 3.0f; // 00CE3854
+                        input.blend_curve_x1 = 5.0f; // 00CE3850
+                        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                            input.difficulty = game_powerups::powerup_site_product(
+                                13, owner_.index_of_slot(unit_)).value_or(1.0f);
+                        }
+                        // The preceding free-flight law cleared ctl+8Ch at
+                        // 007DCCD3. No scene parent means 007DA2C3 rejects the
+                        // attached clamp; the typed input's zero defaults express
+                        // those retained states and the 00F87574 zero-vector eye.
+                        bsp::NativeAdvanceMatrixOps ops;
+                        const float before = heading_of(rows[2]);
+                        const auto published = bsp::rotate_and_translate_007d9f60(input, ops);
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                rows[r][c] = published.live_pose.m[r * 4 + c];
+                            }
+                            unit_.motion.position[r] = published.live_pose.m[12 + r];
+                        }
+                        if (published.rotation_applied) ++owner_.summary.plane_pose_rotations;
+                        if (step != 0.0f) {
+                            ++unit_.bank_yaw_steps;
+                            unit_.bank_yaw_abs_angle +=
+                                std::fabs(static_cast<double>(published.bank_yaw_angle));
+                        }
+                        // This diagnostic now measures the complete published
+                        // heading, including bank yaw, instead of only its first rotation.
+                        double delta = static_cast<double>(heading_of(rows[2]) - before);
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        while (delta > kPi) delta -= 2.0 * kPi;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        while (delta < -kPi) delta += 2.0 * kPi;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        owner_.summary.plane_heading_change += std::fabs(delta);
+                        const double displacement = static_cast<double>(avoid_len(unit_.wanderer.offset)) * step;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        unit_.wanderer_displacement += displacement;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        owner_.wanderer_displacement_total += displacement;
+                        owner_.done("Plane::publish_step_pose_unlocked_007d9f60", 0x007d9f60u);
+                    }
                     void run_core_law_007db680(float step, bool ground) {
                         if constexpr (GameUnitsHost::Impl::kPlanePoseFirstBound) {
                             // Wave 1, 007D9F60 / 007D8230, before this step's physics.
-                            publish_translation(step);
-                            advance_pose_0085e4d0(step, unit_.plane_pose_ground_prev,
-                                                  unit_.plane_forward_speed_7c);
+                            if (!unit_.plane_pose_ground_prev && unit_.deck_parent_plus_one == 0
+                                && !unit_.generic_suppress_520) {
+                                publish_free_flight_pose(step);
+                            } else {
+                                publish_translation(step);
+                                advance_pose_0085e4d0(step, unit_.plane_pose_ground_prev,
+                                                      unit_.plane_forward_speed_7c);
+                            }
                             ++unit_.pose_first_steps;
                         }
                         // The class field the law actually depends on. StallSpd
