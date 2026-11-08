@@ -117,6 +117,11 @@ private:
     static void invoke_trim(void*);
 };
 
+// Address-named entry to the existing Icon specialization's slab initializer.
+// Original 00AB1340: __thiscall(ECX slab, stack index), RET 4. This C++ adapter
+// retains that member's implementation; it does not provide the register ABI.
+void* initialize_native_gui_icon_slab_00ab1340(void* raw, std::uint32_t index) noexcept;
+
 // The slab table at pool+28h viewed as the Mit pointer vector its out-of-line
 // members take in ECX (fields slabs_28, slab_count_2c, table_capacity_30).
 struct NativeGuiPoolSlabTable {

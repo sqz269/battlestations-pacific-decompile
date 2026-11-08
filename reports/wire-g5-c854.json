@@ -1,0 +1,296 @@
+{
+  "goal": 5,
+  "chain": 854,
+  "slot": "g5-w8",
+  "run": 1847,
+  "branch": "agent/g5-w8",
+  "baseline_head": "e85558a2a75e076e62b8c97ac1256228d2bfcdb0",
+  "picked": "Existing Icon pool slab initializer on the real native GUI allocation path",
+  "rows": [
+    {
+      "native": "00ab1340",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::allocate -> allocate_slot -> initialize_native_gui_icon_slab_00ab1340 -> existing initialize_slab member",
+      "evidence": "bsp.py show 00AB1340 / 00AB2930; actual newly allocated Icon slab and first_free_slab_34; built direct CALL at 1052BB6C to 1052D690, reachable from WinMainCRTStartup through create_native_gui_icon_default_00aa1410",
+      "call_sites_to_body": 1,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset overrides",
+      "reason": "Missing actual constructed movie-camera limit storage; these overrides retain only an identity token and report the route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset overrides",
+      "reason": "Missing actual constructed movie-camera limit storage; these overrides retain only an identity token and report the route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset overrides",
+      "reason": "Missing actual constructed movie-camera limit storage; these overrides retain only an identity token and report the route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset overrides",
+      "reason": "Missing actual constructed movie-camera limit storage; these overrides retain only an identity token and report the route unreached."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp / src/game_hosts_fixed_step.cpp / src/game_hosts_lua.cpp: deferred named-call enqueue",
+      "reason": "Missing a frame-job-thread producer carrying a real LuaVariantRecord argument vector; current mission calls execute on the main thread."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp / src/game_hosts_fixed_step.cpp / src/game_hosts_lua.cpp: deferred named-call enqueue",
+      "reason": "Missing a frame-job-thread producer carrying a real LuaVariantRecord argument vector; current mission calls execute on the main thread."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00; src/native_font_resources.cpp: accepts_text_byte",
+      "reason": "Missing live input-character admission caller with its retained text-context font; whole-string layout is a different operation."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing original reflection/property-description writer 00AAAED0 and its per-parent name-sorted child snapshot consumer."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0",
+      "reason": "Missing shared squadron director stance/+370h state and survivor moveto producer in the original 007F32F1..007F340F arm that consumes the map center."
+    },
+    {
+      "native": "004077f0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: Mit pool36/pool20 and EdgeHashMap",
+      "reason": "Missing a demonstrated reachable producer/consumer for these Dyn Mit pools and edge map; the baseline executable has no linked 004077F0 or 004084D0 entry."
+    },
+    {
+      "native": "0040d860",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: Mit pool36/pool20 and EdgeHashMap",
+      "reason": "Missing a demonstrated reachable producer/consumer for these Dyn Mit pools and edge map; the baseline executable has no linked 004077F0 or 004084D0 entry."
+    },
+    {
+      "native": "004084d0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: Mit pool36/pool20 and EdgeHashMap",
+      "reason": "Missing a demonstrated reachable producer/consumer for these Dyn Mit pools and edge map; the baseline executable has no linked 004077F0 or 004084D0 entry."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: Mit pool36/pool20 and EdgeHashMap",
+      "reason": "Missing a demonstrated reachable producer/consumer for these Dyn Mit pools and edge map; the baseline executable has no linked 004077F0 or 004084D0 entry."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: Mit pool36/pool20 and EdgeHashMap",
+      "reason": "Missing a demonstrated reachable producer/consumer for these Dyn Mit pools and edge map; the baseline executable has no linked 004077F0 or 004084D0 entry."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: format_string_1024_0040cfc0",
+      "reason": "Missing gameplay caller; identified native callers format the entity diagnostic tree or Dyn profile report, excluded debug paths."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp / src/native_loading_queue_submission.cpp / src/native_loading_queue_retirement.cpp: work-item enqueue and retirement",
+      "reason": "Missing live work-item/job producer connected to the frame host loading-queue owner; owner existence alone does not supply real queued model work."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp / src/native_loading_queue_submission.cpp / src/native_loading_queue_retirement.cpp: work-item enqueue and retirement",
+      "reason": "Missing live work-item/job producer connected to the frame host loading-queue owner; owner existence alone does not supply real queued model work."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp / src/native_loading_queue_submission.cpp / src/native_loading_queue_retirement.cpp: work-item enqueue and retirement",
+      "reason": "Missing live work-item/job producer connected to the frame host loading-queue owner; owner existence alone does not supply real queued model work."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp / src/native_loading_queue_submission.cpp / src/native_loading_queue_retirement.cpp: work-item enqueue and retirement",
+      "reason": "Missing live work-item/job producer connected to the frame host loading-queue owner; owner existence alone does not supply real queued model work."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: reserve_native_animation_values_00b92440",
+      "reason": "A reachable skinned-animation-item parser/producer with its actual values vector was not established in this survey."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set/clear_camera_extra_clip_plane",
+      "reason": "Missing application reflection/extra-clip-plane caller with the actual CameraClipPlaneState owner."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set/clear_camera_extra_clip_plane",
+      "reason": "Missing application reflection/extra-clip-plane caller with the actual CameraClipPlaneState owner."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list handling",
+      "reason": "Missing native candidate-score-list gameplay owner and consumer; current planner uses separate weight vectors and the documented native reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list handling",
+      "reason": "Missing native candidate-score-list gameplay owner and consumer; current planner uses separate weight vectors and the documented native reader is a debug overlay."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "Missing host MarkerClassRegistry/MarkerClassContext produced by the native MarkerClasses loader with its intrusive mesh-resource ownership."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp: format_string_255_004b8410",
+      "reason": "Only identified native caller is 004C7070 DiagnosticPrintf; debug-only code is excluded."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: profile-manager singleton accessor",
+      "reason": "Missing live binding from the application profile manager to this typed singleton owner/lifetime manager; current checkpoint hosts use separate retained state."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/band_0040_cc13.cpp: byte_grid_sample_neighbor_00412070",
+      "reason": "Missing concrete live Left55 terrain-contour caller implementing byte_grid_sample_00412070 over its actual columns."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: score_record_add_field18_009052e0",
+      "reason": "Missing live HUD-map player-timer caller with the actual 284h-stride score-record storage; mission-result typed records are a different layout."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "Original message-map collection arm requires profile_hints_mode_plus8()==2, but current host fixes that value to zero and lacks the language-switch/mount sweep consumers."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp: clamp_to_screen_margins_00638b90",
+      "reason": "Missing reached 00639230/0063C620/0063D1E0 HUD marker caller and retained runtime screen-margin globals; minimap rim clipping is a different operation."
+    },
+    {
+      "native": "00481510",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp: box_corners_from_bounds_00481510",
+      "reason": "No matching live native box owner and six-bound corner-construction caller was established in the inspected hosts."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: window_platform_base_construct_00be2ac0",
+      "reason": "Missing binding to the actual native platform-window storage/publication and SingletonLifetimeDomain; the Win32 window host alone is not that object."
+    },
+    {
+      "native": "00a9aeb0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: Listbox slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Listbox allocation producer/storage factory; baseline built GUI path links only Icon and Group pools, not GuiListboxPoolTraits."
+    },
+    {
+      "native": "00a9af00",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: Listbox slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Listbox allocation producer/storage factory; baseline built GUI path links only Icon and Group pools, not GuiListboxPoolTraits."
+    },
+    {
+      "native": "00a9b250",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: Listbox slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Listbox allocation producer/storage factory; baseline built GUI path links only Icon and Group pools, not GuiListboxPoolTraits."
+    },
+    {
+      "native": "00a9b2d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: Listbox slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Listbox allocation producer/storage factory; baseline built GUI path links only Icon and Group pools, not GuiListboxPoolTraits."
+    },
+    {
+      "native": "00aab8e0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Button factory composition; the application native child factory currently accepts only default Group/Icon and rejects Button."
+    },
+    {
+      "native": "00aab930",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Button factory composition; the application native child factory currently accepts only default Group/Icon and rejects Button."
+    },
+    {
+      "native": "00aabc70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Button factory composition; the application native child factory currently accepts only default Group/Icon and rejects Button."
+    },
+    {
+      "native": "00aabd00",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button slab-table capacity/grow/push/reserve",
+      "reason": "Missing live Button factory composition; the application native child factory currently accepts only default Group/Icon and rejects Button."
+    }
+  ],
+  "implementation": "Address-named C++ adapter delegates to the pre-existing NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab member. Allocation selects that adapter at compile time and initializes each real new slab once; no second algorithm or shadow owner was added.",
+  "real_state": "Native Icon pool 00F8BDA0, slot stride 13Ch x 64, slab 4F84h. allocate_slot passes the actual allocated slab and the current first_free_slab_34 index; metadata stores are +138h trailers, +4F00h free stack, +4F80h count.",
+  "validation": {
+    "build": "./scripts/build.ps1: passed MSVC Win32 Release and all four CTests",
+    "tests": [
+      "reconstructed_math",
+      "tool_tests",
+      "cc462_loading_config",
+      "cc464_vfs_stream_reader"
+    ],
+    "new_tests": 0,
+    "call_graph": "python tools/call_graph.py; who 00ab1340; path 00ab1340",
+    "entry_reachable_body": true,
+    "native_addresses_called_before": 5571,
+    "native_addresses_called_after": 5572,
+    "reconstructed_addresses_before": 6191,
+    "reconstructed_addresses_after": 6192,
+    "text_wired_before": 10703,
+    "text_wired_after": 10703,
+    "float_math_changed": false,
+    "game_run": false,
+    "readiness_icon": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 2,
+      "callers_live": 2
+    }
+  },
+  "coordination": "Released Listbox and Button claims after built-graph inspection exposed missing allocation producers; announced narrowed Icon ownership. Shared-pool edits are confined to lower member/initializer dispatch and a declaration, outside c847 vector-capacity edits.",
+  "left": "Listbox/Button need real factory composition before pool-table wiring. Other skipped rows identify their missing producers/consumers. Native register ABI and live game validation remain unproven."
+}
