@@ -119,6 +119,9 @@ public:
     // 0077C91B -> 00905300, on this owner's same persisted slot record.
     // Only a validated player slot 0..7 may enter; role value 8 is unassigned.
     void increment_formation_use(int slot);
+    // 005B5A01..005B5A28: while the map updates and game+1FE4h != 0,
+    // add its raw frame delta to this owner's actual local player's map usage.
+    void add_map_usage(std::size_t slot, float seconds);
     // 008EAFF8 -> 0090F5A0, for actual nonlocal single-player AI slots.
     // The local/online award continuation remains outside this bridge.
     void award_active_powerup_use(int slot, std::int32_t mode,

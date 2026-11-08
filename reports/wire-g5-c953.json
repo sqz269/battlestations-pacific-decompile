@@ -1,0 +1,146 @@
+{
+  "chain": 953,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "base": "3dd4b52b66129d46b0cde55e198cfc5b11790ea0",
+  "picked": "HUD map-screen usage into the mission's persisted local-player scoring record",
+  "rows": [
+    {
+      "native": "009052e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::add_map_usage, reached from GameHudHost::update_map_screen_005b45c0 and MenuScreenHost::screen_update",
+      "state": "The frame owns the scoring manager and live entry_state.local_slot_index; the active/wanted screen pump supplies raw_delta. Bind/unbind pairs follow the frame lifetime. The existing session_mode_ != 0 gate is retained.",
+      "body": "The sole score_record_add_field18_009052e0 now borrows raw manager storage or the same MissionScoringManagerState::slots[slot].map_usage_14 field. No copied native buffer or duplicate arithmetic path is introduced.",
+      "evidence": [
+        "bsp.py ghidra count: live/snapshot 77632; current program /battlestationspacific.exe verified by brief",
+        "bsp.py ghidra disasm 009052e0: 009052E4 IMUL slot,284h; 009052EA FLD manager+18h; 009052EE FADD delta; 009052F2 FSTP; 009052F6 returns field address; RET 8",
+        "bsp.py disasm-raw 005b59fa --length 60: 005B5A06 tests game+1FE4h, 005B5A13 loads update delta, 005B5A18 reads game+18ECh, 005B5A22 reads game+21A0h, 005B5A28 calls 009052E0",
+        "MissionScoreRecord begins at manager+4; manager-relative +18 is record+14, persisted as map_usage by mission_progress.cpp",
+        "frontend_states.cpp: run_screen enter/update pump calls screen_update only for wanted and active screens, with raw_delta"
+      ],
+      "abi": "Source field-access interface only; the original thiscall stack/register ABI is not claimed. Native raw-manager source calls remain supported by implicit field-view construction.",
+      "uncertainty": "No gameplay or original-process differential run was performed; remaining map-view/input and local-score-send portions of 005B45C0 remain unimplemented."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (snapshot provenance; no runtime snapshot producer/consumer)",
+      "reason": "Missing a stored controller snapshot and routed snapshot consumer; copying flattened flags into this copy-only builder and back would only round-trip."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "Missing genuine runtime publication at absolute writable F87574/F87578/F8757C required by the literal body; the host currently records and returns a null semantic target."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: flattened land-task state (no constructed native state registry)",
+      "reason": "Missing eight actual constructed land states and their executable entry profiles; host LandTaskState enums are not native registry identities."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::install_land_task_0099a3dd",
+      "reason": "Missing complete base/composite task construction, actual retained state objects and executable profiles required by NativeLandTaskConstructorCalls."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp (flattened land-moveto state)",
+      "reason": "Missing genuine same-root constructed land-moveto storage and complete observer/task lifetime services; current host motion state is flattened."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing constructed movie-camera screen and actual limit fields; this callback still aborts through movcam_new_unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing constructed movie-camera screen with actual default/current height fields; this callback still aborts through movcam_new_unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing actual movie-camera limit storage and live script-to-screen binding; the override remains explicitly unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing actual movie-camera limit storage and live script-to-screen binding; the override remains explicitly unreached."
+    },
+    {
+      "native": "00a9acd0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: initialize_native_listbox_pool_slab_00a9acd0",
+      "reason": "Missing entry-reachable native Listbox allocation/factory path; retained pool startup alone does not allocate a slab."
+    },
+    {
+      "native": "00a9b330",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: free_native_listbox_slot_thunk_00a9b330",
+      "reason": "Missing a live native Listbox producer and deleting-destructor consumer; pool startup/teardown cannot supply an invented widget slot."
+    },
+    {
+      "native": "00a9b580",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: allocate_native_listbox_pool_slot_00a9b580",
+      "reason": "Missing entry-reachable native Listbox factory/consumer; an unused pool allocation would not wire actual widget state."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400 (no live map owner found)",
+      "reason": "Missing an entry-reachable error-context map producer and iterator consumer; changing an unlinked tree helper does not establish game wiring."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420 (no live map owner found)",
+      "reason": "Missing an entry-reachable error-context map producer and iterator consumer; changing an unlinked tree helper does not establish game wiring."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0 (no live map owner found)",
+      "reason": "Missing an entry-reachable actual error-context map producer/rebalance consumer; no game host currently supplies this map state."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630 (no live map owner found)",
+      "reason": "Missing an entry-reachable actual error-context map producer/rebalance consumer; no game host currently supplies this map state."
+    }
+  ],
+  "measurements": {
+    "wired_before": 10823,
+    "wired_after": 10824,
+    "target_before": {"state": "ready", "called": null},
+    "target_after": {"state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "called_rows_before": 6120,
+    "called_rows_after": 6129,
+    "note": "Only 009052E0 is claimed as newly wired in this packet; aggregate call-graph row counts also reflect recompilation/link reach changes."
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all four existing tests passed",
+    "graph": "call_graph.py who 009052e0 reports REACHABLE, one call site from GameMissionResultHost::add_map_usage; path traverses HUD map update, MenuScreenHost, GameMenuHost::frame and WinMainCRTStartup",
+    "probe": "local/c953-probe.cpp compiled MSVC Win32 with /MANIFEST:EMBED; passed slot-7 direct alias/raw-vs-typed offset parity, adjacent field and slot-0 preservation",
+    "float": "pc24_lint.py run; the existing single float-add/store arithmetic is unchanged",
+    "game_run": false,
+    "artifacts": [
+      "local/output/c953-baseline.json",
+      "local/output/c953-after.json",
+      "local/output/c953-build.log",
+      "local/output/c953-who.log",
+      "local/output/c953-probe.log",
+      "local/output/c953-pc24.log"
+    ]
+  },
+  "left": "Remaining map UI/input/local-score-send behavior and skipped native storage/profile/service prerequisites; no game_main edits or gameplay run."
+}

@@ -1900,9 +1900,9 @@ public:
             return;
         }
         // Packet cc13-relgaps gap 2: screen 4Ch's 005B45C0, while the map is up;
-        // only its helm release is hosted.
+        // its helm release and persisted local-player map usage are hosted.
         if (kMapScreenHelmReleaseCc13Bound && owner_.hud != nullptr && slot == 0x4c) {
-            owner_.hud->update_map_screen_005b45c0();
+            owner_.hud->update_map_screen_005b45c0(seconds);
             return;
         }
         // Packet cc9_screen_26h_2eh: these three slots' update virtual is the

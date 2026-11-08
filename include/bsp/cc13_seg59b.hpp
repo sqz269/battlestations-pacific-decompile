@@ -867,9 +867,23 @@ void matrix_interpolator_write_archive_00903d80(Seg59bHost& host, void* element,
 void world_read_archive_00904f70(Seg59bHost& host, void* world, void* archive);
 void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive);
 
-// 009052E0, __thiscall(ECX = scoring, slot, delta), RET 8: the 284h-byte player record's float
-// +18h += delta; EAX = its address.
-float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta);
+// 009052E0, __thiscall(ECX = scoring, slot, delta), RET 8:
+// [scoring + slot*284h + 18h] += delta; EAX = that float's address.
+// The manager-relative +18h is record+14h (map_usage). Borrow either the
+// actual native manager or its same persisted source field, without a copy.
+class ScoreRecordField18Access {
+public:
+    ScoreRecordField18Access(void* actual_scoring) noexcept;
+    ScoreRecordField18Access(bsp::MissionScoringManagerState& actual_scoring) noexcept;
+    float& value(std::int32_t slot) const { return resolve_(owner_, slot); }
+private:
+    using Resolve = float& (*)(void*, std::int32_t);
+    void* owner_;
+    Resolve resolve_;
+};
+// Source field-access interface; the original register/stack ABI is unbound.
+float* score_record_add_field18_009052e0(
+    ScoreRecordField18Access scoring, std::int32_t slot, float delta);
 // 00915F20, __thiscall(ECX = scoring, target, hit), RET 8: one damaging hit into the attacking
 // slot's score record (damage-by-class trees, BW_* weapon counters, RUA_KU / RUA_LBU awards and
 // the +1C0h kill-list entry).
