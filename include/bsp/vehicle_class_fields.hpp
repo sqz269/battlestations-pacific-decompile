@@ -380,6 +380,10 @@ struct VehicleClassFieldHost {
     // The value behind a ref, as the type predicates and getters see it.
     virtual VehicleClassLuaValue inspect(const GuiLuaRef& object) = 0;
 
+    // Bare 00B66270 over the actual Lua value. Unlike the semantic value
+    // converter, lua_tonumber rejects booleans and partial numeric strings.
+    virtual float number_00b66270(const GuiLuaRef& object) = 0;
+
     // 00960672: convert the actual CockpitCameraPos Lua object through
     // 00B680A0, using the image's 00F87574 zero-vector fallback. The default
     // adapter supports typed field hosts; the running Lua host overrides it.

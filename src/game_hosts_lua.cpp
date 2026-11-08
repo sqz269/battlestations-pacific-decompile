@@ -6336,6 +6336,19 @@ public:
         const int ref = static_cast<int>(object.id) - 3;
         if (ref > 0) luaL_unref(state_, LUA_REGISTRYINDEX, ref);
     }
+    float number_00b66270(const bsp::GuiLuaRef& object) override {
+        // Borrow the actual registry-referenced value in this interpreter.
+        // 00B66270 reads only owner.state_04 and object.index_08; this
+        // untracked view does not take ownership of the Lua value or state.
+        NativeLuaStateStorage owner;
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state_;
+        push(object);
+        const auto value = stack_object(owner, ::lua_gettop(state_));
+        const float result = native_lua_number_00b66270(value);
+        ::lua_pop(state_, 1);
+        return result;
+    }
     void read_vector3_or_default(const bsp::GuiLuaRef& object, float out[3],
                                 const float fallback[3]) override {
         // The registry reference belongs to the live VehicleClass row, not a

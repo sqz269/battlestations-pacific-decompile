@@ -7,7 +7,7 @@
       "native": "006d0b80",
       "status": "wired",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor, AirField branch",
-      "evidence": "Reuses the existing body with a typed field interface; the actual VehicleClass row runs 00960230 once, then bare-number width/length reads. The descriptor retains both fields and read_vehicle_class_number returns them. Original AirField vtable 00D1A9A0 has 006D0B80 at +8h (live Ghidra bytes verified). Built call graph: one reachable call at 1015881f into 10462d10."
+      "evidence": "Reuses the existing body with a typed field interface; the actual VehicleClass row runs 00960230 once, then bare-number width/length reads. Review round 1 corrects both conversions through the actual registry-referenced Lua value and native_lua_number_00b66270. The descriptor retains both fields and read_vehicle_class_number returns them. Original AirField vtable 00D1A9A0 has 006D0B80 at +8h (live Ghidra bytes verified). Review-fix build: one reachable call at 1015881f into 10462de0."
     },
     {
       "native": "00412070",
@@ -192,8 +192,20 @@
     "readiness_wired_after": 10623,
     "new_reachable_call_sites": 1,
     "base_loader_runs_per_airfield_load": 1,
+    "number_conversion_probe": "tests/wire_g5_c778_runway_number_probe.cpp passed against linked Lua 5.1.1 and the full runway body: ordinary numbers 125.5/900, true plus invalid string 12m in each lane -> 0/0, valid numeric strings -> 12.5/-7.25; one base load per row and balanced Lua stack",
     "game_run": false,
     "abi_compatible": false
   },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1695,
+      "finding": "src/pool_pool13_cc13.cpp:269: semantic converter accepted true and partially numeric strings that native lua_tonumber rejects",
+      "status": "fixed",
+      "change": "Both runway reads now call VehicleClassFieldHost::number_00b66270. The live implementation borrows the retained value in its actual Lua interpreter and calls native_lua_number_00b66270; other class conversion paths are unchanged.",
+      "checks": "Win32 Release plus all four tests passed; focused real-Lua runway fixture passed; built call graph retains one reachable 006D0B80 call and the base load still runs once",
+      "limits": "Fixture and compiled-call evidence; no game run or original ABI compatibility claim"
+    }
+  ],
   "remaining": "The full original AirField holder-construction/kind-2 load path is still separate work; kind-1 scene runway properties continue to overwrite class dimensions and remain required. Other surveyed rows need the real producers named above."
 }

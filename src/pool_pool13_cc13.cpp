@@ -266,10 +266,10 @@ void runway_class_read_lua_fields_006d0b80(VehicleClassFieldHost& host,
     const GuiLuaRef& row, VehicleClassBaseFields& base, RunwayClassFields& runway) {
     read_vehicle_class_base_fields_00960230(host, row, base);
     const GuiLuaRef width = host.get_by_name(row, "RunwayWidth");
-    runway.width_138 = vehicle_class_number_00b66270(host.inspect(width));
+    runway.width_138 = host.number_00b66270(width);
     host.release(width);
     const GuiLuaRef length = host.get_by_name(row, "RunwayLength");
-    runway.length_13c = vehicle_class_number_00b66270(host.inspect(length));
+    runway.length_13c = host.number_00b66270(length);
     host.release(length);
 }
 
