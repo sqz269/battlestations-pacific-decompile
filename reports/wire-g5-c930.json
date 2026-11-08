@@ -1,0 +1,213 @@
+{
+  "goal": 5,
+  "chain": 930,
+  "slot": "g5-w4",
+  "run": 2066,
+  "branch": "agent/g5-w4",
+  "base_head": "723415960ce3d3db106eea65b2fe952e63e40177",
+  "picked": "Movie pool retained slab-table cleanup",
+  "rows": [
+    {
+      "native": "00aacce0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiMoviePoolTraits>::destroy",
+      "evidence": "The live F8BD4C Movie process owner registers destroy_at_exit during game startup; destroy calls the address entry on its retained +28h table after slab release and before CS/list teardown. The entry reuses gui_widgets_cc13::msvc9_containers::free_pointer. Binary target 105A7730, reachable call site 105A71D4."
+    },
+    {
+      "native": "00aad040",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: GameNativeGuiWidgetPoolProcess<GuiMoviePoolTraits>::destroy_at_exit",
+      "reason": "Already reachable at baseline through Movie process atexit; only its inline table release is replaced in this packet."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context iterator/insert/erase consumers",
+      "reason": "Missing a linked live ErrorContextNode map owner and runtime consumer; source consumers alone are not entry-reachable."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context iterator/insert/erase consumers",
+      "reason": "Missing a linked live ErrorContextNode map owner and runtime consumer; source consumers alone are not entry-reachable."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context iterator/insert/erase consumers",
+      "reason": "Missing a linked live ErrorContextNode map owner and runtime consumer; source consumers alone are not entry-reachable."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context iterator/insert/erase consumers",
+      "reason": "Missing a linked live ErrorContextNode map owner and runtime consumer; source consumers alone are not entry-reachable."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost movcam_reset callbacks",
+      "reason": "Missing the actual constructed movie-camera limits owner; callbacks retain only a camera identity token and report the route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost movcam_reset callbacks",
+      "reason": "Missing the actual constructed movie-camera limits owner; callbacks retain only a camera identity token and report the route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost movcam_reset callbacks",
+      "reason": "Missing the actual constructed movie-camera limits owner; callbacks retain only a camera identity token and report the route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost movcam_reset callbacks",
+      "reason": "Missing the actual constructed movie-camera limits owner; callbacks retain only a camera identity token and report the route unreached."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list integration",
+      "reason": "Missing a live native candidate score-list owner and gameplay consumer; the documented table reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list integration",
+      "reason": "Missing a live native candidate score-list owner and gameplay consumer; the documented table reader is an excluded debug overlay."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp",
+      "reason": "Already called from reachable code at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp",
+      "reason": "Already called from reachable code at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "Already called from reachable code at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "00acd0f0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize_slab",
+      "reason": "Already called at baseline through the mapped initialize_slab member; an address wrapper would add no runtime wiring."
+    },
+    {
+      "native": "00ac1be0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiLinePoolTraits>::initialize_slab",
+      "reason": "Already called at baseline through the mapped initialize_slab member; an address wrapper would add no runtime wiring."
+    },
+    {
+      "native": "00abe890",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiSectionPoolTraits>::initialize_slab",
+      "reason": "Already called at baseline through the mapped initialize_slab member; an address wrapper would add no runtime wiring."
+    },
+    {
+      "native": "00ac1e90",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiLinePoolTraits>::trim",
+      "reason": "Already mapped to the allocator-list trim callback; no new Line owner or consumer change in this Movie packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "Missing a verified live DirectorQueue and clear-path consumer at the candidate host site; left outside the selected Movie lifetime work."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing the verified live default class-ordinal producer and descriptor consumer at the candidate site."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state messages",
+      "reason": "Missing a retained live ControllerStateMessage producer and routed consumer; no temporary state round-trip added."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshots",
+      "reason": "Missing a retained live ControllerSnapshotMessage producer and transport consumer; flattened scene flags are not native snapshot ownership."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair valuation",
+      "reason": "Missing a verified live mode-specific ClassPairRow table at the candidate site within this packet."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live text-input consumer for glyph-byte acceptance; agent/g5-w7 c932 also inspected this path and left it unwired."
+    }
+  ],
+  "built_reconstructed_called": {
+    "before": 6291,
+    "after": 6292,
+    "delta": 1
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; 4/4 CTests",
+    "fixture": "Existing tests/wire_g5_c877_movie_table_probe.cpp compiled with /MANIFEST:EMBED and passed: 129 slots, 33 slabs, table capacity 32 -> 66, payload/trailer identity, trim and teardown",
+    "graph": "python tools/call_graph.py; who/path 00aacce0 confirm reachable call from Movie destroy through registered process atexit callback",
+    "ghidra": "Existing bsp.gpr /battlestationspacific.exe verified; library-style name kept, evidence appended, previous annotation recorded, project saved, affected export refreshed",
+    "abi": "Source interface only; no original register ABI or live game validation",
+    "readiness": "After forced index rebuild, wire_readiness.py --standins text wired remains 10808 -> 10808 and omits AACCE0; the separately rebuilt instruction graph proves the new reachable address, 6291 -> 6292. No text-only credit is claimed."
+  },
+  "evidence_files": [
+    "local/output/c930-baseline-build.log",
+    "local/output/c930-build.log",
+    "local/output/c930-graph-before.log",
+    "local/output/c930-graph-after.log",
+    "local/output/c930-who-after.log",
+    "local/output/c930-probe.log",
+    "local/output/c930-annotation.log",
+    "local/output/c930-prior-annotation.json",
+    "local/output/c930-readiness-before.log",
+    "local/output/c930-readiness-after.log"
+  ],
+  "left_for_others": [
+    "Movie constructor exceptional table cleanup remains the equivalent common implementation.",
+    "Unowned error-context map and movie-camera limits need actual runtime owners before wiring."
+  ],
+  "coordination": "Native material file held only for the 8-line Movie specialization, then released before final verification; GUI review branches were notified. No common pool engine edits.",
+  "readiness_summary": {
+    "before": {
+      "wired": 10808,
+      "callees_done_no_wired_caller": 8465,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "after": {
+      "wired": 10808,
+      "callees_done_no_wired_caller": 8465,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    }
+  },
+  "readiness_called_after": {
+    "called": 6095,
+    "called_not_wired": 365,
+    "wired_not_called": 41,
+    "not_in_binary": 14589
+  }
+}
