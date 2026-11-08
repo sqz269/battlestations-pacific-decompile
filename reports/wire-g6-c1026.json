@@ -142,6 +142,7 @@
       "Owner probe covers matching versus unrelated notifications, invalidation before impact, actual GameProjectileRow copies sharing state, invalidation after enqueue/projectile retirement, queued versus delivered pass-K notices using the production query, +5Eh removal, latched null, rebind baseline and unchanged source identity",
       "Existing fade constructor/four-sector/centre probe recompiled against current bsp_core.lib and PASS",
       "call_graph.py: 5752/6462 reconstructed addresses called; 0064B170 and 0064B780 each retain one entry-reachable compiled call",
+      "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 14 files",
       "git diff --check PASS; no floating-point arithmetic expression changed"
     ],
     "game_run": false
@@ -156,7 +157,7 @@
     "0064b780": "REACHABLE; one compiled call at 1011C109 from run_hud_leaf_screen_constructor",
     "00415680": "existing body now also called from HudLeafShipStatusBinding::eh_vector_construct_00bf7cd1",
     "remaining_rows": "00641910 and 00651760 remain unlinked in the built game",
-    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 10 files; arithmetic operation order retained",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 14 files; arithmetic operation order retained",
     "limits": "Source, build, isolated geometry/layout and compiled reachability verified. No game was run; event occurrence, visual presentation, native ABI/FH3 behavior and original CRT dispatch policy are not claimed. Only the offered ship hit route is changed; plane damage-direction callers were outside this assignment."
   }
 }
