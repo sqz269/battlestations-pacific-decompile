@@ -1,0 +1,215 @@
+{
+  "goal": 5,
+  "chain": 852,
+  "slot": "g5-w10",
+  "base": "9c597e8b51",
+  "picked": "Canonical type-5 scene-property owned-reference payload cleanup",
+  "rows": [
+    {
+      "native": "008f0380",
+      "status": "wired",
+      "host_site": "src/native_scene_property_bag_storage.cpp: release_native_scene_property_record_value_008f0640, case 5",
+      "evidence": "008F0640 assembly 008F0681..008F0694 equals whole 008F0380 over record+18h: conditional current-heap free, conditional pointer clear, unconditional scalar clear. The record and sole-owned duplicate are the existing native property-library state. Removed the old sequence; retained the shared record-reset tail. Source composition of an original inline sequence, not a recovered native CALL."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scoring",
+      "reason": "Missing gameplay owner and consumer for the native score table; the documented table reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scoring",
+      "reason": "Missing live native candidate-score records and gameplay consumer for their chosen byte."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: air-support candidate attack value",
+      "reason": "Missing resolved plane-class weapon-value facts in the current air-support callback, which throws instead of producing a value."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing genuine writable F87574/F87578/F8757C publications required by the literal initializer; semantic command-target fields do not supply them."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land/strafe moveto ticks",
+      "reason": "Missing a constructed native moveto owner with its complete observer lifetime and task/approach contract; current motion state remains flattened host data."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: controller registration",
+      "reason": "Missing complete Cc13Seg67bHost binding for the 2268h native brain constructor and its owned subobjects."
+    },
+    {
+      "native": "007b6830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rk_install_007b7fd0",
+      "reason": "Missing native rocket approach/task storage and complete constructor callbacks behind the projected motion host."
+    },
+    {
+      "native": "007b7fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rk_install_007b7fd0",
+      "reason": "Missing native task/approach construction domain needed to replace the projected rocket installation."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane pilot-target checks",
+      "reason": "Missing same-layout plane+DF4h control storage and genuine local-slot publication for the raw helper."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "Missing live loading-queue owner/update binding with the actual job+8h string-owning work vector."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing live native loader/job production and full queue service binding; current reconstructed helpers alone do not publish the loading owner."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values/assign_native_animation_values_00b926e0",
+      "reason": "Existing parser helpers already invoke the reserve, but the built graph has no distinct 00B92440 entry; no independent real array-growth consumer was established in this packet."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: resize_native_vehicle_pointer_array_005471b0",
+      "reason": "Existing resize already invokes the reserve; no additional same-domain live array-growth consumer was established in this packet."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "No live distortion-record append/growth consumer was established; initialized empty storage alone is not a reserve use."
+    },
+    {
+      "native": "00b57680",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader_constant_rows_reserve_00b576f0",
+      "reason": "Missing reached native 1Ch shader-constant row owner and its pooled-name copy binding."
+    },
+    {
+      "native": "00b580c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader_constant_list_construct_00b58400",
+      "reason": "Missing reached MshdLifetimeHost and real constant-list owner with its row-copy/string domain."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: vehicle_avoidance_007df4f0",
+      "reason": "Its sole native caller is in a separately reviewed host file; no independent replacement site was established."
+    },
+    {
+      "native": "007df4f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: vehicle_avoidance_007df4f0",
+      "reason": "The large collision-band caller requires separate evidence and changes to a host file already in review."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: unit debug inspector",
+      "reason": "Its only original caller is the excluded debug flooded-fraction inspector."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane death/debris arms",
+      "reason": "Missing per-part visual record/node translation, record+14h vector and live debris dynamics consumer."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB5.cpp: gui_listbox_set_input_filter_00a9ac70 callback",
+      "reason": "Missing reached native listbox screen owner with actual +144h input-filter dispatch storage."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_items_00a9bf90",
+      "reason": "Missing reached NativeGuiListboxCalls implementation and actual native listbox row-list owner."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_row_by_data_00a9c860",
+      "reason": "Missing reached NativeGuiListboxCalls implementation and real native selection/row storage."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing reached native listbox owner and select-index callback binding."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing reached native listbox owner and complete selection/refresh call binding."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: backfill_helm_order",
+      "reason": "Missing live helm-message backfill state and apply operation; the inspected host method remains unreached and the existing body only models its age calculation."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0 / src/game_hosts_mission.cpp: report_progress",
+      "reason": "The menu already calls the existing body; the remaining mission-tree stand-in lacks a cross-owner borrow of the published loading screen."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "Missing reached native RamImage/terrain decode owner for this getter's original consumers; generic unrelated DWORD reads are not a binding."
+    },
+    {
+      "native": "008f0340",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_record_assignment.cpp: assign_native_scene_property_record_008f0700",
+      "reason": "Existing canonical copy is already used by the assignment body; that parent file/address is owned by agent/g5-w5 c849."
+    },
+    {
+      "native": "008f0310",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_reference_set.cpp: set_native_scene_property_reference_008f0420",
+      "reason": "Already composed into the live type-5 reference setter; no new call is required in this packet."
+    },
+    {
+      "native": "008f0420",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_reference_set.cpp: set_native_scene_property_reference_008f0420",
+      "reason": "Existing live setter already delegates payload replacement to canonical 008F0310; no duplicate execution added."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, six of six tests",
+    "changed_build": "scripts/build.ps1 passed, six of six tests, 15.85s CTest",
+    "call_graph_before": {"reachable_functions": 42891, "called_reconstructed_addresses": 5568, "identified_reconstructed_addresses": 6188},
+    "call_graph_after": {"reachable_functions": 42892, "called_reconstructed_addresses": 5569, "identified_reconstructed_addresses": 6189},
+    "new_call": "104C7815: release_native_scene_property_record_value_008f0640 -> reset_native_reference_payload_008f0380 at 1061EA70, reachable from WinMainCRTStartup through the scene property-library lifetime chain",
+    "readiness_before": 10703,
+    "readiness_after": 10704,
+    "new_row": {"native": "008f0380", "state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "float_math_changed": false,
+    "new_tests": false,
+    "limits": "Build/static call reachability and exact listing comparison only; no game run, populated gameplay-path observation or new original-ABI claim."
+  },
+  "left_for_others": "00A7FE60 listener-preset append/select identified by agent/g5-w12 in the sound stream; requires the typed configuration-state interface and is outside this property lifetime packet."
+}
