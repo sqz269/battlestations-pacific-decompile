@@ -9,6 +9,7 @@
 #include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/seg10_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/world_entity_update.hpp"
 
@@ -494,6 +495,20 @@ MissionCameraPublication& mission_camera_publication() noexcept {
     return publication;
 }
 
+void update_mission_camera_projection(const MissionCameraProjection& projection) {
+    MissionCameraPublication& node = mission_camera_publication();
+    if (!node.ready) return; // first pose publication supplies these terms
+    set_camera_fov_00b6fbb0(node.state.projection, projection.fov);
+    set_camera_aspect_00b6fbd0(node.state.projection, projection.aspect);
+    set_camera_near_00b6fbf0(node.state.projection, projection.near_plane);
+    set_camera_far_00b6fc10(node.state.projection, projection.far_plane);
+}
+
+void set_mission_camera_fov(MissionCameraProjection& projection, float fov) {
+    projection.fov = fov;
+    update_mission_camera_projection(projection);
+}
+
 void publish_mission_camera(const CameraMatrix16& world, const MissionCameraProjection& projection) {
     MissionCameraPublication& node = mission_camera_publication();
     node.state.projection.fov = projection.fov;
@@ -513,6 +528,19 @@ void clear_mission_camera() noexcept {
     MissionCameraPublication& node = mission_camera_publication();
     node.ready = false;
     node.publishes = 0;
+}
+
+void publish_ship_view_mission_camera(const CameraMatrix16& world,
+    const MissionCameraProjection& projection, const MissionCameraFovFrame& frame,
+    cc13_seg10::ViewFovHost& fov) {
+    // 0051E6E0 has already applied the raised screen's zoom through 004DC940.
+    // Do not overwrite it with the pipe-sight default at the later pose publish.
+    if (frame.pipe_sight_updates && !frame.binoculars_raised) {
+        const float scale = pipe_sight_fov_scale_0064e2d6(
+            frame.pipe_sight_zoom_rate, frame.pipe_sight_zoom);
+        cc13_seg10::game_set_view_fov_004dc940(fov, fov.game_00e188a8(), scale, 1);
+    }
+    publish_mission_camera(world, projection);
 }
 
 float global_config_fov_0087ec0f(double fovs_degrees, float divisor) noexcept {

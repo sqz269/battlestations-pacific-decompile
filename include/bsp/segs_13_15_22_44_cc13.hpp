@@ -93,8 +93,19 @@ struct BriefingConstructHost {
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine or virtual slot it stands for.
 // ---------------------------------------------------------------------------
-struct SegBHost : BriefingConstructHost {
+struct BinocularsFovHost {
+    virtual ~BinocularsFovHost() = default;
+    virtual void binoculars_set_view_fov(float scale, std::int32_t index) = 0;
+    virtual void binoculars_set_mover_zoom(void* mover, bool enabled);
+    virtual float& binoculars_mover_pitch(void* mover);
+    virtual float binoculars_mover_min_pitch(void* mover);
+    virtual float binoculars_mover_max_pitch(void* mover);
+    virtual void unit_virtual_dc(void* mover, float delta) = 0;
+};
+
+struct SegBHost : BriefingConstructHost, BinocularsFovHost {
     virtual ~SegBHost() = default;
+    void binoculars_set_view_fov(float scale, std::int32_t index) override;
     // Globals the routines dereference (named by address).
     virtual Raw game_e188a8() = 0;
     virtual void* main_front_end_e198ac() = 0;
@@ -233,8 +244,9 @@ int briefing_screen_id_0051e250();
 void briefing_collect_children_0051e270(Raw screen, void* out_vector, SegBHost& host);
 void briefing_register_0051e280(Raw screen, SegBHost& host);
 Raw briefing_construct_0051e4d0(Raw screen, BriefingConstructHost& host);
-void binoculars_add_clamped_pitch_0051e650(Raw mover, float delta);
-void binoculars_apply_fov_0051e6e0(Raw screen, SegBHost& host);
+void binoculars_add_clamped_pitch_0051e650(float& pitch_388, float min_pitch_3ec,
+    float max_pitch_3f0, float delta);
+void binoculars_apply_fov_0051e6e0(Raw screen, BinocularsFovHost& host);
 
 // Exposed for the briefing routines: the checked vector<T*>::erase 0051AEB0 inlined by 0051B1B0.
 void pointer_vector_erase_0051aeb0(Raw vector, std::uint8_t* first, std::uint8_t* last,

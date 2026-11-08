@@ -1,0 +1,176 @@
+{
+  "run": 1825,
+  "goal": 5,
+  "chain": 845,
+  "worker": "agent/g5-w7",
+  "base": "36ce9eb9c1842056519c1261c2540d5a3cff8135",
+  "picked": "Retained binocular raise, zoom-axis and FOV lifecycle on the live ship-view path",
+  "rows": [
+    {
+      "native": "0051e650",
+      "status": "wired",
+      "host_site": "src/segs_13_15_22_44_cc13.cpp::binoculars_apply_fov_0051e6e0",
+      "state": "Reference to the same ShipCaptain pitch_388 and its class-produced pitch limits; original wrapped-angle/clamp body reused through typed accessors."
+    },
+    {
+      "native": "0051e6e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::binoculars_apply_fov_0051e6e0 and raised_view",
+      "state": "Retained binocular zoom/mode/mover, existing 004DC940 projection/FOV path, same ShipCaptain zoom flag, pitch and yaw. The FOV provider now updates the already-published Operator projection through the native cache-invalidating setters; pipe-sight publication preserves active binocular zoom."
+    },
+    {
+      "native": "0051e7e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::raise_toggle_0051e7e0",
+      "state": "Actual controlled-unit publication and kind queries, retained binocular screen, same ShipCaptain and Operator projection; saves/restores the actual near plane. Effect-group broadcast remains explicitly recorded."
+    },
+    {
+      "native": "0051eaa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::raised_view",
+      "state": "Actual application's native action owner/bank, its device-query provider and rising-edge fields, retained +28/+2C/+2D/+2E/+38/+3C screen fields, actual frame delta and existing 0042AC60."
+    },
+    {
+      "native": "0051ef00",
+      "status": "skipped",
+      "host_site": "src/hud_warning_screen.cpp::BinocularsViewBinding::binoculars_update_raise_0051ef00",
+      "reason": "Already entry-reachable at baseline; this packet supplies its formerly recorded raise/raised-view services rather than claiming a new caller."
+    },
+    {
+      "native": "00817380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::unit_broadcast_controlled_part_flag_00817380",
+      "reason": "Needs the controlled unit's real +FFCh/+1000h effect-group list and +1008h flag owner; the existing controlled-unit and new binocular service keep this dependency explicitly recorded."
+    },
+    {
+      "native": "00452bd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::ShipViewInputBinding::raised_view",
+      "reason": "Needs the renderer's real 00E081A0 lens-flare owner and rendering provider; the reached call is explicitly recorded."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::scoring_slot",
+      "reason": "Needs a native-layout score-record producer and ScoreLifetimeBindings; the mission-result host retains a typed persistence model."
+    },
+    {
+      "native": "0091ce90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::scoring_slot",
+      "reason": "Needs the actual native score-record container allocations and lifetime binding before the constructor can replace the typed defaults."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::attach_tree/insert_into/make_owned_complete_bag",
+      "reason": "Already has three entry-reachable compiled call sites; no new wiring is missing here."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl/merge_child",
+      "reason": "Already has two entry-reachable compiled call sites; no new wiring is missing here."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp::frame_angles",
+      "reason": "Needs an entry-reachable MovCamFrame owner/caller and frame service binding; the live mission-camera host uses ShipCaptain state."
+    },
+    {
+      "native": "0090e670",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp::scoring_record_drop_interval_0090e670",
+      "reason": "Needs the real scoring record+160h vector and bomb-rack drop caller adapter, which this packet does not construct."
+    },
+    {
+      "native": "0051e8e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::Impl::reset_binoculars_0051e8e0, called from back_out_one_overlay_level_0068b470, collapse_in_game_overlays and HudLeafObservedUnitBinding::screen26_call_0051e8e0",
+      "state": "Existing reset body writes the same retained binocular mode/zoom/limit and reapplies FOV to the same camera, disabling its zoom flag; screen-applied/model accessors borrow the live registry and loaded page."
+    },
+    {
+      "native": "0051e9b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::exit_leaf_screen (slot 26h)",
+      "state": "The registry validates vtable 00CEC9B0 and dispatches the existing exit wrapper on the same retained binocular state, with the reset services used by map/collapse."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release and all four existing tests pass",
+    "fixture": "tests/wire_g5_c845_binocular_probe.cpp: original lifecycle and analog PC24 regression, overlay/screen-exit resets, plus real 004DC940 -> shared FOV setter -> published CameraState projection; pipe sight enabled, warm view-projection cache, immediate cache invalidation/rebuild and preserved active zoom across pose publication",
+    "fixture_recipe": "local/c845-probe.cmd; reproducible cl/library inputs are also documented at the top of the committed fixture",
+    "pc24": "python tools/pc24_lint.py --staged and --diff origin/main...HEAD",
+    "compiled_calls": "python tools/call_graph.py followed by who 0051e650, who 0051e6e0, who 0051e7e0, who 0051eaa0 and path 0051eaa0; who 0051e8e0 and who 0051e9b0 confirm the review cleanup calls; who publish_ship_view_mission_camera and who set_mission_camera_fov confirm the shared publication/FOV integration",
+    "readiness_wired_before": 10697,
+    "readiness_wired_after": 10699,
+    "readiness_called_before": 5937,
+    "readiness_called_after": 5962,
+    "new_directly_verified_bodies": [
+      "0051e650",
+      "0051e6e0",
+      "0051e7e0",
+      "0051eaa0",
+      "0051e8e0",
+      "0051e9b0"
+    ],
+    "boundary": "Built executable reachability plus focused source fixture; no original register-ABI, retail-game visual or gameplay validation."
+  },
+  "remaining": [
+    "00817380 controlled-part effect-group state/producer and 00452BD0 lens rendering remain recorded dependencies.",
+    "The kind-46h weapon-view raise gate still needs its screen+1Ch owner; this packet limits the new raise path to supported controlled-unit kinds.",
+    "The existing helm-aim look-axis/config binding and view_24 arm are outside this packet; only the raise axis is newly sourced from the native input bank."
+  ],
+  "review_round_1": {
+    "review_run": 1854,
+    "reviewed_head": "6119627113027237ac2c4b76c63f0a4ffe087b3f",
+    "findings": [
+      {
+        "priority": "P2",
+        "status": "fixed",
+        "finding": "Newly active binocular zoom survived overlay/interface transitions",
+        "changes": [
+          "Replace map/back and collapse reset records with the existing 0051E8E0 body through a shared retained-state binding.",
+          "Bind screen 26h exit 0051E9B0 in the existing vtable-checked leaf dispatcher and connect the existing observed/bomber reset provider.",
+          "Extend the existing lifecycle fixture with active-zoom overlay reset and screen exit; assert mode 0, zoom/limit/FOV 1 and the same mover zoom flag disabled."
+        ]
+      }
+    ],
+    "validation": {
+      "build": "Win32 Release build and all four existing tests pass",
+      "fixture": "Extended lifecycle/PC24 fixture passes",
+      "pc24_staged": "0 findings across four changed code files",
+      "compiled_cleanup": "Entry-reachable calls at 10106FB3 (map/back), 1010983C (collapse), 10117E2A (shared reset body) and 1010C63F (screen exit).",
+      "folding_note": "Release /OPT:ICF folds the byte-identical reset/exit bodies at 10469B10; the two distinct source call sites and fixture validate the intended operations. All original four claimed bodies remain entry-reachable.",
+      "readiness_wired_after": 10699,
+      "readiness_called_after": 5962
+    }
+  },
+  "review_round_2": {
+    "review_run": 1870,
+    "reviewed_head": "112593820c009a3c6177a41d07b070115ce1a39c",
+    "findings": [
+      {
+        "priority": "P2",
+        "status": "fixed",
+        "finding": "Binocular FOV was stale in the published camera and pipe-sight scale 1 overwrote it before publication",
+        "changes": [
+          "HudViewFovBinding now calls the shared set_mission_camera_fov service. It updates the retained terms and, when ready, the CameraState projection that readers actually consume, using the existing 00B6FBB0/00B6FBD0/00B6FBF0/00B6FC10 setters and their native cache mask.",
+          "The binocular near-plane provider uses the same projection synchronization. Projection-only updates preserve the published pose and publication count; no second camera tick or camera_last_frame invalidation is introduced.",
+          "Extract the live ship-view publication tail into publish_ship_view_mission_camera. It applies the existing pipe-sight default only when binoculars are down, keeping the original 004DC940 gates and FOV math. HudViewFovBinding retains the prior 1A04 index when that default is skipped.",
+          "The fixture replaces its standalone scale variable with the actual 004DC940 body, shared FOV setter, production ship-view publication tail and mission_camera_publication().state. With pipe sight enabled it warms the actual 00B70490 cache, raises zoom, checks immediate published FOV/near-plane and cache invalidation without republishing the pose, then checks preserved zoom after publication and default published FOV after overlay reset/screen exit."
+        ]
+      }
+    ],
+    "validation": {
+      "build": "./scripts/build.ps1: Win32 Release and all four existing tests pass",
+      "fixture": "cmd /c local\\c845-probe.cmd: published pipe-sight projection/cache, lifecycle, overlay reset, screen exit and analog PC24 cases pass",
+      "pc24_staged": "0 findings across four changed code files",
+      "compiled_publication": "publish_ship_view_mission_camera is called from GameHudHost::Impl::publish_ship_view_camera; set_mission_camera_fov is called from HudViewFovBinding::camera_set_fov_00b6fbb0. All six claimed original bodies remain entry-reachable.",
+      "readiness_wired_after": 10699,
+      "readiness_called_after": 5962,
+      "boundary": "Source integration fixture through the actual publication and cached projection reader; no game or original register-ABI validation."
+    }
+  }
+}
