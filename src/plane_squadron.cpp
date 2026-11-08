@@ -7,6 +7,7 @@
 #include "bsp/plane_squadron.hpp"
 
 #include "bsp/air_operations.hpp"
+#include "bsp/band_004b_cc13.hpp"
 #include "bsp/cc13_seg41_land.hpp"
 
 #include <cstdint>
@@ -135,11 +136,36 @@ void squadron_on_plane_left_map_007f31a0(std::size_t leaving_plane,
         }
         // 32BC..32EA: inspect the live latch AFTER routing, and only query
         // 007EE2E0(squadron,0) when both earlier conditions hold.
-        if (survivors > 0 && !host.leave_latched() && host.leaving_on_purpose())
+        if (survivors > 0 && !host.leave_latched() && host.leaving_on_purpose()) {
             host.latch_leave();
-        // The host still lacks the shared squadron director's stance/+370h
-        // stores and survivor moveto command at 32F1..340F. Do not manufacture
-        // a second controller or substitute a member's task for those stores.
+            SquadronLeaveMapGeometry geometry;
+            if (host.survivor_geometry && host.command_survivors &&
+                host.survivor_geometry(geometry)) {
+                const cc13_band004b::GameMapBox box{
+                    geometry.north_west[0], geometry.north_west[1], geometry.north_west[2],
+                    geometry.south_east[0], geometry.south_east[1], geometry.south_east[2]};
+                auto centre = cc13_band004b::game_map_box_center_004b4850(box);
+                // bsp.py show 007f31a0 --asm, 3358..340F: query the actual
+                // game box, replace its Y with the leaving plane's Y, then
+                // issue moveto(centre + (position-centre)*[00CE3DF0], flags1).
+                // bytes 00CE3DF0 = 000000A09999F13F, double(float(1.1)).
+                // Each subtract/multiply/add rounds at PC24; the Y subtract
+                // still executes (including Inf/NaN), as FSUBR ST0,ST0 does.
+                constexpr double scale = 1.10000002384185791015625;
+                centre[1] = geometry.leaving_position[1];
+                std::array<float, 3> target;
+                for (std::size_t axis = 0; axis < target.size(); ++axis) {
+                    volatile float delta = geometry.leaving_position[axis] - centre[axis];
+                    volatile float scaled = static_cast<float>(static_cast<double>(delta) * scale);
+                    volatile float result = centre[axis] + scaled;
+                    target[axis] = result;
+                }
+                host.command_survivors(target);
+            }
+        }
+        // The shared director's fire-stance/+370h stores at 32F1/3302 are
+        // still outside this host projection. The command uses its actual
+        // squadron owner rather than substituting a member's task.
         host.kill_plane(); // 3414..3418: ECX is the leaving PLANE.
         return;
     }

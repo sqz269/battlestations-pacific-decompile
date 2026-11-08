@@ -1,0 +1,190 @@
+{
+  "run": 2146,
+  "goal": 5,
+  "chain": 965,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "picked": "Squadron leave-map survivor moveto using the existing map-box centre body",
+  "wired_before": 10829,
+  "wired_after": 10830,
+  "rows": [
+    {
+      "native": "004b4850",
+      "status": "wired",
+      "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0; src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410",
+      "evidence": "Original CALL 007F3358. Live WorldMapBounds north-west/south-east corners become GameMapBox inputs; the returned centre drives the survivor moveto position, sent once through the retained squadron director with command E08F68 and flags1. Built graph shows one entry-reachable call from 007F31A0."
+    },
+    {
+      "native": "007f31a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410",
+      "evidence": "Already wired at baseline; expanded its canonical body with original survivor arithmetic/command consumer at 007F3358..007F340F. Not counted as a newly wired address."
+    },
+    {
+      "native": "0085dc80",
+      "status": "skipped",
+      "host_site": "src/plane_pose_commit.cpp: orthonormalize_native_pose_matrix_0085dc80",
+      "reason": "Already wired and called before this change; launch-spot normalization is an additional site, not a new function wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: owning enum property insertion",
+      "reason": "Already has reachable owning-bag enum insertion calls at baseline; the ready text classification is not a new wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: owning bag merge",
+      "reason": "Already has reachable recursive native bag merge calls at baseline; no missing caller was established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Group score list",
+      "reason": "No native candidate score-list owner or gameplay consumer exists; the documented image consumer is an unreachable debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Group score list",
+      "reason": "No native candidate score entries exist to mark; the documented image reader is the unreachable debug overlay."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: widget description",
+      "reason": "Missing reached reflection descriptor writer 00AAAED0; child snapshots are not the draw-order path."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp: text input byte acceptance",
+      "reason": "Missing a live text-edit validation consumer; using rendered label bytes would substitute a different operation."
+    },
+    {
+      "native": "0070a710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flag cloth",
+      "reason": "Missing reached flag-cloth vertex-buffer producer and Seg57Host callback implementation."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path editing",
+      "reason": "Missing clear/remove-last user-point message producer and retained path owners for all selectable queue slots."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live default-descriptor consumer; the reached populated-descriptor builder has different initialization semantics."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: command metadata",
+      "reason": "Missing an entry-reachable native main-scene command queue submission path with nonempty command storage."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: install_land_task_core_009b41c0",
+      "reason": "Missing the full native task/approach/state owner and concrete constructor callbacks; current fields are a semantic task projection."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: register_native_land_states_009af9a0",
+      "reason": "Missing actual same-approach state member storage and registry lifetime in the reached semantic landing task."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing queue intake",
+      "reason": "Missing the actual native queue block, native observer owners, slot owner and serialized transport dependencies."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "src/native_land_follow_parameters.cpp: FollowParameterSnapshot::observe_follow_think",
+      "reason": "Already called from the retained follow-parameter snapshot at baseline; no new wiring is needed."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values",
+      "reason": "Missing an entry-reachable native skinned-animation parser/resource consumer; internal reserve calls alone do not establish it."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: camera frustum builder",
+      "reason": "Missing original camera-product consumer with a bound live CameraProjection; address is under another worker review."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: escape_scene_text_008ee5f0",
+      "reason": "Missing reached scene multiline writer 008EFA30; parser string unescaping is the opposite operation."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: alternate flight frame",
+      "reason": "Missing unit+B04h velocity-correction producer admitting the original alternate-frame branch."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile impact effect",
+      "reason": "Missing live descriptor effect-slot spawn consumer; selecting a slot without delivering its effect would add an unused result."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_sound_step_007de490",
+      "reason": "Missing live engine sound slot and pitch/volume target/rate producers connected to an audio consumer."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight target selection",
+      "reason": "Missing the native approach owner and complete observer/reference callback binding; existing target fields alone do not supply that contract."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: saved ship rudder initialization",
+      "reason": "Missing saved-entity Lua Rudder producer and the original saved-data gate; the existing order ring supplies no saved rudder input."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: helmsman_backfill_age_008141a0",
+      "reason": "Missing reached helm message application with sender authority, actual message timestamp and backfill consumer."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and four CTests passed",
+    "probe": "Existing tests/wire_g5_c835_leave_map_probe.cpp extended for non-origin centre target, preserved altitude and exactly one command after a reentrant latch, before Kill; standalone manifested Win32 probe passed",
+    "pc24": "pc24_lint --staged: 0 findings across 4 files; source check also passed; final origin/main...HEAD diff check run after commit",
+    "call_graph": "Final rebuilt exe: 004B4850 at 1048D090, entry-reachable x1 from 007F31A0 at 10519C2E; path through retreat_leave_map_007ee410, leave countdown and mission frame. Compiled graph totals 5716/6426 reconstructed addresses called.",
+    "evidence_files": [
+      "local/output/c965-baseline-build.log",
+      "local/output/c965-build.log",
+      "local/c965-probe.log",
+      "local/output/c965-who-after.log",
+      "local/output/c965-graph-after.log",
+      "local/output/c965-pc24.log",
+      "local/output/c965-baseline.json",
+      "local/output/c965-after.json"
+    ]
+  },
+  "remaining": [
+    "Shared squadron fire-stance0/+370h reset and self exit-message broadcast at 007F32F1..007F3321 remain omitted.",
+    "Squadron/wing-0 identity remains fused by the existing host; command reuses its retained squadron director, with no temporary member bot task.",
+    "Missing live map or registered director storage records and omits survivor retarget.",
+    "No retail game run, original-ABI differential or gameplay validation."
+  ]
+}

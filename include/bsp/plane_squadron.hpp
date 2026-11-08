@@ -27,6 +27,7 @@
 #ifndef BSP_PLANE_SQUADRON_HPP
 #define BSP_PLANE_SQUADRON_HPP
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -194,6 +195,11 @@ inline constexpr std::int32_t kSquadronLeaderSlot = 0;
 // 007F31A0 is the leave-map handler, not a leader-slot query. These callbacks
 // borrow the live squadron/member owners; callbacks can route another member's
 // exit synchronously, so the latch is reread after that routing.
+struct SquadronLeaveMapGeometry {
+    std::array<float, 3> north_west;
+    std::array<float, 3> south_east;
+    std::array<float, 3> leaving_position;
+};
 struct SquadronLeaveMapHost {
     std::int32_t effective_game_mode;
     std::int32_t session_mode;
@@ -206,14 +212,18 @@ struct SquadronLeaveMapHost {
     std::function<void(std::size_t)> route_member_exit;
     std::function<bool()> leaving_on_purpose;
     std::function<void()> latch_leave;
+    // Optional for projections without a live map/squadron command owner.
+    // No temporary member director is substituted when that owner is absent.
+    std::function<bool(SquadronLeaveMapGeometry&)> survivor_geometry;
+    std::function<void(const std::array<float, 3>&)> command_survivors;
     std::function<void()> store_squadron_exit_party;
     std::function<void()> kill_plane;
     std::function<void()> kill_squadron;
 };
 // Native __thiscall(squadron, plane, party), RET8; new C++ interface. The
 // forwarded party is captured by the host's message/store callbacks. Retains
-// the host projection's missing fire-stance/+370h reset and survivor moveto
-// command; latch, exit messages, warning, party publication and kills run here.
+// the host projection's missing fire-stance/+370h reset; the survivor moveto
+// runs only with the real map/pose and squadron command callbacks supplied.
 void squadron_on_plane_left_map_007f31a0(std::size_t leaving_plane,
     const SquadronLeaveMapHost& host);
 

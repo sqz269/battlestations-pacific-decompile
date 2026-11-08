@@ -23521,6 +23521,42 @@ void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
             retreat_latched_361.push_back(sq->name);
             ++retreat_latches_361;
         };
+        h.survivor_geometry = [&](bsp::SquadronLeaveMapGeometry& geometry) {
+            // 007F3330 reads the leaving plane's refreshed world position;
+            // WorldMapBounds retains the game's actual +711Ch/+7128h corners.
+            // Reuse the registered squadron director: this host retains it
+            // on the fused wing-0 slot (kSquadronSetCommandBound routes that
+            // queue as a squadron). No member bot task/controller is created.
+            const std::size_t owner = sq->squadron_unit;
+            if (bounds == nullptr || owner == bsp::kPlaneSquadronNoUnit ||
+                owner >= slots.size() || !slots[owner]) {
+                record("PlaneSquadron::survivor_moveto_missing_owner", 0x007f340fu);
+                return false;
+            }
+            geometry.north_west = bounds->north_west;
+            geometry.south_east = bounds->south_east;
+            const float* p = slots[plane]->motion.position;
+            geometry.leaving_position = {p[0], p[1], p[2]};
+            return true;
+        };
+        h.command_survivors = [&](const std::array<float, 3>& point) {
+            const std::size_t owner = sq->squadron_unit;
+            GameUnitSlot& squadron = *slots[owner];
+            bsp::SceneCommandTarget target;
+            target.kind = 0;
+            target.position_valid = 1;
+            for (std::size_t axis = 0; axis < point.size(); ++axis)
+                target.position[axis] = point[axis];
+            target.trailing = 0.0f; // 007F33F8 FLDZ -> 00468560(point,0)
+            // 007F3407..340F: moveto E08F68, flags1, ECX=squadron.
+            // issue_script_command's non-land path reaches this same chain;
+            // the ring and heading belong to the live squadron director.
+            commands.issue_command_object(owner, 0x00e08f68u, target, 1,
+                "007F31A0 survivor moveto", {}, squadron.ring,
+                pose_heading_radians(squadron));
+            done("PlaneSquadron::map_box_centre_004b4850", 0x004b4850u);
+            done("PlaneSquadron::survivor_moveto", 0x007f340fu);
+        };
         h.store_squadron_exit_party = [&] {
             // LABELLED: this host fuses the squadron with its wing unit.
             // On the final-member arm that member is its live proxy; there
