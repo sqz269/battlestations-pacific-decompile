@@ -99,6 +99,15 @@ public:
                                                         const float point[3]) = 0;
 };
 
+// 009A6970 only allocates and constructs. Its live caller need not supply the
+// unrelated archive, navigation and debug services of the whole segment host.
+class DepthChargeTaskFactoryCalls {
+public:
+    virtual ~DepthChargeTaskFactoryCalls() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void* depth_charge_task_construct_009a5240(void* task, void* bot, void* target) = 0;
+};
+
 // 009BDBB0 only allocates and forwards the bot to its constructor. Keep that
 // contract usable by typed task owners without inventing unrelated raw views.
 struct MoveOnPathTaskFactoryHost {
@@ -108,7 +117,8 @@ struct MoveOnPathTaskFactoryHost {
 };
 
 class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls,
-    public MoveToEntityPoseHost, public StrafeTargetRearmCalls, public MoveOnPathTaskFactoryHost {
+    public MoveToEntityPoseHost, public StrafeTargetRearmCalls,
+    public DepthChargeTaskFactoryCalls, public MoveOnPathTaskFactoryHost {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -909,7 +919,7 @@ void bot_task_depth_charge_destruct_body_009a67c0(Cc13Seg67bHost& host, void* ta
 void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host, void* task,
                                                            void* bot, void* archive);
 // 009A6970: __fastcall(ECX = bot, EDX = target), RET, EAX.
-void* bot_task_make_depth_charge_009a6970(Cc13Seg67bHost& host, void* bot, void* target);
+void* bot_task_make_depth_charge_009a6970(DepthChargeTaskFactoryCalls& host, void* bot, void* target);
 // 009A69E0: __stdcall(bot, archive), RET 8, EAX.
 void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void* archive);
 // 009A19B0: __fastcall(ECX = plan), RET, ST0.

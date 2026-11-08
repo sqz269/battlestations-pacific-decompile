@@ -1,0 +1,86 @@
+{
+  "goal": 5,
+  "chain": 740,
+  "slot": "g5-w2",
+  "base": "9340d132dcfa339e2c101a66cdc65bc6bf416445",
+  "summary": "Wire the existing depth-charge task factory on live task installation and retain its 7BCh allocation as the state used by activation and ticks.",
+  "rows": [
+    {
+      "native": "009a6970",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::run_depth_charge_task_arm_009a66c0",
+      "evidence": "bsp.py show 009a6970 --asm: 009A6991 allocates 7BCh; 009A69AD forwards bot and target to 009A5240; allocation failure skips construction.",
+      "state": "The live aircraft slot and its resolved command target enter the existing factory. Its allocation holds the typed DepthChargeTask consumed by the existing constructor, activation profile and arm; retargeting and slot destruction release it.",
+      "call_graph": "After merging origin/main, one reachable CALL at 102F2D78 to the existing body at 1041D040, from PlaneBinding::run_depth_charge_task_arm_009a66c0; entry path passes through mission frame, fixed step and motion_step_00825f20.",
+      "limits": "Semantic C++ projection and allocator adapter; original raw task layout, original register ABI, private CRT/EH transport and gameplay equivalence are not established. Existing task-host substitutions remain. No game run."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::insert_into",
+      "reason": "No missing call to repair: the baseline already reaches the existing enum-symbol body; the final graph confirms three reachable call sites from the scene-property projection."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::merge_child",
+      "reason": "No missing call to repair: the baseline already reaches the existing bag-merge body; the final graph confirms two reachable call sites from the scene-property projection."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "No missing call to repair: the baseline graph already reports a reachable call to ai_defend_member_is_candidate_00a2def0 from defend_think_00a28a60."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate_attack_value",
+      "reason": "Missing air-support flight-class candidate records and matching 00A0C650 pair-scoring facts; the inspected powerup callback explicitly throws rather than fabricating them."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder/EntityCommand ai_group_forward_command",
+      "reason": "Missing entity-to-AI-group producer and current-command owner on these endpoints; inspected entity group accessors return null/zero, so adding the forwarding call there would not make it run."
+    },
+    {
+      "native": "00add290",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: Landscape terrain load",
+      "reason": "Missing native terrain manager/weak-link and owning terrain object; the inspected host loads a typed height-field projection without the 00ADD290 object and its model/render-node graph."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "Missing actual sound-transition game/movie-screen owners and commit/input/listener bindings; the recorded close-result-GUI event does not supply 004CD610's required context."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10538,
+    "readiness_wired_after": 10539,
+    "reachable_reconstructed_addresses_before": 5415,
+    "reachable_reconstructed_addresses_after": 5416
+  },
+  "checks": {
+    "index": "bsp.py index --if-stale completed; first attempt preserved the old index when the readiness reader held it open, and the sequential retry succeeded.",
+    "build": "scripts/build.ps1 passed before changes and on the final code; all four CTests passed.",
+    "call_graph": "call_graph.py, who 009a6970 and path 009a6970 confirm the new reachable call; wire_readiness.py --standins reports wired, called=true, call_sites=1.",
+    "float_math": "No float arithmetic changed; existing constructor, activation and arm bodies are reused.",
+    "diff": "git diff --check passed."
+  },
+  "merge_validation": {
+    "origin_main": "2c6465cde9618c13f659fbdf735448dcfb5cdf0f",
+    "resolution": "Retained both DepthChargeTaskFactoryCalls and incoming MoveOnPathTaskFactoryHost; Cc13Seg67bHost inherits both. No ledger shard or CMake conflicts occurred.",
+    "normal_build": "scripts/build.ps1 passed with all four CTests after the merge, and again after restoring the ON-build switches.",
+    "on_build": "off_switch_on_build.py passed with zero diagnostics and all four CTests; kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled were temporarily enabled, then both files were restored byte-for-byte.",
+    "normal_artifact": "Rebuilt the normal configuration after ON-source restoration before running call_graph.py and wire_readiness.py --standins.",
+    "readiness_wired": 10550,
+    "reachable_reconstructed_addresses": 5419,
+    "depth_charge_factory": "009A6970 is wired, called=true, call_sites=1.",
+    "move_on_path_factory": "Incoming 009BDBB0 remains wired, called=true, call_sites=1; reachable CALL at 10300DBC to 1041D070.",
+    "diff": "git diff --check, git diff --cached --check and the unresolved-conflict check passed."
+  },
+  "left": "Other task factories and native layout/ABI recovery; game validation remains unrun as instructed."
+}

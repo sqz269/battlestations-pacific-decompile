@@ -1990,7 +1990,7 @@ void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host,
 
 // 009A6970 (009A6970-009A69D5). t = operator new(7BCh) (009A6991); null -> 0;
 // else 009A5240(ECX = t, bot, target) (009A69AD).
-void* bot_task_make_depth_charge_009a6970(Cc13Seg67bHost& host, void* bot, void* target) {
+void* bot_task_make_depth_charge_009a6970(DepthChargeTaskFactoryCalls& host, void* bot, void* target) {
     void* const t = host.operator_new_00bf681b(0x7BC);
     if (t == nullptr) return nullptr;
     return host.depth_charge_task_construct_009a5240(t, bot, target);
