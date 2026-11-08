@@ -567,6 +567,9 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
 // 00AAD4D0 / 00AAD450. Borrow the real pool+28h header once, retaining the
 // allocator-list lifetime, first-free publication and allocation lock scope.
 template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
+    // 00AAD5F0 initializes pool+28h to {nullptr,0,0}, then reserves 32
+    // entries in unwind state 2. AAD4D0 reuses the one AACDF0 entry for
+    // that same inline allocation schedule on this retained process table.
     initialize_pool<GuiMoviePoolTraits, &native_gui_movie_pool_table_reserve_00aad4d0>(
         allocator_list_, storage_);
 }

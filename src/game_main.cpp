@@ -1154,6 +1154,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
             "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3458/CD70F0: MOV ECX,F8BD4C; CALL AAD5F0; atexit(CE0A50).
+        // Live Ghidra confirms this lies between Button CE3450 and Icon CE3468.
         // Start the same retained Movie pool used by AAD990 before Icon.
         // This reserves the table; Movie factory/allocation remains separate.
         auto& gui_movie_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
