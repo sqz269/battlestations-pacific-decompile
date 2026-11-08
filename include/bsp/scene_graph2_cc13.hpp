@@ -381,7 +381,10 @@ struct CameraView {
 };
 // 00B6FE60 / 00B6FE70.
 void camera_get_190_00b6fe60(const CameraView& c, std::uint32_t& out);
-void camera_set_194_00b6fe70(CameraView& c, std::uint32_t value);
+// Native ECX=camera, stack=DWORD, RET4. This source API borrows the actual
+// aligned camera storage (at least198h bytes), without a projected CameraView.
+void camera_set_194_00b6fe70(void* actual_camera,
+    std::uint32_t value) noexcept;
 
 struct CameraServices {
     virtual void camera_slot_30_set_position(CameraView& c, const float eye[3]) = 0;  // vtable +30h

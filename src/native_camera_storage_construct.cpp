@@ -1,5 +1,6 @@
 #include "bsp/native_camera_storage_construct.hpp"
 #include "bsp/camera_plane_initialization.hpp"
+#include "bsp/scene_graph2_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <array>
 #include <cstring>
@@ -162,7 +163,11 @@ void* construct_native_camera_storage_00b71a80(void* actual, std::size_t extent,
         auto* const bytes = reinterpret_cast<volatile std::uint8_t*>(&incoming);
         bytes[2] = 0; bytes[1] = 0; bytes[0] = 0;
         const Word scalar_1dc = c.scalar_00ce3c88;
-        write(actual, 0x194, 0); write_byte(actual, 0x17c, 1);
+        // show 00b71a80 --asm: B71C69 stores EBX=0 at camera+194h.
+        // Replace that store with the one 00B6FE70 body on the same live
+        // pooled camera field; subsequent camera clear reads this storage.
+        cc13_scene2::camera_set_194_00b6fe70(actual, 0);
+        write_byte(actual, 0x17c, 1);
         write(actual, 0x18c, one); write(actual, 0x1dc, scalar_1dc);
         bytes[3] = 0;
         const Word color = incoming;
