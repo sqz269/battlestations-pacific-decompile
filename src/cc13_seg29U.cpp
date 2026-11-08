@@ -352,15 +352,18 @@ void air_ops_slot_record_destruct_006bc690(void* record, Seg29UHost& host) {
     host.observer_member_cleanup_00653390(add(record, 0x14));
 }
 
-// 006BC6F0: a new class sets +4h and +10h = class+134h (0 for a null class); +8h = count on
-// every path, also when the class is unchanged.
-void air_ops_assign_slot_class_006bc6f0(void* slot, void* vehicle_class, std::int32_t count) noexcept {
-    if (ptr(slot, 0x04) != vehicle_class) {
-        at<void*>(slot, 0x04) = vehicle_class;
-        at<std::uint32_t>(slot, 0x10) =
-            vehicle_class != nullptr ? at<std::uint32_t>(vehicle_class, 0x134) : 0u;
+// 006BC6F0: bsp.py show 006bc6f0 --asm, 006BC6F4..006BC729.
+// Goal 5 chain 736 replaces raw offsets with references to the live AirOpsSlot
+// fields. The caller already projects class+134h from its loaded class. Keep
+// the native class-change test and store order; do not reset authored equipment
+// merely because the same class receives another count.
+void air_ops_assign_slot_class_006bc6f0(AirOpsSlotClassFields slot,
+    std::uint32_t vehicle_class, std::int32_t count, std::int32_t class_default_equipment) noexcept {
+    if (slot.vehicle_class_04 != vehicle_class) {
+        slot.vehicle_class_04 = vehicle_class;
+        slot.equipment_10 = vehicle_class != 0u ? class_default_equipment : 0;
     }
-    at<std::int32_t>(slot, 0x08) = count;
+    slot.assigned_count_08 = count;
 }
 
 // 006BC730: +8h = 007EE5C0(+28h squadron), 0 without one; a zero count sets state +2Ch = 1.
