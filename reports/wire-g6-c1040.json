@@ -1,0 +1,122 @@
+{
+  "chain": 1040,
+  "goal": 6,
+  "owner": "agent/g6-w7",
+  "picked": "game_hosts_lua.cpp",
+  "tier": 1,
+  "result": "partial_host_object_built_no_gap_wiring_credit",
+  "rows": [
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::dispatch_damage_listeners",
+      "reason": "climb: 00982C50 needs manager +24h/+D0h/+D4h/+F8h/+104h/+105h/+108h plus a native unit with +5Ch/+5Dh/+5Eh/+60h, +174h id, +180h party and +9D4h squadron <- native unit constructor 0077EED0/0087B670 and base 00928630 <- native creator/placement 0046DC10/00928860 (stopped: the live factory has semantic unit slots, no physical native unit/World placement owner phase; the existing immediate warning tail must also be replaced when dispatch is bound, not run twice). Canonical channel ownership is supplied here; the raw Seg62Host body is not called."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landing_ship_ramp_step -> src/game_hosts_lua.cpp:GameMissionLuaHost::dispatch_ship_landed_listeners",
+      "reason": "climb: 00986820 needs manager +24h/+F8h/+104h/+105h and ship +174h id/+3Ch parent <- 00923810 reads the actual parent published by 009258F0 <- 00928860 <- physical World owner 004CB030/004DE610 (stopped: no host phase constructs and places the actual intrusive subject/World/hierarchy owner; the semantic WorldObjectLayout still delegates create_world to a provider). The new canonical channel owner does not justify a fake null parent or a cast to a native manager/unit."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "WarningOwner::channels_f8 - canonical warning channel/id registry",
+      "where": "include/bsp/warning_owner.hpp:70",
+      "status": "built_and_filled_in_live_host_partial_dispatch_owner",
+      "native_type": "WarningManager; original allocation 0x1B0; canonical C++ owner is deliberately not image-shaped",
+      "constructor": "construct_warning_owner_0098a020 (existing body reused; native ECX=this, EAX=this)",
+      "producers": [
+        "src/game_hosts_global_subsystems.cpp:GameGlobalSubsystemsHost::build_warnings - existing global-subsystems load phase, allocation/0098A020/game+21E0 publication; now publishes the same owner as [00F8A0C4] before table loading",
+        "src/game_hosts_lua.cpp:GameMissionLuaHost::add_listener_00980c10 - actual AddListener Lua block; existing channel-specific subscription constructors/Load bodies populate the only channel collection",
+        "src/game_hosts_lua.cpp:GameMissionLuaHost::remove_listener_00980d30 - existing recovered removal body mutates the same collection under manager+24h lock",
+        "src/game_hosts_global_subsystems.cpp:GameGlobalSubsystemsHost::teardown_004d2bb0 - +21E0 lifetime clears subscription payloads and withdraws the singleton before freeing the shell"
+      ],
+      "rows": [
+        "00982c50",
+        "00986820"
+      ],
+      "climb": [
+        "00982C50/00986820 <- manager+F8h channels <- 00980C10 AddListener actual Lua block <- 008C6760 binding (existing reached producer)",
+        "manager+F8h empty owner <- 0098A020 <- 004DC6A0 warning subphase in GameGlobalSubsystemsHost::build_warnings (hosted)",
+        "manager publication/lifetime <- 009870A0 entry [00F8A0C4] store and game+21E0 <- global-subsystems load; destruction site 004D2D1C (hosted)",
+        "00986820 additional native ship parent <- 00923810 <- 009258F0/00928860 <- physical World/hierarchy owner 004CB030/004DE610 (unhosted owner phase; stopped)",
+        "00982C50 additional physical unit flags/id/party/squadron <- 00928630/0077EED0/0087B670 <- native creation/placement owner (unhosted owner phase; stopped)"
+      ],
+      "native_fields": [
+        {
+          "offset": "0x24",
+          "width": 4,
+          "use": "TrackedCriticalSection* produced by 0098A020; Add/Remove now use this actual owner lock and its +18h int32 recursion depth"
+        },
+        {
+          "offset": "0xD0",
+          "width": 1,
+          "use": "suppression byte; canonical existing WarningManagerState::suppressed initialized by the hosted 009870A0 scalar reset"
+        },
+        {
+          "offset": "0xD4",
+          "width": 12,
+          "use": "entity suppression-map header; existing opaque owner remains empty, no fabricated entry producer"
+        },
+        {
+          "offset": "0xF8",
+          "width": 12,
+          "use": "native channel-map header; now canonical optional<vector<WarningListenerEntry>>, ordered by case-insensitive channel/id keys; no duplicate opaque native sentinel and Lua-owned vector"
+        },
+        {
+          "offset": "0x104",
+          "width": 1,
+          "use": "listener override flag, reset by native dispatch; raw dispatch binding still absent"
+        },
+        {
+          "offset": "0x105",
+          "width": 1,
+          "use": "callback-called flag, set by native dispatch; raw dispatch binding still absent"
+        },
+        {
+          "offset": "0x108",
+          "width": 12,
+          "use": "native warning-name map header; existing canonical tables_108 loads Warnings.lua messages in the mission-frame host"
+        }
+      ],
+      "limits": "No second address body, native object cast, fake entity parent, switch or second retained listener collection was added. Existing raw 00982C50/00986820 bodies remain untouched/unlinked. This is an authoritative typed channel owner and producer/lifetime integration, not a native dispatch ABI binding."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1: pass, 4/4 tests",
+    "final_build": "scripts/build.ps1: pass, 4/4 tests; local/output/c1040-build-final.log",
+    "focused_fixture": "tests/wire_g6_c1040_warning_channels_probe.cmd \"<config/target.json binary>\"; PASS: production AddListener/RemoveListener/IsListenerActive share manager storage; native id-key order, case-insensitive replacement, loaded-payload release and new-manager empty lifetime",
+    "fixture_scope": "Test executable only; original installed PE supplies read-only constants. No original game code or game loop executed. Ad hoc probe has /MANIFEST:EMBED.",
+    "call_graph_before": {
+      "called_reconstructed_addresses": 5751,
+      "total_reconstructed_addresses": 6465,
+      "reachable_functions": 43605
+    },
+    "call_graph_after": {
+      "called_reconstructed_addresses": 5751,
+      "total_reconstructed_addresses": 6465,
+      "reachable_functions": 43611
+    },
+    "constructor_who": "0098A020 REACHABLE from GameGlobalSubsystemsHost::build_warnings, one call site",
+    "gap_who": {
+      "00982c50": "not linked",
+      "00986820": "not linked"
+    },
+    "pc24": "No float arithmetic changes; not applicable",
+    "game_validation": "not run as instructed"
+  },
+  "evidence": [
+    "bsp.py show 00982c50, 00986820, 0098a020, 00980c10, 00980150, 00978d60 and 0097b8c0: native field uses, constructor, Lua producer and case-insensitive map/iterator order",
+    "bsp.py callers 0098a020 --sites and lookup 009870a0: allocation/initialization via 004DC6A0",
+    "bsp.py show 00923810 and 009258f0: parent is entity+3Ch, not the landing-pad target",
+    "bsp.py lookup 00928630, 0077eed0, 00925ce0, 00928860, 004cb030 and 004de610; src/world_construct.cpp:55: physical native owner creation/placement remains a required host provider",
+    "docs/CC12_PARENT_RELATIONSHIP_FRONTIER.md and docs/CC12_NATIVE_WORLD_HIERARCHY_OWNER_SOURCE_READINESS.md: physical subject/world/hierarchy lifetime frontier; current source/lookup rechecked before relying on it"
+  ],
+  "assumptions": [
+    "Single-player process has one current warning manager, as the native [00F8A0C4] publication does. Reads outside its lifetime expose an empty immutable range; mutation requires the constructed owner."
+  ],
+  "left_for_followup": [
+    "Supply the actual native unit/scene-parent/World placement owner, and an audited dispatcher binding over the canonical manager fields; replace both old channel substitutions and the pre-existing immediate failure warning tail when wiring."
+  ]
+}

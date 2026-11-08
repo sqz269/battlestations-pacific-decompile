@@ -8,6 +8,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/warning_messages.hpp"
+#include "bsp/warning_listener_registry.hpp"
 
 #include <array>
 #include <cstddef>
@@ -63,7 +64,10 @@ struct WarningOwner {
     WarningManagerState state; // D0,E0,EC,174,178,17C,180,198,19C
     std::array<std::byte, 3> unconsumed_d1_d3;
     WarningOpaqueTreeHeader tree_d4;
-    WarningOpaqueTreeHeader channels_f8;
+    // 0098A020 constructs the empty channel/id map. 00980C10 fills this
+    // canonical collection, ordered by channel then id with 00443D00's
+    // case-insensitive comparison; it replaces the old opaque empty header.
+    std::optional<std::vector<WarningListenerEntry>> channels_f8;
     std::uint32_t channel_flags_104;
     std::optional<WarningMessageTables> tables_108; //108,114,11C,130
     WarningOpaqueTreeHeader tree_144;
@@ -74,9 +78,9 @@ struct WarningOwner {
     void* environment_us_horn_190{};
     void* environment_air_raid_194{};
     WarningOpaqueTreeHeader tree_1a4;
-    // Unconsumed native allocator words for the six canonical projected
-    // containers:28,E0,EC,108,124,138. No fabricated native shadow sentinels.
-    std::array<std::uint32_t, 6> canonical_allocator_words;
+    // Unconsumed native allocator words for the seven canonical projected
+    // containers:28,E0,EC,F8,108,124,138. No fabricated native shadow sentinels.
+    std::array<std::uint32_t, 7> canonical_allocator_words;
 };
 
 using WarningRosterIterator = NativeHardwareLayoutTreeIterator;
@@ -124,7 +128,7 @@ void warning_hook_00987090(WarningOwnerContext&, std::uint32_t ecx_argument,
     std::uint32_t edx_argument);
 
 // Host cleanup convenience, not native0098A2A0. Only the empty opaque trees
-//created by this packet can be discarded here; populated-tree destruction is
-//an explicit external boundary. Call before destroying the C++ shell.
+//created by this packet and the canonical channel payloads are discarded here;
+//other populated-tree destruction is an explicit external boundary. Call before destroying the C++ shell.
 void release_warning_owner_host_storage(WarningOwner&, WarningOwnerContext&);
 } // namespace bsp
