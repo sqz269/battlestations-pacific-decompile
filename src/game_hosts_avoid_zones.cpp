@@ -13,6 +13,7 @@
 #include "bsp/cc13_avoid1.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_a.hpp"
+#include "bsp/oct18b_nA1_early.hpp"
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -107,10 +108,15 @@ AvoidZoneCell avoid_zone_world_to_cell_00417fa0(const bsp::TerrainGridLayerRecor
 
 float avoid_zone_cell_height_0041bae0(const bsp::TerrainGridLayerRecord& layer,
                                       int ix, int iz) noexcept {
-    const int last = layer.dimension - 1;
+    const std::int32_t first = 0;
+    const std::int32_t last = layer.dimension - 1;
     // 0041BAE4-0041BAFA and 0041BB00-0041BB0C: < 0 -> 0, > n - 1 -> n - 1.
-    if (ix < 0) ix = 0; else if (ix > last) ix = last;
-    if (iz < 0) iz = 0; else if (iz > last) iz = last;
+    // Reuse the recovered signed clamp with the actual sample coordinates and
+    // layer bound. bsp.py show 00415660 --asm: the below-minimum arm returns
+    // before reading maximum, exactly like these original inline branches.
+    // This is C++ helper reuse; the image's 0041BAE0 inlines the comparisons.
+    bsp::oct18b_nA1::clamp_int_in_place_00415660(ix, first, last);
+    bsp::oct18b_nA1::clamp_int_in_place_00415660(iz, first, last);
     const long long index = static_cast<long long>(layer.dimension) * iz + ix;  // 0041BB0E
     if (index < 0 || index >= static_cast<long long>(layer.grid.size())) return 0.0f;
     // 0041BB2D MOVZX, FILD, FMUL [layer+10h], FSTP float.
