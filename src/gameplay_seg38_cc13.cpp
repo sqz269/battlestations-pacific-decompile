@@ -175,10 +175,19 @@ void set_flags_1cc_0071c0a0(DirectorFlags& d, std::uint32_t v) noexcept { d.flag
 void set_enables_220_00720de0(DirectorFlags& d, bool a, bool b, bool c, bool e) noexcept {
     d.enables_220 = {a, b, c, e};
 }
-void set_avoidance_240_00720e50(DirectorFlags& d, bool a, bool b, bool c) noexcept {
-    d.avoidance_240 = {a, b, c};
+__declspec(noinline) void set_avoidance_240_00720e50(DirectorAvoidanceBytes& bytes,
+    std::uint8_t torpedo, std::uint8_t ship, std::uint8_t land) noexcept {
+    // bsp.py show 00720e50 --asm: 00720E58/62/68 store the argument low bytes
+    // to +240h/+241h/+242h in order; no Boolean conversion belongs here.
+    bytes[0] = torpedo;
+    bytes[1] = ship;
+    bytes[2] = land;
 }
-bool land_collision_avoidance_00720e40(const DirectorFlags& d) noexcept { return d.avoidance_240[2]; }
+__declspec(noinline) std::uint8_t land_collision_avoidance_00720e40(
+    const DirectorAvoidanceBytes& bytes) noexcept {
+    // bsp.py show 00720e40 --asm: MOV AL,[ECX+242h]; RET, without normalization.
+    return bytes[2];
+}
 
 bool director_flags_allow_0071c060(bool has_director, std::uint32_t flags_1cc,
                                    std::uint32_t mask) noexcept {

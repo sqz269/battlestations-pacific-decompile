@@ -326,11 +326,16 @@ struct GameDirector {
     // The existing WeaponDirectorState defaults carry the unconditional
     // 00836724/0083672A/00836730 stores. Project only these three bytes: this
     // does not invoke or claim the full endpoint/subobject constructor.
-    GameDirectorAvoidance avoidance = [] {
+    bsp::gameplay_seg38_cc13::DirectorAvoidanceBytes avoidance;
+    GameDirector() {
         const bsp::WeaponDirectorState constructed{};
-        return GameDirectorAvoidance{constructed.torpedo_avoidance,
-            constructed.ship_collision_avoidance, constructed.land_collision_avoidance};
-    }();
+        // The setter writes the canonical bytes consumed below and by cruise
+        // avoidance. Its inputs are the same binary constructor constants as
+        // the previous projection; no full director constructor is claimed.
+        bsp::gameplay_seg38_cc13::set_avoidance_240_00720e50(avoidance,
+            constructed.torpedo_avoidance, constructed.ship_collision_avoidance,
+            constructed.land_collision_avoidance);
+    }
     std::uint32_t slot_command[bsp::kDirectorCommandSlotCount]{};
     bsp::SceneCommandTarget slot_target[bsp::kDirectorCommandSlotCount]{};
     bsp::CruiseCommandMode mode{bsp::CruiseCommandMode::None};
@@ -2204,7 +2209,9 @@ bool GameCommandsHost::director_avoidance(std::size_t unit_index,
     GameDirectorAvoidance& out) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
-    out = host.directors[unit_index].avoidance;
+    const auto& bytes = host.directors[unit_index].avoidance;
+    out = {bytes[0] != 0, bytes[1] != 0,
+        bsp::gameplay_seg38_cc13::land_collision_avoidance_00720e40(bytes) != 0};
     return true;
 }
 
@@ -2212,19 +2219,19 @@ bool GameCommandsHost::apply_director_avoidance_message_00835640(
     std::size_t unit_index, const bsp::DirectorCommandMessage& message) {
     Impl& host = *impl_;
     if (unit_index >= host.directors.size() || message.base_kind != 0x5a) return false;
-    GameDirectorAvoidance& flags = host.directors[unit_index].avoidance;
+    auto& flags = host.directors[unit_index].avoidance;
     // Exactly the three derived switch arms. Other fields belong to the
     // existing command owner; no dummy WeaponDirectorHost or temporary full
     // state is used to run unrelated base-message behavior.
     switch (static_cast<bsp::DirectorCommandSubKind>(message.sub_kind)) {
     case bsp::DirectorCommandSubKind::TorpedoAvoidance:
-        flags.torpedo = message.value != 0; // 00835653
+        flags[0] = message.value != 0; // 00835653
         break;
     case bsp::DirectorCommandSubKind::ShipCollisionAvoidance:
-        flags.ship = message.value != 0;    // 00835668
+        flags[1] = message.value != 0;    // 00835668
         break;
     case bsp::DirectorCommandSubKind::LandCollisionAvoidance:
-        flags.land = message.value != 0;    // 0083567D
+        flags[2] = message.value != 0;    // 0083567D
         break;
     default:
         return false;
