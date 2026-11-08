@@ -1234,6 +1234,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_atexit = resource_pools.initialize_group_once_00cd8460();
         log.notef("native group pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual18ch", group_atexit);
+        // CD88D0 is at CE3614, before CD8A60/CE363C. Construct the canonical
+        // Tracer0109049C owner on the same E188B4 list; native CE0F90 owns exit.
+        const int tracer_atexit = particle_pools.initialize_tracer_once_00cd88d0();
+        log.notef("native tracer pool CRT CD88D0: atexit=%d storage=process_actual38h",
+            tracer_atexit);
         // CD8A60 is at CE363C in the original initializer table, after CD82D0
         // and before CD9010's physical provider pool (started by VFS).
         auto& weak_pool = bsp::game::game_native_weak_pool_process();
