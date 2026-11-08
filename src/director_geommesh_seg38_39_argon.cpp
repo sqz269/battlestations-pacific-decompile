@@ -1398,13 +1398,16 @@ std::int32_t bsp_gun_index_of_readiest_barrel_00727c30(const void* self) {
 
 // 00727d70: BSP_Gun_CountReadyBarrels
 // Original ABI: __thiscall(ECX=self, stack horizon) -> EAX=count, RET 4.
-std::int32_t bsp_gun_count_ready_barrels_00727d70(const void* self, float horizon) {
-  Raw s = raw_of(self);
-  const std::int32_t barrel_count = s.at<std::int32_t>(0x448);
+// bsp.py show 00727D70 --asm: 00727DA5/A9 and 00727DF3/F7 compare
+// horizon against the timer with FCOMI/JC. CF is also set for unordered,
+// so a NaN timer OR horizon must be skipped (ordered timer <= horizon).
+// Keep the original reconstructed loop as the sole body for this address;
+// the removed ship-AI duplicate used !(horizon < timer), counting NaNs.
+__declspec(noinline) std::int32_t bsp_gun_count_ready_barrels_00727d70(
+    const float* timers, std::int32_t barrel_count, float horizon) noexcept {
   std::int32_t ready_count = 0;
   std::int32_t i = 0;
   if (barrel_count >= 4) {
-    const float* timers = static_cast<const float*>(s.ptr(0x414));
     const std::uint32_t blocks = (static_cast<std::uint32_t>(barrel_count - 4) >> 2) + 1u;
     i = static_cast<std::int32_t>(blocks * 4u);
     for (std::uint32_t b = 0; b < blocks; ++b) {
@@ -1424,7 +1427,6 @@ std::int32_t bsp_gun_count_ready_barrels_00727d70(const void* self, float horizo
     }
   }
   if (i < barrel_count) {
-    const float* timers = static_cast<const float*>(s.ptr(0x414));
     for (; i < barrel_count; ++i) {
       if (timers[i] <= horizon) {
         ready_count += 1;
