@@ -8,6 +8,7 @@ extern "C" {
 #include "bsp/path_movcam_seg46_argon.hpp"   // goal 5 chain 696: 007AC780's block
 #include "bsp/flak_note_seg36_37_argon.hpp"
 #include "bsp/pool_pool01_cc13.hpp"
+#include "bsp/airfield_taxi.hpp"
 
 namespace bsp::game {  // namespace
 
@@ -3578,9 +3579,24 @@ bool GameUnitsHost::Impl::landing_hangar_point_006cf420_006cf520(const LandingDe
     bool entry, std::array<float, 3>& out) const {
     const bsp::game::ScenePathEntry* path = landing_hangar_path_006d2780_006d2640(d, entry);
     if (path == nullptr || path->points_world.empty()) return false;
-    const std::array<float, 3>& w = entry ? path->points_world.front()
-                                          : path->points_world.back();
-    out = landing_xform_004142e0(d.inverse_48, w.data());
+    const std::array<float, 3>* point = &path->points_world.front();
+    if (!entry) {
+        // 006CF472..006CF48B counts the selected exit path's point POINTERS,
+        // then passes count-1 to 007AF800. The registry retains the sampler's
+        // world-space outputs, not a native Path object. Borrow those SAME
+        // points through a Win32 pointer-vector view for the existing index
+        // slice; never pass the 12-byte coordinate-vector span as a 4-byte
+        // pointer span, or transform the already-world-space points twice.
+        static_assert(sizeof(void*) == 4);
+        std::vector<const std::array<float, 3>*> points;
+        points.reserve(path->points_world.size());
+        for (const auto& world_point : path->points_world) points.push_back(&world_point);
+        const int index = bsp::taxi_target_point_index_006cf420(
+            reinterpret_cast<std::ptrdiff_t>(points.data()),
+            reinterpret_cast<std::ptrdiff_t>(points.data() + points.size()));
+        point = points[static_cast<std::size_t>(index)];
+    }
+    out = landing_xform_004142e0(d.inverse_48, point->data());
     return true;
 }  // namespace
 

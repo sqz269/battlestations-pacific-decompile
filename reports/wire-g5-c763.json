@@ -1,0 +1,389 @@
+{
+  "run": 1639,
+  "chain": 763,
+  "branch": "agent/g5-w1",
+  "picked": "Air-operations hangar exit-path last-point index",
+  "summary": "Replace exit-path .back() selection with the existing 006CF420 reconstructed index slice over a temporary pointer view borrowing the retained real scene world points.",
+  "rows": [
+    {
+      "native": "006cf420",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::landing_hangar_point_006cf420_006cf520 (exit-path branch)",
+      "scope": "Existing taxi_target_point_index_006cf420 index slice, not the complete native site method."
+    },
+    {
+      "native": "006bf350",
+      "status": "skipped",
+      "host_site": "src/cc13_seg30.cpp: air_ops_total_plane_count_006bf350",
+      "reason": "No original call sites or live single-player consumer of the total-plane query were identified."
+    },
+    {
+      "native": "006bf540",
+      "status": "skipped",
+      "host_site": "src/band_006b_cc13.cpp: air_ops_count_planes_airborne_or_queued_006bf540",
+      "reason": "Missing entry-reachable consumers for the two undefined-code wrappers at 006C11D0/006C1230."
+    },
+    {
+      "native": "006bf4c0",
+      "status": "skipped",
+      "host_site": "src/band_006b_cc13.cpp: air_ops_count_planes_airborne_006bf4c0",
+      "reason": "No original call sites or live single-player consumer of this unreferenced airborne-plane query were identified."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_00444070",
+      "reason": "No original caller or active producer of its string-plus-scalar record was identified."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_004440c0",
+      "reason": "No original caller or active producer of its string-plus-scalar record was identified."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing entry-reachable consumer of the actual camera aspect-times-FOV query."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing live extra-plane submission consumer with the actual camera clip-plane state."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing live extra-plane clear consumer with the actual camera clip-plane state."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_construction.cpp: render service field dispatch",
+      "reason": "Existing native construction dispatcher already names this body; no additional original live consumer was established."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: scene command metadata submission",
+      "reason": "Existing reconstructed submission already calls this body; no additional live queue consumer was established."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/native_listener_renderer.cpp: update_native_listener_renderer_00b0d7b0",
+      "reason": "Missing driven-listener pointer producer and live renderer invalidation-owner/root binding in the inspected units path."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "Missing newly reached distortion record append producer; current reconstructed reserve/resize composition alone adds no live caller."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Missing newly reached distortion owner/record lifecycle consumer beyond existing reconstructed composition."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing live land-task constructor binding that owns the actual registry storage."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing live land-task lifetime binding for the actual registry; existing native approach cleanup alone is not a new entry path."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit/force-select screen-reset tails",
+      "reason": "Missing retained selection-mode/vector producers and an input-context binding for the actual active pick-screen reset."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "Missing actual raw RAM-image header at the typed pixel-vector consumer."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: checkpoint_record_copy_construct_00437490",
+      "reason": "Missing active checkpoint-copy consumer exposing the actual raw checkpoint record rather than a typed map projection."
+    },
+    {
+      "native": "00449980",
+      "status": "skipped",
+      "host_site": "src/native_session_message_base.cpp: construct_native_session_message_one_00449980",
+      "reason": "Missing original single-player message producer that calls this particular base constructor."
+    },
+    {
+      "native": "008f0380",
+      "status": "skipped",
+      "host_site": "src/native_reference_payload_reset.cpp: reset_native_reference_payload_008f0380",
+      "reason": "Only identified original caller is undefined code at 008F52F0; its actual owned payload and live entry path are missing."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_clock_draw.cpp: texture-source time dispatch",
+      "reason": "Existing reconstructed clock draw already names this body; no new live clock-draw/texture-source consumer was established."
+    },
+    {
+      "native": "00c30210",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_virtual_leaves.cpp: construct_native_texture_source_base_00c30210",
+      "reason": "Inspected live source constructor 00C30470 calls 00B19980 directly; inserting this extra constructor would not match the original."
+    },
+    {
+      "native": "00c303b0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_clear.cpp: clear_native_texture_source_children_00c303b0",
+      "reason": "Missing newly reached texture-source child-clear consumer with actual owner and reference services."
+    },
+    {
+      "native": "00c30470",
+      "status": "skipped",
+      "host_site": "src/native_resource_cache_leaves.cpp: construct_native_texture_source_00c30470",
+      "reason": "Existing resource-cache creator already uses this body; no missing additional producer was established."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: contains_point_00414f50 consumers",
+      "reason": "Existing reached avoid-query and point-offset composition already uses this helper; no missing new consumer was established."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Already wired at baseline; no missing live consumer to add."
+    },
+    {
+      "native": "00417580",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::offset_point",
+      "reason": "Already wired at baseline; no missing live consumer to add."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug inspector flooded query",
+      "reason": "Only identified original consumer is the debug inspector 006FB750, excluded from this assignment."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane ground-transition/reset tails",
+      "reason": "Missing retained actual plane impulse fields/matrix and complete Seg62Host binding at the recorded reset."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_collide_mask_clear_00c47f60",
+      "reason": "Missing actual live shape/manifold ownership and critical-section binding at the units consumer."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_collide_mask_set_00c47f90",
+      "reason": "Missing actual live shape/manifold ownership and critical-section binding at the units consumer."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine periscope break shape effect",
+      "reason": "Missing controller+394h actual shape and its manifold/lock services."
+    },
+    {
+      "native": "006fbce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: carrier elevator message tail",
+      "reason": "Only identified original 006D0050 call is client-only; single-player must not acquire this extra call."
+    },
+    {
+      "native": "004fe700",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: construct_native_loading_work_item_004fe700",
+      "reason": "Missing live loading-queue submission consumer carrying the actual loader, by-value name and callback ownership."
+    },
+    {
+      "native": "00501720",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: copy_construct_native_loading_work_item_00501720",
+      "reason": "Missing live loading-work append producer and its actual native work-item vector."
+    },
+    {
+      "native": "005048f0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: append_native_loading_work_item_005048f0",
+      "reason": "Missing reached submission consumer owning the native loading-work vector."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "Missing live loader job/submission services; existing raw owner construction does not establish work submission."
+    },
+    {
+      "native": "004fdba0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: construct_native_loading_queue_owner_004fdba0",
+      "reason": "Owner constructor inspected for loading-state provenance; missing work-submission integration remains."
+    },
+    {
+      "native": "004fde20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: get_native_loading_queue_owner_004fde20",
+      "reason": "Singleton getter inspected for loading-state provenance; missing work-submission integration remains."
+    },
+    {
+      "native": "0043df40",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: observer_set_construct_0043df40",
+      "reason": "Unreferenced original constructor; missing live original consumer."
+    },
+    {
+      "native": "0043e060",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: observer_set_construct_0043e060",
+      "reason": "Unreferenced original constructor; missing live original consumer."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_items_00a9bf90",
+      "reason": "Missing actual raw FC row-list/iterator binding for the typed GuiListboxRuntime consumer."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_row_by_data_00a9c860",
+      "reason": "Missing actual raw FC row-list/iterator binding for the typed GuiListboxRuntime consumer."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing reached original options/control-screen consumer and same native listener/select-index binding."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing same actual row iterator/selection storage binding at a reached original consumer."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: reset_native_listbox_highlight_00a9cf30",
+      "reason": "Missing reached original consumer and complete native listbox highlight services."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing actual flak-alternate ammunition record and retained-reference/tree providers."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing actual unit+660h vector owner and reached command-building D3 clear binding."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/map_screen_update_cc13.cpp: map zoom value input",
+      "reason": "Missing same actual map mode+2Ch/zoom+5BCh owner at the reached map-update projection."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: backfill_helm_order",
+      "reason": "Missing reached helm message application, real timestamp and backfill consumer; inspected override remains unreached."
+    },
+    {
+      "native": "0081b010",
+      "status": "skipped",
+      "host_site": "src/live_effect_update.cpp: erase_live_effect_reference_unordered_0081b010",
+      "reason": "Existing reconstructed effect-update and wreck cleanup already call the body; no new actual live effect-owner consumer was established."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: power-up cooldown activation",
+      "reason": "Missing active-use activation producer and retained native cooldown slot."
+    },
+    {
+      "native": "00ab6a70",
+      "status": "skipped",
+      "host_site": "src/oct18b_nc_mid.cpp: gui_text_set_flag77_00ab6a70",
+      "reason": "A separate native Text field-storage entry already exists; no missing live consumer for this older raw projection was established."
+    },
+    {
+      "native": "00ab7290",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_text_set_state_color_00ab7290",
+      "reason": "Missing compatible actual Text state-color view at the inspected older projection."
+    },
+    {
+      "native": "00ab0fe0",
+      "status": "skipped",
+      "host_site": "src/oct18b_nc_mid.cpp: gui_color_equal_00ab0fe0",
+      "reason": "Only identified original direct caller is undefined code at 00AB1040; no live original equality consumer was established."
+    },
+    {
+      "native": "00ab7200",
+      "status": "skipped",
+      "host_site": "src/gui_text_style.cpp: Text state-color application",
+      "reason": "Actual native Text field-storage entry already exists; no missing new live style consumer was established."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "Missing same GuiResourceOwner/frame-service binding in the current native GUI application."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: pointer update pass",
+      "reason": "Missing complete actual pointer hit-test/input/widget services for the native GUI application."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 006cf420: original exit-path selection uses the last point and then applies the airfield inverse.",
+    "bsp.py show 006cf420 --asm: 006CF472..006CF48B loads the point-pointer span, SAR2, then subtracts one; 006CF49B samples world and 006CF4AE transforms to airfield-local.",
+    "call_graph.py who taxi_target_point_index_006cf420: airfield_taxi.obj body is REACHABLE with one direct call at 1029A929 from GameUnitsHost::Impl::landing_hangar_point_006cf420_006cf520.",
+    "call_graph.py path taxi_target_point_index_006cf420: entry reaches the host through mission fixed-step, plane flight/land task, and the land/park tick."
+  ],
+  "validation": {
+    "baseline_build": "PASS: scripts/build.ps1; all four CTests passed.",
+    "changed_build": "PASS: scripts/build.ps1; all four CTests passed.",
+    "diff_check": "PASS",
+    "pc24": "Not required: no floating-point arithmetic changed.",
+    "call_graph": {
+      "called_before": 5455,
+      "called_after": 5456,
+      "entry_reachable": true,
+      "direct_call_sites": 1
+    },
+    "wired_before": 10606,
+    "wired_after": 10607
+  },
+  "limits": [
+    "This wires only the existing 006CF420 point-index slice; it does not reconstruct the complete raw native site method or its ABI.",
+    "The adapter creates a temporary pointer vector over existing world-coordinate records; no coordinates or synthetic path span are invented.",
+    "The entry-path front-point branch and the existing inverse/world-coordinate producer are preserved.",
+    "Game execution was prohibited and was not attempted."
+  ]
+}
