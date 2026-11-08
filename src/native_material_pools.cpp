@@ -8,6 +8,7 @@
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
+#include "bsp/native_gui_clip_box_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_scrollbar_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
@@ -1019,6 +1020,70 @@ template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::destroy() {
     destroy_pool<GuiModelPoolTraits,
         &free_native_gui_model_pool_table_00acbdd0>(allocator_list_, storage_);
 }
+__declspec(noinline) void free_native_gui_clip_box_pool_table_00ace310(
+    void* actual_table) noexcept {
+    // bsp.py show 00ACE310: free only the current first DWORD. In particular,
+    // leave data/count/capacity untouched, including after destruction.
+    const auto data = static_cast<NativeGuiPoolSlabTable*>(actual_table)->data;
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_set_capacity_00ace340(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // 00ACE340 assembly: capacity precedes new(capacity*4 modulo32); reload
+    // current count/data while copying, free the current old data, then adopt.
+    // Reuse the existing identical engine, including its failure partial state.
+    set_slab_table_capacity(table, capacity);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_grow_00ace390(
+    NativeGuiPoolSlabTable& table) {
+    native_gui_clip_box_pool_table_set_capacity_00ace340(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_push_back_00ace520(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) native_gui_clip_box_pool_table_grow_00ace390(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    // 00ACE578..00ACE58C loads the caller's slab only after growth, and only
+    // for a nonnull destination; publish count after the conditional store.
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_reserve_00ace5b0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_clip_box_pool_table_set_capacity_00ace340(table, capacity);
+}
+
+__declspec(noinline) void construct_native_gui_clip_box_pool_00ace750(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // 00ACE750 inlines ACE5B0's reserve(20h) on pool+28h in unwind state 2.
+    // Keep the existing list/CS/table cleanup; replace its reserve only once.
+    initialize_pool<GuiClipBoxPoolTraits, &native_gui_clip_box_pool_table_reserve_00ace5b0>(
+        list, storage);
+}
+
+__declspec(noinline) void destroy_native_gui_clip_box_pool_00ace3e0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // 00ACE3E0 inlines ACE310 after freeing the slabs, before draining the CS
+    // and unlinking this same E188B4 list element. No second cleanup runs.
+    destroy_pool<GuiClipBoxPoolTraits, &free_native_gui_clip_box_pool_table_00ace310>(list, storage);
+}
+
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize() {
+    construct_native_gui_clip_box_pool_00ace750(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate() {
+    return allocate_slot<GuiClipBoxPoolTraits, WidgetSlabInitializer<GuiClipBoxPoolTraits>::entry,
+        &native_gui_clip_box_pool_table_push_back_00ace520>(storage_);
+}
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy() {
+    destroy_native_gui_clip_box_pool_00ace3e0(allocator_list_, storage_);
+}
+
 #define BSP_GUI_WIDGET_POOL_INSTANCE(T)                                                     \
     static_assert(T::free_count_offset + 4 == T::slab_bytes);                               \
     static_assert(T::slots_per_slab <= 0xffffu);                                            \

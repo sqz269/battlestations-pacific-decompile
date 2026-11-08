@@ -1268,9 +1268,19 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Sound pool CRT CD7660: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", gui_sound_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE34CC/CD76D0: ECX=F8C13C; CALL ACE750; atexit(CE0B30 -> ACE3E0).
+        // Restore ClipBox at its CRT position after Sound, using the same
+        // process owner as the raw ClipBox factory and the E188B4 list.
+        auto& gui_clip_box_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiClipBoxPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int clip_box_pool_atexit = gui_clip_box_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI ClipBox pool CRT CD76D0: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1", clip_box_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CD7740: ECX=F8C188, CALL ACFF70, atexit(CE0B40). Restore the
         // same process owner the DEFAULT FrameBox factory borrows, in CRT
-        // order after Sound and before Traceline; no widget is allocated here.
+        // order after ClipBox and before Traceline; no widget is allocated here.
         auto& gui_frame_box_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
             bsp::GuiFrameBoxPoolTraits>::instance();
         gui_widget_pool_startup_incomplete = true;
