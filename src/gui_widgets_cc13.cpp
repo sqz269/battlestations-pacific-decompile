@@ -289,7 +289,7 @@ void gui_layer_set_name_00ac57e0(void* layer, const void* name, GuiNativeStringH
     std::memcpy(read_field<char*>(header, 4), read_field<const char*>(name, 4), read_field<std::uint32_t>(header, 0));
 }
 
-void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host) {
+__declspec(noinline) void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host) {
     // Saved listing 00AA7910..00AA7916: MOVSS preserves the argument bits,
     // including signalling NaNs; an x87 load/store would quiet them.
     std::memcpy(&w.position.z, &z, sizeof(z));
@@ -333,9 +333,11 @@ void gui_widget_set_scale_00aa7950(GuiWidgetTransform& w, const float (&scale)[2
 }
 
 void gui_widget_set_local_z_and_bounds_00aa7d40(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host) {
-    // MOVSS loads and stores of +0Ch/+10h back to themselves: no change.
-    w.position.z = z;
-    recompose_local_transform(w, host);
+    // bsp.py show 00AA7D40 --asm, 00AA7D43..00AA7D5D: MOVSS rewrites
+    // +0Ch/+10h unchanged, then stores the argument at +14h. Its store and
+    // 00AA7220 call are precisely 00AA7910's body; share that prefix once,
+    // preserving MOVSS payloads and the two reconstructed entry identities.
+    gui_widget_set_local_z_00aa7910(w, z, host);
     refresh_local_bounds(w, host);
 }
 

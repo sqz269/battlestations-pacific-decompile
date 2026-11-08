@@ -336,22 +336,23 @@ struct GameFrontendHost::Impl {
     std::size_t last_logged_quads{static_cast<std::size_t>(-1)};
     std::size_t node_counter{0};
 
-    // 00AA7910 -> 00AA7220 publishes the live widget's local translation.
+    // 00AA7D40 -> 00AA7220 publishes the live widget's local translation.
     // Page owners and their runtime clones outlive these borrowed keys.
     struct PublishedLocalZ {
         std::uint32_t input_bits;
         float translation;
     };
     std::map<const GuiWidgetTransform*, PublishedLocalZ> published_local_z;
-    struct LocalZPublication final : GuiWidgetTransformHost {
+    struct LocalPositionPublication final : GuiWidgetTransformHost {
         Impl& owner;
-        GuiWidgetTransform& receiver;
-        LocalZPublication(Impl& host, GuiWidgetTransform& widget)
-            : owner(host), receiver(widget) {}
+        GameFrontendHost& frontend;
+        GuiLayoutWidget& receiver;
+        LocalPositionPublication(Impl& host, GameFrontendHost& bridge, GuiLayoutWidget& widget)
+            : owner(host), frontend(bridge), receiver(widget) {}
         bool widescreen_enabled() override { return owner.widescreen; }
         void publish_local_transform(GuiWidgetTransform& widget,
             const GuiWidgetLocalTransform& transform) override {
-            if (&widget != &receiver)
+            if (&widget != &receiver.transform)
                 throw std::logic_error("GUI local Z must publish its live receiver");
             PublishedLocalZ output;
             std::memcpy(&output.input_bits, &widget.position.z, sizeof(output.input_bits));
@@ -359,14 +360,20 @@ struct GameFrontendHost::Impl {
             owner.published_local_z.insert_or_assign(&widget, output);
             owner.quads_built = false;
         }
-        void publish_local_bounds(GuiWidgetTransform&, const GuiWidgetBounds&) override {
-            throw std::logic_error("00AA7910 does not refresh bounds");
+        void publish_local_bounds(GuiWidgetTransform& widget, const GuiWidgetBounds&) override {
+            if (&widget != &receiver.transform)
+                throw std::logic_error("GUI bounds must publish their live receiver");
+            // This sprite bridge derives its rectangle from the same retained
+            // widget's size/pivot instead of a native +4Ch scene-node volume.
+            // Refresh the actual draw records (including the moved subtree),
+            // not a second, unconsumed bounds owner.
+            frontend.refresh_widget_geometry(receiver);
         }
         void notify_layout_changed(GuiWidgetTransform&) override {
-            throw std::logic_error("00AA7910 does not notify layout");
+            throw std::logic_error("00AA7D40 does not notify layout");
         }
         void on_layout_finished(GuiWidgetTransform&) override {
-            throw std::logic_error("00AA7910 does not finish layout");
+            throw std::logic_error("00AA7D40 does not finish layout");
         }
     };
     float published_resolved_z(const GuiWidgetTransform& widget) const {
@@ -2097,11 +2104,14 @@ void GameFrontendHost::set_widget_local_position(GuiLayoutWidget& widget, float 
     widget.transform.position.x = x;
     widget.transform.position.y = y;
     widget.transform.authored_x = x;
-    // Saved listing 00AA7910..00AA7920: MOVSS +14h then 00AA7220,
-    // without the bounds refresh performed by the separate 00AA7D40.
-    // The caller supplies the marker/minimap widget and its real Z.
-    Impl::LocalZPublication publication(host, widget.transform);
-    bsp::gui_widgets_cc13::gui_widget_set_local_z_00aa7910(
+    // Goal 5 chain 801. bsp.py show 00AA7DC0 and 00AA7D40 --asm:
+    // the local-position setter's tail is the same Z store, 00AA7220,
+    // then 00AA70E0 as 00AA7D40, after X/Y have been supplied above.
+    // Reuse that body over this live widget; its publication replaces the
+    // former Z-only call, so the transform is recomposed exactly once.
+    // The caller supplies the retained page/runtime widget and its actual XYZ.
+    Impl::LocalPositionPublication publication(host, *this, widget);
+    bsp::gui_widgets_cc13::gui_widget_set_local_z_and_bounds_00aa7d40(
         widget.transform, z, publication);
 }
 
