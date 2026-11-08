@@ -49,6 +49,7 @@
 #include "bsp/unit_rudder_curve.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class_fields.hpp"   // goal 4 chain 391, VehicleClassBaseFields
+#include "bsp/ship_class_fields.hpp"
 
 struct lua_State;
 
@@ -2707,6 +2708,10 @@ private:
     // fields (class +C0h..+CCh Catapult, +124h Cost, +134h DefaultEquipment...),
     // written when 00964790 loads the class and kept after the row is purged.
     std::map<int, bsp::VehicleClassBaseFields> vehicle_class_base_fields_;
+    // 00831840's semantic ship-base fields, on the same descriptor lifetime.
+    // Rows requiring Idle template ownership or a LandingShip descriptor keep
+    // using the existing Lua readers until those two class producers are bound.
+    std::map<int, bsp::ShipClassFields> vehicle_class_ship_base_fields_;
     // 006E00F0 / 006EB4A0 / 006FB550 / 006FE6A0, at the same descriptor load.
     // The native leaves store tuning at +560h..+570h once; keep that result
     // with its class, including the selected settings block, after Lua purge.
