@@ -1,0 +1,317 @@
+{
+  "goal": 5,
+  "chain": 746,
+  "slot": "g5-w10",
+  "run": 1608,
+  "branch": "agent/g5-w10",
+  "summary": "Wire the complete raw output-holder getter 00B4EC50 into live distortion initialization, replacing its inline +18h read.",
+  "rows": [
+    {
+      "native": "00b4ec50",
+      "status": "wired",
+      "host_site": "src/native_distortion_initializer.cpp:initialize_native_distortion_00b4f560",
+      "reason": "Replaces the inline owner+18h DWORD read with the existing complete ECX-input/EAX-result getter; its result selects the actual output holder primary surface passed to set_native_post_effect_color0_00b4cb70."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:order_cautious_move_00a2ccf0",
+      "reason": "Missing a live CAUTIOUSMOVE producer: the current caller passes ratio=1.0, so its stream-one fraction selects MOVETO."
+    },
+    {
+      "native": "00a10370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:replace_command",
+      "reason": "Missing a producer that installs a REGROUPINGMOVE command in this host."
+    },
+    {
+      "native": "00a10240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:order_cautious_move_00a2ccf0",
+      "reason": "Existing live MOVETO arm already calls this constructor with the planner group and point; adding another call would duplicate construction."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate_attack_value",
+      "reason": "Missing the air-support flight-class weapon facts and compose-against-group binding; the current host throws on this unmodelled scoring arm."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:release_group_reference",
+      "reason": "Missing a gameplay consumer and native candidate-score-list owner; the documented image reader is an unreachable debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:release_group_reference",
+      "reason": "Missing native candidate-score-list records to mark and a gameplay consumer of those marks."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:defend planner member pass",
+      "reason": "Existing defend member pass already calls this body with live kind and team-set predicates; no duplicate call was added."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:tick_route_clearorders",
+      "reason": "Missing publication of the original mutable command-target globals F87574/F87578/F8757C into the literal initializer; the host currently uses semantic SceneCommandTarget values."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:deferred mission Lua arguments",
+      "reason": "Missing a real frame-job-thread deferred argument vector; the mission interpreter runs on the main thread."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Existing scene-property insertion already calls this body; baseline call_graph who confirmed a reachable caller, so no duplicate call was added."
+    },
+    {
+      "native": "008f3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Existing Boolean scene-property insertion already calls this body with its authored value; no duplicate call was added."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:native property iteration",
+      "reason": "Existing native property iteration already names the iterator body; this packet did not replace its existing invocation."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp:initialize_native_vehicle_camera_limits_0078e230",
+      "reason": "Missing a demonstrated live native vehicle-camera-row producer in the inspected vehicle-class host; creating disconnected camera rows would not supply gameplay state."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp:resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a demonstrated live native vehicle-camera-array owner and resizing consumer in the inspected vehicle-class host."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a live host-owned native registry construction path in the inspected land-task adapters; their callbacks remain the integration boundary."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp:destroy_native_land_approach",
+      "reason": "Missing an entry-reachable registry lifetime consumer; the inspected native approach destructor is not currently linked as a live host root."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/native_land_task_constructor.cpp:construct_native_land_task_009b3240",
+      "reason": "Missing complete live base/composite constructor callbacks, executable profile bindings and state-entry dispatch for the actual land task."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:set_ambient_volume",
+      "reason": "Missing an ambient sound-instance producer: has_ambient_sound_instance currently returns false, and the setter owns no actual SoundInstance/sample."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp:map_initialize_header_006eeaf0",
+      "reason": "Missing a live native Lua-variant map-header owner and matching map lifetime consumer; an isolated allocated sentinel would not connect to mission Lua state."
+    },
+    {
+      "native": "006edea0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp:initialize_native_lua_variant_header_006eeaf0",
+      "reason": "Missing the live native variant-map-header owner that consumes and eventually releases this link allocation."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:mode_think_apply SpawnGroup",
+      "reason": "Missing the native request weight, threat-record vector and support-site list; quick_spawn_named_group does not produce those gate inputs."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:spawn composition class-pair scoring",
+      "reason": "Missing a parser-owned per-mode class-pair table and its live spawn-composition scoring consumer."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit-pick selection",
+      "reason": "Missing a populated live 34h-stride unit-pick-row collection; the inspected raw screen constructor alone does not produce selection rows."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit-pick selection",
+      "reason": "Missing a live selected unit-pick entry carrying the F0h position and FCh validity byte."
+    },
+    {
+      "native": "0093aa90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:set_section_failure_effect",
+      "reason": "Missing real section effect slots, section lookup and node-backed effect lifetime on this unreached host callback."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:backfill_helm_order",
+      "reason": "Missing a reached helm-order backfill consumer and its actual current tick, message stamp and clamp inputs."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::notify_gun_skill_level",
+      "reason": "Existing chain451 skill notification already calls this body with the loaded descriptor, actual skill and shared stream-one draw; no duplicate call was added."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:apply_user_path_point_007207c0",
+      "reason": "Missing a matching clear-user-path command consumer; inspected user_points.clear calls implement new-path initialization and projection synchronization instead."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command-target construction",
+      "reason": "Missing a demonstrated native descriptor class-ordinal publication and matching live descriptor-init consumer; existing semantic targets do not supply that global."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:unit state-message callback",
+      "reason": "Missing a reached controller-state message producer that supplies the original flags and both native descriptor states."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:controller snapshot",
+      "reason": "Missing the live controller-state-message producer and snapshot-only virtual getter inputs."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:GuiListboxRuntime selection",
+      "reason": "Missing native listbox row-node/container/selection storage mapped to the canonical typed runtime; fabricating a disconnected native list would not preserve identity."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:GuiListboxRuntime::select_index_00a9c7c0",
+      "reason": "Missing the native listener114 publication and matching select-index callback over that same live listbox owner."
+    },
+    {
+      "native": "00a9cc50",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:listbox scrolling",
+      "reason": "Missing native listbox row nodes and canonical row-size/local-position mutation callbacks for that storage."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:listbox selection clear",
+      "reason": "Missing a canonical native listbox selection iterator and refresh callback tied to the existing typed owner."
+    },
+    {
+      "native": "00a9cdf0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:exclusive listbox selection",
+      "reason": "Missing canonical native storage for the participating listboxes and their activation/refresh dispatch."
+    },
+    {
+      "native": "00a9ce60",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:exclusive listbox selection",
+      "reason": "Missing canonical native storage for the four participating listboxes and their activation/refresh dispatch."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:listbox highlight",
+      "reason": "Missing the same native listbox row-node owner, highlight selector and geometry callbacks needed to preserve canonical typed GUI identities."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_layout.cpp:construct_base_sub_object",
+      "reason": "Missing a live native unit-layout construction root in the inspected application; the standalone subobject composition is not a demonstrated gameplay owner."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/native_camera_owner.cpp:CameraProjection backing",
+      "reason": "Missing an identified live consumer of horizontal FOV requiring aspect*fov; adding an unused getter result would not wire behavior."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:reserve_native_distortion_records_00b4ed70",
+      "reason": "Missing a live distortion-record producer requesting capacity; initialization creates output resources but does not append record entries."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:resize_native_distortion_records_00b4ee20",
+      "reason": "Missing a linked record-resize lifetime consumer; the inspected B4EE70/B4F150 destructor paths are absent from this build."
+    },
+    {
+      "native": "00b4ee70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:clear_native_distortion_resources_00b4ee70",
+      "reason": "Missing entry-reachable canonical distortion teardown dispatch; call_graph who found no matching linked function."
+    },
+    {
+      "native": "00b4f150",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:destroy_native_distortion_owner_00b4f150",
+      "reason": "Missing entry-reachable canonical distortion teardown dispatch; call_graph who found no matching linked function."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:render command metadata publication",
+      "reason": "Existing native main-scene submission already calls this body; missing an entry-reachable main-scene submission root, so adding another call at that dormant site would not repair wiring."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_render_resource_init_continuation.cpp:pass frame-target access",
+      "reason": "Baseline call_graph who already reports reachable initialization callers of the raw +8h getter; no duplicate call was added."
+    }
+  ],
+  "measurements": {
+    "wire_readiness_wired_before": 10552,
+    "wire_readiness_wired_after": 10553,
+    "call_graph_recon_called_before": 5423,
+    "call_graph_recon_called_after": 5423,
+    "new_host_call_site": "105757b2",
+    "new_host_caller": "bsp::initialize_native_distortion_00b4f560",
+    "getter_called": true,
+    "aggregate_call_count_note": "The Release linker folds this four-byte leaf with six identical functions. The aggregate reconstructed-address count is unchanged; who now names the new explicit initialization call. Its 18 aggregate call sites must not be attributed exclusively to this getter."
+  },
+  "validation": [
+    "Baseline and post-change ./scripts/build.ps1 passed all four existing tests.",
+    "python tools/call_graph.py refreshed after the successful build.",
+    "python tools/call_graph.py who 00b4ec50 identifies the explicit initialization call at 105757B2.",
+    "python tools/call_graph.py path 00b4f560 reaches initialization through MissionRenderResourcesGraph, prepare_mission_ship, clear_and_present and the application frame.",
+    "python tools/wire_readiness.py --standins reports 00b4ec50 state=wired, called=true.",
+    "git diff --check passed."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00b4ec50 --asm: MOV EAX,dword ptr [ECX+18h]; RET.",
+    "src/native_distortion_initializer.cpp texture prefix publishes the real output holder at owner+18h before the replaced read.",
+    "src/scene_renderer_cc13.cpp distortion_texture reads the same distortion owner+18h as the original 00B4EC50 getter."
+  ],
+  "scope": "Reuse of the existing complete body; no new address-suffixed implementation, ledger row, native storage, float arithmetic, duplicate state read, feature switch or test case was added.",
+  "limits": "Build-tested and static entry/call-site verified. The game was not run; runtime visual behavior and whole-process binary parity are unvalidated."
+}
