@@ -1,0 +1,179 @@
+{
+  "goal": 5,
+  "chain": 898,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "base": "95530694178e18f0607bbecf1ec47eec5fe7fec8",
+  "picked": "Canonical 0109049C tracer-pool pointer table reserve, plus complete grow/append preparation",
+  "rows": [
+    {
+      "native": "00bac210",
+      "status": "wired",
+      "host_site": "src/native_tracer_pool.cpp::initialize_native_tracer_pool_00bac3c0",
+      "detail": "Replaces the existing inline reserve32 with a call borrowing the canonical 0109049C+28h header; original inline path is removed. Executable has one entry-reachable call."
+    },
+    {
+      "native": "00ba9d10",
+      "status": "skipped",
+      "host_site": "src/native_tracer_pool.cpp::append_native_tracer_pool_table_00bac190",
+      "reason": "Production tracer-object allocation consumer is missing, so the raw-slot allocator and grow chain are not linked in bsp_game; full reconstructed body and actual-pool fixture are prepared."
+    },
+    {
+      "native": "00bac190",
+      "status": "skipped",
+      "host_site": "src/native_tracer_pool.cpp::allocate_native_tracer_slot_00bac4a0",
+      "reason": "Production tracer-object allocation consumer is missing; the existing raw-slot allocator now calls the complete append body, but only the standalone fixture reaches this path."
+    },
+    {
+      "native": "00bac4a0",
+      "status": "skipped",
+      "host_site": "src/native_tracer_pool.cpp::allocate_native_tracer_slot_00bac4a0",
+      "reason": "No game-reached caller constructs a native BAD6F0 tracer from this pool; the canonical pool startup alone supplies no slot consumer."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/registered_model_effect.cpp::construct_registered_model_effect_008742a0",
+      "reason": "Production RegisteredModelEffectCallees::return_model_slot_00af62f0 binding is missing; the scalar-delete body correctly calls AF60B0 directly and is not the native wrapper site."
+    },
+    {
+      "native": "00bac2b0",
+      "status": "skipped",
+      "host_site": "src/registered_type4_effect_behavior.cpp::tracer construction unwind",
+      "reason": "Production registered-type4 tracer allocation/construction/unwind provider is missing; scalar-delete correctly calls BABF70 directly and is not the native wrapper site."
+    },
+    {
+      "native": "00af7f40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp::delete_native_particle_model_00af7f40",
+      "reason": "No correction selected: original scalar delete directly calls AF60B0; the missing AF62F0 constructor-unwind consumer belongs elsewhere."
+    },
+    {
+      "native": "00bacb90",
+      "status": "skipped",
+      "host_site": "src/native_tracer_lifetime.cpp::delete_native_tracer_00bacb90",
+      "reason": "No correction selected: original scalar delete directly calls BABF70; the missing BAC2B0 constructor-unwind consumer belongs elsewhere."
+    },
+    {
+      "native": "00728a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::gun_aa_kind_00728a90",
+      "reason": "The host still duplicates this category predicate; no executable body symbol was found, and replacing the gunnery gates was deferred in favor of the claimed tracer packet."
+    },
+    {
+      "native": "005459b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::gun_artillery_kind_005459b0",
+      "reason": "No binding from the host gun category to the primary raw body's actual gun+3F4h/class+80h image was established; do not add another same-address body."
+    },
+    {
+      "native": "00829180",
+      "status": "skipped",
+      "host_site": "src/cg_rebuild_a_cc13.cpp::indexed_points_reserve_00829180 interface",
+      "reason": "A live retained native indexed-point-array header and production caller adapter were not established during selection."
+    },
+    {
+      "native": "0082d700",
+      "status": "skipped",
+      "host_site": "src/native_ship_model_pointer_binding.cpp::bind_native_ship_model_pointers_0082d700",
+      "reason": "A live native ship-class model-pointer image/producer was not established during selection."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already called from the executable before this chain despite readiness state ready; no new wiring is required at this existing call."
+    },
+    {
+      "native": "00868420",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp point-effect creation paths",
+      "reason": "A production PointEffectConstruction adapter with actual template visibility, owner construction, and retained references was not established."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp point-effect creation paths",
+      "reason": "A production PointEffectConstruction adapter with actual template visibility, owner construction, and retained references was not established."
+    },
+    {
+      "native": "0084bf00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp projectile flight sweep",
+      "reason": "A complete ProjectileImpactHost binding for static tracing, entity impacts, medium transition and retained effects is missing; a partial sweep substitution would change behavior."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart::write_checkpoint",
+      "reason": "The reconstructed helper covers only Lua deletion; native profile-record erase and storage rewrite continuation are still missing from a complete host operation."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MissionTeardown::close_result_gui",
+      "reason": "Actual raw screen/input/cinematic SoundLoadTransitionHost bindings were not established; semantic teardown logging is insufficient."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp::refresh_search",
+      "reason": "Existing avoid-zone search already calls this refill internally; a separate symbol-only call would add no new operation."
+    }
+  ],
+  "new_wired": [
+    "00bac210"
+  ],
+  "prepared_not_game_reached": [
+    "00ba9d10",
+    "00bac190"
+  ],
+  "changes": [
+    "Borrowed actual table header view; startup reserve32 has one body call and no retained old path.",
+    "Replaced two incomplete scalar capacity extracts with full allocation/copy/free/publication bodies; superseded their ledger rows.",
+    "Raw-slot allocator delegates its identical inline append/grow to those bodies; producer remains absent from game build."
+  ],
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed all four CTests",
+    "final_build": "./scripts/build.ps1 passed all four CTests, no diagnostics",
+    "focused_probe": "cmd /c local/c898-probe.cmd passed: actual startup reserve32; no-shrink reserve; 257 raw slots crossing 32->66 slab-table growth; return/shared trim; late header-aliased source load. MSVC Win32 /MANIFEST:EMBED.",
+    "call_graph": "python tools/call_graph.py: 5651/6303 reconstructed addresses called; who 00bac210 shows one REACHABLE call from initialize_native_tracer_pool_00bac3c0. who 00ba9d10 and 00bac190 have no linked function.",
+    "path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> GameNativeParticlePoolProcess::initialize_tracer_once_00cd88d0 -> initialize_static_native_tracer_pool_00cd88d0 -> initialize_native_tracer_pool_00bac3c0 -> reserve_native_tracer_pool_table_00bac210",
+    "float_math": "No float math changed; pc24_lint not required.",
+    "limits": "Compiled, fixture-tested and executable entry-reach verified. No game execution, retail behavior validation, original-byte differential or original ABI claim.",
+    "index": "Final index --if-stale succeeded; final wire_readiness --standins uses refreshed ledger names and nonstale call graph. An earlier refresh hit a transient SQLite reader lock and was retried after the reader exited."
+  },
+  "metrics": {
+    "readiness_state_wired_before": 10756,
+    "new_executable_confirmed": 1,
+    "textual_state_is_not_call_graph_proof": true,
+    "readiness_state_wired_after": 10758,
+    "target_readiness": [
+      {
+        "address": "00ba9d10",
+        "name": "grow_native_tracer_pool_table_00ba9d10",
+        "source": "src/native_tracer_pool.cpp",
+        "state": "wired",
+        "called": null,
+        "call_sites": null,
+        "callers_live": null
+      },
+      {
+        "address": "00bac190",
+        "name": "append_native_tracer_pool_table_00bac190",
+        "source": "src/native_tracer_pool.cpp",
+        "state": "wired",
+        "called": null,
+        "call_sites": null,
+        "callers_live": null
+      }
+    ],
+    "readiness_note": "The two existing grow/append rows text-match as wired but are not linked in bsp_game. Newly reconstructed template-tagged BAC210 is omitted from the scored pool; its actual executable call is independently verified. Thus the readiness delta +2 is not the confirmed new-call delta +1."
+  },
+  "assumptions": [
+    "Native scalar-delete inner-return calls remain unchanged; unwind wrappers must be reached from their actual construction providers.",
+    "Identical inlined table operations reuse the complete BA9CC0 reallocation body, preserving native capacity-before-allocation and live-header reload order.",
+    "Grow/append are reported skipped because a probe-only caller does not establish production wiring."
+  ],
+  "left_for_others": "Provide the actual BAD6F0 tracer construction/registered-type4 production consumer before counting BAC4A0/BAC190/BA9D10 as wired."
+}

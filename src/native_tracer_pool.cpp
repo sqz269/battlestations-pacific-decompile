@@ -71,6 +71,40 @@ __declspec(noinline) void reserve_native_tracer_pool_table_00ba9cc0(
     owner_pointer(header, 0) = replacement;
 }
 
+__declspec(noinline) void grow_native_tracer_pool_table_00ba9d10(
+    NativeTracerPoolTableView table) {
+    // Evidence: bsp.py show 00ba9d10 --asm, BA9D13..BA9D5F. The old scalar
+    // capacity extract omitted allocation/copy/free/publication. BA9CC0 is
+    // the same complete reallocation operation with an explicit capacity.
+    reserve_native_tracer_pool_table_00ba9cc0(table.header,
+        owner_word(table.header, 8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_tracer_pool_table_00bac190(
+    NativeTracerPoolTableView table, const void* pointer_cell) {
+    // BAC193..BAC1E7 inlines BA9D10 only on count == capacity. BAC1F4..FA
+    // reads the caller's cell AFTER reallocation (including a header alias),
+    // and only when the wrapped destination is nonnull. BAC1FC reloads count.
+    if (owner_word(table.header, 4) == owner_word(table.header, 8))
+        grow_native_tracer_pool_table_00ba9d10(table);
+    void* const destination = owner_at(owner_pointer(table.header, 0),
+        owner_word(table.header, 4) * 4u);
+    if (destination) {
+        std::uint32_t value;
+        std::memcpy(&value, pointer_cell, sizeof(value));
+        owner_word(destination, 0) = value;
+    }
+    owner_word(table.header, 4) = owner_word(table.header, 4) + 1u;
+}
+
+__declspec(noinline) void reserve_native_tracer_pool_table_00bac210(
+    NativeTracerPoolTableView table, std::uint32_t requested) {
+    // BAC217 JNC: unsigned comparison, no clamp/shrink. The inlined BA9CC0
+    // operation publishes capacity before allocating and leaves count intact.
+    if (owner_word(table.header, 8) < requested)
+        reserve_native_tracer_pool_table_00ba9cc0(table.header, requested);
+}
+
 void* initialize_native_tracer_pool_00bac3c0(void* pool, AllocatorListDomain& list) {
     auto& element = *::new (pool) AllocatorListElement;
     list.prepend_base_element(element);
@@ -87,10 +121,8 @@ void* initialize_native_tracer_pool_00bac3c0(void* pool, AllocatorListDomain& li
         owner_word(pool, 0x30) = 0;
         owner_word(pool, 0x34) = 0xffffffffu;
         unwind_state = 2;
-        if (owner_word(pool, 0x30) < 32u) {
-            // BAC3C0 inlines the same BA9CC0 reserve operation at pool+28h.
-            reserve_native_tracer_pool_table_00ba9cc0(owner_at(pool, 0x28), 32);
-        }
+        // BAC3C0 inlines BAC210's reserve32 at the SAME live pool+28h header.
+        reserve_native_tracer_pool_table_00bac210({owner_at(pool, 0x28)}, 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_native_tracer_pool_table_00ba9c80(owner_at(pool, 0x28));
@@ -239,30 +271,10 @@ void* allocate_native_tracer_slot_00bac4a0(void* pool) {
         void* const slab = raw ? initialize_native_tracer_slab_00ba9b50(
             raw, raw_word(pool, 0x34)) : nullptr;
 
-        const auto capacity = raw_word(pool, 0x30);
-        if (raw_word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            raw_put(pool, 0x30, grown_capacity);
-            void* const replacement = singleton_lifetime_allocate({
-                SingletonAllocationKind::pointer_slots, bytes, bytes});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < raw_word(pool, 0x2c); ++index) {
-                if (destination)
-                    raw_put(destination, 0, raw_word(raw_pointer(raw_word(pool, 0x28)), index * 4u));
-                destination = raw_at(destination, 4);
-            }
-            void* const old_table = raw_pointer(raw_word(pool, 0x28));
-            if (old_table) singleton_lifetime_free(old_table);
-            // BAC536 ADD ESP,4 follows returning free; BAC539 publishes.
-            // The saved Ghidra flow omits those three bytes and falsely exits.
-            raw_put(pool, 0x28, raw_address(replacement));
-        }
-
-        const auto insertion_index = raw_word(pool, 0x2c);
-        auto* const destination = raw_at(raw_pointer(raw_word(pool, 0x28)), insertion_index * 4u);
-        if (destination) raw_put(destination, 0, raw_address(slab));
-        raw_put(pool, 0x2c, raw_word(pool, 0x2c) + 1u);
+        // BAC4EF..BAC55A inlines BAC190. Keep the real allocated slab cell
+        // and borrowed pool+28h header; the old growth/append path is removed.
+        // Returning-free flow: BAC536 ADD ESP,4, then BAC539 publishes data.
+        append_native_tracer_pool_table_00bac190({raw_at(pool, 0x28)}, &slab);
     }
 
     auto* const table = raw_pointer(raw_word(pool, 0x28));

@@ -497,9 +497,9 @@ struct TracerHost {
     virtual W1B_Vec4 transform_point_00b62d10(const float* position) = 0;  // by node +F0h
 };
 
-// Growth rules of the tracer containers.
-std::uint32_t tracer_ptr_vector_grow_capacity_00ba9d10(std::uint32_t capacity);
-std::uint32_t tracer_ptr_vector_push_capacity_00bac190(std::uint32_t size, std::uint32_t capacity);
+// The complete pointer-table operations BA9D10/BAC190/BAC210 are declared in
+// native_tracer_pool_table.hpp; their former scalar capacity extracts were
+// incomplete bodies and have been replaced by operations on the actual header.
 std::uint32_t tracer_parameter_curve_push_capacity_00bac2c0(std::int32_t size,
                                                             std::int32_t capacity);
 
