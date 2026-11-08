@@ -29,7 +29,12 @@ std::uint32_t NativeStreamTypeIds::consume_type_id() {
     return result;
 }
 
-void NativeStreamTypeIds::initialize_file_00be4530(
+// Keep the native helper as a callable body in the release executable. Both
+// 00CD8FC0 and 00CD9030 pass the retained process cFile descriptor here before
+// copying its IDs into their derived descriptors (00CD8FE4 / 00CD9054).
+// Evidence: bsp.py show 00be4530, 00BE4530..00BE456D. Inlining this entire
+// initializer otherwise erases its entry and both calls from the built graph.
+__declspec(noinline) void NativeStreamTypeIds::initialize_file_00be4530(
     volatile NativeFileTypeDescriptor& target) {
     if (storage_.file_guard_0109db54 == 0) {
         storage_.file_guard_0109db54 = 1;
