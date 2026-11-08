@@ -1,0 +1,164 @@
+{
+  "chain": 682,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "base": "153318fb0efab4970683f5d58597a0ca66a610e2",
+  "picked": "AIRBASE_LAUNCHSLOT 83h predicate and 83h/86h decoded message ownership",
+  "wired_total_before": 10431,
+  "wired_total_after": 10434,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "00763210: one direct call plus one reference from queue_airbase_launch_slot_83; 00763240: three reachable call sites; 006bedf0: three reachable call sites",
+    "readiness": "00763210 is wired, called=true, call_sites=1. The compiler-generated delete addresses are excluded from readiness rows by their existing classification; call_graph.py who independently proves their reachable calls. Totals are measured tool summaries, not a claim that all three belong to its eligible row pool.",
+    "evidence": "bsp.py show 00763210, 00763240, 006bedf0 and 00780120; the existing factory notes establish 28h/24h decoded allocation sizes",
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "rows": [
+    {
+      "native": "00763210",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_launch_slot_83",
+      "detail": "Use the existing predicate over the receiver ladder constants and the real decoded message type before projecting its payload."
+    },
+    {
+      "native": "00763240",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_launch_slot_83",
+      "detail": "Bind the recovered root stamp/free operation; retain the actual 28h receive allocation through copying and release it with flags=1 once, with flags=0 for sender stack storage."
+    },
+    {
+      "native": "006bedf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86",
+      "detail": "Bind the recovered root stamp/free operation; retain the actual 24h receive allocation through copying and release it with flags=1 once, with flags=0 for sender stack storage."
+    },
+    {
+      "native": "00763140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: airbase local queue adapters",
+      "reason": "Missing a live 81h SetSlot queue producer and payload delivery path; the current local adapters cover 82h/83h/86h/89h."
+    },
+    {
+      "native": "00763380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: airbase local queue adapters",
+      "reason": "Missing a live 84h slot-status-sync queue producer and decoded payload consumer."
+    },
+    {
+      "native": "007633e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: airbase local queue adapters",
+      "reason": "Missing a live 85h StockItem queue producer and payload delivery path to the airbase stock owner."
+    },
+    {
+      "native": "007634a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: airbase local queue adapters",
+      "reason": "Missing a live 88h SetOrders queue producer and decoded payload consumer; the existing 82h slot-order path is a different message."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing a live raw movie-camera-debug-screen owner; this AddPosition(s)-only adapter intentionally traps the reset service."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing a live raw movie-camera-debug-screen owner and reset caller; the listed stand-in is an unreachable AddPosition(s) service."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing a live raw movie-camera-debug-screen owner with authored defaults and a reachable reset caller."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing a live raw movie-camera-debug-screen owner with authored acceleration defaults and a reachable reset caller."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline construction",
+      "reason": "Missing the teardown SweepA3Host adapter over the canonical game+1930h set and Lua object iteration; the existing host site constructs a projected baseline only."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui record",
+      "reason": "Missing native sound-transition screen ownership and game+7184 publication; this address prepares sound transition rather than merely closing result GUI."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing a live decoder texture owner, scene node and native movie material sampler bindings."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native subtitle Text child and subtitle/extratitle vector ownership; the bridge retains a schedule projection."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Missing a single-player-reachable replication path and peer producer; skip online-only objective replication."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: task fast-path gate",
+      "reason": "Missing a canonical raw task+2F4h unit and per-side unit+9C2h byte view for this Cc13Seg67bHost body."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: Impl::profile_owns_content",
+      "reason": "Missing the live native profile content list and mode-2 language producer; the current message-bank adapter does not enter this content path."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: sorted-child collection",
+      "reason": "The original sole caller is DescribeProperties 00AAAED0, a debug/property-inspection path excluded from single-player wiring."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: sound_cache_records_reserve_00a84450",
+      "reason": "Missing an identified canonical 2Ch record-vector header and SoundCacheRecordCalls binding at a live caller; no auxiliary cache was created."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/native_input_device_runtime.cpp: NativeInputDeviceRuntime::clear_force_requests",
+      "reason": "The live runtime already calls clear_native_gamepad_force_00a95890 over actual raw device ownership; the separate typed-context body needs canonical-owner consolidation rather than a second clear."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Failure::statistics_00913d80 record",
+      "reason": "Missing a native scoring-record owner and Seg59bHost scoring/statistics adapter for the actual failure event."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Missing a reachable repair-completion scoring adapter and native score-record ownership; the inspected service remains an unreached trap."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate::direct_hit_00915f20 record",
+      "reason": "Missing native scoring/hit-object ownership and the Seg59bHost award/statistics bindings; the current direct-hit site records the event only."
+    }
+  ]
+}

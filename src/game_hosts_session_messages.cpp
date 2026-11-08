@@ -975,9 +975,21 @@ HostSessionMessages::AirbaseLaunchSlotCopy HostSessionMessages::queue_airbase_la
     // 00768530 case 83h: operator new(28h), 007631A0 at 00769246; 0076A27B
     // vtable[8] = 007632C0.
     stream.begin_read();
-    seg42::AirbaseLaunchSlotMessage queued{};
+    // Chain 682: retain 00768530's actual 28h allocation through decode and
+    // dispatch, then release it with this class's 00763240(1), exactly once.
+    static_assert(sizeof(seg42::AirbaseLaunchSlotMessage) == 0x28);
+    OwnedDecodedMessage<seg42::AirbaseLaunchSlotMessage,
+        seg42::delete_airbase_launchslot_00763240> owner;
+    auto& queued = owner.get();
     seg42::construct_airbase_launchslot_007631a0(&queued, image.seg42);
     seg42::read_airbase_launchslot_007632c0(&queued, &stream.in);
+    // 00780120 uses the decoded message's +0Ch predicate against its
+    // receiver ladder before 0077FE80 forwards 83h to the air-ops switch.
+    if (!copy_goes_to_unit_handler(&seg42::is_airbase_launchslot_00763210)
+        || !seg42::is_airbase_launchslot_00763210(queued.u.h.base.type_10)) {
+        throw std::logic_error("AirbaseLaunchSlot: decoded copy did not reach the kind switch");
+    }
+    seg42::delete_airbase_launchslot_00763240(&sent, 0u);
     return AirbaseLaunchSlotCopy{queued.slot_20, queued.flag_24 != 0};
 }
 
@@ -1413,7 +1425,20 @@ std::uint16_t HostSessionMessages::queue_airbase_appear_ready_plane_86(
     // 00768530 case 86h: operator new(24h), 00763440 at 007692A6; 0076A27B
     // vtable[8] = 006BDB60.
     stream.begin_read();
-    AppearReadyPlaneMessage86 queued{};
+    // Chain 682: 00768530's 24h allocation remains alive until its decoded
+    // payload has been copied. Slot 0, 006BEDF0(1), owns final release.
+    void* const block = singleton_lifetime_allocate(
+        {SingletonAllocationKind::object, sizeof(AppearReadyPlaneMessage86),
+         sizeof(AppearReadyPlaneMessage86)});
+    auto* const decoded = ::new (block) AppearReadyPlaneMessage86{};
+    struct Release {
+        AppearReadyPlaneMessage86* message;
+        ~Release() {
+            band_006b_cc13::airbase_appear_ready_plane_delete_006bedf0(
+                &message->u.h.base, 1u);
+        }
+    } release{decoded};
+    auto& queued = *decoded;
     seg42::construct_airbase_appearreadyplane_00763440(&queued.u, image.seg42);
     band_006b_cc13::airbase_type86_read_006bdb60(&queued, &stream.in);
     // 00780120 asks the copy's IsType 006BDB00 (86h, 49h, 46h): none is on its
@@ -1423,9 +1448,8 @@ std::uint16_t HostSessionMessages::queue_airbase_appear_ready_plane_86(
         || !band_006b_cc13::airbase_type86_is_type_006bdb00(queued.u.h.base.type_10)) {
         throw std::logic_error("AppearReadyPlane: decoded copy did not reach the kind switch");
     }
-    // 006BEDF0, slot 0 of 00CF864C for both, restamps the root profile
-    // (00CE4974) and frees only for flags bit 0; neither message owns storage,
-    // so the copy ends here, as for 83h.
+    // The sender belongs to this stack frame; only the decoded copy is freed.
+    band_006b_cc13::airbase_appear_ready_plane_delete_006bedf0(&sent.u.h.base, 0u);
     return queued.plane_id_20;
 }
 

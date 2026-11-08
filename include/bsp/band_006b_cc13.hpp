@@ -43,6 +43,9 @@ void airbase_set_orders_read_006bdd30(void*,NativeSessionReadStream*);
 // EAX=identity, stamp root profile then free only for bit0. Reuse the existing
 // actual Source root profile/free boundary; this is not a binary entry bridge.
 NativeSessionMessageStorage* airbase_message_delete_006bdd80(NativeSessionMessageStorage*,std::uint32_t);
+// 006BEDF0, slot 0 of the 86h class: same root stamp/free operation,
+// __thiscall(ECX=message, flags), RET 4, EAX=identity.
+NativeSessionMessageStorage* airbase_appear_ready_plane_delete_006bedf0(NativeSessionMessageStorage*,std::uint32_t);
 
 // ---------------------------------------------------------------------------------------------
 // Type predicates

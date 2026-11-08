@@ -297,6 +297,14 @@ PlaneDisappearMessage* construct_plane_disappear_00762b20(PlaneDisappearMessage*
 PlaneDeadmeatRotMessage* construct_plane_deadmeatrot_00762c80(PlaneDeadmeatRotMessage* m, const Context& c) { return construct_unit(m, &m->u, 0xC8, 0x00D03540u, c); }
 UnitMessage* construct_airbase_setslot_00763140(UnitMessage* m, const Context& c) { return construct_unit(m, m, 0x81, 0x00CF8624u, c); }
 AirbaseLaunchSlotMessage* construct_airbase_launchslot_007631a0(AirbaseLaunchSlotMessage* m, const Context& c) { return construct_unit(m, &m->u, 0x83, 0x00D03554u, c); }
+// Goal 5 chain 682. bsp.py show 00763240: the compiler-generated slot 0
+// stamps 00CE4974 and calls 00BF65AC only for flags & 1, returning this.
+// Bind that identical operation to the existing relocated root-profile/free
+// implementation; the sender's stack storage uses flags=0, decoded heap=1.
+AirbaseLaunchSlotMessage* delete_airbase_launchslot_00763240(AirbaseLaunchSlotMessage* m, U flags) {
+    delete_native_session_message_root_00449910(&m->u.h.base, flags);
+    return m;
+}
 UnitMessage* construct_airbase_changeslotstatus_00763320(UnitMessage* m, const Context& c) { return construct_unit(m, m, 0x82, 0x00CF64C4u, c); }
 UnitMessage* construct_airbase_slotstatussync_00763380(UnitMessage* m, const Context& c) { return construct_unit(m, m, 0x84, 0x00CF8610u, c); }
 UnitMessage* construct_airbase_stockitem_007633e0(UnitMessage* m, const Context& c) { return construct_unit(m, m, 0x85, 0x00CF8638u, c); }
