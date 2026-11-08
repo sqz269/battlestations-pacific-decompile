@@ -451,6 +451,17 @@ void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTr
 void gui_widget_set_rotate_00aa7930(GuiWidgetTransform& w, float rotate, GuiWidgetTransformHost& host);
 // 00AA7950, __thiscall(widget, const float[2]*), RET 4: +28h/+2Ch Scale through
 // x87 FLD/FSTP, then 00AA7220.
+// The retained-owner view borrows the actual scale cells and delegates the
+// same owner's native-node publication; it owns no transform copy. The source
+// pair stays borrowed through both ordered loads, including overlapping input.
+struct GuiWidgetScaleView {
+    GuiWidgetScaleView(float& x, float& y) noexcept : scale_x_28(x), scale_y_2c(y) {}
+    virtual ~GuiWidgetScaleView() = default;
+    float& scale_x_28;
+    float& scale_y_2c;
+    virtual void recompose_00aa7220() = 0;
+};
+void gui_widget_set_scale_00aa7950(GuiWidgetScaleView& widget, const void* scale_pair);
 void gui_widget_set_scale_00aa7950(GuiWidgetTransform& w, const float (&scale)[2], GuiWidgetTransformHost& host);
 // 00AA7D40, __thiscall(widget, float z), RET 4: X and Y are stored back
 // unchanged (an inlined position setter), Z = z, then 00AA7220 and 00AA70E0.

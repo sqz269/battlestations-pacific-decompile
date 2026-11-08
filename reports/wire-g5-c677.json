@@ -1,0 +1,50 @@
+{
+  "goal": 5,
+  "chain": 677,
+  "slot": "g5-w1",
+  "base": "f5c03ffcb",
+  "picked": "GUI widget scale setter shared by live HUD counters and the retained Icon runtime",
+  "wired_before": 10418,
+  "wired_after": 10419,
+  "release_call_graph_reconstructed_addresses_before": 5316,
+  "release_call_graph_reconstructed_addresses_after": 5317,
+  "rows": [
+    {"native": "00aa7950", "status": "wired", "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_scale", "details": "Actual HUD counter GuiLayoutWidget scale cells feed the single canonical body; its callback retains the frontend's existing geometry publication. The existing transform overload and GuiIconRuntime::set_scale48_00ab2820 delegate to the same implementation. Original FLD/FSTP order and x87 NaN behavior are preserved; old inline stores no longer run."},
+    {"native": "00ab00c0", "status": "skipped", "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles", "reason": "Missing native movie page/decoder reach, subtitle Text child, native 14h subtitle records, and extratitle widget owners; the bridge only owns a subtitle schedule projection."},
+    {"native": "00aac820", "status": "skipped", "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures", "reason": "Missing actual movie decoder texture slots and scene-node material sampler ownership; the page and decoder callbacks remain unimplemented."},
+    {"native": "007214c0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance", "reason": "Missing retained ControllerSnapshotMessage producer and routed consumer; copying flattened scene flags into a temporary snapshot and back would add no native behavior."},
+    {"native": "00ab6d00", "status": "skipped", "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00 / absent live GuiLeafHost input callback", "reason": "Missing live input-character caller supplying the actual byte and text-context font; existing probe constants do not establish input wiring."},
+    {"native": "00aa5a00", "status": "skipped", "host_site": "src/gui_render_order.cpp: sorted child collection / absent reflection writer", "reason": "Missing live property-descriptor/reflection writer caller 00AAAED0; frontend render ordering is a different operation."},
+    {"native": "0095cf80", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate", "reason": "Missing producer for the alternate ammunition record at ammo+48h; the host explicitly retains only its authored projectile row."},
+    {"native": "0095d3c0", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10", "reason": "Missing backing for the capture path's native unit vector+660h; the current ownership projection lists this clear as unmodelled."},
+    {"native": "009f3f20", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: generated ship controller registration", "reason": "Missing native ship-brain allocation and constructor object ownership; current host keeps semantic controllers and constructor random draws rather than the native brain receiver."},
+    {"native": "0070db20", "status": "skipped", "host_site": "src/flak_note_seg36_37_argon.cpp: UnitGroup_CreateForLeader_0070db20", "reason": "Missing owned native group factory/initializer integration; the raw body still calls original absolute allocator and constructor addresses."},
+    {"native": "00437c70", "status": "skipped", "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint callback", "reason": "Missing live checkpoint comparison/owner binding at this callback; checkpoint_differs returns false and write_checkpoint only records the operation."},
+    {"native": "008fbef0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level", "reason": "Already delegates to tail_gunner_bot_set_skill_008fbef0 using the loaded descriptor, actual level and shared stream-one draw; another call would run it twice."},
+    {"native": "0084bf00", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp: projectile and plane-crash sweep paths", "reason": "Missing complete native projectile sweep host with real scene-prop collision and shot/owner receiver contracts; the host retains a separate sweep implementation."},
+    {"native": "0074fa80", "status": "skipped", "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80", "reason": "Missing identified live flooded-fraction consumer with the actual settings+404h input; water/capacity logging alone is not that operation."},
+    {"native": "007bbc10", "status": "skipped", "host_site": "src/cc13_seg47.cpp: unit_pilot_target_is_007bbc10", "reason": "Missing live native plane+DF4h per-player target-holder binding and local-slot context; the raw body cannot consume a semantic target index as its receiver."},
+    {"native": "007ee8f0", "status": "skipped", "host_site": "src/game_hosts_units.cpp: live attack command feasibility callback", "reason": "Live path already uses the semantic attack_command_applies reconstruction; the raw Cc15 entry still needs native squadron/target ownership and must not run in addition to it."},
+    {"native": "00877b00", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp: damaged graphics level update", "reason": "Missing native model-group-state publication and session broadcast context; current host writes a retained scalar and cannot implement the complete body by replacing that store alone."},
+    {"native": "006f7c20", "status": "skipped", "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20", "reason": "Missing identified live command-menu owner/caller and actual command-class sort keys; unrelated host sorts are not a replacement site."},
+    {"native": "006834a0", "status": "skipped", "host_site": "src/frontend_screen_animation.cpp: set_scroll_range", "reason": "Deferred pending caller-specific scroller/thumb ownership review; earlier mission-host skips predate the newer retained main-menu scroller bindings."},
+    {"native": "00605630", "status": "skipped", "host_site": "src/cc13_left1.cpp: direction_angle_deltas_00605630", "reason": "Missing reviewed live PlaneHudScreen_UpdateBombFire caller and its two direction vectors; generic heading atan2 sites do not implement the same operation."},
+    {"native": "00638b90", "status": "skipped", "host_site": "src/game_hosts_hud_world.cpp: marker placement", "reason": "Missing matching native marker camera/margin publication; existing placement culls against its bridge rectangle first, so another clamp would only repeat that result."},
+    {"native": "00414f50", "status": "skipped", "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050", "reason": "Already directly used by the live avoid-zone refresh reconstruction; exposing an optimized-away helper would not add missing behavior."},
+    {"native": "00419fa0", "status": "skipped", "host_site": "src/ship_ai_avoid_zone_search.cpp: avoid-zone query refresh", "reason": "Existing avoid-zone runtime owns the layer-change/clear path; no additional behavior replacement was identified in this packet."},
+    {"native": "004224c0", "status": "skipped", "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050", "reason": "Already called by the live refresh body; adding another refill would duplicate its clear and segment selection."}
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed after final C++ changes; all four tests passed",
+    "pc24": "python tools/pc24_lint.py --staged: zero findings across four changed C++/header files",
+    "probe": "local/output/g5_c677_scale_probe.cmd passed x87 signalling-NaN quieting/invalid status, signed zero, overlapping input order, and exactly one publication after both writes; synthetic probe, not gameplay proof",
+    "call_graph": "Normal Release build: 00AA7950 REACHABLE at 10400CA0; one direct call at 1008F234 from GameFrontendHost::set_widget_scale",
+    "path": "HUD countdown layout slot+48 -> GameFrontendHost::set_widget_scale -> gui_widget_set_scale_00aa7950; call_graph.py path reaches WinMainCRTStartup",
+    "readiness": "00AA7950 state=wired, called=true, call_sites=1, callers_live=1; total source-wired 10418 -> 10419"
+  },
+  "limitations": [
+    "No game run or native binary ABI replacement is claimed.",
+    "The frontend view retains the existing sprite geometry publication and its scale-rendering limitation; it does not fabricate a native node.",
+    "The Icon view preserves the real GuiWidgetOwner::recompose_00aa7220 callback, but the standalone main_menu_layout_binding helper is not linked into the current executable."
+  ]
+}

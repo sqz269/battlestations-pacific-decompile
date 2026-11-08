@@ -303,10 +303,33 @@ void gui_widget_set_rotate_00aa7930(GuiWidgetTransform& w, float rotate, GuiWidg
     recompose_local_transform(w, host);
 }
 
+__declspec(noinline) void gui_widget_set_scale_00aa7950(GuiWidgetScaleView& widget, const void* scale_pair) {
+    // bsp.py show 00aa7950 --asm: 7954/7956 FLD/FSTP X, then 7959/795C
+    // FLD/FSTP Y, then one CALL 00AA7220. Preserve x87 signalling-NaN
+    // conversion and the second load AFTER the first store when input aliases.
+    auto* x = &widget.scale_x_28;
+    auto* y = &widget.scale_y_2c;
+    __asm {
+        mov eax, scale_pair
+        mov edx, x
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+        mov edx, y
+        fld dword ptr [eax + 4]
+        fstp dword ptr [edx]
+    }
+    widget.recompose_00aa7220();
+}
+
 void gui_widget_set_scale_00aa7950(GuiWidgetTransform& w, const float (&scale)[2], GuiWidgetTransformHost& host) {
-    w.scale_x = scale[0];
-    w.scale_y = scale[1];
-    recompose_local_transform(w, host);
+    struct TransformView final : GuiWidgetScaleView {
+        TransformView(GuiWidgetTransform& w, GuiWidgetTransformHost& h)
+            : GuiWidgetScaleView(w.scale_x, w.scale_y), widget(w), host(h) {}
+        void recompose_00aa7220() override { recompose_local_transform(widget, host); }
+        GuiWidgetTransform& widget;
+        GuiWidgetTransformHost& host;
+    } view{w, host};
+    gui_widget_set_scale_00aa7950(view, scale);
 }
 
 void gui_widget_set_local_z_and_bounds_00aa7d40(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host) {
