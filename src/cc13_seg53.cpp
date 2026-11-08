@@ -410,8 +410,10 @@ void debug_draw_circle_around_axis_00860bb0(Seg53Host& host, const float* centre
 
 // ---------------------------------------------------------------------------
 // 00861970..008619C0: __fastcall(ECX bridge), RET 0: AL = byte [[bridge+4]+offset] (the upper
-// EAX bytes are the director pointer's). No rel32 or absolute reference in the PE (dead
-// accessors, cc13-gp85).
+// EAX bytes are the director pointer's). No rel32 or absolute reference in the PE
+// (cc13-gp85). The host uses these existing bodies for 008624C0's equivalent
+// byte reads over its retained director flag storage; this does not establish
+// an original-binary caller of the out-of-line accessors.
 // ---------------------------------------------------------------------------
 namespace {
 std::uint8_t director_byte(Object bridge, std::size_t offset) {

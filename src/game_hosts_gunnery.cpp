@@ -5436,8 +5436,7 @@ struct GameGunneryHost::Impl {
     // sub-kinds 0 and 1 leave them (00836210 / 0071D5E0). `set` is false until a
     // script stance reaches the unit; until then the bridge keeps 008363E0's 1/1.
     struct DirectorStanceRow {
-        bool allow_fire{true};
-        bool allow_move{true};
+        bsp::cc13_seg53::DirectorBridgeFlagStorage flags;
         bool set{false};
     };
     std::vector<DirectorStanceRow> director_stance_by_unit;
@@ -8377,8 +8376,19 @@ public:
         // 008363E0 defaults director+3Ch and +3Dh to 1 for a unit of neither
         // class 0Bh nor class 9, and 007202FD sets all four of +220h..+223h to
         // 1 (docs/DIRECTOR_UPDATE_ARMS.md). No producer in this process moves
-        // them, so the stance is the defaulted one.
-        bsp::DirectorGunneryStance stance;
+        // them until a script/session publisher supplies the values below.
+        // Retain the known director bytes and borrow the row after resize.
+        if (unit_ >= owner_.director_stance_by_unit.size()) {
+            owner_.director_stance_by_unit.resize(unit_ + 1);
+        }
+        auto& director = owner_.director_stance_by_unit[unit_];
+        auto& flags = director.flags;
+        // Preserve this host's complete per-pass category publication: an
+        // absent scene entry falls back to 007202FD's four 1 bytes.
+        flags.artillery_220 = 1;
+        flags.anti_air_221 = 1;
+        flags.torpedo_222 = 1;
+        flags.depth_charge_223 = 1;
         const bool plane = owner_.units.unit_is_kind_of(unit_,
             bsp::kUnitGunneryKindPlaneBase);
         if constexpr (kShipDirectorEnablesBound) {
@@ -8386,10 +8396,10 @@ public:
             if (owner_.units.unit_is_kind_of(unit_, 6)) {
                 if (const SceneDirectorEnables* e
                         = scene_director_enables_find(owner_.unit_state[unit_].row.name)) {
-                    stance.artillery = e->artillery;
-                    stance.anti_air = e->anti_air;
-                    stance.torpedo = e->torpedo;
-                    stance.depth_charge = e->depth_charge;
+                    flags.artillery_220 = e->artillery;
+                    flags.anti_air_221 = e->anti_air;
+                    flags.torpedo_222 = e->torpedo;
+                    flags.depth_charge_223 = e->depth_charge;
                     if (!e->torpedo) ++owner_.director_torpedo_disabled_pushes;
                     owner_.done("Gunnery::ship_director_enables_007219c0", 0x007219c0u);
                 }
@@ -8406,20 +8416,35 @@ public:
             if (!plane && !ship_read) {
                 if (const SceneDirectorEnables* e
                         = scene_director_enables_find(owner_.unit_state[unit_].row.name)) {
-                    stance.artillery = e->artillery;
+                    flags.artillery_220 = e->artillery;
                 }
             }
         }
+        // Saved-program listings 00861970..008619C0: MOV EAX,[ECX+4],
+        // MOV AL,[EAX+offset], RET. 008624C0 reads the identical six fields
+        // inline (008624CB, 008624F7, 00862566/8B/B0/D3). Reuse those bodies
+        // for the live host's reads; the resulting stance drives its existing
+        // category masks and allow-fire cache once, below.
+        bsp::cc13_seg53::DirectorBridgeFlagView view{
+            0u, reinterpret_cast<std::uint8_t*>(&flags)};
+        const auto bridge = reinterpret_cast<std::uint8_t*>(&view);
+        bsp::DirectorGunneryStance stance;
+        stance.artillery =
+            bsp::cc13_seg53::director_bridge_get_artillery_enabled_00861990(bridge) != 0;
+        stance.anti_air =
+            bsp::cc13_seg53::director_bridge_get_aa_enabled_008619a0(bridge) != 0;
+        stance.torpedo =
+            bsp::cc13_seg53::director_bridge_get_torpedo_enabled_00861980(bridge) != 0;
+        stance.depth_charge =
+            bsp::cc13_seg53::director_bridge_get_depth_charge_enabled_008619b0(bridge) != 0;
         if constexpr (kShipFireStanceBound) {
             // Packet cc9_ship_fire_stance: +3Ch and +3Dh as the last script stance
             // left them (0071BE80 -> 0071DA50 / 0071DAD0 -> 00836210 / 0071D5E0).
-            if (unit_ < owner_.director_stance_by_unit.size()
-                    && owner_.director_stance_by_unit[unit_].set) {
-                const auto& row = owner_.director_stance_by_unit[unit_];
-                stance.allow_fire = row.allow_fire;                 // director+3Ch
-                stance.torpedo_category_enable = row.allow_move;    // director+3Dh
-                if (!row.allow_fire) ++owner_.stance_fire_forbidden_pushes;
-            }
+            stance.allow_fire =
+                bsp::cc13_seg53::director_bridge_get_allow_fire_00861970(bridge) != 0;
+            stance.torpedo_category_enable =
+                bsp::cc13_seg53::director_bridge_get_allow_move_008619c0(bridge) != 0;
+            if (director.set && !stance.allow_fire) ++owner_.stance_fire_forbidden_pushes;
         }
         state_.category = bsp::apply_director_stance_008624c0(state_.category, stance,
             plane, false, state_.bridge_countdown, state_.allow_fire_cache);
@@ -22331,8 +22356,8 @@ void GameGunneryHost::set_director_fire_stance_0071be80(std::size_t unit_index, 
         impl_->director_stance_by_unit.resize(unit_index + 1);
     }
     auto& row = impl_->director_stance_by_unit[unit_index];
-    row.allow_fire = fire;    // 00836210 at 00836216
-    row.allow_move = move;    // 0071D5E0
+    row.flags.allow_fire_3c = fire;    // 00836210 at 00836216
+    row.flags.allow_move_3d = move;    // 0071D5E0
     row.set = true;
     impl_->log.notef("  director stance: unit %zu stance=%d allowFire %d allowMove %d bound=%d "
         "(0071BE80 -> 0071DA50/0071DAD0 5Ah)", unit_index, stance, fire ? 1 : 0, move ? 1 : 0,
@@ -22355,8 +22380,8 @@ void GameGunneryHost::store_director_stance_permissions(std::size_t unit_index, 
         impl_->director_stance_by_unit.resize(unit_index + 1);
     }
     auto& row = impl_->director_stance_by_unit[unit_index];
-    row.allow_fire = fire;
-    row.allow_move = move;
+    row.flags.allow_fire_3c = fire;
+    row.flags.allow_move_3d = move;
     row.set = true;
     impl_->log.notef("  director stance: unit %zu stance=%d allowFire %d allowMove %d bound=%d "
         "(0071BE80 -> 0071DA50/0071DAD0 5Ah)", unit_index, stance, fire ? 1 : 0, move ? 1 : 0,
@@ -22370,22 +22395,37 @@ void GameGunneryHost::store_director_stance_permissions(std::size_t unit_index, 
 
 bool GameGunneryHost::director_allow_fire_3c(std::size_t unit_index) const noexcept {
     if (!kShipFireStanceBound || unit_index >= impl_->director_stance_by_unit.size()) return true;
-    const auto& row = impl_->director_stance_by_unit[unit_index];
-    return !row.set || row.allow_fire;
+    auto& row = impl_->director_stance_by_unit[unit_index];
+    if (!row.set) return true;
+    bsp::cc13_seg53::DirectorBridgeFlagView view{
+        0u, reinterpret_cast<std::uint8_t*>(&row.flags)};
+    return bsp::cc13_seg53::director_bridge_get_allow_fire_00861970(
+        reinterpret_cast<std::uint8_t*>(&view)) != 0;
 }
 
 bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexcept {
     if (!kShipFireStanceBound || unit_index >= impl_->director_stance_by_unit.size()) return true;
-    const auto& row = impl_->director_stance_by_unit[unit_index];
-    if (row.set && !row.allow_move) ++impl_->stance_move_forbidden_reads;
-    return !row.set || row.allow_move;
+    auto& row = impl_->director_stance_by_unit[unit_index];
+    if (!row.set) return true;
+    bsp::cc13_seg53::DirectorBridgeFlagView view{
+        0u, reinterpret_cast<std::uint8_t*>(&row.flags)};
+    const bool allowed = bsp::cc13_seg53::director_bridge_get_allow_move_008619c0(
+        reinterpret_cast<std::uint8_t*>(&view)) != 0;
+    if (!allowed) ++impl_->stance_move_forbidden_reads;
+    return allowed;
 }
 
 void GameGunneryHost::copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src) {
     // 0072045D..00720468: MOVZX [src+3Ch] -> [dst+3Ch], [src+3Dh] -> [dst+3Dh].
     const std::size_t need = std::max(dst, src) + 1;
     if (impl_->director_stance_by_unit.size() < need) impl_->director_stance_by_unit.resize(need);
-    impl_->director_stance_by_unit[dst] = impl_->director_stance_by_unit[src];
+    auto& to = impl_->director_stance_by_unit[dst];
+    const auto& from = impl_->director_stance_by_unit[src];
+    // This copy owns +3Ch/+3Dh only; the newly retained category bytes keep
+    // their destination director's independently published values.
+    to.flags.allow_fire_3c = from.flags.allow_fire_3c;
+    to.flags.allow_move_3d = from.flags.allow_move_3d;
+    to.set = from.set;
     impl_->done("CommandControllerBase::copy_allow_bytes", 0x0072045du);
 }
 

@@ -2,7 +2,7 @@
 
 // cc13_seg53: segment 53 (00851E10-008740E0: torpedo, turning gun, gunnery AI, effects) functions
 // that had no reconstruction (docs/CC13_SEG53.md). New C++ interfaces over the image's Win32
-// layouts; nothing here is wired into the game. Names are hypotheses, not recovered symbols.
+// layouts; individual live bindings are supplied by game hosts. Names are hypotheses, not recovered symbols.
 // Every call the image makes is a named host hook invoked at the same point with the same
 // arguments; the hook comment gives the callee's original ABI.
 
@@ -385,6 +385,36 @@ void debug_draw_circle_around_axis_00860bb0(Seg53Host& host, const float* centre
                                             std::uint32_t segments);
 
 // --- the gunnery director bridge (+4 = weapon director) byte getters ---
+// Known-field storage for the live host's director permissions. The opaque
+// ranges carry no other director state; this is not its full constructor or
+// vtable. The six initial bytes are the host's existing 008363E0/007202FD
+// defaults, subsequently overwritten by the script/session flag producers.
+struct DirectorBridgeFlagStorage {
+    std::uint8_t opaque_00[0x3c]{};
+    std::uint8_t allow_fire_3c{1};
+    std::uint8_t allow_move_3d{1};
+    std::uint8_t opaque_3e[0x1e2]{};
+    std::uint8_t artillery_220{1};
+    std::uint8_t anti_air_221{1};
+    std::uint8_t torpedo_222{1};
+    std::uint8_t depth_charge_223{1};
+};
+static_assert(offsetof(DirectorBridgeFlagStorage, allow_fire_3c) == 0x3c);
+static_assert(offsetof(DirectorBridgeFlagStorage, allow_move_3d) == 0x3d);
+static_assert(offsetof(DirectorBridgeFlagStorage, artillery_220) == 0x220);
+static_assert(offsetof(DirectorBridgeFlagStorage, anti_air_221) == 0x221);
+static_assert(offsetof(DirectorBridgeFlagStorage, torpedo_222) == 0x222);
+static_assert(offsetof(DirectorBridgeFlagStorage, depth_charge_223) == 0x223);
+static_assert(sizeof(DirectorBridgeFlagStorage) == 0x224);
+
+// A borrowed getter view, rebuilt after any vector relocation. Only +4h is
+// read by 00861970..008619C0; +0h is deliberately opaque, not an AI owner.
+struct DirectorBridgeFlagView {
+    std::uint32_t opaque_00{};
+    Object director_04;
+};
+static_assert(offsetof(DirectorBridgeFlagView, director_04) == 4);
+
 std::uint8_t director_bridge_get_allow_fire_00861970(Object bridge);       // director+3Ch
 std::uint8_t director_bridge_get_torpedo_enabled_00861980(Object bridge);  // director+222h
 std::uint8_t director_bridge_get_artillery_enabled_00861990(Object bridge);  // +220h
