@@ -6,6 +6,7 @@
 #include "bsp/sound_cc13.hpp"
 
 #include "bsp/native_input_configuration_parse.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_dialog_table.hpp"
 #include "bsp/sound_sample.hpp"
@@ -73,7 +74,7 @@ void reserve_with_minimum(NativePointerArray& array, std::int32_t requested, std
 
 using Reserve = void (*)(NativePointerArray&, std::int32_t);
 
-// 00A7A930 / 00A7A980 shared body.
+// 00A7A930 group-effect pointer resize; system DSPs use canonical 00A7A980 below.
 void resize_with(NativePointerArray& array, std::int32_t count, Reserve reserve) {
     if (count > array.capacity) {
         reserve(array, count);
@@ -125,10 +126,12 @@ void destroy_with(NativePointerArray& array, void (*resize)(NativePointerArray&,
 void resize_sound_samples(NativePointerArray& array, std::int32_t count) {
     resize_sound_sample_pointers_00a7b3d0(&array, count);
 }
-void resize_sound_system_dsps(NativePointerArray& array, std::int32_t count) {
-    // 00A7A980: the 00A7A930 body with the 00A7A8B0 reserve (its own record is a fragment in
-    // src/sound_configuration_shutdown.cpp).
-    resize_with(array, count, &reserve_sound_system_dsps);
+void __fastcall reserve_sound_system_dsps_native_call(void* array, void*,
+    std::int32_t requested) {
+    // MSVC Win32 thiscall bridge: ECX is the same 0Ch array header, EDX is
+    // unused, and the requested count is the sole stack word (callee RET4).
+    reserve_sound_system_dsp_pointers_00a7a8b0(
+        *static_cast<NativePointerArray*>(array), requested);
 }
 
 void release_object(void* object) {
@@ -212,7 +215,15 @@ void destroy_sound_group_effect_pointers_00a7b7a0(NativePointerArray& array) {
 }
 
 void destroy_sound_system_dsps_00a7b830(NativePointerArray& array) {
-    destroy_with(array, &resize_sound_system_dsps);
+    // bsp.py show 00A7B830: push 0; call 00A7A980; free the current backing.
+    // Pass the live configuration+134h header, not a second pointer array.
+    // The canonical resize reduces count without releasing EventSystem-owned
+    // DSP objects. Its existing reserve callback has the native thiscall ABI;
+    // the bridge above has the identical ECX/stack/RET4 contract.
+    using NativeReserve = void (__thiscall*)(void*, std::int32_t);
+    oct18_tail_c::sound_dsp_resize_00a7a980(&array, 0,
+        reinterpret_cast<NativeReserve>(&reserve_sound_system_dsps_native_call));
+    singleton_lifetime_free(array.data);
 }
 
 void destroy_sound_sample_pointers_00a7ba80(NativePointerArray& array) {

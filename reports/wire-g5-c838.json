@@ -1,0 +1,211 @@
+{
+  "chain": 838,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "picked": "Canonical DSP pointer-array resize on real sound-system teardown",
+  "rows": [
+    {
+      "native": "00a7a980",
+      "status": "wired",
+      "host_site": "src/sound_cc13.cpp: destroy_sound_system_dsps_00a7b830",
+      "evidence": "Canonical oct18_tail_c body receives the actual SoundConfigurationState.system_dsps_134 NativePointerArray header and native literal count 0 before freeing that same backing. Removed the duplicate private resize helper; the real A7A8B0 reserve uses an ECX/stack/RET4 bridge."
+    },
+    {
+      "native": "00a845a0",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cache.cpp: append_sound_resource_cache_record_00a84530",
+      "reason": "The live cache owns semantic SoundResourceCacheRecord objects and grows via reserve; no raw 2Ch record-array resize-to-count owner/producer was established."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: import_save_table",
+      "reason": "The native source record/copy site belongs to refresh import; its current game host throws before archive reading and provides no reached native 14h source-record owner there."
+    },
+    {
+      "native": "008869d0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_build_variant_from_stack_00886e00",
+      "reason": "No live MissionLuaEnvironmentHost/result-sink producer supplies the native variant owner and retirement/string-pool context; argument pushing is a separate operation."
+    },
+    {
+      "native": "008869f0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_build_variant_from_stack_00886e00",
+      "reason": "No live result-sink environment supplies the native variant receiver and retirement context for Boolean-to-number result conversion."
+    },
+    {
+      "native": "00886b30",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_build_variant_from_stack_00886e00",
+      "reason": "No live result-sink environment supplies a native variant receiver and actual userdata input home for this setter."
+    },
+    {
+      "native": "00886840",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant_construct_map_00886840",
+      "reason": "Missing live native VariantMap source owner and complete copying/lifetime adapter; dense mission argument arrays use a different representation."
+    },
+    {
+      "native": "00886b50",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_build_variant_from_stack_00886e00",
+      "reason": "Missing live keyed VariantMap result producer and native map-copy/retirement domain."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage",
+      "reason": "The group projection exists, but the copied member+04h vector has no established live single-player consumer; lookup misses also require genuine mutable F87574/78/7C publications."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command target initialization",
+      "reason": "Missing genuine current absolute F87574/F87578/F8757C publications required by the literal initializer; semantic target zero values cannot supply them."
+    },
+    {
+      "native": "00549620",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_owner.cpp: set_main_menu_help_variant_00549620",
+      "reason": "Missing reached SetHelpVariant caller carrying the retained command-page owner and reset callback binding in this checkout."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property merge projection",
+      "reason": "Already reached through existing native property projection; readiness ready text state is not evidence of new wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum projection",
+      "reason": "Already reached through existing native property projection; no new call site was identified."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score tables",
+      "reason": "Missing live candidate score-list owner and gameplay consumer; the documented image reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score tables",
+      "reason": "Missing native candidate-score records whose chosen byte feeds a live gameplay consumer."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate filtering",
+      "reason": "Already called at baseline with real member-kind/team-set state; adding another call would duplicate existing wiring."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: air-support candidate scoring",
+      "reason": "Missing resolved plane-class weapon-value facts for the compose-against-group host; the current callback reports unsupported scoring."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane setup",
+      "reason": "The existing call belongs to the native main-scene submission path; no entry-reachable native scene-submission owner was established in this checkout."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane clear",
+      "reason": "The existing call belongs to native main-scene submission; its actual caller/owner is not linked into the reached GUI-only rendering path."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: selection runtime",
+      "reason": "The live canonical listbox uses a companion projection; no same-domain raw listbox/NativeGuiListboxCalls adapter for this separate raw body was established."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: highlight runtime",
+      "reason": "Missing a same-domain raw listbox and NativeGuiListboxCalls adapter; the canonical companion highlight path cannot be passed as raw180h storage."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/cc13_gui1.cpp: gui_listbox_set_field124_00a9ceb0",
+      "reason": "Missing reached native field124 setter caller and its GuiListboxHooks/raw-owner binding; canonical companion fields are separate storage."
+    },
+    {
+      "native": "004b12a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_class_resolution.cpp: construct_native_soldier_class_004b12a0",
+      "reason": "Missing live native SoldierClass allocation/resolution owner and its profile/refcounted-handle context in the inspected scene host."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: soldier registry accessor",
+      "reason": "Missing live native soldier-class registry publication/resolution consumer; creating an unused singleton would not wire gameplay."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_window_platform_base_00be2ac0",
+      "reason": "Already called by the actual platform constructor under the canonical native identifier; the older engine_services alias must not run the constructor again."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission consumer and retained text-context filter owner; complete-string layout is a different operation."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Missing original HUD-map animated-value owner with actual target virtual88 and notify callback+4; ordinary widget properties do not supply it."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "The existing typed manager update already calls the body, but its same-domain GuiResourceOwner/widget runtime is not bound to the current native GUI application."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane failure messages",
+      "reason": "The original C8h DeadMeatRot producer is multiplayer-only at its session-mode gate and is excluded from this single-player assignment."
+    },
+    {
+      "native": "0075a380",
+      "status": "skipped",
+      "host_site": "src/session_message_cc13_seg42.cpp: construct_for_read_formation_set_0075a380",
+      "reason": "Missing reached FormationSet78h sender/codec/consumer with its actual member arrays; the live join/leave messages are distinct76h/77h classes."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "Missing ship+BBCh sound object, device-list broadcast consumer and retained unit+6B4h audio byte; the scalar plan alone cannot deliver those effects."
+    }
+  ],
+  "validation": {
+    "baseline_head": "8c3bed7ac9",
+    "baseline_readiness_wired": 10688,
+    "baseline_entry_reachable_reconstructed_addresses": 5545,
+    "after_entry_reachable_reconstructed_addresses": 5546,
+    "build": "Win32 Release; all four CTests passed",
+    "existing_probe": "tests/wire_g5_c701_dsp_storage_probe.cpp: DSP growth, relocation, reverse release and teardown passed; compiled with /MANIFEST:EMBED",
+    "call_graph": "00A7A980 has one reachable call from destroy_sound_system_dsps_00a7b830; entry path includes GameSoundRuntime destruction",
+    "float_math": "No float arithmetic changed",
+    "game_run": "Not run; compilation, existing ownership fixture and static executable reachability only",
+    "after_readiness_wired": 10689,
+    "reserve_bridge": "Release executable disassembly verifies forwarded ECX/header, requested count at EBP+8 and RET4, with no EDX reads."
+  },
+  "assumptions": [
+    "Retain the established actual NativePointerArray ownership domain and EventSystem ownership of DSP pointees.",
+    "MSVC Win32 bridge ignores EDX and matches the reserve callback ECX/one stack DWORD/RET4 contract; this does not claim whole-function original ABI compatibility."
+  ]
+}
