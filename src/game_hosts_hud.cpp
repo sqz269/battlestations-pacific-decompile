@@ -7128,7 +7128,7 @@ public:
         // 00B0D020 on the renderer object [00F8D39C] is not modelled.
         owner_.record("HudShipView::binoculars_lens_off", 0x00452b80u);
     }
-    bool mover_present() override { return owner_.camera_bound; }
+    void* mover_object() override { return owner_.camera_bound ? &owner_.camera : nullptr; }
     float mover_yaw() override { return owner_.camera.yaw_384; }
     void set_mover_yaw(float yaw) override { owner_.camera.yaw_384 = yaw; }
     float mover_pitch() override { return owner_.camera.pitch_388; }

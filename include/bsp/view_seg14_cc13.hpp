@@ -50,7 +50,16 @@ struct BinocularsRegisterHooks {
     virtual Raw gui_manager_load_page_00aa5840(Raw manager, Raw name, std::uint32_t a, std::uint32_t b) = 0;
 };
 
-struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks, BinocularsRegisterHooks {
+// 0051F330 only dispatches these two calls. Keep its binding independent of
+// the unrelated widget, observer and debug-screen services below.
+struct BinocularsViewHooks {
+    virtual ~BinocularsViewHooks() = default;
+    virtual void binoculars_update_raise_0051ef00(Raw screen, float dt) = 0;
+    virtual void binoculars_turn_mover_0051f050(Raw mover, Raw state, float dt, float zoom) = 0;
+};
+
+struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks, BinocularsRegisterHooks,
+                        BinocularsViewHooks {
     virtual ~ViewSeg14Hooks() = default;
     // Virtual slots, named by slot.
     virtual void widget_show_virtual_34(Raw widget, std::uint32_t flag) = 0;
@@ -63,8 +72,6 @@ struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks, BinocularsRegi
     virtual void lens_flare_set_enabled_00452b80(Raw lens_flare_00e081a0, std::uint32_t flag) = 0;
     virtual void camera_set_near_plane_00b6fbf0(Raw camera, float value) = 0;
     virtual void unit_broadcast_controlled_part_flag_00817380(Raw unit, std::uint32_t flag) = 0;
-    virtual void binoculars_update_raise_0051ef00(Raw screen, float dt) = 0;
-    virtual void binoculars_turn_mover_0051f050(Raw mover, Raw state, float dt, float zoom) = 0;
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
     virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
@@ -115,7 +122,7 @@ struct HudExitHooks : ViewSeg14Hooks {
 // 005212E0: ECX=screen, RET. Global HUD root +50h release first, then if
 // screen+1Ch nonnull send role-transfer(mask=1FEh,take=0) using that receiver.
 void hud_screen_2f_exit_005212e0(Raw screen,const ViewGlobals&,HudExitHooks&);
-void binoculars_update_view_0051f330(Raw screen, float dt, ViewSeg14Hooks& hooks);
+void binoculars_update_view_0051f330(Raw screen, float dt, BinocularsViewHooks& hooks);
 
 // ---- lazy singletons (the shared getter body of engine_seg4_6_9_cc13.cpp) ----------------------
 // 0051F520 BSP_DebugRenderFlags_GetSingleton: global 010901CC, 8 bytes, constructor 00B854D0,

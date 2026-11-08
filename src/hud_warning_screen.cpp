@@ -3,6 +3,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/view_seg14_cc13.hpp"
 
 // Packet cc9_screen_50h. docs/SHIP_SCREEN_UPDATE.md section 16.
 
@@ -231,7 +232,7 @@ float binoculars_step_delta_pc24(float step, double sign, float zoom, float axis
 
 // 0051F050, __fastcall(mover, flag* +24h, float dt, float zoom), RET 8.
 void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
-                         const BinocularsViewTerms& terms, float dt) {
+                         const BinocularsViewTerms& terms, float dt, float zoom) {
     constexpr double kDtCap = 0.5;                                    // 00D7A280
     constexpr float kDtCapF = 0.5f;                                   // 00CE3800
     constexpr double kYawSign = -1.0;                                 // 00D7A250
@@ -242,20 +243,20 @@ void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
     const float step = static_cast<double>(dt) > kDtCap ? kDtCapF : dt;   // 0051F10B
     float yaw_delta = 0.0f;
     if constexpr (kPc24HudGuiCc13Bound) {
-        yaw_delta = binoculars_step_delta_pc24(step, kYawSign, screen.zoom_38, yaw_axis,
+        yaw_delta = binoculars_step_delta_pc24(step, kYawSign, zoom, yaw_axis,
                                                terms.config_04);
     } else {
         yaw_delta = static_cast<float>(
-            static_cast<double>(step) * kYawSign * screen.zoom_38 * yaw_axis * terms.config_04);
+            static_cast<double>(step) * kYawSign * zoom * yaw_axis * terms.config_04);
     }
     host.set_mover_yaw(wrapped_angle_add_00438aa0(host.mover_yaw(), yaw_delta));   // 0051F159
     float pitch_delta = 0.0f;
     if constexpr (kPc24HudGuiCc13Bound) {
-        pitch_delta = binoculars_step_delta_pc24(step, kDtCap, screen.zoom_38, pitch_axis,
+        pitch_delta = binoculars_step_delta_pc24(step, kDtCap, zoom, pitch_axis,
                                                  terms.config_04);
     } else {
         pitch_delta = static_cast<float>(
-            static_cast<double>(step) * kDtCap * screen.zoom_38 * pitch_axis * terms.config_04);
+            static_cast<double>(step) * kDtCap * zoom * pitch_axis * terms.config_04);
     }
     // 0051E650: wrap, then clamp into [+3ECh, +3F0h].
     float pitch = wrapped_angle_add_00438aa0(host.mover_pitch(), pitch_delta);
@@ -274,14 +275,37 @@ void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
     host.view_arm(screen, dt);                                        // 0051F1C0..0051F2FA
 }
 
+class BinocularsViewBinding final : public cc13_seg14::BinocularsViewHooks {
+public:
+    BinocularsViewBinding(ShipViewInputHost& host, const BinocularsViewTerms& terms)
+        : host_(host), terms_(terms) {}
+    void binoculars_update_raise_0051ef00(void* screen, float dt) override {
+        binoculars_0051ef00(*static_cast<BinocularsState*>(screen), host_, terms_, dt);
+    }
+    void binoculars_turn_mover_0051f050(void* mover, void* state, float dt, float zoom) override {
+        if (mover == nullptr) return;                                 // 0051F05B
+        // 0051F330 passes the retained screen's +24h flag. The host accessors
+        // address the same live mover stored at +40h; its layout stays typed.
+        auto* const screen = reinterpret_cast<BinocularsState*>(
+            static_cast<unsigned char*>(state) - offsetof(BinocularsState, view_24));
+        binoculars_0051f050(*screen, host_, terms_, dt, zoom);
+    }
+private:
+    ShipViewInputHost& host_;
+    const BinocularsViewTerms& terms_;
+};
+
 }  // namespace
 
 void ship_view_input_0064a400(BinocularsState& binoculars, ShipViewInputHost& host,
                               float dt) {
-    // 0064A410: 0051F330 on [00E198C4]+4Ch, screen 26h.
+    // 0064A410: 0051F330 on [00E198C4]+4Ch, screen 26h. Evidence:
+    // bsp.py show 0051f330: 0051EF00 first, then 0051F050(+40h, &+24h,
+    // dt, +38h). The original dispatcher replaces the two inline calls.
     const BinocularsViewTerms terms = host.view_terms();
-    binoculars_0051ef00(binoculars, host, terms, dt);                 // 0051F33B
-    binoculars_0051f050(binoculars, host, terms, dt);                 // 0051F357
+    binoculars.mover_40 = host.mover_object();
+    BinocularsViewBinding binding(host, terms);
+    cc13_seg14::binoculars_update_view_0051f330(&binoculars, dt, binding);
     if (host.ship_view_mover_20()) {                                  // 0064A418
         host.screen_2eh_005454b0(0.5f, 0.5f, binoculars.zoom_38);     // 0064A441
     }
