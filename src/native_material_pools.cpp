@@ -1096,8 +1096,10 @@ __declspec(noinline) void construct_native_gui_clip_box_pool_00ace750(
     AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
     // 00ACE750 inlines ACE5B0's reserve(20h) on pool+28h in unwind state 2.
     // Keep the existing list/CS/table cleanup; replace its reserve only once.
-    initialize_pool<GuiClipBoxPoolTraits, &native_gui_clip_box_pool_table_reserve_00ace5b0>(
-        list, storage);
+    // CB9043: load the same owner, add28h, and tail-jump ACE310 on
+    // state-2 unwind. Preserve c938 cleanup in the canonical c923 wrapper.
+    initialize_pool<GuiClipBoxPoolTraits, &native_gui_clip_box_pool_table_reserve_00ace5b0,
+        &free_native_gui_clip_box_pool_table_00ace310>(list, storage);
 }
 
 __declspec(noinline) void destroy_native_gui_clip_box_pool_00ace3e0(

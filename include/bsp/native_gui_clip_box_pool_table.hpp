@@ -29,4 +29,10 @@ void native_gui_clip_box_pool_table_push_back_00ace520(
 void native_gui_clip_box_pool_table_reserve_00ace5b0(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity);
 
+// ACE750's CB9043 unwind passes the SAME pool+28h table to ACE310.
+// Explicit member specializations keep one canonical body for each address.
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize();
+template<> void* NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate();
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy();
+
 } // namespace bsp

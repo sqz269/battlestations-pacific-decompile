@@ -1,0 +1,312 @@
+{
+  "goal": 5,
+  "chain": 938,
+  "slot": "g5-w8",
+  "base_head": "2cee01fd75",
+  "picked": "ClipBox retained F8C13C slab-table lifecycle and CRT startup",
+  "rows": [
+    {
+      "native": "00ace310",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: construct_native_gui_clip_box_pool_00ace750 state-2 unwind and destroy_native_gui_clip_box_pool_00ace3e0",
+      "evidence": "ON/Ob0/NOICF: actual function106c9890, reachable calls from canonical ClipBox destroy_pool106c5794 and initialize_pool106c603c; exact actual table used on normal and state-2 cleanup.",
+      "canonical_cpp_symbol": "free_native_gui_clip_box_pool_table_00ace310",
+      "initial_submission_evidence": "NOICF 106c8890: two reachable calls, from ClipBox destroy_pool and initialize_pool; canonical F8C13C+28h table.",
+      "new_relative_to_merge_parent": false
+    },
+    {
+      "native": "00ace340",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_clip_box_pool_table_reserve_00ace5b0",
+      "evidence": "ON/Ob0/NOICF: actual function106c9dd0, reachable tail call106c9dc5 from canonical ClipBox reserve.",
+      "canonical_cpp_symbol": "native_gui_clip_box_pool_table_set_capacity_00ace340",
+      "initial_submission_evidence": "NOICF 106c9020: reachable tail call from ClipBox reserve at106c8e95; actual startup table.",
+      "new_relative_to_merge_parent": false
+    },
+    {
+      "native": "00ace5b0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp: WinMain -> process initialize_once -> construct_native_gui_clip_box_pool_00ace750 -> actual ClipBox initialize_pool",
+      "evidence": "ON/Ob0/NOICF: actual function106c9db0, reachable call106c5ff6 from initialize_pool reached by canonical constructor00ace750.",
+      "canonical_cpp_symbol": "native_gui_clip_box_pool_table_reserve_00ace5b0",
+      "initial_submission_evidence": "NOICF 106c8e80: reachable call at106c5496 from ClipBox initialize_pool; reserve32 runs once on retained storage.",
+      "new_relative_to_merge_parent": false
+    },
+    {
+      "native": "00ace390",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: canonical ClipBox push_back -> grow",
+      "reason": "The ClipBox payload factory has no reached production caller; grow is prepared and fixture-tested but stripped from both game builds.",
+      "prepared": true,
+      "canonical_cpp_symbol": "native_gui_clip_box_pool_table_grow_00ace390"
+    },
+    {
+      "native": "00ace520",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate -> canonical ClipBox push_back",
+      "reason": "Missing a reached ClipBox payload factory consumer; startup reserves the table without allocating a widget slab, so append remains prepared only.",
+      "prepared": true,
+      "canonical_cpp_symbol": "native_gui_clip_box_pool_table_push_back_00ace520"
+    },
+    {
+      "native": "00ab14f0",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_icon_pool_table.hpp",
+      "reason": "Already completed by agent/g5-w6 in chain937; overlapping claim released immediately without edits."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state message discussion",
+      "reason": "No retained ControllerStateMessage producer and descriptor/flags transport consumer was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: snapshot candidate",
+      "reason": "Missing retained ControllerSnapshotMessage storage and a snapshot transport consumer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The inspected interpreter runs on the main thread; no frame-job-thread deferred-call producer supplies a real LuaVariantRecord argument vector."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp: remove_native_vfs_content_package_00bdd020",
+      "reason": "The native remove-content caller still needs a reached package-retirement event; the inspected phase2 VFS path scans and mounts packages."
+    },
+    {
+      "native": "00bdd020",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp: scan_phase2_packages",
+      "reason": "Missing a reached active-content-package removal request; startup scanning is not a removal operation."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: erase_native_soldier_loop_iterator_00444490",
+      "reason": "A reached partial-erasure consumer for the string/float map was not established; existing input cleanup operates its separate scale-map specialization."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: erase_native_soldier_loop_iterator_00444490",
+      "reason": "A reached partial-erasure consumer for the string/float map was not established; generic registry delegation alone does not call this address body."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp: UnwrittenPostTickCallback",
+      "reason": "The inspected application owns only the input-configuration span and retains an unwritten post-tick cell; no actual game clock/deadline-map callback owner was established."
+    },
+    {
+      "native": "0064b5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: obstacle initialization projection",
+      "reason": "The inspected host uses an obstacle projection; no native obstacle-node callback registration and event consumer was established."
+    },
+    {
+      "native": "00af5af0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference",
+      "reason": "No reached particle-model type-id virtual consumer was established; the current reference adapter exposes its separate is_type operation."
+    },
+    {
+      "native": "00af5b00",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference",
+      "reason": "No reached particle-model type-name virtual consumer was established."
+    },
+    {
+      "native": "00b197e0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_construction.cpp: construct_native_resource_registry_00b1aa70",
+      "reason": "The base D5E550 leaf has no recovered native caller; the inspected concrete registry constructor uses a different profile, so no matching live base construction was established."
+    },
+    {
+      "native": "00be31e0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_lifetime.cpp: primary owner destruction",
+      "reason": "The retained frame-job primary destroys its embedded secondary without deleting it; no separately allocated standalone secondary-pool deletion owner was established."
+    },
+    {
+      "native": "004bfaa0",
+      "status": "skipped",
+      "host_site": "src/native_frame_job_execution.cpp: NativeFrameJobExecution",
+      "reason": "No reached virtual14 optional-callback invocation exists in the inspected native dispatch/drain loops."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support item path",
+      "reason": "Missing native spawn-manager request state, raw member/property records and flight enqueue consumer; the host currently throws for this unmodelled flight spawn."
+    },
+    {
+      "native": "007f9020",
+      "status": "skipped",
+      "host_site": "src/native_game_profile_lifetime.cpp: profile bonus record copy",
+      "reason": "No reached producer that appends or relocates actual three-string bonus records was established."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "The existing enumeration body already calls join_native_physical_enumerated_name_00bee520; the pool row uses an older name, so no replacement was needed."
+    },
+    {
+      "native": "004fe700",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00501720",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00504850",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "005048f0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190",
+      "reason": "Missing the non-empty native loader job/request/worker binding; the existing reached updater explicitly supports only the empty queue."
+    }
+  ],
+  "built": "Canonical main ClipBox helpers/constructor/destructor and one retained CRT startup are preserved; c938 adds the actual-table ACE310 callback to ACE750 state-2 unwind. Duplicate c938 helpers and startup were removed. Append/grow remain prepared until a real ClipBox payload factory is reached.",
+  "readiness": {
+    "branch_before_merge": 10813,
+    "merged_wired_current": 10818,
+    "summary_current": {
+      "wired": 10818,
+      "callees_done_no_wired_caller": 8458,
+      "ready": 1198,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "note": "The merged count includes incoming main changes; original submission baseline/delta remain in initial_submission_readiness. No claim that all added rows are new c938 wiring."
+  },
+  "call_graph": {
+    "analysis_configuration": "Requested ON build, /Ob0 /OPT:NOICF; switches restored after build",
+    "analysis_reachable_reconstructed": 7564,
+    "analysis_linked_reconstructed": 7614,
+    "exact_reachable": [
+      "00ace310",
+      "00ace340",
+      "00ace5b0"
+    ],
+    "prepared_unlinked": [
+      "00ace390",
+      "00ace520"
+    ],
+    "note": "These operations were already present in incoming main; repair preserves canonical functions and adds exact constructor-unwind dispatch. Initial incremental claims remain historical in initial_submission_call_graph."
+  },
+  "validation": {
+    "build": "Merged default Win32 and all4 CTests PASS",
+    "analysis_build": "Merged ON/Ob0/NOICF build and all4 CTests PASS",
+    "probe": "PASS: recompiled existing513-slot/33-slab32->66 growth/trim/unlink fixture against merged default core; local/c938-merge-probe.log",
+    "float_math": "No float arithmetic changed.",
+    "diff_check": "passed",
+    "game_run": false,
+    "native_abi": false
+  },
+  "evidence": {
+    "exports": [
+      "00ace310",
+      "00ace340",
+      "00ace390",
+      "00ace520",
+      "00ace5b0",
+      "00ace750",
+      "00ace8d0",
+      "00ace3e0"
+    ],
+    "live_ghidra": "Existing bsp project /battlestationspacific.exe: CD76D0 initializes F8C13C via ACE750 and registers CE0B30 -> ACE3E0; CRT slot CE34CC between Sound CE34C4 and FrameBox CE34D4; CB9043 passes actual pool+28h to ACE310.",
+    "annotations": "Canonical five main names/comments applied and saved; prior annotations local/ghidra-annotations-20261108T182109Z.json; affected exports refreshed."
+  },
+  "left": "Wire a real ClipBox payload factory/consumer to reach the prepared append/grow path. Native ABI/FH3 and gameplay remain unvalidated.",
+  "coordination": "Icon overlap discovered through mail before edits and released; shared source/main and AC shards coordinated with w3/w4/w7; source/main edits frozen and leases released after passing build; no merge, push, rebase, game run or subagents.",
+  "initial_submission_readiness": {
+    "wired_before": 10806,
+    "wired_after": 10813,
+    "note": "Text-based readiness count; exact new executable reachability is three helpers.",
+    "summary_after": {
+      "wired": 10813,
+      "callees_done_no_wired_caller": 8463,
+      "ready": 1198,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    }
+  },
+  "initial_submission_call_graph": {
+    "release_before": 5684,
+    "release_after": 5686,
+    "note": "Release identical-code folding obscures distinct identities; do not interpret this delta as the three-function attribution proof.",
+    "analysis_reachable_reconstructed": 7535,
+    "analysis_linked_reconstructed": 7585,
+    "analysis_flags": "/O2 /Ob0 /OPT:REF /OPT:NOICF",
+    "new_exact_reachable": [
+      "00ace310",
+      "00ace340",
+      "00ace5b0"
+    ],
+    "prepared_unlinked": [
+      "00ace390",
+      "00ace520"
+    ]
+  },
+  "landing_repair": {
+    "merge_parent": "8839f900b708128124fb87fdfcbf1319b97cfc5b",
+    "pre_repair_head": "dc7ce51c13ac8cde0d00fe778e6edf4f067692b2",
+    "resolution": [
+      "Ran tools/merge_resolve.py: it unioned source insertions but refused mutually different names and records for the same five addresses.",
+      "Compared both ledger stages; kept canonical main names/cpp_symbols and all main rows, combining c938 evidence and recording superseded c938 names.",
+      "Consolidated one body per address and one CRT startup; kept main address-suffixed construction/destruction wrappers, slab initializer dispatch, and all unrelated incoming changes.",
+      "Passed ACE310 as the canonical constructor state-2 unwind cleanup; no duplicate free or allocation path."
+    ],
+    "default_build": "PASS: scripts/build.ps1, all4 CTests; local/c938-merge-build.log",
+    "on_build": "PASS: both kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily true; scripts/build.ps1 -BuildDir build/wire-analysis -NoInline, all4 CTests; local/c938-merge-on-build.log",
+    "switches_restored": true,
+    "restored_header_hashes": [
+      {
+        "file": "include/bsp/air_operations.hpp",
+        "switch": "kAutoAttackAllMembersBound",
+        "original_sha256": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+        "restored_sha256": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5"
+      },
+      {
+        "file": "include/bsp/game_hosts_units_internal.hpp",
+        "switch": "kPlaneFormationPlacementEnabled",
+        "original_sha256": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59",
+        "restored_sha256": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+      }
+    ],
+    "probe": "PASS: recompiled existing513-slot/33-slab32->66 growth/trim/unlink fixture against merged default core; local/c938-merge-probe.log",
+    "attribution": "PASS: Ob0/NOICF ON-build call graph proves ACE310/ACE340/ACE5B0 reachable; grow/append unlinked; local/c938-merge-who.log",
+    "wire_readiness": "PASS: wire_readiness.py --standins; text-wired=10818; local/c938-merge-readiness.log",
+    "no_game_run": true,
+    "no_push": true,
+    "default_graph": "43319/43475 reachable functions;5699/6408 reconstructed addresses called. Default ICF folds equivalent leaves; exact attribution comes from ON/NOICF graph.",
+    "validated_files_sha256": {
+      "src/native_material_pools.cpp": "b7db21e0b762737cdc6dff908ca9efd6516e741a0f801504f1994c162fc9ec71",
+      "include/bsp/native_gui_clip_box_pool_table.hpp": "d6edf2d850fa4a07101fd6ac35e986635129e64ae7b5d2cded40b202c0d2015e",
+      "src/game_main.cpp": "99a0bc270b54a5cb18cbf06df11ce9ff7b18d559b236abb143eda58595787b99",
+      "build/win32/Release/bsp_game.exe": "196051614964eea67957bb0b06a5f9ee7addd081c5db199d878bf1d6ef688a57",
+      "build/wire-analysis/Release/bsp_game.exe": "a765c4a5392cdbde8c29fb1884b6f9ad2892d75fd06e81b84b30f10539450622"
+    }
+  }
+}
