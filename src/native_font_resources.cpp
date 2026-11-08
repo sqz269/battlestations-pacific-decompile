@@ -6,7 +6,7 @@
 #include "bsp/native_int_pointer_tree18_erase.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/stream_scalars.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include <cstddef>
 #include <cstring>
 #include <limits>
@@ -65,17 +65,7 @@ static_assert(offsetof(FontRegistryImageStorage, head_08) == 8);
 static_assert(offsetof(FontRegistryImageStorage, count_0c) == 0x0c);
 static_assert(sizeof(FontImageNode) == 0x18);
 static_assert(offsetof(FontImageNode, payload) == 0x10);
-std::uint16_t image_scaled_word(std::int32_t input, float scale) noexcept {
-    std::int32_t converted;
-    __asm {
-        mov eax, input
-        cvtsi2ss xmm0, eax
-        mulss xmm0, scale
-        cvttss2si eax, xmm0
-        mov converted, eax
-    }
-    return static_cast<std::uint16_t>(converted);
-}
+
 }
 
 // This IS the owned Font storage read by image-aware Text/layout consumers.
@@ -137,76 +127,23 @@ void NativeFontResources::construct_image_00ad55c0(
     construct_native_font_storage_00ad55c0(result->image_, arguments, strings);
 }
 
-void NativeFontResources::save_image_paths_00ad4c30_fragment(
-    const std::string& root, const std::string& language) {
-    if (!image_ || phase_ != Phase::preparing || image_paths_saved_)
-        throw std::logic_error("native Font paths require one fresh constructed image");
-    image_paths_saved_ = true; // Entered failure is retained, not replayed.
-    auto& strings = image_strings_->raw_context();
-    image_->root_38.assign_0041e870(strings, root.c_str());
-    image_->language_40.assign_0041e870(strings, language.c_str());
-    image_->data_20.assign_0041e870(strings, descriptor_.data_file.c_str());
-    image_->gfx_30.assign_0041e870(strings, descriptor_.gfx_file.c_str());
-    image_->alpha_28.assign_0041e870(strings, descriptor_.alpha_texture.c_str());
-}
-void NativeFontResources::populate_image_00ad4c30_fragment(MemoryStream& stream,
-    void*& gfx, void*& alpha) {
-    if (!image_ || phase_ != Phase::preparing || !image_paths_saved_ || image_population_started_ ||
-        &gfx == &alpha || image_->count_08 || !stream.has_backing() || !stream.fully_initialized())
-        throw std::invalid_argument("native Font image population requires a fresh image and complete DAT");
-    image_population_started_ = true;
-    require_actual_reference(gfx, actual_owners_);
-    require_actual_reference(alpha, actual_owners_);
-    if (gfx && gfx == alpha && actual_owners_.resolve_actual(gfx).reference_count.load() < 2)
-        throw std::invalid_argument("aliased Font images require two transferred references");
-    const auto position = stream.position_00bef580();
-    const auto size = stream.size_00bef600();
-    if (position < 0 || position > size || size - position < 6)
-        throw std::invalid_argument("native Font DAT header is incomplete");
-    const auto records = stream_read_u32_00be4300(stream);
-    const auto height = static_cast<std::int16_t>(stream_read_word_00be4320(stream));
-    image_->height_14 = image_scaled_word(height, image_->scale_18);
-    if (static_cast<std::uint64_t>(records) * 24u > static_cast<std::uint64_t>(size - position - 6))
-        throw std::invalid_argument("native Font DAT record extent is incomplete");
-    for (std::uint32_t index = 0; index < records; ++index) {
-        const auto key = stream_read_word_00be4320(stream);
-        auto* payload = new (singleton_lifetime_allocate(
-            {SingletonAllocationKind::object, 0x20u, sizeof(FontGlyphData)})) FontGlyphData;
-        pending_image_glyph_ = payload;
-        for (auto& value : payload->fields_00_0c) value = stream_read_float_00be4360(stream);
-        payload->field_10 = stream_read_word_00be4340(stream);
-        payload->scaled_field_12 = image_scaled_word(stream_read_word_00be4340(stream), image_->scale_18);
-        payload->scaled_field_14 = image_scaled_word(stream_read_word_00be4320(stream), image_->scale_18);
-        payload->gfx_texture_18 = gfx;
-        payload->alpha_texture_1c = alpha;
-        if (image_->find(key) == image_->head_04) {
-            // The provider copies a DWORD key. The low WORD is the native
-            // unsigned key; this new Source pair has a defined upper preimage.
-            const NativeIntPointerTree18Pair pair{static_cast<std::int32_t>(key), payload};
-            NativeIntPointerTree18InsertResult inserted{};
-            insert_native_font_tree_unique_00ad4aa0(image_, &inserted, &pair);
-        } else {
-            singleton_lifetime_free(payload); // Original duplicate: first wins.
-        }
-        pending_image_glyph_ = nullptr;
-    }
-    image_dat_complete_ = true;
-}
-void NativeFontResources::finish_image_00ad4c30_fragment(void*& gfx, void*& alpha) {
-    if (!image_ || phase_ != Phase::preparing || !image_dat_complete_ || &gfx == &alpha)
-        throw std::logic_error("native Font completion requires one completed DAT population");
-    auto* fallback = image_->find(0x91);
-    if (fallback == image_->head_04 || !fallback->payload)
-        throw std::invalid_argument("native Font DAT lacks required glyph 0091");
-    image_->space_4c.scaled_field_12 = static_cast<std::uint16_t>(
-        static_cast<std::int16_t>(image_->height_14) / 4);
-    image_->space_4c.gfx_texture_18 = gfx;
-    image_->space_4c.alpha_texture_1c = alpha;
-    std::memcpy(&image_->missing_6c, fallback->payload, sizeof(FontGlyphData));
-    image_->carriage_8c.gfx_texture_18 = gfx;
-    image_->carriage_8c.alpha_texture_1c = alpha;
-    gfx = nullptr;
-    alpha = nullptr;
+void NativeFontResources::load_image(const std::string& root, const std::string& language,
+    void* const volatile& renderer, void* const volatile& vfs,
+    oct18_tail_c::FontLoadScratch& scratch, const oct18_tail_c::FontLoadBindings& bindings) {
+    if (!image_ || phase_ != Phase::preparing || image_load_started_ || image_->count_08)
+        throw std::logic_error("native Font load requires its fresh AD55C0 image");
+    image_load_started_ = true; // Failure retains the same image; never replay.
+    // AC3910 constructs at AC3BA3, publishes in its list, then calls AD4C30
+    // at AC3D99. These are borrowed input headers, not another string owner.
+    const auto header = [](const std::string& text) {
+        return oct18_tail_c::TailNativeString{static_cast<std::uint32_t>(text.size()),
+            const_cast<char*>(text.c_str())};
+    };
+    const auto root_name = header(root), language_name = header(language);
+    const auto dat = header(descriptor_.data_file), gfx = header(descriptor_.gfx_file);
+    const auto alpha = header(descriptor_.alpha_texture);
+    oct18_tail_c::font_load_00ad4c30(image_, &root_name, &dat, &gfx, &alpha,
+        &language_name, renderer, vfs, scratch, bindings);
     phase_ = Phase::live;
 }
 

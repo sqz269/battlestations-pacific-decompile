@@ -1,0 +1,176 @@
+{
+  "goal": 6,
+  "chain": 1029,
+  "owner": "agent/g6-w1",
+  "candidate": "src/native_material_pools.cpp",
+  "tier": 1,
+  "rows": [
+    {
+      "native": "00ad4c30",
+      "status": "wired",
+      "host_site": "src/native_font_resources.cpp:145 NativeFontResources::load_image, called by GameNativeFontApplication::Impl::load_font_image/produce during existing AC3910 startup",
+      "reason": "Existing complete font_load_00ad4c30 now loads the sole AD55C0 AC-byte Font through concrete same-domain string/tree/renderer/VFS/scalar-stream bindings; removed save/populate/finish partial image methods. Built exact body has one reachable call site from NativeFontResources::load_image."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp:1391 text_accepts_input_char_00ab6d30 -> GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "climb: 00AB6D00 needs editable TextContext font pointer +108h <- input predicate 00AB6D30 <- TextOwner fallback 00A96750 <- queued input 00A96F40 <- MainMenu update 00599DB0 (stopped: new-profile editable-input producer is outside the current host phase; MenuUpdateBinding::text_owner_has_queue returns false at game_hosts_mission.cpp:1569 and dispatch is log-only; native Font production alone cannot supply the absent editing owner; MultiChat 005D18A0 is online and excluded)."
+    },
+    {
+      "native": "00ab9240",
+      "status": "skipped",
+      "host_site": "src/frontend_menus.cpp:159 new_profile_text_changed_00588370 -> NewProfileTextHost::name_set_cursor_00ab9240",
+      "reason": "climb: 00AB9240 needs Text +ECh/+F0h glyph source, +108h Font, +17Ch/+180h mode/index, +184h cursor model and stream, +18Ch/+190h positions, +1D8h advance scale <- EnsureCursorModel 00AB8910 and NewProfileTextOwner callback 00588370 <- MainMenuScreen owner +0Ch constructed by 005902E0 and enabled by its new-profile phase <- MainMenu update 00599DB0 (stopped: current host has no new-profile editing/input phase or concrete NewProfileTextHost; MenuUpdateBinding suppresses queued events, so a native Font and render-only Text producer do not establish the cursor model owner)."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "NativeFontResources::Image (AC-byte native Font, existing AD55C0 allocation; completed load-service graph)",
+      "where": "src/native_font_resources.cpp:74; src/game_native_font_application.cpp:152",
+      "constructor": "00ad55c0",
+      "producers": [
+        "GameFontHost::load_descriptors_00ac3910, reached from existing GUI/raw frontend startup; FontDescriptor values come from actual Lua descriptor rows.",
+        "GameNativeFontApplication::Impl::produce constructs the AD55C0 image and adopts it into the same AC3910 native registry before invoking the existing whole AD4C30 body.",
+        "Renderer +64 -> existing B319B0 texture cache with flags 0; same raw VFS publication -> read-existing DAT flags 2; concrete raw string pool/4261A0 and existing AD4540/AD4AA0 providers.",
+        "DAT scalar fields are read by BE4300/BE4340/BE4320/BE4360; AD5079 source-stream retirement precedes AD508F..5148 special payload publication; existing AD53A0 image lifetime retires glyphs/textures/strings/tree."
+      ],
+      "fields": [
+        {
+          "offset": "04",
+          "width": 4,
+          "meaning": "native tree sentinel",
+          "producer": "AD55C0/AD42C0"
+        },
+        {
+          "offset": "08",
+          "width": 4,
+          "meaning": "native glyph count",
+          "producer": "AD55C0 zero then AD4AA0 insertion"
+        },
+        {
+          "offset": "0c",
+          "width": 8,
+          "meaning": "font name header",
+          "producer": "AD55C0 from Lua descriptor"
+        },
+        {
+          "offset": "14",
+          "width": 2,
+          "meaning": "scaled signed font height",
+          "producer": "AD4C30 DAT height and native SSE scale sequence"
+        },
+        {
+          "offset": "18",
+          "width": 4,
+          "meaning": "scale ratio",
+          "producer": "AD55C0 from descriptor"
+        },
+        {
+          "offsets": [
+            "20",
+            "28",
+            "30",
+            "38",
+            "40"
+          ],
+          "width_each": 8,
+          "meaning": "DAT/alpha/GFX/root/language pooled headers",
+          "producer": "AD4C30 from stable descriptor and caller input headers"
+        },
+        {
+          "offset": "4c",
+          "width": 32,
+          "meaning": "space/LF glyph with height/4 advance and actual texture refs",
+          "producer": "AD508F..50D1"
+        },
+        {
+          "offset": "6c",
+          "width": 32,
+          "meaning": "required 0091 fallback payload",
+          "producer": "AD50DC..5109 bit copy from actual native node payload"
+        },
+        {
+          "offset": "8c",
+          "width": 32,
+          "meaning": "carriage-return glyph with actual texture refs",
+          "producer": "AD510F..5148"
+        },
+        {
+          "object": "tree node 18h",
+          "offset": "0c",
+          "width": 2,
+          "meaning": "unsigned glyph key",
+          "producer": "AD4C30 DAT and existing AD4AA0"
+        },
+        {
+          "object": "tree node 18h",
+          "offset": "10",
+          "width": 4,
+          "meaning": "sole 20h glyph payload pointer",
+          "producer": "AD4F6A allocation / AD505E insertion"
+        },
+        {
+          "object": "glyph payload 20h",
+          "offset": "00",
+          "width": 16,
+          "meaning": "four DAT float fields",
+          "producer": "AD4F81..4FAC"
+        },
+        {
+          "object": "glyph payload 20h",
+          "offsets": [
+            "10",
+            "12",
+            "14"
+          ],
+          "width_each": 2,
+          "meaning": "bearing/advance/width; latter two scaled by same SSE body",
+          "producer": "AD4FB8..5017"
+        },
+        {
+          "object": "glyph payload 20h",
+          "offsets": [
+            "18",
+            "1c"
+          ],
+          "width_each": 4,
+          "meaning": "actual GFX/alpha texture identity without added reference",
+          "producer": "AD5004/AD5007"
+        }
+      ],
+      "rows": [
+        "00ad4c30"
+      ],
+      "related_rows_requiring_separate_edit_owner": [
+        "00ab6d00",
+        "00ab9240"
+      ],
+      "climb": [
+        "00AD4C30 needs native Font + actual texture/VFS/string/tree providers <- existing AD55C0 image <- existing AC3910 Lua descriptor producer <- GameFontHost existing phase-7 GUI/raw frontend startup (reached)."
+      ],
+      "single_source_of_truth": "Native image/tree remains the only metric/glyph authority for this path. Removed three partial population methods; no FontData mirror or callable numeric vtable was added.",
+      "failure_retention": "Existing stable per-load operation now retains DAT source, temporary headers and pending glyph; failures do not replay cleanup or mark the Font live."
+    }
+  ],
+  "validation": {
+    "baseline": "Win32 Release build and four CTest groups passed before edits.",
+    "build": "./scripts/build.ps1: Win32 Release and all four existing CTest groups passed after changes.",
+    "call_graph_before": {
+      "called_reconstructed_addresses": 5748,
+      "total_reconstructed_addresses": 6460,
+      "exact_full_body_called": false
+    },
+    "call_graph_after": {
+      "called_reconstructed_addresses": 5749,
+      "total_reconstructed_addresses": 6461,
+      "exact_full_body_called": true,
+      "caller": "bsp::NativeFontResources::load_image",
+      "call_sites": 1
+    },
+    "normal_startup_graph": "who 00AC3910 confirms GameFontHost::load_descriptors is reachable from GameGuiStartupHost::load_font_descriptors and GameFrontendHost::Impl::run_raw_startup, and calls GameNativeFontApplication::load_descriptors.",
+    "abi_compatible": false,
+    "game_validated": false,
+    "limits": "No game launched. Existing whole-file DAT transport, ordinary Source callback/string/heap ABI and retained-failure policy remain explicit boundaries; original FH3/SEH/register ABI and runtime font visuals are not claimed."
+  }
+}

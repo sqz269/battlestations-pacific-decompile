@@ -10,6 +10,12 @@
 #include "bsp/game_native_gui_page_application.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_font_storage.hpp"
+#include "bsp/native_font_tree_insert.hpp"
+#include "bsp/singleton_lifetime.hpp"
+#include "bsp/stream_scalars.hpp"
+#include <cstdlib>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -143,6 +149,107 @@ struct GameNativeFontApplication::Impl {
         // Numeric token selects the concrete existing body, never a host call.
         return load_native_renderer_texture_00b319b0(receiver, &name, 0, cache, &acquired);
     }
+    void load_font_image(GameNativeFontLoadOperation& op, const std::string& root,
+        const std::string& language) {
+        // AC3D99 -> AD4C30, during the existing phase-7 font startup. The same
+        // AD55C0 AC-byte owner was already inserted into the native registry.
+        // Adapt actual numeric-profile owners; never install a callable image
+        // vtable or overlay MemoryStream/FontData on a native object.
+        auto& strings = game_native_string_process().raw_context();
+        oct18_tail_c::FontLoadBindings calls;
+        calls.text.strings.resize_0041dd40 = [&](void* header, std::uint32_t size,
+            std::uint32_t preserve) {
+            resize_native_string_header_0041dd40(header, strings, size, preserve != 0);
+        };
+        calls.text.strings.assign_0041e870 = [&](void* header, const char* text) {
+            return construct_native_string_header_0041e870(header, strings, text);
+        };
+        calls.text.strings.release_00419cc0_00bd1510 = [&](void* block,
+            std::uint32_t size, std::uint32_t) {
+            auto* pool = native_string_pool_get_or_create_00419cc0(
+                strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+            return_native_string_pool_00bd1510(pool, block, size,
+                strings.actual_small_returns_disabled_01090aa4);
+        };
+        calls.text.concat_004261a0 = [&](const void* left, void* out, const void* right) {
+            return concatenate_native_string_headers_004261a0(left, out, right, strings);
+        };
+        calls.renderer_texture_64 = [&](void* receiver, const void* name, std::uint32_t flags) {
+            const auto* table = grid.graphics.streams.vertices.actual_renderer_profile_00d5f0a8;
+            require(receiver && image_profile(receiver) == 0x00d5f0a8 && table &&
+                table[0x64 / 4] == 0x00b319b0 && op.texture_calls < 2 && flags == 0,
+                "Font AD4C30 requires its actual renderer64=B319B0");
+            const bool alpha = op.texture_calls++ != 0;
+            op.phase = alpha ? GameNativeFontLoadPhase::alpha : GameNativeFontLoadPhase::gfx;
+            op.native_site = alpha ? (op.descriptor->alpha_texture.empty() ? 0x00ad4e6e : 0x00ad4e29)
+                : 0x00ad4cd0;
+            auto& result = alpha ? op.alpha : op.gfx;
+            result = load_native_renderer_texture_00b319b0(receiver, name, flags, cache,
+                alpha ? &op.alpha_cache : &op.gfx_cache);
+            (alpha ? op.alpha_result : op.gfx_result) = result;
+            return result;
+        };
+        calls.vfs_open_04 = [&](void* files, const void* name, std::uint32_t flags) -> void* {
+            require(files == raw.actual_vfs_publication_0109ceec && files && flags == 2,
+                "Font DAT requires the same actual VFS and read-existing mode");
+            const auto& header = *static_cast<const oct18_tail_c::TailNativeString*>(name);
+            op.phase = GameNativeFontLoadPhase::data;
+            op.native_site = 0x00ad4ed5;
+            op.dat_source = vfs.open(std::string(header.data, header.length), flags);
+            require(op.dat_source.provider_opened && op.dat_source.stream &&
+                op.dat_source.stream->fully_initialized(), "Native font DAT could not be read completely");
+            op.phase = GameNativeFontLoadPhase::decode;
+            op.native_site = 0x00ad4f3a;
+            return op.dat_source.stream.get();
+        };
+        // The established VFS transport supplies its sole buffered source
+        // stream. Reuse the original scalar bodies, including BE4340 vs
+        // BE4320 slots; AD5079 retires this source before special records.
+        calls.stream_u32_38 = [](void* stream) {
+            return stream_read_u32_00be4300(*static_cast<MemoryStream*>(stream));
+        };
+        calls.stream_word_3c = [](void* stream) {
+            return stream_read_word_00be4340(*static_cast<MemoryStream*>(stream));
+        };
+        calls.stream_word_40 = [](void* stream) {
+            return stream_read_word_00be4320(*static_cast<MemoryStream*>(stream));
+        };
+        calls.stream_float_44 = [](void* stream) {
+            return stream_read_float_00be4360(*static_cast<MemoryStream*>(stream));
+        };
+        calls.release_stream = [&](void* stream) {
+            require(stream == op.dat_source.stream.get() && !op.dat_released,
+                "Font DAT release requires its same live source stream");
+            op.dat_source.stream.reset();
+            op.dat_released = true;
+        };
+        calls.allocate_00bf681b = [&](std::uint32_t bytes) -> void* {
+            require(bytes == sizeof(FontGlyphData) && !op.pending_glyph,
+                "Font glyph allocation requires its single current 20h payload");
+            op.pending_glyph = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, sizeof(FontGlyphData)});
+            return ::new (op.pending_glyph) FontGlyphData;
+        };
+        calls.free_00bf65ac = [&](void* payload) {
+            singleton_lifetime_free(payload); // AD5066 duplicate: first wins.
+            op.pending_glyph = nullptr;
+        };
+        calls.lookup_00ad4540 = [](void* font, NativeIntPointerTree18Iterator* out,
+            const std::uint16_t& key) {
+            return static_cast<NativeIntPointerTree18Iterator*>(
+                find_native_font_glyph_iterator_00ad4540(font, out, key));
+        };
+        calls.insert_00ad4aa0 = [&](void* font, NativeIntPointerTree18InsertResult* out,
+            const NativeIntPointerTree18Pair* pair) -> void* {
+            auto* result = insert_native_font_tree_unique_00ad4aa0(font, out, pair);
+            op.pending_glyph = nullptr; // Real tree now owns the same payload.
+            return result;
+        };
+        calls.checked_iterator_bf6713 = &_invalid_parameter_noinfo;
+        op.published->load_image(root, language, renderer.publication_00f8d394(),
+            raw.actual_vfs_publication_0109ceec, op.load_scratch, calls);
+        op.gfx = nullptr; op.alpha = nullptr; // Transferred by AD50CB..5148.
+    }
     bool produce(const FontDescriptor& descriptor, const std::string& root,
         const std::string& language, NativeFontResources*& output, std::string& error) {
         require(phase == Phase::loading, "Native font producer cannot reenter or replay");
@@ -165,30 +272,27 @@ struct GameNativeFontApplication::Impl {
                     grid.graphics.streams.geometry.actual_owners(), game_native_string_process(), op.unpublished);
                 op.native_site = 0x00ac3ba3;
                 op.published = &fonts.adopt_image_before_load_00ac3910(op.unpublished);
-            }
-            op.phase = GameNativeFontLoadPhase::gfx;
-            op.native_site = 0x00ad4cd0;
-            op.gfx = load_image(op.gfx_name, op.gfx_name_live, op.gfx_path, op.gfx_cache);
-            op.gfx_result = op.gfx;
-            destroy_native_string_header_0041dd20(&op.gfx_name, raw.strings);
-            op.gfx_name_live = false;
-            if (native_images) op.published->save_image_paths_00ad4c30_fragment(root, language);
-            op.phase = GameNativeFontLoadPhase::alpha;
-            op.native_site = descriptor.alpha_texture.empty() ? 0x00ad4e6e : 0x00ad4e29;
-            op.alpha = load_image(op.alpha_name, op.alpha_name_live, op.alpha_path, op.alpha_cache);
-            op.alpha_result = op.alpha;
-            destroy_native_string_header_0041dd20(&op.alpha_name, raw.strings);
-            op.alpha_name_live = false;
-            op.phase = GameNativeFontLoadPhase::data;
-            op.native_site = 0x00ad4c30; // Composition entry; exact raw DAT-open site unclaimed.
-            auto source = vfs.open(op.data_path, 2);
-            require(source.provider_opened && source.stream && source.stream->fully_initialized(),
-                "Native font DAT could not be read completely through the actual VFS");
-            op.phase = GameNativeFontLoadPhase::decode;
-            op.native_site = 0x00ad4f3a;
-            if (native_images) {
-                op.published->populate_image_00ad4c30_fragment(*source.stream, op.gfx, op.alpha);
+                load_font_image(op, root, language);
             } else {
+                op.phase = GameNativeFontLoadPhase::gfx;
+                op.native_site = 0x00ad4cd0;
+                op.gfx = load_image(op.gfx_name, op.gfx_name_live, op.gfx_path, op.gfx_cache);
+                op.gfx_result = op.gfx;
+                destroy_native_string_header_0041dd20(&op.gfx_name, raw.strings);
+                op.gfx_name_live = false;
+                op.phase = GameNativeFontLoadPhase::alpha;
+                op.native_site = descriptor.alpha_texture.empty() ? 0x00ad4e6e : 0x00ad4e29;
+                op.alpha = load_image(op.alpha_name, op.alpha_name_live, op.alpha_path, op.alpha_cache);
+                op.alpha_result = op.alpha;
+                destroy_native_string_header_0041dd20(&op.alpha_name, raw.strings);
+                op.alpha_name_live = false;
+                op.phase = GameNativeFontLoadPhase::data;
+                op.native_site = 0x00ad4c30; // Composition entry; exact raw DAT-open site unclaimed.
+                auto source = vfs.open(op.data_path, 2);
+                require(source.provider_opened && source.stream && source.stream->fully_initialized(),
+                    "Native font DAT could not be read completely through the actual VFS");
+                op.phase = GameNativeFontLoadPhase::decode;
+                op.native_site = 0x00ad4f3a;
                 op.decoded = std::make_unique<FontData>();
                 if (!decode_font_data_00ad4c30_fragment(*source.stream, descriptor.scale_ratio, *op.decoded, error))
                     throw std::runtime_error(error);
@@ -196,15 +300,10 @@ struct GameNativeFontApplication::Impl {
                 op.native_site = 0x00ad50cb;
                 op.unpublished = NativeFontResources::adopt_00ad4c30_fragment(descriptor,
                     op.decoded, op.gfx, op.alpha, grid.graphics.streams.geometry.actual_owners());
-            }
-            source.stream.reset();
-            if (native_images) {
-                op.phase = GameNativeFontLoadPhase::adoption;
-                op.native_site = 0x00ad508f;
-                op.published->finish_image_00ad4c30_fragment(op.gfx, op.alpha);
+                source.stream.reset();
+                op.published = &fonts.publish(op.unpublished);
             }
             op.phase = GameNativeFontLoadPhase::publication;
-            if (!native_images) op.published = &fonts.publish(op.unpublished);
             output = op.published;
             op.phase = GameNativeFontLoadPhase::complete;
             log.notef("native font %s glyphs=%zu gfx=%p profile=%08x alpha=%p profile=%08x",
