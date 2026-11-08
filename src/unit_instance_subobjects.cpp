@@ -138,7 +138,8 @@ void construct_unit_sub_object_block_10a0_0081eb90(
 }
 
 // 0074E7B0, __thiscall(self), plain RET.
-void construct_unit_leak_manager_0074e7b0(
+// The host consumes these constructor defaults during live leak-model setup.
+__declspec(noinline) void construct_unit_leak_manager_0074e7b0(
     UnitLeakManagerConstruction& self) noexcept {
     self.tuning_38 = 200.0f;                    // 0074E7BC, 00CE386C
     self.tuning_3c = 60.0f;                     // 0074E7C9, 00CEB4B0
