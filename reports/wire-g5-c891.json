@@ -1,0 +1,185 @@
+{
+  "goal": 5,
+  "chain": 891,
+  "run": 1948,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "baseline_head": "f64c94b782",
+  "summary": "Wire the existing HUD screen-margin clamp into live marker placement, replacing the host's strict-interior rejection. The current frame's published clip rectangle supplies all six native margin cells; both native horizontal pairs receive the same left/right values, as in 0064361B..0064367F. The clamped coordinates drive both pooled and per-unit widget placement paths.",
+  "counts": {
+    "readiness_wired_before": 10749,
+    "readiness_wired_after": 10750,
+    "entry_reachable_called_before": 6200,
+    "entry_reachable_called_after": 6201
+  },
+  "evidence": [
+    "bsp.py show 00638b90 --asm: 00638BA4..00638C51 selects the horizontal pair with the wide-layout flag and clamps x/y; FCOMIP/JBE preserves unordered values. Existing reconstructed body retained unchanged.",
+    "bsp.py show 0063d1e0 --asm --lines 22: 0063D209/0063D210 pass the live anchor coordinates to 00638B90 at 0063D224 before widget writes.",
+    "src/hud_updates.cpp hud_marker_clip_rect and hud_markers_screen_update: current GUI extent produces E197D0/D8 left, E197CC/D4 right, E197C8 top and E197C4 bottom; publish_clip_rect retains those values on the same markers owner.",
+    "Original 00638B90 ABI is fastcall with ECX=float* x and EDX=float* y, RET. The reused C++ interface takes float references, ScreenMargins and the host's current wide_aspect flag; this is source wiring, not a native ABI entry replacement."
+  ],
+  "verification": {
+    "baseline": "Fresh index and scripts/build.ps1 passed, including all four CTests.",
+    "build": "scripts/build.ps1 passed after the host change; all four CTests passed.",
+    "call_graph": "6201/6242 reconstructed addresses called, compared with 6200/6241 before the change. who 00638b90 reports one reachable call from GameHudMarkersHost::Impl::place_marker at 1014DD88; the linked body is at 10034080.",
+    "entry_path": "WinMainCRTStartup -> startup -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameHudHost::update_markers_screen_006435d0 -> GameHudMarkersHost::update_006435d0 -> MarkersUpdateBinding::add_marker -> GameHudMarkersHost::Impl::place_marker -> clamp_to_screen_margins_00638b90.",
+    "runtime_limit": "The game was not run. Edge placement and widescreen visuals still need a live check. The existing host chooses the marker anchor and widget clones; this does not wire the complete 0063D1E0 widget-emission body."
+  },
+  "rows": [
+    {
+      "native": "00638b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker"
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410",
+      "reason": "Its native 007F31A0 consumer needs a persistent squadron command receiver; the host fuses that receiver with wing 0, which the same path kills, so issuing the order there would not preserve the survivors' command."
+    },
+    {
+      "native": "007f31a0",
+      "status": "skipped",
+      "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0",
+      "reason": "Existing latch/kill projection is already reached; completing 007F32F1..007F340F still needs the separate squadron director, its fire stance/+370 state and broadcast owner before the outward 1.1-scaled moveto command."
+    },
+    {
+      "native": "0063d1e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker",
+      "reason": "Full native widget emitter still needs its screen-slot and raw widget binding; only its established margin-clamp operation is integrated here."
+    },
+    {
+      "native": "0063c620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker",
+      "reason": "Complete box-marker emitter requires a native marker-widget receiver and child/resource binding beyond the current GuiLayoutWidget projection."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/registered_model_effect.cpp: construct_registered_model_effect_008742a0",
+      "reason": "Constructor-unwind callback has no live RegisteredModelEffectCallees implementation; call_graph also shows no linked particle-model scalar-delete body from which to route a genuine slot return."
+    },
+    {
+      "native": "00af7f40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: NativeParticleModelReference",
+      "reason": "Source-level wired label is not entry reachability: call_graph who 00af7f40 finds no linked body, so replacing its return call would not wire the particle facade into the game."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: engagement pass Pass::candidate_attack_value",
+      "reason": "Powerup flight blocks have class configuration, but the attack-value host still keys weapon facts on spawned units; a real class-level flight weapon/value producer is missing."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-table discussion",
+      "reason": "Native candidate score table has no live gameplay consumer; its documented reader is the excluded debug text overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-table discussion",
+      "reason": "No gameplay-owned score-list entries exist to mark, and constructing a parallel debug table would not replace planner state."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: selling_tick_00a11ff0",
+      "reason": "Query needs the native game/world list at +19CC/+16C, typed unit bytes and pose callbacks, plus a real SELLING message consumer; the current host only records that final selling arm."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: marker-drop boundary",
+      "reason": "Missing marker-manager slot ownership, per-unit keep flags and observer-pair producer; no empty or constant replacement state was created."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: sound-transition teardown boundary",
+      "reason": "Complete transition needs actual game+7184, captured movie-screen bytes and enter callback, input-context and cinematic bindings alongside the running sound context."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall::queue_call",
+      "reason": "Deferred argument copying needs a named Lua call made off the main thread; the current producer still does not originate such calls."
+    },
+    {
+      "native": "0043ff40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun animation ownership boundary",
+      "reason": "No live gun+360 animation owner with its nested model/track state was identified; clock values alone are insufficient."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_issue_clearorders",
+      "reason": "Literal initializer reads actual absolute F87574/F87578/F8757C cells; the SceneCommandTarget host projection does not establish those mapped runtime cells."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command descriptor ownership boundary",
+      "reason": "Native consumers initialize paired class/target descriptors; the current host command-target projection is a different record and no real paired owner was built."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-message path-point boundary",
+      "reason": "Tail operation needs the live DirectorQueue last-filled path slot and its point removal; command host work was owned by another worker during selection."
+    },
+    {
+      "native": "004c8310",
+      "status": "skipped",
+      "host_site": "src/engine_seg4_6_9_cc13.cpp: counted_reference_vector_reserve_004c8310",
+      "reason": "No live counted-effect-handle vector owner and reference-lifetime adapter were identified; an auxiliary allocation would not be a game consumer."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: native animation value vector",
+      "reason": "Reserve already has reconstructed parser callers, but no additional entry-reachable native animation-item producer was established in this packet."
+    },
+    {
+      "native": "0041f820",
+      "status": "skipped",
+      "host_site": "src/native_pool_storage_cleanup.cpp: cleanup_native_pool_storage_0041f820",
+      "reason": "No live owner of its string-at+4 and buffer/count/capacity-at+10 record was identified; generic physical-pool storage is a different object."
+    },
+    {
+      "native": "00940da0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: Impl::destroy_gui_sound_set",
+      "reason": "Actual GUI sound owner already releases samples and clears its base publication through 00940E40; adding this base-only delete afterward would repeat teardown rather than replace it."
+    },
+    {
+      "native": "0090f6c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane achievement boundary",
+      "reason": "Plane-achievement manager state is not carried by the unit host, and the saved function has no pseudocode export for establishing a safe adapter in this packet."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: rewind_engine_movie_clock_0045c5b0",
+      "reason": "Existing body models only the clock fragment; the native track rewind callbacks and a live EngineMovieClock owner remain missing."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: advance_engine_movie_clock_0045f970",
+      "reason": "Clock stepping needs a live engine-movie owner with track stepping and stop/teardown consumers, which the current host does not publish."
+    },
+    {
+      "native": "00acd2c0",
+      "status": "skipped",
+      "host_site": "src/hud_widgets.cpp: gui_sound_update_should_hide_00acd2c0",
+      "reason": "No live GuiSoundWidgetState playback/channel update binding exists; raw GUI Sound constructor storage alone does not supply that state."
+    }
+  ]
+}
