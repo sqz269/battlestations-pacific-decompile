@@ -1,0 +1,104 @@
+{
+  "goal": 5,
+  "chain": 907,
+  "slot": "g5-w4",
+  "base_commit": "ad22b335e848aa1f9a62fcfe4340e5e9a0d5c118",
+  "summary": "Replace the live native instance collector's duplicated group/entry appends with the existing address bodies; correct group append's wrapping growth and null-destination branch.",
+  "readiness_wired_before": 10772,
+  "readiness_wired_after": 10773,
+  "readiness_note": "B1CB80 was already text-classified wired through another source mention but had no linked function in the baseline game build. Both selected bodies now have an actual reached collector call. No claim is made for unrelated changes in aggregate compiled-call counters.",
+  "rows": [
+    {
+      "native": "00b1cbe0",
+      "status": "wired",
+      "host_site": "src/native_instance_collection.cpp:collect_native_instance_entry_00b1dff0",
+      "real_state": "Actual command+38h ordered-group pointer array and the newly constructed NativeRenderGroupStorage pointer cell; the inline append_borrowed path was deleted.",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "1060a355",
+      "body_correction": "B1CBEB wraps DWORD doubling before signed minimum-one comparison; B1CC05..11 skips the source read/store for a null destination and increments the current count. Reuse the existing sibling append algorithm and original B1C660 reserve specialization."
+    },
+    {
+      "native": "00b1cb80",
+      "status": "wired",
+      "host_site": "src/native_instance_collection.cpp:collect_native_instance_entry_00b1dff0",
+      "real_state": "Actual collected entry pointer cell and category-selected native group+24h or group+30h source-entry array; the inline append_borrowed path was deleted.",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "1060a3d0"
+    },
+    {
+      "native": "00b1dff0",
+      "status": "skipped",
+      "host_site": "src/native_instance_collection.cpp:NativeInstanceCollectingRenderServices::collect_entry_00b1dff0",
+      "reason": "Already reached at baseline; this existing caller was changed only to dispatch its two native append operations."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp:add_native_scene_property_integer_word_008f3710",
+      "reason": "Baseline readiness already reports called=true; there is no missing compiled caller to add."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:native scene-property projection",
+      "reason": "Baseline readiness already reports called=true; the ready text classification does not indicate a missing compiled caller."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:native scene-property merge",
+      "reason": "Baseline readiness already reports called=true; the ready text classification does not indicate a missing compiled caller."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp:edge_map_find_00407a50",
+      "reason": "No production EdgeHashMap owner/producer was found outside the reconstructed DYN helper declarations and definitions."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp:edge_map_find_or_insert_00407af0",
+      "reason": "No production EdgeHashMap owner and canonical node-pool producer were established for the hull adjacency path."
+    },
+    {
+      "native": "00a9ea60",
+      "status": "skipped",
+      "host_site": "src/native_locale_node_allocation.cpp:allocate_native_locale_node_00a9f0b0",
+      "reason": "Owned by agent/g5-w2 chain906 before my claim; no edits made, and its owner reports the canonical locale-manager reached producer remains missing."
+    },
+    {
+      "native": "00a9ee40",
+      "status": "skipped",
+      "host_site": "src/native_locale_node_allocation.cpp:allocate_native_locale_node_00a9f0b0",
+      "reason": "Owned by agent/g5-w2 chain906 before my claim; no edits made, and its owner reports the canonical locale-manager reached producer remains missing."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp:distortion_add_object_00b4ef90",
+      "reason": "A live distortion-add caller and concrete DistortionHost graph were not established; the inspected native lifetime owner alone does not supply record appends."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, 4/4 CTests",
+    "changed_build": "scripts/build.ps1 passed, 4/4 CTests; local/c907-build.log",
+    "focused_fixture": "tests/wire_g5_c907_group_append_probe.cpp passed: growth preserves borrowed pointers, data-word alias loads after allocation, null destination skips unreadable source",
+    "fixture_compile": "MSVC x86: cl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /Iinclude tests\\wire_g5_c907_group_append_probe.cpp src\\native_render_pointer_arrays.cpp /Folocal\\ /Felocal\\group_append_probe.exe /link /MANIFEST:EMBED",
+    "call_graph": "Rebuilt tools/call_graph.py; who and path confirm both appends reached directly from collect_native_instance_entry_00b1dff0 through MissionCommandGraph::CollectingServices and GameNativeRendererApplication::prepare_mission_ship",
+    "evidence": [
+      "bsp.py show 00b1cbe0 --asm",
+      "bsp.py show 00b1cb80 --asm",
+      "bsp.py show 00b1dff0 --start 220 --lines 55",
+      "bsp.py show 00b1dff0 --start 275 --lines 46"
+    ],
+    "ghidra": "Verified C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe; appended evidence while preserving names and prior comments through ghidra_annotate.py write lock, saved program, refreshed both exports",
+    "floating_point_math_changed": false,
+    "new_original_abi_compatibility_claim": false,
+    "native_differential_fixture_for_this_change": false,
+    "game_validated": false
+  },
+  "left": "Other workers retain locale/table work. This change establishes compiled reachability and focused pointer-array behavior; retail mission execution and original register ABI compatibility remain unvalidated."
+}

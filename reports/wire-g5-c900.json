@@ -82,18 +82,18 @@
   },
   "left": "Native movie/page/decoder and subtitle widget/container producers remain for another worker. No game run or original ABI equivalence is claimed.",
   "merge_validation": {
-    "parent": "8e9a34a1df262518b6b0274a2e0f7b033459b489",
+    "parent": "03ed3fdb8ffd61e8a122611acac25002bd8846d8",
     "conflicts": [
       "src/render_fx_cc13.cpp"
     ],
-    "resolution": "merge_resolve.py declined the renderer conflict; manually kept both CubeTexture and Surface descriptor removals. B3 shard auto-merged and was verified identical to parent outside four owned records, preserving all order.",
-    "preservation_check": "All12 promoted CubeTexture/Texture2D/Surface records retained with non-table-model sources; all12 old renderer descriptors absent.",
+    "resolution": "Ran merge_resolve.py; renderer requires manual resolution. Kept both branches deletions, preserving upstream logical-vertex promotions and all four CubeTexture promotions.",
+    "preservation_check": "Renderer text equals fetched parent minus exactly the four owned CubeTexture shape rows. B3 ledger equals fetched parent outside the four owned replacements, including all record order.",
     "on_headers_sha256_before": {
       "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
       "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
     },
     "on_build": {
-      "command": "python tools/off_switch_on_build.py --log local/c900-merge2-on-build.log",
+      "command": "python tools/off_switch_on_build.py --log local/c900-merge3-on-build.log",
       "exit_code": 0,
       "distinct_diagnostics": 0,
       "ctests_passed": 4,
@@ -111,15 +111,15 @@
       "command": "scripts/build.ps1 after exact ON header restoration",
       "exit_code": 0,
       "ctests_passed": 4,
-      "log": "local/c900-merge2-default-build.log"
+      "log": "local/c900-merge3-default-build.log"
     },
-    "entry_reachable_reconstructed_called": 5672,
+    "entry_reachable_reconstructed_called": 5668,
     "final_default_rebuilt_after_on": true,
     "focused_probe": "PASS: real1025-slot growth/trim/teardown probe rebuilt against final merged default library",
     "call_graph": "All4 CubeTexture bodies entry-reachable with expected2/1/1/1 call sites from grow/reserve, append, allocator and initializer",
     "readiness_summary": {
-      "wired": 10783,
-      "callees_done_no_wired_caller": 8490,
+      "wired": 10789,
+      "callees_done_no_wired_caller": 8484,
       "ready": 1201,
       "blocked_on_callees": 51,
       "unknown_no_identifier": 200
@@ -231,6 +231,82 @@
       "entry_reachable_reconstructed_called": 5663,
       "final_default_rebuilt_after_on": true,
       "focused_probe": "PASS: real1025-slot growth/trim/teardown probe rebuilt against merged default library"
+    },
+    {
+      "parent": "8e9a34a1df262518b6b0274a2e0f7b033459b489",
+      "conflicts": [
+        "src/render_fx_cc13.cpp"
+      ],
+      "resolution": "merge_resolve.py declined the renderer conflict; manually kept both CubeTexture and Surface descriptor removals. B3 shard auto-merged and was verified identical to parent outside four owned records, preserving all order.",
+      "preservation_check": "All12 promoted CubeTexture/Texture2D/Surface records retained with non-table-model sources; all12 old renderer descriptors absent.",
+      "on_headers_sha256_before": {
+        "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+        "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+      },
+      "on_build": {
+        "command": "python tools/off_switch_on_build.py --log local/c900-merge2-on-build.log",
+        "exit_code": 0,
+        "distinct_diagnostics": 0,
+        "ctests_passed": 4,
+        "switches": [
+          "kAutoAttackAllMembersBound",
+          "kPlaneFormationPlacementEnabled"
+        ],
+        "headers_sha256_restored": true,
+        "headers_sha256_after": {
+          "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+          "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+        }
+      },
+      "default_build": {
+        "command": "scripts/build.ps1 after exact ON header restoration",
+        "exit_code": 0,
+        "ctests_passed": 4,
+        "log": "local/c900-merge2-default-build.log"
+      },
+      "entry_reachable_reconstructed_called": 5672,
+      "final_default_rebuilt_after_on": true,
+      "focused_probe": "PASS: real1025-slot growth/trim/teardown probe rebuilt against final merged default library",
+      "call_graph": "All4 CubeTexture bodies entry-reachable with expected2/1/1/1 call sites from grow/reserve, append, allocator and initializer",
+      "readiness_summary": {
+        "wired": 10783,
+        "callees_done_no_wired_caller": 8490,
+        "ready": 1201,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "cube_rows": [
+        {
+          "address": "00b3dbb0",
+          "state": "callees_done_no_wired_caller",
+          "called": true,
+          "call_sites": 2,
+          "callers_live": 2
+        },
+        {
+          "address": "00b3dc00",
+          "state": "callees_done_no_wired_caller",
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00b3e9c0",
+          "state": "wired",
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00b3ea40",
+          "state": "wired",
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        }
+      ],
+      "diff_check": "git diff --check and cached check passed",
+      "unresolved_conflicts": 0
     }
   ]
 }
