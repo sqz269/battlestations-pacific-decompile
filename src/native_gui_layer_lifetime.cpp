@@ -41,7 +41,7 @@ void unwind_layer(void* owner, int state, NativeGuiLayerLifetimeContext& c) noex
 }
 } // namespace
 
-void release_native_gui_scene_storage_00b72250(void* scene, NativeGuiLayerLifetimeContext& c) {
+void release_native_gui_scene_storage_00b72250(void* scene, NativeGuiSceneReleaseContext c) {
     const auto decrement = c.actual_decrement_00ce2220;
     if (decrement(static_cast<volatile long*>(at(scene, 4))) == 0) {
         const Word profile = word(scene); // Native B72261, AFTER decrement.

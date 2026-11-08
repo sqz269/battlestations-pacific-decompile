@@ -27,6 +27,7 @@
 #include "bsp/native_camera_frustum.hpp"
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
+#include "bsp/native_gui_layer_lifetime.hpp"
 #include "bsp/native_material_parameters.hpp"
 #include "bsp/native_mesh_owner.hpp"
 #include "bsp/native_mesh_section.hpp"
@@ -375,10 +376,31 @@ struct GameNativeGuiRenderApplication::Impl {
     bool scene_name_live{}, root_linked{};
     NativeString label;
     bool label_live{};
-    NativeRenderActualOwnerReleaseObservation scene_release;
     std::uint64_t frames{};
     Phase phase{Phase::prepared};
     std::exception_ptr failure;
+
+    struct SceneReleaseBinding final : NativeGuiSceneReleaseBindings {
+        Impl& app;
+        explicit SceneReleaseBinding(Impl& value) : app(value) {}
+
+        const volatile Word* current_scene_table(void* actual, Word profile) override {
+            require(actual == app.scene_raw && app.scene_reference &&
+                app.renderer.actual_owners().find(actual) == &*app.scene_reference,
+                "native GUI scene release requires its live canonical companion");
+            require(profile == 0x00d62d48u,
+                "native GUI scene release requires the current Scene profile");
+            return table(app.data, profile, 4);
+        }
+        void call_scene_zero_00(void* actual, Word target) override {
+            require(actual == app.scene_raw && target == 0x00bd30e0u,
+                "native GUI scene release requires the captured Scene zero terminal");
+            // B72268 tail-dispatches current slot0 AFTER its single decrement.
+            // The admitted companion dispatches BD30E0/current slot4 B72580;
+            // this shared post-zero operation never decrements a second time.
+            dispatch_native_render_actual_owner_zero(app.renderer.actual_owners(), actual);
+        }
+    };
 
     struct RootDispatch final : NativeNodeSceneChildDispatch {
         Impl& app;
@@ -784,7 +806,13 @@ void GameNativeGuiRenderApplication::retire_before_fonts() {
         release_native_render_actual_owner(p.renderer.actual_owners(), p.camera_raw);
         require(p.camera_retired, "native GUI camera remains referenced after command retirement");
         p.renderer.viewport_registry().forget_quiescent(p.viewport_record);
-        release_native_render_actual_owner_observed(p.renderer.actual_owners(), p.scene_raw, p.scene_release);
+        // bsp.py show 00B72250: release this constructed scene's creator credit
+        // through the original entry, using the same current CE2220 target as
+        // scene construction/lifetime. Pending render-command credits remain
+        // on this actual +04 count until the renderer drains them.
+        Impl::SceneReleaseBinding scene_release(p);
+        release_native_gui_scene_storage_00b72250(p.scene_raw,
+            {scene_release, p.renderer.cockpit_viewport_release().decrement_iat_00ce2220});
         p.phase = Impl::Phase::retired;
         p.log.notef("native GUI Text retired: submitted_frames=%llu model=returned camera=returned scene=released",
             static_cast<unsigned long long>(p.frames));
