@@ -1,0 +1,122 @@
+{
+  "goal": 5,
+  "chain": 908,
+  "run": 2008,
+  "slot": "g5-w10",
+  "owner": "agent/g5-w10",
+  "picked": "FrameBox F8C188 process startup and its actual pool+28h slab table",
+  "rows": [
+    {
+      "native": "00acef70",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_frame_box_pool_table_reserve_00acf860, reached from FrameBox initialize_pool via src/game_main.cpp WinMain",
+      "evidence": "Distinct-code link: ACF860 has one reachable tail call to ACEF70. Complete export establishes capacity-before-allocation, null-tested DWORD copy, free and adopt. Operates on the same F8C188+28h table."
+    },
+    {
+      "native": "00acf860",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::initialize, called by the retained process initialize_once from src/game_main.cpp WinMain",
+      "evidence": "Restored CD7740 startup (CE34D4): ECX=F8C188, construct ACFF70, atexit CE0B40. ACFF70 inline reserve32 replaced inside the existing EH-state-2 constructor operation. Distinct-code link shows the FrameBox initialize_pool call reaches ACF860."
+    },
+    {
+      "native": "00acf7e0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate",
+      "reason": "Missing a production caller of the actual DEFAULT FrameBox factory; append specialization is prepared and fixture-tested, but ACF7E0 is not linked into the game executable."
+    },
+    {
+      "native": "00acefc0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: native_gui_frame_box_pool_table_push_back_00acf7e0 calls the existing src/cc13_sweepC.cpp pointer_table_grow_00acefc0",
+      "reason": "Missing the production FrameBox factory allocation path that fills the actual slab table; existing growth body has a narrow CRT adapter and passes the fixture, but is not linked into the game executable."
+    }
+  ],
+  "changes": [
+    "Restore the canonical FrameBox pool CRT startup after Model and before Traceline, with the existing startup-failure marker and real atexit owner.",
+    "Replace constructor inline reserve with ACF860 -> ACEF70 on the retained pool header, keeping original constructor cleanup.",
+    "Prepare allocator inline-append replacement ACF7E0 under the existing pool lock; reuse the sole ACEFC0 body through PointerTableAllocationHost, without unrelated services or stubs.",
+    "Record three newly reconstructed bodies and qualify the existing growth body in the reconstruction ledger; preserve template-shape names, save Ghidra evidence comments and refresh exports."
+  ],
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed, 6/6 tests",
+    "final_release_build": "scripts/build.ps1 passed, 6/6 tests; local/c908-build.log",
+    "fixture": "tests/wire_g5_c908_frame_box_table_probe.cpp built with /MD and /MANIFEST:EMBED; 513 real pool slots, 33 slabs, capacity 32 -> 66, all payloads/trailing indices preserved, recursion zero and allocator list unlinked after destroy",
+    "fixture_log": "local/c908-probe.log",
+    "distinct_code_link": "Temporarily relinked existing release objects with /OPT:NOICF; ACEF70 and ACF860 each have exactly one reachable call site from the intended FrameBox caller. Restored original /INCREMENTAL:NO release linker flags and rebuilt successfully.",
+    "distinct_code_graph_log": "local/c908-distinct-graph.log",
+    "default_graph_log": "local/c908-callgraph-after.log",
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "metrics": {
+    "wire_readiness_wired_before": 10771,
+    "wire_readiness_wired_after": 10775,
+    "new_graph_verified_address_calls": 2,
+    "default_graph_reachable_reconstructed_addresses_before": 5663,
+    "default_graph_reachable_reconstructed_addresses_after": 5664,
+    "note": "Default linker folds ACEF70 into an existing pool body; /OPT:NOICF confirms both new address calls separately. Readiness state is a source-text heuristic: the four-address increase is not per-address call proof, and its output omits the three formerly tagged template helpers. Only the two wired rows above are claimed."
+  },
+  "left": "Connect the actual DEFAULT FrameBox factory to a production page/widget producer; then ACF7E0 and ACEFC0 can run with real allocated slabs. No gameplay or original binary ABI claim.",
+  "landing_repair": {
+    "merged_origin_main": "3fc7c96455bf508ab831f622e63675c07debe09f",
+    "conflict": "src/native_material_pools.cpp include list only; retain FrameBox/SweepC and incoming Section header, with FrameBox includes placed in the separate shader-table header block to avoid repeated common-widget insertion conflicts.",
+    "preserved": "Incoming Section and Listbox startup/table/lifetime specializations and all existing FrameBox wiring; no duplicated address body or alternate runtime path.",
+    "ledger_or_cmake_conflicts": false,
+    "default_build": "scripts/build.ps1 passed all 6 CTest groups after merge and again after ON-header restoration; local/c908-repair-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled enabled temporarily; build passed all 6 CTest groups with zero diagnostics; local/c908-repair-on-build.log",
+    "on_header_receipt": {
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "exit_code": 0,
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      }
+    },
+    "frame_box_probe": "513 slots, 33 slabs, capacity32->66, payloads and indices preserved; local/c908-repair-probe.log",
+    "wire_readiness_log": "local/c908-repair-readiness.log",
+    "wire_readiness_wired": 10791,
+    "wire_readiness_called": 6087,
+    "metrics_qualification": "Merged totals include origin/main additions. Original c908 contribution remains the two graph-verified address calls above; ACF7E0/ACEFC0 remain prepared only.",
+    "call_graph_log": "local/c908-repair-callgraph.log",
+    "game_run": false
+  },
+  "landing_repair2": {
+    "merged_origin_main": "3e26f5323495c3d4af94a7115716552ed54a44e0",
+    "conflicts": {
+      "include/bsp/cc13_sweepC.hpp": "Retain PointerTableAllocationHost for both incoming GuiSound ACD250 and existing FrameBox ACEFC0.",
+      "src/cc13_sweepC.cpp": "Retain both noinline growth bodies, one per address, delegating to the existing shared operation.",
+      "src/game_main.cpp": "Keep both canonical process startups in native CRT order: Model CD75F0, Sound CD7660, FrameBox CD7740, Traceline CD77F0."
+    },
+    "preserved": "All incoming Line, Sound, Listbox, graphics-pool and other main changes retained; native_material_pools.cpp merged automatically with both families intact.",
+    "ledger_or_cmake_conflicts": false,
+    "default_build": "scripts/build.ps1 passed all 6 CTest groups after restoring the ON headers; local/c908-repair2-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily ON; all 6 CTest groups passed, zero distinct diagnostics; local/c908-repair2-on-build.log",
+    "on_header_receipt": {
+      "headers_restored": true,
+      "headers_after": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "headers_before": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "exit_code": 0
+    },
+    "frame_box_probe": "513 slots, 33 slabs, capacity32->66, payloads and trailing indices preserved; local/c908-repair2-probe.log",
+    "call_graph_log": "local/c908-repair2-callgraph.log",
+    "default_graph_reachable_reconstructed_addresses": 5677,
+    "default_graph_reconstructed_addresses_with_calls": 6366,
+    "frame_box_call_verification": "ACF860 reachable from the FrameBox initialize_pool specialization; ACEF70 reachable from ACF860. ACF7E0 and ACEFC0 remain unlinked/prepared-only.",
+    "wire_readiness_log": "local/c908-repair2-readiness.log",
+    "wire_readiness_wired_before_merge": 10791,
+    "wire_readiness_wired_after_merge": 10805,
+    "wire_readiness_called": 6103,
+    "metrics_qualification": "Totals include incoming origin/main changes; original c908 contribution remains two graph-verified address calls.",
+    "game_run": false
+  }
+}

@@ -1229,6 +1229,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_pool_atexit = gui_group_process.initialize_once_00cd7440();
         log.notef("native GUI Group pool CRT CD7440: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", group_pool_atexit, sizeof(bsp::NativeGuiGroupPoolStorage));
+        // Original CRT CE34B4 selects CD7580: MOV ECX,F8C050; CALL AC9B30;
+        // atexit(CE0B00 -> AC94C0). Start the same Grid process used by its
+        // factory after Group and before Model, preserving CRT registration order.
+        auto& gui_grid_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiGridPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_grid_pool_atexit = gui_grid_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Grid pool CRT CD7580: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1", gui_grid_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34BC points to CD75F0: MOV ECX,F8C09C; CALL ACC1D0; atexit(CE0B10).
         // Start the same process owner used by the GUI Model factory, in CRT order.
         auto& gui_model_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
@@ -1259,6 +1269,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI ClipBox pool CRT CD76D0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", clip_box_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CD7740: ECX=F8C188, CALL ACFF70, atexit(CE0B40). Restore the
+        // same process owner the DEFAULT FrameBox factory borrows, in CRT
+        // order after ClipBox and before Traceline; no widget is allocated here.
+        auto& gui_frame_box_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiFrameBoxPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_frame_box_pool_atexit = gui_frame_box_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI FrameBox pool CRT CD7740: atexit=%d storage_bytes=%zu "
+            "before_traceline_pool=1", gui_frame_box_pool_atexit,
+            sizeof(bsp::NativeGuiWidgetPoolStorage));
         // Original CRT table CE34E4 selects CD77F0, before the particle
         // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
         auto& traceline_pool = bsp::game::game_native_traceline_pool_process();

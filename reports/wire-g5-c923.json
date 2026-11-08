@@ -440,5 +440,298 @@
     "Constructor failure keeps the identical existing generic table-free cleanup; only normal destruction substitutes ACE310.",
     "Main startup blocks from concurrent Grid/Scrollbar/FrameBox/AnimIcon branches must retain native order when landed. No merge or push performed.",
     "Source/build/call-graph proof only; no original binary ABI or gameplay validation claimed."
-  ]
+  ],
+  "landing_repair": {
+    "merged_origin_main": "2cee01fd755e63c72aae407b95bb3a26ab2d9c61",
+    "branch_head_before_merge": "6de1459f3c044735e18ffd3eaa0c0d9e43673259",
+    "conflicts": {
+      "src/game_main.cpp": "Retain both canonical startups in native order Sound CD7660 -> ClipBox CD76D0 -> FrameBox CD7740 -> Traceline CD77F0; adjust FrameBox comment."
+    },
+    "ledger_or_cmake_conflicts": false,
+    "preserved": "All incoming main changes retained. AC names/reconstruction shards and native_material_pools.cpp merged automatically.",
+    "default_build": "scripts/build.ps1 PASS: 4/4 CTest groups, zero compiler diagnostics; local/c923-merge-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily ON: scripts/build.ps1 PASS, 4/4 CTest groups, zero compiler diagnostics; local/c923-merge-on-build.log",
+    "on_header_receipt": {
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "on_exit_code": 0,
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      }
+    },
+    "graph_summary_after": {
+      "functions": 43432,
+      "reachable_functions": 43276,
+      "data_symbols": 49581,
+      "edges": 224520,
+      "roots": 2,
+      "instructions": 2388244,
+      "recon_addresses": 6379,
+      "recon_called": 5686,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2560
+    },
+    "optimized_clip_box_call_evidence": {
+      "00ace750": [
+        {
+          "code_address": "10534500",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10534ee0",
+              "call",
+              1,
+              "10534ee5"
+            ]
+          ],
+          "canonical_symbol": "?construct_native_gui_clip_box_pool_00ace750@bsp@@YAXAAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+          "folded_aliases": []
+        }
+      ],
+      "00ace3e0": [
+        {
+          "code_address": "10534ca0",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10534590",
+              "call",
+              1,
+              "10534595"
+            ]
+          ],
+          "canonical_symbol": "?destroy_native_gui_clip_box_pool_00ace3e0@bsp@@YAXAAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+          "folded_aliases": []
+        }
+      ],
+      "00ace310": [
+        {
+          "code_address": "10534d20",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10532300",
+              "call",
+              1,
+              "105323e1"
+            ],
+            [
+              "105345a0",
+              "call",
+              1,
+              "105345d4"
+            ],
+            [
+              "105347a0",
+              "call",
+              1,
+              "105347d4"
+            ],
+            [
+              "105348a0",
+              "call",
+              1,
+              "105348d4"
+            ],
+            [
+              "105349a0",
+              "call",
+              1,
+              "105349d4"
+            ],
+            [
+              "10534b20",
+              "call",
+              1,
+              "10534b54"
+            ],
+            [
+              "10534ca0",
+              "call",
+              1,
+              "10534cd4"
+            ],
+            [
+              "10534d40",
+              "call",
+              1,
+              "10534d78"
+            ],
+            [
+              "10534dc0",
+              "call",
+              1,
+              "10534df8"
+            ],
+            [
+              "105c9ac0",
+              "call",
+              1,
+              "105c9aff"
+            ],
+            [
+              "105c9b40",
+              "call",
+              1,
+              "105c9c23"
+            ],
+            [
+              "105c9c80",
+              "call",
+              1,
+              "105c9cd7"
+            ]
+          ],
+          "canonical_symbol": "?destroy_native_material_pass_pool_table_00b402b0@bsp@@YAXPAX@Z",
+          "folded_aliases": [
+            "?destroy_native_material_pass_pool_table_00b402b0@bsp@@YAXPAX@Z",
+            "?destroy_native_shader_state_list_pool_table_00b621b0@bsp@@YAXPAX@Z",
+            "?free_native_gui_clip_box_pool_table_00ace310@bsp@@YAXPAX@Z",
+            "?free_native_gui_curve_pool_table_00abc180@bsp@@YAXPAX@Z",
+            "?free_native_gui_group_pool_table_00ac70d0@bsp@@YAXPAX@Z",
+            "?free_native_gui_line_pool_table_00ac1ce0@bsp@@YAXPAX@Z",
+            "?free_native_gui_model_pool_table_00acbdd0@bsp@@YAXPAX@Z",
+            "?free_native_gui_section_pool_table_00abe9d0@bsp@@YAXPAX@Z",
+            "?free_native_tracer_pool_table_00ba9c80@bsp@@YAXPAX@Z"
+          ]
+        }
+      ],
+      "00ace340": [
+        {
+          "code_address": "10535e40",
+          "reachable": true,
+          "call_sites": [
+            [
+              "103b7cd0",
+              "jmp",
+              1,
+              "103b7cd0"
+            ],
+            [
+              "103b7d80",
+              "jmp",
+              1,
+              "103b7d95"
+            ],
+            [
+              "10535e50",
+              "call",
+              1,
+              "10535e62"
+            ]
+          ],
+          "canonical_symbol": "?native_gui_clip_box_pool_table_set_capacity_00ace340@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_set_capacity_00ace340@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_frame_box_pool_table_set_capacity_00acef70@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_set_capacity_00ac7100@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_set_capacity_00aa6fa0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_line_pool_table_capacity_00ac1d10@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_section_pool_table_capacity_00abea00@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "00ace5b0": [
+        {
+          "code_address": "103b7d80",
+          "reachable": true,
+          "call_sites": [
+            [
+              "105321d0",
+              "call",
+              1,
+              "1053226b"
+            ],
+            [
+              "10532430",
+              "call",
+              1,
+              "105324cb"
+            ],
+            [
+              "10532690",
+              "call",
+              1,
+              "1053272b"
+            ],
+            [
+              "105327c0",
+              "call",
+              1,
+              "1053285b"
+            ],
+            [
+              "10532c80",
+              "call",
+              1,
+              "10532d1b"
+            ],
+            [
+              "10532ee0",
+              "call",
+              1,
+              "10532f7b"
+            ],
+            [
+              "10533010",
+              "call",
+              1,
+              "105330ab"
+            ],
+            [
+              "10533140",
+              "call",
+              1,
+              "105331db"
+            ],
+            [
+              "10533270",
+              "call",
+              1,
+              "1053330b"
+            ],
+            [
+              "105333a0",
+              "call",
+              1,
+              "1053343b"
+            ]
+          ],
+          "canonical_symbol": "?native_gui_clip_box_pool_table_reserve_00ace5b0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_reserve_00ace5b0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_frame_box_pool_table_reserve_00acf860@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_reserve_00ac7370@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_reserve_00aa7740@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_icon_pool_table_00ab2420@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_line_pool_table_00ac2020@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_section_pool_table_00abed30@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "00ace390": [],
+      "00ace520": []
+    },
+    "folding_qualification": "Optimized table helpers share identical code with other pools; explicit ClipBox source callers remain and original c923 NOICF evidence is retained above. No new disambiguated NOICF build claimed for this merge.",
+    "wire_readiness_log": "local/c923-merge-readiness.log",
+    "wire_readiness_summary": {
+      "wired": 10813,
+      "callees_done_no_wired_caller": 8462,
+      "ready": 1199,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "wire_readiness_counts": {
+      "called": 6125,
+      "called_not_wired": 362,
+      "wired_not_called": 41,
+      "not_in_binary": 14559
+    },
+    "metrics_qualification": "Totals include incoming main changes. Original c923 contribution remains five exact source call paths; append/grow remain unlinked.",
+    "game_run": false
+  }
 }

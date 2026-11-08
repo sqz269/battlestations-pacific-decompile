@@ -1,0 +1,101 @@
+{
+  "chain": 928,
+  "goal": 5,
+  "owner": "agent/g5-w12",
+  "baseline_head": "4dc4562dd58af247c5010fb0bd295ae1b6a090ce",
+  "picked": "Canonical F8BC10 Listbox allocator-list virtual0 dispatch",
+  "rows": [
+    {
+      "native": "00a9b0b0",
+      "status": "wired",
+      "host_site": "src/cc13_seg87.cpp: NativeGuiWidgetPool<GuiListboxPoolTraits>::invoke_trim",
+      "state": "The E188B4 allocator-list binding retains the actual startup-owned F8BC10 pool as its context; the specialized callback calls the existing trim body once instead of the generic callback's direct pool.trim().",
+      "evidence": ["bsp.py show 00a9b4a0 installs D5BBA4 virtual0", "bsp.py show 00a9b0b0", "src/game_main.cpp Listbox process startup", "src/game_hosts_mission_frame.cpp allocator_list_domain_00e188b4().trim_all_004b46b0()"],
+      "abi": "Existing source interface NativeGuiListboxPool&; original fastcall ECX=pool. This change does not claim a drop-in binary ABI."
+    },
+    {
+      "native": "00a9acd0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate",
+      "reason": "No live raw Listbox creator calling the canonical pool allocator was established; routing its slab initializer alone would leave it unreachable."
+    },
+    {
+      "native": "00a9b580",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: allocate_gui_widget_pool_slot<GuiListboxPoolTraits>",
+      "reason": "Missing live raw Listbox creation/constructor path consuming this pool slot; current startup only constructs the pool."
+    },
+    {
+      "native": "00a9b4a0",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: construct_process_pool(NativeGuiListboxPool&)",
+      "reason": "Already called by Listbox process startup; inspected only to establish the real pool lifetime and D5BBA4 trim profile."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land MoveTo state construction",
+      "reason": "Missing genuine native MoveTo receiver and complete task/approach ownership contract; the current motion fields are flattened host state."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller state snapshot provenance",
+      "reason": "Missing retained ControllerSnapshotMessage producer and routed snapshot consumer; copying current flags out and back would not establish gameplay wiring."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam frame host.wrap_and_clamp_007904d0",
+      "reason": "No live MovCamFrameHost implementation and actual angle-state adapter was established during this packet."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/soldier_traffic_cc13.cpp: fov_aspect_product_00b6fc30 host service",
+      "reason": "No live soldier-traffic service binding to the actual CameraProjection and consuming render path was established during this packet."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: post_effect_pass_extent_00b4ed30",
+      "reason": "No live pass receiver and extent consumer was established during this packet."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/native_gui_icon_delayed_request_storage.cpp: raw named-value array append",
+      "reason": "The live raw 12-byte-header path already has append_native_gui_named_value_array_storage_00ab4990; the alternate typed GuiNamedValueArray body cannot replace that storage contract."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: InitOnceServices pointer-reader registration",
+      "reason": "Missing live InitOnceServices callback owner and consuming F8BC84 cell binding."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: InitOnceServices selection-reader registration",
+      "reason": "Missing live InitOnceServices callback owner and consuming F8BCFC cell binding."
+    },
+    {
+      "native": "00800e20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: rain_pool_trim_00800e20",
+      "reason": "No live RainPool owner and allocator-list service binding was established during this packet."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed; four existing CTest tests passed",
+    "probe": "Existing tests/wire_g5_c913_listbox_table_probe.cpp passed after replacing its direct pool.trim() with domain.trim_all_004b46b0(); verified real table/slab identities, 32-to-66 growth, failure publication, callback trim and teardown.",
+    "graph": "call_graph.py who 00a9b0b0: reachable, one call site from NativeGuiWidgetPool<GuiListboxPoolTraits>::invoke_trim; path reaches the startup-owned process instance from WinMainCRTStartup.",
+    "readiness_wired_before": 10794,
+    "readiness_wired_after": 10806,
+    "newly_verified_called_bodies": ["00a9b0b0"],
+    "count_note": "Readiness is a source-file text metric. Its aggregate increase is not a claim of twelve newly wired bodies; this packet claims only A9B0B0, independently checked in the executable.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "remaining": "Raw Listbox factory/constructor ownership is needed before A9B580 allocation and A9ACD0 slab initialization can become live."
+}

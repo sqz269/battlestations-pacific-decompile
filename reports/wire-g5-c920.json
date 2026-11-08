@@ -1,0 +1,201 @@
+{
+  "goal": 5,
+  "chain": 920,
+  "slot": "g5-w4",
+  "run": 2046,
+  "branch": "agent/g5-w4",
+  "base_commit": "52b4129e25",
+  "summary": "Use the existing avoidance setter to initialize each live command director's canonical three bytes, and the existing land-avoidance getter when ship avoidance reads that same director. Correct the reconstructed accessor interfaces to preserve raw bytes.",
+  "readiness_wired_before": 10795,
+  "readiness_wired_after": 10797,
+  "compiled_reconstructed_called_before": 6275,
+  "compiled_reconstructed_called_after": 6277,
+  "state_contract": "GameDirector owns one DirectorAvoidanceBytes array. GameCommandsHost::register_units constructs it using the pre-existing WeaponDirectorState binary defaults (00836724/2A/30). The existing 00835640 message arms update the same single selected byte. GameCommandsHost::director_avoidance reads this array; GameUnitsHost and ShipAi AvoidSearchBinding consume that publication. There is no second avoidance owner or duplicate initialization path.",
+  "interface_correction": "00720E50 and 00720E40 operate on uint8_t bytes, not bools or a temporary full DirectorFlags object. The independent full-director semantic snapshot remains unchanged. noinline retains independently inspectable compiled body calls in the normal build.",
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 4 CTests passed (local/c920-baseline-build.log).",
+    "changed_build": "scripts/build.ps1 passed; all 4 CTests passed, zero compiler diagnostics (local/c920-build.log).",
+    "call_graph": "tools/call_graph.py: 54076/54271 functions reachable, 6277/6318 reconstructed addresses called; each selected body has one reachable call site.",
+    "readiness": "tools/wire_readiness.py --standins: both selected rows state=wired, called=true, call_sites=1, callers_live=1.",
+    "evidence": [
+      "bsp.py show 00720e50 --asm: low argument-byte stores to +240h/+241h/+242h at 00720E58/62/68, RET 0Ch.",
+      "bsp.py show 00720e40 --asm: MOV AL,[ECX+242h], RET.",
+      "bsp.py disasm-raw 00836724 --length 20: the three original consecutive constructor byte stores.",
+      "call_graph.py path 00720e50: GameDirector constructor <- deque resize <- GameCommandsHost::register_units <- GameUnitsHost::create_units, reachable from entry.",
+      "call_graph.py path 00720e40: GameCommandsHost::director_avoidance <- GameUnitsHost::director_avoidance <- AvoidSearchBinding::director_land_avoidance_0080e160_242 <- controller/fixed-step/mission frame, reachable from entry."
+    ],
+    "limits": "Build and compiled reachability evidence only; the game was not run. These are field-view C++ interfaces, not native ABI replacements. No float arithmetic changed, and no new tests or goal switches were added."
+  },
+  "rows": [
+    {
+      "native": "00720e50",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp:GameDirector::GameDirector",
+      "real_state": "The director's sole persistent avoidance array, initialized from the original constructor constants already used by this host; subsequent real avoidance messages update this same array.",
+      "original_abi": "thiscall ECX=director, three stack DWORDs whose low bytes are stored, RET 0Ch",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "10078030"
+    },
+    {
+      "native": "00720e40",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::director_avoidance",
+      "real_state": "The current land-avoidance byte of the requested existing director, published to the live ship AI avoidance search after message updates.",
+      "original_abi": "ECX=director, raw byte result in AL, RET 0",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "10082b93"
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost::MovieBridge",
+      "reason": "Missing the native movie widget, live decoder texture owner and node-material texture-slot producer."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::reset_subtitles",
+      "reason": "The semantic subtitle schedule lacks native subtitle/extratitle vectors and owned Text-child lifetimes required by this destructor."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp:GUI text input",
+      "reason": "Missing a verified live byte-edit input consumer; glyph rendering must not use the native signed-byte acceptance test as a layout filter."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score list",
+      "reason": "The candidate-score record list has no established gameplay consumer here; the documented record reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score list",
+      "reason": "Missing gameplay-owned candidate-score records and a non-debug reader of their chosen byte."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:distortion record growth",
+      "reason": "No verified live record-growth producer was established; existing teardown with a zero requested size does not justify a reserve call."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:destroy_owner",
+      "reason": "Already has two reachable compiled call sites in current readiness; another call would duplicate the existing resize behavior."
+    },
+    {
+      "native": "00ab3180",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_text_process.cpp:initialize_icon_type_once_00cd71a0",
+      "reason": "The candidate canonical Icon initialization owner has no production caller in this build; its lease was released without source changes."
+    },
+    {
+      "native": "00cd71a0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_text_process.cpp:initialize_icon_type_once_00cd71a0",
+      "reason": "No production caller or linked body is present for this explicit startup API; the selected scope cannot activate its native GUI application owner."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp:projection publication",
+      "reason": "Missing a matching live horizontal-FOV product consumer; projection publication stores the individual fov/aspect terms rather than this getter's product."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:render-command metadata submission",
+      "reason": "Missing an established production root for the existing main-scene submission caller; unrelated command metadata must not be fabricated."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/resource_lookup.cpp:resolve_existing_resource_00bdf4c0_fragment",
+      "reason": "Already has a reachable compiled call site in current readiness despite its ready text classification."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp:native_lua_get_float4_00b67c40",
+      "reason": "Already has a reachable compiled call site in current readiness; no additional float4 extraction call is needed."
+    },
+    {
+      "native": "00741f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:convoy projection",
+      "reason": "Missing a retained live convoy membership/invincibility owner; the inspected host only constructs a bounded damage projection."
+    },
+    {
+      "native": "00742940",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:convoy projection",
+      "reason": "Missing retained native convoy health ownership, initial-size state and a matching convoy health query consumer."
+    },
+    {
+      "native": "00744b30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg41_cc13.cpp:may_follow_target_00744b30",
+      "reason": "Missing a verified land-fort command validation host with the target party/class contracts needed by this body."
+    },
+    {
+      "native": "0074e1e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg41_land.cpp:plane_set_forward_speed_0074e1e0",
+      "reason": "Missing a verified compatible raw plane owner and PlaneUnitHost at a live speed-write site in this packet."
+    },
+    {
+      "native": "0074e210",
+      "status": "skipped",
+      "host_site": "src/cc13_seg41_land.cpp:plane_control_mode_is_free_flight_0074e210",
+      "reason": "Missing a verified live raw control object with the required +1D4h mode field at a matching consumer."
+    },
+    {
+      "native": "0071c0a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameDirector",
+      "reason": "Missing a live +1CCh flags owner/consumer in this bounded director projection; avoidance storage alone does not establish it."
+    },
+    {
+      "native": "00720de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameDirector",
+      "reason": "Missing live +220h..+223h enable-state ownership and its consumers; only the three avoidance bytes were established."
+    },
+    {
+      "native": "0071d5a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameDirector",
+      "reason": "Missing a verified stance-state consumer for this predicate in the inspected command path."
+    },
+    {
+      "native": "0071c480",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp:arg_is_zero_0071c480",
+      "reason": "Missing an established semantic caller for the argument predicate; an arbitrary zero comparison would not establish its native contract."
+    },
+    {
+      "native": "00ad5720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:foliage state",
+      "reason": "Missing a verified live foliage owner and consumer of its native +0Ch scalar."
+    },
+    {
+      "native": "00ad57d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:refresh_bush_textures_00ad60d0",
+      "reason": "Missing the live native foliage owner whose +9Ch texture this refresh path consumes."
+    },
+    {
+      "native": "00ad57e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:refresh_bush_textures_00ad60d0",
+      "reason": "Missing the live native foliage owner whose +A0h normal texture this refresh path consumes."
+    }
+  ]
+}

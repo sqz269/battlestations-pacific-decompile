@@ -4,6 +4,7 @@
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
+#include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 
 #include <cstdlib>
@@ -15,6 +16,31 @@
 #endif
 
 namespace bsp::game {
+namespace {
+template <class T>
+void construct_process_pool(NativeGuiWidgetPool<T>& pool) {
+    pool.initialize();
+}
+
+void construct_process_pool(NativeGuiListboxPool& pool) {
+    // bsp.py show 00A9B4A0: construct the retained F8BC10 pool on the
+    // E188B4 allocator list, including its real CS and reserve(32).
+    // CD6FF0 calls this entry before registering the CE0A00 exit stub.
+    construct_native_listbox_pool_00a9b4a0(pool);
+}
+
+template <class T>
+void destroy_process_pool(NativeGuiWidgetPool<T>& pool) {
+    pool.destroy();
+}
+
+void destroy_process_pool(NativeGuiListboxPool& pool) {
+    // bsp.py show 00CE0A00 / 00A9AFD0: the exit stub destroys this SAME
+    // pool, releasing slabs/table/CS before unlinking the allocator node.
+    destroy_native_listbox_pool_00a9afd0(pool);
+}
+} // namespace
+
 template <class T>
 GameNativeGuiWidgetPoolProcess<T>::GameNativeGuiWidgetPoolProcess()
     : pool_(game_native_physical_pool_process().allocator_list_domain_00e188b4(), storage_) {}
@@ -32,7 +58,7 @@ int GameNativeGuiWidgetPoolProcess<T>::initialize_once() {
     if (state_ == State::returned) return registration_status_;
     if (state_ == State::threw) throw std::logic_error("GUI widget pool startup previously threw");
     state_ = State::threw;
-    pool_.initialize();
+    construct_process_pool(pool_);
     registration_status_ = std::atexit(&GameNativeGuiWidgetPoolProcess::destroy_at_exit);
     state_ = State::returned;
     return registration_status_;
@@ -49,11 +75,42 @@ NativeGuiWidgetPool<T>& GameNativeGuiWidgetPoolProcess<T>::pool() {
 // The exit stub: MOV ECX, global; JMP destroy.
 template <class T>
 void GameNativeGuiWidgetPoolProcess<T>::destroy_at_exit() noexcept {
-    instance().pool_.destroy();
+    destroy_process_pool(instance().pool_);
 }
 } // namespace bsp::game
 
 namespace bsp {
+__declspec(noinline) void native_gui_grid_pool_table_set_capacity_00ac9320(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC9320 has the same capacity-before-new, DWORD byte-count wrap,
+    // null-tested copy and free-before-adopt schedule as the existing AA6FA0.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_grid_pool_table_grow_00ac9370(
+    NativeGuiPoolSlabTable& table) {
+    // AC9370 inlines that body with modulo32 capacity*2+2.
+    native_gui_grid_pool_table_set_capacity_00ac9320(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_grid_pool_table_push_back_00ac97f0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // AC97F0/AC9C10: read the caller's actual slab after any growth,
+    // null-test its destination, and only then publish the increased count.
+    if (table.count == table.capacity) native_gui_grid_pool_table_grow_00ac9370(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_grid_pool_table_reserve_00ac9870(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC9870 and the inline reserve(32) in AC9B30 use an unsigned test.
+    if (table.capacity < capacity)
+        native_gui_grid_pool_table_set_capacity_00ac9320(table, capacity);
+}
+
 __declspec(noinline) void native_gui_curve_pool_table_set_capacity_00abc1e0(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     // Evidence: bsp.py show 00ABC1E0. Reuse the existing identical AA6FA0

@@ -1,0 +1,95 @@
+{
+  "goal": 5,
+  "chain": 921,
+  "worker": "agent/g5-w3",
+  "base": "a6603b92608644865f6f960787206805f20d6937",
+  "summary": "Replace Text startup's generic Element parent initialization with the existing recovered AA9350 returning initializer on the canonical live descriptor, guard, root and type counter.",
+  "rows": [
+    {
+      "native": "00aa9350",
+      "status": "wired",
+      "host_site": "src/game_native_gui_text_process.cpp: GameNativeGuiTextProcess::initialize_types_once_00cd7210 parent initializer",
+      "state": "ElementTypeReturnHost borrows the retained F8BC80 guard, F8BC88 descriptor, canonical 109DB84 root and 109DB7C counter. AA9350 replaces the prior AA8200 generic parent call on this path; Group, Layer and Icon retain AA8200.",
+      "evidence": "bsp.py show 00aa9350 and --asm: AA9350..AA938F guard/name/root/parent/counter-store/own-ID order matches the replaced initialization. Reuse src/cc13_sweepC.cpp's sole existing body; no body, descriptor, counter or default ID is added.",
+      "call_graph": "One direct entry-reachable call from initialize_types_once_00cd7210 in the default Win32 Release executable."
+    },
+    {
+      "native": "008713e0",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_cache.cpp: get_native_particle_resource_cache_owner_00871bd0",
+      "reason": "The F87668 singleton getter and GameNativeParticleRuntime have no linked production acquisition caller in this build; replacing its inline initialization would not establish entry-reachable cache state."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0 / error_context_erase_00bf26c0",
+      "reason": "Missing production error-context map owner and entry-reachable iterator/erase consumer; no error_context symbol is linked in the default game."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450 / error_context_erase_00bf26c0",
+      "reason": "Missing production error-context map owner and entry-reachable iterator/erase consumer; no error_context symbol is linked in the default game."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "Missing production error-context map owner; changing an unlinked generic rebalance to call its wrapper would not make real map state reachable."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "Missing production error-context map owner; changing an unlinked generic rebalance to call its wrapper would not make real map state reachable."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list planning",
+      "reason": "No gameplay owner or consumer for the native candidate score list; its documented reader is the debug overlay excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list planning",
+      "reason": "No live native candidate-score records to mark or gameplay consumer of their chosen byte; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00b197e0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_base.cpp: construct_native_resource_registry_base_00b197e0",
+      "reason": "No production owner construction site using the D5E550 registry-base profile was found; the constructor is absent from the default executable."
+    },
+    {
+      "native": "00ac3660",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_font_registry_list_construct_00ac3660",
+      "reason": "The live FontRegistryStartup uses its owned font collection; no actual native font-registry list header and consumer for this constructor were found."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime::set_all_paused",
+      "reason": "Already has a reachable reconstructed call using the actual published dialog owner; its ready label is a name-discovery mismatch, so there is no missing wiring to add."
+    },
+    {
+      "native": "00ab3180",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_text_process.cpp: initialize_icon_type_once_00cd71a0",
+      "reason": "The explicit Icon type initializer has no production caller in this build; worker g5-w4 independently confirmed and released this candidate."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release passed; all 4 CTests passed, no compiler diagnostics.",
+    "call_graph_before": {"reconstructed_called": 5675, "reconstructed_linked": 6356},
+    "call_graph_after": {"reconstructed_called": 5676, "reconstructed_linked": 6357},
+    "wire_readiness_before": 10797,
+    "wire_readiness_after": 10798,
+    "float_math_changed": false,
+    "new_tests": false,
+    "game_launched": false,
+    "limits": "Build/test and default-executable reachability proof only; no original register ABI, FH3/SEH or gameplay validation is claimed."
+  },
+  "choice": "Use AA9350's already reconstructed returning twin instead of adding another initializer implementation. Its actual host boundaries preserve the existing canonical ownership and sticky startup failure behavior."
+}

@@ -1,5 +1,6 @@
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
+#include "bsp/cc13_sweepC_trap_host.hpp"
 #include <cstddef>
 #include <cstdlib>
 #include <stdexcept>
@@ -23,6 +24,36 @@ struct CounterHost final : GuiTypeCounterHost {
     TypeIdCounterLifetime& lifetime;
     explicit CounterHost(TypeIdCounterLifetime& owner) noexcept : lifetime(owner) {}
     TypeIdCounterStorage& counter() override { return *lifetime.get_006fac20(); }
+};
+
+// Bind AA9350 to the SAME Element guard, root and counter used by AA8200.
+// No descriptor or counter is staged: the body writes the retained F8BC88
+// storage and reads the root only after its real BEA780 initializer returns.
+struct ElementTypeReturnHost final : cc13_sweepC::SweepCTrapHost {
+    std::uint8_t& guard;
+    LightTypeBootstrap& common;
+    GuiTypeCounterHost& ids;
+
+    ElementTypeReturnHost(std::uint8_t& actual_guard, LightTypeBootstrap& root,
+        GuiTypeCounterHost& counter) noexcept : guard(actual_guard), common(root), ids(counter) {}
+
+    std::uint8_t image_byte(std::uint32_t address) override {
+        if (address != 0x00f8bc80u) throw std::logic_error("Element initializer requires F8BC80 guard");
+        return guard;
+    }
+    void set_image_byte(std::uint32_t address, std::uint8_t value) override {
+        if (address != 0x00f8bc80u) throw std::logic_error("Element initializer requires F8BC80 guard");
+        guard = value;
+    }
+    void type_base_init_00bea780(std::uint32_t descriptor) override {
+        if (descriptor != 0x0109db84u) throw std::logic_error("Element initializer requires canonical root");
+        common.initialize_root_00bea780(common.storage().root_0109db84);
+    }
+    std::uint32_t image_dword(std::uint32_t address) override {
+        if (address != 0x0109db84u) throw std::logic_error("Element initializer requires current root ID");
+        return common.storage().root_0109db84.own_id;
+    }
+    void* type_id_counter_006fac20() override { return &ids.counter(); }
 };
 
 // Canonical adapter for the ALREADY reconstructed AA8200 generic initializer.
@@ -97,7 +128,13 @@ void GameNativeGuiTextProcess::initialize_types_once_00cd7210(
     // own-ID assignment: CD7255 counter store precedes CD7258 publication.
     gui_widgets_cc13::gui_type_initialize<3>(text_00f8be28_, text_guard_00f8bdec_,
         0x00d5c5dc, element_00f8bc88_.ids,
-        [&] { initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host); },
+        [&] {
+            // Use the recovered returning twin for Text's actual Element
+            // initialization. AA9350..AA938F has AA8200's same guard/name/
+            // root/parent/counter-store/own-ID order; other roles keep AA8200.
+            ElementTypeReturnHost element_host(element_guard_00f8bc80_, common, host);
+            cc13_sweepC::gui_element_type_id_init_return_00aa9350(element_host, &element_00f8bc88_);
+        },
         host);
     type_state_ = State::returned;
 }

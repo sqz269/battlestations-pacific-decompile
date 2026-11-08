@@ -452,6 +452,10 @@ void render_state_pair_set_00b34390(std::uint8_t pair[2], std::uint8_t a, std::u
 // Shader reflection owner byte maps (+08h and +3Eh, 36h bytes each): 00B343C0 reads
 // map8[i], 00B3FF80 reads map3E[i], 00B34570 writes both. 00B3B190 constructs the owner
 // (vtable 00D61810, refcount 1, byte +74h 0, +78h..+84h 0, both maps memset FFh).
+// Retain the out-of-line entry used by actual compiled-shader reflection.
+#if defined(_MSC_VER)
+__declspec(noinline)
+#endif
 std::uint8_t reflection_map8_at_00b343c0(const std::uint8_t* owner, std::int32_t i) noexcept;
 std::uint8_t reflection_map3e_at_00b3ff80(const std::uint8_t* owner, std::int32_t i) noexcept;
 void reflection_maps_set_00b34570(std::uint8_t* owner, std::int32_t i, std::uint8_t a, std::uint8_t b) noexcept;
