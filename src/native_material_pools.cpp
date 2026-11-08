@@ -492,6 +492,12 @@ template<class T> NativeGuiWidgetPool<T>::~NativeGuiWidgetPool() {
 template<class T> void NativeGuiWidgetPool<T>::initialize() {
     initialize_pool<T>(allocator_list_, storage_);
 }
+template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize() {
+    // 00AB2850 inlines 00AB2420's reserve(32) at the same pool+28h header,
+    // in unwind state 2. CD7180 starts this retained F8BDA0 process pool.
+    initialize_pool<GuiIconPoolTraits,
+        &reserve_native_gui_icon_pool_table_00ab2420>(allocator_list_, storage_);
+}
 template<class T> void* NativeGuiWidgetPool<T>::allocate() {
     // bsp.py show 00AB2930 / 00AB1340: the Icon allocator initializes the
     // actual newly allocated slab with its current first-free slab index.
