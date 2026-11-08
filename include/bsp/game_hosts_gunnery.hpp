@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/game_projectile_owner.hpp"
 // bsp_game.exe milestone 2t: the gun chain, as process bindings.
 //
 // Addresses: 00864bd0 (the gunnery pass attach onto the unit's tick element
@@ -647,6 +648,9 @@ struct GameProjectileRow {
     // and the hit event's attacker_player_index reads. -1: no stamp traced.
     int team_id_1c{-1};
     std::size_t owner_unit{0};        // one based
+    // Current nullable attacker observer. Shared with queued hits, unlike the
+    // immutable owner_unit source/accounting index above.
+    GameProjectileOwnerRef observed_owner;
     int owner_side{0};
     int bullet_class{-1};
     bsp::ProjectileFlightState flight{};
