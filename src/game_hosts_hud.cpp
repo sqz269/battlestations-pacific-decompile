@@ -73,6 +73,10 @@
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
 #include "bsp/cg_rebuild_b_cc13.hpp"         // 005BA7B0
+#include "bsp/cg_rebuild_c_cc13.hpp"         // 006821C0
+#include "bsp/pool_pool17_cc13.hpp"          // 004BA0D0, 006821C0's +30h slots
+#include "bsp/pool_pool22_cc13.hpp"          // 00525A10, 00525A90's +C0h selection
+#include "bsp/voice_slot_start.hpp"          // 00A7B0A0 for 00525A90's +E8h
 #include "bsp/gameplay_effect_sound.hpp"     // 005B9AF0, 005BA7B0's sample append
 #include "bsp/sound_sample_runtime.hpp"      // [00F8BBE8] for 005BA7B0
 #include "bsp/singleton_lifetime.hpp"        // 005B9D40's 00BF6989 on the 33h samples
@@ -732,6 +736,436 @@ void release_hud_narrative_leaf_samples(HudLeafScreenStorage& screen) {
     std::memset(samples, 0, 0x0C);
 }
 
+// Screen 50h (GUI_Warning, manager +C4h, 7Ch bytes, vtable 00CF7184): the calls
+// 006821C0 makes (bsp.py show 006821c0 --asm; src/cg_rebuild_c_cc13.cpp). The
+// 004F7180 base; the EH constructor iterator over the four sample slots at +30h
+// (ctor 004BA0D0, dtor 004C3810) and the four tracked-sound slots at +40h (ctor
+// 0054D440, dtor 00524180), both `MOV dword [ECX],0; RET` (bsp.py ghidra disasm);
+// then, per name of the .data table 00E08CC4..00E08CD3, a pooled NativeString
+// temporary (0041DD40, 00BF7680, 00419CC0/00BD1510), 00A83FD0 on [00F8BBE8] and
+// the retain/release of the slot (InterlockedIncrement [00CE221C] / Decrement
+// [00CE2220], vtable +0 at zero). The cache is the sound runtime's (the one screen
+// 33h's 005BA7B0 fills from), the pool the HUD's string pool. Every other
+// CgRebuildCHost service throws.
+//
+// 00E08CC4 is read only by 006821C0 (bsp.py ghidra xrefs 00e08cc4: three reads at
+// 0068222F/0068224C/00682260, no writes), so its run-time words are the image's:
+// 00CF714C, 00CF7120, 00CF70EC, 00CF714C (bsp.py ghidra bytes 00e08cc4 --length 16),
+// whose texts are below (bsp.py ghidra bytes 00cf70ec --length 140). The three
+// .fsb/.def pairs are in the installation (sound/environment).
+constexpr const char kWarnSampleStall[] = "environment/environment_warning_stall.fsb";             // 00CF714C
+constexpr const char kWarnSampleOxygen[] = "environment/environment_warning_oxigen.fsb";           // 00CF7120
+constexpr const char kWarnSampleShallow[] = "environment/environment_warning_shallowwater.fsb";    // 00CF70EC
+
+class HudLeafWarningBinding final : public bsp::cg_rebuild_c_cc13::CgRebuildCHost {
+public:
+    HudLeafWarningBinding(HudLeafScreenStorage& screen, GameSoundRuntime& sound,
+        NativeStringStorage& strings)
+        : screen_(screen), sound_(sound), strings_(strings) {
+        name_table_[0] = dword_of(kWarnSampleStall);    // 00E08CC4
+        name_table_[1] = dword_of(kWarnSampleOxygen);   // 00E08CC8
+        name_table_[2] = dword_of(kWarnSampleShallow);  // 00E08CCC
+        name_table_[3] = dword_of(kWarnSampleStall);    // 00E08CD0
+        // 006821C0 loads ECX = [00F8BBE8], the current sample cache 00A83FD0 scans.
+        cache_dword_ = dword_of(&sound_.samples().current_sample_cache_00f8bbe8());
+    }
+
+    std::uint32_t& global_dword(std::uint32_t address) override {
+        if (address >= 0x00E08CC4u && address < 0x00E08CD4u && (address & 3u) == 0)
+            return name_table_[(address - 0x00E08CC4u) / 4];
+        if (address == 0x00F8BBE8u) return cache_dword_;
+        unused("an image global other than 00E08CC4..00E08CD3 and [00F8BBE8]");
+    }
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+    void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t constructor, std::uint32_t destructor) override {
+        // 006821F0: +30h, 004BA0D0/004C3810; 0068220A: +40h, 0054D440/00524180;
+        // PUSH 4 (count), PUSH 4 (size) each. Both constructors are noexcept, so
+        // the iterator's unwind never runs.
+        const bool samples = constructor == 0x004BA0D0u && destructor == 0x004C3810u
+            && first == screen_.data() + 0x30;
+        const bool sounds = constructor == 0x0054D440u && destructor == 0x00524180u
+            && first == screen_.data() + 0x40;
+        if ((!samples && !sounds) || size != 4 || count != 4 || !screen_.contains(first, 0x10))
+            throw std::logic_error("006821C0 iterated an unexpected slot array");
+        for (std::uint32_t i = 0; i != count; ++i) {
+            std::uint8_t* const slot = static_cast<std::uint8_t*>(first) + i * size;
+            if (samples) bsp::pool_pool17_cc13::pointer_slot_construct_null_004ba0d0(slot);
+            else bsp::cc13_fe5::pointer_slot_construct_null_0054d440({slot});
+        }
+    }
+    void native_string_resize_0041dd40(void* header, std::uint32_t length,
+        std::uint32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(header, strings_, length, preserve != 0);
+    }
+    void memcpy_00bf7680(void* dst, const void* src, std::uint32_t bytes) override {
+        std::memcpy(dst, src, bytes);
+    }
+    void* sized_pool_00419cc0() override { return &strings_; }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+        std::uint32_t flag) override {
+        // The inlined NativeString release: length + 1 bytes back with flag 1.
+        if (pool != &strings_ || flag != 1)
+            throw std::logic_error("006821C0 returned a block to an unexpected pool");
+        strings_.release(static_cast<char*>(data), size);
+    }
+    void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out,
+        const void* name) override {
+        SoundSampleRuntime& samples = sound_.samples();
+        SoundAuxiliaryTreeOwner& current = samples.current_sample_cache_00f8bbe8();
+        if (cache != &current)
+            throw std::logic_error("00A83FD0 called on a cache other than [00F8BBE8]");
+        // The temporary is the native {length, data} header NativeString owns.
+        return bsp::acquire_sound_sample_00a83fd0(current, *out,
+            *static_cast<const NativeString*>(name), samples.sample_cache_context());
+    }
+    std::int32_t interlocked_increment_00ce221c(void* counter) override {
+        return _InterlockedIncrement(static_cast<volatile long*>(counter));
+    }
+    std::int32_t interlocked_decrement_00ce2220(void* counter) override {
+        return _InterlockedDecrement(static_cast<volatile long*>(counter));
+    }
+    void virtual_call_0(void* object, std::uint32_t slot_offset) override {
+        // D5B074's vtable +0 (00A82E80): the sample's final release.
+        if (slot_offset != 0) unused("a virtual other than a sample's +0");
+        sound_.samples().zero_references_slot_00(object);
+    }
+
+    // Nothing else is reached from 006821C0.
+    void eh_vector_destruct_00bf7c6e(void*, std::uint32_t, std::uint32_t, std::uint32_t) override {
+        unused("00BF7C6E");
+    }
+    void eh_vector_copy_construct_00bf9a96(void*, const void*, std::uint32_t, std::uint32_t,
+        std::uint32_t, std::uint32_t) override { unused("00BF9A96"); }
+    void free_00bf65ac(void*) override { unused("00BF65AC"); }
+    void free_00bf6989(void*) override { unused("00BF6989"); }
+    void virtual_call_1(void*, std::uint32_t, std::uint32_t) override { unused("a one-argument virtual"); }
+    void sound_record_set_destruct_004c9870(void*) override { unused("004C9870"); }
+    void scene_record_header_destruct_004c6520(void*) override { unused("004C6520"); }
+    void pod_pointer_array_resize_00468050(void*, std::uint32_t) override { unused("00468050"); }
+    void effect_handle_vector_resize_004cb160(void*, std::uint32_t) override { unused("004CB160"); }
+    void native_string_vector_resize_00427110(void*, std::uint32_t) override { unused("00427110"); }
+    void native_dword_vector_resize_0086aa10(void*, std::uint32_t) override { unused("0086AA10"); }
+    void sensor_gui_range_list_resize_00807e60(void*, std::uint32_t) override { unused("00807E60"); }
+    void raw_string_tree_erase_range_004d1a50(void*, void*, void*, void*, void*, void*) override {
+        unused("004D1A50");
+    }
+    void xlive_system_shutdown_00a46ee0(void*) override { unused("00A46EE0"); }
+    void stl_list_tidy_004c1f70(void*) override { unused("004C1F70"); }
+    void xlive_session_terminate_xnet_00a4b020(void*) override { unused("00A4B020"); }
+    void string_range_destroy_004ce520(void*, void*, void*, void*) override { unused("004CE520"); }
+    void session_record_destroy_range_00571af0(void*, void*, void*, void*) override {
+        unused("00571AF0");
+    }
+    void xlive_voice_destroy_00a493a0(void*) override { unused("00A493A0"); }
+    void trivial_body_00a48f00(void*) override { unused("00A48F00"); }
+    void xlive_host_qos_cancel_00a4b410(void*) override { unused("00A4B410"); }
+    void xlive_matchmaking_reset_00a4b460(void*) override { unused("00A4B460"); }
+    void stl_inst_00a45510(void*) override { unused("00A45510"); }
+    void stl_list_clear_strings_00688780(void*) override { unused("00688780"); }
+    void game_participant_pairs_destroy_storage_004c5860(void*) override { unused("004C5860"); }
+    void xlive_stats_block_destruct_00994180(void*) override { unused("00994180"); }
+    void front_end_screen_destruct_004f71a0(void*) override { unused("004F71A0"); }
+    void* gui_manager_get_or_create_004c12b0() override { unused("004C12B0"); }
+    void gui_manager_remove_and_destroy_page_00aa31f0(void*, std::uint32_t) override {
+        unused("00AA31F0");
+    }
+    void observed_owner_base_destroy_0064a610(void*) override { unused("0064A610"); }
+    void ref_counted_destroy_base_00bd30f0(void*) override { unused("00BD30F0"); }
+    void callback_owner_destroy_00695870(void*) override { unused("00695870"); }
+    void tick_subnode_base_cleanup_00875b30(void*) override { unused("00875B30"); }
+    void bot_observer_holder_destruct_full_007b3f70(void*) override { unused("007B3F70"); }
+    void ai_load_high_level_globals_00a335d0(void*) override { unused("00A335D0"); }
+
+private:
+    static std::uint32_t dword_of(const void* p) noexcept {
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p));
+    }
+    [[noreturn]] static void unused(const char* what) {
+        throw std::logic_error(std::string("006821C0 does not reach ") + what);
+    }
+    HudLeafScreenStorage& screen_;
+    GameSoundRuntime& sound_;
+    NativeStringStorage& strings_;
+    std::uint32_t name_table_[4]{};
+    std::uint32_t cache_dword_{0};
+};
+
+// 0068CC70's leaf 50h, like 33h, needs the started sound runtime whose sample
+// cache [00F8BBE8] exists from the sound startup on, before any mission is built.
+void construct_hud_warning_leaf(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    NativeStringStorage* const strings = g_hud_sound_strings;
+    if (sound == nullptr || strings == nullptr || !sound->started())
+        throw std::logic_error("006821C0 needs the started sound runtime that owns [00F8BBE8]");
+    HudLeafWarningBinding b(screen, *sound, *strings);
+    bsp::cg_rebuild_c_cc13::vt_cf7184_construct_006821c0(screen.data(), b);
+}
+
+// 00682030's slot release on the 50h block (00682079..006820DE, bsp.py show
+// 00682030): for each i, a set +40h tracked sound would get vtable +8h(0) and be
+// released, and the +30h sample is released (InterlockedDecrement [00CE2220] on
+// +4h, vtable +0 at zero: 00A82E80, the sample's final release) and cleared. On
+// this block +40h stays null: the warning show routines (warning_screen_show_alert,
+// 00682800) run on a per-show WarningScreenImage, not on this block, so no tracked
+// sound is ever stored here; a set slot throws rather than being dropped. The
+// rest of 00682030 is not run: the page +70h was never filled (the 50h register
+// 00682740 is not a kHudLeafScreenRegisters entry, so its page load stays the
+// generic host path, hud_screens.cpp kPages50), so its 00AA31F0 removal on
+// the native GUI manager has nothing to remove, and the two EH destructor
+// iterators (00524180, 004C3810) do nothing on null slots. As for 33h, the sound
+// runtime is still bound and started when the HUD dies (see
+// release_hud_narrative_leaf_samples).
+void release_hud_warning_leaf_samples(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    if (sound == nullptr || !sound->started())
+        throw std::logic_error("00682030's sample release needs the sound runtime that owns [00F8BBE8]");
+    for (std::uint32_t i = 0; i < 4; ++i) {
+        void* late = nullptr;
+        std::memcpy(&late, screen.data() + 0x40 + i * 4, sizeof(late));
+        if (late != nullptr)
+            throw std::logic_error("screen 50h holds a tracked sound this host never created");
+        void* early = nullptr;
+        std::memcpy(&early, screen.data() + 0x30 + i * 4, sizeof(early));
+        if (early != nullptr) {                                                // 006820C2
+            auto* const references = reinterpret_cast<volatile long*>(
+                static_cast<std::uint8_t*>(early) + 4);
+            if (_InterlockedDecrement(references) == 0)
+                sound->samples().zero_references_slot_00(early);              // 006820D0
+        }
+        std::memset(screen.data() + 0x30 + i * 4, 0, sizeof(void*));           // 006820D8
+    }
+}
+
+// Screen 29h (the unit pick, manager +CCh, F0h bytes, vtable 00CECCF8): the calls
+// 00525A90 makes (bsp.py show 00525a90 --asm; src/cg_rebuild_b_cc13.cpp). The
+// 004F7180 base; operator new(18h) for the +BCh block (00525B0A), owned by this
+// leaf; 00525A10 on the +C0h selection (src/pool_pool22_cc13.cpp), whose 00524DC0
+// erase runs on its just-zeroed vector, an empty range; the EH constructor iterator
+// over the two +DCh sample slots (ctor 004BA0D0, dtor 004C3810); per name of the
+// .data table 00E0865C..00E08663 the pooled NativeString temporary, 00A83FD0 on
+// [00F8BBE8] and the slot retain/release; then 00A7ACF0("InGameGUI") into +E4h and
+// 00A7B0A0("Normal") into +E8h on the sound manager [00F8BBD8]. The cache, the
+// manager's level and configuration tables and the string pool are the sound
+// runtime's and the HUD's, as for 33h and 50h. Every other service throws.
+//
+// 00E0865C has only the constructor's three accesses (bsp.py ghidra xrefs
+// 00e0865c: 00525B56, 00525B60, 00525B66; no writes), so its words are the image's:
+// 00CECC90 and 00CECC74 (bsp.py ghidra bytes 00e0865c --length 8; texts at
+// 00cecc74). Both .fsb files are in the installation (sound/gui).
+//
+// The fields this constructor writes (+3Ch..+44h, +BCh..+E8h) are disjoint from
+// the ones the host keeps in UnitPickScreenState (+4Ch, +50h, +54h, +B0h, +B4h,
+// +B8h, +D8h, +ECh; hud_warning_screen.hpp), so the leaf block duplicates none
+// of them.
+constexpr const char kUnitPickSampleClick[] = "sound/gui/click_01.fsb";        // 00CECC90
+constexpr const char kUnitPickSampleHover[] = "sound/gui/onmouse_01.fsb";      // 00CECC74
+
+// 00525A10's two calls on the 29h block's +C0h selection.
+class HudLeafUnitPickSelectionBinding final : public bsp::pool22_cc13::Pool22Host {
+public:
+    void invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("00525A10's checked iterators found first > last");
+    }
+    void vector_erase_range_00524dc0(void* vector, void* ret, void* first_vector,
+        void* first, void* last_vector, void* last) override {
+        // 00525A37..00525A40 zeroed first/last/end before the call, so this is
+        // erase(begin(), end()) on an empty vector: nothing moves or is destroyed,
+        // and the result is the checked iterator {vector, first}.
+        if (first_vector != vector || last_vector != vector || first != last || first != nullptr)
+            throw std::logic_error("00524DC0 from 00525A10 on a non-empty selection vector");
+        void* const result[2] = {vector, first};
+        std::memcpy(ret, result, sizeof(result));
+    }
+};
+
+class HudLeafUnitPickBinding final : public bsp::cg_rebuild_b_cc13::CgRebuildBHost {
+public:
+    using NativeStringImage = bsp::cg_rebuild_b_cc13::NativeStringImage;
+    using CheckedIterImage = bsp::cg_rebuild_b_cc13::CheckedIterImage;
+
+    HudLeafUnitPickBinding(HudLeafScreenStorage& screen, GameSoundRuntime& sound,
+        NativeStringStorage& strings)
+        : screen_(screen), sound_(sound), strings_(strings) {}
+
+    void* global_ptr(std::uint32_t address) override {
+        // 00525BB1: ECX = [00F8BBE8], the sample cache; 00525CC2/00525D34: ECX =
+        // [00F8BBD8], the sound manager.
+        if (address == 0x00F8BBE8u) return &sound_.samples().current_sample_cache_00f8bbe8();
+        if (address == 0x00F8BBD8u) return &sound_.owner();
+        unused("an image global other than [00F8BBE8] and [00F8BBD8]");
+    }
+    const char* image_cstring_table_entry(std::uint32_t address) override {
+        if (address == 0x00E0865Cu) return kUnitPickSampleClick;
+        if (address == 0x00E08660u) return kUnitPickSampleHover;
+        unused("an image string table entry outside 00E0865C..00E08663");
+    }
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        // 00525B03: PUSH 18h. The block is the leaf's own until the HUD dies,
+        // as 00524BA0 frees it with the screen.
+        if (bytes != 0x18) unused("an operator new other than the 18h +BCh block");
+        return screen_.allocate_owned(bytes);
+    }
+    void container_init_00525a10(void* container) override {
+        if (container != screen_.data() + 0xC0 || !screen_.contains(container, 0x18))
+            throw std::logic_error("00525A10 on a member other than this screen's +C0h");
+        HudLeafUnitPickSelectionBinding selection;
+        bsp::pool22_cc13::unit_pick_selection_construct_00525a10(container, selection);
+    }
+    void eh_vector_constructor_iterator_00bf7cd1(void* first, std::uint32_t size,
+        std::uint32_t count, std::uint32_t ctor, std::uint32_t dtor) override {
+        // 00525B37..00525B51: PUSH 004C3810, PUSH 004BA0D0, PUSH 2, PUSH 4, +DCh.
+        if (ctor != 0x004BA0D0u || dtor != 0x004C3810u || size != 4 || count != 2
+            || first != screen_.data() + 0xDC || !screen_.contains(first, size * count))
+            throw std::logic_error("00525A90 iterated an unexpected slot array");
+        // 004BA0D0 is noexcept, so the iterator's unwind (004C3810) never runs.
+        for (std::uint32_t i = 0; i != count; ++i)
+            bsp::pool_pool17_cc13::pointer_slot_construct_null_004ba0d0(
+                static_cast<std::uint8_t*>(first) + i * size);
+    }
+    void native_string_resize_0041dd40(NativeStringImage* string, std::uint32_t length,
+        std::int32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(string, strings_, length, preserve != 0);
+    }
+    void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t count) override {
+        std::memcpy(destination, source, count);
+    }
+    void* sized_pool_get_00419cc0() override { return &strings_; }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+        std::int32_t flag) override {
+        // The inlined NativeString release: length + 1 bytes back with flag 1.
+        if (pool != &strings_ || flag != 1)
+            throw std::logic_error("00525A90 returned a block to an unexpected pool");
+        strings_.release(static_cast<char*>(data), bytes);
+    }
+    void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out,
+        const NativeStringImage* name) override {
+        SoundSampleRuntime& samples = sound_.samples();
+        SoundAuxiliaryTreeOwner& current = samples.current_sample_cache_00f8bbe8();
+        if (cache != &current)
+            throw std::logic_error("00A83FD0 called on a cache other than [00F8BBE8]");
+        static_assert(sizeof(NativeString) == sizeof(NativeStringImage));
+        return bsp::acquire_sound_sample_00a83fd0(current, *out,
+            *reinterpret_cast<const NativeString*>(name), samples.sample_cache_context());
+    }
+    std::int32_t interlocked_increment_00ce221c(std::int32_t* value) override {
+        return _InterlockedIncrement(reinterpret_cast<volatile long*>(value));
+    }
+    std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) override {
+        return _InterlockedDecrement(reinterpret_cast<volatile long*>(value));
+    }
+    void refcounted_vtable0_release(void* object) override {
+        // D5B074's vtable +0 (00A82E80): the sample's final release.
+        sound_.samples().zero_references_slot_00(object);
+    }
+    std::uint32_t sound_manager_find_class_00a7acf0(void* manager,
+        const NativeStringImage* name) override {
+        SoundSystemOwner& owner = sound_.owner();
+        if (manager != &owner) throw std::logic_error("00A7ACF0 on a manager other than [00F8BBD8]");
+        // EAX, the signed class index (-1 on a miss), stored as is at +E4h.
+        return static_cast<std::uint32_t>(bsp::find_sound_class_00a7acf0(owner.levels,
+            *reinterpret_cast<const NativeString*>(name), sound_.fmod()));
+    }
+    std::uint32_t sound_manager_find_type_00a7b0a0(void* manager,
+        const NativeStringImage* name) override {
+        SoundSystemOwner& owner = sound_.owner();
+        if (manager != &owner) throw std::logic_error("00A7B0A0 on a manager other than [00F8BBD8]");
+        return static_cast<std::uint32_t>(bsp::find_sound_type_00a7b0a0(owner.configuration,
+            *reinterpret_cast<const NativeString*>(name), sound_.fmod()));
+    }
+
+    // Nothing else is reached from 00525A90.
+    void global_store_u32(std::uint32_t, std::uint32_t) override { unused("global_store_u32"); }
+    void free_00bf65ac(void*) override { unused("00BF65AC"); }
+    void free_00bf6989(void*) override { unused("00BF6989"); }
+    void invalid_parameter_00bf6713() override { unused("00BF6713"); }
+    void eh_vector_destructor_iterator_00bf7c6e(void*, std::uint32_t, std::uint32_t,
+        std::uint32_t) override { unused("00BF7C6E"); }
+    void leave_critical_section_00ce2210(void*) override { unused("[00CE2210]"); }
+    void delete_critical_section_00ce2214(void*) override { unused("[00CE2214]"); }
+    void stl_tree_erase_range(std::uint32_t, void*, CheckedIterImage*, CheckedIterImage,
+        CheckedIterImage) override { unused("an STL tree erase"); }
+    void stl_tree_iterator_increment(std::uint32_t, CheckedIterImage*) override {
+        unused("an STL tree iterator");
+    }
+    void object_vtable0_scalar_dtor(void*, std::uint32_t) override { unused("a scalar dtor"); }
+    void front_end_screen_destruct_004f71a0(void*) override { unused("004F71A0"); }
+    void* gui_manager_get_or_create_004c12b0() override { unused("004C12B0"); }
+    void gui_manager_remove_and_destroy_page_00aa31f0(void*, void*) override { unused("00AA31F0"); }
+    void node_list_clear_005234f0(void*) override { unused("005234F0"); }
+    void callback_owner_destroy_00695870(void*) override { unused("00695870"); }
+    void observer_endpoint_destruct_00695760(void*) override { unused("00695760"); }
+    void owned_object_list_clear_005b7840(void*) override { unused("005B7840"); }
+    void list_tidy_005b7570(void*) override { unused("005B7570"); }
+    void list_clear_005b77f0(void*) override { unused("005B77F0"); }
+    void* list_buy_head_node_005b7550(void*) override { unused("005B7550"); }
+    void voice_slot_stop_007026f0(void*) override { unused("007026F0"); }
+    void effect_sound_samples_resize_005b8fa0(void*, std::uint32_t) override { unused("005B8FA0"); }
+    void effect_sound_samples_append_005b9af0(void*, void**) override { unused("005B9AF0"); }
+    void debug_text_list_destroy_rows_00543e00(void*) override { unused("00543E00"); }
+    void member_teardown_00544a70(void*) override { unused("00544A70"); }
+    void debug_text_list_destruct_00590250(void*) override { unused("00590250"); }
+    void cheat_menu_destroy_members_0051f910(void*) override { unused("0051F910"); }
+    void list_tidy_005822a0(void*) override { unused("005822A0"); }
+    void text_listener_base_destroy_00a97140(void*) override { unused("00A97140"); }
+    void main_menu_release_mission_preview_005830a0(void*) override { unused("005830A0"); }
+    void native_string_range_destroy_00432050(void*, void*, void*, void*) override { unused("00432050"); }
+    void native_string_vector_resize_00427110(void*, std::uint32_t) override { unused("00427110"); }
+    void warning_manager_clear_waiting_queue_0096bf70(void*) override { unused("0096BF70"); }
+    void member_teardown_0097a190(void*) override { unused("0097A190"); }
+
+private:
+    [[noreturn]] static void unused(const char* what) {
+        throw std::logic_error(std::string("00525A90 does not reach ") + what);
+    }
+    HudLeafScreenStorage& screen_;
+    GameSoundRuntime& sound_;
+    NativeStringStorage& strings_;
+};
+
+// 0068CC70's leaf 29h, like 33h and 50h, needs the started sound runtime: the
+// sample cache [00F8BBE8] and the manager [00F8BBD8] exist from the sound startup
+// on, before any mission is built.
+void construct_hud_unit_pick_leaf(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    NativeStringStorage* const strings = g_hud_sound_strings;
+    if (sound == nullptr || strings == nullptr || !sound->started())
+        throw std::logic_error("00525A90 needs the started sound runtime that owns [00F8BBE8]");
+    HudLeafUnitPickBinding b(screen, *sound, *strings);
+    bsp::cg_rebuild_b_cc13::vt_ceccf8_construct_00525a90(screen.data(), b);
+}
+
+// 00524BA0's sample release on the 29h block (00524C1D..00524C57, bsp.py show
+// 00524ba0): each set +DCh/+E0h sample is released (InterlockedDecrement
+// [00CE2220] on +4h, vtable +0 at zero: 00A82E80) and both are cleared. The rest
+// of 00524BA0 has nothing to undo on this block: the +3Ch node list and the
+// +C8h..+D0h vector stay empty (the host's unit-pick logic keeps its own state),
+// the +BCh block's NativeString at +10h stays empty and the block itself is the
+// leaf's owned allocation, freed with it; its two inline subobject bases (+8h,
+// +18h) hold only the constructor's zeros. As for 33h, the sound runtime is still
+// bound and started when the HUD dies (see release_hud_narrative_leaf_samples).
+void release_hud_unit_pick_leaf_samples(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    if (sound == nullptr || !sound->started())
+        throw std::logic_error("00524BA0's sample release needs the sound runtime that owns [00F8BBE8]");
+    for (std::uint32_t i = 0; i < 2; ++i) {
+        void* sample = nullptr;
+        std::memcpy(&sample, screen.data() + 0xDC + i * 4, sizeof(sample));
+        if (sample != nullptr) {                                               // 00524C2A
+            auto* const references = reinterpret_cast<volatile long*>(
+                static_cast<std::uint8_t*>(sample) + 4);
+            if (_InterlockedDecrement(references) == 0)
+                sound->samples().zero_references_slot_00(sample);
+        }
+        std::memset(screen.data() + 0xDC + i * 4, 0, sizeof(void*));           // 00524C45
+    }
+}
+
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
     for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
         if (shape.construct == constructor) return shape;
@@ -739,14 +1173,14 @@ const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t construc
 }
 
 // The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
-constexpr std::array<std::uint32_t, 31> kHudLeafScreenConstructors{{
+constexpr std::array<std::uint32_t, 33> kHudLeafScreenConstructors{{
     0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005AAEF0u, 0x005C0810u,
     0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
     0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CC120u,
     0x005CB0A0u, 0x005FFCB0u,
     0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
     0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
-    0x005F9440u, 0x0067BE30u, 0x005BA7B0u,
+    0x005F9440u, 0x0067BE30u, 0x005BA7B0u, 0x006821C0u, 0x00525A90u,
 }};
 bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
     return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
@@ -789,6 +1223,8 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     case 0x005FFCB0u: { HudLeafPauseBinding b(screen); bsp::cc13_fe1::hud_pause_screen_construct_005ffcb0(p, b); return; }
     case 0x005AAEF0u: { HudLeafSweepB2Binding b(screen); bsp::cc13_sweepB2_ingame_interface_screen_construct_005aaef0(p, b); return; }
     case 0x005BA7B0u: construct_hud_narrative_leaf(screen); return;
+    case 0x006821C0u: construct_hud_warning_leaf(screen); return;
+    case 0x00525A90u: construct_hud_unit_pick_leaf(screen); return;
     default: break;
     }
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");
@@ -2027,15 +2463,27 @@ public:
 struct GameHudHost::Impl {
     Impl(GameHostLog& log_in, GameMenuHost& menu_in) : log(log_in), menu(menu_in) {}
     // Before leaf_screens frees the blocks: screen 33h's retained samples go back
-    // as 005B9D40 returns them (release_hud_narrative_leaf_samples).
+    // as 005B9D40 returns them (release_hud_narrative_leaf_samples), screen 50h's
+    // four as 00682030 releases its +30h slots (release_hud_warning_leaf_samples),
+    // and screen 29h's two as 00524BA0 does (release_hud_unit_pick_leaf_samples).
     ~Impl() {
         for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
-            if (!leaf_screens[i] || kInGameHudScreens[i].constructor != 0x005BA7B0u) continue;
+            if (!leaf_screens[i]) continue;
+            const std::uint32_t constructor = kInGameHudScreens[i].constructor;
             try {
-                release_hud_narrative_leaf_samples(*leaf_screens[i]);
-                log.implemented("HudNarrative::release_samples", "005b9e11");
+                if (constructor == 0x005BA7B0u) {
+                    release_hud_narrative_leaf_samples(*leaf_screens[i]);
+                    log.implemented("HudNarrative::release_samples", "005b9e11");
+                } else if (constructor == 0x006821C0u) {
+                    release_hud_warning_leaf_samples(*leaf_screens[i]);
+                    log.implemented("HudWarning::release_samples", "006820c2");
+                } else if (constructor == 0x00525A90u) {
+                    release_hud_unit_pick_leaf_samples(*leaf_screens[i]);
+                    log.implemented("HudUnitPick::release_samples", "00524c2a");
+                }
             } catch (const std::exception& error) {
-                log.notef("HUD screen 33h samples not released: %s", error.what());
+                log.notef("HUD screen %02X samples not released: %s",
+                    static_cast<unsigned>(kInGameHudScreens[i].registry_slot), error.what());
             }
         }
     }
@@ -6106,10 +6554,12 @@ public:
             key != nullptr ? std::string(key) : std::string());
     }
     // 00682800. [00E1988C], the in-game GUI sound class, has no owner in this
-    // host, and the samples at +30h come from screen 50h's constructor 006821C0
-    // (00A83FD0 on the sample cache [00F8BBE8]), which this host does not build:
-    // the slots are null, so no tracked sound is made (the host's alerts have
-    // never had sound). A sample would need the sound owner this host lacks.
+    // host. The samples at +30h are loaded by screen 50h's constructor 006821C0
+    // (00A83FD0 on the sample cache [00F8BBE8]), which now runs on the 50h leaf
+    // block (construct_hud_warning_leaf) and keeps them there for the HUD's life.
+    // This per-show image still carries null sample slots: without the class and
+    // a home for the +40h tracked sounds across shows (the image is rebuilt per
+    // call), no tracked sound is made (the host's alerts have never had sound).
     void* ingame_gui_sound_class_00e1988c() override {
         owner_.record("HudWarningScreen::gui_sound_class", 0x00e1988cu);
         return nullptr;

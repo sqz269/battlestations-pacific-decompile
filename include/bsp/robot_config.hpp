@@ -345,6 +345,11 @@ struct RobotConfigAliases {
 // Existing owner/runtime use stock Lua5.1.1 and C++ error transport, not native SEH.
 bool load_robot_config_00901610(RobotConfigRegistry&, RobotConfigAliases,
     LuaStateOwnerEnvironment, LuaScriptRuntime&, RobotConfigContext&);
+// 009DBFE0, cdecl, no arguments, EAX = descriptor: the E4h NavigatorBot
+// descriptor (base vtable, 00438E40 name, derived vtable 00D217DC), published
+// into [00F8A688] before 00901610 registers it. New C++ interface.
+RobotDescriptor* create_navigator_robot_config_009dbfe0(RobotDescriptorStorage&,
+    RobotDescriptor*& navigator_f8a688);
 //009013D0 ECX descriptor, EDX Robots LuaObject, RET. Reloads each virtual slot.
 void register_robot_config_009013d0(RobotConfigRegistry&, RobotDescriptor&,
     GuiLua51Host&, GuiLuaRef robots, RobotConfigContext&);
