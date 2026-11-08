@@ -270,7 +270,7 @@ void cg_adjustor_thunk_008e6220(Seg58Host& host, void* obj) {
 }
 
 // [0x008e6230] BSP_PowerupItem_ReleaseModifiers
-void powerup_item_release_modifiers_008e6230(Seg58Host& host, void* item) {
+void powerup_item_release_modifiers_008e6230(PowerupModifierReleaseHost& host, void* item) {
   if (host.global_u32(0x00f88c30) == 0u) {
     return;
   }

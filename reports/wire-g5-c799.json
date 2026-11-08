@@ -1,0 +1,239 @@
+{
+  "run": 1719,
+  "chain": 799,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "baseline_head": "7985bd8fe8413f05da370248461941f9ccba6c75",
+  "summary": "Replace the live bound-item removal path's duplicate modifier-release loop with the existing 008E6230 body through a narrow provider and a list-link view containing actual retained modifier pointers.",
+  "metrics": {
+    "built_reconstructed_addresses_called_before": 5486,
+    "built_reconstructed_addresses_called_after": 5487,
+    "readiness_text_wired_before": 10639,
+    "readiness_text_wired_after": 10639,
+    "note": "008E6230 was already text-wired through host naming, but its existing reconstructed body had no linked call before this change. It now has called=true, call_sites=1, callers_live=1."
+  },
+  "verification": {
+    "baseline_build": "./scripts/build.ps1 passed all four CTests",
+    "final_build": "./scripts/build.ps1 passed all four CTests after the production changes",
+    "focused_fixture": "tests/wire_g5_c799_modifier_release_probe.cmd passed: two passive record expirations while their real list nodes are erased, unrelated record preservation, non-passive owner detachment without list/count changes, absent-manager early return with null class, and empty list",
+    "call_graph": "python tools/call_graph.py: 5487/6103 reconstructed addresses called; 42546/42700 functions entry-reachable",
+    "direct_call": "powerup_item_release_modifiers_008e6230 at built 104BA100 receives one direct call at 101CBBF5 from remove_items_bound_to_008e8a30 in game_hosts_powerups.obj",
+    "entry_path": "WinMain -> host ownership / script-orders vtable -> role_owner_set_role_available -> GameUnitsHost::set_role_availability_00927d20 -> powerup_manager_observed_event_008ed620 -> remove_items_bound_to_008e8a30 -> powerup_item_release_modifiers_008e6230",
+    "readiness": "python tools/wire_readiness.py --standins completed; 008E6230 called=true, call_sites=1, callers_live=1",
+    "evidence": "bsp.py show 008E6230 --asm: manager gate 008E6230..623A, next-node load 008E6275 before passive expiry call 008E6280, non-passive owner clear 008E6287; existing raw body and record prefix remain unchanged",
+    "float_math": "No float arithmetic changed; pc24 lint is not required for this pointer/lifetime change.",
+    "boundary": "Build, synthetic lifetime fixture and static entry-call-graph evidence; the game was not run and native ABI or gameplay parity is not claimed."
+  },
+  "rows": [
+    {
+      "native": "008e6230",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: remove_items_bound_to_008e8a30 -> release_item_modifiers_008e6230 / PowerupModifierReleaseBinding::release",
+      "details": "The existing single body now operates on the actual class and retained modifier records. Temporary nodes own only traversal links; passive expiry mutates the real item/category lists and non-passive release clears the real modifier owner. The old host loop was deleted."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 consumed-active tail",
+      "reason": "Missing scoring record+70h award-map and 0090F5A0/0090EDE0 providers that native use executes before cooldown; the existing tail remains a throw."
+    },
+    {
+      "native": "008eada0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "Full existing raw use body still lacks live scoring-award and air-support spawn providers; this change leaves its host activation implementation intact."
+    },
+    {
+      "native": "0090f5a0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: scoring_grant_ga_ae_once_0090f5a0",
+      "reason": "Missing the retained per-slot award map and grant/ticker/registry/profile-tracker services needed to grant GA_AE before cooldown."
+    },
+    {
+      "native": "008e87c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: expire_modifier_008e8c30 active-removal tail",
+      "reason": "Missing completed active-use lifecycle and native inventory-node ownership adapter; binding removal is the distinct 008E8A30 behavior and cannot be replaced wholesale by this body."
+    },
+    {
+      "native": "008e8a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: remove_items_bound_to_008e8a30",
+      "reason": "The host already implements binding removal; wiring its existing raw body still needs a native inventory-list ownership adapter beyond the modifier-pointer view supplied here."
+    },
+    {
+      "native": "008e8c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: expire_modifier_008e8c30",
+      "reason": "The adapter uses the existing real-state host expiry helper; wiring the separate raw expiry body still needs category-list node ownership and removal providers."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: C8h plane rotation messages",
+      "reason": "No single-player C8h message producer; the prior c753 investigation identifies this DeadMeatRot producer as multiplayer-only."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred Lua job arguments",
+      "reason": "Missing frame-job-thread enqueue producer and real source LuaVariantRecord argument vector; the mission interpreter uses the main thread."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 air-support arm",
+      "reason": "Missing concrete flight-spawn manager and resolved air-support vehicle-class provider; activation still throws before flight spawning."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled-unit audio",
+      "reason": "Missing ship+BBCh sound owner, +428h device list and +6B4h flag needed by the controlled-audio broadcast."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane neighbour alternate frame",
+      "reason": "Missing own unit+B04h velocity-correction producer admitting the alternate-frame branch; forcing a normalization would introduce work on a different path."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: ocean/atmosphere update",
+      "reason": "Missing atmosphere cloud-manager and reference-node dirty/world-axis producers required by this ocean orientation operation."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing source integration: the existing cache refresher already calls this helper; the optimized build has no standalone symbol, so no new wiring was added."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing source integration: the existing cache refresher already calls this helper; the optimized build has no standalone symbol, so no new wiring was added."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing integration: this cache refresher was already entry-reachable and called in the baseline build."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCamFrameHost::wrap_and_clamp_007904d0",
+      "reason": "Missing a concrete live MovCamFrameHost callback over this camera's real angle fields."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live default-descriptor consumer; the populated descriptor builder is a different constructor and does not justify an extra default construction."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear",
+      "reason": "Missing presence-zero clear-message producer and per-slot retained path owners; another worker also inspected this path during the run."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon_relation_style_00803c20",
+      "reason": "No validated live relation-style table consumer was established for its same/enemy/neutral/unknown table inputs."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group recon ratio",
+      "reason": "Missing member recon-record-value getter 00779D00 and a live ratio consumer; team membership is not a substitute for recon state."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save Lua owner/current mission comparison; checkpoint_differs still returns a substitution rather than authorizing a real clear."
+    },
+    {
+      "native": "00749210",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_structure_class_fields_00749210",
+      "reason": "Missing live derived structure-descriptor construction/loading provider with effect-handle ownership for this reader."
+    },
+    {
+      "native": "0074d4a0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_wreckable_class_fields_0074d4a0",
+      "reason": "Missing live derived wreckable-descriptor construction/loading provider with effect and wreck-class lookup ownership."
+    },
+    {
+      "native": "007d1f70",
+      "status": "skipped",
+      "host_site": "src/plane_class_fields.cpp: read_plane_class_fields_007d1f70",
+      "reason": "Missing a live descriptor-load provider for the full plane-class reader and its effect/model dependencies."
+    },
+    {
+      "native": "0051eaa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding",
+      "reason": "Missing input-device query/zoom-axis providers and raise-step integration; the HUD currently documents zero input substitutions, and g5-w11 owns its view-dispatch work."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing a constructed live Curve widget with authored point/width arrays and its geometry/render consumer."
+    },
+    {
+      "native": "004eb9b0",
+      "status": "skipped",
+      "host_site": "src/ocean_spectrum.cpp: ocean_scene_waves_from_header",
+      "reason": "No missing integration: the header's real g_Ocean bag already calls this reader and feeds the live spectrum; the body was linked before this change."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a live native caller/provider for the mover-frustum, soldier-effect or directional-shadow paths that use this getter."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Missing a concrete entry-reachable ShadowFitHost and native directional-shadow owner; the existing function is not linked in this game build."
+    },
+    {
+      "native": "0042e180",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: mover_build_frustum_planes_0042e180",
+      "reason": "Missing a concrete live MoverFrustumHost over the native mover's projection and frustum storage."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "No validated unleased host consumer was established for the exact leak+28h, settings+404h and capacity+0Ch inputs."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: escape_scene_text_008ee5f0",
+      "reason": "Missing a live multiline scene-text writer; the existing native caller is the write path rather than scene loading."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "No live spawn-class pair-value provider/consumer was established for the mode-specific class-pair rows."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "No live support-site stock and class-eligibility consumer was established during this bounded selection."
+    }
+  ]
+}

@@ -81,8 +81,18 @@ struct PowerupApplicabilityHost {
   virtual bool target_applies(const void* record, void* unit) = 0;
 };
 
+// 008E6230 needs only the published manager and the passive-expiry callback.
+// Its list view can retain real modifier pointers without binding Lua, scoring
+// or session-message providers from the rest of the segment.
+struct PowerupModifierReleaseHost {
+  virtual ~PowerupModifierReleaseHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void invalid_parameter_noinfo_00bf6713() = 0;
+  virtual void power_up_manager_expire_modifier_008e8c30(void* manager, void* modifier) = 0;
+};
+
 struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost, PowerupApplicabilityHost,
-                   PowerupModifierStorageHost {
+                   PowerupModifierStorageHost, PowerupModifierReleaseHost {
   virtual ~Seg58Host() = default;
   bool target_applies(const void* record, void* unit) override;
 
@@ -243,7 +253,7 @@ void tmpl_array12_resize_008e5170(Seg58Host& host, void* array, std::int32_t new
 void tmpl_array12_push_back_008e5670(Seg58Host& host, void* array, const void* elem);
 void tmpl_array12_destroy_008e5f60(Seg58Host& host, void* array);
 void cg_adjustor_thunk_008e6220(Seg58Host& host, void* obj);
-void powerup_item_release_modifiers_008e6230(Seg58Host& host, void* item);
+void powerup_item_release_modifiers_008e6230(PowerupModifierReleaseHost& host, void* item);
 bool power_up_applies_to_unit_008e62a0(PowerupApplicabilityHost& host, void* entry, void* unit);
 void native_string_release_storage_008e6400(Seg58Host& host, void* modifier);
 void native_string_insert_at_008e64a0(

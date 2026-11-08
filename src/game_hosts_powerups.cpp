@@ -946,19 +946,75 @@ void grant_008ed4b0(cp::PowerupRuntime& runtime, std::size_t building,
     if (cls->group_08 == 3) use_item_008eada0(runtime, item, slot, &view, nullptr);
 }
 
-// 008E6230 __thiscall(ECX = item): each listed record expires (passive) or is
+// Goal 5 chain 799: bsp.py show 008E6230 --asm. The body reads only
+// item+4h (the actual class), item+14h (the modifier-list sentinel),
+// node+0h/+8h, and the published manager. The view owns list links only;
+// every value is a pointer to the retained live modifier, whose native
+// prefix is asserted in game_hosts_powerups.hpp. 008E6275 advances before
+// 008E6280 expires the record and erases its real item-list node, so keep
+// the view's links alive through the call. No record or effect is copied.
+struct ModifierReleaseNode {
+    ModifierReleaseNode* next{};
+    ModifierReleaseNode* previous{};
+    PowerupModifier* value{};
+};
+struct ModifierReleaseItemView {
+    std::uint32_t unused_00{};
+    const PowerupClassConfig* cls{};
+    std::uint8_t unused_08[0x0c]{};
+    ModifierReleaseNode* head{};
+};
+static_assert(offsetof(ModifierReleaseNode, value) == 8);
+static_assert(offsetof(ModifierReleaseItemView, cls) == 4);
+static_assert(offsetof(ModifierReleaseItemView, head) == 0x14);
+
+class PowerupModifierReleaseBinding final : public powerup_seg58_argon::PowerupModifierReleaseHost {
+public:
+    PowerupModifierReleaseBinding(cp::PowerupRuntime& runtime, cp::PowerupItem& item)
+        : runtime_(runtime), manager_(reinterpret_cast<std::uint32_t>(runtime.manager)) {
+        // Preserve 008E6237's early return without inspecting the list or class.
+        if (runtime.manager == nullptr) return;
+        nodes_.resize(item.modifiers.size());
+        std::size_t index = 0;
+        for (PowerupModifier* record : item.modifiers) {
+            ModifierReleaseNode& node = nodes_[index];
+            node.next = index + 1 == nodes_.size() ? &head_ : &nodes_[index + 1];
+            node.previous = index == 0 ? &head_ : &nodes_[index - 1];
+            node.value = record;
+            ++index;
+        }
+        head_.next = nodes_.empty() ? &head_ : &nodes_.front();
+        head_.previous = nodes_.empty() ? &head_ : &nodes_.back();
+        view_.cls = item.cls;
+        view_.head = &head_;
+    }
+    void release() {
+        powerup_seg58_argon::powerup_item_release_modifiers_008e6230(*this, &view_);
+    }
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address != 0x00f88c30u) invalid_parameter_noinfo_00bf6713();
+        return manager_;
+    }
+    void invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("008E6230 invalid modifier-release view");
+    }
+    void power_up_manager_expire_modifier_008e8c30(void* manager, void* record) override {
+        if (manager != runtime_.manager) invalid_parameter_noinfo_00bf6713();
+        expire_modifier_008e8c30(runtime_, static_cast<PowerupModifier*>(record));
+    }
+private:
+    cp::PowerupRuntime& runtime_;
+    std::uint32_t manager_;
+    ModifierReleaseNode head_;
+    std::vector<ModifierReleaseNode> nodes_;
+    ModifierReleaseItemView view_;
+};
+
+// 008E6230 __fastcall(ECX = item): each listed record expires (passive) or is
 // released (+0 cleared), while the manager exists.
 void release_item_modifiers_008e6230(cp::PowerupRuntime& runtime, cp::PowerupItem& item) {
-    if (runtime.manager == nullptr) return;          // 008E6230
-    for (auto it = item.modifiers.begin(); it != item.modifiers.end();) {
-        PowerupModifier* const record = *it;
-        ++it;                                        // 008E6275, next before the call
-        if (item.cls->group_08 == 3) {
-            expire_modifier_008e8c30(runtime, record);
-        } else {
-            record->item = nullptr;                  // 008E6287
-        }
-    }
+    PowerupModifierReleaseBinding binding(runtime, item);
+    binding.release();
 }
 
 // 008E8A30 __thiscall(ECX = manager, binding), RET 4: the first item (slots 0..7
