@@ -14,9 +14,10 @@
 // name the image routine, global or virtual slot they stand for, invoked at the binary's point
 // with its arguments. The STL containers inside the records (case-insensitive string->int maps,
 // int->int and int->float maps, a ushort vector) are BOUND, not reconstructed: their member
-// instantiations are host methods named by address. A new C++ interface, not a drop-in binary
-// replacement; nothing here is wired into bsp_game. Names are hypotheses, not recovered
-// symbols. Marker: cc13_seg59a.
+// instantiations are host methods named by address. The award path also admits a narrow
+// live-field/map view; GameMissionResultHost binds nonlocal single-player GA_AE grants.
+// These are new C++ interfaces, not drop-in binary replacements. Names are hypotheses,
+// not recovered symbols. Marker: cc13_seg59a.
 
 #ifndef BSP_CC13_SEG59A_HPP
 #define BSP_CC13_SEG59A_HPP
@@ -59,8 +60,44 @@ struct ScoringFunctionNameView {
     NativeStr& field_147c;
 };
 
-struct Seg59aHost : ScoringFunctionNameHost {
+// Borrow only fields the award path reads. Native hosts return pointers into
+// the actual game image; source hosts borrow their live mission/session cells.
+struct ScoringAwardGameView {
+    const std::int32_t* mode_1fe4;
+    const std::int32_t* local_slot_18ec;
+    const std::int32_t* state_5d4;
+};
+
+struct ScoringAwardHost : ScoringFunctionNameHost {
+    virtual ScoringAwardGameView award_game_view() = 0;
+    virtual void* slot_award_map(void* scoring, std::uint32_t slot) = 0;
+    virtual void* award_map_head(void* map) = 0;
+    virtual void* game_00e188a8() = 0;
+    virtual void* hud_owner_00e198c4() = 0;
+    virtual void* award_registry_00e19900() = 0;
+    virtual void* online_manager_00f8abe8() = 0;
+    virtual const char* empty_text_00f899a0() = 0;
+    virtual void native_string_construct_0041e870(NativeStr*, const char*) = 0;
+    virtual void native_string_copy_construct_00426060(NativeStr*, const NativeStr*) = 0;
+    virtual bool native_string_has_prefix_at_00553c80(const NativeStr*, const char*, std::uint32_t) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    virtual void pool_return_block_00bd1510(void*, void*, std::uint32_t, std::int32_t) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual CheckedIter string_int_map_find_004c8b80(void*, const NativeStr*) = 0;
+    virtual std::int32_t* string_int_map_index_005070c0(void*, const NativeStr*) = 0;
+    virtual void session_message21_construct_00764340(void*) = 0;
+    virtual void session_send_to_remote_player_00772af0(void*, void*, void*) = 0;
+    virtual void hud_root_queue_award_ticker_00648ab0(void*, NativeStr) = 0;
+    virtual std::int32_t award_registry_id_for_name_006b8da0(void*, const NativeStr*) = 0;
+    virtual void online_awards_grant_00a410a0(void*, std::int32_t) = 0;
+    virtual void award_tracker_record_at_least_007fbe20(void*, const NativeStr*, std::int32_t) = 0;
+};
+
+struct Seg59aHost : ScoringAwardHost {
     virtual ~Seg59aHost() = default;
+    ScoringAwardGameView award_game_view() override;
+    void* slot_award_map(void* scoring, std::uint32_t slot) override;
+    void* award_map_head(void* map) override;
 
     // --- globals ---
     virtual void* game_00e188a8() = 0;                  // *(00E188A8)
@@ -128,13 +165,13 @@ struct Seg59aHost : ScoringFunctionNameHost {
 };
 
 // --- badge filter and award grant ---
-bool score_table_is_badge_earned_0090c000(Seg59aHost& host, void* scoring, NativeStr key);
-void scoring_grant_award_0090ede0(Seg59aHost& host, void* scoring, std::int32_t slot, const NativeStr* token,
+bool score_table_is_badge_earned_0090c000(ScoringAwardHost& host, void* scoring, NativeStr key);
+void scoring_grant_award_0090ede0(ScoringAwardHost& host, void* scoring, std::int32_t slot, const NativeStr* token,
                                   std::int32_t value, std::uint8_t accumulate);
 std::int32_t award_registry_score_for_name_00914270(Seg59aHost& host, void* scoring, NativeStr key);
 
 // --- award triggers ---
-void scoring_grant_ga_ae_once_0090f5a0(Seg59aHost& host, void* scoring, std::int32_t slot);
+void scoring_grant_ga_ae_once_0090f5a0(ScoringAwardHost& host, void* scoring, std::int32_t slot);
 void scoring_plane_achievement_0090f6c0(Seg59aHost& host, void* scoring, void* plane, std::int32_t kind);
 void scoring_capture_awards_0090f860(Seg59aHost& host, void* scoring, std::uint32_t slot, std::int32_t building_kind,
                                      std::int32_t building_type);

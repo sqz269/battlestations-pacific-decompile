@@ -1868,6 +1868,10 @@ class PowerupManagerBinding final : public bsp::cc13_powerup::PowerupManagerHost
 
 public:
     explicit PowerupManagerBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    void award_active_powerup_use(std::int32_t slot) override {
+        host_.result->award_active_powerup_use(slot, session_word_1fe4(),
+            local_player_slot_18ec(), static_cast<std::int32_t>(host_.entry_state.game_state));
+    }
     float clock_00f876a4() override { return host_.world_clock; }
     std::int32_t local_player_slot_18ec() override { return 0; }  // single player
     // A mission-tree launch has no session (kAiCoordinatorCreatedAtLoad).

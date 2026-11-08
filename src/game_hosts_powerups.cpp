@@ -8,6 +8,7 @@
 #include "bsp/game_hosts_powerups.hpp"
 
 #include "bsp/band_004b_cc13.hpp"
+#include "bsp/band_0085_cc13.hpp"
 #include "bsp/cc13_powerup.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -903,7 +904,34 @@ void use_item_008eada0(cp::PowerupRuntime& runtime, cp::PowerupItem& item,
     }
     // 008EAFED: only an active class goes on to the cooldown and use count.
     if (consumed) {
-        throw std::logic_error("008EAFF8 active use tail not modelled");
+        // 008EAFF8..008EB062: mode 1 first broadcasts message 67, then modes
+        // 0/1 grant GA_AE. The supported continuation here is the actual
+        // nonlocal SP AI slot; the owner rejects local/online awards before
+        // claiming that provider, preserving the existing unbound boundary.
+        if (host.session_word_1fe4() != 0)
+            throw std::logic_error("008EAFF8 networked active-use tail not modelled");
+        host.award_active_powerup_use(slot);
+
+        // 008EB064..008EB0B8: construct a temporary 18h cooldown record, then
+        // copy it into this class's real +14Ch slot-map value. The class+7Ch
+        // duration, class+80h cooldown and current mission clock are the
+        // original inputs (bsp.py show 008E4B00 --asm, 008E4B17..008E4B2F).
+        bsp::cc13_band0085::PowerupSlotRecord cooldown;
+        bsp::cc13_band0085::powerup_slot_start_cooldown_008e4b00(cooldown,
+            {cls.group_08, cls.duration_7c, cls.cooldown_80}, host.clock_00f876a4());
+        PowerUpSlot& stored = cp::slot_record_00617030(runtime, slot, &cls);
+        stored.notified = cooldown.pending_0;
+        stored.subject = nullptr; // body cleared subject_4 to zero
+        stored.source = const_cast<PowerupClassConfig*>(&cls);
+        stored.absolute_start = cooldown.ready_time_0c;
+        stored.absolute_expiry = cooldown.end_time_10;
+        stored.relative_deadline = cooldown.deferred_14;
+        stored.source_offset = cls.cooldown_80; // host cache, outside native18h
+
+        // 008EB0BC..008EB0E4: a positive limit decreases once; group 2 keeps
+        // its item until the last live modifier expires even at zero uses.
+        if (item.use_limit > 0) --item.use_limit;
+        refresh_hud_if_shown_008e4660(runtime); // 008EB0E6..008EB103
     }
 }
 

@@ -14,6 +14,16 @@ using cc13_seg33a::add;
 using cc13_seg33a::at;
 using cc13_seg33a::ptr;
 
+ScoringAwardGameView Seg59aHost::award_game_view() {
+    void* const game = game_00e188a8();
+    return {&at<std::int32_t>(game, 0x1fe4), &at<std::int32_t>(game, 0x18ec),
+        &at<std::int32_t>(game, 0x5d4)};
+}
+void* Seg59aHost::slot_award_map(void* scoring, std::uint32_t slot) {
+    return add(scoring, static_cast<std::size_t>(slot) * kSlotRecordStride + kAwardMapOffset);
+}
+void* Seg59aHost::award_map_head(void* map) { return at<void*>(map, 4); }
+
 namespace {
 
 // Image literals (bytes read at the addresses).
@@ -38,7 +48,7 @@ void* slot_record(void* scoring, std::uint32_t slot) {
 
 // The inline release every NativeString destructor in the band expands to:
 // `if (data) 00BD1510(00419CC0(data, length+1, 1), data, length+1, 1)`.
-void release(Seg59aHost& host, const NativeStr& s) {
+void release(ScoringAwardHost& host, const NativeStr& s) {
     if (s.data != nullptr) {
         void* const pool = host.pool_singleton_00419cc0();
         host.pool_return_block_00bd1510(pool, s.data, s.length + 1, 1);
@@ -48,7 +58,7 @@ void release(Seg59aHost& host, const NativeStr& s) {
 // The inline copy the compiler emits for a by-value NativeString argument: zero both fields,
 // then, unless the destination is the source, resize to the source length and copy the
 // destination's (new) length when the source length is non-zero.
-void copy_inline(Seg59aHost& host, NativeStr* dst, const NativeStr* src) {
+void copy_inline(ScoringAwardHost& host, NativeStr* dst, const NativeStr* src) {
     dst->length = 0;
     dst->data = nullptr;
     if (dst != src) {
@@ -59,7 +69,7 @@ void copy_inline(Seg59aHost& host, NativeStr* dst, const NativeStr* src) {
 
 // The inline literal construction 00913AB0 and 0090F5A0 use: zero, resize to the literal's
 // length, then copy length+1 bytes (with the terminator) when data was allocated.
-void literal_inline(Seg59aHost& host, NativeStr* s, const char* text, std::uint32_t length) {
+void literal_inline(ScoringAwardHost& host, NativeStr* s, const char* text, std::uint32_t length) {
     s->length = 0;
     s->data = nullptr;
     host.native_string_resize_0041dd40(s, length, 1);
@@ -78,15 +88,15 @@ void assign_by_value(Seg59aHost& host, NativeStr* field, NativeStr& text) {
 
 // `find(map, key) == end` with the checked iterator's container test (00BF6713 when the
 // iterator's container is null or not the map).
-bool award_map_lacks(Seg59aHost& host, void* map, const NativeStr* key) {
-    void* const head = at<void*>(map, 4);
+bool award_map_lacks(ScoringAwardHost& host, void* map, const NativeStr* key) {
+    void* const head = host.award_map_head(map);
     const CheckedIter it = host.string_int_map_find_004c8b80(map, key);
     if (it.container == nullptr || it.container != map) host.invalid_parameter_00bf6713();
     return it.node == head;
 }
 
 // Grant one literal award through 0090EDE0: assign, grant (slot, &s, 1, 0), release.
-void grant_literal(Seg59aHost& host, void* scoring, std::int32_t slot, const char* text) {
+void grant_literal(ScoringAwardHost& host, void* scoring, std::int32_t slot, const char* text) {
     NativeStr s;
     host.native_string_construct_0041e870(&s, text);
     scoring_grant_award_0090ede0(host, scoring, slot, &s, 1, 0);
@@ -129,7 +139,7 @@ float selected_score_scale(Seg59aHost& host, std::uint8_t flag) {
 // 0090C000, __thiscall(ECX = scoring, unused; NativeString key by value at [ESP+4]), RET 8, AL.
 // Four 00553C80(&key, prefix, 0) tests in the order BU, BW, BM, BO; true on the first hit; the
 // key is released before return.
-bool score_table_is_badge_earned_0090c000(Seg59aHost& host, void* /*scoring*/, NativeStr key) {
+bool score_table_is_badge_earned_0090c000(ScoringAwardHost& host, void* /*scoring*/, NativeStr key) {
     const bool earned = host.native_string_has_prefix_at_00553c80(&key, kBadgePrefixBU, 0) ||
                         host.native_string_has_prefix_at_00553c80(&key, kBadgePrefixBW, 0) ||
                         host.native_string_has_prefix_at_00553c80(&key, kBadgePrefixBM, 0) ||
@@ -151,19 +161,19 @@ bool score_table_is_badge_earned_0090c000(Seg59aHost& host, void* /*scoring*/, N
 //  - A token still to report that is not a badge, belongs to the local slot, is neither a short
 //    "RANK" key (length < 6) nor a "Counter..." key and has an achievement id in 1..99 is queued
 //    online (00A410A0) and recorded in the award tracker at game+650h (007FBE20).
-void scoring_grant_award_0090ede0(Seg59aHost& host, void* scoring, std::int32_t slot, const NativeStr* token,
+void scoring_grant_award_0090ede0(ScoringAwardHost& host, void* scoring, std::int32_t slot, const NativeStr* token,
                                   std::int32_t value, std::uint8_t accumulate) {
     bool report = true;                                          // byte [ESP+13h] = 1
-    void* game = host.game_00e188a8();
-    const std::int32_t mode = at<std::int32_t>(game, 0x1FE4);
+    ScoringAwardGameView game = host.award_game_view();
+    const std::int32_t mode = *game.mode_1fe4;
     bool forwarded = false;
     if (mode == 0 || mode == 1) {
         NativeStr copy;                                          // the by-value argument at ESP
         copy_inline(host, &copy, token);                         // 0090EE25..0090EE60
         score_table_is_badge_earned_0090c000(host, scoring, copy);   // 0090EE65, result unused
-        game = host.game_00e188a8();
-        if (slot != at<std::int32_t>(game, 0x18EC) && at<std::int32_t>(game, 0x5D4) == 0x0D &&
-            at<std::int32_t>(game, 0x1FE4) == 1) {
+        game = host.award_game_view();
+        if (slot != *game.local_slot_18ec && *game.state_5d4 == 0x0D &&
+            *game.mode_1fe4 == 1) {
             alignas(4) std::uint8_t message[kSessionMessageSize];   // [ESP+24h]
             host.session_message21_construct_00764340(message);
             at<std::int32_t>(message, 0x1C) = slot;              // [ESP+40h]
@@ -176,15 +186,14 @@ void scoring_grant_award_0090ede0(Seg59aHost& host, void* scoring, std::int32_t 
                 c = *src++;
                 *dst++ = c;
             } while (c != '\0');
-            game = host.game_00e188a8();
-            void* const peer = at<void*>(game, 0x18CC + static_cast<std::size_t>(slot) * 4);
-            host.session_send_to_remote_player_00772af0(add(game, 0x1EF0), message, peer);
+            void* const native_game = host.game_00e188a8();
+            void* const peer = at<void*>(native_game, 0x18CC + static_cast<std::size_t>(slot) * 4);
+            host.session_send_to_remote_player_00772af0(add(native_game, 0x1EF0), message, peer);
             report = false;                                      // 0090EF16
             forwarded = true;
         }
     }
-    void* const record = slot_record(scoring, static_cast<std::uint32_t>(slot));
-    void* const map = add(record, kAwardMapOffset);
+    void* const map = host.slot_award_map(scoring, static_cast<std::uint32_t>(slot));
     if (!forwarded) {
         if (award_map_lacks(host, map, token)) {                 // 0090EF27..0090EF5F
             NativeStr copy;
@@ -207,7 +216,7 @@ void scoring_grant_award_0090ede0(Seg59aHost& host, void* scoring, std::int32_t 
     NativeStr copy;
     copy_inline(host, &copy, token);                             // 0090EFFF..0090F03A
     if (score_table_is_badge_earned_0090c000(host, scoring, copy)) return;
-    if (slot != at<std::int32_t>(host.game_00e188a8(), 0x18EC)) return;
+    if (slot != *host.award_game_view().local_slot_18ec) return;
     // 0090F05D..0090F072: a "RANK" prefix only stops short keys (JC on length < 6).
     if (host.native_string_has_prefix_at_00553c80(token, kRankPrefix, 0) && token->length < 6) return;
     if (host.native_string_has_prefix_at_00553c80(token, kCounterPrefix, 0)) return;
@@ -245,10 +254,10 @@ std::int32_t award_registry_score_for_name_00914270(Seg59aHost& host, void* scor
 // 0090F5A0, __thiscall(ECX = scoring, slot), RET 4. "GA_AE" is granted (value 1, no accumulate)
 // the first time only: the lookup key is the inline literal (Resize 5, memcpy 6 bytes), the
 // grant uses a fresh 0041E870 assignment.
-void scoring_grant_ga_ae_once_0090f5a0(Seg59aHost& host, void* scoring, std::int32_t slot) {
+void scoring_grant_ga_ae_once_0090f5a0(ScoringAwardHost& host, void* scoring, std::int32_t slot) {
     NativeStr key;
     literal_inline(host, &key, kAwardGaAe, 5);
-    void* const map = add(slot_record(scoring, static_cast<std::uint32_t>(slot)), kAwardMapOffset);
+    void* const map = host.slot_award_map(scoring, static_cast<std::uint32_t>(slot));
     const bool absent = award_map_lacks(host, map, &key);
     release(host, key);
     if (absent) grant_literal(host, scoring, slot, kAwardGaAe);

@@ -13,6 +13,7 @@ struct Host final : cp::PowerupManagerHost {
     std::int32_t local_player_slot_18ec() override { unexpected(); }
     std::int32_t session_word_1fe4() override { return 0; }
     bool powerups_enabled_00e0c978() override { unexpected(); }
+    void award_active_powerup_use(std::int32_t) override { unexpected(); }
     void report_powerup_009789a0(std::int32_t, const cp::PowerupItem&, const std::string&) override { unexpected(); }
     bool powerup_screen_shown_00e198c4() override { unexpected(); }
     void powerup_screen_rebuild_lists_0061b0f0() override { unexpected(); }

@@ -42,6 +42,7 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/movie_subtitles.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_language_catalog_storage.hpp"
 #include "bsp/session_context_cc13.hpp"
 #include "bsp/cc13_seg59a.hpp"
 #include "bsp/cc13_seg59b.hpp"
@@ -334,6 +335,108 @@ struct GameMissionResultHost::FinalScoringName final : bsp::cc13_seg59a::Scoring
     }
 };
 
+namespace {
+// Only the 0090EDE0 nonlocal single-player continuation is admitted. It writes
+// the actual scoring owner's runtime tree, then returns at 0090F055 before
+// achievement lookup/upload. No raw game/score images or parallel award maps.
+class NonlocalPowerupAwardBinding final : public bsp::cc13_seg59a::ScoringAwardHost {
+    using NativeStr = bsp::cc13_seg59a::NativeStr;
+    using CheckedIter = bsp::cc13_seg59a::CheckedIter;
+public:
+    NonlocalPowerupAwardBinding(bsp::MissionScoringManagerState& scoring,
+        std::int32_t mode, std::int32_t local, std::int32_t state)
+        : scoring_(scoring), mode_(mode), local_(local), state_(state) {}
+
+    void grant(std::int32_t slot) {
+        if (mode_ != 0 || slot == local_)
+            throw std::logic_error("active power-up award needs the local/online scoring provider");
+        if (static_cast<std::uint32_t>(slot) >= bsp::kMissionScoringSlotCount)
+            throw std::out_of_range("active power-up award player slot");
+        bsp::cc13_seg59a::scoring_grant_ga_ae_once_0090f5a0(*this, &scoring_, slot);
+    }
+    bsp::cc13_seg59a::ScoringAwardGameView award_game_view() override {
+        return {&mode_, &local_, &state_};
+    }
+    void* slot_award_map(void* scoring, std::uint32_t slot) override {
+        if (scoring != &scoring_ || slot >= bsp::kMissionScoringSlotCount)
+            throw std::logic_error("foreign power-up scoring owner/slot");
+        return &scoring_.runtime_awards[slot];
+    }
+    void* award_map_head(void* map) override { return &map_for(map); }
+    CheckedIter string_int_map_find_004c8b80(void* map, const NativeStr* key) override {
+        auto& values = map_for(map);
+        const auto found = values.find(text(key));
+        return {map, found == values.end() ? map : static_cast<void*>(&found->second)};
+    }
+    std::int32_t* string_int_map_index_005070c0(void* map, const NativeStr* key) override {
+        return &map_for(map)[text(key)];
+    }
+    void native_string_resize_0041dd40(NativeStr* field, std::uint32_t length,
+        std::int32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(field, bsp::crt_string_storage(), length,
+            preserve != 0);
+    }
+    void native_string_construct_0041e870(NativeStr* field, const char* text) override {
+        bsp::NativeString owner;
+        owner.assign_0041e870(bsp::crt_string_storage(), text);
+        // NativeString has explicit release and no destructor cleanup. Transfer
+        // its eight-byte header to the original body's explicit release path.
+        field->length = owner.length();
+        field->data = owner.data();
+    }
+    void native_string_copy_construct_00426060(NativeStr* dst, const NativeStr* src) override {
+        *dst = {};
+        bsp::copy_native_string_header_00be0a30_fragment(dst, bsp::crt_string_storage(), src);
+    }
+    bool native_string_has_prefix_at_00553c80(const NativeStr* value, const char* prefix,
+        std::uint32_t offset) override {
+        return (bsp::native_language_prefix_result_00553c80(value, prefix, offset) & 0xffu) != 0;
+    }
+    void* pool_singleton_00419cc0() override { return &bsp::crt_string_storage(); }
+    void pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+        std::int32_t) override {
+        static_cast<bsp::NativeStringStorage*>(pool)->release(static_cast<char*>(data), size);
+    }
+    void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) override {
+        std::memcpy(dst, src, size);
+    }
+    void invalid_parameter_00bf6713() override { unavailable(); }
+    // These branches cannot be reached under grant's native mode/slot contract.
+    // In particular an unresolved local registry never answers a guessed ID.
+    void* game_00e188a8() override { unavailable(); }
+    void* hud_owner_00e198c4() override { unavailable(); }
+    void* award_registry_00e19900() override { unavailable(); }
+    void* online_manager_00f8abe8() override { unavailable(); }
+    const char* empty_text_00f899a0() override { unavailable(); }
+    void session_message21_construct_00764340(void*) override { unavailable(); }
+    void session_send_to_remote_player_00772af0(void*, void*, void*) override { unavailable(); }
+    void hud_root_queue_award_ticker_00648ab0(void*, NativeStr) override { unavailable(); }
+    std::int32_t award_registry_id_for_name_006b8da0(void*, const NativeStr*) override { unavailable(); }
+    void online_awards_grant_00a410a0(void*, std::int32_t) override { unavailable(); }
+    void award_tracker_record_at_least_007fbe20(void*, const NativeStr*, std::int32_t) override { unavailable(); }
+private:
+    [[noreturn]] static void unavailable() {
+        throw std::logic_error("nonlocal GA_AE award crossed its native continuation boundary");
+    }
+    static std::string text(const NativeStr* key) {
+        return key->data ? std::string(key->data, key->length) : std::string{};
+    }
+    bsp::UnlockCounterMap& map_for(void* map) {
+        for (auto& values : scoring_.runtime_awards) if (&values == map) return values;
+        throw std::logic_error("foreign power-up award map");
+    }
+    bsp::MissionScoringManagerState& scoring_;
+    std::int32_t mode_, local_, state_;
+};
+} // namespace
+
+void GameMissionResultHost::award_active_powerup_use(int slot, std::int32_t mode,
+    std::int32_t local_slot, std::int32_t game_state) {
+    NonlocalPowerupAwardBinding awards(scoring_, mode, local_slot, game_state);
+    awards.grant(slot);
+    done("PowerUps::grant_GA_AE_once", 0x0090f5a0u);
+}
+
 GameMissionResultHost::GameMissionResultHost(GameHostLog& log,
     bsp::GameFrameControlState& control, GameVfsHost& vfs, const bsp::LocaleTables& locale)
     : log_(log), control_(control),
@@ -368,6 +471,9 @@ void GameMissionResultHost::done(const char* method, std::uint32_t address) {
 
 void GameMissionResultHost::set_mission_key(std::string key) {
     mission_key_ = std::move(key);
+    // This setter is the mission-load producer; runtime awards are initialized
+    // empty by 0091CE90/0091D620 rather than copied from persisted score maps.
+    for (auto& awards : scoring_.runtime_awards) awards.clear();
 }
 
 void GameMissionResultHost::set_session_mode(std::uint32_t mode) noexcept {
