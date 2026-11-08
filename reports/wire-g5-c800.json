@@ -1,0 +1,77 @@
+{
+  "chain": 800,
+  "slot": "g5-w11",
+  "base": "a6e46f73cf01d1ac75529ef7a8b5d38affaf99e5",
+  "rows": [
+    {
+      "native": "0051f330",
+      "status": "wired",
+      "host_site": "src/hud_warning_screen.cpp: ship_view_input_0064a400, reached from GameHudHost's ShipViewScreen46Binding::view_input_0064a400",
+      "evidence": "bsp.py show 0051f330: 0051EF00(screen, dt), then 0051F050(screen+40h, &screen+24h, dt, screen+38h). The existing reconstructed dispatcher replaces the inline pair of calls."
+    },
+    {
+      "native": "0051eaa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::raised_view",
+      "reason": "The raised-mode arm remains unreachable because raise_toggle_0051e7e0 is record-only; the input axes also lack their native input-bank binding."
+    },
+    {
+      "native": "0051e7e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding::raise_toggle_0051e7e0",
+      "reason": "A complete toggle binding needs the camera near-plane owner and the controlled-part/FOV services; this packet only replaces the already-running view dispatcher."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ControllerSnapshotMessage stand-in",
+      "reason": "No retained ControllerSnapshotMessage owner and gameplay transport consumer was established at this host site."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList candidate-score stand-in",
+      "reason": "The native candidate-score list lacks a live planner consumer; the current capture planner uses separate weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList chosen-entry stand-in",
+      "reason": "No retained native score-list owner with a gameplay reader of its chosen byte was established."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Failure::statistics_00913d80",
+      "reason": "The record-only failure site lacks the scoring-manager storage and attacking-player-record adapter required by Seg59bHost."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "The repair notification remains unreached and no scoring/award-manager adapter was established for its native repair-completion lists."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate::direct_hit_00915f20",
+      "reason": "The direct-hit record site lacks the retained scoring-manager, native hit-record and award-table adapters required by this recorder."
+    }
+  ],
+  "implementation": [
+    "BinocularsState is the retained HUD screen state, with compile-time checks for the +24h flag, +30h mode, +34h/+35h flags, +38h zoom and +40h mover offsets read by the dispatcher.",
+    "The +40h source binding is the actual bound mission-camera mover object, or null when unbound. The existing typed camera accessors continue to operate on that same object.",
+    "A two-service BinocularsViewHooks interface lets the existing dispatcher call the existing raise and turn bodies without implementing unrelated debug/widget services.",
+    "The turn body consumes the forwarded +24h state and +38h zoom. Existing PC24 arithmetic is unchanged; the old direct raise/turn calls are removed."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTest checks passed",
+    "call_graph": "0051F330 REACHABLE, exactly one reachable call site at 10380AD9 from bsp::ship_view_input_0064a400; path reaches GameMenuHost::frame and WinMainCRTStartup",
+    "wired_before": 10641,
+    "wired_after": 10641,
+    "readiness_note": "The source-text wired total is unchanged: this dispatcher was already text-classified as wired, although the old host path called its two children directly. The built graph now reports called=true, call_sites=1 for 0051F330.",
+    "called_reconstructed_total_after": 5491,
+    "pc24_lint_command": "python tools/pc24_lint.py --diff origin/main...HEAD"
+  },
+  "limits": "Build and executable-call-graph evidence only; no game launch, visual check or original binary ABI claim. Existing record-only input, toggle and raised-view services remain for later packets."
+}

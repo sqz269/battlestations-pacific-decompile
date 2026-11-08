@@ -162,12 +162,25 @@ void integrated_controls_0064b870(IntegratedControlsState& screen,
 // (BSP_HudBinocularsScreen_Register 0051ED60); its +40h is the same
 // ShipCaptain mover, handed over by 0051E730 from 0064DA40.
 struct BinocularsState {
+    // Retained screen 26h fields at their native offsets so 0051F330 reads
+    // the actual view flag, zoom and bound mover, rather than a frame copy.
+    std::uint8_t unmodelled_00[0x24]{};
     bool view_24{false};          // +24h, set only by action 75h (0051F316)
+    std::uint8_t unmodelled_25[0x0b]{};
     int mode_30{0};               // +30h, 1 = binoculars up; the register stores 0
     bool flag_34{false};          // +34h
     bool flag_35{false};          // +35h
+    std::uint8_t unmodelled_36[2]{};
     float zoom_38{1.0f};          // +38h, the register stores 1.0 (00D7A24C)
+    std::uint8_t unmodelled_3c[4]{};
+    void* mover_40{nullptr};      // host's live ShipCaptain mover; source binding
 };
+static_assert(offsetof(BinocularsState, view_24) == 0x24);
+static_assert(offsetof(BinocularsState, mode_30) == 0x30);
+static_assert(offsetof(BinocularsState, flag_34) == 0x34);
+static_assert(offsetof(BinocularsState, flag_35) == 0x35);
+static_assert(offsetof(BinocularsState, zoom_38) == 0x38);
+static_assert(offsetof(BinocularsState, mover_40) == 0x40);
 
 // The input manager's view axes and GlobalConfig+4, as 0051EF00/0051F050
 // read them.
@@ -193,7 +206,8 @@ struct ShipViewInputHost {
     virtual void lens_effect_off_00452b80() = 0;
     // The mover at 26h+40h (0 when none): its yaw +384h, pitch +388h and the
     // pitch limits +3ECh/+3F0h.
-    virtual bool mover_present() = 0;
+    virtual void* mover_object() = 0; // source object used by the typed accessors below
+    virtual bool mover_present() { return mover_object() != nullptr; }
     virtual float mover_yaw() = 0;
     virtual void set_mover_yaw(float yaw) = 0;
     virtual float mover_pitch() = 0;
