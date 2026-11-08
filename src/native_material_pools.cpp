@@ -4,8 +4,7 @@
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
-#include "bsp/native_gui_frame_box_pool_table.hpp"
-#include "bsp/cc13_sweepC.hpp"
+#include "bsp/native_gui_section_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -16,6 +15,8 @@
 #include <new>
 
 #include "bsp/native_shader_state_list_pool_table.hpp"
+#include "bsp/native_gui_frame_box_pool_table.hpp"
+#include "bsp/cc13_sweepC.hpp"
 
 namespace bsp {
 namespace {
@@ -505,6 +506,39 @@ template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
         &native_gui_curve_pool_table_push_back_00abc480>(storage_);
 }
 
+// Evidence: bsp.py show 00ABEE60/00ABEAA0 and 00ABE9D0/00ABEA00/00ABED30.
+// The Section constructor/destructor inline these pointer-table operations.
+// Use its retained F8BEAC owner, with the same unwind states and cleanup order.
+template<> void NativeGuiWidgetPool<GuiSectionPoolTraits>::initialize() {
+    initialize_pool<GuiSectionPoolTraits,
+        &reserve_native_gui_section_pool_table_00abed30>(allocator_list_, storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiSectionPoolTraits>::destroy() {
+    destroy_pool<GuiSectionPoolTraits,
+        &free_native_gui_section_pool_table_00abe9d0>(allocator_list_, storage_);
+}
+
+__declspec(noinline) void free_native_gui_section_pool_table_00abe9d0(
+    void* actual_table) noexcept {
+    // 00ABE9D0 reads/frees only [ECX]; pointer/count/capacity remain unchanged.
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void set_native_gui_section_pool_table_capacity_00abea00(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // Same native schedule as AA6FA0: capacity before new(capacity*4 modulo32),
+    // reload count/source on each null-tested copy, free old, publish new.
+    set_slab_table_capacity(table, capacity);
+}
+
+__declspec(noinline) void reserve_native_gui_section_pool_table_00abed30(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        set_native_gui_section_pool_table_capacity_00abea00(table, capacity);
+}
+
 namespace {
 template<class T> struct WidgetSlabInitializer {
     static constexpr auto entry = &NativeGuiWidgetPool<T>::initialize_slab;
@@ -674,6 +708,21 @@ template<> void* NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate() {
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
+template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize() {
+    // A9B4A0 inlines A9B2D0's reserve(32), inside native unwind state 2.
+    // The retained F8BC10 pool keeps its actual header at +28h throughout.
+    initialize_pool<GuiListboxPoolTraits,
+        &reserve_native_listbox_pool_table_00a9b2d0>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate() {
+    // A9B580 inlines A9B250 after initializing the actual 1824h slab,
+    // under the existing critical section. Replace the common append once.
+    return allocate_slot<GuiListboxPoolTraits,
+        &NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize_slab,
+        &push_native_listbox_pool_slab_00a9b250>(storage_);
+}
+
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
     // ACC1D0 inlines ACC160 on the actual F8C09C+28h header, EH state 2.
     initialize_pool<GuiModelPoolTraits,

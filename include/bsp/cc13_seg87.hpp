@@ -411,7 +411,12 @@ struct GuiListboxPoolTraits {
 static_assert(GuiListboxPoolTraits::free_indices_offset == 0x1800);
 static_assert(GuiListboxPoolTraits::free_count_offset == 0x1820);
 static_assert(GuiListboxPoolTraits::slab_bytes == 0x1824);
+template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize();
+template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate();
 extern template class NativeGuiWidgetPool<GuiListboxPoolTraits>;
+namespace game { extern template class GameNativeGuiWidgetPoolProcess<GuiListboxPoolTraits>; }
+extern template void* allocate_gui_widget_pool_slot<GuiListboxPoolTraits>();
+extern template void free_gui_widget_pool_slot<GuiListboxPoolTraits>(void*);
 using NativeGuiListboxPool = NativeGuiWidgetPool<GuiListboxPoolTraits>;
 
 // Address-named entries over that engine (ABI per traits row above).
@@ -423,14 +428,15 @@ void free_native_listbox_pool_slot_00a9b150(NativeGuiListboxPool&, void* slot) n
 void free_native_listbox_slot_thunk_00a9b330(NativeGuiListboxPool& pool_00f8bc10, void* slot) noexcept;
 void construct_native_listbox_pool_00a9b4a0(NativeGuiListboxPool&);
 void* allocate_native_listbox_pool_slot_00a9b580(NativeGuiListboxPool&);
-// The slab-table members (ECX = pool+28h).
+// The slab-table members (ECX = pool+28h). SetCapacity/Append/Reserve are
+// __thiscall, RET 4; Grow is __fastcall, RET. C++ source interfaces only.
+// Names are hypotheses. Borrow the live F8BC10+28h header; no copied table.
 void set_native_listbox_pool_table_capacity_00a9aeb0(NativeGuiPoolSlabTable&, std::uint32_t capacity);
 void grow_native_listbox_pool_table_00a9af00(NativeGuiPoolSlabTable&);
 void push_native_listbox_pool_slab_00a9b250(NativeGuiPoolSlabTable&, std::byte* const& slab);
 void reserve_native_listbox_pool_table_00a9b2d0(NativeGuiPoolSlabTable&, std::uint32_t capacity);
-// The StringMap node pool's table members (pool 00E1768C, slot 1Ch x 400h).
-void grow_native_string_map_pool_table_00a9ea60(NativeGuiPoolSlabTable&);
-void push_native_string_map_pool_slab_00a9ee40(NativeGuiPoolSlabTable&, std::byte* const& slab);
+// The StringMap node pool's actual +28h triple (E1768C, slot 1Ch x 400h)
+// uses native_locale_pool_table.hpp; it is not a NativeGuiPoolSlabTable copy.
 
 // Listbox members over the actual object. Layout used here: row list header
 // +FCh {alloc, head +100h, size +104h} with nodes {next +0, prev +4, row +8};

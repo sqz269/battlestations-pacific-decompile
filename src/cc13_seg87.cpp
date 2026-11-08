@@ -1108,34 +1108,36 @@ void* allocate_native_listbox_pool_slot_00a9b580(NativeGuiListboxPool& pool)
     return pool.allocate();
 }
 
-void set_native_listbox_pool_table_capacity_00a9aeb0(NativeGuiPoolSlabTable& table, std::uint32_t capacity)
+__declspec(noinline) void set_native_listbox_pool_table_capacity_00a9aeb0(NativeGuiPoolSlabTable& table, std::uint32_t capacity)
 {
-    native_gui_pool_table_set_capacity(table, capacity);
+    // bsp.py show 00A9AEB0 --asm: capacity is stored before BF55BE;
+    // reload count/data during the unsigned copy, free, then publish data.
+    // AA6FA0 is the existing identical body over this SAME live header.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
 }
 
-void grow_native_listbox_pool_table_00a9af00(NativeGuiPoolSlabTable& table)
+__declspec(noinline) void grow_native_listbox_pool_table_00a9af00(NativeGuiPoolSlabTable& table)
 {
-    native_gui_pool_table_grow(table);
+    // 00A9AF00 inlines A9AEB0 with modulo-32 capacity*2+2.
+    set_native_listbox_pool_table_capacity_00a9aeb0(table, table.capacity * 2u + 2u);
 }
 
-void push_native_listbox_pool_slab_00a9b250(NativeGuiPoolSlabTable& table, std::byte* const& slab)
+__declspec(noinline) void push_native_listbox_pool_slab_00a9b250(NativeGuiPoolSlabTable& table, std::byte* const& slab)
 {
-    native_gui_pool_table_push_back(table, slab);
+    // 00A9B250 --asm: equality triggers growth; only after old-table free
+    // does B2B4..B2BA read the caller's pointer cell. Preserve that alias.
+    if (table.count == table.capacity) grow_native_listbox_pool_table_00a9af00(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
 }
 
-void reserve_native_listbox_pool_table_00a9b2d0(NativeGuiPoolSlabTable& table, std::uint32_t capacity)
+__declspec(noinline) void reserve_native_listbox_pool_table_00a9b2d0(NativeGuiPoolSlabTable& table, std::uint32_t capacity)
 {
-    native_gui_pool_table_reserve(table, capacity);
-}
-
-void grow_native_string_map_pool_table_00a9ea60(NativeGuiPoolSlabTable& table)
-{
-    native_gui_pool_table_grow(table);
-}
-
-void push_native_string_map_pool_slab_00a9ee40(NativeGuiPoolSlabTable& table, std::byte* const& slab)
-{
-    native_gui_pool_table_push_back(table, slab);
+    // 00A9B2D0 / inline copy in A9B4A0: unsigned reserve, no shrink.
+    if (table.capacity < capacity)
+        set_native_listbox_pool_table_capacity_00a9aeb0(table, capacity);
 }
 
 namespace {

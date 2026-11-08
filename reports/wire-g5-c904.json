@@ -1,0 +1,76 @@
+{
+  "chain": 904,
+  "worker": "agent/g5-w12",
+  "picked": "Section F8BEAC process-pool startup and actual slab-table lifetime",
+  "rows": [
+    {
+      "native": "00abe9d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiSectionPoolTraits>::destroy -> destroy_pool -> free_native_gui_section_pool_table_00abe9d0",
+      "evidence": "Original ABEAA0 inlines the same table-only release after slab retirement. The actual CD72F0 process owner registers its atexit callback; no-inline/no-ICF graph shows a distinct reachable call from Section destroy_pool. Pointer/count/capacity remain unchanged."
+    },
+    {
+      "native": "00abea00",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::reserve_native_gui_section_pool_table_00abed30 -> set_native_gui_section_pool_table_capacity_00abea00",
+      "evidence": "Actual Section pool+28h header, capacity before allocation, DWORD-wrapped byte count, live-source/count reloads, null-tested copies, free old before publishing new. Distinct reachable call from Section reserve in no-inline/no-ICF graph."
+    },
+    {
+      "native": "00abed30",
+      "status": "wired",
+      "host_site": "src/game_main.cpp::WinMain -> GameNativeGuiWidgetPoolProcess<GuiSectionPoolTraits>::initialize_once -> src/native_material_pools.cpp::NativeGuiWidgetPool<GuiSectionPoolTraits>::initialize -> initialize_pool -> reserve_native_gui_section_pool_table_00abed30",
+      "evidence": "ABEE60 inlines unsigned reserve32 within unwind state2. CD72F0 listing constructs F8BEAC and registers CE0AB0; original CRT table CE3488 places this after Curve. Uses the retained process storage and existing E188B4 domain/failure-retention path."
+    },
+    {
+      "native": "00abea50",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiSectionPoolTraits>::allocate",
+      "reason": "Missing live native Section widget allocation consumer; CRT startup only reserves an empty table, so native growth has no game caller yet."
+    },
+    {
+      "native": "00abecb0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiSectionPoolTraits>::allocate",
+      "reason": "Missing live native Section widget allocation consumer and derived storage binding; no actual Section slab is appended by the game path yet."
+    },
+    {
+      "native": "00a9aeb0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::set_native_listbox_pool_table_capacity_00a9aeb0",
+      "reason": "Missing retained native Listbox F8BC10 process-owner startup and allocation binding; existing Listbox layout/type runtime does not call this pool."
+    },
+    {
+      "native": "00a9af00",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::grow_native_listbox_pool_table_00a9af00",
+      "reason": "Missing retained native Listbox F8BC10 process-owner startup and allocation binding; table growth has no game caller."
+    },
+    {
+      "native": "00a9b250",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::push_native_listbox_pool_slab_00a9b250",
+      "reason": "Missing retained native Listbox F8BC10 process-owner startup and allocation binding; no real Listbox slab producer reaches this append."
+    },
+    {
+      "native": "00a9b2d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::reserve_native_listbox_pool_table_00a9b2d0",
+      "reason": "Missing retained native Listbox F8BC10 process-owner startup and allocation binding; Listbox files were left unchanged and released."
+    }
+  ],
+  "validation": {
+    "default_build": "scripts/build.ps1 passed; all four CTests passed, local/c904-build.log",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passed; call_graph.py --build also produced build/callgraph with no inlining and no identical-code folding",
+    "call_graph": "local/c904-section-who.log confirms one distinct reachable caller per new body and the WinMainCRTStartup-to-Section-reserve-to-capacity path",
+    "focused_probe": "tests/wire_g5_c904_section_table_probe.cpp passed: actual reserve32, two live slabs preserved by reserve40, no-op reserve39, release preserves fields and unlinks allocator element; compile using local/c904-probe.cmd with MANIFEST:EMBED",
+    "ghidra": "Verified bsp project /battlestationspacific.exe; retained correct TMPL names, appended evidence comments under write lock, saved project and refreshed all three exports; previous annotations in local/ghidra-annotations-20261108T160826Z.json",
+    "float_math_changed": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "wired_total_before": 10768,
+  "wired_total_after": 10768,
+  "wired_total_note": "Readiness excludes these TMPL/template-tagged library-shaped entries from its game-row pool, so the overview remains 10768. All three new bodies nevertheless have separate reachable calls in the no-inline/no-ICF built executable; correct original TMPL names and tags were retained.",
+  "new_distinct_reachable_bodies": 3,
+  "remaining": "Bind native Section derived storage/factory before wiring its slab grow/append. Listbox requires its own canonical F8BC10 process owner and allocation path. The restored Section CRT subset entry intentionally follows Curve and precedes Group; omitted original CRT entries remain future work. No game was launched."
+}

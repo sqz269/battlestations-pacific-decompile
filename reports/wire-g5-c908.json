@@ -56,5 +56,32 @@
     "default_graph_reachable_reconstructed_addresses_after": 5664,
     "note": "Default linker folds ACEF70 into an existing pool body; /OPT:NOICF confirms both new address calls separately. Readiness state is a source-text heuristic: the four-address increase is not per-address call proof, and its output omits the three formerly tagged template helpers. Only the two wired rows above are claimed."
   },
-  "left": "Connect the actual DEFAULT FrameBox factory to a production page/widget producer; then ACF7E0 and ACEFC0 can run with real allocated slabs. No gameplay or original binary ABI claim."
+  "left": "Connect the actual DEFAULT FrameBox factory to a production page/widget producer; then ACF7E0 and ACEFC0 can run with real allocated slabs. No gameplay or original binary ABI claim.",
+  "landing_repair": {
+    "merged_origin_main": "3fc7c96455bf508ab831f622e63675c07debe09f",
+    "conflict": "src/native_material_pools.cpp include list only; retain FrameBox/SweepC and incoming Section header, with FrameBox includes placed in the separate shader-table header block to avoid repeated common-widget insertion conflicts.",
+    "preserved": "Incoming Section and Listbox startup/table/lifetime specializations and all existing FrameBox wiring; no duplicated address body or alternate runtime path.",
+    "ledger_or_cmake_conflicts": false,
+    "default_build": "scripts/build.ps1 passed all 6 CTest groups after merge and again after ON-header restoration; local/c908-repair-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled enabled temporarily; build passed all 6 CTest groups with zero diagnostics; local/c908-repair-on-build.log",
+    "on_header_receipt": {
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "exit_code": 0,
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      }
+    },
+    "frame_box_probe": "513 slots, 33 slabs, capacity32->66, payloads and indices preserved; local/c908-repair-probe.log",
+    "wire_readiness_log": "local/c908-repair-readiness.log",
+    "wire_readiness_wired": 10791,
+    "wire_readiness_called": 6087,
+    "metrics_qualification": "Merged totals include origin/main additions. Original c908 contribution remains the two graph-verified address calls above; ACF7E0/ACEFC0 remain prepared only.",
+    "call_graph_log": "local/c908-repair-callgraph.log",
+    "game_run": false
+  }
 }

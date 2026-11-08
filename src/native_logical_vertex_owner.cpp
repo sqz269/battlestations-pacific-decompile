@@ -1,4 +1,5 @@
 #include "bsp/native_logical_vertex_owner.hpp"
+#include "bsp/native_logical_vertex_pool_table.hpp"
 #include "bsp/native_logical_vertex_pool_return.hpp"
 #include "bsp/native_render_buffer_unregistration.hpp"
 #include "bsp/native_shader_device_reset.hpp"
@@ -391,6 +392,42 @@ void* initialize_native_logical_vertex_slab_00b48eb0(void* slab, std::uint32_t i
     }
     return slab;
 }
+// Chain 902: specialize the existing render_fx pointer-array shapes over the
+// actual pool header. B498A0 --asm confirms ECX=header, capacity before new,
+// live count/data reloads, conditional free, then pointer publication. B4AE80
+// inlines the same B4A7D0 append; B4ADA0 inlines B4A850 reserve(32).
+__declspec(noinline) void allocate_native_logical_vertex_pool_table_00b498a0(
+    void* header, std::uint32_t capacity) {
+    word(header, 8) = capacity;
+    const auto bytes = capacity * 4u;
+    void* const replacement = singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes});
+    void* destination = replacement;
+    for (std::uint32_t i = 0; i < word(header, 4); ++i) {
+        if (destination) word(destination) = word(pointer(header), i * 4u);
+        destination = at(destination, 4);
+    }
+    void* const old = pointer(header);
+    if (old) singleton_lifetime_free(old);
+    word(header) = address(replacement);
+}
+__declspec(noinline) void grow_native_logical_vertex_pool_table_00b498f0(void* header) {
+    allocate_native_logical_vertex_pool_table_00b498a0(header, word(header, 8) * 2u + 2u);
+}
+__declspec(noinline) void append_native_logical_vertex_pool_table_00b4a7d0(
+    void* header, const void* pointer_cell) {
+    if (word(header, 4) == word(header, 8))
+        grow_native_logical_vertex_pool_table_00b498f0(header);
+    void* const destination = at(pointer(header), word(header, 4) * 4u);
+    if (destination) word(destination) = word(pointer_cell);
+    word(header, 4) = word(header, 4) + 1u;
+}
+__declspec(noinline) void reserve_native_logical_vertex_pool_table_00b4a850(
+    void* header, std::uint32_t capacity) {
+    if (word(header, 8) < capacity)
+        allocate_native_logical_vertex_pool_table_00b498a0(header, capacity);
+}
+
 void* allocate_native_logical_vertex_slot_00b4ae80(void* pool) {
     auto* const section = static_cast<CRITICAL_SECTION*>(at(pool, 0x0c));
     EnterCriticalSection(section);
@@ -399,24 +436,7 @@ void* allocate_native_logical_vertex_slot_00b4ae80(void* pool) {
         word(pool, 0x34) = word(pool, 0x2c);
         void* const raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0xf44, 0xf44});
         void* const slab = raw ? initialize_native_logical_vertex_slab_00b48eb0(raw, word(pool, 0x34)) : nullptr;
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown = capacity * 2u + 2u;
-            word(pool, 0x30) = grown;
-            const auto bytes = grown * 4u;
-            void* const replacement = singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
-            void* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination) word(destination) = word(pointer(pool, 0x28), index * 4u);
-                destination = at(destination, 4);
-            }
-            void* const old = pointer(pool, 0x28);
-            if (old) singleton_lifetime_free(old);
-            word(pool, 0x28) = address(replacement);
-        }
-        void* const destination = at(pointer(pool, 0x28), word(pool, 0x2c) * 4u);
-        if (destination) word(destination) = address(slab);
-        word(pool, 0x2c) = word(pool, 0x2c) + 1u;
+        append_native_logical_vertex_pool_table_00b4a7d0(at(pool, 0x28), &slab);
     }
     void* const slab = pointer(pointer(pool, 0x28), word(pool, 0x34) * 4u);
     half(slab, 0xf40) = static_cast<std::uint16_t>(half(slab, 0xf40) - 1u);

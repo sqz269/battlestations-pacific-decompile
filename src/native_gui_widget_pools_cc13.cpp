@@ -2,6 +2,7 @@
 // The pool members themselves are instantiated in src/native_material_pools.cpp
 // over the shared native engine.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/cc13_seg87.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 
@@ -122,5 +123,6 @@ BSP_GUI_WIDGET_POOL_PROCESS(GuiSoundPoolTraits)
 BSP_GUI_WIDGET_POOL_PROCESS(GuiClipBoxPoolTraits)
 BSP_GUI_WIDGET_POOL_PROCESS(GuiFrameBoxPoolTraits)
 BSP_GUI_WIDGET_POOL_PROCESS(GuiAnimIconPoolTraits)
+BSP_GUI_WIDGET_POOL_PROCESS(GuiListboxPoolTraits)
 #undef BSP_GUI_WIDGET_POOL_PROCESS
 } // namespace bsp

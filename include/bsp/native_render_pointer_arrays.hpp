@@ -55,6 +55,7 @@ void destroy_native_render_command_pointers_00b1d590(NativeRenderPointerArraySto
 // and increment count. This raw byte address also permits an alias of data_00
 // itself without a C++ pointer-type alias violation. The source address must
 // remain valid through reserve; a cell in freed old storage is not valid.
+// A null destination skips the source load/store and still increments count.
 void append_native_render_group_pointer_00b1cbe0(
     NativeRenderPointerArrayStorage&, const void* source_pointer_cell);
 

@@ -43,6 +43,7 @@
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/native_gui_group_storage.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/cc13_seg87.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
@@ -1143,6 +1144,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;
     bool gui_widget_pool_startup_incomplete = false;
     try {
+        // Live Ghidra CD6FF0: MOV ECX,F8BC10; CALL A9B4A0; atexit(CE0A00).
+        // CRT table CE3444 precedes Button's CE3450; CE0A00 destroys A9AFD0.
+        auto& gui_listbox_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiListboxPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int listbox_pool_atexit = gui_listbox_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Listbox pool CRT CD6FF0: atexit=%d storage_bytes=%zu "
+            "before_button_pool=1", listbox_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // bsp.py ghidra xrefs/disasm CD70A0: CE3450 precedes Icon's CE3468;
         // MOV ECX,F8BD00; CALL AABE00; register CE0A30 (Button pool destroy).
         // Start the canonical process pool on the shared E188B4 allocator list.
@@ -1192,6 +1202,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
             curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3488/CD72F0: ECX=F8BEAC, CALL ABEE60, atexit(CE0AB0).
+        // The original CRT starts Section after Curve and before Line/Group.
+        // Retain its process pool on the same E188B4 allocator-list domain.
+        auto& gui_section_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiSectionPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int section_pool_atexit = gui_section_process.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Section pool CRT CD72F0: atexit=%d storage_bytes=%zu",
+            section_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
