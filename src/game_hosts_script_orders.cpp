@@ -9,6 +9,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/oct18_tail_a.hpp"  // 00450750: active dialog keys
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/frontend_screen_sets.hpp"   // chain 648: GameInputContextManagerBinding
 #include "bsp/game_hosts_frontend.hpp"    // goal 5 chain 652: the GUI manager's pages
@@ -735,6 +736,79 @@ private:
 //  * 004514A0 dialog_kill;
 //  * 00450750 dialog_active_ids, then 00B672F0 per id into the one result table.
 // Every other ContentHost / PresentationHost site belongs to another binding.
+// Goal 5 chain 714. bsp.py show 00450750 --asm: ECX is the dialog owner,
+// [ECX+20h] is the sentinel, [sentinel] is begin, node+0Ch is an 8-byte
+// NativeString key; RET 4 consumes the output vector (EDX is not an input).
+// Borrow the existing registry's iterator and key bytes, preserving its
+// case-insensitive map order. Only the fields the body reads are projected;
+// 00448C10 advances the real map iterator, not a fabricated native tree.
+// These are source-level bindings, not original-ABI replacements.
+template<class DialogMap>
+class ScriptDialogIdCollection final : public bsp::oct18_tail_a::DialogServices {
+    struct Key {
+        std::uint32_t size;
+        const char* data;
+    };
+    struct Node {
+        Node* first{};
+        void* unused_parent{};
+        void* unused_right{};
+        Key key{};
+    };
+    struct MapView {
+        std::uint32_t unused{};
+        Node* head{};
+    };
+    struct Owner {
+        std::uint8_t unused[0x1c]{};
+        MapView map;
+    };
+    static_assert(sizeof(void*) == 4);
+    static_assert(sizeof(Key) == 8);
+    static_assert(offsetof(Node, key) == 0x0c);
+    static_assert(offsetof(Owner, map) + offsetof(MapView, head) == 0x20);
+public:
+    explicit ScriptDialogIdCollection(const DialogMap& dialogs)
+        : current_(dialogs.begin()), end_(dialogs.end()) {
+        owner_.map.head = &sentinel_;
+        sentinel_.first = current_node();
+        refresh_key();
+        ids_.reserve(dialogs.size());
+    }
+    std::vector<std::string> collect() {
+        bsp::oct18_tail_a::collect_active_dialog_ids_00450750(&owner_, &ids_, *this);
+        return std::move(ids_);
+    }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("00450750: invalid active-dialog iterator");
+    }
+    void append_native_string_00450540(void* output, const void* key) override {
+        if (output != &ids_ || key != &node_.key || current_ == end_)
+            throw std::logic_error("00450540: invalid active-dialog key");
+        // 00450540 appends a copy; the borrowed key remains owned by the map.
+        ids_.emplace_back(node_.key.data, node_.key.size);
+    }
+    void increment_tree_iterator_00448c10(bsp::oct18_tail_a::DialogIterator& it) override {
+        if (it.owner != &owner_.map || it.node != &node_ || current_ == end_)
+            throw std::logic_error("00448C10: invalid active-dialog iterator");
+        ++current_;
+        refresh_key();
+        it.node = current_node();
+    }
+private:
+    Node* current_node() { return current_ == end_ ? &sentinel_ : &node_; }
+    void refresh_key() {
+        if (current_ != end_) {
+            node_.key = {static_cast<std::uint32_t>(current_->first.size()),
+                         current_->first.data()};
+        }
+    }
+    typename DialogMap::const_iterator current_, end_;
+    Owner owner_;
+    Node sentinel_, node_;
+    std::vector<std::string> ids_;
+};
+
 class ScriptDialogBinding final : public bsp::cc13_seg56::DialogStartHost,
                                   public bsp::cc13_seg56::ContentHost,
                                   public bsp::cc13_seg56::PresentationHost,
@@ -7123,12 +7197,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                     id.c_str(), active_dialogs_.size());
             },
             [this]() {
-                // 00450750: the ids in map order.
                 ++dialog_queries_;
-                std::vector<std::string> ids;
-                ids.reserve(active_dialogs_.size());
-                for (const auto& dialog : active_dialogs_) ids.push_back(dialog.first);
-                return ids;
+                ScriptDialogIdCollection<decltype(active_dialogs_)> collection(active_dialogs_);
+                return collection.collect();
             },
             [this](const std::vector<std::string>& ids) {
                 // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, id) per id.
