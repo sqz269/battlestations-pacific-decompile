@@ -1,0 +1,286 @@
+{
+  "goal": 5,
+  "chain": 871,
+  "slot": "g5-w9",
+  "run": 1887,
+  "baseline_head": "3b9d6a2e81",
+  "scope": "ShaderStateList pool pointer-array helpers on retained 0108FEE4 +28h state",
+  "rows": [
+    {
+      "native": "00b621e0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_shader_state_list_pool_table_reserve_00b62360 / native_shader_state_list_pool_table_grow_00b62230",
+      "operation": "SetCapacity",
+      "evidence": "bsp.py show 00b621e0; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00b62230",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_shader_state_list_pool_table_push_back_00b622e0",
+      "operation": "Grow",
+      "evidence": "bsp.py show 00b62230; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b622e0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeShaderStateListPool::allocate_slot_00b62630",
+      "operation": "PushBack",
+      "evidence": "bsp.py show 00b622e0; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b62360",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeShaderStateListPool::initialize_00b623d0",
+      "operation": "Reserve",
+      "evidence": "bsp.py show 00b62360; original callers 00b623d0 / 00b62630 inline the same actual pool+28h operations",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneNumericPropertyMerge",
+      "reason": "Already compiled through the native scene-property projection at baseline; no new wiring needed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Already called=true at baseline with two compiled call sites; the ready text state is not missing wiring."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TailGunnerBot skill notification",
+      "reason": "Already directly called on loaded TailGunnerBot configuration and owned gun state at baseline."
+    },
+    {
+      "native": "008fe140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: target-kind query",
+      "reason": "Already directly called by the live target-kind host path at baseline."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing the actual constructed movie-camera screen owner and current/default deviation fields."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing the actual constructed movie-camera screen owner and current/default overview-height fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing the actual movie-camera screen current/default speed limits and acceleration-time owner."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing the actual movie-camera screen acceleration-time owner and Lua-to-screen consumer."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path messages",
+      "reason": "Missing a presence-zero clear-message producer and retained path objects for selectable director slots."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: command-target descriptor initialization",
+      "reason": "Missing an entry-reachable descriptor initialization callback backed by the actual class ordinal."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message path",
+      "reason": "Missing the retained complete controller state message producer and transport consumer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot path",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and snapshot transport consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance scoring",
+      "reason": "Missing real per-member reconnaissance values and their live group-scoring consumer."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing the parser-owned per-mode ClassPairRow table and live spawn-composition consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-spawn gate",
+      "reason": "Missing the complete live spawn-group scoring/source-selection owner; no fabricated gate inputs supplied."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: land state registration",
+      "reason": "Missing the eight actual land-state objects and executable entry profiles."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land-task installation",
+      "reason": "Missing complete base/composite task construction and executable state/profile services; another worker also investigated this owner."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: land-follow parameters",
+      "reason": "Missing the actual A4h follow-parameter singleton and state+6Ch destination owner."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land moveto construction",
+      "reason": "Missing the actual constructed land-moveto object and complete task/approach service contract."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon slot invalidation",
+      "reason": "Missing NativeReconDirtyAccess to real slot+25 bytes, player contexts and world+193Ch invalidation."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision filtering",
+      "reason": "Missing actual DYN shape-chain storage and manifold invalidation/world-lock services."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision filtering",
+      "reason": "Missing actual DYN hull-shape storage and filter-change manifold invalidation."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope collision group",
+      "reason": "Missing actual periscope shape-group ownership and manifold invalidation."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp: point-light scalar deletion",
+      "reason": "Missing an entry-reachable actual point-light deletion producer; existing lifetime views alone do not establish a game path."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_lifetime.cpp: particle-model scalar deletion",
+      "reason": "Missing an entry-reachable complete particle-model deletion producer; no new call could be established from current owners."
+    },
+    {
+      "native": "00bac2b0",
+      "status": "skipped",
+      "host_site": "src/native_tracer_lifetime.cpp: tracer scalar deletion",
+      "reason": "Missing an entry-reachable complete native tracer deletion producer."
+    },
+    {
+      "native": "00acf7e0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: FrameBox pool allocation",
+      "reason": "Missing an entry-reachable FrameBox pool process in this build; baseline generic table calls cover only seven other pool types."
+    },
+    {
+      "native": "00acf860",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: FrameBox pool construction",
+      "reason": "Missing an entry-reachable FrameBox pool process in this build."
+    },
+    {
+      "native": "00acff70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: FrameBox pool construction",
+      "reason": "Missing a live FrameBox pool consumer; retained factory support does not establish activation."
+    },
+    {
+      "native": "00acf8e0",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_lifetime.cpp: scalar deletion",
+      "reason": "Missing a live FrameBox deletion producer; the process pool remains outside the compiled entry graph."
+    },
+    {
+      "native": "0071cea0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: oriented rectangle containment",
+      "reason": "Missing the original caller and real oriented-rectangle consumer; the native caller query returned no sites."
+    },
+    {
+      "native": "0071cf30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: oriented rectangle clamp",
+      "reason": "Missing the live oriented-rectangle path owner and clamp consumer."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartHost::write_checkpoint",
+      "reason": "Missing the pre-load checkpoint comparison, actual checkpoint Lua owner/current mission key and storage continuation."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Multiplayer-only player-count path; excluded from this single-player wiring task."
+    }
+  ],
+  "before": {
+    "readiness_wired": 10723,
+    "compiled_reconstructed_called": 5593,
+    "compiled_reconstructed_total": 6216
+  },
+  "validation": {
+    "initial_build": "passed; all four CTests",
+    "final_build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed",
+    "call_graph": "5593/6216 -> 5597/6220 reconstructed addresses called from entry; four distinct address-named entries verified by call_graph.py who",
+    "call_graph_path": "WinMainCRTStartup -> GameStartupHost -> GameNativeGuiEffectProbe -> GameNativeGuiEffectApplication -> NativeMaterialEffectNativeChildren -> read_native_shader_descriptor_00b43b00 -> read_native_shader_samplers_00b41830 -> read_native_shader_sampler_00b57b50 -> NativeShaderStateListPool::allocate_slot_00b62630 -> native_shader_state_list_pool_table_push_back_00b622e0",
+    "float_lint": "not required: no float math changes",
+    "diff_check": "git diff --check passed",
+    "new_tests": 0,
+    "ghidra": "verified bsp project/program through Client.verify; existing template shape names retained, comments appended under write lock, project saved and four affected exports refreshed",
+    "readiness": "10723 -> 10723 in the game-only summary. The four native TMPL_ / tmpl_shape pointer-array entries are intentionally excluded from readiness rows; the built call graph separately verifies all four as reachable (5593 -> 5597)."
+  },
+  "limits": {
+    "abi_compatible": false,
+    "game_validated": false,
+    "game_run": false
+  },
+  "notes": [
+    "Source reuse replaces the existing ShaderStateList table path without a second execution.",
+    "Ghidra shape names retained; evidence comments preserve prior comments, with rollback records in local/ghidra-annotations-20261108T141457Z.json.",
+    "Other workers own Icon and Group table dispatch; shared template signature chosen to match their Append parameter.",
+    "ShaderStateList table operations retain unsigned Win32 capacity/byte arithmetic, capacity-before-allocation publication and count/data reloads after the allocator.",
+    "Source reuse of AA6FA0 SetCapacity keeps a single allocation/copy/free implementation; original B62xxx bodies inline the same schedule.",
+    "No game was launched; compiled reachability is separate from runtime/gameplay or original ABI validation.",
+    "Shared source and 00b60000 ledger leases released after the source and metadata were final, before committing, to unblock queued workers.",
+    "The native template-library classification was retained rather than changed to increase the game-only readiness count."
+  ],
+  "after": {
+    "compiled_reconstructed_called": 5597,
+    "compiled_reconstructed_total": 6220,
+    "readiness_wired": 10723
+  }
+}

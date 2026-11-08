@@ -1,5 +1,6 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_shader_state_list_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -64,7 +65,8 @@ void destroy_section(NativeMaterialPoolStorage& storage) noexcept {
     }
     DeleteCriticalSection(section(storage));
 }
-template<class Pool> void initialize_pool(
+template<class Pool, auto Reserve = &native_gui_pool_table_reserve_00aa7740>
+void initialize_pool(
     AllocatorListDomain& list, NativeMaterialPoolStorage& storage) {
     list.prepend_base_element(storage.allocator_00);
     storage.allocator_00.native_vtable_00 = Pool::native_vtable;
@@ -84,7 +86,7 @@ template<class Pool> void initialize_pool(
         // Source reuse of 00AA7740, not an original CALL claim: bsp.py show
         // 00AA79A0 has the same reserve(32) at pool+28h, inside unwind state 2.
         // The common pool engine retains the actual published table header.
-        native_gui_pool_table_reserve_00aa7740(native_gui_pool_slab_table(storage), 32);
+        Reserve(native_gui_pool_slab_table(storage), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table(storage);
@@ -107,7 +109,8 @@ template<class Pool> std::byte* initialize_slab(void* raw, std::uint32_t index) 
     }
     return bytes;
 }
-template<class Pool, auto Initialize = &initialize_slab<Pool>>
+template<class Pool, auto Initialize = &initialize_slab<Pool>,
+    auto Append = &native_gui_pool_table_push_back_00aa76c0>
 void* allocate_slot(NativeMaterialPoolStorage& storage) {
     EnterCriticalSection(section(storage));
     adjust_recursion(storage, 1);
@@ -121,7 +124,7 @@ void* allocate_slot(NativeMaterialPoolStorage& storage) {
         // bsp.py show 00AA7A80: append the actual newly initialized slab AFTER
         // publishing first_free_slab, under this same lock. 00AA76C0 is its
         // out-of-line equivalent; it replaces the inline growth/copy/append.
-        native_gui_pool_table_push_back_00aa76c0(native_gui_pool_slab_table(storage), slab);
+        Append(native_gui_pool_slab_table(storage), slab);
     }
     auto* slab = storage.slabs_28[storage.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(
@@ -310,12 +313,20 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
     :allocator_list_(list),storage_(storage) {
     list.bind_virtual0(storage.allocator_00,{native_vtable,native_virtual0,this,&invoke_trim});
 }
-void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
+void NativeShaderStateListPool::initialize_00b623d0(){
+    // 00B623D0 inlines B62360's reserve(32) over the retained pool+28h
+    // header, inside unwind state 2. Reuse that body without another reserve.
+    initialize_pool<NativeShaderStateListPool,
+        &native_shader_state_list_pool_table_reserve_00b62360>(allocator_list_,storage_);
+}
 void* NativeShaderStateListPool::allocate_slot_00b62630(){
     // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
     // feed 00B620F0 before the slab table/count publication.
+    // 00B62630 then inlines B622E0's table growth/append, under the same
+    // critical section, after publishing the actual slab's first-free index.
     return allocate_slot<NativeShaderStateListPool,
-        &initialize_native_shader_state_list_slab_00b620f0>(storage_);
+        &initialize_native_shader_state_list_slab_00b620f0,
+        &native_shader_state_list_pool_table_push_back_00b622e0>(storage_);
 }
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
@@ -540,5 +551,37 @@ __declspec(noinline) void native_gui_pool_table_push_back_00aa76c0(
 __declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     if (table.capacity < capacity) native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+// The ShaderStateList table has the SAME three-word representation. Original
+// B621E0/B62230/B622E0/B62360 duplicate the allocation/copy/free schedule above;
+// the pool members B623D0 and B62630 inline it. These entries source-reuse the
+// common implementation, not an original CALL edge or register-ABI replacement.
+// Keep the address entries out of line for compiled reachability evidence.
+__declspec(noinline) void native_shader_state_list_pool_table_set_capacity_00b621e0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // B621E0 publishes capacity BEFORE allocation; the common body reloads the
+    // live count/data after allocation, null-tests each destination, frees the
+    // old backing and only then publishes the replacement. No second copy.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+__declspec(noinline) void native_shader_state_list_pool_table_grow_00b62230(
+    NativeGuiPoolSlabTable& table) {
+    native_shader_state_list_pool_table_set_capacity_00b621e0(
+        table, table.capacity * 2u + 2u);
+}
+__declspec(noinline) void native_shader_state_list_pool_table_push_back_00b622e0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        native_shader_state_list_pool_table_grow_00b62230(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void native_shader_state_list_pool_table_reserve_00b62360(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_shader_state_list_pool_table_set_capacity_00b621e0(table, capacity);
 }
 } // namespace bsp
