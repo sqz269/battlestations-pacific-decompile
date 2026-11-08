@@ -12506,15 +12506,23 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
         std::uint32_t command = 0;
         std::string target_name;
         if (on_water) {
-            // 007F4E5D..007F4E97: stop at the squadron's own position +FCh.
-            // SUBSTITUTION, labelled: 007EF8F0 / 00468560 are unread; the
-            // leader's position is passed as the descriptor's point.
+            // 007F4E87 calls 007EF8F0 before 00468560 builds the stop target
+            // (bsp.py show 007f4ba0 --asm, 007F4E5D..007F4E97). The host's
+            // fused squadron/leader supplies +FCh; the Map load publishes the
+            // selected world+711Ch (NW) and +7128h (SE) corners on the Lua host.
+            const bsp::WorldMapBounds* bounds = host.lua.world_border_bounds();
+            if (bounds == nullptr) {
+                host.log.unimplemented("Squadron::initial_command missing world bounds", "007ef8f0");
+                return;
+            }
             const GameUnitSlot& leader = *host.slots[squadron_index];
             target.kind = 0;
             target.position_valid = 1;
-            target.position[0] = leader.motion.position[0];
-            target.position[1] = leader.motion.position[1];
-            target.position[2] = leader.motion.position[2];
+            bsp::band_007a_cc13::world_clamp_point_to_map_bounds_007ef8f0(
+                leader.motion.position,
+                bounds->north_west[0], bounds->north_west[2],
+                bounds->south_east[0], bounds->south_east[2], target.position);
+            host.done("Squadron::initial_command clamp point", 0x007ef8f0u);
             command = 0x00E08F88u;                              // stop
             target_name = "(position)";
         } else {
