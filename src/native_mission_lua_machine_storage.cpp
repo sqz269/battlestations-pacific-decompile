@@ -2,6 +2,7 @@
 
 #include "bsp/settings_seg29_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/storage_pool.hpp"
 
 extern "C" {
 #include <lua.h>
@@ -56,7 +57,9 @@ const volatile LibraryRow libraries[] = {
 void* construct_native_mission_lua_machine_006b8740(void* actual_machine) {
     void* const captured = actual_machine;
     profile(captured) = 0x00cf8394u;
-    lua_State* const created = luaL_newstate();
+    // 00A6A260's modified allocator is A6A1D0 with null userdata. Retain the
+    // actual Lua sizes and pool B across every allocation and lua_close.
+    lua_State* const created = lua_newstate(&lua_allocate_00a6a1d0, nullptr);
     state(captured) = created;
     lua_atpanic(created, &cc13_seg29::lua_machine_panic_006b8720);
     lua_gc(state(captured), LUA_GCSETPAUSE, 100);

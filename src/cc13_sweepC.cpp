@@ -1921,7 +1921,6 @@ float plane_signed_distance_00b999a0(const void* plane, const float* point) {
 __declspec(noinline) void pointer_table_grow_00aace40(PointerTableAllocationHost& host, void* table) {
     pointer_table_grow(host, table);
 }
-void pointer_table_grow_00acbe50(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acd250(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acefc0(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 

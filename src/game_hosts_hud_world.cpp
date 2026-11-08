@@ -35,6 +35,7 @@
 #include "bsp/local_player_unit_lists.hpp"  // 008DDF90, goal 4 chain 376
 #include "bsp/cc13_seg41_land.hpp"          // 0074DDF0, the land vehicle's +B8h
 #include "bsp/band_0085_cc13.hpp"           // 008DA130 / 008DA140
+#include "bsp/band_0060_cc13.hpp"           // 00638B90, live marker margins
 #include "bsp/engine_seg56_cc13.hpp"        // 008DACD0 / 008DAD30
 #include "bsp/game_hosts_gunnery.hpp"       // the recon pass records
 #include "bsp/game_hosts_hud.hpp"           // 00645060
@@ -2205,12 +2206,17 @@ void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::siz
 void GameHudMarkersHost::Impl::place_marker(std::size_t index,
     const bsp::HudMarkerScreenBounds& bounds, const bsp::HudMarkerFlags& flags) {
     if (page == nullptr || sidemarker == nullptr || type_icon == nullptr) return;
-    const float centre_x = 0.5f * (bounds.min_x + bounds.max_x);
-    const float centre_y = 0.5f * (bounds.min_y + bounds.max_y);
-    if (!(centre_x > clip.left && centre_x < clip.right && centre_y > clip.top
-            && centre_y < clip.bottom)) {
-        return;
-    }
+    float centre_x = 0.5f * (bounds.min_x + bounds.max_x);
+    float centre_y = 0.5f * (bounds.min_y + bounds.max_y);
+    // 0063D224 (bsp.py show 0063d1e0 --asm) clamps the marker anchor before
+    // writing its widgets. 0064361B..0064367F publishes BOTH horizontal
+    // margin pairs from this frame's GUI extent; publish_clip_rect retains
+    // that same state here. The old strict-interior test dropped edge markers.
+    const bsp::band_0060_cc13::ScreenMargins margins{
+        clip.left, clip.right, clip.left, clip.right, clip.top, clip.bottom};
+    bsp::band_0060_cc13::clamp_to_screen_margins_00638b90(
+        centre_x, centre_y, margins, wide_aspect);
+    done("HudMarkers::clamp_to_screen_margins", 0x00638b90u);
     ++summary.markers_on_screen;
     GuiLayoutWidget* marker = nullptr;
     if (kHudMarkerPoolsBound) {

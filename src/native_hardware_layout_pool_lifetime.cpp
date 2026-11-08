@@ -1,4 +1,5 @@
 #include "bsp/native_hardware_layout_pool_lifetime.hpp"
+#include "bsp/native_hardware_layout_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -38,6 +39,50 @@ void destroy_section_00402f70(void* pool) noexcept {
 
 } // namespace
 
+// 00B601C0 listing: capacity is published before wrapped capacity*4
+// allocation. Reload count/data after the real new-handler; copy forwards,
+// skip only an exactly null destination, free current old data, then publish
+// the captured replacement. The four original template bodies inline this
+// same operation; share its reconstruction without a second address body.
+__declspec(noinline) void set_native_hardware_layout_table_capacity_00b601c0(
+    void* table, std::uint32_t capacity) {
+    word(table, 8) = capacity;
+    const auto bytes = capacity * 4u;
+    void* const replacement = singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes});
+    for (std::uint32_t index = 0; index < word(table, 4); ++index) {
+        auto* const destination = reinterpret_cast<void*>(
+            reinterpret_cast<std::uintptr_t>(replacement) + index * 4u);
+        if (destination) pointer(destination, 0) = pointer(pointer(table, 0), index * 4u);
+    }
+    void* const old_data = pointer(table, 0);
+    if (old_data) singleton_lifetime_free(old_data);
+    pointer(table, 0) = replacement;
+}
+
+__declspec(noinline) void grow_native_hardware_layout_table_00b60210(void* table) {
+    // 00B60210: unsigned DWORD wrap in both growth and allocation size.
+    set_native_hardware_layout_table_capacity_00b601c0(table, word(table, 8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_hardware_layout_table_00b603f0(
+    void* table, const void* source) {
+    // 00B603F0 listing: growth tests equality; dereference the supplied word
+    // AFTER growth, then reread count after the store (the words may alias).
+    if (word(table, 4) == word(table, 8)) grow_native_hardware_layout_table_00b60210(table);
+    auto* const destination = reinterpret_cast<void*>(
+        reinterpret_cast<std::uintptr_t>(pointer(table, 0)) + word(table, 4) * 4u);
+    if (destination) pointer(destination, 0) = pointer(const_cast<void*>(source), 0);
+    word(table, 4) = word(table, 4) + 1u;
+}
+
+__declspec(noinline) void reserve_native_hardware_layout_table_00b60470(
+    void* table, std::uint32_t capacity) {
+    // 00B60470 uses an unsigned comparison and performs no shrink.
+    if (word(table, 8) < capacity)
+        set_native_hardware_layout_table_capacity_00b601c0(table, capacity);
+}
+
 void free_native_hardware_layout_pool_table_00b60020(void* header) noexcept {
     auto* const current = pointer(header, 0);
     if (current) singleton_lifetime_free(current);
@@ -60,18 +105,10 @@ void* initialize_native_hardware_layout_pool_00b604d0(
         word(pool, 0x30) = 0;
         word(pool, 0x34) = 0xffffffffu;
         unwind_state = 2;
-        if (word(pool, 0x30) < 32u) {
-            word(pool, 0x30) = 32;
-            auto* const replacement = singleton_lifetime_allocate(
-                {SingletonAllocationKind::pointer_slots, 0x80, 0x80});
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                auto* const destination = static_cast<unsigned char*>(replacement) + index * 4u;
-                if (destination) pointer(destination, 0) = pointer(pointer(pool, 0x28), index * 4u);
-            }
-            free_native_hardware_layout_pool_table_00b60020(
-                static_cast<unsigned char*>(pool) + 0x28);
-            pointer(pool, 0x28) = replacement;
-        }
+        // 00B604D0 inlines the same unsigned reserve operation as 00B60470.
+        // Keep it inside FH3 state 2 so the existing unwind remains the owner.
+        reserve_native_hardware_layout_table_00b60470(
+            static_cast<unsigned char*>(pool) + 0x28, 32u);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) {

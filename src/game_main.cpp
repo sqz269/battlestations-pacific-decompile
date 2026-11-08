@@ -1181,6 +1181,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native GUI Text pool CRT CD71F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1 type_bootstrap=pending_canonical_vfs",
             text_pool_atexit, sizeof(bsp::NativeGuiTextPoolStorage));
+        // CE3480/CD7280: ECX=F8BE5C, CALL ABC570, atexit(CE0AA0).
+        // Start the SAME Curve process owner used by AA1800 after Text and
+        // before Group; its constructor reserves the actual pool+28h table.
+        auto& gui_curve_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiCurvePoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int curve_pool_atexit = gui_curve_process.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
+            curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
@@ -1188,6 +1198,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_pool_atexit = gui_group_process.initialize_once_00cd7440();
         log.notef("native GUI Group pool CRT CD7440: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", group_pool_atexit, sizeof(bsp::NativeGuiGroupPoolStorage));
+        // CE34BC points to CD75F0: MOV ECX,F8C09C; CALL ACC1D0; atexit(CE0B10).
+        // Start the same process owner used by the GUI Model factory, in CRT order.
+        auto& gui_model_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiModelPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_model_pool_atexit = gui_model_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Model pool CRT CD75F0: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1", gui_model_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // Original CRT table CE34E4 selects CD77F0, before the particle
         // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
         auto& traceline_pool = bsp::game::game_native_traceline_pool_process();
