@@ -1,0 +1,332 @@
+{
+  "run": 1851,
+  "goal": 5,
+  "chain": 857,
+  "slot": "g5-w6",
+  "branch": "agent/g5-w6",
+  "picked": "Scoring_GetTotalMissionScore over the retained mission-result slot records",
+  "baseline_head": "90a5b512df13de03dc8a2c7d8cf17131c340d2bb",
+  "counts": {
+    "readiness_wired_before": 10705,
+    "readiness_wired_after": 10706,
+    "entry_reachable_addresses_before": 5574,
+    "entry_reachable_addresses_after": 5575
+  },
+  "rows": [
+    {
+      "native": "008b8ff0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline -> GameMissionLuaHost::run_scoring_record_binding -> lua_binding_scoring_get_total_mission_score_008b8ff0",
+      "state_source": "ScoringRecords::slot_total_score -> MissionResultHost::scoring_slot(slot).totals_1c8[6]",
+      "evidence": "008B90D8 selects local slot, 008B90E9..008B9119 selects argument zero in nonzero session mode; 008B911E..008B912A reads manager+slot*284h+1E4h (record+1E0h); 008B9136 pushes the integer.",
+      "original_abi": "__fastcall(lua_State*) -> Lua result count; existing reconstructed C++ body uses argument/result/score host interfaces."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam host reset methods",
+      "reason": "The current MovCam host methods stop at movcam_new_unreached; a live movie-camera storage owner with the saved default fields is missing."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam host reset methods",
+      "reason": "The current MovCam host methods stop at movcam_new_unreached; a live movie-camera storage owner with the saved default fields is missing."
+    },
+    {
+      "native": "007fbe20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndShell::record_award",
+      "reason": "The shell only records this call; its native profile counter-map adapter and owning key/string state were not established in this packet."
+    },
+    {
+      "native": "00a410a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndShell::grant_award",
+      "reason": "Online award-queue readiness is outside the single-player wiring scope."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: shape/periscope collision call sites",
+      "reason": "The host records collision changes; a live raw shape owner plus manifold-lock/clear provider was not established in this packet."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: shape/periscope collision call sites",
+      "reason": "The host records collision changes; a live raw shape owner plus manifold-lock/clear provider was not established in this packet."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: shape/periscope collision call sites",
+      "reason": "The host records collision changes; a live raw shape owner plus manifold-lock/clear provider was not established in this packet."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree operations",
+      "reason": "The built graph has no linked error_context_insert_unique_00bf2480 body; an entry-reachable native error-context map producer/consumer is missing."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree operations",
+      "reason": "The built graph has no linked error_context_insert_unique_00bf2480 body; an entry-reachable native error-context map producer/consumer is missing."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree operations",
+      "reason": "The built graph has no linked error_context_insert_unique_00bf2480 body; an entry-reachable native error-context map producer/consumer is missing."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree operations",
+      "reason": "The built graph has no linked error_context_insert_unique_00bf2480 body; an entry-reachable native error-context map producer/consumer is missing."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream-reader/writer helpers",
+      "reason": "A live native stream owner with its original virtual I/O methods, chunk storage and remaining-byte counter was not established; session bit cursors use a different protocol."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream-reader/writer helpers",
+      "reason": "A live native stream owner with its original virtual I/O methods, chunk storage and remaining-byte counter was not established; session bit cursors use a different protocol."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream-reader/writer helpers",
+      "reason": "A live native stream owner with its original virtual I/O methods, chunk storage and remaining-byte counter was not established; session bit cursors use a different protocol."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "The candidate native submission contains the calls, but an entry-reachable submission operation with its camera and command-queue owners was not established in this packet."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "The candidate native submission contains the calls, but an entry-reachable submission operation with its camera and command-queue owners was not established in this packet."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "The candidate native submission contains the calls, but an entry-reachable submission operation with its camera and command-queue owners was not established in this packet."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native listbox input, clear, selection, highlight and scroll operations",
+      "reason": "A live native Listbox allocation/factory and NativeGuiListboxCalls adapter were not established; worker g5-w8 independently confirmed no live Listbox storage factory."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp: construct_native_game_grid_0070bd70",
+      "reason": "The constructor already runs initialize_grid_body under its active grid operation; calling the standalone initializer would start grid_begin again, and the live native grid construction owner was not established."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: checkpoint_record_copy_construct_00437490",
+      "reason": "The profile checkpoint caller uses semantic records; a live native 14h source/destination record with NativeStringRawPoolContext was not established."
+    },
+    {
+      "native": "00af6360",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: build_foliage_visible_set_00af0c50",
+      "reason": "The mission-frame root records foliage work; a concrete particle-model owner and FoliageBuildHost/ParticleModelFrameHost geometry provider are missing."
+    },
+    {
+      "native": "00af63a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: build_foliage_visible_set_00af0c50",
+      "reason": "The mission-frame root records foliage work; a concrete particle-model owner and FoliageBuildHost/ParticleModelFrameHost geometry provider are missing."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: UnitDebugInspector_PrintFlooded_006fb750",
+      "reason": "The inspected consumer is the excluded unit debug inspector; no single-player gameplay consumer of this flooded-fraction getter was established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList candidates",
+      "reason": "A live candidate-score list producer/consumer is missing; the documented native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList candidates",
+      "reason": "A live candidate-score list producer/consumer is missing; the documented native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "A real per-member reconnaissance-value provider and corresponding group-scoring consumer were not established."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp and src/band_0080_cc13.cpp: support-site predicates",
+      "reason": "A live support-site availability/squad inventory and its owner-health/menu consumer were not established."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp and src/band_0080_cc13.cpp: support-site predicates",
+      "reason": "A live support-site availability/squad inventory and its owner-health/menu consumer were not established."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_sound_step_007de490",
+      "reason": "The game loads smoothing-rate settings, but a retained engine-sound parameter owner and live pitch/volume sink were not established."
+    },
+    {
+      "native": "00867320",
+      "status": "skipped",
+      "host_site": "src/point_effect_children.cpp and src/point_effect_owner.cpp: point-effect creation/entry append",
+      "reason": "The internal reconstructed paths contain these operations, but an entry-reachable game point-effect owner and render-reference producer were not established."
+    },
+    {
+      "native": "00868420",
+      "status": "skipped",
+      "host_site": "src/point_effect_children.cpp and src/point_effect_owner.cpp: point-effect creation/entry append",
+      "reason": "The internal reconstructed paths contain these operations, but an entry-reachable game point-effect owner and render-reference producer were not established."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/point_effect_children.cpp and src/point_effect_owner.cpp: point-effect creation/entry append",
+      "reason": "The internal reconstructed paths contain these operations, but an entry-reachable game point-effect owner and render-reference producer were not established."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene_text_escape_008ee5f0 callback",
+      "reason": "A live scene-specific string writer and its Seg59bHost adapter were not established; the inspected lexer is a reader."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: text-context glyph-byte acceptance",
+      "reason": "A live input-character admission consumer with its retained text-context font was not established; complete-string layout is a different operation."
+    },
+    {
+      "native": "00b65710",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: plane-set AABB classification",
+      "reason": "A concrete live camera plane-set storage/count adapter with the matching original AABB was not established."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp and src/native_distortion_lifetime.cpp: reserve helpers",
+      "reason": "The internal native value/distortion paths use the canonical reserves, but an entry-reachable owning producer was not established in this packet."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp and src/native_distortion_lifetime.cpp: reserve helpers",
+      "reason": "The internal native value/distortion paths use the canonical reserves, but an entry-reachable owning producer was not established in this packet."
+    },
+    {
+      "native": "00874e60",
+      "status": "skipped",
+      "host_site": "src/native_tick_subnode_requeue.cpp: raw tick-node unlink/reparent",
+      "reason": "A live raw tick receiver, incoming node owner and pending/lifetime publication adapters were not established."
+    },
+    {
+      "native": "00876020",
+      "status": "skipped",
+      "host_site": "src/native_tick_subnode_requeue.cpp: raw tick-node unlink/reparent",
+      "reason": "A live raw tick receiver, incoming node owner and pending/lifetime publication adapters were not established."
+    },
+    {
+      "native": "007f0f80",
+      "status": "skipped",
+      "host_site": "src/native_observer_member_initializer.cpp, src/native_lua_variant_header_initializer.cpp, src/native_ship_indexed_point_array.cpp: raw owner leaves",
+      "reason": "A concrete entry-reachable consumer of the original observer/map-header/indexed-point storage layout was not established in this packet."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/native_observer_member_initializer.cpp, src/native_lua_variant_header_initializer.cpp, src/native_ship_indexed_point_array.cpp: raw owner leaves",
+      "reason": "A concrete entry-reachable consumer of the original observer/map-header/indexed-point storage layout was not established in this packet."
+    },
+    {
+      "native": "00829180",
+      "status": "skipped",
+      "host_site": "src/native_observer_member_initializer.cpp, src/native_lua_variant_header_initializer.cpp, src/native_ship_indexed_point_array.cpp: raw owner leaves",
+      "reason": "A concrete entry-reachable consumer of the original observer/map-header/indexed-point storage layout was not established in this packet."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: final Win32 Release build passed; all 5 existing tests passed (14.21 seconds).",
+    "probe": "tests/wire_g5_c857_scoring_total_probe.cpp linked to rebuilt game objects except game_main.obj, with /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO; PASS production registry/trampoline dispatch, single result, stored total independent of keyed map, retained-record reload and slot selection",
+    "call_graph": "call_graph.py who 008b8ff0: REACHABLE, one call site at 101790cb from GameMissionLuaHost::run_scoring_record_binding",
+    "readiness": "008b8ff0: wired, called=true, call_sites=1, callers_live=1",
+    "game_run": false,
+    "float_math_changed": false,
+    "probe_link": "Rebuilt build/win32/bsp_game.dir/Release/*.obj excluding game_main.obj; bsp_core.lib, bsp_lua511.lib, bsp_zlib121.lib and the same Windows/D3D9 libraries as bsp_game; /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO.",
+    "probe_run": "local/c857-probe.exe <config/target.json binary>; original executable is read-only data input to the controlled child bootstrap."
+  },
+  "limits": [
+    "Reads the existing record+1E0h total; does not introduce a score-total recalculation or substitute keyed-map sums.",
+    "Invalid slots throw before the concrete scoring_slot implementation can fall back to slot zero; original indexing is unchecked.",
+    "Built reachability and the production Lua fixture are not gameplay validation."
+  ],
+  "assumptions": [
+    "Used the existing authoritative MissionResultHost scoring_slot records and existing multiplayer/local-slot selectors.",
+    "Selection-only surveys of the readiness list are not treated as additional reconstructed work."
+  ]
+}
