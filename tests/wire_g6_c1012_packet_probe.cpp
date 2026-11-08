@@ -1,7 +1,11 @@
-// One focused Win32 source fixture for the newly native 00771190 producer.
-// Link bsp_core.lib with /MANIFEST:EMBED; this does not execute the game.
+// Focused Win32 source fixture for native packet ownership and target admission.
+// Link the game_hosts_session_messages object and bsp_core.lib with
+// /MANIFEST:EMBED; this does not execute the game.
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_hosts_powerups.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/multiplayer_session_cc13.hpp"
+#include "bsp/session_participant_pools.hpp"
 
 #include <cstdio>
 #include <cstring>
@@ -9,7 +13,7 @@
 
 namespace {
 void require(bool condition) {
-    if (!condition) throw std::runtime_error("c1012 native scene packet ownership");
+    if (!condition) throw std::runtime_error("c1012 native packet ownership/admission");
 }
 class SelectedOwner final : public bsp::NativeSessionMessageOwnerView {
 public:
@@ -53,5 +57,23 @@ int main() {
     reused.resize_0041dd40(process.strings(), sizeof(name), true);
     require(reused.data() == owned);
     reused.release_to(process.strings());
-    std::puts("c1012: native scene payload, retained bytes and pool return passed");
+
+    // Both send operations must return false for either unsupported target
+    // field. PowerupManagerBinding then keeps its existing observation fallback.
+    bsp::HostSessionMessages messages;
+    bsp::SessionParticipantPools participants{bsp::ParticipantPoolInitialization::ZeroedGameAllocation};
+    const std::size_t local_slot = 0;
+    bsp::game_powerups::PowerupModifier modifier;
+    const std::int32_t operations[]{0, 2};
+    for (const auto operation : operations) {
+        modifier.unit_id = 1;
+        modifier.centre_id = 0;
+        require(!messages.broadcast_powerup_modifier(modifier, operation, participants, local_slot));
+        modifier.unit_id = 0;
+        modifier.centre_id = 1;
+        require(!messages.broadcast_powerup_modifier(modifier, operation, participants, local_slot));
+    }
+    modifier.centre_id = 0;
+    require(messages.broadcast_powerup_modifier(modifier, 2, participants, local_slot));
+    std::puts("c1012: native payload/pool return and insertion/expiration target rejection passed");
 }

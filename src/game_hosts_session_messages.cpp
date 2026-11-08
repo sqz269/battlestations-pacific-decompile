@@ -604,6 +604,11 @@ bool HostSessionMessages::broadcast_powerup_item(std::int32_t slot,
 bool HostSessionMessages::broadcast_powerup_modifier(const game_powerups::PowerupModifier& record,
     std::int32_t operation, const SessionParticipantPools& participants,
     const std::size_t& local_slot) const {
+    // 008E6FB0 always copies modifier+0Ch/+0Eh into message+24h/+26h,
+    // including expiration. The current resolver supplies index+1 tokens,
+    // not native unit+174h identities. Reject either nonzero target for every
+    // operation so the caller retains its unsupported-send observation.
+    if (record.unit_id != 0 || record.centre_id != 0) return false;
     // 008E6FB0 reads item->binding->unit+174h only for operation zero.
     // Expiration (operation two) never dereferences that graph.
     if (operation == 0 && record.item != nullptr
