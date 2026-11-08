@@ -1,0 +1,139 @@
+{
+  "goal": 5,
+  "chain": 806,
+  "slot": "g5-w2",
+  "base": "9b982737bc78099ea4ef13f40eb38bc89dca8411",
+  "summary": "The live robot registry comparator now calls the unique address-named 0043A610 body. The existing RobotNameLess comparison was moved, not duplicated; the adapter passes the real borrowed lookup/insertion key pointers.",
+  "rows": [
+    {
+      "native": "0043a610",
+      "status": "wired",
+      "host_site": "src/robot_config.cpp: RobotNameLess::operator(), inlined into find_robot_config_00900af0, register_robot_config_009013d0 and the registry lower-bound operation",
+      "evidence": "bsp.py show 0043a610 and --asm: right/left first-DWORD loads, pointer equality, null order and signed _stricmp result. The body retains fastcall ECX/EDX pointer-key inputs and AL bool output. Registry keys borrow descriptor+8 and the existing RobotNameKey lookup pointer.",
+      "call_graph": {
+        "reachable": true,
+        "call_sites": 3,
+        "callers": [
+          "registry lower-bound operation",
+          "find_robot_config_00900af0",
+          "register_robot_config_009013d0"
+        ],
+        "entry_path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost::frame -> GameMissionHost::advance -> finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameUnitsHost::load_gameplay_settings_0083b5e0 -> load_pilot_bot_config_00901610 -> load_robot_config_00901610 -> register_robot_config_009013d0 -> compare_cstring_key_casefold_0043a610"
+      }
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::Impl::report_loading_progress_0057bec0",
+      "reason": "Already calls report_loading_progress on the retained singleton and CRT bindings; the readiness identifier misses its unsuffixed body, so no additional wiring was needed."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector host make_command_target",
+      "reason": "Missing genuine current F87574/F87578/F8757C mutable native publications required by the literal initializer."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a retained native bot-state registry owner and entry-reachable construction callback; the live AI state projections do not supply that native registry."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing the live native registry producer and matching teardown owner required before destroying its allocation."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing an entry-reachable text-editor owner and its concrete current input-action singleton/update binding."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart host write_checkpoint",
+      "reason": "Mission-start checkpoint_differs still always returns false; reaching the clear requires the real profile checkpoint comparison and profile/storage erase continuation."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing an entry-reachable error-context map producer/erase path; its reconstructed erase caller is absent from the built executable."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450 and error_context_erase_00bf26c0",
+      "reason": "Missing an entry-reachable error-context map owner; the inspected advance and erase callers are absent from the built executable."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing the live error-context map insertion/erase owner before replacing its generic tree rotations."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing the live error-context map insertion/erase owner before replacing its generic tree rotations."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: runtime formation creation; src/flak_note_seg36_37_argon.cpp: UnitGroup_CreateForLeader_0070db20",
+      "reason": "Missing full native leader/init-with-leader services; the current retained group only provides constructor/first-leader projections, while this body invokes native allocation and initialization addresses."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug inspection caller",
+      "reason": "The identified original consumer is the debug inspector, which this single-player assignment excludes."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing the original per-parent reflection/property-description child producer; the frontend's flattened render sort is a different operation."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty-descriptor constructor consumer with the current class-ordinal publication; populated scene-target construction has different semantics."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: state_message_build_00721280",
+      "reason": "Missing a retained ControllerStateMessage producer/consumer carrying both native descriptors, controller mode and flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and its transport consumer; constructing an unused flattened copy would not wire gameplay."
+    },
+    {
+      "native": "0075a380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: formation message transport",
+      "reason": "The inspected live transport handles formation join/leave; missing the formation-set sender/receiver payload path required for this constructor."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed MSVC Win32 Release and all four CTests",
+    "call_graph": "python tools/call_graph.py; who 0043a610; path 0043a610",
+    "called_reconstructed_before": 5495,
+    "called_reconstructed_after": 5496,
+    "wired_text_before": 10644,
+    "wired_text_after": 10645,
+    "float_math_changed": false,
+    "new_tests": false,
+    "game_run": false,
+    "limitations": "The standard-container node/iterator projection and existing process CRT are unchanged. Build reachability is verified; native ABI differential and gameplay behavior were not run."
+  }
+}
