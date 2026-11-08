@@ -1,0 +1,97 @@
+{
+  "goal": 5,
+  "chain": 764,
+  "slot": "g5-w12",
+  "baseline": "692cd092a1",
+  "rows": [
+    {
+      "native": "00b1bf30",
+      "status": "wired",
+      "host_site": "src/native_render_scene_submission.cpp: submit_native_scene_00b1f4d0",
+      "evidence": "Replaces the single current command+28h load after queue append with the existing exact MOV EAX,[ECX+28h]/RET body; the returned actual context still goes directly to traverse_native_scene_00b72190."
+    },
+    {
+      "native": "00b1bf20",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp: execute_native_shadow_frame_job_00a8ae50",
+      "reason": "Missing entry-reachable shadow-job producer/dispatch; B1F4D0 traverses its incoming scene argument, so substituting a later command+4 load also requires proof against intervening provider mutation."
+    },
+    {
+      "native": "00a8ae50",
+      "status": "skipped",
+      "host_site": "src/native_shadow_command_queue.cpp: NativeShadowFrameJobDispatch::execute_current_00",
+      "reason": "Missing entry-reachable application binding of the actual shadow-job producer and scheduler dispatcher."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Missing entry-reachable main-scene submission caller; existing live B1F4D0 follows its own append/traverse/upload schedule."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "Missing entry-reachable metadata-update route; the inspected main-scene metadata caller is not linked on the live B1F4D0 path."
+    },
+    {
+      "native": "00b1d910",
+      "status": "skipped",
+      "host_site": "src/native_render_scene_submission.cpp: submit_native_scene_00b1f4d0 label copy",
+      "reason": "Missing a caller with matching source-pointer timing: B1F4D0 captures label data before resize, whereas B1D910 reloads source data after resize."
+    },
+    {
+      "native": "00b1d120",
+      "status": "skipped",
+      "host_site": "src/native_render_context.cpp: destroy_native_render_context_00b1d120",
+      "reason": "Missing an identified entry-reachable concrete context teardown caller in this packet; getter wiring adds no ownership or lifetime operation."
+    },
+    {
+      "native": "00b4cc00",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_frame_binding.cpp: get_native_post_effect_count_00b4cc00",
+      "reason": "Missing an identified live post-effect count consumer owning the required actual +20h storage."
+    },
+    {
+      "native": "00b4e3d0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_frame_binding.cpp: set_native_post_effect_frame_target_00b4e3d0",
+      "reason": "Missing an identified live frame-target binding caller with the same actual post-effect owner and reference-release context."
+    },
+    {
+      "native": "00b4ee70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: clear_native_distortion_resources_00b4ee70",
+      "reason": "Missing an identified entry-reachable distortion clear caller with its actual child-owner lifetime bindings."
+    },
+    {
+      "native": "00b4f150",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: destroy_native_distortion_owner_00b4f150",
+      "reason": "Missing an identified entry-reachable distortion-owner teardown caller and coupled actual child-owner bindings."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_tick_gate_passes_0099c270",
+      "reason": "Missing an identified live task+2F4h/unit+9C2h producer and global-side-index adapter in the inspected host path."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after the C++ change; all four CTests passed both times.",
+    "original_evidence": [
+      "bsp.py show 00b1f4d0: append precedes the current command+28h traversal argument load.",
+      "bsp.py show 00b1bf30 --asm: MOV EAX,[ECX+28h] at B1BF30; RET at B1BF33."
+    ],
+    "call_graph": "call_graph.py who 00b1bf30 reports a reachable call at 10582C46 from submit_native_scene_00b1f4d0; that caller's entry path runs through MissionCommandGraph, GameNativeRendererApplication::draw_mission_ship and GameDeviceHost::clear_and_present.",
+    "icf": "Release folds B1BF30 with four other identical functions. Object disassembly independently shows ECX=the actual command, CALL native_shadow_command_context_00b1bf30 at offset E6 and its exact REL32 relocation at E7, followed by traversal and upload. local/output/g5-c764-command-coff.txt retains the inspection.",
+    "wire_readiness_before": 10608,
+    "wire_readiness_after": 10611,
+    "new_verified_wirings": 1,
+    "readiness_limit": "The text scan additionally marks A8AE50 and B1BF20 wired after discovering their source file; neither has a new compiled call and neither is claimed as wired here.",
+    "call_graph_reachable_address_total_before": 5457,
+    "call_graph_reachable_address_total_after": 5457,
+    "call_graph_limit": "The aggregate reachable-address total stays constant because Release ICF folds this newly linked getter into an already reachable body; linked reconstructed-address count changes from 6066 to 6067.",
+    "runtime": "No game run; compiled caller, original field semantics and COFF relocation verified."
+  }
+}

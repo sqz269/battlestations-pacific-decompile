@@ -2,6 +2,7 @@
 #include "bsp/native_render_command_owner.hpp"
 #include "bsp/native_render_queue_access.hpp"
 #include "bsp/native_scene_render_traversal.hpp"
+#include "bsp/native_shadow_command_queue.hpp"
 #include "bsp/native_instance_group_upload.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -193,7 +194,10 @@ NativeRenderCommandStorage* submit_native_scene_00b1f4d0(
             }
         }
         append_command(queue, command, op);
-        auto* const context = reinterpret_cast<void*>(read_word(command, 0x28));
+        // B1F4D0 loads the current command+28h after the queue append. Reuse
+        // B1BF30's exact MOV EAX,[ECX+28h]/RET body on that same live command
+        // (bsp.py show 00b1f4d0; show 00b1bf30 --asm), without a second load.
+        auto* const context = native_shadow_command_context_00b1bf30(command);
         traverse_native_scene_00b72190(scene, &c.instances.render, context);
         upload_native_instance_groups_00b1e990(command, c.instances);
         argument_owned = false; // B1F5A1: disarm BEFORE the returning getter.
