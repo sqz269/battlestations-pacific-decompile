@@ -19,11 +19,14 @@ bool ai_command_install_deletes_previous(bool group_has_command) noexcept {
     return group_has_command;
 }
 
-bool ai_command_notification_is_discarded(AiCommandType type) noexcept {
-    // The +24h slot of all sixteen vtables between 00D22968 and 00D22C68 is
-    // 00A0FC90, which is `RET 8`. No id is an exception.
-    (void)type;
-    return true;
+__declspec(noinline) void ai_command_notify_member_00a0fc90(void* command,
+    void* current_command, void* target_descriptor) noexcept {
+    // bsp.py show 00A0FC90: RET 8. Replace the unused boolean predicate
+    // with the actual notification operation; none of its inputs is read.
+    // Keep a callable body so the executable graph can verify the splice.
+    (void)command;
+    (void)current_command;
+    (void)target_descriptor;
 }
 
 bool ai_entity_class_matches_009fe0b0(bool is_class_1b, bool is_class_45,

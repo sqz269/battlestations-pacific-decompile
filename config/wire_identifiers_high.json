@@ -775,9 +775,9 @@
    "address": "00a0fc90",
    "source": "src/ai_command_object.cpp",
    "identifiers": [
-    "ai_command_notification_is_discarded"
+    "ai_command_notify_member_00a0fc90"
    ],
-   "evidence": "include/bsp/ai_command_object.hpp:84-88 explicitly associates 00a0fc90 with declaration ai_command_notification_is_discarded; body src/ai_command_object.cpp:22. Original ABI/layout qualifications remain in ledger. Header: // vt+24h is 00A0FC90 (`RET 8`) in every one of the sixteen vtables between // 00D22968 and 00D22C68, so no class acts on a member notification. This // closes docs/AI_GROUP_THINK.md's \"whether any class in the block overrides // the slot was not settled\". bool ai_command_notification_is_discarded(AiCommandType type) noexcept;"
+   "evidence": "Goal5 chain786: replaced the unused boolean predicate with ai_command_notify_member_00a0fc90, the void notification operation declared in include/bsp/ai_command_object.hpp and defined once in src/ai_command_object.cpp. Original body is RET 8 and all16 command vt+24h slots select it. The live AI member pass calls it through GameAiCoordinatorHost::Impl::command_notify_member with the current command and opaque host projections; no original director/object ABI is claimed."
   },
   {
    "address": "00a152e0",
