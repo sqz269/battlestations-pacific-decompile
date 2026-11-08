@@ -1,0 +1,121 @@
+{
+  "chain": 947,
+  "worker": "agent/g5-w12",
+  "base": "426d2eb93c076a174c348de35edf627ad4e2b880",
+  "picked": "Reuse the existing owning native string/value constructor in live CEnum symbol insertion",
+  "rows": [
+    {
+      "native": "00aa9a20",
+      "status": "wired",
+      "host_site": "src/native_enum_symbol_insertion.cpp: insert_native_enum_symbol_word_008f2850, reached through LibraryEnumReader::declare_symbol and GameSceneContentsHost property-library loading",
+      "state": "Fresh actual 14h symbol-pool node, caller-owned NativeString key and mapped word, and the insertion's existing NativeStringRawPoolContext",
+      "evidence": "bsp.py show 008f2850 and 00aa9a20: identical zero-header, preserve-resize, post-resize copy and +8 value stores; replaces that inline sequence without a second construction/copy",
+      "abi": "Existing context-bearing C++ interface with a borrowing GuiNativeStringHost adapter; Original register/stack ABI not supplied"
+    },
+    {
+      "native": "008f2850",
+      "status": "wired",
+      "host_site": "src/native_enum_symbol_insertion.cpp: insert_native_enum_symbol_word_008f2850",
+      "previously_called": true,
+      "change": "Existing live caller now delegates only the fresh node's 0Ch owning string/value prefix to AA9A20; hit updates, linkage, preserved +10h storage and count publication remain here"
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "Missing actual game receiver and captured movie-screen owner required for the sound transition, screen flags and enter callback."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list planning",
+      "reason": "Missing live native score-list owner and gameplay consumer; documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list planning",
+      "reason": "Missing native candidate score records and a gameplay consumer for their chosen byte."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-member candidate collection",
+      "reason": "Existing reconstruction is a per-member predicate; the complete native group-list collector with world-set and output-list owners is missing from the inspected site."
+    },
+    {
+      "native": "008f5470",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::copy_or_merge",
+      "reason": "Already entry-reachable in the baseline from real bag owners; no missing caller to replace."
+    },
+    {
+      "native": "008f23e0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_assign_existing.cpp: assign_existing_native_scene_property_bag_008f23e0",
+      "reason": "Readiness already reports a live baseline call; no missing caller to replace."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/native_enum_symbol_lifetime.cpp: enum symbol teardown",
+      "reason": "Missing a genuine detached holder slot at the inspected teardown site; its pool/string services remain explicit rather than canonical process bindings."
+    },
+    {
+      "native": "008f3dc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: property-library lifetime",
+      "reason": "Missing a genuine detached property-library node holder with mapped payload ownership settled before returning its canonical pool slot."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp: texture-source runtime",
+      "reason": "Missing an activated animated texture-source owner with produced rate/children and the actual CE47A0 scale binding."
+    },
+    {
+      "native": "00acd250",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_sound_pool_table.hpp: append_native_gui_sound_pool_table_00acd430",
+      "reason": "The existing Sound table adapter already calls this sole body; missing runtime pool activation is being handled by concurrent c941."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/native_world_constant_byte.cpp: native_world_constant_byte_009035d0",
+      "reason": "Missing a recovered caller contract for World virtual slot 2; returning true at an arbitrary host site would not establish that contract."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "Missing the native F87574/F87578/F8757C runtime cell bindings required by the literal constructor's absolute reads."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::controlled_audio",
+      "reason": "Missing actual ship +BBCh emitter and +428h child sound-device owners in the controlled-unit host."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1: Win32 Release succeeded; all four existing CTests passed",
+    "focused_existing_coverage": "tests/math_tests.cpp chain 382: actual canonical enum owner/pool/string insertion, hit replacement, captured enum values and teardown",
+    "call_graph_before": {
+      "recon_called": 5696,
+      "recon_addresses": 6397
+    },
+    "call_graph_after": {
+      "recon_called": 5697,
+      "recon_addresses": 6398
+    },
+    "new_body_call_sites": 1,
+    "new_body_caller": "bsp::insert_native_enum_symbol_word_008f2850",
+    "entry_path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost -> GameMissionHost -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> property-library enum reader -> declare_native_enum_symbol_008f2e40 -> insert_native_enum_symbol_word_008f2850 -> gui_named_entry_construct_00aa9a20",
+    "readiness_before": 10815,
+    "game_run": false,
+    "limitations": "Build, existing fixture and static entry-reachability evidence only; retail gameplay and Original ABI equivalence are unverified.",
+    "readiness_after": 10816
+  },
+  "left": "Native sound-transition and animated texture-source owners; candidate-score overlay excluded; no new native enum/library holder slots introduced."
+}
