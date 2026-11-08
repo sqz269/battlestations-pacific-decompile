@@ -1,0 +1,322 @@
+{
+  "run": 1716,
+  "harness": "codex",
+  "goal": 5,
+  "chain": 797,
+  "slot": "g5-w9",
+  "baseline_head": "e51b7381722e62dbbe42541e8dd3f316bb60eaef",
+  "picked": "Constructed vehicle-class registry header backing the live mission descriptor cache",
+  "rows": [
+    {
+      "native": "00437e10",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::Bindings::Bindings (inlined into GameVehicleClassDescriptorCache constructor)",
+      "evidence": "Reachable compiled call 103A5E36 -> 1042DDE0; actual 401Ch registry +4/+8/+C is the live descriptor cache header; first resolve comes from mark_vehicle_class_row_00964790."
+    },
+    {
+      "native": "00435960",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::Bindings::party_rows_reserve_00435960",
+      "evidence": "Reachable compiled call 103A670D -> 103E4CB0; 00437E10 supplies the binary constant 400h and real registry+4010h; existing reserve body allocates three bytes per row."
+    },
+    {
+      "native": "004356f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: vehicle_class_registry_construct_00437e10",
+      "reason": "Existing identity-table body is reused but inlined into the new constructor in Release; no separate reachable compiled call is claimed."
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache construction",
+      "reason": "The live cache remains owned per GameMissionLuaHost; the process singleton publication and matching lifetime-registration/teardown owner are not established."
+    },
+    {
+      "native": "004359e0",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::Bindings",
+      "reason": "Only the binary constructor reservation is needed; no live party-row count/growth consumer was established."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight wingmate target query",
+      "reason": "Missing retained pilot+98h target publication for the current F876B8 step slot; command and approach targets are not sufficient."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammunition assignment callback",
+      "reason": "Missing retained native ammunition record, alternate+48h producer, reference slots and tree-copy lifetime host."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit vector clear callback",
+      "reason": "Missing native unit+660h owning vector with 44h elements and its lifetime adapter."
+    },
+    {
+      "native": "0081b010",
+      "status": "skipped",
+      "host_site": "src/live_effect_update.cpp: update_live_effects",
+      "reason": "No new live owning effect-array producer was established; the unit step still has an empty effect-array adapter."
+    },
+    {
+      "native": "009be050",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: follow hold lock",
+      "reason": "Concurrent g5-w7 claimed the function first; worker later confirmed missing live +520 publication and plan+270 input consumer."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530",
+      "reason": "Missing concrete production command-bar widget owner and MainMenuCommandResetHost."
+    },
+    {
+      "native": "005495e0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530",
+      "reason": "Missing concrete alternate-widget owner and reset host."
+    },
+    {
+      "native": "00549620",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_owner.cpp: set_main_menu_help_variant_00549620",
+      "reason": "Missing live command-owner help pages and reset callback binding."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "Missing matching original projection/margin producer; the current marker host culls its substitute camera projection before placement."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: mission camera callbacks",
+      "reason": "Missing retained native MovCamAngles owner and matching frame-update consumer."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_bigB1.cpp: MovCam target aiming",
+      "reason": "Missing live AimCameraView/AimTargetView adapters for the original caller."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No matching live product-query consumer was established; GUI orthographic projection and inverse-FOV script queries do not consume aspect times FOV."
+    },
+    {
+      "native": "00749210",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp: descriptor construction",
+      "reason": "Missing field-loader binding, effect reference/vector owners and base field-reader integration into the constructed native descriptor."
+    },
+    {
+      "native": "0074d4a0",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp: descriptor construction",
+      "reason": "Missing field-loader binding and live effect/wreck lookup owners; descriptor image/semantic field copies remain split."
+    },
+    {
+      "native": "00811ab0",
+      "status": "skipped",
+      "host_site": "src/unit_rudder.cpp: unit_shifted_update_00811ab0",
+      "reason": "Missing matching shifted-unit matrix_0074/matrix_0674 producer and controller/virtual-D8 adapter."
+    },
+    {
+      "native": "00b56200",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MSHD layer pointer storage",
+      "reason": "Missing original live MSHD layer pointer-array owner and allocation dispatcher."
+    },
+    {
+      "native": "00b56260",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MSHD render-mode pointer storage",
+      "reason": "Missing original live MSHD render-mode pointer-array owner."
+    },
+    {
+      "native": "00b562c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MSHD version pointer storage",
+      "reason": "Missing original live MSHD version pointer-array owner."
+    },
+    {
+      "native": "00b56320",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: MSHD LOD-phase pointer storage",
+      "reason": "Missing original live MSHD LOD-phase pointer-array owner."
+    },
+    {
+      "native": "00b580c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader_constant_rows_resize_00b580c0",
+      "reason": "Missing concrete live constant-list owner, native row-copy callback and pooled-string lifetime domain."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: helmsman_backfill_age_008141a0",
+      "reason": "Missing reached helm-message application with real sender timestamp, authority and backfill consumer."
+    },
+    {
+      "native": "007ee8f0",
+      "status": "skipped",
+      "host_site": "src/cc15_seg48.cpp: cc15_seg48_unit_attack_command_applies_007ee8f0",
+      "reason": "Missing original squadron/leader/target raw views and complete ordnance/query host for the attack-command predicate."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: unit debug inspector",
+      "reason": "Only identified original consumer is debug inspection, excluded by this assignment."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: atmosphere cloud tick",
+      "reason": "Missing constructed cloud-manager owner and reference-node world-axis producer; the live callback is record-only."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing parser-owned per-mode class-pair tables and original live final-weight consumer."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: unit_pick_row_value_00521f10",
+      "reason": "No original 34h-row collection producer was established for the live picker."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: unit_pick_read_position_00521fd0",
+      "reason": "No original picker entry+F0h position and +FCh publication owner was established."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message application",
+      "reason": "Missing presence-zero sender and retained path owners for every selectable director slot; the live sender adds points."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp: declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "Missing canonical published world+1A0Ch NativeLuaStateStorage and matching Lua declaration table producer."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "Already reachable at baseline via the real bag iterator; no new wiring."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "Existing same collector already calls the next iterator body; no new wiring."
+    },
+    {
+      "native": "004db190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: reset-to-title teardown",
+      "reason": "Matching title/platform-session reset trigger remains unimplemented; ordinary shutdown is not that trigger."
+    },
+    {
+      "native": "0057d430",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: game_is_loading_state_0057d430",
+      "reason": "Only identified original caller is the debug AutoTest driver, excluded by this assignment."
+    },
+    {
+      "native": "00545750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WeaponGroupScreenBinding target debug callback",
+      "reason": "Original red-color calls belong to target debug drawing, excluded by this assignment."
+    },
+    {
+      "native": "004f9d80",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: tactical-library detail refresh",
+      "reason": "Missing concrete production detail host and owned widgets for the original caller."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: relation display-name style",
+      "reason": "Matching live party display-name formatting consumer and binary style-table owner were not established."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp: frame-box factory",
+      "reason": "Existing factory already calls the exact generic frame-box pool allocation body; no new wiring."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing constructed Curve widget with authored point/width vectors and its tessellation/render consumer."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing reached typed timed-entry ownership consumer in the native GUI bridge."
+    },
+    {
+      "native": "00522050",
+      "status": "skipped",
+      "host_site": "src/hud_warning_screen.cpp: picker screen distance",
+      "reason": "Existing source caller already invokes this body; no distinct new reachable call was established in this pass."
+    },
+    {
+      "native": "0099bb40",
+      "status": "skipped",
+      "host_site": "src/pilot_command_path.cpp: pilot_cmd_slew_slot_0099bb40",
+      "reason": "Existing evaluator already invokes this body; Release has no separate symbol and no new wiring was established."
+    },
+    {
+      "native": "0099bee0",
+      "status": "skipped",
+      "host_site": "src/pilot_command_path.cpp: pilot_cmd_evaluate_plan_slots_0099bee0",
+      "reason": "Existing source command path already names this body; no distinct new reachable call was established."
+    },
+    {
+      "native": "009a3290",
+      "status": "skipped",
+      "host_site": "src/depth_charge_task_cc13.cpp: depth-charge stick sizing",
+      "reason": "Existing attack-run/aim callers already invoke this body; Release has no separate symbol and no new wiring was established."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 10638,
+    "readiness_wired_after": 10639,
+    "compiled_recon_called_before": 5484,
+    "compiled_recon_called_after": 5486
+  },
+  "validation": {
+    "official_build": "scripts/build.ps1 passed all four tests on both post-change builds; final CTest 13.22s.",
+    "call_graph": "00437E10 and 00435960 have direct reachable body calls from the changed owner; reset helper inlined and not counted",
+    "focused_probe": "tests/wire_g5_c797_vehicle_registry_probe.cpp passed cache growth/relocation, replacement refcount, shrink, capacity reuse and null boundaries; synthetic fixture, not game execution",
+    "probe_compile_command": "cl /nologo /std:c++17 /EHsc /MD /O2 /I include /Fo:local/output/c797-registry-probe.obj /Fe:local/output/c797-registry-probe.exe tests/wire_g5_c797_vehicle_registry_probe.cpp build/win32/bsp_game.dir/Release/game_host_vehicle_class.obj build/win32/bsp_game.dir/Release/gameplay_seg61_62_cc13.obj build/win32/bsp_game.dir/Release/cmake_pch.obj build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED /OPT:REF d3d9.lib user32.lib gdi32.lib ole32.lib advapi32.lib shell32.lib powrprof.lib",
+    "float_math": "No floating-point arithmetic changed."
+  },
+  "limitations": [
+    "Mission-owned registry domain remains; 00437F50 process singleton/lifetime registration not integrated.",
+    "Descriptor semantic copy and native constructor image remain split as documented in game_host_vehicle_class.hpp.",
+    "Party rows have real constructor reservation but no live count-growing consumer yet.",
+    "Native registry/descriptor destructors, original ABI and gameplay are not proven."
+  ],
+  "assumptions": [
+    "Kept the existing per-GameMissionLuaHost cache lifetime; the new raw header borrows exactly the existing vector allocation instead of introducing a second cache.",
+    "Host CRT malloc/free provide the reconstructed three-byte row allocator service; no original CRT failure/unwind equivalence claim."
+  ]
+}

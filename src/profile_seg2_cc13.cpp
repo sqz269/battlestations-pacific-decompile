@@ -509,7 +509,7 @@ void vehicle_class_registry_reset_index_tables_004356f0(Raw registry) noexcept {
 // cache vector +4h..+Ch and the party-row vector +4010h..+4018h zeroed, the
 // index tables set as in 004356F0, then 00435960(+4010h, 400h). The SEH frame
 // (00C5F191) only destroys the two vectors if the reserve throws.
-Raw vehicle_class_registry_construct_00437e10(Raw registry, Seg2Host& host) {
+Raw vehicle_class_registry_construct_00437e10(Raw registry, VehicleClassRegistryConstructionHost& host) {
     store_vtable(registry, kVehicleClassRegistryVtable);
     registry.at<std::uint32_t>(0x4) = 0;
     registry.at<std::uint32_t>(0x8) = 0;

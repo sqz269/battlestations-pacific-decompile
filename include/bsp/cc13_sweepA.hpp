@@ -68,8 +68,15 @@ struct HudUnitPickResetHost {
                                                           std::int32_t level) = 0;
 };
 
+// Complete allocation surface of the registry's three-byte party-row array.
+struct PartyRowsStorageHost {
+    virtual ~PartyRowsStorageHost() = default;
+    virtual void* operator_new_00bf55be(std::uint32_t size) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+};
+
 struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost, DirectionPitchYawHost,
-                    HudUnitPickResetHost {
+                    HudUnitPickResetHost, PartyRowsStorageHost {
     virtual ~SweepAHost() = default;
 
     // Existing raw-layout callers retain the original WORD load. Typed live
@@ -521,8 +528,8 @@ bool camera_mover_frustum_contains_point_0042e3d0(Raw mover, const float* point,
 void entity_set_name_004313d0(Raw entity, Raw name, std::uint32_t unused, SweepAHost& host);
 Raw four_vector_record_construct_00432380(Raw record);
 void camera_mover_step_base_00435410(Raw mover, float dt, SweepAHost& host);
-void party_rows_reserve_00435960(Raw rows, std::int32_t capacity, SweepAHost& host);
-void party_rows_resize_004359e0(Raw rows, std::int32_t count, SweepAHost& host);
+void party_rows_reserve_00435960(Raw rows, std::int32_t capacity, PartyRowsStorageHost& host);
+void party_rows_resize_004359e0(Raw rows, std::int32_t count, PartyRowsStorageHost& host);
 void lua_global_table_write_archive_00435f40(Raw owner, SweepAHost& host);
 void profile_manager_request_save_checkpoint_00438a00(Raw manager, const void* source,
                                                      SweepAHost& host);
