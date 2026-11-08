@@ -54,6 +54,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/frontier_wiring_cc13.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/native_session_message_participant_owner.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_big1_null_host.hpp"
@@ -1574,6 +1575,8 @@ struct HudCountersContext {
     std::set<const GuiLayoutWidget*>& visibility_recurses;  // widget +75h (00AA6820)
     // The HUD host's unimplemented-call log (GameHudHost::Impl::record).
     std::function<void(const char*, std::uint32_t)> record{};
+    const bsp::SessionParticipantPools* score_participants{nullptr};
+    const std::size_t* score_local_slot{nullptr};
 };
 
 // 00AA8530 (widget +34h): the low byte is the request; with the widget's +75h
@@ -2096,15 +2099,10 @@ private:
     HudCountersContext& c_;
 };
 
-// The message image 0075B430 reads: [00E188A8], whose local slot (+18ECh) and
-// eight player records (+18CCh) give the base its owner +14h. As for
-// HostSessionMessages, this process keeps no player records, so the slot is 0
-// over null records. 00E17669 is the empty string the 23h writer falls back to
-// (bytes 00 00 00 00); the profile carries the five CED098 slots.
+// Only codec/profile bindings live here. Message ownership comes from the
+// mission's retained participant pools and current local-slot cell below.
+// 00E17669 is the writer's empty fallback; CED098 has five native slots.
 struct HudScoreMessageImage {
-    alignas(4) std::uint8_t game[0x18f0]{};
-    void* volatile current_game{game};
-    bsp::NativeSessionMessageContext session{current_game};
     const char fallback_00e17669[1]{};
     bsp::NativeSessionMessage35Profile profile{game_native_string_process().raw_context(), fallback_00e17669};
 };
@@ -2122,12 +2120,20 @@ class HudScoreMessageBinding final : public bsp::frontend_seg15_22_cc13::HudMess
 public:
     explicit HudScoreMessageBinding(HudCountersContext& c) : c_(c) {}
     void session_send_message35_00772330(const bsp::frontend_seg15_22_cc13::HudMessage35& m) override {
+        if (c_.score_participants == nullptr || c_.score_local_slot == nullptr)
+            throw std::logic_error("HUD score message requires the mission participant binding");
         HudScoreMessageImage& image = hud_score_message_image();
         bsp::NativeStringRawPoolContext& strings = *image.profile.strings;
-        bsp::NativeSessionMessage35 message{};
-        bsp::construct_native_session_message_0075b430(&message.base, 0x23, image.session);
-        message.base.delivery_04 = 1;
-        message.base.profile_00 = image.profile.slots;
+        bsp::NativeSessionMessageParticipantOwner selected(*c_.score_participants, *c_.score_local_slot);
+        // The selected-participant view reads the canonical owner directly;
+        // 0075B430 never reads this raw-game interface cell in that arm.
+        void* volatile no_raw_game = nullptr;
+        const bsp::NativeSessionMessageContext session{no_raw_game, &selected};
+        bsp::NativeSessionMessage35 message;
+        // bsp.py show 0052AEF0: the constructor establishes the three string
+        // headers, word array, flags and subtype on this same delivered object.
+        // Values +18/+1C/+38/+3C are supplied by send(), not defaulted here.
+        bsp::construct_native_session_message35_0052aef0(&message, session, image.profile);
         // The image's EH frame 00C6B938 runs 0052AF50 on unwind too.
         try {
             send(m, message, strings);
@@ -2168,10 +2174,9 @@ private:
         HudScoreSessionBinding session(c_);
         // ECX = [00E188A8]+1EF0h: +F4h is game+1FE4h; the local slot game+18ECh.
         bsp::cc13cam2::session_send_to_player_slot_00772330(bsp::session_context().session_word_1fe4,
-            static_cast<std::int32_t>(message.value_1c), kLocalPlayerSlot, records,
+            static_cast<std::int32_t>(message.value_1c), static_cast<int>(*c_.score_local_slot), records,
             reinterpret_cast<std::uintptr_t>(&message), session);
     }
-    static constexpr int kLocalPlayerSlot = 0;  // game+18ECh, single player
     HudCountersContext& c_;
 };
 
@@ -2506,6 +2511,8 @@ struct GameHudHost::Impl {
     bool camera_fov_read{false};
     double camera_fov_ship_degrees{0.0};
     const bool* cinematic_hidden_634{nullptr};
+    const bsp::SessionParticipantPools* score_participants{nullptr};
+    const std::size_t* score_local_slot{nullptr};
     // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
     bool camera_pipe_sight_read{false};
     bool camera_pipe_sight_enabled{false};
@@ -3729,6 +3736,8 @@ std::optional<HudCountersContext> hud_counters_context(GameHudHost::Impl& impl) 
         if (c.manager_view[offset / 4u] == nullptr) return std::nullopt;
     }
     c.record = [&impl](const char* method, std::uint32_t address) { impl.record(method, address); };
+    c.score_participants = impl.score_participants;
+    c.score_local_slot = impl.score_local_slot;
     return c;
 }
 }  // namespace
@@ -4977,6 +4986,20 @@ void GameHudHost::bind_view_fov_cinematic_state(const bool* hidden_634) noexcept
 
 void GameHudHost::unbind_view_fov_cinematic_state(const bool* hidden_634) noexcept {
     if (impl_->cinematic_hidden_634 == hidden_634) impl_->cinematic_hidden_634 = nullptr;
+}
+
+void GameHudHost::bind_score_message_participants(const bsp::SessionParticipantPools& participants,
+    const std::size_t& local_slot) noexcept {
+    impl_->score_participants = &participants;
+    impl_->score_local_slot = &local_slot;
+}
+
+void GameHudHost::unbind_score_message_participants(const bsp::SessionParticipantPools& participants,
+    const std::size_t& local_slot) noexcept {
+    if (impl_->score_participants == &participants && impl_->score_local_slot == &local_slot) {
+        impl_->score_participants = nullptr;
+        impl_->score_local_slot = nullptr;
+    }
 }
 
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
