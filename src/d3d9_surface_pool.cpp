@@ -1,4 +1,5 @@
 #include "bsp/d3d9_surface_pool.hpp"
+#include "bsp/d3d9_surface_pool_table.hpp"
 #include "bsp/render_fx_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -55,6 +56,9 @@ std::byte** allocate_table(std::uint32_t capacity) {
         SingletonAllocationKind::pointer_slots, native_bytes,
         static_cast<std::size_t>(capacity) * sizeof(std::byte*)}));
 }
+D3D9SurfacePoolTableView table_view(D3D9SurfacePoolStorage& storage) noexcept {
+    return {reinterpret_cast<std::byte*>(&storage) + 0x28};
+}
 D3D9SurfacePool* static_pool_0108db00;
 D3D9SurfacePool& require_static_pool() {
     if (!static_pool_0108db00)
@@ -62,6 +66,50 @@ D3D9SurfacePool& require_static_pool() {
     return *static_pool_0108db00;
 }
 } // namespace
+
+// Promote the four render_fx template rows to one address-specific body each.
+// Capacity publication precedes allocation; count and source are reloaded after
+// a real new-handler callback. The old table is freed before data publication.
+// Null placement destinations are skipped, as in the original DWORD loop.
+__declspec(noinline) void set_d3d9_surface_pool_table_capacity_00b3da70(
+    D3D9SurfacePoolTableView table, std::uint32_t capacity) {
+    table.capacity(capacity);
+    auto* const replacement = reinterpret_cast<std::byte*>(allocate_table(capacity));
+    for (std::uint32_t i = 0; i < table.count(); ++i) {
+        const auto destination = reinterpret_cast<std::uintptr_t>(replacement) + i * 4u;
+        if (destination != 0) {
+            std::uint32_t value;
+            const auto source = reinterpret_cast<std::uintptr_t>(table.data()) + i * 4u;
+            std::memcpy(&value, reinterpret_cast<const void*>(source), sizeof(value));
+            std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+        }
+    }
+    if (auto* const old = table.data()) singleton_lifetime_free(old);
+    table.data(replacement);
+}
+
+__declspec(noinline) void grow_d3d9_surface_pool_table_00b3dac0(
+    D3D9SurfacePoolTableView table) {
+    set_d3d9_surface_pool_table_capacity_00b3da70(table, table.capacity() * 2u + 2u);
+}
+
+__declspec(noinline) void append_d3d9_surface_pool_table_00b3e800(
+    D3D9SurfacePoolTableView table, const void* pointer_cell) {
+    if (table.count() == table.capacity()) grow_d3d9_surface_pool_table_00b3dac0(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data()) + table.count() * 4u;
+    if (destination != 0) {
+        std::uint32_t value;
+        std::memcpy(&value, pointer_cell, sizeof(value));
+        std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+    }
+    table.count(table.count() + 1u);
+}
+
+__declspec(noinline) void reserve_d3d9_surface_pool_table_00b3e880(
+    D3D9SurfacePoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity)
+        set_d3d9_surface_pool_table_capacity_00b3da70(table, capacity);
+}
 
 D3D9SurfacePool::D3D9SurfacePool(AllocatorListDomain& list,
     D3D9SurfacePoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -86,14 +134,8 @@ void D3D9SurfacePool::initialize_00b3ec60() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        // 00B3EC60 inlines 00B3E880 with the native initial capacity 32.
+        reserve_d3d9_surface_pool_table_00b3e880(table_view(storage_), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b3d370();
@@ -112,16 +154,9 @@ void* D3D9SurfacePool::allocate_raw_slot_00b3ed40() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b3d120(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B3ED40's append uses this newly allocated slab and the retained
+        // pool+28h header. No parallel pointer table or duplicate append.
+        append_d3d9_surface_pool_table_00b3e800(table_view(storage_), &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     // 00B3ED40 inlines the same operations as the recovered surface leaves.
