@@ -5,6 +5,7 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_scene_property_array_block_release.hpp"
+#include "bsp/native_reference_payload_reset.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -271,12 +272,13 @@ __declspec(noinline) void release_native_scene_property_record_value_008f0640(
         break;
     }
     case 5: {
-        void* const data = property_lifetime_pointer(property_lifetime_word(actual_record, 0x1c));
-        if (data) {
-            singleton_lifetime_free(data);
-            property_lifetime_store(actual_record, 0x1c, 0);
-        }
-        property_lifetime_store(actual_record, 0x18, 0);
+        // bsp.py show 008F0640 --asm, 008F0681..008F0694: record+18h
+        // is the scalar/owned-text payload consumed by whole 008F0380.
+        // Its conditional free, pointer clear, then scalar clear reproduce
+        // this inlined sequence on the SAME live type-5 record, whose text
+        // comes from the canonical duplicate. This is Source composition,
+        // not a recovered native CALL. Keep the shared record-reset tail.
+        reset_native_reference_payload_008f0380(property_lifetime_at(actual_record, 0x18));
         break;
     }
     case 6: {
