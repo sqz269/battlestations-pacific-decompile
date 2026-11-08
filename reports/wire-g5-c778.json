@@ -1,0 +1,211 @@
+{
+  "chain": 778,
+  "worker": "agent/g5-w7",
+  "picked": "RunwayClass Lua reader and descriptor-owned runway dimensions",
+  "rows": [
+    {
+      "native": "006d0b80",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor, AirField branch",
+      "evidence": "Reuses the existing body with a typed field interface; the actual VehicleClass row runs 00960230 once, then bare-number width/length reads. Review round 1 corrects both conversions through the actual registry-referenced Lua value and native_lua_number_00b66270. The descriptor retains both fields and read_vehicle_class_number returns them. Original AirField vtable 00D1A9A0 has 006D0B80 at +8h (live Ghidra bytes verified). Review-fix build: one reachable call at 1015881f into 10462de0."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080 / landscape_build_shore_mask_00880420",
+      "reason": "Missing live landscape shore-mask column-grid producer and concrete Left55Host; the avoidance grid serves a different operation."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called from entry-reachable code at baseline; another call would duplicate existing behavior."
+    },
+    {
+      "native": "0047ba40",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp / src/cc13_left8_seg8.cpp: quad_cell_range_0047ba40 callbacks",
+      "reason": "Missing a concrete live caller adapter with the native quadtree cell-size owner and its queried bounds."
+    },
+    {
+      "native": "006d3c10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: retain_airfield_runway; src/game_hosts_units.cpp: landing deck construction",
+      "reason": "The complete original holder-construction and kind-2 descriptor path remains missing; retain the existing kind-1 scene-key requirements while adding its class-field producer."
+    },
+    {
+      "native": "0070aa70",
+      "status": "skipped",
+      "host_site": "src/objectives_seg57_argon.cpp: flag-cloth frame callbacks",
+      "reason": "Missing live flag-cloth frame-hook adapter and the actual cloth/model storage; the frame hook has no production caller."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message handling",
+      "reason": "Missing a presence-zero clear-message producer with retained path owners for every selectable last-filled command slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing the live empty-descriptor constructor consumer; prepending it to populated descriptor construction would add redundant work."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: unit debug inspector",
+      "reason": "The established consumer is the debug-only flooded-fraction inspector, excluded by this assignment."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCam frame/mode callbacks",
+      "reason": "Missing the live MovCam owner and original extrapolate/enter-mode adapter carrying theta/rho; other camera angle fields are different state."
+    },
+    {
+      "native": "007c21d0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: Fe5Host::plane_ordnance_point",
+      "reason": "Missing the concrete live plane-HUD bomb-sight consumer, its plane state adapter and retained smoothing fields."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: plane FX sound-holder callbacks",
+      "reason": "Missing per-element pitch/volume sound holders with actual sound-instance publication; loaded global smoothing rates alone do not provide these owners."
+    },
+    {
+      "native": "007df4f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::vehicle_avoidance_007df4f0",
+      "reason": "The existing host body is already entry-reachable; its B04h-dependent alternate-frame branch has no nonzero field producer to justify adding another calculation."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing live support-site stock-list ownership and the HUD support-order or AI spawn-composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing the original live support-site filter with actual availability entries and owning-unit health."
+    },
+    {
+      "native": "00851580",
+      "status": "skipped",
+      "host_site": "src/cc13_seg52b.cpp: stationary_class_read_lua_fields_00851580",
+      "reason": "Missing the StationaryClass descriptor/effect-handle lifetime adapter; the current string-only stationary lookup supplies no owning explosion-effect reference."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::vehicle_avoidance_007df4f0",
+      "reason": "The original call is confined to the alternate collision frame selected by a nonzero B04h field, whose producer is absent."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: matrix orbit callback",
+      "reason": "Missing the live original orbit-about-axis caller and its bound matrix/axis/pivot adapter."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The profile-hints mode-2 language sweep is not produced by this host, and no equivalent live mission-load sweep was established."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: enum declaration wrapper",
+      "reason": "Missing the required canonical published world and its constructed native Lua owner at +1A0Ch; semantic mission Lua adapters do not meet the raw owner contract."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag insertion",
+      "reason": "Already called from entry-reachable code at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already called from entry-reachable code at baseline; no additional merge is warranted."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: TailGunnerBot skill notification",
+      "reason": "Already calls the body with the loaded descriptor, actual skill and shared stream-one draw; baseline compiled reachability confirms it."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list planning",
+      "reason": "Missing a gameplay-owned native candidate score list and consumer; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list planning",
+      "reason": "Missing actual candidate-list entries whose chosen byte feeds gameplay; a parallel unused list would not replace planner state."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance scoring",
+      "reason": "Missing the per-member 00779D00 recon-value provider and the original live ratio consumer."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing the original reflection/property-descriptor writer 00AAAED0; render child ordering is a different operation."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost input-character path",
+      "reason": "Missing a concrete live input-character consumer with its text-context font; existing constant-byte probes do not supply game input."
+    },
+    {
+      "native": "00b72270",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: find_node_by_name_00b72270",
+      "reason": "Missing a bound original scene-root/child-name service and its tree-group or settings caller; unrelated entity-name lookup is not the same owner."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: Atmosphere cloud-manager update callback",
+      "reason": "Missing the actual CloudManager object and reference-node dirty/world-axis state needed by the cloud-frame update."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; all four tests passed",
+    "call_graph_before": 5467,
+    "call_graph_after": 5468,
+    "readiness_wired_before": 10622,
+    "readiness_wired_after": 10623,
+    "new_reachable_call_sites": 1,
+    "base_loader_runs_per_airfield_load": 1,
+    "number_conversion_probe": "tests/wire_g5_c778_runway_number_probe.cpp passed against linked Lua 5.1.1 and the full runway body: ordinary numbers 125.5/900, true plus invalid string 12m in each lane -> 0/0, valid numeric strings -> 12.5/-7.25; one base load per row and balanced Lua stack",
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1695,
+      "finding": "src/pool_pool13_cc13.cpp:269: semantic converter accepted true and partially numeric strings that native lua_tonumber rejects",
+      "status": "fixed",
+      "change": "Both runway reads now call VehicleClassFieldHost::number_00b66270. The live implementation borrows the retained value in its actual Lua interpreter and calls native_lua_number_00b66270; other class conversion paths are unchanged.",
+      "checks": "Win32 Release plus all four tests passed; focused real-Lua runway fixture passed; built call graph retains one reachable 006D0B80 call and the base load still runs once",
+      "limits": "Fixture and compiled-call evidence; no game run or original ABI compatibility claim"
+    }
+  ],
+  "remaining": "The full original AirField holder-construction/kind-2 load path is still separate work; kind-1 scene runway properties continue to overwrite class dimensions and remain required. Other surveyed rows need the real producers named above."
+}

@@ -50,6 +50,7 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class_fields.hpp"   // goal 4 chain 391, VehicleClassBaseFields
 #include "bsp/ship_class_fields.hpp"
+#include "bsp/pool_pool13_cc13.hpp"
 
 struct lua_State;
 
@@ -2712,6 +2713,8 @@ private:
     // Rows requiring Idle template ownership or a LandingShip descriptor keep
     // using the existing Lua readers until those two class producers are bound.
     std::map<int, bsp::ShipClassFields> vehicle_class_ship_base_fields_;
+    // 006D0B80's class+138h/+13Ch, retained on the same descriptor lifetime.
+    std::map<int, bsp::pool_pool13_cc13::RunwayClassFields> vehicle_class_runway_fields_;
     // 006E00F0 / 006EB4A0 / 006FB550 / 006FE6A0, at the same descriptor load.
     // The native leaves store tuning at +560h..+570h once; keep that result
     // with its class, including the selected settings block, after Lua purge.

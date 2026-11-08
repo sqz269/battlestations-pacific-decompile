@@ -2448,6 +2448,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     // a texture that an earlier class also acquired.
     vehicle_class_base_fields_.clear();
     vehicle_class_ship_base_fields_.clear();
+    vehicle_class_runway_fields_.clear();
     vehicle_class_ship_leaf_fields_.clear();
     for (void* texture : class_icon_references_)
         bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
@@ -6339,6 +6340,19 @@ public:
         const int ref = static_cast<int>(object.id) - 3;
         if (ref > 0) luaL_unref(state_, LUA_REGISTRYINDEX, ref);
     }
+    float number_00b66270(const bsp::GuiLuaRef& object) override {
+        // Borrow the actual registry-referenced value in this interpreter.
+        // 00B66270 reads only owner.state_04 and object.index_08; this
+        // untracked view does not take ownership of the Lua value or state.
+        NativeLuaStateStorage owner;
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state_;
+        push(object);
+        const auto value = stack_object(owner, ::lua_gettop(state_));
+        const float result = native_lua_number_00b66270(value);
+        ::lua_pop(state_, 1);
+        return result;
+    }
     void read_vector3_or_default(const bsp::GuiLuaRef& object, float out[3],
                                 const float fallback[3]) override {
         // The registry reference belongs to the live VehicleClass row, not a
@@ -6734,7 +6748,22 @@ public:
             GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_, owner_);
             const bsp::GuiLuaRef row = lua.row(descriptor->class_index);
             bsp::VehicleClassBaseFields fields;
-            bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
+            const int kind_index = descriptor->kind_index;
+            if (kind_index >= 0 && kind_index < bsp::kVehicleClassDescriptorCount
+                && bsp::kVehicleClassDescriptorTable[kind_index].kind
+                    == bsp::VehicleClassKind::AirField) {
+                // 006D0B80, descriptor ECX / LuaObject* row / RET 4. It owns
+                // the 00960230 base call as well as class+138h/+13Ch, so the
+                // generic base path below must not run again for this kind.
+                bsp::pool_pool13_cc13::RunwayClassFields runway;
+                bsp::pool_pool13_cc13::runway_class_read_lua_fields_006d0b80(
+                    lua, row, fields, runway);
+                owner_.vehicle_class_runway_fields_.insert_or_assign(
+                    descriptor->class_index, runway);
+                owner_.log_.implemented("VehicleClass::load_runway_class", "006d0b80");
+            } else {
+                bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
+            }
             load_ship_base(descriptor, lua, row, fields.length);
             load_surface_ship_leaf(descriptor, lua, row);
             load_submarine_leaf(descriptor, lua, row);
@@ -17229,6 +17258,14 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     // the result; this reader does not, because the Lua field is the modifier
     // and class+B8h is its square.
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto runway = vehicle_class_runway_fields_.find(index);
+    if (runway != vehicle_class_runway_fields_.end()) {
+        // 006D3C10 creates the holder from its loaded class+138h/+13Ch
+        // before kind-1 scene properties overwrite the holder dimensions.
+        // Keep these class queries on the same descriptor after Lua edits.
+        if (std::strcmp(key, "RunwayWidth") == 0) return runway->second.width_138;
+        if (std::strcmp(key, "RunwayLength") == 0) return runway->second.length_13c;
+    }
     const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
     if (leaf != vehicle_class_ship_leaf_fields_.end()
         && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership) {
