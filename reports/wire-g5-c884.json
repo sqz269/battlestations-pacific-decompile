@@ -86,8 +86,36 @@
   },
   "assumptions_and_limits": [
     "CRT initialization of the binary's distinct PointLight pool is authorized real state even before a PointLight payload consumer exists. No fixture allocations or invented light objects run in production.",
-    "Release ICF folds B7ADE0 with an equivalent GUI table capacity helper. The explicit tail call from the newly reached PointLight reserve identifies this actual path; no no-ICF analysis build was required for that evidence.",
+    "Release ICF folds the table allocator/reserve with equivalent Mesh/Model/GUI helpers after merging. The separate no-inline/no-ICF build verified the exact PointLight caller chain independently.",
     "Names and new source interfaces are hypotheses, not recovered symbols or original register-ABI thunks. No game launch, rendering, gameplay or original whole-owner ABI validation was performed.",
     "Shared scene_graph2 and game_main edits were kept to two dispatch delegations and one CRT startup block, then their leases were released for other workers."
-  ]
+  ],
+  "landing_repair": {
+    "merged_origin_main": "77d866ef5be57d717c8cda9c219654f7b657c2de",
+    "conflicts": "Only src/scene_graph2_cc13.cpp; manually retained the PointLight allocate/reserve routes and all incoming Mesh, Camera and Model routes. Ledger and startup code merged automatically; no ledger or cmake conflict required merge_resolve.py.",
+    "normal_build": "PASS: scripts/build.ps1; all 5 CTests passed before ON and again after ON restoration (final 15.12 seconds).",
+    "on_build": "PASS: python tools/off_switch_on_build.py --log local/c884-merge-on-build.log; exit 0, zero distinct diagnostics, all 5 CTests passed (17.16 seconds). kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily enabled; both headers restored exactly as confirmed by git diff --exit-code. Goal3 mission clock unchanged.",
+    "focused_probe": "PASS against merged final normal Release libraries: canonical startup, repeated startup, live two-slab table replacement, return/trim and CRT exit.",
+    "readiness": {
+      "text_wired": 10751,
+      "callees_done_no_wired_caller": 8521,
+      "ready": 1202,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "normal_call_graph": {
+      "reachable_functions": 43081,
+      "total_functions": 43236,
+      "reconstructed_addresses_called": 5642,
+      "total_reconstructed_addresses": 6289
+    },
+    "analysis_build": "PASS: scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests; separate /Ob0 and /OPT:NOICF analysis build, log local/c884-merge-analysis-build.log.",
+    "analysis_call_graph": "134694/134977 functions reachable; 7438/7488 reconstructed addresses called. ADE0 has one distinct reachable caller: B4A0 at 10775180. B4A0 has one distinct reachable caller: NativePointLightPool::initialize_00b7b690 at 10775068. Entry chain confirmed through WinMain, process PointLight startup and CD8060; these addresses are distinct from Mesh/Model/GUI helpers.",
+    "artifacts": [
+      "local/output/c884-merge-release-call_graph.json",
+      "local/output/c884-merge-analysis-call_graph.json",
+      "local/output/wire_readiness.json"
+    ],
+    "scope": "Original chain measurements remain above; merged totals also include incoming workers. No new reconstruction scope or game launch."
+  }
 }

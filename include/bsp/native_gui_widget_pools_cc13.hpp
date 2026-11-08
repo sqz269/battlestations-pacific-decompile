@@ -154,6 +154,11 @@ void reserve_native_gui_icon_pool_table_00ab2420(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity);
 template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize();
 
+// Button's retained process pool uses its own equivalent-address table entries
+// for the constructor's reserve and allocator's slab append.
+template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize();
+template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate();
+
 // Existing equivalent-address specializations use these source aliases. Each
 // forwards to the SAME reconstructed body; there is no second vector algorithm.
 inline void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {

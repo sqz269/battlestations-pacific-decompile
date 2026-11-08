@@ -1,0 +1,280 @@
+{
+  "goal": 5,
+  "chain": 869,
+  "slot": "g5-w2",
+  "run": 1883,
+  "branch": "agent/g5-w2",
+  "base_head": "f0dff5e5b78ae94970727e771d35c73667041179",
+  "picked": "Icon pool slab-table capacity, growth and append on retained F8BDA0 allocation state",
+  "rows": [
+    {
+      "native": "00ab1580",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: grow_native_gui_icon_pool_table_00ab15d0",
+      "call_site": "10530382",
+      "compiled_body": "10530e70"
+    },
+    {
+      "native": "00ab15d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: push_native_gui_icon_pool_slab_00ab23a0",
+      "call_site": "10530b30",
+      "compiled_body": "10530370"
+    },
+    {
+      "native": "00ab23a0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::allocate via allocate_slot Append",
+      "call_site": "1052f6ff",
+      "compiled_body": "10530b20"
+    },
+    {
+      "native": "00ab2420",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp: Icon reserve",
+      "reason": "Already supplied by c867 commit 96ea9d01e, now preserved by the origin/main merge; no duplicate reserve body."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native bag merge",
+      "reason": "Already called at baseline with two compiled call sites; the ready text classification does not identify new wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum insertion",
+      "reason": "Already called at baseline with three compiled call sites; the ready text classification does not identify new wiring."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing the constructed movie-camera screen and retained current/default deviation fields."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing the constructed movie-camera screen and retained current/default overview fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing the constructed movie-camera speed-limit owner and live consumer."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing the constructed movie-camera acceleration owner and live consumer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and gameplay transport consumer."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message candidate",
+      "reason": "No actual controller state-message producer/consumer was established in this bounded pass."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: language catalog candidate",
+      "reason": "Missing the original language-sweep consumer hosted under profile-hints mode."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path clear candidate",
+      "reason": "Missing a presence-zero clear-message producer with retained selected-slot path owners."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: flooded-fraction candidate",
+      "reason": "The established original consumer is a debug inspector, excluded from this goal."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: set last metadata",
+      "reason": "Existing source code already invokes this body with the actual queue; no additional distinct game-path wiring was established."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: impact effect selection candidate",
+      "reason": "Missing live descriptor effect-slot selection and effect-spawn consumer."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: Lua enum declaration candidate",
+      "reason": "Missing the canonical published world+1A0Ch native Lua owner and matching declaration table producer."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: FOV/aspect query candidate",
+      "reason": "Missing an entry-reachable FOV/aspect consumer; the current live GUI camera uses orthographic projection."
+    },
+    {
+      "native": "00a3e3b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: profile_change_pending",
+      "reason": "The online manager owning profile-change and overlapped cells is unconstructed; online services are excluded."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon dirty candidate",
+      "reason": "Missing actual slot+25 bytes, native player-context mapping and world+193Ch invalidation owner."
+    },
+    {
+      "native": "00ab6a70",
+      "status": "skipped",
+      "host_site": "src/native_gui_text_field_storage.cpp: flag77 setter candidate",
+      "reason": "Missing a live caller providing the native Text reference and complete slot80 continuation for this setter."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command menu sorting candidate",
+      "reason": "Missing a live command-menu item collection and ordering consumer matching the native list."
+    },
+    {
+      "native": "00be44c0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream reopen candidate",
+      "reason": "No live native ref-slot reopen producer with the actual VFS virtual interface was established."
+    },
+    {
+      "native": "00be7210",
+      "status": "skipped",
+      "host_site": "src/file_store_cc13.cpp: resident-stream removal candidate",
+      "reason": "No live resident FileStore map with a stream-removal consumer was established."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error context maximum candidate",
+      "reason": "Missing a live error-context map producer and consumer."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error context minimum candidate",
+      "reason": "Missing a live error-context map producer and consumer."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error context left rotation candidate",
+      "reason": "Missing a live error-context map producer and consumer."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error context right rotation candidate",
+      "reason": "Missing a live error-context map producer and consumer."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: map center candidate",
+      "reason": "No live consumer of the typed GameMapBox center API was established."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean basis candidate",
+      "reason": "No live OceanState basis owner and consumer was established."
+    },
+    {
+      "native": "00b65710",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: plane-set AABB candidate",
+      "reason": "No live caller with this plane-set and AABB contract was established."
+    }
+  ],
+  "real_state": "The existing canonical Icon pool and its actual pool+28h table remain the owners. AB2930 appends the actual newly initialized slab after publishing first-free, under its existing critical section. The generic Widget append is replaced only for the Icon traits specialization; no second append runs.",
+  "evidence": [
+    "bsp.py show 00AB1580",
+    "bsp.py show 00AB15D0",
+    "bsp.py show 00AB23A0",
+    "bsp.py show 00AB2420",
+    "bsp.py show 00AB2850",
+    "bsp.py show 00AB2930"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS, MSVC Win32 Release",
+    "ctest": "4/4 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "focused_probe": "local/c869-probe.cmd PASS: 2049 actual fixture Icon slots, 33 slabs, capacity 32->66, retained payload/trailer identities, return/trim/destruction and allocator-list unlink",
+    "probe_source": "tests/wire_g5_c869_icon_table_probe.cpp",
+    "call_graph": "Release, no special no-inline build needed: three distinct reachable bodies; one call site each",
+    "path": "WinMainCRTStartup -> GameStartupHost initialization -> GameNativeGuiPageApplication ChildCalls -> create_native_gui_icon_default_00aa1410 -> allocate_gui_widget_pool_slot<GuiIconPoolTraits> -> NativeGuiWidgetPool<GuiIconPoolTraits>::allocate -> AB23A0 -> AB15D0 -> AB1580",
+    "float_math": "No floating-point operations changed; pc24 lint not applicable",
+    "game_run": false
+  },
+  "totals": {
+    "release_reconstructed_called_before": 5589,
+    "release_reconstructed_called_after": 5592,
+    "release_reconstructed_addresses_before": 6212,
+    "release_reconstructed_addresses_after": 6215,
+    "readiness_text_wired_before": 10719,
+    "readiness_text_wired_after": 10719,
+    "readiness_note": "The three native TMPL_/tmpl_shape entries are outside readiness game-function scope; executable call graph is the new wiring evidence.",
+    "scope": "Original c869 pre-merge comparison; merged validation totals are recorded under merge_validation."
+  },
+  "integration": {
+    "c867": "00AB2420 from c867 is present in merged origin/main; its concrete Icon initialization specialization is preserved alongside this packet allocation appender.",
+    "c858": "The allocate_slot<Pool, Initialize, Append> extension matches c858 exactly. Icon dispatch is isolated beside its existing initializer trait.",
+    "next": "Other pool/table streams; current packet is ready for review after merge validation."
+  },
+  "limitations": [
+    "Source interfaces, not Original register/stack/SEH ABI replacements.",
+    "Build, isolated fixture and compiled entry reachability verified; live GUI/gameplay and failure-domain validation not performed."
+  ],
+  "merge_validation": {
+    "incoming_main": "8a70e7f9afb765b1533d64194d34365524aff75f",
+    "worker_parent": "175d5daf26bc64a8d274a4493990d75dc123fb52",
+    "conflicts": {
+      "config/reconstruction/00ab0000.jsonl": "Resolved and staged by tools/merge_resolve.py using reconstruction append union; both Icon capacity and incoming reserve rows verified via bsp.py lookup.",
+      "src/native_material_pools.cpp": "Automatically merged; reviewed against incoming main. Preserves Group capacity/grow/append/reserve, Icon reserve initialization, and Icon-only allocation appender."
+    },
+    "default_build": "scripts/build.ps1 PASS, MSVC Win32 Release, 4/4 CTests",
+    "on_build": "tools/off_switch_on_build.py PASS, 0 diagnostics, 4/4 CTests; two selected switches restored byte-for-byte before final default build",
+    "focused_probe": "local/c869-probe.cmd PASS: 2049 slots, 33 slabs, capacity 32->66, payloads/trailers/trim/teardown",
+    "call_graph": {
+      "reconstructed_called": 5605,
+      "reconstructed_addresses": 6236,
+      "packet_addresses_retained": [
+        "00ab1580",
+        "00ab15d0",
+        "00ab23a0"
+      ],
+      "call_sites_per_packet_address": 1,
+      "distinct_packet_bodies": true
+    },
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "exit_code": 0,
+      "state_counts": {
+        "blocked_on_callees": 51,
+        "callees_done_no_wired_caller": 8541,
+        "ready": 1202,
+        "unknown_no_identifier": 200,
+        "wired": 10731
+      },
+      "note": "Icon template entries remain outside game-function readiness scope; distinct compiled call sites remain the packet proof."
+    },
+    "game_run": false,
+    "float_math": "No float math changed in the resolution; pc24 lint not applicable."
+  }
+}

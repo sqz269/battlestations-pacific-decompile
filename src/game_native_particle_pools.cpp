@@ -3,6 +3,7 @@
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/native_particle_model_pool_owner.hpp"
 #include "bsp/native_particle_parameter_pool_owner.hpp"
+#include "bsp/native_tracer_pool.hpp"
 
 #include <stdexcept>
 
@@ -51,6 +52,22 @@ int GameNativeParticlePoolProcess::initialize_parameters_once_00cd78b0() {
     return parameter_registration_status_;
 }
 
+int GameNativeParticlePoolProcess::initialize_tracer_once_00cd88d0() {
+    std::lock_guard lock(startup_mutex_);
+    if (tracer_state_ == StartupState::returned) return tracer_registration_status_;
+    if (tracer_state_ == StartupState::threw)
+        throw std::logic_error("tracer pool startup previously threw");
+
+    // This process and the shared E188B4 list already have C++ exit callbacks.
+    // Register the native callback later so it drains this same owner first.
+    // Commit the attempt before binding/construction: never recreate a live CS.
+    tracer_state_ = StartupState::threw;
+    bind_static_native_tracer_pool_0109049c(tracer_storage_0109049c_, list_);
+    tracer_registration_status_ = initialize_static_native_tracer_pool_00cd88d0();
+    tracer_state_ = StartupState::returned;
+    return tracer_registration_status_;
+}
+
 void* GameNativeParticlePoolProcess::model_pool_00f8d2d0() {
     std::lock_guard lock(startup_mutex_);
     if (model_state_ != StartupState::returned)
@@ -63,6 +80,13 @@ NativeWeakHandlePool& GameNativeParticlePoolProcess::parameter_pool_00f8d344() {
     if (parameter_state_ != StartupState::returned)
         throw std::logic_error("particle parameter pool requires completed explicit startup");
     return parameters_;
+}
+
+void* GameNativeParticlePoolProcess::tracer_pool_0109049c() {
+    std::lock_guard lock(startup_mutex_);
+    if (tracer_state_ != StartupState::returned)
+        throw std::logic_error("tracer pool requires completed explicit startup");
+    return tracer_storage_0109049c_;
 }
 
 } // namespace bsp::game

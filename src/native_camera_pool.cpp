@@ -1,4 +1,5 @@
 #include "bsp/native_camera_pool.hpp"
+#include "bsp/native_camera_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -48,13 +49,6 @@ std::byte* initialize_slab_00b6fed0(void* raw, std::uint32_t index) noexcept {
     }
     return bytes;
 }
-std::byte** allocate_table(std::uint32_t capacity) {
-    // Native 00BF55BE jumps to the same 00BF681B new-handler allocator.
-    const auto native_bytes = capacity * 4u;
-    return static_cast<std::byte**>(singleton_lifetime_allocate({
-        SingletonAllocationKind::pointer_slots, native_bytes,
-        static_cast<std::size_t>(capacity) * sizeof(std::byte*)}));
-}
 NativeCameraPool* static_pool_0108ffb0;
 NativeCameraPool& require_static_pool() {
     if (!static_pool_0108ffb0)
@@ -86,14 +80,9 @@ void NativeCameraPool::initialize_00b715f0() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        // 00B715F0 inlines 00B712F0's unsigned reserve with native constant 32.
+        reserve_native_camera_pool_table_00b712f0(
+            {reinterpret_cast<std::byte*>(&storage_) + 0x28}, 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b6ffc0();
@@ -112,16 +101,9 @@ void* NativeCameraPool::allocate_raw_slot_00b71770() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b6fed0(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B71770 inlines 00B71260 over this same header and local slab cell.
+        append_native_camera_pool_table_00b71260(
+            {reinterpret_cast<std::byte*>(&storage_) + 0x28}, &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);

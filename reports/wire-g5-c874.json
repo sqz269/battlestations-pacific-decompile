@@ -1,0 +1,204 @@
+{
+  "goal": 5,
+  "chain": 874,
+  "run": 1893,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "base_head": "307c28a19f2e7aa6e4eea0fa308088376c1311ed",
+  "picked": "Mesh pool slab-pointer table over retained 0108FFF8 storage",
+  "rows": [
+    {
+      "native": "00b72900",
+      "status": "wired",
+      "host_site": "src/native_mesh_pool.cpp: grow_native_mesh_pool_table_00b72950 / reserve_native_mesh_pool_table_00b72f10"
+    },
+    {
+      "native": "00b72950",
+      "status": "wired",
+      "host_site": "src/native_mesh_pool.cpp: append_native_mesh_pool_table_00b72e80"
+    },
+    {
+      "native": "00b72e80",
+      "status": "wired",
+      "host_site": "src/native_mesh_pool.cpp: NativeMeshPool::allocate_slot_00b73a10"
+    },
+    {
+      "native": "00b72f10",
+      "status": "wired",
+      "host_site": "src/native_mesh_pool.cpp: NativeMeshPool::initialize_00b73890"
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "No reached caller bound to the native listbox header was established; the live companion uses a typed row list."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a reached silent-selection caller and a view binding the raw body to actual listbox state."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a reached clear-selection caller bound to the raw listbox row and notification state."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a reached reset-highlight caller bound to the raw listbox and its complete highlight callbacks."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a reached scroll-to-row caller and native header binding for the live typed companion."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The matching inline product's shadow-fit consumer is not entry-reachable; the live GUI projection is orthographic."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "No reached extra-plane consumer with an actual CameraClipPlaneState was established."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "No reached extra-plane lifecycle consumer with an actual CameraClipPlaneState was established."
+    },
+    {
+      "native": "00922e90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner owner classification",
+      "reason": "Missing a real native parent chain at entity+3Ch for the semantic gun owner; fabricating that chain would violate real-state ownership."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established native consumer is the excluded debug inspector."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "The context binding exists but has no reached caller supplying an actual enum declaration owner and consumed key."
+    },
+    {
+      "native": "00b92f20",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_dispatch.cpp: NativeSkinnedAnimationResourceCalls::parse_item",
+      "reason": "The adapter is not instantiated on a reached resource-root loading path; the actual dispatch owner remains missing."
+    },
+    {
+      "native": "00447510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: UnitInstance wreck-debris dynamics",
+      "reason": "Missing the actual dynamics-list/spec producer and complete SweepA4Host callback binding."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight target predicates",
+      "reason": "Missing a native plane+DF4h/local-slot target view; the inspected host stores semantic target identities."
+    },
+    {
+      "native": "007ed830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: TargetOrdnance chooser",
+      "reason": "Already directly called with actual chooser membership by chain 862; replacing or adding a call would duplicate existing wiring."
+    },
+    {
+      "native": "007ed970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: TargetOrdnance chooser",
+      "reason": "Already directly called with actual chooser membership by chain 862; replacing or adding a call would duplicate existing wiring."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native main-scene submission",
+      "reason": "Already directly called with real queue metadata on the existing submission path; no additional wiring was needed."
+    }
+  ],
+  "implementation": {
+    "storage": "NativeMeshPoolTableView borrows the actual pool+28h header; no shadow header, pool, slab or allocator domain.",
+    "replaced": "Constructor reserve and allocator append loops are replaced, with no switch or duplicate execution.",
+    "legacy": "The four scene_graph2 address-dispatched entry points forward to the same named bodies.",
+    "evidence": [
+      "bsp.py show 00b72900/00b72950/00b72e80/00b72f10 pseudocode and assembly",
+      "bsp.py show 00b73890/00b73a10: inlined matching reserve/append operations"
+    ],
+    "preserved": [
+      "capacity publication before allocation, including interrupted allocation",
+      "unsigned DWORD size/growth/count arithmetic",
+      "forward DWORD copying and null destination-cell guards",
+      "source pointer-cell read after growth/free/publication",
+      "existing critical-section, recursion, slab and teardown ownership"
+    ]
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 4 tests passed",
+    "final_build": "scripts/build.ps1 passed after the dispatcher and ledger edits; all 4 CTests passed",
+    "focused_probe": "Final linked-core probe passed: 1025 live slots, table 32->66 entries, prior slab/slot identities, failing allocation observation, trim and teardown",
+    "release_call_graph": {
+      "before": 6146,
+      "after": 6150,
+      "added": 4,
+      "all_four_entry_reachable": true
+    },
+    "readiness": {
+      "before": 10726,
+      "after": 10730
+    },
+    "path": "WinMainCRTStartup -> WinMain -> initialize_mesh_once_00cd7e40 -> initialize_static_native_mesh_pool_00cd7e40 -> NativeMeshPool::initialize_00b73890 -> reserve_00b72f10 -> allocate_00b72900; allocate_slot_00b73a10 -> append_00b72e80 -> grow_00b72950",
+    "float_math_changed": false,
+    "probe_compile": "vcvars32.bat; cl /nologo /std:c++17 /EHsc /W4 /WX /MD /I include tests/wire_g5_c874_mesh_table_probe.cpp /Fo:local/c874-mesh-table-probe.obj /Fe:local/c874-mesh-table-probe.exe build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib advapi32.lib ole32.lib shell32.lib winmm.lib d3d9.lib powrprof.lib"
+  },
+  "limits": [
+    "New C++ view interfaces, not original register-ABI replacements.",
+    "Build, call-graph and focused host-fixture evidence; the game was not run."
+  ],
+  "left": "Resource-root/skinned-animation dispatch owner; native listbox front-end binding; other workers' Camera/Model tables.",
+  "coordination": "Claimed all changed files; waited for Camera/Model workers to commit and release scene_graph2 source and B7 shard before editing them. Shared source diff is one include and four early dispatcher forwards.",
+  "merge_repair": {
+    "origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "previous_head": "1a4f7945a0984f1ec31c39df67c7950830a5b6b0",
+    "resolution": "merge_resolve.py retained both insertion sets in scene_graph2_cc13.cpp; manual review confirms Camera and Mesh early-return branches remain distinct and all eight canonical ledger rows survive. No remaining unmerged paths. Delta versus origin/main is only 18 Mesh dispatcher insertions and four Mesh ledger replacements, plus original Mesh files/report/probe.",
+    "checks": {
+      "release_build": "scripts/build.ps1 passed; all 4 CTests passed",
+      "on_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed (/Ob0, /OPT:NOICF)",
+      "focused_probe": "cmd /c local/c874-probe.cmd passed after merge: live growth, slot identities, failure publication and teardown",
+      "release_called_addresses": 6186,
+      "noinline_called_addresses": 7411,
+      "mesh_addresses_entry_reachable_in_both_builds": [
+        "00b72900",
+        "00b72950",
+        "00b72e80",
+        "00b72f10"
+      ],
+      "readiness": {
+        "wired_total": 10743,
+        "all_four_mesh_called": true,
+        "graph_no_inline": true,
+        "graph_stale": false,
+        "mesh_call_sites": {
+          "00b72900": 2,
+          "00b72950": 1,
+          "00b72e80": 1,
+          "00b72f10": 1
+        }
+      },
+      "float_math_changed": false
+    }
+  }
+}

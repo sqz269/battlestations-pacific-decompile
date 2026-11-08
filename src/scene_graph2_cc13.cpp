@@ -1,10 +1,14 @@
 #include "bsp/scene_graph2_cc13.hpp"
 #include "bsp/native_point_light_pool_table.hpp"
 
+#include "bsp/native_camera_pool_table.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_mesh_pool_table.hpp"
 
 #include <cctype>
+#include "bsp/native_model_pool_table.hpp"
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
@@ -12,6 +16,45 @@
 // Segments 88/91, second scene-graph pass (cc13-scene2). Evidence and ABIs:
 // docs/CC13_SCENE_2.md. x87 expressions are evaluated in double and rounded to float
 // wherever the native code stores a float.
+
+namespace bsp {
+
+// Chain 878: specialize the existing shared-shape reconstruction, retaining one
+// body per address. The Camera pool's constructor/allocator inline these same
+// reserve/append operations (bsp.py show 00B715F0 / 00B71770); they now use these
+// entries over their live +28h header. The legacy address dispatcher below
+// forwards here too. Native DWORD arithmetic deliberately wraps before malloc.
+void allocate_native_camera_pool_table_00b6fff0(
+    NativeCameraPoolTableView table, std::uint32_t capacity) {
+    static_assert(sizeof(void*) == 4);
+    table.capacity(capacity);
+    const std::uint32_t bytes = capacity * 4u;
+    auto* fresh = static_cast<std::byte*>(singleton_lifetime_allocate({
+        SingletonAllocationKind::pointer_slots, bytes, bytes}));
+    for (std::uint32_t i = 0; i < table.count(); ++i)
+        std::memcpy(fresh + i * 4u, table.data() + i * 4u, 4);
+    if (table.data()) singleton_lifetime_free(table.data());
+    table.data(fresh);
+}
+
+void grow_native_camera_pool_table_00b70040(NativeCameraPoolTableView table) {
+    allocate_native_camera_pool_table_00b6fff0(table, table.capacity() * 2u + 2u);
+}
+
+void append_native_camera_pool_table_00b71260(
+    NativeCameraPoolTableView table, const void* pointer_cell) {
+    if (table.count() == table.capacity()) grow_native_camera_pool_table_00b70040(table);
+    std::memcpy(table.data() + table.count() * 4u, pointer_cell, 4);
+    table.count(table.count() + 1u);
+}
+
+void reserve_native_camera_pool_table_00b712f0(
+    NativeCameraPoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity)
+        allocate_native_camera_pool_table_00b6fff0(table, capacity);
+}
+
+} // namespace bsp
 
 namespace bsp::cc13_scene2 {
 namespace {
@@ -53,16 +96,48 @@ void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t
         allocate_native_point_light_pool_table_00b7ade0({&a}, static_cast<std::uint32_t>(n));
         return;
     }
+    if (address == 0x00B72900) {
+        allocate_native_mesh_pool_table_00b72900(
+            {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
+        return;
+    }
     (void)count_of(kAllocate);
-    if (contains(kAllocate, 6, address)) array_reallocate_exact(a, n);
+    if (address == 0x00B6FFF0) {
+        allocate_native_camera_pool_table_00b6fff0(
+            {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
+        return;
+    }
+    if (address == 0x00B74570)
+        set_native_model_pool_table_capacity_00b74570(&a, static_cast<std::uint32_t>(n));
+    else if (contains(kAllocate, 6, address)) array_reallocate_exact(a, n);
 }
 
 void grow_pointer_array(std::uint32_t address, PointerArray& a) {
-    if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
+    if (address == 0x00B72950) {
+        grow_native_mesh_pool_table_00b72950({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
+    if (address == 0x00B70040) {
+        grow_native_camera_pool_table_00b70040({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
+    if (address == 0x00B745C0) grow_native_model_pool_table_00b745c0(&a);
+    else if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
 }
 
 void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value) {
-    if (contains(kPushBack, 10, address)) array_push_back_grow(a, value);
+    if (address == 0x00B72E80) {
+        append_native_mesh_pool_table_00b72e80({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
+    if (address == 0x00B71260) {
+        append_native_camera_pool_table_00b71260({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
+    if (address == 0x00B747D0) {
+        auto* const slab = static_cast<std::byte*>(value);
+        append_native_model_pool_slab_00b747d0(&a, slab);
+    } else if (contains(kPushBack, 10, address)) array_push_back_grow(a, value);
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
@@ -70,7 +145,16 @@ void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t
         reserve_native_point_light_pool_table_00b7b4a0({&a}, n);
         return;
     }
-    if (contains(kReserve, 6, address)) array_reserve_unsigned(a, n);
+    if (address == 0x00B72F10) {
+        reserve_native_mesh_pool_table_00b72f10({reinterpret_cast<std::byte*>(&a)}, n);
+        return;
+    }
+    if (address == 0x00B712F0) {
+        reserve_native_camera_pool_table_00b712f0({reinterpret_cast<std::byte*>(&a)}, n);
+        return;
+    }
+    if (address == 0x00B74860) reserve_native_model_pool_table_00b74860(&a, n);
+    else if (contains(kReserve, 6, address)) array_reserve_unsigned(a, n);
 }
 
 void push_back_pointer_via_reserve(std::uint32_t address, PointerArray& a, void* value,
