@@ -2443,7 +2443,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     bool sq_lock_3a9{false};         // +3A9h
     double sq_timer_expiry_380{-1.0};
     // Packet l68_travel_speed: the fourth quadruple, 008A0630's stores (countdown 3
-    // +388h held as its expiry clock, freeze +38Fh, +3A0h, lock +3ACh).
+    // retained float countdown +388h, freeze +38Fh, +3A0h, lock +3ACh).
     // sq_speed_set marks a script override; sq_speed_refreshed marks an actual
     // 007ED5D0 class-speed store. Either publication feeds the movement readers.
     // Before either, the existing readers use the loaded class speed directly.
@@ -2452,7 +2452,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float sq_speed_3a0{0.0f};
     bool sq_freeze_38f{false};
     bool sq_lock_3ac{false};
-    double sq_timer_expiry_388{-1.0};
+    float sq_countdown_388{-1.0f};
     // A plane's head-task signature at its last think (the installed task kinds
     // and the command target), standing in for 0099AE92's compare of the bot's
     // head task before and after 0099A4C0.
@@ -12156,10 +12156,9 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
     // 007ED5D0 BSP_PlaneSquadron_RefreshTravelSpeed, from BSP_PilotBot_Tick
     // 0099AEA3 when the member's head task changed and unit+9D4h is set.
-    // The existing host represents +388h by an expiry clock and fuses the
-    // squadron with wing 0 (the registry's type_class_id). Feed its remaining
-    // duration and that wing's loaded class speed to the single body. This
-    // retains the host's clock representation, not native per-tick timer ABI.
+    // The retained +388h float is decremented only at the subsequent group-3
+    // phase. The squadron is fused with wing 0 (the registry's type_class_id);
+    // its loaded class supplies the class speed to the single body.
     unsigned long long travel_speed_refreshes{0};
     unsigned long long travel_speed_reverts{0};
     unsigned long long travel_speed_script_reads{0};
@@ -12176,7 +12175,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
                 : PlaneSquadronTravelSpeedView(sq.sq_freeze_38f, sq.sq_lock_3ac,
                     sq.sq_speed_3a0), owner(owner), sq(sq) {}
             float countdown_388() const override {
-                return static_cast<float>(sq.sq_timer_expiry_388 - owner.summary.simulated_seconds);
+                return bsp::PlaneSquadronTravelSpeedHostCountdown{
+                    sq.sq_countdown_388, sq.sq_freeze_38f}.read();
             }
             const float& class_speed_190() const override {
                 if (!owner.lua.plane_globals_loaded())

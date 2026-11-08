@@ -7,6 +7,7 @@
 #include "bsp/cc13_seg48.hpp"
 #include "bsp/band_007a_cc13.hpp"
 #include "bsp/gameplay_seg48_cc13.hpp"
+#include "bsp/tick_element_overrides.hpp"
 
 #include <cstring>
 #include <cmath>
@@ -936,6 +937,17 @@ void cc13_seg48_plane_squadron_reset_travel_speed_007ed590(void* squadron) {
     at<std::uint32_t>(squadron, 0x3A0) = speed;
     at<std::uint8_t>(squadron, 0x3AC) = 1;
     at<std::uint8_t>(squadron, 0x38F) = 0;
+}
+
+void PlaneSquadronTravelSpeedHostCountdown::reset_script_override() const noexcept {
+    value_388 = 0.5f; // 008A07E2, native 00CE3800 word 3F000000.
+}
+
+void PlaneSquadronTravelSpeedHostCountdown::advance_group3(float step) const noexcept {
+    // 007F3BAA/B5 gates every timer behind ordered step > 0, then
+    // 007F3BE1/E5 tests +38Fh before the +388h FSUB/FSTP.
+    if (step > 0.0f && !frozen_38f)
+        subtract_squadron_tick_step(value_388, step);
 }
 
 // 007ED5D0 BSP_PlaneSquadron_RefreshTravelSpeed, __thiscall(ECX = squadron).

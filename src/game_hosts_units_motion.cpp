@@ -23332,6 +23332,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // recount. The squadron node registers in tick group 3 (007F2C89 PUSH 3 ->
     // 00875890) and units in group 1; wave 3 runs groups 0-4 in order, so every
     // plane's step precedes it and 007B95E0 reads the previous step's recount.
+    // 007F3BE1..007F3BEC: the travel-speed timer belongs to this squadron
+    // group-3 phase, after all group-1 pilot reads above and before recount.
+    // Walk registry squadrons once, not each wing: they share this one float.
+    for (const auto& squadron : bsp::plane_squadron_registry().records()) {
+        if (squadron.squadron_unit >= host.slots.size()) continue;
+        auto* const slot = host.slots[squadron.squadron_unit].get();
+        if (!slot) continue;
+        bsp::PlaneSquadronTravelSpeedHostCountdown{
+            slot->sq_countdown_388, slot->sq_freeze_38f}.advance_group3(step_seconds);
+    }
     if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
         host.squadron_wingmen_recount_007f3c3f(step_seconds);
     }

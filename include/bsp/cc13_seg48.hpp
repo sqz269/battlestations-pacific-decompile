@@ -396,8 +396,18 @@ bool cc13_seg48_plane_squadron_any_ready_rocket_007ed9c0(void* squadron, std::ui
 std::uint32_t cc13_seg48_plane_squadron_get_ai_command_block_007ecfd0(void* squadron);
 std::uint32_t cc13_seg48_plane_squadron_current_command_token_007ed580(void* squadron, Cc13Seg48Host& host);
 void cc13_seg48_plane_squadron_reset_travel_speed_007ed590(void* squadron);
-// Live semantic view of the script override block. The host retains +388h as
-// an expiry clock, so countdown_388 is its remaining duration at this call.
+// The production adapter shared by the Lua setter, pilot refresh and group-3
+// phase. The reference is one retained binary32 +388h countdown, not a clock
+// difference. The setter resets it; group 3 advances it AFTER pilot think.
+struct PlaneSquadronTravelSpeedHostCountdown {
+    float& value_388;
+    const bool& frozen_38f;
+    void reset_script_override() const noexcept;
+    void advance_group3(float step) const noexcept;
+    float read() const noexcept { return value_388; }
+};
+
+// Live semantic view of the script override block.
 // The speed and lock references are the same storage the script setters and
 // movement readers use. class_speed_190 is the loaded class TravelSpeed times
 // the authored NewTravelSpeedMul. No native layout or vtable is fabricated.

@@ -12,39 +12,55 @@
   "implementation": [
     "Replace the host refresh condition and lock mutation with the single existing 007ED5D0 body through a typed view of retained squadron state.",
     "Resolve the real squadron registry record and fused wing-0 slot; do not treat the standalone-plane fallback block as a native squadron.",
-    "Read the expiry-clock remaining duration only after the frozen gate; read the genuine loaded class TravelSpeed/NewTravelSpeedMul only after the negative-countdown and clear-lock gates.",
+    "Retain one binary32 +388h countdown, initialized from 007F2BD0 and reset to the native 0.5f by the script setter; read it directly only after the frozen gate.",
+    "Advance the retained countdown once per squadron at the group-3 phase after all pilot reads and before recount, with ordered positive-step and freeze gates and the shared native x87 FSUB/FSTP kernel.",
+    "Read the genuine loaded class TravelSpeed/NewTravelSpeedMul only after the negative-countdown and clear-lock gates.",
     "Preserve the native FLD/FSTP class-speed store and publish its result to the movement readers through sq_speed_refreshed.",
     "Remove the old >= expiry comparison: native COMISS/JBE excludes zero and unordered countdowns. Frozen state preserves the lock; the unfrozen path clears it."
   ],
   "evidence": [
     "bsp.py show 007ED5D0 and --asm: 007ED5D0..007ED607; frozen gate, ordered strict-negative comparison, class+190h FLD/FSTP, lock clear.",
-    "game_hosts_units.cpp set_squadron_travel_speed_008a0630 supplies the real expiry, freeze, speed and lock state.",
+    "bsp.py show 007F3BA0 --asm: 007F3BAA/B5 gates on positive step, 007F3BE1/E5 gates on freeze, and 007F3BE7..007F3BEC subtracts the step from +388h with x87 FSUB/FSTP after group-1 pilot reads.",
+    "game_hosts_units.cpp set_squadron_travel_speed_008a0630 resets the real retained float countdown and supplies the freeze, speed and lock state.",
     "plane_squadron.cpp 007F45B0 spawn plan resolves Type to the plane class at squadron+35Ch; PlaneSquadronHostRecord retains the same type and fused wing-0 identity.",
     "game_hosts_units_internal.hpp moveto_speed_009c1850 documents class+190h as class TravelSpeed times tuning+334h NewTravelSpeedMul.",
-    "call_graph.py who 007ED5D0: core body @10505DD0, reachable direct call @102EFACE from PlaneBinding::pilot_think_and_commit in game_hosts_units_motion.obj."
+    "call_graph.py who 007ED5D0: core body @10505EB0, reachable direct call @102EFB7E from PlaneBinding::pilot_think_and_commit in game_hosts_units_motion.obj."
   ],
   "validation": {
     "baseline": "index --if-stale fresh; scripts/build.ps1 passed all six CTest groups",
     "final_build": "scripts/build.ps1 passed all six CTest groups after final C++ changes",
-    "focused_probe": "tests/wire_g5_c810_travel_speed_probe.cpp compiled with MSVC Win32 /MD /O2 /fp:strict and /link /MANIFEST:EMBED; frozen, lock, zero, unordered, lazy class lookup and signed-zero publication sequence passed",
+    "focused_probe": "tests/wire_g5_c810_travel_speed_probe.cpp compiled with MSVC Win32 /MD /O2 /fp:strict and /link /MANIFEST:EMBED at PC24; native gates plus shared host adapter reset/freeze/nonpositive-step/NaN-step and tenth/eleventh-step boundary checks passed",
     "probe_command": "cmd /c local\\c810-travel-speed-probe.cmd",
-    "float_lint": "python tools/pc24_lint.py --staged: 0 findings across 4 C++ files; repeat --diff origin/main...HEAD after commit",
-    "call_graph": "42579/42733 functions reachable; 5501/6117 reconstructed addresses called; target core body has one reachable call site",
+    "float_lint": "python tools/pc24_lint.py --staged: 0 findings across 8 C++ files; repeat --diff origin/main...HEAD after commit",
+    "call_graph": "42582/42736 functions reachable; 5501/6117 reconstructed addresses called; target core body has one reachable call site",
     "readiness": "wire_readiness.py --standins: 007ED5D0 wired, called=true, call_sites=1; total 10647 -> 10648",
     "whitespace": "git diff --check passed"
   },
   "limitations": [
-    "The host retains its existing absolute-expiry representation of +388h, not the native per-tick float countdown arithmetic; the typed view passes its remaining duration.",
     "The squadron remains fused with wing 0; the class speed is derived from its loaded class/tuning values rather than dereferencing an original binary descriptor.",
     "This is a new C++ typed interface and bookkeeping result, not the original __thiscall ABI.",
     "No game execution, gameplay validation or native timer differential proof was performed."
+  ],
+  "review_rounds": [
+    {
+      "review_run": 1766,
+      "round": 1,
+      "reviewed_head": "79105ad5ef63346930594971c9ad9dbd7bf51257",
+      "finding": "P2 include/bsp/game_hosts_units_internal.hpp:12179: expiry subtraction restores class speed before the native group-3 decrement phase",
+      "disposition": "fixed",
+      "agreement": "The finding is correct: simulated_seconds advances before pilot think, so expiry subtraction both changes the phase and loses native per-operation float rounding and freeze behavior.",
+      "changes": "Removed sq_timer_expiry_388 entirely. Its replacement is one float sq_countdown_388, reset by the production setter adapter and decremented after all pilot reads by the production group-3 adapter. Both it and the existing 007F3BA0 body share one x87 subtraction kernel.",
+      "regression": "The focused probe uses the same PlaneSquadronTravelSpeedHostCountdown as the actual setter, RefreshView and group-3 traversal. Starting at 0.5f, step 1 clears the lock; after nine 0.05f decrements step 10 reads 0x3D4CCCC3 (+0.0499999635), so a head-task change preserves the override. Group 3 then stores 0xB3200000 (-3.7252903e-8), and step 11 restores class speed. Frozen, reset and nonpositive/unordered-step checks also pass.",
+      "validation": "Win32 scripts/build.ps1 and all six CTest groups passed; focused shared-host-adapter probe passed; staged PC24 lint reported zero findings across eight C++ files; call graph confirms one entry-reachable call to the original claimed body.",
+      "scope": "No additional reconstructed address is claimed wired by the timer-fragment repair."
+    }
   ],
   "rows": [
     {
       "native": "007ed5d0",
       "status": "wired",
       "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::refresh_travel_speed_007ed5d0, called by src/game_hosts_units_motion.cpp PlaneBinding::pilot_think_and_commit",
-      "reason": "The existing body now runs on the retained squadron override block and publishes its class-speed store to actual movement readers."
+      "reason": "The existing body now reads the retained float countdown before its group-3 decrement, runs on the squadron override block, and publishes its class-speed store to actual movement readers."
     },
     {
       "native": "009c2ac0",
@@ -273,6 +289,12 @@
       "status": "skipped",
       "host_site": "src/cc15_seg48.cpp: cc15_seg48_plane_squadron_begin_from_creation_record_007f1fe0",
       "reason": "Inspected as class-speed producer evidence only; a complete native begin/activation object and callback contract remains outside this packet."
+    },
+    {
+      "native": "007f3ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: post-pilot squadron group-3 phase; src/tick_element_overrides.cpp: shared countdown subtraction",
+      "reason": "Review repair integrates only the retained +388h countdown fragment; the full tick body's complete SquadronTickHost callback/state contract is not claimed wired."
     }
   ]
 }

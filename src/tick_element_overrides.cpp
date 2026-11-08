@@ -152,13 +152,26 @@ void unit_tick_advance_sim_00953cc0(UnitTickAdvanceState& state, float step,
 // Plane squadron
 // ---------------------------------------------------------------------------
 
+void subtract_squadron_tick_step(float& countdown, float step) noexcept {
+    // bsp.py show 007F3BA0 --asm: 007F3BE7..007F3BEC loads +388h,
+    // subtracts the already-loaded step, then stores one binary32 result.
+    // Keep the x87 operation so PC24 rounding also precedes the float store.
+    float* destination = &countdown;
+    __asm {
+        mov eax, destination
+        fld dword ptr [eax]
+        fsub dword ptr step
+        fstp dword ptr [eax]
+    }
+}
+
 void squadron_tick_advance_sim_007f3ba0(SquadronTickState& state, float step,
                                         SquadronTickHost& host) {
     // 007F3BAA: the whole timer block is behind step > 0.0f (00D7A218).
     if (step > 0.0f) {
         for (int i = 0; i < kSquadronTickTimerCount; ++i) {
             if (!state.timers.frozen[i]) {
-                state.timers.value[i] -= step;
+                subtract_squadron_tick_step(state.timers.value[i], step);
             }
         }
         if (state.notify_flag_3ech) {
