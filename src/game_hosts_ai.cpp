@@ -3753,7 +3753,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     bool tick_route_slot_present(void* leader) override {
         std::size_t unit = 0;
-        const bool present = route_unit(leader, unit);
+        // 00A14E30 calls 00778860 on this leader. Query its retained director
+        // and slot-0 object rather than treating every in-range index as one.
+        const bool present = route_unit(leader, unit)
+            && units.commands().unit_has_director_path_object0(unit);
         if (!present) ++summary.cautious_route_no_slot;
         return present;
     }

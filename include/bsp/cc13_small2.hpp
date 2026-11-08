@@ -109,7 +109,16 @@ struct TargetPoint {
     std::uint8_t valid;
 };
 
-struct Small2Host {
+// 00778860 needs only these two lookups. A live command host can bind the
+// existing unit/director/path owners without pretending to implement the
+// unrelated Lua, HUD and network operations on Small2Host. Typed C++ ABI only.
+struct UnitDirectorPathHost {
+    virtual ~UnitDirectorPathHost() = default;
+    virtual void* entity_weapon_director_114(void* entity) = 0;
+    virtual void* weapon_director_slot_path_object_0071bfc0(void* director, std::int32_t i) = 0;
+};
+
+struct Small2Host : UnitDirectorPathHost {
     virtual ~Small2Host() = default;
 
     // The dword / float / byte at image global `address`, and a pointer to it.
@@ -242,7 +251,7 @@ struct Small2Host {
 // Segment 43.
 void* entity_weapon_director_ref_construct_00778820(void* holder, void* entity,
                                                    Small2Host& host);
-void* unit_director_path_object0_00778860(void* unit, Small2Host& host);
+void* unit_director_path_object0_00778860(void* unit, UnitDirectorPathHost& host);
 void* session_message_formation_set_construct_0077a080(void* msg, void* group,
                                                        Small2Host& host);
 void unit_instance_on_killed_lua_0077d270(void* unit, Small2Host& host);
