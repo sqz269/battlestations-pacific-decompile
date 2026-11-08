@@ -1,0 +1,120 @@
+{
+  "run": 1775,
+  "goal": 5,
+  "chain": 823,
+  "slot": "g5-w3",
+  "base_head": "8bc85c77b5",
+  "picked": "Landing-craft keel clearance: reuse the complete 004F49F0 segment-distance body and remove its private copies.",
+  "rows": [
+    {
+      "native": "004f49f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::transport_launch_craft_008206f0 via landing_craft_keel_distance",
+      "body": "bsp::segment_pair_distance_004f49f0",
+      "real_state": "Craft and other-ship keel endpoints from current unit poses and authored class lengths; actual application_camera_axes_crt(). Original craft-first endpoint order retained.",
+      "original_abi": "ECX=a0, EDX=a1, stack=b0,b1, RET8, ST0 result; explicit C++ service ABI retained.",
+      "new_wiring": true
+    },
+    {
+      "native": "00419ab0",
+      "status": "wired",
+      "host_site": "src/avoid_zone_distance_followup.cpp: segment_pair_distance_004f49f0 -> avoid_zone_segment_distance_00419ab0, four endpoint calls",
+      "new_wiring": false,
+      "note": "Existing reachable body reused; private ship-AI point-distance copy removed."
+    },
+    {
+      "native": "004f3730",
+      "status": "wired",
+      "host_site": "src/avoid_zone_distance_followup.cpp: segment_pair_distance_004f49f0 -> native_segment_crossing_004f3730",
+      "new_wiring": false,
+      "note": "Existing reachable body reused; private ship-AI crossing/solver/relative-equality copies removed."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The semantic gun handle lacks the native retained ammunition record, ammo+48h alternate producer, and tree-copy owner."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building clear candidate",
+      "reason": "No native unit+660h 44-byte-element vector owner and Seg62Host lifetime adapter established."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage candidate",
+      "reason": "No live member-vector lookup caller identified in the owned scope; miss path still requires actual mutable F87574/78/7C DATA ownership."
+    },
+    {
+      "native": "00415660",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: weapon_hit_probability candidate",
+      "reason": "Address leased and wired by agent/g5-w8; the local bucket clamp considered here is in the disabled accuracy fallback."
+    },
+    {
+      "native": "004171f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-craft clearance inspection",
+      "reason": "The actual clearance query compares two keel segments, not a native polygon record-list boundary; no matching live polygon query established."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: oriented rectangle candidate",
+      "reason": "No current rectangle+20h axes/extents producer and matching live distance query established."
+    },
+    {
+      "native": "009d7930",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: second oriented rectangle candidate",
+      "reason": "No current rectangle+44h axes/extents/68h flag producer and matching live distance query established."
+    },
+    {
+      "native": "00b999a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: plane-distance candidate",
+      "reason": "No matching live signed-plane-distance call site identified; current host camera code projects clip-space coordinates."
+    }
+  ],
+  "changes": [
+    "Removed the complete private double substitution and PC24 helper family from game_hosts_ship_ai.cpp (180 lines removed, adapter added).",
+    "Deleted the obsolete segment-distance switch header.",
+    "Superseded the stale private-body ledger row with the existing complete body record and live host evidence."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS; 4/4 CTests",
+    "final_build": "scripts/build.ps1 PASS; 4/4 CTests",
+    "call_graph_before": {
+      "reconstructed_called": 5528,
+      "reconstructed_linked": 6145
+    },
+    "call_graph_after": {
+      "reconstructed_called": 5529,
+      "reconstructed_linked": 6146
+    },
+    "compiled_call": "REACHABLE bsp::segment_pair_distance_004f49f0 @104f56b0; one direct call @1026af51 from GameShipAiHost::transport_launch_craft_008206f0.",
+    "entry_path": "call_graph.py path 004f49f0 reports a chain from WinMainCRTStartup through the live Lua binding trampoline and transport launch host.",
+    "pc24_lint": "--staged PASS: 0 findings, 1 file; post-commit command: python tools/pc24_lint.py --diff origin/main...HEAD",
+    "game_run": false,
+    "new_tests": 0,
+    "readiness_text_wired": {
+      "before": 10673,
+      "after": 10673,
+      "note": "Address was already text-wired by its obsolete private substitution; compiled complete-body call count is the actual increase."
+    }
+  },
+  "evidence": [
+    "bsp.py show 004f49f0 (pseudocode and assembly, CALL order and four binary32 spills)",
+    "bsp.py ghidra disasm 0082178b (CALL004F49F0 then FSTP float)",
+    "bsp.py show 00419ab0 --asm (unchecked 004F3630 result and query-pointer slot)",
+    "Existing complete bodies in avoid_zone_distance_followup.cpp, avoid_zone_segment_math.cpp and avoid_zone_clearance.cpp."
+  ],
+  "limits": [
+    "Compiled call reachability and existing build/tests only; no game execution or new native differential run.",
+    "Original ABI, native stack-address identity on the ignored-solver-failure path, and gameplay remain unproved."
+  ],
+  "left": "Native ammunition/vector owners and UnitGroup miss DATA ownership remain for later work; do not fabricate those states.",
+  "coordination": "g5-w9 released game_hosts_ship_ai.cpp without editing it; g5-w3 claimed the file before changes. No source-file overlap with that worker remains."
+}
