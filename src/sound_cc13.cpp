@@ -8,6 +8,7 @@
 #include "bsp/native_input_configuration_parse.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_dialog_table.hpp"
+#include "bsp/sound_configuration_shutdown.hpp"
 #include "bsp/sound_sample.hpp"
 #include "bsp/sound_resource_cache.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
@@ -596,23 +597,31 @@ void append_sound_configured_type_00a7feb0(NativePointerArray& header, const voi
     header.count = add32(header.count, 1);
 }
 
-void* append_default_sound_configured_group_00a7faf0(NativePointerArray& header, NativeStringStorage& strings) {
-    if (header.count == header.capacity) {
-        reserve_sound_configured_groups_00a7f160(header, grown_capacity_additive(header.capacity, 16, 16), strings);
+// Keep the reconstructed entry visible in the optimized game call graph.
+__declspec(noinline) SoundConfiguredChannelGroup& append_default_sound_configured_group_00a7faf0(
+    SoundConfigurationState& state) {
+    // bsp.py show 00A7FAF0 --asm: +16/min16 growth, six zero DWORDs, then
+    // count++. 00A8096D..00A809DC inlines the same body for manager+128h.
+    // These are that live owner's sole records: empty name, null FMOD group,
+    // and empty actual DSP header. Standard-container allocation/EH remains
+    // the existing configuration projection, not the image's 18h-record ABI.
+    auto& groups = state.channel_groups_128;
+    if (groups.size() == static_cast<std::size_t>(state.channel_group_capacity_130)) {
+        const auto capacity = grown_capacity_additive(state.channel_group_capacity_130, 16, 16);
+        groups.reserve(static_cast<std::size_t>(capacity));
+        state.channel_group_capacity_130 = capacity;
     }
-    void* const slot = bytes(header.data, static_cast<std::size_t>(header.count) * 0x18);
-    if (slot != nullptr) {
-        std::memset(slot, 0, 0x18);
-    }
-    header.count = add32(header.count, 1);
-    return bytes(header.data, static_cast<std::size_t>(header.count) * 0x18 - 0x18);
+    groups.emplace_back();
+    return groups.back();
 }
 
-void pop_back_sound_configured_group_00a7f110(NativePointerArray& header, NativeStringStorage& strings) {
-    if (header.count != 0) {
-        destroy_sound_configured_group_raw_00a7bfe0(
-            bytes(header.data, static_cast<std::size_t>(header.count) * 0x18 - 0x18), strings);
-        header.count = add32(header.count, -1);
+__declspec(noinline) void pop_back_sound_configured_group_00a7f110(SoundConfigurationState& state) {
+    // 00A7F123 destroys storage before 00A7F128 decrements count. FMOD handle
+    // release belongs to the caller (00A7F583), not this storage-only leaf.
+    auto& groups = state.channel_groups_128;
+    if (!groups.empty()) {
+        destroy_sound_configured_group_storage_00a7bfe0(groups.back());
+        groups.pop_back();
     }
 }
 

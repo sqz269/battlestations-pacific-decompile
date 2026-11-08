@@ -52,12 +52,9 @@ void shutdown_sound_configuration_effects_00a7f560(SoundConfigurationState& stat
     while (!state.channel_groups_128.empty()) {
         release_sound_configured_group_effects_00a7aaf0(
             state.channel_groups_128.back(), fmod);
-        // 00A7F588 reloads the outer count and selects the current last group.
-        if (!state.channel_groups_128.empty()) {
-            destroy_sound_configured_group_storage_00a7bfe0(
-                state.channel_groups_128.back());
-            state.channel_groups_128.pop_back();
-        }
+        // 00A7F588..00A7F5A4 inlines 00A7F110: reload the outer count after
+        // FMOD callbacks, destroy the current last record, then decrement.
+        sound_cc13::pop_back_sound_configured_group_00a7f110(state);
     }
     if (words_144[2] != 0) {
         fmod.dsp_remove(native_handle(words_144[2]));
