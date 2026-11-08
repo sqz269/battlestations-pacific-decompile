@@ -615,9 +615,15 @@ public:
     // Packet cc9_ai_plane_loadout_arm. 007B9140(plane, 1) as 00A04560 asks it
     // at 00A0463F, without its kind-17h arm: some rack (+974h, 006E3FE0
     // vtable[210h](2Ah, 1)) holds an attached round. Every rack ordnance class
-    // answers 2Ah, and the flag-1 arm needs [00E17BF2], 0 in single player, so
-    // this is squadron_ammo_type's per-plane rack test. False for a non-plane.
+    // answers 2Ah. This API projects attached rounds; the first-slot descriptor
+    // query below separately handles its configured-descriptor reload fallback.
+    // 00E17BF2 is mission-controlled in SP too. False for a non-plane.
     bool plane_holds_rack_round_007b9140(std::size_t unit_index);
+    // 007B9230's first rack ONLY, queried with the loaded-ordnance flag 1.
+    // Returns its loaded or reload-enabled bomb-family configured descriptor
+    // id; -1 when neither arm supplies a descriptor (006E4060 with flag 1).
+    // Uses the existing BSPGun rack order and live equipment/round projection.
+    int plane_first_rack_bullet_id(std::size_t unit_index);
     // Packet cc13-fix16 (docs/CC13_FIX16.md). 007B92E0, GetPlaneIsReloading's
     // test: some rack's vtable[20Ch] (006E3570, no round left) answers. The
     // per-rack count is the one plane_holds_rack_round_007b9140 reads. False

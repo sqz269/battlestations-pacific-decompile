@@ -1,0 +1,249 @@
+{
+  "goal": 5,
+  "chain": 826,
+  "slot": "g5-w1",
+  "base": "4ee31b3975",
+  "branch": "agent/g5-w1",
+  "picked": "Consolidate 007EE8F0 and bind its torpedo first-slot and target-immunity inputs to the live chooser.",
+  "rows": [
+    {
+      "native": "007ee8f0",
+      "status": "wired",
+      "host_site": "src/attack_commands.cpp: attack_command_choose (called by GameScriptOrdersHost::choose_attack_class_007eec50); attack_command_applies facade (GameUnitsHost pilot retest)",
+      "real_state": "The live unit/target/loadout feasibility inputs. Review1800 additionally binds the current flight leader first-rack descriptor (current Equipment and held-round state) and actual target class kind, +808h BigLandingShip and +500h max speed. Empty first racks additionally query live 00E17BF2 and retain the configured descriptor only when it exists and answers IsKindOf(2Ah); SP mode does not determine the flag.",
+      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade. Review1800 round1 adds bind_attack_torpedo_inputs, a first-rack projectile-id read seam on GameUnitsHost, and access to the existing retained projectile descriptor on GameGunneryHost. Review1819 round2 implements the reload-enabled empty-rack fallback and corrects the SP flag assumption.",
+      "original_abi": "thiscall ECX=squadron; class, target, surface byte, loadout; AL; RET 10h",
+      "evidence": "bsp.py show 007ee8f0 --asm (007EE8F0..007EEBFB); assembly 007EEB36 selects E08F50 kamikaze, 007EEB94 selects E08F40 strafe. Correct the old raw comments, which reversed these names. Review1800: 007EEA61 initializes BL=1; absent/non-0Ah first descriptor preserves it, 007EEA82 COMISS/JA and 007EEA87 COMISS/JC clear it with their original unordered behavior. 00828EC0 listing uses class kind0E/0C, byte808 and speed500 COMISS/JB.",
+      "built_call_graph": {
+        "reachable": true,
+        "call_sites": 4,
+        "callers": [
+          "attack_command_choose (3 calls)",
+          "attack_command_applies (1 tail jump)"
+        ]
+      }
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: wreck collision-mask path",
+      "reason": "Missing an admitted actual shape/body/manifold owner for the Cc13Dyn1Calls boundary; a mask-only substitute would omit manifold clearing."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: voice_begin_sound_fade",
+      "reason": "Missing the live VoicePlaybackManager and sound-level/callback binding at this unimplemented voice hook."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0 and fit_shadow_cascade_00a8bd20",
+      "reason": "Missing an entry-reachable shadow-fit consumer; the current live GUI projection is orthographic and does not consume the product."
+    },
+    {
+      "native": "004bb8a0",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: game_session_local_side_check_004bb8a0",
+      "reason": "Its meaningful consumers are multiplayer platform-session/pause paths; outside the single-player assignment."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: BSP_MarkerClasses_Clear",
+      "reason": "Missing the live marker-class registry and deleting descriptor owners at a game teardown consumer."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: pre-load checkpoint path",
+      "reason": "Missing the actual pre-load checkpoint comparison, BSP_Chk_Save Lua owner/current mission key and storage continuation."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp: clamp_to_screen_margins_00638b90",
+      "reason": "Missing the live marker projection consumer and its current screen-margin globals/wide-screen state."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing a live character-admission consumer with its text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field (RamImage_GetData)",
+      "reason": "Missing an actual RAM-image pixel-buffer consumer at this original getter site."
+    },
+    {
+      "native": "0042d510",
+      "status": "skipped",
+      "host_site": "src/native_node_construction.cpp: native-node world/view initialization",
+      "reason": "Owned and wired by g5-w7 chain 817 in its separate branch; awaiting that branch landing, so no duplicate edit."
+    },
+    {
+      "native": "004f9d30",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: color_static_white_004f9d30",
+      "reason": "Missing the live tactical-library entry-detail widget colour consumer."
+    },
+    {
+      "native": "004897b0",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp: scene_node_set_matrix_and_invalidate_004897b0",
+      "reason": "Missing a live entity-node owner with the original +74h/+C8h/+10Ch layout; the native render-node transform uses a different layout."
+    },
+    {
+      "native": "0093efc0",
+      "status": "skipped",
+      "host_site": "src/cc13_large61.cpp: map-scene world/view comparison hook",
+      "reason": "Missing an entry-reachable original map/periscope comparison consumer; unrelated scene-frame comparisons do not supply this site."
+    },
+    {
+      "native": "007ed830",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_unit_has_level_bomb_ordnance_007ed830",
+      "reason": "Missing an admitted live raw squadron/loadout Cc13Seg48Host consumer; its only textual call was in the deleted unused raw feasibility body."
+    },
+    {
+      "native": "007ed970",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_unit_has_rocket_ordnance_007ed970",
+      "reason": "Missing an admitted live raw squadron/loadout Cc13Seg48Host consumer; its only textual call was in the deleted unused raw feasibility body."
+    },
+    {
+      "native": "00828ec0",
+      "status": "wired",
+      "host_site": "src/cc15_seg48.cpp: bind_attack_torpedo_inputs, called by GameScriptOrdersHost::choose_attack_class_007eec50",
+      "already_wired_before_review": true,
+      "change": "Reuse the existing predicate for attack feasibility; it already had another live powerup score caller. No new reconstructed-address count is claimed for this reuse."
+    },
+    {
+      "native": "007b9230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The raw native +974h/+994h owner remains absent; the first-rack read uses the existing BSPGun owner, including its loaded or reload-enabled configured descriptor."
+    },
+    {
+      "native": "006e4060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The raw child-list owner is absent; the host uses current loaded-round state plus the configured retained descriptor fallback gated by live 00E17BF2 and IsKindOf(2Ah), without claiming a call to the raw body."
+    },
+    {
+      "native": "006e4640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "Native multi-rack per-round slots are absent; this packet retains the existing authored multi-rack count projection and claims no call to the raw body."
+    },
+    {
+      "native": "006d1f40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The raw vslot leaf is not called; the established lua_device_reload_enabled_00e17bf2 publication supplies the same live mission-controlled byte."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS, 4/4 CTests",
+    "final_build": "scripts/build.ps1 PASS, 4/4 CTests",
+    "exact_move_check": "Initial consolidation at 24ace8d4e: helpers/dispatch matched the previous live predicate. Review1 intentionally corrects two previously unbound inputs, so preserving all previous chooser behavior is no longer claimed.",
+    "baseline_readiness_wired": 10674,
+    "baseline_built_reconstructed_addresses_called": 5529,
+    "final_built_reconstructed_addresses_called": 5530,
+    "call_graph_path": "WinMainCRTStartup -> startup/frame/menu/mission -> GameMissionFrameHost::run_mission_frame_004e4a40 -> script_orders_squadron_intake_007f1940 -> GameScriptOrdersHost::squadron_intake_007f1940 -> choose_attack_class_007eec50 -> attack_command_choose -> cc15_seg48_unit_attack_command_applies_007ee8f0",
+    "game_run": false,
+    "final_readiness_wired": 10673,
+    "readiness_note": "The text-based wired total drops by one: +007EE8F0, minus 007ED830 and 007ED970 whose only source references were deleted with the unused raw body. Neither raw helper is linked in the built executable. Built entry-reachable reconstructed-address coverage increases by one.",
+    "existing_behavior_tests": "tests/math_tests.cpp: 007EEC50 preference order and allow_guns cases now exercise the one address-suffixed predicate through attack_command_choose.",
+    "pc24_lint": "python tools/pc24_lint.py --diff HEAD: PASS, zero findings (no new floating arithmetic)."
+  },
+  "limitations": [
+    "Typed host-value API is not an original-ABI replacement. The review fixes intentionally change torpedo acceptance for non-surface targets and immune small craft.",
+    "Rack order uses the existing BSPGun projection, equipment and current single-rack ammo; empty-rack configured-descriptor fallback uses the live mission reload flag and native bomb-family kind answer. Native child-list topology and multi-rack per-round slots remain unreconstructed; multi racks retain their authored-count projection.",
+    "The focused fixture exercises the production binder plus chooser/predicate, not a live retail rack. No game run or original-ABI equivalence is claimed."
+  ],
+  "left_for_others": "Other raw segment-48 bodies and missing original consumers listed in rows; genuine native-object ownership remains separate.",
+  "review_round_1": {
+    "review_run": 1800,
+    "reviewed_head": "24ace8d4e748a40295fcff7ade111c02d88af783",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "summary": "Bind torpedo_runs_at_surface from the actual current leader first rack, preserving absent-slot/subtype defaults and both native SSE comparisons.",
+        "producer": "GameScriptOrdersHost resolves plane_squadron_registry().find_by_member_unit(unit_index)->flight_leader(); GameUnitsHost::plane_first_rack_bullet_id reads racks.front(), resolves that platform current Equipment device, maps the single-rack identity to live ammo, and returns only that slot loaded projectile id. GameGunneryHost::weapon_class_descriptor returns the stable mission-owned descriptor. A missing first rack yields null. An empty existing rack now uses the round2 reload-enabled configured-descriptor fallback; it never searches another rack or member.",
+        "comparison": "Null or sub_type != 0Ah -> true. For type0Ah, !(homing_horz_turn_speed > 0.001f) && 0.001f >= homing_vert_turn_speed. The +F0h/+F4h fields are homing turn rates, despite historical depth-band shorthand."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "summary": "Bind torpedo_target_blocked through existing torpedo_proof_small_craft_00828ec0 using live target-class inputs.",
+        "producer": "GameUnitsHost::unit_is_kind_of for class identity, GameShipAiHost::unit_big_landing_ship_0808 for the loaded class flag, and GameUnitsHost::unit_class_max_speed_0500 for class max speed; not current movement speed. Missing required class/descriptor owners fail explicitly rather than supply false input defaults.",
+        "comparison": "Kind0E, or kind0C with +808h false; require +500h >= original float 00D099AC (8.938946723937988f). COMISS/JB rejects NaN speed."
+      }
+    ],
+    "other_production_site": "The pilot retest compatibility path is the free-attack tail. Its active results exclude the seven ordnance classes through early_arm (including torpedo E08F18); its consumed feasibility tests are artillery/attackmove/dogfight/strafe. The torpedo-bearing chooser is the production site that needs these bindings.",
+    "checks": {
+      "build": "scripts/build.ps1 PASS, all 4 CTests",
+      "focused_probe": "tests/wire_g5_c826_torpedo_probe.cpp PASS via local/c826-torpedo-probe.cmd; /MANIFEST:EMBED Win32 exe; observable chooser acceptance covers absent/wrong subtype, exact threshold, adjacent values, asymmetric NaNs, fast torpedo boat, small/big landing ship, ordinary class and NaN speed.",
+      "game_run": false,
+      "readiness": {
+        "wired_before_review": 10673,
+        "wired_after_review": 10673,
+        "007ee8f0_called": true,
+        "007ee8f0_call_sites": 4,
+        "00828ec0_call_sites": 2
+      },
+      "built_reconstructed_addresses_called_before_review": 5530,
+      "built_reconstructed_addresses_called_after_review": 5530,
+      "binder_reachable": true,
+      "first_rack_getter_reachable": true,
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: PASS, 0 findings, 10 files."
+    }
+  },
+  "claimed_new_addresses": [
+    "007ee8f0"
+  ],
+  "review_round_2": {
+    "review_run": 1819,
+    "reviewed_head": "6985618f1ef3cb0a8c224a1ca3be1fc4bf38c417",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "summary": "Implement empty-first-rack configured bomb-family descriptor fallback using live 00E17BF2; retain null when any fallback gate fails.",
+        "native_evidence": "006E4086 checks the flag-1 query; 006E409B calls owner vslot1E4 (006D1F40 reads 00E17BF2); 006E40A7/006E40AB require current record and configured descriptor; 006E40C4 tests IsKindOf(2Ah), returning configured +3F8h/+34h at 006E40D2.",
+        "implementation": "plane_first_rack_bullet_id keeps the attached-round return first. Otherwise it samples lua_device_reload_enabled_00e17bf2 for every query and asks GameGunneryHost::weapon_class_descriptor(id,0x2a). The optional kind filter uses the retained descriptor cached Type and existing OrdnanceKindSet native answer table. A missing owner/record/descriptor or failed kind test returns -1/null through empty_rack_configured_bullet_id.",
+        "corrected_assumption": "Single player does not imply 00E17BF2 is clear. It is written by mission SetDeviceReloadEnabled and settings publication. The installed usn_19_coralus.lua:64 calls SetDeviceReloadEnabled(true). Corrected both rack API comments and the prior report producer description."
+      }
+    ],
+    "installed_evidence": {
+      "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "mission": "scripts/missions/usn/usn_19_coralus.lua:64: SetDeviceReloadEnabled(true)",
+      "fido": [
+        "scripts/datatables/classtables/arcade/bulletclasses.lua: ArcadeTable[4]",
+        "scripts/datatables/classtables/realistic/bulletclasses.lua: RealisticTable[4]"
+      ],
+      "fido_fields": {
+        "Type": "Torpedo",
+        "HomingHorzTurnSpeed": 0.5,
+        "HomingVertTurnSpeed": 0.5
+      }
+    },
+    "checks": {
+      "build": "scripts/build.ps1 PASS, all 4 CTests",
+      "focused_probe": "cmd /c local/c826-torpedo-probe.cmd PASS. Same production empty-rack admission and torpedo binder/chooser: exhausted Fido reload OFF -> null/refused non-surface target; ON -> class4 retained/accepted; OFF again -> null. Missing record/descriptor, non-bomb-family Bullet and unknown Type remain null. Win32 /MANIFEST:EMBED probe.",
+      "call_graph": "007EE8F0 remains REACHABLE at 4 sites. plane_first_rack_bullet_id remains REACHABLE from the live chooser. 5530 reconstructed addresses called; no extra coverage claimed.",
+      "game_run": false,
+      "readiness": {
+        "wired": 10673,
+        "007ee8f0_called": true,
+        "007ee8f0_call_sites": 4,
+        "built_reconstructed_addresses_called": 5530
+      },
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: PASS, 0 findings, 12 files."
+    }
+  }
+}

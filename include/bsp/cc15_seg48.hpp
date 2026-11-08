@@ -6,7 +6,8 @@
 // messages, command-record initialisers, the destructor, home-base and stock bookkeeping, the
 // archive writers, the creation-record pass, position/heading/matrix setters and the kill-reason
 // counter. Reconstructed and build-tested only: these are new C++ interfaces over the native
-// records, not drop-in replacements; nothing is wired into a game host. Names are hypotheses, not
+// records, not drop-in replacements. Chain 826 binds 007EE8F0 to the live chooser;
+// the other bodies retain their individual wiring status. Names are hypotheses, not
 // recovered symbols. Same conventions as cc13_seg48U: raw byte blocks touched only at the offsets
 // the image uses, and one named host hook per native call, at the same point with the same
 // arguments. Exception unwinding (the EH frames the image sets up) is not modelled: the hooks are
@@ -185,9 +186,11 @@ bool cc15_seg48_plane_squadron_is_leaving_on_purpose_007ee2e0(void* squadron, st
 void cc15_seg48_plane_squadron_detach_pilot_007ee4e0(void* squadron, Cc15Seg48Host& host);
 bool cc15_seg48_plane_squadron_first_member_df4_entry_007ee720(void* squadron, Cc15Seg48Host& host);
 void cc15_seg48_plane_squadron_recount_active_wingmen_007ee790(void* squadron, Cc15Seg48Host& host);
-bool cc15_seg48_unit_attack_command_applies_007ee8f0(void* squadron, std::uint32_t command_class, void* target,
-                                                     std::uint8_t allow, std::uint32_t loadout,
-                                                     Cc15Seg48Host& host);
+// Typed boundary for the one 007EE8F0 body. Inputs come from the live unit,
+// target and selected loadout; this replaces the unused raw Host boundary.
+struct AttackFeasibilityInputs;
+bool cc15_seg48_unit_attack_command_applies_007ee8f0(std::uint32_t command,
+    const AttackFeasibilityInputs& in) noexcept;
 bool cc15_seg48_plane_squadron_target_is_home_007eee20(void* squadron, Cc15Seg48Host& host);
 bool cc15_seg48_plane_squadron_slot168_command_target_check_007efeb0(void* squadron, const char* command,
                                                                      Cc15Seg48Host& host);

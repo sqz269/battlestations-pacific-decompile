@@ -8,6 +8,16 @@ struct SingleRackCensusIdentity {
     int projectile_kind{0};
 };
 
+// 006E4086..006E40D7 with query flag 1 and no attached bomb-family child:
+// owner slot1E4 (live 00E17BF2), a configured descriptor, and its vslot8(2Ah).
+// The configured descriptor may survive an exhausted rack. Missing records,
+// missing descriptors and a failed kind test all preserve the native null.
+inline constexpr int empty_rack_configured_bullet_id(bool device_reload_enabled,
+    int configured_bullet_id, bool configured_is_bomb_family) noexcept {
+    return device_reload_enabled && configured_bullet_id >= 0 && configured_is_bomb_family
+        ? configured_bullet_id : -1;
+}
+
 // Only compare ammunition with the device that produced its census entry.
 // Equal rack counts do not establish identity: Rikufu equipment 2 replaces
 // device 89 bombs with device 416 rockets at the same platform keys.
