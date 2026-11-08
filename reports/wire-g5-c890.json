@@ -1,0 +1,153 @@
+{
+  "chain": 890,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "base": "ef30a9a4095528b278c340851eb66a58a22eb47d",
+  "picked": "Live enum/property node-pool page predicates and moved-page slot identities",
+  "rows": [
+    {
+      "native": "00410af0",
+      "status": "wired",
+      "host_site": "src/native_enum_node_pool.cpp: trim_native_enum_node_pool_00410cd0 (compiled into invoke_trim)",
+      "evidence": "Replaces the 64 stores to moved-page slot+10h, stride 14h, using the actual page from the existing pool table. Built graph: one reachable call site."
+    },
+    {
+      "native": "00410b10",
+      "status": "wired",
+      "host_site": "src/native_enum_node_pool.cpp: trim_native_enum_node_pool_00410cd0 (compiled into invoke_trim)",
+      "evidence": "Replaces the actual page free-count WORD == 64 test before reclamation. Built graph: one reachable call site."
+    },
+    {
+      "native": "00410b20",
+      "status": "wired",
+      "host_site": "src/native_enum_node_pool.cpp: allocate_native_enum_node_004e7c00 and trim_native_enum_node_pool_00410cd0",
+      "evidence": "Replaces actual page free-count WORD == 0 scans when selecting the next usable page. Built graph: two reachable call sites."
+    },
+    {
+      "native": "00af5d80",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_pool_allocate.cpp: allocate_native_particle_model_slot_00af69e0",
+      "reason": "The particle-model pool allocator has no linked caller in the baseline game; replacing its inline table growth would not establish an entry-reachable call."
+    },
+    {
+      "native": "00af6820",
+      "status": "skipped",
+      "host_site": "src/terrain_particles_cc13.cpp: pointer_array_push_back",
+      "reason": "No live particle-model emitter-pointer owner/producer was established; the inspected model allocation path is not linked into the game."
+    },
+    {
+      "native": "0041f820",
+      "status": "skipped",
+      "host_site": "src/native_pool_storage_cleanup.cpp: cleanup_native_pool_storage_0041f820",
+      "reason": "The routine requires an actual record with a string header at +4h and owned buffer at +10h; its concrete live owner identity remains missing."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message candidate review",
+      "reason": "No retained controller-state message producer and routed consumer carrying both descriptors and controller flags was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate review",
+      "reason": "No retained controller-snapshot owner or transport consumer was established; a discarded projection of existing facts would not wire gameplay."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroup score-list candidate review",
+      "reason": "The host explicitly keeps no candidate score list because its native reader is the excluded debug overlay; a gameplay owner/consumer is missing."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroup score-list candidate review",
+      "reason": "No actual candidate score-list entries or gameplay consumer exist in the inspected host to receive the chosen marker."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::pause_slot40",
+      "reason": "The dispatcher already names this body, but no live single-player caller of pause_slot40 was established in the inspected runtime owners."
+    },
+    {
+      "native": "00a891f0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::pause_slot40",
+      "reason": "The existing event pause dispatch lacks an established live caller; streamed-dialog pause uses its separate real stream state."
+    },
+    {
+      "native": "00a79a30",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::handle_slot18",
+      "reason": "The existing channel-handle dispatcher has no established live handle consumer in the inspected application sound owners."
+    },
+    {
+      "native": "00a88b90",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::handle_slot18",
+      "reason": "The existing event-handle dispatcher has no established live handle consumer in the inspected application sound owners."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_items_00a9bf90",
+      "reason": "No live NativeGuiListboxCalls implementation over the required raw listbox owner was found; the existing GuiListboxRuntime uses a separate typed row companion."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_row_by_data_00a9c860",
+      "reason": "Missing the actual raw listbox/list-node storage and NativeGuiListboxCalls refresh dispatcher."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing a live raw listbox owner and concrete select_index_00a9c7c0 callback on that same owner."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing live raw selected-node fields and the concrete NativeGuiListboxCalls refresh dispatcher."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: reset_native_listbox_highlight_00a9cf30",
+      "reason": "Missing a concrete raw-listbox highlight/layout callback implementation over the actual native rows and manager."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: scroll_native_listbox_to_item_00a9d360",
+      "reason": "Missing a concrete NativeGuiListboxCalls implementation and actual raw listbox row/paging owner; the typed companion is not that raw storage."
+    },
+    {
+      "native": "00a9e230",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::enable_paging_00a9e230",
+      "reason": "No live application call supplying the same-domain listbox owner, native strings, comparator and native page-size producer was established in this bounded review."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: passed, all four CTests passed",
+    "focused_probe": "tests/wire_g5_c890_enum_page_probe.cpp compiled Win32 /O2 /MD with bsp_core and /MANIFEST:EMBED; passed",
+    "probe_behavior": "65 actual nodes across two constructed pages; trim scans past a full page; returning the first 64 nodes permits reclamation and moves the remaining page; all 64 slot IDs become zero; the live payload survives; returning the moved node permits final reclamation; destruction unlinks the pool",
+    "call_graph": "5635 -> 5638 entry-reachable reconstructed addresses; who confirms 00410AF0/00410B10/00410B20 with 1/1/2 reachable call sites",
+    "readiness_wired_before": 10745,
+    "readiness_wired_after": 10748,
+    "readiness_targets_called": true,
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "evidence": [
+    "bsp.py show 00410af0, 00410b10, 00410b20: existing page leaf bodies",
+    "bsp.py show 00410cd0: equivalent inlined count comparisons and 64 moved-page ID stores",
+    "bsp.py show 004e7c00: actual pool allocation and subsequent-page scan",
+    "call_graph.py path 00410af0: existing enum-symbol pool trim binding from scene property-library load"
+  ],
+  "limits": "Build, focused source fixture and static entry-reach evidence only; no game execution, native binary ABI replacement or gameplay parity claim. Existing bodies and page ownership are reused."
+}
