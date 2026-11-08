@@ -35,6 +35,7 @@ namespace bsp {
 struct MovieKeyframeInput;
 class NativeStringStorage;
 class SessionParticipantPools;
+class NativeObserverLifetime;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -94,10 +95,14 @@ struct GameHudSummary {
 // screens use.
 class GameHudHost {
 public:
-    GameHudHost(GameHostLog& log, GameMenuHost& menu);
+    GameHudHost(GameHostLog& log, GameMenuHost& menu, NativeObserverLifetime& observers);
     ~GameHudHost();
     GameHudHost(const GameHudHost&) = delete;
     GameHudHost& operator=(const GameHudHost&) = delete;
+
+    // 0068B630's screen deletion pass reaches 0068A330 for slot 24h. Run
+    // before the menu registry and application observer lifetime are retired.
+    void release_bomb_view_screen();
 
     // Goal 4 chain 249. [00F8BBD8], the running sound owner the update's tail hands
     // 00A7B710 at 0068CC49 (ECX, no null test). The application binds its core sound

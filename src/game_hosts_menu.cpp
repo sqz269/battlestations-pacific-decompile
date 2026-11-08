@@ -2,6 +2,7 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_observer_runtime.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -3280,7 +3281,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     impl_->loading_locale = &locale;
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
-    impl_->hud = std::make_unique<GameHudHost>(log, *this);
+    impl_->hud = std::make_unique<GameHudHost>(log, *this, singletons.observers().lifetime());
     impl_->profile_scripts = &scripts;
     impl_->bind_menu_locale_tables(locale);
     if constexpr (kHintTriggerPassesCc15Bound) {
@@ -3305,6 +3306,9 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
 }
 
 GameMenuHost::~GameMenuHost() {
+    // 0068B630 -> screen24's deleting destructor -> 0068A330. Retire the
+    // leaf before this registry or the application's observer domain dies.
+    if (impl_->hud) impl_->hud->release_bomb_view_screen();
     // Retire a screen left by an interrupted load before its borrowed
     // binding and GUI owner disappear. A completed canonical drain already
     // cleared this publication, so it never recreates the manager here.
@@ -3441,6 +3445,17 @@ bool GameMenuHost::attach_in_game_page(int slot, const std::string& page_name) {
     const std::size_t before = screen->pages.size();
     host.attach_page(*screen, page_name);
     return screen->pages.size() != before;
+}
+
+void GameMenuHost::unregister_in_game_screen(int slot, const FrontEndScreen& constructed_flags) {
+    Impl& host = *impl_;
+    const auto entry = host.screens.find(slot);
+    unregister_front_end_screen_004f71a0(host.world.screens, constructed_flags);
+    // The native scan also accepts an unregistered base. Retire only metadata
+    // that borrows this exact leaf, leaving any unrelated slot owner alone.
+    if (entry != host.screens.end() && entry->second.flags == &constructed_flags)
+        host.screens.erase(entry);
+    host.log.implemented("FrontEndScreen::unregister_leaf", "004f71a0");
 }
 
 bool GameMenuHost::in_game_page_has_child(int slot, const std::string& widget_name) {

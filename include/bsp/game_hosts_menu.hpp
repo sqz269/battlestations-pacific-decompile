@@ -216,6 +216,9 @@ public:
     bool register_in_game_screen(int slot, const std::string& name,
         std::uint32_t register_virtual, std::uint32_t layout_virtual,
         FrontEndScreen* constructed_flags = nullptr);
+    // 004F71A0 on a leaf's own base, before its storage is released. The
+    // registry scan uses the same flags the leaf registered, including aliases.
+    void unregister_in_game_screen(int slot, const FrontEndScreen& constructed_flags);
     bool attach_in_game_page(int slot, const std::string& page_name);
     bool in_game_page_has_child(int slot, const std::string& widget_name);
     // Milestone 2k. The page one registered HUD screen loaded through 00aa5840,
