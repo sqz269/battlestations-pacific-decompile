@@ -1,0 +1,92 @@
+{
+  "chain": 674,
+  "owner": "agent/g5-w1",
+  "scope": "Bomb-family water dispatch prerequisite",
+  "rows": [
+    {
+      "native": "006e2570",
+      "status": "wired",
+      "identifier": "bsp::bomb_water_mode_006e2570",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "state": "GameProjectileRow::depth_charge_in_water, set only by the successful 006FD660 water-entry path; the return chooses the 006FCD20 in-water advance."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "reason": "Missing retained bomb launch/arming countdowns, owner-grace observer lifetime, non-artillery FlyTime/TimeOutEfx producer and complete sweep/expiry callback ownership."
+    },
+    {
+      "native": "006e1010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "reason": "Missing verified release-time previous/current/cache seeding and the bomb-family placement phase; the shared host currently commits only the bullet-style current position."
+    },
+    {
+      "native": "00855f00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "reason": "Missing construction-time swim state for the below-twice-swim-depth path while the water byte is clear; the host currently creates its swim runtime only on water entry."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_ship_landed_listeners",
+      "reason": "Missing retained native warning-manager channel/suppression graph and callback ownership; the live host dispatches from its typed AddListener collection."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: GameGuiTextBinding::build_single_line",
+      "reason": "Missing a live text-input event consumer; this byte-admission predicate cannot replace Unicode glyph layout or missing-glyph fallback."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target binding",
+      "reason": "Missing a retained native command-target object and its downstream consumer, plus the raw initializer's required actual 00F87574/78/7C data-cell binding."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message delivery",
+      "reason": "Missing the presence-zero path-removal message producer and retained path owners for every last-filled command slot; the live sender produces additions only."
+    },
+    {
+      "native": "006b0020",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "Missing a host-reachable mission Lua restore root; replacing internal helpers would leave this whole save/restore family unreachable."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing a host-reachable mission Lua save root; calling the wrapper instead of strip_names alone would not establish live reach."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "Missing a host-reachable mission Lua restore root; calling the wrapper instead of strip_visits alone would not establish live reach."
+    }
+  ],
+  "validation": {
+    "baseline_commit": "d2de7ccb6b",
+    "build": "./scripts/build.ps1: PASS; all four existing CTests passed",
+    "wire_readiness_wired_before": 10416,
+    "wire_readiness_wired_after": 10417,
+    "call_graph_reconstructed_called_before": 5314,
+    "call_graph_reconstructed_called_after": 5315,
+    "call_sites": 1,
+    "reachable_caller": "bsp::game::GameGunneryHost::Impl::run_projectiles",
+    "call_graph_commands": [
+      "python tools/call_graph.py",
+      "python tools/call_graph.py who 006e2570",
+      "python tools/call_graph.py path 006e2570"
+    ],
+    "readiness": "python tools/wire_readiness.py --standins: 006e2570 state=wired, called=true, call_sites=1, callers_live=1",
+    "float_math": "No arithmetic changed; the sole existing bool-to-water-mode body was renamed, and host dispatch consumes its result."
+  },
+  "validation_boundary": "Win32 build, existing tests and built-executable call-graph verification; no game execution or original ABI equivalence claim."
+}
