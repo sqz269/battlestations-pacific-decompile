@@ -1,4 +1,5 @@
 #include "bsp/native_material_pools.hpp"
+#include "bsp/native_material_pool_tables.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_anim_icon_pool_table.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
@@ -241,12 +242,49 @@ void destroy_pool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage)
 }
 } // namespace
 
+// bsp.py show B17B70/B17BF0/B17C50/B17CD0: these four instantiations have
+// the same allocate/copy/free operation as set_slab_table_capacity above.
+// Keep their address bodies distinct while sharing that source operation.
+__declspec(noinline) void append_native_material_pool_slab_00b17b70(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        set_slab_table_capacity(table, table.capacity * 2u + 2u);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void reserve_native_material_pool_table_00b17bf0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+}
+__declspec(noinline) void append_native_material_parameter_pool_slab_00b17c50(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        set_slab_table_capacity(table, table.capacity * 2u + 2u);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void reserve_native_material_parameter_pool_table_00b17cd0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+}
+
 NativeMaterialPool::NativeMaterialPool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage)
     : allocator_list_(list), storage_(storage) {
     list.bind_virtual0(storage.allocator_00, {native_vtable, native_virtual0, this, &invoke_trim});
 }
-void NativeMaterialPool::initialize_00b17fa0() { initialize_pool<NativeMaterialPool>(allocator_list_, storage_); }
-void* NativeMaterialPool::allocate_00b18200() { return allocate_slot<NativeMaterialPool>(storage_); }
+void NativeMaterialPool::initialize_00b17fa0() {
+    // B17FA0 inlines B17BF0's reserve(32) on this F8D3AC+28h table in EH state 2.
+    initialize_pool<NativeMaterialPool,
+        &reserve_native_material_pool_table_00b17bf0>(allocator_list_, storage_);
+}
+void* NativeMaterialPool::allocate_00b18200() {
+    // B18200 inlines B17B70 after initializing/publishing its actual 4584h slab,
+    // under the same pool lock. Replace the prior generic append once.
+    return allocate_slot<NativeMaterialPool, &initialize_slab<NativeMaterialPool>,
+        &append_native_material_pool_slab_00b17b70>(storage_);
+}
 void NativeMaterialPool::return_slot_00b17a80(void* slot) noexcept { return_slot<NativeMaterialPool>(storage_, slot); }
 void NativeMaterialPool::trim_empty_slabs_00b18160() { trim_empty_slabs<NativeMaterialPool>(storage_); }
 void NativeMaterialPool::destroy_00b180d0() { destroy_pool<NativeMaterialPool>(allocator_list_, storage_); }
@@ -260,10 +298,16 @@ NativeMaterialParameterPool::NativeMaterialParameterPool(
     list.bind_virtual0(storage.allocator_00, {native_vtable, native_virtual0, this, &invoke_trim});
 }
 void NativeMaterialParameterPool::initialize_00b18340() {
-    initialize_pool<NativeMaterialParameterPool>(allocator_list_, storage_);
+    // B18340 inlines B17CD0's reserve(32) on this F8D3E4+28h table, EH state 2.
+    initialize_pool<NativeMaterialParameterPool,
+        &reserve_native_material_parameter_pool_table_00b17cd0>(allocator_list_, storage_);
 }
 void* NativeMaterialParameterPool::allocate_slot_00b185a0() {
-    return allocate_slot<NativeMaterialParameterPool>(storage_);
+    // B185A0 inlines B17C50 after publishing/initializing the genuine 4504h
+    // slab and while holding this pool's critical section.
+    return allocate_slot<NativeMaterialParameterPool,
+        &initialize_slab<NativeMaterialParameterPool>,
+        &append_native_material_parameter_pool_slab_00b17c50>(storage_);
 }
 void NativeMaterialParameterPool::return_slot_00b193fa_fragment(void* slot) noexcept {
     return_slot<NativeMaterialParameterPool>(storage_, slot);
