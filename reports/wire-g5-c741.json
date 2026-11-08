@@ -109,5 +109,29 @@
   "assumptions": [
     "Menu-owned stable storage replaces the native lazy 4Ch allocation, matching existing title-manager ownership. The GUI application registry owns the borrowed page.",
     "Attract playback/update/destruction remain future work; no input or movie state is fabricated to execute them."
+  ],
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1602,
+      "reviewed_head": "5fb187cb0db618dc92595bd51c722a8daf566c22",
+      "findings": [
+        {
+          "finding": 1,
+          "status": "fixed",
+          "site": "src/game_hosts_menu.cpp: MenuTitleInitHost::load_attract_page_00aa5840",
+          "change": "Pass screen_flag=1 to load_screen_page; its existing loader forwards add_reference=false. This matches original 00AA5840(name,1,0).",
+          "cause": "The initial adapter confused the wrapper screen_flag parameter with add_reference.",
+          "evidence": "GameFrontendHost::load_screen_page forwards its screen_flag to Impl::load_page, whose load_gui_page_00aa5840 call passes screen_flag,false; original assembly 00689E15..00689E1F passes 1,0."
+        }
+      ],
+      "validation": {
+        "build": "PASS ./scripts/build.ps1, all four CTests",
+        "call_graph": "Refreshed after build: reachable create_attract_screen call 101843D0 -> 10453550 (00689D90); reachable attract_screen_init call 101831D9 -> 10004750 (00689BD0, folded RET).",
+        "wire_readiness": "Both rows remain wired/called; total remains 10541.",
+        "pc24_lint": "PASS: 0 findings across four files with --diff origin/main. No float arithmetic changed.",
+        "runtime_game": "Not run, per assignment."
+      }
+    }
   ]
 }

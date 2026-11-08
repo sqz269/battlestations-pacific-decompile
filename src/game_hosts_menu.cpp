@@ -1623,9 +1623,9 @@ public:
 
 private:
     void* load_attract_page_00aa5840(std::string_view name) override {
-        // 00689E15..00689E1F pushes (1, 0). Load the installed page into the
-        // frontend's real registry, which owns the returned handle.
-        return owner_.frontend.load_screen_page(std::string(name), 0);
+        // 00689E15..00689E1F pushes (screen_flag=1, add_reference=0).
+        // load_screen_page forwards screen_flag and keeps add_reference=false.
+        return owner_.frontend.load_screen_page(std::string(name), 1);
     }
     void select_front_end_frame_set_impl(FrontEndFrameSet set, bool commit) {
         bsp::select_front_end_frame_set(owner_.frame_layouts, layouts_,
