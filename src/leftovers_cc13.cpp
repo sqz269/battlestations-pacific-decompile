@@ -535,8 +535,8 @@ void* ship_tuning_block_00837de0(void* settings, const void* game) {
     return at(settings, get<int>(game, 0x1fe4) != 0 ? 0xf0 : 0x80);
 }
 // 0084EB60: cdecl/no args, tail delegation to the Lua machine.
-void reset_stationary_class_table_0084eb60(Host& host) {
-    host.run_lua_006b8ad0("StationaryClass=nil\n", 0, 0, 2);
+void reset_stationary_class_table_0084eb60(MissionLuaRunString& host) {
+    host.run_string_006b8ad0("StationaryClass=nil\n", kClassTableResetRunMode);
 }
 
 // 00797DA0: __thiscall(track,float), RET 4. Despite its old name it does

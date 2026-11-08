@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include "bsp/mission_lua_class_table_resets.hpp"
 
 namespace bsp::entity_mission_seg60_argon { struct Seg60Host; }
 namespace bsp { struct ActiveFailure; }
@@ -112,7 +113,7 @@ struct GunClassTargetValues {
 float gun_class_value_for_target_00836eb0(const GunClassTargetValues& values,
                                           bool target_is_kind_8) noexcept;
 void* ship_tuning_block_00837de0(void* settings, const void* game);
-void reset_stationary_class_table_0084eb60(Host&);
+void reset_stationary_class_table_0084eb60(MissionLuaRunString&);
 void movie_camera_track_set_time_00797da0(void* track, float time, Host&);
 void director_copy_state_00836680(void* destination, void* source, Host&);
 void director_visit_state_008367f0(void* director, void* visitor, Host&);

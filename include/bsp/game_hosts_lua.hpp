@@ -2300,8 +2300,12 @@ public:
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
     // docs/AIROPS_LAUNCH_GATES.md.
-    // 00851CB0's lookup: the globals, then `StationaryClass`, then the row by
-    // the type's own text. A name that answers there is a stationary prop and
+    // Retain the actual class table before 0084EB60 clears its global. This
+    // source host's lazy class readers borrow that same table after the reset;
+    // the native game instead keeps its already loaded class objects.
+    void retain_stationary_class_table();
+    // 00851CB0's lookup: `StationaryClass`, then the row by the type's own
+    // text (using the retained table after reset). A match is a stationary prop and
     // has no `VehicleClass` row by construction.
     // docs/SCENE_STATIONARY_UNITS.md.
     bool stationary_class_exists(const std::string& name);
@@ -2430,6 +2434,8 @@ public:
     void set_phase(std::string phase);
 
 private:
+    // Push the live StationaryClass global, or its retained table after reset.
+    void push_stationary_class_table();
     // Packet cc8_spawn_new_route, the two halves of one drain pass.
     // 0094A140 -> 00949300 -> 009483D0: build the frame, create every member,
     // set record+C0h. 0094C777: the completion walk over record+CCh.
@@ -2466,6 +2472,7 @@ private:
     std::vector<std::string> content_suffixes_; // manager +48h/+4Ch, empty here
     std::unique_ptr<bsp::VfsLocaleRuntime> resources_;
     lua_State* state_{nullptr};
+    int stationary_classes_ref_{0}; // positive Lua registry reference, owned by state_
     OpenScript script_;
     std::string phase_;
     // Packet cc9_stage_init_chunk_errors: the last luaL_loadbuffer / lua_pcall

@@ -4403,13 +4403,40 @@ std::int32_t air_ops_integer_argument(lua_State* state, int index, bool& present
 }
 } // namespace
 
+// Goal 5 chain 816. bsp.py show 0084EB60: clearing the global is unconditional.
+// Its two lazy source-host readers previously prevented that call. Hold their
+// SAME installed table in this interpreter's registry, not a fabricated class
+// or a second Lua state. Replacing it releases the previous table's registry
+// credit; lua_close owns the final credit. A repeated reset of nil keeps the
+// existing class lifetime, as the image keeps its loaded native class objects.
+void GameMissionLuaHost::retain_stationary_class_table() {
+    if (state_ == nullptr) return;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        const int replacement = luaL_ref(state_, LUA_REGISTRYINDEX);
+        if (stationary_classes_ref_ > 0)
+            luaL_unref(state_, LUA_REGISTRYINDEX, stationary_classes_ref_);
+        stationary_classes_ref_ = replacement;
+    }
+    ::lua_settop(state_, top);
+}
+
+void GameMissionLuaHost::push_stationary_class_table() {
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TNIL && stationary_classes_ref_ > 0) {
+        ::lua_pop(state_, 1);
+        ::lua_rawgeti(state_, LUA_REGISTRYINDEX, stationary_classes_ref_);
+    }
+}
+
 bool GameMissionLuaHost::stationary_class_exists(const std::string& name) {
     if (state_ == nullptr || name.empty()) return false;
     const int top = ::lua_gettop(state_);
     bool found = false;
     // 00851CB0: BSP_LuaStateOwner_GetGlobals, BSP_LuaObject_GetByName with the
     // literal, then BSP_LuaObject_GetByNativeString with the type's own text.
-    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    push_stationary_class_table();
     if (::lua_type(state_, -1) == LUA_TTABLE) {
         ::lua_getfield(state_, -1, name.c_str());
         found = ::lua_type(state_, -1) == LUA_TTABLE;
@@ -4425,7 +4452,7 @@ std::string GameMissionLuaHost::read_stationary_class_string(const std::string& 
     const int top = ::lua_gettop(state_);
     // The same 00851CB0 StationaryClass/type-name lookup as the existing
     // presence reader above, followed by the installed field itself.
-    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    push_stationary_class_table();
     if (::lua_type(state_, -1) == LUA_TTABLE) {
         ::lua_getfield(state_, -1, name.c_str());
         if (::lua_type(state_, -1) == LUA_TTABLE) {
