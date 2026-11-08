@@ -273,12 +273,14 @@ struct WeaponClassDescriptor {
 WeaponClassDescriptor weapon_class_constructed_defaults() noexcept;
 
 // One Lua row, injected. Each method is one BSP_LuaObject_GetByName plus the
-// typed accessor that follows it; a missing key yields the fallback, which is
-// what BSP_LuaReference_Get*OrDefault does.
+// typed accessor that follows it. number_value is plain GetNumber (00B66270,
+// including numeric-string coercion); float_value / integer_value are the
+// exact-LUA_TNUMBER Get*OrDefault accessors (00B66330 / 00B66380).
 struct WeaponClassRowView {
     virtual ~WeaponClassRowView() = default;
     virtual bool has_key(const char* key) const = 0;
     virtual std::string string_value(const char* key, const char* fallback) const = 0;
+    virtual float number_value(const char* key) const = 0;
     virtual float float_value(const char* key, float fallback) const = 0;
     virtual int integer_value(const char* key, int fallback) const = 0;
     virtual bool boolean_value(const char* key, bool fallback) const = 0;

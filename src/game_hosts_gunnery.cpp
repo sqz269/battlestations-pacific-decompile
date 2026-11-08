@@ -51,6 +51,7 @@
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/projectile_helpers.hpp"
+#include "bsp/lua_numeric.hpp"
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
@@ -251,17 +252,35 @@ public:
         });
         return value;
     }
+    float number_value(const char* key) const override {
+        float value = 0.0f;
+        with_value(key, [&](lua_State* s) {
+            value = bsp::lua_number_float32_00b66270(::lua_tonumber(s, -1));
+        });
+        return value;
+    }
     float float_value(const char* key, float fallback) const override {
         float value = fallback;
         with_value(key, [&](lua_State* s) {
-            if (::lua_isnumber(s, -1)) value = static_cast<float>(::lua_tonumber(s, -1));
+            // bsp.py show 00b66330: exact type 3, then a float32 spill.
+            if (::lua_type(s, -1) == LUA_TNUMBER)
+                value = bsp::lua_number_float32_00b66270(::lua_tonumber(s, -1));
         });
         return value;
     }
     int integer_value(const char* key, int fallback) const override {
         int value = fallback;
         with_value(key, [&](lua_State* s) {
-            if (::lua_isnumber(s, -1)) value = static_cast<int>(::lua_tointeger(s, -1));
+            // bsp.py show 00b66380 --asm: 00B663AE spills float32;
+            // 00B663B6 calls 00BF7420, which truncates independently of RC.
+            if (::lua_type(s, -1) == LUA_TNUMBER) {
+                const double number = ::lua_tonumber(s, -1);
+                // Project the CRT's 0109EEA4 selector from this processor,
+                // as the mission Lua and decal hosts do.
+                const bool sse2_conversion =
+                    IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+                value = bsp::lua_number_integer_00b66290(number, sse2_conversion);
+            }
         });
         return value;
     }
@@ -361,7 +380,7 @@ public:
                               bsp::WeaponClassDescriptor& descriptor)
         : row_(row), resources_(resources), descriptor_(descriptor) {}
     double get_number_by_name(const char* field_name) override {
-        return row_.float_value(field_name, 0.0f);
+        return row_.number_value(field_name);
     }
     const char* get_string_by_name(const char* field_name) override {
         string_ = row_.string_value(field_name, "");
@@ -16374,7 +16393,7 @@ GameGunneryHost::Impl::bullet_class_descriptor(int id) {
         // (GetNumber), WaterSplashEfx (00B66380 + 00870CD0, unresolved like
         // every effect here) and FloatingDepth / TriggerRadius with defaults.
         bsp::gameplay_seg53_cc13::WaterMineClassRow mine_row;
-        mine_row.number = [&row](const char* key) { return row.float_value(key, 0.0f); };
+        mine_row.number = [&row](const char* key) { return row.number_value(key); };
         mine_row.number_or = [&row](const char* key, float fallback) {
             return row.float_value(key, fallback);
         };

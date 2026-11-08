@@ -213,10 +213,10 @@ void load_weapon_class_base_fields(const WeaponClassRowView& row, WeaponClassLoa
     const WeaponClassRowView* blast = row.sub_table("Blast");
     desc.has_blast = blast != nullptr;
     if (blast != nullptr) {
-        // BlastRange and BlastDamageMin are read with the plain number
-        // accessor, so an absent key leaves the constructor's zero.
-        desc.blast_range = blast->float_value("BlastRange", 0.0f);
-        desc.blast_damage_min = blast->float_value("BlastDamageMin", 0.0f);
+        // 006E8770 uses plain 00B66270 for the first two keys (numeric
+        // strings coerce), then exact-number 00B66330 for BlastDamageMax.
+        desc.blast_range = blast->number_value("BlastRange");
+        desc.blast_damage_min = blast->number_value("BlastDamageMin");
         desc.blast_damage_max = blast->float_value("BlastDamageMax", desc.blast_damage_min);
     }
 
@@ -239,10 +239,12 @@ void load_bomb_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost& 
 void load_torpedo_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost& host,
                                WeaponClassDescriptor& desc) {
     load_bomb_class_fields(row, host, desc); // 008566D3
-    desc.max_water_hit_vel = row.float_value("MaxWaterHitVel", 0.0f);
-    desc.max_fall = row.float_value("MaxFall", 0.0f);
-    desc.water_travel_speed = row.float_value("WaterTravelSpeed", 0.0f);
-    desc.heading_turn = row.float_value("HeadingTurn", 0.0f);
+    // bsp.py show 008566b0: first four numbers use plain GetNumber;
+    // the two homing speeds below use exact-number GetFloatOrDefault.
+    desc.max_water_hit_vel = row.number_value("MaxWaterHitVel");
+    desc.max_fall = row.number_value("MaxFall");
+    desc.water_travel_speed = row.number_value("WaterTravelSpeed");
+    desc.heading_turn = row.number_value("HeadingTurn");
     desc.effects.water_splash = read_effect(row, host, "WaterSplashEfx");
     desc.homing_horz_turn_speed = row.float_value("HomingHorzTurnSpeed", 0.0f);
     desc.homing_vert_turn_speed = row.float_value("HomingVertTurnSpeed", 0.0f);
@@ -251,10 +253,11 @@ void load_torpedo_class_fields(const WeaponClassRowView& row, WeaponClassLoadHos
 void load_depth_charge_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost& host,
                                     WeaponClassDescriptor& desc) {
     load_bomb_class_fields(row, host, desc); // 006FD422
-    desc.max_water_hit_vel = row.float_value("MaxWaterHitVel", 0.0f);
-    desc.max_fall = row.float_value("MaxFall", 0.0f);
-    desc.v0_random_factor = row.float_value("V0RandomFactor", 0.0f);
-    desc.dive_speed = row.float_value("DiveSpeed", 0.0f);
+    // bsp.py show 006fd400: these four use plain GetNumber.
+    desc.max_water_hit_vel = row.number_value("MaxWaterHitVel");
+    desc.max_fall = row.number_value("MaxFall");
+    desc.v0_random_factor = row.number_value("V0RandomFactor");
+    desc.dive_speed = row.number_value("DiveSpeed");
     // 006FD507 / 006FD544 FLD [00D7A248] (FLT_MAX, not 1.0f) is the default
     // pushed to 00B66330 (bsp.py show 006fd400 --asm); docs/WEAPON_CLASS_DESCRIPTOR.md.
     desc.dive_min_depth = row.float_value("DiveMinDepth", kWeaponClassFloatMax_00d7a248);
@@ -265,8 +268,10 @@ void load_depth_charge_class_fields(const WeaponClassRowView& row, WeaponClassLo
 void load_rocket_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost& host,
                               WeaponClassDescriptor& desc) {
     load_bomb_class_fields(row, host, desc); // 00809CD2
-    desc.v_max = row.float_value("VMax", 0.0f);
-    desc.acceleration = row.float_value("Acceleration", 0.0f);
+    // bsp.py show 00809cb0: VMax / Acceleration use plain GetNumber;
+    // IgnitionDelay uses exact-number GetFloatOrDefault.
+    desc.v_max = row.number_value("VMax");
+    desc.acceleration = row.number_value("Acceleration");
     desc.ignition_delay = row.float_value("IgnitionDelay", 0.0f);
     desc.anti_air = row.boolean_value("AntiAir", false);
 }

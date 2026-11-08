@@ -92,5 +92,69 @@
     "Effect, payload-icon and decal handles in the descriptor stay unresolved: no gameplay effect manager (00870CD0 -> 008700E0), GUI texture atlas resolution or decal library in this process",
     "FireChance is still copied by the BSPGun flatten because GameBulletClassRow keeps the authored percentage; moving it to the descriptor (+C4h = FireChance/100) needs weapon_fire_chance's divide removed",
     "006FF170 (DummyKamikazePlane reader) has no body; units_motion reads its two keys directly"
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1522,
+    "fix_run": 1531,
+    "base_head": "23ad28e59c2bd4758f59eed86855e77244b63942",
+    "scope": "Only the two numeric-reader corrections; no new wiring rows or native-address bodies.",
+    "findings": [
+      {
+        "id": "P2-numeric-string-coercion",
+        "status": "fixed",
+        "change": "WeaponClassRowView now separates coercing number_value (plain 00B66270) from exact-LUA_TNUMBER float_value (00B66330) and integer_value (00B66380). All existing class-reader call sites select the native accessor, including Blast, torpedo, depth-charge, rocket, paratrooper and water-mine reads.",
+        "evidence": [
+          "bsp.py show 00b66330",
+          "bsp.py show 00b66380",
+          "bsp.py show 006e8770 --start 516 --lines 106",
+          "bsp.py show 008566b0",
+          "bsp.py show 006fd400",
+          "bsp.py show 00809cb0",
+          "bsp.py show 0085f500"
+        ],
+        "regression": "FlyTime=\"2\" retains FLT_MAX; DamageMax=\"9\" retains numeric DamageMin=7; BlastRange=\"3\" and BlastDamageMin=\"4\" still coerce, while BlastDamageMax=\"8\" retains 4. Integer numeric strings retain the supplied fallback."
+      },
+      {
+        "id": "P2-integer-conversion",
+        "status": "fixed",
+        "change": "Removed lua_tointeger; reuse lua_number_integer_00b66290 for the float32 spill/reload and native 00BF7420 truncation tail. Float reads also reuse lua_number_float32_00b66270.",
+        "evidence": [
+          "bsp.py show 00b66380 --asm: FSTP float at 00B663AE, FLD at 00B663B2, CALL 00BF7420 at 00B663B6",
+          "bsp.py show 00bf7420 --asm",
+          "src/lua_numeric.cpp"
+        ],
+        "regression": "Under nearest rounding MinRange=1.75 becomes 1, -1.75 becomes -1, and 0.99999999 becomes 1 after float32 rounding. Under upward rounding 1.75 still truncates to 1."
+      }
+    ],
+    "validation": {
+      "baseline_build": "./scripts/build.ps1 passed, 4/4 CTest groups",
+      "fixed_build": "./scripts/build.ps1 passed, 4/4 CTest groups; local/review1-build.log",
+      "pc24_lint_staged": "0 findings, 3 files",
+      "pc24_lint_branch_before_commit": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files; staged check above covers the repair",
+      "numeric_probe": "PASS: local/review1_numeric_probe.exe uses LuaBulletClassRow extracted verbatim from the fixed host source, linked to the built projectile-class readers and Lua 5.1.1; /fp:strict and /MANIFEST:EMBED. Checks both findings, per-kind accessor selection and Lua stack restoration.",
+      "numeric_probe_source_sha256": "2d2f05709a2bbc5281c5ea07287de97c51319575aa474fa0fc0a3330a85590a7",
+      "call_graph": "Refreshed after fixed build: 41772/41926 functions reachable; 5348/5944 reconstructed addresses called. These address-only totals differ from wire_readiness identifier totals.",
+      "entry_reachability": [
+        "load_weapon_class_fields: REACHABLE, call from GameGunneryHost::Impl::bullet_class_descriptor at 100BA457",
+        "007AC780: REACHABLE, call from bullet_class_descriptor at 100BA37F",
+        "0085F500: REACHABLE, call from bullet_class_descriptor at 100BA82B",
+        "006E8320 and 006E8770 remain inlined in Release; no standalone address-suffixed symbols. Run 1522 confirmed entry-reachable implementations for all eight claimed readers, including inlined readers."
+      ],
+      "readiness_before": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_after": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_logs": [
+        "local/review1-readiness-before.log",
+        "local/review1-readiness-after.log"
+      ],
+      "game_run": "Not performed; build, fixture and executable call-graph evidence only."
+    },
+    "choice": "The CRT SSE2 conversion selector is projected from IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE), following the existing mission Lua and decal hosts. The supplied helper retains both native conversion tails.",
+    "left": "The original report left/skipped items remain; no new rows were selected."
+  }
 }
