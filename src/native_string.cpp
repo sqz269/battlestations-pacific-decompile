@@ -1,6 +1,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_allocate_storage.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/segs_0_9_11_cc13.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -168,7 +169,12 @@ NativeString& NativeString::assign_0041e870(NativeStringStorage& storage, const 
     length_ = 0;
     data_ = nullptr;
 
-    const std::uint32_t length = static_cast<std::uint32_t>(std::strlen(text));
+    // Chain 796: run the existing 00412500 byte scan on the caller's real text.
+    // bsp.py show 00412500 proves NUL-terminated length in EAX, with no state
+    // writes. This replaces the equivalent CRT scan; the original 0041E870
+    // inlined its scan rather than calling 00412500. Keep the DWORD length.
+    const auto length = static_cast<std::uint32_t>(
+        segs_0_9_11_cc13::c_string_length_00412500(text));
     resize_0041dd40(storage, length, true);
     if (data_ != nullptr) {
         // 0041e8b1 copies length + 1 bytes, rewriting the terminator resize
@@ -182,7 +188,10 @@ void* construct_native_string_header_0041e870(void* header,
     NativeStringRawPoolContext& context, const char* text) {
     write_header<std::uint32_t>(header, 0, 0);
     write_header<char*>(header, 4, nullptr);
-    const auto length = static_cast<std::uint32_t>(std::strlen(text));
+    // Same length operation as the typed constructor above, after both native
+    // header stores and before any pool access or source-data copy.
+    const auto length = static_cast<std::uint32_t>(
+        segs_0_9_11_cc13::c_string_length_00412500(text));
     resize_native_string_header_0041dd40(header, context, length, true);
     void* const data = read_header<void*>(header, 4);
     if (data != nullptr) {
@@ -224,7 +233,8 @@ void NativeString::release_to(NativeStringStorage& storage) noexcept {
 
 char* duplicate_00438e40(const char* text) {
     if (text == nullptr) return nullptr; // 00438e47
-    const std::size_t size = std::strlen(text) + 1u;
+    const std::size_t size = static_cast<std::uint32_t>(
+        segs_0_9_11_cc13::c_string_length_00412500(text)) + 1u;
     void* copy = std::malloc(size);
     if (copy == nullptr) throw std::bad_alloc();
     std::memcpy(copy, text, size); // 00438e6b copies the terminator too.
