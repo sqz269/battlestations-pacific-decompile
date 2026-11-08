@@ -832,6 +832,32 @@ bool GameNativeRendererApplication::set_scene_remap_texture(std::size_t slot,
         throw;
     }
 }
+bool GameNativeRendererApplication::reset_scene_remap_textures() {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready, "scene remap retirement requires the ready renderer");
+    if (p.resources.publication) {
+        auto& context = render_resources_remap_context();
+        check(p.resources.acquired.phase == NativeRenderResourcesConstructionAcquired::Phase::complete,
+            "scene remap retirement requires the constructed actual F8D39C service");
+        try {
+            // bsp.py show 004BFD70: 004BFD79 calls B0FEB0 on the current
+            // F8D39C before renderer/session resource release. Its existing
+            // body clears material slot 2 through the actual +650..+65C
+            // owners, then releases +66C..+678 in native order. Use the same
+            // canonical owner/texture domain as the scene's four setters.
+            reset_native_render_remap_textures_00b0feb0(p.resources.publication, context);
+        } catch (...) {
+            p.phase = Impl::Phase::failed;
+            throw;
+        }
+        p.log.implemented("NativeRenderService::reset_scene_remaps", "00b0feb0");
+    }
+    // A pending request belongs to the retiring scene too. With no service,
+    // no native texture has been acquired and there is nothing to release.
+    p.pending_scene_remaps.fill(false);
+    p.pending_scene_remap_names.fill(std::string{});
+    return p.resources.publication != nullptr;
+}
 bool GameNativeRendererApplication::set_old_film_effect(std::uint32_t mode) {
     auto& p = *impl_;
     check(p.phase == Impl::Phase::ready || p.phase == Impl::Phase::rendering,
@@ -1564,6 +1590,11 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
     NativeLuaServiceBindings::Activation activation(impl_->lua_services.binding());
+    // This host ends its one session at process shutdown rather than running
+    // 004BFD70. Retire that session's remaps before the singleton drain can
+    // destroy F8D39C or the material/texture companions borrowed by B0FEB0.
+    if (impl_->phase == Impl::Phase::ready)
+        reset_scene_remap_textures();
     if (impl_->mission_ship && impl_->phase != Impl::Phase::drained)
         observe_mission_texture_owners(impl_->log, impl_->texture_loading.owners, "before_retire");
     if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain(*this);

@@ -1,0 +1,96 @@
+{
+  "chain": 745,
+  "worker": "agent/g5-w9",
+  "base": "b66e3abad7c63a1d03a04be361324acec0e6936f",
+  "scope": "Retire the actual renderer service's scene colour-remap references at scene replacement and final session shutdown.",
+  "rows": [
+    {
+      "native": "00b0feb0",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: GameNativeRendererApplication::reset_scene_remap_textures, called by drain_singletons and src/game_hosts_scene_contents.cpp: GameSceneContentsHost::run_load_scene_contents_004d4df0",
+      "state": "The same constructed F8D39C publication, remap context and canonical material/texture owner registry used by the four existing scene remap setters.",
+      "evidence": "bsp.py show 004bfd70: 004BFD79 calls 00B0FEB0 before renderer/session resource release; show 00b0feb0 and --asm confirm post-effect owners +65C/+658/+654/+650, material slot 2 cleared, then texture references +66C/+670/+674/+678 released in order.",
+      "abi": "Original __thiscall, ECX actual service, no stack arguments, no semantic EAX; existing explicit C++ reconstruction reused unchanged.",
+      "call_graph": "REACHABLE; one call at 10361D29 from GameNativeRendererApplication::reset_scene_remap_textures to body 1058BF60 in native_render_resources_remap.obj. Entry path includes drain_singletons and GameStartupHost::drain_native_singletons."
+    },
+    {
+      "native": "00b4cba0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp: reset_native_render_remap_textures_00b0feb0",
+      "reason": "Already wired and called at baseline; the reset reuses this existing actual post-effect material accessor without adding another body."
+    },
+    {
+      "native": "004bfd70",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp: GameNativeRendererApplication::drain_singletons",
+      "reason": "Full game/session teardown receiver and renderer vslot 124 binding are outside this packet; only the independently established remap-reset leaf is connected."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen_reset records",
+      "reason": "Needs the real HUD screen producer, +C4 checked-vector storage/erase adapter and input-context binding before replacing the recorded reset."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::preload_record_effects PreloadHost::push_effect_handle",
+      "reason": "The effect acquisition callback still returns null and has no concrete 00871BA0 acquisition context; actual effect ownership/vector production must precede wiring the retain append."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: director construction candidates",
+      "reason": "Needs actual director/endpoint storage and concrete base-controller/type-test callbacks, which the selected renderer lifecycle does not supply."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp: native command queue candidate",
+      "reason": "No three-word metadata source producer identified; command-creation caller evidence is required before replacing a last-command metadata write."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp: declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "Needs the actual 19C enum declaration producer and same 4C8 Lua-owner context; not supplied by the selected scene-remap lifecycle."
+    },
+    {
+      "native": "004bbd00",
+      "status": "skipped",
+      "host_site": "src/sound_frame_service.cpp: run_sound_frame_job_004bbd00",
+      "reason": "Needs the native job dispatch and its actual interface receiver; the existing null-interface frame service uses a separate guarded path."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene property enum insertion candidate",
+      "reason": "Already called in the baseline built graph; readiness's ready state alone does not identify missing native wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene property bag merge candidate",
+      "reason": "Already called in the baseline built graph; readiness's ready state alone does not identify missing native wiring."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 10552,
+    "readiness_wired_after": 10553,
+    "built_reconstructed_called_before": 5423,
+    "built_reconstructed_called_after": 5424
+  },
+  "validation": [
+    "Fresh index --if-stale and baseline scripts/build.ps1 passed.",
+    "Post-change scripts/build.ps1 passed all four existing tests.",
+    "call_graph.py, who 00b0feb0 and path 00b0feb0 confirm a reachable call from the changed renderer method.",
+    "wire_readiness.py --standins reports 00b0feb0 wired, called=true, call_sites=1, callers_live=1.",
+    "git diff --check passed. No float arithmetic changed; pc24 lint is not applicable."
+  ],
+  "assumptions_and_limits": [
+    "This host replaces scenes directly and ends its one session before the final singleton drain instead of running the full native 004BFD70 teardown. The reset is placed at those existing lifecycle boundaries while service/material/texture owners remain live.",
+    "Before F8D39C construction, retirement discards only the previous scene's retained remap requests; it never constructs a surrogate service or texture.",
+    "The phase guard prevents replay after the final drain. A returned reset clears native texture slots before the existing service destructor sees them; failed reset operations mark the application failed and do not enter the singleton drain.",
+    "Build and static entry reachability are verified. No game was run; live material detach, reference-count behavior and scene-reload appearance remain untested."
+  ]
+}

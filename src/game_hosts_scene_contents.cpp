@@ -7456,6 +7456,10 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     const std::string& override_name, int raw_game_mode, bool mode_forced,
     bool multiplayer_session) {
     Impl& impl = *impl_;
+    // The previous session's 004BFD79 reset precedes the next scene's four
+    // 004D4F60..004D4FD0 remap setters. The host replaces scenes directly;
+    // retire the old native remaps (or its pre-construction requests) here.
+    if (impl.remap_renderer) impl.remap_renderer->reset_scene_remap_textures();
     impl.root_properties = {};
     impl.scene_path = scene_path;
     impl.override_name = override_name;
