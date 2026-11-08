@@ -3307,6 +3307,12 @@ public:
         else owner_.record("MissionFrame::apply_sound_requests (no [00F89B34] owner)", 0x00941140u);
     }
     void update_front_end_screens_004d8620() override {
+        // Chain707 review: 004E549D runs this GUI phase once AFTER the
+        // 004E5442..004E5488 request drain. Its interface pumps can repeat
+        // with the same raw delta, so HUD callbacks only configure/stop the
+        // retained entries; their first time step also belongs here.
+        if (owner_.hud != nullptr)
+            owner_.hud->advance_gui_alpha_animations(owner_.frame_state.raw_delta);
         owner_.record("MissionFrame::update_front_end_screens", 0x004d8620u);
     }
 

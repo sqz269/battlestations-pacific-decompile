@@ -7295,12 +7295,12 @@ GuiLayoutWidget* GameHudHost::Impl::hud_root_row_widget(bsp::HudRowWidget widget
     return it != hud_root_row_widgets.end() ? it->second : nullptr;
 }
 
+void GameHudHost::advance_gui_alpha_animations(float seconds) {
+    impl_->menu.frontend().advance_widget_alpha_animations(seconds);
+}
+
 void GameHudHost::update_hud_root_screen_00649860(float seconds) {
     Impl& impl = *impl_;
-    // Goal 5 chain 707: advance the retained WeaponInfo entry once with this
-    // frame's real delta, before rows may start a new fade. The bridge's SAME
-    // layout/color is read and published; the old callbacks only recorded it.
-    impl.menu.frontend().advance_widget_alpha_animations(seconds);
     // 00649FD7..00649FF5: with the ticker timer expired the award queue at
     // +B0h..+B4h is read. SUBSTITUTION: 00648AB0, which
     // BSP_MissionScoring_GrantAward (0090EDE0) calls to queue an award

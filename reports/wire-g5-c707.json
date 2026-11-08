@@ -6,13 +6,14 @@
     "Replace the HUD's null animation handle and recorded stop/interval calls with a retained 14h alpha entry borrowing the same rendered GuiLayoutWidget.",
     "Bind the existing alpha/countdown bodies to the bridge's live color operations while preserving canonical GuiWidgetOwner callers and per-call widget reloads.",
     "Make AC2F20 borrow the actual target/rate cells and copy argument bits; retain the caller's 1.0f delay and the binary's 3F800000/80000000 constants.",
-    "Advance once per HUD-root update using its actual seconds argument; release completed/stopped entries and end borrowers before widget retirement."
+    "Advance once in MissionFrame::update_front_end_screens_004d8620 after interface-request draining, using the frame's raw delta; HUD updates only configure/stop entries. Release completed/stopped entries and end borrowers before widget retirement."
   ],
   "evidence": [
     "bsp.py show 00648c20 --asm: 00649221 calls AA8B00(0), 00649226..00649238 supplies target 0/rate 1 to AC2F20, 00649245 stores D7A24C at entry+4, and 00649251 calls AA8B80(0).",
     "bsp.py show 00ac2f20: two dword MOVs at entry+C/+10; no numeric integer-to-float conversion.",
     "bsp.py show 00ac2f40 / 00ad39a0 / 00aa8b80: current color/alpha dispatch, retained countdown, and deletion of an occupied timed slot.",
-    "bsp.py ghidra bytes: 00D7A208 = 00 00 00 80; 00D7A24C = 00 00 80 3F. No Ghidra mutation."
+    "bsp.py ghidra bytes: 00D7A208 = 00 00 00 80; 00D7A24C = 00 00 80 3F. No Ghidra mutation.",
+    "mission_state_frame.cpp: 004E5442..004E5488 may repeat update_interface_only_004c40f0; 004E549D invokes update_front_end_screens_004d8620 once afterward. cc13_sweepA2.cpp documents that GUI phase's game+21ECh raw delta."
   ],
   "assumptions_and_limits": [
     "This is a Source API integration for the existing sprite bridge, not an original widget ABI replacement. The bridge owns alpha indices 0/1; Section still requires its existing canonical companion.",
@@ -29,10 +30,22 @@
   },
   "validation": [
     "scripts/build.ps1: MSVC Win32 Release and all four test groups passed.",
-    "One math_tests.cpp fixture checks interval bit publication, delayed dispatch, post-callback widget reload and base-profile retirement.",
+    "The original math_tests.cpp fixture checks interval bits, delayed dispatch, widget reload and retirement. A focused run_mission_frame regression adds two request-drain iterations: three interface pumps configure a new fade before one GUI update consumes raw delta 1.25, leaving alpha 0.75 after its 1.0 delay.",
     "call_graph.py who: each of the six claimed bodies has a call site reachable from the executable entry.",
     "pc24_lint.py --diff origin/main...HEAD: 0 findings."
   ],
+  "review_round_1": {
+    "review_run": 1537,
+    "reviewed_head": "740e92e4fc234f98ac62859c0bbab6dfe972cc73",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "reason": "Moved advancement out of update_hud_root_screen_00649860 into the once-per-frame GUI phase after the request drain; callbacks retain configuration/cancellation only, so new fades participate in that same GUI phase.",
+        "verification": "Passed the real-frame-scheduler fixture with two drain passes, three interface pumps, one GUI time step and alpha 0.75. MSVC Win32 Release and all four test groups passed (local/output/wire-g5-c707-r1-build.log). All six body callers remain entry-reachable; AD39A0's path now passes through MissionFrameBinding::update_front_end_screens_004d8620. PC24 lint: 0 findings."
+      }
+    ]
+  },
   "rows": [
     {"native":"00AC2ED0","status":"wired","host_site":"src/game_hosts_frontend.cpp: GameFrontendHost::widget_alpha_animation"},
     {"native":"00AD3970","status":"wired","host_site":"src/gui_timed_entry_types.cpp: construct_gui_timed_entry_alpha_00ac2ed0"},

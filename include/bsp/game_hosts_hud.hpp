@@ -250,6 +250,9 @@ public:
     void update_ship_view_screen_0064d610(float seconds, bool wanted);
     // Packet cc9_screen_44h: screen 44h's update 00649860, the HUD root.
     void update_hud_root_screen_00649860(float seconds);
+    // Once-per-frame GUI phase after the interface/menu-request drain. HUD
+    // screen updates configure entries and may repeat without advancing time.
+    void advance_gui_alpha_animations(float seconds);
     // Packet cc9_screen_29h: screen 29h's update 00527260, the unit pick.
     void update_unit_pick_screen_00527260(float seconds);
     // Packet cc9_screen_2eh_group: screen 27h's update 0067BB50, forwarded to
