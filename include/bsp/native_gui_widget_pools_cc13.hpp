@@ -158,6 +158,7 @@ template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize();
 // for the constructor's reserve and allocator's slab append.
 template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize();
 template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate();
+template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy();
 
 // Existing equivalent-address specializations use these source aliases. Each
 // forwards to the SAME reconstructed body; there is no second vector algorithm.
