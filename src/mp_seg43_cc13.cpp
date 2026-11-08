@@ -621,11 +621,28 @@ std::int32_t unit_recon_record_value_00779d00(const void* unit, const MpGlobals&
     const unsigned char* const record = at(unit, party * 0x34 + 0x1e8);
     const auto value = get<std::int32_t>(record, get<std::uint8_t>(record, 0x10) != 0 ? 8 : 4);
     const auto held = get<std::int32_t>(unit, 0x2fc);
-    // FLD float +300h, FADD double 30.0, FCOMIP against FLD float [00F876A4]: x87 extended compare.
-    if (value < held &&
-        static_cast<long double>(get<float>(unit, 0x300)) + kReconHoldSeconds >
-            static_cast<long double>(globals.now_00f876a4))
-        return held;
+    if (value < held) {
+        const float stamp = get<float>(unit, 0x300);
+        const float now = globals.now_00f876a4;
+        unsigned char retain;
+        // bsp.py show 00779D00 --asm: 00779D2F..49 loads stamp, FADDs
+        // double [00CE7630], then FCOMIP/JA against now. FADD rounds at the
+        // caller's x87 precision BEFORE the comparison (PC24 on the main
+        // thread, PC53 on jobs). MSVC long double is a double and its SSE
+        // addition keeps a hold alive at some PC24 expiry boundaries.
+        // Keep the native stack schedule, including unordered -> expire;
+        // no float spill or precision-control change belongs between them.
+        __asm {
+            fld stamp
+            fadd qword ptr [kReconHoldSeconds]
+            fld now
+            fxch st(1)
+            fcomip st(0), st(1)
+            fstp st(0)
+            seta retain
+        }
+        if (retain != 0) return held;
+    }
     return value;
 }
 
