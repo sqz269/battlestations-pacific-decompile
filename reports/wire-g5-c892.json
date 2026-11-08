@@ -1,0 +1,133 @@
+{
+  "goal": 5,
+  "chain": 892,
+  "slot": "g5-w9",
+  "base": "77d866ef5be57d717c8cda9c219654f7b657c2de",
+  "picked": "Directional-light pool 01090154 slab-table helpers",
+  "rows": [
+    {
+      "native": "00b7ae80",
+      "status": "wired",
+      "host_site": "src/directional_light_pool.cpp: grow_directional_light_pool_table_00b7aed0 and reserve_directional_light_pool_table_00b7b5a0",
+      "body": "allocate_directional_light_pool_table_00b7ae80",
+      "analysis_call_sites": 2
+    },
+    {
+      "native": "00b7aed0",
+      "status": "wired",
+      "host_site": "src/directional_light_pool.cpp: append_directional_light_pool_table_00b7b510",
+      "body": "grow_directional_light_pool_table_00b7aed0",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00b7b510",
+      "status": "wired",
+      "host_site": "src/directional_light_pool.cpp: DirectionalLightPool::allocate_raw_slot_00b7bac0",
+      "body": "append_directional_light_pool_table_00b7b510",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00b7b5a0",
+      "status": "wired",
+      "host_site": "src/directional_light_pool.cpp: DirectionalLightPool::initialize_00b7b940",
+      "body": "reserve_directional_light_pool_table_00b7b5a0",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost score-record ownership",
+      "reason": "Did not establish an actual raw score-record receiver and 0091CE90 constructor provider for the host's typed MissionScoreRecord; selected the independent directional pool instead."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::run_teardown_arm_004e458a",
+      "reason": "The teardown callback does not supply SoundLoadTransitionContext's actual game, movie-screen, input and listener service state; that owner integration remains."
+    },
+    {
+      "native": "00b3e5b0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_static.cpp: destroy_static_native_cube_texture_pool_00ce0cb0",
+      "reason": "Already called by the existing canonical cube-texture pool lifetime path; the readiness source classification alone did not identify new wiring work."
+    },
+    {
+      "native": "00b3e690",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_trim.cpp: existing allocator-list trim binding",
+      "reason": "Already reported called in the built graph; no missing call was established, so the existing trim binding was left intact."
+    },
+    {
+      "native": "00b3f090",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_static.cpp: initialize_static_native_cube_texture_pool_00cd7b80",
+      "reason": "Already called with the canonical pool and shared allocator-list domain by the existing graphics-pool startup owner."
+    },
+    {
+      "native": "00b85750",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_pointer_vector_capacity_00b85750",
+      "reason": "No live owner of this particular pointer-vector header was established; do not substitute an unrelated pool's table."
+    },
+    {
+      "native": "00b857a0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: grow_native_pointer_vector_00b857a0",
+      "reason": "No live owner of this particular pointer-vector header was established; do not substitute an unrelated pool's table."
+    },
+    {
+      "native": "00b85a30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: push_native_pointer_vector_00b85a30",
+      "reason": "No live owner or producer for this particular pointer-vector header was established."
+    },
+    {
+      "native": "00b85ac0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: reserve_native_pointer_vector_00b85ac0",
+      "reason": "The native caller query returned zero sites and a live owner for this particular header was not established."
+    }
+  ],
+  "implementation": {
+    "state": "Borrow the actual three-word slab table at DirectionalLightPoolStorage+28h; canonical storage represents native 01090154.",
+    "producer": "Existing 00B7BAC0 allocates and initializes each native 3E44h slab, then passes that real slab pointer's cell to 00B7B510.",
+    "startup": "Existing 00B7B940 calls 00B7B5A0 with binary constant 32 through the canonical 00CD8080 startup owner.",
+    "single_body": "Specialized the existing scene_graph2 shared-shape reconstruction; all four legacy dispatcher cases forward to the same address-suffixed bodies.",
+    "removed": "Deleted the old inline reserve and growth/append blocks from the live directional pool.",
+    "ordering": "Capacity before allocation, live source/count copy, per-destination null check, old-table free before data publication, late append input-cell read, unsigned reserve and modulo32 growth retained.",
+    "abi": "Native ECX header; allocate/reserve/push take one stack DWORD and RET4, grow RET. New C++ view interfaces are not native ABI replacements.",
+    "evidence": [
+      "bsp.py show 00b7ae80 --asm: 00B7AE87 capacity store; 00B7AEA3 null test; 00B7AEA7/00B7AEB4 live reads; 00B7AEC8 final publication",
+      "bsp.py show 00b7aed0 --asm: modulo32 2*capacity+2 and the same live forward copy/free/publication order",
+      "bsp.py show 00b7b510 --asm: 00B7B574..7A reads the input cell after growth; 00B7B57C increments count even when destination is null",
+      "bsp.py show 00b7b5a0 --asm: unsigned capacity comparison and the same allocation sequence",
+      "bsp.py show 00b7b940 and 00b7bac0, then --asm: inline-equivalent operations over actual pool+28h"
+    ]
+  },
+  "counts": {
+    "readiness_wired_before": 10749,
+    "readiness_wired_after": 10753,
+    "new_target_addresses_entry_reachable": 4,
+    "release_graph_before_recon_called": 5637,
+    "release_graph_after_recon_called": 5634,
+    "analysis_graph_after_recon_called": 7433,
+    "counter_note": "Release graph folds these bodies with other identical pool helpers and its aggregate is not an independent identity delta. All four targets are called=true in readiness and have distinct reachable callers in the /Ob0 /OPT:NOICF analysis build; do not compare analysis and Release totals."
+  },
+  "validation": [
+    "Required baseline index and scripts/build.ps1 passed; four existing CTests passed.",
+    "scripts/build.ps1 after C++ changes passed with four existing CTests.",
+    "Focused MSVC Win32 /W4 /WX /fp:strict probe linked with /MANIFEST:EMBED and passed: 1025 actual slots force 32-to-66 table growth, preserve all 33 slab identities, retain capacity/old data/count through failed reserve and CRT new-handler, return/trim/destroy cleanly, read an aliased append input after publication, skip null destination without reading null input.",
+    "python tools/call_graph.py: Release target callers are reachable, with identical-code-folding warnings.",
+    "python tools/call_graph.py --build, then who for each address: four distinct reachable bodies, no unreachable callers, call sites 2/1/1/1.",
+    "call_graph path 00b7b5a0 reaches WinMainCRTStartup through StartupSceneDomain/open_directional_pool and canonical 00CD8080 startup.",
+    "call_graph path 00b7b510 reaches WinMainCRTStartup through MissionShipLightingGraph::create_and_bind and the renderer frame path.",
+    "wire_readiness.py --standins reports all four targets wired and called=true."
+  ],
+  "probe_source": "tests/wire_g5_c892_directional_table_probe.cpp",
+  "probe_build": "From an MSVC x86 developer prompt: cl /nologo /std:c++20 /EHsc /MD /W4 /WX /fp:strict /I include tests/wire_g5_c892_directional_table_probe.cpp /Fo:local/c892-probe.obj /Fe:local/c892-probe.exe /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+  "limitations": [
+    "No game was launched; evidence is source, strict Win32 build, focused host-storage probe and entry call graph, not gameplay validation.",
+    "No original-native ABI or exhaustive native fault/SEH equivalence claim.",
+    "No float arithmetic changed, so pc24_lint was not applicable."
+  ]
+}
