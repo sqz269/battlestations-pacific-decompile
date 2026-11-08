@@ -311,16 +311,21 @@ bool poll_native_xinput_00a9a7f0(void* owner, float, NativeXInputContext& contex
     const auto result = context.api.get_state(read<DWORD>(owner, 0x220), state);
     write<std::uint8_t>(owner, 0x23c, result != ERROR_DEVICE_NOT_CONNECTED ? 1 : 0);
     if (result != ERROR_SUCCESS) return false;
-    auto& vibration = *reinterpret_cast<XINPUT_VIBRATION*>(static_cast<std::byte*>(owner) + 0x238);
     if (!context.gamepad.rumble_enabled_e12f2c) {
-        write<std::uint16_t>(owner, 0x23a, 0);
-        write<std::uint16_t>(owner, 0x238, 0);
+        // A9A7F0's disabled-rumble arm clears the actual owner+238/+23A
+        // motor WORDs before its single SetState call (bsp.py show 00a9a7f0).
+        // A9A790 performs that same operation on this owner and API; reuse
+        // its existing body and keep the poll's ignored SDK result.
+        (void)stop_native_xinput_vibration_00a9a790(owner, context.api);
+    } else {
+        auto& vibration = *reinterpret_cast<XINPUT_VIBRATION*>(static_cast<std::byte*>(owner) + 0x238);
+        (void)context.api.set_state(read<DWORD>(owner, 0x220), vibration);
     }
-    (void)context.api.set_state(read<DWORD>(owner, 0x220), vibration);
     normalize_axes(owner, &context.crt_sse2_conversion_0109eea4);
     return true;
 }
-std::uint32_t stop_native_xinput_vibration_00a9a790(void* owner, XInputApi& api) {
+// Keep the address-owned operation callable in the optimized game build.
+__declspec(noinline) std::uint32_t stop_native_xinput_vibration_00a9a790(void* owner, XInputApi& api) {
     write<std::uint16_t>(owner, 0x238, 0);
     const auto index = read<DWORD>(owner, 0x220);
     write<std::uint16_t>(owner, 0x23a, 0);
