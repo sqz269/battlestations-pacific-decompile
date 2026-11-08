@@ -1,0 +1,166 @@
+{
+  "goal": 5,
+  "chain": 851,
+  "slot": "g5-w9",
+  "base": "ebfc957849",
+  "summary": "Replace the running frame profiler's direct QueryPerformanceCounter sample with the existing reconstructed 00BE3240 body.",
+  "wired_before": 10703,
+  "wired_after": 10704,
+  "rows": [
+    {
+      "native": "00be3240",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: GameFrameProfiler::query_performance_counter",
+      "evidence": "bsp.py show 00be3240: QueryPerformanceCounter into a local, returning the complete 64-bit value; the host removes its duplicate API query and consumes this result for calibration and frame slots.",
+      "call_graph": "REACHABLE: two tail-call sites from GameFrameProfiler::query_performance_counter and its calibration Clock adapter; WinMainCRTStartup -> GameStartupHost::application_initialize -> run_initialize_phases -> GameFrameProfiler constructor.",
+      "scope": "New C++ caller of an originally unreferenced query helper; no claim of a recovered original caller or original profiler ABI. Ordinary successful Win32 QPC path, matching the helper's existing unchecked API-result behavior."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The candidate shadow-fit caller is not linked/reachable in this build; replacing its inline product alone would leave the getter dormant."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing a linked live ShadowFitHost submission path; call_graph.py who 00a8ecb0 finds no function in this build."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: CameraHost::movcam_reset_deviation_factor",
+      "reason": "Missing a real movie-camera screen owner with current/default deviation fields; the inspected CameraHost reset service is an unreached throw."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: CameraHost::movcam_reset_overview_height",
+      "reason": "Missing a real movie-camera screen owner with current/default overview-height fields; the inspected CameraHost reset service is an unreached throw."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: CameraHost::movcam_reset_speed_limits",
+      "reason": "Missing a real movie-camera screen owner with current/default speed limits and acceleration duration; the inspected reset service is an unreached throw."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: CameraHost::movcam_reset_accel_time",
+      "reason": "Missing a real movie-camera screen owner with current/default acceleration duration and speed-limit fields; the inspected reset service is an unreached throw."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroups candidate-score list",
+      "reason": "Excluded debug-only score records: the host documents their only reader as an unreachable text overlay and retains no gameplay score-list owner."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroups candidate-score list",
+      "reason": "Excluded debug-only chosen flags: no gameplay decision reads the candidate-score list and the host retains no corresponding owner."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl brain construction",
+      "reason": "Missing the full 2268h raw brain owner and concrete Cc13Seg67bHost constructor services; retained typed controller fields cannot substitute for that object."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing the authored ammo+48h flak-alternate record producer and its retained-reference/tree ownership."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building message D3 handling",
+      "reason": "Missing the actual unit+660h vector owner and concrete element-lifetime services required by Seg62Host."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread named Lua call producer and retained argument queue; the current mission Lua machine runs on the main thread."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/global_subsystems.cpp: MarkerClassContext teardown",
+      "reason": "Missing a live host-owned MarkerClassRegistry/MarkerClassContext and its resource-acquiring load_marker_classes_006dbeb0 producer."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the checkpoint-difference producer and native profile-record/storage rewrite continuation; the existing body supplies only the Lua clear fragment."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry::check_multiplayer_player_count",
+      "reason": "Missing concrete MissionPlayerCountHost failure-latch, participant-count and end-scene services; the reached host hook only records this operation."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director user-path operations",
+      "reason": "Missing a reached remove-last-point command operation; the body only selects a slot and a call without the corresponding path mutation would not implement the native action."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0",
+      "reason": "Missing the shared squadron-director survivor moveto command owner and its 32F1..340F continuation; computing an unused map center would not wire the behavior."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition class-pair scoring",
+      "reason": "Missing the host's concrete mode-indexed ClassPairRow producer and a reached class_pair_value service to consume it."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group recon-ratio scoring",
+      "reason": "Missing a reached group recon-ratio consumer with the actual per-member values; no substitute vector was manufactured."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: map zoom services",
+      "reason": "Missing the real HUD-map screen owner exposing zoom mode+2Ch and scale+5BCh; the inspected map-zoom service is unreached."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: window platform construction",
+      "reason": "Missing a verified bridge to the actual platform allocation/publication domain and preserved pre-construction width/height words."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "004c7070 BSP_DiagnosticPrintf",
+      "reason": "Excluded diagnostic-only candidate; its sole original caller is BSP_DiagnosticPrintf."
+    },
+    {
+      "native": "0048c190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing troop ship departure",
+      "reason": "Missing a reached ship-departure event with the actual LandingTroopState member lists and SoldierTrafficRandom provider."
+    }
+  ],
+  "validation": {
+    "setup": "bsp.py brief, index --if-stale, initial scripts/build.ps1: passed all four tests",
+    "build": "scripts/build.ps1 passed all four tests after the code change; local/output/c851-build.log",
+    "call_graph": "python tools/call_graph.py; who 00be3240; path 00be3240: reconstructed query is reachable with two caller sites",
+    "readiness": "wire_readiness.py --standins confirms state=wired, called=true, call_sites=2, callers_live=2; total 10703 -> 10704",
+    "float_math": "No float arithmetic changed; pc24_lint not required.",
+    "game_run": "Not run, as instructed; executable reachability is not gameplay validation."
+  },
+  "coordination": "Notified g5-w8 about the small profiler edit in its reviewed menu file and g5-w5 about the separate noinline attribute in engine_services_cc13.cpp."
+}
