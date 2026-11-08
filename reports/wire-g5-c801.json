@@ -1,0 +1,166 @@
+{
+  "goal": 5,
+  "chain": 801,
+  "run": 1723,
+  "owner": "agent/g5-w10",
+  "picked": "Retained frontend local-position publication through the existing local-Z/bounds body",
+  "baseline": {
+    "head": "a6e46f73cf",
+    "wired": 10641,
+    "build": "MSVC Win32 Release; all six CTests passed"
+  },
+  "after": {
+    "wired": 10642,
+    "newly_wired": 1,
+    "entry_reachable_reconstructed_addresses": 5490
+  },
+  "rows": [
+    {
+      "native": "00aa7d40",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_local_position",
+      "evidence": "Original 00AA7DC0/00AA7D40 listings have the same Z-store/recompose/bounds tail after X/Y are supplied. The host passes the retained GuiLayoutWidget transform and actual requested Z; its existing published-local-Z map feeds resolved draw depth. Enabled bounds refresh actual draw records through refresh_widget_geometry. No old Z-only host path remains.",
+      "call_graph": "REACHABLE; one call at 10091a0d from GameFrontendHost::set_widget_local_position to gui_widget_set_local_z_and_bounds_00aa7d40 at 10416140"
+    },
+    {
+      "native": "00aa7910",
+      "status": "wired",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_local_z_and_bounds_00aa7d40",
+      "evidence": "Preserved existing wiring rather than counted as newly wired. 00AA7D40 shares this identical MOVSS-store/recompose prefix once; noinline preserves the reconstructed entry. The bounds callback follows it once.",
+      "call_graph": "REACHABLE; one call at 10416154 from gui_widget_set_local_z_and_bounds_00aa7d40 to gui_widget_set_local_z_00aa7910 at 10416120"
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback, UserPathPoint arm",
+      "reason": "The reached sender emits presence-one additions; a presence-zero producer and retained path owners for every selectable last-filled slot are missing."
+    },
+    {
+      "native": "0071d3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::post_user_path_point_0071d340",
+      "reason": "No reached path-follower virtual +1Ch clear-request producer is bound; the existing host sender only adds points."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback, UserPathPoint arm",
+      "reason": "The original remove-last-point consumer requires the missing presence-zero message and selected per-slot retained path owner."
+    },
+    {
+      "native": "00aa7d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_local_position (candidate only)",
+      "reason": "No separate authored-X setter caller was established; inserting it in the XYZ setter would repeat the recompose/bounds work."
+    },
+    {
+      "native": "0071f290",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::advance / ControllerUpdateBinding",
+      "reason": "The current callback model supplies fixed lifecycle/mode/path-presence projections and no accepted-byte or mode writeback owner; a complete real-state controller adapter is missing."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_command_target_pair_construct_007ecf00",
+      "reason": "The original pair constructor is not linked in this build; an entry-reachable native pair owner and its descriptor-init binding are missing."
+    },
+    {
+      "native": "0071c0a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30",
+      "reason": "The callback's director_player_commands_1cc_ map has no live reader; a gameplay consumer of the retained native director flags is missing."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00 (candidate only)",
+      "reason": "A reached text-input character acceptance caller with its current font context was not established; rendering glyph selection is a different operation."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00 (candidate only)",
+      "reason": "The original reflection/property-description writer is missing; frontend flattened render ordering does not produce this name-sorted child snapshot."
+    },
+    {
+      "native": "00866e60",
+      "status": "skipped",
+      "host_site": "src/cc13_big47a_plane.cpp: point_effect_find_child_by_type_00866e60 call sites",
+      "reason": "An entry-reachable plane-effect callback binding with a retained native PointEffectInstanceStorage child owner was not established."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050 (candidate only)",
+      "reason": "A live support-site filter caller carrying the site's active byte, enabled class entries and owner-health source was not established."
+    },
+    {
+      "native": "0071cea0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: oriented_rect_contains_0071cea0 (candidate only)",
+      "reason": "The original routine is unreferenced and no genuine oriented-rectangle producer/consumer was established; world-map bounds use a different representation."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: component-failure scoring stand-in",
+      "reason": "The native per-player 284h-stride scoring graph, attacker player records and award providers remain unbound at the inspected stand-in."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scoring_record_repair_completed_00914100 (candidate only)",
+      "reason": "The repair-completion hook lacks the same live native player/scoring-counter and award graph required by the existing body."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate::direct_hit_00915f20 stand-in",
+      "reason": "The native hit/source-player attribution and scoring-map/award ownership required by the body are missing at this stand-in."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list inspection",
+      "reason": "A native candidate-score owner with a gameplay consumer is missing; the documented table reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list inspection",
+      "reason": "There are no reached native score-list records whose chosen byte feeds gameplay; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_set_zoom override",
+      "reason": "The callback remains movcam_new_unreached and has no retained MovCamZoom owner/FOV consumer."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: helmsman_backfill_age_008141a0 (candidate only)",
+      "reason": "A reached helm-control message producer with authoritative sender, real timestamp and backfill consumer was not established."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MissionLua::queue_named_call stand-in",
+      "reason": "The main-thread interpreter has no frame-job-thread deferred-call producer; main-thread calls must not be deferred to exercise the body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed after final C++ changes: six of six CTests passed",
+    "focused_probe": "tests/wire_g5_c801_position_probe.cpp compiled MSVC Win32 /O2 /MANIFEST:EMBED and passed: signaling-NaN payload, negative zero, exactly one transform publication, transform-before-bounds and disabled-bounds gate",
+    "call_graph": "tools/call_graph.py plus who/path 00aa7d40 and who 00aa7910 verified entry reachability and the changed caller",
+    "readiness": "tools/wire_readiness.py --standins: 10641 -> 10642; 00aa7d40 called=true, call_sites=1",
+    "pc24_lint": "tools/pc24_lint.py --diff origin/main...HEAD: zero findings; changes only route callbacks/store payloads and add no float arithmetic",
+    "game_validation": "Not run; unattended assignment forbids running the game"
+  },
+  "limitations": [
+    "The existing sprite bridge refreshes its retained draw rectangles rather than publishing a native +4Ch scene-node bounding volume.",
+    "This is source/build/fixture/call-graph evidence, not original binary ABI compatibility or visual game validation.",
+    "No new address-suffixed function was created; existing bodies were reused."
+  ]
+}
