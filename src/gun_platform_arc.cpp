@@ -321,6 +321,37 @@ bool gun_set_fire_request_0072d2c0(GunFireRequestState& state,
     return state.fire_requested;
 }
 
+void rapid_turning_gun_set_fire_request_006fdc90(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool want_fire) {
+    // 006FDC98 calls the base once; 006FDC9D tests the resulting +454h,
+    // not the input request, before 006FDCA6 clears +4D4h.
+    gun_set_fire_request_0072d2c0(state, host, want_fire);
+    if (!state.fire_requested) immediate_4d4 = false;
+}
+
+bool single_turning_gun_set_fire_request_006fdcd0(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool salvo_4d8, bool want_fire) {
+    // 006FDCD4..006FDCE1: a false request while +4D8h is set returns
+    // before the base call and before either mutable flag is touched.
+    if (!want_fire && salvo_4d8) return false;
+    gun_set_fire_request_0072d2c0(state, host, want_fire); // 006FDCE4
+    if (!state.fire_requested) immediate_4d4 = false;   // 006FDCF2
+    return true;
+}
+
+void single_turning_gun_request_immediate_fire_006fdc50(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool salvo_4d8) {
+    // bsp.py show 006FDC50: vtable[1E8h](1). The caller has established
+    // the concrete single-turning class, whose inherited slot is 006FDCD0.
+    single_turning_gun_set_fire_request_006fdcd0(state, host, immediate_4d4,
+        salvo_4d8, true);
+}
+
+void rapid_turning_gun_request_immediate_fire_006fdf60(bool& immediate_4d4) noexcept {
+    // bsp.py show 006FDF60: MOV byte ptr [ECX+4D4h],1; RET.
+    immediate_4d4 = true;
+}
+
 bool gun_fixed_step_tick_0072d130(GunFireRequestState& state,
                                   GunFireRequestHost& host,
                                   float dt) {

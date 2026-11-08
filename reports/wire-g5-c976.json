@@ -1,0 +1,143 @@
+{
+  "goal": 5,
+  "chain": 976,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "picked": "Turning-gun fire-request and immediate-fire overrides, extracted from the live gunnery loop into one address-named body per native entry",
+  "rows": [
+    {
+      "native": "006fdc50",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire / request_immediate",
+      "body": "src/gun_platform_arc.cpp: single_turning_gun_request_immediate_fire_006fdc50",
+      "real_state": "The same gun.fire, immediate_fire_by_gun[g].immediate_4d4 and salvo_4d8 used by the original host path; known single-turning class fixes the native virtual dispatch to 006FDCD0.",
+      "reachable_call_sites": 2
+    },
+    {
+      "native": "006fdc90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire / set_request",
+      "body": "src/gun_platform_arc.cpp: rapid_turning_gun_set_fire_request_006fdc90",
+      "real_state": "Actual gun.fire and the same retained immediate flag; base setter executes once before checking its resulting latch.",
+      "reachable_call_sites": 2
+    },
+    {
+      "native": "006fdcd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire / set_request and mst_salvo_test",
+      "body": "src/gun_platform_arc.cpp: single_turning_gun_set_fire_request_006fdcd0",
+      "real_state": "Actual gun.fire, immediate flag and salvo flag; rejected false requests perform no base calls or flag writes. The semantic admission result preserves existing diagnostics.",
+      "reachable_call_sites": 3
+    },
+    {
+      "native": "006fdf60",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire / request_immediate",
+      "body": "src/gun_platform_arc.cpp: rapid_turning_gun_request_immediate_fire_006fdf60",
+      "real_state": "The retained same-gun immediate_4d4 flag; replaces both delayed-artillery and function-gun stores.",
+      "reachable_call_sites": 2,
+      "call_graph_note": "Release ICF folds this bool store with engine_base_mark_stopped_007DDF00. who lists two calls from the changed gunnery paths and one unrelated engine caller; only the two gunnery calls are claimed here. The trivial-tagged address is absent from readiness rows."
+    },
+    {
+      "native": "0075a550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun-control factory candidate",
+      "reason": "Missing a retained AC fire-mode producer and selected-mode consumer; the existing gun loop chooses ammunition per shot instead of retaining the native mode buffers."
+    },
+    {
+      "native": "0075a580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FireRequestBinding::send_fixed_slave_fire_message_0077c7b0",
+      "reason": "Missing an active AF producer: this binding answers false for the rapid-fixed-slave class query and has only a record callback for its send."
+    },
+    {
+      "native": "0075a5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun-control factory candidate",
+      "reason": "Missing the B0 40h firing-message payload producer and consumer; the existing queue_gun_fire_ad handles a different AD message."
+    },
+    {
+      "native": "0072d5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: player role-owner SelectFireMode_0072d5b0 arm",
+      "reason": "Missing retained mode-buffer selection and barrel/ammunition-mode ownership needed to replace the recorded role-take mode select with the complete body."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message candidate",
+      "reason": "Missing a retained ControllerStateMessage producer and consumer carrying both descriptors, flags and mode; also under agent/g5-w7 inspection ownership during this survey."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "Missing a retained ControllerSnapshotMessage and transport consumer; also under agent/g5-w7 inspection ownership during this survey."
+    },
+    {
+      "native": "0096ae90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: warning ship-noise effect callbacks",
+      "reason": "Missing a concrete ShipNoiseEffectHost and the per-ship effect producer; inspected effect creation/start callbacks remain unreached."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: retained nonpositive, ramp and scaled-ramp updates",
+      "reason": "No missing wiring in those paths: current call_graph who confirms three existing entry-reachable calls; the HUD ambient stand-in still needs its actual SoundInstance and sample producer."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing a proved same-domain raw receiver and publication mapping for the literal native initializer; the inspected command target path uses semantic state."
+    },
+    {
+      "native": "00bbddb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: atmosphere_replace_sky_box",
+      "reason": "Missing the retained raw Atmosphere receiver needed by the getter; the inspected script-order skybox callback is unreached."
+    },
+    {
+      "native": "00447510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: UnitInstance::wreck_debris_pieces_00447510",
+      "reason": "Missing the native debris spec, selected node/model, physics body/world and dynamics-list owner required by the complete insertion body."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted",
+      "reason": "Missing a live score-list producer/consumer established in this packet; address was already leased to agent/g5-w9."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen",
+      "reason": "Missing a live score-list selection consumer established in this packet; address was already leased to agent/g5-w9."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp: allocate_native_gui_frame_box_00aa1a40",
+      "reason": "No additional runtime operation established: the existing factory already calls the concrete FrameBox template pool allocator, so an address-only rename would not add behavior."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed Win32 Release and all four CTests; local/c976-build.log",
+    "focused_check": "One assertion group in the existing FireSyncRecorder fixture covers salvo rejection without base queries and suppressed true immediate requests for both classes.",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings across 4 selected files; only control flow and bool operations changed.",
+    "call_graph": "local/c976-graph-before.log, local/c976-graph-after.log and local/c976-who-after.log",
+    "call_graph_reconstructed_called_before": 5724,
+    "call_graph_reconstructed_called_after": 5726,
+    "call_graph_reconstructed_addresses_before": 6434,
+    "call_graph_reconstructed_addresses_after": 6438,
+    "readiness_text_wired_before": 10837,
+    "readiness_text_wired_after": 10837,
+    "readiness_note": "The three old host-reference rows were already text-classified wired before this change. They now have named reachable reconstructed bodies (called=true, call_sites=2/2/3). The new trivial setter 006FDF60 is omitted from readiness rows; its actual gunnery calls are verified separately. Aggregate graph counts are reported as measured, not inferred from the four row claims.",
+    "ghidra": "Verified bsp project and /battlestationspacific.exe through annotate/export tools; preserved earlier comments and names for the three overrides, named 006FDF60, saved project, and refreshed all four exports.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "left_for_others": "Retained gun-mode buffers and AC/AF/B0 message producer/consumer ownership; effect and native receiver gaps recorded above. No game run performed."
+}
