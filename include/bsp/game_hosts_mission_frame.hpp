@@ -40,6 +40,13 @@ struct SceneRecord;
 namespace bsp::game {
 
 class GameFrontendHost;
+class GameMissionLuaHost;
+
+// Publish this load's selected Map corners before any scene InitAll hook can
+// consume world bounds. Returns false when the Map has no selectable bounds.
+bool publish_scene_load_map_bounds(GameMissionLuaHost& lua,
+    const bsp::ScenePropertyBlock& root, std::int32_t mode,
+    bool forced, std::int32_t session);
 
 // Packet cc9_warning_manager_tick (docs/WARNING_MANAGER.md section 5): the two
 // report entries of the warning manager ([00F8A0C4], game+21E0h) that the ship
