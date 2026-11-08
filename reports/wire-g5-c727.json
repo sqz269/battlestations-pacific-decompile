@@ -1,0 +1,172 @@
+{
+  "goal": 5,
+  "chain": 727,
+  "slot": "g5-w5",
+  "base": "df2a90398b2343e14ddb1ba1e8fc6de025f3eb6c",
+  "picked": "Final-owner cleanup of six mission Lua listener subscription types",
+  "built": "Channel-specific shared ownership over the subscriptions populated by the existing archive loaders; their final deleters call the existing reconstructed destruction bodies before retiring empty C++ storage.",
+  "real_state": "The exact subscription object retained in ListenerEntry.native_kill/native_exit_zone/native_recon/native_other, including its authored callback and loaded filter sets. Copies retain the same owner; failed loads also release through its deleter.",
+  "validation": {
+    "build": "./scripts/build.ps1 passed Win32 Release and all four CTests",
+    "tests": ["reconstructed_math", "tool_tests", "cc462_loading_config", "cc464_vfs_stream_reader"],
+    "diff_check": "git diff --check passed",
+    "readiness_wired_before": 10489,
+    "readiness_wired_after": 10495,
+    "compiled_recon_called_before": 5394,
+    "compiled_recon_called_after": 5398,
+    "compiled_count_note": "The aggregate compiled metric changed by four; per-address who checks and readiness report all six destruction bodies called from reachable code. Release ICF folds input and surrender destruction together.",
+    "per_body_call_sites": 2,
+    "call_sites": "Each actual destruct_* body is called by the shared_ptr final-owner _Destroy and its control-block-allocation-failure _Temporary_owner_del. Template helper names containing an address are not used as the proof.",
+    "entry_path": "WinMain -> GameStartupHost/GameMenuHost/GameMissionHost ownership -> GameMissionLuaHost binding_trampoline/run_add_listener_008c6760/add_listener_00980c10/load_listener_subscription_native -> subscription control-block vtable -> _Destroy -> destruct_*",
+    "float_math_changed": false,
+    "new_tests": 0,
+    "game_run": false
+  },
+  "limitations": "Build and compiled reachability are verified. Existing std::set/std::string value-model storage remains a substitution for native sentinels, vtables, sized pools, and scalar-deleting ABI. No game runtime or binary ABI validation is claimed.",
+  "rows": [
+    {
+      "native": "0097a330",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native recon -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097a330: party/newLevel/oldLevel/entity filters then callback; call_graph.py who: body 1040A3C0 called at 10134DDC and 1013CA77; readiness called=true"
+    },
+    {
+      "native": "0097a530",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native kill -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097a530: lastAttackerPlayerIndex/lastAttacker/entity filters then callback; call_graph.py who: body 1040A290 called at 10134D1C and 1013C9B7; readiness called=true"
+    },
+    {
+      "native": "0097a6d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native exitzone -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097a6d0: exited/entity filters then callback; call_graph.py who: body 1040A120 called at 10134C5C and 1013C8F7; readiness called=true"
+    },
+    {
+      "native": "0097a810",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native input -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097a810: input integer filter then callback; call_graph.py who: body 1040A200 called at 10134CBC and 1013C957 (ICF-shared with surrender); readiness called=true"
+    },
+    {
+      "native": "0097a930",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native surrender -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097a930: party integer filter then callback; call_graph.py who: body 1040A200 called at 10134CBC and 1013C957 (ICF-shared with input); readiness called=true"
+    },
+    {
+      "native": "0097aa50",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native leak -> own_listener_subscription final deleter",
+      "evidence": "bsp.py show 0097aa50: entity filter then callback; duration owns no storage; call_graph.py who: body 1040A330 called at 10134D7C and 1013CA17; readiness called=true"
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::insert_into/attach_tree/make_owned_complete_bag",
+      "reason": "Already called at baseline from three reachable sites in SceneNumericPropertyMerge; no missing wiring remains here."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Impl/merge_child",
+      "reason": "Already called at baseline from two reachable SceneNumericPropertyMerge sites; no missing wiring remains here."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp:font byte acceptance candidate",
+      "reason": "Missing live typed FontData consumer; native font ownership differs and another worker was investigating this address."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing actual raw HudMovieScreen storage in the CameraHost adapter; its camera token cannot supply the native +54/+58 fields."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing actual raw HudMovieScreen storage in the CameraHost adapter; its camera token cannot supply the native +5C/+60 fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing actual raw movie-screen limits/defaults and acceleration state; the AddPosition-only host method remains an unreachable service."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing actual raw movie-screen acceleration defaults/state; the AddPosition-only host method remains an unreachable service."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:scripted-name baseline teardown consumer",
+      "reason": "Missing teardown consumer in this baseline, already leased by agent/g5-w8 for its separate implementation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing real off-main-thread Lua call producer and source LuaVariantRecord vector; the main-thread mission interpreter does not enqueue this path."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp:gui_curve_control_points_00abca10",
+      "reason": "Missing live curve-control rebuild caller over the actual authored curve points; native curve storage operations alone do not consume this model."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing reachable manager-frame caller in the built graph despite an existing source-level call; no additional timed-entry lifecycle was introduced."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart binding write_checkpoint",
+      "reason": "Missing real pre-load BSP_Chk_Save owner/current mission checkpoint comparison; checkpoint_differs still returns false on this path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_shadow_cascade_00a8bd20/fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing reachable shadow-fit callers; replacing their inline products alone would leave the scalar body uncalled from entry."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_shadow_cascade_00a8bd20",
+      "reason": "Missing live ShadowFitHost and owner producer/consumer chain; the body is absent from the baseline executable."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "No original references and no live ShadowFitHost caller; the body is absent from the baseline executable."
+    },
+    {
+      "native": "00b642f0",
+      "status": "skipped",
+      "host_site": "src/camera_projection.cpp:build_projection_00b642f0",
+      "reason": "No equivalent FOV-aspect product exists in the original perspective algorithm to replace; inspected only and left unchanged."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native input",
+      "reason": "Already called at baseline by the live listener loader; retained unchanged while adding its missing destruction consumer."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native surrender",
+      "reason": "Already called at baseline by the live listener loader, ICF-folded with input construction; retained unchanged."
+    }
+  ]
+}

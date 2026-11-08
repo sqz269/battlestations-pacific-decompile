@@ -8584,6 +8584,22 @@ private:
     bsp::GuiLuaHandleResolver& handles_;
 };
 
+// Goal 5 chain 727: bsp.py show 0097A330/0097A530/0097A6D0/0097A810/
+// 0097A930/0097AA50 releases each channel's filters in reverse order, then
+// its callback. These are the same value-model subscriptions the archive
+// loaders populate below. Run the existing body when the last shared owner
+// releases it, including a failed load; a copied dispatch owner keeps it alive.
+// The final C++ delete retires the now-empty containers and allocation. Native
+// tree heads, vtables, sized pools and scalar-deleting ABI remain substituted.
+template<auto Destroy, class Subscription>
+std::shared_ptr<Subscription> own_listener_subscription(Subscription subscription) {
+    return std::shared_ptr<Subscription>(new Subscription(std::move(subscription)),
+        [](Subscription* owned) {
+            Destroy(*owned);
+            delete owned;
+        });
+}
+
 }  // namespace
 
 // Goal 4 chain 352. 00980C10 copies the params LuaObject (00980C66 00B66FA0), builds the
@@ -8662,8 +8678,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                                           crt_sse2_conversion, handles);
         switch (channel) {
         case Channel::kill: {
-            auto subscription =
-                std::make_shared<seg64::KillSubscription>(seg64::construct_kill_0097a450());
+            auto subscription = own_listener_subscription<seg64::destruct_kill_0097a530>(
+                seg64::construct_kill_0097a450());
             seg64::load_kill_00972520(*subscription, reader, handles);
             entry.callback = subscription->callback;
             entry.attacker_filters_set = !subscription->last_attacker.ids.empty()
@@ -8679,7 +8695,7 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             break;
         }
         case Channel::exit_zone: {
-            auto subscription = std::make_shared<seg64::ExitZoneSubscription>(
+            auto subscription = own_listener_subscription<seg64::destruct_exit_zone_0097a6d0>(
                 seg64::construct_exit_zone_0097a620());
             seg64::load_exit_zone_009726d0(*subscription, reader, handles);
             entry.callback = subscription->callback;
@@ -8687,8 +8703,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             break;
         }
         case Channel::recon: {
-            auto subscription =
-                std::make_shared<seg64::ReconSubscription>(seg64::construct_recon_0097a220());
+            auto subscription = own_listener_subscription<seg64::destruct_recon_0097a330>(
+                seg64::construct_recon_0097a220());
             seg64::load_recon_00972450(*subscription, reader, handles);
             entry.callback = subscription->callback;
             entry.native_recon = std::move(subscription);
@@ -8703,18 +8719,23 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         }
         case Channel::other: {
             std::shared_ptr<const seg64::EventSubscription> other;
-            auto load = [&](auto subscription, auto&& load_slot) {
-                auto held = std::make_shared<decltype(subscription)>(std::move(subscription));
+            auto load_held = [&](auto held, auto&& load_slot) {
                 load_slot(*held);
                 entry.callback = held->callback;
                 other = std::move(held);
             };
+            auto load = [&](auto subscription, auto&& load_slot) {
+                load_held(std::make_shared<decltype(subscription)>(std::move(subscription)),
+                    std::forward<decltype(load_slot)>(load_slot));
+            };
             const std::string& c = entry.channel;
             if (listener_key_equal(c, "input")) {
-                load(seg64::construct_input_0097a790(),
+                load_held(own_listener_subscription<seg64::destruct_input_0097a810>(
+                    seg64::construct_input_0097a790()),
                     [&](seg64::InputSubscription& s) { seg64::load_input_00972750(s, reader); });
             } else if (listener_key_equal(c, "surrender")) {
-                load(seg64::construct_surrender_0097a8b0(), [&](seg64::SurrenderSubscription& s) {
+                load_held(own_listener_subscription<seg64::destruct_surrender_0097a930>(
+                    seg64::construct_surrender_0097a8b0()), [&](seg64::SurrenderSubscription& s) {
                     seg64::load_surrender_009727b0(s, reader);
                 });
             } else if (listener_key_equal(c, "failure")) {          // 0097C560
@@ -8722,7 +8743,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                     seg64::load_failure_00972810(s, reader, handles);
                 });
             } else if (listener_key_equal(c, "leak")) {
-                load(seg64::construct_leak_0097a9d0(seg64::RangeFilter{}),
+                load_held(own_listener_subscription<seg64::destruct_leak_0097aa50>(
+                    seg64::construct_leak_0097a9d0(seg64::RangeFilter{})),
                     [&](seg64::LeakSubscription& s) { seg64::load_leak_009728a0(s, reader, handles); });
             } else if (listener_key_equal(c, "fire")) {             // 0097AAF0
                 load(seg64::FireSubscription{},
