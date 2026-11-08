@@ -3,6 +3,7 @@
 #include "bsp/native_renderer_current_depth_surface.hpp"
 #include "bsp/native_renderer_surface_save_publish.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/scene_renderer_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>
@@ -249,7 +250,11 @@ void* construct_native_render_resources_00b14a10(void* receiver,
         put(at(receiver, 0x6a4), 0); // 00B14C4D
         put(at(receiver, 0x6a8), 0); // 00B14C53
         xmm0 = 0; // 00B14C59
-        put(at(receiver, 0x224), xmm0); // 00B14C5C
+        // bsp.py show 00B14A10 --asm, 00B14C59..00B14C5C: XORPS then
+        // MOVSS [ESI+224h],XMM0. Source reuse of the complete 00B0D0B0
+        // DWORD store on this same published service, with those zero bits.
+        // The image inlines the store here; it does not CALL the setter.
+        scene_renderer::set_value_224_00b0d0b0(receiver, xmm0);
         xmm0 = c.cells.actual_00d7a24c; // 00B14C64
         a.unwind_state = 3; // 00B14C6E
         put(at(receiver, 0x50), 0); // 00B14C73
@@ -257,7 +262,10 @@ void* construct_native_render_resources_00b14a10(void* receiver,
         put_byte(at(receiver, 0x219), 0); // 00B14C7C
         put_byte(at(receiver, 0x21a), 0); // 00B14C82
         put_byte(at(receiver, 0x21b), 0); // 00B14C88
-        put_byte(at(receiver, 0x21c), 0); // 00B14C8E
+        // 00B14C8E MOV byte [ESI+21Ch],BL (EBX=0): the complete 00B0D160
+        // byte store, reused at its original place among the constructor's
+        // stores. No second inline store or surrogate service is retained.
+        scene_renderer::set_flag_21c_00b0d160(receiver, 0);
         put(at(receiver, 0x220), 0x1); // 00B14C94
         put(at(receiver, 0x228), xmm0); // 00B14C9E
         put_byte(at(receiver, 0x680), 0); // 00B14CA6
