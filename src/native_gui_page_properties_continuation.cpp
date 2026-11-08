@@ -79,11 +79,16 @@ void continue_native_gui_page_properties_00ac6806(
         propagate_native_node_root_storage_00b6d890(frame.captured_node, nullptr, context.nodes);
         frame.root_returned = true;
 
-        // Existing genuine raw destructor performs CE44FC, vector tidy at +4,
-        // then CE374C. EH metadata is sideband; no original FH3 frame is added.
+        // bsp.py show 00ac6600 --asm, 00AC682A..00AC6847: the frame reader
+        // gets CE44FC, vector tidy at +4, then CE374C. 00441A70 performs
+        // that same sequence (00441A8D..00441AA8). Clear its bit0 free flag:
+        // this SAME retained reader occupies frame storage, which the native
+        // inline tail does not free. Replace the direct destructor, so its
+        // tracked Lua values retire once, before the Lua owner closes below.
+        // EH metadata stays sideband; this is a Source call, not an ABI hook.
         prefix.native_site = 0x00ac683e;
         prefix.native_eh_state = 6;
-        pending.reader.~NativeLuaReaderStorage();
+        destroy_native_lua_reader_00441a70(pending.reader, 0u);
         frame.reader_retired = true;
         prefix.native_site = 0x00ac6857;
         prefix.native_eh_state = 1;
