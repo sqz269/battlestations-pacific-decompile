@@ -1,4 +1,5 @@
 #include "bsp/native_particle_model_pool_owner.hpp"
+#include "bsp/native_particle_model_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -67,19 +68,10 @@ void* initialize_native_particle_model_pool_00af6860(void* pool, AllocatorListDo
         word(pool, 0x30) = 0;
         word(pool, 0x34) = 0xffffffffu;
         unwind_state = 2;
-        if (word(pool, 0x30) < 32u) {
-            word(pool, 0x30) = 32;
-            void* const replacement = singleton_lifetime_allocate(
-                {SingletonAllocationKind::pointer_slots, 0x80, 0x80});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination)
-                    pointer(destination, 0) = pointer(pointer(pool, 0x28), index * 4u);
-                destination = at(destination, 4);
-            }
-            free_native_particle_model_pool_table_00af5d00(at(pool, 0x28));
-            pointer(pool, 0x28) = replacement;
-        }
+        // AF6860 inlines AF6270 with the binary's reserve count32, including
+        // the returning-free continuation at AF6919 before publication.
+        reserve_native_particle_model_pool_table_00af6270(
+            {static_cast<std::byte*>(at(pool, 0x28))}, 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_native_particle_model_pool_table_00af5d00(at(pool, 0x28));
