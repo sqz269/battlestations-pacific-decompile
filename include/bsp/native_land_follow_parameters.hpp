@@ -1,10 +1,15 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
+#include <cstdint>
+
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error This recovered x87 kernel requires MSVC Win32.
 #endif
 
 namespace bsp {
+struct GameTuningBlock;
 // Native 009BE150: ECX=destination, stack=source, EAX=destination, RET4.
 // The declared fastcall bridge reserves unused EDX so source remains on stack.
 // Each block must expose at least A4h live bytes; exact self alias and disjoint
@@ -18,5 +23,19 @@ namespace bsp {
 // allocation, singleton binding, fault recovery or game lifetime is supplied.
 void* __fastcall copy_native_land_follow_parameters_009be150(
     void* destination, const void* unused_edx, const void* source) noexcept;
+
+// Owns the parameter payload reached through follow-state+6Ch. The gameplay
+// host detects entry by a gap in its pilot-think sequence; repeated uses within
+// one think and consecutive follow thinks retain the same payload. This is the
+// host's existing entry approximation, not the native state-machine lifecycle.
+class FollowParameterSnapshot {
+public:
+    bool observe_follow_think(const GameTuningBlock&, std::uint64_t think) noexcept;
+    float safe_alt() const;
+private:
+    alignas(4) std::array<std::byte, 0xa4> parameters_;
+    std::uint64_t last_think_{};
+    bool initialized_{};
+};
 } // namespace bsp
 
