@@ -1,0 +1,140 @@
+{
+  "chain": 980,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "outcome": "partial_body_correction_no_new_wiring",
+  "wired_total_before": 10838,
+  "wired_total_after": 10838,
+  "called_total_before": 5725,
+  "called_total_after": 5725,
+  "body_correction": {
+    "native": "00779d00",
+    "source": "src/mp_seg43_cc13.cpp: unit_recon_record_value_00779d00",
+    "change": "Replace the C++ long-double expiry sum with the native FLD/FADD/FLD/FXCH/FCOMIP/FSTP/SETA schedule, retaining the calling thread's x87 precision and unordered-expiry behavior.",
+    "evidence": "bsp.py show 00779d00 --asm, 00779D2F..00779D49; FADD reads the binary's double 30.0 at 00CE7630.",
+    "regression": "stamp bits 42C83335 (100.10001373291015625), now bits 4302199A (130.100006103515625), current level 1 and held level 2. PC24 rounds stamp+30 down to now and expires; PC53 retains the held level. The old body returned 2 in both cases.",
+    "scope": "Corrected reconstructed body and focused Win32 fixture; no production caller or gameplay validation is claimed."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all five CTests passed (local/c980-baseline-build.log).",
+    "build": "scripts/build.ps1 passed after the correction; all five CTests passed (local/c980-build.log).",
+    "probe_source": "tests/wire_g5_c980_recon_hold_probe.cpp",
+    "probe_build": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict, linked with bsp_core.lib, bsp_lua511.lib, bsp_zlib121.lib and /MANIFEST:EMBED; local/c980-probe.cmd records the command.",
+    "probe_before": "Exit 1: PC24 expected=1 actual=2; PC53 expected=2 actual=2 (local/c980-probe-before.log).",
+    "probe_after": "Exit 0: PC24 expected=1 actual=1; PC53 expected=2 actual=2 (local/c980-probe-after.log).",
+    "call_graph": "43437/43593 functions entry-reachable, 5725/6435 reconstructed addresses called before and after; who 00779d00 finds no function in bsp_game.exe. No wiring gain claimed.",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD passed: 0 findings, 0 allowed, 2 files (local/c980-pc24.log).",
+    "game": "Not run."
+  },
+  "rows": [
+    {
+      "native": "00779d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: opposing-group recon qualification; producer currently projected by GameScriptOrdersHost::sync_recon_level_tables_0077b0c0 in src/game_hosts_script_orders.cpp",
+      "reason": "Missing retained unit+2FCh held recon level and +300h timestamp from the opposing-party 0077B0C0 delegate transition; the live publisher writes Lua levels only. Corrected the existing body's x87 expiry comparison without fabricating this owner."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group members and opposing-team group lists",
+      "reason": "Missing genuine 00779D00 member values, including held-level expiry state, and a live recon-qualified query consumer; present-day sensor visibility cannot replace those values."
+    },
+    {
+      "native": "00a13080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::duel_think_00a25f70 and AI command dispatch",
+      "reason": "Missing the 00A13280 auto-close-attack caller and 00A2C3D0 qualification provider; the existing duel planner correctly calls different 00A1C960 unweighted nearest-group semantics."
+    },
+    {
+      "native": "00a2eee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group information publication; src/lua_binding_ai.cpp: lua_binding_ai_get_group_info",
+      "reason": "Missing a concrete live Seg70Host group-info table writer and 00A2C3D0 provider; no GameAiCoordinatorHost AIGetGroupInfo consumer was found."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target creation",
+      "reason": "The existing raw entry reads actual writable DATA at F87574/78/7C; no production ownership of those native absolute cells was established."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::mode_think_apply SpawnGroup arm",
+      "reason": "Missing native 00946970 request weight, 00A08420 candidate-record count and 0066E590 support-site count; quick_spawn_named_group does not supply those inputs."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing live 00AAAED0 reflection/property-descriptor writer; alphabetical description order cannot replace the frontend's render order."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call; src/game_hosts_fixed_step.cpp: deferred Lua service",
+      "reason": "Missing an off-main-thread named-call producer and its real source LuaVariantRecord vector; main-thread execution is direct."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MissionLua::queue_named_call",
+      "reason": "Missing the frame-job-thread enqueue producer; adding a deferred node to a main-thread call would change its execution semantics."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage::capture_members",
+      "reason": "Missing the original entity-create-message consumer of member+04h vector and native fallback DATA ownership on a lookup miss; this is a member lookup, not capture_members' vector copy."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: UnitOrderRing state",
+      "reason": "Missing saved-entity Lua restoration input toTurn from 0081F980; live ring storage does not justify a new rudder-reset call."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::fit_stand_in_camera",
+      "reason": "That camera computes a unit-bounds box rather than the native game's map box; the actual map-center/squadron path is leased to agent/g5-w2 and was left untouched."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search via ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing host call found: the existing live refresh already invokes this helper, which is inlined in the current build; adding another call would duplicate work."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search via ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing host call found: the existing live query-refresh body already performs the refill with the real runtime manager."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Already has an entry-reachable built-executable call from refresh_search; no new wiring is needed."
+    },
+    {
+      "native": "00b62f20",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: matrix row orthonormalization",
+      "reason": "Missing the original enclosing caller at 00B649F0; the host's established 0085DC80 pose-orthonormalization sites use a different routine."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: RAM-image data accessor",
+      "reason": "Missing an established native RAM-image object owned by a live terrain/TGA consumer; this is an image+18h accessor rather than a VFS file-store getter."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing a production GuiPointerRuntimeServices binding and native GUI-manager frame caller; current GUI resource application alone does not supply cursor sampling and latch state."
+    }
+  ],
+  "left_for_others": "Retain the opposing-party transition's held recon level and timestamp on each real unit, then bind the original auto-close-attack or Lua group-info consumer; use the corrected 00779D00 body and existing 00A2C3D0 implementation. No new owner was fabricated in this packet."
+}
