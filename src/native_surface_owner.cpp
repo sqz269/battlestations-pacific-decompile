@@ -2,6 +2,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_tagged_leaf_b3_03.hpp"
 #include "bsp/native_tagged_leaf_b3_06.hpp"
+#include "bsp/render_fx_cc13.hpp"
 
 #include <cstring>
 #include <new>
@@ -180,14 +181,23 @@ HRESULT recreate_native_surface_00b3d550(NativeSurfaceOwnerStorage& owner, IDire
     // B3D550 selects the device method using +30h, then reads saved +18h
     // format. B3CD00 reads precisely that DWORD on this same surface.
     static_assert(offsetof(NativeSurfaceOwnerStorage, format_18) == 0x18);
+    // B3CD30 is D619A0's actual +24h virtual getter (D619C4), reading this
+    // SAME owner's +24h multisample field. Evidence: bsp.py show 00b3cd30
+    // and live bytes D619A0..D619E3. Consume it as the existing device call's
+    // sample argument; no companion sample value or second recreation runs.
+    static_assert(offsetof(NativeSurfaceOwnerStorage, multisample_24) == 0x24);
     if (owner.kind_30 != 0) {
         return device.CreateDepthStencilSurface(owner.width_1c, owner.height_20,
             static_cast<D3DFORMAT>(native_tagged_b3_read_dword_18_00b3cd00(&owner)),
-            owner.multisample_24, 0, TRUE, &owner.surface_2c, nullptr);
+            static_cast<D3DMULTISAMPLE_TYPE>(cc13_render1::d3d9_surface_sample_count_00b3cd30(
+                reinterpret_cast<const std::uint8_t*>(&owner))),
+            0, TRUE, &owner.surface_2c, nullptr);
     }
     return device.CreateRenderTarget(owner.width_1c, owner.height_20,
         static_cast<D3DFORMAT>(native_tagged_b3_read_dword_18_00b3cd00(&owner)),
-        owner.multisample_24, 0, FALSE, &owner.surface_2c, nullptr);
+        static_cast<D3DMULTISAMPLE_TYPE>(cc13_render1::d3d9_surface_sample_count_00b3cd30(
+            reinterpret_cast<const std::uint8_t*>(&owner))),
+        0, FALSE, &owner.surface_2c, nullptr);
 }
 
 bool remove_first_native_surface_00b25630(

@@ -1,0 +1,209 @@
+{
+  "chain": 955,
+  "slot": "g5-w5",
+  "base": "d7d8178e64",
+  "summary": "Use the existing D619A0 surface sample-count getter in the live device-reset recreation path.",
+  "rows": [
+    {
+      "native": "00b3cd30",
+      "status": "wired",
+      "host_site": "src/native_surface_owner.cpp:recreate_native_surface_00b3d550",
+      "evidence": "BSP show 00B3CD30 reads receiver+24h; live D619A0 vtable bytes place B3CD30 at D619C4. Both existing CreateRenderTarget and CreateDepthStencilSurface calls consume the getter on the same NativeSurfaceOwnerStorage. Its +24h producer remains bind_native_surface_00b3cc80/GetDesc. No extra recreation or copied sample state.",
+      "abi": "Reuses the existing C++ getter interface; the original ECX receiver/EAX DWORD contract is documented by the reconstruction. This change does not claim drop-in binary ABI or a live game test."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp:land-task state owner",
+      "reason": "Missing the eight constructed native land-state identities and executable entry profiles; retained enum states cannot supply the registry's state objects."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:land-task installation",
+      "reason": "Missing complete same-task 0099C6F0 base and 009B2E50 composite constructor services, including native profiles, queue records and state entry dispatch."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "src/native_land_follow_parameters.cpp:NativeLandFollowParameterOwner",
+      "reason": "Already called by the retained follow-parameter owner; there is no missing wiring to add for this row."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:tail-gunner skill notification",
+      "reason": "Already called with loaded tail-gunner configuration and the owner's stream-one draw provider; there is no missing wiring on this path."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:mission Lua dispatch",
+      "reason": "Missing a frame-job-thread deferred enqueue producer with a genuine LuaVariantRecord source argument vector."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command target owner",
+      "reason": "Missing genuine current writable F87574/F87578/F8757C publications required by the literal initializer; semantic target values do not supply them."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:target reporting",
+      "reason": "Missing the actual mission reporter/channel and observed-entity services required by Seg62Host."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp:declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "Missing a production caller supplying the genuine 19Ch enum, consumed raw key and the complete same-domain Lua/world/string declaration context."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:Factory::create_widget_00aa6560",
+      "reason": "Missing Button registration/focus, property and page-dispatch composition; the inspected production factory admits default Group/Icon children."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp:NativeFontResources::accepts_text_byte",
+      "reason": "Missing a live input-character admission consumer; the unused resource helper and complete-string layout do not provide the text-context input-filter path."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp:game_map_box_center_004b4850",
+      "reason": "Missing an established live typed GameMapBox producer/consumer for this semantic projection; native world-border storage has a separate interface."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score planning",
+      "reason": "Missing a gameplay consumer for AiGroupScoreList's full native candidate records; live capture planning uses separate weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score planning",
+      "reason": "Missing a gameplay-owned candidate-score list whose chosen byte is consumed; creating a parallel list would supply no live planner behavior."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp:air-support flight spawn",
+      "reason": "Missing complete air-support flight spawn-manager/member/ref-frame/enqueue services; the inspected host still throws on this unsupported path."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:plane engine sound",
+      "reason": "Missing a retained EngineSoundParams producer and actual sound pitch/volume consumer in the inspected movement host."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:projectile impact effects",
+      "reason": "Missing the matching live effect-slot dispatch and effect placement consumer; the typed selector alone cannot perform the impact side effects."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp:leak_manager_flooded_fraction_0074fa80",
+      "reason": "Missing an established live leak-manager water/capacity owner and settings+404h input at an actual flooded-fraction consumer."
+    },
+    {
+      "native": "0093aa90",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp:repair_set_section_failure_effect_0093aa90",
+      "reason": "Missing the retained section-effect slots and actual create/stop/release consumer needed to apply the typed action plan."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:controlled-unit audio",
+      "reason": "Missing the same unit's BBC audio provider and complete device-list broadcast consumer for the typed AudioFlagPlan."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp:support_site_can_supply_class_0084d050",
+      "reason": "Missing a retained live SupplyClassEntry list and actual support-site owner-health consumer at this predicate."
+    },
+    {
+      "native": "00b3d090",
+      "status": "skipped",
+      "host_site": "src/native_surface_owner.cpp:recreate_native_surface_00b3d550",
+      "reason": "Live xref D618E8 identifies the VolumeTexture width getter; the surface-reset caller owns D619A0 storage, so this is not its multisample getter."
+    },
+    {
+      "native": "00b3d0a0",
+      "status": "skipped",
+      "host_site": "src/native_surface_owner.cpp:surface lifecycle",
+      "reason": "Live xref D618EC identifies the VolumeTexture height getter; missing an appropriate volume-dimension consumer in the chosen surface packet."
+    },
+    {
+      "native": "00b3d0b0",
+      "status": "skipped",
+      "host_site": "src/native_surface_owner.cpp:surface lifecycle",
+      "reason": "Live xref D618F0 identifies the VolumeTexture depth getter; it is not the selected surface owner's COM pointer getter."
+    },
+    {
+      "native": "00b3ce90",
+      "status": "skipped",
+      "host_site": "src/native_texture_2d_owner.cpp:texture owner",
+      "reason": "Missing an appropriate live consumer for the texture+30h getter in the inspected owner construction paths."
+    },
+    {
+      "native": "00b3cd40",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp:surface_lock_rect_00b3cd40",
+      "reason": "Missing a live surface-lock operation and complete D3DResourceHost COM-call adapter in the selected reset recreation path."
+    },
+    {
+      "native": "00b3cd60",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp:surface_unlock_rect_00b3cd60",
+      "reason": "Missing a corresponding live surface-lock/unlock consumer; reset recreation does not perform this operation."
+    },
+    {
+      "native": "00b3dd00",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp:surface_save_to_file_00b3dd00",
+      "reason": "Missing a gameplay surface-save request and complete D3DX save provider in the selected reset path."
+    },
+    {
+      "native": "00b3cd10",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_construction.cpp:surface_dimension",
+      "reason": "Existing width body is private to post-effect construction; no missing public binding was added in this bounded sample-count packet."
+    },
+    {
+      "native": "00b3cd20",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_construction.cpp:surface_dimension",
+      "reason": "Existing height body is private to post-effect construction; no missing public binding was added in this bounded sample-count packet."
+    }
+  ],
+  "validation": {
+    "baseline_wired": 10825,
+    "after_wired": 10826,
+    "baseline_entry_called": 5706,
+    "after_entry_called": 5707,
+    "baseline_build": "local/output/c955-baseline-build.log",
+    "release_build": "local/output/c955-build.log",
+    "release_graph": "local/output/c955-graph-after.log",
+    "release_who": "local/output/c955-who-after.log",
+    "analysis_build": "local/output/c955-analysis-build.log",
+    "analysis_graph": "local/output/c955-analysis-graph.log",
+    "analysis_who": "local/output/c955-analysis-who.log",
+    "readiness": "local/output/c955-readiness-after.log",
+    "tests": "Release scripts/build.ps1 passed reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (4/4). Separate MSVC Win32 bsp_game analysis build passed with /Ob0 and /OPT:NOICF.",
+    "pc24": "Not needed: the change reads an existing integer enum field; no float operation changed.",
+    "runtime": "Game not launched, per assignment. Static built-entry reachability is not a live device-reset or gameplay test.",
+    "call_sites": 2,
+    "entry_path": "WinMain -> GameStartupHost -> GameNativeRendererApplication -> TextureLoadingGraph::retry -> recreate_native_renderer_device_00b29670 -> restore_native_renderer_resources_00b23b10 -> recreate_native_surface_00b3d550 -> d3d9_surface_sample_count_00b3cd30",
+    "analysis_call_confirmation": "call_graph.py --build produced build/callgraph with inlining and ICF disabled; who 00b3cd30 confirms two direct calls from recreate_native_surface_00b3d550. A separate build/c955-analysis bsp_game build also passed."
+  }
+}
