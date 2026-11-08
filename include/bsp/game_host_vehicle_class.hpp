@@ -1,6 +1,7 @@
 #pragma once
 
-// Goal 3 chain 234 (kWireGoal3Chain234Bound). The descriptor half of the
+// Goal 3 chain 234; Goal 5 chain 797 adds the constructed registry owner.
+// The descriptor half of the
 // VehicleClass registry singleton 00437F50 (cache data +4h, size +8h,
 // capacity +0Ch; docs/VEHICLE_CLASS_DESCRIPTORS.md) and the image descriptors
 // 00964790 BSP_VehicleClass_GetOrCreate builds into it.
@@ -34,6 +35,13 @@
 // climb (running vtable +8h, the Lua load 00960230, on the image) must make
 // one copy authoritative: write 00964790's fields into the image and read
 // them back from it, or drop the semantic copy.
+//
+// The registry itself now has the complete 401Ch storage initialized by
+// 00437E10, including both identity tables (004356F0) and the three-byte
+// party-row reservation (00435960). Its +4/+8/+C cache header borrows the
+// vector's actual allocation and is authoritative for cache reads/writes.
+// Host teardown frees the party reservation; the process singleton getter,
+// lifetime registry and native registry/descriptor destructors remain separate.
 
 #include <cstddef>
 #include <cstdint>
@@ -85,7 +93,7 @@ private:
 
     std::unique_ptr<Bindings> bindings_;
     std::vector<std::unique_ptr<Entry>> entries_;
-    std::vector<void*> cache_;   // singleton+4h..+0Ch, VehicleClassDescriptor* slots
+    std::vector<void*> cache_;   // allocation owner for the registry's borrowed +4/+8/+C header
     std::size_t constructed_{0};
 };
 

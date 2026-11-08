@@ -188,7 +188,7 @@ void camera_mover_step_base_00435410(Raw mover, float dt, SweepAHost& host) {
 // capacity*3 bytes (operator new 00BF55BE), copies each row (word + byte) to a
 // non-null destination, frees the old block (_free 00BF6989, also when null)
 // and stores data and capacity.
-void party_rows_reserve_00435960(Raw rows, std::int32_t capacity, SweepAHost& host) {
+void party_rows_reserve_00435960(Raw rows, std::int32_t capacity, PartyRowsStorageHost& host) {
     if (capacity < 1) capacity = 1;
     if (rows.at<std::int32_t>(8) >= capacity) return;
     auto* fresh = static_cast<std::uint8_t*>(host.operator_new_00bf55be(static_cast<std::uint32_t>(capacity * 3)));
@@ -208,7 +208,7 @@ void party_rows_reserve_00435960(Raw rows, std::int32_t capacity, SweepAHost& ho
 // 00435960 when count exceeds the capacity, zero-constructs rows count..new-1
 // (a null row address is skipped), then the count is stepped down one at a
 // time while above the new count and finally set to it; rows have no destructor.
-void party_rows_resize_004359e0(Raw rows, std::int32_t count, SweepAHost& host) {
+void party_rows_resize_004359e0(Raw rows, std::int32_t count, PartyRowsStorageHost& host) {
     if (count > rows.at<std::int32_t>(8)) party_rows_reserve_00435960(rows, count, host);
     const std::int32_t old = rows.at<std::int32_t>(4);
     for (std::int32_t i = old; i < count; ++i) {
