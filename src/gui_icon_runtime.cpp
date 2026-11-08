@@ -1,6 +1,7 @@
 #include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include <cstring>
 #include <stdexcept>
 #include <utility>
@@ -634,20 +635,16 @@ void GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner& owner, const GuiWidget
     auto& self = *impl_;
     require(&owner.layout() == &self.widget,
         "Icon scale48 requires this runtime's same retained widget owner.");
-    // 00AB2828 ->00AA7950. Actual scalar fields, with native FLD/FSTP stores.
-    const auto* source = &scale;
-    auto* scale_x = &self.widget.transform.scale_x;
-    auto* scale_y = &self.widget.transform.scale_y;
-    __asm {
-        mov eax, source
-        mov edx, scale_x
-        fld dword ptr [eax]
-        fstp dword ptr [edx]
-        mov edx, scale_y
-        fld dword ptr [eax + 4]
-        fstp dword ptr [edx]
-    }
-    owner.recompose_00aa7220(); // No base bounds refresh.
+    // 00AB2828 ->00AA7950, over the SAME retained transform/node used by
+    // main_menu_layout_binding's actual bg_01_Icon (005879FE). No bounds pass.
+    struct ScaleView final : gui_widgets_cc13::GuiWidgetScaleView {
+        explicit ScaleView(GuiWidgetOwner& owner)
+            : GuiWidgetScaleView(owner.layout().transform.scale_x,
+                owner.layout().transform.scale_y), owner(owner) {}
+        void recompose_00aa7220() override { owner.recompose_00aa7220(); }
+        GuiWidgetOwner& owner;
+    } view{owner};
+    gui_widgets_cc13::gui_widget_set_scale_00aa7950(view, &scale);
     // 00AB282F ->00AB2600. Retain its short-circuit reads and its selected
     // state lookup only for the point-filter/native-size eligibility branch.
     const bool bilinear = self.prefers_bilinear_00ab2600();

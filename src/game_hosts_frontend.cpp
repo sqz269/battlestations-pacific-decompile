@@ -1545,9 +1545,20 @@ void GameFrontendHost::set_widget_size(GuiLayoutWidget& widget, float width, flo
 }
 
 void GameFrontendHost::set_widget_scale(GuiLayoutWidget& widget, float x, float y) {
-    widget.transform.scale_x = x;          // 00AA7950
-    widget.transform.scale_y = y;
-    refresh_widget_geometry(widget);
+    // GUI counter slot +48h reaches this with the actual retained layout and
+    // the pair read by HudCountersLifecycleHost/HudCountersTableHost. Keep
+    // this bridge's geometry publication as the recompose callback; no native
+    // node identity is manufactured for the sprite bridge's layout object.
+    struct ScaleView final : gui_widgets_cc13::GuiWidgetScaleView {
+        ScaleView(GameFrontendHost& frontend, GuiLayoutWidget& widget)
+            : GuiWidgetScaleView(widget.transform.scale_x, widget.transform.scale_y),
+                frontend(frontend), widget(widget) {}
+        void recompose_00aa7220() override { frontend.refresh_widget_geometry(widget); }
+        GameFrontendHost& frontend;
+        GuiLayoutWidget& widget;
+    } view{*this, widget};
+    const float scale[2] = {x, y};
+    gui_widgets_cc13::gui_widget_set_scale_00aa7950(view, scale);
 }
 
 bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height) {
