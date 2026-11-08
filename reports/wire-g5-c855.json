@@ -1,0 +1,85 @@
+{
+  "chain": 855,
+  "worker": "agent/g5-w1",
+  "picked": "Canonical coordinate command-target construction for authored single-player unit commands",
+  "rows": [
+    {
+      "native": "00467c80",
+      "status": "wired",
+      "host_site": "src/scene_deferred_refs.cpp: bsp::resolve_scene_command_0046aab0, called by GameCommandsHost::issue",
+      "reason": "Replaces the equivalent inline unnamed-target descriptor initialization with the existing constructor; its owner-world-position input and all 18h output bytes feed the actual issued command."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight wingmate target checks",
+      "reason": "Missing retained pilot+98h target publication for the current F876B8 slot; approach and command targets are different state."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing an established live writer with virtual+54h DWORD output and the shared remaining-byte counter."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "Missing a live stream-writer chunk-array owner and begin-chunk producer; session bit cursors do not supply that object."
+    },
+    {
+      "native": "0042e8c0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_identity_0042e8c0",
+      "reason": "No original caller was indexed and no real matrix owner requiring this duplicate identity entry was established."
+    },
+    {
+      "native": "0042b420",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_rotation_z_0042b420",
+      "reason": "No original caller was indexed and no live matrix owner with the required rotation/copy host was established."
+    },
+    {
+      "native": "0042b7f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_orthonormalize_return_this_0042b7f0",
+      "reason": "No original caller was indexed and no live matrix operation requiring this return-this wrapper was established."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Multiplayer participant-count watchdog; single-player does not run the guarded body and online-only wiring is excluded."
+    }
+  ],
+  "evidence": {
+    "native": [
+      "bsp.py show 00467c80: writes kind bytes 0/1, zero id/object, XYZ at +8h/+Ch/+10h and caller payload at +14h; original __thiscall, RET 8",
+      "bsp.py show 0046aab0 --start 70 --lines 65: unnamed target is initialized inline from owner+FCh/100h/104h with word 0100h, zero id/object and +14h zero",
+      "src/game_hosts_commands.cpp: SceneResolveBinding::owner_world_position reads the placed GameCommandUnit position; GameCommandsHost::issue resolves its real one-record authored-command queue and forwards the resulting descriptor"
+    ],
+    "adapter": "Compile-time size, trivial-copyability and every field-offset check establish the two 18h source views; memcpy transfers the constructed payload without aliasing distinct C++ types. Existing body and new source interfaces, not a drop-in original ABI.",
+    "call_graph": {
+      "reachable": true,
+      "caller": "bsp::resolve_scene_command_0046aab0",
+      "built_call_site": "1040e9bc",
+      "path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameUnitsHost::issue_player_command -> GameCommandsHost::issue -> resolve_scene_command_0046aab0 -> scene_property_value_construct_vector3_00467c80"
+    }
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 4 checks passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader passed",
+    "readiness_command": "python tools/wire_readiness.py --standins",
+    "call_graph_commands": [
+      "python tools/call_graph.py",
+      "python tools/call_graph.py who 00467c80",
+      "python tools/call_graph.py path 00467c80"
+    ],
+    "wired_before": 10703,
+    "wired_after": 10704,
+    "baseline_note": "The initial scan against the old index reported 10697 wired. Re-running the original HEAD source against the refreshed index gives 10703; the changed source gives 10704. Both same-index summaries are retained under local/c855-readiness-before.json and local/c855-readiness-after.json.",
+    "float_arithmetic_changed": false,
+    "game_run": false
+  },
+  "left": "Full native squadron-command-block begin-command owner/adapter (0084DDA0) remains unwired; this change replaces an exactly equivalent inline coordinate descriptor operation on the established live authored-command path."
+}
