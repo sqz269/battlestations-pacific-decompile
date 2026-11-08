@@ -43,6 +43,11 @@ public:
     GameInputRuntime& operator=(const GameInputRuntime&) = delete;
     NativeInputBackendOwnerContext& backend_context() noexcept;
     NativeInputActionOwnerContext& action_context() noexcept;
+    // Sole actual 12-byte E18A7C-equivalent signed-int/float tree, initialized
+    // once by CC9E30. Static storage survives this runtime and the shared drain;
+    // the registered CD9EC0 callback owns its CRT-time cleanup. This exposes
+    // storage only; it does not install F8BBFC or supply a game-clock facade.
+    static void* action_deadline_map();
     NativeInputActionRecordsContext& records_context() noexcept;
     NativeInputCursorContext& cursor_context() noexcept;
     NativePlatformLoadMessagesContext& platform_load_context() noexcept;

@@ -5,13 +5,55 @@
 #include "bsp/native_input_backend_bindings.hpp"
 #include "bsp/native_input_class_configuration.hpp"
 #include "bsp/native_input_action_listener_owner.hpp"
+#include "bsp/native_input_action_deadline_map.hpp"
 #include "bsp/native_gamepad_rumble.hpp"
 #include "bsp/render_tail.hpp"
 #include <optional>
+#include <cstddef>
 #include <cstring>
+#include <exception>
+#include <mutex>
 #include <stdexcept>
 
 namespace bsp::game {
+namespace {
+// The sole source storage for the static E18A7C tree, not an application
+// member: CD9EC0 borrows this identity until real CRT atexit processing.
+// bsp.py ghidra bytes 00E18A7C --length 12 (bsp.gpr,
+// /battlestationspacific.exe) confirms the original zero BSS preimage.
+struct InputDeadlineMapHeader {
+    std::uint32_t opaque;
+    void* head;
+    std::uint32_t count;
+};
+static_assert(sizeof(InputDeadlineMapHeader) == 12);
+static_assert(offsetof(InputDeadlineMapHeader, head) == 4);
+static_assert(offsetof(InputDeadlineMapHeader, count) == 8);
+InputDeadlineMapHeader input_deadline_map_00e18a7c{};
+std::once_flag input_deadline_map_initialization;
+std::exception_ptr input_deadline_map_failure;
+
+void* process_input_deadline_map() {
+    // One initialization across runtime recreation. A failed allocation or
+    // atexit registration is retained as a permanent startup failure: retrying
+    // CC9E30 would overwrite its still-owned sentinel. There is no rollback.
+    std::call_once(input_deadline_map_initialization, [] {
+        try {
+            bind_static_native_input_action_deadline_map_00e18a7c(
+                &input_deadline_map_00e18a7c);
+            // Original CE2828 -> CC9E30: allocation, self-links/count, then
+            // real atexit(CD9EC0). Do not also clear/free from runtime teardown.
+            if (initialize_static_native_input_action_deadline_map_00cc9e30() != 0)
+                throw std::runtime_error("input deadline tree CRT registration failed");
+        } catch (...) {
+            input_deadline_map_failure = std::current_exception();
+        }
+    });
+    if (input_deadline_map_failure) std::rethrow_exception(input_deadline_map_failure);
+    return &input_deadline_map_00e18a7c;
+}
+} // namespace
+
 struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputBackendSlotActivation, NativeInputCursorDeviceCalls,
     NativeInputActionRecordCalls, NativeGamepadRumbleOutput, DynamicInputButtonQueryHost,
@@ -47,6 +89,7 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
             throw std::invalid_argument("input runtime requires its real lookup and ShowCursor providers");
         if (&b.rumble_enabled_00e12f2c != &b.devices.xinput_tables.rumble_enabled)
             throw std::invalid_argument("input rumble setter and devices must share the same mutable word");
+        GameInputRuntime::action_deadline_map();
     }
     std::uint32_t device_class_vslot08(void* p, std::uint32_t profile) override {
         return device_runtime.device_class_vslot08(p, profile);
@@ -122,6 +165,7 @@ GameInputRuntime::GameInputRuntime(GameInputRuntimeBindings b) : impl_(std::make
 GameInputRuntime::~GameInputRuntime() = default;
 NativeInputBackendOwnerContext& GameInputRuntime::backend_context() noexcept { return impl_->backend; }
 NativeInputActionOwnerContext& GameInputRuntime::action_context() noexcept { return impl_->actions; }
+void* GameInputRuntime::action_deadline_map() { return process_input_deadline_map(); }
 NativeInputActionRecordsContext& GameInputRuntime::records_context() noexcept { return impl_->records; }
 NativeInputCursorContext& GameInputRuntime::cursor_context() noexcept { return impl_->cursor; }
 NativePlatformLoadMessagesContext& GameInputRuntime::platform_load_context() noexcept {
