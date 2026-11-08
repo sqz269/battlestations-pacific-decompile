@@ -1,0 +1,284 @@
+{
+  "run": 1617,
+  "goal": 5,
+  "chain": 751,
+  "slot": "g5-w6",
+  "branch": "agent/g5-w6",
+  "base_head": "59bca1cdbde32cd59fb7aaeeab0c418b63fc23e9",
+  "picked": "Ship AI retained order-record distance stores and neighbour-message reads",
+  "rows": [
+    {
+      "native": "009d4ea0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: ControllerBinding::publish_009f4d10",
+      "source": "src/cc13_seg67b.cpp",
+      "called": true,
+      "call_sites": 1,
+      "evidence": "Replaces the live UnitAiOrderRecord +40h store with the existing MOVSS/+4Ch=1 body; native 009F4D55/58 use the same pair.",
+      "built_entry": "1041fcb0",
+      "built_call_sites": [
+        "1024cadc"
+      ]
+    },
+    {
+      "native": "009d4ec0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: ControllerBinding::publish_009f4d10",
+      "source": "src/cc13_seg67b.cpp",
+      "called": true,
+      "call_sites": 1,
+      "evidence": "Replaces the live UnitAiOrderRecord +48h and valid-byte stores; the +40h and +48h setters retain the original repeated flag publication.",
+      "built_entry": "1041fcd0",
+      "built_call_sites": [
+        "1024caef"
+      ]
+    },
+    {
+      "native": "009d4f00",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_pass_side_messages, slot lambda",
+      "source": "src/cc13_seg67b.cpp",
+      "called": true,
+      "call_sites": 2,
+      "evidence": "Replaces each real published-slot remaining-distance read passed to ship_ai_predict_track_crossing_009d8ce0; no auxiliary record or invented input.",
+      "built_entry": "1041fc90",
+      "built_call_sites": [
+        "10240491",
+        "102404d7"
+      ]
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit/ForceSelectUnit reset sites",
+      "reason": "Missing retained screen+30h mode and native selection-vector owner at +C4h, with +C0h/+D4h reset fields."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing enum-property producer",
+      "reason": "Already reachable at baseline (built 1060FE00); no missing wiring to add."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native property-bag merge",
+      "reason": "Already reachable at baseline (built 10610400); no missing wiring to add."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing live debug-screen 36h owner and Lua-default +58h producer; AddPosition's adapter deliberately has no such screen."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing live debug-screen 36h owner and Lua-default +60h producer; inspected callback is an unreached trap."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing live debug-screen 36h speed/default/acceleration fields; inspected callback is an unreached trap."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing live debug-screen 36h current limits and default acceleration time; inspected callback is an unreached trap."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list marking",
+      "reason": "Missing a produced native candidate score list consumed by the active planner; existing assignment fields are separate state."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member candidate filtering",
+      "reason": "Already reachable at baseline (built 10376410); no missing wiring to add."
+    },
+    {
+      "native": "00c30570",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_producer.cpp: populate_native_texture_source_00c30570",
+      "reason": "Missing a live animated-texture source owner and caller; current texture owner services expose 2D/load owners rather than a source payload."
+    },
+    {
+      "native": "00be6480",
+      "status": "skipped",
+      "host_site": "src/native_vfs_provider_enumeration_bindings.cpp: enumerate_entry",
+      "reason": "Already reachable at baseline (built 10668B20) through the VFS provider dispatch; no missing wiring to add."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp: existing frame-box factory",
+      "reason": "Missing a distinct live host operation to replace; the existing factory already delegates to the same mapped pool allocate method."
+    },
+    {
+      "native": "00acf610",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_lifetime.cpp: existing scalar destructor",
+      "reason": "Missing a distinct live host operation to replace; the existing scalar destructor already delegates to the same mapped pool free method."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing a live native stream-writer owner with virtual slot54 and its remaining-count field; current ByteStream helper has a different contract."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "Missing a live native stream-writer chunk-vector owner and reserve provider; no consumer was identified in the inspected writer paths."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_member_vector.cpp: copy_native_unit_group_member_vector_0070d980",
+      "reason": "Missing a produced 508h native group image and mutable native DATA bindings at 00F87574/78/7C for lookup misses."
+    },
+    {
+      "native": "00ae19b0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_node_array_release.cpp: native shadow pointer-vector resize",
+      "reason": "Missing a live shadow-node array owner/caller in the inspected host paths; existing raw release callers are outside the reached host path."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry::check_multiplayer_player_count",
+      "reason": "Multiplayer-only behavior after the session-mode gate; single-player only takes the first early return."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclaration binding",
+      "reason": "Missing the live world publication containing the native Lua owner at +1A0Ch for this declaration path."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/profile_checkpoint.cpp: checkpoint record ownership exploration",
+      "reason": "Missing retained native checkpoint source/destination records with owning +0Ch NativeString headers in the inspected host path."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: construct_unit_owned_ref_slot_00809270",
+      "reason": "Missing an active host producer for the unit+72Ch owned-reference subobject; the host controller's similarly numbered fields are different state."
+    },
+    {
+      "native": "00809650",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: reset_unit_owned_ref_slot_00809650",
+      "reason": "Missing a retained unit+72Ch owned-reference object and matching pointee scalar-deletion provider in the inspected host path."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: vehicle camera limits initialization",
+      "reason": "Missing a live vehicle-camera row/defaults producer in the inspected HUD path."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a produced native vehicle-camera array from camera+38Ch/entity+538h/class+BCh in the inspected HUD path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a live consumer requiring the aspect-times-FOV scalar in the inspected hosts; projection construction divides its scale by aspect instead."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/native_scene_numeric_lookahead.cpp: next_native_scene_token_is_float_008d8f40",
+      "reason": "Missing an authoritative native-tokenizer backend for SceneLexer's actual property parsing path; fabricating cached token state would duplicate the scanner."
+    },
+    {
+      "native": "008d9cf0",
+      "status": "skipped",
+      "host_site": "src/game_native_scene_file_tokenizer.cpp: GameNativeSceneFileTokenizerBindings::construct",
+      "reason": "Missing an application caller that consumes this native file tokenizer as its sole scanner; the inspected scene path uses SceneLexer."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/gun_platform_arc.cpp: gun_set_angles_immediate_0085b0f0",
+      "reason": "Missing a real producer of the received target/current angle quartet on the inspected single-player gun path."
+    },
+    {
+      "native": "00858260",
+      "status": "skipped",
+      "host_site": "src/native_particle_tracer_state.cpp: construct_native_traceline_00858260",
+      "reason": "Missing a live Tracer-state allocation/dispatch binding in the inspected host paths."
+    },
+    {
+      "native": "009dabb0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: ship_ai_set_torpedo_avoidance_request_009dabb0",
+      "reason": "Missing a contiguous native navigation-block owner for this raw +3F4h setter; host avoidance fields are separate typed state."
+    },
+    {
+      "native": "009dabc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: set_avoidance_side_03f8",
+      "reason": "Missing a contiguous native navigation-block owner for this raw +3F8h setter; the active host retains a separate side_filter_3f8 field."
+    },
+    {
+      "native": "009dabd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: set_avoidance_flag_03fc",
+      "reason": "Missing a contiguous native navigation-block owner for this raw +3FCh setter; the active host retains a separate bool flag_3fc."
+    },
+    {
+      "native": "009dabe0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: ship_ai_set_drive_bypass_009dabe0",
+      "reason": "Missing a contiguous native navigation-block owner for this raw +3FDh setter in the inspected host paths."
+    },
+    {
+      "native": "009dabf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: goal-vector speed-commanded state",
+      "reason": "Missing a contiguous native navigation-block owner for this raw +B38h setter; host speed_commanded_0b38 is separate typed state."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10579,
+    "readiness_wired_after": 10582,
+    "entry_reachable_reconstructed_addresses_before": 5433,
+    "entry_reachable_reconstructed_addresses_after": 5436,
+    "new_entry_reachable_addresses": 3
+  },
+  "built": "Reused the existing native-layout UnitAiOrderRecord slots and existing bodies; added compile-time field-offset/byte-width checks, no new body or object.",
+  "evidence": [
+    "bsp.py show 009d4ea0/009d4ec0/009d4f00, pseudocode and complete listings",
+    "bsp.py show 009f4d10: +44h heading precedes +40h/valid/+48h/valid",
+    "Release executable setter disassembly: MOVSS to +40h/+48h then byte +4Ch=1; getter FLD reads +48h",
+    "call_graph.py who for all three addresses and path 009d4f00 reaches WinMainCRTStartup through the mission simulation",
+    "wire_readiness.py --standins after build: all three rows state=wired, called=true; call_sites=1,1,2"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all four CTests passed",
+    "final_build": "scripts/build.ps1 passed, all four CTests passed",
+    "pc24_lint_staged": "0 findings, 0 allowed, 1 file",
+    "diff_check": "passed",
+    "game_run": "Not performed, as instructed"
+  },
+  "assumptions": [
+    "The complete 009F4D10 result always publishes valid=true; both existing setters therefore replace the old distance/valid stores without a conditional or invented value.",
+    "The UnitAiOrderRecord source layout is sufficient for these leaves: +40h, +48h and +4Ch are compile-time checked; the unmodelled native +50h back-pointer is never accessed.",
+    "The existing host applies the semantic publish result after its tail callbacks; this patch retains that host timing and uses the native order for the committed heading/distance/valid stores."
+  ],
+  "left_for_others": "Skipped producer gaps and baseline-already-reachable candidates are listed per address; native full-record/back-pointer and broader navigation-block ownership remain outside this change.",
+  "limitations": "Build, static call graph and emitted code verified; no game-runtime or drop-in original-ABI validation."
+}

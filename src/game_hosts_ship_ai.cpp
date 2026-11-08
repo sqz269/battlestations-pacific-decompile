@@ -11911,12 +11911,20 @@ public:
         const bsp::ShipAiPublishResult result = bsp::ship_ai_publish_order_009f4d10(
             ctl_.blk.heading_target_324, ctl_.blk.distance_32c, ctl_.blk.distance_330,
             seconds, publish);
-        // 009F4D10 writes +40h/+44h/+48h/+4Ch, preserving lateral memory.
+        // Chain 751: use the existing command-record leaves on this SAME
+        // retained slot. 009F4D48 sets +44h, then 009F4D55..6B stores +40h,
+        // publishes +4Ch, stores +48h and publishes +4Ch again. The complete
+        // 009D4EA0/009D4EC0 listings are exactly those two store/flag pairs
+        // (MOVSS then byte 1); the old inline stores are replaced here.
+        static_assert(std::is_standard_layout_v<bsp::UnitAiOrderRecord>);
+        static_assert(offsetof(bsp::UnitAiOrderRecord, distance_40) == 0x40);
+        static_assert(offsetof(bsp::UnitAiOrderRecord, distance_48) == 0x48);
+        static_assert(offsetof(bsp::UnitAiOrderRecord, valid_4c) == 0x4c);
+        static_assert(sizeof(bool) == 1);
         auto& slot = ctl_.order.slots[result.slot_index];
-        slot.distance_40 = result.slot.distance_40;
         slot.heading_44 = result.slot.heading_44;
-        slot.distance_48 = result.slot.distance_48;
-        slot.valid_4c = result.slot.valid_4c;
+        bsp::command_record_set_float40_009d4ea0(&slot, result.slot.distance_40);
+        bsp::command_record_set_float48_009d4ec0(&slot, result.slot.distance_48);
         owner_.done("ShipAi::publish_order", 0x009f4d10u);
         ++row_.publishes;
         ++owner_.summary.publishes;
@@ -13253,8 +13261,11 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
     auto slot = [&](std::size_t unit) {
         const auto& order = controllers[unit].order;
         const auto& record = order.slots[1 - order.index];  // unit+A98h+54h*[unit+B40h]
+        // Chain 751: 009D4F00 is FLD [record+48h]; its result replaces the
+        // inline remaining-distance read used by the real neighbour messages.
+        // The slot above is the same retained record published by 009F4D10.
         return bsp::ShipAiOrderSlotView{record.distance_40, record.heading_44,
-                                        record.distance_48};
+            bsp::command_record_get_float48_009d4f00(&record)};
     };
     for (const PassSideMessage& m : due) {
         {
