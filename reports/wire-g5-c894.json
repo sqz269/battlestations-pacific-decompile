@@ -1,0 +1,159 @@
+{
+  "run": 1961,
+  "harness": "codex",
+  "goal": 5,
+  "chain": 894,
+  "slot": "g5-w7",
+  "branch": "agent/g5-w7",
+  "base": "d868ccbf52ad9779f9409863fa96817143dc25f0",
+  "picked": "Retained D3D9 Texture2D pool 0108DB38 slab table",
+  "rows": [
+    {
+      "native": "00b3db10",
+      "status": "wired",
+      "host_site": "src/d3d9_texture2d_pool.cpp: grow_d3d9_texture2d_pool_table_00b3db60 and reserve_d3d9_texture2d_pool_table_00b3e960",
+      "function": "set_d3d9_texture2d_pool_table_capacity_00b3db10",
+      "built_address": "10776260",
+      "reachable_call_sites": [
+        "10775ef6",
+        "10776166"
+      ]
+    },
+    {
+      "native": "00b3db60",
+      "status": "wired",
+      "host_site": "src/d3d9_texture2d_pool.cpp: append_d3d9_texture2d_pool_table_00b3e8e0",
+      "function": "grow_d3d9_texture2d_pool_table_00b3db60",
+      "built_address": "10775ee0",
+      "reachable_call_sites": [
+        "10775d0d"
+      ]
+    },
+    {
+      "native": "00b3e8e0",
+      "status": "wired",
+      "host_site": "src/d3d9_texture2d_pool.cpp: D3D9Texture2DPool::allocate_raw_slot_00b3ef60",
+      "function": "append_d3d9_texture2d_pool_table_00b3e8e0",
+      "built_address": "10775cf0",
+      "reachable_call_sites": [
+        "10775be8"
+      ]
+    },
+    {
+      "native": "00b3e960",
+      "status": "wired",
+      "host_site": "src/d3d9_texture2d_pool.cpp: D3D9Texture2DPool::initialize_00b3ee80",
+      "function": "reserve_d3d9_texture2d_pool_table_00b3e960",
+      "built_address": "10776150",
+      "reachable_call_sites": [
+        "10775fc8"
+      ]
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp / src/scene_numeric_property_merge.cpp",
+      "reason": "Already called at baseline; current analysis build confirms an entry-reachable call, so no new wiring is missing."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "Already called at baseline; current analysis build confirms an entry-reachable call, so no new wiring is missing."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director flags",
+      "reason": "Missing real controller-state message producer/consumer; wrapping the current flag store would only round-trip state."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director flags",
+      "reason": "Missing stored/routed controller snapshot consumer; current host only reads flattened scene flags."
+    },
+    {
+      "native": "00a9aeb0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: NativeGuiListboxPool table wrappers",
+      "reason": "Entry-reachable raw Listbox pool owner/constructor/allocator was not established in this pass; further caller integration is required."
+    },
+    {
+      "native": "00a9af00",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: NativeGuiListboxPool table wrappers",
+      "reason": "Entry-reachable raw Listbox pool owner/constructor/allocator was not established in this pass; further caller integration is required."
+    },
+    {
+      "native": "00a9b250",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: NativeGuiListboxPool table wrappers",
+      "reason": "Entry-reachable raw Listbox pool owner/constructor/allocator was not established in this pass; further caller integration is required."
+    },
+    {
+      "native": "00a9b2d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: NativeGuiListboxPool table wrappers",
+      "reason": "Entry-reachable raw Listbox pool owner/constructor/allocator was not established in this pass; further caller integration is required."
+    },
+    {
+      "native": "00a9ea60",
+      "status": "skipped",
+      "host_site": "src/native_locale_node_allocation.cpp: allocate_native_locale_node_00a9f0b0",
+      "reason": "Missing adapter retaining NativeLocaleNodeAllocationFrame partial-effect checkpoints while extracting table growth/append."
+    },
+    {
+      "native": "00a9ee40",
+      "status": "skipped",
+      "host_site": "src/native_locale_node_allocation.cpp: allocate_native_locale_node_00a9f0b0",
+      "reason": "Missing adapter retaining NativeLocaleNodeAllocationFrame partial-effect checkpoints while extracting table growth/append."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp / src/render_fx_cc13.cpp",
+      "reason": "No entry-reachable distortion record append caller established; actual record producer still needs wiring."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: append_values",
+      "reason": "No entry-reachable animation-value producer established; native skinned-animation resource reader still needs wiring."
+    }
+  ],
+  "wired_total_before": 10749,
+  "wired_total_after": 10753,
+  "new_entry_reachable_bodies": 4,
+  "changes": [
+    "Borrowed byte view over the actual retained pool+28h table header; no copied header or synthetic pool.",
+    "Replaced inline constructor reserve and allocator append. Extracted the four address-specific operations from shared renderer shape metadata; no duplicate address body.",
+    "Preserved unsigned/DWORD growth, capacity-before-allocation, current-header forward copy, caller-cell timing after growth, and native failure publication."
+  ],
+  "evidence": [
+    "bsp.py show 00B3DB10/00B3DB60/00B3E8E0/00B3E960 --asm",
+    "bsp.py show 00B3EE80 and 00B3EF60: same inline table operations over actual pool+28h; Original out-of-line COMDAT entries remain unreferenced."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; Win32 Release; four CTests passed",
+    "probe": "tests/wire_g5_c894_texture2d_table_probe.cpp compiled /MD /O2 /MANIFEST:EMBED via local/c894-probe.cmd; passed 1025 slots, 32-to-66 table growth, all slab identities, throwing reserve/new-handler publication, all-slot return/trim/unlink",
+    "call_graph": "python tools/call_graph.py --build; 7436/7486 reconstructed addresses called; each selected body separately verified by who using build/callgraph (/Ob0 /OPT:NOICF)",
+    "entry_path": "WinMain -> retained texture-pool startup -> initialize_00b3ee80 -> reserve; atlas application -> texture loading -> allocate_d3d9_texture2d_slot_00b3f2b0 -> allocate_raw_slot_00b3ef60 -> append -> grow -> set_capacity",
+    "float_math_changed": false,
+    "diff_check": "git diff --check passed",
+    "readiness": "python tools/wire_readiness.py --standins: wired 10749 -> 10753; all four selected rows state=wired, called=true, sites 2/1/1/1."
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "limitations": [
+    "New source-view ABI; no native register-ABI or native exception-unwind execution proof.",
+    "Game was not run; entry reachability is static executable evidence and growth/failure behavior is host-fixture evidence."
+  ],
+  "coordination": [
+    "Released render_fx_cc13.cpp and B3 reconstruction shard after edits for agent/g5-w6 surface-pool work; sent exact disjoint changes and requested preservation during landing."
+  ],
+  "left_for_others": [
+    "D3D9 surface-pool table helpers are owned by agent/g5-w6.",
+    "Cube-texture and native graphics pool table/producer work remains independent."
+  ]
+}

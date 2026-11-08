@@ -1,0 +1,80 @@
+{
+  "run": 1978,
+  "goal": 5,
+  "chain": 899,
+  "owner": "agent/g5-w4",
+  "base_head": "03d6f131eb4b1fe524056ffc08942d2676f7538d",
+  "picked": "Particle-model pool live slab-table reserve and exact allocation; prepare the matching grow/append path",
+  "rows": [
+    {
+      "native": "00af5d30",
+      "status": "wired",
+      "host_site": "src/terrain_particles_cc13.cpp: reserve_native_particle_model_pool_table_00af6270, reached from src/native_particle_model_pool_owner.cpp: initialize_native_particle_model_pool_00af6860",
+      "real_state": "Same F8D2D0 process pool +28h table header; native reserve32 startup constant",
+      "call_graph": "REACHABLE; one tail-jump site from reserve_native_particle_model_pool_table_00af6270"
+    },
+    {
+      "native": "00af6270",
+      "status": "wired",
+      "host_site": "src/native_particle_model_pool_owner.cpp: initialize_native_particle_model_pool_00af6860",
+      "real_state": "Same F8D2D0 process pool +28h table; replaces the entire old inline reserve32 path",
+      "call_graph": "REACHABLE; one call site from initialize_native_particle_model_pool_00af6860"
+    },
+    {
+      "native": "00af5d80",
+      "status": "skipped",
+      "host_site": "src/terrain_particles_cc13.cpp: append_native_particle_model_pool_table_00af61e0; legacy pointer_array_grow dispatcher delegates here",
+      "reason": "Prepared and real-pool fixture passed; missing entry-reachable caller of AF69E0 raw-slot allocator, so grow is not linked into the game executable."
+    },
+    {
+      "native": "00af61e0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_pool_allocate.cpp: allocate_native_particle_model_slot_00af69e0",
+      "reason": "Prepared and real-pool fixture passed; missing entry-reachable AF69E0 raw-slot consumer, so append is not linked into the game executable."
+    },
+    {
+      "native": "00af6820",
+      "status": "skipped",
+      "host_site": "src/terrain_particles_cc13.cpp: pointer_array_push_back",
+      "reason": "Emitter-pointer append grows by signed doubling through AF6120, unlike the slab table's 2cap+2; missing actual particle-model emitter construction caller."
+    },
+    {
+      "native": "00af69e0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_pool_allocate.cpp: allocate_native_particle_model_slot_00af69e0",
+      "reason": "Missing entry-reachable actual particle-model allocation/construction consumer; only real pool startup is currently bound."
+    },
+    {
+      "native": "00af74a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: construct_native_particle_model_00af74a0",
+      "reason": "Missing actual application mesh/material/variant and callee bindings for complete physical particle-model construction."
+    }
+  ],
+  "new_entry_reachable_addresses": ["00af5d30", "00af6270"],
+  "prepared_only_addresses": ["00af5d80", "00af61e0"],
+  "entry_path": "WinMainCRTStartup -> WinMain -> GameNativeParticlePoolProcess::initialize_model_once_00cd7830 -> initialize_static_native_particle_model_pool_00cd7830 -> initialize_native_particle_model_pool_00af6860 -> reserve_native_particle_model_pool_table_00af6270 -> allocate_native_particle_model_pool_table_00af5d30",
+  "readiness": {
+    "metric": "wire_readiness.summary.wired (source text; distinct from executable reachability)",
+    "before": 10757,
+    "after": 10758,
+    "confirmed_new_executable_reachable": 2,
+    "scope_note": "The three newly reconstructed helpers AF5D30/AF61E0/AF6270 retain original snapshot names prefixed TMPL_ and are excluded from wire_readiness game rows. Its +1 is a source-text match for prepared AF5D80, which remains unlinked. No scope/name filter was changed; only AF5D30/AF6270 count as newly executable-reachable."
+  },
+  "implementation": [
+    "Borrow the live three-DWORD header with byte access; no shadow count/capacity or copied owner.",
+    "Publish wrapped DWORD capacity before CRT allocation; reload live count/data for copying; free old backing before pointer publication.",
+    "Append reads the borrowed pointer cell after growth and increments count last; preserve null destination guard and DWORD address wrapping.",
+    "Specialize the existing AF5D80 shared reconstruction and delegate its legacy dispatcher, retaining one body per address.",
+    "Constructor and raw allocator replace their complete old inline operations; preserve unwind cleanup and native no-rollback lock behavior."
+  ],
+  "validation": [
+    "./scripts/build.ps1: Win32 Release and all four existing CTests passed.",
+    "Focused tests/wire_g5_c899_particle_model_table_probe.cpp via local/c899-probe.cmd: 1025 actual raw slots, 33 slabs, capacity32->66, all prior slab identities and hidden IDs retained, lock depth0, return/trim/destruction and allocator-list unlink passed.",
+    "python tools/call_graph.py and who/path queries: AF6270 and AF5D30 entry-reachable; AF5D80/AF61E0/AF69E0 have no matching linked function.",
+    "No float math changed; pc24 lint not required.",
+    "Ghidra verified /battlestationspacific.exe; annotations saved with prior values in local/ghidra-annotations-20261108T155200Z.json; four affected exports refreshed."
+  ],
+  "focused_probe_compile": "In an MSVC x86 developer shell: cl /nologo /std:c++17 /EHsc /MD /O2 /I include tests/wire_g5_c899_particle_model_table_probe.cpp /Fo:local/c899-particle-table-probe.obj /Fe:local/c899-particle-table-probe.exe /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib d3d9.lib user32.lib gdi32.lib ole32.lib advapi32.lib shell32.lib PowrProf.lib oleaut32.lib uuid.lib comdlg32.lib winspool.lib",
+  "limits": "Build, focused storage fixture, and executable call-graph evidence only. Game not run. Original register/vtable/exception ABI and gameplay unvalidated. Grow/append deliberately reported skipped despite any readiness source-text match."
+}

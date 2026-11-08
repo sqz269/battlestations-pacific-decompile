@@ -1,0 +1,130 @@
+{
+  "chain": 896,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "base": "aae3a9432da3163cd2c054b4e5fc7451496858a1",
+  "picked": "Canonical 0108FE9C hardware vertex-layout pool slab-table operations",
+  "rows": [
+    {
+      "native": "00b601c0",
+      "status": "wired",
+      "host_site": "src/native_hardware_layout_pool_lifetime.cpp: reserve_native_hardware_layout_table_00b60470 and grow_native_hardware_layout_table_00b60210",
+      "call_sites": 2
+    },
+    {
+      "native": "00b60210",
+      "status": "wired",
+      "host_site": "src/native_hardware_layout_pool_lifetime.cpp: append_native_hardware_layout_table_00b603f0",
+      "call_sites": 1
+    },
+    {
+      "native": "00b603f0",
+      "status": "wired",
+      "host_site": "src/native_hardware_layout_pool_allocate.cpp: allocate_native_hardware_layout_slot_00b605b0",
+      "call_sites": 1
+    },
+    {
+      "native": "00b60470",
+      "status": "wired",
+      "host_site": "src/native_hardware_layout_pool_lifetime.cpp: initialize_native_hardware_layout_pool_00b604d0",
+      "call_sites": 1
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing a constructed movie-camera screen owner and live script binding; current override reports this route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing a constructed movie-camera screen with real current/default height fields; current override reports this route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera host",
+      "reason": "Missing a constructed movie-camera screen and live speed-limit storage; readiness mention does not establish an owner."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera host",
+      "reason": "Missing a constructed movie-camera screen and live acceleration-time storage; readiness mention does not establish an owner."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state provenance",
+      "reason": "Missing a live controller-state message producer and routed consumer carrying both command descriptors and controller fields."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a controller snapshot owner and consumer; flattened scene flags do not provide that message path."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "Missing the canonical published world and constructed native Lua owner at +1A0C required by raw enum declaration; current mission adapters are different owners."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map",
+      "reason": "Missing a reached error-context map owner/consumer; neither iterator advance nor erase is linked in the current game executable."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map",
+      "reason": "Missing a reached error-context map owner/consumer; replacing its local tree helper would leave this body unreachable."
+    },
+    {
+      "native": "00bf1450",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "Missing a reached error-context iterator consumer; call_graph.py who reports no matching function in the current executable."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map",
+      "reason": "Missing a reached error-context map insertion/erase path with real nodes; swapping private rotation helpers alone cannot wire it."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map",
+      "reason": "Missing a reached error-context map insertion/erase path with real nodes; swapping private rotation helpers alone cannot wire it."
+    },
+    {
+      "native": "00bf26c0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_erase_00bf26c0",
+      "reason": "Missing a reached error-context map owner; call_graph.py who reports no matching function in the current executable."
+    }
+  ],
+  "implementation": {
+    "real_state": "Use the existing initialized canonical 0108FE9C pool's actual +28/+2C/+30 table header and its actual newly allocated slab pointer.",
+    "replacement": "Delete the constructor's inline unsigned reserve and allocator's inline grow/append; call the reconstructed template operations once on those same paths.",
+    "evidence": "Original exports for B601C0/B60210/B603F0/B60470 and inline counterparts B604D0/B605B0. Exact-capacity listing checked for live reads, null placement guard, publication order and RET4.",
+    "preserved": "Unsigned wrap, equality growth, forward current-count/current-table copy after actual allocation/new-handler, old-data free before replacement publication, count reload after placement store, original caller lock and FH3 ownership.",
+    "choice": "The four addresses were tagged template shapes without a per-address C++ body. Reconstruct them in the existing compiled lifetime source and reuse their common exact-capacity operation; no CMake/main edits or second body per address."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed both baseline and changed builds; all four CTests passed.",
+    "focused_probe": "tests/wire_g5_c896_hardware_table_probe.cpp linked against the actual Release bsp_core.lib with an embedded manifest. Passed 1057 real raw slots, unsigned reserve no-shrink, 32->66 table growth, first-slab trim and moved-slab token rewrite, subsequent slot returns and complete trim/destruction.",
+    "executable_graph": "All four addresses REACHABLE: B604D0 -> B60470 -> B601C0; B605B0 -> B603F0 -> B60210 -> B601C0. call_graph.py who confirms each site.",
+    "source_wired_before": 10748,
+    "source_wired_after": 10752,
+    "executable_reconstructed_called_before": 5646,
+    "executable_reconstructed_called_after": 5650,
+    "ghidra": "Verified bsp project/program via annotation Client.verify; renamed the four tagged templates, preserved old names/comments in local/ghidra-annotations-20261108T153742Z.json, saved project and refreshed all four exports.",
+    "pc24": "Not applicable: no floating-point changes.",
+    "boundaries": "Build, primary-library pool fixture and static executable reachability only. No game launch, original-binary differential test or drop-in ABI claim."
+  }
+}

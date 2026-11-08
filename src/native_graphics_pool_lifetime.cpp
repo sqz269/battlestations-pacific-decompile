@@ -1,5 +1,6 @@
 #include "bsp/native_graphics_pool_lifetime.hpp"
 #include "bsp/native_logical_vertex_pool_table.hpp"
+#include "bsp/native_logical_index_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <Windows.h>
 #include <cstring>
@@ -75,6 +76,11 @@ NativeGraphicsPoolStorage& NativeGraphicsPoolLifetime::initialize() {
         if (kind_ == NativeGraphicsPoolKind::logical_vertex) {
             // B4ADA0 inlines B4A850 reserve(32) over this actual pool+28h.
             reserve_native_logical_vertex_pool_table_00b4a850(&storage_.slabs_28, 32);
+        } else if (kind_ == NativeGraphicsPoolKind::logical_index) {
+            // 00B4AFC0 inlines 00B4A770 over this actual pool+28h header,
+            // with the binary's reserve32 constant and the same FH3 state.
+            reserve_native_logical_index_pool_table_00b4a770(
+                reinterpret_cast<std::byte*>(&storage_) + 0x28, 32u);
         } else if (storage_.table_capacity_30 < 32) {
             storage_.table_capacity_30 = 32;
             auto** replacement = static_cast<std::byte**>(singleton_lifetime_allocate(

@@ -94,5 +94,107 @@
     "The original unused template bodies establish operation shapes, not recovered logical-vertex template symbols; the logical-vertex names describe this source specialization.",
     "Shared lifecycle/render_fx/B4 shard edits were coordinated with g5-w7, g5-w8, g5-w6 and g5-w5; only this packet's branch-local edits are committed here."
   ],
-  "left_for_others": "The skipped HUD and scene-property routes need the stated live owners/adapters. Debug score-table work remains excluded. No outstanding work is required for the four selected table bodies."
+  "left_for_others": "The skipped HUD and scene-property routes need the stated live owners/adapters. Debug score-table work remains excluded. No outstanding work is required for the four selected table bodies.",
+  "landing_repair": {
+    "merged_origin_main": "0224ad8af7ccbdeae38704414b50161f370268be",
+    "merge_helper": "python tools/merge_resolve.py was run; superseded-record ledger conflict remained unresolved",
+    "ledger_resolution": "Verified every local non-target ledger line equals merge-base. Retained incoming non-target lines exactly and replaced only the four owned target-address records.",
+    "lifecycle_resolution": "Retained incoming logical_index branch and added the logical_vertex reserve32 branch; all other incoming initialization and cleanup code retained.",
+    "render_resolution": "Retained incoming render_fx source and removed only four owned descriptor rows; other landed removals preserved.",
+    "implementation_unchanged": true,
+    "default_build": "passed; all four CTests; local/c902-merge-default-build.log",
+    "on_build": "passed; all four CTests; local/c902-merge-on-build.log",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "on_headers_restored_byte_for_byte": true,
+    "on_header_receipts": [
+      {
+        "sha256": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w9\\include\\bsp\\air_operations.hpp",
+        "restored": true
+      },
+      {
+        "sha256": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w9\\include\\bsp\\game_hosts_units_internal.hpp",
+        "restored": true
+      }
+    ],
+    "focused_probe": "passed again on restored-default library; local/c902-merge-probe.log",
+    "game_launched": false,
+    "restored_default_build": "passed; all four CTests; local/c902-merge-restored-build.log",
+    "release_graph_reconstructed_called": 5663,
+    "release_icf_note": "Release links fold the four vertex table bodies with the corresponding index bodies; release caller attribution is shared, so a no-inline/no-ICF analysis build is also checked.",
+    "release_readiness_summary": {
+      "wired": 10782,
+      "callees_done_no_wired_caller": 8491,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "release_readiness_targets": [
+      {
+        "address": "00b4a850",
+        "state": "callees_done_no_wired_caller",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "00b498a0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "00b498f0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00b4a7d0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      }
+    ],
+    "analysis_build": "passed: scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests; /Ob0 and /OPT:NOICF; local/c902-merge-analysis-build.log",
+    "analysis_graph_reconstructed_called": 7491,
+    "analysis_distinct_entry_reachable_targets": {
+      "00b498a0": {
+        "entry": "10712f50",
+        "call_sites": 2,
+        "callers": [
+          "grow_native_logical_vertex_pool_table_00b498f0",
+          "reserve_native_logical_vertex_pool_table_00b4a850"
+        ]
+      },
+      "00b498f0": {
+        "entry": "10713e50",
+        "call_sites": 1,
+        "callers": [
+          "append_native_logical_vertex_pool_table_00b4a7d0"
+        ]
+      },
+      "00b4a7d0": {
+        "entry": "10713260",
+        "call_sites": 1,
+        "callers": [
+          "allocate_native_logical_vertex_slot_00b4ae80"
+        ]
+      },
+      "00b4a850": {
+        "entry": "107145c0",
+        "call_sites": 1,
+        "callers": [
+          "NativeGraphicsPoolLifetime::initialize"
+        ]
+      }
+    },
+    "analysis_graph_command": "python tools/call_graph.py --build-dir build/analysis; python tools/call_graph.py --build-dir build/analysis who <address>",
+    "analysis_result": "All four distinct bodies are entry-reachable; no folding warnings. Native slot append and logical_vertex reserve32 paths remain intact.",
+    "readiness_check": "python tools/wire_readiness.py --standins completed after the restored-default build; all four called=true; reserve retains its known text-state false negative.",
+    "diff_check": "No unresolved files; git diff --check passed; ON headers have no differences from merged origin/main."
+  }
 }

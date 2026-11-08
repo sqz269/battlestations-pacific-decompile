@@ -1,0 +1,310 @@
+{
+  "chain": 895,
+  "goal": 5,
+  "slot": "g5-w6",
+  "branch": "agent/g5-w6",
+  "base_sha": "aae3a9432da3163cd2c054b4e5fc7451496858a1",
+  "picked": "D3D9 surface pool retained slab-table reserve/append/grow/exact-capacity helpers",
+  "rows": [
+    {
+      "native": "00b3da70",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: reserve_d3d9_surface_pool_table_00b3e880 and grow_d3d9_surface_pool_table_00b3dac0",
+      "body": "set_d3d9_surface_pool_table_capacity_00b3da70"
+    },
+    {
+      "native": "00b3dac0",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: append_d3d9_surface_pool_table_00b3e800",
+      "body": "grow_d3d9_surface_pool_table_00b3dac0"
+    },
+    {
+      "native": "00b3e800",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::allocate_raw_slot_00b3ed40",
+      "body": "append_d3d9_surface_pool_table_00b3e800"
+    },
+    {
+      "native": "00b3e880",
+      "status": "wired",
+      "host_site": "src/d3d9_surface_pool.cpp: D3D9SurfacePool::initialize_00b3ec60",
+      "body": "reserve_d3d9_surface_pool_table_00b3e880"
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing a live constructed movie-camera screen and its current/default deviation fields; the host has only a camera identity token."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing a live constructed movie-camera screen and its current/default overview-height fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing actual movie-camera speed-limit/default storage and the Lua-to-screen consumer; the current override explicitly reports the route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing actual movie-camera acceleration-limit/default storage and the Lua-to-screen consumer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate planning",
+      "reason": "Missing a gameplay score-table owner/consumer; the documented native record reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate planning",
+      "reason": "Missing live native candidate-score records and a gameplay consumer for their chosen byte; the documented native reader is debug-only."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PreloadHost::push_effect_handle",
+      "reason": "Missing a counted-effect producer and retained handle-vector owner; effect-name count is zero and acquisition is unimplemented."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree helpers",
+      "reason": "Missing an entry-reachable error-context map owner and retreat/advance caller."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree helpers",
+      "reason": "Missing an entry-reachable error-context map owner and retreat/advance caller."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree helpers",
+      "reason": "Missing a live error-context map producer/consumer and entry-reachable rebalance caller."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context tree helpers",
+      "reason": "Missing a live error-context map producer/consumer and entry-reachable rebalance caller."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp: engine_movie_rewind_0045c5b0 callback",
+      "reason": "Missing a live movie/track clock owner and reached rewind consumer; the reconstructed body covers only the clock portion."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/segs_0_9_11_cc13.cpp: engine_movie_advance_0045f970 callback",
+      "reason": "Missing an authored movie producer, retained EngineMovieClock and reached concrete cutscene callback."
+    },
+    {
+      "native": "00867320",
+      "status": "skipped",
+      "host_site": "src/point_effect_controls.cpp: stop_point_effect_00867b10; src/point_effect_children.cpp",
+      "reason": "Missing an entry-reachable point-effect instance/child owner; the concrete body is already called by reconstructed children/controls but absent from the built executable."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane submission",
+      "reason": "Missing a linked entry-reachable native scene-submission consumer; the semantic caller already invokes this body but the body is absent from the build."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane submission",
+      "reason": "Missing a linked entry-reachable native scene-submission consumer; the semantic caller already invokes this body but the body is absent from the build."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "Missing the full native clear-points behavior and correct retained queue/path consumer; the present body computes only a slot index."
+    },
+    {
+      "native": "009f9980",
+      "status": "skipped",
+      "host_site": "src/native_land_task_constructor.cpp: construct_native_land_task_009b3240",
+      "reason": "Missing a reached concrete native land-task construction owner; this helper already runs inside that currently unbound constructor."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a production text-entry consumer of the decoded FontData byte-acceptance model; the located direct callers are probe-only."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_named_value_array_push_back_00ab4990",
+      "reason": "Missing a reached producer/consumer of this semantic GuiNamedValueArray; actual-storage append also exists and must be preferred when binding a real native owner."
+    }
+  ],
+  "real_state": "Borrowed bytes at the retained D3D9SurfacePoolStorage+28h header; native constructor constant32 and the newly allocated real slab pointer from 00B3ED40. Canonical surface pool is 0108DB00. The pre-existing volume-pool startup also composes this constructor. No extra table or duplicate append.",
+  "evidence": [
+    "bsp.py show 00b3da70",
+    "bsp.py show 00b3dac0",
+    "bsp.py show 00b3e800",
+    "bsp.py show 00b3e880",
+    "bsp.py show 00b3ec60",
+    "bsp.py show 00b3ed40"
+  ],
+  "native_composition": "The original pool constructor and allocator inline operations identical to these template bodies. New source CALL edges factor those operations; they are not recovered original CALL edges or register-ABI thunks.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all5 CTests passed (reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader)",
+    "build_log": "local/c895-final-build.log",
+    "focused_probe": "PASS: actual pool reserve32,1057 slots/34 slabs, table growth32 to66, preserved old pointers, all returns and trim, allocator-list unlink",
+    "probe_source": "tests/wire_g5_c895_surface_table_probe.cpp",
+    "probe_compile_command": "cl /nologo /std:c++17 /EHsc /O2 /MD /I include tests\\wire_g5_c895_surface_table_probe.cpp /Fo:local\\c895-probe.obj /Fe:local\\c895-probe.exe /link /MANIFEST:EMBED /OPT:REF /OPT:ICF build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+    "probe_first_attempt": "An initial probe incorrectly expected destruction to clear the freed table pointer; inspection of the existing native free leaf showed it deliberately leaves that field untouched. The probe was corrected; production behavior was unchanged.",
+    "call_graph_before": {
+      "reachable_functions": 43101,
+      "total_functions": 43257,
+      "called_reconstructed_addresses": 5646,
+      "total_reconstructed_addresses": 6291
+    },
+    "call_graph_after": {
+      "reachable_functions": 43105,
+      "total_functions": 43261,
+      "called_reconstructed_addresses": 5650,
+      "total_reconstructed_addresses": 6295
+    },
+    "new_entry_reachable_addresses": [
+      "00b3da70",
+      "00b3dac0",
+      "00b3e800",
+      "00b3e880"
+    ],
+    "source_heuristic_counts": {
+      "initial_observed_wired": 10742,
+      "attributed_new_wired": 4,
+      "note": "The initial index was stale. Refresh also reclassified10 pre-existing Material/Mesh/Model helpers; those are not credited to this packet.",
+      "final_observed_wired": 10756
+    },
+    "game_run": false,
+    "abi_compatible": false,
+    "float_math_changed": false,
+    "readiness_rows": [
+      {
+        "native": "00b3da70",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3dac0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e800",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e880",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      }
+    ]
+  },
+  "coordination": "Claimed target files/addresses; coordinated with g5-w7 and waited for/reclaimed render_fx_cc13.cpp and B3 reconstruction shard. Only four surface kRows entries removed; preserve g5-w7 texture2D row removals and shard records at landing.",
+  "left_for_others": "Unbound movie-camera, error-context, movie-clock, native scene submission and point-effect consumers remain; listed rows describe missing owners. Other pool families remain outside this packet.",
+  "run": 1963,
+  "harness": "codex",
+  "landing_repair": {
+    "merge_parent": "7ed4d33564eecdb9b5bc2e217c8a5ab74b842027",
+    "original_worker_head": "4cf65d150a8b5a0125d55ed7b7f5d9002e0f1498",
+    "conflicts": [
+      "config/reconstruction/00b30000.jsonl",
+      "src/render_fx_cc13.cpp"
+    ],
+    "resolver": "tools/merge_resolve.py attempted; conservatively refused both-side base-record replacements. Exact address comparison proved disjoint edits: surface DA70/DAC0/E800/E880 versus incoming Texture2D DB10/DB60/E8E0/E960. Preserved all eight canonical records and both descriptor-removal sets, retaining incoming ledger line order.",
+    "normal_build": "PASS: scripts/build.ps1; all five CTests passed",
+    "normal_build_log": "local/c895-merge-default-build.log",
+    "focused_probe": "PASS: 1057 actual pool slots,34 slabs,table32 to66,preserved old entries,all returns and trim",
+    "on_build": "PASS: off_switch_on_build.py; both listed switches enabled; build.ps1 exit0, zero distinct compiler diagnostics, all five CTests passed",
+    "game_run": false,
+    "wire_readiness_summary": {
+      "wired": 10773,
+      "callees_done_no_wired_caller": 8500,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "wire_readiness_rows": [
+      {
+        "native": "00b3da70",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3dac0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e800",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e880",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      }
+    ],
+    "merged_normal_call_graph": {
+      "entry_reachable_functions": 43160,
+      "all_functions": 43316,
+      "entry_reachable_reconstructed_addresses": 5662,
+      "all_reconstructed_addresses": 6326,
+      "edges": 223985,
+      "roots": 2
+    },
+    "on_build_log": "local/c895-merge-on-build.log",
+    "on_headers_restored": true,
+    "on_header_pre_and_post_sha256": [
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-g5-w6\\include\\bsp\\air_operations.hpp",
+        "Hash": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-g5-w6\\include\\bsp\\game_hosts_units_internal.hpp",
+        "Hash": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      }
+    ],
+    "on_headers_git_diff": "clean after helper restored both files",
+    "normal_restored_build_log": "local/c895-merge-restored-build.log",
+    "normal_restored_build": "PASS: normal configuration restored; scripts/build.ps1 passed all five CTests",
+    "final_call_graph_log": "local/c895-merge-final-callgraph.log",
+    "final_wire_readiness_log": "local/c895-merge-final-readiness.log",
+    "final_check": "Restored normal build remeasured: 10773 text-wired rows; 5662 entry-reachable reconstructed addresses; all four packet bodies called."
+  }
+}
