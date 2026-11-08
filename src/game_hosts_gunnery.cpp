@@ -6952,22 +6952,12 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         // named installation still reads.
         "              local BT = type(Bullets) == 'table' and Bullets\n"
         "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
+        // Goal 5 chain 696: every other Bullets field is read from the class
+        // descriptor (bullet_class_descriptor, 006EA910's reader); only the
+        // authored FireChance percentage is still copied here.
         "              local bc = BT and BT[b1.Bullet] or nil\n"
         "              if type(bc) == 'table' then\n"
-        "                f[q .. 'v0'] = num(bc.V0, 1000) or 0\n"
-        "                f[q .. 'range'] = num(bc.Range, 1000) or 0\n"
-        "                f[q .. 'dmin'] = num(bc.DamageMin, 1000) or 0\n"
-        "                f[q .. 'dmax'] = num(bc.DamageMax, 1000) or 0\n"
-        "                f[q .. 'wdmg'] = num(bc.WaterDamage, 1000) or 0\n"
-        "                f[q .. 'fdmg'] = num(bc.FireDamage, 1000) or 0\n"
         "                f[q .. 'fchance'] = num(bc.FireChance, 1000) or 0\n"
-        "                f[q .. 'mass'] = num(bc.Mass, 1000) or 0\n"
-        "                f[q .. 'nograv'] = (bc.NoGravity == true) and 1000 or 0\n"
-        "                if type(bc.Blast) == 'table' then\n"
-        "                  f[q .. 'bdmin'] = num(bc.Blast.BlastDamageMin, 1000) or 0\n"
-        "                  f[q .. 'bdmax'] = num(bc.Blast.BlastDamageMax, 1000) or 0\n"
-        "                  f[q .. 'brange'] = num(bc.Blast.BlastRange, 1000) or 0\n"
-        "                end\n"
         "              end\n"
         "            end\n"
         "            local b2 = nil\n"
@@ -6981,20 +6971,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "              f[q .. '2reload'] = num(rt2, 1000) or 0\n"
         "              f[q .. '2bdelay'] = num(b2.BarrelDelayTime, 1000) or 0\n"
         "              f[q .. '2throw'] = num(b2.Throw, 1000000) or 0\n"
-        "              local BT2 = type(Bullets) == 'table' and Bullets\n"
-        "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
-        "              local bc2 = BT2 and BT2[b2.Bullet] or nil\n"
-        "              if type(bc2) == 'table' then\n"
-        "                f[q .. '2v0'] = num(bc2.V0, 1000) or 0\n"
-        "                f[q .. '2dmin'] = num(bc2.DamageMin, 1000) or 0\n"
-        "                f[q .. '2dmax'] = num(bc2.DamageMax, 1000) or 0\n"
-        "                f[q .. '2nograv'] = (bc2.NoGravity == true) and 1000 or 0\n"
-        "                if type(bc2.Blast) == 'table' then\n"
-        "                  f[q .. '2bdmin'] = num(bc2.Blast.BlastDamageMin, 1000) or 0\n"
-        "                  f[q .. '2bdmax'] = num(bc2.Blast.BlastDamageMax, 1000) or 0\n"
-        "                  f[q .. '2brange'] = num(bc2.Blast.BlastRange, 1000) or 0\n"
-        "                end\n"
-        "              end\n"
         "            end\n"
         "            local wn = 0\n"
         "            if type(p.Windows) == 'table' then\n"
@@ -7471,8 +7447,18 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.throw_amount = flat_scaled(type_id, make("throw"), kAngleScale, 0.0f);
             gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
-            gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
-            gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            // Goal 5 chain 696: V0 (+50h) and Range (+68h) of the class
+            // descriptor, which the flatten's milli-scaled copies (rounded to
+            // 1/1000, no authored value finer) used to carry.
+            if (gun.bullet_class >= 0) {
+                const bsp::WeaponClassDescriptor& gun_class =
+                    bullet_class_descriptor(gun.bullet_class).descriptor;
+                gun.muzzle_speed = gun_class.muzzle_speed;
+                gun.max_range = gun_class.range;
+            } else {
+                gun.muzzle_speed = 0.0f;
+                gun.max_range = 0.0f;
+            }
             if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
                 // Packet cc13-gunB: 0087BCC0 (0043F7B0's first call) seeds +368h from
                 // class +4Ch "Armour" (0087BCF4) and +36Ch / +370h from class +48h
@@ -7564,11 +7550,12 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 if (b2 >= 0) {
                     SecondAmmo second;
                     second.bullet_class = b2;
-                    second.muzzle_speed = flat_scaled(type_id, make("2v0"), kMilliScale, 0.0f);
                     // Goal 5 chain 696: the second class's descriptor, as 006EA910
-                    // builds it (MinRange from the flak reader, an integer).
+                    // builds it (MinRange from the flak reader, an integer); V0
+                    // is its +50h, which the flatten's `2v0` copied.
                     const BulletClassDescriptorEntry& second_class =
                         bullet_class_descriptor(b2);
+                    second.muzzle_speed = second_class.descriptor.muzzle_speed;
                     const std::string& type2 = second_class.type;
                     bsp::WeaponClassFinaliseInput fin2 =
                         weapon_class_finalise_input(second_class.descriptor);
@@ -7597,12 +7584,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                         r.type = type2;
                         r.muzzle_speed = second.muzzle_speed;
                         r.range = second.max_range;
-                        r.damage_min = flat_scaled(type_id, make("2dmin"), kMilliScale, 0.0f);
-                        r.damage_max = flat_scaled(type_id, make("2dmax"), kMilliScale, 0.0f);
-                        r.blast_damage_min = flat_scaled(type_id, make("2bdmin"), kMilliScale, 0.0f);
-                        r.blast_damage_max = flat_scaled(type_id, make("2bdmax"), kMilliScale, 0.0f);
-                        r.blast_range = flat_scaled(type_id, make("2brange"), kMilliScale, 0.0f);
-                        r.no_gravity = flat_scaled(type_id, make("2nograv"), kMilliScale, 0.0f) > 0.5f;
+                        const bsp::WeaponClassDescriptor& d2 = second_class.descriptor;
+                        r.damage_min = d2.damage_min;               // +ACh
+                        r.damage_max = d2.damage_max;               // +B0h
+                        r.blast_damage_min = d2.blast_damage_min;   // +B4h
+                        r.blast_damage_max = d2.blast_damage_max;   // +B8h
+                        r.blast_range = d2.blast_range;             // +70h
+                        r.no_gravity = d2.no_gravity;               // +20h
                         bullets.push_back(r);
                         log.notef("gunnery: bullet class %d Type=%s V0=%.1f range=%.0f "
                             "NoGravity=%d (second ammunition of category %d)", r.id,
@@ -7647,23 +7635,28 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 // Packet cc13-rocketfuze: class +E4h (00809D9F), 0080A563; used
                 // only under kRocketProximityFuzeCc13Bound.
                 b.anti_air = desc.anti_air;
-                b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
-                b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
-                b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
-                b.fire_damage = flat_scaled(type_id, make("fdmg"), kMilliScale, 0.0f);
+                // The 006E8770 block: DamageMin +ACh, DamageMax +B0h (defaults to
+                // DamageMin), WaterDamage +BCh, FireDamage +C0h, Mass +4Ch.
+                b.damage_min = desc.damage_min;
+                b.damage_max = desc.damage_max;
+                b.water_damage = desc.water_damage;
+                b.fire_damage = desc.fire_damage;
+                // The row keeps the authored percentage (weapon_fire_chance
+                // divides); the descriptor holds +C4h = FireChance / 100.0
+                // (006E8C0A), so this one value still comes from the flatten.
                 b.fire_chance = flat_scaled(type_id, make("fchance"), kMilliScale, 0.0f);
-                b.mass = flat_scaled(type_id, make("mass"), kMilliScale, 0.0f);
+                b.mass = desc.mass;
                 // Packet cc9_gun_ballistics: the row's Type string (the same one
-                // the finaliser above maps to a sub-type) and NoGravity.
+                // the finaliser above maps to a sub-type) and NoGravity (+20h).
                 b.type = bullet_class_descriptor(gun.bullet_class).type;
-                b.no_gravity = flat_scaled(type_id, make("nograv"), kMilliScale, 0.0f) > 0.5f;
+                b.no_gravity = desc.no_gravity;
                 log.notef("gunnery: bullet class %d \"%s\" Type=%s V0=%.1f range=%.0f "
                     "NoGravity=%d (first used by category %d)", b.id, b.name.c_str(),
                     b.type.c_str(), static_cast<double>(b.muzzle_speed),
                     static_cast<double>(b.range), b.no_gravity ? 1 : 0, gun.category);
-                b.blast_damage_min = flat_scaled(type_id, make("bdmin"), kMilliScale, 0.0f);
-                b.blast_damage_max = flat_scaled(type_id, make("bdmax"), kMilliScale, 0.0f);
-                b.blast_range = flat_scaled(type_id, make("brange"), kMilliScale, 0.0f);
+                b.blast_damage_min = desc.blast_damage_min;   // +B4h
+                b.blast_damage_max = desc.blast_damage_max;   // +B8h
+                b.blast_range = desc.blast_range;             // +70h
                 bullets.push_back(b);
             }
             if (gun.device_class >= 0 && device(gun.device_class) == nullptr) {
