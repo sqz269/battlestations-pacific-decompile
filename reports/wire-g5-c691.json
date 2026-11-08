@@ -1,0 +1,74 @@
+{
+  "chain": 691,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "base": "f7ba9aabd4b0631ce99d05b2d885aecb1fbcb2ce",
+  "picked": "Live mission-tree navalacademy integer-list reader",
+  "wired_total_before": 10445,
+  "wired_total_after": 10446,
+  "wired_total_note": "The required fresh index/build/readiness baseline was 10445, versus 10439 in the supplied earlier pool snapshot. The final readiness row for 005C4AD0 is wired, called=true, call_sites=1, and its graph is not stale.",
+  "called_total_before": 7083,
+  "called_total_after": 7084,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing test suites passed",
+    "analysis_build": "python tools/call_graph.py --build passed with inlining and identical-code folding disabled",
+    "call_graph": "005C4AD0 was absent from the baseline analysis executable. It is now REACHABLE at analysis VA 10594A90, with one direct call at 1023B1E1 from MissionIntVectorBinding::read.",
+    "entry_path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost -> GameMissionHost::load_mission_tree_005caaf0 -> MissionTreeScriptBinding::open_table -> LiveMissionTreeView::read_int_array -> MissionIntVectorBinding::read -> 005C4AD0. The graph includes retained vtable references; source read_mission_record_impl calls the view for navalacademy when present.",
+    "evidence": "bsp.py show 005C4AD0: original __thiscall(reader, key-kind, key-value, output-vector), RET 0Ch; clears the checked vector at +4/+8/+Ch, enters the caller's key, visits integer indices 1..n and leaves. Existing 00BD63B0 Int-arm source calls 00B66290. The installed scripts/datatables/missiontree.lua contains populated single-player navalacademy lists.",
+    "focused_probe": "PASS: one five-element Lua fixture exercised the exact adapter class text extracted from src/game_hosts_mission.cpp and the built 005C4AD0 body. Values {1, '2.9', -3.9, 16777217, false} produced {1, 2, -3, 16777216, 0}, covering multiple backing growths, numeric strings and the native float32 spill. The probe was built in ignored local/output with /MANIFEST:EMBED; the game was not launched.",
+    "new_repository_tests": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "rows": [
+    {
+      "native": "005c4ad0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: LiveMissionTreeView::read_int_array via MissionIntVectorBinding::read",
+      "detail": "Replace the former host list loop with the existing recovered body. The binding owns an asserted 10h checked-vector control and constructed int backing, retains the live Lua table/elements through each read, and publishes the body's values into MissionRecordExtra::naval_academy. Integer conversion borrows the same application-owned CRT mode as the frontend. Host STL allocation, returnable invalid-iterator diagnostics and original binary ABI remain outside the claim."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The deferred named-call producer requires a frame-job-thread call path; the present mission Lua process runs on the main thread and has no populated deferred argument queue."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval and weapon_animation",
+      "reason": "Missing retained native ticker-animation object and weapon-animation handle producer; weapon_animation returns zero and animation_interval only records the call."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing retained ControllerSnapshotMessage and routed snapshot consumer; the inspected builder has no live host invocation to replace."
+    },
+    {
+      "native": "004c8310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PreloadHost effect-handle storage",
+      "reason": "Missing live counted effect-handle vector and acquisition producer; record_effect_name_count still returns zero and effect acquisition returns null."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PreloadHost::push_effect_handle",
+      "reason": "Missing live counted effect-handle vector and acquisition producer; the inspected push callback only records the call."
+    },
+    {
+      "native": "006e3980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun-fire message IsType dispatch",
+      "reason": "No missing wiring at this site: it already passes the ADh message's native type rule to the reachable shared type_id_rule_accepts body."
+    },
+    {
+      "native": "006eba00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: vehicle-launched message IsType dispatch",
+      "reason": "No missing wiring at this site: it already passes the 7Ch message's native type rule to the reachable shared type_id_rule_accepts body."
+    }
+  ],
+  "left_for_others": "Deferred Lua argument production, HUD ticker ownership, controller snapshot routing and scene-effect preload handle ownership remain separate upstream work. No new address-suffixed body or ledger row was added."
+}

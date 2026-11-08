@@ -40,7 +40,7 @@ SoundOwnedResource* load_sound_resource_00a84740(SoundResourceOwner&,
     NativeStringStorage& = crt_string_storage());
 
 // Full normal 00A84530: ECX=&owner+4, stack source-record pointer, RET4.
-// Minimum 64 records; double only when count==capacity. Source must be outside
+// Minimum 64 records through 00A84450; double only when count==capacity. Source must be outside
 // the destination vector, as in the native loader. Scalar resource is copied
 // without retain. Host capacity may exceed this explicit native capacity.
 void append_sound_resource_cache_record_00a84530(SoundResourceOwner&,

@@ -110,6 +110,19 @@ delete_vehicle_shipyard_launch_message_00760650(seg42::VehicleShipyardLaunchMess
     return message;
 }
 
+// Chain 686 evidence: bsp.py show 00758cd0 --asm, existing bsp.gpr,
+// /battlestationspacific.exe. 00758CD0..00758CEC tests flags bit 0,
+// saves ECX in ESI, stores 00CE4974 at [ESI], optionally calls 00BF65AC,
+// and returns ESI in EAX with RET4. No payload member owns storage.
+// Retain Ghidra's correct CG_scalar_deleting_dtor_00758cd0 name.
+__declspec(noinline) ElevatorMoveSessionMessage*
+delete_elevator_move_message_00758cd0(ElevatorMoveSessionMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->unit.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 // Chain 690 evidence: bsp.py show 00464FE0 --asm and ghidra disasm 006EC100,
 // existing bsp.gpr /battlestationspacific.exe. Both TEST byte [ESP+4],1;
 // save this; stamp 00CE4974; conditionally call 00BF65AC; return this; RET4.
@@ -137,4 +150,5 @@ delete_vehicle_add_launched_message_006ec100(NativeVehicleAddLaunchedMessage* me
     if ((flags & 1u) != 0) singleton_lifetime_free(message);
     return message;
 }
+
 } // namespace bsp

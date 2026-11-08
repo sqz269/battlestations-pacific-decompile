@@ -1,0 +1,274 @@
+{
+  "goal": 5,
+  "chain": 685,
+  "run": 1465,
+  "branch": "agent/g5-w4",
+  "picked": "World-marker recon-aware localized default class display names",
+  "rows": [
+    {
+      "native": "00803DC0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker -> set_marker_name -> display_name_for_unit -> cc13_seg49::marker_display_name",
+      "reason": "Resolves the native naming subject before calling the existing body: supported non-aircraft +140h returns self. Detection and default class display name use that same subject. Aircraft are unbound because the live registry lacks a distinct squadron detection/name owner."
+    },
+    {
+      "native": "00A2BD90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: group command forwarding",
+      "reason": "Missing live AI-group command owner (+564Ch); installed single-player authored orders do not create one."
+    },
+    {
+      "native": "008FBEF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already entry-reachable from the skill notification path; no additional missing call to wire."
+    },
+    {
+      "native": "008FE9F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot slot construction",
+      "reason": "Missing persistent native tail-gunner bot and base-constructor/descriptor ownership; current host uses typed slot/aim state."
+    },
+    {
+      "native": "008FF260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot slot construction",
+      "reason": "Missing persistent native torpedo bot and its base-constructor/descriptor owner; numeric constructor stamps alone would not supply live state."
+    },
+    {
+      "native": "0095CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: flak alternate selection",
+      "reason": "Missing live native ammunition record, retained references and owned +3Ch tree; current host selects through gun-row ammunition handles."
+    },
+    {
+      "native": "0095D3C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building capture",
+      "reason": "Missing live native +660h vector44 owner and its resize/destructor services."
+    },
+    {
+      "native": "008E2BF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: minimap objective update",
+      "reason": "Missing owned native map-ping list and live HUD-map/session ping producer; the existing callback is a record only."
+    },
+    {
+      "native": "00437C70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing pre-load checkpoint comparison and BSP_Chk_Save/current-mission owner; checkpoint_differs still returns false."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane HUD bomb-fire direction",
+      "reason": "Missing live PlaneHudScreen_UpdateBombFire caller and its two direction-vector producers; unrelated steering math is not that path."
+    },
+    {
+      "native": "00AA3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI manager pointer update",
+      "reason": "Missing actual GuiResourceOwner, cursor latches, input sampling and hit-test dispatch publications in the live bridge."
+    },
+    {
+      "native": "00AA5A00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children",
+      "reason": "Missing live reflection/property-descriptor writer 00AAAED0; render child ordering is a different operation."
+    },
+    {
+      "native": "0071F5D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path removal",
+      "reason": "Missing presence-zero remove-message producer and retained per-slot path owners; the current sender produces additions."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate score table",
+      "reason": "Missing live native score-list owner/consumer; the documented table reader is debug-only."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate chosen marker",
+      "reason": "Missing native candidate records to mark and a non-debug table consumer."
+    },
+    {
+      "native": "0074FA80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: flooded-fraction consumer",
+      "reason": "Only identified original consumer is debug inspection, excluded by the assignment."
+    },
+    {
+      "native": "0085D770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane collision bands",
+      "reason": "Missing live 007DF4F0 plane-neighbour collision-band owner/caller for this orthonormalization body."
+    },
+    {
+      "native": "0085E8C0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: orbit_about_axis_0042d610",
+      "reason": "Missing live bomb-view camera owner and its camera-service bindings; the sole reconstructed orbit caller is not run by a host."
+    },
+    {
+      "native": "0042D610",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: bomb-view camera step",
+      "reason": "Missing live BombViewCamera_Step owner; using unrelated camera or gun matrices would not implement this operation."
+    },
+    {
+      "native": "0093CCC0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: map-scene initialization",
+      "reason": "Missing actual HUD-map scene-graph owner/caller; existing reconstruction covers only zoom initialization."
+    },
+    {
+      "native": "0084CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: HUD support confirmation",
+      "reason": "Missing live support-site composition/squad-size consumer; current targeted-launch slice does not run that branch."
+    },
+    {
+      "native": "0084D050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: support-site class filter",
+      "reason": "Missing live HUD support-manager site-list/filter owner and its class-enable entries."
+    },
+    {
+      "native": "00A84450",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: sound cache record reserve",
+      "reason": "Missing native 2Ch sound-cache record array plus actual append/resize owner and retained sample/string lifetimes."
+    },
+    {
+      "native": "00AA0F70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: GUI highlight reset",
+      "reason": "Missing live GuiResourceOwner manager-frame integration; the standalone reconstructed update already calls this helper."
+    },
+    {
+      "native": "00BA0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: ocean field depth kernel",
+      "reason": "Missing complete live ocean-field initialization owner; the inspected depth-sample kernel is only a bounded fragment."
+    },
+    {
+      "native": "006E1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bomb-family tick",
+      "reason": "Missing persistent BombTickState/BombFlightClass owner and complete water/air/sweep/expiry bindings for the whole tick."
+    },
+    {
+      "native": "00803C20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon relation style",
+      "reason": "Missing live relation-style table consumer; inspection showed it is not the name-gating body 00803DC0."
+    },
+    {
+      "native": "00803CE0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: side_relation_00803ce0",
+      "reason": "Already implemented/called by landing capture; the marker relation-colour publisher is outside this name-label change."
+    },
+    {
+      "native": "0042B9E0",
+      "status": "skipped",
+      "host_site": "src/save_settings_cc13.cpp: entity class-name getter",
+      "reason": "Missing native class-id/name-table consumer on this path; its entity class name is not the +14h localized unit display name."
+    },
+    {
+      "native": "006D1F30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg30.cpp: unit class-type getter",
+      "reason": "Missing native +538h class-pointer receiver for the +28h getter; the name-label path needs the +14h display-name virtual instead."
+    },
+    {
+      "native": "0081C0A0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB.cpp: unit display-name static buffer",
+      "reason": "Missing retained custom-name +15Ch/+160h and shared native static-string owner; this host supplies only its actual loaded default class name."
+    },
+    {
+      "native": "00959230",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: record display key",
+      "reason": "Missing live device-class/count record owner and resolver; this provisional builder is not the unit-marker display-name path."
+    }
+  ],
+  "baseline": {
+    "head": "a66a91cf2a0550ef0ed5e7d13a74f86adbedbd56",
+    "readiness_wired": 10438,
+    "target_state": "wired",
+    "target_called": null,
+    "note": "The text metric already counted the unused same-named Host method. The target had no built body call before this change; the new executable has one reachable body call."
+  },
+  "after": {
+    "readiness_wired": 10438,
+    "readiness_called": 5689,
+    "target_state": "wired",
+    "target_called": true,
+    "target_call_sites": 1,
+    "attribution": "The unchanged text-wired total already included this unused Host method. This packet makes 00803DC0 actually callable from the marker publisher. The initial cached call census was 5684; four unrelated menu addresses also appear after the baseline rebuild and are not credited to this packet."
+  },
+  "implementation": [
+    "Narrow ReconDisplayNameHost preserves lazy name lookup and the original raw Seg49Host detection implementation without fabricating a native unit buffer.",
+    "Marker binding reads forced-or-sensor level directly from ReconSensorPassState::record; absent pre-layout records use the binary constructor's zero level, not level()'s permissive fallback.",
+    "Default name is the installed VehicleClass[Type].Name retained as GameUnitRow::class_row_name, not the scene instance name or enum symbol.",
+    "Refreshes the actual marker text source on pool reassignment and detection changes; removes the old authored-label-only path.",
+    "Review round 1: preserve the aircraft (flight-leader and self) or target or friendly gate, then choose squadron +9D4h; all other units resolve through +140h. A missing subject never falls back to the marked plane."
+  ],
+  "evidence": [
+    "bsp.py show 00803dc0 (pseudocode)",
+    "bsp.py show 00803dc0 --asm (15 instructions; effective level gate and lazy +14h tail call)",
+    "bsp.py ghidra proto 00803dc0 and 0081c0a0 verified program battlestationspacific.exe",
+    "src/cc13_pkt642.cpp: 006422F0/00642579/0064278E name lookup and 0063D751 localized C-string setter",
+    "src/cc13_sweepB.cpp: 0081C0A0 default [unit+538h]+54h source; src/game_hosts_units.cpp class row load"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all four CTests",
+    "focused_probe": "MSVC Win32 probe linked against built bsp_core.lib with /OPT:REF /MANIFEST:EMBED passed distinct marked-plane/squadron/+140h identity, differing sensor and forced levels, all aircraft eligibility alternatives, lazy name lookup, changed subject names and unbound-subject behavior.",
+    "graph": "Review fix: call_graph.py confirms 00803DC0 REACHABLE at 1046B080 with call 1014258A from display_name_for_unit; set_marker_name is called by place_marker, itself called by MarkersUpdateBinding::add_marker. The resolver is inline at the host boundary so the reconstructed body remains an actual call.",
+    "float_math": "No float arithmetic changed.",
+    "game_run": false
+  },
+  "limitations": [
+    "Original register ABI is documented, not reproduced by this typed C++ interface.",
+    "Only the host's default class display-name state is owned; custom +15Ch/+160h display-name overrides and their shared native static buffer remain absent.",
+    "Aircraft naming is explicitly unbound: PlaneSquadronHostRecord fuses squadron_unit with wing 0 and owns no independent squadron detection/name state. The marker label is hidden; neither wing state nor the fused index substitutes for the native squadron.",
+    "Stationary/unresolved classes without a retained descriptor hide the label rather than inherit a previous pool user's name.",
+    "Build, fixture and executable reachability are not live visual/gameplay validation."
+  ],
+  "review_round_1": {
+    "run": 1476,
+    "reviewed_head": "4f4ef69da0950a2179db488210b8d361f9c0c182",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "resolution": "Resolve subject before 00803DC0 and pass that one identity to both detection and name callbacks. Propagate actual marker flags and preserve 00642287..006422AC eligibility. Live aircraft subject ownership is missing, so leave their names unbound; non-aircraft bind the verified +140h self result.",
+        "verification": "Focused production-resolver fixture gives the plane level 2 and squadron level 0, then reverses them using forced squadron level 4; the name follows only the squadron. A distinct +140h root and missing subjects are checked too."
+      }
+    ],
+    "evidence": [
+      "bsp.py show 00642040 --asm --start 132/145: 00642287..006422AC gate, 006422C3 squadron load, 006422E4..006422F0 +140h resolution and name call",
+      "bsp.py show 007b8ad0: original plane+9D8h spawn-index zero test",
+      "bsp.py show 0047f320 and ghidra bytes 00cfc510 --length 4: base unit vtable +140h holds 0047F320 (return self)",
+      "include/bsp/plane_squadron_host.hpp: independent squadron object/detection identity absent; fused squadron_unit is also member_units[0]"
+    ],
+    "checks": {
+      "build": "scripts/build.ps1 passed all four CTests after final source changes",
+      "fixture": "Recompiled against final bsp_core.lib; subject identity, aircraft eligibility and differing forced/sensor levels passed",
+      "graph": "00803DC0 entry-reachable; one real call site retained",
+      "game_run": false,
+      "readiness": {
+        "wired": 10438,
+        "called": 5689,
+        "target_called": true,
+        "target_call_sites": 1
+      }
+    }
+  }
+}

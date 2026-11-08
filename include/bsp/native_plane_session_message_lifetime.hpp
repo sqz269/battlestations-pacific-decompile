@@ -35,6 +35,21 @@ seg42::VehicleValueMessage* delete_vehicle_set_party_message_00760610(
 seg42::VehicleShipyardLaunchMessage* delete_vehicle_shipyard_launch_message_00760650(
     seg42::VehicleShipyardLaunchMessage*, std::uint32_t flags);
 
+// Carrier elevator message 87h: the factory allocates 24h, including the
+// conditional plane id and its two presence/control bytes after UnitMessage.
+struct ElevatorMoveSessionMessage {
+    seg42::UnitMessage unit;
+    std::uint16_t plane_id_20;
+    std::uint8_t flag_22;
+    std::uint8_t has_plane_23;
+};
+static_assert(sizeof(ElevatorMoveSessionMessage) == 0x24);
+static_assert(offsetof(ElevatorMoveSessionMessage, plane_id_20) == 0x20);
+static_assert(offsetof(ElevatorMoveSessionMessage, flag_22) == 0x22);
+static_assert(offsetof(ElevatorMoveSessionMessage, has_plane_23) == 0x23);
+ElevatorMoveSessionMessage* delete_elevator_move_message_00758cd0(
+    ElevatorMoveSessionMessage*, std::uint32_t flags);
+
 // The 7Bh / 7Ch factory records are each 24h bytes. Their decoded payloads
 // remain live until projected to the launch receiver; neither owns a subobject.
 struct NativeVehicleUnitLaunchMessage {

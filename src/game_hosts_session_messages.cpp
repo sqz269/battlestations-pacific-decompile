@@ -1890,16 +1890,22 @@ public:
         // 00768530 case 87h: operator new(24h), 00763500 at 007692C6; 0076A27B
         // vtable[8] = 00758C70 (which zeroes +20h without +23h).
         stream.begin_read();
-        alignas(4) std::uint8_t queued[0x24]{};
+        // Retain the factory's actual 24h allocation until the local consumer
+        // has copied its decoded fields. 00758CD0 stamps the root and frees
+        // this allocation once; the sender is the non-owning frame buffer of
+        // 006CFFF0, whose normal return has no destructor call.
+        OwnedDecodedMessage<ElevatorMoveSessionMessage,
+            delete_elevator_move_message_00758cd0> decoded;
+        auto& queued = decoded.get();
         seg42::construct_mothership_elevator_move_00763500(
-            reinterpret_cast<seg42::UnitMessage*>(queued), seg42_);
-        cc13_seg41::elevator_move_read_00758c70(queued, stream.in, seg41_);
-        type = reinterpret_cast<const NativeSessionMessageStorage*>(queued)->type_10;
-        copy.flag = queued[0x22] != 0;
-        copy.has_plane = queued[0x23] != 0;
-        std::memcpy(&copy.plane_id, queued + 0x20, sizeof copy.plane_id);
+            &queued.unit, seg42_);
+        cc13_seg41::elevator_move_read_00758c70(
+            reinterpret_cast<std::uint8_t*>(&queued), stream.in, seg41_);
+        type = queued.unit.h.base.type_10;
+        copy.flag = queued.flag_22 != 0;
+        copy.has_plane = queued.has_plane_23 != 0;
+        copy.plane_id = queued.plane_id_20;
         routed = true;
-        // 00758CD0, slot 0 of 00D01870 for both, owns no storage.
     }
     bool routed{false};
     std::uint8_t type{0};

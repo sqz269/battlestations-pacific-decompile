@@ -9,8 +9,9 @@
 // Allocation model: the image's operator new (00BF55BE, 00BF681B) and free (00BF6989, 00BF65AC, 00BF9DC8)
 // are the project's singleton_lifetime_allocate/free boundary (bsp/singleton_lifetime.hpp), as in
 // src/sound_sample.cpp. Storage passed in must belong to that domain. Original C++ EH and SEH are not
-// claimed. 00A92290 also has a typed view used by the live front-end context
-// stack; other entries retain their individual integration boundaries. Names are hypotheses, not recovered symbols.
+// claimed. 00A92290 has a typed view used by the live front-end context stack;
+// 00A843A0/00A84450 use the live sound owner's standard-container record projection.
+// Other entries retain their individual integration boundaries. Names are hypotheses, not recovered symbols.
 
 #include <array>
 #include <cstdint>
@@ -18,6 +19,8 @@
 #include "bsp/native_input_action_records.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_input_binding_storage.hpp"
+
+namespace bsp { struct SoundResourceOwner; struct SoundResourceCacheRecord; }
 
 namespace bsp::sound_cc13 {
 
@@ -376,17 +379,24 @@ struct SoundCacheRecordCalls {
 // 00A84280 (snapshot name ConstructLists; it is the default constructor), __fastcall(ECX record) -> EAX:
 // name {0, 0}; list head = 004C3020(), size 0; +14h..+24h = 0 (+28h untouched).
 void* sound_cache_record_construct_00a84280(void* record, const SoundCacheRecordCalls& calls);
-// 00A843A0 copy-construct, __thiscall(ECX record, const record*) RET 4 -> EAX: name {0, 0} then copied
-// unless the same; list 004D48A0(+8h, source +8h); +14h..+28h copied.
-void* sound_cache_record_copy_construct_00a843a0(void* record, const void* source, NativeStringStorage& strings,
-                                                 const SoundCacheRecordCalls& calls);
+// 00A843A0 copy-construct, native __thiscall(ECX record, source), RET 4,
+// EAX=record: copy name, independently own the alias list, copy metadata and
+// borrowed resource pointer. Destination is a distinct, freshly default-
+// constructed record in the live owner's C++ projection. No resource retain.
+// As for reserve below, this is not native storage, allocation failure or ABI.
+SoundResourceCacheRecord& sound_cache_record_copy_construct_00a843a0(
+    SoundResourceCacheRecord& record, const SoundResourceCacheRecord& source);
 // 00A84380 pop back, __fastcall(ECX header): when count != 0 destroy the last record (00A842E0), count--.
 void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const SoundCacheRecordCalls& calls);
-// 00A84450 reserve, __thiscall(ECX header, n) RET 4: n raised to 64; when capacity < n: operator new(n * 2Ch)
-// (no overflow saturation), copy-construct each live record (null destinations skipped), destroy each old
-// record, free the old block, store data and capacity.
-void sound_cache_records_reserve_00a84450(NativePointerArray& header, std::int32_t requested,
-                                          NativeStringStorage& strings, const SoundCacheRecordCalls& calls);
+// 00A84450 reserve, native __thiscall(ECX=&owner+4, n), RET 4: n raised to 64;
+// when capacity < n, allocate, copy-construct live records in order, destroy
+// the old record storage, free the old block, publish data and capacity.
+// Same C++ storage projection as the live 00A84530/00A84740 loader: strings,
+// alias lists and the record vector own their allocations; resource pointers
+// are copied without retain/release. Explicit capacity_0c is authoritative.
+// Not the raw 2Ch layout, native allocator/OOM/overflow/FH3 behavior or ABI.
+void sound_cache_records_reserve_00a84450(SoundResourceOwner& owner,
+    std::int32_t requested);
 // 00A84D20 erase-swap-last, __thiscall(ECX header, record** where) RET 4: when *where is not the last
 // record, assign the last over it (00A84680); destroy the last (00A842E0); count--.
 void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,

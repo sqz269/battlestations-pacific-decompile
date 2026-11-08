@@ -1,7 +1,9 @@
 #include "bsp/scene_contents_hosts.hpp"
+#include "bsp/scenes_seg1_cc13.hpp"
 
 #include <cmath>
 #include <cstring>
+#include <stdexcept>
 
 // Reconstruction of the four scene-contents steps. Evidence, offset tables and
 // the labelled gaps: docs/SCENE_CONTENTS_HOSTS.md.
@@ -156,26 +158,60 @@ int select_terrain_grid_layer(
     return best;
 }
 
+namespace {
+
+// The scene host owns the live .nav cursor. Adapt its read slots to the same
+// stream interface used by 004246E0/004239E0; no second cursor or field copy.
+class SceneAvoidZoneLayerStream final : public seg1_cc13::TerrainGridStreamHost {
+public:
+    explicit SceneAvoidZoneLayerStream(SceneAvoidZoneHost& host) : host_(host) {}
+
+    std::string read_string_60(std::int32_t) override {
+        class_name_ = host_.read_string();
+        return class_name_;
+    }
+    float read_float_44(std::int32_t) override { return host_.read_float(); }
+    std::int32_t read_int_38(std::int32_t) override { return host_.read_int(); }
+    void read_bytes_24(std::uint8_t* data, std::int32_t count, std::int32_t) override {
+        if (count < 0) throw std::length_error("negative terrain grid byte count");
+        host_.read_bytes(data, static_cast<std::size_t>(count));
+    }
+    void invalid_parameter_00bf6713() override {
+        throw std::invalid_argument("empty terrain grid");
+    }
+
+    void write_string_64(const std::string&, std::int32_t) override { reject_write(); }
+    void write_float_58(float, std::int32_t) override { reject_write(); }
+    void write_int_54(std::int32_t, std::int32_t) override { reject_write(); }
+    void write_bytes_28(const std::uint8_t*, std::int32_t, std::int32_t) override { reject_write(); }
+
+    const std::string& class_name() const noexcept { return class_name_; }
+
+private:
+    [[noreturn]] static void reject_write() {
+        throw std::logic_error("scene navigation stream is read-only");
+    }
+    SceneAvoidZoneHost& host_;
+    std::string class_name_;
+};
+
+} // namespace
+
 void load_avoid_zones_004248a0(SceneAvoidZoneHost& host) {
     host.ensure_registry(); // 004D5251, 004C17D0
     host.begin_load(); // 004248C1, 0041DED0 on the registry
     host.read_string(); // 004248D9: the root name, read and dropped
     const int count = host.read_int(); // 004248E7
+    SceneAvoidZoneLayerStream stream(host);
     for (int i = 0; i < count; ++i) { // 004248EB is signed, so <= 0 loads nothing
-        TerrainGridLayerRecord layer;
-        layer.class_name = host.read_string(); // 00423A0F, also dropped natively
-        layer.half_extent = host.read_float(); // 00423A22
-        layer.dimension = host.read_int(); // 00423A30
-        layer.cell_size = host.read_float(); // 00423A3E
-        layer.file_scalar = host.read_float(); // 00423A4C
-        layer.slope_limit = host.read_float(); // 00423A5A
-        const std::size_t cells = layer.dimension > 0
-            ? static_cast<std::size_t>(layer.dimension) * static_cast<std::size_t>(layer.dimension)
-            : 0u;
-        layer.grid.assign(cells, 0u);
-        if (cells != 0) {
-            host.read_bytes(layer.grid.data(), cells); // 00423A9D, vtable +24h
-        }
+        // bsp.py show 004248A0: 00424904..0042492F inlines the same vtable /
+        // empty-vector construction as 004246E0, then calls 004239E0. Reuse
+        // that complete body on the host's file cursor instead of rereading
+        // its fields here. This is a typed interface, not the original ABI.
+        TerrainGridLayerRecord layer =
+            seg1_cc13::terrain_grid_layer_construct_from_stream_004246e0(stream);
+        // The binary drops this string; retain only the host's diagnostic name.
+        layer.class_name = stream.class_name();
         host.append_layer(layer); // 0042494F, push into the list at registry+8h
     }
     host.end_load(); // 00424975, 0041E000

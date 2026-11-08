@@ -217,8 +217,14 @@
     "scalar_deletes": "00464FE0 export assembly and live 006EC100 disassembly: root stamp, free iff low flags bit0, receiver identity return, RET4.",
     "ghidra_annotation_receipt": "local/ghidra-annotations-20261108T063754Z.json",
     "old_annotations": {
-      "00464fe0": {"name": "CG_scalar_deleting_dtor_00464fe0", "plate_comment": null},
-      "006ec100": {"name": "Unwind@006ec100", "plate_comment": null}
+      "00464fe0": {
+        "name": "CG_scalar_deleting_dtor_00464fe0",
+        "plate_comment": null
+      },
+      "006ec100": {
+        "name": "Unwind@006ec100",
+        "plate_comment": null
+      }
     },
     "ghidra_saved_and_exports_refreshed": true
   },
@@ -228,38 +234,39 @@
       "before": 10445,
       "after": 10446,
       "command": "python tools/wire_readiness.py --standins",
-      "note": "The readiness pool changes 0080F960 from ready to wired/called with one call site. The two newly reconstructed compiler scalar deletes do not appear as rows in this pool output; their distinct entry-reachable calls are verified independently below."
+      "note": "The readiness pool changes 0080F960 from ready to wired/called with one call site. The two newly reconstructed compiler scalar deletes do not appear as rows in this pool output; their distinct entry-reachable calls are verified independently below.",
+      "measurement_stage": "Original c690 measurement before merging origin/main; current merged measurement is recorded in merge_recheck."
     },
     "fixture": "local/c690_vehicle_lifetime_probe.cpp compiled MSVC Win32 with /MANIFEST:EMBED and passed: both scalar deletes preserve every byte after the vptr for flags0 and flags100h, return identity, run the heap flags1 path; 0080F960 preserves the actual fixture session-owner pointer and full byte payload.",
     "call_graph": {
       "command": "python tools/call_graph.py --build; python tools/call_graph.py --build-dir build/callgraph who <native> --limit 4",
       "no_inline": true,
       "no_icf": true,
-      "reconstructed_addresses_called": 7085,
-      "reconstructed_addresses_present": 7134,
+      "reconstructed_addresses_called": 7095,
+      "reconstructed_addresses_present": 7144,
       "exact_calls": [
         {
           "native": "0080f960",
-          "compiled_body": "10521030",
+          "compiled_body": "105220f0",
           "caller": "HostSessionMessages::queue_shipyard_launch_7a",
-          "call_site": "102ed86c",
+          "call_site": "102ee8fc",
           "entry_reachable": true
         },
         {
           "native": "00464fe0",
-          "compiled_body": "1062d9e0",
+          "compiled_body": "1062f130",
           "caller": "OwnedDecodedMessage<NativeVehicleUnitLaunchMessage>::~OwnedDecodedMessage",
-          "call_site": "102e8106",
-          "host_normal_cleanup_site": "102ee238",
+          "call_site": "102e9186",
+          "host_normal_cleanup_site": "102ef2c8",
           "host": "HostSessionMessages::queue_vehicle_unit_launch_7b",
           "entry_reachable": true
         },
         {
           "native": "006ec100",
-          "compiled_body": "1062d950",
+          "compiled_body": "1062f0a0",
           "caller": "OwnedDecodedMessage<NativeVehicleAddLaunchedMessage>::~OwnedDecodedMessage",
-          "call_site": "102e80b6",
-          "host_normal_cleanup_site": "102edf19",
+          "call_site": "102e9136",
+          "host_normal_cleanup_site": "102eefa9",
           "host": "HostSessionMessages::queue_vehicle_add_launched_7c",
           "entry_reachable": true
         }
@@ -268,6 +275,42 @@
     "float_math_changed": false,
     "game_run": false,
     "abi_compatible": false
+  },
+  "merge_recheck": {
+    "origin_main": "d98eb873ffad6e6f835da1c1c8faf680b1f355f7",
+    "request": "Resolve landing conflict by merging origin/main into agent/g5-w3 in its own worktree.",
+    "resolved_files": [
+      "include/bsp/native_plane_session_message_lifetime.hpp",
+      "src/native_plane_session_message_lifetime.cpp"
+    ],
+    "resolution": "Retain main's ElevatorMoveSessionMessage/00758CD0 additions, then retain both c690 vehicle-launch types and 00464FE0/006EC100 bodies. All nonblank lines from both sides are preserved verbatim. The message-host merge retains the 87h decoded owner alongside c690's 7Ah/7Bh/7Ch changes.",
+    "normal_enabled_build": "scripts/build.ps1 passed, including all four CTests",
+    "on_build_interpretation": "C690 has no enable switch: its normal build is always enabled. Also rerun the separate no-inline/no-ICF analysis build for distinct caller proof.",
+    "fixture": "Recompiled and passed c690_vehicle_lifetime_probe against the merged Release library.",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files",
+    "game_run": false,
+    "analysis_build": "python tools/call_graph.py --build passed (/Ob0, /OPT:NOICF); distinct entry-reachable calls confirmed for all three c690 bodies.",
+    "preserved_main_elevator_call": {
+      "native": "00758cd0",
+      "compiled_body": "1062ef20",
+      "call_site": "102e8be6",
+      "caller": "OwnedDecodedMessage<ElevatorMoveSessionMessage>::~OwnedDecodedMessage",
+      "normal_cleanup_site": "102ef816",
+      "entry_reachable": true
+    },
+    "wire_readiness": {
+      "wired_total": 10453,
+      "command": "python tools/wire_readiness.py --standins",
+      "source_text_sha256": "b0f1800e97d258274b81fc9c4a3d9a504852489f0dd3d8d9eba96f2b8e3e1a3a",
+      "analysis_call_graph_stale": false,
+      "0080f960": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "scalar_delete_note": "The pool still omits compiler scalar-delete rows; exact current entry-reachable calls to both c690 deletes and main's elevator delete are recorded above."
+    },
+    "conflicts_remaining": false
   },
   "assumptions_and_limits": [
     "Unattended run: selected the existing session-message owner path after bounded candidate inspection.",

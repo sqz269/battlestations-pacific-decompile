@@ -1,0 +1,139 @@
+{
+  "chain": 686,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "base": "370a065d889569c8ee00f6db7a701497b8ba5707",
+  "picked": "Carrier elevator 87h decoded-message ownership and scalar destructor",
+  "wired_total_before": 10439,
+  "wired_total_after": 10439,
+  "wired_total_note": "wire_readiness excludes the compiler-generated destructor from its eligible rows, including after replacing its library_instantiation_out_of_scope reconstruction row. This packet adds one genuinely reachable body without changing that tool's eligible wired total.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "analysis_build": "python tools/call_graph.py --build passed, with inlining and identical-code folding disabled",
+    "call_graph": "00758CD0 at analysis VA 1062B620 is REACHABLE, with exactly one direct call at 102E5FC6 from OwnedDecodedMessage<ElevatorMoveSessionMessage>::~OwnedDecodedMessage. That owner has one normal call and one exception-unwind jump from ElevatorMoveRouteBinding::session_route_message_0077c2a0. Unlike the release graph, these bodies are not folded with unrelated destructors.",
+    "entry_path": "WinMain -> mission frame -> fixed simulation -> run_air_ops_update_006cdc70 -> run_landing_queue_006cd240 -> carrier_elevator_site_tick_006d0600 -> route_carrier_elevator_message_87 -> queue_mothership_elevator_move_87 -> ElevatorMoveRouteBinding -> decoded owner -> 00758CD0. This is built-executable reachability, not observed gameplay execution.",
+    "evidence": "bsp.py show 00758cd0 and --asm; 00758CD0..00758CEC stamps 00CE4974, conditionally frees on flags bit 0, preserves payload, returns this and RET4. Existing 00768530 case 87h evidence records a 24h allocation and 00763500 constructor; 006CFFF0's sender is a frame buffer with no normal destructor call.",
+    "ghidra": "Verified configured bsp.gpr and /battlestationspacific.exe; retained the correct CG_scalar_deleting_dtor_00758cd0 name, saved the evidence comment under the annotation write lock, and refreshed the export. Prior comment receipt is local/ghidra-annotations-20261108T062041Z.json.",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "new_tests": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "rows": [
+    {
+      "native": "00758cd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: ElevatorMoveRouteBinding::session_route_message_0077c2a0",
+      "detail": "Own the original 24h decoded 87h message through payload copying and release it exactly once via the recovered scalar destructor, including decode exceptions. The typed record preserves original header/payload offsets. Sender lifetime follows the existing 006CFFF0 frame-buffer contract."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 and HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "Missing canonical producers and retained ownership for screen+30h selection mode, +C4h selection vector, and reset fields +C0h/+D4h."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum insertion backing the scene-contents host",
+      "reason": "No missing call at the inspected site: the initial call graph already reports three reachable calls despite readiness classifying this row as ready."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: populated native property-bag merge",
+      "reason": "No missing call at the inspected site: the initial call graph already reports two reachable calls despite readiness classifying this row as ready."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification",
+      "reason": "No missing call at the inspected site: it already invokes the body with loaded descriptor levels and the live stream-one draw provider."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: land-fort death effect callbacks",
+      "reason": "Missing live effect-definition ownership, effect-manager admission/locking, and native point-effect construction; these callbacks currently retain counters only."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: main-scene metadata submission",
+      "reason": "A concrete call already exists in the native main-scene body; connecting or proving its renderer-owned submission path is outside the selected message-lifetime packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: retained user-path director state",
+      "reason": "Missing a reachable clear-user-path-point command producer that selects and mutates the real last-filled path slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command target descriptor lifetime",
+      "reason": "Missing a native default-descriptor construction consumer; introducing an empty temporary solely to call this initializer would not replace live behavior."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: controller state message production",
+      "reason": "Missing a retained controller-state message producer and consumer binding its two descriptors, mode, flags, and source bytes."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a retained and routed ControllerSnapshotMessage consumer; copying flattened host flags into and out of a temporary would only round-trip state."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing a reachable text-input owner calling the acceptance operation; merely replacing this unused method would not add an entry-reachable body call."
+    },
+    {
+      "native": "00ab6d30",
+      "status": "skipped",
+      "host_site": "src/cc13_large3.cpp: text-owner key fallback host boundary",
+      "reason": "Missing the live text-owner input adapter and its actual font acceptance provider."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: movie-camera state",
+      "reason": "Missing a live MovCamAngles owner for +3C4h/+3C8h on the inspected HUD path; its current mission-camera projection is a different representation."
+    },
+    {
+      "native": "00799750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: movie-camera pose publication",
+      "reason": "Missing the associated live MovCamAngles/MovCamPose owner and MovCamPoseHost publication contract."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: force-composition class-pair lookup",
+      "reason": "Missing a bounded binding from the actual mode-specific class-pair rows and class identities to their composition consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group spawn choice",
+      "reason": "Missing a concrete binding of the native threat-record and source-list counts to the active spawn-choice gate."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Missing actual selected-player ownership and the 00D032FC profile; the existing codec-only path deliberately does not claim native object construction."
+    },
+    {
+      "native": "0075b860",
+      "status": "skipped",
+      "host_site": "src/session_message_cc13_seg42.cpp: ConstructForRead shared prologue",
+      "reason": "Missing an appropriate live mode-zero message producer; this constructor reads the selected game player, unlike the no-session-read ConstructForRead prologue."
+    }
+  ]
+}
