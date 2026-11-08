@@ -1,5 +1,6 @@
 #include "bsp/native_lua_bootstrap.hpp"
 #include "bsp/lua_exec_guard.hpp"
+#include "bsp/storage_pool.hpp"
 #include <cstring>
 #include <stdexcept>
 extern "C" {
@@ -29,7 +30,9 @@ void open_native_lua_state_00b6a020(NativeLuaStateStorage& owner,std::uint32_t m
     NativeStringStorage& strings,const NativeLuaBootstrapInputs& inputs){
     if(!inputs.get_fundamentals_00884770 || !inputs.do_file_00b69e00)
         throw std::invalid_argument("native Lua bootstrap requires canonical fundamentals and DoFile services");
-    owner.owns_00=1;owner.state_04=luaL_newstate();lua_atpanic(owner.state_04,&native_lua_panic_00b669c0);
+    // Native luaL_newstate (00A6A260) passes A6A1D0 and null userdata to
+    // lua_newstate; the stock linked luaL_newstate instead uses CRT realloc.
+    owner.owns_00=1;owner.state_04=lua_newstate(&lua_allocate_00a6a1d0,nullptr);lua_atpanic(owner.state_04,&native_lua_panic_00b669c0);
     std::uint32_t bit=1;
     for(const auto& library:libraries){
         if(bit==1 || (mask&bit)){

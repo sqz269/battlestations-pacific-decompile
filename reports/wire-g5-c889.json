@@ -1,0 +1,112 @@
+{
+  "goal": 5,
+  "chain": 889,
+  "worker": "agent/g5-w8",
+  "base": "24d868c0d1a523957d835fff650e94e633e16cf0",
+  "picked": "Modified Lua allocator and process-lifetime pool B on the native renderer Lua bootstrap path",
+  "totals": {
+    "source_wired_before": 10741,
+    "source_wired_after": 10744,
+    "new_existing_reconstructed_functions": 3,
+    "restored_modified_library_callbacks": 1,
+    "note": "wire_readiness excludes the Lua-library address A6A1D0 from rows; its linked callback reference and pool calls are independently verified by call_graph. Global optimized called totals are not a controlled before/after comparison after the shared storage_pool header rebuild."
+  },
+  "rows": [
+    {
+      "native": "00bd1680",
+      "status": "wired",
+      "host_site": "src/storage_pool.cpp::game_lua_storage_pool (from lua_allocate_00a6a1d0)",
+      "reason": "Existing recovered configuration produces one permanent semantic pool B used for real Lua allocations, with its binary constants unchanged.",
+      "built_call_site": "105bc1a3",
+      "reachable": true
+    },
+    {
+      "native": "00bd1780",
+      "status": "wired",
+      "host_site": "src/storage_pool.cpp::lua_allocate_00a6a1d0",
+      "reason": "Existing body allocates each nonzero real Lua nsize from the retained pool B before any old-block release.",
+      "built_call_site": "105bc09b",
+      "reachable": true
+    },
+    {
+      "native": "00bd17a0",
+      "status": "wired",
+      "host_site": "src/storage_pool.cpp::lua_allocate_00a6a1d0",
+      "reason": "Existing body releases the actual prior Lua block using its osize after copying; small returns observe the canonical process 01090AA4 gate.",
+      "built_call_site": "105bc0df",
+      "reachable": true
+    },
+    {
+      "native": "00a6a1d0",
+      "status": "wired",
+      "host_site": "src/native_lua_bootstrap.cpp::open_native_lua_state_00b6a020 -> lua_newstate allocator callback",
+      "reason": "Restores the modified library allocate/copy/sized-free schedule instead of stock realloc/free; null userdata and live Lua allocation sizes are passed unchanged.",
+      "built_reference_site": "10609126",
+      "reachable": true,
+      "library_callback_not_new_readiness_credit": true
+    },
+    {
+      "native": "006b8740",
+      "status": "skipped",
+      "host_site": "src/native_mission_lua_machine_storage.cpp::construct_native_mission_lua_machine_006b8740",
+      "reason": "Missing a game-reachable producer/caller of this existing native-storage constructor; its allocator conversion is built and fixture-tested partial progress only."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MissionTeardown::close_result_gui",
+      "reason": "Missing the actual game/movie-screen/input/interface listener object graph required by SoundLoadTransitionContext; teardown currently records the transition."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (controller state-message candidate)",
+      "reason": "No actual native controller-state message producer was established; this is a network snapshot path outside the chosen single-player allocator work."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (controller snapshot candidate)",
+      "reason": "Missing the actual director snapshot producer and delivery path; network snapshot work was not selected."
+    },
+    {
+      "native": "0042c4c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (camera shake candidate)",
+      "reason": "Missing a game-reachable actual mover storage producer with the six shake inputs; nearby host shake services remain unreached."
+    },
+    {
+      "native": "00ab0fe0",
+      "status": "skipped",
+      "host_site": "src/oct18b_nc_mid.cpp::gui_color_equal_00ab0fe0",
+      "reason": "Missing a live native color-comparison caller; the recovered direct caller 00AB1040 is undefined code and no equivalent runtime comparison was established."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp::set_text_editor_active_00a966e0",
+      "reason": "Missing an active game editor owner plus platform/input bindings; no existing game host activation call was found."
+    }
+  ],
+  "evidence": {
+    "original": [
+      "bsp.py show 00a6a1d0 --asm: allocate even for same-size, unsigned minimum, signed JLE copy gate, nonzero osize release",
+      "bsp.py show 00a6a260 --asm: null userdata and A6A1D0 passed to lua_newstate",
+      "bsp.py show 00bd1780: pool B getter then sized allocate, not an allocator-hook installer"
+    ],
+    "entry_path": "WinMainCRTStartup -> GameStartupHost initialization -> GameNativeRendererApplication::construct -> construct_native_renderer_00b32410 -> construct_native_renderer_lua_owner_00b1bb90 -> open_native_lua_state_00b6a020 -> lua_allocate_00a6a1d0",
+    "pool_lifetime": "Pool B and its CRT backing allocator are retained through process/CRT retirement. Canonical GameNativeStringProcess supplies the actual shared return gate.",
+    "build": "scripts/build.ps1: PASS; all four CTests PASS",
+    "fixture": "tests/wire_g5_c889_lua_allocator_probe.cpp: PASS; same-size allocate-before-free, byte preservation, small/large threshold crossing, exact-sized reuse, actual process return gate, real Lua GC and native mission-machine close",
+    "fixture_build": "MSVC Win32: cl /std:c++20 /EHsc /MD /O2 /Iinclude /Ibuild/win32/_deps/lua511-src/src tests/wire_g5_c889_lua_allocator_probe.cpp /Fe:local/output/c889-lua-probe.exe /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib gdi32.lib ole32.lib advapi32.lib",
+    "call_graph": "All four target functions explicitly REACHABLE after final build; callback is passed by reference to linked Lua, not called directly by the bootstrap. Wrapper noinline declarations retain actual calls in optimized builds.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limitations": [
+    "Semantic SizedStoragePool is reused; this does not claim the raw DAT_01090AAC layout or original fastcall callback ABI.",
+    "Source arena bounds failure returns null to Lua while preserving the old allocation; native unchecked arena overrun is not reproduced.",
+    "The native-storage mission Lua owner still needs its actual game producer. Other stock luaL_newstate host/library users were not converted.",
+    "No game launch or visual/runtime validation performed."
+  ]
+}

@@ -108,4 +108,14 @@ private:
 void* game_allocate_00bd1780(SizedStoragePool& pool, std::uint32_t size);
 void game_release_00bd17a0(SizedStoragePool& pool, void* block, std::uint32_t size) noexcept;
 
+// One process-lifetime pool B for the native Lua owners. This is the semantic
+// pool above, not a raw mapping of DAT_01090AAC. It survives every lua_close.
+SizedStoragePool& game_lua_storage_pool();
+
+// Modified lauxlib l_alloc, 00A6A1D0..00A6A228. The original is fastcall
+// (ECX=unused userdata, EDX=old block, stack=osize,nsize, RET8); this cdecl
+// adapter matches the linked Lua 5.1 allocator ABI. Sizes are actual Lua sizes.
+void* lua_allocate_00a6a1d0(void* userdata, void* block,
+    std::size_t old_size, std::size_t new_size) noexcept;
+
 }
