@@ -46,5 +46,19 @@
     "graph": "call_graph.py --build disables inlining/ICF: all four individual helpers reachable, capacity has2 direct sites, grow1, append1 and reserve1 before legacy dispatcher forwarding. Real callers are Model initialize00B74B80 and allocate00B74D00. Pool allocation is also reached through production renderer post-effect factories00B4E470/00B4E840.",
     "graph_caveat": "Normal Release ICF folds capacity with another identical body; the separate analysis build removes that ambiguity.",
     "limits": "Built-call reachability and focused host-storage proof; no game run, native ABI replacement, allocator-failure/reentry execution or gameplay validation claimed. No float math changed."
+  },
+  "merge_repair": {
+    "prior_head": "f4d127dd03cad50d3032420d0eea15aa903a82ff",
+    "merged_origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "resolved_files": ["src/scene_graph2_cc13.cpp", "config/reconstruction/00b70000.jsonl"],
+    "source_resolution": "Keep incoming Camera early-return dispatch branches and existing Model if/else fallback branches; every selected address calls its one canonical body.",
+    "ledger_resolution": "tools/merge_resolve.py conservatively refused both-side base-record rewrites. Verified disjoint modified address sets (four Model versus three Camera entries in this shard), then used the same module's address-aware three_way_rows resolver. Asserted every resulting address/row multiset equals the correct parent; no records lost or superseded records resurrected. The normal resolver then reports zero remaining conflicts.",
+    "on_build": "python tools/off_switch_on_build.py --log local/output/c880-merge-on-build.log passed, zero diagnostics, all four CTests passed; both temporary headers restored exactly to the index.",
+    "normal_build": "scripts/build.ps1 after ON restoration passed all four CTests; final normal executable matches restored source configuration.",
+    "analysis_build": "call_graph.py --build passed after merge: 7411 reconstructed addresses called from entry-reachable code; no inlining or identical-code folding.",
+    "model_helper_calls": {"00b74570": true, "00b745c0": true, "00b747d0": true, "00b74860": true},
+    "focused_probe_refreshed": "cmd /c local/c880-probe.cmd passed against rebuilt merged bsp_core; all 1025 real allocations, growth, payload/trailer and retained-capacity checks pass.",
+    "wire_readiness": {"wired": 10743, "callees_done_no_wired_caller": 8529, "ready": 1202, "blocked_on_callees": 51, "unknown_no_identifier": 200, "all_four_model_helpers_called": true},
+    "historical_count_note": "Top-level 10730->10734 is this packet's original isolated delta; merge validation also includes upstream work."
   }
 }
