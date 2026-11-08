@@ -390,7 +390,8 @@ public:
         bsp::load_bomb_class_fields(row_, resources_, descriptor_);
     }
     void read_number_field_007003b0(const char* field_name, float& out) override {
-        out = row_.float_value(field_name, 0.0f);
+        // bsp.py show 007003b0: plain 00B66270 coerces numeric strings.
+        out = row_.number_value(field_name);
     }
     void read_string_field_004fe080(const char*, std::uint32_t& out_handle) override {
         ++unresolved_handles;

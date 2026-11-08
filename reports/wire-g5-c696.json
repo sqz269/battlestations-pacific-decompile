@@ -102,7 +102,7 @@
       {
         "id": "P2-numeric-string-coercion",
         "status": "fixed",
-        "change": "WeaponClassRowView now separates coercing number_value (plain 00B66270) from exact-LUA_TNUMBER float_value (00B66330) and integer_value (00B66380). All existing class-reader call sites select the native accessor, including Blast, torpedo, depth-charge, rocket, paratrooper and water-mine reads.",
+        "change": "WeaponClassRowView now separates coercing number_value (plain 00B66270) from exact-LUA_TNUMBER float_value (00B66330) and integer_value (00B66380). Class-reader call sites were separated by native accessor, including Blast, torpedo, depth-charge, rocket, paratrooper and water-mine reads.",
         "evidence": [
           "bsp.py show 00b66330",
           "bsp.py show 00b66380",
@@ -112,7 +112,8 @@
           "bsp.py show 00809cb0",
           "bsp.py show 0085f500"
         ],
-        "regression": "FlyTime=\"2\" retains FLT_MAX; DamageMax=\"9\" retains numeric DamageMin=7; BlastRange=\"3\" and BlastDamageMin=\"4\" still coerce, while BlastDamageMax=\"8\" retains 4. Integer numeric strings retain the supplied fallback."
+        "regression": "FlyTime=\"2\" retains FLT_MAX; DamageMax=\"9\" retains numeric DamageMin=7; BlastRange=\"3\" and BlastDamageMin=\"4\" still coerce, while BlastDamageMax=\"8\" retains 4. Integer numeric strings retain the supplied fallback.",
+        "round_2_correction": "The separate read_number_field_007003b0 callback for CloseDuration was missed in round 1; review_round_2 corrects it and extends the focused probe to exercise the actual paratrooper reader."
       },
       {
         "id": "P2-integer-conversion",
@@ -156,5 +157,41 @@
     },
     "choice": "The CRT SSE2 conversion selector is projected from IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE), following the existing mission Lua and decal hosts. The supplied helper retains both native conversion tails.",
     "left": "The original report left/skipped items remain; no new rows were selected."
+  },
+  "review_round_2": {
+    "review_run": 1581,
+    "base_head": "ac65d94cc66a0607e6c88f49f378d840338bbe9a",
+    "finding": {
+      "id": "P2-close-duration-numeric-string-coercion",
+      "status": "fixed",
+      "change": "ParatrooperClassRowReader::read_number_field_007003b0 now calls row_.number_value(field_name), preserving plain GetNumber coercion for CloseDuration.",
+      "evidence": "bsp.py show 007003b0: GetByName then coercing 00B66270, storing the float result. src/path_movcam_seg46_argon.cpp:1417 selects this callback for CloseDuration.",
+      "regression": "Extended the focused numeric probe with ParatrooperClassRowReader extracted verbatim from the host source and a call to the built mparatrooper_class_read_lua_fields_007ac780. With CloseDuration=\"2\", the probe failed before the fix (observed 0), then passed after the fix (observed 2)."
+    },
+    "validation": {
+      "build": "./scripts/build.ps1 passed, including all 4 CTest groups; local/review2-build.log confirms game_hosts_gunnery.cpp compiled.",
+      "numeric_probe": "PASS: local/review2_numeric_probe.exe, built with /fp:strict and /MANIFEST:EMBED. Preserves the round 1 checks and adds CloseDuration=\"2\" -> 2 through the actual paratrooper class reader and its 007003B0 adapter. Lua stack restoration still passes.",
+      "numeric_probe_source": "local/review2_numeric_probe.cpp",
+      "numeric_probe_generator": "local/review2_make_probe.py extends the round 1 probe and extracts both host adapter classes verbatim from the current source.",
+      "numeric_probe_source_sha256": "5c58886e3bfa2eef5cc26fcfe80ab9baa790ec0b9a8b4f4ca23c2b1f71777e89",
+      "pc24_lint_staged": "0 findings, 1 source file",
+      "call_graph": "Refreshed after the fixed build: 41772/41926 functions reachable; 5348/5944 reconstructed addresses called; 216783 edges.",
+      "entry_reachability": [
+        "007AC780: REACHABLE, call from GameGunneryHost::Impl::bullet_class_descriptor at 100BA37F",
+        "ParatrooperClassRowReader::read_number_field_007003b0 at 100D2840: REACHABLE via the actual reader vtable reference at 10711238",
+        "Independent review 1581 confirmed all eight claimed rows entry-reachable, including inlined implementations, and accepted the round 1 integer-conversion fix."
+      ],
+      "readiness_before": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_after": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "readiness_log": "local/review2-readiness.log",
+      "game_run": "Not performed; build, focused probe and executable call-graph evidence only."
+    },
+    "scope": "One callback correction and report update; no new rows or native-address bodies. Original skipped rows and unresolved resources remain."
   }
 }
