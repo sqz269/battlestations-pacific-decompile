@@ -682,6 +682,14 @@ template<> void* NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate() {
         &append_native_gui_sound_pool_table_00acd430>(storage_);
 }
 
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
+    // ACD2F0 inlines ACD1D0 on the retained F8C0EC+28h table after freeing
+    // its slabs. Reuse that one body before CS/list teardown; keep the native
+    // dangling header words and replace the common free on this path once.
+    destroy_pool<GuiSoundPoolTraits, &free_native_gui_sound_pool_table_00acd1d0>(
+        allocator_list_, storage_);
+}
+
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.

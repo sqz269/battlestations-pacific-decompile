@@ -12,6 +12,16 @@ namespace bsp {
 // Evidence: bsp.py show ACD200/ACD250/ACD430/ACD4C0 and ACD530/ACD6B0.
 // The constructor/allocator inline the reserve/append schedules. These entries
 // reuse those bodies without adding a table, lock, allocation or second run.
+// 00ACD1D0: ECX points to the actual {data,count,capacity} header, RET.
+// bsp.py show 00ACD1D0: capture data, free it when nonnull, leave all words
+// unchanged. ACD2F0 inlines this after slab retirement and before CS teardown.
+// This is a source substitution for that inline schedule, with a new C++ ABI.
+__declspec(noinline) inline void free_native_gui_sound_pool_table_00acd1d0(
+    void* actual_table) noexcept {
+    void* const captured = *static_cast<void* const volatile*>(actual_table);
+    if (captured != nullptr) singleton_lifetime_free(captured);
+}
+
 __declspec(noinline) inline void set_native_gui_sound_pool_table_capacity_00acd200(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     // ACD200 has AA6FA0's exact capacity-before-allocation, null-tested
