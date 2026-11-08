@@ -1,5 +1,6 @@
 // GameUnitsHost::motion_step_00825f20, the units fixed-step motion tick (split out of game_hosts_units.cpp).
 #include "bsp/game_hosts_units_internal.hpp"
+#include "bsp/band_0071_cc13.hpp"
 #include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
 #include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
 #include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
@@ -20533,12 +20534,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++owner_.summary.pilot_thinks;
                         }
 
-                        // 007BB920, gated on unit+A14h. The two overrides it
-                        // applies - air brake full when the flight state is not
-                        // one of {7,6,4,5}, throttle full under a vtable test -
-                        // are not modelled: this host's plane is always in state
-                        // 7 for the first, and the second needs 00C24h and a
-                        // vtable slot it does not have.
+                        // 007BB920, gated on the live unit+A14h pending byte.
                         if (!unit_.pilot_command_pending_a14) {
                             return;
                         }
@@ -20547,8 +20543,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // unit_flag_0061), so the gate is open.
                             // 007BB932-007BB954: outside flight states 7/6/4/5 the
                             // air brake command is forced to 1.0 (00D7A24C).
-                            const int m = unit_.plane_control_mode_900;
-                            if (m != 7 && m != 6 && m != 4 && m != 5) {
+                            // Goal 5 chain 873: 007BB938..007BB94A and 0074E230
+                            // test the same {7,6,4,5} set (bsp.py show 007bb920 /
+                            // 0074e230). Reuse the existing predicate on the live
+                            // unit+900h value; native 0074E230 is bool __thiscall
+                            // (unit), RET 0, while its typed body takes the state.
+                            const bool admits_ai =
+                                bsp::band_0071_cc13::plane_state_admits_ai_0074e230(
+                                    unit_.plane_control_mode_900);
+                            if (!admits_ai) {
                                 unit_.pilot_command_block[bsp::kPilotCmdAirBrake] = 1.0f;
                                 ++unit_.pc_air_brake_overrides;
                             }
