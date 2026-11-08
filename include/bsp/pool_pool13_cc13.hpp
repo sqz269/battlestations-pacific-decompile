@@ -7,12 +7,14 @@
 //
 // Objects are reached through byte offsets in their Win32 layout. Every call
 // the image makes goes through Pool13Host, named for its target address, at the
-// same point and with the same arguments. Build-tested only, not wired into a
-// game host, not ABI-compatible replacements (the image passes this in ECX).
+// same point and with the same arguments. The runway-class reader also has a
+// typed field view used by the live descriptor loader. These are not
+// ABI-compatible replacements (the image passes this in ECX).
 // Names are hypotheses.
 
 #include <cstddef>
 #include <cstdint>
+#include "bsp/vehicle_class_fields.hpp"
 
 namespace bsp::pool_pool13_cc13 {
 
@@ -78,8 +80,15 @@ bool air_ops_block_is_ready_to_send_planes_006bf620(Object block) noexcept;
 void air_ops_holder_debug_draw_runway_distances_006c2400(Pool13Host& host, Object holder);
 // 006C4F70: re-point an air-ops slot's observed target.
 void air_ops_slot_set_target_006c4f70(Pool13Host& host, Object slot, Object target);
-// 006D0B80: runway class Lua fields.
-void runway_class_read_lua_fields_006d0b80(Pool13Host& host, Object runway_class, LuaObject* row);
+struct RunwayClassFields {
+    float width_138{0.0f};
+    float length_13c{0.0f};
+};
+// 006D0B80, ECX=descriptor, stack LuaObject* row, RET 4. The same body over
+// the descriptor's retained semantic fields: run 00960230 once, then the two
+// bare Number reads, storing each float before releasing its Lua reference.
+void runway_class_read_lua_fields_006d0b80(VehicleClassFieldHost& host,
+    const GuiLuaRef& row, VehicleClassBaseFields& base, RunwayClassFields& runway);
 // 006D1EF0: unit alive-and-active test (vtable slot +124h).
 std::uint32_t ship_unit_is_alive_and_active_006d1ef0(Object unit) noexcept;
 // 006D1F20: empty float-argument slot.

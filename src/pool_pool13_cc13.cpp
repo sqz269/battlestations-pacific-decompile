@@ -1,5 +1,5 @@
-// Packet cc13-pool13: see include/bsp/pool_pool13_cc13.hpp. Build-tested only;
-// nothing here is wired into a game host.
+// Packet cc13-pool13: see include/bsp/pool_pool13_cc13.hpp. Goal 5 chain 778
+// binds the runway-class reader to the live descriptor loader.
 #include "bsp/pool_pool13_cc13.hpp"
 
 namespace bsp::pool_pool13_cc13 {
@@ -257,19 +257,20 @@ void air_ops_slot_set_target_006c4f70(Pool13Host& host, Object slot, Object targ
 // (00CF8AE8); +13Ch = "RunwayLength" (00CF8AD8); each FSTP float of the
 // 00B66270 ST0 result, the temporary destructed after each.
 // EH: state 0 over the first temporary, 1 over the second, -1 between.
-// Unwinding is not modelled. src/vehicle_class_fields.cpp lists the runway
-// class among its table-driven readers for the live host.
+// Goal 5 chain 778: replace the unused raw-layout API with a typed view of the
+// same body, so the live Lua row writes fields owned by its real descriptor.
+// Evidence: bsp.py show 006d0b80, complete export. Bare Number is intentional;
+// these reads have no NumberOr fallback. Native storage/SEH/ABI are not claimed.
 // ---------------------------------------------------------------------------
-void runway_class_read_lua_fields_006d0b80(Pool13Host& host, Object runway_class, LuaObject* row) {
-    host.vehicle_class_read_lua_fields_00960230(runway_class, row);
-    LuaObject width;    // [ESP+8h]
-    at<float>(runway_class, 0x138) =
-        static_cast<float>(host.lua_get_number_00b66270(host.lua_get_by_name_00b67800(row, &width, "RunwayWidth")));
-    host.lua_object_destruct_00b67700(&width);
-    LuaObject length;   // [ESP+1Ch]
-    at<float>(runway_class, 0x13C) =
-        static_cast<float>(host.lua_get_number_00b66270(host.lua_get_by_name_00b67800(row, &length, "RunwayLength")));
-    host.lua_object_destruct_00b67700(&length);
+void runway_class_read_lua_fields_006d0b80(VehicleClassFieldHost& host,
+    const GuiLuaRef& row, VehicleClassBaseFields& base, RunwayClassFields& runway) {
+    read_vehicle_class_base_fields_00960230(host, row, base);
+    const GuiLuaRef width = host.get_by_name(row, "RunwayWidth");
+    runway.width_138 = vehicle_class_number_00b66270(host.inspect(width));
+    host.release(width);
+    const GuiLuaRef length = host.get_by_name(row, "RunwayLength");
+    runway.length_13c = vehicle_class_number_00b66270(host.inspect(length));
+    host.release(length);
 }
 
 // ---------------------------------------------------------------------------
