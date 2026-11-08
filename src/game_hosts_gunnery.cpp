@@ -14,6 +14,7 @@
 #include "bsp/native_damageable_class_construction.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_deferred_entity_lock.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include "bsp/oct18_tail_c.hpp"
@@ -15411,10 +15412,14 @@ private:
 
 // Packet cc13-hitq, kHitDeferredDispatchCc13Bound only (nothing reaches these
 // two OFF). 00926E80: append at head[+4h] under the 00924990 lock (one thread
-// here, so no lock), copy the record and the direction. The write-only byte
+// here), copy the record and the direction. The write-only byte
 // 00E18684 and the discarded shot->vtable[5Ch](29h) at 00926F65 have no effect
 // to carry.
 void GameGunneryHost::Impl::queue_deferred_hit(DeferredHit&& node) {
+    // 00926EA2..00926ED0: the real hit producer now acquires the lazy
+    // F899EC owner and its canonical tracked section. Preserve the existing
+    // record projection until the complete native 00926E80 payload is retained.
+    bsp::NativeDeferredEntityEventQueueGuard guard;
     if (deferred_hits == nullptr) deferred_hits = std::make_unique<std::deque<DeferredHit>>();
     deferred_hits->push_back(std::move(node));
     ++deferred_hits_queued;

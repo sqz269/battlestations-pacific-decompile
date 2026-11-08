@@ -16,6 +16,7 @@
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
+#include "bsp/native_deferred_entity_lock.hpp"
 #include "bsp/native_pending_registry_scalar_retirement.hpp"
 #include "bsp/native_entity_registry_lifetime.hpp"
 #include "bsp/native_mission_entity_lock.hpp"
@@ -631,6 +632,12 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
         delete_native_pending_entity_lock_009256d0(
             static_cast<NativePendingEntityLockOwner*>(owner), flags,
             process_native_pending_entity_lock_00f899e8());
+        return;
+    case 0x00d190c8:
+        // Actual F899EC owner registered by 00924990. Retire the popped
+        // allocation even if the current publication differs; 00925740
+        // unconditionally clears that SAME process cell after section release.
+        retire_native_deferred_entity_lock(owner, flags);
         return;
     case 0x00cf7e74:
         if (bindings.actual_observer_dispatch_owner_00e198dc != nullptr) {
