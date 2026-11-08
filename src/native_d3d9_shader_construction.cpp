@@ -75,7 +75,12 @@ void register_shader(void* renderer,void* shader,Registry* a,bool pixel) {
     if(a) {begin(*a,array,pixel?0x00b289f0u:0x00b289a0u);a->shader=shader;}
     try {
         if(a)a->native_site=pixel?0x00b289feu:0x00b289aeu;
-        remove(array,&shader);
+        // bsp.py show 00B289A0/00B289F0: the registration bodies call
+        // 00B253E0/00B25450 on this renderer's +1AC4/+1AD0 registry and
+        // the address of the incoming shader pointer, before testing capacity.
+        // Reuse those entries instead of bypassing them through their helper.
+        if (pixel) remove_native_pixel_shader_registry_00b25450(array, &shader);
+        else remove_native_vertex_shader_registry_00b253e0(array, &shader);
         const auto capacity=word(array,8);
         if(word(array,4)==capacity) {
             auto request=signed_word(capacity*2u);if(request<=1)request=1;
@@ -110,8 +115,8 @@ void NativeD3d9ShaderConstructionOperation::acknowledge_diagnostic_cleanup() noe
         (registry->phase == Registry::Phase::running || registry->phase == Registry::Phase::failed))) std::terminate();
     phase = Phase::diagnostic_retired;
 }
-bool remove_native_vertex_shader_registry_00b253e0(void* a, const void* p) noexcept { return remove(a, p); }
-bool remove_native_pixel_shader_registry_00b25450(void* a, const void* p) noexcept { return remove(a, p); }
+__declspec(noinline) bool remove_native_vertex_shader_registry_00b253e0(void* a, const void* p) noexcept { return remove(a, p); }
+__declspec(noinline) bool remove_native_pixel_shader_registry_00b25450(void* a, const void* p) noexcept { return remove(a, p); }
 void reserve_native_vertex_shader_registry_00b22dd0(void* a, std::int32_t n, Registry& f) { reserve(a, n, &f, false); }
 void reserve_native_pixel_shader_registry_00b22e30(void* a, std::int32_t n, Registry& f) { reserve(a, n, &f, true); }
 void register_native_vertex_shader_00b289a0(void* r, void* s, Registry& f) { register_shader(r, s, &f, false); }

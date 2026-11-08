@@ -1,0 +1,344 @@
+{
+  "goal": 5,
+  "chain": 700,
+  "slot": "g5-w4",
+  "run": 1494,
+  "branch": "agent/g5-w4",
+  "baseline_head": "5492ebc89c",
+  "scope": "Compose the original shader-registration duplicate-removal calls using the existing bodies and the actual application renderer registries.",
+  "count_boundary": "The two removers were already entry-reachable through destruction. These are additional original registration edges, not newly reachable addresses. No reachability increase is claimed.",
+  "before": {
+    "readiness_wired": 10448,
+    "call_graph_reconstructed_called": 5874,
+    "call_graph_reconstructed_total": 5914,
+    "removal_call_sites": {
+      "00b253e0": 1,
+      "00b25450": 1
+    }
+  },
+  "after": {
+    "readiness_wired": 10450,
+    "call_graph_reconstructed_called": 5874,
+    "call_graph_reconstructed_total": 5914,
+    "removal_call_sites": {
+      "00b253e0": 2,
+      "00b25450": 2
+    }
+  },
+  "evidence": [
+    "bsp.py show 00b289a0 --lines 55: original calls 00B253E0 before capacity testing.",
+    "bsp.py show 00b289f0 --lines 55: original calls 00B25450 before capacity testing.",
+    "bsp.py show 00b253e0/00b25450 --lines 60: same first-match swap removal on actual array and incoming pointer cell.",
+    "Post-build call_graph.py who 00b253e0/00b25450: registration helper and destructor are both reachable callers."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release",
+    "ctest": "4/4 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "diff_check": "passed",
+    "float_math_changed": false,
+    "new_tests": 0,
+    "new_address_bodies": 0,
+    "game_run": false,
+    "runtime_boundary": "Static executable call-graph evidence; no game launch or gameplay validation."
+  },
+  "rows": [
+    {
+      "native": "00b253e0",
+      "status": "wired",
+      "host_site": "src/native_d3d9_shader_construction.cpp: register_shader / register_native_vertex_shader_00b289a0",
+      "baseline_called": true,
+      "newly_called": false,
+      "change": "Reuse the existing vertex remover on the actual renderer+1AC4 registry and incoming shader pointer cell before capacity testing; replaces the private-helper bypass.",
+      "call_sites_before": 1,
+      "call_sites_after": 2,
+      "new_call_site": "106c1a2e"
+    },
+    {
+      "native": "00b25450",
+      "status": "wired",
+      "host_site": "src/native_d3d9_shader_construction.cpp: register_shader / register_native_pixel_shader_00b289f0",
+      "baseline_called": true,
+      "newly_called": false,
+      "change": "Reuse the existing pixel remover on the actual renderer+1AD0 registry and incoming shader pointer cell before capacity testing; replaces the private-helper bypass.",
+      "call_sites_before": 1,
+      "call_sites_after": 2,
+      "new_call_site": "106c1a27"
+    },
+    {
+      "native": "00b289a0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_construction.cpp: register_native_vertex_shader_00b289a0",
+      "reason": "Already entry-reachable at baseline; this packet restores its original removal edge and does not claim a new reachable registration body."
+    },
+    {
+      "native": "00b289f0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_construction.cpp: register_native_pixel_shader_00b289f0",
+      "reason": "Already entry-reachable at baseline; this packet restores its original removal edge and does not claim a new reachable registration body."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Literal body needs original writable F87574/F87578/F8757C publications; no genuine runtime binding for those cells was established."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director construction",
+      "reason": "No actual native director owner+28 endpoint and tick-parent constructor contract was built in this packet."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "Loading screen still lacks a renderer-bound queue reset/cycle provider; recording the callback is insufficient."
+    },
+    {
+      "native": "00aa4040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::start_render_worker",
+      "reason": "No real loading-screen renderer descriptor and worker-start service binding was built."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_enum_add.cpp: add_native_scene_property_enum_symbol_008f3a20",
+      "reason": "Existing source/provider calls already reach this body; no new enum-add producer was introduced."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_merge.cpp: merge_native_scene_property_bag_008f54f0",
+      "reason": "Already called through existing scene-property merge paths; no new entry reach is claimed."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scores",
+      "reason": "Native score-table reader is a debug text overlay; no gameplay consumer justifies manufacturing a parallel table."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scores",
+      "reason": "No live native score-list entries exist, and the documented reader is a debug text overlay."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture resource budget",
+      "reason": "Actual resource-budget publication, unit ResourceUsage and queued spawn records are not bound here."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/entity_lifecycle_tails.cpp: marker_drop_unit_006de3f0",
+      "reason": "No concrete marker-owner/drop consumer binding was established for this outcome projection."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: helmsman_backfill_age_008141a0",
+      "reason": "No live controller helm-message timestamp and clamp producer was bound for the age calculation."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "weapon_animation returns zero, leaving no actual timed-entry instance to mutate."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: voice fade callback",
+      "reason": "No full retained active VoicePlaybackManager and VoiceLineHost fade-service binding was established."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp: destroy_native_land_approach_009b2c80",
+      "reason": "Registry cleanup is already composed into the raw approach destructor, whose actual live approach owner is not provided by this packet."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "No live raw registry constructor producer was built; constructing an unused registry would not wire gameplay."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Pre-load checkpoint comparison remains false and does not supply the real BSP_Chk_Save owner/current mission key."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director-state snapshot provenance",
+      "reason": "No routed controller-state message producer and consumer was built; copy-only round trips would add no real behavior."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "No real snapshot producer/transport owner was found; flattened scene flags alone do not supply the snapshot contract."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: resize_native_vehicle_pointer_array_005471b0",
+      "reason": "The existing resize body already composes this reserve; no additional live activation/provider path was introduced."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "No live camera+38C to entity+538 to class+BC native array owner was bound."
+    },
+    {
+      "native": "008dc7a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_56_to_62.cpp: destroy_native_session_message56_008dc7a0",
+      "reason": "No live native type56 objective-message producer/send lifetime was established."
+    },
+    {
+      "native": "008dc980",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_56_to_62.cpp: destroy_native_session_message57_008dc980",
+      "reason": "No live native type57 objective-message producer/send lifetime was established."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon publication",
+      "reason": "No NativeReconDirtyAccess binding for real slot dirty bytes, player mapping and world invalidation was built."
+    },
+    {
+      "native": "00805d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon shell publication",
+      "reason": "The host publishes empty recon maps and owns no populated native recon-slot lists to categorize."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp: declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "This Lua declaration requires the actual world+1A0C Lua owner; the inspected library path reads file enums instead."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/gui_type_dispatch.cpp: GuiTypeDispatchFactory::Shared::create",
+      "reason": "Current canonical widget factory has no scrollbar raw-owner/property/lifetime integration."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/gui_type_dispatch.cpp: GuiTypeDispatchFactory::Shared::create",
+      "reason": "Current canonical widget factory has no button raw-owner/property/lifetime integration."
+    },
+    {
+      "native": "00b580c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader_constant_rows_resize_00b580c0",
+      "reason": "No entry-reachable MSHD constant-row owner and resize service binding was established."
+    },
+    {
+      "native": "00b58160",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: shader_constant_list_append_00b58160",
+      "reason": "No entry-reachable MSHD constant-list producer was established."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Existing resize composes reserve, but no new positive-count distortion-record producer was built."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its original caller is the unit debug inspector; skip debug-only code."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading work-item retirement",
+      "reason": "No live native loading-queue/job owner and concrete frontend loading Host graph was built."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading job FileBlock preparation",
+      "reason": "No actual live native loading job/FileBlock producer was established."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading work-item submission",
+      "reason": "No real loader/work-item producer and callback ownership graph was built."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: package loading enqueue",
+      "reason": "No actual loader owner/package queue producer was introduced."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading queue retirement",
+      "reason": "No actual live loading queue and front job retirement contract was built."
+    },
+    {
+      "native": "004b12a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_class_resolution.cpp: construct_native_soldier_class_004b12a0",
+      "reason": "No live raw SoldierClass loading producer was bound to the existing constructor."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: get_native_soldier_registry_004b1330",
+      "reason": "No live SoldierClass registry-publication/getter consumer path was introduced."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp: reset_native_render_remap_textures_00b0feb0",
+      "reason": "No live remap-reset service entry was bound for the real render-resource owner/context."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: main scene submission metadata",
+      "reason": "The source already invokes this body; its main-scene submission route was not made entry-reachable in this packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "Current body selects a slot only; the original path-removal tail and a real remove-command producer need integration."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: path_drop_last_point_0071f570",
+      "reason": "No live remove-command producer with the selected retained DirectorPathObject was bound."
+    },
+    {
+      "native": "00b268a0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: unregister_native_vertex_shader_00b268a0",
+      "reason": "Existing destructor source already invokes this wrapper, which is inlined; no new unregister path is claimed."
+    },
+    {
+      "native": "00b268c0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: unregister_native_pixel_shader_00b268c0",
+      "reason": "Existing destructor source already invokes this wrapper, which is inlined; no new unregister path is claimed."
+    }
+  ]
+}
