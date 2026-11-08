@@ -6,6 +6,9 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/sound_retained_record.hpp"
+#include "bsp/sound_cc13.hpp"
+#include "bsp/sound_resource_cache.hpp"
+#include "bsp/sound_system_owner.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -3239,24 +3242,31 @@ void font_registry_destroy_00ac36f0(void* self, CWord& image_f8bf44, const FontR
     image_f8bf44 = 0;
     c_write<CWord>(self, 0, 0x00ce3818);
 }
-void sound_cache_resize_00a845a0(void* array, std::int32_t requested, const SoundCacheBindings& b) {
-    if (requested > c_read<std::int32_t>(array, 8)) b.reserve_00a84450(array, requested);
-    for (std::int32_t i = c_read<std::int32_t>(array, 4); i < requested; ++i) {
-        void* const record = c_at(c_read<void*>(array), static_cast<CWord>(i) * 0x2c);
-        if (record) {
-            c_write<CWord>(record, 0, 0);
-            c_write<CWord>(record, 4, 0);
-            c_write<void*>(record, 0xc, b.sentinel_004c3020(c_at(record, 8)));
-            c_write<CWord>(record, 0x10, 0);
-            for (CWord offset = 0x24; offset >= 0x14; offset -= 4) c_write<CWord>(record, offset, 0);
-        }
+__declspec(noinline) void sound_cache_resize_00a845a0(
+    SoundResourceOwner& owner, std::int32_t requested) {
+    // bsp.py show 00A845A0 --asm: A845C0..CA reserves only above capacity;
+    // A845CF..A84633 constructs records from the current count to requested;
+    // A84640..56 destroys the tail in reverse without releasing resources.
+    // Bind that single body to the cache the VFS/FMOD loader already owns,
+    // replacing its cleanup-only shrink fragment rather than a second path.
+    if (requested > owner.capacity_0c)
+        sound_cc13::sound_cache_records_reserve_00a84450(owner, requested);
+    const auto count = static_cast<std::size_t>(requested);
+    while (owner.records_04.size() < count) {
+        // The existing projection supplies the empty name/list and zero
+        // metadata. Native growth leaves +08/+28 unwritten; this C++ model
+        // initializes those otherwise-indeterminate fields, as its loader
+        // already does. It never creates or retains an FMOD resource here.
+        owner.records_04.emplace_back();
     }
-    while (requested < c_read<std::int32_t>(array, 4)) {
-        const CWord count = c_read<CWord>(array, 4) - 1;
-        c_write<CWord>(array, 4, count);
-        b.destroy_record_00a842e0(c_at(c_read<void*>(array), count * 0x2c));
+    while (count < owner.records_04.size()) {
+        // Native decrements count BEFORE storage destruction. The vector
+        // projection clears then pops; no native allocator callback observes
+        // that interval. Do not move the list-bearing record: a list move can
+        // allocate a sentinel during teardown. Capacity/accounting stay put.
+        clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
+        owner.records_04.pop_back();
     }
-    c_write<std::int32_t>(array, 4, requested);
 }
 void gui_list_visible_00a9cce0(void* self, CWord visible, const GuiListVisibilityBindings& b) {
     b.base_visible_00aa8530(self, visible);

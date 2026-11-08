@@ -11,6 +11,7 @@
 #include "bsp/native_session_message_participant_owner.hpp"
 #include "bsp/sound_cc13.hpp"
 #include "bsp/sound_resource_cache.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/scene_weather_cc13.hpp"
 #include "bsp/scoring_bodies.hpp"
@@ -5767,6 +5768,28 @@ int main() {
         check(erased && owner.records_04.size() == 63 && owner.records_04.data() == data
             && owner.capacity_0c == 128 && resource.references_04 == 7,
             "c831 sound-cache erase/pop preserve allocator and borrowed resource identities");
+
+        // c842: canonical resize must use the same owner, preserve retained
+        // records across both kinds of growth, and destroy storage without
+        // releasing borrowed resources or changing cache byte accounting.
+        owner.total_resource_size_10 = 123;
+        bsp::oct18_tail_c::sound_cache_resize_00a845a0(owner, 65);
+        const bool spare_growth = owner.records_04.data() == data
+            && owner.records_04.size() == 65 && owner.capacity_0c == 128
+            && owner.records_04.back().name_00.empty()
+            && owner.records_04.back().aliases_0c.empty()
+            && owner.records_04.back().metadata_14 == std::array<std::uint32_t, 5>{};
+        bsp::oct18_tail_c::sound_cache_resize_00a845a0(owner, 1);
+        bsp::oct18_tail_c::sound_cache_resize_00a845a0(owner, 130);
+        const bool retained = owner.records_04.size() == 130 && owner.capacity_0c == 130
+            && owner.records_04.front().name_00 == "bank-0"
+            && owner.records_04.front().aliases_0c == std::list<std::string>{"bank-0", "request-0"}
+            && owner.records_04.front().resource_28 == &resource;
+        bsp::oct18_tail_c::sound_cache_resize_00a845a0(owner, 0);
+        check(spare_growth && retained && owner.records_04.empty()
+            && owner.capacity_0c == 130 && resource.references_04 == 7
+            && owner.total_resource_size_10 == 123,
+            "c842 canonical sound-cache resize preserves resource ownership and accounting");
     }
 
     {
