@@ -47,6 +47,7 @@
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
 #include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
 #include "bsp/cc13_sweepB.hpp"                       // 005457C0 typed view (chain 75)
+#include "bsp/cc13_seg29U_trap_host.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -64,6 +65,23 @@
 
 namespace bsp::game {
 namespace {
+
+// 006BC030 (bsp.py show): read vtable+0Ch once, then test 1 or 2.
+// EntityOrderCommandClass::category is that registered command's recovered
+// constant-returning slot (entity_orders.hpp), already used by these director
+// paths. This C++ receiver is the same live registry row, not an image object.
+class CommandCategoryHost final : public bsp::cc13_seg29U::Seg29UTrapHost {
+public:
+    std::int32_t object_vslot_0c(void* command) override {
+        return static_cast<const bsp::EntityOrderCommandClass*>(command)->category;
+    }
+};
+
+bool command_has_category_one_or_two(const bsp::EntityOrderCommandClass& command) {
+    CommandCategoryHost host;
+    return bsp::cc13_seg29U::entity_kind_is_1_or_2_006bc030(
+        const_cast<bsp::EntityOrderCommandClass*>(&command), host) != 0;
+}
 
 // Packet cc9_ai_retask, docs/AI_RETASK.md. True: a re-registration of the unit
 // table keeps each existing unit's formation pair (unit+284h, 007788B0 /
@@ -1438,7 +1456,7 @@ public:
         if (!klass->requires_target) {
             return chain_.owner.command_extra_test_0071d71f(command, target);  // 0071D6E5
         }
-        if (target.position_valid != 0 && klass->category != 1 && klass->category != 2) {
+        if (target.position_valid != 0 && !command_has_category_one_or_two(*klass)) {
             return chain_.owner.command_extra_test_0071d71f(command, target);  // 0071D6FE
         }
         if (target.object == nullptr) return false;
@@ -4785,7 +4803,8 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
             const int category = klass != nullptr ? klass->category : -1;
             if (i == 0) {
                 ++host.summary.release_head_ends;
-            } else if (category == 1 || category == 2) {   // 0071DEB0, i > 0
+            } else if (klass != nullptr && command_has_category_one_or_two(*klass)) {
+                // 0071DEB0, i > 0: the same vtable+0Ch predicate.
                 ++host.summary.release_slot_clears;
             } else {
                 ++host.summary.release_slot_kept;
@@ -5006,7 +5025,7 @@ bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
     if (klass == nullptr) return false;
     if (!klass->requires_target)                       // 0071D6E5
         return host.command_extra_test_0071d71f(command, target);
-    if (target.position_valid != 0 && klass->category != 1 && klass->category != 2)
+    if (target.position_valid != 0 && !command_has_category_one_or_two(*klass))
         return host.command_extra_test_0071d71f(command, target);  // 0071D6EB..0071D6FE
     const std::uint32_t resolved = host.resolve_target_00521ea0(target);  // 0071D702
     if (resolved == 0u) return false;                  // 0071D709
