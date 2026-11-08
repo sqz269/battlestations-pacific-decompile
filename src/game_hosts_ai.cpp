@@ -6860,10 +6860,31 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // ReferenceWeight, 0.33 and 5.0 in all seven tables (lines 139-140).
         const float base = (kGroupValueAttackSumMul * attack_sum + maxes_sum) /
                            kGroupValueReferenceWeight;
-        // 00A0CE26-00A0CE6B: the speed bonus min(+22Ch x 00A07C10(group), +228h x
-        // base). Both are authored 0 (lines 144-145), so it is 0 for any finite
-        // group speed; 00A07C10 is not called here.
-        const float speed_bonus = 0.0f;
+        // bsp.py show 00a07c10: project each attacker's record+0h class into
+        // the list 00A02180 reads. These are the retained 00A04560 inputs:
+        // ship class+500h / plane class+188h, including a squadron's plane
+        // class. Reuse the record builder's kind projection above.
+        std::vector<bsp::gameplay_seg69_70_cc13::SpeedClassView> speeds;
+        speeds.reserve(attackers.size());
+        for (const GroupValueRecord& attacker : attackers) {
+            bsp::gameplay_seg69_70_cc13::SpeedClassView speed;
+            speed.is_kind_06 = attacker.class_query == 0x06;
+            speed.speed_500 = attacker.class_max_speed;
+            speed.is_kind_0f = attacker.class_query == 0x0F;
+            speed.speed_188 = attacker.class_max_speed;
+            speeds.push_back(speed);
+        }
+        // bsp.py show 00a02180 --asm: seed 1e10, replace unless greater
+        // (FCOMIP/JA at 00A02203); this is the slowest class, not the fastest.
+        const float group_speed =
+            bsp::gameplay_seg69_70_cc13::ai_unit_list_min_speed_00a02180(speeds);
+        // 00A0CE26..00A0CE6B: min(tuning+22Ch * group speed, tuning+228h
+        // * base). Read the loaded active-mode fields, whose shipped zeros
+        // are supplied by AiTuningAuthoredReader, not by this consumer.
+        const auto& active_tuning = current_tuning();
+        const float speed = active_tuning.at(bsp::kAiTuningComposeGroupSpeedBonus) * group_speed;
+        const float cap = active_tuning.at(bsp::kAiTuningComposeGroupSpeedBonusWeightRatio) * base;
+        const float speed_bonus = speed > cap ? cap : speed;
         // 00A0CE71: the three penalties are zeroed when arg1 is 0, which it is
         // from 00A1CC61 and from 00A250A0. Then 00A0CEB0-ish clamps a negative
         // result to 0.
