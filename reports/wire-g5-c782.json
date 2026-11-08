@@ -1,0 +1,59 @@
+{
+  "goal": 5,
+  "chain": 782,
+  "run": 1680,
+  "slot": "g5-w5",
+  "rows": [
+    {
+      "native": "005251c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 and HudRootListsBinding::push_controlled_unit_interface_00647040 via GameHudHost::Impl::reset_unit_pick_selection",
+      "state": "The actual screen 29h allocation retained by 0068CC70 at manager+CCh, constructed by 00525A90 and 00525A10; its +C0h selection owner, +C4h checked vector, +D4h cursor and +30h mode are used in place.",
+      "evidence": "005251C0 assembly 005251CF/005251FE/00525203/0052520D/00525240; 00647040 assembly loads [00E198C4]+CCh at 0064704D..00647059 before pushing interface 20h.",
+      "binding": "Narrowed the existing body's provider type without duplicating its implementation. Equal null vector iterators use the existing checked empty erase adapter; modes 4/5/6 borrow the menu's existing real raw input owner/configuration for 004BEC00 and 00A933F0.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230; src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing off-main-thread named-call producer and real source LuaVariantRecord argument vector; the mission interpreter runs on the main thread."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Missing the controlled ship's actual +BBCh sound object, +428h device-list owner and retained +6B4h audio flag needed to apply the reconstructed plan."
+    },
+    {
+      "native": "007ee4e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::pilot_detach",
+      "reason": "Missing live spectate-list and pilot-state queries on this path; spectate_unit_count is zero and the pilot/kind/state callbacks are stand-ins."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::camera_screen_frame_step",
+      "reason": "Missing a SupportInfoPanelHost binding to the real support availability, player points/cap and retained panel text/bar widgets."
+    }
+  ],
+  "wired_total_before": 10625,
+  "wired_total_after": 10626,
+  "validation": [
+    "python tools/bsp.py index --if-stale: fresh",
+    "scripts/build.ps1: MSVC Win32 build and all four existing checks passed before and after the change",
+    "python tools/call_graph.py: 5471/6084 reconstructed addresses called from entry-reachable code",
+    "python tools/call_graph.py who 005251c0: the existing cc13_sweepA body has one reachable call from GameHudHost::Impl::reset_unit_pick_selection",
+    "python tools/call_graph.py path 005251c0: entry -> application/frame/menu/mission -> run_mission_frame_004e4a40 -> set_selected_unit_00647300 -> reset helper -> existing body",
+    "python tools/wire_readiness.py --standins: 005251c0 state=wired, called=true, call_sites=1",
+    "git diff --check: passed"
+  ],
+  "limits": [
+    "No game run or visual validation; compiled reachability is static evidence.",
+    "The candidate vector is the constructor-produced empty range: 00525F80/00526180 have no live host calls. Nonempty state fails explicitly until the real 18h observer-handle destructor is bound.",
+    "No mode producer was invented: the reset reads the retained screen's existing +30h word, and the mode-4/5/6 input branches have real providers but no runtime coverage claim.",
+    "Calls before screen 29h exists retain an explicit missing-owner diagnostic. Both existing 00647040 host paths now call the one shared reset helper; their old record-only paths were removed."
+  ]
+}
