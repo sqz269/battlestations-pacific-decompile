@@ -115,6 +115,16 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
         return;
     }
     switch (profile) {
+    case 0x00ce417c:
+        if (bindings.vehicle_class_registry != nullptr &&
+            owner == bindings.vehicle_class_registry->registered_owner &&
+            bindings.vehicle_class_registry->context != nullptr &&
+            bindings.vehicle_class_registry->retire != nullptr) {
+            bindings.vehicle_class_registry->retire(
+                bindings.vehicle_class_registry->context, owner, flags);
+            return;
+        }
+        break;
     case 0x00cef28c:
         if (bindings.loading_screen != nullptr &&
             owner == bindings.loading_screen->registered_hook &&

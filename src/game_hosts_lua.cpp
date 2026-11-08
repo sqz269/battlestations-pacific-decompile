@@ -107,6 +107,7 @@
 #include "bsp/game_host_vehicle_class.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/game_native_vfs_application.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/native_lua_class_setters.hpp"
 #include "bsp/native_lua_field_setters.hpp"
@@ -6973,7 +6974,8 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
     // test. DL = 1 at every caller this routine serves.
     if (!vehicle_class_cache_) {
         vehicle_class_cache_ =
-            std::make_unique<GameVehicleClassDescriptorCache>(vfs_.raw_strings());
+            std::make_unique<GameVehicleClassDescriptorCache>(vfs_.raw_strings(),
+                vfs_.native_application().singleton_deletion_bindings());
     }
     if (vehicle_class_cache_->cached(class_index) == nullptr) {
         vehicle_class_mark_site_.emplace(class_index, site);

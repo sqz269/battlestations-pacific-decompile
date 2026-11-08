@@ -75,6 +75,16 @@ struct NativeMovieFactoryDeletionBindings {
 };
 static_assert(sizeof(NativeMovieFactoryDeletionBindings)==16);
 
+// Source retirement for the live CE417C registry used by the mission's
+// descriptor cache. The cache owns its C++ vector and split descriptors;
+// this callback retires those borrowed slots before freeing the raw registry.
+// It is not a claim that the Original 00437F30 destructor runs.
+struct VehicleClassRegistryRetirementBinding {
+    void* context{};
+    void* registered_owner{};
+    void (*retire)(void* context, void* registered_owner, std::uint32_t flags){};
+};
+
 // Same narrow current-profile bridge for actual shutdown and manager dispatch.
 // Reject foreign/dead receivers BEFORE reading their prefix; admit only CFEA78
 // and CFEA60, then invoke the real captured-receiver/full-flags callback. Returned
@@ -317,6 +327,8 @@ struct NativeSingletonDeletionBindings {
     // Chain 545: CEF28C is the live projected loading screen's lifetime member.
     // Retain this exact-owner binding through its canonical raw manager drain.
     const frontend_seg19_21_cc13::LoadingScreenDeletionBinding* loading_screen{};
+    // CE417C: appended so every recovered assembly binding offset stays fixed.
+    VehicleClassRegistryRetirementBinding* vehicle_class_registry{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -355,7 +367,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, gui_icon_raw_scalar_disp
 static_assert(offsetof(NativeSingletonDeletionBindings, texture_atlas) == 228);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_spatial_index_publication_00f8a0d8) == 232);
 static_assert(offsetof(NativeSingletonDeletionBindings, loading_screen) == 236);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 240);
+static_assert(offsetof(NativeSingletonDeletionBindings, vehicle_class_registry) == 240);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 244);
 
 // Exception paragraph below is the legacy/default contract. A selected prepared
 // raw edge still armed on an unknown Source escape instead retains/rethrows
