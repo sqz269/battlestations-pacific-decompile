@@ -1,0 +1,108 @@
+{
+  "chain": 827,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "summary": "Use the existing 00876260 numeric unit-health provider for the HUD's live gunnery health pair.",
+  "wired_total_before": 10676,
+  "wired_total_after": 10677,
+  "rows": [
+    {
+      "native": "00876260",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::unit_health (also inlined into kind_45_health)",
+      "state": "The existing gunnery unit_rows() supplies current and maximum health from the mission's live UnitState rows; UnitHealth adapts those two fields to the existing numeric body.",
+      "evidence": "bsp.py show 00876260 --asm: FLD [ECX+370h], FDIV [ECX+36Ch], FSTP [ESP], FLD [ESP]. The replaced inline division no longer runs. The torn-down gate precedes provider evaluation, matching 00923BE4. Existing absent/invalid-model fallback and outer clamp remain.",
+      "call_sites": [
+        {"address": "10111009", "caller": "HudRootRowsBinding::kind_45_health", "entry_reachable": true},
+        {"address": "1011f138", "caller": "HudRootRowsBinding::unit_health", "entry_reachable": true}
+      ]
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call; src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing frame-job-thread named-call enqueue producer carrying an actual LuaVariantRecord argument vector; the inspected mission interpreter uses the main thread."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing actual native group/owner attachment and indexed job state; current callback only records the unimplemented job."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Missing actual native group/owner attachment and indexed job state; current callback only records the unimplemented job."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing actual native group/owner attachment and indexed job state; current callback only records the unimplemented job."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing actual native group/owner attachment and indexed interpolation state; current callback only records the unimplemented job."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "Missing the map-update target argument and live current-widget virtual+88/manager+4 providers; the cursor-switch adapter only implements virtual+34 visibility."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing actual movie-camera screen ownership and current/default deviation fields; callback still throws movcam_new_unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing actual movie-camera screen ownership and current/default overview-height fields; callback still throws movcam_new_unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing actual movie-camera screen ownership and speed/acceleration limit fields; callback still throws movcam_new_unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing actual movie-camera screen ownership and current/default acceleration-time fields; callback still throws movcam_new_unreached."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_set_linear_speed_limit_005cb9f0",
+      "reason": "Missing actual movie-camera screen ownership and a live producer of the screen's speed/acceleration fields."
+    },
+    {
+      "native": "005ef4d0",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: int_wrap_into_range_005ef4d0",
+      "reason": "Missing an identified live cyclic-option adjustment site in the inspected menu/frontend hosts."
+    },
+    {
+      "native": "00bbf280",
+      "status": "skipped",
+      "host_site": "src/weather_render.cpp: sky_gradient_sample_00bbf440 and sky_fog_colour_00bbf590",
+      "reason": "Missing a reachable host consumer carrying authored sky-gradient samples; no caller outside the unbound weather_render helper chain was found."
+    }
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed.",
+    "changed_build": "scripts/build.ps1 passed; all four CTests passed.",
+    "call_graph": "call_graph.py who 00876260 reports two entry-reachable compiled CALL sites to health_fraction_00876260 at 10422630; before the change no matching function was linked.",
+    "readiness": "wire_readiness.py --standins reports state=wired, called=true, call_sites=2, callers_live=2 for 00876260.",
+    "scope": "Existing numeric provider reused; no new address body, Ghidra mutation, switch, or test framework.",
+    "limits": "Build and static call-graph evidence only; game not run. UnitHealth is a typed snapshot adapter, not original entity ABI. The HUD's existing airfield-health substitution remains labelled."
+  },
+  "left_for_others": "ShipAiTorpedoStandoff::own_health_00923be0 has the same inline gunnery health division; game_hosts_ship_ai.cpp belongs to g5-w3, who was notified."
+}
