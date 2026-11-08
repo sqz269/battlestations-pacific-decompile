@@ -201,6 +201,9 @@ public:
     bool display_score(std::uint32_t id, std::uint32_t owner, const std::string& a,
         const std::string& b, bool pair, std::uint32_t v0, std::uint32_t v1);
     bool hide_score(std::uint32_t id, std::uint32_t owner);
+    // 00733FF0's 005BCA70(text) on that same minimap block. The recovered
+    // body is RET4: it accepts the actual receiver/text without changing them.
+    bool begin_countdown_panel(const std::string& text);
     // 00735100's 005BCA80(left / duration, left) and 005BCAB0 (00735100 at expiry,
     // 007340A0 at stop) on the minimap screen's block, [00E198C4]+58h. False
     // before 0068CC70 built that block.

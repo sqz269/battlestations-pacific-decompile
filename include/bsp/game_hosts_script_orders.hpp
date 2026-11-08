@@ -1057,6 +1057,10 @@ private:
                         const std::string& callback, std::vector<int> argument_refs);
     std::uint32_t narrative_queue_size() const noexcept;
     void release_narrative_node_refs(const void* node);
+    // 00733FF0 consumes the caller's newly retained Lua argument vector after
+    // publishing the current countdown fields and releasing the previous one.
+    void countdown_start_00733ff0(const std::string& text, float level, float seconds,
+        const std::string& callback, std::vector<int> argument_refs);
     // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
     float countdown_time_left() const noexcept;
     // 007340A0 past the time-left store: clear +3Ch and +4Ch, free +54h.

@@ -7244,27 +7244,19 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::string text = get_string(0);
         const float level = static_cast<float>(get_number(1));
         const float seconds = static_cast<float>(get_number(2));
+        const std::string callback = count() > 3 ? get_string(3) : std::string();
+        std::vector<int> arguments;
+        for (int index = 4; index < count(); ++index) {
+            lua_pushvalue(state_, stack_slot(index));
+            arguments.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+        }
         // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text (argument 0)
         // and the seconds (argument 2), before 00733FF0 (goal 5 chain 662: the
         // HUD's counters screen); 00733FF0's first call 005BCA70 on
         // [[00E198C4]+58h] is next.
         if (narrative_hud_ == nullptr || !narrative_hud_->show_mission_countdown(text, seconds))
             log_.unimplemented("HudCountdown::show_text", "0052b9b0");
-        log_.unimplemented("HudCountdown::begin", "005bca70");
-        for (const int ref : countdown_.argument_refs_54) {
-            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
-        }
-        countdown_.argument_refs_54.clear();   // 0073405E-00734083
-        // 00733FF0 (RET 14h) at 008B18F7.
-        countdown_.active_3c = true;           // 00734022
-        countdown_.level_40 = level;           // 00734012
-        countdown_.duration_44 = seconds;      // 00734026
-        countdown_.started_48 = mission_clock_;  // 0073402B-00734033
-        countdown_.callback_4c = count() > 3 ? get_string(3) : std::string();
-        for (int index = 4; index < count(); ++index) {
-            lua_pushvalue(state_, stack_slot(index));
-            countdown_.argument_refs_54.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
-        }
+        countdown_start_00733ff0(text, level, seconds, callback, std::move(arguments));
         ++countdown_starts_;
         log_.notef("  Countdown(\"%s\", %.0f, %.2f, \"%s\") at %.2f s, %zu more argument(s)",
             text.c_str(), static_cast<double>(level), static_cast<double>(seconds),
@@ -8464,6 +8456,28 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     blackout_summary_.remaining = blackout_.remaining;
     state_ = outer_state;
     argument_count_ = outer_argument_count;
+}
+
+void GameScriptOrdersHost::countdown_start_00733ff0(const std::string& text,
+    float level, float seconds, const std::string& callback, std::vector<int> argument_refs) {
+    // bsp.py show 00733FF0 --asm, 00734003..0073409D: call the empty minimap
+    // begin, publish level/active/duration/current clock, copy the callback,
+    // then destroy the OLD argument vector before adopting the caller's NEW
+    // vector. These are the existing live countdown owner and Lua registry
+    // references, not a second countdown or an unconsumed message snapshot.
+    // New C++ ownership interface; the original entry is thiscall/RET14h.
+    if (narrative_hud_ == nullptr || !narrative_hud_->begin_countdown_panel(text))
+        log_.unimplemented("HudCountdown::begin", "005bca70");
+    countdown_.level_40 = level;
+    countdown_.active_3c = true;
+    countdown_.duration_44 = seconds;
+    countdown_.started_48 = mission_clock_;
+    countdown_.callback_4c = callback;
+    for (const int ref : countdown_.argument_refs_54) {
+        if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+    }
+    countdown_.argument_refs_54.clear();
+    countdown_.argument_refs_54 = std::move(argument_refs);
 }
 
 float GameScriptOrdersHost::countdown_time_left() const noexcept {
