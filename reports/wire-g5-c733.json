@@ -1,0 +1,66 @@
+{
+  "goal": 5,
+  "chain": 733,
+  "worker": "agent/g5-w5",
+  "picked": "Mothership Lua class leaf loading and retained carrier runway/navigation fields",
+  "rows": [
+    {
+      "native": "00759590",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_surface_ship_leaf",
+      "details": "Calls the existing leaf on the actual VehicleClass row during descriptor loading; retains its output beside that descriptor. Carrier runway readers and ship navigation/depth readers use these retained fields. Corrects MaxLandingPlanesOnBoard/default 4, reads DeckCamera.Position through the existing native Lua vector provider, and retains the full X*Y camera matrix with its translation."
+    },
+    {
+      "native": "0074c630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_surface_ship_leaf",
+      "reason": "Missing soldier-class and vehicle-visual-class registration services for the LandingTroopClass walk; the current ShipLeafFieldHost throws for these operations."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship brain initialization",
+      "reason": "Needs native 0x2268 brain storage and reviewed 009F3BA0 constructor bindings before replacing the semantic brain initialization."
+    },
+    {
+      "native": "009bdbb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: move-on-path task installation",
+      "reason": "Needs a retained native 0x520 task and complete 009BCE50 constructor adapter; agent/g5-w6 announced ownership of this factory during this run."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::land_request_006c54c0",
+      "reason": "Missing native queue storage, captured critical-section identities and complete session-message delivery/registry contexts required by NativeLandingQueueCalls."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: MoveTo state construction",
+      "reason": "Missing same-root native state/observer storage and lifetime bindings for NativeLandMoveToConstructorView; current task fields are semantic slots."
+    },
+    {
+      "native": "009f9ce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: strafe approach initialization",
+      "reason": "Missing native unit/descriptor row backing and a retained NativeBotApproachHeadStorage connecting the constructor output to the live approach."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00759590, pseudocode and assembly: 00759677..007596D8 reads MaxLandingPlanesOnBoard and defaults to EBX=4.",
+    "0075971A reads the actual camera Position; 0075979B..007597D4 negates both angles and constructs Y then X.",
+    "007597E6..007597FA passes X in ECX and Y as the right operand; 00759806 copies 40h bytes, then 0075980B..0075982D writes translation.",
+    "Existing name evidence was appended, old Ghidra comments preserved, the program saved and the affected export refreshed."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all 4 tests",
+    "final_build": "scripts/build.ps1 passed all 4 tests",
+    "call_graph": "00759590 REACHABLE, one call at 10157CDC from GameMissionLuaVehicleClassBinding::load_surface_ship_leaf; path reaches WinMainCRTStartup through mission scene loading",
+    "readiness_before": {"wired": 10500, "called_rows": 5765},
+    "readiness_after": {"wired": 10501, "called_rows": 5772},
+    "target_readiness": {"state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "pc24_lint": "Both changed C++ files checked: 0 findings; 2 existing image_below_2_x87 exclusions. Arithmetic reuses the existing native rotation/matrix providers."
+  },
+  "limits": "Build and static compiled reachability verified; no game run, visual camera validation or original binary ABI equivalence claimed. LandingShip remains unwired."
+}
