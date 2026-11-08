@@ -4557,10 +4557,12 @@ public:
     }
     std::int32_t unit_side_0054() override { return owner_.units.unit_side_0054(index_); }
     void set_avoidance_side_03f8(std::int32_t side) override {
-        ctl_.avoidance.side_filter_3f8 = side;  // 009E2588, brain+3F8h
+        // 009E2588 inlines the same signed brain+3F8h store as 009DABC0.
+        bsp::ship_ai_set_ship_avoidance_party_filter_009dabc0(ctl_.avoidance, side);
     }
     void set_avoidance_flag_03fc(bool enable) override {
-        ctl_.avoidance.flag_3fc = enable;  // 009E25CC / 009E2669, brain+3FCh
+        // 009E25CC / 009E2669 inline 009DABD0's brain+3FCh bool store.
+        bsp::ship_ai_set_land_avoidance_request_009dabd0(ctl_.avoidance, enable);
     }
     void set_navigation_goal_009de050(const bsp::ShipAiAttackMoveXZ& goal, int keep_mode,
                                       int final_leg) override {
@@ -10923,8 +10925,12 @@ public:
             static_cast<std::uint32_t>(zone_set), {point.x, point.z}, margin, use_bounds);
         return bsp::ShipAiFollowLandXZ{out[0], out[1]};
     }
-    void set_blk_flag_3f4(bool value) override { ctl_.avoidance.flag_3fc = value; }
-    void set_blk_field_3f0(int value) override { ctl_.avoidance.side_filter_3f8 = value; }
+    void set_blk_flag_3f4(bool value) override {
+        bsp::ship_ai_set_land_avoidance_request_009dabd0(ctl_.avoidance, value);
+    }
+    void set_blk_field_3f0(int value) override {
+        bsp::ship_ai_set_ship_avoidance_party_filter_009dabc0(ctl_.avoidance, value);
+    }
     void set_navigation_goal_009de050(const bsp::ShipAiFollowLandXZ& goal, bool keep_mode,
                                       bool final_leg) override {
         owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z, keep_mode,
