@@ -8,7 +8,6 @@
 #include "bsp/native_string_copy_construct.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 
-#include <cstring>
 #include <exception>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -21,15 +20,6 @@ using Access = detail::TreeInsertAccess<0x18, 0x19>;
 
 void* at(const void* value, std::size_t offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(value) + offset);
-}
-template<class T> volatile T& field(const void* value, std::size_t offset = 0) noexcept {
-    return *static_cast<volatile T*>(at(value, offset));
-}
-std::uint32_t string_length(const void* header) noexcept {
-    return field<std::uint32_t>(header, 0);
-}
-char* string_data(const void* header) noexcept {
-    return field<char*>(header, 4);
 }
 void invalid(const SingletonLifetimeCallbacks& callbacks) {
     if (callbacks.invalid_parameter) callbacks.invalid_parameter(callbacks.context);
@@ -281,21 +271,19 @@ float* get_or_insert_native_soldier_loop_length_00444be0(
     if (selected == Access::head(actual_tree) ||
         less(actual_key_header, key(selected, 0x0c))) {
         NativeSoldierLoopLengthPairStorage temporary;
-        temporary.key_length_00 = 0;
-        temporary.key_data_04 = nullptr;
-        char* captured_data = nullptr;
-        if (&temporary != actual_key_header) {
-            resize_native_string_header_0041dd40(
-                &temporary, strings, string_length(actual_key_header), true);
-            const bool source_nonempty = string_length(actual_key_header) != 0;
-            captured_data = temporary.key_data_04;
-            if (source_nonempty) {
-                const auto copied_length = temporary.key_length_00;
-                auto* const source_data = string_data(actual_key_header);
-                std::memmove(captured_data, source_data, copied_length);
-            }
-        }
-        temporary.value_08 = 0.0f;
+        // bsp.py show 00444BE0 --asm: 00444C34..00444C65 inlines the
+        // string-header copy and initializes the missing mapped value to +0.
+        // Reuse the sole 00444070 pair constructor on this actual temporary,
+        // borrowed key and canonical pool. Its late FLD/FSTP (004440AF/B2)
+        // copies this exact +0, equivalent to the caller's XORPS/MOVSS value;
+        // this does not admit an arbitrary scalar or a second map/pair owner.
+        const float missing_value = 0.0f;
+        copy_construct_native_string_with_scalar_00444070(
+            &temporary, actual_key_header, &missing_value, strings);
+        // The key and temporary are disjoint, so the intervening byte copy
+        // cannot change this pointer. Retain it across insertion as EBP does
+        // at 00444C4A/00444C86, rather than releasing a later reloaded pointer.
+        char* const captured_data = temporary.key_data_04;
 
         NativeKeyboardTreeIterator inserted;
         try {
