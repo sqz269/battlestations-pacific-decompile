@@ -289,6 +289,9 @@ public:
     // projected `visible` field as the startup table's visibility calls.
     void gui_manager_set_enabled_00aa0e00(bool enabled);
     void gui_manager_set_pointer_visible_00aa0e50(bool visible);
+    // 00AA0E20: hide the current cursor, then select manager+54h (true) or
+    // manager+58h (false). Does not alter the manager's enabled byte at +48h.
+    void select_gui_cursor(bool frontend_cursor);
 
     // ---- milestone 2k: run-time clones of a page's own template ------------
     // The native per-unit minimap icon entry (005bd590 constructs it, 005c0700

@@ -1,0 +1,151 @@
+{
+  "chain": 739,
+  "owner": "agent/g5-w12",
+  "picked": "Mission-load GUI cursor selection through the actual manager and cursor widgets",
+  "rows": [
+    {
+      "native": "00aa0e20",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: GameMissionFrameHost::run_scene_load_004dfb70, before apply_in_game_interface; src/game_hosts_frontend.cpp: GameFrontendHost::select_gui_cursor and Impl::run_raw_pointer",
+      "evidence": "00AA0E20 assembly hides current+50h via virtual34(0), then reloads +54h/+58h and publishes +50h; disk listing 004E1861..004E186A passes zero immediately before 004E1873. Reuses the sole existing body in cc13_seg87.cpp. Native transport borrows the actual admitted manager and authenticated page-widget visibility provider; bridge transport uses its canonical manager slots."
+    },
+    {
+      "native": "00a9acd0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate",
+      "reason": "No entry-reachable native Listbox pool owner/allocation exists; live semantic listboxes do not allocate from this native pool."
+    },
+    {
+      "native": "00a9b580",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: allocate_native_listbox_pool_slot_00a9b580",
+      "reason": "Missing live native Listbox pool and factory caller; the built graph has no linked address-suffixed allocator."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry binding check_multiplayer_player_count",
+      "reason": "Session-mode player-count check is multiplayer-only and returns immediately for single-player."
+    },
+    {
+      "native": "005cf3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: loss warning text posting",
+      "reason": "The reconstructed chat sender requires network session mode 1 and a Seg15Host chat dispatch; single-player does not send this system chat."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264",
+      "reason": "Missing retained StationaryClass cache; live host readers still query that Lua global, so clearing it would remove their source data."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown end-movie arm",
+      "reason": "Missing actual sound-transition game/screen owners and commit/input/listener services; this body is not merely a close-result-GUI operation."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: replicate_objective_state",
+      "reason": "Peer objective replication is multiplayer-only; single-player supplies no peer recipient."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: native candidate score-list insertion",
+      "reason": "No live native candidate score-list owner exists; its documented native consumer is a debug text overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: native candidate score-list chosen marker",
+      "reason": "Missing live candidate score records; the native list's documented reader is the debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate planning",
+      "reason": "No new entry-reachable native coordinator/candidate path was established during this review."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: get_profile_manager_00425c20",
+      "reason": "Missing verified shared live ProfileManagerOwner publication and singleton-lifetime binding at the investigated host entry."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target",
+      "reason": "Native naked body requires readable actual absolute cells 00F87574/78/7C and a real command-target receiver; that receiver/global binding is missing."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_set_zoom_0078e480",
+      "reason": "Missing live MovCamZoom owner; the mission camera projection is a different native object."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: camera angle handling",
+      "reason": "Missing actual MovCamAngles owner and original clamp caller; mission-camera pitch/yaw are not the MovCam fields."
+    },
+    {
+      "native": "00439a00",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: vector2_set_random_unit_direction_00439a00",
+      "reason": "Original body is unreferenced in the image; no single-player caller justifies adding a random draw."
+    },
+    {
+      "native": "0047b7f0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: random_in_range_0047b7f0",
+      "reason": "Original body is unreferenced in the image; no single-player caller or real range receiver was established."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: float4 color reader",
+      "reason": "A source caller already exists, but its registry owner/entry reach was not established; adding another wrapper would not establish that producer."
+    },
+    {
+      "native": "00b664e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native_lua_set_nil_at_00b664e0",
+      "reason": "Missing live LandConvoy parent/placement-law caller binding for the native indexed Lua assignment."
+    },
+    {
+      "native": "00b66620",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native_lua_set_lightuserdata_at_00b66620",
+      "reason": "Missing live numeric-key entity-reference resolver caller and its actual NativeLuaObject owner."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Cursor target virtual88 and manager+4 callback dispatch remain unbound; this packet supplies only the actual virtual34 visibility provider."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four tests",
+    "final_build": "scripts/build.ps1 passed all four tests; local/output/c739-build.log",
+    "diff_check": "git diff --check passed; no float arithmetic changed",
+    "before": { "readiness_wired": 10537, "entry_reachable_reconstructed": 5414 },
+    "after": { "readiness_wired": 10538, "entry_reachable_reconstructed": 5415 },
+    "call_graph": {
+      "native": "00aa0e20",
+      "called": true,
+      "call_sites": 3,
+      "body": "10408080",
+      "raw_transport_call": "1008f70f in GameFrontendHost::Impl::run_raw_pointer",
+      "bridge_call": "1009074f in GameFrontendHost::select_gui_cursor",
+      "mission_load_call": "101b98fd in GameMissionFrameHost::run_scene_load_004dfb70 calls selector 100906b0",
+      "artifacts": "local/output/call_graph.json and local/output/wire_readiness.json"
+    },
+    "qualification": "Source wiring and built entry reach only; the game was not run and original binary ABI replacement is not claimed."
+  }
+}

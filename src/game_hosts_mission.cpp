@@ -3455,7 +3455,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     }
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
         record.locale_table_list, record.mission_id, &record,
-        participant_count == participant_scene_counts.end() ? nullptr : &participant_count->second);
+        participant_count == participant_scene_counts.end() ? nullptr : &participant_count->second,
+        frontend);
 
     const GameMissionLoadRunSummary& load_run = frame_host->load_summary();
     summary.mission_load_finished = load_run.state_after == bsp::kGameStateSceneReady;

@@ -39,6 +39,8 @@ struct SceneRecord;
 
 namespace bsp::game {
 
+class GameFrontendHost;
+
 // Packet cc9_warning_manager_tick (docs/WARNING_MANAGER.md section 5): the two
 // report entries of the warning manager ([00F8A0C4], game+21E0h) that the ship
 // AI's warning timer 009DA8D0 calls on [brain+AA8h]. `unit` is the zero-based
@@ -244,7 +246,8 @@ public:
     // borrowed pools supplied to the constructor must outlive this host/ShipAI.
     void run_scene_load_004dfb70(const std::string& scene_path, const std::string& script_name,
         const std::string& locale_tables, std::int32_t mission_id,
-        const bsp::SceneRecord* scene_record, const std::int32_t* participant_count);
+        const bsp::SceneRecord* scene_record, const std::int32_t* participant_count,
+        GameFrontendHost& frontend);
 
     // 004db920 for game state 0Ch, which tails into 004da6c0.
     bool enter_mission_state_004da6c0();
