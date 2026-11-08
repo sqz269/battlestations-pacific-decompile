@@ -315,7 +315,11 @@ void dyn_convex_shape_local_bounds_00c57c40(DynConvexShapeStorage& shape) {
     const DynAabb expanded{{expand(mesh->minimum.x,-0.02),expand(mesh->minimum.y,-0.02),
         expand(mesh->minimum.z,-0.02)},{expand(mesh->maximum.x,0.02),
         expand(mesh->maximum.y,0.02),expand(mesh->maximum.z,0.02)}};
-    at<DynAabb>(&shape,0xc)=transform_bounds(expanded,&at<float>(&shape,0x34));
+    // bsp.py show 00C32430: the existing getter returns this SAME shape's
+    // +34h frame. Borrow it for the live bounds query instead of spelling a
+    // second offset-based accessor here; no frame or shape state is copied.
+    at<DynAabb>(&shape,0xc)=transform_bounds(expanded,
+        cc13_dyn1::shape_local_transform_00c32430(&shape));
 }
 void dyn_convex_shape_refresh_bounds_00c57c40(DynConvexShapeStorage& shape) {
     dyn_convex_shape_local_bounds_00c57c40(shape);
@@ -330,7 +334,7 @@ void dyn_convex_shape_construct_00c57f50(DynConvexShapeStorage& shape,DynBodySto
     at<std::uint32_t>(&shape,0x2c)=desc.group; at<std::uint32_t>(&shape,0x30)=desc.mask;
     at<void*>(&shape,0x208)=at<void*>(&shape,0x20c)=nullptr;
     at<const void*>(&shape,0x210)=*static_cast<const void* const*>(desc.geometry);
-    std::memcpy(plus(&shape,0x34),desc.row0,0x30);
+    std::memcpy(cc13_dyn1::shape_local_transform_00c32430(&shape),desc.row0,0x30);
     dyn_convex_shape_refresh_bounds_00c57c40(shape);
 }
 // 00C5C940, ECX descriptor, EDX body, plain RET, EAX = shape (EBX). cc13-P1 completed
