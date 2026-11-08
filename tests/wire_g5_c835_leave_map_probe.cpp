@@ -43,6 +43,16 @@ int run_probe() {
         };
         h.leaving_on_purpose = [] { return true; };
         h.latch_leave = [&] { latched = true; events.push_back("latch"); };
+        h.survivor_geometry = [](bsp::SquadronLeaveMapGeometry& geometry) {
+            geometry = {{-100.0f, -10.0f, 100.0f}, {300.0f, 10.0f, -100.0f},
+                {120.0f, 75.0f, -20.0f}};
+            return true;
+        };
+        h.command_survivors = [&](const std::array<float, 3>& target) {
+            if (target != std::array<float, 3>{122.0f, 75.0f, -22.0f})
+                throw std::runtime_error("survivor target differs from map-centre stretch");
+            events.push_back("moveto");
+        };
         h.store_squadron_exit_party = [&] { events.push_back("party"); };
         h.kill_plane = [&] { events.push_back("plane" + std::to_string(plane)); };
         h.kill_squadron = [&] { events.push_back("squadron"); };
@@ -53,7 +63,7 @@ int run_probe() {
         events.clear();
     };
     invoke(0);
-    expect({"warn0", "warn1", "latch", "plane1", "plane0"});
+    expect({"warn0", "warn1", "latch", "moveto", "plane1", "plane0"});
     invoke(2);
     expect({"plane2"}); // no later warning; the nested call set the actual latch
     latched = false;
@@ -73,7 +83,7 @@ int run_probe() {
     squadron.member_units = {bsp::kPlaneSquadronNoUnit, 1,
         bsp::kPlaneSquadronNoUnit, 2, bsp::kPlaneSquadronNoUnit};
     invoke(1);
-    expect({"warn1", "latch", "plane1"});
+    expect({"warn1", "latch", "moveto", "plane1"});
     latched = false;
     squadron.member_units = {bsp::kPlaneSquadronNoUnit, 1, bsp::kPlaneSquadronNoUnit};
     invoke(1);
@@ -81,8 +91,8 @@ int run_probe() {
     squadron.member_units = {0, 1, 2};
     clear_leading_seat_on_warning = true;
     invoke(1);
-    expect({"warn1", "latch", "plane1"}); // reads reflect the callback's mutation
-    std::puts("007F31A0 reentrant/sparse-member/latch/owner/gate sequence passed");
+    expect({"warn1", "latch", "moveto", "plane1"}); // reads reflect the callback's mutation
+    std::puts("007F31A0 reentrant/sparse-member/latch/survivor-target/owner/gate sequence passed");
     return 0;
 }
 

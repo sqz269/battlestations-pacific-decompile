@@ -13401,6 +13401,13 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
 };
 
+// The host represents the shared squadron director on each member. Queue one
+// survivor order per live plane and retire its retreat task at delivery, so
+// wing-0 death cannot strand the command on the fused squadron identity.
+std::size_t queue_squadron_survivor_moveto(GameCommandsHost& commands, GameGunneryHost& gunnery,
+    const std::vector<GameUnitSlot*>& members, std::size_t leaving_plane,
+    const std::array<float, 3>& point);
+
 inline namespace units_local {
 
 // ---------------------------------------------------------------------------

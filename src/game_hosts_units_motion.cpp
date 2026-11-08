@@ -23434,8 +23434,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
 }
 
-// 007EE410 -> 007CA790 -> reconstructed 007F31A0. The survivor retarget
-// and shared squadron director stores remain the labelled host omissions.
+// Project 007F340F's shared squadron command onto retained member queues.
+// Native fire-stance/+370h stores and the self exit broadcast remain omitted.
+std::size_t queue_squadron_survivor_moveto(GameCommandsHost& commands, GameGunneryHost& gunnery,
+    const std::vector<GameUnitSlot*>& members, std::size_t leaving_plane,
+    const std::array<float, 3>& point) {
+    std::size_t posted = 0;
+    for (GameUnitSlot* member : members) {
+        if (member == nullptr || member->process_index == leaving_plane ||
+            gunnery.unit_dead(member->process_index)) continue;
+        const std::size_t index = member->process_index;
+        bsp::SceneCommandTarget target;
+        target.kind = 0;
+        target.position_valid = 1;
+        for (std::size_t axis = 0; axis < point.size(); ++axis)
+            target.position[axis] = point[axis];
+        target.trailing = 0.0f; // 007F33F8 FLDZ -> 00468560(point,0)
+        if (commands.issue_command_object(index, bsp::kPilotOrderClassMoveTo,
+                target, 1, "007F31A0 survivor moveto", {}, member->ring,
+                GameUnitsHost::Impl::pose_heading_radians(*member)) == nullptr) continue;
+        ++posted;
+        // Host projection, as in the existing squadron script/AI fan-out:
+        // the image has one shared director, but here each surviving plane
+        // owns its queue. The MT_COMMAND -> nested 5Bh delivery must precede
+        // the bot's 0099A4C0 retirement and next 0099A170 moveto construction.
+        // Capture the retained plane owner, not the exiting wing-0 identity.
+        std::function<void()> install = [&commands, &gunnery, member, index] {
+            if (gunnery.unit_dead(index) ||
+                commands.current_command_0071be40(index) != bsp::kPilotOrderClassMoveTo) return;
+            bsp::SceneCommandTarget delivered;
+            int mode = 0;
+            if (!commands.active_command_descriptor_0071eb60(index, delivered, mode) ||
+                delivered.kind != 0 || delivered.position_valid == 0) return;
+            member->retreat_task_installed = false;
+            member->retreat_state = bsp::RetreatState::kNone;
+            member->attack_command_class = bsp::kPilotOrderClassMoveTo;
+            member->command_target_plus_one = 0;
+            member->moveto_task_installed = false;
+            member->moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+            member->moveto_arrived_454 = false;
+            member->moveto_entity_target.reset();
+            member->moveto_entity_44 = nullptr;
+            member->moveto_entity_refresh_pending = false;
+            member->moveto_range = delivered.trailing;
+            member->moveto_point[0] = delivered.position[0];
+            member->moveto_point[2] = delivered.position[2];
+            // The next ordinary bot think now reaches the sole existing
+            // run_moveto_task_install_009c3000 instead of ticking retreat.
+        };
+        if (!commands.after_last_issue_delivery(install)) install();
+    }
+    return posted;
+}
+
 void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
     bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_registry().find_by_member_unit(m);
     GameGunneryHost* const gun = gunnery.get();
@@ -23520,6 +23571,30 @@ void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
         h.latch_leave = [&] {
             retreat_latched_361.push_back(sq->name);
             ++retreat_latches_361;
+        };
+        h.survivor_geometry = [&](bsp::SquadronLeaveMapGeometry& geometry) {
+            // 007F3330 reads the leaving plane's refreshed world position;
+            // WorldMapBounds retains the game's actual +711Ch/+7128h corners.
+            if (bounds == nullptr) {
+                record("PlaneSquadron::survivor_moveto_missing_map", 0x007f340fu);
+                return false;
+            }
+            geometry.north_west = bounds->north_west;
+            geometry.south_east = bounds->south_east;
+            const float* p = slots[plane]->motion.position;
+            geometry.leaving_position = {p[0], p[1], p[2]};
+            return true;
+        };
+        h.command_survivors = [&](const std::array<float, 3>& point) {
+            std::vector<GameUnitSlot*> members;
+            for (const std::size_t member : sq->member_units)
+                if (member < slots.size()) members.push_back(slots[member].get());
+            // 007F3407..340F issues once on the image's shared squadron
+            // director. Fan out onto this host's retained member queues;
+            // the fused wing-0 slot is killed before their queued delivery.
+            queue_squadron_survivor_moveto(commands, *gun, members, plane, point);
+            done("PlaneSquadron::map_box_centre_004b4850", 0x004b4850u);
+            done("PlaneSquadron::survivor_moveto", 0x007f340fu);
         };
         h.store_squadron_exit_party = [&] {
             // LABELLED: this host fuses the squadron with its wing unit.
