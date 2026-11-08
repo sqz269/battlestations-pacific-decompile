@@ -120,10 +120,15 @@ struct WeaponClassFinaliseResult {
 // the hook runs: 0Ah is the only class whose slot +10h holds 00855A90 and 10h
 // the only one holding 0070C0B0.
 //
-// already_finalised models the +64h latch: a second call writes nothing and
-// returns true.
+// already_finalised models the base's +64h latch. The flak override still
+// derives +D8h after that base returns true (0070C0B8..0070C0C2).
 WeaponClassFinaliseResult weapon_class_derive_engagement_range(
     const WeaponClassFinaliseInput& in, bool already_finalised = false) noexcept;
+
+// Existing 006E9890 semantic projection, without either derived override.
+// Shared with 0070C0B0 so the base and the flak leaf each run exactly once.
+WeaponClassFinaliseResult weapon_class_derive_base_engagement_range(
+    const WeaponClassFinaliseInput& in, bool already_finalised) noexcept;
 
 // The single number a host that only needs 00731020's answer wants. Equivalent
 // to weapon_class_derive_engagement_range(in).engagement_range.

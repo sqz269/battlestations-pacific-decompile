@@ -3,6 +3,14 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bsp {
+struct WeaponClassRowView;
+struct WeaponClassLoadHost;
+struct WeaponClassDescriptor;
+struct WeaponClassFinaliseInput;
+struct WeaponClassFinaliseResult;
+}
+
 namespace bsp::flak_note_seg36_37_argon {
 
 // ============================================================================
@@ -17,8 +25,15 @@ void FlagModel_Setup_0070bee0(void* self, const void* params);
 void* FlagModel_Construct_0070bfc0(void* self, void* arg0, const void* params);
 
 // --- Segment 36: FlakBullet / FlakProjectile (0x0070c030..0x0070cea0) ---
-void FlakBulletClass_ReadLuaFields_0070c030(void* self, void* lua_node);
-void FlakBulletClass_DeriveEngagementRange_0070c0b0(void* self);
+// 0070C030: original thiscall(ECX=class, stack=Lua row), RET4. Typed
+// projection of the SAME descriptor and row; not a native ABI replacement.
+// Chains 006E8770, clears +D4h, then plain GetInteger(MinRange) -> +58h.
+void FlakBulletClass_ReadLuaFields_0070c030(const WeaponClassRowView&,
+    WeaponClassLoadHost&, WeaponClassDescriptor&);
+// Original thiscall(ECX=class), RET0: call the base, then FLD/FDIV/FSTP
+// +58h/+50h -> +D8h when base AL==1, even when its +64h latch was set.
+WeaponClassFinaliseResult FlakBulletClass_DeriveEngagementRange_0070c0b0(
+    const WeaponClassFinaliseInput&, bool already_finalised) noexcept;
 void FlakBullet_WriteState_0070c0f0(void* self, void* stream);
 void* Entity_AsKind05_0070c1f0(void* self);
 void FlakProjectile_TickAdvance_0070c370(void* self, float dt);
