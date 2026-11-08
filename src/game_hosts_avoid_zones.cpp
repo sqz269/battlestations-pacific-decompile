@@ -5,15 +5,19 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
-#include <limits>
 #include <memory>
 #include <new>
 #include <stdexcept>
 
 #include "bsp/cc13_avoid1.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_list_count_guards.hpp"
+#include "bsp/native_registry_list_producers.hpp"
+#include "bsp/native_registry_list_tidy.hpp"
+#include "bsp/native_zone_group_clear.hpp"
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/oct18b_nA1_early.hpp"
+#include "bsp/singleton_lifetime.hpp"
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -163,7 +167,8 @@ float avoid_zone_sample_0041bc20(const bsp::TerrainGridLayerRecord& layer,
 // those exact buffers, and every query still sees the records that produced
 // the list. Moving a record during vector growth preserves its grid allocation.
 // This binds typed C++ bodies, not the original ECX/vtable or allocator ABI.
-struct GameAvoidZoneRegistry::NativeRegistry final : bsp::Cc13AvoidZoneRegistryHost {
+struct GameAvoidZoneRegistry::NativeRegistry final : bsp::Cc13AvoidZoneRegistryHost,
+    bsp::NativeAvoidZoneRegistryClearHost {
     explicit NativeRegistry(std::vector<bsp::TerrainGridLayerRecord>& layers)
         : layers_(layers) {
         try {
@@ -192,8 +197,10 @@ struct GameAvoidZoneRegistry::NativeRegistry final : bsp::Cc13AvoidZoneRegistryH
             layers_.push_back(record);
             auto layer = std::make_unique<bsp::Cc13TerrainGridLayerNative>();
             project_layer(*layer, layers_.back());
-            auto node = std::unique_ptr<bsp::Cc13TerrainGridLayerListNode>(
-                buy_node_0041c1f0(registry, registry.head, registry.head->previous, layer.get()));
+            auto node = std::unique_ptr<bsp::Cc13TerrainGridLayerListNode,
+                decltype(&bsp::singleton_lifetime_free)>(
+                    buy_node_0041c1f0(registry, registry.head, registry.head->previous, layer.get()),
+                    &bsp::singleton_lifetime_free);
             increment_size_00420140(registry, 1);
             registry.head->previous = node.get();
             node->previous->next = node.get();
@@ -224,11 +231,8 @@ private:
 
     bsp::Cc13TerrainGridLayerListNode* buy_head_node_0041bfd0(
         bsp::Cc13AvoidZoneRegistryNative&) override {
-        auto* head = new bsp::Cc13TerrainGridLayerListNode;
-        head->next = head;
-        head->previous = head;
-        head->value = nullptr; // sentinel payload is never read
-        return head;
+        // bsp.py show 0041BFD0: allocate 0Ch, self-link, leave payload unread.
+        return bsp::buy_native_registry_list_head_0041bfd0();
     }
     void* allocate_layer_00bf681b(std::uint32_t bytes) override {
         return ::operator new(bytes);
@@ -247,34 +251,38 @@ private:
         bsp::Cc13AvoidZoneRegistryNative&, bsp::Cc13TerrainGridLayerListNode* next,
         bsp::Cc13TerrainGridLayerListNode* previous,
         bsp::Cc13TerrainGridLayerNative* const& value) override {
-        auto* node = new bsp::Cc13TerrainGridLayerListNode{next, previous, value};
+        // 0041C1F0 captures the supplied value slot after allocating the node.
+        auto* node = bsp::buy_native_registry_list_node_0041c1f0(next, previous, &value);
         if (pending_layer_.get() == value) pending_layer_.release();
         return node;
     }
     void increment_size_00420140(bsp::Cc13AvoidZoneRegistryNative& registry,
         std::uint32_t count) override {
-        if (count > (std::numeric_limits<std::uint32_t>::max)() - registry.size)
-            throw std::length_error("avoid-zone layer list too long");
-        registry.size += count;
+        // bsp.py show 00420140: its 0Ch list starts at registry+4h and checks
+        // uint32(3FFFFFFFh-current), rather than the old UINT_MAX host limit.
+        bsp::increment_native_list_count_00420140(&registry.list_proxy_04, nullptr, count);
     }
     void clear_layers_0041ded0(bsp::Cc13AvoidZoneRegistryNative& registry) override {
-        if (registry.head != nullptr) {
-            auto* node = registry.head->next;
-            while (node != registry.head) {
-                auto* next = node->next;
-                delete node->value;
-                delete node;
-                node = next;
-            }
-            registry.head->next = registry.head;
-            registry.head->previous = registry.head;
-        }
-        registry.size = 0;
+        // bsp.py show 0041DED0: delete the front payload, reload/unlink the
+        // current front, free it, then decrement the actual registry count.
+        bsp::native_avoid_zone_registry_clear_layers_0041ded0(registry, *this);
         layers_.clear(); // release borrowed grids only after their native views
     }
     void destroy_layer_list_0041d710(bsp::Cc13AvoidZoneRegistryNative& registry) override {
-        delete registry.head;
-        registry.head = nullptr;
+        // No list exists if the constructor's head allocation threw. Normal
+        // destruction supplies the same registry+4h header as 0041F103.
+        if (registry.head != nullptr)
+            bsp::tidy_native_registry_list_0041d710(&registry.list_proxy_04);
+    }
+    void scalar_delete_layer_vtable_0(bsp::Cc13TerrainGridLayerNative& layer,
+        std::uint32_t flags) override {
+        // These host projections borrow layers_' grid buffers (project_layer),
+        // so their existing typed delete releases the view; clear_layers frees
+        // the owning records only after the native list traversal completes.
+        if ((flags & 1u) != 0) delete &layer;
+    }
+    void free_list_node_00bf65ac(bsp::Cc13TerrainGridLayerListNode* node) override {
+        bsp::singleton_lifetime_free(node); // pairs with both native producers
     }
     void store_registry_singleton_00e17620(void* value) override {
         published_ = static_cast<bsp::Cc13AvoidZoneRegistryNative*>(value);
