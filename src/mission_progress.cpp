@@ -1,5 +1,6 @@
 #include "bsp/mission_progress.hpp"
 #include "bsp/band_0080_cc13.hpp"
+#include "bsp/cc13_seg53.hpp"
 #include "bsp/profile_archive.hpp"
 
 #include <cstring>
@@ -96,20 +97,24 @@ void write_named_counters(ProfileArchiveWriter& writer, const char* section,
 }
 
 enum class EnumNames { Party, Unit };
-int enum_index(std::string_view name, EnumNames kind) {
+int enum_index(const char* name, EnumNames kind) {
     // 00805990 BSP_Party_FromName at 00916A00's five party keys (00917C3C,
-    // 00917FBC, 009182DE, 0091865E, 0091897D); OFF keeps the table walk
-    // below. Every caller passes text_key's C string.
+    // 00917FBC, 009182DE, 0091865E, 0091897D). Every caller passes text_key's
+    // actual archive-key C string.
     if (kind == EnumNames::Party)
-        return cc13_band0080::party_from_name_00805990(std::string(name).c_str());
-    // 00805990 compares 4 party strings then returns 4 on a miss. 0085BCE0
-    // compares only unit classes 0..18 then returns 19, the valid 'other' slot.
-    const int count = kind == EnumNames::Party ? 4 : 19;
-    const auto* names = kind == EnumNames::Party ? parties : unit_classes;
-    NativeStringCaseInsensitiveLess less;
-    for (int i = 0; i < count; ++i)
-        if (!less(name, names[i]) && !less(names[i], name)) return i;
-    return count;
+        return cc13_band0080::party_from_name_00805990(name);
+    // bsp.py show 0085BCE0: NativeString +0 size/+4 pointer, _stricmp against
+    // 00E0B590[0..18], miss -> 19 (the valid 'other' slot). Borrow this SAME
+    // archive key; the table above contains the image's spellings. This view
+    // neither owns nor releases its characters. Original register ABI/SEH is
+    // outside this C++ binding.
+    struct NativeNameView {
+        std::uint32_t size;
+        const char* characters;
+    } key{static_cast<std::uint32_t>(std::strlen(name)), name};
+    static_assert(sizeof(NativeNameView) == 8 && offsetof(NativeNameView, characters) == 4);
+    return cc13_seg53::recon_category_index_from_name_0085bce0(
+        unit_classes, reinterpret_cast<cc13_seg53::Object>(&key));
 }
 const char* enum_name(int index, EnumNames kind) {
     const int count = kind == EnumNames::Party ? 4 : 20;
