@@ -7,6 +7,7 @@ extern "C" {
 #include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
 #include "bsp/path_movcam_seg46_argon.hpp"   // goal 5 chain 696: 007AC780's block
 #include "bsp/flak_note_seg36_37_argon.hpp"
+#include "bsp/pool_pool01_cc13.hpp"
 
 namespace bsp::game {  // namespace
 
@@ -3276,7 +3277,10 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     // OFF keeps the inline transpose and negated translation.
     bsp::transpose_inverse_native_frame_0085dea0(d.inverse_48.data(), d.frame_8.data(),
                                                  &bsp::kNegativeZero_00d7a208);
-    d.runway_heading_88 = o.hull_heading_1050;
+    // 006BEE40 obtains the carrier's vtable[50h], the same 006DFD60 field getter
+    // used by unit_heading_vtable50. Borrow the carrier's motion-produced value.
+    d.runway_heading_88 = bsp::pool_pool01_cc13::unit_instance_get_hull_heading_006dfd60(
+        o.hull_heading_1050);
     // 006BC960: the typed body computes T from the class runway length (+B4h) and
     // the owner's IsKindOf(9); on that arm the body reads neither +B0h nor the
     // block's vtable[10h]. OFF keeps the inline MotherShip arm.
@@ -11868,7 +11872,13 @@ float GameUnitsHost::unit_heading_vtable50(std::size_t index) const {
     if (index >= host.slots.size() || !host.slots[index]) return 0.0f;
     const GameUnitSlot& slot = *host.slots[index];
     const int id = slot.class_id;
-    if (id >= 0x06 && id <= 0x0E) return slot.hull_heading_1050;   // 006DFD60
+    if (id >= 0x06 && id <= 0x0E) {
+        // 006DFD60 is the ship vtable[50h] implementation. Its +1050h is this
+        // live field, written by ship_motion_tail_00826c34 after every motion
+        // step (00826C56); lend it directly to the reconstructed single load.
+        return bsp::pool_pool01_cc13::unit_instance_get_hull_heading_006dfd60(
+            slot.hull_heading_1050);
+    }
     if (id >= 0x0F && id <= 0x17) return slot.plane_heading_c6c;   // 0074E260
     if (id == 0x45) {
         // 006D2040: atan2(+94h, +9Ch) of the local frame's row 2, FSTP float. The

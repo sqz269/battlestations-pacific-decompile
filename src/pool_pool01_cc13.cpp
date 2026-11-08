@@ -28,8 +28,14 @@ float artillery_gunner_bot_get_bullet_throw_mul_006dee00(Pool01Host& host, void*
 // unit vtable slot 50h (game_hosts_units.cpp quotes the call sites 00826CDB and the multileg path).
 // No frame, no EH.
 // ---------------------------------------------------------------------------------------------
-float unit_instance_get_hull_heading_006dfd60(void* unit) noexcept {
-    return at<float>(unit, 0x1050);
+// Source interface: borrow the canonical field, without manufacturing a unit-sized image. The
+// motion tail 00826C34 publishes this field from its original 00826C56 store. This is the same
+// one float load as bsp.py show 006dfd60 --asm (FLD [ECX+1050h]; RET), with no arithmetic or
+// cached copy. Keep this actual virtual-dispatch replacement visible to the PE call graph.
+// The reference interface is not the original ECX=unit ABI.
+__declspec(noinline) float unit_instance_get_hull_heading_006dfd60(
+    const float& hull_heading_1050) noexcept {
+    return hull_heading_1050;
 }
 
 // ---------------------------------------------------------------------------------------------

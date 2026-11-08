@@ -1,0 +1,180 @@
+{
+  "goal": 5,
+  "chain": 748,
+  "slot": "g5-w8",
+  "picked": "Ship hull-heading getter on live virtual-heading and carrier-runway queries",
+  "wired_total_before": 10559,
+  "wired_total_after": 10560,
+  "called_reconstructed_before": 5428,
+  "called_reconstructed_after": 5429,
+  "validation": [
+    "scripts/build.ps1: Win32 Release and all four CTests pass",
+    "tools/call_graph.py who 006dfd60: entry-reachable with two calls from the changed host functions",
+    "tools/call_graph.py path 006dfd60: WinMainCRTStartup through mission-frame/minimap heading queries",
+    "tools/wire_readiness.py --standins: 006DFD60 wired, called=true, call_sites=2, callers_live=2; total 10559 -> 10560",
+    "Built getter disassembly: integer bit copies followed by one FLD and RET; no floating-point arithmetic",
+    "git diff --check passes; no floating-point arithmetic changed"
+  ],
+  "limitations": [
+    "Borrowed-field C++ interface, not the original ECX=unit binary ABI",
+    "Build/test and static entry-reachability evidence only; game not run"
+  ],
+  "rows": [
+    {
+      "native": "006dfd60",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_heading_vtable50; GameUnitsHost::Impl::carrier_holder_frame_006bee40",
+      "evidence": "bsp.py show 006dfd60 --asm: FLD [ECX+1050h]; RET. 006BEE40 calls owner vtable[50h] and stores its result at holder+88h.",
+      "state": "Both sites lend their actual GameUnitSlot::hull_heading_1050 field. The existing ship_motion_tail_00826c34 publishes it after the motion step, corresponding to the original 00826C56 store. Each direct field-return path is replaced once; no raw unit image or alternate execution path is added.",
+      "call_graph": {
+        "called": true,
+        "call_sites": 2,
+        "callers_live": 2
+      }
+    },
+    {
+      "native": "006bee40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::carrier_holder_frame_006bee40",
+      "reason": "Already entry-reachable; this packet replaces only its internal owner-heading query with 006DFD60 and claims no additional body credit."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate score-list owner",
+      "reason": "Missing gameplay score-list consumer; the documented table reader is a debug overlay, excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate score-list owner",
+      "reason": "Missing gameplay score-list consumer and live entries to mark; its documented reader is a debug overlay."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already directly called with the loaded tail-gunner descriptor, actual skill notification and shared stream-one draw; no additional call is warranted."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread enqueue producer and its real source LuaVariantRecord argument vector; this mission interpreter runs on the main thread."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing live MovCam receiver; the AddPosition-only binding throws on this unrelated service and does not call it."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing live MovCam receiver; the AddPosition-only binding throws on this unrelated service and does not call it."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing live MovCam receiver; the AddPosition-only binding throws on this unrelated service and does not call it."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing live MovCam receiver; the AddPosition-only binding throws on this unrelated service and does not call it."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_set_zoom",
+      "reason": "Missing live MovCam receiver; the AddPosition-only binding throws on this unrelated service and does not call it."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate set_ambient_volume",
+      "reason": "Missing ambient SoundInstance producer; has_ambient_sound_instance returns false and the volume service only records the call."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "A reachable real distortion-record growth request was not established in this packet; adding a reserve solely to execute the body would invent work."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: animation value-vector reserve callers",
+      "reason": "Missing traced live skinned-animation value-vector producer and reachable growth request in this packet."
+    },
+    {
+      "native": "00ae19b0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_pointer_vector.cpp: resize_native_shadow_pointer_vector_00ae19b0",
+      "reason": "Missing traced live native shadow-vector owner/caller in this packet; the body already exists and was left unchanged."
+    },
+    {
+      "native": "008f37e0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Bag::insert",
+      "reason": "Already called with actual parser-owned V3 lanes and a canonical owning native bag; no additional call is warranted."
+    },
+    {
+      "native": "008f3880",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene_property_bag_add_matrix_008f3880",
+      "reason": "Missing a traced matrix-property caller and concrete Seg59bHost float-array insertion adapter in this packet."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: game OnInitOnce pointer-reader service",
+      "reason": "Missing live OnInitOnce service implementation and actual GUI pointer-reader callback cell consumer."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: set_selection_callback_00aab5e0",
+      "reason": "Missing live OnInitOnce selection-callback cell owner and consumer."
+    },
+    {
+      "native": "00955970",
+      "status": "skipped",
+      "host_site": "src/entity_local_matrix.cpp: refresh_entity_00955970",
+      "reason": "Missing concrete live EntityRefreshHost scene-node pose/matrix setter binding; existing bodies alone do not establish its consumer."
+    },
+    {
+      "native": "0042b9a0",
+      "status": "skipped",
+      "host_site": "src/entity_local_matrix.cpp: EntityRefreshHost::has_derived_local_matrix",
+      "reason": "Missing the live entity refresh virtual binding that would query this false-return leaf."
+    },
+    {
+      "native": "0043a610",
+      "status": "skipped",
+      "host_site": "src/robot_config.cpp: RobotNameLess::operator()",
+      "reason": "Existing robot registry comparator already implements this address on its real borrowed name keys; no additional comparison is warranted."
+    },
+    {
+      "native": "0074e260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_heading_vtable50 plane branch",
+      "reason": "Missing a real native plane allocation at ECX for this literal naked FLD [ECX+C6Ch] body; the host retains the heading as a separate field."
+    },
+    {
+      "native": "007ee290",
+      "status": "skipped",
+      "host_site": "src/plane_squadron_entity.cpp: plane_squadron_heading_007ee290",
+      "reason": "Missing traced squadron slot-C8 leader dispatch and cached-world refresh binding in this packet."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint",
+      "reason": "Missing checkpoint-differs state producer and checkpoint rewrite service; the current mission-start path only records those services."
+    }
+  ]
+}
