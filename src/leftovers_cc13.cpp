@@ -1852,20 +1852,6 @@ bool event_subscription_matches_00968af0(const void* subscription, const void* p
 } // namespace bsp::oct18_tail_b
 
 namespace bsp::oct18_tail_b {
-// 007F8890, __thiscall(profile,NativeString* id), RET 4, AL bool.
-// Length equality comes before the canonical CRT comparison; empty IDs need
-// neither a data pointer nor a comparison. Original list owns its string IDs.
-bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host) {
-    for (void* node = get<void*>(get<void*>(profile, 0xd0), 0);
-         node != get<void*>(profile, 0xd0); node = get<void*>(node, 0)) {
-        const auto length = get<std::uint32_t>(id, 0);
-        if (get<std::uint32_t>(node, 8) == length &&
-            (length == 0 || host.compare_case_insensitive_00bf7fbf(
-                get<const char*>(node, 0xc), get<const char*>(id, 4)) == 0)) return true;
-        if (node == get<void*>(profile, 0xd0)) invalid(host);
-    }
-    return false;
-}
 // 007FB990, ECX=profile, RET. Actual pending (+7Ch) and saved (+70h)
 // string-set owners are retained. Insertion precedes iterator increment;
 // subtree erasure precedes the four empty-tree storage writes.
