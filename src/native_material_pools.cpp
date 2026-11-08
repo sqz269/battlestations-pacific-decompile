@@ -775,6 +775,22 @@ template<> void* NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate() {
         &native_gui_frame_box_pool_table_push_back_00acf7e0>(storage_);
 }
 
+// bsp.py show 00ACEEE0 --asm: MOV EAX,[ECX], TEST/JZ, CALL BF6989;
+// plain RET, no header stores. Retain the existing Ghidra template name.
+__declspec(noinline) void free_native_gui_frame_box_pool_table_00aceee0(
+    void* actual_table) noexcept {
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+template<> void NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy() {
+    // ACF490 inlines ACEEE0's capture/null-test/free at the retained
+    // F8C188+28h table, after slab cleanup and before section teardown.
+    // Replace that operation once; preserve the original header words.
+    destroy_pool<GuiFrameBoxPoolTraits,
+        &free_native_gui_frame_box_pool_table_00aceee0>(allocator_list_, storage_);
+}
+
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
