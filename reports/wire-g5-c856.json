@@ -1,0 +1,215 @@
+{
+  "goal": 5,
+  "chain": 856,
+  "owner": "agent/g5-w4",
+  "base_head": "c291556da5d7894a469cdb49e15fe76f36dd881c",
+  "scope": "Projectile class effect getters consumed by live ship-hit damage processing",
+  "wired_before": 10705,
+  "wired_after": 10708,
+  "count_basis": "wire_readiness.py --standins summary.wired; the initial cached call graph was stale, so its aggregate called count is not used as a before/after claim",
+  "real_state": "Each getter receives a bounded read-only argument view over the SAME hit's loaded GameBulletClassRow. Only shot+4 and the getter's selected class float are initialized and observed. No native object, vtable, ownership, or class identity is fabricated.",
+  "behavior": "Replace the three direct ShipHitBinding property returns with the existing reconstructed getter bodies. Preserve null-weapon returns and the existing authored-percent FireChance conversion. The returned values continue into flood/fire damage processing; the old direct return paths are removed.",
+  "evidence": [
+    "bsp.py show 006e2510: complete FLD [[ECX+4]+BCh] leaf",
+    "bsp.py show 006e2520: complete FLD [[ECX+4]+C0h] leaf",
+    "bsp.py show 006e2530: complete FLD [[ECX+4]+C4h] leaf",
+    "docs/WEAPON_CLASS_DESCRIPTOR.md: WaterDamage +BC, FireDamage +C0, FireChance / 00D7A220 +C4",
+    "GameBulletClassRow fields are populated from the live loaded weapon descriptor; its fire_chance preserves authored percent"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release",
+    "tests": "4/4 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "call_graph": "Rebuilt from the changed executable; each selected body has exactly one reachable call from its changed ShipHitBinding callback",
+    "entry_path": "WinMainCRTStartup -> game frame -> mission frame -> fixed simulation -> GameGunneryHost::fixed_step -> run_projectiles -> apply_hit -> ShipHitBinding -> reconstructed getter",
+    "readiness": "All three selected rows are wired, called=true, call_sites=1",
+    "boundary": "Build and entry-reachable call-graph evidence only; game not run; no drop-in native ABI claim; no new reconstructed body or ledger row"
+  },
+  "rows": [
+    {
+      "native": "006e2510",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: ShipHitBinding::weapon_water_damage",
+      "call_site": "101230f7"
+    },
+    {
+      "native": "006e2520",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: ShipHitBinding::weapon_fire_damage",
+      "call_site": "10123037"
+    },
+    {
+      "native": "006e2530",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: ShipHitBinding::weapon_fire_chance",
+      "call_site": "10122fcf"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list area",
+      "reason": "Missing gameplay candidate-table owner/consumer; the documented native list reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list area",
+      "reason": "Missing live candidate-table records whose chosen bytes feed gameplay; the host planner uses separate weight vectors."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state snapshot references",
+      "reason": "No actual controller-state message owner and single-player consumer were established during this bounded inspection."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: weapon-director snapshot references",
+      "reason": "No actual extended controller-snapshot owner and single-player consumer were established during this bounded inspection."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "No binding to the actual game receiver and transition movie-screen owner was established; the host file also belonged to another packet under review."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "No actual native loading-job work-vector producer and reachable queue update were established during selection."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "No actual native loader queue/job owner binding was established during selection."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "No actual native loader queue/job owner binding was established during selection."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "No actual native loader queue/job owner binding was established during selection."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "The inspected override reports an unreached route and has no actual movie-camera screen/default-field owner binding."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "The inspected override reports an unreached route and has no actual movie-camera screen/default-field owner binding."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "The inspected override reports an unreached route and has no actual movie-camera speed-limit storage binding."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "The inspected override reports an unreached route and has no actual movie-camera acceleration-limit storage binding."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_set_linear_speed_limit_005cb9f0",
+      "reason": "No actual movie-camera screen producer and live script-to-limit-state binding were established during selection."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie_camera_set_angular_speed_limit_005cba20",
+      "reason": "No actual movie-camera screen producer and live script-to-limit-state binding were established during selection."
+    },
+    {
+      "native": "0093aa90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: set_section_failure_effect",
+      "reason": "The inspected override aborts as unreached; no actual section effect-slot owner and create/stop effect services were established."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: last-command metadata publication",
+      "reason": "No reachable adapter supplying the actual nonempty native render-command queue was established during selection."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane publication",
+      "reason": "No reachable native main-scene submission/camera owner binding was established during selection."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane clear",
+      "reason": "No reachable native main-scene submission/camera owner binding was established during selection."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "No reachable adapter joining the typed GuiResourceOwner/highlight widgets to the active raw GUI application was established."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "No actual typed GuiWidgetOwner/timed-entry owner supplied by the active GUI frame caller was established."
+    },
+    {
+      "native": "006e42d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_construct_006e42d0",
+      "reason": "The inspected gunnery host has no MultiRackState producer with live display-round entities, slot timers, and consumers."
+    },
+    {
+      "native": "006e35c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_any_slot_reloading_006e35c0",
+      "reason": "Missing a live multiple-rack owner whose native per-slot reload timers feed firing/HUD behavior."
+    },
+    {
+      "native": "006e35f0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_min_reload_left_006e35f0",
+      "reason": "Missing a live multiple-rack owner whose native per-slot reload timers feed firing/HUD behavior."
+    },
+    {
+      "native": "006e3730",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_count_rounds_006e3730",
+      "reason": "Missing actual multiple-rack display-round storage and its live real/display-round count consumer."
+    },
+    {
+      "native": "006e3700",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_ammo_fraction_006e3700",
+      "reason": "Missing actual multiple-rack original-ammo/display-round state and a consumer of that specific count."
+    },
+    {
+      "native": "006e3770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_set_ammo_006e3770",
+      "reason": "Missing a live multiple-rack owner consuming all three distinct native ammunition fields."
+    },
+    {
+      "native": "006e45e0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: multi_rack_has_round_006e45e0",
+      "reason": "Missing actual multiple-rack display-round entities and their class-kind lookup binding."
+    }
+  ]
+}
