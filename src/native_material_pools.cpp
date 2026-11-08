@@ -11,6 +11,8 @@
 #include <cstring>
 #include <new>
 
+#include "bsp/native_shader_state_list_pool_table.hpp"
+
 namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4, "Native material pools target MSVC Win32.");
@@ -326,12 +328,20 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
     :allocator_list_(list),storage_(storage) {
     list.bind_virtual0(storage.allocator_00,{native_vtable,native_virtual0,this,&invoke_trim});
 }
-void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
+void NativeShaderStateListPool::initialize_00b623d0(){
+    // 00B623D0 inlines B62360's reserve(32) over the retained pool+28h
+    // header, inside unwind state 2. Reuse that body without another reserve.
+    initialize_pool<NativeShaderStateListPool,
+        &native_shader_state_list_pool_table_reserve_00b62360>(allocator_list_,storage_);
+}
 void* NativeShaderStateListPool::allocate_slot_00b62630(){
     // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
     // feed 00B620F0 before the slab table/count publication.
+    // 00B62630 then inlines B622E0's table growth/append, under the same
+    // critical section, after publishing the actual slab's first-free index.
     return allocate_slot<NativeShaderStateListPool,
-        &initialize_native_shader_state_list_slab_00b620f0>(storage_);
+        &initialize_native_shader_state_list_slab_00b620f0,
+        &native_shader_state_list_pool_table_push_back_00b622e0>(storage_);
 }
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
