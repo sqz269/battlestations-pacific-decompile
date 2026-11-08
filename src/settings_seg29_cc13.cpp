@@ -154,7 +154,9 @@ void LuaMachine::set_field_nil(const char* key) {
 void LuaMachine::get_global(const char* name) { lua_getfield(state_, LUA_GLOBALSINDEX, name); }
 void LuaMachine::get_table(int index) { lua_gettable(state_, index); }
 void LuaMachine::create_table_006b84b0() { lua_createtable(state_, 0, 0); }
-void LuaMachine::set_table(int index) { lua_settable(state_, index); }
+// bsp.py show 006B84D0 --asm: stack index -> EDX, machine+04 -> ECX,
+// CALL 00A67E10, RET4. Stock Lua uses its C ABI with the same state and index.
+void LuaMachine::set_table_006b84d0(int index) { lua_settable(state_, index); }
 int LuaMachine::protected_call(int nargs, int nresults, int errfunc) {
     return lua_pcall(state_, nargs, nresults, errfunc);
 }
