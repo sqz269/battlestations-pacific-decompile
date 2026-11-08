@@ -177,7 +177,7 @@ void pod8_uninitialized_fill_n_00523640(Raw destination, std::uint32_t count, co
 Raw pod8_copy_backward_00523af0(const void* first, const void* last, Raw destination_end) noexcept;
 Raw entity_cast_if_kind_00523540(Raw entity, ViewSeg14Hooks& hooks); // kind 1
 Raw entity_cast_if_kind_00523560(Raw entity, EntityKindHooks& hooks); // kind 18h
-Raw entity_cast_if_kind_00523580(Raw entity, ViewSeg14Hooks& hooks); // kind 2
+Raw entity_cast_if_kind_00523580(Raw entity, EntityKindHooks& hooks); // kind 2
 
 // ---- control-layout listeners -------------------------------------------------------------------
 void control_layout_select_current_00527be0(Raw listener, Raw unused, Raw widget, const ViewGlobals& globals,
