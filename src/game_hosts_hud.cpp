@@ -11,6 +11,7 @@
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/game_hosts_powerups.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
+#include "bsp/math.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gui_aspect_extent.hpp"
@@ -6994,7 +6995,11 @@ public:
         const double dx = static_cast<double>(tx) - world[12];
         const double dy = aim_y - world[13];
         const double dz = static_cast<double>(tz) - world[14];
-        const double flat = std::sqrt(dx * dx + dz * dz);
+        // Reuse 00401CF0 on the live camera-to-target planar delta. Zero Y
+        // is this caller's existing horizontal projection, before its pitch
+        // calculation below. The squared length now honors the main thread's
+        // x87 PC24 setting; no original 00401CF0 call at this site is claimed.
+        const double flat = std::sqrt(bsp::length_squared_00401cf0({dx, 0.0, dz}));
         if (!(flat > 1.0e-3)) return false;
         // Goal 5 chain 730: reuse the existing direction-error body on the
         // published camera forward row and this live target's aim direction.

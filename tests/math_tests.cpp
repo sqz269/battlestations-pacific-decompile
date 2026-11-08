@@ -1216,6 +1216,15 @@ int main() {
     check(equal(out, {-2, -4, -6}), "in-place scaling");
     check(length_squared_00401cf0({3, 4, 12}) == 169, "squared length fixture");
     check(length_squared_00401cf0({0, 0, 0}) == 0, "zero squared length");
+    // A double SSE expression returns 16777218 here. Native 00401CF0 must
+    // round both additions at the current x87 PC24 precision instead.
+    unsigned short saved_length_control, pc24_length_control;
+    __asm { fnstcw saved_length_control }
+    pc24_length_control = static_cast<unsigned short>(saved_length_control & ~0x0300u);
+    __asm { fldcw pc24_length_control }
+    const double pc24_squared_length = length_squared_00401cf0({4096, 1, 1});
+    __asm { fldcw saved_length_control }
+    check(pc24_squared_length == 16777216.0, "squared length honors x87 PC24 additions");
 
     RecordingStorage storage;
     NativeString text;
