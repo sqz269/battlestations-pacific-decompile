@@ -4,7 +4,10 @@
 #include <string>
 #include <utility>
 
-namespace bsp { struct ScenePropertyBlock; }
+namespace bsp {
+struct ScenePropertyBlock;
+namespace scene_weather_cc13 { struct ScenePostProcessHost; }
+}
 namespace bsp::game {
 class GameNativeRendererApplication;
 
@@ -13,6 +16,7 @@ class GameNativeRendererApplication;
 class GameScenePostProcessRecord {
 public:
     std::array<std::string, 4> remap_names() const;
+    void publish_parameters(scene_weather_cc13::ScenePostProcessHost&) const;
     void apply(GameNativeRendererApplication&) const;
 private:
     struct Impl;

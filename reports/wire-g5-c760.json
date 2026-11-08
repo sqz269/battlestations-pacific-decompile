@@ -333,7 +333,7 @@
       "00b0ea20": 2,
       "00b0ea70": 2
     },
-    "fixture": "tools/c760_postprocess_probe.ps1 links actual built game object files with a dedicated probe main; installed SceneRootProps plus partial HDR override / explicit empty Colorize / default remap preservation passed.",
+    "fixture": "tools/c760_postprocess_probe.ps1 passed against installed SceneRootProps: partial HDR override publishes all three parameter blocks, authored empty Colorize overrides its default, and authored g_PostProcess = I 0 publishes zero parameter blocks with all four remap names empty.",
     "fixture_schema": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
     "fixture_schema_sha256": "e6618d5b9059a6e7f6316d9e6aea35bb019ce12dfc1ecea884c04d953d1c5440",
     "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings. Reader divisions/subtraction now follow the cited PC24 assembly.",
@@ -354,5 +354,29 @@
     "unknown_no_identifier": 201
   },
   "count_note": "Only 00B0EA70 changes the text readiness state; the other three were already text-matched but had no body call_sites in the baseline inventory. All four now have concrete reachable body calls.",
-  "left": "Lua-specific post-effect commands, original native scene-record ABI ownership, and visual post-processing parity remain separate work. No new address-suffixed bodies or ledger rows were introduced."
+  "left": "Lua-specific post-effect commands, original native scene-record ABI ownership, and visual post-processing parity remain separate work. No new address-suffixed bodies or ledger rows were introduced.",
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1670,
+      "reviewed_head": "85d6751fb3c0f2ff7382ed0446f6023d0f7eb35d",
+      "findings": [
+        {
+          "id": 1,
+          "priority": "P2",
+          "status": "fixed",
+          "site": "src/game_hosts_scene_contents.cpp: read_scene_post_process_record",
+          "change": "Check authored root scalar assignments before selecting the default g_PostProcess child bag. Preserve the native 00469D23 / 004F233F type-6 gate by returning an empty record for a scalar override.",
+          "verification": "Existing probe now observes the same parameter-publication path used by apply(). With I 0 it counts zero publications and checks four empty remap names; the partial HDR override still publishes three blocks with MiddleGray 2.0."
+        }
+      ],
+      "checks": [
+        "scripts/build.ps1: passed, all 4 CTests passed",
+        "tools/c760_postprocess_probe.ps1: passed with installed scene.props",
+        "tools/call_graph.py and who: all 4 concrete bodies remain reachable; body sites 1/2/2/2",
+        "No floating-point arithmetic changed in this fix."
+      ],
+      "runtime": "No game run or visual/ABI validation."
+    }
+  ]
 }

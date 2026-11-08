@@ -7826,10 +7826,10 @@ struct GameScenePostProcessRecord::Impl final : bsp::scene_weather_cc13::ScenePo
         return {fields.texture_name_c24, fields.texture_name_uw_c2c,
             fields.texture_name_old_film_c34, fields.texture_name_old_film_uw_c3c};
     }
-    void apply(GameNativeRendererApplication& renderer) const {
-        if (hdr) (void)renderer.set_scene_hdr(*hdr);
-        if (blur) (void)renderer.set_scene_motion_blur(*blur);
-        if (wave) (void)renderer.set_scene_underwater_wave(*wave);
+    void publish_parameters(bsp::scene_weather_cc13::ScenePostProcessHost& host) const {
+        if (hdr) host.set_hdr_params_00b0e9b0(*hdr);
+        if (blur) host.set_motion_blur_params_00b0ea20(*blur);
+        if (wave) host.set_underwater_wave_params_00b0ea70(*wave);
     }
 };
 
@@ -7870,13 +7870,37 @@ const ScenePropertyBlock* post_process_child(const ScenePropertyBlock* root, con
 std::array<std::string, 4> GameScenePostProcessRecord::remap_names() const {
     return values_->remap_names();
 }
+void GameScenePostProcessRecord::publish_parameters(
+    bsp::scene_weather_cc13::ScenePostProcessHost& host) const {
+    values_->publish_parameters(host);
+}
 void GameScenePostProcessRecord::apply(GameNativeRendererApplication& renderer) const {
-    values_->apply(renderer);
+    struct Publisher final : bsp::scene_weather_cc13::ScenePostProcessHost {
+        GameNativeRendererApplication& renderer;
+        explicit Publisher(GameNativeRendererApplication& value) : renderer(value) {}
+        void set_hdr_params_00b0e9b0(const bsp::scene_weather_cc13::ScenePostProcessHdr& value) override {
+            (void)renderer.set_scene_hdr(value);
+        }
+        void set_motion_blur_params_00b0ea20(
+            const bsp::scene_weather_cc13::ScenePostProcessMotionBlur& value) override {
+            (void)renderer.set_scene_motion_blur(value);
+        }
+        void set_underwater_wave_params_00b0ea70(
+            const bsp::scene_weather_cc13::ScenePostProcessUnderwaterWave& value) override {
+            (void)renderer.set_scene_underwater_wave(value);
+        }
+    } publisher(renderer);
+    publish_parameters(publisher);
 }
 GameScenePostProcessRecord read_scene_post_process_record(
     const ScenePropertyBlock& schema, const ScenePropertyBlock& header) {
     auto values = std::make_shared<GameScenePostProcessRecord::Impl>();
     auto& result = *values;
+    // 00469D23 preserves an authored scalar; 004F233F skips 004E8510
+    // unless the resulting property type is 6. Scalar assignments live in
+    // values, not blocks, and must suppress the schema's default child bag.
+    if (header.find("g_PostProcess") != nullptr)
+        return GameScenePostProcessRecord{std::move(values)};
     const auto* authored = post_process_child(&header, "g_PostProcess");
     const auto* defaults = post_process_child(&schema, "g_PostProcess");
     if (!authored && !defaults) return GameScenePostProcessRecord{std::move(values)};
