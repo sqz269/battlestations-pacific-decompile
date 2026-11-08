@@ -101,6 +101,19 @@ delete_vehicle_set_party_message_00760610(seg42::VehicleValueMessage* message,
     return message;
 }
 
+// Goal 5 chain 775 evidence: bsp.py show 00760630 --asm in the existing
+// bsp.gpr /battlestationspacific.exe. 00760630..0076064C tests flags bit 0,
+// stamps 00CE4974, optionally calls 00BF65AC, and returns this with RET4.
+// Preserve Ghidra's correct CG_scalar_deleting_dtor_00760630 library name.
+__declspec(noinline) seg42::VehicleValueMessage*
+delete_vehicle_set_race_message_00760630(seg42::VehicleValueMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
+
 __declspec(noinline) seg42::VehicleShipyardLaunchMessage*
 delete_vehicle_shipyard_launch_message_00760650(seg42::VehicleShipyardLaunchMessage* message,
     std::uint32_t flags) {

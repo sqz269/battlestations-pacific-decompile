@@ -135,9 +135,14 @@ public:
     // 0095ABE0's 7Fh arm uses the copy's three-bit unsigned +1Ch party;
     // its current race is read at delivery, rather than stored in the message.
     std::uint32_t queue_vehicle_party_7f(std::uint32_t party) const;
-    // Only fields read by the 80h writer, borrowed from SetRace's actual
-    // posted descriptor. This is a codec view, not a constructed native
-    // message: selected-player and vtable/profile ownership are not bound.
+    // Borrow the mission's authoritative participant pool and selected-slot
+    // field. Both outlive this units-owned codec. Only SetRace uses this
+    // source; older message paths retain their existing contexts.
+    void bind_vehicle_race_owner(const SessionParticipantPools& participants,
+        const std::size_t& local_slot) const noexcept;
+
+    // Fields read by the 80h writer, borrowed from SetRace's actual posted
+    // descriptor. The local codec constructs both real message objects.
     struct VehicleRaceFields {
         std::uint8_t type_10;
         std::uint16_t id_18;
@@ -145,7 +150,8 @@ public:
         std::uint32_t race_1c;
     };
     // The local codec retains the low four race bits (00760420 / 00760470);
-    // party is read at delivery. No session/selected-player state is read here.
+    // party is read at delivery. Construction reads the bound participant
+    // identity; the factory's 20h receive allocation lives through decoding.
     std::uint32_t queue_vehicle_race_80(const VehicleRaceFields& posted) const;
     // Goal 4 chain 260. MT_SHIPREPAIR_BODYREPAIR (9Fh, 008AD330 RepairEnable:
     // 0075B430(9Fh) at 008AD494, +18h = 0, +4h = 1, +1Ah = 0, vtable 00D03360,

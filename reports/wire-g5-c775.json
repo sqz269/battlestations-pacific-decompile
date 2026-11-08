@@ -1,0 +1,172 @@
+{
+  "goal": 5,
+  "chain": 775,
+  "slot": "g5-w4",
+  "base": "a709c86501",
+  "summary": "Wire SetRace message construction and complete the 80h local-copy lifetime using the real mission participant pool and current selected slot.",
+  "wired_total_before": 10619,
+  "wired_total_after": 10620,
+  "rows": [
+    {
+      "native": "00760390",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Replaces manually synthesized sender header and receive record with the existing constructor on the actual sender and allocated 20h decoded message. NativeSessionMessageParticipantOwner borrows GameMissionFrameHost participants and entry_state.local_slot_index before scripts can send SetRace.",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00760630",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80 / OwnedDecodedMessage destructor",
+      "reason": "New complete scalar-deleting destructor, replacing the library-out-of-scope placeholder. Flags 0 restamps the stack sender; flags 1 restamps/frees the actual 20h decoded allocation after race consumption. Retains correct Ghidra CG name and library tag; therefore excluded from the text-readiness census.",
+      "called": true,
+      "call_sites": 3
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrderHost::ai_group_forward_command",
+      "reason": "Missing a live entity+16Ch AI-group/current-command owner; the inspected mission path has no AI group to forward to."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: pilot task tick gates",
+      "reason": "Missing a retained task+2F4h/unit+9C2h parity-byte adapter at the live pilot tick; no real native task view was identified."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: land task state registration",
+      "reason": "Missing the eight actual constructed land-state objects and their executable entry profiles; host state enums do not provide native identities."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry::check_player_count",
+      "reason": "The native routine requires nonzero multiplayer game+1FE4h; excluded from this single-player assignment."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target construction",
+      "reason": "Missing the qualified raw descriptor owner and live mutable F87574/F87578/F8757C DATA views required by this raw initializer."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: register_ship_ai_unit",
+      "reason": "Missing the actual 2268h composite GunBot/ship-brain owner and constructor services; current semantic controller storage cannot be passed as that object."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: support launch orders",
+      "reason": "Missing a live support-site stock owner with the +328h/+31Ch lists and a HudSupportManager composition consumer."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/mission_tree_screens.cpp: start_selected_mission_005c5600",
+      "reason": "Missing a live MissionLaunchHost and mission-tree activation consumer for the briefing-screen data."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its original caller is the debug inspector PrintFlooded; debug-only work is excluded."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live input-character consumer with the text context's font; constant-byte probe calls are insufficient."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: publish_and_update",
+      "reason": "No additional wiring is missing: the existing retained-sound update already calls this body from entry-reachable code."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support flight spawn",
+      "reason": "Missing the live power-up spawn-manager/property-bag/border-zone producer; the host currently throws at this unmodelled air-support spawn."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane death effects",
+      "reason": "The C8h DeadMeatRot send is explicitly multiplayer-only at the native session-mode gate."
+    },
+    {
+      "native": "0089b840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch GetCapturePercentage",
+      "reason": "Missing a separate callable body under the readiness ledger identifier; that identifier currently labels the existing inline host substitution."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: apply_user_path_point_007207c0",
+      "reason": "Missing a presence=0 removal-message producer and per-slot retained path owners; the live path sends additions only."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live default-descriptor consumer; calling it before the populated descriptor builder would add redundant initialization."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing bound live GuiPointerRuntimeServices for device sampling, cursor latches and hit-test dispatch."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing a constructed live Curve widget with its authored vectors and tessellation/render consumer."
+    },
+    {
+      "native": "00aa3bd0",
+      "status": "skipped",
+      "host_site": "src/gui_layer.cpp: create_kind_00aa3bd0",
+      "reason": "Missing a live layer factory consumer of the copy/default selector; the helper alone does not construct a layer owner."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing the original reflection/property-descriptor writer consumer 00AAAED0; render sorting serves a different operation."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing the actual native hull shape chain and manifold-clear services; the live path currently stores a semantic hull-class boolean."
+    }
+  ],
+  "real_state": {
+    "producer": "GameMissionFrameHost::run_scene_load_004dfb70 binds the actual persistent participant pool and mutable entry_state.local_slot_index immediately after creating GameUnitsHost.",
+    "consumer": "Existing SetRace Lua route retains the decoded low-four-bit race and applies it at the local unit callback; original party-at-delivery behavior remains.",
+    "profile": "00D032FC five slots verified with bsp.py ghidra bytes against existing bsp.gpr /battlestationspacific.exe.",
+    "ownership": "Sender stays stack-owned; receive storage uses singleton_lifetime_allocate/free and existing OwnedDecodedMessage. No pointer into a copied participant record is synthesized."
+  },
+  "verification": {
+    "build": "scripts/build.ps1: Win32 Release and all four existing CTests passed.",
+    "focused_fixture": "local/c775_race_probe.cpp / .cmd passed: null raw-game pointer, real typed fixture pool identity, mutable slot re-read, constructor guards/untouched payload, low-four-bit codec and flags-bit-0 scalar lifetime. Synthetic source fixture, no original-binary or game execution.",
+    "call_graph": "tools/call_graph.py who 00760390 and who 00760630 confirm reachable calls from the modified host; path 00760390 reaches the registered Lua dispatch from WinMainCRTStartup.",
+    "readiness": "tools/wire_readiness.py --standins: constructor ready -> wired/called true, 2 call sites. Text total 10619 -> 10620; new deleting destructor is excluded by its preserved compiler-generated library tag.",
+    "diff": "git diff --check passed. No floating-point arithmetic changed."
+  },
+  "limitations": [
+    "No game run was performed.",
+    "Typed C++ interfaces are not original-ABI replacements.",
+    "Participant owner values are canonical typed identities only; no native participant field layout is claimed.",
+    "The existing host projects the receive payload before queuing its local callback; this change retains the native receive allocation through that projection."
+  ]
+}

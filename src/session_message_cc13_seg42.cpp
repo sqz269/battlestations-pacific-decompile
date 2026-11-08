@@ -31,7 +31,7 @@ const U* vt(const Context& c, U image_address) { return c.vtables.vtable(image_a
 // The inlined 0075B430: delivery 3, +8/+0Ch zero, base vtable 00D02C68, type,
 // then the selected slot record from game+18CCh[game+18ECh] when 0..7.
 void base(S* m, U type, const Context& c) {
-    NativeSessionMessageContext session{c.current_game_00e188a8};
+    NativeSessionMessageContext session{c.current_game_00e188a8, c.selected_participant};
     construct_native_session_message_0075b430(m, type, session);
 }
 void finish(S* m, U delivery, const U* profile) { m->delivery_04 = delivery; m->profile_00 = profile; }

@@ -50,6 +50,8 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_commands.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/mission_events.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_world.hpp"
@@ -4589,6 +4591,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // authored `Command` token is then queued, and the first created
             // instance becomes the controlled unit through 004c0890.
             host.units = std::make_unique<GameUnitsHost>(host.log, host.lua);
+            // SetRace's message constructor borrows the mission's current
+            // selected participant, before any unit/script order can post it.
+            host.units->commands().session_messages().bind_vehicle_race_owner(
+                host.participants, host.entry_state.local_slot_index);
             // Packet cc9_squadron_pass_hooks_calls: the InitAll walk's squadron hooks.
             host.lua.attach_units_hooks(host.units.get());
             if (host.observer_runtime != nullptr)
