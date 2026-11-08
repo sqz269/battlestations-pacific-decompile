@@ -1,0 +1,358 @@
+{
+  "run": 1744,
+  "goal": 5,
+  "chain": 809,
+  "owner": "agent/g5-w5",
+  "rows": [
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp",
+      "reason": "Missing actual recon dirty-slot bytes, local-player context mapping and world cache-invalidation ownership."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Missing the live HUD map animated-value owner and its current +50h interpolator/notification binding."
+    },
+    {
+      "native": "00a0fc90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::command_notify_member",
+      "reason": "Already reachable at baseline; reused the same sixteen-class notification body for the new forwarding path."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp::EntityIssueBinding::ai_group_forward_command -> src/game_hosts_ai.cpp::ai_forward_group_member_command"
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp",
+      "reason": "Already connected to live native property insertion; no additional run is justified."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "Already connected to live property merging; no additional run is justified."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::CompletionBinding::report_target_event",
+      "reason": "Missing reporter/channel ownership and the real resolved target for synchronous Lua event dispatch."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "src/native_land_follow_parameters.cpp::NativeLandFollowParametersOwner",
+      "reason": "Existing owner already calls the copy body when initialized; no second copy was added."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::PlaneBinding",
+      "reason": "Missing retained approach observer/target-reference owner and its native pilot binding."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing complete land-task base/composite constructors and native pilot/profile/entry services."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp",
+      "reason": "Missing the complete native move-to construction services and approach/task lifetime binding."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::apply_user_path_point_007207c0",
+      "reason": "Missing the presence-zero remove-message producer and retained path owners for all queued slots."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp",
+      "reason": "No live default-descriptor consumer found; populated descriptor construction is a different operation."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp::shutdown",
+      "reason": "Missing the full constructed-game cleanup contexts and publication ownership needed by the complete destructor."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::update_gui_manager_00aa4f80",
+      "reason": "Missing a linked manager-update caller supplying this same widget's timed-entry owner."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp::describe",
+      "reason": "Missing a live sorted-child serialization consumer bound to the actual child/name collection."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "reason": "Existing skill path already calls this body with descriptor, notification and shared random stream."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::PlaneBinding::pilot_think_and_commit",
+      "reason": "Already called at baseline from reachable code using the retained opposite-parity publication."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_retreat_00bf16b0",
+      "reason": "Missing a live error-context tree owner and entry-reachable iterator caller."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_advance_00bf1450",
+      "reason": "Missing a live error-context tree owner and entry-reachable iterator caller."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_insert_at_00bf2270",
+      "reason": "Missing an entry-reachable error-context insertion/erase owner."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_insert_at_00bf2270",
+      "reason": "Missing an entry-reachable error-context insertion/erase owner."
+    },
+    {
+      "native": "00bf2270",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing an entry-reachable error-context map producer."
+    },
+    {
+      "native": "00bf1450",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing an entry-reachable error-context iterator consumer."
+    },
+    {
+      "native": "00bf16b0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing an entry-reachable error-context iterator consumer."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::report_loading_progress_0057bec0",
+      "reason": "Existing loading-screen helper already calls the body; mission-tree reporting still lacks a borrow of that owner."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::set_hull_class_bit",
+      "reason": "Missing actual DYN hull-shape ownership and manifold invalidation under the world lock."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::periscope_break",
+      "reason": "Missing actual periscope shape ownership and manifold invalidation under the world lock."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp",
+      "reason": "Missing a native path-leg-manager owner with singleton lock, construction and lifetime registration services."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "Only an update fragment; missing the renderer's actual depth-kernel destination and screen-size consumer."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp",
+      "reason": "No reached aspect-times-FOV query consumer found for the actual camera projection."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp",
+      "reason": "Missing a live factory binding with the same base/string/registry/focus owners."
+    },
+    {
+      "native": "00aac6f0",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp",
+      "reason": "Missing a live Button constructor consumer with actual registry/focus lifetime ownership."
+    },
+    {
+      "native": "006bc030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp",
+      "reason": "Claimed independently by agent/g5-w6 c812; left its command-category wiring to that owner."
+    },
+    {
+      "native": "00a410a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::grant_award",
+      "reason": "Online award gate/queue lacks a constructed real sign-in manager; excluded from this single-player packet."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp::ocean_orthonormalize_00bbd310",
+      "reason": "Legacy name is cloud-manager arithmetic; missing the real cloud-manager/reference-node producer."
+    },
+    {
+      "native": "00521f30",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_85_to87.cpp",
+      "reason": "Missing the live unit-pick message87 producer or local read-factory consumer."
+    },
+    {
+      "native": "005f9660",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_78_to81.cpp",
+      "reason": "Only the read factory is an original caller; no live local message81 read consumer established."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_text_write_multiline_008efa30",
+      "reason": "Missing an entry-reachable scene multiline writer and actual writer owner."
+    },
+    {
+      "native": "008efa30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp",
+      "reason": "Missing the scene property writer's concrete Seg59bHost and actual output owner."
+    },
+    {
+      "native": "008ef6a0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "Existing BIN reader already reaches the hex-byte decoder; no duplicate decoding was added."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "Already called for retained authored BIN property tokens."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp",
+      "reason": "Only an audio-flag plan; missing the actual ship BBC and device-list notification owners."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp",
+      "reason": "Missing the live support-site stock owner and order/composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp",
+      "reason": "Missing the support-screen site-filter owner and its live supply-class list."
+    },
+    {
+      "native": "0057d430",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp",
+      "reason": "Only original caller is the debug AutoTest driver; excluded from single-player wiring."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::vehicle_avoidance_007df4f0",
+      "reason": "Missing a nonzero real unit+B04h correction producer admitting the alternate-frame branch."
+    },
+    {
+      "native": "007d9c10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::PlaneBinding",
+      "reason": "Already called through world_to_body_007d9c10; does not establish the missing unit+B04h producer."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp::orbit_about_axis_0042d610",
+      "reason": "Missing a live weapon-view camera host and orbit consumer."
+    },
+    {
+      "native": "0042d610",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp::bomb_view_step_00430da0",
+      "reason": "Missing a live WeaponViewCamera producer and concrete WeaponViewHost."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp",
+      "reason": "Missing active-use completion in this checkout; agent/g5-w8 c815 independently claimed that producer."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp",
+      "reason": "Missing a live delayed-load registry consumer for the legacy typed array; raw storage has separate established helpers."
+    },
+    {
+      "native": "00b56200",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp",
+      "reason": "Metadata describes the reserve routine but no live MSHD layer-pointer owner/consumer was established."
+    },
+    {
+      "native": "00b56260",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp",
+      "reason": "Metadata describes the reserve routine but no live MSHD render-mode-pointer owner/consumer was established."
+    },
+    {
+      "native": "00b562c0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp",
+      "reason": "Metadata describes the reserve routine but no live MSHD version-pointer owner/consumer was established."
+    },
+    {
+      "native": "00b56320",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp",
+      "reason": "Metadata describes the reserve routine but no live MSHD LOD-phase-pointer owner/consumer was established."
+    }
+  ],
+  "evidence": {
+    "native": "00A2BD90..00A2BDA3: one group+564Ch load, null test, tail dispatch of +24h with unchanged command/target arguments.",
+    "ownership": "Uses the coordinator's current group_of_unit membership and retained Group::command, never a packed raw group snapshot.",
+    "abi": "Focused source interface only; not a binary ABI replacement.",
+    "baseline_head": "bbec327dcd",
+    "wired_total_before": 10646,
+    "built_called_before": 5499,
+    "wired_total_after": 10647,
+    "built_called_after": 5500,
+    "validation": "MSVC Win32 build and all four existing CTest checks passed; call_graph.py who/path shows one reachable call site at 1004AECD from ai_forward_group_member_command to 104011E0; readiness reports wired, called=true, call_sites=1.",
+    "entry_path": "WinMain -> mission frame -> issue_player_command -> issue_command_object -> EntityIssueBinding::ai_group_forward_command -> ai_forward_group_member_command -> group_forward_command_00a2bd90",
+    "remaining": "The separate session-endpoint subject/controller binding and target-event reporter remain incomplete. Existing direct-entity controller-null substitution is unchanged; no native ABI compatibility or runtime gameplay proof is asserted.",
+    "float_math": "No floating-point arithmetic changed; pc24 lint is not applicable to this packet.",
+    "game_validation": "Not run; assignment prohibits launching the game."
+  }
+}

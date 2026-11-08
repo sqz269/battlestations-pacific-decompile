@@ -58,6 +58,8 @@
 #include <string>
 #include <vector>
 
+namespace bsp { struct SceneCommandTarget; }
+
 namespace bsp::game {
 
 // Packet cc9_objective_kind (docs/MISSION_OBJECTIVES.md section 9). True: Objectives_Add
@@ -516,6 +518,13 @@ int ai_team_slot_009ffd20(int team);
 // the scene command `follow` arm), on the one live coordinator. False when there
 // is none or the request is refused.
 bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader);
+
+// The live coordinator owns entity+16Ch membership and group+564Ch commands.
+// Borrowed group identities last only until group removal/coordinator teardown;
+// callers resolve them for synchronous 0077D600 -> 00A2BD90 notifications.
+void* ai_group_for_unit(std::size_t unit) noexcept;
+void ai_forward_group_member_command(void* group, void* scene_command,
+    const bsp::SceneCommandTarget& target);
 
 class GameAiCoordinatorHost {
 public:

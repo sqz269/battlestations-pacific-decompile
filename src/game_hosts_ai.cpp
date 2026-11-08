@@ -7302,6 +7302,39 @@ bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader
         reinterpret_cast<void*>(follower + 1u), reinterpret_cast<void*>(leader + 1u));
 }
 
+void* ai_group_for_unit(std::size_t unit) noexcept {
+    const auto* owner = g_live_ai_coordinator;
+    if (owner == nullptr || unit >= owner->group_of_unit.size()) return nullptr;
+    auto* group = owner->group_of_unit[unit];
+    return group != nullptr && !group->destroyed ? group : nullptr;
+}
+
+void ai_forward_group_member_command(void* group, void* scene_command,
+    const bsp::SceneCommandTarget& target) {
+    auto* const owner = g_live_ai_coordinator;
+    if (owner == nullptr) return;
+    // Resolve only a retained identity from this coordinator, never an image
+    // pointer or a snapshot. Removal already unpublishes group_of_unit.
+    const auto found = std::find(owner->registry.begin(), owner->registry.end(), group);
+    if (found == owner->registry.end() || (*found)->destroyed) return;
+    struct Calls final : bsp::cc13_seg70::GroupCommandForwardHost {
+        void* group_current_command(void* identity) override {
+            auto& live = *static_cast<GameAiCoordinatorHost::Impl::Group*>(identity);
+            return &live.command;
+        }
+        void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) override {
+            // Same sixteen-class +24h dispatch as command_notify_member above:
+            // 00A0FC90 RET8 consumes neither argument and retains no pointer.
+            bsp::ai_command_notify_member_00a0fc90(command,
+                reinterpret_cast<void*>(a), reinterpret_cast<void*>(b));
+        }
+    } calls;
+    bsp::cc13_seg70::group_forward_command_00a2bd90(calls, *found,
+        reinterpret_cast<std::uint32_t>(scene_command),
+        reinterpret_cast<std::uint32_t>(&target));
+    owner->done("AiGroup::forward_member_command", 0x00a2bd90u);
+}
+
 void GameAiCoordinatorHost::create_00a32350() {
     Impl& host = *impl_;
     if (host.created) return;

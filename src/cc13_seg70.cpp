@@ -484,8 +484,13 @@ void group_copy_command_from_00a2bd50(Seg70Host& host, Raw group, Raw other) {
     group.ptr(kGroupCommand) = clone;
 }
 
-void group_forward_command_00a2bd90(Seg70Host& host, Raw group, std::uint32_t a, std::uint32_t b) {
-    void* command = group.ptr(kGroupCommand);
+void group_forward_command_00a2bd90(GroupCommandForwardHost& host, void* group,
+                                  std::uint32_t a, std::uint32_t b) {
+    // Listing 00A2BD90..00A2BDA3: load the CURRENT group+564Ch exactly once,
+    // null-test it, then tail-dispatch +24h with both arguments unchanged.
+    // The focused access binds the live typed group without fabricating a raw
+    // 5650h allocation or copying its command into a temporary projection.
+    void* command = host.group_current_command(group);
     if (command != nullptr) host.command_forward_24(command, a, b);   // JMP [vtable+24h]
 }
 
