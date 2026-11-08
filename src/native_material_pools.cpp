@@ -670,6 +670,14 @@ template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
         &native_gui_movie_pool_table_push_back_00aad450>(storage_);
 }
 
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::destroy() {
+    // AAD040's inline release is AACCE0's load/null-test/free on this same
+    // F8BD4C+28h header. Replace the common table free exactly once, after
+    // the live slabs and before the existing critical-section/list teardown.
+    destroy_pool<GuiMoviePoolTraits,
+        &free_native_gui_movie_pool_table_00aacce0>(allocator_list_, storage_);
+}
+
 // ACD530/ACD6B0 inline ACD4C0/ACD430 on this same retained F8C0EC+28h
 // header. Preserve constructor unwind state 2 and the allocator's existing
 // lock/first-free publications; the generic reserve/append no longer run here.

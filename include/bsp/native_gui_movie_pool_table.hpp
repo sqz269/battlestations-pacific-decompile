@@ -1,12 +1,25 @@
 #pragma once
 
 #include "bsp/cc13_sweepC.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <new>
 
 namespace bsp {
+
+// 00AACCE0: ECX=pointer-slot, RET; load/free the nonnull pointer without
+// clearing any header fields. 00AAD040 inlines this same release after its
+// slabs and before critical-section/list teardown (bsp.py show AAD040/AACCE0).
+// Reuse the existing free_pointer body, also shared by AA6E80/AAB7F0.
+// This source entry is not a register-ABI replacement.
+__declspec(noinline) inline void free_native_gui_movie_pool_table_00aacce0(
+    void* actual_table) noexcept {
+    gui_widgets_cc13::msvc9_containers::free_pointer(static_cast<void**>(actual_table));
+}
+
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::destroy();
 
 // These entries borrow the Movie pool's actual F8BD4C+28h header; no second
 // table or allocator is retained. Source interfaces, not original ABI adapters.
