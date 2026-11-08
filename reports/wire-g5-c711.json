@@ -1,0 +1,169 @@
+{
+  "run": 1516,
+  "goal": 5,
+  "chain": 711,
+  "slot": "g5-w1",
+  "rows": [
+    {
+      "native": "009ffd20",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:slot_from_owner_player, called by ai_unit_slot_009ffd20, ai_scene_unit_slot_009ffd20 and GameAiCoordinatorHost::Impl::unit_slot_009ffd20",
+      "evidence": "bsp.py show 009ffd20 and --asm: owner +180h, game session +1FE4h, unit side +54h and local player side +28h; existing kill_credit_owning_slot_009ffd20 body reused; former host branches deleted. Live OwnerPlayer publication/overrides, squadron proxy side, SessionContext and scene Player1 Party supply the inputs. PowerupUnitResolverBinding consumes the slot in modifier/applicability and grant paths; group construction consumes it as Group::party."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "The host publishes a typed GroupValueRecord; the native 20h-byte candidate-record/class-object view and a constructor-host adapter are missing."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl powerup engagement Pass::candidate_attack_value",
+      "reason": "Air-support flight blocks have no class-based weapon-facts/pair-value producer; the existing host throws for these entries."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "The current live caller passes ratio 1.0, so its stream-1 fraction cannot select CAUTIOUSMOVE; a real selecting producer is missing."
+    },
+    {
+      "native": "00a15a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::create_party_brain",
+      "reason": "The host owns typed Brain/Planner objects; original-layout brain storage and the native planner allocation/constructor adapters are missing."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list comments beside kAiGroupScoreListReleaseBound",
+      "reason": "The native score list has no gameplay consumer; its only documented reader is an unreachable debug text overlay, so debug-only wiring is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list comments beside kAiGroupScoreListReleaseBound",
+      "reason": "No gameplay-owned candidate score list exists to mark; its only documented reader is an unreachable debug text overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl defend-member selection",
+      "reason": "Already directly called from the existing reachable host and reported called=true/call_sites=1; no new wiring is needed despite readiness state ready."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::CaptureScoreHost::available_resources",
+      "reason": "The host still returns kCaptureAvailableResources; live support-point total, unit resource-cost views and queued spawn-usage adapters are missing."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Actual native group/owner attachment is missing; dispatch_group throws and this legacy row only logs unimplemented."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Actual native group/owner attachment is missing; dispatch_group throws and this legacy row only logs unimplemented."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Actual native group/owner attachment is missing; dispatch_group throws and this legacy row only logs unimplemented."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Actual native group/owner attachment is missing; dispatch_group throws and this legacy row only logs unimplemented."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all 4 tests",
+    "changed_build": "scripts/build.ps1 passed all 4 tests",
+    "body_evidence": [
+      "bsp.py show 009ffd20 --lines 65",
+      "bsp.py show 009ffd20 --asm --lines 52"
+    ],
+    "runtime": "Game not run, as instructed; evidence is build/test and entry-reachable static call graph only.",
+    "float_math": "No float arithmetic changed; pc24 lint not required.",
+    "notes": [
+      "No new address-suffixed body or ledger row was introduced.",
+      "src/game_hosts_powerups.cpp was inspected and left unchanged; its resolver already consumes ai_unit_slot_009ffd20.",
+      "Initial index replacement was blocked by a concurrent readiness reader; rerun succeeded before the final measurements.",
+      "Rebuilt executable graph: reconstructed addresses called 5367 -> 5368. Canonical kill_credit_owning_slot_009ffd20 is entry-reachable at six call sites; no baseline canonical symbol existed.",
+      "agent/g5-w8 is taking 00946FC0 with live support-budget/world-list costs; releasing game_hosts_ai.cpp to that worker after this commit."
+    ],
+    "source_readiness_before": {
+      "wired": 10460,
+      "callees_done_no_wired_caller": 8732,
+      "ready": 1280,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "readiness_called_before": {
+      "called": 5726,
+      "called_not_wired": 346,
+      "wired_not_called": 40,
+      "not_in_binary": 14959
+    },
+    "executable_graph_before": {
+      "functions": 41981,
+      "reachable_functions": 41827,
+      "data_symbols": 47790,
+      "edges": 216914,
+      "roots": 1,
+      "instructions": 2328031,
+      "recon_addresses": 5964,
+      "recon_called": 5367,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2470
+    },
+    "target_before": {
+      "state": "wired",
+      "called": null,
+      "call_sites": null,
+      "note": "Source text matching already labels the body wired, but canonical body has no baseline binary symbol/call; who lists host wrappers only."
+    },
+    "executable_graph_after": {
+      "functions": 41980,
+      "reachable_functions": 41826,
+      "data_symbols": 47788,
+      "edges": 216914,
+      "roots": 1,
+      "instructions": 2327980,
+      "recon_addresses": 5965,
+      "recon_called": 5368,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2472
+    },
+    "call_graph_who_009ffd20": "build J:\\PROG\\battlestations-pacific-decompile-g5-w1\\build\\win32 at 8c221135df\nbsp::game::ai_scene_unit_slot_009ffd20 @1004a7b0 (game_hosts_ai.obj): REACHABLE; 1 call sites and 0 references from reachable code; 0 callers unreachable\n   <- call x1 at 102b96e9 from bsp::game::units_local::StartSpeedSeedBinding::unit_reference_speed_0080fc30\nbsp::game::ai_team_slot_009ffd20 @1004a8d0 (game_hosts_ai.obj): REACHABLE; 2 call sites and 0 references from reachable code; 0 callers unreachable\n   <- call x1 at 100c3d89 from bsp::game::GameGunneryHost::Impl::?1??torpedo_swim3d_step::Swim::gameplay_modifier\n   <- call x1 at 100fab03 from bsp::game::GameGunneryHost::Impl::torpedo_swim3d_step\nbsp::game::ai_unit_slot_009ffd20 @1004a960 (game_hosts_ai.obj): REACHABLE; 2 call sites and 0 references from reachable code; 0 callers unreachable\n   <- call x1 at 101bc31a from bsp::game::?A0x865a413e::PowerupUnitResolverBinding::view_unit\n   <- call x1 at 101bc3a4 from bsp::game::?A0x865a413e::PowerupUnitResolverBinding::view_unit_by_id\nbsp::game::GameAiCoordinatorHost::Impl::unit_slot_009ffd20 @10065fa0 (game_hosts_ai.obj): REACHABLE; 1 call sites and 0 references from reachable code; 0 callers unreachable\n   <- call x1 at 10053dc2 from bsp::game::GameAiCoordinatorHost::Impl::create_group\nbsp::cc13_big1::Big1NullHost::unit_loss_counting_slot_009ffd20 @101190c0 (game_hosts_hud.obj): REACHABLE; 0 call sites and 1 references from reachable code; 0 callers unreachable\n   <- ref  x1 at 1072cfc0 from bsp::game::?A0xc7074069::ShipScreenApplyUnitAdapter::`vftable'\nbsp::kill_credit_owning_slot_009ffd20 @10386b90 (kill_credit.obj): REACHABLE; 6 call sites and 0 references from reachable code; 0 callers unreachable\n   <- call x2 at 1005366f from bsp::game::GameAiCoordinatorHost::create_00a32350\n   <- call x1 at 1004a7e6 from bsp::game::ai_scene_unit_slot_009ffd20\n   <- call x1 at 1004a9e7 from bsp::game::ai_unit_slot_009ffd20\n   <- call x1 at 100576b1 from bsp::game::GameAiCoordinatorHost::Impl::evict_invalid_members\n   <- call x1 at 10066001 from bsp::game::GameAiCoordinatorHost::Impl::unit_slot_009ffd20\n",
+    "canonical_path": "bsp::kill_credit_owning_slot_009ffd20 <- bsp::game::GameAiCoordinatorHost::create_00a32350 <- bsp::game::GameUnitsHost::create_units <- bsp::game::GameScriptOrdersHost::create_air_ops_squadron_006c5050 <- bsp::game::GameMissionLuaHost::create_squadron <- bsp::game::GameMissionLuaHost::`vftable' <- bsp::game::GameMissionLuaHost::~GameMissionLuaHost <- bsp::game::GameMissionHost::Impl::~Impl <- bsp::game::GameMissionHost::~GameMissionHost <- bsp::game::GameMenuHost::Impl::~Impl <- bsp::game::GameMenuHost::~GameMenuHost <- bsp::game::GameStartupHost::~GameStartupHost <- catch$_WinMain <- catch$_WinMain <- WinMain <- __scrt_common_main_seh <- WinMainCRTStartup",
+    "source_readiness_after": {
+      "wired": 10460,
+      "callees_done_no_wired_caller": 8732,
+      "ready": 1280,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "readiness_called_after": {
+      "called": 5727,
+      "called_not_wired": 346,
+      "wired_not_called": 40,
+      "not_in_binary": 14958
+    },
+    "target_after": {
+      "address": "009ffd20",
+      "name": "kill_credit_owning_slot_009ffd20",
+      "source": "src/kill_credit.cpp",
+      "state": "wired",
+      "called": true,
+      "call_sites": 6
+    }
+  }
+}

@@ -45,6 +45,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/ordnance_kinds.hpp"
+#include "bsp/kill_credit.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -1231,13 +1232,15 @@ int ai_team_slot_009ffd20(int team) {
 
 namespace {
 
-// 009FFD20's tail after +180h: 8 is no slot, 0..7 the slot, else the team's.
-// LABELLED: single-player (session mode 0) arms only; 009FFD35's
-// [00E188A8]+1FE4h != 0 arm, which answers -1, is not modelled (rev5 N6).
+// Goal 5 chain 711. bsp.py show 009ffd20 --asm: ECX's +180h owner,
+// game+1FE4h session word, unit+54h side and local player+28h side are
+// exactly the four inputs of the existing typed reconstruction. In single
+// player the local player is slot 0, whose Party the scene loader publishes.
+// PowerupUnitResolverBinding consumes this result as PowerupUnitView::slot;
+// the AI group constructor consumes it as Group::party.
 int slot_from_owner_player(int owner, int team) {
-    if (owner == 8) return -1;
-    if (owner >= 0 && owner < 8) return owner;
-    return ai_team_slot_009ffd20(team);
+    return bsp::kill_credit_owning_slot_009ffd20(owner,
+        bsp::session_context().session_word_1fe4 != 0, team, local_player_party());
 }
 
 // +180h by scene entity name: 9 when unauthored or authored twice.
@@ -1263,19 +1266,10 @@ int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
     // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
     // unit index (no squadron proxy).
     const int team = units.unit_side_0054(unit);
-    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
-    int owner = 9;
-    const auto by_index = g_unit_owner_players.find(unit);
-    if (by_index != g_unit_owner_players.end()) {
-        owner = by_index->second;
-    } else if (const GameUnitRow* row = units.unit_row(unit)) {
-        owner = scene_owner_player_by_name(row->name);
-    }
-    return slot_from_owner_player(owner, team);
+    return slot_from_owner_player(ai_unit_owner_player(units, unit), team);
 }
 
 int ai_scene_unit_slot_009ffd20(int team, const std::string& name) {
-    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
     return slot_from_owner_player(scene_owner_player_by_name(name), team);
 }
 
@@ -2243,16 +2237,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return (g_scene_slot_parties_published && party >= 0) ? party : slot;
     }
     // 009FFD20 BSP_Unit_LossCountingSlot (009FFD20-009FFD5C, live decompile):
-    // +180h == 8 answers -1, +180h < 8 answers itself, otherwise the single-
-    // player team rule below. kAiOwnerPlayerSlotBound OFF takes +180h as 9 for
-    // every unit (section 60's labelled substitution).
+    // Preserve the squadron/member owner lookup and geometric proxy's side;
+    // the reconstructed body owns the slot-selection branches.
     int unit_slot_009ffd20(std::size_t unit) const {
-        const int team_slot = party_slot_of_team(units.unit_side_0054(proxy(unit)));
-        if constexpr (!kAiOwnerPlayerSlotBound) return team_slot;
+        const int team = units.unit_side_0054(proxy(unit));
         const int owner = unit_owner_player_0180(unit);
-        if (owner == 8) return -1;
-        if (owner >= 0 && owner < 8) return owner;
-        return team_slot;
+        return slot_from_owner_player(owner, team);
     }
     // unit+180h as 0077F1F9 stores it from the scene's `OwnerPlayer`, else 9.
     int unit_owner_player_0180(std::size_t unit) const {
