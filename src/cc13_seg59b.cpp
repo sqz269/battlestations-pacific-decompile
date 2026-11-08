@@ -657,7 +657,7 @@ const char* scene_property_value_text_008f0e20(Seg59bHost& host, void* property)
 // 008F84A0 BSP_SpawnRefFrame_Assign. __thiscall(ECX = frame, other), RET 4; EAX = frame.
 // Evidence: 008F84AA +14h = other+14h; non-null -> 008F84B4 00694A60(ECX = entity, EDX = frame);
 // 008F84C0 004134F0(frame+18h, other+18h). The previous entity is not unregistered.
-void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other) {
+void* spawn_ref_frame_assign_008f84a0(SpawnRefFrameAccess& host, void* frame, void* other) {
     void* const entity = ptr(other, 0x14);
     at<void*>(frame, 0x14) = entity;
     if (entity != nullptr) host.observer_register_pair_00694a60(entity, frame);
@@ -668,7 +668,7 @@ void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other
 // 008F84D0 BSP_SpawnRefFrame_ConstructFromMatrix. __thiscall(ECX = frame, matrix), RET 4.
 // Evidence: 008F84D5..008F84E0 +4/+8/+0Ch = 0, byte +10h = 0, +14h = 0; 008F84EC vtable
 // 00D16AA4; 008F84F2 004134F0(frame+18h, matrix).
-void* spawn_ref_frame_construct_from_matrix_008f84d0(Seg59bHost& host, void* frame, const void* matrix) {
+void* spawn_ref_frame_construct_from_matrix_008f84d0(SpawnRefFrameAccess& host, void* frame, const void* matrix) {
     at<std::uint32_t>(frame, 0x04) = 0;
     at<std::uint32_t>(frame, 0x08) = 0;
     at<std::uint32_t>(frame, 0x0C) = 0;
@@ -701,7 +701,7 @@ void* spawn_ref_frame_construct_from_entity_008f8530(Seg59bHost& host, void* fra
 // 008F8610 BSP_SpawnRefFrame_CopyConstruct. __thiscall(ECX = frame, other), RET 4.
 // Evidence: zero +4/+8/+0Ch and byte +10h, vtable 00D16AA4 (008F8641), +14h = other+14h
 // (008F864E); non-null -> 008F8656 00694A60; 008F8662 004134F0(frame+18h, other+18h).
-void* spawn_ref_frame_copy_construct_008f8610(Seg59bHost& host, void* frame, void* other) {
+void* spawn_ref_frame_copy_construct_008f8610(SpawnRefFrameAccess& host, void* frame, void* other) {
     at<std::uint32_t>(frame, 0x04) = 0;
     at<std::uint32_t>(frame, 0x08) = 0;
     at<std::uint32_t>(frame, 0x0C) = 0;
