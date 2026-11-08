@@ -136,15 +136,15 @@ __declspec(noinline) bool input_device_table_any_dynamic_device_button_down_00a9
     return false;
 }
 
-void gamepad_force_clear_all_channels_00a95cb0(Cc13Front2Host& host) {
-    std::uint8_t* table = host.input_device_table_00f8bbf4();   // 00A95CB0
+void gamepad_force_clear_all_channels_00a95cb0(GamepadForceClearHost& host) {
+    std::uint8_t* table = host.current_input_backend();   // 00A95CB0
     // 00A95CB6..00A95CCE: the count is taken once (SAR 2 of the byte span; 0 for a null begin).
     std::int32_t count = 0;
     if (at<std::uint32_t>(table, 0xB8) != 0) {
         count = static_cast<std::int32_t>(at<std::uint32_t>(table, 0xBC) - at<std::uint32_t>(table, 0xB8)) >> 2;
     }
     for (std::int32_t i = 0; i < count; ++i) {   // JL, signed
-        if (i != 0) table = host.input_device_table_00f8bbf4();   // 00A95CE0, reloaded after each call
+        if (i != 0) table = host.current_input_backend();   // 00A95CE0, reloaded after each call
         void* channel = nullptr;   // 00A95CFF: a null begin or i past the size passes ECX = 0
         const std::uint32_t begin = at<std::uint32_t>(table, 0xB8);
         if (begin != 0 &&
