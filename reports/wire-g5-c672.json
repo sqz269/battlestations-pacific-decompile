@@ -1,0 +1,118 @@
+{
+  "goal": 5,
+  "chain": 672,
+  "slot": "g5-w1",
+  "base": "d427aea404",
+  "picked": "Minimap objective marker pools: acquire, construct, retire and delete",
+  "summary": "Replace the host marker-pool stand-ins with the original address bodies on persistent screen state, live objective unit handles, bound GUI templates and the actual marker parent. Surplus widgets and marker records are deleted instead of hidden for reuse.",
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and all four CTests passed",
+    "entry_reachable_reconstructed_before": 5310,
+    "entry_reachable_reconstructed_after": 5314,
+    "source_wired_before": 10414,
+    "source_wired_after": 10416,
+    "count_note": "005BCAC0 was already text-wired but not called in the baseline executable. New 005BDB50 is a compiler-generated destructor filtered from readiness rows; call_graph.py measures its reachable call. The source readiness gain is two and the built reachable-address gain is four.",
+    "call_graph": "005C0930 and 005C0BD0 called from place_objective_markers_005c1e00; 005BCAC0 called from 005C0930; 005BDB50 called from the marker binding's deleting virtual. All four are reachable from WinMainCRTStartup.",
+    "native_evidence": "bsp.py show 005c0930 / 005c0bd0; 005bcac0 assembly 005BCAC0..005BCB72; 005bdb50 pseudocode and assembly 005BDB50..005BDB83",
+    "ghidra": "Existing bsp.gpr /battlestationspacific.exe verified; 005BDB50 compiler-generated name retained, evidence comment applied, previous annotation saved, project saved, affected export refreshed.",
+    "limits": "Build and static entry reachability evidence; game not run and minimap appearance not validated. Semantic host interfaces are not the original binary ABI. Scene-node allocation remains the existing GUI clone adapter's labelled substitution."
+  },
+  "rows": [
+    {
+      "native": "005c0930",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMinimapHost::Impl::acquire_objective_marker <- place_objective_markers_005c1e00",
+      "state": "Native-shaped persistent five checked vectors and cursors borrow the owning host pools; real objective entries supply null or the actual unit handle."
+    },
+    {
+      "native": "005bcac0",
+      "status": "wired",
+      "host_site": "src/frontend_seg20_cc13.cpp: minimap_acquire_marker_005c0930 <- src/game_hosts_hud_world.cpp: acquire_objective_marker",
+      "state": "Actual bound template pointers at +6C/+70/+74/+78/+7C and parent +F0; clone preserves authored subtree state, then ownership and transform links move to the actual parent. Previously source-wired but absent from the baseline executable graph."
+    },
+    {
+      "native": "005c0bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMinimapHost::Impl::hide_unused_objective_markers <- place_objective_markers_005c1e00",
+      "state": "Same persistent pools/cursors as acquire; deleting virtual frees surplus widget subtrees and marker records, then vectors shrink."
+    },
+    {
+      "native": "005bdb50",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapObjectiveMarkerBinding::object_vcall_00_delete <- cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0",
+      "state": "New single reconstructed body restores marker vtable, deletes its real widget through slot +4h, clears the pointer and frees the owning marker for flag bit 0; ledger row included."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: powerup spawn request stand-in",
+      "reason": "Needs live spawn-manager ownership, original player/class/unit property views and the spawn-member/enqueue host services; the marker packet does not supply them."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder and EntityCommand ai_group_forward_command adapters",
+      "reason": "The order host returns a null entity AI group; no real group-owned current-command object reaches these forwarding callbacks."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Literal body reads absolute writable cells F87574/F87578/F8757C; their genuine native runtime publication is missing from the semantic command-target host."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::notify_command_target",
+      "reason": "Adapter only records the call; reporter/channel/observed-entity dispatch ownership through the live mission Lua manager is missing."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_deviation_factor",
+      "reason": "This limited CameraHost marks the operation unreachable; it has no live original movie-camera limits owner."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_overview_height",
+      "reason": "This limited CameraHost marks the operation unreachable; it has no live original movie-camera limits owner."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_speed_limits",
+      "reason": "This limited CameraHost marks the operation unreachable; it has no live original movie-camera limits owner."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_accel_time",
+      "reason": "This limited CameraHost marks the operation unreachable; it has no live original movie-camera limits owner."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_set_zoom",
+      "reason": "This limited CameraHost marks zoom unreachable; a genuine MovCamZoom owner and native zoom command path are missing."
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: place_objective_markers_005c1e00 map_ping_prune record",
+      "reason": "The minimap has objective marker state but no live map-ping list at game+21C8h or ping-entry producer."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: minimap map-ping path",
+      "reason": "A live map-ping input operation, owned list and session dispatch are missing; objective entries are a separate source."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: gui_aspect_extent_00aa1fe0 call",
+      "reason": "Existing inline semantic body already consumes the active platform aspect state; the ready row uses another identifier and supplies no new wiring work."
+    }
+  ]
+}

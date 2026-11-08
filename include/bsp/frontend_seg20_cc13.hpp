@@ -31,7 +31,28 @@ struct NarrativeTextQueryHost {
     virtual void widget_vslot54(void* widget, std::uint8_t (&out)[16]) = 0;
 };
 
-struct Seg20Host : cc13_fe1::EdgeReferenceHost, NarrativeTextQueryHost {
+// The marker pool uses only these services; keep it independent of menu,
+// narrative, hangar and map-icon operations.
+struct MinimapMarkerHost {
+    virtual ~MinimapMarkerHost() = default;
+    virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+    virtual bool is_a_vslot5c(void* object, std::int32_t kind) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void* widget_clone_00aab4c0(void* widget, std::int32_t flags) = 0;
+    virtual void widget_add_child_00aaa5a0(void* parent, void* child, std::int32_t flags) = 0;
+    virtual void widget_vslot34(void* widget, std::int32_t value) = 0;
+    virtual void pointer_vector_push_back_005c0790(void* vector, void* const* value) = 0;
+    virtual void** pointer_vector_at_005bcbd0(void* vector, std::uint32_t index) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+
+struct MinimapMarkerDeletionHost {
+    virtual ~MinimapMarkerDeletionHost() = default;
+    virtual void widget_delete_vslot04(void* widget, std::uint32_t flags) = 0;
+    virtual void free_marker_00bf65ac(void* marker) = 0;
+};
+
+struct Seg20Host : cc13_fe1::EdgeReferenceHost, NarrativeTextQueryHost, MinimapMarkerHost {
     // Image globals (dword storage at the address).
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
 
@@ -142,7 +163,13 @@ inline constexpr std::uint32_t kMinimapMarkerVtable = 0x00CF1154u;
 // layout+74h (is-a 8), +6Ch (is-a 6), +70h (is-a 0Fh) or +78h; marker+4 =
 // 00AAB4C0(template, 0); 00AAA5A0(layout+F0h, marker+4, 0); then
 // (marker+4)->vtable[34h](1).
-void* minimap_marker_construct_005bcac0(void* marker, void* unit, Seg20Host& host);
+void* minimap_marker_construct_005bcac0(void* marker, void* unit, MinimapMarkerHost& host);
+
+// 005BDB50 __thiscall(ECX=marker, byte flags), RET 4, EAX=marker:
+// restore 00CF1154, delete widget+4 through virtual +4h(1), clear it, and
+// free the marker when flags&1. The returned address can already be freed.
+void* minimap_marker_scalar_delete_005bdb50(void* marker, std::uint32_t flags,
+    MinimapMarkerDeletionHost& host);
 
 // 005C0930 __thiscall(screen, unit) RET 4 -> marker. Category k: 0 for no
 // unit, else 1 (is-a 8), 2 (is-a 6), 3 (is-a 0Fh), 4. The use counter at
@@ -151,7 +178,7 @@ void* minimap_marker_construct_005bcac0(void* marker, void* unit, Seg20Host& hos
 // checked index, otherwise 005BCBD0); else a new 8-byte marker
 // (00BF681B, 005BCAC0(unit) unless the allocation failed, then null) is
 // pushed (005C0790) and returned.
-void* minimap_acquire_marker_005c0930(void* screen, void* unit, Seg20Host& host);
+void* minimap_acquire_marker_005c0930(void* screen, void* unit, MinimapMarkerHost& host);
 
 // 0059EAD0 __thiscall(slot, int count) RET 4: the slot points at {data, size,
 // ...}; cur = [slot] ? [[slot]+4] : 0. When count != cur: 0059E690(slot,

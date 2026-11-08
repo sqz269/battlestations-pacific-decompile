@@ -41,8 +41,12 @@
 #include "bsp/objective_units.hpp"          // the +20h entry records
 #include "bsp/plane_squadron_host.hpp"      // vtable +140h of a plane
 #include "bsp/recon_sensor_pass.hpp"
+#include "bsp/frontend_seg20_cc13.hpp"
+#include "bsp/cc13_sweepB3.hpp"
 
 #include <algorithm>
+#include <array>
+#include <cstddef>
 #include <cmath>
 #include <cstdio>
 #include <map>
@@ -140,16 +144,36 @@ struct GameHudMinimapHost::Impl {
     // +154h + k*4h: k = 0 an entry without a unit (+7Ch), 1 IsKindOf(8) (+74h
     // sub), 2 IsKindOf(6) (+6Ch ship), 3 IsKindOf(0Fh) (+70h plane), 4 any other
     // unit (+78h building), the order 005C0930 and 005BCAC0 test.
-    std::vector<GuiLayoutWidget*> objective_markers[5];
-    std::int32_t objective_marker_cursor[5]{-1, -1, -1, -1, -1};
-    // How many leading markers of each pool are visible. 005C0BD0 deletes the
-    // markers past the cursor (vtable +0h(1)) and shrinks the vector to cursor
-    // + 1 (005C0390); the frontend bridge cannot remove a run-time clone, so
-    // SUBSTITUTION (labelled): the surplus is hidden and kept for the next
-    // acquire, which shows it again where 005BCAC0's fresh marker is visible
-    // (005BCB6C virtual +34h(1)).
-    std::size_t objective_marker_shown[5]{};
+    struct ObjectiveMarker {
+        std::uint32_t vtable{};
+        GuiLayoutWidget* widget{};
+    };
+    struct ObjectiveMarkerVector {
+        std::uint32_t allocator{};
+        void** first{};
+        void** last{};
+        void** end{};
+    };
+    struct ObjectiveMarkerScreen {
+        alignas(4) std::uint8_t layout[0x104]{};
+        ObjectiveMarkerVector vectors[5]{};
+        std::int32_t cursors[5]{-1, -1, -1, -1, -1};
+    } objective_marker_screen;
+    static_assert(sizeof(ObjectiveMarker) == 8);
+    static_assert(sizeof(ObjectiveMarkerVector) == 0x10);
+    static_assert(offsetof(ObjectiveMarkerScreen, vectors) == 0x104);
+    static_assert(offsetof(ObjectiveMarkerScreen, cursors) == 0x154);
+    // Owned marker records; the native views above borrow these exact pools.
+    std::vector<void*> objective_markers[5];
     bool logged_objective_marker{false};
+
+    ~Impl() {
+        // Widget subtrees remain page-owned at screen teardown, as do icons.
+        // Surplus markers during a frame take 005C0BD0's deleting path below.
+        for (auto& pool : objective_markers) {
+            for (void* marker : pool) delete static_cast<ObjectiveMarker*>(marker);
+        }
+    }
 
     // The per-unit icon map at screen +F8h, as this process holds it: one
     // run-time clone of the colour template per unit index.
@@ -190,18 +214,112 @@ struct GameHudMinimapHost::Impl {
     // Chain 47: the 005BE240 binds above, and the icon 005BD590 builds.
     void bind_icon_entry_fields(GuiLayoutWidget& root);
     GuiLayoutWidget* create_icon_from_entry(void* unit);
-    // STAND-IN (labelled) for 005C0930 / 005BCAC0, the next marker of pool k,
-    // cloned on first use. The reconstructed bodies (src/frontend_seg20_cc13.cpp)
-    // run over the native screen's pool vectors +104h and cursors +154h, which
-    // this screen does not have; these pools are the screen's own clones under
-    // unit_marker_Group, like the unit icons.
-    GuiLayoutWidget* acquire_objective_marker(std::size_t k);
-    // STAND-IN (labelled) for 005C0BD0 (src/cc13_sweepB3.cpp) over the same
-    // pools after the objective loop.
+    GuiLayoutWidget* acquire_objective_marker(void* unit);
     void hide_unused_objective_markers();
 };
 
 namespace {
+
+// Goal 5 chain 672. bsp.py show 005C0930 / 005C0BD0 and the 005BCAC0
+// listing: the five checked vectors/cursors are persistent screen state;
+// [[00E198C4]+58h] supplies the same screen's bound templates and +F0h parent.
+// This view publishes those live objects, never replacement templates or units.
+class MinimapObjectiveMarkerBinding final
+    : public bsp::frontend_seg20_cc13::MinimapMarkerHost,
+      public bsp::frontend_seg20_cc13::MinimapMarkerDeletionHost,
+      public bsp::MinimapMarkerRetirementHost {
+public:
+    explicit MinimapObjectiveMarkerBinding(GameHudMinimapHost::Impl& owner) : owner_(owner) {
+        auto screen = bsp::frontend_seg20_cc13::raw(&owner_.objective_marker_screen);
+        screen.ptr(0x6C) = owner_.entry_templates[0];
+        screen.ptr(0x70) = owner_.entry_templates[1];
+        screen.ptr(0x74) = owner_.entry_templates[2];
+        screen.ptr(0x78) = owner_.entry_templates[3];
+        screen.ptr(0x7C) = owner_.objective_marker_template;
+        screen.ptr(0xF0) = owner_.marker_group;
+        bsp::frontend_seg20_cc13::raw(interface_.data()).ptr(0x58) = screen.p;
+        interface_pointer_ = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(interface_.data()));
+        for (std::size_t k = 0; k < 5; ++k) publish(k);
+    }
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address != 0x00E198C4) throw std::logic_error("minimap marker unrelated global");
+        return interface_pointer_;
+    }
+    bool is_a_vslot5c(void* unit, std::int32_t kind) override {
+        return owner_.units != nullptr && unit != nullptr
+            && owner_.units->unit_is_kind_of(owner_.index_of(unit), kind);
+    }
+    void* operator_new_00bf681b(std::uint32_t size) override {
+        if (size != sizeof(GameHudMinimapHost::Impl::ObjectiveMarker))
+            throw std::logic_error("minimap marker allocation size");
+        return new GameHudMinimapHost::Impl::ObjectiveMarker;
+    }
+    void* widget_clone_00aab4c0(void* widget, std::int32_t flags) override {
+        if (widget == nullptr || owner_.page == nullptr || flags != 0)
+            throw std::logic_error("minimap marker clone missing template/page");
+        return owner_.menu.frontend().clone_page_widget_subtree(owner_.page->name,
+            *static_cast<GuiLayoutWidget*>(widget));
+    }
+    void widget_add_child_00aaa5a0(void* parent, void* child, std::int32_t flags) override {
+        if (parent == nullptr || child == nullptr || flags != 0)
+            throw std::logic_error("minimap marker attach missing widget");
+        owner_.menu.frontend().reparent_runtime_widget(*static_cast<GuiLayoutWidget*>(child),
+            *static_cast<GuiLayoutWidget*>(parent));
+    }
+    void widget_vslot34(void* widget, std::int32_t value) override {
+        owner_.menu.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), value != 0);
+        ++owner_.summary.objective_markers_created;
+        owner_.done("HudMinimap::construct_objective_marker", 0x005bcac0u);
+    }
+    void pointer_vector_push_back_005c0790(void* vector, void* const* value) override {
+        const std::size_t k = pool_index(vector);
+        owner_.objective_markers[k].push_back(*value);
+        publish(k);
+    }
+    void** pointer_vector_at_005bcbd0(void* vector, std::uint32_t index) override {
+        auto& pool = owner_.objective_markers[pool_index(vector)];
+        if (index >= pool.size()) invalid_parameter_00bf6713();
+        return &pool[index];
+    }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("minimap marker vector bound");
+    }
+    void crt_invalid_parameter_noinfo_00bf6713() override { invalid_parameter_00bf6713(); }
+    void object_vcall_00_delete(void* object, std::uint32_t flags) override {
+        bsp::frontend_seg20_cc13::minimap_marker_scalar_delete_005bdb50(object, flags, *this);
+    }
+    void widget_delete_vslot04(void* widget, std::uint32_t flags) override {
+        if (flags != 1) throw std::logic_error("minimap marker widget delete flags");
+        owner_.menu.frontend().destroy_runtime_widget(*static_cast<GuiLayoutWidget*>(widget));
+    }
+    void free_marker_00bf65ac(void* marker) override {
+        delete static_cast<GameHudMinimapHost::Impl::ObjectiveMarker*>(marker);
+    }
+    void dword_vector_resize_005c0390(void* vector, std::uint32_t size, std::uint32_t value) override {
+        const std::size_t k = pool_index(vector);
+        if (value != 0 || size > owner_.objective_markers[k].size())
+            throw std::logic_error("minimap marker retirement must shrink");
+        owner_.objective_markers[k].resize(size);
+        publish(k);
+    }
+private:
+    std::size_t pool_index(void* vector) const {
+        for (std::size_t k = 0; k < 5; ++k) {
+            if (vector == &owner_.objective_marker_screen.vectors[k]) return k;
+        }
+        throw std::logic_error("minimap marker unrelated vector");
+    }
+    void publish(std::size_t k) {
+        auto& pool = owner_.objective_markers[k];
+        auto& view = owner_.objective_marker_screen.vectors[k];
+        view.first = pool.empty() ? nullptr : pool.data();
+        view.last = pool.empty() ? nullptr : pool.data() + pool.size();
+        view.end = view.last;
+    }
+    GameHudMinimapHost::Impl& owner_;
+    alignas(4) std::array<std::uint8_t, 0x5C> interface_{};
+    std::uint32_t interface_pointer_{};
+};
 
 // bsp::cc13_seg41::LandVehicleObjectiveSetHost for 0074DDF0 on the minimap's
 // handle: game+18ECh is the local player slot (0 in single player, as for the
@@ -626,7 +744,7 @@ void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBin
     const std::size_t self = self_handle != nullptr ? host.index_of(self_handle)
                                                     : bsp::kPlaneSquadronNoUnit;
 
-    for (std::int32_t& cursor : host.objective_marker_cursor) cursor = -1;   // 005C1E00..005C1E1B
+    for (std::int32_t& cursor : host.objective_marker_screen.cursors) cursor = -1;   // 005C1E00..005C1E1B
 
     const int party = local_player_party();   // [[game+18CCh+slot*4]+28h], the record row
     const GameGunneryHost* gunnery = host.units->gunnery();
@@ -702,18 +820,7 @@ void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBin
 
         // 005C2143 005C0930(screen, [entry]): the pool by the unit's kind, 0
         // without a unit.
-        std::size_t k = 0;
-        if (has_unit) {
-            k = 4;
-            if (host.units->unit_is_kind_of(unit, 0x08)) {
-                k = 1;
-            } else if (host.units->unit_is_kind_of(unit, 0x06)) {
-                k = 2;
-            } else if (host.units->unit_is_kind_of(unit, 0x0F)) {
-                k = 3;
-            }
-        }
-        GuiLayoutWidget* marker = host.acquire_objective_marker(k);
+        GuiLayoutWidget* marker = host.acquire_objective_marker(has_unit ? host.handle_for(unit) : nullptr);
         if (marker == nullptr) return;
         ++placed;
         // 005C214D..005C2176 virtual +88h(outside, 0, 1.0f), the icon's state.
@@ -797,61 +904,25 @@ void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBin
 
 }  // namespace
 
-GuiLayoutWidget* GameHudMinimapHost::Impl::acquire_objective_marker(std::size_t k) {
-    // 005C0930: ++cursor[k] (+154h + k*4h); a pool element at that index is
-    // returned (005C09D6..005C09EE for k = 0, 005BCBD0 for the others),
-    // otherwise 005BCAC0 builds one and 005C0790 appends it. 005BCAC0 clones the
-    // kind's template (00AAB4C0(template, 0)), makes it a child of +F0h
-    // (00AAA5A0) and shows it (virtual +34h(1)).
-    if (k >= 5) return nullptr;
-    std::vector<GuiLayoutWidget*>& pool = objective_markers[k];
-    const std::int32_t index = ++objective_marker_cursor[k];
-    const std::size_t i = static_cast<std::size_t>(index);
-    if (i < pool.size()) {
-        GuiLayoutWidget* marker = pool[i];
-        if (marker != nullptr && i >= objective_marker_shown[k]) {
-            menu.frontend().set_widget_visible(*marker, true);
-        }
-        if (i >= objective_marker_shown[k]) objective_marker_shown[k] = i + 1;
-        done("HudMinimap::acquire_objective_marker", 0x005c0930u);
-        return marker;
+GuiLayoutWidget* GameHudMinimapHost::Impl::acquire_objective_marker(void* unit) {
+    if (page == nullptr || marker_group == nullptr || objective_marker_template == nullptr
+        || std::any_of(std::begin(entry_templates), std::end(entry_templates),
+            [](const auto* widget) { return widget == nullptr; })) {
+        record("HudMinimap::construct_objective_marker_missing_layout", 0x005bcac0u);
+        return nullptr;
     }
-    // 005BCAC0's template slots: +7Ch item_marker, +74h sub, +6Ch ship, +70h
-    // plane, +78h building (entry_templates is ship, plane, sub, building).
-    GuiLayoutWidget* const templates[5] = {objective_marker_template, entry_templates[2],
-        entry_templates[0], entry_templates[1], entry_templates[3]};
-    GuiLayoutWidget* templ = templates[k];
-    GuiLayoutWidget* marker = nullptr;
-    if (templ != nullptr && page != nullptr && marker_group != nullptr) {
-        char key[64];
-        std::snprintf(key, sizeof(key), "objective_marker_%zu_%zu", k, i);
-        marker = menu.frontend().clone_runtime_widget(page->name, *templ, *marker_group, key);
-    }
-    if (marker != nullptr) {
-        menu.frontend().set_widget_visible(*marker, true);   // 005BCB6C virtual +34h(1)
-        ++summary.objective_markers_created;
-        done("HudMinimap::construct_objective_marker", 0x005bcac0u);
-    } else {
-        record("HudMinimap::construct_objective_marker", 0x005bcac0u);
-    }
-    pool.push_back(marker);   // 005C0790, the marker object even when its clone failed
-    objective_marker_shown[k] = pool.size();
-    return marker;
+    MinimapObjectiveMarkerBinding binding(*this);
+    auto* marker = static_cast<ObjectiveMarker*>(
+        bsp::frontend_seg20_cc13::minimap_acquire_marker_005c0930(
+            &objective_marker_screen, unit, binding));
+    done("HudMinimap::acquire_objective_marker", 0x005c0930u);
+    return marker != nullptr ? marker->widget : nullptr;
 }
 
 void GameHudMinimapHost::Impl::hide_unused_objective_markers() {
-    // 005C0BD0: past each cursor every marker is deleted and the vector cut to
-    // cursor + 1. Here the surplus is hidden (see objective_marker_shown).
-    for (std::size_t k = 0; k < 5; ++k) {
-        const std::size_t keep = static_cast<std::size_t>(objective_marker_cursor[k] + 1);
-        for (std::size_t i = keep; i < objective_marker_shown[k] && i < objective_markers[k].size(); ++i) {
-            if (objective_markers[k][i] != nullptr) {
-                menu.frontend().set_widget_visible(*objective_markers[k][i], false);
-            }
-        }
-        if (objective_marker_shown[k] > keep) objective_marker_shown[k] = keep;
-    }
-    record("HudMinimap::release_unused_markers", 0x005c0bd0u);   // hidden, not deleted
+    MinimapObjectiveMarkerBinding binding(*this);
+    bsp::cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0(&objective_marker_screen, binding);
+    done("HudMinimap::release_unused_markers", 0x005c0bd0u);
 }
 
 void GameHudMinimapHost::Impl::bind_page_005bec50() {

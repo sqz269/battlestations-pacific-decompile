@@ -297,6 +297,9 @@ public:
     // forced visible. The source must belong to `page` and have a parent.
     GuiLayoutWidget* clone_page_widget_subtree(const std::string& page,
         const GuiLayoutWidget& source);
+    // 00AAA5A0(child, 0): move an owned clone to its actual target parent,
+    // preserving the clone's local transform and visibility.
+    void reparent_runtime_widget(GuiLayoutWidget& widget, GuiLayoutWidget& parent);
     // Widget vtable +4h(1) on a clone clone_page_widget_subtree made, as 0052C0C0
     // deletes a score entry's root (goal 5 chain 667): the base teardown 00AA9730
     // detaches the widget from its parent and the subtree is freed. Every bridge

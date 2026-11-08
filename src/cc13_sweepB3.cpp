@@ -630,7 +630,7 @@ void cc13_sweepB3_hud_map_acquire_line_model_005a8f50(void* screen, const float*
 // through its vtable +0h with 1 and cleared; then 005C0390(vector, cursor + 1,
 // 0) (the cursor re-read). The image's repeated bounds check before the slot
 // read (00BF6713) is kept although the loop condition already holds.
-void cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0(void* screen, Cc13SweepB3Host& host) {
+void cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0(void* screen, MinimapMarkerRetirementHost& host) {
     static constexpr std::size_t kVectors[5][2] = {
         {0x104, 0x154}, {0x114, 0x158}, {0x124, 0x15C}, {0x134, 0x160}, {0x144, 0x164}};
     for (const auto& pair : kVectors) {
