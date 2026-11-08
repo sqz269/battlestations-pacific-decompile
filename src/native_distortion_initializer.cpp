@@ -3,6 +3,7 @@
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_renderer_format_check.hpp"
 #include "bsp/native_render_resources_remap.hpp"
+#include "bsp/native_post_effect_raw_access.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_system_constant_gather.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -268,7 +269,12 @@ bool initialize_native_distortion_00b4f560(void* owner,std::size_t bytes,Word wi
         block.parameter(0x20,0x2c,c.texel_offset_name_00d61f70,12,2,13);
         block.parameter(0x20,0x248,c.bump_height_name_00d61f64,11,1,14);
         block.parameter(0x20,0x24c,c.refraction_name_00d61f50,16,1,15);
-        auto* const surface=native_render_holder_primary_00b4cb20(pointer(word(owner,0x18)));
+        // bsp.py show 00b4ec50 --asm: MOV EAX,[ECX+18h]; RET. The
+        // texture prefix published this live owner's output holder at +18h.
+        // Use that complete raw getter in place of the inline DWORD read;
+        // its descriptive "pass" name imposes no additional object layout.
+        auto* const surface=native_render_holder_primary_00b4cb20(
+            pointer(native_post_effect_pass_raw_18_00b4ec50(owner)));
         set_native_post_effect_color0_00b4cb70(pointer(word(owner,0x20)),surface,p.destruction.frame_targets);
         a.raw_scene=allocate(0x24);a.native_state=16;
         if(a.raw_scene) {
