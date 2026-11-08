@@ -5,6 +5,7 @@
 #include "bsp/cc13_seg67b.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
+#include "bsp/ship_ai_state_steps.hpp"
 #include "bsp/geometry_helpers.hpp"
 
 #include <cmath>
@@ -6141,11 +6142,18 @@ void* ship_ai_current_order_slot_009d4f70(void* ai) {
 void ship_ai_set_torpedo_avoidance_request_009dabb0(void* b, std::uint8_t v) {
     at<std::uint8_t>(b, 0x3F4) = v;
 }
-void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* b, std::uint32_t v) {
-    at<std::uint32_t>(b, 0x3F8) = v;
+// 009DABC0/009DABD0: __thiscall(brain, int/bool), RET 4. `b` is the
+// process-owned semantic view of those same fields, consumed by avoidance;
+// no raw brain-sized surrogate is constructed. Evidence: bsp.py show
+// 009dabc0 / 009dabd0, and docs/SHIP_AI_AVOIDANCE_REQUEST.md. The native
+// out-of-line copies have no image xrefs; live state steps inline the stores.
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(
+    ShipAiAvoidanceRequest& b, std::int32_t v) {
+    b.side_filter_3f8 = v;
 }
-void ship_ai_set_land_avoidance_request_009dabd0(void* b, std::uint8_t v) {
-    at<std::uint8_t>(b, 0x3FC) = v;
+void ship_ai_set_land_avoidance_request_009dabd0(
+    ShipAiAvoidanceRequest& b, bool v) {
+    b.flag_3fc = v;
 }
 void ship_ai_set_drive_bypass_009dabe0(void* b, std::uint8_t v) { at<std::uint8_t>(b, 0x3FD) = v; }
 void ship_ai_set_speed_commanded_flag_009dabf0(void* b) { at<std::uint8_t>(b, 0xB38) = 1; }

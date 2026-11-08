@@ -1,0 +1,112 @@
+{
+  "packet": "g5-w5",
+  "chain": 765,
+  "base": "692cd092a1",
+  "scope": "Ship-AI avoidance party and land-request setters on the live controller owner",
+  "wired_total_before": 10608,
+  "wired_total_after": 10610,
+  "rows": [
+    {
+      "native": "009dabc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: EngageStepBindingT::set_avoidance_side_03f8 and LandStepBinding::set_blk_field_3f0",
+      "call_sites": 1,
+      "evidence": "009DABC4 stores the signed party DWORD at brain+3F8h; the existing live avoidance owner holds it as side_filter_3f8. Replaced the equivalent inlined host stores. Built call at 1025B8BF is reachable through the mission fixed-step/controller path."
+    },
+    {
+      "native": "009dabd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: EngageStepBindingT::set_avoidance_flag_03fc and LandStepBinding::set_blk_flag_3f4",
+      "call_sites": 2,
+      "evidence": "009DABD4 stores the land-request bool at brain+3FCh; the existing live avoidance owner holds it as flag_3fc. Replaced the equivalent inlined host stores. Reachable ship-AI call at 1025B89F. MSVC ICF folds the body with byte_08_set_00652a50, so the second reported call belongs to that existing HUD alias."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen-reset records",
+      "reason": "Missing live selection-mode and native selection-vector producers for the reset body's screen+30h and +C4h fields."
+    },
+    {
+      "native": "00809650",
+      "status": "skipped",
+      "host_site": "src/unit_destructor_levels.cpp: l5_reset_owned_ref_slot_72c dispatch",
+      "reason": "Missing live UnitOwnedRefSlot owner and UnitDestructorHost implementation; the destructor planner currently forwards the reset through an unbound host callback."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp and src/game_hosts_hud_world.cpp: GUI aspect queries",
+      "reason": "No additional wiring needed at these sites: they already use the semantic inline gui_aspect_extent_00aa1fe0 with active platform fields; readiness selects the different ledger identifier BSP_Gui_GetAspectExtent."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: SceneCommandTarget construction",
+      "reason": "Missing genuine publication of writable native F87574/F87578/F8757C cells read by the literal constructor; semantic position defaults cannot supply those absolute-address inputs."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: last-command metadata publication",
+      "reason": "Missing reachable main-scene submission caller for the existing metadata setter; no callable body is linked in the checked executable."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: vehicle_camera_array_construct_005cc700",
+      "reason": "Missing live raw vehicle-camera row constructor binding and its four native default cells; the existing raw limits initializer is not linked."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "No additional wiring needed: call_graph.py already reports a reachable call from MergedRecords::collect despite the readiness source classification."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "No additional wiring needed: call_graph.py already reports a reachable call from MergedRecords::collect despite the readiness source classification."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::pause_slot40",
+      "reason": "Missing reachable caller of the existing pause_slot40 dispatch; the actual sound-channel setter is not linked."
+    },
+    {
+      "native": "00a7f640",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::create_nonspatial",
+      "reason": "No additional wiring needed: the existing nonspatial factory already has a reachable executable call from SoundChannelRuntime::create_nonspatial."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_binding_getters.cpp: native_logical_vertex_stream_get_buffer_00b48cf0",
+      "reason": "Missing live logical-stream getter dispatch in the application binding inspected; this raw virtual-tail-call accessor is not linked."
+    }
+  ],
+  "contract": {
+    "owner": "GameShipAiHost controller.avoidance, already read by ship avoidance and path processing",
+    "inputs": "Existing owning-unit Party and existing attack/follow state bool transitions; no new defaults or mirrored owner",
+    "native_abi": "Original setters are __thiscall(brain, int/bool), RET 4; their out-of-line COMDAT copies have no native image xrefs, while gameplay writers inline the same stores",
+    "cpp_abi": "Existing bodies now take ShipAiAvoidanceRequest& and signed int32/bool values; semantic C++ interfaces, not binary-compatible entry points",
+    "evidence": [
+      "python tools/bsp.py show 009dabc0",
+      "python tools/bsp.py show 009dabd0",
+      "docs/SHIP_AI_AVOIDANCE_REQUEST.md",
+      "009E2588, 009E25CC and 009E2669 inline the equivalent engage-state writes"
+    ]
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed",
+    "changed_build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph": "Both selected rows are called=true and reachable; the party setter has one reported call site, and the land setter has one new ship-AI site plus one pre-existing ICF alias site",
+    "readiness": "10608 -> 10610 source-wired; selected rows both called=true",
+    "diff_check": "git diff --check passed",
+    "pc24": "No float arithmetic changed",
+    "runtime": "Game not run; static executable reachability and build/test proof only"
+  },
+  "left": "Adjacent torpedo-request, drive-bypass and speed-commanded setters remain unwired; reviewed owner/dispatch gaps are recorded above."
+}
