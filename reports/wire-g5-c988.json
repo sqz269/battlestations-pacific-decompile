@@ -1,0 +1,161 @@
+{
+  "chain": 988,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "picked": "GetSquadronPlanes canonical Lua native entry and direct dispatch call",
+  "rows": [
+    {
+      "native": "0089cc50",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> run_get_squadron_planes_0089cc50",
+      "evidence": "One canonical body moved from the existing verified GetSquadronPlanes dispatch branch; the old inline path is deleted. Reads this dispatch's active Lua VM, actual argument entity and retained resolved squadron members. Built executable has one reachable direct dispatch call at 1025749b to 10269b50."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing a linked game caller of the mission savedata encoder; call_graph who finds neither encoder nor cleanup entry, so routing its internal helper alone would not run in game."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "Missing a linked game caller of the mission savedata decoder; call_graph who finds neither decoder nor cleanup entry, so routing its internal helper alone would not run in game."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing an actual element receiver and reconstructed job body; the inspected host entry only logs unimplemented."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing an actual element receiver and reconstructed job body; the inspected host entry only logs unimplemented."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing an actual interpolation element receiver and reconstructed job body; the inspected host entry only logs unimplemented."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred mission Lua call producer comment",
+      "reason": "Missing the frame-job-thread enqueue producer with a real LuaVariantRecord argument vector; the inspected mission VM path uses the main thread."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support flight spawn branch",
+      "reason": "Missing the concrete flight-spawn manager and resolved air-support class provider; the existing live branch explicitly throws that the spawn is not modelled."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship AI controller registration",
+      "reason": "Missing the native brain and its owned-subobject host services; address was also held by agent/g5-w12 during selection."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo selection record site",
+      "reason": "Missing a retained native ammunition record and its Seg62Host lifetime/copy adapter; address was also held by agent/g5-w12 during selection."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing a live native unit+660h record vector and its matching lifetime services; address was also held by agent/g5-w12 during selection."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane death message routing",
+      "reason": "Missing a single-player call path: the inspected host explicitly routes C8h only for multiplayer."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: player-count watchdog",
+      "reason": "Missing a single-player consumer of the multiplayer participant-count watchdog; excluded by the assignment."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene property enum publication",
+      "reason": "No missing executable connection was found: baseline readiness already reports called=true and three reachable call sites; scene host was subsequently leased by agent/g5-w3."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene property bag merge",
+      "reason": "No missing executable connection was found: baseline readiness already reports called=true and nine reachable call sites; scene host was subsequently leased by agent/g5-w3."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a live native approach object that owns this registry; the current ship controller owns projected land state and the constructor stores an explicitly uncallable native profile word."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing the text-input glyph-acceptance consumer; the inspected host builds rendered text and no glyph-byte acceptance call site was found."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::build_quads",
+      "reason": "Missing an alphabetical child-snapshot consumer; the inspected bridge sorts draw records by runtime status and Z, while this body sorts names and cannot replace that render ordering."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: parse_movie_action_0045e5e0",
+      "reason": "Missing a live MovieActionTokens producer/engine-movie owner; the source search found the parser definition without an external caller."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: rewind_engine_movie_clock_0045c5b0",
+      "reason": "Missing a live EngineMovieClock owner and rewind consumer; the source search found only this clock entry definition."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: advance_engine_movie_clock_0045f970",
+      "reason": "Missing a live EngineMovieClock producer and update consumer; no external source use was found."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 10841,
+    "readiness_wired_after": 10842,
+    "executable_recon_called_before": 6362,
+    "executable_recon_called_after": 6362
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed (MSVC Win32 Release); all four CTests passed",
+    "body_identity": "Exact text move check passed: body only deindented and results=1 became return 1; the old branch contains only the canonical call.",
+    "call_graph": "call_graph who 0089cc50 reports one reachable direct call from GameScriptOrdersHost::dispatch; path reaches WinMainCRTStartup.",
+    "float_math": "No float math changed; pc24 lint not required.",
+    "new_tests": "None; this is a behavior-preserving extraction of the existing verified body."
+  },
+  "evidence_files": [
+    "local/output/c988-baseline-build.log",
+    "local/output/c988-build.log",
+    "local/output/c988-before.json",
+    "local/output/c988-after.json",
+    "local/output/c988-who-after.log",
+    "local/output/c988-path-after.log"
+  ],
+  "limitations": [
+    "The baseline identifier map attributed 0089CC50 to generic dispatch and already reported called=true. Aggregate executable reconstructed-address count therefore stays 6362; this change establishes the dedicated canonical entry and an explicit call, and readiness wired rises by one.",
+    "Source host interface remains different from the original ECX borrowed-Lua-owner/EAX result-count ABI. Existing projected unit-index-plus-one identifiers, five-slot guard and departed-lead behavior remain.",
+    "No game run or new game validation."
+  ],
+  "left_for_others": "Native savedata call chain, frame-job receivers and deferred enqueue producer, native ship brain/ammo owners, air-support spawning, and text input/movie owners remain unconnected."
+}

@@ -6418,6 +6418,58 @@ void GameScriptOrdersHost::game_assign_party_player_slots(int value) {
 // The dispatch
 // ---------------------------------------------------------------------------
 
+// Goal 5 chain 988: the sole 0089CC50 body, moved from dispatch below.
+// bsp.py show 0089cc50: 0089CD70 creates the result table, 0089CD75..CE00
+// publishes the ordered member handles, then 00B66400 returns one result.
+// Source host interface: state_ is this dispatch's real VM and the squadron
+// registry owns the live resolved member list; this is not the original ABI.
+__declspec(noinline) int GameScriptOrdersHost::run_get_squadron_planes_0089cc50() {
+    // 0089CC50: argument 0 through BSP_ObjectHandle_FromLuaTable (no kind
+    // check), a new table (00B67930), then for i = 1..[sq+3CCh] the member
+    // [sq+3D0h + 4(i-1)]'s u16 +174h as a string at index i (0089CD75-
+    // 0089CE00); one result. SUBSTITUTION, labelled: the squadron is the
+    // registry record holding the argument's unit, and a plane's +174h is
+    // its unit index plus one, the `thisTable` key (kMissionLuaEntityKeyFormat).
+    resolve_plane_squadron_members();
+    void* entity = argument_ptr_field(0);
+    if (entity == nullptr) entity = entity_from_argument(0);
+    const std::size_t index = index_of(entity);
+    ++squadron_planes_calls_;
+    // 00B67930 calls native_lua_new_table_00b67930; OFF keeps lua_createtable.
+    {
+        // 0089CD70 creates an untracked result on this dispatch's real VM.
+        // The temporary header borrows that stack value; no destructor pops it.
+        ScriptOrdersLuaStackView frame(state_, 0);
+        bsp::NativeLuaObjectStorage result{};
+        bsp::native_lua_new_table_00b67930(frame.object, result);
+        log_.implemented("LuaObject::NewTable", "00b67930");
+    }
+    // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
+    // still names its squadron (find_by_member_or_departed_unit).
+    const bsp::PlaneSquadronHostRecord* record =
+        index >= units_.count() ? nullptr
+        : kGetSquadronPlanesDepartedLeadBound
+            ? bsp::plane_squadron_registry().find_by_member_or_departed_unit(index)
+            : bsp::plane_squadron_registry().find_by_member_unit(index);
+    int slot = 0;
+    if (record != nullptr) {
+        for (const std::size_t member : record->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit || member >= units_.count()) continue;
+            if (slot >= 5) break;   // 0089CD98: past five the image faults
+            ++slot;
+            char key[16];
+            std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+                          static_cast<int>(member + 1));
+            lua_pushstring(state_, key);
+            lua_rawseti(state_, -2, slot);
+        }
+    } else {
+        ++squadron_planes_unresolved_;
+    }
+    squadron_planes_entries_ += static_cast<unsigned long long>(slot);
+    return 1;
+}
+
 int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int argument_count) {
     const ScriptOrderBinding* binding = find_binding(binding_name);
@@ -6773,50 +6825,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         push_number(static_cast<int>(level));
         results = 1;
     } else if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) {
-        // 0089CC50: argument 0 through BSP_ObjectHandle_FromLuaTable (no kind
-        // check), a new table (00B67930), then for i = 1..[sq+3CCh] the member
-        // [sq+3D0h + 4(i-1)]'s u16 +174h as a string at index i (0089CD75-
-        // 0089CE00); one result. SUBSTITUTION, labelled: the squadron is the
-        // registry record holding the argument's unit, and a plane's +174h is
-        // its unit index plus one, the `thisTable` key (kMissionLuaEntityKeyFormat).
-        resolve_plane_squadron_members();
-        void* entity = argument_ptr_field(0);
-        if (entity == nullptr) entity = entity_from_argument(0);
-        const std::size_t index = index_of(entity);
-        ++squadron_planes_calls_;
-        // 00B67930 calls native_lua_new_table_00b67930; OFF keeps lua_createtable.
-        {
-            // 0089CD70 creates an untracked result on this dispatch's real VM.
-            // The temporary header borrows that stack value; no destructor pops it.
-            ScriptOrdersLuaStackView frame(state_, 0);
-            bsp::NativeLuaObjectStorage result{};
-            bsp::native_lua_new_table_00b67930(frame.object, result);
-            log_.implemented("LuaObject::NewTable", "00b67930");
-        }
-        // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
-        // still names its squadron (find_by_member_or_departed_unit).
-        const bsp::PlaneSquadronHostRecord* record =
-            index >= units_.count() ? nullptr
-            : kGetSquadronPlanesDepartedLeadBound
-                ? bsp::plane_squadron_registry().find_by_member_or_departed_unit(index)
-                : bsp::plane_squadron_registry().find_by_member_unit(index);
-        int slot = 0;
-        if (record != nullptr) {
-            for (const std::size_t member : record->member_units) {
-                if (member == bsp::kPlaneSquadronNoUnit || member >= units_.count()) continue;
-                if (slot >= 5) break;   // 0089CD98: past five the image faults
-                ++slot;
-                char key[16];
-                std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
-                              static_cast<int>(member + 1));
-                lua_pushstring(state_, key);
-                lua_rawseti(state_, -2, slot);
-            }
-        } else {
-            ++squadron_planes_unresolved_;
-        }
-        squadron_planes_entries_ += static_cast<unsigned long long>(slot);
-        results = 1;
+        results = run_get_squadron_planes_0089cc50();
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
         // IsKindOf(2) (result unused, 008AA0BF), argument 1 through 00888760 as

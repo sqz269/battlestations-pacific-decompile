@@ -1054,6 +1054,8 @@ private:
     void run_narrative_update_00735100(float step);
     // Packet cc9_lua_camera_state.
     int run_get_camera_state_008bf6a0();
+    // 0089CC50 over the active Lua call and retained squadron members.
+    int run_get_squadron_planes_0089cc50();
     void basis_degrees_0042d2e0(const bsp::CameraMatrix& world, float out[3]);
     std::size_t camera_state_calls_{0};
     std::size_t camera_state_from_camera_{0};
