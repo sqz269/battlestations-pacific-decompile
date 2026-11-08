@@ -403,7 +403,15 @@ struct NarrativeContentHost {
     virtual void narrative_clear() = 0; // 00734FA0
 };
 
-struct ContentHost : NarrativeContentHost {
+// Both day-time bindings use the existing weather owner at game+21C4h.
+// Keep this contract usable without unrelated content/render services.
+struct TimeOfDayHost {
+    virtual ~TimeOfDayHost() = default;
+    virtual void time_of_day_set(int hours, int minutes, int seconds, int ms) = 0; // 004439B0
+    virtual void time_of_day_split(int& hours, int& minutes, int& seconds) = 0;   // 00443A30
+};
+
+struct ContentHost : NarrativeContentHost, TimeOfDayHost {
     virtual ~ContentHost() = default;
     // Localisation manager [00F8BC4C].
     virtual void localization_register_table_name(const std::string& name) = 0; // 00AA0D30
@@ -411,9 +419,6 @@ struct ContentHost : NarrativeContentHost {
     virtual void atmosphere_replace_sky_box(const std::string& name) = 0; // 00BBDF60 on [game+19E8h]
     virtual void rain_set_drop_num_percent(float fraction) = 0;         // 008003B0
     virtual void rain_settings_store_70(float fraction) = 0;            // [[00F8BBD8]+78h]+70h
-    // Time of day [[00E188A8]+21C4h].
-    virtual void time_of_day_set(int hours, int minutes, int seconds, int ms) = 0; // 004439B0
-    virtual void time_of_day_split(int& hours, int& minutes, int& seconds) = 0;     // 00443A30
     // Lighting block [[00E188A8]+5FCh].
     virtual void light_store_float(std::size_t offset, float value) = 0;
     virtual void scene_ensure_default_lighting() = 0; // 004C9EC0
@@ -435,8 +440,8 @@ int lua_add_lockit_path_to_selection(LuaArgs& args, ContentHost& host); // 008C5
 int lua_load_selected_paths(ContentHost& host);                         // 008C5230
 int lua_set_sky(LuaArgs& args, ContentHost& host);                      // 008C49A0
 int lua_set_rain_drop_num_percent(LuaArgs& args, ContentHost& host);    // 008C7F50
-int lua_set_day_time(LuaArgs& args, ContentHost& host);                 // 008B1CC0
-int lua_get_day_time(LuaResults& results, ContentHost& host);           // 008B1EC0
+int lua_set_day_time_008b1cc0(LuaArgs& args, TimeOfDayHost& host);
+int lua_get_day_time_008b1ec0(LuaResults& results, TimeOfDayHost& host);
 // SetLight 008C44B0: arg0.Ambient[1..3] / 255.0 -> +F48h..+F50h, +F54h = 1.0f;
 // arg0.Diffuse[1..3] / 255.0 -> +FC8h..+FD0h, +FD4h = 1.0f; HorizontalAngle and
 // VerticalAngle (default 0) in radians -> +1004h, +1008h; then the default-lighting refresh.

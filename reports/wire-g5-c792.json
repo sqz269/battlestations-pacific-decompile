@@ -1,0 +1,264 @@
+{
+  "run": 1702,
+  "goal": 5,
+  "chain": 792,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "picked": "SetDayTime/GetDayTime over the existing game+21C4 WeatherConfig owner",
+  "baseline_head": "f79dd3bc13",
+  "counts": {
+    "readiness_wired_before": 10634,
+    "readiness_wired_after": 10638,
+    "entry_reachable_addresses_before": 5480,
+    "entry_reachable_addresses_after": 5484
+  },
+  "rows": [
+    {
+      "native": "008b1cc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> lua_set_day_time_008b1cc0"
+    },
+    {
+      "native": "008b1ec0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> lua_get_day_time_008b1ec0"
+    },
+    {
+      "native": "004439b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDayTimeBinding::time_of_day_set"
+    },
+    {
+      "native": "00443a30",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDayTimeBinding::time_of_day_split"
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage",
+      "reason": "Missing reached NetEntityCreateMessage producer/consumer for member+04h vectors; formation lateral/axial offsets are different fields."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native enum symbol insertion",
+      "reason": "Already entry-reachable at baseline; adding another caller would not be new wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property merge",
+      "reason": "Already entry-reachable at baseline; the ready text label does not indicate missing compiled calls."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops launch",
+      "reason": "Missing retained support-screen loadout icons and RadialHost consumer; the existing launch path accepts a supplied selection."
+    },
+    {
+      "native": "00662210",
+      "status": "skipped",
+      "host_site": "src/radial_menu_cc13.cpp: highlight_hangar_loadout_00662210",
+      "reason": "Missing reached support-screen owner, loadout icon list and RadialHost implementation."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops launch",
+      "reason": "Missing retained support-screen templates/record owner and a live loadout-ring consumer."
+    },
+    {
+      "native": "00666dc0",
+      "status": "skipped",
+      "host_site": "src/radial_menu_cc13.cpp: build_hangar_loadout_ring_00666dc0",
+      "reason": "Missing reached hangar support-screen owner and native loadout-record/GUI adapter."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save/current-mission comparison owner; checkpoint_differs remains a false substitution."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp: GUI camera projection",
+      "reason": "Missing original FOV-aspect-product consumer; the live GUI projection is orthographic."
+    },
+    {
+      "native": "0051eaa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipViewInputBinding",
+      "reason": "Missing retained native input-axis/device-query blocks and matching binocular zoom-flag owner for this complete body."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: complete-string layout",
+      "reason": "Missing live character-input admission consumer with its retained font context; complete-string layout is a different operation."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path messaging",
+      "reason": "Missing presence-zero clear-message producer with retained per-slot path owners; the inspected sender adds points."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: edge_map_find_00407a50",
+      "reason": "Missing live convex-hull adjacency edge-map producer/consumer; inserting a discarded map would not replace host behavior."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: edge_map_find_or_insert_00407af0",
+      "reason": "Missing live adjacency EdgeHashMap and its native 20-byte node-pool lifetime."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "Missing matching original projection/margin producer; the current camera culls to its clip rectangle before placement."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: registry construction",
+      "reason": "Missing retained live native land-approach owner that supplies and consumes this registry."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: registry destruction",
+      "reason": "Missing live registry construction/lifetime owner; the inspected semantic task host does not own this native registry."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: land-state registration",
+      "reason": "Missing retained native land approach/state objects and the reached state-dispatch consumer."
+    },
+    {
+      "native": "00b72270",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: find_node_by_name_00b72270",
+      "reason": "Missing live SceneRoots/SceneNodeServices owner matching the native scene traversal; host name indexes are different objects."
+    },
+    {
+      "native": "00b72030",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: build_quadtrees_for_roots_00b72030",
+      "reason": "Missing retained native quadtree roots and QuadTreeBuildServices consumer on the inspected host path."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp: tree-header initialization",
+      "reason": "Missing authoritative native Lua-variant tree-header owner and matching sentinel cleanup; semantic scalar records are not that tree."
+    },
+    {
+      "native": "006edea0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_link_record_allocation.cpp: tree-node allocation",
+      "reason": "Missing reached native variant-tree header/insertion/retirement lifetime; allocating an unused sentinel would not wire gameplay."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_wrap_and_clamp_007904d0",
+      "reason": "Missing retained live MovCamAngles owner and original frame-update consumer; the mission camera uses a different projection."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp: camera_aim_delta_00794910",
+      "reason": "Missing reached native MovCam aim caller with its AimCameraView and AimTargetView inputs."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing parser-owned per-mode ClassPairRow tables and the corresponding live composition-scoring adapter."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing live cloud-manager frame/instance owner; this historical ocean-named routine belongs to clouds, not the ocean host."
+    },
+    {
+      "native": "004bb8a0",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: game_session_local_side_check_004bb8a0",
+      "reason": "Original consumers are platform-session polling and multiplayer pause confirmation; no single-player caller was established."
+    },
+    {
+      "native": "004b61c0",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: session_is_client_stage_3_or_4_004b61c0",
+      "reason": "Client-session-stage predicate has no established single-player consumer; multiplayer-only work is excluded."
+    },
+    {
+      "native": "0067d940",
+      "status": "skipped",
+      "host_site": "src/ingame_gui_cc13.cpp: gui_text_fit_range_to_one_line_0067d940",
+      "reason": "Missing live editable-text prefix/cursor-range owner and line-count feedback consumer; current layout consumes complete strings."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing live collected command-list owner with the original slot+10h sort keys and a consumer of the resulting order."
+    },
+    {
+      "native": "008ad150",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg56b.cpp: lua_set_repair_level",
+      "reason": "Missing live category-level repair state/adapter; the existing FailureRepairEnable gate is a different operation."
+    },
+    {
+      "native": "008adc40",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg56b.cpp: lua_get_repair_level",
+      "reason": "Missing retained category-level repair owner and a live getter adapter."
+    },
+    {
+      "native": "008eea80",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp: readiness source audit",
+      "reason": "Readiness source contains distinct 008EEB10/008EEB60 entries; this wrapper body and its reached foreach consumer were not established."
+    },
+    {
+      "native": "008ef650",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp: readiness source audit",
+      "reason": "Readiness source contains distinct 008EEB10/008EEB60 entries; this begin-copy wrapper and its reached foreach consumer were not established."
+    }
+  ],
+  "state_provenance": "The mission frame attaches its existing GameGlobalSubsystemsHost both when script orders are created and after weather construction. Each dispatch rereads weather(), whose +4h is the Globals.lua-loaded StartDayTimeDefault cell. SetDayTime writes this cell through existing 004439B0; GetDayTime reads it through existing 00443A30. No duplicate clock or random seed is introduced.",
+  "evidence": [
+    "bsp.py show 008b1cc0 --asm: 008B1E5E..008B1E6F loads game+21C4 before 004439B0",
+    "bsp.py show 008b1ec0 --asm: 008B1FA3..008B1FC1 loads game+21C4 before 00443A30",
+    "bsp.py show 00443a30 --asm: only clock+4h is read; WeatherConfig offset is statically asserted",
+    "call_graph.py who: all four addresses have one direct call site from changed host code and are entry-reachable"
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 passed; 4/4 existing tests",
+    "probe": "tests/wire_g5_c792_day_time_probe.cpp compiled /W4 /WX and passed using production dispatch and actual owner construction; fixture seeds the weather hour, without mounted archives or a game loop",
+    "probe_cases": "shared +4h field, optional minute/second defaults, negative-hour wrap, no entity __index on numeric coercion, Lua result table/stack isolation, teardown/rebuild owner lookup",
+    "probe_result": "local/output/c792_day_time_probe_result.txt",
+    "call_graph": "5480 -> 5484 reconstructed addresses called; one reached call site for each new address",
+    "readiness": "10634 -> 10638 wired; all four called=true, call_sites=1"
+  },
+  "coordination": "Released mission-frame lease after completing two attachment additions so agent/g5-w3 could make disjoint map-publication edits. No merges or pushes performed.",
+  "limitations": [
+    "No game launch or gameplay validation performed.",
+    "Probe uses bounded fixture weather hours; production Globals.lua loading is existing code and was not exercised by this probe.",
+    "Weather rendering/progression and the mission-clock goal switch are unchanged.",
+    "Existing source bodies expose C++ interfaces, not native binary ABI replacements."
+  ],
+  "left": "Audit skip reasons identify missing producers/owners; weather lighting/progression consumers remain outside this packet."
+}

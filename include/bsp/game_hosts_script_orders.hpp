@@ -75,6 +75,7 @@ class GameHostLog;
 class GameMissionResultHost;
 class GameMessageManagerHost;
 class GameHudHost;
+class GameGlobalSubsystemsHost;
 
 // The plane-squadron member write-back, as a free function so that a caller
 // which holds no scripts-orders host can drive it. It fills the registry's
@@ -768,6 +769,11 @@ public:
     void attach_message_manager(GameMessageManagerHost* manager) noexcept {
         message_manager_ = manager;
     }
+    // Borrow the frame's owner, not a WeatherConfig snapshot: 004DC6A0 can
+    // replace game+21C4h, and every day-time call must see its current owner.
+    void attach_global_subsystems(GameGlobalSubsystemsHost* owner) noexcept {
+        global_subsystems_ = owner;
+    }
     // Borrow the existing screen owner; the mission frame destroys orders
     // before replacing its world, while the application's HUD outlives it.
     void attach_narrative_hud(GameHudHost* hud) noexcept { narrative_hud_ = hud; }
@@ -1358,6 +1364,7 @@ private:
     GameMissionResultHost* scoring_name_owner_{nullptr};
     // Goal 4 chain 331: borrowed [game+21DCh]; see attach_message_manager.
     GameMessageManagerHost* message_manager_{nullptr};
+    GameGlobalSubsystemsHost* global_subsystems_{nullptr};
     GameHudHost* narrative_hud_{nullptr};
     unsigned long long message_maps_loaded_{0};
     unsigned long long message_maps_without_manager_{0};

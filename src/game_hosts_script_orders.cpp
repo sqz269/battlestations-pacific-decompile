@@ -83,6 +83,11 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_physical_file_date.hpp"  // 00435C40
 #include "bsp/native_string.hpp"
+#include "bsp/native_lua_class_setters.hpp"
+#include "bsp/game_hosts_global_subsystems.hpp"
+#include "bsp/weather_config.hpp"
+#include "bsp/band_0040_cc13.hpp"
+#include "bsp/seg3_4_cc13.hpp"
 // Goal 5 chain 655: the segment-56 unit queries.
 #include "bsp/band_0080_cc13.hpp"                 // 008457E0
 #include "bsp/cc13_dyn1.hpp"                      // 00C336C0
@@ -282,6 +287,8 @@ constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
 
 constexpr ScriptOrderBinding kScriptOrderBindings[] = {
+    {"SetDayTime", 0x008b1cc0u},
+    {"GetDayTime", 0x008b1ec0u},
     {"DisablePhysics", 0x00891380u},
     {"AddMatrixInterpolator", 0x008ade00u},
     {"ExplodeToParts", 0x0088e1b0u},
@@ -1217,6 +1224,56 @@ public:
 
 private:
     bsp::LuaBindingArgumentReader& core_;
+};
+
+// bsp.py show 008B1CC0 --asm, 008B1E5E..008B1E6F: both bindings use the
+// weather owner at [game+21C4h], not the atmosphere's separate time field.
+// Its +4h is the Globals.lua StartDayTimeDefault cell the loader published.
+// 00443A30 reads only +4h; the rest of WeatherConfig keeps
+// its semantic C++ layout. No native vtable or map is dispatched here.
+class ScriptDayTimeBinding final : public bsp::cc13_seg56::TimeOfDayHost,
+                                   public bsp::cc13_seg56::LuaResults {
+public:
+    ScriptDayTimeBinding(bsp::WeatherConfig& weather, lua_State* state)
+        : weather_(weather), state_(state) {}
+
+    void time_of_day_set(int hours, int minutes, int seconds, int ms) override {
+        weather_.start_day_time_04 = bsp::cc13_band0040::time_of_day_hours_004439b0(
+            hours, minutes, seconds, ms);
+    }
+    void time_of_day_split(int& hours, int& minutes, int& seconds) override {
+        static_assert(offsetof(bsp::WeatherConfig, start_day_time_04) == 4);
+        bsp::seg3_4_cc13::time_of_day_split_clock_00443a30(
+            &weather_, &hours, &minutes, &seconds, nullptr);
+    }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>& fields) override {
+        if (state_ == nullptr) return;
+        // 008B1FC6 onward: one new result table and 00B67460 for hours,
+        // minutes, seconds, in that order, on this dispatch's actual Lua VM.
+        ScriptOrdersLuaStackView frame(state_, 0);
+        bsp::NativeLuaObjectStorage result{};
+        bsp::native_lua_new_table_00b67930(frame.object, result);
+        for (const auto& field : fields) {
+            ScriptOrdersNativeText key(field.first);
+            bsp::native_lua_set_integer_00b67460(result, key.text, field.second);
+        }
+    }
+    void push_number(int) override { repair_binding_unreached("day-time integer result"); }
+    void push_float(float) override { repair_binding_unreached("day-time float result"); }
+    void push_boolean(bool) override { repair_binding_unreached("day-time boolean result"); }
+    void push_nil() override { repair_binding_unreached("day-time nil result"); }
+    void push_string(const std::string&) override { repair_binding_unreached("day-time string result"); }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override {
+        repair_binding_unreached("day-time vector result");
+    }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override {
+        repair_binding_unreached("day-time vector fields result");
+    }
+
+private:
+    bsp::WeatherConfig& weather_;
+    lua_State* state_;
 };
 
 // 008A8720's three callees and its sole image read, bound to the current Lua
@@ -6350,9 +6407,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding->name);
     log_.implemented(method, address);
 
-    // DoVector3 reads numbers only. A table converts to zero without reading
-    // ID (lua_getfield would invoke a user-defined __index metamethod).
-    void* subject = std::strcmp(binding->name, "DoVector3") == 0
+    // DoVector3 and the day-time bindings read numbers only. A table converts
+    // to zero without reading ID (lua_getfield would invoke __index).
+    void* subject = (std::strcmp(binding->name, "DoVector3") == 0
+        || std::strcmp(binding->name, "SetDayTime") == 0
+        || std::strcmp(binding->name, "GetDayTime") == 0)
         ? nullptr : entity_from_argument(0);
     if (subject == nullptr && std::strcmp(binding->name, "SetRoleAvailable") == 0) {
         subject = argument_ptr_field(0);
@@ -6361,7 +6420,21 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     row.unit = name_of(subject);
 
     int results = 0;
-    if (std::strcmp(binding->name, "PilotSetTarget") == 0) {
+    if (std::strcmp(binding->name, "SetDayTime") == 0
+        || std::strcmp(binding->name, "GetDayTime") == 0) {
+        bsp::WeatherConfig* const weather = global_subsystems_ != nullptr
+            ? global_subsystems_->weather() : nullptr;
+        if (weather == nullptr) {
+            log_.unimplemented("LuaNative::day-time without game+21C4h weather owner", address);
+        } else {
+            RepairBindingArgs args(*this);
+            ScriptDayTimeBinding clock(*weather, state_);
+            results = std::strcmp(binding->name, "SetDayTime") == 0
+                ? bsp::cc13_seg56::lua_set_day_time_008b1cc0(args, clock)
+                : bsp::cc13_seg56::lua_get_day_time_008b1ec0(clock, clock);
+            if (state_ == nullptr) results = 0;
+        }
+    } else if (std::strcmp(binding->name, "PilotSetTarget") == 0) {
         results = run_pilot_set_target(row);
     } else if (std::strcmp(binding->name, "PlaneForceRelease") == 0 ||
                std::strcmp(binding->name, "SquadronForceRelease") == 0 ||
