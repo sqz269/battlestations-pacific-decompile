@@ -26,6 +26,7 @@ struct MissionSceneEnvironment final : scene_weather_cc13::SceneSkyHost {
  scene_weather_cc13::SceneSkyFields sky;
  scene_weather_cc13::SceneLightsFields lights;
  bool lights_authored{};
+ bool water_tracer_color_authored{};
 
  MissionSceneEnvironment(GameHostLog& output,MissionShipFoliageGraph& actual)
   : log(output),foliage(actual) {}
@@ -51,6 +52,10 @@ struct MissionSceneEnvironment final : scene_weather_cc13::SceneSkyHost {
   const bool group=environment && environment->value.type==ScenePropertyType::SubBag;
   const auto* lights_entry=group ? scene_property_bag_find(model,environment->sub_bag,"Lights") : nullptr;
   lights_authored=lights_entry && lights_entry->value.type==ScenePropertyType::SubBag;
+  // 004EA870 only writes scene+C44h when this optional property exists.
+  // Preserve the existing parsed RGBA; its absent-property preimage is unknown.
+  water_tracer_color_authored=lights_authored &&
+   scene_property_bag_find(model,lights_entry->sub_bag,"WaterTracerColor")!=nullptr;
   // Without the group 004EE450 is not called; without Lights it copies the
   // 004B6800 defaults over +F48h, and 004B6800 leaves +20h..+7Fh and +B8h
   // untouched. This owner has no recovered prior values for that

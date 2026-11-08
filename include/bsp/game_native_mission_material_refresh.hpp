@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 
+namespace bsp::scene_weather_cc13 { struct Rgba; }
+
 namespace bsp::game {
 class GameNativeReadOnlyData;
 class GameNativeRendererApplication;
@@ -27,6 +29,11 @@ public:
     // B1B830. No string cache survives a successful call. Invoke before
     // refresh_after_model_load().
     void publish_reflection_cubemap(const std::string& record_refl_cubemap_b98);
+
+    // 004DF5B7: publish the parsed scene record's +C44h RGBA through B1B890
+    // into the same renderer Lua owner. Requires an authored WaterTracerColor;
+    // this binding supplies no default for the optional scene property.
+    void publish_water_tracer_color(const scene_weather_cc13::Rgba& record_color_c44);
 
     // Fresh persistent native operation per call, published before entry.
     // Failure is retained and cannot be replayed; the complete renderer,
