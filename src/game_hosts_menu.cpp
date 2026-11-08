@@ -2256,13 +2256,24 @@ public:
         owner_.log.implemented("FrontEndScreen::register", "004f71d0");
         if (record->slot == kMainMenuPathScreenId) {
             // 00582F30 chains 004F71D0 and then calls its own slot +14h, which
-            // is 005861B0: FE_main plus the three page roots the mission-detail
-            // page drives and the widget handles it keeps.
-            owner_.attach_page(*record, "FE_main");
+            // is 005861B0: FE_main plus the list/detail pages and their widgets.
             if (owner_.mission != nullptr) {
-                GuiLayoutPage* main_page =
-                    record->pages.empty() ? nullptr : record->pages.back();
+                // FE_main already belongs to the frame-layout singleton:
+                // 00E08500 set 2, backdrop 12. Borrow that owner's page;
+                // attach_page would overwrite its visibility with this still-
+                // inactive screen's byte, although this screen never collects it.
+                auto* main_page = static_cast<GuiLayoutPage*>(owner_.frame_layouts.backdrop[
+                    static_cast<int>(FrontEndFrameSet::MainMenu)][12]);
+                if (!main_page || !main_page->root)
+                    throw std::logic_error("main-menu screen requires frame-owned FE_main");
                 owner_.mission->bind_main_menu_layout_005861b0(main_page);
+                // 005905E0 collects screen+470h, not the FE_main background.
+                // The mission host loaded this SAME page during 005861B0;
+                // borrowing it here avoids a second load/reference increment.
+                auto* listpage = owner_.mission->main_menu_listbox_page();
+                if (!listpage || !listpage->root)
+                    throw std::runtime_error("main-menu screen requires FE_main_listbox");
+                record->pages.assign(1, listpage);
                 owner_.mission->build_top_level_page_00584ae0();
                 owner_.log.implemented("MainMenuScreen::bind_layout", "005861b0");
             }

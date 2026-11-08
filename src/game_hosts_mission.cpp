@@ -33,6 +33,7 @@
 #include "bsp/lua_numeric.hpp"
 #include "bsp/lua_state_owner.hpp"
 #include "bsp/main_menu_mission_detail.hpp"
+#include "bsp/main_menu_layout_binding.hpp"
 #include "bsp/main_menu_map_point_geometry.hpp"
 #include "bsp/main_menu_screen.hpp"
 #include "bsp/main_menu_screens.hpp"
@@ -975,8 +976,15 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<true> {
     const MissionPictureTextureServices* picture_services{};
     bool tree_load_started{};
 
-    // 005861B0's three page roots and the widget handles the detail page drives.
+    // 005861B0's retained pages and the widget handles the page builders use.
     GuiLayoutPage* main_page{nullptr};
+    GuiLayoutPage* main_listbox_page_470{nullptr};
+    // 00587D80 copies the actual main-listbox resolved position into +558h,
+    // +55Ch and +560h (three float32 cells). Unavailable until layout binding.
+    std::optional<GuiWidgetPoint> main_listbox_position_558;
+    // Typed view of screen+414h, initialized by the existing 00543710 body.
+    // Its borrowed widgets belong to main_listbox_page_470, not a second tree.
+    MainMenuTextLayout main_text_layout_414;
     GuiLayoutPage* worldmap_page{nullptr};
     GuiLayoutPage* briefing_grid_page{nullptr};
     GuiLayoutPage* briefing_page{nullptr};
@@ -1451,10 +1459,24 @@ public:
         static_cast<void>(b);
         owner_.log.unimplemented("MissionDetail::set_list_box_flags", "0058cd9e");
     }
-    std::array<float, 3> list_box_position() override { return {0.0f, 0.0f, 0.0f}; }
+    std::array<float, 3> list_box_position() override {
+        // 0058CDB8..0058CDEE reads the saved screen+558h/+55Ch/+560h
+        // cells captured at 00587D80, then 0058CDF5 restores that position.
+        if (!owner_.main_listbox_position_558)
+            throw std::logic_error("mission detail requires its captured main-listbox position");
+        const auto& point = *owner_.main_listbox_position_558;
+        return {point.x, point.y, point.z};
+    }
     void move_list_box(std::array<float, 3> position) override {
-        static_cast<void>(position);
-        owner_.log.unimplemented("MissionDetail::move_list_box", "00aa8240");
+        auto* list = owner_.widget(0x1B8);
+        if (!list) throw std::logic_error("mission detail requires its bound main listbox");
+        // 0058CD9E..0058CE05 moves this SAME listbox through its resolved-
+        // position setter. The bridge consumes the real layout transform.
+        const auto local = local_position_for_resolved(list->transform,
+            {position[0], position[1], position[2]});
+        owner_.frontend.set_widget_local_position(*list, local.x, local.y, local.z);
+        owner_.frontend.refresh_widget_geometry(*list);
+        owner_.log.implemented("MissionDetail::move_list_box", "00aa8240");
     }
     void finish_list_box() override {
         owner_.log.unimplemented("MissionDetail::finish_list_box", "00aa6bc0");
@@ -3116,6 +3138,47 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
     Impl& host = *impl_;
     host.main_page = main_page;
 
+    // 0058621C loads FE_main_listbox before the world-map/briefing pages and
+    // retains it at screen+470h. 005905E0 publishes THIS page in the screen's
+    // active-page collector; FE_main is only the separate background layout.
+    host.main_listbox_page_470 = host.frontend.load_screen_page("FE_main_listbox");
+    host.log.implemented("MainMenuScreen::load_listbox_layout", "00aa5840");
+    if (host.main_listbox_page_470 && host.main_listbox_page_470->root) {
+        auto& listpage = *host.main_listbox_page_470->root;
+        const auto bind = [&](std::uint16_t field, GuiLayoutWidget* parent,
+                              const char* name, GuiWidgetType type) {
+            auto* node = parent ? find_child_by_name_00aa7e00(*parent, name) : nullptr;
+            host.log.implemented("MainMenuScreen::find_listbox_child", "00aa7e00");
+            if (!node || node->type != type)
+                throw std::runtime_error(std::string("main-menu list layout requires ") + name);
+            host.widgets[field] = node;
+            ++host.summary.detail_widgets_bound;
+            return node;
+        };
+        // Direct-child chains from 00587B0A..00587DE7. These are pointers
+        // (four native bytes each); the same loaded widgets remain authoritative.
+        auto* list_group = bind(0x3BC, &listpage, "ListBox_Group", GuiWidgetType::Group);
+        bind(0x3C0, &listpage, "SmallListBox_Group", GuiWidgetType::Group);
+        auto* sub = bind(0x23C, &listpage, "Sub_Listbox", GuiWidgetType::Listbox);
+        bind(0x240, sub, "MainListbox_Text", GuiWidgetType::Text);
+        auto* list = bind(0x1B8, &listpage, "Main_Listbox", GuiWidgetType::Listbox);
+        host.main_listbox_position_558 = resolved_position(list->transform); //00587D80
+        bind(0x238, list, "MainListbox_Text", GuiWidgetType::Text);
+        // The +3DCh panel is the +18h group borrow of the +3C4h list helper.
+        // Row cloning/count/spacing still require its real 00541B80 binding.
+        host.widgets[0x3DC] = list_group;
+        auto* text_group = bind(0x41C, &listpage, "TextBox_Group", GuiWidgetType::Group);
+        // 00588241: field+04 = 32 and three by-value native color quartets.
+        // Reuse the whole initializer; do not reproduce its field stores here.
+        initialize_main_menu_text_00543710(host.main_text_layout_414, *text_group,
+            "TextBox_Text", 32, {0.5f, 0.5f, 0.5f, 1.0f},
+            {1.0f, 1.0f, 1.0f, 1.0f}, {0.2f, 0.2f, 0.2f, 1.0f});
+        host.log.implemented("MainMenuScreen::initialize_text_layout", "00543710");
+        ++host.summary.detail_pages_loaded;
+    } else {
+        host.log.note("main-menu layout FE_main_listbox did not load");
+    }
+
     // 0058629C, 0058641A and 005864A0: the three page roots the screen keeps.
     struct PageBind {
         const char* name;
@@ -3277,6 +3340,10 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
         host.summary.detail_widgets_missing);
 }
 
+GuiLayoutPage* GameMissionHost::main_menu_listbox_page() const noexcept {
+    return impl_->main_listbox_page_470;
+}
+
 void GameMissionHost::build_top_level_page_00584ae0() {
     Impl& host = *impl_;
     // 00584AE0's seven-iteration loop at 00584BF0..00584C70 allocates each entry
@@ -3433,18 +3500,20 @@ void GameMissionHost::Impl::finish_scene_load() {
     // BSP_MainMenu_Destroy 00686c90, which exits each of its seven screens,
     // clears both flag bytes and commits through 004f83b0 at 00686db9, then
     // destroys each screen through its vtable +0Ch at 00686e14. Destroying the
-    // main-menu screen releases the three layouts it holds at +2F0h, +244h and
-    // +248h, which is what takes the mission-detail page off the screen. The
-    // executable owns those three roots directly rather than through the
-    // screen's +24h collector, so it hides them here and says so.
-    for (GuiLayoutPage* released : {worldmap_page, briefing_grid_page, briefing_page}) {
+    // main-menu screen releases the layouts it holds at +470h, +2F0h, +244h
+    // and +248h, taking the list and detail pages off the screen. The three
+    // detail roots are held directly; +470h is also borrowed by the screen's
+    // collector. Mirror the teardown visibility at this existing handoff;
+    // allocation lifetime remains with the frontend's retained page registry.
+    for (GuiLayoutPage* released : {main_listbox_page_470, worldmap_page,
+                                  briefing_grid_page, briefing_page}) {
         if (released != nullptr && released->root) {
             frontend.set_widget_visible(*released->root, false);
         }
     }
     frontend.invalidate_bridge();
-    log.note("the mission-detail page roots were hidden: 00686c90 destroys the main-menu "
-        "screen, which releases the three layouts it holds at +2F0h, +244h and +248h");
+    log.note("the mission-menu page roots were hidden: 00686c90 destroys the main-menu "
+        "screen, releasing its +470h, +2F0h, +244h and +248h layouts");
     const auto participant_count = participant_scene_counts.find(record.scene_path);
     if (native_pictures) {
         const auto remaps = post_process_records.find(record.scene_path);
