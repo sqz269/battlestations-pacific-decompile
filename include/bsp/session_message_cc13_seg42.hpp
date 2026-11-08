@@ -336,6 +336,9 @@ PlaneDisappearMessage* construct_plane_disappear_00762b20(PlaneDisappearMessage*
 PlaneDeadmeatRotMessage* construct_plane_deadmeatrot_00762c80(PlaneDeadmeatRotMessage*, const Context&);
 UnitMessage* construct_airbase_setslot_00763140(UnitMessage*, const Context&);
 AirbaseLaunchSlotMessage* construct_airbase_launchslot_007631a0(AirbaseLaunchSlotMessage*, const Context&);
+// 00763240: __thiscall(ECX=83h message, flags), RET 4, EAX=identity.
+// Root-profile stamp, then free iff flags bit 0; no owned payload members.
+AirbaseLaunchSlotMessage* delete_airbase_launchslot_00763240(AirbaseLaunchSlotMessage*, std::uint32_t flags);
 UnitMessage* construct_airbase_changeslotstatus_00763320(UnitMessage*, const Context&);
 UnitMessage* construct_airbase_slotstatussync_00763380(UnitMessage*, const Context&);
 UnitMessage* construct_airbase_stockitem_007633e0(UnitMessage*, const Context&);

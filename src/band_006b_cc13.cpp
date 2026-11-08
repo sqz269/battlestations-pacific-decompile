@@ -95,6 +95,12 @@ void airbase_set_orders_read_006bdd30(void* p,NativeSessionReadStream* s) {
 NativeSessionMessageStorage* airbase_message_delete_006bdd80(NativeSessionMessageStorage* p,std::uint32_t flags) {
     return delete_native_session_message_root_00449910(p,flags);
 }
+// Goal 5 chain 682. bsp.py show 006bedf0: stamp 00CE4974, free at
+// 00BF65AC iff flags & 1, return the original pointer. No payload teardown.
+NativeSessionMessageStorage* airbase_appear_ready_plane_delete_006bedf0(
+    NativeSessionMessageStorage* p, std::uint32_t flags) {
+    return delete_native_session_message_root_00449910(p, flags);
+}
 
 const TypeIdRule kSessionMessageTypeRules[] = {
     {0x006BC410u, 0x00CF85F0u, 3, {0x89, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_DOLAUNCHSLOT_IsType
