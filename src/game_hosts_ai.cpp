@@ -3,6 +3,7 @@
 // addresses and for every stand-in this file makes.
 
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/game_ai_forced_rules.hpp"
 
 #include <algorithm>
 #include <array>
@@ -755,9 +756,9 @@ public:
     // skipping it changes no answer; the census counts the queries instead.
     bool memo_lookup(const bsp::AiTargetWeightKey&, float&) override { return false; }
     void memo_store(const bsp::AiTargetWeightKey&, float) override {}
-    // 00A31DB0 at 00A08540, over the current mode's shipped table
-    // (bsp::ai_shipped_forced_rules). Scanned in both states for the census;
-    // the answer is used only with kAiForcedTargetWeightRulesBound.
+    // 00A31DB0 at 00A08540: global first, then the current mode's native
+    // table, populated by OnInitOnce. The authored manifest is no longer
+    // queried as a separate source of live weights.
     bool forced_rule_weight(const bsp::AiTargetWeightKey& key, float& weight) override {
         if (!kind_ || !class_id_) return false;
         struct Subject final : bsp::AiForcedRuleSubject {
@@ -772,9 +773,13 @@ public:
         const Subject target(this, index_of(key.target));
         float w = 0.0f;
         int matched = -1;
-        const bool hit = bsp::ai_forced_rule_scan_00a31db0(bsp::ai_shipped_forced_rules(mode),
-                                                           attacker, target,
-                                                           key.target_is_neutral != 0, w, matched);
+        const auto& tables = detail::ai_forced_rule_tables();
+        bool hit = bsp::ai_forced_rule_scan_00a31db0(tables.global_rules(), attacker, target,
+            key.target_is_neutral != 0, w, matched);
+        if (!hit) {
+            hit = bsp::ai_forced_rule_scan_00a31db0(tables.mode_rules(mode), attacker, target,
+                key.target_is_neutral != 0, w, matched);
+        }
         AiForcedRuleCensus& c = ai_forced_rule_census();
         c.mode = mode;
         ++c.queries;
@@ -1196,6 +1201,10 @@ std::map<std::size_t, int> g_unit_owner_players;
 
 void ai_publish_coordinator_created_at_load(bool created) {
     g_ai_coordinator_created_at_load = created;
+}
+
+void ai_initialize_forced_rule_tables() {
+    detail::ai_forced_rule_tables().load();
 }
 
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {

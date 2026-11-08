@@ -117,7 +117,7 @@ bool forced_rules_equal(const std::uint8_t* a, const std::uint8_t* b) {
 
 // One forced-rule table {data, count, capacity}: remove an identical rule, grow at capacity to
 // 2n+2 (copying with the placement-new null test), append, then 00A038C0.
-void forced_rule_table_insert(Seg70Host& host, Raw table, const std::uint8_t* rule) {
+void forced_rule_table_insert(ForcedRuleInsertHost& host, Raw table, const std::uint8_t* rule) {
     auto* data = static_cast<std::uint8_t*>(table.ptr(0));
     std::uint32_t& count = table.at<std::uint32_t>(4);
     std::uint32_t& capacity = table.at<std::uint32_t>(8);
@@ -822,7 +822,7 @@ void controller_destruct_body_00a32460(Seg70Host& host, Raw controller) {
     host.entity_destruct_base_00925780(controller.p);
 }
 
-void forced_target_weight_insert_00a32500(Seg70Host& host, const std::uint8_t* rule, bool global_table,
+void forced_target_weight_insert_00a32500(ForcedRuleInsertHost& host, const std::uint8_t* rule, bool global_table,
                                           int mode) {
     if (global_table) {
         forced_rule_table_insert(host, host.global(kGlobalForcedRules), rule);
