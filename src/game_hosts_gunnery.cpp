@@ -13753,8 +13753,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             }
         }
         if (shot.serial == 0) shot.serial = ++next_projectile_serial;
-        if (kDepthChargeInWaterBound && shot.depth_charge_in_water) {
-            // 006E137D: in water the record's +1A0h slot is 006FCD20.
+        if (kDepthChargeInWaterBound && shot.depth_charge
+            && bsp::bomb_water_mode_006e2570(shot.depth_charge_in_water) != bsp::BombWaterMode::Air) {
+            // 006E1361 -> 006E2570 reads shot+44h (record+354h), retained here
+            // by the successful water entry below. 006E137D
+            // dispatches the wet depth charge to its +1A0h slot, 006FCD20.
             if (depth_charge_advance_006fcd20(shot, dt)) continue;
         }
         if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt

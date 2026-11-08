@@ -179,7 +179,7 @@ float bomb_scaled_step(float step, float time_scale) noexcept;
 
 // 006E2570 and 00855F00. `swim_depth` and `world_y` are only read on the
 // torpedo path; `in_water` is the shot interface byte at +44h.
-BombWaterMode bomb_water_mode(bool in_water) noexcept;
+BombWaterMode bomb_water_mode_006e2570(bool in_water) noexcept;
 BombWaterMode torpedo_water_mode(bool in_water, float world_y, float swim_depth) noexcept;
 
 // 006E1510, the advance every bomb-family kind but the rocket runs in air.
