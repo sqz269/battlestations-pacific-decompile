@@ -264,14 +264,6 @@ public:
             *source_, out, index, *this);
         return out;
     }
-    Vec3 last_point() {
-        // Saved listing 007B10C0: the same read at point-count minus one.
-        Vec3 out;
-        bsp::path_movcam_seg46_argon::authored_path_source_last_point_007b10c0(
-            *source_, out, *this);
-        return out;
-    }
-
 private:
     Vec3 transform_point_to_world_007af800(const Component* path, int index) override {
         if (path != &component_ || index < 0
@@ -4263,7 +4255,10 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         const pm::Vec3 position{unit_x, 0.0f, unit_z};
         pm::entity_command_path_cursor_start_thunk_007b1d30(cursor, &source, position, 0.0f,
             pair, cursor_host);
-        director.path_cursor.index_08 = cursor.index_08;
+        // bsp.py show 007B1010: ECX is the cursor, EAX is its +08h index,
+        // RET. Read the SAME cursor just initialized by 007B1D30/007B1C50;
+        // this is the result installed into the live director's follower.
+        director.path_cursor.index_08 = pm::path_cursor_index_007b1010(cursor);
         director.path_cursor.follow_mode_0c = cursor.follow_mode_0c;
         director.path_cursor.forward_10 = cursor.forward_10;
     }
@@ -4343,21 +4338,61 @@ bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) 
 }
 
 bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float out[3]) const {
-    // 007B1350: cursor+0Ch == 1 and a path with a positive count, else the valid
-    // byte is cleared.
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     const GameDirector& director = host.directors[unit_index];
     if (!director.path_built || director.path_points.empty()) return false;
-    if (director.path_cursor.follow_mode_0c != 1) return false;
-    if (director.authored_path && !director.path_user) {
-        const auto point = director.authored_path->last_point();
-        out[0] = point.x;
-        out[1] = point.y;
-        out[2] = point.z;
-    } else {
-        for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
-    }
+
+    namespace pm = bsp::path_movcam_seg46_argon;
+    // bsp.py show 007B1350 --asm: mode+0Ch == 1, a nonnull source+04h,
+    // two source vslot0C count reads, then cursor vslot04(count - 1).
+    // Borrow the SAME source already built for this director. Authored points
+    // are scene-loader world outputs; user points are its live built path.
+    // This read-only view neither creates a path nor transforms it again.
+    struct LastPointSource final : pm::PathSourceBase {
+        const GameDirector& director;
+        explicit LastPointSource(const GameDirector& d) : director(d) {}
+        pm::Vec3 get_point_vslot08(int index) override {
+            if (director.authored_path && !director.path_user)
+                return director.authored_path->point(index);
+            const auto& p = director.path_points[static_cast<std::size_t>(index)];
+            return {p[0], p[1], p[2]};
+        }
+        int point_count_vslot0c() override {
+            return director.authored_path && !director.path_user
+                ? director.authored_path->count()
+                : static_cast<int>(director.path_points.size());
+        }
+        int start_index_for_pos_vslot10(const pm::Vec3&, float, bool) override {
+            throw std::logic_error("007B1350 does not query a path start index");
+        }
+    } source(director);
+    struct LastPointCalls final : pm::PathCursorHost {
+        pm::Vec3 cursor_get_point_vslot04(const pm::PathCursorState& cursor,
+            int index) override {
+            // 007ADB90 --asm: negative index selects cursor+08h, then
+            // source vslot08(out, index), RET8. No private-register inputs.
+            pm::Vec3 point;
+            return pm::path_cursor_point_at_index_007adb90(cursor, point, index);
+        }
+        void cursor_set_index_vslot08(pm::PathCursorState&, int) override {
+            throw std::logic_error("007B1350 does not mutate its cursor");
+        }
+        float uniform_float_00bd2f10(int, float, float) override {
+            throw std::logic_error("007B1350 does not draw random values");
+        }
+    } calls;
+    pm::PathCursorState cursor;
+    cursor.source_04 = &source;
+    cursor.index_08 = director.path_cursor.index_08;
+    cursor.follow_mode_0c = director.path_cursor.follow_mode_0c;
+    cursor.forward_10 = director.path_cursor.forward_10;
+    pm::FollowModeLastPointResult result;
+    pm::path_cursor_follow_mode_last_point_007b1350(cursor, result, calls);
+    if (!result.valid_0c) return false;
+    out[0] = result.point.x;
+    out[1] = result.point.y;
+    out[2] = result.point.z;
     return true;
 }
 
