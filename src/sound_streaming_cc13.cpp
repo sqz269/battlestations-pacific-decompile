@@ -292,14 +292,23 @@ void* sound_instance_default_vector_00a7bed0(void* out12) noexcept
     return out12;
 }
 
-bool sound_event_is_completed_00a89210(void* instance, SoundEventHost& host)
+__declspec(noinline) bool sound_event_is_completed_00a89210(
+    SoundEventCompletionView instance, SoundEventStateHost& host)
 {
-    if (read<std::uint8_t>(instance, 0x15) != 0) return true;
-    void* const event = read<void*>(instance, 0x54);
+    if (instance.stopped_15 != 0) return true;
+    void* const event = instance.event_54;
     if (event == nullptr) return false;
     std::uint32_t state = 0;
     host.event_get_state(event, &state); // result ignored
     return ((~(state >> 3)) & 1u) != 0u;
+}
+
+bool sound_event_is_completed_00a89210(void* instance, SoundEventHost& host)
+{
+    const auto* const raw = static_cast<const unsigned char*>(instance);
+    return sound_event_is_completed_00a89210(SoundEventCompletionView{
+        *reinterpret_cast<const volatile std::uint8_t*>(raw + 0x15),
+        *reinterpret_cast<void* const volatile*>(raw + 0x54)}, host);
 }
 
 void update_sound_event_00a89600(void* instance, float dt, SoundEventHost& host)

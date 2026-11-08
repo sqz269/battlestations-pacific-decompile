@@ -176,10 +176,20 @@ void* sound_instance_default_parameter_00a7bea0(void* out16, const void* name) n
 void* sound_instance_default_vector_00a7bed0(void* out12) noexcept;
 // 00A7BE70 slot +2C (RET 8) and 00A7BE80 slot +34 (RET 18h) are empty bodies.
 
-class SoundEventHost {
+// Borrow the actual fields, including from the semantic instance projection.
+// That projection does not have the image's raw +15h/+54h object layout.
+struct SoundEventCompletionView {
+    const volatile std::uint8_t& stopped_15;
+    void* const volatile& event_54;
+};
+class SoundEventStateHost {
 public:
-    virtual ~SoundEventHost() = default;
+    virtual ~SoundEventStateHost() = default;
     virtual FmodResult event_get_state(void* event, std::uint32_t* state) = 0; // 00C2DF9E
+};
+class SoundEventHost : public SoundEventStateHost {
+public:
+    ~SoundEventHost() override = default;
     virtual FmodResult event_set_pitch(void* event, float pitch, std::int32_t units) = 0; // 00C2DFB6
     virtual FmodResult event_set_volume(void* event, float volume) = 0; // 00C2DFB0
     virtual FmodResult event_set_paused(void* event, std::uint8_t paused) = 0; // 00C2DF98, pushed as a byte
@@ -193,6 +203,8 @@ public:
 // no event +54h -> false; otherwise getState into a zeroed local and return
 // whether FMOD_EVENT_STATE_PLAYING (8) is clear. The result is ignored.
 bool sound_event_is_completed_00a89210(void* instance, SoundEventHost& host);
+bool sound_event_is_completed_00a89210(SoundEventCompletionView instance,
+    SoundEventStateHost& host);
 
 // 00A89600 event slot +30, ECX instance, stack float dt + unused dword, RET 8.
 // Mirrors channel update 00A7AF10 for FMOD events: skip when finished (+15h);
