@@ -9,9 +9,12 @@
 #include "bsp/sound_instance.hpp"
 #include "bsp/voice_slot_start.hpp"
 #include "bsp/render_tail.hpp"
+#include "bsp/sound_retained_record.hpp"
 
+#include <array>
 #include <atomic>
 #include <cstring>
+#include <intrin.h>
 #include <exception>
 #include <filesystem>
 #include <mutex>
@@ -55,6 +58,8 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     static_assert(offsetof(cc13_audio::GuiSoundSetState, sound_class) == 0x20);
     std::unique_ptr<GuiSoundOwner> gui_sounds;
     GuiSoundOwner* gui_sound_publication{}; // semantic [00F89B34], host-scoped
+    // The scene record's +D5Ch/+D70h/+D84h environment slots (header).
+    std::array<SoundRetainedSourceRecord, 3> scene_environment{};
     // Declared before its users and destroyed after all explicit FMOD cleanup.
     FmodConfigurationLibrary library;
     SoundResourceRuntime resources;
@@ -233,6 +238,24 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
         cc13_census9::sound_request_queue_destruct_00940e40(calls, gui_sounds.get());
         gui_sounds.reset();
     }
+    void release_scene_environment_records() noexcept {
+        for (SoundRetainedSourceRecord& record : scene_environment) {
+            // 004BFD70, per slot: InterlockedDecrement(sample+4), vtable slot 0
+            // at zero, then the slot is cleared. Like the GUI references these
+            // go BEFORE A883B0 closes FMOD and A88750 drops the cache keys.
+            if (void* const sample = record.sample_00) {
+                if (_InterlockedDecrement(reinterpret_cast<volatile long*>(
+                        static_cast<char*>(sample) + 4)) == 0) {
+                    try { samples.zero_references_slot_00(sample); }
+                    catch (...) { std::terminate(); }
+                }
+                record.sample_00 = nullptr;
+            }
+            record.name_04.release_to(services.strings);
+            record.field_0c = 0.0f;
+            record.field_10 = 0.0f;
+        }
+    }
 
     Impl(GameSoundRuntimeServices input, const std::wstring& core, const std::wstring& events)
         : services(std::move(input)), alternate(services.alternate_word ? *services.alternate_word : own_alternate),
@@ -398,6 +421,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     void destroy_manager(std::uint32_t flags) {
         if (!manager || manager_destroyed) return;
         destroy_gui_sound_set();
+        release_scene_environment_records();
         auto* object = manager.get();
         // The destructor owns native unregister and leaves dead +44/+48/+54
         // words. Do not dereference them or run it twice after this point.
@@ -415,6 +439,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
         // A singleton drain may retire the auxiliary cache before the
         // manager. Our owning refs must go while both are still live.
         destroy_gui_sound_set();
+        release_scene_environment_records();
         auto* object = cache.get();
         cache_destroyed = true;
         if (flags & 1u) cache.release();
@@ -522,6 +547,12 @@ void GameSoundRuntime::startup(bool disabled) {
     }
 }
 void GameSoundRuntime::shutdown() { impl_->shutdown(); }
+SoundRetainedSourceRecord& GameSoundRuntime::scene_environment_record(std::size_t slot) {
+    return impl_->scene_environment.at(slot);
+}
+void GameSoundRuntime::release_scene_environment_records() noexcept {
+    impl_->release_scene_environment_records();
+}
 bool GameSoundRuntime::started() const noexcept { return impl_->running; }
 GameSoundRuntimeSummary GameSoundRuntime::summary() const noexcept {
     const auto& self = *impl_;

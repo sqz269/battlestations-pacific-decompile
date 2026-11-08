@@ -41,6 +41,12 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/game_sound_runtime.hpp"
+#include "bsp/fmod_configuration_library.hpp"
+#include "bsp/sound_retained_factory.hpp"
+#include "bsp/sound_retained_record.hpp"
+#include "bsp/sound_sample_cache.hpp"
+#include "bsp/sound_sample_runtime.hpp"
 #include "bsp/scene_weather_cc13.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
@@ -90,6 +96,7 @@ extern "C" {
 #include <cstdio>
 #include <cstring>
 #include <deque>
+#include <intrin.h>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -2568,20 +2575,20 @@ struct SceneMusicBinding final : bsp::scene_weather_cc13::SceneMusicHost {
     }
 };
 
-void read_scene_music_group(GameHostLog& log, const ScenePropertyBlock& header) {
+// Returns whether 004ED690 ran, with its outputs in `fields`.
+bool read_scene_music_group(GameHostLog& log, const bsp::ScenePropertyBagModel& model,
+    bsp::scene_weather_cc13::SceneMusicFields& fields) {
     GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
-    const bsp::ScenePropertyBagModel model = bsp::scene_weather_cc13::scene_bag_from_block(header);
     // 004F229C..004F22C0: 008F2260 "Sound" then the type 6 test.
     const bsp::ScenePropertyEntry* sound = bsp::scene_property_bag_find(model, 0, "Sound");
-    if (sound == nullptr || sound->value.type != bsp::ScenePropertyType::SubBag) return;
+    if (sound == nullptr || sound->value.type != bsp::ScenePropertyType::SubBag) return false;
     if (dialog == nullptr || !dialog->started()) {
         // Without a started dialog owner there is no [00F8BBCC] to take the
         // tracks; the native always has one after application startup.
         log.note("scene music: the header's Sound group has no started dialog owner to take it");
-        return;
+        return false;
     }
     SceneMusicBinding binding(log, *dialog);
-    bsp::scene_weather_cc13::SceneMusicFields fields;
     std::string error;
     if (!bsp::scene_weather_cc13::read_music_and_ambience_004ed690(model, sound->sub_bag,
             fields, binding, error)) {
@@ -2590,6 +2597,196 @@ void read_scene_music_group(GameHostLog& log, const ScenePropertyBlock& header) 
     log.implemented("SceneContents::read_music_and_ambience", "004ed690");
     log.notef("scene music: 004ED690 set %zu music track(s) on the dialog owner through "
         "00A79480; %zu SoundEffect name(s) not acquired", binding.tracks, binding.sound_effects);
+    return true;
+}
+
+// 004ED910 BSP_SceneFile_ApplyTerrainTextureHeader, which 00469BF0 calls at
+// 00469D53 right after 004F1D70 under the same stack flag byte that gates the
+// Sound read ([ESP+24h], 00469D3C..00469D51), so on the instantiate header
+// read only. Evidence: bsp.py show 00469bf0 --asm; 004ed910 --asm
+// 004EDD87..004EDE4C; docs/CC13_SCENE_WEATHER.md "004ED910".
+//
+// The arms and what runs them in this process:
+//  * environment sounds (004EDD97..004EDE4C): for each record+D5Ch + i*14h
+//    slot with no sample and a name, 00A83FD0 on [00F8BBE8] by the slot's +4
+//    name into a temporary, 004E7BB0 into the slot, the temporary released,
+//    then 00A7F2F0 on [00F8BBD8] (slot record, i). The slots are the sound
+//    core's scene_environment_record (the record at [00E188A8]+5FCh has no
+//    host object); 004ED530's name and Distance/Distance2 are copied in from
+//    004ED690's output first. Real, on the started core.
+//  * world parameters (00B1B830 on [00F8D434]) and the [00F8D394] vtable+120h
+//    material refresh (00B24DD0): RECORDS. No renderer Lua owner is reachable
+//    from the scene read; the OFF-default native mission ship
+//    (BSP_NATIVE_MISSION_SHIP) publishes ReflectionCubeMap and refreshes
+//    from its own 004EE450 read (src/game_native_mission_ship.inc).
+//  * VFS aliases: 00BDF940 clears the alias list, which nothing in this
+//    process writes (00BDF590's caller is this body, reached only for a
+//    non-empty FileSystemLua): a RECORD. Every installed scene header that
+//    has FileSystemLua leaves it "", so no alias script is run; a non-empty
+//    one throws rather than being skipped.
+//  * 00AD60D0 bush textures: a RECORD; the foliage system is the native
+//    mission ship's.
+// Inputs: 004DA2A0 -> 004CB420 initializes the texture strings and TerrainLUT
+// to "white.tga". 004EE9E0's optional g_Terrain strings and scene-path LUT rule
+// override those defaults (004F1D70's 004F2310 arm, run here over the header's
+// g_Terrain group, with the record's +90Ch scene path); FileSystemLua is the
+// header string 004F1D91 assigns to +918h. +B98h (ReflCubemap) is written by
+// 004EE450, which runs only in the native mission ship, and +BA8h
+// (CloudShadowMap) has no writer in this process, so both retain "white.tga"
+// here; they reach only the recorded world-parameter arm.
+struct SceneTerrainTextureHeaderBinding final : bsp::scene_weather_cc13::TerrainTextureHeaderHost {
+    GameHostLog& log;
+    GameSoundRuntime* core;
+    std::size_t parameters{}, samples_acquired{}, retained{};
+
+    SceneTerrainTextureHeaderBinding(GameHostLog& output, GameSoundRuntime* sound)
+        : log(output), core(sound) {}
+    void set_world_parameter_string_00b1b830(const std::string& name,
+        const std::string& value) override {
+        ++parameters;
+        log.unimplemented("SceneHeader::set_world_parameter_string", "00b1b830");
+        log.notef("  scene header world parameter %s = \"%s\" (recorded)", name.c_str(),
+            value.c_str());
+    }
+    void refresh_material_textures_00b24dd0() override {
+        log.unimplemented("SceneHeader::refresh_material_textures", "00b24dd0");
+    }
+    GameSoundRuntime& started_core() {
+        if (core == nullptr || !core->started())
+            throw std::logic_error("004ED910 environment sound requires the started sound core");
+        return *core;
+    }
+    void acquire_environment_sample(int index, const std::string& path) override {
+        GameSoundRuntime& sound = started_core();
+        SoundRetainedSourceRecord& record = sound.scene_environment_record(
+            static_cast<std::size_t>(index));
+        // 004EDDB2..004EDDCA: the slot's own +4 name is the key.
+        if (record.name_04.data() == nullptr ||
+            std::string(record.name_04.data(), record.name_04.length()) != path)
+            throw std::logic_error("004ED910 environment slot name differs from its path");
+        SoundSampleRuntime& samples = sound.samples();
+        void* temporary = nullptr;
+        void** const acquired = acquire_sound_sample_00a83fd0(
+            samples.current_sample_cache_00f8bbe8(), temporary, record.name_04,
+            samples.sample_cache_context());
+        // 004EDDCF..004EDE0A: 004E7BB0 inline (publish, retain, release old).
+        assign_sound_sample_reference_004e7bb0(&record.sample_00, acquired,
+            sound.instance_context().sample_lifetime);
+        // 004EDE0C..004EDE3B: the temporary's reference.
+        if (temporary != nullptr && _InterlockedDecrement(reinterpret_cast<volatile long*>(
+                static_cast<char*>(temporary) + 4)) == 0)
+            sound.instance_context().sample_lifetime.zero_references_slot_00(temporary);
+        ++samples_acquired;
+    }
+    void set_retained_channel_00a7f2f0(int index) override {
+        GameSoundRuntime& sound = started_core();
+        SoundSystemOwner& owner = sound.owner();
+        if (sound.instance_context().current_owner_00f8bbd8 != &owner)
+            throw std::logic_error("00A7F2F0 requires the published [00F8BBD8] owner");
+        SoundRetainedFactoryContext context{sound.instance_context(), sound.fmod(),
+            sound.channels()};
+        set_retained_sound_00a7f2f0(owner, sound.scene_environment_record(
+            static_cast<std::size_t>(index)), index, context);
+        ++retained;
+    }
+    void vfs_clear_aliases_00bdf940() override {
+        log.unimplemented("SceneHeader::vfs_clear_aliases", "00bdf940");
+    }
+    std::vector<std::pair<std::string, std::string>> read_file_aliases(
+        const std::string& script) override {
+        throw std::logic_error("004ED910 FileSystemLua alias script is not hosted: " + script);
+    }
+    void vfs_add_alias_00bdf590(const std::string&, const std::string&) override {
+        throw std::logic_error("004ED910 VFS alias add is not hosted");
+    }
+    void refresh_bush_textures_00ad60d0() override {
+        log.unimplemented("SceneHeader::refresh_bush_textures", "00ad60d0");
+    }
+};
+
+void apply_scene_terrain_texture_header(GameHostLog& log, const bsp::ScenePropertyBagModel& model,
+    const std::string& scene_path_90c, const bsp::scene_weather_cc13::SceneMusicFields& sound) {
+    namespace sw = bsp::scene_weather_cc13;
+    sw::TerrainTextureHeaderInputs in;
+    // Native constructor defaults, before optional header properties:
+    // 004DA342 calls 004CB420 on record+990h. Its +208h/+218h/+234h..+254h
+    // strings and global 00E18990 are "white.tga" (bsp.py show 004cb420).
+    in.refl_cubemap_b98 = "white.tga";
+    in.cloud_shadow_map_ba8 = "white.tga";
+    in.diff_atlas_bc4 = "white.tga";
+    in.norm_atlas_bcc = "white.tga";
+    in.mask_texture_bd4 = "white.tga";
+    in.noise_texture_bdc = "white.tga";
+    in.static_shadow_texture_be4 = "white.tga";
+    in.terrain_lut_e18990 = "white.tga";
+    // 004F2310: 008F2260 "g_Terrain" then the type 6 test, then 004EE9E0.
+    const bsp::ScenePropertyEntry* terrain = bsp::scene_property_bag_find(model, 0, "g_Terrain");
+    if (terrain != nullptr && terrain->value.type == bsp::ScenePropertyType::SubBag) {
+        sw::SceneTerrainFields fields;
+        // 004EE9E0 leaves unauthored texture fields unchanged. Seed its view
+        // from the constructed record so copying it back preserves defaults.
+        fields.diff_atlas_bc4 = in.diff_atlas_bc4;
+        fields.norm_atlas_bcc = in.norm_atlas_bcc;
+        fields.mask_texture_bd4 = in.mask_texture_bd4;
+        fields.noise_texture_bdc = in.noise_texture_bdc;
+        fields.static_shadow_texture_be4 = in.static_shadow_texture_be4;
+        fields.terrain_lut_e18990 = in.terrain_lut_e18990;
+        std::string error;
+        if (!sw::read_static_shadow_and_shader_textures_004ee9e0(model, terrain->sub_bag,
+                scene_path_90c, fields, error))
+            throw std::runtime_error("scene g_Terrain group: " + error);
+        log.implemented("SceneContents::read_static_shadow_and_shader_textures", "004ee9e0");
+        in.diff_atlas_bc4 = fields.diff_atlas_bc4;
+        in.norm_atlas_bcc = fields.norm_atlas_bcc;
+        in.mask_texture_bd4 = fields.mask_texture_bd4;
+        in.noise_texture_bdc = fields.noise_texture_bdc;
+        in.static_shadow_texture_be4 = fields.static_shadow_texture_be4;
+        // 00E18990 keeps its value when 004EE9E0's LUT rule declines.
+        if (fields.terrain_lut_set) in.terrain_lut_e18990 = fields.terrain_lut_e18990;
+    }
+    // 004F1D91: FileSystemLua, a type-2 string, into record+918h.
+    const bsp::ScenePropertyEntry* files = bsp::scene_property_bag_find(model, 0, "FileSystemLua");
+    if (files != nullptr && files->value.type == bsp::ScenePropertyType::String)
+        in.file_system_lua_918 = files->value.text;
+
+    GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+    GameSoundRuntime* const core = dialog != nullptr ? dialog->attached_core() : nullptr;
+    if (core != nullptr && core->started()) {
+        // A new scene record: the previous scene's slots go first (004BFD70 at
+        // its session teardown, which this process does not run), then
+        // 004ED530's stores from 004ED690's output.
+        core->release_scene_environment_records();
+        for (int i = 0; i < sw::kEnvironmentSoundCount; ++i) {
+            const sw::SceneEnvironmentSound& source = sound.environment[static_cast<std::size_t>(i)];
+            SoundRetainedSourceRecord& record = core->scene_environment_record(
+                static_cast<std::size_t>(i));
+            if (!source.path_d60.empty())
+                record.name_04.assign_0041e870(core->instance_context().strings,
+                    source.path_d60.c_str());
+            record.field_0c = source.distance_d68;
+            record.field_10 = source.distance2_d6c;
+            in.env_sample_present[static_cast<std::size_t>(i)] = record.sample_00 != nullptr;
+            in.env_path[static_cast<std::size_t>(i)] = source.path_d60;
+        }
+    } else {
+        log.note("scene header: no started sound core, so 004ED910's environment slots stay "
+            "empty");
+    }
+    SceneTerrainTextureHeaderBinding binding(log, core);
+    sw::apply_terrain_texture_header_004ed910(in, binding);
+    log.implemented("SceneContents::apply_terrain_texture_header", "004ed910");
+    log.notef("scene header: 004ED910 recorded %zu world parameter(s); environment sounds: "
+        "%zu sample(s) acquired through 00A83FD0, %zu retained channel(s) set through 00A7F2F0",
+        binding.parameters, binding.samples_acquired, binding.retained);
+}
+
+// 00469D45..00469D53 on the instantiate read: 004F1D70's Sound arm, then 004ED910.
+void read_scene_header_sound_and_terrain(GameHostLog& log, const ScenePropertyBlock& header,
+    const std::string& scene_path_90c) {
+    const bsp::ScenePropertyBagModel model = bsp::scene_weather_cc13::scene_bag_from_block(header);
+    bsp::scene_weather_cc13::SceneMusicFields fields;
+    static_cast<void>(read_scene_music_group(log, model, fields));
+    apply_scene_terrain_texture_header(log, model, scene_path_90c, fields);
 }
 
 class SceneReaderBinding final : public SceneFileReaderHost {
@@ -2650,8 +2847,10 @@ public:
         root_properties_ = block.values.size();
         owner_.root_properties = block;
         owner_.log.implemented("SceneContents::publish_scene_root_properties", "00469b60");
-        // 00469D45 004F1D70 with the sound flag set: the instantiate read only.
-        if (pass_ == SceneFilePass::Instantiate) read_scene_music_group(owner_.log, block);
+        // 00469D45 004F1D70 with the sound flag set, then 00469D53 004ED910:
+        // the instantiate read only. +90Ch is the record's scene path.
+        if (pass_ == SceneFilePass::Instantiate)
+            read_scene_header_sound_and_terrain(owner_.log, block, owner_.scene_path);
     }
     void publish_scene_precache(const ScenePropertyBlock& block) override {
         precache_properties_ = block.values.size();
