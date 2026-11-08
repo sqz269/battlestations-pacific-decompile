@@ -173,15 +173,16 @@ void init_tree_head(NativeSoundTree& tree) {
 
 } // namespace
 
-void reserve_sound_group_effect_pointers_00a7a850(NativePointerArray& array, std::int32_t requested) {
+// Keep these recovered entries visible as calls from the live DSP array owners.
+__declspec(noinline) void reserve_sound_group_effect_pointers_00a7a850(NativePointerArray& array, std::int32_t requested) {
     reserve_with_minimum(array, requested, 8);
 }
 
-void reserve_sound_system_dsp_pointers_00a7a8b0(NativePointerArray& array, std::int32_t requested) {
+__declspec(noinline) void reserve_sound_system_dsp_pointers_00a7a8b0(NativePointerArray& array, std::int32_t requested) {
     reserve_with_minimum(array, requested, 16);
 }
 
-void resize_sound_group_effect_pointers_00a7a930(NativePointerArray& array, std::int32_t count) {
+__declspec(noinline) void resize_sound_group_effect_pointers_00a7a930(NativePointerArray& array, std::int32_t count) {
     resize_with(array, count, &reserve_sound_group_effects);
 }
 
