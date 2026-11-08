@@ -1,0 +1,382 @@
+{
+  "run": 1633,
+  "harness": "codex",
+  "slot": "g5-w2",
+  "chain": 760,
+  "picked": "Scene g_PostProcess reader and actual renderer parameter publication",
+  "rows": [
+    {
+      "native": "004e8510",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: read_scene_post_process_record",
+      "evidence": "Uses SceneRootProps from the installed VFS and authored scene-header assignments; replaces the old four-string Colorize projection."
+    },
+    {
+      "native": "00b0e9b0",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: set_scene_hdr / prepare_mission_ship",
+      "evidence": "Applies the selected scene reader output to the actual F8D39C service; preserves the byte-only AntiBandingON store without reading struct padding."
+    },
+    {
+      "native": "00b0ea20",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: set_scene_motion_blur / prepare_mission_ship",
+      "evidence": "Applies all eight original parameter words, including the three native zero impulse words, to the real service."
+    },
+    {
+      "native": "00b0ea70",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: set_scene_underwater_wave / prepare_mission_ship",
+      "evidence": "Applies the selected scene parameters and the existing body's shader-order copy at +628h to the real service."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp",
+      "reason": "Missing a live native land/bot-state registry owner and concrete approach host; the reviewed calls remain abstract callbacks."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp",
+      "reason": "Missing the corresponding live registry lifecycle; no additional destructor invocation is justified."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/band_0040_cc13.cpp",
+      "reason": "Missing landscape shore-mask producer and concrete Left55Host; the avoid-zone sampler is a different operation."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/profile_checkpoint.cpp",
+      "reason": "Missing the pre-load BSP_Chk_Save Lua owner and authoritative checkpoint comparison which permits clearing it."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp",
+      "reason": "Missing live EngineMovieClock and track owner; the mission host currently skips the engine movie."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp",
+      "reason": "Missing real engine-movie timeline/track producer and playback consumer; no synthetic clock was created."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp",
+      "reason": "Missing an authoritative native target with the literal absolute-address cell bindings required by this entry."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick reset",
+      "reason": "Missing the selection-mode +30h producer and native selection vector at +C4h, plus retained reset fields."
+    },
+    {
+      "native": "005fb080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: screen_3b_idle",
+      "reason": "Missing native controlled-unit +3B0h and manager +20h/+40h/+60h object bindings."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing actual movie-camera screen owner/default-field producer; the current method throws as unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing actual movie-camera screen owner/default-field producer; the current method throws as unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing actual screen speed/default/acceleration fields; the current callback remains unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing actual screen acceleration/default fields; no constant reset was invented."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp",
+      "reason": "Missing live MarkerClassRegistry/MarkerClassContext construction; GlobalSubsystemContext is not instantiated by the reviewed host."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp",
+      "reason": "Missing an established live clear-user-path consumer with the native selected path-slot ownership contract."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp",
+      "reason": "Missing a concrete native command-target descriptor construction path; existing host descriptors are a different projection."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp",
+      "reason": "Only identified original consumer is the excluded debug flooded-fraction inspector."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp",
+      "reason": "Missing saved-entity Lua restoration source for toTurn and its native caller; scene StartSpeed does not authorize resetting rudder."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp",
+      "reason": "Missing frame-job-thread deferred-call producer and its source LuaVariantRecord vector; direct mission calls must stay direct."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp",
+      "reason": "Missing a live MissionLuaResultSink lifecycle; cleaning a fabricated empty sink would not wire real state."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp",
+      "reason": "Missing frame-job-thread enqueue path; current main-thread calls must not be deferred to exercise insertion."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The actual catalog is available, but its only reviewed sweep is gated by a substituted profile-hints mode 0; missing real mode-2 producer and language switching."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "No new call needed: baseline inventory already reports a reachable actual body call from numeric property merging."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "No new call needed: baseline inventory already reports a reachable actual body call from numeric property merging."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp",
+      "reason": "Missing parser-owned per-mode class-pair table and matching composition consumer."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate_attack_value",
+      "reason": "Missing air-support flight-class value records and their pair-value composition inputs."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted",
+      "reason": "Missing live candidate score-table consumer; the documented reader is an excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen",
+      "reason": "Missing actual candidate score-list entries; the documented table consumer is the excluded debug overlay."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp",
+      "reason": "Missing authoritative member recon-record values and live nearest-group search consumer."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate filter",
+      "reason": "No duplicate predicate call added: the host already names this body; coordinator activation still needs independent verification."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp",
+      "reason": "No duplicate volume scaling added: retained-sound update already invokes this body; HUD ambient sound still lacks its own real instance owner."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp",
+      "reason": "Missing live native listbox input-filter publication site; the running listbox companion uses a typed callback field."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp",
+      "reason": "Missing raw native FC intrusive-list owner for this hide/unlink operation; the existing companion owns STL row nodes."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp",
+      "reason": "Missing live silent-selection caller with raw listbox +114h storage; no extra selection operation was introduced."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp",
+      "reason": "Missing matching raw selection iterator/list-head owner and original clear-selection consumer."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/cc13_gui1.cpp",
+      "reason": "Missing actual setter caller and native FC row storage for optional relayout; a zero width initialization is not the same operation."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp",
+      "reason": "Missing raw FC row/highlight owner and original reset-width consumer; typed layout alone does not supply them."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "Missing current cursor virtual88 target transition and manager notifier; existing switch provider only implements visibility."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp",
+      "reason": "Missing live input-character consumer with its text-context font; render/probe glyph bytes do not supply that path."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp",
+      "reason": "Missing constructed Curve widget authored control points and its live tessellation/render consumer."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_construction.cpp",
+      "reason": "No additional store needed: actual render-resource constructor already reuses this setter at its +224h initialization."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp",
+      "reason": "Missing matching live movie/traffic-camera consumer; no extra product calculation was inserted."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "Existing submission source already calls this body; missing independently established activation of that parent submission route."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "Existing submission source already calls this body; no new clip-plane reset was justified by constructor state."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_screen_scene_runtime.cpp",
+      "reason": "No additional release needed: the existing screen-scene owner already invokes this lifecycle body."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp",
+      "reason": "Missing live directional-light shadow-owner assignment caller and its retained native owner context."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "Missing an established original getter site and exact object/offset binding; generic field reads were not substituted arbitrarily."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing established native stream-writer vtable object and remaining-count consumer in the reviewed running path."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing established native writer-chunk array producer and matching live stream writer in the reviewed path."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; 4/4 CTests passed",
+    "call_graph": "All four concrete reconstructed bodies have entry-reachable direct call sites, verified with tools/call_graph.py who; host-method references are not the evidence.",
+    "body_call_sites": {
+      "004e8510": 1,
+      "00b0e9b0": 2,
+      "00b0ea20": 2,
+      "00b0ea70": 2
+    },
+    "fixture": "tools/c760_postprocess_probe.ps1 passed against installed SceneRootProps: partial HDR override publishes all three parameter blocks, authored empty Colorize overrides its default, and authored g_PostProcess = I 0 publishes zero parameter blocks with all four remap names empty.",
+    "fixture_schema": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
+    "fixture_schema_sha256": "e6618d5b9059a6e7f6316d9e6aea35bb019ce12dfc1ecea884c04d953d1c5440",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings. Reader divisions/subtraction now follow the cited PC24 assembly.",
+    "runtime": "No game launch or visual/ABI/gameplay validation performed."
+  },
+  "readiness_before": {
+    "wired": 10602,
+    "callees_done_no_wired_caller": 8632,
+    "ready": 1238,
+    "blocked_on_callees": 52,
+    "unknown_no_identifier": 201
+  },
+  "readiness_after": {
+    "wired": 10603,
+    "callees_done_no_wired_caller": 8632,
+    "ready": 1237,
+    "blocked_on_callees": 52,
+    "unknown_no_identifier": 201
+  },
+  "count_note": "Only 00B0EA70 changes the text readiness state; the other three were already text-matched but had no body call_sites in the baseline inventory. All four now have concrete reachable body calls.",
+  "left": "Lua-specific post-effect commands, original native scene-record ABI ownership, and visual post-processing parity remain separate work. No new address-suffixed bodies or ledger rows were introduced.",
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1670,
+      "reviewed_head": "85d6751fb3c0f2ff7382ed0446f6023d0f7eb35d",
+      "findings": [
+        {
+          "id": 1,
+          "priority": "P2",
+          "status": "fixed",
+          "site": "src/game_hosts_scene_contents.cpp: read_scene_post_process_record",
+          "change": "Check authored root scalar assignments before selecting the default g_PostProcess child bag. Preserve the native 00469D23 / 004F233F type-6 gate by returning an empty record for a scalar override.",
+          "verification": "Existing probe now observes the same parameter-publication path used by apply(). With I 0 it counts zero publications and checks four empty remap names; the partial HDR override still publishes three blocks with MiddleGray 2.0."
+        }
+      ],
+      "checks": [
+        "scripts/build.ps1: passed, all 4 CTests passed",
+        "tools/c760_postprocess_probe.ps1: passed with installed scene.props",
+        "tools/call_graph.py and who: all 4 concrete bodies remain reachable; body sites 1/2/2/2",
+        "No floating-point arithmetic changed in this fix."
+      ],
+      "runtime": "No game run or visual/ABI validation."
+    }
+  ]
+}

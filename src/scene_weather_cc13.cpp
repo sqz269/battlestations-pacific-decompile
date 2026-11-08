@@ -808,9 +808,10 @@ void read_post_process(const ScenePropertyBagModel& model, int bag, ScenePostPro
         hdr.bright_pass_threshold = req_number(model, hdr_bag, "BrightPassTreshold");
         hdr.bright_pass_offset = req_number(model, hdr_bag, "BrightPassOffset");
         hdr.middle_gray = req_number(model, hdr_bag, "MiddleGray");
-        // FLD / FDIV qword 100 / FLD1 / FSUBRP / FSTP float: 80-bit natively.
-        hdr.adaptation = static_cast<float>(1.0 - static_cast<double>(req_number(model, hdr_bag,
-                                                                                 "AdaptationPercent")) / 100.0);
+        // bsp.py show 004E8510 --asm, 004E8656..004E866B: FDIV then
+        // FSUBRP each round at main-thread PC24 before the final FSTP32.
+        hdr.adaptation = static_cast<float>(cc13x87::x87_sub24(1.0,
+            cc13x87::x87_div24(req_number(model, hdr_bag, "AdaptationPercent"), 100.0)));
         hdr.bloom_scale = req_number(model, hdr_bag, "BloomScale");
         hdr.min_luminance = req_number(model, hdr_bag, "MinLuminance");
         hdr.max_luminance = req_number(model, hdr_bag, "MaxLuminance");
@@ -836,14 +837,15 @@ void read_post_process(const ScenePropertyBagModel& model, int bag, ScenePostPro
         wave.horiz_speed = req_number(model, wave_bag, "HorizSpeed");
         wave.horiz_scale = req_number(model, wave_bag, "HorizScale");
         wave.horiz_phase = req_number(model, wave_bag, "HorizPhase");
-        // FDIV qword 1000 (00CE47A0) then FSTP float.
-        wave.horiz_amplitude = static_cast<float>(static_cast<double>(req_number(model, wave_bag,
-                                                                                 "HorizAmplitude")) / 1000.0);
+        // 004E89CA FDIV qword 1000 (00CE47A0), PC24, then FSTP32.
+        wave.horiz_amplitude = static_cast<float>(cc13x87::x87_div24(
+            req_number(model, wave_bag, "HorizAmplitude"), 1000.0));
         wave.vert_speed = req_number(model, wave_bag, "VertSpeed");
         wave.vert_scale = req_number(model, wave_bag, "VertScale");
         wave.vert_phase = req_number(model, wave_bag, "VertPhase");
-        wave.vert_amplitude = static_cast<float>(static_cast<double>(req_number(model, wave_bag,
-                                                                                "VertAmplitude")) / 1000.0);
+        // 004E8A69 FDIV qword 1000, PC24, then 004E8A74 FSTP32.
+        wave.vert_amplitude = static_cast<float>(cc13x87::x87_div24(
+            req_number(model, wave_bag, "VertAmplitude"), 1000.0));
         host.set_underwater_wave_params_00b0ea70(wave);
     }
     const int colorize = gated_sub_bag(model, bag, "Colorize");
