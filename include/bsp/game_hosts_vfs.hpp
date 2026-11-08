@@ -105,6 +105,8 @@ public:
     std::vector<std::string> enumerate(const std::string&, const std::string&, std::uint32_t) override;
     std::array<std::uint32_t, 5> file_date(const std::string&) override;
     void pump_pending();
+    // Pump the retained E18D4C queue, binding only stopped-state retirement.
+    void update_loading_queue(NativeLoadingQueueOwnerStorage*);
     void preload_startup_scripts();
     // The 004C9A70 normal pair. An open or interrupted frame is retained until
     // explicit normal close; no destructor replays native scope cleanup.

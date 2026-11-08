@@ -21,6 +21,7 @@
 #include "bsp/resource_preload.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_fileblock_owner.hpp"
+#include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -122,6 +123,17 @@ GameNativeVfsRuntime& GameVfsHost::active_runtime() {
 
 NativeStringRawPoolContext& GameVfsHost::raw_strings() noexcept {
     return native_->raw_strings();
+}
+
+void GameVfsHost::update_loading_queue(NativeLoadingQueueOwnerStorage* queue) {
+    // The empty fast path needs no VFS initialization. Acquire the runtime's
+    // actual archive/FileStore domain only if the native stopped branch runs.
+    const NativeLoadingQueueStoppedRetirement retirement{this,
+        [](void* context, NativeLoadingQueueOwnerStorage* actual_queue) {
+            auto& owner = *static_cast<GameVfsHost*>(context);
+            owner.active_runtime().retire_loading_queue_front(actual_queue, owner.raw_strings());
+        }};
+    invoke_native([&] { update_native_loading_queue_00509190(queue, &retirement); });
 }
 
 GameNativeVfsRawServices GameVfsHost::borrow_raw_services() {

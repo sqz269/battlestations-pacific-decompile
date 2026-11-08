@@ -31,6 +31,8 @@ struct NativeVfsOpenRouteContext;
 struct NativeStoredStreamConversionContext;
 struct NativeVfsEnumerationContext;
 struct NativeVfsFileBlockScopeContext;
+struct NativeLoadingQueueOwnerStorage;
+struct NativeStringRawPoolContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -126,6 +128,11 @@ public:
     // performs no allocation, publication, callback, I/O or cleanup. Keep this
     // runtime and its borrowed inputs alive until all blocks close, before drain.
     NativeVfsFileBlockScopeContext& borrow_fileblock_scopes();
+    // 00509190's stopped-front branch, using this runtime's existing factory,
+    // provider, FileBlock scope and SAME raw string domain. Retain this runtime
+    // and caller's queue on escape; no job is created or worker started here.
+    void retire_loading_queue_front(NativeLoadingQueueOwnerStorage*,
+        NativeStringRawPoolContext&);
     // Keep this object alive if startup throws: drain the shared singleton
     // manager before any bound context or publication cell is destroyed.
     void construct_and_register_core();

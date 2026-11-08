@@ -1,0 +1,159 @@
+{
+  "goal": 5,
+  "chain": 944,
+  "slot": "g5-w1",
+  "baseline": "25c63684bbc2313ca2a3ddcc4f9feaadcf4e0435",
+  "picked": "Stopped native loading-queue front retirement on the application's retained E18D4C owner",
+  "result": "Partial progress: compiled retirement bridge and retained VFS invocation owner; no nonempty gameplay execution claim",
+  "rows": [
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue -> src/game_hosts_vfs.cpp: GameVfsHost::update_loading_queue -> src/game_native_vfs_runtime.cpp: GameNativeVfsRuntime::retire_loading_queue_front",
+      "reason": "The bridge is entry-reachable, but the actual queue is constructed empty and no live native job producer was added; execution of the nonempty retirement branch remains unestablished.",
+      "prepared": "00509190 now selects the original stopped-state0/2 prefix from the actual front +4/+0 fields; 00506BF0 alone owns FileBlock deletion, FileStore removal, job destruction/free, current-array shift and count decrement.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "005051a0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "Transitive entry-reachable job-storage destruction is prepared, but it shares 00506BF0's missing live nonempty queue producer.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp: update_native_loading_queue_00509190 state2 branch",
+      "reason": "The active state2 FileBlock/worker-start branch and genuine native job submission are not bound; this packet implements only the initial stopped-front retirement prefix."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp: existing runtime loading-queue service boundary",
+      "reason": "Missing an active native job whose real work-item producer, worker start and completion consumption can replace the current direct loading path."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / SceneNumericPropertyMerge",
+      "reason": "The owning native scene-property projection already reaches this merge body; the ready text classification is not new wiring."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "No live text-edit byte-acceptance consumer was established; the current acceptance member itself has no production caller."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: deliver_loopback UserPathPoint arm",
+      "reason": "The live sender posts presence-one additions; a presence-zero clear-message producer and last-selected path-slot ownership remain missing."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: retained user-path owner",
+      "reason": "Its clear-message consumer depends on the missing presence-zero sender and selected path-slot owner; replacing add-point clearing would perform a different operation."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: command_queue_set_last_metadata_00b1cb50 service",
+      "reason": "No live scene-renderer host binds this metadata callback to the actual last queued command and its original three-word source."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a live native bot-state registry owner and state/name identity publication feeding a gameplay state-machine consumer."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: register_native_land_states_009af9a0",
+      "reason": "The eight actual constructed native land-state owners and executable profiles are not supplied by the current host state enums."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: create_native_gui_button_default_00aa4440",
+      "reason": "No live raw Button widget factory/property/layout consumer was established; initializing its existing pool alone does not supply such an object."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage",
+      "reason": "The copied member+04h vector belongs to net-entity-create construction, whose native consumer is absent; it is not the live lateral/axial formation offset."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No entry-reachable original FOV/aspect consumer was established; the current GUI camera uses orthographic projection."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0",
+      "reason": "The original survivor-retarget branch still lacks the shared squadron director, stance/+370h stores and command consumer; HUD unit-envelope midpoints are a different domain."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/band_0090_cc13.cpp: crc32_update",
+      "reason": "Missing the original live MSAR checksum-validation request and archive-stream owner; an unrelated checksum would not bind that consumer."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "No live Curve authored-point/property and render consumer was established; the retained Curve pool supplies storage only."
+    }
+  ],
+  "changes": [
+    "Application frame pump passes its retained native queue through GameVfsHost to the existing runtime; the empty fast path does not require VFS startup.",
+    "An immovable retirement frame borrows the same native VFS publication, FileBlock scopes, FileStore factory/provider and raw string-pool cells.",
+    "Interrupted retirement retains its native acquired frame and reaches the existing process-retention guard; no host cleanup replays native retirement.",
+    "00509190 rereads the live queue count after the one stopped-front retirement and never touches the freed captured front again.",
+    "Existing active-job and nonempty shutdown-drain paths remain outside the supported binding; no synthetic jobs, values or new goal switch were added."
+  ],
+  "measurement": {
+    "text_wired_before": 10815,
+    "text_wired_after": 10817,
+    "release_graph_reconstructed_called_before": 5693,
+    "release_graph_reconstructed_called_after": 5698,
+    "newly_accepted_runtime_wirings": 0,
+    "qualification": "The two newly text-wired rows and entry-reachable bodies are reported as skipped until the missing genuine nonempty producer is bound. The graph proves compiled call reachability, not branch execution."
+  },
+  "checks": [
+    "python tools/bsp.py index --if-stale: PASS before work and after fragment-ledger update",
+    "./scripts/build.ps1: PASS baseline and changed Win32 Release build; all four existing CTests pass",
+    "local/c944-probe.cpp linked against current bsp_core.lib with /MANIFEST:EMBED: PASS one focused stopped-state2 callback/count-reload regression; callback frees captured backing to reject stale post-retirement reads",
+    "python tools/call_graph.py: fresh Release graph; who/path 00506bf0 shows GameNativeVfsRuntime::retire_loading_queue_front caller from GameFrameHost",
+    "python tools/call_graph.py who 005051a0: reachable one-call retirement-owned job-storage destruction",
+    "python tools/wire_readiness.py --standins: 10817 text-wired; 00506bf0 and 005051a0 both called=true, one call site each",
+    "git diff --check: PASS; no float arithmetic changed, so pc24_lint was not required"
+  ],
+  "evidence": [
+    "bsp.py show 00509190: initial stopped-byte/state0-or2 retirement, then current count reload",
+    "bsp.py show 00506bf0: same-front FileBlock/name handling followed by current-front destruction/shift/count decrement",
+    "bsp.py show 005051a0: job name and work-vector storage destruction; outer job free belongs to retirement",
+    "config/reconstruction/00500000.jsonl: updated existing 00509190 fragment and retained all explicit limitations",
+    "local/c944-baseline-build.log",
+    "local/c944-retirement-build.log",
+    "local/c944-probe.log",
+    "local/c944-graph-before.log",
+    "local/c944-graph-after.log",
+    "local/c944-readiness-after.log"
+  ],
+  "left_for_others": [
+    "Bind genuine native job/work-item submission from an existing loading consumer before claiming nonempty runtime execution.",
+    "Bind state0 FileStore requests and completion callback 00504850, state2 FileBlock/start-work, and state3 result delivery/retirement.",
+    "Complete the nonempty stop-and-wait/drain contract; do not enable native job submission while active-job branches still throw.",
+    "Run a separately authorized real-game nonempty loading/cancellation check; this worker did not run the game or claim original-ABI compatibility."
+  ]
+}

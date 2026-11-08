@@ -11,7 +11,7 @@ namespace bsp {
 struct NativeEventOwnerStorage;
 
 // Actual 20h storage. Numeric table identity is not a callable source vtable.
-// Jobs are actual 24h allocations; only their state DWORD at +0 is used here.
+// Jobs are actual 24h allocations; update reads state +0 and stop byte +4.
 // No constructor/default member initializer runs before the recovered stores.
 struct NativeLoadingQueueOwnerStorage {
     volatile std::uint32_t table_00;
@@ -61,11 +61,20 @@ void native_loading_queue_on_filestore_ready_00504850(
 // calls GetLastError); every other status returns its unmodified low byte.
 std::uint8_t poll_native_event_owner_00bd1920(const NativeEventOwnerStorage*) noexcept;
 
-// Complete 00509190 for the empty queue only: native ECX owner, RET; count +14
-// zero returns before any read. The non-empty states drive FileStore requests,
-// 00506BF0 retirement and 00501620 work submission, which have no native
-// binding here; a non-empty queue throws a source contract error instead.
-void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner);
+// Borrowed source binding for the actual VFS/FileStore/string domain. This
+// callback must finish 00506BF0 or retain its interrupted invocation; it must
+// not substitute a different queue or manufacture a front job.
+struct NativeLoadingQueueStoppedRetirement {
+    void* context;
+    void (*retire_front)(void*, NativeLoadingQueueOwnerStorage*);
+};
+// 00509190's empty return and initial stopped-state 0/2 retirement. Native
+// ECX owner, RET; this source interface adds an explicit service binding.
+// Reread count after retirement, as 5091CD does. A remaining active job still
+// throws before the unbound request/worker/completion branches run. With no
+// services, a nonempty queue remains outside the existing drain's contract.
+void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner,
+    const NativeLoadingQueueStoppedRetirement* retirement = nullptr);
 
 // 0050ACE0 deleting destructor over 509FD0 (cc15-ob3). Native ECX owner, stack
 // flags, RET4/EAX owner. 509FD0 restamps CEB198 and calls 5092E0, whose
@@ -79,8 +88,10 @@ NativeLoadingQueueOwnerStorage* delete_native_loading_queue_owner_0050ace0(
     NativeLoadingQueueOwnerStorage* volatile& actual_publication_00e18d4c);
 
 // The getter and 00509190 are wired by GameFrameHost::update_loading_queue
-// behind kLoadingQueueCc15Bound, with the CEB198 drain profile; both admit only
-// the empty queue. The FileStore-ready callback stays source-only coverage.
+// behind kLoadingQueueCc15Bound, with the CEB198 drain profile. The application
+// update additionally binds stopped-front retirement to its existing VFS;
+// the shutdown drain still admits only the empty queue. The FileStore-ready
+// callback stays source-only coverage.
 // No owner RAII rollback is added. Native FH3/SEH, mutable EH-spill aliases,
 // original CRT throw identities and hardware-fault cleanup are not reproduced.
 } // namespace bsp

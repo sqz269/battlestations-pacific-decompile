@@ -122,10 +122,26 @@ void native_loading_queue_on_filestore_ready_00504850(
     *static_cast<volatile std::uint32_t*>(current_front) = 2;
 }
 
-void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner) {
+void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner,
+    const NativeLoadingQueueStoppedRetirement* retirement) {
+    if (actual_owner->count_14 == 0) return;
+    // bsp.py show 00509190: 50919E..5091C8 tests the actual front's +4 byte
+    // before reading state +0, and retires stopped states 0/2 exactly once.
+    // The application supplies the SAME E18D4C queue, not a projected job list.
+    void* const front = actual_owner->jobs_10[0];
+    const auto stopped = *reinterpret_cast<const volatile std::uint8_t*>(
+        static_cast<const std::byte*>(front) + 4);
+    if (stopped != 0) {
+        const auto state = *static_cast<const volatile std::uint32_t*>(front);
+        if ((state == 0 || state == 2) && retirement && retirement->retire_front) {
+            retirement->retire_front(retirement->context, actual_owner);
+        }
+    }
+    // 5091CD reloads the live count after the callback and returns when the
+    // retired front was the last job. Never inspect the now-freed front.
     if (actual_owner->count_14 == 0) return;
     throw std::logic_error("00509190: a non-empty native loading queue needs the FileStore, "
-        "00506BF0 and 00501620 bindings");
+        "request, worker and completion bindings");
 }
 
 NativeLoadingQueueOwnerStorage* delete_native_loading_queue_owner_0050ace0(
