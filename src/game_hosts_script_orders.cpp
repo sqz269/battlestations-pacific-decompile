@@ -6418,6 +6418,32 @@ void GameScriptOrdersHost::game_assign_party_player_slots(int value) {
 // The dispatch
 // ---------------------------------------------------------------------------
 
+// 0089B840, native __fastcall(lua_State* ECX), RET, EAX result count.
+// bsp.py show 0089b840: argument 0 -> 00888AA0 -> 006F1F90, FABS at
+// 0089B966, then 00B66480 and 00B66400. This is the former dispatch block,
+// extracted as the sole body for that address. Borrowed VM, argument-count and
+// reentrancy ownership stay in dispatch; original SEH/error handling is not
+// reimplemented. This member is a new C++ interface, not a native ABI replacement.
+// Keep the entry boundary visible in the built call graph.
+__declspec(noinline) int GameScriptOrdersHost::lua_get_capture_percentage_0089b840() {
+    ++capture_percentage_calls_;
+    void* entity = entity_from_argument(0);
+    const std::size_t index = index_of(entity);
+    GameShipAiHost* ai = units_.ship_ai();
+    float fraction = 0.0f;
+    // Established host substitution: entities outside the capture-building
+    // registry answer zero; native 006F1F90 reads +7A4h/+7A8h without a class
+    // test. Use the same owner and fallback as the prior dispatch path.
+    if (entity == nullptr || index >= units_.count() || ai == nullptr ||
+        !ai->command_building_capture_fraction_006f1f90(index, fraction)) {
+        ++capture_percentage_unresolved_;
+        fraction = 0.0f;
+    }
+    if (kLuaCapturePercentageFabsBound) fraction = std::fabs(fraction); // 0089B966
+    push_number_float_00b66480(fraction);
+    return state_ != nullptr ? 1 : 0;
+}
+
 int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int argument_count) {
     const ScriptOrderBinding* binding = find_binding(binding_name);
@@ -7567,28 +7593,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             results = bsp::cc13_powerup::lua_get_available_powerups_008eb350(powerups, state_);
         }
     } else if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
-        // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
-        // test, then 00B66480 on the result as it is; one result. 006F1F90
-        // (006F1F90-006F1FB2): +7A4h == 0 -> 0.0, else FLD [+7A8h] / FIDIV [+7A4h] /
-        // FSTP; the binding then applies FABS at 0089B966 before the push, so the
-        // pushed fraction is never negative (kLuaCapturePercentageFabsBound; the
-        // switch off pushes the signed fraction).
-        // SUBSTITUTION, labelled: an entity that is not one of the ship-AI host's
-        // capture buildings answers 0.0; the image reads those two offsets of
-        // whatever object it is handed.
-        ++capture_percentage_calls_;
-        void* entity = entity_from_argument(0);
-        const std::size_t index = index_of(entity);
-        GameShipAiHost* ai = units_.ship_ai();
-        float fraction = 0.0f;
-        if (entity == nullptr || index >= units_.count() || ai == nullptr ||
-            !ai->command_building_capture_fraction_006f1f90(index, fraction)) {
-            ++capture_percentage_unresolved_;
-            fraction = 0.0f;
-        }
-        if (kLuaCapturePercentageFabsBound) fraction = std::fabs(fraction);   // 0089B966
-        push_number_float_00b66480(fraction);
-        results = state_ != nullptr ? 1 : 0;
+        results = lua_get_capture_percentage_0089b840();
     } else if (std::strcmp(binding->name, "GetCommandBuildingLevel") == 0) {
         // Packet cc13-fix13. 0089B6D0 (__fastcall, ECX the Lua state, RET): 0089B7CF
         // 00888AA0 on argument 0, 0089B7E6 MOV ESI,[ESI+770h] with no null or class

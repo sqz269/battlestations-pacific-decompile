@@ -138,9 +138,9 @@
       "address": "0089b840",
       "source": "src/game_hosts_script_orders.cpp",
       "identifiers": [
-        "dispatch"
+        "lua_get_capture_percentage_0089b840"
       ],
-      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetCapturePercentage branch queries command_building_capture_fraction_006f1f90 and applies std::fabs before pushing under kLuaCapturePercentageFabsBound=true. Source/header now supersede the old signed-fraction defect; non-building fallback0 and host scope remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+      "evidence": "Goal 5 chain 989: the existing GetCapturePercentage dispatch block is now the sole lua_get_capture_percentage_0089b840 member, called directly by dispatch with its same borrowed Lua VM and live units/capture owner. Argument 0, 006F1F90, FABS and float result remain unchanged; non-building fallback0 and host scope remain labelled. The old generic dispatch alias is removed. Build/call-graph evidence is recorded in reports/wire-g5-c989.json; no native ABI or gameplay equivalence claim."
     },
     {
       "address": "0089cc50",

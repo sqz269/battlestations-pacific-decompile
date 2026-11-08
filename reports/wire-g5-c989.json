@@ -1,0 +1,251 @@
+{
+  "run": 2183,
+  "goal": 5,
+  "chain": 989,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "base_head": "6dce840cf8fdb85bc8d05ea81d115eb8a161a031",
+  "rows": [
+    {
+      "native": "0089b840",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> lua_get_capture_percentage_0089b840",
+      "detail": "Extracted the existing inline capture-fraction entry into one address-named member; dispatch calls it once with the same borrowed VM, argument mapping and live units/ship-AI capture registry. Existing fallback0 and typed-host limitations remain."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map iterator/insert/erase",
+      "reason": "Missing a reached error-reporter/map owner: the built executable has no linked error_context_advance_00bf1450, retreat_00bf16b0, insert_at_00bf2270 or erase_00bf26c0 caller to replace."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map iterator/insert/erase",
+      "reason": "Missing a reached error-reporter/map owner: the built executable has no linked error_context_advance_00bf1450, retreat_00bf16b0, insert_at_00bf2270 or erase_00bf26c0 caller to replace."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map iterator/insert/erase",
+      "reason": "Missing a reached error-reporter/map owner: the built executable has no linked error_context_advance_00bf1450, retreat_00bf16b0, insert_at_00bf2270 or erase_00bf26c0 caller to replace."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map iterator/insert/erase",
+      "reason": "Missing a reached error-reporter/map owner: the built executable has no linked error_context_advance_00bf1450, retreat_00bf16b0, insert_at_00bf2270 or erase_00bf26c0 caller to replace."
+    },
+    {
+      "native": "00aa4ef0",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp: QuickSettingsApplyHost::gui_manager_reload",
+      "reason": "Missing the actual native Page snapshot and complete 00AA8710 transform/bounds/listener/final-slot dispatch provider; native Page mode is enabled, so the legacy typed registry would omit active Pages."
+    },
+    {
+      "native": "00aa8710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: prospective GUI settings relayout",
+      "reason": "Missing the full native Page child/model transform, bounds and virtual+24 dispatch adapter; existing RotationPublication/LocalPositionPublication explicitly support narrower setters."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: prospective text-byte admission",
+      "reason": "Missing a live input-character admission consumer with its retained font; the inspected host handles complete-string layout."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "Missing a new unwired path: this existing live consumer already calls set_scroll_range on its retained briefing scroller and measured layout."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCapturePercentage",
+      "reason": "Missing a new unwired path: the existing capture-fraction method is already directly called by the live dispatch; chain989 retains that same call in the extracted entry."
+    },
+    {
+      "native": "0089b6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCommandBuildingLevel",
+      "reason": "Missing a new unwired path: the live branch already calls the sole lua_get_command_building_level body through CommandBuildingLevelView."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing the actual retained ammunition record, ammo+48 alternate and native reference/tree-copy lifetime adapter; the current semantic gun handle supplies none."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing a live unit+660 vector of 44h elements and matching Seg62Host lifetime services."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support spawn request",
+      "reason": "Missing the concrete flight-spawn manager and resolved air-support vehicle-class provider required by the raw-state enqueue contract."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship ramp unload report",
+      "reason": "Missing the retained native warning/event manager, channel/subscription evaluation and owned argument/result-vector providers; the existing unload path only queues a semantic shipLanded event."
+    },
+    {
+      "native": "00add290",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: prospective terrain owner",
+      "reason": "Missing the raw terrain/base/quadtree owner and the constructor string/allocation services; the semantic scene record is not this receiver."
+    },
+    {
+      "native": "00ade820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: prospective terrain model attachment",
+      "reason": "Missing the native retained terrain/model reference, visibility-group node and matching heightmap-loading owner required by the body."
+    },
+    {
+      "native": "008875f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: mission script base/override sequence",
+      "reason": "Missing a live result-sink owner: the existing receiver is MissionLuaHostState, not MissionLuaResultSink, and the chunk adapter ignores the sink."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: prospective result-sink retirement",
+      "reason": "Missing a live canonical MissionLuaResultSink lifetime/result-vector producer; creating an unused sink for tidy would invent work."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: convex-hull adjacency",
+      "reason": "Missing a live edge-map consumer; prior skip evidence identifies the native caller map as populated then cleared unread, with no host operation to replace."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: convex-hull adjacency",
+      "reason": "Missing the live edge-map/pool owner and meaningful consumer; restoring an unused map merely to execute insert would add unused work."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing the actual checkpoint-difference decision and clear/rewrite storage continuation; checkpoint_differs remains false and write_checkpoint logs."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: saved-state rudder restoration",
+      "reason": "Missing the retained saved-entity Lua reader supplying toTurn; normal scene/order-ring state does not justify a new rudder reset."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: camera FOV/aspect consumers",
+      "reason": "Missing a reached matching consumer: graph who queries for 00A8BD20, 00A8ECB0, 0042E180 and 0048A010 find no linked body; projection-matrix construction performs a different operation."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: native Win32 platform base",
+      "reason": "Missing a new unwired path: the actual native constructor already calls construct_native_window_platform_base_00be2ac0; calling the legacy engine-services body would duplicate construction."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "Missing an actual target-setting/notify consumer with virtual+88 and manager+4 providers; the current cursor switch intentionally only supports 00AA0E20 visibility/switch operations."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: prospective raw Listbox adapter",
+      "reason": "Missing a canonical raw-compatible Listbox receiver and the corresponding native filter/listener/FC-list/highlight services; a temporary raw shadow would split callback-visible state."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: prospective raw Listbox adapter",
+      "reason": "Missing a canonical raw-compatible Listbox receiver and the corresponding native filter/listener/FC-list/highlight services; a temporary raw shadow would split callback-visible state."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: prospective raw Listbox adapter",
+      "reason": "Missing a canonical raw-compatible Listbox receiver and the corresponding native filter/listener/FC-list/highlight services; a temporary raw shadow would split callback-visible state."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: prospective raw Listbox adapter",
+      "reason": "Missing a canonical raw-compatible Listbox receiver and the corresponding native filter/listener/FC-list/highlight services; a temporary raw shadow would split callback-visible state."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: prospective raw Listbox adapter",
+      "reason": "Missing a canonical raw-compatible Listbox receiver and the corresponding native filter/listener/FC-list/highlight services; a temporary raw shadow would split callback-visible state."
+    },
+    {
+      "native": "00876020",
+      "status": "skipped",
+      "host_site": "src/native_tick_subnode_reparent.cpp: prospective tick hierarchy",
+      "reason": "Missing the live actual tick-subnode/parent hierarchy, pending-registry publication and lifetime-manager lock contract; semantic callbacks are not those raw nodes."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: register_native_material_float3_00b18ae0",
+      "reason": "Missing a concrete cloud/rain/ocean registration consumer retaining both actual material and source-parameter backing."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "Missing the matching native RAM-image raw field receiver; the existing semantic image owns a pixel vector."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing the native stream-writer owner, virtual+54 DWORD-output provider and actual remaining-byte counter."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "Missing the live writer-chunk array producer and its string/reserve owner services."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1: MSVC Win32 Release passed; all four CTests passed",
+    "readiness_wired_before": 10841,
+    "readiness_wired_after": 10842,
+    "graph_reconstructed_called_before": 5733,
+    "graph_reconstructed_called_after": 5733,
+    "graph_reachable_functions_before": 43467,
+    "graph_reachable_functions_after": 43468,
+    "call_site": "10219473: GameScriptOrdersHost::dispatch -> lua_get_capture_percentage_0089b840 at 1021f720",
+    "baseline_count_note": "Readiness previously treated generic dispatch as the address identity, so its called=true/1 was already counted; baseline who 0089b840 found no distinct linked body. The generic alias is now replaced with the exact extracted entry. No increase in the aliased graph address total is claimed.",
+    "evidence": [
+      "local/output/c989-baseline-build.log",
+      "local/output/c989-final-build.log",
+      "local/output/c989-before.json",
+      "local/output/c989-after.json",
+      "local/output/c989-graph-before.log",
+      "local/output/c989-graph-final.log",
+      "local/output/c989-who-after.log",
+      "local/output/c989-path-after.log"
+    ],
+    "game_run": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": "Native GUI relayout requires the actual Page/model dispatch adapter. Error-context candidates require a reached reporter owner. Existing typed identity/fallback and original SEH limitations of GetCapturePercentage remain."
+}
