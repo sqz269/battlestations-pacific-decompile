@@ -23353,4 +23353,123 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         host.summary.controlled_distance = host.slots[host.controlled_index]->row.distance;
     }
 }
+
+// 007EE410 -> 007CA790 -> reconstructed 007F31A0. The survivor retarget
+// and shared squadron director stores remain the labelled host omissions.
+void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
+    bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_registry().find_by_member_unit(m);
+    GameGunneryHost* const gun = gunnery.get();
+    if (gun == nullptr || m >= slots.size() || gun->unit_dead(m)) return;
+    if (sq == nullptr) {
+        // No squadron record: 007EE410 runs on plane+9D4h, which this host
+        // cannot name, so neither 007CA790 nor 007F31A0 runs.
+        record("Plane::exit_zone_no_squadron_record", 0x007ee410u);
+        return;
+    }
+    bool latched = false;
+    for (const std::string& s : retreat_latched_361) if (s == sq->name) latched = true;
+    const std::size_t leader = sq->flight_leader();
+    // 007EE427: squadron+5Dh clear and (+361h set, or the plane is the leader).
+    if (!latched && m != leader) {
+        ++retreat_exit_gated;
+        return;
+    }
+    ++retreat_exits;
+    // 007C6DAD..007C6DC1: 007EE410's third argument is 00489C40(game, plane+FCh),
+    // the border zone at the plane, and the message 50h it routes (flags 7, local
+    // in single player) carries that zone's +4h, its party (the dword
+    // SetBorderZoneParty stores at 008AEC7D). The message's handler is 007CA790.
+    // LABELLED: inside the map 00489C40 indexes with a stale value
+    // (border_zone_at_point_00489c40 answers null), so no party is recovered and
+    // 007CA790 is not run; 007F31A0's own work is.
+    const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
+    const bsp::BorderZoneSet* zones = lua.world_border_zones();
+    const bsp::BorderZoneRecord* zone = nullptr;
+    if (bounds != nullptr && zones != nullptr) {
+        const float* pm = slots[m]->motion.position;
+        zone = bsp::border_zone_at_point_00489c40(*bounds, *zones, {pm[0], pm[1], pm[2]});
+    }
+    if (zone == nullptr) ++exit_zone_party_no_zone;
+    std::size_t outside_killed = 0;
+    bool main_killed = false;
+    // NoUnit holes can appear after start-of-step compaction. Count, leader
+    // and indexed members must share compact live ordinals, rescanned at each
+    // callback; keep existing unit entries until the owner actually clears them.
+    std::function<void(std::size_t)> left_map;
+    left_map = [&](std::size_t plane) {
+        bsp::SquadronLeaveMapHost h;
+        const auto& session = bsp::session_context();
+        h.effective_game_mode = bsp::effective_game_mode_004bca50(session);
+        h.session_mode = session.session_word_1fe4;
+        h.leave_latched = [&] {
+            return std::find(retreat_latched_361.begin(), retreat_latched_361.end(),
+                sq->name) != retreat_latched_361.end();
+        };
+        h.warn_exit_zone = [&] {
+            lua.note_exit_zone_00982120(
+                sq->squadron_unit != bsp::kPlaneSquadronNoUnit ? sq->squadron_unit : plane,
+                true);
+            done("PlaneSquadron::exit_zone_notice_00982120", 0x00982120u);
+        };
+        h.member_count = [&] { return static_cast<std::size_t>(sq->live_count()); };
+        h.leader = [&] { return sq->flight_leader(); };
+        h.member = [&](std::size_t i) { return sq->live_member(i); };
+        h.outside_map = [&](std::size_t u) {
+            if (bounds == nullptr || u >= slots.size() || !slots[u]) return false;
+            const float* p = slots[u]->motion.position;
+            return bsp::point_outside_world_map_0071c4f0(*bounds, {p[0], p[1], p[2]});
+        };
+        h.route_member_exit = [&](std::size_t u) {
+            // Original 007F328F: member's 50h message, flags7. In SP its
+            // 007CA790 handler reenters 007F31A0, rather than bypassing it
+            // with the former host's direct Kill(4) callback.
+            if (zone != nullptr) {
+                run_exit_zone_007ca790(u, zone->side,
+                    [&](std::int32_t) { left_map(u); });
+            } else {
+                left_map(u); // existing no-zone projection; no party invented
+            }
+            ++retreat_exit_members;
+            ++outside_killed;
+        };
+        h.leaving_on_purpose = [&] {
+            if constexpr (bsp::kLeaveCountdownAllSquadronsCc13Bound)
+                return leaving_on_purpose_007ee2e0(plane, false);
+            return slots[plane]->retreat_squadron_ordered;
+        };
+        h.latch_leave = [&] {
+            retreat_latched_361.push_back(sq->name);
+            ++retreat_latches_361;
+        };
+        h.store_squadron_exit_party = [&] {
+            // LABELLED: this host fuses the squadron with its wing unit.
+            // On the final-member arm that member is its live proxy; there
+            // is no separate native squadron Lua self or kill owner yet.
+            // A missing border zone has no recovered party to publish.
+            if (zone != nullptr) store_exit_zone_party_007ca790(plane, zone->side);
+        };
+        const auto kill = [&] {
+            note_kill_cause(plane, 4);
+            gun->kill_unit_00926d90(plane, 4);
+            slots[plane]->retreat_task_installed = false;
+            if (plane == m) main_killed = true;
+        };
+        h.kill_plane = kill;
+        h.kill_squadron = kill; // fused-owner projection described above
+        bsp::squadron_on_plane_left_map_007f31a0(plane, h);
+        done("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
+    };
+    if (zone != nullptr) {
+        run_exit_zone_007ca790(m, zone->side, [&](std::int32_t) { left_map(m); });
+    } else {
+        left_map(m);
+    }
+    if (main_killed) {
+        log.notef("retreat leave map: plane \"%s\" squadron \"%s\" leader=%d members=%zu "
+            "also_outside=%zu at %.2f s (007C6C30 -> 007EE410 -> 007CA790 -> 007F31A0 "
+            "Kill(4), packet g5-c835)", slots[m]->row.name.c_str(),
+            sq->name.c_str(), m == leader ? 1 : 0, sq->member_units.size(), outside_killed,
+            static_cast<double>(summary.simulated_seconds));
+    }
+}
 }  // namespace bsp::game

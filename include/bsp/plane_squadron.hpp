@@ -29,6 +29,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <string>
 
 namespace bsp {
@@ -189,7 +190,32 @@ int squadron_plane_name_suffix_007f4926(std::int32_t wing_count, std::int32_t in
 // array towards 0, so the leader is whatever survives at slot 0 and the spawn
 // index stamped at plane+9D8h is NOT rewritten by a compaction.
 inline constexpr std::int32_t kSquadronLeaderSlot = 0;
-bool squadron_plane_is_leader_007f31a0(std::int32_t slot) noexcept;
+
+// 007F31A0 is the leave-map handler, not a leader-slot query. These callbacks
+// borrow the live squadron/member owners; callbacks can route another member's
+// exit synchronously, so the latch is reread after that routing.
+struct SquadronLeaveMapHost {
+    std::int32_t effective_game_mode;
+    std::int32_t session_mode;
+    std::function<bool()> leave_latched;
+    std::function<void()> warn_exit_zone;
+    std::function<std::size_t()> member_count;
+    std::function<std::size_t()> leader;
+    std::function<std::size_t(std::size_t)> member;
+    std::function<bool(std::size_t)> outside_map;
+    std::function<void(std::size_t)> route_member_exit;
+    std::function<bool()> leaving_on_purpose;
+    std::function<void()> latch_leave;
+    std::function<void()> store_squadron_exit_party;
+    std::function<void()> kill_plane;
+    std::function<void()> kill_squadron;
+};
+// Native __thiscall(squadron, plane, party), RET8; new C++ interface. The
+// forwarded party is captured by the host's message/store callbacks. Retains
+// the host projection's missing fire-stance/+370h reset and survivor moveto
+// command; latch, exit messages, warning, party publication and kills run here.
+void squadron_on_plane_left_map_007f31a0(std::size_t leaving_plane,
+    const SquadronLeaveMapHost& host);
 
 // 007F4813: a plane spawned under a parent entity (PlaneParentID resolved) is
 // placed with an identity matrix relative to that parent; a plane spawned

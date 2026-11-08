@@ -111,8 +111,42 @@ int squadron_plane_name_suffix_007f4926(std::int32_t wing_count, std::int32_t in
     return written;
 }
 
-bool squadron_plane_is_leader_007f31a0(std::int32_t slot) noexcept {
-    return slot == kSquadronLeaderSlot;
+void squadron_on_plane_left_map_007f31a0(std::size_t leaving_plane,
+    const SquadronLeaveMapHost& host) {
+    // bsp.py show 007f31a0 --asm: 31C6..31E6 skip mode9, then warn only
+    // while +361h is clear. 31F6..31FC skips the rest for session mode2.
+    if (host.effective_game_mode == 9) return;
+    if (!host.leave_latched()) host.warn_exit_zone();
+    if (host.session_mode == 2) return;
+
+    const std::size_t count = host.member_count();
+    if (count > 1) {
+        std::size_t survivors = count - 1;
+        if (leaving_plane == host.leader()) {
+            // 3240..32B3 rereads +3CCh each pass, and routes flags7 on every
+            // outside tail member. Routing can reenter this same handler.
+            for (std::size_t i = 1; i < host.member_count(); ++i) {
+                const std::size_t member = host.member(i);
+                if (host.outside_map(member)) {
+                    host.route_member_exit(member);
+                    --survivors;
+                }
+            }
+        }
+        // 32BC..32EA: inspect the live latch AFTER routing, and only query
+        // 007EE2E0(squadron,0) when both earlier conditions hold.
+        if (survivors > 0 && !host.leave_latched() && host.leaving_on_purpose())
+            host.latch_leave();
+        // The host still lacks the shared squadron director's stance/+370h
+        // stores and survivor moveto command at 32F1..340F. Do not manufacture
+        // a second controller or substitute a member's task for those stores.
+        host.kill_plane(); // 3414..3418: ECX is the leaving PLANE.
+        return;
+    }
+    // 3432..34CE: under the mission lock, publish ExitZoneParty on the
+    // SQUADRON's Lua self, then Kill(4) with ECX=squadron, not plane.
+    host.store_squadron_exit_party();
+    host.kill_squadron();
 }
 
 SquadronPlanePlacement squadron_plane_placement_007f4813(bool parent_resolved) noexcept {
