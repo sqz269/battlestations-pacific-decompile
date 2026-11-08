@@ -5,6 +5,7 @@
 
 #include "bsp/rocket_task_cc13.hpp"
 
+#include "bsp/cc13_seg47.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/native_rocket_class_query.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -699,7 +700,11 @@ RocketAimResult rocket_aim_tick_007b5430(RocketTask& t, const RocketAimInputs& i
             // 007B56C7-007B5700: 0080AA20 on the rocket's homing block, then
             // 007BBBA0 on the unit; the timer re-arms to U(0.8, 1.2) * RepeatTime.
             r.release.fire = true;
-            for (int i = 0; i < 3; ++i) r.release.homing_point[i] = t.ap.ref.body_offset_28[i];
+            // 007B56E5 calls 007B5400 on this approach. Its +80h member is
+            // the live target reference's +28h body offset, refreshed above
+            // by 009FADA0; keep the original getter on the release path.
+            cc13_seg47::rocket_approach_body_aim_offset_007b5400(
+                {t.ap.ref.body_offset_28.data()}, r.release.homing_point);
             r.release.homing_angle = in.row.homing_angle_114;
             const float w = draw(rng, RocketDraw::kAimRepeat18, 0.8f, 1.2f);   // 007B5725
             t.aim.timer_18 = static_cast<float>(static_cast<double>(w) * in.row.repeat_time_118);

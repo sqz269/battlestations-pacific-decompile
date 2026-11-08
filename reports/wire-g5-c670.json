@@ -1,0 +1,57 @@
+{
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "wired_before": 10366,
+    "wired_after": 10367,
+    "readiness": "007B5400 state=wired, called=true, call_sites=1",
+    "call_graph": "007B5400 REACHABLE; one call at 104ED79D from rocket_aim_tick_007b5430; path reaches WinMainCRTStartup through the rocket task and mission fixed-step host",
+    "proof_boundary": "Built executable call-graph reachability; no game run or original binary ABI compatibility claimed",
+    "choice": "Selected the rocket release getter because the host already retains the target-reference field; left constructors and state transitions pending their real ownership/callback contracts"
+  },
+  "rows": [
+    {
+      "native": "007b5400",
+      "status": "wired",
+      "host_site": "src/rocket_task_cc13.cpp: rocket_aim_tick_007b5430 (called by the live RocketHostAdapter arm)",
+      "evidence": "bsp.py show 007b5400 --asm: 007B5400..007B541E copies approach+80h..88h and returns out; bsp.py show 007b5430: release path calls this getter at 007B56E5",
+      "state": "Borrowed view points directly to unit_.rk.ap.ref.body_offset_28, produced by the retained target-reference update; output is the release's homing_point. The previous inline copy is removed.",
+      "abi": "New C++ borrowed-field view; not a drop-in original thiscall replacement"
+    },
+    {
+      "native": "007b6f50",
+      "status": "skipped",
+      "host_site": "src/rocket_task_cc13.cpp: rocket_task_arm_007b7c40",
+      "reason": "RocketHostAdapter::enter_formation_state and exit_formation_state are empty; native old-state vt[8] and new-state vt[4] effects are missing."
+    },
+    {
+      "native": "007b6830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::rk_install_007b7fd0",
+      "reason": "The projected RocketTask has no native state-machine registration/lifetime owner for approach+D8h and its seven embedded state objects."
+    },
+    {
+      "native": "007b7fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::rk_install_007b7fd0",
+      "reason": "The retained task is stored as a typed RocketTask; the Seg47Host 007B6A40 adapter for the native 708h allocation and its destruction/ownership are missing."
+    },
+    {
+      "native": "007b9510",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp: weapon_controller_first_bomb_class_007b9510",
+      "reason": "A live plane rack traversal and rack vt[218h](2Ah) class-return adapter are missing; the current raw body requires plane+974h/+994h."
+    },
+    {
+      "native": "007b9100",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp: weapon_controller_first_bomb_class_007b9100",
+      "reason": "A reachable original caller and the live rack vt[218h](2Ah) class-return adapter are missing."
+    },
+    {
+      "native": "007c1de0",
+      "status": "skipped",
+      "host_site": "00648c20 HUD unit-row widgets (original caller)",
+      "reason": "The sole original caller is in the HUD area awaiting another branch's review; the rocket-only rack vt[21Ch](33h) traversal adapter is also missing."
+    }
+  ]
+}
