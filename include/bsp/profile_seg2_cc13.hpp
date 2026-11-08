@@ -52,13 +52,21 @@ struct MatrixCopyHost {
     virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
 };
 
+// The negative X/Y rotations need only builders and the native matrix copy.
+// Keep their production contract usable by a camera without unrelated
+// profile, registry, observer or singleton services.
+struct MatrixNegatedRotationHost : MatrixCopyHost {
+    virtual void build_rotation_x_00b64640(Mat16& out, const float& angle) = 0;
+    virtual void build_rotation_y_00b646e0(Mat16& out, const float& angle) = 0;
+};
+
 // 00437E10 needs only the party-row reserve provider.
 struct VehicleClassRegistryConstructionHost {
     virtual ~VehicleClassRegistryConstructionHost() = default;
     virtual void party_rows_reserve_00435960(Raw vector, std::uint32_t count) = 0;
 };
 
-struct Seg2Host : MatrixOrthonormalizeHost, MatrixCopyHost,
+struct Seg2Host : MatrixOrthonormalizeHost, MatrixNegatedRotationHost,
                   VehicleClassRegistryConstructionHost {
     virtual ~Seg2Host() = default;
     // Image globals (dword storage at a fixed address) and image data addresses.
@@ -83,8 +91,7 @@ struct Seg2Host : MatrixOrthonormalizeHost, MatrixCopyHost,
     // 00BF701A _CIatan2 on (ST1 = y, ST0 = x).
     virtual double ciatan2_00bf701a(double y, double x) = 0;
     // Matrix builders: __fastcall(ECX = out, EDX = &angle), EAX = out.
-    virtual void build_rotation_x_00b64640(Mat16& out, const float& angle) = 0;
-    virtual void build_rotation_y_00b646e0(Mat16& out, const float& angle) = 0;
+    // The X/Y builders come from MatrixNegatedRotationHost.
     virtual void build_rotation_z_00b64780(Mat16& out, const float& angle) = 0;
     // matrix_copy_004134f0 comes from MatrixCopyHost.
     // 0085DC80 matrix_orthonormalize_0085dc80 comes from MatrixOrthonormalizeHost.
@@ -154,8 +161,8 @@ float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept;
 void matrix_set_rotation_x_0042b3c0(Raw matrix, float angle, Seg2Host& host);
 void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, Seg2Host& host);
 void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host);
-Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, Seg2Host& host);
-Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, Seg2Host& host);
+Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegatedRotationHost& host);
+Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, MatrixCopyHost& host);
 Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host);

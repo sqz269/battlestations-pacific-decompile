@@ -4,6 +4,7 @@
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/gamepad_force_events.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
@@ -42,11 +43,36 @@ constexpr float kZoomDirFloorF = -0.10000000149011612f; // 00CE3CB4
 constexpr double kHalf = 0.5;                     // 00D7A280
 
 
-void rot_y(CameraMatrix16& out, float angle) {
-    matrix_interpolator_rotation_y_00b646e0(out.data(), angle);
+// Reuse the complete negative-angle matrix operations on the live camera's
+// yaw/pitch, rather than repeating their SUBSS and builder at each caller.
+// bsp.py show 0042b450 / 0042b490: -0.0f-angle, build a stack matrix, then
+// sixteen sequential 004134F0 copies. These are shared matrix operations;
+// the image's callers are MovCam/unit-library code, not 00432ED0 itself.
+class CameraRotationBinding final : public profile_seg2_cc13::MatrixNegatedRotationHost {
+public:
+    void build_rotation_x_00b64640(profile_seg2_cc13::Mat16& out,
+        const float& angle) override {
+        matrix_interpolator_rotation_x_00b64640(out.m, angle);
+    }
+    void build_rotation_y_00b646e0(profile_seg2_cc13::Mat16& out,
+        const float& angle) override {
+        matrix_interpolator_rotation_y_00b646e0(out.m, angle);
+    }
+    void matrix_copy_004134f0(profile_seg2_cc13::Raw destination,
+        const profile_seg2_cc13::Mat16& source) override {
+        copy_native_camera_matrix_004134f0(destination.p, nullptr, source.m);
+    }
+};
+
+void rot_y_negated(CameraMatrix16& out, float angle) {
+    CameraRotationBinding operations;
+    profile_seg2_cc13::matrix_set_rotation_y_negated_0042b490(
+        {reinterpret_cast<std::uint8_t*>(out.data())}, angle, operations);
 }
-void rot_x(CameraMatrix16& out, float angle) {
-    matrix_interpolator_rotation_x_00b64640(out.data(), angle);
+void rot_x_negated(CameraMatrix16& out, float angle) {
+    CameraRotationBinding operations;
+    profile_seg2_cc13::matrix_set_rotation_x_negated_0042b450(
+        {reinterpret_cast<std::uint8_t*>(out.data())}, angle, operations);
 }
 // 00413920 with left = a stack copy (004134F0) of `left`, right = +2B8h, then
 // the product copied back into +2B8h, as 004330E5..0043310E does.
@@ -361,7 +387,7 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
                     profile_seg2_cc13::Raw{reinterpret_cast<std::uint8_t*>(camera.orient_2b8.data())},
                     forward, kWorldUp00f8758c.data(), orthonormalize);
             }
-            rot_y(rotation, kNegativeZero - camera.yaw_384);
+            rot_y_negated(rotation, camera.yaw_384);
             premultiply(camera.orient_2b8, rotation);
             // 0043310E..00433158: the sway along row 0.
             const float s = camera.sway_3f8;
@@ -373,12 +399,12 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
             pivot[2] = pivot[2] - o2;
         } else {
             // 0043315E..0043319B.
-            rot_y(rotation, kNegativeZero - camera.yaw_384);
+            rot_y_negated(rotation, camera.yaw_384);
             camera.orient_2b8 = rotation;
         }
         const float pitch = camera.pitch_388;
         if (0.0f > pitch) {                                    // 004331A0..004331F1
-            rot_x(rotation, kNegativeZero - pitch);
+            rot_x_negated(rotation, pitch);
             premultiply(camera.orient_2b8, rotation);
         }
         // 004331F6..0043325C.
@@ -438,7 +464,7 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         float position[3];
         for (int i = 0; i < 3; ++i) position[i] = pivot[i] - offset[i];
         if (!(pitch < 0.0f) && !std::isnan(pitch)) {           // 0043346E..004334E2
-            rot_x(rotation, kNegativeZero - pitch);
+            rot_x_negated(rotation, pitch);
             premultiply(camera.orient_2b8, rotation);
         }
         camera.orient_2b8[12] = position[0];                   // 004334E7..00433510
