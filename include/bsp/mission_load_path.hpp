@@ -23,6 +23,7 @@
 
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
+#include "bsp/game_host_scene_records.hpp"
 
 namespace bsp {
 
@@ -177,7 +178,7 @@ struct SelectSceneRecordInputs {
 // at 004e087b; this reuses normalise_mission_script_slot from
 // bsp/mission_scene_load.hpp rather than restating it.
 SelectSceneRecordResult run_select_scene_record_004c6890(
-    const std::vector<SceneRecord>& records, std::int32_t index,
+    const NativeSceneRecordList& records, std::int32_t index,
     const SelectSceneRecordInputs& inputs);
 
 // ---------------------------------------------------------------------------
@@ -238,7 +239,7 @@ struct SetPendingSceneResult {
 // arguments, RET 10h. Returns 1 except on the reuse arm's duplicate reject,
 // which returns 0. The third stack argument is pushed as -1 by 004e2770 and is
 // never read by the body - see the Uncertainties section of the doc.
-bool run_build_scene_record_004e1d70(std::vector<SceneRecord>& records,
+bool run_build_scene_record_004e1d70(NativeSceneRecordList& records,
     const std::string& scene_path, SceneRecordBuildArm arm,
     const std::string& weather_override, SetPendingSceneHost& host);
 
@@ -250,7 +251,7 @@ bool run_build_scene_record_004e1d70(std::vector<SceneRecord>& records,
 //
 // Order: clear the record list, null game+5FCh, empty the override string,
 // build the record with the Create arm, then select index 0.
-SetPendingSceneResult run_set_pending_scene_004e2770(std::vector<SceneRecord>& records,
+SetPendingSceneResult run_set_pending_scene_004e2770(NativeSceneRecordList& records,
     const std::string& scene_path, const std::string& weather_override,
     const SelectSceneRecordInputs& inputs, SetPendingSceneHost& host);
 
@@ -363,7 +364,7 @@ struct MissionLoadFrameResult {
 
 // Everything the path carries between frames.
 struct MissionLoadPathState {
-    std::vector<SceneRecord> records;     // game+5F0h
+    NativeSceneRecordList records;        // game+5F0h, canonical header/nodes
     SelectSceneRecordResult selection{};  // game+5FCh and the slot array
     std::vector<std::uint32_t> requests;  // game+5D8h, front at index 0
     bool have_pending_scene{false};
