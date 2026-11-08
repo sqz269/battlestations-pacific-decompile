@@ -1,0 +1,200 @@
+{
+  "goal": 5,
+  "chain": 902,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "base_head": "7d4e6867ded431e86df44dce4d9e6d1f965cac48",
+  "picked": "Logical vertex buffer pool 0108FE18 slab-table allocation, growth, append and reserve",
+  "rows": [
+    {
+      "native": "00b498a0",
+      "status": "wired",
+      "host_site": "src/native_logical_vertex_owner.cpp: grow_native_logical_vertex_pool_table_00b498f0 and reserve_native_logical_vertex_pool_table_00b4a850",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00b498f0",
+      "status": "wired",
+      "host_site": "src/native_logical_vertex_owner.cpp: append_native_logical_vertex_pool_table_00b4a7d0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b4a7d0",
+      "status": "wired",
+      "host_site": "src/native_logical_vertex_owner.cpp: allocate_native_logical_vertex_slot_00b4ae80",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b4a850",
+      "status": "wired",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: NativeGraphicsPoolLifetime::initialize, logical_vertex branch",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller",
+      "note": "The text-based state misses the shared lifecycle caller; the built executable reaches the reserve body from initialize."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate score list",
+      "reason": "Missing live candidate score-table owner; the identified native table consumer is an unreached debug overlay, excluded from this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate score list",
+      "reason": "Missing actual candidate score-list entries to mark; the identified consumer is the excluded debug overlay."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing live HUD ambient sound instance and camera producer; has_ambient_sound_instance returns false and set_ambient_volume only records a stand-in."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Missing a verified raw114h property-bag insertion route from the projected ScenePropertyBlock merge path; not pursued beyond initial inspection."
+    }
+  ],
+  "implementation": [
+    "Specialized the existing four render_fx pointer-array shapes over the actual pool+28h three-DWORD header, and removed their old descriptor rows and superseded ledger entries.",
+    "Replaced the slot allocator's inline growth/append with B4A7D0; replaced the logical_vertex lifecycle's inline reserve32 with B4A850. Other pool kinds retain their existing implementation.",
+    "Preserved DWORD wrapping, capacity publication before allocation, live table/count reloads, conditional old-table free, data publication last, and append source consumption after possible growth."
+  ],
+  "evidence": [
+    "bsp.py show 00B498A0/00B498F0/00B4A7D0/00B4A850; assembly checked for B498A0/B4A7D0/B4A850.",
+    "bsp.py show 00B4ADA0 and 00B4AE80 establish the matching inlined reserve and append behavior.",
+    "GameNativeGraphicsPoolProcess constructs and initializes the actual logical_vertex storage for 0108FE18 through CD7C60; the changed code borrows that same storage."
+  ],
+  "counts": {
+    "executable_reconstructed_called_before": 5654,
+    "executable_reconstructed_called_after": 5658,
+    "readiness_text_wired_before": 10764,
+    "readiness_text_wired_after": 10767,
+    "new_executable_reachable_bodies": 4
+  },
+  "checks": {
+    "required_initial_build": "passed; all four CTests",
+    "final_build": "./scripts/build.ps1 passed; all four CTests, log local/c902-build.log",
+    "focused_probe": "tests/wire_g5_c902_logical_vertex_table_probe.cpp compiled with MSVC Win32 /W4 /WX /fp:strict and /link /MANIFEST:EMBED, linked against built bsp_core; passed via local/c902-probe.cmd",
+    "probe_coverage": "1,025 real raw-slot allocations; table32 to66 growth; existing slab and per-slot slab-index identities; tracked lock depth; failure/new-handler capacity-before-pointer ordering; slot returns, trim, destruction; late aliased append input and null destination",
+    "call_graph": "Regenerated after the final build; who reports all four bodies REACHABLE, including reserve from NativeGraphicsPoolLifetime::initialize and append from allocate_native_logical_vertex_slot_00b4ae80",
+    "readiness": "python tools/wire_readiness.py --standins completed; all four target rows called=true, call_sites=2/1/1/1",
+    "index": "python tools/bsp.py index --if-stale rebuilt after ledger edits",
+    "diff_check": "git diff --check passed",
+    "float_math": "No float operations changed; pc24 lint not required"
+  },
+  "limits": [
+    "Ordinary C++ raw-header interfaces, not original register-ABI replacements. No game execution or game validation performed.",
+    "The original unused template bodies establish operation shapes, not recovered logical-vertex template symbols; the logical-vertex names describe this source specialization.",
+    "Shared lifecycle/render_fx/B4 shard edits were coordinated with g5-w7, g5-w8, g5-w6 and g5-w5; only this packet's branch-local edits are committed here."
+  ],
+  "left_for_others": "The skipped HUD and scene-property routes need the stated live owners/adapters. Debug score-table work remains excluded. No outstanding work is required for the four selected table bodies.",
+  "landing_repair": {
+    "merged_origin_main": "0224ad8af7ccbdeae38704414b50161f370268be",
+    "merge_helper": "python tools/merge_resolve.py was run; superseded-record ledger conflict remained unresolved",
+    "ledger_resolution": "Verified every local non-target ledger line equals merge-base. Retained incoming non-target lines exactly and replaced only the four owned target-address records.",
+    "lifecycle_resolution": "Retained incoming logical_index branch and added the logical_vertex reserve32 branch; all other incoming initialization and cleanup code retained.",
+    "render_resolution": "Retained incoming render_fx source and removed only four owned descriptor rows; other landed removals preserved.",
+    "implementation_unchanged": true,
+    "default_build": "passed; all four CTests; local/c902-merge-default-build.log",
+    "on_build": "passed; all four CTests; local/c902-merge-on-build.log",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "on_headers_restored_byte_for_byte": true,
+    "on_header_receipts": [
+      {
+        "sha256": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w9\\include\\bsp\\air_operations.hpp",
+        "restored": true
+      },
+      {
+        "sha256": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-g5-w9\\include\\bsp\\game_hosts_units_internal.hpp",
+        "restored": true
+      }
+    ],
+    "focused_probe": "passed again on restored-default library; local/c902-merge-probe.log",
+    "game_launched": false,
+    "restored_default_build": "passed; all four CTests; local/c902-merge-restored-build.log",
+    "release_graph_reconstructed_called": 5663,
+    "release_icf_note": "Release links fold the four vertex table bodies with the corresponding index bodies; release caller attribution is shared, so a no-inline/no-ICF analysis build is also checked.",
+    "release_readiness_summary": {
+      "wired": 10782,
+      "callees_done_no_wired_caller": 8491,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "release_readiness_targets": [
+      {
+        "address": "00b4a850",
+        "state": "callees_done_no_wired_caller",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "00b498a0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "00b498f0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00b4a7d0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      }
+    ],
+    "analysis_build": "passed: scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests; /Ob0 and /OPT:NOICF; local/c902-merge-analysis-build.log",
+    "analysis_graph_reconstructed_called": 7491,
+    "analysis_distinct_entry_reachable_targets": {
+      "00b498a0": {
+        "entry": "10712f50",
+        "call_sites": 2,
+        "callers": [
+          "grow_native_logical_vertex_pool_table_00b498f0",
+          "reserve_native_logical_vertex_pool_table_00b4a850"
+        ]
+      },
+      "00b498f0": {
+        "entry": "10713e50",
+        "call_sites": 1,
+        "callers": [
+          "append_native_logical_vertex_pool_table_00b4a7d0"
+        ]
+      },
+      "00b4a7d0": {
+        "entry": "10713260",
+        "call_sites": 1,
+        "callers": [
+          "allocate_native_logical_vertex_slot_00b4ae80"
+        ]
+      },
+      "00b4a850": {
+        "entry": "107145c0",
+        "call_sites": 1,
+        "callers": [
+          "NativeGraphicsPoolLifetime::initialize"
+        ]
+      }
+    },
+    "analysis_graph_command": "python tools/call_graph.py --build-dir build/analysis; python tools/call_graph.py --build-dir build/analysis who <address>",
+    "analysis_result": "All four distinct bodies are entry-reachable; no folding warnings. Native slot append and logical_vertex reserve32 paths remain intact.",
+    "readiness_check": "python tools/wire_readiness.py --standins completed after the restored-default build; all four called=true; reserve retains its known text-state false negative.",
+    "diff_check": "No unresolved files; git diff --check passed; ON headers have no differences from merged origin/main."
+  }
+}

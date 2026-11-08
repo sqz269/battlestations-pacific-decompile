@@ -1,0 +1,170 @@
+{
+  "run": 1996,
+  "goal": 5,
+  "chain": 906,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "base": "6f8f18dac4f87686b07c9e1ade6e35f426c4c4fc",
+  "result": "prepared_only_no_new_live_wiring",
+  "rows": [
+    {
+      "native": "00a9ea60",
+      "status": "skipped",
+      "host_site": "src/native_locale_pool_table.cpp: push_native_string_map_pool_slab_00a9ee40",
+      "reason": "Missing an entry-reachable canonical E1768C locale owner/registration producer; default built graph links neither A9F0B0 nor these helpers. Actual-storage implementation is prepared and fixture-tested only."
+    },
+    {
+      "native": "00a9ee40",
+      "status": "skipped",
+      "host_site": "src/native_locale_node_allocation.cpp: allocate_native_locale_node_00a9f0b0",
+      "reason": "Missing an entry-reachable canonical E1768C locale owner/registration producer; default built graph links neither A9F0B0 nor these helpers. Actual-storage implementation is prepared and fixture-tested only."
+    },
+    {
+      "native": "00a9f0b0",
+      "status": "skipped",
+      "host_site": "src/native_locale_map_insertion.cpp: insert_or_get_native_locale_value_00a9fc30",
+      "reason": "Missing a reached caller of GameSingletonHost::prepare_locale_manager and the canonical locale parser/registration graph; allocator has no linked symbol in the default built entry graph."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the constructed movie-camera screen with actual default/current deviation fields and a reached consumer; current callbacks do not supply that owner."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the constructed movie-camera screen with actual default/current overview height fields and a reached consumer; current callbacks do not supply that owner."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the constructed movie-camera screen with actual default/current linear/angular speed limits fields and a reached consumer; current callbacks do not supply that owner."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing the constructed movie-camera screen with actual default/current acceleration time fields and a reached consumer; current callbacks do not supply that owner."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera callbacks",
+      "reason": "Missing retained MovCamZoom storage and a reached camera FOV consumer; identity-only callbacks do not supply these fields."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state callbacks",
+      "reason": "Missing a retained controller-state message producer/consumer carrying native descriptors, mode and flags; adding a discarded snapshot would not wire gameplay."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot path",
+      "reason": "Missing a stored ControllerSnapshotMessage and original snapshot transport consumer; projectile positions are a different operation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCallBinding::queue_call",
+      "reason": "Missing a frame-job-thread named-call producer carrying the real LuaVariantRecord argument vector; the current mission interpreter executes on the main thread."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread deferred-call producer/list owner; the live main-thread path executes named calls directly."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "shadow_cascades_cc13.cpp: shadow-fit caller",
+      "reason": "Missing an entry-reachable shadow-fit consumer for this FOV/aspect product; the GUI orthographic camera does not consume it."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "No reached original extra-clip-plane producer was established with the actual CameraClipPlaneState and matching plane."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "No reached original extra-clip-plane clear site was established with the actual CameraClipPlaneState owner."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: register_native_material_float3_00b18ae0",
+      "reason": "No reached original float3 material registration producer was established among the inspected cloud/ocean/landscape callers; adding an unused parameter would invent work."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: post_effect_pass_extent_00b4ed30",
+      "reason": "Missing a reached distortion-pass extent consumer with its actual pass+24h/+28h owner."
+    },
+    {
+      "native": "00a8fd30",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc: MissionShipLightingGraph",
+      "reason": "Missing the constructed native directional shadow owner/provider graph; this admitted mission lighting path explicitly owns a null shadow."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc: MissionShipLightingGraph",
+      "reason": "Missing a reached directional-shadow replacement operation; existing admitted directional light requires its native null shadow."
+    },
+    {
+      "native": "0080f9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: BreakShip breakup registry site",
+      "reason": "No actual native vehicle-class +6E0h/+700h breakup arrays were established at the semantic host BreakShip site."
+    },
+    {
+      "native": "0080dc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: apply_repair_settings",
+      "reason": "Missing a reached repair-settings message application carrying the actual message+20h and unit+1134h storage; inspected override remains unreached."
+    },
+    {
+      "native": "00884ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: Lua variant construction",
+      "reason": "No actual native entity-record +18h ID producer was established for the inspected host Lua variant path."
+    }
+  ],
+  "prepared": [
+    "Sole A9EA60/A9EE40 bodies moved from detached GUI descriptors to borrowed actual data/count/capacity DWORDs; shared CRT allocation/free and wrapping native-width accesses retained.",
+    "A9F0B0 inline table growth/append replaced, preserving its partial-progress diagnostics and callback failure fences.",
+    "One focused MSVC Win32 probe checks allocator-mutated current data/count and an append source cell aliased with capacity across the free callback."
+  ],
+  "metrics": {
+    "built_reconstructed_addresses_called_before": 5659,
+    "built_reconstructed_addresses_called_after": 5659,
+    "wire_readiness_text_wired_before": 10771,
+    "wire_readiness_text_wired_after": 10773,
+    "text_delta_is_not_live_wiring": true
+  },
+  "validation": {
+    "baseline_build": "passed; all 4 CTests",
+    "final_build": "passed; all 4 CTests",
+    "fixture": "passed: A9EA60/A9EE40 actual-triple callback/aliased-source probe",
+    "probe_compile": "cl /nologo /std:c++20 /EHsc /W4 /WX /O2 /Gy /I include tests/wire_g5_c906_locale_table_probe.cpp src/native_locale_pool_table.cpp /Fo:local/ /Fe:local/c906_locale_table_probe.exe /link /OPT:REF /MANIFEST:EMBED",
+    "call_graph": "43157/43313 functions entry-reachable; 5659/6323 reconstructed addresses called, unchanged; who A9EA60/A9EE40/A9F0B0 finds no linked symbol",
+    "floating_point": "No float arithmetic changed; PC24 lint not applicable.",
+    "abi": "New C++ interfaces; not original ABI replacements.",
+    "game": "Not run, per worker instruction.",
+    "independent_coordination": "agent/g5-w4 confirmed it had no additional live locale-owner evidence."
+  },
+  "left_for_next_worker": "Find and activate the genuine canonical locale manager startup language/table-registration/parser consumer graph; do not call a helper on an unrelated table to increase the count.",
+  "assumptions": [
+    "Accepted a buildable partial preparation packet because the canonical locale allocator is not entry-reachable; none of the prepared functions is reported wired."
+  ]
+}

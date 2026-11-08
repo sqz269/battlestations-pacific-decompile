@@ -428,9 +428,8 @@ void set_native_listbox_pool_table_capacity_00a9aeb0(NativeGuiPoolSlabTable&, st
 void grow_native_listbox_pool_table_00a9af00(NativeGuiPoolSlabTable&);
 void push_native_listbox_pool_slab_00a9b250(NativeGuiPoolSlabTable&, std::byte* const& slab);
 void reserve_native_listbox_pool_table_00a9b2d0(NativeGuiPoolSlabTable&, std::uint32_t capacity);
-// The StringMap node pool's table members (pool 00E1768C, slot 1Ch x 400h).
-void grow_native_string_map_pool_table_00a9ea60(NativeGuiPoolSlabTable&);
-void push_native_string_map_pool_slab_00a9ee40(NativeGuiPoolSlabTable&, std::byte* const& slab);
+// The StringMap node pool's actual +28h triple (E1768C, slot 1Ch x 400h)
+// uses native_locale_pool_table.hpp; it is not a NativeGuiPoolSlabTable copy.
 
 // Listbox members over the actual object. Layout used here: row list header
 // +FCh {alloc, head +100h, size +104h} with nodes {next +0, prev +4, row +8};

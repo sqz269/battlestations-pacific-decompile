@@ -234,19 +234,6 @@ NativeRenderGroupStorage* indexed_group(NativeRenderPointerArrayStorage& array,
         resize_native_render_group_pointers_00b1c7c0(array,signed_bits(id+1u));
     return cell<NativeRenderGroupStorage*>(plus(cell<void*>(&array),id*4u));
 }
-void append_borrowed(NativeRenderPointerArrayStorage& array,void* entry,bool group) {
-    const auto capacity=cell<std::uint32_t>(&array,8);
-    if(cell<std::uint32_t>(&array,4)==capacity) {
-        auto doubled=signed_bits(capacity*2u);
-        if(doubled<=1) doubled=1;
-        if(group) reserve_native_render_group_pointers_00b1c660(array,doubled);
-        else reserve_native_instance_entry_pointers_00b1c500(array,doubled);
-    }
-    const auto count=cell<std::uint32_t>(&array,4);
-    void* destination=plus(cell<void*>(&array),count*4u);
-    if(destination) cell<void*>(destination)=entry;
-    cell<std::uint32_t>(&array,4)+=1u;
-}
 void initialize_colors(NativeInstanceCollectionAccess& a) {
     if((*a.color_guard_00f8d4b0&1u)!=0) return;
     std::uint32_t one;
@@ -408,13 +395,18 @@ void collect_native_instance_entry_00b1dff0(void* command,void* entry,
             reserve_native_instance_entry_pointers_00b1c500(group->source_entries_24[i],8);
         }
         cell<std::uint32_t>(group,category?0xc:0x10)=1;
-        append_borrowed(*static_cast<NativeRenderPointerArrayStorage*>(plus(command,0x38)),group,true);
+        // 00B1DFF0 inlines B1CBE0's append into the command's ordered-group
+        // header (+38h). Pass the actual group cell after construction.
+        append_native_render_group_pointer_00b1cbe0(
+            *static_cast<NativeRenderPointerArrayStorage*>(plus(command,0x38)),&group);
     } else {
         group=indexed_group(indexed,cell<std::uint32_t>(binding,8));
         cell<std::uint32_t>(group,category?0xc:0x10)+=1u;
         group=indexed_group(indexed,cell<std::uint32_t>(binding,8));
     }
-    append_borrowed(group->source_entries_24[category?0:1],entry,false);
+    // The final native append selects group+24h or +30h by this same category.
+    append_native_instance_entry_pointer_00b1cb80(
+        group->source_entries_24[category?0:1],&entry);
 }
 
 void* prefix_native_string_header_0043c130(void* output, const char* prefix,

@@ -1128,16 +1128,6 @@ void reserve_native_listbox_pool_table_00a9b2d0(NativeGuiPoolSlabTable& table, s
     native_gui_pool_table_reserve(table, capacity);
 }
 
-void grow_native_string_map_pool_table_00a9ea60(NativeGuiPoolSlabTable& table)
-{
-    native_gui_pool_table_grow(table);
-}
-
-void push_native_string_map_pool_slab_00a9ee40(NativeGuiPoolSlabTable& table, std::byte* const& slab)
-{
-    native_gui_pool_table_push_back(table, slab);
-}
-
 namespace {
 
 constexpr U32 kRowsFc = 0xfc;

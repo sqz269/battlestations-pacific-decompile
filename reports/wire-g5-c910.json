@@ -28,6 +28,24 @@
   ],
   "limits": "Source/build/fixture/compiled-entry-reachability proof only. Original register/exception ABI and live gameplay were not tested. No game was launched.",
   "probe_command": "From a VS Win32 developer prompt: cl /nologo /std:c++17 /EHsc /W4 /WX /MD /I include tests/wire_g5_c910_node_table_probe.cpp /Fo:local/c910-node-table-probe.obj /Fe:local/c910-node-table-probe.exe build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib advapi32.lib ole32.lib shell32.lib winmm.lib d3d9.lib PowrProf.lib; then run local/c910-node-table-probe.exe",
+  "landing_repair": {
+    "merged_origin_main": "03ed3fdb8ffd61e8a122611acac25002bd8846d8",
+    "resolution": "Retain both node B6DEF0/B6E580 and incoming point-light B7AE30/B7B410 early-return dispatcher arms in scene_graph2_cc13.cpp. All ledger shards and cmake/startup.cmake merged cleanly; merge_resolve.py reports0 of0 remaining conflicts.",
+    "default_build": "scripts/build.ps1 passed all5 CTests; local/c910-merge-default-build.log",
+    "on_build": "off_switch_on_build.py --names kAutoAttackAllMembersBound kPlaneFormationPlacementEnabled --log local/c910-merge-on-build.log -- -BuildDir build/c910-on passed all5 CTests with zero compiler diagnostics",
+    "on_headers_restored": true,
+    "restored_header_sha256": {
+      "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+      "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+    },
+    "node_table_probe": "Recompiled against merged default bsp_core.lib; growth, slot identities, failure publication, trim and teardown passed",
+    "pc24_lint": "0 findings,0 allowed,5 files",
+    "readiness_wired_total": 10791,
+    "compiled_reconstructed_addresses_called_total": 5668,
+    "called_target_sites": {"00b6dea0": 2, "00b6def0": 1, "00b6e580": 1, "00b6e610": 1},
+    "readiness": "All four targets state=wired and called=true after header restoration; local/c910-merge-readiness.log",
+    "note": "Original metrics above describe the initial packet baseline; these totals include the fetched main changes. No live game or original register/EH ABI validation."
+  },
   "rows": [
     {"native": "00b6dea0", "status": "wired", "host_site": "src/scene_graph2_cc13.cpp: grow_native_node_pool_table_00b6def0 and reserve_native_node_pool_table_00b6e610"},
     {"native": "00b6def0", "status": "wired", "host_site": "src/scene_graph2_cc13.cpp: append_native_node_pool_table_00b6e580"},
