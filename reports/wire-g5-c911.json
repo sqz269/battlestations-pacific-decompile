@@ -1,0 +1,287 @@
+{
+  "goal": 5,
+  "chain": 911,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "base_sha": "0224ad8af7ccbdeae38704414b50161f370268be",
+  "picked": "Actual GUI Scrollbar F8C004 retained slab pointer table and original CD7510 CRT startup",
+  "rows": [
+    {
+      "native": "00ac7f40",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_reserve_00ac81a0",
+      "built_site": "105036b5 -> 105036c0 (analysis/no ICF)",
+      "state_owner": "Actual GuiScrollbarPoolTraits process owner F8C004; retained vector at +28h"
+    },
+    {
+      "native": "00ac81a0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize; src/game_main.cpp::WinMain",
+      "built_site": "106c43e6 -> 105036a0 (analysis/no ICF)",
+      "state_owner": "CD7510-equivalent startup reserves 32 pointers on actual F8C004+28h"
+    },
+    {
+      "native": "00ac8110",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::allocate",
+      "reason": "Missing entry-reachable Scrollbar factory/allocation consumer; specialization and actual-table append are implemented and fixture-tested, but the game linker removes this uncalled body."
+    },
+    {
+      "native": "00ac7f90",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_push_back_00ac8110",
+      "reason": "Missing entry-reachable Scrollbar allocation consumer for AC8110; growth is implemented and exercised by the 529-slot fixture, but is not linked in the game."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp",
+      "reason": "No new wiring missing: baseline readiness already reports called=true for the native enum-property insertion body."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp",
+      "reason": "No new wiring missing: baseline readiness already reports called=true for the native property-bag merge body."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "reason": "No new wiring missing: baseline readiness already reports called=true for the tail-gunner skill body."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "Missing a validated controller-state message producer and routed consumer; the existing mention is director-flag provenance."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "reason": "Missing a controller snapshot producer and transport consumer; copying flattened flags into and back out of a temporary snapshot would not bind that path."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Missing a validated current native score-list producer and gameplay consumer during selection; no auxiliary diagnostic list was added."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Missing a validated current native score-list selection consumer during selection; no fabricated chosen-entry list was added."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp",
+      "reason": "Missing a verified current BSP_Chk_Save owner and mission-key/checkpoint-diff path in this candidate host; no unconditional checkpoint rewrite was introduced."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing a validated live native stream-writer owner with slot54 DWORD-write dispatch."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp",
+      "reason": "Missing a validated live native writer-chunk array producer and serialization consumer."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp",
+      "reason": "Missing a plane EngineSoundParams producer with a live sound handle and pitch/volume dispatch; the existing host stores different smoothing-rate state."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "No new metadata operation was established: the active native submission already calls this body; a missing optimized symbol alone is not a new wiring opportunity."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/native_render_scene_submission.cpp",
+      "reason": "Missing a validated live shadow-command submission consumer; the existing B1F4D0 scene submission has its own original append/traversal schedule."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc",
+      "reason": "Missing an actual directional shadow-owner producer and lifetime binding; the current lighting composition has a NoShadow resolver."
+    },
+    {
+      "native": "00be5380",
+      "status": "skipped",
+      "host_site": "src/native_singleton_destruction.cpp",
+      "reason": "Missing an actual base-profile filestore-factory deletion request; the existing singleton route deletes the concrete secondary profile."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::skip_balanced_block",
+      "reason": "Missing the native property-group tokenizer owner at this site; SceneLexer skipping SceneBrowserGroups/traffic is a different operation."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp",
+      "reason": "Missing the original HUD-map animated-value consumer with actual widget slot88 target dispatch; cursor restart is a different operation."
+    },
+    {
+      "native": "00aa1fa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::gui_cursor_position",
+      "reason": "Missing a validated cursor-position write/input consumer; this host site currently only reads manager+5C/+60."
+    },
+    {
+      "native": "00a78ce0",
+      "status": "skipped",
+      "host_site": "src/voice_slot_start.cpp::construct_voice_slot_00702cc0",
+      "reason": "Missing a live VoiceSlotStartHost implementation and voice-slot producer reaching the alternate dialog-stream request."
+    },
+    {
+      "native": "00a78330",
+      "status": "skipped",
+      "host_site": "src/voice_manager_update.cpp::set_named_voice_volume_00701870",
+      "reason": "Missing a live voice-manager update host reaching the alternate named-channel volume operation."
+    },
+    {
+      "native": "007bbc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing the image-shaped plane/site-holder state and site-kind dispatch required by the native owned-site grounding predicate."
+    },
+    {
+      "native": "007b9510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing a real rack descriptor object returned by slot218(2A); current ordnance scalars cannot stand in for it."
+    },
+    {
+      "native": "007b9230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing a real rack list and slot220(1) descriptor consumer; no class-id or boolean substitute was introduced."
+    },
+    {
+      "native": "007c1de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing a validated image-shaped rack-child list and round-count virtual dispatch for the native plane sum."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "Missing the per-part visual record/node pair and live debris-dynamics consumer required by the debris-spec inputs."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "reason": "Missing a validated rapid-gun aim/snapshot receive consumer; the live local aiming path uses target-angle commands rather than this received-state operation."
+    },
+    {
+      "native": "0065f560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp",
+      "reason": "Missing the loaded support-screen sample owner and tracked support sound callback binding."
+    },
+    {
+      "native": "0065f6b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp",
+      "reason": "Missing the loaded support-screen sample owner and tracked support sound callback binding."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/native_world_constant_byte.cpp",
+      "reason": "Missing the genuine world-profile virtual consumer; replacing an unrelated true constant would not establish it."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/native_listener_renderer.cpp",
+      "reason": "Missing a validated live renderer-listener owner and invalidation-root binding; this is not the sound listener update."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_time.cpp",
+      "reason": "Missing a validated live animated-texture source producer and time-update consumer."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_verify_checksum_00bbbab0",
+      "reason": "Missing a live MSAR archive validation request/stream owner; replacing the private CRC loop alone leaves the body without an entry-reachable consumer."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_owner.cpp",
+      "reason": "Missing the original point-light constructor/unwind caller binding for this thin static-owner wrapper; existing scalar deletion directly calls B7B1D0 and was left intact."
+    }
+  ],
+  "built": [
+    "Four address-suffixed Scrollbar table bodies in src/native_gui_widget_pools_cc13.cpp, reusing the existing equivalent AA6FA0 allocation operation.",
+    "AC8240 initialization and AC83C0 allocation specializations replace their generic table operations on the same retained pool header.",
+    "WinMain restores CD7510 startup before CD75F0 Model, with the existing failure guard and actual process owner/atexit lifecycle.",
+    "One standalone 529-slot Win32 probe covering capacity32->66, retained slab pointers, live-payload preservation, moved-slab trailer repair, and teardown."
+  ],
+  "metrics": {
+    "readiness_wired_before": 10779,
+    "readiness_wired_after": 10779,
+    "new_entry_reachable_addresses": [
+      "00ac81a0",
+      "00ac7f40"
+    ],
+    "prepared_only_addresses": [
+      "00ac8110",
+      "00ac7f90"
+    ],
+    "note": "The refreshed readiness overview remains10779: none of these four newly reconstructed template-helper addresses is present in its rows. Two distinct NOICF-verified initializer helper bodies receive wired credit; growth/append remain prepared only.",
+    "readiness_index_built_utc": "2026-11-08T16:52:50.665523+00:00",
+    "readiness_rows_present": []
+  },
+  "validation": {
+    "default_build": "./scripts/build.ps1: passed, all 4 CTests passed; local/c911-build.log",
+    "analysis_build": "./scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests: passed; /Ob0 and /OPT:NOICF; local/c911-analysis-build.log",
+    "probe": "MSVC Win32 /MD /EHsc /std:c++17, bsp_core+bsp_lua511+bsp_zlib121 and platform libs, /link /MANIFEST:EMBED; local/c911-scrollbar-probe.exe: exit0; local/c911-probe.log",
+    "probe_source": "tests/wire_g5_c911_scrollbar_table_probe.cpp",
+    "probe_driver": "local/c911-probe.cmd (ignored local driver)",
+    "call_graph": [
+      "python tools/call_graph.py --build-dir build/callgraph",
+      "python tools/call_graph.py --build-dir build/callgraph who 00ac7f40",
+      "python tools/call_graph.py --build-dir build/callgraph who 00ac81a0",
+      "python tools/call_graph.py --build-dir build/callgraph path 00ac81a0"
+    ],
+    "float_math_changed": false,
+    "game_launched": false,
+    "native_abi_compatible": false
+  },
+  "evidence": [
+    "bsp.py show AC7F40/AC7F90/AC8110/AC81A0: capacity publication, wrapping growth, current-count copying, null-tested stores and late append value.",
+    "bsp.py show AC8240/AC83C0: reserve32 in EH state2 and append after first-free publication while holding the actual pool lock.",
+    "Live bsp.gpr /battlestationspacific.exe: CD7510 MOV ECX,F8C004; CALL AC8240; atexit CE0AF0.",
+    "Live CRT CE34AC contains CD7510; CE34BC contains CD75F0."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "existing_template_shape_names_preserved": true,
+    "evidence_comments_applied_under_write_lock": true,
+    "old_annotations_receipt": "local/ghidra-annotations-20261108T164831Z.json",
+    "project_saved": true,
+    "four_affected_exports_refreshed": true
+  },
+  "remaining": "Bind a genuine Scrollbar factory/allocation consumer before claiming AC8110/AC7F90 as game-reachable. No game, runtime ABI, GUI or post-update stability validation asserted."
+}

@@ -3,6 +3,7 @@
 // over the shared native engine.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
+#include "bsp/native_gui_scrollbar_pool_table.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 
 #include <cstdlib>
@@ -53,6 +54,39 @@ void GameNativeGuiWidgetPoolProcess<T>::destroy_at_exit() noexcept {
 } // namespace bsp::game
 
 namespace bsp {
+__declspec(noinline) void native_gui_scrollbar_pool_table_set_capacity_00ac7f40(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC7F40 is identical to AA6FA0: publish capacity before new(capacity*4),
+    // copy current entries with null-tested destinations, free, then adopt.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_grow_00ac7f90(
+    NativeGuiPoolSlabTable& table) {
+    // AC7F90 inlines that same schedule with modulo32 capacity*2+2.
+    native_gui_scrollbar_pool_table_set_capacity_00ac7f40(
+        table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_push_back_00ac8110(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // AC8110 and AC83C0's inline append use the actual pool+28h header,
+    // after first-free publication and slab initialization, under its lock.
+    if (table.count == table.capacity)
+        native_gui_scrollbar_pool_table_grow_00ac7f90(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_reserve_00ac81a0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC81A0: unsigned comparison; AC8240 inlines reserve(32) in EH state2.
+    if (table.capacity < capacity)
+        native_gui_scrollbar_pool_table_set_capacity_00ac7f40(table, capacity);
+}
+
 __declspec(noinline) void native_gui_curve_pool_table_set_capacity_00abc1e0(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     // Evidence: bsp.py show 00ABC1E0. Reuse the existing identical AA6FA0

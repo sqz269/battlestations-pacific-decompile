@@ -4,6 +4,7 @@
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
+#include "bsp/native_gui_scrollbar_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -682,6 +683,21 @@ __declspec(noinline) void native_gui_pool_table_push_back_00aa76c0(
 __declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     if (table.capacity < capacity) native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+template<> void NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize() {
+    // AC8240 inlines AC81A0's reserve(32), in unwind state 2, on the
+    // CD7510 process owner's actual F8C004+28h table. No second header.
+    initialize_pool<GuiScrollbarPoolTraits,
+        &native_gui_scrollbar_pool_table_reserve_00ac81a0>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiScrollbarPoolTraits>::allocate() {
+    // AC83C0 publishes first_free_slab before appending the new initialized
+    // slab under its existing lock. Reuse the identical AC8110 body once.
+    return allocate_slot<GuiScrollbarPoolTraits,
+        &NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize_slab,
+        &native_gui_scrollbar_pool_table_push_back_00ac8110>(storage_);
 }
 
 // ACBE00/ACBE50/ACC0D0/ACC160 and the inlined Model pool copies operate on
