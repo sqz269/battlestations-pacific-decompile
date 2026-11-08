@@ -3144,6 +3144,12 @@ void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& bi
     impl_->input_contexts.manager = &binding;
 }
 
+GameInputContextManagerBinding& GameMenuHost::input_context_manager() {
+    if (impl_->input_contexts.manager == nullptr)
+        throw std::logic_error("menu input context manager is not bound");
+    return *impl_->input_contexts.manager;
+}
+
 void GameMenuHost::bind_native_renderer(GameNativeRendererApplication& renderer) {
     impl_->native_renderer = &renderer;
 }

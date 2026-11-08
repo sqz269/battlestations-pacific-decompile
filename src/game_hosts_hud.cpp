@@ -984,6 +984,43 @@ public:
     }
 };
 
+// 005251C0's ECX is the very F0h screen 00525A90 constructed. Its +C4h
+// vector is still the empty vector 00525A10 produced: the candidate collectors
+// 00525F80/00526180 are not called by this host. Do not substitute a temporary
+// screen or a separate selection vector. An unexpected populated vector needs
+// its actual 18h observer-handle destructor before this adapter can erase it.
+class HudLeafUnitPickResetBinding final : public bsp::cc13_sweepA::HudUnitPickResetHost {
+public:
+    HudLeafUnitPickResetBinding(HudLeafScreenStorage& screen, GameMenuHost& menu)
+        : screen_(screen), menu_(menu) {}
+    void invalid_parameter_noinfo_00bf6713() override {
+        selection_.invalid_parameter_noinfo_00bf6713();
+    }
+    void vector_erase_range_00524dc0(bsp::cc13_sweepA::Raw vector, void* ret,
+        void* first_vector, void* first, void* last_vector, void* last) override {
+        if (vector.p != screen_.data() + 0xC4
+            || first != vector.ptr(4) || last != vector.ptr(8))
+            throw std::logic_error("005251C0 erased a range outside its retained selection");
+        // 00524DC0: equal iterators skip both the 18h element move and the
+        // virtual-destructor loop; return {first_vector, first}. This is the
+        // same checked empty erase the selection constructor already uses.
+        selection_.vector_erase_range_00524dc0(
+            vector.p, ret, first_vector, first, last_vector, last);
+    }
+    void* input_manager_get_singleton_004bec00() override {
+        return menu_.input_context_manager().current_owner();
+    }
+    void input_manager_set_context_level_00a933f0(void* manager, std::int32_t context,
+        std::int32_t level) override {
+        menu_.input_context_manager().set_level(manager,
+            static_cast<std::uint32_t>(context), static_cast<std::uint32_t>(level));
+    }
+private:
+    HudLeafScreenStorage& screen_;
+    GameMenuHost& menu_;
+    HudLeafUnitPickSelectionBinding selection_;
+};
+
 class HudLeafUnitPickBinding final : public bsp::cg_rebuild_b_cc13::CgRebuildBHost {
 public:
     using NativeStringImage = bsp::cg_rebuild_b_cc13::NativeStringImage;
@@ -2705,6 +2742,7 @@ struct GameHudHost::Impl {
     unsigned long long force_calls{0};
     unsigned long long force_selects{0};
     void run_root_lists(bool force);
+    void reset_unit_pick_selection(const char* site);
     unsigned long long select_accepted{0};
     unsigned long long select_pushes{0};
     bool pick_first_basis_logged{false};
@@ -2786,6 +2824,23 @@ public:
 private:
     GameHudHost::Impl& owner_;
 };
+}
+
+void GameHudHost::Impl::reset_unit_pick_selection(const char* site) {
+    // 00647059 (bsp.py show 00647040 --asm) loads [00E198C4]+CCh. Use
+    // 0068CC70's retained allocation, including its actual +30h mode; no mode
+    // or iterator value is synthesized at this call. The reset itself writes
+    // +C0h = 0, +D4h = -1 and +30h = 0 (005251CF/00525203/00525240).
+    const std::size_t index = bsp::in_game_hud_screen_index_at(0xCC);
+    HudLeafScreenStorage* const screen = index < kInGameHudScreenCount
+        ? leaf_screens[index].get() : nullptr;
+    if (screen == nullptr) {
+        record(site, 0x005251c0u); // HUD manager has not built screen 29h yet.
+        return;
+    }
+    HudLeafUnitPickResetBinding binding(*screen, menu);
+    bsp::cc13_sweepA::hud_screen_reset_selection_005251c0({screen->data()}, binding);
+    done(site, 0x005251c0u);
 }
 
 void GameHudHost::Impl::save_root_interface(int id, bsp::HudRootPayload payload) {
@@ -5707,10 +5762,8 @@ bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
         impl.record("SetSelectedUnit::push_limbo_34h", 0x0064734bu);
         return true;
     }
-    // 00647040: 0059DA80 on [manager+54h] is a bare RET; 005251C0 on
-    // [manager+CCh] (a screen reset: +C0h, its vector, +D4h = -1 and two input
-    // context levels) is unread here and recorded.
-    impl.record("SetSelectedUnit::screen_reset_005251c0", 0x005251c0u);
+    // 00647059: reset the retained screen at [manager+CCh] before pushing.
+    impl.reset_unit_pick_selection("SetSelectedUnit::screen_reset_005251c0");
     // 0064705E..00647077: 004CC460(20h, [00E188D8]->vtable[140h]()). For a
     // ship the slot is 0047F320, `MOV EAX,ECX`: the unit itself, which is the
     // payload the host's classifier already reads (the controlled unit).
@@ -5814,9 +5867,8 @@ public:
         owner_.record("ForceSelectUnit::push_limbo", 0x004cc460u);
     }
     void push_controlled_unit_interface_00647040() override {
-        // The same 00647040 as SetSelectedUnit's tail: 005251C0 is recorded,
-        // then 004CC460(20h, the unit) re-arms the pending/applied pair.
-        owner_.record("ForceSelectUnit::screen_reset_005251c0", 0x005251c0u);
+        // The same 00647040 as SetSelectedUnit's tail: reset, then push.
+        owner_.reset_unit_pick_selection("ForceSelectUnit::screen_reset_005251c0");
         owner_.unit_request_pending = true;
         owner_.unit_request_applied = false;
         owner_.pending_interface_id = 0;
