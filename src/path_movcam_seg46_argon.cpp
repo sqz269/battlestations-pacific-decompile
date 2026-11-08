@@ -560,21 +560,21 @@ void session_message_path_create_write_007b0bf0(
 // 007B0E30 BSP_SimplePathSource_PointCount
 // Address: 007B0E30-007B0E52
 int simple_path_source_point_count_007b0e30(const SimplePathSource& src) noexcept {
-    if (src.slot_points_08 == nullptr || src.slot_points_08->empty()) {
+    if (!src.slot_points_08) {
         return 0;
     }
-    return static_cast<int>(src.slot_points_08->size());
+    return static_cast<int>(src.slot_points_08.size());
 }
 
 // 007B0F00 BSP_SimplePathSource_Save
 // Address: 007B0F00-007B0FEF
 void simple_path_source_save_007b0f00(const SimplePathSource& src, PathArchiveHost& archive) {
     archive.write_named_string(0, "", 0, "simple");
-    if (src.slot_points_08 == nullptr) {
+    if (!src.slot_points_08) {
         return;
     }
-    for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(src.slot_points_08->size()); ++i) {
-        const Vec3 pt = (*src.slot_points_08)[i];
+    for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(src.slot_points_08.size()); ++i) {
+        const Vec3 pt = src.slot_points_08.point(i);
         archive.write_indexed_vec3(1, i, 5, pt);
     }
 }
@@ -646,7 +646,7 @@ void authored_path_source_save_007b1170(
 // Address: 007B2250-007B2294
 SimplePathSource** entity_path_source_create_for_slot_007b2250(
     SimplePathSource*& out_ptr,
-    const std::vector<Vec3>* slot_points) {
+    SimplePathPoints slot_points) {
     SimplePathSource* obj = new (std::nothrow) SimplePathSource{};
     if (obj != nullptr) {
         obj->vtable_00 = 0x00CEB130u;

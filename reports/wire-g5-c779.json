@@ -1,0 +1,251 @@
+{
+  "run": 1672,
+  "harness": "codex",
+  "goal": 5,
+  "chain": 779,
+  "slot": "g5-w9",
+  "picked": "Retained live user-command SimplePathSource factory and count queries",
+  "rows": [
+    {
+      "native": "007b2250",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameDirector::build_own_points_source, build_path_object_0071f600 and DirectorPathObjectCopyView::adopt_own_points_source_007b2250"
+    },
+    {
+      "native": "007b0e30",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameDirector::path_point_count; live user-path queue, cursor, final-leg and advance queries"
+    },
+    {
+      "native": "007b0f00",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: simple_path_source_save_007b0f00",
+      "reason": "No live path archive owner was established; adapted only its existing vector reads to the shared borrowed-vector interface."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit reset records",
+      "reason": "Missing live selection-mode +30h and selection-vector +C4h producers, with retained +C0h/+D4h reset fields."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding",
+      "reason": "Missing the native 34h-byte selection row owner and its value/flag producers; the host enumerates unit identities instead."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding",
+      "reason": "Missing the selected entry owner for retained position +F0h..+F8h and validity +FCh."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::set_ambient_volume",
+      "reason": "Missing the live ambient SoundInstance receiver; the host records the volume call and has no retained ambient sample/channel."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a reachable owner/producer of the actual native vehicle-camera array header and its camera defaults."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing the same live native camera-array/defaults producer; supplying invented camera limits would not establish wiring."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: resize_native_vehicle_pointer_array_005471b0",
+      "reason": "Missing the live class pointer-array header and refcounted referents needed for native reserve/release behavior."
+    },
+    {
+      "native": "00829180",
+      "status": "skipped",
+      "host_site": "src/native_ship_indexed_point_array.cpp: reserve_native_ship_indexed_point_array_00829180",
+      "reason": "Missing a live ship indexed-point array header/producer in the inspected hosts."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "Missing the coupled movie-screen visibility/enter, game+7184, cinematic and real listener transition owner; the existing site is a record."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing the live per-mode class-pair rows and their producer for the inspected AI host."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "Missing native per-party member recon-value queries and the group member-count owner at the inspected host sites."
+    },
+    {
+      "native": "006bc120",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: record_return_to_base_007f16d0",
+      "reason": "Missing an established native air-ops owner +5Dh contract: the host hardcodes remote=false while its canonical +5Dh cell is simulate, so neither value can safely be substituted here."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HUD map projection",
+      "reason": "Missing the native map-screen mode+2Ch and zoom+5BCh owner and producers."
+    },
+    {
+      "native": "007c6820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: actuator/effect drive projection",
+      "reason": "Missing the complete native plane/model sphere, camera projection, effect and timer dependencies required by the full actuator-drive body."
+    },
+    {
+      "native": "007b1010",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: path_cursor_index_007b1010",
+      "reason": "Native vslot evidence places this +8h getter in authored source table 00D0534C, not the cursor; its current PathCursorState interpretation needs correction before wiring."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing call: current built graph already reaches this body through cache containment and avoid-zone point offset."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing call: the existing reachable query-refresh body already calls this helper with its real segment list."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing call: the existing reachable query-refresh body already refills the real segment list through this helper."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: skill notification tail",
+      "reason": "No missing call: existing code already calls the reconstructed body with the loaded tail-gunner descriptor, actual level and shared draw."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text glyph rendering",
+      "reason": "Missing the native text-entry byte-validation call site; glyph rendering alone does not justify applying this byte acceptance predicate."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing an inspected live native listbox selection owner/caller; the helper requires its listener and refresh dispatch."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing the live native listbox selection owner/caller for its coupled clear/refresh behavior."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: reset_native_listbox_highlight_00a9cf30",
+      "reason": "Missing the live native listbox highlight owner/caller and required refresh callbacks."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_group_clear_00c47fc0",
+      "reason": "Missing an established real shape group mutation site with the owning body and required manifold-clear dispatch."
+    },
+    {
+      "native": "00c47ff0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_group_set_00c47ff0",
+      "reason": "Missing an established real shape group mutation site with the owning body and required manifold-clear dispatch."
+    }
+  ],
+  "metrics": {
+    "built_reconstructed_addresses_called_before": 5468,
+    "built_reconstructed_addresses_called_after": 5470,
+    "readiness_wired_before": 10623,
+    "readiness_wired_after": 10624
+  },
+  "implementation": [
+    "Run the existing 007B2250 body when the kind-0 user path is built and when a successor adopts its own point vector; retain its one-owner source for the path lifetime.",
+    "Borrow the actual slot user_points vector through a typed Vec3/array view; observe append, replacement and buffer reallocation without point copying or type punning.",
+    "Rebind a source to its same owner before a count read because the directors vector can relocate. Route user-path queue, cursor bounds, final-leg and path-follow advance counts through the existing 007B0E30 body.",
+    "Keep other path-source counts on their existing projection. Adapt the existing unwired SimplePathSource save body to the new borrowed-vector interface.",
+    "Review round 1: user-path counts, all point readers and the contiguous follow-step buffer select the same live user_points owner, independently of path_begun snapshot refresh."
+  ],
+  "evidence": [
+    "bsp.py show 007b2250: native fastcall out/slot interface, allocation, refcount and vtable stores; 0071F821 kind-0 path build caller.",
+    "bsp.py show 007b0e30: source+8 vector first/last and 12-byte point count.",
+    "call_graph.py who 007b2250: reachable, 2 call sites from build_own_points_source and copy_director_state_00720450.",
+    "call_graph.py who 007b0e30: reachable, 2 call sites from path_point_count and path_cursor_rows; path_point_count is called by gameplay queue, path-cursor bounds, final-leg and advance queries."
+  ],
+  "validation": [
+    "scripts/build.ps1 passes all four existing test groups.",
+    "git diff --check passes; no float arithmetic changed.",
+    "Review round 1: the focused probe now executes real GameCommandsHost begin/copy/append/final/cursor/follow operations. It fails on reviewed 4185490d8 objects and passes against the fixed rebuilt host. Game was not run."
+  ],
+  "limitations": [
+    "Static entry reach and focused source fixture, not gameplay or original ABI validation. The game was not run.",
+    "The existing host still owns one path per director and its existing copied point representation for inherited non-owned paths. Full native shared source/reference lifetime and archive saving are not newly claimed.",
+    "The readiness text census rises by one while the independently rebuilt executable gains two actual called reconstructed addresses."
+  ],
+  "follow_on": [
+    "0071F5D0 removal needs a real presence=0 producer and last-filled-slot path owner; agent/g5-w4 reported the current sender only produces presence=1 additions.",
+    "007B1010 needs its authored-source receiver interpretation corrected before use.",
+    "Native shared source references and the live archive-save owner remain separate from this one-owner host projection."
+  ],
+  "review_round_1": {
+    "review_run": 1692,
+    "reviewed_head": "4185490d8b06770ed6a0e94742f538990bad1bc3",
+    "findings": [
+      {
+        "finding": "User counts read live user_points but point/follow-step reads use stale path_points after director copy then append before begin.",
+        "status": "fixed",
+        "change": "Centralized selected source storage in GameDirector::path_point_storage. The retained SimplePathSource count view, cursor XY/XYZ, final point, build source, follow-step point/buffer, queue counts and report rows use that same storage. State copying takes the source selected by this accessor.",
+        "regression": "Extended the existing probe to execute actual GameCommandsHost public calls: begin a user path, copy director 0 to 1, append to 1 before its next begin, then query final and cursor points and advance/read the current point.",
+        "before": "Probe linked against existing 4185490d8 game objects exited 1: copy+append final point read the stale snapshot.",
+        "after": "PASS: the same probe linked to rebuilt game objects returns the appended XYZ through final-point, explicit cursor-point, and follow-step/current-point queries. All four build test groups pass; both claimed bodies remain reachable (5470 called reconstructed addresses)."
+      }
+    ],
+    "validation": {
+      "baseline_probe_exit": 1,
+      "baseline_failure": "copy+append final point read the stale snapshot",
+      "rebuilt_probe_exit": 0,
+      "rebuilt_probe_result": "simple path live-vector contract passed",
+      "build": "scripts/build.ps1: 4/4 test groups pass",
+      "call_graph": "007b2250 and 007b0e30 reachable; 5470/6083 reconstructed addresses called",
+      "float_math": "No float arithmetic changed; source-storage reads only.",
+      "probe_build": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /W4 /WX; link rebuilt bsp_game objects excluding game_main.obj, bsp_core/lua/zlib and Windows libraries; /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO.",
+      "readiness": {
+        "wired": 10624,
+        "claimed_rows": [
+          {
+            "address": "007b0e30",
+            "state": "wired",
+            "called": true,
+            "call_sites": 2
+          },
+          {
+            "address": "007b2250",
+            "state": "wired",
+            "called": true,
+            "call_sites": 2
+          }
+        ]
+      }
+    }
+  }
+}

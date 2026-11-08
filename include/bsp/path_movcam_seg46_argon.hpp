@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <array>
 #include <type_traits>
 #include <vector>
 
@@ -415,10 +416,41 @@ struct PathSourceBase {
     virtual int start_index_for_pos_vslot10(const Vec3& pos, float unused_radius, bool forward) = 0;
 };
 
+// Borrow a live vector object, rather than its data buffer: appending/replacing
+// points must be visible to the native source's next count/point query. The host
+// stores float3s as arrays, while the standalone path bodies use Vec3. Neither
+// vector is type-punned or copied. This is a source interface, not native layout.
+class SimplePathPoints {
+public:
+    SimplePathPoints() noexcept = default;
+    SimplePathPoints(const std::vector<Vec3>* points) noexcept { bind(points); }
+    SimplePathPoints(const std::vector<std::array<float, 3>>* points) noexcept { bind(points); }
+    explicit operator bool() const noexcept { return owner_ != nullptr; }
+    std::size_t size() const noexcept { return size_(owner_); }
+    Vec3 point(std::size_t index) const { return point_(owner_, index); }
+private:
+    static Vec3 read(const Vec3& point) noexcept { return point; }
+    static Vec3 read(const std::array<float, 3>& point) noexcept {
+        return {point[0], point[1], point[2]};
+    }
+    template<class Point> void bind(const std::vector<Point>* points) noexcept {
+        owner_ = points;
+        size_ = [](const void* owner) noexcept {
+            return static_cast<const std::vector<Point>*>(owner)->size();
+        };
+        point_ = [](const void* owner, std::size_t index) {
+            return read((*static_cast<const std::vector<Point>*>(owner))[index]);
+        };
+    }
+    const void* owner_{};
+    std::size_t (*size_)(const void*) noexcept{};
+    Vec3 (*point_)(const void*, std::size_t){};
+};
+
 struct SimplePathSource {
     std::uint32_t vtable_00{0x00D05318u};
     std::int32_t ref_count_04{1};
-    const std::vector<Vec3>* slot_points_08{nullptr};
+    SimplePathPoints slot_points_08{};
 };
 
 struct AuthoredPathSource {
@@ -482,10 +514,11 @@ void authored_path_source_save_007b1170(
     PathArchiveHost& archive);
 
 // 007B2250 BSP_EntityPathSource_CreateForSlot
-// __fastcall(ECX = SimplePathSource** out, EDX = const std::vector<Vec3>* slot_points), RET 0.
+// Native __fastcall(ECX = out, EDX = slot point-vector interface), RET 0.
+// New source ABI borrows either supported live vector representation.
 SimplePathSource** entity_path_source_create_for_slot_007b2250(
     SimplePathSource*& out_ptr,
-    const std::vector<Vec3>* slot_points);
+    SimplePathPoints slot_points);
 
 // 007B22A0 BSP_EntityPathSource_CreateForEntity
 // __fastcall(ECX = AuthoredPathSource** out, EDX = PathComponentState* scene_path), RET 0.
