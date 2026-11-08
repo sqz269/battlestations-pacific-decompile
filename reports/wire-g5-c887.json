@@ -64,5 +64,82 @@
     "Ghidra /battlestationspacific.exe verified by live proto queries; reviewed names and comments applied under the write lock, previous annotations recorded in local/ghidra-annotations-20261108T145040Z.json; project saved and four affected exports refreshed"
   ],
   "coordination": "Group files and addresses leased; scene_graph2 shared dispatcher queued behind PointLight, Model and Mesh edits. Changes there are confined to a Group header include and Group-only dispatcher delegation.",
-  "left": "No additional Group table implementation required. Original register ABI, full retail execution and gameplay remain unvalidated; no game launch was performed under the worker contract."
+  "left": "No additional Group table implementation required. Original register ABI, full retail execution and gameplay remain unvalidated; no game launch was performed under the worker contract.",
+  "merge_repair": {
+    "merged_origin_main": "77d866ef5be57d717c8cda9c219654f7b657c2de",
+    "conflict_files": [
+      "src/scene_graph2_cc13.cpp"
+    ],
+    "ledger_or_cmake_conflicts": false,
+    "resolution": "Preserved Group grow/append early-return delegates together with incoming Model delegates, Camera/Mesh paths and generic fallbacks. Diff against merged main contains only the original Group header include and two Group cases; no duplicate operation or new functional change.",
+    "normal_build": "scripts/build.ps1: exit 0, all four CTests passed",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c887-merge-on-build.log",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "ctests": "4/4 passed",
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_restored_exactly": true,
+      "backup_manifest_removed": true,
+      "mission_clock_switch_changed": false
+    },
+    "restored_normal_build": "scripts/build.ps1: exit 0, all four CTests passed after ON header restoration",
+    "focused_group_probe": "Passed again against merged/restored-normal library: no-shrink reserve, 32-to-66 slab-table growth, all 1025 slot identities, failed allocation publication, returns, trim and teardown.",
+    "pc24_lint": "0 findings, 0 allowed, 3 files",
+    "production_call_graph": {
+      "entry_reachable_functions": 43073,
+      "total_functions": 43228,
+      "reconstructed_addresses_called": 5636,
+      "reconstructed_addresses_total": 6284,
+      "group_helpers_reachable": [
+        "00b8e8e0",
+        "00b8e930",
+        "00b8edc0",
+        "00b8ee50"
+      ],
+      "icf_note": "Capacity and reserve retain equivalent Camera aliases; changed Group grow and constructor calls are present."
+    },
+    "readiness_command": "python tools/wire_readiness.py --standins",
+    "readiness_summary": {
+      "wired": 10751,
+      "callees_done_no_wired_caller": 8521,
+      "ready": 1202,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "readiness_group_rows": [
+      {
+        "address": "00b8e930",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00b8edc0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    ],
+    "readiness_call_graph": {
+      "build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w2\\build\\win32",
+      "map_mtime": 1794150968.7518253,
+      "exe_mtime": 1794150968.7452843,
+      "head": "ddc17363f6d71b76639af5bd928d525088d01117",
+      "no_inline": false,
+      "seconds": 4.5,
+      "orphan_contributions": {},
+      "stale": false,
+      "counts": {
+        "called": 6050,
+        "called_not_wired": 355,
+        "wired_not_called": 41,
+        "not_in_binary": 14634
+      }
+    },
+    "readiness_note": "10751 wired rows after integrating concurrent main work. The original packet gained two scored Group rows (10739 to 10741); both remain wired/called in this merged normal executable. The two newly recovered template-tagged helpers remain outside the scored pool."
+  }
 }

@@ -1,4 +1,5 @@
 #include "bsp/native_model_pool.hpp"
+#include "bsp/native_model_pool_table.hpp"
 #include "bsp/native_post_effect_model_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -61,7 +62,50 @@ NativeModelPool& require_static_pool() {
         throw std::logic_error("native 01090054 Native model pool has no actual storage binding");
     return *static_pool_01090054;
 }
+std::byte* slab_table(NativeModelPoolStorage& storage) noexcept {
+    return reinterpret_cast<std::byte*>(&storage) + offsetof(NativeModelPoolStorage, slabs_28);
+}
 } // namespace
+
+__declspec(noinline) void set_native_model_pool_table_capacity_00b74570(
+    void* header, std::uint32_t capacity) {
+    // bsp.py show 00B74570: capacity first, then a live count/source walk,
+    // per-destination null tests, free old data, publish replacement last.
+    auto* const table = static_cast<std::byte*>(header);
+    write(table + 8, capacity);
+    auto** const replacement = allocate_table(capacity);
+    auto destination = reinterpret_cast<std::uintptr_t>(replacement);
+    for (std::uint32_t i = 0; i < read<std::uint32_t>(table + 4); ++i, destination += 4u) {
+        if (destination != 0)
+            ::new (reinterpret_cast<void*>(destination)) std::byte*(read<std::byte**>(table)[i]);
+    }
+    if (auto** const old = read<std::byte**>(table)) singleton_lifetime_free(old);
+    write(table, replacement);
+}
+
+__declspec(noinline) void grow_native_model_pool_table_00b745c0(void* header) {
+    // 00B745C0 inlines the same body with modulo32 2*capacity+2.
+    const auto capacity = read<std::uint32_t>(static_cast<const std::byte*>(header) + 8);
+    set_native_model_pool_table_capacity_00b74570(header, capacity * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_model_pool_slab_00b747d0(
+    void* header, std::byte* const& slab) {
+    auto* const table = static_cast<std::byte*>(header);
+    if (read<std::uint32_t>(table + 4) == read<std::uint32_t>(table + 8))
+        grow_native_model_pool_table_00b745c0(header);
+    const auto destination = reinterpret_cast<std::uintptr_t>(read<std::byte**>(table))
+        + read<std::uint32_t>(table + 4) * 4u;
+    // 00B747D0 dereferences the borrowed source cell after any growth.
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    write(table + 4, read<std::uint32_t>(table + 4) + 1u);
+}
+
+__declspec(noinline) void reserve_native_model_pool_table_00b74860(
+    void* header, std::uint32_t capacity) {
+    if (read<std::uint32_t>(static_cast<const std::byte*>(header) + 8) < capacity)
+        set_native_model_pool_table_capacity_00b74570(header, capacity);
+}
 
 NativeModelPool::NativeModelPool(AllocatorListDomain& list,
     NativeModelPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -86,14 +130,9 @@ void NativeModelPool::initialize_00b74b80() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        // 00B74B80's reserve(32) is 00B74860's exact inline schedule,
+        // within constructor unwind state 2 on the retained process header.
+        reserve_native_model_pool_table_00b74860(slab_table(storage_), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b74530();
@@ -112,16 +151,9 @@ void* NativeModelPool::allocate_raw_slot_00b74d00() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b74450(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B74D48..00B74DAB (listing): reuse 00B747D0 for the live table
+        // grow/append after slab birth. First-free publication/lock unchanged.
+        append_native_model_pool_slab_00b747d0(slab_table(storage_), slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);

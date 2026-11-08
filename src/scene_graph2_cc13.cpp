@@ -5,8 +5,10 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_mesh_pool_table.hpp"
 
 #include <cctype>
+#include "bsp/native_model_pool_table.hpp"
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
@@ -90,16 +92,27 @@ bool is_pointer_array_routine(std::uint32_t address) noexcept {
 }
 
 void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t n) {
+    if (address == 0x00B72900) {
+        allocate_native_mesh_pool_table_00b72900(
+            {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
+        return;
+    }
     (void)count_of(kAllocate);
     if (address == 0x00B6FFF0) {
         allocate_native_camera_pool_table_00b6fff0(
             {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
         return;
     }
-    if (contains(kAllocate, 6, address)) array_reallocate_exact(a, n);
+    if (address == 0x00B74570)
+        set_native_model_pool_table_capacity_00b74570(&a, static_cast<std::uint32_t>(n));
+    else if (contains(kAllocate, 6, address)) array_reallocate_exact(a, n);
 }
 
 void grow_pointer_array(std::uint32_t address, PointerArray& a) {
+    if (address == 0x00B72950) {
+        grow_native_mesh_pool_table_00b72950({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
     if (address == 0x00B70040) {
         grow_native_camera_pool_table_00b70040({reinterpret_cast<std::byte*>(&a)});
         return;
@@ -108,10 +121,15 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
         grow_native_group_pool_table_00b8e930({reinterpret_cast<std::byte*>(&a)});
         return;
     }
-    if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
+    if (address == 0x00B745C0) grow_native_model_pool_table_00b745c0(&a);
+    else if (contains(kGrow, 10, address)) array_grow_double_plus_two(a);
 }
 
 void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value) {
+    if (address == 0x00B72E80) {
+        append_native_mesh_pool_table_00b72e80({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
     if (address == 0x00B71260) {
         append_native_camera_pool_table_00b71260({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
@@ -120,15 +138,23 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
         append_native_group_pool_table_00b8edc0({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
     }
-    if (contains(kPushBack, 10, address)) array_push_back_grow(a, value);
+    if (address == 0x00B747D0) {
+        auto* const slab = static_cast<std::byte*>(value);
+        append_native_model_pool_slab_00b747d0(&a, slab);
+    } else if (contains(kPushBack, 10, address)) array_push_back_grow(a, value);
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
+    if (address == 0x00B72F10) {
+        reserve_native_mesh_pool_table_00b72f10({reinterpret_cast<std::byte*>(&a)}, n);
+        return;
+    }
     if (address == 0x00B712F0) {
         reserve_native_camera_pool_table_00b712f0({reinterpret_cast<std::byte*>(&a)}, n);
         return;
     }
-    if (contains(kReserve, 6, address)) array_reserve_unsigned(a, n);
+    if (address == 0x00B74860) reserve_native_model_pool_table_00b74860(&a, n);
+    else if (contains(kReserve, 6, address)) array_reserve_unsigned(a, n);
 }
 
 void push_back_pointer_via_reserve(std::uint32_t address, PointerArray& a, void* value,
