@@ -1460,9 +1460,11 @@ public:
         owner_.log.unimplemented("MissionDetail::set_list_box_flags", "0058cd9e");
     }
     std::array<float, 3> list_box_position() override {
-        auto* list = owner_.widget(0x1B8);
-        if (!list) throw std::logic_error("mission detail requires its bound main listbox");
-        const auto point = resolved_position(list->transform); //00AA6750
+        // 0058CDB8..0058CDEE reads the saved screen+558h/+55Ch/+560h
+        // cells captured at 00587D80, then 0058CDF5 restores that position.
+        if (!owner_.main_listbox_position_558)
+            throw std::logic_error("mission detail requires its captured main-listbox position");
+        const auto& point = *owner_.main_listbox_position_558;
         return {point.x, point.y, point.z};
     }
     void move_list_box(std::array<float, 3> position) override {

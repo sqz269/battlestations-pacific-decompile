@@ -2256,10 +2256,15 @@ public:
         if (record->slot == kMainMenuPathScreenId) {
             // 00582F30 chains 004F71D0 and then calls its own slot +14h, which
             // is 005861B0: FE_main plus the list/detail pages and their widgets.
-            owner_.attach_page(*record, "FE_main");
             if (owner_.mission != nullptr) {
-                GuiLayoutPage* main_page =
-                    record->pages.empty() ? nullptr : record->pages.back();
+                // FE_main already belongs to the frame-layout singleton:
+                // 00E08500 set 2, backdrop 12. Borrow that owner's page;
+                // attach_page would overwrite its visibility with this still-
+                // inactive screen's byte, although this screen never collects it.
+                auto* main_page = static_cast<GuiLayoutPage*>(owner_.frame_layouts.backdrop[
+                    static_cast<int>(FrontEndFrameSet::MainMenu)][12]);
+                if (!main_page || !main_page->root)
+                    throw std::logic_error("main-menu screen requires frame-owned FE_main");
                 owner_.mission->bind_main_menu_layout_005861b0(main_page);
                 // 005905E0 collects screen+470h, not the FE_main background.
                 // The mission host loaded this SAME page during 005861B0;

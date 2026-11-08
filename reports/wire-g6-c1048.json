@@ -36,8 +36,8 @@
         "00587B0A..00587DE7: existing 00AA7E00 direct-child lookup binds the list groups, Main_Listbox/Sub_Listbox and their own MainListbox_Text templates from the same authored GUI graph",
         "00587D80: existing resolved_position reads the actual Main_Listbox position into the retained +558h/+55Ch/+560h view",
         "00588241: existing initialize_main_menu_text_00543710 receives TextBox_Group, TextBox_Text, 32 and the binary's gray/white/dark color quartets",
-        "005905E0: the menu screen collector borrows the same loaded +470h page instead of collecting the separate FE_main background",
-        "0058CD9E..0058CE05: the existing mission-detail caller now reads and restores the actual bound listbox transform instead of returning zero and logging its movement",
+        "005905E0: the menu screen collector borrows only the same loaded +470h page; FE_main is borrowed from the existing frame-layout singleton's set-2 backdrop-12 slot without attach_page or any screen-visibility write",
+        "0058CDB8..0058CDEE reads the saved screen+558h/+55Ch/+560h position captured at 00587D80; the existing mission-detail caller restores that saved position through 00AA8240 at 0058CDF5 and rejects an unbound capture",
         "00686C90 main-menu destruction at the existing mission-load handoff hides +470h together with the existing +2F0h/+244h/+248h roots"
       ],
       "native_fields": [
@@ -74,7 +74,7 @@
   ],
   "verification": {
     "baseline": "dd3b00472d; index fresh; scripts/build.ps1 passed all four checks",
-    "build": "scripts/build.ps1 passed all four checks after the object changes",
+    "build": "scripts/build.ps1 passed all four checks after the review-2292 round-1 ownership and saved-position fixes",
     "call_graph_before": {"called": 5761, "reconstructed": 6475},
     "call_graph_after": {"called": 5762, "reconstructed": 6476},
     "offered_gaps_wired": 0,
@@ -84,6 +84,33 @@
   "coordination": {
     "packet": "g6-w1",
     "dependency_lease": "src/game_hosts_menu.cpp was initially held by agent/g6-w12; foreground retry succeeded before any edits to that file",
+    "review_dependency_lease": "Review 2292 first claimed mission.cpp/report separately while menu.cpp was held by agent/g6-w9; foreground retries and that worker's release notice preceded successful acquisition and all menu edits",
     "integration": "Worker branch only; no merge, rebase or push"
+  },
+  "review_round_1": {
+    "run": 2292,
+    "reviewed_head": "4741390c4dbd2a7f73d2bcded18657aad2fc4b37",
+    "findings": [
+      {
+        "file": "src/game_hosts_menu.cpp",
+        "finding": "Preserve FE_main frame-owner visibility when installing the listbox collector",
+        "status": "fixed",
+        "evidence": "MenuFrameLayoutHost::gui_layout_acquire owns FE_main visibility; src/title_init.cpp's 00E08500 layout table places FE_main in set 2 backdrop 12; attach_page would publish this inactive screen's false active byte",
+        "change": "MenuManagerHost::register_screen borrows frame_layouts.backdrop[MainMenu][12] without loading or changing FE_main visibility and keeps only FE_main_listbox in record->pages"
+      },
+      {
+        "file": "src/game_hosts_mission.cpp",
+        "finding": "Restore the saved +558h/+55Ch/+560h position rather than the current transform",
+        "status": "fixed",
+        "evidence": "bsp.py show 0058C010 --asm: 0058CDB8 loads ESI+558h, 0058CDD9 loads ESI+55Ch, 0058CDE8 reads ESI+560h; 0058CDF5 calls 00AA8240",
+        "change": "MissionDetailBinding::list_box_position returns the retained main_listbox_position_558 and throws if it has not been captured"
+      }
+    ],
+    "checks": {
+      "build": "scripts/build.ps1: Win32 build and all 4 existing checks passed",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main: 0 findings across 3 files",
+      "call_graph": "python tools/call_graph.py: 5762/6476 reconstructed addresses called; who 00543710 confirms its reachable menu-registration caller",
+      "scope": "Both findings fixed; offered gaps remain 0 wired; no game run or original-ABI validation"
+    }
   }
 }
