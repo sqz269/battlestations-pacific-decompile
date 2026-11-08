@@ -1152,6 +1152,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
             "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3458/CD70F0: MOV ECX,F8BD4C; CALL AAD5F0; atexit(CE0A50).
+        // Start the same retained Movie pool used by AAD990 before Icon.
+        // This reserves the table; Movie factory/allocation remains separate.
+        auto& gui_movie_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiMoviePoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int movie_pool_atexit = gui_movie_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Movie pool CRT CD70F0: atexit=%d storage_bytes=%zu "
+            "before_icon_pool=1", movie_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3468/CD7180 starts the SAME F8BDA0 process pool used by AA1410.
         // No Icon allocation or Page factory is entered by pool startup.
         auto& gui_icon_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
@@ -1272,9 +1282,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
                 log.notef("native pool startup failed: %s", failure.what());
-                log.note("interrupted GUI Button/Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("interrupted GUI widget/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Button/Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI widget/Text/Group pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
@@ -1286,9 +1296,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
-                log.note("unknown interrupted GUI Button/Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("unknown interrupted GUI widget/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Button/Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI widget/Text/Group pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.
