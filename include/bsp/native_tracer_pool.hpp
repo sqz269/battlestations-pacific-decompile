@@ -39,6 +39,12 @@ void return_native_tracer_00bac2b0(void* actual_raw_slot, void* actual_pool_0109
 // preserving pointer/count/capacity. This header is at+28 in the actual owner.
 void free_native_tracer_pool_table_00ba9c80(void* actual_table_header) noexcept;
 
+// Complete BA9CC0: ECX actual0Ch table header, stack capacity, RET4. Publish
+// capacity before wrapped4*capacity allocation, copy current unsigned count,
+// free the old backing, then publish the new pointer. No count change/clamp.
+void reserve_native_tracer_pool_table_00ba9cc0(void* actual_table_header,
+    std::uint32_t capacity);
+
 // Complete BAC3C0: ECX fresh38h owner, EAX same owner; RET. Prepend to the SAME
 // application's E188B4 list, profileD63F90, real CS, reserve32 pointer cells.
 // Abnormal termination follows verified FH3 table -> section -> base order.

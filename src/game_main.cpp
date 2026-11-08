@@ -1142,6 +1142,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;
     bool gui_widget_pool_startup_incomplete = false;
     try {
+        // bsp.py ghidra xrefs/disasm CD70A0: CE3450 precedes Icon's CE3468;
+        // MOV ECX,F8BD00; CALL AABE00; register CE0A30 (Button pool destroy).
+        // Start the canonical process pool on the shared E188B4 allocator list.
+        auto& gui_button_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiButtonPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int button_pool_atexit = gui_button_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
+            "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3458/CD70F0: MOV ECX,F8BD4C; CALL AAD5F0; atexit(CE0A50).
         // Start the same retained Movie pool used by AAD990 before Icon.
         // This reserves the table; Movie factory/allocation remains separate.
@@ -1244,6 +1254,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_atexit = resource_pools.initialize_group_once_00cd8460();
         log.notef("native group pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual18ch", group_atexit);
+        // CD88D0 is at CE3614, before CD8A60/CE363C. Construct the canonical
+        // Tracer0109049C owner on the same E188B4 list; native CE0F90 owns exit.
+        const int tracer_atexit = particle_pools.initialize_tracer_once_00cd88d0();
+        log.notef("native tracer pool CRT CD88D0: atexit=%d storage=process_actual38h",
+            tracer_atexit);
         // CD8A60 is at CE363C in the original initializer table, after CD82D0
         // and before CD9010's physical provider pool (started by VFS).
         auto& weak_pool = bsp::game::game_native_weak_pool_process();
