@@ -1076,28 +1076,34 @@ public:
     }
     int attackmove_ordinal() override { return bsp::kEntityOrderAttackMoveOrdinal; }
 
-    // entity+16ch, 0077d787. Nothing in this process writes it: its only
-    // producer in the reconstruction is the `AICreateGroup` binding 00a38a50
-    // through 00a2dfa0 / 00a2d8e0, and no installed mission script calls it.
+    // entity+16Ch at 0077D787. 00A2D8E0's live attach path now retains this
+    // publication in the coordinator's group_of_unit table. Resolve the actual
+    // commanded entity's index; initial scene orders before a coordinator and
+    // units outside groups still take the native null arm.
     void* entity_ai_group(void* entity) override {
-        static_cast<void>(entity);
-        return nullptr;
+        const auto* unit = static_cast<const GameCommandUnit*>(entity);
+        return unit != nullptr ? ai_group_for_entity(unit->index) : nullptr;
     }
     void* entity_controller(void* entity) override {
-        static_cast<void>(entity);
-        return nullptr;
+        // Listing 0077D791..0077D7A3: a formation member forwards only when
+        // its group's +14h leader is itself. set_unit_formation publishes the
+        // live follower/leader pair on join, leave and leader replacement.
+        // Borrow that retained leader cell as this source adapter's opaque
+        // controller identity; leaders and ungrouped units take the null arm.
+        auto* unit = static_cast<GameCommandUnit*>(entity);
+        return unit != nullptr && unit->formation_follower
+            ? &unit->formation_leader : nullptr;
     }
     void* controller_owner(void* controller) override {
-        static_cast<void>(controller);
-        return nullptr;
+        if (controller == nullptr) return nullptr;
+        const std::size_t leader = *static_cast<const std::size_t*>(controller);
+        return leader < chain_.owner.units.size() ? &chain_.owner.units[leader] : nullptr;
     }
-    // 00a2bd90 at 0077d7a3. Not reached here, because the entity has no group.
+    // 00A2BD90 at 0077D7A3, after the same 0077D600 group/controller gates.
     void ai_group_forward_command(void* ai_group, void* command,
         const bsp::SceneCommandTarget& target) override {
-        static_cast<void>(ai_group);
-        static_cast<void>(command);
-        static_cast<void>(target);
-        chain_.owner.record("EntityOrder::ai_group_forward_command", 0x00a2bd90u);
+        ai_forward_group_member_command(ai_group, command, target);
+        chain_.owner.done("EntityOrder::ai_group_forward_command", 0x00a2bd90u);
         if (chain_.row != nullptr) chain_.row->ai_group_notified = true;
         ++chain_.owner.summary.ai_forwards;
     }
@@ -1200,9 +1206,9 @@ public:
         // destroyer vtable 00CFC3D0), so it is [unit+338h], read elsewhere as
         // the unit (its +54h party, GUNNERY 35); slot 140h of that vtable is
         // 0047F320, MOV EAX,ECX. The block 0071ed19..0071ed5c then needs
-        // entity+16Ch, the AI group, which nothing sets on any reference row
-        // (entity_ai_group above; the coordinator creates no group), so
-        // answering 0 skips exactly what the image skips there. LABELLED.
+        // This session-endpoint path still lacks its real subject binding.
+        // The direct EntityOrder path above resolves coordinator membership;
+        // retain this endpoint's labelled null substitution until it has one.
         chain_.owner.record_slot("EntityCommand::endpoint_subject", "00d09ec0+vtable140");
         return 0;
     }

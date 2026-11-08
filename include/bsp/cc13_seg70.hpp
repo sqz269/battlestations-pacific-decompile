@@ -180,7 +180,17 @@ struct PlannerConstructionHost {
     virtual void pool_return_00bd1510(void* data, std::uint32_t size) = 0;
 };
 
-struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost, PlannerConstructionHost {
+// 00A2BD90 needs only the current command publication and its +24h dispatch.
+// The source gameplay owner may supply its retained typed Group/command;
+// legacy raw callers use Seg70Host's +564Ch field access below.
+struct GroupCommandForwardHost {
+    virtual ~GroupCommandForwardHost() = default;
+    virtual void* group_current_command(void* group) = 0;
+    virtual void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) = 0;
+};
+
+struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost, PlannerConstructionHost,
+                   GroupCommandForwardHost {
     virtual ~Seg70Host() = default;
 
     // Image globals: the memory at that image address.
@@ -200,7 +210,10 @@ struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost, PlannerConstructi
     virtual bool is_kind_of_5c(void* entity, int class_id) = 0;              // entity vtable +5Ch
     bool command_is_type_08(void* command, int type) override = 0;          // command vtable +8h
     virtual void* command_clone_for_group_20(void* command, void* group) = 0; // command vtable +20h
-    virtual void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) = 0;  // +24h, RET 8
+    void* group_current_command(void* group) override {
+        return Raw{static_cast<std::uint8_t*>(group)}.ptr(kGroupCommand);
+    }
+    void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) override = 0;  // +24h, RET 8
     virtual void command_fill_lua_18(void* command, LuaObjectRaw* table) = 0; // command vtable +18h
 
     // std::list helpers (ECX = the list object).
@@ -328,7 +341,8 @@ void group_set_command_00a2bd00(Seg70Host& host, Raw group, void* command);
 // 00A2BD50 BSP_AiGroup_CopyCommandFrom, __thiscall(group)(other), RET 4.
 void group_copy_command_from_00a2bd50(Seg70Host& host, Raw group, Raw other);
 // 00A2BD90 BSP_AiGroup_ForwardCommand, __thiscall(group)(a, b), RET 8.
-void group_forward_command_00a2bd90(Seg70Host& host, Raw group, std::uint32_t a, std::uint32_t b);
+void group_forward_command_00a2bd90(GroupCommandForwardHost& host, void* group,
+                                  std::uint32_t a, std::uint32_t b);
 // 00A2BDB0 BSP_AiGroup_IsAttackingTarget, __thiscall(group)(target_group), RET 4.
 bool group_is_attacking_target_00a2bdb0(CommandTypeQueryHost& host, Raw group, void* target_group);
 // 00A2BE10 BSP_AiGroup_IsSelling, __thiscall(group), AL.
