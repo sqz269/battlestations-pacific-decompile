@@ -1,0 +1,80 @@
+{
+  "goal": 5,
+  "chain": 776,
+  "run": 1666,
+  "owner": "agent/g5-w10",
+  "scope": "Flak class Lua reader and descriptor finalisation",
+  "rows": [
+    {
+      "native": "0070c030",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::bullet_class_descriptor -> load_weapon_class_fields -> load_flak_class_fields",
+      "evidence": "bsp.py show 0070c030 and --asm: base reader at C051, clear D4 at C062, plain integer at C07B, CVTSI2SS at C080, store 58 at C088.",
+      "state": "Uses the live Bullets[id] row and cached descriptor; existing resource resolver limitations remain. Replaces the semantic helper's old operations, without running either base reader or leaf twice.",
+      "abi": "Typed row/descriptor projection; original thiscall(ECX=class, stack=Lua row), RET4. Not a binary ABI replacement.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0070c0b0",
+      "status": "skipped",
+      "host_site": "src/bullet_engagement_range.cpp: weapon_class_derive_engagement_range",
+      "reason": "The semantic helper still owns the flak fuse division; the address body needs the existing typed base-finalisation result instead of original-image calls."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage::capture_members",
+      "reason": "The copied member+04h vector has no established formation-station consumer; its miss path also requires actual mutable F87574/78/7C storage."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate scoring",
+      "reason": "Missing a live native candidate-score-list owner and gameplay consumer; current planner scoring uses separate vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate scoring",
+      "reason": "Missing actual candidate-score-list records whose chosen flag feeds gameplay; allocating an unused parallel list would not wire the body."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate selection",
+      "reason": "The inspected host already calls this body; an additional invocation would duplicate existing work."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_native_scene.cpp: GUI scene loading",
+      "reason": "Missing a live curve-point owner and mesh consumer in the inspected native GUI scene path."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state bindings",
+      "reason": "Missing the reached controller-state message producer and snapshot consumer; mentioning the network format in a Lua comment is not a call."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot",
+      "reason": "Missing a reached controller-snapshot message producer using the actual director extension; live projectile state is a different operation."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification",
+      "reason": "Existing chain451 code already calls this body with the loaded descriptor, actual skill notification and shared random stream."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest checks passed",
+    "entry_graph_before": { "reconstructed_called": 5466, "reachable_functions": 42410 },
+    "entry_graph_after": { "reconstructed_called": 5467, "reachable_functions": 42412 },
+    "source_wired_before": 10622,
+    "game_run": false
+  }
+}

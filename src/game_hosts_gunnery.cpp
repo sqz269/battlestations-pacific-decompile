@@ -284,6 +284,17 @@ public:
         });
         return value;
     }
+    int plain_integer_value(const char* key) const override {
+        int value = 0;
+        with_value(key, [&](lua_State* s) {
+            // bsp.py show 0070c030 --asm: CALL B66290, with no type check.
+            // B66290 spills lua_tonumber to float32 before CRT truncation.
+            const bool sse2_conversion =
+                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+            value = bsp::lua_number_integer_00b66290(::lua_tonumber(s, -1), sse2_conversion);
+        });
+        return value;
+    }
     bool boolean_value(const char* key, bool fallback) const override {
         bool value = fallback;
         with_value(key, [&](lua_State* s) {

@@ -10,6 +10,7 @@
 // ticks are not modelled: only the two flak predicates are, and every other
 // tick body is listed as a contract in the doc.
 #include "bsp/projectile_kinds.hpp"
+#include "bsp/flak_note_seg36_37_argon.hpp"
 
 #include <cctype>
 
@@ -278,9 +279,7 @@ void load_rocket_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost
 
 void load_flak_class_fields(const WeaponClassRowView& row, WeaponClassLoadHost& host,
                             WeaponClassDescriptor& desc) {
-    load_weapon_class_base_fields(row, host, desc); // 0070C051, the base not the bomb
-    desc.effects.time_out = 0;                      // +D4h is cleared at 0070C04B
-    desc.flak_min_range = static_cast<float>(row.integer_value("MinRange", 0));
+    flak_note_seg36_37_argon::FlakBulletClass_ReadLuaFields_0070c030(row, host, desc);
 }
 
 void load_weapon_class_fields(ProjectileKind kind, const WeaponClassRowView& row,
