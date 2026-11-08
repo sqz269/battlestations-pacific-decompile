@@ -1,0 +1,124 @@
+{
+  "packet": "g5-w12",
+  "chain": 913,
+  "base": "8e9a34a1df",
+  "picked": "GUI Listbox retained F8BC10 pool startup and its actual slab pointer table",
+  "rows": [
+    {
+      "native": "00a9aeb0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: initialize_pool<GuiListboxPoolTraits> -> reserve_native_listbox_pool_table_00a9b2d0 -> set_native_listbox_pool_table_capacity_00a9aeb0",
+      "evidence": "NOICF analysis executable: one reachable tail call from A9B2D0; path through Listbox process initialize_once and WinMain to WinMainCRTStartup. Same live F8BC10+28h header."
+    },
+    {
+      "native": "00a9b2d0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp: WinMain Listbox startup -> GameNativeGuiWidgetPoolProcess<GuiListboxPoolTraits>::initialize_once -> src/native_material_pools.cpp: initialize_pool<GuiListboxPoolTraits>",
+      "evidence": "NOICF analysis executable: one reachable CALL from Listbox initialize_pool. Live Ghidra CD6FF0 constructs F8BC10 at CRT table CE3444, before Button CE3450; exit CE0A00 destroys A9AFD0."
+    },
+    {
+      "native": "00a9af00",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate (prepared only)",
+      "reason": "Missing production Listbox allocation-factory caller; grow is fixture-tested on the actual pool but absent from both game executables."
+    },
+    {
+      "native": "00a9b250",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate (prepared only)",
+      "reason": "Missing production caller of Listbox allocation stub A9B7E0; actual-slab append specialization and focused fixture are ready, but fixture calls do not count as wiring."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate planning survey",
+      "reason": "Missing live native score-list owner and gameplay consumer; the prior skip evidence identifies the excluded debug overlay as its reader."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate planning survey",
+      "reason": "Missing native score-list entries whose chosen byte feeds the live planner; a parallel list would have no gameplay consumer."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate survey",
+      "reason": "Missing verified entry-reachable coordinator path for the existing candidate call; no additional predicate call was added."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "Missing actual ship BBC sound owner, device list at 428 and consumed byte at 6B4; the host currently records the operation."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp: scale_sound_instance_volume_00a79880",
+      "reason": "Already reachable in the baseline executable from retained-sound nonpositive, ramp and scaled-ramp updates; no missing wiring to replace there."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "Already called in the baseline readiness graph; no new missing call established during survey."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Already called in the baseline readiness graph; another teardown call would duplicate existing behavior."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: recon publication survey",
+      "reason": "Missing NativeReconDirtyAccess bindings for actual slot dirty bytes, player contexts and world unit-list invalidation; existing publication derives differences."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane state survey",
+      "reason": "Missing verified actual impulse-storage and matrix-copy binding for this raw-object body; the inspected host site records that operation."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing authored flak-alternate ammo record producer and its retained references/tree; the host explicitly documents no producer."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building vector survey",
+      "reason": "Missing verified binding to the actual unit vector at 660 and its resize/default-element lifetime; only a source survey was performed."
+    },
+    {
+      "native": "00761c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: NativeSessionMessage111 survey",
+      "reason": "Missing verified single-player producer and consumer for message111; the inspected live bridge handles message112 instead."
+    }
+  ],
+  "metrics": {
+    "wire_readiness_wired_before": 10768,
+    "wire_readiness_wired_after": 10785,
+    "verified_new_bodies": 2,
+    "default_executable_called_addresses_before": 5668,
+    "default_executable_called_addresses_after": 5669,
+    "analysis_executable_called_addresses_after": 7492,
+    "qualification": "Readiness is a source-file text heuristic: its +17 includes functions in newly reached cc13_seg87.cpp, including uncalled grow/append. Default identical-code folding merges Listbox capacity/reserve with other pool helpers. NOICF analysis verifies the two Listbox-specific call paths separately; no claim that all 17 are newly called."
+  },
+  "checks": {
+    "baseline": "scripts/build.ps1 passed all four CTests; initial index retry succeeded after SQLite reader closed.",
+    "default_build": "scripts/build.ps1 passed all four CTests; local/c913-build.log",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passed; local/c913-analysis-build.log",
+    "call_graph": "call_graph.py rebuilt for both default and NOICF executables; who A9AEB0/A9B2D0 and path A9AEB0 confirm Listbox-specific initialization from WinMainCRTStartup; A9B250 is not linked.",
+    "focused_probe": "tests/wire_g5_c913_listbox_table_probe.cpp passed via local/c913-probe.cmd: reserve32, 513 allocations causing table32->66, preserved slab/slot identities, no-op reserve, new-handler sees published capacity and old data/count, teardown unlinks allocator while preserving table fields.",
+    "float_math": "No float math changed; pc24 lint not required.",
+    "runtime": "Game not run; reachability/build/fixture evidence only, no native ABI or gameplay parity claim."
+  },
+  "left": "Connect the real Listbox type-table factory/owner to A9B7E0 before counting A9AF00/A9B250. The actual allocation path is prepared and fixture-tested.",
+  "shared_files": "Notified w10/w11/w1. Listbox startup is before Button; material specializations before Model; process file adds only cc13_seg87.hpp and Listbox instantiation. Shared files released as soon as frozen."
+}

@@ -654,6 +654,21 @@ template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
+template<> void NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize() {
+    // A9B4A0 inlines A9B2D0's reserve(32), inside native unwind state 2.
+    // The retained F8BC10 pool keeps its actual header at +28h throughout.
+    initialize_pool<GuiListboxPoolTraits,
+        &reserve_native_listbox_pool_table_00a9b2d0>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate() {
+    // A9B580 inlines A9B250 after initializing the actual 1824h slab,
+    // under the existing critical section. Replace the common append once.
+    return allocate_slot<GuiListboxPoolTraits,
+        &NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize_slab,
+        &push_native_listbox_pool_slab_00a9b250>(storage_);
+}
+
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
     // ACC1D0 inlines ACC160 on the actual F8C09C+28h header, EH state 2.
     initialize_pool<GuiModelPoolTraits,
