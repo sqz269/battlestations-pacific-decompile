@@ -1,0 +1,148 @@
+{
+  "run": 2137,
+  "chain": 959,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "base": "28356eb429",
+  "picked": "Native XInput disabled-rumble polling reuses the existing stop-vibration body",
+  "rows": [
+    {
+      "native": "00a9a790",
+      "status": "wired",
+      "host_site": "src/native_gamepad_xinput.cpp: bsp::poll_native_xinput_00a9a7f0",
+      "implementation": "bsp::stop_native_xinput_vibration_00a9a790",
+      "newly_wired": true,
+      "evidence": "The actual native device owner and its production XInputApi are forwarded after successful GetState when the live E12F2C rumble flag is disabled. This replaces the inline motor-zeroing and SetState operation; no second SDK submission remains on that arm. Release call_graph who reports one REACHABLE call at 106212ab from poll_native_xinput_00a9a7f0 into stop_native_xinput_vibration_00a9a790 at 10621630."
+    },
+    {
+      "native": "00a9a7f0",
+      "status": "wired",
+      "host_site": "src/native_input_device_runtime.cpp: bsp::NativeInputDeviceRuntime::poll_device_vslot10",
+      "newly_wired": false,
+      "evidence": "Already entry-reachable before this chain. Its xinput profile dispatch passes the same actual owner to the modified raw poll. Failed GetState still returns before SetState; the enabled-rumble arm still submits retained motor values once; axis normalization remains after the single submission."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a live raw Listbox+144 input-filter producer/consumer adapter; the existing companion owns typed widget state rather than the raw object this setter requires."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a caller with the body's raw FC/100/104 row-list and 108/10C iterator storage; the current companion uses std::list of actual widget owners and its existing clear operation has different deletion semantics."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing the raw row-list/iterator owner adapter and a live selection-by-data caller; typed selected-row/data accessors alone do not supply the body's raw list storage."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing the raw listener114 and select-index dispatch adapter plus a live silent-selection caller; the existing typed select_index operation is not this raw wrapper."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Missing a raw Listbox owner/caller bridge for selection clearing; the companion's std::list iterator and listener storage cannot be passed as a native object."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "Selection survey did not establish the native candidate score-table owner and gameplay consumer needed for insert_sorted; historical skips identify an excluded debug-overlay consumer."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "Selection survey did not establish actual native score-list entries or a gameplay consumer for mark_chosen; adding a parallel table would not replace planner behavior."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "Selection survey did not establish the two CandidateAttackBlock producers and concrete attack-value host adapter required by this body."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "Missing the concrete live input-character GuiLeafHost adapter carrying its actual FontData; direct source uses found in the survey are probe checks with constant bytes."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: frontend widget bridge",
+      "reason": "Selection survey did not establish the descriptor-writing caller 00AAAED0; render-child traversal is not the alphabetical property snapshot consumer."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB3.cpp and src/cc13_sweepB4.cpp: curve rebuild callbacks",
+      "reason": "Missing a concrete curve callback adapter and retained authored-control-point owner feeding the live curve consumer; abstract callbacks alone do not wire the body."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam callbacks",
+      "reason": "Selection survey did not establish a live MovCamZoom owner and original camera-FOV consumer; the separate published mission-camera projection is insufficient."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCam frame callback",
+      "reason": "Missing a retained live MovCamAngles owner and concrete wrap/clamp frame callback; a separate camera's angles cannot substitute for that state."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp: engine_movie_rewind_0045c5b0 callback",
+      "reason": "Missing a concrete callback and live EngineMovieClock owner for the rewind path; the source survey found only the abstract caller."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: movie action parser",
+      "reason": "Selection survey did not establish the live MovieActionTokens producer and animation-action parser caller needed to consume this body."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/segs_0_9_11_cc13.cpp: engine_movie_advance_0045f970 callback",
+      "reason": "Missing a concrete advance callback carrying the live EngineMovieClock and playback consumer; the source survey found only the abstract caller."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bomb ticking",
+      "reason": "Selection survey did not establish the complete native BombTickState producers, including launch-delay410, active458 and arming45C, or their concrete BombTickHost adapter."
+    }
+  ],
+  "real_state": {
+    "owner": "NativeInputDeviceRuntime::poll_device_vslot10 forwards the actual xinput-profile allocation; no extra device or shadow motor record is created.",
+    "inputs": "Existing user-index220, SDK-written state228, retained motor WORDs238/23A, live rumble-enabled flag and production XInputApi.",
+    "single_execution": "Disabled rumble executes only the existing A9A790 zero-and-SetState body. Enabled rumble executes only the original retained-value SetState. GetState failure executes neither.",
+    "choice": "Retain the existing raw address-owned operation out of line so the optimized production build contains a separately reviewable direct call. No new address-suffixed body was added."
+  },
+  "native_evidence": [
+    "python tools/bsp.py show 00a9a790 --lines 45: zero motor WORDs238/23A and XInputSetState(index220, owner+238), returning SDK result.",
+    "python tools/bsp.py show 00a9a7f0 --lines 65: failed GetState returns early; disabled E12F2C clears the same motor WORDs; success makes exactly one SetState call."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all four existing CTest groups passed.",
+    "call_graph_before": "5710/6419 reconstructed addresses called; 43359/43515 functions entry-reachable.",
+    "call_graph_after": "5711/6420 reconstructed addresses called; 43360/43516 functions entry-reachable.",
+    "readiness_wired_before": 10827,
+    "readiness_wired_after": 10828,
+    "readiness_target": "00a9a790 is wired, called=true, call_sites=1, callers_live=1.",
+    "path": "WinMain -> GameStartupHost -> GameInputRuntime -> NativeInputBackendStartupDeviceRuntime -> NativeInputDeviceRuntime::poll_device_vslot10 -> poll_native_xinput_00a9a7f0 -> stop_native_xinput_vibration_00a9a790.",
+    "pc24": "No float arithmetic changed; axis normalization remains untouched.",
+    "limits": "Static built-entry reach and existing tests only. No game launch, live controller/hardware validation, raw ABI-equivalence claim or new fixture test."
+  }
+}
