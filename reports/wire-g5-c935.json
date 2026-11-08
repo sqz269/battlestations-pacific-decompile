@@ -1,0 +1,92 @@
+{
+  "goal": 5,
+  "chain": 935,
+  "run": 2081,
+  "branch": "agent/g5-w12",
+  "picked": "Material and MaterialParameter retained slab-table reserve and append",
+  "rows": [
+    {
+      "native": "00b17b70",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPool::allocate_00b18200 -> allocate_slot<NativeMaterialPool> -> append_native_material_pool_slab_00b17b70",
+      "state": "The same F8D3AC process-owner table at +28h, with its genuine initialized slab, under the existing pool critical section.",
+      "analysis_call_site": "106c4843 -> 106c8150"
+    },
+    {
+      "native": "00b17bf0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPool::initialize_00b17fa0 -> initialize_pool<NativeMaterialPool> -> reserve_native_material_pool_table_00b17bf0",
+      "state": "The same F8D3AC process-owner table at +28h; binary reserve capacity 32 within constructor unwind state 2.",
+      "analysis_call_site": "106c6116 -> 106c89a0"
+    },
+    {
+      "native": "00b17c50",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialParameterPool::allocate_slot_00b185a0 -> allocate_slot<NativeMaterialParameterPool> -> append_native_material_parameter_pool_slab_00b17c50",
+      "state": "The same F8D3E4 process-owner table at +28h, with its genuine initialized slab, under the existing pool critical section.",
+      "analysis_call_site": "106c45c3 -> 106c8100"
+    },
+    {
+      "native": "00b17cd0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialParameterPool::initialize_00b18340 -> initialize_pool<NativeMaterialParameterPool> -> reserve_native_material_parameter_pool_table_00b17cd0",
+      "state": "The same F8D3E4 process-owner table at +28h; binary reserve capacity 32 within constructor unwind state 2.",
+      "analysis_call_site": "106c5ed6 -> 106c8980"
+    },
+    {
+      "native": "00ac9290",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiGridPoolTraits>::destroy",
+      "reason": "Owned by agent/g5-w2 chain 933; the worker reported the Grid cleanup complete, so this packet supplies no duplicate body."
+    },
+    {
+      "native": "0071bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameDirector path cursor projection",
+      "reason": "Missing retained per-slot path owners beyond slot zero and a corresponding variable-index cursor consumer; the existing host only owns the slot-zero cursor."
+    },
+    {
+      "native": "0071ebf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::active_command_descriptor_0071eb60",
+      "reason": "Missing an established live newest-attack-target query caller; the inspected current-descriptor consumer implements the distinct 0071EB60 slot-zero selection."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director user-path messages",
+      "reason": "Missing presence-zero clear-message producer and retained path owners for each selectable director slot; the inspected live sender supplies additions."
+    }
+  ],
+  "evidence": {
+    "original_bodies": ["bsp.py show 00b17b70", "bsp.py show 00b17bf0", "bsp.py show 00b17c50", "bsp.py show 00b17cd0"],
+    "inline_consumers": ["bsp.py show 00b17fa0", "bsp.py show 00b18200", "bsp.py show 00b18340", "bsp.py show 00b185a0"],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "old_names": {
+      "00b17b70": "TMPL_PointerArray_PushBack_00b17b70",
+      "00b17bf0": "TMPL_PointerArray_Reserve_00b17bf0",
+      "00b17c50": "TMPL_PointerArray_PushBack_00b17c50",
+      "00b17cd0": "TMPL_PointerArray_Reserve_00b17cd0"
+    },
+    "prior_annotations": "local/c935-prior-annotation.json",
+    "annotation_apply": "local/c935-annotation.log; saved project and refreshed all four exports",
+    "abi": "Original __thiscall with ECX=actual 0Ch header, one stack argument, RET 4; source interfaces do not assert binary ABI compatibility.",
+    "shared_file": "Claimed native_material_pools.cpp after w5/w2 released; released immediately after freezing this packet's edits for w6/w9/w3."
+  },
+  "validation": {
+    "release_build": "scripts/build.ps1 passed; all four existing CTests passed, local/c935-build.log",
+    "focused_probe": "local/c935-probe.cpp/.cmd/.log: passed real Material and Parameter pool reserve(32), 33-slab table growth to 66, preserved slab IDs and table relocation, returned-slot reuse, balanced recursion and shutdown; probe linked /MANIFEST:EMBED",
+    "release_graph": "local/c935-baseline.json and local/c935-after.json: all four newly mapped addresses are entry-reachable; identical-code folding merges each append/reserve pair in Release",
+    "release_graph_recon_called_before": 5683,
+    "release_graph_recon_called_after": 5685,
+    "new_entry_reachable_addresses": ["00b17b70", "00b17bf0", "00b17c50", "00b17cd0"],
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passed; local/c935-analysis-build.log",
+    "analysis_graph": "call_graph.py --build-dir build/analysis; each of the four distinct address bodies has exactly one reachable call site, local/c935-analysis-who.log",
+    "analysis_entry_path": "local/c935-analysis-path.log: WinMainCRTStartup -> game loop -> MissionRenderResourcesGraph initialization -> material parameter binding -> actual parameter pool -> recovered append",
+    "readiness": "Ran --standins before/after. These four generic template-tagged native functions are outside its game-row scope; compiled call graphs provide the per-address evidence. Global source-level totals are approximate and are not used as this packet's proof.",
+    "float_math": "No float operations changed.",
+    "game_validated": false
+  },
+  "left": "No game launch or original ABI validation. Director newest-target/cursor/clear-path wiring needs the missing live consumers/producers noted above. Material/Parameter shutdown table leaves B17630/B17670 retain their existing shared free_table implementation."
+}
