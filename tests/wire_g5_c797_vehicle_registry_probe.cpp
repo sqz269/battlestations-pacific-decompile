@@ -1,0 +1,34 @@
+// Focused host fixture: cache publication survives relocation, replacement,
+// and shrink after the registry's real constructor. This is not a game run.
+#include "bsp/game_host_vehicle_class.hpp"
+#include "bsp/native_string.hpp"
+#include <cstdio>
+#include <stdexcept>
+
+int main() {
+    bsp::NativeStringPoolStorage* volatile strings = nullptr;
+    volatile std::uint32_t returns_disabled = 0;
+    void* volatile manager = nullptr;
+    bsp::NativeStringRawPoolContext context{strings, returns_disabled, manager};
+    bsp::game::GameVehicleClassDescriptorCache cache(context);
+    auto require = [](bool value) {
+        if (!value) throw std::runtime_error("vehicle registry cache publication regression");
+    };
+    require(cache.cache_size() == 0 && cache.cached(0) == nullptr);
+    bsp::VehicleClassDescriptor first, second;
+    first.ref_count = 2;
+    cache.store_cached(0, &first);
+    cache.resize_cache(2048); // Forces growth beyond the initial single slot.
+    require(cache.cache_size() == 2048 && cache.cached(0) == &first);
+    require(cache.cached(2047) == nullptr && cache.cached(2048) == nullptr);
+    cache.store_cached(0, &second);
+    require(first.ref_count == 1 && cache.cached(0) == &second);
+    cache.resize_cache(0);
+    require(second.ref_count == 0 && cache.cache_size() == 0 && cache.cached(0) == nullptr);
+    cache.store_cached(7, &first); // Reuse retained capacity after shrink.
+    require(cache.cache_size() == 8 && cache.cached(7) == &first && cache.cached(0) == nullptr);
+    cache.resize_cache(0);
+    // These synthetic string publications are never used by this cache-only fixture.
+    require(strings == nullptr && manager == nullptr && returns_disabled == 0);
+    std::puts("c797 vehicle registry cache relocation/replacement/shrink: PASS");
+}

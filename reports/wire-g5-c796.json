@@ -1,0 +1,280 @@
+{
+  "chain": 796,
+  "slot": "g5-w4",
+  "base_head": "90a27b4748309b9f262bde0e43d9a955c15fb552",
+  "picked": "Run the existing 00412500 C-string length body from the live NativeString construction and duplication paths",
+  "rows": [
+    {
+      "native": "00412500",
+      "status": "wired",
+      "host_site": "src/native_string.cpp: NativeString::assign_0041e870, construct_native_string_header_0041e870, duplicate_00438e40",
+      "evidence": "bsp.py show 00412500: NUL byte scan returning length in EAX; existing body is segs_0_9_11_cc13::c_string_length_00412500. The three former CRT strlen scans are replaced, with real caller text, the same DWORD length and existing null-duplicate guard.",
+      "call_sites": ["1040b68a", "1040b789", "1040b849", "1040ba8a"],
+      "entry_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> qualify_vfs_physical_read_owner -> NativeString::assign_0041e870 -> c_string_length_00412500"
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "The cursor-switch adapter has no original map animated-value target virtual88 or notify04 callback; its implementations deliberately throw."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: pointer bridge",
+      "reason": "No concrete GuiPointerRuntimeServices binding with actual AA2F10 hit testing and shared input/resource ownership was established."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The live HUD callback only records the address and supplies no SoundInstance with its actual sample/options owner."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "The callback only records the address; the ship sound object and device-list audio recipients required to consume the plan are missing."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted",
+      "reason": "No live candidate-score-list owner and gameplay consumer was established; the documented original table reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen",
+      "reason": "There is no live candidate-score-list record whose chosen byte feeds a gameplay consumer."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native property insertion",
+      "reason": "Already called at baseline; prior wiring is not new credit for this chain."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_merge.cpp: merge_native_scene_property_bag_008f54f0",
+      "reason": "Already called at baseline through the numeric-property merge path; the source ready classification is not a new wiring opportunity."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam frame wrap_and_clamp callback",
+      "reason": "No retained live MovCamAngles owner and concrete original frame-update callback was established."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp: aim_delta_00794910 callback",
+      "reason": "The original camera controller still needs a live host supplying its AimCameraView and AimTargetView."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_tick_gate_passes_0099c270",
+      "reason": "The inspected baseline lacked matching native per-parity unit flags; agent/g5-w7 subsequently claimed and reported wiring this gate in chain 794, so it is outside this packet."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg47_cc13.cpp: debris_spec_007caad0",
+      "reason": "No actual per-part visual record/node translation and plane-debris dynamics consumer was established."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_sound_step_007de490",
+      "reason": "No live EngineSoundParams owner with loaded engine-sound handles and consumers for the emitted sound calls was established."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The callback explicitly has no ammo+48h alternate producer or native retained-reference/tree-owning ammunition record."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "No actual unit+660h 44h-element vector and matching Seg62Host lifetime binding was established."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "The host lacks a concrete per-member 00779D00 recon-value provider and live original group-scoring consumer."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker projection",
+      "reason": "The current camera projection culls to its own clip rectangle; the original marker margin producer and consumer were not established."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "No production caller for the existing binding with the actual world/Lua publication and live raw enum owner was established."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "reason": "Already reachable at baseline with one compiled call site from the real sensor-class registry allocator."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The identified original consumer is the debug unit inspector; debug-only wiring is excluded."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "No live camera consumer supplying an actual extra clip plane was established; ordinary GUI projection does not require one."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "No extra-clip-plane owner/use path was established that requires the corresponding clear operation."
+    },
+    {
+      "native": "007f0f80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: observer_member_initialize_007f0f80 callback",
+      "reason": "No live native approach/member owner with retained observer lifetime and actual endpoint cells was established."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_result_sink_construct_008875d0",
+      "reason": "The identified original sinks are in DebugTrap and 00427190; no qualifying single-player result-sink owner and consumer was established."
+    },
+    {
+      "native": "0093aa90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: set_section_failure_effect",
+      "reason": "The host callback throws; actual per-section point-effect slots and effect creation/stop/release consumers remain missing."
+    },
+    {
+      "native": "007f7cd0",
+      "status": "skipped",
+      "host_site": "src/band_0079_cc13.cpp: player_record_has_recent_camera_state_007f7cd0",
+      "reason": "The original caller consumes received MT_CAMERA player records; no relevant single-player owner/consumer was established."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/oct18_tail_a.cpp: checkpoint_record_copy_construct_00437490",
+      "reason": "No live checkpoint-record copy construction over actual raw source/destination records was established."
+    },
+    {
+      "native": "006bc120",
+      "status": "skipped",
+      "host_site": "src/cc13_seg29U.cpp: air_ops_block_owner_missing_006bc120",
+      "reason": "No original live callback with the actual block+7Ch owner and its torn-down byte was established."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: collect_language_lanfiles",
+      "reason": "The existing helper has an unsuffixed identifier; no original mission-loader installed_languages consumer bound to the actual language catalog was established."
+    },
+    {
+      "native": "0042c4c0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: camera_mover_set_shake_0042c4c0",
+      "reason": "No retained live mover with the six native shake fields and their update consumer was established."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: reserve_native_vehicle_pointer_array_00546630",
+      "reason": "No matching live raw pointer-array owner with current native referent slot0 terminal dispatch was established."
+    },
+    {
+      "native": "00749210",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_structure_class_fields_00749210",
+      "reason": "There is no concrete VehicleClassLeafFieldHost binding for actual effect references, raw descriptor vector slots and class resolution."
+    },
+    {
+      "native": "0074d4a0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_wreckable_class_fields_0074d4a0",
+      "reason": "The raw leaf reader lacks a concrete effect/wreck ownership binding over its live descriptor."
+    },
+    {
+      "native": "007d1f70",
+      "status": "skipped",
+      "host_site": "src/plane_class_fields.cpp: read_plane_class_fields_007d1f70",
+      "reason": "No live PlaneClassFieldHost implementation was established for the complete plane descriptor reader and its resource owners."
+    },
+    {
+      "native": "0074c630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaShipLeafFieldBinding",
+      "reason": "LandingTroopClasses access and actual soldier/vehicle class registration are unavailable; all three relevant binding methods currently throw."
+    },
+    {
+      "native": "00953720",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: small_recon_plane_class_name_00953720",
+      "reason": "No live descriptor class-name virtual-slot consumer was established; descriptor loading uses the authored Type string."
+    },
+    {
+      "native": "009537b0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: large_recon_plane_class_name_009537b0",
+      "reason": "No live descriptor class-name virtual-slot consumer was established; descriptor loading uses the authored Type string."
+    },
+    {
+      "native": "00963e00",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: submarine_class_name_00963e00",
+      "reason": "No live descriptor class-name virtual-slot consumer was established; descriptor loading uses the authored Type string."
+    },
+    {
+      "native": "009c6220",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: math_clamp_symmetric_009c6220",
+      "reason": "The original has no indexed callers; no live clamp operation with the same ordering and numeric contract was established."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect_distance_to_point_009d7780",
+      "reason": "The original has no indexed callers and no live record with its rectangle field layout was established."
+    },
+    {
+      "native": "009d7930",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect2_distance_to_point_009d7930",
+      "reason": "No live alternate-rectangle record and consumer matching its distinct center/axis/flag layout was established."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four CTest groups",
+    "changed_build": "scripts/build.ps1 passed all four CTest groups, 10.86 seconds",
+    "existing_string_checks": "reconstructed_math includes NativeString terminator copy, allocation/release lengths, resize behavior and raw-pool string construction checks",
+    "call_graph": "53089 -> 53090 reachable functions; 6024 -> 6025 reconstructed addresses called; who 00412500 reports four reachable call sites and no unreachable callers",
+    "wire_readiness": "00412500 moved from callees_done_no_wired_caller, called=null to wired, called=true, call_sites=4, callers_live=4",
+    "wired_total_before": 10637,
+    "wired_total_after": 10638,
+    "initial_setup_wired_total": 10634,
+    "metadata_note": "Shared reconstruction metadata changed three readiness rows during selection before this code edit; the pre-edit refreshed total was 10637. The executable graph increased by exactly one reconstructed address.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "assumptions": [
+    "A pure reconstructed C-string primitive may replace equivalent CRT scans in an existing reached reconstructed caller. This is a new composition, not a claim that original 0041E870 or 00438E40 called 00412500.",
+    "Existing constructors continue to require a valid NUL-terminated input; duplication continues to return null before scanning a null input."
+  ],
+  "boundaries": "Build and executable entry-reachability evidence only. No original ABI, original literal-address identity, game launch or gameplay validation is claimed. No new address-suffixed function was created."
+}

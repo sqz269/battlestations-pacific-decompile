@@ -18,7 +18,17 @@
     "probe": "Ignored local/c798_camera_probe.cpp and local/c798-camera-probe.cmd; MANIFEST:EMBED; no game loop or original executable code run.",
     "limits": "Build, static reachability and bounded camera-fixture evidence only; no gameplay, original ABI or original MovCam caller validation."
   },
-  "coordination": "profile_seg2_cc13 header/cpp were held by g5-w9. Requested the narrow interface, waited for its release, then claimed before editing. Its separate VehicleClassRegistryConstructionHost base must be retained alongside MatrixNegatedRotationHost if landing the two header edits conflicts.",
+  "coordination": "profile_seg2_cc13 header/cpp were held by g5-w9. Requested the narrow interface, waited for its release, then claimed before editing. The landing conflict was resolved by preserving both MatrixNegatedRotationHost and VehicleClassRegistryConstructionHost as Seg2Host bases; MatrixCopyHost is inherited once through MatrixNegatedRotationHost.",
+  "landing_merge_validation": {
+    "merged_origin_main": "081e18603d1c345e029ff9c7eb17d3d65cb48853",
+    "resolution": "Only profile_seg2_cc13.hpp conflicted. Kept both narrow host interfaces and both sets of narrowed function signatures. No ledger or cmake/startup.cmake conflicts occurred.",
+    "build": "scripts/build.ps1 passed after the resolution; all five tests passed.",
+    "on_build": "The c798 path is unconditional, so the standard build compiles and links the ON path. There is no c798 OFF switch or separate toggle build. The unrelated kWireGoal3Chain242Bound remains false.",
+    "wire_readiness": {"wired": 10646, "0042b450_called": true, "0042b450_call_sites": 2, "0042b490_called": true, "0042b490_call_sites": 2},
+    "call_graph": {"entry_reachable_called_addresses": 5500, "00437e10_called": true, "00435960_called": true},
+    "matrix_equivalence": "Rebuilt the probe against all merged game objects and bsp_core; all 216 matrix rows still match the original c798 baseline byte-for-byte, with the unchanged trace SHA-256 recorded above.",
+    "count_note": "These merged-tree totals include incoming main work; c798's own two-address increase is recorded in counts."
+  },
   "rows": [
     {"native":"0042b450","status":"wired","host_site":"src/mission_camera.cpp::update_ship_captain_00432ed0 via rot_x_negated"},
     {"native":"0042b490","status":"wired","host_site":"src/mission_camera.cpp::update_ship_captain_00432ed0 via rot_y_negated"},

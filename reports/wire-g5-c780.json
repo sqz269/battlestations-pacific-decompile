@@ -1,0 +1,120 @@
+{
+  "run": 1675,
+  "chain": 780,
+  "owner": "agent/g5-w11",
+  "base": "7cff7e8c8d333f4f705479e036001b281ea669f7",
+  "picked": "Projectile plain-number Lua field reader over the live Bullets row",
+  "before": {
+    "wire_readiness_wired": 10624,
+    "wire_readiness_called": 5853,
+    "call_graph_recon_called": 5469,
+    "00700330_called": false
+  },
+  "after": {
+    "wire_readiness_wired": 10624,
+    "wire_readiness_called": 5854,
+    "call_graph_recon_called": 5470,
+    "00700330_called": true
+  },
+  "change": "Reuse the existing 00700330 body, replacing original-address fn_at calls with the reconstructed native Lua primitives. LuaBulletClassRow::number_value now calls it with an untracked consuming copy/view of its actual Bullets row or actual subtable. The old direct field/conversion path is removed. The lookup owns and releases its tracked child; the outer row scope still owns the borrowed table stack entry.",
+  "assumptions": [
+    "00700330 is a generic keyed GetNumber helper; its original dummy-target caller does not impose a class-specific condition on the same operation used by the projectile field loader.",
+    "The call-scoped NativeLuaStateStorage borrows the existing interpreter and rebases only its local tracking slots. It does not replace the process interpreter, register DoFile, fabricate descriptor values, or close the borrowed interpreter.",
+    "The standalone probe is synthetic ownership/coercion evidence, not execution of a shipped mission."
+  ],
+  "evidence": [
+    "bsp.py show 00700330 --asm: 0070035D GetByName, 00700369 GetNumber, 0070036E FSTP32; 00700379 destroys the field before 0070038A destroys the by-value table; RET 14h at 0070039E.",
+    "The existing native_lua_number_00b66270 implementation supplies the native float32 result, preserving the prior LuaBulletClassRow plain-number coercion.",
+    "call_graph.py who 00700330 finds a new reachable direct call from LuaBulletClassRow::number_value; the first post-change build placed it at 100D00D7, targeting the actual body at 1003A0F0.",
+    "call_graph.py path 00700330 includes bullet_class_descriptor -> build_guns -> attach_00864bd0 -> GameUnitsHost::create_units and the executable entry. Textual wired status was already true before the change, while no body was linked/called."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all four existing test groups after the final C++ change",
+    "focused_probe": "passed: numeric-string coercion, __index lookup, nil-to-zero, tracked-copy consumption, untracked-row borrowing, field-before-copy cleanup, and unchanged 80-value stack prefix at PC24",
+    "probe_compile_from_x86_tools_shell": "cl /nologo /std:c++17 /EHsc /O2 /MD /I include /I build\\win32\\_deps\\lua511-src\\src tests\\wire_g5_c780_number_reader_probe.cpp src\\dummy_depth_seg34_argon.cpp /Fo:local\\ /Fe:local\\c780-number-probe.exe /link /MANIFEST:EMBED build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib",
+    "probe_run": "local\\c780-number-probe.exe",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD; no new floating arithmetic chain",
+    "diff_check": "git diff --check passed"
+  },
+  "limits": [
+    "No game launch or gameplay validation was performed.",
+    "This is an explicit C++ Source interface, not the original by-value register/stack ABI or a proof of original private SEH/nonlocal Lua-error equivalence.",
+    "Only the generic number reader is changed; deferred class/resource/physics owners listed below remain missing."
+  ],
+  "integration_retry": {
+    "merged_origin_main": "f79dd3bc136c2d678cf6d52fb450e5b0826430ea",
+    "resolution": "Hand-unioned the native LuaObject and GuiLuaHost/GuiLuaRef forward declarations, and both corresponding includes. Kept main's 006FE780 default-reader body and this branch's 00700330 plain-number body. The gunnery merge was clean. No ledger shard or cmake/startup.cmake conflicts occurred.",
+    "normal_build": "scripts/build.ps1 passed all four test groups both before and after the temporary ON build; the final executable uses the restored normal switches",
+    "on_build": "tools/off_switch_on_build.py --log local/c780-on-build.log passed all four test groups, exit 0, zero distinct compiler/linker diagnostics",
+    "on_switches": ["kAutoAttackAllMembersBound", "kPlaneFormationPlacementEnabled"],
+    "restoration": "Both toggled headers restored byte-for-byte, verified with before/after SHA-256; the mission-clock switch was not changed",
+    "header_sha256": {
+      "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+      "include/bsp/game_hosts_units_internal.hpp": "801ED5CCB0831C608EE547037AC9BDA4B30CD868787F6A0DD3EC12AE740FD867"
+    },
+    "focused_probes": "Both tests/wire_g5_c780_number_reader_probe.cpp and main's tests/wire_g5_c777_number_default_probe.cpp passed against the merged helper source and real linked Lua 5.1 library",
+    "normal_call_graph": {
+      "reconstructed_addresses_called": 5481,
+      "00700330": "one reachable direct call from LuaBulletClassRow::number_value at 100D03E7 to 1003A140",
+      "006fe780": "one reachable direct call from PlaneBinding::dkz_release_007bbba0 at 102D9E14 to 1003A1E0"
+    },
+    "wire_readiness": {
+      "wired": 10634,
+      "called": 5866,
+      "00700330": {"state":"wired", "called":true, "call_sites":1, "callers_live":1},
+      "006fe780": {"state":"wired", "called":true, "call_sites":1, "callers_live":1}
+    },
+    "pc24_lint": "0 findings across four files for origin/main...HEAD",
+    "count_scope": "The original before/after counts above describe chain 780 before integration; retry totals include the newly merged main changes."
+  },
+  "rows": [
+    {"native":"00700330","status":"wired","host_site":"src/game_hosts_gunnery.cpp: LuaBulletClassRow::number_value"},
+    {"native":"00759120","status":"skipped","host_site":"src/game_hosts_units.cpp: Impl::carrier_runway_class_00759120","reason":"The raw mothership binder also needs the complete ship model/buoyancy owner and native named-point model, beyond the existing Aux-point projection."},
+    {"native":"0082fe30","status":"skipped","host_site":"src/game_hosts_units.cpp: Impl::carrier_runway_class_00759120","reason":"Missing full raw class/model binding, buoyancy/debarkation/bow/wave/indexed-point vector owners required by Big53Host."},
+    {"native":"004cd610","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: mission teardown end-movie arm","reason":"Missing actual game+7184 and movie-screen visibility/input/cinematic owners plus the complete five-pass sound transition binding."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/engine_seg49_64_78_cc13.cpp: input-character glyph callback","reason":"No concrete live input-character consumer with its actual text-context font was established; constant probe calls are insufficient."},
+    {"native":"00aa3bd0","status":"skipped","host_site":"src/cc13_gui1.cpp: widget creator dispatch","reason":"Existing create_kind projection only chooses default/copy; the full cGuiLayer factory and concrete widget_type_creator binding remain missing."},
+    {"native":"00a79880","status":"skipped","host_site":"src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::set_ambient_volume","reason":"The host reports no ambient sound instance and lacks the actual owned SoundInstance needed by the setter."},
+    {"native":"00c47f60","status":"skipped","host_site":"src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70","reason":"Missing actual DYN hull-shape chain and world-lock/manifold-clear callbacks; the current host stores a boolean."},
+    {"native":"00c47f90","status":"skipped","host_site":"src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70","reason":"Missing actual DYN hull shapes and filter-change manifold cleanup."},
+    {"native":"00c47fc0","status":"skipped","host_site":"src/game_hosts_units.cpp: submarine periscope break","reason":"Missing actual periscope controller shape-group owner and required manifold invalidation binding."},
+    {"native":"006f7c20","status":"skipped","host_site":"src/entity_orders.cpp: entity_order_collect_by_category_006f9110","reason":"Its category collector/menu owner has no linked executable caller in this build; adding the sort alone would remain dead."},
+    {"native":"006f9110","status":"skipped","host_site":"src/entity_orders.cpp: entity_order_menu_set_category_00523900","reason":"No linked real player-unit menu/category consumer was established in this packet."},
+    {"native":"005cd640","status":"skipped","host_site":"src/cc13_segmix.cpp: vehicle-camera array callbacks","reason":"Missing concrete caller ownership of the native vehicle-camera array and row string lifetimes on an executable path."},
+    {"native":"0078e230","status":"skipped","host_site":"src/frontend_seg19_21_cc13.cpp: vehicle_camera_array_construct_005cc700","reason":"No live vehicle-camera array constructor owner was established; invoking limits initialization on an unrelated camera would not wire that path."},
+    {"native":"009b3240","status":"skipped","host_site":"src/game_hosts_units.cpp: Impl::install_land_task_core_009b41c0","reason":"Missing complete base/composite constructors, stable actual task states/profiles and executable entry services required by NativeLandTaskConstructorCalls."},
+    {"native":"008fbef0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: tail-gunner skill notification","reason":"Already called from the loaded gun-bot descriptor and actual selected gun rows; baseline readiness called=true, so no new wiring was made."},
+    {"native":"0085d770","status":"skipped","host_site":"src/game_hosts_units.cpp: plane collision-band alternate frame","reason":"Missing own-unit+B04h velocity-correction producer needed to reach the original alternate-frame branch."},
+    {"native":"0085e8c0","status":"skipped","host_site":"src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0","reason":"No matching live pivot/axis rotation call site and its actual owner was established in the inspected unit paths."},
+    {"native":"00638b90","status":"skipped","host_site":"src/cc13_pkt642.cpp: HUD marker margin callback","reason":"Missing a concrete marker-screen consumer supplying its actual margin cells and widescreen publication."},
+    {"native":"0057bec0","status":"skipped","host_site":"src/game_hosts_menu.cpp: Impl::report_loading_progress_0057bec0","reason":"The published loading-screen singleton and real progress already call the existing body; older disabled-switch skips are stale."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/game_hosts_commands.cpp: user-path clearing","reason":"Existing helper reconstructs only slot selection, not the whole original clearing operation; source factory ownership was concurrently held by g5-w9."},
+    {"native":"00721070","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: descriptor_init_00721070","reason":"No live state-message constructor site requiring this default descriptor was identified; adding an unused descriptor would not count."},
+    {"native":"00721280","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: state_message_build_00721280","reason":"Missing executable message producer carrying the actual controller mode, flags and both descriptors."},
+    {"native":"007214c0","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0","reason":"Missing executable snapshot producer carrying actual director enable/avoidance arrays and getter results."},
+    {"native":"008f2f70","status":"skipped","host_site":"src/game_native_enum_lua_declaration.cpp: declaration adapter","reason":"Missing canonical published world and constructed native Lua owner at +1A0Ch required by the enum registration path."},
+    {"native":"00b67c40","status":"skipped","host_site":"src/game_recon_sensor_class_registry.cpp: GUI-range Color reader","reason":"Already has an entry-reachable call using the actual Color table; verified with the baseline executable call graph."},
+    {"native":"00ba0090","status":"skipped","host_site":"src/water_weather_cc13.cpp: ocean_field_depth_sample_kernel_00ba0090","reason":"The existing kernel is a fragment of the ocean update; no actual depth-render owner/consumer for its sample array was established."},
+    {"native":"00475710","status":"skipped","host_site":"src/scene_class_registry.cpp: get_or_create_buoy_class_00475710","reason":"No live buoy-class registry consumer with the corresponding actual scene-object construction path was established."},
+    {"native":"004722d0","status":"skipped","host_site":"src/scene_class_registry.cpp: get_or_create_anim_class_004722d0","reason":"No live animation-class registry consumer with actual scene-object construction was established."},
+    {"native":"00803ba0","status":"skipped","host_site":"src/game_hosts_lua.cpp: recon listener publication","reason":"The host uses content-change detection and lacks canonical native recon-slot dirty bytes and world+193Ch invalidation ownership."},
+    {"native":"00ab4990","status":"skipped","host_site":"src/game_native_gui_icon_application.cpp: named-value queue","reason":"No admitted actual named-value append queue consumer was established; the raw array/string lifetime provider alone is insufficient."},
+    {"native":"005495a0","status":"skipped","host_site":"src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530","reason":"Missing concrete MainMenuCommandResetHost for the command owner's actual glyph widget fields."},
+    {"native":"005495e0","status":"skipped","host_site":"src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530","reason":"Missing concrete MainMenuCommandResetHost for the command owner's actual alternate widget fields."},
+    {"native":"00549620","status":"skipped","host_site":"src/main_menu_command_owner.cpp: help-variant setter","reason":"No live command-owner help-variant call site with actual retained command widget bindings was established."},
+    {"native":"00a25a30","status":"skipped","host_site":"src/game_hosts_ai.cpp: planner spawn path","reason":"The existing reconstructed gate is only the routine prefix; a complete live threat/source/spawn owner path was not established."},
+    {"native":"00a03900","status":"skipped","host_site":"src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900","reason":"No matching live mode-indexed class-pair table producer and executable query consumer was established."},
+    {"native":"00a2def0","status":"skipped","host_site":"src/game_hosts_ai.cpp: defend candidate pass","reason":"The current defend pass already names the reconstructed candidate rule; this audit made no additional call path."},
+    {"native":"00b6fc30","status":"skipped","host_site":"src/game_native_mission_camera.inc: mission camera","reason":"No matching horizontal-FOV product consumer was established; adding an unused product to camera creation would not count."},
+    {"native":"00758510","status":"skipped","host_site":"src/unit_kind_query.cpp: ship kind dispatch","reason":"The existing live class-id adapter already calls native_mothership_is_kind_00758510; no additional wiring was needed."},
+    {"native":"00ac2d00","status":"skipped","host_site":"src/game_native_gui_line_application.cpp: Line constructor continuation","reason":"The actual bridge begins at the current74 constructor continuation; complete base-widget construction services for the whole default constructor remain missing."},
+    {"native":"00ac2d60","status":"skipped","host_site":"src/game_native_gui_line_application.cpp: Line copy path","reason":"No complete actual base-widget copy and native point-vector copy services were established for the full copy constructor."},
+    {"native":"0074d4a0","status":"skipped","host_site":"src/vehicle_class_fields.cpp: read_wreckable_class_fields_0074d4a0","reason":"Missing actual effect references, native descriptor ownership and wreck-class preload services needed by the full leaf."},
+    {"native":"00749210","status":"skipped","host_site":"src/vehicle_class_fields.cpp: read_structure_class_fields_00749210","reason":"Missing complete actual effect-handle arrays and descriptor lifetime bindings required by the structure leaf."},
+    {"native":"00851580","status":"skipped","host_site":"src/cc13_seg52b.cpp: stationary class reader","reason":"Existing stationary host only queries source rows; a complete native stationary descriptor/base/model/resource owner was not established."},
+    {"native":"006e02c0","status":"skipped","host_site":"src/pool_pool01_cc13.cpp: multiple_bomb_platform_class_read_lua_fields_006e02c0","reason":"Missing complete base bomb-platform descriptor reader and retained native Platforms array consumer."},
+    {"native":"006eb6b0","status":"skipped","host_site":"src/cc13_seg33a.cpp: catapult_class_read_lua_fields_006eb6b0","reason":"The current native device descriptor is constructor-only; the complete gun base reader and loaded catapult field consumers remain unbound."},
+    {"native":"00701060","status":"skipped","host_site":"src/pool_pool09_cc13.cpp: dummy_target_bullet_class_read_lua_fields_00701060","reason":"Missing complete linked vehicle-class resolution and descriptor-name/reference ownership beyond the bomb-class projection."},
+    {"native":"00700290","status":"skipped","host_site":"src/pool_pool09_cc13.cpp: dummy-target OpenAtFallingSpeed","reason":"No matching live dummy-target subtype field consumer was established; exact-number default readers cannot be replaced by this nil-only default helper."}
+  ]
+}

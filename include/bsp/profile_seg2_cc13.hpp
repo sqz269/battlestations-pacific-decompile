@@ -60,7 +60,14 @@ struct MatrixNegatedRotationHost : MatrixCopyHost {
     virtual void build_rotation_y_00b646e0(Mat16& out, const float& angle) = 0;
 };
 
-struct Seg2Host : MatrixOrthonormalizeHost, MatrixNegatedRotationHost {
+// 00437E10 needs only the party-row reserve provider.
+struct VehicleClassRegistryConstructionHost {
+    virtual ~VehicleClassRegistryConstructionHost() = default;
+    virtual void party_rows_reserve_00435960(Raw vector, std::uint32_t count) = 0;
+};
+
+struct Seg2Host : MatrixOrthonormalizeHost, MatrixNegatedRotationHost,
+                  VehicleClassRegistryConstructionHost {
     virtual ~Seg2Host() = default;
     // Image globals (dword storage at a fixed address) and image data addresses.
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -182,7 +189,7 @@ void vehicle_class_registry_destruct_singleton_base_00435770(Raw object, Seg2Hos
 void lua_script_holder_close_00435850(Raw holder, Seg2Host& host);
 void profile_manager_destruct_004358c0(Raw manager, Seg2Host& host);
 void vehicle_class_registry_reset_index_tables_004356f0(Raw registry) noexcept;
-Raw vehicle_class_registry_construct_00437e10(Raw registry, Seg2Host& host);
+Raw vehicle_class_registry_construct_00437e10(Raw registry, VehicleClassRegistryConstructionHost& host);
 void vehicle_class_registry_destruct_00437ea0(Raw registry, Seg2Host& host);
 void registry_cache_destroy_00437dc0(Raw vector, Seg2Host& host);
 void registry_cache_destroy_00437df0(Raw vector, Seg2Host& host);

@@ -1,0 +1,60 @@
+{
+  "chain": 788,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "picked": "Torpedo class finalizer through the live cached weapon-class derivation",
+  "rows": [
+    {
+      "native": "00855a90",
+      "status": "wired",
+      "host_site": "src/bullet_engagement_range.cpp: bsp::weapon_class_derive_engagement_range, called by src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns",
+      "state_source": "weapon_class_finalise_input copies actual cached WeaponClassDescriptor WaterTravelSpeed(+E4h), MaxFall(+E0h), and FlyTime(+54h); the base finalizer's real result supplies FlyTime and acceptance",
+      "consumer": "leaf cached_range_60 becomes finalised.engagement_range, consumed by build_guns as gun.max_range; terminal speed and acceptance remain the finalization result",
+      "replacement": "Removed the duplicate range/fall arithmetic and the wrapper's premature latch return; called the sole existing body in gameplay_seg53_cc13.cpp after the base finalizer",
+      "original_abi": "__thiscall(ECX descriptor), RET 0, AL success; the reused C++ field projection is not a binary ABI replacement",
+      "evidence": [
+        "bsp.py show 00855a90 --asm: base call 00855A95; FLD/FMUL/FMUL/FSTP at 00855A9A..00855AAB; FADD/FMUL/FSTP/sqrt at 00855AAE..00855AD3; AL acceptance at 00855AD9..00855AF5",
+        "ghidra bytes 00CEFF98: 00 00 00 40 33 33 E3 3F; 00CF9058: 00 00 00 60 B8 9E 23 40, both exact float-valued double constants used by the existing body",
+        "call_graph.py who 00855a90: REACHABLE, one call at 103E9A17 from bsp::weapon_class_derive_engagement_range",
+        "call_graph.py path 00855a90 includes GameGunneryHost::Impl::build_guns, attach_00864bd0 and GameUnitsHost::create_units"
+      ]
+    },
+    {"native": "0074c630", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_surface_ship_leaf", "reason": "Missing actual SoldierClass and vehicle-class preload services for the LandingTroopClass[LandingTroopType].Classes walk; the existing leaf binding throws on those services."},
+    {"native": "00749210", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: load_descriptor", "reason": "Missing native structure-descriptor image and refcounted effect-resource owner for this raw-pointer field reader."},
+    {"native": "0074d4a0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: load_descriptor", "reason": "Missing native wreckable-descriptor image and resolved wreck/effect owners; the present host descriptor is a separate semantic projection."},
+    {"native": "00852c60", "status": "skipped", "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_submarine_depth_level_008528b0", "reason": "Missing reached A1h depth-step message producer/consumer; the present Lua depth setter directly uses the absolute 008528B0 path."},
+    {"native": "00852b50", "status": "skipped", "host_site": "src/gameplay_seg53_cc13.cpp: submarine_depth_step_shallower_00852b50", "reason": "No original image reference or reached single-player producer for this unreferenced depth-step helper was established."},
+    {"native": "00852b70", "status": "skipped", "host_site": "src/gameplay_seg53_cc13.cpp: submarine_depth_step_deeper_00852b70", "reason": "Missing reached original caller for this depth-step helper; adding it to the absolute Lua setter would change that command's meaning."},
+    {"native": "00852740", "status": "skipped", "host_site": "src/gameplay_seg53_cc13.cpp: submarine_is_below_band1_for_kind0e_00852740", "reason": "No reached caller supplying the actual kind-0Eh argument and consuming this band predicate was established."},
+    {"native": "0085d770", "status": "skipped", "host_site": "src/game_hosts_units.cpp: plane collision-band path", "reason": "Missing admitted unit+B04h velocity-correction producer for the original caller's alternate-frame branch."},
+    {"native": "0085e8c0", "status": "skipped", "host_site": "src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0", "reason": "No reached original orbit-about-point caller and consuming matrix path was established in the surveyed hosts."},
+    {"native": "00b6fc30", "status": "skipped", "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30", "reason": "Missing reached original product-query consumer with a bound actual CameraProjection; the inspected shadow-fit caller remains unhosted."},
+    {"native": "00a2b950", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: candidate score-list path", "reason": "Missing actual native candidate-score entries and gameplay consumer; existing planning uses separate weight vectors."},
+    {"native": "00a2bcc0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: candidate score-list path", "reason": "Missing retained native score-list entries whose chosen byte feeds the live planner."},
+    {"native": "008141a0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: helm-control message path", "reason": "Missing reached helm-message application carrying sender authority, real timestamp and a backfill consumer."},
+    {"native": "0078e480", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: MovCam callback", "reason": "Missing retained MovCam zoom owner and original camera-FOV consumer; the callback remains unreached."},
+    {"native": "00721280", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: controller message path", "reason": "Missing retained controller-state message producer/consumer with both command descriptors, controller mode and native flags."},
+    {"native": "0071f5d0", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: user-path loopback", "reason": "Missing presence-zero clear-message producer and retained path owners for the selected director slot; current producer adds points."},
+    {"native": "0071d3e0", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: user-path loopback", "reason": "Missing reached user-path clear operation and consuming per-slot path owner for the presence-zero message."},
+    {"native": "008db990", "status": "skipped", "host_site": "src/engine_seg56_cc13.cpp: objective_entry_select_entity_or_pos_key", "reason": "Missing concrete objective-property archive carrying the actual vtable+14h predicate and vtable+10h selector."},
+    {"native": "004bb8a0", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: platform-session polling", "reason": "Original callers are unhosted platform-session polling and multiplayer pause handling; no required single-player caller was established."}
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four tests before changes",
+    "changed_build": "scripts/build.ps1 passed all four tests after the production change",
+    "differential_probe": "tests/wire_g5_c788_torpedo_class_probe.cpp: 2 fixtures x 2 latch states, zero mismatches against listing-based x87 operations under PC24; the HEAD pre-change implementation produced three mismatches",
+    "probe_link": "MSVC Win32 /O2 /MD /Gy, bsp_core.lib plus src/gameplay_seg53_cc13.cpp and src/flak_note_seg36_37_argon.cpp, /link /OPT:REF /MANIFEST:EMBED; invocation recorded in local/c788-torpedo-probe.cmd",
+    "fixture_provenance": "Installed arcade/bulletclasses.lua ArcadeTable[4] Fido: WaterTravelSpeed 30.8664, FlyTime 60, MaxFall 50; the second fixture changes FlyTime to 180 for the PC24 rounding boundary and MaxFall to zero for the positive-speed gate",
+    "pc24_lint": "0 findings on the working production diff; the committed origin/main...HEAD diff is checked again at completion",
+    "git_diff_check": "passed",
+    "game_validation": "Not run, as instructed"
+  },
+  "readiness": {
+    "wired_before": 10632,
+    "wired_after": 10633,
+    "method": "Controlled source comparison after index refresh: temporarily used the HEAD production source for the baseline scan, restored the changed source and after-scan output; only 00855a90 changed to wired",
+    "first_scan_with_stale_index": 10631,
+    "new_functions_with_verified_reachable_calls": ["00855a90"]
+  },
+  "left": "LandingShip leaf still needs real troop-class resource loaders; unrelated archive, camera, controller and online paths remain unbound. No host feature switch, duplicate body, Ghidra mutation or game launch was added."
+}

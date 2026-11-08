@@ -13,7 +13,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace bsp { struct GuiLuaHost; struct GuiLuaRef; }
+namespace bsp { struct NativeLuaObjectStorage; struct GuiLuaHost; struct GuiLuaRef; }
 
 namespace bsp::dummy_depth_seg34_argon {
 
@@ -129,10 +129,15 @@ void LuaObject_ReadNumberFieldOr_00700290(
     void* lua_table_by_val,
     float default_val
 );
+// Whole ordinary body over a live table copy. Consumes that copy (field
+// destruction precedes table destruction); caller must not destroy it again.
+// The owner/interpreter must remain live and its tracking domain have room
+// for the one field. An untracked table view leaves its stack entry borrowed.
+// Source interface, not the original by-value stack ABI or private SEH.
 void LuaObject_ReadNumberField_00700330(
     const char* key_name,
     float* out_val,
-    void* lua_table_by_val
+    NativeLuaObjectStorage& lua_table_by_val
 );
 void LuaObject_ReadNumberField_007003b0(
     const char* key_name,

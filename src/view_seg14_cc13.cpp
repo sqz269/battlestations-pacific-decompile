@@ -179,7 +179,7 @@ void binoculars_screen_collect_children_0051f040(Raw screen, Raw out, ViewSeg14H
     hooks.vector_push_back_004d6790(out, at(screen, 0x1c));
 }
 
-void binoculars_update_view_0051f330(Raw screen, float dt, ViewSeg14Hooks& hooks) {
+void binoculars_update_view_0051f330(Raw screen, float dt, BinocularsViewHooks& hooks) {
     hooks.binoculars_update_raise_0051ef00(screen, dt);
     hooks.binoculars_turn_mover_0051f050(get<void*>(screen, 0x40), at(screen, 0x24), dt, get<float>(screen, 0x38));
 }

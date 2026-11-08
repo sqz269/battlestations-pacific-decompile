@@ -1,4 +1,5 @@
 #include "bsp/dummy_depth_seg34_argon.hpp"
+#include "bsp/native_lua_objects.hpp"
 #include "bsp/gui_lua_reader.hpp"
 
 #include <cmath>
@@ -8,6 +9,11 @@
 namespace bsp::dummy_depth_seg34_argon {
 
 namespace {
+
+struct NativeLuaNumberFieldCleanup {
+    NativeLuaObjectStorage& object;
+    ~NativeLuaNumberFieldCleanup() { destroy_native_lua_object_00b67700(object); }
+};
 
 template <typename T>
 inline T& field_at(void* base, std::ptrdiff_t offset) {
@@ -1289,20 +1295,23 @@ void LuaObject_ReadNumberFieldOr_00700290(
 
 // [0x00700330] BSP_LuaObject_ReadNumberField_00700330
 // Original ABI: __fastcall (ECX = key_name, EDX = out_val, stack 20B LuaObject), RET 14h.
+// Source API consumes the supplied actual LuaObject copy. Evidence: bsp.py show
+// 00700330 --asm, 0070035D GetByName, 00700369 GetNumber, 0070036E FSTP32,
+// then 00700379/0070038A destroy the field before the by-value table. The
+// existing GetNumber body already returns its native float32 spill. No calls
+// through original executable addresses remain on this path; original ABI and
+// nonlocal Lua-error/private-EH equivalence are not claimed.
 void LuaObject_ReadNumberField_00700330(
     const char* key_name,
     float* out_val,
-    void* lua_table_by_val
+    NativeLuaObjectStorage& lua_table_by_val
 ) {
-    ByValLuaObj20 sub_obj{};
-    void* obj_ptr = fn_at<void*(__thiscall*)(void*, void*, const char*)>(0x00b67800)(
-        lua_table_by_val,
-        &sub_obj,
-        key_name
-    );
-    *out_val = static_cast<float>(fn_at<double(__thiscall*)(void*)>(0x00b66270)(obj_ptr));
-    fn_at<void(__thiscall*)(void*)>(0x00b67700)(&sub_obj);
-    fn_at<void(__thiscall*)(void*)>(0x00b67700)(lua_table_by_val);
+    NativeLuaNumberFieldCleanup release_table{lua_table_by_val};
+    NativeLuaObjectStorage sub_obj;
+    construct_native_lua_object_00b65f50(&sub_obj);
+    NativeLuaNumberFieldCleanup release_field{sub_obj};
+    auto* const field = native_lua_get_by_name_00b67800(lua_table_by_val, &sub_obj, key_name);
+    *out_val = native_lua_number_00b66270(*field);
 }
 
 // [0x007003b0] BSP_LuaObject_ReadNumberField_007003b0

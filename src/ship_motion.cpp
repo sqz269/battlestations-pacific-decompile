@@ -1,4 +1,5 @@
 #include "bsp/ship_motion.hpp"
+#include "bsp/band_0067_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
 
@@ -131,21 +132,22 @@ ShipSteeringStep ship_apply_steering_0092e8c0(const ShipSteeringInputs& in) noex
 
     // 0092EAD3..0092EB8B: recomposition. Each product is stored as a float, then the
     // row-1 and row-2 contributions are summed and the row-0 one is added last.
-    float p0[3];
     float p1[3];
     float p2[3];
     for (int i = 0; i < 3; ++i) {
-        p0[i] = static_cast<float>(static_cast<double>(rate0) * static_cast<double>(in.basis.row0[i]));
         p2[i] = static_cast<float>(static_cast<double>(rate2) * static_cast<double>(in.basis.row2[i]));
         p1[i] = static_cast<float>(static_cast<double>(new_rate1) * static_cast<double>(in.basis.row1[i]));
     }
-    float sum[3];
-    for (int i = 0; i < 3; ++i) {
-        sum[i] = static_cast<float>(static_cast<double>(p1[i]) + static_cast<double>(p2[i]));
-    }
-    out.angular_velocity.x = static_cast<float>(static_cast<double>(sum[0]) + static_cast<double>(p0[0]));
-    out.angular_velocity.y = static_cast<float>(static_cast<double>(sum[1]) + static_cast<double>(p0[1]));
-    out.angular_velocity.z = static_cast<float>(static_cast<double>(sum[2]) + static_cast<double>(p0[2]));
+    // Reuse the image's alias-safe vector primitives for these same stored
+    // products/sums. 00709A60 stores each sum; 00709BB0 (00709BC3..00709BF1)
+    // stores row0*rate0 before adding it, matching 0092EAD3..0092EB8B above.
+    // These are source-level calls on the live body's basis/rates, not native
+    // register-ABI replacements or additional physics updates.
+    using namespace band_0067_cc13;
+    const Vec3 sum = vec3_add_00709a60({p1[0], p1[1], p1[2]}, {p2[0], p2[1], p2[2]});
+    const Vec3 velocity = vec3_add_scaled_00709bb0(sum,
+        {in.basis.row0[0], in.basis.row0[1], in.basis.row0[2]}, rate0);
+    out.angular_velocity = {velocity.x, velocity.y, velocity.z};
     return out;
 }
 
@@ -162,24 +164,19 @@ OceanVec3 ship_keel_point_00826866(const ShipKeelPointInputs& in) noexcept {
     }
 
     // 00826893..008268B9: added to the world translation component by component.
-    float base[3];
-    for (int i = 0; i < 3; ++i) {
-        base[i] = static_cast<float>(static_cast<double>(stern[i]) + static_cast<double>(in.translation[i]));
-    }
+    const band_0067_cc13::Vec3 base = band_0067_cc13::vec3_add_00709a60(
+        {stern[0], stern[1], stern[2]},
+        {in.translation[0], in.translation[1], in.translation[2]});
 
     // 00826910..00826972: minus half the hull height along the up row, added again.
     const float down = static_cast<float>(static_cast<double>(in.hull_height) * kShipMotionHalfNegative);
-    OceanVec3 out{};
-    float keel[3];
+    float drop[3];
     for (int i = 0; i < 3; ++i) {
-        const float drop =
-            static_cast<float>(static_cast<double>(down) * static_cast<double>(in.row_up[i]));
-        keel[i] = static_cast<float>(static_cast<double>(drop) + static_cast<double>(base[i]));
+        drop[i] = static_cast<float>(static_cast<double>(down) * static_cast<double>(in.row_up[i]));
     }
-    out.x = keel[0];
-    out.y = keel[1];
-    out.z = keel[2];
-    return out;
+    const band_0067_cc13::Vec3 keel = band_0067_cc13::vec3_add_00709a60(
+        {drop[0], drop[1], drop[2]}, base);
+    return {keel.x, keel.y, keel.z};
 }
 
 ShipThrottleGate ship_throttle_gate_00826994(const ShipThrottleGateInputs& in) noexcept {

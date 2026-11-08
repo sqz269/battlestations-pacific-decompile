@@ -1,0 +1,196 @@
+{
+  "goal": 5,
+  "chain": 787,
+  "slot": "g5-w3",
+  "baseline_head": "bf7d19d750b8a5d443cc06e7d9381e28b6b73d4f",
+  "wired_before": 10631,
+  "wired_after": 10632,
+  "rows": [
+    {
+      "native": "007ef8f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::on_squadron_pass_c_initial_command",
+      "evidence": "007F4E87 calls 007EF8F0 on the squadron world position before 00468560 builds the stop target; 007EF909..007EF96E maps NW.x/NW.z/SE.x/SE.z to the shrunk x/z limits.",
+      "real_state": "Existing fused squadron/leader motion.position and selected WorldMapBounds published by the Map load through GameMissionLuaHost::set_world_border_zones.",
+      "missing_state_policy": "If the selected bounds have not been published, report the missing state and leave the initial command unissued. No unclamped position substitute remains."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: pilot task construction",
+      "reason": "Missing retained native moveto task/descriptor storage and MoveToTaskCalls adapter; the host uses separate semantic task fields."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "Missing a gameplay consumer for the native candidate score table; its documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "Missing real candidate score-list entries to mark; the host planner consumes separate weight vectors."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save owner and a real checkpoint-diff result; the current comparison returns false."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread deferred-call producer and its real LuaVariantRecord source argument vector."
+    },
+    {
+      "native": "00c41ad0",
+      "status": "skipped",
+      "host_site": "src/dyn_world_settings.cpp: dyn_world_settings_game",
+      "reason": "Existing settings composition already calls this body; no additional live world construction path was established in this packet."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a live retained native registry owner on the inspected semantic pilot-task path."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing a live text-input acceptance caller; the current NativeFontResources method has no consumer, and the existing body accepts FontData rather than the native glyph tree."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HUD marker placement candidate",
+      "reason": "Missing the six live native screen-margin global values and widescreen layout flag for this body."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: mission camera update candidate",
+      "reason": "Missing the corresponding live MovCamAngles owner; the mission mover is a different camera state path."
+    },
+    {
+      "native": "004235a0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: avoid-zone scratch candidate",
+      "reason": "Missing a live Cc13AvoidZoneDraftScratch producer with the native four vectors and nested-vector allocation ownership."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: df_pilot_targets_us",
+      "reason": "Missing retained pilot+98h target publication for the current step slot; dogfight and command targets are documented substitutes."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: pose normalization candidate",
+      "reason": "Missing an established row-Z-first normalization call site; the inspected live pose path uses the different 0085DC80 rule."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rotation candidate",
+      "reason": "Missing a matching live matrix rotation-about-axis-through-pivot call site; the inspected host point rotation is a different operation."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: cooldown candidate",
+      "reason": "Missing the live PowerupSlotRecord and PowerupClassTimes owner; the inspected host uses another cooldown map representation."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: impact effect candidate",
+      "reason": "Missing an established live effect-class consumer for the selected descriptor offset; the gunnery host file is also leased by another worker."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick row candidate",
+      "reason": "Missing the native 34h-stride unit-pick row-array owner and a corresponding live row read."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick position candidate",
+      "reason": "Missing the live entry owner with position at F0h and validity byte at FCh."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD map zoom candidate",
+      "reason": "Missing the matching retained map-screen mode at 2Ch and scale at 5BCh on an established live zoom consumer."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: command metadata publication",
+      "reason": "Existing native scene submission already calls this body; the inspected packet did not establish an entry-reachable queue producer for it."
+    },
+    {
+      "native": "009c6220",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: math_clamp_symmetric_009c6220",
+      "reason": "Missing an original live caller; the native export documents this angle-range helper as unreferenced."
+    },
+    {
+      "native": "007bad70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: vector placement candidate",
+      "reason": "Missing a matching live unit-distance placement caller and its random-direction fallback binding."
+    },
+    {
+      "native": "007c2aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane heading candidate",
+      "reason": "Missing the native plane pose owner and refresh callback required before reading the matrix heading terms."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a matching live CommandTargetDescriptor producer; the inspected command host uses SceneCommandTarget instead."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: mover_build_frustum_planes_0042e180",
+      "reason": "Missing a live MoverFrustumHost binding that supplies the actual CameraProjection to this existing getter."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four tests",
+    "baseline_call_graph": "42502/42656 entry-reachable functions; 5477/6091 reconstructed addresses called",
+    "build": "scripts/build.ps1 passed all four tests after the host change",
+    "call_graph": "42503/42657 entry-reachable functions; 5478/6092 reconstructed addresses called",
+    "target_call": "Review round 1 rebuild: REACHABLE at 10506b60; one call site at 102a30d8 from GameUnitsHost::on_squadron_pass_c_initial_command",
+    "readiness": "007ef8f0 state=wired, called=true, call_sites=1, callers_live=1; total wired 10631 -> 10632",
+    "pc24_lint": "Review round 1: python tools/pc24_lint.py --diff origin/main...HEAD passed: zero findings, four files scanned.",
+    "original_evidence": "bsp.py show 007ef8f0 --asm; bsp.py show 007f4ba0 --asm (007F4E87 caller and 007F4E91 descriptor construction)",
+    "new_tests": "Review round 1 adds one headless source fixture, tests/wire_g5_c787_fresh_load_probe.cpp, exercising the shared Map publication producer, real InitAll/pass C, 007EF8F0, and command delivery."
+  },
+  "review_round_1": {
+    "run": 1715,
+    "finding": "P1: Fresh-load squadron pass C precedes the reset_avoid_zone_state bounds publication, dropping initial on-water stop commands without a retry.",
+    "disposition": "fixed",
+    "agreement": "The review is correct. Source-line order obscured the runtime load-inventory order; the first version relied on bounds that had not yet been published.",
+    "change": "Extract the existing Map decode/selection/publication into publish_scene_load_map_bounds. Call it immediately after this mission's scene read, before units are created and before load-time InitAll. Remove the later publication from reset_avoid_zone_state.",
+    "fresh_load_fixture": "Starts with world_border_bounds()==nullptr, publishes synthetic current-mission Map data through the production producer, and runs the real run_scene_load_init_all_0046eb4b over a scene squadron. Production placement selects Water and pass C issues exactly one stop that is delivered into a director slot near (99,0,-199), including command-message quantization.",
+    "negative_control": "The same fixture with --late publishes the same Map after InitAll; it exits 1 with 'fresh-load water squadron lost its initial stop command'. No retry is synthesized.",
+    "probe_command": "Generate a linker response listing rebuilt bsp_game Release objects except game_main.obj, plus bsp_core/lua/zlib and the game's Windows libraries; run local/c787-probe.cmd. The fixture header documents the linking contract. Probe links with /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO and maps the original PE as read-only data only.",
+    "build": "scripts/build.ps1 passed all four tests after the production fix; the focused fixture separately compiled and passed.",
+    "readiness": "Recomputed after the fix: total wired remains 10632; 007ef8f0 is wired, called=true, call_sites=1.",
+    "scope": "Headless source-fixture and static call-graph evidence only; no full game, installed-scene gameplay, or original ABI validation."
+  },
+  "limits": [
+    "No game run was performed.",
+    "Existing host squadron/leader fusion remains the position source."
+  ]
+}

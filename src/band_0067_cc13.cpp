@@ -9,8 +9,30 @@ namespace bsp::band_0067_cc13 {
 
 Vec3 vec3_add_00709a60(const Vec3& a, const Vec3& b) noexcept {
     // FLD [edx+i]; FADD [eax+i]; FSTP temp (00709A63..00709A7E), then copied to ECX.
+#if defined(_MSC_VER) && defined(_M_IX86)
+    // Preserve x87 NaN payload selection as well as the caller's precision.
+    const float* const a_ptr = &a.x;
+    const float* const b_ptr = &b.x;
+    volatile float components[3];
+    __asm {
+        mov edx, a_ptr
+        mov eax, b_ptr
+        lea ecx, components
+        fld dword ptr [edx]
+        fadd dword ptr [eax]
+        fstp dword ptr [ecx]
+        fld dword ptr [edx + 4]
+        fadd dword ptr [eax + 4]
+        fstp dword ptr [ecx + 4]
+        fld dword ptr [edx + 8]
+        fadd dword ptr [eax + 8]
+        fstp dword ptr [ecx + 8]
+    }
+    return {components[0], components[1], components[2]};
+#else
     return {static_cast<float>(static_cast<double>(a.x) + b.x), static_cast<float>(static_cast<double>(a.y) + b.y),
             static_cast<float>(static_cast<double>(a.z) + b.z)};
+#endif
 }
 
 Vec3 vec3_sub_00709ac0(const Vec3& a, const Vec3& b) noexcept {
@@ -35,12 +57,55 @@ void vec3_add_scaled_in_place_00709b60(Vec3& v, const Vec3& d, float s) noexcept
 }
 
 Vec3 vec3_add_scaled_00709bb0(const Vec3& a, const Vec3& b, float s) noexcept {
-    const float px = static_cast<float>(static_cast<double>(b.x) * s);
-    const float py = static_cast<float>(static_cast<double>(b.y) * s);
-    const float pz = static_cast<float>(static_cast<double>(b.z) * s);
+#if defined(_MSC_VER) && defined(_M_IX86)
+    // 00709BB7..00709BF1: retain the original x87 operation/operand order.
+    // PC24 multiplication rounds before FSTP underflow, and x87's choice
+    // between two NaN payloads differs from the software/SSE double model.
+    // The current control word is the caller's, as in the original routine.
+    const float* const a_ptr = &a.x;
+    const float* const b_ptr = &b.x;
+    float products[3];
+    // Volatile outputs force the C++ return to load the memory written by asm.
+    volatile float components[3];
+    __asm {
+        mov eax, b_ptr
+        fld dword ptr [eax]
+        fld s
+        fld st(0)
+        fmulp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr products[0]
+        fld dword ptr [eax + 4]
+        fmul st(0), st(1)
+        fstp dword ptr products[4]
+        fmul dword ptr [eax + 8]
+        fstp dword ptr products[8]
+        mov edx, a_ptr
+        lea ecx, components
+        fld dword ptr [edx]
+        fadd dword ptr products[0]
+        fstp dword ptr [ecx]
+        fld dword ptr [edx + 4]
+        fadd dword ptr products[4]
+        fstp dword ptr [ecx + 4]
+        fld dword ptr [edx + 8]
+        fadd dword ptr products[8]
+        fstp dword ptr [ecx + 8]
+    }
+    return {components[0], components[1], components[2]};
+#else
+    // 00709BB7..00709BD2: each FMUL rounds at the main thread's PC24 before
+    // FSTP DWORD. Retain that intermediate rounding for subnormal products,
+    // as in the adjacent in-place 00709B60 body.
+    using cc13x87::x87_add24;
+    using cc13x87::x87_mul24;
+    const float px = static_cast<float>(x87_mul24(b.x, s));
+    const float py = static_cast<float>(x87_mul24(b.y, s));
+    const float pz = static_cast<float>(x87_mul24(b.z, s));
     // 00709BD6..00709BF1: a + product into temporaries, then copied to ECX.
-    return {static_cast<float>(static_cast<double>(a.x) + px), static_cast<float>(static_cast<double>(a.y) + py),
-            static_cast<float>(static_cast<double>(a.z) + pz)};
+    return {static_cast<float>(x87_add24(a.x, px)), static_cast<float>(x87_add24(a.y, py)),
+            static_cast<float>(x87_add24(a.z, pz))};
+#endif
 }
 
 void plane_from_normal_and_point_0073e780(Plane& plane, const Vec3& point, const Vec3& normal) noexcept {

@@ -770,8 +770,12 @@ void* bot_state_construct_base_009c2b80(Cc13Seg67bHost& host, void* state, void*
 std::uintptr_t bot_task_pilot_robots_row_0099c210(Cc13Seg67bHost& host, void* task);
 // 0099C230: __fastcall(ECX = task), RET, AL.
 bool bot_task_break_off_allowed_for_unit_0099c230(Cc13Seg67bHost& host, void* task);
-// 0099C270: __fastcall(ECX = task), RET, EAX (0/1).
-bool bot_task_tick_gate_passes_0099c270(Cc13Seg67bHost& host, void* task);
+// 0099C270: __fastcall(ECX = task), RET, EAX (0/1). The host resolves
+// task+2F4h and the previous-slot byte unit+9C2h+[00F876B8]*8 before this
+// new C++ interface. Null means the task has no unit; a non-null pointer
+// must name that unit's retained publication, rather than its current +520h.
+bool bot_task_tick_gate_passes_0099c270(
+    const std::uint8_t* published_suppress_9c2) noexcept;
 
 // ---- teardown bodies: __thiscall(ECX = object), RET, EH frames not modelled ----
 // Follow-style state destructor bodies, all 006CDD70(s+18h) then 007B45F0(s):

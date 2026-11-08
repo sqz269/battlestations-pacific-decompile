@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/dummy_depth_seg34_argon.hpp"
+#include "bsp/native_lua_objects.hpp"
 #include "bsp/material_effect_plane.hpp"
 #include "bsp/game_recon_relation_lists.hpp"
 #include "bsp/cc13_seg49.hpp"
@@ -254,8 +256,19 @@ public:
     }
     float number_value(const char* key) const override {
         float value = 0.0f;
-        with_value(key, [&](lua_State* s) {
-            value = bsp::lua_number_float32_00b66270(::lua_tonumber(s, -1));
+        with_value(nullptr, [&](lua_State* s) {
+            // Chain 780: 00700330 consumes an untracked by-value view of this
+            // actual Bullets row (or its actual subtable). Its tracked field
+            // is popped first; with_value retains ownership of the row stack
+            // entry. Rebase only this local tracking domain so a deep mission
+            // Lua stack cannot index past the native owner's fifty slots.
+            bsp::NativeLuaStateStorage owner;
+            bsp::construct_native_lua_state_00b66bd0(&owner);
+            owner.state_04 = s;
+            const int row_index = ::lua_gettop(s);
+            owner.stack_offset_0c = -row_index;
+            bsp::NativeLuaObjectStorage row{&owner, 2, row_index, 0, 0, {}};
+            bsp::dummy_depth_seg34_argon::LuaObject_ReadNumberField_00700330(key, &value, row);
         });
         return value;
     }

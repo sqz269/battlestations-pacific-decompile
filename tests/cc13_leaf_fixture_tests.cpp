@@ -1588,6 +1588,33 @@ int main() {
             add_scaled(&out, &point, &other, s);
             vs.check(same(out, vec3_add_scaled_00709bb0(point, other, s)));
         }
+        // The live ship caller runs at PC24. Its multiply must round before
+        // FSTP underflow: this case gives 0044EAAAh, versus 0044EAA9h when
+        // evaluated as a double product narrowed only at the float store.
+        unsigned saved_control;
+        _controlfp_s(&saved_control, 0, 0);
+        _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
+        const std::uint32_t tiny_bits = 0x00c77827u, scale_bits = 0x3eb0e55eu;
+        float tiny, scale;
+        std::memcpy(&tiny, &tiny_bits, sizeof(tiny));
+        std::memcpy(&scale, &scale_bits, sizeof(scale));
+        const Vec3 zero{}, tiny_vector{tiny, -tiny, tiny};
+        Vec3 out{};
+        add_scaled(&out, &zero, &tiny_vector, scale);
+        vs.check(same(out, vec3_add_scaled_00709bb0(zero, tiny_vector, scale)));
+        // Two NaNs exercise x87 payload selection, which the double/SSE
+        // arithmetic model does not preserve.
+        const std::uint32_t qnan_bits = 0x7fc12345u, other_nan_bits = 0xffc54321u;
+        float qnan, other_nan;
+        std::memcpy(&qnan, &qnan_bits, sizeof(qnan));
+        std::memcpy(&other_nan, &other_nan_bits, sizeof(other_nan));
+        const Vec3 nan_vector{qnan, qnan, qnan};
+        add_scaled(&out, &zero, &nan_vector, other_nan);
+        vs.check(same(out, vec3_add_scaled_00709bb0(zero, nan_vector, other_nan)));
+        const Vec3 other_nan_vector{other_nan, other_nan, other_nan};
+        add(&out, &nan_vector, &other_nan_vector);
+        va.check(same(out, vec3_add_00709a60(nan_vector, other_nan_vector)));
+        _controlfp_s(&control, saved_control, _MCW_PC | _MCW_RC);
     }
     {
         using namespace bsp::cc13_band0050;

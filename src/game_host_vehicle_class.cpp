@@ -1,16 +1,21 @@
 #include "bsp/game_host_vehicle_class.hpp"
 
+#include <array>
+#include <cstdlib>
 #include <cstring>
+#include <new>
 #include <stdexcept>
 #include <string>
 
 #include "bsp/cc13_front4.hpp"
+#include "bsp/cc13_sweepA.hpp"
 #include "bsp/cc13_seg41.hpp"
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/native_damageable_class_construction.hpp"
 #include "bsp/native_vehicle_class_base_constructor.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/save_settings_cc13.hpp"
 
 // Goal 3 chain 234. See the header for the object, its producer and lifetime.
@@ -220,10 +225,41 @@ private:
 
 } // namespace
 
-struct GameVehicleClassDescriptorCache::Bindings {
+struct GameVehicleClassDescriptorCache::Bindings final
+    : bsp::profile_seg2_cc13::VehicleClassRegistryConstructionHost,
+      bsp::cc13_sweepA::PartyRowsStorageHost {
     explicit Bindings(bsp::NativeStringRawPoolContext& strings)
         : damageable{kRefCountedVtable_00ceb130, kDamageableVtable_00d0e13c, strings},
-          plane(damageable), fort(damageable), leaf(damageable, plane, fort) {}
+          plane(damageable), fort(damageable), leaf(damageable, plane, fort) {
+        // 00437F50 allocates 401Ch before 00437E10. This mission-owned
+        // registry is created at the existing first descriptor resolve, and
+        // its actual +4/+8/+C header serves every cache read below. Keep the
+        // existing semantic descriptor pointers (see the header's split-copy
+        // limitation); do not reinterpret them as native image descriptors.
+        bsp::profile_seg2_cc13::vehicle_class_registry_construct_00437e10(registry(), *this);
+    }
+    ~Bindings() override {
+        // Party rows are three-byte trivial records (00435960/004359E0).
+        // The live path never adds one yet: release the constructor's exact
+        // 400h-row reservation. This is host teardown, not 00437EA0 credit.
+        std::free(registry().ptr(0x4010));
+    }
+
+    bsp::profile_seg2_cc13::Raw registry() noexcept { return {registry_image.data()}; }
+    void party_rows_reserve_00435960(bsp::profile_seg2_cc13::Raw vector,
+        std::uint32_t count) override {
+        bsp::cc13_sweepA::party_rows_reserve_00435960(
+            {vector.p}, static_cast<std::int32_t>(count), *this);
+    }
+    void* operator_new_00bf55be(std::uint32_t size) override {
+        void* const allocation = std::malloc(size);
+        if (allocation == nullptr) throw std::bad_alloc();
+        return allocation;
+    }
+    void free_00bf6989(void* allocation) override { std::free(allocation); }
+
+    // The constructor, rather than value initialization, writes all fields.
+    alignas(4) std::array<std::uint8_t, 0x401c> registry_image;
     const bsp::NativeDamageableClassConstructionAccess damageable;
     PlaneBaseBinding plane;
     LandFortBaseBinding fort;
@@ -247,27 +283,35 @@ GameVehicleClassDescriptorCache::~GameVehicleClassDescriptorCache() {
 }
 
 int GameVehicleClassDescriptorCache::cache_size() const noexcept {
-    return static_cast<int>(cache_.size());
+    return bindings_->registry().at<std::int32_t>(0x8);
 }
 
 void GameVehicleClassDescriptorCache::resize_cache(int size) {
     bsp::cc13_save::resize_descriptor_cache_00437bd0(cache_, size,
         [this](void* descriptor) { release_slot(descriptor); });
+    // The vector owns allocation/reallocation; the native registry borrows
+    // that same live allocation. Publish after resize, before any subsequent
+    // resolver read, so neither storage nor reference-count work runs twice.
+    const auto registry = bindings_->registry();
+    registry.ptr(0x4) = cache_.data();
+    registry.at<std::int32_t>(0x8) = static_cast<std::int32_t>(cache_.size());
+    registry.at<std::int32_t>(0xc) = static_cast<std::int32_t>(cache_.capacity());
 }
 
 bsp::VehicleClassDescriptor* GameVehicleClassDescriptorCache::cached(
     int class_index) const noexcept {
-    if (class_index < 0 || static_cast<std::size_t>(class_index) >= cache_.size()) return nullptr;
-    return static_cast<bsp::VehicleClassDescriptor*>(cache_[static_cast<std::size_t>(class_index)]);
+    if (class_index < 0 || class_index >= cache_size()) return nullptr;
+    auto* const data = bindings_->registry().at<void**>(0x4);
+    return static_cast<bsp::VehicleClassDescriptor*>(data[class_index]);
 }
 
 void GameVehicleClassDescriptorCache::store_cached(int class_index,
     bsp::VehicleClassDescriptor* descriptor) {
     if (class_index < 0) throw std::invalid_argument("vehicle class index is negative");
-    if (static_cast<std::size_t>(class_index) >= cache_.size()) {
+    if (class_index >= cache_size()) {
         resize_cache(class_index + 1);
     }
-    void*& slot = cache_[static_cast<std::size_t>(class_index)];
+    void*& slot = bindings_->registry().at<void**>(0x4)[class_index];
     if (slot != nullptr && slot != descriptor) release_slot(slot);
     slot = descriptor;
 }
