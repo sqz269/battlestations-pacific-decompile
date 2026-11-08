@@ -487,6 +487,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kLuaGetDirectionBound.
     {"GetShipMaxSpeed", 0x00890bb0u},
     {"GetDirection", 0x008a7cb0u},
+    // Goal 5 chain 678: three live numeric arguments, one vector table.
+    {"DoVector3", 0x00899300u},
     // Goal 5 chain 655: the skill index SetSkillLevel / SetCrewLevel write.
     {"GetSkillLevel", 0x008953f0u},
     {"GetCrewLevel", 0x008950d0u},
@@ -2314,7 +2316,7 @@ private:
     std::function<void(void*)> refresh_if_stale_;
 };
 
-// GetDirection's one push, 0088BA30's {x, y, z} table on the dispatch's frame.
+// GetDirection / DoVector3's one push, 0088BA30's {x, y, z} table on the dispatch's frame.
 class DirectionResults final : public bsp::cc13_seg56::LuaResults {
 public:
     explicit DirectionResults(std::function<void(const bsp::cc13_seg56::Vec3&)> push)
@@ -6976,6 +6978,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_delete_script(*this, *this, nullptr);
     } else if (std::strcmp(binding->name, "GetHpPercentage") == 0) {
         results = bsp::lua_binding_get_hp_percentage(*this, *this);
+    } else if (std::strcmp(binding->name, "DoVector3") == 0) {
+        // 00899300 takes only the Lua call frame, so there is no unit/class
+        // precondition. The reconstructed body performs all three reads and
+        // float stores; its result is pushed onto this same VM, not a record.
+        DirectionResults pushed([this](const bsp::cc13_seg56::Vec3& v) {
+            const float xyz[3] = {v.x, v.y, v.z};
+            push_vector3_table_0088ba30(xyz);
+        });
+        const int count = bsp::cc13_seg56::lua_do_vector3_00899300(*this, pushed);
+        results = state_ != nullptr ? count : 0;
     } else if (std::strcmp(binding->name, "GetPosition") == 0) {
         results = bsp::lua_binding_get_position(*this, *this);
     } else if (std::strcmp(binding->name, "GetMeasure") == 0) {
