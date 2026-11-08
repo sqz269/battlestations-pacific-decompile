@@ -1,0 +1,203 @@
+{
+  "chain": 752,
+  "slot": "g5-w3",
+  "baseline_head": "917799b38",
+  "wired_total_before": 10579,
+  "rows": [
+    {
+      "native": "0074e7b0",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::build_leak_model_0074f490",
+      "details": "Constructs the typed leak-manager state; its binary 200/60 defaults now supply live DamageToDeath/TimeToDeath before the existing authored-class override."
+    },
+    {
+      "native": "0074e830",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::build_leak_model_0074f490",
+      "details": "Reuses the existing two-array reset body for the identical memsets in 0074F490; projects the real UnitLeakEntry rate/water fields and writes both cleared arrays back, replacing the old scalar stores."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge",
+      "reason": "No native movie widget, decoder/player texture owner or material-slot binding exists on this bridge."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The bridge has a dormant subtitle schedule projection, not the native widget/Text child and subtitle-container ownership required by the body."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::teardown",
+      "reason": "The teardown records the transition; an actual game-layout view and SoundLoadTransitionContext were not established in this packet."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Objective replication is a record; the native message allocation/routing and objective/comment string adapter are missing on this host path."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The named-call host runs on the main thread; a real off-main-thread deferred-call producer and owned argument queue are missing."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: marker-manager binding",
+      "reason": "The host lacks the native marker slot, per-entry keep flags and observer-pair membership required to apply the returned destruction decisions."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: moving-camera binding",
+      "reason": "A live MovCamZoom owner and the original zoom command adapter were not established; the mission camera is a different projection."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: unit-message host backfill_helm_order",
+      "reason": "The arm remains unreached; the live helm-order message stamp/current-tick adapter is missing."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The host retains a collision-bit substitution, not native shape-chain storage and body manifold ownership/locking."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The native shape-chain, body pointer and manifold-clear/critical-section bindings are missing."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine periscope-break path",
+      "reason": "Controller+394h has no native mast shape owner or body/manifold-clear binding on this path."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score list",
+      "reason": "Its identified image consumer is the debug overlay; no live native score-table gameplay consumer exists, and debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score list",
+      "reason": "No native candidate score-list entries are owned; the identified table reader is the excluded debug overlay."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "The byte-acceptance method has no live editor insertion caller; adding a call only inside that unused method would not establish entry reachability."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "The alphabetical snapshot is outside the draw path; a live named-child enumeration consumer was not established."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The language sweep is guarded by a profile-hints mode accessor that always returns zero; its real profile-hints owner and selection/content bindings are missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0 / fit_shadow_cascade_00a8bd20",
+      "reason": "Both shadow calculations duplicate the product, but no entry-reachable shadow-fit caller and borrowed camera projection adapter were established."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "A live extra-plane producer and CameraClipPlaneState adapter were not established in this packet."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "A live extra-plane clear path on the same camera/plane-set owner was not established."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "No live RamImage pixel-buffer getter call with its real +18h image storage was established."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "The native support-site supply lists and their live squad-size request consumer were not established."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "The live support-site active byte, enabled supply-class list and owner-health adapter were not established."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp: impact_effect_slot_0084b8c0",
+      "reason": "A live impact effect dispatch carrying native mode/medium and consuming the selected class effect slot was not established."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg47_cc13.cpp: debris_spec_007caad0",
+      "reason": "The native debris record/node transform and RNG-backed spawned-debris consumer are missing on a live host path."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_sound_step_007de490",
+      "reason": "A real plane engine sound handle with its retained pitch/volume interpolators and FMOD publication adapter was not established."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "The collected command-menu list and live menu consumer were not established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The identified original consumer is the debug inspector 006FB750; debug-only work is excluded."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: init_map_scene_zoom_0093ccc0",
+      "reason": "Only the zoom fragment is reconstructed; its live strategic-map scene owner and the rest of the scene construction remain missing."
+    }
+  ],
+  "scope": "Typed leak-model construction and zone initialization; no raw unit-layout or original ABI equivalence claimed.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph": "python tools/call_graph.py: both selected bodies REACHABLE, each with one direct call from GameUnitsHost::Impl::build_leak_model_0074f490",
+    "call_sites": {
+      "0074e7b0": "10287877",
+      "0074e830": "10287f5c"
+    },
+    "game_run": "Not run, as assigned",
+    "abi": "Typed semantic interfaces; no raw layout or drop-in ABI proof",
+    "pc24_lint": "python tools/pc24_lint.py --staged: 0 findings"
+  },
+  "wired_total_after": 10593,
+  "verified_new_called_bodies": 2,
+  "readiness_note": "The coarse source-reachability wired count rose by 14 after unit_instance_subobjects became reachable. Only 0074E7B0 and 0074E830 are claimed as new wirings; each has one direct reachable call in the built executable."
+}

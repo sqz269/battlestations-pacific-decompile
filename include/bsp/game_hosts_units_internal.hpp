@@ -14,6 +14,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/unit_instance_subobjects.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/entity_local_matrix.hpp"
 #include "bsp/cc13_left8_seg8.hpp"
@@ -4401,6 +4402,12 @@ struct GameUnitsHost::Impl {
     // Packet cc9_ship_sink_descent. controller+84h (00937DBB..00937F74) and the
     // leak manager's init 0074F490 (called from 00823780 in 00822C20).
     void build_leak_model_0074f490(GameUnitSlot& s) {
+        // 0081F15F constructs unit+10D4h before 0074F490 initializes its
+        // zones. Use that body's binary defaults for the live model rather
+        // than independently supplying DamageToDeath/TimeToDeath below.
+        // This is its typed construction projection, not a raw unit overlay.
+        bsp::UnitLeakManagerConstruction constructed;
+        bsp::construct_unit_leak_manager_0074e7b0(constructed);
         // 00937D8E..00937DB8: Mass < 100.0 (00D7A220) -> 1, else the unit's
         // IsKindOf(8) -> 2, else 0.
         const float mass = s.motion_class.hull_mass;             // class+B0h
@@ -4445,6 +4452,22 @@ struct GameUnitsHost::Impl {
             cap = static_cast<float>(static_cast<double>(cap) * 3.0);
         }
         s.leak_rate_cap_08 = cap;
+        // 0074F490 performs the same two memsets as 0074E830, water first
+        // then rates. Reuse the existing body for those initialization stores.
+        // The host interleaves the manager's three arrays in UnitLeakEntry;
+        // project the actual six zones and publish both cleared arrays back.
+        bsp::gameplay_seg41_cc13::LeakManagerZones zones;
+        zones.water_1c.reserve(s.leaks.size());
+        zones.leak_18.reserve(s.leaks.size());
+        for (const auto& leak : s.leaks) {
+            zones.water_1c.push_back(leak.water);
+            zones.leak_18.push_back(leak.rate);
+        }
+        bsp::gameplay_seg41_cc13::clear_all_zones_0074e830(zones);
+        for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+            s.leaks[i].water = zones.water_1c[i];
+            s.leaks[i].rate = zones.leak_18[i];
+        }
         // The six points: side -1 then +1 (local_8), three stations each at
         // z = (L / 2) * i - L * 0.5, x = Width * side, y = 0.
         const float length = s.motion_class.hull_length;       // class+A0h
@@ -4453,8 +4476,6 @@ struct GameUnitsHost::Impl {
         for (int side = -1; side < 2; side += 2) {
             for (int i = 0; i < 3; ++i) {
                 bsp::UnitLeakEntry& leak = s.leaks[k++];
-                leak.rate = 0.0f;
-                leak.water = 0.0f;
                 leak.point = bsp::OceanVec3{width * static_cast<float>(side), 0.0f,
                     (length / 2.0f) * static_cast<float>(i) - length * 0.5f};
             }
@@ -4463,7 +4484,8 @@ struct GameUnitsHost::Impl {
         // TimeToDeath (+550h) when both are >= 0; else the constructor's
         // 200.0 and 60.0 (0074E7B0). +34h = 2 * settings+404h * capacity / +3Ch,
         // and the cap is raised to it.
-        float damage_to_death = 200.0f, time_to_death = 60.0f;
+        float damage_to_death = constructed.tuning_38;
+        float time_to_death = constructed.tuning_3c;
         const float d = lua.read_vehicle_class_number(s.row.type_id, "DamageToDeath", -1.0f);
         const float t = lua.read_vehicle_class_number(s.row.type_id, "TimeToDeath", -1.0f);
         if (0.0f <= d && 0.0f <= t) {

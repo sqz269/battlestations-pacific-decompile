@@ -448,7 +448,8 @@ SquadOrdnanceCheck squad_ordnance_check_007504f0(bool squadron_present_30,
 // 5. The ship leak manager
 // ---------------------------------------------------------------------------
 
-void clear_all_zones_0074e830(LeakManagerZones& z) {
+// Keep the shared initialization/reset body visible in the Release call graph.
+__declspec(noinline) void clear_all_zones_0074e830(LeakManagerZones& z) {
     for (float& w : z.water_1c) w = 0.0f;  // 0074E836.. memset +1Ch
     for (float& l : z.leak_18) l = 0.0f;   // 0074E849.. memset +18h
 }
