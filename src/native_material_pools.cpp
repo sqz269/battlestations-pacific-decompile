@@ -1,4 +1,5 @@
 #include "bsp/native_material_pools.hpp"
+#include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -51,12 +52,6 @@ std::byte** allocate_table(std::uint32_t capacity) {
     return static_cast<std::byte**>(singleton_lifetime_allocate({
         SingletonAllocationKind::pointer_slots, bytes, bytes}));
 }
-void replace_table(NativeMaterialPoolStorage& storage, std::byte** replacement) {
-    for (std::uint32_t i = 0; i < storage.slab_count_2c; ++i)
-        ::new (replacement + i) std::byte*(storage.slabs_28[i]);
-    if (storage.slabs_28) singleton_lifetime_free(storage.slabs_28);
-    storage.slabs_28 = replacement;
-}
 // B17630/B17670/B402B0 receive ECX=pool+28 and free only the current pointer. They
 // preserve pointer/count/capacity fields, including during constructor unwind.
 void free_table(NativeMaterialPoolStorage& storage) noexcept {
@@ -86,10 +81,10 @@ template<class Pool> void initialize_pool(
         storage.table_capacity_30 = 0;
         storage.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage.table_capacity_30 < 32) {
-            storage.table_capacity_30 = 32;
-            replace_table(storage, allocate_table(32));
-        }
+        // Source reuse of 00AA7740, not an original CALL claim: bsp.py show
+        // 00AA79A0 has the same reserve(32) at pool+28h, inside unwind state 2.
+        // The common pool engine retains the actual published table header.
+        native_gui_pool_table_reserve_00aa7740(native_gui_pool_slab_table(storage), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table(storage);
@@ -123,12 +118,10 @@ void* allocate_slot(NativeMaterialPoolStorage& storage) {
         auto* raw = singleton_lifetime_allocate({
             SingletonAllocationKind::object, Pool::slab_bytes, Pool::slab_bytes});
         auto* slab = raw ? static_cast<std::byte*>(Initialize(raw, storage.first_free_slab_34)) : nullptr;
-        if (storage.slab_count_2c == storage.table_capacity_30) {
-            storage.table_capacity_30 = storage.table_capacity_30 * 2u + 2u;
-            replace_table(storage, allocate_table(storage.table_capacity_30));
-        }
-        ::new (storage.slabs_28 + storage.slab_count_2c) std::byte*(slab);
-        ++storage.slab_count_2c;
+        // bsp.py show 00AA7A80: append the actual newly initialized slab AFTER
+        // publishing first_free_slab, under this same lock. 00AA76C0 is its
+        // out-of-line equivalent; it replaces the inline growth/copy/append.
+        native_gui_pool_table_push_back_00aa76c0(native_gui_pool_slab_table(storage), slab);
     }
     auto* slab = storage.slabs_28[storage.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(
@@ -437,7 +430,6 @@ __declspec(noinline) void free_native_gui_group_pool_table_00ac70d0(void* header
 
 // GUI widget pool family (cc13-gui1, docs/CC13_GUI_1.md): fourteen more instances
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
-#include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/terrain_bush_pool_cc13.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
@@ -495,32 +487,38 @@ BSP_GUI_WIDGET_POOL_INSTANCE(GuiListboxPoolTraits)
 } // namespace bsp
 // The out-of-line Mit pointer-vector members of the slab table (ECX = pool+28h:
 // data, count, capacity). Widget 00AA6FA0/00AA6FF0/00AA76C0/00AA7740, Button
-// 00AAB8E0/00AAB930/00AABC70/00AABD00, Movie 00AACDF0; none has a
-// direct caller (the pool members inline the same code). operator new is
-// 00BF55BE and the free is 00BF6989, as in the inlined copies above.
+// 00AAB8E0/00AAB930/00AABC70/00AABD00, Movie 00AACDF0. The native pool
+// members inline the same code; the reconstructed common engine now reuses
+// these bodies on its retained pool+28h headers. operator new is 00BF55BE
+// and the free is 00BF6989, as in the native inlined copies.
 namespace bsp {
-namespace {
-void set_slab_table_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+__declspec(noinline) void native_gui_pool_table_set_capacity_00aa6fa0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     table.capacity = capacity;
     auto* replacement = allocate_table(capacity);
-    for (std::uint32_t i = 0; i < table.count; ++i)
-        ::new (replacement + i) std::byte*(table.data[i]);
+    // bsp.py show 00AA6FA0: every destination slot is null-tested; unsigned
+    // Win32 address arithmetic also retains its modulo32 stepping on null.
+    auto destination = reinterpret_cast<std::uintptr_t>(replacement);
+    for (std::uint32_t i = 0; i < table.count; ++i, destination += 4u)
+        if (destination != 0)
+            ::new (reinterpret_cast<void*>(destination)) std::byte*(table.data[i]);
     if (table.data) singleton_lifetime_free(table.data);
     table.data = replacement;
 }
-} // namespace
-void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
-    set_slab_table_capacity(table, capacity);
+__declspec(noinline) void native_gui_pool_table_grow_00aa6ff0(NativeGuiPoolSlabTable& table) {
+    // 00AA6FF0's inline capacity/copy/free schedule is the existing 00AA6FA0 body.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, table.capacity * 2u + 2u);
 }
-void native_gui_pool_table_grow(NativeGuiPoolSlabTable& table) {
-    set_slab_table_capacity(table, table.capacity * 2u + 2u);
-}
-void native_gui_pool_table_push_back(NativeGuiPoolSlabTable& table, std::byte* const& slab) {
-    if (table.count == table.capacity) set_slab_table_capacity(table, table.capacity * 2u + 2u);
-    ::new (table.data + table.count) std::byte*(slab);
+__declspec(noinline) void native_gui_pool_table_push_back_00aa76c0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) native_gui_pool_table_grow_00aa6ff0(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) // 00AA76C0's append also tests the actual slot address.
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
     ++table.count;
 }
-void native_gui_pool_table_reserve(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
-    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+__declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
 }
 } // namespace bsp
