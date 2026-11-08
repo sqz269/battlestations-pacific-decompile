@@ -43,6 +43,7 @@ class GameHostLog;
 class GameMenuHost;
 class GameUnitsHost;
 class GameMissionLuaHost;
+class GameMissionResultHost;
 class GameHudMinimapHost;
 class GameHudMarkersHost;
 class GameSoundRuntime;
@@ -127,6 +128,11 @@ public:
         const std::size_t& local_slot) noexcept;
     void unbind_score_message_participants(const bsp::SessionParticipantPools&,
         const std::size_t& local_slot) noexcept;
+
+    // Map usage borrows the mission's scoring owner and current local-slot
+    // cell. The frame unbinds both before either source is destroyed.
+    void bind_map_usage_scoring(GameMissionResultHost&, const std::size_t& local_slot) noexcept;
+    void unbind_map_usage_scoring(GameMissionResultHost&, const std::size_t& local_slot) noexcept;
 
     // The `create_hud_manager` row of the load walk, 0068a990 at 004e046c, and
     // the Init 0068cc70 its caller runs. The construction itself is a record;
@@ -281,9 +287,8 @@ public:
     bool release_gun_armed() const noexcept;
     void arm_release_gun_map_toggle() noexcept;
     void exit_ship_view_screen_0064a490();
-    // Packet cc13-relgaps gap 2: screen 4Ch's update 005B45C0, only its
-    // 005B4673..005B46B3 helm release.
-    void update_map_screen_005b45c0();
+    // Screen 4Ch's update: helm release and 005B5A28's persisted map usage.
+    void update_map_screen_005b45c0(float seconds);
     // Goal 5 chain 646: a leaf screen's own vtable +4h (self-managed), +18h
     // (enter), +1Ch (exit) or +20h (update) on the block 0068CC70 built, for the
     // slots and virtuals kHudLeafScreenVirtuals lists. False leaves the caller's

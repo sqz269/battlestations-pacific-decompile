@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_left1.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
@@ -2570,6 +2571,8 @@ struct GameHudHost::Impl {
     const bool* cinematic_hidden_634{nullptr};
     const bsp::SessionParticipantPools* score_participants{nullptr};
     const std::size_t* score_local_slot{nullptr};
+    GameMissionResultHost* map_usage_scoring{nullptr};
+    const std::size_t* map_usage_local_slot{nullptr};
     // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
     bool camera_pipe_sight_read{false};
     bool camera_pipe_sight_enabled{false};
@@ -5050,7 +5053,7 @@ void GameHudHost::exit_ship_view_screen_0064a490() {
         roles ? " and roles 1..8 (1FEh)" : "; no ship-view unit");
 }
 
-void GameHudHost::update_map_screen_005b45c0() {
+void GameHudHost::update_map_screen_005b45c0(float seconds) {
     Impl& impl = *impl_;
     // 005B4673..005B46B3, every update while the map is up: [00E188D8]'s
     // vtable[13Ch]() unit, its role-1 holder +1B0h (+1ACh[1]); not 8 (005B468D)
@@ -5067,8 +5070,27 @@ void GameHudHost::update_map_screen_005b45c0() {
         impl.units->role_request_0077c470(impl.units->controlled_index(), 0x2u, false);
         impl.done("HudMapScreen::release_helm", 0x0077c470u);
     }
-    // The rest of 005B45C0 (005B45E6..005B466E, 005B46B8.. the map view) is not hosted.
+    if (impl.map_usage_scoring != nullptr) {
+        // The screen pump supplies this update's raw delta. Borrow the live
+        // local-slot cell; add_map_usage retains the native session-mode gate.
+        impl.map_usage_scoring->add_map_usage(*impl.map_usage_local_slot, seconds);
+    }
+    // The rest of 005B45C0's map view and input work remains unimplemented.
     impl.record("HudMapScreen::update", 0x005b45c0u);
+}
+
+void GameHudHost::bind_map_usage_scoring(GameMissionResultHost& scoring,
+    const std::size_t& local_slot) noexcept {
+    impl_->map_usage_scoring = &scoring;
+    impl_->map_usage_local_slot = &local_slot;
+}
+
+void GameHudHost::unbind_map_usage_scoring(GameMissionResultHost& scoring,
+    const std::size_t& local_slot) noexcept {
+    if (impl_->map_usage_scoring == &scoring && impl_->map_usage_local_slot == &local_slot) {
+        impl_->map_usage_scoring = nullptr;
+        impl_->map_usage_local_slot = nullptr;
+    }
 }
 
 void GameHudHost::bind_view_fov_cinematic_state(const bool* hidden_634) noexcept {

@@ -718,6 +718,18 @@ void GameMissionResultHost::increment_formation_use(int slot) {
     done("Formation::slot_counter_increment", 0x00905300u);
 }
 
+void GameMissionResultHost::add_map_usage(std::size_t slot, float seconds) {
+    // bsp.py disasm-raw 005B5A01 --length 49: the caller tests game+1FE4h,
+    // then pushes its update delta and game+18ECh, using game+21A0h as ECX.
+    if (session_mode_ == 0) return;
+    if (slot >= bsp::kMissionScoringSlotCount)
+        throw std::out_of_range("map-usage scoring requires player slot 0..7");
+    bsp::cc13_seg59b::ScoreRecordField18Access access{scoring_};
+    bsp::cc13_seg59b::score_record_add_field18_009052e0(
+        access, static_cast<std::int32_t>(slot), seconds);
+    done("HudMapScreen::add_map_usage", 0x009052e0u);
+}
+
 float GameMissionResultHost::mission_clock() { return mission_clock_; }
 
 void GameMissionResultHost::notify_scoring_entities_00927f60() {

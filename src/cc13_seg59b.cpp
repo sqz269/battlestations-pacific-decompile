@@ -835,14 +835,28 @@ void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive) 
 
 // ---------------------------------------------------------------------------
 // 009052E0 BSP_ScoreRecord_AddField18 (hypothesis). __thiscall(ECX = scoring, slot, delta),
-// RET 8; EAX = &record+18h. Evidence: 009052E4 IMUL slot,284h; 009052EA FLD [rec+18h];
+// RET 8; EAX = scoring+slot*284h+18h. Evidence: 009052E4 IMUL slot,284h; 009052EA FLD [base+18h];
 // 009052EE FADD float [ESP+8]; 009052F2 FSTP back; 009052F6 LEA EAX. Caller 005B45C0
 // (HUD map update). x87: one add of two floats rounded to float; the same at 24- and 53-bit
 // precision control: double rounding through binary64 is innocuous for a binary32 addition
 // (53 >= 2*24 + 2), so the 53-bit result rounds to the same float.
 // ---------------------------------------------------------------------------
-float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta) {
-    float* const field = &at<float>(scoring, static_cast<std::size_t>(slot * 0x284) + 0x18);
+ScoreRecordField18Access::ScoreRecordField18Access(void* actual_scoring) noexcept
+    : owner_(actual_scoring), resolve_([](void* owner, std::int32_t slot) -> float& {
+        return at<float>(owner, static_cast<std::uint32_t>(slot) * 0x284u + 0x18u);
+    }) {}
+
+ScoreRecordField18Access::ScoreRecordField18Access(
+    bsp::MissionScoringManagerState& actual_scoring) noexcept
+    : owner_(&actual_scoring), resolve_([](void* owner, std::int32_t slot) -> float& {
+        // bsp.py ghidra disasm 009052E0: IMUL slot,284h; FLD/FADD/FSTP
+        // manager+18h. Records begin at manager+4, so this is record+14h.
+        return static_cast<bsp::MissionScoringManagerState*>(owner)->slots[slot].map_usage_14;
+    }) {}
+
+__declspec(noinline) float* score_record_add_field18_009052e0(
+    ScoreRecordField18Access scoring, std::int32_t slot, float delta) {
+    float* const field = &scoring.value(slot);
     *field = *field + delta;
     return field;
 }

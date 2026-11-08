@@ -3721,6 +3721,7 @@ GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
     if (hud != nullptr) {
         hud->bind_view_fov_cinematic_state(&impl_->cinematic_hidden);
         hud->bind_score_message_participants(impl_->participants, impl_->entry_state.local_slot_index);
+        hud->bind_map_usage_scoring(*impl_->result, impl_->entry_state.local_slot_index);
     }
     g_warning_owner = impl_.get();
 }
@@ -3729,6 +3730,7 @@ GameMissionFrameHost::~GameMissionFrameHost() {
     if (impl_->hud != nullptr) {
         impl_->hud->unbind_view_fov_cinematic_state(&impl_->cinematic_hidden);
         impl_->hud->unbind_score_message_participants(impl_->participants, impl_->entry_state.local_slot_index);
+        impl_->hud->unbind_map_usage_scoring(*impl_->result, impl_->entry_state.local_slot_index);
     }
     if (g_warning_owner == impl_.get()) g_warning_owner = nullptr;
     if (impl_->hint_frame) {
