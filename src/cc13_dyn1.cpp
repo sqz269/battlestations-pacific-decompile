@@ -539,14 +539,14 @@ void* shape_body_00c32490(const void* shape) noexcept { return raw(shape).ptr(0x
 namespace {
 // The shared tail of the six mask setters: PUSH 0109ECD8; CALL [EnterCriticalSection];
 // PUSH [S+4]; CALL 00C43AA0; JMP [LeaveCriticalSection] with the lock in the arg slot.
-void lock_and_clear_manifolds(void* shape, Cc13Dyn1Calls& calls) {
+void lock_and_clear_manifolds(void* shape, ShapeFilterCalls& calls) {
     calls.enter_critical_section(kDynWorldLock_0109ecd8);
     calls.clear_body_manifolds_00c43aa0(raw(shape).ptr(0x4));
     calls.leave_critical_section(kDynWorldLock_0109ecd8);
 }
 }  // namespace
 
-void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls) {
+void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, ShapeFilterCalls& calls) {
     raw(shape).at<std::uint32_t>(0x30) &= ~bits;  // NOT EAX; AND [ESI+30h],EAX
     lock_and_clear_manifolds(shape, calls);
 }

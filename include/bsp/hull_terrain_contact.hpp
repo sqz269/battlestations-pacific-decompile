@@ -37,6 +37,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -304,6 +305,11 @@ public:
     const std::vector<HullContactEvent>& contact_events() const noexcept { return events_; }
 
 private:
+    class ShapeFilterCalls;
+    std::size_t clear_contact_manifolds(std::size_t unit);
+    // Host counterpart of 0109ECD8, shared by filter invalidation and the
+    // contact owner. Recursive because world_step invokes the native setter.
+    std::recursive_mutex contact_mutex_;
     struct Manifold;
     struct HullShape {
         std::vector<OceanVec3> raw;         // the raw points the build came from
