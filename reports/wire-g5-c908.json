@@ -1,0 +1,60 @@
+{
+  "goal": 5,
+  "chain": 908,
+  "run": 2008,
+  "slot": "g5-w10",
+  "owner": "agent/g5-w10",
+  "picked": "FrameBox F8C188 process startup and its actual pool+28h slab table",
+  "rows": [
+    {
+      "native": "00acef70",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_frame_box_pool_table_reserve_00acf860, reached from FrameBox initialize_pool via src/game_main.cpp WinMain",
+      "evidence": "Distinct-code link: ACF860 has one reachable tail call to ACEF70. Complete export establishes capacity-before-allocation, null-tested DWORD copy, free and adopt. Operates on the same F8C188+28h table."
+    },
+    {
+      "native": "00acf860",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::initialize, called by the retained process initialize_once from src/game_main.cpp WinMain",
+      "evidence": "Restored CD7740 startup (CE34D4): ECX=F8C188, construct ACFF70, atexit CE0B40. ACFF70 inline reserve32 replaced inside the existing EH-state-2 constructor operation. Distinct-code link shows the FrameBox initialize_pool call reaches ACF860."
+    },
+    {
+      "native": "00acf7e0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate",
+      "reason": "Missing a production caller of the actual DEFAULT FrameBox factory; append specialization is prepared and fixture-tested, but ACF7E0 is not linked into the game executable."
+    },
+    {
+      "native": "00acefc0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: native_gui_frame_box_pool_table_push_back_00acf7e0 calls the existing src/cc13_sweepC.cpp pointer_table_grow_00acefc0",
+      "reason": "Missing the production FrameBox factory allocation path that fills the actual slab table; existing growth body has a narrow CRT adapter and passes the fixture, but is not linked into the game executable."
+    }
+  ],
+  "changes": [
+    "Restore the canonical FrameBox pool CRT startup after Model and before Traceline, with the existing startup-failure marker and real atexit owner.",
+    "Replace constructor inline reserve with ACF860 -> ACEF70 on the retained pool header, keeping original constructor cleanup.",
+    "Prepare allocator inline-append replacement ACF7E0 under the existing pool lock; reuse the sole ACEFC0 body through PointerTableAllocationHost, without unrelated services or stubs.",
+    "Record three newly reconstructed bodies and qualify the existing growth body in the reconstruction ledger; preserve template-shape names, save Ghidra evidence comments and refresh exports."
+  ],
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed, 6/6 tests",
+    "final_release_build": "scripts/build.ps1 passed, 6/6 tests; local/c908-build.log",
+    "fixture": "tests/wire_g5_c908_frame_box_table_probe.cpp built with /MD and /MANIFEST:EMBED; 513 real pool slots, 33 slabs, capacity 32 -> 66, all payloads/trailing indices preserved, recursion zero and allocator list unlinked after destroy",
+    "fixture_log": "local/c908-probe.log",
+    "distinct_code_link": "Temporarily relinked existing release objects with /OPT:NOICF; ACEF70 and ACF860 each have exactly one reachable call site from the intended FrameBox caller. Restored original /INCREMENTAL:NO release linker flags and rebuilt successfully.",
+    "distinct_code_graph_log": "local/c908-distinct-graph.log",
+    "default_graph_log": "local/c908-callgraph-after.log",
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "metrics": {
+    "wire_readiness_wired_before": 10771,
+    "wire_readiness_wired_after": 10775,
+    "new_graph_verified_address_calls": 2,
+    "default_graph_reachable_reconstructed_addresses_before": 5663,
+    "default_graph_reachable_reconstructed_addresses_after": 5664,
+    "note": "Default linker folds ACEF70 into an existing pool body; /OPT:NOICF confirms both new address calls separately. Readiness state is a source-text heuristic: the four-address increase is not per-address call proof, and its output omits the three formerly tagged template helpers. Only the two wired rows above are claimed."
+  },
+  "left": "Connect the actual DEFAULT FrameBox factory to a production page/widget producer; then ACF7E0 and ACEFC0 can run with real allocated slabs. No gameplay or original binary ABI claim."
+}

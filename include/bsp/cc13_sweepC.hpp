@@ -103,7 +103,7 @@ struct SubscriptionMatchHost {
     virtual std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) = 0;
 };
 
-// The existing AACE40 growth body only needs the original CRT allocation pair.
+// The existing AACE40/ACEFC0 growth bodies only need the original CRT allocation pair.
 // A live pool binding must not implement unrelated sweep services with stubs.
 struct PointerTableAllocationHost {
     virtual ~PointerTableAllocationHost() = default;
@@ -754,7 +754,7 @@ float plane_signed_distance_00b999a0(const void* plane, const float* point);
 // The pointer-table growth (data +0h, count +4h, capacity +8h), one shape at four addresses.
 void pointer_table_grow_00aace40(PointerTableAllocationHost& host, void* table);
 void pointer_table_grow_00acd250(SweepCHost& host, void* table);
-void pointer_table_grow_00acefc0(SweepCHost& host, void* table);
+void pointer_table_grow_00acefc0(PointerTableAllocationHost& host, void* table);
 
 }  // namespace bsp::cc13_sweepC
 

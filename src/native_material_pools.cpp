@@ -4,6 +4,8 @@
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
+#include "bsp/native_gui_frame_box_pool_table.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -615,6 +617,58 @@ template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
     return allocate_slot<GuiButtonPoolTraits,
         &NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize_slab,
         &push_native_gui_button_pool_slab_00aabc70>(storage_);
+}
+
+// bsp.py show ACEF70/ACF860: publish capacity before allocating, copy DWORD
+// pointers with the native destination-null check, free old, then adopt new.
+// set_slab_table_capacity is the same source operation used by the other pools.
+__declspec(noinline) void native_gui_frame_box_pool_table_set_capacity_00acef70(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    set_slab_table_capacity(table, capacity);
+}
+
+namespace {
+struct FrameBoxTableAllocation final : cc13_sweepC::PointerTableAllocationHost {
+    void* operator_new_00bf55be(std::uint32_t bytes) override {
+        return singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
+    }
+    void operator_delete_00bf6989(void* block) override { singleton_lifetime_free(block); }
+};
+} // namespace
+
+__declspec(noinline) void native_gui_frame_box_pool_table_push_back_00acf7e0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // ACF7E0's inlined 2*n+2 growth matches ACEFC0..ACF00F (listing checked).
+    // The adapter operates on this actual pool+28h header, not a side vector.
+    if (table.count == table.capacity) {
+        FrameBoxTableAllocation allocation;
+        cc13_sweepC::pointer_table_grow_00acefc0(allocation, &table);
+    }
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_frame_box_pool_table_reserve_00acf860(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_frame_box_pool_table_set_capacity_00acef70(table, capacity);
+}
+
+template<> void NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::initialize() {
+    // bsp.py show 00ACFF70: inline reserve(32) at the SAME pool+28h, in
+    // constructor unwind state 2. Replace that operation, retaining cleanup.
+    initialize_pool<GuiFrameBoxPoolTraits,
+        &native_gui_frame_box_pool_table_reserve_00acf860>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate() {
+    // bsp.py show 00AD0050: append initialized 1224h slab under the original
+    // pool lock, after publishing first-free. ACF7E0 is the same operation.
+    return allocate_slot<GuiFrameBoxPoolTraits,
+        &NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::initialize_slab,
+        &native_gui_frame_box_pool_table_push_back_00acf7e0>(storage_);
 }
 
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
