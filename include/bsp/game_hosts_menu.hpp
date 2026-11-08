@@ -43,6 +43,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameSingletonHost;
 class GameFrontendHost;
+class GameNativeRendererApplication;
 class GameVfsHost;
 class GameScriptHost;
 class GameNativeInputConfigurationApplication;
@@ -164,6 +165,7 @@ public:
     // Borrow the application's actual input-action owner/configuration before
     // the first menu publication. It outlives the menu and the raw manager drain.
     void bind_input_context_manager(GameInputContextManagerBinding&);
+    void bind_native_renderer(GameNativeRendererApplication&);
     // Goal 4 chain 302: the application's embedded input configuration
     // (game+3Ch), which the press-start commits load through 00698A10.
     // Borrowed; the application retires it only after this menu is deleted.

@@ -3719,6 +3719,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
         options_.order_speed, options_.order_speed_set);
     menu_->bind_input_context_manager(input_->context_manager);
+    menu_->bind_native_renderer(*native_renderer_);
     // Chain 648: EnableInput (008AFBD0) writes the same manager's context 1Eh.
     // The menu bind above has prepared its table.
     GameScriptOrdersHost::bind_input_context_manager(&input_->context_manager);

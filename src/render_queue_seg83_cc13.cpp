@@ -55,7 +55,7 @@ void render_queue_start_worker_00b1c4a0(std::uint32_t a, std::uint32_t b, std::u
     host.renderer_slot118(a, b, c);
 }
 
-void render_queue_reset_mode_and_cycle_frame_00b1c4b0(void* queue, RenderQueueHost& host) {
+void render_queue_reset_mode_and_cycle_frame_00b1c4b0(void* queue, RenderQueueFrameCycleHost& host) {
     if (rd<std::uint32_t>(queue, 0x20) == 2) host.renderer_slot11c();
     wr<std::uint32_t>(queue, 0x20, 0);
     host.renderer_slot0c();
