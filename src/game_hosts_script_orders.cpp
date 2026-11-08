@@ -41,6 +41,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/cc13_seg52.hpp"
+#include "bsp/cc13_seg48.hpp"
 #include "bsp/cc13_left55_seg56b.hpp"   // goal 4 chain 365: 008AD540 / 008ACD10 bodies
 #include "bsp/cc13_sweepB.hpp"
 #include "bsp/world_ocean.hpp"
@@ -237,13 +238,6 @@ inline constexpr bool kThinkDelayInWalkBound = true;   // ON: SQUADRON_LAND_TASK
 // through entity_issue_command like the other navigator orders. False leaves
 // it an unimplemented record, as before.
 inline constexpr bool kLuaNavigatorStopBound = true;  // ON: SQUADRON_LAND_TASK 5hb
-// Packet cc9_l63_member_ordnance (SQUADRON_LAND_TASK 5hv.4). 007EE8F0's ordnance
-// queries 007ED7E0 / 007ED830 / 007ED880 / 007ED8D0 each loop the squadron's
-// +3CCh members at +3D0h and answer on the first member that holds the kind
-// (007ED850 `MOV ECX,[EDI]`). True: each answer is the OR over the ordered unit's
-// live squadron members (gunnery liveness stands for +3CCh membership, LABELLED).
-// False: the ordered unit (slot 0) alone, as before.
-inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
 // Packet cc9_l65_chooser_surface_set (SQUADRON_LAND_TASK 5hy). 007EEC9F calls the
 // thunk 00922DC0 (DL = 1) into 00922C80; a target past the ship, airfield,
 // shipyard and 1Ch arms (an MLandFort: hangars, bunkers) reaches 008DDF90, the
@@ -3950,21 +3944,57 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     // ordered unit is a plane. That follows from the identification the self
     // queries already make; it is not a further assumption.
     in.unit_has_weapon_controller = units_.unit_is_kind_of(unit_index, 0x0f);
-    const std::uint64_t ordnance = units_.unit_ordnance(unit_index);
-    const bsp::OrdnanceKindSet set{ordnance};
-    in.has_level_bomb_ordnance = bsp::ordnance_has_paratrooper_31h(set);
-    in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
-    in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
-    in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
-    // Packet cc13-depthcharge1: 007EDA10 -> 007B94F0, kind 2Ch (Type
-    // "DepthCharge"). Lands with the task, never apart from it.
-    if constexpr (bsp::kDepthChargeTaskBound) in.has_depth_charge_ordnance = set.contains(0x2c);
-    // Packet cc9-rocket1: 007ED970 -> 007B9480, kind 33h with IgnitionDelay > 0.
-    // Lands with the rocket task (bsp::kRocketTaskBound), never apart from it.
-    if constexpr (bsp::kRocketTaskBound) {
-        in.has_rocket_ordnance = units_.unit_has_rocket_ordnance_007b9480(unit_index);
-    }
-    if constexpr (kSquadronMemberOrdnanceBound) {
+    {
+        // Goal 5 chain 862. The existing chooser uses current rack state and
+        // gunnery liveness for +3CCh membership. Keep that projection, including
+        // the ordered plane first and its surviving siblings in registry order.
+        // bsp.py show 007ED830/007ED970 --asm: each body calls the member's
+        // controller and stops on the first hit; no native-shaped copy is made.
+        struct TargetOrdnance final : bsp::Cc13SquadronTargetOrdnanceHost {
+            GameUnitsHost& units;
+            std::vector<std::size_t> members;
+            explicit TargetOrdnance(GameUnitsHost& u, std::size_t ordered)
+                : units(u), members{ordered} {}
+            std::int32_t squadron_member_count(void*) override {
+                return static_cast<std::int32_t>(members.size());
+            }
+            void* squadron_member(void*, std::int32_t i) override {
+                return &members[static_cast<std::size_t>(i)];
+            }
+            std::size_t unit(void* member, std::uint32_t loadout) const {
+                // This host owns only the active loadout, as did the replaced
+                // unit_ordnance/007B9480 loop. Zero selects that same state.
+                if (loadout != 0) throw std::logic_error("unbound chooser loadout");
+                return *static_cast<const std::size_t*>(member);
+            }
+            bsp::OrdnanceKindSet kinds(void* member, std::uint32_t loadout) const {
+                return {units.unit_ordnance(unit(member, loadout))};
+            }
+            bool weapon_controller_has_level_bomb_ordnance_007b9500(
+                void* member, std::uint32_t loadout) override {
+                return bsp::ordnance_has_paratrooper_31h(kinds(member, loadout));
+            }
+            bool weapon_controller_has_general_bomb_ordnance_007b9320(
+                void* member, std::uint32_t loadout) override {
+                return bsp::ordnance_has_general_bomb_2ah(kinds(member, loadout));
+            }
+            bool weapon_controller_has_drop_kamikaze_ordnance_007b93e0(
+                void* member, std::uint32_t loadout) override {
+                return bsp::ordnance_has_drop_kamikaze_2fh(kinds(member, loadout));
+            }
+            bool weapon_controller_has_torpedo_ordnance_007b93f0(
+                void* member, std::uint32_t loadout) override {
+                return bsp::ordnance_has_torpedo_2bh(kinds(member, loadout));
+            }
+            bool weapon_controller_has_depth_charge_ordnance_007b94f0(
+                void* member, std::uint32_t loadout) override {
+                return kinds(member, loadout).contains(0x2c);
+            }
+            bool weapon_controller_has_rocket_ordnance_007b9480(
+                void* member, std::uint32_t loadout) override {
+                return units.unit_has_rocket_ordnance_007b9480(unit(member, loadout));
+            }
+        } ordnance(units_, unit_index);
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit_index);
         auto* const gun = units_.gunnery();
@@ -3972,19 +4002,17 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
             for (const std::size_t m : sq->member_units) {
                 if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count() || m == unit_index) continue;
                 if (gun != nullptr && gun->unit_dead(m)) continue;
-                const bsp::OrdnanceKindSet ms{units_.unit_ordnance(m)};
-                in.has_level_bomb_ordnance |= bsp::ordnance_has_paratrooper_31h(ms);
-                in.has_general_bomb_ordnance |= bsp::ordnance_has_general_bomb_2ah(ms);
-                in.has_drop_kamikaze_ordnance |= bsp::ordnance_has_drop_kamikaze_2fh(ms);
-                in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
-                if constexpr (bsp::kDepthChargeTaskBound) {
-                    in.has_depth_charge_ordnance |= ms.contains(0x2c);
-                }
-                if constexpr (bsp::kRocketTaskBound) {
-                    in.has_rocket_ordnance |= units_.unit_has_rocket_ordnance_007b9480(m);
-                }
+                ordnance.members.push_back(m);
             }
         }
+        in.has_level_bomb_ordnance = bsp::cc13_seg48_unit_has_level_bomb_ordnance_007ed830(&ordnance, 0, ordnance);
+        in.has_general_bomb_ordnance = bsp::cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(&ordnance, 0, ordnance);
+        in.has_drop_kamikaze_ordnance = bsp::cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(&ordnance, 0, ordnance);
+        in.has_torpedo_ordnance = bsp::cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(&ordnance, 0, ordnance);
+        if constexpr (bsp::kDepthChargeTaskBound)
+            in.has_depth_charge_ordnance = bsp::cc13_seg48_unit_has_depth_charge_ordnance_007eda10(&ordnance, 0, ordnance);
+        if constexpr (bsp::kRocketTaskBound)
+            in.has_rocket_ordnance = bsp::cc13_seg48_unit_has_rocket_ordnance_007ed970(&ordnance, 0, ordnance);
     }
     // Packet cc9_kamikaze_ship_blocked: 007EEB64..007EEB8A. 00827F70 on the
     // target's class, then 00604A50 on the slot-0 plane (the ordered unit, as
@@ -3997,9 +4025,13 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
             (units_.unit_is_kind_of(target_index, 0x0c) && !big);
         if (small_target) {
             ++kamikaze_small_targets_;
-            // 00604A58 (17h, held above), 00604A60 [plane+C24h] == 0.
+            // 007EEB74 calls 00604A50 on the same slot-0 plane. Goal 5 chain
+            // 865: its canonical body consumes the retained kind-17h answer
+            // and the live PilotFires byte (00604A58 / 00604A60).
             const bool uncommitted_kamikaze =
-                !units_.plane_pilot_fires_0c24(unit_index);
+                bsp::cc13_sweepB_entity_kind17_ready_00604a50(
+                    in.self_is_kamikaze_capable,
+                    static_cast<std::uint8_t>(units_.plane_pilot_fires_0c24(unit_index)));
             const bool blocked = !uncommitted_kamikaze;
             if (blocked) ++kamikaze_blocked_;
             log_.notef("  %s kamikaze small-ship test: target class %d small, "

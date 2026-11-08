@@ -43,6 +43,14 @@ public:
     virtual bool weapon_controller_has_depth_charge_ordnance_007b94f0(void*, std::uint32_t loadout) = 0;
 };
 
+// 007ED830/007ED970 use the same member walk, with the kind-31h and
+// delayed-ignition rocket predicates used by the attack-command chooser.
+class Cc13SquadronTargetOrdnanceHost : public Cc13SquadronOrdnanceHost {
+public:
+    virtual bool weapon_controller_has_level_bomb_ordnance_007b9500(void*, std::uint32_t loadout) = 0;
+    virtual bool weapon_controller_has_rocket_ordnance_007b9480(void*, std::uint32_t loadout) = 0;
+};
+
 // 007ED920 needs only ordered membership and the kind-33h query. Defaults
 // preserve its native +3CCh/+3D0h accesses; game hosts can expose live records.
 class Cc13SquadronRocketHost {
@@ -67,7 +75,7 @@ public:
     virtual void observer_unregister_pair_006952a0(void* observed, void* owner) = 0;
 };
 
-class Cc13Seg48Host : public Cc13SquadronOrdnanceHost, public Cc13SquadronRocketHost,
+class Cc13Seg48Host : public Cc13SquadronTargetOrdnanceHost, public Cc13SquadronRocketHost,
                       public PlaneNeighboursObserverHost {
 public:
     virtual ~Cc13Seg48Host() = default;
@@ -465,11 +473,11 @@ void cc13_seg48_plane_squadron_release_controlled_unit_007f3a60(void* squadron, 
 bool cc13_seg48_plane_squadron_any_can_drop_ordnance_007ed790(void* squadron, std::uint32_t loadout,
                                                               Cc13Seg48Host& host);
 bool cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host);
-bool cc13_seg48_unit_has_level_bomb_ordnance_007ed830(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host);
+bool cc13_seg48_unit_has_level_bomb_ordnance_007ed830(void* squadron, std::uint32_t loadout, Cc13SquadronTargetOrdnanceHost& host);
 bool cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host);
 bool cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host);
 bool cc13_seg48_plane_squadron_any_has_rockets_007ed920(void* squadron, std::uint32_t loadout, Cc13SquadronRocketHost& host);
-bool cc13_seg48_unit_has_rocket_ordnance_007ed970(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host);
+bool cc13_seg48_unit_has_rocket_ordnance_007ed970(void* squadron, std::uint32_t loadout, Cc13SquadronTargetOrdnanceHost& host);
 bool cc13_seg48_unit_has_depth_charge_ordnance_007eda10(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host);
 
 // ---- session messages ----

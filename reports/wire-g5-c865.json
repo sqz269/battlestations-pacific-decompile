@@ -1,0 +1,117 @@
+{
+  "goal": 5,
+  "chain": 865,
+  "slot": "g5-w4",
+  "base_head": "0f5e4069c0616d5baaed4055a9079c467ee2d2d2",
+  "rows": [
+    {
+      "native": "00604a50",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::choose_attack_class_007eec50"
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller flags path",
+      "reason": "No retained controller-state message producer and routed consumer carrying both command descriptors and controller mode was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller flags path",
+      "reason": "Missing a retained controller snapshot owner and transport consumer; copying flattened flags alone would add a discarded snapshot."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing the live support-site stock lists and a corresponding support-order or spawn-composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing the live support-site availability entries, owner health and support-menu consumer."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "No host-owned MarkerClassRegistry and MarkerClassContext with the real game Lua and intrusive mesh resource producer was established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a reached character-admission consumer with its retained text-context font; whole-string layout is a different operation."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "Missing the real nonzero unit+B04h correction producer that admits the original alternate-frame branch."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: WeaponViewHost::rotate_about_axis_0085e8c0",
+      "reason": "Missing a reached WeaponViewHost implementation with the live weapon-view pose, pivot and axis."
+    },
+    {
+      "native": "00a78330",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC2.cpp: dialog_channel_set_volume_by_name_00a78330",
+      "reason": "No reached voice-volume consumer with the actual dialog channel and requested name was established."
+    },
+    {
+      "native": "00a78620",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime",
+      "reason": "No reached voice-end request consumer with the actual logical dialog channel was established."
+    },
+    {
+      "native": "00a78ce0",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime",
+      "reason": "No reached voice-slot start producer carrying the actual alternate dialog record and channel was established."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime pause dispatch",
+      "reason": "The canonical body is already named by the runtime adapter, but a reached gameplay pause caller was not established in this packet."
+    },
+    {
+      "native": "00a79a30",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime handle dispatch",
+      "reason": "The canonical getter is already named by the runtime adapter, but a reached gameplay handle consumer was not established in this packet."
+    }
+  ],
+  "evidence": [
+    "bsp.py ghidra decompile 00604a50 and disasm: kind(17h), then byte[C24h] == 0; ECX entity, EAX bool, RET",
+    "GameUnitsHost::plane_pilot_fires_0c24 reads the retained per-unit field populated from VehicleClass platform PilotFires in the 007CD930 property-bag projection.",
+    "The script-orders small-ship feasibility branch already consumes both live inputs and applies the inverse result to kamikaze_ship_blocked."
+  ],
+  "verification": {
+    "baseline_build": "passed; all four CTests",
+    "wired_before": 10716,
+    "reconstructed_called_before": 6130,
+    "final_build": "passed; all four CTests",
+    "build_log": "local/c865-build.txt",
+    "wired_after": 10717,
+    "reconstructed_called_after": 6131,
+    "readiness_called_after": 5973,
+    "function": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "caller": "GameScriptOrdersHost::choose_attack_class_007eec50",
+      "call_site": "1024efd7",
+      "body_site": "104c9e70"
+    },
+    "call_graph_path": "WinMainCRTStartup -> game startup/frame -> mission frame -> squadron intake -> choose_attack_class_007eec50 -> cc13_sweepB_entity_kind17_ready_00604a50",
+    "float_math_changed": false,
+    "game_run": false
+  }
+}

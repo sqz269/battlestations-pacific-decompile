@@ -144,10 +144,28 @@ struct MissionCameraPublication {
     std::uint64_t publishes{0};
 };
 MissionCameraPublication& mission_camera_publication() noexcept;
+// Projection setters must reach the camera that HUD readers already borrow,
+// even if the pose was published earlier in this frame. Does not tick or
+// republish the mover, and preserves the native projection-cache invalidation.
+void update_mission_camera_projection(const MissionCameraProjection& projection);
+void set_mission_camera_fov(MissionCameraProjection& projection, float fov);
 // node->vtable[34h](world) (00B71460 on the Operator camera) after the
 // projection terms are stored.
 void publish_mission_camera(const CameraMatrix16& world, const MissionCameraProjection& projection);
 void clear_mission_camera() noexcept;
+
+namespace cc13_seg10 { struct ViewFovHost; }
+struct MissionCameraFovFrame {
+    bool pipe_sight_updates;
+    bool binoculars_raised;
+    float pipe_sight_zoom_rate;
+    float pipe_sight_zoom;
+};
+// The live ship-view publication tail: pipe sight owns the default only
+// while binoculars are down. The caller supplies the existing 004DC940 gates.
+void publish_ship_view_mission_camera(const CameraMatrix16& world,
+    const MissionCameraProjection& projection, const MissionCameraFovFrame& frame,
+    cc13_seg10::ViewFovHost& fov);
 
 // The in-mission FOV (packet cc9_mission_camera, part 3). Screen 45h's update
 // 0064DD30 (vtable 00CF5E30 +20h) runs, while its unit (+184h) is set and

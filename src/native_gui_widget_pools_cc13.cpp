@@ -51,6 +51,16 @@ void GameNativeGuiWidgetPoolProcess<T>::destroy_at_exit() noexcept {
 } // namespace bsp::game
 
 namespace bsp {
+__declspec(noinline) void reserve_native_gui_icon_pool_table_00ab2420(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // Evidence: bsp.py show 00AB2420 and 00AB2850. The Icon constructor's
+    // reserve(32) is an inline copy, not an original CALL to this entry.
+    // AA6FA0 supplies the same allocate/copy/free body, including DWORD size
+    // wrapping and the null-tested destination; pass the retained actual table.
+    if (table.capacity < capacity)
+        native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
 template <class T>
 void* allocate_gui_widget_pool_slot() {
     return game::GameNativeGuiWidgetPoolProcess<T>::instance().pool().allocate();

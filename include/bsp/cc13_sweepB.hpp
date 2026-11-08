@@ -504,7 +504,10 @@ bool cc13_sweepB_interface_allows_input_00604a20(const void* screen);
 bool cc13_sweepB_interface_allows_input_00604a20(std::int32_t mode_900, std::uint8_t byte_904);
 
 // 00604A50: 1 when the entity is kind 17h (vtable +5Ch) and byte +C24h is clear.
-bool cc13_sweepB_entity_kind17_ready_00604a50(void* entity, Cc13SweepBHost& host);
+// Semantic inputs from the live entity; this C++ interface does not use the
+// native ECX-object ABI or require a fabricated C24h-sized object.
+bool cc13_sweepB_entity_kind17_ready_00604a50(bool entity_is_kind17,
+    std::uint8_t pilot_fires_c24) noexcept;
 
 // ---------------------------------------------------------------------------
 // Segment 24

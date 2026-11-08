@@ -28,6 +28,9 @@ constexpr AiTuningKey kKeys[kAiTuningKeyCount] = {
     {kAiTuningCloseAttackTargetGroupMemberMul,
                                             "CloseAttack_TargetGroupMemberMul", 2.0f},// 00CE3958
     {kAiTuningFormationUnitDist,            "Formation_UnitDist",            300.0f}, // 00CE3AE8
+    {kAiTuningComposeGroupSpeedBonusWeightRatio,
+                                            "ComposeGroup_SpeedBonusWeightRatio", 0.5f}, // 00CE3800
+    {kAiTuningComposeGroupSpeedBonus,       "ComposeGroup_SpeedBonus",        1.0f}, // inline 3F800000h
     // +0h..+4Ch, GetNumber with no image default; an absent key leaves zero.
     {0x000u, "MotherShip", 0.0f},
     {0x004u, "BattleShip", 0.0f},
@@ -357,6 +360,14 @@ bool AiTuningAuthoredReader::read_number(AiTuningMode mode, const char* key, flo
     }
     if (std::strcmp(key, "Formation_UnitDist") == 0) {
         out = row->formation_unit_dist;
+        return true;
+    }
+    // Installed highlvlaiglobals.lua: 144-145, 332-333, 518-519, 702-703,
+    // 857-858, 1026-1027 and 1181-1182. Both authored values are zero in
+    // every mode, distinct from 00A335D0's missing-key defaults 0.5 and 1.
+    if (std::strcmp(key, "ComposeGroup_SpeedBonusWeightRatio") == 0 ||
+        std::strcmp(key, "ComposeGroup_SpeedBonus") == 0) {
+        out = 0.0f;
         return true;
     }
     {

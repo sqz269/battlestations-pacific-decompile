@@ -3,6 +3,7 @@
 
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/sound_cc13.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
 
@@ -1541,8 +1542,9 @@ void* input_device_construct_00a943d0(void* device) {
     at<std::uint32_t>(device, 0x00) = 0x00CEB130u;
     at<std::uint32_t>(device, 0x04) = 1;
     at<std::uint32_t>(device, 0x00) = 0x00D5B638u;
-    std::memset(add(device, 0x0C), 0, 0x100);
-    std::memset(add(device, 0x10C), 0, 0x100);
+    // bsp.py show 00A943D0 / 00A93EC0: identical ordered 100h clears
+    // on the receiver's +0Ch/+10Ch histories; keep one canonical body.
+    sound_cc13::input_device_clear_states_00a93ec0(device);
     return device;
 }
 
@@ -1551,8 +1553,8 @@ void* input_device_construct_00a943d0(void* device) {
 void* mouse_device_construct_00a9a0b0(void* device) {
     at<std::uint32_t>(device, 0x00) = 0x00CEB130u;
     at<std::uint32_t>(device, 0x04) = 1;
-    std::memset(add(device, 0x0C), 0, 0x100);
-    std::memset(add(device, 0x10C), 0, 0x100);
+    // 00A9A0B0 has the same history stores, before its derived profile.
+    sound_cc13::input_device_clear_states_00a93ec0(device);
     at<std::uint32_t>(device, 0x00) = 0x00D5B850u;
     return device;
 }

@@ -73,7 +73,11 @@ void release_string(void* tmp, NativeStringStorage& strings) noexcept {
 // ---------------------------------------------------------------------------------------------
 // Binoculars screen
 // ---------------------------------------------------------------------------------------------
-void binoculars_toggle_zoom_0051e7e0(Raw screen, const ViewGlobals& globals, ViewSeg14Hooks& hooks) {
+Raw BinocularsToggleHooks::binoculars_camera(Raw mover) { return get<void*>(mover, 0x1bc); }
+float BinocularsToggleHooks::binoculars_near_plane(Raw camera) { return get<float>(camera, 0x1d4); }
+
+void binoculars_toggle_zoom_0051e7e0(Raw screen, Raw controlled_00e188d8,
+    float& saved_near_plane_00e18da8, BinocularsToggleHooks& hooks) {
     const auto mode = get<std::int32_t>(screen, 0x30);
     if (mode == 1) {
         const float zoom = get<float>(screen, 0x38);
@@ -86,10 +90,12 @@ void binoculars_toggle_zoom_0051e7e0(Raw screen, const ViewGlobals& globals, Vie
             put<std::uint8_t>(screen, 0x2d, 0);
             put<std::uint8_t>(screen, 0x2e, 0);
             // UCOMISS/LAHF/TEST AH,44h/JNP skips only on an ordered equal compare.
-            if (!(globals.saved_near_plane_00e18da8 == kZero)) {
+            if (!(saved_near_plane_00e18da8 == kZero)) {
                 void* const mover = get<void*>(screen, 0x40);
-                if (mover != nullptr && get<void*>(mover, 0x1bc) != nullptr)
-                    hooks.camera_set_near_plane_00b6fbf0(get<void*>(mover, 0x1bc), globals.saved_near_plane_00e18da8);
+                if (mover != nullptr) {
+                    if (void* const camera = hooks.binoculars_camera(mover))
+                        hooks.camera_set_near_plane_00b6fbf0(camera, saved_near_plane_00e18da8);
+                }
             }
         }
     } else if (mode == 0 && get<float>(screen, 0x38) == kOne) {
@@ -97,25 +103,33 @@ void binoculars_toggle_zoom_0051e7e0(Raw screen, const ViewGlobals& globals, Vie
         put<std::uint8_t>(screen, 0x34, 1);
         put<float>(screen, 0x38, kOne);
         void* const mover = get<void*>(screen, 0x40);
-        if (mover != nullptr && get<void*>(mover, 0x1bc) != nullptr) {
-            void* const camera = get<void*>(mover, 0x1bc);
-            globals.saved_near_plane_00e18da8 = get<float>(camera, 0x1d4);
-            hooks.camera_set_near_plane_00b6fbf0(camera, kRaisedNearPlane);
+        if (mover != nullptr) {
+            if (void* const camera = hooks.binoculars_camera(mover)) {
+                saved_near_plane_00e18da8 = hooks.binoculars_near_plane(camera);
+                hooks.camera_set_near_plane_00b6fbf0(camera, kRaisedNearPlane);
+            }
         }
     }
-    if (hooks.object_is_kind_virtual_5c(globals.controlled_00e188d8, 6))
-        hooks.unit_broadcast_controlled_part_flag_00817380(globals.controlled_00e188d8,
+    if (hooks.object_is_kind_virtual_5c(controlled_00e188d8, 6))
+        hooks.unit_broadcast_controlled_part_flag_00817380(controlled_00e188d8,
                                                            get<std::int32_t>(screen, 0x30) == 1 ? 1 : 0);
     hooks.binoculars_apply_fov_0051e6e0(screen); // tail JMP
 }
 
-void binoculars_reset_0051e8e0(Raw screen, ViewSeg14Hooks& hooks) {
+bool BinocularsResetHooks::binoculars_screen_applied(Raw screen) {
+    return get<std::uint8_t>(screen, 5) != 0;
+}
+Raw BinocularsResetHooks::binoculars_model_widget(Raw screen) {
+    return get<void*>(screen, 0x20);
+}
+
+void binoculars_reset_0051e8e0(Raw screen, BinocularsResetHooks& hooks) {
     put<std::int32_t>(screen, 0x30, 0);
     put<float>(screen, 0x38, kOne);
     put<float>(screen, 0x28, kOne);
     hooks.binoculars_apply_fov_0051e6e0(screen);
-    if (get<std::uint8_t>(screen, 5) == 0) return;
-    hooks.widget_show_virtual_34(get<void*>(screen, 0x20), 0);
+    if (!hooks.binoculars_screen_applied(screen)) return;
+    hooks.widget_show_virtual_34(hooks.binoculars_model_widget(screen), 0);
     hooks.lens_flare_set_enabled_00452b80(reinterpret_cast<Raw>(kLensFlare), 0);
 }
 
@@ -134,7 +148,7 @@ Raw binoculars_screen_construct_0051e950(Raw screen, FrontEndScreenBaseHooks& ho
     return screen;
 }
 
-void binoculars_screen_exit_0051e9b0(Raw screen, ViewSeg14Hooks& hooks) {
+void binoculars_screen_exit_0051e9b0(Raw screen, BinocularsResetHooks& hooks) {
     binoculars_reset_0051e8e0(screen, hooks); // byte-identical body
 }
 

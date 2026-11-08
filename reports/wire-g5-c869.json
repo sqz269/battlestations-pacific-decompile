@@ -11,28 +11,28 @@
       "native": "00ab1580",
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: grow_native_gui_icon_pool_table_00ab15d0",
-      "call_site": "1052d7b2",
-      "compiled_body": "1052e330"
+      "call_site": "10530382",
+      "compiled_body": "10530e70"
     },
     {
       "native": "00ab15d0",
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: push_native_gui_icon_pool_slab_00ab23a0",
-      "call_site": "1052dff0",
-      "compiled_body": "1052d7a0"
+      "call_site": "10530b30",
+      "compiled_body": "10530370"
     },
     {
       "native": "00ab23a0",
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::allocate via allocate_slot Append",
-      "call_site": "1052cb2f",
-      "compiled_body": "1052dfe0"
+      "call_site": "1052f6ff",
+      "compiled_body": "10530b20"
     },
     {
       "native": "00ab2420",
       "status": "skipped",
       "host_site": "src/native_gui_widget_pools_cc13.cpp: Icon reserve",
-      "reason": "Already supplied by c867 commit 96ea9d01e in review; no duplicate body or startup edit."
+      "reason": "Already supplied by c867 commit 96ea9d01e, now preserved by the origin/main merge; no duplicate reserve body."
     },
     {
       "native": "008f54f0",
@@ -229,15 +229,52 @@
     "release_reconstructed_addresses_after": 6215,
     "readiness_text_wired_before": 10719,
     "readiness_text_wired_after": 10719,
-    "readiness_note": "The three native TMPL_/tmpl_shape entries are outside readiness game-function scope; executable call graph is the new wiring evidence."
+    "readiness_note": "The three native TMPL_/tmpl_shape entries are outside readiness game-function scope; executable call graph is the new wiring evidence.",
+    "scope": "Original c869 pre-merge comparison; merged validation totals are recorded under merge_validation."
   },
   "integration": {
-    "c867": "00AB2420 is owned by commit 96ea9d01e; this packet leaves its reserve/startup change to that review.",
+    "c867": "00AB2420 from c867 is present in merged origin/main; its concrete Icon initialization specialization is preserved alongside this packet allocation appender.",
     "c858": "The allocate_slot<Pool, Initialize, Append> extension matches c858 exactly. Icon dispatch is isolated beside its existing initializer trait.",
-    "next": "Remaining pool/table streams and the pending c867 Icon reserve landing."
+    "next": "Other pool/table streams; current packet is ready for review after merge validation."
   },
   "limitations": [
     "Source interfaces, not Original register/stack/SEH ABI replacements.",
     "Build, isolated fixture and compiled entry reachability verified; live GUI/gameplay and failure-domain validation not performed."
-  ]
+  ],
+  "merge_validation": {
+    "incoming_main": "8a70e7f9afb765b1533d64194d34365524aff75f",
+    "worker_parent": "175d5daf26bc64a8d274a4493990d75dc123fb52",
+    "conflicts": {
+      "config/reconstruction/00ab0000.jsonl": "Resolved and staged by tools/merge_resolve.py using reconstruction append union; both Icon capacity and incoming reserve rows verified via bsp.py lookup.",
+      "src/native_material_pools.cpp": "Automatically merged; reviewed against incoming main. Preserves Group capacity/grow/append/reserve, Icon reserve initialization, and Icon-only allocation appender."
+    },
+    "default_build": "scripts/build.ps1 PASS, MSVC Win32 Release, 4/4 CTests",
+    "on_build": "tools/off_switch_on_build.py PASS, 0 diagnostics, 4/4 CTests; two selected switches restored byte-for-byte before final default build",
+    "focused_probe": "local/c869-probe.cmd PASS: 2049 slots, 33 slabs, capacity 32->66, payloads/trailers/trim/teardown",
+    "call_graph": {
+      "reconstructed_called": 5605,
+      "reconstructed_addresses": 6236,
+      "packet_addresses_retained": [
+        "00ab1580",
+        "00ab15d0",
+        "00ab23a0"
+      ],
+      "call_sites_per_packet_address": 1,
+      "distinct_packet_bodies": true
+    },
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "exit_code": 0,
+      "state_counts": {
+        "blocked_on_callees": 51,
+        "callees_done_no_wired_caller": 8541,
+        "ready": 1202,
+        "unknown_no_identifier": 200,
+        "wired": 10731
+      },
+      "note": "Icon template entries remain outside game-function readiness scope; distinct compiled call sites remain the packet proof."
+    },
+    "game_run": false,
+    "float_math": "No float math changed in the resolution; pc24 lint not applicable."
+  }
 }

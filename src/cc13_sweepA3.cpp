@@ -7,6 +7,7 @@
 #include "bsp/cc13_sweepA3.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/cc13_seg87.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <algorithm>
 
@@ -1323,21 +1324,33 @@ bool unit_line_of_sight_from_viewer_005220c0(void* unit, SweepA3Host& host) {
 // EA at 0051EBDE is ST2 = ST2 - ST0 (1 - r), DE E9 at 0051ECFD is ST1 = ST1 -
 // ST0 (value - dt*5). Doubles 00D7A250 = -1.0, 00D7A280 = 0.5, 00CEC9E0 =
 // -0.5, 00D7A370 = 5.0; floats 00CE3868 = 0.25, 00D7A24C = 1.0. Intermediates
-// are double here, extended in the image.
+// use PC24 helpers below: each x87 arithmetic instruction rounds separately.
+Raw SweepA3Host::binoculars_input_bank() { return input_bank(*this); }
+bool SweepA3Host::binoculars_zoom_pressed() {
+    return input_action_was_pressed_004c43c0(global_pointer(kGame), 0xe0);
+}
+void SweepA3Host::binoculars_reset_overlay() {
+    if (void* const overlay = raw(global_pointer(kHudManager)).ptr(0x84)) {
+        raw(overlay).at<std::uint8_t>(0x1c) = 1;
+        vcall_set_visible_34(raw(overlay).ptr(0x20), 0);
+    }
+}
+
 void hud_binoculars_step_input_axes_0051eaa0(float* value, float* limit, float divisor, float dt,
                                              std::uint8_t* active, std::uint8_t* rising, std::uint8_t* falling,
-                                             std::uint8_t keep_limit, SweepA3Host& host) {
-    const bool analog = host.input_action_has_device_query_00a92090(input_bank(host).field(0x15c0)) ||
-                        host.input_action_has_device_query_00a92090(input_bank(host).field(0x2a00));
-    const float axis = input_bank(host).at<float>(0x15e4);
-    const bool toggle = host.input_action_was_pressed_004c43c0(host.global_pointer(kGame), 0xe0) ||
+                                             std::uint8_t keep_limit, BinocularsAxesHost& host) {
+    using namespace cc13x87;
+    const bool analog = host.input_action_has_device_query_00a92090(host.binoculars_input_bank().field(0x15c0)) ||
+                        host.input_action_has_device_query_00a92090(host.binoculars_input_bank().field(0x2a00));
+    const float axis = host.binoculars_input_bank().at<float>(0x15e4);
+    const bool toggle = host.binoculars_zoom_pressed() ||
                         (*rising != 0 && *falling != 0);
-    const float diff = static_cast<float>(static_cast<double>(axis) - input_bank(host).at<float>(0x2a24));
+    const float diff = static_cast<float>(x87_sub24(axis, host.binoculars_input_bank().at<float>(0x2a24)));
     bool step = false;
     if (axis == 0.0f) {
         if (toggle) {
             if (*limit > 0.25f) {
-                if (keep_limit == 0) *limit = static_cast<float>(*limit - 0.75);
+                if (keep_limit == 0) *limit = static_cast<float>(x87_sub24(*limit, 0.75));
                 *falling = 1;
                 *rising = 0;
                 *active = 1;
@@ -1348,31 +1361,31 @@ void hud_binoculars_step_input_axes_0051eaa0(float* value, float* limit, float d
                 *falling = 0;
                 *active = 0;
                 *value = *limit;
-                if (void* const binoculars = raw(host.global_pointer(kHudManager)).ptr(0x84); binoculars != nullptr) {
-                    raw(binoculars).at<std::uint8_t>(0x1c) = 1;
-                    host.vcall_set_visible_34(raw(raw(host.global_pointer(kHudManager)).ptr(0x84)).ptr(0x20), 0);
-                }
+                host.binoculars_reset_overlay();
             }
         }
     } else if (analog) {
-        const float r = static_cast<float>(1.0 / divisor);
-        *value = static_cast<float>(r + (1.0 - r) * (diff - -1.0) * 0.5);
+        // 0051EBCE..EBF6: reciprocal spill, SUB, SUB, MUL, MUL, ADD.
+        const float r = static_cast<float>(x87_div24(1.0, divisor));
+        *value = static_cast<float>(x87_add24(r,
+            x87_mul24(x87_mul24(x87_sub24(1.0, r), x87_sub24(diff, -1.0)), 0.5)));
     } else if (diff > 0.0f) {
-        host.math_step_towards_0042ac60(value, 1.0f, static_cast<float>(diff * 0.5 * dt));
+        host.math_step_towards_0042ac60(value, 1.0f,
+            static_cast<float>(x87_mul24(x87_mul24(diff, 0.5), dt)));
     } else {
-        const float rate = static_cast<float>(diff * -0.5 * dt);
-        host.math_step_towards_0042ac60(value, static_cast<float>(1.0 / divisor), rate);
+        const float rate = static_cast<float>(x87_mul24(x87_mul24(diff, -0.5), dt));
+        host.math_step_towards_0042ac60(value, static_cast<float>(x87_div24(1.0, divisor)), rate);
     }
     if (!step && *active == 0) return;
     if (*rising != 0) {
-        const float next = static_cast<float>(dt * 5.0 + *value);
+        const float next = static_cast<float>(x87_add24(x87_mul24(dt, 5.0), *value));
         *value = next;
         if (next > *limit) {
             *value = *limit;
             *active = 0;
         }
     } else if (*falling != 0) {
-        const float next = static_cast<float>(*value - dt * 5.0);
+        const float next = static_cast<float>(x87_sub24(*value, x87_mul24(dt, 5.0)));
         *value = next;
         if (*limit > next) {
             *value = *limit;

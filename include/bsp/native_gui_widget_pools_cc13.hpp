@@ -146,6 +146,14 @@ void native_gui_pool_table_push_back_00aa76c0(NativeGuiPoolSlabTable& table, std
 // when it grows.
 void native_gui_pool_table_reserve_00aa7740(NativeGuiPoolSlabTable& table, std::uint32_t capacity);
 
+// 00AB2420, __thiscall(ECX = Icon pool+28h, stack capacity), RET 4.
+// Same reserve operation as the inline copy in 00AB2850: unsigned growth
+// check, capacity published before allocation, current entries copied, old
+// table freed and replacement adopted. Source interface, not a native ABI thunk.
+void reserve_native_gui_icon_pool_table_00ab2420(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize();
+
 // Existing equivalent-address specializations use these source aliases. Each
 // forwards to the SAME reconstructed body; there is no second vector algorithm.
 inline void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
