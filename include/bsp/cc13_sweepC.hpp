@@ -62,7 +62,7 @@ struct MusicRowHost {
                                                std::uint32_t keep) = 0;
 };
 
-// 0080FA50 / 0080FF30 / 0080FF80 / 0080FFD0 call only this boundary.
+// 0080F960 / 0080FA50 / 0080FF30 / 0080FF80 / 0080FFD0 call only this boundary.
 // Keep their application adapters independent of the unrelated sweep services.
 struct UnitMessageConstructionHost {
     virtual ~UnitMessageConstructionHost() = default;
@@ -509,7 +509,7 @@ std::uint32_t unit_current_weapon_command_0080e1b0(SweepCHost& host, void* unit)
 // 0080E290, __thiscall(ECX = unit): 0085AD00 on every child node answering IsKindOf(22h).
 void unit_aim_turning_guns_to_rest_0080e290(SweepCHost& host, void* unit);
 // 0080F960, __thiscall(ECX = message, byte), RET 4 -> message: the 7Ah message.
-void* unit_message_shipyard_launch_construct_0080f960(SweepCHost& host, void* message,
+void* unit_message_shipyard_launch_construct_0080f960(UnitMessageConstructionHost& host, void* message,
                                                        std::uint8_t state);
 // 0080F9F0, __thiscall(ECX = vehicle class) -> EAX: 1 when either breakup vector is non-empty.
 std::uint32_t vehicle_class_has_breakup_pieces_0080f9f0(void* vehicle_class);

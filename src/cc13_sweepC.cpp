@@ -694,7 +694,7 @@ void unit_aim_turning_guns_to_rest_0080e290(SweepCHost& host, void* unit) {
 
 // 0080F960-0080F98D, __thiscall(ECX = message, [esp+4] = byte), RET 4 -> message. 0075B430(7Ah),
 // +18h word 0, +1Ah 0, +1Ch 0, +20h = byte, +4h = 1, vtable 00D03310.
-void* unit_message_shipyard_launch_construct_0080f960(SweepCHost& host, void* message,
+void* unit_message_shipyard_launch_construct_0080f960(UnitMessageConstructionHost& host, void* message,
                                                        std::uint8_t state) {
     host.session_message_construct_base_0075b430(message, 0x7A);
     message_head(message);

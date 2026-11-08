@@ -1979,11 +1979,13 @@ HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
 HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_launch_7a(
     std::uint8_t flag) const {
     const Image& image = *image_;
-    // 009CFBFB..009CFC23: 0080F960's stores inline; 007604C0 makes the same
-    // header, and the sender adds +20h.
+    // 009CFBFB..009CFC23 inline the 0080F960 value constructor. Run that
+    // existing body over the sender and this session's actual player state.
+    // Evidence: bsp.py show 0080F960. Relocate only its original vptr.
     seg42::VehicleShipyardLaunchMessage sent{};
-    seg42::construct_vehicle_shipyard_launch_007604c0(&sent, image.seg42);
-    sent.flag_20 = flag;
+    UnitMessageConstructionBinding binding(image.session);
+    cc13_sweepC::unit_message_shipyard_launch_construct_0080f960(binding, &sent, flag);
+    sent.u.h.base.profile_00 = image.seg42.vtables.vtable(0x00d03310u);
 
     LocalStream stream;
     seg42::write_vehicle_shipyard_launch_00760550(&sent, &stream.out);
@@ -2354,13 +2356,7 @@ namespace {
 // Goal 5 chain 632. The 7Bh class: the 20h-byte unit message and the heading
 // at +20h, 24h bytes as 00768530 case 7Bh allocates it
 // (include/bsp/oct18_tail_a_factory.inc: {0x7b, 0x24, 0x007601a0, ...}).
-struct VehicleUnitLaunchMessage7B {
-    seg42::UnitMessage u;
-    float heading_20;
-};
-static_assert(sizeof(VehicleUnitLaunchMessage7B) == 0x24);
-static_assert(offsetof(VehicleUnitLaunchMessage7B, heading_20) == 0x20);
-static_assert(sizeof(VehicleUnitLaunchMessage7B)
+static_assert(sizeof(NativeVehicleUnitLaunchMessage)
               == sizeof(HostSessionMessages::UnitKindSwitchCopy::bytes));
 
 // The six boundaries 004647D0 / 00464810 call, bound to the process's
@@ -2417,7 +2413,7 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     float heading) const {
     const Image& image = *image_;
     // 00891F05..00891F31: 007601A0's stores, then +20h the heading.
-    VehicleUnitLaunchMessage7B sent{};
+    NativeVehicleUnitLaunchMessage sent{};
     seg42::construct_vehicle_unit_launch_007601a0(&sent.u, image.seg42);
     sent.heading_20 = heading;
 
@@ -2428,11 +2424,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     cc13_seg5::vehicle_launch_message_write_004647d0(reinterpret_cast<cc13_seg5::Object>(&sent),
         reinterpret_cast<cc13_seg5::Object>(&stream.out), codec);
     // 00768530 case 7Bh: operator new(24h), 007601A0 at 00769186; 0076A27B
-    // vtable[8] = 00464810. The copy is host storage: its scalar delete
-    // 00464FE0 is the compiler's (it restamps 00CE4974 and frees) and the class
-    // owns no payload subobjects.
+    // vtable[8] = 00464810. Retain the original factory's 24h allocation
+    // through decode/routing/projection, then scalar-delete it with bit 0 set.
     stream.begin_read();
-    VehicleUnitLaunchMessage7B queued{};
+    OwnedDecodedMessage<NativeVehicleUnitLaunchMessage,
+        delete_vehicle_unit_launch_message_00464fe0> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_unit_launch_007601a0(&queued.u, image.seg42);
     cc13_seg5::vehicle_launch_message_read_00464810(reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in), codec);
@@ -2446,25 +2443,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     return copy;
 }
 
-namespace {
-// Goal 5 chain 632. The 7Ch class: the 20h-byte unit message and the plane's
-// handle word at +20h, 24h bytes as 00768530 case 7Ch allocates it
-// (include/bsp/oct18_tail_a_factory.inc: {0x7c, 0x24, 0x00760200, ...}).
-struct VehicleAddLaunchedMessage7C {
-    seg42::UnitMessage u;
-    std::uint16_t plane_id_20;
-    std::uint16_t pad_22;
-};
-static_assert(sizeof(VehicleAddLaunchedMessage7C) == 0x24);
-static_assert(offsetof(VehicleAddLaunchedMessage7C, plane_id_20) == 0x20);
-}  // namespace
-
 HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_add_launched_7c(
     std::uint16_t plane_id) const {
     const Image& image = *image_;
     // 006ED3E3..006ED3EF: 006EB9C0(stack message, plane). It reads only the
     // plane's +174h word (006EB9E7 MOV CX,[EAX+174h]); its other service is 0075B430.
-    VehicleAddLaunchedMessage7C sent{};
+    NativeVehicleAddLaunchedMessage sent{};
     GunFireMessageBinding codec(image.session);
     {
         PlaneHandleView174 plane{};
@@ -2478,10 +2462,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_add_l
     // 0076E575: vtable[4] = 006EBA20.
     cc13_seg33a::vehicle_add_launched_message_write_006eba20(codec, &sent, &stream.out);
     // 00768530 case 7Ch: operator new(24h), 00760200 at 007691A6; 0076A27B
-    // vtable[8] = 006EBA50. The copy is host storage: 006EC100, the scalar
-    // delete, only restamps 00CE4974 and frees, and the class owns no payload.
+    // vtable[8] = 006EBA50. Keep the factory's real 24h allocation through
+    // decode/routing/projection; 006EC100 then restamps and releases it.
     stream.begin_read();
-    VehicleAddLaunchedMessage7C queued{};
+    OwnedDecodedMessage<NativeVehicleAddLaunchedMessage,
+        delete_vehicle_add_launched_message_006ec100> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_add_launched_00760200(&queued.u, image.seg42);
     cc13_seg33a::vehicle_launched_message_read_006eba50(codec, &queued, &stream.in);
 
