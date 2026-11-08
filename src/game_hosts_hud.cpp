@@ -54,6 +54,7 @@
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/frontier_wiring_cc13.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/native_session_message_participant_owner.hpp"
@@ -2464,8 +2465,9 @@ constexpr bool kHudPickSegmentQueryBound = true;
 // records 0064AE20 and the flags keep the enter's clear values. ON runs the
 // body through ShipScreenApplyUnitAdapter below, whose stand-ins are: the Lua
 // lookups (no NoRepairGUI key is read, so +40h shows), class+C8h = 0,
-// 00818300 / 00852350 / 0059CB90 = 0, and the widgets at +40h, +54h, +58h and
+// 00818300 / 0059CB90 = 0, and the widgets at +40h, +54h, +58h and
 // +68h..+74h, which 0064C0F0's host name map does not bind (no-ops).
+// Chain 982 binds 00852350 to the retained gunnery rows' bomb-platform kinds.
 // ON with both sub-switches (cc9-lua69, 2026-10-18): USN01 all-OFF vs all-ON pair,
 // gameplay identical (presentation only; SQUADRON_LAND_TASK 5ir).
 inline constexpr bool kHudShipScreenApplyUnitBound = true;
@@ -6424,8 +6426,8 @@ namespace {
 // written fields back into GameHudHost::Impl::ship_screen. Host state in:
 // unit+980h = the row's throttle, class+70h = the row's type_id, screen+104h
 // = gauge_sub_104 (the body leaves it unwritten off the submarine arm), and
-// vtable[5Ch](8) = unit_is_kind_of. Every other input is a stand-in, labelled
-// at its hook.
+// vtable[5Ch](8) = unit_is_kind_of. Bomb-platform child kinds come from the
+// retained gunnery rows; remaining stand-ins are labelled at their hooks.
 class ShipScreenApplyUnitAdapter final : public bsp::cc13_big1::Big1NullHost {
 public:
     ShipScreenApplyUnitAdapter(GameHudHost::Impl& owner, bsp::ShipScreenHost& binding)
@@ -6542,16 +6544,36 @@ public:
         return owner_.units != nullptr
             && owner_.units->unit_is_kind_of(owner_.ship_screen_unit, flag);
     }
-    // STAND-IN: 00818300 sums +448h over the unit's kind-7 gun children,
-    // 00852350 counts its bomb-platform children and 0059CB90 reads the HUD
-    // icon from the class; the host builds none of them, so each answers 0.
+    // STAND-IN: 00818300 needs the native kind-20h child chain and 0059CB90
+    // reads the HUD icon from the class; neither input is bound here.
     std::int32_t unit_torpedo_barrel_count_00818300(void*) override {
         owner_.record("HudShipScreen::apply_unit_torpedo_barrels", 0x00818300u);
         return 0;
     }
-    std::int32_t unit_count_bomb_platform_children_00852350(void*) override {
-        owner_.record("HudShipScreen::apply_unit_bomb_platforms", 0x00852350u);
-        return 0;
+    std::int32_t unit_count_bomb_platform_children_00852350(void* unit) override {
+        if (unit != unit_)
+            throw std::logic_error("0064AE20 bomb-platform count belongs to another unit");
+        const GameGunneryHost* gunnery =
+            owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (gunnery == nullptr
+            || owner_.units->unit_row(owner_.ship_screen_unit) == nullptr) {
+            owner_.record("HudShipScreen::apply_unit_bomb_platforms", 0x00852350u);
+            return 0;
+        }
+        // bsp.py show 00852350: count child IsKindOf(25h), without a health,
+        // ammunition or readiness gate. The process's retained device children
+        // are its GameGunRows; device_bomb_platform is the authored Gun[1]
+        // DeviceClass Type test retained when that row was created. As in the
+        // firing/AI owners, one row per platform is the current child domain;
+        // do not multiply it by the authored list size or invent missing guns.
+        std::vector<bsp::gameplay_seg53_cc13::UnitChildDevice> children;
+        for (const GameGunRow& gun : gunnery->guns()) {
+            if (gun.unit_index == owner_.ship_screen_unit)
+                children.push_back({gun.device_bomb_platform});
+        }
+        const int count = bsp::gameplay_seg53_cc13::unit_count_bomb_platform_children_00852350(children);
+        owner_.done("HudShipScreen::apply_unit_bomb_platforms", 0x00852350u);
+        return count;
     }
     std::uint32_t unit_hud_icon_index_0059cb90(void*, void*) override {
         owner_.record("HudShipScreen::apply_unit_hud_icon", 0x0059cb90u);
