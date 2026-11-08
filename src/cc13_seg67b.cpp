@@ -926,11 +926,12 @@ bool bot_task_break_off_allowed_for_unit_0099c230(Cc13Seg67bHost& host, void* ta
 
 // 0099C270 (0099C270-0099C293). task+2F4h (the unit) set and the byte
 // unit+9C2h + [00F876B8]*8 set -> 1, else 0.
-bool bot_task_tick_gate_passes_0099c270(Cc13Seg67bHost& host, void* task) {
-    void* const unit = ptr_at(task, 0x2F4);
-    if (unit == nullptr) return false;
-    const std::size_t side = host.global_side_index_00f876b8();
-    return at<std::uint8_t>(unit, 0x9C2 + side * 8) != 0;
+bool bot_task_tick_gate_passes_0099c270(
+    const std::uint8_t* published_suppress_9c2) noexcept {
+    // Listing 0099C270..0099C293: missing unit -> 0, otherwise test the
+    // selected publication byte. Resolve its address in the live owner;
+    // this projection never treats a GameUnitSlot as a native allocation.
+    return published_suppress_9c2 != nullptr && *published_suppress_9c2 != 0;
 }
 
 // ---------------------------------------------------------------------------
