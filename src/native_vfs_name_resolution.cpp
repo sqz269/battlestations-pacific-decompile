@@ -7,6 +7,7 @@
 #include "bsp/native_pooled_resource_path.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
@@ -427,14 +428,13 @@ bool resolve_candidates(ResolutionState& s) {
     s.site = 0x00bddcf1;
     const auto slash = reverse_find_native_string_bytes_004bcb80(
         *static_cast<const NativeString*>(s.output), "/", 0x7fffffff);
-    U start = slash == 0xffffffffu ? 0u : slash;
-    auto* data = pointer(s.output, 4);
-    if (!data || !word(s.output)) return false;
-    if (static_cast<I>(start) < 0) start = 0;
-    else if (start > word(s.output)) return false;
+    const U start = slash == 0xffffffffu ? 0u : slash;
     s.site = 0x00bddd30;
-    const auto dot = start + static_cast<U>(std::strcspn(static_cast<const char*>(at(data, start)), "."));
-    if (dot == word(s.output) || static_cast<I>(dot) <= 0) return false;
+    // BDDC80's inline first-dot scan matches 005B69B0. Reuse its body on
+    // the current output header rather than packing a temporary string.
+    const auto dot = cc13_fe1::native_string_find_first_of_005b69b0(s.output, ".", static_cast<I>(start));
+    if (dot <= 0) return false;
+    void* data;
     try {
         data = pointer(s.output, 4);
         if (!data) data = const_cast<char*>(s.context->empty_name_0109cef0);

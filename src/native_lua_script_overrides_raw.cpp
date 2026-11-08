@@ -3,6 +3,7 @@
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_vfs_application.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_string.hpp"
@@ -136,21 +137,11 @@ void append_native_lua_script_overrides_00bdef90(void* manager, const void* path
 
     const Word slash = reverse_find_native_string_bytes_004bcb80(
         path, context.slash_00ce7898_, 0x7fffffff);
-    Word start = slash == 0xffffffffu ? 0u : slash; // slash itself, not +1
-    Word dot = 0xffffffffu;
-    const Word initial_data = word(path, 4u);
-    if (initial_data != 0u) {
-        const Word current_length = word(path, 0u);
-        if (current_length != 0u) {
-            if (signed_word(start) < 0) start = 0u;
-            if (start <= current_length) {
-                const Word span = static_cast<Word>(std::strcspn(
-                    static_cast<const char*>(pointer(initial_data + start)), context.dot_00ce3a70_));
-                const Word found = start + span;
-                if (found != word(path, 0u)) dot = found; // CURRENT after CRT
-            }
-        }
-    }
+    const Word start = slash == 0xffffffffu ? 0u : slash; // slash itself, not +1
+    // BDEF90 inlines this same scan. Keep the SAME actual header and the
+    // retained image's dot literal; 005B69B0 reloads its length after CRT.
+    const Word dot = static_cast<Word>(cc13_fe1::native_string_find_first_of_005b69b0(
+        path, context.dot_00ce3a70_, signed_word(start)));
 
     TemporaryScope temporaries(context.strings_);
     zero_header(temporaries.stem);
