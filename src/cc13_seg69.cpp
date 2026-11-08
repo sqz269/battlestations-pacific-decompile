@@ -488,7 +488,7 @@ void ai_debug_write_groups_target_value_00a0fa70(Seg69Host& host, const char* ar
 // __fastcall(ECX = command) RET. The destructor bodies of the four classes that carry the
 // observer sub-object at +8h: 00695870(ECX = command ? command + 8 : 0), then the base
 // command vtable 00D22968 is written back.
-void ai_command_destruct_observer_body(Seg69Host& host, Raw command)
+void ai_command_destruct_observer_body_00a108f0(CommandObserverDestructionHost& host, Raw command)
 {
     host.callback_owner_destroy_00695870(command.p != nullptr ? command.p + 0x8 : nullptr);
     command.at<std::uint32_t>(0x0) = kCommandBaseVtable;

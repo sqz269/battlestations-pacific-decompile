@@ -1,0 +1,255 @@
+{
+  "goal": 5,
+  "chain": 774,
+  "worker": "agent/g5-w1",
+  "baseline": "a709c8650136b4f7e4ce55e0210df47002088bf6",
+  "summary": "Retire retained AI ATTACK command observers through the existing shared reconstructed destructor body, replacing the host-only cleanup loop.",
+  "wired_before": 10619,
+  "wired_after": 10620,
+  "entry_called_before": 5463,
+  "entry_called_after": 5464,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph": "00A108F0 REACHABLE, three call sites from NativeAttackCommand unique_ptr destruction/reset and deleting destruction",
+    "readiness": "00A108F0 state=wired, called=true, call_sites=3",
+    "evidence": "bsp.py show 00a108f0 --asm: 00A10917/1A supplies command+8 to 00695870; 00A10923 restores primary vtable 00D22968",
+    "abi": "New C++ service interface; original fastcall/SEH-frame ABI is not reproduced",
+    "game_run": "Not run, as instructed"
+  },
+  "rows": [
+    {
+      "native": "00a108f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand::~NativeAttackCommand",
+      "detail": "The existing destructor body receives the constructor's retained bytes. Its cleanup callback removes this command from its actual shared target endpoint; the body then restores the base vtable. The old direct cleanup path was removed. Command replacement, target-destroyed IDLE replacement and group teardown all use this owner."
+    },
+    {
+      "native": "00a0fde0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg69.cpp: ai_command_destruct_observer_body_00a108f0",
+      "reason": "The shared normal-flow implementation is retained, but a distinct live base-ATTACK command producer/address mapping was not established."
+    },
+    {
+      "native": "00a10a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: NativeAttackCommand::~NativeAttackCommand",
+      "reason": "This identical destructor twin shares the called 00A108F0 implementation; no separate address symbol/call credit is claimed."
+    },
+    {
+      "native": "00a10b40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: NativeAttackCommand::~NativeAttackCommand",
+      "reason": "This identical destructor twin shares the called 00A108F0 implementation; no separate address symbol/call credit is claimed."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "reason": "Already called from this live registry adapter; call_graph who confirms entry reachability despite the initial readiness label."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::load_from_row_00809147",
+      "reason": "The current adapter already calls this loader with its actual pending sensor record and mission Lua row."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: controller construction",
+      "reason": "The factory needs the complete native ship/brain constructor state; current controller ownership is a typed projection."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The native flak-alternate ammunition record and its retained references/tree have no producer at this host site."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "A live native unit+660h ammunition-vector owner and element-destruction bindings were not established."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: LandFort effect synchronization",
+      "reason": "The host records D1h synchronization but has no retained message dispatch consumer for this constructor."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrderBinding::ai_group_forward_command",
+      "reason": "The entity order path supplies no entity AI-group binding, so the forwarding callback is not selected."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director user paths",
+      "reason": "A presence-zero clear-message producer and retained per-slot path owners are missing."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live empty-descriptor construction caller with the published empty-command ordinal was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "The flattened controller facts lack a retained ControllerSnapshotMessage producer and transport consumer."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: original debug flooded-fraction consumer",
+      "reason": "The identified original caller is the unit debug inspector, excluded by the assignment."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "A live support-site stock owner and HUD-support or AI spawn-composition caller are missing."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "No live support-site availability inventory and native support-menu filter caller were established."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "No live original row-Z normalization consumer was established; existing pose normalizers have different row priorities."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: rotate_about_axis_0085e8c0 callback",
+      "reason": "The camera path lacks a live WeaponView owner and rotational update binding for this axis/pivot operation."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_manager_queries.cpp: avoid_zone_point_offset_00417580",
+      "reason": "Existing reconstructed avoid-zone consumers already call the body; no duplicate call was added."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision filtering",
+      "reason": "The host lacks the actual DYN shape chain and its manifold-clear/world-lock services."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "The live grant path consumes passive classes; an active-use activation caller and its retained cooldown record are missing."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/native_unit_health_parts.cpp: initialize_native_unit_health_parts_0087bcc0",
+      "reason": "Native unit/class part-vector, parent/model identity and part-instance construction services are missing from the scalar-health host."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target initialization",
+      "reason": "No retained native command-target receiver and qualified mutable F87574/F87578/F8757C backing were established at this site."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage::initialize_first_leader",
+      "reason": "The factory's raw InitWithLeader needs actual native unit objects; current group storage holds opaque one-based leader identities."
+    },
+    {
+      "native": "0041ccd0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::rebuild",
+      "reason": "This live rebuild already calls the scene-path constructor with its real path and owned zone storage."
+    },
+    {
+      "native": "0041bd10",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_layer_normal.cpp: avoid_zone_layer_normal_0041bd10",
+      "reason": "A live terrain-grid layer owner and world-to-cell/cell-height services were not established."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/native_gui_icon_delayed_request_storage.cpp: request_native_gui_icon_delayed_loads_storage_00ab5f00",
+      "reason": "This path already calls the whole raw append provider; the typed GuiNamedValueArray body is a different storage model."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "A constructed live Curve widget with authored point/width storage and a tessellation/render consumer is missing."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI child ordering",
+      "reason": "The original reflection/property-descriptor writer 00AAAED0 is absent; render child ordering is a different operation."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: order_cautious_move_00a2ccf0",
+      "reason": "The current producer supplies ratio=1, preventing CAUTIOUSMOVE selection; a selectable real producer is missing."
+    },
+    {
+      "native": "00a10370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: replace_command",
+      "reason": "No live RegroupingMove command producer was established."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_candidate_attack_value_00a0f680",
+      "reason": "A live active air-support power-up candidate-selection caller and corresponding candidate blocks were not established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner candidate scoring",
+      "reason": "The native candidate score table lacks a live gameplay owner/consumer; its documented reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner candidate scoring",
+      "reason": "No native candidate score-table entries feed gameplay selection, so there is no live chosen byte to update."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member selection",
+      "reason": "The current host already calls this predicate with real member-kind/objective-set facts under its existing enabled path."
+    },
+    {
+      "native": "009b9030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: level-bomb installation",
+      "reason": "The factory lacks a retained native composite level-bomb task/approach owner; current task fields are typed slot state."
+    },
+    {
+      "native": "009ca2b0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: install_retreat_task_009c9d00",
+      "reason": "A retained native retreat task and full native constructor binding are missing; an unused allocation would not replace the typed task."
+    },
+    {
+      "native": "009cff40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: install_takeoff_task_0099a4a0 and push_ground_retakeoff_0099b107",
+      "reason": "The composite native takeoff task/approach owner and full 009CF8E0 constructor services are missing."
+    }
+  ]
+}
