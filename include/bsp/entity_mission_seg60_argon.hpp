@@ -64,7 +64,21 @@ struct DeferredEventLockAccess {
   virtual void singleton_lifetime_register_00bd0c30(void* manager, void* instance) = 0;
 };
 
-struct Seg60Host : UnitMessageConstructionHost, DeferredEventLockAccess {
+// 00927BF0 needs only the unit's real WORD key and these Lua/CRT calls.
+// Raw entity hosts retain the default +174h read; typed owners override it
+// with their SAME thisTable identity, without fabricating native Unit storage.
+struct UnitLuaSelfHost {
+  virtual ~UnitLuaSelfHost() = default;
+  virtual void* image_address(std::uint32_t address) = 0;
+  virtual std::uint16_t unit_lua_key_174(void* unit);
+  virtual void lua_machine_remove_006b7ea0(void* lua_machine, std::int32_t index) = 0;
+  virtual void lua_machine_push_string_006b8120(void* lua_machine, const char* text) = 0;
+  virtual void lua_machine_get_global_006b8460(void* lua_machine, const char* name) = 0;
+  virtual void lua_machine_get_table_006b8470(void* lua_machine, std::int32_t index) = 0;
+  virtual char* itoa_00bf9010(std::int32_t value, char* buf, std::int32_t radix) = 0;
+};
+
+struct Seg60Host : UnitMessageConstructionHost, DeferredEventLockAccess, UnitLuaSelfHost {
   virtual ~Seg60Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -444,7 +458,9 @@ void entity_get_property_unit_command_00927ad0(
     void* out_lua_obj,
     const void* key_native_str
 );
-void unit_push_lua_self_slot_00927bf0(Seg60Host& host, void* unit, void* lua_machine);
+// Original ECX=unit, stack LuaInstance*, RET4. This narrowed C++ service API
+// preserves the global/key/get/remove sequence; it is not a binary ABI shim.
+void unit_push_lua_self_slot_00927bf0(UnitLuaSelfHost& host, void* unit, void* lua_machine);
 void unit_set_role_availability_00927d20(
     Seg60Host& host,
     void* unit,

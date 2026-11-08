@@ -38,9 +38,13 @@ void destruct_recon_slot_00805240(cc13_seg49::Raw slot,
 
 struct ReconRelationPublicationHost {
     virtual ~ReconRelationPublicationHost() = default;
-    //00805E31: actual unit+170h base, freshly loaded native vtable slot0.
-    virtual std::int32_t category_virtual_00(void* category_base,
-        std::uint32_t native_vtable) = 0;
+    // Typed access to the SAME borrowed triple record/unit. These reads bind
+    // record+4, unit+C4, unit+170 current0, and unit+174 respectively. A host
+    // registry identity must be resolved here, never dereferenced as a Unit*.
+    virtual void* record_unit_04(void* record) = 0;
+    virtual std::int32_t unit_class_c4(void* unit) = 0;
+    virtual std::int32_t unit_category_current00(void* unit) = 0;
+    virtual std::uint16_t unit_lua_key_174(void* unit) = 0;
     //00927BF0: thisTable[decimal u16 unit+174h] through the passed instance.
     virtual void push_unit_lua_self_00927bf0(void* unit, ReconLuaInstanceView) = 0;
 };
@@ -48,9 +52,11 @@ struct ReconRelationPublicationHost {
 //00805F27. Complete normal flow: filter ten classes/no-category19, bucket in
 //input order, ensure all19 named raw tables and assign decimal keys with
 //ordinary lua_settable(-3). Caller supplies the live19-entry00E0B590 table;
-//category virtual must return0..18 or19. Native table/stack preconditions and
+//category virtual must return0..18 or19. Records/units are opaque borrowed
+//identities resolved by the required accessors, not native layout overlays.
+//Native table/stack preconditions and
 //unprotected Lua error behavior remain. New interface, not a native ABI shim.
-void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
+void publish_recon_relation_categories_00805d90(cc13_seg49::ReconListStorageHost& lists,
     ReconRelationPublicationHost&, ReconLuaInstanceView,
     const cc13_seg49::ReconList& triple, const char* const* category_names_00e0b590,
     std::int32_t unused);
