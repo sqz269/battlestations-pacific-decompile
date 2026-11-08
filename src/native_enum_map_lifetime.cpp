@@ -26,18 +26,18 @@ initialize_native_cenum_table_map_storage_004ba130(void*) noexcept {
 
 __declspec(naked) void* __fastcall
 initialize_native_scene_enum_registry_storage_004d25f0(void*) noexcept {
+    // 004D25F3..004D2611 writes the outer phase word, then exactly the
+    // 004BA130 map layout at receiver+4: CE7514, zero count, 64 zero heads.
+    // Use that existing body on the actual nested map instead of repeating
+    // its stores. The child preserves EDI and consumes the same REP STOSD
+    // direction flag; restore the outer receiver in both native result regs.
     __asm {
-        mov edx, ecx
-        push edi
-        mov dword ptr [edx], 00ce78bch
-        xor eax, eax
-        lea edi, [edx + 0ch]
-        mov ecx, 40h
-        mov dword ptr [edx + 4], 00ce7514h
-        mov dword ptr [edx + 8], 0
-        rep stosd
-        mov eax, edx
-        pop edi
+        mov dword ptr [ecx], 00ce78bch
+        push ecx
+        lea ecx, [ecx + 4]
+        call initialize_native_cenum_table_map_storage_004ba130
+        pop eax
+        mov edx, eax
         ret
     }
 }

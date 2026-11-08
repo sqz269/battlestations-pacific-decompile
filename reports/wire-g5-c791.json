@@ -1,0 +1,155 @@
+{
+  "chain": 791,
+  "owner": "agent/g5-w5",
+  "change": "Reuse the existing CEnum map initializer for the actual nested map in the live scene enum registry constructor, replacing its duplicate inline initialization.",
+  "evidence": [
+    "bsp.py show 004d25f0 --asm: outer word CE78BC; nested map at +4 has CE7514, zero count, 64 zero bucket heads.",
+    "bsp.py show 004ba130 --asm: identical nested-map stores; preserves EDI and returns receiver; no allocation or external calls.",
+    "GameSceneContentsHost::Impl::load_property_library already calls 004D25F0 on its actual retained registry.",
+    "The replacement invokes 004BA130 exactly once on registry+4, preserving outer-before-map store order and REP STOSD behavior, then restores the outer receiver in EAX and EDX."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed",
+    "readiness_wired_before": 10634,
+    "readiness_wired_after": 10635,
+    "compiled_reconstructed_called_before": 5480,
+    "compiled_reconstructed_called_after": 5481,
+    "new_call_site": "104BFD4A: initialize_native_scene_enum_registry_storage_004d25f0 -> initialize_native_cenum_table_map_storage_004ba130",
+    "entry_path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost::frame -> GameMissionHost::advance -> finish_scene_load -> run_scene_load_004dfb70 -> run_load_scene_contents_004d4df0 -> load_property_library -> 004D25F0 -> 004BA130",
+    "game_run": false,
+    "float_math_changed": false
+  },
+  "rows": [
+    {
+      "native": "004ba130",
+      "status": "wired",
+      "host_site": "src/native_enum_map_lifetime.cpp: initialize_native_scene_enum_registry_storage_004d25f0"
+    },
+    {
+      "native": "004d25f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library",
+      "reason": "Already entry-reachable at baseline; changed its nested-map initialization but claim no new wiring for this caller."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already called through the live numeric property projection; ready text classification supplies no new wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already called by the live property projection; replacing its host again would duplicate the existing native merge."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages",
+      "reason": "Earlier native-gate evidence identifies C8h DeadMeatRot as multiplayer-only; excluded from this single-player packet."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "The existing cursor-switch adapter lacks real target virtual88 and notify+4 implementations required by this different operation."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "include/bsp/gui_aspect_extent.hpp: gui_aspect_extent_00aa1fe0",
+      "reason": "The live HUD paths already call this inline semantic body; the readiness ledger name has no separate callable definition."
+    },
+    {
+      "native": "00aa1fa0",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_manager_set_cursor_position_00aa1fa0",
+      "reason": "No live original cursor-position consumer with the required pointer widget dispatch was established in this bounded survey."
+    },
+    {
+      "native": "00ab95f0",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_text_set_cursor_mode_00ab95f0",
+      "reason": "No live text cursor-model producer supplying node184 and ensure-model/position/virtual50 callbacks was established."
+    },
+    {
+      "native": "00ab9240",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_text_position_cursor_00ab9240",
+      "reason": "No live cursor-model owner with the required glyph/font fields and vertex-stream services was established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Survey found only unlinked original product consumers; the GUI orthographic camera path does not consume aspect times FOV."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect_distance_to_point_009d7780",
+      "reason": "No live producer of this original rectangle record and distance-query consumer was established; reconstruction marks it unreferenced."
+    },
+    {
+      "native": "009d7930",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect2_distance_to_point_009d7930",
+      "reason": "No live producer of the second rectangle record and its special68 flag query was established; reconstruction marks it unreferenced."
+    },
+    {
+      "native": "009da9d0",
+      "status": "skipped",
+      "host_site": "src/band_0099_cc13.cpp: ship_ai_heading_set_vector_009da9d0",
+      "reason": "Native caller inventory is empty and no original live HeadingRecord consumer was established."
+    },
+    {
+      "native": "00414220",
+      "status": "skipped",
+      "host_site": "src/pool_pool21_cc13.cpp: hud_support_manager_screen_update_00675c40",
+      "reason": "The native direct caller 00675C40 is absent from the built game; adding the leaf there would remain unreachable."
+    },
+    {
+      "native": "004897b0",
+      "status": "skipped",
+      "host_site": "src/classes_seg7_cc13.cpp: scene_node_set_matrix_and_invalidate_004897b0",
+      "reason": "No live matching raw node owner with 74h matrix, C8h/10Ch invalidation bytes and linked child traversal was established."
+    },
+    {
+      "native": "0042b7f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_orthonormalize_return_this_0042b7f0",
+      "reason": "No matching live native orthonormalization consumer was established; unrelated host matrix copies do not justify this operation."
+    },
+    {
+      "native": "0042d510",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_identity_0042d510",
+      "reason": "No original live call boundary for this identity wrapper was established in the inspected scene/frontend paths."
+    },
+    {
+      "native": "0042e8c0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_identity_0042e8c0",
+      "reason": "No original live call boundary for this duplicate identity wrapper was established in the inspected scene/frontend paths."
+    },
+    {
+      "native": "0078feb0",
+      "status": "skipped",
+      "host_site": "src/band_0076_cc13.cpp: movcam_angle_windows_clamp_0078feb0",
+      "reason": "No live original AngleWindows owner and clamp consumer was established in this bounded survey."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_00444070",
+      "reason": "No live retained native string-plus-scalar destination and matching source construction boundary was established."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_004440c0",
+      "reason": "No live retained native string-plus-scalar copy-construction owner was established."
+    }
+  ]
+}
