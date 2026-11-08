@@ -2354,7 +2354,9 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/airfield_marker_seg31_32_argon.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/airfield_taxi.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/airops_ver_cc13.cpp)
-cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/band_0040_cc13.cpp)
+# Shared uppercase string hash is used by bsp_core's native property/enum
+# bucket readers as well as the game (Goal 5 chain 749).
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/band_0040_cc13.cpp)
 # Chain 429: the settings writer's 00BD5680 equality provider uses these
 # existing vector helpers; core-linked platform probes need the same bodies.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/band_0045_cc13.cpp)

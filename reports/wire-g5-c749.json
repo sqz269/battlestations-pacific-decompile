@@ -1,0 +1,196 @@
+{
+  "run": 1615,
+  "chain": 749,
+  "worker": "agent/g5-w12",
+  "base": "05819e04f9584acde3288898be60a7747eadee0c",
+  "scope": "Share the existing uppercase native-string hash across live property, property-library and enum bucket readers.",
+  "wired_before": 10559,
+  "wired_after": 10560,
+  "rows": [
+    {
+      "native": "0043b700",
+      "status": "wired",
+      "host_site": "src/native_enum_dictionary_lookup.cpp::bucket_for/native_property_key_bucket_0043b760; src/native_property_library_lookup.cpp::native_property_library_key_bucket_004689d0",
+      "evidence": "0043B700 assembly B722/B727/B72C sign-extends the current byte, calls the CRT uppercase routine and keeps AL; 0043B760, 004689D0, 004895B0 and 00489610 have the same recurrence followed by AND 3Fh.",
+      "real_state": "Existing native property/library/enum queries supply their captured real string length/data and their own actual empty-string fallback. Header load order, one-byte cursor advancement, unsigned arithmetic and six-bit bucket selection are preserved; duplicate caller loops are removed.",
+      "call_graph": "build/callgraph (/Ob0): reachable, three direct call sites from bucket_for, native_property_key_bucket_0043b760 and native_property_library_key_bucket_004689d0; entry path passes through GameSceneContentsHost::Impl::load_property_library.",
+      "limits": "Source interface over captured fields; original header/register ABI and gameplay execution were not tested. CRT uppercasing now uses the same signed-byte current-UCRT operation as the replaced live loops."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost",
+      "reason": "Missing live native candidate score-table producer and gameplay consumer; the documented table reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost",
+      "reason": "Missing live AiGroupScoreList entries to mark; host planner assignment fields are separate state."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::native scene metadata submission",
+      "reason": "An existing native main-scene call already uses this body; no new admitted host command-queue producer was established in this packet."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp::ControlledUnit listener publication",
+      "reason": "Missing exact driven-listener pointer and live renderer invalidation-root owner; current callback receives a bool."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp::scene-remap lifetime",
+      "reason": "File/address ownership belongs to agent/g5-w9; worker acknowledged that its packet wires actual F8D39C remap reset."
+    },
+    {
+      "native": "004bfd70",
+      "status": "skipped",
+      "host_site": "src/engine_seg4_6_9_cc13.cpp::release_session_render_resources_004bfd70",
+      "reason": "Missing bound session resource block and renderer slot124 provider for the full session release caller; remap-reset work belongs to g5-w9."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart checkpoint callback",
+      "reason": "Missing pre-load BSP_Chk_Save owner and real checkpoint-difference producer; the callback remains unreachable behind a false comparison."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SetSelectedUnit/ForceSelectUnit screen reset",
+      "reason": "Missing retained native screen+30h mode and +C4h selection-vector producer required by the reset body."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp::font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character GuiLeafHost consumer that supplies the text-context font and actual input byte."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_verify_checksum_00bbbab0",
+      "reason": "Missing live MSAR archive-mount consumer; replacing its duplicate CRC helper alone would leave the function unlinked from the game."
+    },
+    {
+      "native": "00bba090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_read_header_00bba090",
+      "reason": "Missing live MSAR provider/mount producer; header parsing is currently reached only by the isolated MSAR models."
+    },
+    {
+      "native": "00bbbab0",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_validate_archive_00bbbb90",
+      "reason": "Missing live MSAR archive-validation consumer and real mounted archive data."
+    },
+    {
+      "native": "00bbb890",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_read_toc_00bbb890",
+      "reason": "Missing live MSAR provider/mount producer; no entry-reachable call was found in the baseline game build."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20",
+      "reason": "The candidate shadow caller has no entry-reachable binding; replacing its inline product would not establish a live camera consumer."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20",
+      "reason": "Missing bound ShadowFitHost and directional-shadow fit caller on the current game path."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp::construct_native_bot_state_registry_00411e20",
+      "reason": "Missing live native land-approach registry owner; current complete registry storage API alone does not supply a game consumer."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp::destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing game-owned constructed land-state registry and its actual lifetime path."
+    },
+    {
+      "native": "00955970",
+      "status": "skipped",
+      "host_site": "src/entity_local_matrix.cpp::refresh_entity_00955970",
+      "reason": "Missing concrete EntityRefreshHost for the original entity/node publication contract."
+    },
+    {
+      "native": "0042b9a0",
+      "status": "skipped",
+      "host_site": "src/entity_local_matrix.cpp::refresh_entity_00955970",
+      "reason": "Missing concrete live EntityRefreshHost caller; routing an unused refresh model through the false-return leaf would not wire it."
+    },
+    {
+      "native": "00412500",
+      "status": "skipped",
+      "host_site": "src/native_string.cpp::string length capture",
+      "reason": "No original caller relationship or missing string-length behavior was established; generic CRT replacement was not included in the selected hash packet."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_retreat_00bf16b0",
+      "reason": "Missing entry-reachable typed ErrorContextNode tree owner; the current tree helpers are unlinked from the game."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_advance_00bf1450",
+      "reason": "Missing entry-reachable typed ErrorContextNode tree owner; replacing the generic helper alone would retain a dead caller."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error-context tree erase",
+      "reason": "Missing live typed error-context tree producer and erase consumer."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error-context tree erase",
+      "reason": "Missing live typed error-context tree producer and erase consumer."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp::set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing serialized ship Rudder or sinking-override input producer; the live ring alone supplies neither operand."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene text write callback",
+      "reason": "Missing game-side scene-text writer consumer; the current SceneFile application path reads and decodes text."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::objective marker removal",
+      "reason": "Missing marker-manager unit map entries and their actual keep flags."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp::initialize_native_command_target_004f1830",
+      "reason": "Literal body requires actual writable native globals F87574/F87578/F8757C; no mapped runtime backing was established in this packet."
+    }
+  ],
+  "validation": {
+    "baseline": "Win32 build and all four existing CTests passed before edits.",
+    "call_graph": "Both normal and /Ob0 analysis builds show three reachable direct calls to 0043B700. Normal callers are find_native_property_map_node_0043b8b0, native_enum_symbol_bucket_004895b0 and find_native_property_library_node_00468ed0; normal reachable reconstructed total changed 5428 -> 5429. Analysis path passes through scene property-library loading.",
+    "build": "./scripts/build.ps1 passed after promoting band_0040_cc13.cpp to bsp_core; all four existing CTests passed. Initial link failure of core-only probes was resolved by this shared-target promotion.",
+    "readiness": "python tools/wire_readiness.py --standins: 10559 -> 10560 wired; 0043b700 is newly wired.",
+    "float_math": "No float operations changed.",
+    "gameplay": "Game was not run."
+  }
+}

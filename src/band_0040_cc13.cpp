@@ -4,6 +4,7 @@
 #include "bsp/band_0040_cc13.hpp"
 
 #include <cassert>
+#include <cctype>
 #include <cmath>
 #include <cstring>
 
@@ -132,8 +133,11 @@ std::uint32_t hash_upper_case_0043b700(std::uint32_t length, const char* data) {
     const std::uint32_t step = (length | 0x20u) >> 5;
     std::uint32_t h = length;
     for (std::uint32_t left = length; left >= step; left -= step) {
-        unsigned char c = static_cast<unsigned char>(*p++);
-        if (c >= 'a' && c <= 'z') c = static_cast<unsigned char>(c - 32);   // CRT toupper, "C" locale
+        // bsp.py show 0043B700 --asm: B722 MOVSX byte, B727 CRT toupper,
+        // B72C MOVZX AL. Preserve the current CRT locale and a fresh byte
+        // load per iteration, as in the live property/enum bucket readers.
+        const auto c = static_cast<unsigned char>(
+            std::toupper(*reinterpret_cast<const volatile signed char*>(p++)));
         h ^= static_cast<std::uint32_t>(c) + (h << 5) + (h >> 2);
     }
     return h;

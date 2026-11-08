@@ -96,6 +96,8 @@ void trim_trailing_fraction_zeros_00438e80(std::string& text);
 // left -= step) h ^= toupper(*p++) + (h << 5) + (h >> 2). A null data pointer
 // reads the static empty string 00E177E4. toupper is the CRT's on a sign-
 // extended char, low byte kept; in the "C" locale that changes only 'a'..'z'.
+// New Source interface receives the captured length/data, not the original
+// header ABI. Raw bucket callers select their actual fallback before calling.
 std::uint32_t hash_upper_case_0043b700(std::uint32_t length, const char* data);
 
 // 004439B0, __thiscall(ECX object, int hours, int minutes, int seconds,
