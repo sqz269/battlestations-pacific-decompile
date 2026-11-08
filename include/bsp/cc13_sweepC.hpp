@@ -103,8 +103,16 @@ struct SubscriptionMatchHost {
     virtual std::uint32_t* vector_at_009658b0(void* vector, std::uint32_t index) = 0;
 };
 
+// The existing AACE40 growth body only needs the original CRT allocation pair.
+// A live pool binding must not implement unrelated sweep services with stubs.
+struct PointerTableAllocationHost {
+    virtual ~PointerTableAllocationHost() = default;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void operator_delete_00bf6989(void* block) = 0;
+};
+
 struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayoutHost,
-                    CameraPoolFactoryHost, SubscriptionMatchHost {
+                    CameraPoolFactoryHost, SubscriptionMatchHost, PointerTableAllocationHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
@@ -113,9 +121,7 @@ struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayo
     virtual void leave_critical_section(void* section) = 0;
     // invalid_iterator_00bf6713, filter_accepts_vslot_00 and vector_at_009658b0 come from
     // SubscriptionMatchHost.
-    // 00BF55BE operator new / 00BF6989 operator delete.
-    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
-    virtual void operator_delete_00bf6989(void* block) = 0;
+    // 00BF55BE / 00BF6989 come from PointerTableAllocationHost.
     // [00F876A4], the fixed-step clock (float).
     virtual float fixed_step_clock_00f876a4() = 0;
 
@@ -746,7 +752,7 @@ void* camera_pool_create_camera_00b8a200(CameraPoolFactoryHost& host, std::uint3
 // Segment 91: 00B999A0, __thiscall(ECX = plane {n, d}, const float3*), RET 4 -> ST0.
 float plane_signed_distance_00b999a0(const void* plane, const float* point);
 // The pointer-table growth (data +0h, count +4h, capacity +8h), one shape at four addresses.
-void pointer_table_grow_00aace40(SweepCHost& host, void* table);
+void pointer_table_grow_00aace40(PointerTableAllocationHost& host, void* table);
 void pointer_table_grow_00acbe50(SweepCHost& host, void* table);
 void pointer_table_grow_00acd250(SweepCHost& host, void* table);
 void pointer_table_grow_00acefc0(SweepCHost& host, void* table);

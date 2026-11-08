@@ -1,5 +1,6 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -518,6 +519,18 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
     // Address entry only: reuse the one pre-existing Icon member body.
     return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
 }
+// 00AAD5F0 / 00AAD6D0 inline the same reserve and append schedules as
+// 00AAD4D0 / 00AAD450. Borrow the real pool+28h header once, retaining the
+// allocator-list lifetime, first-free publication and allocation lock scope.
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
+    initialize_pool<GuiMoviePoolTraits, &native_gui_movie_pool_table_reserve_00aad4d0>(
+        allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
+    return allocate_slot<GuiMoviePoolTraits, WidgetSlabInitializer<GuiMoviePoolTraits>::entry,
+        &native_gui_movie_pool_table_push_back_00aad450>(storage_);
+}
+
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
