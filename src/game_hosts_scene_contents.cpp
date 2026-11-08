@@ -13,6 +13,7 @@
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_property_library_lookup.hpp"
+#include "bsp/native_property_library_readers.hpp"
 #include "bsp/native_property_library_insert.hpp"
 #include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
@@ -301,7 +302,8 @@ bool library_group_name_is_native_ascii(const std::string& name) {
 class LibraryOwningGroupNameIndex final {
 public:
     LibraryOwningGroupNameIndex()
-        : strings_(game_native_string_process()), insertion_(strings_, pools()) {
+        : strings_(game_native_string_process()), insertion_(strings_, pools()),
+          readers_(strings_) {
         initialize_native_property_tree_library_storage_008f5670(owner_);
     }
     ~LibraryOwningGroupNameIndex() {
@@ -321,13 +323,12 @@ public:
         std::unique_ptr<void, BagDeleter> incoming(
             projection.make_owned_complete_bag(group.block),
             BagDeleter{&insertion_.lifetime().bags()});
-        Query query(strings_, group.name.c_str());
+        void* const previous_bag = find_bag(group.name.c_str());
         if (!incoming) {
             // A newly raw/unsupported group is read from the parser's record.
             // Keep any previous admitted tree owned but unused until a later
             // replacement or teardown; never publish a fabricated empty bag.
-            void* const node = find_node(query.bytes);
-            const auto previous = rows_.find(node);
+            const auto previous = rows_.find(previous_bag);
             if (previous != rows_.end()) previous->second.current = false;
             return;
         }
@@ -339,24 +340,29 @@ public:
         // The fresh graph is disjoint from the old mapping. Unsupported trees
         // take the parser-owned path above, without calling this insertion.
         // Source interface only; Original thiscall/RET8/FH3 is not asserted.
+        Query query(strings_, group.name.c_str());
         insert_or_replace_native_property_library_entry_008f29a0(
             owner_ + 4, query.bytes, incoming.get(), insertion_);
-        incoming.release(); // The native map is now the sole bag owner.
-        void* const node = find_node(query.bytes);
-        if (node == nullptr) throw std::logic_error("published library group is missing");
-        rows_[node] = {group, true};
+        void* const bag = incoming.release(); // The native map is now the sole bag owner.
+        // Keep the metadata object's identity across a native bag replacement,
+        // as the former node-keyed index did across a redeclaration.
+        auto previous = rows_.extract(previous_bag);
+        if (previous.empty()) {
+            rows_.emplace(bag, Row{group, true});
+        } else {
+            previous.key() = bag;
+            previous.mapped() = {group, true};
+            rows_.insert(std::move(previous));
+        }
     }
 
     const PropertyGroupDefinition* find(const std::string& name,
         SceneNativeEnumSource* enums) {
-        Query query(strings_, name.c_str());
-        void* const node = find_node(query.bytes);
-        if (node == nullptr) return nullptr;
-        auto found = rows_.find(node);
+        void* const bag = find_bag(name.c_str());
+        if (bag == nullptr) return nullptr;
+        auto found = rows_.find(bag);
         if (found == rows_.end()) throw std::logic_error("library group metadata is missing");
         if (!found->second.current) return nullptr;
-        void* bag;
-        std::memcpy(&bag, static_cast<const std::byte*>(node) + 8, sizeof(bag));
         SceneNumericPropertyMerge projection({}, {}, true, enums);
         found->second.row.block = projection.read_complete_bag(bag, found->second.row.block);
         return &found->second.row;
@@ -383,16 +389,25 @@ private:
         process.initialize_property_library_node_pool_once_00cc8a70();
         return process;
     }
-    void* find_node(const void* query) {
-        std::uint32_t bucket;
-        return find_native_property_library_node_00468ed0(owner_ + 4, query, bucket,
-            strings_.library_empty_00e18560(), strings_.query_empty_00e17654());
+    void* find_bag(const char* name) {
+        // bsp.py show 008F2DB0 / 00469B60: the former admits a missing name;
+        // the latter loads node+8 before releasing its native temporary key.
+        // Use the actual 10Ch library and its owning bag as the lookup result,
+        // including for inheritance and repeated declarations. Both calls keep
+        // the same process string pools/empty identities as insertion. The old
+        // host node lookup and node+8 load no longer run on this path.
+        if (!contains_native_property_library_name_008f2db0(owner_, name, readers_))
+            return nullptr;
+        return reinterpret_cast<void*>(
+            read_native_property_library_word_00469b60(owner_, name, readers_));
     }
 
     GameNativeStringProcess& strings_;
     NativePropertyLibraryInsertContext insertion_;
+    NativePropertyLibraryReaderContext readers_;
     alignas(4) std::byte owner_[0x10c];
-    // Stable node identities survive group-vector relocation and reopening.
+    // Actual owning bags survive group-vector relocation. Redeclaration rekeys
+    // the same metadata node when the native mapping replaces its owning bag.
     struct Row { PropertyGroupDefinition row; bool current; };
     std::map<void*, Row> rows_;
 };
