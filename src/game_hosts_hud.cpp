@@ -129,6 +129,17 @@
 #include <string>
 #include <vector>
 
+namespace bsp::cc13_fe1 {
+// bsp.py show 005BCA70 --asm: the complete body is RET 4. Original ECX is
+// [HUD manager+58h]; its sole stacked argument is the current text header.
+// The new fastcall padding formal leaves that pointer on the stack, preserving
+// RET4 without reading either borrowed object or inventing a display update.
+__declspec(naked) void __fastcall hud_panel_begin_005bca70(
+    void*, void*, const void*) noexcept {
+    __asm { ret 4 }
+}
+} // namespace bsp::cc13_fe1
+
 namespace bsp::game {
 namespace {
 
@@ -3862,6 +3873,16 @@ std::uint8_t* hud_minimap_block(GameHudHost::Impl& impl) {
         ? impl.leaf_screens[index]->data() : nullptr;
 }
 }  // namespace
+
+bool GameHudHost::begin_countdown_panel(const std::string& text) {
+    std::uint8_t* const panel = hud_minimap_block(*impl_);
+    if (panel == nullptr) return false;
+    // The native empty body never interprets its text pointer; borrow this
+    // call's real text object rather than fabricate a native-string header.
+    bsp::cc13_fe1::hud_panel_begin_005bca70(panel, nullptr, &text);
+    impl_->done("HudCountdown::begin", 0x005bca70u);
+    return true;
+}
 
 bool GameHudHost::set_countdown_panel(float fraction, float left) {
     std::uint8_t* const panel = hud_minimap_block(*impl_);

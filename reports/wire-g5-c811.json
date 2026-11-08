@@ -1,0 +1,268 @@
+{
+  "goal": 5,
+  "chain": 811,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "baseline_head": "4374ae1392",
+  "picked": "Mission countdown start and original empty minimap begin",
+  "rows": [
+    {
+      "native": "00733ff0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> countdown_start_00733ff0",
+      "evidence": "Existing inline host reconstruction extracted into its sole address-named body; same live countdown fields, current mission clock, callback, old/new Lua registry references. 00734003..0073409D listing fixes publication-before-old-vector-release order. No duplicate old path."
+    },
+    {
+      "native": "005bca70",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::begin_countdown_panel -> cc13_fe1::hud_panel_begin_005bca70",
+      "evidence": "Full native listing is RET4. The sole naked body receives the owned minimap block and the actual current text object; neither is read. EDX is unused fastcall padding. No fabricated native string header or display work."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::instance",
+      "reason": "Missing address-specific callable body; this readiness row is a shared lazy-singleton table entry."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing live ambient SoundInstance producer and camera-height input; the current host reports no ambient instance."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::controlled_audio",
+      "reason": "Missing ship sound-object +BBCh and device-list +428h producers for the audio broadcast plan."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native numeric-property merge",
+      "reason": "Existing unchanged numeric-property merge already calls this native iterator; no additional wiring needed."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native numeric-property merge",
+      "reason": "Existing unchanged numeric-property merge already advances this native iterator; no additional wiring needed."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "Missing production bridge supplying the same typed GuiResourceOwner and widget-frame owner graph."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: update_gui_pointer_00aa3910",
+      "reason": "Missing complete live pointer-input, hit-test and widget-ownership services for the projected pointer runtime."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing original property-description writer consumer; live flattened render sorting is a different operation."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing live typed timed-entry owner for this manager-frame query."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing original product-query consumer with its live CameraProjection; GUI orthographic projection does not use it."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: submit_scene_render_00b101c0",
+      "reason": "Missing concrete entry-reachable SceneRenderFrameHost supplying the actual camera clip-plane owner."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: submit_scene_render_00b101c0",
+      "reason": "Missing concrete entry-reachable SceneRenderFrameHost supplying the actual camera clip-plane owner."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/native_game_lifetime.cpp: destroy_native_game_004dcf90",
+      "reason": "Missing live complete NativeGameLifetimeContext and its same-domain shutdown providers at the inspected application host."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp: director_slot_path_object_0071bfc0 callback",
+      "reason": "Missing native director +1A4h per-slot retained-path array; the inspected command host retains projected paths."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: path command routing, initial inspection",
+      "reason": "Missing presence-zero path-clear producer with retained per-slot path owners in this baseline; g5-w9 subsequently announced ownership of this address."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing reached empty-descriptor constructor and its current class-ordinal publication."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: state_message_build_00721280",
+      "reason": "Missing retained controller-state message producer and routed consumer for both target descriptors."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0, initial inspection",
+      "reason": "Missing retained snapshot owner/transport in the inspected baseline; g5-w9 subsequently announced ownership of this address."
+    },
+    {
+      "native": "0093efc0",
+      "status": "skipped",
+      "host_site": "src/cc13_large61.cpp: matrix44_not_equal_0093efc0 callback",
+      "reason": "Missing original reached consumer supplying its live current/cached controller matrices."
+    },
+    {
+      "native": "0076eaa0",
+      "status": "skipped",
+      "host_site": "src/mp_seg43_cc13.cpp: lan_host_key_less_0076eaa0",
+      "reason": "LAN host-discovery comparator is outside the requested single-player work."
+    },
+    {
+      "native": "009c6220",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: math_clamp_symmetric_009c6220",
+      "reason": "Missing original reached clamp consumer; the torpedo helper has different compare ordering for negative limits and is not an established replacement site."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_sample_00412070 callbacks",
+      "reason": "Missing production column-grid builder/consumer for the original terrain-grid neighborhood calls."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: create_native_gui_button_default/copy_00aa4440",
+      "reason": "Missing canonical native Button implementation factory and its shared registry/lifetime bindings on the application widget path."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp: create_native_gui_scrollbar_default/copy_00aa15c0",
+      "reason": "Missing canonical native Scrollbar implementation factory/lifetime binding on the application widget path."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing live editable-text owner, platform activation and input-action services at its original screen consumer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission/filter consumer with its retained text-context font."
+    },
+    {
+      "native": "0081b010",
+      "status": "skipped",
+      "host_site": "src/live_effect_update.cpp: update_live_effect_manager_00867ee0",
+      "reason": "Missing reached manager update with its actual effect array and complete point-effect ownership/update bindings."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp: mark_native_recon_slot_dirty_00803ba0",
+      "reason": "Missing actual recon-slot +25h, player-context +28h and world +193Ch alias provider."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: hud_map_zoom_scale_for_mode_0059abc0",
+      "reason": "Missing actual map-screen mode +2Ch and zoom +5BCh owner at a reached query site."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing actual cloud-manager producer and current reference-node axis/dirty-matrix input; the legacy OceanState name is provisional."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: color reader",
+      "reason": "Already entry-reachable in the unchanged baseline through the sensor-class color reader; no additional call added."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing saved-entity Lua toTurn producer or the original sinking-override producer for immediate rudder restoration."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: helmsman_backfill_age_008141a0",
+      "reason": "Missing reached authoritative helm-message consumer supplying the sender stamp and real backfill application."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp: initialize_native_command_target_004f1830",
+      "reason": "Missing genuine writable absolute F87574/F87578/F8757C publications required by this literal body."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: MSAR CRC path",
+      "reason": "Missing reached MSAR stream/TOC owner; replacing its duplicate local CRC helper alone would leave the body unreachable."
+    },
+    {
+      "native": "00b72270",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: find_node_by_name_00b72270",
+      "reason": "Missing original reached name-query consumer with the same SceneRoots/SceneNode domain."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: distortion_extent_00b4ed30 callback",
+      "reason": "Missing reached distortion-pass extent adapter and actual pass owner."
+    }
+  ],
+  "validation": {
+    "release_build": "scripts/build.ps1 passed; all four CTest suites passed",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed",
+    "call_graph": "--build-dir build/callgraph: one direct entry-reachable call each; dispatch -> countdown_start_00733ff0 -> GameHudHost::begin_countdown_panel -> hud_panel_begin_005bca70",
+    "release_call_graph_before": {
+      "called": 5504,
+      "linked_reconstructed": 6120
+    },
+    "release_call_graph_after": {
+      "called": 5504,
+      "linked_reconstructed": 6121
+    },
+    "release_folding": "RET4 is folded with other empty bodies; the no-ICF build independently establishes its sole intended caller.",
+    "readiness_before": 10653,
+    "readiness_after": 10654,
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings across 4 files; no arithmetic changed.",
+    "runtime": "Game was not run; these are build and entry-call-graph checks, not gameplay or binary-ABI validation.",
+    "readiness_note": "RET4 helper 005BCA70 is absent from readiness rows after index refresh; its entry-reachable call is independently verified in the no-ICF build."
+  },
+  "notes": [
+    "00733FF0 reuses and removes the previous inline reconstruction rather than adding a second implementation.",
+    "005BCA70 consumes no state: its complete recovered behavior is RET4.",
+    "Only the existing four CTest suites were used; no new tests or goal switches were added."
+  ]
+}
