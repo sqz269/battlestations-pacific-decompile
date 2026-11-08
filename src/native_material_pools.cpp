@@ -3,6 +3,7 @@
 #include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
+#include "bsp/native_gui_sound_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
@@ -489,8 +490,65 @@ __declspec(noinline) void native_gui_group_pool_table_reserve_00ac7370(
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
 #include "bsp/terrain_bush_pool_cc13.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
+#include "bsp/native_gui_line_pool_table.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
+// Evidence: bsp.py show AC1D10/AC1D60/AC1FA0/AC2020. Reuse the existing
+// Mit vector engine: capacity-before-new, DWORD size wrapping, null-tested
+// copy and free-before-adopt schedule. No second slab table is retained.
+__declspec(noinline) void set_native_gui_line_pool_table_capacity_00ac1d10(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    set_slab_table_capacity(table, capacity);
+}
+
+__declspec(noinline) void grow_native_gui_line_pool_table_00ac1d60(
+    NativeGuiPoolSlabTable& table) {
+    set_native_gui_line_pool_table_capacity_00ac1d10(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void push_native_gui_line_pool_slab_00ac1fa0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) grow_native_gui_line_pool_table_00ac1d60(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void reserve_native_gui_line_pool_table_00ac2020(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        set_native_gui_line_pool_table_capacity_00ac1d10(table, capacity);
+}
+
+__declspec(noinline) void free_native_gui_line_pool_table_00ac1ce0(
+    void* actual_table) noexcept {
+    // AC1CE0 releases only [ECX], retaining pointer/count/capacity.
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+template<> void NativeGuiWidgetPool<GuiLinePoolTraits>::initialize() {
+    // AC2160 inlines reserve(32) in unwind state 2 on the same F8BEFC+28h
+    // table used by AC2020, reached by the original CD7360 CRT initializer.
+    initialize_pool<GuiLinePoolTraits,
+        &reserve_native_gui_line_pool_table_00ac2020>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiLinePoolTraits>::allocate() {
+    // AC2240 inlines AC1FA0 after publishing/initializing the actual 2144h
+    // slab, under its existing critical section. This replaces one append.
+    return allocate_slot<GuiLinePoolTraits,
+        &NativeGuiWidgetPool<GuiLinePoolTraits>::initialize_slab,
+        &push_native_gui_line_pool_slab_00ac1fa0>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiLinePoolTraits>::destroy() {
+    // AC1DB0 releases the slab table after its slabs, before CS/list teardown.
+    destroy_pool<GuiLinePoolTraits,
+        &free_native_gui_line_pool_table_00ac1ce0>(allocator_list_, storage_);
+}
+
 template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize() {
     // 00ABC570 inlines 00ABC500's reserve(32) in unwind state 2.
     // CD7280 constructs this same F8BE5C process owner, never a side table.
@@ -612,6 +670,18 @@ template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
 template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
     return allocate_slot<GuiMoviePoolTraits, WidgetSlabInitializer<GuiMoviePoolTraits>::entry,
         &native_gui_movie_pool_table_push_back_00aad450>(storage_);
+}
+
+// ACD530/ACD6B0 inline ACD4C0/ACD430 on this same retained F8C0EC+28h
+// header. Preserve constructor unwind state 2 and the allocator's existing
+// lock/first-free publications; the generic reserve/append no longer run here.
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize() {
+    initialize_pool<GuiSoundPoolTraits, &reserve_native_gui_sound_pool_table_00acd4c0>(
+        allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate() {
+    return allocate_slot<GuiSoundPoolTraits, WidgetSlabInitializer<GuiSoundPoolTraits>::entry,
+        &append_native_gui_sound_pool_table_00acd430>(storage_);
 }
 
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for

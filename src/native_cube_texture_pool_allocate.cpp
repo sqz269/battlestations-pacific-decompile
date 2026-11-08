@@ -1,4 +1,5 @@
 #include "bsp/native_cube_texture_pool_allocate.hpp"
+#include "bsp/native_cube_texture_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -80,29 +81,8 @@ void* allocate_native_cube_texture_slot_00b3f170(void* pool) {
         void* const slab = raw ? initialize_native_cube_texture_slab_00b3d2a0(
             raw, word(pool, 0x34)) : nullptr;
 
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            put(pool, 0x30, grown_capacity);
-            void* const replacement = singleton_lifetime_allocate({
-                SingletonAllocationKind::pointer_slots, bytes, bytes});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination)
-                    put(destination, 0, word(pointer(word(pool, 0x28)), index * 4u));
-                destination = at(destination, 4);
-            }
-            void* const old_table = pointer(word(pool, 0x28));
-            if (old_table) singleton_lifetime_free(old_table);
-            // Full B3F206 ADD ESP,4 returns from free before B3F209 publishes.
-            put(pool, 0x28, address(replacement));
-        }
-
-        const auto insertion_index = word(pool, 0x2c);
-        auto* const destination = at(pointer(word(pool, 0x28)), insertion_index * 4u);
-        if (destination) put(destination, 0, address(slab));
-        put(pool, 0x2c, word(pool, 0x2c) + 1u);
+        // B3F1B8..B3F21B inline B3E9C0's append/grow on this exact header.
+        native_cube_texture_pool_table_push_back_00b3e9c0(at(pool, 0x28), &slab);
     }
 
     auto* const table = pointer(word(pool, 0x28));

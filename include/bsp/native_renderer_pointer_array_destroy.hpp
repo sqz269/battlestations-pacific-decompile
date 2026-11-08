@@ -30,6 +30,12 @@ void __fastcall resize_native_renderer_vertex_pointers_00b25940(
 void __fastcall resize_native_renderer_index_pointers_00b259d0(
     void*, std::uint32_t unused_edx, std::int32_t count);
 
+// B27FB0/B28000: ECX=actual header, PUSH 0 / CALL the corresponding resize /
+// RET. Reuse the same zero-count operation in the live member destructors.
+// Source calls are not a claim of original binary ABI or SEH compatibility.
+void __fastcall clear_native_renderer_vertex_pointers_00b27fb0(void*);
+void __fastcall clear_native_renderer_index_pointers_00b28000(void*);
+
 // Resize0, then load and free CURRENT data. Preserve stale data/capacity bits.
 // A resize exception bypasses this body's final free, without rollback.
 void __fastcall destroy_native_renderer_query_pointers_00b27f50(void*);

@@ -1,4 +1,5 @@
 #include "bsp/native_node_pool_allocation.hpp"
+#include "bsp/native_node_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -88,31 +89,9 @@ void* allocate_native_node_pool_slot_00b6eb00(void* pool) {
         void* const slab = raw ? initialize_native_node_pool_slab_00b6dd10(
             raw, word(pool, 0x34)) : nullptr;
 
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            put(pool, 0x30, grown_capacity);
-            void* const replacement = singleton_lifetime_allocate({
-                SingletonAllocationKind::pointer_slots, bytes, bytes});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination) {
-                    const auto old_table = word(pool, 0x28);
-                    put(destination, 0, word(pointer(old_table), index * 4u));
-                }
-                destination = at(destination, 4);
-            }
-            void* const old_table = pointer(word(pool, 0x28));
-            if (old_table) singleton_lifetime_free(old_table);
-            // B6EB96 is ADD ESP,4 after returning CRT free, not a function exit.
-            put(pool, 0x28, address(replacement));
-        }
-
-        const auto index = word(pool, 0x2c);
-        auto* const destination = at(pointer(word(pool, 0x28)), index * 4u);
-        if (destination) put(destination, 0, address(slab));
-        put(pool, 0x2c, word(pool, 0x2c) + 1u);
+        // B6EB44..B6EBBD inlines B6E580's 2*capacity+2 append. Pass the
+        // actual produced slab cell; retain the surrounding held-lock path.
+        append_native_node_pool_table_00b6e580({at(pool, 0x28)}, &slab);
     }
 
     const auto slab_index = word(pool, 0x34);

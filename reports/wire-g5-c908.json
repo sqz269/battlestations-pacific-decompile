@@ -83,5 +83,40 @@
     "metrics_qualification": "Merged totals include origin/main additions. Original c908 contribution remains the two graph-verified address calls above; ACF7E0/ACEFC0 remain prepared only.",
     "call_graph_log": "local/c908-repair-callgraph.log",
     "game_run": false
+  },
+  "landing_repair2": {
+    "merged_origin_main": "3e26f5323495c3d4af94a7115716552ed54a44e0",
+    "conflicts": {
+      "include/bsp/cc13_sweepC.hpp": "Retain PointerTableAllocationHost for both incoming GuiSound ACD250 and existing FrameBox ACEFC0.",
+      "src/cc13_sweepC.cpp": "Retain both noinline growth bodies, one per address, delegating to the existing shared operation.",
+      "src/game_main.cpp": "Keep both canonical process startups in native CRT order: Model CD75F0, Sound CD7660, FrameBox CD7740, Traceline CD77F0."
+    },
+    "preserved": "All incoming Line, Sound, Listbox, graphics-pool and other main changes retained; native_material_pools.cpp merged automatically with both families intact.",
+    "ledger_or_cmake_conflicts": false,
+    "default_build": "scripts/build.ps1 passed all 6 CTest groups after restoring the ON headers; local/c908-repair2-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily ON; all 6 CTest groups passed, zero distinct diagnostics; local/c908-repair2-on-build.log",
+    "on_header_receipt": {
+      "headers_restored": true,
+      "headers_after": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "headers_before": {
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5",
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      },
+      "exit_code": 0
+    },
+    "frame_box_probe": "513 slots, 33 slabs, capacity32->66, payloads and trailing indices preserved; local/c908-repair2-probe.log",
+    "call_graph_log": "local/c908-repair2-callgraph.log",
+    "default_graph_reachable_reconstructed_addresses": 5677,
+    "default_graph_reconstructed_addresses_with_calls": 6366,
+    "frame_box_call_verification": "ACF860 reachable from the FrameBox initialize_pool specialization; ACEF70 reachable from ACF860. ACF7E0 and ACEFC0 remain unlinked/prepared-only.",
+    "wire_readiness_log": "local/c908-repair2-readiness.log",
+    "wire_readiness_wired_before_merge": 10791,
+    "wire_readiness_wired_after_merge": 10805,
+    "wire_readiness_called": 6103,
+    "metrics_qualification": "Totals include incoming origin/main changes; original c908 contribution remains two graph-verified address calls.",
+    "game_run": false
   }
 }

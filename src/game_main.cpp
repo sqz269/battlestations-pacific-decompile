@@ -1212,6 +1212,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Section pool CRT CD72F0: atexit=%d storage_bytes=%zu",
             section_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3490/CD7360: ECX=F8BEFC, CALL AC2160, atexit(CE0AC0).
+        // Start Line's retained process pool after Section and before Group,
+        // sharing the E188B4 allocator-list domain with the other GUI pools.
+        auto& gui_line_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiLinePoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int line_pool_atexit = gui_line_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Line pool CRT CD7360: atexit=%d storage_bytes=%zu",
+            line_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
@@ -1228,9 +1238,20 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Model pool CRT CD75F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", gui_model_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // Live bsp.py ghidra disasm CD7660/CE0B20 and bytes CE34B8:
+        // CE34C4 selects CD7660, after the Model pool's CE34BC entry.
+        // ECX=F8C0EC; CALL ACD530; atexit(CE0B20 -> ACD2F0).
+        // Start that canonical Sound pool on the shared E188B4 allocator list.
+        auto& gui_sound_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiSoundPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_sound_pool_atexit = gui_sound_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Sound pool CRT CD7660: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1", gui_sound_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CD7740: ECX=F8C188, CALL ACFF70, atexit(CE0B40). Restore the
         // same process owner the DEFAULT FrameBox factory borrows, in CRT
-        // order after Model and before Traceline; no widget is allocated here.
+        // order after Sound and before Traceline; no widget is allocated here.
         auto& gui_frame_box_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
             bsp::GuiFrameBoxPoolTraits>::instance();
         gui_widget_pool_startup_incomplete = true;
