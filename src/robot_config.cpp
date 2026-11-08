@@ -781,12 +781,26 @@ void run_robot_script(PcStorageLuaOwner& lua, LuaScriptRuntime& scripts,
 }
 } // namespace
 
-bool RobotNameLess::operator()(const char* left, const char* right) const noexcept {
-    //0043A610 operates on borrowed pointer keys, including the null ordering.
+__declspec(noinline) bool __fastcall compare_cstring_key_casefold_0043a610(
+    const char* const* left_key, const char* const* right_key) noexcept {
+    // bsp.py show 0043A610 --asm: 0043A610/12 load the right/left key's first
+    // DWORD, 0043A614..45 order identical/null pointers, 0043A648 calls
+    // _stricmp and 0043A654 tests its signed result. ECX/EDX key*, AL bool,
+    // RET. This is the existing comparator body, shared by registry lookup
+    // and insertion; the std::map node/iterator layout remains a projection.
+    const char* const right = *right_key;
+    const char* const left = *left_key;
     if (left == right) return false;
     if (!left) return true;
     if (!right) return false;
     return ::_stricmp(left, right) < 0;
+}
+
+bool RobotNameLess::operator()(const char* left, const char* right) const noexcept {
+    // These are the live registry/search key pointers, still borrowed from
+    // descriptor+8 or the caller's RobotNameKey. The native body reads no
+    // ownership flag, so their first-DWORD views need no temporary owner.
+    return compare_cstring_key_casefold_0043a610(&left, &right);
 }
 
 std::pair<RobotConfigRegistry::iterator, bool> insert_robot_config_00901210(

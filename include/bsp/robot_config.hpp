@@ -314,6 +314,10 @@ static_assert(sizeof(NavigatorBotConfig) == 0xe4);
 // pointers. This standard-container projection preserves uniqueness and pointer
 // ownership, not the native tree node/iterator ABI. Duplicate insertion retains
 // the old entry and does not delete the newly supplied descriptor.
+// 0043A610: ECX/EDX point to borrowed pointer keys; AL is the ordering result.
+// Only each key's first DWORD is read; no ownership byte is consumed.
+bool __fastcall compare_cstring_key_casefold_0043a610(
+    const char* const* left_key, const char* const* right_key) noexcept;
 struct RobotNameLess { bool operator()(const char*, const char*) const noexcept; };
 using RobotConfigRegistry = std::map<const char*, RobotDescriptor*, RobotNameLess>;
 
