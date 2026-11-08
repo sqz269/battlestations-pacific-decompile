@@ -1,0 +1,214 @@
+{
+  "goal": 5,
+  "chain": 710,
+  "run": 1515,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "base_head": "114cd86dbed799aa0f299b16f8a7ba91241d24c3",
+  "summary": "Compose the existing retained Air, scaled-Air and Underwater ordinary destructor bodies into their live scalar-delete paths. This preserves existing behavior while making the address-named bodies execute with the current channel owner/context.",
+  "rows": [
+    {
+      "native": "00a7dad0",
+      "status": "wired",
+      "host_site": "src/sound_retained_channel.cpp:scalar_delete_retained_sound_channel_00a7db20",
+      "reason": "The existing live scalar-delete path calls the matching existing ordinary destructor with the same retained-channel object and SoundInstanceContext; record release and base-channel unwind occur once before flag-controlled free."
+    },
+    {
+      "native": "00a7dc20",
+      "status": "wired",
+      "host_site": "src/sound_retained_channel.cpp:scalar_delete_scaled_retained_sound_channel_00a7dc70",
+      "reason": "The existing live scalar-delete path calls the matching existing ordinary destructor with the same retained-channel object and SoundInstanceContext; record release and base-channel unwind occur once before flag-controlled free."
+    },
+    {
+      "native": "00a7dd60",
+      "status": "wired",
+      "host_site": "src/sound_retained_channel.cpp:scalar_delete_underwater_retained_sound_channel_00a7ddb0",
+      "reason": "The existing live scalar-delete path calls the matching existing ordinary destructor with the same retained-channel object and SoundInstanceContext; record release and base-channel unwind occur once before flag-controlled free."
+    },
+    {
+      "native": "00a7db20",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::release_reference",
+      "reason": "Already entry-reachable before c710; changed only delegation of its existing cleanup prefix to 00A7DAD0."
+    },
+    {
+      "native": "00a7dc70",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::release_reference",
+      "reason": "Already entry-reachable before c710; changed only delegation of its existing cleanup prefix to 00A7DC20."
+    },
+    {
+      "native": "00a7ddb0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::release_reference",
+      "reason": "Already entry-reachable before c710; changed only delegation of its existing cleanup prefix to 00A7DD60."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "No additional wiring missing: the existing enum projection already calls this body in the baseline executable."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "No additional wiring missing: the existing native bag merge already calls this body in the baseline executable."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:squadron_target order arm",
+      "reason": "Missing native HUD unit-pick screen and screen-centre candidate producer; the host arm selects an explicitly named helm-order target."
+    },
+    {
+      "native": "00526720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:unit-pick cycle candidate",
+      "reason": "Missing native HUD cycle-list owner, selected ordinal and refresh providers; the Lua flags alone do not produce them."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:mission player-count candidate",
+      "reason": "The native player-count operation is multiplayer-only; single-player leaves session mode zero and takes its early return."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroupScoreList candidate",
+      "reason": "Missing live native candidate-score owner and gameplay consumer; the documented image table reader is a debug overlay, excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroupScoreList candidate",
+      "reason": "Missing live candidate-score entries to mark and a non-debug consumer; fabricating a parallel list would not replace gameplay state."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save Lua owner and real checkpoint comparison; checkpoint_differs remains false on this path."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp:land task state candidate",
+      "reason": "Missing a full native land-approach/state object producer; current landing states are semantic fields rather than the native embedded registry owner."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp:land registry candidate",
+      "reason": "Missing the native registry owner/lifetime to retire on the live land-task path."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp:land task state candidate",
+      "reason": "Missing genuine native approach storage and its eight embedded state identities; the host currently stores LandTaskState ordinals."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:WeaponDirector::make_command_target",
+      "reason": "Missing native runtime publication of absolute writable cells F87574/F87578/F8757C and a native descriptor consumer; semantic target values cannot substitute for them."
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:clear_all_leak_zones",
+      "reason": "Missing an active binding that supplies the actual leak-manager zone arrays to this Lua message arm."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp:flooded inspector candidate",
+      "reason": "Only identified original consumer is debug inspection; debug-only work is excluded."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_reset_deviation_factor",
+      "reason": "Missing the native movie-camera screen owner and its Lua-produced default at +58h; the current AddPosition adapter does not supply that screen."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_reset_overview_height",
+      "reason": "Missing the native movie-camera screen owner and its Lua-produced default at +60h."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_reset_speed_limits",
+      "reason": "Missing the native movie-camera screen owner and initialized speed/default/acceleration fields consumed by the camera."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_reset_accel_time",
+      "reason": "Missing the native movie-camera screen owner and initialized default acceleration duration at +48h."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing a loading-screen binding to the actual renderer queue-cycle services 0Ch/14h/11Ch; logging callbacks cannot implement reset."
+    },
+    {
+      "native": "0064a270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:set_repair_priority",
+      "reason": "Missing a live native repair-task owner and the warning-manager repair-channel binding for this Lua message arm."
+    },
+    {
+      "native": "00be44c0",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp:stream reopen candidate",
+      "reason": "Missing a live reopen operation that owns an existing native stream slot and native VFS callable vtable; current stream-reference adapters open through explicit services."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp:stream type initializer candidate",
+      "reason": "The existing GameNativeTypeStorage already composes stream initialization; no new runtime operation was selected here."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::progress_slot20",
+      "reason": "Missing an active gameplay progress-query consumer; this runtime method is not currently requested by the selected retained-channel lifetime path."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::audibility_slot1c",
+      "reason": "Missing an active gameplay audibility-query consumer on this selected retained-channel lifetime path."
+    }
+  ],
+  "verification": {
+    "build": "./scripts/build.ps1: passed, 4/4 existing CTests",
+    "float_math_changed": false,
+    "call_graph": "Fresh built-executable graph: one reachable call from each matching scalar-delete function to its ordinary destructor.",
+    "built_reconstructed_called_before": 5886,
+    "built_reconstructed_called_after": 5889,
+    "readiness_wired_before": 10458,
+    "readiness_wired_after": 10461,
+    "source_evidence": [
+      "bsp.py show 00a7dad0",
+      "bsp.py show 00a7db20",
+      "bsp.py show 00a7dc20",
+      "bsp.py show 00a7dc70",
+      "bsp.py show 00a7dd60",
+      "bsp.py show 00a7ddb0"
+    ],
+    "limits": "Static entry reachability and build/tests only; the game was not run. These are existing C++ projection interfaces, not native ABI bridges. The new call edges compose equivalent teardown prefixes; the original scalar entries inline that prefix.",
+    "call_sites": {
+      "00a7dad0": "10677f0b <- scalar_delete_retained_sound_channel_00a7db20",
+      "00a7dc20": "10677f3b <- scalar_delete_scaled_retained_sound_channel_00a7dc70",
+      "00a7dd60": "10677f6b <- scalar_delete_underwater_retained_sound_channel_00a7ddb0"
+    }
+  }
+}
