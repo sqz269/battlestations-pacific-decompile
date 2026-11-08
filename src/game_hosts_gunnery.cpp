@@ -5995,6 +5995,9 @@ struct GameGunneryHost::Impl {
         // MParatrooper's own block (+D8h..+FCh), 007AC780; read for that kind only.
         bool paratrooper_read{false};
         bsp::path_movcam_seg46_argon::ParatrooperClassResidue paratrooper;
+        // MWaterMine's own block (+D8h..+E8h), 0085F500; read for that kind only.
+        bool water_mine_read{false};
+        bsp::gameplay_seg53_cc13::WaterMineClassFields water_mine;
     };
     std::map<int, BulletClassDescriptorEntry> bullet_class_descriptors;
     UnresolvedBulletClassResources bullet_class_resources;
@@ -16371,6 +16374,24 @@ GameGunneryHost::Impl::bullet_class_descriptor(int id) {
             static_cast<double>(entry.paratrooper.damage_fc), reader.unresolved_handles);
     } else {
         bsp::load_weapon_class_fields(kind, row, bullet_class_resources, entry.descriptor);
+    }
+    if (kind == bsp::ProjectileKind::WaterMine) {
+        // MWaterMine's vtable[18h] is 0085F500: 006E1BE0 (0085F523, run by
+        // load_weapon_class_fields above), then V0RandomFactor and DiveSpeed
+        // (GetNumber), WaterSplashEfx (00B66380 + 00870CD0, unresolved like
+        // every effect here) and FloatingDepth / TriggerRadius with defaults.
+        bsp::gameplay_seg53_cc13::WaterMineClassRow mine_row;
+        mine_row.number = [&row](const char* key) { return row.float_value(key, 0.0f); };
+        mine_row.number_or = [&row](const char* key, float fallback) {
+            return row.float_value(key, fallback);
+        };
+        mine_row.effect_present = [&](const char* key) {
+            return bullet_class_resources.acquire_effect(row.integer_value(key, 0)) != 0u;
+        };
+        bsp::gameplay_seg53_cc13::water_mine_read_class_fields_0085f500(mine_row, entry.water_mine);
+        entry.water_mine.blast_damage_min_b4 = entry.descriptor.blast_damage_min;
+        entry.water_mine.blast_damage_max_b8 = entry.descriptor.blast_damage_max;
+        entry.water_mine_read = true;
     }
     entry.descriptor.bullet_id = id;                                      // 006EAD86
     ++bullet_class_descriptor_loads;
