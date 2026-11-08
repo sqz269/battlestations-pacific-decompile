@@ -1,12 +1,14 @@
 // Reference models of the bomb platforms and their device reload (segment 33, cc13-gpr33).
 // Evidence per function is in docs/CC13_GPR_33.md; the header states each original address and
-// ABI. Reconstructed and build-tested only: nothing here is wired into a host.
+// ABI. Host wiring and validation limits are recorded per function in the ledger.
 #include "bsp/gameplay_seg33_cc13.hpp"
 
+#include "bsp/band_006b_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
 #include <cstddef>
+#include <cstring>
 #include <iterator>
 #include <list>
 
@@ -391,10 +393,34 @@ float projectile_speed_006e7cd0(const Seg33Vec3& velocity) noexcept {
 
 Seg33Vec3 projectile_extrapolate_position_006e2220(const Seg33Vec3& base,
                                                    const Seg33Vec3& velocity, float t) noexcept {
-    const float dx = t * velocity.x;  // 006E2234 FSTP float
-    const float dy = velocity.y * t;
-    const float dz = t * velocity.z;
-    return Seg33Vec3{base.x + dx, base.y + dy, base.z + dz};  // FADD, FSTP float each
+    // bsp.py show 006E2220 --asm: 006E2223..2274 multiplies all three
+    // velocity components, spills each product to float, then adds the base.
+    // 006E0547..057E has the same arithmetic/spills. Reuse that body with
+    // the live round's committed position, velocity and time from
+    // cc13_paratrooper::RoundAdapter::extrapolate_position (007AC0FE).
+    // Its native x87 operations use main-thread PC24, including the float
+    // product spills before each addition and exceptional float bits.
+    float position[3] = {base.x, base.y, base.z};
+    const float direction[3] = {velocity.x, velocity.y, velocity.z};
+    band_006b_cc13::vec3_add_scaled_in_place_006e0540(position, direction, t);
+    // 006E225C loads base.y before FADD product.y; 006E056D instead loads
+    // product.y before FADD base.y. FLD quiets an SNaN; among quiet NaNs,
+    // x87 keeps the larger significand, choosing the positive NaN at a
+    // sign-only tie. Retain 006E2220's base-first result without repeating
+    // arithmetic. The focused C781 probe compares both original bodies.
+    // X and Z already use base-first.
+    std::uint32_t base_y_bits;
+    std::memcpy(&base_y_bits, &base.y, sizeof(base_y_bits));
+    if ((base_y_bits & 0x7fffffffu) > 0x7f800000u) {
+        base_y_bits |= 0x00400000u;
+        std::uint32_t result_y_bits;
+        std::memcpy(&result_y_bits, &position[1], sizeof(result_y_bits));
+        if ((base_y_bits & 0x7fffffffu) > (result_y_bits & 0x7fffffffu) ||
+            ((base_y_bits & 0x7fffffffu) == (result_y_bits & 0x7fffffffu) &&
+             base_y_bits < result_y_bits))
+            std::memcpy(&position[1], &base_y_bits, sizeof(base_y_bits));
+    }
+    return Seg33Vec3{position[0], position[1], position[2]};
 }
 
 // ---------------------------------------------------------------------------------------------
