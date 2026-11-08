@@ -4,9 +4,9 @@
     "wired_before": 10366,
     "wired_after": 10367,
     "readiness": "007B5400 state=wired, called=true, call_sites=1",
-    "call_graph": "007B5400 REACHABLE; one call at 104ED79D from rocket_aim_tick_007b5430; path reaches WinMainCRTStartup through the rocket task and mission fixed-step host",
-    "proof_boundary": "Built executable call-graph reachability; no game run or original binary ABI compatibility claimed",
-    "choice": "Selected the rocket release getter because the host already retains the target-reference field; left constructors and state transitions pending their real ownership/callback contracts"
+    "call_graph": "After the review fix: 007B5400 REACHABLE; one call at 104ED7B1 from rocket_aim_tick_007b5430; path reaches WinMainCRTStartup through the rocket task and mission fixed-step host.",
+    "proof_boundary": "Built executable call-graph reachability and one producer-to-release regression fixture; no game run or original binary ABI compatibility claimed.",
+    "choice": "Bind the release getter directly to the host target-reference producer state instead of copying its offset into the projected RocketTask reference."
   },
   "rows": [
     {
@@ -14,7 +14,7 @@
       "status": "wired",
       "host_site": "src/rocket_task_cc13.cpp: rocket_aim_tick_007b5430 (called by the live RocketHostAdapter arm)",
       "evidence": "bsp.py show 007b5400 --asm: 007B5400..007B541E copies approach+80h..88h and returns out; bsp.py show 007b5430: release path calls this getter at 007B56E5",
-      "state": "Borrowed view points directly to unit_.rk.ap.ref.body_offset_28, produced by the retained target-reference update; output is the release's homing_point. The previous inline copy is removed.",
+      "state": "Borrowed view points to RocketAimInputs.target_ref.body_offset_28; the arm obtains that reference from RocketHostAdapter::target_ref_state(), which returns the actual unit_.hull_aim_ref updated by target picking, retarget reconstruction and freeze handling. Output is release.homing_point; the projected task ref is not used as the body-offset source.",
       "abi": "New C++ borrowed-field view; not a drop-in original thiscall replacement"
     },
     {
@@ -53,5 +53,16 @@
       "host_site": "00648c20 HUD unit-row widgets (original caller)",
       "reason": "The sole original caller is in the HUD area awaiting another branch's review; the rocket-only rack vt[21Ch](33h) traversal adapter is also missing."
     }
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1429,
+    "finding": "The original getter read rk.ap.ref.body_offset_28, which stayed at constructor zeros while target picking updated unit_.hull_aim_ref.",
+    "status": "fixed",
+    "fix": "RocketHostAdapter::target_ref_state returns unit_.hull_aim_ref; the arm passes that reference into RocketAimInputs and the release getter reads its body_offset_28. The input requires an explicit producer reference; there is no default fallback to task-ref zeros.",
+    "lifecycle": "Both kz_enter_pick_009fa260 and kz_target_point write hull_aim_ref. Dirty repicks and bias are therefore read from their actual result; hull_aim_world_point reconstructs that same object on retarget, and aim_point_freeze_009fada0 retains it across death-head and observer freezes. No producer, repick, retarget or freeze policy is replaced or run twice.",
+    "regression": "One regression in tests/math_tests.cpp uses approach_target_ref_pick_009fa260 to produce nonzero hull offsets plus bias, repicks, reconstructs the retained object for a new bias-only target, and freezes with approach_target_ref_freeze_009fadae. The borrowed RocketAimInputs stays bound to that object and every offset must reach release.homing_point while task.ap.ref.body_offset_28 remains zero.",
+    "red_check": "bsp_math_tests.exe exited 1 on the new regression while the release getter still used t.ap.ref; this reproduced the review finding.",
+    "checks": "scripts/build.ps1 passed all four CTests, including the nonzero pick/repick/retarget/freeze regression that failed with the old task-ref binding. Refreshed call_graph.py who/path confirm one entry-reachable call from rocket_aim_tick_007b5430. wire_readiness.py --standins remains 10367 wired; 007B5400 is wired, called=true, call_sites=1.",
+    "proof_boundary": "Focused producer-to-release fixture plus executable static call-graph reachability; no in-game rocket release or original ABI compatibility claimed."
+  }
 }

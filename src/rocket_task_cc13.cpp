@@ -700,11 +700,12 @@ RocketAimResult rocket_aim_tick_007b5430(RocketTask& t, const RocketAimInputs& i
             // 007B56C7-007B5700: 0080AA20 on the rocket's homing block, then
             // 007BBBA0 on the unit; the timer re-arms to U(0.8, 1.2) * RepeatTime.
             r.release.fire = true;
-            // 007B56E5 calls 007B5400 on this approach. Its +80h member is
-            // the live target reference's +28h body offset, refreshed above
-            // by 009FADA0; keep the original getter on the release path.
+            // 007B56E5 calls 007B5400 on this approach's target ref +28h.
+            // The host's pick/update/freeze producers retain that state
+            // separately from t.ap.ref. Borrow their authoritative state:
+            // the projected task ref's offset is not copied back by them.
             cc13_seg47::rocket_approach_body_aim_offset_007b5400(
-                {t.ap.ref.body_offset_28.data()}, r.release.homing_point);
+                {in.target_ref.body_offset_28.data()}, r.release.homing_point);
             r.release.homing_angle = in.row.homing_angle_114;
             const float w = draw(rng, RocketDraw::kAimRepeat18, 0.8f, 1.2f);   // 007B5725
             t.aim.timer_18 = static_cast<float>(static_cast<double>(w) * in.row.repeat_time_118);
@@ -874,7 +875,7 @@ RocketArmResult rocket_task_arm_007b7c40(RocketTask& t, RocketTaskHost& host,
             host.apply_plan(res.plan);
             break;
         case RocketState::kAim: {
-            RocketAimInputs ai;
+            RocketAimInputs ai{host.target_ref_state()};
             ai.unit_position = host.unit_position();
             ai.local_point = host.world_to_body(t.ap.aim_point);
             ai.row = host.robot_row();

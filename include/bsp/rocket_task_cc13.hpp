@@ -331,6 +331,10 @@ struct RocketTaskHost {
                                             std::array<float, 3>& point) = 0;
     // 009FA260 on ap.ref after 007B48E0 re-armed it (the pick).
     virtual void pick_target_ref_009fa260(ApproachTargetRefState& ref) = 0;
+    // The state these producers actually update. The units host retains it
+    // separately from ap.ref; release must read its picked offset plus bias,
+    // including picks on enter, retarget reconstruction and the frozen latch.
+    virtual const ApproachTargetRefState& target_ref_state() const = 0;
     virtual bool target_marked_5d() = 0;          // target+5Dh
     virtual RocketTargetKinds target_kinds() = 0; // vt[5Ch](6, 9, 0Ah, 0Bh, 0Dh)
     virtual bool target_is_unit_5() = 0;          // target vt[5Ch](5)
@@ -489,6 +493,10 @@ RocketPlanCommand rocket_attackrun_tick_007b4f60(RocketTask& t, const RocketFlig
                                                  float dt, RocketTaskHost& host);
 
 struct RocketAimInputs {
+    explicit RocketAimInputs(const ApproachTargetRefState& produced_ref) noexcept
+        : target_ref(produced_ref) {}
+    // Borrow the producer's state rather than a snapshot from the task ref.
+    const ApproachTargetRefState& target_ref;
     std::array<float, 3> unit_position{{0.0f, 0.0f, 0.0f}};
     std::array<float, 3> local_point{{0.0f, 0.0f, 0.0f}};  // 004142E0 of ap.aim_point
     RocketStrikeRow row{};

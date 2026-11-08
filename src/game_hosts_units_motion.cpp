@@ -9287,6 +9287,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override {
                             b.kz_enter_pick_009fa260(ref);
                         }
+                        const bsp::ApproachTargetRefState& target_ref_state() const override {
+                            // Both kz_target_point (including its freeze path) and
+                            // kz_enter_pick_009fa260 produce the offset here. The
+                            // task ref only receives their world point, not +28h.
+                            return b.unit_.hull_aim_ref;
+                        }
                         bool target_marked_5d() override {
                             const GameUnitSlot* t = b.st_target();
                             if (t == nullptr) return true;
