@@ -1,6 +1,7 @@
 #include "bsp/native_enum_symbol_insertion.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_enum_node_pool.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include <cstring>
 #include <new>
 
@@ -34,6 +35,19 @@ std::uint32_t address(const void* value) noexcept {
 void* at(const void* base, std::uint32_t offset) noexcept {
     return reinterpret_cast<void*>(address(base) + offset);
 }
+
+// AA9A20's only service is the same raw 0041DD40 resize used by 8F2850.
+// Borrow the insertion's current string domain; do not create another pool.
+class EnumEntryStrings final : public gui_widgets_cc13::GuiNativeStringHost {
+public:
+    explicit EnumEntryStrings(NativeStringRawPoolContext& strings) noexcept
+        : strings_(strings) {}
+    void resize_0041dd40(void* header, std::uint32_t length, bool preserve) override {
+        resize_native_string_header_0041dd40(header, strings_, length, preserve);
+    }
+private:
+    NativeStringRawPoolContext& strings_;
+};
 } // namespace
 
 void* initialize_native_scene_enum_owner_008f4dd0(void* owner,
@@ -73,17 +87,16 @@ std::uint32_t insert_native_enum_symbol_word_008f2850(void* receiver,
         return word(receiver, 4);
     }
     node = allocate_native_enum_node_004e7c00(symbol_pool);
-    if (node) ::new (node) NativeString; // native fresh header stores0/4 only
-    if (node != &key) {
-        resize_native_string_header_0041dd40(node, strings, key.length(), true);
-        if (key.length() != 0) {
-            // Reload both headers AFTER resize; do not replace owning copy with
-            // a pointer assignment, CString scan, or the unrelated copy fragment.
-            auto* const destination = static_cast<NativeString*>(node);
-            std::memmove(destination->data(), key.data(), destination->length());
-        }
-    }
-    put(node, 8, value);
+    // bsp.py show 008F2850 and 00AA9A20: both zero +0/+4, resize with keep=1,
+    // reload the source length and both buffers after resize, copy destination
+    // length bytes, then store the supplied word at +8. The fresh 14h enum
+    // node's owning 0Ch prefix is exactly that string/value pair. The live key
+    // and fresh allocation are disjoint in this admitted successful domain;
+    // AA9A20's memcpy therefore has the replaced memmove's result. Leave +Ch
+    // linkage and +10h preserved storage to this insertion. Source reuse only,
+    // with an explicit pool adapter; no Original register/stack ABI claim.
+    EnumEntryStrings entry_strings(strings);
+    gui_widgets_cc13::gui_named_entry_construct_00aa9a20(node, &key, value, entry_strings);
     put(node, 0x0c, word(receiver, 8u + bucket * 4u));
     put(receiver, 8u + bucket * 4u, address(node));
     put(receiver, 4, word(receiver, 4) + 1u);

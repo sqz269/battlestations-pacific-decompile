@@ -1,11 +1,13 @@
 // GUI widget library reconstructions, packet cc13-gui1 (docs/CC13_GUI_1.md).
 #include "bsp/gui_widgets_cc13.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_animation_registry.hpp"
 #include "bsp/gui_manager_cc13.hpp"
 
 #include <cstdlib>
 #include <cstring>
 #include <intrin.h>
+#include <new>
 #include <type_traits>
 
 namespace bsp::gui_widgets_cc13 {
@@ -903,10 +905,11 @@ void* gui_named_entry_copy_00aa3d30(void* entry, const void* source, GuiNativeSt
     return entry;
 }
 
-void* gui_named_entry_construct_00aa9a20(void* entry, const void* name, std::uint32_t value,
+__declspec(noinline) void* gui_named_entry_construct_00aa9a20(void* entry, const void* name, std::uint32_t value,
     GuiNativeStringHost& strings) {
-    write_field<std::uint32_t>(entry, 0, 0);
-    write_field<std::uint32_t>(entry, 4, 0);
+    // bsp.py show 00AA9A20: the two zero stores construct an owning 8h string.
+    // Start that C++ header's lifetime as well when borrowing fresh pool storage.
+    ::new (entry) NativeString;
     if (entry != name) copy_native_string(entry, name, strings);
     write_field<std::uint32_t>(entry, 8, value);
     return entry;
