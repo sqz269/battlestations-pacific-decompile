@@ -58,6 +58,8 @@
 #include <string>
 #include <vector>
 
+namespace bsp { struct AiCommandObject; }
+
 namespace bsp::game {
 
 // Packet cc9_objective_kind (docs/MISSION_OBJECTIVES.md section 9). True: Objectives_Add
@@ -516,6 +518,11 @@ int ai_team_slot_009ffd20(int team);
 // the scene command `follow` arm), on the one live coordinator. False when there
 // is none or the request is refused.
 bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader);
+
+// AISetCommand's 00A37250/00A2BD00 boundary: current entity+16Ch group,
+// then a replacement consumed by that group's existing command tick.
+void* ai_group_for_entity(std::size_t unit) noexcept;
+bool ai_install_group_command(void* group, const bsp::AiCommandObject& command);
 
 class GameAiCoordinatorHost {
 public:

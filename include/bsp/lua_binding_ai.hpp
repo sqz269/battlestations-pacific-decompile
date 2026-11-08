@@ -153,7 +153,16 @@ struct LuaBindingAiReader {
 
 // Each method is exactly one native call site of the fourteen handlers. Nothing
 // here has a default implementation: none of it stands in for game behaviour.
-struct LuaBindingAiHost {
+// The three operations AISetCommand actually uses. The full AI service host
+// inherits this boundary so its existing adapters keep the same overrides.
+struct LuaBindingAiSetCommandHost {
+    virtual ~LuaBindingAiSetCommandHost() = default;
+    virtual void* ai_group_of_entity_argument(int index) = 0;
+    virtual void* ai_command_from_table(void* group, int argument_index) = 0;
+    virtual void ai_group_set_command(void* group, void* command) = 0;
+};
+
+struct LuaBindingAiHost : LuaBindingAiSetCommandHost {
     virtual ~LuaBindingAiHost() = default;
 
     // --- AICreate --------------------------------------------------------
@@ -282,7 +291,7 @@ int lua_binding_ai_enable_grouping(LuaBindingArgumentReader& args,
                                    LuaBindingAiHost& host);              // 00A37650
 int lua_binding_ai_merge_groups(LuaBindingAiHost& host);                 // 00A37790
 int lua_binding_ai_get_group_info(LuaBindingAiHost& host);               // 00A378C0
-int lua_binding_ai_set_command(LuaBindingAiHost& host);                  // 00A37A00
+int lua_binding_ai_set_command(LuaBindingAiSetCommandHost& host);        // 00A37A00
 // The hint-weight handler's complete, narrow service boundary. Other AI
 // bindings keep their larger interfaces; no unrelated stubs are required.
 struct LuaBindingAiHintWeightHost {

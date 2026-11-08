@@ -2191,6 +2191,7 @@ public:
     int run_has_fired_008be7e0(lua_State* state, int argument_count);
     int run_get_firepower(lua_State* state);
     int run_ai_set_hint_weight(lua_State* state);
+    int run_ai_set_command(lua_State* state);
     // Goal 5 chain 649: the eight HintSystem wrappers (ShowHint, ShowHintForced,
     // AddStoredHint, RemoveStoredHint, HideHint, IsHintActive, IsHintCritical and
     // IsHintStored, rows 00E0B7F0..00E0B830) over the process's hint tracker.

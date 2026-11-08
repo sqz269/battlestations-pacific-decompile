@@ -1448,6 +1448,62 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
     };
 
+    struct NativeMoveCommand {
+        alignas(4) std::array<std::uint8_t, 0x20> bytes{};
+
+        NativeMoveCommand(void* owner, bsp::AiCommandType type, const float point[3]) {
+            namespace native = bsp::cc13_seg69;
+            const native::Raw view{bytes.data()};
+            // bsp.py show 00A102D0 / 00A10370: ECX is the new 20h/14h
+            // object, stack inputs are the actual group and Lua targetPos.
+            // Retain the constructor destination as the group's command owner;
+            // only initialized fields are decoded, never numeric image vtables.
+            switch (type) {
+            case bsp::AiCommandType::CautiousMove:
+                native::ai_command_cautious_move_construct_00a102d0(view, owner, point);
+                break;
+            case bsp::AiCommandType::RegroupingMove:
+                native::ai_command_regrouping_move_construct_00a10370(view, owner, point);
+                break;
+            default:
+                throw std::logic_error("Native positional command requires a MOVE subclass");
+            }
+        }
+
+        bsp::AiCommandObject state() {
+            namespace native = bsp::cc13_seg69;
+            const native::Raw view{bytes.data()};
+            bsp::AiCommandObject result;
+            switch (view.at<std::uint32_t>(0)) {
+            case native::kCautiousMoveVtable:
+                result.type = bsp::ai_command_cautious_move_get_type_00a10310();
+                // 00A152B0 passes command+14h to 00A14DD0. Its flag/counter
+                // at subobject+4/+8 use the tick projection's shared names.
+                result.route_flag_24 = view.at<std::uint8_t>(0x18) != 0;
+                result.route_counter_28 = view.at<std::int32_t>(0x1c);
+                break;
+            case native::kRegroupingMoveVtable:
+                result.type = bsp::ai_command_regrouping_move_get_type_00a103a0();
+                break;
+            default:
+                throw std::logic_error("MOVE constructor produced an unknown vtable");
+            }
+            result.owner_group = view.ptr(4);
+            std::memcpy(result.target_position, bytes.data() + 8, sizeof(result.target_position));
+            return result;
+        }
+
+        void store_route_state(const bsp::AiCommandObject& command) {
+            const bsp::cc13_seg69::Raw view{bytes.data()};
+            if (view.at<std::uint32_t>(0) != bsp::cc13_seg69::kCautiousMoveVtable) return;
+            if (command.type != bsp::AiCommandType::CautiousMove ||
+                command.owner_group != view.ptr(4))
+                throw std::logic_error("CAUTIOUSMOVE route state has no matching native owner");
+            view.at<std::uint8_t>(0x18) = static_cast<std::uint8_t>(command.route_flag_24);
+            view.at<std::int32_t>(0x1c) = command.route_counter_28;
+        }
+    };
+
     struct Group {
         int team{0};                  // group+5638h, the seed entity's +54h
         int party{0};                 // the party slot this process files it under
@@ -1458,6 +1514,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiCommandObject command{};
         std::shared_ptr<AttackObserverEndpoint> attack_endpoint;
         std::unique_ptr<NativeAttackCommand> native_attack;
+        std::unique_ptr<NativeMoveCommand> native_move;
         float member_pass_due{0.0f};  // group+5650h, 0.0f from the constructor
         bool emptied{false};
         bool destroyed{false};
@@ -1475,6 +1532,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void replace_command(Group* g, const bsp::AiCommandObject& next) {
         bsp::AiCommandObject result = next;
         std::unique_ptr<NativeAttackCommand> native;
+        std::unique_ptr<NativeMoveCommand> move;
         if (next.type == bsp::AiCommandType::MoveToAttack ||
             next.type == bsp::AiCommandType::CautiousAttack ||
             next.type == bsp::AiCommandType::CloseAttack) {
@@ -1486,14 +1544,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             native = std::make_unique<NativeAttackCommand>(g, target, next.type,
                 target->attack_endpoint);
             result = native->state();
+        } else if (next.type == bsp::AiCommandType::CautiousMove ||
+            next.type == bsp::AiCommandType::RegroupingMove) {
+            move = std::make_unique<NativeMoveCommand>(g, next.type, next.target_position);
+            result = move->state();
         }
         g->native_attack = std::move(native);
+        g->native_move = std::move(move);
         g->command = result;
     }
 
     void store_command_route_state(Group* g) {
         if (g != nullptr && g->native_attack)
             g->native_attack->store_route_state(g->command);
+        if (g != nullptr && g->native_move)
+            g->native_move->store_route_state(g->command);
     }
 
     struct Planner {
@@ -2139,6 +2204,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         // Group teardown also destroys its outgoing command observer.
         g->native_attack.reset();
+        g->native_move.reset();
         registry.erase(std::remove(registry.begin(), registry.end(), g), registry.end());
         for (std::vector<Group*>& list : by_team) {
             list.erase(std::remove(list.begin(), list.end(), g), list.end());
@@ -4569,10 +4635,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             c.owner_group = native.ptr(4);
             std::memcpy(c.target_position, native.p + 8, sizeof(c.target_position));
         } else {
-            // The only current caller passes ratio=1.0, so its stream-1
-            // fraction cannot select this branch. Retain the host path
-            // until a real producer can select CAUTIOUSMOVE; merely adding
-            // a static CALL here would not make 00A102D0 run in the game.
+            // This planner caller passes ratio=1.0 and cannot select this
+            // arm. AISetCommand supplies the independent Lua producer;
+            // replace_command owns native construction for both paths.
             c.type = bsp::AiCommandType::CautiousMove;
             c.owner_group = g;
             for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
@@ -7300,6 +7365,36 @@ bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader
     // The coordinator's entity handles are index + 1 (unit_index_of).
     return g_live_ai_coordinator->tick_request_join_formation(
         reinterpret_cast<void*>(follower + 1u), reinterpret_cast<void*>(leader + 1u));
+}
+
+void* ai_group_for_entity(std::size_t unit) noexcept {
+    if (g_live_ai_coordinator == nullptr) return nullptr;
+    const auto& owner = *g_live_ai_coordinator;
+    if (unit >= owner.units.count()) return nullptr;
+    // The Lua table of a PlaneSquadronGen keeps its fused creation-slot ID;
+    // the coordinator indexes that same entity after the real unit rows.
+    // Match its retained creation identity, never a current wing/leader proxy.
+    for (std::size_t i = 0; i != owner.squadrons.size(); ++i) {
+        if (owner.squadrons[i].resource_owner.creation_unit == unit) {
+            unit = owner.units.count() + i;
+            break;
+        }
+    }
+    if (unit >= owner.group_of_unit.size()) return nullptr;
+    auto* const group = owner.group_of_unit[unit];
+    return group != nullptr && !group->destroyed ? group : nullptr;
+}
+
+bool ai_install_group_command(void* group, const bsp::AiCommandObject& command) {
+    if (g_live_ai_coordinator == nullptr || command.owner_group != group) return false;
+    auto& owner = *g_live_ai_coordinator;
+    auto* const current = owner.group_at(group);
+    if (std::find(owner.registry.begin(), owner.registry.end(), current) == owner.registry.end()
+        || current->destroyed) return false;
+    owner.replace_command(current, command);
+    ++owner.summary.commands_replaced;
+    owner.done("AiGroup::AISetCommand", 0x00a2bd00u);
+    return true;
 }
 
 void GameAiCoordinatorHost::create_00a32350() {
