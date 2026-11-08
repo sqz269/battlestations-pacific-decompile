@@ -481,6 +481,10 @@ void hud_map_hide_unused_arrow_widgets_0059f9b0(void* screen, WidgetHost& host);
 
 // 005BCA80 HUD panel pending value: +170h = value, +168h = 1, +174h = extra.
 void hud_panel_set_pending_value_005bca80(void* panel, std::uint32_t value, std::uint32_t extra) noexcept;
+// 005BCAB0, __thiscall(ECX = panel), RET: +168h = 0 (MOV byte ptr [ECX+168h],0;
+// RET). The panel is the minimap screen at [00E198C4]+58h; callers 007340A0
+// (007340E1) and 00735100 (007351D7), the mission countdown's stop and expiry.
+void hud_panel_clear_pending_005bcab0(void* panel) noexcept;
 // 0059AD20: +5F0h = 1, +5F4h = pos[0], +5F8h = pos[2] (the forced cursor x/z).
 void hud_map_force_cursor_pos_0059ad20(void* screen, const std::uint32_t* pos) noexcept;
 
@@ -536,7 +540,28 @@ void* session_message188_scalar_delete_005f97d0(void* message, std::uint8_t flag
 // Screen registration, construction and destruction
 // ---------------------------------------------------------------------------
 
-struct ScreenLifetimeHost {
+// The leaf constructors 0068CC70 runs whose only call is the front-end screen
+// base 004F7180 (005EE440, 005F9440, 00604780). The HUD host binds them over
+// its own native screen storage without the page and layout services.
+struct FrontEndScreenConstructHost {
+    virtual ~FrontEndScreenConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+
+// 005EE010 and 00604890, two of 0068CC70's leaf register overrides: the
+// registry's 004F71D0 and one page load 00AA5840.
+struct ScreenRegisterPageHost {
+    virtual ~ScreenRegisterPageHost() = default;
+    virtual void frontend_register_004f71d0(void* screen) = 0;
+    virtual std::uint32_t load_page_00aa5840(std::string_view name) = 0;
+};
+// 005F9FF0 adds the screen's own +14h layout virtual (ECX = screen) after
+// its page load.
+struct ScreenRegisterLayoutHost : ScreenRegisterPageHost {
+    virtual void screen_bind_layout(void* screen) = 0;
+};
+
+struct ScreenLifetimeHost : FrontEndScreenConstructHost, ScreenRegisterLayoutHost {
     virtual ~ScreenLifetimeHost() = default;
     // BSP_FrontEndScreen_Register 004F71D0 / _Construct 004F7180 / _Destruct, ECX = screen.
     virtual void frontend_register_004f71d0(void* screen) = 0;
@@ -567,9 +592,9 @@ struct ScreenLifetimeHost {
 inline constexpr std::string_view kHudObjectivesPage = "GUI_objectives";
 inline constexpr std::string_view kHudOrderPage = "GUI_order";
 inline constexpr std::string_view kHudPauseCheatPage = "GUI_pause_cheat";
-void hud_objectives_register_005ee010(void* screen, ScreenLifetimeHost& host);
-void hud_order_register_005f9ff0(void* screen, ScreenLifetimeHost& host);
-void hud_pause_cheat_register_00604890(void* screen, ScreenLifetimeHost& host);
+void hud_objectives_register_005ee010(void* screen, ScreenRegisterPageHost& host);
+void hud_order_register_005f9ff0(void* screen, ScreenRegisterLayoutHost& host);
+void hud_pause_cheat_register_00604890(void* screen, ScreenRegisterPageHost& host);
 // 005EA720 MultiMainMenu: Register, vtable +14h, +F0h = +E0h = +E4h = 0,
 // +ECh = the y of widget +DCh's resolved position, +F4h = -1, then
 // LayoutAchievementLocks (tail JMP).
@@ -587,9 +612,9 @@ void multi_mode_selector_register_005ea7c0(void* screen, ScreenLifetimeHost& hos
 // before return and are not modelled.
 void* multi_main_construct_005e6d90(void* screen, ScreenLifetimeHost& host);
 void* multi_mode_selector_construct_005ea8c0(void* screen, ScreenLifetimeHost& host);
-void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host);
-void* hud_order_construct_005f9440(void* screen, ScreenLifetimeHost& host);
-void* hud_pause_cheat_construct_00604780(void* screen, ScreenLifetimeHost& host);
+void* hud_objectives_construct_005ee440(void* screen, FrontEndScreenConstructHost& host);
+void* hud_order_construct_005f9440(void* screen, FrontEndScreenConstructHost& host);
+void* hud_pause_cheat_construct_00604780(void* screen, FrontEndScreenConstructHost& host);
 
 // Destructors: restore the screen's vtables, destroy the loaded pages, free owned
 // vectors, put the base vtable 00CEB0FC back at +08h (where the screen has one)
@@ -1299,7 +1324,12 @@ void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host);
 // HUD map and minimap object pools (batch 3)
 // ---------------------------------------------------------------------------
 
-struct MapPoolHost {
+// 005C0810, 0068CC70's minimap leaf: the screen base and its tree head 005BDD40.
+struct MinimapConstructHost : FrontEndScreenConstructHost {
+    virtual void* tree_buy_head_node_005bdd40(void* tree) = 0;
+};
+
+struct MapPoolHost : MinimapConstructHost {
     virtual ~MapPoolHost() = default;
     virtual void invalid_iterator_00bf6713() = 0;
     virtual void delete_object(void* object) = 0;  // (*vtable[0])(1)
@@ -1332,7 +1362,7 @@ void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, 
 // the icon map at +F8h (head from 005BDD40, nil byte +15h, size +100h = 0); and
 // the vector/array words +108h..+110h, +118h..+120h, +128h..+130h,
 // +138h..+140h, +148h..+150h, +180h, +184h zeroed.
-void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host);
+void* hud_minimap_screen_construct_005c0810(void* screen, MinimapConstructHost& host);
 
 // Two-page registers (batch 3). Page names read from the image.
 //   005E1820 MultiGameLobby: "FE_lobby" (00CF242C) -> +14h, "FE_lobby_settings"
@@ -1392,7 +1422,21 @@ void* options_screen_construct_005f6030(void* screen, OptionsLifetimeHost& host)
 void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host);
 
 // HudPauseScreen constructor and destructor (batch 3).
-struct PauseLifetimeHost : ScreenLifetimeHost {
+// 005FFCB0, 0068CC70's pause leaf: the screen base, its scroller 00683610 and
+// three containers' head-node allocators. Standalone (PauseLifetimeHost
+// redeclares the two services ScreenLifetimeHost also declares).
+struct PauseConstructHost {
+    virtual ~PauseConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+    virtual void scroller_construct_00683610(void* scroller) = 0;
+    virtual void* list_allocate_sentinel_00582280(void* list) = 0;
+    virtual void* tree_buy_head_node_005fd1b0(void* tree) = 0;
+    virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
+};
+
+struct PauseLifetimeHost : ScreenLifetimeHost, PauseConstructHost {
+    void frontend_construct_004f7180(void* screen) override = 0;
+    void scroller_construct_00683610(void* scroller) override = 0;
     virtual void* list_allocate_sentinel_00582280(void* list) = 0;
     virtual void* tree_buy_head_node_005fd1b0(void* tree) = 0;
     virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
@@ -1404,7 +1448,7 @@ struct PauseLifetimeHost : ScreenLifetimeHost {
 // list +64h (sentinel 00582280 at +68h, size +6Ch = 0); scroller at +9Ch; hint
 // map +11Ch (head 005FD1B0, nil byte +19h, size +124h = 0); pooled string list
 // +128h (sentinel 004C3020 at +12Ch, size +130h = 0).
-void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host);
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseConstructHost& host);
 // 005FF980: vtables back; pages +14h, +18h, +1Ch; clear the string list and
 // free its sentinel; erase the hint map (005FEDC0), free its head, zero +120h and
 // +124h; tidy the list +64h; +08h = 00CEB0FC; FrontEndScreen_Destruct. The

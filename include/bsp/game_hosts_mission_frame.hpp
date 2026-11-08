@@ -47,6 +47,31 @@ namespace bsp::game {
 // 00977690 BSP_WarningManager_ReportTorpedo(this, entity): the guards, then a
 // "torpedo" warning through 00974150 and 009763E0.
 void game_warning_report_torpedo_00977690(std::size_t unit);
+// Goal 5 chain 634. The damage-warning tails the listener manager [00F8A0C4] runs
+// after a channel's listener pass, for the zero-based unit index:
+//  - 009832F0 "leak" / 00983780 "fire" (`fire`), from the repair task's adders
+//    0093A4F0 (0093A513) and 0093A470 (0093A484): the guards, then the local unit
+//    gets an 84h entity warning with that id through 00974150 and 009763E0;
+//  - 00982C50 "failure" with the failure's name, from 0093BED0 (0093C0C2),
+//    0093C300, 0095ABE0's 7Dh arm (0095AD52, "InferiorFailure") and 0081B630's
+//    explosion (0081B77D, "Explosion"): the same guards,
+//    the local unit, an airfield or a shipyard; reported only for an entity whose
+//    +180h is the local slot, with id "failure" + kind (an airfield's
+//    "failureairfield", a shipyard's "failureshipyard") when the +108h map holds it.
+// Both are no-ops before a mission frame host exists.
+void game_warning_report_damage(std::size_t unit, bool fire);
+void game_warning_report_failure(std::size_t unit, const std::string& kind);
+// 00982120's tail (00982447..0098250F), for the `exitzone` call on `unit` with the byte
+// `exited`: with the byte 0, the same guards and a unit on the local player's party,
+// an 84h exit-zone warning through 00975340(entity, 0) and 009763E0.
+void game_warning_report_exit_zone(std::size_t unit, bool exited);
+// 00980E50's tail (00981202..0098134E), for a recon record change of `unit` seen by
+// `party` (old -> new), with the record's +28h `observer` (kGunneryReconNoObserver
+// for none): for the local party, a change from below 2 to 2 or more at or past 4.5 s
+// of an IsKindOf(5) enemy or unknown entity that is not IsKindOf(19h), a 9Ch recon
+// warning through 009741E0(entity, old, new) and 009763E0.
+void game_warning_report_recon(std::size_t unit, int old_level, int new_level, int party,
+    std::size_t observer);
 // 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);
@@ -88,6 +113,12 @@ inline constexpr bool kBotSchedulerWritersBound = true;
 // 00905340 BSP_MissionScoring_SetRealPlayTimeRunning on [game+21A0h]: +14A4h.
 // A no-op before a mission frame host exists.
 void game_scoring_set_real_play_time_running_00905340(bool running);
+
+// Goal 5 chain 653: the float at [game+21A0h]+14A0h, the real play time the bot
+// scheduler 00914EF0 accumulates while +14A4h is set (0091505A..0091507A) and
+// 0091C560 zeroes at each mission (0091C62F), as Scoring_GetRealPlayTime reads
+// it. False, with `seconds` untouched, before a mission frame host exists.
+bool game_scoring_real_play_time_14a0(float& seconds);
 
 // Goal 2 chain 166 (kWireGoal2Chain166Bound): 0096BF70
 // BSP_WarningManager_ClearWaitingQueue on [00F8A0C4], as EnableMessages(false)

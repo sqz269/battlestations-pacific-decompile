@@ -10,6 +10,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_pooled_string_substring.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -68,7 +69,10 @@ struct GameSoundDialogRuntime::Impl final : SoundAlternateOwnerDependencies,
     }
     // Stack-only adapter, constructed only by the ON service. It borrows the
     // A79230 owner/channels, its actual string allocator, and its live refs.
-    struct MusicDirectorAdapter final : cc13_sweepC2::DialogMusicHost,
+    // The A79480 slot-record services build the .def table the same way the
+    // stream constructor A877D0 does (A79150 over the 20h object storage that
+    // the A796F0 profile delete frees).
+    struct MusicDirectorAdapter final : cc13_sweepC2::DialogSlotRecordHost,
         cc13_sweepC::MusicRowHost {
         Impl& runtime;
         explicit MusicDirectorAdapter(Impl& value) : runtime(value) {}
@@ -118,6 +122,28 @@ struct GameSoundDialogRuntime::Impl final : SoundAlternateOwnerDependencies,
             std::uint32_t keep) override {
             resize_native_string_header_0041dd40(string, runtime.bound().table.strings,
                 length, keep != 0);
+        }
+        void memcpy_00bf7680(void* dest, const void* src, std::uint32_t bytes) override {
+            std::memmove(dest, src, bytes);  // BF7680 permits overlap
+        }
+        void* operator_new_00bf681b(std::uint32_t bytes) override {
+            return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+        }
+        void* native_string_substring_00469840(void* string, void* out, std::uint32_t start,
+            std::uint32_t count) override {
+            return construct_native_string_substring_00469840(string, out, start, count,
+                runtime.bound().table.strings);
+        }
+        void* native_string_concat_004261a0(void* left, void* out, const void* right) override {
+            return concatenate_native_string_headers_004261a0(left, out, right,
+                runtime.bound().table.strings);
+        }
+        void native_string_assign_0041e870(void* string, const char* text) override {
+            static_cast<NativeString*>(string)->assign_0041e870(runtime.bound().table.strings, text);
+        }
+        void* sound_stream_table_construct_00a79150(void* memory, const void* filename) override {
+            return construct_sound_stream_table_00a79150(memory,
+                *static_cast<const NativeString*>(filename), runtime.bound().table);
         }
     };
     void check_owner(void* object) const {
@@ -271,6 +297,55 @@ void GameSoundDialogRuntime::set_music_level(std::int32_t level) {
     // 00A788A0 calls the existing level/row selection body; OFF keeps no service.
     cc13_sweepC2::music_director_set_level_00a788a0(calls,
         *static_cast<NativeSoundAlternateOwnerStorage*>(current), level);
+}
+namespace {
+// The scene record's 18h music-state record at +D98h + slot*18h, which
+// 004ED2D0 hands 00A79480 whole (EBP at 004ED307, pushed at 004ED512) and
+// 00A78230 copies field by field (+0, +8, +10h retained, +14h).
+// 004DA2A0 builds the 18 records at 004DA3EB through 004CCB00 (ECX =
+// record+D5Ch; the vector at +3Ch, size 18h, count 12h) with 004C87D0: two
+// empty strings, a null +10h reference and +14h = [00D7A24C]. 004ED2D0
+// writes +0 (FileName, cleared first), +8 (Channel at +DA0h, 004ED33E,
+// cleared first) and +10h (SoundEffect sample, 004E7BB0); nothing else in
+// the image writes +DACh, so +14h stays the constructor's word.
+struct SceneMusicStateRecord {
+    NativeString path;       // +0
+    NativeString channel;    // +8
+    void* sample{};          // +10h, null: the SoundEffect sample is not acquired
+    std::uint32_t word_14{}; // +14h, [00D7A24C]
+};
+static_assert(sizeof(NativeString) == 8 && sizeof(SceneMusicStateRecord) == 0x18);
+void assign_text(NativeString& out, NativeStringStorage& strings, const std::string& text) {
+    if (text.size() > 0xffffffffu)
+        throw std::length_error("Music state text exceeds the native string extent");
+    out.resize_0041dd40(strings, static_cast<std::uint32_t>(text.size()), false);
+    if (!text.empty()) std::memcpy(out.data(), text.data(), text.size());
+}
+} // namespace
+
+void GameSoundDialogRuntime::set_music_track(const std::string& path, const std::string& channel,
+    std::int32_t party, std::int32_t state) {
+    auto& self = *impl_;
+    void* const current = self.globals.alternate_00f8bbcc;
+    self.check_owner(current);
+    // 004ED2D0 stores slot party*9 + state of 2 x 9 (004ED690's loops).
+    if (party < 0 || party > 1 || state < 0 || state > 8)
+        throw std::out_of_range("Music track slot is outside the scene's 2 x 9 states");
+    auto& strings = self.bound().table.strings;
+    SceneMusicStateRecord record;
+    record.word_14 = self.globals.one_00d7a24c;  // 004C87D0 MOVSS from 00D7A24C
+    Impl::MusicDirectorAdapter calls(self);
+    try {
+        assign_text(record.path, strings, path);
+        assign_text(record.channel, strings, channel);
+        cc13_sweepC2::dialog_set_slot_record_00a79480(calls, current, &record, party, state);
+    } catch (...) {
+        record.channel.release_to(strings);
+        record.path.release_to(strings);
+        throw;
+    }
+    record.channel.release_to(strings);
+    record.path.release_to(strings);
 }
 void GameSoundDialogRuntime::set_music_target_level(float level) {
     auto& self = *impl_;

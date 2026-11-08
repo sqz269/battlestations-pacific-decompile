@@ -9,6 +9,7 @@
 
 #include "bsp/gameplay_seg41_cc13.hpp"
 
+#include "bsp/cc13_x87_model.hpp"  // per-op 24-bit rounding, 00750230
 #include "bsp/entity_identity.hpp"  // compare_insensitive_00438e10
 #include "bsp/native_string_compare.hpp"  // equal_native_string_header_00425850
 
@@ -416,16 +417,22 @@ bool proximity_check_00750000(const Vec3& watched, const Vec3& target, float rad
 bool line_of_sight_check_00750230(LineOfSightTrigger& t, float dt, const Vec3& watched,
                                   const Vec3& target, std::uint32_t watched_ignore,
                                   std::uint32_t target_44, LineOfSightHost& host) {
-    const float dx = f32(static_cast<double>(watched.x) - target.x);  // 007502CA
-    const float dy = f32(static_cast<double>(watched.y) - target.y);  // 007502D6
-    const float dz = f32(static_cast<double>(watched.z) - target.z);  // 007502E2
-    // 007502F2..00750302: (dx*dx + dy*dy) + dz*dz.
-    const float d2 = f32((static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
-                         + static_cast<double>(dz) * dz);
+    // Goal 5 chain 639: the trigger walk runs in the fixed step, so every x87 op below
+    // rounds to 24 bits as the main thread's precision control does
+    // (docs/CC13_FPU_PRECISION.md; the same assumption as the proximity check's host).
+    // The old double chain rounded 007502F2..00750302 once.
+    using namespace cc13x87;
+    const float dx = f32(x87_sub24(watched.x, target.x));  // 007502C6 FSUB, 007502CA FSTP
+    const float dy = f32(x87_sub24(watched.y, target.y));  // 007502D2, 007502D6
+    const float dz = f32(x87_sub24(watched.z, target.z));  // 007502DE, 007502E2
+    // 007502F2..00750302: FMULP dx*dx, FMULP dy*dy, FADDP (dy*dy + dx*dx), FMUL dz*dz,
+    // FADDP, FSTP float.
+    const float d2 = f32(x87_add24(x87_add24(x87_mul24(dy, dy), x87_mul24(dx, dx)),
+                                   x87_mul24(dz, dz)));
     if (!(t.range_sq_48 > d2)) return false;                    // 0075030D, JBE
-    t.timer_4c = f32(static_cast<double>(t.timer_4c) - dt);     // 0075031A, 00750329 FST
+    t.timer_4c = f32(x87_sub24(t.timer_4c, dt));                // 0075031A FSUB, 00750329 FST
     if (!(0.0f > t.timer_4c)) return false;                     // 0075032E FCOMIP, JBE
-    t.timer_4c = f32(static_cast<double>(t.timer_4c) + kLosRecheck_00d7a280);  // 00750336
+    t.timer_4c = f32(x87_add24(t.timer_4c, kLosRecheck_00d7a280));  // 00750336 FADD m64
     std::uint32_t hit = 0;
     if (!host.cast_0084b6b0(watched, target, watched_ignore, hit)) return false;  // 007503D9
     return hit == target_44;                                     // 007503E6

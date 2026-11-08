@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace bsp {
@@ -39,6 +40,8 @@ struct GuiLayoutPage;
 struct GuiLayoutWidget;
 struct FrontEndScreenScroller;
 struct GuiWidgetPoint;
+// bsp/gui_text.hpp: the Text widget's +100h Align.
+enum class GuiTextAlign : std::int32_t;
 // bsp/locale_tables.hpp, milestone 2d: the tables the Text widgets resolve through.
 class LocaleTables;
 }  // namespace bsp
@@ -217,12 +220,21 @@ public:
     void release_screen_page(GuiLayoutPage* page);
     // 00aa7e00, the direct-child lookup a screen's enter virtual runs.
     GuiLayoutWidget* find_page_child(GuiLayoutPage& page, const std::string& name);
+    // 00AA3140 on the GUI manager's page list: every page 00aa5840 registered
+    // (title, screen-owned and in-game), matched case-insensitively by name.
+    // Null when none matches. Goal 5 chain 652, for 008C8C20's first segment.
+    GuiLayoutPage* find_page_00aa3140(std::string_view name) noexcept;
     // The per-child call 004f83b0 makes: the screen's applied byte +5h reaching
     // the page through the child's vtable +34h.
     void commit_page_visibility(GuiLayoutPage& page, bool visible);
     // A single element's vtable +34h and +50h, which the press-start update
     // calls on its prompt widget every frame.
     void set_widget_visible(GuiLayoutWidget& widget, bool visible);
+    // Widget vtable +38h, 00A9E0D0: the widget's own scene-node factor above 0,
+    // which 00AA8530 sets from the requested value. Here the per-widget half of
+    // the bridge's visibility rule: an applied flag answers, then an authored
+    // "Visible" key, else visible. Ancestors are not consulted (goal 5 chain 662).
+    bool widget_own_visible(const GuiLayoutWidget& widget) const;
     void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
     // 0043ABA0 on an authored digit icon. Uses its loaded atlas rectangle and
     // publishes the body's four vertex UVs to the next sprite-bridge draw.
@@ -233,9 +245,23 @@ public:
     // cached run is dropped so the next draw resolves and lays out the new
     // source through the same path an authored string takes.
     void set_widget_text_source(GuiLayoutWidget& widget, std::string source);
+    // The source the last set_widget_text_source gave this widget, or null. A
+    // caller modelling 00ABAED0's cached-source gate (+F4h) compares against it.
+    const std::string* widget_text_source(const GuiLayoutWidget& widget) const;
     // Obtain AB6BD0 height from the same cached layout the bridge renders.
     // Builds a not-yet-drawn run once; false leaves height untouched.
     bool widget_text_height(GuiLayoutWidget& widget, float& height);
+    // The Text widget's +114h, the width its last layout measured (font units of
+    // the 960-wide container), from the same cached run. False when no run can
+    // be built (no text bridge, not a Text widget, or not a page widget).
+    bool widget_text_width(GuiLayoutWidget& widget, float& width);
+    // Widget vtable +58h. The base 00AA7970 stores +20h/+24h and recomposes; a
+    // Text widget's is 00ABBF30, which then blanks the text (00ABB1D0) so the next
+    // layout rebuilds. Goal 5 chain 662.
+    void set_widget_size(GuiLayoutWidget& widget, float width, float height);
+    // Widget vtable +48h, 00AA7950: +28h/+2Ch, then the recompose. The sprite
+    // bridge draws no scale, so only the transform carries it.
+    void set_widget_scale(GuiLayoutWidget& widget, float x, float y);
     // Follow 006834A0's live thumb/arrow size and color in the sprite bridge.
     void bind_scroller_controls(const FrontEndScreenScroller& scroller);
     // Read the bound actual manager's cursor lanes (+5C/+60), never reinterpret
@@ -263,6 +289,28 @@ public:
     // stays visible in the report. `source` and `parent` must belong to `page`.
     GuiLayoutWidget* clone_runtime_widget(const std::string& page,
         const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key);
+    // 00AAB4C0 BSP_GuiWidget_CloneSubtree(widget, parent_clone = null), as 0052C640
+    // calls it (goal 5 chain 662): the subtree is copied under the source's own
+    // parent (+70h) with every widget's name, transform and visible flag, and each
+    // copy keeps its source's visibility standing (an applied flag stays applied,
+    // an authored one stays authored). Unlike clone_runtime_widget nothing is
+    // forced visible. The source must belong to `page` and have a parent.
+    GuiLayoutWidget* clone_page_widget_subtree(const std::string& page,
+        const GuiLayoutWidget& source);
+    // Widget vtable +4h(1) on a clone clone_page_widget_subtree made, as 0052C0C0
+    // deletes a score entry's root (goal 5 chain 667): the base teardown 00AA9730
+    // detaches the widget from its parent and the subtree is freed. Every bridge
+    // record and per-widget cache of the subtree goes with it. Only run-time
+    // clones are destroyed this way; a page's authored widget throws.
+    void destroy_runtime_widget(GuiLayoutWidget& widget);
+    // The two Text fields a screen stores directly before its 00ABAED0 call
+    // (goal 5 chain 667, the HUD counter layouts 00529D70 / 0052A100 / 0052A470):
+    // +100h, the Align, and +0FCh, Multiline (0 selects the single-line builder
+    // 00ABA8D0 runs). The image lays the text out with them at the next
+    // 00ABAED0; here the next run built with a run-time source applies them over
+    // the authored values. The cached run is dropped.
+    void set_widget_text_align(GuiLayoutWidget& widget, GuiTextAlign align);
+    void set_widget_text_multiline(GuiLayoutWidget& widget, bool multiline);
     // 00aa7dc0 BSP_GuiWidget_SetLocalPositionAndBounds and the widget rotation
     // virtual +44h, as the two per-frame passes call them on an icon. Both
     // invalidate the quad list.

@@ -102,6 +102,8 @@ namespace bsp {
 inline constexpr bool kGunneryPassByte7dBound = true;
 class ReconSensorPassState;
 struct UnitFirepowerReport;
+struct ShipRepairTaskTerms;
+struct ShipDeviceTerms;
 }
 
 namespace bsp::game {
@@ -340,8 +342,11 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // host's gun rows: mask & 4 or mask == 8, 00953F60 (a release only: Function
 // 1/5/6 through 00729F70, keeping a Function 6 when [unit+1BCh] is the slot);
 // mask & 10h, 00954000 (Function 2/3/4/6: take vtable[154h](0, slot), plus
-// 0072D5B0(0, 0) on Function 6, a record; release 00729F70). Masks 20h and 80h
-// (009540D0 / 00954170) stay with the group 4/5 models. This is what puts the
+// 0072D5B0(0, 0) on Function 6, a record; release 00729F70). Goal 5 chain 651:
+// mask & 20h, 009540D0 over the Function 7 devices, and mask & 80h, 00954170 over
+// Function 8 then 9 (take vtable[154h](0, slot); release vtable[154h](0, 8) and
+// vtable[1E8h](0)); the group 4/5 fire models still seat their tubes and
+// launchers themselves when the harness fires a group. This is what puts the
 // player's artillery in the seat in single player: 0095A05B, the hand-over in
 // 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
 // True: the walk runs. False: role takes leave every gun AI-held.
@@ -1104,8 +1109,10 @@ public:
     // is one-based (0 = none) and stands for ignore->vtable[B0h]. True with the
     // nearest hit's one-based unit and point. Read-only: the two trace counters
     // the binding bumps are restored, so no gunnery summary line moves.
+    // `pick_ray` false (goal 5 chain 639: the Lua line-of-sight trigger's 0084B6B0
+    // cast) leaves the landscape-attach PickRay census and its log lines alone.
     bool query_segment_units(const float from[3], const float to[3], std::size_t exclude,
-        std::size_t& hit_unit, float hit_point[3]) const;
+        std::size_t& hit_unit, float hit_point[3], bool pick_ray = true) const;
 
     // Packet cc9_landscape_segment_query: 00904400(kind, from, to, record, entity),
     // RET 14h, ECX set by callers but unread. Every caller (007C255E,
@@ -1154,6 +1161,27 @@ public:
     // unit+9E4h (steering) or +9E5h (engine), what 008135C0 answers for the two
     // jam names and what 00826754 / 00826B2E read.
     bool ship_jam_flag(std::size_t unit_index, bool steering) const;
+    // Goal 5 chain 661: the repair task at unit+A20h as the ship screen's damage
+    // panel 0064F665 reads it: priority +24h (unit+A44h, 0064F6BD), the water
+    // and fire timers +34h / +38h over their divisors +40h / +3Ch (unit+A60h /
+    // +A5Ch; 0093A4F0 mirrors water into +40h, 0093A470 sums fire into +3Ch),
+    // and 0093A3F0 run on the task's +18h failure records (0064F9D2). False,
+    // with `out` untouched, for a unit this host keeps no repair task for.
+    bool ship_repair_task_terms(std::size_t unit_index, bsp::ShipRepairTaskTerms& out) const;
+    // GameSettings+3E4h, the ShipGlobals.Failures descriptors (14h stride) this
+    // host loads once: the +0Ch seconds of the last row named "EngineJam"
+    // (0064F8DA..0064F9C3), else 0.
+    float failure_descriptor_engine_jam_seconds() const;
+    // The unit+48h device list as the damage panel's worst-device loop
+    // 0064FBEC..0064FD22 reads it: this host's gun rows of the unit in build
+    // order (LABELLED, as repair_guns_0093c860 walks them: each gun row is a
+    // kind-20h child, answers IsKindOf(4) and not IsKindOf(0Fh), and keeps the
+    // +378h byte 0087BD19 sets), with the Function [dev+3F4h]+80h as the row's
+    // category and +36Ch / +370h as its health.
+    std::vector<bsp::ShipDeviceTerms> ship_device_terms(std::size_t unit_index) const;
+    // [unit+538h]+D0h, the VehicleClass `Repair` byte (nil -> 1) the ship
+    // screen tests at 0064E5F4; false for a unit this host has not built.
+    bool unit_class_repair_d0(std::size_t unit_index) const;
 
     // 0088DC10's current report, using initial +103Ch..+1048h totals and
     // current category lists, gun+3B8h flags and ship control factors.
@@ -1348,6 +1376,45 @@ public:
         int ordnance_kind{-1};
     };
     std::vector<GameGunneryHitEvent> take_hit_events();
+    // The `hpEvent` channel's input: 00879070's tail (00879150..008791EB, bsp.py show
+    // 00879070 --asm). After 00877B90 has stored the new +370h, with the listener
+    // manager [00F8A0C4] present and the health changed (FUCOMIP / TEST AH,44h / JNP at
+    // 00879175..0087917D: equal skips, unordered dispatches), 00986B00 receives the
+    // entity, "damage" (00CFD7C8) when old > new (FCOMIP / JA at 0087918A) else
+    // "repair" (00CFD994), and old / +36Ch and +370h / +36Ch as floats. One record per
+    // unit-health write through the five 00879070 sites below; take_hp_events() drains
+    // them for GameMissionLuaHost::dispatch_hp_event_listeners. The gun sites
+    // (00728080, 0093C860) are not queued: a gun's parent is its ship, and 00986B4E..
+    // 00986B6D refuse an entity whose parent is not the Landscape (IsKindOf(44h)).
+    struct GameGunneryHpEvent {
+        std::size_t unit;
+        bool damage;          // "damage" when true, "repair" otherwise
+        float old_fraction;   // old +370h / +36Ch
+        float new_fraction;   // new +370h / +36Ch
+    };
+    std::vector<GameGunneryHpEvent> take_hp_events();
+    // Goal 5 chain 634. The inputs of the `leak`, `fire` and `failure` channels: one
+    // record per call this host makes where the image calls the listener manager
+    // [00F8A0C4] - 009832F0 (entity, float seconds) at 0093A513 for a positive water
+    // amount, 00983780 (entity, float seconds) at 0093A484 for every fire amount, and
+    // 00982C50 (entity, failure name, float seconds) at 0093C0C2 / 0093C300's site, at
+    // 0095AD52 (7Dh "InferiorFailure" of an airfield or shipyard, seconds +728h) and at
+    // 0081B77D (0081B630's magazine explosion: "Explosion", 0.0f).
+    // take_damage_channel_events() drains them for
+    // GameMissionLuaHost::dispatch_damage_listeners. The warning tail of each call
+    // runs at the call (game_warning_report_damage / game_warning_report_failure).
+    enum class DamageChannel { leak, fire, failure };
+    struct GameGunneryDamageChannelEvent {
+        DamageChannel channel;
+        std::size_t unit;
+        std::string kind;     // failure only: the failure's name
+        float seconds;
+    };
+    std::vector<GameGunneryDamageChannelEvent> take_damage_channel_events();
+    // The `ammoType` channel's input: the plane of each rack drop that left a round
+    // (release_bomb_drop's bomb and paratrooper arms, release_ordnance_drop), for
+    // 006E4D50's tail call 00984BA0 on the plane's squadron (006E55FF..006E5633).
+    std::vector<std::size_t> take_ammo_type_drops();
     void kill_unit_00926d90(std::size_t unit_index, int cause);
     // Packet cc9_airfield_destruction_rule: 006D41E6..006D41EF, the airfield's
     // destroy arm, vtable[70h](0) = 0077D1A0 BSP_UnitInstance_DestroyAndBroadcast
@@ -1403,6 +1470,15 @@ public:
     // 00939FE0 directly on unit+A20h (008AD69F), storing the flag at task+46h, which
     // 0093C520's failure step reads. No message is routed.
     void set_failure_repair_enabled_00939fe0(std::size_t unit_index, bool enabled);
+    // Goal 5 chain 651. A 9Eh MT_SHIPREPAIR_ADDDAMAGE message that a mission Lua
+    // binding routes to a ship with 0077C2A0 flags 7 (0088E320 SetFireDamage, 0088E790
+    // SetWaterDamage: +1Ch the seconds, +20h the add byte, +24h the channel). The
+    // local copy goes through the session codec, as the ship-hit sender's does, and
+    // 00821E80's 9Eh arm (0082203D) applies it to the repair task at unit+A20h:
+    // add (0093A470 / 0093A4F0) or set (00939F90 / 00939FA0). False when the unit has
+    // no repair task here (not a class-06 ship).
+    bool route_repair_damage_9e(std::size_t unit_index, std::int32_t channel, float seconds,
+                                bool add);
     // Chain 479: current repair-task priority for the submarine repair arm.
     bool periscope_repair_priority(std::size_t unit_index, int& priority) const;
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;

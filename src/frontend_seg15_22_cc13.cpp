@@ -4,6 +4,7 @@
 // ECX, a stack argument, x87 or a store order mattered.
 
 #include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/segs_13_15_22_44_cc13.hpp"
 
 #include <cstdarg>
@@ -80,7 +81,7 @@ const std::size_t kTrivialSlotCount = sizeof(kTrivialSlots) / sizeof(kTrivialSlo
 // ---------------------------------------------------------------------------
 
 // 00529700 (and its twin 00529760): __thiscall(array, n), RET 4.
-void ptr_array_reserve_00529700(Raw array, std::int32_t n, Seg15Host& host) {
+void ptr_array_reserve_00529700(Raw array, std::int32_t n, Seg15ArrayHost& host) {
     if (n < 1) n = 1;
     if (capacity_of(array) >= n) return;
     auto* fresh = static_cast<std::uint32_t*>(host.operator_new_00bf55be(static_cast<std::size_t>(n) * 4));
@@ -95,7 +96,7 @@ void ptr_array_reserve_00529700(Raw array, std::int32_t n, Seg15Host& host) {
 
 // 005297C0 (reserve 00529760) and 005299D0 (reserve 00529700): resize, zeroing
 // the new slots; shrinking just drops the size.
-void ptr_array_resize_005297c0(Raw array, std::int32_t n, Seg15Host& host) {
+void ptr_array_resize_005297c0(Raw array, std::int32_t n, Seg15ArrayHost& host) {
     if (capacity_of(array) < n) ptr_array_reserve_00529700(array, n, host);
     auto* data = reinterpret_cast<std::uint32_t*>(data_of(array));
     for (std::int32_t i = size_of(array); i < n; ++i) data[i] = 0;
@@ -104,7 +105,7 @@ void ptr_array_resize_005297c0(Raw array, std::int32_t n, Seg15Host& host) {
 
 // 00529900 (reserve 00529700) and 00529940 (reserve 00529760), RET 4: the
 // argument is a pointer to the value.
-void ptr_array_push_back_00529900(Raw array, std::uint32_t value, Seg15Host& host) {
+void ptr_array_push_back_00529900(Raw array, std::uint32_t value, Seg15ArrayHost& host) {
     if (size_of(array) == capacity_of(array)) {
         std::int32_t grow = capacity_of(array) * 2;
         if (grow < 2) grow = 1;
@@ -149,14 +150,14 @@ std::int32_t ptr_array_index_of_00529650(Raw array, std::uint32_t value) {
 }
 
 // 00529C50 / 0052AE40, __fastcall(array): called from unwind funclets.
-void ptr_array_destroy_00529c50(Raw array, Seg15Host& host) {
+void ptr_array_destroy_00529c50(Raw array, Seg15ArrayHost& host) {
     ptr_array_resize_005297c0(array, 0, host);
     host.free_00bf6989(array.ptr(0));
 }
 
 // 00529C70, RET 4: each record is copy-constructed (00523480) and re-vtabled to
 // 00CE75CC, then every old record is destroyed through its slot 0 with flag 0.
-void rec18_array_reserve_00529c70(Raw array, std::int32_t n, Seg15Host& host) {
+void rec18_array_reserve_00529c70(Raw array, std::int32_t n, HudCountersScoreHost& host) {
     if (n < 1) n = 1;
     if (capacity_of(array) >= n) return;
     auto* fresh = static_cast<std::uint8_t*>(host.operator_new_00bf55be(static_cast<std::size_t>(n) * 0x18));
@@ -186,7 +187,7 @@ bool control_layout_take_button_flags_00527cb0(Raw layout, std::uint8_t out[4]) 
 
 // 00527D00, __thiscall(screen) -> EAX: base constructor, the two listener bases
 // at +8h / +Ch, then this screen's three vtables.
-Raw control_layout_construct_00527d00(Raw s, Seg15Host& host) {
+Raw control_layout_construct_00527d00(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
@@ -294,7 +295,7 @@ void control_layout_collect_children_00528a60(Raw s, void* out, Seg15Host& host)
 // hide the entry widget (+0h, +34h(0)); otherwise format by +A0h (0 h:m:s,
 // 1 m:s, 2 s) into the text at +28h. Any other mode leaves the 128-byte buffer
 // uninitialised in the image; this model passes "".
-void hud_counter_format_time_00528b00(Raw entry, float seconds, Seg15Host& host) {
+void hud_counter_format_time_00528b00(Raw entry, float seconds, HudCounterFormatTimeHost& host) {
     const float left = entry.at<float>(0x98) - seconds;
     entry.at<float>(0x98) = left;
     if (!(0.0f < left)) {
@@ -341,7 +342,7 @@ void hud_counter_update_bar_00528e90(Raw counter, float a, float b, Seg15Host& h
 // 00528F70: a visible entry whose widget +4h lies left of the panel edge (and
 // right of -900) is hidden and flagged +A5h while the manager panel
 // (*(interface + C0h) + 4) is up or the support manager is in its mode.
-void hud_counters_hide_under_manager_panel_00528f70(Raw s, Seg15Host& host) {
+void hud_counters_hide_under_manager_panel_00528f70(Raw s, HudCountersLayoutHost& host) {
     for (std::int32_t i = 0; i < s.at<std::int32_t>(0x24); ++i) {
         Raw entry{static_cast<std::uint8_t**>(s.ptr(0x20))[i]};
         if (!host.widget_is_visible_38(entry.ptr(0x0))) continue;
@@ -366,7 +367,7 @@ namespace {
 // Shape of 00529200 and 00529120: x of widget +8h (below -900 wrapped by +1000,
 // through float stores) left of the edge re-shows a flagged entry; otherwise
 // the entry is hidden and flagged.
-void hide_right_of(Raw s, Seg15Host& host, double narrow, double wide_edge, std::size_t flag) {
+void hide_right_of(Raw s, HudCountersLayoutHost& host, double narrow, double wide_edge, std::size_t flag) {
     const bool wide = host.global_object(kDisplayModeGlobal).at<std::uint8_t>(0xD) != 0;
     const float edge = static_cast<float>(wide ? wide_edge : narrow);
     for (std::int32_t i = 0; i < s.at<std::int32_t>(0x24); ++i) {
@@ -389,18 +390,18 @@ void hide_right_of(Raw s, Seg15Host& host, double narrow, double wide_edge, std:
 }  // namespace
 
 // 00529200: edge 0.76 (0.877 wide), flag +A7h.
-void hud_counters_hide_under_screen58_00529200(Raw s, Seg15Host& host) {
+void hud_counters_hide_under_screen58_00529200(Raw s, HudCountersLayoutHost& host) {
     hide_right_of(s, host, kCounterScreen58Edge, kCounterScreen58EdgeWide, 0xA7);
 }
 
 // 00529120: edge 0.936 (1.052 wide), flag +A9h.
-void hud_counters_hide_right_of_edge_00529120(Raw s, Seg15Host& host) {
+void hud_counters_hide_right_of_edge_00529120(Raw s, HudCountersLayoutHost& host) {
     hide_right_of(s, host, kCounterScreenC0Edge, kCounterScreenC0EdgeWide, 0xA9);
 }
 
 // 005293B0: x of widget +8h left of 0.71 (0.89 wide), or the screen at
 // interface +54h down, re-shows an entry flagged +A8h; otherwise hide and flag.
-void hud_counters_hide_under_screen54_005293b0(Raw s, Seg15Host& host) {
+void hud_counters_hide_under_screen54_005293b0(Raw s, HudCountersLayoutHost& host) {
     const bool wide = host.global_object(kDisplayModeGlobal).at<std::uint8_t>(0xD) != 0;
     const float edge = wide ? kCounterScreen54EdgeWide : kCounterScreen54Edge;
     for (std::int32_t i = 0; i < s.at<std::int32_t>(0x24); ++i) {
@@ -423,7 +424,7 @@ void hud_counters_hide_under_screen54_005293b0(Raw s, Seg15Host& host) {
 // 00529810, __fastcall(screen): per-frame occlusion against the interface's
 // screens +58h, +C0h (or the support manager mode), +60h (+5h and +70h) and +54h.
 // The last step tail-jumps to 00529200 or, after 005292E0, to 00529120.
-void hud_counters_update_occlusion_00529810(Raw s, Seg15Host& host) {
+void hud_counters_update_occlusion_00529810(Raw s, HudCountersLayoutHost& host) {
     auto iface_screen = [&](std::size_t off) {
         return Raw{static_cast<std::uint8_t*>(host.global_object(kInterfaceGlobal).ptr(off))};
     };
@@ -448,7 +449,8 @@ namespace {
 // 0052AB40 / 0052AB90 shape: when the counter entry in the slot is visible,
 // hide it, erase it from the visible list (+20h) and re-lay out (tail jump to
 // 00529A30). The entry is the slot's pointer; the list search compares it.
-void remove_visible(Raw s, std::size_t slot, Seg15Host& host) {
+template <class Host>
+void remove_visible(Raw s, std::size_t slot, Host& host) {
     Raw entry{static_cast<std::uint8_t*>(s.ptr(slot))};
     if (!host.widget_is_visible_38(entry.ptr(0x0))) return;
     host.widget_set_visible_34(entry.ptr(0x0), false);
@@ -459,13 +461,13 @@ void remove_visible(Raw s, std::size_t slot, Seg15Host& host) {
 }  // namespace
 
 // 0052AB40, __fastcall(screen): entry slot +0Ch.
-void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host) { remove_visible(s, 0xC, host); }
+void hud_counters_remove_counter_a_0052ab40(Raw s, HudCountersShowHost& host) { remove_visible(s, 0xC, host); }
 
 // 0052AB90, __fastcall(screen): the countdown entry slot +10h.
-void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host) { remove_visible(s, 0x10, host); }
+void hud_counters_cancel_countdown_0052ab90(Raw s, HudCountersShowHost& host) { remove_visible(s, 0x10, host); }
 
 // 0052B030: base constructor, vtable 00CED0AC, +0Ch..+28h zeroed.
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host) {
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kHudCountersVtable;
     for (std::size_t off = 0x14; off <= 0x28; off += 4) s.at<std::uint32_t>(off) = 0;
@@ -509,7 +511,7 @@ void rec18_array_remove_at_swap_last_0052add0(Raw array, std::int32_t index, Seg
 
 // 0052AE60, RET 4: new records are {vtable 00CE75CC, 0, 0, 0, set byte 1, 0};
 // shrinking destroys from the end (slot 0, flag 0).
-void rec18_array_resize_0052ae60(Raw array, std::int32_t n, Seg15Host& host) {
+void rec18_array_resize_0052ae60(Raw array, std::int32_t n, HudCountersScoreHost& host) {
     if (capacity_of(array) < n) rec18_array_reserve_00529c70(array, n, host);
     for (std::int32_t i = size_of(array); i < n; ++i) {
         Raw r{data_of(array) + i * 0x18};
@@ -528,7 +530,7 @@ void rec18_array_resize_0052ae60(Raw array, std::int32_t n, Seg15Host& host) {
 }
 
 // 0052C0A0, __fastcall(array): unwind-funclet destroy.
-void rec18_array_destroy_0052c0a0(Raw array, Seg15Host& host) {
+void rec18_array_destroy_0052c0a0(Raw array, HudCountersScoreHost& host) {
     rec18_array_resize_0052ae60(array, 0, host);
     host.free_00bf6989(array.ptr(0));
 }
@@ -562,7 +564,7 @@ void hud_send_hide_unit_hp_0052b570(std::uint32_t owner, Seg15Host& host) {
 
 // 0052B620: score display, subtype 1, texts in +28h and +30h.
 void hud_send_display_score_0052b620(std::uint32_t id, std::uint32_t owner, std::string_view a,
-                                     std::string_view b, Seg15Host& host) {
+                                     std::string_view b, HudMessage35SendHost& host) {
     HudMessage35 m;
     m.value_18 = id;
     m.value_1c = owner;
@@ -574,7 +576,7 @@ void hud_send_display_score_0052b620(std::uint32_t id, std::uint32_t owner, std:
 
 // 0052B780: the score display with two values (+38h, +3Ch) and +25h = 1.
 void hud_send_display_score_pair_0052b780(std::uint32_t id, std::uint32_t owner, std::string_view a,
-                                          std::string_view b, std::uint32_t v0, std::uint32_t v1, Seg15Host& host) {
+                                          std::string_view b, std::uint32_t v0, std::uint32_t v1, HudMessage35SendHost& host) {
     HudMessage35 m;
     m.value_18 = id;
     m.value_1c = owner;
@@ -588,7 +590,7 @@ void hud_send_display_score_pair_0052b780(std::uint32_t id, std::uint32_t owner,
 }
 
 // 0052B900: hide form of the score display.
-void hud_send_hide_score_0052b900(std::uint32_t id, std::uint32_t owner, Seg15Host& host) {
+void hud_send_hide_score_0052b900(std::uint32_t id, std::uint32_t owner, HudMessage35SendHost& host) {
     HudMessage35 m;
     m.value_18 = id;
     m.value_1c = owner;
@@ -598,14 +600,15 @@ void hud_send_hide_score_0052b900(std::uint32_t id, std::uint32_t owner, Seg15Ho
 }
 
 namespace {
-void push_visible(Raw s, std::uint32_t entry, Seg15Host& host) {
+template <class Host>
+void push_visible(Raw s, std::uint32_t entry, Host& host) {
     ptr_array_push_back_00529900(Raw{s.p + 0x20}, entry, host);
 }
 }  // namespace
 
 // 0052B9B0: the screen becomes wanted; a hidden countdown entry (+10h) joins
 // the visible list; lay it out (0052A860) and re-lay out the list.
-void hud_counters_show_countdown_0052b9b0(Raw s, std::string_view text, float seconds, Seg15Host& host) {
+void hud_counters_show_countdown_0052b9b0(Raw s, std::string_view text, float seconds, HudCountersShowHost& host) {
     s.at<std::uint8_t>(kWanted) = 1;
     Raw entry{static_cast<std::uint8_t*>(s.ptr(0x10))};
     if (!host.widget_is_visible_38(entry.ptr(0x0))) push_visible(s, s.at<std::uint32_t>(0x10), host);
@@ -615,7 +618,7 @@ void hud_counters_show_countdown_0052b9b0(Raw s, std::string_view text, float se
 
 // 0052BFA0: the HP entry (+0Ch) joins the visible list only when hidden and
 // none of its occlusion flags (+A5h..+A9h) is set; then 0052BB10 lays it out.
-void hud_counters_show_unit_hp_0052bfa0(Raw s, std::uint32_t value, std::string_view text, Seg15Host& host) {
+void hud_counters_show_unit_hp_0052bfa0(Raw s, std::uint32_t value, std::string_view text, HudCountersScoreHost& host) {
     s.at<std::uint8_t>(kWanted) = 1;
     Raw entry{static_cast<std::uint8_t*>(s.ptr(0xC))};
     if (!host.widget_is_visible_38(entry.ptr(0x0)) && entry.at<std::uint8_t>(0xA6) == 0
@@ -630,7 +633,7 @@ void hud_counters_show_unit_hp_0052bfa0(Raw s, std::uint32_t value, std::string_
 // 0052C850: grow the score-entry array (+14h) with null slots up to index;
 // an empty slot gets a clone of the HP entry (+0Ch) in a zeroed 0ACh block,
 // which is also appended to the visible list.
-Raw hud_counters_ensure_entry_0052c850(Raw s, std::int32_t index, Seg15Host& host) {
+Raw hud_counters_ensure_entry_0052c850(Raw s, std::int32_t index, HudCountersScoreHost& host) {
     Raw entries{s.p + 0x14};
     while (size_of(entries) < index + 1) ptr_array_push_back_00529900(entries, 0, host);
     auto* slots = reinterpret_cast<std::uint8_t**>(data_of(entries));
@@ -644,7 +647,7 @@ Raw hud_counters_ensure_entry_0052c850(Raw s, std::int32_t index, Seg15Host& hos
 
 // 0052C990: screen wanted, entry by index, 00529D70 layout, re-lay out.
 void hud_counters_show_score_0052c990(Raw s, std::int32_t index, std::string_view a, std::string_view b,
-                                      Seg15Host& host) {
+                                      HudCountersScoreHost& host) {
     s.at<std::uint8_t>(kWanted) = 1;
     host.counter_layout_timer_00529d70(hud_counters_ensure_entry_0052c850(s, index, host), a, b);
     host.counters_relayout_00529a30(s);
@@ -652,7 +655,7 @@ void hud_counters_show_score_0052c990(Raw s, std::int32_t index, std::string_vie
 
 // 0052CAC0: as 0052C990 with the two values and the 0052A100 layout.
 void hud_counters_show_score_pair_0052cac0(Raw s, std::int32_t index, std::string_view a, std::string_view b,
-                                           std::uint32_t v0, std::uint32_t v1, Seg15Host& host) {
+                                           std::uint32_t v0, std::uint32_t v1, HudCountersScoreHost& host) {
     s.at<std::uint8_t>(kWanted) = 1;
     host.counter_layout_value_0052a100(hud_counters_ensure_entry_0052c850(s, index, host), a, b, v0, v1);
     host.counters_relayout_00529a30(s);
@@ -661,7 +664,7 @@ void hud_counters_show_score_pair_0052cac0(Raw s, std::int32_t index, std::strin
 // 0052C0C0, __fastcall(entry): delete the root widget (slot 1, flag 1) when the
 // entry owns it (+A4h), release the strings +90h, +88h, +7Ch, then the record
 // array +70h.
-void hud_counter_entry_destruct_0052c0c0(Raw entry, Seg15Host& host) {
+void hud_counter_entry_destruct_0052c0c0(Raw entry, HudCountersScoreHost& host) {
     if (entry.at<std::uint8_t>(0xA4) != 0 && entry.ptr(0x0) != nullptr) host.object_delete_04(entry.ptr(0x0));
     host.native_string_release(Raw{entry.p + 0x90});
     host.native_string_release(Raw{entry.p + 0x88});
@@ -670,7 +673,7 @@ void hud_counter_entry_destruct_0052c0c0(Raw entry, Seg15Host& host) {
 }
 
 // 0052CDC0, __fastcall(slot): destroy and free *slot, then clear it.
-void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, Seg15Host& host) {
+void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, HudCountersScoreHost& host) {
     Raw entry{static_cast<std::uint8_t*>(slot.ptr(0))};
     if (entry.p == nullptr) return;
     hud_counter_entry_destruct_0052c0c0(entry, host);
@@ -680,7 +683,7 @@ void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, Seg15Host& host) {
 
 // 0052CBF0, slot +10h: page GUI_counters into +8h; the HP entry (+0Ch) is built
 // from the page and the twelve names; the countdown entry (+10h) clones it.
-void hud_counters_register_0052cbf0(Raw s, Seg15Host& host) {
+void hud_counters_register_0052cbf0(Raw s, HudCountersRegisterHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_counters");
     static constexpr std::string_view kNames[12] = {
@@ -709,7 +712,7 @@ void hud_counters_destruct_0052cdf0(Raw s, Seg15Host& host) {
 
 // 0052CF00: an existing score entry leaves the visible list and is freed; the
 // list is re-laid out in every case.
-void hud_counters_remove_entry_widget_0052cf00(Raw s, std::int32_t index, Seg15Host& host) {
+void hud_counters_remove_entry_widget_0052cf00(Raw s, std::int32_t index, HudCountersScoreHost& host) {
     Raw entries{s.p + 0x14};
     if (index < size_of(entries)) {
         Raw slot{data_of(entries) + index * 4};
@@ -1219,7 +1222,7 @@ void hud_formation_add_member_marker_00538d60(Raw s, void* map, std::uint32_t me
 // 00538E30: base, the 3D scene sub-object at +8h, the listener bases at +64h
 // and +78h, this screen's vtables, two map heads (+114h, +120h), a vector
 // (+12Ch..+134h) and two list heads (+198h, +1A4h).
-Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host) {
+Raw hud_formation_construct_00538e30(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     host.simple_3d_scene_construct_0093cb10(Raw{s.p + 0x8});
     s.at<std::uint32_t>(0x64) = 0x00CE3CD4;
@@ -1526,7 +1529,7 @@ void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, s
 
 // 005401F0, __fastcall(block at screen+64h): vector +4h emptied (+8h..+10h),
 // list head +18h, size +1Ch, +20h..+28h cleared.
-void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host) {
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15LeafConstructHost& host) {
     block.at<std::uint32_t>(0x8) = 0;
     block.at<std::uint32_t>(0xC) = 0;
     block.at<std::uint32_t>(0x10) = 0;
@@ -1563,7 +1566,7 @@ void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host) {
 // cleared, the 44h settings block (+60h, bytes +0 and +1Ch cleared), the
 // effect lists (+64h), speed +2Ch 500.0, +30h 1.7453293 (100 degrees),
 // +34h 111.5, +38h..+48h and +54h..+5Ch cleared.
-Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host) {
+Raw free_camera_construct_00540ba0(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
     s.at<std::uint32_t>(0xC) = 0;
@@ -1791,7 +1794,7 @@ void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& h
 
 // 005CE610: base, callback owner at +8h, vtables, the two tree heads (+68h
 // nil byte +15h, +74h nil byte +21h), sizes, +30h cleared.
-Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host) {
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15LeafConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
     s.at<std::uint32_t>(0xC) = 0;
@@ -2290,7 +2293,7 @@ void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host) {
 }
 
 // 005D3540: base, listener bases, vtables 00CF1D70 / 00CF1D5C / 00CF1D3C, +24h cleared.
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host) {
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
@@ -2337,7 +2340,7 @@ void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& hos
 }
 
 // 005D38A0: page GUI_pause_multi into +10h.
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host) {
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x10) = host.gui_load_page_00aa5840("GUI_pause_multi");
 }
@@ -3531,7 +3534,7 @@ void hud_formation_destruct_00538a80(Raw s, Fe10Host& host) {
     host.front_end_screen_destruct_004f71a0(s);
 }
 
-void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host) {
+void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, HudCountersScoreHost& host) {
     const std::int32_t kind = r.at<std::int32_t>(0x20);
     if (kind == 1) {
         if (r.at<std::uint8_t>(0x24) != 0) {
@@ -3578,7 +3581,7 @@ void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host) {
     host.free_00bf6989(units.ptr(0));
 }
 
-void hud_counters_relayout_00529a30(Raw s, Fe10Host& host) {
+void hud_counters_relayout_00529a30(Raw s, HudCountersLayoutHost& host) {
     const Raw entries{s.p + 0x20};
     auto entry = [&](std::int32_t i) { return Raw{static_cast<std::uint8_t**>(entries.ptr(0))[i]}; };
     auto kept = [&](std::int32_t i) {
@@ -3618,9 +3621,13 @@ void hud_counters_relayout_00529a30(Raw s, Fe10Host& host) {
         pos[0] = x;
         host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
         const float* const size = host.widget_size_00aa6740(entry(i).ptr(0x2C));
-        x = static_cast<float>((size[0] + kCounterRowGap) + x);
+        // 00529BD4..00529BE2: FLD float size, FADD double 00CED060, FADD float x,
+        // FSTP float (bytes dc 05 / d8 44 24 10); each FADD rounds at PC24 on the
+        // main thread (goal 5 chain 662 review).
+        x = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(size[0], kCounterRowGap), x));
         if (parked) {
-            pos[0] = static_cast<float>(pos[0] - kCounterWrapAdd);
+            // 00529BE8..00529BFA: FLD float, FSUB double 00CE47A0 (dc 25), FSTP float.
+            pos[0] = static_cast<float>(cc13x87::x87_sub24(pos[0], kCounterWrapAdd));
             host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
         }
     }

@@ -123,6 +123,17 @@ public:
     const GameHintsScreen* hints_screen_34_if_built() const noexcept { return screen_34_.get(); }
     // 00690FD0 __thiscall(tracker, NativeString* name, char forced), RET 8.
     void trigger_hint_00690fd0(const std::string& name, bool forced);
+    // The tracker entry points the HintSystem mission-Lua wrappers reach
+    // (bsp/gui_screens_3.hpp HintLuaHost), each through its existing body:
+    // 00692FB0 award_tracker_trigger_forced_hint_00692fb0 (+4h = 1, then
+    // 00690FD0(name, 1)); 00690B00 award_tracker_is_active_hint_blocking_00690b00
+    // (false for an empty name, else the definition's +114h critical byte);
+    // 00690B20 hint_tracker_add_stored_00690b20; 00690C30
+    // hint_tracker_remove_stored_00690c30 over +18h.
+    void trigger_forced_hint_00692fb0(const std::string& name);
+    bool hint_blocking_00690b00(const std::string& name);
+    void add_stored_hint_00690b20(const std::string& name);
+    void remove_stored_hint_00690c30(const std::string& name);
     // 0068E5B0 (copy of +60h), 0068E420 (+60h := ""), 0068E600, 004D05E0 on
     // +48h, and the hints screen's Exit store of +1Ch := "".
     const std::string& active_hint_60() const noexcept { return state_.active_60; }

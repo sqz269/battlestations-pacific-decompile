@@ -1,8 +1,7 @@
 #pragma once
 
 #include <memory>
-
-namespace bsp { struct ScenePropertyBlock; }
+#include <string>
 
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -23,12 +22,11 @@ public:
     GameNativeMissionMaterialRefresh(GameNativeMissionMaterialRefresh&&) = delete;
     GameNativeMissionMaterialRefresh& operator=(GameNativeMissionMaterialRefresh&&) = delete;
 
-    // Read borrowed g_Environment.ReflCubemap, apply original whole-string
-    // HDR_ prefix when requested, and publish ReflectionCubeMap via B1B830.
-    // No root/property/string cache survives a successful call. Invoke before
-    // refresh_after_model_load(); missing/empty fields use the Source default;
-    // unsupported schema fails explicitly.
-    void publish_reflection_cubemap(const ScenePropertyBlock&, bool hdr);
+    // Publish the scene record's +B98h ReflCubemap string, as 004EE450 left
+    // it (its whole-string HDR_ prefix included), as ReflectionCubeMap via
+    // B1B830. No string cache survives a successful call. Invoke before
+    // refresh_after_model_load().
+    void publish_reflection_cubemap(const std::string& record_refl_cubemap_b98);
 
     // Fresh persistent native operation per call, published before entry.
     // Failure is retained and cannot be replayed; the complete renderer,

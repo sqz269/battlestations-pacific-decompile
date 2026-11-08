@@ -67,12 +67,47 @@ struct PlaneGunTargetHost {
     virtual void clear_gun_target(Raw finder) = 0;
 };
 
-struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost {
+// The failure-message constructors 007BA170 / 007BA1C0 / 007BA200 call nothing
+// but 0075B430 (bsp.py show each: one CALL, then the header, vptr and payload
+// stores). A host that only builds messages implements this one slot instead of
+// the whole Seg47Host.
+struct Seg47MessageHost {
+    virtual ~Seg47MessageHost() = default;
+    // 0075B430 session message base constructor, __thiscall(ECX = message; type), RET 4.
+    virtual void session_message_construct_0075b430(Raw message, std::uint32_t type) = 0;
+};
+
+// 007BC550 calls only these four (bsp.py show 007bc550 --asm: CALL 00922F30,
+// 00951F40, 00779C60 and 00922F80 at 007BC573 / 007BC57C / 007BC589 / 007BC592 /
+// 007BC59B). A host that runs the flight-state notify implements this slice.
+struct PlaneAttachmentSyncHost {
+    virtual ~PlaneAttachmentSyncHost() = default;
+    // 00951F40, __thiscall(ECX = unit; int), RET 4.
+    virtual void unit_instance_detach_00951f40(Raw unit, std::int32_t value) = 0;
+    // 00922F80 BSP_SceneNode_Disable / 00922F30 BSP_SceneNode_Enable, __thiscall(ECX = entity; int), RET 4.
+    virtual void scene_node_disable_00922f80(Raw entity, std::int32_t value) = 0;
+    virtual void scene_node_enable_00922f30(Raw entity, std::int32_t value) = 0;
+    // 00779C60 BSP_Unit_UpdateOwnerHudState, __thiscall(ECX = unit; float), RET 4.
+    virtual void unit_update_owner_hud_state_00779c60(Raw unit, float value) = 0;
+};
+
+// 007C7430 reads [[00E188A8]+1FE4h] (007C7430 / 007C7435) and calls only
+// 007C71E0 (007C7451), bsp.py show 007c7430 --asm. Goal 5 chain 650.
+struct PlaneRemoteTouchdownHost {
+    virtual ~PlaneRemoteTouchdownHost() = default;
+    // The pointer stored at the image global `address`.
+    virtual void* global_pointer(std::uint32_t address) = 0;
+    // 007C71E0, __thiscall(ECX = plane): the touchdown arm.
+    virtual void plane_touchdown_007c71e0(Raw plane) = 0;
+};
+
+struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost,
+                   Seg47MessageHost, PlaneAttachmentSyncHost, PlaneRemoteTouchdownHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
     virtual void* global_address(std::uint32_t address) = 0;
-    virtual void* global_pointer(std::uint32_t address) = 0;
+    // global_pointer: PlaneRemoteTouchdownHost.
 
     // --- CRT --------------------------------------------------------------
     // 00BF681B operator new(size), __cdecl (the allocator the path sources use).
@@ -253,8 +288,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void ai_node_vcall_retire_10(Raw node) = 0;
     // 00951FB0 unit-instance retire (tail jump), __thiscall(ECX = unit).
     virtual void unit_instance_retire_00951fb0(Raw unit) = 0;
-    // 00951F40, __thiscall(ECX = unit; int), RET 4.
-    virtual void unit_instance_detach_00951f40(Raw unit, std::int32_t value) = 0;
+    // 00951F40: PlaneAttachmentSyncHost.
     // 007E2090 gun target finder scan, __thiscall(ECX = finder; f0..f4, int, float), RET 1Ch, EAX.
     virtual void* gun_target_finder_scan_007e2090(Raw finder, float f0, float f1, float f2, float f3, float f4,
                                                   std::int32_t n, float f6) = 0;
@@ -270,8 +304,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void* matrix_multiply_00413920(Raw left, void* out, const void* right) = 0;
     // 004134F0 matrix assign, __thiscall(ECX = matrix; const matrix*), RET 4, EAX = matrix.
     virtual void* matrix_assign_004134f0(Raw matrix, const void* source) = 0;
-    // 0075B430 session message base constructor, __thiscall(ECX = message; type), RET 4.
-    virtual void session_message_construct_0075b430(Raw message, std::uint32_t type) = 0;
+    // 0075B430: inherited from Seg47MessageHost.
     // entity->vtable[5Ch](kind), __thiscall, RET 4, AL.
     virtual bool entity_vcall_is_kind_5c(Raw entity, std::int32_t kind) = 0;
     // 0087FA50 landscape height, __thiscall(ECX = landscape; x, z), RET 8, ST0.
@@ -330,11 +363,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void vector3_transform_affine_point_00414d10(float* out, void* pose, const void* point) = 0;
 
     // --- plane helpers 007BC550-007BD3E0 ---------------------------------------------
-    // 00922F80 BSP_SceneNode_Disable / 00922F30 BSP_SceneNode_Enable, __thiscall(ECX = entity; int), RET 4.
-    virtual void scene_node_disable_00922f80(Raw entity, std::int32_t value) = 0;
-    virtual void scene_node_enable_00922f30(Raw entity, std::int32_t value) = 0;
-    // 00779C60 BSP_Unit_UpdateOwnerHudState, __thiscall(ECX = unit; float), RET 4.
-    virtual void unit_update_owner_hud_state_00779c60(Raw unit, float value) = 0;
+    // 00922F80 / 00922F30 / 00779C60: PlaneAttachmentSyncHost.
     // 00B3C650 BSP_CockpitHelper_SetAttachedNode, __thiscall(ECX = helper; node), RET 4.
     virtual void cockpit_helper_set_attached_node_00b3c650(Raw helper, void* node) = 0;
     // 006E3500 BSP_MBombPlatform_RoundCount / 006E3520, __thiscall(ECX = rack), EAX.
@@ -428,8 +457,7 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTarge
     virtual void entity_set_state_0077c470(Raw entity, std::int32_t a, std::int32_t b) = 0;
     // 0077C2A0 BSP_Session_RouteMessage, __thiscall(ECX = entity; message, int, int), RET 0Ch.
     virtual void session_route_message_0077c2a0(Raw entity, void* message, std::int32_t a, std::int32_t b) = 0;
-    // 007C71E0, __thiscall(ECX = plane): the touchdown arm.
-    virtual void plane_touchdown_007c71e0(Raw plane) = 0;
+    // 007C71E0: PlaneRemoteTouchdownHost.
     // 0042C1B0, __thiscall(ECX = camera+428h).
     virtual void camera_shake_start_0042c1b0(Raw shake) = 0;
     // 007C78A0 BSP_Plane_SetFlightStateUnguarded, __thiscall(ECX = plane; state, int), RET 8.
@@ -638,9 +666,9 @@ void plane_neighbours_clear_target_007b9740(PlaneGunTargetHost& host, Raw unit);
 void* plane_get_squadron_007b97e0(Raw plane);
 void firing_gun_registry_destruct_unwind_007b98a0(Seg47Host& host, Raw registry);
 Raw matrix_multiply_in_place_007ba020(Seg47Host& host, Raw matrix, const void* other);
-Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, std::int32_t index, float value);
-Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message, float value);
-Raw session_message_spinning_construct_007ba200(Seg47Host& host, Raw message, std::uint8_t side, float value);
+Raw session_message_enginefire_construct_007ba170(Seg47MessageHost& host, Raw message, std::int32_t index, float value);
+Raw session_message_engineslost_construct_007ba1c0(Seg47MessageHost& host, Raw message, float value);
+Raw session_message_spinning_construct_007ba200(Seg47MessageHost& host, Raw message, std::uint8_t side, float value);
 float landscape_height_at_007ba340(Seg47Host& host, Raw game, float x, float z);
 std::int32_t unit_is_gun_of_subtype156_007ba3e0(Seg47Host& host, Raw unit);
 float max3_007ba450(const float* a, const float* b, const float* c);
@@ -687,7 +715,7 @@ bool plane_is_grounded_on_owned_site_007bbc50(Seg47Host& host, Raw plane);
 
 
 // --- plane helpers 007BC550-007BD3E0, 007C7750 -------------------------------------------
-void plane_sync_elevator_attachment_for_state_007bc550(Seg47Host& host, Raw plane);
+void plane_sync_elevator_attachment_for_state_007bc550(PlaneAttachmentSyncHost& host, Raw plane);
 void plane_enter_cockpit_view_007bc610(Seg47Host& host, Raw plane);
 void plane_leave_cockpit_view_007bc690(Seg47Host& host, Raw plane);
 float weapon_controller_total_bomb_rounds_007bc8c0(Seg47Host& host, Raw plane);
@@ -776,7 +804,7 @@ void plane_slot4c_point_event_007c0c60(Seg47Host& host, Raw plane, const float* 
                                        float d);
 void plane_step_countdown_964_007c3cb0(Seg47Host& host, Raw plane, float dt);
 void plane_issue_land_on_touchdown_007c3ea0(Seg47Host& host, Raw plane);
-void plane_remote_touchdown_to_state4_007c7430(Seg47Host& host, Raw plane);
+void plane_remote_touchdown_to_state4_007c7430(PlaneRemoteTouchdownHost& host, Raw plane);
 void plane_sync_cockpit_camera_gun_shake_007c7800(Seg47Host& host, Raw plane, Raw camera);
 void plane_remote_enter_flight_state6_007cb9e0(Seg47Host& host, Raw plane);
 void plane_control_mode_on_water_contact_007cc2d0(Seg47Host& host, Raw mode, void* arg);

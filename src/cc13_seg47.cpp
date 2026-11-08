@@ -1144,7 +1144,7 @@ Raw matrix_multiply_in_place_007ba020(Seg47Host& host, Raw matrix, const void* o
 namespace {
 // The session-message head every constructor here writes after 0075B430(type):
 // +18h word, +1Ah and +1Ch bytes = 0, +4 = 1, then the vptr.
-void message_head(Seg47Host& host, Raw message, std::uint32_t type) {
+void message_head(Seg47MessageHost& host, Raw message, std::uint32_t type) {
     host.session_message_construct_0075b430(message, type);
     message.at<std::uint16_t>(0x18) = 0;
     message.at<std::uint8_t>(0x1A) = 0;
@@ -1154,7 +1154,7 @@ void message_head(Seg47Host& host, Raw message, std::uint32_t type) {
 
 // 007BA170 ENGINEFIREFAILURE, __thiscall(ECX = message; int index, float value),
 // RET 8, EAX: type 65h; +24h = index; +4 = 1; vptr 00D02CF4; +20h = value.
-Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, std::int32_t index, float value) {
+Raw session_message_enginefire_construct_007ba170(Seg47MessageHost& host, Raw message, std::int32_t index, float value) {
     message_head(host, message, 0x65);
     message.at<std::int32_t>(0x24) = index;
     message.at<std::uint32_t>(4) = 1;
@@ -1165,7 +1165,7 @@ Raw session_message_enginefire_construct_007ba170(Seg47Host& host, Raw message, 
 
 // 007BA1C0 ENGINESLOSTFAILURE, __thiscall(ECX = message; float), RET 4, EAX:
 // type 66h; +4 = 1; vptr 00D02F94; +20h = value.
-Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message, float value) {
+Raw session_message_engineslost_construct_007ba1c0(Seg47MessageHost& host, Raw message, float value) {
     message_head(host, message, 0x66);
     message.at<std::uint32_t>(4) = 1;
     message.at<std::uint32_t>(0) = 0x00D02F94u;
@@ -1175,7 +1175,7 @@ Raw session_message_engineslost_construct_007ba1c0(Seg47Host& host, Raw message,
 
 // 007BA200 SPINNINGFAILURE, __thiscall(ECX = message; char side, float), RET 8,
 // EAX: type 67h; +24h = side; +4 = 1; vptr 00D02D08; +20h = value.
-Raw session_message_spinning_construct_007ba200(Seg47Host& host, Raw message, std::uint8_t side, float value) {
+Raw session_message_spinning_construct_007ba200(Seg47MessageHost& host, Raw message, std::uint8_t side, float value) {
     message_head(host, message, 0x67);
     message.at<std::uint8_t>(0x24) = side;
     message.at<std::uint32_t>(4) = 1;
@@ -1745,7 +1745,7 @@ bool gun_subtype_156(Seg47Host& host, Raw child) {
 // state +900h 0 or 1 -> 00922F80(plane, 0) and 00951F40(plane, 0); any other
 // state -> 00922F30(plane, 0) when +5Ch is clear, 00951F40(plane, 1) and
 // 00779C60(plane, 1.0f).
-void plane_sync_elevator_attachment_for_state_007bc550(Seg47Host& host, Raw plane) {
+void plane_sync_elevator_attachment_for_state_007bc550(PlaneAttachmentSyncHost& host, Raw plane) {
     if (plane.ptr(0x4A4) == nullptr) return;
     const std::int32_t state = plane.at<std::int32_t>(0x900);
     if (state == 1 || state == 0) {
@@ -2481,7 +2481,7 @@ void plane_issue_land_on_touchdown_007c3ea0(Seg47Host& host, Raw plane) {
 // 007C7430, __thiscall(ECX = plane). Session mode 2 with +900h not 4/5 ->
 // 007C71E0(plane). Then +904h cleared when set; +910h = 0; +908h = 0.0f; when
 // +BF8h is clear and +900h == 5, +900h = 4.
-void plane_remote_touchdown_to_state4_007c7430(Seg47Host& host, Raw plane) {
+void plane_remote_touchdown_to_state4_007c7430(PlaneRemoteTouchdownHost& host, Raw plane) {
     const Raw game = raw(host.global_pointer(0x00E188A8u));
     if (game.at<std::int32_t>(0x1FE4) == 2) {
         const std::int32_t state = plane.at<std::int32_t>(0x900);

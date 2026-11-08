@@ -1,7 +1,244 @@
 // GameUnitsHost::motion_step_00825f20, the units fixed-step motion tick (split out of game_hosts_units.cpp).
 #include "bsp/game_hosts_units_internal.hpp"
+#include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
+#include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
+#include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
 
 namespace bsp::game {
+
+namespace {
+namespace s47_effects = bsp::gameplay_seg47_cc13;
+namespace s48_engines = bsp::gameplay_seg48_cc13;
+
+// Goal 5 chain 654. 007DE600 BSP_PlaneEngineList_StopAll on the plane's list at
+// unit+C98h: slot +0Ch on each engine (007DDF00 base, 007DDF10 rotor).
+void stop_all_plane_engines(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
+    s48_engines::engine_list_stop_all_007de600(unit.plane_engine_list_c98());
+    ++host.plane_engine_stop_alls;
+    host.done("Plane::stop_all_engines_007de600", 0x007de600u);
+}
+
+// Goal 5 chain 645. The plane's vtable[194h] 007BBFA0 BSP_Plane_StartNamedEffect
+// (bsp::gameplay_seg47_cc13::named_effect_007bbfa0) on a host plane: the death-mode
+// step's 007CA8A0 choice and the raises of the water contact (007CB8DC), the water
+// drown (007CBE02) and the +C01h latch (007CE790). Inputs, from bsp.py show
+// 007bbfa0 --asm: unit+900h the flight state; (unit+72Ch)->vtable[38h], 0074E210,
+// is unit+900h == 7; unit->vtable[38h] 007B8E60 the +B1Ch speed 007D8020 caches;
+// unit+C36h and the entry unit+C10h; game+1FE4h 0. LABELLED, as before: unit+DFCh
+// (rammed by a unit) is clear, since this host has no ram hit. The ECX = 0 draw
+// 007BC3C7 is 00BD2F10 on the gunnery host's stream 0. "spinning" (the arm that
+// draws on stream 1) is not raised here. Goal 5 chain 654: "enginefire" is raised
+// (007CAF10's engine block); its 007BC0FC NextU32 (ECX = EDI + 2 = 1) is
+// 00BD2FC0 on the shared stream-1 generator the gunnery host's 00BD2F10 draws
+// use, the startup RandomThreads' stream 1, and its count [unit+538h]+7Ch is the
+// class's NumEngines, the key +140h reads too.
+s47_effects::NamedEffectResult run_plane_named_effect(GameUnitsHost::Impl& host,
+    GameUnitSlot& unit, std::size_t index, s47_effects::NamedEffect effect,
+    std::optional<std::int32_t> lua_engine_index = std::nullopt) {
+    GameGunneryHost* const gh = host.gunnery.get();
+    s47_effects::NamedEffectInputs ne;
+    ne.effect = effect;
+    ne.lua_engine_index = lua_engine_index;
+    ne.flight_state_900 = unit.plane_control_mode_900;
+    ne.controller_gate_72c = [&unit] { return unit.plane_control_mode_900 == 7; };
+    ne.cached_speed_b1c = bsp::plane_cached_speed_b1c_007d8020(unit.plane_world_velocity);
+    ne.rammed_dfc = false;
+    ne.spinning_c36 = unit.plane_death_c36;
+    ne.timer_c10 = unit.plane_death_timer_c10;
+    ne.engine_count_7c = unit.plane_num_engines_140;
+    ne.session_mode_1fe4 = 0;
+    // planepartclasses.lua ExplosionExplosionDelay, which 004A9BD0 stores at
+    // [00E18710] / [00E1870C]; read once, as the death-mode step read it.
+    static bool delay_read = false;
+    static float delay_pair[2] = {0.6f, 1.8f};
+    if (!delay_read) {
+        delay_read = true;
+        host.lua.read_global_number_pair("ExplosionExplosionDelay", delay_pair[0],
+            delay_pair[1]);
+    }
+    s47_effects::PlaneFailureGlobals g;
+    g.explosion_delay_a_e18710 = delay_pair[0];
+    g.explosion_delay_b_e1870c = delay_pair[1];
+    s47_effects::Rng rng;
+    rng.uniform = [gh, index](int stream, float lo, float hi) {
+        if (gh == nullptr) throw std::logic_error("007BBFA0: no gunnery host owns 00BD2F10");
+        return gh->death_mode_draw_00bd2f10(stream, index, lo, hi);
+    };
+    rng.next_u32 = [gh](int stream) -> std::uint32_t {
+        if (gh == nullptr) throw std::logic_error("007BBFA0: no gunnery host owns the shared stream");
+        return require_startup_random().next_00bd2fc0(
+            stream == 1 ? bsp::RandomStream::secondary : bsp::RandomStream::primary);
+    };
+    s47_effects::NamedEffectResult r = s47_effects::named_effect_007bbfa0(ne, g, rng);
+    unit.plane_death_timer_c10 = r.timer_c10;   // 007BBFA0's own unit+C10h store
+    host.done("Plane::start_named_effect_007bbfa0", 0x007bbfa0u);
+    return r;
+}
+
+// Goal 5 chain 645. Each message 007BBFA0 routed with 0077C2A0 flags 7: single
+// player takes the local bit, 0076E520 rebuilds the copy from its bits through
+// 00768530 and the drain hands it to the plane's session switch, whose 007CCFA0
+// passes IsType(62h) copies to vtable[208h] 007D0B80
+// (HostSessionMessages::deliver_plane_failure_message, then
+// bsp::gameplay_seg47_cc13::state_message_007d0b80). LABELLED, as the death-mode
+// step already was: the copy is delivered here, in the same step, not at the
+// drain. The plane's state in and out:
+//  * unit+C10h, +C36h, +C37h, +C39h, +C3Ah are the slot's; +5Dh is the caller's
+//    (`dead_5d`), +5Eh is plane_death_removed; unit+C68h the bank and +9E8h the
+//    live pitch control (plane_live_controls[1]), which the tail zeroes below
+//    10 degrees of bank (007D12FC..007D1331);
+//  * unit+C38h (the left wing) has no host reader, so it is not kept; unit+969h
+//    has no host writer (0);
+//  * the model [[unit+360h]+160h] is taken as present (EDI at 007D0BE6), as for
+//    the other plane model reads in this host; unit+100h is the world pose's y;
+//  * [[game+19CCh]+4ACh] is set: the drain runs only inside the fan-out's world
+//    gate (00875E78, rows 9..13, fixed_step_fanout.cpp);
+//  * goal 5 chain 654: 007DE600 and 007EB0B0 run on the plane's engine list
+//    unit+C98h (Impl::build_plane_engine_list); 007E23E0's point effect of the
+//    class +220h, gated on the scene node +4A4h (taken as present, as the model
+//    +360h is), is presentation and a record;
+//  * the arms' other presentation calls have no host object and are records:
+//    007BC4E0 (crash effect), 00498F80 / 0049A760 (the debris marker, so +C4Ch
+//    stays clear), 00868420 (explosion effect) and the wing break block from
+//    007D0DD7. vtable[70h](1) is the caller's +C3Ah handling. 00926D90(unit, 1),
+//    the explosion arm's Kill, is the return value.
+bool deliver_plane_failure_messages(GameUnitsHost::Impl& host, GameUnitSlot& unit,
+    const std::vector<s47_effects::FailureMessage>& routed, bool dead_5d) {
+    s47_effects::PlaneFailureState st;
+    st.timer_c10 = unit.plane_death_timer_c10;
+    st.dead_5d = dead_5d;
+    st.removed_5e = unit.plane_death_removed;
+    st.spinning_c36 = unit.plane_death_c36;
+    st.right_wing_c37 = unit.plane_spin_right_c37;
+    st.powerlost_c39 = unit.plane_death_c39;
+    st.death_raised_c3a = unit.plane_death_c3a;
+    st.bank_c68 = unit.plane_bank_angle_c68;
+    st.pitch_input_9e8 = unit.plane_live_controls[1];
+    s47_effects::StateMessageEnv env;
+    env.session_mode_1fe4 = 0;
+    env.has_model_360 = true;
+    env.controller_gate_72c = [&unit] { return unit.plane_control_mode_900 == 7; };
+    env.pos_y_100 = unit.world[13];
+    env.marker_service_on = true;
+    bool killed = false;
+    s47_effects::StateMessageHost arms;
+    arms.stop_all_engines = [&host, &unit] { stop_all_plane_engines(host, unit); };
+    arms.destroy_engine_at = [&host, &unit](std::uint32_t engine_index) {
+        // 007D0D49-007D0D57: 007EB0B0(unit+C98h, the message's +24h index).
+        const bool effect = s48_engines::engine_list_destroy_at_007eb0b0(
+            unit.plane_engine_list_c98(), static_cast<std::int32_t>(engine_index), true);
+        ++host.plane_engines_destroyed;
+        host.done("Plane::destroy_engine_at_007eb0b0", 0x007eb0b0u);
+        if (effect) host.record("PlaneEngine::fire_effect_007e2419", 0x007e2419u);
+    };
+    arms.bind_crash_effect = [&host] {
+        host.record("Plane::bind_crash_effect_007bc4e0", 0x007bc4e0u);
+    };
+    arms.create_marker = [&host] {
+        host.record("Plane::debris_marker_00498f80", 0x00498f80u);
+        return false;
+    };
+    arms.update_marker = [&host] {
+        host.record("Plane::debris_marker_update_0049a760", 0x0049a760u);
+    };
+    arms.spawn_explosion_effect = [&host] {
+        host.record("Plane::explosion_effect_00868420", 0x00868420u);
+    };
+    arms.kill = [&killed] { killed = true; };
+    arms.break_wing = [&host](bool) {
+        host.record("Plane::break_wing_007d0dd7", 0x007d0dd7u);
+    };
+    arms.raise_dead = [] {};
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    for (const s47_effects::FailureMessage& m : routed) {
+        if (messages == nullptr) {
+            // No live commands host: the posted message stands for its copy.
+            s47_effects::state_message_007d0b80(st, m, env, arms);
+            continue;
+        }
+        if (!messages->deliver_plane_failure_message(m, st, env, arms)) {
+            throw std::logic_error("007D0B80: a plane failure copy missed the state handler");
+        }
+    }
+    unit.plane_death_timer_c10 = st.timer_c10;
+    unit.plane_death_c36 = st.spinning_c36;
+    unit.plane_spin_right_c37 = st.right_wing_c37;
+    unit.plane_death_c39 = st.powerlost_c39;
+    unit.plane_death_c3a = st.death_raised_c3a;
+    unit.plane_live_controls[1] = st.pitch_input_9e8;
+    host.done("Plane::state_message_007d0b80", 0x007d0b80u);
+    return killed;
+}
+
+// The raise: 007BBFA0 now, its messages kept for the death-mode step. The mode
+// the step reports is the effect the messages carry: a forced explosion (BL at
+// 007BC031) routes 63h with -1.0, whatever name was raised.
+void raise_plane_named_effect(GameUnitsHost::Impl& host, GameUnitSlot& unit,
+    std::size_t index, s47_effects::NamedEffect effect) {
+    s47_effects::NamedEffectResult r = run_plane_named_effect(host, unit, index, effect);
+    unit.plane_raised_death_mode = r.forced_explosion ? bsp::PlaneDeathMode::Explosion
+        : effect == s47_effects::NamedEffect::PowerLost ? bsp::PlaneDeathMode::PowerLost
+        : bsp::PlaneDeathMode::Explosion;
+    unit.plane_raised_routed = std::move(r.routed);
+}
+
+// The dead aircraft's "splash" (007CC3C7 in the free-flight arm, 007CBB90 at the
+// water surface): vtable[194h](&"splash", 0), then unit+911h = 1 (007CC418 /
+// 007CBBE0) whatever 007BBFA0 did. +5Dh is set, so 007D0B80 keeps unit+C10h; its
+// 64h arm records 007BC4E0 and 007DE600 and sets +C39h. In the water state (6)
+// the free-flight gate is clear, so 007BBFA0 forces an explosion below 1 km/h
+// and the 63h arm's Kill takes the aircraft out. True when it was killed.
+bool raise_dead_plane_splash(GameUnitsHost::Impl& host, GameUnitSlot& unit) {
+    const s47_effects::NamedEffectResult r = run_plane_named_effect(host, unit,
+        unit.process_index, s47_effects::NamedEffect::Splash);
+    const bool killed = deliver_plane_failure_messages(host, unit, r.routed, true);
+    unit.plane_splashed_911 = true;
+    if (killed) unit.plane_death_removed = true;
+    host.log.notef("plane splash: unit=%s t=%.2f state=%d y=%.2f forced=%d c39=%d removed=%d "
+        "(007BBFA0 \"splash\" -> 007D0B80, unit+911h set)", unit.row.name.c_str(),
+        static_cast<double>(host.summary.simulated_seconds), unit.plane_control_mode_900,
+        static_cast<double>(unit.world[13]), r.forced_explosion ? 1 : 0,
+        unit.plane_death_c39 ? 1 : 0, killed ? 1 : 0);
+    return killed;
+}
+}  // namespace
+
+// Goal 5 chain 654. SetFailure (0088EFF0) on a plane: 007BBFA0(name, frame) at
+// 0088F14C. "enginefire" (LOMP 08_lightning_strike.lua and 09_samar.lua raise it
+// on flying squadron planes) takes the frame's argument 2 as the engine (00B66290,
+// truncated, 0 when absent), so it draws only for an explicit -1; its 65h copy
+// reaches 007D0B80, whose arm runs 007EB0B0 on the engine list and skips the death
+// tail. A forced explosion (state outside 4..7, or a slow plane off the controller
+// gate, 007BBFC7-007BC031) routes 63h instead, whose 007D0B80 arm kills the plane:
+// that Kill is 00926D90(unit, 1) (007D0CFD), taken through the gunnery host's
+// funnel as 007CE3A7's depth kill is. LABELLED, as for the other raises: the copy
+// is delivered at the call, not at the session drain. NOT APPLIED (counted by the
+// caller): the other names. None is raised on a plane by this installation's
+// scripts, and their 007D0B80 tails (C39h / C36h, then +C3Ah and vtable[70h](1))
+// would kill a plane the gunnery host still holds alive.
+bool GameUnitsHost::script_plane_set_failure(std::size_t index, const std::string& name,
+                                             std::int32_t engine_index, bool& applied) {
+    Impl& host = *impl_;
+    applied = false;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& unit = *host.slots[index];
+    if (unit.motion_dispatch.entry != 0x007ce040u) return false;
+    const s47_effects::NamedEffect effect = s47_effects::named_effect_from_name(name.c_str());
+    if (effect != s47_effects::NamedEffect::EngineFire) return true;
+    const s47_effects::NamedEffectResult r =
+        run_plane_named_effect(host, unit, index, effect, engine_index);
+    const bool dead_5d = unit.plane_death_c3a
+        || (unit.state != nullptr && unit.state->simulate != 0);   // unit+5Dh
+    const bool killed = deliver_plane_failure_messages(host, unit, r.routed, dead_5d);
+    if (killed && host.gunnery != nullptr) host.gunnery->kill_unit_00926d90(index, 1);
+    applied = true;
+    host.log.notef("plane SetFailure: unit=%s \"%s\" engine=%d t=%.2f forced=%d routed=%zu "
+        "killed=%d (0088EFF0 -> 007BBFA0 -> 007D0B80 -> 007EB0B0, goal 5 chain 654)",
+        unit.row.name.c_str(), name.c_str(), engine_index,
+        static_cast<double>(host.summary.simulated_seconds), r.forced_explosion ? 1 : 0,
+        r.routed.size(), killed ? 1 : 0);
+    return true;
+}
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
@@ -273,9 +510,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
-                        // A water "powerlost" calls 007BBFA0 directly; 007CA8A0
-                        // (and its draw) runs only from SetHealth.
-                        din.draw = slot.plane_water_powerlost_raised || destroy_only ? -1.0f
+                        // A raised named effect (the water "powerlost", the +C01h
+                        // latch) calls 007BBFA0 directly; 007CA8A0 (and its draw)
+                        // runs only from SetHealth.
+                        const bool raised =
+                            slot.plane_raised_death_mode != bsp::PlaneDeathMode::None;
+                        din.draw = raised || destroy_only ? -1.0f
                             : gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
                         din.rammed_dfc = false;
                         din.spin_side_800 = gun_host->plane_spin_side_800(index);
@@ -288,31 +528,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bsp::PlaneDeathMode mode = destroy_only
                             ? bsp::PlaneDeathMode::None
-                            : slot.plane_water_powerlost_raised
-                            ? bsp::PlaneDeathMode::PowerLost
+                            : raised
+                            ? slot.plane_raised_death_mode
                             : bsp::plane_death_mode_007ca8a0(din);
-                        // planepartclasses.lua ExplosionExplosionDelay, which
-                        // 004A9BD0 stores at [00E18710] / [00E1870C].
-                        static bool delay_read = false;
-                        static float delay_pair[2] = {0.6f, 1.8f};
-                        if (!delay_read) {
-                            delay_read = true;
-                            host.lua.read_global_number_pair("ExplosionExplosionDelay",
-                                delay_pair[0], delay_pair[1]);
-                        }
-                        const float delayed = mode == bsp::PlaneDeathMode::ExplosionDelayed
-                            ? gun_host->death_mode_draw_00bd2f10(0, index, delay_pair[0],
-                                delay_pair[1]) : 0.0f;   // 007BBFA0, ECX = 0
+                        // Goal 5 chain 645: 007CA8A0's vtable[194h] call, 007BBFA0 on
+                        // the mode's name (a raised effect ran it at its raise), then
+                        // 007D0B80 over each routed message's local copy, which sets
+                        // +C10h, +C39h / +C36h / +C37h and, in its tail 007D12FC,
+                        // +C3Ah. +5Dh is clear at that delivery: the tail's
+                        // vtable[70h](1) is what raises it. A destroy-only Kill
+                        // reaches neither, so +C3Ah stays clear for it.
                         slot.plane_death_mode = mode;
-                        slot.plane_death_timer_c10 =
-                            bsp::plane_death_timer_c10_007bbfa0(mode, delayed);
-                        const bsp::PlaneDeathFlags flags = bsp::plane_death_flags_007d0b80(
-                            mode, slot.plane_death_timer_c10);
-                        slot.plane_death_c39 = flags.powerlost_c39;
-                        slot.plane_death_c36 = flags.spinning_c36;
-                        slot.plane_spin_right_c37 = flags.spinning_c36
-                            && mode == bsp::PlaneDeathMode::SpinRight;   // 007D0DD7
-                        slot.plane_death_c3a = !destroy_only;   // 007D12FC, not reached by a Kill
+                        bool killed_now = false;
+                        if (!destroy_only) {
+                            std::vector<bsp::gameplay_seg47_cc13::FailureMessage> routed;
+                            if (raised) {
+                                routed.swap(slot.plane_raised_routed);
+                            } else {
+                                routed = run_plane_named_effect(host, slot, index,
+                                    bsp::gameplay_seg47_cc13::named_effect_from_name(
+                                        bsp::plane_death_mode_name(mode))).routed;
+                            }
+                            killed_now = deliver_plane_failure_messages(host, slot, routed,
+                                false);
+                        }
                         slot.plane_death_seconds = host.summary.simulated_seconds;
                         // Packet cc9_plane_death_flags. The C3Ah tail's destroy sets
                         // +60h at once (00926CD5); this host has no 009273A0 flush,
@@ -333,7 +572,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // flush is taken here (as the +5Dh store above), so across two
                         // planes dying in one step the stream-0 order interleaves.
                         if constexpr (bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
-                            if (host.plane_on_destroyed_draw_007bcabb(index)) {
+                            if (host.plane_on_destroyed_draw_007bcabb(slot, index)) {
                                 ++host.combat_death_destroy_draws;
                             }
                         }
@@ -341,7 +580,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // The Kill's own flush: 007BCAA0's 007BCABB draw, and the
                             // plane leaves (no mode, so nothing else removes it).
                             if constexpr (!bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
-                                host.plane_on_destroyed_draw_007bcabb(index);
+                                host.plane_on_destroyed_draw_007bcabb(slot, index);
                             }
                             slot.plane_death_removed = true;
                             ++host.funnel_kill_destroy_only;
@@ -409,7 +648,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 host.done("Squadron::remove_plane_007f3970", 0x007f3970u);
                             }
                         }
-                        if (flags.killed_now) {
+                        if (killed_now) {
                             slot.plane_death_removed = true;
                             host.log.notef("plane death explosion: unit=%s t=%.2f "
                                 "dead_for=0.00 (007D0CFD Kill, packet cc9_plane_death_modes)",
@@ -1223,7 +1462,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007B9770 at 007CE96F, in that address order with the
                         // motion arm between, so the think and commit run first
                         // and control_step_007da710's latch runs last.
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         // Packet cc9_plane_death_modes: 007CAF10's death terms,
                         // called at 007CC322 before the controller step. The
@@ -1271,18 +1510,73 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 dsi.timer_c10 = unit_.plane_death_timer_c10;
                                 dsi.dead_timer_c3c = unit_.plane_lost_drag_timer_c3c;
                                 dsi.step = step;
-                                const bsp::PlaneDeathStepResult dso =
-                                    bsp::plane_death_step_007caf10(dsi);
-                                unit_.plane_lost_drag_timer_c3c = dso.dead_timer_c3c;
-                                if (dso.explode) {
-                                    unit_.plane_death_timer_c10 = -1.0f;
-                                    unit_.plane_death_removed = true;
-                                    owner_.log.notef("plane death explosion: unit=%s "
-                                        "t=%.2f dead_for=%.2f (007CAF10 -> 007D0CFD Kill, "
-                                        "packet cc9_plane_death_modes)",
+                                // Goal 5 chain 654: the engine block. Single player:
+                                // [00E188A8]+1FE4h is not 2. ctl+94h is 007D7A80's byte.
+                                dsi.session_client_1fe4 = false;
+                                dsi.controller_byte_94 = unit_.plane_ctl_94;
+                                dsi.engine_fire_timer_c14 = unit_.plane_engine_fire_timer_c14;
+                                dsi.engine_count_140 = unit_.plane_num_engines_140;
+                                bsp::PlaneDeathEngineCalls engines;
+                                engines.stop_all_engines = [this] {
+                                    stop_all_plane_engines(owner_, unit_);
+                                };
+                                engines.any_engine_burning = [this] {
+                                    owner_.done("Plane::any_engine_burning_007de5b0", 0x007de5b0u);
+                                    return s48_engines::engine_list_any_burning_007de5b0(
+                                        unit_.plane_engine_list_c98());
+                                };
+                                engines.raise_engine_fire = [this] {
+                                    // 007CB039-007CB06E: vtable[194h](&"enginefire", 0),
+                                    // 007BBFA0 with no Lua args, so the engine is drawn;
+                                    // its 65h copy reaches 007D0B80 on the dead plane.
+                                    const s47_effects::NamedEffectResult fire =
+                                        run_plane_named_effect(owner_, unit_,
+                                            unit_.process_index,
+                                            s47_effects::NamedEffect::EngineFire);
+                                    if (deliver_plane_failure_messages(owner_, unit_,
+                                            fire.routed, true)) {
+                                        unit_.plane_death_removed = true;
+                                    }
+                                    ++owner_.plane_engine_fires_raised;
+                                    owner_.log.notef("plane engine fire: unit=%s t=%.2f "
+                                        "dead_for=%.2f engines=%d forced=%d routed=%zu "
+                                        "removed=%d (007CAF10 -> 007BBFA0 \"enginefire\" "
+                                        "-> 007D0B80 -> 007EB0B0, goal 5 chain 654)",
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
-                                        static_cast<double>(dso.dead_timer_c3c));
+                                        static_cast<double>(unit_.plane_lost_drag_timer_c3c),
+                                        unit_.plane_num_engines_140,
+                                        fire.forced_explosion ? 1 : 0, fire.routed.size(),
+                                        unit_.plane_death_removed ? 1 : 0);
+                                    return unit_.plane_death_timer_c10;
+                                };
+                                const bsp::PlaneDeathStepResult dso =
+                                    bsp::plane_death_step_007caf10(dsi, engines);
+                                unit_.plane_lost_drag_timer_c3c = dso.dead_timer_c3c;
+                                unit_.plane_engine_fire_timer_c14 = dso.engine_fire_timer_c14;
+                                if (dso.explode) {
+                                    // Goal 5 chain 645: 007CB0C1..007CB0F8 store
+                                    // unit+C10h = -1.0f (00D7A260), then vtable[194h]
+                                    // ("explosion", 0); its 63h copy reaches 007D0B80 on
+                                    // the dead plane, whose explosion arm's Kill
+                                    // (007D0CFD) takes it out of the world.
+                                    unit_.plane_death_timer_c10 = -1.0f;
+                                    const s47_effects::NamedEffectResult boom =
+                                        run_plane_named_effect(owner_, unit_,
+                                            unit_.process_index,
+                                            s47_effects::NamedEffect::Explosion);
+                                    if (deliver_plane_failure_messages(owner_, unit_,
+                                            boom.routed, true)) {
+                                        unit_.plane_death_removed = true;
+                                    }
+                                    owner_.log.notef("plane death explosion: unit=%s "
+                                        "t=%.2f dead_for=%.2f removed=%d (007CAF10 -> "
+                                        "007BBFA0 -> 007D0B80 007D0CFD Kill, packet "
+                                        "cc9_plane_death_modes)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(dso.dead_timer_c3c),
+                                        unit_.plane_death_removed ? 1 : 0);
                                 }
                                 if (dso.zero_throttle) {
                                     unit_.plane_live_throttle = 0.0f;
@@ -1295,8 +1589,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.done("Plane::death_step_007caf10", 0x007caf10u);
                             }
                         }
-                        run_core_law_007db680(step, false);
-                        free_flight_stall_force_007dc830(step);   // 007DC830's tail
+                        free_flight_step_007dc830(step);   // 007CC332 CALL 007DC830
                         // 007C6500 BSP_PlaneTickElement_AdvancePose, tick-element
                         // slot +4h of all nine plane vtables, is where the native
                         // publishes a plane's pose, and it is a DIFFERENT element
@@ -1346,6 +1639,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.plane_touchdown_007cc440(unit_);
                             }
                         }
+                        // Goal 5 chain 645: 007CC375..007CC41F, the arm's dead branch
+                        // (bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0): a dead
+                        // aircraft whose +911h is clear raises "splash" once it is below
+                        // 3.0 m (00CE3854, unit+100h after the 00414DB0 refresh, the
+                        // published pose). +5Dh is plane_death_c3a on a plane still in
+                        // the world, the stand-in the 007CAF10 block above and the
+                        // water arm's step 2 use: a plane killed earlier in this step
+                        // has not had its death-mode step deliver yet. game+1FE4h is 0,
+                        // so the session-2 exception does not apply. A dead plane never
+                        // reaches the live branch 007CC431: 007CC39C (+911h set) and
+                        // 007CC3C1 (y >= 3.0) jump to the epilogue 007CC567 and the
+                        // splash returns at 007CC42E, so the water test 007CC523 below
+                        // runs only for the live branch.
+                        bool live_branch_007cc431 = true;
+                        {
+                            bsp::gameplay_seg47_cc13::FreeFlightTailInputs tail;
+                            tail.dead_5d = unit_.plane_death_c3a && !unit_.plane_death_removed;
+                            tail.has_game_e188a8 = true;
+                            tail.session_mode_1fe4 = 0;
+                            tail.splashed_911 = unit_.plane_splashed_911;
+                            tail.pos_y_100 = unit_.world[13];
+                            const bsp::gameplay_seg47_cc13::FreeFlightTail branch =
+                                bsp::gameplay_seg47_cc13::free_flight_tail_007cc2f0(tail);
+                            live_branch_007cc431 =
+                                branch == bsp::gameplay_seg47_cc13::FreeFlightTail::LiveBranch;
+                            if (branch == bsp::gameplay_seg47_cc13::FreeFlightTail::DeadSplash) {
+                                owner_.done("Plane::free_flight_tail_007cc2f0", 0x007cc375u);
+                                raise_dead_plane_splash(owner_, unit_);
+                            }
+                        }
                         // 007CC523-007CC562, the free-flight arm own water
                         // test, and the answer to why a plane here could fly to
                         // -400 m. The arm samples the sea under the aircraft and
@@ -1368,7 +1691,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // and 0074E210's free-flight gate is unit+900h == 7, so
                         // the aircraft leaves this arm for the water surface law
                         // 007DCDD0. docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md.
-                        if (unit_.plane_control_mode_900 == 7) {
+                        // Goal 5 chain 645: live branch only (007CC431..007CC562).
+                        if (live_branch_007cc431 && unit_.plane_control_mode_900 == 7) {
                             OceanFieldBinding sea(owner_);
                             const float water = bsp::ocean_water_height_0078cf20(
                                 unit_.motion.position[0], unit_.motion.position[2], sea);
@@ -1455,16 +1779,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         && gun_host != nullptr
                                         && self_index < owner_.slots.size()
                                         && !gun_host->unit_dead(self_index)) {
-                                        unit_.plane_water_powerlost_raised = true;
+                                        // Goal 5 chain 645: 007BBFA0("powerlost") at
+                                        // 007CB8DC, before 007CB92C moves the state to 6.
+                                        raise_plane_named_effect(owner_, unit_, self_index,
+                                            s47_effects::NamedEffect::PowerLost);
                                         owner_.log.notef("plane water powerlost raised: unit=%s "
-                                            "t=%.2f alt=%.2f MinWaterSpd=%.3f up_y=%.4f "
+                                            "t=%.2f alt=%.2f MinWaterSpd=%.3f up_y=%.4f mode=%s "
                                             "(007CB8DC -> 007BBFA0 -> 007D0B80, packet "
                                             "cc9_lua54_follow_altitude)",
                                             unit_.row.name.c_str(),
                                             static_cast<double>(owner_.summary.simulated_seconds),
                                             static_cast<double>(unit_.motion.position[1]),
                                             static_cast<double>(min_water_spd),
-                                            static_cast<double>(unit_.motion.pose_row1[1]));
+                                            static_cast<double>(unit_.motion.pose_row1[1]),
+                                            bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
                                         // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                         // not 00926D90, so no funnel path tag (the
                                         // powerlost mode stays the death block's).
@@ -1539,6 +1867,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         static_cast<double>(unit_.motion.position[1]),
                                         static_cast<double>(kPlaneDepthKillLimit));
                                     gun_host->kill_unit_00926d90(self_index, 1);
+                                } else if (unit_.plane_death_c3a && !unit_.plane_death_removed) {
+                                    // Goal 5 chain 645: 007CE313 tests only unit+61h
+                                    // (CMP [ESI-2AFh] with EDI = ESI-310h), not +5Dh, so
+                                    // a dead plane below the limit takes 007CE3A7 too.
+                                    // A dead plane now stays in state 7 (the dead branch
+                                    // above skips the 007CC523 water test), so its Kill
+                                    // is taken here as the water arm's wreck depth kill
+                                    // takes it: the plane leaves the world.
+                                    unit_.plane_death_removed = true;
+                                    owner_.log.notef("plane wreck depth kill: unit=%s t=%.2f "
+                                        "alt=%.2f state 7 (007CE3A7 -> 00926D90 Kill(unit, 1), "
+                                        "removed)", unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(unit_.motion.position[1]));
                                 }
                                 owner_.record("Plane::depth_kill_007ce3a7", 0x007ce3a7u);
                             }
@@ -5101,10 +5443,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return const_cast<GameUnitSlot*>(plane.df_finder_scan_007e2090(
                                 fp, threshold, filter, noise * 0.5f));
                         }
+                        // Goal 5 chain 650: 007B9740's tail 007E2070 runs as its body
+                        // (bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070)
+                        // over a shadow of the neighbours object whose member +9Ch's
+                        // +14h (neighbours+B0h) is the cached target, the slot
+                        // nb_found_plus_one names; the cleared pointer is written back.
+                        // The cache holds a slot identity, not a native observer
+                        // reference, so 006952A0 has no registration to drop.
                         void clear_gun_target(Raw) override {
-                            // The cache holds a slot identity, not a native
-                            // observer reference; no unregister is needed.
-                            plane.unit_.nb_found_plus_one = 0;
+                            struct Observers final : bsp::PlaneNeighboursObserverHost {
+                                void observer_unregister_pair_006952a0(void*, void*) override {}
+                            } observers;
+                            alignas(4) std::uint8_t neighbours[0xB4] = {};
+                            const std::size_t found = plane.unit_.nb_found_plus_one;
+                            void* cached = found != 0 && found - 1 < plane.owner_.slots.size()
+                                ? static_cast<void*>(plane.owner_.slots[found - 1].get()) : nullptr;
+                            std::memcpy(neighbours + 0xB0, &cached, sizeof(cached));
+                            bsp::cc13_seg48_plane_neighbours_clear_target_observer_007e2070(
+                                neighbours, observers);
+                            std::memcpy(&cached, neighbours + 0xB0, sizeof(cached));
+                            if (cached == nullptr) plane.unit_.nb_found_plus_one = 0;
                         }
                     };
 
@@ -20073,72 +20431,107 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // They feed both the control targets (sin(bank), cos(pitch))
                     // and the planner's yaw arm (cos(bank), |bank|, heading), so
                     // they are computed once per step and cached on the slot.
-                    void refresh_attitude_007c1900() {
-                        bsp::AdvanceMatrix pose{};
-                        const float* const rows[3] = {unit_.motion.pose_row0,
-                            unit_.motion.pose_row1, unit_.motion.pose_row2};
-                        for (int r = 0; r < 3; ++r) {
-                            for (int c = 0; c < 3; ++c) {
-                                pose.m[r * 4 + c] = rows[r][c];
+                    // Goal 5 chain 657: 007C18B0 BSP_Plane_UpdatePoseDerivedState runs as
+                    // itself (cc13_seg47b) where each arm refreshed the attitude: pitch,
+                    // bank, heading and their rates +C70h..+C78h, the velocity elevation
+                    // +C7Ch and the low-passed path pitch +C84h with their rates. The image
+                    // calls it at the end of 007CE040 (007CEE9C, dt = the fixed step);
+                    // SUBSTITUTION, labelled (as before): this host runs it at the head of
+                    // each arm, before the think, on the pose the previous step left. The
+                    // binding answers the body's plane offsets from this slot's fields and
+                    // its matrix calls with the recovered primitives (plane_advance_pose).
+                    class PoseDerivedStateBinding final
+                        : public bsp::cc13_seg47b::PlanePoseDerivedStateHost {
+                    public:
+                        explicit PoseDerivedStateBinding(PlaneBinding& plane) : plane_(plane) {
+                            const GameUnitSlot& u = plane.unit_;
+                            const float* const rows[3] = {u.motion.pose_row0, u.motion.pose_row1,
+                                u.motion.pose_row2};
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) pose_[r * 4 + c] = rows[r][c];
+                                pose_[r * 4 + 3] = 0.0f;
                             }
-                            pose.m[r * 4 + 3] = 0.0f;
+                            for (int c = 0; c < 3; ++c) pose_[12 + c] = u.motion.position[c];
+                            pose_[15] = 1.0f;
                         }
-                        pose.m[15] = 1.0f;
-                        bsp::NativeAdvanceMatrixOps ops;
-                        const bsp::PlaneAttitudeAngles a =
-                            bsp::plane_attitude_angles_007c1900(pose, ops);
-                        unit_.plane_pitch_angle_c64 = a.pitch;
-                        // The native leaves the previous heading and bank in
-                        // place when the forward axis is too near vertical, and
-                        // so does this - which is why they are slot state rather
-                        // than locals.
-                        if (a.heading_and_bank_written) {
-                            unit_.plane_heading_c6c = a.heading;
-                            unit_.plane_bank_angle_c68 = a.bank;
+                        ~PoseDerivedStateBinding() override = default;
+                        // LABELLED: this host's pose rows are always current; there is
+                        // no +C8h cache to refresh.
+                        void refresh_pose_if_stale_00414db0() override {}
+                        const float* pose_cc() override { return pose_; }
+                        float& plane_float(std::uint32_t offset) override {
+                            GameUnitSlot& u = plane_.unit_;
+                            switch (offset) {
+                            case 0xC64u: return u.plane_pitch_angle_c64;
+                            case 0xC68u: return u.plane_bank_angle_c68;
+                            case 0xC6Cu: return u.plane_heading_c6c;
+                            case 0xC70u: return u.plane_heading_rate_c70;
+                            case 0xC74u: return u.plane_pitch_rate_c74;
+                            case 0xC78u: return u.plane_bank_rate_c78;
+                            case 0xC7Cu: return u.plane_velocity_elevation_c7c;
+                            case 0xC80u: return u.plane_velocity_elevation_rate_c80;
+                            case 0xC84u: return u.plane_path_pitch_c84;
+                            case 0xC88u: return u.plane_path_pitch_rate_c88;
+                            case 0xAC8u: return u.plane_world_velocity[0];   // ctl+18h
+                            case 0xACCu: return u.plane_world_velocity[1];
+                            case 0xAD0u: return u.plane_world_velocity[2];
+                            case 0xAE0u: return u.plane_velocity_lp_30[0];   // ctl+30h
+                            case 0xAE4u: return u.plane_velocity_lp_30[1];
+                            case 0xAE8u: return u.plane_velocity_lp_30[2];
+                            default: break;
+                            }
+                            throw std::logic_error("007C18B0: plane float offset not mapped");
                         }
-                        {   // cc9-physics29: written in both modes; OFF reads it only
-                            // in the terrain_avoidance_0099f1c0 census (diagnostic).
-                            // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
-                            // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
-                            // stored, 0 at or below 1e-10 [00CE3820]; only when
-                            // |v| > 0.1 [00D7A3A0] (FCOMPI/JBE at 007C1C55, unordered
-                            // keeps it too) the horizontal sqrt(z*z + x*x) (same
-                            // floor) and C7Ch = atan2(y, horizontal) (00BF701A),
-                            // stored as a float; otherwise C7Ch keeps its value.
-                            using namespace bsp::cc13x87;
-                            const float* const v = unit_.plane_world_velocity;
-                            const double xx = x87_mul24(v[0], v[0]);
-                            const double yy = x87_mul24(v[1], v[1]);
-                            const double zz = x87_mul24(v[2], v[2]);
-                            const float s3 = static_cast<float>(x87_add24(x87_add24(yy, xx), zz));
-                            float len3 = 0.0f;
-                            if (s3 > 1.0e-10) len3 = static_cast<float>(std::sqrt(static_cast<double>(s3)));
-                            if (len3 > 0.10000000149011612) {
-                                const float s2 = static_cast<float>(x87_add24(zz, xx));
-                                float horiz = 0.0f;
-                                if (s2 > 1.0e-10) horiz = static_cast<float>(std::sqrt(static_cast<double>(s2)));
-                                unit_.plane_velocity_elevation_c7c = static_cast<float>(
-                                    std::atan2(static_cast<double>(v[1]), static_cast<double>(horiz)));
+                        const float* up_vector_00f8758c() override { return bsp::kWorldUp00f8758c.data(); }
+                        const float* vector3_cross_004f9b30(float* out, const float* a,
+                                                            const float* b) override {
+                            bsp::pc24_unitshost::cross_004f9b30(a, b, out);
+                            return out;
+                        }
+                        void matrix_rotate_by_angular_velocity_0085e4d0(float* out16, const float* in16,
+                                float wx, float wy, float wz, float dt) override {
+                            bsp::AdvanceMatrix in{};
+                            bsp::AdvanceMatrix out{};
+                            std::memcpy(in.m, in16, sizeof in.m);
+                            std::memcpy(out.m, out16, sizeof out.m);
+                            const float w[3] = {wx, wy, wz};
+                            // 00F87574, the zero vector (plane_advance_pose.hpp).
+                            static constexpr float eye_00f87574[3] = {0.0f, 0.0f, 0.0f};
+                            if (bsp::rotate_about_axis_0085e4d0(out, in, w, dt, eye_00f87574, ops_)) {
+                                std::memcpy(out16, out.m, sizeof out.m);
                             }
                         }
-                        if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
-                            // 007C1B85-007C1D05: only when |ctl+18h| > 0.1 (double
-                            // 00D7A3A0); the horizontal length is 0 unless its square
-                            // exceeds 1e-10 (00CE3820).
-                            const float* const v = unit_.plane_world_velocity;
-                            const float s2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-                            const float s = static_cast<double>(s2) > 1.0e-10
-                                ? std::sqrt(s2) : 0.0f;
-                            if (static_cast<double>(s) > 0.10000000149011612
-                                && unit_.plane_velocity_lp_valid) {
-                                const float* const lp = unit_.plane_velocity_lp_30;
-                                const float h2 = lp[0] * lp[0] + lp[2] * lp[2];
-                                const float h = static_cast<double>(h2) > 1.0e-10
-                                    ? std::sqrt(h2) : 0.0f;
-                                unit_.plane_path_pitch_c84 = static_cast<float>(std::atan2(
-                                    static_cast<double>(lp[1]), static_cast<double>(h)));
-                            }
+                        const float* matrix_build_rotation_y_00b646e0(float* out16,
+                                                                      const float* angle) override {
+                            bsp::AdvanceMatrix r{};
+                            ops_.build_rotation_y_00b646e0(r, *angle);
+                            std::memcpy(out16, r.m, sizeof r.m);
+                            return out16;
                         }
+                        void matrix_assign_004134f0(float* destination16, const float* source16) override {
+                            std::memmove(destination16, source16, 16 * sizeof(float));
+                        }
+                        const float* matrix_multiply_00413920(const float* left16, float* out16,
+                                                              const float* right16) override {
+                            bsp::AdvanceMatrix left{};
+                            bsp::AdvanceMatrix right{};
+                            bsp::AdvanceMatrix product{};
+                            std::memcpy(left.m, left16, sizeof left.m);
+                            std::memcpy(right.m, right16, sizeof right.m);
+                            ops_.multiply_00413920(product, left, right);
+                            std::memcpy(out16, product.m, sizeof product.m);
+                            return out16;
+                        }
+
+                    private:
+                        PlaneBinding& plane_;
+                        float pose_[16]{};
+                        bsp::NativeAdvanceMatrixOps ops_;
+                    };
+                    void update_pose_derived_state_007c18b0(float step) {
+                        PoseDerivedStateBinding binding(*this);
+                        bsp::cc13_seg47b::plane_update_pose_derived_state_007c18b0(binding, step);
+                        owner_.done("Plane::update_pose_derived_state_007c18b0", 0x007c18b0u);
                     }
 
                     // 009AC190's bearing into plan+2C0h, then 0099D300's yaw arm
@@ -20848,7 +21241,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (GameUnitsHost::Impl::kPlaneBankYawBound) {
                             // 007DA00C-007DA117, which runs whether or not the
                             // rotation applied. The pitch and bank are unit+C64h /
-                            // +C68h as refresh_attitude_007c1900 left them for this
+                            // +C68h as update_pose_derived_state_007c18b0 left them for this
                             // step, and ctl+7Ch is the forward speed this step's
                             // core law produced, the value the image's next wave-1
                             // pose step reads (007D80C0 copies it after the step).
@@ -21457,7 +21850,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pose (packet cc9_carrier_landing_deck_part2).
                             owner_.carrier_deck_carry_in(unit_);
                         }
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         // Step 1, 007CBFC3: the pre-pass 007C5AC0.
                         owner_.plane_site_probe_007c5ac0(unit_, step);
@@ -21499,8 +21892,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // Diagnostic: where a landed plane loses contact.
                                 owner_.log_ground_contact_loss(unit_);
                             }
-                            run_core_law_007db680(step, false);
-                            free_flight_stall_force_007dc830(step);   // 007DCCF0 -> 007DC830
+                            free_flight_step_007dc830(step);   // 007DCD14: 007DCCF0 -> 007DC830
                         } else {
                             ++unit_.ground_law_steps;
                             run_core_law_007db680(step, true);
@@ -21598,6 +21990,190 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         }   // kPlaneGroundRollBound
+                    }
+                    // 007CE55D..007CE82E, unit+C01h (bsp::plane_named_effect_latch_007ce790),
+                    // and the vtable[194h] call it makes, 007BBFA0 itself
+                    // (bsp::gameplay_seg47_cc13::named_effect_007bbfa0). The stores this
+                    // consumes are unit_.plane_c01's writers in this file: 007B9000 (the
+                    // park arm 009B23F1, the takeoff holder's dead-owner arm), 007B9010
+                    // (the takeoff holder's water-plane arm) and 007CC2AD (the base
+                    // launch). game+1FE4h is 0, single player, as at 007CEA02.
+                    // 007BBFA0's result in this host's terms:
+                    //  * a live plane: the mode is raised and the plane is killed through
+                    //    the gunnery host's funnel, as the water "powerlost" is; the
+                    //    death-mode step applies the mode with no 007CA8A0 draw.
+                    //    SUBSTITUTION, labelled (the water arm's): 007D0B80 and its tail
+                    //    007D12FC run at the next step's death-mode block. The funnel's
+                    //    path tag is suppressed for both names: the explosion arm's
+                    //    00926D90 (007D0CFD) follows 007BBFA0's choice, so it is not the
+                    //    destroy-only Kill the tag marks.
+                    //  * a dying plane (+5Dh set; the death-mode step has run): the
+                    //    routed copies reach 007D0B80 at once (goal 5 chain 645), which
+                    //    keeps unit+C10h for a dead plane; its explosion arm's Kill
+                    //    (007D0CFD) takes the plane out of the world, its EnginesLost
+                    //    arm sets +C39h.
+                    // Goal 5 chain 650. 007CE598..007CE618 (bsp::plane_landed_flag_tick_007ce598)
+                    // on the slot's +904h (plane_landed_904). +9D4h is the squadron record
+                    // found for the unit and +9D8h its live seat among the occupied members
+                    // (-1 with none, 007CFE72's stamp), as plane_is_leader_with_wingmen_007b95e0
+                    // reads them. Squadron +3B0h is always 0: tools/store_census.py 0x3b0
+                    // finds two byte writers, 007EFB69 (DL = 0 at 007EFB60) and 007F2DD3 (BL,
+                    // with EBX = 0 from 007F2C91 in the squadron constructor).
+                    void landed_flag_tick_007ce598() override {
+                        const bsp::PlaneSquadronHostRecord* sq =
+                            bsp::plane_squadron_registry().find_by_member_unit(unit_.process_index);
+                        std::int32_t seat_9d8 = -1;
+                        if (sq != nullptr) {
+                            std::int32_t live = 0;
+                            for (const std::size_t m : sq->member_units) {
+                                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                                if (m == unit_.process_index) {
+                                    seat_9d8 = live;
+                                    break;
+                                }
+                                ++live;
+                            }
+                        }
+                        bsp::PlaneLandedFlagTickInputs in;
+                        in.session_mode_1fe4 = bsp::session_context().session_word_1fe4;
+                        in.landed_904 = unit_.plane_landed_904;
+                        in.control_mode_900 = unit_.plane_control_mode_900;
+                        in.squadron_seat_9d8 = seat_9d8;
+                        in.has_squadron_9d4 = sq != nullptr;
+                        in.squadron_3b0 = false;
+                        switch (bsp::plane_landed_flag_tick_007ce598(in)) {
+                        case bsp::PlaneLandedFlagTickArm::InlineClear_007ce611:
+                            unit_.plane_landed_904 = false;                    // 007CE611
+                            owner_.done("Plane::landed_flag_tick_007ce611", 0x007ce611u);
+                            break;
+                        case bsp::PlaneLandedFlagTickArm::ClearFlag904_007b8450:
+                            bsp::cc13_seg47::plane_clear_flag_904_007b8450(unit_.plane_landed_904);
+                            owner_.done("Plane::clear_flag_904_007b8450", 0x007b8450u);
+                            break;
+                        case bsp::PlaneLandedFlagTickArm::None:
+                            break;
+                        }
+                    }
+
+                    bool named_effect_latch_007ce790(bool suppress_520, bool frozen_9e0) override {
+                        GameGunneryHost* const gh = owner_.gunnery.get();
+                        const std::size_t self = unit_.process_index;
+                        const bool bound = gh != nullptr && self < owner_.slots.size()
+                            && owner_.slots[self].get() == &unit_;
+                        // 007CE3B1..007CE46A (bsp::plane_below_landscape_007ce3b1, which also
+                        // models its unit+520h gate 007CE0B5 and the depth kill's skip
+                        // 007CE3AC): game+1FE4h is 0 (007CE291) and unit+61h has no writer
+                        // (game_hosts_units.hpp), so 007CE31A falls through to it. The host's
+                        // own depth kill runs later in the tick (free-flight arm, state 7,
+                        // labelled there); this gate keeps a plane below -30 m from taking
+                        // the Landscape store the image skips. The world list +348h is the scene
+                        // host's Landscape list, in list order; each is asked 0087FC60 through
+                        // the borrowed terrain (slot 2Ch), and a Landscape whose +3D0h was not
+                        // loaded answers 0087FC60's own -1.0. unit+FCh..+104h are the world
+                        // pose's translation (00414DB0 refreshed), as at 007CE92A.
+                        {
+                            const bsp::game::SceneWorldClassLists& lists =
+                                bsp::game::scene_world_class_lists();
+                            std::vector<std::size_t> landscapes;   // read once both gates pass
+                            bsp::PlaneLandscapeBelowInputs below;
+                            // 007CE09C: the unit+520h the sequence read after 00953CC0.
+                            below.suppress_520 = suppress_520;
+                            // 007CE397: SUBSTITUTION, labelled (the depth kill's own,
+                            // "plane depth kill" above): the 30.0f fallback (00CE38C8);
+                            // the (unit+360h)->+160h->+0Ch->vtable[48h] chain is not carried.
+                            below.depth_kill_limit = 30.0f;
+                            below.free_flight_gate_72c = free_flight_gate_00d06130_38();
+                            below.height_9b4 = unit_.plane_height_above_surface_9b4;
+                            const float* const p = unit_.world.data() + 12;
+                            below.x_fc = p[0];
+                            below.y_100 = p[1];
+                            below.z_104 = p[2];
+                            const bool hit = bsp::plane_below_landscape_007ce3b1(below,
+                                [&lists, &landscapes](std::size_t k, const float xz[2], float& h) {
+                                    namespace l55 = bsp::landscape_lua_seg55_argon;
+                                    if (k == 0) landscapes = lists.list(bsp::game::kSceneLandscapeClassId);
+                                    if (k >= landscapes.size()) return false;
+                                    const bsp::game::SceneWorldObject& object =
+                                        lists.objects()[landscapes[k]];
+                                    if (!object.terrain) {
+                                        const l55::LandscapeState none{};
+                                        h = l55::landscape_height_at_world_or_default_0087fc60(none, xz);
+                                        return true;
+                                    }
+                                    const SceneTerrainForwarders terrain(*object.terrain);
+                                    h = l55::landscape_height_at_world_or_default_0087fc60(
+                                        terrain.landscape(), xz);
+                                    return true;
+                                });
+                            if (hit) {
+                                unit_.plane_c01 = 2;                                   // 007CE46A
+                                ++unit_.plane_below_landscape_stores;
+                                if (unit_.plane_below_landscape_stores == 1) {
+                                    owner_.log.notef("plane below a Landscape: unit=%s t=%.2f "
+                                        "pos=(%.1f %.1f %.1f) h9b4=%.2f; +C01h = 2 (007CE44A "
+                                        "0087FC60 -> 007CE46A)", unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(p[0]), static_cast<double>(p[1]),
+                                        static_cast<double>(p[2]),
+                                        static_cast<double>(below.height_9b4));
+                                }
+                                owner_.done("Plane::below_landscape_007ce3b1", 0x007ce46au);
+                            }
+                        }
+                        bsp::PlaneNamedEffectLatchInputs in;
+                        in.c01 = unit_.plane_c01;
+                        in.session_mode_1fe4 = 0;
+                        in.control_mode_900 = unit_.plane_control_mode_900;
+                        in.dead_5d = bound && gh->unit_dead(self);
+                        in.frozen_9e0 = frozen_9e0;
+                        in.suppress_520 = suppress_520;
+                        const bsp::PlaneNamedEffectLatchResult latch =
+                            bsp::plane_named_effect_latch_007ce790(in);
+                        const unsigned entry = unit_.plane_c01;
+                        unit_.plane_c01 = latch.c01;
+                        if (latch.effect == bsp::PlaneNamedEffectLatchEffect::None) return false;
+                        const bool power = latch.effect == bsp::PlaneNamedEffectLatchEffect::PowerLost;
+                        if (!bound) {
+                            owner_.record("Plane::named_effect_latch_unbound", 0x007ce7d4u);
+                            return false;
+                        }
+                        // 007CE7A6 / 007CE7D8: the name, then vtable[194h](&name, 0).
+                        const s47_effects::NamedEffect effect = power
+                            ? s47_effects::NamedEffect::PowerLost : s47_effects::NamedEffect::Explosion;
+                        owner_.done("Plane::named_effect_latch_007ce790", 0x007ce790u);
+                        const char* const name = power ? "powerlost" : "explosion";
+                        if (in.dead_5d) {
+                            const s47_effects::NamedEffectResult r =
+                                run_plane_named_effect(owner_, unit_, self, effect);
+                            const bool killed =
+                                deliver_plane_failure_messages(owner_, unit_, r.routed, true);
+                            if (killed) {
+                                unit_.plane_death_removed = true;
+                                owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u "
+                                    "\"%s\" on a dying plane: explosion, removed (007CE790 -> "
+                                    "007BBFA0 -> 007D0B80 007D0CFD)", unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    entry, name);
+                                return true;
+                            }
+                            owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u "
+                                "\"%s\" on a dying plane: c10=%.2f c39=%d (007CE790 -> 007BBFA0 "
+                                "-> 007D0B80)", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds), entry,
+                                name, static_cast<double>(unit_.plane_death_timer_c10),
+                                unit_.plane_death_c39 ? 1 : 0);
+                            return false;
+                        }
+                        raise_plane_named_effect(owner_, unit_, self, effect);
+                        owner_.log.notef("plane named effect latch: unit=%s t=%.2f c01=%u \"%s\" "
+                            "state=%d -> %s raised (007CE790 -> 007BBFA0 -> 007D0B80)",
+                            unit_.row.name.c_str(),
+                            static_cast<double>(owner_.summary.simulated_seconds), entry, name,
+                            unit_.plane_control_mode_900,
+                            bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
+                        const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
+                        gh->kill_unit_00926d90(self, 1);
+                        return false;
                     }
                     // 007CE0D2 -> 007BE060 (packet cc9_plane_wanderer). Reached only
                     // with unit+520h clear (007CE09C) and game+1FE4h == 0, so the
@@ -21698,8 +22274,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // Packet cc9_plane_water_law: 007CBA50 (docs/PLANE_GROUND_OPS.md
                     // section 7, docs/WATER_SURFACE_LAW.md sections 10-11).
                     // SUBSTITUTIONS, labelled:
-                    // * step 2, the "splash" effect and its unit+911h latch, is not
-                    //   carried: it raises a presentation effect only;
+                    // * step 2 (goal 5 chain 645): the "splash" raise and its unit+911h
+                    //   latch are carried; its speed is vtable+204h, taken as below;
                     // * step 5's hull list desc+5BCh and unit+770h are not carried, so
                     //   unit+770h stands clear and the lift-off is the 1.5 m test alone;
                     // * vtable+204h is taken as the world speed, as vtable+38h is;
@@ -21723,9 +22299,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         ++unit_.plane_water_law_steps;
-                        refresh_attitude_007c1900();
+                        update_pose_derived_state_007c18b0(step);
                         pilot_think_and_commit(step);
                         owner_.plane_site_probe_007c5ac0(unit_, step);   // step 1, vtable[+1ECh]
+                        // Step 2, 007CBA90..007CBBE0 (bsp.py disasm-raw 007cba50): a dead
+                        // plane (unit+5Dh, as step 3 reads it) outside session mode 2
+                        // whose +911h is clear, below 3.0 m (00CE3854 COMISS/JBE against
+                        // unit+100h after 00414DB0, the published pose), raises "splash"
+                        // when 007CBB91's test holds (bsp::water_impact_is_splash_007cbb91):
+                        // speed (vtable+204h) above desc+19Ch MaxWaterSpd, unit+ACCh (world
+                        // vy) below -tuning+2B4h, unit+C64h below -tuning+2B8h or above
+                        // +2BCh, |unit+C68h| above +2C0h ([0042E740]+210h+A4h..+B0h).
+                        // Without the loaded tuning block the test is not run.
+                        if (unit_.plane_death_c3a && !unit_.plane_death_removed
+                            && !unit_.plane_splashed_911 && 3.0f > unit_.world[13]
+                            && owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& tg = owner_.lua.plane_globals();
+                            const float* const sv = unit_.plane_world_velocity;
+                            bsp::PlaneWaterImpactInputs wi;
+                            wi.speed = std::sqrt(sv[0] * sv[0] + sv[1] * sv[1] + sv[2] * sv[2]);
+                            wi.class_max_water_spd = unit_.plane_max_water_spd_19c;
+                            wi.vertical_rate = sv[1];
+                            wi.pitch = unit_.plane_pitch_angle_c64;
+                            wi.roll = unit_.plane_bank_angle_c68;
+                            wi.tuning_water_max_vspd = tg.dynamics_water_max_v_spd;
+                            wi.tuning_water_max_down_pitch = tg.dynamics_water_max_down_pitch;
+                            wi.tuning_water_max_up_pitch = tg.dynamics_water_max_up_pitch;
+                            wi.tuning_water_max_roll = tg.dynamics_water_max_roll;
+                            if (bsp::water_impact_is_splash_007cbb91(wi)) {
+                                owner_.done("Plane::water_impact_splash_007cbb91", 0x007cbb91u);
+                                if (raise_dead_plane_splash(owner_, unit_)) return;
+                            }
+                        }
                         // Step 3, 007CBBE7-007CBC14: a dying plane (unit+5Dh) whose
                         // ctl+94h is clear gets 007D8180(0) and unit+C10h = 99.0.
                         if (unit_.plane_death_c3a && !unit_.plane_ctl_94) {
@@ -21781,13 +22386,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (gh != nullptr && self < owner_.slots.size()
                                     && owner_.slots[self].get() == &unit_
                                     && !gh->unit_dead(self)) {
-                                    unit_.plane_water_powerlost_raised = true;
+                                    // Goal 5 chain 645: 007BBFA0("powerlost") at 007CBE02.
+                                    raise_plane_named_effect(owner_, unit_, self,
+                                        s47_effects::NamedEffect::PowerLost);
                                     owner_.log.notef("plane water powerlost raised: unit=%s "
-                                        "t=%.2f depth=%.2f (007CBE02 -> 007BBFA0 -> 007D0B80, "
-                                        "packet cc9_lua54_follow_altitude)",
+                                        "t=%.2f depth=%.2f mode=%s (007CBE02 -> 007BBFA0 -> "
+                                        "007D0B80, packet cc9_lua54_follow_altitude)",
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
-                                        static_cast<double>(depth));
+                                        static_cast<double>(depth),
+                                        bsp::plane_death_mode_name(unit_.plane_raised_death_mode));
                                     // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                     // not 00926D90, so no funnel path tag.
                                     const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
@@ -21847,161 +22455,157 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         return pose;
                     }
-                    // 007DD493-007DD9AA after the rate law, on the world angular
-                    // velocity ctl+24h. LABELLED: this host keeps the body rates
-                    // (ctl+48h) as the state, so the world vector is taken through
-                    // the pose rows and handed back the same way. The horizontal
-                    // speed (vtable[+34h]) is the world velocity with y zeroed;
-                    // unit+674h, the degenerate-axis fallback, is pose row 0.
-                    // 007DC878-007DCB40 (the block after 007DC86E's core law), packet
-                    // cc9_p14_stall_force. The x87 keeps g*m*d and f*desc+17Ch wide and
-                    // rounds each once (docs/CC13_FRONT3.md). The world angular velocity
-                    // ctl+24h is taken through the pose rows, as water_law_tail does.
-                    void free_flight_stall_force_007dc830(float step) {
-                        free_flight_stall_block_007dc894(step);
-                        if constexpr (GameUnitsHost::Impl::kFreeFlightWreckLiftBound) {
-                            if (unit_.plane_ctl_94) free_flight_wreck_lift_007dcb4b(step);
+                    // Goal 5 chain 657: 007DC830 BSP_PlaneFlight_FreeFlightStep runs as
+                    // itself (cc13_front3_plane_flight_free_flight_step_007dc830, packets
+                    // cc9_p14_stall_force and p15_dying_spin), core law included, at both
+                    // of its native sites (007CC332 in 007CC2F0, 007DCD14 in 007DCCF0).
+                    // The units host keeps no controller (unit+AB0h) image, so the
+                    // binding answers each offset the body reads from this plane's
+                    // fields. LABELLED: this host keeps the body rates (ctl+48h) as the
+                    // angular state, so the world vector ctl+24h..2Ch the body reads and
+                    // writes is taken through the pose rows at its first use (after the
+                    // core law) and handed back the same way once the body returns, as
+                    // water_law_tail does.
+                    class FreeFlightStepBinding final : public bsp::PlaneFreeFlightStepHost {
+                    public:
+                        explicit FreeFlightStepBinding(PlaneBinding& plane) : plane_(plane) {}
+                        ~FreeFlightStepBinding() override = default;
+                        // ctl+FCh: the ground law 007DCCF0 stores 1, this step 0; the
+                        // host's core law takes it as its `ground` argument.
+                        void set_controller_mode_fc(std::uint32_t mode) override { mode_fc_ = mode; }
+                        void copy_turbo_boost_bytes_9f9_9f8() override {
+                            // LABELLED: ctl+4h / +5h are read only inside 007DB680, and
+                            // the host's core law reads unit+9F9h / +9F8h
+                            // (plane_turbo_9f9 / plane_boost_9f8) at those uses.
                         }
-                    }
-                    // 007DCB4B-007DCCCB (packet p15_dying_spin, section 58).
-                    void free_flight_wreck_lift_007dcb4b(float step) {
-                        const float* const wv = unit_.plane_world_velocity;   // vtable[34h]
-                        const float v[3] = {wv[0], 0.0f, wv[2]};
-                        const float len = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);   // 0042B2F0
-                        const float h = bsp::clamped_interpolate_00419010(0.0f, 4.0f,
-                            69.44444274902344f, 20.0f, len);                               // 007DCBA3
-                        const float c64 = unit_.plane_pitch_angle_c64;
-                        const float t = c64 > 0.0f ? c64 : -0.0f - c64;
-                        float u = 1.0f - t;                                                // 007DCBEB
-                        const float c68 = unit_.plane_bank_angle_c68;
-                        const float aw = c68 > 0.0f ? c68 : -0.0f - c68;
-                        float p = 0.0f;
-                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                            // pc24w1-units-DE: 007DCC0F FMUL qword and 007DCC15 FADD
-                            // qword, each at PC24.
-                            namespace x8 = bsp::cc13x87;
-                            p = static_cast<float>(x8::x87_add24(
-                                x8::x87_mul24(aw, 0.800000011920929), 0.6000000238418579));
-                        } else {
-                            p = static_cast<float>(static_cast<double>(aw) * 0.800000011920929
-                                + 0.6000000238418579);                                     // 007DCC0B
+                        void core_law_007db680(float step, float a, float b, std::int32_t c) override {
+                            if (a != 0.0f || b != 0.0f || c != 0) {
+                                throw std::logic_error("007DB680: only 007DC830's (0, 0, 0) arguments are modelled");
+                            }
+                            plane_.run_core_law_007db680(step, mode_fc_ == 1u);
                         }
-                        if (0.0f > u) u = 0.0f;                                            // 007DCC23
-                        const float q = p > 1.0f ? 1.0f : p;                               // 007DCC3F
-                        float force = 0.0f;
-                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                            // pc24w1-units-DE: 007DCC88 and 007DCC9E FMUL, each at PC24.
-                            namespace x8 = bsp::cc13x87;
-                            force = static_cast<float>(x8::x87_mul24(x8::x87_mul24(q, u), h));
-                        } else {
-                            force = static_cast<float>(static_cast<double>(q) * u * h);    // 007DCC80
+                        float forward_speed_007d99c0() override {
+                            ++plane_.owner_.stall_force_steps;
+                            const float* const fr = plane_.unit_.motion.pose_row2;
+                            const float* const wv = plane_.unit_.plane_world_velocity;
+                            return plane_.owner_.plane_forward_speed_007d99c0(plane_.unit_,
+                                fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2]);
                         }
-                        const bsp::PlaneWaterPose pose = water_pose();
-                        float w[3];
-                        for (int c = 0; c < 3; ++c) {
-                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
-                                + pose.rows[1][c] * unit_.plane_body_angular[1]
-                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        float desc_stall_speed_184() override { return plane_.unit_.plane_stall_spd; }
+                        float desc_stall_rot_accel_17c() override {
+                            // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps
+                            // the descriptor's zero. Cached per class (LABELLED).
+                            static std::map<int, float> stall_rot_accel_by_class;
+                            const int type_id = plane_.unit_.row.type_id;
+                            auto it = stall_rot_accel_by_class.find(type_id);
+                            if (it == stall_rot_accel_by_class.end()) {
+                                it = stall_rot_accel_by_class.emplace(type_id,
+                                    plane_.owner_.lua.read_vehicle_class_number(type_id,
+                                        "StallRotAccel", 0.0f)).first;
+                            }
+                            return it->second;
                         }
-                        const float nose[3] = {0.0f, 0.0f, 1.0f};
-                        const float down[3] = {0.0f, -1.0f, 0.0f};
-                        bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1000.0f,
-                            pose.rows[0]);                                                  // 007DCCCB, 00CE3804
-                        for (int r2 = 0; r2 < 3; ++r2) {
-                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
-                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        // The Dynamics mirror is GameTuningBlock + (address - 00F870E0h):
+                        // StallRangeMin +22Ch is 00F8730C, StallMulOffPitch +288h is
+                        // 00F87368 (bsp/game_tuning_singleton.hpp).
+                        float dynamics_mirror_float(std::uint32_t address) override {
+                            const bsp::GameTuningBlock& g = plane_.owner_.lua.plane_globals();
+                            switch (address) {
+                            case 0x00F8730Cu: return g.dynamics_spd_multipliers_stall_range_min;
+                            case 0x00F87310u: return g.dynamics_spd_multipliers_stall_range_max;
+                            case 0x00F87314u: return g.dynamics_spd_multipliers_stall_off_pitch;
+                            case 0x00F87318u: return g.dynamics_spd_multipliers_stall_on_pitch;
+                            case 0x00F8734Cu: return g.dynamics_dead_meat_spin_stall_mul;
+                            case 0x00F87350u: return g.dynamics_dead_meat_spin_stall_mul_time;
+                            case 0x00F87354u: return g.dynamics_dead_meat_spin_stall_mul_on_pitch;
+                            case 0x00F87358u: return g.dynamics_dead_meat_spin_stall_mul_off_pitch;
+                            case 0x00F8735Cu: return g.dynamics_dead_meat_stall_mul;
+                            case 0x00F87360u: return g.dynamics_dead_meat_stall_mul_time;
+                            case 0x00F87364u: return g.dynamics_dead_meat_stall_mul_on_pitch;
+                            case 0x00F87368u: return g.dynamics_dead_meat_stall_mul_off_pitch;
+                            default: break;
+                            }
+                            throw std::logic_error("007DC830: Dynamics mirror address not mapped");
                         }
-                        ++owner_.wreck_lift_kicks;
-                    }
-                    // 007DC894-007DCB40: the stall block.
-                    void free_flight_stall_block_007dc894(float step) {
-                        if constexpr (!GameUnitsHost::Impl::kFreeFlightStallForceBound) {
-                            (void)step;
-                            return;
-                        } else {
-                        if (!owner_.lua.plane_globals_loaded() || !(unit_.plane_stall_spd > 0.0f)) return;
-                        const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
-                        const auto interp = bsp::clamped_interpolate_00419010;
-                        const float* const fr = unit_.motion.pose_row2;
-                        const float* const wv = unit_.plane_world_velocity;
-                        const float fwd = owner_.plane_forward_speed_007d99c0(unit_,
-                            fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2]);              // 007D99C0
-                        const float r = static_cast<float>(static_cast<double>(fwd) /
-                            static_cast<double>(unit_.plane_stall_spd));                  // 007DC878-007DC886
-                        const bool dead = unit_.plane_death_c3a
-                            || (unit_.state != nullptr && unit_.state->simulate != 0);      // unit+5Dh
-                        ++owner_.stall_force_steps;
-                        if (!(g.dynamics_spd_multipliers_stall_range_max > r) && !dead) return;   // 007DC894
-                        float m = interp(g.dynamics_spd_multipliers_stall_range_min, 1.0f,
-                            g.dynamics_spd_multipliers_stall_range_max, 0.0f, r);          // 007DC8C9
-                        const bool spinning = unit_.plane_death_c36 || unit_.plane_spin_right_c37;
-                        if (dead) {
-                            const float t = spinning
-                                ? interp(0.0f, 0.0f, g.dynamics_dead_meat_spin_stall_mul_time,
-                                         g.dynamics_dead_meat_spin_stall_mul, unit_.plane_lost_drag_timer_c3c)
-                                : interp(0.0f, 0.0f, g.dynamics_dead_meat_stall_mul_time,
-                                         g.dynamics_dead_meat_stall_mul, unit_.plane_lost_drag_timer_c3c);
-                            if (!(m > t)) m = t;                                           // 007DC955-007DC961
+                        // unit+5Dh: the death byte 007D0B80 sets, or the state's own
+                        // simulate flag.
+                        bool unit_dead_5d() override {
+                            const GameUnitSlot& u = plane_.unit_;
+                            return u.plane_death_c3a || (u.state != nullptr && u.state->simulate != 0);
                         }
-                        if (!(m > 0.0f)) return;                                           // 007DC970
-                        const float pitch = unit_.plane_pitch_angle_c64;
-                        float gp;
-                        if (!dead) {
-                            gp = interp(g.dynamics_spd_multipliers_stall_on_pitch, 1.0f,
-                                        g.dynamics_spd_multipliers_stall_off_pitch, 0.0f, pitch);   // 00F87318/00F87314
-                        } else if (spinning) {
-                            gp = interp(g.dynamics_dead_meat_spin_stall_mul_on_pitch, 1.0f,
-                                        g.dynamics_dead_meat_spin_stall_mul_off_pitch, 0.0f, pitch);
-                        } else {
-                            gp = interp(g.dynamics_dead_meat_stall_mul_on_pitch, 1.0f,
-                                        g.dynamics_dead_meat_stall_mul_off_pitch, 0.0f, pitch);
+                        // C36h (spinning, set by 007D0B80 for either wing) or C37h
+                        // (rightspinning); 007D104F's leftspinning C38h is not kept
+                        // apart from C36h here.
+                        bool unit_spinning_c36_c38() override {
+                            return plane_.unit_.plane_death_c36 || plane_.unit_.plane_spin_right_c37;
                         }
-                        float d = static_cast<float>(static_cast<double>(unit_.plane_airborne_908) - 1.0);  // 007DCA2B
-                        if (0.0f > d) d = 0.0f;
-                        else if (d > 1.0f) d = 1.0f;
-                        const float f = static_cast<float>(static_cast<double>(gp) * m * d);   // 007DCA6E
-                        const bool spin = GameUnitsHost::Impl::kFreeFlightDyingSpinBound && dead;
-                        if (!(f > 0.0f) && !spin) return;                                  // 007DCA82
-                        // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps the
-                        // descriptor's zero. Cached per class (LABELLED).
-                        static std::map<int, float> stall_rot_accel_by_class;
-                        auto it = stall_rot_accel_by_class.find(unit_.row.type_id);
-                        if (it == stall_rot_accel_by_class.end()) {
-                            it = stall_rot_accel_by_class.emplace(unit_.row.type_id,
-                                owner_.lua.read_vehicle_class_number(unit_.row.type_id,
-                                    "StallRotAccel", 0.0f)).first;
+                        float unit_c3c() override { return plane_.unit_.plane_lost_drag_timer_c3c; }
+                        float unit_pitch_c64() override { return plane_.unit_.plane_pitch_angle_c64; }
+                        float unit_bank_c68() override { return plane_.unit_.plane_bank_angle_c68; }
+                        float unit_airborne_908() override { return plane_.unit_.plane_airborne_908; }
+                        void apply_force_at_point_007dafd0(const float point[3], const float direction[3],
+                                                           float force, float step, float k) override {
+                            take_world_angular();
+                            // unit+674h, the degenerate-axis fallback, is pose row 0.
+                            bsp::water_angular_kick_007dafd0(w_, pose_, point, direction, force, step, k,
+                                                             pose_.rows[0]);
+                            if (k == 1000.0f) {
+                                ++plane_.owner_.wreck_lift_kicks;      // 007DCCCB
+                            } else {
+                                ++plane_.owner_.stall_force_kicks;     // 007DCAE6
+                            }
                         }
-                        const float force = static_cast<float>(static_cast<double>(f) * it->second);
-                        const bsp::PlaneWaterPose pose = water_pose();
-                        float w[3];
-                        for (int c = 0; c < 3; ++c) {
-                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
-                                + pose.rows[1][c] * unit_.plane_body_angular[1]
-                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        float* world_angular_24() override {
+                            take_world_angular();
+                            return w_;
                         }
-                        const float nose[3] = {0.0f, 0.0f, 1.0f};
-                        const float down[3] = {0.0f, -1.0f, 0.0f};                          // 00D7A260
-                        if (f > 0.0f) {
-                            bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1.5f,
-                                pose.rows[0]);                                              // 007DCAE6, 1.5f 00CE380C
-                            ++owner_.stall_force_kicks;
+                        const float* dying_spin_rates_f0() override {
+                            // 007D7EA0's draw, from the plane's keyed stream at first use.
+                            plane_.seed_dying_spin_007d7ea0(plane_.owner_.lua.plane_globals());
+                            ++plane_.owner_.dying_spin_steps;
+                            return plane_.unit_.dying_spin_f0;
                         }
-                        if (spin) {
-                            // 007DCAF2-007DCB40: ctl+24h..2Ch += step * ctl+F0h..F8h.
-                            seed_dying_spin_007d7ea0(g);
-                            const float a = step * unit_.dying_spin_f0[0];
-                            const float b = unit_.dying_spin_f0[1] * step;
-                            const float c = step * unit_.dying_spin_f0[2];
-                            w[0] = w[0] + a;
-                            w[1] = b + w[1];
-                            w[2] = w[2] + c;
-                            ++owner_.dying_spin_steps;
+                        bool wreck_lift_94() override { return plane_.unit_.plane_ctl_94; }
+                        // vtable[34h]: the world velocity.
+                        void unit_velocity_vcall_34(float out[3]) override {
+                            for (int i = 0; i < 3; ++i) out[i] = plane_.unit_.plane_world_velocity[i];
                         }
-                        for (int r2 = 0; r2 < 3; ++r2) {
-                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
-                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        void clear_controller_8c() override {
+                            // LABELLED: ctl+8Ch, the levelling input 007D9F60 reads; the
+                            // host's pose step keeps its own (packet cc9_plane_pose_first).
                         }
+                        // Hands ctl+24h back as body rates when the body used it.
+                        void hand_back_world_angular() {
+                            if (!have_world_) return;
+                            for (int r = 0; r < 3; ++r) {
+                                plane_.unit_.plane_body_angular[r] = pose_.rows[r][0] * w_[0]
+                                    + pose_.rows[r][1] * w_[1] + pose_.rows[r][2] * w_[2];
+                            }
+                            have_world_ = false;
                         }
+
+                    private:
+                        void take_world_angular() {
+                            if (have_world_) return;
+                            have_world_ = true;
+                            pose_ = plane_.water_pose();
+                            for (int c = 0; c < 3; ++c) {
+                                w_[c] = pose_.rows[0][c] * plane_.unit_.plane_body_angular[0]
+                                    + pose_.rows[1][c] * plane_.unit_.plane_body_angular[1]
+                                    + pose_.rows[2][c] * plane_.unit_.plane_body_angular[2];
+                            }
+                        }
+                        PlaneBinding& plane_;
+                        std::uint32_t mode_fc_{0};
+                        bool have_world_{false};
+                        bsp::PlaneWaterPose pose_{};
+                        float w_[3]{0.0f, 0.0f, 0.0f};
+                    };
+                    void free_flight_step_007dc830(float step) {
+                        FreeFlightStepBinding binding(*this);
+                        bsp::cc13_front3_plane_flight_free_flight_step_007dc830(step, binding);
+                        binding.hand_back_world_angular();
+                        owner_.done("PlaneFlight::free_flight_step_007dc830", 0x007dc830u);
                     }
                     // 007D7EA0's dying-spin draw (007D7F90, then 0043996D / 0043998D in
                     // 00439950), from the plane's keyed stream at first use.
@@ -22023,6 +22627,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.dying_spin_f0[2] = d[2] * m;   // 007D7FB6
                         ++owner_.dying_spin_seeds;
                     }
+                    // 007DD493-007DD9AA after the rate law, on the world angular
+                    // velocity ctl+24h. LABELLED: this host keeps the body rates
+                    // (ctl+48h) as the state, so the world vector is taken through
+                    // the pose rows and handed back the same way. The horizontal
+                    // speed (vtable[+34h]) is the world velocity with y zeroed;
+                    // unit+674h, the degenerate-axis fallback, is pose row 0.
                     void water_law_tail(float step, float forward_speed) {
                         const bsp::PlaneWaterPose pose = water_pose();
                         float w[3];

@@ -31,6 +31,12 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_text.hpp"            // 00ABB877, the counters' Text Align
+#include "bsp/gui_widget.hpp"          // 00AA6750 / 00AA8240 arithmetic
+#include "bsp/band_0050_cc13.hpp"      // 005292E0 / 005290D0 / 00529350
+#include "bsp/hud_counters_screen.hpp" // 0052BAA0 / 00528C40 / 00528C50
+#include "bsp/session_context_cc13.hpp"
+#include "bsp/world_ocean.hpp"         // 004B6260
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ocean_spectrum.hpp"
@@ -52,6 +58,26 @@
 #include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"    // 0068CC70 leaf screens 005178B0, 00565D40
+#include "bsp/frontend_seg15_22_cc13.hpp"    // 0052B030, 005D3540
+#include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
+#include "bsp/seg25_cc13.hpp"                // 0060FD90, 00611750
+#include "bsp/cc13_front4.hpp"               // 006529E0
+#include "bsp/cc13_front5.hpp"               // 00652A30, 00652A20, 00652A50, 006529C0, 006529B0
+#include "bsp/view_seg14_cc13.hpp"           // 0051E950
+#include "bsp/seg27_cc13.hpp"                // 006735D0
+#include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
+#include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
+#include "bsp/cg_rebuild_b_cc13.hpp"         // 005BA7B0
+#include "bsp/gameplay_effect_sound.hpp"     // 005B9AF0, 005BA7B0's sample append
+#include "bsp/sound_sample_runtime.hpp"      // [00F8BBE8] for 005BA7B0
+#include "bsp/singleton_lifetime.hpp"        // 005B9D40's 00BF6989 on the 33h samples
+#include "bsp/cc13_sweepB6.hpp"              // 005FA0F0
+#include "bsp/game_native_string_process.hpp"  // the leaf registers' string temporaries
+#include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
+#include "bsp/cc13_left61.hpp"               // 0093CB10, 00538E30's scene member
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
 
@@ -69,6 +95,10 @@
 #include "bsp/sound_manager_levels.hpp"
 #include "bsp/sound_class_ownership.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_pooled_string_substring.hpp"  // 00426060, the counters tick's copies
+#include "bsp/native_session_message35.hpp"        // HUD message 23h (0052B620 / 0052AF50)
+#include "bsp/engine_seg43_45_cc13.hpp"            // 00772330
+#include "bsp/cc13_sweepB4.hpp"                    // 00529D70 / 0052A100 / 0052A470
 #include "bsp/fmod_configuration_library.hpp"
 
 #include <algorithm>
@@ -77,8 +107,14 @@
 #include <cstdio>
 #include <cstring>
 #include <cstddef>
+#include <deque>
+#include <functional>
+#include <intrin.h>
 #include <map>
 #include <memory>
+#include <new>
+#include <optional>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -226,9 +262,1672 @@ private:
 };
 
 // Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
-// (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
+// (GameHudHost::bind_sound_runtime), and the pool their temporary names use. Goal 5
+// chain 635: also [00F8BBE8], the sample cache screen 33h's constructor fills from.
 GameSoundRuntime* g_hud_sound_runtime = nullptr;
 NativeStringStorage* g_hud_sound_strings = nullptr;
+
+// 0068CC70's operator new(size) for a HUD screen whose leaf constructor is
+// reconstructed and needs only the 004F7180 base (plus, for 00606470 and
+// 00608E60, its own 00BF681B blocks and 0064A4F0). The block is this owner's
+// for the HUD's lifetime, like the root and scene-init screens above. As for
+// those two, the front-end base's two flag bytes at +4h/+5h are an actual
+// FrontEndScreen, so the registry borrows the very base the leaf constructed
+// (register_in_game_screen's constructed_flags) instead of a second copy.
+// The block is zeroed; the native allocation is not, and nothing reads a
+// byte the leaf did not store before the screen's own register runs.
+class HudLeafScreenStorage {
+public:
+    explicit HudLeafScreenStorage(std::size_t size_bytes)
+        : bytes_(std::make_unique<std::uint8_t[]>(size_bytes)), size_(size_bytes) {
+        if (size_bytes < 6) throw std::logic_error("0068CC70 leaf screen smaller than its base");
+        flags_ = ::new (static_cast<void*>(bytes_.get() + 4)) FrontEndScreen{};
+    }
+    std::uint8_t* data() const noexcept { return bytes_.get(); }
+    FrontEndScreen& flags() const noexcept { return *flags_; }
+    bool contains(const void* p, std::size_t bytes) const noexcept {
+        const auto* b = static_cast<const std::uint8_t*>(p);
+        return b >= data() && bytes <= size_ && b <= data() + (size_ - bytes);
+    }
+    // 00BF681B blocks the leaf constructor stores into its own fields (the
+    // two 14h flash records of 00606470); the native destructor frees them.
+    void* allocate_owned(std::size_t bytes) {
+        owned_.push_back(std::make_unique<std::uint8_t[]>(bytes));
+        return owned_.back().get();
+    }
+    // 00BF6989 on a block allocate_owned handed out (the counters screen's
+    // pointer arrays grow through 00529700); _free(null) does nothing.
+    void release_owned(void* block) {
+        if (block == nullptr) return;
+        for (auto it = owned_.begin(); it != owned_.end(); ++it) {
+            if (it->get() == block) {
+                owned_.erase(it);
+                return;
+            }
+        }
+        throw std::logic_error("00BF6989 frees a block this HUD screen does not own");
+    }
+
+private:
+    std::unique_ptr<std::uint8_t[]> bytes_;
+    std::size_t size_;
+    FrontEndScreen* flags_{nullptr};
+    std::vector<std::unique_ptr<std::uint8_t[]>> owned_;
+};
+
+// 004F7180 on a leaf's own block (bsp.py show 004f7180): the base vtable
+// 00CEAE54, then both flag bytes cleared. The leaf replaces the vtable.
+void construct_leaf_screen_base(HudLeafScreenStorage& screen, const void* p) {
+    if (p != screen.data())
+        throw std::logic_error("004F7180 base belongs to a different HUD screen");
+    bsp::construct_front_end_screen_004f7180(screen.flags());
+    std::memcpy(screen.data(), &bsp::kFrontEndScreenBaseVtable, sizeof(std::uint32_t));
+}
+
+// One adapter per narrow host the leaf constructors take; each has the single
+// 004F7180 service.
+class HudLeafGuiBaseBinding final : public bsp::ingame_gui_cc13::HudScreenBaseHost {
+public:
+    explicit HudLeafGuiBaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+class HudLeafSeg14BaseBinding final : public bsp::cc13_seg14::FrontEndScreenBaseHooks {
+public:
+    explicit HudLeafSeg14BaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+template <class Host>
+class HudLeafVoidBaseBinding final : public Host {
+public:
+    explicit HudLeafVoidBaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// The Fe5Host leaves: 004F7180, 00608E60's 0064A4F0 on its +16Ch member and
+// 00606470's two operator new(14h). Every other Fe5Host service stays the
+// base's loud failure.
+class HudLeafFe5Binding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    explicit HudLeafFe5Binding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::cc13_fe5::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void widget_quad_fade_construct_0064a4f0(bsp::cc13_fe5::Raw fade) override {
+        if (!screen_.contains(fade.p, 0x24))
+            throw std::logic_error("0064A4F0 fade is not a member of this HUD screen");
+        bsp::ingame_gui_cc13::hud_widget_quad_fade_construct_0064a4f0(fade);
+    }
+    void* operator_new(std::size_t bytes) override { return screen_.allocate_owned(bytes); }
+private:
+    HudLeafScreenStorage& screen_;
+};
+
+// The STL head-node allocators (_Buyheadnode) the leaf constructors call for
+// their embedded containers. Each row was read from its listing (bsp.py show
+// <routine> --asm): operator new(size) 00BF681B, then a list head stores its
+// own address at +0h/+4h, or a tree head clears +0h/+4h/+8h and stores 1 at
+// isnil-1 (colour) and 0 at isnil. The constructor then links a tree head to
+// itself and sets isnil, as the native _Tree constructor does.
+struct HudHeadNodeShape {
+    std::uint32_t routine;
+    std::uint8_t size;
+    std::uint8_t isnil;  // 0: a list head
+};
+constexpr HudHeadNodeShape kHudHeadNodeShapes[] = {
+    {0x0063B110u, 0x14, 0x11}, {0x006593A0u, 0x14, 0}, {0x00659B90u, 0x24, 0x21},
+    {0x00659B40u, 0x18, 0x15}, {0x00659480u, 0x0C, 0}, {0x00659550u, 0x0C, 0},
+    {0x006595C0u, 0x10, 0}, {0x00659350u, 0x14, 0}, {0x00659630u, 0x0C, 0},
+    {0x006596A0u, 0x1C, 0}, {0x0059FD60u, 0x0C, 0}, {0x004E79F0u, 0x14, 0},
+    {0x006596C0u, 0x0C, 0}, {0x004870F0u, 0x0C, 0}, {0x004C1630u, 0x0C, 0},
+    {0x00659760u, 0x1C, 0}, {0x00659EB0u, 0x18, 0x15}, {0x00659F40u, 0x20, 0x1D},
+    {0x005828E0u, 0x18, 0x15}, {0x00659F90u, 0x18, 0x15}, {0x005BDD40u, 0x18, 0x15},
+    {0x005359A0u, 0x18, 0x15}, {0x00535720u, 0x0C, 0}, {0x005356C0u, 0x0C, 0},
+    {0x0053DA70u, 0x3C, 0}, {0x005CC2E0u, 0x18, 0x15}, {0x005CC330u, 0x24, 0x21},
+    {0x00613AE0u, 0x1C, 0x19}, {0x00613B30u, 0x18, 0x15}, {0x00613860u, 0x0C, 0},
+    {0x005FD1B0u, 0x1C, 0x19}, {0x00582280u, 0x0C, 0}, {0x004C3020u, 0x10, 0},
+    {0x005A0220u, 0x14, 0x11}, {0x005A0270u, 0x18, 0x15},
+    // 005B7550: PUSH 0Ch, CALL 00BF681B, then [EAX] = EAX and [EAX+4] = EAX.
+    {0x005B7550u, 0x0C, 0},
+};
+void* buy_hud_head_node(HudLeafScreenStorage& screen, std::uint32_t routine) {
+    for (const HudHeadNodeShape& shape : kHudHeadNodeShapes) {
+        if (shape.routine != routine) continue;
+        auto* const node = static_cast<std::uint8_t*>(screen.allocate_owned(shape.size));
+        if (shape.isnil == 0) {
+            std::memcpy(node, &node, sizeof(node));
+            std::memcpy(node + 4, &node, sizeof(node));
+        } else {
+            std::memset(node, 0, 0x0C);
+            node[shape.isnil - 1] = 1;
+            node[shape.isnil] = 0;
+        }
+        return node;
+    }
+    throw std::logic_error("HUD leaf screen head-node routine not read from its listing");
+}
+
+// 00640C80's tree head is bought by its caller here (the reconstruction takes
+// it as a parameter; natively 00640C80 calls 0063B110 itself at 00640D0D).
+void construct_hud_markers_leaf(HudLeafScreenStorage& screen) {
+    HudLeafGuiBaseBinding b(screen);
+    bsp::ingame_gui_cc13::hud_markers_construct_00640c80({screen.data()}, b,
+        buy_hud_head_node(screen, 0x0063B110u));
+}
+
+// 00538E30, 00540BA0 (with 005401F0) and 005CE610.
+class HudLeafSeg15Binding final : public bsp::frontend_seg15_22_cc13::Seg15LeafConstructHost {
+public:
+    explicit HudLeafSeg15Binding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void* operator_new_00bf681b(std::size_t bytes) override { return screen_.allocate_owned(bytes); }
+    void simple_3d_scene_construct_0093cb10(bsp::ingame_gui_cc13::Raw scene) override {
+        if (!screen_.contains(scene.p, 0x28))
+            throw std::logic_error("0093CB10 scene is not a member of this HUD screen");
+        bsp::cc13_left61::simple_3d_scene_construct_0093cb10({scene.p});
+    }
+    void* tree_buy_head_node_005359a0() override { return buy_hud_head_node(screen_, 0x005359A0u); }
+    void* list_buy_head_node(std::uint32_t routine) override { return buy_hud_head_node(screen_, routine); }
+    void* list_buy_head_node_0053da70() override { return buy_hud_head_node(screen_, 0x0053DA70u); }
+    void* tree_buy_head_node(std::uint32_t routine) override { return buy_hud_head_node(screen_, routine); }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 005C0810.
+class HudLeafMinimapBinding final : public bsp::cc13_fe1::MinimapConstructHost {
+public:
+    explicit HudLeafMinimapBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void* tree_buy_head_node_005bdd40(void* tree) override {
+        if (!screen_.contains(tree, 0x0C))
+            throw std::logic_error("005BDD40 tree is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, 0x005BDD40u);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 0061A480.
+class HudLeafPowerupBinding final : public bsp::seg25_cc13::PowerupManagerConstructHost {
+public:
+    explicit HudLeafPowerupBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void* container_buy_head_node(std::uint32_t function, void* container) override {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("0061A480 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, function);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// 006735D0.
+class HudLeafSupportBinding final : public bsp::seg27_cc13::SupportScreenConstructHost {
+public:
+    explicit HudLeafSupportBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void* container_buy_head_node(std::uint32_t routine, void* container) override {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("006735D0 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, routine);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+
+// 00683610 writes the scroller in place at the screen's own offset, so the
+// typed scroller must have the native 5Ch layout (bsp.py show 00683610 --asm).
+static_assert(sizeof(bsp::FrontEndScreenScroller) == 0x5C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, scroll_range) == 0x0C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, auto_scroll) == 0x20);
+static_assert(offsetof(bsp::FrontEndScreenScroller, thumb_widget) == 0x28);
+static_assert(offsetof(bsp::FrontEndScreenScroller, thumb_min_height) == 0x40);
+static_assert(offsetof(bsp::FrontEndScreenScroller, dragging) == 0x48);
+static_assert(offsetof(bsp::FrontEndScreenScroller, drag_anchor_cursor_x) == 0x4C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, drag_anchor_thumb_offset) == 0x54);
+static_assert(offsetof(bsp::FrontEndScreenScroller, auto_scroll_overridden) == 0x58);
+static_assert(offsetof(bsp::FrontEndScreenScroller, tint_widgets) == 0x5B);
+
+// 005FFCB0.
+class HudLeafPauseBinding final : public bsp::cc13_fe1::PauseConstructHost {
+public:
+    explicit HudLeafPauseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void scroller_construct_00683610(void* scroller) override {
+        if (!screen_.contains(scroller, sizeof(bsp::FrontEndScreenScroller)))
+            throw std::logic_error("00683610 scroller is not a member of this HUD screen");
+        // The object begins its life here, at +9Ch of the zeroed block. 00683610
+        // leaves +4Ch/+50h as operator new returned them; here they stay zero.
+        auto* const typed = ::new (scroller) bsp::FrontEndScreenScroller;
+        bsp::construct_front_end_screen_scroller_00683610(*typed);
+    }
+    void* list_allocate_sentinel_00582280(void* list) override { return head(list, 0x00582280u); }
+    void* tree_buy_head_node_005fd1b0(void* tree) override { return head(tree, 0x005FD1B0u); }
+    void* string_list_allocate_sentinel_004c3020(void* list) override { return head(list, 0x004C3020u); }
+private:
+    void* head(void* container, std::uint32_t routine) {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("005FFCB0 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, routine);
+    }
+    HudLeafScreenStorage& screen_;
+};
+
+// 005AAEF0.
+class HudLeafSweepB2Binding final : public bsp::InGameInterfaceScreenConstructHost {
+public:
+    explicit HudLeafSweepB2Binding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_screen_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void simple3d_scene_construct_0093cb10(void* scene) override {
+        if (!screen_.contains(scene, 0x28))
+            throw std::logic_error("0093CB10 scene is not a member of this HUD screen");
+        bsp::cc13_left61::simple_3d_scene_construct_0093cb10({static_cast<std::uint8_t*>(scene)});
+    }
+    void* stl_buy_head_node_005a0220(void* c) override { return head(c, 0x005A0220u); }
+    void* stl_buy_head_node_005356c0(void* c) override { return head(c, 0x005356C0u); }
+    void* stl_buy_head_node_005359a0(void* c) override { return head(c, 0x005359A0u); }
+    void* stl_buy_head_node_005a0270(void* c) override { return head(c, 0x005A0270u); }
+private:
+    void* head(void* container, std::uint32_t routine) {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("005AAEF0 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, routine);
+    }
+    HudLeafScreenStorage& screen_;
+};
+
+// 005BA7B0, screen 33h (narrative, manager +A4h, E8h bytes; goal 5 chain 635).
+// Its calls (bsp.py show 005ba7b0 --asm, src/cg_rebuild_b_cc13.cpp): the 004F7180
+// base; the EH constructor iterator over the one 18h voice slot at +8h (ctor
+// 005B7FA0, dtor 005B7FC0); 005B7550 on the list at +64h; then for each of the five
+// warning radio banks a pooled NativeString temporary (0041DD40 resize, 00BF7680
+// copy, 00419CC0/00BD1510 release), 00A83FD0 on [00F8BBE8] and 005B9AF0 onto the
+// retained samples at +A0h, dropping the cache's temporary reference
+// (InterlockedDecrement [00CE2220], vtable +0 at zero). The cache, the samples'
+// final release and the pool are this process's sound runtime (g_hud_sound_runtime,
+// the same [00F8BBE8] the message manager's 00704590 banks use) and the HUD's string
+// pool. The constructor runs no other host service.
+//
+// Lifetime: the five references stay in +A0h for the HUD's life, as on the native
+// screen. release_hud_narrative_leaf_samples drops them when the HUD dies, as the
+// destructor 005B9D40 does (see there).
+class HudLeafNarrativeBinding final : public bsp::cg_rebuild_b_cc13::CgRebuildBHost {
+public:
+    using NativeStringImage = bsp::cg_rebuild_b_cc13::NativeStringImage;
+    using CheckedIterImage = bsp::cg_rebuild_b_cc13::CheckedIterImage;
+
+    HudLeafNarrativeBinding(HudLeafScreenStorage& screen, GameSoundRuntime& sound,
+        NativeStringStorage& strings)
+        : screen_(screen), sound_(sound), strings_(strings) {}
+
+    void* global_ptr(std::uint32_t address) override {
+        // 005BA899: MOV ECX,[00F8BBE8], the current sample cache 00A83FD0 scans.
+        if (address == 0x00F8BBE8u) return &sound_.samples().current_sample_cache_00f8bbe8();
+        unused("an image global other than [00F8BBE8]");
+    }
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+    void eh_vector_constructor_iterator_00bf7cd1(void* first, std::uint32_t size,
+        std::uint32_t count, std::uint32_t ctor, std::uint32_t dtor) override {
+        // 005BA7E3..005BA7F5: PUSH 005B7FC0, PUSH 005B7FA0, PUSH 1, PUSH 18h, +8h.
+        if (ctor != 0x005B7FA0u || dtor != 0x005B7FC0u || size != 0x18 || count != 1
+            || !screen_.contains(first, size * count))
+            throw std::logic_error("005BA7B0 iterated an unexpected voice slot array");
+        // 005B7FA0 is noexcept, so the iterator's unwind (005B7FC0) never runs.
+        for (std::uint32_t i = 0; i != count; ++i)
+            bsp::cc13_fe1::record14_clear_005b7fa0(static_cast<std::uint8_t*>(first) + i * size);
+    }
+    void* list_buy_head_node_005b7550(void* list) override {
+        if (!screen_.contains(list, 0x0C))
+            throw std::logic_error("005B7550 list is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, 0x005B7550u);
+    }
+    void native_string_resize_0041dd40(NativeStringImage* string, std::uint32_t length,
+        std::int32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(string, strings_, length, preserve != 0);
+    }
+    void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t count) override {
+        std::memcpy(destination, source, count);
+    }
+    void* sized_pool_get_00419cc0() override { return &strings_; }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+        std::int32_t flag) override {
+        // The inlined NativeString release: length + 1 bytes back with flag 1.
+        if (pool != &strings_ || flag != 1)
+            throw std::logic_error("005BA7B0 returned a block to an unexpected pool");
+        strings_.release(static_cast<char*>(data), bytes);
+    }
+    void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out,
+        const NativeStringImage* name) override {
+        SoundSampleRuntime& samples = sound_.samples();
+        SoundAuxiliaryTreeOwner& current = samples.current_sample_cache_00f8bbe8();
+        if (cache != &current)
+            throw std::logic_error("00A83FD0 called on a cache other than [00F8BBE8]");
+        // NativeStringImage is the native {length, data} header NativeString owns.
+        static_assert(sizeof(NativeString) == sizeof(NativeStringImage));
+        return bsp::acquire_sound_sample_00a83fd0(current, *out,
+            *reinterpret_cast<const NativeString*>(name), samples.sample_cache_context());
+    }
+    void effect_sound_samples_append_005b9af0(void* samples, void** slot) override {
+        if (!screen_.contains(samples, 0x0C))
+            throw std::logic_error("005B9AF0 samples are not a member of this HUD screen");
+        bsp::append_effect_sound_sample_005b9af0(samples, slot, sound_.samples());
+    }
+    std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) override {
+        return _InterlockedDecrement(reinterpret_cast<volatile long*>(value));
+    }
+    void refcounted_vtable0_release(void* object) override {
+        // D5B074's vtable +0 (00A82E80): the sample's final release.
+        sound_.samples().zero_references_slot_00(object);
+    }
+
+    // Nothing else is reached from 005BA7B0.
+    void global_store_u32(std::uint32_t, std::uint32_t) override { unused("global_store_u32"); }
+    const char* image_cstring_table_entry(std::uint32_t) override { unused("an image string table"); }
+    void free_00bf65ac(void*) override { unused("00BF65AC"); }
+    void free_00bf6989(void*) override { unused("00BF6989"); }
+    void* operator_new_00bf681b(std::uint32_t) override { unused("00BF681B"); }
+    void invalid_parameter_00bf6713() override { unused("00BF6713"); }
+    void eh_vector_destructor_iterator_00bf7c6e(void*, std::uint32_t, std::uint32_t,
+        std::uint32_t) override { unused("00BF7C6E"); }
+    std::int32_t interlocked_increment_00ce221c(std::int32_t*) override { unused("[00CE221C]"); }
+    void leave_critical_section_00ce2210(void*) override { unused("[00CE2210]"); }
+    void delete_critical_section_00ce2214(void*) override { unused("[00CE2214]"); }
+    void stl_tree_erase_range(std::uint32_t, void*, CheckedIterImage*, CheckedIterImage,
+        CheckedIterImage) override { unused("an STL tree erase"); }
+    void stl_tree_iterator_increment(std::uint32_t, CheckedIterImage*) override {
+        unused("an STL tree iterator");
+    }
+    void object_vtable0_scalar_dtor(void*, std::uint32_t) override { unused("a scalar dtor"); }
+    void front_end_screen_destruct_004f71a0(void*) override { unused("004F71A0"); }
+    void* gui_manager_get_or_create_004c12b0() override { unused("004C12B0"); }
+    void gui_manager_remove_and_destroy_page_00aa31f0(void*, void*) override { unused("00AA31F0"); }
+    void node_list_clear_005234f0(void*) override { unused("005234F0"); }
+    void callback_owner_destroy_00695870(void*) override { unused("00695870"); }
+    void observer_endpoint_destruct_00695760(void*) override { unused("00695760"); }
+    void container_init_00525a10(void*) override { unused("00525A10"); }
+    std::uint32_t sound_manager_find_class_00a7acf0(void*, const NativeStringImage*) override {
+        unused("00A7ACF0");
+    }
+    std::uint32_t sound_manager_find_type_00a7b0a0(void*, const NativeStringImage*) override {
+        unused("00A7B0A0");
+    }
+    void owned_object_list_clear_005b7840(void*) override { unused("005B7840"); }
+    void list_tidy_005b7570(void*) override { unused("005B7570"); }
+    void list_clear_005b77f0(void*) override { unused("005B77F0"); }
+    void voice_slot_stop_007026f0(void*) override { unused("007026F0"); }
+    void effect_sound_samples_resize_005b8fa0(void*, std::uint32_t) override { unused("005B8FA0"); }
+    void debug_text_list_destroy_rows_00543e00(void*) override { unused("00543E00"); }
+    void member_teardown_00544a70(void*) override { unused("00544A70"); }
+    void debug_text_list_destruct_00590250(void*) override { unused("00590250"); }
+    void cheat_menu_destroy_members_0051f910(void*) override { unused("0051F910"); }
+    void list_tidy_005822a0(void*) override { unused("005822A0"); }
+    void text_listener_base_destroy_00a97140(void*) override { unused("00A97140"); }
+    void main_menu_release_mission_preview_005830a0(void*) override { unused("005830A0"); }
+    void native_string_range_destroy_00432050(void*, void*, void*, void*) override { unused("00432050"); }
+    void native_string_vector_resize_00427110(void*, std::uint32_t) override { unused("00427110"); }
+    void warning_manager_clear_waiting_queue_0096bf70(void*) override { unused("0096BF70"); }
+    void member_teardown_0097a190(void*) override { unused("0097A190"); }
+
+private:
+    [[noreturn]] static void unused(const char* what) {
+        throw std::logic_error(std::string("005BA7B0 does not reach ") + what);
+    }
+    HudLeafScreenStorage& screen_;
+    GameSoundRuntime& sound_;
+    NativeStringStorage& strings_;
+};
+
+// 0068CC70's leaf 33h needs the started sound runtime its samples come from; the
+// image's cache exists from the sound startup on, before any mission is built.
+void construct_hud_narrative_leaf(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    NativeStringStorage* const strings = g_hud_sound_strings;
+    if (sound == nullptr || strings == nullptr || !sound->started())
+        throw std::logic_error("005BA7B0 needs the started sound runtime that owns [00F8BBE8]");
+    HudLeafNarrativeBinding b(screen, *sound, *strings);
+    bsp::cg_rebuild_b_cc13::hud_narrative_screen_construct_005ba7b0(screen.data(), b);
+}
+
+// 005B9D40's sample release on the 33h block (005B9E02..005B9E19): 005B8FA0
+// resizes the samples at +A0h to 0, dropping each reference (D5B074's vtable +0,
+// 00A82E80, when one reaches zero), then 00BF6989 frees the data 0086E770's reserve
+// allocated (singleton_lifetime_allocate, so singleton_lifetime_free here). The
+// header is zeroed after, since the block outlives this call by a moment. The rest
+// of 005B9D40 (005B7840, 007026F0, the three page removals, the NativeStrings, the
+// +94h vector, the +54h/+64h lists, 005B7FC0, 004F71A0) is not run: the block's
+// +20h/+24h/+28h page slots were never filled (005BB130 stays generic) and its
+// lists and strings hold nothing the constructor did not leave empty.
+// The sound runtime is still bound and started here: the menu host owning this HUD
+// is deleted before the singleton drain retires the sample cache and the sound owner
+// (game_hosts.cpp: application_shutdown's `delete menu_` at 4121 runs before
+// destroy_singleton_lifetime_manager's drain at 4197, winmain_startup.cpp 231..233;
+// on the exceptional path `delete menu_` at 2673 precedes the drain at 2691,
+// bind_sound_runtime(nullptr) at 2744 and sound_.reset() at 2745).
+void release_hud_narrative_leaf_samples(HudLeafScreenStorage& screen) {
+    GameSoundRuntime* const sound = g_hud_sound_runtime;
+    if (sound == nullptr || !sound->started())
+        throw std::logic_error("005B9D40's sample release needs the sound runtime that owns [00F8BBE8]");
+    std::uint8_t* const samples = screen.data() + 0xA0;
+    bsp::resize_effect_sound_samples_005b8fa0(samples, 0, sound->samples());  // 005B9E11
+    void* data = nullptr;
+    std::memcpy(&data, samples, sizeof(data));
+    bsp::singleton_lifetime_free(data);                                       // 005B9E19
+    std::memset(samples, 0, 0x0C);
+}
+
+const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
+    for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
+        if (shape.construct == constructor) return shape;
+    throw std::logic_error("no small HUD screen shape for this constructor");
+}
+
+// The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
+constexpr std::array<std::uint32_t, 31> kHudLeafScreenConstructors{{
+    0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005AAEF0u, 0x005C0810u,
+    0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
+    0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CC120u,
+    0x005CB0A0u, 0x005FFCB0u,
+    0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
+    0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
+    0x005F9440u, 0x0067BE30u, 0x005BA7B0u,
+}};
+bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
+    return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
+        constructor) != kHudLeafScreenConstructors.end();
+}
+
+// 0068CC70's `call constructor` on the block allocate_screen made.
+void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenStorage& screen) {
+    std::uint8_t* const p = screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    switch (constructor) {
+    case 0x0067BE30u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::follow_screen_construct_0067be30(raw, b); return; }
+    case 0x00643DA0u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::spectator_construct_00643da0(raw, b); return; }
+    case 0x00650140u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::submarine_construct_00650140(raw, b); return; }
+    case 0x00650B00u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::periscope_construct_00650b00(raw, b); return; }
+    case 0x0052B030u: { HudLeafGuiBaseBinding b(screen); bsp::frontend_seg15_22_cc13::hud_counters_construct_0052b030(raw, b); return; }
+    case 0x005D3540u: { HudLeafGuiBaseBinding b(screen); bsp::frontend_seg15_22_cc13::pause_multi_construct_005d3540(raw, b); return; }
+    case 0x00565D40u: { HudLeafGuiBaseBinding b(screen); bsp::cc13_fe3::hud_limbo_construct_00565d40(raw, b); return; }
+    case 0x005178B0u: { HudLeafGuiBaseBinding b(screen); bsp::cc13_fe3::in_game_screen_23_construct_005178b0(raw, b); return; }
+    case 0x0051E950u: { HudLeafSeg14BaseBinding b(screen); bsp::cc13_seg14::binoculars_screen_construct_0051e950(p, b); return; }
+    case 0x005EE440u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_objectives_construct_005ee440(p, b); return; }
+    case 0x005F9440u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_order_construct_005f9440(p, b); return; }
+    case 0x00604780u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_pause_cheat_construct_00604780(p, b); return; }
+    case 0x005CB0A0u: { HudLeafVoidBaseBinding<bsp::frontend_seg19_21_cc13::FrontEndScreenConstructHost> b(screen); bsp::frontend_seg19_21_cc13::hud_engine_movie_screen_construct_005cb0a0(p, b); return; }
+    case 0x0060FD90u: { HudLeafVoidBaseBinding<bsp::seg25_cc13::FrontEndScreenConstructHost> b(screen); bsp::seg25_cc13::hud_scoring_screen_construct_0060fd90(p, b); return; }
+    case 0x005472F0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::screen2e_construct_005472f0(raw, b); return; }
+    case 0x0054F8C0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::idle_camera_screen_construct_0054f8c0(raw, b); return; }
+    case 0x00608E60u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::plane_screen_construct_00608e60(raw, b); return; }
+    case 0x00606470u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::plane_effects_construct_00606470(raw, b); return; }
+    case 0x0060CAE0u:
+    case 0x0068A8A0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::small_hud_screen_construct(small_hud_shape(constructor), raw, b); return; }
+    case 0x00640C80u: construct_hud_markers_leaf(screen); return;
+    case 0x00538E30u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::hud_formation_construct_00538e30(raw, b); return; }
+    case 0x00540BA0u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::free_camera_construct_00540ba0(raw, b); return; }
+    case 0x005CE610u: { HudLeafSeg15Binding b(screen); bsp::frontend_seg15_22_cc13::movie_camera_debug_construct_005ce610(raw, b); return; }
+    case 0x005C0810u: { HudLeafMinimapBinding b(screen); bsp::cc13_fe1::hud_minimap_screen_construct_005c0810(p, b); return; }
+    case 0x0061A480u: { HudLeafPowerupBinding b(screen); bsp::seg25_cc13::powerup_manager_construct_0061a480(p, b); return; }
+    case 0x006735D0u: { HudLeafSupportBinding b(screen); bsp::seg27_cc13::support_manager_screen_construct_006735d0(raw, b); return; }
+    case 0x005CC120u: { HudLeafVoidBaseBinding<bsp::frontend_seg19_21_cc13::FrontEndScreenConstructHost> b(screen); bsp::frontend_seg19_21_cc13::hud_movie_screen_construct_005cc120(p, b); return; }
+    case 0x005FFCB0u: { HudLeafPauseBinding b(screen); bsp::cc13_fe1::hud_pause_screen_construct_005ffcb0(p, b); return; }
+    case 0x005AAEF0u: { HudLeafSweepB2Binding b(screen); bsp::cc13_sweepB2_ingame_interface_screen_construct_005aaef0(p, b); return; }
+    case 0x005BA7B0u: construct_hud_narrative_leaf(screen); return;
+    default: break;
+    }
+    throw std::logic_error("0068CC70 leaf constructor listed but not bound");
+}
+
+// The leaf register overrides (+10h, kHudScreenLayouts) that run on their
+// blocks: each is 004F71D0 and at most one page load (bsp.py show <address>
+// --asm; 0060D1C0, 00565EE0 and 0051ED60 build the name in a native-string temporary),
+// and each page is the one kHudScreenLayouts lists for the slot. 0067BE80,
+// 00650170 and 005F9FF0 also call the screen's +14h layout virtual
+// (run_hud_leaf_screen_layout). 005CCE70 (38h) loads its page and two children
+// and reads the platform object's widescreen byte. 00643E80 (43h) loads
+// GUI_spectator into +8h and then stores +4h = 1 (00643F26), the wanted byte of
+// the flags the registry borrows. 0052CBF0 (51h, goal 5 chain 662) loads
+// GUI_counters into +8h and builds its two counter entries.
+constexpr std::array<std::uint32_t, 14> kHudLeafScreenRegisters{{
+    0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
+    0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u, 0x00643E80u, 0x0052CBF0u,
+}};
+bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
+    return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
+        register_virtual) != kHudLeafScreenRegisters.end();
+}
+
+// What a leaf register's 004F71D0 and 00AA5840 reach: the registry the
+// menu owner keeps (registering this block's own base flags) and the page
+// that registry loads for the slot. The page root is what 00AA5840 returns.
+struct HudLeafRegisterContext {
+    HudLeafScreenStorage& screen;
+    GameMenuHost& menu;
+    int slot;
+    std::string name;
+    std::uint32_t register_virtual;
+    std::uint32_t layout_virtual;
+
+    void register_base(const void* p) {
+        if (p != screen.data())
+            throw std::logic_error("004F71D0 base belongs to a different HUD screen");
+        if (!menu.register_in_game_screen(slot, name, register_virtual, layout_virtual,
+                &screen.flags()))
+            throw std::logic_error("004F71D0 could not register a free HUD slot");
+    }
+    void* load_page(std::string_view page_name) {
+        const std::string page(page_name);
+        menu.attach_in_game_page(slot, page);
+        GuiLayoutPage* loaded = menu.in_game_page(slot, page);
+        return loaded != nullptr && loaded->root ? loaded->root.get() : nullptr;
+    }
+};
+class HudLeafRegisterBinding final : public bsp::ingame_gui_cc13::HudScreenRegisterPageHost {
+public:
+    explicit HudLeafRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void* gui_load_page_00aa5840(std::string_view name) override { return context_.load_page(name); }
+private:
+    HudLeafRegisterContext& context_;
+};
+class HudLeafScreenRegisterBinding final : public bsp::cc13_fe1::ScreenRegisterPageHost {
+public:
+    explicit HudLeafScreenRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    std::uint32_t load_page_00aa5840(std::string_view name) override {
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(context_.load_page(name)));
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
+// The register overrides' native-string temporaries, over this process's
+// actual string pool: 0041DD40 and the 00419CC0/00BD1510 pair on the
+// 01090AA8/01090AA0/01090AA4 cells game_native_string_process() publishes,
+// as the menu host's 0090C5D0 binding does.
+struct HudLeafStringPool {
+    bsp::NativeStringRawPoolContext& strings{game_native_string_process().raw_context()};
+    void resize(void* header, std::uint32_t length, bool preserve) {
+        bsp::resize_native_string_header_0041dd40(header, strings, length, preserve);
+    }
+    void* pool() {
+        return bsp::native_string_pool_get_or_create_00419cc0(strings.actual_published_01090aa8,
+            strings.actual_manager_publication_01090aa0);
+    }
+    void give_back(void* pool, void* block, std::uint32_t size) {
+        bsp::return_native_string_pool_00bd1510(static_cast<bsp::NativeStringPoolStorage*>(pool),
+            block, size, strings.actual_small_returns_disabled_01090aa4);
+    }
+    // The eight-byte header 00AA5840 takes the name in: length +0h, data +4h.
+    static std::string_view name(const void* header) {
+        std::uint32_t length = 0;
+        const char* data = nullptr;
+        std::memcpy(&length, header, sizeof(length));
+        std::memcpy(&data, static_cast<const std::uint8_t*>(header) + 4, sizeof(data));
+        return data != nullptr ? std::string_view(data, length) : std::string_view();
+    }
+};
+// 0060D1C0. Its 004C12B0 is the registry owner that loads the page.
+class HudLeafPlaneSpawnRegisterBinding final : public bsp::seg25_cc13::PlaneSpawnRegisterHost {
+public:
+    explicit HudLeafPlaneSpawnRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void native_string_resize_0041dd40(bsp::seg25_cc13::NativeStr* s, std::uint32_t length,
+        std::int32_t flag) override { pool_.resize(s, length, flag != 0); }
+    void* pool_singleton_00419cc0() override { return pool_.pool(); }
+    void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, std::int32_t) override {
+        pool_.give_back(pool, block, size);  // the unused stack argument is 1
+    }
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_004c12b0() override { return &context_.menu; }
+    std::uint32_t gui_load_page_00aa5840(void* manager, const bsp::seg25_cc13::NativeStr* name,
+        std::int32_t, std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("0060D1C0 loaded its page through another GUI manager");
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(
+            context_.load_page(HudLeafStringPool::name(name))));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+};
+// 00565EE0. Its 00BD1510 runs on the 00419CC0 pool, both inside this service.
+class HudLeafLimboRegisterBinding final : public bsp::cc13_fe3::HudLimboRegisterHost {
+public:
+    explicit HudLeafLimboRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* gui_load_page_00aa5840(const void* name, std::uint32_t, std::uint32_t) override {
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+    void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t) override {
+        pool_.give_back(pool_.pool(), block, bytes);
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+};
+
+// 0051ED60. Its name temporary is built in this process's actual string pool
+// (game_native_string_process().strings(), passed as the body's storage); its
+// 004C12B0 manager is the registry owner that loads the page.
+class HudLeafBinocularsRegisterBinding final : public bsp::cc13_seg14::BinocularsRegisterHooks {
+public:
+    explicit HudLeafBinocularsRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_get_or_create_004c12b0() override { return &context_.menu; }
+    void* gui_manager_load_page_00aa5840(void* manager, void* name, std::uint32_t, std::uint32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("0051ED60 loaded its page through another GUI manager");
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
+// 005CCE70, screen 38h (goal 5 chain 635). Its three names are image strings
+// (bsp.py ghidra bytes 00cf1930 --length 28: 00CF1930 "down_Icon", 00CF193C
+// "up_Icon", 00CF1944 "GUI_movie") copied into native-string temporaries of the
+// process's string pool; its 004C12B0 manager is the registry owner that loads the
+// page; 00AA7E00(name, 1) searches the page's descendants. [0109CF04] is the
+// platform object 00BE2960 publishes (GameStartupHost's native platform, whose view
+// active_platform_state() returns): its +0h block is the window state and +0Dh
+// the widescreen byte the body reads for +1Ch.
+class HudLeafEngineMovieRegisterBinding final : public bsp::Cc13SweepB2EngineMovieRegisterHost {
+public:
+    explicit HudLeafEngineMovieRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void* image_global(std::uint32_t address) override {
+        static constexpr char kDownIcon[] = "down_Icon";  // 00CF1930
+        static constexpr char kUpIcon[] = "up_Icon";      // 00CF193C
+        static constexpr char kGuiMovie[] = "GUI_movie";  // 00CF1944
+        switch (address) {
+        case 0x00CF1930u: return const_cast<char*>(kDownIcon);
+        case 0x00CF193Cu: return const_cast<char*>(kUpIcon);
+        case 0x00CF1944u: return const_cast<char*>(kGuiMovie);
+        case 0x0109CF04u: {
+            const Win32PlatformState* const platform = active_platform_state();
+            if (platform == nullptr)
+                throw std::logic_error("005CCE70 read [0109CF04] with no published platform object");
+            static_assert(offsetof(NativePlatformObjectStorage, window) == 0);
+            static_assert(offsetof(NativePlatformWindowFocusStorage, widescreen_0d) == 0x0D);
+            platform_object_ = &platform->native_window_focus();
+            return &platform_object_;
+        }
+        default: break;
+        }
+        throw std::logic_error("005CCE70 read an image global it does not use");
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t size) override {
+        return std::memcpy(dest, source, size);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void frontend_screen_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_get_004c12b0() override { return &context_.menu; }
+    void* gui_manager_load_page_00aa5840(void* manager, const void* name, std::int32_t,
+        std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("005CCE70 loaded its page through another GUI manager");
+        return context_.load_page(HudLeafStringPool::name(name));
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        if (widget == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(widget),
+            HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+    const void* platform_object_{nullptr};
+};
+
+// Goal 5 chain 662: the HUD counters screen (51h), the countdown / unit-HP /
+// score panel the mission scripts drive. Its register 0052CBF0 (bsp.py show
+// 0052cbf0 --asm) is 004F71D0, GUI_counters (00CED190) through 00AA5840(name,
+// 1, 0) into +8h, then two 0ACh blocks, each operator new 00BF55BE and memset
+// 00BF79F0: +0Ch = 0052C1B0(page root, the twelve names), +10h = 0052C640(+0Ch);
+// both leave their root widget hidden. The widgets are the page's own GuiLayoutWidgets, as for
+// the other leaves; the blocks are owned by the screen block, which the native
+// destructor 0052CDF0 frees them with.
+GuiLayoutWidget& hud_counters_widget(void* widget, const char* routine) {
+    if (widget == nullptr)
+        throw std::logic_error(std::string(routine) + " reached a widget GUI_counters lacks");
+    return *static_cast<GuiLayoutWidget*>(widget);
+}
+
+// 0052C1B0's services. Each name temporary is built in this process's actual
+// string pool (0041E870, bsp.py show 0041e870: a constructor, length and data
+// zeroed first) and returned to it; 00AA7E00 is the direct-child lookup.
+// 00AA67F0 is LEA EAX,[ECX+0Ch] and 00AA6740 hands out +20h: the widget's Pos and
+// Size (GuiWidgetTransform). Virtual +34h is 00AA8530, which tests only BL.
+class HudCounterEntryConstructBinding final : public bsp::Cc13SweepB4CounterEntryHost {
+public:
+    explicit HudCounterEntryConstructBinding(GameFrontendHost& frontend) : frontend_(frontend) {}
+    void* native_string_assign_0041e870(void* string, const char* text) override {
+        return bsp::construct_native_string_header_0041e870(string, pool_.strings, text);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        return bsp::find_child_by_name_00aa7e00(hud_counters_widget(widget, "00AA7E00"),
+            HudLeafStringPool::name(name));
+    }
+    const float* gui_widget_get_local_position_00aa67f0(void* widget) override {
+        return &hud_counters_widget(widget, "00AA67F0").transform.position.x;
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        frontend_.set_widget_visible(hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+private:
+    GameFrontendHost& frontend_;
+    HudLeafStringPool pool_;
+};
+
+// 0052C640's services. 00AAB4C0(widget, null) copies the subtree under the
+// source's parent (GameFrontendHost::clone_page_widget_subtree); virtual
+// +28h hands out the widget's own name, an eight-byte {length, data} header that
+// 00AA7E00 reads, which here points into the widget's key.
+class HudCounterEntryCloneBinding final : public bsp::Cc13SweepBCounterCloneHost {
+public:
+    HudCounterEntryCloneBinding(GameFrontendHost& frontend, std::string page)
+        : frontend_(frontend), page_(std::move(page)) {}
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        frontend_.set_widget_visible(hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void* widget_vcall_28_name(void* widget) override {
+        const GuiLayoutWidget& w = hud_counters_widget(widget, "widget +28h");
+        std::array<std::uint32_t, 2> header{static_cast<std::uint32_t>(w.key.size()),
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(w.key.c_str()))};
+        names_.push_back(header);
+        return names_.back().data();
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        return bsp::find_child_by_name_00aa7e00(hud_counters_widget(widget, "00AA7E00"),
+            HudLeafStringPool::name(name));
+    }
+    void* widget_clone_subtree_00aab4c0(void* widget, void* parent_clone) override {
+        if (parent_clone != nullptr)
+            throw std::logic_error("0052C640 passes 00AAB4C0 a null parent clone");
+        return frontend_.clone_page_widget_subtree(page_, hud_counters_widget(widget, "00AAB4C0"));
+    }
+private:
+    GameFrontendHost& frontend_;
+    std::string page_;
+    std::deque<std::array<std::uint32_t, 2>> names_;
+};
+
+class HudLeafCountersRegisterBinding final : public bsp::frontend_seg15_22_cc13::HudCountersRegisterHost {
+public:
+    explicit HudLeafCountersRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void* gui_load_page_00aa5840(std::string_view name) override {
+        page_ = std::string(name);
+        return context_.load_page(name);
+    }
+    bsp::ingame_gui_cc13::Raw counter_entry_construct_0052c1b0(void* page,
+        const std::string_view (&names)[12]) override {
+        const char* cnames[12];
+        for (std::size_t i = 0; i < 12; ++i) cnames[i] = names[i].data();  // image literals
+        void* const entry = context_.screen.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryConstructBinding b(context_.menu.frontend());
+        bsp::cc13_sweepB4_hud_counter_entry_construct_0052c1b0(entry, page, cnames, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+    bsp::ingame_gui_cc13::Raw counter_entry_clone_0052c640(bsp::ingame_gui_cc13::Raw source) override {
+        if (source.p == nullptr)
+            throw std::logic_error("0052C640 clones a counter entry 0052C1B0 did not build");
+        void* const entry = context_.screen.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryCloneBinding b(context_.menu.frontend(), page_);
+        bsp::cc13_sweepB_counter_entry_construct_clone_0052c640(entry, source.p, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+private:
+    static constexpr std::size_t kCounterEntryBytes = 0xAC;  // 0052CC93 / 0052CD33 PUSH 0ACh
+    HudLeafRegisterContext& context_;
+    std::string page_;
+};
+
+// The countdown path on the same block: 0052B9B0 (Lua Countdown, 008B18B8) and
+// 0052AB90 (CountdownCancel, 008B1A92 / 008B1AA2), with 0052A860 and 00529A30 /
+// 00529810 under them. What they reach of the image: the entry widgets (the
+// page's GuiLayoutWidgets 0052C1B0 / 0052C640 stored), the counters block's own
+// visible list (+20h, 00529900 growing it with 00BF55BE / 00BF6989 blocks the
+// screen owns), [00E198C4] (this HUD's interface manager, as the image object:
+// +N is the leaf block 0068CC70 built for manager offset N, kInGameHudScreens),
+// and [0109CF04] (the platform object, +0Dh the widescreen byte).
+struct HudCountersContext {
+    GameFrontendHost& frontend;
+    HudLeafScreenStorage& counters;
+    std::array<std::uint8_t*, 0x40> manager_view{};      // [00E198C4]+0h..+FCh
+    const void* platform_object{nullptr};                 // [0109CF04]
+    std::set<const GuiLayoutWidget*>& visibility_recurses;  // widget +75h (00AA6820)
+    // The HUD host's unimplemented-call log (GameHudHost::Impl::record).
+    std::function<void(const char*, std::uint32_t)> record{};
+};
+
+// 00AA8530 (widget +34h): the low byte is the request; with the widget's +75h
+// set, 00AA8450 hands every descendant the request as its own visibility
+// (apply_requested inherited), otherwise only this widget's own flag moves.
+void hud_counters_set_visible_00aa8530(HudCountersContext& c, GuiLayoutWidget& widget, bool visible) {
+    if (c.visibility_recurses.count(&widget) == 0) {
+        c.frontend.set_widget_visible(widget, visible);
+        return;
+    }
+    std::vector<GuiLayoutWidget*> walk{&widget};
+    while (!walk.empty()) {
+        GuiLayoutWidget* const w = walk.back();
+        walk.pop_back();
+        c.frontend.set_widget_visible(*w, visible);
+        for (const auto& child : w->children) {
+            if (child) walk.push_back(child.get());
+        }
+    }
+}
+
+// 00AA8240: the local translation that puts the widget at `world`
+// (local_position_for_resolved); +08h, the authored X, is not written.
+void hud_counters_set_resolved_00aa8240(HudCountersContext& c, GuiLayoutWidget& widget, const float* world) {
+    const GuiWidgetPoint local = local_position_for_resolved(widget.transform,
+        GuiWidgetPoint{world[0], world[1], world[2]});
+    const float authored_x = widget.transform.authored_x;
+    c.frontend.set_widget_local_position(widget, local.x, local.y, local.z);
+    widget.transform.authored_x = authored_x;
+    c.frontend.refresh_widget_geometry(widget);
+}
+
+void hud_counters_resolved_00aa6750(const GuiLayoutWidget& widget, float* out) {
+    const GuiWidgetPoint p = resolved_position(widget.transform);
+    out[0] = p.x;
+    out[1] = p.y;
+    out[2] = p.z;
+}
+
+// 00529A30 / 00529810 and the four passes under the occlusion step.
+class HudCountersLayoutBinding final : public bsp::frontend_seg15_22_cc13::HudCountersLayoutHost {
+public:
+    explicit HudCountersLayoutBinding(HudCountersContext& c) : c_(c) {}
+    bool widget_is_visible_38(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    const float* widget_local_position_00aa67f0(void* widget) override {
+        return &hud_counters_widget(widget, "00AA67F0").transform.position.x;
+    }
+    void widget_resolved_position_00aa6750(void* widget, float out[3]) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float xyz[3]) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), xyz);
+    }
+    const float* widget_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    bsp::ingame_gui_cc13::Raw global_object(std::uint32_t address) override {
+        if (address == bsp::frontend_seg15_22_cc13::kInterfaceGlobal)
+            return {reinterpret_cast<std::uint8_t*>(c_.manager_view.data())};
+        if (address == bsp::frontend_seg15_22_cc13::kDisplayModeGlobal) {
+            // Read only (+0Dh); the platform object is the published one.
+            return {static_cast<std::uint8_t*>(const_cast<void*>(c_.platform_object))};
+        }
+        throw std::logic_error("the HUD counters read an image global they do not use");
+    }
+    bool support_manager_mode_006529e0(bsp::ingame_gui_cc13::Raw manager) override {
+        // The support-manager screen 4Eh's own block (the interface update reads
+        // the same bytes, see camera_screen_spectating).
+        return bsp::cc13_front4::overlay_busy_006529e0({manager.p}) != 0;
+    }
+    void counters_restore_hidden_a7_005292e0(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::restore_hidden_a7_005292e0);
+    }
+    void counters_hide_all_a6_005290d0(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::hide_all_a6_005290d0);
+    }
+    void counters_restore_hidden_a6_00529350(bsp::ingame_gui_cc13::Raw screen) override {
+        run_flag_pass(screen, bsp::cc13_band0050::restore_hidden_a6_00529350);
+    }
+private:
+    // src/band_0050_cc13.cpp's passes take the visible list (+20h, count +24h) as
+    // HudCounterEntryFlags: each entry's widget +38h and its bytes +A5h..+A8h.
+    // What a pass changes goes back as the image does it: widget +34h, the bytes.
+    void run_flag_pass(bsp::ingame_gui_cc13::Raw s,
+        void (*pass)(std::vector<bsp::cc13_band0050::HudCounterEntryFlags>&)) {
+        const std::int32_t count = s.at<std::int32_t>(0x24);
+        auto* const* const list = static_cast<std::uint8_t* const*>(s.ptr(0x20));
+        std::vector<bsp::cc13_band0050::HudCounterEntryFlags> flags(
+            static_cast<std::size_t>(count > 0 ? count : 0));
+        for (std::size_t i = 0; i < flags.size(); ++i) {
+            const bsp::ingame_gui_cc13::Raw e{list[i]};
+            flags[i].widget_visible = widget_is_visible_38(e.ptr(0x0));
+            flags[i].hidden_a5 = e.at<std::uint8_t>(0xA5) != 0;
+            flags[i].hidden_a6 = e.at<std::uint8_t>(0xA6) != 0;
+            flags[i].hidden_a7 = e.at<std::uint8_t>(0xA7) != 0;
+            flags[i].hidden_a8 = e.at<std::uint8_t>(0xA8) != 0;
+        }
+        std::vector<bsp::cc13_band0050::HudCounterEntryFlags> after = flags;
+        pass(after);
+        for (std::size_t i = 0; i < flags.size(); ++i) {
+            const bsp::ingame_gui_cc13::Raw e{list[i]};
+            if (after[i].widget_visible != flags[i].widget_visible)
+                widget_set_visible_34(e.ptr(0x0), after[i].widget_visible);
+            e.at<std::uint8_t>(0xA5) = after[i].hidden_a5 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA6) = after[i].hidden_a6 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA7) = after[i].hidden_a7 ? 1u : 0u;
+            e.at<std::uint8_t>(0xA8) = after[i].hidden_a8 ? 1u : 0u;
+        }
+    }
+    HudCountersContext& c_;
+};
+
+// 0052A860's services on the countdown entry's widgets.
+class HudCounterCountdownLayoutBinding final : public bsp::Cc13SweepB4CounterCountdownLayoutHost {
+public:
+    explicit HudCounterCountdownLayoutBinding(HudCountersContext& c) : c_(c) {}
+    void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) override {
+        // 00AA6820 stores the byte +75h (src/gui_widgets_cc13.cpp).
+        const GuiLayoutWidget* const w = &hud_counters_widget(widget, "00AA6820");
+        if ((show & 0xFF) != 0) c_.visibility_recurses.insert(w);
+        else c_.visibility_recurses.erase(w);
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void widget_vcall_58_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_size(hud_counters_widget(widget, "widget +58h"), pair[0], pair[1]);
+    }
+    void widget_vcall_48_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_scale(hud_counters_widget(widget, "00AA7950"), pair[0], pair[1]);
+    }
+    void gui_text_store_align_100(void* text, std::int32_t align) override {
+        // The bridge lays a Text widget out with its authored Align (00ABB877);
+        // GUI_counters authors Left (0) on both texts this body stores 0 into.
+        const GuiLayoutWidget& w = hud_counters_widget(text, "Text +100h");
+        const GuiValue* const authored = w.source != nullptr ? w.source->find("Align") : nullptr;
+        const bsp::GuiTextAlign current = authored != nullptr && authored->kind() == GuiValue::Kind::String
+            ? bsp::parse_gui_text_align_00abb877(authored->string()) : bsp::GuiTextAlign::Left;
+        if (static_cast<std::int32_t>(current) != align)
+            throw std::logic_error("0052A860 stores a Text +100h the authored Align does not carry");
+    }
+    float gui_text_measured_width_114(void* text) override {
+        float width = 0.0f;
+        if (!c_.frontend.widget_text_width(hud_counters_widget(text, "Text +114h"), width))
+            throw std::logic_error("0052A860 reads Text +114h with no text layout to measure it");
+        return width;
+    }
+    void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("0052A860 passes 00ABAED0 its localise flag 1");
+        c_.frontend.set_widget_text_source(hud_counters_widget(widget, "00ABAED0"),
+            std::string(HudLeafStringPool::name(text)));
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) override {
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA7DC0");
+        c_.frontend.set_widget_local_position(w, position[0], position[1], position[2]);
+        c_.frontend.refresh_widget_geometry(w);
+    }
+    float* widget_get_resolved_position_00aa6750(void* widget, float* out) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+        return out;
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float* position) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), position);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+class HudCountersShowBinding final : public bsp::frontend_seg15_22_cc13::HudCountersShowHost {
+public:
+    explicit HudCountersShowBinding(HudCountersContext& c) : c_(c) {}
+    void* operator_new_00bf55be(std::size_t bytes) override { return c_.counters.allocate_owned(bytes); }
+    void free_00bf6989(void* block) override { c_.counters.release_owned(block); }
+    bool widget_is_visible_38(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    void counter_layout_countdown_0052a860(bsp::ingame_gui_cc13::Raw entry, std::string_view text,
+        float seconds) override {
+        // The by-value native string 0052A860 releases, built in the process pool.
+        const std::string copy(text);
+        bsp::Cc13SweepBNativeString value{};
+        bsp::construct_native_string_header_0041e870(&value, pool_.strings, copy.c_str());
+        HudCounterCountdownLayoutBinding b(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_countdown_0052a860(entry.p, value, seconds, b);
+    }
+    void counters_relayout_00529a30(bsp::ingame_gui_cc13::Raw screen) override {
+        HudCountersLayoutBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_relayout_00529a30(screen, b);
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+// 00528B00's calls: +34h, and 00ABBE50(text, 1), whose case-insensitive gate on
+// the cached source (+F4h, bsp.py show 00abbe50) returns before 00ABAED0 when
+// the time string is unchanged.
+class HudCounterFormatTimeBinding final : public bsp::frontend_seg15_22_cc13::HudCounterFormatTimeHost {
+public:
+    explicit HudCounterFormatTimeBinding(HudCountersContext& c) : c_(c) {}
+    void widget_set_visible_34(void* widget, bool visible) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), visible);
+    }
+    void text_set_localised_00abbe50(void* text, std::string_view value) override {
+        GuiLayoutWidget& w = hud_counters_widget(text, "00ABBE50");
+        const std::string* const cached = c_.frontend.widget_text_source(w);
+        if (cached != nullptr && cached->size() == value.size()
+            && _strnicmp(cached->data(), value.data(), value.size()) == 0) {
+            return;
+        }
+        c_.frontend.set_widget_text_source(w, std::string(value));
+    }
+private:
+    HudCountersContext& c_;
+};
+
+// Goal 5 chain 667: the services of the score layouts 00529D70 / 0052A100 and
+// the tick's text-pair layout 0052A470 on a score entry (a 0052C640 clone of
+// the HP entry). The widgets are the page's GuiLayoutWidgets, as for the
+// countdown; the Text fields the image stores directly (+100h, +0FCh) become
+// the text bridge's layout override, and +114h is the bridge's measured width.
+class HudCounterScoreLayoutBinding final : public bsp::Cc13SweepB4CounterScoreLayoutHost {
+public:
+    explicit HudCounterScoreLayoutBinding(HudCountersContext& c) : c_(c) {}
+    void gui_widget_set_visibility_recursive_00aa6820(void* widget, std::int32_t show) override {
+        // 00AA6820 stores the byte +75h (src/gui_widgets_cc13.cpp).
+        const GuiLayoutWidget* const w = &hud_counters_widget(widget, "00AA6820");
+        if ((show & 0xFF) != 0) c_.visibility_recurses.insert(w);
+        else c_.visibility_recurses.erase(w);
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    void widget_vcall_58_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_size(hud_counters_widget(widget, "widget +58h"), pair[0], pair[1]);
+    }
+    void widget_vcall_48_set_pair(void* widget, const float* pair) override {
+        c_.frontend.set_widget_scale(hud_counters_widget(widget, "00AA7950"), pair[0], pair[1]);
+    }
+    void widget_vcall_88(void* widget, std::int32_t, std::int32_t, float) override {
+        // Virtual +88h on flag_A_Icon / flag_B_Icon, the icon state select
+        // (00AB1710); the sprite bridge draws a widget's first authored state only.
+        static_cast<void>(hud_counters_widget(widget, "00AB1710"));
+        if (c_.record) c_.record("HudCounters::score_flag_icon_state", 0x00ab1710u);
+    }
+    void widget_set_local_x_00aa78d0(void* widget, float x) override {
+        // 00AA78D0 (bsp.py show 00aa78d0): MOVSS the argument into +0Ch (the
+        // local X), then 00AA7220; +08h, the authored X, is not written.
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA78D0");
+        const float authored_x = w.transform.authored_x;
+        c_.frontend.set_widget_local_position(w, x, w.transform.position.y, w.transform.position.z);
+        w.transform.authored_x = authored_x;
+    }
+    void gui_text_store_align_100(void* text, std::int32_t align) override {
+        if (align < 0 || align > 2) throw std::logic_error("Text +100h stored outside Left..Right");
+        c_.frontend.set_widget_text_align(hud_counters_widget(text, "Text +100h"),
+            static_cast<bsp::GuiTextAlign>(align));
+    }
+    void gui_text_store_multiline_fc(void* text, std::uint8_t multiline) override {
+        c_.frontend.set_widget_text_multiline(hud_counters_widget(text, "Text +0FCh"), multiline != 0);
+    }
+    float gui_text_measured_width_114(void* text) override {
+        float width = 0.0f;
+        if (!c_.frontend.widget_text_width(hud_counters_widget(text, "Text +114h"), width))
+            throw std::logic_error("a score layout reads Text +114h with no text layout to measure it");
+        return width;
+    }
+    void gui_text_set_localised_source_00abaed0(void* widget, const void* text, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("the score layouts pass 00ABAED0 its localise flag 1");
+        c_.frontend.set_widget_text_source(hud_counters_widget(widget, "00ABAED0"),
+            std::string(HudLeafStringPool::name(text)));
+    }
+    void gui_text_set_localised_cstring_00abbe50(void* text, const char* value, std::int32_t arg) override {
+        if (arg != 1) throw std::logic_error("0052A470 passes 00ABBE50 its localise flag 1");
+        // 00ABBE50's case-insensitive gate on the cached source (+F4h), as the
+        // countdown's HudCounterFormatTimeBinding models it.
+        GuiLayoutWidget& w = hud_counters_widget(text, "00ABBE50");
+        const std::string_view v(value);
+        const std::string* const cached = c_.frontend.widget_text_source(w);
+        if (cached != nullptr && cached->size() == v.size()
+            && _strnicmp(cached->data(), v.data(), v.size()) == 0) {
+            return;
+        }
+        c_.frontend.set_widget_text_source(w, std::string(v));
+    }
+    const float* gui_widget_get_size_00aa6740(void* widget) override {
+        return &hud_counters_widget(widget, "00AA6740").transform.size.width;
+    }
+    void gui_widget_set_local_position_00aa7dc0(void* widget, const float* position) override {
+        GuiLayoutWidget& w = hud_counters_widget(widget, "00AA7DC0");
+        c_.frontend.set_widget_local_position(w, position[0], position[1], position[2]);
+        c_.frontend.refresh_widget_geometry(w);
+    }
+    float* widget_get_resolved_position_00aa6750(void* widget, float* out) override {
+        hud_counters_resolved_00aa6750(hud_counters_widget(widget, "00AA6750"), out);
+        return out;
+    }
+    void widget_set_resolved_position_00aa8240(void* widget, const float* position) override {
+        hud_counters_set_resolved_00aa8240(c_, hud_counters_widget(widget, "00AA8240"), position);
+    }
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t flag) override {
+        pool_.resize(string, length, flag != 0);
+    }
+    void crt_memcpy_00bf7680(void* dest, const void* source, std::uint32_t bytes) override {
+        std::memcpy(dest, source, bytes);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+private:
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+// The by-value native string a layout takes and releases, built in the process
+// pool from a 0052CF60 copy (00426060 there, from the same text).
+bsp::Cc13SweepBNativeString hud_counter_string_argument(HudLeafStringPool& pool, std::string_view text) {
+    const std::string copy(text);
+    bsp::Cc13SweepBNativeString value{};
+    bsp::construct_native_string_header_0041e870(&value, pool.strings, copy.c_str());
+    return value;
+}
+
+// 0052B080's services. The countdown entry is mode 2 (0052A860 stores it); the
+// HP entry stays mode 3 (0052C1B0), which ticks nothing; a score entry is mode
+// 1 (00529D70 / 0052A100 store it), whose tick re-lays out its two texts through
+// 0052A470 (goal 5 chain 667). Mode 0 is the unit-HP layout 0052BB10 stores,
+// which no path here runs, so its services fail loudly rather than answer.
+class HudCounterTickBinding final : public bsp::Cc13SweepB4CounterTickHost {
+public:
+    explicit HudCounterTickBinding(HudCountersContext& c) : c_(c) {}
+    bool widget_vcall_38_is_visible(void* widget) override {
+        return c_.frontend.widget_own_visible(hud_counters_widget(widget, "00A9E0D0"));
+    }
+    void widget_vcall_34_set_visible(void* widget, std::int32_t show) override {
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(widget, "00AA8530"), (show & 0xFF) != 0);
+    }
+    bool session_counts_mission_start_004b6260() override {
+        // 004B6260 on [00E188A8]+1EF0h: session+F4h (game+1FE4h) and +29Ch
+        // (game+218Ch), the session context the mission frame reads.
+        const bsp::SessionContext& session = bsp::session_context();
+        return bsp::session_counts_mission_004b6260(session.session_word_1fe4 != 0,
+            session.skirmish_218c);
+    }
+    void hud_counter_format_time_00528b00(void* entry, float seconds) override {
+        HudCounterFormatTimeBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counter_format_time_00528b00(
+            {static_cast<std::uint8_t*>(entry)}, seconds, b);
+    }
+    void native_string_copy_construct_00426060(void* dest, const void* source) override {
+        bsp::copy_construct_native_string_header_00426060(dest, source, pool_.strings);
+    }
+    void hud_counter_layout_text_pair_0052a470(void* entry, bsp::Cc13SweepBNativeString a,
+        bsp::Cc13SweepBNativeString b) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_text_pair_0052a470(entry, a, b, binding);
+    }
+    void counter_units_remove_at_0052add0(void*, std::int32_t) override { unbuilt("0052ADD0"); }
+    bool object_vcall_5c_is_kind(void*, std::int32_t) override { unbuilt("+5Ch"); }
+    double getter_38_00939f70(void*) override { unbuilt("00939F70"); }
+    double getter_34_00939f80(void*) override { unbuilt("00939F80"); }
+    double getter_30_00939fc0(void*) override { unbuilt("00939FC0"); }
+    double getter_2c_00939fb0(void*) override { unbuilt("00939FB0"); }
+    void hud_counter_update_bar_00528e90(void*, float, float) override { unbuilt("00528E90"); }
+private:
+    [[noreturn]] static void unbuilt(const char* routine) {
+        throw std::logic_error(std::string("0052B080 reached ") + routine
+            + " on a unit-HP counter entry, which no HUD path builds");
+    }
+    HudCountersContext& c_;
+    HudLeafStringPool pool_;
+};
+
+// 0052BAA0 (+20h) and 00528C40 / 00528C50 (+18h / +1Ch) on the counters block.
+class HudCountersUpdateBinding final : public bsp::HudCountersHost {
+public:
+    explicit HudCountersUpdateBinding(HudCountersContext& c) : c_(c) {}
+    void widget8_virtual_34(std::int32_t arg) override {
+        void* const page = bsp::ingame_gui_cc13::Raw{c_.counters.data()}.ptr(0x8);
+        hud_counters_set_visible_00aa8530(c_, hud_counters_widget(page, "counters +8h"), (arg & 0xFF) != 0);
+    }
+    void counter_tick_0052b080(std::uintptr_t counter, float seconds) override {
+        HudCounterTickBinding b(c_);
+        bsp::cc13_sweepB4_hud_counter_tick_0052b080(reinterpret_cast<void*>(counter), seconds, b);
+    }
+    void finish_00529810() override {
+        HudCountersLayoutBinding b(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_update_occlusion_00529810({c_.counters.data()}, b);
+    }
+private:
+    HudCountersContext& c_;
+};
+
+// Goal 5 chain 667: 0052CF60's services on the counters block, for the score
+// forms (kind 1) the Lua DisplayScores / HideScoreDisplay messages carry. A
+// score entry is a zeroed 0ACh block the screen owns holding a 0052C640 clone
+// of the HP entry (the page's own widgets, copied under New_Group's parent);
+// 0052C0C0 deletes that clone's root (+A4h is 1 on a clone) and releases the
+// entry's strings in the process pool. The 18h-record array (+70h) and the
+// unit registry are the unit-HP form's (kind 0, 0052BB10), which no message
+// here carries, so those services fail loudly.
+class HudCountersScoreBinding final : public bsp::frontend_seg15_22_cc13::HudCountersScoreHost {
+public:
+    explicit HudCountersScoreBinding(HudCountersContext& c) : c_(c), show_(c) {}
+    void* operator_new_00bf55be(std::size_t bytes) override { return c_.counters.allocate_owned(bytes); }
+    void free_00bf6989(void* block) override { c_.counters.release_owned(block); }
+    bool widget_is_visible_38(void* widget) override { return show_.widget_is_visible_38(widget); }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        show_.widget_set_visible_34(widget, visible);
+    }
+    void counter_layout_countdown_0052a860(bsp::ingame_gui_cc13::Raw entry, std::string_view text,
+        float seconds) override {
+        show_.counter_layout_countdown_0052a860(entry, text, seconds);
+    }
+    void counters_relayout_00529a30(bsp::ingame_gui_cc13::Raw screen) override {
+        show_.counters_relayout_00529a30(screen);
+    }
+    void object_delete_04(void* object) override {
+        // 0052C0C0 on a score entry: the clone root, vtable +4h(1).
+        GuiLayoutWidget& root = hud_counters_widget(object, "widget +4h(1)");
+        std::vector<const GuiLayoutWidget*> walk{&root};
+        while (!walk.empty()) {
+            const GuiLayoutWidget* const w = walk.back();
+            walk.pop_back();
+            c_.visibility_recurses.erase(w);
+            for (const auto& child : w->children) {
+                if (child) walk.push_back(child.get());
+            }
+        }
+        c_.frontend.destroy_runtime_widget(root);
+    }
+    std::uint32_t object_virtual_arg(bsp::ingame_gui_cc13::Raw, std::uint16_t, std::uint32_t) override {
+        unbuilt("an 18h record's slot 0");
+    }
+    void observer_handle_copy_00523480(bsp::ingame_gui_cc13::Raw, bsp::ingame_gui_cc13::Raw) override {
+        unbuilt("00523480");
+    }
+    void native_string_release(bsp::ingame_gui_cc13::Raw string) override {
+        bsp::destroy_native_string_header_0041dd20(string.p, pool_.strings);
+    }
+    std::string native_string_value(bsp::ingame_gui_cc13::Raw string) override {
+        return std::string(HudLeafStringPool::name(string.p));
+    }
+    bsp::ingame_gui_cc13::Raw global_block(std::uint32_t) override { unbuilt("the unit registry"); }
+    bsp::ingame_gui_cc13::Raw counter_entry_clone_0052c640(bsp::ingame_gui_cc13::Raw source) override {
+        if (source.p == nullptr)
+            throw std::logic_error("0052C850 clones an HP entry 0052CBF0 did not build");
+        void* const entry = c_.counters.allocate_owned(kCounterEntryBytes);  // zeroed
+        HudCounterEntryCloneBinding b(c_.frontend, kCountersPage);
+        bsp::cc13_sweepB_counter_entry_construct_clone_0052c640(entry, source.p, b);
+        return {static_cast<std::uint8_t*>(entry)};
+    }
+    void counter_layout_timer_00529d70(bsp::ingame_gui_cc13::Raw entry, std::string_view a,
+        std::string_view b) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_timer_00529d70(entry.p,
+            hud_counter_string_argument(pool_, a), hud_counter_string_argument(pool_, b), binding);
+    }
+    void counter_layout_value_0052a100(bsp::ingame_gui_cc13::Raw entry, std::string_view a,
+        std::string_view b, std::uint32_t v0, std::uint32_t v1) override {
+        HudCounterScoreLayoutBinding binding(c_);
+        bsp::cc13_sweepB4_hud_counter_layout_value_0052a100(entry.p,
+            hud_counter_string_argument(pool_, a), hud_counter_string_argument(pool_, b),
+            static_cast<std::int32_t>(v0), static_cast<std::int32_t>(v1), binding);
+    }
+    void counter_layout_score_0052bb10(bsp::ingame_gui_cc13::Raw, std::uint32_t, std::string_view) override {
+        unbuilt("0052BB10");
+    }
+private:
+    static constexpr std::size_t kCounterEntryBytes = 0xAC;  // as 0052CBF0's two entries
+    static constexpr const char* kCountersPage = "GUI_counters";  // 0052CBF0's page
+    [[noreturn]] static void unbuilt(const char* routine) {
+        throw std::logic_error(std::string("0052CF60 reached ") + routine
+            + ", the unit-HP form's, which no HUD message here carries");
+    }
+    HudCountersContext& c_;
+    HudCountersShowBinding show_;
+    HudLeafStringPool pool_;
+};
+
+// 00772330's services with ECX = [00E188A8]+1EF0h. The record addressed to the
+// local slot goes to 0052CF60 on [[00E198C4]+C8h]; this single-player process
+// has no peers (every record's +50h is null), so nothing is sent or broadcast.
+class HudScoreSessionBinding final : public bsp::cc13cam2::SessionSendHost {
+public:
+    explicit HudScoreSessionBinding(HudCountersContext& c) : c_(c) {}
+    void broadcast_except_00784790(const bsp::cc13cam2::SessionMessageOut&) override { unreached("00784790"); }
+    void flush_peer_buffers_007848f0() override { unreached("007848F0"); }
+    void send_to_peer_00770b50(std::uintptr_t, std::uintptr_t) override { unreached("00770B50"); }
+    void kick_peer_00784b10(std::uintptr_t, int) override { unreached("00784B10"); }
+    void apply_counter_record_0052cf60(std::uintptr_t message) override {
+        HudCountersScoreBinding binding(c_);
+        bsp::frontend_seg15_22_cc13::hud_counters_apply_counter_record_0052cf60({c_.counters.data()},
+            {reinterpret_cast<std::uint8_t*>(message)}, binding);
+    }
+    void broadcast_message_00784830(std::uintptr_t) override { unreached("00784830"); }
+    void scalar_delete(std::uintptr_t) override { unreached("the scalar delete"); }
+private:
+    [[noreturn]] static void unreached(const char* routine) {
+        throw std::logic_error(std::string("00772330 reached ") + routine
+            + ", which needs a peer this single-player session does not have");
+    }
+    HudCountersContext& c_;
+};
+
+// The message image 0075B430 reads: [00E188A8], whose local slot (+18ECh) and
+// eight player records (+18CCh) give the base its owner +14h. As for
+// HostSessionMessages, this process keeps no player records, so the slot is 0
+// over null records. 00E17669 is the empty string the 23h writer falls back to
+// (bytes 00 00 00 00); the profile carries the five CED098 slots.
+struct HudScoreMessageImage {
+    alignas(4) std::uint8_t game[0x18f0]{};
+    void* volatile current_game{game};
+    bsp::NativeSessionMessageContext session{current_game};
+    const char fallback_00e17669[1]{};
+    bsp::NativeSessionMessage35Profile profile{game_native_string_process().raw_context(), fallback_00e17669};
+};
+HudScoreMessageImage& hud_score_message_image() {
+    static HudScoreMessageImage image;
+    return image;
+}
+
+// 0052B620 / 0052B780 / 0052B900's one service: the 23h message on the stack
+// (0052B64B 0075B430(23h), 0052B652 +4h = 1, 0052B656 vtable 00CED098, the
+// strings, the two value dwords and the word array zeroed, both flags 0; then
+// the sender's fields, the strings through 0041DD40(length, 1) and memcpy),
+// 00772330 on [00E188A8]+1EF0h (0052B711) and 0052AF50 (0052B71F).
+class HudScoreMessageBinding final : public bsp::frontend_seg15_22_cc13::HudMessage35SendHost {
+public:
+    explicit HudScoreMessageBinding(HudCountersContext& c) : c_(c) {}
+    void session_send_message35_00772330(const bsp::frontend_seg15_22_cc13::HudMessage35& m) override {
+        HudScoreMessageImage& image = hud_score_message_image();
+        bsp::NativeStringRawPoolContext& strings = *image.profile.strings;
+        bsp::NativeSessionMessage35 message{};
+        bsp::construct_native_session_message_0075b430(&message.base, 0x23, image.session);
+        message.base.delivery_04 = 1;
+        message.base.profile_00 = image.profile.slots;
+        // The image's EH frame 00C6B938 runs 0052AF50 on unwind too.
+        try {
+            send(m, message, strings);
+        } catch (...) {
+            bsp::destroy_native_session_message35_0052af50(&message, strings, image.profile);
+            throw;
+        }
+        bsp::destroy_native_session_message35_0052af50(&message, strings, image.profile);
+    }
+private:
+    void send(const bsp::frontend_seg15_22_cc13::HudMessage35& m, bsp::NativeSessionMessage35& message,
+        bsp::NativeStringRawPoolContext& strings) {
+        message.value_18 = m.value_18;
+        message.value_1c = m.value_1c;
+        message.subtype_20 = m.subtype_20;
+        message.flag_24 = m.hide_24;
+        message.flag_25 = m.pair_25;
+        auto assign = [&strings](std::uint32_t* header, std::string_view text) {
+            bsp::resize_native_string_header_0041dd40(header, strings,
+                static_cast<std::uint32_t>(text.size()), true);
+            if (!text.empty()) {
+                char* data = nullptr;
+                std::memcpy(&data, reinterpret_cast<std::uint8_t*>(header) + 4, sizeof(data));
+                std::memcpy(data, text.data(), text.size());
+            }
+        };
+        assign(&message.length_28, m.text_28);
+        assign(&message.length_30, m.text_30);
+        message.values_38[0] = m.values_38[0];
+        message.values_38[1] = m.values_38[1];
+        if (m.unit_count_40 != 0 || !m.text_4c.empty())
+            throw std::logic_error("the HUD score senders carry no unit-HP words or text");
+        std::array<bsp::cc13cam2::SessionPlayerRecord, 8> records{};
+        // 0077236A indexes game+18CCh by +1Ch, the 3-bit slot the 23h writer
+        // packs (005294F0); a script owner outside 0..7 would read past it.
+        if (message.value_1c >= records.size())
+            throw std::logic_error("a HUD 23h message addressed beyond the eight player slots");
+        HudScoreSessionBinding session(c_);
+        // ECX = [00E188A8]+1EF0h: +F4h is game+1FE4h; the local slot game+18ECh.
+        bsp::cc13cam2::session_send_to_player_slot_00772330(bsp::session_context().session_word_1fe4,
+            static_cast<std::int32_t>(message.value_1c), kLocalPlayerSlot, records,
+            reinterpret_cast<std::uintptr_t>(&message), session);
+    }
+    static constexpr int kLocalPlayerSlot = 0;  // game+18ECh, single player
+    HudCountersContext& c_;
+};
+
+// 0052BAA0's view of the block: +0Ch, +10h and the +14h array (count +18h).
+bsp::HudCountersState hud_counters_state(const HudLeafScreenStorage& counters) {
+    const bsp::ingame_gui_cc13::Raw s{counters.data()};
+    bsp::HudCountersState state;
+    state.counter_0c = reinterpret_cast<std::uintptr_t>(s.ptr(0x0C));
+    state.counter_10 = reinterpret_cast<std::uintptr_t>(s.ptr(0x10));
+    const std::int32_t count = s.at<std::int32_t>(0x18);
+    auto* const* const slots = static_cast<void* const*>(s.ptr(0x14));
+    for (std::int32_t i = 0; i < count; ++i)
+        state.counters_14.push_back(reinterpret_cast<std::uintptr_t>(slots[i]));
+    return state;
+}
+
+// The layout virtuals (+14h) those registers call through the screen's own
+// vtable, ECX = screen. kHudScreenLayouts lists each slot's layout virtual;
+// the vtable the leaf constructor stored must hold it at +14h (bsp.py ghidra
+// bytes: 00CF6D68+14h = 0067BEA0, 00CF61D4+14h = 00650B90).
+struct HudLeafLayoutVirtual {
+    std::uint32_t layout_virtual;
+    std::uint32_t vtable;
+};
+constexpr std::array<HudLeafLayoutVirtual, 3> kHudLeafLayoutVirtuals{{
+    {0x0067BEA0u, bsp::ingame_gui_cc13::kFollowScreenVtable},
+    {0x00650B90u, bsp::ingame_gui_cc13::kSubmarineScreenVtable},
+    {0x005FA0F0u, 0x00CF3B7Cu},  // order 3Bh (005F9440 stores it; 00CF3B90 = 005FA0F0)
+}};
+// 00650B90's page and children: its 00AA5840 is the registry owner's page
+// load for the slot; 00AA7E00(name, 1) searches the page's descendants and
+// returns null for a name the page lacks.
+class HudLeafPageChildBinding final : public bsp::ingame_gui_cc13::HudScreenPageChildHost {
+public:
+    explicit HudLeafPageChildBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void* gui_load_page_00aa5840(std::string_view name) override { return context_.load_page(name); }
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override {
+        if (parent == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(parent), name);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+// 005FA0F0's twenty name temporaries live in this process's actual string
+// pool, as the register overrides' names do; its 00AA7E00 searches the
+// GUI_order page 005F9FF0 stored at +8h.
+class HudLeafOrderLayoutBinding final : public bsp::Cc13SweepB6OrderLayoutHost {
+public:
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint8_t preserve) override {
+        pool_.resize(string, length, preserve != 0);
+    }
+    void* sized_pool_get_00419cc0() override { return pool_.pool(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes, std::int32_t) override {
+        pool_.give_back(pool, data, bytes);  // the flag argument is 1
+    }
+    void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t) override {
+        if (widget == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(widget),
+            HudLeafStringPool::name(name));
+    }
+private:
+    HudLeafStringPool pool_;
+};
+void run_hud_leaf_screen_layout(HudLeafRegisterContext& context) {
+    std::uint8_t* const p = context.screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    const auto entry = std::find_if(kHudLeafLayoutVirtuals.begin(), kHudLeafLayoutVirtuals.end(),
+        [&](const HudLeafLayoutVirtual& e) { return e.layout_virtual == context.layout_virtual; });
+    if (entry == kHudLeafLayoutVirtuals.end() || raw.at<std::uint32_t>(0) != entry->vtable)
+        throw std::logic_error("HUD leaf +14h virtual does not match the screen's vtable");
+    switch (context.layout_virtual) {
+    case 0x0067BEA0u: bsp::ingame_gui_cc13::hud_follow_screen49_bind_layout_0067bea0(raw); return;
+    case 0x00650B90u: { HudLeafPageChildBinding b(context); bsp::ingame_gui_cc13::submarine_load_layout_00650b90(raw, b); return; }
+    case 0x005FA0F0u: { HudLeafOrderLayoutBinding b; bsp::cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(p, b); return; }
+    default: break;
+    }
+    throw std::logic_error("HUD leaf layout virtual listed but not bound");
+}
+// 0067BE80 / 00650170: 004F71D0 on the block, then its +14h virtual.
+class HudLeafLayoutRegisterBinding final : public bsp::ingame_gui_cc13::HudScreenRegisterLayoutHost {
+public:
+    explicit HudLeafLayoutRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        context_.register_base(screen.p);
+    }
+    void screen_virtual_14(bsp::ingame_gui_cc13::Raw screen) override {
+        if (screen.p != context_.screen.data())
+            throw std::logic_error("+14h virtual called on a different HUD screen");
+        run_hud_leaf_screen_layout(context_);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+// 005F9FF0: 004F71D0, GUI_order into +8h, then its +14h virtual.
+class HudLeafPageLayoutRegisterBinding final : public bsp::cc13_fe1::ScreenRegisterLayoutHost {
+public:
+    explicit HudLeafPageLayoutRegisterBinding(HudLeafRegisterContext& context) : context_(context) {}
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    std::uint32_t load_page_00aa5840(std::string_view name) override {
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(context_.load_page(name)));
+    }
+    void screen_bind_layout(void* screen) override {
+        if (screen != context_.screen.data())
+            throw std::logic_error("+14h virtual called on a different HUD screen");
+        run_hud_leaf_screen_layout(context_);
+    }
+private:
+    HudLeafRegisterContext& context_;
+};
+
+void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
+    std::uint8_t* const p = context.screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    switch (context.register_virtual) {
+    case 0x0067B3F0u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::hud_common_overlay_screen_register_0067b3f0(raw, b); return; }
+    case 0x005176A0u: { HudLeafRegisterBinding b(context); bsp::cc13_fe3::in_game_screen_23_register_005176a0(raw, b); return; }
+    case 0x005D38A0u: { HudLeafRegisterBinding b(context); bsp::frontend_seg15_22_cc13::pause_multi_register_005d38a0(raw, b); return; }
+    case 0x005EE010u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_objectives_register_005ee010(p, b); return; }
+    case 0x00604890u: { HudLeafScreenRegisterBinding b(context); bsp::cc13_fe1::hud_pause_cheat_register_00604890(p, b); return; }
+    case 0x0060D1C0u: { HudLeafPlaneSpawnRegisterBinding b(context); bsp::seg25_cc13::hud_plane_spawn_screen_register_0060d1c0(p, b); return; }
+    case 0x00565EE0u: { HudLeafLimboRegisterBinding b(context); bsp::cc13_fe3::hud_limbo_register_00565ee0(raw, b); return; }
+    case 0x0051ED60u: { HudLeafBinocularsRegisterBinding b(context); bsp::cc13_seg14::binoculars_screen_register_0051ed60(p, b, game_native_string_process().strings()); return; }
+    case 0x0067BE80u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::follow_screen_register_0067be80(raw, b); return; }
+    case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
+    case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
+    case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
+    case 0x00643E80u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::spectator_register_00643e80(raw, b); return; }
+    case 0x0052CBF0u: { HudLeafCountersRegisterBinding b(context); bsp::frontend_seg15_22_cc13::hud_counters_register_0052cbf0(raw, b); return; }
+    default: break;
+    }
+    throw std::logic_error("0068CC70 leaf register listed but not bound");
+}
+
+// Goal 5 chain 646: the leaf screens' own +4h (manages its own visibility),
+// +18h (enter), +1Ch (exit) and +20h (update) virtuals on their blocks, as
+// 004F7620 and the pump 004F8830 call them through the screen's vtable. Read
+// from the vtables (bsp.py ghidra bytes <vtable> --length 36):
+// - 00CF5998 (43h): +4h 00643DD0 (MOV AL,1), +18h 00643F40, +1Ch 00643DE0 (RET),
+//   +20h 00643DF0 (RET 4). Its register 00643E80 stores +4h = 1, so the screen is
+//   wanted from registration on and the set recompute never clears it.
+// - 00CF7A38 (27h): +18h 0067B400 and +1Ch 0067B410, both RET.
+// - 00CF61D4 (48h): +18h 00650190 (RET) and +1Ch the base 004F75B0 (RET).
+// - 00CF6D68 (49h): +18h 0067BEB0 (RET).
+// 0 leaves the slot's existing path: 27h's and 49h's +20h (0067BB50, 0067BF00)
+// run from their own hosts; 48h's +20h 00650450 reads the controlled
+// submarine's image fields (unit+1200h..+127Ch), which no host row carries;
+// 49h's +1Ch 0067BEC0 clears +8h, which FollowScreen49State holds for 0067BF00,
+// so running it on the block would split that field.
+struct HudLeafScreenVirtuals {
+    int slot;
+    std::uint32_t vtable;
+    std::uint32_t self_managed_04;
+    std::uint32_t enter_18;
+    std::uint32_t exit_1c;
+    std::uint32_t update_20;
+};
+// - 00CED0AC (51h, goal 5 chain 662): +4h 0052B070 (MOV AL,1), +18h 00528C40 and
+//   +1Ch 00528C50 (the page root +8h's +34h(1) / (0)), +20h 0052BAA0 (the
+//   counter ticks and 00529810). bsp.py ghidra bytes 00ced0ac --length 40.
+constexpr std::array<HudLeafScreenVirtuals, 5> kHudLeafScreenVirtuals{{
+    {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
+        0x00643DF0u},
+    {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
+    {0x48, bsp::ingame_gui_cc13::kSubmarineScreenVtable, 0, 0x00650190u, 0x004F75B0u, 0},
+    {0x49, bsp::ingame_gui_cc13::kFollowScreenVtable, 0, 0x0067BEB0u, 0, 0},
+    {0x51, bsp::frontend_seg15_22_cc13::kHudCountersVtable, 0x0052B070u, 0x00528C40u, 0x00528C50u,
+        0x0052BAA0u},
+}};
+const HudLeafScreenVirtuals* hud_leaf_screen_virtuals(int slot) noexcept {
+    for (const HudLeafScreenVirtuals& v : kHudLeafScreenVirtuals) {
+        if (v.slot == slot) return &v;
+    }
+    return nullptr;
+}
+
+// 00643F40's services: 00AA7E00(name, 1) searches the page's descendants, and
+// vtable +34h is the menu's widget visibility setter. The image calls +34h with
+// no null test; a page without Spectator_Text is reported, not dereferenced.
+class HudLeafChildVisibilityBinding final
+    : public bsp::ingame_gui_cc13::HudScreenChildVisibilityHost {
+public:
+    HudLeafChildVisibilityBinding(GameMenuHost& menu, GameHostLog& log) : menu_(menu), log_(log) {}
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override {
+        if (parent == nullptr) return nullptr;
+        return bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(parent), name);
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        if (widget == nullptr) {
+            log_.notef("HUD leaf enter: widget vtable +34h on a child the page does not hold");
+            return;
+        }
+        menu_.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), visible);
+    }
+private:
+    GameMenuHost& menu_;
+    GameHostLog& log_;
+};
 
 // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md). True: 00526A40's
 // camera segment query 009043A0 runs over the gunnery host's units
@@ -312,6 +2011,19 @@ public:
 
 struct GameHudHost::Impl {
     Impl(GameHostLog& log_in, GameMenuHost& menu_in) : log(log_in), menu(menu_in) {}
+    // Before leaf_screens frees the blocks: screen 33h's retained samples go back
+    // as 005B9D40 returns them (release_hud_narrative_leaf_samples).
+    ~Impl() {
+        for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
+            if (!leaf_screens[i] || kInGameHudScreens[i].constructor != 0x005BA7B0u) continue;
+            try {
+                release_hud_narrative_leaf_samples(*leaf_screens[i]);
+                log.implemented("HudNarrative::release_samples", "005b9e11");
+            } catch (const std::exception& error) {
+                log.notef("HUD screen 33h samples not released: %s", error.what());
+            }
+        }
+    }
 
     GameHostLog& log;
     GameMenuHost& menu;
@@ -378,6 +2090,11 @@ struct GameHudHost::Impl {
     alignas(4) std::array<std::uint8_t, 0xE8> root_interface_fields{};
     HudRootConstructionStorage constructed_root_screen{};
     HudSceneInitStorage constructed_scene_init_screen{};
+    // 0068CC70's blocks for the leaf screens kHudLeafScreenConstructors lists,
+    // by kInGameHudScreens index; empty for every other screen.
+    std::array<std::unique_ptr<HudLeafScreenStorage>, kInGameHudScreenCount> leaf_screens{};
+    // Widget +75h (00AA6820) of the counters' widgets, while it is set.
+    std::set<const GuiLayoutWidget*> counters_visibility_recurses;
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
@@ -888,20 +2605,68 @@ public:
     bool session_flag_19c4() override { return false; }
     bool overlay_c_extra_gate() override { return false; }
 
-    bool camera_screen_spectating() override { return record_false("006529e0", 0x006529e0u); }
-    bool camera_screen_flag_09() override { return record_false("00652a20", 0x00652a20u); }
-    bool camera_screen_flag_08() override { return record_false("00652a30", 0x00652a30u); }
-    void camera_screen_set_flag_08(bool value) override {
-        static_cast<void>(value);
-        owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_08", 0x00652a50u);
+    // The "camera screen" of this interface is the support-manager screen 4Eh,
+    // ECX = [manager+BCh] at every site below (0068C237..0068C9AF); 0068CC70
+    // builds it on its leaf block through 006735D0. Its register 0066EA60 does
+    // not run on that block (chain 629), but it only zeroes +0Ah, +30h and +66h
+    // of what these read (bsp.py show 0066ea60), and the block starts zeroed,
+    // so each answer is the block's own byte. +4h is the screen's FrontEndScreen
+    // flag the menu registry sets. Before Init has built the block the answers
+    // stay the neutral records they were.
+    bool camera_screen_spectating() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("006529e0", 0x006529e0u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_04", 0x006529e0u);
+        return bsp::cc13_front4::overlay_busy_006529e0({s}) != 0;
     }
-    bool camera_screen_flag_0a() override { return false; }
-    void camera_screen_set_flag_0a(bool value) override { static_cast<void>(value); }
-    bool camera_screen_flag_30() override { return false; }
-    bool camera_screen_flag_66() override { return record_false("006529c0", 0x006529c0u); }
+    bool camera_screen_flag_09() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("00652a20", 0x00652a20u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_09", 0x00652a20u);
+        return bsp::cc13_front5::byte_09_get_00652a20({s}) != 0;
+    }
+    bool camera_screen_flag_08() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("00652a30", 0x00652a30u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_08", 0x00652a30u);
+        return bsp::cc13_front5::byte_08_get_00652a30({s}) != 0;
+    }
+    void camera_screen_set_flag_08(bool value) override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_08", 0x00652a50u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::support_screen_set_byte_08", 0x00652a50u);
+        bsp::cc13_front5::byte_08_set_00652a50({s}, value ? 1u : 0u);
+    }
+    // 0068C25B CMP byte [ECX+0Ah] and 0068C7D8 MOV byte [ECX+0Ah],1 are inline.
+    bool camera_screen_flag_0a() override {
+        const std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        return s != nullptr && s[0x0A] != 0;
+    }
+    void camera_screen_set_flag_0a(bool value) override {
+        if (std::uint8_t* const s = leaf_block_at(kSupportScreenOffset)) s[0x0A] = value ? 1u : 0u;
+    }
+    // 0068C7C0..0068C7CC: [[00E198C4]+BCh]+30h, the same screen through the global.
+    bool camera_screen_flag_30() override {
+        const std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        return s != nullptr && s[0x30] != 0;
+    }
+    bool camera_screen_flag_66() override {
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) return record_false("006529c0", 0x006529c0u);
+        owner_.done("InGameInterfaceUpdate::support_screen_byte_66", 0x006529c0u);
+        return bsp::cc13_front5::byte_66_get_006529c0({s}) != 0;
+    }
     void camera_screen_set_flag_66(bool value) override {
-        static_cast<void>(value);
-        owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_66", 0x006529b0u);
+        std::uint8_t* const s = leaf_block_at(kSupportScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::camera_screen_set_flag_66", 0x006529b0u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::support_screen_set_byte_66", 0x006529b0u);
+        bsp::cc13_front5::byte_66_set_006529b0({s}, value ? 1u : 0u);
     }
     void camera_screen_frame_step() override {
         owner_.record("InGameInterfaceUpdate::camera_screen_frame_step", 0x00673130u);
@@ -984,9 +2749,21 @@ public:
     void hud_root_set_field_1c(std::uint32_t value) override {
         owner_.set_root_closed_value(static_cast<std::int32_t>(value));
     }
-    bool screen_2b_wanted() override { return false; }
-    void screen_2b_set_mode(bool) override {
-        owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+    // The free-camera screen 2Bh, ECX = [manager+90h], on its 00540BA0 leaf
+    // block: 0068C40E tests its +4h (the FrontEndScreen's wanted flag) inline,
+    // and 0068C440 / 0068C449 call 0053D290 with 0 or 1.
+    bool screen_2b_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFreeCameraScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2b_set_mode(bool mode) override {
+        std::uint8_t* const s = leaf_block_at(kFreeCameraScreenOffset);
+        if (s == nullptr) {
+            owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
+            return;
+        }
+        owner_.done("InGameInterfaceUpdate::free_camera_screen_set_28", 0x0053d290u);
+        bsp::cc13_front5::dword_28_set_0053d290({s}, mode ? 1u : 0u);
     }
     bool screen_34_query() override {
         if constexpr (kHudHintsSecondsLeftBound) {
@@ -1005,20 +2782,58 @@ public:
             return record_false("0054d3c0", 0x0054d3c0u);
         }
     }
-    bool screen_2a_wanted() override { return false; }
-    void screen_2a_clear_wanted() override {}
-    bool screen_3b_block_a() override { return false; }
-    bool screen_3b_block_b() override { return false; }
+    // The formation screen 2Ah, [manager+5Ch], on its 00538E30 leaf block:
+    // 0068C6D4..0068C6E3 tests its +4h and clears it with MOV byte [EAX+4],0,
+    // the wanted flag the menu registry borrows, before 0068AB80(1, 1).
+    bool screen_2a_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    void screen_2a_clear_wanted() override {
+        if (FrontEndScreen* const f = leaf_flags_at(kFormationScreenOffset)) f->wanted = false;
+    }
+    // 0068C685..0068C698: ECX = [manager+64h], the order screen 3Bh that
+    // 0068CC70 builds on its leaf block through 005F9440 (its register 005F9FF0
+    // runs there too); CMP byte [EAX+81h] / [EAX+82h], inline.
+    bool screen_3b_block_a() override {
+        const std::uint8_t* const s = leaf_block_at(kOrderScreenOffset);
+        return s != nullptr && s[0x81] != 0;
+    }
+    bool screen_3b_block_b() override {
+        const std::uint8_t* const s = leaf_block_at(kOrderScreenOffset);
+        return s != nullptr && s[0x82] != 0;
+    }
+    // 005FB080 reads the controlled unit's native fields (+3B0h on a squadron)
+    // and the manager's +20h/+40h/+60h, none of which this process has as
+    // native objects; it stays a record.
     void screen_3b_idle() override {
         owner_.record("InGameInterfaceUpdate::screen_3b_idle", 0x005fb080u);
     }
     bool screen_45_block_a() override { return false; }
     bool screen_45_block_b() override { return false; }
-    bool map_screen_wanted() override { return false; }
+    // The "map screen" is the powerup-manager screen 4Fh, ECX = [manager+C0h]
+    // (0068C784..0068C9C2), built on its leaf block by 0061A480. 0068C795 and
+    // 0068C80B test its +4h inline: the FrontEndScreen flag the menu registry
+    // sets when the screen is shown.
+    bool map_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPowerupScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    // 00612DA0 starts on the widgets its register 00614170 loads (+B0h, +D4h,
+    // +E4h..+ECh), and that register does not run on the leaf block (chain
+    // 629: it takes a typed state), so the step stays a record.
     void map_screen_frame_step() override {
         owner_.record("InGameInterfaceUpdate::map_screen_frame_step", 0x00612da0u);
     }
-    bool map_screen_busy() override { return record_false("00611750", 0x00611750u); }
+    // 0068C9C2..0068C9CE: 00611750 on the same block, +1F9h or +13Fh. The
+    // skipped register only clears +1F9h (00614170 at 006142EC, BL = 0), which
+    // the zeroed block already holds; the constructor stores +13Fh (0061A513).
+    bool map_screen_busy() override {
+        std::uint8_t* const s = leaf_block_at(kPowerupScreenOffset);
+        if (s == nullptr) return record_false("00611750", 0x00611750u);
+        owner_.done("InGameInterfaceUpdate::powerup_screen_scrolling", 0x00611750u);
+        return bsp::seg25_cc13::powerup_manager_is_scrolling_00611750(s);
+    }
     std::uint32_t map_screen_overlay_argument() override { return 0; }
     bool pause_screen_flag_05() override { return false; }
     bool pause_screen_flag_08() override { return false; }
@@ -1060,10 +2875,36 @@ public:
         owner_.record("InGameInterfaceUpdate::water_height", 0x0078cf20u);
         return 0.0f;
     }
-    bool cockpit_screen_wanted() override { return false; }
-    int cockpit_screen_mode() override { return record_false("00604f30", 0x00604f30u) ? 1 : 0; }
-    bool second_cockpit_screen_wanted() override { return false; }
-    int second_cockpit_screen_mode() override { return 0; }
+    // 0068CB4A..0068CB6D. First the plane-effects screen 3Fh ([manager+6Ch],
+    // the 00606470 leaf block): its +4h, then 00604F30 on it. 00604F30 answers
+    // 0 while the block's plane +B8h is null, which is the constructor's store
+    // (00606470) and stays so because the 0068ACA0 plane arm that binds one is
+    // a record here; only a bound plane would reach the kind query, which
+    // HudLeafFe5Binding leaves unreached. Then the periscope screen 47h
+    // ([manager+84h], the 00650B00 leaf block): its +4h and CMP dword [+74h],2.
+    bool cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPlaneEffectsScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int cockpit_screen_mode() override {
+        HudLeafScreenStorage* const leaf = leaf_at(kPlaneEffectsScreenOffset);
+        if (leaf == nullptr) return record_false("00604f30", 0x00604f30u) ? 1 : 0;
+        HudLeafFe5Binding binding(*leaf);
+        owner_.done("InGameInterfaceUpdate::plane_effects_cockpit_view", 0x00604f30u);
+        return static_cast<int>(
+            bsp::cc13_fe5::plane_screen_cockpit_view_flag_00604f30({leaf->data()}, binding));
+    }
+    bool second_cockpit_screen_wanted() override {
+        const FrontEndScreen* const f = leaf_flags_at(kPeriscopeScreenOffset);
+        return f != nullptr && f->wanted;
+    }
+    int second_cockpit_screen_mode() override {
+        const std::uint8_t* const s = leaf_block_at(kPeriscopeScreenOffset);
+        if (s == nullptr) return 0;
+        std::int32_t mode = 0;
+        std::memcpy(&mode, s + 0x74, sizeof(mode));
+        return mode;
+    }
     bool controlled_unit_is_submarine() override {
         // 0068CC04: IsKindOf(8) on 00E188D8.
         if constexpr (kHudInterfaceControlledUnitBound) {
@@ -1114,6 +2955,28 @@ public:
     }
 
 private:
+    // The manager slots the reads above dereference (src/ingame_interface.cpp).
+    static constexpr std::uint16_t kFormationScreenOffset = 0x5C;   // screen 2Ah
+    static constexpr std::uint16_t kOrderScreenOffset = 0x64;       // screen 3Bh
+    static constexpr std::uint16_t kPlaneEffectsScreenOffset = 0x6C;  // screen 3Fh
+    static constexpr std::uint16_t kPeriscopeScreenOffset = 0x84;     // screen 47h
+    static constexpr std::uint16_t kFreeCameraScreenOffset = 0x90;  // screen 2Bh
+    static constexpr std::uint16_t kSupportScreenOffset = 0xBC;     // screen 4Eh
+    static constexpr std::uint16_t kPowerupScreenOffset = 0xC0;     // screen 4Fh
+    // The leaf block 0068CC70 built for [manager+offset], or null.
+    HudLeafScreenStorage* leaf_at(std::uint16_t offset) const {
+        const std::size_t index = bsp::in_game_hud_screen_index_at(offset);
+        return index < kInGameHudScreenCount ? owner_.leaf_screens[index].get() : nullptr;
+    }
+    std::uint8_t* leaf_block_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? leaf->data() : nullptr;
+    }
+    // Its +4h/+5h, the FrontEndScreen the leaf constructed and the registry borrows.
+    FrontEndScreen* leaf_flags_at(std::uint16_t offset) const {
+        HudLeafScreenStorage* const leaf = leaf_at(offset);
+        return leaf != nullptr ? &leaf->flags() : nullptr;
+    }
     bool record_false(const char* suffix, std::uint32_t address) {
         char method[80];
         std::snprintf(method, sizeof(method), "InGameInterfaceUpdate::query_%s", suffix);
@@ -1129,10 +2992,12 @@ private:
 // ---------------------------------------------------------------------------
 //
 // bsp::init_in_game_interface_0068cc70 drives this, so the order the 42 screens
-// are built and registered in is the recovered one. The 42 leaf classes are not
-// reconstructed: the allocation and the constructor are records and the
-// registry record is the executable's own, the substitution milestone 2c makes
-// for the seven main-menu screen classes. What register_screen then does is the
+// are built and registered in is the recovered one. The root (0068BF60), the
+// scene-init screen (00636D90) and the kHudLeafScreenConstructors leaves are
+// constructed on this owner's own blocks and the registry borrows each one's
+// base flags; for every other leaf the allocation and the constructor are
+// records and the registry record is the executable's own, the substitution
+// milestone 2c makes for the seven main-menu screen classes. What register_screen then does is the
 // recovered part of each +10h override, 004f71d0 plus the page the screen loads
 // through 00aa5840 and the widget names it binds through 00aa7e00.
 class HudInitBinding final : public InMissionInterfaceInitHost {
@@ -1174,6 +3039,14 @@ public:
             owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
             return true;
         }
+        if (index < kInGameHudScreenCount
+            && is_hud_leaf_screen_constructor(kInGameHudScreens[index].constructor)) {
+            if (owner_.leaf_screens[index])
+                throw std::logic_error("0068CC70 allocated a HUD leaf screen twice");
+            owner_.leaf_screens[index] = std::make_unique<HudLeafScreenStorage>(size_bytes);
+            owner_.done("InGameInterface::allocate_leaf_screen", 0x00bf681bu);
+            return true;
+        }
         owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
         return true;
     }
@@ -1199,6 +3072,12 @@ public:
                     {owner_.constructed_scene_init_screen.data()}, binding);
                 ++owner_.summary.screen_constructors;
                 owner_.done("InGameInterface::scene_init_constructor", constructor);
+            } else if (index < kInGameHudScreenCount && owner_.leaf_screens[index]) {
+                if (constructor != kInGameHudScreens[index].constructor)
+                    throw std::logic_error("0068CC70 leaf constructor changed");
+                run_hud_leaf_screen_constructor(constructor, *owner_.leaf_screens[index]);
+                ++owner_.summary.screen_constructors;
+                owner_.done("InGameInterface::leaf_screen_constructor", constructor);
             } else {
                 if (constructor != 0) ++owner_.summary.screen_constructors;
                 owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
@@ -1218,7 +3097,21 @@ public:
         char name[32];
         std::snprintf(name, sizeof(name), "HUD%02X",
             static_cast<unsigned>(slot.registry_slot));
+        // The leaf's own register override over its block, for the overrides
+        // kHudLeafScreenRegisters lists. As for scene-init, the generic page
+        // loader below must not also run on that screen.
+        bool leaf_registered = false;
         const bool registered = [&]() {
+            if (owner_.leaf_screens[index] && layout != nullptr
+                && is_hud_leaf_screen_register(layout->register_virtual)) {
+                if (owner_.menu.in_game_screen_registered(slot.registry_slot)) return false;
+                HudLeafRegisterContext context{*owner_.leaf_screens[index], owner_.menu,
+                    slot.registry_slot, name, layout->register_virtual, layout->layout_virtual};
+                run_hud_leaf_screen_register(context);
+                owner_.done("InGameInterface::leaf_screen_register", layout->register_virtual);
+                leaf_registered = true;
+                return true;
+            }
             if (slot.registry_slot == kSceneInitRegistrySlot) {
                 // bsp.py show 00636f30: register this exact base, load
                 // FE_sceneinit, bind Message_Text, retain its four colour
@@ -1230,9 +3123,10 @@ public:
                 owner_.done("InGameInterface::scene_init_register", 0x00636f30u);
                 return true;
             }
+            FrontEndScreen* const constructed = index == 0 ? &owner_.constructed_root_screen.flags
+                : owner_.leaf_screens[index] ? &owner_.leaf_screens[index]->flags() : nullptr;
             return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                record.register_virtual, record.layout_virtual,
-                index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
+                record.register_virtual, record.layout_virtual, constructed);
         }();
         if (!registered) {
             owner_.log.notef("HUD screen slot %02X could not be registered",
@@ -1248,7 +3142,7 @@ public:
                 record.pages.push_back(page);
                 ++owner_.summary.pages_requested;
                 const bool loaded = [&]() {
-                    if (slot.registry_slot == kSceneInitRegistrySlot)
+                    if (slot.registry_slot == kSceneInitRegistrySlot || leaf_registered)
                         return owner_.menu.in_game_page(slot.registry_slot, page) != nullptr;
                     return owner_.menu.attach_in_game_page(slot.registry_slot, page);
                 }();
@@ -1328,6 +3222,134 @@ bool GameHudHost::hide_mission_narrative_text() {
     // fields read. Native ABI is ECX=screen, RET; this is its source view.
     bsp::cc13_fe1::hud_narrative_hide_text_005b5d40(&view, binding);
     impl_->done("HudNarrative::hide", 0x005b5d40u);
+    return true;
+}
+
+namespace {
+// [00E198C4]+C8h, the counters block, once its register built both entries,
+// with the image objects the countdown path reads (HudCountersContext).
+std::optional<HudCountersContext> hud_counters_context(GameHudHost::Impl& impl) {
+    constexpr std::uint16_t kCountersOffset = 0xC8;  // kInGameHudScreens: 51h
+    const std::size_t index = bsp::in_game_hud_screen_index_at(kCountersOffset);
+    HudLeafScreenStorage* const counters = index < kInGameHudScreenCount
+        ? impl.leaf_screens[index].get() : nullptr;
+    if (counters == nullptr) return std::nullopt;
+    const bsp::ingame_gui_cc13::Raw s{counters->data()};
+    if (s.ptr(0x0C) == nullptr || s.ptr(0x10) == nullptr) return std::nullopt;  // 0052CBF0 not run
+    const Win32PlatformState* const platform = active_platform_state();
+    if (platform == nullptr) return std::nullopt;
+    // 0052A860 reads the Text widget's measured width (+114h), which only the
+    // text bridge lays out; a run without a device opens none.
+    if (!impl.menu.frontend().summary().text_bridge_open) return std::nullopt;
+    HudCountersContext c{impl.menu.frontend(), *counters, {}, &platform->native_window_focus(),
+        impl.counters_visibility_recurses};
+    for (std::size_t i = 0; i < kInGameHudScreenCount; ++i) {
+        if (!impl.leaf_screens[i]) continue;
+        const std::size_t slot = kInGameHudScreens[i].offset / 4u;
+        if (slot >= c.manager_view.size())
+            throw std::logic_error("kInGameHudScreens offset beyond the counters' manager view");
+        c.manager_view[slot] = impl.leaf_screens[i]->data();
+    }
+    // The screens 00529A30 / 00529810 read: +54h, +58h, +60h, +BCh, +C0h.
+    static constexpr std::array<std::uint16_t, 5> kRead{{0x54, 0x58, 0x60, 0xBC, 0xC0}};
+    for (const std::uint16_t offset : kRead) {
+        if (c.manager_view[offset / 4u] == nullptr) return std::nullopt;
+    }
+    c.record = [&impl](const char* method, std::uint32_t address) { impl.record(method, address); };
+    return c;
+}
+}  // namespace
+
+bool GameHudHost::show_mission_countdown(const std::string& text, float seconds) {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::show_countdown", 0x0052b9b0u);
+        return false;
+    }
+    HudCountersShowBinding binding(*c);
+    bsp::frontend_seg15_22_cc13::hud_counters_show_countdown_0052b9b0(
+        {c->counters.data()}, text, seconds, binding);
+    impl_->done("HudCounters::show_countdown", 0x0052b9b0u);
+    return true;
+}
+
+bool GameHudHost::cancel_mission_countdown() {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::cancel_countdown", 0x0052ab90u);
+        return false;
+    }
+    HudCountersShowBinding binding(*c);
+    // 008B1A92 and 008B1AA2: two calls; the second finds the entry hidden.
+    bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
+    bsp::frontend_seg15_22_cc13::hud_counters_cancel_countdown_0052ab90({c->counters.data()}, binding);
+    impl_->done("HudCounters::cancel_countdown", 0x0052ab90u);
+    return true;
+}
+
+bool GameHudHost::display_score(std::uint32_t id, std::uint32_t owner, const std::string& a,
+    const std::string& b, bool pair, std::uint32_t v0, std::uint32_t v1) {
+    const std::uint32_t sender = pair ? 0x0052b780u : 0x0052b620u;
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::display_score", sender);
+        return false;
+    }
+    HudScoreMessageBinding binding(*c);
+    if (pair) {
+        bsp::frontend_seg15_22_cc13::hud_send_display_score_pair_0052b780(id, owner, a, b, v0, v1, binding);
+    } else {
+        bsp::frontend_seg15_22_cc13::hud_send_display_score_0052b620(id, owner, a, b, binding);
+    }
+    impl_->done("HudCounters::display_score", sender);
+    return true;
+}
+
+bool GameHudHost::hide_score(std::uint32_t id, std::uint32_t owner) {
+    std::optional<HudCountersContext> c = hud_counters_context(*impl_);
+    if (!c) {
+        impl_->record("HudCounters::hide_score", 0x0052b900u);
+        return false;
+    }
+    HudScoreMessageBinding binding(*c);
+    bsp::frontend_seg15_22_cc13::hud_send_hide_score_0052b900(id, owner, binding);
+    impl_->done("HudCounters::hide_score", 0x0052b900u);
+    return true;
+}
+
+namespace {
+// [00E198C4]+58h, the minimap screen 35h's leaf block (005C0810).
+std::uint8_t* hud_minimap_block(GameHudHost::Impl& impl) {
+    const std::size_t index = bsp::in_game_hud_screen_index_at(0x58);
+    return index < kInGameHudScreenCount && impl.leaf_screens[index]
+        ? impl.leaf_screens[index]->data() : nullptr;
+}
+}  // namespace
+
+bool GameHudHost::set_countdown_panel(float fraction, float left) {
+    std::uint8_t* const panel = hud_minimap_block(*impl_);
+    if (panel == nullptr) {
+        impl_->record("HudCountdown::update", 0x005bca80u);
+        return false;
+    }
+    // The two stack floats are stored with MOVSS (bit copies).
+    std::uint32_t value = 0;
+    std::uint32_t extra = 0;
+    std::memcpy(&value, &fraction, sizeof(value));
+    std::memcpy(&extra, &left, sizeof(extra));
+    bsp::cc13_fe1::hud_panel_set_pending_value_005bca80(panel, value, extra);
+    impl_->done("HudCountdown::update", 0x005bca80u);
+    return true;
+}
+
+bool GameHudHost::clear_countdown_panel() {
+    std::uint8_t* const panel = hud_minimap_block(*impl_);
+    if (panel == nullptr) {
+        impl_->record("HudCountdown::end", 0x005bcab0u);
+        return false;
+    }
+    bsp::cc13_fe1::hud_panel_clear_pending_005bcab0(panel);
+    impl_->done("HudCountdown::end", 0x005bcab0u);
     return true;
 }
 
@@ -1419,7 +3441,7 @@ void GameHudHost::build_manager_0068a990() {
     impl.manager.base.active = true;
     impl.record("InGameInterface::activate_manager", 0x00684700u);
     impl.log.notef("in-mission HUD manager: %zu of %zu screens registered through "
-        "bsp::init_in_game_interface_0068cc70 (%zu leaf constructors are records), %zu of "
+        "bsp::init_in_game_interface_0068cc70 (%zu leaf constructors called), %zu of "
         "%zu pages loaded, %zu of %zu named widgets bound; INTF_SCENE3D (%02Xh) pushed by "
         "Init at 0068d73a", impl.summary.screens_built,
         static_cast<std::size_t>(kInGameHudScreenCount), impl.summary.screen_constructors,
@@ -3488,11 +5510,11 @@ public:
         return controlled_present();
     }
     bool controlled_class_repair() override {
-        // [unit+538h]+D0h, the VehicleClass `Repair` byte (00962E16), not
-        // loaded by the host. Both answers reach the same path with no input
-        // (0064E5FB and 0064E626 both end at 0064F496), so it is recorded.
-        owner_.record("HudShipScreen::class_repair_flag", 0x00962e16u);
-        return false;
+        // 0064E5E8..0064E5FB: [unit+538h]+D0h, the VehicleClass `Repair` byte
+        // (00962E16), as the gunnery host keeps it (goal 5 chain 661).
+        const GameGunneryHost* gunnery = ship_gunnery();
+        return gunnery != nullptr && controlled_present()
+            && gunnery->unit_class_repair_d0(owner_.units->controlled_index());
     }
     bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
     bool input_held(int action) override { return owner_.menu.input_action_held(action); }
@@ -3560,19 +5582,22 @@ public:
         owner_.menu.frontend().set_widget_color(*w, rgba[0], rgba[1], rgba[2], rgba[3]);
     }
     bsp::ShipRepairTaskTerms controlled_repair_task() override {
-        // SUBSTITUTION: the repair task at unit+A20h (priority +24h, the two
-        // timers +34h/+38h, their divisors unit+A5Ch/+A60h and 0093A3F0's
-        // EngineJam record) has no producer in this host
-        // (docs/UNIT_FIRE_AND_REPAIR.md; its constructor is unread). Every
-        // term reads zero: +150h = -1 and the three task circles hide.
-        owner_.record("HudShipScreen::repair_task", 0x0064f6bdu);
-        return {};
+        // Goal 5 chain 661: the repair task at unit+A20h of the controlled
+        // ship as the gunnery host's damage control keeps it: priority +24h
+        // (0064F6BD), water +34h over +40h (0064FA7E), fire +38h over +3Ch
+        // (0064FB38), and 0093A3F0 on its +18h failure records (0064F9D2).
+        bsp::ShipRepairTaskTerms terms{};
+        const GameGunneryHost* gunnery = ship_gunnery();
+        if (gunnery != nullptr && controlled_present()) {
+            gunnery->ship_repair_task_terms(owner_.units->controlled_index(), terms);
+        }
+        return terms;
     }
     float settings_engine_jam_seconds() override {
-        // SUBSTITUTION: GameSettings+3E4h, the failure descriptor vector, is
-        // not loaded by this host; the loop finds no EngineJam and answers 0.
-        owner_.record("HudShipScreen::settings_failure_descriptors", 0x0064f8e7u);
-        return 0.0f;
+        // 0064F8DA..0064F9C3 over GameSettings+3E4h, the ShipGlobals.Failures
+        // rows the gunnery host loads (goal 5 chain 661).
+        const GameGunneryHost* gunnery = ship_gunnery();
+        return gunnery != nullptr ? gunnery->failure_descriptor_engine_jam_seconds() : 0.0f;
     }
     float settings_4c4() override {
         // Recorded with controlled_float_125c, the submarine arm's other term.
@@ -3585,14 +5610,19 @@ public:
         return 0.0f;
     }
     int controlled_device_count() override {
-        // SUBSTITUTION: the device list unit+48h with the damage fields
-        // +36Ch/+370h/+378h is not modelled; the list reads empty.
-        owner_.record("HudShipScreen::device_list", 0x0064fbecu);
-        return 0;
+        // Goal 5 chain 661: 0064FBEC..0064FC7A walks the unit+48h devices; the
+        // gunnery host gives the controlled ship's gun rows (kind 20h) with
+        // their Function and health, read once per damage-panel pass.
+        devices_.clear();
+        const GameGunneryHost* gunnery = ship_gunnery();
+        if (gunnery != nullptr && controlled_present()) {
+            devices_ = gunnery->ship_device_terms(owner_.units->controlled_index());
+        }
+        return static_cast<int>(devices_.size());
     }
     bsp::ShipDeviceTerms controlled_device(int index) override {
-        static_cast<void>(index);
-        return {};
+        if (index < 0 || static_cast<std::size_t>(index) >= devices_.size()) return {};
+        return devices_[static_cast<std::size_t>(index)];
     }
     void circle_progress(bsp::ShipScreenWidget widget, float ratio, bool snap) override {
         static_cast<void>(widget);
@@ -3673,7 +5703,13 @@ public:
     }
 
 private:
+    const GameGunneryHost* ship_gunnery() const {
+        return owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+    }
+
     GameHudHost::Impl& owner_;
+    // The damage panel's device list for this pass (controlled_device_count).
+    std::vector<bsp::ShipDeviceTerms> devices_;
 };
 }  // namespace
 
@@ -5651,6 +7687,118 @@ void GameHudHost::update_unit_pick_screen_00527260(float seconds) {
     UnitPickBinding binding(impl);
     bsp::unit_pick_screen_update_00527260(impl.unit_pick, binding, seconds);
     impl.done("UnitPickScreen::update", 0x00527260u);
+}
+
+namespace {
+// The block kHudLeafScreenVirtuals' slot was constructed on, null when 0068CC70
+// built none. The vtable its constructor stored must be the one listed.
+HudLeafScreenStorage* hud_leaf_block(GameHudHost::Impl& impl, const HudLeafScreenVirtuals& v) {
+    const std::size_t index = bsp::in_game_hud_screen_index_for_slot(v.slot);
+    if (index >= kInGameHudScreenCount || !impl.leaf_screens[index]) return nullptr;
+    HudLeafScreenStorage& block = *impl.leaf_screens[index];
+    std::uint32_t vtable = 0;
+    std::memcpy(&vtable, block.data(), sizeof(vtable));
+    if (vtable != v.vtable)
+        throw std::logic_error("HUD leaf screen virtuals listed for a different vtable");
+    return &block;
+}
+}  // namespace
+
+bool GameHudHost::leaf_screen_self_managed(int slot, bool& self_managed) {
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->self_managed_04 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(*impl_, *v);
+    if (block == nullptr) return false;
+    switch (v->self_managed_04) {
+    case 0x00643DD0u:
+        self_managed = bsp::ingame_gui_cc13::hud_spectator_screen_is_self_managed_00643dd0(
+            {block->data()});
+        return true;
+    case 0x0052B070u:
+        self_managed = bsp::frontend_seg15_22_cc13::hud_counters_screen_is_self_managed_0052b070(
+            {block->data()});
+        return true;
+    default: break;
+    }
+    throw std::logic_error("HUD leaf +4h virtual listed but not bound");
+}
+
+bool GameHudHost::enter_leaf_screen(int slot) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->enter_18 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    const bsp::ingame_gui_cc13::Raw raw{block->data()};
+    switch (v->enter_18) {
+    case 0x00643F40u: {
+        HudLeafChildVisibilityBinding binding(impl.menu, impl.log);
+        bsp::ingame_gui_cc13::spectator_enter_00643f40(raw, binding);
+        break;
+    }
+    case 0x0067B400u: bsp::ingame_gui_cc13::hud_common_overlay_screen_enter_0067b400(raw); break;
+    case 0x00650190u: bsp::ingame_gui_cc13::hud_submarine_screen_enter_00650190(raw); break;
+    case 0x0067BEB0u: bsp::ingame_gui_cc13::hud_follow_screen49_enter_0067beb0(raw); break;
+    case 0x00528C40u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_enter_00528c40(binding);
+        break;
+    }
+    default: throw std::logic_error("HUD leaf +18h virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::enter", v->enter_18);
+    return true;
+}
+
+bool GameHudHost::exit_leaf_screen(int slot) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->exit_1c == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    const bsp::ingame_gui_cc13::Raw raw{block->data()};
+    switch (v->exit_1c) {
+    case 0x00643DE0u: bsp::ingame_gui_cc13::hud_spectator_screen_exit_00643de0(raw); break;
+    case 0x0067B410u: bsp::ingame_gui_cc13::hud_common_overlay_screen_exit_0067b410(raw); break;
+    case 0x004F75B0u: bsp::engine_seg11_35_66_cc13::base_screen_exit_004f75b0(); break;
+    case 0x00528C50u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_exit_00528c50(binding);
+        break;
+    }
+    default: throw std::logic_error("HUD leaf +1Ch virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::exit", v->exit_1c);
+    return true;
+}
+
+bool GameHudHost::update_leaf_screen(int slot, float seconds) {
+    Impl& impl = *impl_;
+    const HudLeafScreenVirtuals* v = hud_leaf_screen_virtuals(slot);
+    if (v == nullptr || v->update_20 == 0) return false;
+    HudLeafScreenStorage* block = hud_leaf_block(impl, *v);
+    if (block == nullptr) return false;
+    switch (v->update_20) {
+    // RET 4: the pump's seconds argument is not read.
+    case 0x00643DF0u:
+        bsp::ingame_gui_cc13::hud_spectator_screen_update_00643df0({block->data()});
+        break;
+    // __thiscall(screen, float seconds), RET 4: the pump's seconds.
+    case 0x0052BAA0u: {
+        std::optional<HudCountersContext> c = hud_counters_context(impl);
+        if (!c) return false;
+        HudCountersUpdateBinding binding(*c);
+        bsp::hud_counters_update_0052baa0(hud_counters_state(*block), seconds, binding);
+        break;
+    }
+    default: throw std::logic_error("HUD leaf +20h virtual listed but not bound");
+    }
+    impl.done("HudLeafScreen::update", v->update_20);
+    return true;
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

@@ -30,6 +30,7 @@ class FmodConfigurationLibrary;
 class SoundResourceRuntime;
 class SoundSampleRuntime;
 class SoundChannelRuntime;
+struct SoundRequestQueue;
 }
 
 namespace bsp::game {
@@ -99,6 +100,15 @@ public:
     // OnInitOnce 004DD6F6: owns the five GUI sample references until teardown,
     // using this runtime's actual class table, cache and sample final release.
     void initialize_gui_sound_set();
+    // 004C1B90's queue: the request bytes (+18h..+1Dh) and forced slot (+20h) of
+    // the published [00F89B34] owner initialize_gui_sound_set built. Null when
+    // that owner is not published (before OnInitOnce, after its destruction).
+    SoundRequestQueue* gui_sound_requests() noexcept;
+    // 004E5496: 00941140 on the published owner, then 00941070 for the slot it
+    // picks; `select_device_active` is 00941140's slot-1 input-device test.
+    // False, having done nothing, when no owner is published: nothing can have
+    // written a request then, since every writer goes through the same queue.
+    bool apply_gui_sound_requests_00941140(const std::function<bool()>& select_device_active);
     void shutdown();
     bool started() const noexcept;
     GameSoundRuntimeSummary summary() const noexcept;

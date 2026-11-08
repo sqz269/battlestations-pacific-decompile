@@ -4,6 +4,7 @@
 // Evidence: docs/CC13_MENU_SCREENS_2.md. Every name here is a hypothesis; addresses,
 // ABIs and listing ranges are in the comments of src/menu_screens_2.cpp.
 
+#include "bsp/hud_counters_screen.hpp"
 #include "bsp/main_menu_command_bar.hpp"
 
 #include <array>
@@ -783,27 +784,9 @@ void hud_bomber_enter_00519120(ObservedUnitScreenState& screen, ObservedUnitScre
 void hud_bomber_exit_00519160(ObservedUnitScreenState& screen, ObservedUnitScreenHost& host);
 
 // ---------------------------------------------------------------------------
-// HUD counters screen (51h, constructor 0052B030, vtable 00CED0AC)
+// HUD counters screen (51h, constructor 0052B030, vtable 00CED0AC): declared in
+// bsp/hud_counters_screen.hpp (included at the top of this header).
 // ---------------------------------------------------------------------------
-
-struct HudCountersHost {
-    virtual ~HudCountersHost() = default;
-    virtual void widget8_virtual_34(std::int32_t arg) = 0;            // *(screen+8)
-    virtual void counter_tick_0052b080(std::uintptr_t counter, float seconds) = 0;  // ECX = counter
-    virtual void finish_00529810() = 0;                               // ECX = screen
-};
-
-struct HudCountersState {
-    std::uintptr_t counter_0c{};                // +0Ch, ticked without a null test
-    std::uintptr_t counter_10{};                // +10h
-    std::vector<std::uintptr_t> counters_14;    // +14h array, +18h count; null entries skipped
-};
-
-// 00528C40 / 00528C50: slots +18h/+1Ch, __thiscall(screen), RET.
-void hud_counters_enter_00528c40(HudCountersHost& host);
-void hud_counters_exit_00528c50(HudCountersHost& host);
-// 0052BAA0: slot +20h, __thiscall(screen, float seconds), RET 4.
-void hud_counters_update_0052baa0(const HudCountersState& screen, float seconds, HudCountersHost& host);
 
 // ---------------------------------------------------------------------------
 // Tactical library (screen 0Bh, constructor 005098B0): listbox activate 00517280

@@ -196,6 +196,58 @@ PlaneCruiseAltitudeResult cruise_altitude_command_009fba50(const PlaneCruiseAlti
     return out;
 }
 
+PlaneNamedEffectLatchResult plane_named_effect_latch_007ce790(
+    const PlaneNamedEffectLatchInputs& in) noexcept {
+    PlaneNamedEffectLatchResult out;
+    out.c01 = in.c01;
+    // 007CE55D..007CE592: CMP [game+1FE4h],2 / JZ, then the four JZ on unit+900h
+    // and CMP [ESI-2B3h],0 / JZ; MOV [ESI+8F1h],CL with CL = 2 (007CE562).
+    if (in.session_mode_1fe4 != 2) {
+        const int m = in.control_mode_900;
+        if (m != 7 && m != 6 && m != 4 && m != 5 && in.dead_5d) out.c01 = 2;
+    }
+    // 007CE6CA / 007CE6D7: CMP byte [ESI+6D0h],0 and [ESI+210h],0, JNZ 007CE835.
+    if (in.frozen_9e0 || in.suppress_520) return out;
+    // 007CE790..007CE798: TEST AL,AL / JLE, a signed byte.
+    if (static_cast<std::int8_t>(out.c01) <= 0) return out;
+    // 007CE79E CMP AL,1 / JNZ 007CE7D8: 1 is "powerlost", any other value "explosion".
+    out.effect = out.c01 == 1 ? PlaneNamedEffectLatchEffect::PowerLost
+                              : PlaneNamedEffectLatchEffect::Explosion;
+    out.c01 = 0;  // 007CE82E MOV byte [ESI+8F1h],0
+    return out;
+}
+
+PlaneLandedFlagTickArm plane_landed_flag_tick_007ce598(const PlaneLandedFlagTickInputs& in) noexcept {
+    if (in.session_mode_1fe4 == 2) return PlaneLandedFlagTickArm::None;   // 007CE5A4 JZ 007CE61D
+    if (!in.landed_904) return PlaneLandedFlagTickArm::None;              // 007CE5AD JZ 007CE6C7
+    const std::int32_t m = in.control_mode_900;                           // 007CE5B3
+    if (m == 7 || m == 6) return PlaneLandedFlagTickArm::InlineClear_007ce611;   // 007CE5BC / 007CE5C1
+    if (m != 4) return PlaneLandedFlagTickArm::None;                      // 007CE5C6 JNZ 007CE6C7
+    if (in.squadron_seat_9d8 == 0) return PlaneLandedFlagTickArm::None;   // 007CE5D3 JZ
+    if (!in.has_squadron_9d4) return PlaneLandedFlagTickArm::None;        // 007CE5E1 JZ
+    if (in.squadron_3b0) return PlaneLandedFlagTickArm::None;             // 007CE5EE JNZ
+    return PlaneLandedFlagTickArm::ClearFlag904_007b8450;                 // 007CE5FA
+}
+
+bool plane_below_landscape_007ce3b1(const PlaneLandscapeBelowInputs& in,
+    const std::function<bool(std::size_t landscape, const float xz[2], float& height)>&
+        landscape_height_0087fc60) {
+    if (in.suppress_520) return false;                                // 007CE0B5 JNZ 007CE55B
+    // 007CE39B FCHS / 007CE39D FCOMIP ST0 = -limit, ST1 = y / 007CE3A1 JBE 007CE3B1:
+    // an ordered -limit > y is the depth kill's arm (007CE3A7), which 007CE3AC
+    // ends with JMP 007CE471 past the loop.
+    if (-in.depth_kill_limit > in.y_100) return false;
+    if (!in.free_flight_gate_72c) return false;                       // 007CE3C4 JZ 007CE471
+    if (!(30.0 > static_cast<double>(in.height_9b4))) return false;   // 007CE3DA JBE 007CE471
+    const float xz[2] = {in.x_fc, in.z_104};                          // [ESP+18h], [ESP+1Ch]
+    float h = 0.0f;
+    // 007CE435..007CE466: node +4h, the Landscape at +8h, until the node is null.
+    for (std::size_t k = 0; landscape_height_0087fc60(k, xz, h); ++k) {
+        if (h > in.y_100) return true;                                // 007CE45F JA 007CE46A
+    }
+    return false;
+}
+
 PlaneMotionArm select_motion_arm_007ce040(const PlaneMotionDispatchInputs& in) {
     if (in.control_mode_gate) {
         return PlaneMotionArm::FreeFlight;  // 007CEC43 JZ, so a true answer takes this arm
@@ -220,6 +272,18 @@ PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step) 
         host.out_of_action_countdown_007c6c30(step);  // 00953D98, vtable[+1D8h]
         // 007CE09C-007CE0D2: with unit+520h clear, the wanderer (single player).
         host.wanderer_fixed_step_007be060(step);
+    }
+
+    // 007CE598..007CE618, the +904h clear. In the image it sits between the latch's
+    // +C01h store (007CE592) and its gates (007CE6CA); it reads and writes only
+    // +904h, which the latch neither reads nor writes, so it runs first here.
+    host.landed_flag_tick_007ce598();
+
+    // 007CE55D..007CE82E: unit+C01h, ahead of the 007CE835 vtable[1DCh] call and
+    // the arms. An effect that took the unit out of the world ends the tick:
+    // 007CE856 JNZ 007CF0D3 skips the arms, the pose commit and the latch.
+    if (host.named_effect_latch_007ce790(suppress_slot_1d8, host.airborne_time_frozen())) {
+        return PlaneMotionArm::None;
     }
 
     PlaneMotionDispatchInputs dispatch;

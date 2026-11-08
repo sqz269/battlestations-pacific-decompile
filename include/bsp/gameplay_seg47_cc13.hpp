@@ -11,10 +11,15 @@
 // service the image calls is a host callback, so nothing here invents a global
 // or stubs a call. Gameplay runs at 24-bit x87 precision
 // (docs/CC13_FPU_PRECISION.md); every value here is stored to a float by the
-// image, so the models compute in float. Build-tested only; not wired, not
-// game-run.
+// image, so the models compute in float. Build-tested; not game-run. Goal 5
+// chain 645 wired named_effect_007bbfa0, state_message_007d0b80 and
+// free_flight_tail_007cc2f0 into src/game_hosts_units_motion.cpp
+// (run_plane_named_effect, deliver_plane_failure_messages, the free-flight
+// arm's dead branch); the rest is as the adoption note below reads.
 //
-// ADOPTION NOTE (cc9 terms; the full table is docs/CC13_GPR_47.md section 2):
+// ADOPTION NOTE (cc9 terms; the full table is docs/CC13_GPR_47.md section 2).
+// The two plane_death_modes.cpp copies it names were deleted by goal 5 chain
+// 645 when the first two bodies below replaced them:
 // - Replaces:
 //   * named_effect_007bbfa0: plane_death_timer_c10_007bbfa0
 //     (src/plane_death_modes.cpp:39) and the mode-to-message step of the host's

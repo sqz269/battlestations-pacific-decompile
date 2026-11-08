@@ -87,7 +87,75 @@ inline constexpr double kCounterScreenC0EdgeWide = 1.0520000457763672;  // 00CED
 // ---------------------------------------------------------------------------
 struct HudMessage35;
 
-struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
+// What 0068CC70's three Seg15 leaf constructors (00538E30, 00540BA0 with
+// 005401F0, 005CE610) call: the front-end screen base, operator new, the
+// 0093CB10 scene sub-object and the containers' head-node allocators. The HUD
+// host binds them over its own native screen storage without the other
+// Seg15Host services. 006898C0's control layout constructor 00527D00 needs
+// only the 004F7180 base; the front-end menu host binds it the same way.
+struct Seg15LeafConstructHost {
+    virtual ~Seg15LeafConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void* operator_new_00bf681b(std::size_t bytes) = 0;
+    virtual void simple_3d_scene_construct_0093cb10(Raw scene) = 0;
+    virtual void* tree_buy_head_node_005359a0() = 0;
+    virtual void* list_buy_head_node(std::uint32_t routine) = 0;
+    virtual void* list_buy_head_node_0053da70() = 0;
+    virtual void* tree_buy_head_node(std::uint32_t routine) = 0;
+};
+
+// The image pointer arrays' two calls (00529700 / 00529900): operator new
+// 00BF55BE and _free 00BF6989. Seg15Host redeclares both, so one override
+// answers both; the HUD counters binding implements only these (goal 5 chain 662).
+struct Seg15ArrayHost {
+    virtual ~Seg15ArrayHost() = default;
+    virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+};
+
+// Goal 5 chain 662: the HUD host runs the countdown path on its own counters
+// block. Both hosts carry Seg15Host's / Fe10Host's signatures.
+// 0052B9B0 / 0052AB90: the entry widget's +38h / +34h, the visible list's
+// pointer array, the countdown layout 0052A860 and the relayout 00529A30.
+struct HudCountersShowHost : Seg15ArrayHost {
+    virtual bool widget_is_visible_38(void* widget) = 0;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+    virtual void counter_layout_countdown_0052a860(Raw entry, std::string_view text, float seconds) = 0;
+    virtual void counters_relayout_00529a30(Raw screen) = 0;
+};
+
+// Goal 5 chain 667: what the counter record 0052CF60 and its score forms reach
+// (0052C990 / 0052CAC0 / 0052CF00, the entry 0052C850 / 0052CDC0 / 0052C0C0 and
+// the 18h-record array under it), with Seg15Host's signatures; Seg15Host
+// derives it, so its callers keep their host. The HUD host runs them on its
+// own counters block.
+struct HudCountersScoreHost : HudCountersShowHost {
+    virtual void object_delete_04(void* object) = 0;   // vtable +4h(1)
+    virtual std::uint32_t object_virtual_arg(Raw object, std::uint16_t slot, std::uint32_t arg) = 0;
+    virtual void observer_handle_copy_00523480(Raw dst, Raw src) = 0;
+    virtual void native_string_release(Raw string) = 0;
+    virtual std::string native_string_value(Raw string) = 0;
+    virtual Raw global_block(std::uint32_t address) = 0;
+    virtual Raw counter_entry_clone_0052c640(Raw source) = 0;
+    virtual void counter_layout_timer_00529d70(Raw entry, std::string_view a, std::string_view b) = 0;
+    virtual void counter_layout_value_0052a100(Raw entry, std::string_view a, std::string_view b,
+                                               std::uint32_t v0, std::uint32_t v1) = 0;
+    virtual void counter_layout_score_0052bb10(Raw entry, std::uint32_t value, std::string_view text) = 0;
+};
+
+// Goal 5 chain 667: the one service of the score senders 0052B620 / 0052B780 /
+// 0052B900 (Seg15Host derives it).
+struct HudMessage35SendHost {
+    virtual ~HudMessage35SendHost() = default;
+    virtual void session_send_message35_00772330(const HudMessage35& message) = 0;
+};
+
+struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices, Seg15LeafConstructHost, HudCountersScoreHost,
+                   HudMessage35SendHost {
+    // Declared in both bases; one service answers both.
+    void front_end_screen_construct_004f7180(Raw screen) override = 0;
+    void widget_set_visible_34(void* widget, bool visible) override = 0;
+    void object_delete_04(void* object) override = 0;
     // Static storage of the image at that address (a global block, not a cell).
     virtual Raw global_block(std::uint32_t address) = 0;
     // *(address): the object a global pointer cell holds.
@@ -112,9 +180,9 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     virtual void front_end_push_interface_004cc460(Raw manager, int id, int arg) = 0;
     // 004C1B90: the sound-request singleton (byte +1Dh is the "accept" cue).
     virtual Raw sound_request_singleton_004c1b90() = 0;
-    // 00BF55BE operator new / 00BF6989 _free.
-    virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
-    virtual void free_00bf6989(void* block) = 0;
+    // 00BF55BE operator new / 00BF6989 _free (also Seg15ArrayHost's).
+    void* operator_new_00bf55be(std::size_t bytes) override = 0;
+    void free_00bf6989(void* block) override = 0;
     // 00523480, ECX = destination: copy-construct an observer handle (18h bytes).
     virtual void observer_handle_copy_00523480(Raw dst, Raw src) = 0;
     // Existing reconstructions in src/band_0050_cc13.cpp, called on the
@@ -441,11 +509,11 @@ extern const std::size_t kTrivialSlotCount;
 // ---------------------------------------------------------------------------
 // 00529700 / 00529760 (pointers), word variant BSP_WordArray_Reserve: grow to
 // max(n, 1) when n exceeds the capacity (operator new, element copy, _free).
-void ptr_array_reserve_00529700(Raw array, std::int32_t n, Seg15Host& host);
+void ptr_array_reserve_00529700(Raw array, std::int32_t n, Seg15ArrayHost& host);
 // 005297C0 / 005299D0: resize to n, zeroing new slots.
-void ptr_array_resize_005297c0(Raw array, std::int32_t n, Seg15Host& host);
+void ptr_array_resize_005297c0(Raw array, std::int32_t n, Seg15ArrayHost& host);
 // 00529900 / 00529940: push back with doubling growth (minimum 1).
-void ptr_array_push_back_00529900(Raw array, std::uint32_t value, Seg15Host& host);
+void ptr_array_push_back_00529900(Raw array, std::uint32_t value, Seg15ArrayHost& host);
 // 005298C0: the 16-bit element variant of push back.
 void word_array_push_back_005298c0(Raw array, std::uint16_t value, Seg15Host& host);
 // 00529620: erase the element at index (shift down, size - 1).
@@ -453,9 +521,9 @@ void ptr_array_erase_at_00529620(Raw array, std::int32_t index);
 // 00529650: index of the pointer or -1.
 std::int32_t ptr_array_index_of_00529650(Raw array, std::uint32_t value);
 // 00529C50 / 0052AE40: resize(0) then _free(data).
-void ptr_array_destroy_00529c50(Raw array, Seg15Host& host);
+void ptr_array_destroy_00529c50(Raw array, Seg15ArrayHost& host);
 // 00529C70: reserve for 18h-byte observer-handle records.
-void rec18_array_reserve_00529c70(Raw array, std::int32_t n, Seg15Host& host);
+void rec18_array_reserve_00529c70(Raw array, std::int32_t n, HudCountersScoreHost& host);
 
 // ---------------------------------------------------------------------------
 // Control layout screen (0Eh, page FE_controls_X360 + FE_controls_X360_listbox).
@@ -463,7 +531,7 @@ void rec18_array_reserve_00529c70(Raw array, std::int32_t n, Seg15Host& host);
 // 00527CB0, __thiscall(layout, out a, b, c, d), RET 10h: when +2Ch is set copy
 // the four bytes +28h..+2Bh out and clear +2Ch.
 bool control_layout_take_button_flags_00527cb0(Raw layout, std::uint8_t out[4]);
-Raw control_layout_construct_00527d00(Raw s, Seg15Host& host);
+Raw control_layout_construct_00527d00(Raw s, Seg15LeafConstructHost& host);
 void control_layout_destruct_00527da0(Raw s, Seg15Host& host);
 void control_layout_listener_current0c_00527d50(void* widget, Seg15Host& host);
 void control_layout_listbox_activate_00527e30(Seg15Host& host);
@@ -477,57 +545,93 @@ void control_layout_collect_children_00528a60(Raw s, void* out, Seg15Host& host)
 // ---------------------------------------------------------------------------
 // HUD counters screen (51h): timer / value / countdown / score entries.
 // ---------------------------------------------------------------------------
-// 00528B00, __thiscall(entry, float seconds), RET 4.
-void hud_counter_format_time_00528b00(Raw entry, float seconds, Seg15Host& host);
+// HudCountersShowHost and HudCountersScoreHost are declared with Seg15Host.
+// 00529A30 and the occlusion pass 00529810 it ends in (00528F70, 00529200,
+// 005293B0, 00529120): widget visibility and geometry, the two global objects
+// (kInterfaceGlobal, kDisplayModeGlobal), 006529E0 on the support-manager
+// screen, and the three flag passes of src/band_0050_cc13.cpp.
+struct HudCountersLayoutHost {
+    virtual ~HudCountersLayoutHost() = default;
+    virtual bool widget_is_visible_38(void* widget) = 0;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+    virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
+    virtual void widget_resolved_position_00aa6750(void* widget, float out[3]) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float xyz[3]) = 0;
+    virtual const float* widget_size_00aa6740(void* widget) = 0;
+    virtual Raw global_object(std::uint32_t address) = 0;
+    virtual bool support_manager_mode_006529e0(Raw manager) = 0;
+    virtual void counters_restore_hidden_a7_005292e0(Raw screen) = 0;
+    virtual void counters_hide_all_a6_005290d0(Raw screen) = 0;
+    virtual void counters_restore_hidden_a6_00529350(Raw screen) = 0;
+};
+// 00528B00, __thiscall(entry, float seconds), RET 4. Its two calls, with
+// Seg15Host's signatures (goal 5 chain 662: the counters tick 0052B080 reaches
+// it on the HUD host's countdown entry).
+struct HudCounterFormatTimeHost {
+    virtual ~HudCounterFormatTimeHost() = default;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+    virtual void text_set_localised_00abbe50(void* text, std::string_view value) = 0;
+};
+void hud_counter_format_time_00528b00(Raw entry, float seconds, HudCounterFormatTimeHost& host);
 // 00528BE0, __thiscall(counter, float value), RET 4.
 void hud_counter_set_value_00528be0(Raw counter, float value);
 // 00528E90, __thiscall(counter, float a, float b), RET 8.
 void hud_counter_update_bar_00528e90(Raw counter, float a, float b, Seg15Host& host);
-void hud_counters_hide_under_manager_panel_00528f70(Raw s, Seg15Host& host);
-void hud_counters_hide_under_screen58_00529200(Raw s, Seg15Host& host);
-void hud_counters_hide_under_screen54_005293b0(Raw s, Seg15Host& host);
+void hud_counters_hide_under_manager_panel_00528f70(Raw s, HudCountersLayoutHost& host);
+void hud_counters_hide_under_screen58_00529200(Raw s, HudCountersLayoutHost& host);
+void hud_counters_hide_under_screen54_005293b0(Raw s, HudCountersLayoutHost& host);
 // 00529120 (no Ghidra function; tail of 00529810): hide entries right of the
 // C0 edge, flag +A9h.
-void hud_counters_hide_right_of_edge_00529120(Raw s, Seg15Host& host);
-void hud_counters_update_occlusion_00529810(Raw s, Seg15Host& host);
-void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host);
-void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host);
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host);
+void hud_counters_hide_right_of_edge_00529120(Raw s, HudCountersLayoutHost& host);
+void hud_counters_update_occlusion_00529810(Raw s, HudCountersLayoutHost& host);
+void hud_counters_remove_counter_a_0052ab40(Raw s, HudCountersShowHost& host);
+void hud_counters_cancel_countdown_0052ab90(Raw s, HudCountersShowHost& host);
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 // 0052AD50 / 0052ADD0 / 0052AE60 / 0052C0A0: the 18h-byte observer-handle
 // record array (vtable 00CE75CC, observed pointer +14h, "set" byte +10h).
 void rec18_array_push_back_0052ad50(Raw array, Raw source, Seg15Host& host);
 void rec18_array_remove_at_swap_last_0052add0(Raw array, std::int32_t index, Seg15Host& host);
-void rec18_array_resize_0052ae60(Raw array, std::int32_t n, Seg15Host& host);
-void rec18_array_destroy_0052c0a0(Raw array, Seg15Host& host);
+void rec18_array_resize_0052ae60(Raw array, std::int32_t n, HudCountersScoreHost& host);
+void rec18_array_destroy_0052c0a0(Raw array, HudCountersScoreHost& host);
 // Session senders (Lua DisplayUnitHP / HideUnitHP / DisplayScores / HideScoreDisplay).
 // 0052B400 __stdcall(owner, const PtrArray* units, NativeString text), RET 10h.
 void hud_send_display_unit_hp_0052b400(std::uint32_t owner, Raw units, std::string_view text, Seg15Host& host);
 void hud_send_hide_unit_hp_0052b570(std::uint32_t owner, Seg15Host& host);  // RET 4
 // 0052B620 (id, owner, NativeString a, NativeString b), RET 18h.
 void hud_send_display_score_0052b620(std::uint32_t id, std::uint32_t owner, std::string_view a,
-                                     std::string_view b, Seg15Host& host);
+                                     std::string_view b, HudMessage35SendHost& host);
 // 0052B780 (id, owner, a, b, v0, v1), RET 20h.
 void hud_send_display_score_pair_0052b780(std::uint32_t id, std::uint32_t owner, std::string_view a,
-                                          std::string_view b, std::uint32_t v0, std::uint32_t v1, Seg15Host& host);
-void hud_send_hide_score_0052b900(std::uint32_t id, std::uint32_t owner, Seg15Host& host);  // RET 8
+                                          std::string_view b, std::uint32_t v0, std::uint32_t v1, HudMessage35SendHost& host);
+void hud_send_hide_score_0052b900(std::uint32_t id, std::uint32_t owner, HudMessage35SendHost& host);  // RET 8
 // 0052B9B0, __thiscall(screen, NativeString text, float seconds), RET 0Ch.
-void hud_counters_show_countdown_0052b9b0(Raw s, std::string_view text, float seconds, Seg15Host& host);
+void hud_counters_show_countdown_0052b9b0(Raw s, std::string_view text, float seconds, HudCountersShowHost& host);
 // 0052BFA0, __thiscall(screen, value, NativeString text), RET 0Ch.
-void hud_counters_show_unit_hp_0052bfa0(Raw s, std::uint32_t value, std::string_view text, Seg15Host& host);
+void hud_counters_show_unit_hp_0052bfa0(Raw s, std::uint32_t value, std::string_view text, HudCountersScoreHost& host);
 // 0052C850, __thiscall(screen, index), RET 4: the score entry, created on demand.
-Raw hud_counters_ensure_entry_0052c850(Raw s, std::int32_t index, Seg15Host& host);
+Raw hud_counters_ensure_entry_0052c850(Raw s, std::int32_t index, HudCountersScoreHost& host);
 // 0052C990, __thiscall(screen, index, a, b), RET 14h.
 void hud_counters_show_score_0052c990(Raw s, std::int32_t index, std::string_view a, std::string_view b,
-                                      Seg15Host& host);
+                                      HudCountersScoreHost& host);
 // 0052CAC0, __thiscall(screen, index, a, b, v0, v1), RET 1Ch.
 void hud_counters_show_score_pair_0052cac0(Raw s, std::int32_t index, std::string_view a, std::string_view b,
-                                           std::uint32_t v0, std::uint32_t v1, Seg15Host& host);
-void hud_counter_entry_destruct_0052c0c0(Raw entry, Seg15Host& host);
-void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, Seg15Host& host);
-void hud_counters_register_0052cbf0(Raw s, Seg15Host& host);
+                                           std::uint32_t v0, std::uint32_t v1, HudCountersScoreHost& host);
+void hud_counter_entry_destruct_0052c0c0(Raw entry, HudCountersScoreHost& host);
+void hud_counter_entry_destroy_and_free_0052cdc0(Raw slot, HudCountersScoreHost& host);
+// The four services 0052CBF0 calls, with Seg15Host's signatures (goal 5 chain
+// 662): the HUD host runs the register on its own counters block (slot 51h)
+// without the other Seg15Host services.
+struct HudCountersRegisterHost {
+    virtual ~HudCountersRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
+    virtual Raw counter_entry_construct_0052c1b0(void* page, const std::string_view (&names)[12]) = 0;
+    virtual Raw counter_entry_clone_0052c640(Raw source) = 0;
+};
+void hud_counters_register_0052cbf0(Raw s, HudCountersRegisterHost& host);
 void hud_counters_destruct_0052cdf0(Raw s, Seg15Host& host);
 // 0052CF00, __thiscall(screen, index), RET 4.
-void hud_counters_remove_entry_widget_0052cf00(Raw s, std::int32_t index, Seg15Host& host);
+void hud_counters_remove_entry_widget_0052cf00(Raw s, std::int32_t index, HudCountersScoreHost& host);
 void hud_counters_collect_children_0052d1d0(Raw s, void* out, Seg15Host& host);
 
 // ---------------------------------------------------------------------------
@@ -642,7 +746,7 @@ void hud_formation_listbox_selection_changed_00536100(Raw listener, void* list, 
 void hud_formation_collect_children_00538d20(Raw s, void* out, Seg15Host& host);
 // 00538D60, __thiscall(screen, map, member, float unused), RET 0Ch.
 void hud_formation_add_member_marker_00538d60(Raw s, void* map, std::uint32_t member, Seg15Host& host);
-Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host);
+Raw hud_formation_construct_00538e30(Raw s, Seg15LeafConstructHost& host);
 
 // ---------------------------------------------------------------------------
 // Frame statistics overlay (57h, vtable 00CEDA10) and its statistics object.
@@ -681,11 +785,11 @@ void free_camera_effect_list_clear_0053e850(Raw list, Seg15Host& host);
 // 0053FF10, __thiscall(vector, iterator, where, count, const record*), RET 10h.
 void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value,
                                                  Seg15Host& host);
-void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host);
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15LeafConstructHost& host);
 void free_camera_release_effects_00540260(Raw block, Seg15Host& host);
 void free_camera_destruct_005402d0(Raw s, Seg15Host& host);
 void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host);
-Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host);
+Raw free_camera_construct_00540ba0(Raw s, Seg15LeafConstructHost& host);
 
 // ---------------------------------------------------------------------------
 // Debug text lists and the command bar (STL instances over small elements).
@@ -732,7 +836,7 @@ std::uint8_t* vehicle_camera_array_at_005cd820(Raw array, std::int32_t index, Se
 // Movie camera debug screen (36h, vtables 00CF1968 / 00CF1950 at +8h).
 void movie_camera_debug_destruct_005ce4d0(Raw s, Seg15Host& host);
 void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& host);
-Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host);
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15LeafConstructHost& host);
 
 // Multiplayer chat screen (15h, vtables 00CF1998 / text listener 00CF19C0 at +8h).
 // Overlay line (18h): {dword, WideString +4, NativeString +0Ch, dword +14h};
@@ -803,11 +907,11 @@ void listener_focus_dim_typed_005d3440(void* widget, bool flag, Seg15Host& host)
 void listener_refresh_dim_typed_005d35a0(void* widget, Seg15Host& host);
 // 005D34E0, listener slot (unused, listbox), RET 8: 00E19550 = selected index.
 void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host);
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host);
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 void pause_multi_destroy_005d3710(Raw s, Seg15Host& host);
 // 005D3790, widget listener at screen+0Ch, RET 4.
 void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host);
-void pause_multi_register_005d38a0(Raw s, Seg15Host& host);
+void pause_multi_register_005d38a0(Raw s, bsp::ingame_gui_cc13::HudScreenRegisterPageHost& host);
 void pause_multi_exit_005d3960(Raw s, Seg15Host& host);
 void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host);
 
@@ -1184,7 +1288,7 @@ void hud_formation_destruct_00538a80(Raw s, Fe10Host& host);
 // *00F89A10: *00F89A54 at (id - *00F89A0C) * 10h + 0Ch, else *00F89AA8 at
 // (id - *00F89A60) * 10h + 0Ch) into a pointer array and show their hit
 // points with the text +4Ch (0052BFA0), then free the array.
-void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host);
+void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, HudCountersScoreHost& host);
 
 // 00529A30 __thiscall(ECX = HUD counters screen): re-lay the counters out.
 // Entries (pointer array +20h) whose widget +0 is hidden (vtable +38h) and
@@ -1197,7 +1301,7 @@ inline constexpr double kCounterRowGap = 0.030500000342726707;  // 00CED060
 inline constexpr float kCounterRowStart = 0.07000000029802322f;         // 00CED070 (00CED074 wide: -)
 inline constexpr float kCounterRowStartManager = 0.38499999046325684f;  // 00CED068
 inline constexpr float kCounterRowStartManagerWide = 0.23000000417232513f;  // 00CED06C
-void hud_counters_relayout_00529a30(Raw s, Fe10Host& host);
+void hud_counters_relayout_00529a30(Raw s, HudCountersLayoutHost& host);
 
 // ---------------------------------------------------------------------------
 // Packet cc13-trivialslots: one ordinary function per kTrivialSlots row, re-read from

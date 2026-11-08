@@ -1426,6 +1426,14 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Goal 5 chain 654. SetFailure (0088EFF0) on a plane: 0088F14C's
+    // vtable[194h](name, frame) is 007BBFA0 for the plane vtables. `engine_index`
+    // is 00B66290 of the frame's argument 2 (the third Lua argument, 0 when
+    // absent), which the "enginefire" arm reads. False when the unit is not a
+    // plane (its fixed step is not 007CE040). `applied` is set for the names this
+    // host applies ("enginefire"; game_hosts_units_motion.cpp has the others).
+    bool script_plane_set_failure(std::size_t index, const std::string& name,
+                                  std::int32_t engine_index, bool& applied);
     // Packet cc13_natives1: unit+720h, the byte 0095AD0A sets on message 7Dh
     // (InferiorFailure); here the airfield destruction rule's inferior arm has
     // run at least once. What 00953E60 answers for "InferiorFailure".

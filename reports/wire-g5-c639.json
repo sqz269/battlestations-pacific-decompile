@@ -1,0 +1,131 @@
+{
+  "goal": 5,
+  "chain": 639,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "picked": "Land fort death (00747170 OnDestroyed, 007465E0 StartDeathFire, the 00745F1E smoke arm) in the gunnery kill path, then the Lua AddLineOfSightTrigger (008C9460 / 00750230)",
+  "rows": [
+    {
+      "native": "00747170",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_land_fort_on_destroyed (from kill_unit), for a dead MLandFort 1Bh / MCommandBuilding 1Ch; replaces the inline master hand-off land_section_destroyed_00747170"
+    },
+    {
+      "native": "007465e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_on_destroyed, FortDestroy::start_death_fire (the 00747351 call), stream-0 SmokeFireDuration draw; for a CommandBuilding the ship AI host holds, on that capture building's +740h..+750h through GameShipAiHost::command_building_fort_timers"
+    },
+    {
+      "native": "00745f1e",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp run_land_fort_smoke_frames from GameGunneryHost::fixed_step (plain forts, unheld CommandBuildings); src/game_hosts_ship_ai.cpp GameShipAiHost::Impl::landfort_smoke_arm from capture_step after the +740h arm (held capture buildings)"
+    },
+    {
+      "native": "008c9460",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_add_line_of_sight_trigger_008c9460 (binding_trampoline row 008C9460) runs bsp::cc13_left55::seg56c::lua_add_line_of_sight_trigger over LuaArgs / Left55Seg56cHost adapters"
+    },
+    {
+      "native": "00750230",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::check_line_of_sight_trigger_00750230, from run_proximity_triggers_008759b0 (the per-step trigger walk); body fixed to per-op 24-bit rounding"
+    },
+    {
+      "native": "0084b6b0",
+      "status": "skipped",
+      "reason": "los_sweep_with_ignore_0084b6b0 (cc13_seg52b) takes a 105-method Seg52bHost over native segment/record memory; 00750230's cast is answered by GameGunneryHost::query_segment_units (the 0098ADD0 binding) instead"
+    },
+    {
+      "native": "0098b370",
+      "status": "skipped",
+      "reason": "raw native segment-list body; the single-segment case it reduces to (0098ADD0 kind filter 0) is what query_segment_units already answers"
+    },
+    {
+      "native": "00747400",
+      "status": "skipped",
+      "reason": "the LandFort die rule needs the +50h eligibility byte and the +48h/+44h element chain, which no host carries"
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "reason": "needs the unit+360h model part instance (its damage-state vector); 00747170's callback answers its no-instance 0 and records"
+    },
+    {
+      "native": "00744b30",
+      "status": "skipped",
+      "reason": "the fort's vtable[16Ch]; the only host asker (JoinFormation's entity_command_is_available) passes \"follow\", which 00744B30 refuses before any target test, so binding it changes no answer"
+    },
+    {
+      "native": "007470b0",
+      "status": "skipped",
+      "reason": "lead, not unwired: the host runs the SmokeFireChanceMul hit roll only for capture buildings (game_hosts_ship_ai.cpp landfort_fire_roll_007470b0); hits on plain MLandForts (most LandFort classes have the mul > 0) take no stream-1 roll and never start the 00746320 fire"
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "reason": "the 91h MT_SHIP_LEAKCHEATWATER arm; its only constructor 00762190 is called from 00768530 CreateFromBitStream (network read)"
+    },
+    {
+      "native": "0074cd30",
+      "status": "skipped",
+      "reason": "convoy damage pooling needs the LandConvoy state (+364h HP, +398h roster, +3B8h InitialSize); the host keeps a convoy only as a name"
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "reason": "the plane tick's landscape contact 007CE3B1..007CE46A calls the height field's slot 2Ch 00ADA2C0, which lies inside the mis-bounded 00ADA240 and has no body"
+    },
+    {
+      "native": "005c0930",
+      "status": "skipped",
+      "reason": "minimap objective/ping marker pass (005C1E00..005C2750) is raw native screen memory; the host minimap is a typed widget model without the +104h..+110h marker vector"
+    },
+    {
+      "native": "005c0bd0",
+      "status": "skipped",
+      "reason": "same minimap marker pass as 005C0930: no native screen +104h..+154h state in the host"
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "reason": "same minimap pass: the game+21C8h map ping list is not built by any host"
+    },
+    {
+      "native": "007d0b80",
+      "status": "skipped",
+      "reason": "state_message_007d0b80's callbacks need the plane engine list and debris/marker objects; the host's plane death is the typed plane_death_flags_007d0b80 model in game_hosts_units_motion.cpp"
+    },
+    {
+      "native": "00797af0",
+      "status": "skipped",
+      "reason": "provisional: called at 0079A685 inside 0079A3B0's key-input block (004C43C0 presses), which the host's movie camera update has no input path for"
+    },
+    {
+      "native": "0075eb40",
+      "status": "skipped",
+      "reason": "session-message constructors in session_message_cc13_seg42.cpp have the one caller 00768530 CreateFromBitStream (network read), not run in single player"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "reason": "the AI group score list is read only by the debug overlay 00A2CDD0 (game_hosts_ai.cpp kAiGroupScoreListReleaseBound note)"
+    }
+  ],
+  "review_round_1": [
+    {
+      "finding": "two copies of +740h/+748h/+750h for MCommandBuilding (1Ch)",
+      "status": "fixed",
+      "how": "CaptureBuilding gains +744h (smoke_744); GameShipAiHost::command_building_fort_timers exposes its +740h/+744h/+748h/+750h; 007465E0 runs on that record for a held building (stops and clears a burning +740h, the smoke time lands in the shared +748h); the ship AI host's 00745BE0 now runs the +744h arm (00745F1E) after the +740h arm; land_fort_timers keeps only plain forts and unheld CommandBuildings; comments at the 00746320 fire roll, the +740h frame arm and the gunnery smoke frames updated"
+    },
+    {
+      "finding": "nit: line-of-sight casts counted as landscape-attach PickRay queries",
+      "status": "fixed",
+      "how": "query_segment_units takes pick_ray (default true); the trigger cast passes false. The trigger comment now says a land hit occludes (query_segment_units answers no unit for it), replacing the wrong \"no islands or terrain occlude\""
+    },
+    {
+      "finding": "integrator note: game_hosts_gunnery.cpp / game_hosts_lua.cpp also changed by agent/g5-w3",
+      "status": "no_change",
+      "how": "agent/g5-w3 has already landed on origin/main (6356c439a); its hunks there do not overlap these edits (checked with git diff HEAD origin/main before editing)"
+    }
+  ]
+}

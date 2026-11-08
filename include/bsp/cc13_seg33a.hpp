@@ -91,11 +91,19 @@ struct Seg33aGunFireMessageHost {
     virtual void session_message_read_header_0075b4c0(void* message, void* stream) = 0;
 };
 
+// The one read 006E6210 and 006E6270 make, [[00E188A8]+1FE4h] (the session word, 0 in single
+// player), separately bindable without the rest of Seg33aHost (goal 5 chain 655: the Lua
+// GetCrewLevel 008950D0 runs 006E6270 over the script-orders host). Seg33aHost keeps it.
+struct Seg33aSessionModeHost {
+    virtual ~Seg33aSessionModeHost() = default;
+    virtual std::int32_t session_mode_00e188a8_1fe4() = 0;
+};
+
 // ---------------------------------------------------------------------------
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
 // address; the comment gives the original register ABI.
 // ---------------------------------------------------------------------------
-struct Seg33aHost : Seg33aGunFireMessageHost {
+struct Seg33aHost : Seg33aGunFireMessageHost, Seg33aSessionModeHost {
     virtual ~Seg33aHost() = default;
 
     // Image data the routines read.
@@ -243,11 +251,10 @@ struct Seg33aHost : Seg33aGunFireMessageHost {
     virtual void* sized_storage_pool_00419cc0() = 0;
     virtual void sized_storage_pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size,
                                                           std::int32_t flag) = 0;
-    // [[00E188A8]+19CCh], [[00E188A8]+19F0h], [[00E188A8]+1FE4h], [00E188A8]+1A0Ch, and the empty
-    // string 00E19982.
+    // [[00E188A8]+19CCh], [[00E188A8]+19F0h], [00E188A8]+1A0Ch, and the empty string 00E19982.
+    // [[00E188A8]+1FE4h] is Seg33aSessionModeHost's session_mode_00e188a8_1fe4.
     virtual void* scene_root_00e188a8_19cc() = 0;
     virtual void* game_world_00e188a8_19f0() = 0;
-    virtual std::int32_t session_mode_00e188a8_1fe4() = 0;
     virtual void* lua_state_owner_00e188a8_1a0c() = 0;
     virtual const char* empty_string_00e19982() = 0;
     // 0042ED50, __fastcall(node /*ECX*/): invalidate the subtree pose.
@@ -648,8 +655,8 @@ inline constexpr const char* kSkillLevelKey = "skilllevel";  // 00CF9CD8
 inline constexpr const char* kIdKey = "id";                  // 00CF16BC
 void* entity_child_local_frame_006e5a80(Seg33aHost& host, void* entity, std::int32_t index);
 void bomb_platform_load_saved_state_006e6010(Seg33aHost& host, void* rack);
-std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew);
-std::int32_t crew_level_from_skill_006e6270(Seg33aHost& host, std::int32_t skill);
+std::int32_t skill_from_crew_level_006e6210(Seg33aSessionModeHost& host, std::int32_t crew);
+std::int32_t crew_level_from_skill_006e6270(Seg33aSessionModeHost& host, std::int32_t skill);
 void skill_level_read_006e6360(Seg33aHost& host, void* skill, void* reader);
 void skill_level_write_006e63a0(Seg33aHost& host, void* skill, void* archive);
 void projectile_shot_set_air_mode_006e6410(Seg33aHost& host, void* shot, void* unused);
@@ -764,7 +771,10 @@ inline constexpr const char* kPlaneStartPosZKey = "PlaneStartPosZ";         // 0
 inline constexpr const char* kPlaneStartPosYKey = "PlaneStartPosY";         // 00CFA9DC
 void catapult_class_read_lua_fields_006eb6b0(Seg33aHost& host, void* cls, void* lua);
 float ratio_abs_dc_over_8c_006eb870(void* cls);
-void* vehicle_add_launched_message_construct_006eb9c0(Seg33aHost& host, void* message, void* entity);
+// Goal 5 chain 632: 006EB9C0 calls only 0075B430, so it takes the narrow message host
+// (Seg33aHost inherits it; every caller still passes its Seg33aHost).
+void* vehicle_add_launched_message_construct_006eb9c0(Seg33aGunFireMessageHost& host, void* message,
+                                                      void* entity);
 void* plane_takeoff_message_construct_006eba90(Seg33aHost& host, void* message, std::uint8_t value);
 void* catapult_fire_message_construct_006ebb90(Seg33aHost& host, void* message, void* entity, float heading);
 void catapult_turn_commit_angles_006ebcc0(Seg33aHost& host, void* turn);
@@ -812,7 +822,10 @@ float* bullet_velocity_006e7ca0(void* bullet, float* out);
 void* bullet_class_unavailable_create_006ea230(void* cls, std::uint32_t, std::uint32_t, std::uint32_t,
                                              std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
 void* bullet_class_unavailable_aux_006ea240(void* cls, std::uint32_t) noexcept;
-void vehicle_launched_message_read_006eba50(Seg33aHost&, void* message, void* stream);
+// Goal 5 chain 632: 006EBA20 (vtable 00CFAA0C slot 1, no Ghidra function: its 006EBA00
+// IsType body runs on over these bytes) and 006EBA50 take the narrow message host.
+void vehicle_add_launched_message_write_006eba20(Seg33aGunFireMessageHost&, void* message, void* cursor);
+void vehicle_launched_message_read_006eba50(Seg33aGunFireMessageHost&, void* message, void* stream);
 void plane_takeoff_message_write_006ebb10(Seg33aHost&, void* message, void* cursor);
 void plane_takeoff_message_read_006ebb40(Seg33aHost&, void* message, void* stream);
 void catapult_fire_message_write_006ebc10(Seg33aHost&, void* message, void* cursor);

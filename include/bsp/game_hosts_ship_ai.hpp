@@ -586,7 +586,6 @@ struct GameShipAiSummary {
     unsigned long long nav_bearings{0};
     std::size_t units_with_path_point{0};
     unsigned long long command_events{0};
-    unsigned long long command_event_callbacks{0};
     unsigned long long command_endings{0};
     unsigned long long command_completions{0};
     unsigned long long arm_tails{0};
@@ -913,6 +912,11 @@ public:
     // when the unit is not one of the capture buildings (out untouched).
     bool command_building_capture_fraction_006f1f90(std::size_t unit_index,
                                                     float& out) const;
+    // Goal 5 chain 631: the landing ships that finished landing (0074AD90, which
+    // reports the `shipLanded` channel through 00986820) since the last take, in
+    // order. The mission Lua host drains it once per frame and evaluates the
+    // channel's subscriptions there.
+    std::vector<std::size_t> take_ship_landed_events();
     // Packet cc13-fix13 (GetCommandBuildingLevel 0089B6D0): the building's current
     // +770h Level as this host keeps it (006F2780's scene value, then 006F38E0's
     // level-ups and resets). Read-only; false when the unit is not one of the
@@ -938,6 +942,18 @@ public:
     // 007AB509's paratrooper bleed. False (out untouched) for a unit that is not
     // one of the capture buildings.
     bool command_building_armour_0368(std::size_t unit_index, float& out);
+    // Goal 5 chain 639: the LandFort timers of the capture building this host keeps
+    // for a CommandBuilding, the one copy of +740h (fire), +744h (smoke), +748h (the
+    // time both share) and +750h (the secondary clock). The gunnery host's 00747170
+    // runs 007465E0 on them, and this host's 00745BE0 runs both arms. Null fields
+    // (false) for a unit that is not one of the capture buildings.
+    struct FortTimerFields {
+        bool* fire_740{nullptr};
+        bool* smoke_744{nullptr};
+        float* time_748{nullptr};
+        float* clock_750{nullptr};
+    };
+    bool command_building_fort_timers(std::size_t unit_index, FortTimerFields& out);
     // Packet cc13-para2: the avoid-zone manager for 007ABB30's 0041B840 call,
     // which is a non-const query; null before load_avoid_zone_geometry.
     GameAvoidZoneRuntime* avoid_zone_runtime_mutable() noexcept;
@@ -946,6 +962,9 @@ public:
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
     // for a unit that is not a loaded LandingShip. Read-only.
     bool unit_big_landing_ship_0808(std::size_t unit_index) const;
+    // [[unit+538h]+804h], the class's `CapturePower` (an integer or 10, CVTSI2SS at
+    // 00834547) as the capture tick reads it: 10.0f for a unit no class row loaded.
+    float unit_class_capture_power_0804(std::size_t unit_index) const;
     // Packet cc9_avoid_zone_draft_bodies: the avoid-zone manager's geometry (004218E0),
     // for 00424DDF..00425487's draft bodies; null before load_avoid_zone_geometry.
     const GameAvoidZoneRuntime* avoid_zone_runtime() const noexcept;

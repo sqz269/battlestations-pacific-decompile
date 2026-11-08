@@ -1,5 +1,9 @@
 #include "bsp/render_tail.hpp"
+#include "bsp/cc13_front2.hpp"
 #include "bsp/particle_clock_lifetime.hpp"
+
+#include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -152,7 +156,8 @@ FoliageBuildResult build_foliage_visible_set_00af0c50(FoliageGroupManager& manag
 }
 
 SoundRequestDecision apply_sound_request_00941140(SoundRequestQueue& queue,
-    bool slot_one_condition)
+    const std::function<bool()>& slot_one_condition,
+    const std::function<void(int)>& play_00941070)
 {
     SoundRequestDecision decision{};
     if (queue.forced_slot != kSoundRequestNone) {
@@ -163,7 +168,7 @@ SoundRequestDecision apply_sound_request_00941140(SoundRequestQueue& queue,
             if (queue.requested[static_cast<std::size_t>(slot)] == 0) {
                 continue;
             }
-            if (slot == 1 && !slot_one_condition) {
+            if (slot == 1 && !slot_one_condition()) {
                 slot = kSoundRequestFallbackSlot;
             }
             decision.apply = true;
@@ -171,9 +176,41 @@ SoundRequestDecision apply_sound_request_00941140(SoundRequestQueue& queue,
             break;
         }
     }
+    // 0094114D / 00941236: 00941070 runs before the clear (00941152 / 0094123B).
+    if (decision.apply) play_00941070(decision.slot);
     queue.requested.fill(0);
     queue.forced_slot = kSoundRequestNone;
     return decision;
+}
+
+namespace {
+// 009411A1..009411CF for +6Ch and 009411D7..0094120B for +B4h: the checked
+// vector's begin (+4h) and end (+8h); SAR 2 of the span, a null begin or a zero
+// count giving no element, else the first pointer.
+void* leading_input_device(const std::uint8_t* backend, std::size_t vector_offset) noexcept
+{
+    std::uint32_t begin;
+    std::uint32_t end;
+    std::memcpy(&begin, backend + vector_offset + 4, sizeof begin);
+    std::memcpy(&end, backend + vector_offset + 8, sizeof end);
+    if (begin == 0 || (static_cast<std::int32_t>(end - begin) >> 2) == 0) return nullptr;
+    void* device;
+    std::memcpy(&device, reinterpret_cast<const void*>(static_cast<std::uintptr_t>(begin)), sizeof device);
+    return device;
+}
+} // namespace
+
+bool sound_request_select_device_active_00941140(const std::uint8_t* backend,
+    DynamicInputButtonQueryHost& host)
+{
+    if (backend == nullptr)
+        throw std::logic_error("00941140 slot-1 test requires the published input backend");
+    // 0094119B / 009411D1: [00F8BBF4] is read for each vector, both before any
+    // virtual call; the receivers are EBX and ESI.
+    void* const first = leading_input_device(backend, 0x6C);
+    void* const third = leading_input_device(backend, 0xB4);
+    if (first != nullptr && host.input_device_vcall_2c(first)) return true;   // 0094120D..0094121C
+    return third != nullptr && host.input_device_vcall_2c(third);             // 0094121E..0094122D
 }
 
 GuiVisibilityDecision decide_gui_visibility_004c6c70(const GuiVisibilityInputs& in)

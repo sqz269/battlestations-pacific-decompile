@@ -189,7 +189,7 @@
       "address": "0x008dacd0",
       "source": "src/engine_seg56_cc13.cpp",
       "identifiers": [
-        "objective_entry_is_revealed"
+        "objective_entry_is_revealed_to_local_side_008dacd0"
       ],
       "evidence": "src/engine_seg56_cc13.cpp:1631 executable model body; Header:999-1011 identifies true without entity,valid local-side0..7,selected party-row dword+4/+8 based on row byte+10,then value>1. Body evaluates supplied decoded view; gathering raw manager/entity rows remains a host-view contract. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
     },
@@ -197,7 +197,7 @@
       "address": "0x008dad30",
       "source": "src/engine_seg56_cc13.cpp",
       "identifiers": [
-        "objective_entry_position"
+        "objective_entry_position_008dad30"
       ],
       "evidence": "src/engine_seg56_cc13.cpp:1643 executable model body; Header associates008DAD30 with entity vtable+C4 position when present,else stored position. Body implements that branch using typed entity/position services. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
     },

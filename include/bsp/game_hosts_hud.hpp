@@ -62,7 +62,7 @@ struct GameHudScreenRecord {
 struct GameHudSummary {
     bool manager_built{false};       // the executable's registry records exist
     bool manager_global_published{false};  // 0068ccfe, the second write of 00e198c4
-    std::size_t screen_constructors{0};    // the 42 leaf constructors, all records
+    std::size_t screen_constructors{0};    // leaf constructors 0068cc70 called (run or recorded)
     std::size_t screens_built{0};    // of kInGameHudScreenCount
     std::size_t pages_requested{0};
     std::size_t pages_loaded{0};
@@ -175,6 +175,24 @@ public:
     bool show_mission_narrative_text(const std::string& source);
     // 00734140 / 00734FA0 -> reconstructed 005B5D40 on the live +ACh group.
     bool hide_mission_narrative_text();
+    // Goal 5 chain 662: Lua Countdown's 0052B9B0 (008B18B8) and CountdownCancel's
+    // 0052AB90 (008B1A92 and 008B1AA2) on the counters screen 51h, [00E198C4]+C8h.
+    // False until the counters register 0052CBF0 has built the entries.
+    bool show_mission_countdown(const std::string& text, float seconds);
+    bool cancel_mission_countdown();
+    // Goal 5 chain 667: Lua DisplayScores' 0052B620 (four arguments, 008C241A) /
+    // 0052B780 (six, 008C22DA) and HideScoreDisplay's 0052B900 (008C25E5): the
+    // HUD message 23h built, 00772330 handing it to the local slot's 0052CF60 on
+    // the counters screen, and destroyed. False (nothing sent) until the counters
+    // register 0052CBF0 has built the entries.
+    bool display_score(std::uint32_t id, std::uint32_t owner, const std::string& a,
+        const std::string& b, bool pair, std::uint32_t v0, std::uint32_t v1);
+    bool hide_score(std::uint32_t id, std::uint32_t owner);
+    // 00735100's 005BCA80(left / duration, left) and 005BCAB0 (00735100 at expiry,
+    // 007340A0 at stop) on the minimap screen's block, [00E198C4]+58h. False
+    // before 0068CC70 built that block.
+    bool set_countdown_panel(float fraction, float left);
+    bool clear_countdown_panel();
     // 00735100 -> 005B5D20: query/discard the live text's colour (no alpha store).
     bool query_mission_narrative_text_colour();
     // 004cc460(20h, controlled unit). Milestone 2h applied the request Init
@@ -247,6 +265,14 @@ public:
     // Packet cc13-relgaps gap 2: screen 4Ch's update 005B45C0, only its
     // 005B4673..005B46B3 helm release.
     void update_map_screen_005b45c0();
+    // Goal 5 chain 646: a leaf screen's own vtable +4h (self-managed), +18h
+    // (enter), +1Ch (exit) or +20h (update) on the block 0068CC70 built, for the
+    // slots and virtuals kHudLeafScreenVirtuals lists. False leaves the caller's
+    // path for that slot.
+    bool leaf_screen_self_managed(int slot, bool& self_managed);
+    bool enter_leaf_screen(int slot);
+    bool exit_leaf_screen(int slot);
+    bool update_leaf_screen(int slot, float seconds);
 
     // One summary line for the run log.
     void report();

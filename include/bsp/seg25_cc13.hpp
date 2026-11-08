@@ -26,7 +26,36 @@ struct NativeStr {
     char* data;
 };
 
-struct Seg25Host {
+// 0060FD90's only call is the front-end screen base 004F7180, so the HUD host
+// binds it over its own native screen storage without the scoring services.
+struct FrontEndScreenConstructHost {
+    virtual ~FrontEndScreenConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+
+// 0061A480, 0068CC70's powerup-manager leaf: the screen base and the
+// containers' head-node allocators.
+struct PowerupManagerConstructHost : FrontEndScreenConstructHost {
+    virtual void* container_buy_head_node(std::uint32_t function, void* container) = 0;
+};
+
+// The inlined native-string temporary every page/widget name here is built in
+// (0041DD40, then 00419CC0/00BD1510 on release).
+struct NativeStringTempHost {
+    virtual ~NativeStringTempHost() = default;
+    virtual void native_string_resize_0041dd40(NativeStr* s, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    virtual void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, std::int32_t flag) = 0;
+};
+// 0060D1C0, 0068CC70's plane-spawn (41h) register override: 004F71D0 and the
+// GUI_plane_spawn page load. The HUD host binds it over its own screen block.
+struct PlaneSpawnRegisterHost : NativeStringTempHost {
+    virtual void frontend_register_004f71d0(void* screen) = 0;
+    virtual void* gui_manager_004c12b0() = 0;
+    virtual std::uint32_t gui_load_page_00aa5840(void* manager, const NativeStr* name, std::int32_t a, std::int32_t b) = 0;
+};
+
+struct Seg25Host : PowerupManagerConstructHost, PlaneSpawnRegisterHost {
     virtual ~Seg25Host() = default;
     // Address of an image global's storage (00E188A8, 00E198C4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -96,7 +125,7 @@ struct Seg25Host {
 
 // ---- plane-spawn and please-wait screens ----
 void hud_plane_spawn_screen_destroy_0060d130(void* screen, Seg25Host& host);
-void hud_plane_spawn_screen_register_0060d1c0(void* screen, Seg25Host& host);
+void hud_plane_spawn_screen_register_0060d1c0(void* screen, PlaneSpawnRegisterHost& host);
 void hud_plane_spawn_screen_collect_children_0060d280(void* screen, void* children, Seg25Host& host);
 void* please_wait_screen_construct_0060d290(void* screen, Seg25Host& host);
 std::int32_t please_wait_screen_get_screen_id_0060d2b0() noexcept;
@@ -110,7 +139,7 @@ void hud_scoring_screen_on_listbox_activate_0060de00(void* listener, Seg25Host& 
 void hud_score_row_destroy_0060de10(void* row, Seg25Host& host);
 void* hud_score_row_assign_0060dfb0(void* self, const void* source, Seg25Host& host);
 void* hud_score_row_copy_construct_0060f020(void* self, const void* source, Seg25Host& host);
-void* hud_scoring_screen_construct_0060fd90(void* screen, Seg25Host& host);
+void* hud_scoring_screen_construct_0060fd90(void* screen, FrontEndScreenConstructHost& host);
 std::int32_t hud_scoring_screen_get_screen_id_0060fe00() noexcept;
 bool hud_scoring_screen_is_self_managed_0060fe20(Seg25Host& host);
 void hud_scoring_screen_collect_children_0060fe40(void* screen, void* children, Seg25Host& host);
@@ -129,7 +158,7 @@ void powerup_manager_destroy_00618ea0(void* screen, Seg25Host& host);
 std::int32_t powerup_manager_get_screen_id_00619160() noexcept;
 void powerup_manager_collect_children_00619170(void* screen, void* children, Seg25Host& host);
 void powerup_manager_refresh_second_rows_00619ae0(void* screen, Seg25Host& host);
-void* powerup_manager_construct_0061a480(void* screen, Seg25Host& host);
+void* powerup_manager_construct_0061a480(void* screen, PowerupManagerConstructHost& host);
 void powerup_manager_tick_second_fade_0061aff0(void* screen, float dt, Seg25Host& host);
 void powerup_manager_on_listener_refresh_0061b840(void* listener, Seg25Host& host);
 void rewards_screen_on_widget_hover_0061c800(void* screen, void* widget, bool hovered, Seg25Host& host);

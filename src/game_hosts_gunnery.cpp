@@ -45,6 +45,7 @@
 #include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"   // goal 5 chain 639: 00747170 / 007465E0 / 00745F1E
 #include "bsp/bot_fire_target.hpp"
 #include "bsp/native_damageable_class_lua.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -59,6 +60,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"   // goal 4 chain 365: the repair task at unit+A20h
+#include "bsp/unit_message_arms.hpp"        // chain 648: 0095AC1D's route for the role walks
 #include "bsp/ship_catapult_host.hpp"                 // chain 369: catapult launch record
 #include "bsp/pc24_unitshost_cc13.hpp"                // chain 369: 0042B2F0
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
@@ -116,6 +118,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -141,6 +144,7 @@
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_crash_sweep.hpp"
 #include "bsp/unit_fire_flooding.hpp"
+#include "bsp/hud_ship_screen.hpp"   // ShipRepairTaskTerms (chain 661)
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/air_operations.hpp"
@@ -2899,6 +2903,12 @@ struct GameGunneryHost::Impl {
         // kLuaKillBoxFromHitBound: +2C8h (one based) and +2D8h as 009813A0 boxes them.
         std::size_t lua_kill_attacker{0};
         int lua_kill_slot{-1};
+        // Goal 5 chain 664: +2D8h as 0077CFC5 stores it on this unit itself, the
+        // slot 0091BDA0 credits. lua_kill_slot also takes the squadron copy
+        // (0077D0E8..0077D128) of a hit on any wing, because this host fuses the
+        // squadron with wing 0; the kill credit must not see that copy. -1 is the
+        // constructor's value (0077EFEF / 0077F012).
+        int own_kill_slot_2d8{-1};
         // The per-step scratch the pass fills.
         std::vector<bsp::GunneryCandidate> candidates;
         std::vector<int> order;
@@ -3191,6 +3201,7 @@ struct GameGunneryHost::Impl {
         ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
         sink_leak = 35,       // 0074ECA5, 0074EC50's per-leak U(0, 1), stream 1, key (ship, 0)
         hull_aim_point = 36,  // 00816650 via 009FA260, the hull aim pick, stream 1, key (shooter, 0)
+        land_fort_death_fire = 37, // 0074672B / 0074679D, 007465E0's SmokeFireDuration draw, stream 0, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -3840,6 +3851,19 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_lead_ship{0}, seat_lead_other{0}, seat_lead_turned{0},
         seat_lead_adds_speed{0};
     std::map<int, bool> adds_speed_by_device;       // DeviceClass "AddsSpeed", desc+95h
+    // [[gun+3F4h]+95h], the DeviceClass "AddsSpeed" byte (00732BE9..00732C0E
+    // through 00B662F0), read once per device class.
+    bool device_adds_speed_95(int device_class) {
+        auto found = adds_speed_by_device.find(device_class);
+        if (found == adds_speed_by_device.end()) {
+            found = adds_speed_by_device.emplace(device_class,
+                lua.read_device_class_bool(device_class, "AddsSpeed", false)).first;
+        }
+        return found->second;
+    }
+    // Goal 5 chain 658: launches whose 0072BF10 added the owner's velocity
+    // (0072C04B, an AddsSpeed device).
+    unsigned long long spawn_platform_velocity_adds{0};
     void seat_artillery_lead_009578c3(const GameGunRow& gun, const UnitState& state,
         std::size_t unit, std::size_t target, const float right[3], const float up[3],
         const float forward[3], const float origin[3], float aim[3]);
@@ -3862,6 +3886,7 @@ struct GameGunneryHost::Impl {
     unsigned long long death_route_child_triggers{0};
     unsigned long long loss_reports[2]{0, 0};        // by side, 009813A0's own guard passed
     unsigned long long loss_report_calls{0};         // every 009813A0 call
+    unsigned long long kill_credits_skipped_70{0};   // 0091BDA0 not run: unit+70h != 1
     unsigned long long limbo_pages{0};
     // Packet cc13-limbo: what the image's controlled-unit arm would do (always
     // counted) and what kUnitDeathLimboPushCc13Bound applied.
@@ -3995,6 +4020,18 @@ struct GameGunneryHost::Impl {
     std::vector<std::size_t> land_master_738;
     std::vector<bool> land_master_is_airfield;
     bool land_masters_built{false};
+    // Goal 5 chain 639: the timers 007465E0 starts and the 00745F1E smoke arm runs
+    // (+740h fire, +744h smoke, +748h the shared time, +750h the secondary clock), per
+    // MLandFort, or MCommandBuilding the ship AI host holds no capture building for,
+    // that went through 00747170. A held building's timers are that host's record.
+    std::map<std::size_t, bsp::gameplay_seg41_cc13::FortTimers> land_fort_timers;
+    struct LandFortDeathCounts {
+        unsigned long long on_destroyed{0}, gated{0}, death_effects{0}, death_fires{0};
+        unsigned long long smoke_starts{0}, smoke_extends{0}, smoke_draws{0}, smoke_stops{0};
+        unsigned long long building_fires{0};   // 007465E0 on a ship AI capture building
+        bool last_smoke_744{false};             // the last 007465E0's result, for the log
+        float last_time_748{0.0f};
+    } land_fort_death;
     // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
     int explicit_kill_cause{0};
     // Packet cc13-jm08: the image phase of the kill in progress (the table at
@@ -4949,6 +4986,9 @@ struct GameGunneryHost::Impl {
     bool dc_logged{false};
     unsigned long long dc_water_adds{0};
     unsigned long long dc_fire_adds{0};
+    // Goal 5 chain 651: the 9Eh set arms (00939FA0 water, 00939F90 fire).
+    unsigned long long dc_water_sets{0};
+    unsigned long long dc_fire_sets{0};
     unsigned long long dc_doomed_notes{0};   // 0090E6C0 tail calls
     unsigned long long dc_deaths{0};
     unsigned long long element_hits{0};
@@ -5081,6 +5121,42 @@ struct GameGunneryHost::Impl {
             ++invincibility_floored_writes;
         }
     }
+    // 00879070's tail (GameGunneryHpEvent, include/bsp/game_hosts_gunnery.hpp), run by
+    // each unit-health site after it stored the 00877B90 result; `old_health` is +370h
+    // as the site read it before 00879070. 0087917D: an equal pair returns, an
+    // unordered one dispatches. 008791CA FDIVP / 008791DA FDIVR: one division each,
+    // stored as a float (008791CE / 008791DE), so a float quotient is the same value.
+    std::vector<GameGunneryHost::GameGunneryHpEvent> hp_events;   // drained per frame
+    unsigned long long hp_events_queued{0};
+    // Goal 5 chain 634: the listener manager calls 009832F0 / 00983780 / 00982C50 this
+    // host makes (take_damage_channel_events). Each also runs its warning tail at once.
+    std::vector<GameGunneryHost::GameGunneryDamageChannelEvent> damage_channel_events;
+    void note_damage_channel(GameGunneryHost::DamageChannel channel, std::size_t unit,
+                             const std::string& kind, float seconds) {
+        damage_channel_events.push_back({channel, unit, kind, seconds});
+        if (channel == GameGunneryHost::DamageChannel::failure) {
+            game_warning_report_failure(unit, kind);
+        } else {
+            game_warning_report_damage(unit, channel == GameGunneryHost::DamageChannel::fire);
+        }
+    }
+    // 006E4D50's tail (006E55FF..006E5633, bsp.py show 006e4d50 --asm): when the
+    // platform's parent (00923810(1)) answers vtable[5Ch](0Fh), a plane, 00984BA0 runs
+    // on that plane's squadron (+9D4h): the `ammoType` channel. One record per plane
+    // drop that left a round (bomb, paratrooper, torpedo); take_ammo_type_drops().
+    std::vector<std::size_t> ammo_type_drops;
+    void note_ammo_type_drop(std::size_t unit) {
+        if (units.unit_is_kind_of(unit, 0x0f)) ammo_type_drops.push_back(unit);
+    }
+    void note_hp_event(std::size_t unit, float old_health) {
+        if (unit >= unit_state.size()) return;
+        const UnitState& state = unit_state[unit];
+        const float new_health = state.health;
+        if (old_health == new_health) return;
+        hp_events.push_back({unit, old_health > new_health, old_health / state.max_health,
+            new_health / state.max_health});
+        ++hp_events_queued;
+    }
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
@@ -5089,6 +5165,10 @@ struct GameGunneryHost::Impl {
     void route_ship_jam_6b_6c(std::size_t unit, bool steering);
     bool mothership_failure_message(std::size_t unit, const std::string& name, bool set);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
+    void damage_control_set_seconds(std::size_t unit, bool water, float seconds);
+    // 00821E80's 9Eh arm (0082203D..008220C2) over a delivered 9Eh copy.
+    void apply_repair_damage_arm_9e(std::size_t unit,
+        const bsp::HostSessionMessages::RepairAddDamageCopy& copy);
     void run_damage_control(float dt);
     const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
                                   std::size_t target) const {
@@ -5771,7 +5851,12 @@ struct GameGunneryHost::Impl {
     void build_land_masters_00744a20();
     void forward_land_master_damage_0074715a(std::size_t section, float amount);
     void land_master_add_damage_0095da00(std::size_t master, float amount);
-    void land_section_destroyed_00747170(std::size_t section);
+    // Goal 5 chain 639: 00747170 through bsp::gameplay_seg41_cc13 for a dead
+    // MLandFort (1Bh) / MCommandBuilding (1Ch); the master arm is its callback.
+    void run_land_fort_on_destroyed(std::size_t victim);
+    void run_land_master_die(std::size_t section, std::size_t master);
+    float land_fort_stream0_draw(std::size_t unit, float low, float high);
+    void run_land_fort_smoke_frames(float dt);
     // Packet cc9_ship_death_message (kShipDeathMessageBound).
     void ship_death_message_00827ab0(std::size_t victim);
     struct ShipDeathCounts {
@@ -11938,7 +12023,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (st.shot_range_min < 0.0f || r < st.shot_range_min) st.shot_range_min = r;
         }
         ++gun.shots;
-        gun.last_fire_seconds = clock_seconds;   // gun+474h
+        // gun+474h = [00F876A4] is 0072BF10's store (0072C043), made by its body
+        // at the spawn below (GunProjectileSpawn::stamp_fire_time).
         if constexpr (kUnitFireCooldownBound) {
             // 0072F830: 0072FB35..0072FB78 and 0072FB7E..0072FBA9.
             if (gun.category == 2 || gun.category == 3 || gun.category == 4
@@ -12129,11 +12215,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             bsp::gun_ring_muzzle_origin_006fe160(ring, direction);
             done("Gun::launcher_direction_cone_006fe160", 0x006fe160u);
         }
+        // The record the class factory (0072C006, classDesc->vtable[20h]) builds.
+        // Its owner, party and team are 0072BF10's own stores, made by the body
+        // at the spawn below.
         GameProjectileRow shot;
-        shot.gun_row = g;
-        shot.owner_unit = owner_unit + 1;
-        shot.owner_side = units.unit_side_0054(owner_unit);
-        shot.team_id_1c = shot_team_id_0072c0f2(gun, owner_unit);
         shot.bullet_class = gun.bullet_class;
         float launch_speed = gun.muzzle_speed;
         int launch_sub_type = 0;
@@ -12362,7 +12447,105 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
-        shots.push_back(shot);
+        {
+            // Goal 5 chain 658: 0072BF10 BSP_Gun_CreateProjectile runs on its body
+            // (bsp::projectile_spawn_0072bf10, src/projectile_impact.cpp; bsp.py
+            // show 0072bf10 --asm) over this host's rows. `shot` above is the
+            // record the class factory builds; the factory call is where it joins
+            // the live list, and the body then makes 0072BF10's stores in order.
+            struct GunProjectileSpawn final : bsp::ProjectileSpawnHost {
+                Impl& h;
+                GameGunRow& gun;
+                const std::size_t gun_row;
+                const std::size_t owner;
+                GameProjectileRow& built;
+                GunProjectileSpawn(Impl& host, GameGunRow& firing, std::size_t row,
+                                   std::size_t owner_unit, GameProjectileRow& record)
+                    : h(host), gun(firing), gun_row(row), owner(owner_unit), built(record) {}
+                static GameProjectileRow& at(void* shot) {
+                    return *static_cast<GameProjectileRow*>(shot);
+                }
+                void* create_projectile_006e8430(const bsp::ProjectileSpawnRequest&) override {
+                    // The factory's nearCamera and 0072F830 flag arguments select
+                    // presentation in the class factories; this host's record
+                    // reads neither. gun_row is the host's own back-reference.
+                    built.gun_row = gun_row;
+                    h.shots.push_back(built);
+                    return &h.shots.back();
+                }
+                void store_ids(void* shot) override {
+                    // 0072C025: record+54h = [owner+54h], the owner's party.
+                    // LABELLED: record+58h = [gun+58h] (0072C013), the device's
+                    // race, is not held; this host reads no race off a shot.
+                    at(shot).owner_side = h.units.unit_side_0054(owner);
+                }
+                void gun_on_projectile_created(void*) override {
+                    // 0072C033 gun->vtable[1E4h](shot): 006E3DE0 (RET 4) for the
+                    // plain gun classes, 008598B0 for the turning ones, which copies
+                    // gun+4A4h..+4B8h into shot+78h..+8Ch and sets +90h within 0.25 s
+                    // of gun+4A0h. LABELLED: the row has no +78h..+90h block.
+                    h.record("Gun::on_projectile_created_vtable1e4", 0x008598b0u);
+                }
+                void stamp_fire_time() override {
+                    gun.last_fire_seconds = h.clock_seconds;   // 0072C043, gun+474h
+                }
+                bsp::TickPoint3 owner_velocity() override {
+                    // 0072C064 owner->vtable[34h](): the units host's linear
+                    // velocity, the vtable[34h] reading the rocket fuze takes.
+                    // LABELLED: for a plane parented to a deck the image's +AC8h is
+                    // parent-local; this is the world velocity.
+                    float v[3] = {0.0f, 0.0f, 0.0f};
+                    if (!h.units.unit_linear_velocity(owner, v)) v[0] = v[1] = v[2] = 0.0f;
+                    return bsp::TickPoint3{v[0], v[1], v[2]};
+                }
+                void add_platform_velocity(void* shot, const bsp::TickPoint3& v) override {
+                    // 0072C066..0072C08F: FLD [shot+48h], FADD [shot+8h], FSTP per
+                    // axis, one float add each. LABELLED: the copy at shot+48h..+50h
+                    // is not held.
+                    bsp::TickPoint3& velocity = at(shot).flight.velocity;
+                    velocity.x = v.x + velocity.x;
+                    velocity.y = v.y + velocity.y;
+                    velocity.z = v.z + velocity.z;
+                    ++h.spawn_platform_velocity_adds;
+                }
+                void shot_set_scale(void*, float) override {
+                    // Unreached here: scale_43c is the constructor's 1 (below).
+                    h.record("Projectile::set_scale_vtable20", 0x0072c0aeu);
+                }
+                void shot_set_appearance(void*) override {
+                    // 0072C0F0 shot->vtable[34h](&{1,1,1}, &{0,0,0}): presentation.
+                    h.record("Projectile::set_appearance_vtable34", 0x0072c0f0u);
+                }
+                void shot_set_team(void* shot, int team) override {
+                    at(shot).team_id_1c = team;   // 0072C0FB / 0072C14B, shot+1Ch
+                }
+                void bind_owner_006e6bb0(void* shot) override {
+                    // 006E6BB0: shot+0C8h (projectile+238h) = the owner. LABELLED:
+                    // the observer pair and the +94h grace [00CE3854] are not kept.
+                    at(shot).owner_unit = owner + 1;
+                }
+                void store_owner_record_ids(void*) override {
+                    // 009555BD..009555C9: shot+18h = [owner+54h] is the party the
+                    // row's owner_side already holds (0072C025 above); LABELLED:
+                    // shot+14h, (owner+170h)->vtable[0](), is not held.
+                }
+                void stamp_director_fire_time(int) override {
+                    // 0095561B: [director + 1D0h + classDesc[+8h]*4] = [00F876A4].
+                    // LABELLED: this host keeps no director timestamps.
+                    h.record("Owner::director_fire_time_0095561b", 0x009555a0u);
+                }
+            };
+            GunProjectileSpawn spawn_host(*this, gun, g, owner_unit, shot);
+            bsp::ProjectileSpawnRequest request;
+            request.position = bsp::TickPoint3{spawn[0], spawn[1], spawn[2]};
+            request.direction = launch_direction;
+            request.team_id = shot_team_id_0072c0f2(gun, owner_unit);
+            // gun+43Ch: the constructor's 1 (0072E5EA / 0072E666). LABELLED: the
+            // plane gun-group size 009575D0 stores through 00727E10 is not hosted.
+            request.scale_43c = 1;
+            request.inherit_platform_velocity = device_adds_speed_95(gun.device_class);
+            bsp::projectile_spawn_0072bf10(request, gun.bullet_sub_type, spawn_host);
+        }
         ++summary.projectiles;
         done("Projectile::launch_velocity_006e8430", 0x006e8430u);
         done("Projectile::spawn_0072bf10", 0x0072bf10u);
@@ -13153,13 +13336,14 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
 }
 
 bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
-    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
+    std::size_t exclude, std::size_t& hit_unit, float hit_point[3], bool pick_ray) const {
     // Integrator arbitration 2026-09-26: the HUD's one const query over
     // SegmentBinding (packet cc9_player_gun_seat_segment_query moved the body
     // into query_segment_units_impl so the seat shares it).
     bool land = false;
     const bool hit = query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point,
         &land);
+    if (!pick_ray) return hit;   // the trigger cast is not a HUD pick
     if constexpr (kLandscapeSpatialAttachBound) {
         note_land_hit_query(LandHitConsumer::PickRay, land);
         if (impl_->pick_rays_logged < 3) {
@@ -14684,8 +14868,9 @@ public:
             // queues 0076E520's copy (007608E0 stores, 00760970 write,
             // 00768530 case 9Eh 007608E0, 007609E0 read). 00821E80's 9Eh arm
             // reads the copy: +24h 0 fire / 1 water (any other channel does
-            // nothing), +20h set the add arm, +1Ch the seconds. The set arms
-            // (0082206C / 008220AB) have no host consumer and no sender here.
+            // nothing), +20h the add byte, +1Ch the seconds. Goal 5 chain 651:
+            // the arm is apply_repair_damage_arm_9e, the one the Lua
+            // setters' copies take too.
             // No live commands host keeps the posted values.
             const bsp::HostSessionMessages* messages = commands_session_messages();
             bsp::HostSessionMessages::RepairAddDamageCopy copy{
@@ -14694,9 +14879,7 @@ public:
                 copy = messages->queue_repair_add_damage_9e(
                     static_cast<std::int32_t>(channel), value, add);
             }
-            if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
-                owner_.damage_control_add_seconds(victim_, copy.channel == 1, copy.seconds);
-            }
+            owner_.apply_repair_damage_arm_9e(victim_, copy);
         }
     }
 
@@ -14774,6 +14957,7 @@ public:
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
         dispatch_health_changed_ |= write.dispatch_health_changed;
         if (write.wrote) owner_.unit_state[victim_].health = write.stored_health;
+        owner_.note_hp_event(victim_, health.current_health);
         return true;
     }
 
@@ -15205,6 +15389,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
             attacker, kamikaze, true);
         target.last_attacker = shooter + 1;
+        // Goal 5 chain 664: this victim's own +2D8h (0077CFC5), for 0091BDA0.
+        target.own_kill_slot_2d8 = team_id;   // +180h = 9, so [src+1Ch]
         if (kLuaKillBoxFromHitBound) {
             target.lua_kill_attacker = shooter + 1;
             target.lua_kill_slot = team_id;   // +180h = 9, so [src+1Ch]
@@ -15771,6 +15957,47 @@ float point_triangle_distance2_0085df60(const float p[3], const float v0[3],
     static_cast<void>(f);
     return q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
 }
+
+// Chain 648: the UnitHitPathHost 0080E440 reaches. Its one call (0080E467) is
+// 00934150 BSP_UnitParts_DetachPart through [unit+1018h] with the zero impulse
+// the body builds (0080E443..0080E461). The parts object is not hosted; the
+// detach is the destroyed-segment record this host keeps, the same record the
+// direct 00934150 call at 00935D16 writes. It carries no impulse. No other
+// UnitHitPathHost site is reached from 0080E440.
+class SegmentDetachBinding final : public bsp::UnitHitPathHost {
+public:
+    SegmentDetachBinding(std::vector<std::pair<int, float>>& destroyed, float clock)
+        : destroyed_(destroyed), clock_(clock) {}
+
+    void detach_part(std::uint32_t, int part_index, const float*) override {
+        destroyed_.emplace_back(part_index, clock_);
+    }
+
+    bool unit_is_kind_of(std::uint32_t, int) override { unreached("vtable+5Ch"); }
+    float unit_alternate_armour(std::uint32_t) override { unreached("[unit+354h]+24h"); }
+    float unit_armour(std::uint32_t) override { unreached("unit+368h"); }
+    float gameplay_modifier_product(int, std::uint32_t) override { unreached("008E6430"); }
+    bool gameplay_modifiers_enabled(int) override { unreached("00E0C978"); }
+    std::uint32_t unit_owner_scoped_unit(std::uint32_t) override { unreached("unit+3F0h"); }
+    void unit_add_damage(std::uint32_t, float) override { unreached("vtable+1ACh"); }
+    void write_applied_damage(std::uint32_t, float) override { unreached("hit+48h"); }
+    void unit_apply_damage(std::uint32_t, float) override { unreached("00879070"); }
+    void unit_set_health(std::uint32_t, float) override { unreached("00877B90"); }
+    bsp::RepairSettings game_settings() override { unreached("00424C40"); }
+    bsp::UnitHealth read_health(std::uint32_t) override { unreached("unit+36Ch"); }
+    int repairable_child_count(std::uint32_t) override { unreached("0093C860"); }
+    std::uint32_t repairable_child(std::uint32_t, int) override { unreached("0093C860"); }
+    bool unit_condition_flag(std::uint32_t) override { unreached("unit+378h"); }
+    void write_condition_reset(std::uint32_t) override { unreached("0080E422"); }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("SegmentDetachBinding: 0080E440 does not reach ") + site);
+    }
+
+    std::vector<std::pair<int, float>>& destroyed_;
+    float clock_;
+};
 }  // namespace
 
 void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int index,
@@ -15808,7 +16035,11 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
                 delivered = copy.explode_one_part_99;
                 part = static_cast<int>(copy.part);
             }
-            if (delivered) dc.destroyed_segments.emplace_back(part, clock_seconds);
+            if (delivered) {
+                // 00821FF0, the 99h arm: 0080E440(ECX = unit, copy+20h).
+                SegmentDetachBinding detach(dc.destroyed_segments, clock_seconds);
+                bsp::detach_part_0080e440(detach, static_cast<std::uint32_t>(unit), part);
+            }
         }
         log.notef("gunnery: hull segment %d of %s destroyed t=%.2f (0092D1F0 -> 99h -> "
             "0080E440)", index, unit_state[unit].row.name.c_str(),
@@ -17156,8 +17387,12 @@ public:
     void session_route_failure_started(std::uint32_t, int) override {
         owner_.record("Failure::section_state_message_0093a2c0", 0x0093a2c0u);
     }
-    void warning_fire_failure(std::uint32_t, const std::string&, float) override {
-        owner_.record("Failure::warning_manager_00982c50", 0x00982c50u);
+    // 0093C0B1..0093C0C2: 00982C50 on [00F8A0C4] with the task's entity [ESI], the
+    // failure's name and its duration. Goal 5 chain 634: queued for the `failure`
+    // channel's Lua listeners, and the failure warning runs at once.
+    void warning_fire_failure(std::uint32_t, const std::string& name, float duration) override {
+        owner_.note_damage_channel(GameGunneryHost::DamageChannel::failure, unit_, name,
+                                   duration);
     }
     void failure_side_effect(std::uint32_t, std::uint32_t, std::uint32_t) override {
         owner_.record("Failure::statistics_00913d80", 0x00913d80u);
@@ -17278,9 +17513,7 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
             if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
                 copy = messages->queue_repair_add_damage_9e(0, fire_failure_seconds, true);
             }
-            if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
-                damage_control_add_seconds(unit, copy.channel == 1, copy.seconds);
-            }
+            apply_repair_damage_arm_9e(unit, copy);
         }
     } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
@@ -17392,6 +17625,61 @@ bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const
     return steering ? dc.steering_jam_9e4 : dc.engine_jam_9e5;
 }
 
+// Goal 5 chain 661. The fields are this host's copies of the task cells the
+// adders and steps write: water +34h (0093A4F0, 0093C210), fire +38h
+// (0093A470, 0093C120), the fire sum +3Ch and the water mirror +40h (cleared by
+// 0093BCC0 and by the steps when their seconds run out), the priority +24h
+// (0093BCC0's 0; the 0064A2F0 setter is not hosted) and the failure vector
+// +18h (0093BED0 starts, 0093C520 counts down and retires).
+bool GameGunneryHost::ship_repair_task_terms(std::size_t unit_index,
+                                             bsp::ShipRepairTaskTerms& out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size()) return false;
+    const Impl::DamageControl& dc = host.damage_control[unit_index];
+    out.priority_24 = static_cast<int>(dc.task.priority);
+    out.seconds_34 = dc.water_seconds;
+    out.seconds_38 = dc.fire_seconds;
+    out.total_3c = dc.fire_total_3c;
+    out.total_40 = dc.water_last_40;
+    out.engine_jam_seconds = bsp::oct18_tail_b::engine_jam_seconds_0093a3f0(dc.task.failures);
+    return true;
+}
+
+// 0064F8DA..0064F9C3 walks GameSettings+3E4h through 00424C40 and keeps the
+// +0Ch of every row whose +8h name text _stricmp-matches 00CF6124 "EngineJam".
+// failure_rows is this host's copy of those rows in table order; its effect 3
+// is the same case-blind name test (the ShipGlobals flattener's
+// string.lower(FailureName) == 'enginejam'), and duration is row +0Ch.
+float GameGunneryHost::failure_descriptor_engine_jam_seconds() const {
+    float seconds = 0.0f;
+    for (const Impl::FailureRow& row : impl_->failure_rows) {
+        if (row.effect == 3) seconds = row.duration;
+    }
+    return seconds;
+}
+
+std::vector<bsp::ShipDeviceTerms> GameGunneryHost::ship_device_terms(std::size_t unit_index) const {
+    std::vector<bsp::ShipDeviceTerms> devices;
+    for (const GameGunRow& gun : impl_->guns) {
+        if (gun.unit_index != unit_index) continue;
+        bsp::ShipDeviceTerms d;
+        d.kind_04 = true;                     // 0064FC0A PUSH 4
+        d.kind_0f = false;                    // 0064FC19 PUSH 0Fh
+        d.kind_20 = true;                     // 0064FC28 PUSH 20h, kDeviceKindGun
+        d.config_80 = gun.category;           // 0064FC32 [dev+3F4h]+80h
+        d.byte_378 = true;                    // 0064FC40, 1 from 0087BD19
+        d.full_36c = gun.max_health_36c;      // 0064FC49
+        d.current_370 = gun.health_370;       // 0064FC59
+        devices.push_back(d);
+    }
+    return devices;
+}
+
+bool GameGunneryHost::unit_class_repair_d0(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    return unit_index < host.class_repair_flags.size() && host.class_repair_flags[unit_index] != 0;
+}
+
 bsp::UnitFirepowerReport GameGunneryHost::ship_firepower_report(std::size_t unit_index) {
     if (!impl_->units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase))
         throw std::invalid_argument("GetFirepower requires a represented ship");
@@ -17422,8 +17710,9 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     // +3Ch, +40h, +44h = task.reported_repaired, +45h/+46h the enables),
     // copied in and written back around the body. The two statistics calls
     // go to [00F8A0C4], the listener manager (00983780 "fire", 009832F0
-    // "leak"), which this host does not hold: recorded, as the 0090E6C0 tail
-    // into the scoring owner was before.
+    // "leak"), with the task's entity [task] (0093A477 MOV EAX,[ESI] / 0093A483
+    // PUSH EAX) and the amount: goal 5 chain 634 queues each for the channel's
+    // Lua listeners and runs its local damage warning (note_damage_channel).
     namespace g61 = bsp::gameplay_seg61_62_cc13;
     g61::RepairTask task;
     task.water_tick_2c = dc.water_tick;
@@ -17436,11 +17725,11 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     task.hull_repair_enabled_45 = dc.task.hull_repair_enabled;
     task.failure_repair_enabled_46 = dc.task.failure_repair_enabled;
     g61::RepairAddHost add_host;
-    add_host.warning_fire_channel_00983780 = [this](float) {
-        record("RepairTask::listener_manager_fire_00983780", 0x00983780u);
+    add_host.warning_fire_channel_00983780 = [this, unit](float amount) {
+        note_damage_channel(GameGunneryHost::DamageChannel::fire, unit, {}, amount);
     };
-    add_host.warning_leak_channel_009832f0 = [this](float) {
-        record("RepairTask::listener_manager_leak_009832f0", 0x009832f0u);
+    add_host.warning_leak_channel_009832f0 = [this, unit](float amount) {
+        note_damage_channel(GameGunneryHost::DamageChannel::leak, unit, {}, amount);
     };
     add_host.pending_exceeds_health_0090e6c0 = [this] {
         ++dc_doomed_notes;
@@ -17463,6 +17752,89 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     dc.task.reported_repaired = task.byte_44 != 0;
 }
 
+// Goal 5 chain 651. 00939F90 (fire, task+38h) / 00939FA0 (water, task+34h), the 9Eh
+// set arms' callees (00821E80 at 008220BD / 00822076, ECX = unit+A20h). Each is one
+// MOVSS of the float argument into the task and RET 4 (bsp.py show 00939f90 --asm):
+// no statistics call, no +44h clear and no health test, unlike the adders. The task
+// view is this host's +34h / +38h, copied in and written back.
+void GameGunneryHost::Impl::damage_control_set_seconds(std::size_t unit, bool water,
+    float seconds) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    DamageControl& dc = damage_control[unit];
+    namespace g61 = bsp::gameplay_seg61_62_cc13;
+    g61::RepairTask task;
+    task.water_seconds_34 = dc.water_seconds;
+    task.fire_seconds_38 = dc.fire_seconds;
+    if (water) {
+        g61::repair_set_water_seconds_00939fa0(task, seconds);
+        ++dc_water_sets;
+        done("DamageControl::set_water_seconds_00939fa0", 0x00939fa0u);
+    } else {
+        g61::repair_set_fire_seconds_00939f90(task, seconds);
+        ++dc_fire_sets;
+        done("DamageControl::set_fire_seconds_00939f90", 0x00939f90u);
+    }
+    dc.water_seconds = task.water_seconds_34;
+    dc.fire_seconds = task.fire_seconds_38;
+}
+
+// Goal 5 chain 651. 00821E80's 9Eh arm, 0082203D..008220C2 (bsp.py show 00821e80
+// --asm): MOV EAX,[msg+24h]; SUB EAX,0 / JZ 00822090 takes channel 0 (fire), SUB
+// EAX,1 / JNZ 008220C2 drops every channel above 1 into the return-true epilogue;
+// in both arms CMP byte [msg+20h] against zero picks the adder (0093A470 /
+// 0093A4F0) for a non-zero byte and the setter (00939F90 / 00939FA0) for zero, with
+// the +1Ch float pushed through FLD / FSTP float unchanged.
+void GameGunneryHost::Impl::apply_repair_damage_arm_9e(std::size_t unit,
+    const bsp::HostSessionMessages::RepairAddDamageCopy& copy) {
+    switch (bsp::repair_damage_route_0082203d(static_cast<int>(copy.channel), copy.add)) {
+    case bsp::RepairDamageRoute::AddFireSeconds:
+        damage_control_add_seconds(unit, false, copy.seconds);   // 008220A3
+        break;
+    case bsp::RepairDamageRoute::AddWaterSeconds:
+        damage_control_add_seconds(unit, true, copy.seconds);    // 0082205C
+        break;
+    case bsp::RepairDamageRoute::SetFireSeconds:
+        damage_control_set_seconds(unit, false, copy.seconds);   // 008220BD
+        break;
+    case bsp::RepairDamageRoute::SetWaterSeconds:
+        damage_control_set_seconds(unit, true, copy.seconds);    // 00822076
+        break;
+    case bsp::RepairDamageRoute::Ignored:
+        break;
+    }
+}
+
+// Goal 5 chain 651. The Lua setters' 9Eh message (0088E4AC..0088E4FF SetFireDamage,
+// 0088E919..0088E96B SetWaterDamage: 0075B430(9Eh), word +18h 0, byte +1Ah 0, +4h 1,
+// vtable 00D0334C, +1Ch the seconds, +20h the add byte, +24h the channel), routed
+// with 0077C2A0 flags 7. Single player takes the local bit: 0076E520 rebuilds the
+// copy from its bits through 00768530 (queue_repair_add_damage_9e, the codec the
+// ship-hit sender's copy takes; the stores are the same fields 0080FA50 makes), and
+// the class-06 ship's session switch 00821E80 runs its 9Eh arm. A unit that is not
+// a ship has no unit+A20h task and its own switch has no 9Eh arm (00878350's
+// fallback answers false for 9Eh), so nothing is applied. LABELLED, as for the
+// ship-hit copy: delivered in the routing call, not at the drain.
+bool GameGunneryHost::route_repair_damage_9e(std::size_t unit_index, std::int32_t channel,
+    float seconds, bool add) {
+    Impl& h = *impl_;
+    if (unit_index >= h.unit_state.size() || unit_index >= h.damage_control.size()
+        || !h.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) {
+        return false;
+    }
+    bsp::HostSessionMessages::RepairAddDamageCopy copy{channel, seconds, add};
+    if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+        copy = messages->queue_repair_add_damage_9e(channel, seconds, add);
+    }
+    h.apply_repair_damage_arm_9e(unit_index, copy);
+    const auto& dc = h.damage_control[unit_index];
+    h.log.notef("  repair damage 9Eh: unit %zu %s channel=%d seconds=%.2f add=%d -> "
+        "water_s=%.2f fire_s=%.2f (00821E80 0082203D)", unit_index,
+        h.unit_state[unit_index].row.name.c_str(), static_cast<int>(copy.channel),
+        static_cast<double>(copy.seconds), copy.add ? 1 : 0,
+        static_cast<double>(dc.water_seconds), static_cast<double>(dc.fire_seconds));
+    return true;
+}
+
 // 0093CA20 per ship, the call 00826B84 makes through vtable slot 1ECh
 // (008160B0) with the motion step. Steps 0093C860 and 0093C520 have nothing to
 // act on in this host (no subobjects, the failure list stays empty because
@@ -17474,7 +17846,8 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
 // "not dead".
 void GameGunneryHost::Impl::run_damage_control(float dt) {
     // 0081B630 for every explosion object 008198A0 scheduled since the last
-    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]).
+    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]), then
+    // the "Explosion" failure call 00982C50 (0081B77D).
     if (!pending_explosions.empty()) {
         std::vector<std::pair<std::size_t, float>> due;
         due.swap(pending_explosions);
@@ -17500,6 +17873,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     cf_explosion_damage += state.health - write.stored_health;
                     state.health = write.stored_health;
                 }
+                note_hp_event(unit, health.current_health);
             }
             state.row.health = state.health;
             done("Failure::explosion_damage_0081b630", 0x0081b630u);
@@ -17516,6 +17890,13 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                     static_cast<double>(clock_seconds));
                 kill_unit(unit);
             }
+            // 0081B734..0081B77D, after the damage (0081B729) and the object's retire
+            // (0081B732): 00982C50 on [00F8A0C4] with the owner EDI, "Explosion"
+            // (00D080C8, resize 9 + memcpy) and FLDZ, with no branch on the way. The
+            // `failure` channel's listeners and the "failureExplosion" warning (goal 5
+            // chain 634 review).
+            note_damage_channel(GameGunneryHost::DamageChannel::failure, unit, "Explosion",
+                                0.0f);
         }
     }
     // Packet cc9_live_hull_repair: the leak manager's two inputs, every step, for
@@ -17555,6 +17936,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
             dispatch_health_changed |= write.dispatch_health_changed;
             if (write.wrote) state.health = write.stored_health;
+            note_hp_event(i, health.current_health);
         };
         if constexpr (kShipHullRepairBound) {
             // 0093C770, then 00877B90(max) when the heal overshoots. 0093C776: a
@@ -17798,17 +18180,23 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         }
     }
 
+    bool credits_kill = true;   // 00959450's report gate, set below
     if constexpr (kUnitDeathRouteBound) {
         // 00959450 BSP_Unit_OnDestroyed, reached from 00825271 (OnWrecked) for
         // a ship and 007BCAD9 (Plane_OnDestroyed) for a plane.
-        // SUBSTITUTIONS: unit+70h is 1 (every gunnery kill is a harm death,
-        // docs/KILL_CREDIT.md); world+4ACh is 1 (set at the construct_world
-        // load step and never cleared in this host, docs/CONSTRUCT_WORLD.md
-        // section 9); the controller flags +C41h / +100Ah are not held here,
-        // so the loss report is never skipped.
+        // unit+70h is the cause 00926D90 stored: explicit_kill_cause during an
+        // explicit kill, 1 (a harm death) on the health-zero paths, the mapping
+        // the fort destroy and the Lua kill listener use. 00959475 CMP [EDI+70h],1
+        // / JNZ 0095951E skips 009813A0, the child-trigger pass and 00959519 CALL
+        // 0091BDA0, so a plane landing back on its deck (cause 5), Lua Kill(x,
+        // true) and a landed remainder (cause 2) report and credit nothing.
+        // SUBSTITUTIONS: world+4ACh is 1 (set at the construct_world load step
+        // and never cleared in this host, docs/CONSTRUCT_WORLD.md section 9);
+        // the controller flags +C41h / +100Ah are not held here, so the loss
+        // report is never skipped.
         bsp::UnitDeathInputs death{};
         death.mission_clock = clock_seconds;
-        death.unit_party_70 = 1;
+        death.unit_party_70 = explicit_kill_cause == 0 ? 1 : explicit_kill_cause;
         death.world_gate_4ac = true;
         death.is_controlled_unit = units.controlled_bound() && units.controlled_index() == victim;
         // Packet cc13-limbo. SUBSTITUTION: the front end idle ([00E198C4]+4h ==
@@ -17926,11 +18314,19 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
                 decision.retargets_front_end ? 1 : 0, keeps ? 0 : 1,
                 kUnitDeathLimboPushCc13Bound ? 1 : 0);
         }
-        if (!decision.reports_alternate) return;   // 0091BDA0 runs only when reported
+        // 0091BDA0 runs only when reported (00959468 clock, 00959475 +70h == 1,
+        // 0095948A world+4ACh). The host's tail below, the fort hand-off (its own
+        // path, 00747170, which tail-calls 00959450) and the 9Ah message, is not
+        // inside that gate; it keeps the clock and world gates it had.
+        credits_kill = decision.reports_alternate;
+        if (!(death.mission_clock > bsp::kUnitDeathReportGraceSeconds && death.world_gate_4ac)) {
+            return;
+        }
     }
 
     struct KillBinding final : bsp::KillCreditHost {
-        explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
+        KillBinding(Impl& owner_in, GameMissionResultHost& scoring_in, std::size_t victim_in)
+            : owner(owner_in), scoring(scoring_in), victim(victim_in) {}
         // game+1FE4h from the session context (packet cc13-mp2c). Campaign identity:
         // the OFF arm is the old literal 0.
         int session_mode() override {
@@ -17944,11 +18340,50 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
         // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
         int local_player_side() override { return bsp::game::local_player_party(); }
-        bool root_entity_already_scored() override { return false; }
+        // 0091BE01..0091BE0B: victim->vtable[140h](), the victim's root entity, then
+        // 0091BE29 0090C170 looks it up in the +1488h tree Scoring_IgnoreEntityKill
+        // fills; a hit abandons the kill at 0091BE3F. For a plane that root is its
+        // squadron (docs/CC13_AUDIT_LUA51_FLIPS.md, 0077D0E8..0077D128), which is
+        // what every IgnoreEntityKill caller passes. Here it is the squadron unit
+        // of plane_squadron_registry(), the mapping apply_hit uses for the same
+        // vtable[140h] at 0077D0E8; any other victim is its own root. The entity
+        // is its Lua ID, the slot + 1 the IgnoreEntityKill row stored.
+        // in.victim_is_root below is a different test, the IsKindOf(1Bh) fort
+        // gate at 0091BE4D.
+        bool root_entity_already_scored() override {
+            std::size_t root = victim;
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit) root = sqn->squadron_unit;
+            }
+            return scoring.scoring_manager().ignored_kill_entities_1488.count(
+                static_cast<int>(root) + 1) != 0;
+        }
+        // Not stored: the pass compares each slot's party [[game+18CCh+i*4]+28h]
+        // (in.slot_sides), which this host does not hold.
         void add_loss(int, bool, const std::string&) override { ++losses; }
         void add_type_kill(int, std::size_t, int) override { ++type_kills; }
-        int& kill_tree_leaf(int, std::size_t, const bsp::ScoringKillKey&) override {
-            return leaf;
+        // 0091BF9D..0091C046: the record [game+21A0h]+4h+slot*284h, then +B4h
+        // (player_kills) when +2D8h == +2DCh else +C0h (party_kills), and the
+        // three chained operator[]s 0062C170 / 0062BB60 / 00625900 on the
+        // relative party, the attacker's class and the victim's class
+        // (docs/SCORING_BODIES.md section 6). These are the record's persisted
+        // trees: 004D7970's commit merges them into the mission progress (0091A080),
+        // and Scoring_GetPlayerShotDown (008BC9B0) reads +B4h.
+        int& kill_tree_leaf(int slot, std::size_t tree_offset,
+                            const bsp::ScoringKillKey& key) override {
+            bsp::MissionResultHost& manager = scoring;
+            bsp::MissionScoreRecord& record = manager.scoring_slot(slot);
+            bsp::MissionEnumCounterTriples* tree = nullptr;
+            if (tree_offset == bsp::kScoringPlayerKillsOffset) {
+                tree = &record.player_kills_b4;
+            } else if (tree_offset == bsp::kScoringPartyKillsOffset) {
+                tree = &record.party_kills_c0;
+            } else {
+                throw std::logic_error("kill credit 0091BDA0: not a kill tree offset");
+            }
+            ++leaf_writes;
+            return (*tree)[key.party][key.attacker_class][key.victim_class];
         }
         int add_named_counter(int, const std::string&) override { return ++counter; }
         int award_threshold(const std::string&) override {
@@ -17959,7 +18394,9 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         void update_kill_list(int, std::uint32_t, int, int, bool) override { ++entries; }
 
         Impl& owner;
-        int leaf{0};
+        GameMissionResultHost& scoring;
+        std::size_t victim;
+        int leaf_writes{0};
         int counter{0};
         int losses{0};
         int type_kills{0};
@@ -17967,29 +18404,55 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         int entries{0};
     };
 
-    KillBinding binding(*this);
-    bsp::UnitKillInputs in;
-    in.victim_name = target.row.name;
-    in.victim_type_id = target.row.type_id;
-    in.victim_owning_slot = target.row.side;
-    in.victim_is_root = true;
-    in.has_attacker = target.last_attacker != 0;
-    in.attacker_is_ship_base = true;
-    in.ordnance_kind = target.attribution.ordnance_kind;
-    in.sole_attacker = target.attribution.sole_attacker;
-    if (target.last_attacker != 0) {
-        in.attacker_type_id = unit_state[target.last_attacker - 1].row.type_id;
+    if (credits_kill) {
+        // Goal 5 chain 664. ECX at 00959512 is [[00E188A8]+21A0h], the scoring
+        // manager: here the mission result the frame host lent the Lua host
+        // (attach_mission_result, for the whole mission; the units, and this host
+        // with them, die first).
+        GameMissionResultHost* const scoring = lua.mission_result();
+        if (scoring == nullptr) {
+            throw std::logic_error("kill credit 0091BDA0 without the scoring manager [game+21A0h]");
+        }
+        KillBinding binding(*this, *scoring, victim);
+        bsp::UnitKillInputs in;
+        in.victim_name = target.row.name;
+        in.victim_type_id = target.row.type_id;
+        in.victim_owning_slot = target.row.side;
+        in.victim_is_root = true;
+        in.has_attacker = target.last_attacker != 0;
+        in.attacker_is_ship_base = true;
+        in.ordnance_kind = target.attribution.ordnance_kind;
+        in.sole_attacker = target.attribution.sole_attacker;
+        if (target.last_attacker != 0) {
+            in.attacker_type_id = unit_state[target.last_attacker - 1].row.type_id;
+        }
+        in.attribution.attacker_side = target.attribution.attacker_side;
+        // Goal 5 chain 664. +2D8h as 0077CE60 writes it: attacker+180h is 9 for
+        // every unit whose scene authors no OwnerPlayer, so 0077CFC2 takes the
+        // shot's team stamp [src+1Ch] = gun+1ACh (0 on a gun the player's seat
+        // holds, 8 on an AI gun; docs/CC13_AUDIT_LUA51_FLIPS.md item 1a), not
+        // attribution.credited_slot (the side stand-in). 0091BF86 records only
+        // slots 0..7, so AI kills leave the player's record alone. It is the
+        // victim's own stamp (own_kill_slot_2d8), not lua_kill_slot: the latter
+        // also takes the squadron copy of a hit on another wing, and this host
+        // fuses the squadron with wing 0. A victim no counted hit reached keeps
+        // -1 and records nothing, as in the image: the unit constructor 0077EED0
+        // stores +2D8h = -1 (0077EFEF OR EAX,-1, EAX unchanged to 0077F012
+        // MOV [ESI+2D8h],EAX; docs/CC13_AUDIT_LUA51_FLIPS.md, the constructor
+        // defaults).
+        in.attribution.credited_slot = target.own_kill_slot_2d8;
+        in.attribution.originating_slot = target.attribution.origin_slot;
+        in.attribution.attacker_class = target.attribution.attacker_class;
+        in.attribution.victim_class = units.unit_class_id(victim);
+        in.attribution.victim_side = target.row.side;
+        bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
+        ++summary.kill_credits;
+        done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
+    } else {
+        ++kill_credits_skipped_70;
     }
-    in.attribution.attacker_side = target.attribution.attacker_side;
-    in.attribution.credited_slot = target.attribution.credited_slot;
-    in.attribution.originating_slot = target.attribution.origin_slot;
-    in.attribution.attacker_class = target.attribution.attacker_class;
-    in.attribution.victim_class = units.unit_class_id(victim);
-    in.attribution.victim_side = target.row.side;
-    bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
-    ++summary.kill_credits;
-    done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
-    if constexpr (kLandMasterDamageBound) land_section_destroyed_00747170(victim);
+    // vtable[7Ch] of MLandFort / MCommandBuilding (the master hand-off is its arm).
+    run_land_fort_on_destroyed(victim);
     if constexpr (kShipDeathMessageBound) {
         if (explicit_kill_cause == 0) ship_death_message_00827ab0(victim);
     }
@@ -18177,6 +18640,7 @@ void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, 
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        note_hp_event(master, health.current_health);
     }
     state.row.health = state.health;
     done("LandMaster::add_damage_0095da00", 0x0095da00u);
@@ -18194,26 +18658,184 @@ void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, 
     }
 }
 
-// 00747170 (LandFort OnDestroyed, vtable[7Ch]): with +70h == 1 and the clock gate,
-// a non-null master takes vtable[1ACh](1e10) (007472A7's block), then vtable[1A8h]
-// while it is still live. The clock gate (DAT_00D7A24C < [00F876A4]) is read as true.
-void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section) {
-    if (section >= land_master_738.size()) return;
-    const std::size_t master = land_master_738[section];
-    if (master >= unit_state.size()) return;
-    ++land_master.section_deaths;
-    if (explicit_kill_cause != 0 && explicit_kill_cause != 1) {   // 0074718A, +70h == 1
-        ++land_master.hand_offs_skipped_cause;
-        return;
+// 00747170 BSP_LandFort_OnDestroyed, vtable[7Ch] of MLandFort (1Bh, 00CFF3F8 +7Ch =
+// 00CFF474) and MCommandBuilding (1Ch, 00CFB028 +7Ch = 00CFB0A4), run through
+// bsp::gameplay_seg41_cc13::on_destroyed_00747170 (goal 5 chain 639). The body gates
+// on +70h == 1 (0074718D) and the clock [00F876A4] above 1.0 (007471A2); then the
+// master arm (00747263..007472AD: vtable[1ACh](1e10), then vtable[1A8h] while live),
+// the ExplosionEfx effect (00747315), and 007465E0 (00747351) when class+164h
+// SmokeFireChanceMul is above 0.
+// Inputs, each from this host's state:
+// * +70h: the stored cause during an explicit kill; the health-zero paths are a
+//   harm death (cause 1), as 00959450's binding in kill_unit takes it;
+// * the clock: clock_seconds, the fixed-step clock this host advances;
+// * +738h: land_master_738 (00744A20's store, build_land_masters_00744a20);
+// * class+164h/+160h/+168h/+16Ch: the VehicleClass row 00749210 reads.
+// LABELLED: unit+360h (the model part instance) is not carried, so +19Ch's part
+// list is clear and 0072AB10 answers its no-instance 0 for the damaged-graphics
+// level; the +48h/+44h element chain is not carried either (empty). Both only feed
+// vtable[1B4h], a model state. The effects are presentation and are records.
+// LABELLED order: the host's 00959450 (the body's tail call, 007473E3) already ran
+// in kill_unit before the kill credit, so the tail is a record here.
+void GameGunneryHost::Impl::run_land_fort_on_destroyed(std::size_t victim) {
+    namespace s41 = bsp::gameplay_seg41_cc13;
+    if (victim >= unit_state.size()) return;
+    const int class_id = units.unit_class_id(victim);
+    if (class_id != 0x1B && class_id != 0x1C) return;   // the two vtables holding 00747170
+    const std::size_t master = victim < land_master_738.size()
+        ? land_master_738[victim] : static_cast<std::size_t>(-1);
+    const bool has_master = master < unit_state.size();
+    if (has_master) ++land_master.section_deaths;
+    const int type_id = unit_state[victim].row.type_id;
+
+    struct FortDeathFire final : s41::LandFortHost {
+        FortDeathFire(Impl& owner_in, std::size_t unit_in) : owner(owner_in), unit(unit_in) {}
+        float uniform(int stream, float low, float high) override {
+            // 00BD2F10 with ECX = stream; both 007465E0 draws are stream 0.
+            if (stream == 0) {
+                ++owner.land_fort_death.smoke_draws;
+                return owner.land_fort_stream0_draw(unit, low, high);
+            }
+            return owner.draw(Draw::death_mode, unit, 0, low, high);
+        }
+        void stop_fire_effect_740() override {
+            owner.record("LandFort::fire_effect_stop_00867b10", 0x007465fdu);
+        }
+        bool create_death_smoke_effect() override {
+            // 007466D0..007466E0: 008689C0 with class+160h. LABELLED: taken to
+            // succeed, as the fire start at 00746474 is (no effect system here).
+            ++owner.land_fort_death.smoke_starts;
+            owner.record("LandFort::death_smoke_effect_008689c0", 0x007466e0u);
+            return true;
+        }
+        void send_effect_message_7(float) override {
+            // 0074675A..0074676E: 007448B0(7, d) routed by 0077C2A0(m, 4, 0); route
+            // flags 4 are the session send, dropped in single player.
+            owner.record("LandFort::effect_message_d1_0077c2a0", 0x0074676eu);
+        }
+        void stop_smoke_effect_744() override {
+            ++owner.land_fort_death.smoke_stops;
+            owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+        }
+        Impl& owner;
+        std::size_t unit;
+    };
+
+    struct FortDestroy final : s41::FortDestroyHost {
+        FortDestroy(Impl& owner_in, std::size_t victim_in, std::size_t master_in, int type_in)
+            : owner(owner_in), victim(victim_in), master(master_in), type_id(type_in) {}
+        int last_damage_state_index_0072ab10(std::uint32_t) override {
+            owner.record("LandFort::last_damage_state_index_0072ab10", 0x007471b1u);
+            return 0;   // 0072AB10 without a unit+360h instance
+        }
+        void set_damaged_gfx_level(std::uint32_t, int) override {
+            owner.record("LandFort::set_damaged_gfx_level_vt1b4", 0x007471bfu);
+        }
+        void rebuild_part_render_list() override {
+            owner.record("LandFort::part_render_list_19c", 0x007471c1u);
+        }
+        void master_add_damage(float amount) override {
+            owner.log.notef("land master: section=%s died, master=%s takes 1e10 t=%.2f "
+                "(00747170, packet cc9_land_master_damage)",
+                owner.unit_state[victim].row.name.c_str(),
+                owner.unit_state[master].row.name.c_str(),
+                static_cast<double>(owner.clock_seconds));
+            const int saved_cause = owner.explicit_kill_cause;
+            owner.explicit_kill_cause = 0;   // the master's 0095DA00 is a health-zero path
+            owner.land_master_add_damage_0095da00(master, amount);   // 00747283
+            owner.explicit_kill_cause = saved_cause;
+        }
+        bool master_die_gate() override { return !owner.unit_state[master].dead; }   // 0074728B
+        void master_die() override { owner.run_land_master_die(victim, master); }   // 007472AD
+        void create_death_effect() override {
+            ++owner.land_fort_death.death_effects;
+            owner.record("LandFort::death_effect_008689c0", 0x00747315u);
+        }
+        void start_death_fire() override {
+            // 00747351 007465E0 over this fort's timers and its class row.
+            ++owner.land_fort_death.death_fires;
+            s41::FortClassRow cls;
+            // 00749379: class+160h holds the first SmokeFireEfx entry's effect.
+            // LABELLED: a non-zero id stands for the 00870CD0 handle, as for DeathEfx.
+            cls.smoke_fire_efx_160 =
+                owner.lua.read_vehicle_class_first_integer(type_id, "SmokeFireEfx", 0) != 0;
+            cls.smoke_fire_chance_mul_164 =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireChanceMul", 0.0f);
+            cls.fire_duration_min_168 =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMin", 0.0f);
+            cls.fire_duration_max_16c =
+                owner.lua.read_vehicle_class_number(type_id, "SmokeFireDurationMax", 0.0f);
+            // One copy of +740h..+750h: a CommandBuilding the ship AI host holds as a
+            // capture building keeps them there (its 00746320 fire and 00745BE0 arms
+            // read the same words), so 007465E0 stops and clears its burning +740h
+            // and its smoke time lands in the shared +748h. Every other fort keeps
+            // them in land_fort_timers.
+            GameShipAiHost::FortTimerFields held;
+            const bool building = owner.ship_ai != nullptr
+                && owner.ship_ai->command_building_fort_timers(victim, held);
+            s41::FortTimers copy;
+            if (building) {
+                copy.fire_740 = *held.fire_740;
+                copy.smoke_744 = *held.smoke_744;
+                copy.time_748 = *held.time_748;
+                copy.clock_750 = *held.clock_750;
+            }
+            s41::FortTimers& timers = building ? copy : owner.land_fort_timers[victim];
+            const bool was_smoking = timers.smoke_744;
+            FortDeathFire fire(owner, victim);
+            s41::start_death_fire_007465e0(timers, cls, fire);
+            if (building) {
+                *held.fire_740 = copy.fire_740;
+                *held.smoke_744 = copy.smoke_744;
+                *held.time_748 = copy.time_748;
+                *held.clock_750 = copy.clock_750;
+                ++owner.land_fort_death.building_fires;
+            }
+            owner.land_fort_death.last_smoke_744 = timers.smoke_744;
+            owner.land_fort_death.last_time_748 = timers.time_748;
+            if (was_smoking) ++owner.land_fort_death.smoke_extends;
+            owner.done("LandFort::start_death_fire_007465e0", 0x007465e0u);
+        }
+        void base_on_destroyed_00959450() override {
+            owner.record("LandFort::base_on_destroyed_tail_007473e3", 0x007473e3u);
+        }
+        Impl& owner;
+        std::size_t victim;
+        std::size_t master;
+        int type_id;
+    };
+
+    s41::FortDestroyInput in;
+    in.self = static_cast<std::uint32_t>(victim);
+    in.state_70 = explicit_kill_cause == 0 ? 1 : explicit_kill_cause;
+    in.clock = clock_seconds;
+    in.part_list_19c = false;
+    in.master_738 = has_master;
+    in.smoke_fire_chance_mul_164 = lua.read_vehicle_class_number(type_id, "SmokeFireChanceMul", 0.0f);
+    const bool gate = in.state_70 == 1 && in.clock > 1.0f;   // 0074718D, 007471A2
+    if (!gate) {
+        ++land_fort_death.gated;
+        if (has_master) ++land_master.hand_offs_skipped_cause;
     }
-    log.notef("land master: section=%s died, master=%s takes 1e10 t=%.2f (00747170, "
-        "packet cc9_land_master_damage)", unit_state[section].row.name.c_str(),
-        unit_state[master].row.name.c_str(), static_cast<double>(clock_seconds));
-    const int saved_cause = explicit_kill_cause;
-    explicit_kill_cause = 0;   // the master's 0095DA00 is a health-zero path
-    land_master_add_damage_0095da00(master, 1.0e10f);
-    explicit_kill_cause = saved_cause;
-    if (unit_state[master].dead) return;   // 0074728B..007472A1
+    ++land_fort_death.on_destroyed;
+    const unsigned long long fires_before = land_fort_death.death_fires;
+    FortDestroy host(*this, victim, master, type_id);
+    s41::on_destroyed_00747170(in, host);
+    done("LandFort::on_destroyed_00747170", 0x00747170u);
+    if (land_fort_death.on_destroyed <= 4) {
+        const bool fired = land_fort_death.death_fires != fires_before;
+        log.notef("land fort destroyed: unit=%s class=%Xh t=%.2f gate=%d master=%d "
+            "death_fire=%d smoke=%d smoke_time=%.2f (00747170 -> 007465E0, goal 5 chain 639)",
+            unit_state[victim].row.name.c_str(), class_id, static_cast<double>(clock_seconds),
+            gate ? 1 : 0, has_master ? 1 : 0, fired ? 1 : 0,
+            fired && land_fort_death.last_smoke_744 ? 1 : 0,
+            fired ? static_cast<double>(land_fort_death.last_time_748) : 0.0);
+    }
+}
+
+// 00747295..007472AD, vtable[1A8h] of the dead section's master (its class's die
+// rule; land_master_is_airfield is per section).
+void GameGunneryHost::Impl::run_land_master_die(std::size_t section, std::size_t master) {
     ++land_master.die_calls;
     if (land_master_is_airfield[section]) {
         units.run_airfield_destruction_rule_006d40f0(master);   // 006D40F0
@@ -18265,6 +18887,48 @@ void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section)
             "packet g50_shipyard_rule)", unit_state[master].row.name.c_str(), slots.size(),
             host.arm, static_cast<double>(clock_seconds));
         done("LandMaster::die_shipyard_00845ac0", 0x00845ac0u);
+    }
+}
+
+// 00BD2F10 with ECX = 0 (007465E0's 0074672B / 0074679D), the primary stream as
+// death_mode_draw_00bd2f10(0, ...) takes it; its own key under the measurement option.
+float GameGunneryHost::Impl::land_fort_stream0_draw(std::size_t unit, float low, float high) {
+    if (rng_streams_enabled()) return draw(Draw::land_fort_death_fire, unit, 0, low, high);
+    return startup_random_range(bsp::RandomStream::primary, low, high);
+}
+
+// 00745F1E..00745F9D, the +744h arm of the LandFort frame update 00745BE0, for every
+// fort in land_fort_timers that 007465E0 set smoking. LABELLED order: once per
+// gunnery step after the unit passes, with the step's seconds (00745BE0 is the
+// fort's own tick). These are the plain forts and unheld CommandBuildings: no host
+// starts a +740h fire on them (00746320 runs for the ship AI host's capture
+// buildings, whose 00745BE0 runs both arms on their own record), so only the smoke
+// arm runs here.
+void GameGunneryHost::Impl::run_land_fort_smoke_frames(float dt) {
+    for (auto& entry : land_fort_timers) {
+        if (!entry.second.smoke_744) continue;
+        struct SmokeStop final : bsp::gameplay_seg41_cc13::LandFortHost {
+            explicit SmokeStop(Impl& owner_in) : owner(owner_in) {}
+            float uniform(int, float, float) override {
+                throw std::logic_error("00745F1E draws nothing");
+            }
+            void stop_fire_effect_740() override {
+                throw std::logic_error("00745F1E does not touch +740h");
+            }
+            bool create_death_smoke_effect() override {
+                throw std::logic_error("00745F1E creates nothing");
+            }
+            void send_effect_message_7(float) override {
+                throw std::logic_error("00745F1E sends nothing");
+            }
+            void stop_smoke_effect_744() override {   // 00745F73 00867B10, 00745F80 00484620(0)
+                ++owner.land_fort_death.smoke_stops;
+                owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+            }
+            Impl& owner;
+        } host(*this);
+        bsp::gameplay_seg41_cc13::smoke_frame_00745f1e(entry.second, dt, host);
+        done("LandFort::smoke_frame_00745f1e", 0x00745f1eu);
     }
 }
 
@@ -18639,12 +19303,7 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
     // 0095790E..0095792F / 009579B2..009579D3: [dev+3F4h]+95h ("AddsSpeed",
     // 00732C0E) takes the unit's vtable[34h], else the zero vector 00F87574.
     float shooter_vel[3] = {0.0f, 0.0f, 0.0f};
-    auto found = adds_speed_by_device.find(gun.device_class);
-    if (found == adds_speed_by_device.end()) {
-        found = adds_speed_by_device.emplace(gun.device_class,
-            lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
-    }
-    if (found->second) {
+    if (device_adds_speed_95(gun.device_class)) {
         unit_velocity(unit, shooter_vel);
         ++seat_lead_adds_speed;
     }
@@ -18736,12 +19395,7 @@ bool GameGunneryHost::Impl::unit_adds_speed_04a0(std::size_t unit) {
               || gun.category == 6)) {
             continue;
         }
-        auto found = adds_speed_by_device.find(gun.device_class);
-        if (found == adds_speed_by_device.end()) {
-            found = adds_speed_by_device.emplace(gun.device_class,
-                lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
-        }
-        if (found->second) return true;
+        if (device_adds_speed_95(gun.device_class)) return true;
     }
     return false;
 }
@@ -18992,44 +19646,96 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
         static_cast<void>(take);
         return;
     } else {
+        namespace gp = bsp::gameplay_seg61_62_cc13;
         Impl& h = *impl_;
-        const bool walk_156 = (mask & 0x04u) != 0 || mask == 0x08u;   // 0095AC5D, 0095AC62
-        const bool walk_2346 = !walk_156 && (mask & 0x10u) != 0;      // 0095AC67
-        if (!walk_156 && !walk_2346) return;   // 20h / 80h: the group 4/5 models
-        auto in_156 = [](int k) { return k == 1 || k == 5 || k == 6; };
-        auto in_2346 = [](int k) { return k == 2 || k == 3 || k == 4 || k == 6; };
-        // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
-        auto release = [&](GameGunRow& gun) {
-            release_player_gun_control(h, gun);
-            ++h.seat_role_releases;
-        };
-        if (walk_156) {
-            if (take) return;                                  // 00953F64: a release only
+        // 0095AC1D's mask tests (0095AC5D, 0095AC62, 0095AC67), msg+20h clear on
+        // this path: the first match wins.
+        const bsp::RoleOwnerRoute route =
+            bsp::role_owner_route_0095ac1d(false, static_cast<int>(mask));
+        const bool walk_156 = route == bsp::RoleOwnerRoute::DeviceKindSet156;
+        const bool walk_slots_7 = route == bsp::RoleOwnerRoute::GlobalCollectionA;
+        const bool walk_slots_89 = route == bsp::RoleOwnerRoute::GlobalCollectionB;
+        if (!walk_156 && !walk_slots_7 && !walk_slots_89
+            && route != bsp::RoleOwnerRoute::DeviceKindSet2346) {
+            return;   // no mask bit 04h, 10h, 20h or 80h (and mask != 8)
+        }
+        std::vector<GameGunRow*> rows;
+        std::vector<gp::RoleDevice> devices;
+        if (walk_slots_7 || walk_slots_89) {
+            // Goal 5 chain 651. 009540D0 (mask 20h, slot table 00E0A520 = {7, 12})
+            // and 00954170 (mask 80h, 00E0A528 = {8, 9, 12}): 00952080 / 009520E0
+            // walk the unit's twelve typed device lists (unit+394h + Function * 0Ch,
+            // keyed by [[device+3F4h]+80h] as 00956BA0's erase shows), every device
+            // of the listed Functions, list by list in table order, with no
+            // IsKindOf test (bsp.py show 009540d0 --asm). Here: the unit's gun rows
+            // of those Functions (GameGunRow::category), Function by Function.
+            const auto collect = [&](int function) {
+                for (GameGunRow& gun : h.guns) {
+                    if (gun.unit_index == unit && gun.category == function) rows.push_back(&gun);
+                }
+            };
+            if (walk_slots_7) {
+                for (const std::int32_t f : gp::kSlotTable_00e0a520) collect(f);
+            } else {
+                for (const std::int32_t f : gp::kSlotTable_00e0a528) collect(f);
+            }
+        } else {
+            // The unit's device list (this+48h, next +44h): its guns in gun order.
+            // Every row answers IsKindOf(20h); the descriptor's +80h kind is the
+            // Function, GameGunRow::category.
+            for (GameGunRow& gun : h.guns) {
+                if (gun.unit_index != unit) continue;
+                rows.push_back(&gun);
+                devices.push_back({true, gun.category});
+            }
+        }
+        // msg+28h the slot, msg+2Ch 1 for take / 0 for release. The caller
+        // passes its `take == 1` test, so any other +2Ch value arrives as 0.
+        const gp::RoleOwnerMessage message{slot, take ? 1 : 0};
+        std::vector<gp::RoleStep> steps;
+        if (walk_slots_7 || walk_slots_89) {
+            // 009540F3 / 00954193 CMP [msg+2Ch],1: take vtable[154h](0, msg+28h);
+            // otherwise vtable[154h](0, 8) then vtable[1E8h](0).
+            steps = gp::role_owner_walk_slots_009540d0(rows.size(), message);
+        } else if (walk_156) {
             // 00953F74: [unit+1BCh] (role 4) against msg+28h.
             std::int32_t role4 = 8;
             if (!h.units.unit_current_role_slot(unit, 4, role4)) role4 = 8;
-            const bool same_slot = role4 == slot;
-            for (GameGunRow& gun : h.guns) {
-                if (gun.unit_index != unit || !in_156(gun.category)) continue;
-                if (same_slot && in_2346(gun.category)) continue;   // 00953FAD
-                release(gun);
-            }
-            h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
-            return;
+            steps = gp::role_owner_walk_00953f60(devices, message, role4);
+        } else {
+            steps = gp::role_owner_walk_00954000(devices, message);
         }
-        for (GameGunRow& gun : h.guns) {                       // 00954000
-            if (gun.unit_index != unit || !in_2346(gun.category)) continue;
-            if (!take) {
-                release(gun);
-                continue;
+        for (const gp::RoleStep& step : steps) {
+            GameGunRow& gun = *rows.at(step.device);
+            switch (step.action) {
+            case gp::RoleAction::Release_00729f70:
+                // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
+                release_player_gun_control(h, gun);
+                ++h.seat_role_releases;
+                break;
+            case gp::RoleAction::Assign_vtable154:
+                // 00954056 / 0095410F vtable[154h](0, slot); 0095412D (0, 8) on a
+                // 009540D0 / 00954170 release, counted at its vtable[1E8h] below.
+                gun.seat_1ac = step.argument;
+                if (take) ++h.seat_role_takes;
+                break;
+            case gp::RoleAction::SelectFireMode_0072d5b0:
+                // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
+                // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
+                h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
+                break;
+            case gp::RoleAction::Activate_vtable1e8:
+                // 0095413C / 009541DC vtable[1E8h](0), the trigger argument the
+                // seat ray and the group 4 / 5 arms keep (00729F70's second call).
+                gun.seat_trigger = step.argument != 0;
+                ++h.seat_role_releases;
+                break;
             }
-            gun.seat_1ac = slot;                               // 00954056 vtable[154h](0, slot)
-            ++h.seat_role_takes;
-            // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
-            // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
-            if (gun.category == 6) h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
         }
-        h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
+        if (walk_slots_7) h.done("PlayerGunSeat::role_owner_walk_slots_7", 0x009540d0u);
+        else if (walk_slots_89) h.done("PlayerGunSeat::role_owner_walk_slots_8_9", 0x00954170u);
+        else if (walk_156) h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
+        else h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
     }
 }
 
@@ -19260,6 +19966,14 @@ void GameGunneryHost::Impl::inferior_failure_health_zero_00958a30(std::size_t vi
         // 00953DA0 (006D2210 for an airfield, which falls through to it) routes 7Dh,
         // and 0095AD0A sets +720h.
         units.set_inferior_failure_720(victim);
+        // 0095AD06..0095AD52, the rest of the 7Dh arm: an airfield (vtable[5Ch](45h)) or
+        // a shipyard (46h) reports 00982C50(entity, "InferiorFailure" 00CF0B74, +728h)
+        // to [00F8A0C4]. 00958AA1 sends 7Dh before 00958AF5 stores the new window, so
+        // the duration is +728h as it stood (goal 5 chain 634).
+        if (units.unit_is_kind_of(victim, 0x45) || units.unit_is_kind_of(victim, 0x46)) {
+            note_damage_channel(GameGunneryHost::DamageChannel::failure, victim,
+                                "InferiorFailure", s.inferior_timer_728);
+        }
         s.inferior_timer_728 = inferior_failure_seconds_00958ae8(victim, owner);
         ++inferior.first_breaks;
         log.notef("inferior failure: unit=%s owner=%s first break t=%.2f window=%.1f "
@@ -19889,6 +20603,7 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     for (std::size_t i = 0; i < host.unit_state.size(); ++i) {
         host.run_gunnery_pass(i, step_seconds);
     }
+    host.run_land_fort_smoke_frames(step_seconds);   // goal 5 chain 639
     if constexpr (kTorpedoSupplyTickBound) {
         // 00826182 in UpdateShipMotion 00825F20: every ship, every step.
         // LABELLED: run here, after the gunnery passes, not inside the motion
@@ -20248,6 +20963,7 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
     s.last_attacker = 0;
     s.lua_kill_attacker = 0;
     s.lua_kill_slot = -1;
+    s.own_kill_slot_2d8 = -1;
     s.fire_target = 0;
     s.command_target = 0;
     s.attribution = {};
@@ -20580,6 +21296,25 @@ std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_even
     return out;
 }
 
+std::vector<GameGunneryHost::GameGunneryHpEvent> GameGunneryHost::take_hp_events() {
+    std::vector<GameGunneryHpEvent> out;
+    out.swap(impl_->hp_events);
+    return out;
+}
+
+std::vector<std::size_t> GameGunneryHost::take_ammo_type_drops() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ammo_type_drops);
+    return out;
+}
+
+std::vector<GameGunneryHost::GameGunneryDamageChannelEvent>
+GameGunneryHost::take_damage_channel_events() {
+    std::vector<GameGunneryDamageChannelEvent> out;
+    out.swap(impl_->damage_channel_events);
+    return out;
+}
+
 // Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
 // 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
 // runs; this host makes that set at the first torpedo shot, so an unset unit
@@ -20641,6 +21376,7 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
+        host.note_hp_event(unit_index, health.current_health);
     }
     state.row.health = state.health;
     host.done("Unit::add_damage_0095da00", 0x0095da00u);
@@ -21422,6 +22158,7 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
+    h.note_ammo_type_drop(unit_index);   // a plane torpedo is an MBombPlatform (2Ah) round
     // Packet cc8_torpedo_breakoff: RESTORED, as half two of the spent-bomber
     // fix. A drop clears the owner's kind 2Bh bit, so approach+132h (== task+52Ah,
     // section 10.2) goes false on the next approach update.
@@ -21652,6 +22389,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         paratrooper->owner_side = h.units.unit_side_0054(unit_index);
         ++h.summary.paratrooper_releases;
         h.done("Rack::paratrooper_release_006e4d50", 0x006e4d50u);
+        h.note_ammo_type_drop(unit_index);
         return true;
     }
 
@@ -21707,6 +22445,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.bomb_drops;
+    h.note_ammo_type_drop(unit_index);
     // NOT DONE, deliberately: no kind 2Ah twin of the torpedo drop's 2Bh clear.
     // The torpedo side can clear its bit because one drop is its whole loadout;
     // a dive bomber's is a salvo of up to two per pass out of a stock this host
@@ -21979,11 +22718,13 @@ void GameGunneryHost::report() {
             host.seat_target_messages, host.seat_target_unresolved, host.seat_target_aims,
             host.seat_target_adds_speed, kPlayerGunSeatTargetInterceptBound ? 1 : 0);
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
+            "not_harm_70=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route) "
             "limbo_push=%llu/%llu retarget=%llu ctrl_cleared=%llu/%llu ctrl_kept_plane=%llu "
             "limbo_bound=%d (cc13-limbo, applied/would)",
-            host.death_route_calls, host.death_route_reported, host.death_route_child_triggers,
+            host.death_route_calls, host.death_route_reported, host.kill_credits_skipped_70,
+            host.death_route_child_triggers,
             host.loss_report_calls, host.loss_reports[0], host.loss_reports[1], host.limbo_pages,
             kUnitDeathRouteBound ? 1 : 0, host.limbo_push_applied, host.limbo_push_would,
             host.limbo_retarget_would, host.ctrl_cleared_applied, host.ctrl_clear_would,
@@ -22122,6 +22863,9 @@ void GameGunneryHost::report() {
             host.muzzle_offset_shots != 0
                 ? host.muzzle_shift_sum / static_cast<double>(host.muzzle_offset_shots) : 0.0,
             host.muzzle_shift_max, kMuzzleOffsetsBound ? 1 : 0);
+        host.log.notef("summary mission gunnery projectile spawn platform_velocity_adds=%llu "
+            "(0072BF10 0072C04B AddsSpeed, goal 5 chain 658)",
+            host.spawn_platform_velocity_adds);
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
@@ -22340,6 +23084,13 @@ void GameGunneryHost::report() {
                 c.sections, c.masters, c.party_adoptions, c.forwards, c.section_deaths,
                 c.hand_offs_skipped_cause, c.die_calls, c.die_unhosted, c.master_kills,
                 c.kept_alive, kLandMasterDamageBound ? 1 : 0);
+            const Impl::LandFortDeathCounts& f = host.land_fort_death;
+            host.log.notef("summary mission gunnery land fort deaths on_destroyed=%llu "
+                "gated=%llu death_effects=%llu death_fires=%llu building_fires=%llu "
+                "smoke_starts=%llu smoke_extends=%llu smoke_draws=%llu smoke_stops=%llu "
+                "(00747170 / 007465E0 / 00745F1E, goal 5 chain 639)", f.on_destroyed, f.gated,
+                f.death_effects, f.death_fires, f.building_fires, f.smoke_starts,
+                f.smoke_extends, f.smoke_draws, f.smoke_stops);
         }
         if (kReloadDrawBound) {
             host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "

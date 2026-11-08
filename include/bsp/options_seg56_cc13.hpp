@@ -398,7 +398,7 @@ int lua_set_catapult_stock(LuaArgs& args, Seg56Host& host);
 int lua_set_pump(LuaArgs& args);
 // GetSubmarineAirSupply 008938E0 / SetSubmarineAirSupply 00893A60: float entity+127Ch.
 int lua_get_submarine_air_supply_008938e0(LuaArgs& args, LuaResults& results, ImageAccess& image);
-int lua_set_submarine_air_supply(LuaArgs& args, ImageAccess& image);
+int lua_set_submarine_air_supply_00893a60(LuaArgs& args, ImageAccess& image);
 // ForceSubmarinePeriscope 00893DA0: byte entity+1235h = boolean arg1.
 int lua_force_submarine_periscope(LuaArgs& args, ImageAccess& image);
 // SubmarineAttack 00894440 / PilotTorpedo 008A5310: 0077D600(entity, command object,

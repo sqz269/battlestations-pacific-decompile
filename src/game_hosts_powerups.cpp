@@ -719,16 +719,34 @@ void refresh_hud_if_shown_008e4660(cp::PowerupRuntime& runtime) {
     }
 }
 
-// 008E35F0 __fastcall(ECX = unit, EDX = class): the class scope for a unit.
-bool class_scope_accepts_unit_008e35f0(const PowerupClassConfig& cls, bool unit_present) {
+}  // namespace
+
+// 008E35F0 __fastcall(ECX = unit, EDX = class) -> AL: the class scope for a unit.
+// This host's typed projection, arm for arm the ledger body
+// objectives_seg57_argon::powerup_class_scope_accepts_unit_008e35f0, which takes
+// the 84-virtual Seg57Host (image globals) for its two kind queries.
+bool class_scope_accepts_unit_008e35f0(const PowerupClassConfig& cls, bool unit_present,
+    const PowerupUnitKindQuery* kinds) {
     // 008E35F0..008E3606: scopes other than PUTT_FRIENDUNIT / PUTT_ENEMYUNIT pass.
     if (cls.target_type_84 != 1 && cls.target_type_84 != 2) return true;
     if (!unit_present) return false;                 // 008E3607..008E360E
-    if (cls.target_filter_88 == 0x0F) return true;   // 008E3616..008E361F
-    // 008E3620..008E367C: IsKindOf 8 / 6 / 18h and 009FE0B0 select a mask bit.
-    // Every class 008ED4B0 uses at once is PUT_PASSIVE, scoped RANGE or PARTY.
-    throw std::logic_error("008E35F0 unit-kind mask arms not modelled");
+    const std::uint32_t mask = static_cast<std::uint32_t>(cls.target_filter_88);
+    if (mask == 0x0Fu) return true;                  // 008E3616..008E361F
+    // 008E3620..008E367C: the first kind the unit answers picks the mask bit;
+    // none of them answers 0 (the AND EAX,0FFFFFF00h tail). Every class 008ED4B0
+    // uses at once is PUT_PASSIVE, scoped RANGE or PARTY, so that caller has no
+    // kind query.
+    if (kinds == nullptr) {
+        throw std::logic_error("008E35F0 unit-kind mask arms without the unit's kind query");
+    }
+    if (kinds->is_kind_of_5c(0x08)) return ((mask >> 1) & 1u) != 0;  // submarine, bit 1
+    if (kinds->is_kind_of_5c(0x06)) return (mask & 1u) != 0;         // ship, bit 0
+    if (kinds->is_kind_of_5c(0x18)) return ((mask >> 2) & 1u) != 0;  // bit 2
+    if (kinds->static_installation_009fe0b0()) return ((mask >> 3) & 1u) != 0;  // bit 3
+    return false;
 }
+
+namespace {
 
 // 008E8C30 __thiscall(ECX = manager, record*), RET 4.
 void expire_modifier_008e8c30(cp::PowerupRuntime& runtime, PowerupModifier* record) {
@@ -848,10 +866,12 @@ void insert_modifier_008ea250(cp::PowerupRuntime& runtime, std::int32_t category
     }
 }
 
-// 008EADA0 __thiscall(ECX = manager, item, slot, unit), RET 0Ch, as 008ED4B0
-// reaches it: a single-player use of a just-granted item.
+// 008EADA0 __thiscall(ECX = manager, item, slot, unit), RET 0Ch, as 008ED4B0 (a
+// single-player use of a just-granted item) and 00A180C9 (the AI party brain's
+// pick) reach it. `unit` is null for a null unit argument; `kinds` answers
+// 008E35F0's mask arms on it.
 void use_item_008eada0(cp::PowerupRuntime& runtime, cp::PowerupItem& item,
-    std::int32_t slot, const PowerupUnitView& unit) {
+    std::int32_t slot, const PowerupUnitView* unit, const PowerupUnitKindQuery* kinds) {
     cp::PowerupManagerHost& host = *runtime.host;
     if (!host.powerups_enabled_00e0c978()) return;   // 008EADB8
     if (host.session_word_1fe4() == 2) {
@@ -870,9 +890,12 @@ void use_item_008eada0(cp::PowerupRuntime& runtime, cp::PowerupItem& item,
     if (ready_at > now) return;
     // 008EAEAD: the air-support arm (class+8 == 1). 008ED4B0 uses passives only.
     if (cls.group_08 == 1) {
-        throw std::logic_error("008EAEC3 air-support use not modelled");
+        if (unit == nullptr) return;                  // 008EAEC3 TEST ECX,ECX / JZ
+        if (!class_scope_accepts_unit_008e35f0(cls, true, kinds)) return;  // 008EAECD
+        // 008EAEDA onwards: the flight 0094BFF0 spawns through the spawn manager.
+        throw std::logic_error("008EADA0 air-support flight spawn 0094BFF0 not modelled");
     }
-    if (!class_scope_accepts_unit_008e35f0(cls, true)) return;  // 008EAF6F
+    if (!class_scope_accepts_unit_008e35f0(cls, unit != nullptr, kinds)) return;  // 008EAF6F
     // 008EAF7E..008EAFEB: item+0 cleared, then one insert per category whose
     // multiplier is not 1.0f (UCOMISS: an unordered compare inserts too).
     const bool active = cls.group_08 == 2;
@@ -881,7 +904,10 @@ void use_item_008eada0(cp::PowerupRuntime& runtime, cp::PowerupItem& item,
     for (std::int32_t category = 0; category < kPowerupCategoryCount; ++category) {
         const float multiplier = cls.multipliers_8c[static_cast<std::size_t>(category)];
         if (!(multiplier == 1.0f)) {
-            insert_modifier_008ea250(runtime, category, multiplier, cls, &item, slot, unit);
+            // A null unit reaches here only for scopes other than 1 and 2,
+            // whose records 008EA250 does not read the unit for.
+            insert_modifier_008ea250(runtime, category, multiplier, cls, &item, slot,
+                unit != nullptr ? *unit : PowerupUnitView{});
             consumed = active;
         }
     }
@@ -927,7 +953,7 @@ void grant_008ed4b0(cp::PowerupRuntime& runtime, std::size_t building,
         require_unhosted_session(runtime, "008ED4B0");   // 008ED5AB, message 67
     }
     // 008ED5F1..008ED601: a passive class (class+8 == 3) is used now.
-    if (cls->group_08 == 3) use_item_008eada0(runtime, item, slot, view);
+    if (cls->group_08 == 3) use_item_008eada0(runtime, item, slot, &view, nullptr);
 }
 
 // 008E6230 __thiscall(ECX = item): each listed record expires (passive) or is
@@ -1098,6 +1124,29 @@ std::string pick_from_bracket_list_008ec650(cp::PowerupRuntime& runtime,
 }
 
 }  // namespace
+
+std::vector<const cc13_powerup::PowerupItem*> ready_items_for_slot(std::int32_t slot) {
+    cp::PowerupRuntime& runtime = cp::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr) return {};
+    return cp::list_ready_items_008ea0c0(runtime, slot);
+}
+
+void use_ready_item_for_ai(const cc13_powerup::PowerupItem& item, std::int32_t slot,
+    std::optional<std::size_t> target, const PowerupUnitKindQuery* kinds) {
+    cp::PowerupRuntime& runtime = cp::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr) {
+        throw std::logic_error("00A180C9 use without a power-up manager");
+    }
+    // 00A180AD: [ESP+68h] is the vector element 008EA0C0 filled, the live item
+    // itself; 008EADA0 writes its +0h.
+    cp::PowerupItem& live = const_cast<cp::PowerupItem&>(item);
+    if (!target) {
+        use_item_008eada0(runtime, live, slot, nullptr, kinds);
+        return;
+    }
+    const PowerupUnitView view = view_or_throw(*target, "00A180C9");
+    use_item_008eada0(runtime, live, slot, &view, kinds);
+}
 
 void command_building_powerup_init_008ed720(std::size_t building,
     std::string_view powerup_class_id) {

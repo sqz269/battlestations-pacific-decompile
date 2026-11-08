@@ -16,12 +16,17 @@
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/oct18_tail_a.hpp"                // 0054ED00
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/frontend_states.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"     // 00563370, 00555770
 #include "bsp/frontend_seg15_22_cc13.hpp"
 #include "bsp/frontend_seg19_21_cc13.hpp"
+#include "bsp/frontend_screen_animation.hpp"  // 00683610
+#include "bsp/options_menu_screens.hpp"
+#include "bsp/segs_13_15_22_44_cc13.hpp"      // 0051E4D0
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
@@ -65,6 +70,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <cstring>
 #include <cwctype>
 #include <map>
 #include <memory>
@@ -475,9 +481,137 @@ private:
     FrontEndScreen& flags_;
 };
 
+// operator new(size) at an Init call site (00686380 / 006898C0) for a leaf
+// whose constructor stores more than the two image-shaped records above
+// carry: the block is this owner's for the screen record's lifetime, as the
+// HUD's leaf blocks are its owner's (game_hosts_hud.cpp HudLeafScreenStorage).
+// The front-end base's two flag bytes at +4h/+5h are an actual FrontEndScreen,
+// so the registry borrows the very base the leaf constructed instead of a
+// second copy. The block is zeroed; the native allocation is not, and nothing
+// reads a byte the leaf did not store before the screen's own register runs.
+class MenuLeafBlock {
+public:
+    explicit MenuLeafBlock(std::size_t size_bytes)
+        : bytes_(std::make_unique<std::uint8_t[]>(size_bytes)), size_(size_bytes) {
+        if (size_bytes < 6) throw std::logic_error("front-end leaf screen smaller than its base");
+        flags_ = ::new (static_cast<void*>(bytes_.get() + 4)) FrontEndScreen{};
+    }
+    std::uint8_t* data() const noexcept { return bytes_.get(); }
+    FrontEndScreen& flags() const noexcept { return *flags_; }
+    bool contains(const void* p, std::size_t bytes) const noexcept {
+        const auto* b = static_cast<const std::uint8_t*>(p);
+        return b >= data() && bytes <= size_ && b <= data() + (size_ - bytes);
+    }
+    // 00BF681B blocks the leaf constructor links into its own fields (a tree
+    // head node); the native destructor frees them.
+    void* allocate_owned(std::size_t bytes) {
+        owned_.push_back(std::make_unique<std::uint8_t[]>(bytes));
+        return owned_.back().get();
+    }
+
+private:
+    std::unique_ptr<std::uint8_t[]> bytes_;
+    std::size_t size_;
+    FrontEndScreen* flags_{nullptr};
+    std::vector<std::unique_ptr<std::uint8_t[]>> owned_;
+};
+
+// 004F7180 on a leaf's own block (bsp.py show 004f7180): the base vtable
+// 00CEAE54, then both flag bytes cleared. The leaf replaces the vtable.
+void construct_menu_leaf_base(MenuLeafBlock& block, const void* p) {
+    if (p != block.data())
+        throw std::logic_error("004F7180 base belongs to a different front-end screen");
+    construct_front_end_screen_004f7180(block.flags());
+    std::memcpy(block.data(), &kFrontEndScreenBaseVtable, sizeof(std::uint32_t));
+}
+
+// 00683610 writes the scroller in place at the screen's own offset, so the
+// typed scroller must have the native 5Ch layout (bsp.py show 00683610 --asm).
+static_assert(sizeof(FrontEndScreenScroller) == 0x5C);
+void construct_menu_leaf_scroller(MenuLeafBlock& block, void* scroller) {
+    if (!block.contains(scroller, sizeof(FrontEndScreenScroller)))
+        throw std::logic_error("00683610 scroller is not a member of this front-end screen");
+    auto* const typed = ::new (scroller) FrontEndScreenScroller;
+    construct_front_end_screen_scroller_00683610(*typed);
+}
+
+// 00626630, the rewards (scoring) screen: the base and its three scrollers.
+class MenuLeafRewardsBinding final : public ingame_gui_cc13::RewardsConstructHost {
+public:
+    explicit MenuLeafRewardsBinding(MenuLeafBlock& block) : block_(block) {}
+    void front_end_screen_construct_004f7180(ingame_gui_cc13::Raw screen) override {
+        construct_menu_leaf_base(block_, screen.p);
+    }
+    void scroller_construct_00683610(ingame_gui_cc13::Raw scroller) override {
+        construct_menu_leaf_scroller(block_, scroller.p);
+    }
+private:
+    MenuLeafBlock& block_;
+};
+
+// 0051E4D0, the briefing screen: the base and the head node of its +12Ch tree.
+class MenuLeafBriefingBinding final : public segs_13_15_22_44_cc13::BriefingConstructHost {
+public:
+    explicit MenuLeafBriefingBinding(MenuLeafBlock& block) : block_(block) {}
+    void front_end_screen_construct_004f7180(ingame_gui_cc13::Raw screen) override {
+        construct_menu_leaf_base(block_, screen.p);
+    }
+    void* tree_buy_head_node_0051acb0(ingame_gui_cc13::Raw tree) override {
+        if (!block_.contains(tree.p, 0x0C))
+            throw std::logic_error("0051ACB0 tree is not a member of this front-end screen");
+        // bsp.py show 0051acb0 --asm: operator new(1Ch), +0h/+4h/+8h = 0,
+        // colour +18h = 1, isnil +19h = 0. The constructor then sets isnil
+        // and links the head to itself.
+        auto* const node = static_cast<std::uint8_t*>(block_.allocate_owned(0x1C));
+        node[0x18] = 1;
+        node[0x19] = 0;
+        return node;
+    }
+private:
+    MenuLeafBlock& block_;
+};
+
+// 00563370 (leaderboards) and 00555770 (control binding): the base and
+// 00683610 on their embedded scroller blocks.
+class MenuLeafScrollerScreenBinding final : public cc13_fe3::ScrollerScreenConstructHost {
+public:
+    explicit MenuLeafScrollerScreenBinding(MenuLeafBlock& block) : block_(block) {}
+    void front_end_screen_construct_004f7180(ingame_gui_cc13::Raw screen) override {
+        construct_menu_leaf_base(block_, screen.p);
+    }
+    void gui_scroller_construct_00683610(void* scroller) override {
+        construct_menu_leaf_scroller(block_, scroller);
+    }
+private:
+    MenuLeafBlock& block_;
+};
+
+// 00527D00, the control layout screen: the 004F7180 base only (bsp.py show
+// 00527d00 --asm), so the other Seg15LeafConstructHost services stay a loud
+// failure.
+class MenuLeafControlLayoutBinding final : public frontend_seg15_22_cc13::Seg15LeafConstructHost {
+public:
+    explicit MenuLeafControlLayoutBinding(MenuLeafBlock& block) : block_(block) {}
+    void front_end_screen_construct_004f7180(ingame_gui_cc13::Raw screen) override {
+        construct_menu_leaf_base(block_, screen.p);
+    }
+    void* operator_new_00bf681b(std::size_t) override { return unreached("00BF681B"); }
+    void simple_3d_scene_construct_0093cb10(ingame_gui_cc13::Raw) override { unreached("0093CB10"); }
+    void* tree_buy_head_node_005359a0() override { return unreached("005359A0"); }
+    void* list_buy_head_node(std::uint32_t) override { return unreached("list head node"); }
+    void* list_buy_head_node_0053da70() override { return unreached("0053DA70"); }
+    void* tree_buy_head_node(std::uint32_t) override { return unreached("tree head node"); }
+private:
+    [[noreturn]] static void* unreached(const char* service) {
+        throw std::logic_error(std::string("00527D00 does not call ") + service);
+    }
+    MenuLeafBlock& block_;
+};
+
 struct MenuLeafBacking {
     std::unique_ptr<MenuMissionTreeImage> mission_tree;
     std::unique_ptr<MenuCreditsImage> credits;
+    std::unique_ptr<MenuLeafBlock> block;
     FrontEndScreen* flags{};
     std::uint32_t* primary_vtable{};
 };
@@ -506,11 +640,72 @@ void release_menu_leaf(Screen& screen) {
     }
 }
 
-// Adapts the native constructor field references to the menu's owned backing.
-// Called only in the chain-91 ON arm. Neither raw allocation nor field setup
-// takes place in the OFF build.
-[[maybe_unused]] std::unique_ptr<MenuLeafBacking> construct_menu_leaf(
+// The size each Init call site passes to operator new for a constructor that
+// runs on a MenuLeafBlock: the recovered class tables' object_size.
+std::size_t menu_leaf_block_size(std::uint32_t constructor) noexcept {
+    for (const MainMenuScreenClass& entry : kMainMenuScreens)
+        if (entry.constructor == constructor) return entry.object_size;
+    for (const OptionsScreenClass& entry : kOptionsScreens)
+        if (entry.constructor == constructor) return entry.object_size;
+    return 0;
+}
+
+// 00686380's 00626630, 0051E4D0 and 00563370, and 006898C0's 00527D00 and
+// 00555770, each on a zeroed block of its call site's operator new size.
+std::unique_ptr<MenuLeafBacking> construct_menu_leaf_block(
     std::size_t size_bytes, std::uint32_t constructor, GameHostLog& log) {
+    switch (constructor) {
+    case 0x00626630u: case 0x0051E4D0u: case 0x00563370u:
+    case 0x00527D00u: case 0x00555770u: break;
+    default: return nullptr;
+    }
+    if (size_bytes != menu_leaf_block_size(constructor)) return nullptr;
+    auto backing = std::make_unique<MenuLeafBacking>();
+    backing->block = std::make_unique<MenuLeafBlock>(size_bytes);
+    MenuLeafBlock& block = *backing->block;
+    const ingame_gui_cc13::Raw raw{block.data()};
+    switch (constructor) {
+    case 0x00626630u: {
+        MenuLeafRewardsBinding b(block);
+        ingame_gui_cc13::rewards_construct_00626630(raw, b);
+        log.implemented("FrontEndManager::rewards_constructor", "00626630");
+        break;
+    }
+    case 0x0051E4D0u: {
+        MenuLeafBriefingBinding b(block);
+        segs_13_15_22_44_cc13::briefing_construct_0051e4d0(raw, b);
+        log.implemented("FrontEndManager::briefing_constructor", "0051e4d0");
+        break;
+    }
+    case 0x00563370u: {
+        MenuLeafScrollerScreenBinding b(block);
+        cc13_fe3::leaderboards_construct_00563370(raw, b);
+        log.implemented("FrontEndManager::leaderboards_constructor", "00563370");
+        break;
+    }
+    case 0x00527D00u: {
+        MenuLeafControlLayoutBinding b(block);
+        frontend_seg15_22_cc13::control_layout_construct_00527d00(raw, b);
+        log.implemented("FrontEndManager::control_layout_constructor", "00527d00");
+        break;
+    }
+    case 0x00555770u: {
+        MenuLeafScrollerScreenBinding b(block);
+        cc13_fe3::control_binding_construct_00555770(raw, b);
+        log.implemented("FrontEndManager::control_binding_constructor", "00555770");
+        break;
+    }
+    default: break;
+    }
+    backing->flags = &block.flags();
+    backing->primary_vtable = reinterpret_cast<std::uint32_t*>(block.data());
+    return backing;
+}
+
+std::unique_ptr<MenuLeafBacking> construct_menu_leaf(
+    std::size_t size_bytes, std::uint32_t constructor, GameHostLog& log) {
+    if (auto block = construct_menu_leaf_block(size_bytes, constructor, log)) return block;
+    // Adapts the native constructor field references to the menu's owned backing.
     if (!((constructor == 0x005CA880u && size_bytes == sizeof(MenuMissionTreeImage)) ||
           (constructor == 0x0052FCE0u && size_bytes == sizeof(MenuCreditsImage)))) return nullptr;
     auto backing = std::make_unique<MenuLeafBacking>();
@@ -825,13 +1020,16 @@ public:
     explicit MenuSetBindings(GameMenuHost::Impl& owner) : owner_(owner) {}
 
     bool screen_manages_own_visibility(int slot) override {
-        // Vtable +4h. The base 004f7570 is `xor al,al; ret` and no leaf this
-        // milestone builds overrides it, so the screen sets own every request.
-        // cc15-hint2: the hints screen 34h overrides it with 0054D670, which
-        // returns true (vtable 00CEE290 +4h).
+        // Vtable +4h. The base 004f7570 is `xor al,al; ret`, so the screen sets
+        // own every request. cc15-hint2: the hints screen 34h overrides it with
+        // 0054D670, which returns true (vtable 00CEE290 +4h).
         if constexpr (kHintTriggerPassesCc15Bound) {
             if (slot == 0x34) return true;
         }
+        // Goal 5 chain 646: a leaf's own +4h on its block (43h: 00643DD0, true).
+        bool self_managed = false;
+        if (owner_.hud != nullptr && owner_.hud->leaf_screen_self_managed(slot, self_managed))
+            return self_managed;
         static_cast<void>(slot);
         return front_end_screen_self_managed_004f7570();
     }
@@ -1463,7 +1661,9 @@ public:
             owner_.hud->exit_ship_view_screen_0064a490();
             return;
         }
-        // Every other leaf's +1Ch is its own routine; none is reconstructed.
+        // Goal 5 chain 646: the leaf +1Ch virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->exit_leaf_screen(slot)) return;
+        // Every other screen's +1Ch is its own routine, not run here.
         owner_.log.unimplemented("FrontEndScreen::exit", "004f75b0");
         owner_.log.notef("screen %d exit virtual %08lx", slot,
             screen != nullptr ? static_cast<unsigned long>(screen->exit_virtual) : 0ul);
@@ -1495,6 +1695,8 @@ public:
                 return;
             }
         }
+        // Goal 5 chain 646: the leaf +18h virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->enter_leaf_screen(slot)) return;
         owner_.log.unimplemented("FrontEndScreen::enter", "004f75a0");
         if (screen == nullptr) return;
         owner_.log.notef("screen %d (%s) enter virtual %08lx", slot, screen->name.c_str(),
@@ -1583,11 +1785,15 @@ public:
             return;
         }
         // Packet cc9_screen_26h_2eh: these three slots' update virtual is the
-        // base 004F75C0 itself, `RET 4`, so the call does nothing.
+        // base 004F75C0 itself, `RET 4`, so the call does nothing. Goal 5
+        // chain 636: the dispatch calls that base body.
         if (kHudBaseUpdateScreensBound && (slot == 0x26 || slot == 0x2e || slot == 0x3e)) {
+            engine_seg11_35_66_cc13::base_screen_update_004f75c0(seconds);
             owner_.log.implemented("FrontEndScreen::base_update", "004f75c0");
             return;
         }
+        // Goal 5 chain 646: the leaf +20h virtuals the HUD runs on their blocks.
+        if (owner_.hud != nullptr && owner_.hud->update_leaf_screen(slot, seconds)) return;
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
     }
 
@@ -1867,8 +2073,9 @@ public:
         }
     }
     void* create_screen(std::size_t size_bytes, std::uint32_t constructor_address) override {
-        // 005CA880 / 0052FCE0: construct the leaves named by 00686380's table;
-        // OFF preserves the existing constructor-address registry stand-ins.
+        // Construct the leaves named by 00686380's and 006898C0's tables whose
+        // constructors are bound (construct_menu_leaf); the other main-menu
+        // classes keep the constructor-address registry record.
         owner_.log.unimplemented("FrontEndManager::create_screen", "00bf681b");
         auto native = construct_menu_leaf(size_bytes, constructor_address, owner_.log);
         const MainMenuScreenClass* recovered = nullptr;
@@ -1881,6 +2088,22 @@ public:
             if (matches) {
                 recovered = &entry;
                 break;
+            }
+        }
+        if (recovered == nullptr && native) {
+            // 006898C0's leaves (options_menu_screens.hpp), selected the same
+            // way by the primary vtable their constructor stored.
+            for (const OptionsScreenClass& entry : kOptionsScreens) {
+                if (entry.primary_vtable != *native->primary_vtable) continue;
+                GameMenuHost::Impl::MenuScreen& screen = owner_.add_screen(entry.screen_id,
+                    std::string(entry.layout_page), native->flags, entry.enter_virtual,
+                    entry.exit_virtual, entry.update_virtual, false);
+                retain_menu_leaf(screen, std::move(native));
+                owner_.log.notef("front-end screen id=%d layout=%.*s constructor=%08lx size=%lu",
+                    entry.screen_id, static_cast<int>(entry.layout_page.size()),
+                    entry.layout_page.data(), static_cast<unsigned long>(constructor_address),
+                    static_cast<unsigned long>(entry.object_size));
+                return &screen;
             }
         }
         if (recovered == nullptr) {
@@ -2976,7 +3199,16 @@ bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
             false);
     }();
     screen.enter_virtual = register_virtual;
-    register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    if (register_virtual == 0x0054ED00u) {
+        // Goal 5 chain 646: slot 2Ch's register virtual (kHudScreenLayouts) is
+        // 0054ED00, `JMP 004F71D0` (bsp.py ghidra disasm 0054ed00): the base
+        // store is the whole body.
+        bsp::oct18_tail_a::frontend_register_thunk_0054ed00(host.world.screens, *screen.flags,
+            slot);
+        host.log.implemented("FrontEndScreen::register_thunk", "0054ed00");
+    } else {
+        register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    }
     // cc15-hint2: 34h's register 0054D860 runs the base, builds its widgets,
     // and stores +4h = 1 last (0054D862), so the hints screen is wanted from
     // registration on and pumped every frame.

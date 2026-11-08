@@ -3,6 +3,7 @@
 // the simplifications it makes. Reconstructed and build-tested only.
 
 #include "bsp/cc13_seg47b.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -113,124 +114,200 @@ void plane_request_flight_state_007c1570(Seg47bHost& host, Raw plane, std::int32
 // 007C17D0, __thiscall(ECX = plane), RET 0, SEH frame. Only when byte +904h
 // is set: cur = +900h; return when cur == 2 in session mode 2. Mode != 2: the
 // C3h message (cur, 4). Mode 2: 007C1430(plane, 4) when cur is 7/6/4/5.
-void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane) {
-    if (plane.at<std::uint8_t>(0x904) == 0) return;
-    const std::int32_t cur = plane.at<std::int32_t>(0x900);
-    const bool client = session_is_client(host);
-    if (cur == 2 && client) return;
-    if (!client) {
-        send_flight_state_message(host, plane, static_cast<std::uint8_t>(cur), 4);
+void plane_notify_takeoff_start_007c17d0(bool landed_904, std::int32_t state_900,
+                                         bool session_is_client, PlaneTakeoffStartNotifyHost& host) {
+    if (!landed_904) return;                                   // 007C17F3
+    const std::int32_t cur = state_900;
+    const bool client = session_is_client;
+    if (cur == 2 && client) return;                            // 007C180C / 007C1814
+    if (!client) {                                             // 007C1820
+        host.send_flight_state_c3(static_cast<std::uint8_t>(cur), 4);
         return;
     }
-    if (state_in_7645(cur)) host.plane_set_flight_state_007c1430(plane, 4);
+    if (state_in_7645(cur)) host.set_flight_state_007c1430(4); // 007C187F..007C1897
+}
+
+void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane) {
+    struct RawExits final : PlaneTakeoffStartNotifyHost {
+        Seg47bHost& host;
+        Raw plane;
+        RawExits(Seg47bHost& h, Raw p) : host(h), plane(p) {}
+        void send_flight_state_c3(std::uint8_t current, std::uint8_t requested) override {
+            send_flight_state_message(host, plane, current, requested);
+        }
+        void set_flight_state_007c1430(std::int32_t state) override {
+            host.plane_set_flight_state_007c1430(plane, state);
+        }
+    } exits(host, plane);
+    plane_notify_takeoff_start_007c17d0(plane.at<std::uint8_t>(0x904) != 0,
+                                        plane.at<std::int32_t>(0x900), session_is_client(host),
+                                        exits);
 }
 
 // 007C18B0, __thiscall(ECX = plane; float dt), RET 4: the attitude angles and
 // their rates from the pose matrix +CCh and the velocities.
 // Old heading +C6Ch, pitch +C64h and bank +C68h are read first, then the pose
-// refresh. f = matrix row 2 (+ECh..+F4h): h = (float)sqrt((float)(fx*fx) +
-// (float)(fz*fz)) (no zero test); +C64h = (float)atan2(fy, h).
-// v = 004F9B30(&local; row 2, 00F8758C); s = (float)((v0*v0 + v1*v1) + v2*v2);
-// when s > 1e-10 (double 00CE3820) and L = (float)sqrt(s) > 0.001f (00D7A23C,
-// COMISS/JBE): 0085E4D0(&M, +CCh; v0/L, v1/L, v2/L, new pitch) (the quotients
-// rounded to float); +C6Ch = (float)atan2(M[28h], M[20h]); M = M * rotY(that
-// heading) (00B646E0 on a copy, 004134F0, 00413920, 004134F0; the image
-// negates the heading twice before 00B646E0, a no-op); +C68h =
-// (float)atan2(M[18h], M[14h]); +C6Ch = 00438B10(1.5707964f (00CE3C64),
-// heading); with dt > 0, d = 00438B10(new +C6Ch, old heading) and +C70h =
-// (float)(d / dt) only when 0.5f (00CE3800) > |d|. With dt > 0 (also when the
+// refresh. f = matrix row 2 (+ECh..+F4h): h = sqrt(fx*fx + fz*fz) (00BF7030,
+// no zero test); +C64h = (float)atan2(fy, h).
+// v = 004F9B30(&local; row 2, 00F8758C); s = (v1*v1 + v0*v0) + v2*v2; when s >
+// 1e-10 (double 00CE3820) and L = sqrt(s) > 0.001f (00D7A23C, COMISS/JBE):
+// 0085E4D0(&M, +CCh; v0/L, v1/L, v2/L, new pitch); +C6Ch = (float)atan2(M[28h],
+// M[20h]); M = M * rotY(that heading) (00B646E0 on a copy, 004134F0, 00413920,
+// 004134F0; the image negates the heading twice before 00B646E0, a no-op);
+// +C68h = (float)atan2(M[18h], M[14h]); +C6Ch = 00438B10(1.5707964f
+// (00CE3C64), heading); with dt > 0, d = 00438B10(new +C6Ch, old heading) and
+// +C70h = d / dt only when 0.5f (00CE3800) > |d|. With dt > 0 (also when the
 // heading block was skipped): +C74h = 00438B10(+C64h, old pitch) / dt, +C78h =
 // 00438B10(+C68h, old bank) / dt.
-// Velocities: S = (float)((vy^2 + vx^2) + vz^2) of +AC8h..+AD0h, speed =
-// S > 1e-10 ? (float)sqrt(S) : 0; when speed > 0.1 (double 00D7A3A0):
-// +C7Ch = (float)atan2(vy, |(vx, vz)|) and +C84h = (float)atan2(+AE4h,
-// |(+AE0h, +AE8h)|), each length with the same 1e-10 test. With dt > 0:
-// +C80h = 00438B10(+C7Ch, old +C7Ch) / dt and +C88h = 00438B10(+C84h,
-// old +C84h) / dt (the old values read before the velocity block).
-// Simplifications: x87 sums of squares are formed in double (the float
-// products are exact; the sums may round differently from 80-bit); CRT
-// atan2 / sqrt are std:: on doubles of the stored floats (the image passes
-// the CRT the unrounded 80-bit atan2 inputs only where they are float loads,
-// so this matches); 00438B10 is bsp::wrapped_angle_subtract_00438b10.
-void plane_update_pose_derived_state_007c18b0(Seg47bHost& host, Raw plane, float dt) {
-    const float old_heading = plane.at<float>(0xC6C);
-    const float old_pitch = plane.at<float>(0xC64);
-    const float old_bank = plane.at<float>(0xC68);
-    refresh_pose(host, plane);
-    const float fx = plane.at<float>(0xCC + 0x20);
-    const float fz = plane.at<float>(0xCC + 0x28);
-    const float h = static_cast<float>(std::sqrt(static_cast<double>(fx * fx + fz * fz)));
-    const float fy = plane.at<float>(0xCC + 0x24);
-    const float pitch = static_cast<float>(std::atan2(static_cast<double>(fy), static_cast<double>(h)));
-    plane.at<float>(0xC64) = pitch;
+// Velocities: S = (vy^2 + vx^2) + vz^2 of +AC8h..+AD0h, speed = S > 1e-10 ?
+// sqrt(S) : 0; when speed > 0.1 (double 00D7A3A0): +C7Ch = (float)atan2(vy,
+// |(vx, vz)|) (the stored squares vx^2 + vz^2) and +C84h = (float)atan2(+AE4h,
+// |(+AE0h, +AE8h)|), each length with the same 1e-10 test. With dt > 0: +C80h
+// = 00438B10(+C7Ch, old +C7Ch) / dt and +C88h = 00438B10(+C84h, old +C84h) / dt
+// (the old values read before the velocity block).
+// Precision (goal 5 chain 657): the main thread runs the x87 at PC24, so every
+// FMUL/FADD/FDIV and the CRT sqrt 00BF7030 (FSQRT) round to a 24-bit
+// significand. The sums of squares round per op through cc13x87 (007C190A..
+// 007C192A, 007C1989..007C19A5, 007C1BCD..007C1C0B with the squares stored as
+// doubles of the rounded products at 007C1BEF / 007C1BFD, 007C1C5F, 007C1CAE..
+// 007C1CBC); the old body formed them in double. A single op on two floats
+// (the quotients v/L, d/dt) rounds once either way. The CRT atan2 00BF701A runs
+// FPATAN at extended precision whatever the control word, so it is std::atan2
+// on the stored floats, rounded to float as the FSTP does. 00438B10 is
+// bsp::wrapped_angle_subtract_00438b10.
+void plane_update_pose_derived_state_007c18b0(PlanePoseDerivedStateHost& host, float dt) {
+    namespace x8 = cc13x87;
+    const float old_heading = host.plane_float(0xC6C);
+    const float old_pitch = host.plane_float(0xC64);
+    const float old_bank = host.plane_float(0xC68);
+    host.refresh_pose_if_stale_00414db0();                               // 007C18BA-007C18EE
+    const float* const pose = host.pose_cc();
+    const float fx = pose[8];
+    const float fz = pose[10];
+    const float hs = static_cast<float>(x8::x87_add24(x8::x87_mul24(fx, fx), x8::x87_mul24(fz, fz)));  // 007C190A-007C192A
+    const float h = static_cast<float>(x8::x87_sqrt24(hs));               // 007C1932
+    const float fy = pose[9];
+    const float pitch = static_cast<float>(std::atan2(static_cast<double>(fy), static_cast<double>(h)));  // 007C1952
+    host.plane_float(0xC64) = pitch;                                     // 007C1966
     float v_storage[3];
-    const float* const vp = host.vector3_cross_004f9b30(
-        v_storage, &plane.at<float>(0xCC + 0x20), static_cast<const float*>(host.global_address(0x00F8758Cu)));
+    const float* const vp = host.vector3_cross_004f9b30(v_storage, pose + 8, host.up_vector_00f8758c());  // 007C1970
     const float v[3] = {vp[0], vp[1], vp[2]};
-    const float s = static_cast<float>(static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1] +
-                                       static_cast<double>(v[2]) * v[2]);
-    bool heading_block = false;
-    if (static_cast<double>(s) > 1e-10) {
-        const float length = static_cast<float>(std::sqrt(static_cast<double>(s)));
-        if (length > 0.001f) heading_block = true;
-        if (heading_block) {
-            alignas(4) std::uint8_t m[0x40];
-            host.matrix_rotate_by_angular_velocity_0085e4d0(m, plane.field(0xCC), v[0] / length, v[1] / length,
-                                                            v[2] / length, pitch);
-            const Raw mr{m};
+    const float s = static_cast<float>(x8::x87_add24(
+        x8::x87_add24(x8::x87_mul24(v[1], v[1]), x8::x87_mul24(v[0], v[0])),
+        x8::x87_mul24(v[2], v[2])));                                     // 007C1989-007C19A5
+    bool rates = true;
+    if (static_cast<double>(s) > 1e-10) {                                // 007C19A9-007C19B7
+        const float length = static_cast<float>(x8::x87_sqrt24(s));      // 007C19BD
+        if (length > 0.001f) {                                           // 007C19D4
+            // Zero-filled: 0085E4D0 writes it whenever the axis is a unit vector,
+            // which v / L is.
+            float m[16] = {};
+            host.matrix_rotate_by_angular_velocity_0085e4d0(m, pose, v[0] / length, v[1] / length,
+                                                            v[2] / length, pitch);  // 007C19FE-007C1A14
             float heading = static_cast<float>(
-                std::atan2(static_cast<double>(mr.at<float>(0x28)), static_cast<double>(mr.at<float>(0x20))));
-            plane.at<float>(0xC6C) = heading;
-            alignas(4) std::uint8_t rotation[0x40];
-            alignas(4) std::uint8_t copy[0x40];
-            alignas(4) std::uint8_t product[0x40];
-            void* const built = host.matrix_build_rotation_y_00b646e0(rotation, &heading);
-            host.matrix_assign_004134f0(Raw{copy}, built);
-            void* const multiplied = host.matrix_multiply_00413920(mr, product, copy);
-            host.matrix_assign_004134f0(mr, multiplied);
-            plane.at<float>(0xC68) = static_cast<float>(
-                std::atan2(static_cast<double>(mr.at<float>(0x18)), static_cast<double>(mr.at<float>(0x14))));
-            const float heading2 = bsp::wrapped_angle_subtract_00438b10(1.5707963705062866f, plane.at<float>(0xC6C));
-            plane.at<float>(0xC6C) = heading2;
-            if (!(dt > 0.0f)) goto velocity_block;
-            const float d = bsp::wrapped_angle_subtract_00438b10(heading2, old_heading);
-            if (0.5f > std::fabs(d)) plane.at<float>(0xC70) = d / dt;
+                std::atan2(static_cast<double>(m[10]), static_cast<double>(m[8])));  // 007C1A21
+            host.plane_float(0xC6C) = heading;                           // 007C1A32
+            float rotation[16];
+            float copy[16];
+            float product[16];
+            const float* const built = host.matrix_build_rotation_y_00b646e0(rotation, &heading);  // 007C1A47
+            host.matrix_assign_004134f0(copy, built);                    // 007C1A54
+            const float* const multiplied = host.matrix_multiply_00413920(m, product, copy);  // 007C1A6D
+            host.matrix_assign_004134f0(m, multiplied);                  // 007C1A77
+            host.plane_float(0xC68) = static_cast<float>(
+                std::atan2(static_cast<double>(m[6]), static_cast<double>(m[5])));  // 007C1A84-007C1A94
+            const float heading2 =
+                wrapped_angle_subtract_00438b10(1.5707963705062866f, host.plane_float(0xC6C));  // 007C1AAD
+            host.plane_float(0xC6C) = heading2;                          // 007C1ACA
+            if (!(dt > 0.0f)) {
+                rates = false;                                           // 007C1AD0 JBE 007C1B83
+            } else {
+                const float d = wrapped_angle_subtract_00438b10(heading2, old_heading);  // 007C1AE4
+                if (0.5f > std::fabs(d)) host.plane_float(0xC70) = d / dt;  // 007C1B0B-007C1B19
+            }
         }
     }
-    if (dt > 0.0f) {
-        plane.at<float>(0xC74) = bsp::wrapped_angle_subtract_00438b10(plane.at<float>(0xC64), old_pitch) / dt;
-        plane.at<float>(0xC78) = bsp::wrapped_angle_subtract_00438b10(plane.at<float>(0xC68), old_bank) / dt;
+    if (rates && dt > 0.0f) {                                            // 007C1B23-007C1B33
+        host.plane_float(0xC74) =
+            wrapped_angle_subtract_00438b10(host.plane_float(0xC64), old_pitch) / dt;  // 007C1B49-007C1B58
+        host.plane_float(0xC78) =
+            wrapped_angle_subtract_00438b10(host.plane_float(0xC68), old_bank) / dt;   // 007C1B6F-007C1B7B
     }
-velocity_block : {
-    const float old_track = plane.at<float>(0xC7C);
-    const float old_aoa = plane.at<float>(0xC84);
-    const float vx = plane.at<float>(0xAC8);
-    const float vy = plane.at<float>(0xACC);
-    const float vz = plane.at<float>(0xAD0);
-    const double vx2 = static_cast<double>(vx) * vx;
-    const double vz2 = static_cast<double>(vz) * vz;
-    const float sum = static_cast<float>(static_cast<double>(vy) * vy + vx2 + vz2);
+    // 007C1B85..007C1D69.
+    const float old_track = host.plane_float(0xC7C);
+    const float old_aoa = host.plane_float(0xC84);
+    const float vx = host.plane_float(0xAC8);
+    const float vy = host.plane_float(0xACC);
+    const float vz = host.plane_float(0xAD0);
+    const double vx2 = x8::x87_mul24(vx, vx);                            // 007C1BD9, FST double 007C1BEF
+    const double vz2 = x8::x87_mul24(vz, vz);                            // 007C1BFB, FST double 007C1BFD
+    const double vy2 = x8::x87_mul24(vy, vy);                            // 007C1C03
+    const float sum = static_cast<float>(x8::x87_add24(x8::x87_add24(vy2, vx2), vz2));  // 007C1C07-007C1C0B
     float speed = 0.0f;
-    if (static_cast<double>(sum) > 1e-10) speed = static_cast<float>(std::sqrt(static_cast<double>(sum)));
-    if (static_cast<double>(speed) > 0.10000000149011612) {
-        const float hs = static_cast<float>(vx2 + vz2);
+    if (static_cast<double>(sum) > 1e-10) speed = static_cast<float>(x8::x87_sqrt24(sum));  // 007C1C23
+    if (static_cast<double>(speed) > 0.10000000149011612) {              // 007C1C4B-007C1C59
+        const float hsq = static_cast<float>(x8::x87_add24(vx2, vz2));   // 007C1C5F
         float hl = 0.0f;
-        if (static_cast<double>(hs) > 1e-10) hl = static_cast<float>(std::sqrt(static_cast<double>(hs)));
-        plane.at<float>(0xC7C) =
-            static_cast<float>(std::atan2(static_cast<double>(vy), static_cast<double>(hl)));
-        const float a = plane.at<float>(0xAE0);
-        const float b = plane.at<float>(0xAE4);
-        const float c = plane.at<float>(0xAE8);
-        const float ls = static_cast<float>(static_cast<double>(a) * a + static_cast<double>(c) * c);
+        if (static_cast<double>(hsq) > 1e-10) hl = static_cast<float>(x8::x87_sqrt24(hsq));  // 007C1C75
+        host.plane_float(0xC7C) =
+            static_cast<float>(std::atan2(static_cast<double>(vy), static_cast<double>(hl)));  // 007C1C9B
+        const float a = host.plane_float(0xAE0);
+        const float b = host.plane_float(0xAE4);
+        const float c = host.plane_float(0xAE8);
+        const float ls = static_cast<float>(x8::x87_add24(x8::x87_mul24(a, a), x8::x87_mul24(c, c)));  // 007C1CAE-007C1CBC
         float l2 = 0.0f;
-        if (static_cast<double>(ls) > 1e-10) l2 = static_cast<float>(std::sqrt(static_cast<double>(ls)));
-        plane.at<float>(0xC84) = static_cast<float>(std::atan2(static_cast<double>(b), static_cast<double>(l2)));
+        if (static_cast<double>(ls) > 1e-10) l2 = static_cast<float>(x8::x87_sqrt24(ls));  // 007C1CD2
+        host.plane_float(0xC84) =
+            static_cast<float>(std::atan2(static_cast<double>(b), static_cast<double>(l2)));  // 007C1CF8
     }
-    if (dt > 0.0f) {
-        plane.at<float>(0xC80) = bsp::wrapped_angle_subtract_00438b10(plane.at<float>(0xC7C), old_track) / dt;
-        plane.at<float>(0xC88) = bsp::wrapped_angle_subtract_00438b10(plane.at<float>(0xC84), old_aoa) / dt;
+    if (dt > 0.0f) {                                                     // 007C1D11-007C1D21
+        host.plane_float(0xC80) =
+            wrapped_angle_subtract_00438b10(host.plane_float(0xC7C), old_track) / dt;  // 007C1D37-007C1D46
+        host.plane_float(0xC88) =
+            wrapped_angle_subtract_00438b10(host.plane_float(0xC84), old_aoa) / dt;    // 007C1D5D-007C1D69
     }
 }
+
+namespace {
+
+// 007C18B0's raw entry: the typed host over the plane image and Seg47bHost.
+class RawPoseDerivedStateHost final : public PlanePoseDerivedStateHost {
+public:
+    RawPoseDerivedStateHost(Seg47bHost& host, Raw plane) : host_(host), plane_(plane) {}
+    void refresh_pose_if_stale_00414db0() override { refresh_pose(host_, plane_); }
+    const float* pose_cc() override { return &plane_.at<float>(0xCC); }
+    float& plane_float(std::uint32_t offset) override { return plane_.at<float>(offset); }
+    const float* up_vector_00f8758c() override {
+        return static_cast<const float*>(host_.global_address(0x00F8758Cu));
+    }
+    const float* vector3_cross_004f9b30(float* out, const float* a, const float* b) override {
+        return host_.vector3_cross_004f9b30(out, a, b);
+    }
+    void matrix_rotate_by_angular_velocity_0085e4d0(float* out16, const float* in16, float wx, float wy,
+                                                    float wz, float dt) override {
+        host_.matrix_rotate_by_angular_velocity_0085e4d0(out16, in16, wx, wy, wz, dt);
+    }
+    const float* matrix_build_rotation_y_00b646e0(float* out16, const float* angle) override {
+        return static_cast<const float*>(host_.matrix_build_rotation_y_00b646e0(out16, angle));
+    }
+    void matrix_assign_004134f0(float* destination16, const float* source16) override {
+        host_.matrix_assign_004134f0(Raw{reinterpret_cast<std::uint8_t*>(destination16)}, source16);
+    }
+    const float* matrix_multiply_00413920(const float* left16, float* out16, const float* right16) override {
+        return static_cast<const float*>(host_.matrix_multiply_00413920(
+            Raw{reinterpret_cast<std::uint8_t*>(const_cast<float*>(left16))}, out16, right16));
+    }
+
+private:
+    Seg47bHost& host_;
+    Raw plane_;
+};
+
+}  // namespace
+
+void plane_update_pose_derived_state_007c18b0(Seg47bHost& host, Raw plane, float dt) {
+    RawPoseDerivedStateHost typed(host, plane);
+    plane_update_pose_derived_state_007c18b0(typed, dt);
 }
 
 // 007C2090, __thiscall(ECX = plane), RET 0, SEH frame: when +900h != 2 and the

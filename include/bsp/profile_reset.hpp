@@ -2,6 +2,7 @@
 
 #include "bsp/game_settings.hpp"
 #include "bsp/profile_unlock.hpp"
+#include "bsp/scoring_bodies.hpp"
 
 #include <array>
 #include <cstdint>
@@ -48,6 +49,11 @@ struct ProfileResetState {
     UnlockNameSet seen_unlocks_88;
     std::vector<ProfileTransientRecord94> transient_records_94;
     std::vector<std::string> bonus_ac;
+    // +BCh, the 1Ch bonus records 007FC9F0 / 007FCBC0 push (007FC940) after the
+    // +ACh dedupe (Scoring_GrantBonus 008BB770, goal 5 chain 664); the profile's
+    // destructor frees them (007FB340 at 007FD917). 007FDB20 leaves the vector
+    // alone and the archive writes only +ACh ("Bonus").
+    std::vector<ScoringBonusRecord> bonus_records_bc;
     std::uint64_t content_mask_d8{};
     int japan_nose_art_e0{};
     int allied_nose_art_e4{};

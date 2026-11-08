@@ -485,7 +485,7 @@ template<class T> void put(void* p, std::size_t offset, T value) {
 void* at(void* p, std::size_t offset) {
     return static_cast<std::byte*>(p) + offset;
 }
-[[noreturn]] void invalid(Host& host) {
+[[noreturn]] void invalid(SubscriptionFilterHost& host) {
     host.invalid_iterator_00bf6713();
     throw std::logic_error("non-returning CRT provider returned");
 }
@@ -606,15 +606,20 @@ bool consume_single_peer_flag_00784cd0(void* transport, Host& host) {
 }
 // 00968470: __thiscall(subscription,parameter-vector), RET 4, EAX 0/1.
 // Keep lazy bounds checks: a rejecting earlier filter does not inspect later
-// parameters. Re-read the vector and filter pointers after each virtual call.
+// parameters. Re-read the vector after each virtual call.
+// Goal 5 chain 631 fix: the receiver of each filter call is the filter object
+// embedded at subscription+0Ch+i*10h, not the dword stored there (that dword is
+// the filter's vtable, read only to fetch slot 0): 00968491 MOV EDX,[EDI+0Ch],
+// 00968496 MOV EDX,[EDX], 00968498 LEA ECX,[EDI+0Ch], 0096849C CALL EDX; the
+// same LEA ECX,[EDI+1Ch] at 009684CC (bsp.py show 00968470 --asm).
 bool recon_subscription_matches_00968470(const void* subscription,
-                                         const void* parameters, Host& host) {
+                                         const void* parameters, SubscriptionFilterHost& host) {
     for (std::uint32_t i = 0; i != 4; ++i) {
         const auto begin = get<std::uintptr_t>(parameters, 4);
         const auto end = get<std::uintptr_t>(parameters, 8);
         if (begin == 0 || ((end - begin) >> 2) < i + 1) invalid(host);
         const auto value = get<std::uint32_t>(reinterpret_cast<void*>(begin), i * 4);
-        void* filter = get<void*>(subscription, 0xc + i * 0x10);
+        void* filter = at(const_cast<void*>(subscription), 0xc + i * 0x10);
         if (!host.filter_vslot_00(filter, value)) return false;
     }
     return true;
@@ -1692,21 +1697,63 @@ bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host) {
 } // namespace bsp::oct18_tail_b
 
 #include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/unit_fire_flooding.hpp"   // ActiveFailure, the typed 0093A3F0 view
 namespace bsp::oct18_tail_b {
 // 0093A3F0, ECX=task, RET, ST0 float. Last matching record wins; compare
-// through the canonical CRT binding. Listing is MOVSS/FLD, with no x87 math.
-float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
-    float seconds = 0.0f;
-    for (std::uint32_t index = 0;; ++index) {
-        void* begin = get<void*>(task, 0x18);
-        if (begin == nullptr || index >=
-            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16) break;
-        void* record = at(begin, index * 16);
-        const char* name = get<const char*>(record, 8);
-        if (name != nullptr && host.compare_case_insensitive_00bf7fbf(name, "EngineJam") == 0)
-            seconds = get<float>(record, 0xc);
+// through the canonical CRT binding 00BF7FBF (_stricmp) against 00CF6124
+// "EngineJam" (0093A439..0093A44E). Listing is MOVSS/FLD, with no x87 math.
+// One body over a failure-vector view: the raw entry reads the task's
+// +18h/+1Ch words (16-byte records, name text +8h, seconds +0Ch) and re-reads
+// them on every pass as 0093A404/0093A40B do; the typed entry reads the
+// ActiveFailure vector a host keeps as its copy of task+18h (the same records:
+// id +0h, name +4h/+8h, seconds +0Ch). An empty typed name stands for the
+// image's null text pointer; neither matches "EngineJam".
+namespace {
+template <class FailureView>
+float engine_jam_seconds_body(const FailureView& failures) {
+    float seconds = 0.0f;                                           // 0093A3FC
+    for (std::uint32_t index = 0; index < failures.count(); ++index) {
+        const char* name = failures.name(index);                    // 0093A42F
+        if (name != nullptr && failures.compare(name, "EngineJam") == 0)
+            seconds = failures.seconds(index);                      // 0093A450
     }
     return seconds;
+}
+
+struct RawFailureVector {
+    const void* task;
+    Host& host;
+    std::uint32_t count() const {
+        void* begin = get<void*>(task, 0x18);
+        if (begin == nullptr) return 0;
+        return static_cast<std::uint32_t>(
+            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16);
+    }
+    const void* record(std::uint32_t index) const { return at(get<void*>(task, 0x18), index * 16); }
+    const char* name(std::uint32_t index) const { return get<const char*>(record(index), 8); }
+    float seconds(std::uint32_t index) const { return get<float>(record(index), 0xc); }
+    int compare(const char* a, const char* b) const {
+        return host.compare_case_insensitive_00bf7fbf(a, b);
+    }
+};
+
+struct ActiveFailureVector {
+    const std::vector<ActiveFailure>& failures;
+    std::uint32_t count() const { return static_cast<std::uint32_t>(failures.size()); }
+    const char* name(std::uint32_t index) const { return failures[index].name.c_str(); }
+    float seconds(std::uint32_t index) const { return failures[index].seconds_remaining; }
+    static int compare(const char* a, const char* b) { return _stricmp(a, b); }
+};
+} // namespace
+
+float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
+    const RawFailureVector view{task, host};
+    return engine_jam_seconds_body(view);
+}
+
+float engine_jam_seconds_0093a3f0(const std::vector<ActiveFailure>& failures) {
+    const ActiveFailureVector view{failures};
+    return engine_jam_seconds_body(view);
 }
 // 0095C550, ECX=class id, RET. Supplied actual vector is 00F8A09C, not
 // an independent census. Keep the duplicate scan and capacity fast append.
@@ -1798,7 +1845,8 @@ void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& h
 }
 // 00968AF0 and 00968470 have identical raw filter/parameter layouts and
 // ordered short-circuit checks. Reuse the complete checked storage body.
-bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host) {
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters,
+                                         SubscriptionFilterHost& host) {
     return recon_subscription_matches_00968470(subscription, parameters, host);
 }
 } // namespace bsp::oct18_tail_b

@@ -283,6 +283,12 @@ struct GameFrontendHost::Impl {
     // Milestone 2e: the run-time 00ABAED0 sources a screen pushed into a Text
     // widget, which replace the page's authored DefaultText on the next build.
     std::map<const GuiLayoutWidget*, std::string> text_sources;
+    // Goal 5 chain 667: the +100h / +0FCh stores a screen made ahead of them.
+    std::map<const GuiLayoutWidget*, GameTextLayoutOverride> text_layouts;
+    const GameTextLayoutOverride* text_layout(const GuiLayoutWidget& widget) const {
+        const auto found = text_layouts.find(&widget);
+        return found != text_layouts.end() ? &found->second : nullptr;
+    }
     unsigned back_buffer_width{};
     unsigned back_buffer_height{};
     bool quads_built{false};
@@ -1148,7 +1154,7 @@ void GameFrontendHost::Impl::append_text_quads(GameWidgetRecord& record,
         GameTextRun run;
         const auto source = text_sources.find(&node);
         text_host->build_run(record.page, node, origin_x, origin_y, run,
-            source != text_sources.end() ? &source->second : nullptr);
+            source != text_sources.end() ? &source->second : nullptr, text_layout(node));
         cached = text_runs.emplace(&node, std::move(run)).first;
         summary.text_widgets = text_host->summary().text_widgets;
         summary.text_runs = text_host->summary().runs_built;
@@ -1442,6 +1448,12 @@ GuiLayoutWidget* GameFrontendHost::find_page_child(GuiLayoutPage& page,
     return find_child_by_name_00aa7e00(*page.root, name);
 }
 
+GuiLayoutPage* GameFrontendHost::find_page_00aa3140(std::string_view name) noexcept {
+    // The registry 00aa5840 registers every page into (Impl::load_page) is the
+    // manager's +14h vector; GuiPageRegistry::find_00aa3140 is its scan.
+    return impl_->registry.find_00aa3140(name);
+}
+
 void GameFrontendHost::commit_page_visibility(GuiLayoutPage& page, bool visible) {
     Impl& host = *impl_;
     if (!page.root) return;
@@ -1456,6 +1468,13 @@ void GameFrontendHost::set_widget_visible(GuiLayoutWidget& widget, bool visible)
     widget.visible = visible;
     host.visibility_applied.insert(&widget);
     host.quads_built = false;
+}
+
+bool GameFrontendHost::widget_own_visible(const GuiLayoutWidget& widget) const {
+    // bridge_visible's test for one node, without its walk up the parents.
+    if (impl_->visibility_applied.count(&widget) != 0) return widget.visible;
+    if (widget.source != nullptr && widget.source->find("Visible") != nullptr) return widget.visible;
+    return true;
 }
 
 void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float g, float b,
@@ -1479,6 +1498,58 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.quads_built = false;
 }
 
+const std::string* GameFrontendHost::widget_text_source(const GuiLayoutWidget& widget) const {
+    const auto found = impl_->text_sources.find(const_cast<GuiLayoutWidget*>(&widget));
+    return found != impl_->text_sources.end() ? &found->second : nullptr;
+}
+
+void GameFrontendHost::set_widget_text_align(GuiLayoutWidget& widget, GuiTextAlign align) {
+    if (widget.type != GuiWidgetType::Text)
+        throw std::logic_error("Text +100h stored on a widget that is not a Text");
+    Impl& host = *impl_;
+    // An unchanged store leaves the cached run, which was built with it.
+    std::optional<GuiTextAlign>& stored = host.text_layouts[&widget].align;
+    if (stored == align) return;
+    stored = align;
+    host.text_runs.erase(&widget);
+    host.quads_built = false;
+}
+
+void GameFrontendHost::set_widget_text_multiline(GuiLayoutWidget& widget, bool multiline) {
+    if (widget.type != GuiWidgetType::Text)
+        throw std::logic_error("Text +0FCh stored on a widget that is not a Text");
+    Impl& host = *impl_;
+    std::optional<bool>& stored = host.text_layouts[&widget].multiline;
+    if (stored == multiline) return;
+    stored = multiline;
+    host.text_runs.erase(&widget);
+    host.quads_built = false;
+}
+
+bool GameFrontendHost::widget_text_width(GuiLayoutWidget& widget, float& width) {
+    // The run widget_text_height builds or finds; measured_width is the layout's
+    // own result (src/game_hosts_text.cpp, from 00ABA270 / 00AB9FD0).
+    float height = 0.0f;
+    static_cast<void>(widget_text_height(widget, height));
+    const auto cached = impl_->text_runs.find(&widget);
+    if (cached == impl_->text_runs.end()) return false;
+    width = cached->second.measured_width;
+    return true;
+}
+
+void GameFrontendHost::set_widget_size(GuiLayoutWidget& widget, float width, float height) {
+    widget.transform.size.width = width;   // 00AA7974..00AA797C, FLD/FSTP float
+    widget.transform.size.height = height;
+    if (widget.type == GuiWidgetType::Text) impl_->text_runs.erase(&widget);  // 00ABBF3F 00ABB1D0
+    refresh_widget_geometry(widget);       // 00AA797F 00AA7220
+}
+
+void GameFrontendHost::set_widget_scale(GuiLayoutWidget& widget, float x, float y) {
+    widget.transform.scale_x = x;          // 00AA7950
+    widget.transform.scale_y = y;
+    refresh_widget_geometry(widget);
+}
+
 bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height) {
     Impl& host = *impl_;
     if (!host.text_host || widget.type != GuiWidgetType::Text) return false;
@@ -1496,7 +1567,8 @@ bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height
         host.text_host->build_run(host.widget_records[index].page, widget,
             position.x - transform.pivot_x * transform.size.width,
             position.y - transform.pivot_y * transform.size.height, run,
-            source != host.text_sources.end() ? &source->second : nullptr);
+            source != host.text_sources.end() ? &source->second : nullptr,
+            host.text_layout(widget));
         cached = host.text_runs.emplace(&widget, std::move(run)).first;
         host.summary.text_widgets = host.text_host->summary().text_widgets;
         host.summary.text_runs = host.text_host->summary().runs_built;
@@ -1673,7 +1745,108 @@ void show_runtime_subtree(GameFrontendHost::Impl& host, GuiLayoutWidget& widget)
     }
 }
 
+// clone_widget_tree keeps the child order, so the two trees walk in step.
+void mirror_applied_visibility(GameFrontendHost::Impl& host, const GuiLayoutWidget& source,
+    const GuiLayoutWidget& clone) {
+    if (host.visibility_applied.count(&source) != 0) host.visibility_applied.insert(&clone);
+    std::size_t c = 0;
+    for (const auto& child : source.children) {
+        if (!child) continue;
+        if (c >= clone.children.size()) break;
+        mirror_applied_visibility(host, *child, *clone.children[c]);
+        ++c;
+    }
+}
+
+// 00AAB4C0's per-widget 00AA6560 builds each copy with its own scene node
+// (00AA6640: 00B74EB0 + 00B75030), which this process does not allocate. The
+// copies take the loader's diagnostic node ids instead, never zero, so a later
+// 00AA7E00 finds them by name as it finds the page's own widgets.
+void assign_clone_nodes(GameFrontendHost::Impl& host, GuiLayoutWidget& widget) {
+    host.log.unimplemented("GuiLayoutHost::allocate_model_slot", "00b74eb0");
+    host.log.unimplemented("GuiLayoutHost::create_widget_node", "00b75030");
+    widget.node_id = static_cast<std::uint32_t>(++host.node_counter);
+    for (const auto& child : widget.children) {
+        if (child) assign_clone_nodes(host, *child);
+    }
+}
+
 }  // namespace
+
+GuiLayoutWidget* GameFrontendHost::clone_page_widget_subtree(const std::string& page,
+    const GuiLayoutWidget& source) {
+    Impl& host = *impl_;
+    // 00AAB4C0 with a null parent_clone attaches the copy under the source's +70h
+    // (bsp.py show 00aab4c0, src/cc13_gui1.cpp); a parentless source would leave
+    // the copy detached, which no caller of this binding has.
+    if (source.parent == nullptr)
+        throw std::logic_error("00AAB4C0 clone of a widget with no parent");
+    GuiLayoutWidget& parent = *source.parent;
+    std::unique_ptr<GuiLayoutWidget> clone = clone_widget_tree(source, source.key);
+    clone->parent = &parent;
+    clone->transform.parent = &parent.transform;
+    GuiLayoutWidget* borrowed = clone.get();
+    parent.children.push_back(std::move(clone));
+    assign_clone_nodes(host, *borrowed);
+    mirror_applied_visibility(host, source, *borrowed);
+    host.record_widgets(page, *borrowed, 0, parent.key, true);
+    host.quads_built = false;
+    return borrowed;
+}
+
+void GameFrontendHost::destroy_runtime_widget(GuiLayoutWidget& widget) {
+    Impl& host = *impl_;
+    GuiLayoutWidget* const parent = widget.parent;
+    if (parent == nullptr)
+        throw std::logic_error("widget +4h(1) on a run-time widget with no parent");
+    const auto owned = std::find_if(parent->children.begin(), parent->children.end(),
+        [&widget](const auto& child) { return child.get() == &widget; });
+    if (owned == parent->children.end())
+        throw std::logic_error("widget +4h(1) on a widget its parent does not own");
+    std::set<const GuiLayoutWidget*> subtree;
+    std::vector<const GuiLayoutWidget*> walk{&widget};
+    while (!walk.empty()) {
+        const GuiLayoutWidget* const w = walk.back();
+        walk.pop_back();
+        subtree.insert(w);
+        for (const auto& child : w->children) {
+            if (child) walk.push_back(child.get());
+        }
+    }
+    // Every bridge row of the subtree must be a run-time clone's (record_widgets
+    // marks clone_page_widget_subtree's rows), checked before anything moves.
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        if (subtree.count(host.widget_nodes[i]) != 0 && !host.widget_records[i].runtime)
+            throw std::logic_error("widget +4h(1) on a page's authored widget");
+    }
+    std::vector<GameWidgetRecord> records;
+    std::vector<const GuiLayoutWidget*> nodes;
+    records.reserve(host.widget_records.size());
+    nodes.reserve(host.widget_nodes.size());
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        if (subtree.count(host.widget_nodes[i]) != 0) continue;
+        records.push_back(std::move(host.widget_records[i]));
+        nodes.push_back(host.widget_nodes[i]);
+    }
+    host.widget_records = std::move(records);
+    host.widget_nodes = std::move(nodes);
+    for (const GuiLayoutWidget* const w : subtree) {
+        host.digit_uvs.erase(w);
+        host.published_rotations.erase(w);
+        host.text_runs.erase(w);
+        host.text_sources.erase(w);
+        host.text_layouts.erase(w);
+        host.visibility_applied.erase(w);
+        host.published_local_z.erase(&w->transform);
+    }
+    // 00AA9730's detach (the 00AA83A0 list edit, src/gui_widget_detach.cpp): the
+    // parent drops the child, whose sole owner then frees the subtree.
+    auto& transforms = parent->transform.children;
+    transforms.erase(std::remove(transforms.begin(), transforms.end(), &widget.transform),
+        transforms.end());
+    parent->children.erase(owned);
+    host.quads_built = false;
+}
 
 GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,
     const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key) {

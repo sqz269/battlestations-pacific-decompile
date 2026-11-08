@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <cctype>
 #include <iterator>
+#include <stdexcept>
 
 namespace bsp::game {
 namespace {
@@ -328,6 +329,30 @@ void GameHintTracker::profile_mark_seen_cc15_007fae20(const std::string& name) {
     log_.notef("hint profile seen += %s t=%.2f (in memory only)", name.c_str(), mission_seconds());
 }
 
+// 007FAE60 ADD ECX,8 / JMP 005FE8B0: the profile's list (+08h) loses every
+// entry equal to the name, case-insensitively, as in the removal half of
+// 007FAE20 above. Reached from 00690C30 (Lua RemoveStoredHint). In memory only.
+void GameHintTracker::profile_unmark_007fae60(const std::string& name) {
+    std::vector<std::string>& seen = profile_.profile().string_list_08;
+    seen.erase(std::remove_if(seen.begin(), seen.end(),
+                   [&name](const std::string& entry) { return equals_ci(entry, name); }),
+               seen.end());
+    log_.notef("hint profile seen -= %s t=%.2f (in memory only)", name.c_str(), mission_seconds());
+}
+
+// 00690C30's [00E188D8] test (00690C42) and its (+170h)->vtable[0]() read
+// (00690C4B..00690C55), through the mission frame's queries; without a frame
+// there is no controlled unit, so [00E188D8] reads null.
+bool GameHintTracker::player_unit_present_e188d8() {
+    return frame_ != nullptr && frame_->controlled_unit_present_e188d8();
+}
+
+std::int32_t GameHintTracker::player_unit_class_170() {
+    if (frame_ == nullptr || !frame_->controlled_unit_present_e188d8())
+        throw std::logic_error("00690C4D read the class of an absent controlled unit");
+    return frame_->controlled_type_170();
+}
+
 std::int32_t GameHintTracker::hints_setting_00f8898c() {
     // SUBSTITUTION (labelled) without a mission frame: 008D41C0's default 2.
     return frame_ != nullptr ? frame_->hints_setting_00f8898c() : 2;
@@ -493,10 +518,8 @@ void GameHintTracker::update_unit_class_00692b60() {
         return;
     }
     // 00692DD0..00692E0F: a blocking (critical) active hint holds the class.
-    if (!state_.active_60.empty()) {
-        const HintDefinition* active = find_definition_0068e450(state_.active_60);  // 00690B00
-        if (active != nullptr && active->critical) return;
-    }
+    // 00692DF8 00449AF0 (+60h != ""), then 00692E04 CALL 00690B00(+60h).
+    if (!state_.active_60.empty() && hint_blocking_00690b00(state_.active_60)) return;
     last_unit_class_18_ = q.controlled_type_170();   // 00692E1A
     UnitClassHintInputs in{};
     in.class_id = last_unit_class_18_;

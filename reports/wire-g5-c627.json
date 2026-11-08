@@ -1,0 +1,24 @@
+{
+  "goal": 5,
+  "chain": 627,
+  "slot": "g5-w5",
+  "picked": "mission Lua listener channels: hpEvent and ammoType dispatch, plus a narrow SubscriptionMatchHost for the seg64 subscription matchers",
+  "rows": [
+    {"native": "009690b0", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_hp_event_listeners"},
+    {"native": "00968c50", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_ammo_type_listeners"},
+    {"native": "00986b00", "status": "skipped", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_hp_event_listeners", "reason": "body walks the native warning manager's channel map ([00F8A0C4]+F8h) the host does not keep; the host dispatcher substitutes for it and calls its matcher 009690B0"},
+    {"native": "00984ba0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_ammo_type_listeners", "reason": "Seg62Host body runs on the native manager's channel map and lock; the host dispatcher substitutes for it and calls its matcher 00968C50"},
+    {"native": "00968940", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds", "reason": "fire channel: producer is live but no shipped mission script subscribes to fire, so a dispatcher would be dead for shipped content; matcher now callable through SubscriptionMatchHost"},
+    {"native": "009688c0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds", "reason": "leak channel: producer is live but no shipped mission script subscribes to leak; matcher now callable through SubscriptionMatchHost"},
+    {"native": "00968810", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp FailureBinding::warning_fire_failure", "reason": "failure channel: producer roll_component_failure_0093bed0 is live but no shipped mission script subscribes to failure; matcher now callable through SubscriptionMatchHost"},
+    {"native": "009689c0", "status": "skipped", "host_site": "src/game_hosts_hud.cpp (ship screen)", "reason": "repair channel (JM03, USN02 use it): producer 0064A270 BSP_RepairTask_SetRepairPriority is HUD ship-screen code with no host hook yet; matcher ready through SubscriptionMatchHost"},
+    {"native": "00968d80", "status": "skipped", "host_site": "src/gui_type_dispatch.cpp visibility_hook_00f8bf4c", "reason": "gui channel (16 campaign files): producer is the GUI layer visibility hook [00F8BF4C], whose service interface no host implements; the host's in-game screens need a visibility hook first"},
+    {"native": "00986820", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp (LandingShip finish)", "reason": "shipLanded (JM11, JM13, USN07): producer 0074AD90 lives in the ship AI host, not taken this turn; needs a ShipLandedSubscription matcher call (1-key shape)"},
+    {"native": "007b95e0", "status": "skipped", "host_site": "include/bsp/game_hosts_units_internal.hpp plane_is_leader_with_wingmen_007b95e0", "reason": "host test uses the live leader slot; the body tests +9D8h, which 007ED260 re-indexes but member_spawn_index keeps as the stamp, so the inputs disagree after a compaction"},
+    {"native": "007c1de0", "status": "skipped", "host_site": "src/game_hosts_hud.cpp HudRootRowsBinding::weapon_count", "reason": "reached only behind panel_byte(6Ch, BDh), which this host always answers false (no slot-3Fh screen object): a dead arm"},
+    {"native": "0085d770", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::vehicle_avoidance_007df4f0", "reason": "only the velocity-frame branch calls it, and unit+B04h has no writer, so the inverse-pose frame is always taken"},
+    {"native": "00887560", "status": "skipped", "host_site": "src/game_hosts_ready.cpp", "reason": "deferred named Lua call; reached only from a frame job thread, which the host does not run"},
+    {"native": "00437c70", "status": "skipped", "host_site": "src/game_hosts_mission.cpp write_checkpoint", "reason": "needs the BSP_Chk_Save owner and 007F8D60 checkpoint_differs; also writes the player's profile file"},
+    {"native": "008fe740", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp (gun_bot_slots_for_subtype_0072c6a0)", "reason": "GunBot class constructors build native bot objects; the host keeps semantic gun-bot classes and ticks"}
+  ]
+}

@@ -1,5 +1,6 @@
 #include "bsp/terrain_particles_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
 #include "bsp/terrain_render.hpp"
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_multiply.hpp"
@@ -656,9 +657,22 @@ std::int32_t* height_field_world_to_cell_00ada810(void* field, std::int32_t out[
 float height_field_height_at_world_00ada990(void* field, float x, float z, HeightFieldHost& host) {
     const double inv = f(1.0 / rd<float>(field, 0x1C));
     void* node = fresh_node(field, host);
-    const float u = f(((static_cast<double>(x) - rd<float>(node, 0x120)) - rd<float>(field, 0x80)) * inv);
-    node = fresh_node(field, host);
-    const float v = f(((static_cast<double>(z) - rd<float>(node, 0x128)) - rd<float>(field, 0x84)) * inv);
+    float u, v;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // Main thread (chain 640, the plane tick's 0087FC60): 00ADA9B6 FSUB node+120h,
+        // 00ADA9C3 FSUB +80h, 00ADA9C9 FMUL, each rounded at PC24; v at
+        // 00ADA9E0..00ADA9F4 the same.
+        namespace x8 = cc13x87;
+        u = f(x8::x87_mul24(x8::x87_sub24(x8::x87_sub24(x, rd<float>(node, 0x120)),
+            rd<float>(field, 0x80)), inv));
+        node = fresh_node(field, host);
+        v = f(x8::x87_mul24(x8::x87_sub24(x8::x87_sub24(z, rd<float>(node, 0x128)),
+            rd<float>(field, 0x84)), inv));
+    } else {
+        u = f(((static_cast<double>(x) - rd<float>(node, 0x120)) - rd<float>(field, 0x80)) * inv);
+        node = fresh_node(field, host);
+        v = f(((static_cast<double>(z) - rd<float>(node, 0x128)) - rd<float>(field, 0x84)) * inv);
+    }
     const double bilinear = host.slot50_sample_bilinear(field, u, v);
     return f(host.slot48_grid_height(field, u, v) + bilinear);
 }
@@ -704,7 +718,14 @@ float height_field_sample_at_00adb550(void* field, std::int32_t i, std::int32_t 
     const void* tile = rd<void* const*>(field, 0x40)[rd<std::int32_t>(field, 0x38) * tz + tx];
     if (tile == nullptr) return 0.0f;
     const std::uint8_t b = block_byte_layer_sample_00adb1d0(tile_block_00adea70(tile), lx, lz);
-    return f(static_cast<double>(b) / 255.0 * 60.0);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // Goal 5 chain 640 runs this on the main thread (terrain slot 2Ch from the
+        // plane tick 007CE44A): FILD, FDIV double [00CE4B48] 255.0, FMUL double
+        // [00CE3D68] 60.0, each rounded at PC24, then FSTP float.
+        return f(cc13x87::x87_mul24(cc13x87::x87_div24(static_cast<double>(b), 255.0), 60.0));
+    } else {
+        return f(static_cast<double>(b) / 255.0 * 60.0);
+    }
 }
 
 float height_field_sample_bilinear_00adb620(void* field, float u, float v, HeightFieldHost& host) {
@@ -715,10 +736,21 @@ float height_field_sample_bilinear_00adb620(void* field, float u, float v, Heigh
     const float h01 = host.slot4c_sample(field, i, j + 1);
     const float h10 = host.slot4c_sample(field, i + 1, j);
     const float h00 = host.slot4c_sample(field, i, j);
-    const float a = f(h00 + (static_cast<double>(h10) - h00) * fu);
-    const float b = f(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
-    const float fv = f(static_cast<double>(v) - j);
-    return f(a + (static_cast<double>(b) - a) * fv);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // Main thread (chain 640): 00ADB699 FSUBP, 00ADB6A2 FMULP, 00ADB6A6 FADDP ->
+        // 00ADB6A8 FSTP; the same three for b (00ADB6B6..00ADB6BE) and the last lerp
+        // from 00ADB6CC; each op rounded at PC24.
+        namespace x8 = cc13x87;
+        const float a = f(x8::x87_add24(h00, x8::x87_mul24(x8::x87_sub24(h10, h00), fu)));
+        const float b = f(x8::x87_add24(h01, x8::x87_mul24(fu, x8::x87_sub24(h11, h01))));
+        const float fv = f(static_cast<double>(v) - j);
+        return f(x8::x87_add24(a, x8::x87_mul24(x8::x87_sub24(b, a), fv)));
+    } else {
+        const float a = f(h00 + (static_cast<double>(h10) - h00) * fu);
+        const float b = f(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+        const float fv = f(static_cast<double>(v) - j);
+        return f(a + (static_cast<double>(b) - a) * fv);
+    }
 }
 
 void tile_grid_load_tile_from_node_00adbc90(void* field, void* node, HeightFieldHost& host) {

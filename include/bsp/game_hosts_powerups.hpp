@@ -180,6 +180,34 @@ struct HudPowerupEntries {
 void collect_hud_powerups(HudPowerupEntries& entries);
 // 00689940's 008ED9C0 query uses the current local slot's actual inventory.
 bool local_player_has_usable_powerup();
+
+// --- the AI party brain's power-up pass, 00A179E0 ---------------------------
+
+// What 008E35F0's unit-kind mask arms ask of the unit, in its order (bsp.py show
+// 008e35f0): vtable+5Ch with 8, 6 and 18h, then 009FE0B0.
+class PowerupUnitKindQuery {
+public:
+    virtual ~PowerupUnitKindQuery() = default;
+    virtual bool is_kind_of_5c(int kind) const = 0;
+    virtual bool static_installation_009fe0b0() const = 0;
+};
+
+// 008E35F0 __fastcall(ECX = unit, EDX = class) -> AL. `unit_present` is
+// ECX != 0; `kinds` answers the mask arms for that unit. With no `kinds` the
+// mask arms throw: 008ED4B0's passive uses never reach them.
+bool class_scope_accepts_unit_008e35f0(const PowerupClassConfig& cls, bool unit_present,
+    const PowerupUnitKindQuery* kinds = nullptr);
+
+// 00A17A2F's 008EA0C0(brain+20h, &vector) on [00F88C30]: the slot's ready items
+// in 008EA0C0's order, each pointing at its live inventory item. Empty while no
+// manager is published.
+std::vector<const cc13_powerup::PowerupItem*> ready_items_for_slot(std::int32_t slot);
+
+// 00A180C9's 008EADA0(entry, brain+20h, target) on [00F88C30]. `item` is one of
+// the items above; `target` is the units-host index the pass chose, or none
+// (scopes 4 and 5 choose no unit); `kinds` answers 008E35F0 on that target.
+void use_ready_item_for_ai(const cc13_powerup::PowerupItem& item, std::int32_t slot,
+    std::optional<std::size_t> target, const PowerupUnitKindQuery* kinds);
 // 00649860 queries each collected live item with the current controlled unit.
 bool hud_powerup_applies_to_unit(const cc13_powerup::PowerupItem& item,
     const game::GameUnitsHost& units, std::size_t unit_index);

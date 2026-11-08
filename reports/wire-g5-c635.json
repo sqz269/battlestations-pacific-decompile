@@ -1,0 +1,104 @@
+{
+  "goal": 5,
+  "chain": 635,
+  "slot": "g5-w1",
+  "picked": "0068CC70 HUD leaf screens: 33h narrative constructor and 38h engine-movie register on native blocks",
+  "wired_before": 10057,
+  "wired_after": 10063,
+  "called_before": 5379,
+  "called_after": 5387,
+  "review_round_1": "Run 1324's finding accepted: the HUD (menu host) is deleted before the singleton drain (game_hosts.cpp 4121 < 4197; 2673 < 2691/2744/2745), not after it. GameHudHost::Impl's destructor now releases screen 33h's +A0h samples as 005B9D40 does at 005B9E11/005B9E19 (005B8FA0 resize to 0, then the 0086E770 data freed with singleton_lifetime_free, header zeroed); the wrong lifetime comment is replaced and the 005b9d40/005b8fa0 rows corrected.",
+  "rows": [
+    {
+      "native": "005ba7b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor -> construct_hud_narrative_leaf (HudLeafNarrativeBinding)"
+    },
+    {
+      "native": "005b7fa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp HudLeafNarrativeBinding::eh_vector_constructor_iterator_00bf7cd1 (005BA7B0's +8h voice slot)"
+    },
+    {
+      "native": "005b9af0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp HudLeafNarrativeBinding::effect_sound_samples_append_005b9af0 (005BA7B0's +A0h samples)"
+    },
+    {
+      "native": "005cce70",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_register (HudLeafEngineMovieRegisterBinding)"
+    },
+    {
+      "native": "005b9d40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::Impl::~Impl (release_hud_narrative_leaf_samples runs its 005B9E02..005B9E19 sample release)",
+      "reason": "The full destructor needs 007026F0 (voice slot stop), 00AA31F0 page removals of +20h/+24h/+28h, which stay unfilled while 005BB130 is generic, and 005B7840/005B7570/005B77F0, 005B7FC0 and 004F71A0. Only its sample release runs, at HUD teardown, while the sound runtime is still started."
+    },
+    {
+      "native": "005b8fa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::Impl::~Impl -> release_hud_narrative_leaf_samples (005B9D40's call at 005B9E11 on screen 33h's +A0h)"
+    },
+    {
+      "native": "005bb130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp register_screen (generic path for slot 33h)",
+      "reason": "Register stores DialogFadeTime/TempCharWait/TempWaitBase (+78h..+80h) that GameScriptOrdersHost's narrative (00733BB0/00735100) keeps its own copy of; also needs a Lua owner run of DialogGlobals.lua, the +90h message-box vector and 007026F0."
+    },
+    {
+      "native": "00525a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor",
+      "reason": "Screen 29h: the host's UnitPickScreenState (hud_warning_screen.hpp) holds the screen's +4Ch..+ECh fields, so a leaf block would split screen 29h. Its pool/sample calls follow HudLeafNarrativeBinding; it also needs 00A7ACF0/00A7B0A0 on [00F8BBD8] and 00524DC0 on an empty vector."
+    },
+    {
+      "native": "00525a10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor",
+      "reason": "Only caller is 00525A90 (screen 29h), skipped above."
+    },
+    {
+      "native": "004ba0d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_constructor",
+      "reason": "Its iterator callers are the split leaves 00525A90 (29h), 006821C0 (50h) and 0054D680 (34h)."
+    },
+    {
+      "native": "006821c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::show_alert",
+      "reason": "Screen 50h: WarningScreenState is the host's one copy; real +30h samples would make 00682800 create tracked sounds, which needs the in-game GUI sound class [00E1988C] and real sound stop/finished/release."
+    },
+    {
+      "native": "005cccb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp register_screen (generic path for slot 37h)",
+      "reason": "Screen 37h register clears +20h, which the host keeps in HudMovieScreenState (engaged); running it on the block would split screen 37h. The platform byte is now bindable as in HudLeafEngineMovieRegisterBinding."
+    },
+    {
+      "native": "005cdc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp screen_enter (slot 38h)",
+      "reason": "38h enter needs the game's camera mover (004BC410) and the movie-screen parking over the other movie screens; no game object in the menu host."
+    },
+    {
+      "native": "005cdd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp screen_exit (slot 38h)",
+      "reason": "38h exit needs the render service [00F8D39C] value 224, the cutscene player at game+38h (0045D930) and the movie-screen parking."
+    },
+    {
+      "native": "0066ea60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_register",
+      "reason": "Screen 4Eh register needs its layout virtual +14h, 00AB64C0 icon state, the mission name [[00E188A8]+5FCh]+90Ch, map bounds +711Ch and the radar-shot texture load, beyond the leaf register bindings."
+    },
+    {
+      "native": "008fafc0",
+      "status": "skipped",
+      "host_site": "game OnInitOnce (004DD5B0)",
+      "reason": "Preload needs the render device vt64 [00F8D394] for 84 textures, 007188A0 for 60 models and the 00BE0A30 file block, besides its nine samples."
+    }
+  ]
+}

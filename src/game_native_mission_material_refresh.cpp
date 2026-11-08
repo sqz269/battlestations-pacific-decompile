@@ -7,7 +7,6 @@
 #include "bsp/native_material_texture_refresh.hpp"
 #include "bsp/native_sampler_parameter_write.hpp"
 #include "bsp/platform_renderer_activation.hpp"
-#include "bsp/scene_file.hpp"
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -23,20 +22,6 @@ NativeMaterialTextureNameLiterals name_literals(GameNativeReadOnlyData& data) {
     if (*empty != '\0')
         throw std::logic_error("Material texture refresh requires actual CE3A0C empty literal");
     return {game_native_renderer_scalar_process().material_texture_nil_00f8d438(), empty};
-}
-std::string reflection_name(const ScenePropertyBlock& root, bool hdr) {
-    const ScenePropertyBlock* environment = nullptr;
-    for (const auto& block : root.blocks) {
-        if (block.first == "g_Environment") { environment = &block.second; break; }
-    }
-    const auto* property = environment ? environment->find("ReflCubemap") : nullptr;
-    if (property && (property->type_letter != "S" || property->values.size() != 1))
-        throw std::logic_error("Authored g_Environment.ReflCubemap must be one string");
-    // Existing Source SceneSkyFields starts empty. Missing/empty reflection
-    // still publishes that default, clearing any previous mission's Lua value.
-    const std::string name = property ? property->values.front() : std::string{};
-    // 4EE450 prefixes the ENTIRE authored string, with no path/basename rewrite.
-    return hdr ? "HDR_" + name : name;
 }
 }
 
@@ -71,10 +56,12 @@ struct GameNativeMissionMaterialRefresh::Impl {
             throw std::logic_error("Mission material refresh requires current D5F0A8 slot120 B24DD0");
         return renderer;
     }
-    void publish_reflection(const ScenePropertyBlock& root, bool hdr) {
+    void publish_reflection(const std::string& name) {
         if (running || failed)
             throw std::logic_error("Mission material publication cannot reenter or replay failed work");
-        const std::string name = reflection_name(root, hdr); // synchronous borrowed source
+        // The record's +B98h as 004EE450 wrote it (empty without an authored
+        // ReflCubemap, HDR_-prefixed whole when linearizing); an empty name
+        // still publishes, clearing any previous mission's Lua value.
         if (name.size() > std::numeric_limits<std::uint32_t>::max())
             throw std::logic_error("ReflectionCubeMap source exceeds native string extent");
         auto publication = std::make_unique<ParameterWrite>();
@@ -147,8 +134,8 @@ GameNativeMissionMaterialRefresh::~GameNativeMissionMaterialRefresh() noexcept {
     if (impl_ && impl_->retain()) std::terminate();
 }
 void GameNativeMissionMaterialRefresh::publish_reflection_cubemap(
-    const ScenePropertyBlock& root, bool hdr) {
-    impl_->publish_reflection(root, hdr);
+    const std::string& record_refl_cubemap_b98) {
+    impl_->publish_reflection(record_refl_cubemap_b98);
 }
 void GameNativeMissionMaterialRefresh::refresh_after_model_load() {
     impl_->refresh();

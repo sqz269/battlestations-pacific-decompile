@@ -26,6 +26,17 @@ namespace bsp::game {
 struct GunAimMessage79;
 }
 
+namespace bsp::gameplay_seg41_cc13 {
+class LandingShipMessageHost;
+}
+
+namespace bsp::gameplay_seg47_cc13 {
+struct FailureMessage;
+struct PlaneFailureState;
+struct StateMessageEnv;
+struct StateMessageHost;
+}
+
 namespace bsp {
 
 // cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
@@ -140,6 +151,21 @@ public:
     // 00768530 case 9Fh at 0076960E (00760A50), 00760B30 read. Returns the
     // copy's +1Ch bool, the flag 00821E80's 9Fh arm hands 00939FD0.
     bool queue_repair_body_9f(bool enabled) const;
+    // Goal 5 chain 630. MT_LANDINGSHIP_STARTLANDING (A5h), a landing ship's
+    // order to land at a pad. 009F2304 (the ship AI approach, mode 3) and
+    // 0074A56B (0074A4C0, the 94h landing request) each run 00749D90(message,
+    // pad, building) on a stack message and route it to the ship with
+    // 0077C2A0 flags 7; in single player 0077C2A0 turns any flags but 4 into
+    // the local bit (game+1FE4h == 0). The copy: 00749E10 write (header, then
+    // the pad's +174h in 13 bits and the building's +174h in 12), 00768530
+    // case A5h (20h bytes, 0075AF00 at 007696E8), 00749E40 read. 00780120's
+    // ladder over IsType 00749DF0 {A5h, 46h} answers no ladder id, so the
+    // session-kind switch hands the copy to the ship's slot 164h, 0074B570,
+    // which runs here against `receiver` with the copy's kind and handles.
+    // `pad_id` and `building_id` are the host's +174h stand-ins. Returns
+    // 0074B570's AL, or false when the copy would not reach that handler.
+    bool deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint16_t building_id,
+                                gameplay_seg41_cc13::LandingShipMessageHost& receiver) const;
     // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
     // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
     // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local
@@ -173,6 +199,67 @@ public:
         bool now{false};
     };
     AirbaseLaunchSlotCopy queue_airbase_launch_slot_83(std::uint32_t slot, bool now) const;
+    // Goal 5 chain 628. MT_AIRBASE_APPEARREADYPLANE (86h): the airfield launch
+    // site's tick 006CF980 builds it on its stack with 006BDAC0(plane) at
+    // 006CF9B2 (0075B430(86h), +18h/+1Ah/+1Ch zero, +4h = 1, vtable 00CF864C,
+    // +20h word = plane+174h) and routes it to the airfield (site+44h) at
+    // 006CF9C7, 0077C2A0(msg, 5, 0), the local bit set; then 006BDB30 write
+    // (header, +1Ch bit, +20h in 12 bits), 00768530 case 86h at 007692A6
+    // (00763440), 006BDB60 read. The receiver 006CD6C0's 86h arm (006CD788)
+    // resolves the copy's +20h with 006BDBF0 and hands that plane to the
+    // site's vtable[14h] 006CF9F0. `plane_id` is the plane's +174h word;
+    // returns the copy's +20h.
+    std::uint16_t queue_airbase_appear_ready_plane_86(std::uint16_t plane_id) const;
+    // Goal 5 chain 628. MT_AIRBASE_DOLAUNCHSLOT (89h): 006C64B0, the queued
+    // slot wait, serves the head slot with 006BC8E0(slot) at 006C6502, which
+    // builds the 24h-byte message on its stack (0075B430(89h), +18h/+1Ah/+1Ch
+    // zero, +4h = 1, vtable 00CF85F0, +20h = slot) and routes it to the
+    // block's owner (+7Ch) with 0077C2A0(msg, 1, 0), the local bit; then
+    // 006BC440 write (header, +1Ch bit, +20h in 8 bits), 00768530 case 89h at
+    // 00769306 (006BC3E0), 006BC470 read. The receiver 006CD6C0's case 8 runs
+    // 006C7490(copy slot, 0). Returns the copy's +20h slot.
+    std::uint32_t queue_airbase_do_launch_slot_89(std::uint32_t slot) const;
+    // Goal 5 chain 636. MT_AIRBASE_CHANGESLOTSTATUS (82h), the player's order to
+    // an air-ops slot: the support manager builds it on its stack with
+    // 00656280(slot, order, target entity, player = game+18ECh) (00673A10 at
+    // 006748C0 / 0067491B, 00675C40 at 0067A5D1 / 0067A945) and routes it to
+    // the block's owner (+7Ch) with 0077C2A0(msg, 0, 0): flags 0 takes the
+    // default [00E0AF1C] (1 in the image, 0077C302), and a single-player
+    // session (game+1FE4h == 0) takes the local bit (0077C329..0077C333). Then
+    // 00656320 write (header, +1Ch bit, +20h in 6 bits, +24h in 3, a presence
+    // bit and +28h in 12, +2Ch in 4), 00768530 case 82h at 00769226
+    // (operator new(30h), 00763320), 006563A0 read, and the copy's scalar
+    // delete 00656420. The receiver 006CD6C0's 82h arm 006CD160 hands 006CCDA0
+    // the copy's slot +20h, order +24h, the target its +28h names and player
+    // +2Ch. `target_id` is the target's +174h word (0 for none); the player is
+    // the image game's +18ECh, as the sender reads it.
+    struct AirbaseSlotOrderCopy {
+        bool to_unit{false};      // 00780120's ladder reached the unit handler
+        std::uint8_t type{0};     // copy +10h
+        std::uint32_t slot{0};    // copy +20h
+        std::uint32_t order{0};   // copy +24h
+        std::uint16_t target_id{0};  // copy +28h
+        std::uint32_t player{0};  // copy +2Ch
+    };
+    AirbaseSlotOrderCopy queue_airbase_slot_order_82(std::uint32_t slot, std::uint32_t order,
+        std::uint16_t target_id) const;
+    // Goal 5 chain 628. MT_MOTHERSHIP_ELEVATOR_MOVE (87h): 006D0600, the mother
+    // ship's elevator site tick, calls 006CFFF0(flag, plane) at 006D071D (0, the
+    // landed candidate or null) and 006D078E (1, the ready plane +18h), which
+    // builds the 24h-byte message with 00758B90 (0075B430(87h), +18h/+1Ah/+1Ch
+    // zero, +4h = 1, vtable 00D01870, +22h = flag, +23h = plane present, +20h =
+    // plane+174h or 0) and routes it to the carrier (site+B8h) with
+    // 0077C2A0(msg, 5, 0), the local bit; then 00758C20 write (header, the
+    // +1Ch/+22h/+23h bits, +20h in 12 bits when +23h), 00768530 case 87h at
+    // 007692C6 (00763500), 00758C70 read. The receiver 006D0050 runs on the
+    // copy's flag and the plane its +20h names when +23h (00758CF0).
+    struct ElevatorMoveCopy {
+        bool flag{false};
+        bool has_plane{false};
+        std::uint16_t plane_id{0};
+    };
+    ElevatorMoveCopy queue_mothership_elevator_move_87(bool flag, bool has_plane,
+                                                       std::uint16_t plane_id) const;
     // Goal 4 chain 260. The weapon director's kind 5Ah (session message 90):
     // 0071DD30 (sub-kind 2) at 0071DD4B..0071DD81: 0075B430(5Ah), +18h word 0,
     // +1Ah 0, +4h = 1, +1Ch 0, vtable 00CFD9C4, +20h = the sub-kind, +24h =
@@ -427,6 +514,37 @@ public:
         bool clear_arm_69{false};    // 0072D830 -> vtable[1CCh] and IsType(69h)
     };
     GunDestroyedCopy queue_gun_destroyed_68_69(bool set) const;
+    // Goal 5 chain 641. The plane failure messages 007BBFA0 (the plane's
+    // vtable[194h], StartNamedEffect) routes with 0077C2A0 flags 7: 63h built
+    // inline at 007BC3EC..007BC424 (0075B430(63h), word +18h 0, byte +1Ah 0, +4h
+    // 1, byte +1Ch 0, vtable 00D02F6C, float +20h = unit+C10h: 0075C380's header
+    // stores with the timer in place of its -1.0f), 64h by 0075C450 itself
+    // (+20h its 256.0f), 65h by 007BA170, 66h by 007BA1C0, 67h by 007BA200.
+    // Flags 7 is not 4, so the local bit is taken and 0076E520 rebuilds the copy:
+    // 00768530 runs the type's constructor (0075C380 / 0075C450 / 0075A150 /
+    // 0075C570 / 0075A1F0) and vtable[8] reads it (006D1550 for 63h, 64h and
+    // 66h; 0075C540 for 65h; 0075C660 for 67h). 006D2F20 quantises +20h: at or
+    // below 0.1 it is absent and reads back as -1.0f; otherwise trunc(x * 4.0)
+    // clamped to 0..255, read as n * 0.25. So 1000.0f arrives as 63.75f. The
+    // plane's 007CCFA0 asks the copy's IsType for 62h (007CCFB0, the 0075C400 /
+    // 0075C4D0 / 0075A1A0 / 0075C5F0 / 0075A240 sets {own, 62h, 49h, 46h}) and
+    // hands it to vtable[208h], 007D0B80. Returned: the copy's fields.
+    struct PlaneFailureCopy {
+        std::uint8_t type{0};
+        bool to_state_handler{false};  // 00780120 -> session switch -> IsType(62h)
+        float value_20{0.0f};
+        std::uint32_t arg_24{0};       // 65h: the engine (2 bits); 67h: the side byte
+    };
+    PlaneFailureCopy queue_plane_failure_63_67(std::uint8_t type, float value_20,
+                                               std::uint32_t arg_24) const;
+    // One message of 007BBFA0's routed list as the plane receives it: its local
+    // copy (queue_plane_failure_63_67) and, when 007CCFA0 hands it on, 007D0B80
+    // over the copy's kind, +20h and +24h. Returns false when the copy does not
+    // reach 007D0B80. C8h (multiplayer only, session mode != 0) is refused.
+    bool deliver_plane_failure_message(const gameplay_seg47_cc13::FailureMessage& routed,
+        gameplay_seg47_cc13::PlaneFailureState& state,
+        const gameplay_seg47_cc13::StateMessageEnv& env,
+        const gameplay_seg47_cc13::StateMessageHost& host) const;
     // Goal 4 chain 356. MT_PLANE_DISAPPEAR (C7h): the plane's fixed step
     // 007CE040 at 007CE6FE..007CE74F makes 0075B430(C7h), +18h word 0, +1Ah 0,
     // +4h = 1, +1Ch 0, vtable 00D0352C (00762B20's stores) and +20h word = the
@@ -442,6 +560,35 @@ public:
         std::uint16_t holder_id{0};
     };
     PlaneDisappearCopy queue_plane_disappear_c7(std::uint16_t holder_id) const;
+    // Goal 5 chain 632. MT_VEHICLE_UNIT_LAUNCH (7Bh): ShipUseCatapult 00891D50
+    // makes it inline at 00891F05..00891F31 (0075B430(7Bh), word +18h = EBP 0,
+    // byte +1Ah 0, +4h = EDI 1, byte +1Ch 0, vtable 00CE53AC, float +20h = the
+    // heading) and routes it with 0077C2A0(ECX = the ship, &message, EBX = 2, EBP
+    // = 0) at 00891F48. Flags 2 is not 4, so with [00E188A8]+1FE4h == 0 the route
+    // takes the local bit (0077C30D..0077C333) and 0076E520 rebuilds the copy.
+    // Those stores are 007601A0's (the case-7Bh constructor 00768530 calls at
+    // 00769186 on a 24h-byte allocation), so both messages are built with it;
+    // 00CE53AC's slots are 00464FE0 scalar delete (restamps only), 004647D0
+    // write, 00464810 read, 004647B0 IsType {7Bh, 49h, 46h}, 004499C0. Returned:
+    // whether 00780120's ladder hands the copy to the entity's session-kind
+    // switch, and the copy's 24h bytes as its read left them (what 00821E80
+    // reads: +10h kind, +14h sender, +20h the payload).
+    struct UnitKindSwitchCopy {
+        bool to_unit{false};
+        std::uint8_t bytes[0x24]{};  // read through memcpy, so no alignment is needed
+    };
+    UnitKindSwitchCopy queue_vehicle_unit_launch_7b(float heading) const;
+    // Goal 5 chain 632. MT_VEHICLE_ADD_LAUNCHED (7Ch): the catapult's fixed step
+    // 006ED1C0 calls 006EB9C0(stack message, plane) at 006ED3EF (0075B430(7Ch),
+    // word +18h 0, +1Ah 0, +1Ch 0, +4h = 1, vtable 00CFAA0C, word +20h =
+    // plane+174h) and routes it to the device's owner ([ESI+0E0h]) with
+    // 0077C2A0 flags 7 at 006ED409, the local bit in single player. 00768530
+    // case 7Ch allocates 24h bytes and calls 00760200 (007691A6); 00CFAA0C's
+    // slots: 006EC100 scalar delete (restamps only), 006EBA20 write (header,
+    // the +1Ch bit, +20h in 12 bits), 006EBA50 read, 006EBA00 IsType {7Ch, 49h,
+    // 46h}, 004499C0. 00821E80's 7Ch arm resolves the copy's +20h (00521E30)
+    // and hands a non-null entity to 00957450.
+    UnitKindSwitchCopy queue_vehicle_add_launched_7c(std::uint16_t plane_id) const;
 
 private:
     struct Image;

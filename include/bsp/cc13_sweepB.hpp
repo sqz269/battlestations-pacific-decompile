@@ -31,6 +31,18 @@ inline float cc13_sweepB_f32(std::uint32_t bits) {
     return value;
 }
 
+// The four services 0052C640 calls, with Cc13SweepBHost's signatures (goal 5
+// chain 662). Its one caller, the HUD counters screen register 0052CBF0, runs it
+// on the HUD host's own counters block without the other sweepB services.
+class Cc13SweepBCounterCloneHost {
+public:
+    virtual ~Cc13SweepBCounterCloneHost() = default;
+    virtual void widget_vcall_34_set_visible(void* widget, std::int32_t show) = 0;
+    virtual void* widget_vcall_28_name(void* widget) = 0;
+    virtual void* widget_find_child_00aa7e00(void* widget, void* name, std::int32_t unused) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent_clone) = 0;
+};
+
 class Cc13SweepBHost {
 public:
     virtual ~Cc13SweepBHost() = default;
@@ -349,7 +361,7 @@ bool cc13_sweepB_formation_drag_pick_00535f50(void* screen, Cc13SweepBHost& host
 // 0052C640 BSP_HudCounterEntry_ConstructClone: a 0ACh-byte counter entry built
 // by cloning the template entry's widget subtree. Returns entry.
 void* cc13_sweepB_counter_entry_construct_clone_0052c640(void* entry, const void* source,
-                                                        Cc13SweepBHost& host);
+                                                        Cc13SweepBCounterCloneHost& host);
 
 // 00535430 BSP_InterfaceView_DrawTargetOrtho: the level-3 top-down view.
 void cc13_sweepB_interface_view_draw_target_ortho_00535430(void* view, Cc13SweepBHost& host);

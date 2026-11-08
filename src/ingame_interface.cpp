@@ -1,5 +1,7 @@
 #include "bsp/ingame_interface.hpp"
 
+#include "bsp/fe5_host_unreached.hpp"
+
 // Packet in_mission_interface_manager. Evidence: docs/IN_MISSION_INTERFACE_MANAGER.md.
 namespace bsp {
 namespace {
@@ -58,8 +60,10 @@ const int kCtxDefaultHud[] = {4, 0x11, 0x12, 0x0C, 0x0B};   // 0068AF53, 0068AD8
 const int kCtxPlane[] = {0x0A, 4, 0x11, 0x12, 0x0C, 0x0B};  // 0068B027
 const int kCtxPlaneBomber[] = {9, 4, 0x11, 0x12, 0x0C, 0x0B}; // 0068AFDA
 const int kCtxPlaneSpawn[] = {0x17, 4, 0x11, 0x12, 0x0C, 0x0B}; // 0068B06E
-const int kCtxShip[] = {6, 4, 0x11, 0x12, 0x0C, 0x0B};      // 00689FA0 and 00689FE0
-const int kCtxSubmarine[] = {7, 4, 0x11, 0x12, 0x0C, 0x0B}; // 00689FC0
+// 0068B1BA..0068B1D1, the command-building arm's own 004D8A50 call. The
+// captain, torpedo-boat and submarine arms push the same lists through their
+// helpers instead (unit_input_context_level below).
+const int kCtxCommandBuilding[] = {6, 4, 0x11, 0x12, 0x0C, 0x0B};
 const int kCtxBombView[] = {5, 4, 0x0A};                    // 0068B17A
 const int kCtxFreeCamera[] = {2};                           // 0068AD6A
 const int kCtxMovie[] = {3};                                // 0068ADB2, 0068ADD8, 0068ADF9
@@ -103,6 +107,39 @@ ArmScreenHandoff arm_handoff(int interface_id) noexcept {
     default: return {0, 0};
     }
 }
+
+// The level-1 input-context helper each unit arm calls with ECX = this, which
+// none of them reads: 0068B137 00689FA0 (25h), 0068B0B5 00689FE0 (27h) and
+// 0068B0F6 00689FC0 (28h), each right after the arm's 004F8530 and before its
+// hand-offs. bsp.py ghidra disasm 00689fa0 / 00689fc0 / 00689fe0: [00E188A8]
+// then 6, 4, 11h, 12h, 0Ch, 0Bh (7 first for 00689FC0) and 0 into 004D8A50.
+const cc13_fe5::InputContextLevel* unit_input_context_level(int interface_id) noexcept {
+    const auto find = [](std::uint32_t address) -> const cc13_fe5::InputContextLevel* {
+        for (const cc13_fe5::InputContextLevel& level : cc13_fe5::kUnitInputContexts) {
+            if (level.address == address) return &level;
+        }
+        return nullptr;
+    };
+    switch (interface_id) {
+    case kInterfaceCaptain: return find(0x00689FA0u);
+    case kInterfaceTBoatHelmsman: return find(0x00689FE0u);
+    case kInterfaceSubmarine: return find(0x00689FC0u);
+    default: return nullptr;
+    }
+}
+
+// The one Fe5Host service those helpers call, 004D8A50(game, list..., 0), is
+// the host's level-1 input-context setter; the list is the six ids before the
+// terminator. Every other Fe5Host service stays the base's loud failure.
+class UnitInputContextsBinding final : public cc13_fe5::Fe5HostUnreached {
+public:
+    explicit UnitInputContextsBinding(InGameInterfaceHost& host) : host_(host) {}
+    void game_input_contexts_push_level_004d8a50(const std::int32_t contexts[6]) override {
+        host_.set_level1_input_contexts(contexts, 6);
+    }
+private:
+    InGameInterfaceHost& host_;
+};
 
 }  // namespace
 
@@ -206,17 +243,17 @@ InGameInterfaceScreenSet in_game_interface_screen_set(int interface_id) noexcept
     case kInterfacePlaneSpawn:
         return make_set(kSetPlaneSpawn, count_of(kSetPlaneSpawn), kCtxPlaneSpawn,
             count_of(kCtxPlaneSpawn));
+    // 25h, 27h and 28h set their contexts through 00689FA0 / 00689FE0 /
+    // 00689FC0 (unit_input_context_level), so their sets carry no list here.
     case kInterfaceCaptain:
-        return make_set(kSetCaptain, count_of(kSetCaptain), kCtxShip, count_of(kCtxShip));
+        return make_set(kSetCaptain, count_of(kSetCaptain), nullptr, 0);
     case kInterfaceBombView:
         return make_set(kSetBombView, count_of(kSetBombView), kCtxBombView,
             count_of(kCtxBombView));
     case kInterfaceTBoatHelmsman:
-        return make_set(kSetTBoatHelmsman, count_of(kSetTBoatHelmsman), kCtxShip,
-            count_of(kCtxShip));
+        return make_set(kSetTBoatHelmsman, count_of(kSetTBoatHelmsman), nullptr, 0);
     case kInterfaceSubmarine:
-        return make_set(kSetSubmarine, count_of(kSetSubmarine), kCtxSubmarine,
-            count_of(kCtxSubmarine));
+        return make_set(kSetSubmarine, count_of(kSetSubmarine), nullptr, 0);
     case kInterfaceFreeCamera:
         return make_set(kSetFreeCamera, count_of(kSetFreeCamera), kCtxFreeCamera,
             count_of(kCtxFreeCamera));
@@ -233,8 +270,8 @@ InGameInterfaceScreenSet in_game_interface_screen_set(int interface_id) noexcept
         return make_set(kSetEngineMovieCamera, count_of(kSetEngineMovieCamera), kCtxMovie,
             count_of(kCtxMovie));
     case kInterfaceCommandBuilding:
-        return make_set(kSetCommandBuilding, count_of(kSetCommandBuilding), kCtxShip,
-            count_of(kCtxShip));
+        return make_set(kSetCommandBuilding, count_of(kSetCommandBuilding), kCtxCommandBuilding,
+            count_of(kCtxCommandBuilding));
     case kInterfaceLaunchLanding:
         return make_set(kSetLaunchLanding, count_of(kSetLaunchLanding), kCtxLaunchLanding,
             count_of(kCtxLaunchLanding));
@@ -378,6 +415,10 @@ bool apply_in_game_interface_0068aca0(InGameInterfaceManager& manager, InGameInt
         }
         if (set.sets_input_contexts) {
             host.set_level1_input_contexts(set.input_contexts, set.input_context_count);
+        }
+        if (const cc13_fe5::InputContextLevel* level = unit_input_context_level(id)) {
+            UnitInputContextsBinding contexts(host);
+            cc13_fe5::set_unit_input_contexts(*level, contexts);
         }
         const ArmScreenHandoff handoff = arm_handoff(id);
         if (handoff.first != 0) {

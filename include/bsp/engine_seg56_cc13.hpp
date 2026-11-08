@@ -600,7 +600,7 @@ struct CameraStateResults {
 // One angle of GetCameraState: (float)(a + 131.9468994140625 (qword 00D13268)), fmod by
 // 6.2831854820251465 (qword 00CE3828), narrowed, then / pi (00CE3D28) * 180 (00CE3D20).
 float camera_state_degrees(float radians) noexcept;
-int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host);
+int lua_get_camera_state_008bf6a0(CameraStateResults& results, CameraStateHost& host);
 // GetDistFromCrosshair: offset = entity - camera (float per axis), (a, b) = 00794750, s =
 // a*a + b*b narrowed; 0 when s <= 1e-10 (qword 00CE3820, FCOMI / JBE), else sqrt narrowed;
 // pushed as s / camera FOV (00B66480).
@@ -1064,7 +1064,7 @@ struct ObjectiveRevealView {
     std::int32_t row_value_plus4{};     // entity+row*34h+1ECh
     std::int32_t row_value_plus8{};     // entity+row*34h+1F0h
 };
-bool objective_entry_is_revealed(const ObjectiveRevealView& view) noexcept;
+bool objective_entry_is_revealed_to_local_side_008dacd0(const ObjectiveRevealView& view) noexcept;
 
 // 008DAD30, __thiscall(entry, Vec3* out), RET 4: the entity's position through its
 // vtable+C4h when an entity is set, else the stored +4h/+8h/+0Ch. Returns `out`.
@@ -1076,7 +1076,7 @@ struct ObjectiveEntityHost {
     virtual ~ObjectiveEntityHost() = default;
     virtual Vec3 entity_vcall_c4_position(void* entity) = 0;
 };
-Vec3 objective_entry_position(const ObjectiveEntryView& entry, ObjectiveEntityHost& host);
+Vec3 objective_entry_position_008dad30(const ObjectiveEntryView& entry, ObjectiveEntityHost& host);
 
 // 008DADC0, __thiscall(message, unsigned type), RET 4: accepts type 36h or the byte at
 // message+10h.

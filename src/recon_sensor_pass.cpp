@@ -165,6 +165,11 @@ ReconDetectionRecord* ReconSensorPassState::record(int party, std::size_t unit) 
     return &records_[static_cast<std::size_t>(party) * record_unit_count_ + unit];
 }
 
+const ReconDetectionRecord* ReconSensorPassState::record(int party, std::size_t unit) const noexcept {
+    if (party < 0 || party >= 3 || unit >= record_unit_count_) return nullptr;
+    return &records_[static_cast<std::size_t>(party) * record_unit_count_ + unit];
+}
+
 namespace {
 
 // 00806840's view of the state: the records, the delegate and the payload level.
@@ -180,7 +185,9 @@ public:
     }
     void level_changed(std::size_t unit, int slot, ReconDetectionLevel old_level,
                        ReconDetectionLevel new_level) override {
-        transitions_.push_back({unit, slot, old_level, new_level});
+        const ReconDetectionRecord* r = state_.record(slot, unit);
+        transitions_.push_back({unit, slot, old_level, new_level,
+                                r != nullptr ? r->observer : kGunneryReconNoObserver});
     }
     void publish_level(std::size_t, ReconDetectionLevel) override {}
 
@@ -234,6 +241,7 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
             t.party = c.first;
             t.old_level = old;
             t.new_level = r->level;
+            t.observer = r->observer;
             state.transitions_.push_back(t);
         }
     }
@@ -241,6 +249,10 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
 
     // 00805CF0's writes, kept in the forced table by SetForcedReconLevel: +10h = 1
     // and +8h = level. 00803B50 (above) is the one writer that clears +10h.
+    // 00805CF0 also drops the +28h observer edge (00805D11..00805D1F: 006952A0, then
+    // MOV [EDI+14h],0 with EDI = record+14h); a forced record skips the sensor pass,
+    // so it stays null until the force is cleared, and the 00803B50 transition above
+    // carries the null detector 009741E0 reads (goal 5 chain 634 review).
     for (int party = 0; party < 3; ++party) {
         for (std::size_t u = 0; u < count; ++u) {
             ReconDetectionLevel level = ReconDetectionLevel::none;
@@ -248,6 +260,7 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
             ReconDetectionRecord& r = *state.record(party, u);
             r.forced = true;
             r.forced_level = level;
+            r.observer = kGunneryReconNoObserver;   // 00805D1F
         }
     }
 
@@ -294,7 +307,8 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
                 recon_record_accumulate_00805af0(*r, 1.0f, true, kGunneryReconNoObserver);
             ++state.record_own_refreshes;
             if (change.changed) {
-                state.transitions_.push_back({u, slot, change.old_level, change.new_level});
+                state.transitions_.push_back({u, slot, change.old_level, change.new_level,
+                                              r->observer});
             }
         }
 

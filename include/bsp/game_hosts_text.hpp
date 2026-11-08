@@ -40,6 +40,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/gui_text.hpp"
 #include "bsp/gui_text_content.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 
@@ -82,6 +83,14 @@ struct GameTextQuad {
     float v1{0.0f};
     float u2{0.0f};
     float v2{0.0f};
+};
+
+// The Text fields a screen stores directly before its run-time 00ABAED0 (goal
+// 5 chain 667, the HUD counter layouts): +0FCh Multiline and +100h Align.
+// Empty fields keep the authored value.
+struct GameTextLayoutOverride {
+    std::optional<bool> multiline;
+    std::optional<GuiTextAlign> align;
 };
 
 // What the text path produced for one Text widget.
@@ -152,9 +161,14 @@ public:
     // mission-detail page builder 0058C010 pushes the selected record's
     // `background` key into the briefing text widget the same way the loader
     // pushes an authored one, and everything after the setter is unchanged.
+    //
+    // `layout`, when non-null, carries the Text fields a screen stored directly
+    // before that setter (GameTextLayoutOverride); they replace the authored
+    // values ahead of it, so the setter's layout uses them as the image's does.
     bool build_run(const std::string& page, const GuiLayoutWidget& widget,
         float origin_x, float origin_y, GameTextRun& run,
-        const std::string* source_override = nullptr);
+        const std::string* source_override = nullptr,
+        const GameTextLayoutOverride* layout = nullptr);
 
     const GameTextSummary& summary() const noexcept;
 

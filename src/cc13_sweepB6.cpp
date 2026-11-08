@@ -20,6 +20,8 @@
 
 #include <cmath>
 #include <cstring>
+#include <stdexcept>
+#include <string_view>
 
 namespace bsp {
 
@@ -1607,39 +1609,49 @@ void cc13_sweepB6_movcam_begin_path_walk_007a5a00(void* camera, float start, std
 // Twenty bindings in the image's order, each: the name is built from its
 // literal (0041DD40 + 00BF7680), the field = 00AA7E00([screen+8], &name, 1),
 // the name released. Nothing else runs. No RNG draws.
-void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6Host& host) {
+// Each literal's text is the image's NUL-terminated string at that address
+// (bsp.py ghidra bytes <literal> --length <length + 1>; every one checked,
+// each length the PUSH before its 0041DD40), so the length + 1 bytes
+// 00BF7680 copies are the text and its terminator.
+void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6OrderLayoutHost& host) {
     struct Binding {
         std::uint32_t literal;
-        std::uint32_t length;
+        std::string_view text;
         std::size_t field;
     };
-    static const Binding kBindings[] = {
-        {0x00CED94Cu, 0x19, 0x0C},  // ship_plane_agressive_Icon
-        {0x00CED930u, 0x19, 0x10},  // ship_plane_defensive_Icon
-        {0x00CF3C7Cu, 0x14, 0x14},  // plane_formation_Icon
-        {0x00CF3C68u, 0x13, 0x18},  // ship_formation_Icon
-        {0x00CF3C50u, 0x14, 0x1C},  // ship_plane_move_Icon
-        {0x00CF3C3Cu, 0x11, 0x20},  // plane_attack_Icon
-        {0x00CF3C28u, 0x10, 0x24},  // ship_attack_Icon
-        {0x00CF3C18u, 0x0E, 0x28},  // ship_sell_Icon
-        {0x00CF3C00u, 0x14, 0x2C},  // ship_leave_form_Icon
-        {0x00CF3BECu, 0x12, 0x30},  // plane_retreat_Icon
-        {0x00CF3BD8u, 0x12, 0x34},  // plane_landing_Icon
-        {0x00CED854u, 0x11, 0x3C},  // repair_glass_Icon
-        {0x00CED840u, 0x11, 0x40},  // repair_frame_Icon
-        {0x00CED8D8u, 0x0B, 0x38},  // cancel_Icon
-        {0x00CED8C4u, 0x13, 0x44},  // repair_hl_west_Icon
-        {0x00CED8B0u, 0x13, 0x48},  // repair_hl_east_Icon
-        {0x00CED898u, 0x14, 0x4C},  // repair_hl_north_Icon
-        {0x00CED880u, 0x14, 0x50},  // repair_hl_south_Icon
-        {0x00CED868u, 0x15, 0x54},  // repair_hl_middle_Icon
-        {0x00CED834u, 0x09, 0x58},  // info_Text
+    static constexpr Binding kBindings[] = {
+        {0x00CED94Cu, "ship_plane_agressive_Icon", 0x0C},  // length 19h
+        {0x00CED930u, "ship_plane_defensive_Icon", 0x10},  // 19h
+        {0x00CF3C7Cu, "plane_formation_Icon", 0x14},       // 14h
+        {0x00CF3C68u, "ship_formation_Icon", 0x18},        // 13h
+        {0x00CF3C50u, "ship_plane_move_Icon", 0x1C},       // 14h
+        {0x00CF3C3Cu, "plane_attack_Icon", 0x20},          // 11h
+        {0x00CF3C28u, "ship_attack_Icon", 0x24},           // 10h
+        {0x00CF3C18u, "ship_sell_Icon", 0x28},             // 0Eh
+        {0x00CF3C00u, "ship_leave_form_Icon", 0x2C},       // 14h
+        {0x00CF3BECu, "plane_retreat_Icon", 0x30},         // 12h
+        {0x00CF3BD8u, "plane_landing_Icon", 0x34},         // 12h
+        {0x00CED854u, "repair_glass_Icon", 0x3C},          // 11h
+        {0x00CED840u, "repair_frame_Icon", 0x40},          // 11h
+        {0x00CED8D8u, "cancel_Icon", 0x38},                // 0Bh
+        {0x00CED8C4u, "repair_hl_west_Icon", 0x44},        // 13h
+        {0x00CED8B0u, "repair_hl_east_Icon", 0x48},        // 13h
+        {0x00CED898u, "repair_hl_north_Icon", 0x4C},       // 14h
+        {0x00CED880u, "repair_hl_south_Icon", 0x50},       // 14h
+        {0x00CED868u, "repair_hl_middle_Icon", 0x54},      // 15h
+        {0x00CED834u, "info_Text", 0x58},                  // 09h
     };
     for (const Binding& binding : kBindings) {
-        Cc13SweepBNativeString name;
-        build_literal(name, binding.literal, binding.length, host);
+        Cc13SweepBNativeString name{0, nullptr};
+        host.native_string_resize_0041dd40(&name, static_cast<std::uint32_t>(binding.text.size()), 1);
+        if (name.data != nullptr) {
+            if (name.length > binding.text.size())
+                throw std::logic_error("005FA0F0 name temporary longer than its literal");
+            std::memcpy(name.data, binding.text.data(), name.length + 1);  // 00BF7680
+        }
         at<void*>(screen, binding.field) = host.widget_find_child_00aa7e00(at<void*>(screen, 8), &name, 1);
-        release_string(name, host);
+        if (name.data != nullptr)
+            host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), name.data, name.length + 1, 1);
     }
 }
 

@@ -9,15 +9,16 @@
       "native": "007b95e0",
       "status": "wired",
       "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::plane_is_leader_with_wingmen_007b95e0, called by src/game_hosts_units_motion.cpp: PlaneBinding::plan_yaw_0099d300",
-      "inputs": "Live-seat zero/nonzero test (+9D8h rewritten by 007ED260): sq->flight_leader()==unit.process_index ? 0 : 1, actual member squadron binding (+9D4h), and wingmen_recount_[name].count_3bc (+3BCh)",
+      "inputs": "Exact live seat (+9D8h rewritten by 007ED260), found by counting non-kPlaneSquadronNoUnit entries before the unit in sq->member_units; actual member squadron binding (+9D4h), and wingmen_recount_[name].count_3bc (+3BCh)",
       "consumer": "The predicate chooses the aircraft class TurnRollLeader (+260h) input to the live pilot roll law.",
-      "change": "Call the existing reconstructed predicate with the current live-seat zero/nonzero test, so a new first live member qualifies for TurnRollLeader after leader removal; do not use the stale member_spawn_index stamp.",
-      "evidence": "bsp.py show 007b95e0; bsp.py show 007f3970 --asm: 007F3A11 CALL 007ED260 after compaction; bsp.py show 007ed260 --asm: 007ED292 MOV [ESI+9D8h],EAX publishes the live array position; src/plane_squadron_host.cpp: PlaneSquadronHostRecord::flight_leader returns the first non-NoUnit member",
+      "change": "Preserve origin/main's exact live-seat adaptation when merging the reviewed predicate fix, so the first occupied seat qualifies for TurnRollLeader after leader removal; keep one call to the existing reconstructed body and the verified immediate removal/reindex evidence.",
+      "evidence": "bsp.py show 007b95e0; bsp.py show 007f3970 --asm: 007F3A11 CALL 007ED260 after compaction; bsp.py show 007ed260 --asm: 007ED292 MOV [ESI+9D8h],EAX publishes the live array position; include/bsp/game_hosts_units_internal.hpp: occupied-member seat walk in plane_is_leader_with_wingmen_007b95e0",
       "original_abi": "__fastcall(ECX=plane), EAX boolean; reconstructed C++ takes typed field values and is not a binary replacement",
-      "call_site": "102b331c",
+      "call_site": "102e2139",
       "compiled_caller": "PlaneBinding::plan_yaw_0099d300",
       "called_before": false,
-      "called_after": true
+      "called_after": true,
+      "already_wired_on_merged_main": true
     },
     {
       "native": "007ee790",
@@ -258,6 +259,28 @@
     },
     "scope": "The pre-existing member_spawn_index model/comment and its other readers are separate follow-up work; this repair changes only the reviewed predicate and report."
   },
+  "merge_resolution": {
+    "branch_head_before_merge": "71bc45bcb105859fa611911c293257ca871a5e44",
+    "merged_origin_main": "d427aea404d0e63a254cfc12aae1c582a2b2ccd0",
+    "conflicts": ["include/bsp/game_hosts_units_internal.hpp"],
+    "resolution": "Keep incoming main's chain-628 exact live-seat walk and native predicate call, which are equivalent to review round 1's zero/nonzero test; retain the verified immediate 007F3A11 -> 007ED260 -> 007ED292 reindex evidence and remove the incoming comment's contradicted lag uncertainty.",
+    "ledger_and_cmake": "No ledger-shard or cmake/startup.cmake conflicts occurred; only the host-header conflict needed manual resolution.",
+    "count_scope": "The top-level baseline/counts describe the original cb57fddfdf wiring task. Incoming main already wires 007b95e0 in chain 628, so this merge claims zero additional wired rows relative to d427aea40.",
+    "incremental_wired_rows": 0,
+    "validated_header_blob": "f1259ef63d5a02ddf97e6b110c408164374ee165",
+    "merged_build_counts": {
+      "readiness_wired": 10414,
+      "called_reconstructed_addresses": 5310
+    },
+    "checks": {
+      "on_build": "PASS: scripts/build.ps1 -Target bsp_game -SkipTests compiled/linked existing kPlaneLeaderTurnRollBound=true; this packet has no OFF switch to flip",
+      "full_build": "PASS: scripts/build.ps1 after the ON build; all four existing CTests passed (12.73 seconds)",
+      "readiness": "PASS: wired=10414; 007b95e0 is wired, called=true, call_sites=1, callers_live=1",
+      "call_graph": "PASS: one reachable call at 102e2139 from PlaneBinding::plan_yaw_0099d300; path reaches WinMainCRTStartup; 5310 reconstructed addresses called in the merged build",
+      "diff_check": "PASS: no remaining conflict markers or whitespace errors",
+      "game_execution": "Not run, as instructed"
+    }
+  },
   "artifacts": [
     "local/output/wire-g5-c624-build.log",
     "local/output/wire-g5-c624-callgraph-before.log",
@@ -270,7 +293,13 @@
     "local/output/wire-g5-c624-r1-callgraph.log",
     "local/output/wire-g5-c624-r1-calls-007b95e0.log",
     "local/output/wire-g5-c624-r1-path-007b95e0.log",
-    "local/output/wire-g5-c624-r1-readiness.log"
+    "local/output/wire-g5-c624-r1-readiness.log",
+    "local/output/wire-g5-c624-merge-on-build.log",
+    "local/output/wire-g5-c624-merge-build.log",
+    "local/output/wire-g5-c624-merge-callgraph.log",
+    "local/output/wire-g5-c624-merge-calls-007b95e0.log",
+    "local/output/wire-g5-c624-merge-path-007b95e0.log",
+    "local/output/wire-g5-c624-merge-readiness.log"
   ],
   "limitations": [
     "Compiled entry reachability establishes wiring, not a live gameplay observation.",

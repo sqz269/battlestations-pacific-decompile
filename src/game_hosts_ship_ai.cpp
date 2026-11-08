@@ -42,6 +42,7 @@
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
 #include "bsp/cc13_seg41_land.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"        // 0074B570 receiver (goal 5 chain 630)
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
 #include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
@@ -1356,7 +1357,10 @@ struct GameShipAiHost::Impl {
         float fire_duration_max_16c{0.0f};    // class+16Ch SmokeFireDurationMax
         float secondary_mul_170{0.0f};        // class+170h SecondaryExplosionChanceMul
         bool fire_740{false};          // the fire effect pointer is set
-        float fire_time_748{0.0f};
+        // +744h, the death smoke effect pointer: set only by 007465E0 (the gunnery
+        // host's 00747170, goal 5 chain 639) through command_building_fort_timers.
+        bool smoke_744{false};
+        float fire_time_748{0.0f};     // +748h, shared by the fire and the smoke
         float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
         // Packet s52_cb_repair: 006F4360's class rates (RepairTime and the
         // garrison rates, 200 when absent).
@@ -1384,6 +1388,7 @@ struct GameShipAiHost::Impl {
     unsigned long long fire_starts{0};
     unsigned long long fire_extends{0};
     unsigned long long fire_stops{0};
+    unsigned long long smoke_stops{0};   // goal 5 chain 639, 00745F1E
     unsigned long long fire_secondary_rolls{0};
     unsigned long long fire_secondary_hits{0};
     unsigned long long fire_draws{0};
@@ -1413,11 +1418,15 @@ struct GameShipAiHost::Impl {
     bool deliver_set_owner_d3(CaptureBuilding& b, std::uint32_t player, bool flag,
                               bsp::CommandBuildingFlipOutcome& flip, const char* source);
     void deliver_set_level_d4(CaptureBuilding& b, std::int32_t level, const char* source);
+    // Goal 5 chain 630: the A5h landing order through 0077C2A0's local copy
+    // and the ship's receiver 0074B570, which runs 0074A990.
+    void deliver_land_at_pad_a5(std::size_t unit, int pad, int building, const char* source);
     unsigned long long command_building_d3_copies{0};
     unsigned long long command_building_d4_copies{0};
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
     void landfort_fire_roll_007470b0(CaptureBuilding& b, float amount);
     void landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds);
+    void landfort_smoke_arm(CaptureBuilding& b, float seconds);   // 00745F1E, chain 639
     // Packet cc9_landed_ship_remainder: class+80Ch LandedDamage per unit, and the
     // remainder's census.
     std::vector<std::int32_t> landed_damage_080c;
@@ -1478,6 +1487,8 @@ struct GameShipAiHost::Impl {
     unsigned long long ramp_ground_contacts{0};
     unsigned long long ramp_lowers{0};
     unsigned long long ramp_unloads{0};
+    // 0074AD90's 00986820 reports, for GameShipAiHost::take_ship_landed_events.
+    std::vector<std::size_t> ship_landed_events;
     unsigned long long capture_landed_adds{0};
     unsigned long long capture_paratrooper_adds{0};   // packet cc13-para2, arm 3
     unsigned long long capture_paratrooper_bad_side{0};
@@ -4057,13 +4068,13 @@ public:
     }
     void post_command_message_00984300(std::uint32_t command) override {
         // 009E595C, 00984300 on [00F8A0C4] with the `finished` literal the
-        // step assigned at 009E58EF.
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        // step assigned at 009E58EF. The mission Lua host evaluates the
+        // channel at its frame (goal 5 chain 631).
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveTo::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveTo::release_message_text", 0x00419cc0u);
@@ -4223,12 +4234,11 @@ public:
         owner_.record("ShipAiMoveOnPath::message_text_assign", 0x0041e870u);
     }
     void post_command_message_00984300(std::uint32_t command) override {
-        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+        owner_.units.report_command_event_00984300(
             index_, command, bsp::kCommandEventStatusFinished);
         owner_.done("ShipAiMoveOnPath::post_command_message", 0x00984300u);
         ++row_.command_events;
         ++owner_.summary.command_events;
-        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveOnPath::release_message_text", 0x00419cc0u);
@@ -6891,26 +6901,10 @@ public:
             owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
             return;
         }
-        // 009F2304..009F2328: 00749D90 builds 0A5h (pad, building) and 0077C2A0
-        // routes it to the unit at class 7; 0074B570 runs 0074A990 on it.
-        // SUBSTITUTION, labelled: delivered at once rather than through the route.
-        owner_.record("LandingShip::vtable_148_on_0a5", 0x0074b5b0u);
-        const float draw = owner_.gunnery_draws != nullptr
-            ? owner_.gunnery_draws->ship_ai_draw(index_, 0.0f, 0.75f) : 0.0f;
-        // +1208h is the scene key SpawnPhase (00CFFCAC, 0074C5F4), which no scene
-        // in this installation authors: 0, the construct's value (0074BB90).
-        pads.begin_landing_0074a990(unit, pad, building, draw, 0);
-        owner_.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
-        // 0074A9FC..0074AA75: unless [game+1FE4h] == 2, 0077D600(ship)(land
-        // 00E08FA0, {kind 0, position valid, pad world position, 0.0f}, 1).
-        bsp::SceneCommandTarget target{};
-        target.kind = 0;
-        target.position_valid = 1;
-        target.position[0] = p->position[0];
-        target.position[1] = p->position[1];
-        target.position[2] = p->position[2];
-        owner_.units.issue_script_command(index_, 0x00e08fa0u, target, 1,
-            "0074A990 land at pad", "LandingPoint");
+        // 009F2304..009F2328: 00749D90(pad = EBX, building = [ESP+14h]) on a
+        // stack message, then 0077C2A0(ship, message, 7, 0); the local copy
+        // reaches the ship's 0074B570, whose A5h arm runs 0074A990.
+        owner_.deliver_land_at_pad_a5(index_, pad, building, "0074A990 land at pad");
         ++s.landing_begins;
         owner_.done("ShipAiApproach::landing_mode_3_begin", 0x0074a990u);
     }
@@ -13480,6 +13474,12 @@ bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
     return impl_->big_landing_ship_of(unit_index);
 }
 
+float GameShipAiHost::unit_class_capture_power_0804(std::size_t unit_index) const {
+    // The same read as the capture tick's (the `power` it scales).
+    const std::vector<float>& power = impl_->capture_power_0804;
+    return unit_index < power.size() ? power[unit_index] : 10.0f;
+}
+
 const GameAvoidZoneRuntime* GameShipAiHost::avoid_zone_runtime() const noexcept {
     return impl_->zones.ready() ? &impl_->zones : nullptr;
 }
@@ -13494,6 +13494,19 @@ bool GameShipAiHost::command_building_armour_0368(std::size_t unit_index, float&
     const Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
     if (b == nullptr) return false;
     out = b->armour_368;
+    return true;
+}
+
+bool GameShipAiHost::command_building_fort_timers(std::size_t unit_index,
+                                                  FortTimerFields& out) {
+    Impl& host = *impl_;
+    if (!host.capture_built) host.build_capture_buildings();
+    Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return false;
+    out.fire_740 = &b->fire_740;
+    out.smoke_744 = &b->smoke_744;
+    out.time_748 = &b->fire_time_748;
+    out.clock_750 = &b->secondary_clock_750;
     return true;
 }
 
@@ -13810,10 +13823,13 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         }
     }
     if (kLandFortFireRollBound) {
-        // 00745BE0, the LandFort frame update's fire arm (LABELLED order: here, at
-        // the head of the capture step).
+        // 00745BE0, the LandFort frame update (LABELLED order: here, at the head of
+        // the capture step): the +740h fire arm, then (it falls through at 00745F16)
+        // the +744h smoke arm 00745F1E, which only a dead building's 007465E0 sets
+        // (goal 5 chain 639, through command_building_fort_timers).
         for (CaptureBuilding& b : capture_buildings) {
             if (b.fire_740) landfort_fire_frame_00745be0(b, seconds);
+            if (b.smoke_744) landfort_smoke_arm(b, seconds);
         }
     }
     if (gunnery_draws != nullptr) {
@@ -14098,7 +14114,11 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     if (!(chance > draw)) return;                                       // 00747123
     ++fire_roll_hits;
     // 00746320. +744h (the smoke effect) is set only by 007465E0 (the death arm,
-    // 00747351) and the D1h handler; neither runs for a capture building here.
+    // 00747351) and the D1h handler. 007465E0 runs on this record for a dead
+    // building (the gunnery host's 00747170, goal 5 chain 639): it stops and clears
+    // +740h and writes the shared +748h. The D1h handler is the session replica and
+    // does not run in single player. 00746320 reads only +740h, so a smoking building
+    // starts a fire here as in the image.
     if (b.fire_740) {
         // 0074657E..007465C5: keep the larger duration.
         ++fire_draws;
@@ -14129,8 +14149,8 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     }
 }
 
-// 00745BE0 (body 00745BE0-00745F9F), the +740h arm only; packet
-// cc9_landfort_fire_roll. The +744h arm (00745F1E..) has no producer here.
+// 00745BE0 (body 00745BE0-00745F9F), the +740h arm; packet cc9_landfort_fire_roll.
+// The +744h arm (00745F1E..) is landfort_smoke_arm below (goal 5 chain 639).
 void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds) {
     // 00745C41..00745C6C: +748h -= dt (stored as a float), +750h += dt.
     b.fire_time_748 = static_cast<float>(static_cast<double>(b.fire_time_748)
@@ -14185,6 +14205,43 @@ void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, floa
                                           - static_cast<double>(back));
     b.secondary_clock_750 = -1.0f < next ? -1.0f : next;                // 00745EDE
     record("LandFort::secondary_sync_message_d1", 0x00745f06u);
+}
+
+// 00745F1E..00745F9D, the +744h arm of 00745BE0 for a capture building (goal 5 chain
+// 639), through bsp::gameplay_seg41_cc13::smoke_frame_00745f1e on this record's
+// +744h / +748h / +750h: +748h -= dt, +750h += dt, and the smoke stops at +748h <= 0.
+void GameShipAiHost::Impl::landfort_smoke_arm(CaptureBuilding& b, float seconds) {
+    namespace s41 = bsp::gameplay_seg41_cc13;
+    struct SmokeStop final : s41::LandFortHost {
+        explicit SmokeStop(Impl& owner_in) : owner(owner_in) {}
+        float uniform(int, float, float) override {
+            throw std::logic_error("00745F1E draws nothing");
+        }
+        void stop_fire_effect_740() override {
+            throw std::logic_error("00745F1E does not touch +740h");
+        }
+        bool create_death_smoke_effect() override {
+            throw std::logic_error("00745F1E creates nothing");
+        }
+        void send_effect_message_7(float) override {
+            throw std::logic_error("00745F1E sends nothing");
+        }
+        void stop_smoke_effect_744() override {   // 00745F73 00867B10, 00745F80 00484620(0)
+            ++owner.smoke_stops;
+            owner.record("LandFort::smoke_effect_stop_00867b10", 0x00745f73u);
+        }
+        Impl& owner;
+    } host(*this);
+    s41::FortTimers t;
+    t.fire_740 = b.fire_740;
+    t.smoke_744 = b.smoke_744;
+    t.time_748 = b.fire_time_748;
+    t.clock_750 = b.secondary_clock_750;
+    s41::smoke_frame_00745f1e(t, seconds, host);
+    b.smoke_744 = t.smoke_744;
+    b.fire_time_748 = t.time_748;
+    b.secondary_clock_750 = t.clock_750;
+    done("LandFort::smoke_frame_00745f1e", 0x00745f1eu);
 }
 
 // 00803CE0, fastcall (ECX = side, EDX = target), complete: 3 when the target's
@@ -14399,13 +14456,22 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
         ++ramp_unloads;
         pads.post_unload(static_cast<int>(u));
         const GameUnitRow* row = units.unit_row(u);
+        // Goal 5 chain 631: 0074AD90's 0074AE6E..0074AE79 report the ship on the
+        // `shipLanded` channel (00986820, [00F8A0C4] being the live warning manager)
+        // right after +118Ch = 1; queued for the mission Lua host's dispatcher.
+        ship_landed_events.push_back(u);
         log.notef("landing ship unload: unit=%s at t=%.2f pad=%d +118Bh=1 +118Ch=1 "
-            "LandingStarted=true LandingFinished=true queued (0074B164..0074B2EF, 0074AD90; "
-            "006AC370's troop paths and the shipLanded event 00986820 are records)",
+            "LandingStarted=true LandingFinished=true shipLanded queued (0074B164..0074B2EF, "
+            "0074AD90 -> 00986820; 006AC370's troop paths are a record)",
             row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200);
         record("LandingShip::pad_troop_paths_006ac370", 0x006ac370u);
-        record("MissionEvents::ship_landed_00986820", 0x00986820u);
     }
+}
+
+std::vector<std::size_t> GameShipAiHost::take_ship_landed_events() {
+    std::vector<std::size_t> out;
+    out.swap(impl_->ship_landed_events);
+    return out;
 }
 
 // Packet cc9_lua_capture_percentage: see the header.
@@ -14854,6 +14920,122 @@ bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const fl
     return true;
 }
 
+namespace {
+// Goal 5 chain 630. The landing ship's slot 164h, 0074B570, over this host:
+// the three calls of its A5h arm (bsp.py show 0074B570 --asm). The handles
+// are resolved against the +174h stand-ins the sender posted: a pad is its
+// scene marker id (BuildingPadModel::Pad::marker_id, the LandingPoint's id in
+// this host), a building its units-host index + 1 (the id
+// GameScriptOrdersHost::entity_object_id answers). LABELLED: a stand-in the
+// copy's 13 (pad) or 12 (building) bits cannot carry keeps the posted entity,
+// as the formation and gun-aim copies keep theirs; the load-time marker ids
+// count up from 50000, so a pad is in practice the posted one.
+class LandAtPadReceiver final : public bsp::gameplay_seg41_cc13::LandingShipMessageHost {
+public:
+    LandAtPadReceiver(GameShipAiHost::Impl& host, bsp::BuildingPadModel& pads, std::size_t unit,
+                      int pad, std::uint32_t pad_id, int building, std::uint32_t building_id,
+                      const char* source)
+        : host_(host), pads_(pads), unit_(unit), pad_(pad), pad_id_(pad_id),
+          building_(building), building_id_(building_id), source_(source) {}
+
+    void set_role_available_0077f360(std::uint32_t, std::uint32_t) override {
+        // 0074B59F..0074B5B0: vtable[148h](1FFh, 8), 0077F360 over the image
+        // unit's role table (00927D20) and the role manager map; no typed arm.
+        host_.record("LandingShip::vtable_148_on_0a5", 0x0074b5b0u);
+    }
+    void begin_landing_0074a990(std::uint16_t pad_handle,
+                                std::uint16_t building_handle) override {
+        // 0074B5B2..0074B616: +1Eh, then +1Ch, through the handle tables at
+        // 00F89A0C / 00F89A60.
+        int building = building_;
+        if (building_id_ <= 0xfffu) {
+            building = building_handle == 0 ? -1 : static_cast<int>(building_handle) - 1;
+        }
+        int pad = pad_;
+        if (pad_id_ <= 0x1fffu) {
+            pad = -1;
+            for (std::size_t i = 0; i < pads_.pad_count(); ++i) {
+                const bsp::BuildingPadModel::Pad* candidate = pads_.pad(static_cast<int>(i));
+                if (candidate != nullptr
+                    && static_cast<std::uint32_t>(candidate->marker_id) == pad_handle) {
+                    pad = static_cast<int>(i);
+                    break;
+                }
+            }
+        }
+        const bsp::BuildingPadModel::Pad* p = pad >= 0 ? pads_.pad(pad) : nullptr;
+        if (p == nullptr) throw std::logic_error("A5h copy names no landing pad");
+        // 0074B61A: 0074A990(pad, building). `draw` is 00BD2F10's uniform(0,
+        // 0.75f [00CEE07C]) inside 0074A990. +1208h is the scene key
+        // SpawnPhase (00CFFCAC, 0074C5F4), which no scene in this installation
+        // authors: 0, the construct's value (0074BB90).
+        const float draw = host_.gunnery_draws != nullptr
+            ? host_.gunnery_draws->ship_ai_draw(unit_, 0.0f, 0.75f) : 0.0f;
+        pads_.begin_landing_0074a990(static_cast<int>(unit_), pad, building, draw, 0);
+        host_.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
+        // 0074A9FC..0074AA75: unless [game+1FE4h] == 2, 0077D600(ship)(land
+        // 00E08FA0, {kind 0, position valid, pad world position, 0.0f}, 1).
+        bsp::SceneCommandTarget target{};
+        target.kind = 0;
+        target.position_valid = 1;
+        target.position[0] = p->position[0];
+        target.position[1] = p->position[1];
+        target.position[2] = p->position[2];
+        host_.units.issue_script_command(unit_, 0x00e08fa0u, target, 1, source_,
+                                         "LandingPoint");
+        began_ = true;
+    }
+    void hud_landing_prompt_if_selected() override {
+        // 0074B61F..0074B684: 00644A60 on [00E198C4]+40h against this ship,
+        // then 00566050 and the front-end request; presentation.
+        host_.record("LandingShip::hud_landing_prompt", 0x0074b61fu);
+    }
+    void lower_ramp_0074a420() override {
+        throw std::logic_error("A5h copy reached 0074B570's A6h arm");
+    }
+    bool base_handle_message_00821e80() override {
+        throw std::logic_error("A5h copy reached the ship base handler 00821E80");
+    }
+    bool began() const noexcept { return began_; }
+
+private:
+    GameShipAiHost::Impl& host_;
+    bsp::BuildingPadModel& pads_;
+    std::size_t unit_;
+    int pad_;
+    std::uint32_t pad_id_;
+    int building_;
+    std::uint32_t building_id_;
+    const char* source_;
+    bool began_{false};
+};
+}  // namespace
+
+void GameShipAiHost::Impl::deliver_land_at_pad_a5(std::size_t unit, int pad, int building,
+                                                  const char* source) {
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+    const std::uint32_t pad_id = p != nullptr ? static_cast<std::uint32_t>(p->marker_id) : 0u;
+    const std::uint32_t building_id =
+        building >= 0 ? static_cast<std::uint32_t>(building) + 1u : 0u;
+    LandAtPadReceiver receiver(*this, pads, unit, pad, pad_id, building, building_id, source);
+    bool handled = false;
+    if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+        handled = messages->deliver_land_at_pad_a5(static_cast<std::uint16_t>(pad_id),
+            static_cast<std::uint16_t>(building_id), receiver);
+        done("LandingShip::a5_local_copy_0075af00", 0x0075af00u);
+    } else {
+        // No commands host: 0074B570 over the posted message, as the direct
+        // call took it.
+        handled = bsp::gameplay_seg41_cc13::handle_message_0074b570(0xA5u,
+            static_cast<std::uint16_t>(pad_id), static_cast<std::uint16_t>(building_id),
+            receiver);
+        record("LandingShip::a5_local_copy_0075af00", 0x0075af00u);
+    }
+    if (!handled || !receiver.began())
+        throw std::logic_error("A5h: the copy did not reach 0074B570's landing arm");
+}
+
 int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     Impl& host = *impl_;
     GameShipAiSummary& s = host.summary;
@@ -14906,21 +15088,10 @@ int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     }
     const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
     if (p == nullptr) return -4;
-    // 0074A565 ship+1200h = pad; 0074A56B..0074A57F 0A5h (00749D90) routed at
-    // class 7; 0074B570 runs 0074A990. Delivered at the call (LABELLED).
-    const float draw = host.gunnery_draws != nullptr
-        ? host.gunnery_draws->ship_ai_draw(unit, 0.0f, 0.75f) : 0.0f;
-    pads.begin_landing_0074a990(ship, pad, site, draw, 0);
-    host.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
-    // 0074A9FC..0074AA75: 0077D600(ship)(land 00E08FA0, pad world position).
-    bsp::SceneCommandTarget target{};
-    target.kind = 0;
-    target.position_valid = 1;
-    target.position[0] = p->position[0];
-    target.position[1] = p->position[1];
-    target.position[2] = p->position[2];
-    host.units.issue_script_command(unit, 0x00e08fa0u, target, 1,
-        "0074A4C0 land at pad", "LandingPoint");
+    // 0074A565 ship+1200h = pad; 0074A55F..0074A57F 00749D90(pad = EAX,
+    // building = EDI) on a stack message and 0077C2A0(ship, message, 7, 0);
+    // the local copy reaches the ship's 0074B570, which runs 0074A990.
+    host.deliver_land_at_pad_a5(unit, pad, site, "0074A4C0 land at pad");
     ++s.landing_begins;
     ++s.landing_requests_begun;
     host.log.notef("  landing ship request (94h -> 0074A4C0): t=%.2f unit=%u pad=%d site=%d "
@@ -16168,9 +16339,9 @@ void GameShipAiHost::report() {
                 static_cast<double>(row.station_limit_max));
         }
     }
-    host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
+    host.log.notef("summary mission ship ai command completion events=%llu "
         "end_commands=%llu queue_advances=%llu",
-        host.summary.command_events, host.summary.command_event_callbacks,
+        host.summary.command_events,
         host.summary.command_endings, host.summary.command_completions);
     host.log.notef("summary mission ship ai arm tail bodies=%llu latched=%llu stops=%llu "
         "arrival_latches=%llu",
@@ -16296,11 +16467,12 @@ void GameShipAiHost::report() {
             host.timer_draws_standoff,
             kShipAiTimerDrawsBound ? 1 : 0);
         host.log.notef("summary mission landfort fire rolls=%llu roll_hits=%llu starts=%llu "
-            "extends=%llu stops=%llu secondary_rolls=%llu secondary_hits=%llu draws=%llu "
-            "bound=%d (007470B0 / 00746320 / 00745BE0, packet cc9_landfort_fire_roll)",
+            "extends=%llu stops=%llu smoke_stops=%llu secondary_rolls=%llu "
+            "secondary_hits=%llu draws=%llu bound=%d (007470B0 / 00746320 / 00745BE0, "
+            "packet cc9_landfort_fire_roll)",
             host.fire_rolls, host.fire_roll_hits, host.fire_starts, host.fire_extends,
-            host.fire_stops, host.fire_secondary_rolls, host.fire_secondary_hits,
-            host.fire_draws, kLandFortFireRollBound ? 1 : 0);
+            host.fire_stops, host.smoke_stops, host.fire_secondary_rolls,
+            host.fire_secondary_hits, host.fire_draws, kLandFortFireRollBound ? 1 : 0);
         host.log.notef("summary mission command building level ups=%llu resets=%llu "
             "unchanged=%llu bound=%d (006F7360 / 006F4D10 -> D4h 006F38E0, packet "
             "cc9_command_building_level)", host.level_ups, host.level_resets,

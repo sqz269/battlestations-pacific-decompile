@@ -1,0 +1,234 @@
+{
+  "chain": 653,
+  "slot": "g5-w1",
+  "goal": 5,
+  "picked": "the keyed Scoring_* Lua rows over the mission result's [game+21A0h] records and the profile's unlock state",
+  "wired_total_before": 10189,
+  "wired_total_after": 10216,
+  "rows": [
+    {
+      "native": "008b9190",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetMissionScore, lua_binding_scoring_set_mission_score_008b9190"
+    },
+    {
+      "native": "008b93c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetMissionScore, lua_binding_scoring_get_mission_score_008b93c0"
+    },
+    {
+      "native": "008b95c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_AddMissionScore, lua_binding_scoring_add_mission_score_008b95c0"
+    },
+    {
+      "native": "008b97f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetMissionMedal, lua_binding_scoring_set_medal_008b97f0"
+    },
+    {
+      "native": "008bb530",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetActionMedal, lua_binding_scoring_set_medal_008b97f0 (ActionMedals)"
+    },
+    {
+      "native": "008b9a30",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetActionScore, lua_binding_scoring_set_keyed_score_variant_b"
+    },
+    {
+      "native": "008ba0f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetShipScore, lua_binding_scoring_set_keyed_score_variant_b"
+    },
+    {
+      "native": "008ba7b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetPlaneScore, lua_binding_scoring_set_keyed_score_variant_b"
+    },
+    {
+      "native": "008bae70",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetCommandScore, lua_binding_scoring_set_keyed_score_variant_b"
+    },
+    {
+      "native": "008b9c90",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetActionScore, lua_binding_scoring_get_keyed_score_variant_a"
+    },
+    {
+      "native": "008ba350",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetShipScore, lua_binding_scoring_get_keyed_score_variant_a"
+    },
+    {
+      "native": "008baa10",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetPlaneScore, lua_binding_scoring_get_keyed_score_variant_a"
+    },
+    {
+      "native": "008bb0d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetCommandScore, lua_binding_scoring_get_keyed_score_variant_a"
+    },
+    {
+      "native": "008b9e90",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_AddActionScore, seg56b lua_scoring_add_action_score"
+    },
+    {
+      "native": "008ba550",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_AddShipScore, seg56b lua_scoring_add_ship_score"
+    },
+    {
+      "native": "008bac10",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_AddPlaneScore, seg56b lua_scoring_add_plane_score"
+    },
+    {
+      "native": "008bb2d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_AddCommandScore, seg56b lua_scoring_add_command_score"
+    },
+    {
+      "native": "008bbc40",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_IsUnlocked, seg56b lua_scoring_is_unlocked over the profile's unlock state"
+    },
+    {
+      "native": "008cb920",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GrantUnlock, options lua_scoring_grant_unlock into profile pending_unlocks"
+    },
+    {
+      "native": "008b8970",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_GetRealPlayTime, seg56b lua_scoring_get_real_play_time (+14A0h = world.bots.active_time)"
+    },
+    {
+      "native": "008b8ca0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "Scoring_SetRanking, seg56b lua_scoring_set_ranking (00905350 store on ranking_04)"
+    },
+    {
+      "native": "009103f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "scoring_scaled_set_009103f0 via the mission-score setter; PC24 per-op rounding fixed"
+    },
+    {
+      "native": "00910480",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding",
+      "note": "scoring_scaled_add_00910480 via the mission-score adder; PC24 per-op rounding fixed"
+    },
+    {
+      "native": "008b8ff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_GetTotalMissionScore reads record+1E0h, whose producer (the scoring recalculation, 009150A0 with 0091B2E0's multipliers) does not run in this host, so it would answer a stale 0"
+    },
+    {
+      "native": "008b8e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_ForceRefreshScoringTable needs 009150A0, the score-table recalculation over the raw manager; the host keeps typed records and does not load 0091B2E0's score multipliers"
+    },
+    {
+      "native": "008bbe00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_SetConditionMessage writes the commit record's runtime string +254h, which MissionScoreRecord does not carry and no host debrief reads"
+    },
+    {
+      "native": "008bc0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_SetVictoryMessage writes the commit record's runtime string +25Ch, which MissionScoreRecord does not carry and no host debrief reads"
+    },
+    {
+      "native": "008bb770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_GrantBonus writes the profile's bonus vectors +ACh/+BCh, which ProfileResetState does not model"
+    },
+    {
+      "native": "008d0140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_GetUnitTypeShotDown reads the record's loss maps +1ECh/+1F8h, which nothing in this host fills (0091BDA0's loss attribution and AddPartyLoss do not run)"
+    },
+    {
+      "native": "008c3fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_AddPartyLoss: 0090ED90's body addresses the raw manager and the loss maps have no reader wired here; wire with GetUnitTypeShotDown and the loss attribution"
+    },
+    {
+      "native": "008c3ea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_IgnorePlayersPartyLosses sets manager byte +1484h, read only by the loss attribution this host does not run"
+    },
+    {
+      "native": "008cc330",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_IgnoreEntityKill inserts into the manager set +1488h, read only by the kill attribution 0091BDA0 this host does not run"
+    },
+    {
+      "native": "008d2d60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "Scoring_ClearAllMissionsScore clears the loaded profile's mission progress (007FD510) and needs 00916980's reset of the eight live records, which the result host only records"
+    },
+    {
+      "native": "008cbad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline",
+      "reason": "ForceEnableInput's set game+5B0h is InputTickState::suppressed_actions, but the mission frame leaves InputTickState.records empty (the application input runtime holds the live records), so an insert would reach no action"
+    },
+    {
+      "native": "008c7300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "BlackBars: 005CB0F0/005CB130 and 005CBC30/005CBCC0 address the raw movie screens (+8h/+9h/+0Ch/+1Ch); the HUD host builds no native-layout movie screen for them"
+    },
+    {
+      "native": "008a8f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp",
+      "reason": "SetGuiName: entity vtable+0Ch is 0077D3F0, which stores the name at entity+15Ch; the units host keeps no gui-name field to store it in"
+    }
+  ],
+  "review_round_1": [
+    {
+      "finding": "ScoringRowArgs::get_integer dropped 00B66290 float32 spill (00B662A0 FSTP float / 00B662A3 FLD float) before __ftol",
+      "outcome": "fixed",
+      "change": "get_integer now returns bsp::lua_number_integer_00b66290(lua_tonumber(...), conversion mode from IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE)); comment describes the spill; rebuilt, tests pass, pc24_lint 0"
+    }
+  ],
+  "review_round_1_nits": "not changed: read_score_multipliers mirrors the existing Globals readers by design; the ScoringImage token buffer is per call and only addresses are used"
+}

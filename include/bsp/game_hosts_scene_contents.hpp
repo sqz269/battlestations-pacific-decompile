@@ -793,6 +793,68 @@ template <> struct SceneTerrainQuadNodeStorage<true> {
     using type = SceneTerrainNativeQuadNodes;
 };
 
+// Goal 5 chain 640: native-layout views for terrain slot 2Ch 00ADA990 and the
+// slots it reaches, 50h 00ADB620 -> 4Ch 00ADB550 -> 00ADEA70 / 00ADB1D0, which
+// read the height field +1Ch (cell), +2Ch (the node: +5Ch flags, +120h/+128h
+// its world x/z), +38h/+3Ch (tiles), +40h (tile pointers; tile +1Ch the block,
+// whose +20h/+24h/+28h is a 21h x 21h byte grid) and +80h/+84h (origin). Only
+// those offsets are written. The byte grid is the base block's: 00AED9A0 sizes
+// it with 00AED210 and fill 0, and its only writer 00ADB160 is called only by
+// 00ADB6F0, which nothing in the image references (no rel32 or abs32), so every
+// loaded block's grid is zero; the blocks share one zero array.
+struct SceneTerrainNativeNodeView {
+    std::uint8_t unread_00[0x5c]{};
+    std::uint32_t flags_5c{2};   // bit 2: the world is valid, so 00B6DB70 is not called
+    std::uint8_t unread_60[0xc0]{};
+    float x_120{0.0f};
+    float y_124{0.0f};
+    float z_128{0.0f};
+};
+struct SceneTerrainNativeByteGridView {
+    std::uint8_t unread_00[0x20]{};
+    std::int32_t width_20{0x21};
+    std::int32_t height_24{0x21};
+    const std::uint8_t* data_28{nullptr};
+};
+struct SceneTerrainNativeTileView {
+    std::uint8_t unread_00[0x1c]{};
+    const SceneTerrainNativeByteGridView* block_1c{nullptr};
+};
+struct SceneTerrainNativeFieldView {
+    std::uint8_t unread_00[0x1c]{};
+    float cell_1c{0.0f};
+    std::uint8_t unread_20[0x0c]{};
+    const SceneTerrainNativeNodeView* node_2c{nullptr};
+    std::uint8_t unread_30[0x08]{};
+    std::int32_t tiles_wide_38{0};
+    std::int32_t tiles_deep_3c{0};
+    const SceneTerrainNativeTileView* const* tiles_40{nullptr};
+    std::uint8_t unread_44[0x3c]{};
+    float origin_x_80{0.0f};
+    float origin_z_84{0.0f};
+};
+static_assert(offsetof(SceneTerrainNativeNodeView, flags_5c) == 0x5c);
+static_assert(offsetof(SceneTerrainNativeNodeView, x_120) == 0x120);
+static_assert(offsetof(SceneTerrainNativeNodeView, z_128) == 0x128);
+static_assert(offsetof(SceneTerrainNativeByteGridView, width_20) == 0x20);
+static_assert(offsetof(SceneTerrainNativeByteGridView, data_28) == 0x28);
+static_assert(offsetof(SceneTerrainNativeTileView, block_1c) == 0x1c);
+static_assert(offsetof(SceneTerrainNativeFieldView, cell_1c) == 0x1c);
+static_assert(offsetof(SceneTerrainNativeFieldView, node_2c) == 0x2c);
+static_assert(offsetof(SceneTerrainNativeFieldView, tiles_wide_38) == 0x38);
+static_assert(offsetof(SceneTerrainNativeFieldView, tiles_40) == 0x40);
+static_assert(offsetof(SceneTerrainNativeFieldView, origin_x_80) == 0x80);
+static_assert(offsetof(SceneTerrainNativeFieldView, origin_z_84) == 0x84);
+
+struct SceneTerrainNativeHeightView {
+    SceneTerrainNativeFieldView field;
+    SceneTerrainNativeNodeView node;
+    std::vector<std::uint8_t> zero_grid;                      // 21h x 21h, all 0
+    std::vector<SceneTerrainNativeByteGridView> grids;        // one per loaded block
+    std::vector<SceneTerrainNativeTileView> tiles;            // one per loaded block
+    std::vector<const SceneTerrainNativeTileView*> tile_pointers;  // +40h, null = no tile
+};
+
 struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<true> {
     std::string root;               // `TRNV2` on this installation's islands
     int tiles_wide{0};              // +38h
@@ -820,6 +882,16 @@ struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<true> {
     // Terrain slot 38h, 00ADABA0 -> slot 30h 00ADAA40: the unit normal of the
     // cell the world (x, z) truncates to.
     void normal_00adaba0(float x, float z, float out[3]) const noexcept;
+    // Terrain slot 44h, 00ADA890 (no Ghidra function; 00ADA890..00ADA8FF):
+    // tile = index >> 5, local = index - (tile << 5); a tile at or past +38h
+    // (+3Ch) takes the last tile and local 32 ([00D5D658]).
+    void split_index_00ada890(int i, int j, int& tx, int& tz, int& lx, int& lz) const noexcept;
+    // Terrain slot 2Ch, 00ADA990, the Landscape forwarder 0087FC60's slot:
+    // slot 48h's height plus slot 50h's bilinear of the blocks' byte grids, run
+    // through bsp::cc13_terrain::height_field_height_at_world_00ada990 over the
+    // native view below (built on the first query).
+    float height_at_world_slot2c(float x, float z) const;
+    mutable std::unique_ptr<SceneTerrainNativeHeightView> native_height_view;
     // Packet cc9_land_convoy_movement: the local-frame slots the forwarders
     // 0087FA20 ([+3D0h]->vtable[24h]) and 0087FB90 (vtable[34h]) reach. The
     // vtable is 00D5D350 (xrefs 00ADD1CE, 00ADD2C9), so +24h is 00ADA160 and

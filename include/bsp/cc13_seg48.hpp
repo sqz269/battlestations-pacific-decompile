@@ -57,7 +57,18 @@ public:
     virtual bool weapon_controller_has_rocket_kind33_007b9400(void*, std::uint32_t loadout) = 0;
 };
 
-class Cc13Seg48Host : public Cc13SquadronOrdnanceHost, public Cc13SquadronRocketHost {
+// Goal 5 chain 650. 007E2070 calls only 006952A0 (bsp.py show 007e2070 --asm:
+// CALL 006952A0 at 007E2080). Declaration moved out of Cc13Seg48Host so a host
+// with a live neighbours cache runs the body without the whole boundary.
+class PlaneNeighboursObserverHost {
+public:
+    virtual ~PlaneNeighboursObserverHost() = default;
+    // 006952A0 BSP_Observer_UnregisterPair: __fastcall(ECX = observed, EDX = owner).
+    virtual void observer_unregister_pair_006952a0(void* observed, void* owner) = 0;
+};
+
+class Cc13Seg48Host : public Cc13SquadronOrdnanceHost, public Cc13SquadronRocketHost,
+                      public PlaneNeighboursObserverHost {
 public:
     virtual ~Cc13Seg48Host() = default;
 
@@ -100,8 +111,7 @@ public:
     virtual void callback_owner_detach_all_if_bound_00695830(void* owner) = 0;
     // 00694A60 BSP_Observer_RegisterPair: __fastcall(ECX = observed, EDX = owner).
     virtual void observer_register_pair_00694a60(void* observed, void* owner) = 0;
-    // 006952A0 BSP_Observer_UnregisterPair: __fastcall(ECX = observed, EDX = owner).
-    virtual void observer_unregister_pair_006952a0(void* observed, void* owner) = 0;
+    // 006952A0: PlaneNeighboursObserverHost.
     // 006CDD70 BSP_FollowObserverMember_Destroy: __thiscall(ECX = member).
     virtual void follow_observer_member_destroy_006cdd70(void* member) = 0;
     // 00875B30 BSP_TickSubnode_BaseCleanup: __thiscall(ECX = node).
@@ -348,7 +358,7 @@ void cc13_seg48_callback_owner_reset_007de690(void* owner, Cc13Seg48Host& host);
 void cc13_seg48_callback_buffer_destruct_007dec80(void* buffer, Cc13Seg48Host& host);
 void cc13_seg48_plane_neighbours_destruct_007decf0(void* neighbours, Cc13Seg48Host& host);
 void cc13_seg48_plane_neighbours_append_observed_007e0f20(void* buffer, void* observed, Cc13Seg48Host& host);
-void cc13_seg48_plane_neighbours_clear_target_observer_007e2070(void* neighbours, Cc13Seg48Host& host);
+void cc13_seg48_plane_neighbours_clear_target_observer_007e2070(void* neighbours, PlaneNeighboursObserverHost& host);
 void* cc13_seg48_plane_neighbours_construct_007e1e20(void* neighbours, void* owner, Cc13Seg48Host& host);
 void cc13_seg48_plane_neighbours_advance_timers_007e2010(void* neighbours, float dt, Cc13Seg48Host& host);
 void cc13_seg48_plane_fx_component_start_class_loops_007eb160(void* component, Cc13Seg48Host& host);

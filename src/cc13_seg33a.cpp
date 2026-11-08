@@ -1414,7 +1414,7 @@ void bomb_platform_load_saved_state_006e6010(Seg33aHost& host, void* rack) {
 
 // 006E6210, __fastcall(crew /*ECX*/), RET -> EAX: crew level to skill index, with mp = session mode
 // [[00E188A8]+1FE4h] != 0: 0 -> mp; 1 -> 1 + 2*mp; 2 -> 2 + 2*mp; 3 -> 5; anything else -> 1.
-std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew) {
+std::int32_t skill_from_crew_level_006e6210(Seg33aSessionModeHost& host, std::int32_t crew) {
     if (crew == 0) return host.session_mode_00e188a8_1fe4() != 0 ? 1 : 0;
     if (crew == 1) return host.session_mode_00e188a8_1fe4() != 0 ? 3 : 1;
     if (crew == 2) return host.session_mode_00e188a8_1fe4() != 0 ? 4 : 2;
@@ -1423,7 +1423,7 @@ std::int32_t skill_from_crew_level_006e6210(Seg33aHost& host, std::int32_t crew)
 
 // 006E6270, __fastcall(skill /*ECX*/), RET -> EAX: skill index to crew level, mp as above: 0 -> 0;
 // 1 -> !mp; 2 -> 2 - mp; 3 -> 2 - mp; 4 -> 3 - mp; 5 -> 3; anything else -> 1.
-std::int32_t crew_level_from_skill_006e6270(Seg33aHost& host, std::int32_t skill) {
+std::int32_t crew_level_from_skill_006e6270(Seg33aSessionModeHost& host, std::int32_t skill) {
     if (skill == 0) return 0;
     if (skill == 1) return host.session_mode_00e188a8_1fe4() == 0 ? 1 : 0;
     if (skill == 2) return host.session_mode_00e188a8_1fe4() != 0 ? 1 : 2;
@@ -2324,7 +2324,8 @@ float ratio_abs_dc_over_8c_006eb870(void* cls) {
 
 // 006EB9C0, __thiscall(message, entity), RET 4. 0075B430(message, 7Ch); word +18h = 0, +1Ah = +1Ch
 // = 0, +4h = 1, vtable 00CFAA0C, word +20h = entity+174h. Returns message.
-void* vehicle_add_launched_message_construct_006eb9c0(Seg33aHost& host, void* message, void* entity) {
+void* vehicle_add_launched_message_construct_006eb9c0(Seg33aGunFireMessageHost& host, void* message,
+                                                      void* entity) {
     host.session_message_construct_base_0075b430(message, 0x7C);
     at<std::uint16_t>(message, 0x18) = 0;
     at<std::uint8_t>(message, 0x1A) = 0;
@@ -2824,7 +2825,14 @@ void* bullet_class_unavailable_create_006ea230(void*, std::uint32_t, std::uint32
 void* bullet_class_unavailable_aux_006ea240(void*, std::uint32_t) noexcept { return nullptr; }
 
 // 006EBA50..006EBC60: ECX message, cursor/stream, RET4. Header precedes all fields.
-void vehicle_launched_message_read_006eba50(Seg33aHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
+// 006EBA20..006EBA4A (bsp.py disasm-raw 006eba00 --length 0x50): 0075B480 on the cursor,
+// 004290B0 with MOVZX [ESI+1Ch], 00429120 with MOVZX word [ESI+20h] in 0Ch bits, RET 4.
+void vehicle_add_launched_message_write_006eba20(Seg33aGunFireMessageHost& h, void* m, void* c) {
+    late_write_bool_word(h, m, c);
+}
+void vehicle_launched_message_read_006eba50(Seg33aGunFireMessageHost& h, void* m, void* s) {
+    late_read_bool_word(h, m, s);
+}
 void plane_takeoff_message_write_006ebb10(Seg33aHost& h, void* m, void* c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x1C));

@@ -1148,7 +1148,7 @@ namespace {
 // The inline checked index every matcher makes before key k: a null begin (+4h) or k at or past
 // the dword count ((+8h - +4h) >> 2, signed shift then unsigned compare) reports through 00BF6713;
 // the read still happens.
-std::uint32_t checked_param(SweepCHost& host, void* params, std::uint32_t k) {
+std::uint32_t checked_param(SubscriptionMatchHost& host, void* params, std::uint32_t k) {
     const auto begin = at<std::int32_t>(params, 0x04);
     if (begin == 0 ||
         static_cast<std::uint32_t>((at<std::int32_t>(params, 0x08) - begin) >> 2) <= k) {
@@ -1159,7 +1159,7 @@ std::uint32_t checked_param(SweepCHost& host, void* params, std::uint32_t k) {
 
 // The shared shape of the 48- and 67-instruction matchers: filter k is the object embedded at
 // subscription+0Ch+k*10h; each must accept params[k], in order, stopping at the first refusal.
-std::uint32_t match_keys(SweepCHost& host, void* subscription, void* params, std::uint32_t keys) {
+std::uint32_t match_keys(SubscriptionMatchHost& host, void* subscription, void* params, std::uint32_t keys) {
     for (std::uint32_t k = 0; k < keys; ++k) {
         const std::uint32_t value = checked_param(host, params, k);
         if (!host.filter_accepts_vslot_00(add(subscription, 0x0C + k * 0x10), value)) return 0u;
@@ -1171,42 +1171,61 @@ std::uint32_t match_keys(SweepCHost& host, void* subscription, void* params, std
 
 // Two-key matchers (one 48-instruction shape, checked by stripping addresses: 00968710,
 // 009688C0, 00968940, 009689C0, 00968BD0, 00968C50, 00968D80, 00968E00): filters +0Ch, +1Ch.
-std::uint32_t leak_subscription_matches_009688c0(SweepCHost& host, void* subscription, void* params) {
+// 00968710, the exitzone matcher (vtable 00D1B69C slot 3), 00968710..00968781 read whole
+// (goal 5 chain 634): the checked index on key 0 (0096871D..00968729), the +0Ch entity
+// filter's slot 0 with params[0] (00968731..0096873C); only when it holds, the checked
+// index on key 1 (00968742..00968756) and the +1Ch exited filter's slot 0 with params[1]
+// (0096875B..0096876D); AL 1 when both hold. RET 4.
+std::uint32_t exit_zone_subscription_matches_00968710(SubscriptionMatchHost& host, void* subscription,
+                                                      void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t fire_subscription_matches_00968940(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t leak_subscription_matches_009688c0(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t repair_subscription_matches_009689c0(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t fire_subscription_matches_00968940(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t target_subscription_matches_00968bd0(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t repair_subscription_matches_009689c0(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t ammo_type_subscription_matches_00968c50(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t target_subscription_matches_00968bd0(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t gui_subscription_matches_00968d80(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t ammo_type_subscription_matches_00968c50(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
-std::uint32_t generate_subscription_matches_00968e00(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t gui_subscription_matches_00968d80(SubscriptionMatchHost& host, void* subscription, void* params) {
+    return match_keys(host, subscription, params, 2);
+}
+std::uint32_t generate_subscription_matches_00968e00(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 2);
 }
 
+// 00969070, the shipLanded matcher (vtable 00D1B72C slot 3; Ghidra's STL_inst_00969070 tag is
+// a misclassification), __thiscall(ECX = subscription, params), RET 4: the one-key shape. The
+// checked index on key 0 (00969075..00969089: a null begin or an empty vector reports through
+// 00BF6713), then a tail jump into the +0Ch entity filter's slot 0 with params[0]
+// (0096908E LEA ECX,[EDI+0Ch] .. 009690A1 JMP EDX), so AL is the filter's answer.
+std::uint32_t ship_landed_subscription_matches_00969070(SubscriptionMatchHost& host, void* subscription,
+                                                        void* params) {
+    return match_keys(host, subscription, params, 1);
+}
+
 // Three-key matchers (one 67-instruction shape: 00968810, 00968A40, 00968CD0): +0Ch, +1Ch, +2Ch.
-std::uint32_t failure_subscription_matches_00968810(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t failure_subscription_matches_00968810(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 3);
 }
-std::uint32_t zone_subscription_matches_00968a40(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t zone_subscription_matches_00968a40(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 3);
 }
-std::uint32_t stock_subscription_matches_00968cd0(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t stock_subscription_matches_00968cd0(SubscriptionMatchHost& host, void* subscription, void* params) {
     return match_keys(host, subscription, params, 3);
 }
 
 // 009685B0, the hit matcher (vtable 00D1B74C slot 3). Keys 0..3 inline against +0Ch, +1Ch, +2Ch,
 // +3Ch; keys 4..7 read through 009658B0(params, k) against the filters at +4Ch, +5Ch, +68h, +74h.
-std::uint32_t hit_subscription_matches_009685b0(SweepCHost& host, void* subscription, void* params) {
+std::uint32_t hit_subscription_matches_009685b0(SubscriptionMatchHost& host, void* subscription, void* params) {
     if (match_keys(host, subscription, params, 4) == 0) return 0u;
     constexpr std::size_t kTail[] = {0x4C, 0x5C, 0x68, 0x74};
     for (std::uint32_t i = 0; i < 4; ++i) {

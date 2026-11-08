@@ -1,0 +1,31 @@
+{
+  "chain": 664,
+  "goal": 5,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "picked": "mission kill scoring: the 0091BDA0 kill credit writes the real [game+21A0h] score record (shot-team +2D8h, +B4h/+C0h trees, +1488h ignore set), and the Scoring_* Lua rows that read or feed it run their bodies",
+  "wired_before": 10326,
+  "wired_after": 10329,
+  "review_round_1": [
+    "fixed: root_entity_already_scored maps a plane victim to its squadron unit (plane_squadron_registry().find_by_member_unit, squadron_unit != kPlaneSquadronNoUnit) before the +1488h lookup, as 0091BE01..0091BE29 look up vtable[140h](); comment now names victim_is_root as the separate IsKindOf(1Bh) fort gate at 0091BE4D",
+    "fixed: the no-hit note cites the constructor store 0077EFEF OR EAX,-1 / 0077F012 MOV [ESI+2D8h],EAX (checked in the listing) instead of LABELLED/unread",
+    "fixed (optional nit): Scoring_GetPlayerShotDown counts reads and the last answer in the Lua host summary instead of one log line per call"
+  ],
+  "review_round_2": [
+    "fixed: the death route's unit+70h is the stored cause (explicit_kill_cause == 0 ? 1 : cause, the mapping the fort destroy and the Lua kill listener use) instead of a literal 1, so 00959475 CMP [EDI+70h],1 / JNZ 0095951E (checked in the listing) skips 009813A0, the child-trigger pass and 0091BDA0 for a plane landing back on deck (cause 5), Lua Kill(x, true) and a landed remainder (cause 2). The 0091BDA0 block now runs only on that decision. The host tail after it (the fort hand-off 00747170, which is its own path, and the 9Ah ship death message) keeps the clock and world+4ACh gates the old early return had, so a non-harm death still runs them as before. New counter not_harm_70 in the death route summary",
+    "fixed: 0091BDA0 reads a new per-unit own_kill_slot_2d8 that only the victim's own stamp (0077CFC5) writes, reset to -1 where the unit is revived. lua_kill_slot keeps the squadron copy (0077D0E8..0077D128) for the squadron's Lua kill box; the fused wing-0 slot no longer lends wing 0 another wing's stamp"
+  ],
+  "called_note": "readiness 'called' 5545 -> 5609 is not this branch's alone: the first readiness run read an older build (837cbf3e2d); the four rows below are the ones this branch made called",
+  "rows": [
+    {"native": "008cc330", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_IgnoreEntityKill) -> bsp::cc13_left55::seg56c::lua_scoring_ignore_entity_kill over ScoringIgnoreKillHost (0063F1E0 into MissionScoringManagerState::ignored_kill_entities_1488)"},
+    {"native": "008bc9b0", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_GetPlayerShotDown) -> bsp::scoring_sum_shot_down_008bc9b0 on the slot record's player_kills_b4; replaces the script-orders death-row count (removed in 4d0f9bcad)"},
+    {"native": "008bb770", "status": "wired", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_scoring_record_binding (Scoring_GrantBonus) -> bsp::scoring_binding_grant_bonus_008bb770 over ScoringBonusHost (profile bonus_ac + new bonus_records_bc)"},
+    {"native": "007fc9f0", "status": "wired", "host_site": "src/scoring_bodies.cpp scoring_binding_grant_bonus_008bb770 -> scoring_bonus_record_007fc9f0 (reached from the Scoring_GrantBonus row)"},
+    {"native": "0091bda0", "status": "wired", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::kill_unit KillBinding -> bsp::kill_credit_record_unit_kill_0091bda0; already called before this chain, now on real state: kill_tree_leaf writes MissionScoreRecord +B4h/+C0h (merged into the mission progress by 0091A080), root_entity_already_scored reads +1488h with the victim's root (a plane's squadron unit from plane_squadron_registry, as 0091BE01 vtable[140h] answers; review round 1), credited slot is the victim's own shot-team stamp (own_kill_slot_2d8) instead of the side stand-in, run only for a harm death (unit+70h == 1, review round 2); a never-hit victim keeps the constructor's +2D8h = -1 (0077EFEF / 0077F012) and records nothing"},
+    {"native": "008b8ff0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "reads record+1E0h (totals_1c8[6]); nothing in this host writes the +1C8h..+1E0h totals live (the final-scoring pass is not run), so the row would answer 0"},
+    {"native": "008bbe00", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "Scoring_SetConditionMessage: MissionScoreRecord has no +254h string and its only reader, the debrief 00920A20, is a record in GameMissionResultHost"},
+    {"native": "008bc0c0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_scoring_record_binding (not added)", "reason": "Scoring_SetVictoryMessage: same as 008BBE00, no +25Ch string and no reader (debrief 00920A20 not built)"},
+    {"native": "008d0140", "status": "skipped", "host_site": "src/game_hosts_lua.cpp (not added)", "reason": "Scoring_GetUnitTypeShotDown reads the +1ECh/+1F8h loss maps, which 0091BDA0's loss pass cannot fill here: it needs each slot's party [[game+18CCh+i*4]+28h] (KillBinding::add_loss counts only); no script calls it"},
+    {"native": "00898e30", "status": "skipped", "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::push_resolved_entity (FindEntity arm)", "reason": "lua_binding_find_entity is only the argument/push shell; the substance is 0088B1B0's world walk (mission_entity_find_by_name over a MissionEntityListView: per-kind buckets with the +5Ch..+60h gate bytes), which needs a world bucket view of the scene entities; the host's map lookup stands in. Not attempted on this hottest path without a game run"}
+  ]
+}

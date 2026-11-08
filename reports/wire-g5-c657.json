@@ -1,0 +1,96 @@
+{
+  "chain": 657,
+  "slot": "g5-w5",
+  "goal": 5,
+  "base": "origin/main dde57fe18 (fast-forwarded; the branch had no commits of its own)",
+  "picked": "Plane flight bodies the units host had copied inline and that earlier chains skipped only for want of a PC24 audit: 007DC830 BSP_PlaneFlight_FreeFlightStep and 007C18B0 BSP_Plane_UpdatePoseDerivedState",
+  "wired_before": 10255,
+  "wired_after": 10257,
+  "built": [
+    "PlaneFreeFlightStepHost (include/bsp/cc13_front3.hpp): 007DC830's typed boundary, split out of Cc13Front3Host (no implementation anywhere); the body reads each controller/unit/descriptor offset through it at the image's points and rounds every x87 chain per op at PC24 (007DC87D FDIV, 007DCA72/76 FMUL, 007DCC0F/15 FMUL/FADD double, 007DCC88/9E FMUL)",
+    "PlaneBinding::FreeFlightStepBinding + free_flight_step_007dc830 (src/game_hosts_units_motion.cpp): runs the body, core law included, at 007CC332 (007CC2F0's arm) and 007DCD14 (007DCCF0's fallback); the host's inline stall block, dying spin and wreck lift and their three switches (kFreeFlightStallForceBound, kFreeFlightDyingSpinBound, kFreeFlightWreckLiftBound) are deleted",
+    "PlanePoseDerivedStateHost (include/bsp/cc13_seg47b.hpp): 007C18B0's typed boundary; the Seg47bHost raw entry is now a thin adapter over the one body; the four sums of squares round per op at PC24 and the CRT sqrt goes through x87_sqrt24",
+    "PlaneBinding::PoseDerivedStateBinding + update_pose_derived_state_007c18b0: replaces refresh_attitude_007c1900 (the 007C1900 fragment angles plus inline +C7Ch/+C84h) at the head of the free-flight, ground-roll and water-surface arms",
+    "GameUnitSlot gains 007C18B0's rates +C70h/+C74h/+C78h/+C80h/+C88h; follow_hold_attitude reads +C70h instead of the labelled constant 0"
+  ],
+  "evidence": [
+    "bsp.py show 007dc830 --asm: 007DC841 ctl+FCh = 0, 007DC84F/86B ctl+4h/+5h, 007DC86E 007DB680(step,0,0,0); 007DC87D FDIV float [desc+184h]; 007DCA6E FLD g, 007DCA72 FMUL m, 007DCA76 FMUL d, FSTP; 007DCAB9 FMUL desc+17Ch; 007DCAFB-007DCB40 the dead-meat add; 007DCC0F FMUL double 00CE3D40, 007DCC15 FADD double 00CEFF98; 007DCC88 / 007DCC9E FMUL; 007DCCD3 ctl+8Ch = 0",
+    "Dynamics mirror = GameTuningBlock + (address - 00F870E0h): StallRangeMin +22Ch = 00F8730C ... StallMulOffPitch +288h = 00F87368 (include/bsp/game_tuning_singleton.hpp)",
+    "bsp.py show 007c18b0 --asm: 007C190A-007C192A fx*fx and fz*fz stored then summed; 007C1989-007C19A5 (v1^2 + v0^2) + v2^2; 007C1BD9/007C1BFB squares stored as doubles (FST double 007C1BEF / 007C1BFD) and 007C1C07-007C1C0B summed; 007C1C5F vx^2 + vz^2; 007C1CAE-007C1CBC a^2 + c^2; 00CE3820 = double 1e-10 (bytes bb bd d7 d9 df 7c db 3d)",
+    "007CE040 calls 007C18B0 at 007CEE9C with dt = [ESP+104h], the fixed step; call_graph.py who: both bodies REACHABLE from PlaneBinding (1 call site each)",
+    "pc24_lint --diff origin/main...HEAD: 0 findings over 8 files; build.ps1 4/4 tests pass"
+  ],
+  "rows": [
+    {
+      "native": "007dc830",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::free_flight_step_007dc830 (from free_flight_007cc2f0 and ground_roll_007cbfa0)"
+    },
+    {
+      "native": "007c18b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp PlaneBinding::update_pose_derived_state_007c18b0 (from free_flight_007cc2f0, ground_roll_007cbfa0 and water_surface_step_007cba50)"
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameReconRelationLists::retire_unscanned",
+      "reason": "Walks native 1Ch ReconEntry payloads ([payload+4h] unit) and the unit's observer pairs 00694AF0/006952A0; the host's recon list payloads are unit indices, no native unit or entry exists."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp publish_recon_triples_008073c0 (group fold)",
+      "reason": "Publishes on the group unit's native detection record unit+1E8h+slot*34h (level, detector pair +28h, change delegate); the host keeps no per-unit detection record image."
+    },
+    {
+      "native": "00806a60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp publish_recon_triples_008073c0 (convoy fold)",
+      "reason": "Same native detection record as 008069A0; the convoy group's entity is a LandConvoy with no host unit index."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp GameReconRelationLists::refresh",
+      "reason": "Constructs the native 1Ch ReconEntry from a native unit (+1E4h vtable[1] sensor class index); the host lists borrow unit indices instead."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp Pass::candidate_attack_value (throws for an air-support entry)",
+      "reason": "Needs 00A0C650's composition pair value (compose_against_group; SpawnCompositionHost has no implementation) over the power-up class's flight block plane class."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Reads the per-mode class-pair rows [004C1C50()+mode*10h+FACh]; no parser-owned table reaches the AI host."
+    },
+    {
+      "native": "00526720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp UnitPickBinding::lock_branch",
+      "reason": "The unit-pick lock branches (also 00525250, 005241D0) run only on in-mission action input; action_byte has no device state to answer and the bodies read raw native units."
+    },
+    {
+      "native": "0067c1a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp HudInterfaceBinding (0068ACA0's interface arms)",
+      "reason": "Binds a native unit and its camera (unit+538h)+A0h, camera image +3ACh..+3F0h; the HUD host keeps unit indices (also 00519B00: unit+9F0h, unit+9D4h)."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (kAiGroupScoreListReleaseBound)",
+      "reason": "Debug-only: the group score list's only reader is the text overlay 00A2CDD0 <- 00A2D580 <- 00A31000, which nothing reaches (also 00A2BCC0)."
+    }
+  ],
+  "left": "007C18B0's other native callers keep host substitutes: the squadron placement 007F2920 and launch spot 007C5F60 run 007C18B0(0) natively but sit in GameUnitsHost::Impl, outside PlaneBinding where the binding lives; moving PoseDerivedStateBinding to namespace scope would let them call it. The recon carry-over/publish bodies need a native detection record per unit before they can replace GameReconRelationLists.",
+  "review_round_1": [
+    "fixed: deleted the uncalled 007C1900 fragment copy plane_attitude_angles_007c1900 and its constants kCrossLengthSquaredFloor / kCrossLengthFloor / kFloatHalfPi (src/plane_attitude_angles.cpp; the now-unused unit_rudder.hpp include went with it); plane_bearing_to_target_009ac190 and its kBearing* constants stay",
+    "fixed: deleted struct PlaneAttitudeAngles and the plane_attitude_angles_007c1900 declaration (include/bsp/plane_attitude_angles.hpp); the header keeps the 009AC190 declaration and points at 007C18B0 for the angles",
+    "fixed: include/bsp/units_host_deviations_cc13.hpp names 007C18B0 itself (update_pose_derived_state_007c18b0) as the C7Ch writer",
+    "fixed: docs/DIVE_BOMB_TASK.md points at plane_update_pose_derived_state_007c18b0 (src/cc13_seg47b.cpp) at 3419, and the same stale refresh_attitude_007c1900 name at 2403; build.ps1 4/4 tests pass, call_graph.py still shows both bodies REACHABLE"
+  ]
+}

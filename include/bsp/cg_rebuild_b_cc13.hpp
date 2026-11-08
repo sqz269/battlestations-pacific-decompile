@@ -7,14 +7,14 @@
 // Objects are raw image storage (Raw::at at the image's byte offsets). Every
 // routine the image calls is a host method invoked at the same point; library
 // code (CRT free/new/memcpy, the EH vector iterators, STL tree/list/vector
-// instantiations, kernel32 imports) is bound, never rebuilt. Build-only: none
-// of these is wired into a live host path.
+// instantiations, kernel32 imports) is bound, never rebuilt.
 //
 // EH state numbers are the values the body stores into its frame's state slot
 // ([ESP+..] after the FS:[0] registration); each function's comment lists them
 // in order. They decide which members the unwind funclets destroy if a call
 // throws; the C++ here has no unwinding of its own (the bound calls are not
-// expected to throw), so the states are documentation only.
+// expected to throw), so the states are documentation only. Goal 5 chain 635:
+// 005BA7B0 is the one body a live host runs (game_hosts_hud.cpp, screen 33h).
 #include <cstddef>
 #include <cstdint>
 

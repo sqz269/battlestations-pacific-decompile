@@ -25,6 +25,7 @@ void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float 
 #include <cassert>
 #include <cmath>
 #include <cctype>
+#include <stdexcept>
 
 // docs/HUD_PICK_SEGMENT_QUERY.md sections 8.6 and 8.7. Every branch is the
 // listing's; the x87 intermediates are kept as float stores where the listing
@@ -319,6 +320,25 @@ public:
 
 private:
     MovieCameraParentHost& host_;
+};
+
+// 00694A60 / 006952A0 on the watched entity's observer list, for the event
+// set-entity slots 007A1F94 calls, and 0042BCA0, the observer's destructor the
+// event class destructors call. The image's observer (event+10h, vtable
+// 00CE3CF0) clears the event's +24h when that entity is deleted. This host
+// deletes no unit while a mission runs (see KeyframeEventBinding), so a
+// registration has no reader and none is kept: +24h is the only state the
+// slots change, and 0042BCA0's 006952A0 has nothing to remove. 00694AF0 is
+// not called by them.
+class KeyframeEventObservers final : public cc13cam2::ObserverHost,
+                                     public cc13cam2::KeyframeEventDestroyHost {
+public:
+    void register_00694a60(std::size_t, const void*) override {}
+    void unregister_006952a0(std::size_t, const void*) override {}
+    bool is_registered_00694af0(std::size_t, const void*) override {
+        throw std::logic_error("007A1F94's set-entity slots never query 00694AF0");
+    }
+    void target_observer_destruct_0042bca0(std::size_t, const void*) override {}
 };
 
 // 00795C10, weight(track, dt).
@@ -647,7 +667,9 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
     if (kMovieKeyframeModifierBound && in.event) {
         cc13cam::KeyframeEvent ev;
         const std::size_t parent = k.parent_1c == kMovieNoParent ? 0 : k.parent_1c + 1;
-        if (cc13cam::keyframe_event_parse_007a1f94(*in.event, parent, k.camera_28 || named, ev)) {
+        KeyframeEventObservers observers;
+        if (cc13cam::keyframe_event_parse_007a1f94(*in.event, parent, k.camera_28 || named, ev,
+                                                   observers)) {
             k.event_ec = std::move(ev);
         }
     }
@@ -816,6 +838,7 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
 int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
                                     MovieCameraParentHost& host) {
     KeyframeEventBinding events(host);
+    KeyframeEventObservers observers;
     int fired = 0;
     for (MovieTrack* track : {&camera.target_414, &camera.camera_498}) {   // 00798D46, 00798D59
         // 00797ED0 walks the list live; an event's script may append keys, so
@@ -828,7 +851,7 @@ int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
             k.event_ec.reset();
             // Keep the event alive outside the camera: its script can destroy
             // this key or append new keys. Only restore it when no script ran.
-            cc13cam::keyframe_tick_0078e630(k.state_f8, dt, pending, events);
+            cc13cam::keyframe_tick_0078e630(k.state_f8, dt, pending, events, observers);
             if (pending) k.event_ec = std::move(pending);
             else if (had_event) ++fired;
         }

@@ -1097,10 +1097,9 @@ bool land_vehicle_is_kind_of_0074dd90(const std::uint8_t* unit, std::uint32_t ki
            kind == at<std::uint32_t>(unit, 0xC4);
 }
 
-void land_vehicle_vslot_b4_0074ddd0(std::uint8_t* vehicle, void* const& game_00e188a8, LandVehicleHost& host) {
-    auto* game = static_cast<std::uint8_t*>(game_00e188a8);
-    const std::uint32_t slot = at<std::uint32_t>(game, 0x18EC);
-    host.ai_query_008ddf00(at<std::uint32_t>(game, 0x21A4 + slot * 4), vehicle);
+bool land_vehicle_vslot_b4_0074ddd0(const void* vehicle, LandVehicleObjectiveSetHost& host) {
+    const std::int32_t slot = host.local_player_slot_18ec();    // 0074DDD2..0074DDD8
+    return host.objective_set_find_008ddf00(slot, vehicle);     // 0074DDDE..0074DDE6, AL kept
 }
 
 void land_vehicle_detach_0074de50(std::uint8_t* vehicle, LandVehicleHost& host) {
@@ -1785,8 +1784,9 @@ void land_vehicle_message_write_0074cef0(const void* message, NativeBitCursor* c
 void land_vehicle_message_read_0074cf00(void* message, NativeSessionReadStream& stream) { read_native_session_message_header_0075b4c0(message, &stream); }
 void land_vehicle_message_write_0074d000(const void* message, NativeBitCursor* cursor) { write_native_session_message_header_0075b480(message, cursor); }
 void land_vehicle_message_read_0074d010(void* message, NativeSessionReadStream& stream) { read_native_session_message_header_0075b4c0(message, &stream); }
-void land_vehicle_register_ai_0074ddf0(std::uint8_t* vehicle, void* const& game, LandVehicleHost& host) {
-    land_vehicle_vslot_b4_0074ddd0(vehicle, game, host);
+bool land_vehicle_in_local_objective_set_0074ddf0(const void* vehicle, LandVehicleObjectiveSetHost& host) {
+    const std::int32_t slot = host.local_player_slot_18ec();    // 0074DDF2..0074DDF8
+    return host.objective_set_find_008ddf00(slot, vehicle);     // 0074DDFE..0074DE06, AL kept
 }
 std::uint8_t* plane_observer_0074e170(std::uint8_t* plane) noexcept { return plane ? plane + 0x72c : nullptr; }
 void* plane_copy_matrix_e00_0074e270(const std::uint8_t* plane, void* out) { return oct18b_copy_16_dwords(plane + 0xe00, out); }

@@ -63,6 +63,7 @@
 
 namespace bsp {
 struct DummyKamikazeSpawn;
+struct GameInputContextManagerBinding;
 }
 
 struct lua_State;
@@ -200,19 +201,6 @@ inline constexpr bool kFillPathPointsBound = true;
 // first row that passes the marker gate 0043F080 (the player can only pick a
 // live, shown marker), else to the first row as before. False: the first row.
 inline constexpr bool kHarnessTargetPrefersLiveBound = true;   // ON: SQUADRON_LAND_TASK 5gl
-
-// Packet cc9_bsm01_think_natives (docs/LUA_BINDING_MISSION.md,
-// "Scoring_GetPlayerShotDown and PutTo"). True: Scoring_GetPlayerShotDown
-// (008BC9B0) answers slot argument 0's (default 0) count of enemy aircraft
-// kills credited to that player slot's own kill tree (record+B4h, level-1 key
-// ENEMY, level-3 keys 7..0Ch; docs/SCORING_BODIES.md section 6). False: the
-// native stays an unimplemented record and answers nothing.
-// LABELLED SUBSTITUTION: this process keeps no scoring record. The count is
-// taken from the gunnery host's death rows: a sunk unit of the plane family
-// (IsKindOf(0Fh)) whose killer is the controlled unit (player slot 0; no
-// other unit carries a player slot in this process) and whose side is ENEMY
-// to the killer's (00803510). Other slots answer 0.
-inline constexpr bool kScoringPlayerShotDownBound = true;
 
 // Packet cc9_bsm01_think_natives. True: PutTo (008A9F90) places a unit through
 // its vtable slot +118h (008193A0, GameUnitsHost::place_at_world_position_008193a0)
@@ -638,7 +626,10 @@ inline constexpr bool kLuaGetSubmarineAirSupplyBound = true;
 // (00733BB0's fade-in 0.5 x DialogFadeTime, display length x TempCharWait +
 // TempWaitBase, fade-out DialogFadeTime) and 00734140 calls the entry's callback
 // when it has faded out; EndScene 008B01B0 is recorded (no freeze). False: the
-// natives stay unimplemented records and no callback ever fires.
+// natives stay unimplemented records and no callback ever fires. Goal 5 chain
+// 643 adds MissionNarrativeUrgent 008B0E10 (007349C0, push front unless the
+// front is the same text and callback) and MissionNarrativeOverride 008B1010
+// (00734E50, clear then append), all three over the native list.
 // Packet cc9_lua_camera_state (docs/MISSION_END.md 7.2). True: GetCameraState
 // 008BF6A0 answers {Position, Rotation, Zoom} from the published Operator
 // camera [game+19FCh] (a labelled stand-in, the controlled unit's pose, when
@@ -751,8 +742,19 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
     ~GameScriptOrdersHost();
+    // The narrative object's list nodes are owned through raw pointers.
+    GameScriptOrdersHost(const GameScriptOrdersHost&) = delete;
+    GameScriptOrdersHost& operator=(const GameScriptOrdersHost&) = delete;
     // Application phase5's existing dialog owner; no new manager lifetime.
     static void bind_music_dialog(class GameSoundDialogRuntime*) noexcept;
+    // Chain 648: the input manager 004BEC00 whose context table EnableInput
+    // (008AFBD0) writes through 00A933F0; the application's input services own
+    // it. Null until bound: EnableInput then stays an unimplemented record.
+    static void bind_input_context_manager(bsp::GameInputContextManagerBinding*) noexcept;
+    // Goal 5 chain 652: the GUI manager 004C12B0's page list (the application's
+    // GameFrontendHost) that IsGUIActive (008CA010) searches through 008C9F80 /
+    // 008C8C20. Null until bound: IsGUIActive then stays an unimplemented record.
+    static void bind_gui_frontend(class GameFrontendHost*) noexcept;
     // The runtime bind_music_dialog published, or null (goal 4 chain 312: the
     // mission frame's session-teardown sound reset borrows it).
     static class GameSoundDialogRuntime* bound_music_dialog_runtime() noexcept;
@@ -1047,7 +1049,15 @@ private:
     std::size_t get_rotation_calls_{0};
     std::size_t get_rotation_unresolved_{0};
     void narrative_finish_00734140();
-    void narrative_clear_00734fa0();    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
+    void narrative_clear_00734fa0();
+    // Goal 5 chain 643: one post into the narrative object's list through the
+    // entry point's own body (00734870 / 007349C0 / 00734E50), the list's size
+    // word +0Ch, and a freed node's argument references.
+    void narrative_post(std::uint32_t entry_point, const std::string& text,
+                        const std::string& callback, std::vector<int> argument_refs);
+    std::uint32_t narrative_queue_size() const noexcept;
+    void release_narrative_node_refs(const void* node);
+    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
     float countdown_time_left() const noexcept;
     // 007340A0 past the time-left store: clear +3Ch and +4Ch, free +54h.
     void countdown_stop_007340a0();
@@ -1066,8 +1076,10 @@ private:
     // The `ID` field 00928a00 seeds, turned into a created instance. Null when
     // the argument is not one of this process's entity tables.
     void* entity_from_argument(int index);
-    // 008A4C90 PilotSetTarget. Resolves and reports; see the definition for why
-    // it does not yet issue.
+    // Goal 5 chain 663: bsp::PilotOrderHost over this host, for the pilot order
+    // bodies of src/pilot_order_bindings.cpp (defined beside run_pilot_set_target).
+    class PilotOrderBinding;
+    // 008A4C90 PilotSetTarget on its body pilot_set_target_008a4c90.
     int run_pilot_set_target(GameScriptOrderRow& row);
     // Packet cc13-fix16: the receiver's side of PilotSetTarget, shared with
     // PilotBomb. `label` names the native in the log lines.
@@ -1076,6 +1088,16 @@ private:
         std::size_t target_index, const char* label, unsigned long long& tasks);
     // Packet cc13-fix16: the six bomb-release natives (docs/CC13_FIX16.md).
     int run_bomb_release_native(GameScriptOrderRow& row, const char* name);
+    // Goal 5 chain 660: ArtilleryEnable 0089C590 / TorpedoEnable 0089C8F0 through
+    // their src/unit_weapons.cpp bodies.
+    int run_weapon_enable_binding(const char* name);
+    // Goal 5 chain 660: a Pilot* attack body's 0077D600 (PilotBomb, PilotGunFire,
+    // PilotTorpedo): the issue, then the receiver's 0099A170 install after delivery.
+    void issue_pilot_attack_order(void* entity, std::uint32_t chosen,
+        const bsp::SceneCommandTarget& target, int flags, const char* label,
+        std::size_t& issued, unsigned long long& tasks);
+    // Goal 5 chain 660: PilotGunFire 008A50D0 and PilotTorpedo 008A5310.
+    int run_pilot_gun_fire_or_torpedo(const char* name);
     const bsp::PlaneSquadronHostRecord* squadron_record_for_argument(std::size_t index);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
@@ -1251,8 +1273,6 @@ private:
     unsigned long long fill_path_points_calls_{0};
     unsigned long long fill_path_points_empty_{0};
     // Packet cc9_bsm01_think_natives.
-    unsigned long long shot_down_calls_{0};
-    int shot_down_last_{0};
     unsigned long long put_to_calls_{0};
     // Packet cc9_submarine_depth_level.
     // Packet cc9_recon_level_table.
@@ -1421,6 +1441,26 @@ private:
     std::size_t ship_max_speed_unresolved_{0};
     std::size_t direction_calls_{0};
     std::size_t direction_unresolved_{0};
+    // Goal 5 chain 655: the segment-56 unit queries run on their bodies.
+    // run_role_table_query is GetRoleAvailable 008ABAC0 / GetRoleOwner 008ABF90
+    // (fill_nine_integers); run_seg56_unit_query is GetSkillLevel 008953F0,
+    // GetCrewLevel 008950D0, GetShipMaxSpeed 00890BB0, SetAirBasePlaneLimit
+    // 00897720, GetAirBasePlaneLimit 008978D0 and RemoveShipyardStock 00896EE0.
+    // Both take the row's address and answer the body's result count.
+    int run_role_table_query(std::uint32_t address);
+    int run_seg56_unit_query(std::uint32_t address);
+    // EntityTurnToPosition 008A0F10 (lua_entity_turn_to_position).
+    int run_turn_to_position();
+    std::size_t role_table_calls_{0};
+    std::size_t skill_query_calls_{0};
+    std::size_t air_base_limit_calls_{0};
+    std::size_t shipyard_stock_calls_{0};
+    std::size_t turn_to_position_calls_{0};
+    std::size_t turn_to_position_posed_{0};
+    std::size_t pilot_stop_calls_{0};
+    std::size_t pilot_stop_issued_{0};
+    std::size_t air_base_slot_calls_{0};
+    std::size_t unit_query_unresolved_{0};
     // Packet cc13-fix16, per native: calls, requests or rearms made, unresolved.
     std::size_t plane_force_release_calls_{0};
     std::size_t plane_force_release_requests_{0};
@@ -1432,6 +1472,15 @@ private:
     std::size_t pilot_bomb_issued_{0};
     unsigned long long pilot_bomb_tasks_{0};
     std::size_t pilot_bomb_unresolved_{0};
+    // Goal 5 chain 660: PilotGunFire 008A50D0 / PilotTorpedo 008A5310.
+    std::size_t pilot_gun_fire_calls_{0};
+    std::size_t pilot_gun_fire_issued_{0};
+    unsigned long long pilot_gun_fire_tasks_{0};
+    std::size_t pilot_gun_fire_unresolved_{0};
+    std::size_t pilot_torpedo_calls_{0};
+    std::size_t pilot_torpedo_issued_{0};
+    unsigned long long pilot_torpedo_tasks_{0};
+    std::size_t pilot_torpedo_unresolved_{0};
     std::size_t bomb_falling_time_calls_{0};
     std::size_t bomb_falling_time_unresolved_{0};
     std::size_t reload_bomb_platforms_calls_{0};
@@ -1440,15 +1489,20 @@ private:
     std::size_t plane_is_reloading_calls_{0};
     std::size_t plane_is_reloading_true_{0};
     std::size_t plane_is_reloading_unresolved_{0};
-    // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
-    // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
-    // +14h..+34h.
-    struct NarrativeEntry {
-        std::string text;
-        std::string callback;
-        std::vector<int> argument_refs;
-    };
-    std::vector<NarrativeEntry> narrative_queue_;
+    // Goal 5 chain 643: the narrative object [game+21E8h] itself, 58h bytes
+    // (004DFA75 operator new(58h) and 00735030, then 004DFA8D 00733030; the
+    // scalar delete 00735420 runs 00735080). Its VC9 list +4h (head +8h, size
+    // +0Ch) is the queue the three post bindings write (00734870 / 007349C0 /
+    // 00734E50) and 00735100 consumes through 00734D20; a node is {next, prev,
+    // entry: vtable 00CFE960, text +0Ch, callback +14h, arguments +1Ch}. The
+    // shown entry +10h..+34h and the countdown +38h..+54h stay the members
+    // below; their native words keep 00735030's values.
+    alignas(4) std::uint8_t narrative_object_[0x58]{};
+    // A queued post's extra arguments as Lua registry references, by list
+    // node: this host's stand-in for the node's variant vector +1Ch, which
+    // stays 0. A node's references go when 00734CE0 / 00734D20 free it.
+    std::map<const void*, std::vector<int>> narrative_node_refs_;
+    // Packet cc9_lua_mission_narrative: the shown entry +14h..+34h.
     bool narrative_active_14_{false};
     int narrative_state_18_{0};
     float narrative_fade_in_1c_{0.0f};
@@ -1459,11 +1513,6 @@ private:
     std::string narrative_callback_2c_;
     std::vector<int> narrative_refs_34_;
     std::size_t narrative_enqueues_{0};
-    // Packet cc9_lua47_display_scores: each score id's last logged lines.
-    std::map<int, std::string> score_lines_;
-    std::size_t score_posts_{0};
-    std::size_t score_changes_{0};
-    std::size_t score_hides_{0};
     std::size_t narrative_clears_{0};
     std::size_t narrative_shown_{0};
     std::size_t narrative_callbacks_{0};

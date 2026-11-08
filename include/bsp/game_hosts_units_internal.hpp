@@ -63,6 +63,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/cc13_seg29U.hpp"
+#include "bsp/cc13_seg29U_trap_host.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
@@ -584,64 +585,7 @@ struct PlaneOrdnanceRack {
 // Adapter for the single-threaded landing-assignment snapshot. The body can
 // only report an invalid index: there is no host lock at block+8h. All other
 // segment services trap rather than provide unrelated placeholder behavior.
-class LandingAssignmentLookupHost : public bsp::cc13_seg29U::Seg29UHost {
-    using NativeStr = bsp::cc13_seg29U::NativeStr;
-public:
-    void* global_pointer(std::uint32_t) override { std::abort(); }
-    void* global_address(std::uint32_t) override { std::abort(); }
-    void invalid_parameter_00bf6713() override { std::abort(); }
-    void free_00bf65ac(void*) override { std::abort(); }
-    void* operator_new_00bf681b(std::uint32_t) override { std::abort(); }
-    void entity_pose_refresh_00414db0(void*) override { std::abort(); }
-    void* matrix_multiply_00413920(void*,  void*,  void*) override { std::abort(); }
-    void matrix_copy_004134f0(void*,  void*) override { std::abort(); }
-    void matrix_inverse_00b63d50(void*,  void*) override { std::abort(); }
-    void* transform_point_004142e0(void*,  void*,  void*) override { std::abort(); }
-    void object_vslot_04(void*,  std::uint32_t,  void*) override { std::abort(); }
-    void path_derive_knots_007af150(void*) override { std::abort(); }
-    void game_21d0_register_0048ca60(void*,  void*,  std::int32_t) override { std::abort(); }
-    void observer_unregister_pair_006952a0(void*,  void*) override { std::abort(); }
-    void callback_owner_destroy_00695870(void*) override { std::abort(); }
-    void game_entity_destruct_009287b0(void*) override { std::abort(); }
-    void entity_default_slot_a4_009295b0(void*) override { std::abort(); }
-    NativeStr* native_string_from_int_004260b0(NativeStr*,  std::int32_t) override { std::abort(); }
-    void native_string_resize_0041dd40(NativeStr*,  std::uint32_t,  char) override { std::abort(); }
-    void memcpy_00bf7680(void*,  const void*,  std::uint32_t) override { std::abort(); }
-    void native_string_concat_004261a0(const NativeStr*,  NativeStr*,  const NativeStr*) override { std::abort(); }
-    void* sized_pool_00419cc0() override { std::abort(); }
-    void sized_pool_return_00bd1510(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
-    void* property_bag_find_008f2260(void*,  const char*) override { std::abort(); }
-    const char* property_string_value_008f0df0(void*) override { std::abort(); }
-    void* entity_registry_find_00925a90(void*,  const char*) override { std::abort(); }
-    bool entity_is_kind_of_5c(void*,  std::int32_t) override { std::abort(); }
-    void list_push_back_006acd80(void*,  void* const*) override { std::abort(); }
-    void object_vslot_08_float(void*,  float) override { std::abort(); }
-    std::int32_t object_vslot_0c(void*) override { std::abort(); }
-    double object_vslot_10_x87(void*) override { std::abort(); }
-    void* object_vslot_18(void*) override { std::abort(); }
-    const float* object_vslot_34(void*,  float*) override { std::abort(); }
-    void object_vslot_44(void*,  float*) override { std::abort(); }
-    void* object_vslot_114(void*) override { std::abort(); }
-    void enter_critical_section(void*) override { std::abort(); }
-    void leave_critical_section(void*) override { std::abort(); }
-    void free_00bf6989(void*) override { std::abort(); }
-    void session_message_construct_base_0075b430(void*,  std::uint32_t) override { std::abort(); }
-    void session_route_message_0077c2a0(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
-    std::uint32_t vehicle_class_registry_id_0095b9c0(void*) override { std::abort(); }
-    std::uint32_t current_command_0071be40(void*) override { std::abort(); }
-    void* active_target_descriptor_0071eb60(void*,  void*) override { std::abort(); }
-    const float* target_descriptor_position_006f7dd0(void*) override { std::abort(); }
-    float vector3_length_0042b2f0(const float*) override { std::abort(); }
-    std::int32_t squadron_airborne_count_007ee5c0(void*) override { std::abort(); }
-    void observer_ref_destruct_00653400(void*) override { std::abort(); }
-    void observer_member_cleanup_00653390(void*) override { std::abort(); }
-    float add_wrapped_angle_00438aa0(float,  float) override { std::abort(); }
-    double sqrt_00bf7030(double) override { std::abort(); }
-    double atan2_00bf701a(double,  double) override { std::abort(); }
-    void format_to_buffer32_00467310(char*,  const char*,  std::int32_t) override { std::abort(); }
-    void vehicle_class_mark_party_required_0095ba60(void*,  std::uint32_t) override { std::abort(); }
-    void register_hidden_stock_unit_0046be90(void*,  void*) override { std::abort(); }
-    void* landing_vector_at_006ba7b0(void*,  std::int32_t) override { std::abort(); }
+class LandingAssignmentLookupHost : public bsp::cc13_seg29U::Seg29UTrapHost {
 };
 
 // Goal 2 chain 209 (kWireGoal2Chain209Bound): the squadron block's byte +3AEh.
@@ -756,6 +700,11 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     std::int32_t plane_c18{5};
     float plane_wheel_height_1fc{0.0f};       // classDesc+1FCh WheelHeight
     float plane_min_water_spd_198{0.0f};      // classDesc+198h MinWaterSpd
+    float plane_max_water_spd_19c{0.0f};      // classDesc+19Ch MaxWaterSpd
+    // unit+911h, the "splash" latch: set once a dead aircraft has raised
+    // "splash" (007CC418 in the free-flight arm, 007CBBE0 at the water
+    // surface), so it raises it once. Goal 5 chain 645.
+    bool plane_splashed_911{false};
     // DIAGNOSTIC counters for the probe and the touchdown test.
     unsigned long long td_probes{0}, td_contact_steps{0}, td_low_steps{0};
     unsigned long long td_refused_airborne{0}, td_refused_vy{0}, td_touchdowns{0};
@@ -846,15 +795,22 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float plane_live_controls[3]{0.0f, 0.0f, 0.0f};
     // unit+9F0h and +9F4h. 007CFEB0 sets the throttle to 1.0f at construction
     // and 007CFEA4 zeroes the air brake.
-    // unit+C64h pitch, +C68h bank, +C6Ch heading, all from 007C1900 over the
-    // live pose. Slot state rather than locals because the native leaves the
-    // heading and bank untouched when the forward axis is near vertical.
+    // unit+C64h pitch, +C68h bank, +C6Ch heading, all from 007C18B0 (its 007C1900
+    // block) over the live pose. Slot state rather than locals because the native
+    // leaves the heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
-    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written only
-    // under kUnitsHostDeviationsCc13Bound by refresh_attitude_007c1900 (all three
-    // of its host callers); kept when |v| <= 0.1. Starts at 0 (the constructor's
-    // value was not read; labelled).
+    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written by
+    // update_pose_derived_state_007c18b0 (all three of its host callers); kept when
+    // |v| <= 0.1. Starts at 0 (the constructor's value was not read; labelled).
     float plane_velocity_elevation_c7c{0.0f};
+    // Goal 5 chain 657: the rates 007C18B0 derives with dt > 0. +C70h the heading
+    // rate (only while |d| < 0.5), +C74h pitch, +C78h bank, +C80h the velocity
+    // elevation's and +C88h the path pitch's.
+    float plane_heading_rate_c70{0.0f};
+    float plane_pitch_rate_c74{0.0f};
+    float plane_bank_rate_c78{0.0f};
+    float plane_velocity_elevation_rate_c80{0.0f};
+    float plane_path_pitch_rate_c88{0.0f};
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
@@ -1465,6 +1421,8 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // read at 009A1963 under kLuaSquadronEnableVehicleAvoidanceBound.
     std::uint32_t sq_avoid_3a4{0xFFu};
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
+    // 007CE46A's +C01h = 2 stores (below a Landscape), counted (goal 5 chain 640).
+    unsigned long long plane_below_landscape_stores{0};
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
     // Packet cc9_land_park_done_test: which arm of 009B21D0 set done - the timer
@@ -2573,9 +2531,16 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // 007D0B80 set (unit+C39h power lost, +C36h spinning, +C3Ah message seen),
     // and whether the aircraft has been killed and left the world.
     bsp::PlaneDeathMode plane_death_mode{bsp::PlaneDeathMode::None};
-    // 007CB8DC / 007CBE02 raised "powerlost" on the water: the death-mode step
-    // takes PowerLost without 007CA8A0's draw (packet cc9_lua54_follow_altitude).
-    bool plane_water_powerlost_raised{false};
+    // A live plane's mode raised through vtable[194h] 007BBFA0 rather than
+    // chosen by SetHealth's 007CA8A0: "powerlost" on the water (007CB8DC /
+    // 007CBE02, packet cc9_lua54_follow_altitude) and the +C01h latch's
+    // "powerlost" or "explosion" (007CE790). The death-mode step takes it
+    // without 007CA8A0's draw. None: no effect was raised.
+    bsp::PlaneDeathMode plane_raised_death_mode{bsp::PlaneDeathMode::None};
+    // Goal 5 chain 645: what that raise's own 007BBFA0 routed (0077C2A0 flags
+    // 7), kept for the death-mode step, which delivers each copy to 007D0B80.
+    // 007BBFA0 stores unit+C10h itself at the raise.
+    std::vector<bsp::gameplay_seg47_cc13::FailureMessage> plane_raised_routed;
     float plane_death_timer_c10{-1.0f};
     bool plane_death_c39{false};
     bool plane_death_c36{false};
@@ -2589,6 +2554,24 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float plane_path_pitch_c84{0.0f};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
+    // Goal 5 chain 654. unit+C14h, the dead-engine fire delay: -1.0f from the
+    // constructor (docs/CC13_MISTAG.md), then 007BCAA0's 007BCABB draw
+    // (DeadEngineFireDelay) when the plane is destroyed; 007CAF10's engine block
+    // reads it and stores -1.0f again once the engine fire is raised.
+    float plane_engine_fire_timer_c14{-1.0f};
+    // The engine list at unit+C98h (+8h data, +0Ch count), as 007EC5A0 fills it
+    // from the class at spawn (build_plane_engine_list). Empty for a
+    // ship or a class without NumEngines. plane_num_engines_140 is the class's
+    // NumEngines as 007D204D stores it at +140h (007BBFA0 reads the same key's
+    // +7Ch copy).
+    std::int32_t plane_num_engines_140{0};
+    std::vector<std::unique_ptr<bsp::gameplay_seg48_cc13::PlaneEngineSlots>> plane_engines_c98;
+    std::vector<bsp::gameplay_seg48_cc13::PlaneEngineSlots*> plane_engine_list_c98() const {
+        std::vector<bsp::gameplay_seg48_cc13::PlaneEngineSlots*> list;
+        list.reserve(plane_engines_c98.size());
+        for (const auto& engine : plane_engines_c98) list.push_back(engine.get());
+        return list;
+    }
     // Packet cc13-limbo3: the squadron's live count (+3CCh, this plane included)
     // stamped by the stock return just before it clears the member seat; -1
     // otherwise. Read only by plane_squadron_live_count_3cc.
@@ -3558,6 +3541,10 @@ struct GameUnitsHost::Impl {
     std::map<std::string, float> leave_warn_36c;
     unsigned long long leave_countdown_calls{0}, leave_counting_steps{0},
         leave_counting_not_retreat{0};
+    // Goal 5 chain 668: the 007C6D65 warnings (00982120(plane, 0)) and the 007CA790
+    // ExitZoneParty stores (made / without a border zone at the plane / no self slot).
+    unsigned long long leave_warnings_00982120{0}, exit_zone_party_stores{0},
+        exit_zone_party_no_zone{0}, exit_zone_party_no_slot{0};
     // BSP_MissionEntity_Kill's cause (00926D90's argument) for the kills this
     // host passes one other than 1; 00929800 names it from 00E0CF04.
     std::vector<int> kill_cause_by_unit;
@@ -3888,6 +3875,10 @@ struct GameUnitsHost::Impl {
     // Packet cc13-landc.
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
     unsigned long long combat_death_destroy_draws{0};
+    // Goal 5 chain 654: the plane engine lists (007EC5A0) and their calls.
+    unsigned long long plane_engine_lists_built{0}, plane_engines_built{0};
+    unsigned long long plane_engine_stop_alls{0}, plane_engine_fires_raised{0};
+    unsigned long long plane_engines_destroyed{0};
     unsigned long long ground_state_dead_tail_skips{0};
     unsigned long long funnel_kill_destroy_only{0};
     // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
@@ -3896,19 +3887,23 @@ struct GameUnitsHost::Impl {
     float dead_engine_fire_delay[2]{3.0f, 5.0f};
     // The destroy flush's vtable[7Ch] for a plane is 007BCAA0 (00D19D28+7Ch);
     // its first act is 00BD2F10(ECX = 0, [00E18718], [00E18714]) at 007BCABB,
-    // stored at +C14h (no host field: nothing the host runs reads it). Takes
-    // that stream-0 draw through the gunnery host; false without one.
-    bool plane_on_destroyed_draw_007bcabb(std::size_t index) {
+    // stored at +C14h (007BCAC0), which 007CAF10's engine block reads (goal 5
+    // chain 654). Takes that stream-0 draw through the gunnery host; false
+    // without one.
+    bool plane_on_destroyed_draw_007bcabb(GameUnitSlot& plane, std::size_t index) {
         if (gunnery == nullptr) return false;
         if (!dead_engine_fire_delay_read) {
             dead_engine_fire_delay_read = true;
             lua.read_global_number_pair("DeadEngineFireDelay", dead_engine_fire_delay[0],
                 dead_engine_fire_delay[1]);
         }
-        gunnery->death_mode_draw_00bd2f10(0, index, dead_engine_fire_delay[0],
-            dead_engine_fire_delay[1]);
+        plane.plane_engine_fire_timer_c14 = gunnery->death_mode_draw_00bd2f10(0, index,
+            dead_engine_fire_delay[0], dead_engine_fire_delay[1]);
         return true;
     }
+    // Goal 5 chain 654: the engine list 007EC5A0 builds at unit+C98h for a new
+    // plane (BSP_Plane_ReadPropertyBag, 007D6327). game_hosts_units.cpp.
+    void build_plane_engine_list(GameUnitSlot& plane);
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
@@ -3941,6 +3936,11 @@ struct GameUnitsHost::Impl {
     bool carrier_site_has_free_runway_006d0530(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
     void carrier_elevator_raise_plane_006fc810(LandingDeck& d, GameUnitSlot& p);
+    // Goal 5 chain 628. 006CFFF0(flag, plane), the reconstructed body run by
+    // HostSessionMessages::queue_mothership_elevator_move_87 through the 87h
+    // message's local copy, then the carrier's receiver 006D0050 on the copy.
+    // `plane` is a slot index or SIZE_MAX for null.
+    void route_carrier_elevator_message_87(LandingDeck& d, bool flag, std::size_t plane);
     unsigned long long base_launch_lift_down{0}, base_launch_lift_up{0};
     unsigned long long base_launch_lift_top{0}, base_launch_lift_blocked{0};
     unsigned long long base_launch_placed{0}, base_launch_place_refused{0};
@@ -4447,18 +4447,34 @@ struct GameUnitsHost::Impl {
     // delivered yet, in post order. Filled only with the switch ON.
     struct PendingShipSink92h {
         GameUnitSlot* slot{nullptr};
-        std::array<float, 6> rates{};
+        std::uint32_t count{0};          // msg+1Ch, the copy's count
+        std::array<float, 6> rates{};    // msg+20h
     };
     std::vector<PendingShipSink92h> pending_ship_sink_92h;
     // 0076C600 -> 0082220D -> 0074E860 for each: the message's rates overwrite
     // the manager's (+18h), so a leak 0074F440 added since the post is lost.
+    // bsp.py show 00821e80 --asm: 0082220D MOV EDX,[ESI+1Ch]; 00822210 LEA
+    // ECX,[ESI+20h]; PUSH ECX; PUSH EDX; LEA ECX,[EDI+10D4h]; CALL 0074E860.
+    // The slot's `leaks` are the manager's parallel arrays as one struct per
+    // zone, so the +18h array is projected into the body's view and back.
     std::size_t deliver_ship_sink_92h_0082220d() {
         if (pending_ship_sink_92h.empty()) return 0;
         std::vector<PendingShipSink92h> batch;
         batch.swap(pending_ship_sink_92h);
         for (const PendingShipSink92h& m : batch) {
+            bsp::gameplay_seg41_cc13::LeakManagerZones zones;
+            zones.leak_18.resize(m.slot->leaks.size());
             for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
-                m.slot->leaks[i].rate = m.rates[i];
+                zones.leak_18[i] = m.slot->leaks[i].rate;
+            if (!bsp::gameplay_seg41_cc13::load_zone_array_0074e860(
+                    zones, static_cast<std::int32_t>(m.count), m.rates.data())) {
+                // The image has no bound; a count past +14h would write past
+                // the manager's arrays. queue_ship_sink_92 posts the zone count.
+                throw std::logic_error("92h leak-rate count exceeds the leak manager's zones");
+            }
+            for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
+                m.slot->leaks[i].rate = zones.leak_18[i];
+            done("LeakManager::load_zone_array_0074e860", 0x0074e860u);
             done("ShipMessage::sink_92h_0082220d", 0x0082220du);
         }
         return batch.size();
@@ -4512,6 +4528,7 @@ struct GameUnitsHost::Impl {
                 if (copy.sink_92) {
                     for (std::size_t i = 0; i < message.rates.size(); ++i)
                         message.rates[i] = i < copy.count ? copy.rates[i] : 0.0f;
+                    message.count = copy.count;
                     pending_ship_sink_92h.push_back(message);
                 }
             }
@@ -9314,31 +9331,16 @@ struct GameUnitsHost::Impl {
     // ammo 006E3C00 stored, 1. Both the 007B9140 answer and the release seed see it.
     // False: such a rack holds nothing. LABELLED: single racks only, as for bag 0.
     static constexpr bool kRackPositiveBagRoundBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 54.5)
-    // Packet cc9_p14_stall_force (docs/OCEAN_WAVE_FIELD.md 55). True: after the core
-    // law, the free-flight step 007DC830 (007CC2F0's arm and 007DCCF0's fallback) adds
-    // its stall block: r = 007D99C0 / StallSpd; when StallRangeMax > r or the plane is
-    // dead, m = 00419010(StallRangeMin, 1, StallRangeMax, 0, r) (a dead plane takes the
-    // DeadMeat StallMul or SpinStallMul ramp on +C3Ch when larger), g = 00419010(OnPitch,
-    // 1, OffPitch, 0, pitch), d = clamp(+908h - 1, 0, 1), and with f = g m d > 0 the
-    // 007DAFD0 kick at the nose (0,0,1) toward (0,-1,0) of f x StallRotAccel (desc+17Ch),
-    // limit 1.5. False: the core law alone. LABELLED: the dying spin ctl+F0h..F8h (its
-    // constructor draw is not hosted) and ctl+94h (the wreck/water gate) are not carried.
-    static constexpr bool kFreeFlightStallForceBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 55.4)
+    // Goal 5 chain 657: 007DC830 itself runs at both native sites (PlaneBinding::
+    // free_flight_step_007dc830): the stall block (packet cc9_p14_stall_force,
+    // docs/OCEAN_WAVE_FIELD.md 55), the dying spin and the wreck lift (packet
+    // p15_dying_spin, section 58). Counters for the report. LABELLED: the dying spin
+    // ctl+F0h..F8h is 007D7EA0's construction draw, U(+250h, +254h) (007D7F90; the
+    // loader fills both from Dynamics/DeadMeat/RotationMin, RotationMax is never
+    // read) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all on
+    // stream 1, drawn here from the plane's keyed stream (`name#ds_m`, `#ds_z`,
+    // `#ds_p`) at its first dying step, not at construction.
     unsigned long long stall_force_steps{0}, stall_force_kicks{0};
-    // Packet p15_dying_spin (docs/OCEAN_WAVE_FIELD.md section 58). True: inside the
-    // stall block's m > 0 arm, a dead plane (+5Dh re-read at 007DCAF2) adds
-    // step x ctl+F0h..F8h to its world angular velocity ctl+24h..2Ch (007DCAF9-
-    // 007DCB40, each product stored as a float first). ctl+F0h..F8h is 007D7EA0's
-    // construction draw: U(+250h, +254h) (007D7F90; the loader fills both from
-    // Dynamics/DeadMeat/RotationMin, RotationMax is never read) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all
-    // on stream 1. LABELLED: drawn from the plane's keyed stream (`name#ds_m`,
-    // `#ds_z`, `#ds_p`) at its first dying step, not at construction. False: no spin.
-    static constexpr bool kFreeFlightDyingSpinBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 58.4)
-    // Packet p15_dying_spin (section 58). True: 007DCB4B-007DCCCB, with ctl+94h set:
-    // v = the world velocity with y = 0, h = 00419010(0, 4, 69.444443, 20, |v|),
-    // u = max(0, 1 - |+C64h|), q = min(1, |+C68h| * 0.8 + 0.6), and the 007DAFD0 kick
-    // at (0,0,1) toward (0,-1,0) of q u h, limit 1000. False: not carried.
-    static constexpr bool kFreeFlightWreckLiftBound = true;   // ON by mechanism (OCEAN_WAVE_FIELD 58.4)
     unsigned long long dying_spin_steps{0}, dying_spin_seeds{0}, wreck_lift_kicks{0};
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
@@ -11397,27 +11399,44 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
         return active;
     }
+    // Goal 5 chain 628: the predicate is the reconstructed 007B95E0 body
+    // (src/band_007a_cc13.cpp; CMP [ECX+9D8h],0 / JNE, TEST squadron / JE,
+    // CMP [EAX+3BCh],0 / JLE). Its three inputs come from this host's squadron
+    // record: +9D4h is the record found for the unit; +9D8h is the unit's live
+    // seat among the occupied members, so the first occupied seat,
+    // flight_leader(), is index 0; +3BCh is the 007EE790 recount described above.
+    // Evidence for +9D8h: bsp.py show 007ed260 --asm, 007ED290..007ED2B4 walks
+    // +3D0h for +3CCh members with 007ED292 MOV [ESI+9D8h],EAX, EAX the walk
+    // index; 007F4BFA runs it in the spawn tail and 007ED610 after promoting the
+    // leader to slot 0. So PlaneSquadronHostRecord::member_spawn_index (the
+    // 007F4B43 stamp, which this host never rewrites) is not +9D8h once 007ED260
+    // has run. 007F3970 calls 007ED260 at 007F3A11 immediately after compaction,
+    // so 007ED292 publishes the new live seats before removal returns.
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
         const bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
         const bsp::PlaneSquadronHostRecord* sq =
             registry.find_by_member_unit(unit.process_index);
-        if (sq == nullptr) return false;
-        int active_wingmen;
-        if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
-            const auto it = wingmen_recount_.find(sq->name);
-            if (it == wingmen_recount_.end()) return false;
-            active_wingmen = it->second.count_3bc;  // +3BCh
-        } else {
-            active_wingmen = count_following_wingmen_007ee790(*sq);
+        std::int32_t seat_9d8 = -1;      // 007CFE72's constructor stamp: no squadron
+        std::int32_t wingmen_3bc = 0;
+        if (sq != nullptr) {
+            std::int32_t live = 0;
+            for (const std::size_t m : sq->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                if (m == unit.process_index) {
+                    seat_9d8 = live;
+                    break;
+                }
+                ++live;
+            }
+            if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+                const auto it = wingmen_recount_.find(sq->name);
+                wingmen_3bc = it != wingmen_recount_.end() ? it->second.count_3bc : 0;  // +3BCh
+            } else {
+                wingmen_3bc = count_following_wingmen_007ee790(*sq);
+            }
         }
-        // bsp.py show 007f3970/007ed260 --asm: after compaction, 007F3A11
-        // calls 007ED260; 007ED292 MOV [ESI+9D8h],EAX rewrites each plane's
-        // live array position. 007B95E0 tests only whether that seat is zero,
-        // so the first non-NoUnit member gives the equivalent 0/nonzero input.
-        // This result selects class+260h TurnRollLeader in live 0099D300.
-        const int leader_seat_test = sq->flight_leader() == unit.process_index ? 0 : 1;
         return bsp::band_007a_cc13::plane_is_leader_with_wingmen_007b95e0(
-            leader_seat_test, sq != nullptr, active_wingmen);
+            seat_9d8, sq != nullptr, wingmen_3bc);
     }
     // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
     // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store
@@ -11762,9 +11781,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         a.pitch = u.plane_pitch_angle_c64;
         a.bank = u.plane_bank_angle_c68;
         a.heading = u.plane_heading_c6c;
-        // SUBSTITUTION, labelled: unit+C70h is not carried. Its only consumer
-        // here is rf_hdgV, authored 0/DEG(400), so the term is zero either way.
-        a.turn_c70 = 0.0f;
+        // unit+C70h, 007C18B0's heading rate (goal 5 chain 657).
+        a.turn_c70 = u.plane_heading_rate_c70;
         // vtable+38h 007B8E60 BSP_Unit_GetCachedSpeed: the world speed.
         if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
             // unit+B1Ch as 007D8020 caches it (per op, 1e-10 floor).
@@ -12287,8 +12305,21 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return bsp::point_beyond_map_margin_0059c9b0(*b, p[0], p[2], margin);
         };
         h.local_player_role = [&] { return unit.current_roles_01ac[0] == kLocalPlayerSlot; };
+        // 007C6D5C..007C6D65: 00982120([00F8A0C4], plane, 0). 00982120 first takes
+        // entity->vtable[140h](), 007B97E0 for a plane (+9D4h, the squadron), so the
+        // hook gets the squadron's unit, the same entity the exit (plane, 1) events
+        // carry (dispatch_exit_zone_listeners_00982120), and the warning tail and the
+        // exitzone listeners (exited 0) run on it. A plane whose squadron has no unit
+        // slot is the plane itself there too.
         h.warn_exit_zone = [&] {
-            record("Plane::out_of_action_notice_00982120", 0x00982120u);
+            if (sq == nullptr) {
+                record("Plane::out_of_action_notice_00982120", 0x00982120u);
+                return;
+            }
+            lua.note_exit_zone_00982120(
+                sq->squadron_unit != bsp::kPlaneSquadronNoUnit ? sq->squadron_unit : m, false);
+            ++leave_warnings_00982120;
+            done("Plane::out_of_action_notice_00982120", 0x00982120u);
         };
         h.send_exit_zone = [&] { send = true; };
         bsp::gameplay_seg47_cc13::out_of_action_countdown_007c6c30(s, gun->unit_dead(m), step, t, h);
@@ -12319,16 +12350,20 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         done("Plane::out_of_action_countdown_007c6c30", 0x007c6c30u);
     }
     // 007EE410 -> message 50h -> 007CA790 -> 007F31A0 for a plane whose leave
-    // countdown ran out. PARTIAL, labelled: 00982120's HUD notices, the Lua
-    // ExitZoneParty stores (no script in this installation reads the key), the
-    // fire stance 0 and the moveto 007F340F re-issues to the survivors are not
-    // modelled; the survivors keep their retreat task instead.
+    // countdown ran out. 007CA790 runs on its body (run_exit_zone_007ca790: the Lua
+    // ExitZoneParty store, then 007F31A0). PARTIAL, labelled: 007F31A0's 007F31E6
+    // exitzone event is taken from the cause-4 death by the Lua host
+    // (dispatch_exit_zone_listeners_00982120); the fire stance 0 and the moveto
+    // 007F340F re-issues to the survivors are not modelled; the survivors keep
+    // their retreat task instead.
     void retreat_leave_map_007ee410(std::size_t m) {
         bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_registry().find_by_member_unit(m);
         GameGunneryHost* const gun = gunnery.get();
         if (gun == nullptr || m >= slots.size() || gun->unit_dead(m)) return;
         if (sq == nullptr) {
-            record("Plane::exit_zone_party_007ca790", 0x007ca790u);   // no 007F31A0
+            // No squadron record: 007EE410 runs on plane+9D4h, which this host
+            // cannot name, so neither 007CA790 nor 007F31A0 runs.
+            record("Plane::exit_zone_no_squadron_record", 0x007ee410u);
             return;
         }
         bool latched = false;
@@ -12340,24 +12375,49 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return;
         }
         ++retreat_exits;
+        // 007C6DAD..007C6DC1: 007EE410's third argument is 00489C40(game, plane+FCh),
+        // the border zone at the plane, and the message 50h it routes (flags 7, local
+        // in single player) carries that zone's +4h, its party (the dword
+        // SetBorderZoneParty stores at 008AEC7D). The message's handler is 007CA790.
+        // LABELLED: inside the map 00489C40 indexes with a stale value
+        // (border_zone_at_point_00489c40 answers null), so no party is recovered and
+        // 007CA790 is not run; 007F31A0's own work is.
+        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
+        const bsp::BorderZoneSet* zones = lua.world_border_zones();
+        const bsp::BorderZoneRecord* zone = nullptr;
+        if (bounds != nullptr && zones != nullptr) {
+            const float* pm = slots[m]->motion.position;
+            zone = bsp::border_zone_at_point_00489c40(*bounds, *zones, {pm[0], pm[1], pm[2]});
+        }
+        if (zone == nullptr) ++exit_zone_party_no_zone;
         std::vector<std::size_t> alive;
         for (const std::size_t u : sq->member_units) {
             if (u != bsp::kPlaneSquadronNoUnit && u < slots.size() && !gun->unit_dead(u))
                 alive.push_back(u);
         }
-        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
         std::size_t outside_killed = 0;
+        // 007F31A0 on the plane, reached from its 007CA790 (or directly, labelled above).
+        const auto left_map = [&] {
         if (alive.size() > 1) {
             std::size_t survivors = alive.size() - 1;
             if (m == leader && bounds != nullptr) {
                 // 007F3240-007F32B6: every other member already outside gets the
-                // same exit message, whose 007F31A0 kills it (non-leader arm).
+                // same exit message (007EDF50 with 007F31A0's own party argument,
+                // 0077C2A0 flags 7), whose 007CA790 stores that party and runs the
+                // member's 007F31A0, which kills it (non-leader arm).
                 for (const std::size_t u : alive) {
                     if (u == m) continue;
                     const float* p = slots[u]->motion.position;
                     if (bsp::point_outside_world_map_0071c4f0(*bounds, {p[0], p[1], p[2]})) {
-                        note_kill_cause(u, 4);
-                        gun->kill_unit_00926d90(u, 4);
+                        const auto member_left_map = [&](std::int32_t) {
+                            note_kill_cause(u, 4);
+                            gun->kill_unit_00926d90(u, 4);
+                        };
+                        if (zone != nullptr) {
+                            run_exit_zone_007ca790(u, zone->side, member_left_map);
+                        } else {
+                            member_left_map(0);   // unread: the kill takes no party
+                        }
                         ++retreat_exit_members;
                         ++outside_killed;
                         --survivors;
@@ -12388,7 +12448,36 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         gun->kill_unit_00926d90(m, 4);
         slots[m]->retreat_task_installed = false;
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
+        };
+        if (zone != nullptr) {
+            run_exit_zone_007ca790(m, zone->side, [&](std::int32_t) { left_map(); });
+        } else {
+            left_map();
+        }
     }
+    // 007CA790 BSP_Plane_OnExitZone, __thiscall(plane, party), RET 4, the handler of
+    // message 50h (bsp.py disasm-raw 007ca790): under the mission entity lock
+    // (004C1570's +4h critical section, 007CA7AD..007CA7CE), the plane's Lua
+    // self.ExitZoneParty = party (00927B40 at 007CA815, 00B67460 at 007CA82B, an
+    // integer), then 007CA862..007CA86E 007F31A0(ECX = plane+9D4h, plane, party) when
+    // +9D4h is set, which it is on every path here (007EE410 itself runs with ECX =
+    // plane+9D4h). The lock has no host counterpart: this host runs the mission on
+    // one thread.
+    void run_exit_zone_007ca790(std::size_t unit, std::int32_t party,
+                                const std::function<void(std::int32_t)>& left_map) {
+        bsp::gameplay_seg47_cc13::ExitZoneHost h;
+        h.set_lua_exit_zone_party = [&](std::int32_t p) {
+            store_exit_zone_party_007ca790(unit, p);
+        };
+        h.squadron_left_map = left_map;
+        bsp::gameplay_seg47_cc13::exit_zone_007ca790(true, party, h);
+        done("Plane::exit_zone_party_007ca790", 0x007ca790u);
+    }
+    // 007CA7D2..007CA82B: the key "ExitZoneParty" (00D05E00, copied into a native
+    // string through 0041DD40), 00927B40's thisTable slot of the plane (the units-host
+    // index plus one, kMissionLuaEntityKeyFormat), and 00B67460 stores the party there
+    // as an integer. A plane with no slot stores nothing.
+    void store_exit_zone_party_007ca790(std::size_t unit, std::int32_t party);
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit, float state_8c = 1.0f) {
         if constexpr (kFollowSightSearchBound) follow_sight_enter_009bed80(unit);
         // 009BFDA6-009BFDB2: the calling state's +8Ch. The follow state's is

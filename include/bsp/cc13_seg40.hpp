@@ -6,8 +6,9 @@
 // symbol; native objects are raw byte blocks touched only at the offsets the
 // image uses; every call goes through a named host method at the same point
 // with the same arguments. Cc13Seg40Host extends Cc13Seg48Host, whose hooks
-// (CRT, references, bit cursors, session-message base) are reused. Nothing is
-// wired into the game. Build-tested only.
+// (CRT, references, bit cursors, session-message base) are reused. Only the
+// narrative object's teardown (00733DC0, 00733E70, 00733F00, 00735080) is wired,
+// through MissionNarrativeObjectHost (goal 5 chain 643). Build-tested only.
 
 #include "bsp/cc13_seg48.hpp"
 
@@ -15,8 +16,46 @@
 
 namespace bsp {
 
-class Cc13Seg40Host : public Cc13Seg48Host {
+// Goal 5 chain 643: the hooks the mission narrative object [game+21E8h] reaches
+// in its constructor (00735030), entry copy (00733C80), entry and holder
+// teardown (00733DC0, 00733E70, 00733F00) and destructor (00735080), split out
+// of Cc13Seg40Host / Cc13Seg48UHost so a host can run those bodies over its
+// live narrative object without implementing the segment's other hooks. Every
+// method keeps the declaration it has in Cc13Seg48Host, Cc13Seg40Host or
+// Cc13Seg48UHost, and those classes redeclare it, so it stays one hook.
+class MissionNarrativeObjectHost {
 public:
+    virtual ~MissionNarrativeObjectHost() = default;
+    // 00BF6989 / 00BF65AC _free, __cdecl(block).
+    virtual void crt_free_00bf6989(void* block) = 0;
+    virtual void crt_free_00bf65ac(void* block) = 0;
+    // 0041DD40 BSP_NativeString_Resize, __thiscall(ECX = string; length, keep), RET 8.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t keep) = 0;
+    // 00BF7680 _memcpy, __cdecl(dst, src, size).
+    virtual void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t size) = 0;
+    // 00419CC0 BSP_SizedStoragePool_GetSingleton, then 00BD1510 ReturnBlock
+    // __thiscall(ECX = pool; block, size, flag), RET 0Ch.
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size, std::int32_t flag) = 0;
+    // 006B88E0 BSP_LuaVariantVector_Resize: __thiscall(ECX = vector, int), RET 4.
+    virtual void lua_variant_vector_resize_006b88e0(void* vector, std::int32_t size) = 0;
+    // 00734CE0 BSP_NarrativeList_Clear: __thiscall(ECX = the list at narrative+4h).
+    virtual void narrative_list_clear_00734ce0(void* list) = 0;
+    // 00733430 BSP_MissionNarrativeList_BuyHeadNode, __thiscall(ECX = list), EAX = node.
+    virtual void* narrative_list_buy_head_node_00733430(void* list) = 0;
+};
+
+class Cc13Seg40Host : public Cc13Seg48Host, public MissionNarrativeObjectHost {
+public:
+    // ---- the Cc13Seg48Host hooks MissionNarrativeObjectHost shares ----
+    void crt_free_00bf6989(void* block) override = 0;
+    void crt_free_00bf65ac(void* block) override = 0;
+    void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t keep) override = 0;
+    void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t size) override = 0;
+    void* sized_pool_get_00419cc0() override = 0;
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+                                          std::int32_t flag) override = 0;
+
     // ---- entity kinds and gun bots ----
     // 00521EA0 BSP_CommandTarget_ResolveObject: __thiscall(ECX = target), EAX.
     virtual void* command_target_resolve_object_00521ea0(void* target) = 0;
@@ -108,9 +147,9 @@ public:
     // 0041CC80 BSP_CriticalSection_DestroyOwned: __thiscall(ECX = section).
     virtual void critical_section_destroy_owned_0041cc80(void* section) = 0;
     // 006B88E0 BSP_LuaVariantVector_Resize: __thiscall(ECX = vector, int), RET 4.
-    virtual void lua_variant_vector_resize_006b88e0(void* vector, std::int32_t size) = 0;
+    void lua_variant_vector_resize_006b88e0(void* vector, std::int32_t size) override = 0;
     // 00734CE0 BSP_NarrativeList_Clear: __thiscall(ECX = the list at narrative+4h).
-    virtual void narrative_list_clear_00734ce0(void* list) = 0;
+    void narrative_list_clear_00734ce0(void* list) override = 0;
 };
 
 // pi as float at 00D7A264 (bits 40490FDB) and FLT_MAX at 00CFDBF8 (bits 7F7FFFFF).
@@ -166,10 +205,10 @@ void cc13_seg40_gun_class_activate_model_and_bullet_classes_00731a50(void* gun_c
 void cc13_seg40_native_vector14_destruct_0072cae0(void* vector, Cc13Seg40Host& host);
 void cc13_seg40_native_particle_population_lock_destruct_0072cc60(void* lock, std::uint32_t* global_0108ff50,
                                                                   Cc13Seg40Host& host);
-void cc13_seg40_countdown_callback_holder_destruct_00733e70(void* holder, Cc13Seg40Host& host);
-void cc13_seg40_narrative_callback_holder_destruct_00733f00(void* holder, Cc13Seg40Host& host);
-void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, Cc13Seg40Host& host);
-void cc13_seg40_mission_narrative_destruct_00735080(void* narrative, Cc13Seg40Host& host);
+void cc13_seg40_countdown_callback_holder_destruct_00733e70(void* holder, MissionNarrativeObjectHost& host);
+void cc13_seg40_narrative_callback_holder_destruct_00733f00(void* holder, MissionNarrativeObjectHost& host);
+void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, MissionNarrativeObjectHost& host);
+void cc13_seg40_mission_narrative_destruct_00735080(void* narrative, MissionNarrativeObjectHost& host);
 void* cc13_seg40_session_message_missioninfo_construct_00733b10(void* message, const void* text,
                                                                 Cc13Seg40Host& host);
 

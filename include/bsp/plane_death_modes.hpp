@@ -4,6 +4,8 @@
 // pure rules. docs/PLANE_DEATH_MODES.md. Every name here is a hypothesis, not a
 // recovered symbol; nothing is ABI-compatible or game-validated.
 
+#include <functional>
+
 namespace bsp {
 
 // The mode 007CA8A0 raises through the plane's named-effect slot 007BBFA0.
@@ -42,23 +44,10 @@ struct PlaneDeathModeInputs {
 //   otherwise                      -> ExplosionDelayed
 PlaneDeathMode plane_death_mode_007ca8a0(const PlaneDeathModeInputs& in) noexcept;
 
-// 007BBFA0: the explosion timer unit+C10h each mode stores before it routes
-// its session message. Explosion -1.0f (00D7A260, immediate); ExplosionDelayed
-// the draw 00BD2F10(stream 0, [00E18710], [00E1870C]); PowerLost and the two
-// spins 1000.0f (00CE3804). `delayed_draw` is used only for ExplosionDelayed.
-float plane_death_timer_c10_007bbfa0(PlaneDeathMode mode, float delayed_draw) noexcept;
-
-// 007D0B80's arms for the mode's message: which of unit+C39h (power lost) and
-// unit+C36h (spinning) the handler sets. Every arm reaches the tail 007D12FC,
-// which sets unit+C3Ah and calls vtable[70h](1), so the aircraft is dead
-// (unit+5Dh) from the message on. An immediate Explosion also calls
-// BSP_MissionEntity_Kill(unit, 1) at 007D0CFD.
-struct PlaneDeathFlags {
-    bool powerlost_c39{false};
-    bool spinning_c36{false};
-    bool killed_now{false};
-};
-PlaneDeathFlags plane_death_flags_007d0b80(PlaneDeathMode mode, float timer_c10) noexcept;
+// The mode's name is what 007CA8A0 hands vtable[194h] 007BBFA0; that body and
+// 007D0B80, which reads the message it routes, are
+// bsp::gameplay_seg47_cc13::named_effect_007bbfa0 and state_message_007d0b80
+// (goal 5 chain 645 removed this file's mode-keyed copies of both).
 
 // 007CAF10's death terms, run from the free-flight arm at 007CC322 (and from
 // the other arms' vtable[1ECh] call).
@@ -71,13 +60,32 @@ struct PlaneDeathStepInputs {
     float dead_timer_c3c{0.0f};
     float step{0.0f};
     bool explosion_budget_ok{true};  // [00E186E8] <= [00E1873C] MaxExplosionNum
+    // Goal 5 chain 654: the engine block 007CAF47-007CB07E. A session client
+    // ([00E188A8]+1FE4h == 2, 007CAF4C/007CAF5E) jumps past it and the
+    // explosion block to 007CB13F.
+    bool session_client_1fe4{false};
+    bool controller_byte_94{false};  // 007D7A80(unit+AB0h), ctl+94h: skips the block
+    float engine_fire_timer_c14{-1.0f};  // unit+C14h: -1.0f from the constructor
+                                         // (docs/CC13_MISTAG.md), 007BCABB's draw once destroyed
+    int engine_count_140{0};         // [unit+538h]+140h NumEngines (007D204D)
+};
+// The engine block's calls on the engine list unit+C98h, in image order.
+struct PlaneDeathEngineCalls {
+    std::function<void()> stop_all_engines;    // 007DE600 (007CAFA9, 007CB075)
+    std::function<bool()> any_engine_burning;  // 007DE5B0 (007CB030)
+    // vtable[194h](&"enginefire" 00D05A04, 0) at 007CB060, which is 007BBFA0;
+    // answers unit+C10h afterwards, which the explosion block reads afresh
+    // (007CB084).
+    std::function<float()> raise_engine_fire;
 };
 struct PlaneDeathStepResult {
     float dead_timer_c3c{0.0f};
+    float engine_fire_timer_c14{-1.0f};  // unit+C14h on exit
     bool explode{false};            // raise "explosion": timer -> -1, Kill(1)
     bool zero_throttle{false};      // unit+9F0h and +BBCh = 0
     bool zero_air_brake{false};     // unit+9F4h and +BC0h = 0
 };
-PlaneDeathStepResult plane_death_step_007caf10(const PlaneDeathStepInputs& in) noexcept;
+PlaneDeathStepResult plane_death_step_007caf10(const PlaneDeathStepInputs& in,
+                                               const PlaneDeathEngineCalls& engines);
 
 }  // namespace bsp

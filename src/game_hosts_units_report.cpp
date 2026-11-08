@@ -449,12 +449,11 @@ void GameUnitsHost::report() {
         1, host.stock_return_c7h_copies,
         host.stock_return_c7h_index_holder);
     host.log.notef("summary free flight stall force bound=%d steps=%llu kicks=%llu (007DC830 -> "
-        "007DAFD0, packet cc9_p14_stall_force)", Impl::kFreeFlightStallForceBound ? 1 : 0,
+        "007DAFD0, packet cc9_p14_stall_force)", 1,
         host.stall_force_steps, host.stall_force_kicks);
     host.log.notef("summary free flight dying spin bound=%d steps=%llu seeds=%llu wreck_lift_bound=%d "
         "wreck_lift_kicks=%llu (007DC830 007DCAF9 / 007DCB4B, packet p15_dying_spin)",
-        Impl::kFreeFlightDyingSpinBound ? 1 : 0, host.dying_spin_steps, host.dying_spin_seeds,
-        Impl::kFreeFlightWreckLiftBound ? 1 : 0, host.wreck_lift_kicks);
+        1, host.dying_spin_steps, host.dying_spin_seeds, 1, host.wreck_lift_kicks);
     host.log.notef("summary squadron free attack bound=%d census=%d ticks=%llu stops mode=%llu gate=%llu " 
         "no_target=%llu refused=%llu same=%llu not_air=%llu ordnance=%llu override=%llu sends=%llu installed=%llu " 
         "tasks=%llu stage_raises=%llu cleared=%llu restored=%llu moveto_self=%llu (009F8470, packet " 
@@ -477,6 +476,11 @@ void GameUnitsHost::report() {
     host.log.notef("summary plane combat death draw bound=%d draws=%llu (007BCABB after "
         "the death flush, packet cc13-landc)",
         bsp::kPlaneCombatDeathRetireDrawCc13Bound ? 1 : 0, host.combat_death_destroy_draws);
+    host.log.notef("summary plane engines lists=%llu engines=%llu stop_alls=%llu "
+        "fires_raised=%llu destroy_calls=%llu (007EC5A0 list; 007CAF10 engine block "
+        "007DE600 / 007DE5B0 / \"enginefire\"; 007D0B80 -> 007EB0B0, goal 5 chain 654)",
+        host.plane_engine_lists_built, host.plane_engines_built, host.plane_engine_stop_alls,
+        host.plane_engine_fires_raised, host.plane_engines_destroyed);
     host.log.notef("summary plane ground state dead tail bound=%d skips=%llu "
         "(007CA50F, packet cc13-landc)",
         bsp::kPlaneGroundStateDeadTailCc13Bound ? 1 : 0, host.ground_state_dead_tail_skips);

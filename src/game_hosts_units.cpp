@@ -1,5 +1,11 @@
 #include "bsp/game_hosts_units_internal.hpp"
 
+extern "C" {
+#include <lua.h>   // goal 5 chain 668: 007CA790's thisTable store
+}
+
+#include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
+
 namespace bsp::game {  // namespace
 
 // Packet cc13-para2: 0084CB70 once per run. False when the datatable did not read.
@@ -293,6 +299,119 @@ float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
     } else {
         return sea_h;
     }
+}
+
+// Goal 5 chain 654. 007EC5A0 BSP_PlaneFxComponent_LoadFromClass, called from
+// BSP_Plane_ReadPropertyBag at 007D6327 (ECX = unit+C98h, plane, active 0): the
+// engine list (007ECB41-007ECC85), one engine per class+140h NumEngines (007D204D:
+// 00B66270, then the CRT float-to-int, a truncation), a base engine (00D08640)
+// when class+144h JetEngines (007D208B, 00B662F0 with a false default) is set,
+// else a rotor (00D0865C), each initialised through its slot 0 at 007ECC85.
+// LABELLED, not modelled: the component's effect slots, levels and class loops
+// (007EC5D9-007EC9CC) and the rotor's Init 007EBF10. Their effects are scene-node
+// visibility and spin scalars no host code reads, and their draws (the speed
+// spread 007ECA23 / 007ECA41 / 007ECADD and 007EBF10's 007EC10F, all stream 1)
+// are the ones docs/CC13_RNG_STREAM_CENSUS.md section 11 reclassifies as
+// PRESENTATION; they are not taken, so the shared stream is as before. A rotor
+// therefore keeps operator new's state (007ECBC4-007ECBD6). Its Reset (007E1C60,
+// reached from Restart and from 007B97F0's ResetAll, neither of which this host
+// runs) would draw 007E1CCF on stream 1; that draw has no host site, so it throws.
+// The base engine's Init 007E1BA0 reads none of its arguments and runs.
+namespace {
+namespace s48 = bsp::gameplay_seg48_cc13;
+
+// The two engine objects 007EC5A0 pushes: the base engine (0Ch bytes, vtable
+// 00D08640) and the rotor (40h bytes, vtable 00D0865C), over the slot bodies in
+// src/gameplay_seg48_cc13.cpp. operator new's stores 007ECBC4-007ECBD6: +4h = 0,
+// +9h = 0, +8h = 0. The interface's burning_8 / stopped_9 are the object's own
+// +8h / +9h; stopped_9 is copied from the body state after each slot call, and
+// burning_8 is written only by 007E23E0 through the interface.
+class PlaneBaseEngine final : public s48::PlaneEngineSlots {
+public:
+    // Slot 0, 007E1BA0 (the call at 007ECC85; its four arguments are unread).
+    void init() noexcept { s48::engine_base_init_007e1ba0(state_); sync(); }
+    void restart(bool running) override {
+        s48::engine_base_restart_007ddeb0(state_, running);
+        sync();
+    }
+    void reset() override { s48::engine_base_reset_007e1c00(state_); sync(); }
+    void stop_engine() override { s48::engine_base_mark_stopped_007ddf00(state_); sync(); }
+    void step_rpm(float target, float dt) override { s48::engine_step_rpm_noop_007e23b0(target, dt); }
+    void apply_spin(float dt) override { s48::engine_apply_spin_noop_007e23c0(dt); }
+    void blur_blend() override { s48::engine_blur_blend_noop_007e23d0(); }
+
+private:
+    void sync() noexcept { stopped_9 = state_.stopped_9; }
+    s48::PlaneEngineBase state_;
+};
+
+// The rotor. The node visibility its slots return is dropped: this host has no
+// rotor scene nodes ("rotor<i>", "rotor_still<i>", "rotor_still_dam<i>").
+class PlaneRotorEngine final : public s48::PlaneEngineSlots {
+public:
+    PlaneRotorEngine(const s48::RotorTuning& tuning, s48::Rng rng)
+        : tuning_(tuning), rng_(std::move(rng)) {}
+    void restart(bool running) override {
+        static_cast<void>(s48::rotor_restart_007ddec0(rotor_, running, tuning_, rng_));
+        sync();
+    }
+    void reset() override {
+        static_cast<void>(s48::rotor_reset_007e1c60(rotor_, rng_));
+        sync();
+    }
+    void stop_engine() override {
+        static_cast<void>(s48::rotor_stop_engine_007ddf10(rotor_));
+        sync();
+    }
+    void step_rpm(float target, float dt) override {
+        s48::rotor_step_rpm_007ec180(rotor_, target, dt, tuning_);
+    }
+    void apply_spin(float dt) override { static_cast<void>(s48::rotor_apply_spin_007ec1f0(rotor_, dt)); }
+    void blur_blend() override { static_cast<void>(s48::rotor_blur_blend_007ec3b0(rotor_, tuning_)); }
+
+private:
+    void sync() noexcept { stopped_9 = rotor_.stopped_9; }
+    s48::PlaneRotor rotor_;
+    s48::RotorTuning tuning_;
+    s48::Rng rng_;
+};
+}  // namespace
+
+void GameUnitsHost::Impl::build_plane_engine_list(GameUnitSlot& plane) {
+    plane.plane_engines_c98.clear();
+    const int type = plane.row.type_id;
+    const std::int32_t count = static_cast<std::int32_t>(
+        lua.read_vehicle_class_number(type, "NumEngines", 0.0f));
+    plane.plane_num_engines_140 = count;
+    const bool jet_engines = lua.read_vehicle_class_boolean(type, "JetEngines", false);
+    s48::RotorTuning tuning;
+    if (lua.plane_globals_loaded()) {
+        const bsp::GameTuningBlock& g = lua.plane_globals();
+        tuning.speed_base_160 = g.rotor_speed_base;
+        tuning.speed_random_168 = g.rotor_speed_random;
+        tuning.still_only_speed_16c = g.rotor_still_only_speed;
+        tuning.blurred_only_speed_170 = g.rotor_blurred_only_speed;
+        tuning.rotor_speed_change_17c = g.rotor_rotor_speed_change;
+    }
+    s48::Rng no_reset_draw;
+    no_reset_draw.uniform = [](int, float, float) -> float {
+        throw std::logic_error("007E1C60: the rotor Reset's 007E1CCF draw has no host site");
+    };
+    no_reset_draw.next_u32 = [](int) -> std::uint32_t {
+        throw std::logic_error("007E1C60: the rotor Reset draws no NextU32");
+    };
+    for (std::int32_t i = 0; i < count; ++i) {
+        if (jet_engines) {
+            auto engine = std::make_unique<PlaneBaseEngine>();
+            engine->init();   // 007ECC85 -> 007E1BA0
+            plane.plane_engines_c98.push_back(std::move(engine));
+        } else {
+            plane.plane_engines_c98.push_back(
+                std::make_unique<PlaneRotorEngine>(tuning, no_reset_draw));
+        }
+    }
+    ++plane_engine_lists_built;
+    plane_engines_built += plane.plane_engines_c98.size();
 }
 
 // 007E2010 / 007E11D0 for the +30h copy: the +7Ch clock advanced by dt and, when it
@@ -829,7 +948,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         // writes only when |v| > 0.1 (otherwise it keeps its value). In the
         // image that write is at 007CEE9C, after the think (007CE865) and the
         // motion, so think sees the previous step's C7C. The host's
-        // refresh_attitude_007c1900 runs before pilot_think_and_commit in each
+        // update_pose_derived_state_007c18b0 runs before pilot_think_and_commit in each
         // of its three arms (free flight, ground roll/deck, surface), from the
         // velocity the host holds at that point. In steady free flight that is
         // the velocity the previous step's motion left, so the values agree.
@@ -862,7 +981,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
     // DIAGNOSTIC (cc9-physics29): the ON arm would read C7Ch, which the writer in
-    // refresh_attitude_007c1900 now keeps in both modes (read only by this census
+    // update_pose_derived_state_007c18b0 now keeps in both modes (read only by this census
     // when OFF).
     ++uhd_pitch_calls;
     if (pitch != u.plane_velocity_elevation_c7c) {
@@ -4063,59 +4182,221 @@ void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
     wing_target_007b8dc0(u.actuator_block_dec, spread);
 }
 
-// Packet cc13-landc (kPlaneFlightStateNotifyCc13Bound, bsp/plane_land_chain_cc13.hpp):
-// 007C11E0(0) on the state the caller has just stored. 007EABC0 runs at the
-// plane's construction in the image, so the class read the poll makes lazily is
-// made first here, or it would later reset the targets this writes.
-// SUBSTITUTIONS, labelled (the same as the state-one copy this replaces): the
-// controller's +3Ch..+50h and 007D9C80 are the host's three velocity fields
-// zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the
-// +C98h sub-block's timer and effects) are recorded; +C0Ch has no host field
-// (007BB9A0's gate derives it from +900h); 007BC550 takes the Lua self +4A4h as
-// set, as the state-one copy does, and 00779C60(1.0f) is recorded; 007EB270
-// (007C12D6, the +C98h FX component's OnFlightState, given the vtable[38h] value of
-// +72Ch) is presentation only, draws no RNG, and is not carried.
+// Goal 5 chain 650. 007C11E0 and its tail 007BC550 run as their bodies
+// (bsp::cc13_front3_plane_notify_flight_state_007c11e0,
+// bsp::cc13_seg47::plane_sync_elevator_attachment_for_state_007bc550) over a
+// shadow of the plane image. The shadow holds only the offsets the two bodies
+// read or write; it is filled from the slot before the call and written back
+// after it, and every call the bodies make lands on the slot:
+//  * +5Ch, the scene node's active byte: the slot's state->active (row.active
+//    when no state object). 00922F30 / 00922F80 are the typed bodies on the
+//    slot's SceneNodeFlags (+5Ch..+5Fh) when the host models them; otherwise
+//    the active flags are written directly, as before.
+//  * +900h / +908h: plane_control_mode_900 / plane_airborne_908.
+//  * [+DECh]: the actuator block (+11h moving_any, +28h channel_b, +44h
+//    channel_a, offsets as bsp::PlaneActuatorChannel lays them out).
+//  * +9F0h: plane_live_throttle.
+//  * +AB0h, the flight controller: +3Ch..+50h are the body-frame linear and
+//    angular velocities the body zeroes from 00F87574; 007D9C80 is
+//    bsp::body_to_world_007d9c80 through the live pose, written back to
+//    plane_world_velocity (ctl+18h..+20h), plane_body_angular (ctl+48h..+50h)
+//    and motion.linear_velocity. Its 007D8020 tail call is not modelled, as in
+//    the motion step's own use of the body.
+//  * 00951F40 is bsp::gameplay_seg61_62_cc13::plane_set_visible_00951f40's plan; its attach/detach of
+//    the +360h part is plane_hit_node_detached.
+// LABELLED, as the inline copy this replaces: +4A4h (the node 007BC550 and
+// 00951F40 test) is taken as present; 007DDEA0 and 007EB380(0.0f) (the +C98h FX
+// sub-block's timer and effects) and 00779C60(1.0f) are records, the host has
+// none of those objects; +C0Ch has no host field (007BB9A0's gate derives it
+// from +900h). Every host caller passes immediate = 0 (PUSH 0 at 007C16E8,
+// 007CC7DE, 007CC853, 007CB6C0, 007CB72F, 007C6278; PUSH EBX after XOR EBX,EBX
+// at 007C1465 in 007C1430), so the immediate arm (+72Ch slot +38h, 007EB270)
+// is not reached from this host.
+namespace {
+class PlaneFlightStateNotifyBinding final : public bsp::PlaneNotifyFlightStateHost,
+                                            public bsp::cc13_seg47::PlaneAttachmentSyncHost {
+public:
+    PlaneFlightStateNotifyBinding(GameUnitsHost::Impl& host, GameUnitSlot& p)
+        : host_(host), p_(p) {}
+
+    void run() {
+        std::memset(plane_, 0, sizeof(plane_));
+        std::memset(block_, 0, sizeof(block_));
+        const bool active = p_.state != nullptr ? p_.state->active != 0 : p_.row.active;
+        put<std::uint8_t>(plane_, 0x5C, active ? 1u : 0u);
+        std::uint8_t* const node = plane_;   // +4A4h present (labelled above)
+        std::memcpy(plane_ + 0x4A4, &node, sizeof(node));
+        put<std::int32_t>(plane_, 0x900, p_.plane_control_mode_900);
+        put<float>(plane_, 0x908, p_.plane_airborne_908);
+        put<float>(plane_, 0x9F0, p_.plane_live_throttle);
+        std::uint8_t* const block = block_;
+        std::memcpy(plane_ + 0xDEC, &block, sizeof(block));
+        const bsp::PlaneActuatorBlock& b = p_.actuator_block_dec;
+        put<std::uint8_t>(block_, 0x11, b.moving_any ? 1u : 0u);
+        put_channel(0x28, b.channel_b);
+        put_channel(0x44, b.channel_a);
+
+        bsp::cc13_front3_plane_notify_flight_state_007c11e0(plane_, false, *this);
+
+        p_.plane_live_throttle = get<float>(plane_, 0x9F0);
+        bsp::PlaneActuatorBlock& out = p_.actuator_block_dec;
+        out.moving_any = get<std::uint8_t>(block_, 0x11) != 0;
+        get_channel(0x28, out.channel_b);
+        get_channel(0x44, out.channel_a);
+    }
+
+    // PlaneNotifyFlightStateHost.
+    const float* static_vector_00f87574() override { return kZero; }
+    std::uint32_t vcall_38_dword(void*) override {
+        throw std::logic_error("007C11E0: the immediate arm (+72Ch slot +38h) has no host caller");
+    }
+    void plane_sync_elevator_attachment_007bc550(void* plane) override {
+        bsp::cc13_seg47::plane_sync_elevator_attachment_for_state_007bc550(
+            *this, bsp::cc13_seg47::raw(plane));
+        host_.done("Plane::sync_elevator_attachment_007bc550", 0x007bc550u);
+    }
+    void flight_controller_body_to_world_velocity_007d9c80(void* controller) override {
+        std::uint8_t* const ctl = static_cast<std::uint8_t*>(controller);
+        bsp::ControllerVelocities v;
+        for (int i = 0; i < 3; ++i) {
+            v.linear_body[i] = get<float>(ctl, 0x3C + 4 * static_cast<std::size_t>(i));
+            v.angular_body[i] = get<float>(ctl, 0x48 + 4 * static_cast<std::size_t>(i));
+        }
+        bsp::AdvanceMatrix live{};
+        const float* const rows[3] = {p_.motion.pose_row0, p_.motion.pose_row1,
+                                      p_.motion.pose_row2};
+        for (int r = 0; r < 3; ++r) {
+            for (int c = 0; c < 3; ++c) live.m[r * 4 + c] = rows[r][c];
+            live.m[r * 4 + 3] = 0.0f;
+            live.m[12 + r] = p_.motion.position[r];
+        }
+        live.m[15] = 1.0f;
+        bsp::body_to_world_007d9c80(v, live);
+        for (int i = 0; i < 3; ++i) {
+            put<float>(ctl, 0x18 + 4 * static_cast<std::size_t>(i), v.linear_world[i]);
+            put<float>(ctl, 0x24 + 4 * static_cast<std::size_t>(i), v.angular_world[i]);
+            p_.plane_world_velocity[i] = v.linear_world[i];
+            p_.plane_body_angular[i] = v.angular_body[i];
+        }
+        p_.motion.linear_velocity = bsp::OceanVec3{v.linear_world[0], v.linear_world[1],
+                                                   v.linear_world[2]};
+        host_.done("PlaneFlightController::body_to_world_velocity_007d9c80", 0x007d9c80u);
+    }
+    void plane_sub_block_reset_timer40_007ddea0(void*) override {
+        host_.record("PlaneFx::reset_timer40_007ddea0", 0x007ddea0u);
+    }
+    void plane_fx_on_flight_state_007eb270(void*, std::uint32_t) override {
+        throw std::logic_error("007C11E0: 007EB270 is on the immediate arm, which has no host caller");
+    }
+    void plane_fx_step_007eb380(void*, float) override {
+        host_.record("PlaneFx::step_007eb380", 0x007eb380u);
+    }
+
+    // PlaneAttachmentSyncHost.
+    void unit_instance_detach_00951f40(bsp::cc13_seg47::Raw unit, std::int32_t value) override {
+        const bsp::gameplay_seg61_62_cc13::PlaneVisiblePlan plan =
+            bsp::gameplay_seg61_62_cc13::plane_set_visible_00951f40(unit.ptr(0x4A4) != nullptr, value != 0);
+        if (plan.acts) p_.plane_hit_node_detached = !plan.attach;   // 00710AD0 / 00710B80
+    }
+    void scene_node_disable_00922f80(bsp::cc13_seg47::Raw entity, std::int32_t) override {
+        set_scene_node_active(entity, false);
+    }
+    void scene_node_enable_00922f30(bsp::cc13_seg47::Raw entity, std::int32_t) override {
+        set_scene_node_active(entity, true);
+    }
+    void unit_update_owner_hud_state_00779c60(bsp::cc13_seg47::Raw, float) override {
+        host_.record("Unit::fade_00779c60", 0x00779c60u);
+    }
+
+private:
+    template <class T>
+    static void put(std::uint8_t* base, std::size_t offset, T value) noexcept {
+        std::memcpy(base + offset, &value, sizeof(T));
+    }
+    template <class T>
+    static T get(const std::uint8_t* base, std::size_t offset) noexcept {
+        T value;
+        std::memcpy(&value, base + offset, sizeof(T));
+        return value;
+    }
+    void put_channel(std::size_t at, const bsp::PlaneActuatorChannel& c) noexcept {
+        put<std::uint8_t>(block_, at + 0x0, c.enabled ? 1u : 0u);
+        put<std::uint8_t>(block_, at + 0x1, c.target ? 1u : 0u);
+        put<float>(block_, at + 0x4, c.value);
+        put<std::uint8_t>(block_, at + 0x8, c.moving ? 1u : 0u);
+    }
+    void get_channel(std::size_t at, bsp::PlaneActuatorChannel& c) const noexcept {
+        c.target = get<std::uint8_t>(block_, at + 0x1) != 0;
+        c.value = get<float>(block_, at + 0x4);
+        c.moving = get<std::uint8_t>(block_, at + 0x8) != 0;
+    }
+    void set_scene_node_active(bsp::cc13_seg47::Raw entity, bool enable) {
+        if (p_.scene_flags_available && p_.state != nullptr) {
+            bsp::SceneNodeFlags flags{p_.state->active != 0, p_.state->simulate != 0,
+                                      p_.scene_destroyed_005e != 0, p_.scene_removed_005f != 0};
+            if (enable) {
+                bsp::scene_node_enable_00922f30(flags);
+            } else {
+                bsp::scene_node_disable_00922f80(flags);
+            }
+            p_.state->active = flags.active ? 1 : 0;
+            p_.row.active = flags.active;
+        } else {
+            if (p_.state != nullptr) p_.state->active = enable ? 1 : 0;
+            p_.row.active = enable;
+        }
+        const bool active = p_.state != nullptr ? p_.state->active != 0 : p_.row.active;
+        entity.at<std::uint8_t>(0x5C) = active ? 1u : 0u;
+    }
+
+    static constexpr float kZero[3] = {0.0f, 0.0f, 0.0f};   // 00F87574, zero BSS
+    GameUnitsHost::Impl& host_;
+    GameUnitSlot& p_;
+    alignas(8) std::uint8_t plane_[0xDF0];
+    alignas(8) std::uint8_t block_[0x70];
+};
+}  // namespace
+
 void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
+    // 007EABC0 runs at the plane's construction in the image, so the class read
+    // the poll makes lazily is made first here, or it would later reset the
+    // targets the notify writes.
     if (!p.wing_fold_read) wing_fold_class_007eabc0(p);
     ++flight_state_notifies;
-    const std::int32_t s = p.plane_control_mode_900;
-    // 007C11E9-007C1208 (COMISS / JC: a NaN +908h takes a = 0).
-    const bool a = !(s == 6 || (s == 7 && !(5.0f >= p.plane_airborne_908)));
-    const bool b = s == 7 || s == 6 || s == 4 || s == 5;               // 007C120A-007C1223
-    bsp::PlaneActuatorBlock& block = p.actuator_block_dec;
-    if (block.channel_b.target != a) {                                 // 007C12E6, +29h
-        block.channel_b.target = a;
-        block.channel_b.moving = true;
-    }
-    if (block.channel_b.moving) block.moving_any = true;               // 007C12F8, +11h
-    if (block.channel_a.target != b) {                                 // 007C1302, +45h
-        block.channel_a.target = b;
-        block.channel_a.moving = true;
-    }
-    if (block.channel_a.moving) block.moving_any = true;               // 007C1314
-    if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = s;
-    if (s != 7 && s != 6 && s != 4 && s != 5 && s != 3) {              // 007C1318-007C1345
-        p.plane_live_throttle = 0.0f;                                  // 007C134E, +9F0h
-        for (int i = 0; i < 3; ++i) {                                  // 007C1356-007C13AB
-            p.plane_world_velocity[i] = 0.0f;
-            p.plane_body_angular[i] = 0.0f;
-        }
-        p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
-        record("PlaneFx::reset_timer40_007ddea0", 0x007ddea0u);
-        record("PlaneFx::step_007eb380", 0x007eb380u);
-    }
-    const bool active = p.state != nullptr ? p.state->active != 0 : p.row.active;
-    if (s == 1 || s == 0) {                                            // 007C1412 -> 007BC550
-        if (p.state != nullptr) p.state->active = 0;                   // 00922F80(0)
-        p.row.active = false;
-        p.plane_hit_node_detached = true;                              // 00951F40(0)
-    } else if (!active) {                                              // 007C141B, +5Ch clear
-        if (p.state != nullptr) p.state->active = 1;                   // 00922F30(0)
-        p.row.active = true;
-        p.plane_hit_node_detached = false;                             // 00951F40(1)
-        record("Unit::fade_00779c60", 0x00779c60u);
-    }
+    PlaneFlightStateNotifyBinding binding(*this, p);
+    binding.run();
+    // The poll stand-in's bookkeeping (wing_fold_notify_007c11e0), not the image's.
+    if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = p.plane_control_mode_900;
     done("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+}
+
+// Goal 5 chain 668: 007CA790's Lua half (see the declaration).
+void GameUnitsHost::Impl::store_exit_zone_party_007ca790(std::size_t unit, std::int32_t party) {
+    lua_State* const state = lua.mission_lua_state();
+    if (state == nullptr || unit >= slots.size()) {
+        ++exit_zone_party_no_slot;
+        return;
+    }
+    const int base = lua_gettop(state);
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (lua_istable(state, -1)) {
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(unit + 1u));
+        lua_getfield(state, -1, key);
+        if (lua_istable(state, -1)) {
+            lua_pushinteger(state, static_cast<lua_Integer>(party));
+            lua_setfield(state, -2, "ExitZoneParty");
+            lua_settop(state, base);
+            ++exit_zone_party_stores;
+            log.notef("exit zone: plane \"%s\" self.ExitZoneParty = %d at %.2f s (007CA790)",
+                slots[unit]->row.name.c_str(), party,
+                static_cast<double>(summary.simulated_seconds));
+            return;
+        }
+    }
+    lua_settop(state, base);
+    ++exit_zone_party_no_slot;
 }
 
 // 007CC16C-007CC186: (+BF4h)->+4h->+3Ch vtable[38h](unit). A carrier's site is
@@ -4334,7 +4615,24 @@ void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostR
 
 void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d) {
     if (d.site_ready_18 >= slots.size() || !slots[d.site_ready_18]) return;
-    GameUnitSlot& p = *slots[d.site_ready_18];
+    // Goal 5 chain 628. 006CF9AD..006CF9C7: the ready plane goes out as
+    // MT_AIRBASE_APPEARREADYPLANE (86h, 006BDAC0) through 0077C2A0(msg, 5, 0)'s
+    // local copy, and the receiver's 86h arm (006CD788) hands 006CF9F0 the plane
+    // the copy's +20h names (006BDBF0). +174h is this process's unit index + 1
+    // (GameScriptOrdersHost::entity_object_id). LABELLED: an index the copy's
+    // 12 bits cannot carry keeps the posted plane, as queue_gun_aim_79 keeps
+    // its target id; delivery stays in this step, as before.
+    std::size_t plane_index = d.site_ready_18;
+    if (d.site_ready_18 + 1u <= 0xfffu) {
+        const std::uint16_t copy = commands.session_messages().queue_airbase_appear_ready_plane_86(
+            static_cast<std::uint16_t>(d.site_ready_18 + 1u));
+        plane_index = copy == 0 ? slots.size() : static_cast<std::size_t>(copy) - 1u;
+    }
+    if (plane_index >= slots.size() || !slots[plane_index]) {
+        d.site_ready_18 = static_cast<std::size_t>(-1);                // 006CFA54
+        return;
+    }
+    GameUnitSlot& p = *slots[plane_index];
     const bool owner_alive = d.owner < slots.size() && slots[d.owner]
         && !(gunnery != nullptr && gunnery->unit_dead(d.owner));
     if (owner_alive && place_on_launch_spot_007c5f60(p, deck_index, d, true)) {
@@ -4793,19 +5091,47 @@ void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const 
 // path over the host's slot.
 void GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0(GameUnitSlot& p) {
     ++takeoff_notify_calls;
-    if (!p.plane_landed_904) {
+    // Goal 5 chain 650: the body (bsp::cc13_seg47b, typed view) over the slot's
+    // +904h, +900h and the session context's game+1FE4h.
+    struct Exits final : bsp::cc13_seg47b::PlaneTakeoffStartNotifyHost {
+        GameUnitsHost::Impl& host;
+        GameUnitSlot& p;
+        bool posted{false};
+        Exits(GameUnitsHost::Impl& h, GameUnitSlot& s) : host(h), p(s) {}
+        void send_flight_state_c3(std::uint8_t current, std::uint8_t requested) override {
+            // 0076E520 writes 00762940; its C3h factory copy is constructed with
+            // 00762880 and read by 007629A0. The slot retains that copy until the
+            // existing row-9 delivery, with its recipient identity kept out of band.
+            const auto copy =
+                host.commands.session_messages().queue_plane_change_state_c3(current, requested);
+            p.takeoff_notify_c3h_pending = copy.requested == 4;
+            p.takeoff_notify_c3h_current = copy.current;
+            posted = true;
+        }
+        void set_flight_state_007c1430(std::int32_t wanted) override {
+            // 007C1897, a client session only (game+1FE4h == 2): 007C1430 on the
+            // slot, applied as 007C1570's direct arm applies it.
+            bsp::PlaneSetStateInputs si;
+            si.requested_state = wanted;
+            si.current_state = p.plane_control_mode_900;
+            si.airborne_clock = p.plane_airborne_908;
+            si.class_min_water_spd = p.plane_min_water_spd_198;
+            si.landed_after_flight = p.plane_landed_904;
+            const bsp::PlaneSetStateEffects fx = bsp::set_flight_state_007c1430(si);
+            p.plane_control_mode_900 = fx.state;
+            if (fx.write_state_change_stamp) p.plane_site_timer_c04 = -1.0f;
+            if (fx.write_landed_after_flight) p.plane_landed_904 = fx.landed_after_flight;
+            if (fx.write_state_enter_marker) p.plane_c18 = 3;
+            if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+                if (fx.changed) host.flight_state_notify_007c11e0(p);
+            }
+        }
+    } exits(*this, p);
+    bsp::cc13_seg47b::plane_notify_takeoff_start_007c17d0(p.plane_landed_904,
+        p.plane_control_mode_900, bsp::session_context().session_word_1fe4 == 2, exits);
+    if (!exits.posted) {
         done("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
         return;
-    }
-    {
-        // bsp.py show 007C17D0: +20h is the current +900h byte, +21h is 4.
-        // 0076E520 writes 00762940; its C3h factory copy is constructed with
-        // 00762880 and read by 007629A0. The slot retains that copy until the
-        // existing row-9 delivery, with its recipient identity kept out of band.
-        const auto copy = commands.session_messages().queue_plane_change_state_c3(
-            static_cast<std::uint8_t>(p.plane_control_mode_900), 4);
-        p.takeoff_notify_c3h_pending = copy.requested == 4;
-        p.takeoff_notify_c3h_current = copy.current;
     }
     ++takeoff_notify_posts;
     if (takeoff_notify_posts <= 10) {
@@ -4845,16 +5171,42 @@ void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
     }
     if (p.plane_control_mode_900 == 4 || p.plane_control_mode_900 == 5) {   // 0042A7E0
         ++takeoff_notify_arm_7c7430;
-        // 007C7460 is the same conditional +904h clear as 007B8450.
-        // Borrow the live flag used by taxi, touchdown and takeoff; the
-        // original native 007B8450 call site is 007CE5FA, not this receive.
-        bsp::cc13_seg47::plane_clear_flag_904_007b8450(p.plane_landed_904);
-        p.plane_taxi_queue_910 = false;                                  // 007C746F
-        p.plane_airborne_908 = 0.0f;                                     // 007C7475
-        if (!p.plane_ground_contact_bf8 && p.plane_control_mode_900 == 5) {
-            p.plane_control_mode_900 = 4;                                // 007C7488
-            ++takeoff_notify_5_to_4;
-        }
+        // Goal 5 chain 650: 007C7430's body
+        // (bsp::cc13_seg47::plane_remote_touchdown_to_state4_007c7430) over a shadow
+        // of the five plane bytes it touches (+900h, +904h, +908h, +910h, +BF8h)
+        // and of the game object's +1FE4h (the session context's word), written
+        // back after the call. 007B8450 runs at its own site now (the plane
+        // tick's 007CE5FA, bsp::plane_landed_flag_tick_007ce598).
+        struct RemoteTouchdown final : bsp::cc13_seg47::PlaneRemoteTouchdownHost {
+            std::uint8_t game[0x1FE8] = {};   // 4-aligned after the vptr; +1FE4h is a dword
+            void* global_pointer(std::uint32_t address) override {
+                if (address != 0x00E188A8u) {
+                    throw std::logic_error("007C7430 reads only the game object [00E188A8]");
+                }
+                return game;
+            }
+            void plane_touchdown_007c71e0(bsp::cc13_seg47::Raw) override {
+                // 007C7447..007C744F: only +900h other than 4 and 5 reaches 007C7451,
+                // and this arm runs for 4 or 5 alone.
+                throw std::logic_error("007C7430: 007C71E0 is unreachable from the 0042A7E0 arm");
+            }
+        } touchdown;
+        const std::int32_t session = bsp::session_context().session_word_1fe4;
+        std::memcpy(touchdown.game + 0x1FE4, &session, sizeof(session));
+        alignas(8) std::uint8_t plane[0xBFC] = {};
+        const std::int32_t before = p.plane_control_mode_900;
+        std::memcpy(plane + 0x900, &before, sizeof(before));
+        plane[0x904] = p.plane_landed_904 ? 1u : 0u;
+        std::memcpy(plane + 0x908, &p.plane_airborne_908, sizeof(float));
+        plane[0x910] = p.plane_taxi_queue_910 ? 1u : 0u;
+        plane[0xBF8] = p.plane_ground_contact_bf8 ? 1u : 0u;
+        bsp::cc13_seg47::plane_remote_touchdown_to_state4_007c7430(touchdown,
+                                                                   bsp::cc13_seg47::raw(plane));
+        std::memcpy(&p.plane_control_mode_900, plane + 0x900, sizeof(std::int32_t));
+        p.plane_landed_904 = plane[0x904] != 0;
+        std::memcpy(&p.plane_airborne_908, plane + 0x908, sizeof(float));
+        p.plane_taxi_queue_910 = plane[0x910] != 0;
+        if (before == 5 && p.plane_control_mode_900 == 4) ++takeoff_notify_5_to_4;
         done("Plane::remote_touchdown_to_state4_007c7430", 0x007c7430u);
         return;
     }
@@ -5136,7 +5488,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
     if constexpr (bsp::kPlaneRetireOnDestroyedDrawCc13Bound) {
-        if (plane_on_destroyed_draw_007bcabb(p.process_index)) ++stock_return_destroy_draws;
+        if (plane_on_destroyed_draw_007bcabb(p, p.process_index)) ++stock_return_destroy_draws;
     }
     if constexpr (kStockReturnDestroyBytesBound) {
         // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
@@ -5329,17 +5681,17 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
             cand = oi;
         }
         if (cand < slots.size()) {
-            carrier_elevator_take_006fc720(d, *slots[cand]);
+            // 006D0703..006D071D: 006CFFF0(0, cand) -> 006D0050 -> 006FC720.
+            route_carrier_elevator_message_87(d, false, cand);
         } else if constexpr (kBaseLaunchChainBound) {
             // Packet cc9_base_launch_deck_arms, 006D0707-006D071D: no landed
             // candidate, a ready plane +18h and 006D02F0 false: 006CFFF0(0, 0) ->
-            // 006D0050 -> 006FC640, the empty platform goes down. LABELLED: the
-            // message to the carrier (0077C2A0 with 5) is delivered at once.
+            // 006D0050 -> 006FC640, the empty platform goes down.
             if (d.site_ready_18 < slots.size()) {
                 if (carrier_elevator_blocked_006d02f0(d)) {
                     ++base_launch_lift_blocked;
                 } else {
-                    carrier_elevator_send_empty_down_006fc640(d);
+                    route_carrier_elevator_message_87(d, false, static_cast<std::size_t>(-1));
                 }
             }
         }
@@ -5363,28 +5715,61 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
     }
     const bsp::GameTuningBlock& g = lua.plane_globals();
     if (e.timer_9c > g.pilot_landing_lift_delay && e.plane_34 >= slots.size()) {
+        // 006D0786..006D07A1: 006CFFF0(1, +18h), then +9Ch = 0. Packet
+        // cc9_base_launch_deck_arms: with the ready plane, 006D0050's flag-1 arm
+        // places and raises it; +18h stays set until the top (006D0667).
+        std::size_t ready = static_cast<std::size_t>(-1);
         if constexpr (kBaseLaunchChainBound) {
-            // Packet cc9_base_launch_deck_arms: 006CFFF0(1, +18h) -> 006D0050
-            // flag 1 with the ready plane: 007C5F60(plane, carrier+1188h), then
-            // 006FC810 brings it up. +18h stays set until the top (006D0667).
-            if (d.site_ready_18 < slots.size() && slots[d.site_ready_18]) {
-                GameUnitSlot& p = *slots[d.site_ready_18];
-                const std::size_t di = static_cast<std::size_t>(&d - landing_decks.data());
-                if (place_on_launch_spot_007c5f60(p, di, d, false)) {
-                    carrier_elevator_raise_plane_006fc810(d, p);
-                }
-                e.timer_9c = 0.0f;
-                return;
-            }
+            if (d.site_ready_18 < slots.size() && slots[d.site_ready_18]) ready = d.site_ready_18;
         }
-        // 006CFFF0(1, ready +18h) -> 006D0050 flag 1 with no plane -> 006FC6B0:
-        // the empty platform goes up.
-        ++e.unfed_relaunch;
-        e.p18 = e.depth_48 + e.p1c;
-        e.mode_50 = 1;
-        ++e.empty_up;
+        if (ready >= slots.size()) ++e.unfed_relaunch;
+        route_carrier_elevator_message_87(d, true, ready);
         e.timer_9c = 0.0f;
     }
+}
+
+void GameUnitsHost::Impl::route_carrier_elevator_message_87(LandingDeck& d, bool flag,
+                                                         std::size_t plane) {
+    // 006CFFF0 (its body, cc13_sweepC, runs inside the queue call): 00758B90
+    // (plane, flag) on the stack, 0077C2A0(msg, 5, 0) to the carrier
+    // (site+B8h); the local bit sends it through 0076E520's copy, and the
+    // carrier's kind switch runs 006D0050 on it. +174h is this process's
+    // unit index + 1 (GameScriptOrdersHost::entity_object_id). LABELLED: the
+    // copy is delivered in this step, as the direct calls it replaces were; an
+    // index the copy's 12 bits cannot carry keeps the posted plane.
+    bool copy_flag = flag;
+    std::size_t copy_plane = plane < slots.size() ? plane : static_cast<std::size_t>(-1);
+    if (copy_plane >= slots.size() || copy_plane + 1u <= 0xfffu) {
+        const bool has_plane = copy_plane < slots.size();
+        const bsp::HostSessionMessages::ElevatorMoveCopy copy =
+            commands.session_messages().queue_mothership_elevator_move_87(flag, has_plane,
+                static_cast<std::uint16_t>(has_plane ? copy_plane + 1u : 0u));
+        copy_flag = copy.flag;
+        // 00758CF0: the +20h entity when +23h, else null.
+        copy_plane = copy.has_plane && copy.plane_id != 0
+            ? static_cast<std::size_t>(copy.plane_id) - 1u : static_cast<std::size_t>(-1);
+    }
+    CarrierElevator& e = d.elevator;
+    if (copy_plane >= slots.size() || !slots[copy_plane]) {
+        if (!copy_flag) {
+            carrier_elevator_send_empty_down_006fc640(d);              // 006FC640
+        } else {
+            // 006FC6B0: the empty platform goes up.
+            e.p18 = e.depth_48 + e.p1c;
+            e.mode_50 = 1;
+            ++e.empty_up;
+        }
+    } else if (!copy_flag) {
+        carrier_elevator_take_006fc720(d, *slots[copy_plane]);         // 006FC720
+    } else {
+        // 007C5F60(plane, carrier+1188h), then 006FC810 brings it up.
+        GameUnitSlot& p = *slots[copy_plane];
+        const std::size_t di = static_cast<std::size_t>(&d - landing_decks.data());
+        if (place_on_launch_spot_007c5f60(p, di, d, false)) {
+            carrier_elevator_raise_plane_006fc810(d, p);
+        }
+    }
+    // 006D0050's tail 006FBCE0 runs only for a client (game+1FE4h == 2).
 }
 
 // 006FC480 (through 006CFE40, slot +8h, when dt != 0 and the owner exists).
@@ -7959,6 +8344,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // BSP_Memory_AllocZeroed (00470B80). This installation authors neither
             // for the P-40 or the P-38.
             slot->plane_min_water_spd_198 = lua_row.min_water_spd;
+            slot->plane_max_water_spd_19c = lua_row.max_water_spd;   // goal 5 chain 645
             if constexpr (Impl::kPlaneTouchdownBound) {
                 constexpr float kAbsent = -1.0e30f;
                 const float wh = host.lua.read_vehicle_class_number(row.type_id, "WheelHeight", kAbsent);
@@ -8074,6 +8460,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 slot->plane_world_velocity[0], slot->plane_world_velocity[1],
                 slot->plane_world_velocity[2]};
             slot->plane_velocity_seeded = true;
+            host.build_plane_engine_list(*slot);   // 007D6327
             host.log.notef("plane spawn: unit=%s heading=%.2f deg forward=(%.4f %.4f %.4f)"
                 " seed=(%.2f %.2f %.2f)", row.name.c_str(),
                 static_cast<double>(row.heading_degrees),
@@ -9048,9 +9435,14 @@ bool GameUnitsHost::begin_submarine_periscope_failure(std::size_t unit_index, fl
     // The existing model reader applies 009396BA..009399BF's periszkop and
     // kamikaze gates. This is its actual retained shape, not the AI's old
     // assumed-present node. Do not synthesize an absent shape to run a body.
-    if (!hull.ok || !hull.box.periscope_merged) return false;
-    const auto broken = bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009327f0(
-        clock, settings->submarine_periscope_repair_time);
+    // bsp.py show 009373c0 --asm: ECX = the controller, ESI = [controller+1Ch]
+    // the unit; 009373C4 CMP [EDI+394h],0 / JZ is the periscope-shape gate, then
+    // the +122Ch/+125Ch/+1258h/+1254h stores. Its callers are 008132C0 (SetFailure)
+    // and 009377E0 (contact). 009327F0 repeats those stores but nothing in the
+    // image calls it, so the outer body runs here.
+    const auto broken = bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009373c0(
+        hull.ok && hull.box.periscope_merged, clock, settings->submarine_periscope_repair_time);
+    if (!broken.acts) return false;
     slot.sub_periscope_state_122c = broken.state_122c;
     slot.sub_periscope_repair = {broken.deadline_1254, broken.clock_1258, broken.clock_fast_125c};
     slot.sub_periscope_node_1214 = hull.box.periscope_node;
@@ -9058,11 +9450,14 @@ bool GameUnitsHost::begin_submarine_periscope_failure(std::size_t unit_index, fl
     // failure may precede the first AI writer that normally binds this value.
     slot.sub_periscope_move_range = host.lua.read_vehicle_class_number(
         slot.row.type_id, "PeriscopeMoveRange", 10.0f);
-    host.done("SubmarineUnit::common_periscope_break", 0x009327f0u);
-    // This deliberately binds only 009327F0's common stores. The outer
-    // 009373C0 has additional 00B6DA70 and 00C47FC0 calls and stays unbound
-    // until per-instance mast and Dyn shape owners are available.
-    host.record("SubmarineUnit::periscope_mast_shape_break_unbound", 0x009373c0u);
+    host.done("SubmarineUnit::periscope_break_009373c0", 0x009373c0u);
+    // The plan's other two effects need owners this host does not have: the
+    // mast node hide (009373DF 00B6DA70(0.0, 0) on unit+1214h) and the shape's
+    // collision bits (00937430 00C47FC0(2) on controller+394h).
+    if (broken.hide_mast_node_1214)
+        host.record("SubmarineUnit::periscope_mast_hide_00b6da70", 0x009373dfu);
+    if (broken.shape_collision_c47fc0_2)
+        host.record("SubmarineUnit::periscope_shape_collision_00c47fc0", 0x00937430u);
     return true;
 }
 

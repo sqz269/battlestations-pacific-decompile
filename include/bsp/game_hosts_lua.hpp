@@ -60,6 +60,8 @@ struct ShipCameraSettings;
 struct ShipClassCameraInputs;
 struct GameplayTuningSettings;
 struct MissionPictureTextureServices;
+struct ObjectiveUnitList;
+struct VehicleClassRegistry;
 }
 
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
@@ -74,6 +76,16 @@ struct ExitZoneSubscription;
 }
 
 namespace bsp::game {
+
+// The +20h entry list of objective `index` in the objective set of player slot
+// `slot` ([game+21A4h+slot*4]), units and positions in the order 008DEE50 and
+// 008DEEB0 pushed them, as the Objectives bindings keep it; null when nothing
+// was ever pushed to that objective. Name, kind and state are refreshed only
+// when a binding touches the list: GameObjectiveSets holds the current ones.
+const bsp::ObjectiveUnitList* game_objective_entry_list(int slot, std::size_t index) noexcept;
+// The host unit index an entry's +0h word names (the word is the index plus
+// one, so a position entry's word stays 0, as 008DEEC9 stores it).
+std::size_t game_objective_entry_unit(const void* word) noexcept;
 
 // Packet cc9_wing_construction_lua (docs/WING_CONSTRUCTION_LUA.md, section 15.4 of
 // docs/SENTITY_INIT_ATTACH_ORDER.md), committed OFF. Effective only together
@@ -1069,6 +1081,10 @@ struct GameVehicleClassRow {
     // class with a non-zero value in free flight when it touches the water.
     // Packet cc9_water_surface_law.
     float min_water_spd{0.0f};
+    // desc+19Ch MaxWaterSpd (007D1F70 reads it after MinWaterSpd). 007CBA50's
+    // water-impact test (007CBAF9) splashes a dead aircraft faster than this.
+    // Goal 5 chain 645.
+    float max_water_spd{0.0f};
     // desc+268h TurnCircleRadius. The dive-bomb approach constructor 009C3EA0
     // multiplies it twice, at 009C3F86 into approach+B4h and at 009C3FB5 into
     // approach+B8h/+BCh. Packet cc8_dive_race.
@@ -1209,6 +1225,13 @@ struct GameMissionLuaSummary {
     unsigned long long ordnance_trigger_unresolved{0};
     unsigned long long ordnance_trigger_checks{0};
     unsigned long long ordnance_trigger_fires{0};
+    unsigned long long los_trigger_adds{0};              // goal 5 chain 639
+    unsigned long long los_trigger_unresolved{0};
+    unsigned long long los_trigger_checks{0};
+    unsigned long long los_trigger_casts{0};
+    unsigned long long los_trigger_fires{0};
+    unsigned long long shot_down_reads{0};               // goal 5 chain 664, 008BC9B0
+    int shot_down_last{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8
@@ -1228,6 +1251,34 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_attack_type_subkind_differs{0};  // cc13-atkkind, log-only
     unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
     unsigned long long listener_hit_second_pass_fires{0};
+    // hpEvent (00986B00): health changes drained from the gunnery host, those whose
+    // subscriptions passed 009690B0 and crossed +2Ch, the callbacks called, and the
+    // entries AddListener could not load natively (not evaluated).
+    unsigned long long listener_hp_events{0};
+    unsigned long long listener_hp_matches{0};
+    unsigned long long listener_hp_fires{0};
+    unsigned long long listener_hp_unloaded{0};
+    // ammoType (00984BA0): plane drops drained from the gunnery host, those whose plane
+    // had a squadron (the dispatches), and the callbacks called.
+    unsigned long long listener_ammo_type_drops{0};
+    unsigned long long listener_ammo_type_dispatches{0};
+    unsigned long long listener_ammo_type_fires{0};
+    // shipLanded (00986820): landings drained from the ship AI host, the subscriptions
+    // 00969070 held for, and the callbacks called.
+    unsigned long long listener_ship_landed_events{0};
+    unsigned long long listener_ship_landed_matches{0};
+    unsigned long long listener_ship_landed_fires{0};
+    // command (00984300): reports drained from the commands host, the subscriptions
+    // 00968AF0 held for, and the callbacks called.
+    unsigned long long listener_command_events{0};
+    unsigned long long listener_command_matches{0};
+    unsigned long long listener_command_fires{0};
+    // leak / fire / failure (009832F0 / 00983780 / 00982C50): calls drained from the
+    // gunnery host, the subscriptions 009688C0 / 00968940 / 00968810 held for, and the
+    // callbacks called (goal 5 chain 634).
+    unsigned long long listener_damage_events{0};
+    unsigned long long listener_damage_matches{0};
+    unsigned long long listener_damage_fires{0};
     // Goal 4 chain 352: AddListener blocks loaded by the native Load slot, and the
     // blocks whose load threw (an absent filter key) and fell back to the host parse.
     unsigned long long listener_native_loads{0};
@@ -1532,6 +1583,22 @@ public:
     void mark_scene_vehicle_class_row_00964790(int class_index, const char* site) {
         mark_vehicle_class_row_00964790(class_index, site);
     }
+    // Goal 5 chain 652: the vehicle class registry singleton 00437F50, whose
+    // per-party rows at +4010h 0095BA60 marks. GameSceneContentsHost owns it
+    // (Impl::vehicle_registry); its attach_lua lends it here and its destructor
+    // takes it back. Null before load_scene_contents.
+    void attach_vehicle_registry(bsp::VehicleClassRegistry* registry) noexcept {
+        vehicle_registry_ = registry;
+    }
+    bsp::VehicleClassRegistry* vehicle_registry() const noexcept { return vehicle_registry_; }
+    // PrepareClass 008C8F70 through lua_binding_prepare_class (src/lua_binding_core.cpp).
+    int run_prepare_class_008c8f70(lua_State* state);
+    // Goal 5 chain 659: Scoring_RealPlayTimeRunning 008B87F0 through
+    // lua_binding_scoring_real_play_time_running (src/lua_binding_core.cpp).
+    int run_scoring_real_play_time_running_008b87f0(lua_State* state);
+    // Goal 5 chain 659: MovCamNew_AddPosition 008B79F0 / MovCamNew_AddPositions 008B7850
+    // through lua_movcam_new_add_position(s) (src/engine_seg56_cc13.cpp).
+    int run_movcam_new_add_position(lua_State* state, std::uint32_t address);
     // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
     // the VehicleClass rows whose Got is not true. Later reads of those rows
     // through the read_vehicle_class_* readers are counted for the summary
@@ -1544,6 +1611,12 @@ public:
     // -1). The same plain table lookup against the live interpreter.
     int read_vehicle_class_integer(int index, const char* key, const char* nested_key,
         int fallback);
+    // Goal 5 chain 639. The first value of the table `VehicleClass[index][key]` as
+    // 00B67080 (BSP_LuaObject_IterateFirst: a nil push, then lua_next) yields it, as an integer;
+    // `fallback` when the field is not a table, is empty, or its first value is not a
+    // number. 00749210 reads `SmokeFireEfx` this way (one step, no Next) into
+    // class+160h.
+    int read_vehicle_class_first_integer(int index, const char* key, int fallback);
 
     // The float twin of the reader above, for the `VehicleClass[index]` fields
     // 00960230 BSP_VehicleClass_ReadLuaFields stores as floats rather than
@@ -2001,6 +2074,12 @@ public:
     int run_add_listener_008c6760(lua_State* state, int argument_count);
     int run_remove_listener_008c6990(lua_State* state, int argument_count);
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
+    // Goal 5 chain 659: the three rows run their bodies (src/engine_seg56_cc13.cpp),
+    // whose message-system services on [00F8A0C4] are these.
+    void add_listener_00980c10(lua_State* state, int argument_count,
+                               const std::string& channel, const std::string& id);
+    void remove_listener_00980d30(const std::string& channel, const std::string& id);
+    bool listener_active_00980e00(const std::string& channel, const std::string& id);
     void dispatch_kill_listeners_009813a0();
     void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
     void dispatch_exit_zone_listeners_00982120();       // packet cc13-fix3
@@ -2017,11 +2096,29 @@ public:
     };
     ReconPublishCounts publish_recon_slot_tables_00806b10(bool apply = true);
     void dispatch_hit_listeners_00988510();
+    // The `hpEvent` channel over the gunnery host's 00879070 tail records; the host
+    // substitution for 00986B00 (src/game_hosts_lua.cpp).
+    void dispatch_hp_event_listeners();
+    // The `ammoType` channel over the gunnery host's plane drops; the host substitution
+    // for 00984BA0 (src/game_hosts_lua.cpp).
+    void dispatch_ammo_type_listeners();
+    // The `shipLanded` channel over the ship AI host's 0074AD90 landings; the host
+    // substitution for 00986820, matching with 00969070 (src/game_hosts_lua.cpp).
+    void dispatch_ship_landed_listeners();
+    // The `command` channel over the commands host's 00984300 reports; the host
+    // substitution for 00984300's evaluation, matching with 00968AF0.
+    void dispatch_command_listeners();
+    // Goal 5 chain 634. The `leak`, `fire` and `failure` channels over the gunnery
+    // host's listener-manager calls; the host substitution for the listener passes of
+    // 009832F0, 00983780 and 00982C50, matching with 009688C0, 00968940 and 00968810.
+    void dispatch_damage_listeners();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
     // until that switch is on. docs/LUA_BINDING_MISSION.md.
     int run_set_invincible_00897a50(lua_State* state, int argument_count);
+    // Goal 5 chain 649. 00897CB0 IsInvincible, the +150h query, on its body.
+    int run_is_invincible_00897cb0(lua_State* state, int argument_count);
     int run_override_hp_008c1930(lua_State* state, int argument_count);
     // Packet cc9_forced_recon_level, under kForcedReconLevelBound.
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
@@ -2055,6 +2152,8 @@ public:
     }
     // Packet cc13-fix10, under kLuaProximityTriggersBound.
     int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
+    // Goal 5 chain 639: 008C9460 AddLineOfSightTrigger, stored in the same lists.
+    int run_add_line_of_sight_trigger_008c9460(lua_State* state, int argument_count);
     int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);
     // Wave 2's sub-list walk (00875B90 -> 008759B0) over the proximity triggers;
     // the mission frame calls it once per fixed step, after the motion step.
@@ -2087,6 +2186,31 @@ public:
     int run_has_fired_008be7e0(lua_State* state, int argument_count);
     int run_get_firepower(lua_State* state);
     int run_ai_set_hint_weight(lua_State* state);
+    // Goal 5 chain 649: the eight HintSystem wrappers (ShowHint, ShowHintForced,
+    // AddStoredHint, RemoveStoredHint, HideHint, IsHintActive, IsHintCritical and
+    // IsHintStored, rows 00E0B7F0..00E0B830) over the process's hint tracker.
+    static bool is_hint_binding(std::uint32_t address) noexcept;
+    int run_hint_binding(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 649: the IsFormationLeader and IsFormationFollower rows on
+    // their segment-56 bodies, which ask the unit for 00778890 / 007788B0.
+    int run_formation_role_query(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 653: the keyed Scoring_* rows (Set/Get/Add of the mission,
+    // action, ship, plane and command maps, the two medal setters) and the
+    // Scoring_IsUnlocked / Scoring_GrantUnlock rows, on their bodies over the
+    // mission result's eight [game+21A0h] records and the profile's unlocks.
+    static bool is_scoring_record_binding(std::uint32_t address) noexcept;
+    int run_scoring_record_binding(lua_State* state, std::uint32_t address);
+    // Goal 5 chain 653: Globals.Difficulty.ScoreMultipliers as the global-config
+    // loader 0087D7B0 reads it into GlobalConfig+2Ch, one float per index while
+    // HPMultipliers[index] is not nil (0087DBEB..0087DC3E).
+    bool read_score_multipliers(std::vector<float>& out);
+    // Goal 5 chain 649: the Lua InitAll row on its body lua_init_all, whose
+    // 00925F20(0) is run_sentity_init_all_00925f20.
+    int run_lua_init_all_00898610(lua_State* state);
+    // Goal 5 chain 651: the SetFireDamage (0088E320) and SetWaterDamage (0088E790)
+    // rows on their segment-56 bodies, whose 9Eh message reaches the ship's repair
+    // task through GameGunneryHost::route_repair_damage_9e.
+    int run_set_damage_setting(lua_State* state, std::uint32_t address);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
@@ -2358,6 +2482,11 @@ private:
     // two squadron entries (the orders host hands out a const view only).
     GameUnitsHost* units_hooks_{nullptr};
     GameMissionResultHost* mission_result_{nullptr};  // packet cc13-fix20
+    // Goal 5 chain 653: GlobalConfig+2Ch, read on the first scoring row that
+    // needs it, and the count of [[00E198C4]+B8h]+14h clears the accessors make.
+    std::vector<float> score_multipliers_;
+    bool score_multipliers_read_{false};
+    std::uint64_t score_cache_clears_{0};
     // Packet cc13-smbind. The byte global 00F8AB6A that 00A38DA0 stores (1 banned, 0
     // permitted), and the panel list at ([00E198C4]+BCh)+1F8h that SupportManagerEnable
     // edits, held as entity ids (unit index + 1). Nothing in this process reads either.
@@ -2440,8 +2569,12 @@ private:
         // Packet cc13-fix19: the record's vtable. 00D00580 = proximity (check
         // 00750000), 00D005C0 = squad ordnance dropped (check 007504F0); both
         // share the Lua trigger base fields below (+10h..+28h).
-        enum class Kind : std::uint8_t { Proximity, SquadOrdnanceDropped };
+        // Goal 5 chain 639: 00D005AC = line of sight (check 00750230, made by
+        // 00750550 -> 007500E0 with the entity target +44h, +48h and +4Ch below).
+        enum class Kind : std::uint8_t { Proximity, SquadOrdnanceDropped, LineOfSight };
         Kind kind{Kind::Proximity};
+        float range_sq_48{0.0f};   // line of sight: range * range (007500E0)
+        float timer_4c{0.0f};      // line of sight: the recheck timer, 0 at construction
         std::string name_1c;
         bool named_24{false};
         std::string callback_28;
@@ -2458,6 +2591,9 @@ private:
     void check_proximity_trigger_00750000(std::size_t unit, ProximityTrigger& trigger);
     // Packet cc13-fix19.
     void check_squad_ordnance_trigger_007504f0(std::size_t unit, ProximityTrigger& trigger);
+    // Goal 5 chain 639.
+    void check_line_of_sight_trigger_00750230(std::size_t unit, ProximityTrigger& trigger,
+                                              float step);
     void fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger);
     std::vector<std::size_t> target_gone_pending_;   // the kill list's notices, FIFO
     std::vector<bool> target_gone_notified_;         // +5Eh: pass K ran (00926D90 idempotence)
@@ -2554,6 +2690,8 @@ private:
     // (bsp/game_host_vehicle_class.hpp). ON it is the cache in place of
     // vehicle_class_rows_marked_; OFF it is never created.
     std::unique_ptr<GameVehicleClassDescriptorCache> vehicle_class_cache_;
+    // Goal 5 chain 652: borrowed singleton 00437F50; see attach_vehicle_registry.
+    bsp::VehicleClassRegistry* vehicle_registry_{nullptr};
     // Chain 340: the non-owning 006B7E30 machine over state_ that the named-call
     // body makes its stack calls on (named_call_machine_006b7e30).
     std::unique_ptr<bsp::cc13_seg29::LuaMachine> named_call_machine_;

@@ -1,0 +1,290 @@
+{
+ "chain": 628,
+ "slot": "g5-w3",
+ "rows": [
+  {
+   "native": "007b95e0",
+   "status": "wired",
+   "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::plane_is_leader_with_wingmen_007b95e0 (from plan_yaw_0099d300)"
+  },
+  {
+   "native": "006bdac0",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86 (from src/game_hosts_units.cpp: airfield_site_tick_006cf980)"
+  },
+  {
+   "native": "006bdb30",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86 (from src/game_hosts_units.cpp: airfield_site_tick_006cf980)"
+  },
+  {
+   "native": "006bdb60",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86 (from src/game_hosts_units.cpp: airfield_site_tick_006cf980)"
+  },
+  {
+   "native": "00763440",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86 (from src/game_hosts_units.cpp: airfield_site_tick_006cf980)"
+  },
+  {
+   "native": "006bdb00",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_appear_ready_plane_86 (from src/game_hosts_units.cpp: airfield_site_tick_006cf980)"
+  },
+  {
+   "native": "006bc8e0",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_airbase_do_launch_slot_89 (from game_hosts_script_orders.cpp run_air_ops_player_launch_queue and game_hosts_lua.cpp run_launch_air_base_slot_00896750)"
+  },
+  {
+   "native": "006bc440",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: DoLaunchSlotRouteBinding::session_route_message_0077c2a0 (queue_airbase_do_launch_slot_89)"
+  },
+  {
+   "native": "006bc3e0",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: DoLaunchSlotRouteBinding::session_route_message_0077c2a0 (queue_airbase_do_launch_slot_89)"
+  },
+  {
+   "native": "006bc470",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: DoLaunchSlotRouteBinding::session_route_message_0077c2a0 (queue_airbase_do_launch_slot_89)"
+  },
+  {
+   "native": "006cfff0",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_mothership_elevator_move_87 (from src/game_hosts_units.cpp: route_carrier_elevator_message_87, carrier_elevator_site_tick_006d0600)"
+  },
+  {
+   "native": "00758b90",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: ElevatorMoveRouteBinding::elevator_message_construct_00758b90 (006CFFF0 body)"
+  },
+  {
+   "native": "00758c20",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: ElevatorMoveRouteBinding::session_route_message_0077c2a0 (006CFFF0 body)"
+  },
+  {
+   "native": "00758c70",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: ElevatorMoveRouteBinding::session_route_message_0077c2a0 (006CFFF0 body)"
+  },
+  {
+   "native": "00763500",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: ElevatorMoveRouteBinding::session_route_message_0077c2a0 (006CFFF0 body)"
+  },
+  {
+   "native": "00758bf0",
+   "status": "wired",
+   "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_mothership_elevator_move_87 (IsType gate through copy_goes_to_unit_handler)"
+  },
+  {
+   "native": "007bbc10",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units_motion.cpp: dogfight target scoring",
+   "reason": "raw plane memory (Seg47Host + plane+ pilot target); the host keeps df_target_plus_one, no native plane image"
+  },
+  {
+   "native": "007ee720",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: squadron head-task arm",
+   "reason": "cc15_seg48 body reads raw squadron memory (void* squadron); no native squadron image"
+  },
+  {
+   "native": "007ee8f0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: free attack accept",
+   "reason": "cc15_seg48 body reads raw squadron/target memory; no native squadron image"
+  },
+  {
+   "native": "007f1000",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: rtb home arm",
+   "reason": "cc15_seg48 command record init reads raw entity memory; no native command record storage"
+  },
+  {
+   "native": "00811150",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: formation wake point",
+   "reason": "raw unit memory (wake point at distance over the unit image); no native unit image"
+  },
+  {
+   "native": "0092d6a0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: motion proxy",
+   "reason": "raw motion proxy memory; host keeps typed motion state only"
+  },
+  {
+   "native": "00954580",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: entity impulse reset",
+   "reason": "raw entity memory; no native dynamics body image"
+  },
+  {
+   "native": "007c18b0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: plane pose derived state",
+   "reason": "raw plane memory (Seg47 raw_callback); no native plane image"
+  },
+  {
+   "native": "007c3ea0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: land on touchdown",
+   "reason": "raw plane memory (Seg47 raw_callback); no native plane image"
+  },
+  {
+   "native": "007ddea0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: plane sub-block timer",
+   "reason": "raw_view over plane+sub-block memory; no native plane image"
+  },
+  {
+   "native": "00815370",
+   "status": "skipped",
+   "host_site": "include/bsp/game_hosts_units_internal.hpp: tick_part",
+   "reason": "needs the unit effect element arrays (+0Ch/+18h targets); a created unit has no effect groups"
+  },
+  {
+   "native": "004842c0",
+   "status": "skipped",
+   "host_site": "include/bsp/game_hosts_units_internal.hpp: publish_bow/stern_anchor",
+   "reason": "needs the effect node and its parent transform; no wake effect nodes are built"
+  },
+  {
+   "native": "009373c0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: begin_submarine_periscope_failure",
+   "reason": "additional 00B6DA70 / 00C47FC0 calls need per-instance mast and Dyn shape owners; 009327F0 already runs"
+  },
+  {
+   "native": "00605630",
+   "status": "skipped",
+   "host_site": "include/bsp/game_hosts_units_internal.hpp: player_bomb_release_006082d0",
+   "reason": "only the HUD bomb-sight display angles call it; the host does not draw that HUD"
+  },
+  {
+   "native": "0085d770",
+   "status": "skipped",
+   "host_site": "src/game_hosts_units.cpp: vehicle_avoidance_007df4f0",
+   "reason": "only the velocity-frame branch calls it and unit+B04h has no writer, so the inverse-pose frame is always taken"
+  },
+  {
+   "native": "00ba0090",
+   "status": "skipped",
+   "host_site": "include/bsp/game_hosts_units_internal.hpp: ocean field",
+   "reason": "render-only depth sample kernel; no host water renderer consumes the texel offsets"
+  },
+  {
+   "native": "004d87b0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+   "reason": "returns at 004D87C9 with game+1FE4h 0; its counting arms need participant blocks and scene slots a skirmish host does not publish"
+  },
+  {
+   "native": "00954990",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+   "reason": "needs the unit +BBCh engine-sound object and +6B4h byte; neither exists in the host"
+  },
+  {
+   "native": "006bd9e0",
+   "status": "skipped",
+   "host_site": "src/air_operations.cpp: air_base_stock_add_006ca770",
+   "reason": "STOCKITEM is only sent by 0077C7B0 broadcast to peers (006CA891); no local copy in single player"
+  },
+  {
+   "native": "007633e0",
+   "status": "skipped",
+   "host_site": "src/air_operations.cpp: air_base_stock_add_006ca770",
+   "reason": "factory constructor of STOCKITEM, which single player never routes locally (broadcast only)"
+  },
+  {
+   "native": "007636c0",
+   "status": "skipped",
+   "host_site": "src/cc13_seg33a.cpp: catapult fire",
+   "reason": "CATAPULT_FIRE is built only when game+1FE4h == 1 and sent by 0077C7B0 broadcast (006EC01C / 006EC04C)"
+  },
+  {
+   "native": "006bd800",
+   "status": "skipped",
+   "host_site": "src/air_operations.cpp: air_ops_slot_launch_006cd350",
+   "reason": "SETSLOT senders 006CD350 (UpdateSlot) and 00895ED0 (SetAirBaseSlot) have no host model; 006C47F0 sends only with game+1FE4h == 1"
+  },
+  {
+   "native": "00763140",
+   "status": "skipped",
+   "host_site": "src/air_operations.cpp: air_ops_slot_launch_006cd350",
+   "reason": "SETSLOT factory constructor; its senders are not modelled by the host"
+  },
+  {
+   "native": "007634a0",
+   "status": "skipped",
+   "host_site": "src/cc13_sweepC.cpp: air_ops_block_set_orders_006bf650",
+   "reason": "SETORDERS sender 006BF650 is reached only from the SetAirbaseOrders Lua native 008AE900, which no host binds"
+  },
+  {
+   "native": "006bdce0",
+   "status": "skipped",
+   "host_site": "src/cc13_sweepC.cpp: air_ops_block_set_orders_006bf650",
+   "reason": "SETORDERS write; no live sender (SetAirbaseOrders unbound)"
+  },
+  {
+   "native": "006bdd30",
+   "status": "skipped",
+   "host_site": "src/cc13_sweepC.cpp: air_ops_block_set_orders_006bf650",
+   "reason": "SETORDERS read; no live sender (SetAirbaseOrders unbound)"
+  },
+  {
+   "native": "006bdd80",
+   "status": "skipped",
+   "host_site": "src/game_hosts_session_messages.cpp: queue_airbase_appear_ready_plane_86",
+   "reason": "not the 86h delete: 00CF864C slot 0 is 006BEDF0 (no body, library-tagged); neither message owns storage"
+  },
+  {
+   "native": "006bdb90",
+   "status": "skipped",
+   "host_site": "src/game_hosts_session_messages.cpp: queue_airbase_appear_ready_plane_86",
+   "reason": "+20h handle-table test needs the 00F89A0C/00F89A60 entity tables, which the host does not build; the copy id is resolved as unit index + 1"
+  },
+  {
+   "native": "0093a2c0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::session_route_failure_started",
+   "reason": "9Bh copy has no consumer: its only receiver, 0093AA90 (00822023), is presentation (point effect on the unit node +4A4h), which no host models"
+  },
+  {
+   "native": "00761590",
+   "status": "skipped",
+   "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::session_route_failure_cleared",
+   "reason": "9Bh factory constructor; the round trip from 0093BED0 / 0093C520 (flags 7) would feed only the presentation-only 0093AA90 arm"
+  },
+  {
+   "native": "00761630",
+   "status": "skipped",
+   "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::session_route_failure_cleared",
+   "reason": "9Bh write; see 00761590 (receiver presentation-only, not modelled)"
+  },
+  {
+   "native": "007616a0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::session_route_failure_cleared",
+   "reason": "9Bh read; see 00761590 (receiver presentation-only, not modelled)"
+  },
+  {
+   "native": "00760e90",
+   "status": "skipped",
+   "host_site": "src/game_hosts_ship_ai.cpp: transport_launch_craft_008206f0",
+   "reason": "95h is routed with flags 4 (00821E13), which a local session drops (0077C30D); the sender already stores +1124h itself (00821DC9), as the host does"
+  },
+  {
+   "native": "00763320",
+   "status": "skipped",
+   "host_site": "src/game_hosts_script_orders.cpp: player_air_ops_order",
+   "reason": "82h is built by 00656280 from the support-manager HUD, which only the harness input stands in for here; not a game-driven sender in this host"
+  }
+ ]
+}

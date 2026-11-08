@@ -1,0 +1,93 @@
+{
+  "chain": 652,
+  "slot": "g5-w4",
+  "goal": 5,
+  "picked": "Mission-Lua natives the shipped scripts reach as unimplemented records (survey of 80 mission logs): IsGUIActive and PrepareClass, with their lookups and the 0095BA60 party mark",
+  "rows": [
+    {
+      "native": "008ca010",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch (IsGUIActive arm, lua_is_gui_active over ScriptGuiQueryBinding)"
+    },
+    {
+      "native": "008c9f80",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp ScriptGuiQueryBinding::gui_find_widget -> lua_gui_find_widget_from_string_arg"
+    },
+    {
+      "native": "008c8c20",
+      "status": "wired",
+      "host_site": "src/engine_seg56_cc13.cpp lua_gui_find_widget_from_string_arg (reached from ScriptGuiQueryBinding); pages through GameFrontendHost::find_page_00aa3140"
+    },
+    {
+      "native": "008c8f70",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp binding_trampoline -> GameMissionLuaHost::run_prepare_class_008c8f70 (lua_binding_prepare_class over PrepareClassHost)"
+    },
+    {
+      "native": "0095ba60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp PrepareClassHost::vehicle_class_mark_party_required and GameMissionLuaVehicleClassBinding::mark_party_requires_class (00964F46), on the registry GameSceneContentsHost::attach_lua lends"
+    },
+    {
+      "native": "008c7300",
+      "status": "skipped",
+      "reason": "BlackBars: 005CB0F0 reads [00E198C4]+BCh/+C0h for its 00652B60/00611BF0 hides and no native interface-manager view exists; the leaf update 005CBD90 that reads the bar flags is not run on the +A0h block"
+    },
+    {
+      "native": "008c1b10",
+      "status": "skipped",
+      "reason": "DisplayUnitHP: needs 0052B400 on the HUD counters leaf block [00E198C4]+C8h through a binding the script-orders host lacks (its DisplayScores keeps score_lines_ instead of the block)"
+    },
+    {
+      "native": "008c1f50",
+      "status": "skipped",
+      "reason": "HideUnitHP: same missing HUD counters block binding (0052B570 on [00E198C4]+C8h)"
+    },
+    {
+      "native": "008cc850",
+      "status": "skipped",
+      "reason": "Loading_Start: needs the sound listener 0068A670, effect manager 00867EE0, listener sink [vt+4], please-wait worker 0060D6E0 and game+644h in one host; none is bound to the Lua natives"
+    },
+    {
+      "native": "008c77f0",
+      "status": "skipped",
+      "reason": "Loading_Finish: game+644h loading depth, please-wait hide 0060D3E0 and 004CD0F0 are not exposed to the script-orders host"
+    },
+    {
+      "native": "008a8f90",
+      "status": "skipped",
+      "reason": "SetGuiName: the entity vtable+0Ch GUI-name setter has no counterpart on the host's units"
+    },
+    {
+      "native": "006b7710",
+      "status": "skipped",
+      "reason": "Mission save write: no absolute, RVA or rel32 reference to 006B7710 exists in the image (include/bsp/mission_savedata_lua.hpp); dead code"
+    },
+    {
+      "native": "006b5960",
+      "status": "skipped",
+      "reason": "Mission load finish: unreferenced in the image, as 006B7710; dead code"
+    },
+    {
+      "native": "0075eb40",
+      "status": "skipped",
+      "reason": "Seg42 session-message constructors (this and the other construct_for_read rows of session_message_cc13_seg42.cpp) are called only from 00768530 CreateFromBitStream, the network receive path; multiplayer only"
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "reason": "GameFixedStepHost::run_wave1_job is the unattached legacy projection; with NativeFixedStepJobWaves attached the native job bodies run there (same for 00875b90, 00874fe0, 00875160)"
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "reason": "set_briefing_mission: its caller start_selected_mission_005c5600 (src/mission_tree_screens.cpp) is not linked into bsp_game; the mission tree runs through game_hosts_mission.cpp"
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "reason": "HUD award ticker: the queue at root+B0h is filled only by 00648AB0 from 0090EDE0 GrantAward, which the host's award grants do not reach"
+    }
+  ]
+}

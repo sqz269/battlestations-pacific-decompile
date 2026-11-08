@@ -6,6 +6,8 @@
 
 #include "bsp/game_profile_owner.hpp"
 
+#include "bsp/fe5_host_unreached.hpp"
+#include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hint_passes.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -13,9 +15,12 @@
 #include "bsp/lua_state_owner.hpp"
 #include "bsp/vfs_lua_scripts.hpp"
 
+#include <cstdint>
+#include <cstring>
 #include <exception>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string_view>
 
 extern "C" {
@@ -321,10 +326,93 @@ const HintDefinition* GameHintTracker::find_definition_0068e450(const std::strin
     return found != definitions_30_.end() ? &found->second : nullptr;
 }
 
-// The remaining HintStoreHost hooks belong to routines this lane does not wire
-// (00690B20, 00690C30, 0068EE00); reaching one is recorded. Under
-// kHintTriggerPassesCc15Bound the three TriggerHint and the passes read are
-// the image's (src/game_hint_passes.cpp).
+namespace {
+// The three services 00692FB0 and 00690B00 call, for their raw bodies in
+// src/frontend_seg16_24_28_cc13.cpp. Each body gets the bytes it reads: the
+// tracker's +4h force byte (00692FB7 MOV byte [ECX+4],1), the name's +0h
+// length (00690B04 CMP [EAX],0) and the definition's +114h critical byte
+// (00690B12). The name crosses as the caller's std::string; the dword the
+// bodies pass on is only checked to be the token handed in.
+class HintTrackerFe5Binding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    static constexpr std::uint32_t kNameToken = 1;
+    HintTrackerFe5Binding(GameHintTracker& tracker, const std::string& name,
+                          bool& force_next_04, const std::uint8_t* force_byte)
+        : tracker_(tracker), name_(name), force_next_04_(force_next_04),
+          force_byte_(force_byte) {}
+
+    std::string native_string_read(bsp::cc13_fe5::Raw) override { return name_; }
+    // 005FFB20, the definitions map's operator[] at tracker+30h. As at this
+    // tracker's other 005FFB20 sites (00690B20, 00690FD0, 00690CD0) a missing
+    // name reads as a default definition (+114h = 0) and none is inserted.
+    bsp::cc13_fe5::Raw award_hint_definition_005ffb20(bsp::cc13_fe5::Raw,
+                                                      const std::string& name) override {
+        std::memset(definition_, 0, sizeof definition_);
+        if (const HintDefinition* def = tracker_.find_definition_0068e450(name)) {
+            definition_[0x114] = def->critical ? 1 : 0;
+            definition_[0x115] = def->hidden ? 1 : 0;
+            definition_[0x116] = def->mission_specific ? 1 : 0;
+        }
+        return bsp::cc13_fe5::Raw{definition_};
+    }
+    // 00692FBB CALL 00690FD0(name, 1): TriggerHint reads +4h, so the byte the
+    // body stored is the tracker's force flag before the call.
+    void award_tracker_trigger_hint_forced_00690fd0(bsp::cc13_fe5::Raw, std::uint32_t name,
+                                                    int forced) override {
+        if (name != kNameToken || force_byte_ == nullptr)
+            throw std::logic_error("00692FB0 passed a name this binding did not hand it");
+        force_next_04_ = force_byte_[4] != 0;
+        tracker_.trigger_hint_00690fd0(name_, forced != 0);
+    }
+
+private:
+    GameHintTracker& tracker_;
+    const std::string& name_;
+    bool& force_next_04_;
+    const std::uint8_t* force_byte_;
+    alignas(4) std::uint8_t definition_[0x118]{};
+};
+}  // namespace
+
+// 00692FB0 __thiscall(tracker, NativeString* name), RET 4.
+void GameHintTracker::trigger_forced_hint_00692fb0(const std::string& name) {
+    alignas(4) std::uint8_t block[8]{};
+    block[4] = state_.force_next_04 ? 1 : 0;
+    HintTrackerFe5Binding binding(*this, name, state_.force_next_04, block);
+    bsp::cc13_fe5::award_tracker_trigger_forced_hint_00692fb0(
+        bsp::cc13_fe5::Raw{block}, HintTrackerFe5Binding::kNameToken, binding);
+    log_.implemented("HintTracker::trigger_forced_hint", "00692fb0");
+}
+
+// 00690B00 __thiscall(tracker, const NativeString* name), RET 4 -> AL.
+bool GameHintTracker::hint_blocking_00690b00(const std::string& name) {
+    alignas(4) std::uint8_t tracker_block[0x34]{};   // the body only offsets to +30h
+    alignas(4) std::uint8_t name_block[8]{};          // NativeString: +0h length
+    const auto length = static_cast<std::uint32_t>(name.size());
+    std::memcpy(name_block, &length, sizeof length);
+    bool unused_force = false;
+    HintTrackerFe5Binding binding(*this, name, unused_force, nullptr);
+    return bsp::cc13_fe5::award_tracker_is_active_hint_blocking_00690b00(
+        bsp::cc13_fe5::Raw{tracker_block}, bsp::cc13_fe5::Raw{name_block}, binding);
+}
+
+// 00690B20 __thiscall(tracker, NativeString* name), RET 4.
+void GameHintTracker::add_stored_hint_00690b20(const std::string& name) {
+    hint_tracker_add_stored_00690b20(*this, name);
+    log_.implemented("HintTracker::add_stored_hint", "00690b20");
+}
+
+// 00690C30 __thiscall(tracker, NativeString* name), RET 4, over +18h.
+void GameHintTracker::remove_stored_hint_00690c30(const std::string& name) {
+    HintStoreState store{last_unit_class_18_};
+    hint_tracker_remove_stored_00690c30(store, *this, name);
+    last_unit_class_18_ = store.last_unit_class_18;
+    log_.implemented("HintTracker::remove_stored_hint", "00690c30");
+}
+
+// Under kHintTriggerPassesCc15Bound the three TriggerHint and the passes read
+// are the image's (src/game_hint_passes.cpp); the store hooks of 00690B20 and
+// 00690C30 follow.
 bool GameHintTracker::has_been_shown_0068e600(const std::string& name) {
     if constexpr (kHintTriggerPassesCc15Bound) {
         return has_been_shown_cc15_0068e600(name);
@@ -351,22 +439,11 @@ void GameHintTracker::profile_mark_seen_007fae20(const std::string& name) {
     }
 }
 
-void GameHintTracker::profile_unmark_007fae60(const std::string&) {
-    log_.unimplemented("HintTracker::profile_unmark", "007fae60");
-}
+// profile_unmark_007fae60, player_unit_present_e188d8 and player_unit_class_170
+// are in src/game_hint_passes.cpp, beside the profile and frame reads they share.
 
 void GameHintTracker::mission_seen_push_back_48(const std::string& name) {
     mission_seen_48_.push_back(name);   // 004D2660 on +48h
-}
-
-bool GameHintTracker::player_unit_present_e188d8() {
-    log_.unimplemented("HintTracker::player_unit_present", "00e188d8");
-    return false;
-}
-
-std::int32_t GameHintTracker::player_unit_class_170() {
-    log_.unimplemented("HintTracker::player_unit_class", "00e188d8+170h");
-    return 0;
 }
 
 bool GameHintTracker::history94_has_key(const std::string& key) {

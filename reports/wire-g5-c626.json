@@ -1,0 +1,188 @@
+{
+  "goal": 5,
+  "chain": 626,
+  "slot": "g5-w4",
+  "base": "cb57fddfdf",
+  "picked": "Local formation and vehicle message routing and decoded-message ownership",
+  "rows": [
+    {
+      "native": "0075a310",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_formation_member_76_77"
+    },
+    {
+      "native": "0075a360",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_formation_member_76_77"
+    },
+    {
+      "native": "0075ca20",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_formation_member_76_77"
+    },
+    {
+      "native": "0075ca40",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_formation_member_76_77"
+    },
+    {
+      "native": "00760610",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_party_7f"
+    },
+    {
+      "native": "00760650",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_shipyard_launch_7a"
+    },
+    {
+      "native": "00894100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch/GetSubmarineDepthLevel",
+      "reason": "Inventory maps this address to a dispatcher branch; a separate canonical reconstructed body and complete native object/state contract are missing."
+    },
+    {
+      "native": "0089b840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch/GetCapturePercentage",
+      "reason": "Inventory maps this address to a dispatcher branch; a separate canonical reconstructed body and complete native object/state contract are missing."
+    },
+    {
+      "native": "0089cc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch/GetSquadronPlanes",
+      "reason": "Inventory maps this address to a dispatcher branch; a separate canonical reconstructed body and complete native object/state contract are missing."
+    },
+    {
+      "native": "008a7e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch/GetRotation",
+      "reason": "Inventory maps this address to a dispatcher branch; a separate canonical reconstructed body and complete native object/state contract are missing."
+    },
+    {
+      "native": "00927b40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::push_script_self_table",
+      "reason": "Canonical NativeString entity key and constructed world+1A0C Lua owner are missing; a temporary key/world view would violate the body contract."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Actual selected-player ownership and the SetRace profile are unbound; codec-only records do not establish the constructor/lifetime contract."
+    },
+    {
+      "native": "00760630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Actual selected-player ownership and the SetRace profile are unbound; codec-only records do not establish the constructor/lifetime contract."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score diagnostics",
+      "reason": "Candidate score-list records serve the unreached debug overlay; debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score diagnostics",
+      "reason": "Candidate score-list records serve the unreached debug overlay; debug-only work is excluded."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already has an entry-reachable direct body call in the baseline executable; readiness text classification is stale for this candidate."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "Already has an entry-reachable direct body call in the baseline executable; no missing caller remains."
+    },
+    {
+      "native": "007b95e0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: plane_is_leader_with_wingmen_007b95e0",
+      "reason": "Owned by agent/g5-w2 during selection and completed by that worker; no edit made here."
+    }
+  ],
+  "changes": [
+    "Route actual decoded formation messages through their existing IsType bodies before consuming member ids.",
+    "Retain the original factory-sized decoded allocation (24h formation/shipyard, 20h SetParty) through payload projection, then call its scalar delete with flags=1.",
+    "Use flags=0 for each corresponding stack sender; no double construction or previous stack-decoding path remains.",
+    "Four scalar-delete reconstructions replace out-of-scope ledger placeholders; existing Ghidra names are retained, evidence comments saved, affected exports refreshed."
+  ],
+  "verification": {
+    "build": "scripts/build.ps1: Win32 Release build passed, 4/4 existing tests passed",
+    "float_math_changed": false,
+    "native_abi_compatible": false,
+    "game_run": false,
+    "distinct_body_call_graph": "Relinked local build with /OPT:NOICF. All six exact reconstructed body symbols have direct calls from entry-reachable code; scalar deletes have 3 call sites each, IsType bodies 2 each.",
+    "release_call_graph_before": {
+      "functions": 38186,
+      "reachable_functions": 38021,
+      "data_symbols": 43282,
+      "edges": 195268,
+      "roots": 1,
+      "instructions": 2207328,
+      "recon_addresses": 5560,
+      "recon_called": 5042,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2102
+    },
+    "release_call_graph_first_after_log": "local/output/g5-c626-callgraph-after.log",
+    "noicf_call_graph_after": {
+      "functions": 46762,
+      "reachable_functions": 46580,
+      "data_symbols": 45448,
+      "edges": 209883,
+      "roots": 1,
+      "instructions": 2434374,
+      "recon_addresses": 5535,
+      "recon_called": 5511,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 389
+    },
+    "call_graph_count_caveat": "Release identical-code folding aliases the scalar deletes, so global called totals from the release and NOICF links are not directly comparable.",
+    "readiness_before": {
+      "wired": 9964,
+      "callees_done_no_wired_caller": 9113,
+      "ready": 1394,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 202
+    },
+    "readiness_after": {
+      "wired": 9966,
+      "callees_done_no_wired_caller": 9111,
+      "ready": 1394,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 202
+    },
+    "readiness_wired_before": 9964,
+    "readiness_wired_after": 9966,
+    "readiness_inventory_caveat": "The four compiler-generated scalar-delete addresses are excluded from readiness rows even after index rebuild and replacement of their out-of-scope body records. The two existing formation predicates change to wired/called, with two direct call sites each. The four new lifetime bodies have separate exact symbols and direct callers in the NOICF built-executable graph.",
+    "newly_reachable_bodies": 6,
+    "existing_pool_rows_wired": 2,
+    "new_lifetime_bodies": 4,
+    "noicf_link": "Local CMake cache only: CMAKE_EXE_LINKER_FLAGS_RELEASE=/INCREMENTAL:NO /OPT:REF /OPT:NOICF; compiler flags unchanged. Distinct-body attribution, no source build-switch change.",
+    "new_pool_rows": [
+      {
+        "address": "0075a310",
+        "name": "seg42::is_formation_join_0075a310",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "0075a360",
+        "name": "seg42::is_formation_leave_0075a360",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      }
+    ]
+  },
+  "remaining": "SetRace needs actual selected-player/profile binding. Lua query dispatch aliases need native body/object contracts. Other local-message stack copies can adopt their scalar-deleting lifetimes in later packets."
+}

@@ -38,7 +38,10 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/scene_weather_cc13.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -2529,6 +2532,66 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag,
     return authored;
 }
 
+// 004ED690 BSP_SceneRecord_ReadMusicAndAmbience over the header's Sound group:
+// 004F1D70 finds the group at 004F229C and calls 004ED690 at 004F22C0 when its
+// sound flag is set. 00469BF0 passes 0046DF00's third argument ([EBP+10h] at
+// 0046E724) as that flag, and only 004D4DF0's instantiate read pushes 1 there
+// (004D552B; the registration read at 004D54D3 and both 004E1D70 header-only
+// reads push 0). Each Music state reaches 00A79480 on the published dialog
+// owner [00F8BBCC] through 004ED2D0, which is what the Music_Control levels
+// later select from. Evidence: bsp.py show 00469bf0 / 0046df00 --asm /
+// 004d4df0 --asm; docs/CC13_SCENE_WEATHER.md.
+struct SceneMusicBinding final : bsp::scene_weather_cc13::SceneMusicHost {
+    GameHostLog& log;
+    GameSoundDialogRuntime& dialog;
+    std::size_t tracks{};
+    std::size_t sound_effects{};
+
+    SceneMusicBinding(GameHostLog& output, GameSoundDialogRuntime& runtime)
+        : log(output), dialog(runtime) {}
+    void assign_sound_effect(int slot, const std::string& name) override {
+        // 004ED2D0's SoundEffect arm: 00A83FD0 on [00F8BBE8], then 004E7BB0
+        // into record+DA8h + slot*18h. This host's scene record keeps no
+        // +DA8h sample slots, and the only static reference to +DA8h is this
+        // writer, so the sample is not acquired.
+        static_cast<void>(slot);
+        static_cast<void>(name);
+        ++sound_effects;
+        log.unimplemented("SceneContents::scene_music_sound_effect", "004ed2d0");
+    }
+    void set_music_track_00a79480(const bsp::scene_weather_cc13::SceneMusicState& music,
+        int party, int state) override {
+        // The whole +D98h + slot*18h record: path, Channel, a null sample
+        // (above) and the constructor's +14h word.
+        dialog.set_music_track(music.path_d98, music.channel_da0, party, state);
+        if (!music.path_d98.empty()) ++tracks;
+    }
+};
+
+void read_scene_music_group(GameHostLog& log, const ScenePropertyBlock& header) {
+    GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+    const bsp::ScenePropertyBagModel model = bsp::scene_weather_cc13::scene_bag_from_block(header);
+    // 004F229C..004F22C0: 008F2260 "Sound" then the type 6 test.
+    const bsp::ScenePropertyEntry* sound = bsp::scene_property_bag_find(model, 0, "Sound");
+    if (sound == nullptr || sound->value.type != bsp::ScenePropertyType::SubBag) return;
+    if (dialog == nullptr || !dialog->started()) {
+        // Without a started dialog owner there is no [00F8BBCC] to take the
+        // tracks; the native always has one after application startup.
+        log.note("scene music: the header's Sound group has no started dialog owner to take it");
+        return;
+    }
+    SceneMusicBinding binding(log, *dialog);
+    bsp::scene_weather_cc13::SceneMusicFields fields;
+    std::string error;
+    if (!bsp::scene_weather_cc13::read_music_and_ambience_004ed690(model, sound->sub_bag,
+            fields, binding, error)) {
+        throw std::runtime_error("scene Sound group: " + error);
+    }
+    log.implemented("SceneContents::read_music_and_ambience", "004ed690");
+    log.notef("scene music: 004ED690 set %zu music track(s) on the dialog owner through "
+        "00A79480; %zu SoundEffect name(s) not acquired", binding.tracks, binding.sound_effects);
+}
+
 class SceneReaderBinding final : public SceneFileReaderHost {
 public:
     SceneReaderBinding(GameSceneContentsHost::Impl& owner, SceneFilePass pass,
@@ -2587,6 +2650,8 @@ public:
         root_properties_ = block.values.size();
         owner_.root_properties = block;
         owner_.log.implemented("SceneContents::publish_scene_root_properties", "00469b60");
+        // 00469D45 004F1D70 with the sound flag set: the instantiate read only.
+        if (pass_ == SceneFilePass::Instantiate) read_scene_music_group(owner_.log, block);
     }
     void publish_scene_precache(const ScenePropertyBlock& block) override {
         precache_properties_ = block.values.size();
@@ -4793,7 +4858,13 @@ void SceneContentsBinding::scatter_clouds() {
 // ---------------------------------------------------------------------------
 
 void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
+    // Goal 5 chain 652: lend the 00437F50 registry this host owns, so the Lua
+    // host's 0095BA60 calls (PrepareClass 008C9297, 00964790 at 00964F46) mark
+    // the same party rows the registration pass and 0095BAB0 use. Taken back
+    // when the Lua host changes and by the destructor.
+    if (impl_->lua != nullptr && impl_->lua != lua) impl_->lua->attach_vehicle_registry(nullptr);
     impl_->lua = lua;
+    if (lua != nullptr) lua->attach_vehicle_registry(&impl_->vehicle_registry);
 }
 void GameSceneContentsHost::bind_native_scene_remaps(GameNativeRendererApplication& renderer,
     const std::array<std::string, 4>& names) {
@@ -4811,6 +4882,9 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameSceneContentsHost::~GameSceneContentsHost() {
+    // The mission frame holds the Lua host by reference, so it outlives this
+    // host; take the lent registry back before it goes.
+    if (impl_->lua != nullptr) impl_->lua->attach_vehicle_registry(nullptr);
     scene_path_sources().clear();
     if (g_live_scene_contents == this) g_live_scene_contents = nullptr;
 }
@@ -4992,6 +5066,101 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
     return cell_height_arm_00adb3a0<kPc24FlightRenderCc13Bound>(i, j);
 }
 
+// bsp.py show 00ADA890: SAR by [00D5D65C] for the tiles (00ADA8A0 / 00ADA8B4),
+// SHL / SUB for the locals (00ADA8BA..00ADA8CF), then CMP +38h / +3Ch with JL:
+// a tile at or past the grid is decremented and its local set to [00D5D658].
+void SceneTerrainHeightField::split_index_00ada890(int i, int j, int& tx, int& tz, int& lx,
+                                                   int& lz) const noexcept {
+    tx = i >> kTerrainTileShift;
+    tz = j >> kTerrainTileShift;
+    lx = i - (tx << kTerrainTileShift);
+    lz = j - (tz << kTerrainTileShift);
+    if (tx >= tiles_wide) { tx -= 1; lx = kTerrainTileCells; }
+    if (tz >= tiles_deep) { tz -= 1; lz = kTerrainTileCells; }
+}
+
+namespace {
+// The HeightFieldHost the slot 2Ch chain calls back, over this process's height
+// field (goal 5 chain 640). Slots 10h/14h are 00ADAC50 on the view's +38h/+3Ch,
+// 44h the split above, 48h the loaded grid height, 4Ch/50h the reconstructed
+// 00ADB550 / 00ADB620. The chain reaches nothing else: the node's +5Ch bit is set
+// (no 00B6DB70), and no tile is created or read here.
+class TerrainSlot2cHost final : public bsp::cc13_terrain::HeightFieldHost {
+public:
+    explicit TerrainSlot2cHost(const SceneTerrainHeightField& field) : field_(field) {}
+    void refresh_world_matrix_00b6db70(void*) override { unreached("00B6DB70"); }
+    void transform_affine_point_004142e0(const float*, float*, const void*) override {
+        unreached("004142E0");
+    }
+    std::int32_t slot10_samples_wide(void* view) override {
+        return bsp::cc13_terrain::height_field_samples_00adac50(view, false);
+    }
+    std::int32_t slot14_samples_deep(void* view) override {
+        return bsp::cc13_terrain::height_field_samples_00adac50(view, true);
+    }
+    void slot44_split_index(void*, std::int32_t* tx, std::int32_t* tz, std::int32_t* lx,
+                            std::int32_t* lz, std::int32_t i, std::int32_t j) override {
+        int a = 0, b = 0, c = 0, d = 0;
+        field_.split_index_00ada890(i, j, a, b, c, d);
+        *tx = a; *tz = b; *lx = c; *lz = d;
+    }
+    float slot48_grid_height(void*, float u, float v) override {
+        return field_.grid_height_00adb480(u, v);
+    }
+    float slot4c_sample(void* view, std::int32_t i, std::int32_t j) override {
+        return bsp::cc13_terrain::height_field_sample_at_00adb550(view, i, j, *this);
+    }
+    float slot50_sample_bilinear(void* view, float u, float v) override {
+        return bsp::cc13_terrain::height_field_sample_bilinear_00adb620(view, u, v, *this);
+    }
+    void* create_tile(void*, std::int32_t, std::int32_t) override { unreached("create_tile"); }
+    std::int32_t node_read_dword_00be99f0(void*) override { unreached("00BE99F0"); }
+    void tile_read_chunks_00adfeb0(void*, void*) override { unreached("00ADFEB0"); }
+    void tile_member_slot50(void*, std::uint32_t) override { unreached("tile +24h slot 50h"); }
+
+private:
+    [[noreturn]] static void unreached(const char* what) {
+        throw std::logic_error(std::string("terrain slot 2Ch chain reached ") + what);
+    }
+    const SceneTerrainHeightField& field_;
+};
+}  // namespace
+
+// Terrain slot 2Ch, 00ADA990 (bsp.py show 00ADA990: u and v as in 00ADA900, then
+// slot 50h at 00ADAA0B, slot 48h at 00ADAA2A, FADD double, FSTP float).
+float SceneTerrainHeightField::height_at_world_slot2c(float x, float z) const {
+    if (!native_height_view) {
+        auto view = std::make_unique<SceneTerrainNativeHeightView>();
+        view->node.x_120 = node_x;
+        view->node.y_124 = node_y;
+        view->node.z_128 = node_z;
+        view->zero_grid.assign(0x21 * 0x21, 0);
+        view->grids.resize(blocks.size());
+        view->tiles.resize(blocks.size());
+        for (std::size_t k = 0; k < blocks.size(); ++k) {
+            view->grids[k].data_28 = view->zero_grid.data();
+            view->tiles[k].block_1c = &view->grids[k];
+        }
+        view->tile_pointers.assign(block_index.size(), nullptr);
+        for (std::size_t k = 0; k < block_index.size(); ++k) {
+            if (block_index[k] >= 0) {
+                view->tile_pointers[k] = &view->tiles[static_cast<std::size_t>(block_index[k])];
+            }
+        }
+        view->field.cell_1c = kTerrainCellSize;
+        view->field.node_2c = &view->node;
+        view->field.tiles_wide_38 = tiles_wide;
+        view->field.tiles_deep_3c = tiles_deep;
+        view->field.tiles_40 = view->tile_pointers.data();
+        view->field.origin_x_80 = origin_x;
+        view->field.origin_z_84 = origin_z;
+        native_height_view = std::move(view);
+    }
+    TerrainSlot2cHost host(*this);
+    return bsp::cc13_terrain::height_field_height_at_world_00ada990(
+        &native_height_view->field, x, z, host);
+}
+
 template <bool kPc24Bound>
 float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noexcept {
     std::array<int, 2> sample_counts;
@@ -5017,10 +5186,8 @@ float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noex
     }
     const int wide = sample_counts[0], deep = sample_counts[1];
     if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
-    int tx = i >> kTerrainTileShift, lx = i - (tx << kTerrainTileShift);
-    int tz = j >> kTerrainTileShift, lz = j - (tz << kTerrainTileShift);
-    if (tx >= tiles_wide) { tx -= 1; lx = kTerrainTileCells; }
-    if (tz >= tiles_deep) { tz -= 1; lz = kTerrainTileCells; }
+    int tx = 0, tz = 0, lx = 0, lz = 0;
+    split_index_00ada890(i, j, tx, tz, lx, lz);
     const int index = block_index[static_cast<std::size_t>(tiles_wide) * tz + tx];
     if (index < 0) return kTerrainNoGround;
     const SceneTerrainBlock& block = blocks[static_cast<std::size_t>(index)];

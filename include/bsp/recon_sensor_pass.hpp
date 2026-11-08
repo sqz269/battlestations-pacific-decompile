@@ -58,6 +58,9 @@ struct ReconLevelTransition {
     int party{0};
     ReconDetectionLevel old_level{ReconDetectionLevel::none};
     ReconDetectionLevel new_level{ReconDetectionLevel::none};
+    // The record's +28h observer when the delegate ran (00805AF0 swaps it before the
+    // call): what 00980E50's recon warning 009741E0 reads as entity+210h+party*34h.
+    std::size_t observer{kGunneryReconNoObserver};
 };
 
 // Everything 008048A0 and 00806840 read that this process must supply. One
@@ -177,6 +180,7 @@ public:
 
     // The persistent record, for 00805CF0's forced writes; null when out of range.
     ReconDetectionRecord* record(int party, std::size_t unit) noexcept;
+    const ReconDetectionRecord* record(int party, std::size_t unit) const noexcept;
 
 private:
     friend void recon_sensor_pass_step_008073c0(ReconSensorPassState&, float,

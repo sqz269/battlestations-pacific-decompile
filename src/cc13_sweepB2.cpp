@@ -28,7 +28,8 @@ double f64_bits(std::uint64_t bits) {
     return value;
 }
 
-void* image_pointer(Cc13SweepBHost& host, std::uint32_t address) {
+template <class Host>
+void* image_pointer(Host& host, std::uint32_t address) {
     return *static_cast<void**>(host.image_global(address));
 }
 
@@ -72,8 +73,8 @@ void release_reference(void* reference, Cc13SweepBHost& host) {
 // A temporary native string of an image text: 0041DD40(length, 1), memcpy of
 // length + 1 bytes when data is non-null, the use, then the data back to the
 // sized pool with length + 1 bytes (the length re-read after the use).
-template <class Use>
-void with_image_string(std::uint32_t text_address, std::uint32_t length, Cc13SweepBHost& host, Use use) {
+template <class Host, class Use>
+void with_image_string(std::uint32_t text_address, std::uint32_t length, Host& host, Use use) {
     Cc13SweepBNativeString text = {0, nullptr};
     host.native_string_resize_0041dd40(&text, length, 1);
     if (text.data != nullptr) host.crt_memcpy_00bf7680(text.data, host.image_global(text_address), text.length + 1);
@@ -596,7 +597,7 @@ void zero_words(void* base, std::initializer_list<std::size_t> offsets) {
 //   +108h..+11Ch = 0, +5E4h = 0.001f (00D7A23C), +5DCh = 2.0f (00CE3958),
 //   +53Ch = 0, +540h = 0.0f.
 // EH frame 00C71CA1 (states 0, 2, 5, 9, 0Fh) is not modelled.
-void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, Cc13SweepB2Host& host) {
+void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, InGameInterfaceScreenConstructHost& host) {
     std::uint8_t* s = static_cast<std::uint8_t*>(screen);
     host.frontend_screen_construct_004f7180(screen);
     host.simple3d_scene_construct_0093cb10(s + 0x8);
@@ -642,7 +643,8 @@ void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, Cc13
 // - +1Ch = [[0109CF04]+0Dh] ? 0.14f (00CE81A4) : 0.18f (00CE8198).
 // Each name is a temporary native string (with_image_string). EH frame
 // 00C73698 (states 0..2 around the strings) is not modelled.
-void cc13_sweepB2_hud_engine_movie_screen_register_005cce70(void* screen, Cc13SweepB2Host& host) {
+void cc13_sweepB2_hud_engine_movie_screen_register_005cce70(void* screen,
+    Cc13SweepB2EngineMovieRegisterHost& host) {
     host.frontend_screen_register_004f71d0(screen);
     at<std::uint8_t>(screen, 0x9) = 0;
     at<std::uint8_t>(screen, 0x8) = 0;

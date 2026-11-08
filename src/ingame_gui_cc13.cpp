@@ -161,7 +161,7 @@ void cursor_screen_enter_0067bd70(Raw s, HudScreenHost& host) {
 // ---------------------------------------------------------------------------
 
 // 0067BE30.
-Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host) {
+Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kFollowScreenVtable;
     s.ptr(0x8) = nullptr;
@@ -169,7 +169,7 @@ Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host) {
 }
 
 // 0067BE80: base register, then the screen's +14h virtual (0067BEA0, empty).
-void follow_screen_register_0067be80(Raw s, HudScreenHost& host) {
+void follow_screen_register_0067be80(Raw s, HudScreenRegisterLayoutHost& host) {
     host.front_end_screen_register_004f71d0(s);
     host.screen_virtual_14(s);
 }
@@ -289,7 +289,7 @@ void common_overlay_released_0067bc60(Raw s, void* object, HudScreenHost& host) 
 // ---------------------------------------------------------------------------
 
 // 00643DA0.
-Raw spectator_construct_00643da0(Raw s, HudScreenHost& host) {
+Raw spectator_construct_00643da0(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint8_t>(0x14) = 0;
     s.ptr(0x10) = nullptr;
@@ -307,15 +307,16 @@ void spectator_destruct_00643e00(Raw s, HudScreenHost& host) {
 
 // 00643E80: base register, page "GUI_spectator" into +8h, then the screen is
 // wanted at once (+4h = 1).
-void spectator_register_00643e80(Raw s, HudScreenHost& host) {
+void spectator_register_00643e80(Raw s, HudScreenRegisterPageHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_spectator");
     s.at<std::uint8_t>(kWanted) = 1;
 }
 
-// 00643F40, enter: "Score_Text" into +0Ch, "Spectator_Text" into +10h (hidden).
-// The find calls take the page at +8h.
-void spectator_enter_00643f40(Raw s, HudScreenHost& host) {
+// 00643F40, enter: "Score_Text" (00CF59E0) into +0Ch, "Spectator_Text"
+// (00CF59D0) into +10h, then +10h's vtable +34h(0) (00644042..0064404B, no
+// null test). The find calls take the page at +8h.
+void spectator_enter_00643f40(Raw s, HudScreenChildVisibilityHost& host) {
     s.ptr(0xC) = host.gui_find_child_00aa7e00(s.ptr(0x8), "Score_Text");
     s.ptr(0x10) = host.gui_find_child_00aa7e00(s.ptr(0x8), "Spectator_Text");
     host.widget_set_visible_34(s.ptr(0x10), false);
@@ -399,7 +400,7 @@ void binoculars_overlay_exit_0067c0a0(Raw s, HudScreenHost& host) {
 // ---------------------------------------------------------------------------
 
 // 00650140.
-Raw submarine_construct_00650140(Raw s, HudScreenHost& host) {
+Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kSubmarineScreenVtable;
     return s;
@@ -407,7 +408,7 @@ Raw submarine_construct_00650140(Raw s, HudScreenHost& host) {
 
 // 00650170: base register, the +14h virtual (00650B90, the layout), then +1Ch
 // byte and +20h float cleared.
-void submarine_register_00650170(Raw s, HudScreenHost& host) {
+void submarine_register_00650170(Raw s, HudScreenRegisterLayoutHost& host) {
     host.front_end_screen_register_004f71d0(s);
     host.screen_virtual_14(s);
     s.at<std::uint8_t>(0x1C) = 0;
@@ -438,7 +439,7 @@ void periscope_exit_00650810(Raw s, HudScreenHost& host) {
 }
 
 // 00650B00.
-Raw periscope_construct_00650b00(Raw s, HudScreenHost& host) {
+Raw periscope_construct_00650b00(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;
     for (std::size_t off : {0xCu, 0x10u, 0x14u}) s.at<std::uint32_t>(off) = 0;
@@ -530,7 +531,7 @@ Raw hud_befogo_marker_construct_0063e950(Raw marker, void* page, HudScreenHost& 
 // 00640C80: the four marker-pool vectors (+34h, +4Ch, +5Ch, +6Ch: their
 // begin/end/capacity words cleared), the +90h vector, and the map at +A4h whose
 // head node (0063B110) is self-linked with its +11h "is nil" byte set.
-Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head) {
+Raw hud_markers_construct_00640c80(Raw s, HudScreenBaseHost& host, void* tree_head) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;
     for (std::size_t off : {0xCu, 0x10u, 0x14u}) s.at<std::uint32_t>(off) = 0;
@@ -1170,7 +1171,7 @@ void periscope_load_layout_00651230(Raw s, HudScreenHost& host) {
 
 // 00650B90, submarine layout (+14h): page "GUI_sub" into +8h and its depth and
 // air widgets into +0Ch..+18h.
-void submarine_load_layout_00650b90(Raw s, HudScreenHost& host) {
+void submarine_load_layout_00650b90(Raw s, HudScreenPageChildHost& host) {
     s.ptr(0x8) = host.gui_load_page_00aa5840("GUI_sub");
     s.ptr(0xC) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_depht_arrow_dest_Icon");
     s.ptr(0x10) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_depth_arrow_Icon");
@@ -1212,7 +1213,7 @@ inline constexpr std::uint32_t kRewardsVtable = 0x00CF50CC;
 inline constexpr std::uint32_t kRewardsCallbackVtable = 0x00CF50B8;
 inline constexpr std::uint32_t kRewardsListenerVtable = 0x00CF5098;
 inline constexpr std::uint32_t kWidgetListenerBaseVtable = 0x00CEB110;
-Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host) {
+Raw rewards_construct_00626630(Raw s, RewardsConstructHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
@@ -3156,7 +3157,7 @@ void hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw) 
 std::int32_t hud_tactical_sheet_screen_get_screen_id_0067af60(Raw) noexcept { return 0x54; }
 std::int32_t hud_cursor_screen_get_screen_id_0067b320(Raw) noexcept { return 0x28; }
 void hud_cursor_screen_exit_0067b330(Raw) noexcept {}
-void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenServices& host) {
+void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenRegisterHost& host) {
     host.front_end_screen_register_004f71d0(self);
 }
 void hud_common_overlay_screen_enter_0067b400(Raw) noexcept {}

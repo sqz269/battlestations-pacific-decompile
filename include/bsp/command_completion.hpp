@@ -209,27 +209,9 @@ struct CommandEventParameters {
     std::string status;             // argument 4
 };
 
-// One parsed Lua `command` event block: the four filter containers 0097C8A0
-// builds at +0Ch, +1Ch, +2Ch and +3Ch, plus the callback name at +4h. An empty
-// container accepts everything.
-struct CommandEventSubscription {
-    std::string callback;
-    std::vector<std::uint16_t> unit_ids;
-    std::vector<std::uint16_t> target_ids;
-    std::vector<std::string> command_names;
-    std::vector<std::string> statuses;
-};
-
-// 00968AF0 BSP_EventSubscription_MatchFourParameters, vtable 00D1B770 slot +0Ch.
-// A conjunction over the four containers.
-bool command_event_matches(const CommandEventSubscription& subscription,
-                           const CommandEventParameters& parameters) noexcept;
-
-// 0097B8C0 BSP_WarningChannel_Evaluate over a whole channel: the callback names
-// of every matching subscription, in list order.
-std::vector<std::string> command_event_callbacks(
-    const std::vector<CommandEventSubscription>& channel,
-    const CommandEventParameters& parameters);
+// The subscriptions are AddListener's (seg64 CommandEventSubscription, 0097C8A0 /
+// 00972AB0), matched by 00968AF0 (src/leftovers_cc13.cpp) and evaluated by the
+// mission Lua host (goal 5 chain 631).
 
 // ---------------------------------------------------------------------------
 // Host: one virtual per native call site of the completion sequence
