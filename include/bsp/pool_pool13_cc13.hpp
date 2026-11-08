@@ -32,12 +32,17 @@ struct LuaObject {
     std::uint8_t storage[0x14];
 };
 
-struct Pool13Host {
-    virtual ~Pool13Host() = default;
-
+// The free-stock accessor needs only this query. Keep it separate so a typed
+// deck adapter need not implement the unrelated runway, Lua and tick services.
+struct AirOpsStockAvailableHost {
+    virtual ~AirOpsStockAvailableHost() = default;
     // 006BF230 BSP_AirOps_StockAvailable, __thiscall(block, out pair, class), RET 8,
     // EAX = out ({available, total}).
     virtual std::int32_t* air_ops_stock_available_006bf230(Object block, std::int32_t* out, Object vehicle_class) = 0;
+};
+
+struct Pool13Host : AirOpsStockAvailableHost {
+    virtual ~Pool13Host() = default;
     // 006952A0 / 00694A60 __fastcall(ECX = observed, EDX = observer link).
     virtual void observer_unregister_pair_006952a0(Object observed, Object link) = 0;
     virtual void observer_register_pair_00694a60(Object observed, Object link) = 0;
@@ -61,7 +66,7 @@ struct Pool13Host {
 };
 
 // 006BF330: available stock of one plane class in an air-ops block.
-std::int32_t air_ops_free_stock_for_class_006bf330(Pool13Host& host, Object block, Object vehicle_class);
+std::int32_t air_ops_free_stock_for_class_006bf330(AirOpsStockAvailableHost& host, Object block, Object vehicle_class);
 // 006BF620: the block may send planes.
 // The five values the body tests, typed over whatever storage holds the block:
 // the bytes +1Ch and +1Dh, whether the owner [+7Ch] is set, the owner's byte

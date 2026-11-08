@@ -1,0 +1,183 @@
+{
+  "goal": 5,
+  "chain": 804,
+  "slot": "g5-w3",
+  "branch": "agent/g5-w3",
+  "base": "49161309d5",
+  "summary": "Reuse the existing 006BF330 free-stock body for the available-only stock query in the live 006C0F00 slot-fill path. Narrow its Host dependency to the stock query and adapt the borrowed deck, class key and launched-plane counts.",
+  "rows": [
+    {
+      "native": "006bf330",
+      "status": "wired",
+      "host_site": "src/air_operations.cpp::air_ops_fill_slot_006c0f00, reached from src/game_hosts_script_orders.cpp::GameScriptOrdersHost::player_air_ops_launch",
+      "evidence": "bsp.py show 006bf330: returns word zero of the 006BF230 pair. 006C0F70 requests that same pair and consumes available; the adapter calls 006BF230 exactly once with the same deck/class/counts.",
+      "original_abi": "__thiscall(ECX=block; stack class), RET 4, EAX=available; the C++ Host adapter is a typed projection, not a binary ABI replacement."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp",
+      "reason": "Native C8h DeadMeatRot send is multiplayer-only; the single-player path has no eligible rotation-message producer."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp",
+      "reason": "Pre-load checkpoint_differs still substitutes false and supplies no real checkpoint comparison or BSP_Chk_Save Lua owner to authorize clearing."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::set_unit_controlled_audio",
+      "reason": "The controlled-audio callback only records the request; no linked ship +BBC sound owner or +428 device-list producer was established."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp::clear_marker_classes_006db2f0",
+      "reason": "No live host MarkerClassContext/descriptor-registry producer was found for this cleanup."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp",
+      "reason": "No live NativeBotStateRegistryStorage owner was found in the game hosts to destroy."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp",
+      "reason": "No live native bot-state registry consumer was established; constructing an unused registry would not wire real bot state."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/native_game_lifetime.cpp",
+      "reason": "No same-domain NativeGameStorage and complete lifetime-operation bridge was established for host shutdown."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp",
+      "reason": "The typed reset requires GuiResourceOwner and GuiWidgetOwnerRuntime from the same live application graph; that bridge was not established."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "The main-thread mission Lua path produces no frame-job-thread deferred call with a real LuaVariantRecord argument vector."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::UnitPickBinding",
+      "reason": "The native row lookup belongs to a lock/action branch whose row storage and live action producer were not established in this host."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::UnitPickBinding",
+      "reason": "The position accessor requires the lock branch entry with retained +F0..FC position/validity fields; no eligible live entry producer was established."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp",
+      "reason": "The existing reconstructed pool free template already backs the live wrapper; adding an address wrapper would not introduce new behavior."
+    },
+    {
+      "native": "00abc410",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp",
+      "reason": "The reconstructed GuiCurve pool free template already implements the existing path; no new call requiring replacement was identified."
+    },
+    {
+      "native": "00ac1f30",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp",
+      "reason": "The reconstructed GuiLine pool free template already implements the existing path; no new call requiring replacement was identified."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp::gui_curve_control_points_00abca10",
+      "reason": "No constructed live Curve widget with authored point vectors and a matching tessellation/render consumer was established."
+    },
+    {
+      "native": "00aa8f30",
+      "status": "skipped",
+      "host_site": "src/gui_manager_cc13.cpp",
+      "reason": "No GuiWidgetTransform producer and matching live rectangle-copy call site was established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp",
+      "reason": "No live input-character admission consumer with its text-context font was established; full-string layout is a different operation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp",
+      "reason": "No reachable shadow-fit consumer requiring the FOV-aspect product was established; the inspected GUI camera is orthographic."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp",
+      "reason": "No live extra-clip-plane producer for the inspected camera application was established."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp",
+      "reason": "No same-domain live extra-clip-plane lifecycle was established to clear."
+    },
+    {
+      "native": "00b72030",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp",
+      "reason": "No live SceneRoots/QuadTreeBuildServices bridge was established."
+    },
+    {
+      "native": "00b72270",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp",
+      "reason": "No live SceneRoots/SceneNodeServices lookup bridge was established."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp",
+      "reason": "The inspected mission directional light explicitly requires a null shadow; no compatible live 508h incoming shadow owner was established."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/native_landing_queue.cpp",
+      "reason": "The live landing host uses its semantic queue; no NativeLandingQueueBlockStorage with matching observer/health-message providers was established."
+    },
+    {
+      "native": "006cd350",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp::air_ops_slot_launch_006cd350",
+      "reason": "Its launch-decision projection has no linked caller; this patch preserves the existing slot-fill path without adding a new state-5 cancel/launch producer."
+    }
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed, 4/4 tests",
+    "final_build": "scripts/build.ps1 passed, 4/4 tests",
+    "compiled_call": "call_graph.py who 006bf330: REACHABLE, one call at 104242ac from air_ops_fill_slot_006c0f00; baseline who found no linked function",
+    "entry_path": "WinMain -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameScriptOrdersHost::player_air_ops_launch -> air_ops_fill_slot_006c0f00 -> air_ops_free_stock_for_class_006bf330",
+    "float_math": "No float arithmetic changed.",
+    "runtime_boundary": "Compiled entry reachability and existing fixture tests only; no game run or original ABI claim.",
+    "readiness_target": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "wired_source_before": 10643,
+  "wired_source_after": 10644
+}
