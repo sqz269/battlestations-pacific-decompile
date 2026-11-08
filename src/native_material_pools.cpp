@@ -687,7 +687,16 @@ template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize() {
     // 00AB2850 inlines 00AB2420's reserve(32) at the same pool+28h header,
     // in unwind state 2. CD7180 starts this retained F8BDA0 process pool.
     initialize_pool<GuiIconPoolTraits,
-        &reserve_native_gui_icon_pool_table_00ab2420>(allocator_list_, storage_);
+        &reserve_native_gui_icon_pool_table_00ab2420,
+        &free_native_gui_icon_pool_table_00ab14f0>(allocator_list_, storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::destroy() {
+    // AB1FD0 inlines AB14F0's release on the same F8BDA0+28h header,
+    // after its slabs and before CS/list teardown. CB7A33 -> AB14F0 is
+    // the matching constructor state-2 cleanup; neither path zeros fields.
+    destroy_pool<GuiIconPoolTraits,
+        &free_native_gui_icon_pool_table_00ab14f0>(allocator_list_, storage_);
 }
 template<class T> void* NativeGuiWidgetPool<T>::allocate() {
     // bsp.py show 00AB2930 / 00AB1340: the Icon allocator initializes the
