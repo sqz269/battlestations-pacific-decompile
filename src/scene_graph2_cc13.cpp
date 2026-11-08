@@ -120,6 +120,10 @@ void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t
 }
 
 void grow_pointer_array(std::uint32_t address, PointerArray& a) {
+    if (address == 0x00B7AE30) {
+        grow_native_point_light_pool_table_00b7ae30({&a});
+        return;
+    }
     if (address == 0x00B7AED0) {
         grow_directional_light_pool_table_00b7aed0({reinterpret_cast<std::byte*>(&a)});
         return;
@@ -141,6 +145,10 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
 }
 
 void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value) {
+    if (address == 0x00B7B410) {
+        append_native_point_light_pool_table_00b7b410({&a}, &value);
+        return;
+    }
     if (address == 0x00B7B510) {
         append_directional_light_pool_table_00b7b510({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
