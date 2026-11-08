@@ -14,6 +14,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_hud.hpp"
 
+#include "bsp/entity_lifecycle_tails.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/recon_sensor_pass.hpp"
@@ -34,6 +35,52 @@ namespace bsp::game {
 namespace {
 // Packet cc9_recon_call_sites: the lists of the world host that built last.
 const bsp::LocalPlayerUnitLists* g_local_player_unit_lists = nullptr;
+
+// The existing 00903F30 Source interface uses handles in place of entity
+// pointers. Handle unit+1 retains the real unit-registry identity and reserves
+// zero for the native null link. This is the update pass's owning chain, not a
+// second list populated only for retirement. See bsp.py show 00903F30 --asm:
+// +34/+38 are previous/next; head+0/+4/+8 are first/last/signed count.
+class WorldUpdateChain {
+public:
+    ~WorldUpdateChain() { clear(); }
+
+    void rebuild(std::size_t units) {
+        clear();
+        nodes_.resize(units + 1u);
+        for (std::size_t handle = 1; handle <= units; ++handle) {
+            nodes_[handle].prev = handle - 1u;
+            nodes_[handle].next = handle < units ? handle + 1u : 0u;
+        }
+        chain_.first = units != 0 ? 1u : 0u;
+        chain_.last = units;
+        chain_.count = static_cast<std::int32_t>(units);
+    }
+
+    std::size_t size() const noexcept { return static_cast<std::size_t>(chain_.count); }
+
+    std::vector<std::size_t> unit_indices() const {
+        std::vector<std::size_t> result;
+        result.reserve(size());
+        for (std::size_t handle = chain_.first; handle != 0; handle = nodes_[handle].next)
+            result.push_back(handle - 1u);
+        return result;
+    }
+
+private:
+    void clear() noexcept {
+        // 009257FC retires membership from exactly the chain 00904BF0 walks.
+        // The world host owns that membership through rebuild/scene teardown.
+        // Read the new head after each unlink, including the final linkless
+        // singleton (00903F44 is signed JG, not JGE).
+        while (chain_.first != 0)
+            bsp::chain_unlink_00903f30(chain_, chain_.first, nodes_);
+        nodes_.clear();
+    }
+
+    bsp::IntrusiveChain chain_{};
+    std::vector<bsp::IntrusiveChainNode> nodes_;
+};
 }  // namespace
 
 const bsp::LocalPlayerUnitLists* game_local_player_unit_lists() noexcept {
@@ -64,7 +111,7 @@ struct GameWorldHost::Impl {
 
     // The chain 009037f0's first header holds. An entry is the index of a unit
     // in the units host, which is the creation order the instantiate pass used.
-    std::vector<std::size_t> chain;
+    WorldUpdateChain chain;
     // The second header, world+8h. 009037f0 allocates it and nothing this
     // packet read ever touches it again (docs/WORLD_ENTITY_UPDATE.md).
     std::vector<std::size_t> second_chain;
@@ -142,13 +189,16 @@ private:
 
 class WorldEntityUpdateBinding final : public bsp::WorldEntityUpdateHost {
 public:
-    explicit WorldEntityUpdateBinding(GameWorldHost::Impl& owner) : owner_(owner) {}
+    WorldEntityUpdateBinding(GameWorldHost::Impl& owner,
+        const std::vector<std::size_t>& unit_indices)
+        : owner_(owner), unit_indices_(unit_indices) {}
 
     void update_entity(std::size_t index, float scaled_delta) override {
         // 00904c18: entity->vtable[0DCh](scaledDelta), which for a unit is
-        // 008255b0. The chain position is the units host's index.
-        if (index >= owner_.chain.size()) return;
-        owner_.units.update_entity_008255b0(owner_.chain[index], scaled_delta);
+        // 008255b0. The traversal projection maps this position to the
+        // registry identity read from the owning chain's +38h links.
+        if (index >= unit_indices_.size()) return;
+        owner_.units.update_entity_008255b0(unit_indices_[index], scaled_delta);
         ++owner_.summary.entities_updated;
     }
 
@@ -189,6 +239,7 @@ public:
 
 private:
     GameWorldHost::Impl& owner_;
+    const std::vector<std::size_t>& unit_indices_;
 };
 
 // ---------------------------------------------------------------------------
@@ -312,10 +363,7 @@ GameWorldHost::~GameWorldHost() {
 
 void GameWorldHost::build_entity_chains_009037f0() {
     Impl& host = *impl_;
-    host.chain.clear();
-    for (std::size_t index = 0; index < host.units.count(); ++index) {
-        host.chain.push_back(index);
-    }
+    host.chain.rebuild(host.units.count());
     host.second_chain.clear();
     host.summary.chains_built = true;
     host.summary.chain_entities = host.chain.size();
@@ -340,10 +388,11 @@ void queue_add_matrix_interpolator_008ade00(std::size_t unit_index, const float 
 void GameWorldHost::run_world_entity_update_00904bf0(float scaled_delta) {
     Impl& host = *impl_;
     host.clock += scaled_delta;
+    const auto unit_indices = host.chain.unit_indices();
     std::vector<bool> active;
-    active.reserve(host.chain.size());
-    for (std::size_t entity : host.chain) active.push_back(host.units.unit_active(entity));
-    WorldEntityUpdateBinding binding(host);
+    active.reserve(unit_indices.size());
+    for (std::size_t entity : unit_indices) active.push_back(host.units.unit_active(entity));
+    WorldEntityUpdateBinding binding(host, unit_indices);
     const std::size_t visited
         = bsp::update_world_entities_00904bf0(active, binding, scaled_delta);
     ++host.summary.walks;
