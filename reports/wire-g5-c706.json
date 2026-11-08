@@ -253,7 +253,7 @@
       "recon_called": 5358,
       "recon_addresses": 5953
     },
-    "call_graph_who_00831840": "REACHABLE, one call at 1015541d from GameMissionLuaVehicleClassBinding::load_ship_base to read_ship_class_fields_00831840 at 104409b0",
+    "call_graph_who_00831840": "REACHABLE, one call at 1015541d from GameMissionLuaVehicleClassBinding::load_ship_base to read_ship_class_fields_00831840 at 10440a10",
     "readiness_before": 10453,
     "readiness_after": 10454,
     "pc24_lint": "0 findings; this wiring changes no float arithmetic",
@@ -289,5 +289,33 @@
     "Bind Idle template class references and nonzero LandingShip descriptor ownership before admitting the other ship rows.",
     "The existing reader is a semantic field projection: effect IDs are retained as IDs; original native effect-handle refcount/SEH traffic is not supplied by this interface.",
     "Build/static call-graph and installed-data evidence only; the game was not launched."
+  ],
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1528,
+      "reviewed_head": "4f5d9821afffb770709e583621c4056ee1166431",
+      "findings": [
+        {
+          "id": "P2 cached camera base_length",
+          "status": "fixed",
+          "change": "The cached camera return now requires the retained 00960230 base record and copies its Length into out.base_length, independently of CameraDistanceFront.",
+          "verification": "The focused probe resolves class 8 through loaded_vehicle_class_base_fields, then changes Lua Length/CameraDistanceFront to 7/9. The production read_ship_class_camera_00831e0d returns retained Length=100 and CameraDistanceFront=110.",
+          "installed_evidence": "Current installed VehicleClass[8] is Submarine, Length=100, CameraDistanceFront/Side/Vertical=110.",
+          "probe": "tests/wire_g5_c706_ship_camera_probe.cpp",
+          "proof_boundary": "Bounded Lua/settings fixture using the production descriptor loader and camera getter. Original PE mapped as read-only data only; no game loop or original executable code is run."
+        }
+      ],
+      "checks": {
+        "build": "./scripts/build.ps1 passed, all four existing test groups passed",
+        "focused_probe": "PASS: cached class 8 Length=100, CameraDistanceFront=110 after Lua changes",
+        "probe_build": "MSVC Win32 /O2 /MD /EHsc; rebuilt bsp_game objects excluding game_main.obj; bsp_core/lua/zlib; /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO",
+        "probe_result": "local/output/wire_g5_c706_ship_camera_probe_result.txt",
+        "pc24_lint": "0 findings; no float arithmetic changed by this repair",
+        "call_graph": "00831840 remains entry-reachable, one call from GameMissionLuaVehicleClassBinding::load_ship_base; 5358/5953 reconstructed addresses called",
+        "diff_check": "passed",
+        "readiness": "10454 wired; 00831840 remains wired/called with one reachable call site"
+      }
+    }
   ]
 }

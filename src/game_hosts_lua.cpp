@@ -3551,11 +3551,16 @@ bool GameMissionLuaHost::read_ship_class_camera_00831e0d(int type_id,
     bsp::ShipClassCameraInputs& out) {
     if (state_ == nullptr || type_id < 0) return false;
     const auto loaded = vehicle_class_ship_base_fields_.find(type_id);
-    if (loaded != vehicle_class_ship_base_fields_.end()) {
+    const auto base = vehicle_class_base_fields_.find(type_id);
+    if (loaded != vehicle_class_ship_base_fields_.end()
+            && base != vehicle_class_base_fields_.end()) {
         // These are descriptor slots after 00831840's chained defaults. The
         // camera consumer must use them as present values, without rereading
         // mutable Lua fields or applying different defaults a second time.
         const auto& camera = loaded->second.camera;
+        // HUD zoom also consumes the separate 00960230 Length slot (+A0h).
+        // CameraDistanceFront may differ (installed class 8: 110 vs 100).
+        out.base_length = base->second.length;
         out.has_captain_camera_height = true;
         out.captain_camera_height = camera.captain_camera_height;
         out.has_distance_front = true;
