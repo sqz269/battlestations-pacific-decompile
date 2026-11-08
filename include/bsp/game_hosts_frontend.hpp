@@ -169,6 +169,9 @@ public:
         const bool& gui_sse2_conversion);
     ~GameFrontendHost();
 
+    // Borrow the same application-owned CRT conversion mode as GUI readers.
+    const bool& crt_sse2_conversion() const noexcept;
+
     // BSP_NATIVE_GUI_RESOURCES: borrow the application's SAME ready native
     // renderer before initial startup. The existing manager slots borrow the
     // returned references; this binding owns them until explicit retirement.

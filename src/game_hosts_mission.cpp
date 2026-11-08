@@ -29,6 +29,7 @@
 #include "bsp/locale_tables.hpp"
 #include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/lua_object.hpp"
+#include "bsp/lua_numeric.hpp"
 #include "bsp/lua_state_owner.hpp"
 #include "bsp/main_menu_mission_detail.hpp"
 #include "bsp/main_menu_map_point_geometry.hpp"
@@ -232,9 +233,99 @@ private:
     NativeString temporary_{};
 };
 
+// 005C4AD0 reads the native checked vector's +4/+8/+Ch cells directly. Own
+// those cells and their int objects here; the final value vector is retained
+// by MissionRecordExtra::naval_academy. The STL backing's unused slots are
+// constructed so the reader's in-place stores have live C++ objects to write.
+class MissionIntVectorBinding final : public cc13_fe1::TableReaderHost {
+public:
+    MissionIntVectorBinding(GuiLuaHost& lua, GuiLuaRef parent,
+        const bool& sse2_conversion)
+        : lua_(lua), parent_(parent), sse2_conversion_(sse2_conversion) {}
+    ~MissionIntVectorBinding() override { leave_08(); }
+    MissionIntVectorBinding(const MissionIntVectorBinding&) = delete;
+    MissionIntVectorBinding& operator=(const MissionIntVectorBinding&) = delete;
+
+    std::vector<std::int32_t> read(const char* key) {
+        // bsp.py show 005C4AD0: name-kind 0, the caller's live key pointer,
+        // enter once, indices 1..n through reader slots +14h/+10h, leave.
+        cc13_fe1::mission_tree_read_int_vector_005c4ad0(0,
+            reinterpret_cast<std::uint32_t>(key), &vector_, *this);
+        if (vector_.first == nullptr) return {};
+        return {vector_.first, vector_.last};
+    }
+
+    void enter_04(std::uint32_t kind, std::uint32_t key) override {
+        if (kind != 0) throw std::logic_error("mission integer-vector key is not a name");
+        if (lua_.type_of(parent_) == GuiLuaType::Table)
+            table_ = lua_.get_by_name(parent_, reinterpret_cast<const char*>(key));
+    }
+    bool has_index_14(std::int32_t index) override {
+        if (element_.valid()) lua_.release(element_);
+        element_ = {};
+        if (lua_.type_of(table_) != GuiLuaType::Table) return false;
+        element_ = lua_.get_by_index(table_, index);
+        const auto type = lua_.type_of(element_);
+        return type != GuiLuaType::Nil && type != GuiLuaType::None;
+    }
+    std::int32_t read_int_10(std::int32_t) override {
+        // 00BD63B0's Int arm uses 00B66290, including float32 spill,
+        // numeric-string conversion and the application's live CRT mode.
+        return lua_object_integer_00b66290(lua_, element_, sse2_conversion_);
+    }
+    void leave_08() override {
+        if (element_.valid()) lua_.release(element_);
+        element_ = {};
+        if (table_.valid()) lua_.release(table_);
+        table_ = {};
+    }
+    void invalid_iterator_00bf6713() override {
+        throw std::logic_error("invalid mission integer-vector bounds");
+    }
+    void erase_all_004685a0(void* vector) override {
+        if (vector != &vector_) invalid_iterator_00bf6713();
+        vector_.last = vector_.first;
+    }
+    void insert_one_00441f30(void* vector, void* where,
+        const std::int32_t* value) override {
+        if (vector != &vector_ || where != vector_.last) invalid_iterator_00bf6713();
+        const auto count = vector_.first == nullptr ? 0u
+            : static_cast<std::size_t>(vector_.last - vector_.first);
+        const auto copied = *value;
+        // Capacity/allocation are hosted STL storage; the recovered body
+        // alone controls the logical end and every value read from Lua.
+        slots_.resize(count);
+        slots_.push_back(copied);
+        const auto size = slots_.size();
+        slots_.resize(slots_.capacity());
+        vector_.first = slots_.data();
+        vector_.last = slots_.data() + size;
+        vector_.end = slots_.data() + slots_.size();
+    }
+
+private:
+    struct Vector {
+        void* proxy{};
+        std::int32_t* first{};
+        std::int32_t* last{};
+        std::int32_t* end{};
+    };
+    static_assert(sizeof(void*) == 4 && sizeof(Vector) == 0x10);
+    static_assert(offsetof(Vector, first) == 4 && offsetof(Vector, last) == 8
+        && offsetof(Vector, end) == 0xC);
+    GuiLuaHost& lua_;
+    GuiLuaRef parent_;
+    const bool& sse2_conversion_;
+    GuiLuaRef table_{};
+    GuiLuaRef element_{};
+    Vector vector_{};
+    std::vector<std::int32_t> slots_;
+};
+
 class LiveMissionTreeView final : public MissionTreeLuaView {
 public:
-    LiveMissionTreeView(GuiLuaHost& host, GuiLuaRef root) : host_(host) {
+    LiveMissionTreeView(GuiLuaHost& host, GuiLuaRef root, const bool& sse2_conversion)
+        : host_(host), sse2_conversion_(sse2_conversion) {
         stack_.push_back(root);
     }
     ~LiveMissionTreeView() override {
@@ -332,24 +423,9 @@ public:
         return out;
     }
     std::vector<std::int32_t> read_int_array(std::string_view key) override {
-        std::vector<std::int32_t> out;
-        const GuiLuaRef table = child(std::string(key).c_str());
-        if (host_.type_of(table) == GuiLuaType::Table) {
-            for (std::int32_t index = 1;; ++index) {
-                const GuiLuaRef element = host_.get_by_index(table, index);
-                const GuiLuaType type = host_.type_of(element);
-                if (type == GuiLuaType::Nil) {
-                    release(element);
-                    break;
-                }
-                out.push_back(type == GuiLuaType::Number
-                        ? static_cast<std::int32_t>(host_.to_number(element))
-                        : 0);
-                release(element);
-            }
-        }
-        release(table);
-        return out;
+        MissionIntVectorBinding binding(host_, stack_.back(), sse2_conversion_);
+        const std::string name(key);
+        return binding.read(name.c_str());
     }
 
     std::vector<std::string> string_keys() override {
@@ -416,6 +492,7 @@ private:
     }
 
     GuiLuaHost& host_;
+    const bool& sse2_conversion_;
     std::vector<GuiLuaRef> stack_;
 };
 
@@ -1100,7 +1177,8 @@ public:
         if (reader_->type_of(root_) != GuiLuaType::Table) {
             throw std::runtime_error("the mission tree global is not a table");
         }
-        view_ = std::make_unique<LiveMissionTreeView>(*reader_, root_);
+        view_ = std::make_unique<LiveMissionTreeView>(
+            *reader_, root_, owner_.frontend.crt_sse2_conversion());
         owner_.log.implemented("MissionTree::open_table", "00b67800");
         return *view_;
     }
