@@ -30,12 +30,6 @@ static void run(lua_State* state, const char* script) {
         throw std::runtime_error(lua_tostring(state, -1));
     require(lua_gettop(state) == 0, "day-time dispatch leaked Lua stack entries");
 }
-static int dispatch_day_time(lua_State* state) {
-    auto* const orders = static_cast<bsp::game::GameScriptOrdersHost*>(
-        lua_touserdata(state, lua_upvalueindex(1)));
-    return orders->dispatch(state, lua_tostring(state, lua_upvalueindex(2)), lua_gettop(state));
-}
-
 int main(int argc, char** argv) {
     try {
         _control87(_PC_24, _MCW_PC);
@@ -70,12 +64,12 @@ int main(int argc, char** argv) {
         GameSingletonHost singletons(log);
         GameVfsHost vfs(log, singletons, data, argv[2]);
         GameMissionLuaHost mission(log, vfs);
-        mission.create_state();
+        // Use the normal complete binding table and binding_trampoline route,
+        // including its diagnostic subject lookup, rather than private closures.
+        require(bsp::initialise_mission_lua_host(mission) != 0,
+            "mission binding registration failed");
         lua_State* const state = mission.mission_lua_state();
         require(state != nullptr, "missing mission Lua VM");
-        lua_pushcfunction(state, luaopen_base);
-        lua_pushstring(state, "");
-        lua_call(state, 1, 0);
         GameGlobalSubsystemsHost globals(log, vfs);
         globals.build_weather();
         require(globals.weather() != nullptr, "missing actual weather owner");
@@ -86,14 +80,6 @@ int main(int argc, char** argv) {
         GameScriptOrdersHost orders(log, units);
         orders.attach_global_subsystems(&globals);
         mission.attach_script_orders(&orders);
-        // Register only these closures over the production dispatcher, avoiding
-        // unrelated mission-machine/VFS loading in this bounded fixture.
-        for (const char* name : {"SetDayTime", "GetDayTime"}) {
-            lua_pushlightuserdata(state, &orders);
-            lua_pushstring(state, name);
-            lua_pushcclosure(state, dispatch_day_time, 2);
-            lua_setglobal(state, name);
-        }
         run(state, R"lua(
             local t = GetDayTime()
             assert(t.hours == 18 and t.minutes == 45 and t.seconds == 0)
@@ -104,12 +90,24 @@ int main(int argc, char** argv) {
         require(globals.weather()->start_day_time_04 == 6.5f,
             "SetDayTime did not update the retained weather owner's +4h");
         run(state, R"lua(
-            SetDayTime(-1)
+            SetDayTime(1.99999999)
             local t = GetDayTime()
+            assert(t.hours == 2 and t.minutes == 0 and t.seconds == 0)
+            SetDayTime(6, 29.99999999)
+            t = GetDayTime()
+            assert(t.hours == 6 and t.minutes == 30 and t.seconds == 0)
+            SetDayTime(6, 0, 1799.99999999)
+            t = GetDayTime()
+            assert(t.hours == 6 and t.minutes == 30 and t.seconds == 0)
+            SetDayTime(-1)
+            t = GetDayTime()
             assert(t.hours == 23 and t.minutes == 0 and t.seconds == 0)
             -- Numeric coercion must not perform the entity dispatch's ID lookup.
-            SetDayTime(setmetatable({}, {__index = function() error('entity lookup') end}))
-            t = GetDayTime()
+            local numeric_table = setmetatable({}, {
+                __index = function() error('entity lookup') end
+            })
+            SetDayTime(numeric_table)
+            t = GetDayTime(numeric_table)
             assert(t.hours == 0 and t.minutes == 0 and t.seconds == 0)
         )lua");
         globals.teardown_004d2bb0();

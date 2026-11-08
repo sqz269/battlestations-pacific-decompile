@@ -1195,7 +1195,7 @@ private:
     throw std::logic_error(std::string("FailureRepairEnable/AddFire: unreached ") + what);
 }
 
-class RepairBindingArgs final : public bsp::cc13_seg56::LuaArgs {
+class RepairBindingArgs : public bsp::cc13_seg56::LuaArgs {
 public:
     explicit RepairBindingArgs(bsp::LuaBindingArgumentReader& core) : core_(core) {}
     int count() override { return core_.count(); }
@@ -1224,6 +1224,25 @@ public:
 
 private:
     bsp::LuaBindingArgumentReader& core_;
+};
+
+// 008B1CC0 uses 00B66290 for all three integers. Its float32 spill precedes
+// truncation; the generic host argument_integer's direct double cast differs
+// at boundaries such as 1.99999999. Borrow the real argument slots and use the
+// existing complete conversion, including the host's 0109EEA4 projection.
+class ScriptDayTimeArgs final : public RepairBindingArgs {
+public:
+    ScriptDayTimeArgs(bsp::LuaBindingArgumentReader& core, lua_State* state)
+        : RepairBindingArgs(core), state_(state),
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+    int get_integer(int index) override {
+        if (state_ == nullptr) return 0;
+        ScriptOrdersLuaStackView value(state_, index + 1);
+        return bsp::native_lua_integer_00b66290(value.object, sse2_conversion_);
+    }
+private:
+    lua_State* state_;
+    bool sse2_conversion_;
 };
 
 // bsp.py show 008B1CC0 --asm, 008B1E5E..008B1E6F: both bindings use the
@@ -6427,7 +6446,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         if (weather == nullptr) {
             log_.unimplemented("LuaNative::day-time without game+21C4h weather owner", address);
         } else {
-            RepairBindingArgs args(*this);
+            ScriptDayTimeArgs args(*this, state_);
             ScriptDayTimeBinding clock(*weather, state_);
             results = std::strcmp(binding->name, "SetDayTime") == 0
                 ? bsp::cc13_seg56::lua_set_day_time_008b1cc0(args, clock)

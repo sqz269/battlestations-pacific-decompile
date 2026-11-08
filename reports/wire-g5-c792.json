@@ -247,13 +247,33 @@
   ],
   "checks": {
     "build": "scripts/build.ps1 passed; 4/4 existing tests",
-    "probe": "tests/wire_g5_c792_day_time_probe.cpp compiled /W4 /WX and passed using production dispatch and actual owner construction; fixture seeds the weather hour, without mounted archives or a game loop",
-    "probe_cases": "shared +4h field, optional minute/second defaults, negative-hour wrap, no entity __index on numeric coercion, Lua result table/stack isolation, teardown/rebuild owner lookup",
+    "probe": "tests/wire_g5_c792_day_time_probe.cpp compiled /W4 /WX and passed through initialise_mission_lua_host's normal complete binding registration and binding_trampoline. No private dispatch closures remain. The fixture seeds the weather hour without mounted archives or a game loop.",
+    "probe_cases": "shared +4h field, optional minute/second defaults, float32-before-truncation for hours/minutes/seconds (including SetDayTime(1.99999999) -> 2 hours), negative-hour wrap, throwing __index table arguments passed to both SetDayTime and GetDayTime, Lua result table/stack isolation, teardown/rebuild owner lookup",
     "probe_result": "local/output/c792_day_time_probe_result.txt",
     "call_graph": "5480 -> 5484 reconstructed addresses called; one reached call site for each new address",
     "readiness": "10634 -> 10638 wired; all four called=true, call_sites=1"
   },
-  "coordination": "Released mission-frame lease after completing two attachment additions so agent/g5-w3 could make disjoint map-publication edits. No merges or pushes performed.",
+  "review_round_1": {
+    "review_run": 1729,
+    "reviewed_head": "50157388ad4af603ccf85926ccc9dc2f1dca3823",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "change": "ScriptDayTimeArgs overrides only this binding's integer reader and calls existing native_lua_integer_00b66290 on the real Lua argument slot. All three arguments now spill to float32 before truncation, with the established host SSE2 conversion-mode projection.",
+        "verification": "Normal-registration probe passes 1.99999999 hours -> 2, 29.99999999 minutes -> 30, and 1799.99999999 seconds -> 1800. The generic argument_integer path for unrelated bindings is unchanged."
+      },
+      {
+        "finding": 2,
+        "status": "fixed",
+        "change": "binding_trampoline excludes SetDayTime and GetDayTime from diagnostic entity ID lookup, matching the existing exemption inside GameScriptOrdersHost::dispatch.",
+        "verification": "Replaced the probe's manual closures with initialise_mission_lua_host normal registration. This first reproduced the outer router's entity lookup error after the conversion fix; after the router exemption, throwing-__index tables pass through both bindings and GetDayTime returns the zero-hour result."
+      }
+    ],
+    "checks": "scripts/build.ps1 passed 4/4 tests; focused probe passed; all four claimed rows remain entry-reachable with one direct host call site each.",
+    "disagreements": []
+  },
+  "coordination": "Released mission-frame lease after completing two attachment additions so agent/g5-w3 could make disjoint map-publication edits. For review round 1, queued src/game_hosts_lua.cpp while agent/g5-w1 held it, then claimed it after their release and changed only the diagnostic exemption. No merges or pushes performed.",
   "limitations": [
     "No game launch or gameplay validation performed.",
     "Probe uses bounded fixture weather hours; production Globals.lua loading is existing code and was not exercised by this probe.",
