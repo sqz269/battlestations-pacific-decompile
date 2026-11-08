@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/dummy_depth_seg34_argon.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/material_effect_plane.hpp"
@@ -15382,14 +15383,20 @@ public:
         }
     }
 
-    bool is_local_players_unit() override { return false; }
+    bool is_local_players_unit() override {
+        // 00827455 compares the victim to 00E188D8, maintained by 004C0890.
+        return owner_.units.controlled_bound()
+            && owner_.units.controlled_index() == victim_;
+    }
     bool shooter_world_position(float out[3]) override {
         float right[3], up[3], forward[3], origin[3];
         owner_.unit_pose(shooter_, right, up, forward, origin);
         for (int i = 0; i < 3; ++i) out[i] = origin[i];
         return true;
     }
-    void push_damage_direction(const float[3]) override {}
+    void push_damage_direction(const float point[3]) override {
+        hud_register_ship_damage_direction(point);
+    }
     // R10 (0082749C..0082757B, 0080FF80 at 0082755F) and R11c (00827663..,
     // the inline 90h build): message 90h MT_SHIP_LEAK, whose receiver is the
     // units host's add_leak_0074f440 (packet cc9_live_hull_leak). The count is

@@ -1,0 +1,88 @@
+{
+  "goal": 6,
+  "chain": 1026,
+  "owner": "agent/g6-w11",
+  "base": "914cf9fa8c",
+  "candidate": "game_hosts_gunnery.cpp",
+  "tier": 1,
+  "selection": "The six-gap powerup screen was refused because agent/g6-w6 held its files and rows. Claimed the three image-unit/HUD gaps in gunnery. The command-building and submarine branches stopped at missing full producer bodies; the existing ship HUD and camera permitted the damage-direction member to reach a complete host phase. The required game_hosts_hud.cpp lease was obtained after foreground retries, without editing its previous owner's files.",
+  "rows": [
+    {
+      "native": "00641910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp:MarkersUpdateBinding::add_marker (006430C0 dispatch remains semantic)",
+      "reason": "climb: 00641910 needs the native CommandBuilding image and its class/model <- 006F5C10 allocation / 006F5610 constructor <- class from 00964790 <- 009598D0 activation <- 00879AA0 current class slot+20h (00D1A558) <- 0095F500 (stopped: no reconstructed full class-model binder; only gun_platform_slot_frame_0095f500 is reconstructed). The current host's semantic unit handles and separate Lua-field cache are not native instances.",
+      "required_fields": [
+        "unit+005Ch/005Dh/005Eh/0060h: four u8 lifecycle fields; 00925CE0 initial stores and subsequent activation/lifecycle writers",
+        "unit+00C8h: u8 world-pose valid; 00414DB0 refresh",
+        "unit+00FCh/0100h/0104h: three f32 world-position lanes; placement and pose refresh",
+        "unit+0538h: 32-bit class pointer; 009553D0 owning setter in 006F5C10",
+        "class+00A8h: f32 Height; 00960230 store at 009603D6 from VehicleClass.Height",
+        "markers+001Ch: u8 show gate; marker screen owner, plus the acquired widget record and native-string pool required by the existing body"
+      ]
+    },
+    {
+      "native": "0064b170",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp:ShipHitBinding::push_damage_direction -> src/game_hosts_hud.cpp:hud_register_ship_damage_direction / GameHudHost::register_ship_damage_direction",
+      "reason": "00826F10's existing hit handler now tests the canonical 004C0890 controlled-unit selection and forwards the shooter's existing world pose. 0064B170 writes the actual screen45+18Ch member constructed by 0064B780; 0064ABD0 reads the same four intensities. Camera inverse and FOV borrow the current MissionCameraPublication, and the enable DWORD reads the existing binoculars mode instead of the previous constant false.",
+      "called": true,
+      "call_sites": 1,
+      "required_fields": [
+        "fade+00h/04h/08h/0Ch: four 32-bit borrowed GUI widget pointers from the existing 0064C0F0 name lookups",
+        "fade+10h/14h/18h/1Ch: four f32 intensities; 0064B780 initializes zero, 0064B170 stores 1.5f, 0064ABD0 decays/displays them",
+        "fade+20h: u32 enabled; 0064B780 initializes 1, 0064E31A reads screen26+30h == 1",
+        "game+19FCh camera identity and camera+1C4h f32 FOV: typed live MissionCameraPublication views, queried separately in original order"
+      ]
+    },
+    {
+      "native": "00651760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:InGameInterfaceBinding submarine handoff (0068ACA0 caller)",
+      "reason": "climb: 00651760 needs a native Submarine unit+122Ch and its observer/periscope/camera graph <- 008531A0 instance allocation <- 00852F10 submarine constructor <- 0081ED40 ship base constructor (stopped: no reconstructed full body; only seed_navigator_params_0081f214 is recorded). The semantic submarine-default helper does not construct a compatible native receiver; zeroing a shadow unit or borrowing a command-building allocation would invent the missing lifetime.",
+      "required_fields": [
+        "view+24h: 32-bit observed unit pointer",
+        "unit+122Ch: i32 view state, reset to 0 unless 2",
+        "view+5Ch: f32 previous view scale, then 1.0f",
+        "view+74h: u32 reset to zero",
+        "view+08h observer endpoint, periscope attach/detach, screen2Eh and +2Ch submarine-camera ownership are additional required producers"
+      ]
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "HudDamageDirectionStorage, the 24h-byte fade member in native screen 45h",
+      "where": "include/bsp/hud_damage_direction.hpp:13; src/game_hosts_hud.cpp:1242 and GameHudHost::Impl::ship_damage_direction",
+      "constructor": "0064b780",
+      "producers": [
+        "0068CC70 already runs in HUD initialization: its existing slot78h row allocates the actual 1B0h HudLeafScreenStorage and now calls the existing vt_cf5e30_construct_0064b780 body",
+        "004F7180 constructs the base; BF7CD1 invokes the four existing 00415680 slot initializers; 0064B780 initializes every fade field in the same allocation",
+        "0064C0F0's existing GUI_ship_effects / VillanasFelso, Also, Bal and Jobb lookups bind the real widgets directly into this member; their former map entries were removed",
+        "004C0890 supplies controlled-unit identity; the existing gunnery unit_pose supplies the attacker's world point",
+        "MissionCameraPublication owns the actual inverse-world cache and projection FOV; get_transform_inverse_world_00b6e0d0, transform_point_004142e0, normalize_camera_basis_0042b260 and camera_asin_clamped_0042cf10 are reused",
+        "0051EF00/0051E7E0 maintain the canonical BinocularsState.mode_30 that 0064E31A reads"
+      ],
+      "lifetime": "Owned by the existing HUD leaf allocation at its original manager slot, released with that owner. GUI pointers are borrowed from the existing menu page owner. Detach clears the semantic borrowed view; no second timer/enable storage or extra widget ownership is retained.",
+      "rows": ["0064b170"],
+      "climb": [
+        "0064B170 <- screen45+18Ch fade <- 0064B780 <- 0068CC70 Init (already hosted)",
+        "0064B170 camera <- MissionCameraPublication <- existing ship/movie camera pose publication (already hosted)",
+        "0064ABD0 enable <- screen26+30h binoculars mode <- existing 0051EF00 input/update path"
+      ]
+    }
+  ],
+  "producer_functions_wired": ["0064b780"],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 PASS; 4/4 CTests",
+    "changed_build": "scripts/build.ps1 PASS; 4/4 CTests",
+    "isolated_probe": "local/damage_direction_probe.cpp compiled MSVC Win32 /MD /EHsc /O2 /Gy with /link /MANIFEST:EMBED /OPT:REF; PASS: native screen constructor, shared fade storage, four sectors and centre",
+    "call_graph_before": {"called": 5748, "reconstructed": 6460},
+    "call_graph_after": {"called": 5752, "reconstructed": 6462},
+    "0064b170": "REACHABLE; one compiled call at 10111ECB from hud_register_ship_damage_direction, through the changed ShipHitBinding event path",
+    "0064b780": "REACHABLE; one compiled call at 1011AA09 from run_hud_leaf_screen_constructor",
+    "00415680": "existing body now also called from HudLeafShipStatusBinding::eh_vector_construct_00bf7cd1",
+    "remaining_rows": "00641910 and 00651760 remain unlinked in the built game",
+    "pc24": "Arithmetic operation order retained; final committed-range pc24_lint is run separately before reporting completion",
+    "limits": "Source, build, isolated geometry/layout and compiled reachability verified. No game was run; event occurrence, visual presentation, native ABI/FH3 behavior and original CRT dispatch policy are not claimed. Only the offered ship hit route is changed; plane damage-direction callers were outside this assignment."
+  }
+}

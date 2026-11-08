@@ -310,7 +310,7 @@ void vt_cf7184_destruct_00682030(void* screen, CgRebuildCHost& host) {
 // +18Ch..+198h = 0, +1ACh = 1, floats +19Ch..+1A8h = 0.0 (XORPS), +78h/+7Ch/+80h = 0.
 // Handler 00C7A9C8; the state stays 0 after the array.
 // ---------------------------------------------------------------------------
-void* vt_cf5e30_construct_0064b780(void* screen, CgRebuildCHost& host) {
+void* vt_cf5e30_construct_0064b780(void* screen, ShipStatusConstructHost& host) {
     host.front_end_screen_construct_004f7180(screen);
     field<std::uint32_t>(screen, 0) = 0x00CF5E30u;
     host.eh_vector_construct_00bf7cd1(at(screen, 0xC), 4, 4, 0x00415680u, 0x0041DE40u);

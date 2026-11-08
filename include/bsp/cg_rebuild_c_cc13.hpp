@@ -15,13 +15,22 @@
 // give the state sequence from the listing.
 //
 // Names are hypotheses, not recovered symbols. Reconstructed and build-tested only;
-// nothing here is called from a live host path, and none is fixture- or game-validated.
+// selected constructors have live host adapters (0064B780 in game_hosts_hud.cpp).
+// Source/build and isolated checks do not establish native ABI or gameplay parity.
 
 #include <cstdint>
 
 namespace bsp::cg_rebuild_c_cc13 {
 
-struct CgRebuildCHost {
+// 0064B780 uses only screen-base construction and the four handle constructors.
+struct ShipStatusConstructHost {
+    virtual ~ShipStatusConstructHost() = default;
+    virtual void front_end_screen_construct_004f7180(void* screen) = 0;
+    virtual void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size,
+        std::uint32_t count, std::uint32_t constructor, std::uint32_t destructor) = 0;
+};
+
+struct CgRebuildCHost : ShipStatusConstructHost {
     virtual ~CgRebuildCHost() = default;
 
     // --- library bindings (no reconstruction credit) ---
@@ -124,7 +133,7 @@ void* vt_cf7184_construct_006821c0(void* screen, CgRebuildCHost& host);
 // 00682030, __thiscall(ECX = screen), RET.
 void vt_cf7184_destruct_00682030(void* screen, CgRebuildCHost& host);
 // 0064B780, __thiscall(ECX = screen), RET -> EAX = screen.
-void* vt_cf5e30_construct_0064b780(void* screen, CgRebuildCHost& host);
+void* vt_cf5e30_construct_0064b780(void* screen, ShipStatusConstructHost& host);
 // 0064D740, __thiscall(ECX = screen), RET.
 void vt_cf5e30_destruct_0064d740(void* screen, CgRebuildCHost& host);
 // 0086E5A0, __thiscall(ECX = flare), RET.
