@@ -1,0 +1,320 @@
+{
+  "goal": 5,
+  "chain": 736,
+  "slot": "g5-w8",
+  "picked": "AirOps retained slot class/equipment/count assignment",
+  "wired_total_before": 10503,
+  "wired_total_after": 10504,
+  "validation": [
+    "scripts/build.ps1: Win32 Release and all four CTests pass",
+    "tools/call_graph.py:006BC6F0 entry-reachable with two live call sites",
+    "tools/wire_readiness.py --standins:006BC6F0 wired, called=true, call_sites=2",
+    "git diff --check passes; no floating-point operations changed"
+  ],
+  "limitations": [
+    "New C++ borrowed-field interface, not original binary ABI proof",
+    "Static entry reachability and build/test evidence only; game not run"
+  ],
+  "rows": [
+    {
+      "native": "006bc6f0",
+      "status": "wired",
+      "host_site": "src/air_operations.cpp: air_ops_fill_slot_006c0f00; air_ops_launch_squadron_006cc690",
+      "evidence": "006BC6F4..006BC729, 006C108F..006C10B0 and 006CC6EE..006CC70F assembly: identical conditional class/equipment writes followed by the unconditional count write.",
+      "state": "Borrowed references name the retained deck slot itself; class identity, class default equipment and stock-limited count are existing real caller inputs. No raw shadow slot or second execution path.",
+      "call_graph": {
+        "called": true,
+        "call_sites": 2,
+        "callers_live": 2
+      }
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing genuine runtime publishers for writable absolute cells F87574/F87578/F8757C; semantic SceneCommandTarget values cannot supply the literal body."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector construction",
+      "reason": "Missing native director-base receiver, embedded target-reference identity and base constructor/lifetime bridge."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder::ai_group_forward_command",
+      "reason": "Missing real AI-group/controller aggregate bridge; this host boundary currently records the forward only."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::notify_command_target",
+      "reason": "Missing reporter/channel/observed-entity dispatch ownership; current adapter only records the notification."
+    },
+    {
+      "native": "009ca780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: strafe target rearm binding",
+      "reason": "Already directly called on the retained live strafe approach by chain720; no duplicate wiring added."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: path-leg manager access",
+      "reason": "Missing concrete canonical F8A720 manager and singleton-manager registration/lock provider; the body exposes those required callbacks."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane target query",
+      "reason": "Missing retained DF4 pilot-slot target table and current F876B8 slot binding for this raw receiver."
+    },
+    {
+      "native": "00498f80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane damage create_marker",
+      "reason": "Missing actual debris-marker/spawner owner; callback records the address and returns false."
+    },
+    {
+      "native": "0049a760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane damage update_marker",
+      "reason": "Missing actual debris-marker owner/update state; callback only records the address."
+    },
+    {
+      "native": "007bc4e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane damage bind_crash_effect",
+      "reason": "Missing actual crash point-effect owner/attachment bridge; callback only records the address."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score diagnostics",
+      "reason": "Debug-only candidate-score records have no reached reader beyond the unreached overlay; excluded from this single-player wiring packet."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score diagnostics",
+      "reason": "Debug-only chosen-record marking belongs to the same unreached score overlay; excluded from this single-player wiring packet."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate attack scoring",
+      "reason": "Missing concrete CandidateAttackHost composition with the real class/tuning and opponent-group value providers; AI host ownership is also held by another packet."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend_think_00a28a60",
+      "reason": "Existing body is only the member predicate projection; the complete native group-list collection and squadron coverage are missing, and AI host is held by another packet."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission end-movie handoff",
+      "reason": "Missing shared raw game/movie-screen state and complete input, cinematic, listener and update providers for SoundLoadTransitionContext."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "Missing decoded movie texture owners; the reached adapter only records the binding boundary."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Missing actual movie+108 text owner and raw10C subtitle-row list; current schedule uses a semantic vector."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: PressStartScreen::apply_input_settings",
+      "reason": "Missing current-profile settings receiver with its live Lua preset state and settings-reader application provider."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path message application",
+      "reason": "Missing presence-zero clear-message producer and per-slot retained path owners; current live sender supplies additions only."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: command-target pair construction",
+      "reason": "Missing live pair/snapshot constructor consumer with descriptor initialization binding; existing raw callers still delegate through unimplemented host contracts."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: input character acceptance",
+      "reason": "Missing live input-character GuiLeafHost consumer with its text-context font; constant probe bytes do not supply game input state."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: GUI cursor selection",
+      "reason": "Concurrent agent/g5-w12 claimed this cursor-selection work after the survey; left to its owner."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: GUI cursor target setter",
+      "reason": "Missing concrete current cursor vslot88 and notify04 bridge; adjacent cursor owner work is held by agent/g5-w12."
+    },
+    {
+      "native": "00aa3bd0",
+      "status": "skipped",
+      "host_site": "src/gui_layer.cpp: create_kind_00aa3bd0",
+      "reason": "Existing function projects only the default/copy branch; full actual Layer pool allocation and constructor ownership are missing from that body."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: Button factory",
+      "reason": "Missing actual application Button registry/focus binding and base lifetime/copy contexts; semantic GUI owners cannot be passed as raw factory storage."
+    },
+    {
+      "native": "007b65e0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_lifetime.cpp: MoveTo state destruction",
+      "reason": "Missing matching retained native MoveTo-state cleanup receiver with its actual24B observer vector and callback18 lifetime; approach objects are a different layout."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine sound stepping",
+      "reason": "Missing actual retained engine sound+10 owner and downstream pitch/volume virtual-call bridge."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: UnitDebugInspector_PrintFlooded_006fb750",
+      "reason": "Inspected caller is a debug-only inspector with original-address calls; excluded rather than wiring diagnostic output as gameplay."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene multiline writer",
+      "reason": "Missing concrete live multiline scene writer callback provider; archive settings escaping has a different format and cannot be substituted."
+    },
+    {
+      "native": "00866e60",
+      "status": "skipped",
+      "host_site": "src/point_effect_lookup.cpp: child type lookup",
+      "reason": "Missing live plane-engine/torpedo wake consumer with the required canonical point-effect owner and manager-lifetime bindings in this packet."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "Already directly called with published LoadingScreen and actual progress/CRT bindings; no duplicate wiring added."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "Already directly called using the retained briefing scroller and measured text/clip heights; no duplicate wiring added."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/mission_tree_screens.cpp: set_briefing_mission_0051dce0",
+      "reason": "Missing real BriefingScreenState consumer for this older screen; the current main-menu detail path consumes the selected mission record directly."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon relation style",
+      "reason": "Missing concrete relation-style table/index consumer in the inspected HUD path; no arbitrary color-query call added."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/native_unit_health_parts.cpp: unit health-part initialization",
+      "reason": "Missing actual native unit/class-part ownership and complete health-part callback providers; mission unit source currently lends descriptors and transforms."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: immediate rudder setter",
+      "reason": "Missing reached immediate-rudder producer on the canonical UnitOrderRing; inspected script/command paths do not expose this operation."
+    },
+    {
+      "native": "006bc120",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: block owner availability",
+      "reason": "Missing native block+7C receiver/owner byte layout; current deck projects owner-present/blocked fields rather than that raw object."
+    },
+    {
+      "native": "006cd350",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air_ops_slot_launch_006cd350",
+      "reason": "Only the numeric launch decision is reconstructed here; the full state5 slot receiver/dispatch bridge is missing, so it is not claimed as newly wired."
+    },
+    {
+      "native": "006c0f00",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air_ops_fill_slot_006c0f00",
+      "reason": "Already entry-reachable caller; its equivalent inline assignment now reuses006BC6F0 and is not counted again."
+    },
+    {
+      "native": "006cc690",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air_ops_launch_squadron_006cc690",
+      "reason": "Already entry-reachable caller; its equivalent inline assignment now reuses006BC6F0 and is not counted again."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "Missing preceding0090F5A0 GA_AE-once scoring award map in MissionScoreRecord; agent/g5-w9 confirmed the active-use tail throws before cooldown and released the collided claim."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support use branch",
+      "reason": "Missing real spawn-manager/member/property-bag and flight-lifetime providers; the current air-support branch throws before spawning."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/profile_checkpoint.cpp: clear_checkpoint_00437c70",
+      "reason": "Existing body is the Lua-only projection; full profile-record erasure and storage rewrite continuation are not supplied by it."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing consumer with the actual support-site328/31C class and squad-size lists in this packet."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing concrete live supply-class enable list and owner-health caller binding in the inspected support-site host path."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_manager_construct_00bbda50",
+      "reason": "Missing application cloud-manager owner and actual cloud-group node construction/registration bridge."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "Missing live CloudInstanceC owner/alpha producer consumer; no call with an invented cloud value added."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "This is only the cloud-manager frame arithmetic projection despite its historical ocean name; the instance-update/scene-node caller ownership remains missing."
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 // Addresses in comments are the native sites each rule was read from.
 #include "bsp/air_operations.hpp"
 #include "bsp/band_006b_cc13.hpp"
+#include "bsp/cc13_seg29U.hpp"
 #include "bsp/launch_ver_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/pool_pool13_cc13.hpp"
@@ -736,15 +737,12 @@ AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
         deck.slots.resize(static_cast<std::size_t>(result.slot_index) + 1);
     }
     AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(result.slot_index)];
-    // 006CC6D0: the class is written only when it differs, and that same arm
-    // takes the class's own default at class+134h. 006CC6F5 then overwrites the
-    // arm with the argument, so the default only survives when the caller passed
-    // the class's own value.
-    if (slot.vehicle_class != request.vehicle_class) {
-        slot.vehicle_class = request.vehicle_class;
-        slot.class_field_134 = request.vehicle_class != 0 ? request.class_default_arm : 0;
-    }
-    slot.assigned_count = request.count;
+    // 006CC6EE..006CC70F inlines 006BC6F0's class/equipment/count stores.
+    // Reuse that body on the actual retained slot; 006CC712 still applies the
+    // explicit equipment argument afterwards, including on an unchanged class.
+    cc13_seg29U::air_ops_assign_slot_class_006bc6f0(
+        {slot.vehicle_class, slot.assigned_count, slot.class_field_134},
+        request.vehicle_class, request.count, request.class_default_arm);
     slot.class_field_134 = request.arm;
     if (deck.launch_in_progress == 0) {
         // 006CC733 calls 006C7490 with the block in ECX and the slot index and a
@@ -1126,12 +1124,13 @@ std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
         s.assigned_count -= take;
         room += take;
     }
-    // 006C10A8-006C10D4.
-    if (slot.vehicle_class != vehicle_class) {
-        slot.vehicle_class = vehicle_class;
-        slot.class_field_134 = vehicle_class != 0u ? class_default_arm : 0;
-    }
-    slot.assigned_count = count;
+    // Goal 5 chain 736. bsp.py show 006c0f00 --asm: 006C108F..006C10B0
+    // inlines the SAME class/equipment/count operation as 006BC6F0. All three
+    // references name this deck's retained slot, after the real stock/capacity
+    // calculations; class_default_arm is the existing loaded class+134h input.
+    cc13_seg29U::air_ops_assign_slot_class_006bc6f0(
+        {slot.vehicle_class, slot.assigned_count, slot.class_field_134},
+        vehicle_class, count, class_default_arm);
     return count;
 }
 

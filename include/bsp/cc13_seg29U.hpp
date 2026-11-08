@@ -6,8 +6,9 @@
 // Model: every routine works on the original object as raw bytes (Win32 layout, offsets as in
 // the image) and reaches the engine through Seg29UHost, whose methods name the image routine or
 // virtual slot they stand for and give the register inputs. Constants carry their image address
-// and width. New C++ interfaces, not drop-in binary replacements; nothing here is bound into
-// bsp_game. Names are hypotheses, not recovered symbols.
+// and width. New C++ interfaces, not drop-in binary replacements. The borrowed-field
+// 006BC6F0 entry below is bound to live AirOps slots; other entries retain their
+// individual adoption status. Names are hypotheses, not recovered symbols.
 
 #ifndef BSP_CC13_SEG29U_HPP
 #define BSP_CC13_SEG29U_HPP
@@ -215,8 +216,19 @@ void* do_launch_slot_message_construct_006bc3e0(void* message, Seg29UHost& host)
 bool squadron_target_within_range_006bc5e0(void* squadron, Seg29UHost& host);
 // 006BC690, __thiscall(ECX = slot record) RET.
 void air_ops_slot_record_destruct_006bc690(void* record, Seg29UHost& host);
-// 006BC6F0, __thiscall(ECX = slot; class, count) RET 8.
-void air_ops_assign_slot_class_006bc6f0(void* slot, void* vehicle_class, std::int32_t count) noexcept;
+// Borrow the three SAME retained slot fields. Class identities are the host's
+// loaded class handles, not fabricated native VehicleClass pointers. The
+// existing caller supplies the loaded class+134h equipment value separately.
+struct AirOpsSlotClassFields {
+    std::uint32_t& vehicle_class_04;
+    std::int32_t& assigned_count_08;
+    std::int32_t& equipment_10;
+};
+// 006BC6F0, original __thiscall(ECX = slot; class, count), RET 8.
+// New C++ borrowed-field ABI. A class change writes +4h, then +10h (zero for
+// null); an unchanged class preserves equipment. Every path writes +8h last.
+void air_ops_assign_slot_class_006bc6f0(AirOpsSlotClassFields slot,
+    std::uint32_t vehicle_class, std::int32_t count, std::int32_t class_default_equipment) noexcept;
 // 006BC730, __thiscall(ECX = slot) RET.
 void air_ops_slot_refresh_airborne_006bc730(void* slot, Seg29UHost& host);
 // 006BC800, __thiscall(ECX = slot) -> AL.
