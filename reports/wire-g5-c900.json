@@ -80,5 +80,79 @@
     "entry_reachable_reconstructed_called_after": 5656,
     "note": "All four new bodies are called=true; readiness text state marks only the two direct source calls wired and misses the two header-internal calls."
   },
-  "left": "Native movie/page/decoder and subtitle widget/container producers remain for another worker. No game run or original ABI equivalence is claimed."
+  "left": "Native movie/page/decoder and subtitle widget/container producers remain for another worker. No game run or original ABI equivalence is claimed.",
+  "merge_validation": {
+    "parent": "ad22b335e848aa1f9a62fcfe4340e5e9a0d5c118",
+    "conflicts": [
+      "config/reconstruction/00b30000.jsonl",
+      "src/render_fx_cc13.cpp"
+    ],
+    "resolution": "merge_resolve.py refused dual record rewrites; manually replayed only the four owned CubeTexture replacements on the upstream ledger, with exact set/order checks; removed both branches promoted CubeTexture/Texture2D renderer rows",
+    "on_headers_sha256_before": {
+      "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+      "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+    },
+    "default_build": {
+      "command": "scripts/build.ps1",
+      "exit_code": 0,
+      "ctests_passed": 4,
+      "log": "local/c900-default-build.log"
+    },
+    "preservation_check": "All eight CubeTexture/Texture2D records retained with their promoted sources; all eight old descriptors absent. Only four owned records differ from the merged parent shard.",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c900-on-build.log",
+      "exit_code": 0,
+      "distinct_diagnostics": 0,
+      "ctests_passed": 4,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_sha256_restored": true,
+      "headers_sha256_after": {
+        "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+        "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+      }
+    },
+    "readiness_summary": {
+      "wired": 10774,
+      "callees_done_no_wired_caller": 8499,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "cube_rows": [
+      {
+        "address": "00b3dbb0",
+        "state": "callees_done_no_wired_caller",
+        "called": true,
+        "call_sites": 2,
+        "callers_live": 2
+      },
+      {
+        "address": "00b3dc00",
+        "state": "callees_done_no_wired_caller",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "00b3e9c0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "00b3ea40",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    ],
+    "entry_reachable_reconstructed_called": 5663,
+    "final_default_rebuilt_after_on": true,
+    "focused_probe": "PASS: real1025-slot growth/trim/teardown probe rebuilt against merged default library"
+  }
 }

@@ -9,6 +9,8 @@
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_material_parameters.hpp"
+#include "bsp/native_particle_model_pool_table.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <intrin.h>
 
@@ -21,6 +23,59 @@
 
 // Segments 80-82 (packet cc13-terrain1). Evidence and ABIs: docs/CC13_TERRAIN_1.md and the
 // declarations in include/bsp/terrain_particles_cc13.hpp.
+
+namespace bsp {
+namespace {
+std::byte* particle_model_table_cell(std::byte* data, std::uint32_t index) noexcept {
+    // Native LEA/ADD wraps even for null or overflowing addresses.
+    return reinterpret_cast<std::byte*>(reinterpret_cast<std::uintptr_t>(data) + index * 4u);
+}
+}
+
+void allocate_native_particle_model_pool_table_00af5d30(
+    NativeParticleModelPoolTableView table, std::uint32_t capacity) {
+    static_assert(sizeof(void*) == 4);
+    // AF5D37/AF5D40: publish capacity before the CRT allocation/new handler.
+    table.capacity(capacity);
+    const auto bytes = capacity * 4u;
+    auto* fresh = static_cast<std::byte*>(singleton_lifetime_allocate({
+        SingletonAllocationKind::pointer_slots, bytes, bytes}));
+    auto* destination = fresh;
+    for (std::uint32_t i = 0; i < table.count(); ++i) {
+        // AF5D53..67 reload count/data, and skip the source read for a null
+        // destination. Use DWORD address math rather than C++ null arithmetic.
+        if (destination)
+            std::memcpy(destination, particle_model_table_cell(table.data(), i), 4);
+        destination = particle_model_table_cell(destination, 1);
+    }
+    if (auto* old = table.data()) singleton_lifetime_free(old);
+    table.data(fresh); // AF5D78, only after the returning free.
+}
+
+void grow_native_particle_model_pool_table_00af5d80(NativeParticleModelPoolTableView table) {
+    // Specializes the existing pointer_array_grow shape for this address.
+    allocate_native_particle_model_pool_table_00af5d30(table, table.capacity() * 2u + 2u);
+}
+
+void append_native_particle_model_pool_table_00af61e0(
+    NativeParticleModelPoolTableView table, const void* pointer_cell) {
+    // AF61EB..6235 inlines the same grow body. AF6244 reads pointer_cell only
+    // after growth, including if it aliases the live header.
+    if (table.count() == table.capacity()) grow_native_particle_model_pool_table_00af5d80(table);
+    if (auto* destination = particle_model_table_cell(table.data(), table.count())) {
+        std::uint32_t value;
+        std::memcpy(&value, pointer_cell, 4);
+        std::memcpy(destination, &value, 4);
+    }
+    table.count(table.count() + 1u);
+}
+
+void reserve_native_particle_model_pool_table_00af6270(
+    NativeParticleModelPoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity)
+        allocate_native_particle_model_pool_table_00af5d30(table, capacity);
+}
+} // namespace bsp
 
 namespace bsp::cc13_terrain {
 namespace {
@@ -1159,6 +1214,10 @@ void particle_model_advance_vertex_cursor_00af0540(void* model, std::int32_t cou
 
 void pointer_array_grow(std::uint32_t address, PtrArray& a) {
     if (address != 0x00AF1B90 && address != 0x00AF5D80) throw std::invalid_argument("not a grow routine");
+    if (address == 0x00AF5D80) {
+        grow_native_particle_model_pool_table_00af5d80({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
     bsp::cc13_scene2::array_grow_double_plus_two(a);
 }
 

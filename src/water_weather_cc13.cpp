@@ -677,14 +677,6 @@ std::array<float, 6> ocean_height_generator_tap_weights_00ba8ee0(OceanCrtHost& h
 
 // =============================================================================================
 // Skinned water tracer
-std::uint32_t tracer_ptr_vector_grow_capacity_00ba9d10(std::uint32_t capacity) {
-    return capacity * 2u + 2u;
-}
-
-std::uint32_t tracer_ptr_vector_push_capacity_00bac190(std::uint32_t size, std::uint32_t capacity) {
-    return size == capacity ? capacity * 2u + 2u : capacity;
-}
-
 std::uint32_t tracer_parameter_curve_push_capacity_00bac2c0(std::int32_t size,
                                                             std::int32_t capacity) {
     if (size != capacity) return static_cast<std::uint32_t>(capacity);

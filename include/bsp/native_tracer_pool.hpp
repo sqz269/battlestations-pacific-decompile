@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/allocator_list.hpp"
+#include "bsp/native_tracer_pool_table.hpp"
 #include <cstddef>
 #include <cstdint>
 

@@ -1,4 +1,5 @@
 #include "bsp/native_particle_model_pool_allocate.hpp"
+#include "bsp/native_particle_model_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -80,30 +81,11 @@ void* allocate_native_particle_model_slot_00af69e0(void* pool) {
         void* const slab = raw ? initialize_native_particle_model_slab_00af5c20(
             raw, word(pool, 0x34)) : nullptr;
 
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            put(pool, 0x30, grown_capacity);
-            void* const replacement = singleton_lifetime_allocate({
-                SingletonAllocationKind::pointer_slots, bytes, bytes});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination)
-                    put(destination, 0, word(pointer(word(pool, 0x28)), index * 4u));
-                destination = at(destination, 4);
-            }
-            void* const old_table = pointer(word(pool, 0x28));
-            if (old_table) singleton_lifetime_free(old_table);
-            // AF6A76 ADD ESP,4 follows returning free; AF6A79 publishes.
-            // The saved Ghidra flow omits those three bytes and falsely exits.
-            put(pool, 0x28, address(replacement));
-        }
-
-        const auto insertion_index = word(pool, 0x2c);
-        auto* const destination = at(pointer(word(pool, 0x28)), insertion_index * 4u);
-        if (destination) put(destination, 0, address(slab));
-        put(pool, 0x2c, word(pool, 0x2c) + 1u);
+        // AF6A20..AF6A97 inlines AF61E0 over the actual +28h header.
+        // AF6A76 ADD ESP,4 follows returning free before pointer publication;
+        // retain that repaired continuation in the shared grow/exact body.
+        append_native_particle_model_pool_table_00af61e0(
+            {static_cast<std::byte*>(at(pool, 0x28))}, &slab);
     }
 
     auto* const table = pointer(word(pool, 0x28));
