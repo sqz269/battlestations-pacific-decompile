@@ -56,6 +56,31 @@ int main() {
     if (solver.fort_manifolds_.size() != 1 || solver.fort_manifolds_.begin()->first.second != other) return 7;
     if (solver.draft_manifolds_.size() != 1 || solver.draft_manifolds_.begin()->first.second != other) return 8;
     if (solver.census_.retired != 5) return 9;
-    std::puts("PASS: terrain bit removed; all unit contact families invalidated; unrelated contacts and shape retained");
+    // Exercise the production class-mask publication on the same retained
+    // shape after terrain removal: setting a class must not restore bit 8.
+    shape.convex_ready = true;
+    const std::vector<std::vector<bsp::OceanVec3>> shapes(1);
+    bsp::HullWorldEntry entry;
+    entry.unit = unit;
+    entry.shapes = &shapes;
+    solver.draft_manifolds_[{0, unit}] = std::make_unique<Solver::Manifold>();
+    {
+        const std::lock_guard<std::recursive_mutex> lock(solver.contact_mutex_);
+        solver.publish_hull_class_bit(unit, shape, 0x40u);
+    }
+    std::memcpy(&mask, shape.convex + 0x30, sizeof(mask));
+    if (mask != 0x45u || shape.class_bit != 0x40u) return 10;
+    if (!solver.hull_selects_filter(entry, 0x40u, 0u)
+        || solver.hull_selects_filter(entry, 8u, 0u)) return 11;
+    if (solver.draft_manifolds_.size() != 1 || solver.census_.retired != 6) return 12;
+    {
+        const std::lock_guard<std::recursive_mutex> lock(solver.contact_mutex_);
+        solver.publish_hull_class_bit(unit, shape, 0u);
+    }
+    std::memcpy(&mask, shape.convex + 0x30, sizeof(mask));
+    if (mask != 5u || shape.class_bit != 0u
+        || solver.hull_selects_filter(entry, 0x40u, 0u)) return 13;
+    if (solver.hulls_.size() != 1 || solver.hulls_.begin()->second.body != body) return 14;
+    std::puts("PASS: terrain and class masks updated on retained shape; contacts invalidated; unrelated contacts preserved");
     return 0;
 }

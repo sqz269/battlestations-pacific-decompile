@@ -197,7 +197,7 @@ void* shape_body_00c32490(const void* shape) noexcept;
 // (collide mask) or S+2Ch (group), then under the world lock clear the owning body's
 // manifolds through 00C43AA0.
 void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, ShapeFilterCalls& calls);
-void shape_collide_mask_set_00c47f90(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
+void shape_collide_mask_set_00c47f90(void* shape, std::uint32_t bits, ShapeFilterCalls& calls);
 void shape_group_clear_00c47fc0(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
 void shape_group_set_00c47ff0(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
 void shape_collide_mask_assign_00c48020(void* shape, std::uint32_t value, Cc13Dyn1Calls& calls);
