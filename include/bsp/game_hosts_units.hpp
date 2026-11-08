@@ -1139,6 +1139,9 @@ public:
     // `(float)(int)target[+7A0h]` (00A037CF FILD). Answers 500 for a unit that is not a
     // CommandBuilding (kind 1Ch) or has no slot.
     float command_building_capture_range_07a0(std::size_t unit_index) const;
+    // 006F5960 uses IMUL before FILD: keep the authored dword intact for
+    // integer consumers instead of converting it through the float accessor.
+    std::int32_t command_building_capture_range_raw_07a0(std::size_t unit_index) const;
     // Packet cc9_command_building_capture_bind: unit+7A4h, the CommandBuilding's
     // CaptureValue (006F2780 stores the scene dword, 1000 when unauthored). 1000
     // for a unit that is not a CommandBuilding or has no slot.

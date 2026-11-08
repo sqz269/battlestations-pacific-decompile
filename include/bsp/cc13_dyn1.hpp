@@ -1,7 +1,8 @@
 #pragma once
 // cc13_dyn1: the in-house mitengine "Dyn" block [00C30930,00C5DF60), the functions earlier
 // waves left without a reconstruction record. docs/CC13_DYN1.md carries the per-function
-// ABI, evidence and uncertainty. Nothing here is wired.
+// ABI, evidence and uncertainty. Hull contact code consumes the retained-shape
+// accessors and the collision-mask clear through C++ host adapters.
 //
 // Everything works on native storage by byte offset, like the native_dyn_* files: the
 // pointers are the image's own objects (body, motion, shape, world) and every offset in a
@@ -57,15 +58,22 @@ inline constexpr float kOne_00d7a24c = 1.0f;
 // The Dyn world lock at 0109ECD8 (a CRITICAL_SECTION in .data) every shape mask setter takes.
 inline constexpr std::uint32_t kDynWorldLock_0109ecd8 = 0x0109ecd8u;
 
-struct Cc13Dyn1Calls {
-    virtual ~Cc13Dyn1Calls() = default;
+// The mask setters need only these services. A contact owner can provide its
+// actual lock and manifold storage without implementing unrelated Dyn calls.
+struct ShapeFilterCalls {
+    virtual ~ShapeFilterCalls() = default;
     // EnterCriticalSection / LeaveCriticalSection through the IAT (00CE2218 / 00CE2210) on
     // the lock whose image address is given.
     virtual void enter_critical_section(std::uint32_t lock_address) = 0;
     virtual void leave_critical_section(std::uint32_t lock_address) = 0;
-    // 00C43AA0, stack body, RET 4: clear_native_dyn_body_manifolds_00c43aa0 in
-    // src/native_game_physics_lifetime.cpp is the reconstruction the host forwards to.
+    // 00C43AA0, stack body, RET 4: invalidate all contacts of that body. The
+    // raw-layout provider is clear_native_dyn_body_manifolds_00c43aa0; a typed
+    // contact owner invalidates its corresponding retained manifold storage.
     virtual void clear_body_manifolds_00c43aa0(void* body) = 0;
+};
+
+struct Cc13Dyn1Calls : ShapeFilterCalls {
+    virtual ~Cc13Dyn1Calls() = default;
     // The native virtual call [[dispatcher]+0] with ECX = dispatcher, stack (hit_out, shape,
     // start, end), callee-cleaned; AL is the hit flag. hit_out is 24 bytes: point, normal.
     virtual bool shape_ray_test_slot0(void* dispatcher, float* hit_out, void* shape,
@@ -188,7 +196,7 @@ void* shape_body_00c32490(const void* shape) noexcept;
 // value), RET 4 through a tail JMP to LeaveCriticalSection: update S+30h
 // (collide mask) or S+2Ch (group), then under the world lock clear the owning body's
 // manifolds through 00C43AA0.
-void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
+void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, ShapeFilterCalls& calls);
 void shape_collide_mask_set_00c47f90(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
 void shape_group_clear_00c47fc0(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);
 void shape_group_set_00c47ff0(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls);

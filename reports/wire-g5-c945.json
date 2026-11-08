@@ -1,0 +1,157 @@
+{
+  "chain": 945,
+  "slot": "g5-w2",
+  "base": "0408cbfd52",
+  "picked": "Reuse the existing owned string/scalar pair constructor in the live keyboard multiplier map's missing-key insertion.",
+  "rows": [
+    {
+      "native": "00444070",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp:get_or_insert_native_soldier_loop_length_00444be0",
+      "state": "Borrow the actual key header and canonical raw string-pool context from KeyboardRawFloatLibrary; construct the insertion temporary with the native +0 default.",
+      "evidence": "00444C34..00444C65 inlines equivalent key construction and initializes +0; 00444070's scalar FLD/FSTP preserves that exact value. The old construction sequence and unused helpers were deleted.",
+      "call_graph": "One entry-reachable call at 105FEBC9 from get_or_insert_native_soldier_loop_length_00444BE0 to the sole existing 00444070 body."
+    },
+    {
+      "native": "00444be0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp:KeyboardRawFloatLibrary::multiplier_00444be0",
+      "reason": "Already entry-reachable before this change; its existing raw-map insertion supplies the new 00444070 call rather than another wiring count."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp:initialize_native_soldier_loop_node_00444150",
+      "reason": "Already called for the inserted node's second owned key copy; retained without adding a duplicate construction."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp:erase_native_soldier_loop_iterator_00444490",
+      "reason": "Missing an established live partial-erasure consumer; full scalar-map cleanup destroys the subtree without querying its maximum."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp:erase_native_soldier_loop_iterator_00444490",
+      "reason": "Missing an established live partial-erasure consumer; full scalar-map cleanup destroys the subtree without querying its minimum."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:planner score-list storage",
+      "reason": "Missing native candidate score-table storage with a gameplay consumer; existing notes identify its image-table reader as a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:planner score-list storage",
+      "reason": "Missing real candidate score-list entries and a gameplay consumer of their chosen flag."
+    },
+    {
+      "native": "008f23e0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Impl",
+      "reason": "Already entry-reachable in the baseline graph from the live property merge; readiness's ready label was not a new-wiring opportunity."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already entry-reachable in the baseline graph on the real merged property hash."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already reported called by baseline readiness on the merged property-hash iteration path."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable at two baseline call sites; no additional merge is needed."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp:skip_balanced_block",
+      "reason": "Missing the actual raw tokenizer owner/context on this SceneLexer path; the existing native settings tokenizer is not this group-skip consumer."
+    },
+    {
+      "native": "0099a4c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:pilot task retirement",
+      "reason": "Missing the same-owner active/retired task arrays, stable native task handles and complete command-task installer required by the native retirement interface."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::queue_deferred_hit",
+      "reason": "Missing the native owning list and raw 60h hit-record/entity profile; the real queue currently retains a typed DeferredHit projection under the canonical lock."
+    },
+    {
+      "native": "004da2a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:scene record ownership",
+      "reason": "Missing an actual full scene-record owner with its eight player slots and texture-layer construction services."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::preload_record_effects",
+      "reason": "Missing the record effect-name producer and live counted effect handles; this preload path currently processes zero names."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp:GUI camera projection",
+      "reason": "Missing an original FOV-times-aspect consumer on the inspected orthographic GUI projection path."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/native_world_constant_byte.cpp:native_world_constant_byte_009035d0",
+      "reason": "Missing the concrete World table binding and established meaning of slot 2; a generic true predicate would not establish a valid consumer."
+    },
+    {
+      "native": "00911c00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:mission scoring",
+      "reason": "Missing the actual scoring owner with per-category kill-weight tables, selector scales and indexed configuration-point values."
+    },
+    {
+      "native": "00911ce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:mission scoring",
+      "reason": "Missing the actual scoring owner with per-category damage-weight tables, selector scales and indexed configuration-point values."
+    },
+    {
+      "native": "00aa3f70",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:page ownership",
+      "reason": "Missing established same-manager pointer-scope/pass and visible-page update providers for this caller-supplied page-list operation."
+    }
+  ],
+  "measurements": {
+    "readiness_wired_before": 10815,
+    "readiness_wired_after": 10816,
+    "release_reconstructed_addresses_called_before": 5695,
+    "release_reconstructed_addresses_called_after": 5696,
+    "target_called_before": false,
+    "target_called_after": true,
+    "target_call_sites_after": 1
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS, all four CTests passed",
+    "changed_build": "scripts/build.ps1 PASS, all four CTests passed",
+    "existing_probe": "tests/wire_g5_c875_keyboard_float_probe.cpp PASS, compiled MSVC Win32 /O2 /MD /fp:strict /W4 /WX /link /MANIFEST:EMBED",
+    "probe_scope": "Real raw-map insert/rebalance, zero initialization, case-insensitive duplicate identity, retained values, existing keyboard-provider interoperability and production scalar-map cleanup; no new tests added.",
+    "assembly": "bsp.py show 00444070 --asm and show 00444be0 --asm; original header-copy schedule and +0 initialization compared before substitution.",
+    "call_graph": "call_graph.py rebuilt; who/path 00444070 reaches KeyboardRawFloatLibrary, GameNativeInputConfigurationApplication, GameStartupHost and WinMainCRTStartup.",
+    "readiness": "wire_readiness.py --standins: target now wired, called=true, call_sites=1",
+    "post_commit_pc24_command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+    "limits": "Build, fixture and static entry-call-graph evidence. The original caller inlines construction; this source call reuses an equivalent existing body for the real +0-default pair. Full machine-state/ABI equivalence and live game execution are not claimed; the game was not launched."
+  },
+  "left": "Pilot-task owning arrays/command installation, native scene-record ownership, effect-name production, camera product consumers and native pointer/page-update providers remain separate work."
+}

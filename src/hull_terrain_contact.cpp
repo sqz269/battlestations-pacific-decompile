@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <float.h>
+#include <stdexcept>
 
 #include "bsp/avoid_zone_dyn_hull.hpp"
 #include "bsp/cc13_dyn1.hpp"
@@ -142,13 +143,43 @@ static_assert(sizeof(DynSolverContactPoint) == 0x30, "the native point is 30h by
 HullTerrainContactSolver::HullTerrainContactSolver() = default;
 HullTerrainContactSolver::~HullTerrainContactSolver() = default;
 
-void HullTerrainContactSolver::forget(std::size_t unit) {
+// 00C47F60's original __thiscall(shape,bits) clears +30h, takes 0109ECD8,
+// then passes [shape+4h] to 00C43AA0 (bsp.py show 00c47f60 --asm).
+// The retained convex records below are the ones 00C535E0 reads. Their +4h
+// pose owners identify this solver's live unit and its four manifold maps;
+// those maps, rather than a fabricated native body's +74h vector, are the
+// contact storage to invalidate. This is a C++ host adapter, not binary ABI.
+class HullTerrainContactSolver::ShapeFilterCalls final : public cc13_dyn1::ShapeFilterCalls {
+public:
+    ShapeFilterCalls(HullTerrainContactSolver& owner, std::size_t unit, void* body)
+        : owner_(owner), unit_(unit), body_(body) {}
+    void enter_critical_section(std::uint32_t address) override {
+        require_world_lock(address);
+        owner_.contact_mutex_.lock();
+    }
+    void leave_critical_section(std::uint32_t address) override {
+        require_world_lock(address);
+        owner_.contact_mutex_.unlock();
+    }
+    void clear_body_manifolds_00c43aa0(void* body) override {
+        if (body != body_) throw std::logic_error("Hull filter invalidated a different body");
+        owner_.census_.retired += owner_.clear_contact_manifolds(unit_);
+    }
+private:
+    static void require_world_lock(std::uint32_t address) {
+        if (address != cc13_dyn1::kDynWorldLock_0109ecd8)
+            throw std::logic_error("Hull filter requested an unknown world lock");
+    }
+    HullTerrainContactSolver& owner_;
+    std::size_t unit_;
+    void* body_;
+};
+
+std::size_t HullTerrainContactSolver::clear_contact_manifolds(std::size_t unit) {
+    const std::size_t before = manifolds_.size() + pair_manifolds_.size()
+        + fort_manifolds_.size() + draft_manifolds_.size();
     for (auto it = manifolds_.begin(); it != manifolds_.end();) {
         if (std::get<0>(it->first) == unit) it = manifolds_.erase(it);
-        else ++it;
-    }
-    for (auto it = hulls_.begin(); it != hulls_.end();) {
-        if (it->first.first == unit) it = hulls_.erase(it);
         else ++it;
     }
     for (auto it = pair_manifolds_.begin(); it != pair_manifolds_.end();) {
@@ -159,13 +190,23 @@ void HullTerrainContactSolver::forget(std::size_t unit) {
         if (it->first.first == unit || it->first.second == unit) it = fort_manifolds_.erase(it);
         else ++it;
     }
-    fort_boxes_.erase(unit);
     for (auto it = draft_manifolds_.begin(); it != draft_manifolds_.end();) {
         if (it->first.second == unit) it = draft_manifolds_.erase(it);
         else ++it;
     }
+    return before - (manifolds_.size() + pair_manifolds_.size()
+        + fort_manifolds_.size() + draft_manifolds_.size());
 }
 
+void HullTerrainContactSolver::forget(std::size_t unit) {
+    const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
+    clear_contact_manifolds(unit);
+    for (auto it = hulls_.begin(); it != hulls_.end();) {
+        if (it->first.first == unit) it = hulls_.erase(it);
+        else ++it;
+    }
+    fort_boxes_.erase(unit);
+}
 
 // 006FAD70's shape build: centre on the box (006F9EE0), 00C5DEB0 on the re-centred points,
 // the centre back as the shape's translation. Rebuilt only when the raw points change. With
@@ -479,6 +520,7 @@ HullTerrainContactStepResult HullTerrainContactSolver::native_narrow_phase(
 HullTerrainContactStepResult HullTerrainContactSolver::step(
     std::size_t unit, DynBody& body, const std::vector<std::vector<OceanVec3>>& shapes,
     float hull_friction, float dt, bool apply) {
+    const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
     HullTerrainContactStepResult out;
     ++census_.steps;
     const Key lo{unit, -1, -1, -1, -1};
@@ -1007,6 +1049,7 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
 }
 
 void HullTerrainContactSolver::hull_hull_census(std::vector<HullWorldEntry>& hulls) {
+    const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
     ++census_.world_steps;
     hull_hull_narrow_phase(hulls, false);
 }
@@ -1276,6 +1319,7 @@ struct HullTerrainContactSolver::DraftShape {
 };
 
 void HullTerrainContactSolver::set_draft_bodies(std::vector<DraftWorldEntry> drafts, bool apply) {
+    const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
     drafts_.clear();
     draft_manifolds_.clear();
     drafts_set_ = true;
@@ -1447,11 +1491,32 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
 void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
                                           const std::vector<FortWorldEntry>& forts, float dt,
                                           bool hull_hull, bool hull_fort) {
+    const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
     ++census_.world_steps;
     std::map<std::size_t, HullWorldEntry*> by_unit;
+    std::map<std::size_t, bool> selects_terrain;
     for (HullWorldEntry& e : hulls) {
         e.result = HullTerrainContactStepResult{};
         by_unit[e.unit] = &e;
+        bool selected = false;
+        for (std::size_t s = 0; s < e.shapes->size(); ++s) {
+            HullShape* shape = hull_convex(e.unit, s, (*e.shapes)[s], e.friction, *e.body);
+            if (shape == nullptr) continue;
+            std::uint32_t mask;
+            std::memcpy(&mask, shape->convex + 0x30, sizeof(mask));
+            // 00826410..0082643B: the live sinking state requests removal
+            // once; subsequent phases read the persistent shape mask. Do not
+            // also use the former boolean-only filter/retirement path.
+            if (e.terrain_mask_cleared && (mask & 8u) != 0) {
+                ShapeFilterCalls calls(*this, e.unit,
+                    cc13_dyn1::shape_body_00c32490(shape->convex));
+                cc13_dyn1::shape_collide_mask_clear_00c47f60(shape->convex, 8u, calls);
+                std::memcpy(&mask, shape->convex + 0x30, sizeof(mask));
+            }
+            selected |= dyn_shapes_overlap_filter(
+                cc13_dyn1::shape_group_00c32450(shape->convex), mask, 8u, 0u);
+        }
+        selects_terrain[e.unit] = selected;
     }
     // ManifoldUpdate (00C549D0) over every manifold, both bodies at their current poses; a
     // manifold whose hull is not stepping this step, or left with no point, is retired.
@@ -1465,7 +1530,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
         }
         // kSunkHullTerrainMaskBound: a hull whose shapes lost mask bit 8 fails 00C44104's
         // filter against the terrain, so its terrain manifolds go with the pair.
-        const bool filtered = found != by_unit.end() && found->second->terrain_mask_cleared;
+        const bool filtered = found != by_unit.end() && !selects_terrain.at(found->first);
         if (found == by_unit.end() || filtered || m.count() <= 0) {
             ++census_.retired;
             it = manifolds_.erase(it);
@@ -1540,12 +1605,8 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     const DynWorkerPrecisionScope worker;
     for (HullWorldEntry& e : hulls) {
         ++census_.steps;
-        // 00C44104..00C44110 with the hull mask 0Dh & ~8 (00826410..0082643B) and the terrain's
-        // group 8, mask 0: neither direction selects the other.
-        if (e.terrain_mask_cleared &&
-            !dyn_shapes_overlap_filter(1u, 0x0Du & ~8u, 8u, 0u)) {
-            continue;
-        }
+        // 00C44104..00C44110 consumes the masks changed by 00C47F60 above.
+        if (!selects_terrain.at(e.unit)) continue;
         e.result = native_narrow_phase(e.unit, *e.body, *e.shapes, true);
         if (e.result.contact) {
             ++census_.contact_steps;

@@ -13231,9 +13231,14 @@ float GameUnitsHost::unit_class_max_speed_0500(std::size_t index) const {
 
 float GameUnitsHost::command_building_capture_range_07a0(std::size_t unit_index) const {
     // 006F2780 -> unit+7A0h; 00A03760 FILDs it. 1Ch is MCommandBuilding.
-    if (unit_index >= impl_->slots.size()) return 500.0f;
-    if (!unit_is_kind_of(unit_index, 0x1c)) return 500.0f;
-    return static_cast<float>(impl_->slots[unit_index]->capture_range_7a0);
+    return static_cast<float>(command_building_capture_range_raw_07a0(unit_index));
+}
+
+std::int32_t GameUnitsHost::command_building_capture_range_raw_07a0(
+    std::size_t unit_index) const {
+    if (unit_index >= impl_->slots.size()) return 500;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 500;
+    return impl_->slots[unit_index]->capture_range_7a0;
 }
 
 std::int32_t GameUnitsHost::command_building_level_0770(std::size_t unit_index) const {

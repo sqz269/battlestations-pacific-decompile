@@ -2,10 +2,12 @@
 // The pool members themselves are instantiated in src/native_material_pools.cpp
 // over the shared native engine.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_widget_pool_lifetime.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/game_native_physical_pool.hpp"
+#include "bsp/native_gui_scrollbar_pool_table.hpp"
 
 #include <cstdlib>
 #include <new>
@@ -15,11 +17,30 @@
 #error Native GUI widget pools require MSVC Win32.
 #endif
 
+namespace bsp {
+// bsp.py show AA79A0/AA7470, live CD7080/CE0A20 and CE344C: the CRT
+// constructs and later destroys this same F8BC94 pool. These aliases reuse
+// the sole reconstructed members in native_material_pools.cpp; no second
+// pool, allocation algorithm, initialization or teardown runs on this path.
+__declspec(noinline) void construct_native_gui_widget_pool_00aa79a0(
+    NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    pool.initialize();
+}
+__declspec(noinline) void destroy_native_gui_widget_pool_00aa7470(
+    NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    pool.destroy();
+}
+} // namespace bsp
+
 namespace bsp::game {
 namespace {
 template <class T>
 void construct_process_pool(NativeGuiWidgetPool<T>& pool) {
     pool.initialize();
+}
+
+void construct_process_pool(NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    construct_native_gui_widget_pool_00aa79a0(pool);
 }
 
 void construct_process_pool(NativeGuiListboxPool& pool) {
@@ -32,6 +53,10 @@ void construct_process_pool(NativeGuiListboxPool& pool) {
 template <class T>
 void destroy_process_pool(NativeGuiWidgetPool<T>& pool) {
     pool.destroy();
+}
+
+void destroy_process_pool(NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    destroy_native_gui_widget_pool_00aa7470(pool);
 }
 
 void destroy_process_pool(NativeGuiListboxPool& pool) {
@@ -182,4 +207,39 @@ BSP_GUI_WIDGET_POOL_PROCESS(GuiFrameBoxPoolTraits)
 BSP_GUI_WIDGET_POOL_PROCESS(GuiAnimIconPoolTraits)
 BSP_GUI_WIDGET_POOL_PROCESS(GuiListboxPoolTraits)
 #undef BSP_GUI_WIDGET_POOL_PROCESS
+} // namespace bsp
+
+namespace bsp {
+__declspec(noinline) void native_gui_scrollbar_pool_table_set_capacity_00ac7f40(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC7F40 is identical to AA6FA0: publish capacity before new(capacity*4),
+    // copy current entries with null-tested destinations, free, then adopt.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_grow_00ac7f90(
+    NativeGuiPoolSlabTable& table) {
+    // AC7F90 inlines that same schedule with modulo32 capacity*2+2.
+    native_gui_scrollbar_pool_table_set_capacity_00ac7f40(
+        table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_push_back_00ac8110(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // AC8110 and AC83C0's inline append use the actual pool+28h header,
+    // after first-free publication and slab initialization, under its lock.
+    if (table.count == table.capacity)
+        native_gui_scrollbar_pool_table_grow_00ac7f90(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_scrollbar_pool_table_reserve_00ac81a0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // AC81A0: unsigned comparison; AC8240 inlines reserve(32) in EH state2.
+    if (table.capacity < capacity)
+        native_gui_scrollbar_pool_table_set_capacity_00ac7f40(table, capacity);
+}
 } // namespace bsp

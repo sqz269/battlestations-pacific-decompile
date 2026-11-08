@@ -1,0 +1,232 @@
+{
+  "goal": 5,
+  "chain": 936,
+  "worker": "agent/g5-w3",
+  "base": "58e8599619c3b1f1038e966768340ef41ff88ef8",
+  "picked": "Layer pool F8BF50 retained slab-table lifecycle",
+  "implementation": "Promote five previously shape-only native functions to sole address-specific C++ bodies; replace the existing Layer pool's inline-equivalent reserve, append and free operations. All calls borrow its actual +28h table, existing allocator domain, slab producer and critical section. No second table or old execution path remains.",
+  "validation": {
+    "release_build": "scripts/build.ps1 PASS; all four existing CTests PASS",
+    "focused_probe": "local/c936-probe.cpp compiled with MSVC Win32 and /MANIFEST:EMBED; PASS:1025 actual Layer pool slots,33 slabs,32->66 table growth,preserved32 slab pointers,return/trim,unlinked list and unchanged released table header",
+    "probe_log": "local/output/c936-probe.log",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests PASS; CMake cache /O2 /Ob0 and /OPT:NOICF",
+    "analysis_graph": "All five address-specific symbols have distinct reachable executable calls; local/output/c936-analysis-who.log and c936-who-path.log",
+    "entry_path": "WinMain startup -> frontend raw startup -> Page load -> allocate_native_gui_layer_slot_00ac51a0 -> NativeGuiLayerPool::allocate_00ac4e50 -> Layer table append -> grow -> set capacity",
+    "startup_cleanup": "GameNativeGuiLayerPoolProcess::initialize_once_00cd73d0 -> Layer initialize -> reserve; destroy_00ce0ad0 -> Layer destroy -> free table. Constructor unwind uses the same free helper.",
+    "ghidra": "Verified existing bsp project and battlestationspacific.exe program; annotations applied under tool write lock and project saved. Prior names/comments in local/ghidra-annotations-20261108T175832Z.json; all five exports refreshed.",
+    "float_math_changed": false,
+    "original_binary_abi_compatible": false,
+    "game_run": false
+  },
+  "measurement": {
+    "source_wired_before": 10812,
+    "source_wired_after": 10812,
+    "readiness_note": "wire_readiness.py's game-only rows exclude all five existing tmpl_shape-tagged addresses. Their inventory tags remain unchanged; this packet adds five executable-reachable bodies but no game-only readiness-count credit.",
+    "new_functions": 5,
+    "release_called_before": 5684,
+    "release_called_after": 5682,
+    "release_count_note": "Release ICF combines the new Layer bodies with CubeTexture/other existing bodies, changing symbol attribution; the aggregate Release called delta is not a wiring delta. The /Ob0 /OPT:NOICF analysis build resolves all five actual callers separately.",
+    "analysis_called_after": 7536,
+    "analysis_reconstructed_addresses_after": 7586
+  },
+  "rows": [
+    {
+      "native": "00ac4250",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp:NativeGuiLayerPool::destroy_00ac4670 and initialize_00ac4d70 unwind",
+      "called": true,
+      "evidence": "AC4250 listing captures [ECX], frees only if nonnull and leaves all three table words unchanged; AC4670 inline free follows slab retirement and precedes CS/list teardown. Distinct analysis calls from Layer destroy_pool and initialize_pool."
+    },
+    {
+      "native": "00ac4350",
+      "status": "wired",
+      "host_site": "include/bsp/native_gui_layer_pool_table.hpp:grow_native_gui_layer_pool_table_00ac43a0 and reserve_native_gui_layer_pool_table_00ac4a10",
+      "called": true,
+      "evidence": "AC4357 publishes capacity before wrapped DWORD allocation; AC436C/4377/4384 reread current count/data, AC4390 frees before AC4398 adopts replacement. Distinct analysis calls from Layer grow/reserve."
+    },
+    {
+      "native": "00ac43a0",
+      "status": "wired",
+      "host_site": "include/bsp/native_gui_layer_pool_table.hpp:push_native_gui_layer_pool_slab_00ac4990",
+      "called": true,
+      "evidence": "AC43A6 computes DWORD capacity*2+2 and otherwise follows the exact-capacity schedule; distinct analysis call from Layer append."
+    },
+    {
+      "native": "00ac4990",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp:NativeGuiLayerPool::allocate_00ac4e50",
+      "called": true,
+      "evidence": "Replaces AC4E50's inline append after actual slab initialization under its existing lock. AC49F4 reads the supplied slab after growth and only for nonnull destination, then AC49FC increments count. Distinct analysis call from Layer allocate_slot."
+    },
+    {
+      "native": "00ac4a10",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp:NativeGuiLayerPool::initialize_00ac4d70",
+      "called": true,
+      "evidence": "AC4D70 inlines reserve32 on F8BF50+28h in unwind state2. AC4A17 uses unsigned capacity comparison; distinct analysis call from Layer initialize_pool."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:enum insertion",
+      "reason": "Existing SceneNumericPropertyMerge already calls the enum body; no missing wiring identified."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "Already reachable from Impl construction and merge_child in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:defend planner member loop",
+      "reason": "Existing conditional call requires auditing the enclosing defend-planner activation and membership producer before changing its path."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovCam binding candidate",
+      "reason": "Missing live legacy MovCam screen/default-field owner; current inspected MovCamNew adapter does not supply it."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovCam binding candidate",
+      "reason": "Missing live legacy MovCam screen/default-field owner; current inspected MovCamNew adapter does not supply it."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovCam binding candidate",
+      "reason": "Missing live legacy camera speed/default/acceleration storage; no fabricated screen view introduced."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovCam binding candidate",
+      "reason": "Missing live legacy camera speed/default/acceleration storage; no fabricated screen view introduced."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:scoring record candidate",
+      "reason": "Needs native-container constructor0091CE90 and a real raw score-record owner; the host currently exposes a typed MissionScoreRecord."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "Missing producer for the native ammo+48h alternate record; host explicitly records that absent operation."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:unit vector660 candidate",
+      "reason": "Missing verified native unit+660h vector owner/provider in this host; no wiring attempted."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:collision mask candidate",
+      "reason": "Needs actual Dyn shape/body, canonical world lock and manifold-clear provider; mask-only projection is insufficient."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:collision mask candidate",
+      "reason": "Needs actual Dyn shape/body, canonical world lock and manifold-clear provider; mask-only projection is insufficient."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:collision group candidate",
+      "reason": "Needs actual Dyn shape/body, canonical world lock and manifold-clear provider; group-only projection is insufficient."
+    },
+    {
+      "native": "00c47ff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:collision group candidate",
+      "reason": "Needs actual Dyn shape/body, canonical world lock and manifold-clear provider; group-only projection is insufficient."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:event subscription load",
+      "reason": "The host already calls the existing constructor for authored input subscriptions; no new call added."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:event subscription load",
+      "reason": "The host already calls the existing constructor for authored surrender subscriptions; no new call added."
+    },
+    {
+      "native": "00ac1ce0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool<GuiLinePoolTraits>::destroy",
+      "reason": "Baseline executable already calls the table-free body from Line destruction; no missing wiring."
+    },
+    {
+      "native": "00ac1db0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool<GuiLinePoolTraits>::destroy",
+      "reason": "Existing Line pool destructor already supplies the retained slab/table lifecycle; no additional change needed."
+    },
+    {
+      "native": "00ac1bb0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_line_application.cpp:GameNativeGuiLineApplication::loaded78_00ac1bb0",
+      "reason": "Application composition is not linked on the current host path; needs an upstream Line application/owner activation before replacing its loaded-hook operations."
+    },
+    {
+      "native": "00b3dbb0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp:CubeTexture table growth",
+      "reason": "Baseline executable already reaches the exact-capacity body through CubeTexture grow/reserve."
+    },
+    {
+      "native": "00b3dc00",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp:CubeTexture table append",
+      "reason": "Baseline executable already reaches the grow body through CubeTexture append."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:recon dirty-slot candidate",
+      "reason": "Needs a verified live NativeReconDirtyAccess joining current recon slots and current-world player context; not established in this packet."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HUD map zoom candidate",
+      "reason": "Missing verified current raw HUD map screen and mode/zoom-field producer; no synthetic screen supplied."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:tail-gunner skill refresh",
+      "reason": "Existing host already calls the tail-gunner skill body; no new wiring identified."
+    },
+    {
+      "native": "00ac4900",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:Layer table address lookup",
+      "reason": "No function starts here; native Layer append/reserve resolve to00AC4990/00AC4A10 instead."
+    },
+    {
+      "native": "00ac57e0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:Layer page-name candidate",
+      "reason": "Needs an established current native Layer-name header and resize provider at the Page naming call site; not established in this packet."
+    },
+    {
+      "native": "00ac4d30",
+      "status": "skipped",
+      "host_site": "src/gui_layer.cpp:layer_property_is_described_00ac4d30",
+      "reason": "Needs a live Layer property-description caller; property reading alone does not justify a description call."
+    }
+  ],
+  "left_for_others": "Broader Line application activation, native score-record containers, legacy MovCam owners and Dyn shape/world providers remain outside this packet."
+}

@@ -13,7 +13,7 @@
       "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::destroy -> destroy_pool<GuiScrollbarPoolTraits, free_native_gui_scrollbar_pool_table_00ac7f10>",
       "body": "src/native_material_pools.cpp::free_native_gui_scrollbar_pool_table_00ac7f10",
       "real_state": "Actual retained GuiScrollbarPoolTraits process owner's slabs_28 header, native F8C004+28h. The caller first frees its slabs, then this leaf frees its current table, before critical-section/list teardown.",
-      "built_call_no_icf": "106c5624 -> 106c91c0, one call from the Scrollbar destroy_pool specialization",
+      "built_call_no_icf": "106c6614 -> 106ca820, exactly one reachable call from Scrollbar destroy_pool in merged ON no-inline/no-ICF build",
       "path_no_icf": "WinMain -> GameNativeGuiWidgetPoolProcess<GuiScrollbarPoolTraits>::initialize_once -> registered destroy_at_exit -> destroy_process_pool -> NativeGuiWidgetPool<GuiScrollbarPoolTraits>::destroy -> destroy_pool -> free_native_gui_scrollbar_pool_table_00ac7f10",
       "abi": "Original __fastcall ECX=table, plain RET; source C++ interface only, not register-ABI compatible",
       "game_validated": false
@@ -22,13 +22,13 @@
       "native": "00ac7f40",
       "status": "skipped",
       "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_set_capacity_00ac7f40 on agent/g5-w1",
-      "reason": "The body and its live startup caller already belong to c911 awaiting landing; no duplicate body added."
+      "reason": "Already supplied and wired by c911, now present on merged main; this packet adds no duplicate body."
     },
     {
       "native": "00ac81a0",
       "status": "skipped",
       "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize on agent/g5-w1",
-      "reason": "The body and its live startup caller already belong to c911 awaiting landing; this packet preserves that ownership."
+      "reason": "Already supplied and wired by c911, now present on merged main; this packet adds no duplicate body."
     },
     {
       "native": "00ac7f90",
@@ -134,7 +134,7 @@
     "Add the name/function ledger rows, preserve the prior Ghidra name, annotate the evidence, save the project and refresh the affected export."
   ],
   "integration": {
-    "c911_overlap": "The nine-line game_main.cpp CD7510 startup block is copied identically from agent/g5-w1's c911. Coalesce the identical block when landing both; do not register a second Scrollbar startup. All four c911 table bodies and its header remain untouched by this packet.",
+    "c911_overlap": "Landing repair coalesced the identical c911 CD7510 startup block. The resulting game_main.cpp is identical to the fetched main parent: one retained Scrollbar startup registration. c911 table bodies/header and the distinct c942 cleanup body coexist.",
     "shared_source": "native_material_pools.cpp contains only the cleanup-header include and a distinct AC7F10 leaf/destroy specialization before the Section block; source lease was coordinated with g5-w7 and released after editing."
   },
   "verification": {
@@ -160,5 +160,53 @@
     "Land c911's existing Scrollbar table helpers and coalesce the identical CD7510 startup block.",
     "Connect an actual Scrollbar payload factory before crediting AC8110/AC7F90; this packet proves process-pool lifetime, not a payload allocation consumer.",
     "Original register ABI and retail gameplay remain unvalidated."
-  ]
+  ],
+  "landing_repair": {
+    "merged_origin_main": "767c5b495dced0631ab9fe2ba713333e9f32a1bc",
+    "prior_packet_head": "1fcf2ad5be38e1670bb83ee34b858b149d5fb192",
+    "conflicts_resolved": [
+      "config/names/00ac0000.jsonl",
+      "config/reconstruction/00ac0000.jsonl"
+    ],
+    "resolver": "python tools/merge_resolve.py J:/PROG/battlestations-pacific-decompile-g5-w11",
+    "ledger_verification": "Dictionary comparison against MERGE_HEAD: every existing name/function/fragment row preserved unchanged; exactly one AC7F10 name and one AC7F10 function row added. Three existing reconstruction rows only reordered by the resolver.",
+    "source_verification": "One Scrollbar initialize specialization, one allocate specialization (c911), one destroy specialization (c942), one AC7F10 body. One CD7510 startup block, no game_main.cpp delta against merged main.",
+    "standard_build": "local/c942-merge-build.log: PASS, Win32 Release and all five CTests",
+    "on_build": "local/c942-merge-on-build.log: PASS, kAutoAttackAllMembersBound=true and kPlaneFormationPlacementEnabled=true temporarily; no-inline/no-ICF build and all five CTests",
+    "flag_restoration": {
+      "build_exit": 0,
+      "files": {
+        "include/bsp/air_operations.hpp": {
+          "before": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+          "after": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+          "restored": true
+        },
+        "include/bsp/game_hosts_units_internal.hpp": {
+          "before": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59",
+          "after": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59",
+          "restored": true
+        }
+      }
+    },
+    "probe": "local/c942-merge-probe.log: PASS, null leaf and retained two-slab Scrollbar teardown; table fields preserved",
+    "distinct_call": "local/c942-merge-who.log: AC7F10 at 106ca820, exactly one reachable call at 106c6614 from Scrollbar destroy_pool; no ICF",
+    "entry_path": "local/c942-merge-path.log: WinMain -> retained Scrollbar initialize_once -> registered destroy_at_exit -> destroy_process_pool -> destroy -> destroy_pool -> AC7F10",
+    "wire_readiness": "local/c942-merge-readiness.log: PASS",
+    "merged_readiness_summary": {
+      "wired": 10826,
+      "callees_done_no_wired_caller": 8451,
+      "ready": 1197,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "merged_called_counts": {
+      "called": 6131,
+      "called_not_wired": 356,
+      "wired_not_called": 41,
+      "not_in_binary": 14553
+    },
+    "own_increment_note": "Merged headline wired=10826 includes other landed packets; c942 AC7F10 remains excluded by the existing tmpl_shape category. One distinct additional called body is independently verified.",
+    "float_math_changed": false,
+    "game_run": false
+  }
 }
