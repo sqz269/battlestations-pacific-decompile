@@ -1,0 +1,117 @@
+{
+  "goal": 5,
+  "chain": 878,
+  "worker": "agent/g5-w6",
+  "picked": "Camera pool slab-table reserve, append, grow and allocation over canonical pool 0108FFB0",
+  "rows": [
+    {
+      "native": "00b6fff0",
+      "status": "wired",
+      "host_site": "src/scene_graph2_cc13.cpp::grow_native_camera_pool_table_00b70040 and reserve_native_camera_pool_table_00b712f0",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00b70040",
+      "status": "wired",
+      "host_site": "src/scene_graph2_cc13.cpp::append_native_camera_pool_table_00b71260",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b71260",
+      "status": "wired",
+      "host_site": "src/native_camera_pool.cpp::NativeCameraPool::allocate_raw_slot_00b71770",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b712f0",
+      "status": "wired",
+      "host_site": "src/native_camera_pool.cpp::NativeCameraPool::initialize_00b715f0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp (candidate)",
+      "reason": "No live ScrollerState/thumb-widget owner binding was identified in the frontend host during selection."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::make_command_target",
+      "reason": "Host returns zero; a retained native command-target owner and readable F87574/78/7C data cells are missing."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp (candidate)",
+      "reason": "Native export was unavailable and the live unit+660h vector owner was not identified during selection."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::check_multiplayer_player_count",
+      "reason": "Multiplayer player-count path is excluded from this single-player wiring goal."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (candidate)",
+      "reason": "Live CandidateAttackBlock producers and CandidateAttackHost binding were not identified in this packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::release_group_reference (candidate subsystem)",
+      "reason": "Score-list consumer is a debug overlay, excluded by the task; no gameplay list owner is retained."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::release_group_reference (candidate subsystem)",
+      "reason": "Score-list consumer is a debug overlay, excluded by the task; no gameplay list owner is retained."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (existing defend candidate path)",
+      "reason": "Existing defend path already calls this body; no missing host call was selected for replacement."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::report_loading_progress_0057bec0",
+      "reason": "Existing menu host already calls report_loading_progress; no missing call on that path."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command_building_capture_fraction_006f1f90",
+      "reason": "Existing typed host implementation is already used by script orders; no separate unwired body was identified."
+    }
+  ],
+  "implementation": [
+    "Removed Camera constructor inline reserve and allocator inline append; each now calls its canonical reconstructed entry once.",
+    "Specialized four addresses from their existing shared-shape PointerArray reconstruction; the legacy per-address dispatchers delegate to those same bodies.",
+    "Borrowed byte view of actual pool+28h header avoids incompatible struct aliasing and detached header state during reentrant allocation.",
+    "Preserved unsigned capacity comparison, DWORD arithmetic, capacity-before-allocation publication, copy/free/adopt order and failure state."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1: passed; all 5 tests passed",
+    "changed_build": "scripts/build.ps1: passed; all 5 tests passed",
+    "focused_probe": "tests/wire_g5_c878_camera_table_probe.cpp compiled /W4 /WX, linked /MANIFEST:EMBED against built Win32 bsp_core; passed",
+    "probe_scope": "Actual Camera pool: 1025 live slots, capacity 32 to 66, 33 slab identities/trailers, failing 0xFFFFFFFC-byte allocation observes live published capacity and unchanged pointer/count, return/trim/destroy unlinks owner.",
+    "call_graph": "python tools/call_graph.py --build; who for all four addresses: REACHABLE, called=true, no unreachable callers",
+    "entry_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> GameNativeResourcePoolProcess::initialize_camera_once_00cd7dd0 -> initialize_static_native_camera_pool_00cd7dd0 -> NativeCameraPool::initialize_00b715f0 -> reserve_native_camera_pool_table_00b712f0 (static graph, including EH funclet; not a runtime trace)",
+    "release_graph": "Reserve, append and allocate remain reachable calls; grow is inlined. No-inline analysis confirms its actual append caller.",
+    "float_math_changed": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "wired_before": 10728,
+  "wired_after": 10732,
+  "left_for_others": "Other pool families remain separate packets; complete game execution and original register-ABI replacement remain unvalidated."
+}

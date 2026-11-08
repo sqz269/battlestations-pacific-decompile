@@ -1,0 +1,163 @@
+{
+  "chain": 861,
+  "owner": "agent/g5-w3",
+  "base": "229576fd7656b1d6139345494e27e13b3082ac1f",
+  "scope": "AI group attack scoring: minimum class speed and its loaded speed-bonus tuning",
+  "wired_total_before": 10706,
+  "wired_total_after": 10710,
+  "credited_new_reachable_bodies": ["00a02180"],
+  "count_note": "The readiness source count rises by four; only 00A02180 is credited here. In particular, the existing 00A07C10 ledger alias names the same 00A02180 implementation and has no separate linked symbol.",
+  "built": [
+    "Project actual attacker records into SpeedClassView using the existing class-query and class+500h/188h speed producers, including squadron plane classes.",
+    "Replace the constant-zero speed bonus with min(active tuning+22Ch times the reconstructed group minimum, active tuning+228h times base score).",
+    "Extend the existing authored tuning loader with both speed-bonus keys, verified as zero in all seven installed highlvlaiglobals.lua mode tables; retain binary missing-key defaults 0.5 and 1.0."
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed Win32 Release and all four CTest groups after the code changes.",
+    "probe": "cmd /c local/c861-probe.cmd passed: mixed ship/plane minimum, empty-list seed, seven authored modes, and missing-key defaults. Probe links actual production sources and embeds its manifest.",
+    "pc24": "python tools/pc24_lint.py --staged: zero findings in four files. A whole-file scan reports an existing unrelated diagnostic-formatting chain at game_hosts_ai.cpp:3162; it is outside this diff.",
+    "graph": "python tools/call_graph.py: 5580/6202 reconstructed addresses called; who 00a02180 reports one reachable call at 1005484D from GameAiCoordinatorHost::Impl::compose_attack_value_00a0c650 to 1037F570.",
+    "source_path": "GameAiCoordinatorHost::Impl::candidate_base_weight -> group_target_value_00a0f970 -> compose_attack_value_00a0c650 -> ai_unit_list_min_speed_00a02180",
+    "readiness": "00A02180: state wired, called true, call_sites 1, callers_live 1.",
+    "diff": "git diff --cached --check passed."
+  },
+  "evidence": [
+    "bsp.py show 00a02180 --asm: class vtable+18h tests 6 then 0Fh; speed fields +500h/+188h; 1e10 seed; FCOMIP/JA at 00A02203 retains the minimum and permits unordered replacement.",
+    "bsp.py show 00a07c10: projects each 20h record's class pointer before calling 00A02180.",
+    "bsp.py show 00a0c650: speed-bonus read/multiply/cap at 00A0CE26..00A0CE6B.",
+    "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/highlvlaiglobals.lua: 144-145, 332-333, 518-519, 702-703, 857-858, 1026-1027, 1181-1182.",
+    "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md:216-217 and src/ai_target_weights.cpp retain the binary defaults for the two new tuning keys."
+  ],
+  "limitations": [
+    "No game launch or gameplay validation was performed.",
+    "The existing host class-kind projection and authored-tuning reader remain typed source interfaces, not drop-in original ABI replacements.",
+    "This wires the minimum-speed body into the retained host composition path; it does not claim the complete reconstructed 00A0C650 or a separate 00A07C10 body."
+  ],
+  "rows": [
+    {
+      "native": "00a02180",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::compose_attack_value_00a0c650"
+    },
+    {
+      "native": "00a07c10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::compose_attack_value_00a0c650",
+      "reason": "Missing a separate reconstructed 00A07C10 body: the ledger aliases 00A02180; the host now projects real class records before calling that canonical minimum-speed body."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: native nearest-enemy-group consumer not bound",
+      "reason": "Missing the exact 00779D00 member-value provider with recent-recon hold state and an entry-reachable original nearest-enemy-group or Lua-info consumer."
+    },
+    {
+      "native": "00779d00",
+      "status": "skipped",
+      "host_site": "src/mp_seg43_cc13.cpp: unit_recon_record_value_00779d00",
+      "reason": "Missing the actual unit+2FCh held value and +300h timestamp owner; current sensor effective levels alone do not satisfy the native opposite-party record and 30-second hold query."
+    },
+    {
+      "native": "00a13080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: original command nearest-enemy query not bound",
+      "reason": "Missing its native command/group-list view and the exact 00A2C3D0 reconnaissance provider; the live Duel nearest-group query is a different routine."
+    },
+    {
+      "native": "00a13280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: original automatic nearest-close-attack dispatch not bound",
+      "reason": "Missing a verified live command-vtable dispatch and the 00A13080 input/provider contract; no new automatic attack dispatch was invented."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiWeightModelBinding",
+      "reason": "Missing the live mode-indexed class-pair row owner; the inspected target-weight binding uses forced rules and weapon facts rather than this class-pair table."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner spawn path",
+      "reason": "Missing a bound threat-record and spawn-source collection for the native group-spawn gate."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing a gameplay score-list owner and consumer; the established native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostics",
+      "reason": "Missing native candidate-score records to mark and a gameplay consumer; the established reader is the excluded debug overlay."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall::queue_call",
+      "reason": "Missing a frame-job-thread named-call producer carrying a real LuaVariantRecord vector; the inspected interpreter runs on the main thread."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp: font input admission",
+      "reason": "Missing a verified input-character admission consumer in this packet; agent/g5-w12 subsequently announced ownership of this font acceptance follow-up."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/native_gui_icon_delayed_request_storage.cpp: delayed icon requests",
+      "reason": "Missing a typed GuiNamedValueArray owner; the delayed-icon path already uses the native storage append implementation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow fit",
+      "reason": "Missing an entry-reachable original FOV-aspect-product consumer; the established GUI camera uses orthographic projection."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command menu ordering",
+      "reason": "Missing a live native command-menu linked-list owner and ordering consumer; the director command queue is a separate collection."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "Missing the mode-2 profile-hints producer and language-sweep consumer; current message-map loading keeps that branch disabled."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: controlled squadron target orders",
+      "reason": "Missing the actual unit-pick screen, cursor projection and 00523130 target-selection providers; named harness targets cannot supply the native screen contract."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing retained native ammunition records, alternate+48h storage and reference/tree owners required by copy assignment."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: native vector660 reset",
+      "reason": "Missing the native unit+660h vector owner and a verified live command-building reset consumer."
+    },
+    {
+      "native": "008050e0",
+      "status": "skipped",
+      "host_site": "src/recon_slot_lists.cpp: construct_recon_slot_008050e0",
+      "reason": "Missing the full raw recon-slot lifetime owner; existing live sensor records do not provide the constructor's observer and bucket-list storage."
+    },
+    {
+      "native": "00855b30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: torpedo_propeller_angle_00855b30",
+      "reason": "Missing the live torpedo propeller node and retained basis-matrix extrapolation owner; the existing scalar helper alone does not implement the original whole body."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "chain": 876,
+  "owner": "agent/g5-w3",
+  "picked": "Reuse the identity and Z-matrix setters in the live world matrix-interpolator pass",
+  "baseline_head": "732a8ddeaaf4704f1f0a0f1ba82f86de8fb76e3f",
+  "called_before": 5595,
+  "called_after": 5597,
+  "wired_before": 10726,
+  "wired_after": 10728,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "0042B420 has one reachable call at 1052BFAF and 0042E8C0 has one at 1052BDF5, both from matrix_interpolator_compose_009046b5",
+    "differential": "Local manifested Win32 probe compared all 16 matrix words and FP status against baseline 732a8ddea world_entity_update.cpp at PC24/round-nearest, using one translated/rotated record at phases +0, -0, 0.375 and 1; all four comparisons matched. Probe sources/command are local/c876-compose-{baseline,probe}.cpp and local/c876-compose-probe.cmd",
+    "state": "GameWorldHost drains live MatrixInterpolatorRequest rows, captures each unit's local matrix, and retains translation/rotation/duration/clock in its interpolator list; the result is applied by the existing world pass",
+    "evidence": "bsp.py show 0042b420 --asm: builder at 0042B43A, sequential matrix copy at 0042B442; show 0042e8c0 --asm: binary-one load at 0042E8C6, sequential copy at 0042E936; 00904600 listing identifies the existing inline Z-builder sequence",
+    "scope": "Existing address body and current rotation builder reused once; no new reconstructed address, game launch, original ABI claim, or gameplay validation"
+  },
+  "rows": [
+    {
+      "native": "0042b420",
+      "status": "wired",
+      "host_site": "src/world_entity_update.cpp: matrix_interpolator_compose_009046b5, reached from GameWorldHost::WorldEntityUpdateBinding::update_timed_attachments_00904600",
+      "detail": "A narrow builder/copy interface supplies the existing Z builder and native 004134F0 copy; the input is the retained record's scaled, negated Z angle and the output is the matrix consumed by the existing multiplication chain. The former direct builder call was removed."
+    },
+    {
+      "native": "0042e8c0",
+      "status": "wired",
+      "host_site": "src/world_entity_update.cpp: matrix_interpolator_compose_009046b5, reached from GameWorldHost::WorldEntityUpdateBinding::update_timed_attachments_00904600",
+      "detail": "Narrowed the existing setter to its actual MatrixCopyHost dependency and reused it to initialize the real translation matrix before the existing translation stores. The binary +0/1 constants and native 004134F0 copy replace the deleted local identity initializer."
+    },
+    {
+      "native": "0042b4d0",
+      "status": "skipped",
+      "host_site": "src/marker_manager_cc13.cpp: rotation_z_0042b4d0 / update_marker_instance_pose_006d7fc0",
+      "reason": "No production MarkerInstanceHost consumer or reachable marker pose owner was found; the built graph does not contain this marker route."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list release documentation",
+      "reason": "The candidate-score record's reader is the unreached debug overlay; no single-player gameplay consumer was established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list release documentation",
+      "reason": "The chosen-record byte is consumed only by the unreached candidate-score debug overlay."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The pre-load checkpoint comparison and actual checkpoint Lua owner/current mission key are still missing at this site."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: BSP_GuiWidget_CollectSortedChildren",
+      "reason": "No live per-parent property-description/name-sorted child-list producer and consumer was established."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message stand-in",
+      "reason": "No retained ControllerStateMessage producer and routed state consumer carrying both descriptors was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot stand-in",
+      "reason": "No retained ControllerSnapshotMessage owner or snapshot transport consumer was established."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost gun-skill notification",
+      "reason": "The existing host already calls the canonical body with loaded TailGunnerBot configuration, actual level and shared draw; no second call is needed."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_anim_class_004722d0",
+      "reason": "No production owner supplying NamedSceneClassRegistry<AnimClass> and its Lua/class-resource hooks was established."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_buoy_class_00475710",
+      "reason": "The reconstructed caller contracts still lack a live BuoyClass registry/resource owner."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "No complete live NativeBotStateRegistryStorage owner and land-task construction route was established in this packet."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "The corresponding complete live native registry owner and retirement route are missing from this packet."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: squadron leave-map route",
+      "reason": "World bounds are available, but no map-center consumer was established on the inspected squadron leave-map path."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_manager_queries.cpp / src/ship_ai_avoid_zone_search.cpp: existing containment queries",
+      "reason": "Existing reconstructed query bodies already call contains_point_00414f50; no additional equivalent containment site was identified."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: initialize_memory_00cd8fc0 / initialize_physical_00cd9030",
+      "reason": "Both existing process type initializers already call the canonical file-descriptor initializer; no second initialization route is warranted."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The original language-sweep consumer requires the unhosted profile-hints mode; no live matching consumer was established."
+    }
+  ]
+}

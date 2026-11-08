@@ -63,6 +63,22 @@ void* initialize_gui_text_pool_slab_00ab6f60(void* actual_slab,
 // has become armed; it executes BEFORE that CS cleanup.
 void free_gui_text_pool_table_00ab70c0(void* actual_table_header) noexcept;
 
+// The actual {data, count, capacity} header at F8BDF0+28h. Capacity is
+// published BEFORE allocation, count/data are reloaded during copying, and
+// the old allocation is freed before the new pointer is adopted. DWORD
+// arithmetic wraps. These borrow the pool's existing allocation domain;
+// they neither own another table nor construct/destroy Text payloads.
+// Original AB7120/AB7610/AB7690: ECX header, one stack argument, RET4;
+// AB7170: ECX header, RET0. New C++ interfaces, not native register-ABI entries.
+void set_gui_text_pool_table_capacity_00ab7120(void* actual_table_header,
+    std::uint32_t capacity);
+void grow_gui_text_pool_table_00ab7170(void* actual_table_header);
+// The slab pointer is read from this cell AFTER any table-growth callbacks.
+void append_gui_text_pool_slab_pointer_00ab7610(void* actual_table_header,
+    const void* actual_slab_pointer_cell);
+void reserve_gui_text_pool_table_00ab7690(void* actual_table_header,
+    std::uint32_t capacity);
+
 // AB79E0 overwrites incoming ECX (size ignored) with F8BDF0 and tail-jumps
 // AB78A0. AB76F0 takes the failed raw slot in ECX, selects that same pool and
 // calls AB75A0, RET. It does not invoke AB8250 or destroy a C++ companion.

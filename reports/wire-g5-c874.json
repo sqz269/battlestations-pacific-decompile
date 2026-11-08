@@ -169,5 +169,36 @@
     "Build, call-graph and focused host-fixture evidence; the game was not run."
   ],
   "left": "Resource-root/skinned-animation dispatch owner; native listbox front-end binding; other workers' Camera/Model tables.",
-  "coordination": "Claimed all changed files; waited for Camera/Model workers to commit and release scene_graph2 source and B7 shard before editing them. Shared source diff is one include and four early dispatcher forwards."
+  "coordination": "Claimed all changed files; waited for Camera/Model workers to commit and release scene_graph2 source and B7 shard before editing them. Shared source diff is one include and four early dispatcher forwards.",
+  "merge_repair": {
+    "origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "previous_head": "1a4f7945a0984f1ec31c39df67c7950830a5b6b0",
+    "resolution": "merge_resolve.py retained both insertion sets in scene_graph2_cc13.cpp; manual review confirms Camera and Mesh early-return branches remain distinct and all eight canonical ledger rows survive. No remaining unmerged paths. Delta versus origin/main is only 18 Mesh dispatcher insertions and four Mesh ledger replacements, plus original Mesh files/report/probe.",
+    "checks": {
+      "release_build": "scripts/build.ps1 passed; all 4 CTests passed",
+      "on_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed (/Ob0, /OPT:NOICF)",
+      "focused_probe": "cmd /c local/c874-probe.cmd passed after merge: live growth, slot identities, failure publication and teardown",
+      "release_called_addresses": 6186,
+      "noinline_called_addresses": 7411,
+      "mesh_addresses_entry_reachable_in_both_builds": [
+        "00b72900",
+        "00b72950",
+        "00b72e80",
+        "00b72f10"
+      ],
+      "readiness": {
+        "wired_total": 10743,
+        "all_four_mesh_called": true,
+        "graph_no_inline": true,
+        "graph_stale": false,
+        "mesh_call_sites": {
+          "00b72900": 2,
+          "00b72950": 1,
+          "00b72e80": 1,
+          "00b72f10": 1
+        }
+      },
+      "float_math_changed": false
+    }
+  }
 }

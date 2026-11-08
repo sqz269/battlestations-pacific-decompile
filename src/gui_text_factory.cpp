@@ -68,20 +68,48 @@ void* at(const void* base, std::uint32_t displacement) noexcept {
 CRITICAL_SECTION* section(NativeGuiTextPoolStorage& storage) noexcept {
     return reinterpret_cast<CRITICAL_SECTION*>(storage.critical_section_0c);
 }
-void replace_table(void* pool, std::uint32_t bytes) {
+void replace_table(void* header, std::uint32_t bytes) {
     void* const replacement = singleton_lifetime_allocate({
         SingletonAllocationKind::pointer_slots, bytes, bytes});
     auto* destination = replacement;
-    for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
+    for (std::uint32_t index = 0; index < word(header, 4); ++index) {
         if (destination)
-            put(destination, 0, word(pointer(word(pool, 0x28)), index * 4u));
+            put(destination, 0, word(pointer(word(header)), index * 4u));
         destination = at(destination, 4);
     }
-    void* const old_table = pointer(word(pool, 0x28));
+    void* const old_table = pointer(word(header));
     if (old_table) singleton_lifetime_free(old_table);
-    put(pool, 0x28, address(replacement));
+    put(header, 0, address(replacement));
 }
 } // namespace
+
+// bsp.py show 00AB7120/7170/7610/7690 --asm: these four template bodies
+// contain the same allocate/copy/free/adopt sequence. AB77C0 inlines reserve
+// on its own +28h header; AB78A0 inlines append on that SAME retained header.
+// Factor those sequences through the address-backed entries, preserving
+// capacity-before-allocation, fresh header reads and source-cell timing.
+__declspec(noinline) void set_gui_text_pool_table_capacity_00ab7120(
+    void* header, std::uint32_t capacity) {
+    put(header, 8, capacity);                         // AB7127
+    replace_table(header, capacity * 4u);             // AB712A..AB7168
+}
+
+__declspec(noinline) void grow_gui_text_pool_table_00ab7170(void* header) {
+    set_gui_text_pool_table_capacity_00ab7120(header, word(header, 8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_gui_text_pool_slab_pointer_00ab7610(
+    void* header, const void* source_cell) {
+    if (word(header, 4) == word(header, 8)) grow_gui_text_pool_table_00ab7170(header);
+    void* const destination = at(pointer(word(header)), word(header, 4) * 4u);
+    if (destination) put(destination, 0, word(source_cell)); // AB7668..AB767A
+    put(header, 4, word(header, 4) + 1u);                  // AB767C
+}
+
+__declspec(noinline) void reserve_gui_text_pool_table_00ab7690(
+    void* header, std::uint32_t capacity) {
+    if (word(header, 8) < capacity) set_gui_text_pool_table_capacity_00ab7120(header, capacity);
+}
 
 NativeGuiTextPool::NativeGuiTextPool(AllocatorListDomain& list,
     NativeGuiTextPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -109,10 +137,7 @@ void NativeGuiTextPool::initialize_00ab77c0() {
         put(&storage_, 0x30, 0);
         put(&storage_, 0x34, 0xffffffffu);
         unwind_state = 2;
-        if (word(&storage_, 0x30) < 32u) {
-            put(&storage_, 0x30, 32);
-            replace_table(&storage_, 0x80);
-        }
+        reserve_gui_text_pool_table_00ab7690(at(&storage_, 0x28), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_gui_text_pool_table_00ab70c0(at(&storage_, 0x28));
@@ -149,16 +174,7 @@ void* NativeGuiTextPool::allocate_raw_slot_00ab78a0() {
             SingletonAllocationKind::object, slab_bytes, slab_bytes});
         void* const slab = raw ? initialize_gui_text_pool_slab_00ab6f60(
             raw, word(pool, 0x34)) : nullptr;
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            put(pool, 0x30, grown_capacity);
-            replace_table(pool, bytes);
-        }
-        auto* const destination = at(pointer(word(pool, 0x28)), word(pool, 0x2c) * 4u);
-        if (destination) put(destination, 0, address(slab));
-        put(pool, 0x2c, word(pool, 0x2c) + 1u);
+        append_gui_text_pool_slab_pointer_00ab7610(at(pool, 0x28), &slab);
     }
     auto* const slab = pointer(word(pointer(word(pool, 0x28)), word(pool, 0x34) * 4u));
     put_half(slab, 0x7e80, static_cast<std::uint16_t>(half(slab, 0x7e80) - 1u));

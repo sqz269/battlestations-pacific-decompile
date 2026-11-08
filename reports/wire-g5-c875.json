@@ -1,0 +1,250 @@
+{
+  "chain": 875,
+  "slot": "g5-w11",
+  "subsystem": "Keyboard sensitivity string/float map and pooled pair construction",
+  "rows": [
+    {
+      "native": "00444be0",
+      "status": "wired",
+      "host_site": "src/game_native_input_configuration_application.cpp: KeyboardRawFloatLibrary::multiplier_00444be0",
+      "note": "Replaces the production abbreviated storage implementation with existing get_or_insert_native_soldier_loop_length_00444be0 on the actual device+24h tree. Returned float is consumed by NativeInputKeyboardApplication. The address already had another called implementation at baseline."
+    },
+    {
+      "native": "00443d60",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: get_or_insert_native_soldier_loop_length_00444be0",
+      "note": "Inlined specialization invokes the existing actual raw-tree lower-bound body."
+    },
+    {
+      "native": "004afe50",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: lower_bound_native_soldier_loop_lengths_00443d60"
+    },
+    {
+      "native": "00444910",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: get_or_insert_native_soldier_loop_length_00444be0"
+    },
+    {
+      "native": "004437f0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: insert_hint_native_soldier_loop_pair_00444910",
+      "note": "Predecessor selection for an interior lower-bound insertion; wrapper inlined in Release."
+    },
+    {
+      "native": "004afbe0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: decrement_native_soldier_loop_iterator_004437f0"
+    },
+    {
+      "native": "004442a0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: insert_hint_native_soldier_loop_pair_00444910"
+    },
+    {
+      "native": "004441e0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: link_native_soldier_loop_node_004442a0"
+    },
+    {
+      "native": "00444150",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: allocate_native_soldier_loop_node_004441e0",
+      "note": "Inlined actual-node initializer now delegates the equivalent header/scalar portion to 004440C0."
+    },
+    {
+      "native": "004440c0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: initialize_native_soldier_loop_node_00444150",
+      "note": "Actual node+0Ch and actual source 0Ch pair; links before copy, late x87 scalar read after raw string construction, color/nil after copy."
+    },
+    {
+      "native": "00443ba0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: link_native_soldier_loop_node_004442a0"
+    },
+    {
+      "native": "004436e0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: link_native_soldier_loop_node_004442a0"
+    },
+    {
+      "native": "004afaa0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: rotate_native_soldier_loop_left_00443ba0",
+      "note": "Release linker folds equivalent tree-rotation code."
+    },
+    {
+      "native": "004afaf0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: rotate_native_soldier_loop_right_004436e0",
+      "note": "Release linker folds equivalent tree-rotation code."
+    },
+    {
+      "native": "00443fb0",
+      "status": "wired",
+      "host_site": "src/native_soldier_loop_lengths.cpp: get_or_insert_native_soldier_loop_length_00444be0 exception cleanup",
+      "note": "Owns the real temporary header on insertion failure; compiled equivalent destructor is folded."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp: initialize_native_soldier_loop_node_00444150",
+      "reason": "No split header/scalar producer is needed here; the actual node source is a contiguous pair handled by 004440C0."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "No missing caller: baseline already reports this body called through the owning native scene-property projection."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "No missing caller: baseline already reports this body called through the owning native scene-property projection."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing the constructed movie-screen owner with retained current/default deviation fields; this callback is unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing the constructed movie-screen owner with retained current/default overview height; this callback is unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing a constructed movie-screen owner with current/default speed limits and acceleration time."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing the actual movie-screen acceleration owner and live Lua-to-screen dispatch."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller message integration",
+      "reason": "No retained ControllerStateMessage producer and consumer carrying both descriptors and controller flags was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot integration",
+      "reason": "No retained ControllerSnapshotMessage producer and transport consumer was established."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "reason": "Missing complete task base/composite construction, actual embedded states and executable profile/entry services required by NativeLandTaskConstructorCalls."
+    },
+    {
+      "native": "009f9980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "reason": "Missing stable constructed native land task command/gun/control identities and their actual alias cells."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitSlot land state",
+      "reason": "Missing eight constructed embedded native state objects; the retained enum values cannot supply actual state identities."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint callback",
+      "reason": "Missing the checkpoint-difference producer and complete profile erase/storage rewrite integration; the available helper covers only the Lua portion."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "The inspected result-GUI callback lacks the movie-screen/input/cinematic bindings required by the complete sound transition body."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message integration",
+      "reason": "Missing a presence-zero clear-message producer and retained path owners for the last filled director slot."
+    },
+    {
+      "native": "00ad2600",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_frame_box_default.cpp: GameNativeGuiPageFrameBoxDefault",
+      "reason": "The default-only owner is not composed into the production Page factory with the required property/state/resource services."
+    },
+    {
+      "native": "00ad26d0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_frame_box_default.cpp: GameNativeGuiPageFrameBoxDefault",
+      "reason": "Missing an active production FrameBox consumer; reading its default state only for diagnostics would not wire GUI behavior."
+    },
+    {
+      "native": "00ad2750",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_frame_box_default.cpp: GameNativeGuiPageFrameBoxDefault",
+      "reason": "Missing a production FrameBox state-record population and selection consumer; the available default owner has an empty state vector."
+    },
+    {
+      "native": "00ad0860",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_records.cpp: release_native_gui_frame_box_record_00ad0860",
+      "reason": "Missing live FrameBox records in the production Page graph; the default-only owner has no record-release work."
+    },
+    {
+      "native": "00ad0c60",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_records.cpp: copy_construct_native_gui_frame_box_record_00ad0c60",
+      "reason": "Missing a production populated FrameBox copy path with actual source records and resource owners."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: font integration",
+      "reason": "No live editable-text byte-acceptance consumer was established; glyph rendering alone does not consume this predicate."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: screen projection integration",
+      "reason": "No original screen-margin owner and corresponding clamp call site was established."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_native_settings_application.cpp: language catalog integration",
+      "reason": "No current language-option list consumer requiring the lanfile-name vector was established."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane collision-band integration",
+      "reason": "Missing the actual nonzero unit+B04h correction producer admitting the alternate-frame branch."
+    }
+  ],
+  "measurements": {
+    "readiness_wired_before": 10726,
+    "readiness_wired_after": 10727,
+    "release_reconstructed_addresses_called_before": 5594,
+    "release_reconstructed_addresses_called_after": 5604,
+    "note": "Text reachability, Release inlining and identical-code folding produce different counts. The call-graph increase includes transitive generic hint branches; these counts are static evidence, not observed gameplay coverage."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 PASS; all five CTests pass",
+    "probe": "MSVC Win32 /O2 /MD /fp:strict, /link /MANIFEST:EMBED; tests/wire_g5_c875_keyboard_float_probe.cpp PASS",
+    "probe_scope": "Raw string/float inserts and rebalancing, zero initialization, case-insensitive duplicate identity, retained mapped values, interoperability with the existing keyboard storage provider, and cleanup through the production scalar-map destructor 00445900.",
+    "call_graph": "Fresh build/win32 Release graph: 004440C0 has one entry-reachable call from allocate_native_soldier_loop_node_004441E0; 00444910 and 004AFE50 are called by get_or_insert_native_soldier_loop_length_00444BE0; entry path passes through KeyboardRawFloatLibrary and GameNativeInputConfigurationApplication.",
+    "assembly": "bsp.py show 00444150 --asm and show 004440c0 --asm establish equivalent header-copy and late FLD32/FSTP32 order. Source comment cites the instruction ranges.",
+    "limitations": "No game launch or original binary ABI claim; input owner construction and virtual dispatch are source/call-graph checked, while the standalone fixture exercises the shared actual map/pool/cleanup domain."
+  },
+  "left": "Land task construction/profile services, movie-camera screen ownership, populated FrameBox Page composition, controller snapshot transport and editable-text input consumer remain separate work."
+}

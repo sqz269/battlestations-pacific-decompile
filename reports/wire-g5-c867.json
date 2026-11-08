@@ -1,0 +1,62 @@
+{
+  "chain": 867,
+  "slot": "g5-w6",
+  "picked": "Icon process-pool slab-table reserve on the actual pre-GUI startup path",
+  "rows": [
+    {
+      "native": "00ab2420",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::initialize -> initialize_pool<GuiIconPoolTraits, &reserve_native_gui_icon_pool_table_00ab2420>",
+      "state": "The same retained F8BDA0 process-pool +28h table; capacity 32 comes from the native 00AB2850 constructor.",
+      "evidence": "bsp.py show 00AB2420 and 00AB2850. This source call replaces the constructor's inline reserve copy; the native constructor has no original CALL to 00AB2420. The existing AA6FA0 capacity implementation retains unsigned DWORD arithmetic, capacity publication before allocation, null-tested slot copying, and old-table free/adoption.",
+      "call_graph": "Ob0/OPT:NOICF build: body 10500b60, one entry-reachable CALL at 106be226 from initialize_pool<GuiIconPoolTraits>; WinMainCRTStartup -> WinMain -> GameNativeGuiWidgetPoolProcess<GuiIconPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiIconPoolTraits>::initialize -> initialize_pool -> 00AB2420.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "00aab8e0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button pool table capacity",
+      "reason": "No live Button process startup or allocation caller was established; the current production startup explicitly starts Icon, Text and Group pools, and Button factory composition is still missing."
+    },
+    {
+      "native": "00aab930",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button pool table grow",
+      "reason": "Missing an entry-reachable Button pool allocation path consuming the retained Button table; adding this helper alone would leave it uncalled."
+    },
+    {
+      "native": "00aabc70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button pool table push_back",
+      "reason": "Missing live Button factory composition and its process-pool allocation caller; the Icon allocation path owns a different table."
+    },
+    {
+      "native": "00aabd00",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: Button pool table reserve",
+      "reason": "No live Button CRT initializer was established on the existing startup path; startup must compose that process owner before this reserve can run on its real state."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_window_platform_base_00be2ac0",
+      "reason": "Already invoked by the actual platform constructor through the newer canonical implementation; the older engine_services identifier is not grounds for running the base constructor again."
+    }
+  ],
+  "validation": {
+    "baseline": "Fresh index and scripts/build.ps1 passed all five tests before edits.",
+    "changed_build": "scripts/build.ps1 passed: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed; call_graph.py --build-dir build/callgraph who/path 00ab2420 confirms the distinct Icon caller without ICF folding.",
+    "release_reconstructed_called_before": 5587,
+    "release_reconstructed_called_after": 5588,
+    "readiness_wired_before": 10718,
+    "readiness_wired_after": 10718,
+    "readiness_scope": "The new address is omitted by wire_readiness's game-only scope because its original snapshot name is TMPL_PointerArray_Reserve_00ab2420 and its existing tag is tmpl_shape. Those classification inputs were not changed to inflate the total. The executable call graph separately proves the new body's distinct live Icon call.",
+    "float_math_changed": false,
+    "new_tests": 0,
+    "ghidra": "Project/program verified by annotate/export tools; prior name/comment recorded in local/ghidra-annotations-20261108T135916Z.json, evidence appended, project saved and affected export refreshed.",
+    "limits": "Static entry reachability and build/test evidence only; no game run or original ABI compatibility claim."
+  },
+  "left": "Button startup/factory composition and its slab-table helpers; Icon growth and allocation table helpers were not changed."
+}

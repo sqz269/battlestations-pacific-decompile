@@ -5,6 +5,7 @@
 #include "bsp/native_hardware_layout_tree_insert.hpp"
 #include "bsp/native_legacy_sbo_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_string_copy_construct.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 
 #include <cstring>
@@ -132,27 +133,11 @@ void* initialize_native_soldier_loop_node_00444150(
     Access::left(node) = left_node;
     Access::parent(node) = parent_node;
     Access::right(node) = right_node;
-    auto* const destination_key = at(node, 0x0c);
-    field<std::uint32_t>(destination_key) = 0;
-    field<char*>(destination_key, 4) = nullptr;
-    if (destination_key != pair) {
-        resize_native_string_header_0041dd40(
-            destination_key, strings, string_length(pair), true);
-        if (string_length(pair) != 0) {
-            const auto copied_length = string_length(destination_key);
-            auto* const source_data = string_data(pair);
-            auto* const destination_data = string_data(destination_key);
-            std::memmove(destination_data, source_data, copied_length);
-        }
-    }
-    const void* source_value = at(pair, 8);
-    void* destination_value = at(node, 0x14);
-    __asm {
-        mov eax, source_value
-        mov edx, destination_value
-        fld dword ptr [eax]
-        fstp dword ptr [edx]
-    }
+    // bsp.py show 00444150 --asm: 00444172..004441AE is the same header
+    // construction and late FLD32/FSTP32 scalar copy as 004440C0..004440FF.
+    // Reuse that body on this actual node pair; links precede it, color/nil
+    // follow it, and source+8 is not captured before string-pool work.
+    copy_construct_native_string_with_scalar_004440c0(at(node, 0x0c), pair, strings);
     Access::color(node) = node_color;
     Access::byte(node, 0x19) = 0;
     return node;

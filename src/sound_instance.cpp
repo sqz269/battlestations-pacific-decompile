@@ -1,4 +1,5 @@
 #include "bsp/sound_instance.hpp"
+#include "bsp/sound_gameplay_methods.hpp"
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/unit_motion.hpp"
@@ -257,8 +258,11 @@ void update_sound_channel_00a7af10(SoundChannelInstance& s, float dt, std::uint3
     }
     const bool paused = s.paused_1c || descriptor(s.class_44).flags_0c;
     c.fmod.channel_set_paused(s.channel_54, static_cast<std::uint8_t>(s.enabled_38 | static_cast<std::uint8_t>(paused)));
-    float ignored;
-    c.fmod.channel_get_audibility(s.channel_54, &ignored);
+    // 00A7AF10's tail queries this same live channel after setPaused and
+    // discards the output (bsp.py show 00a7af10, final getAudibility).
+    // Reuse 00A7A710's single FMOD query; its initialized/returned scalar is
+    // likewise discarded here, including when FMOD leaves the output alone.
+    static_cast<void>(sound_channel_audibility_00a7a710(s, c));
     s.was_virtual_58 = s.virtual_59;
     s.virtual_59 = static_cast<std::uint8_t>(!c.virtuals.query_slot_14(s, c));
 }
