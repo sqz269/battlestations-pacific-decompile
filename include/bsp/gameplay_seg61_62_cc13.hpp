@@ -422,8 +422,18 @@ struct ClassRegistryModel {
 // 0095B9E0 `__thiscall(index)`: grow the cache to index+1 (00437BD0) when
 // needed, release the entry (destroy at a zero count) and store null.
 void class_registry_release_cached_0095b9e0(ClassRegistryModel& reg, std::int32_t index);
-// 0095BA30: both vectors resized to 0 (00437BD0(0), 004359E0(0)).
-void class_registry_clear_0095ba30(ClassRegistryModel& reg);
+// 0095BA30 has no native receiver: it gets the current registry separately
+// before each resize. Bind both subobjects of the actual registry; the second
+// getter must observe any publication change caused by releasing the cache.
+// This C++ service interface is not an original binary ABI bridge.
+class ClassRegistryClearCalls {
+public:
+    virtual ~ClassRegistryClearCalls() = default;
+    virtual void* get_registry_00437f50() = 0;
+    virtual void resize_cache_00437bd0(void* actual_cache, std::int32_t count) = 0;
+    virtual void resize_party_rows_004359e0(void* actual_rows, std::int32_t count) = 0;
+};
+void class_registry_clear_0095ba30(ClassRegistryClearCalls& calls);
 // 0095BAB0 `__fastcall(ECX=index)` -> bool: false unless the local player index
 // world+18ECh is 0..7; grows the party rows to index+1 (004359E0) and answers
 // party_rows[index][player+28h] == 0. This C++ interface borrows the actual

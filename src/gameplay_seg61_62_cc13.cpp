@@ -537,9 +537,14 @@ void class_registry_release_cached_0095b9e0(ClassRegistryModel& reg, std::int32_
     cell = nullptr;                                                      // 0095BA26
 }
 
-void class_registry_clear_0095ba30(ClassRegistryModel& reg) {
-    reg.cache_4.clear();          // 0095BA3C 00437BD0(0)
-    reg.party_rows_4010.clear();  // 0095BA4F 004359E0(0)
+__declspec(noinline) void class_registry_clear_0095ba30(ClassRegistryClearCalls& calls) {
+    // bsp.py show 0095BA30 --asm: CALL getter, ADD EAX,4, resize(0);
+    // CALL getter again, ADD EAX,4010h, resize(0). The previous model's
+    // vector::clear skipped the real cache's reference-release service.
+    auto* registry = static_cast<std::uint8_t*>(calls.get_registry_00437f50());
+    calls.resize_cache_00437bd0(registry + 4, 0);
+    registry = static_cast<std::uint8_t*>(calls.get_registry_00437f50());
+    calls.resize_party_rows_004359e0(registry + 0x4010, 0);
 }
 
 __declspec(noinline) bool class_registry_party_row_clear_0095bab0(
