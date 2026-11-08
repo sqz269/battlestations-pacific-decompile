@@ -2443,10 +2443,12 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     bool sq_lock_3a9{false};         // +3A9h
     double sq_timer_expiry_380{-1.0};
     // Packet l68_travel_speed: the fourth quadruple, 008A0630's stores (countdown 3
-    // +388h held as its expiry clock, freeze +38Fh, +3A0h, lock +3ACh). While
-    // sq_speed_set is false +3A0h is the class's [squadron+35Ch]+190h, as 007ED590 /
-    // 007F1FE0 / 007ED5D0 write it.
+    // +388h held as its expiry clock, freeze +38Fh, +3A0h, lock +3ACh).
+    // sq_speed_set marks a script override; sq_speed_refreshed marks an actual
+    // 007ED5D0 class-speed store. Either publication feeds the movement readers.
+    // Before either, the existing readers use the loaded class speed directly.
     bool sq_speed_set{false};
+    bool sq_speed_refreshed{false};
     float sq_speed_3a0{0.0f};
     bool sq_freeze_38f{false};
     bool sq_lock_3ac{false};
@@ -12145,33 +12147,57 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     float squadron_speed_3a0_live(std::size_t unit, float class_value) {
         if constexpr (kLuaSquadronSetTravelSpeedBound) {
             const GameUnitSlot* sq = squadron_slot_of(unit);
-            if (sq != nullptr && sq->sq_speed_set) {
-                ++travel_speed_script_reads;
+            if (sq != nullptr && (sq->sq_speed_set || sq->sq_speed_refreshed)) {
+                if (sq->sq_speed_set) ++travel_speed_script_reads;
                 return sq->sq_speed_3a0;
             }
         }
         return class_value;
     }
     // 007ED5D0 BSP_PlaneSquadron_RefreshTravelSpeed, from BSP_PilotBot_Tick
-    // 0099AEA3 when the member's head task changed and unit+9D4h is set. Unless
-    // +38Fh: the class value when the countdown is below zero and +3ACh is clear;
-    // then +3ACh = 0. LABELLED: the change is seen at the member's next think.
+    // 0099AEA3 when the member's head task changed and unit+9D4h is set.
+    // The existing host represents +388h by an expiry clock and fuses the
+    // squadron with wing 0 (the registry's type_class_id). Feed its remaining
+    // duration and that wing's loaded class speed to the single body. This
+    // retains the host's clock representation, not native per-tick timer ABI.
     unsigned long long travel_speed_refreshes{0};
     unsigned long long travel_speed_reverts{0};
     unsigned long long travel_speed_script_reads{0};
     void refresh_travel_speed_007ed5d0(std::size_t unit) {
-        GameUnitSlot* sq = squadron_slot_of(unit);
-        if (sq == nullptr || !sq->sq_speed_set) return;
+        // The native call tests member+9D4h. A standalone plane's fallback
+        // block in squadron_slot_of is not a squadron for this operation.
+        const auto* record = bsp::plane_squadron_registry().find_by_member_unit(unit);
+        if (record == nullptr || record->squadron_unit >= slots.size()) return;
+        GameUnitSlot* sq = slots[record->squadron_unit].get();
+        if (sq == nullptr) return;
         ++travel_speed_refreshes;
-        if (sq->sq_freeze_38f) return;                                     // 007ED5D3
-        if (summary.simulated_seconds >= sq->sq_timer_expiry_388 && !sq->sq_lock_3ac) {
-            sq->sq_speed_set = false;                                      // 007ED5FA
+        struct RefreshView final : bsp::PlaneSquadronTravelSpeedView {
+            RefreshView(Impl& owner, GameUnitSlot& sq)
+                : PlaneSquadronTravelSpeedView(sq.sq_freeze_38f, sq.sq_lock_3ac,
+                    sq.sq_speed_3a0), owner(owner), sq(sq) {}
+            float countdown_388() const override {
+                return static_cast<float>(sq.sq_timer_expiry_388 - owner.summary.simulated_seconds);
+            }
+            const float& class_speed_190() const override {
+                if (!owner.lua.plane_globals_loaded())
+                    throw std::logic_error("Squadron travel-speed refresh requires PlaneGlobals");
+                // This is the fused wing-0 plane's genuine descriptor class:
+                // PlaneSquadronHostRecord::type_class_id constructs all wings.
+                cached_class_speed = owner.retreat_squadron_speed_3a0(sq);
+                return cached_class_speed;
+            }
+            Impl& owner;
+            GameUnitSlot& sq;
+            mutable float cached_class_speed{};
+        } view{*this, *sq};
+        if (bsp::cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(view)) {
+            sq->sq_speed_set = false;
+            sq->sq_speed_refreshed = true;
             ++travel_speed_reverts;
             log.notef("squadron travel speed: %s back to the class value at %.2f s "
                 "(007ED5D0, packet l68_travel_speed)", sq->row.name.c_str(),
                 static_cast<double>(summary.simulated_seconds));
         }
-        sq->sq_lock_3ac = false;                                           // 007ED600
     }
     static std::uint64_t head_task_signature(const GameUnitSlot& u) {
         std::uint64_t s = 0;
