@@ -6478,9 +6478,9 @@ private:
     std::deque<std::string> strings_;
 };
 
-// The four surface leaves below only ask for the actual settings singleton's
-// selected tuning dwords. Keep the other leaf-specific services unavailable:
-// they belong to the carrier, landing-ship and submarine loaders.
+// The surface leaves borrow the actual settings singleton's selected tuning
+// dwords. Landing-ship class registration and submarine effect resolution
+// remain unavailable in this binding.
 class GameMissionLuaShipLeafFieldBinding final : public bsp::ShipLeafFieldHost {
 public:
     GameMissionLuaShipLeafFieldBinding(bsp::GameplayTuningSettings& settings,
@@ -6795,7 +6795,7 @@ private:
         using Kind = bsp::VehicleClassKind;
         if (kind != Kind::BattleShip && kind != Kind::Cargo
             && kind != Kind::Cruiser && kind != Kind::Destroyer
-            && kind != Kind::MotherShip) return;
+            && kind != Kind::MotherShip && kind != Kind::TorpedoBoat) return;
 
         // 00424C40 is lazy in the image as well. Resolve its real ShipGlobals
         // producer if this class is the first settings borrower in this run.
@@ -6834,6 +6834,14 @@ private:
             // same retained tuning instead of re-reading the Lua class type.
             bsp::read_mothership_class_fields_00759590(lua, settings, row, fields);
             owner_.log_.implemented("VehicleClass::load_mothership_leaf", "00759590");
+            break;
+        case Kind::TorpedoBoat:
+            // bsp.py show 00857F40: after the ship base, the real class row
+            // supplies +808h/+80Ch/+810h (TurboTime/Strength/RechargingTime),
+            // with defaults 10/3/10, then the selected tuning +14h/+10h.
+            // Navigation/depth and the scalar reader below share this result.
+            bsp::read_torpedo_boat_class_fields_00857f40(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_torpedo_boat_leaf", "00857f40");
             break;
         default: return;
         }
@@ -17199,6 +17207,15 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
         // second lookup of the mutable Lua row (00759590 has already run).
         if (std::strcmp(key, "RunwayWidth") == 0) return leaf->second.fields.runway_width;
         if (std::strcmp(key, "RunwayLength") == 0) return leaf->second.fields.runway_length;
+    }
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::TorpedoBoat) {
+        // 00857F40 owns these descriptor fields once the class loads. A later
+        // Lua edit must not replace the values retained beside that descriptor.
+        const auto& fields = leaf->second.fields;
+        if (std::strcmp(key, "TurboTime") == 0) return fields.turbo_time;
+        if (std::strcmp(key, "TurboStrength") == 0) return fields.turbo_strength;
+        if (std::strcmp(key, "TurboRechargingTime") == 0) return fields.turbo_recharging_time;
     }
     const auto loaded = vehicle_class_ship_base_fields_.find(index);
     if (loaded != vehicle_class_ship_base_fields_.end()) {
