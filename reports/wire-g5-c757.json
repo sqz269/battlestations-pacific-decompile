@@ -3,16 +3,17 @@
   "chain": 757,
   "owner": "agent/g5-w4",
   "baseline_head": "42bdd0e001300149f59934ba3ffc976bf853de93",
-  "scope": "Borrow the live director cursor and path source for index and final-point queries.",
+  "scope": "Borrow the live director cursor and path source for final-point queries.",
   "rows": [
     {
       "native": "007b1010",
-      "status": "wired",
-      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600",
-      "state": "The same PathCursorState just initialized by 007B1D30/007B1C50; its returned index is installed into the live director follower.",
-      "native_abi": "ECX cursor, EAX DWORD at cursor+08h, RET",
-      "called": true,
-      "call_sites": 1
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: former call in GameCommandsHost::build_path_object_0071f600",
+      "reason": "Missing actual authored-source path-pointer getter consumer in this packet; removed the wrong cursor-receiver call. The existing provisional C++ name/signature misidentifies the receiver and requires correction before any future wiring.",
+      "state": "007B22A0 constructs authored source vtable 00D0534C with the scene-path pointer at +08h; vslot +28h at 00D05374 references this getter.",
+      "native_abi": "ECX authored-source object, EAX borrowed scene-path pointer from source+08h, RET",
+      "called": false,
+      "call_sites": 0
     },
     {
       "native": "007b1350",
@@ -217,12 +218,20 @@
     "build": "scripts/build.ps1 passed on the final source; all four existing CTests passed",
     "call_graph": "Fresh parent and final builds were both analyzed; the initial readiness call-graph cache was stale and was not used for the called-total comparison.",
     "called_addresses_before": 5982,
-    "called_addresses_after": 5984,
+    "called_addresses_after": 5983,
     "readiness_wired_before": 10587,
-    "readiness_wired_after": 10588,
-    "new_reconstructed_bodies": ["007b1010", "007b1350", "007adb90"],
+    "readiness_wired_after": 10587,
+    "new_reconstructed_bodies": ["007b1350", "007adb90"],
     "displaced_shortcut": "007b10c0",
-    "evidence": ["bsp.py show 007b1010", "bsp.py show 007b1350 --asm", "bsp.py show 007adb90 --asm"],
+    "evidence": ["bsp.py show 007b22a0", "bsp.py show 007b1010 --asm", "bsp.py show 007b1350 --asm", "bsp.py show 007adb90 --asm"],
     "boundary": "Build and static entry-reachable call evidence; the game was not run, and the typed adapters are not original binary ABI replacements."
+  },
+  "review_round_1": {
+    "review_run": 1650,
+    "reviewed_head": "227210346d158263a80792cab61a67d9b195be81",
+    "findings": [
+      {"finding": 1, "status": "fixed", "resolution": "Removed the wrong-receiver 007B1010 call and restored the direct cursor-index copy; only the accepted 007B1350 -> 007ADB90 wiring remains."},
+      {"finding": 2, "status": "fixed", "resolution": "Marked 007B1010 skipped, corrected its authored-source receiver and pointer return, and refreshed the build/call/readiness verification totals."}
+    ]
   }
 }

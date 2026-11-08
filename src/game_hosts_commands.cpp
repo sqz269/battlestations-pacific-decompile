@@ -4255,10 +4255,7 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         const pm::Vec3 position{unit_x, 0.0f, unit_z};
         pm::entity_command_path_cursor_start_thunk_007b1d30(cursor, &source, position, 0.0f,
             pair, cursor_host);
-        // bsp.py show 007B1010: ECX is the cursor, EAX is its +08h index,
-        // RET. Read the SAME cursor just initialized by 007B1D30/007B1C50;
-        // this is the result installed into the live director's follower.
-        director.path_cursor.index_08 = pm::path_cursor_index_007b1010(cursor);
+        director.path_cursor.index_08 = cursor.index_08;
         director.path_cursor.follow_mode_0c = cursor.follow_mode_0c;
         director.path_cursor.forward_10 = cursor.forward_10;
     }
