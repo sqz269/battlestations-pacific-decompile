@@ -316,8 +316,13 @@ void terrain_grid_layer_deserialize_004239e0(TerrainGridLayerRecord& layer, Terr
     layer.cell_size = stream.read_float_44(0);       // 00423A40
     layer.file_scalar = stream.read_float_44(0);     // 00423A4E
     layer.slope_limit = stream.read_float_44(0);     // 00423A5C
-    const std::int32_t cells = layer.dimension * layer.dimension;
-    layer.grid.resize(static_cast<std::size_t>(static_cast<std::uint32_t>(cells)), 0);  // 00423A6D 004219A0(n*n, 0)
+    // 00423A5F..00423A6D IMUL keeps the low 32 bits. Avoid signed C++
+    // overflow before the native byte-vector resize receives that count.
+    const std::uint32_t cell_bits = static_cast<std::uint32_t>(layer.dimension) *
+        static_cast<std::uint32_t>(layer.dimension);
+    std::int32_t cells;
+    std::memcpy(&cells, &cell_bits, sizeof(cells));
+    layer.grid.resize(static_cast<std::size_t>(cell_bits), 0);  // 00423A6D 004219A0(n*n, 0)
     if (layer.grid.empty()) stream.invalid_parameter_00bf6713();  // 00423A72..00423A82
     stream.read_bytes_24(layer.grid.data(), cells, 0);           // 00423A9D
 }
