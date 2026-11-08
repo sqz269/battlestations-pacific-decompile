@@ -165,7 +165,10 @@ Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegate
 Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, MatrixCopyHost& host);
 Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host);
-Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host);
+// Capture the caller's actual 00D7A24C word once, then build a stack identity
+// and use only the native matrix-copy service. New source interface, not ABI.
+Raw matrix_set_identity_0042d510(Raw matrix, MatrixCopyHost& host,
+                               const volatile std::uint32_t& one_00d7a24c);
 Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host);
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
                                                   MatrixOrthonormalizeHost& host);

@@ -7,14 +7,15 @@
 #include "bsp/native_string.hpp"
 
 #include "bsp/engine_seg4_6_9_cc13.hpp"
+#include <cstring>
 
 namespace bsp::profile_seg2_cc13 {
 namespace {
 
 // 00D7A208, float -0.0: the negated rotations build (-0.0f - angle) with SUBSS.
 constexpr float kNegativeZero = -0.0f;
-// 00D7A24C, float 1.0: identity diagonal.
-constexpr float kOne = 1.0f;
+// 00D7A24C, float 1.0 bits: identity diagonal in the existing fixed projection.
+constexpr std::uint32_t kOneWord = 0x3f800000u;
 // 00CE3C88 / 00CE3C84, floats 512.0 and 384.0: the default extent pair.
 constexpr float kDefaultExtentX = 512.0f;
 constexpr float kDefaultExtentY = 384.0f;
@@ -55,12 +56,14 @@ void observer_ref_on_released(Raw ref, void* released, Seg2Host& host) {
 
 // 0042D510 / 0042E8C0: the same body twice. A stack identity is copied in
 // through 004134F0.
-Raw matrix_set_identity(Raw matrix, Seg2Host& host) {
+Raw matrix_set_identity(Raw matrix, MatrixCopyHost& host, std::uint32_t diagonal = kOneWord) {
     Mat16 identity{};
-    identity.m[0] = kOne;
-    identity.m[5] = kOne;
-    identity.m[10] = kOne;
-    identity.m[15] = kOne;
+    // MOVSS at 0042D516 captures one word, reused at 0042D526/544/562/580.
+    // Keep its bits until 004134F0 performs the sequential x87 copies.
+    std::memcpy(&identity.m[0], &diagonal, sizeof(diagonal));
+    std::memcpy(&identity.m[5], &diagonal, sizeof(diagonal));
+    std::memcpy(&identity.m[10], &diagonal, sizeof(diagonal));
+    std::memcpy(&identity.m[15], &diagonal, sizeof(diagonal));
     host.matrix_copy_004134f0(matrix, identity);
     return matrix;
 }
@@ -387,7 +390,10 @@ Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host) {
 }
 
 // 0042D510, __thiscall(matrix), RET, EAX = matrix.
-Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host) { return matrix_set_identity(matrix, host); }
+Raw matrix_set_identity_0042d510(Raw matrix, MatrixCopyHost& host,
+                               const volatile std::uint32_t& one_00d7a24c) {
+    return matrix_set_identity(matrix, host, one_00d7a24c);
+}
 
 // 0042E8C0: byte-identical body to 0042D510.
 Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host) { return matrix_set_identity(matrix, host); }
