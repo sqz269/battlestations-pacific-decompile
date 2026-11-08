@@ -189,9 +189,22 @@ struct GroupCommandForwardHost {
     virtual void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) = 0;
 };
 
+// 00A32500 needs only a retained {data,count,capacity} publication, its CRT
+// allocation lifetime, the negative-mode selector and weight-memo invalidation.
+// A globals loader must not implement unrelated unit/planner services.
+struct ForcedRuleInsertHost {
+    virtual ~ForcedRuleInsertHost() = default;
+    virtual Raw global(std::uint32_t image_address) = 0;
+    virtual void* operator_new_00bf55be(std::size_t size) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual int ai_effective_game_mode_index_009ffc80() = 0;
+    virtual void forced_target_weight_clear_00a038c0() = 0;
+};
+
 struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost, PlannerConstructionHost,
-                   GroupCommandForwardHost {
+                   GroupCommandForwardHost, ForcedRuleInsertHost {
     virtual ~Seg70Host() = default;
+    int ai_effective_game_mode_index_009ffc80() override = 0;
 
     // Image globals: the memory at that image address.
     virtual Raw global(std::uint32_t image_address) = 0;
@@ -376,7 +389,7 @@ void controller_broadcast_party_state_00a329f0(Seg70Host& host);
 // 00A32460 BSP_AiController_DestructBody, __fastcall(ECX = controller).
 void controller_destruct_body_00a32460(Seg70Host& host, Raw controller);
 // 00A32500 BSP_Ai_ForcedTargetWeightInsert, __fastcall(ECX = 20h-byte rule, DL = global)(mode), RET 4.
-void forced_target_weight_insert_00a32500(Seg70Host& host, const std::uint8_t* rule, bool global_table,
+void forced_target_weight_insert_00a32500(ForcedRuleInsertHost& host, const std::uint8_t* rule, bool global_table,
                                           int mode);
 // 00A371A0 BSP_Ai_ActiveModeTuning, void(): coordinator + 4 + mode * 23Ch.
 void* active_mode_tuning_00a371a0(ActiveModeTuningHost& host);

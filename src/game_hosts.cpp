@@ -2,6 +2,7 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_startup_random.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/platform_activation.hpp"
@@ -3903,6 +3904,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // 004DD71B, has no writer here (see the application's comment).
     if (input_configuration_ && input_configuration_->load_if_unloaded())
         log_.implemented("OnInitOnce::load_input_configuration", "00698a10");
+    // 004DD766: 004C1C50 -> HighLvlAIGlobals ctor 00A37130 -> 00A335D0.
+    // Its 00A36FD5 tail supplies the retained native forced-rule tables before
+    // OnInitTitle and any mission's weight-model queries.
+    ai_initialize_forced_rule_tables();
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
