@@ -2869,6 +2869,16 @@ int main() {
                 && bsp::is_unlock_expression_satisfied_007fc4c0(profile, "rank, IJN04")
                 && bsp::are_unlock_requirements_met_007fc820(profile, {}),
             "a zero named counter is locked, an any-of token and an empty vector are not");
+        // 007F8890 must traverse real list links, gate CRT comparison by byte
+        // length, and accept an empty ID without dereferencing its text.
+        profile.content_ids = {"unrelated", "DL_Content_0000062", ""};
+        check(bsp::classify_unlock_token_007fc4c0(profile, "dl_content_0000062")
+                    == bsp::UnlockSource::kDownloadableContent
+                && bsp::classify_unlock_token_007fc4c0(profile, "DL_Content_000006")
+                    == bsp::UnlockSource::kNone
+                && bsp::classify_unlock_token_007fc4c0(profile, "")
+                    == bsp::UnlockSource::kDownloadableContent,
+            "owned content uses the native list scan and exact length before case folding");
     }
 
     {

@@ -1,7 +1,12 @@
 #include "bsp/profile_unlock.hpp"
+#include "bsp/oct18_tail_b.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cctype>
+#include <cstddef>
+#include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -29,7 +34,90 @@ bool is_separator(char c) noexcept
     return kUnlockTokenSeparators.find(c) != std::string_view::npos;
 }
 
+class ProfileContentCalls final : public oct18_tail_b::ProfileContentHost {
+public:
+    int compare_case_insensitive_00bf7fbf(const char* lhs, const char* rhs) override {
+        return _stricmp(lhs, rhs);
+    }
+    void invalid_iterator_00bf6713() override {
+        throw std::logic_error("invalid profile content-list iterator");
+    }
+};
+
+bool owns_profile_content(const ProfileUnlockState& profile, std::string_view token)
+{
+    // 007F8890 (bsp.py show): profile+D0h points to a circular list sentinel;
+    // nodes hold next/previous/length/data at +0/+4/+8/+Ch. This read-only view
+    // borrows the actual owner's IDs, preserving their order and byte lengths.
+    // It does not populate content entitlements from installed files: 007FDB20
+    // clears this owner's list, and only its real producer can add IDs.
+    struct Node {
+        Node* next;
+        Node* previous;
+        std::uint32_t length;
+        const char* data;
+    };
+    struct ProfileView {
+        std::array<std::byte, 0xd0> unread;
+        Node* head;
+    };
+    struct StringView {
+        std::uint32_t length;
+        const char* data;
+    };
+    static_assert(sizeof(Node) == 0x10 && offsetof(Node, data) == 0xc);
+    static_assert(offsetof(ProfileView, head) == 0xd0);
+    static_assert(offsetof(StringView, data) == 4);
+
+    std::vector<Node> nodes(profile.content_ids.size());
+    Node sentinel{&sentinel, &sentinel, 0, nullptr};
+    for (std::size_t i = 0; i < nodes.size(); ++i) {
+        const std::string& id = profile.content_ids[i];
+        nodes[i] = {i + 1 < nodes.size() ? &nodes[i + 1] : &sentinel,
+                    i != 0 ? &nodes[i - 1] : &sentinel,
+                    static_cast<std::uint32_t>(id.size()), id.c_str()};
+    }
+    if (!nodes.empty()) {
+        sentinel.next = &nodes.front();
+        sentinel.previous = &nodes.back();
+    }
+    const ProfileView view{{}, &sentinel};
+    // Tokens are string_views into a delimited expression; the CRT needs its
+    // own terminator, while the native length comparison must retain size().
+    const std::string terminated(token);
+    const StringView comparison{static_cast<std::uint32_t>(token.size()), terminated.c_str()};
+    ProfileContentCalls calls;
+    return oct18_tail_b::profile_owns_content_007f8890(&view, &comparison, calls);
+}
+
+template<class T> T content_field(const void* storage, std::size_t offset) {
+    T result;
+    std::memcpy(&result, static_cast<const std::byte*>(storage) + offset, sizeof result);
+    return result;
+}
+
 } // namespace
+
+namespace oct18_tail_b {
+// 007F8890, __thiscall(profile,NativeString* id), RET 4, AL bool.
+// Moved intact from leftovers_cc13.cpp into the core profile target. Evidence:
+// bsp.py show 007f8890; profile+D0h sentinel, node length+8/data+Ch, __stricmp.
+// Length equality precedes the CRT comparison; empty IDs read no data pointer.
+bool profile_owns_content_007f8890(const void* profile, const void* id, ProfileContentHost& host) {
+    for (void* node = content_field<void*>(content_field<void*>(profile, 0xd0), 0);
+         node != content_field<void*>(profile, 0xd0); node = content_field<void*>(node, 0)) {
+        const auto length = content_field<std::uint32_t>(id, 0);
+        if (content_field<std::uint32_t>(node, 8) == length &&
+            (length == 0 || host.compare_case_insensitive_00bf7fbf(
+                content_field<const char*>(node, 0xc), content_field<const char*>(id, 4)) == 0)) return true;
+        if (node == content_field<void*>(profile, 0xd0)) {
+            host.invalid_iterator_00bf6713();
+            throw std::logic_error("non-returning CRT provider returned");
+        }
+    }
+    return false;
+}
+} // namespace oct18_tail_b
 
 bool NativeStringCaseInsensitiveLess::operator()(
     std::string_view lhs, std::string_view rhs) const noexcept
@@ -87,9 +175,7 @@ UnlockSource classify_unlock_token_007fc4c0(
 
     // 007FC6DD: 007F8890 walks the list at this+D0h and compares length first,
     // then __stricmp.
-    const auto content = std::find_if(profile.content_ids.begin(), profile.content_ids.end(),
-        [token](const std::string& id) { return case_insensitive_compare(id, token) == 0; });
-    if (content != profile.content_ids.end()) {
+    if (owns_profile_content(profile, token)) {
         return UnlockSource::kDownloadableContent;
     }
 

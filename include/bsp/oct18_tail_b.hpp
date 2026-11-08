@@ -25,7 +25,16 @@ public:
     virtual void invalid_iterator_00bf6713() = 0;
 };
 
-class Host : public SubscriptionFilterHost {
+// 007F8890 only needs the CRT comparison and invalid-iterator boundary. Keep
+// those dependencies usable by the live profile owner without unrelated hosts.
+class ProfileContentHost {
+public:
+    virtual ~ProfileContentHost() = default;
+    virtual int compare_case_insensitive_00bf7fbf(const char*, const char*) = 0;
+    virtual void invalid_iterator_00bf6713() = 0;
+};
+
+class Host : public SubscriptionFilterHost, public ProfileContentHost {
 public:
     ~Host() override = default;
     virtual void run_lua_006b8ad0(const char*, int, int, int) = 0;
@@ -80,7 +89,6 @@ public:
     virtual void apply_director_command_0071c1e0(void* director, void* message) = 0;
     virtual void set_gunbot_target_006df170(void* bot, void* target) = 0;
     virtual bool derive_ship_turn_fields_00828f20(void* descriptor) = 0;
-    virtual int compare_case_insensitive_00bf7fbf(const char*, const char*) = 0;
     virtual void insert_census_00441f30(void* vector, void* end, const std::int32_t* value) = 0;
     virtual void read_vehicle_fields_00960230(void* descriptor, void* lua_row) = 0;
     virtual void insert_string_set_004d0640(void* set, const void* native_key) = 0;
@@ -88,7 +96,7 @@ public:
     virtual void erase_string_subtree_004cec60(void* set, void* root) = 0;
     virtual Iterator find_counter_004c8b80(void* map, const void* native_key) = 0;
     virtual std::int32_t* index_counter_005070c0(void* map, const void* native_key) = 0;
-    // invalid_iterator_00bf6713: SubscriptionFilterHost.
+    void invalid_iterator_00bf6713() override = 0;
 };
 
 bool class60_is_kind_007810f0(const void*, int);
@@ -163,7 +171,7 @@ bool event_subscription_matches_00968af0(const void* subscription, const void* p
                                          SubscriptionFilterHost& host);
 char* decode_scene_fragment_008ee670(const char* input, char* scratch);
 
-bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host);
+bool profile_owns_content_007f8890(const void* profile, const void* id, ProfileContentHost& host);
 void flush_pending_unlocks_007fb990(void* profile, Host& host);
 void record_award_at_least_007fbe20(void* profile, const void* key, std::int32_t value, Host& host);
 } // namespace bsp::oct18_tail_b
