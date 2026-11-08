@@ -43,14 +43,40 @@ std::int32_t increment(std::int32_t value) noexcept {
     std::memcpy(&value, &bits, sizeof value); return value;
 }
 } // namespace
-void reserve_effect_sound_samples_005b8ea0(void* header, std::int32_t n, GameplayEffectComponentLifetime& host) {
+// Keep the native sound-array reserve entry as the call target at 005B9B20.
+// Its shared implementation operates on this same live header and sample slots.
+__declspec(noinline) void reserve_effect_sound_samples_005b8ea0(void* header, std::int32_t n, GameplayEffectComponentLifetime& host) {
     reserve_gameplay_effect_components_0086e770(header, n, host);
 }
 void resize_effect_sound_samples_005b8fa0(void* header, std::int32_t n, GameplayEffectComponentLifetime& host) {
     resize_gameplay_effect_components_0086edd0(header, n, host);
 }
 void append_effect_sound_sample_005b9af0(void* header, const void* source, GameplayEffectComponentLifetime& host) {
-    append_gameplay_effect_component_0086eb60(header, source, host);
+    // bsp.py show 005B9AF0 --asm: 005B9B0B..20 doubles the signed capacity
+    // with wrapping ADD, clamps <=1, and calls 005B8EA0 on this actual header.
+    const auto capacity = load<std::int32_t>(header, 8);
+    if (load<std::int32_t>(header, 4) == capacity) {
+        const auto bits = static_cast<std::uint32_t>(capacity) * 2u;
+        std::int32_t grown;
+        std::memcpy(&grown, &bits, sizeof grown);
+        if (grown <= 1) grown = 1;
+        reserve_effect_sound_samples_005b8ea0(header, grown, host);
+    }
+    // 005B9B25..47 reloads data/count after growth, zeros the destination
+    // BEFORE reading source (which may alias it), then retains the sample.
+    const auto address = reinterpret_cast<std::uintptr_t>(load<void*>(header, 0))
+        + static_cast<std::uint32_t>(load<std::int32_t>(header, 4)) * 4u;
+    void* const destination = reinterpret_cast<void*>(address);
+    if (destination) {
+        store<void*>(destination, 0, nullptr);
+        if (void* const sample = load<void*>(source, 0)) {
+            store<void*>(destination, 0, sample);
+            InterlockedIncrement(reinterpret_cast<volatile LONG*>(
+                static_cast<unsigned char*>(sample) + 4));
+        }
+    }
+    // 005B9B4D increments the current header count after the retain call.
+    store<std::int32_t>(header, 4, increment(load<std::int32_t>(header, 4)));
 }
 void read_effect_sound_0086ef60(void* p, GuiLua51Host& lua, const GuiLuaRef& row, EffectSoundContext& context) {
     read_effect_component_base_00868bf0(p, lua, row, context.crt_sse2_conversion);
