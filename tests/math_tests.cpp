@@ -63,6 +63,8 @@
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_render_order.hpp"
+#include "bsp/gui_timed_entry_types.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_text.hpp"
@@ -287,6 +289,50 @@ private:
 }
 
 int main() {
+    {
+        // Chain707: the alpha dispatch domain consumes the retained interval
+        // and countdown, and reloads entry+08 between current54/current4C.
+        bsp::GuiLayoutWidget first, second;
+        first.color[3] = 1.0f;
+        second.color[3] = 0.5f;
+        const volatile float one = 1.0f, zero = -0.0f;
+        bsp::GuiTimedEntryStorage entry;
+        bsp::construct_gui_timed_entry_alpha_00ac2ed0(entry, first, one);
+        bsp::cc13_seg49_64_78::GuiHudTickerRange interval{entry.target_0c, entry.rate_10};
+        bsp::cc13_seg49_64_78::hud_ticker_set_range_00ac2f20(interval, 0, 0x3f800000u);
+        entry.remaining_04 = 1.0f;
+        struct AlphaCalls final : bsp::GuiTimedEntryAlphaCalls {
+            bsp::GuiTimedEntryStorage& entry;
+            bsp::GuiLayoutWidget& first;
+            bsp::GuiLayoutWidget& second;
+            int reads{}, writes{};
+            AlphaCalls(bsp::GuiTimedEntryStorage& e, bsp::GuiLayoutWidget& a, bsp::GuiLayoutWidget& b)
+                : entry(e), first(a), second(b) {}
+            const float* read_color54(bsp::GuiLayoutWidget& current, float (&)[4]) override {
+                check(&current == &first, "alpha reads the current borrowed widget");
+                ++reads;
+                entry.widget_08 = &second;
+                return &current.color[0];
+            }
+            void set_alpha4c(bsp::GuiLayoutWidget& current, float alpha) override {
+                check(&current == &second, "alpha reloads its widget after current54");
+                ++writes;
+                current.color[3] = alpha;
+            }
+        } calls(entry, first, second);
+        const bsp::GuiTimedEntryConstants constants{one, zero};
+        check(bsp::advance_gui_timed_entry_00ad39a0(entry, calls, 0.5f, &first, constants)
+            && entry.remaining_04 == 0.5f && calls.reads == 0,
+            "alpha retained delay prevents early dispatch");
+        check(bsp::advance_gui_timed_entry_00ad39a0(entry, calls, 0.75f, &first, constants)
+            && entry.remaining_04 == 0.0f && entry.target_0c == 0.0f && entry.rate_10 == 1.0f
+            && first.color[3] == 1.0f && second.color[3] == 0.75f
+            && calls.reads == 1 && calls.writes == 1,
+            "alpha consumes interval bits and only the delta beyond its delay");
+        bsp::destroy_gui_timed_entry_profile(entry);
+        check(entry.profile_00 == bsp::kGuiTimedEntryBaseProfile,
+            "alpha retirement restores the base profile");
+    }
     {
         // Chain683: raw native readers borrow the retained slot directly.
         // A stale host cache must not replace the live class+7C/+80 fields.

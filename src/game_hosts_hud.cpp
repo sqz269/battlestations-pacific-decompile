@@ -6845,17 +6845,24 @@ public:
         if (w == nullptr) return;
         owner_.menu.frontend().set_widget_color(*w, w->color[0], w->color[1], w->color[2], value);
     }
-    void stop_weapon_animation(int) override {
-        owner_.record("HudRootRows::stop_weapon_animation", 0x00aa8b80u);
+    void stop_weapon_animation(int slot) override {
+        if (auto* widget = owner_.hud_root_row_widget(bsp::HudRowWidget::WeaponInfo))
+            owner_.menu.frontend().stop_widget_alpha_animation(*widget, slot);
     }
-    std::uint32_t weapon_animation(int) override {
-        owner_.record("HudRootRows::weapon_animation", 0x00aa8b00u);
-        return 0u;
+    std::uint32_t weapon_animation(int slot) override {
+        auto* widget = owner_.hud_root_row_widget(bsp::HudRowWidget::WeaponInfo);
+        if (!widget) return 0u;
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(
+            owner_.menu.frontend().widget_alpha_animation(*widget, slot)));
     }
-    void animation_interval(std::uint32_t, float, float) override {
-        owner_.record("HudRootRows::animation_interval", 0x00ac2f20u);
+    void animation_interval(std::uint32_t animation, float target, float rate) override {
+        owner_.menu.frontend().set_widget_alpha_interval(
+            reinterpret_cast<bsp::GuiTimedEntryStorage*>(static_cast<std::uintptr_t>(animation)), target, rate);
     }
-    void animation_field_4(std::uint32_t, float) override {}
+    void animation_field_4(std::uint32_t animation, float value) override {
+        owner_.menu.frontend().set_widget_alpha_delay(
+            reinterpret_cast<bsp::GuiTimedEntryStorage*>(static_cast<std::uintptr_t>(animation)), value);
+    }
     bool special_command_state(std::uint32_t unit, int role) override {
         // 00927F30(unit, role): the holder at unit+1ACh is the local player's
         // slot 0, as WeaponGroupScreenBinding::local_player_role answers it.
@@ -7290,6 +7297,10 @@ GuiLayoutWidget* GameHudHost::Impl::hud_root_row_widget(bsp::HudRowWidget widget
 
 void GameHudHost::update_hud_root_screen_00649860(float seconds) {
     Impl& impl = *impl_;
+    // Goal 5 chain 707: advance the retained WeaponInfo entry once with this
+    // frame's real delta, before rows may start a new fade. The bridge's SAME
+    // layout/color is read and published; the old callbacks only recorded it.
+    impl.menu.frontend().advance_widget_alpha_animations(seconds);
     // 00649FD7..00649FF5: with the ticker timer expired the award queue at
     // +B0h..+B4h is read. SUBSTITUTION: 00648AB0, which
     // BSP_MissionScoring_GrantAward (0090EDE0) calls to queue an award

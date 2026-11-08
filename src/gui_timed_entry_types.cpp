@@ -84,14 +84,42 @@ bool approach_alpha(const float& current, const float& target,
 }
 } // namespace
 
-GuiTimedEntryStorage& construct_gui_timed_entry_base_00ad3970(
+const float* GuiTimedEntryWidgetDomain::read_color54(
+    GuiTimedEntryStorage& entry, float (&scratch)[4]) const {
+    if (owner_) {
+        auto& widget = borrowed_widget(entry, *owner_);
+        return widget.implementation().read_color54(widget, scratch);
+    }
+    if (!entry.widget_08)
+        throw std::logic_error("Timed alpha requires its live borrowed bridge widget");
+    return alpha_->read_color54(*entry.widget_08, scratch);
+}
+
+void GuiTimedEntryWidgetDomain::set_alpha4c(GuiTimedEntryStorage& entry, float value) const {
+    if (owner_) {
+        auto& widget = borrowed_widget(entry, *owner_);
+        widget.implementation().set_alpha4c(widget, value);
+    } else {
+        if (!entry.widget_08)
+            throw std::logic_error("Timed alpha requires its live borrowed bridge widget");
+        alpha_->set_alpha4c(*entry.widget_08, value);
+    }
+}
+
+GuiWidgetOwner& GuiTimedEntryWidgetDomain::canonical_owner() const {
+    if (!owner_)
+        throw std::logic_error("Section timed entries require their canonical widget owner");
+    return *owner_;
+}
+
+__declspec(noinline) GuiTimedEntryStorage& construct_gui_timed_entry_base_00ad3970(
     GuiTimedEntryStorage& entry, GuiLayoutWidget& widget) noexcept {
     entry.profile_00 = kGuiTimedEntryBaseProfile;
     entry.remaining_04 = 0.0f;
     entry.widget_08 = &widget;
     return entry;
 }
-GuiTimedEntryStorage& construct_gui_timed_entry_alpha_00ac2ed0(
+__declspec(noinline) GuiTimedEntryStorage& construct_gui_timed_entry_alpha_00ac2ed0(
     GuiTimedEntryStorage& entry, GuiLayoutWidget& widget,
     const volatile float& one_00d7a24c) noexcept {
     construct_gui_timed_entry_base_00ad3970(entry, widget);
@@ -107,7 +135,7 @@ GuiTimedEntryStorage& construct_gui_timed_entry_alpha_00ac2ed0(
     }
     return entry;
 }
-void reset_gui_timed_entry_base_00ad3990(GuiTimedEntryStorage& entry) noexcept {
+__declspec(noinline) void reset_gui_timed_entry_base_00ad3990(GuiTimedEntryStorage& entry) noexcept {
     entry.profile_00 = kGuiTimedEntryBaseProfile;
 }
 void destroy_gui_timed_entry_profile(GuiTimedEntryStorage& entry) {
@@ -124,21 +152,18 @@ GuiTimedEntryStorage* delete_gui_timed_entry_profile(GuiTimedEntryStorage& entry
     return &entry;
 }
 
-bool update_gui_timed_entry_alpha_00ac2f40(GuiTimedEntryStorage& entry,
-    GuiWidgetOwner& domain_owner, float delta) {
+__declspec(noinline) bool update_gui_timed_entry_alpha_00ac2f40(GuiTimedEntryStorage& entry,
+    GuiTimedEntryWidgetDomain domain, float delta) {
     require_profile(entry, kGuiTimedEntryAlphaProfile);
     float color[4];
-    auto& read_owner = borrowed_widget(entry, domain_owner);
-    const float* const current_color =
-        read_owner.implementation().read_color54(read_owner, color);
+    const float* const current_color = domain.read_color54(entry, color);
     if (!current_color)
         throw std::logic_error("Timed alpha current54 returned no color storage");
     float candidate;
     if (!approach_alpha(current_color[3], entry.target_0c, entry.rate_10, delta, candidate))
         return false;
     // AC2FB2 reloads entry+8 AFTER current54 and arithmetic.
-    auto& write_owner = borrowed_widget(entry, domain_owner);
-    write_owner.implementation().set_alpha4c(write_owner, candidate);
+    domain.set_alpha4c(entry, candidate);
     return true;
 }
 
@@ -223,8 +248,8 @@ bool update_gui_timed_entry_section_00abe7b0(GuiTimedEntryStorage& entry,
     return update_gui_section_timed_owner_00abe7b0(*section, entry, delta);
 }
 
-bool advance_gui_timed_entry_00ad39a0(GuiTimedEntryStorage& entry,
-    GuiWidgetOwner& domain_owner, float delta, GuiLayoutWidget* /*unused_widget*/,
+__declspec(noinline) bool advance_gui_timed_entry_00ad39a0(GuiTimedEntryStorage& entry,
+    GuiTimedEntryWidgetDomain domain, float delta, GuiLayoutWidget* /*unused_widget*/,
     const GuiTimedEntryConstants& constants) {
     float* remaining = &entry.remaining_04;
     float countdown;
@@ -253,10 +278,10 @@ bool advance_gui_timed_entry_00ad39a0(GuiTimedEntryStorage& entry,
     bool active;
     switch (entry.profile_00) {
     case kGuiTimedEntryAlphaProfile:
-        active = update_gui_timed_entry_alpha_00ac2f40(entry, domain_owner, effective_delta);
+        active = update_gui_timed_entry_alpha_00ac2f40(entry, domain, effective_delta);
         break;
     case kGuiTimedEntrySectionProfile:
-        active = update_gui_timed_entry_section_00abe7b0(entry, domain_owner, effective_delta);
+        active = update_gui_timed_entry_section_00abe7b0(entry, domain.canonical_owner(), effective_delta);
         break;
     default:
         throw std::logic_error("Timed entry current8 has no supported concrete profile");

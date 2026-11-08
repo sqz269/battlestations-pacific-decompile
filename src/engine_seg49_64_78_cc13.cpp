@@ -1,6 +1,7 @@
 // Packet cc13-sys6: segments 49, 64 and 78. See docs/CC13_SYS_6.md and the header for
 // addresses, ABI and evidence. Comments cite the instruction each statement stands for.
 #include "bsp/engine_seg49_64_78_cc13.hpp"
+#include <cstring>
 
 namespace bsp::cc13_seg49_64_78 {
 // 0097A220, ECX=this / EAX=this, RET at 0097A322. Callback +4/+8 is
@@ -1445,10 +1446,10 @@ void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLea
     host.widget_virtual_7c(section);
 }
 
-void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to)
+__declspec(noinline) void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to)
 {
-    ticker.from_0c = from;
-    ticker.to_10 = to;
+    std::memcpy(&ticker.from_0c, &from, sizeof(from));
+    std::memcpy(&ticker.to_10, &to, sizeof(to));
 }
 
 GuiFontRegistryList& gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list)
