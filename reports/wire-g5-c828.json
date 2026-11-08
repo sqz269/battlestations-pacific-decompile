@@ -1,0 +1,179 @@
+{
+  "packet": "g5-w12",
+  "chain": 828,
+  "picked": "Share the reconstructed X/Y matrix setters with the live ship-captain camera's negated-angle operations",
+  "baseline_head": "34ec00c5006023cd2427c9a67fd9c1b2bff87263",
+  "newly_wired": ["0042b3c0", "0042b3f0"],
+  "wired_total_before": 10677,
+  "wired_total_after": 10679,
+  "called_reconstructed_addresses_before": 5531,
+  "called_reconstructed_addresses_after": 5533,
+  "implementation": [
+    "Move the two existing builder/copy bodies into matrix_rotation_setters.cpp; there remains exactly one body per address.",
+    "Narrow their provider from Seg2Host to its existing MatrixNegatedRotationHost base, which the live CameraRotationBinding already implements.",
+    "Replace the duplicated builder/copy pairs in 0042B450/0042B490 with calls to those setters, retaining the existing SUBSS subtraction and return-this behavior.",
+    "Keep the live camera matrices, yaw/pitch inputs, 00B64640/00B646E0 builders and 004134F0 copy provider. No extra rotation, fabricated state or feature switch is introduced."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing checks passed",
+    "native_evidence": "bsp.py show 0042b3c0 / 0042b3f0; bsp.py show 0042b450 / 0042b490 --asm",
+    "call_graph": "Both setters have one direct reachable call from their respective negated-angle wrappers in the production Win32 exe",
+    "entry_path": "WinMainCRTStartup -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameHudHost::update_minimap_screen_005c0f20 -> step_mission_camera -> update_ship_captain_00432ed0 -> 0042B450/0042B490 -> 0042B3C0/0042B3F0",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD passed: 0 findings, 0 allowed, 3 files; no floating-point expression changed",
+    "git_diff_check": "passed"
+  },
+  "limits": "Source/build/reachability checked; no game execution or original register/stack ABI claim.",
+  "coordination": "Exclusive lease held for both setters, both edited wrappers and every edited file; g5-w7 confirmed the reviewed profile_seg2 change does not overlap the rotation section.",
+  "rows": [
+    {
+      "native": "0042b3c0",
+      "status": "wired",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_x_negated_0042b450, reached by src/mission_camera.cpp::rot_x_negated / update_ship_captain_00432ed0",
+      "call_sites": 1
+    },
+    {
+      "native": "0042b3f0",
+      "status": "wired",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_y_negated_0042b490, reached by src/mission_camera.cpp::rot_y_negated / update_ship_captain_00432ed0",
+      "call_sites": 1
+    },
+    {
+      "native": "0042b450",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp::rot_x_negated",
+      "reason": "Already entry-reachable; existing wrapper now delegates its builder/copy pair to 0042B3C0 and is not counted as a new wiring."
+    },
+    {
+      "native": "0042b490",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp::rot_y_negated",
+      "reason": "Already entry-reachable; existing wrapper now delegates its builder/copy pair to 0042B3F0 and is not counted as a new wiring."
+    },
+    {
+      "native": "0042b420",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_z_0042b420 (candidate)",
+      "reason": "A live Z-rotation caller with the required provider was not established in this packet."
+    },
+    {
+      "native": "0042b7f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_orthonormalize_return_this_0042b7f0 (candidate)",
+      "reason": "No additional live caller was established for the return-this orthonormalize wrapper."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp (candidate)",
+      "reason": "The live text-context glyph-input acceptance caller was not established; drawing glyphs does not establish that input-filter path."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GuiManagerPointerSlot (candidate)",
+      "reason": "Full live pointer update requires the retained cursor profile, shared input publication and actual 00AA2F10 hit provider; this packet did not establish that owner chain."
+    },
+    {
+      "native": "00aa2f10",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp::GuiPointerRuntime::update_pointer_00aa3910 (candidate)",
+      "reason": "The live manager/page hit-test provider and shared hover globals were not established in this packet."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::bind_movie_textures",
+      "reason": "The current movie bridge has no native decoder texture resources or loaded movie page to bind."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::clear_movie_subtitles",
+      "reason": "The host retains a subtitle schedule projection; the actual native subtitle-widget owner required by this body is absent."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp (candidate)",
+      "reason": "The native game sound-transition context and its provider chain were not established in the inspected result path."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart host::write_checkpoint",
+      "reason": "The existing body implements only the Lua erase; full native profile-record erasure/storage rewrite and the checkpoint-diff gate remain missing."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::insert_into",
+      "reason": "Already entry-reachable with three direct call sites; no additional unwired path was established."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable with two direct call sites; no additional unwired path was established."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg30_seg50.cpp::controller_snapshot_construct_0080ddb0 / controller_snapshot_ex_construct_0080de00 (candidate)",
+      "reason": "A live snapshot-constructor caller supplying the real ordinal/global and descriptor storage was not established in this packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp::00721A40 command-message path (candidate)",
+      "reason": "The actual director-queue clearing provider was not established without entering the commands host under another worker's review."
+    },
+    {
+      "native": "0042c4c0",
+      "status": "skipped",
+      "host_site": "src/options_hardware_cc13.cpp::apply_weather_camera_shake_00445790 (candidate)",
+      "reason": "The actual raw camera-mover shake destination/provider was not established in the inspected weather path."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::push_effect_handle",
+      "reason": "The preload acquisition still returns null; genuine counted effect handles and their retained vector owner are missing."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::replicate_objective_state",
+      "reason": "The inspected path requires a peer while slot_has_peer returns false; it is not a single-player path to wire."
+    },
+    {
+      "native": "006b68c0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::save_mission_lua_globals_006b7710 (candidate)",
+      "reason": "An entry-reachable mission-save serialization caller was not established."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_mission_lua_state_006b68c0 (candidate)",
+      "reason": "The naming helper depends on the mission-save encoder, whose live host entry was not established."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_mission_lua_state_006b68c0 (candidate)",
+      "reason": "The string-key encoder depends on the mission-save path, whose live host entry was not established."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_mission_lua_state_006b68c0 (candidate)",
+      "reason": "The C-string-key encoder depends on the mission-save path, whose live host entry was not established."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_mission_lua_state_006b68c0 (candidate)",
+      "reason": "The name-strip pass depends on the mission-save encoder, whose live host entry was not established."
+    }
+  ]
+}

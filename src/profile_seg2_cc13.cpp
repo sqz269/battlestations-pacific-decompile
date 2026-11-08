@@ -336,21 +336,9 @@ float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept {
     return static_cast<float>(x87_add24(x87_add24(y, x), z));
 }
 
-// 0042B3C0 / 0042B3F0 / 0042B420, __thiscall(matrix, float angle), RET 4:
-// 00B64640/00B646E0/00B64780 build into a 40h stack temporary, 004134F0
-// copies it into ECX. EAX is not set to `this` (unlike the negated forms).
-void matrix_set_rotation_x_0042b3c0(Raw matrix, float angle, Seg2Host& host) {
-    Mat16 temp{};
-    host.build_rotation_x_00b64640(temp, angle);
-    host.matrix_copy_004134f0(matrix, temp);
-}
-
-void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, Seg2Host& host) {
-    Mat16 temp{};
-    host.build_rotation_y_00b646e0(temp, angle);
-    host.matrix_copy_004134f0(matrix, temp);
-}
-
+// The X/Y setters live in matrix_rotation_setters.cpp and are shared by the
+// negative-angle wrappers below. 0042B420: 00B64780 builds a 40h temporary,
+// then 004134F0 copies it into ECX. EAX is not set to `this`.
 void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host) {
     Mat16 temp{};
     host.build_rotation_z_00b64780(temp, angle);
@@ -362,18 +350,17 @@ void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host) {
 // sibling 0042B4D0 already exists as rotation_z_0042b4d0 in
 // src/marker_manager_cc13.cpp and is not duplicated here.
 Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegatedRotationHost& host) {
-    Mat16 temp{};
     const float negated = kNegativeZero - angle;
-    host.build_rotation_x_00b64640(temp, negated);
-    host.matrix_copy_004134f0(matrix, temp);
+    // bsp.py show 0042b450 --asm: SUBSS precedes exactly the builder/copy
+    // pair in 0042B3C0. Reuse that body on the live camera matrix once.
+    matrix_set_rotation_x_0042b3c0(matrix, negated, host);
     return matrix;
 }
 
 Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host) {
-    Mat16 temp{};
     const float negated = kNegativeZero - angle;
-    host.build_rotation_y_00b646e0(temp, negated);
-    host.matrix_copy_004134f0(matrix, temp);
+    // The Y sibling has the same SUBSS/build/copy sequence (0042B490).
+    matrix_set_rotation_y_0042b3f0(matrix, negated, host);
     return matrix;
 }
 

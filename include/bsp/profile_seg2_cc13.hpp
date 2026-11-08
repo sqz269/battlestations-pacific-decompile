@@ -52,7 +52,7 @@ struct MatrixCopyHost {
     virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
 };
 
-// The negative X/Y rotations need only builders and the native matrix copy.
+// The X/Y setters and their negative-angle wrappers need only builders and the native matrix copy.
 // Keep their production contract usable by a camera without unrelated
 // profile, registry, observer or singleton services.
 struct MatrixNegatedRotationHost : MatrixCopyHost {
@@ -158,8 +158,8 @@ float* vector3_scale_in_place_0042ae50(float v[3], float s) noexcept;
 float* vector3_add_in_place_0042aeb0(float v[3], const float w[3]) noexcept;
 float* vector3_subtract_in_place_0042aee0(float v[3], const float w[3]) noexcept;
 float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept;
-void matrix_set_rotation_x_0042b3c0(Raw matrix, float angle, Seg2Host& host);
-void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, Seg2Host& host);
+void matrix_set_rotation_x_0042b3c0(Raw matrix, float angle, MatrixNegatedRotationHost& host);
+void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host);
 Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, MatrixNegatedRotationHost& host);
 Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, MatrixNegatedRotationHost& host);
