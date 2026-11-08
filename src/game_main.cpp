@@ -1249,6 +1249,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Sound pool CRT CD7660: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", gui_sound_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // Live Ghidra CD77B0/CE34DC: MOV ECX,F8C1D4; CALL AD36A0;
+        // atexit(CE0B50), whose tail jump destroys this same pool via AD31F0.
+        // Its retained allocator-list owner precedes Traceline CE34E4.
+        auto& gui_anim_icon_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiAnimIconPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_anim_icon_pool_atexit = gui_anim_icon_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI AnimIcon pool CRT CD77B0: atexit=%d storage_bytes=%zu "
+            "before_traceline_pool=1", gui_anim_icon_pool_atexit,
+            sizeof(bsp::NativeGuiWidgetPoolStorage));
         // Original CRT table CE34E4 selects CD77F0, before the particle
         // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
         auto& traceline_pool = bsp::game::game_native_traceline_pool_process();
