@@ -3,6 +3,7 @@
 #include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/native_camera_pool_table.hpp"
+#include "bsp/native_node_pool_table.hpp"
 #include "bsp/native_group_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/post_effects_cc13.hpp"
@@ -20,6 +21,52 @@
 // wherever the native code stores a float.
 
 namespace bsp {
+
+// Chain 910: specialize the existing four shared-shape bodies; their legacy
+// dispatchers below forward here. bsp.py show B6DEA0/B6DEF0/B6E580/B6E610
+// and B6DEA0 --asm establish capacity-before-allocation, current count/data
+// reloads, conditional placement stores, free-before-publication and DWORD
+// wrapping. B6E980/B6EB00 inline the same reserve32/append schedules over the
+// actual Node slab table; replacing those loops introduces no second run.
+__declspec(noinline) void allocate_native_node_pool_table_00b6dea0(
+    NativeNodePoolTableView table, std::uint32_t capacity) {
+    static_assert(sizeof(void*) == 4);
+    table.word(8, capacity);
+    const std::uint32_t bytes = capacity * 4u;
+    const auto fresh = reinterpret_cast<std::uintptr_t>(singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes}));
+    auto destination = fresh;
+    for (std::uint32_t index = 0; index < table.word(4); ++index) {
+        if (destination) {
+            const auto source = table.word(0) + index * 4u;
+            *reinterpret_cast<volatile std::uint32_t*>(destination) =
+                *reinterpret_cast<volatile std::uint32_t*>(source);
+        }
+        destination += 4u;
+    }
+    const auto old = table.word(0);
+    if (old) singleton_lifetime_free(reinterpret_cast<void*>(old));
+    table.word(0, fresh);
+}
+
+__declspec(noinline) void grow_native_node_pool_table_00b6def0(NativeNodePoolTableView table) {
+    allocate_native_node_pool_table_00b6dea0(table, table.word(8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_node_pool_table_00b6e580(
+    NativeNodePoolTableView table, const void* pointer_cell) {
+    if (table.word(4) == table.word(8)) grow_native_node_pool_table_00b6def0(table);
+    const auto destination = table.word(0) + table.word(4) * 4u;
+    if (destination)
+        *reinterpret_cast<volatile std::uint32_t*>(destination) =
+            *static_cast<const volatile std::uint32_t*>(pointer_cell);
+    table.word(4, table.word(4) + 1u);
+}
+
+__declspec(noinline) void reserve_native_node_pool_table_00b6e610(
+    NativeNodePoolTableView table, std::uint32_t capacity) {
+    if (table.word(8) < capacity) allocate_native_node_pool_table_00b6dea0(table, capacity);
+}
 
 // Chain 878: specialize the existing shared-shape reconstruction, retaining one
 // body per address. The Camera pool's constructor/allocator inline these same
@@ -94,6 +141,10 @@ bool is_pointer_array_routine(std::uint32_t address) noexcept {
 }
 
 void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t n) {
+    if (address == 0x00B6DEA0) {
+        allocate_native_node_pool_table_00b6dea0({&a}, static_cast<std::uint32_t>(n));
+        return;
+    }
     if (address == 0x00B7AE80) {
         allocate_directional_light_pool_table_00b7ae80(
             {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
@@ -120,6 +171,10 @@ void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t
 }
 
 void grow_pointer_array(std::uint32_t address, PointerArray& a) {
+    if (address == 0x00B6DEF0) {
+        grow_native_node_pool_table_00b6def0({&a});
+        return;
+    }
     if (address == 0x00B7AED0) {
         grow_directional_light_pool_table_00b7aed0({reinterpret_cast<std::byte*>(&a)});
         return;
@@ -141,6 +196,10 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
 }
 
 void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value) {
+    if (address == 0x00B6E580) {
+        append_native_node_pool_table_00b6e580({&a}, &value);
+        return;
+    }
     if (address == 0x00B7B510) {
         append_directional_light_pool_table_00b7b510({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
@@ -164,6 +223,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
+    if (address == 0x00B6E610) {
+        reserve_native_node_pool_table_00b6e610({&a}, n);
+        return;
+    }
     if (address == 0x00B7B5A0) {
         reserve_directional_light_pool_table_00b7b5a0({reinterpret_cast<std::byte*>(&a)}, n);
         return;
