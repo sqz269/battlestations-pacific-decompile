@@ -1919,7 +1919,6 @@ float plane_signed_distance_00b999a0(const void* plane, const float* point) {
 
 // 00AACE40, 00ACBE50, 00ACD250, 00ACEFC0: one 35-instruction shape (address-stripped compare).
 void pointer_table_grow_00aace40(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
-void pointer_table_grow_00acbe50(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acd250(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 void pointer_table_grow_00acefc0(SweepCHost& host, void* table) { pointer_table_grow(host, table); }
 
