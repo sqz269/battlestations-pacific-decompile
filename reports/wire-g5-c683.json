@@ -1,0 +1,115 @@
+{
+  "goal": 5,
+  "chain": 683,
+  "run": 1457,
+  "slot": "g5-w3",
+  "branch": "agent/g5-w3",
+  "base_head": "35de3a84b01b6a076c9d10af1b388a2c3f44c1f2",
+  "scope": "Retained power-up cooldown slot prerequisite; no new activation wiring claimed",
+  "wired_before": 10437,
+  "wired_after": 10437,
+  "newly_wired": [],
+  "built": [
+    "PowerUpSlot retains the native value prefix at +0/+4/+8/+0C/+10/+14, with compile-time Win32 offset checks; the host-only class cooldown cache remains outside that prefix.",
+    "The existing 008E3710 initializer writes the value inserted into the actual per-player map; 008E4B40 and 008E9AF0 borrow that value directly instead of SlotResetView, SlotExpiryView or CollectionCooldown copies.",
+    "One focused fixture verifies absolute and deferred native time readers against the retained slot, including a descriptor mutation that must remain visible without a projection refresh."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 008e3710 --lines 55: reset stores the six fields in the retained native prefix.",
+    "python tools/bsp.py show 008e4b00 --lines 80: start-cooldown stores the descriptor, clears subject/notification, and conditionally writes both times.",
+    "python tools/bsp.py show 008eada0 --start 100 --lines 80: active use also grants GA_AE, decrements finite uses and removes exhausted non-active items before the HUD refresh.",
+    "src/game_hosts_ai.cpp party_brain_plan_tail -> game_powerups::use_ready_item_for_ai supplies real active inventory items; older passive-only skip reasons are stale."
+  ],
+  "validation": {
+    "initial_build": "PASS; four CTests passed",
+    "final_build": "PASS; ./scripts/build.ps1, four CTests passed (including the focused retained-slot fixture)",
+    "diff_check": "PASS; git diff --check",
+    "call_graph": "008E3710 reachable from slot_record_00617030; 008E4B40 reachable from list_ready_items_008ea0c0 and lua_get_available_powerups_008eb350; 008E4B60/80 reachable from power_up_manager_collect_active_008e9af0",
+    "activation": "008E4B00 has no function match in this build and remains uncalled",
+    "production_float_math_changed": false,
+    "game_run": false,
+    "limits": "Build, semantic fixture and static entry reach only; no original ABI or gameplay validation."
+  },
+  "rows": [
+    {
+      "native": "008e3710",
+      "status": "wired",
+      "host_site": "src/cc13_powerup.cpp: slot_record_00617030",
+      "new_wiring": false,
+      "reason": "Already wired before this chain; now initializes the actual retained slot prefix, including the previously dropped subject field. No new wiring credited."
+    },
+    {
+      "native": "008e4b40",
+      "status": "wired",
+      "host_site": "src/cc13_powerup.cpp: list_ready_items_008ea0c0",
+      "new_wiring": false,
+      "reason": "Already wired before this chain; now reads the retained slot directly. No new wiring credited."
+    },
+    {
+      "native": "008e4b60",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: PowerupCollectionBinding::stl_map_subscript_00617030 -> power_up_manager_collect_active_008e9af0",
+      "new_wiring": false,
+      "reason": "Already wired before this chain; collector now lends the actual retained slot to the existing native time reader. No new wiring credited."
+    },
+    {
+      "native": "008e4b80",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: PowerupCollectionBinding::stl_map_subscript_00617030 -> power_up_manager_collect_active_008e9af0",
+      "new_wiring": false,
+      "reason": "Already wired before this chain; collector now lends the actual retained slot to the existing native time reader. No new wiring credited."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "The AI now supplies real active-use inputs, but its tail still lacks GA_AE award dispatch and the finite-use/item-removal lifecycle; calling cooldown alone would leave an incomplete throwing activation."
+    },
+    {
+      "native": "0090f5a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "Missing a retained slot award-map and 0090EDE0 award-grant binding on the mission scoring owner; the existing raw Seg59aHost body has no implementation here."
+    },
+    {
+      "native": "008e87c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: expire_modifier_008e8c30 active-item removal and use_item_008eada0 finite-use tail",
+      "reason": "Missing the active-item removal binding across inventory ownership, modifier back-references and expiry; the current active-expiry branch still throws."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: FirepowerBinding::ammo_select_flak_alternate",
+      "reason": "Missing native primary/alternate ammunition record owners, retained descriptor/effect references and copied effect tree; the host only carries flattened gun/bullet rows."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0 (no native unit-vector host binding)",
+      "reason": "Missing the unit's retained native +660h vector and its 44h element ownership; a detached temporary vector would not clear the actual unit state."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort fire synchronization",
+      "reason": "Missing the retained D1h dispatch/consumer path for this producer; constructing a temporary message beside the existing presentation record would not deliver its native payload."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing the frame-job-thread producer: on_frame_job_thread still returns false and main-thread mission calls execute directly."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: UnitDebugInspector_PrintFlooded",
+      "reason": "The only identified original caller is debug inspection, which this assignment excludes."
+    }
+  ],
+  "remaining": [
+    "Adapt the sole 008E4B00 body to the retained slot and actual descriptor, preserving its class/subject stores and deferred times.",
+    "Complete active-use GA_AE bookkeeping, finite-use removal and active-modifier expiry/removal before enabling the activation tail; then verify a new entry-reachable 008E4B00 call."
+  ]
+}

@@ -24,37 +24,6 @@ extern "C" {
 namespace bsp::cc13_powerup {
 namespace {
 
-// Goal 4 chain 438. bsp.py show 008E3710: 00617030 constructs a new map
-// value by resetting byte +0, words +4/+8, floats +0C/+10, and byte +14.
-// PowerUpSlot is a typed projection with a different layout, so let the one
-// reconstructed body initialize its native fields and publish those results
-// into the actual slot inserted below. The native +4 word has no host reader.
-struct SlotResetView {
-    std::uint8_t notified_00;
-    std::uint8_t padding_01[3];
-    std::uint32_t unused_04;
-    std::uint32_t source_08;
-    float start_0c;
-    float end_10;
-    std::uint8_t deferred_14;
-};
-static_assert(offsetof(SlotResetView, notified_00) == 0x00);
-static_assert(offsetof(SlotResetView, unused_04) == 0x04);
-static_assert(offsetof(SlotResetView, source_08) == 0x08);
-static_assert(offsetof(SlotResetView, start_0c) == 0x0c);
-static_assert(offsetof(SlotResetView, end_10) == 0x10);
-static_assert(offsetof(SlotResetView, deferred_14) == 0x14);
-
-// The expiry helper reads only +10h and +14h of the native cooldown value.
-// Project those fields from the actual per-player slot, not a new timer.
-struct SlotExpiryView {
-    std::uint32_t unused_00[4]{};
-    float end_10{};
-    std::uint8_t deferred_14{};
-};
-static_assert(offsetof(SlotExpiryView, end_10) == 0x10);
-static_assert(offsetof(SlotExpiryView, deferred_14) == 0x14);
-
 class SlotClock final : public powerup_seg58_argon::PowerupSlotClockHost {
 public:
     explicit SlotClock(PowerupManagerHost& host) : host_(host) {}
@@ -140,14 +109,10 @@ PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
     if (at == keys.end() || key < *at) {
         keys.insert(at, key);
         {
-            SlotResetView native;
-            objectives_seg57_argon::powerup_slot_record_reset_008e3710(&native);
             PowerUpSlot value{};
-            value.notified = native.notified_00 != 0;
-            value.relative_deadline = native.deferred_14 != 0;
-            value.absolute_expiry = native.end_10;
-            value.source = reinterpret_cast<void*>(native.source_08);
-            value.absolute_start = native.start_0c;
+            // Goal 5 chain 683: bsp.py show 008E3710. The initializer writes
+            // the retained value's native prefix directly, including +4h.
+            objectives_seg57_argon::powerup_slot_record_reset_008e3710(&value);
             // source_offset is the host's cached class+80h, not a native
             // record field. A freshly reset record has no source class.
             values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), value);
@@ -365,11 +330,8 @@ std::vector<const PowerupItem*> list_ready_items_008ea0c0(PowerupRuntime& runtim
         {
             // 008EA13C..008EA14F duplicates 008E4B40's CMP/FCOMIP/JBE.
             // The helper still short-circuits the clock read for deferred slots.
-            SlotExpiryView native;
-            native.end_10 = record.absolute_expiry;
-            native.deferred_14 = record.relative_deadline ? 1u : 0u;
             if (powerup_seg58_argon::powerup_slot_record_is_cooldown_expired_008e4b40(
-                    clock, &native) == 0u) continue;
+                    clock, &record) == 0u) continue;
         }
         // 008EA163..008EA1B1: the last entry of the same class is replaced,
         // else the item is pushed.
