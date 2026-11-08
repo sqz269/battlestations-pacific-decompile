@@ -1,0 +1,294 @@
+{
+  "goal": 5,
+  "chain": 673,
+  "run": 1431,
+  "harness": "codex",
+  "branch": "agent/g5-w6",
+  "base_head": "d427aea404d0e63a254cfc12aae1c582a2b2ccd0",
+  "picked": "Mission teardown clears the actual active gamepads' native force-request trees",
+  "rows": [
+    {
+      "native": "00a95cb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp::FrameControlBinding::request_10_teardown_004e458a -> src/game_input_runtime.cpp::GameInputRuntime::clear_gamepad_forces",
+      "body": "src/cc13_front2.cpp::gamepad_force_clear_all_channels_00a95cb0",
+      "real_state": "The canonical GameInputRuntime backend_00f8bbf4 publication and its actual +B8h/+BCh active gamepad vector; captured initial count and backend reloads preserved.",
+      "evidence": "Ghidra bsp.gpr /battlestationspacific.exe: 004DA7A0..004DA7BC excludes states 1/2/4; 004DAD15 calls A95CB0 before AD52 clock reset. Original A95CB0 listing checked.",
+      "original_abi": "No arguments, RET; existing reconstruction uses an explicit host reference.",
+      "call_graph": "REACHABLE; one direct call at 103c0c56 from GameInputRuntime::clear_gamepad_forces; path through request_10_teardown_004e458a, mission frame, menu frame and WinMainCRTStartup."
+    },
+    {
+      "native": "00a95890",
+      "status": "wired",
+      "host_site": "src/game_input_runtime.cpp::GameInputRuntime::Impl::gamepad_force_clear_requests_00a95890 -> src/native_input_device_runtime.cpp::NativeInputDeviceRuntime::clear_force_requests",
+      "body": "src/native_gamepad_xinput.cpp::clear_native_gamepad_force_00a95890",
+      "real_state": "The same actual raw gamepad, request tree at +20Ch and NativeInputDeviceRuntime gamepad context; existing request deletion, CRT tree erasure and derived force output reused.",
+      "evidence": "Existing raw body reused, not the separate typed std::map projection. Original A95890 deletes payloads in tree order, clears nodes then pumps 0; A95D2C calls it for each current active device.",
+      "original_abi": "thiscall ECX=actual gamepad, RET at A9595C; reconstructed source adds the existing explicit NativeGamepadContext reference.",
+      "call_graph": "Raw body REACHABLE; one direct call at 104783cd from NativeInputDeviceRuntime::clear_force_requests. The host callback also appears as a vtable reference; the raw body call is separately verified."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/approach_target_ref.cpp::ship_section_points_0081f980",
+      "reason": "The standalone call restores toTurn only from saved holder kind 3; the host has no saved-entity restore producer, and the motion inline is gated by unit+61h with no known writer."
+    },
+    {
+      "native": "005caf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_set_deviation_factor",
+      "reason": "The Lua adapter still throws; missing its binding to the actual screen 36h limits/settings owner."
+    },
+    {
+      "native": "005cafa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_set_overview_height",
+      "reason": "The Lua adapter still throws; missing its binding to the actual screen 36h limits/settings owner."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_reset_deviation_factor",
+      "reason": "The Lua adapter still throws; missing the actual screen 36h settings owner and its retained Lua default at +58h."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_reset_overview_height",
+      "reason": "The Lua adapter still throws; missing the actual screen 36h settings owner and its retained Lua default at +60h."
+    },
+    {
+      "native": "005cb900",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp::movie_camera_set_speed_limits_005cb900",
+      "reason": "Missing the Lua adapter binding to the actual screen 36h settings owner and its acceleration-time producer."
+    },
+    {
+      "native": "005cb940",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_set_accel_time",
+      "reason": "Missing the Lua adapter binding to the actual screen 36h settings owner and its speed-limit producers."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_reset_speed_limits",
+      "reason": "Missing the Lua adapter binding to the actual screen 36h settings owner and its Lua-authored default limits."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::movcam_reset_accel_time",
+      "reason": "Missing the Lua adapter binding to the actual screen 36h settings owner and its Lua-authored default acceleration time."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "No live candidate-score-table owner/consumer is bound; its documented native reader is a debug overlay, which is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "No live candidate-score-table entries exist to mark; the documented table consumer is an excluded debug overlay."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_vehicle_race_80",
+      "reason": "The existing codec intentionally omits construction because real selected-player ownership and the 00D032FC profile are not bound."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp::support_site_can_supply_class_0084d050",
+      "reason": "Missing a live support-site owner supplying active+340h, enabled class entries and the ancestor health chain."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp::clear_marker_classes_006db2f0",
+      "reason": "Missing the native marker-class registry/descriptors and retained resource ownership; the current host only resets the Lua class table."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "reason": "Missing the actual AirOps queue block, captured queue/slot locks and observer-backed incoming/holder endpoints required by the raw queue body."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_class_pair_value_00a03900",
+      "reason": "Missing the parser-owned per-mode class-pair table and a live spawn-composition scoring consumer."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::GameCommandHost",
+      "reason": "Missing a presence-zero remove-message producer and retained path owners for every last-filled director slot."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp::leak_manager_flooded_fraction_0074fa80",
+      "reason": "The only identified native consumer is the 006FB750 debug inspector; debug-only work is excluded."
+    },
+    {
+      "native": "006b0020",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::decode_table_tree",
+      "reason": "Missing the mission Lua pickler load caller; the module documents no native references to its enclosing save/load entries."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::strip_table_names_006b1190",
+      "reason": "Missing the mission Lua pickler save caller; the module documents no native references to its enclosing save/load entries."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::strip_visit_marks_006b1490",
+      "reason": "Missing the mission Lua pickler restore caller; the module documents no native references to its enclosing save/load entries."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::name_table_tree",
+      "reason": "Missing the mission Lua pickler save caller; naming a live mission table without that save transaction would mutate unrelated state."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_table_tree",
+      "reason": "Missing the mission Lua pickler save/restore transaction and output consumer."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::encode_table_tree",
+      "reason": "Missing the mission Lua pickler save/restore transaction and output consumer."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::run_script override adapter",
+      "reason": "The inspected script adapter passes no result sink; there is no live owned result vector to construct on this path."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp::lua_variant_vector_tidy_00887670",
+      "reason": "Missing a live script-result-sink owner and its natural result-vector retirement caller."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp::camera_aim_delta_00794910",
+      "reason": "Missing the original movcam aim caller and camera-owned divisor/local-point/default-scale state; the current camera-state query only supplies its world matrix and FOV."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp::movcam_wrap_and_clamp_007904d0",
+      "reason": "Missing a live MovCamAngles owner and its original frame-clamp caller."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp::engine movie rewind",
+      "reason": "Missing a live engine-movie clock/action owner; the inspected mission host skips engine-movie playback."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp::read_movie_action_0045e5e0",
+      "reason": "Missing the host's EMA action tokenizer/owner and playback consumer; the inspected mission host skips engine-movie playback."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::FrameControlBinding::update_cutscene_playback_004c6b20",
+      "reason": "The host records the update but owns no EngineMovieClock or parsed action playback state to advance."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an original product-query consumer bound to the same actual CameraProjection; current camera-state queries consume a FOV ratio instead."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane death-mode handling",
+      "reason": "Missing the detached-part visual record/node and six-float model AABB consumed by the original plane message handler."
+    },
+    {
+      "native": "007caad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane death-mode handling",
+      "reason": "Missing per-part visual records, their world translations and record+14h vectors, plus a live debris dynamics consumer."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp::impact_effect_slot_0084b8c0",
+      "reason": "Missing the live weapon-class impact-effect presentation owner/consumer; selecting an unused slot would add no gameplay path."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp::orthonormalize_from_row_z_0085d770",
+      "reason": "Missing the original plane-neighbour collision-band transform owner; replacing unrelated pose math would not bind that caller."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp::orbit_about_axis_0042d610",
+      "reason": "Missing a live original orbit-camera caller supplying its pivot/axis/pose state."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp::construct_native_game_grid_0070bd70",
+      "reason": "The live constructor already executes its initialization body inline; calling the standalone entry would repeat grid_begin and is not new wiring."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called from entry-reachable query refresh and point-offset code before this change; no new wiring needed."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already composed in the reachable query-refresh implementation; introducing a separate call for an inline helper would add no behavior."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp::ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already composed in the reachable query-refresh implementation over the actual avoidance manager; no new host binding needed."
+    }
+  ],
+  "totals": {
+    "source_readiness_wired_before": 10414,
+    "source_readiness_wired_after": 10415,
+    "call_graph_recon_called_before": 5310,
+    "call_graph_recon_called_after": 5312,
+    "explanation": "A95CB0 was already text-classified wired before the change but had no linked body. Both A95CB0 and the existing raw A95890 body now have entry-reachable calls. Readiness reports called=true and one call_site for each."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed",
+    "final_build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed (12.98 seconds total)",
+    "diff_check": "git diff --check passed",
+    "call_graph": "tools/call_graph.py plus who for 00a95cb0 and 00a95890, and path for 00a95cb0",
+    "readiness": "tools/wire_readiness.py --standins: both target rows wired, called=true, call_sites=1",
+    "float_math": "No floating-point arithmetic changed; existing zero-time pump and existing raw math reused.",
+    "runtime": "No game launch or physical controller/rumble validation performed."
+  },
+  "left": "The separate limbo-screen enter caller 00566080 is still unbound to this runtime; saved-holder rudder restoration still lacks its producer."
+}

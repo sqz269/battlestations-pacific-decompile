@@ -24,7 +24,18 @@ public:
     virtual bool input_device_vcall_2c(void* device) = 0;
 };
 
-class Cc13Front2Host : public DynamicInputButtonQueryHost {
+// The complete A95CB0 body needs only the current backend, returning CRT
+// validation and the actual device's request clear. Keep that domain separate
+// from the unrelated camera/settings operations of the older sweep host.
+class GamepadForceClearHost {
+public:
+    virtual ~GamepadForceClearHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual std::uint8_t* current_input_backend() = 0;
+    virtual void gamepad_force_clear_requests_00a95890(void* channel) = 0;
+};
+
+class Cc13Front2Host : public DynamicInputButtonQueryHost, public GamepadForceClearHost {
 public:
     virtual ~Cc13Front2Host() = default;
 
@@ -43,11 +54,12 @@ public:
     // ---- input (00A91020, 00A95CB0) ----
     // The dword global 00F8BBF4: the input device table (backend).
     virtual std::uint8_t* input_device_table_00f8bbf4() = 0;
+    std::uint8_t* current_input_backend() final { return input_device_table_00f8bbf4(); }
     // Device vtable +2Ch: __thiscall(ECX = device), no stack arguments, AL.
     bool input_device_vcall_2c(void* device) override = 0;
     // 00A95890 BSP_GamepadForce_ClearRequests: __thiscall(ECX = channel), RET.
     // 00A95CB0 can pass a null ECX (see there).
-    virtual void gamepad_force_clear_requests_00a95890(void* channel) = 0;
+    void gamepad_force_clear_requests_00a95890(void* channel) override = 0;
 
     // ---- session transport (00784790) ----
     // The kernel32 imports through 00CE2218 / 00CE2210 (stdcall, one argument).
@@ -240,7 +252,7 @@ bool input_device_table_any_dynamic_device_button_down_00a91020(std::uint8_t* ta
 
 // 00A95CB0 BSP_GamepadForce_ClearAllChannels: no arguments, RET. 00A95890 on
 // each pointer of the vector at [00F8BBF4]+B8h..+BCh.
-void gamepad_force_clear_all_channels_00a95cb0(Cc13Front2Host& host);
+void gamepad_force_clear_all_channels_00a95cb0(GamepadForceClearHost& host);
 
 // 00784790 BSP_SessionTransport_BroadcastExcept: __thiscall(ECX = transport,
 // message, exclude_peer), RET 8. Serializes the message to every peer of the

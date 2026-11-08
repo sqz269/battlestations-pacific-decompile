@@ -240,5 +240,44 @@
   "new_source_wired_addresses": [
     "007fcbc0"
   ],
-  "binary_reconstructed_addresses_called_after": 5316
+  "binary_reconstructed_addresses_called_after": 5316,
+  "merge_validation": {
+    "origin_main": "2708035c06479beb998f3d818a89f5c27bc9c93b",
+    "resolution": "Kept the chain675 profile-bonus fixture and chain670 rocket offset/lifetime fixture in separate scopes in tests/math_tests.cpp; no ledger shard or startup.cmake conflicts occurred. The later gamepad teardown packet merged cleanly.",
+    "normal_build": "scripts/build.ps1 passed with all 4 tests",
+    "on_build": "tools/off_switch_on_build.py passed with all 4 tests and 0 diagnostics; kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled were temporarily enabled and their original bytes restored",
+    "pc24_lint": "0 findings, 0 allowed, 4 files",
+    "readiness_summary": {
+      "wired": 10421,
+      "callees_done_no_wired_caller": 8757,
+      "ready": 1294,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "selected_rows": {
+      "008bb770": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "007f8b40": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      "007fc9f0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "007fcbc0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    },
+    "binary_reconstructed_addresses_called": 5321,
+    "measurement_note": "Top-level 10416 -> 10417 counts retain the original chain675 packet measurement; this merged-head summary includes other landed packets.",
+    "game_validation": "No game run; static call reach and fixture/build evidence only"
+  }
 }

@@ -53,6 +53,9 @@ public:
     // each class. Caller supplies the original first-time initialization stage.
     void initialize_classes_004dd6a8();
     void set_rumble_enabled_00a94c50(bool enabled);
+    // 004DAD15's A95CB0 teardown call over the current backend's actual
+    // active gamepad vector. Request deletion/output stays on those owners.
+    void clear_gamepad_forces();
     void update_cursor(bool loading);
     // BECE70 keeps its platform receiver across the application-frame call.
     // Load callers above instead capture the current platform publication.

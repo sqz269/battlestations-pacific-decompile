@@ -14,7 +14,8 @@
 namespace bsp::game {
 struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputBackendSlotActivation, NativeInputCursorDeviceCalls,
-    NativeInputActionRecordCalls, NativeGamepadRumbleOutput, DynamicInputButtonQueryHost {
+    NativeInputActionRecordCalls, NativeGamepadRumbleOutput, DynamicInputButtonQueryHost,
+    GamepadForceClearHost {
     GameInputRuntimeBindings bound;
     NativeInputDeviceRuntime device_runtime;
     NativeInputBackendDirectInput direct_input;
@@ -109,6 +110,12 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
         // Dispatch the current native profile on the same vector element.
         return device_runtime.buttons_active_vslot2c(device) != 0;
     }
+    std::uint8_t* current_input_backend() override {
+        return static_cast<std::uint8_t*>(bound.backend_00f8bbf4);
+    }
+    void gamepad_force_clear_requests_00a95890(void* device) override {
+        device_runtime.clear_force_requests(device);
+    }
 };
 
 GameInputRuntime::GameInputRuntime(GameInputRuntimeBindings b) : impl_(std::make_unique<Impl>(b)) {}
@@ -137,6 +144,9 @@ void GameInputRuntime::initialize_classes_004dd6a8() {
 }
 void GameInputRuntime::set_rumble_enabled_00a94c50(bool enabled) {
     set_native_gamepad_rumble_enabled_00a94c50(enabled, impl_->rumble);
+}
+void GameInputRuntime::clear_gamepad_forces() {
+    gamepad_force_clear_all_channels_00a95cb0(*impl_);
 }
 void GameInputRuntime::update_cursor(bool loading) {
     auto* const platform = impl_->bound.devices.platform_0109cf04;
