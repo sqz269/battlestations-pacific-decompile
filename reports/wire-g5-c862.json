@@ -1,0 +1,187 @@
+{
+  "goal": 5,
+  "chain": 862,
+  "slot": "g5-w9",
+  "base_head": "18c619d73d0ea4b44311232c0ab163f8a099c95f",
+  "picked": "PilotSetTarget squadron level-bomb and delayed-ignition rocket ordnance member queries",
+  "rows": [
+    {
+      "native": "007ed830",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::choose_attack_class_007eec50",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "1020e911"
+    },
+    {
+      "native": "007ed970",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::choose_attack_class_007eec50",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "1020e965"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list release",
+      "reason": "The score-list gameplay owner/consumer is absent; the documented native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list release",
+      "reason": "No live candidate-score records or gameplay mark consumer; the documented reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring candidate",
+      "reason": "The parser-owned per-mode class-pair table and its original spawn-composition consumer were not established."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: reconnaissance-ratio candidate",
+      "reason": "The exact per-member reconnaissance-value provider and live original ratio consumer were not established."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "No live threat-record/site-selection provider was established for the original spawn gate."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "The literal body reads writable native F87574/78/7C absolute cells; a live same-address publication/receiver domain is missing."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call",
+      "reason": "The inspected interpreter runs on the main thread; a frame-job-thread deferred argument-vector producer is missing."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: UserPathPoint delivery",
+      "reason": "A presence-zero clear-message producer with the retained last-selected-slot path owner is missing."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Live support-site stock lists and the corresponding support-order consumer were not established."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "The support-site availability list, owner-health view and live original support-menu consumer were not established."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp: format_string_255_004b8410",
+      "reason": "The only identified original caller is DiagnosticPrintf 004C7070; debug-only code is excluded."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "An entry-reachable authored-curve owner and its original control-point rebuild consumer were not established."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "No entry-reachable alphabetical child-snapshot consumer with a real widget child list was established."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "The existing projection is labelled as cloud-manager frame arithmetic; the complete live cloud-manager receiver and instance-update consumer remain missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "An entry-reachable original perspective-camera product consumer was not established; the inspected live GUI camera is orthographic."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane preparation",
+      "reason": "No new entry-reachable main-scene submission owner was established for the existing same-camera clip-plane call."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: extra clip-plane clearing",
+      "reason": "No new entry-reachable main-scene submission owner was established for the existing same-camera clip-plane call."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission scoring initialization",
+      "reason": "The semantic score/award maps do not supply the required native 288h receiver and 0091CE90 construction host."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "The decoded font exists, but an entry-reachable original editable-text input consumer was not established."
+    },
+    {
+      "native": "00a9f0b0",
+      "status": "skipped",
+      "host_site": "src/native_locale_map_insertion.cpp: locale allocation",
+      "reason": "Canonical native locale allocation already serves insertion; the alternate SweepC2 implementation has no additional established pool receiver to wire."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/cc13_small2.cpp: unit_within_friendly_capture_radius_005f98f0",
+      "reason": "The raw unit/world capture-list receiver and original live port-menu consumer were not established."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: queue_plane_failure_63_67",
+      "reason": "C8h dead-meat rotation is routed only for multiplayer game+1FE4h != 0; single-player excludes this sender."
+    }
+  ],
+  "counts": {
+    "source_wired_before": 10711,
+    "source_wired_after": 10713,
+    "built_called_before": 5580,
+    "built_called_after": 5582,
+    "newly_wired": 2
+  },
+  "implementation": [
+    "Narrowed the existing 007ED830/007ED970 bodies to Cc13SquadronTargetOrdnanceHost; no second address body was introduced.",
+    "The chooser uses actual unit indices from its ordered plane and live registered siblings, retaining its existing dead-member filtering and active rack/reload policy.",
+    "Replaced the old six-query OR loop and its obsolete member switch; general-bomb, torpedo, kamikaze and depth-charge answers reuse their already-wired member bodies.",
+    "Loadout zero names the same currently active rack state used by the replaced host loop; alternate-loadout state was not introduced."
+  ],
+  "evidence": [
+    "bsp.py show 007ED830 --asm: member ECX at 007ED850, loadout forwarding at 007ED852, count reload at 007ED862, RET 4; AL result.",
+    "bsp.py show 007ED970 --asm: member ECX at 007ED990, loadout forwarding at 007ED992, count reload at 007ED9A2, RET 4; AL result."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; 4/4 existing checks",
+    "changed_build": "scripts/build.ps1 passed; 4/4 existing checks",
+    "call_graph": "5580 -> 5582 reconstructed addresses called; both new bodies have one reachable CALL from choose_attack_class_007eec50",
+    "readiness": "10711 -> 10713 source-wired; both rows called=true, call_sites=1, callers_live=1",
+    "diff_check": "git diff --check passed",
+    "float_math": "No float arithmetic changed; pc24 lint not required",
+    "gameplay": "Not run per assignment; build and static entry reachability do not establish gameplay validation or original ABI replacement"
+  },
+  "left_for_others": [
+    "Stock-list, raw-publication and input-consumer blockers are recorded per skipped row.",
+    "00604A50 readiness predicate in the following chooser block is untouched for agent/g5-w4."
+  ]
+}
