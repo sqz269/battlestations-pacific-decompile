@@ -1,0 +1,444 @@
+{
+  "goal": 5,
+  "chain": 923,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "base": "29b6dbd7ca50a088e9b14f6b16bb25e328f91326",
+  "picked": "ClipBox canonical process pool startup, lifetime and slab-table operations",
+  "rows": [
+    {
+      "native": "00ace750",
+      "status": "wired",
+      "host_site": "src/game_main.cpp: WinMain -> GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits>::initialize_once",
+      "detail": "Canonical F8C13C process pool startup at the original CD76D0 position after Sound; native constructor reserve is replaced once.",
+      "cpp_symbol": "construct_native_gui_clip_box_pool_00ace750",
+      "optimized_call_evidence": [
+        {
+          "code_address": "10533a20",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10534300",
+              "call",
+              1,
+              "10534305"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ],
+      "noicf_call_evidence": [
+        {
+          "code_address": "106c7710",
+          "reachable": true,
+          "call_sites": [
+            [
+              "106c79c0",
+              "call",
+              1,
+              "106c79c5"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ]
+    },
+    {
+      "native": "00ace3e0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy",
+      "detail": "The same retained process pool is destroyed by its existing atexit callback.",
+      "cpp_symbol": "destroy_native_gui_clip_box_pool_00ace3e0",
+      "optimized_call_evidence": [
+        {
+          "code_address": "105340c0",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10533ab0",
+              "call",
+              1,
+              "10533ab5"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ],
+      "noicf_call_evidence": [
+        {
+          "code_address": "106c7820",
+          "reachable": true,
+          "call_sites": [
+            [
+              "106c7730",
+              "call",
+              1,
+              "106c7735"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ]
+    },
+    {
+      "native": "00ace310",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: destroy_native_gui_clip_box_pool_00ace3e0 -> destroy_pool",
+      "detail": "Normal destruction frees the current actual pool+28h table through this entry, then drains the CS and unlinks the same list node.",
+      "cpp_symbol": "free_native_gui_clip_box_pool_table_00ace310",
+      "optimized_call_evidence": [],
+      "noicf_call_evidence": [
+        {
+          "code_address": "106c78f0",
+          "reachable": true,
+          "call_sites": [
+            [
+              "106c4310",
+              "call",
+              1,
+              "106c4344"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ]
+    },
+    {
+      "native": "00ace340",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: native_gui_clip_box_pool_table_reserve_00ace5b0",
+      "detail": "Actual retained table capacity published before allocation; existing equivalent copy/free/adopt engine reused.",
+      "cpp_symbol": "native_gui_clip_box_pool_table_set_capacity_00ace340",
+      "optimized_call_evidence": [
+        {
+          "code_address": "10535180",
+          "reachable": true,
+          "call_sites": [
+            [
+              "103b7730",
+              "jmp",
+              1,
+              "103b7730"
+            ],
+            [
+              "103b77e0",
+              "jmp",
+              1,
+              "103b77f5"
+            ],
+            [
+              "10535190",
+              "call",
+              1,
+              "105351a2"
+            ]
+          ],
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_set_capacity_00ace340@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_set_capacity_00ac7100@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_set_capacity_00aa6fa0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_line_pool_table_capacity_00ac1d10@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_section_pool_table_capacity_00abea00@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "noicf_call_evidence": [
+        {
+          "code_address": "106c7c70",
+          "reachable": true,
+          "call_sites": [
+            [
+              "106c7c50",
+              "jmp",
+              1,
+              "106c7c65"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ]
+    },
+    {
+      "native": "00ace5b0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: construct_native_gui_clip_box_pool_00ace750 -> initialize_pool",
+      "detail": "Constructor reserves the binary constant 32 entries on actual F8C13C+28h in unwind state 2.",
+      "cpp_symbol": "native_gui_clip_box_pool_table_reserve_00ace5b0",
+      "optimized_call_evidence": [
+        {
+          "code_address": "103b77e0",
+          "reachable": true,
+          "call_sites": [
+            [
+              "105319f0",
+              "call",
+              1,
+              "10531a8b"
+            ],
+            [
+              "10531c50",
+              "call",
+              1,
+              "10531ceb"
+            ],
+            [
+              "10531d80",
+              "call",
+              1,
+              "10531e1b"
+            ],
+            [
+              "10532240",
+              "call",
+              1,
+              "105322db"
+            ],
+            [
+              "105324a0",
+              "call",
+              1,
+              "1053253b"
+            ],
+            [
+              "105325d0",
+              "call",
+              1,
+              "1053266b"
+            ],
+            [
+              "10532700",
+              "call",
+              1,
+              "1053279b"
+            ],
+            [
+              "10532830",
+              "call",
+              1,
+              "105328cb"
+            ],
+            [
+              "10532960",
+              "call",
+              1,
+              "105329fb"
+            ]
+          ],
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_reserve_00ace5b0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_reserve_00ac7370@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_reserve_00aa7740@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_icon_pool_table_00ab2420@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_line_pool_table_00ac2020@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_section_pool_table_00abed30@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "noicf_call_evidence": [
+        {
+          "code_address": "106c7c50",
+          "reachable": true,
+          "call_sites": [
+            [
+              "106c48e0",
+              "call",
+              1,
+              "106c4996"
+            ]
+          ],
+          "folded_aliases": []
+        }
+      ]
+    },
+    {
+      "native": "00ace390",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: native_gui_clip_box_pool_table_push_back_00ace520",
+      "reason": "Prepared and build-tested, but missing an entry-reachable raw ClipBox allocation producer; absent from both optimized and NOICF executables.",
+      "cpp_symbol": "native_gui_clip_box_pool_table_grow_00ace390",
+      "optimized_call_evidence": [],
+      "noicf_call_evidence": []
+    },
+    {
+      "native": "00ace520",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate",
+      "reason": "Prepared and build-tested, but the raw ClipBox factory has no current entry-reachable allocation caller; absent from both executables.",
+      "cpp_symbol": "native_gui_clip_box_pool_table_push_back_00ace520",
+      "optimized_call_evidence": [],
+      "noicf_call_evidence": []
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing a gameplay candidate-score-list owner and consumer; the documented native list reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing native score-list entries whose chosen byte feeds gameplay; a parallel debug list would be unused."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: GameStepSubsystemsHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing a frame-job-thread enqueue producer carrying a real LuaVariantRecord argument vector; the mission interpreter runs on the main thread."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing the frame-job-thread producer; current named Lua calls execute directly on the main thread."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an entry-reachable FOV/aspect consumer; the live GUI camera uses orthographic projection and the shadow-fit caller is not active."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live input-character admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400",
+      "reason": "Missing a production native error-context map owner; no live map exists for this iterator leaf."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420",
+      "reason": "Missing a production native error-context map owner; no live map exists for this iterator leaf."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0",
+      "reason": "Missing a live native error-context map producer and consumer; an unlinked semantic tree rotation would not establish wiring."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630",
+      "reason": "Missing a live native error-context map producer and consumer; an unlinked semantic tree rotation would not establish wiring."
+    },
+    {
+      "native": "00b3dbb0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_lifetime.cpp: initialize_native_cube_texture_pool_00b3f090",
+      "reason": "No new binding is missing: the refreshed baseline executable already reaches capacity through the canonical CubeTexture pool reserve."
+    },
+    {
+      "native": "00b3dc00",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: allocate_native_cube_texture_pool_slot",
+      "reason": "No new binding is missing: the baseline source already routes append growth through this entry; another replacement would duplicate prior work."
+    },
+    {
+      "native": "00b3e9c0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: native CubeTexture pool allocation",
+      "reason": "No new binding is missing: the existing native CubeTexture allocation source already calls this slab append."
+    },
+    {
+      "native": "00b3ea40",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_lifetime.cpp: initialize_native_cube_texture_pool_00b3f090",
+      "reason": "No new binding is missing: the refreshed baseline executable already calls this reserve with the canonical CubeTexture pool table."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "No new binding is missing at the menu site: it already calls the body with the published loading singleton and real progress; the separate mission-owner borrow remains missing."
+    }
+  ],
+  "real_state": {
+    "pool": "retained GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits> storage corresponding to F8C13C",
+    "slab_table": "the same pool+28h header",
+    "allocator_list": "shared E188B4 domain",
+    "capacity": 32,
+    "crt_slot": "CE34CC -> CD76D0",
+    "exit_stub": "CE0B30 -> ACE3E0"
+  },
+  "validation": {
+    "default_build": "scripts/build.ps1: PASS",
+    "existing_tests": "4/4 PASS",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests: PASS",
+    "analysis_link": "/OPT:NOICF; the five claimed ClipBox calls are individually reachable",
+    "default_graph_before": {
+      "functions": 43377,
+      "reachable_functions": 43221,
+      "data_symbols": 49544,
+      "edges": 224262,
+      "roots": 2,
+      "instructions": 2386337,
+      "recon_addresses": 6361,
+      "recon_called": 5673,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2560
+    },
+    "default_graph_after": {
+      "functions": 43390,
+      "reachable_functions": 43234,
+      "data_symbols": 49550,
+      "edges": 224306,
+      "roots": 2,
+      "instructions": 2386938,
+      "recon_addresses": 6366,
+      "recon_called": 5676,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2560
+    },
+    "analysis_graph_after": {
+      "functions": 135321,
+      "reachable_functions": 135038,
+      "data_symbols": 55144,
+      "edges": 396691,
+      "roots": 2,
+      "instructions": 3920059,
+      "recon_addresses": 7572,
+      "recon_called": 7522,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 1309
+    },
+    "no_game_run": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "float_math_changed": false
+  },
+  "metrics": {
+    "source_wired_before": 10802,
+    "source_wired_after": 10804,
+    "optimized_recon_called_before": 5673,
+    "optimized_recon_called_after": 5676,
+    "claimed_wired": 5,
+    "prepared_not_linked": 2,
+    "readiness_summary_after": {
+      "wired": 10804,
+      "callees_done_no_wired_caller": 8469,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "readiness_note": "The refreshed readiness pool lists the two lifetime rows as wired, but does not list the five newly promoted tagged table entries; exact optimized and NOICF call evidence proves reserve/capacity/free separately. Growth/append are not claimed."
+  },
+  "evidence": [
+    "bsp.py show ACE310/ACE340/ACE390/ACE520/ACE5B0/ACE750/ACE8D0/ACE3E0; ACE340/ACE520 assembly",
+    "live CD76D0 disassembly and CE34C4..CE34D8 bytes; config verifies C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe",
+    "Ghidra names/comments saved with prior values in local/ghidra-annotations-20261108T172320Z.json; all seven exports refreshed",
+    "NOICF exact edges: initialize_pool -> ACE5B0 -> ACE340; destroy_pool -> ACE310; process initialize_once -> ACE750 and registered destroy_at_exit -> ACE3E0"
+  ],
+  "remaining": [
+    "Raw ClipBox factory adoption is needed before append/grow execute. Their sole address bodies and allocator specialization are prepared.",
+    "Constructor failure keeps the identical existing generic table-free cleanup; only normal destruction substitutes ACE310.",
+    "Main startup blocks from concurrent Grid/Scrollbar/FrameBox/AnimIcon branches must retain native order when landed. No merge or push performed.",
+    "Source/build/call-graph proof only; no original binary ABI or gameplay validation claimed."
+  ]
+}
