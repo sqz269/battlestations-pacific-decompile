@@ -7,7 +7,8 @@
 
 namespace bsp {
 // Recovered Dyn convex-hull data, produced by 00C389C0. Names are hypotheses;
-// these layouts are native Win32, unlike the algorithm's C++ work vectors.
+// these layouts are native Win32. The triangle-pointer scratch also uses a
+// native {data,size,capacity} descriptor; other algorithm work vectors use C++.
 struct AvoidZoneDynHullVertex {
     OceanVec3 point;                         // +00
     std::uint16_t adjacency_offset;          // +0C, in uint16 elements
