@@ -1,5 +1,6 @@
 #include "bsp/bullet_engagement_range.hpp"
 #include "bsp/flak_note_seg36_37_argon.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"
 
 #include <cmath>
 
@@ -107,25 +108,30 @@ WeaponClassFinaliseResult weapon_class_derive_engagement_range(
             in, already_finalised);
     }
     auto out = weapon_class_derive_base_engagement_range(in, already_finalised);
-    if (already_finalised) return out;
 
     const int kind = in.sub_type;
     if (kind == kProjectileSubTypeTorpedo) {
-        // 00855A90 runs the base first (which has just put 3000.0f in +60h,
-        // torpedoes taking the default arm) and then overwrites it. The
-        // WaterTravelSpeed * FlyTime product is never rounded to a float: only
-        // the store at 00855AAB is.
+        // Goal 5 chain 788: bsp.py show 00855A90 --asm, 00855A95..00855AF5.
+        // Original ABI: ECX descriptor, RET 0, AL success. The base runs first;
+        // its +54h and the cached descriptor's +E0h/+E4h feed the existing leaf
+        // body. Its +60h goes to gun.max_range, and +ECh/AL remain the result's
+        // terminal speed/acceptance. This is a semantic adapter, not that ABI.
+        // Both FMULs round at the main thread's PC24 precision. The prior
+        // double chain rounded only once. Even when the base latch is set,
+        // 00855A9A resumes here and recomputes the leaf fields.
+        gameplay_seg53_cc13::TorpedoClassFields fields;
+        fields.fly_time_54 = out.fly_time;
+        fields.max_fall_e0 = in.max_fall;
+        fields.water_travel_speed_e4 = in.water_travel_speed;
+        const auto leaf = gameplay_seg53_cc13::torpedo_class_derive_00855a90(
+            fields, out.accepted);
+        out.engagement_range = leaf.cached_range_60;
+        out.terminal_fall_speed = leaf.terminal_fall_speed_ec;
+        out.accepted = leaf.ok;
+        // This host's additional swim-speed output is not a field 00855A90
+        // writes; preserve its existing producer for the swim integrator.
         out.swim_speed = store_float(static_cast<double>(in.water_travel_speed) *
                                      kTorpedoSwimSpeedFraction);
-        out.engagement_range = store_float(static_cast<double>(in.water_travel_speed) *
-                                           static_cast<double>(out.fly_time) *
-                                           kTorpedoSwimSpeedFraction);
-        // 00855AAE: 2 * MaxFall * 9.81 under a square root, rounded to a float
-        // before the call exactly as the artillery arm is.
-        const float fall = store_float(static_cast<double>(in.max_fall) * 2.0 *
-                                       kWeaponClassGravity);
-        out.terminal_fall_speed = store_float(std::sqrt(static_cast<double>(fall)));
-        out.accepted = out.accepted && out.terminal_fall_speed > 0.0f;  // 00855AD1
     }
     return out;
 }
