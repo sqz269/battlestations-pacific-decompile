@@ -1,0 +1,123 @@
+{
+  "goal": 5,
+  "chain": 933,
+  "slot": "g5-w2",
+  "branch": "agent/g5-w2",
+  "base_sha": "d901193ec9",
+  "picked": "Grid process pool F8C050 table release at 00AC9290",
+  "rows": [
+    {
+      "native": "00ac9290",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiGridPoolTraits>::destroy and initialize",
+      "implementation": "include/bsp/native_gui_grid_pool_table.hpp: free_native_gui_grid_pool_table_00ac9290",
+      "state": "The existing CRT-started Grid process owns F8C050's actual +28h slab table; shutdown passes that same header after freeing slabs, before section destruction and allocator-list unlink. Constructor unwind passes the same header in unwind state 2.",
+      "replacement": "The Grid destroy specialization replaces the generic inline free with the sole AC9290 body. Initialize's existing FreeTable template parameter replaces the generic unwind release. No second release or pool is introduced.",
+      "native_evidence": "bsp.py show 00ac9290 --asm: MOV EAX,[ECX], TEST/JZ, PUSH EAX, CALL 00BF6989, POP ECX, RET; captures the pointer once and leaves header words untouched. AC94C0 decompile inlines the identical release; AC9B30 uses it during table unwind.",
+      "abi": "Original ECX=borrowed table, no stacked arguments, plain RET. Ordinary C++ source interface; not a native register-ABI replacement.",
+      "game_validated": false
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_capture_fraction_006f1f90",
+      "reason": "The script-orders host already calls this host helper on real capture-building state; there is no additional distinct native body to wire without duplicating the active path."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "The job remains a log stand-in; actual native group/owner attachment required by the fixed-step dispatcher is missing."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "The job remains a log stand-in; actual native group/owner attachment required by the fixed-step dispatcher is missing."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "The job remains a log stand-in; actual native group/owner attachment required by the fixed-step dispatcher is missing."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "The job remains a log stand-in; actual native group/owner attachment required by the fixed-step dispatcher is missing."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding set_ambient_volume",
+      "reason": "The HUD reports no ambient sound instance and its volume callback only records an address; a real SoundInstance owner is missing on this path."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit binding set_unit_controlled_audio",
+      "reason": "The callback only records the address; the ship/BBC audio-object state and audio-side dispatch needed to consume AudioFlagPlan are missing here."
+    },
+    {
+      "native": "004845a0",
+      "status": "skipped",
+      "host_site": "src/native_unit_owner_entity.cpp: native unit-owner teardown",
+      "reason": "The naked removal body is not linked in the release graph; its caller needs a live native unit-owner/list lifetime before it can replace host vector erasure."
+    },
+    {
+      "native": "00bbd110",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud instance array operations",
+      "reason": "No current scene host CloudManagerC instance-array owner or active native cloud-instance producer was found."
+    },
+    {
+      "native": "00bbd170",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud manager class-array retirement",
+      "reason": "No current scene host CloudManagerC lifetime with the atmosphere/cloud-group and class producers was found."
+    },
+    {
+      "native": "00bbd1d0",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud manager instance-array retirement",
+      "reason": "No current scene host CloudManagerC lifetime with an owned native instance array was found."
+    },
+    {
+      "native": "00bbf390",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: sky colour-strip operations",
+      "reason": "An active atmosphere/sky owner carrying the native sky colour-strip allocation is missing."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_manager_construct_00bbda50",
+      "reason": "The scene host does not supply the real atmosphere owner and preconstructed, registered cloud-group node required by this constructor."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "No live scene-owned CloudInstanceC producer was found; calling the setter on a fabricated instance would not wire game state."
+    }
+  ],
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed all 4 CTests; local/c933-baseline-build.log",
+    "build": "scripts/build.ps1 passed all 4 CTests; local/c933-build.log",
+    "existing_probe": "tests/wire_g5_c919_gui_grid_table_probe.cpp passed unchanged: 513 slots, 33 slabs, capacity 32 -> 66, payloads, trailers, trim and teardown; local/c933-probe.log",
+    "probe_link": "MSVC Win32 /MD /O2 /W4 /WX, /link /MANIFEST:EMBED; local/c933-probe.cmd",
+    "release_graph": "call_graph.py who 00ac9290 shows a reachable direct call at 10534294 from NativeGuiWidgetPool<GuiGridPoolTraits>::destroy, plus initialize unwind at 10532271; release ICF folds the target with eight equivalent functions.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/win32-analysis -NoInline -Target bsp_game -SkipTests passed; /Ob0 /OPT:NOICF; local/c933-analysis-build.log",
+    "analysis_graph": "call_graph.py --build and who/path 00ac9290 --build-dir build/callgraph passed with /Ob0 /OPT:NOICF. The sole free_native_gui_grid_pool_table_00ac9290 is reachable at 106C82F0, with two direct calls: Grid destroy_pool at 106C4B54 and initialize_pool unwind at 106C53DC. Entry chain: WinMainCRTStartup -> WinMain -> Grid GameNativeGuiWidgetPoolProcess::initialize_once -> retained process destroy_at_exit -> NativeGuiWidgetPool::destroy -> destroy_pool -> AC9290. No identical-code fold remains in this receipt.",
+    "ghidra": "Verified /battlestationspacific.exe in existing BSP project, annotated BSP_GuiGridPoolTable_Free, saved project and refreshed AC9290 export. Prior annotations: local/ghidra-annotations-20261108T174746Z.json.",
+    "float_math": "No float arithmetic changed."
+  },
+  "measurement": {
+    "textual_wired_before": 10811,
+    "textual_wired_after": 10811,
+    "new_bodies_with_explicit_game_state_calls": 1,
+    "note": "wire_readiness.py --standins omits the new template-tagged AC9290 row even after ledger/index refresh. No metric or classification tooling changed. The compiled call graph is the wiring evidence; unrelated changes in folded-alias counts are not credited to this packet."
+  },
+  "left": "No additional Grid state producer is needed for table release. Grid allocation/table growth continue through existing bodies; their startup, factory and trim work is outside this packet. No game run was performed."
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 namespace bsp {
 // Actual F8C050+28h slab table, borrowed without a second header or pool.
@@ -16,6 +17,18 @@ void native_gui_grid_pool_table_push_back_00ac97f0(
 void native_gui_grid_pool_table_reserve_00ac9870(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity);
 
+// 00AC9290: MOV EAX,[ECX]; TEST/JZ; PUSH EAX; CALL free; POP ECX; RET.
+// ECX borrows the actual F8C050+28h table, with no stacked arguments. Free
+// only its allocation and leave all three native header words untouched.
+// Source interface, not a register-ABI replacement. The same operation is
+// inlined by AC94C0 and used by AC9B30's table-construction unwind.
+__declspec(noinline) inline void free_native_gui_grid_pool_table_00ac9290(
+    void* actual_table) noexcept {
+    void* const data = static_cast<NativeGuiPoolSlabTable*>(actual_table)->data;
+    if (data) singleton_lifetime_free(data);
+}
+
 template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::initialize();
 template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate();
+template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::destroy();
 } // namespace bsp

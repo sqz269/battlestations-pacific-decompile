@@ -929,7 +929,8 @@ template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::initialize() {
     // AC9B30 inlines AC9870's reserve(32) on the actual pool+28h table,
     // inside native unwind state 2. Keep the shared engine's unwind order.
     initialize_pool<GuiGridPoolTraits,
-        &native_gui_grid_pool_table_reserve_00ac9870>(allocator_list_, storage_);
+        &native_gui_grid_pool_table_reserve_00ac9870,
+        &free_native_gui_grid_pool_table_00ac9290>(allocator_list_, storage_);
 }
 template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
     // AC9C10 at AC9C58..AC9CBF inlines AC97F0 after the genuine 12A4h
@@ -937,6 +938,14 @@ template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
     return allocate_slot<GuiGridPoolTraits,
         &NativeGuiWidgetPool<GuiGridPoolTraits>::initialize_slab,
         &native_gui_grid_pool_table_push_back_00ac97f0>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::destroy() {
+    // bsp.py show AC94C0: its inline table release matches AC9290 exactly.
+    // Borrow the retained F8C050+28h header after freeing slabs and before
+    // destroying the critical section/unlinking; replace the common free once.
+    destroy_pool<GuiGridPoolTraits,
+        &free_native_gui_grid_pool_table_00ac9290>(allocator_list_, storage_);
 }
 
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
