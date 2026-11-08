@@ -12,6 +12,7 @@
 
 #include <cstddef>
 #include <string>
+#include <vector>
 
 #include "bsp/mission_progress.hpp"
 #include "bsp/mission_result.hpp"
@@ -179,10 +180,17 @@ struct ScoringGrantBonusArguments {
     bool third_is_string{false}; // 008BB770's BSP_LuaObject_IsString on argument 3
 };
 
-// 007FC9F0 (integer form) and 007FCBC0 (four-string form) differ only in the record's third
-// string and its int: the string form stores argument 3 and a zero value (007FCC92 PUSH EBX
-// with EBX zeroed at 007FCC90), the integer form an empty string and argument 3.
-ScoringBonusRecord scoring_bonus_record_007fc9f0(const ScoringGrantBonusArguments& args);
+// Borrow the actual profile containers: +ACh granted keys and +BCh bonus records.
+// Both bodies append to these same vectors; no copied profile or separate dedupe cache.
+struct ScoringBonusProfile {
+    std::vector<std::string>& granted_ac;
+    std::vector<ScoringBonusRecord>& records_bc;
+};
+
+// 007FC9F0, __thiscall(profile, key, a, b, int), RET 10h: dedupe the key, then
+// append {a, b, "", value}. Source interface; native allocation/EH/ABI are not ported.
+void grant_bonus_value_007fc9f0(ScoringBonusProfile profile, const std::string& key,
+    const std::string& text_a, const std::string& text_b, int value);
 
 // ---------------------------------------------------------------------------
 // The two clears
@@ -237,12 +245,6 @@ struct ScoringBodiesHost {
     virtual void set_condition_message(int slot, const std::string& text) = 0;
     virtual void set_victory_message(int slot, const std::string& text) = 0;
 
-    // 007FC9F0/007FCBC0's two containers on the profile at [00e188a8]+650h. The first
-    // answers the dedupe walk at 007FCA32..007FCAA9, the second is 00450540/007FC940.
-    virtual bool profile_has_granted_bonus(const std::string& key) = 0;
-    virtual void profile_record_granted_bonus(const std::string& key) = 0;
-    virtual void profile_append_bonus(const ScoringBonusRecord& record) = 0;
-
     // 007FD510 over the root of the map at MissionProgress+0h, then the three self-pointers
     // and the size (008D2E60..008D2E7x), then 00916980 for the eight live records.
     virtual void clear_all_mission_records() = 0;
@@ -272,7 +274,7 @@ void scoring_binding_set_victory_message_008bc0c0(ScoringBodiesHost& host, int s
                                                   bool is_local_target, const std::string& text);
 
 // 008BB770 Scoring_GrantBonus.
-void scoring_binding_grant_bonus_008bb770(ScoringBodiesHost& host,
+void scoring_binding_grant_bonus_008bb770(ScoringBonusProfile profile,
                                           const ScoringGrantBonusArguments& args);
 
 } // namespace bsp

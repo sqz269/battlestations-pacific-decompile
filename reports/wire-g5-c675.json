@@ -1,0 +1,244 @@
+{
+  "goal": 5,
+  "chain": 675,
+  "slot": "g5-w2",
+  "base_head": "0cde6bf96b",
+  "picked": "Scoring_GrantBonus profile text/value bodies on real profile containers",
+  "source_wired_before": 10416,
+  "source_wired_after": 10417,
+  "rows": [
+    {
+      "native": "007fcbc0",
+      "status": "wired",
+      "host_site": "src/scoring_bodies.cpp::scoring_binding_grant_bonus_008bb770 <- src/game_hosts_lua.cpp::GameMissionLuaHost::run_scoring_record_binding",
+      "change": "New direct call to the existing text grant body on profile.bonus_ac and profile.bonus_records_bc; selected by the real Lua argument-3 type."
+    },
+    {
+      "native": "007fc9f0",
+      "status": "wired",
+      "host_site": "src/scoring_bodies.cpp::scoring_binding_grant_bonus_008bb770 <- src/game_hosts_lua.cpp::GameMissionLuaHost::run_scoring_record_binding",
+      "change": "Replaced the existing partial record helper with the complete numeric grant over borrowed profile containers, including case-insensitive key dedupe and ordered appends; already source-wired before this chain."
+    },
+    {
+      "native": "007f8b40",
+      "status": "wired",
+      "host_site": "src/scoring_bodies.cpp::grant_bonus_value_007fc9f0 and src/engine_seg49_64_78_cc13.cpp::grant_bonus_text_007fcbc0",
+      "change": "Both grant forms now call the existing profile bonus-record constructor; already source-wired before this chain."
+    },
+    {
+      "native": "008bb770",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::GameMissionLuaHost::run_scoring_record_binding",
+      "change": "Preserved the live Lua entry and delegated each form to its own address body; deleted the duplicate binding/host dedupe and append sequence."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::register_ship_ai_unit",
+      "reason": "Missing complete native 2268h composite brain storage and 009F3BA0 base/construction providers; the existing host keeps projected controller fields."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp::GameUnitsHost::Impl land-task state",
+      "reason": "Missing the actual land registry and executable state/name/profile ownership required by the source registry API."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::land-task installation",
+      "reason": "Missing complete 0099C6F0/009B2E50 construction, stable native task subobjects, retained cells and executable entry profiles required by NativeLandTaskConstructorCalls."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp::task-gun-controller fast-path comment",
+      "reason": "Missing an actual task receiver and bound fast-path providers; the host occurrence is a comment about the published-unit path."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::scripted squadron-target order",
+      "reason": "Missing the native HUD unit-pick cursor/selection owner and command-at-cursor producer; the scripted order is an already-selected target path."
+    },
+    {
+      "native": "00526720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::run_unit_set_player_commands_enabled_008a6c30",
+      "reason": "Missing the native HUD cycle list, selected index, observed owner and refresh providers; this occurrence only documents a director-flags reader."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::run_unit_set_player_commands_enabled_008a6c30",
+      "reason": "Missing a single-player snapshot producer/consumer; this host occurrence describes the network snapshot reader, not a live local message path."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::shipyard launch Skill property",
+      "reason": "Missing actual native property-bag/tree storage and allocation context; the host occurrence documents a semantic Lua property value."
+    },
+    {
+      "native": "00915760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::former ScoringBonusHost::clear_slot_record",
+      "reason": "Missing a live native score-clear owner with all 36 tree headers and vectors; the inspected occurrence was an unreachable service in the removed bonus adapter."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::power-up candidate_attack_value",
+      "reason": "Missing the air-support flight-class pair-value/weapon facts; the existing provider explicitly throws for that unmodelled case."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::defend think candidate pass",
+      "reason": "Already called from the real defend candidate pass in the baseline; no absent body call remained to wire."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::mode_think move selection",
+      "reason": "Missing a real producer selecting CAUTIOUSMOVE: the inspected caller passes ratio=1 and always selects MOVETO; agent/g5-w5 is separately investigating this area."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group attack-value path",
+      "reason": "Missing the three native class-pair table row sets and a consumer using those rows; existing group values use weapon facts instead."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::SpawnGroup arm",
+      "reason": "Missing native spawn-manager request weight, target-record vector and support-site list; quick_spawn_named_group does not produce the gate inputs."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group-reference handling",
+      "reason": "Missing an owned native group candidate score list and insertion producer; existing inter-group reference handling tracks command targets only."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group-reference handling",
+      "reason": "Missing the retained candidate score list and real selected-key consumer required to mark a list entry chosen."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group recon ratio candidate",
+      "reason": "Missing a live consumer of the original per-member recon ratio and its native member-value sequence."
+    },
+    {
+      "native": "006fbce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::carrier elevator launch tail",
+      "reason": "Client-only call at the inspected native tail requires game+1FE4h==2; single-player never takes that path."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::run_class_table_resets_cc264",
+      "reason": "Missing the rebuilt StationaryClass cache; live host readers still use the Lua table and clearing it would starve them."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path delivery",
+      "reason": "Missing the presence-zero clear-message producer and per-slot retained path-owner delivery; the live sender currently produces additions."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::descriptor building",
+      "reason": "Missing an independent default-descriptor consumer; adding this initializer before the populated builder would duplicate initialization."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp::queue_plane_failure_63_67",
+      "reason": "Multiplayer-only C8h route is guarded by nonzero game+1FE4h; single-player does not send it."
+    },
+    {
+      "native": "0078fcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::MovieCameraParentHost::plane_velocity_810",
+      "reason": "Missing the traced writer for real plane+810h..818h; the current parent provider returns a labelled zero substitution."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp::modifier ownership",
+      "reason": "Missing a live type-3 game-camera modifier producer and its host bindings; current keyframe ownership only builds goaround modifiers."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp::sound channel runtime",
+      "reason": "Missing a live sample-volume multiplier producer/consumer corresponding to this scale operation; ordinary construction initializes sample volume directly."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GUI layout ownership",
+      "reason": "Missing the native listbox row list, listener and selection ownership required by NativeGuiListboxCalls."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GUI layout ownership",
+      "reason": "Missing an actual native listbox selection owner and row callback providers."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GUI layout ownership",
+      "reason": "Missing an actual native listbox highlight/row owner and bound manager highlight callbacks."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GUI manager update candidate",
+      "reason": "Missing fully integrated GuiWidgetOwnerRuntime and actual manager highlight owners at the frontend frame boundary."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GUI manager update candidate",
+      "reason": "Missing actual frontend page timed-entry ownership shared with GuiWidgetFrameRuntime; no valid live entries list is supplied here."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::plane bomb sight candidate",
+      "reason": "Missing original sight-display camera/impact inputs and yaw/pitch output consumer; existing release-gate logic is a different branch."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save owner/current mission checkpoint comparison; checkpoint_differs still returns the labelled false substitution."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an entry-reachable shadow-fit caller consuming this product; a getter call alone would not establish the original shadow operation."
+    }
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 passed; all four CTest checks passed, including the single new bonus fixture",
+    "call_graph": "007FCBC0 and 007FC9F0 each have one reachable call from 008BB770; 007F8B40 has one reachable call from each grant body",
+    "float_math": "No float math changed",
+    "game_validation": "Game not run; build, fixture and static entry-reach evidence only",
+    "readiness": "python tools/wire_readiness.py --standins: 10416 -> 10417 wired; all four changed/reused addresses are called in the built exe"
+  },
+  "new_source_wired_addresses": [
+    "007fcbc0"
+  ],
+  "binary_reconstructed_addresses_called_after": 5316
+}
