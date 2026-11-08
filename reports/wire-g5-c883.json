@@ -11,7 +11,7 @@
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::initialize, reached from src/game_main.cpp: WinMain",
       "detail": "The actual process-owned pool+28h table reaches set-capacity through ACC160 reserve(32); reuses the established AA6FA0 allocation/copy/free implementation.",
-      "call_site": "106c52d5",
+      "call_site": "106c5b65",
       "call_site_build": "build/c849-analysis; /Ob0 /OPT:NOICF, merged tree",
       "called": true
     },
@@ -20,7 +20,7 @@
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::initialize -> initialize_pool<GuiModelPoolTraits, native_gui_model_pool_table_reserve_00acc160>",
       "detail": "Restored original CD75F0/CE34BC CRT producer starts the canonical F8C09C process owner after Group and before particle pools; existing constructor EH state 2 and allocation behavior retained.",
-      "call_site": "106c3296",
+      "call_site": "106c38a6",
       "call_site_build": "build/c849-analysis; /Ob0 /OPT:NOICF, merged tree",
       "called": true
     },
@@ -139,7 +139,7 @@
     "original_abi_compatible": false,
     "ghidra": "Four addressed names/evidence applied through ghidra_annotate.py write lock; previous annotations saved in local/ghidra-annotations-20261108T145311Z.json; project saved and affected exports refreshed."
   },
-  "merge_validation": {
+  "previous_merge_validation": {
     "merged_origin_main": "da28406ae3077a5d31ffb69a0df4498095fc800b",
     "manual_conflicts": {
       "src/game_main.cpp": "Retained main's shared gui_widget_pool_startup_incomplete guard for Button/Icon and used it around Model initialization; retained both native startup orders and generic GUI failure diagnostics.",
@@ -169,9 +169,39 @@
     },
     "game_run": false
   },
+  "merge_validation": {
+    "merged_origin_main": "95530694178e18f0607bbecf1ec47eec5fe7fec8",
+    "manual_conflicts": {
+      "include/bsp/cc13_sweepC.hpp": "Retained Movie's PointerTableAllocationHost interface and removed the obsolete SweepCHost Model-grow declaration; Model retains its sole typed entry.",
+      "src/cc13_sweepC.cpp": "Retained the noinline narrow Movie grow entry and removed the obsolete second ACBE50 body.",
+      "src/game_main.cpp": "Retained Model CD75F0 before incoming Traceline CD77F0 in native CRT order; preserved main's shared guard and diagnostic wording."
+    },
+    "ledger_or_cmake_conflicts": false,
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c883-merge2-on-build.log",
+      "switches": ["kAutoAttackAllMembersBound", "kPlaneFormationPlacementEnabled"],
+      "exit_code": 0,
+      "distinct_diagnostics": 0,
+      "ctests_passed": 4,
+      "headers_restored_and_diff_clean": true
+    },
+    "normal_build": "scripts/build.ps1 passed after ON restoration; all four CTests passed",
+    "focused_probe": "257 Model slots, 33 slabs, table 32 -> 66; payloads/trailers, lock depth, trim and teardown passed against merged normal libraries",
+    "normal_called_addresses_total": 5651,
+    "normal_readiness_wired_total": 10757,
+    "analysis_build_command": "scripts/build.ps1 -BuildDir build/c849-analysis -NoInline -Target bsp_game -SkipTests",
+    "analysis_build_passed": true,
+    "analysis_model_path_verified": true,
+    "analysis_model_path": "ACC160 <- initialize_pool<GuiModelPoolTraits> <- NativeGuiWidgetPool<GuiModelPoolTraits>::initialize <- GameNativeGuiWidgetPoolProcess<GuiModelPoolTraits>::initialize_once <- WinMain; ACBE00 has its sole caller in ACC160",
+    "analysis_unique_symbols": {
+      "00acbe00": "106c5b70; one reachable caller at 106c5b65 from Model reserve",
+      "00acc160": "106c5b50; one reachable caller at 106c38a6 from Model initialize_pool"
+    },
+    "game_run": false
+  },
   "coordination": {
     "shared_files": "native_material_pools.cpp, game_main.cpp and AC metadata claimed before editing and released promptly; adjacent worker edits were not imported or modified.",
-    "pending_review_overlap": "Small Model dispatch additions in native_material_pools.cpp and CRT startup/guard additions in game_main.cpp overlap files changed by other review-pending branches. ACBE50 removal is adjacent to w7's Movie allocator-interface repair; retain both changes at integration.",
+    "pending_review_overlap": "Second repair retained main's Movie allocator-interface change, the single typed Model grow entry, and Model-before-Traceline CRT ordering. Model additions still share native_material_pools.cpp and game_main.cpp with other review-pending pool work.",
     "remaining": "Wire the real native GUI Model factory consumer before crediting ACC350, ACC0D0 or ACBE50; do not allocate dummy slots during startup."
   }
 }

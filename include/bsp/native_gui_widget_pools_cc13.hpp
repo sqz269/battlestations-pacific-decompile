@@ -208,6 +208,10 @@ void* allocate_gui_widget_pool_slot();
 template <class Traits>
 void free_gui_widget_pool_slot(void* slot);
 
+// Movie uses its own recovered table entries on the retained F8BD4C storage.
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize();
+template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate();
+
 #define BSP_GUI_WIDGET_POOL_EXTERN(T)                                     \
     extern template class NativeGuiWidgetPool<T>;                         \
     namespace game { extern template class GameNativeGuiWidgetPoolProcess<T>; } \
