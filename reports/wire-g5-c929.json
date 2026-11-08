@@ -1,0 +1,180 @@
+{
+  "goal": 5,
+  "chain": 929,
+  "worker": "agent/g5-w3",
+  "run": 2065,
+  "rows": [
+    {
+      "native": "00922b10",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::choose_attack_class_007eec50; src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470 attack-feasibility callback",
+      "body": "src/entity_mission_seg60_argon.cpp: entity_is_airborne_target_00922b10",
+      "real_state": "Existing EntityTargetFacts producers read selected target presence, unit_flag_005d and unit_is_kind_of(0x0f/0x18). The body consumes those same facts; no new state or defaults.",
+      "replacement": "Deleted inline entity_is_airborne_00922b10; both host paths call the sole reconstructed body directly.",
+      "abi": "Original int __fastcall(ECX=entity), RET. Explicit C++ const EntityTargetFacts& interface; not original binary ABI compatible.",
+      "evidence": "bsp.py show 00922b10: reject null or nonzero byte +5Dh, accept kind 0Fh or 18h.",
+      "call_graph": {
+        "called": true,
+        "reachable_call_sites": 2,
+        "callers": [
+          "GameScriptOrdersHost::choose_attack_class_007eec50",
+          "GameUnitsHost::run_squadron_free_attack_009f8470 attack-feasibility lambda"
+        ]
+      }
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset methods",
+      "reason": "The adapter exposes an HUD movie-camera token but has no owned MovCam limits/defaults block for these raw reset bodies."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset methods",
+      "reason": "The adapter exposes an HUD movie-camera token but has no owned MovCam limits/defaults block for these raw reset bodies."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset methods",
+      "reason": "The adapter exposes an HUD movie-camera token but has no owned MovCam limits/defaults block for these raw reset bodies."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset methods",
+      "reason": "The adapter exposes an HUD movie-camera token but has no owned MovCam limits/defaults block for these raw reset bodies."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::set_mission_key",
+      "reason": "Runtime awards use typed scoring state; the raw score-record receiver and 0091CE90 constructor Host adapter required by this tail are missing."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship navigation initialization",
+      "reason": "Needs an owned native brain allocation and full 009F3BA0 constructor adapter; the current retained navigation state alone does not supply that receiver."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The host stores a hull-class boolean; an owned raw hull shape chain, body-manifold state and Dyn lock adapter are required to replace it."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The host stores a hull-class boolean; an owned raw hull shape chain, body-manifold state and Dyn lock adapter are required to replace it."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope failure handling",
+      "reason": "The host records the periscope shape-collision request without an owned raw controller shape and manifold-clear adapter."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list commentary",
+      "reason": "The list has no host owner; documented native reader is a debug text overlay with no gameplay consumer, so skip debug-only wiring."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list commentary",
+      "reason": "The list has no host owner; documented native reader is a debug text overlay with no gameplay consumer, so skip debug-only wiring."
+    },
+    {
+      "native": "0044c970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: StartDialog session-message boundary",
+      "reason": "The E1 session-message branch is not reached by this single-player dialog path; no multiplayer message is fabricated."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint",
+      "reason": "The checkpoint-diff producer currently returns false, and full native clear/profile-erasure/persist continuation ownership is missing."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "An owned decoder and native GUI video-texture widget are missing; the current boundary only logs the request."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The retained subtitle schedule is a projection; no native movie widget/text child exists for the raw clear body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release, all four existing checks pass",
+    "graph": "call_graph.py, who 00922b10, path 00922b10: two game-entry-reachable calls",
+    "game_run": false,
+    "float_math_changed": false,
+    "new_tests": false,
+    "graph_counts": {
+      "called": 6105,
+      "called_not_wired": 361,
+      "wired_not_called": 41,
+      "not_in_binary": 14579
+    }
+  },
+  "scope": "One existing predicate body and its two existing live-state host call sites; no startup, online-service or debug path added.",
+  "assumptions": [
+    "The existing host target facts are the real-state interface for this predicate; the previous raw Seg60Host API had no callers."
+  ],
+  "remaining": [
+    "Original register ABI and gameplay execution are not validated; no game was launched.",
+    "The surface-target classifier 00922C80 remains separate and unchanged."
+  ],
+  "readiness": {
+    "wired_before": 10806,
+    "wired_after": 10807,
+    "target_before": {
+      "address": "00922b10",
+      "name": "entity_is_airborne_target_00922b10",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "category": "scene",
+      "state": "ready",
+      "callers": 4,
+      "wired_callers": 2,
+      "callees": 0,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "abi": "raw_callback",
+      "params": "Seg60Host& host, void* entity",
+      "stand_in_hosts": [
+        "game_hosts_script_orders.cpp",
+        "game_hosts_units.cpp"
+      ],
+      "called": null
+    },
+    "target_after": {
+      "address": "00922b10",
+      "name": "entity_is_airborne_target_00922b10",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "category": "scene",
+      "state": "wired",
+      "callers": 4,
+      "wired_callers": 2,
+      "callees": 0,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 2,
+      "callers_live": 2
+    },
+    "aggregate_call_count_note": "The initial readiness graph cache was marked stale, so no aggregate binary-call delta is claimed. The final target call graph is freshly rebuilt and has two reachable call sites."
+  }
+}

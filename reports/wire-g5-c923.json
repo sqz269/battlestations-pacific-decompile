@@ -733,5 +733,315 @@
     },
     "metrics_qualification": "Totals include incoming main changes. Original c923 contribution remains five exact source call paths; append/grow remain unlinked.",
     "game_run": false
+  },
+  "landing_repair2": {
+    "merged_origin_main": "c38378d8bf7457c8d9b8fc7e175efe95a34ecbbc",
+    "branch_head_before_merge": "45b4e20fd6195e225705e4717866cf103de7f47b",
+    "conflicts": {
+      "src/native_material_pools.cpp": "Retain incoming Movie/Sound/FrameBox cleanup and the complete ClipBox block. Move unchanged ClipBox address entries and specializations immediately before explicit pool instantiations to avoid overlap with adjacent Sound cleanup edits."
+    },
+    "ledger_or_cmake_conflicts": false,
+    "preserved": "All incoming cleanup, unit-classifier, vehicle descriptor, ledger and other main changes retained. AC names and reconstruction shards merged automatically.",
+    "default_build": "scripts/build.ps1 PASS: 4/4 CTest groups, zero compiler diagnostics; local/c923-merge2-build.log",
+    "on_build": "kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled temporarily ON: scripts/build.ps1 PASS, 4/4 CTest groups, zero compiler diagnostics; local/c923-merge2-on-build.log",
+    "source_and_header_receipt": {
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "on_exit_code": 0,
+      "clip_box_block_before_sha256": "f465440a50ffdc5f1b455f7de1bd93fe1f09094a8188dcce2083c5ddabbd4217",
+      "clip_box_block_after_sha256": "f465440a50ffdc5f1b455f7de1bd93fe1f09094a8188dcce2083c5ddabbd4217",
+      "clip_box_block_unchanged": true
+    },
+    "graph_summary_after": {
+      "functions": 43436,
+      "reachable_functions": 43280,
+      "data_symbols": 49581,
+      "edges": 224518,
+      "roots": 2,
+      "instructions": 2388340,
+      "recon_addresses": 6384,
+      "recon_called": 5687,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2561
+    },
+    "optimized_clip_box_call_evidence": {
+      "00ace750": [
+        {
+          "code_address": "10534600",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10534ff0",
+              "call",
+              1,
+              "10534ff5"
+            ]
+          ],
+          "canonical_symbol": "?construct_native_gui_clip_box_pool_00ace750@bsp@@YAXAAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+          "folded_aliases": []
+        }
+      ],
+      "00ace3e0": [
+        {
+          "code_address": "10534da0",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10534690",
+              "call",
+              1,
+              "10534695"
+            ]
+          ],
+          "canonical_symbol": "?destroy_native_gui_clip_box_pool_00ace3e0@bsp@@YAXAAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+          "folded_aliases": []
+        }
+      ],
+      "00ace310": [
+        {
+          "code_address": "10534e20",
+          "reachable": true,
+          "call_sites": [
+            [
+              "10532400",
+              "call",
+              1,
+              "105324e1"
+            ],
+            [
+              "105346a0",
+              "call",
+              1,
+              "105346d4"
+            ],
+            [
+              "10534720",
+              "call",
+              1,
+              "10534754"
+            ],
+            [
+              "105348a0",
+              "call",
+              1,
+              "105348d4"
+            ],
+            [
+              "105349a0",
+              "call",
+              1,
+              "105349d4"
+            ],
+            [
+              "10534aa0",
+              "call",
+              1,
+              "10534ad4"
+            ],
+            [
+              "10534b20",
+              "call",
+              1,
+              "10534b54"
+            ],
+            [
+              "10534c20",
+              "call",
+              1,
+              "10534c54"
+            ],
+            [
+              "10534da0",
+              "call",
+              1,
+              "10534dd4"
+            ],
+            [
+              "10534e40",
+              "call",
+              1,
+              "10534e78"
+            ],
+            [
+              "10534ec0",
+              "call",
+              1,
+              "10534ef8"
+            ],
+            [
+              "105c9bd0",
+              "call",
+              1,
+              "105c9c0f"
+            ],
+            [
+              "105c9c50",
+              "call",
+              1,
+              "105c9d33"
+            ],
+            [
+              "105c9d90",
+              "call",
+              1,
+              "105c9de7"
+            ]
+          ],
+          "canonical_symbol": "?destroy_native_material_pass_pool_table_00b402b0@bsp@@YAXPAX@Z",
+          "folded_aliases": [
+            "?destroy_native_material_pass_pool_table_00b402b0@bsp@@YAXPAX@Z",
+            "?destroy_native_shader_state_list_pool_table_00b621b0@bsp@@YAXPAX@Z",
+            "?free_native_gui_clip_box_pool_table_00ace310@bsp@@YAXPAX@Z",
+            "?free_native_gui_curve_pool_table_00abc180@bsp@@YAXPAX@Z",
+            "?free_native_gui_frame_box_pool_table_00aceee0@bsp@@YAXPAX@Z",
+            "?free_native_gui_group_pool_table_00ac70d0@bsp@@YAXPAX@Z",
+            "?free_native_gui_line_pool_table_00ac1ce0@bsp@@YAXPAX@Z",
+            "?free_native_gui_model_pool_table_00acbdd0@bsp@@YAXPAX@Z",
+            "?free_native_gui_section_pool_table_00abe9d0@bsp@@YAXPAX@Z",
+            "?free_native_gui_sound_pool_table_00acd1d0@bsp@@YAXPAX@Z",
+            "?free_native_tracer_pool_table_00ba9c80@bsp@@YAXPAX@Z"
+          ]
+        }
+      ],
+      "00ace340": [
+        {
+          "code_address": "10535f50",
+          "reachable": true,
+          "call_sites": [
+            [
+              "103b7d80",
+              "jmp",
+              1,
+              "103b7d80"
+            ],
+            [
+              "103b7e30",
+              "jmp",
+              1,
+              "103b7e45"
+            ],
+            [
+              "10535f60",
+              "call",
+              1,
+              "10535f72"
+            ]
+          ],
+          "canonical_symbol": "?native_gui_clip_box_pool_table_set_capacity_00ace340@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_set_capacity_00ace340@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_frame_box_pool_table_set_capacity_00acef70@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_set_capacity_00ac7100@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_set_capacity_00aa6fa0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_line_pool_table_capacity_00ac1d10@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?set_native_gui_section_pool_table_capacity_00abea00@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "00ace5b0": [
+        {
+          "code_address": "103b7e30",
+          "reachable": true,
+          "call_sites": [
+            [
+              "105322d0",
+              "call",
+              1,
+              "1053236b"
+            ],
+            [
+              "10532530",
+              "call",
+              1,
+              "105325cb"
+            ],
+            [
+              "10532790",
+              "call",
+              1,
+              "1053282b"
+            ],
+            [
+              "105328c0",
+              "call",
+              1,
+              "1053295b"
+            ],
+            [
+              "10532d80",
+              "call",
+              1,
+              "10532e1b"
+            ],
+            [
+              "10532fe0",
+              "call",
+              1,
+              "1053307b"
+            ],
+            [
+              "10533110",
+              "call",
+              1,
+              "105331ab"
+            ],
+            [
+              "10533240",
+              "call",
+              1,
+              "105332db"
+            ],
+            [
+              "10533370",
+              "call",
+              1,
+              "1053340b"
+            ],
+            [
+              "105334a0",
+              "call",
+              1,
+              "1053353b"
+            ]
+          ],
+          "canonical_symbol": "?native_gui_clip_box_pool_table_reserve_00ace5b0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+          "folded_aliases": [
+            "?native_gui_clip_box_pool_table_reserve_00ace5b0@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_frame_box_pool_table_reserve_00acf860@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_group_pool_table_reserve_00ac7370@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?native_gui_pool_table_reserve_00aa7740@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_icon_pool_table_00ab2420@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_line_pool_table_00ac2020@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z",
+            "?reserve_native_gui_section_pool_table_00abed30@bsp@@YAXAAUNativeGuiPoolSlabTable@1@I@Z"
+          ]
+        }
+      ],
+      "00ace390": [],
+      "00ace520": []
+    },
+    "folding_qualification": "Optimized table helper aliases remain qualified by exact ClipBox source edges. Original c923 NOICF evidence and source-block SHA256 equality are retained; no new NOICF build claimed for this merge.",
+    "wire_readiness_log": "local/c923-merge2-readiness.log",
+    "wire_readiness_summary": {
+      "wired": 10815,
+      "callees_done_no_wired_caller": 8461,
+      "ready": 1198,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "metrics_qualification": "Totals include incoming main changes. ClipBox contribution remains five exact source call paths; append/grow remain unlinked.",
+    "game_run": false,
+    "wire_readiness_counts": {
+      "called": 6126,
+      "called_not_wired": 362,
+      "wired_not_called": 41,
+      "not_in_binary": 14558
+    }
   }
 }

@@ -1,0 +1,194 @@
+{
+  "goal": 5,
+  "chain": 931,
+  "run": 2067,
+  "slot": "g5-w10",
+  "branch": "agent/g5-w10",
+  "base_head": "81b61b7e0b96384e6f063b1fa56bb5978e5ee203",
+  "picked": "FrameBox retained pool slab-table cleanup through its existing entry-reachable shutdown owner",
+  "implementation": {
+    "real_state": "NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy borrows the actual retained F8C188 process pool header at +28h after freeing its slabs. No new owner, constants, shadow state or discarded results.",
+    "replacement": "The FrameBox destroy specialization instantiates the existing destroy_pool engine with ACEEE0 as its table-free provider, replacing the old generic inline free once. Slab cleanup, critical-section teardown, allocator-list unlink and header words retain their existing schedule.",
+    "evidence": "bsp.py show 00aceee0 --asm: MOV EAX,[ECX]; TEST EAX,EAX; JZ; PUSH EAX; CALL BF6989; POP ECX; RET. bsp.py show 00acf490 confirms the same inline capture/null-test/free after the slab loop and before section teardown.",
+    "abi": "Original ACEEE0 is fastcall ECX=table, no stack arguments, plain RET. The reconstructed C++ source interface is not an original-register-ABI thunk. Descriptive C++ name is a hypothesis; correct Ghidra template name TMPL_FreePointer_00aceee0 was retained without analysis mutations.",
+    "selection_refinement": "ACED50 and AD0050 were initially claimed; the default built graph has no concrete FrameBox allocator or slab-initializer contribution, despite generic readiness identifiers reporting called=true. Chose the actual linked process shutdown owner instead."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all six CTests before selection.",
+    "final_build": "scripts/build.ps1 passed all six CTests initially and again after restoring the original linker cache; local/output/c931-build.log and local/output/c931-build-restored.log.",
+    "existing_probe": "Recompiled and ran tests/wire_g5_c908_frame_box_table_probe.cpp against the new production bsp_core.lib; passed 513 slots, capacity32->66, slot/slab metadata, destroy and allocator-list unlink. local/output/c931-probe.log; manifest embedded; no new test added.",
+    "call_graph": "Default Release graph shows ACEEE0 REACHABLE and a direct call at 10533DB4 from the changed FrameBox destroy member. local/output/c931-who-after.log.",
+    "entry_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> GameNativeGuiWidgetPoolProcess<GuiFrameBoxPoolTraits>::initialize_once -> registered destroy_at_exit -> NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy -> ACEEE0.",
+    "folding_limit": "Default Release /OPT:ICF folds this null-tested-free body with seven identical helpers; other folded callers are not claimed as new wiring. A temporary optimized /Ob2 relink with /OPT:REF /OPT:NOICF disambiguated ACEEE0: exactly one reachable direct call from FrameBox destroy at 105A73E4, no unreachable callers. local/output/c931-who-unfolded.log. Original /INCREMENTAL:NO linker flags were restored afterward; no C++ compiler flags changed.",
+    "readiness_before": {
+      "wired": 10808,
+      "ready": 1201,
+      "callees_done_no_wired_caller": 8465
+    },
+    "readiness_after": {
+      "wired": 10808,
+      "ready": 1201,
+      "callees_done_no_wired_caller": 8465
+    },
+    "readiness_scope": "The new ACEEE0 body is indexed in the reconstruction ledger and reachable in the built exe, but is outside the readiness rows (tagged tmpl_shape). The tier-1 wired total therefore remains unchanged.",
+    "default_graph_before": {
+      "reachable_functions": 43249,
+      "total_functions": 43405,
+      "called_reconstructed_addresses": 5680,
+      "reconstructed_addresses": 6370,
+      "edges": 224389
+    },
+    "default_graph_after": {
+      "reachable_functions": 43249,
+      "total_functions": 43405,
+      "called_reconstructed_addresses": 5680,
+      "reconstructed_addresses": 6371,
+      "edges": 224390
+    },
+    "float_math": "No float arithmetic changed; pc24_lint was not required.",
+    "game_validated": false,
+    "unfolded_entry_path": "The /OPT:NOICF graph path is ACEEE0 <- FrameBox destroy <- FrameBox process destroy_at_exit <- FrameBox process initialize_once <- catch$_WinMain <- WinMain <- __scrt_common_main_seh <- WinMainCRTStartup.",
+    "runtime_limit": "Build, source and fixture evidence only; game not run, no binary ABI or shutdown runtime equivalence asserted.",
+    "restored_default_graph": "Rebuilt restored default Release graph: 43249/43405 functions reachable, 5680/6371 reconstructed addresses called, 224390 edges; identical to the prior default after graph. local/output/c931-graph-restored.log."
+  },
+  "rows": [
+    {
+      "native": "00aceee0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy -> destroy_pool<GuiFrameBoxPoolTraits, &free_native_gui_frame_box_pool_table_00aceee0>"
+    },
+    {
+      "native": "00acf490",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy",
+      "reason": "Already reached by the retained FrameBox process destroy_at_exit owner; only its inline table-free provider was replaced in this chain."
+    },
+    {
+      "native": "00acff70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::initialize",
+      "reason": "Already reached by the retained FrameBox process initialize_once owner; no additional constructor wiring was needed."
+    },
+    {
+      "native": "00aced50",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate",
+      "reason": "No concrete FrameBox allocator/slab-initializer contribution is linked from the game entry; generic readiness identifiers conflate other pool specializations."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate",
+      "reason": "Missing an entry-reachable live FrameBox widget allocation consumer; current linked retained process owner only initializes and destroys the pool."
+    },
+    {
+      "native": "00acef10",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_vector_allocation.cpp: allocate_native_gui_frame_box_records_00acef10",
+      "reason": "This allocates 2Ch FrameBox vector records, not the pool slab-pointer table; no corresponding live vector consumer was established."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera binding",
+      "reason": "Missing an actual movie-camera screen owner carrying current/default deviation fields and a live consumer."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera binding",
+      "reason": "Missing an actual movie-camera screen owner carrying current/default overview-height fields and a live consumer."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera binding",
+      "reason": "Missing the actual movie-camera speed-limit and acceleration-time owner; a camera identity token is insufficient."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera binding",
+      "reason": "Missing the actual movie-camera current/default acceleration-time owner and corresponding live screen consumer."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::failure_side_effect",
+      "reason": "Missing native hit/attacker player-record providers and the per-player 284h-stride scoring/award graph; the current callback only records statistics."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::repair_completed_notify",
+      "reason": "The inspected adapter marks this path unreached and does not provide the native scoring record and award-table owner."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director flags binding",
+      "reason": "Missing a retained controller-state-message producer and consumer carrying both target descriptors, mode and flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "Missing a retained controller-snapshot owner and transport consumer; constructing an unused snapshot would not wire behavior."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring candidate",
+      "reason": "Missing the parser-owned per-mode class-pair table and its live spawn-composition consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn gate candidate",
+      "reason": "Missing the native request weight, threat-record vector and support-site list required by the original spawn gate."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: group reconnaissance candidate",
+      "reason": "Missing the live per-member reconnaissance-value provider and nearest-enemy-group consumer."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: player-count watchdog candidate",
+      "reason": "Multiplayer participant-count watchdog; single-player only reaches its guarded early return and online-only work is excluded."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerCursorSwitch",
+      "reason": "The existing adapter implements cursor visibility switching and deliberately rejects virtual88 and manager+4 notifications; the actual animated-target providers are missing."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already directly called and entry-reachable before this chain; no new wiring required."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already consumed by the actual raw-bag iteration loop; no new wiring required."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "Already entry-reachable from the native listener-subscription load path; readiness uses a different legacy name."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "Already called by the native surrender-listener load path; default ICF folds the equivalent empty input/surrender constructors."
+    }
+  ],
+  "left_for_others": "Live FrameBox widget allocation/creation consumer for AD0050 and ACED50; broader native camera/scoring owners and providers identified in skipped rows. No game run, ABI equivalence or shutdown runtime validation claimed."
+}

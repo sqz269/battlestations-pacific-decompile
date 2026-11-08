@@ -1305,9 +1305,11 @@ void* allocate_elements(std::uint32_t count, std::uint32_t element_bytes);
 // allocator::deallocate(p, n), __thiscall(alloc, p, n), RET 8 (00AA10F0,
 // 00AA1190, 00AAB770, 00AACAE0, 00AACB00): operator delete(p).
 void deallocate(void* pointer) noexcept;
-// 00AA6E80 / 00AAB7F0 / 00AACCE0, __fastcall(ECX = slot): free(*slot) when
+// 00AA6E80 / 00AACCE0, __fastcall(ECX = slot): free(*slot) when
 // non-null; the slot is NOT cleared. 00AA1AD0: operator delete(*slot) when
 // non-null and the slot cleared.
+// The 00AAB7F0 address entry in native_gui_button_pool_table.hpp reuses this
+// common algorithm on the retained Button pool table.
 void free_pointer(void** slot) noexcept;
 void free_and_clear_00aa1ad0(void** slot) noexcept;
 // vector::size for 40h (00AA1D00), 14h (00AAC910) and 24h (00AAC970) byte

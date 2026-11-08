@@ -486,6 +486,20 @@ bool GameVehicleClassDescriptorCache::descriptor_is_kind(
     }
     const auto* body = bsp::gameplay_seg61_62_cc13::is_kind_of_row(is_kind_of);
     if (body == nullptr) throw std::logic_error("descriptor vtable has no IsKindOf row");
+    // 007CFD00..007CFD1F: the plane base accepts 0Fh, 5 and 4. The eight
+    // plane descriptor leaves (00953470..009537D0, kIsKindOfRows) inline
+    // that same tail after their subtype checks. Reuse the existing body
+    // with the actual query, replacing those comparisons on this path.
+    // Select by the resolved descriptor's exact tail, retaining both prefix
+    // ids for the small/large recon classes and all other families' dispatch.
+    const auto count = body->id_count;
+    if (count >= 3 && body->ids[count - 3] == 0x0f &&
+        body->ids[count - 2] == 5 && body->ids[count - 1] == 4) {
+        for (std::uint8_t i = 0; i < count - 3; ++i) {
+            if (kind == static_cast<int>(body->ids[i])) return true;
+        }
+        return bsp::plane_class_is_kind_of_007cfd00(static_cast<std::uint32_t>(kind));
+    }
     return bsp::gameplay_seg61_62_cc13::is_kind_of(*body, kind);
 }
 
