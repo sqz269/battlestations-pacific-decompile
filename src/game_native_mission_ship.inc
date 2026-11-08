@@ -214,6 +214,10 @@ struct MissionShipGraph final {
             if (all_units) devices_visual = std::make_unique<GameNativeMissionDevices>(log, *source.units);
             load_new_unit_models(units);
             material_refresh->publish_reflection_cubemap(environment->sky.refl_cubemap_b98);
+            // 004DF5B7 publishes the loaded scene+C44h before rendering. The
+            // optional field has a proven value only when 004EA870 read it.
+            if (environment->water_tracer_color_authored)
+                material_refresh->publish_water_tracer_color(environment->lights.water_tracer_color_c44);
             material_refresh->refresh_after_model_load();
             check(model->drawable_count() != 0, "mission has no installed unit drawables");
             update_live_poses(0);

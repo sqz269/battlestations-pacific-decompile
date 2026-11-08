@@ -34,6 +34,7 @@
 #include "bsp/native_shader_preload.hpp"
 #include "bsp/native_render_service_base.hpp"
 #include "bsp/scene_renderer_cc13.hpp"
+#include "bsp/scene_weather_cc13.hpp"
 #include "bsp/native_material_effect_owner.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_weak_owner.hpp"
@@ -555,6 +556,24 @@ struct GameNativeRendererApplication::Impl {
     // Goal 5 chain 684: settings may precede the actual native service. Empty
     // means no profile request; no mode is supplied by this host.
     std::optional<U> pending_old_film_effect;
+    std::optional<scene_weather_cc13::ScenePostProcessHdr> pending_scene_hdr;
+    std::optional<scene_weather_cc13::ScenePostProcessMotionBlur> pending_scene_blur;
+    std::optional<scene_weather_cc13::ScenePostProcessUnderwaterWave> pending_scene_wave;
+
+    template<class Block, class Apply>
+    bool set_scene_parameters(const Block& block, std::optional<Block>& pending, Apply apply) {
+        check(phase == Phase::ready || phase == Phase::rendering,
+            "scene post-processing requires the live application renderer");
+        if (!resources.publication) {
+            pending = block;
+            return false;
+        }
+        check(resources.acquired.phase == NativeRenderResourcesConstructionAcquired::Phase::complete,
+            "scene post-processing requires the constructed actual F8D39C service");
+        apply(resources.publication, block);
+        pending.reset();
+        return true;
+    }
 
     Impl(NativeMeshRetentionState& retained_state,GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
@@ -856,6 +875,9 @@ bool GameNativeRendererApplication::reset_scene_remap_textures() {
     // no native texture has been acquired and there is nothing to release.
     p.pending_scene_remaps.fill(false);
     p.pending_scene_remap_names.fill(std::string{});
+    p.pending_scene_hdr.reset();
+    p.pending_scene_blur.reset();
+    p.pending_scene_wave.reset();
     return p.resources.publication != nullptr;
 }
 bool GameNativeRendererApplication::set_old_film_effect(std::uint32_t mode) {
@@ -878,6 +900,42 @@ bool GameNativeRendererApplication::set_old_film_effect(std::uint32_t mode) {
     p.pending_old_film_effect.reset();
     p.log.implemented("NativeRenderService::set_old_film_effect", "00b0d080");
     return true;
+}
+bool GameNativeRendererApplication::set_scene_hdr(
+    const scene_weather_cc13::ScenePostProcessHdr& block) {
+    return impl_->set_scene_parameters(block, impl_->pending_scene_hdr,
+        [](void* service, const scene_weather_cc13::ScenePostProcessHdr& values) {
+            // 00B0E9B0 reads nine float words, only byte24h, then float28h.
+            // Do not read the C++ struct's three padding bytes after that byte.
+            static_assert(offsetof(scene_weather_cc13::ScenePostProcessHdr, anti_banding_on) == 0x24);
+            static_assert(offsetof(scene_weather_cc13::ScenePostProcessHdr, particle_luminance_mul) == 0x28);
+            std::array<std::uint32_t, 11> words;
+            std::memcpy(words.data(), &values, 9 * sizeof(std::uint32_t));
+            words[9] = values.anti_banding_on;
+            std::memcpy(&words[10], &values.particle_luminance_mul, sizeof(std::uint32_t));
+            scene_renderer::set_hdr_params_00b0e9b0(service, words.data());
+        });
+}
+bool GameNativeRendererApplication::set_scene_motion_blur(
+    const scene_weather_cc13::ScenePostProcessMotionBlur& block) {
+    return impl_->set_scene_parameters(block, impl_->pending_scene_blur,
+        [](void* service, const scene_weather_cc13::ScenePostProcessMotionBlur& values) {
+            static_assert(sizeof(values) == 8 * sizeof(std::uint32_t));
+            std::array<std::uint32_t, 8> words;
+            std::memcpy(words.data(), &values, sizeof(words));
+            scene_renderer::set_motion_blur_params_00b0ea20(service, words.data());
+        });
+}
+bool GameNativeRendererApplication::set_scene_underwater_wave(
+    const scene_weather_cc13::ScenePostProcessUnderwaterWave& block) {
+    return impl_->set_scene_parameters(block, impl_->pending_scene_wave,
+        [](void* service, const scene_weather_cc13::ScenePostProcessUnderwaterWave& values) {
+            static_assert(sizeof(values) == 8 * sizeof(std::uint32_t));
+            std::array<std::uint32_t, 8> words;
+            std::memcpy(words.data(), &values, sizeof(words));
+            // 00B0EA70 also fills the shader-order copy at service+628h.
+            scene_renderer::set_underwater_wave_00b0ea70(service, words.data());
+        });
 }
 GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
     check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");
@@ -1190,6 +1248,9 @@ void GameNativeRendererApplication::prepare_mission_ship() {
         p.mission_ship->prepare(*this, p.device_generation);
         if (p.pending_old_film_effect)
             (void)set_old_film_effect(*p.pending_old_film_effect);
+        if (p.pending_scene_hdr) (void)set_scene_hdr(*p.pending_scene_hdr);
+        if (p.pending_scene_blur) (void)set_scene_motion_blur(*p.pending_scene_blur);
+        if (p.pending_scene_wave) (void)set_scene_underwater_wave(*p.pending_scene_wave);
         // The native B14A10/B107F0 producer has now completed, before
         // the first scene draw. Apply only actual pending record strings,
         // once each and in 004D4F60's slot order. No construction replay.

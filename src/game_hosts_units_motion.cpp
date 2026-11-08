@@ -824,30 +824,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 007DB680 BSP_PlaneFlight_CoreLaw with its integrator, run by the
                     // free-flight step (ground false) and by the ground law 007DCCF0
                     // (ground true, ctl+FCh = 1; packet cc9_plane_ground_roll).
-                    // 007D8230 (007D8278-007D8318): the published translation takes
-                    // t x unit+810h..818h next to t x ctl+18h. LABELLED: this host has
-                    // no sub-frame publish; the term is added where it integrates the
-                    // velocity, with t the fixed step.
-                    void wanderer_publish_007d8230(float step) {
-                        if constexpr (GameUnitsHost::Impl::kPlaneWandererBound) {
-                            const float* o = unit_.wanderer.offset;
-                            for (int i = 0; i < 3; ++i) unit_.motion.position[i] += o[i] * step;
-                            const double d = static_cast<double>(avoid_len(o)) * step;
-                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
-                            unit_.wanderer_displacement += d;
-                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
-                            owner_.wanderer_displacement_total += d;
-                        } else {
-                            (void)step;
+                    // 007D827B..007D8300 and 007DA218..007DA2AD perform the same
+                    // translation: committed position + ctl+18h * t, then unit+810h * t.
+                    // Reuse the complete short publisher for that shared operation;
+                    // this is source reuse, not a recovered 007D9F60 -> 007D8230 call.
+                    // The host folds publication into its fixed step, so the pose at
+                    // entry is its committed boundary pose, before the existing rotation.
+                    void publish_translation(float step) {
+                        bsp::PlaneAdvanceInputs input;
+                        input.step = step;
+                        const float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                input.committed_pose.m[r * 4 + c] = rows[r][c];
+                            }
+                            // Native affine homogeneous column; the live host stores
+                            // its three basis rows and world translation separately.
+                            input.committed_pose.m[r * 4 + 3] = 0.0f;
+                            input.committed_pose.m[12 + r] = unit_.motion.position[r];
+                            input.linear_velocity[r] = unit_.plane_world_velocity[r];
+                            input.external_velocity[r] = unit_.wanderer.offset[r];
                         }
+                        input.committed_pose.m[15] = 1.0f;
+                        const auto published = bsp::translate_only_007d8230(input);
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.motion.position[i] = published.live_pose.m[12 + i];
+                        }
+                        const double d = static_cast<double>(avoid_len(unit_.wanderer.offset)) * step;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        unit_.wanderer_displacement += d;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
+                        owner_.wanderer_displacement_total += d;
                     }
                     void run_core_law_007db680(float step, bool ground) {
                         if constexpr (GameUnitsHost::Impl::kPlanePoseFirstBound) {
                             // Wave 1, 007D9F60 / 007D8230, before this step's physics.
-                            for (int i = 0; i < 3; ++i) {
-                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
-                            }
-                            wanderer_publish_007d8230(step);
+                            publish_translation(step);
                             advance_pose_0085e4d0(step, unit_.plane_pose_ground_prev,
                                                   unit_.plane_forward_speed_7c);
                             ++unit_.pose_first_steps;
@@ -1498,17 +1511,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
-                                for (int i = 0; i < 3; ++i) {
-                                    unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
-                                }
-                                wanderer_publish_007d8230(step);
+                                publish_translation(step);
                             }
                         } else {
                             for (int i = 0; i < 3; ++i) {
                                 unit_.plane_world_velocity[i] += world_accel[i] * step;
-                                if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
-                                    unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
-                                }
                             }
                             {
                                 bsp::ControllerVelocities velocity;
@@ -1520,7 +1527,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 forward_speed_after_step_44 = velocity.linear_body[2];
                             }
                             if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
-                                wanderer_publish_007d8230(step);
+                                publish_translation(step);
                             }
                         }
                         // 0092D730 takes the body's linear velocity from

@@ -29,6 +29,8 @@
 
 namespace bsp {
 
+struct ShipAiAvoidanceRequest;
+
 template <class T>
 inline T& cc13_seg67b_at(void* base, std::size_t offset) {
     return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(base) + offset);
@@ -1314,10 +1316,15 @@ void command_record_set_float48_009d4ec0(void* record, float value);
 float command_record_get_float48_009d4f00(const void* record);
 // 009D4F70: EAX = ai + A98h + [ai+B40h] * 54h.
 void* ship_ai_current_order_slot_009d4f70(void* ai);
-// The unreferenced navigation-block setters.
+// The native navigation-block setters (unused out-of-line COMDAT copies).
 void ship_ai_set_torpedo_avoidance_request_009dabb0(void* block, std::uint8_t value);
-void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* block, std::uint32_t value);
-void ship_ai_set_land_avoidance_request_009dabd0(void* block, std::uint8_t value);
+// Typed owner for the same brain+3F8h signed DWORD and brain+3FCh bool.
+// Native ABI: __thiscall(brain, int/bool), RET 4. These C++ interfaces are
+// semantic bindings, not binary-compatible entry points.
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(
+    ShipAiAvoidanceRequest& block, std::int32_t value);
+void ship_ai_set_land_avoidance_request_009dabd0(
+    ShipAiAvoidanceRequest& block, bool value);
 void ship_ai_set_drive_bypass_009dabe0(void* block, std::uint8_t value);
 void ship_ai_set_speed_commanded_flag_009dabf0(void* block);
 // 009F5260: [o] = 00D21B40, [o+4h] = arg; EAX = o.

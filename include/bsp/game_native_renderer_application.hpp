@@ -9,6 +9,11 @@ struct IDirect3D9;
 struct IDirect3DDevice9;
 struct _D3DPRESENT_PARAMETERS_;
 namespace bsp {
+namespace scene_weather_cc13 {
+struct ScenePostProcessHdr;
+struct ScenePostProcessMotionBlur;
+struct ScenePostProcessUnderwaterWave;
+}
 struct RendererInitRequest;
 struct NativeRendererParametersOwner;
 struct SettingsRendererCapabilities;
@@ -372,6 +377,11 @@ public:
     // retain only the latest setting and apply it after native mission
     // resource initialization, before the first draw. False means retained.
     bool set_old_film_effect(std::uint32_t mode);
+    // 004E8510's parsed blocks for the selected scene. Retain only actual
+    // reader output until F8D39C exists, then use its native parameter setters.
+    bool set_scene_hdr(const scene_weather_cc13::ScenePostProcessHdr&);
+    bool set_scene_motion_blur(const scene_weather_cc13::ScenePostProcessMotionBlur&);
+    bool set_scene_underwater_wave(const scene_weather_cc13::ScenePostProcessUnderwaterWave&);
     // Ready-phase borrowed raw factory contexts, retained by this application.
     // Caller retains each acquired frame and disposes survivors before drain;
     // failed attempts may require process retention. Does not call B107F0 or

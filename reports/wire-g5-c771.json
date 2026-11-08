@@ -238,5 +238,18 @@
   "limits": [
     "No game execution was performed. Built entry reach and existing focused tests do not prove original ABI or in-game behavior."
   ],
-  "wired_after": 10614
+  "wired_after": 10614,
+  "merge_validation": {
+    "merged_origin_main": "f0f3744cfb6c20b291ddd29d1eff1146ccb011e9",
+    "conflict_files": ["src/game_hosts_lua.cpp"],
+    "resolution": "Retain the submarine semantic effect-ID contract and both independent Submarine/TorpedoBoat loaders and numeric getter blocks; no ledger or CMake conflicts occurred.",
+    "standard_build": "passed; all four tests",
+    "on_build": "passed; all four tests, zero distinct compiler/linker diagnostics; kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled restored afterward",
+    "mission_clock_switch": "unchanged",
+    "wired_total_after_merge": 10627,
+    "called_reconstructed_total_after_merge": 5474,
+    "submarine_00854230": "wired/called; one entry-reachable call at 10158ACD from GameMissionLuaVehicleClassBinding::load_descriptor",
+    "torpedo_boat_00857f40": "wired/called; one entry-reachable call at 1015C04E from GameMissionLuaVehicleClassBinding::load_surface_ship_leaf",
+    "contribution": "The original c771 contribution remains one additional wired body; the higher merged total includes independently landed main changes."
+  }
 }

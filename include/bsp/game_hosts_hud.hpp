@@ -34,6 +34,7 @@
 namespace bsp {
 struct MovieKeyframeInput;
 class NativeStringStorage;
+class SessionParticipantPools;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -119,6 +120,13 @@ public:
     // The frame unbinds this source before its state is destroyed.
     void bind_view_fov_cinematic_state(const bool* hidden_634) noexcept;
     void unbind_view_fov_cinematic_state(const bool* hidden_634) noexcept;
+
+    // Message 35 borrows the mission's current participant identities and
+    // local-slot cell for its base owner. Unbind before that frame is destroyed.
+    void bind_score_message_participants(const bsp::SessionParticipantPools&,
+        const std::size_t& local_slot) noexcept;
+    void unbind_score_message_participants(const bsp::SessionParticipantPools&,
+        const std::size_t& local_slot) noexcept;
 
     // The `create_hud_manager` row of the load walk, 0068a990 at 004e046c, and
     // the Init 0068cc70 its caller runs. The construction itself is a record;
