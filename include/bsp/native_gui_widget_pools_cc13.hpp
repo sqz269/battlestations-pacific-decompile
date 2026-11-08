@@ -159,6 +159,12 @@ template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize();
 template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize();
 template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate();
 
+// 00AACDF0 is the Movie table's existing equivalent-address set-capacity
+// body. Startup reuses it for 00AAD5F0's inline initial allocation.
+void set_native_gui_movie_pool_table_capacity_00aacdf0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize();
+
 // Existing equivalent-address specializations use these source aliases. Each
 // forwards to the SAME reconstructed body; there is no second vector algorithm.
 inline void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {

@@ -576,6 +576,22 @@ template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize() {
     initialize_pool<GuiButtonPoolTraits,
         &reserve_native_gui_button_pool_table_00aabd00>(allocator_list_, storage_);
 }
+__declspec(noinline) void set_native_gui_movie_pool_table_capacity_00aacdf0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // bsp.py show 00AACDF0: Movie's equivalent-address specialization uses
+    // the existing capacity-first allocate/copy/free/adopt implementation.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
+    // bsp.py show 00AAD5F0: immediately after initializing pool+28h to
+    // {nullptr,0,0}, native reserves 32 entries in unwind state 2. Its
+    // inline set-capacity schedule is exactly 00AACDF0, reused here on the
+    // SAME process table; there is no original CALL to that out-of-line entry.
+    initialize_pool<GuiMoviePoolTraits,
+        &set_native_gui_movie_pool_table_capacity_00aacdf0>(allocator_list_, storage_);
+}
+
 template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
     // 00AABF80 inlines 00AABC70 after initializing the actual 4084h slab,
     // under the existing pool lock. Replace its common append, running once.
