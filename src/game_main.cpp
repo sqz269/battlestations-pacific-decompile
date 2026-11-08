@@ -1228,6 +1228,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Model pool CRT CD75F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", gui_model_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // Live bsp.py ghidra disasm CD7660/CE0B20 and bytes CE34B8:
+        // CE34C4 selects CD7660, after the Model pool's CE34BC entry.
+        // ECX=F8C0EC; CALL ACD530; atexit(CE0B20 -> ACD2F0).
+        // Start that canonical Sound pool on the shared E188B4 allocator list.
+        auto& gui_sound_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiSoundPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_sound_pool_atexit = gui_sound_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Sound pool CRT CD7660: atexit=%d storage_bytes=%zu "
+            "before_particle_pool=1", gui_sound_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // Original CRT table CE34E4 selects CD77F0, before the particle
         // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
         auto& traceline_pool = bsp::game::game_native_traceline_pool_process();
