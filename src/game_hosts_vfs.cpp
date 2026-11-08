@@ -357,7 +357,7 @@ const GameVfsProbeResult& GameVfsHost::probe(const std::string& requested) {
 GameScriptHost::GameScriptHost(GameHostLog& log, VfsMountContext& mounts,
     const std::vector<std::string>& suffixes, GameNativeLuaServices& lua,
     GameSingletonHost& singletons,GameNativeReadOnlyData& data,const GameNativeVfsRawServices& vfs)
-    : globals_(lua.globals()), files_(mounts, suffixes, &lua.bootstrap()), runtime_(files_),
+    : lua_(lua), globals_(lua.globals()), files_(mounts, suffixes, &lua.bootstrap()), runtime_(files_),
       // The native stack has no defined high bytes for two persisted flags.
       // This explicit source policy is not a recovered native stack value.
       input_(log,singletons,lua,data,vfs,GameInputSettingsStackPolicy{0,0,0}) {}

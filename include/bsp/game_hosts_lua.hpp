@@ -1593,6 +1593,7 @@ public:
     // Goal 5 chain 659: MovCamNew_AddPosition 008B79F0 / MovCamNew_AddPositions 008B7850
     // through lua_movcam_new_add_position(s) (src/engine_seg56_cc13.cpp).
     int run_movcam_new_add_position(lua_State* state, std::uint32_t address);
+    int run_movcam_reset(lua_State* state, std::uint32_t address);
     // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
     // the VehicleClass rows whose Got is not true. Later reads of those rows
     // through the read_vehicle_class_* readers are counted for the summary

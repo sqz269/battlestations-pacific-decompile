@@ -3355,6 +3355,11 @@ void GameMenuHost::Impl::publish_input_device_flags_sink() {
 }
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
+GameScriptHost& GameMenuHost::script_services() const {
+    if (impl_->profile_scripts == nullptr)
+        throw std::logic_error("HUD table registration has no application script services");
+    return *impl_->profile_scripts;
+}
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;
     impl_->publish_input_device_flags_sink();

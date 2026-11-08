@@ -195,6 +195,9 @@ public:
     const GameMenuSummary& summary() const noexcept;
     // Milestone 2e. Null when --menu-select named nothing.
     GameMissionHost* mission() const noexcept;
+    // The application's retained script services, also borrowed by temporary
+    // table owners during HUD registration (005CC770).
+    GameScriptHost& script_services() const;
     // cc15-prof2: the live settings and the sinks 008D7A50 / 008D5B50 reach at
     // the sign-in (kQuickSettingsApplyCc15Bound); copied, members borrowed.
     void bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks);

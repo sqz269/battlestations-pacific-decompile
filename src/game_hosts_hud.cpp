@@ -48,6 +48,12 @@
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_native_lua_services.hpp"
+#include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/native_lua_objects.hpp"
+#include "bsp/native_lua_bootstrap.hpp"
+#include "bsp/native_lua_file_loading.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gunnery_tables.hpp"      // kInstalledLosTargetHeightAdd (cc13-aimunit3)
 #include "bsp/unit_gunnery_pass.hpp"   // kUnitGunneryKindShipBase (cc13-aimunit3)
@@ -1301,9 +1307,10 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
 // GUI_spectator into +8h and then stores +4h = 1 (00643F26), the wanted byte of
 // the flags the registry borrows. 0052CBF0 (51h, goal 5 chain 662) loads
 // GUI_counters into +8h and builds its two counter entries.
-constexpr std::array<std::uint32_t, 14> kHudLeafScreenRegisters{{
+constexpr std::array<std::uint32_t, 15> kHudLeafScreenRegisters{{
     0x0067B3F0u, 0x005176A0u, 0x005D38A0u, 0x005EE010u, 0x00604890u, 0x0060D1C0u, 0x00565EE0u,
     0x0051ED60u, 0x0067BE80u, 0x00650170u, 0x005F9FF0u, 0x005CCE70u, 0x00643E80u, 0x0052CBF0u,
+    0x005CC770u,
 }};
 bool is_hud_leaf_screen_register(std::uint32_t register_virtual) noexcept {
     return std::find(kHudLeafScreenRegisters.begin(), kHudLeafScreenRegisters.end(),
@@ -1381,6 +1388,73 @@ struct HudLeafStringPool {
         std::memcpy(&data, static_cast<const std::uint8_t*>(header) + 4, sizeof(data));
         return data != nullptr ? std::string_view(data, length) : std::string_view();
     }
+};
+// Screen 36h's limits are ordinary mission-script state despite the debug
+// page name: 008B6FC2/008B7272/008B7552/008B7802 call the reset bodies on
+// [HUD+98h] without enabling that page or constructing a movie mover.
+// 0068D2AB already runs 005CE610 on this exact 84h leaf block. At its existing
+// register phase, replace the generic page-only load with the complete
+// 005CC770 producer (005CC85A..005CCA41: MovieCamera.lua -> +34h..+60h).
+// All Lua scratch objects below are the native 4C8h/14h layouts the body
+// supplies, borrowing the application's bootstrap, VFS and override services.
+class HudLeafMovieCameraRegisterBinding final
+    : public bsp::frontend_seg19_21_cc13::MovieCameraRegisterHost {
+public:
+    explicit HudLeafMovieCameraRegisterBinding(HudLeafRegisterContext& context)
+        : context_(context), lua_(context.menu.script_services().native_lua_services()),
+          activation_(lua_.binding()) {}
+    void native_string_resize_0041dd40(bsp::frontend_seg19_21_cc13::NativeStr* s,
+        std::uint32_t length, std::int32_t preserve) override {
+        pool_.resize(s, length, preserve != 0);
+    }
+    void* pool_singleton_00419cc0() override { return pool_.pool(); }
+    void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t bytes,
+        std::int32_t) override { pool_.give_back(pool, block, bytes); }
+    void frontend_register_004f71d0(void* screen) override { context_.register_base(screen); }
+    void* gui_manager_004c12b0() override { return &context_.menu; }
+    std::uint32_t gui_load_page_00aa5840(void* manager,
+        const bsp::frontend_seg19_21_cc13::NativeStr* name, std::int32_t, std::int32_t) override {
+        if (manager != &context_.menu)
+            throw std::logic_error("005CC770 loaded its page through another GUI manager");
+        return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(
+            context_.load_page(HudLeafStringPool::name(name))));
+    }
+    void lua_owner_construct_00b66bd0(void* owner) override {
+        bsp::construct_native_lua_state_00b66bd0(owner);
+    }
+    void lua_owner_open_00b6a020(void* owner, std::int32_t mask) override {
+        bsp::open_native_lua_state_00b6a020(*static_cast<bsp::NativeLuaStateStorage*>(owner),
+            static_cast<std::uint32_t>(mask), game_native_string_process().strings(), lua_.bootstrap());
+    }
+    void lua_run_script_00b69d40(void* owner,
+        const bsp::frontend_seg19_21_cc13::NativeStr* path, std::int32_t flag) override {
+        bsp::NativeString borrowed{};
+        static_assert(sizeof(borrowed) == sizeof(*path));
+        std::memcpy(&borrowed, path, sizeof(borrowed));
+        bsp::run_native_lua_file_00b69d40(*static_cast<bsp::NativeLuaStateStorage*>(owner),
+            borrowed, static_cast<std::uint32_t>(flag), game_native_string_process().strings(),
+            lua_.binding().files());
+    }
+    void lua_get_globals_00b67980(void* owner, void* out) override {
+        bsp::native_lua_globals_00b67980(*static_cast<bsp::NativeLuaStateStorage*>(owner), out);
+    }
+    void lua_get_by_name_00b67800(void* table, void* out, const char* key) override {
+        bsp::native_lua_get_by_name_00b67800(*static_cast<bsp::NativeLuaObjectStorage*>(table), out, key);
+    }
+    double lua_get_number_00b66270(void* object) override {
+        return bsp::native_lua_number_00b66270(*static_cast<bsp::NativeLuaObjectStorage*>(object));
+    }
+    void lua_object_destruct_00b67700(void* object) override {
+        bsp::destroy_native_lua_object_00b67700(*static_cast<bsp::NativeLuaObjectStorage*>(object));
+    }
+    void lua_owner_close_00b669a0(void* owner) override {
+        bsp::close_native_lua_state_00b669a0(*static_cast<bsp::NativeLuaStateStorage*>(owner));
+    }
+private:
+    HudLeafRegisterContext& context_;
+    HudLeafStringPool pool_;
+    GameNativeLuaServices& lua_;
+    bsp::NativeLuaServiceBindings::Activation activation_;
 };
 // 0060D1C0. Its 004C12B0 is the registry owner that loads the page.
 class HudLeafPlaneSpawnRegisterBinding final : public bsp::seg25_cc13::PlaneSpawnRegisterHost {
@@ -2361,6 +2435,7 @@ void run_hud_leaf_screen_register(HudLeafRegisterContext& context) {
     case 0x00650170u: { HudLeafLayoutRegisterBinding b(context); bsp::ingame_gui_cc13::submarine_register_00650170(raw, b); return; }
     case 0x005F9FF0u: { HudLeafPageLayoutRegisterBinding b(context); bsp::cc13_fe1::hud_order_register_005f9ff0(p, b); return; }
     case 0x005CCE70u: { HudLeafEngineMovieRegisterBinding b(context); bsp::cc13_sweepB2_hud_engine_movie_screen_register_005cce70(p, b); return; }
+    case 0x005CC770u: { HudLeafMovieCameraRegisterBinding b(context); bsp::frontend_seg19_21_cc13::movie_camera_debug_register_005cc770(p, b); return; }
     case 0x00643E80u: { HudLeafRegisterBinding b(context); bsp::ingame_gui_cc13::spectator_register_00643e80(raw, b); return; }
     case 0x0052CBF0u: { HudLeafCountersRegisterBinding b(context); bsp::frontend_seg15_22_cc13::hud_counters_register_0052cbf0(raw, b); return; }
     default: break;
@@ -5770,6 +5845,33 @@ bool hud_movie_screen_camera_005cd240() {
     if (hud == nullptr) return false;
     hud->movie_screen_camera_005cd240();
     return true;
+}
+
+bool GameHudHost::reset_movie_camera_limits(std::uint32_t address) {
+    Impl& impl = *impl_;
+    const std::size_t index = bsp::in_game_hud_screen_index_at(0x98);
+    if (index >= kInGameHudScreenCount || !impl.leaf_screens[index]) return false;
+    HudLeafScreenStorage& screen = *impl.leaf_screens[index];
+    if (!screen.contains(screen.data(), sizeof(bsp::frontend_seg19_21_cc13::MovieCameraLimitsImage))
+        || !impl.menu.in_game_screen_registered(0x36))
+        throw std::logic_error("MovCam reset reached screen 36h before its 005CC770 defaults producer");
+    // No host-side defaults/current copy: the retained screen is both the
+    // 005CC770 output and the four original reset bodies' input/output.
+    using namespace bsp::frontend_seg19_21_cc13;
+    switch (address) {
+    case 0x005cb970u: movie_camera_reset_speed_limits_005cb970(screen.data()); break;
+    case 0x005cb9c0u: movie_camera_reset_accel_time_005cb9c0(screen.data()); break;
+    case 0x005cafb0u: movie_camera_reset_deviation_factor_005cafb0(screen.data()); break;
+    case 0x005cafc0u: movie_camera_reset_overview_height_005cafc0(screen.data()); break;
+    default: throw std::logic_error("MovCam reset selected an unrelated native body");
+    }
+    impl.done("MovieScreen::reset_limits", address);
+    return true;
+}
+
+bool hud_reset_movie_camera_limits(std::uint32_t address) {
+    GameHudHost* hud = attached_hud_for_selection();
+    return hud != nullptr && hud->reset_movie_camera_limits(address);
 }
 
 bool hud_unit_selectable_00645060(std::size_t unit, bool& reached) {
