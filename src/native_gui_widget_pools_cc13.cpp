@@ -15,6 +15,31 @@
 #endif
 
 namespace bsp::game {
+namespace {
+template <class T>
+void construct_process_pool(NativeGuiWidgetPool<T>& pool) {
+    pool.initialize();
+}
+
+void construct_process_pool(NativeGuiListboxPool& pool) {
+    // bsp.py show 00A9B4A0: construct the retained F8BC10 pool on the
+    // E188B4 allocator list, including its real CS and reserve(32).
+    // CD6FF0 calls this entry before registering the CE0A00 exit stub.
+    construct_native_listbox_pool_00a9b4a0(pool);
+}
+
+template <class T>
+void destroy_process_pool(NativeGuiWidgetPool<T>& pool) {
+    pool.destroy();
+}
+
+void destroy_process_pool(NativeGuiListboxPool& pool) {
+    // bsp.py show 00CE0A00 / 00A9AFD0: the exit stub destroys this SAME
+    // pool, releasing slabs/table/CS before unlinking the allocator node.
+    destroy_native_listbox_pool_00a9afd0(pool);
+}
+} // namespace
+
 template <class T>
 GameNativeGuiWidgetPoolProcess<T>::GameNativeGuiWidgetPoolProcess()
     : pool_(game_native_physical_pool_process().allocator_list_domain_00e188b4(), storage_) {}
@@ -32,7 +57,7 @@ int GameNativeGuiWidgetPoolProcess<T>::initialize_once() {
     if (state_ == State::returned) return registration_status_;
     if (state_ == State::threw) throw std::logic_error("GUI widget pool startup previously threw");
     state_ = State::threw;
-    pool_.initialize();
+    construct_process_pool(pool_);
     registration_status_ = std::atexit(&GameNativeGuiWidgetPoolProcess::destroy_at_exit);
     state_ = State::returned;
     return registration_status_;
@@ -49,7 +74,7 @@ NativeGuiWidgetPool<T>& GameNativeGuiWidgetPoolProcess<T>::pool() {
 // The exit stub: MOV ECX, global; JMP destroy.
 template <class T>
 void GameNativeGuiWidgetPoolProcess<T>::destroy_at_exit() noexcept {
-    instance().pool_.destroy();
+    destroy_process_pool(instance().pool_);
 }
 } // namespace bsp::game
 

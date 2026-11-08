@@ -1078,7 +1078,7 @@ void* initialize_native_listbox_pool_slab_00a9acd0(void* raw, std::uint32_t inde
     return NativeGuiListboxPool::initialize_slab(raw, index);
 }
 
-void destroy_native_listbox_pool_00a9afd0(NativeGuiListboxPool& pool)
+__declspec(noinline) void destroy_native_listbox_pool_00a9afd0(NativeGuiListboxPool& pool)
 {
     pool.destroy();
 }
@@ -1098,7 +1098,7 @@ void free_native_listbox_slot_thunk_00a9b330(NativeGuiListboxPool& pool_00f8bc10
     free_native_listbox_pool_slot_00a9b150(pool_00f8bc10, slot);
 }
 
-void construct_native_listbox_pool_00a9b4a0(NativeGuiListboxPool& pool)
+__declspec(noinline) void construct_native_listbox_pool_00a9b4a0(NativeGuiListboxPool& pool)
 {
     pool.initialize();
 }
