@@ -1,4 +1,5 @@
 #include "bsp/native_lua_objects.hpp"
+#include "bsp/native_mission_lua_register.hpp"
 #include "bsp/lua_numeric.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include <cstring>
@@ -10,6 +11,8 @@ extern "C" {
 #include <ldo.h>
 }
 namespace bsp {
+static_assert(offsetof(NativeLuaStateStorage,state_04)==4,
+    "006B8610 registration reads this owner's actual state at +4h");
 NativeLuaObjectStorage* construct_native_lua_object_00b65f50(void* fresh) noexcept {
     auto* object=::new(fresh) NativeLuaObjectStorage;
     object->owner_00=nullptr;object->kind_04=0;object->index_08=-1;object->tracked_10=0;return object;
@@ -23,7 +26,10 @@ NativeLuaStateStorage* construct_native_lua_borrowed_state_00b66c00(
     void* fresh,lua_State& state,int (*do_file)(lua_State*)){
     if(!do_file)throw std::invalid_argument("native borrowed Lua owner requires application's DoFile callback");
     auto* owner=construct_native_lua_state_00b66bd0(fresh);owner->owns_00=0;owner->state_04=&state;
-    lua_pushcclosure(&state,do_file,0);lua_setfield(owner->state_04,LUA_GLOBALSINDEX,"DoFile");return owner;
+    // B66C00's DoFile publication has the same zero-upvalue/+4h-state
+    // contract as 006B8610 (bsp.py show B66C00; show 006B8610 --asm).
+    // The borrowed VM and executable callback remain the caller's owners.
+    register_native_mission_lua_global_006b8610(owner,"DoFile",do_file);return owner;
 }
 int execute_native_lua_string_00b66c60(NativeLuaStateStorage& owner,const NativeString& code){
     const char* text=code.data();if(!text)text="";
