@@ -37,8 +37,38 @@ Vec3 vec3_add_00709a60(const Vec3& a, const Vec3& b) noexcept {
 
 Vec3 vec3_sub_00709ac0(const Vec3& a, const Vec3& b) noexcept {
     // FSUB [eax], [eax+4], [eax+8] (00709AC9..00709ADB) into temporaries, then copied.
+#if defined(_MSC_VER) && defined(_M_IX86)
+    // bsp.py show 00709AC0 --asm: retain the native x87 operand order and
+    // the second FLD/FSTP pass (also observable for denormal exception flags).
+    const float* const a_ptr = &a.x;
+    const float* const b_ptr = &b.x;
+    float temporary[3];
+    volatile float components[3];
+    __asm {
+        mov edx, a_ptr
+        mov eax, b_ptr
+        fld dword ptr [edx]
+        fsub dword ptr [eax]
+        fstp dword ptr temporary[0]
+        fld dword ptr [edx + 4]
+        fsub dword ptr [eax + 4]
+        fstp dword ptr temporary[4]
+        fld dword ptr [edx + 8]
+        fsub dword ptr [eax + 8]
+        fstp dword ptr temporary[8]
+        lea ecx, components
+        fld dword ptr temporary[0]
+        fstp dword ptr [ecx]
+        fld dword ptr temporary[4]
+        fstp dword ptr [ecx + 4]
+        fld dword ptr temporary[8]
+        fstp dword ptr [ecx + 8]
+    }
+    return {components[0], components[1], components[2]};
+#else
     return {static_cast<float>(static_cast<double>(a.x) - b.x), static_cast<float>(static_cast<double>(a.y) - b.y),
             static_cast<float>(static_cast<double>(a.z) - b.z)};
+#endif
 }
 
 void vec3_add_scaled_in_place_00709b60(Vec3& v, const Vec3& d, float s) noexcept {

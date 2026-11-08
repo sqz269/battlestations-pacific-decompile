@@ -6,8 +6,9 @@
 // interfaces, not the native register ABI. Names are hypotheses, not recovered symbols; each
 // declaration states the original address and ABI.
 //
-// x87 model (as in bsp/band_0060_cc13.hpp): the image runs with 53-bit precision, so an FSTP to
-// a float slot is a float cast and unspilled intermediates are doubles.
+// The game main thread uses PC24. On MSVC Win32, 00709A60/00709AC0/00709BB0
+// retain the native x87 sequence and the caller's actual control word; other
+// source models document their precision at the implementation.
 
 #include <array>
 #include <cstddef>
