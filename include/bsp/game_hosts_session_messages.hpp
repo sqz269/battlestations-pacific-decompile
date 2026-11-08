@@ -30,6 +30,9 @@ namespace bsp::gameplay_seg41_cc13 {
 class LandingShipMessageHost;
 }
 
+namespace bsp::cc13_powerup { struct PowerupItem; }
+namespace bsp::game_powerups { struct PowerupModifier; }
+
 namespace bsp::gameplay_seg47_cc13 {
 struct FailureMessage;
 struct PlaneFailureState;
@@ -72,6 +75,16 @@ public:
     ~HostSessionMessages();
     HostSessionMessages(const HostSessionMessages&) = delete;
     HostSessionMessages& operator=(const HostSessionMessages&) = delete;
+
+    // 008EDDC0/008E9FD0 and 008E8C30/008EA250 construct these stack packets
+    // even when the host-only transport has no peers. Copy the real payload
+    // into its owned pooled string, then take its native normal destructor.
+    // No receive/loopback occurs. False leaves unsupported bound-entity sends
+    // with the caller: their +174h identity is not supplied by an index token.
+    bool broadcast_powerup_item(std::int32_t slot, const cc13_powerup::PowerupItem&,
+        std::int32_t operation, const SessionParticipantPools&, const std::size_t& local_slot) const;
+    bool broadcast_powerup_modifier(const game_powerups::PowerupModifier&,
+        std::int32_t operation, const SessionParticipantPools&, const std::size_t& local_slot) const;
 
     // MT_GAMEUNIT_SETCMD: 0071C830 at 0071ED6C over a stack message, then
     // 0076E520's local copy (0071C930 write, 00768530 type byte and rewind,

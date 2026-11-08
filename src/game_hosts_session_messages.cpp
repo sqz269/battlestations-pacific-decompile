@@ -3,6 +3,10 @@
 #include "bsp/native_session_message_participant_owner.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
 #include "bsp/native_gun_control_message_lifetime.hpp"
+#include "bsp/native_session_message_tags_66_67_68.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/cc13_powerup.hpp"
+#include "bsp/powerup_seg58_argon.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -59,6 +63,9 @@ struct HostSessionMessages::Image {
     alignas(4) std::uint8_t game[0x18f0]{};
     void* volatile current_game{game};
     NativeSessionMessageContext session{current_game};
+    // bsp.gpr /battlestationspacific.exe, 00E17669: initial NUL byte.
+    // The power-up profiles borrow this fallback; a zero-peer send runs no codec.
+    const char powerup_empty_00e17669{};
     const SessionParticipantPools* vehicle_race_participants{};
     const std::size_t* vehicle_race_local_slot{};
 
@@ -473,6 +480,139 @@ void require_local_director_route(std::uint8_t decoded_type, std::uint8_t expect
 
 HostSessionMessages::HostSessionMessages() : image_(std::make_unique<Image>()) {}
 HostSessionMessages::~HostSessionMessages() = default;
+
+namespace {
+// Read-only views of the sender's item/binding fields, not another inventory.
+// The host's kNoBinding sentinel represents the native null item+8h pointer.
+// Non-null bindings require a real unit+174h and are rejected by these senders.
+struct PowerupPacketItemView {
+    std::uint32_t word_00;
+    const PowerupClassConfig* cls_04;
+    const void* binding_08;
+    std::int32_t use_limit_0c;
+};
+static_assert(sizeof(PowerupPacketItemView) == 0x10);
+static_assert(offsetof(PowerupPacketItemView, cls_04) == 4);
+static_assert(offsetof(PowerupPacketItemView, binding_08) == 8);
+static_assert(offsetof(PowerupPacketItemView, use_limit_0c) == 0x0c);
+static_assert(offsetof(PowerupClassConfig, name_00) == 0);
+
+struct PowerupPacketModifierView {
+    const PowerupPacketItemView* item_00;
+    std::byte payload_04[0x24];
+};
+static_assert(sizeof(PowerupPacketModifierView) == 0x28);
+static_assert(offsetof(PowerupPacketModifierView, payload_04) == 4);
+static_assert(offsetof(game_powerups::PowerupModifier, cls) == sizeof(PowerupPacketModifierView));
+
+class PowerupMessageConstructionBinding final
+    : public powerup_seg58_argon::PowerupMessageConstructionHost {
+public:
+    PowerupMessageConstructionBinding(const NativeSessionMessageContext& session,
+        NativeStringRawPoolContext& strings, std::uint32_t address,
+        const std::uint32_t* profile) noexcept
+        : session_(session), strings_(strings), address_(address), profile_(profile) {}
+
+    void* image_address(std::uint32_t address) override {
+        if (address != address_) throw std::logic_error("power-up sender profile");
+        return const_cast<std::uint32_t*>(profile_);
+    }
+    void* session_message_construct_base_0075b430(void* message, std::uint8_t type) override {
+        return construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+    void native_string_resize_0041dd40(void* header, std::uint32_t length,
+        std::uint8_t preserve) override {
+        // Each producer zeroes its header before this first potentially throwing
+        // operation. Its native EH cleanup must also run if allocation fails.
+        string_started_ = true;
+        resize_native_string_header_0041dd40(header, strings_, length, preserve != 0);
+    }
+    void* memcpy_00bf7680(void* dst, const void* src, std::uint32_t bytes) override {
+        return std::memcpy(dst, src, bytes);
+    }
+    bool string_started() const noexcept { return string_started_; }
+private:
+    const NativeSessionMessageContext& session_;
+    NativeStringRawPoolContext& strings_;
+    std::uint32_t address_;
+    const std::uint32_t* profile_;
+    bool string_started_{};
+};
+}
+
+bool HostSessionMessages::broadcast_powerup_item(std::int32_t slot,
+    const cc13_powerup::PowerupItem& item, std::int32_t operation,
+    const SessionParticipantPools& participants, const std::size_t& local_slot) const {
+    if (item.cls == nullptr || item.binding != cc13_powerup::PowerupItem::kNoBinding)
+        return false;
+    Image& image = *image_;
+    NativeSessionMessageParticipantOwner selected(participants, local_slot);
+    const NativeSessionMessageContext session{image.current_game, &selected};
+    auto& strings = game::game_native_string_process().raw_context();
+    // The invalid-parameter callback belongs to message 66's vector accessors;
+    // neither this sender nor either of its profile codecs uses those accessors.
+    const NativeSessionMessage66To68Context context{&session, &strings,
+        &image.powerup_empty_00e17669, &image.numeric, &image.maximum_00d7a248, nullptr};
+    const NativeSessionMessage67Profile profile(context);
+    PowerupMessageConstructionBinding construction(session, strings, 0x00d0366cu, profile.slots);
+    const PowerupPacketItemView view{item.word_00, item.cls, nullptr, item.use_limit};
+    NativeSessionMessage67 message;
+    try {
+        // 008EDDC0 @008EDFB7..008EDFF7 and 008E9FD0 @008EA06B..008EA079:
+        // the real slot, item name/use limit and operation, with both units null.
+        // 008E6E00 owns the +1Ch DWORD length and +20h DWORD pool pointer.
+        powerup_seg58_argon::session_message67_construct_from_class_008e6e00(
+            construction, &message, static_cast<std::uint32_t>(slot), &view,
+            static_cast<std::uint32_t>(operation), nullptr, nullptr);
+        // The retained host-only session has no peers. 0076A9F0/00784790
+        // therefore performs no serialization or delivery; do not loop back.
+    } catch (...) {
+        if (construction.string_started())
+            destroy_native_session_message67_007657d0(&message, context, profile);
+        throw;
+    }
+    destroy_native_session_message67_007657d0(&message, context, profile);
+    return true;
+}
+
+bool HostSessionMessages::broadcast_powerup_modifier(const game_powerups::PowerupModifier& record,
+    std::int32_t operation, const SessionParticipantPools& participants,
+    const std::size_t& local_slot) const {
+    // 008E6FB0 reads item->binding->unit+174h only for operation zero.
+    // Expiration (operation two) never dereferences that graph.
+    if (operation == 0 && record.item != nullptr
+        && record.item->binding != cc13_powerup::PowerupItem::kNoBinding) return false;
+    Image& image = *image_;
+    NativeSessionMessageParticipantOwner selected(participants, local_slot);
+    const NativeSessionMessageContext session{image.current_game, &selected};
+    auto& strings = game::game_native_string_process().raw_context();
+    const NativeSessionMessage66To68Context context{&session, &strings,
+        &image.powerup_empty_00e17669, &image.numeric, &image.maximum_00d7a248, nullptr};
+    const NativeSessionMessage68Profile profile(context);
+    PowerupMessageConstructionBinding construction(session, strings, 0x00d03680u, profile.slots);
+    PowerupPacketItemView item_view;
+    PowerupPacketModifierView view;
+    std::memcpy(&view, &record, sizeof(view)); // borrow the real +04h..+27h fields and name
+    if (operation == 0 && record.item != nullptr) {
+        item_view = {record.item->word_00, record.item->cls, nullptr, record.item->use_limit};
+        view.item_00 = &item_view; // translate the authoritative absent-binding sentinel
+    }
+    NativeSessionMessage68 message;
+    try {
+        // 008E8C30 @008E8CE6..008E8D46 / 008EA250 @008EA466..008EA4A9:
+        // 008E6FB0 copies all real modifier fields and owns name+3Ch/+40h.
+        powerup_seg58_argon::session_message68_construct_from_modifier_008e6fb0(
+            construction, &message, &view, static_cast<std::uint32_t>(operation));
+        // Same zero-peer terminal as the item sender; no receiving mutation.
+    } catch (...) {
+        if (construction.string_started())
+            destroy_native_session_message68_007658c0(&message, context, profile);
+        throw;
+    }
+    destroy_native_session_message68_007658c0(&message, context, profile);
+    return true;
+}
 
 NativeSessionMessage92 HostSessionMessages::queue_set_command_92(
     int command_ordinal, const SceneCommandTarget& target, std::uint8_t flag) const {

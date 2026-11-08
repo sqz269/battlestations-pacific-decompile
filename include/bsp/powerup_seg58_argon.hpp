@@ -91,8 +91,20 @@ struct PowerupModifierReleaseHost {
   virtual void power_up_manager_expire_modifier_008e8c30(void* manager, void* modifier) = 0;
 };
 
+// 008E6E00/008E6ED0/008E6FB0 only construct a message and copy its string.
+// A sender need not implement the segment's unrelated Lua/container services.
+struct PowerupMessageConstructionHost {
+  virtual ~PowerupMessageConstructionHost() = default;
+  virtual void* image_address(std::uint32_t address) = 0;
+  virtual void* session_message_construct_base_0075b430(void* message, std::uint8_t type) = 0;
+  virtual void native_string_resize_0041dd40(void* string, std::uint32_t length,
+                                           std::uint8_t preserve) = 0;
+  virtual void* memcpy_00bf7680(void* dst, const void* src, std::uint32_t bytes) = 0;
+};
+
 struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost, PowerupApplicabilityHost,
-                   PowerupModifierStorageHost, PowerupModifierReleaseHost {
+                   PowerupModifierStorageHost, PowerupModifierReleaseHost,
+                   PowerupMessageConstructionHost {
   virtual ~Seg58Host() = default;
   bool target_applies(const void* record, void* unit) override;
 
@@ -268,15 +280,15 @@ void power_up_manager_on_powerup_binding_message_008e6d30(
 
 // Part 2 function declarations (008e6e00 .. 008ea0c0)
 void* session_message67_construct_from_class_008e6e00(
-    Seg58Host& host, void* self, std::uint32_t player_slot, const void* item,
+    PowerupMessageConstructionHost& host, void* self, std::uint32_t player_slot, const void* item,
     std::uint32_t op, const void* unit_a, const void* unit_b);
 
 void* session_message67_construct_from_name_008e6ed0(
-    Seg58Host& host, void* self, std::uint32_t player_slot,
+    PowerupMessageConstructionHost& host, void* self, std::uint32_t player_slot,
     const void* name_str, std::uint32_t use_limit, std::uint32_t op,
     const void* unit_a, const void* unit_b);
 
-void* session_message68_construct_from_modifier_008e6fb0(Seg58Host& host,
+void* session_message68_construct_from_modifier_008e6fb0(PowerupMessageConstructionHost& host,
                                                          void* self,
                                                          const void* modifier,
                                                          std::uint32_t op);
