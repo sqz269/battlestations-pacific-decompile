@@ -1,0 +1,235 @@
+{
+  "goal": 5,
+  "chain": 863,
+  "slot": "g5-w10",
+  "branch": "agent/g5-w10",
+  "baseline_head": "75ab5be152",
+  "picked": "Canonical archive field orchestration on the live settings/profile/checkpoint writer",
+  "rows": [
+    {
+      "native": "00bd8cd0",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: bsp::ArchiveTextWriter::write_field(const GuiLuaVariant&, const SettingsValue&)",
+      "evidence": "bsp.py show 00bd8cd0 and --asm: BD8CD3/BD8CDF/BD8D00 reload writer+4 before indent, key and terminator; BD8CFB emits the actual tagged scalar.",
+      "real_state": "The writer retains an 8-byte header whose +4 depth is also used by begin_section/end_section. Existing key/scalar payloads and the caller's current ArchiveTextOutput feed the existing reconstructed emitters. Scoped thread-local callback bindings restore enclosing output destinations after nested calls and exceptions.",
+      "replaced": "Removed the inline indent/key/value/terminator orchestration; the existing 00BD8CD0 body runs exactly once per field.",
+      "call_graph": "archive_write_field_00bd8cd0 @10406560: REACHABLE; one call at 104862BD from ArchiveTextWriter::write_field. Entry path includes GameMissionLuaHost::mission_checkpoint_binding and the real ArchiveTextWriter vtable.",
+      "limits": "Existing scalar tags 0..3 and supported key domain remain the application boundary. New C++ interfaces are not native ABI/FH3/SEH replacements. No game launch or gameplay validation."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::set_mission_key candidate",
+      "reason": "Missing a live native score-record storage/0091CE90 constructor binding; typed MissionScoreRecord defaults cannot serve as the raw +284 receiver."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native scene-property projection",
+      "reason": "Already entry-reachable at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native scene-property projection",
+      "reason": "Already entry-reachable at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: scripted helm-order candidate",
+      "reason": "Missing the player's native screen-center pick producer; a file-scripted target is a different input path."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/mission_state_frame.cpp: run_mission_player_count_check_004d87b0",
+      "reason": "Multiplayer participant-count watchdog; single-player only takes its initial return and online-only wiring is excluded."
+    },
+    {
+      "native": "005cf3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: loss-warning candidate",
+      "reason": "Missing complete Seg15Host/HudScreenServices bindings to the live warning manager and UI owners."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing an entry-reachable same-domain GuiResourceOwner/GuiWidgetOwnerRuntime bridge for the projected manager frame."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing the live typed timed-entry ownership consumer required by the projected manager frame."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp: pointer-update candidate",
+      "reason": "Missing the complete GuiPointerRuntime owner with live input and hit-test services."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: input-character admission candidate",
+      "reason": "Missing a live character-admission consumer and retained text-context font; whole-string layout is a different operation."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint-clear candidate",
+      "reason": "Missing the native pre-load checkpoint comparison and actual checkpoint Lua owner/current mission key continuation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: FOV/aspect query candidate",
+      "reason": "Missing an entry-reachable consumer of this perspective query; the inspected GUI camera uses orthographic projection."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "No live extra-plane producer with a retained CameraClipPlaneState consumer was established."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "No live extra-plane lifecycle with a retained CameraClipPlaneState consumer was established."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: skip_balanced_block candidate",
+      "reason": "Missing the native tokenizer owner/context at this high-level SceneLexer site; its generic balanced-brace skip has a different token schedule."
+    },
+    {
+      "native": "0042ba40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: heading query candidate",
+      "reason": "Missing the same native entity raw pose receiver and Seg2Host pose-refresh binding; projected heading scalars do not establish that object."
+    },
+    {
+      "native": "0042d210",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: transform_get_world_position_0042d210",
+      "reason": "Missing a live raw transform owner and its same-object world-refresh provider at a matching consumer."
+    },
+    {
+      "native": "0042b420",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_rotation_z_0042b420",
+      "reason": "No matching entry-reachable raw matrix setter consumer with the Seg2Host rotation/copy bindings was established."
+    },
+    {
+      "native": "0042a940",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: camera_set_shake_max_0042a940",
+      "reason": "No live camera-mover shake receiver/maximum-setting consumer was established."
+    },
+    {
+      "native": "0042a970",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: camera_set_shake_base_0042a970",
+      "reason": "No live camera-mover shake receiver/base-setting consumer was established."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp: release_native_enum_symbol_node_holder_008f3d80",
+      "reason": "Missing a live enum-symbol insertion/unwind owner retaining the actual temporary node-holder slot."
+    },
+    {
+      "native": "008f3dc0",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp: release_native_property_library_node_holder_008f3dc0",
+      "reason": "Missing a live property-library insertion/unwind owner retaining the actual temporary node-holder slot."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated ship registration candidate",
+      "reason": "Missing the complete native 2268h brain constructor/subobject Cc13Seg67bHost graph; the live controllers are projected objects."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: sound-transition candidate",
+      "reason": "Missing the live movie-screen owner and complete SoundLoadTransitionContext input/cinematic transition services."
+    },
+    {
+      "native": "004db190",
+      "status": "skipped",
+      "host_site": "src/frontend_managers.cpp: teardown_front_end_managers_004db190",
+      "reason": "No live matching FrontEndManagerSet teardown caller/provider graph was established in this bounded inspection."
+    },
+    {
+      "native": "004fd7c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: vehicle_class_get_type_004fd7c0",
+      "reason": "Missing a matching live consumer with complete Fe3LuaHost class-field reference and native-string output bindings."
+    },
+    {
+      "native": "004fda50",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: vehicle_class_get_name_or_no_unlock_004fda50",
+      "reason": "Missing a matching live consumer with complete Fe3LuaHost class-field reference and native-string output bindings."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: unit health initialization candidate",
+      "reason": "Missing the complete NativeUnitHealthPartsView descriptor/model/parent/part-set graph and required same-object callbacks."
+    },
+    {
+      "native": "00877b00",
+      "status": "skipped",
+      "host_site": "src/sim_damage_seg54_argon.cpp: unit_tickable_entity_set_damaged_gfx_level_00877b00",
+      "reason": "Missing the live raw tickable-unit receiver and complete Seg54Host message-broadcast binding."
+    },
+    {
+      "native": "00877cd0",
+      "status": "skipped",
+      "host_site": "src/sim_damage_seg54_argon.cpp: unit_instance_set_health_from_scale255_00877cd0",
+      "reason": "Missing a matching live raw unit receiver and required Seg54Host health/damage callback graph."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "Missing the native writer virtual+54h DWORD output owner and its shared remaining-byte counter."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "No matching live raw RAM-image receiver/data-field consumer was established; semantic pixel vectors are different storage."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: existing native scene submission",
+      "reason": "The existing main-scene body already calls this setter with real queue metadata; a second invocation would duplicate it."
+    }
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; all six tests passed",
+    "changed_build": "scripts/build.ps1 passed; all six tests passed (19.11 seconds)",
+    "focused_probe": "tests/wire_g5_c863_archive_field_probe.cpp passed under MSVC Win32 /O2 /MD with /MANIFEST:EMBED; nested success/rejection restores parent output and reentrant end_section changes the same native depth before key/terminator reads",
+    "call_graph": "python tools/call_graph.py; who 00bd8cd0; path 00bd8cd0 passed entry reachability",
+    "readiness": "wire_readiness.py --standins reports 00bd8cd0 state=wired, called=true, call_sites=1, callers_live=1",
+    "float_math": "No floating-point arithmetic changed",
+    "game_run": false
+  },
+  "counts": {
+    "text_wired_before": 10712,
+    "text_wired_after": 10713,
+    "entry_called_rows_before": 5965,
+    "entry_called_rows_after": 5980,
+    "credited_new_native_bodies": 1,
+    "entry_count_note": "Whole-inventory called totals are scanner observations; only the separately verified new 00BD8CD0 call is credited to this packet."
+  }
+}
