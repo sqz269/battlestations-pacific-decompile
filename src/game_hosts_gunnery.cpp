@@ -14789,7 +14789,25 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             shot.started_under_water = true;   // +354h -> torpedo+49Ch (s57_torpedo_from_sub)
         }
         if constexpr (kGunneryLiveWaterSurfaceBound) {
-            if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
+            const GameBulletClassRow* const water_round = bullet(shot.bullet_class);
+            const bsp::ProjectileClassInfo* const water_kind = water_round != nullptr
+                ? bsp::projectile_class_for_lua_type(water_round->type) : nullptr;
+            const bool swimming_torpedo = shot.swimming && water_kind != nullptr
+                && water_kind->kind == bsp::ProjectileKind::Torpedo;
+            if ((!shot.swimming && !shot.depth_charge_in_water) || swimming_torpedo) {
+                // Goal 5 chain 958. bsp.py show 00855F00 / 0084BF00:
+                // 0084C11C queries the actual shot's +2Ch slot. MTorpedo's
+                // 00855F00 returns 2 below twice +47Ch, otherwise its +354h
+                // water byte. The host's world position is already refreshed
+                // above. Preserve the existing entry path; a swimming torpedo
+                // now uses that same live state to select its surface trace.
+                const bsp::BombWaterMode medium = swimming_torpedo
+                    ? bsp::torpedo_water_mode(shot.swimming, shot.position[1], shot.swim_depth)
+                    : bsp::BombWaterMode::Air;
+                const bool prefer_entry = swimming_torpedo
+                    && bullet_class_descriptor(shot.bullet_class).descriptor.expl_water_hit;
+                const auto variant = bsp::static_trace_variant_0084c11c(
+                    static_cast<int>(medium), prefer_entry);
                 struct LiveWater final : bsp::WaterSurfaceSampler {
                     float water_height_0078cf20(float x, float z) override {
                         return bsp::ocean_live_field_water_height_0078cf20(x, z);
@@ -14801,7 +14819,10 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 list.count = 1;
                 // Faithful to the image's axis defect: the trace samples (x, y)
                 // (docs/PROJECTILE_HELPERS.md 1).
-                const bsp::StaticTraceResult crossing = bsp::static_trace_0084b380(water, list);
+                const bsp::StaticTraceResult crossing =
+                    variant == bsp::StaticTraceVariant::kSurfaceEntry
+                        ? bsp::static_trace_0084b380(water, list)
+                        : bsp::static_trace_0084b4b0(water, list);
                 crossed = crossing.hit;
                 if (crossing.hit) {  // 0084C15F..0084C16B: the crossing replaces the segment end
                     shot.position[0] = crossing.point.x;
@@ -14814,9 +14835,19 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     shot.flight.snapshot_current = shot.flight.local_position;
                     ++live_water_crossings;
                 }
+                if (crossed && swimming_torpedo) {
+                    // 0084C3DA..0084C3F0's nonzero-medium arm calls shot+24h, 006E6410:
+                    // clear the water byte. Trails have no owner in this host;
+                    // their stop/resume calls remain unhosted. Restore this
+                    // descriptor's real air-gravity flag for the next step.
+                    shot.swimming = false;
+                    shot.flight.class_disables_gravity = water_round->no_gravity;
+                    ++summary.water_crossings;
+                    crossed = false; // this was an air transition, not a new water entry
+                    done("TorpedoShot::surface_exit_0084c11c", 0x0084c11cu);
+                }
             } else {
-                // Already in the water: the trace is not run (0084C11C), and the
-                // swim hold below keeps the round on a surface that is not y = 0.
+                // Other wet projectile families retain their existing host path.
                 crossed = false;
             }
         }
@@ -14950,7 +14981,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     shot.flight.local_position.y = level_y;
                     shot.flight.snapshot_current.y = level_y;
                 }
-                if (kTorpedoSwimDepthHomingBound) torpedo_swim3d_start(shot);
+                // A surface exit preserves the torpedo's controller. Re-entry
+                // does not reconstruct it or repeat its constructor RNG draw.
+                if (kTorpedoSwimDepthHomingBound
+                    && torpedo_swim_by_serial.find(shot.serial) == torpedo_swim_by_serial.end())
+                    torpedo_swim3d_start(shot);
                 ++summary.torpedo_swims_started;
                 if (trace) {
                     log.notef("  torpedo trace %llu swim_started life=%.2f "
