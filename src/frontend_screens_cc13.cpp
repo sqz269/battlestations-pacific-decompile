@@ -338,12 +338,18 @@ void* legacy_sbo_record_copy_00588640(void* dst, const void* src, LegacyStringHo
 
 std::int32_t native_string_find_first_of_005b69b0(const void* string, const char* set, std::int32_t pos) noexcept {
     const char* data = read_field<const char*>(string, 0x4);
-    const std::uint32_t length = read_field<std::uint32_t>(string, 0x0);
-    if (data == nullptr || length == 0 || set == nullptr) return -1;
+    if (data == nullptr) return -1;
+    const auto* const current_length = static_cast<const volatile std::uint32_t*>(string);
+    const std::uint32_t length = *current_length;
+    if (length == 0 || set == nullptr) return -1;
     if (pos < 0) pos = 0;
     else if (static_cast<std::uint32_t>(pos) > length) return -1;  // JA: unsigned compare
-    const std::size_t span = std::strcspn(data + pos, set) + static_cast<std::uint32_t>(pos);
-    if (span == length) return -1;
+    const std::uint32_t span = static_cast<std::uint32_t>(std::strcspn(data + pos, set))
+        + static_cast<std::uint32_t>(pos);
+    // bsp.py show 005b69b0 --asm: 005B69E7 compares against CURRENT [EDI],
+    // not the length captured by 005B69BA before _strcspn. Preserve that load
+    // and the native 32-bit addition now that VFS uses this shared body.
+    if (span == *current_length) return -1;
     return static_cast<std::int32_t>(span);
 }
 
