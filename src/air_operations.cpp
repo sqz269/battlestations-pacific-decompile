@@ -1,6 +1,7 @@
 // Airbase and carrier air operations. docs/AIR_OPERATIONS.md.
 // Addresses in comments are the native sites each rule was read from.
 #include "bsp/air_operations.hpp"
+#include "bsp/band_006b_cc13.hpp"
 #include "bsp/launch_ver_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/pool_pool13_cc13.hpp"
@@ -601,15 +602,13 @@ std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
     std::size_t released = 0;
     for (AirOpsSlot& slot : deck.slots) {
         if (slot.launched_squadron != squadron) continue;
-        // 006C65EE guards only the observer unregister and the zeroing of +28h
-        // on the field being non-zero; the four stores below are unconditional,
-        // so calling this with a zero squadron would reset every free slot. No
-        // caller does, and the native has the same shape.
-        slot.launched_squadron = 0u;
-        slot.assigned_count = 0;
-        slot.state = AirOpsSlotState::kCooldown;
-        slot.timer = kAirOpsSlotCooldownSeconds;
-        slot.launch_requested = false;
+        // bsp.py show 006C65B0 / 006C4F30: the matched-slot arm duplicates
+        // 006C4F30's observer guard and all five field writes. Reuse that body
+        // on the deck's actual slot. The observer pair remains unmodelled by
+        // AirOpsSlot, as it was on this path before the call was shared.
+        // The stores are unconditional even for a zero squadron, so that input
+        // still resets every free slot just as 006C65B0 does.
+        band_006b_cc13::air_ops_slot_clear_006c4f30(slot);
         ++released;
     }
     return released;
