@@ -1,0 +1,384 @@
+{
+  "goal": 5,
+  "chain": 734,
+  "owner": "agent/g5-w3",
+  "scope": "Source reuse of complete render-service scalar setters at the actual 00B14A10 constructor stores; these are Source calls, not recovered Original CALL instructions.",
+  "rows": [
+    {
+      "native": "00B0D0B0",
+      "status": "wired",
+      "host_site": "src/native_render_resources_construction.cpp:construct_native_render_resources_00b14a10",
+      "evidence": "Reuses the existing complete DWORD setter for the actual published service at the former 00B14C5C zero store."
+    },
+    {
+      "native": "00B0D160",
+      "status": "wired",
+      "host_site": "src/native_render_resources_construction.cpp:construct_native_render_resources_00b14a10",
+      "evidence": "Reuses the existing complete byte setter for the same service at the former 00B14C8E zero store."
+    },
+    {
+      "native": "009F3F20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:register_generated_units",
+      "reason": "Missing complete native 2268h brain receiver and constructor host over the live ship-controller projection."
+    },
+    {
+      "native": "00AB00C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::reset_subtitles",
+      "reason": "Missing native movie Text child, 14h subtitle records and 24h extratitle ownership; the bridge retains a schedule projection."
+    },
+    {
+      "native": "00AAC820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::bind_movie_textures",
+      "reason": "Missing an actual decoder/player and native movie material/texture binding."
+    },
+    {
+      "native": "0095CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "Missing a live native ammo-record source/destination pair; the current firepower boundary only records the alternate-selection step."
+    },
+    {
+      "native": "0095D3C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp",
+      "reason": "Missing the native unit+660h vector owner and its lifecycle adapter."
+    },
+    {
+      "native": "0094BFF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp:use_item_008eada0",
+      "reason": "Missing the complete native spawn manager/member/property-bag and air-support flight publication path."
+    },
+    {
+      "native": "00521F10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit pick",
+      "reason": "Missing actual 34h unit-pick row storage; current unit selections are typed host objects."
+    },
+    {
+      "native": "00521FD0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit pick",
+      "reason": "Missing the actual pick-entry receiver with its native +F0h position and +FCh byte."
+    },
+    {
+      "native": "00803BA0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:publish_recon_slot_tables_00806b10",
+      "reason": "Missing a NativeReconDirtyAccess binding to the live slot dirty byte and canonical world/player-context publication."
+    },
+    {
+      "native": "0074E830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:clear_all_leak_zones",
+      "reason": "Missing repair-message bridge from the unreached Lua boundary to the owning leak/water arrays."
+    },
+    {
+      "native": "008141A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:helm delivery",
+      "reason": "Missing an identified live caller carrying both current tick and the accepted message stamp; no synthetic age is supplied."
+    },
+    {
+      "native": "00A9C860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:selection",
+      "reason": "Missing actual raw FC list/header/row layout required by the raw listbox body; the runtime owns typed rows."
+    },
+    {
+      "native": "00A9C8F0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:selection",
+      "reason": "Missing raw +114h listener/listbox binding and raw select-index dispatch for the typed runtime."
+    },
+    {
+      "native": "00A9BF90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:row retirement",
+      "reason": "Missing raw FC node ownership and raw current80 dispatch; the existing typed retirement uses a different receiver layout."
+    },
+    {
+      "native": "00A9CDC0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:selection",
+      "reason": "Missing raw selected-container/node fields and callback binding on the current typed listbox owner."
+    },
+    {
+      "native": "00A9CF30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp:highlight",
+      "reason": "Missing a same-root raw listbox/highlight-widget dispatch adapter; current highlight services are typed."
+    },
+    {
+      "native": "00AA0E20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:mission-load cursor selection",
+      "reason": "Not taken: agent/g5-w12 claimed and completed this cursor binding in chain739 while selection was in progress."
+    },
+    {
+      "native": "00AA0E60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:GUI cursor state",
+      "reason": "Missing a live raw animated-value/pointer-state owner and its current88/notify callbacks."
+    },
+    {
+      "native": "00C42BA0",
+      "status": "skipped",
+      "host_site": "src/hull_terrain_contact.cpp:contact solve",
+      "reason": "Existing hull solver already calls this body; no additional unbound warm-start path was selected."
+    },
+    {
+      "native": "00C4DE40",
+      "status": "skipped",
+      "host_site": "src/hull_terrain_contact.cpp:contact-row construction",
+      "reason": "Hull integration is under another branch review; no disjoint additional live contact-row producer was selected."
+    },
+    {
+      "native": "0071F5D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user path handling",
+      "reason": "Existing reconstruction returns only a slot index; missing complete point-removal side effect and a hosted clear-point message arm."
+    },
+    {
+      "native": "0071F570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user path handling",
+      "reason": "Missing the live clear-point request path; the current host handles append/new-path requests."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command message construction",
+      "reason": "Missing a retained native CommandTargetDescriptor initialization consumer in the active message path."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:command message construction",
+      "reason": "Missing an active native descriptor/state-message producer supplying the complete command/target/handle inputs."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:controller state messages",
+      "reason": "Missing complete primary/override descriptors and live controller flag/mode inputs at this boundary."
+    },
+    {
+      "native": "00B6FC30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_shadow_cascade_00a8bd20",
+      "reason": "Missing a linked live shadow-fit caller; the current live projection builder does not consume the FOV/aspect product."
+    },
+    {
+      "native": "00B1CB50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "Existing native submission adapter names the body, but its missing active submission path is outside this constructor packet."
+    },
+    {
+      "native": "00B70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "Existing native submission adapter names the body; no new live extra-plane producer was selected."
+    },
+    {
+      "native": "00B70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp",
+      "reason": "Existing native submission adapter names the body; no new live extra-plane cleanup producer was selected."
+    },
+    {
+      "native": "00414F50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing live query-refresh and point-offset code already invokes this body; no new wiring required."
+    },
+    {
+      "native": "00437C70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart::write_checkpoint",
+      "reason": "Body supplies only the Lua deletion; missing profile-record erase/storage rewrite and the live checkpoint-difference decision."
+    },
+    {
+      "native": "0057BEC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionTree::report_progress",
+      "reason": "Already called from the menu loading-screen owner; the mission-tree boundary still lacks that owner binding."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/landscape shore-mask construction",
+      "reason": "Missing linked shore-mask/falloff callers and their actual byte-grid producer."
+    },
+    {
+      "native": "008F2F70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:LibraryNativeEnums",
+      "reason": "Missing the actual initialized world+1A0Ch Lua owner/publication at this library-reader site; do not substitute a detached Lua state."
+    },
+    {
+      "native": "006DB2F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:marker class teardown",
+      "reason": "Missing an owned live MarkerClassRegistry and resource-manager teardown dispatch in the selected host graph."
+    },
+    {
+      "native": "007DE490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:plane engine sound",
+      "reason": "Missing a retained engine-sound parameter object and downstream live sound-channel consumer."
+    },
+    {
+      "native": "007CAAD0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:deliver_plane_failure_messages",
+      "reason": "Missing live wing/debris node translation and the native debris creation/ownership boundary."
+    },
+    {
+      "native": "0080DA00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:unit order ring",
+      "reason": "Missing an identified immediate-rudder operation at the live section-point bind path; ordinary ring writes have different semantics."
+    },
+    {
+      "native": "0085D770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:commit_step_pose_0085dc80",
+      "reason": "Current commit uses 0085DC80; missing a live row-Z orthonormalization call with the different 0085D770 contract."
+    },
+    {
+      "native": "0085E8C0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp:camera shake",
+      "reason": "Missing the live shake-axis/pivot/angle binding at the current camera boundary."
+    },
+    {
+      "native": "0078FCC0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp:keyframe position",
+      "reason": "Missing the actual raw keyframe receiver containing native +810h position fields; current keyframes are typed objects."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landing ship unload",
+      "reason": "Missing canonical native warning-manager lock/channel dispatch and the landing-target filter binding."
+    },
+    {
+      "native": "006440C0",
+      "status": "skipped",
+      "host_site": "src/ingame_gui_cc13.cpp:class icon mapping",
+      "reason": "Already wired through the existing icon-mapping caller; no new wiring required."
+    },
+    {
+      "native": "008F3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F38A0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F3AC0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F3B60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F0420",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F23E0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F04C0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F0460",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F0520",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    },
+    {
+      "native": "008F0580",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag",
+      "reason": "Existing retained scene-property merge already calls this body; no additional missing producer path selected."
+    }
+  ],
+  "validation": {
+    "official_win32_build": "passed",
+    "ctest": "4/4 passed",
+    "reconstructed_addresses_called_before": 5404,
+    "reconstructed_addresses_called_after": 5406,
+    "call_sites": {
+      "00B0D0B0": "10585E62 <- construct_native_render_resources_00b14a10",
+      "00B0D160": "10585EA5 <- construct_native_render_resources_00b14a10"
+    },
+    "evidence": [
+      "bsp.py show 00B14A10 --asm: 00B14C59..00B14C9E",
+      "bsp.py show 00B0D0B0",
+      "bsp.py show 00B0D160",
+      "call_graph.py who 00b0d0b0",
+      "call_graph.py who 00b0d160",
+      "call_graph.py path 00b0d0b0"
+    ],
+    "float_math": "No arithmetic changed; DWORD/byte bit stores only.",
+    "game_run": "not run",
+    "readiness_text_wired_before": 10501,
+    "readiness_text_wired_after": 10501,
+    "readiness_called": {
+      "00B0D0B0": {
+        "called": true,
+        "call_sites": 1
+      },
+      "00B0D160": {
+        "called": true,
+        "call_sites": 1
+      }
+    },
+    "readiness_note": "Text state is unchanged because the new callers are reconstructed native constructor code rather than game_hosts text; built called/call_sites confirms both new reachable body calls."
+  },
+  "remaining": "Movie-screen runtime/underwater callers remain separate work. This commit binds only the native constructor stores; it adds no ABI replacement or gameplay validation."
+}
