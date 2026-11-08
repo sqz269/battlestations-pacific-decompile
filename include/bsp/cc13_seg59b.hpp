@@ -776,7 +776,10 @@ void watch_list_destruct_00922210(Seg59bHost& host, void* owner);
 void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name);
 // 00915760, __thiscall(ECX = record = scoring + slot*284h + 4), RET: zero every scalar of one
 // mission score record, empty its trees and vectors and reset its three strings.
-void mission_score_record_clear_00915760(Seg59bHost& host, void* record);
+// Source interface over the same manager record used by Lua and persistence;
+// native checked iterators, sentinel allocation and binary ABI are not exposed.
+// Fields +26Ch..+284h are outside this native clear and must survive it.
+void mission_score_record_clear_00915760(MissionScoringManagerState&, std::size_t slot);
 // 00913D80, __thiscall(ECX = scoring, unit, hit, owner_kind), RET 0Ch: the component-failure
 // statistics and the RUA_DBU award (called from 0093BED0 at 0093C0DC).
 void scoring_record_component_failure_00913d80(Seg59bHost& host, void* scoring, void* unit, void* hit,
