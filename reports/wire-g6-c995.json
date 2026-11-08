@@ -1,0 +1,82 @@
+{
+  "goal": 6,
+  "chain": 995,
+  "run": 2203,
+  "owner": "agent/g6-w5",
+  "candidate": "src/game_hosts_hud.cpp",
+  "tier": 1,
+  "result": "partial_host_object_binding",
+  "rows": [
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickBinding::lock_branch; native 005277D1 arm, call site 00527849",
+      "reason": "climb: 00521F10 needs the selected slot's 34h row records <- 00527849 in the 005277D1 lock arm <- 00527260 / UnitPickBinding::lock_branch (stopped: no executable reconstruction of that caller arm; it only records a call). The shared action-listener input gate is now bound, but game+19C4h remains unproduced/false and no row consumer is claimed."
+    },
+    {
+      "native": "00521f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickBinding::lock_branch; native 00527905 expired arm, call site 005279A7",
+      "reason": "climb: 00521F30 message construction <- 005279A7 in the 00527905 expired lock arm <- 00527260 / UnitPickBinding::lock_branch (stopped: no executable reconstruction of that caller arm; it only records a call). Its game+19C4h gate is also unproduced/false; binding real listener bytes alone cannot create the expired-command/message dispatch."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickBinding::lock_branch; native 00527905 expired arm, call site 00527928",
+      "reason": "climb: 00521FD0 reads the HUD entry's float3 +F0h/+F4h/+F8h and byte +FCh <- 00527928 in the 00527905 expired lock arm <- 00527260 / UnitPickBinding::lock_branch (stopped: no executable reconstruction of that caller arm; it only records a call). Its game+19C4h gate is also unproduced/false; no scratch HUD position was substituted."
+    },
+    {
+      "native": "005241d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickBinding::lock_branch; native 00527659 / 005277D1 arms, call sites 0052771A / 005277B8 / 005278A3",
+      "reason": "climb: 005241D0 needs native command/player state and screen+B0h <- 0052771A / 005277B8 / 005278A3 in the 00527659 / 005277D1 lock arms <- 00527260 / UnitPickBinding::lock_branch (stopped: no executable reconstruction of those caller arms; they only record calls). The shared action-listener input gate is now bound, but the order-producing caller was not invented."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "NativeInputActionListenerStorage: borrowed UnitPick listener-byte view",
+      "where": "src/game_hosts_hud.cpp:8486",
+      "constructor": "00a92b70",
+      "ownership": "Existing application input runtime owns the sole native owner, action records and retained listeners. The HUD borrows current pointers per query, with no new allocation, cached mirror, extra reference or extra device poll.",
+      "fields": [
+        "NativeInputActionOwnerStorage+04h: 32-bit action-array pointer; +08h: 32-bit action count",
+        "30h-byte action record+2Ch: 32-bit retained NativeInputActionListenerStorage pointer",
+        "24h-byte NativeInputActionListenerStorage+0Bh and +10h: one-byte flags read by 00527260"
+      ],
+      "producers": [
+        "004BEC00 / 00A93DA0: existing shared native input owner getter/construction, borrowed through GameMenuHost::input_context_manager().current_owner()",
+        "00698A10 -> 00A93C80 -> 00A92B70: existing input configuration and actual listener allocation/flag initialization",
+        "004E4A63..004E4A72 -> 00A92C40 -> 00A91A50: GameFrameHost::game_on_move updates the actual listener flags before menu/HUD dispatch",
+        "Existing input configuration/record retirement retains ownership; the HUD view has no separate destruction"
+      ],
+      "rows": ["00521f10", "00521f30", "00521fd0", "005241d0"],
+      "climb": [
+        "00521F10 / 00521F30 / 00521FD0 / 005241D0 <- 00527260 action gates <- actual action+2Ch listener flags <- 00A91A50 <- 00A92C40 <- existing GameFrameHost::game_on_move (input-state climb completed)",
+        "Actual listeners <- 00A92B70 <- 00A93C80 <- 00698A10 <- existing GameNativeInputConfigurationApplication::load (producer already present and reused)",
+        "Remaining gap consumers <- 00527659 / 005277D1 / 00527905 arms of 00527260 <- UnitPickBinding::lock_branch (stopped: caller-arm reconstruction absent; no gap body made reachable)"
+      ],
+      "existing_screen": "00525A90 and its 00525A10 selection constructor already run on the retained F0h HUD leaf. Their presence was verified; no duplicate screen or selection was constructed.",
+      "replacement": "Deleted the constant-false action_byte implementation and its unconditional unimplemented marker. Actual byte reads now record completion only when performed. Missing configured records/listeners raise an explicit binding error instead of fabricating neutral input."
+    }
+  ],
+  "evidence": [
+    "bsp.py show: 00521F10, 00521F30, 00521FD0, 005241D0, 00527260 (input and lock-arm pages), 00521670, 00525A90, 00525A10, 00A92B70, 00A91A50, 00A92C40",
+    "bsp.py callers --sites: 00521F10, 00521FD0, 00525A90, 00A92B70",
+    "Existing source inspected: native_input_action_owner/records/listener_owner/tick, GameInputRuntime, GameNativeInputConfigurationApplication, GameInputContextManagerBinding and GameFrameHost::game_on_move"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed",
+    "modified_build": "scripts/build.ps1 passed; all four CTests passed (reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader)",
+    "build_log": "local/wire-g6-c995-build.log",
+    "called_before": 6155,
+    "called_after": 6155,
+    "address_suffix_call_graph_before": 5742,
+    "address_suffix_call_graph_after": 5742,
+    "gap_rows_called_before": 0,
+    "gap_rows_called_after": 0,
+    "input_view_call_graph": "UnitPickBinding::action_byte is reachable through the UnitPick vtable and GameHudHost::update_unit_pick_screen_00527260, MenuScreenHost::screen_update, GameMenuHost::frame and GameFrameHost::game_on_move to WinMainCRTStartup. Its new call at 10106D32 targets GameInputContextManagerBinding::current_owner, which calls get_native_input_action_owner_004bec00.",
+    "gap_call_graph": "call_graph.py who for each of 00521F10, 00521F30, 00521FD0 and 005241D0 finds no linked matching function in the modified Release executable; no gap is claimed wired.",
+    "game_run": false,
+    "abi_or_gameplay_claim": false
+  }
+}
