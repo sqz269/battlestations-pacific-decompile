@@ -1,4 +1,5 @@
 #include "bsp/native_keyboard_mouse.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/input_focus_reset.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -150,10 +151,12 @@ void reset_base_profile(void* object) noexcept {
 }
 
 void* construct_native_keyboard_base_00a962f0(void* storage) noexcept {
-    write<std::uint32_t>(storage, 0, 0x00ceb130);
-    write<std::uint32_t>(storage, 4, 1);
-    std::memset(bytes(storage, 0x0c), 0, 0x100);
-    std::memset(bytes(storage, 0x10c), 0, 0x100);
+    // bsp.py show 00A962F0 / 00A943D0: the first two histories and
+    // reference count are the input base's actual fields. Compose its
+    // existing body on this allocation, then install the keyboard profile
+    // before initializing the third history. Its transient abstract profile
+    // is overwritten before any callback, allocation or throwing service.
+    cc13_sweepC::input_device_construct_00a943d0(storage);
     write<std::uint32_t>(storage, 0, 0x00d5b6c4);
     std::memset(bytes(storage, 0x20c), 0, 0x100);
     return storage;
@@ -175,10 +178,12 @@ void* construct_native_keyboard_00a9a3e0(void* storage, IDirectInput8A& input,
 }
 void* construct_native_mouse_00a9a290(void* storage, IDirectInput8A& input,
     NativeInputDeviceSdk& sdk, NativeKeyboardMouseContext& context) {
-    write<std::uint32_t>(storage, 0, 0x00ceb130);
-    write<std::uint32_t>(storage, 4, 1);
-    std::memset(bytes(storage, 0x0c), 0, 0x100);
-    std::memset(bytes(storage, 0x10c), 0, 0x100);
+    // bsp.py show 00A9A290 / 00A9A0B0: reuse the complete mouse base
+    // initialization on the real 23Ch device. The base's D5B850 profile is
+    // immediately replaced by D5B8B0 before CreateDevice or other callbacks;
+    // each native history is initialized once. Ordinary C++ composition,
+    // without a claim of the original constructor's register/EH ABI.
+    cc13_sweepC::mouse_device_construct_00a9a0b0(storage);
     write(storage, 0, native_mouse_profile);
     write<std::uint8_t>(storage, 0x210, 0);
     write<std::uint32_t>(storage, 0x230, 0);

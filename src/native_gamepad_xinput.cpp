@@ -1,10 +1,10 @@
 #include "bsp/native_gamepad_xinput.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/native_int_pointer_tree18_erase.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
 #include "bsp/native_render_batch_keys.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/singleton_lifetime.hpp"
-#include "bsp/sound_cc13.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -160,14 +160,12 @@ __declspec(naked) void __fastcall normalize_axes(void*, const volatile std::uint
 } // namespace
 
 void* construct_native_gamepad_00a95d70(void* owner, NativeGamepadContext& context) {
-    write<std::uint32_t>(owner, 0, 0x00ceb130);
-    write<std::int32_t>(owner, 4, 1);
-    // bsp.py show 00A95D70 / 00A93EC0: both clear exactly the two
-    // 100h-byte button histories at +0Ch/+10Ch. Reuse the existing
-    // clear body on the actual device being constructed; it preserves
-    // the profile/refcount and precedes the force-registry construction.
-    // This is C++ composition, not a claim of the original register ABI.
-    sound_cc13::input_device_clear_states_00a93ec0(owner);
+    // bsp.py show 00A95D70 / 00A943D0: compose the existing input base
+    // on the actual gamepad allocation, replacing its duplicated reference
+    // count and two-history initialization. The transient D5B638 profile is
+    // overwritten below before the first allocation/force callback. This is
+    // ordinary C++ composition, not the original register/EH ABI.
+    cc13_sweepC::input_device_construct_00a943d0(owner);
     void* const tree = tree_of(owner);
     bool tree_completed = false;
     try {
