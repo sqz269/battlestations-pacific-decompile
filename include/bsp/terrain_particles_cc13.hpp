@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/material_float4_array.hpp"
 
 namespace bsp::cc13_terrain {
 
@@ -766,10 +767,7 @@ void material_record_swap_00b13350(void* a, void* b, RenderMiscHost& render);
 // 00B171C0 BSP_SceneRenderer_ToggleStatsFilterName, __thiscall(service, const NativeString*
 // name), RET 4: erase the name when present, else append it.
 void scene_renderer_toggle_stats_filter_name_00b171c0(void* service, const void* name, RenderMiscHost& render);
-// 00B18AC0 BSP_Material_RegisterFloat4ArrayParameter, __thiscall(material, name, source,
-// int count), RET 0Ch: 00B17E10(name, source, count * 4, 0).
-void* material_register_float4_array_00b18ac0(void* material, const void* name, const void* source,
-    std::int32_t count, RenderMiscHost& render);
+// 00B18AC0's actual material-service interface is in material_float4_array.hpp.
 // 00B191D0 BSP_NamedRecord88_ScalarDeletingDestructor, __thiscall(record, flags), RET 4 ->
 // record: name string +00/+04 released; flags & 1 -> 88-byte pool slot returned.
 void* named_record88_scalar_deleting_dtor_00b191d0(void* record, std::uint8_t flags, TerrainHost& host,

@@ -8,6 +8,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_material_parameters.hpp"
 
 #include <intrin.h>
 
@@ -1470,8 +1471,12 @@ void scene_renderer_toggle_stats_filter_name_00b171c0(void* service, const void*
 }
 
 void* material_register_float4_array_00b18ac0(void* material, const void* name, const void* source,
-    std::int32_t count, RenderMiscHost& render) {
-    return render.material_register_parameter_00b17e10(material, name, source, count * 4, 0);
+    std::uint32_t count, NativeMaterialParameterAccess& access) {
+    // bsp.py show 00B18AC0 --asm: LEA EDX,[EAX*4], PUSH 0, CALL B17E10.
+    // Preserve DWORD wraparound and use the same retained material/source and
+    // actual parameter services as the native initializer's former direct call.
+    return register_native_material_parameter_00b17e10(
+        *static_cast<NativeMaterialStorage*>(material), name, source, count * 4u, 0, access);
 }
 
 void* named_record88_scalar_deleting_dtor_00b191d0(void* record, std::uint8_t flags, TerrainHost& host,

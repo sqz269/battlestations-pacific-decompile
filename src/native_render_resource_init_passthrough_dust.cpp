@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_init_passthrough_dust.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_material_parameters.hpp"
 #include "bsp/native_particle_preparation.hpp"
@@ -162,9 +163,8 @@ void parameter(std::size_t index,Context& c,StageContext& d,State& a) {
     site(a,step.registration,step.state);
     if(index<2)register_native_material_float2_00b18b00(*material,&a.names[n],source,c.passes.parameters);
     else {
-        // Existing complete B18AC0: 4*vector_count DWORDs, matrix0, RET0C.
         // B1204E supplies vector_count9; preserve a borrowed36-word record.
-        register_native_material_parameter_00b17e10(*material,&a.names[n],source,4u*9u,0,c.passes.parameters);
+        cc13_terrain::material_register_float4_array_00b18ac0(material,&a.names[n],source,9,c.passes.parameters);
     }
     return_name(n,0,index==1,step.getter,step.release,c,a);
 }

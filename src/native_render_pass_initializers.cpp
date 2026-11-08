@@ -1,4 +1,5 @@
 #include "bsp/native_render_pass_initializers.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_particle_preparation.hpp"
@@ -212,10 +213,9 @@ void NativeRenderPassInitializationBlock::execute(void* owner,std::size_t bytes,
         if(void* const data=pointer(word(&parameter_name_,4)))
             std::memcpy(data,c.sample_offsets_name_00d5e40c,word(&parameter_name_)+1u);
         set_state(3);
-        // B18AC0 is a complete wrapper: wrapping 4*vector_count and matrix0
-        // into the existing actual B17E10/B44D60 registration. Here count is1.
-        register_native_material_parameter_00b17e10(current_material(owner),&parameter_name_,
-            pointer(reinterpret_cast<Word>(owner)+0x10),4,0,c.parameters);
+        // B54200 / B54449 call B18AC0 with one borrowed float4 at owner+10h.
+        cc13_terrain::material_register_float4_array_00b18ac0(&current_material(owner),&parameter_name_,
+            pointer(reinterpret_cast<Word>(owner)+0x10),1,c.parameters);
         set_state(-1);return_parameter_name();
         if(!particle) {
             void* const texture=native_shadow_holder_texture_00b4cb10(depth.input_holder);
