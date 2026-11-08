@@ -11,7 +11,7 @@
       "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::run_depth_charge_task_arm_009a66c0",
       "evidence": "bsp.py show 009a6970 --asm: 009A6991 allocates 7BCh; 009A69AD forwards bot and target to 009A5240; allocation failure skips construction.",
       "state": "The live aircraft slot and its resolved command target enter the existing factory. Its allocation holds the typed DepthChargeTask consumed by the existing constructor, activation profile and arm; retargeting and slot destruction release it.",
-      "call_graph": "One reachable CALL at 102F2488 to the existing body at 1041C3E0, from PlaneBinding::run_depth_charge_task_arm_009a66c0; entry path passes through mission frame, fixed step and motion_step_00825f20.",
+      "call_graph": "After merging origin/main, one reachable CALL at 102F2D78 to the existing body at 1041D040, from PlaneBinding::run_depth_charge_task_arm_009a66c0; entry path passes through mission frame, fixed step and motion_step_00825f20.",
       "limits": "Semantic C++ projection and allocator adapter; original raw task layout, original register ABI, private CRT/EH transport and gameplay equivalence are not established. Existing task-host substitutions remain. No game run."
     },
     {
@@ -69,6 +69,18 @@
     "call_graph": "call_graph.py, who 009a6970 and path 009a6970 confirm the new reachable call; wire_readiness.py --standins reports wired, called=true, call_sites=1.",
     "float_math": "No float arithmetic changed; existing constructor, activation and arm bodies are reused.",
     "diff": "git diff --check passed."
+  },
+  "merge_validation": {
+    "origin_main": "2c6465cde9618c13f659fbdf735448dcfb5cdf0f",
+    "resolution": "Retained both DepthChargeTaskFactoryCalls and incoming MoveOnPathTaskFactoryHost; Cc13Seg67bHost inherits both. No ledger shard or CMake conflicts occurred.",
+    "normal_build": "scripts/build.ps1 passed with all four CTests after the merge, and again after restoring the ON-build switches.",
+    "on_build": "off_switch_on_build.py passed with zero diagnostics and all four CTests; kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled were temporarily enabled, then both files were restored byte-for-byte.",
+    "normal_artifact": "Rebuilt the normal configuration after ON-source restoration before running call_graph.py and wire_readiness.py --standins.",
+    "readiness_wired": 10550,
+    "reachable_reconstructed_addresses": 5419,
+    "depth_charge_factory": "009A6970 is wired, called=true, call_sites=1.",
+    "move_on_path_factory": "Incoming 009BDBB0 remains wired, called=true, call_sites=1; reachable CALL at 10300DBC to 1041D070.",
+    "diff": "git diff --check, git diff --cached --check and the unresolved-conflict check passed."
   },
   "left": "Other task factories and native layout/ABI recovery; game validation remains unrun as instructed."
 }

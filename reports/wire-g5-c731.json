@@ -1,0 +1,188 @@
+{
+  "goal": 5,
+  "chain": 731,
+  "slot": "g5-w6",
+  "base_head": "ee130cc2c48e901ffbbd952863652bd3e670dfe1",
+  "rows": [
+    {
+      "native": "009bdbb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::run_moveonpath_task_arm_009bd990",
+      "reason": "The existing factory allocates 0x520 bytes and forwards the live GameUnitSlot bot identity to the existing typed 009BCE50 constructor; the retained allocation is the task used by activation, arm and stop."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing retained native ammo-record/alternate-tree producer; the current device handle is a gun index, not an ammo record."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "Missing command-building +660h vector producer and its native resize/destruction contract."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBinding::bind_movie_textures",
+      "reason": "Missing real decoder texture and material-slot producers for movie+F0h and node+4Ch."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBinding::clear_movie_subtitles",
+      "reason": "Missing owning native subtitle/extratitle vectors and Text widget; current host owns a schedule projection."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_failure_63_67",
+      "reason": "The original C8h deadmeat-rotation sender is multiplayer-only; no single-player route should be added."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support powerup grant arm",
+      "reason": "Missing flight-spawn manager implementation behind the air-support arm, which currently throws."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated ship controller registration",
+      "reason": "Missing canonical 0x2268 raw brain constructor/state owner; current host keeps separate typed controller state."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-menu collection",
+      "reason": "Missing menu-list producer with real command vtable+10h sort keys; no matching live list was established."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing verified mode-indexed ClassPairRow table producer at the live scoring site."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-spawn selection",
+      "reason": "Missing a verified host site supplying the original weight, threat-record count and source count together."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance scoring",
+      "reason": "Missing verified original member-value producer and matching group-score consumer."
+    },
+    {
+      "native": "0074e7b0",
+      "status": "skipped",
+      "host_site": "src/unit_instance_layout.cpp: native constructor subobject sequence",
+      "reason": "Missing live implementation of the layout host base-subobject callback; typed constructor alone has no entry-reachable caller."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: flooding state consumers",
+      "reason": "Missing verified live consumer of the exact water/(settings+404h*capacity+0Ch) fraction; Lua GetLeaks uses a different ratio."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: move-on-path leg manager callbacks",
+      "reason": "Missing canonical raw singleton/critical-section owner for the getter; the host already owns a typed leg manager."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable in the baseline through two actual merge calls; readiness text classification is a false negative."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum-property insertion",
+      "reason": "Existing owning projection already names and invokes this body; no replacement was needed in the chosen packet."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear routing",
+      "reason": "Missing verified live clear-path route consuming the original DirectorQueue slot query."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target descriptor creation",
+      "reason": "Missing verified live descriptor owner and its original global class ordinal at a matching constructor site."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director-state snapshot readers",
+      "reason": "Original use examined is network snapshot construction; no single-player snapshot sender was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director snapshot enable references",
+      "reason": "Missing single-player snapshot consumer; existing weapon-enable state is not itself a snapshot message."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: PressStartBinding::apply_input_settings",
+      "reason": "Missing current-profile input-settings source and native input-manager binding; current callback only logs."
+    },
+    {
+      "native": "009bce50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: Factory::move_on_path_task_construct_009bce50",
+      "reason": "Already entry-reachable before this packet; reused its single typed body through the new factory callback without adding another constructor run."
+    }
+  ],
+  "implementation": {
+    "factory_contract": "MoveOnPathTaskFactoryHost exposes only allocation and construction; Cc13Seg67bHost inherits it. The single existing factory body is unchanged except for the narrower C++ host type.",
+    "state_owner": "GameUnitSlot::moveonpath_task owns the 0x520 scalar allocation. The typed MoveOnPathTask lives at its start and feeds all existing activation/tick/stop calls. No raw layout or binary ABI compatibility is claimed.",
+    "lifetime": "Pending allocation is RAII-owned during construction; failed allocation returns before task installation or RNG draws. Retirement stops the same task then frees it with scalar unsized delete.",
+    "inputs": "The same live unit, path cursor, squadron, loaded MaxAltOffset (or the existing binary default), and shared RNG callbacks reach the existing constructor. Its old direct call is removed."
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed.",
+    "call_graph_before": {
+      "reconstructed_called": 5398,
+      "reconstructed_present": 6001,
+      "factory": "not linked"
+    },
+    "call_graph_after": {
+      "reconstructed_called": 5399,
+      "reconstructed_present": 6002,
+      "factory": "REACHABLE, one call site at 102fe9ec in PlaneBinding::run_moveonpath_task_arm_009bd990; body at 1041a0c0"
+    },
+    "constructor_call": "Existing typed 009BCE50 body remains REACHABLE with one call, now from Factory::move_on_path_task_construct_009bce50 at 102e5d4d.",
+    "entry_path": "WinMain -> startup -> mission frame -> fixed simulation -> motion -> free flight -> pilot think -> move-on-path task arm -> 009BDBB0",
+    "wire_readiness_before": 10492,
+    "game_run": "Not run, per worker assignment; built-executable reachability is static evidence.",
+    "wire_readiness_after": 10493,
+    "wire_readiness_factory": {
+      "address": "009bdbb0",
+      "name": "bot_task_move_on_path_create_009bdbb0",
+      "source": "src/cc13_seg67b.cpp",
+      "category": "ai",
+      "state": "wired",
+      "callers": 1,
+      "wired_callers": 1,
+      "callees": 1,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "remaining": "Raw leg-manager singleton 009BD400, raw brain allocation 009F3F20, and raw task archive/state-registry ownership remain separate work; this packet retains the established typed task interface."
+}

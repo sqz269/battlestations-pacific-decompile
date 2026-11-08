@@ -55,6 +55,7 @@
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/cc13_left61.hpp"
 #include "bsp/lobby_option_defaults_cc13.hpp"
@@ -1498,6 +1499,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bool replan_002c{false};
     };
 
+    // Retain the actual constructor destinations, name allocation and list
+    // sentinel. Subsequent planner ticks use Planner's existing typed state;
+    // these bytes are its birth record, not a second mutable planner model.
+    struct PlannerBirthStorage {
+        explicit PlannerBirthStorage(std::uint32_t size)
+            : bytes(std::make_unique<std::uint8_t[]>(size)), size(size) {}
+        ~PlannerBirthStorage() {
+            bsp::destroy_native_string_header_0041dd20(
+                bytes.get() + bsp::cc13_seg70::kPlannerName, bsp::crt_string_storage());
+        }
+        std::unique_ptr<std::uint8_t[]> bytes;
+        std::uint32_t size;
+        std::unique_ptr<std::array<void*, 3>> group_head;
+    };
+
     struct Brain {
         int party_slot{0};            // brain+20h
         int world_set{0};             // brain+24h
@@ -1506,6 +1522,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // planner. 00A15A70 installs +0Ch only outside modes 4..7. The pointer
         // borrows planners[3] for this Brain's whole retained lifetime.
         Planner* capture_planner_000c{nullptr};
+        alignas(4) std::array<std::uint8_t, 0x28> birth{};
+        std::array<std::unique_ptr<PlannerBirthStorage>, 8> planner_births{};
     };
 
     // Groups are held by pointer so a void* handed to a sequence stays valid
@@ -4224,23 +4242,92 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void* create_party_brain(int party_slot) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
         auto brain = std::make_unique<Brain>();
-        brain->party_slot = party_slot;
-        brain->world_set = kAiPartyGateUnforcedBound ? slot_team(party_slot) : party_slot;
-        for (int slot = 0; slot < 8; ++slot) {
-            brain->planners[static_cast<std::size_t>(slot)].slot = slot;
-            brain->planners[static_cast<std::size_t>(slot)].kind = planner_kind_for_slot(slot);
-        }
-        {
-            // 00A15A70's constructor dispatch: modes 4..7 leave +0Ch null;
-            // the default arm installs the actual Capture planner there.
-            const int mode = game_mode();
-            if (mode < 4 || mode > 7) brain->capture_planner_000c = &brain->planners[3];
+        // bsp.py show 00A15A70 (including register-input listing): ECX is
+        // this retained 28h brain, the real party slot is passed to 009FFD60,
+        // and 004BCA50 selects the planner allocations/constructors. The old
+        // handwritten dispatch and Capture initialization are replaced here.
+        struct Construction final : bsp::cc13_seg69::PartyBrainConstructionHost,
+                                    bsp::cc13_seg70::PlannerConstructionHost {
+            Impl& owner;
+            Brain& brain;
+            std::unique_ptr<PlannerBirthStorage> pending;
+            Construction(Impl& owner, Brain& brain) : owner(owner), brain(brain) {}
+            int player_slot_team_009ffd60(int slot) override { return owner.slot_team(slot); }
+            int game_mode_004bca50() override { return owner.game_mode(); }
+            void* operator_new_00bf681b(std::uint32_t size) override {
+                if (pending) std::abort();
+                pending = std::make_unique<PlannerBirthStorage>(size);
+                return pending->bytes.get();
+            }
+            void* planner_construct(std::uint32_t address, void* memory, void* native_brain) override {
+                namespace native = bsp::cc13_seg70;
+                if (!pending || pending->bytes.get() != memory || native_brain != brain.birth.data())
+                    std::abort();
+                const auto* const classes = bsp::ai_planner_class_table();
+                for (int slot = 0; slot < bsp::kAiPlannerKindCount; ++slot) {
+                    const auto& type = classes[slot];
+                    if (type.constructor != address) continue;
+                    if (pending->size != type.instance_size) std::abort();
+                    void* const result = native::planner_construct_00a1efc0_family(*this,
+                        static_cast<native::PlannerConstructKind>(slot),
+                        native::Raw{pending->bytes.get()}, native::Raw{brain.birth.data()});
+                    brain.planner_births[static_cast<std::size_t>(slot)] = std::move(pending);
+                    return result;
+                }
+                std::abort();
+            }
+            void* list_buy_head_node_00a168a0(void* list) override {
+                // 00A168A0 allocates 0Ch and self-links next/previous. Its
+                // payload is unused while the constructor's list is empty.
+                if (!pending || list != pending->bytes.get() + bsp::cc13_seg70::kPlannerGroups ||
+                    pending->group_head) std::abort();
+                pending->group_head = std::make_unique<std::array<void*, 3>>();
+                auto* const head = pending->group_head.get();
+                (*head)[0] = head;
+                (*head)[1] = head;
+                return head;
+            }
+            void native_string_resize_0041dd40(bsp::cc13_seg70::NativeStringRaw& string,
+                std::uint32_t length, int keep) override {
+                bsp::resize_native_string_header_0041dd40(&string,
+                    bsp::crt_string_storage(), length, keep != 0);
+            }
+            void memcpy_00bf7680(void* destination, const void* source, std::size_t size) override {
+                std::memcpy(destination, source, size);
+            }
+            void pool_return_00bd1510(void* data, std::uint32_t size) override {
+                bsp::crt_string_storage().release(static_cast<char*>(data), size);
+            }
+        } construction{*this, *brain};
+        const auto native = bsp::cc13_seg69::ai_party_brain_construct_00a15a70(
+            construction, bsp::cc13_seg69::Raw{brain->birth.data()}, party_slot);
+        brain->party_slot = native.at<int>(0x20);
+        brain->world_set = native.at<int>(0x24);
+        for (int slot = 0; slot < bsp::kAiPlannerKindCount; ++slot) {
+            void* const installed = native.ptr(static_cast<std::size_t>(slot) * 4);
+            if (installed == nullptr) continue;
+            const auto& storage = brain->planner_births[static_cast<std::size_t>(slot)];
+            if (!storage || storage->bytes.get() != installed) std::abort();
+            const bsp::cc13_seg70::Raw planner{storage->bytes.get()};
+            const auto& type = bsp::ai_planner_class_table()[slot];
+            if (planner.at<std::uint32_t>(0) != type.vtable ||
+                planner.ptr(bsp::cc13_seg70::kPlannerBrain) != brain->birth.data()) std::abort();
+            Planner& live = brain->planners[static_cast<std::size_t>(slot)];
+            live.slot = slot;
+            live.kind = type.kind;
+            live.replan_002c = planner.at<std::uint8_t>(bsp::cc13_seg70::kPlannerChanged) != 0;
+            if (type.kind == bsp::AiPlannerKind::Capture) {
+                live.age_0038 = planner.at<float>(0x38);
+                live.since_spawn_003c = planner.at<float>(0x3c);
+                live.last_clock_0040 = planner.at<float>(0x40);
+                brain->capture_planner_000c = &live;
+            }
         }
         Brain* raw = brain.get();
         brains[static_cast<std::size_t>(party_slot)] = std::move(brain);
         refresh_tuning_selection();
         party_row(party_slot).brain_created = true;
-        record("AiGroups::create_party_brain", 0x00a15a70u);
+        done("AiGroups::create_party_brain", 0x00a15a70u);
         return raw;
     }
     void destroy_party_brain(void* brain) override {
@@ -6803,26 +6890,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void* handle(std::size_t unit) { return reinterpret_cast<void*>(unit + 1u); }
     static std::size_t unit_index_of(void* entity) {
         return reinterpret_cast<std::size_t>(entity) - 1u;
-    }
-
-    static bsp::AiPlannerKind planner_kind_for_slot(int slot) {
-        if constexpr (kAiPlannerSlotKindsBound) {
-            // AiPlannerKind is declared in brain-slot order (src/ai_planners.cpp's
-            // table carries the offsets 00h..1Ch).
-            if (slot >= 0 && slot < bsp::kAiPlannerKindCount)
-                return static_cast<bsp::AiPlannerKind>(slot);
-            return bsp::AiPlannerKind::Competitive;
-        } else {
-            switch (slot) {
-            case 0: return bsp::AiPlannerKind::Attack;
-            case 1: return bsp::AiPlannerKind::Defend;
-            case 2: return bsp::AiPlannerKind::Capture;
-            case 3: return bsp::AiPlannerKind::Duel;
-            case 4: return bsp::AiPlannerKind::Escort;
-            case 5: return bsp::AiPlannerKind::Siege;
-            default: return bsp::AiPlannerKind::Competitive;
-            }
-        }
     }
 
     // 009FE080's inputs. The squadron arm's three reads have no producer in

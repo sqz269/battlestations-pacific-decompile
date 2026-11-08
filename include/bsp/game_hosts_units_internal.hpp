@@ -608,6 +608,16 @@ template <> struct SquadronForceReleaseByte<true> {
     bool sq_force_release_3ae{false};   // +3AEh, memset 0 at new(414h)
 };
 
+// The factory requests the image's full 520h allocation; only the typed task
+// projection lives at its start. Pair scalar allocation with unsized deletion.
+struct GameMoveOnPathTaskDeleter {
+    void operator()(bsp::MoveOnPathTask* task) const noexcept {
+        task->~MoveOnPathTask();
+        ::operator delete(task);
+    }
+};
+using GameMoveOnPathTaskOwner = std::unique_ptr<bsp::MoveOnPathTask, GameMoveOnPathTaskDeleter>;
+
 struct GameUnitSlot : SquadronForceReleaseByte<true> {
     GameUnitSlot() {
         // Partial projections of the two actual bases, not a whole unit ctor.
@@ -1137,7 +1147,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     bool moveto_task_installed{false};
     // Packet cc13-moveonpath1: the kind-6 moveonpath task (009BCE50), kMoveOnPathTaskBound.
     bool moveonpath_task_installed{false};
-    bsp::MoveOnPathTask moveonpath_task{};
+    GameMoveOnPathTaskOwner moveonpath_task;
     unsigned long long moveonpath_ticks{0};
     bool moveto_stage_logged{false};   // cc9_moveto_arrival_end_command, one note per member
     MoveToTaskState moveto_state{MoveToTaskState::kNone};

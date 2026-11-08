@@ -5,6 +5,8 @@
 #include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
 #include "bsp/cc13_seg67b.hpp"
 
+#include <new>
+
 namespace bsp::game {
 
 namespace {
@@ -19552,8 +19554,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.moveonpath_task_installed) {
                                 // 009BD120, slot +58h, as the task is replaced.
                                 Binding h{*this, owner_.squadron_slot_of(unit_.process_index)};
-                                bsp::moveonpath_task_stop_009bd120(unit_.moveonpath_task, h);
+                                bsp::moveonpath_task_stop_009bd120(*unit_.moveonpath_task, h);
                                 unit_.moveonpath_task_installed = false;
+                                unit_.moveonpath_task.reset();
                             }
                             return;
                         }
@@ -19565,8 +19568,41 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bool activated = false;
                         if (!unit_.moveonpath_task_installed) {
-                            bsp::moveonpath_task_construct_009bce50(unit_.moveonpath_task, h, h,
-                                                                    max_alt_offset);
+                            // bsp.py show 009BDBB0 --live: 009BDBC7 allocates
+                            // 520h; 009BDBE9 forwards this bot to 009BCE50. The
+                            // factory never reads the bot/task layout. Its bot
+                            // identity here is the live slot owning the pilot;
+                            // its constructor keeps the existing typed state,
+                            // real cursor/squadron inputs and shared RNG calls.
+                            // This remains a C++ adapter, not a native ABI view.
+                            struct Factory final : bsp::MoveOnPathTaskFactoryHost {
+                                Factory(Binding& binding, GameUnitSlot& bot, float max_alt)
+                                    : binding_(binding), bot_(bot), max_alt_(max_alt) {}
+                                void* operator_new_00bf681b(std::uint32_t bytes) override {
+                                    static_assert(sizeof(bsp::MoveOnPathTask) <= 0x520);
+                                    void* storage = ::operator new(bytes, std::nothrow);
+                                    if (storage == nullptr) return nullptr;
+                                    pending_.reset(::new (storage) bsp::MoveOnPathTask{});
+                                    return pending_.get();
+                                }
+                                void* move_on_path_task_construct_009bce50(
+                                    void* task, void* bot) override {
+                                    if (bot != &bot_ || task != pending_.get())
+                                        throw std::logic_error("009BDBB0 task/bot owner mismatch");
+                                    bsp::moveonpath_task_construct_009bce50(
+                                        *pending_, binding_, binding_, max_alt_);
+                                    return pending_.get();
+                                }
+                                Binding& binding_;
+                                GameUnitSlot& bot_;
+                                float max_alt_;
+                                GameMoveOnPathTaskOwner pending_;
+                            } factory{h, unit_, max_alt_offset};
+                            if (bsp::bot_task_move_on_path_create_009bdbb0(factory, &unit_) == nullptr)
+                                return;
+                            // The same allocation is read by the activation,
+                            // arm and stop bodies, and is released on retirement.
+                            unit_.moveonpath_task = std::move(factory.pending_);
                             unit_.moveonpath_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                             activated = true;
                         }
@@ -19603,14 +19639,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ci.cruise.one_shot = sq->sq_lock_3a9;
                             const bsp::MoveOnPathCruiseResult cr =
                                 bsp::moveonpath_cruise_profile_009bd6e0(ci, h);
-                            unit_.moveonpath_task.ap.travel_alt_offset_30 = cr.travel_alt_offset_30;
+                            unit_.moveonpath_task->ap.travel_alt_offset_30 = cr.travel_alt_offset_30;
                             if (cr.writes_alt_394) {
                                 sq->sq_alt_394 = cr.alt_394;
                                 sq->sq_alt_set = true;
                             }
                             if (cr.clears_one_shot_3a9) sq->sq_lock_3a9 = false;
                         }
-                        bsp::moveonpath_task_arm_009bd990(unit_.moveonpath_task, h, dt);
+                        bsp::moveonpath_task_arm_009bd990(*unit_.moveonpath_task, h, dt);
                         owner_.done("BotTaskMoveOnPath::tick", 0x009bd990u);
                     }
 

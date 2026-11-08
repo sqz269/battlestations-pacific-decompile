@@ -122,7 +122,19 @@ struct CandidateRecordHost {
     virtual float random_uniform_00bd2f10(std::uint32_t stream, float low, float high) = 0;
 };
 
-struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost {
+// 00A15A70 owns only the party/mode query and planner allocation/dispatch.
+// A retained brain owner does not need unrelated Lua or debug services.
+struct PartyBrainConstructionHost {
+    virtual ~PartyBrainConstructionHost() = default;
+    virtual int player_slot_team_009ffd60(int slot) = 0;
+    virtual int game_mode_004bca50() = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // One of the eight constructors 00A1EFC0..00A1F890; ECX=memory,
+    // stack brain, RET4. The returned pointer is published in the brain.
+    virtual void* planner_construct(std::uint32_t constructor, void* memory, void* brain) = 0;
+};
+
+struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost, PartyBrainConstructionHost {
     virtual ~Seg69Host() = default;
 
     // Image globals: the address of the cell (BSS / .data) named by its image address.
@@ -136,9 +148,6 @@ struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost {
     virtual bool object_virtual_38(void* object) = 0;              // vtable +38h
     virtual bool filter_rejects_0(void* filter, const float* point) = 0;  // vtable +0h(point)
     virtual void planner_debug_draw_28(void* planner) = 0;         // planner vtable +28h
-    // One of the eight planner constructors 00A1EFC0, 00A1F0F0, 00A1F220, 00A1F390, 00A1F500,
-    // 00A1F630, 00A1F760, 00A1F890, named by address: __thiscall(ECX = memory)(brain), RET 4.
-    virtual void* planner_construct(std::uint32_t constructor, void* memory, void* brain) = 0;
 
     // Engine routines.
     virtual bool can_drop_ordnance_007b9140(void* unit, std::uint32_t arg) = 0;  // ECX unit
@@ -149,8 +158,6 @@ struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost {
     virtual int class_upgrade_levels_00951f10(void* vehicle_class) = 0;      // ECX
     // 00A08460 __fastcall(ECX = attacker, EDX = level)(target, flag), RET 8, ST0 discarded.
     virtual float target_weight_00a08460(void* attacker, int level, void* target, int flag) = 0;
-    virtual int game_mode_004bca50() = 0;                          // ECX = [00E188A8]
-    virtual int player_slot_team_009ffd60(int slot) = 0;           // ECX = slot
     virtual void entity_pose_refresh_00414db0(void* entity) = 0;   // ECX = entity
     // 00413920 __thiscall(ECX = local 4x4)(out, parent 4x4), RET 8: returns out.
     virtual float* matrix_multiply_00413920(const float* local, float* out, const float* parent) = 0;
@@ -214,7 +221,6 @@ struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost {
     virtual void lua_object_destruct_00b67700(void* object) = 0;
 
     // CRT.
-    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual void operator_delete_00bf65ac(void* block) = 0;
     virtual void invalid_parameter_00bf6713() = 0;  // checked-iterator failure
     virtual long atol_00bf8417(const char* text) = 0;
@@ -281,7 +287,7 @@ void ai_command_auto_close_attack_nearest_00a13280(Seg69Host& host, Raw command)
 NativeStr* ai_command_describe_string_00a137d0(Seg69Host& host, Raw command, NativeStr* out);
 void ai_command_move_describe_lua_00a13960(Seg69Host& host, Raw command, void* lua_object);
 void ai_command_attack_describe_lua_00a13a60(Seg69Host& host, Raw command, void* lua_object);
-Raw ai_party_brain_construct_00a15a70(Seg69Host& host, Raw brain, int party_slot);
+Raw ai_party_brain_construct_00a15a70(PartyBrainConstructionHost& host, Raw brain, int party_slot);
 void ai_party_brain_debug_draw_planners_00a15d00(Seg69Host& host, Raw brain);
 
 }  // namespace bsp::cc13_seg69

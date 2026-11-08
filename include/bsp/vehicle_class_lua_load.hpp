@@ -8,7 +8,7 @@
 // 0074C630 MLandingShip, 00759590 MMothership, 00854230 MSubmarine and
 // 00857F40 MTorpedoBoat. 00424C40 (the gameplay settings singleton), 00870CD0,
 // 00964790, 004B1400, 0047B3C0, 00425850, 00B646E0, 00B64640, 00413920 and
-// 004134F0 are read as contracts, not reconstructed.
+// 004134F0 are supplied by the existing providers elsewhere in src/.
 //
 // The two readers this layer sits on are already reconstructed elsewhere and
 // nothing of theirs is repeated here: 00960230, the descriptor base reader, is
@@ -34,6 +34,7 @@
 #include <string>
 
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/camera_projection.hpp"
 #include "bsp/vehicle_class_fields.hpp"
 
 namespace bsp {
@@ -178,7 +179,7 @@ enum class ShipLeafConversion : std::uint8_t {
     Number,          // 00B66270, written unconditionally
     NumberOr,        // 00B66330 with a literal float default
     IntegerOr,       // 00B66380 with a literal integer default
-    IntegerOrZero,   // 00B66290 after an IsNil test, zero when absent
+    IntegerOrFour,   // 00B66290 after an IsNil test, four when absent
     BooleanOr,       // 00B662F0 with a literal boolean default
     EffectHandle,    // 00B66290 after IsInteger, then 00870CD0
     StringEquals,    // 00B662B0 then 00425850 against a literal, stored as a byte
@@ -313,8 +314,8 @@ struct CargoSubType {
 CargoSubType cargo_sub_type(const char* sub_type) noexcept;
 
 // MMothership at 0075979B..00759806. Both angles are negated before the basis is
-// built; the horizontal one drives 00B646E0 and the vertical one 00B64640, and
-// 00413920 multiplies them in that order.
+// built; the horizontal one drives 00B646E0 and the vertical one 00B64640.
+// 007597E6..007597FA passes X as ECX and Y as the right operand (X * Y).
 struct DeckCameraAngles {
     float horizontal_radians = 0.0F;
     float vertical_radians = 0.0F;
@@ -355,9 +356,9 @@ struct ShipLeafFieldHost {
     // Classes table for the given LandingTroopType, or an invalid ref.
     virtual GuiLuaRef landing_troop_classes(std::int32_t troop_type) = 0;
 
-    // 00B646E0, 00B64640, 00413920 and 004134F0: the two axis rotations and
-    // their product, copied into descriptor +830h. The 30h bytes are opaque here.
-    virtual void store_deck_camera_basis(const DeckCameraAngles& angles) = 0;
+    // 0075971A: bare 00B67A80 on DeckCamera.Position, not the optional-vector
+    // wrapper. The running adapter borrows the actual Lua object.
+    virtual void read_deck_camera_position(const GuiLuaRef& position, float out[3]) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -397,6 +398,7 @@ struct ShipLeafFields {
     bool is_carrier_escort = false;
     DeckCameraAngles deck_camera;
     float deck_camera_position[3] = {0.0F, 0.0F, 0.0F};
+    CameraMatrix deck_camera_matrix{}; // +830h..+86Fh, position at +860h..+868h
 
     // MSubmarine.
     std::int32_t periscope_wave_handle = 0;
