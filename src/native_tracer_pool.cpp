@@ -47,9 +47,28 @@ void* actual_canonical_pool;
 AllocatorListDomain* actual_canonical_list;
 } // namespace
 
-void free_native_tracer_pool_table_00ba9c80(void* header) noexcept {
+__declspec(noinline) void free_native_tracer_pool_table_00ba9c80(void* header) noexcept {
     auto* const current = owner_pointer(header, 0);
     if (current) singleton_lifetime_free(current);
+}
+
+__declspec(noinline) void reserve_native_tracer_pool_table_00ba9cc0(
+    void* header, std::uint32_t capacity) {
+    // Evidence: bsp.py show 00BA9CC0. This is the full native table operation,
+    // including capacity-before-allocation and current-count/pointer reloads.
+    // Names are hypotheses; this C++ interface is not an original ABI entry.
+    owner_word(header, 8) = capacity;
+    const auto bytes = capacity * 4u;
+    void* const replacement = singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes});
+    auto* destination = replacement;
+    for (std::uint32_t index = 0; index < owner_word(header, 4); ++index) {
+        if (destination)
+            owner_pointer(destination, 0) = owner_pointer(owner_pointer(header, 0), index * 4u);
+        destination = owner_at(destination, 4);
+    }
+    free_native_tracer_pool_table_00ba9c80(header);
+    owner_pointer(header, 0) = replacement;
 }
 
 void* initialize_native_tracer_pool_00bac3c0(void* pool, AllocatorListDomain& list) {
@@ -69,17 +88,8 @@ void* initialize_native_tracer_pool_00bac3c0(void* pool, AllocatorListDomain& li
         owner_word(pool, 0x34) = 0xffffffffu;
         unwind_state = 2;
         if (owner_word(pool, 0x30) < 32u) {
-            owner_word(pool, 0x30) = 32;
-            void* const replacement = singleton_lifetime_allocate(
-                {SingletonAllocationKind::pointer_slots, 0x80, 0x80});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < owner_word(pool, 0x2c); ++index) {
-                if (destination)
-                    owner_pointer(destination, 0) = owner_pointer(owner_pointer(pool, 0x28), index * 4u);
-                destination = owner_at(destination, 4);
-            }
-            free_native_tracer_pool_table_00ba9c80(owner_at(pool, 0x28));
-            owner_pointer(pool, 0x28) = replacement;
+            // BAC3C0 inlines the same BA9CC0 reserve operation at pool+28h.
+            reserve_native_tracer_pool_table_00ba9cc0(owner_at(pool, 0x28), 32);
         }
     } __finally {
         if (AbnormalTermination()) {
@@ -91,7 +101,8 @@ void* initialize_native_tracer_pool_00bac3c0(void* pool, AllocatorListDomain& li
     return pool;
 }
 
-void destroy_native_tracer_pool_00babdd0(void* pool, AllocatorListDomain& list) noexcept {
+__declspec(noinline) void destroy_native_tracer_pool_00babdd0(
+    void* pool, AllocatorListDomain& list) noexcept {
     const bool has_slabs = owner_word(pool, 0x2c) != 0;
     owner_word(pool, 0) = pool_profile; // native captures comparison before this store
     if (has_slabs) {
@@ -106,7 +117,7 @@ void destroy_native_tracer_pool_00babdd0(void* pool, AllocatorListDomain& list) 
     list.unlink_base_element_00403970(*static_cast<AllocatorListElement*>(pool));
 }
 
-void trim_native_tracer_pool_00babed0(void* pool) noexcept {
+__declspec(noinline) void trim_native_tracer_pool_00babed0(void* pool) noexcept {
     for (std::uint32_t index = 0; index < owner_word(pool, 0x2c); ++index) {
         auto* const slab = owner_pointer(owner_pointer(pool, 0x28), index * 4u);
         if (owner_half(slab, 0x3d90) != 8u) continue;

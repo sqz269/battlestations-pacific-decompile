@@ -4,6 +4,8 @@
 #include <cstring>
 
 #include "bsp/native_camera_matrix_math.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 
 namespace bsp {
 namespace {
@@ -15,13 +17,18 @@ namespace {
 constexpr float kNegativeZero = -0.0f; // 00D7A208
 constexpr float kOne = 1.0f;           // 00D7A24C
 
-void identity(float dst[16]) noexcept {
-    std::memset(dst, 0, sizeof(float) * 16);
-    dst[0] = kOne;
-    dst[5] = kOne;
-    dst[10] = kOne;
-    dst[15] = kOne;
-}
+class InterpolatorMatrixCalls final : public profile_seg2_cc13::MatrixZRotationHost,
+    public profile_seg2_cc13::MatrixCopyHost {
+public:
+    void build_rotation_z_00b64780(profile_seg2_cc13::Mat16& out,
+        const float& angle) noexcept override {
+        matrix_interpolator_rotation_z_00b64780(out.m, angle);
+    }
+    void matrix_copy_004134f0(profile_seg2_cc13::Raw destination,
+        const profile_seg2_cc13::Mat16& source) noexcept override {
+        copy_native_camera_matrix_004134f0(destination.p, nullptr, source.m);
+    }
+};
 
 } // namespace
 
@@ -85,7 +92,13 @@ void matrix_interpolator_compose_009046b5(const MatrixInterpolatorRecord& record
     // and then negated. Native evaluation order is translation first, then the
     // x, y and z angles, each through its own builder.
     float translate[16];
-    identity(translate);
+    InterpolatorMatrixCalls matrix_calls;
+    // 0042E8C0 builds the same +0/1 identity and copies it through 004134F0.
+    // Its binary 00D7A24C constant is the same kOne used by the former inline
+    // initialization; the live translation stores still follow the identity.
+    // Evidence: bsp.py show 0042e8c0 --asm, 0042E8C6/0042E936.
+    profile_seg2_cc13::matrix_set_identity_0042e8c0(
+        {reinterpret_cast<std::uint8_t*>(translate)}, matrix_calls);
     translate[12] = phase * record.translation[0]; // 009046EB, +30h of the block
     translate[13] = record.translation[1] * phase; // 00904721
     translate[14] = record.translation[2] * phase; // 00904751
@@ -96,7 +109,14 @@ void matrix_interpolator_compose_009046b5(const MatrixInterpolatorRecord& record
     // 009047AB, 00904889, 00904991: FCHS on the scaled angle.
     matrix_interpolator_rotation_x_00b64640(rotation_x, -(phase * record.rotation[0]));
     matrix_interpolator_rotation_y_00b646e0(rotation_y, -(record.rotation[1] * phase));
-    matrix_interpolator_rotation_z_00b64780(rotation_z, -(record.rotation[2] * phase));
+    // Reuse 0042B420's complete build/copy operation on this live record's
+    // Z rotation. Evidence: bsp.py show 0042b420 --asm, 0042B43A/0042B442.
+    // 00904991 originally builds this same matrix inline; the shared setter
+    // adds only its sequential float copy, with disjoint stack matrices and
+    // no added arithmetic. The existing scaled/FCHS angle is unchanged.
+    profile_seg2_cc13::matrix_set_rotation_z_0042b420(
+        {reinterpret_cast<std::uint8_t*>(rotation_z)},
+        -(record.rotation[2] * phase), matrix_calls);
 
     // 00904AC3..00904AD8, four chained 00413920 calls. The left operand of the
     // first is the z rotation and the right operand of the last is the record's

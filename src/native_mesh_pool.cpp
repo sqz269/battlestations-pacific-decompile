@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_pool.hpp"
+#include "bsp/native_mesh_pool_table.hpp"
 #include "bsp/native_mesh_storage_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -48,12 +49,31 @@ std::byte* initialize_slab_00b727f0(void* raw, std::uint32_t index) noexcept {
     }
     return bytes;
 }
-std::byte** allocate_table(std::uint32_t capacity) {
+std::byte* allocate_table(std::uint32_t capacity) {
     // Native 00BF55BE jumps to the same 00BF681B new-handler allocator.
     const auto native_bytes = capacity * 4u;
-    return static_cast<std::byte**>(singleton_lifetime_allocate({
+    return static_cast<std::byte*>(singleton_lifetime_allocate({
         SingletonAllocationKind::pointer_slots, native_bytes,
         static_cast<std::size_t>(capacity) * sizeof(std::byte*)}));
+}
+NativeMeshPoolTableView table_view(NativeMeshPoolStorage& storage) noexcept {
+    return {reinterpret_cast<std::byte*>(&storage.slabs_28)};
+}
+void replace_table(NativeMeshPoolTableView table, std::uint32_t capacity) {
+    auto* const replacement = allocate_table(capacity);
+    // 00B7291C..37: observe the current header AFTER the allocator callback,
+    // reload count/source as the forward DWORD copy advances, and skip only a
+    // null destination cell. No source snapshot, rollback or added validation.
+    for (std::uint32_t i = 0, destination = reinterpret_cast<std::uint32_t>(replacement);
+            i < table.count(); ++i, destination += 4u) {
+        if (destination != 0) {
+            std::uint32_t value;
+            std::memcpy(&value, table.data() + i * 4u, sizeof(value));
+            std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+        }
+    }
+    if (auto* const previous = table.data()) singleton_lifetime_free(previous);
+    table.data(replacement); // 00B72948, after the old table's release.
 }
 NativeMeshPool* static_pool_0108fff8;
 NativeMeshPool& require_static_pool() {
@@ -62,6 +82,33 @@ NativeMeshPool& require_static_pool() {
     return *static_pool_0108fff8;
 }
 } // namespace
+
+// Extracted from scene_graph2_cc13's address-dispatched pointer-array bodies.
+// Keep the four native identities visible in the optimized entry call graph.
+__declspec(noinline) void allocate_native_mesh_pool_table_00b72900(
+    NativeMeshPoolTableView table, std::uint32_t capacity) {
+    table.capacity(capacity); // 00B72907, before operator new.
+    replace_table(table, capacity);
+}
+__declspec(noinline) void grow_native_mesh_pool_table_00b72950(NativeMeshPoolTableView table) {
+    allocate_native_mesh_pool_table_00b72900(table, table.capacity() * 2u + 2u);
+}
+__declspec(noinline) void append_native_mesh_pool_table_00b72e80(
+    NativeMeshPoolTableView table, const void* pointer_cell) {
+    if (table.count() == table.capacity()) grow_native_mesh_pool_table_00b72950(table);
+    const auto destination = reinterpret_cast<std::uint32_t>(table.data()) + table.count() * 4u;
+    if (destination != 0) {
+        // 00B72EE4 reads the caller's cell only AFTER growth/free/publication.
+        std::uint32_t value;
+        std::memcpy(&value, pointer_cell, sizeof(value));
+        std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+    }
+    table.count(table.count() + 1u); // 00B72EEC, even for null destination.
+}
+__declspec(noinline) void reserve_native_mesh_pool_table_00b72f10(
+    NativeMeshPoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity) allocate_native_mesh_pool_table_00b72900(table, capacity);
+}
 
 NativeMeshPool::NativeMeshPool(AllocatorListDomain& list,
     NativeMeshPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -86,14 +133,8 @@ void NativeMeshPool::initialize_00b73890() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        // 00B73890's inlined reserve has the identical 00B72F10 schedule.
+        reserve_native_mesh_pool_table_00b72f10(table_view(storage_), 32u);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b728d0();
@@ -112,16 +153,8 @@ void* NativeMeshPool::allocate_slot_00b73a10() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b727f0(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B73A10's inlined append is 00B72E80 over the SAME pool+28h.
+        append_native_mesh_pool_table_00b72e80(table_view(storage_), &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);

@@ -1,6 +1,8 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
+#include "bsp/native_gui_button_pool_table.hpp"
+#include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
@@ -9,6 +11,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <new>
+
+#include "bsp/native_shader_state_list_pool_table.hpp"
 
 namespace bsp {
 namespace {
@@ -325,12 +329,20 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
     :allocator_list_(list),storage_(storage) {
     list.bind_virtual0(storage.allocator_00,{native_vtable,native_virtual0,this,&invoke_trim});
 }
-void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
+void NativeShaderStateListPool::initialize_00b623d0(){
+    // 00B623D0 inlines B62360's reserve(32) over the retained pool+28h
+    // header, inside unwind state 2. Reuse that body without another reserve.
+    initialize_pool<NativeShaderStateListPool,
+        &native_shader_state_list_pool_table_reserve_00b62360>(allocator_list_,storage_);
+}
 void* NativeShaderStateListPool::allocate_slot_00b62630(){
     // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
     // feed 00B620F0 before the slab table/count publication.
+    // 00B62630 then inlines B622E0's table growth/append, under the same
+    // critical section, after publishing the actual slab's first-free index.
     return allocate_slot<NativeShaderStateListPool,
-        &initialize_native_shader_state_list_slab_00b620f0>(storage_);
+        &initialize_native_shader_state_list_slab_00b620f0,
+        &native_shader_state_list_pool_table_push_back_00b622e0>(storage_);
 }
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
@@ -481,6 +493,12 @@ template<class T> struct WidgetSlabInitializer {
 template<> struct WidgetSlabInitializer<GuiIconPoolTraits> {
     static constexpr auto entry = &initialize_native_gui_icon_slab_00ab1340;
 };
+template<class T> struct WidgetSlabAppender {
+    static constexpr auto entry = &native_gui_pool_table_push_back_00aa76c0;
+};
+template<> struct WidgetSlabAppender<GuiIconPoolTraits> {
+    static constexpr auto entry = &push_native_gui_icon_pool_slab_00ab23a0;
+};
 } // namespace
 
 template<class T> NativeGuiWidgetPool<T>::NativeGuiWidgetPool(AllocatorListDomain& list,
@@ -505,7 +523,10 @@ template<class T> void* NativeGuiWidgetPool<T>::allocate() {
     // Use the existing traits-bound member (64 trailer stores at +138h,
     // descending free stack at +4F00h, count +4F80h for Icon), rather than
     // bypassing that reconstructed body through the common engine helper.
-    return allocate_slot<T, WidgetSlabInitializer<T>::entry>(storage_);
+    // 00AB2930's inline append/grow has the same schedule as 00AB23A0:
+    // after slab initialization, under the existing pool lock, on pool+28h.
+    return allocate_slot<T, WidgetSlabInitializer<T>::entry,
+        WidgetSlabAppender<T>::entry>(storage_);
 }
 template<class T> void NativeGuiWidgetPool<T>::free(void* slot) noexcept {
     return_slot<T>(storage_, slot);
@@ -525,6 +546,45 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
     // Address entry only: reuse the one pre-existing Icon member body.
     return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
 }
+// bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
+// Button's existing reconstructed Mit vector operations, formerly source
+// aliases of the Widget specialization. Retain one capacity/copy/free engine.
+__declspec(noinline) void set_native_gui_button_pool_table_capacity_00aab8e0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+__declspec(noinline) void grow_native_gui_button_pool_table_00aab930(
+    NativeGuiPoolSlabTable& table) {
+    set_native_gui_button_pool_table_capacity_00aab8e0(table, table.capacity * 2u + 2u);
+}
+__declspec(noinline) void push_native_gui_button_pool_slab_00aabc70(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) grow_native_gui_button_pool_table_00aab930(table);
+    // Load the caller's current pointer after growth; Win32 destination
+    // arithmetic and the destination null test match 00AABC70's stores.
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void reserve_native_gui_button_pool_table_00aabd00(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        set_native_gui_button_pool_table_capacity_00aab8e0(table, capacity);
+}
+template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize() {
+    // 00AABE00 inlines reserve(32) on this same pool+28h header in EH state 2.
+    initialize_pool<GuiButtonPoolTraits,
+        &reserve_native_gui_button_pool_table_00aabd00>(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
+    // 00AABF80 inlines 00AABC70 after initializing the actual 4084h slab,
+    // under the existing pool lock. Replace its common append, running once.
+    return allocate_slot<GuiButtonPoolTraits,
+        &NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize_slab,
+        &push_native_gui_button_pool_slab_00aabc70>(storage_);
+}
+
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
@@ -563,8 +623,8 @@ BSP_GUI_WIDGET_POOL_INSTANCE(GuiListboxPoolTraits)
 #undef BSP_GUI_WIDGET_POOL_INSTANCE
 } // namespace bsp
 // The out-of-line Mit pointer-vector members of the slab table (ECX = pool+28h:
-// data, count, capacity). Widget 00AA6FA0/00AA6FF0/00AA76C0/00AA7740, Button
-// 00AAB8E0/00AAB930/00AABC70/00AABD00, Movie 00AACDF0. The native pool
+// data, count, capacity). Widget 00AA6FA0/00AA6FF0/00AA76C0/00AA7740 and
+// Movie 00AACDF0. Button's address entries are defined above. The native pool
 // members inline the same code; the reconstructed common engine now reuses
 // these bodies on its retained pool+28h headers. operator new is 00BF55BE
 // and the free is 00BF6989, as in the native inlined copies.
@@ -619,5 +679,28 @@ __declspec(noinline) void native_gui_model_pool_table_reserve_00acc160(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     if (table.capacity < capacity)
         native_gui_model_pool_table_set_capacity_00acbe00(table, capacity);
+}
+
+__declspec(noinline) void set_native_gui_icon_pool_table_capacity_00ab1580(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // bsp.py show 00AB1580: the same capacity-first allocate/copy/free/adopt
+    // schedule as 00AA6FA0, including DWORD size wrapping and destination
+    // null tests. Reuse that one implementation with the actual Icon header.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+__declspec(noinline) void grow_native_gui_icon_pool_table_00ab15d0(
+    NativeGuiPoolSlabTable& table) {
+    // bsp.py show 00AB15D0: unsigned DWORD arithmetic retains modulo32 growth.
+    set_native_gui_icon_pool_table_capacity_00ab1580(table, table.capacity * 2u + 2u);
+}
+__declspec(noinline) void push_native_gui_icon_pool_slab_00ab23a0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // bsp.py show 00AB23A0 and 00AB2930: grow only on equality; load the
+    // caller's slab AFTER growth, null-test its destination, then bump count.
+    if (table.count == table.capacity) grow_native_gui_icon_pool_table_00ab15d0(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
 }
 } // namespace bsp

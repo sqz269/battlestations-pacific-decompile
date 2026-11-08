@@ -1140,16 +1140,25 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
 
     bsp::game::GameNativeGuiTextProcess* text_pool_process = nullptr;
     bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;
-    bool icon_pool_startup_incomplete = false;
-    bool model_pool_startup_incomplete = false;
+    bool gui_widget_pool_startup_incomplete = false;
     try {
+        // bsp.py ghidra xrefs/disasm CD70A0: CE3450 precedes Icon's CE3468;
+        // MOV ECX,F8BD00; CALL AABE00; register CE0A30 (Button pool destroy).
+        // Start the canonical process pool on the shared E188B4 allocator list.
+        auto& gui_button_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiButtonPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int button_pool_atexit = gui_button_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
+            "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3468/CD7180 starts the SAME F8BDA0 process pool used by AA1410.
         // No Icon allocation or Page factory is entered by pool startup.
         auto& gui_icon_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
             bsp::GuiIconPoolTraits>::instance();
-        icon_pool_startup_incomplete = true; // Before the actual initializer.
+        gui_widget_pool_startup_incomplete = true; // Before the actual initializer.
         const int icon_pool_atexit = gui_icon_pool.initialize_once();
-        icon_pool_startup_incomplete = false; // Every normal status is preserved.
+        gui_widget_pool_startup_incomplete = false; // Every normal status is preserved.
         log.notef("native GUI Icon pool CRT CD7180: atexit=%d storage_bytes=%zu "
             "before_gui_text_pool=1", icon_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3470/CD71F0 precedes the existing CE34EC/CD7830 subset entry.
@@ -1172,9 +1181,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         // Start the same process owner used by the GUI Model factory, in CRT order.
         auto& gui_model_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
             bsp::GuiModelPoolTraits>::instance();
-        model_pool_startup_incomplete = true;
+        gui_widget_pool_startup_incomplete = true;
         const int gui_model_pool_atexit = gui_model_pool.initialize_once();
-        model_pool_startup_incomplete = false;
+        gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Model pool CRT CD75F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", gui_model_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         auto& particle_pools = bsp::game::game_native_particle_pool_process();
@@ -1244,6 +1253,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_atexit = resource_pools.initialize_group_once_00cd8460();
         log.notef("native group pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual18ch", group_atexit);
+        // CD88D0 is at CE3614, before CD8A60/CE363C. Construct the canonical
+        // Tracer0109049C owner on the same E188B4 list; native CE0F90 owns exit.
+        const int tracer_atexit = particle_pools.initialize_tracer_once_00cd88d0();
+        log.notef("native tracer pool CRT CD88D0: atexit=%d storage=process_actual38h",
+            tracer_atexit);
         // CD8A60 is at CE363C in the original initializer table, after CD82D0
         // and before CD9010's physical provider pool (started by VFS).
         auto& weak_pool = bsp::game::game_native_weak_pool_process();
@@ -1262,7 +1276,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Dyn convex pool CRT CC89C0: atexit=%d storage=process_actual38h",
             convex_atexit);
     } catch (const std::exception& failure) {
-        if (icon_pool_startup_incomplete || model_pool_startup_incomplete ||
+        if (gui_widget_pool_startup_incomplete ||
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
@@ -1277,7 +1291,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.close();
         return 1;
     } catch (...) {
-        if (icon_pool_startup_incomplete || model_pool_startup_incomplete ||
+        if (gui_widget_pool_startup_incomplete ||
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {

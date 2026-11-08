@@ -11,7 +11,8 @@
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::initialize, reached from src/game_main.cpp: WinMain",
       "detail": "The actual process-owned pool+28h table reaches set-capacity through ACC160 reserve(32); reuses the established AA6FA0 allocation/copy/free implementation.",
-      "call_site": "10531cf5",
+      "call_site": "106c52d5",
+      "call_site_build": "build/c849-analysis; /Ob0 /OPT:NOICF, merged tree",
       "called": true
     },
     {
@@ -19,7 +20,8 @@
       "status": "wired",
       "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiModelPoolTraits>::initialize -> initialize_pool<GuiModelPoolTraits, native_gui_model_pool_table_reserve_00acc160>",
       "detail": "Restored original CD75F0/CE34BC CRT producer starts the canonical F8C09C process owner after Group and before particle pools; existing constructor EH state 2 and allocation behavior retained.",
-      "call_site": "1052fc4b",
+      "call_site": "106c3296",
+      "call_site_build": "build/c849-analysis; /Ob0 /OPT:NOICF, merged tree",
       "called": true
     },
     {
@@ -122,6 +124,7 @@
     "failure_handling": "Model initialization sets an incomplete flag before entry and clears it after normal return; both existing WinMain startup-failure guards retain interrupted raw state."
   },
   "validation": {
+    "scope": "Original c883 validation before the landing repair; current merged-tree checks are in merge_validation.",
     "build": "scripts/build.ps1 passed; all 4 CTests passed after final C++ changes",
     "focused_probe": "tests/wire_g5_c883_gui_model_table_probe.cpp compiled MSVC Win32 with /link /MANIFEST:EMBED; 257 slots, 33 slabs, table 32 -> 66, retained payloads/trailers, lock depth, trim and teardown passed",
     "probe_command": "cl /nologo /std:c++17 /EHsc /O2 /MD /DNDEBUG /Iinclude tests\\wire_g5_c883_gui_model_table_probe.cpp /Fobuild\\win32\\c883_model_probe.obj /Febuild\\win32\\c883_model_probe.exe /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:NOICF build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
@@ -135,6 +138,36 @@
     "game_run": false,
     "original_abi_compatible": false,
     "ghidra": "Four addressed names/evidence applied through ghidra_annotate.py write lock; previous annotations saved in local/ghidra-annotations-20261108T145311Z.json; project saved and affected exports refreshed."
+  },
+  "merge_validation": {
+    "merged_origin_main": "da28406ae3077a5d31ffb69a0df4498095fc800b",
+    "manual_conflicts": {
+      "src/game_main.cpp": "Retained main's shared gui_widget_pool_startup_incomplete guard for Button/Icon and used it around Model initialization; retained both native startup orders and generic GUI failure diagnostics.",
+      "src/native_material_pools.cpp": "Retained incoming Button/Icon dispatch and helper definitions plus the Model initialize/allocate specializations and all four Model table bodies."
+    },
+    "ledger_or_cmake_conflicts": false,
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c883-merge-on-build.log",
+      "switches": ["kAutoAttackAllMembersBound", "kPlaneFormationPlacementEnabled"],
+      "exit_code": 0,
+      "distinct_diagnostics": 0,
+      "ctests_passed": 4,
+      "headers_restored_and_diff_clean": true
+    },
+    "normal_build": "scripts/build.ps1 passed after ON restoration; all four CTests passed",
+    "focused_probe": "257 Model slots, 33 slabs, table 32 -> 66; payloads/trailers, lock depth, trim and teardown passed against merged normal libraries",
+    "normal_called_addresses_total": 5639,
+    "normal_readiness_wired_total": 10750,
+    "normal_graph_note": "The normal linker folds the Model table entries with identical Button/shader helpers; Model initialize_pool directly calls the reserve address. Analysis with /OPT:NOICF is recorded separately below.",
+    "analysis_build_command": "scripts/build.ps1 -BuildDir build/c849-analysis -NoInline -Target bsp_game -SkipTests",
+    "analysis_build_passed": true,
+    "analysis_model_path_verified": true,
+    "analysis_model_path": "ACC160 <- initialize_pool<GuiModelPoolTraits> <- NativeGuiWidgetPool<GuiModelPoolTraits>::initialize <- GameNativeGuiWidgetPoolProcess<GuiModelPoolTraits>::initialize_once <- WinMain; ACBE00 has its sole caller in ACC160",
+    "analysis_unique_symbols": {
+      "00acbe00": "106c52e0; one reachable caller at 106c52d5 from Model reserve",
+      "00acc160": "106c52c0; one reachable caller at 106c3296 from Model initialize_pool"
+    },
+    "game_run": false
   },
   "coordination": {
     "shared_files": "native_material_pools.cpp, game_main.cpp and AC metadata claimed before editing and released promptly; adjacent worker edits were not imported or modified.",

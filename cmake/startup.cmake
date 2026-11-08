@@ -303,6 +303,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_ef
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_pools.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_shader_state_list_pool_table.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mission_progress_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mission_score_record.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_model_numbering.cpp)
