@@ -1255,8 +1255,9 @@ void marker_manager_forget_entity_006dda40(
 
 // 006de3d0 | BSP_MarkerManager_BindUnitMarkerStub
 // Original ABI: __thiscall(void* self, uint32_t arg0, uint32_t arg1) -> void, RET 0x8.
-void marker_manager_bind_unit_marker_stub_006de3d0(
-    void* /*self*/, std::uint32_t /*arg0*/, std::uint32_t /*arg1*/) {}
+// bsp.py show 006de3d0 --asm: one RET 8, with no state or argument reads.
+// The source-only interface needs no stand-in marker manager or native tokens.
+void marker_manager_bind_unit_marker_stub_006de3d0() {}
 
 // 006de3e0 | TRIV_body_006de3e0
 // Original ABI: __thiscall(void* self, uint32_t arg0, float x, float y, float z) -> void, RET 0x10.

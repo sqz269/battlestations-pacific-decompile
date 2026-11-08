@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/airfield_marker_seg31_32_argon.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/cc13_seg69.hpp"
@@ -792,8 +793,14 @@ public:
     // registry here, so the pair is answered unregistered and registered nowhere.
     bool observer_pair_registered(bsp::ObjectiveUnitList&, void*) override { return false; }
     void observer_register_pair(bsp::ObjectiveUnitList&, void*) override {}
-    // 006DE3D0 at 008DF39E and 006DE3E0 at 008DF5D0's tail: bare RET 8.
-    void marker_bind_on_add_stub(const std::string&, void*) override {}
+    void marker_bind_on_add_stub(const std::string&, void* unit) override {
+        // 008DF2B0 calls 006DE3D0 at 008DF39E after inserting this live unit.
+        // Its whole body is RET 8 (bsp.py show 006de3d0 --asm), so the source
+        // interface drops the unread manager/name/unit ABI inputs. The shared
+        // position callback passes null and belongs to the separate 006DE3E0.
+        if (unit != nullptr)
+            bsp::airfield_marker_seg31_32_argon::marker_manager_bind_unit_marker_stub_006de3d0();
+    }
     // 006DE3F0 / 006DE4C0 on the marker manager at game+21D4h. The SzurkeNyil
     // markers are not built in this process (LABELLED; the HUD marker host records
     // its objective arm), so nothing is rebound or cleared.

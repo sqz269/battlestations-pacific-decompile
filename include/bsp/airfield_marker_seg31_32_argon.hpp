@@ -278,8 +278,9 @@ void marker_manager_remove_gui_highlight_006dc5a0(
     Seg31_32Host& host, void* self, void* gui_element);
 void marker_manager_forget_entity_006dda40(
     Seg31_32Host& host, void* self, std::uint32_t entity_id);
-void marker_manager_bind_unit_marker_stub_006de3d0(
-    void* self, std::uint32_t arg0, std::uint32_t arg1);
+// Complete native body is RET 8: it reads neither the receiver nor arguments.
+// This source interface omits those unused native ABI inputs.
+void marker_manager_bind_unit_marker_stub_006de3d0();
 void triv_body_006de3e0(
     void* self, std::uint32_t arg0, float x, float y, float z);
 void marker_manager_clear_position_marker_006de4c0(
