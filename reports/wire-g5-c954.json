@@ -1,0 +1,60 @@
+{
+  "chain": 954,
+  "slot": "g5-w6",
+  "base": "ea69564f7d5eb759e6193dcb5b5439980f45456a",
+  "picked": "Vehicle-class registry clear on actual descriptor-cache retirement",
+  "rows": [
+    {
+      "native": "0095ba30",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::Bindings::retire",
+      "evidence": "One compiled reachable call from retire; uses the registry constructed/published by 00437F50 and consumed by live 00964790 descriptor resolution. Replaces the previous direct resize_cache(0). Both getter calls and cache+4/party-rows+4010 offsets match 0095BA30 assembly."
+    },
+    {
+      "native": "004359e0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp: GameVehicleClassDescriptorCache::Bindings::resize_party_rows_004359e0",
+      "evidence": "New transitive compiled reachable call from 0095BA30's second service; resizes the actual raw registry+4010 party-row header to zero before freeing it. Already text-classified wired before this change, but had no reachable compiled body at baseline."
+    },
+    {"native":"008f3a20","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: PropertyLibrary enum parsing","reason":"Already called through the existing native scene-property adapter; no missing wiring to add."},
+    {"native":"008f54f0","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: merge_property_block","reason":"Already called through the existing native numeric-property merge adapter; no missing wiring to add."},
+    {"native":"00aa3910","status":"skipped","host_site":"src/gui_pointer_runtime.cpp: BSP_GuiManager_UpdatePointer","reason":"Missing the complete actual input/widget owner and hit-test services joining the native manager to GuiPointerRuntime."},
+    {"native":"007214c0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: controller snapshot boundary","reason":"Missing a retained controller-snapshot message owner and its real transport consumer."},
+    {"native":"009f3f20","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: projected brain registration","reason":"Missing the complete native 2268h brain constructor service binding and owned subobjects."},
+    {"native":"0091d620","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: set_mission_key","reason":"Missing the native score-record receiver and base 0091CE90 constructor binding; clearing runtime awards is not this constructor."},
+    {"native":"004cd610","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: end-movie teardown","reason":"Missing the actual game receiver, movie-screen owner and full SoundLoadTransitionContext."},
+    {"native":"0074fa80","status":"skipped","host_site":"src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80","reason":"The established native consumer is the excluded debug inspector; no gameplay consumer was established."},
+    {"native":"0059abc0","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: map projection","reason":"Missing the actual map-screen mode+2Ch and zoom+5BCh owner and getter consumer."},
+    {"native":"009af9a0","status":"skipped","host_site":"include/bsp/game_hosts_units_internal.hpp: projected land-task state","reason":"Missing one actual approach allocation with its registry and eight embedded state identities; the existing task uses projected fields."},
+    {"native":"0084cf80","status":"skipped","host_site":"src/band_0080_cc13.cpp: support_site_squad_size_0084cf80","reason":"Missing live support-site stock lists and their support-order or spawn-composition consumer."},
+    {"native":"0084d050","status":"skipped","host_site":"src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050","reason":"Missing the live support-site class availability list and native support-menu consumer."},
+    {"native":"0085d770","status":"skipped","host_site":"src/game_hosts_units.cpp: vehicle_avoidance_007df4f0","reason":"The only original caller's alternate-frame branch needs a real nonzero unit+B04h producer; that producer was not established."},
+    {"native":"0085e8c0","status":"skipped","host_site":"src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0","reason":"Missing the actual camera-controller 0042D610 pivot/axis state and consumer; unrelated projectile rotations are not this path."},
+    {"native":"007df4f0","status":"skipped","host_site":"src/game_hosts_units.cpp: GameUnitsHost::Impl::vehicle_avoidance_007df4f0","reason":"Already wired at baseline; its unresolved alternate-frame producer remains separate work."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/game_hosts_commands.cpp: user-path editing","reason":"Missing a real user undo-point command consumer for the last-slot/drop-last-point operation."},
+    {"native":"00721070","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: descriptor_init_00721070","reason":"Missing a wired owning pair or create-for-read message constructor that consumes these initialized descriptors."},
+    {"native":"005cafb0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovCamNew host boundary","reason":"Missing the real legacy movie-camera screen and reset-deviation consumer; the inspected MovCamNew path does not call this service."},
+    {"native":"005cafc0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovCamNew host boundary","reason":"Missing the real legacy movie-camera screen and reset-overview consumer; the inspected MovCamNew path does not call this service."},
+    {"native":"005cb970","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovCamNew host boundary","reason":"Missing the real legacy movie-camera screen and reset-speed consumer; the inspected MovCamNew path does not call this service."},
+    {"native":"005cb9c0","status":"skipped","host_site":"src/game_hosts_lua.cpp: MovCamNew host boundary","reason":"Missing the real legacy movie-camera screen and reset-acceleration consumer; the inspected MovCamNew path does not call this service."},
+    {"native":"005cb9f0","status":"skipped","host_site":"src/frontend_seg19_21_cc13.cpp: movie_camera_set_linear_speed_limit_005cb9f0","reason":"Missing the actual legacy movie-camera screen and its linear-speed-setting consumer."},
+    {"native":"005cba20","status":"skipped","host_site":"src/frontend_seg19_21_cc13.cpp: movie_camera_set_angular_speed_limit_005cba20","reason":"Missing the actual legacy movie-camera screen and its angular-speed-setting consumer."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp: candidate score-list boundary","reason":"The score-list records feed only the excluded debug overlay; no gameplay decision reads them."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp: candidate score-list boundary","reason":"The chosen markers feed only the excluded debug overlay; no gameplay decision reads them."},
+    {"native":"0071bfc0","status":"skipped","host_site":"src/director_geommesh_seg38_39_argon.cpp: director path-slot lookup","reason":"Missing a new native path-slot query consumer beyond the existing host-owned slot-zero user path."},
+    {"native":"008f2f70","status":"skipped","host_site":"src/native_enum_lua_declaration.cpp: declare_native_enum_symbols_from_lua_008f2f70","reason":"Missing a live Lua enum declaration caller supplying the actual world+1A0Ch state and enum-owner lifetime."},
+    {"native":"0070b330","status":"skipped","host_site":"src/native_game_grid.cpp: initialize_native_game_grid_0070b330","reason":"Missing an actual game-grid owner joined to its producer and consumers; GameWorldHost's entity-chain projection is a different object."}
+  ],
+  "validation": {
+    "official_build": "./scripts/build.ps1: PASS, MSVC Win32 Release; all five existing tests passed",
+    "focused_probe": "tests/wire_g5_c954_vehicle_registry_probe.cpp: PASS; links the changed source and existing cache/party-row resize bodies, verifies each cached reference releases once and the second getter observes a changed publication",
+    "call_graph_before": {"reconstructed_addresses_called":5705,"reachable_functions":43338},
+    "call_graph_after": {"reconstructed_addresses_called":5707,"reachable_functions":43346},
+    "readiness_before": {"wired":10824,"ready":1198},
+    "readiness_after": {"wired":10825,"ready":1197},
+    "new_calls": ["0095ba30", "004359e0"],
+    "float_math_changed": false,
+    "evidence_logs": ["local/output/c954-baseline-build.log", "local/output/c954-build.log", "local/output/c954-graph-before.log", "local/output/c954-graph-after.log", "local/output/c954-who-after.log", "local/output/c954-readiness-after.log", "local/output/c954-probe.log"]
+  },
+  "remaining": "Existing split image/semantic descriptor fields and missing original descriptor destructors remain unchanged; this is compiled executable reach and focused fixture evidence, not original ABI or gameplay validation. No game run, merge, rebase or push performed."
+}

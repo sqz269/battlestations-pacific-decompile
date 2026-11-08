@@ -233,6 +233,7 @@ private:
 struct GameVehicleClassDescriptorCache::Bindings final
     : bsp::profile_seg2_cc13::VehicleClassRegistryConstructionHost,
       bsp::cc13_sweepA::PartyRowsStorageHost,
+      bsp::gameplay_seg61_62_cc13::ClassRegistryClearCalls,
       bsp::cc13_sys::LazySingletonHost {
     Bindings(GameVehicleClassDescriptorCache& owner, bsp::NativeStringRawPoolContext& strings,
         bsp::NativeSingletonDeletionBindings& deletions)
@@ -294,12 +295,25 @@ struct GameVehicleClassDescriptorCache::Bindings final
         if (publication_ == nullptr) return;
         // The registry borrows the real vector. Retire its references before
         // either allocation disappears; no Original descriptor dtor is claimed.
-        owner_.resize_cache(0);
+        bsp::gameplay_seg61_62_cc13::class_registry_clear_0095ba30(*this);
         lifetime_.get_manager_00415350().unregister_object(publication_);
         std::free(registry().ptr(0x4010));
         publication_ = nullptr;
         retirement_.registered_owner = nullptr;
         allocation_.reset();
+    }
+    void* get_registry_00437f50() override {
+        return bsp::profile_seg2_cc13::vehicle_class_registry_get_00437f50(
+            publication_, *this);
+    }
+    void resize_cache_00437bd0(void* actual_cache, std::int32_t count) override {
+        if (actual_cache != registry().p + 4)
+            throw std::logic_error("vehicle class cache resize receiver mismatch");
+        owner_.resize_cache(count);
+    }
+    void resize_party_rows_004359e0(void* actual_rows, std::int32_t count) override {
+        bsp::cc13_sweepA::party_rows_resize_004359e0(
+            {static_cast<std::uint8_t*>(actual_rows)}, count, *this);
     }
     void party_rows_reserve_00435960(bsp::profile_seg2_cc13::Raw vector,
         std::uint32_t count) override {

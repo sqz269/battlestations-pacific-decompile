@@ -43,7 +43,8 @@
 // 00437F50 now allocates/publishes this storage and registers it with the SAME
 // application lifetime manager as the borrowed strings. Its returned pointer
 // supplies every cache-header access. The CE417C source retirement binding
-// clears descriptor references, unregisters and frees the registry/party rows
+// now calls 0095BA30 to resize the actual descriptor cache and party rows to
+// zero through 00437BD0/004359E0, then unregisters/frees the registry/party rows
 // either at cache teardown or at shared drain. The existing mission scope and
 // split descriptors remain; Original 00437F30/00437EA0 are not claimed.
 
