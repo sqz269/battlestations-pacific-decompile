@@ -358,10 +358,6 @@ namespace {
 constexpr RoutineRow kRows[] = {
 // BEGIN ROWS
     {0x00B25E50U, Shape::kClearViaResize, 0x0, 0x0, "RendererCapabilityRecords_Clear_00b25e50"},
-    {0x00B27FB0U, Shape::kClearViaResize, 0x0, 0x0, "RendererVertexPointerArray_Clear_00b27fb0"},
-    {0x00B28000U, Shape::kClearViaResize, 0x0, 0x0, "RendererIndexPointerArray_Clear_00b28000"},
-    {0x00B282F0U, Shape::kClearViaResize, 0x0, 0x0, "RendererVertexShaderPointerArray_Clear_00b282f0"},
-    {0x00B28300U, Shape::kClearViaResize, 0x0, 0x0, "RendererPixelShaderPointerArray_Clear_00b28300"},
     {0x00B28560U, Shape::kClearViaResize, 0x0, 0x0, "RendererCapabilityDwords_Clear_00b28560"},
     {0x00B2C8D0U, Shape::kClearViaResize, 0x0, 0x0, "RendererCapabilityHeaders_Clear_00b2c8d0"},
     {0x00B305C0U, Shape::kClearViaResize, 0x0, 0x0, "NativeDeclarationRecordArray_Clear_00b305c0"},
