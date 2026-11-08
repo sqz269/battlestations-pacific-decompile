@@ -1,4 +1,6 @@
 #include "bsp/mission_result.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/game_native_string_process.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -147,16 +149,51 @@ bool scoring_notifies_entity_00906460(std::uint32_t entity_field_180) noexcept
 // End-of-mission movie and the poll
 // ---------------------------------------------------------------------------
 
+namespace {
+class EndMovieStrings final : public cc13_sweepA::EndMovieStringHost {
+public:
+    void native_string_resize_0041dd40(cc13_sweepA::Raw string,
+        std::uint32_t length, char preserve) override {
+        resize_native_string_header_0041dd40(string.p,
+            game::game_native_string_process().raw_context(), length, preserve != 0);
+    }
+};
+} // namespace
+
+MissionEndMovieRequest::MissionEndMovieRequest(const std::string& movie_name) {
+    // 004CD405 calls 004CC3F0 on the newly allocated request. The real script
+    // name is borrowed only for that copy; the destination owns its native
+    // pooled buffer until this same record is reset/retired. Assembly evidence:
+    // 004CC3FE..004CC454, resize at 004CC430, length-byte memcpy at 004CC445.
+    // Source API boundary: input is the host's std::string, presented as an
+    // eight-byte, non-owning NativeString header; no second name owner is made.
+    struct BorrowedName {
+        std::uint32_t length;
+        const char* data;
+    } source{static_cast<std::uint32_t>(movie_name.size()), movie_name.data()};
+    static_assert(sizeof(BorrowedName) == 8);
+    EndMovieStrings strings;
+    cc13_sweepA::end_of_mission_movie_construct_004cc3f0(
+        {reinterpret_cast<std::uint8_t*>(this)},
+        {reinterpret_cast<std::uint8_t*>(&source)}, strings);
+}
+
+MissionEndMovieRequest::~MissionEndMovieRequest() {
+    // 004CD3A8..004CD3D2 returns +18h with size [+14h]+1 before freeing
+    // the request. The retained process supplies the same pool/manager cells
+    // used by construction, including replacement and the normal drain.
+    destroy_native_string_header_0041dd20(&name,
+        game::game_native_string_process().raw_context());
+}
+
 void set_end_of_mission_movie_004cd390(std::optional<MissionEndMovieRequest>& slot,
                                        const std::string& name, bool go_to_debrief,
                                        float parameter_08) noexcept
 {
     slot.reset(); // 004cd3b4..004cd3d2, the free branch falls through
-    MissionEndMovieRequest request{};
-    request.name = name;
-    request.parameter_08 = parameter_08; // MOVSS from 00ce77e4 at 004cd420
-    request.requests_debrief = go_to_debrief; // 004cd430
-    slot = request;
+    slot.emplace(name); // the same owned record is constructed, then published
+    slot->parameter_08 = parameter_08; // MOVSS from 00ce77e4 at 004cd420
+    slot->requests_debrief = go_to_debrief; // 004cd430
 }
 
 MissionCompletionPollDecision mission_completion_poll_004d7ea0(

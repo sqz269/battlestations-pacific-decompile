@@ -546,7 +546,9 @@ void GameMissionResultHost::play_named_movie_0089a390(const std::string& script_
     bsp::set_end_of_mission_movie_004cd390(end_movie_, name, go_to_debrief, kEndMovieLocalZ);
     done("MissionEndMovie::set_end_of_mission_movie", 0x0089a40eu);
     exit_.movie_requested = true;
-    exit_.movie_name = name;
+    // Consume the name that 004CC3F0 copied into the retained request, rather
+    // than retaining another copy of the setter's input as the result.
+    exit_.movie_name.assign(end_movie_->name.data(), end_movie_->name.length());
     exit_.requests_debrief = go_to_debrief;
     log_.notef("mission end movie requested: name=\"%s\" go_to_debrief=%d "
         "result+8h=%.1f (00ce77e4, the movie's local Z at 004f8a20)", name.c_str(),

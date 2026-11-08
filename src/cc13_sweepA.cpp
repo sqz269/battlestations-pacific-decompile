@@ -1344,7 +1344,7 @@ void effect_handle_vector_resize_004cb160(Raw vector, std::int32_t count, SweepA
 // (00D7A24C), bytes +10h/+11h = 0; the NativeString +14h is zeroed and, unless
 // it is the argument itself, sized by 0041DD40(name.length, 1) and memcpy'd
 // for its length when the name's length is non-zero; +1Ch = 0, bytes +20h/+21h = 0.
-Raw end_of_mission_movie_construct_004cc3f0(Raw record, Raw name, SweepAHost& host) {
+Raw end_of_mission_movie_construct_004cc3f0(Raw record, Raw name, EndMovieStringHost& host) {
     record.at<float>(8) = 0.0f;
     record.at<std::uint32_t>(0) = 0;
     record.at<std::uint32_t>(4) = 0;
