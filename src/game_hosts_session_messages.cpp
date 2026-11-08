@@ -1,6 +1,7 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
+#include "bsp/native_gun_control_message_lifetime.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -647,8 +648,13 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     LocalStream stream;
     seg42::write_vehicle_gun_control_0075fff0(&sent, &stream.out, image.numeric);
     stream.begin_read();
-    // 00769132: operator new(3Ch), 0075FF60; 0076A27B: vtable+8, 007600D0.
-    seg42::VehicleGunControlMessage queued{};
+    // 00769132..0076914D: allocate 3Ch, construct 0075FF60, then dispatch
+    // vtable+8 (007600D0) at 0076A27B. Retain that allocation until the real
+    // gun-control payload has been consumed below. Profile D032D0 selects
+    // 007605F0: reset CE4974 and free iff flags&1, including on decode failure.
+    OwnedDecodedMessage<seg42::VehicleGunControlMessage,
+        delete_vehicle_gun_control_message_007605f0> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_gun_control_0075ff60(&queued, image.seg42);
     seg42::read_vehicle_gun_control_007600d0(&queued, &stream.in, image.numeric);
 
@@ -662,6 +668,7 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     result.has_target_36 = queued.has_target_36 != 0;
     result.target_38 = result.has_target_36 ? posted.target_38 : queued.target_id_38;
     result.angles_carried = true;
+    delete_vehicle_gun_control_message_007605f0(&sent, 0u);
     return result;
 }
 

@@ -1,0 +1,198 @@
+{
+  "goal": 5,
+  "chain": 693,
+  "run": 1480,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "baseline": "f7ba9aabd4b0631ce99d05b2d885aecb1fbcb2ce",
+  "scope": "Native VEHICLE_GUN_CONTROL 79h decoded-message ownership and scalar deletion",
+  "wired_before": 10445,
+  "wired_after": 10445,
+  "wired_total_note": "wire_readiness excludes the compiler-generated destructor from eligible rows even after the ledger replacement and index rebuild. One new exact entry-reachable body is independently proven in the NOICF analysis executable; no change to readiness classification was made.",
+  "newly_wired": ["007605f0"],
+  "built": [
+    "Complete 007605F0 scalar-delete body with the original flag-bit test, root-profile stamp, conditional matching free and this return.",
+    "HostSessionMessages::queue_gun_aim_79 now owns the factory-sized 3Ch receive allocation through decode and actual gun-control payload consumption, replacing its old stack receive object.",
+    "The existing RAII owner calls 007605F0 with flags 1 on normal and exceptional receive cleanup; the separate stack sender takes flags 0 after consumption.",
+    "The original constructor, reader, writer, posted state, quantization, target-id policy and result consumer remain the existing ones."
+  ],
+  "evidence": [
+    "Existing C:/Users/sqz269/bsp.gpr, /battlestationspacific.exe verified live with bsp.py ghidra ensure --status.",
+    "bsp.py ghidra bytes 00D032D0 --length 20: the actual gun-control profile selects 007605F0, 0075FFF0, 007600D0 and 0075FFD0.",
+    "bsp.py ghidra disasm 007605F0: complete 007605F0..0076060C, TEST byte [ESP+4],1; save ECX; store CE4974; conditional BF65AC; EAX=this; RET 4.",
+    "bsp.py disasm-raw 00769110 --length 64: the aligned 00769132 case allocates 3Ch and calls 0075FF60 at 00769146.",
+    "The existing correct CG_scalar_deleting_dtor_007605f0 Ghidra name is retained. The ledger supersedes the prior documentation-only library-instantiation record with this concrete body."
+  ],
+  "validation": {
+    "baseline_build": "PASS: scripts/build.ps1; all four CTests passed.",
+    "changed_build": "PASS: scripts/build.ps1; all four CTests passed.",
+    "release_call_graph": "Entry-reachable calls from queue_gun_aim_79, but /OPT:ICF folds 007605F0 with eleven existing scalar-delete bodies; the aggregate release count is not distinct-address proof.",
+    "analysis_build": "PASS: scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests; this separate verification build uses /Ob0 /OPT:NOICF.",
+    "analysis_call_graph": "PASS: call_graph.py --build-dir build/analysis; who 007605f0 identifies the distinct delete_vehicle_gun_control_message_007605f0 symbol at 1062D9A0 with two reachable call sites: 102EBA14 from queue_gun_aim_79 and 102E8426 from its OwnedDecodedMessage destructor. That owner destructor also has the real decode-exception unwind edge.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost -> GameHudHost::exit_weapon_group_screen_005470a0 -> WeaponGroupScreenBinding::route_fire_message_0077c2a0 -> HostSessionMessages::queue_gun_aim_79 -> delete_vehicle_gun_control_message_007605f0 (call_graph path; static reach includes vtable edges).",
+    "readiness": "PASS: refreshed after successful index rebuild; wired 10445 -> 10445; the new compiler-generated destructor is excluded from eligible rows, as documented by earlier destructor packets.",
+    "diff_check": "PASS: git diff --check.",
+    "production_float_math_changed": false,
+    "tests_added": false,
+    "game_run": false,
+    "limits": "Build and static executable reach only; no original register-ABI, native differential fixture or gameplay validation."
+  },
+  "rows": [
+    {
+      "native": "007605f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_gun_aim_79 / OwnedDecodedMessage::~OwnedDecodedMessage",
+      "details": "Consumes the same live gun-control message state as the existing codec bridge, owns its original factory-sized receive allocation, and invokes the sole reconstructed destructor once per sender/receiver object with the appropriate flags."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 / ForceSelectUnitBinding::push_controlled_unit_interface_00647040",
+      "reason": "Missing the retained unit-pick screen, mode producer and native selection-vector owner; both reset sites currently record the operation."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreenBinding::advance_ticker",
+      "reason": "Missing award enqueue, retained award strings and ticker-entry owners; the current HUD update has no real award queue to advance."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "weapon_animation returns zero, so the callback has no real timed-entry range owner to mutate."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing the frame-job-thread deferred-call producer and its real source LuaVariantRecord argument vector; this host runs mission Lua on the main thread."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-think member filter",
+      "reason": "The existing defend-think code already names this predicate; no missing coordinator producer was established to justify another call."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot stand-in reference",
+      "reason": "Missing a live controller-create snapshot producer and the bound director getter inputs; the inspected gun host supplies no call site."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already has an entry-reachable call with loaded TailGunnerBot configuration and the actual skill level; no new wiring is needed."
+    },
+    {
+      "native": "006fbce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: carrier elevator update tail",
+      "reason": "The original caller runs this travel correction only for session mode 2, the multiplayer client; single-player has no such call."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort fire synchronization",
+      "reason": "Missing a retained D1h synchronization delivery and consumer path; constructing beside the existing effect record would not deliver its native payload."
+    },
+    {
+      "native": "00749aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship ramp latch",
+      "reason": "The original update lowers the ramp then routes A6h with flags 4; this host lacks a peer synchronization consumer, so a temporary message would only duplicate the existing record."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::landing_request_006c54c0",
+      "reason": "Missing the actual queue block, captured queue/slot locks and observer-backed incoming/holder endpoints; the current sequencer owns a different typed queue."
+    },
+    {
+      "native": "00759120",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::carrier_runway_class_00759120",
+      "reason": "Missing a bound Big53Host base-model operation and retained native model-group owner; the inspected carrier cache reads flattened Aux points."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer player-count behavior returns immediately for the actual single-player session mode; its multiplayer participant operations are unbound."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline comment",
+      "reason": "False stand-in match: this path produces the pre-script global-name baseline, while the native teardown consumer requires a different retained game/Lua set owner."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: initialize_memory_00cd8fc0 / initialize_physical_00cd9030",
+      "reason": "Both existing stream-type initializers already call this guarded file-type initializer; no missing startup connection was found."
+    },
+    {
+      "native": "00cd8fc0",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_application.cpp: GameNativeVfsApplication::Impl::initialize_core",
+      "reason": "The existing VFS core startup already calls this initializer with the shared counter and retained type storage; adding another call would duplicate the connection."
+    },
+    {
+      "native": "00cd9030",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_application.cpp: GameNativeVfsApplication::Impl::initialize_core",
+      "reason": "The existing VFS core startup already calls this initializer after the physical pool bootstrap with the retained type storage."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save/current-mission checkpoint comparison owner; checkpoint_differs does not authorize the clear-and-rewrite path."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::Impl::report_loading_progress_0057bec0",
+      "reason": "Already called from the live loading-screen path with its published singleton and real progress; older disabled-screen skip notes are stale."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: loadout selection",
+      "reason": "Missing the live radial loadout screen and input-driven selection owner; this host represents the player's pick without running the ring."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: loadout selection",
+      "reason": "Missing the live radial loadout screen/widget owner; the current loadout path does not construct or display that ring."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing an entry-reachable shadow-fit caller; substituting the inline product here would still leave the getter unreachable."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "No live producer of the three source metadata words for the current last command was found in the inspected renderer queue path."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "The retained cooldown slot now exists, but activation still lacks GA_AE award dispatch and finite-use/item-removal lifecycle before it can complete."
+    },
+    {
+      "native": "008e87c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: expire_modifier_008e8c30",
+      "reason": "Missing the native per-player inventory headers and item modifier-list ownership required by the raw removal body; the host currently owns typed std::list containers."
+    }
+  ]
+}
