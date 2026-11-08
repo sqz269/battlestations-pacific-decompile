@@ -75,8 +75,16 @@ struct PartyRowsStorageHost {
     virtual void free_00bf6989(void* block) = 0;
 };
 
+// Complete provider surface of 004CC3F0. Its request constructor only needs
+// the actual pooled-string resize, not the unrelated scene/camera providers.
+struct EndMovieStringHost {
+    virtual ~EndMovieStringHost() = default;
+    virtual void native_string_resize_0041dd40(Raw string, std::uint32_t length,
+                                              char preserve) = 0;
+};
+
 struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost, DirectionPitchYawHost,
-                    HudUnitPickResetHost, PartyRowsStorageHost {
+                    HudUnitPickResetHost, PartyRowsStorageHost, EndMovieStringHost {
     virtual ~SweepAHost() = default;
 
     // Existing raw-layout callers retain the original WORD load. Typed live
@@ -626,7 +634,7 @@ Raw scene_record_player_slot_construct_004c9800(Raw record, SweepAHost& host);
 void scene_record_player_slot_destroy_004c9820(Raw record, SweepAHost& host);
 void effect_handle_vector_push_back_004caf50(Raw vector, void* const* handle, SweepAHost& host);
 void effect_handle_vector_resize_004cb160(Raw vector, std::int32_t count, SweepAHost& host);
-Raw end_of_mission_movie_construct_004cc3f0(Raw record, Raw name, SweepAHost& host);
+Raw end_of_mission_movie_construct_004cc3f0(Raw record, Raw name, EndMovieStringHost& host);
 // --- segment 10 ------------------------------------------------------------
 void game_show_game_closed_004d7d50(Raw game, std::uint8_t suppress_prompt, SweepAHost& host);
 

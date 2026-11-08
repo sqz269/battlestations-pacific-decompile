@@ -10,6 +10,7 @@
 // write into a state transition; this header models those paths and the poll.
 
 #include "bsp/mission_progress.hpp"
+#include "bsp/native_string.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -166,14 +167,33 @@ bool scoring_notifies_entity_00906460(std::uint32_t entity_field_180) noexcept;
 // The end-of-mission movie, 004cd390, and the poll 004d7ea0
 // ---------------------------------------------------------------------------
 
-// The 24h object at game+7188h. game_frame_control.hpp already projects the
-// polled side as bsp::MissionResult; this is the producer side, which also
-// carries the name string 004cd390 stores at +14h/+18h.
+// Owned 24h record published at the host's game+7188h role. 004CC3F0 writes
+// these same fields, including the pooled NativeString at +14h. The completion
+// poll and result projection read this record directly; there is no shadow
+// three-field request. Original __thiscall/RET4 is adapted through C++.
 struct MissionEndMovieRequest {
-    std::string name;             // +14h length, +18h pointer, "movies/" + script name
-    float parameter_08{0.0f};     // +8h, from the constant at 00ce77e4
-    bool requests_debrief{false}; // +21h, PlayBinkMovie's second argument
+    explicit MissionEndMovieRequest(const std::string& movie_name);
+    ~MissionEndMovieRequest();
+    MissionEndMovieRequest(const MissionEndMovieRequest&) = delete;
+    MissionEndMovieRequest& operator=(const MissionEndMovieRequest&) = delete;
+
+    std::uint32_t field_00;
+    std::uint32_t field_04;
+    float parameter_08;          // +8h, setter replaces constructor's zero
+    float parameter_0c;          // +Ch = 00D7A24C (1.0f)
+    std::uint8_t field_10;
+    std::uint8_t field_11;
+    std::uint8_t padding_12[2];  // original constructor leaves padding alone
+    NativeString name;           // +14h length, +18h owned pool buffer
+    std::uint32_t field_1c;
+    std::uint8_t field_20;
+    bool requests_debrief;       // +21h, setter supplies PlayBinkMovie argument
+    std::uint8_t padding_22[2];
 };
+static_assert(sizeof(MissionEndMovieRequest) == 0x24);
+static_assert(offsetof(MissionEndMovieRequest, parameter_08) == 0x08);
+static_assert(offsetof(MissionEndMovieRequest, name) == 0x14);
+static_assert(offsetof(MissionEndMovieRequest, requests_debrief) == 0x21);
 
 // 004cd390: free any existing request, then construct a new one. The free
 // branch falls through into the allocation; the decompiler's early return is
