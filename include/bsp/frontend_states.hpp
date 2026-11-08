@@ -72,6 +72,16 @@ struct TitleScreen {
     FrontEndManagerBase base{};
 };
 
+// 00689D90's 4Ch attract manager, published at 00E198BC. Its base belongs to
+// the same registry as TitleScreen; the page is borrowed from the GUI owner.
+// This is a semantic projection, not the original Win32 object layout.
+struct AttractScreen {
+    FrontEndManagerBase base{}; // +00h..+3Ch
+    void* page{nullptr};        // +40h, 00AA5840("FE_attract", 1, 0)
+    float idle_countdown{0.0f}; // +44h, initialized by 00689D90
+    bool enabled{false};       // +48h
+};
+
 // Fields of the game object (00E188A8) that the front-end branch reads or writes.
 struct GameFrontEndFrameState {
     bool render_queue_open{false}; // +34h; 1 once the renderer frame is begun
