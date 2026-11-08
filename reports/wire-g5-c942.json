@@ -1,0 +1,212 @@
+{
+  "goal": 5,
+  "chain": 942,
+  "slot": "g5-w11",
+  "run": 2101,
+  "branch": "agent/g5-w11",
+  "base_sha": "d0b62ad119c42894418a548ce0e44dc9cab00139",
+  "picked": "Scrollbar retained F8C004+28h slab-table release on actual process-pool destruction",
+  "rows": [
+    {
+      "native": "00ac7f10",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::destroy -> destroy_pool<GuiScrollbarPoolTraits, free_native_gui_scrollbar_pool_table_00ac7f10>",
+      "body": "src/native_material_pools.cpp::free_native_gui_scrollbar_pool_table_00ac7f10",
+      "real_state": "Actual retained GuiScrollbarPoolTraits process owner's slabs_28 header, native F8C004+28h. The caller first frees its slabs, then this leaf frees its current table, before critical-section/list teardown.",
+      "built_call_no_icf": "106c6614 -> 106ca820, exactly one reachable call from Scrollbar destroy_pool in merged ON no-inline/no-ICF build",
+      "path_no_icf": "WinMain -> GameNativeGuiWidgetPoolProcess<GuiScrollbarPoolTraits>::initialize_once -> registered destroy_at_exit -> destroy_process_pool -> NativeGuiWidgetPool<GuiScrollbarPoolTraits>::destroy -> destroy_pool -> free_native_gui_scrollbar_pool_table_00ac7f10",
+      "abi": "Original __fastcall ECX=table, plain RET; source C++ interface only, not register-ABI compatible",
+      "game_validated": false
+    },
+    {
+      "native": "00ac7f40",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_set_capacity_00ac7f40 on agent/g5-w1",
+      "reason": "Already supplied and wired by c911, now present on merged main; this packet adds no duplicate body."
+    },
+    {
+      "native": "00ac81a0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize on agent/g5-w1",
+      "reason": "Already supplied and wired by c911, now present on merged main; this packet adds no duplicate body."
+    },
+    {
+      "native": "00ac7f90",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::native_gui_scrollbar_pool_table_push_back_00ac8110 on agent/g5-w1",
+      "reason": "c911 already supplies the body; a live Scrollbar payload-allocation consumer is still missing from that packet's report."
+    },
+    {
+      "native": "00ac8110",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiScrollbarPoolTraits>::allocate on agent/g5-w1",
+      "reason": "c911 already supplies the body; no new live Scrollbar payload factory was established in this packet."
+    },
+    {
+      "native": "0044c970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp / Lua StartDialog message route",
+      "reason": "A live E1 dialogue-construction and session-delivery bridge was not established; constructor-only temporary objects would not replace the dialogue path."
+    },
+    {
+      "native": "0080dc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::apply_repair_settings",
+      "reason": "The inspected callback is unreached and supplies no live 6Fh repair-settings message/unit pair."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "The inspected Lua path runs on the main thread; the worker-thread deferred-call producer needed for this argument-copy path is absent there."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / movie-camera limits reset",
+      "reason": "No retained native limits record with authored current/default fields was established for this raw-view reset."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / movie-camera limits reset",
+      "reason": "No retained native limits record with authored current/default fields was established for this raw-view reset."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / movie-camera limits reset",
+      "reason": "A live native speed-limit/default/acceleration-time owner was not established; the HUD movie-screen model alone does not supply this layout."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / movie-camera limits reset",
+      "reason": "A live native speed-limit/default/acceleration-time owner was not established; no constants were invented to call the reset."
+    },
+    {
+      "native": "0075a550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp / gun fire-mode local decode",
+      "reason": "No matching live ACh fire-mode sender and routed payload consumer was established; the existing ADh gun-fire route is a different message."
+    },
+    {
+      "native": "0075a380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp / formation-set local decode",
+      "reason": "No live 78h formation-set payload producer and consumer was established; the existing formation-member join/leave codec is a separate route."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp / bomb-family tick",
+      "reason": "A complete native BombTickHost lifecycle attachment was not established; this would require a separate retained projectile-state packet."
+    },
+    {
+      "native": "006e2e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp / bomb activation",
+      "reason": "A live retained native bomb record and Seg33aHost activation attachment were not established in this packet."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp / projectile water transition",
+      "reason": "A retained native shot/effect owner for the full Seg33aHost medium-transition contract was not established."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / native bot-state registry ownership",
+      "reason": "A live native registry owner and original state/name identity publication were not established in this packet."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / native bot-state registry ownership",
+      "reason": "The corresponding live native registry lifecycle and callable profile/class binding were not established."
+    }
+  ],
+  "changes": [
+    "Add one AC7F10 source body; free the current nonnull data pointer without clearing data/count/capacity.",
+    "Replace the Scrollbar destructor's generic table release through its existing FreeTable callback, after slab release and before critical-section/list teardown.",
+    "Restore the original CD7510 CRT initialization at CE34AC, after Group and before Grid, on the same retained process pool; initialize_once preserves one initialization and one registered teardown.",
+    "Add the name/function ledger rows, preserve the prior Ghidra name, annotate the evidence, save the project and refresh the affected export."
+  ],
+  "integration": {
+    "c911_overlap": "Landing repair coalesced the identical c911 CD7510 startup block. The resulting game_main.cpp is identical to the fetched main parent: one retained Scrollbar startup registration. c911 table bodies/header and the distinct c942 cleanup body coexist.",
+    "shared_source": "native_material_pools.cpp contains only the cleanup-header include and a distinct AC7F10 leaf/destroy specialization before the Section block; source lease was coordinated with g5-w7 and released after editing."
+  },
+  "verification": {
+    "baseline_build": "local/c942-baseline-build.log: Win32 Release and all five CTests passed",
+    "final_build": "local/c942-build.log: Win32 Release and all five CTests passed",
+    "focused_probe": "local/c942-probe.log: null leaf and retained 17-slot/two-slab Scrollbar teardown passed; table fields retained and allocator-list owner unlinked",
+    "analysis_build": "tools/call_graph.py --build-dir build/analysis --build produced the canonical build/callgraph no-inline/no-ICF executable successfully",
+    "distinct_call": "local/c942-analysis-who.log: AC7F10 at 106c91c0, exactly one reachable call from Scrollbar destroy_pool at 106c5624, no code folding",
+    "entry_path": "local/c942-analysis-path.log: WinMain through the retained Scrollbar initialize_once/registered destroy_at_exit path to the exact leaf",
+    "original_startup": "Live bsp.gpr /battlestationspacific.exe: CD7510 MOV ECX,F8C004; CALL AC8240; PUSH CE0AF0; CALL BF6FF5. CE34AC bytes 10 75 cd 00. CE0AF0 calls AC7FE0.",
+    "prior_annotation": "local/ghidra-annotations-20261108T181533Z.json: previous name TMPL_FreePointer_00ac7f10, no prior evidence comment",
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "counts": {
+    "readiness_wired_before": 10815,
+    "readiness_wired_after": 10815,
+    "new_distinct_entry_reachable_bodies": 1,
+    "explanation": "The original AC7F10 snapshot name/tag is TMPL_FreePointer/tmpl_shape. wire_readiness.py excludes this library-template category from rows and headline wired totals. No tags or metric rules were changed to count it. The separate no-ICF built-call evidence establishes the new body and its real-owner caller."
+  },
+  "left_for_others": [
+    "Land c911's existing Scrollbar table helpers and coalesce the identical CD7510 startup block.",
+    "Connect an actual Scrollbar payload factory before crediting AC8110/AC7F90; this packet proves process-pool lifetime, not a payload allocation consumer.",
+    "Original register ABI and retail gameplay remain unvalidated."
+  ],
+  "landing_repair": {
+    "merged_origin_main": "767c5b495dced0631ab9fe2ba713333e9f32a1bc",
+    "prior_packet_head": "1fcf2ad5be38e1670bb83ee34b858b149d5fb192",
+    "conflicts_resolved": [
+      "config/names/00ac0000.jsonl",
+      "config/reconstruction/00ac0000.jsonl"
+    ],
+    "resolver": "python tools/merge_resolve.py J:/PROG/battlestations-pacific-decompile-g5-w11",
+    "ledger_verification": "Dictionary comparison against MERGE_HEAD: every existing name/function/fragment row preserved unchanged; exactly one AC7F10 name and one AC7F10 function row added. Three existing reconstruction rows only reordered by the resolver.",
+    "source_verification": "One Scrollbar initialize specialization, one allocate specialization (c911), one destroy specialization (c942), one AC7F10 body. One CD7510 startup block, no game_main.cpp delta against merged main.",
+    "standard_build": "local/c942-merge-build.log: PASS, Win32 Release and all five CTests",
+    "on_build": "local/c942-merge-on-build.log: PASS, kAutoAttackAllMembersBound=true and kPlaneFormationPlacementEnabled=true temporarily; no-inline/no-ICF build and all five CTests",
+    "flag_restoration": {
+      "build_exit": 0,
+      "files": {
+        "include/bsp/air_operations.hpp": {
+          "before": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+          "after": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+          "restored": true
+        },
+        "include/bsp/game_hosts_units_internal.hpp": {
+          "before": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59",
+          "after": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59",
+          "restored": true
+        }
+      }
+    },
+    "probe": "local/c942-merge-probe.log: PASS, null leaf and retained two-slab Scrollbar teardown; table fields preserved",
+    "distinct_call": "local/c942-merge-who.log: AC7F10 at 106ca820, exactly one reachable call at 106c6614 from Scrollbar destroy_pool; no ICF",
+    "entry_path": "local/c942-merge-path.log: WinMain -> retained Scrollbar initialize_once -> registered destroy_at_exit -> destroy_process_pool -> destroy -> destroy_pool -> AC7F10",
+    "wire_readiness": "local/c942-merge-readiness.log: PASS",
+    "merged_readiness_summary": {
+      "wired": 10826,
+      "callees_done_no_wired_caller": 8451,
+      "ready": 1197,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "merged_called_counts": {
+      "called": 6131,
+      "called_not_wired": 356,
+      "wired_not_called": 41,
+      "not_in_binary": 14553
+    },
+    "own_increment_note": "Merged headline wired=10826 includes other landed packets; c942 AC7F10 remains excluded by the existing tmpl_shape category. One distinct additional called body is independently verified.",
+    "float_math_changed": false,
+    "game_run": false
+  }
+}

@@ -12,6 +12,7 @@
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_scrollbar_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
+#include "bsp/native_gui_scrollbar_pool_cleanup.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/native_gui_layer_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -633,6 +634,21 @@ template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::destroy() {
     // Source reuse of that leaf replaces the inline free, before CS/list teardown.
     destroy_pool<GuiCurvePoolTraits,
         &free_native_gui_curve_pool_table_00abc180>(allocator_list_, storage_);
+}
+
+// Scrollbar's retained F8C004+28h table. Evidence: bsp.py show AC7F10/AC7FE0.
+// Reuse the out-of-line leaf for the destructor's identical inline table free.
+__declspec(noinline) void free_native_gui_scrollbar_pool_table_00ac7f10(
+    void* actual_table) noexcept {
+    // Only release [ECX]; the native leaf preserves all three header fields.
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+template<> void NativeGuiWidgetPool<GuiScrollbarPoolTraits>::destroy() {
+    // AC7FE0 releases slabs, then table, then critical section/list ownership.
+    destroy_pool<GuiScrollbarPoolTraits,
+        &free_native_gui_scrollbar_pool_table_00ac7f10>(allocator_list_, storage_);
 }
 
 // Evidence: bsp.py show 00ABEE60/00ABEAA0 and 00ABE9D0/00ABEA00/00ABED30.
