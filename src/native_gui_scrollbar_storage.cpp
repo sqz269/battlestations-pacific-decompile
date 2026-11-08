@@ -310,4 +310,74 @@ void finish_native_gui_scrollbar_properties_after_reads_00ac85a0(void* raw,
     if (clamp.needed) set_native_gui_scrollbar_value_00ac7d00(raw, clamp.spilled, calls);
     call_current_layout(raw, calls);
 }
+
+void read_native_gui_scrollbar_properties_after_base(void* raw, void* visitor,
+    NativeGuiScrollbarPropertyScratch& scratch,
+    const NativeGuiScrollbarPropertyLiterals& literals,
+    NativeGuiWidgetPropertyDispatch& fields, NativeStringRawPoolContext& strings,
+    NativeGuiScrollbarCalls& calls) {
+    require_storage(raw);
+    auto* const fallback = scratch.arguments;
+    auto* const field = fallback + 2;
+    auto* const key = fallback + 4;
+    auto bits = [](const void* value) { return reinterpret_cast<Word>(value); };
+    auto metadata = [&](void* pair) { scratch.argument_home = bits(pair); };
+    auto read_default = [&](const char* name) {
+        key[0] = 0;
+        key[1] = bits(name);
+        // AC8604/8683/86D1 reload the SAME reader's current profile and +0C
+        // independently, after staging each pair and before its metadata store.
+        const Word profile = word(visitor, 0);
+        const Word target = word(reinterpret_cast<void*>(profile), 0x0c);
+        metadata(key);
+        fields.call_virtual0c(target, visitor, key, field, fallback);
+    };
+    word(&scratch.alignment, 0) = 0;
+    word(&scratch.alignment, 4) = 0;
+    scratch.alignment_live = true;
+    try {
+        // bsp.py show AC85A0 --asm, AC85C8..AC86DC: string tag0 and two
+        // float tag2 destinations, on the actual F0/F4 cells, both default +0.
+        fallback[0] = 0; fallback[1] = bits(literals.empty_00ce3a0c); metadata(fallback);
+        field[0] = 0; metadata(field); field[1] = bits(&scratch.alignment);
+        read_default(literals.alignment_00d5cdb0);
+        const char* const alignment = reinterpret_cast<const char*>(word(&scratch.alignment, 4));
+        word(raw, 0xf8) = alignment &&
+            _stricmp(alignment, literals.vertical_00d5cda4) == 0 ? 0u : 1u;
+
+        fallback[0] = 2; fallback[1] = 0; metadata(fallback);
+        field[0] = 2; metadata(field); field[1] = bits(static_cast<std::byte*>(raw) + 0xf0);
+        read_default(literals.minimum_00d5cd98);
+        fallback[0] = 2; fallback[1] = 0; metadata(fallback);
+        field[0] = 2; metadata(field); field[1] = bits(static_cast<std::byte*>(raw) + 0xf4);
+        read_default(literals.maximum_00d5cd8c);
+
+        // Reuse the sole raw AC86DE..AC872A fragment, including its late
+        // maximum read AFTER SetMinimum's genuine layout callbacks return.
+        finish_native_gui_scrollbar_properties_after_reads_00ac85a0(raw, calls);
+    } catch (...) {
+        // AC85A0's state0 owns only this header. Never retry a cleanup that
+        // itself escapes; normal cleanup below is outside this catch.
+        scratch.alignment_live = false;
+        try { destroy_native_string_header_0041dd20(&scratch.alignment, strings); }
+        catch (...) { std::terminate(); }
+        throw;
+    }
+    // AC872A..AC8751 sets unwind state -1 BEFORE the current-pool release.
+    scratch.alignment_live = false;
+    destroy_native_string_header_0041dd20(&scratch.alignment, strings);
+}
+
+void read_native_gui_scrollbar_properties(void* raw, void* visitor,
+    NativeGuiWidgetPropertyScratch& base,
+    NativeGuiWidgetPropertyInteractionContext& interaction,
+    NativeGuiWidgetPropertyChildrenRawContext& children,
+    NativeGuiWidgetPropertyChildrenAcquired& acquired,
+    NativeGuiScrollbarPropertyScratch& derived,
+    const NativeGuiScrollbarPropertyLiterals& literals, NativeGuiScrollbarCalls& calls) {
+    read_native_gui_widget_properties_and_children_00aaa710(raw, visitor, base,
+        interaction, children, acquired);
+    read_native_gui_scrollbar_properties_after_base(raw, visitor, derived, literals,
+        interaction.properties.dispatch, interaction.properties.strings, calls);
+}
 } // namespace bsp
