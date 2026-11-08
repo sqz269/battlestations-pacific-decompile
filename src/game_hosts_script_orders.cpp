@@ -7389,42 +7389,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         });
         results = bsp::cc13_seg56::lua_is_gui_active(args, gui, gui);
     } else if (std::strcmp(binding->name, "Countdown") == 0) {
-        // 008B17B2-008B17C3: 00887120(-1, 4) reads the frame into 14h-byte
-        // variants: the text +8h (argument 0), +1Ch (1), +30h (2), and the name
-        // +44h (3) only when there are more than three (008B17D2); arguments 4..n
-        // go to a new vector (008B1846-008B185E).
-        const std::string text = get_string(0);
-        const float level = static_cast<float>(get_number(1));
-        const float seconds = static_cast<float>(get_number(2));
-        const std::string callback = count() > 3 ? get_string(3) : std::string();
-        std::vector<int> arguments;
-        for (int index = 4; index < count(); ++index) {
-            lua_pushvalue(state_, stack_slot(index));
-            arguments.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
-        }
-        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text (argument 0)
-        // and the seconds (argument 2), before 00733FF0 (goal 5 chain 662: the
-        // HUD's counters screen); 00733FF0's first call 005BCA70 on
-        // [[00E198C4]+58h] is next.
-        if (narrative_hud_ == nullptr || !narrative_hud_->show_mission_countdown(text, seconds))
-            log_.unimplemented("HudCountdown::show_text", "0052b9b0");
-        countdown_start_00733ff0(text, level, seconds, callback, std::move(arguments));
-        ++countdown_starts_;
-        log_.notef("  Countdown(\"%s\", %.0f, %.2f, \"%s\") at %.2f s, %zu more argument(s)",
-            text.c_str(), static_cast<double>(level), static_cast<double>(seconds),
-            countdown_.callback_4c.c_str(), static_cast<double>(mission_clock_),
-            countdown_.argument_refs_54.size());
-        results = 0;  // 008B1990, nothing pushed
+        results = run_countdown_008b16e0();
     } else if (std::strcmp(binding->name, "CountdownCancel") == 0) {
-        // 008B19A0: two 0052AB90 HUD calls (008B1A92, 008B1AA2; goal 5 chain
-        // 662, the HUD's counters screen), then 007340A0(&left) and 00B66480(left).
-        if (narrative_hud_ == nullptr || !narrative_hud_->cancel_mission_countdown())
-            log_.unimplemented("HudCountdown::clear_text", "0052ab90");
-        const float left = countdown_time_left();
-        countdown_stop_007340a0();
-        ++countdown_cancels_;
-        push_number_float_00b66480(left);
-        results = state_ != nullptr ? 1 : 0;
+        results = run_countdown_cancel_008b19a0();
     } else if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
                std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0 ||
                std::strcmp(binding->name, "MissionNarrativeUrgent") == 0 ||
@@ -7870,10 +7837,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             }
         }
     } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
-        // 008B1B40 computes the time left without testing +3Ch.
-        ++countdown_time_left_reads_;
-        push_number_float_00b66480(countdown_time_left());
-        results = state_ != nullptr ? 1 : 0;
+        results = run_countdown_time_left_008b1b40();
     } else if (std::strcmp(binding->name, "Blackout") == 0) {
         // 008D142F..008D1612 reads the frame; the marshalling stays here and the
         // decode, the arm and the immediate step are src/mission_blackout.cpp.
@@ -8608,6 +8572,68 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     blackout_summary_.remaining = blackout_.remaining;
     state_ = outer_state;
     argument_count_ = outer_argument_count;
+}
+
+// Goal 5 chain 981: the existing host implementations below now have one
+// callable body per native Lua entry. dispatch supplies its real borrowed Lua
+// frame; countdown_, mission_clock_ and narrative_hud_ are the existing owners,
+// also consumed by the fixed-step countdown update. Original ABI for all three:
+// ECX = lua_State*, EAX = result count, plain RET (008B16FE / 008B19C5 /
+// 008B1B65). These C++ methods are not binary replacements.
+int GameScriptOrdersHost::run_countdown_008b16e0() {
+    // Evidence: bsp.py show 008B16E0, listing 008B17B2-008B185E.
+    // 00887120(-1, 4) reads 14h-byte variants: text +8h (argument 0),
+    // +1Ch (1), +30h (2), and name +44h (3) only with >3 arguments.
+    // Arguments 4..n go to the newly retained callback argument vector.
+    const std::string text = get_string(0);
+    const float level = static_cast<float>(get_number(1));
+    const float seconds = static_cast<float>(get_number(2));
+    const std::string callback = count() > 3 ? get_string(3) : std::string();
+    std::vector<int> arguments;
+    for (int index = 4; index < count(); ++index) {
+        lua_pushvalue(state_, stack_slot(index));
+        arguments.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+    }
+    // 008B18B8: 0052B9B0 on [[00E198C4]+C8h], with text and seconds,
+    // before 00733FF0 (008B18F7) on [game+21E8h]. Its first HUD call is
+    // 005BCA70 on [[00E198C4]+58h]. The host's HUD methods own those screens.
+    if (narrative_hud_ == nullptr || !narrative_hud_->show_mission_countdown(text, seconds))
+        log_.unimplemented("HudCountdown::show_text", "0052b9b0");
+    countdown_start_00733ff0(text, level, seconds, callback, std::move(arguments));
+    ++countdown_starts_;
+    log_.notef("  Countdown(\"%s\", %.0f, %.2f, \"%s\") at %.2f s, %zu more argument(s)",
+        text.c_str(), static_cast<double>(level), static_cast<double>(seconds),
+        countdown_.callback_4c.c_str(), static_cast<double>(mission_clock_),
+        countdown_.argument_refs_54.size());
+    // The 00772B30 broadcast at 008B193F requires game+1FE4h == 1;
+    // this is the existing single-player binding. 008B1990 returns zero.
+    return 0;
+}
+
+int GameScriptOrdersHost::run_countdown_cancel_008b19a0() {
+    // Evidence: bsp.py show 008B19A0, listing 008B1A92-008B1AC9.
+    // Two 0052AB90 HUD calls, then 007340A0(&left) and 00B66480(left).
+    // cancel_mission_countdown performs both counter-screen calls; the stop
+    // below clears the other countdown HUD, active flag and retained refs.
+    if (narrative_hud_ == nullptr || !narrative_hud_->cancel_mission_countdown())
+        log_.unimplemented("HudCountdown::clear_text", "0052ab90");
+    const float left = countdown_time_left();
+    countdown_stop_007340a0();
+    ++countdown_cancels_;
+    push_number_float_00b66480(left);
+    // 00770940 at 008B1AE8 likewise requires game+1FE4h == 1.
+    return state_ != nullptr ? 1 : 0;
+}
+
+int GameScriptOrdersHost::run_countdown_time_left_008b1b40() {
+    // Evidence: bsp.py show 008B1B40 --asm, 008B1C2A-008B1C6D:
+    // +44h - (00F876A4 - +48h), each FSUB rounded at PC24, clamp below
+    // zero, then 00B66480. No active-byte (+3Ch) test, including after cancel.
+    // countdown_time_left is shared with the stop operation and preserves
+    // that two-operation rounding on the actual countdown/mission clock.
+    ++countdown_time_left_reads_;
+    push_number_float_00b66480(countdown_time_left());
+    return state_ != nullptr ? 1 : 0;
 }
 
 void GameScriptOrdersHost::countdown_start_00733ff0(const std::string& text,
