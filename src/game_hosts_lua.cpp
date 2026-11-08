@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/mission_picture_owner.hpp"
@@ -1185,8 +1186,11 @@ struct ScopedMissionCheckpointRecord {
             &value, game_native_string_process().raw_context());
     }
     ~ScopedMissionCheckpointRecord() {
-        destroy_native_string_header_0041dd20(
-            &value.unlock_name, game_native_string_process().raw_context());
+        // Chain 687: 00436490's listing releases this actual record's +0Ch
+        // pooled string without clearing its header or touching the words.
+        bsp::profile_seg2_cc13::native_string_at_0c_destroy_storage_00436490(
+            {reinterpret_cast<std::uint8_t*>(&value)},
+            game_native_string_process().raw_context());
     }
     ScopedMissionCheckpointRecord(const ScopedMissionCheckpointRecord&) = delete;
     ScopedMissionCheckpointRecord& operator=(const ScopedMissionCheckpointRecord&) = delete;

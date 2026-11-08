@@ -4,6 +4,7 @@
 
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_string.hpp"
 
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 
@@ -574,8 +575,14 @@ void native_string_destroy_storage_00431f20(Raw string, Seg2Host& host) { releas
 // 00431F40, __stdcall(string), RET 4 (ECX unused).
 void native_string_destroy_storage_00431f40(Raw string, Seg2Host& host) { release_pooled_string(string, host); }
 // 00436490, __thiscall(owner), RET: the string at +0Ch.
-void native_string_at_0c_destroy_storage_00436490(Raw owner, Seg2Host& host) {
-    release_pooled_string(Raw{owner.p + 0xc}, host);
+void native_string_at_0c_destroy_storage_00436490(Raw owner, NativeStringRawPoolContext& strings) {
+    // Chain 687, bsp.py show 00436490 --asm, 00436490..004364AD:
+    // capture owner+10h; only when nonnull read owner+0Ch, wrap length+1,
+    // and return it to the same sized pool. No header field is cleared.
+    // 0041DD20 has exactly that storage-release schedule over an 8h header.
+    // The explicit raw-pool context replaces only the source Host interface;
+    // the original ABI remains ECX=owner, plain RET, not this C++ signature.
+    destroy_native_string_header_0041dd20(owner.p + 0xc, strings);
 }
 // 0043BAE0, __thiscall(owner), RET: the string at +8h.
 void native_string_at_8_destroy_storage_0043bae0(Raw owner, Seg2Host& host) {
