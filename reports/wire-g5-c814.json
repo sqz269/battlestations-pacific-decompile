@@ -1,0 +1,163 @@
+{
+  "chain": 814,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "base": "0be9ad2003",
+  "rows": [
+    {
+      "native": "00437f50",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp:GameVehicleClassDescriptorCache::Bindings::Bindings (from GameMissionLuaHost::mark_vehicle_class_row_00964790)",
+      "evidence": "bsp.py show 00437f50 and 00437e10; call_graph.py who/path 00437f50 show one entry-reachable call from Bindings constructor",
+      "real_state": "Getter-allocated 0x401c receiver replaces the inline registry image; all live descriptor cache data/count/capacity reads and stores use its +4/+8/+C header. Lock and registration borrow actual_manager_publication_01090aa0 from the VFS native strings. CE417C retirement uses the same application deletion table."
+    },
+    {
+      "native": "00437e10",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp:GameVehicleClassDescriptorCache::Bindings::construct",
+      "reason": "Already called at baseline; retained exactly once as the constructor provider reached by 00437F50."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge",
+      "reason": "Already called at baseline according to compiled readiness; no new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge",
+      "reason": "Already called at baseline according to compiled readiness; no new wiring opportunity."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing constructed movie-camera screen storage/default producers; current override reports the route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing constructed movie-camera screen storage/default producers; current override reports the route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing constructed movie-camera screen storage/default producers; current override reports the route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:MovieCameraNewHost",
+      "reason": "Missing constructed movie-camera screen storage/default producers; current override reports the route unreached."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:voice_begin_sound_fade",
+      "reason": "Missing live VoicePlaybackManager and VoiceLineHost fade bindings at the current unreached override."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:push_effect_handle",
+      "reason": "Missing owning native effect-handle vector and real reference-counted effect handles at the current record-only site."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart::write_checkpoint",
+      "reason": "Missing pre-load BSP_Chk_Save/current-mission checkpoint comparison; checkpoint_differs is still a false substitution."
+    },
+    {
+      "native": "007fbe20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:FrontEndShell::record_award",
+      "reason": "Missing live front-end award-gate and profile counter-map bridge for the record-only override."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroupScoreList",
+      "reason": "The score records feed only the debug overlay; no gameplay decision reads them and debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroupScoreList",
+      "reason": "The score records feed only the debug overlay; no gameplay decision reads them and debug-only work is excluded."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:MissionEntry::check_multiplayer_player_count",
+      "reason": "Multiplayer-only participant watchdog; single-player skips its guarded body and online-only work is excluded."
+    },
+    {
+      "native": "00926420",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneUnit::hierarchy_parent_name",
+      "reason": "Missing live raw ancestor +3C links and Seg60Host native-string/name bridge at this deferred hierarchy site."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:shape collision/group operations",
+      "reason": "Missing the live raw collision-shape receiver and locked owning-body manifold-clear bridge; this packet does not build that physics owner."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:shape collision/group operations",
+      "reason": "Missing the live raw collision-shape receiver and locked owning-body manifold-clear bridge; this packet does not build that physics owner."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:shape collision/group operations",
+      "reason": "Missing the live raw collision-shape receiver and locked owning-body manifold-clear bridge; this packet does not build that physics owner."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "src/native_land_follow_parameters.cpp:FollowParameterSnapshot::observe_follow_think",
+      "reason": "Already called at baseline; call_graph.py who confirms a reachable call from observe_follow_think."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp:MoverFrustumHost::fov_aspect_product_00b6fc30",
+      "reason": "Missing entry-reachable native frustum/shadow consumer and its camera projection view; no equivalent live product query was established."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp:set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Needs the live +50h animation controller and +04h notification binding; neither is supplied by this packet."
+    }
+  ],
+  "wired_before": 10658,
+  "wired_after": 10659,
+  "compiled_called_before": 5511,
+  "compiled_called_after": 5512,
+  "verification": {
+    "build": "scripts/build.ps1: Win32 Release build and all four CTest checks passed",
+    "probe": "tests/wire_g5_c814_vehicle_registry_probe.cpp compiled with /MD /fp:strict and /link /MANIFEST:EMBED; real registered cache header, shared manager drain and later C++ teardown passed",
+    "probe_command": "cmd /c local\\c814-registry-probe.cmd",
+    "call_graph": "00437f50 has one reachable call from Bindings::Bindings; path proceeds through mark_vehicle_class_row_00964790 and mission scene load to game entry",
+    "readiness": "00437f50 state=wired called=true call_sites=1 callers_live=1",
+    "float_math": "No float arithmetic changed; pc24 lint not required."
+  },
+  "limitations": [
+    "New Source interface and shared-lifetime adapter; Original register ABI/FH3/SEH equivalence is not claimed.",
+    "Existing mission-scoped registry publication and split semantic/image descriptors remain; this is not yet a unified process-global vehicle registry.",
+    "CE417C retirement is explicit host cleanup; Original 00437F30/00437EA0 and descriptor destructors are not claimed.",
+    "No game was run."
+  ],
+  "left_for_others": [
+    "Unify semantic vehicle registry party rows and descriptor cache into one process-scoped owner.",
+    "Recover native registry/descriptor destruction and eliminate the existing descriptor split-copy divergence."
+  ]
+}

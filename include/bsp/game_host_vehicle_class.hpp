@@ -40,8 +40,12 @@
 // 00437E10, including both identity tables (004356F0) and the three-byte
 // party-row reservation (00435960). Its +4/+8/+C cache header borrows the
 // vector's actual allocation and is authoritative for cache reads/writes.
-// Host teardown frees the party reservation; the process singleton getter,
-// lifetime registry and native registry/descriptor destructors remain separate.
+// 00437F50 now allocates/publishes this storage and registers it with the SAME
+// application lifetime manager as the borrowed strings. Its returned pointer
+// supplies every cache-header access. The CE417C source retirement binding
+// clears descriptor references, unregisters and frees the registry/party rows
+// either at cache teardown or at shared drain. The existing mission scope and
+// split descriptors remain; Original 00437F30/00437EA0 are not claimed.
 
 #include <cstddef>
 #include <cstdint>
@@ -52,6 +56,7 @@
 
 namespace bsp {
 struct NativeStringRawPoolContext;
+struct NativeSingletonDeletionBindings;
 }
 
 namespace bsp::game {
@@ -60,7 +65,8 @@ class GameVehicleClassDescriptorCache final {
 public:
     // `strings` is the native string pool the damageable base 0087C640
     // borrows for its constructor-failure cleanup (GameVfsHost::raw_strings()).
-    explicit GameVehicleClassDescriptorCache(bsp::NativeStringRawPoolContext& strings);
+    GameVehicleClassDescriptorCache(bsp::NativeStringRawPoolContext& strings,
+        bsp::NativeSingletonDeletionBindings& deletions);
     ~GameVehicleClassDescriptorCache();
     GameVehicleClassDescriptorCache(const GameVehicleClassDescriptorCache&) = delete;
     GameVehicleClassDescriptorCache& operator=(const GameVehicleClassDescriptorCache&) = delete;

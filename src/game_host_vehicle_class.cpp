@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <new>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
@@ -11,12 +12,16 @@
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/cc13_seg41.hpp"
 #include "bsp/cc13_seg41_land.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/native_damageable_class_construction.hpp"
+#include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_vehicle_class_base_constructor.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/save_settings_cc13.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 // Goal 3 chain 234. See the header for the object, its producer and lifetime.
 // Every constructor below is the existing reconstructed body; this file only
@@ -227,25 +232,75 @@ private:
 
 struct GameVehicleClassDescriptorCache::Bindings final
     : bsp::profile_seg2_cc13::VehicleClassRegistryConstructionHost,
-      bsp::cc13_sweepA::PartyRowsStorageHost {
-    explicit Bindings(bsp::NativeStringRawPoolContext& strings)
-        : damageable{kRefCountedVtable_00ceb130, kDamageableVtable_00d0e13c, strings},
+      bsp::cc13_sweepA::PartyRowsStorageHost,
+      bsp::cc13_sys::LazySingletonHost {
+    Bindings(GameVehicleClassDescriptorCache& owner, bsp::NativeStringRawPoolContext& strings,
+        bsp::NativeSingletonDeletionBindings& deletions)
+        : owner_(owner), deletions_(deletions),
+          lifetime_(strings.actual_manager_publication_01090aa0),
+          retirement_{this, nullptr, &retire_registered},
+          damageable{kRefCountedVtable_00ceb130, kDamageableVtable_00d0e13c, strings},
           plane(damageable), fort(damageable), leaf(damageable, plane, fort) {
-        // 00437F50 allocates 401Ch before 00437E10. This mission-owned
-        // registry is created at the existing first descriptor resolve, and
-        // its actual +4/+8/+C header serves every cache read below. Keep the
-        // existing semantic descriptor pointers (see the header's split-copy
-        // limitation); do not reinterpret them as native image descriptors.
-        bsp::profile_seg2_cc13::vehicle_class_registry_construct_00437e10(registry(), *this);
+        if (deletions_.vehicle_class_registry != nullptr)
+            throw std::logic_error("vehicle class registry already has a live cache owner");
+        deletions_.vehicle_class_registry = &retirement_;
+        try {
+            // bsp.py show 00437F50 / 00437E10: exact 401Ch allocation,
+            // constructor CE417C, then registration of the returned receiver.
+            // This is the existing first 00964790 descriptor resolve. Its
+            // cache header now lives in the getter's returned allocation;
+            // the previous direct construction of an inline image is gone.
+            bsp::profile_seg2_cc13::vehicle_class_registry_get_00437f50(
+                publication_, *this);
+        } catch (...) {
+            // The generic Source getter has no EH guard. Release the captured
+            // shared section if allocation/construction/registration throws.
+            section_.reset();
+            if (constructed_) std::free(registry().ptr(0x4010));
+            if (publication_ != nullptr)
+                lifetime_.get_manager_00415350().unregister_object(publication_);
+            deletions_.vehicle_class_registry = nullptr;
+            throw;
+        }
     }
     ~Bindings() override {
-        // Party rows are three-byte trivial records (00435960/004359E0).
-        // The live path never adds one yet: release the constructor's exact
-        // 400h-row reservation. This is host teardown, not 00437EA0 credit.
-        std::free(registry().ptr(0x4010));
+        // The outer owner retires while its vector and entries are still alive.
+        if (deletions_.vehicle_class_registry == &retirement_)
+            deletions_.vehicle_class_registry = nullptr;
     }
 
-    bsp::profile_seg2_cc13::Raw registry() noexcept { return {registry_image.data()}; }
+    bsp::profile_seg2_cc13::Raw registry() noexcept {
+        return {static_cast<std::uint8_t*>(publication_)};
+    }
+    void lock() override { section_.emplace(lifetime_); }
+    void unlock() override { section_.reset(); }
+    void* operator_new(std::uint32_t size) override {
+        allocation_.reset(static_cast<std::uint8_t*>(operator_new_00bf55be(size)));
+        return allocation_.get();
+    }
+    void* construct(std::uint32_t constructor, void* memory) override {
+        if (constructor != 0x00437e10u || memory != allocation_.get())
+            throw std::logic_error("unexpected vehicle class registry constructor");
+        bsp::profile_seg2_cc13::vehicle_class_registry_construct_00437e10(
+            {static_cast<std::uint8_t*>(memory)}, *this);
+        constructed_ = true;
+        return memory;
+    }
+    void register_lifetime(void* object) override {
+        retirement_.registered_owner = object;
+        lifetime_.get_manager_00415350().register_object(object);
+    }
+    void retire() {
+        if (publication_ == nullptr) return;
+        // The registry borrows the real vector. Retire its references before
+        // either allocation disappears; no Original descriptor dtor is claimed.
+        owner_.resize_cache(0);
+        lifetime_.get_manager_00415350().unregister_object(publication_);
+        std::free(registry().ptr(0x4010));
+        publication_ = nullptr;
+        retirement_.registered_owner = nullptr;
+        allocation_.reset();
+    }
     void party_rows_reserve_00435960(bsp::profile_seg2_cc13::Raw vector,
         std::uint32_t count) override {
         bsp::cc13_sweepA::party_rows_reserve_00435960(
@@ -258,8 +313,23 @@ struct GameVehicleClassDescriptorCache::Bindings final
     }
     void free_00bf6989(void* allocation) override { std::free(allocation); }
 
-    // The constructor, rather than value initialization, writes all fields.
-    alignas(4) std::array<std::uint8_t, 0x401c> registry_image;
+    static void retire_registered(void* context, void* registered, std::uint32_t flags) {
+        auto& self = *static_cast<Bindings*>(context);
+        if (registered != self.publication_ || flags != 1u)
+            throw std::logic_error("vehicle class registry retirement receiver/flags mismatch");
+        self.retire();
+    }
+    struct FreeAllocation {
+        void operator()(std::uint8_t* memory) const noexcept { std::free(memory); }
+    };
+    GameVehicleClassDescriptorCache& owner_;
+    bsp::NativeSingletonDeletionBindings& deletions_;
+    bsp::SoundLifetimeAccess lifetime_;
+    std::optional<bsp::CapturedSoundLifetimeSection> section_;
+    void* publication_{}; // Existing mission-scoped registry, now a getter publication.
+    std::unique_ptr<std::uint8_t, FreeAllocation> allocation_;
+    bsp::VehicleClassRegistryRetirementBinding retirement_;
+    bool constructed_{};
     const bsp::NativeDamageableClassConstructionAccess damageable;
     PlaneBaseBinding plane;
     LandFortBaseBinding fort;
@@ -273,10 +343,11 @@ struct GameVehicleClassDescriptorCache::Entry {
 };
 
 GameVehicleClassDescriptorCache::GameVehicleClassDescriptorCache(
-    bsp::NativeStringRawPoolContext& strings)
-    : bindings_(std::make_unique<Bindings>(strings)) {}
+    bsp::NativeStringRawPoolContext& strings, bsp::NativeSingletonDeletionBindings& deletions)
+    : bindings_(std::make_unique<Bindings>(*this, strings, deletions)) {}
 
 GameVehicleClassDescriptorCache::~GameVehicleClassDescriptorCache() {
+    bindings_->retire();
     for (const auto& entry : entries_) {
         entry->descriptor.type_name.release_to(bsp::crt_string_storage());
     }

@@ -216,6 +216,10 @@ GameNativeVfsRawServices GameNativeVfsApplication::borrow_raw_services() {
     return runtime().borrow_raw_services();
 }
 
+NativeSingletonDeletionBindings& GameNativeVfsApplication::singleton_deletion_bindings() noexcept {
+    return impl_->singleton_host.native_deletion_bindings();
+}
+
 NativeVfsOwnerServices& GameNativeVfsApplication::owners() noexcept {
     return impl_->owner_services;
 }

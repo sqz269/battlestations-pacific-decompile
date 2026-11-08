@@ -9,6 +9,7 @@
 namespace bsp {
 class NativeVfsOwnerServices;
 struct NativeStringRawPoolContext;
+struct NativeSingletonDeletionBindings;
 }
 
 namespace bsp::game {
@@ -39,6 +40,9 @@ public:
     // status does not mean that the native pool construction failed.
     void initialize_core();
     GameNativeVfsRuntime& runtime();
+    // Borrow the SAME application's finite deletion table. Consumers install
+    // their stable owner binding before registering with its lifetime manager.
+    NativeSingletonDeletionBindings& singleton_deletion_bindings() noexcept;
     // Explicit opt-in after successful initialize_core(): publish the qualified
     // raw C3 symbol only at the retained manager's +90, then borrow that owner.
     // Normal startup keeps its Original identities. The caller serializes this
