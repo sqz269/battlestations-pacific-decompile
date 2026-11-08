@@ -47,7 +47,19 @@ struct LoadingConfigReleaseHost {
     virtual void native_string_range_destroy_00432050(Object first, Object last, Object owner, Object allocator) = 0;
 };
 
-struct Seg10Host : InputContextHost, LoadingConfigReleaseHost {
+// 004DC940's services, independent of the rest of segment 10. The HUD supplies
+// views of the live game/session, hints pause group, config and Operator camera.
+struct ViewFovHost {
+    virtual ~ViewFovHost() = default;
+    virtual Object game_00e188a8() = 0;
+    virtual Object mission_00e198c4() = 0;
+    virtual bool vcall_38_bool(Object object) = 0;
+    virtual Object global_config_00432650() = 0;
+    virtual float fov_scale_00f889b4() = 0;
+    virtual void camera_set_fov_00b6fbb0(Object camera, float fov) = 0;
+};
+
+struct Seg10Host : InputContextHost, LoadingConfigReleaseHost, ViewFovHost {
     virtual ~Seg10Host() = default;
     // One final overrider for the service shared by both narrow contracts.
     virtual void crt_free_00bf65ac(void* memory) override = 0;
@@ -224,7 +236,7 @@ void input_contexts_push_level3_004d8b70(InputContextHost& host, Object game, co
 void game_toggle_pause_menu_004db030(Seg10Host& host, Object game);
 
 // Camera.
-void game_set_view_fov_004dc940(Seg10Host& host, Object game, float scale, std::int32_t index);
+void game_set_view_fov_004dc940(ViewFovHost& host, Object game, float scale, std::int32_t index);
 void game_apply_camera_display_settings_004dcdf0(Seg10Host& host, Object game);
 
 // Scene entities.

@@ -22,6 +22,8 @@
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
+#include "bsp/seg10_cc13.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/hud_ship_screen.hpp"
 #include "bsp/hud_warning_screen.hpp"
 #include "bsp/hud_updates.hpp"
@@ -60,6 +62,7 @@
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"    // 0068CC70 leaf screens 005178B0, 00565D40
+#include "bsp/observed_unit_screens.hpp"     // screen 23h's 00517820 / 00517860
 #include "bsp/frontend_seg15_22_cc13.hpp"    // 0052B030, 005D3540
 #include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
 #include "bsp/seg25_cc13.hpp"                // 0060FD90, 00611750
@@ -1890,7 +1893,17 @@ struct HudLeafScreenVirtuals {
 // - 00CED0AC (51h, goal 5 chain 662): +4h 0052B070 (MOV AL,1), +18h 00528C40 and
 //   +1Ch 00528C50 (the page root +8h's +34h(1) / (0)), +20h 0052BAA0 (the
 //   counter ticks and 00529810). bsp.py ghidra bytes 00ced0ac --length 40.
-constexpr std::array<HudLeafScreenVirtuals, 5> kHudLeafScreenVirtuals{{
+// - 00CEC194 (23h, the airfield-view screen, block 2Ch from 005178B0; goal 5 chain
+//   671): +4h is the base 004F7570, +18h 00517820, +1Ch 00517860, +20h 005178A0
+//   (C2 04 00, a bare RET 4). bsp.py ghidra bytes 00cec194 --length 40.
+// - 00CF3B7C (3Bh, the order screen, block 90h from 005F9440; goal 5 chain 671):
+//   +1Ch 005F9480 (XOR AL,AL; +81h = +82h = AL; RET), the two bytes this HUD's
+//   InGameInterface update reads on the block (screen_3b_block_a/b). Its +18h
+//   005FAD70 reads the controlled unit's image fields (+738h's vtable +50h,
+//   +284h) and its +20h 005F9DD0 the manager's +5Ch screen and the page
+//   colours, so both keep the existing path (0). bsp.py ghidra bytes 00cf3b7c
+//   --length 40.
+constexpr std::array<HudLeafScreenVirtuals, 7> kHudLeafScreenVirtuals{{
     {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
         0x00643DF0u},
     {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
@@ -1898,6 +1911,8 @@ constexpr std::array<HudLeafScreenVirtuals, 5> kHudLeafScreenVirtuals{{
     {0x49, bsp::ingame_gui_cc13::kFollowScreenVtable, 0, 0x0067BEB0u, 0, 0},
     {0x51, bsp::frontend_seg15_22_cc13::kHudCountersVtable, 0x0052B070u, 0x00528C40u, 0x00528C50u,
         0x0052BAA0u},
+    {0x23, 0x00CEC194u, 0, 0x00517820u, 0x00517860u, 0x005178A0u},
+    {0x3B, 0x00CF3B7Cu, 0, 0, 0x005F9480u, 0},
 }};
 const HudLeafScreenVirtuals* hud_leaf_screen_virtuals(int slot) noexcept {
     for (const HudLeafScreenVirtuals& v : kHudLeafScreenVirtuals) {
@@ -2037,13 +2052,21 @@ struct GameHudHost::Impl {
     bsp::ShipCameraSettings camera_settings{};
     bsp::ShipClassCameraFields camera_class{};
     float camera_class_length{0.0f};
-    // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
+    // GlobalConfig+F8h, loaded independently of screen 46h's ship-view binding.
     bool camera_fov_read{false};
     double camera_fov_ship_degrees{0.0};
+    const bool* cinematic_hidden_634{nullptr};
+    // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
     bool camera_pipe_sight_read{false};
     bool camera_pipe_sight_enabled{false};
     float camera_pipe_sight_zoom_rate{0.0f};
     bsp::MissionCameraProjection camera_projection{};
+    // Goal 5 chain 671: game+1A04h, the GlobalConfig FOV index the last 004DC940
+    // stored (004DC947); -1 before the first call.
+    std::int32_t view_fov_index_1a04{-1};
+    // 004DC940 BSP_Game_SetViewFov(scale, index) for the callers the HUD runs (the
+    // leaf screen virtuals below), over this camera's projection.
+    void set_view_fov(float scale, std::int32_t index);
     // Packet cc9_ship_screen_update: screen 45h's fields and its widgets.
     bsp::ShipScreenState ship_screen{};
     std::size_t ship_screen_unit{0};
@@ -4063,11 +4086,9 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     if (!settings_read) record("MissionCamera::ship_camera_settings", 0x0083b5e0u);
     if (!class_read) record("MissionCamera::class_camera_keys", 0x00831e0du);
     if (lua != nullptr) {
-        camera_fov_read = lua->read_global_fov_ship_0087d7b0(camera_fov_ship_degrees);
         camera_pipe_sight_read = lua->read_pipe_sight_params_0083b5e0(
             camera_pipe_sight_enabled, camera_pipe_sight_zoom_rate);
     }
-    if (!camera_fov_read) record("MissionCamera::global_config_fovs", 0x0087d7b0u);
     if (!camera_pipe_sight_read) record("MissionCamera::pipe_sight_params", 0x0083b5e0u);
     camera_class = bsp::ship_class_camera_00831e0d(inputs);
     camera_class_length = inputs.base_length;
@@ -4170,15 +4191,97 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
     // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
     // spring and drag never move it off zero without them, so it is 0.0f.
-    if (kMissionFovBound && camera_fov_read && camera_pipe_sight_read &&
+    if (kMissionFovBound && camera_pipe_sight_read &&
         camera_pipe_sight_enabled) {
-        const float stored = bsp::global_config_fov_0087ec0f(camera_fov_ship_degrees,
-            bsp::kFovDivisor00f889b4);
         const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
-        camera_projection.fov = bsp::mission_fov_004dc940(stored, bsp::kFovDivisor00f889b4, scale);
-        done("MissionCamera::pipe_sight_fov", 0x004dc940u);
+        set_view_fov(scale, 1);
     }
     bsp::publish_mission_camera(world, camera_projection);
+}
+
+namespace {
+// Review repair, chain 671. These are field views, not a second 004DC940 body:
+// bsp.py show 004dc940 --asm, 004DC947..004DC9D9. +634h is borrowed from the
+// mission frame; +614h/+61Ch/+1FE4h come from the process's live SessionContext.
+// [00E198C4]+A8h is screen 34h and its +20h is hints_pause_Group (0054D980),
+// whose +38h reads its own visibility. The hint tracker owns the active model.
+class HudViewFovBinding final : public bsp::cc13_seg10::ViewFovHost {
+    using Object = bsp::cc13_seg10::Object;
+    template<class T> static T& at(Object p, std::uint32_t offset) {
+        return bsp::cc13_seg10::native_at<T>(p, offset);
+    }
+public:
+    explicit HudViewFovBinding(GameHudHost::Impl& owner) : owner_(owner) {
+        const bsp::SessionContext& session = bsp::session_context();
+        at<std::int32_t>(game_.data(), 0x614) = session.game_mode_614;
+        at<std::uint8_t>(game_.data(), 0x61C) = session.forced_61c;
+        at<std::uint8_t>(game_.data(), 0x634) =
+            owner_.cinematic_hidden_634 != nullptr && *owner_.cinematic_hidden_634;
+        at<std::int32_t>(game_.data(), 0x1FE4) = session.session_word_1fe4;
+        at<Object>(game_.data(), 0x19FC) = reinterpret_cast<Object>(&owner_.camera_projection);
+        at<Object>(manager_.data(), 0xA8) = hints_.data();
+        // The virtual receiver is resolved by vcall_38_bool to the actual hint
+        // model's +20h handle, or the loaded frontend widget before that model exists.
+        at<Object>(hints_.data(), 0x20) = hints_.data();
+    }
+    Object game_00e188a8() override { return game_.data(); }
+    Object mission_00e198c4() override {
+        return owner_.summary.manager_global_published ? manager_.data() : nullptr;
+    }
+    bool vcall_38_bool(Object object) override {
+        if (object != hints_.data()) throw std::logic_error("004DC940 queried another hints group");
+        GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+        GameHintTracker* tracker = slot != nullptr ? slot->built() : nullptr;
+        if (tracker != nullptr) {
+            GameHintsScreen& screen = tracker->hints_screen_34();
+            return screen.widget_shown_38(screen.state().pause_group_20);
+        }
+        GuiLayoutPage* page = owner_.menu.in_game_page(0x34, "GUI_hints");
+        GuiLayoutWidget* group = page != nullptr
+            ? owner_.menu.frontend().find_page_child(*page, "hints_pause_Group") : nullptr;
+        if (group == nullptr) {
+            owner_.record("MissionCamera::missing_hints_pause_group", 0x004dc9a1u);
+            return false;
+        }
+        return owner_.menu.frontend().widget_own_visible(*group);
+    }
+    Object global_config_00432650() override {
+        // 0087EBE2..0087EC2F initializes GlobalConfig+F8h from Globals.FOVs.Ship.
+        // The Lua reader loads globals.lua if needed; no ship-view bind is required.
+        if (!owner_.camera_fov_read && owner_.lua != nullptr)
+            owner_.camera_fov_read = owner_.lua->read_global_fov_ship_0087d7b0(
+                owner_.camera_fov_ship_degrees);
+        if (!owner_.camera_fov_read)
+            throw std::runtime_error("004DC940 requires the live Globals.FOVs.Ship setting");
+        if (at<std::int32_t>(game_.data(), 0x1A04) != 1)
+            throw std::logic_error("HUD FOV caller requested an unbound GlobalConfig index");
+        at<float>(config_.data(), 0xF8) = bsp::global_config_fov_0087ec0f(
+            owner_.camera_fov_ship_degrees, bsp::kFovDivisor00f889b4);
+        return config_.data();
+    }
+    float fov_scale_00f889b4() override { return bsp::kFovDivisor00f889b4; }
+    void camera_set_fov_00b6fbb0(Object camera, float fov) override {
+        if (camera != reinterpret_cast<Object>(&owner_.camera_projection))
+            throw std::logic_error("004DC940 set another Operator camera");
+        owner_.camera_projection.fov = fov;
+        owner_.done("MissionCamera::view_fov", 0x004dc940u);
+    }
+    ~HudViewFovBinding() override {
+        // Also retain 004DC947's unconditional index store when a gate rejects.
+        owner_.view_fov_index_1a04 = at<std::int32_t>(game_.data(), 0x1A04);
+    }
+private:
+    GameHudHost::Impl& owner_;
+    alignas(4) std::array<std::uint8_t, 0x1FE8> game_{};
+    alignas(4) std::array<std::uint8_t, 0xAC> manager_{};
+    alignas(4) std::array<std::uint8_t, 0x24> hints_{};
+    alignas(4) std::array<std::uint8_t, 0xFC> config_{};
+};
+}  // namespace
+
+void GameHudHost::Impl::set_view_fov(float scale, std::int32_t index) {
+    HudViewFovBinding binding(*this);
+    bsp::cc13_seg10::game_set_view_fov_004dc940(binding, binding.game_00e188a8(), scale, index);
 }
 
 namespace {
@@ -4418,10 +4521,19 @@ void GameHudHost::update_map_screen_005b45c0() {
     impl.record("HudMapScreen::update", 0x005b45c0u);
 }
 
+void GameHudHost::bind_view_fov_cinematic_state(const bool* hidden_634) noexcept {
+    impl_->cinematic_hidden_634 = hidden_634;
+}
+
+void GameHudHost::unbind_view_fov_cinematic_state(const bool* hidden_634) noexcept {
+    if (impl_->cinematic_hidden_634 == hidden_634) impl_->cinematic_hidden_634 = nullptr;
+}
+
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
     Impl& impl = *impl_;
     impl.units = &units;
     impl.lua = &lua;
+    impl.camera_fov_read = false;
     if (!impl.minimap) impl.minimap = std::make_unique<GameHudMinimapHost>(impl.log, impl.menu);
     if (!impl.markers) impl.markers = std::make_unique<GameHudMarkersHost>(impl.log, impl.menu);
     impl.minimap->attach_world(units, lua);
@@ -4434,6 +4546,7 @@ void GameHudHost::detach_world_2k() noexcept {
     if (attached_hud_for_selection() == this) attached_hud_for_selection() = nullptr;
     impl.units = nullptr;
     impl.lua = nullptr;
+    impl.camera_fov_read = false;
     impl.camera_bound = false;
     impl.camera_last_frame = ~0ull;
     impl.ship_screen = bsp::ShipScreenState{};
@@ -7702,6 +7815,53 @@ HudLeafScreenStorage* hud_leaf_block(GameHudHost::Impl& impl, const HudLeafScree
         throw std::logic_error("HUD leaf screen virtuals listed for a different vtable");
     return &block;
 }
+// Goal 5 chain 671. Screen 23h's +18h 00517820 / +1Ch 00517860 (bsp.py ghidra
+// disasm 00517820) on its 2Ch block: the state is the block's +1Ch unit and +28h
+// word, read at the call (neither body stores into the screen). 00517820 runs
+// 004DC940(1.0, 1) on [00E188A8] (the HUD's view fov service), then, only with a
+// unit at +1Ch, the observer pair on screen+8; 00517860 sends 0077C470(+1Ch, 1FEh,
+// 0) only with a unit. +1Ch is stored by the constructor 005178B0 (0) and by
+// 005178F0 BSP_InGameScreen23_BindUnit, which nothing in this process calls, so
+// the unit arms are unreached and throw; so do the bomber screen 25h's services.
+class HudLeafObservedUnitBinding final : public bsp::ObservedUnitScreenHost {
+public:
+    explicit HudLeafObservedUnitBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    bool observer_registered_00694af0(std::uintptr_t) override { unreached("00694AF0"); }
+    void observer_register_00694a60(std::uintptr_t) override { unreached("00694A60"); }
+    void unit_send_0077c470(std::uintptr_t, std::int32_t, std::int32_t) override {
+        unreached("0077C470");
+    }
+    std::uintptr_t unit_child_9d4(std::uintptr_t) override { unreached("unit+9D4h"); }
+    void game_set_view_fov_004dc940(float fov, std::int32_t arg) override {
+        owner_.set_view_fov(fov, arg);
+    }
+    void weapon_group_bind_unit_00549260(std::uintptr_t, std::uintptr_t) override {
+        unreached("00549260");
+    }
+    void weapon_group_release_005470c0() override { unreached("005470C0"); }
+    void screen26_call_0051e8e0() override { unreached("0051E8E0"); }
+
+    static bsp::ObservedUnitScreenState state_of(const HudLeafScreenStorage& block) {
+        if (!block.contains(block.data() + 0x28, sizeof(std::uint32_t)))
+            throw std::logic_error("screen 23h block shorter than its +28h word");
+        std::uint32_t unit = 0;
+        std::uint32_t word = 0;
+        std::memcpy(&unit, block.data() + 0x1C, sizeof(unit));
+        std::memcpy(&word, block.data() + 0x28, sizeof(word));
+        bsp::ObservedUnitScreenState state;
+        state.unit_1c = unit;
+        state.field_28 = word;
+        return state;
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("screen 23h virtual reached ") + site
+            + " with a +1Ch unit no host call stores");
+    }
+    GameHudHost::Impl& owner_;
+};
+
 }  // namespace
 
 bool GameHudHost::leaf_screen_self_managed(int slot, bool& self_managed) {
@@ -7746,6 +7906,12 @@ bool GameHudHost::enter_leaf_screen(int slot) {
         bsp::hud_counters_enter_00528c40(binding);
         break;
     }
+    case 0x00517820u: {
+        bsp::ObservedUnitScreenState state = HudLeafObservedUnitBinding::state_of(*block);
+        HudLeafObservedUnitBinding binding(impl);
+        bsp::in_game_screen23_enter_00517820(state, binding);
+        break;
+    }
     default: throw std::logic_error("HUD leaf +18h virtual listed but not bound");
     }
     impl.done("HudLeafScreen::enter", v->enter_18);
@@ -7770,6 +7936,13 @@ bool GameHudHost::exit_leaf_screen(int slot) {
         bsp::hud_counters_exit_00528c50(binding);
         break;
     }
+    case 0x00517860u: {
+        bsp::ObservedUnitScreenState state = HudLeafObservedUnitBinding::state_of(*block);
+        HudLeafObservedUnitBinding binding(impl);
+        bsp::in_game_screen23_exit_00517860(state, binding);
+        break;
+    }
+    case 0x005F9480u: bsp::cc13_fe1::hud_order_screen_exit_005f9480(block->data()); break;
     default: throw std::logic_error("HUD leaf +1Ch virtual listed but not bound");
     }
     impl.done("HudLeafScreen::exit", v->exit_1c);
@@ -7795,6 +7968,10 @@ bool GameHudHost::update_leaf_screen(int slot, float seconds) {
         bsp::hud_counters_update_0052baa0(hud_counters_state(*block), seconds, binding);
         break;
     }
+    // C2 04 00: RET 4, the pump's seconds unread.
+    case 0x005178A0u:
+        bsp::cc13_fe3::in_game_screen23_update_005178a0({block->data()});
+        break;
     default: throw std::logic_error("HUD leaf +20h virtual listed but not bound");
     }
     impl.done("HudLeafScreen::update", v->update_20);

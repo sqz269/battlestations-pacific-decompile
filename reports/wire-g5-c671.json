@@ -1,0 +1,129 @@
+{
+  "chain": 671,
+  "slot": "g5-w3",
+  "piece": "HUD leaf-screen virtuals on the 0068CC70 leaf blocks (goal 5 chain 646's table): screen 23h enter/exit/update and order screen 3Bh exit, plus a view-fov service for 004DC940's HUD callers",
+  "review_round_1": {
+    "review_run": 1427,
+    "repair_run": 1434,
+    "base": "be441607b936c4e6f9dd9037bf6fd00b67b714af",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "Removed the HUD's duplicate 004DC940 implementation. Both leaf-screen and pipe-sight FOV calls now use cc13_seg10::game_set_view_fov_004dc940 through its narrow ViewFovHost contract. Game+634h is borrowed from the live mission frame; +614h/+61Ch/+1FE4h come from session_context(). The HUD-manager presence test and the live hints_pause_Group visibility supply the remaining native gate. Rejected calls retain the unconditional game+1A04h index store. The two FMULs now round separately through x87_mul24.",
+        "evidence": "bsp.py show 004dc940 --asm: 004DC947 index store; 004DC952..004DC9A5 cinematic/mode/manager/group gates; 004DC9C4 and 004DC9CA FMULs. HudHintsState.pause_group_20 and hud_hints_layout_0054d980 identify screen 34h +20h."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "change": "The FOV service lazily reads Globals.FOVs.Ship through read_global_fov_ship_0087d7b0 at the reconstructed GlobalConfig singleton call, then supplies GlobalConfig+F8h using global_config_fov_0087ec0f. The reader loads globals.lua when necessary. Ship-view binding no longer initializes or gates this config value, and world detach/attach invalidates the cache.",
+        "evidence": "src/game_hosts_hud.cpp HudViewFovBinding::global_config_00432650; src/game_hosts_lua.cpp read_global_fov_ship_0087d7b0; native initialization 0087EBE2..0087EC2F."
+      }
+    ],
+    "checks": {
+      "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed (4/4).",
+      "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: zero findings.",
+      "focused_probe": "local/wire-g5-c671-fov-probe.cpp and .txt: synthetic ViewFovHost fixture passed the cinematic/mode/session/manager/group accept/reject cases, index-store ordering, first-use config service and camera-null ordering. Its FOV output matched two real x87 FMULs under PC24 bit-for-bit, including a one-ULP-sensitive triple with the binary's 00F889B4 factor. Built with /MD and /link /MANIFEST:EMBED; no game process was run.",
+      "call_graph": "python tools/call_graph.py and who queries: 00517820, 00517860 and 005F9480 each have one reachable HUD call. 005178A0 remains linker-folded with reachable HUD update call sites; its aggregate caller count is not unique attribution. The shared cc13_seg10::game_set_view_fov_004dc940 body has one reachable direct call from GameHudHost::Impl::set_view_fov.",
+      "report_calls": "python tools/verify_report_calls.py reports/wire-g5-c671.json: 0 call rows checked, 0 failed (the report uses rows, not that verifier's call-row schema). Explicit who queries are the call evidence."
+    },
+    "counts": {
+      "claimed_rows_before": 4,
+      "claimed_rows_after": 4,
+      "readiness_wired_total_before": 10417,
+      "readiness_wired_total_after": 10417,
+      "readiness_called_total_before": 5675,
+      "readiness_called_total_after": 5675,
+      "note": "Repair of the four reviewed claims; no new rows claimed. The shared FOV dependency is now reached through its reconstructed gate body. Readiness totals include identifier aliases and are not the call_graph.py reconstructed-address total."
+    },
+    "remaining": "All original skipped rows remain out of scope. HUD callers bind only GlobalConfig index 1. When a cinematic gate runs before the hint model exists it reads the loaded frontend hints_pause_Group; an unavailable group rejects and records the missing service. An unavailable live Lua FOV setting fails explicitly instead of silently skipping the update. No runtime, gameplay or original binary ABI validation is claimed."
+  },
+  "rows": [
+    {
+      "native": "00517820",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::enter_leaf_screen (slot 23h, vtable 00CEC194 +18h; HudLeafObservedUnitBinding over the block's +1Ch/+28h)"
+    },
+    {
+      "native": "00517860",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::exit_leaf_screen (slot 23h, vtable 00CEC194 +1Ch)"
+    },
+    {
+      "native": "005178A0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::update_leaf_screen (slot 23h, vtable 00CEC194 +20h, bare RET 4; the linker folds the empty body)"
+    },
+    {
+      "native": "005F9480",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp GameHudHost::exit_leaf_screen (slot 3Bh, vtable 00CF3B7C +1Ch; clears block +81h/+82h, which screen_3b_block_a/b read)"
+    },
+    {
+      "native": "005FAD70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 3Bh +18h left 0)",
+      "reason": "Order screen enter reads the controlled unit's image fields (+738h component vtable +50h, +284h) through a native unit pointer; the units host has no native unit object."
+    },
+    {
+      "native": "005F9DD0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 3Bh +20h left 0)",
+      "reason": "Runs only with block +82h set, which only the unwired order idle 005FB080 stores; also needs the manager's +5Ch screen and a widget colour getter (vtable +54h) the frontend bridge lacks."
+    },
+    {
+      "native": "0051EE50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 26h not listed)",
+      "reason": "Binoculars enter: the block's +28h..+38h zoom/mode fields live split in the HUD's typed BinocularsState (0064A400/0051F050 path); move that state onto the 26h leaf block before running 0051EE50/0051E6E0 on it."
+    },
+    {
+      "native": "0051E9B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 26h not listed)",
+      "reason": "Binoculars exit (0051E8E0 reset) writes +30h/+38h/+28h, the same split BinocularsState fields as 0051EE50; also lens flare 00452B80 is not hosted (renderer 00B0D020)."
+    },
+    {
+      "native": "00566080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 32h not listed)",
+      "reason": "Limbo screen 32h is raised only by INTF_LIMBO 34h (the unwired leave-unit order 005FACB0 and the multiplayer respawn path); single player never enters it here."
+    },
+    {
+      "native": "00565D70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 32h not listed)",
+      "reason": "Limbo exit: same as 00566080, screen 32h is not entered in single player."
+    },
+    {
+      "native": "00565E00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 32h not listed)",
+      "reason": "Limbo update polls the multiplayer respawn input 00565D80; screen 32h is not entered in single player."
+    },
+    {
+      "native": "005EEA00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 39h not listed)",
+      "reason": "Objectives enter needs the list-box services 00A9AC70/00A9AC40 on ObjectiveNumbers_Listbox and RefreshRows 005EE520 over the native objective records; the frontend bridge has no list-box model."
+    },
+    {
+      "native": "005EEF60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 39h not listed)",
+      "reason": "Objectives update reads the block's +54h objective vector (filled by 005EE520 from native records) and the list-box selection 00A9C920/00A9C7C0; same missing list-box model as 005EEA00."
+    },
+    {
+      "native": "0060C870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 41h not listed)",
+      "reason": "Plane spawn enter tail-jumps 00681E90 on [[00E198C4]+C4h], a manager screen that is not a leaf block here; screen 41h is raised only by INTF_PLANESPAWN 24h."
+    },
+    {
+      "native": "005CDD70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp kHudLeafScreenVirtuals (slot 38h not listed)",
+      "reason": "Engine movie exit reads the native game's +38h cutscene player and the render service [00F8D39C] (00B0D0B0); neither is a native object in this process."
+    }
+  ]
+}
