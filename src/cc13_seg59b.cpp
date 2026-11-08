@@ -479,7 +479,7 @@ void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity) {
 // EAX = property. Evidence: 008EF7C0..008EF7C9 MOV [EAX+0Ch],ECX. Callers (cc13_large61) use it
 // on scene property records ("OwnerPlayer", the skill), so +0Ch is the record's value word.
 // ---------------------------------------------------------------------------
-void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value) {
+__declspec(noinline) void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value) {
     at<std::uint32_t>(property, 0x0C) = value;
     return property;
 }

@@ -1,0 +1,346 @@
+{
+  "goal": 5,
+  "chain": 849,
+  "run": 1835,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "baseline": "bcc035b258ab208acc6a23d84e01029a140a50ca",
+  "rows": [
+    {
+      "native": "008ef7c0",
+      "status": "wired",
+      "host_site": "src/native_scene_property_record_assignment.cpp::assign_native_scene_property_record_008f0700 (destination tags 0/4)",
+      "reason": "Canonical DWORD setter replaces the previous single store using the actual destination record and source+0Ch bits; no second store or shadow state."
+    },
+    {
+      "native": "008f0700",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_record_assignment.cpp::assign_native_scene_property_record_008f0700",
+      "reason": "Already entry-reachable at baseline through two raw bag assignment/merge call sites; changed only as the setter caller."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_max_00bf1400",
+      "reason": "Missing an entry-reachable native error-reporter map producer; no linked BF1450/BF2270/BF26C0 caller at baseline."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_min_00bf1420",
+      "reason": "Missing an entry-reachable native error-reporter map producer; internal helper reuse alone would remain unlinked."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_rotate_left_00bf15e0",
+      "reason": "Missing an entry-reachable native error-reporter map insertion/erase owner."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_rotate_right_00bf1630",
+      "reason": "Missing an entry-reachable native error-reporter map insertion/erase owner."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_enum_add.cpp::add_native_scene_property_enum_symbol_008f3a20",
+      "reason": "Already called through the native scene-property projection at baseline; no new wiring credit."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_merge.cpp::merge_native_scene_property_bag_008f54f0",
+      "reason": "Already called through native bag merge at baseline; no new wiring credit."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::WeaponDirector report_target_event/notify_command_target",
+      "reason": "Missing reporter/channel/observed-entity dispatch ownership through the real mission Lua manager."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::deferred Lua argument-copy producer comment",
+      "reason": "Missing a frame-job-thread enqueue producer and real source LuaVariantRecord vector; the mission interpreter runs on the main thread."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp::plane DeadMeatRot dispatch",
+      "reason": "Native C8h DeadMeatRot construction is multiplayer-only and excluded from this single-player packet."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp::GUI frame bridge",
+      "reason": "Missing the complete same-owner GuiPointerRuntime input/hit-test services on the actual manager bridge."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::reset_gui_manager_highlights_00aa0f70",
+      "reason": "Missing a live bridge supplying the same GuiResourceOwner/GuiWidgetOwnerRuntime graph."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp::gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing a live typed timed-entry owner/consumer on the inspected native GUI bridge."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp::font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live character-admission consumer with its retained input/filter font; complete-string layout is a different operation."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp::engine movie rewind clock projection",
+      "reason": "Missing live movie/track ownership and its actual rewind consumer."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp::movie action reader",
+      "reason": "Missing an entry-reachable movie-track parser with the actual action tokenizer/track owner."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::maximum_native_soldier_loop_node_004437a0",
+      "reason": "Missing a linked native loop-tree consumer; the inspected loop iterator/node producer entries are absent from the baseline executable."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::minimum_native_soldier_loop_node_004437c0",
+      "reason": "Missing a linked native loop-tree consumer; changing delegated iterator helpers alone would remain unlinked."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp::copy_construct_native_string_with_scalar_00444070",
+      "reason": "Missing a live native string/scalar pair construction consumer; none was established in the inspected node producer."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp::copy_construct_native_string_with_scalar_004440c0",
+      "reason": "Missing a live native string/scalar pair copy consumer; none was established in the inspected node producer."
+    },
+    {
+      "native": "00444150",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::initialize_native_soldier_loop_node_00444150",
+      "reason": "Missing a linked loop-length node producer at baseline."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::stream_writer_write_dword_00bf0340",
+      "reason": "Missing a live native stream-writer owner and remaining-byte budget consumer in the inspected host paths."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::push_back_stream_writer_chunk_00bf0810",
+      "reason": "Missing a live native writer chunk-stack producer; the menu reserve callback is explicitly unused."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp::release_native_enum_symbol_node_holder_008f3d80",
+      "reason": "Missing an entry-reachable temporary enum-node holder release consumer."
+    },
+    {
+      "native": "008f3dc0",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp::release_native_property_library_node_holder_008f3dc0",
+      "reason": "Missing an entry-reachable temporary property-library-node holder release consumer."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp::skip_native_scene_group_008f0800",
+      "reason": "Missing an established live balanced-group skip call site with the native tokenizer owner."
+    },
+    {
+      "native": "008eea80",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp::readiness metadata row",
+      "reason": "Readiness identifies this address, but the source defines the distinct canonical 008EEB60 next body; no replacement body was invented."
+    },
+    {
+      "native": "008ef650",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp::readiness metadata row",
+      "reason": "Readiness identifies this address, but the source defines the distinct canonical 008EEB10 begin body; no replacement body was invented."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Live consumer was not established by this packet; agent/g5-w9 subsequently claimed the camera/shadow-fit wiring."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp::set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing an established entry-reachable extra-clip-plane set consumer with its actual camera state."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp::clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing an established entry-reachable extra-clip-plane clear consumer with its actual camera state."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart::write_checkpoint",
+      "reason": "Missing the preceding checkpoint comparison, actual BSP_Chk_Save owner/current mission key and write continuation on the pre-load path."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::MissionEntry::check_multiplayer_player_count",
+      "reason": "Native participant-count watchdog is multiplayer-only; single-player only reaches its first early return."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/leftovers_cc13.cpp::construct_score_record_tail_0091d620",
+      "reason": "Missing an established real score-record allocation/0091CE90 constructor consumer; a tail-only call cannot construct the record."
+    },
+    {
+      "native": "00aa1fa0",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp::gui_manager_set_cursor_position_00aa1fa0",
+      "reason": "Missing an established live original formation/map cursor-position producer with the retained manager/cursor owner."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp::marker placement",
+      "reason": "Missing the original marker projection/margin producer; the inspected host camera culls before placement."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_class_pair_value_00a03900",
+      "reason": "Missing the parser-owned per-mode class-pair table and live composition-scoring consumer."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp::sub_update_008252c0",
+      "reason": "Missing plane engine sound emitter ownership; the inspected ship RPM smoother explicitly does not build the emitters."
+    },
+    {
+      "native": "009035d0",
+      "status": "skipped",
+      "host_site": "src/native_world_constant_byte.cpp::native_world_constant_byte_009035d0",
+      "reason": "Missing an established live consumer of the original world virtual slot at 00CE778C."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp::format_string_1024_0040cfc0",
+      "reason": "Identified original consumers are the unlinked entity-tree formatter and Dyn profile report; no single-player production consumer was established."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp::format_string_255_004b8410",
+      "reason": "The sole identified original caller is debug-only DiagnosticPrintf 004C7070, excluded from this packet."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp::impact_effect_slot_0084b8c0",
+      "reason": "Missing a live impact-effect slot/spawn consumer with actual mode and medium; computing an unused selection adds no effect."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::clear_user_path_points_slot_0071f5d0",
+      "reason": "Missing a presence-zero clear-message producer and retained path owners for each selected director slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "Missing an established live native command-target-pair owner and actual class ordinal at its initialization consumer."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::state_message_build_00721280",
+      "reason": "Missing an established live native controller-state message owner and transport consumer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::snapshot_build_007214c0",
+      "reason": "Missing an established retained ControllerSnapshotMessage owner and snapshot transport consumer."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp::collect_language_names",
+      "reason": "The catalog exists, but the original language-sweep consumer is gated by the unhosted profile-hints mode."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_member_vector.cpp::copy_native_unit_group_member_vector_0070d980",
+      "reason": "The identified original consumer is net-entity-create construction; its member vector is not the formation offset and no single-player consumer was established."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_clock_draw.cpp::animated texture-source time dispatch",
+      "reason": "Missing an established live animated texture-source producer and its particle draw/time consumer."
+    },
+    {
+      "native": "0042b9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/entity_local_matrix.hpp::entity_has_derived_local_matrix_0042b9a0",
+      "reason": "Missing an established live entity-local-matrix virtual dispatch consumer; the inspected interface has no production implementation."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp::add_native_scene_property_integer_word_008f3710",
+      "reason": "Adjacent constructor was inspected only; it is not needed to establish the selected live assignment/setter route."
+    }
+  ],
+  "evidence": {
+    "original_setter": "bsp.py show 008ef7c0 --asm: MOV EAX,ECX; MOV ECX,[ESP+4]; MOV [EAX+0Ch],ECX; RET 4",
+    "original_assignment": "008F0716..008F071D: capture source+0Ch DWORD, store destination+0Ch for tags 0/4",
+    "real_state": "The actual raw source/destination records are owned by the native property bags. Merge 008F54F0 and assign-existing 008F23E0 already reach assignment 008F0700.",
+    "single_execution": "The original store is deleted from tags 0/4; the setter performs the sole replacement write. No value conversion or float operation changes.",
+    "abi": "Existing reconstructed C++ interfaces; no drop-in native ABI or game-validation claim."
+  },
+  "validation": {
+    "release_build": "scripts/build.ps1 passed; all four existing CTest checks passed",
+    "baseline_compiled_recon_called": 5565,
+    "release_compiled_recon_called_after": 5564,
+    "release_new_call": "1068CC7B assign_native_scene_property_record_008F0700 -> scene_property_set_field0c_008EF7C0",
+    "release_folding": "Release folds the setter with set_native_mesh_lod_00B72710; its aggregate called-address total changes 5565 -> 5564 and cannot measure this wiring delta. The analysis build separates the symbols and proves the exact new caller.",
+    "readiness_wired_before": 10698,
+    "no_game_run": true,
+    "new_tests": 0,
+    "readiness_wired_after": 10701,
+    "readiness_note": "Text classifier changes are not the new compiled-body count; target row still says ready/nodef because the ledger keeps its provisional name, while called=true proves the canonical body call.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/c849-analysis -NoInline -Target bsp_game -SkipTests passed (/Ob0 /OPT:NOICF).",
+    "analysis_distinct_caller": "10871D6E assign_native_scene_property_record_008F0700 -> 1063A050 scene_property_set_field0c_008EF7C0; exactly one call site, no folded aliases.",
+    "analysis_entry_route": "WinMain -> scene loading -> SceneReaderBinding::instantiate_entity -> SceneNumericPropertyMerge -> assign_existing_native_scene_property_bag_008F23E0 -> assign_native_scene_property_record_008F0700 -> scene_property_set_field0c_008EF7C0",
+    "analysis_compiled_recon_called_after": 7328,
+    "new_distinct_wired_addresses": 1
+  }
+}
