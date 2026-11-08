@@ -875,6 +875,9 @@ public:
         const std::uint32_t& step_count, const std::size_t& local_slot) noexcept;
     // The bound owner, or null (packet cc9_usn02_sameside_torpedoes: 00927F10 for gunnery).
     const bsp::SessionParticipantPools* session_participants() const noexcept;
+    // 007465E0's actual smoke duration, using the mission's bound session
+    // owner/clock. False retains the caller's diagnostic when not bound.
+    bool post_land_fort_death_smoke_d1(float duration);
 
     // Packet cc8_ship_ai_firepower_inputs. Borrow the gunnery host so the
     // firepower rating 0095EB40 can read the tables 00956C20 built: the max

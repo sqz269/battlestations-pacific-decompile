@@ -12976,6 +12976,16 @@ const bsp::SessionParticipantPools* GameShipAiHost::session_participants() const
     return impl_->session_participants;
 }
 
+bool GameShipAiHost::post_land_fort_death_smoke_d1(float duration) {
+    const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
+    if (messages == nullptr || impl_->message_game_state == nullptr
+        || impl_->session_participants == nullptr || impl_->message_local_slot == nullptr)
+        return false;
+    return messages->post_land_fort_death_smoke_d1(duration,
+        static_cast<std::int32_t>(*impl_->message_game_state), impl_->session_mode,
+        *impl_->session_participants, *impl_->message_local_slot);
+}
+
 void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene,
     GameMissionLuaHost& lua, std::int32_t mode, std::uint8_t forced, std::int32_t session) {
     std::string error;

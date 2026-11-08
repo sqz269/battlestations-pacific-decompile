@@ -870,6 +870,23 @@ struct LandingShipSenderProfile final : cc13_seg41::SessionMessageHost {
         throw std::logic_error("Landing ship constructor has no header codec call");
     }
 };
+// bsp.py ghidra bytes 00CFF37C --length 20, bsp.gpr /battlestationspacific.exe:
+// scalar delete, writer, reader, IsType, always true. Only the constructor
+// profile binding is used: the flags-4 local route returns before a codec.
+constexpr std::uint32_t kLandFortEffectSlots_00cff37c[5]{0x00744a00u, 0x00744920u,
+    0x00744990u, 0x00744900u, 0x004499c0u};
+struct LandFortEffectSenderProfile final : cc13_seg41::SessionMessageHost {
+    const std::uint32_t* vtable(std::uint32_t image_address) override {
+        if (image_address != 0x00cff37cu)
+            throw std::logic_error("LandFort effect constructor stored an unexpected profile");
+        return kLandFortEffectSlots_00cff37c;
+    }
+    void write_header_0075b480(const void*, NativeBitCursor*) override { unused(); }
+    void read_header_0075b4c0(void*, NativeSessionReadStream&) override { unused(); }
+    [[noreturn]] static void unused() {
+        throw std::logic_error("LandFort effect sender constructor has no header codec call");
+    }
+};
 struct LandAtPadReadProfile final : seg42::VtableBinding {
     const std::uint32_t* vtable(std::uint32_t image_address) const override {
         if (image_address != 0x00cff908u)
@@ -964,6 +981,32 @@ bool HostSessionMessages::post_landing_ship_open_a6(std::int32_t game_state,
     // 0077C30D..0077C323 returns before any codec, queue, audit or transport
     // mutation. Its earlier discarded IsType(D3h) query cannot mutate this A6h
     // message. In particular, do not loop it back to 0074B570/0074A420.
+    return !route_session_message_0077c2a0(route).routed;
+}
+
+bool HostSessionMessages::post_land_fort_death_smoke_d1(float duration,
+    std::int32_t game_state, std::int32_t session_mode,
+    const SessionParticipantPools& participants, const std::size_t& local_slot) const {
+    if (session_mode != static_cast<std::int32_t>(SessionMode::kLocal)) return false;
+    Image& image = *image_;
+    NativeSessionMessageParticipantOwner selected(participants, local_slot);
+    const NativeSessionMessageContext live_session{image.current_game, &selected};
+    LandFortEffectSenderProfile profile;
+    // bsp.py show 007465E0: the smoke duration written to fort+748h is passed
+    // unchanged to 007448B0(7, duration) at 0074675A. The integer variant's
+    // +20h is deliberately untouched by this constructor and never read here.
+    cc13_seg41::LandFortEffectMessage sent;
+    cc13_seg41::land_fort_effect_construct_point_007448b0(
+        sent, 7u, duration, live_session, profile);
+
+    SessionRouteInputs route;
+    route.session_object_present = true; // Caller retains the bound mission/session owner.
+    route.game_state = game_state;
+    route.mode = static_cast<SessionMode>(session_mode);
+    route.flags_override = kRouteFlagToPeers; // 00746761 PUSH 4, route at 0074676E.
+    route.default_flags = default_route_flags_for_mode(route.mode);
+    // 0077C30D..0077C323 returns before serialization, entity-id assignment,
+    // the queue or a receiver. Re-applying kind 7 locally would start smoke twice.
     return !route_session_message_0077c2a0(route).routed;
 }
 

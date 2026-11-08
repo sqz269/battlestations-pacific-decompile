@@ -19189,10 +19189,14 @@ void GameGunneryHost::Impl::run_land_fort_on_destroyed(std::size_t victim) {
             owner.record("LandFort::death_smoke_effect_008689c0", 0x007466e0u);
             return true;
         }
-        void send_effect_message_7(float) override {
+        void send_effect_message_7(float duration) override {
             // 0074675A..0074676E: 007448B0(7, d) routed by 0077C2A0(m, 4, 0); route
-            // flags 4 are the session send, dropped in single player.
-            owner.record("LandFort::effect_message_d1_0077c2a0", 0x0074676eu);
+            // flags 4 drop in single player. Use the live death routine's d,
+            // with the mission participant/clock already bound to ship_ai.
+            if (owner.ship_ai != nullptr && owner.ship_ai->post_land_fort_death_smoke_d1(duration))
+                owner.done("LandFort::effect_message_d1_0077c2a0", 0x0074676eu);
+            else
+                owner.record("LandFort::effect_message_d1_0077c2a0", 0x0074676eu);
         }
         void stop_smoke_effect_744() override {
             ++owner.land_fort_death.smoke_stops;
