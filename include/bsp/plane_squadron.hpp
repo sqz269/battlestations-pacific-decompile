@@ -212,8 +212,8 @@ struct SquadronLeaveMapHost {
     std::function<void(std::size_t)> route_member_exit;
     std::function<bool()> leaving_on_purpose;
     std::function<void()> latch_leave;
-    // Optional for projections without a live map/squadron command owner.
-    // No temporary member director is substituted when that owner is absent.
+    // Optional for projections without live map/member command owners.
+    // Their queues/task delivery must outlive the exiting plane's death.
     std::function<bool(SquadronLeaveMapGeometry&)> survivor_geometry;
     std::function<void(const std::array<float, 3>&)> command_survivors;
     std::function<void()> store_squadron_exit_party;

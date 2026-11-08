@@ -12,13 +12,15 @@
       "native": "004b4850",
       "status": "wired",
       "host_site": "src/plane_squadron.cpp: squadron_on_plane_left_map_007f31a0; src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410",
-      "evidence": "Original CALL 007F3358. Live WorldMapBounds north-west/south-east corners become GameMapBox inputs; the returned centre drives the survivor moveto position, sent once through the retained squadron director with command E08F68 and flags1. Built graph shows one entry-reachable call from 007F31A0."
+      "evidence": "Original CALL 007F3358. Live WorldMapBounds and leaving pose feed the sole 004B4850 body. Its centre drives the original PC24 survivor target. Review1 corrects delivery: queue_squadron_survivor_moveto fans the point onto live non-leaving members' retained command queues; after real MT_COMMAND/nested5Bh delivery, the decoded descriptor retires retreat and supplies the existing ordinary moveto constructor. Graph remains entry-reachable x1 from 007F31A0.",
+      "newly_wired": true
     },
     {
       "native": "007f31a0",
       "status": "wired",
       "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410",
-      "evidence": "Already wired at baseline; expanded its canonical body with original survivor arithmetic/command consumer at 007F3358..007F340F. Not counted as a newly wired address."
+      "evidence": "Already entry-reachable at baseline; not newly counted. Canonical survivor arithmetic is retained, and review1 connects its computed point to surviving members' queued delivery and actual bot task construction after fused wing0 death.",
+      "newly_wired": false
     },
     {
       "native": "0085dc80",
@@ -166,10 +168,10 @@
     }
   ],
   "validation": {
-    "build": "scripts/build.ps1: Win32 Release and four CTests passed",
-    "probe": "Existing tests/wire_g5_c835_leave_map_probe.cpp extended for non-origin centre target, preserved altitude and exactly one command after a reentrant latch, before Kill; standalone manifested Win32 probe passed",
-    "pc24": "pc24_lint --staged: 0 findings across 4 files; source check also passed; final origin/main...HEAD diff check run after commit",
-    "call_graph": "Final rebuilt exe: 004B4850 at 1048D090, entry-reachable x1 from 007F31A0 at 10519C2E; path through retreat_leave_map_007ee410, leave countdown and mission frame. Compiled graph totals 5716/6426 reconstructed addresses called.",
+    "build": "Review1 final scripts/build.ps1 passed Win32 Release and all four CTests.",
+    "probe": "Review1: tests/wire_g5_c965_survivor_delivery_probe.cpp passed against rebuilt production game objects/core. A source fixture kills leader 0 through real 00926D90 after posting only wing1; wing1 retains retreat until actual MT_COMMAND/nested5Bh drain, receives computed (452,75,-22) through the codec, retires retreat, and ordinary motion_step_00825f20 constructs kind7 moveto with the decoded X/Z target. Wing1 is promoted to flight leader. PE data is read-only; no original code/game loop runs.",
+    "pc24": "Review1 staged PC24 and final origin/main...HEAD diff checks recorded in local/output/c965-review1-pc24.log.",
+    "call_graph": "Review1 rebuilt exe: both 004B4850 and existing 007F31A0 are entry-reachable with one compiled call each; only 004B4850 is newly wired.",
     "evidence_files": [
       "local/output/c965-baseline-build.log",
       "local/output/c965-build.log",
@@ -178,13 +180,41 @@
       "local/output/c965-graph-after.log",
       "local/output/c965-pc24.log",
       "local/output/c965-baseline.json",
-      "local/output/c965-after.json"
-    ]
+      "local/output/c965-after.json",
+      "local/output/c965-review1-build.log",
+      "local/c965-review1-probe.log",
+      "local/c965-review1-result.txt",
+      "local/c965-review1-host.log",
+      "local/output/c965-review1-graph.log",
+      "local/output/c965-review1-who.log",
+      "local/output/c965-review1-pc24.log",
+      "local/output/c965-review1-after.json"
+    ],
+    "gate_probe": "Existing tests/wire_g5_c835_leave_map_probe.cpp rerun: reentrant/sparse-member/latch/survivor-target/owner/gate sequence passed. The production queue/task probe above supplies the missing review coverage.",
+    "readiness": "Review1 fresh --standins scan: wired total 10829 -> 10830; 004B4850 wired/called with one compiled call site; 007F31A0 already wired."
   },
   "remaining": [
     "Shared squadron fire-stance0/+370h reset and self exit-message broadcast at 007F32F1..007F3321 remain omitted.",
-    "Squadron/wing-0 identity remains fused by the existing host; command reuses its retained squadron director, with no temporary member bot task.",
-    "Missing live map or registered director storage records and omits survivor retarget.",
+    "The source host still fuses squadron/wing0 identity; shared native director semantics are projected onto existing live-member command queues, with authoritative death checks at post and delivery.",
+    "Missing live map records and omits the survivor retarget.",
     "No retail game run, original-ABI differential or gameplay validation."
+  ],
+  "newly_wired_addresses": [
+    "004b4850"
+  ],
+  "review_fixes": [
+    {
+      "review_run": 2167,
+      "round": 1,
+      "finding": "P1: survivor command stranded on fused wing0, without surviving member task transition",
+      "status": "fixed",
+      "files": [
+        "src/game_hosts_units_motion.cpp",
+        "include/bsp/game_hosts_units_internal.hpp",
+        "tests/wire_g5_c965_survivor_delivery_probe.cpp"
+      ],
+      "resolution": "Removed the fused-owner-only issue. Post one real queued position order per live survivor. Defer retirement/retarget until its decoded command is current; clear the old retreat task and expose moveto inputs to the sole existing ordinary bot constructor. Recheck authoritative gunnery death before post and at delivery.",
+      "verification": "Production command queue, real kill funnel and ordinary motion tick: leader dead before drain, exactly one in-map survivor receives target, retreat remains until delivery, then kind7 moveto is constructed on the promoted flight leader."
+    }
   ]
 }

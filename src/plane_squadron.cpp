@@ -164,8 +164,8 @@ void squadron_on_plane_left_map_007f31a0(std::size_t leaving_plane,
             }
         }
         // The shared director's fire-stance/+370h stores at 32F1/3302 are
-        // still outside this host projection. The command uses its actual
-        // squadron owner rather than substituting a member's task.
+        // still outside this host projection. The command callback projects
+        // the shared director onto the surviving planes' retained queues.
         host.kill_plane(); // 3414..3418: ECX is the leaving PLANE.
         return;
     }
