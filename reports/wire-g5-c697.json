@@ -5,7 +5,7 @@
   "wired_before": 10445,
   "wired_after": 10456,
   "called_before": 5707,
-  "called_after": 5712,
+  "called_after": 5713,
   "rows": [
     {
       "native": "006821c0",
@@ -25,7 +25,12 @@
     {
       "native": "009dbfe0",
       "status": "wired",
-      "host_site": "src/robot_config.cpp: load_robot_config_00901610 (the compiler inlines the body into the loader, so call_graph shows no separate site)"
+      "host_site": "src/robot_config.cpp: load_robot_config_00901610 -> create_navigator_robot_config_009dbfe0 (out-of-line, __declspec(noinline))",
+      "called": true,
+      "call_sites": 1,
+      "reachable_caller": "bsp::load_robot_config_00901610",
+      "built_entry": "105e6490",
+      "built_call_site": "105e69b7"
     },
     {
       "native": "00682030",
@@ -87,5 +92,34 @@
       "host_site": "src/ai_tuning_globals.cpp: ai_tuning_load_00a335d0 (ForcedTargetWeightValues)",
       "reason": "Forced target rules live in game_hosts_ai.cpp's semantic table; the native global/per-mode rule tables the body inserts into do not exist."
     }
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1523,
+    "fix_run": 1527,
+    "base_head": "33607f7b0838",
+    "wired_before": 10456,
+    "wired_after": 10456,
+    "called_before": 5712,
+    "called_after": 5713,
+    "rows_counted": 4,
+    "rows_claimed": 4,
+    "findings": [
+      {
+        "native": "009dbfe0",
+        "status": "fixed",
+        "reason": "Preserved the native loader-to-descriptor call boundary with __declspec(noinline); the rebuilt PE now links the body with one reachable direct call from load_robot_config_00901610.",
+        "evidence": "python tools/call_graph.py who 009dbfe0: entry 105e6490, REACHABLE, call at 105e69b7 from bsp::load_robot_config_00901610; path 009dbfe0 reaches WinMainCRTStartup through the gameplay-settings and scene-load hosts."
+      }
+    ],
+    "checks": [
+      "python tools/bsp.py index --if-stale: fresh",
+      "./scripts/build.ps1: MSVC Win32 Release build and all 4 tests passed before and after the fix",
+      "python tools/call_graph.py: rebuilt after the fix; reconstructed addresses called 5349 -> 5350",
+      "python tools/call_graph.py who 009dbfe0 and path 009dbfe0: reachable direct caller and entry path confirmed",
+      "python tools/call_graph.py who 006821c0, 00525a90, 00525a10: the three HUD rows retain reachable calls",
+      "python tools/wire_readiness.py: wired 10456 -> 10456; called 5712 -> 5713; 009dbfe0 called=true with call_sites=1",
+      "No float arithmetic changed; pc24_lint was not required."
+    ],
+    "validation_scope": "Executable call-graph and build/test evidence; the game was not run."
+  }
 }

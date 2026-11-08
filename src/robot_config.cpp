@@ -761,7 +761,9 @@ RobotDescriptor* construct_descriptor(RobotDescriptorStorage& storage,
 // 009DC027 derived vtable 00D217DC; 009DC02D publishes [00F8A688]. Its null-new
 // arm (009DC045, [00F8A688] = 0) is excluded by RobotDescriptorStorage's
 // nonnull allocation contract, which throws instead.
-RobotDescriptor* create_navigator_robot_config_009dbfe0(RobotDescriptorStorage& storage,
+// Preserve the native 00901610 -> 009DBFE0 call boundary in this translation
+// unit so the descriptor body's reachable caller remains visible in the PE.
+__declspec(noinline) RobotDescriptor* create_navigator_robot_config_009dbfe0(RobotDescriptorStorage& storage,
     RobotDescriptor*& navigator_f8a688) {
     navigator_f8a688 = construct_descriptor<NavigatorBotConfig>(storage, "NavigatorBot", 0x00d217dc);
     return navigator_f8a688;
