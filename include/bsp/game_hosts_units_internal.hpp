@@ -11410,12 +11410,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // index; 007F4BFA runs it in the spawn tail and 007ED610 after promoting the
     // leader to slot 0. So PlaneSquadronHostRecord::member_spawn_index (the
     // 007F4B43 stamp, which this host never rewrites) is not +9D8h once 007ED260
-    // has run. UNCERTAIN: between a 007F3970 compaction and the next 007ED260 the
-    // image's +9D8h can lag the live seat; this host, as before, answers the
-    // live seat.
+    // has run. 007F3970 calls 007ED260 at 007F3A11 immediately after compaction,
+    // so 007ED292 publishes the new live seats before removal returns.
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
+        const bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
         const bsp::PlaneSquadronHostRecord* sq =
-            bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
+            registry.find_by_member_unit(unit.process_index);
         std::int32_t seat_9d8 = -1;      // 007CFE72's constructor stamp: no squadron
         std::int32_t wingmen_3bc = 0;
         if (sq != nullptr) {
