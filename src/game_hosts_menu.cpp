@@ -800,6 +800,8 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
     TitleInitState title_init{};
     TitleHandoverState handover{};
     TitleScreen title_object{};
+    AttractScreen attract_object{};
+    AttractScreen* attract_singleton{}; // 00E198BC, published by 00689D90
     FrontEndFrameLayouts frame_layouts{};
     // Milestone 2i: the layouts 00518250 acquires for the mission's own set 3
     // are published hidden; see MenuFrameLayoutHost::gui_layout_acquire.
@@ -1532,7 +1534,8 @@ private:
 // 004c9a70, GGame::OnInitTitle
 // ---------------------------------------------------------------------------
 
-class MenuTitleInitHost final : public TitleInitHost {
+class MenuTitleInitHost final : public TitleInitHost,
+    private cc13_fe5::AttractScreenConstructionHost {
 public:
     MenuTitleInitHost(GameMenuHost::Impl& owner, MenuFrameLayoutHost& layouts,
         MenuTitleHandoverHost& handover, MenuCommitHost& commit)
@@ -1563,14 +1566,17 @@ public:
         select_front_end_frame_set_impl(set, commit);
     }
     void* create_attract_screen() override {
-        // operator new(4Ch) then 00689d90. The attract screen plays FE_attract
-        // and is not reconstructed.
-        owner_.log.unimplemented("TitleInit::create_attract_screen", "00689d90");
-        return nullptr;
+        auto* screen = cc13_fe5::attract_screen_construct_00689d90(
+            owner_.attract_object, owner_.manager_registry,
+            owner_.attract_singleton, *this);
+        owner_.log.implemented("TitleInit::create_attract_screen", "00689d90");
+        return screen;
     }
     void attract_screen_init(void* screen) override {
-        static_cast<void>(screen);
-        owner_.log.unimplemented("TitleInit::attract_screen_init", "00689d90+4h");
+        // 004C9BBD..004C9BC5 calls vtable +4h; 00689BD0 is a bare RET.
+        cc13_fe5::attract_screen_virtual04no_op_00689bd0(
+            {reinterpret_cast<std::uint8_t*>(screen)});
+        owner_.log.implemented("TitleInit::attract_screen_init", "00689bd0");
     }
     void* create_title_screen() override {
         auto* title = cc13_fe5::title_screen_construct_0068d760(
@@ -1616,6 +1622,11 @@ public:
     }
 
 private:
+    void* load_attract_page_00aa5840(std::string_view name) override {
+        // 00689E15..00689E1F pushes (screen_flag=1, add_reference=0).
+        // load_screen_page forwards screen_flag and keeps add_reference=false.
+        return owner_.frontend.load_screen_page(std::string(name), 1);
+    }
     void select_front_end_frame_set_impl(FrontEndFrameSet set, bool commit) {
         bsp::select_front_end_frame_set(owner_.frame_layouts, layouts_,
             static_cast<int>(set), commit);

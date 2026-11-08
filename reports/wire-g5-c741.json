@@ -1,0 +1,137 @@
+{
+  "goal": 5,
+  "chain": 741,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "picked": "Owned attract-screen construction during title initialization",
+  "wired_total_before": 10539,
+  "wired_total_after": 10541,
+  "rows": [
+    {
+      "native": "00689d90",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "evidence": "Original constructor export and 00689E15..00689E2A assembly; entry-reachable executable caller at 101843D0 to body 10453550."
+    },
+    {
+      "native": "00689bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::attract_screen_init",
+      "evidence": "Original 004C9BBD..004C9BC5 calls vtable +4h; body is RET. Actual executable edge from reachable attract_screen_init at 101831D9 to 10004750. /OPT:ICF folds this empty body with other empty functions; aggregate call_sites is not a unique count for this address."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen update adapter::advance_ticker",
+      "reason": "Missing owned nonempty native award vector, strings and ticker widgets/timed entry; update_hud_root_screen still forces ticker_queue_count=0."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: apply selected unit and ForceSelectUnit adapter",
+      "reason": "Missing selection mode/vector owner and retained reset fields for screen+30h/+C0h/+C4h/+D4h; both callbacks only record the reset."
+    },
+    {
+      "native": "007ee4e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterface update adapter::pilot_detach",
+      "reason": "Missing live spectate list and pilot/kind/state queries; spectate_unit_count returns zero and pilot_detach only records the address."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled-unit adapter::set_unit_controlled_audio",
+      "reason": "Missing live per-unit audio view/adapter at this callback, which currently only records the address."
+    },
+    {
+      "native": "006887e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager",
+      "reason": "Multiplayer manager/session owner is absent; skipped the multiplayer subsystem for this single-player assignment."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::apply_input_settings",
+      "reason": "Missing current-profile input-settings adapter at the sign-in completion callback, which still only records the address."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree/insert_into/make_owned_complete_bag",
+      "reason": "No new wiring needed: the existing application property-bag owner already calls this body from three entry-reachable sites; readiness text matching misses that owner."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Impl/merge_child",
+      "reason": "No new wiring needed: the existing application property-bag owner already calls this body from two entry-reachable sites; readiness text matching misses that owner."
+    },
+    {
+      "native": "00689c00",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: attract_screen_deactivate_00689c00",
+      "reason": "Missing typed lifecycle adapter for the retained attract manager and actual movie-player screen/stop binding; existing body still accepts the original raw image view."
+    },
+    {
+      "native": "00689c60",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: attract_screen_destruct_00689c60",
+      "reason": "Missing typed teardown adapter for the retained manager/page and state-transition destruction call; existing body still accepts the original raw image view."
+    },
+    {
+      "native": "00689e80",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: attract_screen_activate_00689e80",
+      "reason": "Missing typed activation adapter and actual movie-player screen/play binding; existing body still accepts the original raw image view."
+    },
+    {
+      "native": "00689cc0",
+      "status": "skipped",
+      "host_site": "src/blocking_screen.cpp: update_attract_screen_00689cc0",
+      "reason": "Missing application blocking-screen/attract update adapter and real input/movie/completion/scene predicates; construction does not enable an idle-movie loop."
+    }
+  ],
+  "built": [
+    "AttractScreen semantic owner and published singleton, retained for the menu lifetime",
+    "Actual FrontEndManagerBase joins the application manager registry",
+    "Narrow page-construction adapter loads installed FE_attract through GameFrontendHost with original (1,0) flags",
+    "Existing raw constructor body replaced, not duplicated; original init no-op called once"
+  ],
+  "validation": {
+    "baseline_build": "PASS, four CTests",
+    "changed_build": "PASS, four CTests",
+    "call_graph": "00689D90 and 00689BD0 have entry-reachable calls from the changed title host; see rows for direct sites and ICF qualification",
+    "wire_readiness": "10539 -> 10541, exactly 00689BD0 and 00689D90 added",
+    "runtime_game": "Not run, per assignment; no visual/movie/gameplay proof",
+    "abi": "New C++ semantic interface, not a drop-in original ABI"
+  },
+  "assumptions": [
+    "Menu-owned stable storage replaces the native lazy 4Ch allocation, matching existing title-manager ownership. The GUI application registry owns the borrowed page.",
+    "Attract playback/update/destruction remain future work; no input or movie state is fabricated to execute them."
+  ],
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1602,
+      "reviewed_head": "5fb187cb0db618dc92595bd51c722a8daf566c22",
+      "findings": [
+        {
+          "finding": 1,
+          "status": "fixed",
+          "site": "src/game_hosts_menu.cpp: MenuTitleInitHost::load_attract_page_00aa5840",
+          "change": "Pass screen_flag=1 to load_screen_page; its existing loader forwards add_reference=false. This matches original 00AA5840(name,1,0).",
+          "cause": "The initial adapter confused the wrapper screen_flag parameter with add_reference.",
+          "evidence": "GameFrontendHost::load_screen_page forwards its screen_flag to Impl::load_page, whose load_gui_page_00aa5840 call passes screen_flag,false; original assembly 00689E15..00689E1F passes 1,0."
+        }
+      ],
+      "validation": {
+        "build": "PASS ./scripts/build.ps1, all four CTests",
+        "call_graph": "Refreshed after build: reachable create_attract_screen call 101843D0 -> 10453550 (00689D90); reachable attract_screen_init call 101831D9 -> 10004750 (00689BD0, folded RET).",
+        "wire_readiness": "Both rows remain wired/called; total remains 10541.",
+        "pc24_lint": "PASS: 0 findings across four files with --diff origin/main. No float arithmetic changed.",
+        "runtime_game": "Not run, per assignment."
+      }
+    }
+  ]
+}

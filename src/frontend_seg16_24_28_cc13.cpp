@@ -642,14 +642,19 @@ void attract_screen_destruct_00689c60(Raw screen, Fe5Host& host) {
     host.front_end_manager_destroy_base_00684fa0(screen);
 }
 
-void* attract_screen_construct_00689d90(Raw screen, Fe5Host& host) {
-    host.front_end_manager_construct_base_00684e10(screen);
-    screen.at<std::uint32_t>(0) = kAttractScreenVtable;
-    screen.at<float>(0x44) = kAttractIdleSeconds;
-    host.set_attract_screen_global_00e198bc(screen.p);
-    screen.at<std::uint8_t>(0x48) = 1;
-    screen.ptr(0x40) = host.gui_load_page_00aa5840("FE_attract");
-    return screen.p;
+__declspec(noinline) AttractScreen* attract_screen_construct_00689d90(
+    AttractScreen& screen, FrontEndManagerRegistry& registry,
+    AttractScreen*& singleton, AttractScreenConstructionHost& host) {
+    // bsp.py show 00689D90: preserve the base/leaf/countdown/publication/enable/
+    // page order. As with 0068D760, use the actual manager registry, not a
+    // second raw image whose base the application's manager walk cannot see.
+    front_end_manager_construct_base_00684e10(screen.base, registry);
+    screen.base.native_vtable = kAttractScreenVtable;
+    screen.idle_countdown = kAttractIdleSeconds;
+    singleton = &screen;
+    screen.enabled = true;
+    screen.page = host.load_attract_page_00aa5840("FE_attract");
+    return &screen;
 }
 
 void attract_screen_activate_00689e80(Raw screen, Fe5Host& host) {

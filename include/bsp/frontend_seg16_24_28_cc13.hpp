@@ -14,8 +14,8 @@
 // Fe5Host, whose methods are named after the image routine. Vtable stores keep
 // the image's vtable addresses. New C++ interfaces, not drop-in binary
 // replacements. The constructor chain 006844F0/00684E10/00686170 and options
-// constructor 00689800 project onto the typed front-end managers consumed by
-// bsp_game (chains 503 and 561).
+// constructor 00689800 and attract constructor 00689D90 project onto the typed
+// front-end managers consumed by bsp_game (chains 503, 561 and 741).
 
 #ifndef BSP_FRONTEND_SEG16_24_28_CC13_HPP
 #define BSP_FRONTEND_SEG16_24_28_CC13_HPP
@@ -30,7 +30,7 @@
 #include <string_view>
 #include <utility>
 
-namespace bsp { struct TitleScreen; }
+namespace bsp { struct TitleScreen; struct AttractScreen; }
 
 namespace bsp::cc13_fe5 {
 
@@ -958,8 +958,15 @@ inline constexpr float kAttractMovieZ = -902.0f;                        // 00CEF
 void attract_screen_deactivate_00689c00(Raw screen, Fe5Host& host);
 // 00689C60 __thiscall(screen): vtable, clear the global, remove the page, base destroy.
 void attract_screen_destruct_00689c60(Raw screen, Fe5Host& host);
-// 00689D90 __thiscall(screen) -> EAX.
-void* attract_screen_construct_00689d90(Raw screen, Fe5Host& host);
+// Narrow construction boundary: the application owns the actual page registry.
+struct AttractScreenConstructionHost {
+    virtual ~AttractScreenConstructionHost() = default;
+    virtual void* load_attract_page_00aa5840(std::string_view name) = 0;
+};
+// 00689D90 __thiscall(screen) -> EAX; typed projection of the owned manager.
+AttractScreen* attract_screen_construct_00689d90(AttractScreen& screen,
+    FrontEndManagerRegistry& registry, AttractScreen*& singleton,
+    AttractScreenConstructionHost& host);
 // 00689E80 __thiscall(screen) (vtable +8h): base activate, show the page,
 // activate the movie player screen (+4h/+5h = 1, commit, its +18h virtual) and
 // play the theme movie with (1, -902.0f, loop 1). The float pushed at 00689EFF
