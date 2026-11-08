@@ -9,6 +9,7 @@
 
 #include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/scene_weather_cc13.hpp"
+#include "bsp/scoring_bodies.hpp"
 #include "bsp/cc13_seg67b.hpp"
 #include "bsp/cc13_seg67n.hpp"
 #include "bsp/unit_weapons.hpp"
@@ -281,6 +282,35 @@ private:
 }
 
 int main() {
+    {
+        // Chain675: both Lua forms write the same profile containers and
+        // dedupe across forms. One fixture catches repeated/partial appends.
+        std::vector<std::string> keys;
+        std::vector<bsp::ScoringBonusRecord> records;
+        bsp::ScoringBonusProfile profile{keys, records};
+        bsp::ScoringGrantBonusArguments bonus;
+        bonus.key = "text";
+        bonus.text_a = "heading";
+        bonus.text_b = "detail";
+        bonus.text_c = "caption";
+        bonus.third_is_string = true;
+        bsp::scoring_binding_grant_bonus_008bb770(profile, bonus);
+        bonus.key = "TEXT";
+        bonus.third_is_string = false;
+        bonus.value = 17;
+        bsp::scoring_binding_grant_bonus_008bb770(profile, bonus);
+        bonus.key = "value";
+        bsp::scoring_binding_grant_bonus_008bb770(profile, bonus);
+        bonus.key = "VALUE";
+        bonus.third_is_string = true;
+        bsp::scoring_binding_grant_bonus_008bb770(profile, bonus);
+        check(keys == std::vector<std::string>{"text", "value"} && records.size() == 2 &&
+            records[0].text_00 == "heading" && records[0].text_08 == "detail" &&
+            records[0].text_10 == "caption" && records[0].value_18 == 0 &&
+            records[1].text_00 == "heading" && records[1].text_08 == "detail" &&
+            records[1].text_10.empty() && records[1].value_18 == 17,
+            "chain675 profile bonus forms share live containers and cross-form dedupe");
+    }
     {
         // Chain670 review1429: the task's projected ref stays at constructor
         // zeros while the host's retained ref is picked. Exercise that exact

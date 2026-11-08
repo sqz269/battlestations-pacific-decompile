@@ -2,6 +2,12 @@
 // Ghidra was read-only for this packet; every name is a hypothesis.
 
 #include "bsp/scoring_bodies.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
+
+#include <cstring>
+#if !defined(_MSC_VER)
+#include <strings.h>
+#endif
 
 namespace bsp {
 
@@ -78,21 +84,28 @@ int scoring_unit_type_shot_down_008d0140(const UnlockCounterMap& losses, const s
     return it == losses.end() ? 0 : it->second;
 }
 
-ScoringBonusRecord scoring_bonus_record_007fc9f0(const ScoringGrantBonusArguments& args)
+void grant_bonus_value_007fc9f0(ScoringBonusProfile profile, const std::string& key,
+    const std::string& text_a, const std::string& text_b, int value)
 {
-    ScoringBonusRecord record{};
-    // Both callees copy stack argument 2 then argument 3 into the record's first two
-    // strings; only the third slot and the int differ between them.
-    record.text_00 = args.text_a;
-    record.text_08 = args.text_b;
-    if (args.third_is_string) {
-        record.text_10 = args.text_c;
-        record.value_18 = 0;
-    } else {
-        record.text_10.clear();
-        record.value_18 = args.value;
+    // bsp.py show 007FC9F0 --asm: 007FCA61..007FCA97 compares lengths first,
+    // treats two empty strings as equal, otherwise calls __stricmp. The former
+    // record-only helper omitted this body's profile writes and also handled
+    // the distinct 007FCBC0 text form. Keep one complete body per address.
+    for (const std::string& granted : profile.granted_ac) {
+        if (granted.size() != key.size()) continue;
+        if (granted.empty()) return;
+#if defined(_MSC_VER)
+        if (_stricmp(granted.c_str(), key.c_str()) == 0) return;
+#else
+        if (strcasecmp(granted.c_str(), key.c_str()) == 0) return;
+#endif
     }
-    return record;
+    // 007FCAB9 appends the key BEFORE constructing/appending the record.
+    // 007FCABE supplies the integer; 007FCACC..007FCAF8 produces the empty
+    // third string; 007FCB7E calls 007F8B40 and 007FCB96 calls 007FC940.
+    profile.granted_ac.push_back(key);
+    profile.records_bc.push_back(cc13_seg49_64_78::construct_profile_bonus_record_007f8b40(
+        text_a, text_b, "", value));
 }
 
 ScoringClearedSlotState scoring_clear_player_score_008bc540(int difficulty_before,
@@ -143,17 +156,18 @@ void scoring_binding_set_victory_message_008bc0c0(ScoringBodiesHost& host, int s
     host.set_victory_message(host.commit_slot(), text);
 }
 
-void scoring_binding_grant_bonus_008bb770(ScoringBodiesHost& host,
+void scoring_binding_grant_bonus_008bb770(ScoringBonusProfile profile,
                                           const ScoringGrantBonusArguments& args)
 {
-    // 007FCA32..007FCAA9 walks the granted-name vector and 007FCAAB skips everything when a
-    // case-insensitive match was found. The comparison is the native NativeString rule:
-    // equal lengths, then __stricmp; an empty stored name matches only an empty key.
-    if (host.profile_has_granted_bonus(args.key)) {
-        return;
+    // bsp.py show 008BB770: the Lua argument-3 string test selects the actual
+    // profile body, 007FCBC0 at 008BB982 or 007FC9F0 at 008BBB34. Dedupe and
+    // appends belong to those callees; do not run a second copy in this binding.
+    if (args.third_is_string) {
+        cc13_seg49_64_78::grant_bonus_text_007fcbc0(profile.granted_ac, profile.records_bc,
+            args.key, args.text_a, args.text_b, args.text_c);
+    } else {
+        grant_bonus_value_007fc9f0(profile, args.key, args.text_a, args.text_b, args.value);
     }
-    host.profile_record_granted_bonus(args.key);
-    host.profile_append_bonus(scoring_bonus_record_007fc9f0(args));
 }
 
 } // namespace bsp

@@ -12240,61 +12240,6 @@ private:
     bsp::MissionScoringManagerState& manager_;
 };
 
-// Goal 5 chain 664. The ScoringBodiesHost services Scoring_GrantBonus (008BB770)
-// reaches: 007FC9F0 / 007FCBC0 on the profile [game+650h] (008BB982 / 008BBB34,
-// ECX = [00E188A8]+650h), here the profile owner's ProfileResetState: the
-// granted-key vector +ACh (bonus_ac, which the archive writes as "Bonus") and
-// the 1Ch record vector +BCh. Every other service belongs to another row.
-class ScoringBonusHost final : public bsp::ScoringBodiesHost {
-public:
-    explicit ScoringBonusHost(bsp::ProfileResetState& profile) : profile_(profile) {}
-    // 007FCA32..007FCAA9 (007FCBF3..007FCC5x in 007FCBC0): each +ACh name against
-    // the key, equal lengths then __stricmp (00BF7FBF), so an empty name matches
-    // only an empty key.
-    bool profile_has_granted_bonus(const std::string& key) override {
-        for (const std::string& granted : profile_.bonus_ac) {
-            if (granted.size() == key.size() && _stricmp(granted.c_str(), key.c_str()) == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-    // 00450540, the push_back on +ACh.
-    void profile_record_granted_bonus(const std::string& key) override {
-        profile_.bonus_ac.push_back(key);
-    }
-    // 007FC940, the push_back of the 007F8B40 record on +BCh.
-    void profile_append_bonus(const bsp::ScoringBonusRecord& record) override {
-        profile_.bonus_records_bc.push_back(record);
-    }
-    int session_mode() override { scoring_row_unreached("008BB770 game+1FE4h"); }
-    float difficulty_score_multiplier(int) override {
-        scoring_row_unreached("008BB770 GlobalConfig+2Ch");
-    }
-    int& kill_tree_leaf(int, std::size_t, const bsp::ScoringKillKey&) override {
-        scoring_row_unreached("008BB770 kill tree");
-    }
-    void clear_slot_record(int) override { scoring_row_unreached("008BB770 00915760"); }
-    int slot_difficulty(int) override { scoring_row_unreached("008BB770 record+08h"); }
-    int slot_used_slot(int) override { scoring_row_unreached("008BB770 record+250h"); }
-    void set_slot_difficulty(int, int) override { scoring_row_unreached("008BB770 record+08h"); }
-    void set_slot_used_slot(int, int) override { scoring_row_unreached("008BB770 record+250h"); }
-    void set_slot_cleared_flag(int, bool) override {
-        scoring_row_unreached("008BB770 manager+14B0h");
-    }
-    int commit_slot() override { scoring_row_unreached("008BB770 004B4750"); }
-    void set_condition_message(int, const std::string&) override {
-        scoring_row_unreached("008BB770 0090BDA0");
-    }
-    void set_victory_message(int, const std::string&) override {
-        scoring_row_unreached("008BB770 0090BE30");
-    }
-    void clear_all_mission_records() override { scoring_row_unreached("008BB770 007FD510"); }
-    void reset_all_player_records() override { scoring_row_unreached("008BB770 00916980"); }
-
-private:
-    bsp::ProfileResetState& profile_;
-};
 }  // namespace
 
 int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32_t address) {
@@ -12478,8 +12423,11 @@ int GameMissionLuaHost::run_scoring_record_binding(lua_State* state, std::uint32
         }
         bsp::ProfileResetState& profile = owner->profile();
         const std::size_t before = profile.bonus_records_bc.size();
-        ScoringBonusHost host(profile);
-        bsp::scoring_binding_grant_bonus_008bb770(host, bonus);
+        // 008BB982 / 008BBB34 pass [game+650h] to the selected profile body.
+        // Borrow its actual profile containers; the binding and body
+        // consume these references directly, without a shadow key list.
+        bsp::scoring_binding_grant_bonus_008bb770(
+            {profile.bonus_ac, profile.bonus_records_bc}, bonus);
         count = 0;
         log_.notef("  Scoring_GrantBonus 008bb770: \"%s\" %s (records %zu; goal 5 chain 664)",
             bonus.key.c_str(), profile.bonus_records_bc.size() > before ? "granted" : "already held",
