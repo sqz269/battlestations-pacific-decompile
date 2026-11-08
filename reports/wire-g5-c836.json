@@ -1,0 +1,84 @@
+{
+  "chain": 836,
+  "worker": "agent/g5-w3",
+  "base": "21010b2b3b",
+  "scope": "Live recon relation-entry construction",
+  "rows": [
+    {
+      "native": "00804e70",
+      "status": "wired",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::refresh, called by src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "evidence": "The sole constructor now initializes the actual map-owned entry whose unit/level are projected into the live published recon lists. The unit index comes from the world's per-class registry; the sensor getter delegates to GunneryReconSensorPassHost::unit_sensor_category over that same index. Original own=2/enemy-neutral=0 constructor arguments precede publication of the completed sensor-pass level. No parallel entry-initialization path remains."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::retire_unscanned",
+      "reason": "The typed recon slot has no producer for the unit/slot registered observer pairs required by 00694AF0/006952A0; binding retirement would require fabricated observer state."
+    },
+    {
+      "native": "008065b0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::refresh",
+      "reason": "The existing live scan supplies the constructor caller, but a full native AddOrRefresh body still needs its registered observer-pair producer; this chain only wires its existing constructor callee and preserves carried sensor-cache refresh."
+    },
+    {
+      "native": "008040e0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::refresh",
+      "reason": "Already called from entry-reachable code before this chain; there is no missing call to wire."
+    },
+    {
+      "native": "00804150",
+      "status": "skipped",
+      "host_site": "include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::begin_pass",
+      "reason": "Already called from entry-reachable code before this chain; there is no missing call to wire."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship weapon-director snapshot seam",
+      "reason": "A live controller-snapshot message producer/consumer was not established during bounded selection; creating an unused snapshot would not wire real behavior."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: recon slot invalidation seam",
+      "reason": "NativeReconDirtyAccess needs the real slot +25h dirty cell and world +193Ch unit-list-built owner; neither binding was established by this entry-construction packet."
+    }
+  ],
+  "assumptions": [
+    "The typed entry retains the real world-registry host unit index, rather than manufacturing an original Unit* byte image.",
+    "The existing recon sensor-category provider remains authoritative, including its currently documented submarine-depth support limits.",
+    "The constructor has a new typed C++ interface; original Win32 layout and binary ABI compatibility are not claimed."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, 4/4 CTests",
+    "final_build": "scripts/build.ps1 passed, 4/4 CTests",
+    "fixture": "Existing tests/game_recon_relation_lists_probe.cpp compiled with MSVC Win32 /O2 /MD /fp:strict and /link /MANIFEST:EMBED; passed ownership/order, native constructor-field and carried sensor-cache checks.",
+    "call_graph": {
+      "target": "00804e70",
+      "reachable": true,
+      "reachable_call_sites": 2,
+      "callers": [
+        "GameGunneryHost::Impl::publish_recon_triples_008073c0 at 100d3a08",
+        "GameReconRelationLists::refresh at 100d72ac"
+      ],
+      "entry_path": "WinMainCRTStartup -> GameStartupHost initialization -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost scene load -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameGunneryHost::run_recon_pass_at_scene_load_004e059b -> run_recon_sensor_pass_body_008073c0 -> publish_recon_triples_008073c0 -> recon_entry_construct_00804e70"
+    },
+    "wired_total_before": 10685,
+    "wired_total_after": 10685,
+    "game_validated": false,
+    "float_math_changed": false,
+    "readiness_target": {
+      "name": "recon_entry_construct_00804e70",
+      "state": "ready",
+      "abi": "callback",
+      "called": true,
+      "call_sites": 2
+    },
+    "readiness_note": "Source-text wired total remains 10685 because the direct constructor call is in the inline GameReconRelationLists::refresh header, which the text state classifier does not promote. The built executable independently reports target 00804e70 called=true, call_sites=2, callers_live=2. Refreshed whole-graph called total is 5943; the earlier cached graph reported 5917, so that aggregate delta is not attributed to this one-function patch.",
+    "compiled_new_target_calls": 1
+  },
+  "coordination": "Gunnery file was queued behind agent/g5-w1 and claimed after its release; only the disjoint recon getter/refresh hunks were edited."
+}

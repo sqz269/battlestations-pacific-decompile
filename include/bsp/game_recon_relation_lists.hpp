@@ -9,9 +9,10 @@
 namespace bsp {
 
 // The live scan buckets behind GameGunneryHost's indexed recon APIs. The list
-// nodes use the reconstructed native operations; their payload borrows the
-// host's real unit index and sensor-pass level, not a fabricated native unit or
-// 1Ch ReconEntry. Group/detection-record publication remains a separate seam.
+// nodes and entry construction use the reconstructed native operations; their
+// payload borrows the host's real unit index, sensor getter and sensor-pass
+// level. No native unit byte image is manufactured. Group/detection-record
+// publication remains a separate seam.
 //
 // Evidence: bsp.py show 008073c0, 008040e0, 00804150. At 00807430..00807455
 // every class's own/enemy/neutral lists move into its carry-over list. The
@@ -21,9 +22,7 @@ public:
     static constexpr std::size_t kClassCount = 0x61;
     static constexpr std::size_t kRelationCount = 3; // own, enemy, neutral
 
-    struct Entry {
-        std::size_t unit{};
-        int level{};
+    struct Entry : cc13_seg49::ReconEntry {
         cc13_seg49::ReconNode* node{};
         cc13_seg49::ReconList* owner{};
     };
@@ -49,18 +48,26 @@ public:
         }
     }
 
-    void refresh(int class_id, std::size_t relation, std::size_t unit, int level) {
+    void refresh(int class_id, std::size_t relation, std::size_t unit, int level,
+                 cc13_seg49::ReconEntrySensorHost& sensors) {
         auto& bucket = classes_.at(static_cast<std::size_t>(class_id));
         auto& destination = bucket.relations.at(relation);
         auto& entry = bucket.entries.try_emplace(unit).first->second;
-        entry.unit = unit;
-        entry.level = level;
         if (entry.node != nullptr) {
+            // 008065B0's carried arm refreshes +8h even for an unchanged
+            // relation: a submarine's live sensor class can change with depth.
+            entry.sensor_class_index = sensors.recon_unit_sensor_class_index(unit);
             cc13_seg49::recon_list_splice_node_008040e0(destination, *entry.owner, entry.node);
         } else {
+            // 008065B0 passes level 2 for own entries, 0 for enemy/neutral.
+            cc13_seg49::recon_entry_construct_00804e70(sensors, entry, unit,
+                                                       relation == 0 ? 2 : 0);
             cc13_seg49::recon_list_push_back_00804c30(*this, destination, &entry);
             entry.node = destination.tail;
         }
+        // The sensor pass has already established this pass's final level;
+        // this same constructed entry supplies the published projection.
+        entry.level = level;
         entry.owner = &destination;
     }
 
