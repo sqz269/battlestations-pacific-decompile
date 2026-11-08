@@ -183,7 +183,8 @@
     "Run the existing 007B2250 body when the kind-0 user path is built and when a successor adopts its own point vector; retain its one-owner source for the path lifetime.",
     "Borrow the actual slot user_points vector through a typed Vec3/array view; observe append, replacement and buffer reallocation without point copying or type punning.",
     "Rebind a source to its same owner before a count read because the directors vector can relocate. Route user-path queue, cursor bounds, final-leg and path-follow advance counts through the existing 007B0E30 body.",
-    "Keep other path-source counts on their existing projection. Adapt the existing unwired SimplePathSource save body to the new borrowed-vector interface."
+    "Keep other path-source counts on their existing projection. Adapt the existing unwired SimplePathSource save body to the new borrowed-vector interface.",
+    "Review round 1: user-path counts, all point readers and the contiguous follow-step buffer select the same live user_points owner, independently of path_begun snapshot refresh."
   ],
   "evidence": [
     "bsp.py show 007b2250: native fastcall out/slot interface, allocation, refcount and vtable stores; 0071F821 kind-0 path build caller.",
@@ -193,8 +194,8 @@
   ],
   "validation": [
     "scripts/build.ps1 passes all four existing test groups.",
-    "Win32 /MD /W4 /WX standalone wire_g5_c779_simple_path_probe, linked with /MANIFEST:EMBED: live vector reallocation, append, empty and alternate Vec3 binding contract passes.",
-    "git diff --check passes; no float arithmetic changed."
+    "git diff --check passes; no float arithmetic changed.",
+    "Review round 1: the focused probe now executes real GameCommandsHost begin/copy/append/final/cursor/follow operations. It fails on reviewed 4185490d8 objects and passes against the fixed rebuilt host. Game was not run."
   ],
   "limitations": [
     "Static entry reach and focused source fixture, not gameplay or original ABI validation. The game was not run.",
@@ -205,5 +206,46 @@
     "0071F5D0 removal needs a real presence=0 producer and last-filled-slot path owner; agent/g5-w4 reported the current sender only produces presence=1 additions.",
     "007B1010 needs its authored-source receiver interpretation corrected before use.",
     "Native shared source references and the live archive-save owner remain separate from this one-owner host projection."
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1692,
+    "reviewed_head": "4185490d8b06770ed6a0e94742f538990bad1bc3",
+    "findings": [
+      {
+        "finding": "User counts read live user_points but point/follow-step reads use stale path_points after director copy then append before begin.",
+        "status": "fixed",
+        "change": "Centralized selected source storage in GameDirector::path_point_storage. The retained SimplePathSource count view, cursor XY/XYZ, final point, build source, follow-step point/buffer, queue counts and report rows use that same storage. State copying takes the source selected by this accessor.",
+        "regression": "Extended the existing probe to execute actual GameCommandsHost public calls: begin a user path, copy director 0 to 1, append to 1 before its next begin, then query final and cursor points and advance/read the current point.",
+        "before": "Probe linked against existing 4185490d8 game objects exited 1: copy+append final point read the stale snapshot.",
+        "after": "PASS: the same probe linked to rebuilt game objects returns the appended XYZ through final-point, explicit cursor-point, and follow-step/current-point queries. All four build test groups pass; both claimed bodies remain reachable (5470 called reconstructed addresses)."
+      }
+    ],
+    "validation": {
+      "baseline_probe_exit": 1,
+      "baseline_failure": "copy+append final point read the stale snapshot",
+      "rebuilt_probe_exit": 0,
+      "rebuilt_probe_result": "simple path live-vector contract passed",
+      "build": "scripts/build.ps1: 4/4 test groups pass",
+      "call_graph": "007b2250 and 007b0e30 reachable; 5470/6083 reconstructed addresses called",
+      "float_math": "No float arithmetic changed; source-storage reads only.",
+      "probe_build": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /W4 /WX; link rebuilt bsp_game objects excluding game_main.obj, bsp_core/lua/zlib and Windows libraries; /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO.",
+      "readiness": {
+        "wired": 10624,
+        "claimed_rows": [
+          {
+            "address": "007b0e30",
+            "state": "wired",
+            "called": true,
+            "call_sites": 2
+          },
+          {
+            "address": "007b2250",
+            "state": "wired",
+            "called": true,
+            "call_sites": 2
+          }
+        ]
+      }
+    }
+  }
 }

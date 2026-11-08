@@ -344,7 +344,9 @@ struct GameDirector {
     // 00836920's `moveonpath` arm ever ask for. The native allocates ten of
     // them; this host carries the one that is read.
     bsp::ShipAiPathCursor path_cursor{};
-    std::vector<std::array<float, 3>> path_points;   // the path source's points
+    // Authored/inherited source projection. An attached user source borrows
+    // user_points below; this snapshot is never its count or point-read owner.
+    std::vector<std::array<float, 3>> path_points;
     std::shared_ptr<DirectorAuthoredPath> authored_path;
     std::unique_ptr<bsp::path_movcam_seg46_argon::SimplePathSource> simple_path;
     std::string path_name;
@@ -397,6 +399,9 @@ struct GameDirector {
         pm::entity_path_source_create_for_slot_007b2250(source, &user_points);
         simple_path.reset(source);
     }
+    const std::vector<std::array<float, 3>>& path_point_storage() const {
+        return path_user ? user_points : path_points;
+    }
     int path_point_count() const {
         namespace pm = bsp::path_movcam_seg46_argon;
         if (path_user) {
@@ -404,7 +409,7 @@ struct GameDirector {
             // directors is a relocatable vector. Rebind to this SAME slot's
             // vector object before reading it, including after a director move.
             // No point buffers are copied or reinterpreted by this projection.
-            simple_path->slot_points_08 = pm::SimplePathPoints{&user_points};
+            simple_path->slot_points_08 = pm::SimplePathPoints{&path_point_storage()};
             // bsp.py show 007B0E30: source+8 -> vector first/last, /0Ch.
             return pm::simple_path_source_point_count_007b0e30(*simple_path);
         }
@@ -1356,7 +1361,7 @@ public:
         // 1 the native's `MOV EBX,0x1` default gives them. Named hole.
         if (chain_.director.slot_command[0] == 0x00e08f80u
             && chain_.director.path_built) {
-            path_point_counts[0] = static_cast<int>(chain_.director.path_points.size());
+            path_point_counts[0] = chain_.director.path_point_count();
         }
         // 0071D79C reads only the slot's command pointer, so the queue record
         // this hands over carries the ten commands and nothing else.
@@ -3750,7 +3755,7 @@ struct DirectorPathObjectCopyView {
         // 007B1C05: the successor now shares the source, which is not its own +40h
         // vector; 007B1C2E..007B1C3E: the cursor's +8h/+0Ch/+10h.
         to.path_name = from.path_name;
-        to.path_points = from.path_points;
+        to.path_points = from.path_point_storage();
         to.authored_path = from.path_user ? nullptr : from.authored_path;
         to.simple_path.reset();
         to.path_user = false;
@@ -4136,7 +4141,8 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     Impl& host = *impl_;
     GameDirector& director = host.directors[unit_index];
     const std::string& path_name = director.pending_path_name;
-    const std::vector<std::array<float, 3>>& points = director.pending_path_points;
+    const std::vector<std::array<float, 3>>& points = director.path_user
+        ? director.user_points : director.pending_path_points;
     // 0071F6C6/0071F6CD answer null for an entity with no path interface and
     // 007B22A0 still builds the source, so the build always happens and a
     // zero-point source is what makes 007ADC30 true on the first state step.
@@ -4327,8 +4333,9 @@ bool GameCommandsHost::path_cursor_point(std::size_t unit_index, int leg,
         x = point.x;
         z = point.z;
     } else {
-        x = director.path_points[static_cast<std::size_t>(index)][0];
-        z = director.path_points[static_cast<std::size_t>(index)][2];
+        const auto& point = director.path_point_storage()[static_cast<std::size_t>(index)];
+        x = point[0];
+        z = point[2];
     }
     return true;
 }
@@ -4358,7 +4365,8 @@ bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) 
         out[1] = point.y;
         out[2] = point.z;
     } else {
-        for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
+        const auto& point = director.path_point_storage()[static_cast<std::size_t>(index)];
+        for (int k = 0; k < 3; ++k) out[k] = point[k];
     }
     return true;
 }
@@ -4381,7 +4389,7 @@ bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float o
         pm::Vec3 get_point_vslot08(int index) override {
             if (director.authored_path && !director.path_user)
                 return director.authored_path->point(index);
-            const auto& p = director.path_points[static_cast<std::size_t>(index)];
+            const auto& p = director.path_point_storage()[static_cast<std::size_t>(index)];
             return {p[0], p[1], p[2]};
         }
         int point_count_vslot0c() override {
@@ -4457,7 +4465,8 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     int index = director.path_cursor.index_08;
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
-    const std::array<float, 3>& point = director.path_points[static_cast<std::size_t>(index)];
+    const auto& points = director.path_point_storage();
+    const std::array<float, 3>& point = points[static_cast<std::size_t>(index)];
     const bool squadron_arm = bsp::kSquadronPathFollowStepBound && !ship_arm;
     if ((bsp::kPathCursorFollowStepBound && ship_arm) || squadron_arm) {
         // Packet s53_sqn_path: a plane unit takes 0084E3A8's arguments instead
@@ -4473,7 +4482,7 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
         const bool force = !squadron_arm && goal_reached ? goal_reached(point[0], point[2]) : false;
         const std::int32_t attached = user_path_attached_0071fc40(unit_index) ? 1 : 0;
         const bsp::ShipAiPathFollowStep r = bsp::ship_ai_path_follow_step_007add70(
-            director.path_cursor, director.path_points.front().data(), count, unit_x, unit_z,
+            director.path_cursor, points.front().data(), count, unit_x, unit_z,
             arm_radius, attached, heading, arm_factor, force);
         host.done("WeaponDirector::path_follow_00836bf0", 0x00836bf0u);
         host.done("EntityCommand::path_follow_step_007add70", 0x007add70u);
@@ -4554,7 +4563,7 @@ std::vector<GamePathCursorRow> GameCommandsHost::path_cursor_rows() const {
         row.unit_index = i;
         row.unit = i < host.units.size() ? host.units[i].name : std::string();
         row.path = director.path_name;
-        row.points = director.path_points.size();
+        row.points = director.path_point_storage().size();
         row.follow_mode = director.path_follow_mode;
         row.start_mode = director.path_start_mode;
         row.start_index = director.path_start_index;
