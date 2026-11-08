@@ -7,6 +7,20 @@
   "base_head": "e910d1b96474a65fca7979219cdca7f8a1583c97",
   "wire_readiness_before": 10421,
   "wire_readiness_after": 10425,
+  "review_round_1": {
+    "run": 1460,
+    "finding": "P2: scene class resolution and later units setup initialize ShipGlobals twice, replacing the settings object retained by the ship leaves.",
+    "status": "fixed",
+    "change": "Make their shared load_ship_globals_0083b6e6 initializer return immediately once gameplay_tuning_settings_ exists, before script execution or object replacement. Failed initialization remains retryable; units setup continues all subsequent tuning reads.",
+    "evidence": "bsp.py show 00424c40: native singleton pointer 00F8753C is retained and returned to subsequent borrowers.",
+    "checks": [
+      "./scripts/build.ps1: MSVC Win32 Release build and all four CTests passed after the fix.",
+      "Fresh call_graph.py and who checks: all four claimed loaders remain entry-reachable with one call site each.",
+      "wire_readiness.py: 10425 wired, all four leaf rows called=true/call_sites=1, call graph stale=false.",
+      "Source inspection: successful-load return precedes script execution and the only gameplay_tuning_settings_ replacement; src/game_hosts_units.cpp is unchanged, preserving its subsequent tuning reads.",
+      "git diff --check passed. No game execution or dedicated dynamic initialization fixture was run."
+    ]
+  },
   "validation": {
     "build": "./scripts/build.ps1: passed MSVC Win32 Release and all four CTests",
     "call_graph": "python tools/call_graph.py and who for each wired address: each has one entry-reachable call from load_surface_ship_leaf",

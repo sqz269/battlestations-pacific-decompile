@@ -1708,7 +1708,10 @@ public:
     // through 00b67980 / 00b67800 at 0083b721 / 0083b73d. The executable has one
     // Lua state, the mission machine's, so it runs the file through the
     // recovered file runner 00885110 on that state and records 00b69d40.
-    // Returns true when the global is a table afterwards.
+    // Shared, idempotent initialization for descriptor loads and units setup:
+    // after a successful settings load, later borrowers reuse that same object
+    // and ShipGlobals table without executing the script again. Failed loads
+    // remain retryable. Units setup still performs its remaining tuning reads.
     bool load_ship_globals_0083b6e6();
 
     // 007E2A20 BSP_GameTuning_LoadFromPlaneGlobals, driven by the reconstruction

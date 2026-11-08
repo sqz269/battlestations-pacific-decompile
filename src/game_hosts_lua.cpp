@@ -2777,6 +2777,11 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         log_.unimplemented("GameSettings::run_ship_globals_script", "00b69d40");
         return false;
     }
+    // 00424C40 returns the same settings singleton to later borrowers. Scene
+    // class loading can initialize it before GameUnitsHost's first settings
+    // pass; that pass must reuse it and continue its remaining tuning reads.
+    // A failed load publishes no settings object, so it remains retryable.
+    if (gameplay_tuning_settings_) return true;
     // The native runner is the Lua state owner's, with its own override list;
     // this process has one state and one recovered file runner, so the call
     // itself stays a record and the file is run through 00885110.
@@ -2824,7 +2829,7 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         log_.notef("stored ship avoidance tuning 194=%.9g 1d4=%.9g 1d8=%.9g 214=%.9g 218=%.9g",
             tuning[0], tuning[1], tuning[2], tuning[3], tuning[4]);
         // Literal store in the native settings load, not a Lua key/default
-        // inferred from the mission. The explicit process reload replays it.
+        // inferred from the mission. Later settings borrowers retain it.
         avoid_all_ship_collision_ = kAvoidAllShipCollisionLoaderDefault;
         avoid_all_ship_collision_loaded_ = true;
         log_.implemented("GameSettings::load_avoid_all_ship_collision", "0083bcd5");
