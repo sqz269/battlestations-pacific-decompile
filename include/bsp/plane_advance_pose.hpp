@@ -307,6 +307,7 @@ inline constexpr float kPlaneAttachHeightMargin = 0.01f;
 struct PlaneAdvanceOutput {
     AdvanceMatrix live_pose{};  // what lands in unit+74h
     bool rotation_applied = false;  // 0085E4D0 did not take its 0085E871 exit
+    float bank_yaw_angle = 0.0f; // 007DA0E9's stored angle, for host accounting
     bool levelling_applied = false;
     // True when 007DA211's attached branch would have run but no
     // PlaneAttachedClampHost was supplied, so the clamp did not run.

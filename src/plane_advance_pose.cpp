@@ -470,9 +470,9 @@ PlaneAdvanceOutput rotate_and_translate_007d9f60(const PlaneAdvanceInputs& in,
                                                          in.blend_curve_x1, 1.0f,
                                                          in.level_blend_input);
     AdvanceMatrix rot_y{};
-    ops.build_rotation_y_00b646e0(
-        rot_y, bank_yaw_angle_007da0ae(blend, in.bank_angle, in.pitch_angle,
-                                       in.bank_yaw_gain, in.difficulty, in.step));
+    out.bank_yaw_angle = bank_yaw_angle_007da0ae(blend, in.bank_angle, in.pitch_angle,
+                                               in.bank_yaw_gain, in.difficulty, in.step);
+    ops.build_rotation_y_00b646e0(rot_y, out.bank_yaw_angle);
     AdvanceMatrix yawed{};
     ops.multiply_00413920(yawed, out.live_pose, rot_y);
     out.live_pose = yawed;  // 007DA112..007DA117
