@@ -3,6 +3,7 @@
 #include "bsp/game_native_input_settings_application.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/native_game_settings_owner.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_configuration_cleanup.hpp"
@@ -15,6 +16,7 @@
 #include "bsp/native_input_keyboard_storage.hpp"
 #include "bsp/native_input_settings_defaults.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/native_soldier_loop_lengths.hpp"
 #include "bsp/settings_seg29_cc13.hpp"
 #include <array>
 #include <cstddef>
@@ -60,6 +62,31 @@ std::uint32_t header_count(const std::byte* configuration, std::size_t header, s
     const auto end = word<std::uintptr_t>(configuration, header + 8);
     return begin ? static_cast<std::uint32_t>((end - begin) / element) : 0u;
 }
+
+// 00444BE0 is the same string/float map specialization for keyboard
+// sensitivity and SoldierClass LoopLengths: key at node+0Ch, float+14h,
+// color/nil+18h/+19h. Use the complete existing raw-tree body on the actual
+// keyboard map, rather than the storage provider's abbreviated insert path.
+class KeyboardRawFloatLibrary final : public NativeInputKeyboardStorage {
+public:
+    explicit KeyboardRawFloatLibrary(NativeStringStorage& strings)
+        : NativeInputKeyboardStorage(strings),
+          raw_strings_(game_native_string_process().raw_context()) {
+        // Other keyboard operations and cleanup still borrow this bridge.
+        // Admit identical publication/gate/manager cells, not matching values.
+        const auto* const bridge = dynamic_cast<ActualNativeStringPoolStorage*>(&strings);
+        if (!bridge || !bridge->uses_raw_pool_cells(raw_strings_))
+            throw std::logic_error("keyboard float map requires the canonical raw string-pool domain");
+    }
+    float* multiplier_00444be0(void* tree, const void* key) override {
+        // Empty callbacks select the body's native CRT invalid-parameter
+        // boundary; no alternate allocation or tree-validation service.
+        return get_or_insert_native_soldier_loop_length_00444be0(
+            tree, key, raw_strings_, {});
+    }
+private:
+    NativeStringRawPoolContext& raw_strings_;
+};
 } // namespace
 
 struct GameNativeInputConfigurationApplication::Impl {
@@ -72,7 +99,7 @@ struct GameNativeInputConfigurationApplication::Impl {
     NativeInputConfigurationCleanupContext cleanup;
     NativeInputConfigurationLoadServices loading;
     NativeInputConfigurationParseServices parsing;
-    NativeInputKeyboardStorage keyboard_library;
+    KeyboardRawFloatLibrary keyboard_library;
     NativeInputKeyboardApplyContext keyboard_context;
     NativeInputKeyboardApplication keyboard;
     NativeInputSettingsDefaultsServices defaults;

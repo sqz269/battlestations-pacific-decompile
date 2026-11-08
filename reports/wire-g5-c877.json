@@ -192,5 +192,55 @@
   },
   "remaining": "Movie append/growth need a production native Movie allocation owner. C++ interfaces are not original register-ABI replacements; no gameplay or live GUI validation.",
   "producer_evidence": "Saved bsp.gpr /battlestationspacific.exe: ghidra xrefs F8BD4C, decompile/disasm CD70F0. MOV ECX,F8BD4C at CD70F0; CALL AAD5F0 at CD70F5; PUSH CE0A50 at CD70FA; atexit at CD70FF. CRT table reference CE3458. initialize_once reuses the existing process storage/allocator-list owner and one-shot teardown registration.",
-  "integration_note": "Common game_main failure flag/diagnostics deliberately use the same gui_widget_pool_startup_incomplete rename as c881 Line work; retain the separate Movie (before Icon), Button and Line startup blocks when landing concurrent work. Material/GUI-header edits are explicit Movie member specializations, leaving generic and Icon/Button/Line dispatch alone."
+  "integration_note": "Common game_main failure flag/diagnostics deliberately use the same gui_widget_pool_startup_incomplete rename as c881 Line work; retain the separate Movie (before Icon), Button and Line startup blocks when landing concurrent work. Material/GUI-header edits are explicit Movie member specializations, leaving generic and Icon/Button/Line dispatch alone.",
+  "merge_repair": {
+    "origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "original_head": "f0199fd6b0667d5fb986255a1f8ee81bc675f32a",
+    "conflict_files": [
+      "src/native_material_pools.cpp"
+    ],
+    "resolution": "Reviewed the helper union of pure insertions: retain incoming WidgetSlabAppender<T>/Icon specialization and generic allocate routing, plus Movie initialize/allocate specializations and their include. No ledger or cmake/startup.cmake conflict. Diff against origin/main leaves only the intended Movie source/header additions.",
+    "normal_build": "scripts/build.ps1 passed all four CTests",
+    "movie_fixture": "129 Movie slots; 33 slabs; capacity 32 -> 66; payloads/trailers and trim/teardown pass",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c877-merge-on-build.log",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_restored_against_merge_index": true,
+      "backup_manifest_remaining": false,
+      "ctests_passed": 4
+    },
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "summary": {
+        "wired": 10739,
+        "callees_done_no_wired_caller": 8533,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "graph_stale": false,
+      "aacdf0_called": true,
+      "aacdf0_call_sites": 2,
+      "aad4d0": "Direct PE who/path confirms reachable Movie initialize_pool call; new tagged entry remains outside old readiness rows"
+    },
+    "production_called": 5625,
+    "source_calls": "AACDF0 remains called by AAD4D0; AAD4D0 remains called by Movie initialize_pool, reached from WinMain startup.",
+    "game_run": false,
+    "restored_normal_build": "scripts/build.ps1 passed all four CTests after ON restoration",
+    "call_graph_meta": {
+      "build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w7\\build\\win32",
+      "map_mtime": 1794149847.5310607,
+      "exe_mtime": 1794149847.5230072,
+      "head": "f0199fd6b0667d5fb986255a1f8ee81bc675f32a",
+      "no_inline": false,
+      "seconds": 4.7,
+      "orphan_contributions": {}
+    },
+    "tests": "Normal, ON and restored-normal builds each pass all four CTests; focused 129-slot Movie fixture passes against merged library."
+  }
 }

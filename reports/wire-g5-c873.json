@@ -1,0 +1,82 @@
+{
+  "goal": 5,
+  "chain": 873,
+  "packet": "g5-w1",
+  "branch": "agent/g5-w1",
+  "rows": [
+    {
+      "native": "0074e230",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::pilot_think_and_commit, 007BB920 air-brake override",
+      "evidence": "bsp.py show 0074e230 and 007bb920: both predicates admit exactly unit+900h states 7, 6, 4, 5. The existing typed body now replaces the host's four comparisons on the retained live plane state.",
+      "abi": "Original bool __thiscall(unit), RET 0; reconstructed interface bool(int32_t plane_state). This is a typed host call, not a binary ABI replacement.",
+      "call_graph": "Release bsp_game.exe: one entry-reachable call at 102f378c from PlaneBinding::pilot_think_and_commit; path includes the plane free-flight arm, fixed-step simulation, mission frame and WinMainCRTStartup."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: UnitDebugInspector_PrintFlooded_006fb750",
+      "reason": "Only recovered caller is the debug inspector 006FB750; a single-player gameplay consumer is missing and debug-only work is excluded."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: readiness stand-in candidate",
+      "reason": "A live ControllerStateMessage/DirectorFlags snapshot producer at this host site is missing; projectile flight snapshots are a different object."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::failure_side_effect",
+      "reason": "The record-only callback lacks the scoring/unit/hit native views needed by the existing raw-callback body."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::repair_completed_notify",
+      "reason": "This implementation is explicitly unreachable on the bound failure-start/expiry path; a live repair-completion caller and scoring/unit views are missing here."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate::direct_hit_00915f20 record sites",
+      "reason": "The record-only sites lack the scoring/target/hit native views required to call the existing raw-callback body."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "The inspected AddPosition(s)-only adapter deliberately rejects this callback; a live reset caller and movie-screen view are missing in that adapter."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "The inspected AddPosition(s)-only adapter deliberately rejects this callback; a live reset caller and movie-screen view are missing in that adapter."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "The inspected AddPosition(s)-only adapter deliberately rejects this callback; a live reset caller and movie-screen view are missing in that adapter."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "The inspected AddPosition(s)-only adapter deliberately rejects this callback; a live reset caller and movie-screen view are missing in that adapter."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_set_zoom",
+      "reason": "The inspected AddPosition(s)-only adapter deliberately rejects this callback; its live camera token does not expose the MovCamZoom state required by this body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed.",
+    "binary": "tools/call_graph.py reports 5597/6220 reconstructed addresses called; who and path 0074e230 confirm the new reachable call.",
+    "scope": "No float arithmetic changed; no new tests or reconstructed bodies were added. The four comparisons were removed, and no alternate path or goal switch was added.",
+    "limitations": "Built-executable reachability only; the game was not run. The original AI-tick call site is not newly bound by this change."
+  }
+}
