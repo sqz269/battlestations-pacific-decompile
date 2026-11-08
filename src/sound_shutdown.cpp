@@ -32,8 +32,7 @@ void destroy_member_stage(SoundSystemOwner& owner, SoundSystemShutdownContext& c
     auto& config = owner.configuration;
     switch (stage) {
     case 0: // +134 pointer storage only; EventSystem owns the DSP objects.
-        shrink_sound_system_dsps_00a7a980_fragment(config, 0);
-        std::vector<void*>{}.swap(config.system_dsps_134);
+        config.system_dsps_134.reset(); // A7B830 includes the native resize-to-zero.
         break;
     case 1:
         shrink_sound_configured_groups_00a7f240_fragment(config, 0);

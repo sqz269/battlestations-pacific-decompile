@@ -4,10 +4,12 @@
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/sound_manager_levels.hpp"
 #include "bsp/sound_listener.hpp"
+#include "bsp/sound_cc13.hpp"
 
 #include <array>
 #include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace bsp {
@@ -40,11 +42,46 @@ struct SoundFmodAdvancedSettings {
 };
 static_assert(sizeof(SoundFmodAdvancedSettings) == 0x44);
 
+// Own the live 4-byte FMOD handle slots, in the allocation domain used by
+// A7A850/A7A8B0. This owns storage only: A7AAF0/EventSystem release the DSPs.
+// A7B7A0/A7B830 leave a freed pointer word behind; clear the C++ owner's header
+// afterwards so explicit native teardown and C++ unwinding cannot free it twice.
+template<void (*Destroy)(sound_cc13::NativePointerArray&)>
+class SoundConfiguredDspPointers {
+public:
+    SoundConfiguredDspPointers() noexcept = default;
+    ~SoundConfiguredDspPointers() { reset(); }
+    SoundConfiguredDspPointers(const SoundConfiguredDspPointers&) = delete;
+    SoundConfiguredDspPointers& operator=(const SoundConfiguredDspPointers&) = delete;
+    SoundConfiguredDspPointers(SoundConfiguredDspPointers&& other) noexcept
+        : header_(std::exchange(other.header_, {})) {}
+    SoundConfiguredDspPointers& operator=(SoundConfiguredDspPointers&& other) noexcept {
+        if (this != &other) {
+            reset();
+            header_ = std::exchange(other.header_, {});
+        }
+        return *this;
+    }
+    sound_cc13::NativePointerArray& native_header() noexcept { return header_; }
+    bool empty() const noexcept { return header_.count == 0; }
+    std::size_t size() const noexcept { return static_cast<std::size_t>(header_.count); }
+    void* back() const noexcept {
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(header_.data[header_.count - 1]));
+    }
+    void pop_back() noexcept { --header_.count; }
+    void reset() noexcept {
+        if (header_.data != nullptr) Destroy(header_);
+        header_ = {};
+    }
+private:
+    sound_cc13::NativePointerArray header_{};
+};
+
 struct SoundConfiguredChannelGroup {
     std::string name;                 // native NativeString at record +00
     void* channel_group{};            // native record +08
-    std::vector<void*> dsps;          // native record +0C/+10/+14
-    std::int32_t dsp_capacity{};
+    SoundConfiguredDspPointers<sound_cc13::destroy_sound_group_effect_pointers_00a7b7a0>
+        dsps;                        // actual header for native record +0C/+10/+14
 };
 
 struct SoundConfiguredType {
@@ -68,8 +105,8 @@ struct SoundConfigurationState {
     std::int32_t previous_listener_110{}; // caller value until the first change
     std::vector<SoundConfiguredChannelGroup> channel_groups_128;
     std::int32_t channel_group_capacity_130{};
-    std::vector<void*> system_dsps_134;
-    std::int32_t system_dsp_capacity_13c{};
+    SoundConfiguredDspPointers<sound_cc13::destroy_sound_system_dsps_00a7b830>
+        system_dsps_134;              // actual +134/+138/+13C pointer-array header
     void* master_channel_group_140{};
 };
 

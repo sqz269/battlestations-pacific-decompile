@@ -37,7 +37,7 @@ void release_sound_configured_group_effects_00a7aaf0(
 
 void destroy_sound_configured_group_storage_00a7bfe0(
     SoundConfiguredChannelGroup& group) {
-    std::vector<void*>{}.swap(group.dsps);
+    group.dsps.reset(); // A7BFE0 -> A7B7A0: resize then free the actual slots.
     std::string{}.swap(group.name);
 }
 
