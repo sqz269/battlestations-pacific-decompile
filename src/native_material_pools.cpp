@@ -1,6 +1,7 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
+#include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
@@ -791,6 +792,20 @@ template<> void* NativeGuiWidgetPool<GuiListboxPoolTraits>::allocate() {
     return allocate_slot<GuiListboxPoolTraits,
         &NativeGuiWidgetPool<GuiListboxPoolTraits>::initialize_slab,
         &push_native_listbox_pool_slab_00a9b250>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::initialize() {
+    // AC9B30 inlines AC9870's reserve(32) on the actual pool+28h table,
+    // inside native unwind state 2. Keep the shared engine's unwind order.
+    initialize_pool<GuiGridPoolTraits,
+        &native_gui_grid_pool_table_reserve_00ac9870>(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
+    // AC9C10 at AC9C58..AC9CBF inlines AC97F0 after the genuine 12A4h
+    // slab initialization under this pool's existing critical section.
+    return allocate_slot<GuiGridPoolTraits,
+        &NativeGuiWidgetPool<GuiGridPoolTraits>::initialize_slab,
+        &native_gui_grid_pool_table_push_back_00ac97f0>(storage_);
 }
 
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
