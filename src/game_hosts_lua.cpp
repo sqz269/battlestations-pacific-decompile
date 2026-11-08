@@ -107,6 +107,8 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/game_host_vehicle_class.hpp"
+#include "bsp/game_hosts_global_subsystems.hpp"
+#include "bsp/warning_owner.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/game_native_vfs_application.hpp"
@@ -8959,12 +8961,56 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
     return loaded;
 }
 
+namespace {
+// 00980C10/00980D30 take manager+24h while parsing or changing a slot.
+// This is the critical section created by 0098A020, with its real +18h
+// recursion-depth word, not a separate lock attached to the Lua machine.
+class WarningManagerLock {
+public:
+    explicit WarningManagerLock(bsp::WarningOwner* owner)
+        : section_(owner != nullptr ? owner->critical_section_24 : nullptr) {
+        if (section_ != nullptr) {
+            ::EnterCriticalSection(&section_->native);
+            ++section_->depth;
+        }
+    }
+    ~WarningManagerLock() {
+        if (section_ != nullptr) {
+            --section_->depth;
+            ::LeaveCriticalSection(&section_->native);
+        }
+    }
+    WarningManagerLock(const WarningManagerLock&) = delete;
+    WarningManagerLock& operator=(const WarningManagerLock&) = delete;
+private:
+    bsp::TrackedCriticalSection* section_;
+};
+} // namespace
+
+// Reads before mission construction (for example the final menu summary)
+// see no channel map. Only AddListener/RemoveListener request mutable state;
+// they require the actual manager produced by the global-subsystems phase.
+const std::vector<GameMissionLuaHost::ListenerEntry>&
+GameMissionLuaHost::warning_listeners() const noexcept {
+    static const std::vector<ListenerEntry> empty;
+    const bsp::WarningOwner* owner = current_warning_owner();
+    return owner != nullptr && owner->channels_f8 ? *owner->channels_f8 : empty;
+}
+
+std::vector<GameMissionLuaHost::ListenerEntry>& GameMissionLuaHost::mutable_warning_listeners() {
+    bsp::WarningOwner* owner = current_warning_owner();
+    if (owner == nullptr || !owner->channels_f8)
+        throw std::logic_error("warning listener mutation before manager construction");
+    return *owner->channels_f8;
+}
+
 // Packet cc9_lua_listeners. 008C6760 AddListener(channel, id, block) -> 00980C10:
 // channel map (00980150), the id's slot (00978D60), the subscription 0097E360
 // builds. A re-add of the same (channel, id) replaces the slot.
 void GameMissionLuaHost::add_listener_00980c10(lua_State* state, int argument_count,
     const std::string& channel, const std::string& id) {
     ++summary_.listener_adds;
+    const WarningManagerLock lock(current_warning_owner());
     ListenerEntry entry;
     entry.channel = channel;
     entry.id = id;
@@ -9094,18 +9140,25 @@ void GameMissionLuaHost::add_listener_00980c10(lua_State* state, int argument_co
         }
         }  // !native_loaded (goal 4 chain 352)
     }
-    for (ListenerEntry& existing : listeners_) {
-        if (listener_key_equal(existing.channel, entry.channel)
-            && listener_key_equal(existing.id, entry.id)) {
-            existing = entry;
-            log_.implemented("MissionLuaNative::AddListener", "008c6760");
-            return;
-        }
+    auto& entries = mutable_warning_listeners();
+    // 00980150 orders channel keys and 00978D60 orders id keys by 00443D00.
+    // 0097B8C0 traverses that tree in key order, not AddListener call order.
+    const auto position = std::lower_bound(entries.begin(), entries.end(), entry,
+        [](const ListenerEntry& a, const ListenerEntry& b) {
+            const int channel_order = _stricmp(a.channel.c_str(), b.channel.c_str());
+            return channel_order < 0 || (channel_order == 0
+                && _stricmp(a.id.c_str(), b.id.c_str()) < 0);
+        });
+    if (position != entries.end() && listener_key_equal(position->channel, entry.channel)
+        && listener_key_equal(position->id, entry.id)) {
+        *position = std::move(entry);
+        log_.implemented("MissionLuaNative::AddListener", "008c6760");
+        return;
     }
     log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" callback=\"%s\" entities=%zu "
         "attacker_filters=%d (packet cc9_lua_listeners)", entry.channel.c_str(), entry.id.c_str(),
         entry.callback.c_str(), entry.entity_ids.size(), entry.attacker_filters_set ? 1 : 0);
-    listeners_.push_back(std::move(entry));
+    entries.insert(position, std::move(entry));
     log_.implemented("MissionLuaNative::AddListener", "008c6760");
     return;
 }
@@ -9113,11 +9166,12 @@ void GameMissionLuaHost::add_listener_00980c10(lua_State* state, int argument_co
 void GameMissionLuaHost::remove_listener_00980d30(const std::string& channel,
     const std::string& id) {
     ++summary_.listener_removes;
-    // 00980D30 removes the checked subscription; OFF keeps the tolerant vector search.
+    const WarningManagerLock lock(current_warning_owner());
+    // 00980D30 removes the checked subscription from the canonical manager map.
     {
         // 008C6AE7 passes the two Lua strings to 00980D30 (RET 8). The registry
         // is the existing 008C6760 -> 00980C10 producer, not a second manager.
-        // Lua calls run serially on this host; no native critical section is owned.
+        // Lua calls run serially on this host; the manager owns the registry lifetime.
         class LuaListenerRemovalView final : public bsp::oct18_tail_c::WarningListenerRemovalView {
         public:
             LuaListenerRemovalView(std::vector<ListenerEntry>& entries,
@@ -9153,7 +9207,7 @@ void GameMissionLuaHost::remove_listener_00980d30(const std::string& channel,
             const std::string& id_;
             std::size_t index_{};
             ListenerEntry* subscription_{};
-        } view(listeners_, channel, id);
+        } view(mutable_warning_listeners(), channel, id);
         bsp::oct18_tail_c::warning_remove_listener_00980d30(view);
     }
     log_.implemented("MissionLuaNative::RemoveListener", "008c6990");
@@ -9163,7 +9217,7 @@ void GameMissionLuaHost::remove_listener_00980d30(const std::string& channel,
 bool GameMissionLuaHost::listener_active_00980e00(const std::string& channel,
     const std::string& id) {
     ++summary_.listener_queries;
-    for (const ListenerEntry& entry : listeners_) {
+    for (const ListenerEntry& entry : warning_listeners()) {
         if (listener_key_equal(entry.channel, channel) && listener_key_equal(entry.id, id)) {
             return true;
         }
@@ -9244,7 +9298,7 @@ private:
 };
 
 // The three message-system services on [00F8A0C4]: 00980C10 add, 00980D30 remove and
-// 00980E00 query, the host's listener registry (listeners_) through the helpers
+// 00980E00 query, the host's listener registry (warning_listeners()) through the helpers
 // above. Every other PresentationHost service belongs to another binding.
 class ListenerRowHost final : public bsp::cc13_seg56::PresentationHost {
 public:
@@ -9393,7 +9447,7 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
             const seg64::EventParams params{&entity_param, &reason_param};
             matchers::MatchesHost matches_host;
             std::vector<bsp::WarningSubscription> subscriptions;
-            for (const ListenerEntry& entry : listeners_) {
+            for (const ListenerEntry& entry : warning_listeners()) {
                 if (!listener_key_equal(entry.channel, "entityKilled") || entry.callback.empty()) {
                     continue;
                 }
@@ -9534,7 +9588,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
         // condition; OFF keeps the host's inline collection loop.
         if constexpr (bsp::kWireLuaHostBound) {
             std::vector<bsp::WarningSubscription> subscriptions;
-            for (const ListenerEntry& entry : listeners_) {
+            for (const ListenerEntry& entry : warning_listeners()) {
                 if (!listener_key_equal(entry.channel, "exitzone") || entry.callback.empty()) continue;
                 bsp::WarningSubscription subscription;
                 subscription.callback = entry.callback;
@@ -9572,7 +9626,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
             }
             callbacks = bsp::evaluate_warning_channel_0097b8c0(subscriptions);
         } else {
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "exitzone")) continue;
             if (!entry.entity_ids.empty()
                 && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
@@ -9630,7 +9684,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
 //    this host keeps no entity tree, so a plane parented to its base is not told apart;
 //  - the parameter boxes are the entity (word [entity+174h], here the host id unit + 1)
 //    and the reason NativeString (0096DC00);
-//  - every subscription in the channel's order (here AddListener's) whose vtable[0Ch]
+//  - every subscription in case-insensitive listener-id order whose vtable[0Ch]
 //    009690B0 holds on those boxes and whose +2Ch threshold the pair crosses collects
 //    its callback name: with the reason "damage" (__stricmp 00BF7FBF) old > hp > new,
 //    with "repair" old < hp < new, both strict, so equality and NaN fail;
@@ -9654,7 +9708,7 @@ void GameMissionLuaHost::dispatch_hp_event_listeners() {
         const seg64::EventParams params{&entity_param, &reason_param};
         matchers::MatchesHost matches_host;
         std::vector<std::string> callbacks;
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "hpEvent")) continue;
             if (entry.native_other == nullptr) {
                 ++summary_.listener_hp_unloaded;
@@ -9733,7 +9787,7 @@ void GameMissionLuaHost::dispatch_ammo_type_listeners() {
         const seg64::EventParam kind_param = matchers::word_param(kind);
         const std::vector<const seg64::EventParam*> params{&entity_param, &kind_param};
         std::vector<bsp::WarningSubscription> subscriptions;
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "ammoType") || entry.native_other == nullptr) {
                 continue;
             }
@@ -9794,7 +9848,7 @@ void GameMissionLuaHost::dispatch_ammo_type_listeners() {
 //    vtable[0Ch] holds - 009688C0 (`leak`, vtable 00D1B6CC) and 00968940 (`fire`,
 //    00D1B6DC) test the entity filter +0Ch and the duration range +1Ch; 00968810
 //    (`failure`, 00D1B750) the entity +0Ch, the failureType set +1Ch and the
-//    duration range +2Ch - in the channel's order (here AddListener's);
+//    duration range +2Ch - in case-insensitive listener-id order;
 //  - each name is called with those values through 00887E50.
 // An entry whose native Load threw (AddListener's host-parse fallback) has no filter to
 // test and is skipped, as for `ammoType`.
@@ -9820,7 +9874,7 @@ void GameMissionLuaHost::dispatch_damage_listeners() {
             ? std::vector<const seg64::EventParam*>{&entity_param, &kind_param, &seconds_param}
             : std::vector<const seg64::EventParam*>{&entity_param, &seconds_param};
         std::vector<bsp::WarningSubscription> subscriptions;
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, channel) || entry.native_other == nullptr) {
                 continue;
             }
@@ -9898,7 +9952,7 @@ void GameMissionLuaHost::dispatch_damage_listeners() {
 //    ships are the scene's top-level units, so the test passes;
 //  - the one parameter box is the ship entity (word [ship+174h], here unit + 1);
 //  - 0097B8C0 collects the callback of every subscription whose vtable[0Ch] 00969070
-//    holds (the +0Ch entity filter), in the channel's order (here AddListener's);
+//    holds (the +0Ch entity filter), in case-insensitive listener-id order;
 //  - each name is called with (ship 00884A90) through 00887E50.
 // An entry whose native Load threw (AddListener's host-parse fallback) has no filter to
 // test and is skipped, as for `ammoType`.
@@ -9915,7 +9969,7 @@ void GameMissionLuaHost::dispatch_ship_landed_listeners() {
         const seg64::EventParam ship_param = matchers::word_param(entity);
         const std::vector<const seg64::EventParam*> params{&ship_param};
         std::vector<bsp::WarningSubscription> subscriptions;
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "shipLanded") || entry.native_other == nullptr) {
                 continue;
             }
@@ -9986,7 +10040,7 @@ void GameMissionLuaHost::dispatch_command_listeners() {
         Param status_param;
         status_param.text04 = seg64::construct_warning_event_record_0096dc00(p.status).name;
         std::vector<bsp::WarningSubscription> subscriptions;
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "command") || entry.native_other == nullptr) {
                 continue;
             }
@@ -10922,7 +10976,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
             const seg64::EventParams params{&victim_param, &attacker_param, &slot_param};
             matchers::MatchesHost matches_host;
             std::vector<bsp::WarningSubscription> subscriptions;
-            for (const ListenerEntry& entry : listeners_) {
+            for (const ListenerEntry& entry : warning_listeners()) {
                 if (!listener_key_equal(entry.channel, "kill")) continue;
                 if (entry.native_kill != nullptr) {
                     // Goal 4 chain 352: the subscription AddListener constructed
@@ -10953,7 +11007,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 bsp::evaluate_warning_channel_0097b8c0(subscriptions);
             callbacks.insert(callbacks.end(), matched.begin(), matched.end());
         } else {
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "kill")) continue;
             if (!entry.entity_ids.empty()
                 && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
@@ -11076,7 +11130,7 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     const std::size_t count = units_hooks_->count();
     if (recon_listener_levels_.size() < count * 3) recon_listener_levels_.resize(count * 3, 0);
     bool any_recon = false;
-    for (const ListenerEntry& entry : listeners_) {
+    for (const ListenerEntry& entry : warning_listeners()) {
         if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
     }
     if (bsp::kReconDetectionRecordsBound) {
@@ -11143,7 +11197,7 @@ void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, i
             ++summary_.listener_recon_changes;
             const int unit_id = static_cast<int>(u + 1);
             std::vector<std::string> callbacks;
-            for (const ListenerEntry& entry : listeners_) {
+            for (const ListenerEntry& entry : warning_listeners()) {
                 if (!listener_key_equal(entry.channel, "recon")) continue;
                 if (entry.native_recon != nullptr) {
                     // Goal 5 chain 631: the subscription AddListener loaded (00972450),
@@ -15923,7 +15977,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                        match, match.subscription(), match.params()) != 0;
         };
         auto evaluate = [&](int shooter) {
-        for (const ListenerEntry& entry : listeners_) {
+        for (const ListenerEntry& entry : warning_listeners()) {
             if (!listener_key_equal(entry.channel, "hit")) continue;
             if (entry.native_hit != nullptr) {
                 if (!native_hit_holds(*entry.native_hit, shooter)) continue;
@@ -16135,7 +16189,7 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
                 last = now;
                 ++summary_.forced_recon_sync_notifies;
                 bool any_recon = false;
-                for (const ListenerEntry& entry : listeners_) {
+                for (const ListenerEntry& entry : warning_listeners()) {
                     if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
                 }
                 if (!dead && kLuaListenersBound && kLuaReconListenersBound && any_recon
@@ -19104,7 +19158,7 @@ void GameMissionLuaHost::report_mission_script_state() {
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "
         "008C6990 / 008C6BB0 / 009813A0, packet cc9_lua_listeners)", kLuaListenersBound ? 1 : 0,
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
-        listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
+        warning_listeners().size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
     if constexpr (kLuaEntityKilledListenersBound) {
         log_.notef("summary mission script entityKilled listeners bound=1 deaths=%llu "

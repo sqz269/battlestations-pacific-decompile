@@ -26,6 +26,7 @@
 namespace bsp::game {
 
 namespace {
+WarningOwner* active_warnings{}; // [00F8A0C4], borrowed from game+21E0
 
 // 00BF6713 can return; no validation site in these four owners is expected to
 // reach it with the owners this host builds, so a call is an error.
@@ -96,12 +97,11 @@ struct GameGlobalSubsystemsHost::Impl {
     SingletonLifetimeCallbacks callbacks{nullptr, &destroy_registered_unreached,
         &invalid_parameter_unreached};
     WarningOwnerServicesSeam warning_services;
-    WarningOwner* warning_singleton_f8a0c4{nullptr};
     void* world_e188a8{nullptr};
     void* hook_owner_f8bbcc{nullptr};
     std::uint32_t hook_f8bf4c{0};
     WarningOwnerContext warning_context{crt_string_storage(), warning_services,
-        warning_singleton_f8a0c4, world_e188a8, hook_owner_f8bbcc, hook_f8bf4c, callbacks};
+        active_warnings, world_e188a8, hook_owner_f8bbcc, hook_f8bf4c, callbacks};
 
     TrafficConfig* traffic_21d0{nullptr};
     VoicePanelState* panel_21e4{nullptr};
@@ -197,6 +197,9 @@ void GameGlobalSubsystemsHost::build_warnings() {
     m.warnings_21e0 = allocate_owner<WarningOwner>(0x1b0, warning_words);
     construct_warning_owner_0098a020(*m.warnings_21e0);
     m.log.implemented("GlobalSubsystems::construct_warnings", "0098a020");
+    // 009870A0 publishes the same owner at [00F8A0C4] before the table load.
+    // AddListener/RemoveListener and all host dispatchers borrow its channels.
+    active_warnings = m.warnings_21e0;
     WarningOwner& owner = *m.warnings_21e0;
     owner.state.air_raid_deadline = 0.0f;
     owner.state.air_raid_active = false;
@@ -240,6 +243,7 @@ void GameGlobalSubsystemsHost::teardown_004d2bb0() {
     }
     if (m.warnings_21e0) {  // 004D2D1C
         release_warning_owner_host_storage(*m.warnings_21e0, m.warning_context);
+        if (active_warnings == m.warnings_21e0) active_warnings = nullptr;
         free_owner(m.warnings_21e0);
         m.log.note("global subsystems teardown: +21E0 warnings (004D2D1C)");
     }
@@ -249,6 +253,8 @@ void GameGlobalSubsystemsHost::teardown_004d2bb0() {
         m.log.note("global subsystems teardown: +21E4 panel (004D2D34)");
     }
 }
+
+WarningOwner* current_warning_owner() noexcept { return active_warnings; }
 
 WarningOwner* GameGlobalSubsystemsHost::warnings() noexcept { return impl_->warnings_21e0; }
 TrafficConfig* GameGlobalSubsystemsHost::traffic() noexcept { return impl_->traffic_21d0; }

@@ -14,6 +14,10 @@ namespace bsp::game {
 class GameHostLog;
 class GameVfsHost;
 
+// Current mission's canonical manager, published at 009870A0's entry and
+// withdrawn by the +21E0 teardown. Null outside that owner lifetime.
+WarningOwner* current_warning_owner() noexcept;
+
 // cc15-ob1 (docs/CC15_OBJECT_GLOBALSUBSYSTEMS.md): four of the five owners
 // 004DC6A0 builds, each through its typed constructor and loader. The power-up
 // manager 008EDC60 [00F88C30] is cc13-powerup's and is not built here, and nor

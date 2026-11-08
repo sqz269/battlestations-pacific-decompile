@@ -34,7 +34,6 @@ void* blank_tree_node(std::size_t bytes, std::size_t color_offset) {
     return node;
 }
 void* allocate_node_0096b960() { return blank_tree_node(0x18, 0x14); }
-void* allocate_node_0096b9b0() { return blank_tree_node(0x24, 0x20); }
 void* allocate_node_005826b0() { return blank_tree_node(0x1c, 0x18); }
 void* allocate_node_00443e20() { return allocate_native_string_value_tree_node_00443e20(); }
 void* allocate_node_0096baf0() { return blank_tree_node(0x18, 0x14); }
@@ -115,7 +114,6 @@ void load_effect(void*& destination, const char* literal, std::uint32_t length,
 WarningOwner::WarningOwner(const WarningOwnerAllocationWords& allocation) noexcept
     : unconsumed_34(allocation.unconsumed_34),
       tree_d4{allocation.allocator_words[1], nullptr, 0},
-      channels_f8{allocation.allocator_words[4], nullptr, 0},
       channel_flags_104(allocation.channel_flags_104),
       tree_144{allocation.allocator_words[8], nullptr, 0},
       tree_150{allocation.allocator_words[9], nullptr, 0},
@@ -124,8 +122,8 @@ WarningOwner::WarningOwner(const WarningOwnerAllocationWords& allocation) noexce
       tree_184{allocation.allocator_words[12], nullptr, 0},
       tree_1a4{allocation.allocator_words[13], nullptr, 0},
       canonical_allocator_words{allocation.allocator_words[0], allocation.allocator_words[2],
-          allocation.allocator_words[3], allocation.allocator_words[5],
-          allocation.allocator_words[6], allocation.allocator_words[7]} {
+          allocation.allocator_words[3], allocation.allocator_words[4],
+          allocation.allocator_words[5], allocation.allocator_words[6], allocation.allocator_words[7]} {
     for (std::size_t i = 0; i != clocks_04_20.size(); ++i)
         clocks_04_20[i] = float_word(allocation.clock_words_04_20[i]);
     state.suppressed = (allocation.suppression_word_d0 & 0xffu) != 0;
@@ -145,7 +143,10 @@ WarningOwner& construct_warning_owner_0098a020(WarningOwner& owner) {
     install_sentinel(owner.tree_d4, allocate_node_0096b960(), 0x15);
     owner.state.pending.clear(); //0096B2D0: empty canonical pending queue atE0
     owner.state.applied.clear(); //0096B2D0: empty canonical applied queue atEC
-    install_sentinel(owner.channels_f8, allocate_node_0096b9b0(), 0x21);
+    // 0098A020: empty +F8h map. Its STL allocation is a
+    // canonical-container boundary, as for the +108h table below. Do not
+    // retain a second empty native tree beside the live Lua subscriptions.
+    owner.channels_f8.emplace();
     owner.tables_108.emplace(); //008E5CF0: existing canonical message map
     //0097BBC0 initializes each escape section's empty string and replacement
     //map. Those are members of the same canonical WarningMessageTables object;
@@ -256,7 +257,7 @@ void warning_hook_00987090(WarningOwnerContext& context, std::uint32_t ecx_argum
 }
 
 void release_warning_owner_host_storage(WarningOwner& owner, WarningOwnerContext& context) {
-    WarningOpaqueTreeHeader* trees[]{&owner.tree_d4, &owner.channels_f8, &owner.tree_144,
+    WarningOpaqueTreeHeader* trees[]{&owner.tree_d4, &owner.tree_144,
         &owner.tree_150, &owner.tree_15c, &owner.tree_168, &owner.tree_184, &owner.tree_1a4};
     for (auto* tree : trees)
         if (tree->count_08 != 0)
@@ -269,6 +270,9 @@ void release_warning_owner_host_storage(WarningOwner& owner, WarningOwnerContext
         release_effect(owner.environment_air_raid_194, context.services);
         owner.environment_air_raid_194 = nullptr;
     }
+    // 0098A2A0 owns the subscription map's lifetime. shared_ptr retains the
+    // concrete subscription's deleter, including its callback/filter members.
+    owner.channels_f8.reset();
     for (auto& string : owner.strings_38) string.release_to(context.strings);
     for (auto* tree : trees) {
         singleton_lifetime_free(tree->head_04);
