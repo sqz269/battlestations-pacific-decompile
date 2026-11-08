@@ -614,6 +614,24 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
     return queued;
 }
 
+namespace {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type);
+
+// Goal 5 chain 719. bsp.py show 00780120: the decoded object's slot +0Ch
+// selects the receiver before 0077FE80 switches on its actual +10h kind.
+// The local codecs already retain the real receive allocation; admit its
+// payload only through that same ladder and the expected kind-switch arm.
+// Each borrowed predicate below is the existing whole address body (receiver
+// unused), queried with the binary's ladder IDs, not an invented class tag.
+template <class IsType>
+void require_local_unit_route(std::uint8_t decoded_type, std::uint8_t expected_type,
+    IsType is_type, const char* failure) {
+    if (!copy_goes_to_unit_handler(is_type) || decoded_type != expected_type)
+        throw std::logic_error(failure);
+}
+}  // namespace
+
 game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     const game::GunAimMessage79& posted) const {
     Image& image = *image_;
@@ -657,6 +675,9 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     auto& queued = owner.get();
     seg42::construct_vehicle_gun_control_0075ff60(&queued, image.seg42);
     seg42::read_vehicle_gun_control_007600d0(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x79, [](std::uint32_t type) {
+        return seg42::is_vehicle_gun_control_0075ffd0(type);
+    }, "GunControl: decoded copy did not reach the unit control arm");
 
     game::GunAimMessage79 result = posted;
     result.group = static_cast<int>(queued.mode_1c);
@@ -670,11 +691,6 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     result.angles_carried = true;
     delete_vehicle_gun_control_message_007605f0(&sent, 0u);
     return result;
-}
-
-namespace {
-template <class IsType>
-bool copy_goes_to_unit_handler(IsType is_type);
 }
 
 std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t type,
@@ -763,6 +779,9 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     auto& queued = owner.get();
     seg42::construct_vehicle_set_party_00760260(&queued, image.seg42);
     seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
+    require_local_unit_route(queued.h.base.type_10, 0x7f, [](std::uint32_t type) {
+        return seg42::is_vehicle_set_party_007602c0(type);
+    }, "SetParty: decoded copy did not reach the unit party arm");
     const auto copied_party = queued.value_1c;
     delete_vehicle_set_party_message_00760610(&sent, 0u);
     return copied_party;
@@ -906,6 +925,9 @@ bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
     auto& queued = owner.get();
     seg42::construct_shiprepair_bodyrepair_00760a50(&queued, image.seg42);
     seg42::read_shiprepair_bodyrepair_00760b30(&queued, &stream.in);
+    require_local_unit_route(queued.h.base.type_10, 0x9f, [](std::uint32_t type) {
+        return seg42::is_shiprepair_bodyrepair_00760ab0(type);
+    }, "BodyRepair: decoded copy did not reach the unit repair arm");
     return queued.flag_1c != 0;
 }
 
@@ -935,6 +957,9 @@ HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
     auto& queued = owner.get();
     seg42::construct_ship_leak_00761f60(&queued, image.seg42);
     seg42::read_ship_leak_00762090(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x90, [](std::uint32_t type) {
+        return seg42::is_ship_leak_00761fc0(type);
+    }, "ShipLeak: decoded copy did not reach the unit leak arm");
     ShipLeakCopy copy;
     copy.count = queued.leak_1c;
     for (int i = 0; i < 3; ++i) copy.point[i] = queued.vector_20[i];
@@ -1024,6 +1049,9 @@ HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_chang
     auto& queued = owner.get();
     seg42::construct_plane_change_state_00762880(&queued, image.seg42);
     seg42::read_plane_change_state_007629a0(&queued, &stream.in);
+    require_local_unit_route(queued.u.h.base.type_10, 0xc3, [](std::uint32_t type) {
+        return seg42::is_plane_change_state_007628f0(type);
+    }, "PlaneChangeState: decoded copy did not reach the plane state arm");
     const PlaneChangeStateCopy copy{queued.state_20, queued.state_21};
     delete_plane_change_state_message_00762920(&sent, 0u);
     return copy;
@@ -1054,6 +1082,9 @@ std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
     cc13_seg5::session_bool_message_read_004645d0(codec,
         reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in));
+    require_local_unit_route(queued.h.base.type_10, 0xc5, [](std::uint32_t type) {
+        return seg42::is_plane_touchdown_00762ad0(type);
+    }, "PlaneTouchdown: decoded copy did not reach the plane touchdown arm");
     const auto type = queued.h.base.type_10;
     delete_plane_touchdown_message_00762b00(&sent, 0u);
     return type; // 00762B00(1) releases the factory's 20h allocation.
@@ -1225,6 +1256,9 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     auto& queued = owner.get();
     seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
     seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x93, [](std::uint32_t type) {
+        return seg42::is_ship_addtorque_00762280(type);
+    }, "ShipAddTorque: decoded copy did not reach the unit torque arm");
     ShipAddTorqueCopy copy;
     for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
     return copy;
@@ -1262,6 +1296,9 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     NativeSessionMessage112& queued = owner.get();
     construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
     read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
+    require_local_unit_route(queued.base.type_10, 0x70, [](std::uint32_t type) {
+        return native_session_message_is112_00761df0(type);
+    }, "KamikazeDetonate: decoded copy did not reach the unit detonation arm");
     KamikazeDetonateCopy copy;
     copy.other_id = queued.value_1c;
     for (int i = 0; i < 3; ++i) {
@@ -1301,6 +1338,9 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     auto& queued = owner.get();
     seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
     seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x9e, [](std::uint32_t type) {
+        return seg42::is_shiprepair_adddamage_00760940(type);
+    }, "RepairAddDamage: decoded copy did not reach the unit repair-damage arm");
     return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
 }
 
@@ -2345,6 +2385,9 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     auto& queued = owner.get();
     seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
     seg42::read_plane_disappear_00762c30(&queued, &stream.in);
+    require_local_unit_route(queued.u.h.base.type_10, 0xc7, [](std::uint32_t type) {
+        return seg42::is_plane_disappear_00762b90(type);
+    }, "PlaneDisappear: decoded copy did not reach the plane disappear arm");
     PlaneDisappearCopy copy;
     copy.type = queued.u.h.base.type_10;
     copy.holder_id = queued.id_20;
