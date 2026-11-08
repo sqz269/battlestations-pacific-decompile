@@ -966,13 +966,19 @@ void entity_get_property_unit_command_00927ad0(
 
 // 0x00927bf0: BSP_Unit_PushLuaSelfSlot
 // Original ABI: void __thiscall(ECX = unit, [ESP+4] = lua_machine), RET 4.
-void unit_push_lua_self_slot_00927bf0(Seg60Host& host, void* unit, void* lua_machine) {
+std::uint16_t UnitLuaSelfHost::unit_lua_key_174(void* unit) {
+  return Raw{static_cast<std::uint8_t*>(unit)}.at<std::uint16_t>(0x174);
+}
+
+void unit_push_lua_self_slot_00927bf0(UnitLuaSelfHost& host, void* unit, void* lua_machine) {
   host.lua_machine_get_global_006b8460(
       lua_machine,
       static_cast<const char*>(host.image_address(0x00ce7494))
   );
   char num_buf[16]{};
-  const std::uint16_t entity_id = Raw{static_cast<std::uint8_t*>(unit)}.at<std::uint16_t>(0x174);
+  // bsp.py show 00927BF0: MOVZX WORD unit+174h follows GetGlobal. Keep
+  // that timing while letting the real typed registry resolve its identity.
+  const std::uint16_t entity_id = host.unit_lua_key_174(unit);
   char* text = host.itoa_00bf9010(static_cast<std::int32_t>(entity_id), num_buf, 10);
   host.lua_machine_push_string_006b8120(lua_machine, text);
   host.lua_machine_get_table_006b8470(lua_machine, -2);

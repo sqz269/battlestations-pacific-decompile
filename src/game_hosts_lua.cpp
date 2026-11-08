@@ -115,6 +115,7 @@
 #include "bsp/recon_level_forced_cc13.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
+#include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
 #include "bsp/plane_retreat_task.hpp"   // packet cc13_natives1, 00489C40
 #include "bsp/script_natives_fix5_cc13.hpp"   // packet cc13-fix5
@@ -11231,6 +11232,74 @@ void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, i
 // walks the same buckets and counts what would be published, but touches no
 // Lua, no generation, no last-published content, no squadron category cache
 // and no summary counter.
+namespace {
+// One publication's borrowed facts from the real sensor-pass triples. This is
+// a typed source view, not a native detection-record or Unit memory overlay.
+struct ReconLuaPublicationUnit {
+    std::size_t unit_index;
+    int class_id;
+    std::optional<int> category;
+};
+
+class ReconLuaCategoryPublication final : public bsp::ReconRelationPublicationHost,
+    public bsp::cc13_seg49::ReconListStorageHost,
+    public bsp::entity_mission_seg60_argon::UnitLuaSelfHost {
+public:
+    void* record_unit_04(void* record) override { return record; }
+    std::int32_t unit_class_c4(void* unit) override { return fact(unit).class_id; }
+    std::int32_t unit_category_current00(void* unit) override {
+        const auto category = fact(unit).category;
+        if (!category || *category < 0 || *category > bsp::kReconPublishNoCategory)
+            throw std::logic_error("recon publication requires the unit's produced category");
+        return *category;
+    }
+    std::uint16_t unit_lua_key_174(void* unit) override {
+        const auto index = fact(unit).unit_index;
+        // This host's SAME thisTable identity is index+1. Native 805EA5 reads
+        // a WORD; reject an unsupported registry extent instead of truncating
+        // it into a different entity's Lua key.
+        if (index >= 0xffffu)
+            throw std::logic_error("recon publication entity key exceeds the native WORD domain");
+        return static_cast<std::uint16_t>(index + 1u);
+    }
+    void push_unit_lua_self_00927bf0(void* unit, bsp::ReconLuaInstanceView instance) override {
+        bsp::entity_mission_seg60_argon::unit_push_lua_self_slot_00927bf0(
+            *this, unit, instance.state_04);
+        ++entries;
+    }
+    void* image_address(std::uint32_t address) override {
+        if (address != 0x00ce7494u)
+            throw std::logic_error("unit Lua self requested an unbound image constant");
+        return const_cast<char*>(bsp::kMissionLuaSelfTable);
+    }
+    void lua_machine_get_global_006b8460(void* state, const char* name) override {
+        bsp::cc13_seg29::LuaMachine(static_cast<lua_State*>(state)).get_global(name);
+    }
+    void lua_machine_push_string_006b8120(void* state, const char* text) override {
+        bsp::cc13_seg29::LuaMachine(static_cast<lua_State*>(state)).push_string(text);
+    }
+    void lua_machine_get_table_006b8470(void* state, std::int32_t index) override {
+        bsp::cc13_seg29::LuaMachine(static_cast<lua_State*>(state)).get_table(index);
+    }
+    void lua_machine_remove_006b7ea0(void* state, std::int32_t index) override {
+        bsp::cc13_seg29::LuaMachine(static_cast<lua_State*>(state)).remove(index);
+    }
+    char* itoa_00bf9010(std::int32_t value, char* buffer, std::int32_t radix) override {
+        ::_itoa_s(value, buffer, 16, radix);
+        return buffer;
+    }
+    void* operator_new_00bf681b(std::size_t bytes) override { return ::operator new(bytes); }
+    void free_00bf65ac(void* block) override { ::operator delete(block); }
+
+    std::size_t entries{};
+
+private:
+    static const ReconLuaPublicationUnit& fact(void* unit) {
+        return *static_cast<const ReconLuaPublicationUnit*>(unit);
+    }
+};
+} // namespace
+
 GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_tables_00806b10(
     bool apply) {
     ReconPublishCounts counts;
@@ -11276,17 +11345,21 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
     for (int party = 0; party < 3; ++party) {
         // buckets[relation][category] = entity ids in triple order.
         std::array<std::array<std::vector<int>, kCategories>, 4> buckets;
+        std::array<std::vector<ReconLuaPublicationUnit>, 4> publication_units;
         bool any_triple = false;
         for (std::size_t r = 0; r < kRelations.size(); ++r) {
             if (!gunnery->recon_triple_units(party, kRelations[r].second, triple)) continue;
             any_triple = true;
             for (const std::size_t unit : triple) {
+                auto& facts = publication_units[r];
+                facts.push_back({unit, units_hooks_->unit_class_id(unit), std::nullopt});
                 if (bsp::recon_publish_excludes_class_00805de6(
-                        units_hooks_->unit_class_id(unit))) {
+                        facts.back().class_id)) {
                     if (apply) ++summary_.recon_publish_excluded;
                     continue;
                 }
                 const int category = category_of(unit);
+                facts.back().category = category;
                 if (category < 0 || category >= static_cast<int>(kCategories)) {
                     if (apply) ++summary_.recon_publish_no_category;
                     continue;
@@ -11341,31 +11414,27 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
         // Pass 2, 00806BA2..00806CB7.
         bsp::push_recon_global_table_006b8190(instance, bsp::kMissionReconGlobal);
         bsp::ReconTableScope indexed = bsp::push_recon_index_table_00803750(instance, party);
-        char key[16];
         for (std::size_t r = 0; r < kRelations.size(); ++r) {
             bsp::ReconTableScope related =
                 bsp::push_recon_named_table_008037d0(instance, kRelations[r].first);
-            for (std::size_t c = 0; c < kCategories; ++c) {   // 00805E5A..00805EEB
-                bsp::ReconTableScope category = bsp::push_recon_named_table_008037d0(
-                    instance, bsp::recon_category_names_00e0b590[c]);
-                for (const int id : buckets[r][c]) {
-                    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, id);
-                    {
-                        // 00805EA5 CALL 006B8120 and 00805EBA CALL 006B84D0(-3), both
-                        // with ECX = the LuaInstance (EDI), here a non-owning 006B7E30
-                        // view of state_. 00927BF0 between them stays the host's.
-                        bsp::cc13_seg29::LuaMachine machine(state_);
-                        machine.push_string(key);
-                        lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);  // 00927BF0
-                        ::lua_pushstring(state_, key);
-                        ::lua_gettable(state_, -2);
-                        ::lua_remove(state_, -2);
-                        machine.set_table(-3);
-                    }
-                    ++summary_.recon_publish_entries;
-                }
-                bsp::pop_recon_table_scope(category);
+            // bsp.py show 00805D90: the native body filters/buckets the SAME
+            // triple, creates all nineteen category tables and assigns each
+            // unit's Lua self in list order. The census above determines
+            // publication admission; only this body performs Lua assignments.
+            auto& facts = publication_units[r];
+            std::vector<bsp::cc13_seg49::ReconNode> nodes(facts.size());
+            for (std::size_t i = 0; i < nodes.size(); ++i) {
+                nodes[i] = {i == 0 ? nullptr : &nodes[i - 1],
+                    i + 1 == nodes.size() ? nullptr : &nodes[i + 1], &facts[i]};
             }
+            const bsp::cc13_seg49::ReconList source{
+                static_cast<std::int32_t>(nodes.size()),
+                nodes.empty() ? nullptr : nodes.data(),
+                nodes.empty() ? nullptr : &nodes.back()};
+            ReconLuaCategoryPublication publication;
+            bsp::publish_recon_relation_categories_00805d90(publication, publication,
+                instance, source, bsp::recon_category_names_00e0b590.data(), 0);
+            summary_.recon_publish_entries += publication.entries;
             bsp::pop_recon_table_scope(related);
         }
         bsp::pop_recon_table_scope(indexed);

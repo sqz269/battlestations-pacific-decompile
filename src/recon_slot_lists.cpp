@@ -63,13 +63,13 @@ void destruct_recon_slot_00805240(cc13_seg49::Raw slot,
     observers.destroy_callback_owner_00695870(slot.at<NativeObserverOwnerStorage>(0x00));
 }
 
-void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
+void publish_recon_relation_categories_00805d90(cc13_seg49::ReconListStorageHost& lists,
     ReconRelationPublicationHost& host, ReconLuaInstanceView instance,
     const cc13_seg49::ReconList& triple, const char* const* names,
     std::int32_t) {
     using namespace cc13_seg49;
     struct Buckets {
-        Seg49Host& host;
+        ReconListStorageHost& host;
         std::array<ReconList, kReconPublishCategoryCount> values{};
         ~Buckets() {
             for (std::size_t i = values.size(); i != 0; --i)
@@ -77,11 +77,12 @@ void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
         }
     } buckets{lists};
     for (auto* node = triple.head; node != nullptr; node = node->next) {
-        Raw record{static_cast<std::uint8_t*>(node->payload)};
-        Raw unit{static_cast<std::uint8_t*>(record.ptr(4))};
-        if (recon_publish_excludes_class_00805de6(unit.at<int>(0xc4))) continue;
-        const auto category = host.category_virtual_00(unit.p + 0x170,
-            unit.at<std::uint32_t>(0x170));
+        // bsp.py show 00805D90: record+4, class+C4, then category current0.
+        // Required field access admits the live typed recon registry without
+        // manufacturing a native Unit image or changing this filter/order.
+        void* const unit = host.record_unit_04(node->payload);
+        if (recon_publish_excludes_class_00805de6(host.unit_class_c4(unit))) continue;
+        const auto category = host.unit_category_current00(unit);
         if (category == kReconPublishNoCategory) continue;
         recon_list_push_back_00804c30(lists, buckets.values[static_cast<std::size_t>(category)], node->payload);
     }
@@ -93,13 +94,13 @@ void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
         const auto& bucket = buckets.values[category];
         if (bucket.count == 0) continue;
         for (auto* node = bucket.head; node != nullptr; node = node->next) {
-            Raw record{static_cast<std::uint8_t*>(node->payload)};
-            Raw unit{static_cast<std::uint8_t*>(record.ptr(4))};
+            void* const unit = host.record_unit_04(node->payload);
             char key[36];
-            const auto result = std::to_chars(key, key + sizeof key - 1, unit.at<std::uint16_t>(0x174));
+            const auto result = std::to_chars(key, key + sizeof key - 1,
+                host.unit_lua_key_174(unit));
             *result.ptr = '\0';
             lua_pushstring(instance.state_04, key);
-            host.push_unit_lua_self_00927bf0(unit.p, instance);
+            host.push_unit_lua_self_00927bf0(unit, instance);
             lua_settable(instance.state_04, -3);
         }
     }
