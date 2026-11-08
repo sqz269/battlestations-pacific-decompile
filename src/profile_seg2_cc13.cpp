@@ -339,7 +339,10 @@ float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept {
 // The X/Y setters live in matrix_rotation_setters.cpp and are shared by the
 // negative-angle wrappers below. 0042B420: 00B64780 builds a 40h temporary,
 // then 004134F0 copies it into ECX. EAX is not set to `this`.
-void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host) {
+// Keep the shared entry observable in the built caller graph. The production
+// interpolator supplies its actual scaled angle and destination matrix.
+__declspec(noinline) void matrix_set_rotation_z_0042b420(
+    Raw matrix, float angle, MatrixZRotationHost& host) {
     Mat16 temp{};
     host.build_rotation_z_00b64780(temp, angle);
     host.matrix_copy_004134f0(matrix, temp);
@@ -383,7 +386,10 @@ Raw matrix_set_identity_0042d510(Raw matrix, MatrixCopyHost& host,
 }
 
 // 0042E8C0: byte-identical body to 0042D510.
-Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host) { return matrix_set_identity(matrix, host); }
+// As with the Z setter, retain the shared entry used by the live interpolator.
+__declspec(noinline) Raw matrix_set_identity_0042e8c0(Raw matrix, MatrixCopyHost& host) {
+    return matrix_set_identity(matrix, host);
+}
 
 // 0042D5A0, __thiscall(matrix, forward, up), RET 8, EAX = matrix: row 2
 // (+20h..+28h) = forward and row 1 (+10h..+18h) = up (FLD/FSTP float
