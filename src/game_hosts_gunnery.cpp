@@ -15242,17 +15242,53 @@ public:
         owner_.done("ShipHit::add_hull_torque_00827312", 0x00827312u);
     }
 
+    // Goal 5 chain 856: read-only inputs over the SAME hit's loaded BulletClass
+    // row. bsp.py show 006e2510/006e2520/006e2530: the complete leaf bodies
+    // read only shot+4 and class+BC/C0/C4. WEAPON_CLASS_DESCRIPTOR.md maps
+    // those fields to WaterDamage, FireDamage and normalized FireChance.
+    // These are bounded argument views, not fabricated native objects: only
+    // the requested field is initialized; no other bytes are observed.
+    struct ShotDamageClassInput {
+        std::byte unobserved_00[0xbc];
+        float water_damage_bc;
+        float fire_damage_c0;
+        float fire_chance_c4;
+    };
+    struct ShotDamageInput {
+        std::byte unobserved_00[4];
+        ShotDamageClassInput* class_04;
+    };
+    static_assert(offsetof(ShotDamageClassInput, water_damage_bc) == 0xbc);
+    static_assert(offsetof(ShotDamageClassInput, fire_damage_c0) == 0xc0);
+    static_assert(offsetof(ShotDamageClassInput, fire_chance_c4) == 0xc4);
+    static_assert(offsetof(ShotDamageInput, class_04) == 4);
+
     float weapon_water_damage() override {
-        return weapon_ != nullptr ? weapon_->water_damage : 0.0f;
+        if (weapon_ == nullptr) return 0.0f;
+        ShotDamageClassInput descriptor;
+        descriptor.water_damage_bc = weapon_->water_damage;
+        ShotDamageInput shot;
+        shot.class_04 = &descriptor;
+        return bsp::cc13_seg33a::projectile_shot_class_bc_006e2510(&shot);
     }
     float weapon_fire_damage() override {
-        return weapon_ != nullptr ? weapon_->fire_damage : 0.0f;
+        if (weapon_ == nullptr) return 0.0f;
+        ShotDamageClassInput descriptor;
+        descriptor.fire_damage_c0 = weapon_->fire_damage;
+        ShotDamageInput shot;
+        shot.class_04 = &descriptor;
+        return bsp::cc13_seg33a::projectile_shot_class_c0_006e2520(&shot);
     }
     float weapon_fire_chance() override {
         if (weapon_ == nullptr) return 0.0f;
         // weapon+C4h holds FireChance / 100.0 (00D7A220); the bullet row keeps
         // the authored percentage.
-        return kHullElementSegmentBound ? weapon_->fire_chance / 100.0f : weapon_->fire_chance;
+        ShotDamageClassInput descriptor;
+        descriptor.fire_chance_c4 =
+            kHullElementSegmentBound ? weapon_->fire_chance / 100.0f : weapon_->fire_chance;
+        ShotDamageInput shot;
+        shot.class_04 = &descriptor;
+        return bsp::cc13_seg33a::projectile_shot_class_c4_006e2530(&shot);
     }
     float random_unit_float() override {
         return owner_.draw(GameGunneryHost::Impl::Draw::hit_effect, victim_, 0, 0.0f, 1.0f);
