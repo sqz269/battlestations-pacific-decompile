@@ -70,25 +70,25 @@ constexpr AiTuningAuthoredRow kAuthored[kAiTuningModeCount] = {
     // IslandCaptureRookie widens CautionMove_Dist to 40000 against 8000.
     {AiTuningMode::IslandCaptureRookie,  2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      40000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
-     {25.0f, 12.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 12.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.95f, 1.05f}},
     {AiTuningMode::IslandCaptureRegular, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.95f, 1.05f}},
     {AiTuningMode::IslandCaptureVeteran, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.95f, 1.05f}},
     {AiTuningMode::Duel,                 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.85f, 1.1f}},
     {AiTuningMode::Escort,               2.0f, 9000.0f, 15000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 6000.0f, 6000.0f, 12000.0f, 1.8f, 10.0f, 300.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.85f, 1.1f}},
     {AiTuningMode::Siege,                2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.85f, 1.1f}},
     {AiTuningMode::Competitive,          2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
      8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
-     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, {0.85f, 1.1f}},
 };
 
 bool mode_in_range(AiTuningMode mode) noexcept {
@@ -174,6 +174,13 @@ void ai_tuning_load_00a335d0(AiTuningLuaReader& reader, AiTuningMode mode,
     // are Lua array elements. docs/AI_TARGET_WEIGHT_TERMS.md.
     ai_tuning_load_bullet_type_accuracy_00a335d0(mode, out);
     ai_tuning_load_attacker_vs_target_00a335d0(mode, out);
+    // 00A335D0 GetByIndex(1/2), coordinator+54h/+58h = record+50h/+54h.
+    // Installed highlvlaiglobals.lua lines 37/225/411/597/752/921/1076;
+    // like BulletTypeAccuracy, this array uses the retained authored rows.
+    if (const auto* row = ai_tuning_authored_row(mode)) {
+        out.field[kAiTuningValueRandomLow / sizeof(float)] = row->value_random_mul[0];
+        out.field[kAiTuningValueRandomHigh / sizeof(float)] = row->value_random_mul[1];
+    }
     out.loaded = true;
 }
 

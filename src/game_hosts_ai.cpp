@@ -6334,34 +6334,47 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     struct GroupValueRecord {
         std::size_t member{0};   // the group member (a unit or a squadron)
         std::size_t unit{0};     // proxy(member): the plane leader for a squadron
-        float x{0.0f};           // +4h, the pose X (00A04582, entity+FCh)
-        float z{0.0f};           // +8h, the pose Z (00A0459D, entity+104h)
-        float fix_weight{1.0f};  // +14h, 009FDF30's class weight x 00A04240
-        float spread{1.0f};      // +18h, the ValueRandomMul interpolation
-        bool third_party{false}; // +1Ch, 00A04568 CMP [entity+54h],2 / SETGE
+        // The constructor's actual output is retained and read by pair scoring;
+        // it is not a parallel diagnostic record. subject borrows the loaded
+        // class-derived weapon-facts projection, not an image class/vtable.
+        bsp::cc13_seg69::CandidateRecord native{};
         // record+0h's class answers vtable[+18h](6) (a ship class, 00A0C3F5) or
         // (0Fh) (a plane class, 00A0C51D); 0 when neither.
         int class_query{0};
         float class_max_speed{0.0f};  // class+500h (ship) or class+188h (plane)
     };
 
-    // ValueRandomMul [1] and [2], tuning +50h/+54h. This installation's
-    // highlvlaiglobals.lua (2024-07-13) authors {0.95, 1.05} in the three
-    // IslandCapture tables (lines 37, 225, 411) and {0.85, 1.1} in the other
-    // four. The per-entity spread is 00419010(0, [1], 78.0 [00D21D04], [2],
-    // entity pointer mod 79) (00A0458A-00A045E5). LABELLED stand-in: this
-    // process has no stable entity addresses, so the argument is the midpoint
-    // 39, which gives every record the same spread. A constant spread scales
-    // every candidate's value by the same square, so it moves no pick; the
-    // per-entity +-5% the image draws is what is lost.
-    float group_value_spread() const {
-        const bool island = current_tuning().mode == bsp::AiTuningMode::IslandCaptureRookie ||
-                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular ||
-                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran;
-        const float lo = island ? 0.95f : 0.85f;
-        const float hi = island ? 1.05f : 1.1f;
-        return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, 39.0f);
+    // bsp.py show 00a04560 --asm: 00A0458A..00A045B0 takes the
+    // creation entity address modulo 79, not its geometric proxy/leader.
+    // Source identities are retained owners, not original-image addresses;
+    // their allocation-dependent spread therefore is not binary replay proof.
+    float group_value_spread(std::size_t member) {
+        const Squadron* squadron = squadron_of(member);
+        const void* identity = squadron != nullptr
+            ? static_cast<const void*>(&squadron->entity) : units.unit_identity(member);
+        if (identity == nullptr) throw std::logic_error("AI record requires a live entity identity");
+        const float fraction = static_cast<float>(reinterpret_cast<std::uintptr_t>(identity) % 79u);
+        // 00A045B9 reads +54h before 00A045D1 reads +50h.
+        const float hi = selected_tuning_field(bsp::kAiTuningValueRandomHigh, game_mode());
+        const float lo = selected_tuning_field(bsp::kAiTuningValueRandomLow, game_mode());
+        return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, fraction);
     }
+
+    struct CandidateRecordBridge final : bsp::cc13_seg69::CandidateRecordHost {
+        Impl& owner;
+        explicit CandidateRecordBridge(Impl& owner_in) : owner(owner_in) {}
+        bsp::cc13_seg69::Raw active_mode_tuning_00a371a0() override {
+            TuningRecordBridge bridge(owner, static_cast<int>(owner.current_tuning().mode));
+            return {static_cast<std::uint8_t*>(
+                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge))};
+        }
+        float random_uniform_00bd2f10(std::uint32_t stream, float low, float high) override {
+            if (stream != 1) throw std::logic_error("AI record random stream must be 1");
+            // Existing coordinator RNG projection; the installed positive
+            // ValueRandomMul intervals never take the constructor's draw arm.
+            return owner.random_00bd2f10(low, high);
+        }
+    };
 
     // 00A04560's record+10h (00A04608..00A0464E) for X = proxy(member): the
     // plane itself, or a squadron's leader ([entity+3D0h]). [X+C54h] when
@@ -6402,9 +6415,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         GroupValueRecord r;
         r.member = member;
         r.unit = proxy(member);
-        float y = 0.0f;
-        units.unit_position_00fc(r.unit, r.x, y, r.z);
-        r.third_party = units.unit_side_0054(r.unit) >= 2;
+        float point[2], y = 0.0f;
+        units.unit_position_00fc(r.unit, point[0], y, point[1]);
+        const std::uint32_t third_party = units.unit_side_0054(r.unit) >= 2;
+        float fix_weight;
         // 00A045EE-00A04604: 009FDF30's weight for the entity's +C4h class id,
         // times 00A04240(entity). 00A04240 multiplies the two hint-weight maps
         // at 00F8A740 (global) and 00F8A750 + party*0Ch, default 1.0
@@ -6420,13 +6434,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (current_party >= 0 && current_party < 8) {
             const float class_weight = unit_class_weight(member);
             const float hint_weight = member_hint_weight(member);
-            r.fix_weight = class_weight * hint_weight;
+            fix_weight = class_weight * hint_weight;
         } else {
             // Preserve the host's non-party observation calls; the image's
             // unchecked party-map read has no defined source domain here.
-            r.fix_weight = unit_class_weight(member);
+            fix_weight = unit_class_weight(member);
         }
-        r.spread = group_value_spread();
+        const float spread = group_value_spread(member);
+        // 00A04652..00A04680 picks the vehicle/squadron's class, or null.
+        // Borrow the class-derived facts that pair scoring already queries;
+        // it never dispatches this typed projection as a raw image vtable.
+        const auto* subject = (is_squadron(member) || units.unit_is_kind_of(r.unit, 5))
+            ? game_ai_weapon_facts().row(r.unit)
+            : nullptr;
+        CandidateRecordBridge bridge(*this);
+        // 00A04682..00A046A5: original stack order verified in the listing;
+        // flag=1 is PUSH 1 at 00A0468F. No second field-building path remains.
+        bsp::cc13_seg69::ai_candidate_record_construct_00a00020(bridge,
+            {reinterpret_cast<std::uint8_t*>(&r.native)},
+            const_cast<GameAiWeaponFacts::Unit*>(subject),
+            static_cast<std::uint32_t>(record_loadout_00a04560(r.unit)), fix_weight,
+            third_party, spread, 1, point);
         // 00A04652 IsKindOf(5) takes [entity+538h], 00A0466E IsKindOf(18h)
         // [entity+35Ch], the squadron's plane class. LABELLED: this host asks
         // the unit's own kind for the class's vtable[+18h] answer.
@@ -6507,11 +6535,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.attacker = handle(a.unit);
             // a+10h: 0 for a ship record (00A04650); the model reads it only
             // as a memo key, and this binding keeps no memo.
-            key.attacker_class = kAiPlaneLoadoutArmBound ? record_loadout_00a04560(a.unit)
-                                 : kAiPlaneAttackerWeightBound ? 0   // record+10h
-                                 : units.unit_class_id(a.unit);
+            key.attacker_class = static_cast<int>(a.native.value10);
             key.target = handle(t.unit);
-            key.target_is_neutral = t.third_party ? 1 : 0;
+            key.target_is_neutral = t.native.value1c != 0 ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, current_tuning(),
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
@@ -6529,14 +6555,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A0C34E: an attacker record with +1Ch set whose class answers
         // vtable[+18h](1Ch) scores 0. That query is unread here (the same slot
         // 00A0F859 asks), so the arm never fires; it can only remove value.
-        float value = a.spread * t.spread * weight * t.fix_weight;
+        float value = a.native.random_factor * t.native.random_factor;
+        value *= weight;
+        value *= t.native.class_weight;
         // 00A0C3F5 / 00A0C51D: the distance multiplier, ship or plane class.
         if (a.class_query == 0x06 || a.class_query == 0x0F) {
             const bool ship = a.class_query == 0x06;
             // 00A0C415-00A0C439: the records' +0Ch bytes are both 1 (00A0468F),
             // so the distance is 00414C60 over the pose delta, 0 under 1e-10.
-            const float dx = a.x - t.x;
-            const float dz = a.z - t.z;
+            const float dx = a.native.point_x - t.native.point_x;
+            const float dz = a.native.point_z - t.native.point_z;
             const float d2 = dx * dx + dz * dz;
             const float d = static_cast<double>(d2) > 1.0e-10
                                 ? static_cast<float>(std::sqrt(static_cast<double>(d2)))

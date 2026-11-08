@@ -1,0 +1,190 @@
+{
+  "goal": 5,
+  "chain": 721,
+  "slot": "g5-w10",
+  "run": 1544,
+  "branch": "agent/g5-w10",
+  "picked": "AI entity value-record construction and its real spread inputs",
+  "base": "19836a52f6",
+  "rows": [
+    {
+      "native": "00a00020",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "details": "Existing ai_candidate_record_construct_00a00020 now fills the retained CandidateRecord read by group_value_pair_00a0c3c0. Real unit/squadron identity, pose, class-derived facts, loadout, class/hint weight, side and loaded ValueRandomMul supply its arguments.",
+      "new_wiring": true
+    },
+    {
+      "native": "00a04560",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::build_group_value_record / capture_group_value_00a250a0",
+      "details": "Previously wired caller; replaced parallel scalar record fields with the 20h constructor output and replaced the midpoint spread with the creation entity address modulo 79.",
+      "new_wiring": false
+    },
+    {
+      "native": "00a335d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::create / src/ai_tuning_globals.cpp: ai_tuning_load_00a335d0",
+      "details": "Previously wired loader; added retained authored ValueRandomMul[1..2] to record+50h/+54h for all seven modes.",
+      "new_wiring": false
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land/air MoveTo state construction",
+      "reason": "Needs a same-root native 3Ch receiver and genuine observer lifetime; units_motion.cpp is leased to agent/g5-w2, so no edits made."
+    },
+    {
+      "native": "009c1c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: run_moveto_task_install_009c3000",
+      "reason": "Complete raw approach receiver and engine callback bridge are missing; units_motion.cpp is leased to agent/g5-w2."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: MoveTo path-leg ownership",
+      "reason": "Native path-leg manager receiver/ownership bridge was not established; units_motion.cpp is leased to agent/g5-w2."
+    },
+    {
+      "native": "009ca780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: strafe go-towards target rearm",
+      "reason": "Address and host file are owned by agent/g5-w2; the foreground claim was refused and no edits were made."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native movie Text/extratitle widget ownership and raw subtitle vectors; only the separate schedule projection exists."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing live decoder/video texture producer; current bridge only reports the missing texture binding."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: presentation bridge voice_begin_sound_fade",
+      "reason": "Presentation bridge has no connected VoicePlaybackManager/fade host; this callback is explicitly unreached."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops loadout choice",
+      "reason": "Missing live RadialScreen/icon/catalog owner; this site accepts a harness loadout index rather than running the UI."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player air-ops loadout choice",
+      "reason": "Missing live RadialScreen/icon/catalog owner needed to build the loadout ring."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: powerup pass candidate_attack_value",
+      "reason": "Missing real air-support flight class blocks and their class-composition attack-value bridge; existing host explicitly rejects this arm."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: move command construction",
+      "reason": "Only current producer passes ratio=1 and cannot choose CAUTIOUSMOVE; no real producer for that constructor branch was established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score list",
+      "reason": "Missing native score-table gameplay consumer; current documented table reader is a debug overlay, excluded from this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score list",
+      "reason": "Missing live score-list entries and gameplay consumer; current documented consumer is debug-only."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate walk",
+      "reason": "Existing host already calls this body with real kind/set state; no additional call was added."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: nearest-enemy group/recon ratio",
+      "reason": "Missing 00779D00 per-member recon values and live nearest-enemy/Lua-info consumer; visibility cannot substitute for those values."
+    },
+    {
+      "native": "00a13080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: nearest-enemy group search",
+      "reason": "Missing live command consumer and the per-member recon query required by the opposing-group filter."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair composition scoring",
+      "reason": "Missing retained parser-owned per-mode class-pair table and its live composition consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: quick_spawn_named_group",
+      "reason": "Missing native request weight, target records and support-site list; quick-spawn state does not supply those inputs."
+    },
+    {
+      "native": "00c32d20",
+      "status": "skipped",
+      "host_site": "src/hull_terrain_contact.cpp: hull vertex consumers",
+      "reason": "Existing hull binding already calls this accessor; host file was leased to agent/g5-w5, so no additional wiring was attempted."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing connected profile checkpoint owner and rewrite callback; current host reports that boundary as unimplemented."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp / src/game_hosts_mission.cpp: loading progress",
+      "reason": "Live screen plus actual CRT scale/global/conversion access were not established for these host sites."
+    }
+  ],
+  "wired_total": {
+    "before": 10471,
+    "after": 10472,
+    "measurement": "tools/wire_readiness.py --standins; local baseline differs from the earlier control-plane overview"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest suites passed",
+    "call_graph": "tools/call_graph.py: 41885/42039 functions reachable; 5376/5978 reconstructed addresses called",
+    "constructor_call": "00a00020 REACHABLE; body 103f0f40; one reachable call at 10059a2c from GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 5 files",
+    "game": "not run as instructed",
+    "readiness": {
+      "native": "00a00020",
+      "state": "wired",
+      "called": true,
+      "call_sites": 1
+    }
+  },
+  "evidence": [
+    "bsp.py show 00a00020 --asm: full constructor stores and RET 1Ch",
+    "bsp.py show 00a04560 --asm: creation address modulo 79, spread interpolation, stack arguments at 00A04682..00A046A5",
+    "bsp.py show 00a335d0 --start 296: ValueRandomMul indices 1/2 stored at coordinator+54h/+58h",
+    "Installed I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/highlvlaiglobals.lua lines 37/225/411/597/752/921/1076"
+  ],
+  "limitations": [
+    "Source interfaces and typed class-facts projection, not an original binary ABI replacement.",
+    "Spread uses the actual retained source entity address; allocation differences prevent original-image replay equivalence.",
+    "The installed positive ValueRandomMul intervals do not exercise the constructor negative-factor RNG arm; its adapter retains the existing coordinator RNG projection.",
+    "Unrelated incomplete class/weapon scoring projections remain; no gameplay validation was performed.",
+    "Coordinator load gate remains intact: this scoring path runs in local AI skirmish/forced-session contexts; ordinary campaign loads do not create the coordinator. kSkirmishSessionCc13Bound is true and start_skirmish publishes the real session context."
+  ],
+  "left": "Nearest-enemy recon query, powerup flight composition, debug score lists and full aircraft approach receivers remain outside this change."
+}

@@ -79,6 +79,8 @@ inline constexpr std::uint32_t kAiTuningCloseAttackTargetGroupMemberMul = 0x204;
 inline constexpr std::uint32_t kAiTuningAutoMergeMergeDist = 0x208;
 inline constexpr std::uint32_t kAiTuningAutoMergeLeaveDist = 0x20C;
 inline constexpr std::uint32_t kAiTuningFormationUnitDist = 0x210;
+inline constexpr std::uint32_t kAiTuningValueRandomLow = 0x050;
+inline constexpr std::uint32_t kAiTuningValueRandomHigh = 0x054;
 
 // One key of the reconstructed subset. `image_default` is the float
 // BSP_LuaReference_GetFloatOrDefault (00B66330) answers when the key is absent,
@@ -168,6 +170,8 @@ struct AiTuningAuthoredRow {
     // These are GetNumber keys with no image default, so an unloaded block
     // leaves them at zero and every leader weight collapses to zero with it.
     float class_weight[20];
+    // AttackerVSTarget.ValueRandomMul[1..2], loaded at +50h/+54h.
+    std::array<float, 2> value_random_mul;
 };
 
 // The twenty per-class weight offsets, in record order.
