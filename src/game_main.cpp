@@ -1191,6 +1191,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
             curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3488/CD72F0: ECX=F8BEAC, CALL ABEE60, atexit(CE0AB0).
+        // The original CRT starts Section after Curve and before Line/Group.
+        // Retain its process pool on the same E188B4 allocator-list domain.
+        auto& gui_section_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiSectionPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int section_pool_atexit = gui_section_process.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Section pool CRT CD72F0: atexit=%d storage_bytes=%zu",
+            section_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
