@@ -317,8 +317,12 @@ void push_back_context_word_00697170(void* header, const std::uint32_t* value) {
     if (get<std::int32_t>(header, 4) == get<std::int32_t>(header, 8))
         reserve_native_input_context_words_00696d80(header, doubled(get<std::int32_t>(header, 8)));
     // The value is read after a possible reallocation, as the image does.
-    auto* const slot = get<std::uint32_t*>(header, 0) + get<std::int32_t>(header, 4);
-    *slot = *value;
+    auto* const slot = reinterpret_cast<std::uint32_t*>(
+        reinterpret_cast<std::uintptr_t>(get<void*>(header, 0))
+        + get<std::uint32_t>(header, 4) * 4u);
+    // bsp.py show 00697170 --asm: TEST EAX,EAX / JZ at 00697195..97
+    // skips the source read/store on a null computed slot, but still increments.
+    if (slot != nullptr) *slot = *value;
     put<std::int32_t>(header, 4, get<std::int32_t>(header, 4) + 1);
 }
 
@@ -330,8 +334,15 @@ void* push_back_context_word_returning_006972d0(void* header, const std::uint32_
 void push_back_input_modifier_006971c0(void* header, const void* modifier) {
     if (get<std::int32_t>(header, 4) == get<std::int32_t>(header, 8))
         reserve_native_input_modifiers_00696de0(header, doubled(get<std::int32_t>(header, 8)));
-    void* const slot = at(get<void*>(header, 0), static_cast<std::size_t>(get<std::int32_t>(header, 4)) * 0x14);
-    copy_record20(slot, modifier);
+    void* const slot = reinterpret_cast<void*>(
+        reinterpret_cast<std::uintptr_t>(get<void*>(header, 0))
+        + get<std::uint32_t>(header, 4) * 0x14u);
+    // 006971E8..0069720C has the same null-slot branch before its five DWORD
+    // copies. Copy representations so descriptor padding stays uninterpreted.
+    if (slot != nullptr) {
+        for (std::size_t offset = 0; offset != 0x14; offset += 4)
+            std::memcpy(at(slot, offset), at(const_cast<void*>(modifier), offset), 4);
+    }
     put<std::int32_t>(header, 4, get<std::int32_t>(header, 4) + 1);
 }
 
