@@ -4,6 +4,8 @@
 #include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
 #include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/dummy_depth_seg34_argon.hpp"
+#include "bsp/gui_lua_runtime.hpp"
 
 #include <new>
 
@@ -12,6 +14,32 @@ namespace bsp::game {
 namespace {
 namespace s47_effects = bsp::gameplay_seg47_cc13;
 namespace s48_engines = bsp::gameplay_seg48_cc13;
+
+float dummy_kamikaze_open_after_time(GameMissionLuaHost& mission, int bullet) {
+    auto* const state = mission.mission_lua_state();
+    if (state == nullptr || bullet < 0)
+        throw std::logic_error("dummy kamikaze release requires its loaded bullet class");
+    bsp::GuiLua51Host host(*state);
+    struct OwnedRef {
+        bsp::GuiLua51Host& host;
+        bsp::GuiLuaRef value;
+        ~OwnedRef() { if (value.valid()) host.release(value); }
+    } globals{host, host.globals()}, bullets{host, host.get_by_name(globals.value, "Bullets")};
+    if (host.type_of(bullets.value) != bsp::GuiLuaType::Table)
+        throw std::logic_error("dummy kamikaze release requires the actual Bullets table");
+    OwnedRef row{host, host.get_by_index(bullets.value, bullet)};
+    if (host.type_of(row.value) != bsp::GuiLuaType::Table)
+        throw std::logic_error("dummy kamikaze release requires its actual Bullets row");
+    // 006FF198 FLD1 supplies 1.0, then 006FF1BC calls 006FE780 for class+D8.
+    // The real row reference is transferred to the helper; its output drives
+    // DummyKamikazeRoundRegistry::step's release-to-spawn timer (006FEC00).
+    const auto transferred = row.value;
+    row.value = {};
+    float result;
+    bsp::dummy_depth_seg34_argon::LuaTable_ReadNumberOrDefault_006fe780(
+        "OpenAfterTime", &result, host, transferred, 1.0f);
+    return result;
+}
 
 // 009CA780's read/write view, not a second approach owner. The row is the
 // selected level loaded by 00901610; the target, centre and rocket block come
@@ -9779,6 +9807,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::size_t i = static_cast<std::size_t>(unit_.dkz_rack);
                         const int bullet = i < unit_.rack_bullet_id_per_rack.size()
                             ? unit_.rack_bullet_id_per_rack[i] : -1;
+                        const float open_after_time = dummy_kamikaze_open_after_time(owner_.lua, bullet);
                         if (unit_.rack_ammo_per_rack[i] > 0) --unit_.rack_ammo_per_rack[i];
                         if (unit_.rack_ammo > 0) --unit_.rack_ammo;
                         bsp::DummyKamikazeRound r;
@@ -9786,8 +9815,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         r.bullet_class = bullet;
                         r.plane_class = static_cast<int>(owner_.lua.read_bullet_class_number(
                             bullet, "KamikazePlaneClass", -1.0f));            // desc+DCh
-                        r.open_after_time = owner_.lua.read_bullet_class_number(
-                            bullet, "OpenAfterTime", 0.0f);                    // desc+D8h
+                        r.open_after_time = open_after_time;                  // desc+D8h, 006FE780
                         for (int k = 0; k < 3; ++k) {
                             r.position[static_cast<std::size_t>(k)] = unit_.motion.position[k];
                         }
