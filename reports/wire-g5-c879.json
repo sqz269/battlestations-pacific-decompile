@@ -1,0 +1,152 @@
+{
+  "chain": 879,
+  "slot": "g5-w8",
+  "branch": "agent/g5-w8",
+  "picked": "Button process-pool CRT producer and its existing Mit slab-table operations",
+  "rows": [
+    {
+      "native": "00aab8e0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp::WinMain -> GameNativeGuiWidgetPoolProcess<GuiButtonPoolTraits>::initialize_once -> src/native_material_pools.cpp::NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize -> reserve_native_gui_button_pool_table_00aabd00 -> set_native_gui_button_pool_table_capacity_00aab8e0",
+      "called": true
+    },
+    {
+      "native": "00aabd00",
+      "status": "wired",
+      "host_site": "src/game_main.cpp::WinMain -> GameNativeGuiWidgetPoolProcess<GuiButtonPoolTraits>::initialize_once -> src/native_material_pools.cpp::NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize -> reserve_native_gui_button_pool_table_00aabd00",
+      "called": true
+    },
+    {
+      "native": "00aab930",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate -> push_native_gui_button_pool_slab_00aabc70 -> grow_native_gui_button_pool_table_00aab930",
+      "reason": "Missing a game-entry-reachable Button payload allocation producer; the canonical pool starts, but its allocate path is only fixture-tested.",
+      "prepared": true,
+      "called": false
+    },
+    {
+      "native": "00aabc70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate -> push_native_gui_button_pool_slab_00aabc70",
+      "reason": "Missing a game-entry-reachable Button payload allocation producer; the canonical pool starts, but its allocate path is only fixture-tested.",
+      "prepared": true,
+      "called": false
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::candidate_attack_value",
+      "reason": "Missing resolved plane-class flight/weapon-value facts; the live air-support callback still throws instead of supplying a candidate value."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::candidate score-list ownership",
+      "reason": "Missing a gameplay consumer and native candidate-list owner; inspected host identifies the score-list reader as the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::candidate score-list ownership",
+      "reason": "Missing live native candidate records whose chosen byte feeds gameplay; a parallel diagnostic list would be unused."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::set_mission_key",
+      "reason": "Missing the raw score-record lifetime owner; current mission-load state clears typed award vectors and cannot supply the constructor receiver/tail."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_fileblock_owner.cpp::ensure_native_loading_job_fileblock_00504790",
+      "reason": "Missing a live native loading-job producer with its retained filename and FileBlock context."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp::retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing a live retained native loader queue/job producer; no substitute queue was introduced."
+    }
+  ],
+  "implementation": {
+    "producer": "WinMain starts the sole GameNativeGuiWidgetPoolProcess<GuiButtonPoolTraits> on the shared E188B4 allocator list, before existing Icon startup; its normal atexit status is preserved and interrupted startup follows existing process-retention handling.",
+    "table": "Actual canonical F8BD00 pool storage +28h is passed directly, without a table/count mirror. Button initialize reserves the original 32 entries; allocate uses the original initialized slab and existing lock scope.",
+    "reuse": "Previously generic Widget source aliases become Button-address entries. Capacity allocation/copy/free/adopt remains the existing shared reconstructed body; no new body is invented for a native address.",
+    "no_double_run": "Button initialize/allocate specializations replace their generic reserve/append paths; each operation runs once.",
+    "abi": "Ordinary reconstructed C++ interfaces; no native register-ABI equivalence claimed.",
+    "float_math_changed": false
+  },
+  "evidence": [
+    "bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: capacity published before allocation, current-count copy, free/adopt; DWORD growth capacity*2+2; equality-only append growth, late source load, null-tested destination and count increment; unsigned reserve comparison.",
+    "bsp.py show 00AABE00/00AABF80: constructor inlines reserve(32) at +28h in EH state 2; allocator initializes 4084h slab, appends under its existing critical section after first-free publication.",
+    "Existing bsp.gpr /battlestationspacific.exe: bsp.py ghidra xrefs 00CD70A0 identifies CRT table slot 00CE3450 before Icon slot 00CE3468.",
+    "bsp.py ghidra disasm 00CD70A0: MOV ECX,F8BD00; CALL 00AABE00; PUSH 00CE0A30; CALL atexit; POP ECX; RET. Decompile 00CE0A30 calls Button pool destroy."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1: passed; 4/4 CTests",
+    "final_build": "scripts/build.ps1: passed; 4/4 CTests; local/c879-final-build.log",
+    "focused_probe": "local/c879-button-probe.cpp/.cmd, MSVC Win32 /MD /O2, linked /MANIFEST:EMBED; PASS 2049 Button slots / 33 slabs / capacity 32->66; verifies slot identity, payload and trailer preservation, recursion state, free/trim/list teardown. Local-only fixture, not a game run.",
+    "call_graph": {
+      "build": "build/win32 Release",
+      "before_called": 5600,
+      "after_called": 5602,
+      "before_reconstructed_addresses": 6231,
+      "after_reconstructed_addresses": 6233,
+      "after_reachable_functions": 43017,
+      "after_edges": 223316,
+      "wired": [
+        "00aab8e0",
+        "00aabd00"
+      ],
+      "not_linked": [
+        "00aab930",
+        "00aabc70"
+      ],
+      "path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> Button process initialize_once -> Button pool initialize -> initialize_pool -> reserve_00aabd00 -> capacity_00aab8e0"
+    },
+    "readiness_before": {
+      "wired": 10729,
+      "callees_done_no_wired_caller": 8543,
+      "ready": 1202,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "game_run": false,
+    "readiness_after": {
+      "wired": 10731,
+      "callees_done_no_wired_caller": 8541,
+      "ready": 1202,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "readiness_rows": [
+      {
+        "address": "00aab930",
+        "state": "callees_done_no_wired_caller",
+        "called": null,
+        "call_sites": null
+      },
+      {
+        "address": "00aabc70",
+        "state": "callees_done_no_wired_caller",
+        "called": null,
+        "call_sites": null
+      },
+      {
+        "address": "00aab8e0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00aabd00",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      }
+    ]
+  },
+  "left_for_others": "Connect canonical Button payload factory/default/copy lifetime to real GUI Button creation, then the prepared append/grow entries become production-reachable. No online/debug wiring, game run, main merge, rebase or push performed.",
+  "coordination": "Released AA ledger shard for w7 and both shared pool source/header files after compilation; released game_main.cpp after final build/graph verification. Notified w2/w7/w1 of disjoint specializations and Button CRT subset/interruption flag for landing."
+}
