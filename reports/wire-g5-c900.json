@@ -1,0 +1,84 @@
+{
+  "goal": 5,
+  "chain": 900,
+  "slot": "g5-w3",
+  "owner": "agent/g5-w3",
+  "base_head": "73b1994c1a",
+  "picked": "CubeTexture pool slab-table exact capacity, grow, append and reserve over canonical 0108DB70+28h",
+  "rows": [
+    {
+      "native": "00b3dbb0",
+      "status": "wired",
+      "host_site": "include/bsp/native_cube_texture_pool_table.hpp: native_cube_texture_pool_table_grow_00b3dc00 and native_cube_texture_pool_table_reserve_00b3ea40",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00b3dc00",
+      "status": "wired",
+      "host_site": "include/bsp/native_cube_texture_pool_table.hpp: native_cube_texture_pool_table_push_back_00b3e9c0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b3e9c0",
+      "status": "wired",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: allocate_native_cube_texture_slot_00b3f170",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00b3ea40",
+      "status": "wired",
+      "host_site": "src/native_cube_texture_pool_lifetime.cpp: initialize_native_cube_texture_pool_00b3f090",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing the native GUI movie/page, decoder texture producer and node-material sampler owners; decoder_open still returns false and load_movie_page returns null."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles/reset_subtitles",
+      "reason": "Missing native subtitle Text-child ownership and 14h/24h subtitle/extratitle containers; reset_subtitles only clears the semantic schedule."
+    },
+    {
+      "native": "00ab0220",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::prepare_movie_subtitles",
+      "reason": "Missing the native GUI movie record vectors and owned widget/string lifetimes required by resize; the live subtitle schedule has a different representation."
+    }
+  ],
+  "implementation": [
+    "Promoted the four sole per-address shape rows into noinline C++ bodies in native_cube_texture_pool_table.hpp; removed their render_fx_cc13.cpp descriptors.",
+    "Replaced B3F090 reserve(32) and B3F170 append/grow inline code on the existing native pool header; no added state, fabricated inputs, repeated execution, lock scopes or fallback path.",
+    "Preserved DWORD wrap, capacity-before-allocation, current count/table reads after real CRT new-handler processing, current-old-table free before captured replacement publication, and append value read after growth.",
+    "The image COMDATs are originally unreferenced. New source call boundaries deliberately substitute equivalent inlined operations; they are not claimed to be original binary call edges."
+  ],
+  "evidence": [
+    "bsp.py show 00b3dbb0/00b3dc00/00b3e9c0/00b3ea40 pseudocode; assembly for DBB0/DC00/E9C0",
+    "bsp.py show 00b3f090 and 00b3f170 pseudocode/assembly: inline equivalence at B3F100..B3F14C and B3F1B8..B3F21B",
+    "config/target.json verifies C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe; bsp.py brief/count verified the live program and 77632 function count",
+    "call_graph.py who confirms all four bodies reachable with 2/1/1/1 call sites; path 00b3ea40 reaches WinMainCRTStartup through the retained graphics-pool startup"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before changes and after the final C++ change; all 4 CTests passed",
+    "focused_probe": "tests/wire_g5_c900_cube_table_probe.cpp linked against built bsp_core and real allocation services with MSVC Win32 /MD /W4 /WX /link /MANIFEST:EMBED; PASS for 1025 live slots, 33 slabs, capacity32->66, payload/index retention, trim and teardown",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "totals": {
+    "readiness_wired_before": 10757,
+    "readiness_wired_after": 10759,
+    "entry_reachable_reconstructed_called_before": 5652,
+    "entry_reachable_reconstructed_called_after": 5656,
+    "note": "All four new bodies are called=true; readiness text state marks only the two direct source calls wired and misses the two header-internal calls."
+  },
+  "left": "Native movie/page/decoder and subtitle widget/container producers remain for another worker. No game run or original ABI equivalence is claimed."
+}
