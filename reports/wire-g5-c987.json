@@ -1,0 +1,122 @@
+{
+  "chain": 987,
+  "slot": "g5-w3",
+  "base": "7d9ad2044b",
+  "rows": [
+    {
+      "native": "009251f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity (FindEntity)",
+      "state": "Names and authored hierarchy come from live_scene_entities(); the result must still resolve to an existing findable scene_entity_ids_ entry and thisTable slot."
+    },
+    {
+      "native": "00467f30",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity::SceneNameNode::child_at",
+      "state": "Typed sibling links/counts are derived from live scene_id/parent_scene_id and record visit order; the existing cc13_sys::scene_node_child_at_00467f30 body walks them."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "A retained ControllerSnapshotMessage owner and transport consumer were not established; projectile position snapshots do not provide that lifetime."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "No missing wiring: call_graph who confirms the existing entry-reachable canonical call with the loaded descriptor and shared random draw."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred Lua argument-copy candidate",
+      "reason": "The frame-job-thread enqueue producer carrying a real LuaVariantRecord argument vector was not established during selection."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "The full ocean-field render object, spectrum, geometry and material-parameter consumer were not established; this row is only a partial kernel of the native update."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "An active CloudInstanceC producer and scene-property host owning its real alpha field were not established during selection."
+    },
+    {
+      "native": "00bbd110",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_vector_reserve_00bbd110",
+      "reason": "An entry-reachable CloudManagerC instance-array owner and factory-created instance producer were not established during selection."
+    },
+    {
+      "native": "00bbd170",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_class_vector_resize_00bbd170",
+      "reason": "The real CloudManagerC class-array retirement lifetime was not established during selection."
+    },
+    {
+      "native": "00bbd1d0",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_vector_resize_00bbd1d0",
+      "reason": "The real CloudManagerC instance-array retirement lifetime was not established during selection."
+    },
+    {
+      "native": "00bbf390",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: sky_colour_strip_reserve_00bbf390",
+      "reason": "An active owner/producer for the actual sky-colour strip vector was not established during selection."
+    },
+    {
+      "native": "00baf070",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: coast_ptr_vector_resize_00baf070",
+      "reason": "An entry-reachable coastline pointer-vector owner and producer were not established during selection."
+    },
+    {
+      "native": "00ac2d00",
+      "status": "skipped",
+      "host_site": "src/native_gui_line_storage.cpp: create_native_gui_line_default_00aa1530",
+      "reason": "The existing native constructor has no call_graph match in this build; an active Line factory/base-owner path was not established during selection."
+    },
+    {
+      "native": "00ac2d60",
+      "status": "skipped",
+      "host_site": "src/native_gui_line_storage.cpp: create_native_gui_line_copy_00aa1530",
+      "reason": "The existing native copy constructor has no call_graph match in this build; an active Line copy source/vector lifetime was not established during selection."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing retained ammunition/alternate records and Seg62Host reference/tree-copy ownership; agent/g5-w12 subsequently leased this address."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing live unit+660h records and matching Seg62Host destruction services; agent/g5-w12 subsequently leased this address."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; all four CTest groups passed.",
+    "probe": "tests/wire_g5_c987_find_entity_probe.cpp: PASS on rebuilt game objects; read-only original-data bootstrap, no original code/game loop.",
+    "probe_coverage": "Exact-name priority, case-folded map order, second sibling in a qualified path, unfindable child, missing child/prefix, runtime-only fallback, ambiguous duplicate-name rejection.",
+    "entry_reachable_reconstructed_addresses_before": 5729,
+    "entry_reachable_reconstructed_addresses_after": 5731,
+    "call_sites": {
+      "009251f0": "10168f06 from GameMissionLuaHost::push_resolved_entity",
+      "00467f30": "1014d038 from GameMissionLuaHost::push_resolved_entity::SceneNameNode::child_at"
+    },
+    "readiness_source_wired_before": 10841,
+    "readiness_source_wired_after": 10842
+  },
+  "limitations": [
+    "The Lua name index retains exact-hit priority and map-order case-folded ties, rather than the native registry bucket order.",
+    "Runtime-only entries and duplicate authored names retain the existing whole-name lookup because a unique scene-node-to-Lua-id identity is unavailable; qualified duplicate aliases are rejected.",
+    "The sibling view borrows live scene records for each lookup; it is a source adapter, not a native scene-node allocation or binary ABI replacement.",
+    "No game was run; frame performance, gameplay and native ABI compatibility remain unvalidated."
+  ]
+}

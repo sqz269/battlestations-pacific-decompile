@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/entity_identity.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/airfield_marker_seg31_32_argon.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
@@ -1129,15 +1131,6 @@ constexpr bool kCarrierLaunchSkillBound = true;
 // entity is not killed and the call counts as unresolved, as before.
 // ON: pairs held, six rows gameplay identical (section 57.1).
 constexpr bool kLuaKillScriptEntityBound = true;
-
-// Packet cc9_find_entity_case (docs/CONTROLLED_UNIT.md, "FindEntity matches
-// names case-insensitively"). 00925A90 hands each registry entry to 009251F0,
-// whose first test (0092521E) is 00438E10, a null-guarded CRT _stricmp
-// (00BF7FBF) over the whole name. True answers an exact miss with the first
-// entry that compares equal ignoring ASCII case; false keeps the exact map.
-// ON: IJN01 resolves "Airfield 02" -> "AirField 02" (entity_resolves 78 -> 79)
-// and is gameplay-identical while PilotLand stays a record; JM05 identical.
-constexpr bool kFindEntityCaseInsensitiveBound = true;
 
 // Packet s54_class_id (docs/SHIP_AI_OPEN_ITEMS.md 270). 00964790
 // BSP_VehicleClass_GetOrCreate, on a cache miss, reads VehicleClass[classIndex]
@@ -18632,18 +18625,80 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
             std::free(v);
             return on;
         }();
-        std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
-        if (kFindEntityCaseInsensitiveBound && found == scene_entity_ids_.end()) {
-            // 009251F0's 00438E10 -> _stricmp: the whole string, ASCII case
-            // folded. LABELLED: the registry's walk order is not modelled; an
-            // exact hit wins, then the first case-folded match in name order.
-            for (found = scene_entity_ids_.begin(); found != scene_entity_ids_.end(); ++found) {
+        // bsp.py show 009251F0/00467F30: names come from vtable+10h;
+        // children are walked in sibling order, with an explicit count.
+        // Borrow the live scene records. Their scene_id/parent_scene_id are
+        // produced by SceneReaderBinding::instantiate_entity from the authored
+        // nesting, in visit order; name text never manufactures a parent.
+        struct SceneNameNode final : bsp::EntityNameNode {
+            explicit SceneNameNode(const GameSceneEntityRecord& record) : record_(record) {}
+            const char* node_name() const override { return record_.name.c_str(); }
+            int child_count() const override { return count_; }
+            const bsp::EntityNameNode* child_at(int index) const override {
+                return static_cast<const SceneNameNode*>(bsp::cc13_sys::scene_node_child_at_00467f30(
+                    first_, count_, index, [](const void* node) -> const void* {
+                        return static_cast<const SceneNameNode*>(node)->next_;
+                    }));
+            }
+            const GameSceneEntityRecord& record_;
+            SceneNameNode* first_{};
+            SceneNameNode* last_{};
+            SceneNameNode* next_{};
+            int count_{};
+        };
+        std::vector<SceneNameNode> nodes;
+        std::map<std::size_t, SceneNameNode*> by_scene_id;
+        std::map<std::string, SceneNameNode*> by_name;
+        if (const auto* records = live_scene_entities()) {
+            nodes.reserve(records->size());
+            for (const auto& record : *records) {
+                nodes.emplace_back(record);
+                auto* node = &nodes.back(); // reserve above keeps all sibling pointers stable
+                if (record.scene_id != 0) by_scene_id.emplace(record.scene_id, node);
+                const auto [entry, inserted] = by_name.emplace(record.name, node);
+                // The flat Lua id index cannot distinguish duplicate authored
+                // names. Do not assign either node the other's entity id.
+                if (!inserted) entry->second = nullptr;
+            }
+            for (auto& node : nodes) {
+                if (node.record_.parent_scene_id == 0) continue;
+                const auto parent = by_scene_id.find(node.record_.parent_scene_id);
+                if (parent == by_scene_id.end()) continue;
+                auto& owner = *parent->second;
+                if (owner.last_) owner.last_->next_ = &node;
+                else owner.first_ = &node;
+                owner.last_ = &node;
+                ++owner.count_;
+            }
+        }
+        // Preserve this host's existing priority: an exact hit wins, then
+        // the first case-folded match in map order. The native registry's
+        // bucket order is not represented by this flat index.
+        auto found = scene_entity_ids_.find(name);
+        const bool exact = found != scene_entity_ids_.end();
+        if (!exact) found = scene_entity_ids_.begin();
+        for (; found != scene_entity_ids_.end(); ++found) {
+            const auto source = by_name.find(found->first);
+            if (source == by_name.end() || source->second == nullptr) {
+                // Runtime-only and duplicate-name entries have no unique
+                // scene-node identity. Preserve their whole-name lookup;
+                // do not invent a child count or choose a duplicate's id.
                 if (_stricmp(found->first.c_str(), name) == 0) break;
+                continue;
             }
-            if (trace && !error_replay_ && found != scene_entity_ids_.end()) {
-                log_.notef("FindEntity case-folded: \"%s\" -> \"%s\"", name,
-                    found->first.c_str());
+            const auto* hit = bsp::entity_find_by_qualified_name_009251f0(*source->second, name);
+            if (hit == nullptr) continue;
+            if (by_name.find(hit->node_name())->second != hit) continue;
+            const auto resolved = scene_entity_ids_.find(hit->node_name());
+            if (resolved != scene_entity_ids_.end()) {
+                found = resolved; // only a findable entry with a thisTable id can escape
+                break;
             }
+        }
+        if (trace && !error_replay_ && !exact && found != scene_entity_ids_.end()) {
+            log_.notef("FindEntity %s: \"%s\" -> \"%s\"",
+                std::strchr(name, '\\') ? "qualified" : "case-folded", name,
+                found->first.c_str());
         }
         if (found == scene_entity_ids_.end()) {
             if (trace && !error_replay_) log_.notef("FindEntity miss: \"%s\"", name);
