@@ -576,7 +576,13 @@ void land_state_observer_vector_destruct_007b45a0(Seg47Host& host, Raw vector);
 bool bot_task_state_base_predicate18_007b45e0();
 void rocket_approach_redraw_run_speed_007b4890(Seg47Host& host, Raw state);
 Raw rocket_attack_run_state_construct_007b4d90(Seg47Host& host, Raw state, void* owner);
-float* rocket_approach_body_aim_offset_007b5400(Raw approach, float* out);
+// A borrowed view of approach+80h..88h (target-reference member +28h).
+// The executable host retains these floats in ApproachTargetRefState rather
+// than retaining the original approach layout. This is a C++ interface only.
+struct RocketBodyAimOffsetView {
+    const float* body_offset_80;
+};
+float* rocket_approach_body_aim_offset_007b5400(RocketBodyAimOffsetView approach, float* out);
 bool random_timer_step_007b5980(Seg47Host& host, Raw timer, float dt);
 float unit_largest_extent_007b5be0(Raw unit);
 // 007B5BE0 over the three extents the body reads (+434h, +444h, +448h); the Raw entry

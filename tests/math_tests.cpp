@@ -33,6 +33,7 @@
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_rack_census_admission.hpp"
+#include "bsp/rocket_task_cc13.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/avoid_zone_geometry.hpp"
@@ -309,6 +310,63 @@ int main() {
             records[1].text_00 == "heading" && records[1].text_08 == "detail" &&
             records[1].text_10.empty() && records[1].value_18 == 17,
             "chain675 profile bonus forms share live containers and cross-form dedupe");
+    }
+    {
+        // Chain670 review1429: the task's projected ref stays at constructor
+        // zeros while the host's retained ref is picked. Exercise that exact
+        // separation through the real pick -> release getter path, then keep
+        // the borrowed input across repick, retarget reconstruction and freeze.
+        struct Random final : bsp::RocketRandom {
+            float uniform_00bd2f10(const char*, float low, float) override { return low; }
+        } random;
+        bsp::RocketTask task;
+        task.ap.has_rocket_d4 = true;
+        task.ap.rocket.launch_speed = 100.0f;
+        task.ap.rocket.vmax_d8 = 200.0f;
+        task.ap.rocket.accel_dc = 10.0f;
+        task.ap.fire_dist_38 = 200.0f;
+        task.ap.aim_point = {0.0f, 0.0f, 100.0f};
+        bsp::ApproachTargetRefState produced = bsp::approach_target_ref_construct_009fb200(0.0f);
+        bsp::RocketAimInputs inputs{produced};
+        inputs.local_point = {0.0f, 0.0f, 100.0f};
+        inputs.row.fire_angle_11c = 1.0f;
+        const bsp::LeadAimHullExtents hull{100.0f, 20.0f, 10.0f};
+        bsp::ShipLeadRandomDraws draws;
+        draws.box_x = 0.25f;
+        draws.box_y = 0.5f;
+        draws.box_z = 0.25f;
+        const auto reaches_release = [&] {
+            task.aim.timer_18 = -1.0f;
+            const bsp::RocketAimResult result = bsp::rocket_aim_tick_007b5430(
+                task, inputs, 0.0f, random);
+            return result.release.fire
+                && result.release.homing_point[0] == produced.body_offset_28[0]
+                && result.release.homing_point[1] == produced.body_offset_28[1]
+                && result.release.homing_point[2] == produced.body_offset_28[2];
+        };
+        produced.bias_34 = {3.0f, 0.0f, -2.0f};
+        const auto picked = bsp::approach_target_ref_pick_009fa260(produced, hull, draws, true);
+        const bool first_pick = picked != std::array<float, 3>{} && reaches_release();
+        produced.bias_34 = {-4.0f, 2.0f, 7.0f};
+        produced.dirty_41 = true;
+        draws.box_z = -0.25f;
+        const auto repicked = bsp::approach_target_ref_pick_009fa260(produced, hull, draws, true);
+        const bool repick = repicked != picked && reaches_release();
+        // A retarget reconstructs the retained object in place. Its new pick
+        // (origin-only target + bias) must replace the previous hull offset.
+        produced = bsp::approach_target_ref_construct_009fb200(0.0f);
+        produced.bias_34 = {8.0f, -3.0f, 5.0f};
+        bsp::approach_target_ref_pick_009fa260(produced, {}, {}, false);
+        const bool retarget = produced.body_offset_28 == produced.bias_34 && reaches_release();
+        const auto before_freeze = produced.body_offset_28;
+        bsp::CameraMatrix matrix{};
+        matrix[0] = matrix[5] = matrix[10] = matrix[15] = 1.0f;
+        bsp::approach_target_ref_freeze_009fadae(produced, matrix);
+        const bool freeze = produced.frozen && !produced.tracking
+            && produced.body_offset_28 == before_freeze && reaches_release();
+        check(first_pick && repick && retarget && freeze
+                && task.ap.ref.body_offset_28 == std::array<float, 3>{},
+            "chain670 rocket release reads nonzero produced offset across repick, retarget and freeze");
     }
     {
         // Chain474 review970: the same retained coordinator must switch both

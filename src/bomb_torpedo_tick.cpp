@@ -77,7 +77,7 @@ float bomb_scaled_step(float step, float time_scale) noexcept {
     return time_scale * step;
 }
 
-BombWaterMode bomb_water_mode(bool in_water) noexcept {
+BombWaterMode bomb_water_mode_006e2570(bool in_water) noexcept {
     return in_water ? BombWaterMode::Water : BombWaterMode::Air;
 }
 
@@ -87,7 +87,7 @@ BombWaterMode torpedo_water_mode(bool in_water, float world_y, float swim_depth)
     if (swim_depth + swim_depth > world_y) {
         return BombWaterMode::TorpedoBelowTwiceSwimDepth;
     }
-    return bomb_water_mode(in_water);
+    return bomb_water_mode_006e2570(in_water);
 }
 
 BombVector3 bomb_air_velocity(const BombVector3& velocity,

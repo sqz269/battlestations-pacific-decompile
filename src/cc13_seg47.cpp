@@ -523,10 +523,12 @@ Raw rocket_attack_run_state_construct_007b4d90(Seg47Host& host, Raw state, void*
 }
 
 // 007B5400, __thiscall(ECX = approach; float* out), RET 4, EAX = out: copies +80h..+88h.
-float* rocket_approach_body_aim_offset_007b5400(Raw approach, float* out) {
-    out[0] = approach.at<float>(0x80);
-    out[1] = approach.at<float>(0x84);
-    out[2] = approach.at<float>(0x88);
+// Evidence: bsp.py show 007b5400 --asm, 007B5400..007B541E. The borrowed
+// view binds the actual target-reference floats; it changes only the C++ ABI.
+float* rocket_approach_body_aim_offset_007b5400(RocketBodyAimOffsetView approach, float* out) {
+    out[0] = approach.body_offset_80[0];
+    out[1] = approach.body_offset_80[1];
+    out[2] = approach.body_offset_80[2];
     return out;
 }
 
