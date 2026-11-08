@@ -132,6 +132,7 @@
 #include "bsp/unit_state_message.hpp"
 #include "bsp/vector_helpers.hpp"
 #include "bsp/command_building_capture.hpp"
+#include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp"
@@ -13956,10 +13957,13 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         std::int32_t strength[2] = {0, 0};
         float bx = 0.0f, by = 0.0f, bz = 0.0f;
         units.unit_position_00fc(b.unit, bx, by, bz);
-        const std::int32_t range = static_cast<std::int32_t>(
-            units.command_building_capture_range_07a0(b.unit));
-        // (float)(CaptureRange * CaptureRange), an int product (IMUL).
-        const float range_sq = static_cast<float>(range * range);
+        const std::int32_t range = units.command_building_capture_range_raw_07a0(b.unit);
+        // bsp.py show 006F5960: the building's +218h query squares its
+        // real +7A0h CaptureRange with 32-bit IMUL wrap before FILD. Reuse
+        // that body for 006F6760's same range test instead of signed C++
+        // multiplication (which is undefined on overflow).
+        const float range_sq =
+            bsp::gameplay_seg33_cc13::command_building_capture_range_squared_006f5960(range);
         const std::size_t count = units.count();
         for (std::size_t u = 0; u < count; ++u) {
             if (!units.unit_is_kind_of(u, 6)) continue;

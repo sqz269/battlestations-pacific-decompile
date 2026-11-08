@@ -1,0 +1,66 @@
+{
+  "goal": 5,
+  "chain": 939,
+  "slot": "g5-w10",
+  "run": 2092,
+  "branch": "agent/g5-w10",
+  "base_head": "ea9f3f6c65",
+  "picked": "Command-building capture range square over the exact authored int32 field",
+  "rows": [
+    {
+      "native": "006f5960",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::capture_step",
+      "evidence": "Replaces the host's signed range*range expression with the existing gameplay_seg33_cc13 body. GameUnitsHost supplies the live slot's capture_range_7a0 through a new int32 accessor; its producer is the scene CaptureRange dword or the binary default 500. The previous float accessor remains available with the same result. Native 006F5961..006F596F reads +7A0h, performs 32-bit IMUL, then FILD. Release executable target 10379B10 has exactly one reachable call at 1024468E from capture_step.",
+      "native_abi": "ECX=building, ST0=result, RET; the existing C++ int32-to-float interface is reused, not a binary replacement"
+    },
+    {
+      "native": "006f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: BuildingPadModel consumers",
+      "reason": "Missing each pad's native +200h observer/group list and the live game+21D0h manager query; the available occupant field cannot answer this group-membership predicate."
+    },
+    {
+      "native": "006f4a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: CaptureBuilding::garrison consumers",
+      "reason": "Missing a live 0084D560 query consumer and Seg33bHost/native garrison projection for the InferiorFailure virtual query; capture repair does not request this predicate."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch",
+      "reason": "Already called from the reachable Lua GetCapturePercentage dispatch; the readiness ready classification does not represent a missing binary call."
+    },
+    {
+      "native": "006f4cc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::capture_step land-fort passes",
+      "reason": "Missing a Seg33bHost command-building view, full 00745BE0 adapter and debug-owner state; the current separate fire/smoke passes cannot stand in for that complete update."
+    },
+    {
+      "native": "009781e0",
+      "status": "skipped",
+      "host_site": "src/warning_reports_cc13.cpp: report_capture_point_009781e0",
+      "reason": "Multiplayer-only capture warning guarded by game+1FE4h; excluded from this single-player wiring assignment."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support arm of item activation",
+      "reason": "Missing the real spawn-manager enqueue owner and its flight-member/reference-frame providers; the existing activation path throws before the flight request."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 6 tests passed",
+    "final_build": "scripts/build.ps1 passed, all 6 tests passed",
+    "wire_readiness_before": 10813,
+    "wire_readiness_after": 10814,
+    "called_reconstructed_before": 5685,
+    "called_reconstructed_after": 5686,
+    "target_called": true,
+    "target_call_sites": 1,
+    "entry_path": "WinMain -> startup/frame hosts -> mission fixed-step -> motion_step_00825f20 -> GameShipAiHost::controller_step -> capture_step -> 006F5960",
+    "limits": "Build/tests and executable reachability verified; no game run or native ABI validation performed."
+  }
+}
