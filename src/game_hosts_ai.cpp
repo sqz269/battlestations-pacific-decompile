@@ -6604,7 +6604,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (current_party >= 0 && current_party < 8) {
             const float class_weight = unit_class_weight(member);
             const float hint_weight = member_hint_weight(member);
-            fix_weight = class_weight * hint_weight;
+            // A045F9..A0460F is the same qword-class/x87-hint product as
+            // A04530. Consume these real member/party inputs once through
+            // that reconstructed body; its source API is not a native thunk.
+            fix_weight = bsp::gameplay_seg69_70_cc13::ai_hinted_class_weight_00a04530(
+                hint_weight, class_weight);
         } else {
             // Preserve the host's non-party observation calls; the image's
             // unchecked party-map read has no defined source domain here.

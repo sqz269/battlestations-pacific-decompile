@@ -1,0 +1,215 @@
+{
+  "goal": 5,
+  "chain": 948,
+  "slot": "g5-w9",
+  "baseline_head": "d817e92697",
+  "picked": "AI entity-record hinted class weight from the live member class and active party hint maps",
+  "rows": [
+    {
+      "native": "00a04530",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "evidence": "00A045F4..00A0460F performs the same class-qword/hint-x87 product as 00A0453C..00A04554. Replaced the existing host multiplication with the one reconstructed body, using unit_class_weight(member) followed by member_hint_weight(member) only for a valid live current_party. No second multiplication or new switch remains.",
+      "body_fix": "Replaced SSE-prone C++ double multiplication with the listing's x87 class-qword store, FMUL qword and FSTP32 sequence under the existing control word. The float-input source API remains distinct from the original ECX=unit ABI.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-composition scoring",
+      "reason": "Missing the parser-owned per-mode class-pair table and live SpawnCompositionHost scoring consumer."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / SceneNumericPropertyMerge",
+      "reason": "Already called at baseline through the owning scene-property projection; ready is a text-classification artifact."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "No gameplay score-list owner/consumer; the documented native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing gameplay-owned candidate-score records and a consumer for the chosen marks; the documented reader is debug-only."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: air-support candidate attack value",
+      "reason": "The earlier missing plane-class weapon-value facts and live compose-against-group consumer were not supplied by this packet."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text input admission",
+      "reason": "Missing an input-character admission consumer with its retained text-context font; complete-string rendering is a different operation."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "checkpoint_differs still substitutes false, so the pre-load clear path lacks its actual checkpoint owner/current mission key and storage continuation."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: land task state",
+      "reason": "Missing eight constructed native land-state identities and their executable entry profiles; host state enums do not provide them."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: land task construction",
+      "reason": "Missing complete native base/composite construction, raw owner-plane binding and actual state/profile services."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: bot registry construction",
+      "reason": "Missing a live native registry owner publishing original state/name identities into a gameplay consumer."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: bot registry destruction",
+      "reason": "Missing the constructed live registry owner and callable native state/profile binding needed for retirement."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "The movie-camera callback still lacks actual current/default deviation storage behind its camera identity token."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the actual movie-camera screen owner and retained current/default overview-height fields."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the constructed movie-camera screen and its current/default speed-limit block."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost",
+      "reason": "Missing the actual movie-camera acceleration-limit owner and live Lua-to-screen consumer."
+    },
+    {
+      "native": "00aab930",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate",
+      "reason": "Missing a live raw Button factory/consumer allocating from this retained pool; g5-w1 confirmed its packet instead covers loading-queue retirement."
+    },
+    {
+      "native": "00aabc70",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate",
+      "reason": "Missing a live raw Button allocation consumer; retained pool startup alone does not execute slab append, and Button remains available."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane binding",
+      "reason": "Existing source already calls this body with the live camera state; adding another call would not be new wiring."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane binding",
+      "reason": "Existing source already calls this body with the live camera state; the release graph may inline the wrapper."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: camera projection product",
+      "reason": "No live horizontal-FOV consumer replacing a matching host product was established."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "The corrected identity is a cloud-manager frame update; the inspected world host supplies no actual cloud-manager frame owner."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "No live leak-manager water/capacity/settings storage and corresponding fraction consumer were established."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing a live command-menu owner providing authored row keys and consuming the sorted permutation."
+    },
+    {
+      "native": "00ab3180",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GUI Icon type initialization",
+      "reason": "Missing the shared native type-counter/parent-type initialization owner and consumer; widget type constants are not that registry."
+    },
+    {
+      "native": "00a236f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-site selection",
+      "reason": "No live native spawn-site record collection and matching selection consumer were established."
+    },
+    {
+      "native": "00a23980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-composition selection",
+      "reason": "Missing the live spawn-site class/composition owner and complete SpawnChoiceHost services."
+    },
+    {
+      "native": "00a2e1e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group type counts",
+      "reason": "No matching live group type-key count map consumer was established; diagnostic class counters are a different operation."
+    },
+    {
+      "native": "00a32df0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: controller party initialization",
+      "reason": "Missing the actual eight player-slot flags owner and its activation/publication continuation."
+    },
+    {
+      "native": "00aa6800",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_node_name_00aa6800",
+      "reason": "No matching raw-widget node-name consumer and GuiSceneNodeHost binding were established."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "readiness_wired_before": 10818,
+    "readiness_wired_after": 10819,
+    "graph_reconstructed_called_before": 5700,
+    "graph_reconstructed_called_after": 5701,
+    "graph_caller": "GameAiCoordinatorHost::Impl::group_value_record_00a04560 at 1005acc3",
+    "graph_path": "Entry reaches the AI coordinator, planner_tick, capture_plan_00a29fd0, capture_group_value_00a250a0 and group_value_record_00a04560",
+    "focused_probe": "2028 comparisons against an independent listing transcription: PC24/53/64, all four rounding modes, signed zero/subnormal/normal/overflow/infinity/qNaN inputs, identical result bits and x87 exception flags, unchanged control word",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings; changed product contains one explicit x87 FMUL and final FSTP32",
+    "game_validated": false,
+    "abi_compatible": false,
+    "artifacts": [
+      "local/output/c948-baseline.json",
+      "local/output/c948-build.log",
+      "local/output/c948-graph-after.log",
+      "local/output/c948-who-after.log",
+      "local/output/c948-probe.log",
+      "local/output/c948-readiness.log",
+      "local/output/c948-pc24.log"
+    ]
+  },
+  "left_for_others": "Per-mode class-pair parsing/spawn composition, native movie-camera limit ownership, bot-state construction, and the selection-stage skips above remain unwired by this packet."
+}

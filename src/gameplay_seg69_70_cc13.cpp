@@ -743,9 +743,24 @@ DefendOrder ai_order_defend_group_00a1a6d0(bool has_groupable_combatant) noexcep
     return has_groupable_combatant ? DefendOrder::PatrolToEntity : DefendOrder::DefendPosition;
 }
 
-float ai_hinted_class_weight_00a04530(float hint_multiplier, float class_weight) noexcept {
-    return static_cast<float>(static_cast<double>(hint_multiplier) *
-                              static_cast<double>(class_weight));   // FMUL qword, FSTP float
+__declspec(noinline) float ai_hinted_class_weight_00a04530(
+    float hint_multiplier, float class_weight) noexcept {
+    // bsp.py show 00A04530 --asm: A04541 stores the class result as a
+    // qword; A0454C multiplies the hint result by it before FSTP32/FLD32.
+    // A045F9..A0460F inlines the same operation in entity-record construction.
+    // Use the active x87 control word (PC24 on the game thread), including
+    // its exponent range before the final float store. SSE double arithmetic
+    // would round at a different precision and ignores the x87 rounding mode.
+    double class_qword;
+    float result;
+    __asm {
+        fld class_weight
+        fstp class_qword
+        fld hint_multiplier
+        fmul class_qword
+        fstp result
+    }
+    return result;
 }
 
 // ---------------------------------------------------------------------------
