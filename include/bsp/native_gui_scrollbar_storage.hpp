@@ -2,6 +2,7 @@
 #include "bsp/native_gui_widget_copy_storage.hpp"
 #include "bsp/native_gui_widget_lifetime.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_gui_widget_property_children.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -77,8 +78,47 @@ void loaded_native_gui_scrollbar_00ac8890(void* actual_scrollbar,
 
 // Only AC86DE..AC872A after SAME caller's successful AAA710/visitor reads have
 // already published raw F8/F0/F4. Native min call, late max clamp and current7C;
-// not the full AC85A0 reader or its Alignment string/visitor cleanup. A full raw
-// property visitor remains an explicit prerequisite; no typed-state projection.
+// not the full AC85A0 reader or its Alignment string/visitor cleanup. The
+// adapters below supply those stages without a typed-state projection.
 void finish_native_gui_scrollbar_properties_after_reads_00ac85a0(
     void* actual_scrollbar, NativeGuiScrollbarCalls&);
+
+// AC85C8..AC8751 adapter around the existing AC85A0 clamp/layout fragment.
+// The caller has already completed the SAME widget's genuine AAA710 reader.
+// These are the actual RO C strings at D5CDB0, D5CDA4, D5CD98, D5CD8C and
+// CE3A0C respectively, borrowed throughout all reached visitor/layout calls.
+struct NativeGuiScrollbarPropertyLiterals {
+    const char* alignment_00d5cdb0;
+    const char* vertical_00d5cda4;
+    const char* minimum_00d5cd98;
+    const char* maximum_00d5cd8c;
+    const char* empty_00ce3a0c;
+};
+// Caller-owned, stable storage. The argument pairs are fallback, field, key;
+// only their native meaningful words are initialized at the reached sites.
+// Alignment stays live through all three reads AND the final layout call.
+// A successful cleanup leaves its original stale header, never a cleared copy.
+struct NativeGuiScrollbarPropertyScratch {
+    std::uint32_t arguments[6];
+    std::uint32_t argument_home;
+    std::uint32_t alignment[2]; // Raw eight-byte header; no early constructor stores.
+    bool alignment_live{};
+};
+void read_native_gui_scrollbar_properties_after_base(void* actual_scrollbar,
+    void* actual_visitor, NativeGuiScrollbarPropertyScratch&,
+    const NativeGuiScrollbarPropertyLiterals&, NativeGuiWidgetPropertyDispatch&,
+    NativeStringRawPoolContext&, NativeGuiScrollbarCalls&);
+
+// Complete normal source composition: reuse the actual AAA710 base/children
+// reader, then the adapter above and the pre-existing clamp/layout body.
+// This supplies no application admission, raw suffix lookup, XY/layout binding
+// or canonical Scrollbar lifetime companion. Each reentrant call needs distinct
+// retained scratch and child-acquisition backing, as required by AAA710.
+// Original register/RET4/FH3/SEH compatibility and game execution are unproved.
+void read_native_gui_scrollbar_properties(void* actual_scrollbar,
+    void* actual_visitor, NativeGuiWidgetPropertyScratch& base_scratch,
+    NativeGuiWidgetPropertyInteractionContext&,
+    NativeGuiWidgetPropertyChildrenRawContext&, NativeGuiWidgetPropertyChildrenAcquired&,
+    NativeGuiScrollbarPropertyScratch&, const NativeGuiScrollbarPropertyLiterals&,
+    NativeGuiScrollbarCalls&);
 } // namespace bsp
