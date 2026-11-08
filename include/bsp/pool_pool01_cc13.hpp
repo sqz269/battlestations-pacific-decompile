@@ -3,8 +3,9 @@
 //
 // Model as in cc13_seg33a: every routine works on the original object as raw bytes (Win32 layout,
 // offsets as in the image) and reaches the engine through Pool01Host, whose methods name the image
-// routine they stand for. New C++ interfaces, not drop-in binary replacements; nothing here is bound
-// into bsp_game. Names are hypotheses, not recovered symbols. Marker: pool_pool01_cc13.
+// routine they stand for. The hull-heading getter borrows the host's canonical +1050h field instead
+// of requiring a raw unit allocation. New C++ interfaces, not drop-in binary replacements. Names
+// are hypotheses, not recovered symbols. Marker: pool_pool01_cc13.
 
 #ifndef BSP_POOL_POOL01_CC13_HPP
 #define BSP_POOL_POOL01_CC13_HPP
@@ -69,7 +70,8 @@ inline constexpr std::uint32_t kBombClassVtable_00cfa4b0 = 0x00CFA4B0u;
 inline constexpr std::int32_t kBulletClassKind_29 = 0x29;
 
 float artillery_gunner_bot_get_bullet_throw_mul_006dee00(Pool01Host& host, void* bot);
-float unit_instance_get_hull_heading_006dfd60(void* unit) noexcept;
+// Source view of the single native field; the caller must supply the actual +1050h heading.
+float unit_instance_get_hull_heading_006dfd60(const float& hull_heading_1050) noexcept;
 void battleship_detach_from_world_lists_006e0060(Pool01Host& host, void* unit);
 void bomb_platform_class_read_lua_fields_006e01c0(Pool01Host& host, void* cls, LuaObjectStorage* table);
 void multiple_bomb_platform_class_read_lua_fields_006e02c0(Pool01Host& host, void* cls, LuaObjectStorage* table);
