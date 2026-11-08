@@ -2402,7 +2402,8 @@ struct HudLeafScreenVirtuals {
 //   +284h) and its +20h 005F9DD0 the manager's +5Ch screen and the page
 //   colours, so both keep the existing path (0). bsp.py ghidra bytes 00cf3b7c
 //   --length 40.
-constexpr std::array<HudLeafScreenVirtuals, 7> kHudLeafScreenVirtuals{{
+constexpr std::array<HudLeafScreenVirtuals, 8> kHudLeafScreenVirtuals{{
+    {0x26, 0x00CEC9B0u, 0, 0, 0x0051E9B0u, 0},
     {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
         0x00643DF0u},
     {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
@@ -2616,6 +2617,7 @@ struct GameHudHost::Impl {
     void log_map_state(const char* state);
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
+    void reset_binoculars_0051e8e0();
     float binoculars_saved_near_plane{0.0f}; // process cell 00E18DA8, initially 00D7A218
     // Screen 44h, the HUD root (00649860). The enter 006488D0 zeroes +F4h;
     // the default state is that store, and the screen enters once per run.
@@ -4890,7 +4892,7 @@ void GameHudHost::Impl::log_map_state(const char* state) {
 void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     // 0068B4A8..0068B4C6: the level-3 collapse runs only with 00E18D1C non-empty; this
     // host never fills level 3 (level3_screen_count answers 0).
-    record("InGameInterface::binoculars_reset", 0x0051e8e0u);   // 0068B4CE
+    reset_binoculars_0051e8e0();                              // 0068B4CE
     if (release_gun_map_up) {
         // Packet cc13-mapback. 0068B4D3..0068B4DA: [this+54h]+4h set (the map
         // is up) takes the close arm. HARNESS INPUT, labelled: the C1h press is
@@ -4976,8 +4978,8 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
 // Each collapse is followed by 0068AA40(004B4B00()), modelled as the C1h close
 // models it (back_out_one_overlay_level_0068b470). The level-2 clear also ends
 // the host's two mirrors of the map being up (release_gun_map_up, the helm
-// occlusion), which that close keeps in step with the same clear. 0051E8E0 has
-// no body here: it stays the record the C1h close makes.
+// occlusion), which that close keeps in step with the same clear. The extra
+// hook resets the same retained binocular state as the C1h close (0051E8E0).
 void GameHudHost::Impl::collapse_in_game_overlays(bool clear_level2, bool run_extra_hook,
     const char* site) {
     bsp::InGameInterfaceCollapseState state;
@@ -5007,7 +5009,7 @@ void GameHudHost::Impl::collapse_in_game_overlays(bool clear_level2, bool run_ex
         menu.clear_level3_screen_and_context_sets();
         request_scene_for_controlled_unit();
     }
-    if (state.extra_hook_ran) record("InGameInterface::binoculars_reset", 0x0051e8e0u);
+    if (state.extra_hook_ran) reset_binoculars_0051e8e0();
     if (state.level2_cleared) {
         // 0068AC00 004F85D0(0), 0068AC0A 004D8AE0(game, 0).
         static const int kNone[] = {0};
@@ -6979,10 +6981,11 @@ private:
 // mover.
 class ShipViewInputBinding final : public bsp::ShipViewInputHost,
     public bsp::cc13_seg14::BinocularsToggleHooks,
+    public bsp::cc13_seg14::BinocularsResetHooks,
     public bsp::cc13_sweepA3::BinocularsAxesHost,
     public bsp::segs_13_15_22_44_cc13::BinocularsFovHost {
 public:
-    ShipViewInputBinding(GameHudHost::Impl& owner, float dt) : owner_(owner), dt_(dt) {}
+    ShipViewInputBinding(GameHudHost::Impl& owner, float dt = 0.0f) : owner_(owner), dt_(dt) {}
     bsp::BinocularsViewTerms view_terms() override {
         // The raise axis is the application's actual input-action bank. The
         // look axes/config retain the existing helm-aim source binding below.
@@ -7253,10 +7256,27 @@ public:
     }
     void set_model_visible(bool visible) override {
         // Screen 26h's +20h, the Tavcso_Model widget of GUI_binoculars.
-        GuiLayoutPage* page = owner_.menu.in_game_page(0x26, "GUI_binoculars");
-        GuiLayoutWidget* w = page != nullptr && page->root
-            ? bsp::find_descendant_by_name(*page->root, "Tavcso_Model") : nullptr;
+        auto* w = static_cast<GuiLayoutWidget*>(binoculars_model_widget(&owner_.binoculars));
         if (w != nullptr) owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    bool binoculars_screen_applied(void* screen) override {
+        if (screen != &owner_.binoculars) throw std::logic_error("binoculars reset another screen");
+        return owner_.menu.in_game_screen_applied(0x26);
+    }
+    void* binoculars_model_widget(void* screen) override {
+        if (screen != &owner_.binoculars) throw std::logic_error("binoculars read another model");
+        GuiLayoutPage* page = owner_.menu.in_game_page(0x26, "GUI_binoculars");
+        return page != nullptr && page->root
+            ? bsp::find_descendant_by_name(*page->root, "Tavcso_Model") : nullptr;
+    }
+    void widget_show_virtual_34(void* widget, std::uint32_t flag) override {
+        if (widget != nullptr)
+            owner_.menu.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), flag != 0);
+    }
+    void lens_flare_set_enabled_00452b80(void* lens, std::uint32_t flag) override {
+        if (lens != reinterpret_cast<void*>(0x00e081a0u) || flag != 0)
+            throw std::logic_error("binoculars reset requested another lens operation");
+        lens_effect_off_00452b80();
     }
     void lens_effect_off_00452b80() override {
         // 00B0D020 on the renderer object [00F8D39C] is not modelled.
@@ -7316,6 +7336,14 @@ void ShipViewScreen46Binding::integrated_controls_0064b870(float dt) {
     owner_.done("HudShipView::integrated_controls_0064b870", 0x0064b870u);
 }
 }  // namespace
+
+void GameHudHost::Impl::reset_binoculars_0051e8e0() {
+    // 0051E8E0 has no frame/input arguments: this binding only reads the
+    // retained screen, registry visibility and the existing camera projection.
+    ShipViewInputBinding binding(*this);
+    bsp::cc13_seg14::binoculars_reset_0051e8e0(&binoculars, binding);
+    done("InGameInterface::binoculars_reset", 0x0051e8e0u);
+}
 
 void GameHudHost::update_ship_view_screen_0064d610(float seconds, bool wanted) {
     Impl& impl = *impl_;
@@ -8537,7 +8565,7 @@ public:
         unreached("00549260");
     }
     void weapon_group_release_005470c0() override { unreached("005470C0"); }
-    void screen26_call_0051e8e0() override { unreached("0051E8E0"); }
+    void screen26_call_0051e8e0() override { owner_.reset_binoculars_0051e8e0(); }
 
     static bsp::ObservedUnitScreenState state_of(const HudLeafScreenStorage& block) {
         if (!block.contains(block.data() + 0x28, sizeof(std::uint32_t)))
@@ -8624,6 +8652,11 @@ bool GameHudHost::exit_leaf_screen(int slot) {
     if (block == nullptr) return false;
     const bsp::ingame_gui_cc13::Raw raw{block->data()};
     switch (v->exit_1c) {
+    case 0x0051E9B0u: {
+        ShipViewInputBinding binding(impl);
+        bsp::cc13_seg14::binoculars_screen_exit_0051e9b0(&impl.binoculars, binding);
+        break;
+    }
     case 0x00643DE0u: bsp::ingame_gui_cc13::hud_spectator_screen_exit_00643de0(raw); break;
     case 0x0067B410u: bsp::ingame_gui_cc13::hud_common_overlay_screen_exit_0067b410(raw); break;
     case 0x004F75B0u: bsp::engine_seg11_35_66_cc13::base_screen_exit_004f75b0(); break;

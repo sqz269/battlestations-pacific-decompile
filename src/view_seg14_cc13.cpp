@@ -116,13 +116,20 @@ void binoculars_toggle_zoom_0051e7e0(Raw screen, Raw controlled_00e188d8,
     hooks.binoculars_apply_fov_0051e6e0(screen); // tail JMP
 }
 
-void binoculars_reset_0051e8e0(Raw screen, ViewSeg14Hooks& hooks) {
+bool BinocularsResetHooks::binoculars_screen_applied(Raw screen) {
+    return get<std::uint8_t>(screen, 5) != 0;
+}
+Raw BinocularsResetHooks::binoculars_model_widget(Raw screen) {
+    return get<void*>(screen, 0x20);
+}
+
+void binoculars_reset_0051e8e0(Raw screen, BinocularsResetHooks& hooks) {
     put<std::int32_t>(screen, 0x30, 0);
     put<float>(screen, 0x38, kOne);
     put<float>(screen, 0x28, kOne);
     hooks.binoculars_apply_fov_0051e6e0(screen);
-    if (get<std::uint8_t>(screen, 5) == 0) return;
-    hooks.widget_show_virtual_34(get<void*>(screen, 0x20), 0);
+    if (!hooks.binoculars_screen_applied(screen)) return;
+    hooks.widget_show_virtual_34(hooks.binoculars_model_widget(screen), 0);
     hooks.lens_flare_set_enabled_00452b80(reinterpret_cast<Raw>(kLensFlare), 0);
 }
 
@@ -141,7 +148,7 @@ Raw binoculars_screen_construct_0051e950(Raw screen, FrontEndScreenBaseHooks& ho
     return screen;
 }
 
-void binoculars_screen_exit_0051e9b0(Raw screen, ViewSeg14Hooks& hooks) {
+void binoculars_screen_exit_0051e9b0(Raw screen, BinocularsResetHooks& hooks) {
     binoculars_reset_0051e8e0(screen, hooks); // byte-identical body
 }
 

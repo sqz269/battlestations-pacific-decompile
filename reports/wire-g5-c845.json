@@ -83,23 +83,37 @@
       "status": "skipped",
       "host_site": "src/cc13_seg59a.cpp::scoring_record_drop_interval_0090e670",
       "reason": "Needs the real scoring record+160h vector and bomb-rack drop caller adapter, which this packet does not construct."
+    },
+    {
+      "native": "0051e8e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::Impl::reset_binoculars_0051e8e0, called from back_out_one_overlay_level_0068b470, collapse_in_game_overlays and HudLeafObservedUnitBinding::screen26_call_0051e8e0",
+      "state": "Existing reset body writes the same retained binocular mode/zoom/limit and reapplies FOV to the same camera, disabling its zoom flag; screen-applied/model accessors borrow the live registry and loaded page."
+    },
+    {
+      "native": "0051e9b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::exit_leaf_screen (slot 26h)",
+      "state": "The registry validates vtable 00CEC9B0 and dispatches the existing exit wrapper on the same retained binocular state, with the reset services used by map/collapse."
     }
   ],
   "validation": {
     "build": "./scripts/build.ps1: Win32 Release and all four existing tests pass",
-    "fixture": "tests/wire_g5_c845_binocular_probe.cpp: raise -> half zoom -> quarter zoom -> lower, same-camera near-plane restoration, FOV/zoom flag/visibility and an analog PC24 bit regression pass",
+    "fixture": "tests/wire_g5_c845_binocular_probe.cpp: raise/quarter-zoom/lower and analog PC24 bit regression, plus raise -> overlay reset and raise -> screen exit; both reset mode/FOV/limit and disable the same mover zoom flag",
     "fixture_recipe": "local/c845-probe.cmd; reproducible cl/library inputs are also documented at the top of the committed fixture",
     "pc24": "python tools/pc24_lint.py --staged and --diff origin/main...HEAD",
-    "compiled_calls": "python tools/call_graph.py followed by who 0051e650, who 0051e6e0, who 0051e7e0, who 0051eaa0 and path 0051eaa0",
+    "compiled_calls": "python tools/call_graph.py followed by who 0051e650, who 0051e6e0, who 0051e7e0, who 0051eaa0 and path 0051eaa0; who 0051e8e0 and who 0051e9b0 confirm the review cleanup calls",
     "readiness_wired_before": 10697,
-    "readiness_wired_after": 10698,
+    "readiness_wired_after": 10699,
     "readiness_called_before": 5937,
-    "readiness_called_after": 5960,
+    "readiness_called_after": 5962,
     "new_directly_verified_bodies": [
       "0051e650",
       "0051e6e0",
       "0051e7e0",
-      "0051eaa0"
+      "0051eaa0",
+      "0051e8e0",
+      "0051e9b0"
     ],
     "boundary": "Built executable reachability plus focused source fixture; no original register-ABI, retail-game visual or gameplay validation."
   },
@@ -107,5 +121,30 @@
     "00817380 controlled-part effect-group state/producer and 00452BD0 lens rendering remain recorded dependencies.",
     "The kind-46h weapon-view raise gate still needs its screen+1Ch owner; this packet limits the new raise path to supported controlled-unit kinds.",
     "The existing helm-aim look-axis/config binding and view_24 arm are outside this packet; only the raise axis is newly sourced from the native input bank."
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1854,
+    "reviewed_head": "6119627113027237ac2c4b76c63f0a4ffe087b3f",
+    "findings": [
+      {
+        "priority": "P2",
+        "status": "fixed",
+        "finding": "Newly active binocular zoom survived overlay/interface transitions",
+        "changes": [
+          "Replace map/back and collapse reset records with the existing 0051E8E0 body through a shared retained-state binding.",
+          "Bind screen 26h exit 0051E9B0 in the existing vtable-checked leaf dispatcher and connect the existing observed/bomber reset provider.",
+          "Extend the existing lifecycle fixture with active-zoom overlay reset and screen exit; assert mode 0, zoom/limit/FOV 1 and the same mover zoom flag disabled."
+        ]
+      }
+    ],
+    "validation": {
+      "build": "Win32 Release build and all four existing tests pass",
+      "fixture": "Extended lifecycle/PC24 fixture passes",
+      "pc24_staged": "0 findings across four changed code files",
+      "compiled_cleanup": "Entry-reachable calls at 10106FB3 (map/back), 1010983C (collapse), 10117E2A (shared reset body) and 1010C63F (screen exit).",
+      "folding_note": "Release /OPT:ICF folds the byte-identical reset/exit bodies at 10469B10; the two distinct source call sites and fixture validate the intended operations. All original four claimed bodies remain entry-reachable.",
+      "readiness_wired_after": 10699,
+      "readiness_called_after": 5962
+    }
+  }
 }

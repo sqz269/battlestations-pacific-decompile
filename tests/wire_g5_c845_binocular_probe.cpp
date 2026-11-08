@@ -23,6 +23,7 @@ template<class T> T& at(void* p, std::size_t offset) {
 }
 struct Lifecycle final : bsp::ShipViewInputHost,
     bsp::cc13_seg14::BinocularsToggleHooks,
+    bsp::cc13_seg14::BinocularsResetHooks,
     bsp::cc13_sweepA3::BinocularsAxesHost,
     bsp::segs_13_15_22_44_cc13::BinocularsFovHost {
     bsp::BinocularsState screen;
@@ -32,6 +33,7 @@ struct Lifecycle final : bsp::ShipViewInputHost,
     float saved_near = 0.0f;
     float fov = 1.0f;
     bool shown = false;
+    bool applied = true;
     bool relative = false;
     unsigned raises = 0, part_calls = 0, overlays = 0;
     Lifecycle() {
@@ -74,6 +76,19 @@ struct Lifecycle final : bsp::ShipViewInputHost,
         set_model_visible(true);
     }
     void set_model_visible(bool show) override { shown = show; }
+    bool binoculars_screen_applied(void* p) override {
+        assert(p == &screen); return applied;
+    }
+    void* binoculars_model_widget(void* p) override {
+        assert(p == &screen); return &shown;
+    }
+    void widget_show_virtual_34(void* p, std::uint32_t flag) override {
+        assert(p == &shown); shown = flag != 0;
+    }
+    void lens_flare_set_enabled_00452b80(void* p, std::uint32_t flag) override {
+        assert(p == reinterpret_cast<void*>(0x00e081a0u) && flag == 0);
+        lens_effect_off_00452b80();
+    }
     void lens_effect_off_00452b80() override {}
     void* mover_object() override { return mover.data(); }
     float mover_yaw() override { return at<float>(mover.data(), 0x384); }
@@ -148,6 +163,27 @@ int main() {
     std::uint32_t zoom_bits;
     std::memcpy(&zoom_bits, &fixture.screen.zoom_38, sizeof zoom_bits);
     assert(zoom_bits == 0x3f32504au);
+    // Review 1854: overlay/map cleanup and the screen's +1Ch exit both
+    // reset the retained screen that was just raised, including live FOV
+    // and the very same mover's zoom flag (not a fresh default screen copy).
+    Lifecycle overlay;
+    const auto assert_default_view = [&overlay]() {
+        assert(overlay.screen.mode_30 == 0 && overlay.screen.zoom_38 == 1.0f);
+        assert(overlay.screen.zoom_limit_28 == 1.0f && overlay.fov == 1.0f);
+        assert(at<unsigned char>(overlay.mover.data(), 0x3a0) == 0 && !overlay.shown);
+    };
+    overlay.press(true);
+    bsp::ship_view_input_0064a400(overlay.screen, overlay, 0.1f);
+    assert(overlay.screen.mode_30 == 1 && overlay.fov == 0.5f);
+    bsp::cc13_seg14::binoculars_reset_0051e8e0(&overlay.screen, overlay);
+    assert_default_view();
+    overlay.press(false);
+    bsp::ship_view_input_0064a400(overlay.screen, overlay, 0.1f);
+    overlay.press(true);
+    bsp::ship_view_input_0064a400(overlay.screen, overlay, 0.1f);
+    assert(overlay.screen.mode_30 == 1 && overlay.fov == 0.5f);
+    bsp::cc13_seg14::binoculars_screen_exit_0051e9b0(&overlay.screen, overlay);
+    assert_default_view();
     _controlfp_s(&ignored, old_control, _MCW_PC | _MCW_RC);
-    std::puts("c845 binocular lifecycle: PASS (raise -> quarter zoom -> lower/restore; analog PC24 bits)");
+    std::puts("c845 binocular lifecycle: PASS (raise/zoom/lower; overlay reset; screen exit; analog PC24)");
 }
