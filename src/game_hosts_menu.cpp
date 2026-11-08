@@ -25,6 +25,9 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"     // 00563370, 00555770
 #include "bsp/frontend_seg15_22_cc13.hpp"
 #include "bsp/frontend_seg19_21_cc13.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/game_native_settings_process.hpp"
+#include <cstdlib>
 #include "bsp/frontend_screen_animation.hpp"  // 00683610
 #include "bsp/options_menu_screens.hpp"
 #include "bsp/segs_13_15_22_44_cc13.hpp"      // 0051E4D0
@@ -609,10 +612,93 @@ private:
     MenuLeafBlock& block_;
 };
 
+// Goal 5 chain 813. 006898C0 constructs the actual 270h options-screen
+// receiver; 005F6030 constructs BCh settings at +D8h/+194h and mallocs ten
+// language-name bytes at +26Ch (bsp.py show 005f6030). Borrow the already
+// initialized process context: these are genuine settings owners, including
+// their pooled clan strings and the shared input/profile publications.
+// The menu still retains its GUI pages separately, so this owner releases
+// only the members it constructed, in native teardown order. The complete
+// page-removing destructor and native virtual ABI remain unbound.
+class MenuLeafOptionsBinding final : public cc13_fe1::OptionsLifetimeHost {
+public:
+    explicit MenuLeafOptionsBinding(MenuLeafBlock& block)
+        : block_(block), settings_(game_native_settings_process().embedded_settings_context()) {}
+    ~MenuLeafOptionsBinding() override {
+        std::free(language_buffer_);
+        for (std::size_t i = constructed_.size(); i != 0; --i) {
+            if (constructed_[i - 1]) game_settings_destroy_008d78d0(member(i - 1));
+        }
+    }
+    void frontend_construct_004f7180(void* screen) override {
+        construct_menu_leaf_base(block_, screen);
+    }
+    void game_settings_construct_008d7710(void* settings) override {
+        const std::size_t index = member_index(settings);
+        if (constructed_[index]) throw std::logic_error("options settings already constructed");
+        ::new (settings) NativeGameSettingsStorage;
+        NativeGameSettingsOperation operation;
+        construct_native_game_settings_008d7710(settings, settings_, operation);
+        constructed_[index] = true;
+    }
+    void game_settings_destroy_008d78d0(void* settings) override {
+        const std::size_t index = member_index(settings);
+        if (!constructed_[index]) throw std::logic_error("options settings not constructed");
+        NativeGameSettingsOperation operation;
+        destroy_native_game_settings_008d78d0(settings, settings_, operation);
+        constructed_[index] = false;
+    }
+    void* malloc_00bf9f1a(std::size_t size) override {
+        if (size != 10 || buffer_requested_)
+            throw std::logic_error("unexpected options language-buffer allocation");
+        buffer_requested_ = true;
+        language_buffer_ = std::malloc(size);
+        return language_buffer_;
+    }
+    void free_00bf9dc8(void* buffer) override {
+        if (buffer != language_buffer_)
+            throw std::logic_error("options language buffer belongs to another owner");
+        std::free(language_buffer_);
+        language_buffer_ = nullptr;
+    }
+    // Registration/page/destruction services are outside this constructor.
+    // Its three callees are all bound above; reject use at another entry.
+    void frontend_register_004f71d0(void*) override { unavailable("004F71D0"); }
+    void frontend_destruct(void*) override { unavailable("004F71A0"); }
+    std::uint32_t load_page_00aa5840(std::string_view) override { unavailable("00AA5840"); }
+    void remove_and_destroy_page(std::uint32_t) override { unavailable("00AA31F0"); }
+    void screen_bind_layout(void*) override { unavailable("layout virtual"); }
+    void scroller_construct_00683610(void*) override { unavailable("00683610"); }
+    std::array<float, 3> widget_resolved_position_00aa6750(std::uint32_t) override {
+        unavailable("00AA6750");
+    }
+    void multi_main_layout_achievement_locks_005ea030(void*) override { unavailable("005EA030"); }
+    void free_block(void*) override { unavailable("vector free"); }
+private:
+    void* member(std::size_t index) const noexcept {
+        return block_.data() + (index == 0 ? 0xD8 : 0x194);
+    }
+    std::size_t member_index(void* settings) const {
+        if (settings == member(0)) return 0;
+        if (settings == member(1)) return 1;
+        throw std::logic_error("settings are not a member of this options screen");
+    }
+    [[noreturn]] static void unavailable(const char* service) {
+        throw std::logic_error(std::string("005F6030 does not call ") + service);
+    }
+    MenuLeafBlock& block_;
+    NativeGameSettingsContext& settings_;
+    std::array<bool, 2> constructed_{};
+    void* language_buffer_{};
+    bool buffer_requested_{};
+};
+
 struct MenuLeafBacking {
     std::unique_ptr<MenuMissionTreeImage> mission_tree;
     std::unique_ptr<MenuCreditsImage> credits;
     std::unique_ptr<MenuLeafBlock> block;
+    // Release the settings and malloc buffer before their receiver block.
+    std::unique_ptr<MenuLeafOptionsBinding> options;
     FrontEndScreen* flags{};
     std::uint32_t* primary_vtable{};
 };
@@ -657,7 +743,7 @@ std::unique_ptr<MenuLeafBacking> construct_menu_leaf_block(
     std::size_t size_bytes, std::uint32_t constructor, GameHostLog& log) {
     switch (constructor) {
     case 0x00626630u: case 0x0051E4D0u: case 0x00563370u:
-    case 0x00527D00u: case 0x00555770u: break;
+    case 0x00527D00u: case 0x00555770u: case 0x005F6030u: break;
     default: return nullptr;
     }
     if (size_bytes != menu_leaf_block_size(constructor)) return nullptr;
@@ -666,6 +752,13 @@ std::unique_ptr<MenuLeafBacking> construct_menu_leaf_block(
     MenuLeafBlock& block = *backing->block;
     const ingame_gui_cc13::Raw raw{block.data()};
     switch (constructor) {
+    case 0x005F6030u: {
+        auto binding = std::make_unique<MenuLeafOptionsBinding>(block);
+        cc13_fe1::options_screen_construct_005f6030(block.data(), *binding);
+        backing->options = std::move(binding);
+        log.implemented("FrontEndManager::options_constructor", "005f6030");
+        break;
+    }
     case 0x00626630u: {
         MenuLeafRewardsBinding b(block);
         ingame_gui_cc13::rewards_construct_00626630(raw, b);

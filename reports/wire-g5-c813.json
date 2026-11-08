@@ -1,0 +1,178 @@
+{
+  "run": 1752,
+  "goal": 5,
+  "chain": 813,
+  "slot": "g5-w3",
+  "branch": "agent/g5-w3",
+  "picked": "Options-screen constructor and ownership of its embedded native settings and language buffer",
+  "rows": [
+    {
+      "native": "005f6030",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: construct_menu_leaf_block, called by MenuManagerHost::create_screen from init_options_menu_006898c0",
+      "evidence": "bsp.py show 005f6030: 270h receiver, base construction, vtables, BCh settings at D8h/194h, malloc(10) at 26Ch. Existing body reused once; its primary vtable selects the options class and its own flag bytes are registered. Both settings use the initialized process string/profile/input/data context. New members are released before the retained screen block."
+    },
+    {
+      "native": "005f1bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLeafOptionsBinding::~MenuLeafOptionsBinding",
+      "reason": "Complete native page-removing teardown needs the raw screen's page fields and registry destruction contract; pages still belong to separate menu records, so cleanup releases only the newly constructed settings and malloc buffer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "The main-thread Lua host produces no frame-job-thread deferred call with an actual source LuaVariantRecord vector to copy."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list ownership",
+      "reason": "No live native score-list owner or gameplay consumer exists; current capture planning consumes separate weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list ownership",
+      "reason": "There are no actual candidate-list entries whose chosen byte feeds the live planner."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: SpawnCompositionHost::candidate_attack_value",
+      "reason": "The air-support flight blocks still lack resolved plane-class weapon-value inputs; the current callback throws."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land-task installation",
+      "reason": "The land-state enum projection is not the eight actual constructed native state objects with executable entry profiles required by the registry."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land-task installation",
+      "reason": "The host lacks the complete native task/base construction, owner-plane binding and executable state-entry services for this constructor."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land-moveto task production",
+      "reason": "Flattened motion state does not provide the genuine native land-moveto object and complete task/approach service contract."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision-filter state",
+      "reason": "The boolean hull-filter projection lacks actual DYN shape-chain storage and manifold-clear/world-lock callbacks."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull collision-filter state",
+      "reason": "Actual hull shapes and filter-change manifold invalidation are missing."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine periscope collision-filter state",
+      "reason": "No actual DYN shape-group owner with the required manifold invalidation binding was established."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameStartupHost shutdown",
+      "reason": "The separate startup owners do not supply a complete NativeGameStorage receiver and full shared-subsystem NativeGameLifetimeContext."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: cc13_command_target",
+      "reason": "The literal initializer needs current native F87574/F87578/F8757C publications; semantic SceneCommandTarget values cannot substitute for those mutable absolute cells."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: enum declaration production",
+      "reason": "The lexer-backed enum reader supplies no canonical published world with its constructed NativeLuaStateStorage at 1A0Ch and matching Lua declaration table."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text-context font borrowing",
+      "reason": "Complete-string layout has no original input-character admission consumer with the required text-context font."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: flattened rendering-order collection",
+      "reason": "The native collector serves name-sorted property descriptions; the host's flattened Z/runtime render ordering supplies neither its original caller nor collection."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: FOV-aspect product consumers",
+      "reason": "No entry-reachable original product-query consumer with a bound actual projection was established; the GUI orthographic path is a different operation."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug inspector",
+      "reason": "The identified native caller is the excluded debug inspector."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: camera_screen_frame_step",
+      "reason": "Despite the host callback name, this is a support-manager info-panel update requiring actual availability state and widgets at 16Ch/180h/184h/188h/1A8h."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: push_effect_handle",
+      "reason": "Effect-name enumeration is empty and effect acquisition is unimplemented, leaving no live counted handle or native handle-vector owner to append."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: sub_update_008252c0",
+      "reason": "The unit host smooths RPM but creates no plane sound emitter with actual pitch/volume current/target fields to consume this body's output."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionPlay::clear_command_bar",
+      "reason": "No live MainMenuCommandOwner with its glyph-widget bindings and concrete reset adapter was established."
+    },
+    {
+      "native": "005495e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionPlay::clear_command_bar",
+      "reason": "The actual alternate command-bar widget owner and reset binding are missing."
+    },
+    {
+      "native": "00549620",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_owner.cpp: help-variant ownership",
+      "reason": "The help-page widget owner and live concrete reset binding have no established producer in the menu host."
+    }
+  ],
+  "built": [
+    "Actual retained options-screen backing in the existing menu leaf factory; no constructor switch or second native body",
+    "Two in-place BCh settings objects in the canonical initialized settings context and the constructor's malloc(10) language buffer",
+    "Reverse member cleanup before the raw receiver is freed; full GUI-page destruction remains separate"
+  ],
+  "verification": {
+    "setup": "bsp.py index --if-stale and initial scripts/build.ps1 passed",
+    "build": "scripts/build.ps1 passed with reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader",
+    "compiled_called_before": 5507,
+    "compiled_called_after": 5508,
+    "new_compiled_addresses": ["005f6030"],
+    "caller": "construct_menu_leaf_block -> options_screen_construct_005f6030, one direct reachable call at 10188b9c to linked 104506a0",
+    "entry_path": "WinMainCRTStartup -> application initialization/frame -> GameMenuHost::Impl::advance_path -> MenuManagerHost::create_screen -> construct_menu_leaf -> construct_menu_leaf_block -> options_screen_construct_005f6030",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "left": "Bind native options edit/enter consumers and transfer page ownership/registry teardown before wiring the complete options-screen destructor.",
+  "limitations": "Compiled reachability and existing tests only; no game execution or native ABI replacement claim."
+}

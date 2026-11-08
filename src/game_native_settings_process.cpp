@@ -80,6 +80,15 @@ NativeGameSettingsStorage& GameNativeSettingsProcess::settings(){
     if(impl_->phase!=Impl::Phase::ready)throw std::logic_error("native settings static owner is not initialized");
     return impl_->settings;
 }
+NativeGameSettingsContext& GameNativeSettingsProcess::embedded_settings_context(){
+    if(impl_->phase!=Impl::Phase::ready)throw std::logic_error("embedded settings require the initialized native settings process");
+    return impl_->settings_context;
+}
+GameNativeSettingsProcess& game_native_settings_process(){
+    if(!process)throw std::logic_error("native settings process has not been initialized");
+    (void)process->embedded_settings_context();
+    return *process;
+}
 void* GameNativeSettingsProcess::resolution_header() noexcept{return &impl_->resolutions;}
 void* GameNativeSettingsProcess::antialias_header() noexcept{return &impl_->antialias;}
 void* GameNativeSettingsProcess::catalog_header() noexcept{return &impl_->catalog;}

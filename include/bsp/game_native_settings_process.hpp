@@ -16,6 +16,9 @@ public:
     GameNativeSettingsProcess& operator=(const GameNativeSettingsProcess&)=delete;
     std::array<int,4> initialize_once(); // CD2D60,CD2D70,CD2D80,CD2DA0 order
     NativeGameSettingsStorage& settings();
+    // Embedded settings (for example the options screen's two edit copies)
+    // share the process's strings, input publication, profile and image data.
+    NativeGameSettingsContext& embedded_settings_context();
     void* resolution_header() noexcept;
     void* antialias_header() noexcept;
     void* catalog_header() noexcept;
@@ -44,4 +47,6 @@ private:
     static void shutdown_catalog();
 };
 GameNativeSettingsProcess& game_native_settings_process(GameNativeReadOnlyData&);
+// Borrow the already initialized process; never constructs a substitute domain.
+GameNativeSettingsProcess& game_native_settings_process();
 } // namespace bsp::game
