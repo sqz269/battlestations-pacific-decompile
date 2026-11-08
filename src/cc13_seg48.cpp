@@ -1159,8 +1159,9 @@ bool cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(void* squadron, std::uin
 
 // 007ED830 BSP_Unit_HasLevelBombOrdnance: 007B9500 (kind 31h) per member
 // (bytes 007ED830-007ED876; ECX = [edi], edi += 4 at 007ED85F).
-bool cc13_seg48_unit_has_level_bomb_ordnance_007ed830(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_level_bomb_ordnance_007ed830(void* squadron, std::uint32_t loadout, Cc13SquadronTargetOrdnanceHost& host) {
+    // Listing 007ED850/007ED862: member receiver, then reload +3CCh.
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_level_bomb_ordnance_007b9500(m, loadout);
     });
 }
@@ -1192,8 +1193,9 @@ bool cc13_seg48_plane_squadron_any_has_rockets_007ed920(void* squadron, std::uin
 }
 
 // 007ED970 BSP_Unit_HasRocketOrdnance: 007B9480 per member.
-bool cc13_seg48_unit_has_rocket_ordnance_007ed970(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_rocket_ordnance_007ed970(void* squadron, std::uint32_t loadout, Cc13SquadronTargetOrdnanceHost& host) {
+    // Listing 007ED990/007ED9A2: same early-out walk with 007B9480.
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_rocket_ordnance_007b9480(m, loadout);
     });
 }
