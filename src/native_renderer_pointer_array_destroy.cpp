@@ -54,10 +54,22 @@ void __fastcall resize_native_renderer_index_pointers_00b259d0(
 void __fastcall destroy_native_renderer_query_pointers_00b27f50(void* header) {
     destroy_pointers<resize_native_renderer_query_pointers_00b22cc0>(header);
 }
+// Evidence: bsp.py show 00B27FB0/00B28000 --asm: each entire body is PUSH 0,
+// CALL its existing resize, RET. B29B20/B29B40 perform that same resize(0)
+// before loading/freeing CURRENT data. Route the real borrowed renderer
+// headers through these sole clear bodies, without another resize or free.
+__declspec(noinline) void __fastcall clear_native_renderer_vertex_pointers_00b27fb0(void* header) {
+    resize_native_renderer_vertex_pointers_00b25940(header, 0, 0);
+}
+__declspec(noinline) void __fastcall clear_native_renderer_index_pointers_00b28000(void* header) {
+    resize_native_renderer_index_pointers_00b259d0(header, 0, 0);
+}
 void __fastcall destroy_native_renderer_vertex_pointers_00b29b20(void* header) {
-    destroy_pointers<resize_native_renderer_vertex_pointers_00b25940>(header);
+    clear_native_renderer_vertex_pointers_00b27fb0(header);
+    singleton_lifetime_free(reinterpret_cast<void*>(word(header)));
 }
 void __fastcall destroy_native_renderer_index_pointers_00b29b40(void* header) {
-    destroy_pointers<resize_native_renderer_index_pointers_00b259d0>(header);
+    clear_native_renderer_index_pointers_00b28000(header);
+    singleton_lifetime_free(reinterpret_cast<void*>(word(header)));
 }
 } // namespace bsp

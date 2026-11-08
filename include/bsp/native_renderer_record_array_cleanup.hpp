@@ -17,6 +17,11 @@ void __fastcall resize_native_renderer_pixel_shader_registry_00b25d40(
 void __fastcall resize_native_renderer_third_state_cache_00b22e90(
     void*, std::uint32_t unused_edx, std::int32_t count);
 
+// Native ECX header / RET: PUSH 0, CALL B25CF0/B25D40, RET. These source
+// entries replace the equivalent resize(0) in the live member destructors.
+void __fastcall clear_native_renderer_vertex_shader_registry_00b282f0(void*);
+void __fastcall clear_native_renderer_pixel_shader_registry_00b28300(void*);
+
 // Actual 0Ch header: data+00, signed count+04, signed capacity+08. Native
 // bodies consume ECX=header and return with plain RET. These entries share
 // the existing raw pointer cleanup implementation after full instruction
