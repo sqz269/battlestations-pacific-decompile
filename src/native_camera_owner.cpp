@@ -1,4 +1,5 @@
 #include "bsp/native_camera_owner.hpp"
+#include "bsp/camera_configuration.hpp"
 #include "bsp/camera_plane_initialization.hpp"
 #include "bsp/system_fog_owner.hpp"
 #include "bsp/native_tagged_leaf_b6_16e.hpp"
@@ -217,7 +218,11 @@ void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const NativeStr
         construct_camera_plane_set_00b659d0(tail.planes_2f4, environment.viewport.one_bits_00d7a24c);
         tail.retained_438 = nullptr;
         unwind_state = 2;
-        tail.borrowed_context_43c = nullptr;
+        // Source reuse: bsp.py show 00B71A80 --asm, 00B71B26, stores EBX
+        // (zero) to this camera+43Ch. 00B6FEC0 is the complete same DWORD
+        // store, not an original CALL here. frame_backing binds owner.frame
+        // to tail.borrowed_context_43c; no extra camera or pointee is created.
+        set_camera_context_depth_scale_00b6fec0(owner.frame, nullptr);
         const DWORD origin[2] = {0, 0};
         set_native_viewport_origin_00b1f920(*tail.viewport_180, origin);
         auto* const renderer = environment.viewport.renderer_00f8d394;
@@ -312,7 +317,9 @@ void* construct_native_camera_raw(NativeCameraOwner& owner, const void* actual_n
         construct_camera_plane_set_00b659d0(tail.planes_2f4, environment.viewport.one_bits_00d7a24c);
         tail.retained_438 = nullptr;
         unwind_state = 2;
-        tail.borrowed_context_43c = nullptr;
+        // Same 00B71B26 store on the raw-name construction path; the frame
+        // borrows this owner's actual +43Ch field (see frame_backing).
+        set_camera_context_depth_scale_00b6fec0(owner.frame, nullptr);
         const DWORD origin[2] = {0, 0};
         set_native_viewport_origin_00b1f920(*tail.viewport_180, origin);
         auto* const renderer = environment.viewport.renderer_00f8d394;
