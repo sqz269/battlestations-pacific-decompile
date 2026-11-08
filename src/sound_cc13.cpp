@@ -9,6 +9,7 @@
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_dialog_table.hpp"
+#include "bsp/sound_configuration.hpp"
 #include "bsp/sound_configuration_shutdown.hpp"
 #include "bsp/sound_sample.hpp"
 #include "bsp/sound_resource_cache.hpp"
@@ -597,15 +598,22 @@ void reserve_sound_configured_groups_00a7f160(NativePointerArray& header, std::i
                     &destroy_sound_configured_group_raw_00a7bfe0, strings);
 }
 
-void append_sound_configured_type_00a7feb0(NativePointerArray& header, const void* type, NativeStringStorage& strings) {
-    if (header.count == header.capacity) {
-        reserve_sound_configured_types_00a7fbd0(header, grown_capacity_doubling(header.capacity), strings);
+__declspec(noinline) void append_sound_configured_type_00a7feb0(
+    SoundConfigurationState& state, const SoundConfiguredType& type) {
+    // bsp.py show 00A7FEB0 --asm: equality-only full test, signed wrapped
+    // max(2*capacity,1), copy construction, then count++. The live loader
+    // inlines this same operation at 00A812AE..00A812F2 on manager+38h.
+    // 00A7FB50 copies the name and the pointer array, without retaining the
+    // pointed-to FMOD groups. These are the existing owner's actual records;
+    // no raw mirror or second append is kept. Standard-container allocation
+    // and failure cleanup remain this host projection's C++ boundary.
+    auto& types = state.types_38;
+    if (types.size() == static_cast<std::size_t>(state.type_capacity_40)) {
+        const auto capacity = grown_capacity_doubling(state.type_capacity_40);
+        types.reserve(static_cast<std::size_t>(capacity));
+        state.type_capacity_40 = capacity;
     }
-    void* const slot = bytes(header.data, static_cast<std::size_t>(header.count) * 0x14);
-    if (slot != nullptr) {
-        copy_sound_configured_type_00a7fb50(slot, type, strings);
-    }
-    header.count = add32(header.count, 1);
+    types.push_back(type); // Increment the count only after the copy succeeds.
 }
 
 // Keep the reconstructed entry visible in the optimized game call graph.

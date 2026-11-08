@@ -1,5 +1,6 @@
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_class_ownership.hpp"
+#include "bsp/sound_cc13.hpp"
 #include "bsp/game_native_lua_display_string.hpp"
 
 #include <algorithm>
@@ -354,11 +355,7 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
                 type.by_listener[index] = find_sound_channel_group_00a7b120(
                     state, group_name.value, fmod);
             });
-            if (state.types_38.size() == static_cast<std::size_t>(state.type_capacity_40)) {
-                state.type_capacity_40 = std::max(2 * state.type_capacity_40, 1);
-                state.types_38.reserve(state.type_capacity_40);
-            }
-            state.types_38.push_back(std::move(type));
+            sound_cc13::append_sound_configured_type_00a7feb0(state, type);
         });
     }
 }

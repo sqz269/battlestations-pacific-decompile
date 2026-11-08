@@ -1,0 +1,512 @@
+{
+  "chain": 848,
+  "run": 1833,
+  "slot": "g5-w12",
+  "branch": "agent/g5-w12",
+  "picked": "Canonical sound configured-type append on the live Lua SoundTypes table",
+  "rows": [
+    {
+      "native": "00a7feb0",
+      "status": "wired",
+      "host_site": "src/sound_configuration.cpp: apply_sound_configuration_lua_00a7ff80_fragment, SoundTypes iteration",
+      "evidence": "One canonical body in src/sound_cc13.cpp consumes the existing SoundConfigurationState.types_38/type_capacity_40 and independent parsed temporary. Removed the old grow/move inline. Assembly 00A7FECB..00A7FF0E matches the loader inline at 00A812AE..00A812F2: equality-only full test, signed wrapped doubling/min1, copy record, count++ after success. Typed string/vector storage copies owned name and pointer-array storage while retaining borrowed FMOD group identities."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: GameMissionFrameHost::run_mission_frame_004e4a40",
+      "reason": "Missing the original screen-center/cursor pick producer; the inspected helm-order script names a target directly."
+    },
+    {
+      "native": "005cf3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: loss-text adapter",
+      "reason": "Missing retained native player/class text arguments and a concrete Seg15Host chat-channel binding; the inspected host keeps side counters."
+    },
+    {
+      "native": "0096ae90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: ship-noise adapter",
+      "reason": "No retained air-raid effect owner and stop-children provider was established in the inspected frame host."
+    },
+    {
+      "native": "0096edd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: ship-noise adapter",
+      "reason": "No concrete native ship-noise update owner/provider path was established in the inspected frame host."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing a frame-job-thread enqueue producer with an actual LuaVariantRecord argument vector; the inspected interpreter runs on the main thread."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: local-session message routing",
+      "reason": "The native C8h DeadMeatRot producer is multiplayer-only; excluded from this single-player assignment."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::scoring_slot",
+      "reason": "Missing the native 288h score-record/container constructor binding; current scoring records use a typed model that cannot receive the raw +284h store."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live input-character admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00ab6d30",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: text_accepts_input_char_00ab6d30",
+      "reason": "Missing the original input-character owner/font admission path and its glyph-byte provider."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message handling",
+      "reason": "Missing a presence-zero clear-message producer and retained path owners for the selected director slot; inspected live senders add points."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow-fit consumers",
+      "reason": "Missing an entry-reachable original shadow-fit consumer; agent/g5-w9 c851 independently confirmed the fitter remains dormant and moved to another target."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: main-scene clip preparation",
+      "reason": "No entry-reachable native main-scene submission owner was established locally; the existing source caller already names this setter."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: main-scene clip preparation",
+      "reason": "No entry-reachable native main-scene submission owner was established locally; the existing source caller already names this resetter."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: BeginCommandBinding target notification",
+      "reason": "Missing reporter/channel ownership and observed-target argument dispatch into the actual mission Lua subscriptions; the inspected callbacks only record the call."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing the original DescribeProperties per-parent name-sorted child consumer; flattened quad rendering does not supply that call site."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "No entry-reachable native command-menu collection/sort consumer was established; 006F7CC0 is absent from the built game graph."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established native caller is the debug flooded inspector; debug-only work is excluded."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI spawn-composition scoring",
+      "reason": "Missing a parser-owned per-mode ClassPairRow table and its live spawn-composition scoring consumer."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: get_profile_manager_00425c20",
+      "reason": "Missing a live consumer of ProfileManagerOwner and its publication/lifetime slot; existing refresh consumes ProfileResetState directly."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "Missing a nonempty native loading-job work-vector producer and full queue update binding; the live queue currently admits only empty updates."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_fileblock_owner.cpp: ensure_native_loading_job_fileblock_00504790",
+      "reason": "Missing the retained native loading-job filename/FileBlock owner and reached queue-state callback."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "Missing the actual nonempty queue/job producer and worker execution/update providers; the live queue owner throws for nonempty updates."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing nonempty native queue FileStore/work-submission bindings; enqueueing a job would enter the current explicit unsupported-update path."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing a live completed native job and the nonempty queue/FileStore retirement composition."
+    },
+    {
+      "native": "009b9030",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_make_level_bomb_009b9030",
+      "reason": "Missing a concrete Cc13Seg67bHost and retained native bot/task subobjects at the live projected-controller registration site."
+    },
+    {
+      "native": "009ca2b0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_make_retreat_009ca2b0",
+      "reason": "Missing the concrete native 009C9D00 retreat-task constructor provider and native bot owner."
+    },
+    {
+      "native": "009cff40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: pilot_bot_create_takeoff_task_009cff40",
+      "reason": "Missing a concrete Cc13Seg67bHost and the retained native takeoff-task/bot subobject composition."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated controller registration",
+      "reason": "Missing the complete native 2268h brain constructor/provider composition; the live registration uses projected controllers."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp: UnwrittenPostTickCallback",
+      "reason": "Missing the original OnInitOnce callback-publication writer over a retained native game clock owner; the application callback cell remains zero."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Missing the actual HUD-map animation owner+50h, widget virtual88 dispatch and notify callback+4h."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp: native manager frame bridge",
+      "reason": "Missing the projected GuiPointerRuntime owner with shared live input and complete AA2F10 hit-test services."
+    },
+    {
+      "native": "00a9a790",
+      "status": "skipped",
+      "host_site": "src/native_gamepad_xinput.cpp: stop_native_xinput_vibration_00a9a790",
+      "reason": "No original live stop-vibration request/dispatch producer was established; the existing poll rumble-disabled path is a separate operation."
+    },
+    {
+      "native": "0042b420",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_set_rotation_z_0042b420",
+      "reason": "No original live rotation-Z setter consumer with its Seg2Host matrix services was established."
+    },
+    {
+      "native": "0042b7f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_orthonormalize_return_this_0042b7f0",
+      "reason": "No original live wrapper consumer with its Seg2Host orthonormalization provider was established."
+    },
+    {
+      "native": "0042aff0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: transform_get_world_matrix_0042aff0",
+      "reason": "Missing a live raw node/cache-validity owner and concrete transform-refresh provider for this getter."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_row_by_data_00a9c860",
+      "reason": "The established native callers are autotest-only listbox selection helpers; excluded from this single-player runtime assignment."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing a live original options/control-binding consumer over the actual raw listbox listener and selection storage."
+    },
+    {
+      "native": "00a9d360",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: scroll_native_listbox_to_item_00a9d360",
+      "reason": "No original live scroll-to-item consumer with the actual raw listbox and scroll callbacks was established."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: child factory admission",
+      "reason": "Missing complete Button property/focus/page-dispatch composition; storage construction alone cannot admit a production child."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: child factory admission",
+      "reason": "Missing the full raw AC85A0 scrollbar property visitor and genuine current7C layout services."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Missing a single-player use of the native objective replication message; the inspected host only records replication, without a raw message/transport owner."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: language-sweep load consumer",
+      "reason": "The catalog exists, but the original language-sweep consumer requires the unhosted profile-hints mode and ownership."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: format_string_1024_0040cfc0",
+      "reason": "The established original consumers format entity-tree or Dyn-profile diagnostics; debug-only wiring is excluded."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp: format_string_255_004b8410",
+      "reason": "The established native consumer is DiagnosticPrintf; debug-only wiring is excluded."
+    },
+    {
+      "native": "00439a00",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: vector2_set_random_unit_direction_00439a00",
+      "reason": "No original live float2 random-direction consumer was established; the plane-wanderer uses a distinct float3 random-direction routine."
+    },
+    {
+      "native": "0040d7b0",
+      "status": "skipped",
+      "host_site": "src/cc16_dyn_ring_owner.cpp: ring-owner vector construction",
+      "reason": "Missing an entry-reachable native Dyn ring-owner/vector12 construction path; source callers already name the copy body."
+    },
+    {
+      "native": "006a33f0",
+      "status": "skipped",
+      "host_site": "src/input_binding_text.cpp: collect_action_binding_texts_006a33f0",
+      "reason": "No original live binding-text collection UI consumer with the required action/settings display owner was established."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "Missing a retained CloudInstanceC produced by a live old-cloud scene/Lua alpha consumer."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: score-record field18 increment",
+      "reason": "No live original HUD-map field18 increment consumer with the matching score-record state was established."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_00444070",
+      "reason": "No original live constructor consumer with the actual 12-byte string/scalar record owner was established."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_004440c0",
+      "reason": "No original live copy-constructor consumer with the actual 12-byte string/scalar record owner was established."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a live native land-task/controller registry producer and consumer composition; source storage constructors alone are insufficient."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: register_native_land_states_009af9a0",
+      "reason": "Missing the live native land-task state objects and reached registry registration path."
+    },
+    {
+      "native": "00a7fe60",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp: listener-preset append/find/select inline",
+      "reason": "The raw system+0A4h wrapper needs a typed live listener-table interface; this small shared-file follow-up was sent to agent/g5-w10."
+    },
+    {
+      "native": "00a818d0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: sound_sample_has_resource_word08_00a818d0",
+      "reason": "No live original consumer over a retained raw sample+78h resource owner was established; existing semantic sample consumers do not supply that layout."
+    },
+    {
+      "native": "00a83120",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp: apply_sound_sample_settings_00a83120",
+      "reason": "Missing a live complete raw sample/descriptor owner and concrete SoundSampleApplyHost composition for the native settings path."
+    }
+  ],
+  "verification": {
+    "baseline": "./scripts/build.ps1 passed; all four tests passed.",
+    "build": "./scripts/build.ps1 passed after implementation; all four tests passed. local/output/c848-build.log.",
+    "focused_probe": "tests/wire_g5_c848_sound_types_probe.cpp compiled MSVC x86 /O2 /MD /MANIFEST:EMBED through local/c848-probe.cmd and passed: capacities 1/2/4/4/8, source preservation, independent record storage, null holes and borrowed FMOD pointer identities.",
+    "call_graph": "python tools/call_graph.py; who 00a7feb0: REACHABLE, one call site from the SoundTypes Lua iteration. path: WinMain -> startup -> construct_sound_system_00a88770 -> initialize_sound_configuration_00a7ff80 -> apply_sound_configuration_lua_00a7ff80_fragment -> append_sound_configured_type_00a7feb0.",
+    "float_math": "No float arithmetic changed.",
+    "called_reconstructed_addresses": {
+      "before": 5564,
+      "after": 5565
+    },
+    "readiness_wired": {
+      "before": 10700,
+      "after": 10701
+    },
+    "readiness_row": {
+      "address": "00a7feb0",
+      "name": "append_sound_configured_type_00a7feb0",
+      "source": "src/sound_cc13.cpp",
+      "category": "sound",
+      "state": "wired",
+      "callers": 0,
+      "wired_callers": 0,
+      "callees": 2,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "limitations": [
+    "Standard string/vector storage and allocation/EH are the existing live host projection; native 14h-record ABI, native allocator/failure identity and SEH are not reproduced.",
+    "Compiled entry reachability and synthetic ownership checks only; no game launch or gameplay validation."
+  ],
+  "left_for_others": "Listener-preset wrapper 00A7FE60 has a matching live inline in sound_configuration.cpp; notified g5-w10. Native loading-queue nonempty work, GUI input owners and raw score/task owners remain separate work.",
+  "merge_verification": {
+    "merged_main": "229576fd7656b1d6139345494e27e13b3082ac1f",
+    "conflicts_resolved": [
+      "include/bsp/sound_cc13.hpp: preserve both SoundConfiguredType and SoundConfiguredChannelGroup forward declarations",
+      "src/sound_cc13.cpp: preserve both sound_configuration.hpp and sound_configuration_shutdown.hpp includes"
+    ],
+    "preserved_main_wiring": [
+      "00a7faf0 live channel-group append",
+      "00a7f110 live channel-group pop"
+    ],
+    "ledger_and_startup_conflicts": false,
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/output/c848-merge-on-build.log",
+      "passed": true,
+      "distinct_diagnostics": 0,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "sources_restored": true
+    },
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "log": "local/output/c848-merge-build.log",
+      "ran_after_on_sources_restored": true
+    },
+    "focused_probes": {
+      "passed": true,
+      "sources": [
+        "tests/wire_g5_c848_sound_types_probe.cpp",
+        "tests/wire_g5_c841_channel_groups_probe.cpp"
+      ],
+      "log": "local/output/c848-merge-probes.log",
+      "compile": "MSVC x86 /O2 /MD /MANIFEST:EMBED against merged bsp_core.lib"
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "summary": {
+        "wired": 10711,
+        "callees_done_no_wired_caller": 8554,
+        "ready": 1209,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "rows": [
+        {
+          "address": "00a7f110",
+          "name": "pop_back_sound_configured_group_00a7f110",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 1,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00a7faf0",
+          "name": "append_default_sound_configured_group_00a7faf0",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 1,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00a7feb0",
+          "name": "append_sound_configured_type_00a7feb0",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 2,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        }
+      ],
+      "ran_after_normal_build": true
+    },
+    "call_graph": {
+      "summary": {
+        "functions": 43069,
+        "reachable_functions": 42913,
+        "data_symbols": 49342,
+        "edges": 222762,
+        "roots": 1,
+        "instructions": 2374172,
+        "recon_addresses": 6202,
+        "recon_called": 5580,
+        "orphan_refs_ignored": 0,
+        "folded_functions": 2528
+      },
+      "reachable_addresses": [
+        "00a7feb0",
+        "00a7faf0",
+        "00a7f110"
+      ],
+      "call_sites_each": 1,
+      "evidence": "call_graph.py who reports all three canonical bodies REACHABLE from the normal merged build."
+    }
+  }
+}

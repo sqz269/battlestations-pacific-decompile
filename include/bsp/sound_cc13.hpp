@@ -25,6 +25,7 @@ namespace bsp {
 struct SoundResourceOwner;
 struct SoundResourceCacheRecord;
 struct SoundConfigurationState;
+struct SoundConfiguredType;
 struct SoundConfiguredChannelGroup;
 }
 
@@ -217,7 +218,12 @@ void reserve_sound_configured_types_00a7fbd0(NativePointerArray& header, std::in
 void reserve_sound_configured_groups_00a7f160(NativePointerArray& header, std::int32_t requested, NativeStringStorage& strings);
 // 00A7FEB0 BSP_SoundConfiguredTypes_Append, __thiscall(ECX header, const type*), RET 4: when full, reserve
 // capacity * 2 (at least 1); copy-construct at the end; count + 1 after the copy returns.
-void append_sound_configured_type_00a7feb0(NativePointerArray& header, const void* type, NativeStringStorage& strings);
+// Uses the live configuration owner's sole typed table and logical capacity.
+// The source is the loader's independent temporary: name/array storage is copied,
+// while the listener's FMOD group pointers remain borrowed. New C++ interface;
+// the native 14h-record layout and allocator/EH identities are not reproduced.
+void append_sound_configured_type_00a7feb0(SoundConfigurationState& state,
+    const SoundConfiguredType& type);
 // 00A7FAF0 BSP_SoundConfiguredGroups_AppendDefault, __fastcall(ECX header) -> EAX new record: when full,
 // reserve capacity + 16 (at least 16); zero the six DWORDs of the new 18h record; count + 1.
 // Uses the live configuration owner's existing typed records and logical capacity;
