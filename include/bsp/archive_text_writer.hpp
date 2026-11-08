@@ -67,7 +67,7 @@ public:
     void write_options_text_008d6170() override;
     void write_keyboard_setup() override;
 
-    std::uint32_t depth() const noexcept { return depth_; }
+    std::uint32_t depth() const noexcept { return native_.depth_04; }
 
 private:
     std::string format_key(const GuiLuaVariant& key) const;
@@ -76,7 +76,12 @@ private:
 
     ArchiveTextOutput& output_;
     ArchiveSettingsServices* settings_services_;
-    std::uint32_t depth_{};
+    // Retained 8h writer state. 00BD8CD0 reloads this same +4h depth between
+    // output callbacks; a temporary snapshot would lose reentrant changes.
+    struct NativeState {
+        std::uint32_t vtable_00{0x00ce4104u};
+        std::uint32_t depth_04{};
+    } native_;
 };
 
 } // namespace bsp
