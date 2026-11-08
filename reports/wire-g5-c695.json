@@ -1,0 +1,86 @@
+{
+  "goal": 5,
+  "chain": 695,
+  "owner": "agent/g5-w10",
+  "base": "f7ba9aabd4",
+  "picked": "Scene navigation layer loading through the existing stream constructor and deserializer",
+  "rows": [
+    {
+      "native": "004246e0",
+      "status": "wired",
+      "host_site": "src/scene_contents_hosts.cpp: bsp::load_avoid_zones_004248a0",
+      "evidence": "004248A0 at 00424904..0042492F inlines the same vtable/empty-vector construction as 004246E0 before calling 004239E0; the complete existing constructor now consumes the scene host's live .nav cursor.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "004239e0",
+      "status": "wired",
+      "host_site": "src/scenes_seg1_cc13.cpp: terrain_grid_layer_construct_from_stream_004246e0, reached from src/scene_contents_hosts.cpp: load_avoid_zones_004248a0",
+      "evidence": "00423A0F..00423A9D reads the name, half extent, dimension, cell size, scale, slope limit and grid bytes through the adapted live stream slots. 00423A62 and 00423A94 IMUL keep the low 32 bits; the existing body's signed-overflow expression was corrected accordingly.",
+      "previous_readiness_state": "wired",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "004248a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::load_avoid_zones",
+      "previously_reachable": true,
+      "evidence": "The existing entry-reachable loader replaces its inline per-layer reads with one call to 004246E0; the old field-read path was deleted. Registry phases, stream ownership and layer publication remain with the existing scene host.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "004180a0",
+      "status": "skipped",
+      "host_site": "src/scenes_seg1_cc13.cpp: terrain_grid_cell_to_world_004180a0",
+      "reason": "No live grid-to-world consumer in this packet; the existing body documents no original direct caller or xref."
+    },
+    {
+      "native": "0041ef90",
+      "status": "skipped",
+      "host_site": "src/scenes_seg1_cc13.cpp: terrain_grid_layer_serialize_0041ef90",
+      "reason": "The scene path only loads .nav data; a real navigation-save operation and writable stream are missing."
+    },
+    {
+      "native": "0041f130",
+      "status": "skipped",
+      "host_site": "src/scenes_seg1_cc13.cpp: terrain_grid_save_layers_0041f130",
+      "reason": "The scene path only loads .nav data; a real navigation-save operation and writable stream are missing."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10445,
+    "readiness_wired_after": 10446,
+    "readiness_note": "Before is the fresh branch baseline, rather than the older assignment pool snapshot. 004239E0 was already textually wired; both layer bodies now have verified entry-reachable calls.",
+    "readiness_called_after": 5709,
+    "called_before": null,
+    "called_before_note": "The initial readiness run had no call-graph cache; no before/after emitted-call total is claimed."
+  },
+  "validation": {
+    "baseline": "python tools/bsp.py index --if-stale; ./scripts/build.ps1: passed all four tests before edits",
+    "build": "./scripts/build.ps1: passed all four tests after C++ edits",
+    "build_log": "local/output/wire-g5-c695-build.txt",
+    "fixture": "Local Win32 probe passed one focused two-layer case: shared cursor exhausted exactly, scalar order and grid byte counts correct, diagnostic names preserved, registry phases called once in order.",
+    "fixture_source": "local/wire_g5_c695_probe.cpp (ignored, not a new permanent test suite)",
+    "fixture_link": "cl /std:c++17 /EHsc /MD /I include local/wire_g5_c695_probe.cpp build/win32/Release/bsp_core.lib /link /MANIFEST:EMBED /OPT:REF",
+    "call_graph": "python tools/call_graph.py; who 004246e0; who 004239e0; path 004246e0; who 004248a0: all reachable, expected caller and one call site each",
+    "entry_path": "WinMain -> startup/frame/menu -> mission advance/scene load -> SceneContentsBinding::load_avoid_zones -> load_avoid_zones_004248a0 -> terrain_grid_layer_construct_from_stream_004246e0 -> terrain_grid_layer_deserialize_004239e0",
+    "readiness": "python tools/wire_readiness.py --standins before; python tools/wire_readiness.py after; both layer rows called=true and call_sites=1 after",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "assumptions_and_limits": [
+    "The constructor's native initialization is already inlined in 004248A0; reusing its existing body preserves that initialization without a second read or second implementation.",
+    "The native reader drops the serialized class name; the adapter retains it only for the existing host diagnostic field.",
+    "An empty grid now follows the existing body's native invalid-parameter branch and throws, instead of the replaced inline loader silently accepting it.",
+    "Typed C++ interface wiring and a synthetic stream fixture are established; original binary ABI equivalence and game execution were not tested."
+  ],
+  "left_for_others": [
+    "Navigation saving requires a real writable stream and save trigger.",
+    "Grid-to-world conversion requires a real consumer.",
+    "No original ABI replacement or game launch was attempted."
+  ]
+}
