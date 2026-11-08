@@ -1,0 +1,299 @@
+{
+  "goal": 5,
+  "chain": 830,
+  "slot": "g5-w7",
+  "branch": "agent/g5-w7",
+  "picked": "Nonlocal single-player AI active-power-up award/cooldown completion",
+  "scope": "Only real nonlocal SP slots are admitted to GA_AE; local/online providers remain explicit exceptions. No game launched.",
+  "rows": [
+    {
+      "native": "0090f5a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::award_active_powerup_use -> NonlocalPowerupAwardBinding::grant"
+    },
+    {
+      "native": "0090ede0",
+      "status": "wired",
+      "host_site": "src/cc13_seg59a.cpp: grant_literal, reached by scoring_grant_ga_ae_once_0090f5a0"
+    },
+    {
+      "native": "0090c000",
+      "status": "wired",
+      "host_site": "src/cc13_seg59a.cpp: scoring_grant_award_0090ede0"
+    },
+    {
+      "native": "008e4b00",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 consumed-active nonlocal-SP tail"
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot",
+      "reason": "Missing retained ControllerSnapshotMessage owner and native snapshot transport consumer; projectile snapshots are a different operation."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: notify_gun_skill_level",
+      "reason": "Already directly calls the body with loaded descriptor, real skill and shared draw; no additional call warranted."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage",
+      "reason": "Missing native net-entity-create producer and mutable F87574/78/7C miss inputs; member+04h is not the formation station offset."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "Missing original marker projection/margin producer; existing substitute camera culls to the clip rectangle first."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already has three entry-reachable binary calls from avoidance queries; no additional call warranted."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission consumer with its retained text-context font."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/gun_platform_arc.cpp: gun_set_angles_immediate_0085b0f0",
+      "reason": "Missing original immediate-angle receive producer with same-gun received/current/target fields and node consumer."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "Missing actual nonzero unit+B04h correction producer admitting the alternate-frame branch."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCam callbacks",
+      "reason": "Missing retained MovCamAngles owner and original frame-update consumer."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Native multiplayer participant watchdog is excluded from single-player work."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "Missing live application bridge supplying the same-domain projected GuiResourceOwner and widget-owner graph."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing live typed timed-entry owner and corresponding consumer in the inspected GUI bridge."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GUI pointer update",
+      "reason": "Missing projected GuiPointerRuntime owner and matching live input/hit-test services."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: render child collection",
+      "reason": "Missing original per-parent child/name-order producer; current bridge sorts flattened quads by runtime status and Z."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing live authored Curve-point owner and native curve rebuild/tessellation consumer."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/profile_manager.cpp: get_profile_manager_00425c20",
+      "reason": "Missing live ProfileManagerOwner publication/lifetime consumer; checkpoint refresh uses ProfileResetState directly."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing parser-owned per-mode class-pair table and live spawn-composition scoring consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "Missing live per-member reconnaissance-value provider and corresponding group-scoring consumer."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing atmosphere+3Ch cloud-manager owner and reference-node dirty/world-axis producer; this body is cloud, not ocean, state."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing live command-menu key collection and native linked-list ordering consumer; director queues are separate."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: clear-user-path message",
+      "reason": "Missing presence-zero clear-message producer and retained selectable-slot path owners."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing reached native command-target-pair owner with actual class ordinal and descriptor-initialization callback."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/native_gui_icon_delayed_request_storage.cpp: delayed-request append",
+      "reason": "Existing path uses append_native_gui_named_value_array_storage_00ab4990; the typed GuiNamedValueArray is a separate domain."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "The inspected helper is only a fragment of the address; missing whole ocean update owner and real depth-target consumer."
+    },
+    {
+      "native": "007b65e0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_lifetime.cpp: destroy_native_land_moveto_007b65e0",
+      "reason": "Missing reached native land-moveto lifetime owner; the inspected host has no matching full native cleanup path."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Established native consumer is the excluded debug inspector, not gameplay."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing saved-entity Lua restoration producer for toTurn; the normal scene start is a different input."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp: engine_sound_step_007de490",
+      "reason": "Missing actual retained plane-engine sound emitters and their pitch/volume producer; current unit RPM smoother does not build emitters."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing live support-site availability list and matching native support-menu consumer."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing live support-site stock lists and support-order/spawn-composition consumer."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: unit_pick_read_position_00521fd0",
+      "reason": "Missing lock entry owning cached position+F0h/valid+FCh and the corresponding D4 action/countdown producer."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "Already calls report_loading_progress with the published LoadingScreen singleton and real progress; no duplicate call warranted."
+    },
+    {
+      "native": "006b8da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: NonlocalPowerupAwardBinding",
+      "reason": "Local achievement-ID continuation still needs the actual loaded achievement registry; nonlocal GA_AE returns before this call."
+    },
+    {
+      "native": "008eada0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "Existing reached semantic fragment now completes nonlocal SP active tail; whole native Seg58Host body and air-support/local/online continuations remain unbound."
+    },
+    {
+      "native": "008e87c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: expire_modifier_008e8c30",
+      "reason": "Exhausted active-item removal after its final live modifier expires still needs the native inventory-removal owner/provider."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Failure statistics",
+      "reason": "Missing native component-failure threshold/counter providers; the new nonlocal GA_AE bridge only admits its award path."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Missing complete repair-completion scoring record/providers; the current host still reports this callback unavailable."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate direct-hit scoring",
+      "reason": "Missing original raw hit-scoring record/attack-window providers; current direct arm records this call only."
+    }
+  ],
+  "readiness": {
+    "wired_before": 10679,
+    "wired_after": 10684,
+    "text_match_delta": 5,
+    "note": "Readiness is a source-text measure; four body calls below are independently verified in the executable."
+  },
+  "binary_evidence": {
+    "new_body_calls": [
+      "0090f5a0",
+      "0090ede0",
+      "0090c000",
+      "008e4b00"
+    ],
+    "reconstructed_addresses_called_after": 5537,
+    "reconstructed_addresses_total": 6155,
+    "ai_caller": "GameAiCoordinatorHost::Impl::party_brain_plan_tail::Pass::use_item -> game_powerups::use_ready_item_for_ai",
+    "exe_sha256": "2275113d47e7b6df88444dabefac8b1d6cc1df82280f17929c50f4515bf9a106"
+  },
+  "state_provenance": [
+    "AI planner supplies its actual inventory item, slot and optional target.",
+    "Mission frame supplies actual session word, local slot and entry game state.",
+    "Mission scoring manager owns the case-insensitive per-slot runtime award trees; native reset empties them per mission load.",
+    "Cooldown uses loaded class group/duration/cooldown and the current mission clock; its results are copied into the actual retained class slot record."
+  ],
+  "evidence": [
+    "bsp.py ghidra disasm 0090f5a0: slot*284h+70h award map; literal GA_AE and original once-only map search.",
+    "bsp.py show 008e4b00 --asm: 008E4B17..008E4B2F class+80h and class+7Ch plus mission clock; 008E4B32..39 clear subject/notified.",
+    "powerup_seg58_argon.cpp 008EADA0 tail: award before cooldown publication, positive use-limit decrement and conditional HUD rebuild."
+  ],
+  "checks": {
+    "official_build": "PASS; all four CTests",
+    "focused_active_probe": "PASS; award-before-cooldown, actual retained slot, cooldown-blocked repeat, deadline reuse, once-only case-insensitive award map and explicit local boundary",
+    "existing_modifier_release_probe": "PASS",
+    "call_graph": "PASS; all four named bodies have entry-reachable call sites",
+    "pc24_lint": "PASS; 0 findings"
+  },
+  "limitations": [
+    "No live game/ABI compatibility claim.",
+    "Local/online award continuation and air-support flight activation remain unbound.",
+    "Exhausted-active-item final modifier expiration still reaches the existing removal-provider exception."
+  ]
+}

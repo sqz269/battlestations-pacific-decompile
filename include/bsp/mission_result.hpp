@@ -118,6 +118,10 @@ constexpr std::size_t mission_scoring_record_offset(std::size_t slot) noexcept
 // nothing is re-declared here.
 struct MissionScoringManagerState {
     MissionScoreRecord slots[kMissionScoringSlotCount]{}; // +4h, stride 284h
+    // Runtime award/counter trees: manager + slot*284h +70h (006b8da0 is
+    // the separate definition registry). 0090F5A0/0090EDE0 retain GA_AE here;
+    // these are not the persisted score-category trees in MissionScoreRecord.
+    UnlockCounterMap runtime_awards[kMissionScoringSlotCount];
     int commit_slot{0};                                   // +1424h
     // +1488h, the entity tree 008CC330 Scoring_IgnoreEntityKill inserts its
     // argument into (0063F1E0 on LEA ECX,[EAX+1488h]) and 0091BDA0 finds the

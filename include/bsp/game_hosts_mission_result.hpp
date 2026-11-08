@@ -119,6 +119,10 @@ public:
     // 0077C91B -> 00905300, on this owner's same persisted slot record.
     // Only a validated player slot 0..7 may enter; role value 8 is unassigned.
     void increment_formation_use(int slot);
+    // 008EAFF8 -> 0090F5A0, for actual nonlocal single-player AI slots.
+    // The local/online award continuation remains outside this bridge.
+    void award_active_powerup_use(int slot, std::int32_t mode,
+        std::int32_t local_slot, std::int32_t game_state);
     // game+1EE3h, written by the state entry 004da71e. The drain's 10h arm
     // tests it at 004e4715 and takes the early-return sub-path when it is set.
     void set_session_networked(bool networked) noexcept;

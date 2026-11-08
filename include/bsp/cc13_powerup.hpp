@@ -64,6 +64,8 @@ public:
     virtual std::int32_t local_player_slot_18ec() = 0;  // [game+18ECh]
     virtual std::int32_t session_word_1fe4() = 0;       // [game+1FE4h]
     virtual bool powerups_enabled_00e0c978() = 0;       // EnablePowerups
+    // 008EAFF8, before cooldown publication and use-limit decrement.
+    virtual void award_active_powerup_use(std::int32_t slot) = 0;
     // 009789A0 on the warning manager [00F8A0C4]: (slot, item, name).
     virtual void report_powerup_009789a0(std::int32_t slot, const PowerupItem& item,
         const std::string& name) = 0;
