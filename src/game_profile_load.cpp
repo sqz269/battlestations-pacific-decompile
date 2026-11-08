@@ -470,7 +470,14 @@ public:
     void renderer_rebuild_post_effects(int, bool, int) override {
         missing("renderer_rebuild_post_effects", "00b107f0");
     }
-    void gui_manager_reload() override { missing("gui_manager_reload", "004c12b0"); }
+    void gui_manager_reload() override {
+        if (!sinks_.relayout_gui_pages) {
+            missing("gui_manager_reload", "00aa4ef0");
+            return;
+        }
+        sinks_.relayout_gui_pages();
+        log_.implemented("QuickSettingsApply::gui_manager_reload", "00aa4ef0");
+    }
     void renderer_set_old_film_effect(int mode) override {
         // 008D610D: settings+90h is passed unchanged to [00F8D39C]+220h.
         if (!sinks_.store_renderer_old_film_effect) {

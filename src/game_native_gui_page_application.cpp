@@ -53,6 +53,7 @@
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_window_focus_dispatch.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
+#include "bsp/gui_layout_finished.hpp"
 #include "bsp/native_gui_page_reader_continuation.hpp"
 #include "bsp/native_gui_page_registry.hpp"
 #include "bsp/native_gui_page_script_continuation.hpp"
@@ -851,6 +852,71 @@ struct GameNativeGuiPageApplication::Impl {
         void call_current_page_virtual_04(void* actual, Word flags) override { app.delete_page(actual, flags); }
     };
 
+    // Source scratch for one actual AA8710 traversal; no widget fields or
+    // child list are copied. Each node keeps its AA7220 local frame through
+    // an entered failure just as the other Page operations retain theirs.
+    struct LayoutCall final : GuiWideScreenLayoutAccess {
+        Impl& app;
+        void* actual;
+        const bool& widescreen;
+        NativeGuiWidgetTransformScratch transform{};
+        GuiWidgetBounds bounds;
+        std::vector<std::unique_ptr<LayoutCall>> children;
+        Word site{0x00aa8710};
+        bool entered{}, complete{};
+        LayoutCall(Impl& owner, void* widget, const bool& wide)
+            : app(owner), actual(widget), widescreen(wide) {}
+        void run() {
+            app.authenticate_widget(actual);
+            entered = true;
+            apply_widescreen_layout(*this); // SAME body as the projected caller.
+            complete = true;
+        }
+        void apply_children() override {
+            // Listing AA8714..AA8744: count once, but reload sentinel at each
+            // checked-iterator boundary and next AFTER the recursive callback.
+            Word remaining = read(actual, 0x6c);
+            void* node = pointer(read(pointer(read(actual, 0x68))));
+            while (remaining != 0) {
+                --remaining;
+                require(node != pointer(read(actual, 0x68)), "AA8710 child iterator reached sentinel");
+                children.push_back(std::make_unique<LayoutCall>(app, pointer(read(node, 8)), widescreen));
+                site = 0x00aa8731;
+                children.back()->run();
+                require(node != pointer(read(actual, 0x68)), "AA8710 child iterator became sentinel");
+                node = pointer(read(node));
+            }
+        }
+        GuiWideScreenAlign alignment() override {
+            site = 0x00aa8746;
+            return static_cast<GuiWideScreenAlign>(read(actual, 0xe0));
+        }
+        bool widescreen_enabled() override { return widescreen; }
+        const float* authored_x() override { return static_cast<const float*>(at(actual, 8)); }
+        float* local_x() override { return static_cast<float*>(at(actual, 0x0c)); }
+        void notify_layout_changed() override {
+            site = 0x00aa8782;
+            // AA9390 clears +DC. The currently hosted Page/Group/Icon graph
+            // has no listener producer; never manufacture a successful call
+            // for a foreign non-null listener's unresolved current+1C.
+            if (read(actual, 0xdc) != 0) reject("layout listener+1C", read(pointer(read(actual, 0xdc))));
+        }
+        void recompose() override {
+            site = 0x00aa8795;
+            recompose_native_gui_widget_transform_00aa7220(actual, transform, app.transform);
+        }
+        void refresh_bounds() override {
+            site = 0x00aa879c;
+            refresh_native_gui_widget_local_bounds_00aa70e0(actual, bounds, scalar<double>(app.data, 0x00d7a280));
+        }
+        void finish_layout() override {
+            site = 0x00aa87a3;
+            const Word target = app.widgets.current_table(actual, read(actual))[0x24 / 4];
+            if (target != 0x00a9e0a0) reject("layout current+24", target);
+            base_gui_layout_finished24_00a9e0a0(actual); // verified RET; receiver ignored
+        }
+    };
+
     GameHostLog& log;
     GameNativeGuiManagerApplication& manager;
     GameNativeRendererApplication& renderer;
@@ -925,6 +991,7 @@ struct GameNativeGuiPageApplication::Impl {
     // Entered failures: retained, never destroyed (the host _Exits first).
     std::vector<std::unique_ptr<Construction>> retained_frames;
     std::vector<std::unique_ptr<WidgetOperation>> widget_operations;
+    std::vector<std::unique_ptr<LayoutCall>> layout_calls;
     std::vector<std::unique_ptr<TextChild34Borrow>> text_child34_borrows;
     TextChild34Borrow* current_text_child34{};
     std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding> manager_binding;
@@ -1987,6 +2054,23 @@ void GameNativeGuiPageApplication::set_widget_visibility_00aa8530(void* actual,
         call.native_calls.failed = true;
         p.fail(0x00aa8530);
         throw;
+    }
+}
+void GameNativeGuiPageApplication::apply_page_widescreen_layout(void* actual,
+    const bool& widescreen) {
+    auto& p = *impl_;
+    p.require_entry();
+    p.authenticate_widget(actual);
+    p.layout_calls.push_back(std::make_unique<Impl::LayoutCall>(p, actual, widescreen));
+    auto& call = *p.layout_calls.back();
+    p.active = true;
+    try {
+        call.run();
+        require(!p.failed && p.active, "Page layout cannot resume after nested failure");
+        p.active = false;
+    } catch (...) {
+        p.fail(call.site);
+        throw; // Keep scratch, callbacks and the SAME graph after partial stores.
     }
 }
 void GameNativeGuiPageApplication::after_native_renderer_drain() {

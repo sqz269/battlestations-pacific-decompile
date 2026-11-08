@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 namespace bsp {
-void base_gui_layout_finished24_00a9e0a0(GuiWidgetOwner&) noexcept {}
+void base_gui_layout_finished24_00a9e0a0(void*) noexcept {}
 
 void dispatch_gui_layout_finished24(GuiWidgetOwner& owner) {
     const auto type = owner.layout().type;
@@ -42,7 +42,7 @@ void dispatch_gui_layout_finished24(GuiWidgetOwner& owner) {
     }
     if (!base_target)
         throw std::invalid_argument("GUI current24 type tag does not match its concrete companion");
-    base_gui_layout_finished24_00a9e0a0(owner);
+    base_gui_layout_finished24_00a9e0a0(&owner);
 }
 
 GuiLayoutFinishedHost::GuiLayoutFinishedHost(GuiWidgetOwnerRuntime& owners,

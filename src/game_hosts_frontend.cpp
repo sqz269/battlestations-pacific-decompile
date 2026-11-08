@@ -305,7 +305,7 @@ struct GameFrontendHost::Impl {
         std::size_t stores{};
     };
     struct RawPointerCall {
-        enum class Kind { getter, enabled, visible, cursor, safe_zone };
+        enum class Kind { getter, enabled, visible, cursor, safe_zone, relayout };
         Kind kind;bool requested{};
         void* manager{};void* pointer{};
         bool entered{},getter_returned{},enabled_store_entered{},enabled_stored{},visibility_entered{},normal_returned{};
@@ -792,6 +792,26 @@ struct GuiManagerSafeZone final : gui_manager_cc13::GuiSafeZoneHost {
     }
 };
 
+struct GuiManagerRelayout final : gui_manager_cc13::GuiWideScreenRelayoutHost {
+    GameFrontendHost::Impl& owner;
+    void* actual;
+    GuiManagerRelayout(GameFrontendHost::Impl& host, void* manager) : owner(host), actual(manager) {}
+    std::vector<void*> snapshot_pages() override {
+        // AA4EF0 -> 004D35D0 copies the current +18/+1C range. These are
+        // AA52A0's actual priority-ordered Page pointers, not bridge records.
+        auto* const fields = static_cast<void* const*>(actual);
+        auto* const begin = static_cast<void* const*>(fields[0x18 / 4]);
+        auto* const end = static_cast<void* const*>(fields[0x1c / 4]);
+        if (begin == end) return {};
+        if (!begin || end < begin)
+            throw std::logic_error("GUI relayout requires a valid actual Page registry range");
+        return std::vector<void*>(begin, end);
+    }
+    void apply_widescreen_layout(void* page) override {
+        owner.raw_transport->pages.apply_page_widescreen_layout(page, owner.widescreen);
+    }
+};
+
 // GuiStartupHost for 0073bae0.
 class GameGuiStartupHost final : public GuiStartupHost {
 public:
@@ -1046,6 +1066,10 @@ void* GameFrontendHost::Impl::run_raw_pointer(GameFrontendHost& frontend,RawPoin
                 GuiManagerSafeZone binding(*this, &call);
                 auto& image = *static_cast<GuiSafeZoneManagerImage*>(call.manager);
                 gui_manager_cc13::set_safe_zone_visible_00aa2110(image.state_84, binding, value);
+            } else if(kind==RawPointerCall::Kind::relayout) {
+                GuiManagerRelayout binding(*this, call.manager);
+                call.site = 0x00aa4ef0;
+                gui_manager_cc13::relayout_all_pages_00aa4ef0(binding);
             } else {
                 if(kind==RawPointerCall::Kind::enabled) {
                     call.enabled_store_entered=true;
@@ -1986,6 +2010,13 @@ void GameFrontendHost::set_safe_zone_visible(bool visible) {
         gui_manager_cc13::set_safe_zone_visible_00aa2110(impl_->manager.safe_zone, binding, visible);
     }
     impl_->log.implemented("OnInitOnce::set_safe_zone_visible", "00aa2110");
+}
+
+void GameFrontendHost::relayout_gui_pages() {
+    if (!impl_->summary.gui_startup_ran || !impl_->raw_transport)
+        throw std::logic_error("GUI relayout requires the actual initialized Page graph");
+    impl_->run_raw_pointer(*this, Impl::RawPointerCall::Kind::relayout, false);
+    impl_->log.implemented("QuickSettingsApply::relayout_gui_pages", "00aa4ef0");
 }
 
 // ---------------------------------------------------------------------------

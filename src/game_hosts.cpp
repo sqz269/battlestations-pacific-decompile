@@ -3781,6 +3781,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         sinks.languages = &settings_host_->language_catalog();
         sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
         sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        // AA5E20 and AA52A0 have already produced the actual Page registry.
+        // 008D5B50's original 008D60FB site controls when this snapshot runs.
+        sinks.relayout_gui_pages = [this] { frontend_->relayout_gui_pages(); };
         if (native_renderer_) {
             GameNativeRendererApplication* const renderer = native_renderer_.get();
             sinks.change_renderer_presentation_mode = [renderer](int width, int height,

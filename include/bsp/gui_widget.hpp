@@ -264,4 +264,22 @@ void set_resolved_position(GuiWidgetTransform& widget,
 void apply_widescreen_layout(
     GuiWidgetTransform& widget, GuiWidgetTransformHost& host);
 
+// A borrowed field/dispatch view for the SAME 00AA8710 body. Raw Page owners
+// cannot acquire a second projected widget tree merely to run a layout pass.
+// Each access must address its current widget; children execute recursively
+// in the owner's stored order, and all callbacks retain that same owner.
+struct GuiWideScreenLayoutAccess {
+    virtual ~GuiWideScreenLayoutAccess() = default;
+    virtual void apply_children() = 0;
+    virtual GuiWideScreenAlign alignment() = 0;
+    virtual bool widescreen_enabled() = 0;
+    virtual const float* authored_x() = 0;
+    virtual float* local_x() = 0;
+    virtual void notify_layout_changed() = 0;
+    virtual void recompose() = 0;
+    virtual void refresh_bounds() = 0;
+    virtual void finish_layout() = 0;
+};
+void apply_widescreen_layout(GuiWideScreenLayoutAccess&);
+
 } // namespace bsp

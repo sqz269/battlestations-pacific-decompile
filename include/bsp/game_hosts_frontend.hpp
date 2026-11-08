@@ -296,6 +296,8 @@ public:
     // +84h shown latch. The caller reads actual settings+ B1h (00F88A31).
     // The borrowed platform widescreen byte must outlive this frontend.
     void set_safe_zone_visible(bool visible);
+    // 008D60FB: snapshot actual manager+14h and relayout each registered page.
+    void relayout_gui_pages();
 
     // ---- milestone 2k: run-time clones of a page's own template ------------
     // The native per-unit minimap icon entry (005bd590 constructs it, 005c0700
