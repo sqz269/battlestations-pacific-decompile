@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bsp { struct EntityTargetFacts; }
+
 namespace bsp::entity_mission_seg60_argon {
 
 // nB-high hierarchy leaves. Actual Win32 links are child+48h / sibling+44h.
@@ -372,7 +374,9 @@ struct Seg60Host : UnitMessageConstructionHost, DeferredEventLockAccess {
 };
 
 // Segment 60 reconstructed functions (58 functions: 00922b10..0092ced0)
-std::int32_t entity_is_airborne_target_00922b10(Seg60Host& host, void* entity);
+// 00922B10: original ECX=entity, EAX=0/1, RET. This C++ interface consumes
+// the host's live +5Dh and IsKindOf answers instead of borrowing a raw object.
+std::int32_t entity_is_airborne_target_00922b10(const EntityTargetFacts& entity);
 void* entity_cast_to_submarine_00922b70(Seg60Host& host, void* entity);
 void* entity_cast_to_land_fort_00922b90(Seg60Host& host, void* entity);
 std::uint8_t entity_is_surface_target_00922c80(

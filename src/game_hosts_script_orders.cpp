@@ -5,6 +5,7 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/options_seg56_cc13.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
@@ -3880,7 +3881,8 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
         float r[3], u[3], f[3], t[3];
         if (units_.unit_pose(target_index, r, u, f, t)) tf.world_y = t[1];
     }
-    const bool target_air = bsp::entity_is_airborne_00922b10(tf);
+    const bool target_air = bsp::entity_mission_seg60_argon::
+        entity_is_airborne_target_00922b10(tf) != 0;
     const bsp::SurfaceTargetAnswer target_surface =
         bsp::entity_is_surface_target_00922c80(tf);
     log_.notef("  %s classify: target_is_air=%d target_is_surface=%s "
