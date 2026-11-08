@@ -1,0 +1,237 @@
+{
+  "goal": 5,
+  "chain": 757,
+  "owner": "agent/g5-w4",
+  "baseline_head": "42bdd0e001300149f59934ba3ffc976bf853de93",
+  "scope": "Borrow the live director cursor and path source for final-point queries.",
+  "rows": [
+    {
+      "native": "007b1010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: former call in GameCommandsHost::build_path_object_0071f600",
+      "reason": "Missing actual authored-source path-pointer getter consumer in this packet; removed the wrong cursor-receiver call. The existing provisional C++ name/signature misidentifies the receiver and requires correction before any future wiring.",
+      "state": "007B22A0 constructs authored source vtable 00D0534C with the scene-path pointer at +08h; vslot +28h at 00D05374 references this getter.",
+      "native_abi": "ECX authored-source object, EAX borrowed scene-path pointer from source+08h, RET",
+      "called": false,
+      "call_sites": 0
+    },
+    {
+      "native": "007b1350",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_final_point_007b1350",
+      "state": "Read-only cursor projection borrows the director's actual follow mode, index, direction and begun source; source callbacks read retained authored world geometry or live built user points.",
+      "native_abi": "__thiscall cursor, stack output XYZ/valid record, RET4",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "007adb90",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_final_point_007b1350::LastPointCalls::cursor_get_point_vslot04",
+      "state": "Receives the same borrowed cursor and the final index requested by 007B1350; source slot08 reads the retained director path and returns the consumed XYZ.",
+      "native_abi": "__thiscall cursor, stack output pointer and signed index, RET8; negative index reloads cursor+08h",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "007b10c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: former DirectorAuthoredPath::last_point",
+      "reason": "No remaining host consumer for the specialized last-point shortcut: the replacement follows 007B1350 -> 007ADB90 -> indexed authored source 007B10A0, and the old shortcut was deleted."
+    },
+    {
+      "native": "007b1320",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: path cursor queries and advance_path_cursor_00836bf0",
+      "reason": "No live next-point-query consumer identified: current/final queries do not request lookahead, and the advance path uses 007ADCC0 without fetching a next point."
+    },
+    {
+      "native": "007b0650",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: scene_path_centroid_world_007b0650",
+      "reason": "Missing reached ScenePathTransformHost with the native path world matrix and local-centroid producer; the director source instead retains already transformed scene-loader points."
+    },
+    {
+      "native": "007b0710",
+      "status": "skipped",
+      "host_site": "src/path_movcam_seg46_argon.cpp: scene_path_distance_to_polyline_world_007b0710",
+      "reason": "Missing reached ScenePathTransformHost with the inverse path matrix and local-polyline distance producer; no such consumer was added to the director cursor."
+    },
+    {
+      "native": "007b0e30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: built director path source",
+      "reason": "Missing matching SimplePathSource owner over vector<Vec3>; the existing built user source borrows vector<array<float,3>>, and authored paths use their existing 007B1030 count body."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: existing tail-gunner skill application",
+      "reason": "Already called from the existing host with its tail-gunner configuration and random callback; the baseline readiness row says ready despite called=true, so no duplicate call was added."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate set_ambient_volume",
+      "reason": "Missing actual ambient SoundInstance and camera producer: this host reports has_ambient_sound_instance=false and camera_present=false."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug flooded-fraction inspector",
+      "reason": "Only identified original consumer is debug inspection; debug-only wiring is excluded."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing reached composition consumer and concrete SpawnCompositionHost class-pair lookup; no such implementation was identified in the bounded GameAiCoordinatorHost scan."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-group path",
+      "reason": "Missing native spawn-request weight, candidate threat records and support-site source list; the existing quick-spawn path does not provide this gate's inputs."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: existing defend-member candidate path",
+      "reason": "Existing host code already invokes this candidate body; no additional consumer or independent coordinator-lifetime producer was established in this packet."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: marker registry lifetime",
+      "reason": "Missing matching host-owned MarkerClassRegistry and MarkerClassContext with the actual Lua marker table and intrusive mesh-resource ownership."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing live movie-camera screen owner and script-to-camera binding; the override explicitly reports this route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing constructed movie-camera screen and its actual default/current height fields; the override reports this route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing live movie-camera screen owner for the reset body; the override reports this route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing live movie-camera screen owner for the reset body; the override reports this route unreached."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: canonical typed Listbox companion",
+      "reason": "Missing matching reached raw-listbox callback-word owner; the canonical companion retains a typed std::function at logical +144h, not a raw 180h layout."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: canonical typed Listbox selection",
+      "reason": "Missing raw listbox listener/selection storage and concrete NativeGuiListboxCalls consumer compatible with this body; the actual companion uses typed owner and iterator identities."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: canonical typed Listbox selection",
+      "reason": "Missing raw listbox selection storage and NativeGuiListboxCalls consumer compatible with this body; the companion's typed FC-row identities cannot be cast to the native layout."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: canonical typed Listbox highlight",
+      "reason": "Missing matching raw-listbox highlight owner and NativeGuiListboxCalls adapter; no raw alias or fabricated highlight state was introduced."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: construct_unit_instance_sub_objects_0081ed40",
+      "reason": "Missing reached matching UnitInstanceSubObjects producer with the live owned-ref slot; the bounded unit-host scan found no use of this typed slot owner."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing identified reached text-byte acceptance consumer using this decoded FontData projection; no additional font/input owner was created."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "Missing identified reached record-growth consumer for the actual distortion array; the bounded scan only established the reserve/resize implementation, not a live add-object path."
+    },
+    {
+      "native": "0043ee60",
+      "status": "skipped",
+      "host_site": "src/seg3_4_cc13.cpp: string_format_buffer_2a_0043ee60",
+      "reason": "Missing reached concrete SmallOwnerHost formatting consumer with an actual 2Ah-byte destination and original argument list."
+    },
+    {
+      "native": "004e60e0",
+      "status": "skipped",
+      "host_site": "src/seg10_cc13.cpp: format_string64_004e60e0",
+      "reason": "Missing identified reached Seg10Host formatting consumer with an actual 40h-byte destination and original arguments; unrelated diagnostics were not rerouted to inflate wiring."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: format_string_1024_0040cfc0",
+      "reason": "Missing reached original entity-tree or dynamics-profile formatting consumer with a 400h-byte destination; no unrelated logging call was substituted."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: landscape shore-mask sampling",
+      "reason": "Missing reached landscape shore-mask producer and concrete Left55Host sample callback; avoid-zone sampling is a different operation."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: parse_movie_action_0045e5e0",
+      "reason": "Missing reached engine-movie action token stream and owning action consumer; the bounded movie/frontend scan did not identify one."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: startup/application shutdown",
+      "reason": "Missing full NativeGameStorage owner and complete NativeGameLifetimeContext; individual startup subsystem owners do not satisfy the destructor contract."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: unit health/model initialization",
+      "reason": "Missing matching live NativeUnitHealthPartsView and full class-parts/model-construction bindings; existing host health/armour fields alone do not provide its owned part vector and model lifecycle."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed on the final source; all four existing CTests passed",
+    "call_graph": "Fresh parent and final builds were both analyzed; the initial readiness call-graph cache was stale and was not used for the called-total comparison.",
+    "called_addresses_before": 5982,
+    "called_addresses_after": 5983,
+    "readiness_wired_before": 10587,
+    "readiness_wired_after": 10587,
+    "new_reconstructed_bodies": ["007b1350", "007adb90"],
+    "displaced_shortcut": "007b10c0",
+    "evidence": ["bsp.py show 007b22a0", "bsp.py show 007b1010 --asm", "bsp.py show 007b1350 --asm", "bsp.py show 007adb90 --asm"],
+    "boundary": "Build and static entry-reachable call evidence; the game was not run, and the typed adapters are not original binary ABI replacements."
+  },
+  "review_round_1": {
+    "review_run": 1650,
+    "reviewed_head": "227210346d158263a80792cab61a67d9b195be81",
+    "findings": [
+      {"finding": 1, "status": "fixed", "resolution": "Removed the wrong-receiver 007B1010 call and restored the direct cursor-index copy; only the accepted 007B1350 -> 007ADB90 wiring remains."},
+      {"finding": 2, "status": "fixed", "resolution": "Marked 007B1010 skipped, corrected its authored-source receiver and pointer return, and refreshed the build/call/readiness verification totals."}
+    ]
+  }
+}
