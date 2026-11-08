@@ -46,6 +46,7 @@
 #include "bsp/gameplay_seg41_cc13.hpp"        // 0074B570 receiver (goal 5 chain 630)
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
+#include "bsp/director_geommesh_seg38_39_argon.hpp"
 #include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
 
 #include <algorithm>
@@ -5220,13 +5221,9 @@ public:
         }
     }
 
-    // 0095EC84, 00727D70: the [device+448h] reload timers at [device+414h] that
-    // are at or below the horizon. The gunnery host carries the timer list but
-    // nothing pushes to it (GameGunRow::pending_timers), so every barrel counts
-    // as ready. LABELLED SUBSTITUTION.
-    // BOUND: 00727D70 counts the barrels whose +414h timer is at or below the
-    // horizon. The gunnery host keeps those timers in fire.barrel_timers
-    // (0072CF00 sets one per shot, the fixed step counts them down).
+    // 0095EC84 and 0080DF6A share the one 00727D70 body over the live +414h
+    // timers (0072CF00 sets one per shot; the fixed step counts them down).
+    // Preserve the host's retained-storage bound on the native +448h count.
     int device_ready_rounds(bsp::NativeHandle device, float horizon) override {
         const GameGunRow* gun = gun_row(device);
         if (!kShipFirepowerBound) {
@@ -5235,8 +5232,9 @@ public:
         }
         owner_.done("ShipAiFirepower::device_ready_rounds_00727d70", 0x0095ec84u);
         if (gun == nullptr) return 0;
-        return bsp::ship_ai_gun_ready_rounds_00727d70(gun->fire.barrel_timers.data(),
-            gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size()), horizon);
+        return bsp::director_geommesh_seg38_39_argon::bsp_gun_count_ready_barrels_00727d70(
+            gun->fire.barrel_timers.data(),
+            std::min(gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size())), horizon);
     }
 
     // [device+3B8h], 0095EC8B. Packet cc13-gunB: set by 0072B5A0 under

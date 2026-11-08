@@ -426,13 +426,6 @@ bool ship_ai_gun_is_operational_00729f10(bool unit_fire_blocked_720,
                                          bool gun_disabled_3b8,
                                          bool gun_torn_down_5d) noexcept;
 
-// 00727D70, __thiscall(gun, float horizon) -> int, RET 4, read whole: the
-// number of the first [gun+448h] floats at [gun+414h] that are <= horizon
-// (FCOMI with the horizon in ST0; a timer above it is skipped). `available` is
-// how many timers the caller actually has; entries past it do not count.
-int ship_ai_gun_ready_rounds_00727d70(const float* barrel_timers, int barrel_count,
-                                      int available, float horizon) noexcept;
-
 // 0085B7D0 past its first two arms (Function 8 -> true, range beyond the
 // class's +60h -> false), which the caller tests. `function` is
 // [[gun+3F4h]+80h]; `muzzle_speed` is the projectile class's +50h.

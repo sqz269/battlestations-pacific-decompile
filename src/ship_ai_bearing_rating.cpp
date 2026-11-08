@@ -483,16 +483,6 @@ bool ship_ai_gun_is_operational_00729f10(bool unit_fire_blocked_720, bool gun_di
     return !unit_fire_blocked_720 && !gun_disabled_3b8 && !gun_torn_down_5d;
 }
 
-int ship_ai_gun_ready_rounds_00727d70(const float* barrel_timers, int barrel_count,
-                                      int available, float horizon) noexcept {
-    int ready = 0;
-    const int n = barrel_count < available ? barrel_count : available;
-    for (int i = 0; i < n; ++i) {
-        if (!(horizon < barrel_timers[i])) ++ready;   // JC skips when horizon < timer
-    }
-    return ready;
-}
-
 namespace {
 // 0085A8B0: both angles wrapped as 0085ABBD does, then 007F5FC0.
 bool can_reach_angles_0085a8b0(const GunPlatformArcs& arcs, float horz, float vert) noexcept {

@@ -319,7 +319,11 @@ void* bsp_geom_mesh_resource_parser_parse_00727a90(Seg38_39Host& host, void* sel
 void* bsp_hit_record_dbfc_construct_00727b20(Seg38_39Host& host, void* self, const void* src_record);
 void* bsp_hit_record_dc04_construct_00727b90(Seg38_39Host& host, void* self, const void* src_record);
 std::int32_t bsp_gun_index_of_readiest_barrel_00727c30(const void* self);
-std::int32_t bsp_gun_count_ready_barrels_00727d70(const void* self, float horizon);
+// Original __thiscall(gun, horizon), RET 4. The semantic view borrows the
+// live [gun+414h] timers and [gun+448h] count; the caller bounds the count to
+// its retained storage. No native gun image or second timer array is made.
+std::int32_t bsp_gun_count_ready_barrels_00727d70(const float* timers,
+    std::int32_t barrel_count, float horizon) noexcept;
 void bsp_gun_set_pair_43c_00727e10(void* self, std::uint32_t val_43c, std::uint32_t val_440);
 void bsp_gun_set_bot_skill_00727e70(Seg38_39Host& host, void* self, std::uint32_t skill);
 void bsp_gun_set_bot_fire_target_00727f10(Seg38_39Host& host, void* self, void* target, std::uint32_t flag);
