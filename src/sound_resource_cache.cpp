@@ -108,11 +108,7 @@ void remove_sound_resource_cache_entry_00a85560(SoundResourceOwner& owner,
     }
     const auto size = host.resource_size_vslot_0c(*matched->resource_28);
     owner.total_resource_size_10 -= size;
-    if (matched != &owner.records_04.back()) {
-        copy_sound_resource_cache_record_00a84680(*matched, owner.records_04.back());
-    }
-    clear_sound_resource_cache_record_storage_00a842e0(owner.records_04.back());
-    owner.records_04.pop_back();
+    sound_cc13::sound_cache_records_erase_swap_last_00a84d20(owner, *matched);
 }
 
 SoundOwnedResource* load_sound_resource_00a84740(SoundResourceOwner& owner,

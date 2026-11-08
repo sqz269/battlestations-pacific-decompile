@@ -5754,6 +5754,19 @@ int main() {
         bsp::sound_cc13::sound_cache_records_reserve_00a84450(owner, 1);
         check(preserved && owner.records_04.data() == data && owner.capacity_0c == 128,
             "c688 sound-cache growth preserves aliases, metadata and borrowed resource ownership");
+
+        // c831: removal must assign the tail without moving its list allocator
+        // or releasing a borrowed resource, and then pop only record storage.
+        bsp::sound_cc13::sound_cache_records_erase_swap_last_00a84d20(owner, owner.records_04[2]);
+        const auto& replaced = owner.records_04[2];
+        const bool erased = owner.records_04.size() == 64 && replaced.name_00 == "bank-64"
+            && replaced.aliases_0c == std::list<std::string>{"bank-64", "request-64"}
+            && replaced.field_08 == 2 && replaced.resource_28 == &resource
+            && replaced.metadata_14 == std::array<std::uint32_t, 5>{64, 65, 66, 67, 68};
+        bsp::sound_cc13::sound_cache_records_pop_back_00a84380(owner);
+        check(erased && owner.records_04.size() == 63 && owner.records_04.data() == data
+            && owner.capacity_0c == 128 && resource.references_04 == 7,
+            "c831 sound-cache erase/pop preserve allocator and borrowed resource identities");
     }
 
     {
