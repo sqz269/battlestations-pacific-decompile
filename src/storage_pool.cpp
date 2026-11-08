@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <mutex>
 #include <new>
 #include <stdexcept>
 
@@ -154,15 +155,24 @@ __declspec(noinline) void game_release_00bd17a0(SizedStoragePool& pool, void* bl
     pool.release_00bd1510(block, size);
 }
 
+namespace {
+struct GameLuaStoragePool {
+    CrtSystemAllocator system;
+    // Native 00BD11F0/00BD1620 share the recursive critical section at
+    // pool+B89A98. Retain its Source counterpart WITH the pool/backing
+    // allocator, including through every Lua-owner/CRT retirement callback.
+    std::recursive_mutex mutex;
+    SizedStoragePool pool{game_pool_config_00bd1680(), system};
+};
+
+GameLuaStoragePool& game_lua_pool_owner() {
+    static auto* const owner = new GameLuaStoragePool;
+    return *owner;
+}
+} // namespace
+
 SizedStoragePool& game_lua_storage_pool() {
-    // The binary lazily retains pool B behind 01090AAC. Keep the Source pool
-    // alive through Lua-owner/CRT retirement, just like the canonical string
-    // process that owns the shared 01090AA4 return gate.
-    // Its backing allocator must also survive CRT callbacks; the ordinary
-    // crt_system_allocator() has a destructible function-static lifetime.
-    static auto* const system = new CrtSystemAllocator;
-    static auto* const pool = new SizedStoragePool(game_pool_config_00bd1680(), *system);
-    return *pool;
+    return game_lua_pool_owner().pool;
 }
 
 void* lua_allocate_00a6a1d0(void*, void* block,
@@ -174,19 +184,36 @@ void* lua_allocate_00a6a1d0(void*, void* block,
     // Stock lauxlib realloc/free skips the recovered pool and this schedule.
     if (old_size == 0 && new_size == 0) return nullptr;
     try {
-        auto& pool = game_lua_storage_pool();
-        void* const replacement = new_size != 0
-            ? game_allocate_00bd1780(pool, static_cast<std::uint32_t>(new_size)) : nullptr;
+        auto& owner = game_lua_pool_owner();
+        auto& pool = owner.pool;
+        void* replacement = nullptr;
+        if (new_size != 0) {
+            if (pool.is_pooled_size(static_cast<std::uint32_t>(new_size))) {
+                // BD1217..BD125E/BD1290: exclude concurrent ring/counter
+                // updates and bump carving. The CRT large path is unlocked.
+                const std::lock_guard<std::recursive_mutex> lock(owner.mutex);
+                replacement = game_allocate_00bd1780(pool, static_cast<std::uint32_t>(new_size));
+            } else {
+                replacement = game_allocate_00bd1780(pool, static_cast<std::uint32_t>(new_size));
+            }
+        }
         const auto copied = static_cast<std::uint32_t>(old_size < new_size ? old_size : new_size);
         if (static_cast<std::int32_t>(copied) > 0)
             std::memcpy(replacement, block, copied);
         if (old_size != 0) {
             // Read the SAME actual process gate after allocation/copy, at the
             // release epoch. Large blocks still go to the CRT when disabled.
-            if (pool.is_pooled_size(static_cast<std::uint32_t>(old_size)))
+            if (pool.is_pooled_size(static_cast<std::uint32_t>(old_size))) {
+                // BD1653..BD1670 protect ring/counter mutation. Include the
+                // Source gate cache update in the SAME exclusion so another
+                // Lua owner cannot replace that value before this release.
+                const std::lock_guard<std::recursive_mutex> lock(owner.mutex);
                 pool.set_small_returns_enabled(
                     game::game_native_string_process().returns_disabled_01090aa4() == 0);
-            game_release_00bd17a0(pool, block, static_cast<std::uint32_t>(old_size));
+                game_release_00bd17a0(pool, block, static_cast<std::uint32_t>(old_size));
+            } else {
+                game_release_00bd17a0(pool, block, static_cast<std::uint32_t>(old_size));
+            }
         }
         return replacement;
     } catch (const std::bad_alloc&) {

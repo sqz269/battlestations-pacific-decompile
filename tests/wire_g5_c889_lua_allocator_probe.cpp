@@ -8,8 +8,11 @@ extern "C" {
 #include <lauxlib.h>
 }
 #include <cstdint>
+#include <array>
+#include <barrier>
 #include <cstdio>
 #include <cstdlib>
+#include <thread>
 
 namespace {
 void require(bool value, const char* message) {
@@ -51,5 +54,28 @@ int main() {
         "collectgarbage('collect') assert(#t==2000) t=nil collectgarbage('collect')") == 0,
         "real Lua growth, shrink and collection");
     bsp::delete_native_mission_lua_machine_006b87c0(machine, 0);
-    std::puts("c889 Lua allocator schedule + actual mission-machine lifetime: PASS");
+
+    // Independent real Lua states share only pool B. Synchronize their start
+    // and library-open completion, then overlap allocation/GC/close. A lock
+    // around a whole test thread would conceal the original pool race.
+    std::barrier phase(4);
+    std::array<std::thread, 4> workers;
+    for (auto& worker : workers) {
+        worker = std::thread([&] {
+            phase.arrive_and_wait();
+            alignas(4) std::uint32_t independent_machine[3]{};
+            bsp::construct_native_mission_lua_machine_006b8740(independent_machine);
+            auto* independent_state = reinterpret_cast<lua_State*>(independent_machine[1]);
+            phase.arrive_and_wait();
+            require(luaL_dostring(independent_state,
+                "for round=1,16 do local t={} for i=1,512 do "
+                "t[i]=string.rep(tostring(i),20) end collectgarbage('collect') "
+                "for i=1,512 do assert(t[i]==string.rep(tostring(i),20)) end "
+                "t=nil collectgarbage('collect') end") == 0,
+                "concurrent independent Lua states preserve allocated contents");
+            bsp::delete_native_mission_lua_machine_006b87c0(independent_machine, 0);
+        });
+    }
+    for (auto& worker : workers) worker.join();
+    std::puts("c889 Lua allocator schedule + lifetime + four concurrent Lua states: PASS");
 }

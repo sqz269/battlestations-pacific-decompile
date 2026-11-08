@@ -15,9 +15,9 @@
     {
       "native": "00bd1680",
       "status": "wired",
-      "host_site": "src/storage_pool.cpp::game_lua_storage_pool (from lua_allocate_00a6a1d0)",
+      "host_site": "src/storage_pool.cpp::game_lua_pool_owner (from lua_allocate_00a6a1d0)",
       "reason": "Existing recovered configuration produces one permanent semantic pool B used for real Lua allocations, with its binary constants unchanged.",
-      "built_call_site": "105bc1a3",
+      "built_call_site": "105bbfe2",
       "reachable": true
     },
     {
@@ -25,7 +25,8 @@
       "status": "wired",
       "host_site": "src/storage_pool.cpp::lua_allocate_00a6a1d0",
       "reason": "Existing body allocates each nonzero real Lua nsize from the retained pool B before any old-block release.",
-      "built_call_site": "105bc09b",
+      "built_call_site": "105bc1bd",
+      "built_call_sites_count": 2,
       "reachable": true
     },
     {
@@ -33,7 +34,8 @@
       "status": "wired",
       "host_site": "src/storage_pool.cpp::lua_allocate_00a6a1d0",
       "reason": "Existing body releases the actual prior Lua block using its osize after copying; small returns observe the canonical process 01090AA4 gate.",
-      "built_call_site": "105bc0df",
+      "built_call_site": "105bc24f",
+      "built_call_sites_count": 2,
       "reachable": true
     },
     {
@@ -41,7 +43,7 @@
       "status": "wired",
       "host_site": "src/native_lua_bootstrap.cpp::open_native_lua_state_00b6a020 -> lua_newstate allocator callback",
       "reason": "Restores the modified library allocate/copy/sized-free schedule instead of stock realloc/free; null userdata and live Lua allocation sizes are passed unchanged.",
-      "built_reference_site": "10609126",
+      "built_reference_site": "10609216",
       "reachable": true,
       "library_callback_not_new_readiness_credit": true
     },
@@ -92,16 +94,27 @@
     "original": [
       "bsp.py show 00a6a1d0 --asm: allocate even for same-size, unsigned minimum, signed JLE copy gate, nonzero osize release",
       "bsp.py show 00a6a260 --asm: null userdata and A6A1D0 passed to lua_newstate",
-      "bsp.py show 00bd1780: pool B getter then sized allocate, not an allocator-hook installer"
+      "bsp.py show 00bd1780: pool B getter then sized allocate, not an allocator-hook installer",
+      "bsp.py show 00bd11f0 --asm: BD1217 enters pool+B89A98 critical section before ring/counter/bump changes; BD125E/BD1290 leave; large CRT path bypasses lock",
+      "bsp.py show 00bd1620 --asm: BD1653..BD1670 protect the small-block ring return; large CRT path bypasses lock"
     ],
     "entry_path": "WinMainCRTStartup -> GameStartupHost initialization -> GameNativeRendererApplication::construct -> construct_native_renderer_00b32410 -> construct_native_renderer_lua_owner_00b1bb90 -> open_native_lua_state_00b6a020 -> lua_allocate_00a6a1d0",
-    "pool_lifetime": "Pool B and its CRT backing allocator are retained through process/CRT retirement. Canonical GameNativeStringProcess supplies the actual shared return gate.",
+    "pool_lifetime": "One retained GameLuaStoragePool owns pool B, its recursive mutex, and CRT backing allocator through process/CRT retirement. All converted Lua callbacks lock the SAME owner for small allocation and for the complete cached-gate update plus small release. Copying and large CRT operations occur outside the lock. Canonical GameNativeStringProcess supplies the actual shared return gate.",
     "build": "scripts/build.ps1: PASS; all four CTests PASS",
-    "fixture": "tests/wire_g5_c889_lua_allocator_probe.cpp: PASS; same-size allocate-before-free, byte preservation, small/large threshold crossing, exact-sized reuse, actual process return gate, real Lua GC and native mission-machine close",
+    "fixture": "tests/wire_g5_c889_lua_allocator_probe.cpp: PASS; same-size allocate-before-free, byte preservation, small/large threshold crossing, exact-sized reuse, actual process return gate, real Lua GC and native mission-machine close, plus four independent real Lua states allocating/collecting/closing concurrently on the shared pool",
     "fixture_build": "MSVC Win32: cl /std:c++20 /EHsc /MD /O2 /Iinclude /Ibuild/win32/_deps/lua511-src/src tests/wire_g5_c889_lua_allocator_probe.cpp /Fe:local/output/c889-lua-probe.exe /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib gdi32.lib ole32.lib advapi32.lib",
     "call_graph": "All four target functions explicitly REACHABLE after final build; callback is passed by reference to linked Lua, not called directly by the bootstrap. Wrapper noinline declarations retain actual calls in optimized builds.",
     "float_math_changed": false,
     "game_run": false
+  },
+  "review_round_1": {
+    "review_run": 1962,
+    "reviewed_head": "a652a77304de9bcbb92a466ce0b20b2994265c8f",
+    "finding": "P2: shared Lua pool B mutated its bump pointer, ring and counters without original small-block exclusion",
+    "resolution": "fixed",
+    "change": "Retain one recursive mutex with the canonical pool owner; guard every callback small allocation and the complete shared-gate cache update/small-release operation. Match the native separate critical sections rather than holding exclusion across memcpy or CRT large-block operations.",
+    "checks": "scripts/build.ps1 and all four CTests PASS; extended allocator probe with four simultaneous independent Lua states PASS; rebuilt call_graph explicitly reaches all four claimed targets; wire_readiness rerun.",
+    "remaining_scope": "The generic semantic SizedStoragePool is unchanged; the retained pool-B owner supplies synchronization to every converted runtime Lua callback. game_lua_storage_pool is borrowed by the focused fixture for quiescent inspection. No game validation or binary-layout/ABI claim."
   },
   "limitations": [
     "Semantic SizedStoragePool is reused; this does not claim the raw DAT_01090AAC layout or original fastcall callback ABI.",
