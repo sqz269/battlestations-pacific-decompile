@@ -8,6 +8,7 @@
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
+#include "bsp/native_gui_layer_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -395,10 +396,16 @@ NativeGuiLayerPool::~NativeGuiLayerPool() {
     allocator_list_.unbind_virtual0(storage_.allocator_00);
 }
 void NativeGuiLayerPool::initialize_00ac4d70() {
-    initialize_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+    // AC4D70 inlines reserve(32) on F8BF50+28h in unwind state 2.
+    initialize_pool<NativeGuiLayerPool,
+        &reserve_native_gui_layer_pool_table_00ac4a10,
+        &free_native_gui_layer_pool_table_00ac4250>(allocator_list_, storage_);
 }
 void* NativeGuiLayerPool::allocate_00ac4e50() {
-    return allocate_slot<NativeGuiLayerPool>(storage_);
+    // AC4E50 appends the actual initialized slab under the existing pool lock;
+    // AC4990 is the out-of-line equivalent of its inline growth and append.
+    return allocate_slot<NativeGuiLayerPool, &initialize_slab<NativeGuiLayerPool>,
+        &push_native_gui_layer_pool_slab_00ac4990>(storage_);
 }
 void NativeGuiLayerPool::return_00ac47f0(void* slot) noexcept {
     return_slot<NativeGuiLayerPool>(storage_, slot);
@@ -407,7 +414,9 @@ void NativeGuiLayerPool::trim_00ac4750() {
     trim_empty_slabs<NativeGuiLayerPool>(storage_);
 }
 void NativeGuiLayerPool::destroy_00ac4670() {
-    destroy_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+    // AC4670 releases slabs before the current table, then tears down CS/list.
+    destroy_pool<NativeGuiLayerPool,
+        &free_native_gui_layer_pool_table_00ac4250>(allocator_list_, storage_);
 }
 void NativeGuiLayerPool::invoke_trim(void* context) {
     static_cast<NativeGuiLayerPool*>(context)->trim_00ac4750();
