@@ -869,7 +869,17 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // bsp::kDepthChargeTaskBound. docs/CC13_DEPTH_CHARGE_TASK.md 7.
     bool depth_charge_task_installed{false};
     std::size_t dc_target_plus_one{0};
-    bsp::DepthChargeTask dc{};
+    // 009A6970's 7BCh allocation backs the task actually ticked below. The
+    // semantic C++ state has no native layout/ABI claim. Use unsized delete
+    // because the allocation is larger than this typed projection.
+    struct DepthChargeTaskDelete {
+        void operator()(bsp::DepthChargeTask* task) const noexcept {
+            task->~DepthChargeTask();
+            ::operator delete(task);
+        }
+    };
+    using DepthChargeTaskOwner = std::unique_ptr<bsp::DepthChargeTask, DepthChargeTaskDelete>;
+    DepthChargeTaskOwner dc;
     unsigned long long dc_transitions{0};
     unsigned long long dc_releases{0};
     // Packet cc9_l65_dc_census: arm ticks per DepthChargeState, the ticks with an

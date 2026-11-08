@@ -10049,8 +10049,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("BotTaskDropKamikaze::arm", 0x009ae8a0u);
                     }
 
-                    // Packet cc13-depthcharge1 (bsp::kDepthChargeTaskBound, committed
-                    // OFF): the depth-charge task, kind 1, 009A6970 -> 009A5240 and
+                    // Packet cc13-depthcharge1 (bsp::kDepthChargeTaskBound):
+                    // the depth-charge task, kind 1, 009A6970 -> 009A5240 and
                     // the arm 009A66C0. src/depth_charge_task_cc13.cpp holds the task;
                     // this adapter maps its host calls onto what the strafe arm
                     // already reads. Every SUBSTITUTION is labelled.
@@ -10058,13 +10058,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_depth_charge_task_arm_009a66c0(float dt) {
                         if (unit_.attack_command_class != bsp::kAttackCmdDepthCharge) {
                             unit_.depth_charge_task_installed = false;
+                            unit_.dc.reset();
                             return;
                         }
                         if (unit_.command_target_plus_one == 0) return;
-                        struct Adapter final : bsp::DepthChargeTaskHost, bsp::DepthChargeRandom {
+                        struct Adapter final : bsp::DepthChargeTaskHost, bsp::DepthChargeRandom,
+                            bsp::DepthChargeTaskFactoryCalls {
                             PlaneBinding& a;
                             float moveto_near{0.0f}, moveto_far{0.0f}, moveto_speed{0.0f};
                             explicit Adapter(PlaneBinding& arm) : a(arm) {}
+                            void* operator_new_00bf681b(std::uint32_t size) override {
+                                return ::operator new(size, std::nothrow);
+                            }
+                            void* depth_charge_task_construct_009a5240(
+                                void* storage, void* bot, void* target) override {
+                                // bsp.py show 009A6970 --asm: 009A6991 allocates
+                                // 7BCh; 009A69AD forwards the original bot/target.
+                                // The adapter consumes that same live pilot owner
+                                // and command target through the existing host.
+                                // This is a C++ state projection, not raw task ABI.
+                                static_assert(sizeof(bsp::DepthChargeTask) <= bsp::depth_charge::kTaskSize);
+                                GameUnitSlot::DepthChargeTaskOwner task{
+                                    ::new (storage) bsp::DepthChargeTask{}};
+                                if (bot != &a.unit_ || target != a.st_target())
+                                    throw std::logic_error("depth-charge factory owner mismatch");
+                                bsp::depth_charge_task_construct_009a5240(*task, *this, *this);
+                                return task.release();
+                            }
                             float uniform_00bd2f10(const char* key, float lo, float hi) override {
                                 return a.owner_.stream_set2_draw_00bd2f10(
                                     a.unit_, a.unit_.row.name + "#dc" + key, lo, hi);
@@ -10362,29 +10382,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         Adapter host{*this};
                         if (!unit_.depth_charge_task_installed ||
                             unit_.dc_target_plus_one != unit_.command_target_plus_one) {
-                            // SUBSTITUTION as strafe: one task per class and target.
-                            bsp::depth_charge_task_construct_009a5240(unit_.dc, host, host);
+                            // One retained task per class/target, as before. The
+                            // factory now owns allocation/null gating; its result
+                            // is the same state consumed by activation and ticks.
+                            unit_.depth_charge_task_installed = false;
+                            unit_.dc.reset(static_cast<bsp::DepthChargeTask*>(
+                                bsp::bot_task_make_depth_charge_009a6970(host, &unit_,
+                                    const_cast<GameUnitSlot*>(st_target()))));
+                            if (!unit_.dc) return;
                             // 009A6500 on activation (docs/CC13_TASK_PROFILE_CADENCE.md).
                             bsp::DepthChargeCruiseProfileInputs pin;
                             pin.ctl_380 = -1.0f;
                             pin.ctl_37c = -1.0f;
-                            bsp::depth_charge_cruise_profile_009a6500(unit_.dc, host, pin);
+                            bsp::depth_charge_cruise_profile_009a6500(*unit_.dc, host, pin);
                             unit_.depth_charge_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 3);
                             unit_.dc_target_plus_one = unit_.command_target_plus_one;
                         }
                         const bsp::DepthChargeArmResult r =
-                            bsp::depth_charge_task_arm_009a66c0(unit_.dc, host, host, dt);
+                            bsp::depth_charge_task_arm_009a66c0(*unit_.dc, host, host, dt);
                         unit_.dc_transitions += static_cast<unsigned long long>(r.transitions);
                         unit_.dc_releases += static_cast<unsigned long long>(r.releases);
                         {
-                            const int s = static_cast<int>(unit_.dc.state);
+                            const int s = static_cast<int>(unit_.dc->state);
                             if (s >= 0 && s < 9) ++unit_.dc_state_ticks[s];
                             ++unit_.dc_arm_ticks;
-                            if (unit_.dc.ap.in_range_75) ++unit_.dc_target_ticks;
-                            if (unit_.dc.ap.has_ordnance_74) ++unit_.dc_armed_ticks;
-                            if (unit_.dc.ap.range_48 > 0.0f
-                                && unit_.dc.ap.range_48 < unit_.dc_min_range_48) {
-                                unit_.dc_min_range_48 = unit_.dc.ap.range_48;
+                            if (unit_.dc->ap.in_range_75) ++unit_.dc_target_ticks;
+                            if (unit_.dc->ap.has_ordnance_74) ++unit_.dc_armed_ticks;
+                            if (unit_.dc->ap.range_48 > 0.0f
+                                && unit_.dc->ap.range_48 < unit_.dc_min_range_48) {
+                                unit_.dc_min_range_48 = unit_.dc->ap.range_48;
                             }
                         }
                         owner_.done("BotTaskDepthCharge::arm", 0x009a66c0u);
