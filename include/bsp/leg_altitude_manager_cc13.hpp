@@ -54,6 +54,18 @@ struct LegAltitudeRecord {
 
 enum class LegAltitudeStorage { projected, native };
 
+// Borrow the application's canonical publication cells, retained through its
+// shared singleton drain. This constructs no private lifetime manager/domain.
+struct LegAltitudeSingletonDomain {
+    void* volatile& manager_01090aa0;
+    void* volatile& path_leg_manager_00f8a720;
+};
+
+// 009FAA90 __thiscall(manager, byte flags), EAX=captured manager, RET4.
+// Source interface adds the same actual F8A720 cell; D21C80 dispatch supplies it.
+void* delete_native_leg_manager_009faa90(void* manager, std::uint32_t flags,
+    void* volatile& path_leg_manager_00f8a720);
+
 // A borrowed view of the selected owner's sole record array. Native mode does
 // not build a vector mirror; references expire on the next append/removal.
 struct LegAltitudeRecordView {
@@ -73,6 +85,7 @@ struct LegAltitudeRecordView {
 class LegAltitudeRecords {
 public:
     explicit LegAltitudeRecords(LegAltitudeStorage storage = LegAltitudeStorage::projected);
+    explicit LegAltitudeRecords(LegAltitudeSingletonDomain);
     ~LegAltitudeRecords();
     LegAltitudeRecords(const LegAltitudeRecords&) = delete;
     LegAltitudeRecords& operator=(const LegAltitudeRecords&) = delete;
@@ -98,6 +111,7 @@ class LegAltitudeManager {
 public:
     explicit LegAltitudeManager(LegAltitudeStorage storage = LegAltitudeStorage::projected)
         : records_(storage) {}
+    explicit LegAltitudeManager(LegAltitudeSingletonDomain domain) : records_(domain) {}
     // 009FC000 (009FC000-009FC1B8), __thiscall(this, unit, const float* point),
     // RET 8. Drops null and out-of-action records; returns at once, without
     // updating the point, when `unit` already has a record; otherwise appends

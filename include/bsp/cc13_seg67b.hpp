@@ -118,9 +118,25 @@ struct MoveOnPathTaskFactoryHost {
     virtual void* move_on_path_task_construct_009bce50(void* task, void* bot) = 0;
 };
 
+// 009BD400 uses only these lifetime services. The live leg-record owner can
+// supply them without pretending to implement unrelated task/archive calls.
+class PathLegManagerLifetimeCalls {
+public:
+    virtual ~PathLegManagerLifetimeCalls() = default;
+    virtual void* path_leg_manager_00f8a720() = 0;
+    virtual void set_path_leg_manager_00f8a720(void*) = 0;
+    virtual void* singleton_manager_00415350() = 0;
+    virtual void enter_critical_section_ce2218(void*) = 0;
+    virtual void leave_critical_section_ce2210(void*) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void* bot_path_leg_manager_construct_009faa40(void*) = 0;
+    virtual void singleton_register_00bd0c30(void* manager, void* instance) = 0;
+};
+
 class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls,
     public MoveToEntityPoseHost, public StrafeTargetRearmCalls,
-    public DepthChargeTaskFactoryCalls, public MoveOnPathTaskFactoryHost {
+    public DepthChargeTaskFactoryCalls, public MoveOnPathTaskFactoryHost,
+    public PathLegManagerLifetimeCalls {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -912,7 +928,7 @@ void ship_ai_brain_destruct_009e8c10(Cc13Seg67bHost& host, void* brain);
 // 009BEBA0: __fastcall(ECX = approach), RET.
 void bot_approach_refresh_target_009beba0(Cc13Seg67bHost& host, void* a);
 // 009BD400: __cdecl(), RET, EAX. (009BEBA0 reaches it through the host hook.)
-void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host);
+void* bot_path_leg_manager_get_body_009bd400(PathLegManagerLifetimeCalls& host);
 // 009A35D0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
 void* bot_approach_depth_charge_construct_from_stream_009a35d0(Cc13Seg67bHost& host, void* a,
                                                                void* arg, void* archive);

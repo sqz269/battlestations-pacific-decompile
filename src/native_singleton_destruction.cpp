@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/leg_altitude_manager_cc13.hpp"
 #include "bsp/native_locale_manager_deletion_lifetime.hpp"
 #include "bsp/native_texture_atlas_deletion_lifetime.hpp"
 #include "bsp/native_texture_atlas_manager_delete_attempt.hpp"
@@ -411,6 +412,13 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
     case 0x00ce3818:
         delete_native_singleton_base_00412440(owner, nullptr, flags);
         return;
+    case 0x00d21c80:
+        if (bindings.actual_path_leg_manager_publication_00f8a720 != nullptr) {
+            delete_native_leg_manager_009faa90(owner, flags,
+                *bindings.actual_path_leg_manager_publication_00f8a720);
+            return;
+        }
+        break;
     case 0x00d0da64:
         if (bindings.actual_effect_publication_00f87664 != nullptr) {
             delete_native_gameplay_effect_manager_008703e0(
