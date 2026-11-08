@@ -1,0 +1,353 @@
+{
+  "goal": 5,
+  "chain": 940,
+  "slot": "g5-w4",
+  "run": 2094,
+  "branch": "agent/g5-w4",
+  "base": "ea9f3f6c65a7742efd3d2edd0e3a92c36887a10b",
+  "picked": "Canonical Widget pool F8BC94 CRT startup and registered teardown",
+  "rows": [
+    {
+      "native": "00aa79a0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp:WinMain -> GameNativeGuiWidgetPoolProcess<GuiWidgetPoolTraits>::initialize_once -> construct_native_gui_widget_pool_00aa79a0",
+      "reason": "Restored original CD7080 CRT startup on the canonical F8BC94 process pool in CE344C order; alias delegates the existing pool.initialize member exactly once."
+    },
+    {
+      "native": "00aa7470",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp:GameNativeGuiWidgetPoolProcess<GuiWidgetPoolTraits>::destroy_at_exit -> destroy_native_gui_widget_pool_00aa7470",
+      "reason": "The same startup registers the real process atexit callback, corresponding to CE0A20; alias delegates the existing pool.destroy member exactly once."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:existing native property projection",
+      "reason": "No missing live call: the baseline already calls the owning native scene-property implementation; another host invocation would duplicate its effects."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:existing native property projection",
+      "reason": "No missing live call: the baseline already calls the owning native scene-property implementation; another host invocation would duplicate its effects."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroups candidate-score lists",
+      "reason": "Missing a gameplay candidate-score-list consumer; the documented native reader is the excluded debug overlay, while planning uses separate weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroups candidate-score lists",
+      "reason": "Missing a gameplay candidate-score-list consumer; the documented native reader is the excluded debug overlay, while planning uses separate weight vectors."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:class-pair scoring",
+      "reason": "Missing the parser-owned per-mode ClassPairRow table and its real spawn-composition scoring consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group reconnaissance scoring",
+      "reason": "Missing the native per-member reconnaissance-value provider and corresponding live group-scoring consumer."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movie-camera callbacks",
+      "reason": "Missing a constructed movie-camera screen with retained current/default fields and its Lua-to-screen consumer; the existing callback token is not camera storage."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movie-camera callbacks",
+      "reason": "Missing a constructed movie-camera screen with retained current/default fields and its Lua-to-screen consumer; the existing callback token is not camera storage."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movie-camera callbacks",
+      "reason": "Missing a constructed movie-camera screen with retained current/default fields and its Lua-to-screen consumer; the existing callback token is not camera storage."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movie-camera callbacks",
+      "reason": "Missing a constructed movie-camera screen with retained current/default fields and its Lua-to-screen consumer; the existing callback token is not camera storage."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:listbox factory",
+      "reason": "Missing a native listbox input-filter publication site and its admitted owning listbox path."
+    },
+    {
+      "native": "004fdc00",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "004fe700",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "00501720",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "005048f0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_owner.cpp:update_native_loading_queue_00509190",
+      "reason": "Missing the live nonempty loading-job producer and complete FileStore/worker/retirement bindings; the current update rejects a nonempty queue, so enqueueing work alone would introduce a failing path."
+    },
+    {
+      "native": "0099a4c0",
+      "status": "skipped",
+      "host_site": "include/bsp/native_pilot_bot_task_owner.hpp:task owner services",
+      "reason": "Missing the same-owner live task arena, retirement predicates, scalar lifetime and complete command-task installer needed by the source task-owner contracts."
+    },
+    {
+      "native": "0099a720",
+      "status": "skipped",
+      "host_site": "include/bsp/native_pilot_bot_task_owner.hpp:task owner services",
+      "reason": "Missing the same-owner live task arena, retirement predicates, scalar lifetime and complete command-task installer needed by the source task-owner contracts."
+    },
+    {
+      "native": "0099a830",
+      "status": "skipped",
+      "host_site": "include/bsp/native_pilot_bot_task_owner.hpp:task owner services",
+      "reason": "Missing the same-owner live task arena, retirement predicates, scalar lifetime and complete command-task installer needed by the source task-owner contracts."
+    },
+    {
+      "native": "00ac1bb0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_line_application.cpp:raw Line lifecycle",
+      "reason": "Missing the admitted production raw Line/page owner and complete constructor/property/factory composition; the standalone Line application is not called from a game host."
+    },
+    {
+      "native": "00ac2d00",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_line_application.cpp:raw Line lifecycle",
+      "reason": "Missing the admitted production raw Line/page owner and complete constructor/property/factory composition; the standalone Line application is not called from a game host."
+    },
+    {
+      "native": "00ac2d60",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_line_application.cpp:raw Line lifecycle",
+      "reason": "Missing the admitted production raw Line/page owner and complete constructor/property/factory composition; the standalone Line application is not called from a game host."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding/scoring notifications",
+      "reason": "Missing the native per-slot scoring owner, player records, award tables and score-map/vector graph required by these bodies; semantic hit/failure handles do not supply that storage."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding/scoring notifications",
+      "reason": "Missing the native per-slot scoring owner, player records, award tables and score-map/vector graph required by these bodies; semantic hit/failure handles do not supply that storage."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding/scoring notifications",
+      "reason": "Missing the native per-slot scoring owner, player records, award tables and score-map/vector graph required by these bodies; semantic hit/failure handles do not supply that storage."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp:sub_update_008252c0",
+      "reason": "Missing the live plane sound emitters and pitch/volume consumers; the existing unit RPM smoother explicitly has no built emitters."
+    },
+    {
+      "native": "007b9510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:plane weapon/rack queries",
+      "reason": "Missing the native plane child-link owner and rack virtual providers required by the raw traversal; semantic loadout vectors are not that object."
+    },
+    {
+      "native": "007c1de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:plane weapon/rack queries",
+      "reason": "Missing the native plane child-link owner and rack virtual providers required by the raw traversal; semantic loadout vectors are not that object."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:existing metadata publication",
+      "reason": "No missing host call: main-scene submission already calls this body with its actual queue and binary metadata; the optimized baseline folds its implementation into the caller."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp:construct_native_game_grid_0070bd70",
+      "reason": "No missing initialization: the live constructor already runs initialize_grid_body under its acquired operation; calling the public entry again would repeat grid_begin."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp:glyph-byte input admission",
+      "reason": "Missing a live input-character admission consumer with its retained text-context font; whole-string layout supplies a different operation."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:saved-entity Lua restoration",
+      "reason": "Missing the saved-entity toTurn restoration producer; existing scene StartSpeed initialization does not justify another rudder write."
+    },
+    {
+      "native": "008141a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:helm-control message application",
+      "reason": "Missing the reached helm-control message application with real sender authority, timestamp and backfill consumer."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp:alternate plane frame",
+      "reason": "Missing the real nonzero unit+B04h correction producer that selects this alternate-frame branch."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp:weapon-view rotation",
+      "reason": "Missing a reached WeaponViewHost adapter with its actual camera pose, pivot and axis."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:Scrollbar factory",
+      "reason": "Missing the complete raw AC85A0 property visitor and genuine AC8A80 child-layout service needed to admit a real Scrollbar."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:Button factory",
+      "reason": "Missing the complete Button property/focus/page-dispatch composition for the production factory."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp:Movie factory",
+      "reason": "Missing the production Movie factory/property/resource consumer of its raw allocation; pool startup alone does not justify constructing an unused payload."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp:animated pointer state",
+      "reason": "Missing the owning animated pointer object and its real target/notification virtual-call services."
+    }
+  ],
+  "wired_total_before": 10813,
+  "wired_total_after": 10815,
+  "compiled_called_before": 6301,
+  "compiled_called_after": 6303,
+  "evidence": {
+    "original_project": "C:/Users/sqz269/bsp.gpr",
+    "original_program": "/battlestationspacific.exe",
+    "initializer": "CD7080: MOV ECX,F8BC94; CALL AA79A0; PUSH CE0A20; CALL BF6FF5; POP ECX; RET",
+    "teardown": "CE0A20: MOV ECX,F8BC94; JMP AA7470",
+    "crt_order": "CE3444=CD6FF0 (Listbox), CE344C=CD7080 (Widget), CE3450=CD70A0 (Button)",
+    "release_calls": "AA79A0 at 10413B30 called once from initialize_once at 104149EA; AA7470 at 10413F00 called once from destroy_at_exit at 10413EDB; both entry reachable.",
+    "graph_log": "local/output/c940-graph-after.log",
+    "call_sites": "local/output/c940-who-after.log",
+    "build": "local/output/c940-build.log: Win32 Release build and all 4 CTests passed",
+    "analysis_build": "local/output/c940-analysis-build.log: Win32 /Ob0 /OPT:NOICF bsp_game build passed",
+    "focused_probe": "local/output/c940-probe.log: canonical 32-entry empty table, list order Listbox/Widget/Button, repeat initialize_once preserves table/list, actual process atexit callbacks restore list head and base profiles",
+    "baseline_readiness": "local/output/c940-before.json",
+    "final_readiness": "local/output/c940-after.json"
+  },
+  "boundaries": [
+    "No game launched or gameplay validation performed.",
+    "Source interfaces reuse the existing pool members; original register ABI, constructor EAX result, FH3/SEH identity and payload factories are not supplied.",
+    "No float arithmetic changed.",
+    "No merge, rebase, push or worktree removal performed."
+  ],
+  "left": "Payload factory/allocator activation remains with the actual Widget/page consumers; unrelated skipped candidates require the owners/providers named per row.",
+  "readiness_before": {
+    "wired": 10813,
+    "callees_done_no_wired_caller": 8463,
+    "ready": 1198,
+    "blocked_on_callees": 51,
+    "unknown_no_identifier": 200
+  },
+  "readiness_after": {
+    "wired": 10815,
+    "callees_done_no_wired_caller": 8461,
+    "ready": 1198,
+    "blocked_on_callees": 51,
+    "unknown_no_identifier": 200
+  },
+  "target_rows_before": [
+    {
+      "address": "00aa7470",
+      "state": "callees_done_no_wired_caller",
+      "called": true,
+      "call_sites": 9,
+      "source": "src/native_material_pools.cpp"
+    },
+    {
+      "address": "00aa79a0",
+      "state": "callees_done_no_wired_caller",
+      "called": true,
+      "call_sites": 9,
+      "source": "src/native_material_pools.cpp"
+    }
+  ],
+  "target_rows_after": [
+    {
+      "address": "00aa7470",
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "source": "src/native_gui_widget_pools_cc13.cpp"
+    },
+    {
+      "address": "00aa79a0",
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "source": "src/native_gui_widget_pools_cc13.cpp"
+    }
+  ]
+}

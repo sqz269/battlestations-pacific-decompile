@@ -1153,6 +1153,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Listbox pool CRT CD6FF0: atexit=%d storage_bytes=%zu "
             "before_button_pool=1", listbox_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // Live Ghidra CD7080/CE0A20: ECX=F8BC94, CALL AA79A0,
+        // atexit(CE0A20 -> AA7470). CE344C lies after Listbox's CE3444
+        // and before Button's CE3450. Start the canonical Widget pool on
+        // the shared E188B4 allocator list, retaining reverse exit order.
+        auto& gui_widget_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiWidgetPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int widget_pool_atexit = gui_widget_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Widget pool CRT CD7080: atexit=%d storage_bytes=%zu "
+            "before_button_pool=1", widget_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // bsp.py ghidra xrefs/disasm CD70A0: CE3450 precedes Icon's CE3468;
         // MOV ECX,F8BD00; CALL AABE00; register CE0A30 (Button pool destroy).
         // Start the canonical process pool on the shared E188B4 allocator list.

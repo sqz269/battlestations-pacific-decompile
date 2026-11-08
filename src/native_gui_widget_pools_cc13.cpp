@@ -2,6 +2,7 @@
 // The pool members themselves are instantiated in src/native_material_pools.cpp
 // over the shared native engine.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_widget_pool_lifetime.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/native_gui_grid_pool_table.hpp"
@@ -16,11 +17,30 @@
 #error Native GUI widget pools require MSVC Win32.
 #endif
 
+namespace bsp {
+// bsp.py show AA79A0/AA7470, live CD7080/CE0A20 and CE344C: the CRT
+// constructs and later destroys this same F8BC94 pool. These aliases reuse
+// the sole reconstructed members in native_material_pools.cpp; no second
+// pool, allocation algorithm, initialization or teardown runs on this path.
+__declspec(noinline) void construct_native_gui_widget_pool_00aa79a0(
+    NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    pool.initialize();
+}
+__declspec(noinline) void destroy_native_gui_widget_pool_00aa7470(
+    NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    pool.destroy();
+}
+} // namespace bsp
+
 namespace bsp::game {
 namespace {
 template <class T>
 void construct_process_pool(NativeGuiWidgetPool<T>& pool) {
     pool.initialize();
+}
+
+void construct_process_pool(NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    construct_native_gui_widget_pool_00aa79a0(pool);
 }
 
 void construct_process_pool(NativeGuiListboxPool& pool) {
@@ -33,6 +53,10 @@ void construct_process_pool(NativeGuiListboxPool& pool) {
 template <class T>
 void destroy_process_pool(NativeGuiWidgetPool<T>& pool) {
     pool.destroy();
+}
+
+void destroy_process_pool(NativeGuiWidgetPool<GuiWidgetPoolTraits>& pool) {
+    destroy_native_gui_widget_pool_00aa7470(pool);
 }
 
 void destroy_process_pool(NativeGuiListboxPool& pool) {
