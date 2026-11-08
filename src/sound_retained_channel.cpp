@@ -70,34 +70,40 @@ RetainedSoundChannelInstance& construct_underwater_retained_sound_channel_00a7dc
     return sound;
 }
 
-void destroy_retained_sound_channel_00a7dad0(
+__declspec(noinline) void destroy_retained_sound_channel_00a7dad0(
     RetainedSoundChannelInstance& sound, SoundInstanceContext& context) {
     destroy_retained_channel(sound, context);
 }
-void destroy_scaled_retained_sound_channel_00a7dc20(
+__declspec(noinline) void destroy_scaled_retained_sound_channel_00a7dc20(
     ScaledRetainedSoundChannelInstance& sound, SoundInstanceContext& context) {
     destroy_retained_channel(sound, context);
 }
-void destroy_underwater_retained_sound_channel_00a7dd60(
+__declspec(noinline) void destroy_underwater_retained_sound_channel_00a7dd60(
     RetainedSoundChannelInstance& sound, SoundInstanceContext& context) {
     destroy_retained_channel(sound, context);
 }
 
 RetainedSoundChannelInstance* scalar_delete_retained_sound_channel_00a7db20(
     RetainedSoundChannelInstance* sound, std::uint32_t flags, SoundInstanceContext& context) {
-    destroy_retained_channel(*sound, context);
+    // G5 c710: bsp.py show 00A7DB20 / 00A7DAD0 establish the same record-then-
+    // channel teardown (including A7BF40 on record-release unwind). Compose
+    // that existing ordinary body over this live object, then apply bit0's
+    // free only after it returns. This is a C++ call, not an Original ABI edge.
+    destroy_retained_sound_channel_00a7dad0(*sound, context);
     if (flags & 1u) delete sound;
     return sound;
 }
 ScaledRetainedSoundChannelInstance* scalar_delete_scaled_retained_sound_channel_00a7dc70(
     ScaledRetainedSoundChannelInstance* sound, std::uint32_t flags, SoundInstanceContext& context) {
-    destroy_retained_channel(*sound, context);
+    // 00A7DC70 / 00A7DC20 have the same teardown prefix; the scale is not read.
+    destroy_scaled_retained_sound_channel_00a7dc20(*sound, context);
     if (flags & 1u) delete sound;
     return sound;
 }
 RetainedSoundChannelInstance* scalar_delete_underwater_retained_sound_channel_00a7ddb0(
     RetainedSoundChannelInstance* sound, std::uint32_t flags, SoundInstanceContext& context) {
-    destroy_retained_channel(*sound, context);
+    // 00A7DDB0 / 00A7DD60 likewise share the complete teardown and unwind order.
+    destroy_underwater_retained_sound_channel_00a7dd60(*sound, context);
     if (flags & 1u) delete sound;
     return sound;
 }
