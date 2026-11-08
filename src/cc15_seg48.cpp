@@ -1,9 +1,13 @@
 // cc15_seg48: the live, unbuilt game bodies of segment 48 (packet cc15-r48a, docs/CC15_SEG48.md).
 // Names are hypotheses; see the header for the hooks and the x87 model. Each body was transcribed
 // from its export listing (bsp.py show --asm) or, where Ghidra's listing is short, from the disk
-// bytes (bsp.py disasm-raw). Reconstructed and build-tested only; nothing is wired.
+// bytes (bsp.py disasm-raw). Goal 5 chain 826 binds 007EE8F0 through the live
+// attack chooser; the other bodies retain their individual wiring status.
 
 #include "bsp/cc15_seg48.hpp"
+#include "bsp/attack_commands.hpp"
+#include "bsp/band_0080_cc13.hpp"
+#include "bsp/projectile_kinds.hpp"
 
 #include <cstring>
 #include <initializer_list>
@@ -234,88 +238,202 @@ void cc15_seg48_plane_squadron_recount_active_wingmen_007ee790(void* squadron, C
 }
 
 // ---------------------------------------------------------------------------
-// 007EE8F0 BSP_Unit_AttackCommandApplies, __thiscall(ECX = squadron; command class,
-// target, byte allow, loadout), RET 10h, AL (EAX = 1 or 0 on some arms). Evidence: listing
-// 007EE8F0-007EEBFB. Null target or no leader: 0. Side gate: a target answering +5Ch(1Ch)
-// fails on the same side (+54h); any other target fails on the same side or side 2. Then
-// by class: attackmove 00E08F78 1; levelbomb 00E08F28: with level-bomb ordnance (007ED830)
-// allow && leader +5Ch(10h) && target +5Ch(1Ch), else allow && leader +5Ch(10h) && general
-// bomb ordnance (007ED7E0) && !target +5Ch(0Eh); divebomb 00E08F20: allow && !leader
-// +5Ch(10h) && 007ED7E0 && !target +5Ch(0Eh); rocket 00E08F48: allow && 007ED970 && !target
-// +5Ch(0Eh); torpedo 00E08F18: 007ED8D0, then the leader's first slot descriptor (007B9230)
-// of kind 10 with +F0h > 0.001 or !(0.001 >= +F4h) (COMISS 00D7A23C) lifts the allow
-// requirement, then !00828EC0(target class +538h); depthcharge 00E08F38: target +5Ch(8) &&
-// 007EDA10; dogfight 00E08F58: 00922B10(target) && leader byte +C24h && !leader +5Ch(16h)
-// && !0047B850(leader); strafe 00E08F50: allow && leader +5Ch(17h) && (!target +5Ch(6) ||
-// !00827F70(target class) || 00604A50(leader)); kamikaze 00E08F40: (allow || target
-// +5Ch(41h)) && leader byte +C24h && !0047B850(leader); dropkamikaze 00E08F30: allow &&
-// 007ED880; anything else 0. The 007ED7E0 family is cc13_seg48's.
+// 007EE8F0 BSP_Unit_AttackCommandApplies. Original ABI: thiscall(ECX = squadron;
+// class, target, surface byte, loadout), AL, RET 10h. Goal 5 chain 826 unifies
+// the unused raw reconstruction and the live chooser's typed projection here.
+// AttackFeasibilityInputs borrows the host's established unit/target/loadout
+// answers (GameScriptOrdersHost::choose_attack_class_007eec50 and the pilot retest in
+// GameUnitsHost). No raw squadron, leader or target is fabricated for this API.
+// The compatibility facade in attack_commands.cpp only forwards to this body.
+//
+// Evidence: bsp.py show 007ee8f0 --asm, 007EE8F0..007EEBFB. The old raw comments
+// reversed kamikaze/strafe names: CMP 00E08F50 at 007EEB36 selects the kind-17h
+// kamikaze arm; CMP 00E08F40 at 007EEB94 selects the C24h/0047B850 strafe arm.
+// The typed branch helpers below retain the already-used chooser semantics and
+// per-instruction evidence. This interface is not an original-ABI replacement.
 // ---------------------------------------------------------------------------
-bool cc15_seg48_unit_attack_command_applies_007ee8f0(void* squadron, std::uint32_t command_class, void* target,
-                                                     std::uint8_t allow, std::uint32_t loadout,
-                                                     Cc15Seg48Host& host) {
-    if (target == nullptr || member(squadron, 0) == nullptr) return false;
-    const bool target_1c = host.vcall_5c_has_ordnance_kind(target, 0x1C);
-    const std::int32_t target_side = rd<std::int32_t>(target, 0x54);
-    if (target_1c) {
-        if (target_side == rd<std::int32_t>(squadron, 0x54)) return false;
-    } else if (rd<std::int32_t>(squadron, 0x54) == target_side || target_side == 2) {
+namespace {
+bool level_bomb_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EE946..007EE9C2. BL is the IsKindOf(10h) answer taken once at
+    // 007EE95C; the two halves differ only in which ordnance they accept and
+    // which target kind they then demand.
+    if (!in.target_is_surface) {
         return false;
     }
-    switch (command_class) {
-    case 0x00E08F78u:  // attackmove
-        return true;
-    case 0x00E08F28u: {  // levelbomb
-        const bool level_bomber = host.vcall_5c_has_ordnance_kind(member(squadron, 0), 0x10);
-        if (cc13_seg48_unit_has_level_bomb_ordnance_007ed830(squadron, loadout, host)) {
-            return allow != 0 && level_bomber && host.vcall_5c_has_ordnance_kind(target, 0x1C);
-        }
-        return allow != 0 && level_bomber && cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(squadron, loadout, host) &&
-               !host.vcall_5c_has_ordnance_kind(target, 0x0E);
-    }
-    case 0x00E08F20u:  // divebomb
-        if (allow == 0) return false;
-        if (host.vcall_5c_has_ordnance_kind(member(squadron, 0), 0x10)) return false;
-        if (!cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(squadron, loadout, host)) return false;
-        return !host.vcall_5c_has_ordnance_kind(target, 0x0E);
-    case 0x00E08F48u:  // rocket
-        if (allow == 0) return false;
-        if (!cc13_seg48_unit_has_rocket_ordnance_007ed970(squadron, loadout, host)) return false;
-        return !host.vcall_5c_has_ordnance_kind(target, 0x0E);
-    case 0x00E08F18u: {  // torpedo
-        if (!cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(squadron, loadout, host)) return false;
-        bool needs_allow = true;
-        const void* slot = host.weapon_controller_first_slot_descriptor_007b9230(member(squadron, 0));
-        if (slot != nullptr && rd<std::int32_t>(slot, 8) == 10) {
-            constexpr float kThreshold = 0.001f;  // 00D7A23C
-            if (rd<float>(slot, 0xF0) > kThreshold || !(kThreshold >= rd<float>(slot, 0xF4))) needs_allow = false;
-        }
-        if (allow == 0 && needs_allow) return false;
-        return !host.vehicle_class_is_torpedo_proof_small_craft_00828ec0(ptr(target, 0x538));
-    }
-    case 0x00E08F38u:  // depthcharge
-        if (!host.vcall_5c_has_ordnance_kind(target, 8)) return false;
-        return cc13_seg48_unit_has_depth_charge_ordnance_007eda10(squadron, loadout, host);
-    case 0x00E08F58u:  // dogfight
-        if (!host.entity_is_airborne_target_00922b10(target)) return false;
-        if (rd<std::uint8_t>(member(squadron, 0), 0xC24) == 0) return false;
-        if (host.vcall_5c_has_ordnance_kind(member(squadron, 0), 0x16)) return false;
-        return !host.fun_0047b850(member(squadron, 0));
-    case 0x00E08F50u:  // strafe
-        if (allow == 0) return false;
-        if (!host.vcall_5c_has_ordnance_kind(member(squadron, 0), 0x17)) return false;
-        if (!host.vcall_5c_has_ordnance_kind(target, 6)) return true;
-        if (!host.vehicle_class_is_torpedo_boat_or_small_landing_ship_00827f70(ptr(target, 0x538))) return true;
-        return host.fun_00604a50(member(squadron, 0));
-    case 0x00E08F40u:  // kamikaze
-        if (allow == 0 && !host.vcall_5c_has_ordnance_kind(target, 0x41)) return false;
-        if (rd<std::uint8_t>(member(squadron, 0), 0xC24) == 0) return false;
-        return !host.fun_0047b850(member(squadron, 0));
-    case 0x00E08F30u:  // dropkamikaze
-        return allow != 0 && cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(squadron, loadout, host);
-    default:
+    if (!in.self_is_level_bomber) {
         return false;
     }
+    if (in.has_level_bomb_ordnance) {
+        return in.target_is_structure; // 007EE980, vt[5Ch](1Ch)
+    }
+    if (!in.has_general_bomb_ordnance) {
+        return false; // 007EE9A4, 007ED7E0
+    }
+    return !in.target_is_bomb_excluded; // 007EE9B2, vt[5Ch](0Eh)
+}
+
+bool dive_bomb_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EE9C5..007EEA1D, the exact complement of the level-bomber gate.
+    if (!in.target_is_surface) {
+        return false;
+    }
+    if (in.self_is_level_bomber) {
+        return false; // 007EE9E6, a level bomber never dive bombs
+    }
+    if (!in.has_general_bomb_ordnance) {
+        return false;
+    }
+    return !in.target_is_bomb_excluded;
+}
+
+bool rocket_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEA20..007EEA3E, which joins divebomb's tail at 007EE9FA.
+    if (!in.target_is_surface) {
+        return false;
+    }
+    if (!in.has_rocket_ordnance) {
+        return false;
+    }
+    return !in.target_is_bomb_excluded;
+}
+
+bool torpedo_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEA40..007EEAAE. The depth-band test only narrows the surface case:
+    // a torpedo that runs at the surface cannot be used on a target the caller
+    // did not classify as a surface vessel.
+    if (!in.has_torpedo_ordnance) {
+        return false;
+    }
+    if (!in.target_is_surface && in.torpedo_runs_at_surface) {
+        return false; // 007EEA94..007EEA9D
+    }
+    return !in.torpedo_target_blocked; // 007EEAA9, 00828EC0 must answer 0
+}
+
+bool depth_charge_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEAB3..007EEAE9. The only arm that never looks at the surface flag.
+    if (!in.target_is_submarine) {
+        return false;
+    }
+    return in.has_depth_charge_ordnance;
+}
+
+bool dogfight_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEAEC..007EEB31.
+    if (!in.target_is_air) {
+        return false; // 007EEAF5, 00922B10
+    }
+    if (!in.guns_available) {
+        return false; // 007EEB08, controller+C24h
+    }
+    if (in.self_is_dogfight_excluded) {
+        return false; // 007EEB1A, vt[5Ch](16h)
+    }
+    return !in.guns_suppressed; // 007EEB2C, 0047B850 must answer 0
+}
+
+bool kamikaze_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEB36..007EEB91.
+    if (!in.target_is_surface) {
+        return false;
+    }
+    if (!in.self_is_kamikaze_capable) {
+        return false; // 007EEB53, vt[5Ch](17h)
+    }
+    if (in.target_is_kamikaze_ship && in.kamikaze_ship_blocked) {
+        return false; // 007EEB6E..007EEB8A
+    }
+    return true;
+}
+
+bool strafe_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEB94..007EEBC7. Unlike every ordnance arm, a non-surface target is
+    // not fatal: it only has to answer IsKindOf(41h).
+    if (!in.target_is_surface && !in.target_is_strafe_fallback) {
+        return false; // 007EEBA7
+    }
+    if (!in.guns_available) {
+        return false;
+    }
+    return !in.guns_suppressed;
+}
+
+bool drop_kamikaze_applies(const AttackFeasibilityInputs& in) noexcept
+{
+    // 007EEBCC..007EEBE8, the shortest arm.
+    if (!in.target_is_surface) {
+        return false;
+    }
+    return in.has_drop_kamikaze_ordnance;
+}
+
+} // namespace
+
+void bind_attack_torpedo_inputs(AttackFeasibilityInputs& in,
+    const WeaponClassDescriptor* first_slot, bool target_kind_0e,
+    bool target_kind_0c, bool target_big_landing_ship_808, float target_speed_500) noexcept
+{
+    // bsp.py show 007ee8f0 --asm: 007EEA61 MOV BL,1 survives a null slot
+    // (007EEA68) or a subtype other than 0Ah (007EEA6C). COMISS/JA at
+    // 007EEA82 ignores an unordered +F0h, while COMISS/JC at 007EEA87 clears
+    // BL for an unordered +F4h. Do not replace these with an ordered range test.
+    constexpr float threshold = 0.001f; // 00D7A23C
+    in.torpedo_runs_at_surface = first_slot == nullptr || first_slot->sub_type != 0x0a
+        || (!(first_slot->homing_horz_turn_speed > threshold)
+            && threshold >= first_slot->homing_vert_turn_speed);
+    in.torpedo_target_blocked = cc13_band0080::torpedo_proof_small_craft_00828ec0(
+        target_kind_0e, target_kind_0c, target_big_landing_ship_808, target_speed_500);
+}
+
+bool cc15_seg48_unit_attack_command_applies_007ee8f0(std::uint32_t command,
+                            const AttackFeasibilityInputs& in) noexcept
+{
+    if (!attack_command_target_side_allows(in.unit_has_weapon_controller,
+                                           in.target_present,
+                                           in.target_is_structure,
+                                           in.unit_side,
+                                           in.target_side)) {
+        return false;
+    }
+    if (command == kCommandAttackMove) {
+        return true; // 007EE938, the one arm with no condition
+    }
+    if (command == kAttackCmdLevelBomb) {
+        return level_bomb_applies(in);
+    }
+    if (command == kAttackCmdDiveBomb) {
+        return dive_bomb_applies(in);
+    }
+    if (command == kAttackCmdRocket) {
+        return rocket_applies(in);
+    }
+    if (command == kAttackCmdTorpedo) {
+        return torpedo_applies(in);
+    }
+    if (command == kAttackCmdDepthCharge) {
+        return depth_charge_applies(in);
+    }
+    if (command == kAttackCmdDogfight) {
+        return dogfight_applies(in);
+    }
+    if (command == kAttackCmdKamikaze) {
+        return kamikaze_applies(in);
+    }
+    if (command == kAttackCmdStrafe) {
+        return strafe_applies(in);
+    }
+    if (command == kAttackCmdDropKamikaze) {
+        return drop_kamikaze_applies(in);
+    }
+    return false; // 007EEBF6, every class the chain does not name
 }
 
 // ---------------------------------------------------------------------------

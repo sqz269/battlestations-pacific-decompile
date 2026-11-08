@@ -3,6 +3,7 @@
 #include "bsp/camera_decomposition.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/pc24_camera_cc13.hpp"
@@ -467,9 +468,15 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
             rot_x_negated(rotation, pitch);
             premultiply(camera.orient_2b8, rotation);
         }
-        camera.orient_2b8[12] = position[0];                   // 004334E7..00433510
-        camera.orient_2b8[13] = position[1];
-        camera.orient_2b8[14] = position[2];
+        // Shared vector copy, not an original CALL here: bsp.py show 00432ED0
+        // --asm, 004334E7..00433510 uses three MOVSS pairs; 00414220 uses
+        // three sequential FLD/FSTP pairs. Each position component above is
+        // already a subtraction result, so a NaN has already been quieted.
+        // The existing 00414220 source model preserves every other bit pattern
+        // (including signed zero/subnormals), making it the same publication
+        // on this live, nonoverlapping camera matrix and stack vector.
+        engine_seg1_cc13::vector3_assign_00414220(
+            camera.orient_2b8.data() + 12, position);
         camera.out_2f8 = camera.orient_2b8;                    // 00433518
         apply_zoom_0042c610(camera);                           // 0043351F
     }

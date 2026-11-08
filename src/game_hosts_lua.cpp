@@ -9511,8 +9511,8 @@ void GameMissionLuaHost::note_exit_zone_00982120(std::size_t unit, bool exited) 
 
 // Packet cc13-fix3, under kLuaExitZoneListenersBound. 00982120's `exitzone` channel.
 // The plane producer is 007F31A0, whose 007F31E6 call fires (plane, 1) before the
-// plane's Kill(4) at 007F3418; the host records that kill as cause 4 (the units host's
-// retreat leave-map arm, note_kill_cause(..., 4)), so each such death is one event. The
+// plane's Kill(4) at 007F3418; it now queues that event at the actual handler's
+// warning call, gated by its live +361h latch, rather than inferring it from a death. The
 // entity is plane->vtable[140h]() = 007B97E0, plane+9D4h, the squadron (id = squadron
 // slot + 1). Other producers queue through note_exit_zone_00982120. 00968710 tests the
 // entity set (+0Ch), then the exited set (+1Ch); an empty set matches all.
@@ -9520,29 +9520,6 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
     if (units_hooks_ == nullptr || state_ == nullptr) return;
     std::vector<std::pair<std::size_t, bool>> events;
     events.swap(exit_zone_pending_);
-    const std::vector<std::pair<std::size_t, float>> deaths = units_hooks_->destroyed_units();
-    if (listener_exit_zone_seen_.size() < units_hooks_->count()) {
-        listener_exit_zone_seen_.resize(units_hooks_->count(), false);
-    }
-    for (const auto& death : deaths) {
-        const std::size_t unit = death.first;
-        if (unit >= listener_exit_zone_seen_.size() || listener_exit_zone_seen_[unit]) continue;
-        listener_exit_zone_seen_[unit] = true;
-        if (units_hooks_->kill_cause_00926d90(unit) != 4) continue;
-        const bsp::PlaneSquadronHostRecord* sq =
-            bsp::plane_squadron_registry().find_by_member_unit(unit);
-        if (sq == nullptr) continue;   // not a plane: 007F31A0 is the squadron's arm
-        const std::size_t entity = sq->squadron_unit != bsp::kPlaneSquadronNoUnit
-            ? sq->squadron_unit : unit;
-        // 007F31CF CMP [squadron+361h],0 / JNE past the call. SUBSTITUTION (labelled at
-        // the switch): only the deaths at the squadron's first exit clock fire.
-        const auto first = exit_zone_first_clock_.emplace(entity, death.second).first;
-        if (first->second != death.second) {
-            ++summary_.listener_exit_zone_latched;
-            continue;
-        }
-        events.emplace_back(entity, true);
-    }
     for (const auto& event : events) {
         ++summary_.listener_exit_zone_events;
         const int victim = static_cast<int>(event.first + 1);
@@ -18947,9 +18924,9 @@ void GameMissionLuaHost::report_mission_script_state() {
             summary_.listener_entity_killed_fires);
     }
     if constexpr (kLuaExitZoneListenersBound) {
-        log_.notef("summary mission script exitzone listeners bound=1 events=%llu latched=%llu "
+        log_.notef("summary mission script exitzone listeners bound=1 events=%llu "
             "fires=%llu (00982120, packet cc13-fix3)", summary_.listener_exit_zone_events,
-            summary_.listener_exit_zone_latched, summary_.listener_exit_zone_fires);
+            summary_.listener_exit_zone_fires);
     }
     if constexpr (kLuaProximityTriggersBound) {
         log_.notef("summary mission script proximity triggers bound=1 adds=%llu "

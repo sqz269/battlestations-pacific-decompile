@@ -10,7 +10,8 @@
 // are the project's singleton_lifetime_allocate/free boundary (bsp/singleton_lifetime.hpp), as in
 // src/sound_sample.cpp. Storage passed in must belong to that domain. Original C++ EH and SEH are not
 // claimed. 00A92290 has a typed view used by the live front-end context stack;
-// 00A843A0/00A84450 use the live sound owner's standard-container record projection.
+// 00A843A0/00A84450 and 00A7FAF0/00A7F110 use the live sound owner's
+// standard-container record projections.
 // Other entries retain their individual integration boundaries. Names are hypotheses, not recovered symbols.
 
 #include <array>
@@ -25,6 +26,7 @@ struct SoundResourceOwner;
 struct SoundResourceCacheRecord;
 struct SoundConfigurationState;
 struct SoundConfiguredType;
+struct SoundConfiguredChannelGroup;
 }
 
 namespace bsp::sound_cc13 {
@@ -224,10 +226,12 @@ void append_sound_configured_type_00a7feb0(SoundConfigurationState& state,
     const SoundConfiguredType& type);
 // 00A7FAF0 BSP_SoundConfiguredGroups_AppendDefault, __fastcall(ECX header) -> EAX new record: when full,
 // reserve capacity + 16 (at least 16); zero the six DWORDs of the new 18h record; count + 1.
-void* append_default_sound_configured_group_00a7faf0(NativePointerArray& header, NativeStringStorage& strings);
+// Uses the live configuration owner's existing typed records and logical capacity;
+// no raw-array mirror is maintained. This C++ interface is not the original ABI.
+SoundConfiguredChannelGroup& append_default_sound_configured_group_00a7faf0(SoundConfigurationState& state);
 // 00A7F110 BSP_SoundConfiguredGroups_PopBack, __fastcall(ECX header): when count != 0, destroy the last
 // record (00A7BFE0) and count - 1.
-void pop_back_sound_configured_group_00a7f110(NativePointerArray& header, NativeStringStorage& strings);
+void pop_back_sound_configured_group_00a7f110(SoundConfigurationState& state);
 
 // 00A7FCC0 (types) and 00A7F240 (groups) over raw storage, __thiscall(ECX header, int count), RET 4: reserve
 // (00A7FBD0 / 00A7F160) when count exceeds the capacity, zero the new records, then while count < current:

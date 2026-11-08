@@ -216,7 +216,12 @@ void load_sound_bank_00a823f0(SoundOwnedResource& resource,
             + " bank_returned=" + (resource.fsb_bank_0c ? "1" : "0"));
     }
     resource.size_28 = raw_size;
-    file.bytes.reset(); // native VFS +14 / 00BD91F0, before subsound queries
+    // 00A823F0's VFS +14 call releases this same whole-file allocation after
+    // the length query and before subsound queries (bsp.py show 00BD91F0).
+    // The recovered body owns that release; its allocator binding matches
+    // SoundWholeFileRuntime::allocate's existing new[] storage.
+    oct18_tail_c::release_whole_file_00bd91f0(file.bytes.release(),
+        [](void* buffer) { delete[] static_cast<char*>(buffer); });
     std::int32_t subsound_count;
     result = fmod.sound_get_num_subsounds(resource.fsb_bank_0c, &subsound_count);
     check_memory(result, fmod); // count is not consumed or tested by native

@@ -194,7 +194,17 @@ struct AttackFeasibilityInputs {
     bool kamikaze_ship_blocked = false;    // 00827F70(target+538h) and 00604A50
 };
 
-// 007EE8F0. True when the named class may be issued against this target.
+struct WeaponClassDescriptor;
+// 007EEA5B..007EEAA9's inputs from the leader's CURRENT first rack and target
+// class. An absent/non-torpedo descriptor keeps BL=1 (surface target required).
+// +F0h/+F4h are the descriptor's homing turn fields, despite the depth-band
+// shorthand used in the original attack-command notes.
+void bind_attack_torpedo_inputs(AttackFeasibilityInputs& in,
+    const WeaponClassDescriptor* first_slot, bool target_kind_0e,
+    bool target_kind_0c, bool target_big_landing_ship_808, float target_speed_500) noexcept;
+
+// Compatibility facade for cc15_seg48_unit_attack_command_applies_007ee8f0.
+// True when the named class may be issued against this target.
 // A class with no arm (anything outside the eleven the routine names) is false,
 // which is 007EEBF6's fall-through.
 bool attack_command_applies(std::uint32_t command,

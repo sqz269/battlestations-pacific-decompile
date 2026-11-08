@@ -468,8 +468,11 @@ void* entity_as_kind05_or_null_008fe120(Seg59bHost& host, void* entity) {
 // 008FE140 BSP_Entity_AsShipOrNull. __fastcall(ECX = entity), RET; EAX = entity or null.
 // Evidence: 008FE143 null test; 008FE14D entity->vt[5Ch](6); 008FE150 false -> null. Caller
 // 008FFF20 (the torpedo bot's tick; gun_bot_remainder.hpp names the address only).
+// Chain 840: this body never dereferences the entity. EntityKindAccess lets
+// the player-seat lead path reuse the checked cast with its live unit handle
+// and recovered IsKindOf slot, without fabricating a native entity layout.
 // ---------------------------------------------------------------------------
-void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity) {
+__declspec(noinline) void* entity_as_kind06_or_null_008fe140(EntityKindAccess& host, void* entity) {
     if (entity == nullptr) return nullptr;
     return host.entity_is_kind_of_vt5c(entity, 6) ? entity : nullptr;
 }
@@ -479,7 +482,7 @@ void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity) {
 // EAX = property. Evidence: 008EF7C0..008EF7C9 MOV [EAX+0Ch],ECX. Callers (cc13_large61) use it
 // on scene property records ("OwnerPlayer", the skill), so +0Ch is the record's value word.
 // ---------------------------------------------------------------------------
-void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value) {
+__declspec(noinline) void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value) {
     at<std::uint32_t>(property, 0x0C) = value;
     return property;
 }

@@ -1128,7 +1128,9 @@ public:
         return static_cast<std::int32_t>(state_.component.points_08.size());
     }
     void format_string128_004f9a80(char* dst, const char* fmt, std::int32_t value) override {
-        std::snprintf(dst, 0x80, fmt, value); // 007B3571/007B35F1: ADD ESP,0Ch
+        // bsp.py show 007B34F0: 007B3571/007B35F1 call 004F9A80 with
+        // this same 80h stack buffer, Point%002i format and live point index.
+        bsp::engine_seg11_35_66_cc13::format_string128_004f9a80(dst, fmt, value);
     }
     void vcall_08_append_point(void*, const float* xyz) override {
         // 00D053D8[08h] = 00480890 clears +18h, then 007B34B0 allocates

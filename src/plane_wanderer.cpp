@@ -1,4 +1,5 @@
 #include "bsp/plane_wanderer.hpp"
+#include "bsp/band_0067_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
@@ -125,11 +126,16 @@ bool plane_wanderer_fixed_step_007be060(PlaneWandererState& s, const PlaneWander
             // 007BE196-007BE1DD: d = 00439950() - offset / OffsetMax.
             float r[3];
             plane_wanderer_random_direction_00439950(r, draw);
-            float d[3];
-            for (int i = 0; i < 3; ++i) {
-                const float q = static_cast<float>(static_cast<double>(s.offset[i]) / t.offset_max);
-                d[i] = r[i] - q;
-            }
+            const band_0067_cc13::Vec3 normalized_offset{
+                static_cast<float>(static_cast<double>(s.offset[0]) / t.offset_max),
+                static_cast<float>(static_cast<double>(s.offset[1]) / t.offset_max),
+                static_cast<float>(static_cast<double>(s.offset[2]) / t.offset_max)};
+            // 007BE1BD..007BE1DD is the same three stored FSUBs as the shared
+            // 00709AC0 body. Inputs are this wanderer's offset and RNG draw;
+            // replace the inline subtraction, without drawing or updating twice.
+            const auto direction = band_0067_cc13::vec3_sub_00709ac0(
+                {r[0], r[1], r[2]}, normalized_offset);
+            float d[3] = {direction.x, direction.y, direction.z};
             // 007BE1E1-007BE224: longer than 1.5 (00CE380C) is scaled to 1.5 (00CE3D78).
             const float dl = length3_0042b2f0(d);
             if (dl > 1.5f) {

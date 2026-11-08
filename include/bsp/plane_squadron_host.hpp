@@ -186,6 +186,10 @@ struct PlaneSquadronHostRecord {
 
     // +3CCh: the live member count, which is what 007EEF54 and 007EE7F0 test.
     std::int32_t live_count() const noexcept;
+    // Compact ordinal in the current member array, excluding NoUnit holes
+    // left by a kill before the next compaction. Rescans on every call; returns
+    // NoUnit when that ordinal no longer exists after a callback's mutation.
+    std::size_t live_member(std::size_t ordinal) const noexcept;
     // +3D0h, the flight leader. 007EDA91 reads slot 0 whatever the count.
     std::size_t flight_leader() const noexcept;
     // 007F3970's compaction for one dead member, found by unit or, when

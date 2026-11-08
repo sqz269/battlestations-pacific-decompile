@@ -9334,6 +9334,52 @@ bool GameUnitsHost::plane_any_rack_empty_007b92e0(std::size_t unit_index) {
     return false;
 }
 
+int GameUnitsHost::plane_first_rack_bullet_id(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return -1;
+    GameUnitSlot& unit = *host.slots[unit_index];
+    const auto& racks = host.ordnance_racks(unit);
+    if (racks.empty()) return -1; // 007B9230: +994h <= 0.
+    // 007B9230 queries element zero even when a later rack holds a torpedo.
+    // Retain the established BSPGun-order projection, and resolve THAT slot's
+    // current Equipment rather than treating the first general gun as a rack.
+    PlaneOrdnanceRack first = racks.front();
+    const int device = host.rack_equipment_device(unit, unit.row.type_id,
+        first.platform_key, first.device_class);
+    const std::string type = host.lua.read_device_class_string(device, "Type");
+    first.device_class = device;
+    first.class_id = host.read_device_bullet_class_id(device);
+    first.authored_ammo = host.rack_equipment_ammo(unit, unit.row.type_id, first.platform_key);
+    if (type == "BombPlatform") {
+        first.multi = false;
+        first.authored_ammo = host.rack_positive_bag_round(unit, first.authored_ammo);
+        host.plane_rack_census(unit);
+        const auto found = std::find_if(unit.rack_identity_per_rack.begin(),
+            unit.rack_identity_per_rack.end(), [&](const SingleRackCensusIdentity& identity) {
+                return identity.platform_key == first.platform_key && identity.device_class == device;
+            });
+        if (found == unit.rack_identity_per_rack.end())
+            throw std::logic_error("first rack has no current equipment identity");
+        first.single_index = static_cast<int>(found - unit.rack_identity_per_rack.begin());
+    } else if (type == "MultiBombPlatform") {
+        first.multi = true;
+        first.single_index = -1;
+    } else {
+        throw std::logic_error("first rack current equipment is not a supported rack");
+    }
+    const int bullet_id = host.read_device_bullet_id(device);
+    if (host.plane_rack_holds_round(unit, first)) return bullet_id;
+    // bsp.py show 006e4060 --asm, 006E4086..006E40D7: query flag 1 admits
+    // the configured +3F8h/+34h descriptor when owner slot1E4 (006D1F40's
+    // LIVE 00E17BF2) is set and descriptor vslot8 answers 2Ah. SP missions
+    // can enable this flag (usn_19_coralus.lua:64); do not infer it from mode.
+    const bool reload = lua_device_reload_enabled_00e17bf2();
+    GameGunneryHost* const owner = reload ? gunnery() : nullptr;
+    const bool bomb_family = owner != nullptr
+        && owner->weapon_class_descriptor(bullet_id, 0x2a) != nullptr;
+    return empty_rack_configured_bullet_id(reload, bullet_id, bomb_family);
+}
+
 int GameUnitsHost::plane_reload_bomb_platforms_007c1d80(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size() || !host.slots[unit_index]) return -1;

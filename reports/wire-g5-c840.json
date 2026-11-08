@@ -1,0 +1,219 @@
+{
+  "chain": 840,
+  "slot": "g5-w10",
+  "base": "5c2883a543",
+  "change": "Replace the live player-seat ship lead discriminator with the existing checked entity cast, using a narrow kind-query interface over the resolved target index.",
+  "rows": [
+    {
+      "native": "008fe140",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::seat_artillery_lead_009578c3",
+      "evidence": "Original 008FE143 null test, 008FE14D vt[5Ch](6), 008FE150 false-to-null; original caller 008FFF20 at 009000D8. The same canonical body now replaces the seat lead's inline IsKindOf(target, 6), and its returned pointer selects ship turn lead versus generic intercept.",
+      "state": "The adapter borrows the already resolved live target index and GameUnitsHost::unit_is_kind_of. The body treats that identity as opaque and performs no native object-field reads.",
+      "call_graph": "Release body 1044FB40, direct reachable call 100F50CA from seat_artillery_lead_009578c3; 1 live call site, no unreachable callers.",
+      "limitations": "Semantic C++ interface; original register ABI and object layout are not supplied. No game launch or gameplay validation. The original torpedo tick's discarded cast result was not added as an unused call."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Bag::insert_enum",
+      "reason": "Already called from reachable code before this chain; baseline reports three live call sites."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: copy_or_merge",
+      "reason": "Already called from reachable code before this chain; baseline reports two live call sites."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: power-up pass candidate_attack_value",
+      "reason": "Missing resolved air-support flight-class weapon-value facts; the existing live callback explicitly throws for this unmodelled input."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI planner score records",
+      "reason": "The inspected score-list reader is the excluded debug overlay; g5-w8 independently confirmed that finding and recorded skips in c846."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI planner chosen records",
+      "reason": "The inspected score-list reader is the excluded debug overlay; g5-w8 independently confirmed that finding and recorded skips in c846."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate admission",
+      "reason": "Already called from reachable code before this chain; baseline reports one live call site."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target initialization",
+      "reason": "Missing genuine current F87574/F87578/F8757C writable native publications required by the literal absolute-address initializer."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio",
+      "reason": "Missing the real BBC audio object and device-list endpoints needed to consume the plan and apply the original audio calls."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::camera_screen_frame_step",
+      "reason": "Missing the original support-info-panel receiver/storage behind the current record-only update hook."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::build_quads",
+      "reason": "Missing the original per-parent property-description child/name-order consumer; the live bridge sorts flattened quads by runtime status and Z."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "Missing the original marker projection/margin producer; the current camera substitute culls before placement."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "No live mode-specific ClassPairRow table producer was established for the native class-pair lookup."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition",
+      "reason": "No matching live native threat-record/source-count owner was established for the reconstructed spawn gate."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance score",
+      "reason": "No exact per-member native reconnaissance-value producer was established for the group's ratio input."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "The reconstructed identifier actually denotes cloud-manager frame work; no matching live cloud frame/instance owner was established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No live caller supplying the actual CameraProjection owner was established among the inspected camera clients."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: font glyph acceptance",
+      "reason": "No live byte-editing consumer was established in this audit; g5-w4 announced independent font-byte work."
+    },
+    {
+      "native": "00867320",
+      "status": "skipped",
+      "host_site": "src/point_effect_controls.cpp and src/point_effect_children.cpp: child-array append",
+      "reason": "The reconstructed native point-effect callers had no established host root with their actual retained reference-array owner."
+    },
+    {
+      "native": "007f0f80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: observer_member_initialize_007f0f80",
+      "reason": "Missing a matched live observer-member receiver and incoming endpoint cell for the native approach constructor."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp: resize_native_vehicle_pointer_array_005471b0",
+      "reason": "The inspected native vehicle-class activation caller was not linked/reachable in the Release graph; preserving a leaf alone would not establish a live owner."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a live owner of the actual native vehicle-camera row array and defaults on the inspected host path."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: assign_native_animation_values_00b926e0",
+      "reason": "The native skinned-animation item reader/assignment caller had no linked Release entry root in this audit."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: MSAR checksum verification",
+      "reason": "Missing the live MSAR validation request and archive-stream owner; the reconstructed checksum clients were not linked."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: cutscene playback update",
+      "reason": "Missing an authored movie producer and retained EngineMovieClock behind the record-only cutscene update path."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "No live last-command metadata request with a genuine populated native render queue was established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "No matched live water/settings/capacity publication was established for the native leak-manager fraction query."
+    },
+    {
+      "native": "0057d430",
+      "status": "skipped",
+      "host_site": "src/scenes_seg1_cc13.cpp: scene loading-state query",
+      "reason": "No new live single-player host binding for the native game loading-state query was established."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: member-vector access",
+      "reason": "The literal missing-member arm reads mutable F87574/F87578/F8757C absolute publications whose live native storage is not bound."
+    }
+  ],
+  "validation": {
+    "initial_build": "scripts/build.ps1 passed, all six tests passed",
+    "final_build": "scripts/build.ps1 passed after the caller change, all six tests passed",
+    "call_graph_before": {
+      "called_reconstructed_addresses": 5549,
+      "reachable_functions": 42805
+    },
+    "call_graph_after": {
+      "called_reconstructed_addresses": 5550,
+      "reachable_functions": 42808
+    },
+    "readiness_before": {
+      "wired": 10692,
+      "ready": 1213,
+      "callees_done_no_wired_caller": 8568
+    },
+    "float_math": "No float arithmetic changed; only the kind-6 branch discriminator was replaced.",
+    "game_run": false,
+    "new_tests": "None; existing checks and the direct Release call graph cover this bounded interface/caller change.",
+    "readiness_after": {
+      "wired": 10692,
+      "ready": 1213,
+      "callees_done_no_wired_caller": 8568
+    },
+    "readiness_row_after": {
+      "name": "bsp::cc13_seg59b::entity_as_kind06_or_null_008fe140",
+      "state": "ready",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    "readiness_note": "The static text state remains ready; the built executable proves called=true and one entry-reachable direct call. The unchanged static wired total is reported separately from the actual called-address gain."
+  },
+  "coordination": "Claimed g5-w10 and queued g5-w10-gunnery. g5-w1 released the gunnery file after its review fix; this chain claimed it before editing. Its weapon_class_descriptor hunk is disjoint from this seat-lead hunk. No merge, rebase, push, worktree removal, subagent, or game launch."
+}

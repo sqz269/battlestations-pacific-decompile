@@ -1,0 +1,190 @@
+{
+  "goal": 5,
+  "chain": 841,
+  "slot": "g5-w4",
+  "base_head": "1739275e8a3c25bc2cef9ab114ed998b78ea8efa",
+  "picked": "Live sound configuration channel-group append and storage retirement",
+  "rows": [
+    {
+      "native": "00a7faf0",
+      "status": "wired",
+      "host_site": "src/sound_configuration.cpp: apply_sound_configuration_lua_00a7ff80_fragment, Channelgroups iteration",
+      "evidence": "00A8096D..00A809DC inlines the same +16/min16 growth, default record construction and count increment as 00A7FAF0. Reuses the existing SoundConfigurationState channel_groups_128 and channel_group_capacity_130. Count increases before configure_channel_group_00a7de10."
+    },
+    {
+      "native": "00a7f110",
+      "status": "wired",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "evidence": "00A7F588..00A7F5A4 inlines the same current-last storage destruction then count decrement as 00A7F110. The canonical leaf reloads the live vector after FMOD callbacks; DSP/FMOD object release remains in the existing preceding call."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing entry-reachable text-input acceptance consumer: the native-resource wrapper has no source caller and neither it nor 00AB6D00 is linked into bsp_game."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail::Pass::candidate_attack_value",
+      "reason": "Air-support faction blocks lack resolved plane-class weapon-value facts for compose_against_group; current facts are published per existing unit and the live callback still throws."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate score-list ownership",
+      "reason": "No live candidate score-table owner and gameplay consumer established; current capture planning uses separate records, and the documented score-list reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI candidate score-list ownership",
+      "reason": "Missing native candidate score records whose chosen byte is consumed by gameplay; no parallel diagnostic list was introduced."
+    },
+    {
+      "native": "00778860",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_route_slot_present",
+      "reason": "Missing Small2Host bridge to the same live director and slot-0 path owner; the existing AI route queries semantic command state rather than a native director object."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: friendly capture queries",
+      "reason": "Missing Small2Host bridge exposing same live unit fields and the command-building list in the raw layout this body reads."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_issue_clearorders",
+      "reason": "No native command-target owner or genuine publication of the writable F87574/78/7C cells was established for the semantic descriptor."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path update",
+      "reason": "Missing presence-zero clear-message producer and retained last-selected-slot path owners; the current live path produces additions."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp: command_target_descriptor_init_00721070 callback",
+      "reason": "No entry-reachable native command-target-pair owner and initializer callback with the actual mutable class ordinal was established."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_build_00721090",
+      "reason": "Missing entry-reachable descriptor serialization/build owner; no matching function is linked in the game build."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing live mode-specific ClassPairRow table producer and a concrete class-pair scoring callback."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg69.cpp: ai_command_find_nearest_enemy_group_00a13080",
+      "reason": "No live nearest-enemy caller bridge with each group's real member recon-record values was established."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp: retained nonpositive/ramp/scaled-ramp updates",
+      "reason": "Already entry-reachable at three existing call sites; no additional missing wiring remained at those sites."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native_lua_get_float4_00b67c40",
+      "reason": "No entry-reachable caller using an actual four-element native Lua object was established; the inspected live Lua paths request vectors of three."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate",
+      "reason": "No linked address-named allocation entry or additional live FrameBox factory producer was established; existing pool logic is a template specialization."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp: clamp_to_screen_margins_00638b90",
+      "reason": "Missing live caller supplying the same current screen-margin cells and widescreen state."
+    },
+    {
+      "native": "00481510",
+      "status": "skipped",
+      "host_site": "00498C40 traffic-cell visibility caller",
+      "reason": "No entry-reachable traffic-cell update host with the actual bounds/box owner was established."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0",
+      "reason": "Missing entry-reachable ErrorContextNode map owner; inspected error-context iterator and constructor entries are not linked."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "Missing entry-reachable ErrorContextNode map owner; replacing its private tree helper would not establish a game caller."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map rebalance",
+      "reason": "No live error-context map insertion/erase producer was established."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context map rebalance",
+      "reason": "No live error-context map insertion/erase producer was established."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio",
+      "reason": "Missing owned unit+6B4 flag, real engine-emitter slot and gun-child audio-mix consumers needed to apply all side effects."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown close_result_gui",
+      "reason": "Missing actual game/movie-screen/input/cinematic transition context required by the native sound-load transition body."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: widget factory",
+      "reason": "Missing page-composed native Button registry/focus and lifetime bindings; current factory admits only default Group/Icon."
+    },
+    {
+      "native": "00a7feb0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp: SoundTypes iteration",
+      "reason": "Canonical append still takes a raw array; a live typed SoundConfiguredType adapter and its copy/ownership contract were left for a separate packet."
+    },
+    {
+      "native": "00a7fe60",
+      "status": "skipped",
+      "host_site": "src/sound_configuration.cpp: Listeners iteration",
+      "reason": "Canonical body still needs a raw manager and listener-table callback bridge; current loader uses the typed listener owner directly."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed",
+    "focused_probe": "tests/wire_g5_c841_channel_groups_probe.cpp: MSVC x86 /std:c++17 /EHsc /MD /O2, linked against bsp_core/bsp_lua511/bsp_zlib121 with /MANIFEST:EMBED; passed growth through 17 groups, preservation of nested actual DSP storage/name/handle, storage retirement and empty pop",
+    "call_graph": "Both addresses REACHABLE with one call site each. Append reaches apply_sound_configuration_lua_00a7ff80_fragment through the Channelgroups lambda; pop reaches shutdown_sound_configuration_effects_00a7f560.",
+    "called_addresses_before": 6094,
+    "called_addresses_after": 6096,
+    "readiness_wired_before_initial_index_refresh": 10690,
+    "readiness_wired_after": 10694,
+    "count_note": "Only the two rows marked wired are claimed. The initial readiness measurement preceded completion of the setup index refresh; compiled graph confirms exactly two additional address bodies called.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "interface_limit": "Retains the existing SoundConfigurationState standard-container projection. No original private 18h-record ABI or gameplay/FMOD execution proof is claimed."
+}

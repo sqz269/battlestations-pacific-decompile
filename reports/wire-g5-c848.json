@@ -384,5 +384,129 @@
     "Standard string/vector storage and allocation/EH are the existing live host projection; native 14h-record ABI, native allocator/failure identity and SEH are not reproduced.",
     "Compiled entry reachability and synthetic ownership checks only; no game launch or gameplay validation."
   ],
-  "left_for_others": "Listener-preset wrapper 00A7FE60 has a matching live inline in sound_configuration.cpp; notified g5-w10. Native loading-queue nonempty work, GUI input owners and raw score/task owners remain separate work."
+  "left_for_others": "Listener-preset wrapper 00A7FE60 has a matching live inline in sound_configuration.cpp; notified g5-w10. Native loading-queue nonempty work, GUI input owners and raw score/task owners remain separate work.",
+  "merge_verification": {
+    "merged_main": "229576fd7656b1d6139345494e27e13b3082ac1f",
+    "conflicts_resolved": [
+      "include/bsp/sound_cc13.hpp: preserve both SoundConfiguredType and SoundConfiguredChannelGroup forward declarations",
+      "src/sound_cc13.cpp: preserve both sound_configuration.hpp and sound_configuration_shutdown.hpp includes"
+    ],
+    "preserved_main_wiring": [
+      "00a7faf0 live channel-group append",
+      "00a7f110 live channel-group pop"
+    ],
+    "ledger_and_startup_conflicts": false,
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/output/c848-merge-on-build.log",
+      "passed": true,
+      "distinct_diagnostics": 0,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "sources_restored": true
+    },
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "log": "local/output/c848-merge-build.log",
+      "ran_after_on_sources_restored": true
+    },
+    "focused_probes": {
+      "passed": true,
+      "sources": [
+        "tests/wire_g5_c848_sound_types_probe.cpp",
+        "tests/wire_g5_c841_channel_groups_probe.cpp"
+      ],
+      "log": "local/output/c848-merge-probes.log",
+      "compile": "MSVC x86 /O2 /MD /MANIFEST:EMBED against merged bsp_core.lib"
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "summary": {
+        "wired": 10711,
+        "callees_done_no_wired_caller": 8554,
+        "ready": 1209,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "rows": [
+        {
+          "address": "00a7f110",
+          "name": "pop_back_sound_configured_group_00a7f110",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 1,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00a7faf0",
+          "name": "append_default_sound_configured_group_00a7faf0",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 1,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00a7feb0",
+          "name": "append_sound_configured_type_00a7feb0",
+          "source": "src/sound_cc13.cpp",
+          "category": "sound",
+          "state": "wired",
+          "callers": 0,
+          "wired_callers": 0,
+          "callees": 2,
+          "missing_callees": [],
+          "library_bound_callees": [],
+          "address_taken": false,
+          "host_has_own": false,
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        }
+      ],
+      "ran_after_normal_build": true
+    },
+    "call_graph": {
+      "summary": {
+        "functions": 43069,
+        "reachable_functions": 42913,
+        "data_symbols": 49342,
+        "edges": 222762,
+        "roots": 1,
+        "instructions": 2374172,
+        "recon_addresses": 6202,
+        "recon_called": 5580,
+        "orphan_refs_ignored": 0,
+        "folded_functions": 2528
+      },
+      "reachable_addresses": [
+        "00a7feb0",
+        "00a7faf0",
+        "00a7f110"
+      ],
+      "call_sites_each": 1,
+      "evidence": "call_graph.py who reports all three canonical bodies REACHABLE from the normal merged build."
+    }
+  }
 }

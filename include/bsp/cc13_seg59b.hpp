@@ -142,7 +142,14 @@ struct SpawnRefFrameAccess {
     virtual void matrix_copy_004134f0(void* dst, const void* src) = 0;
 };
 
-struct Seg59bHost : SpawnRefFrameAccess {
+// Checked casts only query the live entity's kind slot. They do not require
+// gun-bot construction, property archives, or scoring services.
+struct EntityKindAccess {
+    virtual ~EntityKindAccess() = default;
+    virtual bool entity_is_kind_of_vt5c(void* entity, std::int32_t kind) = 0;
+};
+
+struct Seg59bHost : SpawnRefFrameAccess, EntityKindAccess {
     virtual ~Seg59bHost() = default;
 
     // The dword at an image global (the robot descriptor aliases at 00E19988..00E199A0).
@@ -642,7 +649,7 @@ void robot_config_read_parameters_base_008fb770(void* descriptor, void* level_ta
 // 008FE120 / 008FE140, __fastcall(ECX = entity), RET: entity when non-null and vt[5Ch](5 / 6)
 // accepts, else null.
 void* entity_as_kind05_or_null_008fe120(Seg59bHost& host, void* entity);
-void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity);
+void* entity_as_kind06_or_null_008fe140(EntityKindAccess& host, void* entity);
 // 008FE120, typed view overload (wire goal 2 chain 71); the raw entry above wraps it.
 // View supplies the Entity handle type, null_entity(), entity_is_null(e) (008FE123 TEST ESI)
 // and entity_is_kind_of_vt5c(e, kind) (008FE12D, vt[5Ch]).

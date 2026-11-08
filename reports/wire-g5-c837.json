@@ -1,0 +1,128 @@
+{
+  "run": 1808,
+  "chain": 837,
+  "branch": "agent/g5-w5",
+  "base": "38620d9018",
+  "picked": "Plane wanderer shared vector subtraction",
+  "rows": [
+    {
+      "native": "00709ac0",
+      "status": "wired",
+      "host_site": "src/plane_wanderer.cpp: plane_wanderer_fixed_step_007be060",
+      "evidence": "Replaces the inline three FSUB/FSTP operations at original 007BE1BD..007BE1DD using the live wanderer offset, tuning OffsetMax, and existing random-direction draw; built caller at 10519C17 is entry-reachable."
+    },
+    {
+      "native": "00709b60",
+      "status": "skipped",
+      "host_site": "src/plane_wanderer.cpp: plane_wanderer_fixed_step_007be060 acceleration update",
+      "reason": "Missing an exactly matching live accumulator site: native 007BE23C..007BE279 uses product-first z FADD, and the native 00709B60 helper selects different NaN payloads in 330/4096 isolated PC24 comparisons."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage",
+      "reason": "Missing an established single-player consumer of member+04h: the existing 508h group projection supplies the layout, but the evidenced consumer is NetEntityCreateMessage, not the lateral/axial formation reader."
+    },
+    {
+      "native": "00924100",
+      "status": "skipped",
+      "host_site": "src/game_native_entity_registry_process.cpp: GameNativeEntityRegistryProcess::pending_lock_00924810",
+      "reason": "Missing a reached canonical raw-entity pending-list producer: the facade has no consumer and the getter/constructor are not linked in the built game."
+    },
+    {
+      "native": "00928080",
+      "status": "skipped",
+      "host_site": "src/game_native_entity_registry_process.cpp: GameNativeEntityRegistryProcess::scene_lock_00928240",
+      "reason": "Missing a reached canonical scene-registry operation requiring this lock: the facade has no consumer and the getter/constructor are not linked in the built game."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing genuine current F87574/F87578/F8757C native DATA publication and a same-domain command-target receiver; the semantic host still returns an empty target identity."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save Lua owner/current mission key and a real checkpoint comparison; checkpoint_differs remains a false substitution."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "Missing a new eligible replacement at the inspected site: it already calls bsp::set_scroll_range with the retained briefing scroller, actual text measurement, and bound controls."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score planning",
+      "reason": "Missing a native-style candidate score-table owner and reached gameplay consumer; the current planner does not consume this debug score list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score planning",
+      "reason": "Missing live AiGroupScoreList entries and a reached gameplay consumer of their chosen flags."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member candidate filter",
+      "reason": "Missing a new replacement at the inspected site: the existing kDefendThinkImageBound arm already calls ai_defend_member_is_candidate_00a2def0 with real member-kind and objective-set inputs."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an established reached product-query consumer; the inspected native camera owner provides projection storage but does not itself require this product."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing an established reached extra-clip-plane request/producer for the inspected camera owner."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing an established reached extra-clip-plane lifecycle consumer for the inspected camera owner."
+    },
+    {
+      "native": "0042c4c0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: ShipCaptainCamera / weather shake binding",
+      "reason": "Missing live six-field mover shake storage and a reached WeatherShakeTarget/request binding; the current ship-camera projection only implements the inactive shake gate."
+    },
+    {
+      "native": "005cd070",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: copy_native_vehicle_camera_row_005cd070",
+      "reason": "Missing a reached owner/producer of actual 5Ch vehicle-camera rows in the inspected camera paths."
+    },
+    {
+      "native": "005cd260",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: reserve_native_vehicle_camera_array_005cd260",
+      "reason": "Missing a reached actual vehicle-camera array owner whose row count/capacity growth requires this reserve body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release, 4/4 existing CTest groups passed",
+    "native_probe": "tests/wire_g5_c837_wanderer_math_probe.cpp: 256 PC24 subtraction comparisons passed bitwise and x87 exception flags; native helper/caller scaled-accumulate candidate differs in 330/4096 comparisons and was left unchanged",
+    "probe_recipe": "VsDevCmd -host_arch=x64 -arch=x86; cl /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /I include tests/wire_g5_c837_wanderer_math_probe.cpp /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib kernel32.lib user32.lib /OPT:REF; pass config/target.json binary as the probe argument",
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "source_evidence": [
+      "bsp.py show 00709ac0 --asm",
+      "bsp.py show 007be060 --asm --start 80 --lines 95",
+      "bsp.py show 00709b60 --asm"
+    ],
+    "call_graph": "00709AC0: one reached call from plane_wanderer_fixed_step_007BE060 at 10519C17; path reaches GameUnitsHost::motion_step_00825F20 and WinMainCRTStartup",
+    "called_before": 5543,
+    "called_after": 5544,
+    "wired_before": 10686,
+    "wired_after": 10687,
+    "scope": "Source wiring, build, isolated native-byte PC24 comparisons, and built entry reachability; no game run or drop-in native ABI claim."
+  }
+}

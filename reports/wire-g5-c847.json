@@ -1,0 +1,193 @@
+{
+  "goal": 5,
+  "chain": 847,
+  "run": 1831,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "picked": "Shared native pool slab-table reserve, append, grow and capacity bodies on actual retained pool+28h state",
+  "rows": [
+    {
+      "native": "00aa7740",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::initialize_pool -> native_gui_pool_table_reserve_00aa7740"
+    },
+    {
+      "native": "00aa76c0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::allocate_slot -> native_gui_pool_table_push_back_00aa76c0"
+    },
+    {
+      "native": "00aa6ff0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::native_gui_pool_table_push_back_00aa76c0 -> native_gui_pool_table_grow_00aa6ff0"
+    },
+    {
+      "native": "00aa6fa0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::native_gui_pool_table_reserve_00aa7740 / native_gui_pool_table_grow_00aa6ff0 -> native_gui_pool_table_set_capacity_00aa6fa0"
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::register_generated_units",
+      "reason": "Missing an admitted native 2268h brain owner and complete 009F3BA0 constructor provider; the live controllers are typed host projections."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::Impl planner score storage",
+      "reason": "Missing an adopted live AiGroupScoreList and its complete 16-term candidate-record producer in the inspected host planner."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::Impl planner choice storage",
+      "reason": "Missing the retained native score list whose chosen-record byte this body updates."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp::accepts_text_byte",
+      "reason": "Missing a live character-admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_retreat_00bf16b0",
+      "reason": "Missing an entry-reachable error-context map/iterator consumer in the initial fresh executable graph."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error_context_advance_00bf1450",
+      "reason": "Missing an entry-reachable error-context map/iterator consumer in the initial fresh executable graph."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error reporter map rebalance",
+      "reason": "Missing an entry-reachable actual error-context map producer and rebalance consumer; notified g5-w5, which subsequently claimed this area."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::error reporter map rebalance",
+      "reason": "Missing an entry-reachable actual error-context map producer and rebalance consumer; notified g5-w5, which subsequently claimed this area."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::skip_balanced_block",
+      "reason": "Missing a native tokenizer-backed scene property-group consumer; this SceneLexer path uses a different lexer and token-count result."
+    },
+    {
+      "native": "004437a0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::decrement_native_soldier_loop_iterator_004437f0",
+      "reason": "Missing a linked live LoopLengths tree iterator path; the fresh graph has no decrement_native_soldier_loop match."
+    },
+    {
+      "native": "004437c0",
+      "status": "skipped",
+      "host_site": "src/native_soldier_loop_lengths.cpp::increment_native_soldier_loop_iterator_00443880",
+      "reason": "Missing a live LoopLengths tree consumer; its inspected reconstruction delegates to SoldierRegistry specializations and is not linked."
+    },
+    {
+      "native": "00c302a0",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_time.cpp::set_native_texture_source_time_00c302a0",
+      "reason": "Missing an established live native texture-source owner/time consumer; changing a semantic texture adapter would not provide this raw header."
+    },
+    {
+      "native": "00ad26d0",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_geometry.cpp::NativeGuiFrameBoxGeometryFrame run",
+      "reason": "Missing an entry-reachable raw FrameBox geometry/state consumer; the fresh graph has no native_gui_frame_box match."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::Impl::group_value_pair_00a0c3c0",
+      "reason": "Missing loaded per-mode ClassPairRow inputs for this lookup; the live path uses a separate weapon-facts model."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_text_write_multiline_008efa30",
+      "reason": "Missing an established game-entry serialization caller with original multiline text bounds; the inspected live scene path reads data."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::set_scroll_range",
+      "reason": "No new wiring needed at the inspected host site: it already calls bsp::set_scroll_range on the retained briefing scroller; identifier mapping remains outside this packet."
+    }
+  ],
+  "implementation": [
+    "Replaced initialize_pool reserve(32) and allocate_slot grow/copy/append code with existing reconstructed table bodies; original inline path removed.",
+    "Moved the existing shared bodies to address-suffixed canonical symbols; generic source aliases preserve equivalent-address consumers without a second algorithm.",
+    "Retained the same pool storage, pointer header, slab pointer, critical section, recursion and native allocation/free domain; no surrogate table or invented values.",
+    "Restored native null tests for copy/append destination addresses and Win32 modulo32 address stepping from AA6FA0/AA76C0 exports.",
+    "Common pool engine includes GUI, layer/group and material/parameter/pass/shader pools; compatible headers share the original template algorithm."
+  ],
+  "evidence": [
+    "bsp.py show 00AA79A0",
+    "bsp.py show 00AA7A80",
+    "bsp.py show 00AA6FA0",
+    "bsp.py show 00AA6FF0 --asm",
+    "bsp.py show 00AA76C0",
+    "bsp.py show 00AA7740"
+  ],
+  "validation": {
+    "build": "Final scripts/build.ps1: passed after obsolete helper removal; all five existing CTest checks passed (12.75 seconds).",
+    "call_graph_before": {
+      "reconstructed_addresses_called": 5563,
+      "reconstructed_addresses_linked": 6182
+    },
+    "call_graph_after": {
+      "reconstructed_addresses_called": 5567,
+      "reconstructed_addresses_linked": 6186
+    },
+    "text_wired_before": 10696,
+    "call_sites": {
+      "00aa6fa0": 2,
+      "00aa6ff0": 1,
+      "00aa76c0": 8,
+      "00aa7740": 7
+    },
+    "entry_path": "WinMainCRTStartup -> WinMain -> game_native_material_process -> NativeMaterialPool -> allocate_00b18200 -> native_gui_pool_table_push_back_00aa76c0 (call_graph includes the retained pool virtual target)",
+    "float_math_changed": false,
+    "tests_added": false,
+    "game_run": false,
+    "abi_compatible": false,
+    "text_wired_after": 10703,
+    "text_counter_note": "Observed scanner totals include alias/metadata classification changes; only the four selected addresses have new confirmed executable call sites and are claimed as wired.",
+    "readiness_selected": {
+      "00aa6fa0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      "00aa6ff0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "00aa76c0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 8
+      },
+      "00aa7740": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 7
+      }
+    }
+  },
+  "assumptions": [
+    "Source reuse of equivalent inline native table operations is intentional; no assertion that the retail pool code originally issued CALLs to these helpers.",
+    "Reachability in the rebuilt executable is static evidence; game execution and original register-ABI equivalence are not claimed."
+  ],
+  "left": "Other GUI pool address specializations keep their existing source aliases; no extra address credit claimed. Unadmitted AI/font/FrameBox/LoopLengths/texture-source state paths remain for their owners."
+}

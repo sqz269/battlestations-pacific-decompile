@@ -1,0 +1,321 @@
+{
+  "goal": 5,
+  "chain": 835,
+  "run": 1802,
+  "owner": "agent/g5-w9",
+  "baseline_commit": "21010b2b3ba3ff930beed7fb2bf57a7fc88901d8",
+  "rows": [
+    {
+      "native": "007f31a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::Impl::retreat_leave_map_007ee410 -> bsp::squadron_on_plane_left_map_007f31a0",
+      "scope": "Partial host projection now owns mode/session gates, live member routing, latch, exit-warning production, party publication and kills; replaces leader-only body and old inline host implementation."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship director enable reads",
+      "reason": "Missing retained ControllerSnapshotMessage producer and transport consumer; current flattened scene flags are not that object."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: UserPathPoint sender",
+      "reason": "Missing presence-zero clear-message producer and retained per-slot path owners; existing sender adds points."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty-descriptor constructor consumer and actual class ordinal; populated-descriptor initialization is a different operation."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Only original caller is the debug flooded inspector, which this assignment excludes."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing the live original command-menu list/comparator consumer; no matching sort at inspected HUD/menu hosts."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "Missing the nonzero unit+B04h velocity-correction producer admitting the original alternate-frame branch."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: orbit_about_axis_0042d610",
+      "reason": "Missing concrete reached WeaponViewHost rotation service with actual weapon-view camera pose, pivot and axis."
+    },
+    {
+      "native": "0042d610",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: orbit_about_axis_0042d610",
+      "reason": "Missing live WeaponViewCamera owner and concrete WeaponViewHost services."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: init_map_scene_zoom_0093ccc0",
+      "reason": "Missing the original Simple3dSceneHandler/camera/light owner; main-menu map geometry is a different state owner."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Missing a reached original shadow-fit/weapon-view projection consumer; inspected multiplication is in an unlinked caller."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing the live support-site active byte, class-enable tree and owning-unit view at original filter consumers."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing actual support-site +328h/+31Ch list owners at reached support-order/spawn-composition consumers."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_result_sink_construct_008875d0",
+      "reason": "Missing a live MissionLuaResultSink owner consumed by the mission Lua return path."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: lua_variant_vector_tidy_00887670",
+      "reason": "Missing a live result-sink vector owner and destruction path."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_items_00a9bf90",
+      "reason": "Missing concrete reached listbox screen adapter and actual native item owner."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing concrete reached screen adapter with actual native selection/item owner."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: torpedo water entry",
+      "reason": "Missing shot +24h/+28h effect owners and lifecycle providers for the complete water transition."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp: impact_effect_slot_0084b8c0",
+      "reason": "Missing impact-effect class-slot spawn consumer; selecting a discarded effect slot adds no behavior."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400",
+      "reason": "Missing a reached real error-context map owner; diagnostic sink is a different singleton."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420",
+      "reason": "Missing a reached real error-context map owner; diagnostic sink is a different singleton."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0",
+      "reason": "Missing a reached real error-context map insertion/erase owner; helper-only substitution would remain unlinked."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630",
+      "reason": "Missing a reached real error-context map insertion/erase owner; helper-only substitution would remain unlinked."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCapturePercentage dispatch",
+      "reason": "Already entry-reachable in the baseline through GameShipAiHost::command_building_capture_fraction_006f1f90; readiness text mismatch is not a wiring gap."
+    },
+    {
+      "native": "0089b840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCapturePercentage dispatch",
+      "reason": "Existing binding behavior is inline in dispatch with no separate reusable reconstructed body; extraction alone adds no previously absent behavior."
+    },
+    {
+      "native": "0089b6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetCommandBuildingLevel dispatch",
+      "reason": "Already invokes existing options_seg56 body through CommandBuildingLevelView; no new wiring gap taken."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "Missing retained ambient SoundInstance owner and playback consumer; current site records the call."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled audio broadcast",
+      "reason": "Missing real ship sound object, device list and controlled-audio byte owner."
+    },
+    {
+      "native": "004704e0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: hit_record_owning_unit_004704e0",
+      "reason": "Missing live original collision-object vtable108 owner and +ACh unit chain at the gunnery host boundary."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reached query-refresh body already calls this helper; exposing its optimized-away symbol would add no behavior."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reached query-refresh body already calls refill; exposing its optimized-away symbol would add no behavior."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: text-context acceptance hook",
+      "reason": "Missing reached text-edit acceptance callback with the actual loaded FontData; glyph rendering is a different consumer."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080",
+      "reason": "Missing a reached Cc13Left55 host and actual shore-mask byte-grid producer."
+    },
+    {
+      "native": "0085bd50",
+      "status": "skipped",
+      "host_site": "src/cc13_seg53.cpp: recon_category_from_class_type_name_0085bd50",
+      "reason": "Native function has no PE references; no original live type-name mapping consumer was established."
+    },
+    {
+      "native": "0085bce0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg53.cpp: recon_category_index_from_name_0085bce0",
+      "reason": "Missing reached native mission-score archive name consumer and narrow concrete name-table adapter; existing frame category constants alone are not that consumer."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_window_platform_base_00be2ac0",
+      "reason": "Live native platform already uses the canonical raw base constructor; old engine_services semantic sibling is not a new behavior gap."
+    },
+    {
+      "native": "007ca790",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: run_exit_zone_007ca790",
+      "reason": "Already entry-reachable baseline exit-zone body; retained as caller of newly bound 007F31A0."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "Missing actual loader queue/job work-vector producer at the mission host boundary."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/native_fileblock_owner.cpp: ensure_native_loading_job_fileblock_00504790",
+      "reason": "Missing actual loader job/fileblock producer for the original full queue update."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing live native loading queue/job owner and concrete submission caller."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "Missing live native loading queue/work-item producer and original submission services."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing live native loader queue/job owner and actual retirement consumer."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_anim_class_004722d0",
+      "reason": "Missing actual AnimClass registry owner and live lazy-load consumer; Lua table reset alone is not class construction."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_buoy_class_00475710",
+      "reason": "Missing actual BuoyClass registry owner and live lazy-load consumer; Lua table reset alone is not class construction."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "Missing live retained MarkerClassContext/descriptor registry teardown owner."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10685,
+    "readiness_wired_after": 10686,
+    "entry_reachable_reconstructed_before": 5542,
+    "entry_reachable_reconstructed_after": 5543
+  },
+  "checks": {
+    "official_build": "scripts/build.ps1: rerun after review1828 fix; Win32 Release passed and all four CTests passed",
+    "focused_probe": "tests/wire_g5_c835_leave_map_probe.cmd: passed reentrant/sparse-member/latch/owner/gate sequence; tests the actual PlaneSquadronHostRecord compact accessors used by the adapter; embedded executable manifest",
+    "call_graph": "Rerun after review1828 fix: 007f31a0 REACHABLE with one direct call site in the units-motion lambda; entry-reachable reconstructed total remains 5543.",
+    "diff_check": "git diff --check passed",
+    "game_run": false,
+    "float_math_changed": false
+  },
+  "limitations": [
+    "Partial host projection: shared squadron director fire stance0/+370h reset, self exit broadcast and survivor moveto remain missing.",
+    "Host fuses squadron and wing entity identities; final-member party/kill use that live member proxy.",
+    "No original ABI or gameplay validation."
+  ],
+  "coordination": "units_internal.hpp declaration edit is disjoint from g5-w8 c832 Impl destructor and path-leg owner changes; no merges or pushes performed.",
+  "review_round_1": {
+    "review_run": 1828,
+    "reviewed_head": "868024a5932db395e260a11e924f878c05b35d30",
+    "findings": [
+      {
+        "id": "P1",
+        "status": "fixed",
+        "finding": "Mixed filtered flight_leader and raw sparse count/member indices could route a promoted leader to itself indefinitely.",
+        "change": "Added live_member(ordinal) to the real squadron record; flight_leader delegates to live_member(0), and all live handler callbacks use live_count/flight_leader/live_member. Each callback rescans current member_units and excludes only kPlaneSquadronNoUnit; no snapshot or invented member state.",
+        "regression_before_fix": "Extended focused probe failed with exit1 and message: leader recursively routed its own exit. The probe guard stopped recursion without a stack overflow.",
+        "regression_after_fix": "Same probe passes with leading/interior/trailing NoUnit holes, a single member amid holes, and a leading seat cleared during the warning callback. The route callback rejects self-routing, and outside-map callback rejects sentinel members.",
+        "validation": [
+          "Win32 Release build and all four CTests passed",
+          "Focused probe passed",
+          "git diff --check passed",
+          "Optimized call graph rerun: claimed body still entry-reachable, one call site; reconstructed called total 5543",
+          "Fresh wire_readiness --standins: wired total10686; 007f31a0 wired/called with one call site."
+        ],
+        "remaining_scope": "Original partial host-projection limitations remain; no original ABI or gameplay validation."
+      }
+    ]
+  }
+}

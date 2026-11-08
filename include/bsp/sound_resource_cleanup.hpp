@@ -51,16 +51,9 @@ void destroy_sound_resource_00a85790(SoundOwnedResource&, SoundResourceCleanupCo
 SoundOwnedResource* delete_sound_resource_00a85ac0(SoundOwnedResource*,
     std::uint32_t flags, SoundResourceCleanupContext&);
 
-// Only the <=current-count shrink branch of 00A845A0; ECX native header owner+4,
-// requested signed count stack, RET4. Domain: 0<=requested<=current count.
-// Reverse record-storage destruction; no resource releases or accounting changes.
-// Native decrements count before destruction; this vector projection clears the
-// record then pops it, with no native allocator callback to observe that interval.
-// Growth/allocation/record construction excluded; cleanup itself allocates nothing.
-void shrink_sound_resource_cache_records_00a845a0_fragment(SoundResourceOwner&,
-    std::uint32_t requested) noexcept;
 // 00A84D00: ECX=&owner+4, RET. Shrink record storage to zero then free its
-// allocation; never release resources. Also used by base-destructor unwind.
+// allocation, using canonical 00A845A0; never release resources. Also used by
+// base-destructor unwind. The shrink path performs no allocation.
 void destroy_sound_resource_cache_storage_00a84d00(SoundResourceOwner&) noexcept;
 
 // 00A84C90: ECX owner, RET. For each CURRENT tail, subtract its size, release it,

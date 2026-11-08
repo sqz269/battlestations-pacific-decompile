@@ -131,15 +131,30 @@ inline NativeGuiPoolSlabTable& native_gui_pool_slab_table(NativeGuiWidgetPoolSto
 }
 // 00AA6FA0 / 00AAB8E0 / 00AACDF0, __thiscall(table, capacity), RET 4: allocate
 // capacity*4 bytes, copy the count entries, free the old block, adopt the new.
-void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+void native_gui_pool_table_set_capacity_00aa6fa0(NativeGuiPoolSlabTable& table, std::uint32_t capacity);
 // 00AA6FF0 / 00AAB930, __fastcall(ECX = table), RET: capacity = capacity*2+2.
-void native_gui_pool_table_grow(NativeGuiPoolSlabTable& table);
+void native_gui_pool_table_grow_00aa6ff0(NativeGuiPoolSlabTable& table);
 // 00AA76C0 / 00AABC70, __thiscall(table, const slab*&), RET 4: grow when full
 // (capacity*2+2), then append.
-void native_gui_pool_table_push_back(NativeGuiPoolSlabTable& table, std::byte* const& slab);
+void native_gui_pool_table_push_back_00aa76c0(NativeGuiPoolSlabTable& table, std::byte* const& slab);
 // 00AA7740 / 00AABD00, __thiscall(table, capacity), RET 4: set capacity only
 // when it grows.
-void native_gui_pool_table_reserve(NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+void native_gui_pool_table_reserve_00aa7740(NativeGuiPoolSlabTable& table, std::uint32_t capacity);
+
+// Existing equivalent-address specializations use these source aliases. Each
+// forwards to the SAME reconstructed body; there is no second vector algorithm.
+inline void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+inline void native_gui_pool_table_grow(NativeGuiPoolSlabTable& table) {
+    native_gui_pool_table_grow_00aa6ff0(table);
+}
+inline void native_gui_pool_table_push_back(NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    native_gui_pool_table_push_back_00aa76c0(table, slab);
+}
+inline void native_gui_pool_table_reserve(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    native_gui_pool_table_reserve_00aa7740(table, capacity);
+}
 
 namespace game {
 // The process-static pool at Traits::native_global. The image constructs it from

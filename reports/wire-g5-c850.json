@@ -1,0 +1,103 @@
+{
+  "chain": 850,
+  "slot": "g5-w2",
+  "owner": "agent/g5-w2",
+  "baseline": {
+    "head": "2c2959dcae",
+    "wired": 10702,
+    "target_state": "ready",
+    "target_called": null,
+    "target_note": "Baseline readiness had no compiled call evidence for the target; the existing setter did not reference its body."
+  },
+  "result": {
+    "wired": 10703,
+    "target_state": "wired",
+    "target_called": true,
+    "target_call_sites": 1
+  },
+  "rows": [
+    {
+      "native": "004cc3f0",
+      "status": "wired",
+      "host_site": "src/mission_result.cpp: MissionEndMovieRequest::MissionEndMovieRequest, through set_end_of_mission_movie_004cd390 and GameMissionResultHost::play_named_movie_0089a390",
+      "evidence": "Original 004CD405 calls the one existing 004CC3F0 body. Retained 24h request has asserted +08/+14/+21 offsets; its native pooled name, parameter and debrief byte feed the host exit record, result projection and completion poll. Resize uses the retained GameNativeStringProcess raw pool context; replacement/reset destroys that same owned string.",
+      "abi": "Original __thiscall(ECX=request, const NativeString* name), RET4, EAX=request; adapted C++ Raw/EndMovieStringHost interface, not binary ABI compatibility.",
+      "call_graph": "REACHABLE, one call at 10431bc8 from bsp::set_end_of_mission_movie_004cd390 in the current build; WinMainCRTStartup path through mission frame and PlayBinkMovie confirmed."
+    },
+    {
+      "native": "004cd390",
+      "status": "skipped",
+      "host_site": "src/mission_result.cpp: set_end_of_mission_movie_004cd390",
+      "reason": "Already wired at baseline; used as the existing caller and replaced its three-field request construction with the owned native constructor path."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing enum-property projection",
+      "reason": "Already entry-reachable at baseline with three compiled call sites; no new wiring is needed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing property-bag merge projection",
+      "reason": "Already entry-reachable at baseline with two compiled call sites; no new wiring is needed."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: scoring owner; native caller is HUD map update 005B45C0",
+      "reason": "The inspected scoring owner has no matching HUD-map delta producer; calling this slot+18h accumulator from unrelated scoring updates would invent its input."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: reset_gui_manager_highlights_00aa0f70",
+      "reason": "No entry-reachable application bridge for its same-domain projected GuiResourceOwner/GuiWidgetOwnerRuntime graph was established in the scoped inspection."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing a live bridge from the native GUI manager to the projected pointer owner and its input/hit-test services."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "No live same-domain timed-entry owner and consumer was established in the scoped GUI inspection."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: render-order bridge",
+      "reason": "The existing bridge orders flattened quads; the original per-parent child/name-order producer and consumer remain unestablished."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No matching consumer was selected in this packet; agent/g5-w9 subsequently claimed the independent shadow-fit caller work in chain 851."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: release_group_reference and candidate-score ownership inspection",
+      "reason": "No gameplay-owned candidate-score list and consumer were established; the prior identified reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score ownership inspection",
+      "reason": "Missing live candidate-score records and a gameplay consumer for their chosen flag."
+    }
+  ],
+  "validation": {
+    "setup": "bsp.py brief; index --if-stale; initial scripts/build.ps1 passed all four tests",
+    "build": "scripts/build.ps1 passed Win32 Release and all four CTests after implementation",
+    "probe": "tests/wire_g5_c850_end_movie_probe.cpp linked against the built Release libraries with /MANIFEST:EMBED; passed owned exact-length name copy, embedded NUL, source retirement, replacement with empty name, native defaults, and completion-poll debrief behavior",
+    "call_graph": "python tools/call_graph.py; who 004cc3f0; path 004cc3f0: reachable from game entry through the changed setter",
+    "readiness": "python tools/wire_readiness.py --standins: wired 10702 -> 10703; 004cc3f0 called=true, call_sites=1",
+    "float_math": "No float arithmetic changed; only native stores and setter field placement. pc24_lint diff check has zero findings.",
+    "limits": "Source reconstruction, build, focused fixture and compiled entry-reachability evidence only. No game was run, and native allocation/EH/binary ABI parity is not claimed."
+  }
+}

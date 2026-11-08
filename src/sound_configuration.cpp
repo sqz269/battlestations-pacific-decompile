@@ -290,15 +290,9 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
                 return;
             }
             const std::string name(lua.to_string(key));
-            if (state.channel_groups_128.size() ==
-                static_cast<std::size_t>(state.channel_group_capacity_130)) {
-                state.channel_group_capacity_130 =
-                    std::max(state.channel_group_capacity_130 + 16, 16);
-                state.channel_groups_128.reserve(state.channel_group_capacity_130);
-            }
             // Count is increased before 00A7DE10 runs, including on FMOD error.
-            state.channel_groups_128.emplace_back();
-            configure_channel_group_00a7de10(system.system, state.channel_groups_128.back(),
+            auto& group = sound_cc13::append_default_sound_configured_group_00a7faf0(state);
+            configure_channel_group_00a7de10(system.system, group,
                 name.c_str(), value, fmod, lua);
         });
     }
