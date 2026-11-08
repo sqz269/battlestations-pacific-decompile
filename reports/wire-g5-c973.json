@@ -1,0 +1,119 @@
+{
+  "chain": 973,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "scope": "Use the existing support-site stock reader for the SpawnPoint loader's real preload queue and class-resolution effects. Runtime support-site ownership remains outside this change.",
+  "rows": [
+    {
+      "native": "0084D170",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene_support_stock_activate, called by scene_stock_lists_0046bf70",
+      "evidence": "The existing body receives the loaded SpawnPoint property bags, enum-resolved stock types and current effective game mode. Its ordered class_loads replace the old stock scan and drive 0095C4D0 queue insertion and 00964790 Lua class marks; no old scan remains. Native shared Stock index and Count filtering follow bsp.py show 0084D170."
+    },
+    {
+      "native": "0084CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene_support_stock_activate; src/game_hosts_ai.cpp: spawn planning",
+      "reason": "Missing a retained runtime support-site owner and a support-order or spawn-composition consumer of its squad sizes; this packet only consumes activation's class preload effects."
+    },
+    {
+      "native": "0084D050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "Missing the live support-site availability map, actual owner-health view and support-order availability consumer."
+    },
+    {
+      "native": "0071F5D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message delivery",
+      "reason": "Missing a presence-zero clear-point message producer and retained last-selected-slot path owners; the established path receives additions and retains only slot zero."
+    },
+    {
+      "native": "00A03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "Missing the parser-owned per-mode ClassPairRow table and live class-pair query consumer; existing class weights do not supply this table."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list ownership",
+      "reason": "Missing a gameplay-owned native score list and consumer; the documented record reader is an excluded debug overlay."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list ownership",
+      "reason": "Missing native candidate records with a gameplay consumer of their chosen byte; the reached host owns command-target references instead."
+    },
+    {
+      "native": "00A2C3D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: nearest enemy-group selection",
+      "reason": "Missing the original recon-filtered nearest-group query and its per-party member recon inputs; the current duel query uses the distinct 00A1C960 operation."
+    },
+    {
+      "native": "008875D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_mission_script_008860b0",
+      "reason": "Missing a live typed result-sink owner; the reached 00885110 script-file path explicitly passes a null result sink."
+    },
+    {
+      "native": "008875F0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: lua_script_override_list_construct_008875f0",
+      "reason": "Missing a live owner of this typed result-sink representation; native raw override storage and the named-call result projection use different layouts."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: lua_variant_vector_tidy_00887670",
+      "reason": "Missing a retained typed result sink with collected values whose lifetime can invoke this cleanup."
+    },
+    {
+      "native": "00AB6D00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp: text admission",
+      "reason": "Missing the live input-character admission consumer with its retained text-context font; complete-string glyph layout is a different operation."
+    },
+    {
+      "native": "00ABCA10",
+      "status": "skipped",
+      "host_site": "src/native_gui_curve_storage.cpp: load_native_gui_curve_00abc040",
+      "reason": "Missing the authored-point producer and loaded geometry continuation that publish the semantic control-point result into the actual raw Curve arrays."
+    },
+    {
+      "native": "0074FA80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Only original caller 006FB750 is a debug inspector, which this assignment excludes."
+    },
+    {
+      "native": "00803BA0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp: mark_native_recon_slot_dirty_00803ba0",
+      "reason": "Missing the concrete current-slot dirty-byte, local-player context and world unit-list-built publication access for this native lifecycle service."
+    },
+    {
+      "native": "0080DA00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit order-ring ownership",
+      "reason": "Missing the native immediate-rudder operation consumer; existing reached write-slot commands and ring construction have different semantics."
+    },
+    {
+      "native": "00414F50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing wiring: the baseline PE already reaches this function at three call sites despite its readiness text state being ready."
+    }
+  ],
+  "validation": {
+    "baseline_build": "passed, all four tests",
+    "build": "passed, all four tests",
+    "call_graph": "0084D170 is entry-reachable with one call from scene_support_stock_activate; baseline had no linked matching body",
+    "wired_before": 10834,
+    "wired_after": 10835,
+    "game_run": false,
+    "limits": "Build and PE call-path evidence only. No native ABI replacement, full owner activation, gameplay validation or retained support-site availability owner is claimed."
+  }
+}

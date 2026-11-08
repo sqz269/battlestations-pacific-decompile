@@ -8,6 +8,7 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
+#include "bsp/gameplay_seg52_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
@@ -2040,27 +2041,48 @@ void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
     }
 }
 
-// queue_list_stock (0046C329..0046C3A4, 0046C3C3..0046C439). The host's mode
-// is never 4 (single player).
-int scene_stock_queue_list(GameSceneContentsHost::Impl& owner,
-    const ScenePropertyBlock* list, int index) {
-    if (list == nullptr) return index;
-    for (;; ++index) {
+// The SpawnPoint load already combines 0046BF70's stock registration with
+// 0084D170's InitAll class-resolution effect. Feed the latter's existing body
+// the actual scene bags and consume its ordered class loads for both effects.
+// bsp.py show 0084D170: Count==0 skips an entry; the Stock index continues
+// from JapanList into AlliedList, and mode 4 suppresses class resolution.
+// This remains the load-time projection, before 004E0A9B, rather than a native
+// owner-entity activation or a retained support-site runtime object.
+void scene_support_stock_activate(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag) {
+    namespace support = bsp::gameplay_seg52_cc13;
+    support::SupportSiteProperties properties;
+    const auto integer = [&](const ScenePropertyBlock& source, const char* key)
+        -> std::optional<std::int32_t> {
+        if (source.find(key) == nullptr) return std::nullopt;
+        return scene_stock_int(owner, source, key);
+    };
+    properties.max_planes = integer(bag, "maxPlanes");
+    properties.max_ships = integer(bag, "maxShips");
+    properties.angle = integer(bag, "Angle");
+    if (const auto* active = bag.find("SPActive"))
+        properties.sp_active = hidden_property_bool(active);
+    properties.effective_game_mode = owner.summary.effective_game_mode;
+    properties.stock = [&](int list, std::int32_t index) {
+        support::SupportStockBag stock;
+        const auto* entries = scene_stock_sub_bag(bag,
+            list == 0 ? "JapanList" : "AlliedList");
+        if (entries == nullptr) return stock;
         char key[32];
         std::snprintf(key, sizeof key, "Stock %d", index);
-        const ScenePropertyBlock* sub = scene_stock_sub_bag(*list, key);
-        if (sub == nullptr) return index;
-        if (scene_stock_int(owner, *sub, "Count") == 0) continue;
-        const int type = scene_stock_int(owner, *sub, "Type");
+        const auto* entry = scene_stock_sub_bag(*entries, key);
+        if (entry == nullptr) return stock;
+        stock.bag = true;
+        stock.count = integer(*entry, "Count");
+        if (stock.count.value_or(0) != 0) {
+            stock.type = scene_stock_int(owner, *entry, "Type");
+            stock.squad_size = integer(*entry, "SquadSize");
+        }
+        return stock;
+    };
+    const auto site = support::support_site_activate_0084d170(properties);
+    for (const std::int32_t type : site.class_loads) {
         scene_stock_queue_0095c4d0(owner, type);
-        // cc15-vcp7: the SpawnPoint's InitAll pass B (0084D170, vtable
-        // 00CEA218 +A0h) walks the same JapanList / AlliedList "Stock %d" run,
-        // with the index carried across, and resolves each counted Type with
-        // 00964790(type, DL=1) at 0084D304 / 0084D41E when the effective game
-        // mode is not 4. That runs at load, before 004E0A9B, so the miss path
-        // marks ID and Got. CONTRACT: the mark sits on this registration walk
-        // rather than on an instantiated SpawnPoint; no SpawnPoint in this
-        // installation is Hidden.
         if (owner.lua != nullptr) {
             owner.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
                 VehicleClassPreloadBinding(owner).map_class_index(type)), "0084D304");
@@ -2100,8 +2122,7 @@ void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
         }
     }
     if (!equal_insensitive(class_name, "SpawnPoint")) return;
-    const int next = scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "JapanList"), 1);
-    scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "AlliedList"), next);
+    scene_support_stock_activate(owner, bag);
 }
 
 // ---------------------------------------------------------------------------
