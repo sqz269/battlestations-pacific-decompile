@@ -1,6 +1,8 @@
 #pragma once
 #include "bsp/native_font_resources.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/oct18_tail_c.hpp"
+#include "bsp/vfs_mounts.hpp"
 #include <exception>
 #include <memory>
 #include <string>
@@ -45,19 +47,24 @@ struct GameNativeFontLoadOperation final {
     std::unique_ptr<FontData> decoded;
     std::unique_ptr<NativeFontResources> unpublished;
     NativeFontResources* published{};
+    oct18_tail_c::FontLoadScratch load_scratch{};
+    VfsMemoryOpen dat_source;
+    void* pending_glyph{}; // Unowned AD4F6A payload if a read/insertion throws.
+    std::uint32_t texture_calls{};
+    bool dat_released{};
     std::exception_ptr failure;
 };
 
 // Genuine normal initial-load producer over the SAME renderer/VFS/string/
 // canonical-resource domain. Native64's observed B319B0 path loads GFX then
 // alpha (flags0), then read-existing DAT goes through the real VFS and the
-// proven scalar decoder, or selected direct native-image DAT population. Both
+// proven scalar decoder, or the existing whole AD4C30 native-image body. Both
 // arms transfer the two returned raw image references into the same canonical
 // NativeFontResources without AddRef or a second live metric/glyph map.
 // Registry descriptors remain stable across appends as name-lookup metadata.
 //
 // AD4C30 native ABI: ECX font, five string arguments, RET14h. This source
-// composition implements successful final population/ownership; its DAT
+// dispatch implements successful final population/ownership; its DAT
 // whole-file transport and failure timing are not the original per-field
 // stream/SEH/private-heap ABI. The optional image arm uses genuine raw Font
 // constructor/tree providers and native pooled strings; its complete normal

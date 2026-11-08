@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <functional>
+#include "bsp/native_effect_handle_acquisition.hpp"
 
 namespace bsp { struct NativeMpkgArchiveContext; struct SoundResourceOwner; }
 
@@ -418,21 +419,44 @@ std::uint8_t atlas_parse_00aeeaf0(void*, void*, void* volatile& image_f8d394,
 struct FontLoadScratch {
     // Upper key/pair padding is not initialized by the original. Preserve a
     // caller-supplied preimage rather than manufacture private stack bytes.
-    std::uint32_t key;
-    std::uint32_t pair[2];
-    std::uint32_t insertion_result[3];
+    std::uint16_t key, key_padding;
+    NativeIntPointerTree18Pair pair;
+    NativeIntPointerTree18InsertResult insertion_result;
+    // Source-retained temporary headers survive an interrupted load. Consumed
+    // headers are observations only; no destructor replays their pool returns.
+    TailNativeString gfx_suffix, localized_root, full_gfx, full_alpha, white;
+    TailNativeString dat_root, full_dat;
+};
+struct FontLoadStringBindings {
+    std::function<void(void*, std::uint32_t, std::uint32_t)> resize_0041dd40;
+    std::function<void*(void*, const char*)> assign_0041e870;
+    std::function<void(void*, std::uint32_t, std::uint32_t)> release_00419cc0_00bd1510;
+};
+struct FontLoadTextBindings {
+    FontLoadStringBindings strings;
+    std::function<void*(const void*, void*, const void*)> concat_004261a0;
 };
 struct FontLoadBindings {
-    ResourceStringBindings text;
-    void* (__cdecl* allocate_00bf681b)(std::uint32_t);
-    void (__cdecl* free_00bf65ac)(void*);
-    WarningIteratorPair* (__thiscall* lookup_00ad4540)(void*, WarningIteratorPair*, const void*);
-    void* (__thiscall* insert_00ad4aa0)(void*, void*, const void*);
+    FontLoadTextBindings text;
+    std::function<void*(std::uint32_t)> allocate_00bf681b;
+    std::function<void(void*)> free_00bf65ac;
+    std::function<NativeIntPointerTree18Iterator*(void*, NativeIntPointerTree18Iterator*,
+        const std::uint16_t&)> lookup_00ad4540;
+    std::function<void*(void*, NativeIntPointerTree18InsertResult*,
+        const NativeIntPointerTree18Pair*)> insert_00ad4aa0;
     CheckedIterator checked_iterator_bf6713;
+    // Explicit Source dispatch over the actual captured renderer/VFS owners.
+    // Their original profile words remain tokens, never callable host vtables.
+    std::function<void*(void*, const void*, std::uint32_t)> renderer_texture_64;
+    std::function<void*(void*, const void*, std::uint32_t)> vfs_open_04;
+    std::function<std::uint32_t(void*)> stream_u32_38;
+    std::function<std::uint16_t(void*)> stream_word_3c, stream_word_40;
+    std::function<float(void*)> stream_float_44;
+    std::function<void(void*)> release_stream;
 };
 void font_load_00ad4c30(void*, const TailNativeString* root, const TailNativeString* dat,
     const TailNativeString* gfx, const TailNativeString* alpha, const TailNativeString* language,
-    void* volatile& image_f8d394, void* volatile& image_109ceec,
+    void* const volatile& image_f8d394, void* const volatile& image_109ceec,
     FontLoadScratch&, const FontLoadBindings&);
 } // namespace bsp::oct18_tail_c
 
