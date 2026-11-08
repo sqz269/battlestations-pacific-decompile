@@ -1,4 +1,5 @@
 #include "bsp/native_input_configuration_parse.hpp"
+#include "bsp/settings_seg29_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
 #include <cstring>
@@ -71,29 +72,12 @@ struct ArrayScope {
     void release() {
         if (!owned) return;
         owned = false;
-        if (modifiers) resize_native_input_modifiers_00697220(&value, 0);
-        else resize_native_input_context_words_00696e70(&value, 0);
-        singleton_lifetime_free(value.base);
+        // Source reuse of the complete native temporary-array retirement:
+        // resize to zero, then free the CURRENT buffer without clearing its header.
+        if (modifiers) cc13_seg29::destroy_input_modifiers_006977d0(&value);
+        else cc13_seg29::destroy_context_words_006972b0(&value);
     }
 };
-std::int32_t grow_capacity(Word capacity) noexcept {
-    const auto doubled = static_cast<std::int32_t>(capacity + capacity);
-    return doubled > 1 ? doubled : 1;
-}
-void append_context(NativeInputArrayHeader& array, Word value) {
-    const auto h = address(&array), capacity = field(h, 8);
-    if (field(h, 4) == capacity) reserve_native_input_context_words_00696d80(&array, grow_capacity(capacity));
-    const auto slot = field(h) + field(h, 4) * 4u;
-    if (slot) field(slot) = value;
-    field(h, 4) = field(h, 4) + 1u;
-}
-void append_modifier(NativeInputArrayHeader& array, const void* descriptor) {
-    const auto h = address(&array), capacity = field(h, 8);
-    if (field(h, 4) == capacity) reserve_native_input_modifiers_00696de0(&array, grow_capacity(capacity));
-    const auto slot = field(h) + field(h, 4) * 0x14u;
-    if (slot) copy_descriptor(slot, address(descriptor));
-    field(h, 4) = field(h, 4) + 1u;
-}
 Word word_distance(Word first, Word last) noexcept {
     return static_cast<Word>(static_cast<std::int32_t>(last - first) >> 2);
 }
@@ -142,7 +126,9 @@ void parse_actions(void* configuration, NativeInputConfigurationParsedObjects& o
         native_lua_iterate_first_00b67080(table.value, group_key.value, group_value.value);
         while (!native_lua_is_unbound_00b66420(group_key.value)) {
             const auto context = static_cast<Word>(native_lua_integer_00b66290(group_value.value, services.crt_sse2_conversion));
-            append_context(contexts.value, context);
+            // 00697170 has the same count/capacity growth and append sequence
+            // as this 00698A10 inline site (source reuse, not a native CALL claim).
+            cc13_seg29::push_back_context_word_00697170(&contexts.value, &context);
             native_lua_iterate_next_00b67190(table.value, group_key.value, group_value.value);
         }
         std::uint8_t helper = 0;
@@ -172,7 +158,7 @@ void parse_actions(void* configuration, NativeInputConfigurationParsedObjects& o
                         alignas(4) std::byte descriptor[0x14];
                         auto* decoded = decode_native_input_descriptor_006974f0(configuration, descriptor, modifier_value.value, swap,
                             services.loading.x360comp_00f88a30, services.crt_sse2_conversion);
-                        append_modifier(arrays[group]->value, decoded);
+                        cc13_seg29::push_back_input_modifier_006971c0(&arrays[group]->value, decoded);
                         native_lua_iterate_next_00b67190(component.value, modifier_key.value, modifier_value.value);
                     }
                 }
@@ -195,7 +181,8 @@ void parse_actions(void* configuration, NativeInputConfigurationParsedObjects& o
     {
         ArrayScope contexts(false);
         reserve_native_input_context_words_00696d80(&contexts.value, 1);
-        append_context(contexts.value, 0x1e);
+        const Word context = 0x1e; // The image's built-in action 128h context.
+        cc13_seg29::push_back_context_word_00697170(&contexts.value, &context);
         configure_native_input_action_00a93c80(owner, 0x128, &contexts.value, 0, services.actions);
         contexts.release();
     }
