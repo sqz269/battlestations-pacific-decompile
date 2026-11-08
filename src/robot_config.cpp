@@ -753,6 +753,22 @@ RobotDescriptor* construct_descriptor(RobotDescriptorStorage& storage,
     return &object->descriptor;
 }
 
+} // namespace
+
+// 009DBFE0, cdecl, no arguments, EAX = descriptor (bsp.py show 009dbfe0 --asm):
+// 009DBFFC operator new(E4h); 009DC019 base vtable 00D17DC0; 009DC01F 00438E40
+// on ECX = 00D2145C "NavigatorBot" (bsp.py ghidra bytes 00d2145c) into +8h;
+// 009DC027 derived vtable 00D217DC; 009DC02D publishes [00F8A688]. Its null-new
+// arm (009DC045, [00F8A688] = 0) is excluded by RobotDescriptorStorage's
+// nonnull allocation contract, which throws instead.
+RobotDescriptor* create_navigator_robot_config_009dbfe0(RobotDescriptorStorage& storage,
+    RobotDescriptor*& navigator_f8a688) {
+    navigator_f8a688 = construct_descriptor<NavigatorBotConfig>(storage, "NavigatorBot", 0x00d217dc);
+    return navigator_f8a688;
+}
+
+namespace {
+
 void run_robot_script(PcStorageLuaOwner& lua, LuaScriptRuntime& scripts,
     NativeStringStorage& strings, const char* path) {
     OwnedString name{strings, {}};
@@ -884,9 +900,7 @@ bool load_robot_config_00901610(RobotConfigRegistry& registry, RobotConfigAliase
         //rel32 or absolute reference anywhere in the PE (scanned; the same scan
         //finds 00900AF0's 16 call sites), so they never run and the loader's
         //assignment is the whole behaviour.
-        aliases.navigator_f8a688 = construct_descriptor<NavigatorBotConfig>(
-            context.descriptors, "NavigatorBot", 0x00d217dc);
-        add(aliases.navigator_f8a688);
+        add(create_navigator_robot_config_009dbfe0(context.descriptors, aliases.navigator_f8a688));
         aliases.pilot_f8a30c = find_robot_config_00900af0(registry, "PilotBot");
         aliases.tail_gunner_e199a0 = find_robot_config_00900af0(registry, "TailGunnerBot");
         aliases.aa_flak_e1999c = find_robot_config_00900af0(registry, "AAFlakBot");
