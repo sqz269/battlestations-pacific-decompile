@@ -15,6 +15,10 @@ namespace bsp::cc13_sys {
 struct LazySingletonHost;
 }
 
+namespace bsp {
+struct NativeStringRawPoolContext;
+}
+
 namespace bsp::profile_seg2_cc13 {
 
 static_assert(sizeof(void*) == 4, "segment 2 objects are modelled in their Win32 layout");
@@ -187,7 +191,8 @@ void scoped_byte_override_f8d394_destruct_0043ab80(Raw scope, Seg2Host& host);
 // The string is {length at +0, data at +4} relative to `string`.
 void native_string_destroy_storage_00431f20(Raw string, Seg2Host& host);
 void native_string_destroy_storage_00431f40(Raw string, Seg2Host& host);
-void native_string_at_0c_destroy_storage_00436490(Raw owner, Seg2Host& host);
+// Borrow the owner's actual raw pool publications; no other Seg2Host services.
+void native_string_at_0c_destroy_storage_00436490(Raw owner, NativeStringRawPoolContext& strings);
 void native_string_at_8_destroy_storage_0043bae0(Raw owner, Seg2Host& host);
 void native_string_at_8_destroy_storage_0043d090(Raw owner, Seg2Host& host);
 
