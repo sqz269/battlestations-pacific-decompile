@@ -193,5 +193,37 @@
       "game_run": "Not performed; build, focused probe and executable call-graph evidence only."
     },
     "scope": "One callback correction and report update; no new rows or native-address bodies. Original skipped rows and unresolved resources remain."
+  },
+  "merge_origin_main": {
+    "previous_worker_head": "0a594d8ed074afd2d93c807c11b4d080be0e5477",
+    "upstream_merged": "805f7e73f22b67312e56d63edc0c3c9c83808050",
+    "conflicts": [
+      "src/game_hosts_units.cpp: adjacent include additions"
+    ],
+    "resolution": "Keep both bsp/path_movcam_seg46_argon.hpp for this chain and bsp/flak_note_seg36_37_argon.hpp for upstream formation member-add. The branch paratrooper descriptor consumer and main formation-join implementation are both retained.",
+    "ledger_and_cmake_conflicts": "None; no merge_resolve.py intervention required.",
+    "validation": {
+      "regular_build": "./scripts/build.ps1 passed with all 4 CTest groups; local/merge-main-build.log",
+      "on_build": "./scripts/build.ps1 -Target bsp_game passed with all 4 CTest groups; local/merge-main-on-build.log. This chain has no switch and runs unconditionally. off_switch_on_build.py --pattern WireGoal5 --list reported no OFF switches selected (exit 2), so there is no distinct Goal 5 ON configuration; the extra build validates the same always-enabled paths. No switches were changed, and kWireGoal3Chain242Bound remains false.",
+      "numeric_probe": "PASS after merging main: regenerated both adapters verbatim and ran the extended round 2 Lua numeric probe, including CloseDuration=\"2\" -> 2 and native integer-conversion checks.",
+      "numeric_probe_source_sha256": "5c58886e3bfa2eef5cc26fcfe80ab9baa790ec0b9a8b4f4ca23c2b1f71777e89",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files before merge commit.",
+      "call_graph": "Refreshed after the enabled-code build: 42253/42407 functions entry-reachable; 5419/6027 reconstructed addresses called; 219177 edges.",
+      "entry_reachability": [
+        "007AC780: REACHABLE, one call from GameGunneryHost::Impl::bullet_class_descriptor at 100BBC6F",
+        "ship_ai_formation_add_member (0070EF30): REACHABLE, one call from GameUnitsHost::formation_join_0077f940 at 102920D5"
+      ],
+      "worker_readiness_before_upstream_merge": {
+        "wired": 10449,
+        "called": 5711
+      },
+      "merged_readiness": {
+        "wired": 10544,
+        "called": 5789
+      },
+      "readiness_log": "local/merge-main-readiness.log",
+      "scope": "Totals include the newly merged upstream work; no additional wiring rows are claimed by this merge-only repair.",
+      "game_run": "Not performed; build, focused probe and executable graph evidence only."
+    }
   }
 }

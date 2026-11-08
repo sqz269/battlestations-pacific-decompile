@@ -3,6 +3,8 @@
 // for the address list and docs/VEHICLE_CLASS_LUA_LOAD.md for the evidence.
 
 #include "bsp/vehicle_class_lua_load.hpp"
+#include "bsp/camera_multiply.hpp"
+#include "bsp/native_particle_axial_loading.hpp"
 
 #include <cstring>
 
@@ -220,9 +222,9 @@ const ShipLeafFieldSpec kShipLeafFieldSchema[] = {
     {ShipLeafClass::Mothership, "CarrierEscort", 0x00D01918, ShipLeafConversion::BooleanOr,
      ShipLeafDescriptorOffsets::kMothershipIsCarrierEscort, 0x0075963F, 0x0075965C,
      "false (PUSH 0 at 00759644)", ""},
-    {ShipLeafClass::Mothership, "MaxLandingPlanes", 0x00D01900,
-     ShipLeafConversion::IntegerOrZero, ShipLeafDescriptorOffsets::kMothershipMaxLandingPlanes,
-     0x0075968E, 0x007596D0, "0 (the else arm at 007596D8)",
+    {ShipLeafClass::Mothership, "MaxLandingPlanesOnBoard", 0x00D01900,
+     ShipLeafConversion::IntegerOrFour, ShipLeafDescriptorOffsets::kMothershipMaxLandingPlanes,
+     0x0075968E, 0x007596D0, "4 (MOV [ESI+828h],EBX at 007596D8; EBX=4)",
      "assigned into a held LuaObject at 007596A4, then IsNil at 007596BE"},
     {ShipLeafClass::Mothership, "DeckCamera.Position", 0x00CE68B4,
      ShipLeafConversion::Vector3, ShipLeafDescriptorOffsets::kMothershipDeckCameraPosition,
@@ -456,21 +458,37 @@ void read_mothership_class_fields_00759590(VehicleClassFieldHost& lua,
     out.runway_length = number_bare(lua, row, "RunwayLength");
     out.is_carrier_escort = boolean_or(lua, row, "CarrierEscort", false);
 
-    const GuiLuaRef planes = lua.get_by_name(row, "MaxLandingPlanes");
+    // bsp.py show 00759590: 0075966E..007596D8 reads this exact key and
+    // stores 4 on the nil arm, not the old MaxLandingPlanes / zero substitute.
+    const GuiLuaRef planes = lua.get_by_name(row, "MaxLandingPlanesOnBoard");
     const VehicleClassLuaValue planes_value = lua.inspect(planes);
     out.max_landing_planes =
-        planes_value.is_nil() ? 0 : vehicle_class_integer_00b66290(planes_value);
+        planes_value.is_nil() ? 4 : vehicle_class_integer_00b66290(planes_value);
     lua.release(planes);
 
     const GuiLuaRef camera = lua.get_by_name(row, "DeckCamera");
     const GuiLuaRef position = lua.get_by_name(camera, "Position");
-    const VehicleClassLuaValue position_value = lua.inspect(position);
-    (void)position_value;  // 00B67A80 fills three floats; the host owns that read.
+    host.read_deck_camera_position(position, out.deck_camera_position);
     lua.release(position);
     const float horz = number_bare(lua, camera, "HorzAngle");
     const float vert = number_bare(lua, camera, "VertAngle");
     out.deck_camera = deck_camera_angles(horz, vert);
-    host.store_deck_camera_basis(out.deck_camera);
+    // Assembly 0075979B..00759806: negate both angles, build Y then X,
+    // multiply X * Y and copy the full 40h bytes to descriptor+830h.
+    // Reuse the address's existing arithmetic providers (x87 FSIN/FCOS and
+    // per-operation matrix rounding), with the binary's own constant cells.
+    static const volatile float negative_zero_00d7a208 = -0.0f;
+    static const volatile float one_00d7a24c = 1.0f;
+    CameraMatrix horizontal, vertical, product;
+    build_native_particle_rotation_y_00b646e0(horizontal.data(),
+        &out.deck_camera.horizontal_radians, &negative_zero_00d7a208, &one_00d7a24c);
+    build_native_particle_rotation_x_00b64640(vertical.data(),
+        &out.deck_camera.vertical_radians, &negative_zero_00d7a208, &one_00d7a24c);
+    multiply_camera_matrices_00413920(product, vertical, horizontal);
+    copy_camera_matrix_004134f0(out.deck_camera_matrix, product);
+    // 0075980B..0075982D overwrites the copied translation after the product.
+    std::memcpy(out.deck_camera_matrix.data() + 12, out.deck_camera_position,
+        sizeof(out.deck_camera_position));
     lua.release(camera);
 
     copy_tuning_pair(host, 0x04, 0x00, out);

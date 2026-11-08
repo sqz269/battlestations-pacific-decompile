@@ -114,7 +114,15 @@ struct AttackCommandObserverHost {
     virtual void observer_register_pair_00694a60(void* endpoint, void* owner) = 0;  // ECX, EDX
 };
 
-struct Seg69Host : AttackCommandObserverHost {
+// 00A00020 needs only the tuning/RNG services on its negative-factor arm.
+// A record owner need not implement the segment's unrelated planner services.
+struct CandidateRecordHost {
+    virtual ~CandidateRecordHost() = default;
+    virtual Raw active_mode_tuning_00a371a0() = 0;
+    virtual float random_uniform_00bd2f10(std::uint32_t stream, float low, float high) = 0;
+};
+
+struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost {
     virtual ~Seg69Host() = default;
 
     // Image globals: the address of the cell (BSS / .data) named by its image address.
@@ -134,9 +142,6 @@ struct Seg69Host : AttackCommandObserverHost {
 
     // Engine routines.
     virtual bool can_drop_ordnance_007b9140(void* unit, std::uint32_t arg) = 0;  // ECX unit
-    virtual Raw active_mode_tuning_00a371a0() = 0;
-    // 00BD2F10 __thiscall(ECX = stream)(low, high), RET 8, ST0: the process-wide RNG.
-    virtual float random_uniform_00bd2f10(std::uint32_t stream, float low, float high) = 0;
     virtual float class_weight_009fdf30(void* class_record) = 0;  // ECX = class record, ST0
     virtual void* vehicle_class_by_index_00964790(int index, bool read_race) = 0;  // ECX, DL
     virtual Raw vehicle_class_registry_00437f50() = 0;
@@ -226,7 +231,7 @@ float class_ship_or_plane_value_009fe170(Seg69Host& host, Raw object);
 std::int32_t unit_droppable_ordnance_count_009fe1b0(Seg69Host& host, Raw unit, std::uint32_t arg);
 bool unit_is_available_for_ai_009ffe00(Seg69Host& host, Raw unit);
 void* unit_class_data_kind5_or_18_009fff20(Seg69Host& host, Raw unit);
-Raw ai_candidate_record_construct_00a00020(Seg69Host& host, Raw record, void* subject,
+Raw ai_candidate_record_construct_00a00020(CandidateRecordHost& host, Raw record, void* subject,
     std::uint32_t value10, float class_weight, std::uint32_t value1c, float random_factor,
     std::uint8_t flag, const float* point);
 const char* ai_name_or_empty_00a02010(Seg69Host& host, Raw object);

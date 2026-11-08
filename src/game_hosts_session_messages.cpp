@@ -1,6 +1,7 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
+#include "bsp/native_gun_control_message_lifetime.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -613,6 +614,24 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
     return queued;
 }
 
+namespace {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type);
+
+// Goal 5 chain 719. bsp.py show 00780120: the decoded object's slot +0Ch
+// selects the receiver before 0077FE80 switches on its actual +10h kind.
+// The local codecs already retain the real receive allocation; admit its
+// payload only through that same ladder and the expected kind-switch arm.
+// Each borrowed predicate below is the existing whole address body (receiver
+// unused), queried with the binary's ladder IDs, not an invented class tag.
+template <class IsType>
+void require_local_unit_route(std::uint8_t decoded_type, std::uint8_t expected_type,
+    IsType is_type, const char* failure) {
+    if (!copy_goes_to_unit_handler(is_type) || decoded_type != expected_type)
+        throw std::logic_error(failure);
+}
+}  // namespace
+
 game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     const game::GunAimMessage79& posted) const {
     Image& image = *image_;
@@ -647,10 +666,18 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     LocalStream stream;
     seg42::write_vehicle_gun_control_0075fff0(&sent, &stream.out, image.numeric);
     stream.begin_read();
-    // 00769132: operator new(3Ch), 0075FF60; 0076A27B: vtable+8, 007600D0.
-    seg42::VehicleGunControlMessage queued{};
+    // 00769132..0076914D: allocate 3Ch, construct 0075FF60, then dispatch
+    // vtable+8 (007600D0) at 0076A27B. Retain that allocation until the real
+    // gun-control payload has been consumed below. Profile D032D0 selects
+    // 007605F0: reset CE4974 and free iff flags&1, including on decode failure.
+    OwnedDecodedMessage<seg42::VehicleGunControlMessage,
+        delete_vehicle_gun_control_message_007605f0> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_gun_control_0075ff60(&queued, image.seg42);
     seg42::read_vehicle_gun_control_007600d0(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x79, [](std::uint32_t type) {
+        return seg42::is_vehicle_gun_control_0075ffd0(type);
+    }, "GunControl: decoded copy did not reach the unit control arm");
 
     game::GunAimMessage79 result = posted;
     result.group = static_cast<int>(queued.mode_1c);
@@ -662,12 +689,8 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     result.has_target_36 = queued.has_target_36 != 0;
     result.target_38 = result.has_target_36 ? posted.target_38 : queued.target_id_38;
     result.angles_carried = true;
+    delete_vehicle_gun_control_message_007605f0(&sent, 0u);
     return result;
-}
-
-namespace {
-template <class IsType>
-bool copy_goes_to_unit_handler(IsType is_type);
 }
 
 std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t type,
@@ -756,6 +779,9 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     auto& queued = owner.get();
     seg42::construct_vehicle_set_party_00760260(&queued, image.seg42);
     seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
+    require_local_unit_route(queued.h.base.type_10, 0x7f, [](std::uint32_t type) {
+        return seg42::is_vehicle_set_party_007602c0(type);
+    }, "SetParty: decoded copy did not reach the unit party arm");
     const auto copied_party = queued.value_1c;
     delete_vehicle_set_party_message_00760610(&sent, 0u);
     return copied_party;
@@ -899,6 +925,9 @@ bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
     auto& queued = owner.get();
     seg42::construct_shiprepair_bodyrepair_00760a50(&queued, image.seg42);
     seg42::read_shiprepair_bodyrepair_00760b30(&queued, &stream.in);
+    require_local_unit_route(queued.h.base.type_10, 0x9f, [](std::uint32_t type) {
+        return seg42::is_shiprepair_bodyrepair_00760ab0(type);
+    }, "BodyRepair: decoded copy did not reach the unit repair arm");
     return queued.flag_1c != 0;
 }
 
@@ -928,6 +957,9 @@ HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
     auto& queued = owner.get();
     seg42::construct_ship_leak_00761f60(&queued, image.seg42);
     seg42::read_ship_leak_00762090(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x90, [](std::uint32_t type) {
+        return seg42::is_ship_leak_00761fc0(type);
+    }, "ShipLeak: decoded copy did not reach the unit leak arm");
     ShipLeakCopy copy;
     copy.count = queued.leak_1c;
     for (int i = 0; i < 3; ++i) copy.point[i] = queued.vector_20[i];
@@ -1017,6 +1049,9 @@ HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_chang
     auto& queued = owner.get();
     seg42::construct_plane_change_state_00762880(&queued, image.seg42);
     seg42::read_plane_change_state_007629a0(&queued, &stream.in);
+    require_local_unit_route(queued.u.h.base.type_10, 0xc3, [](std::uint32_t type) {
+        return seg42::is_plane_change_state_007628f0(type);
+    }, "PlaneChangeState: decoded copy did not reach the plane state arm");
     const PlaneChangeStateCopy copy{queued.state_20, queued.state_21};
     delete_plane_change_state_message_00762920(&sent, 0u);
     return copy;
@@ -1047,6 +1082,9 @@ std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
     cc13_seg5::session_bool_message_read_004645d0(codec,
         reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in));
+    require_local_unit_route(queued.h.base.type_10, 0xc5, [](std::uint32_t type) {
+        return seg42::is_plane_touchdown_00762ad0(type);
+    }, "PlaneTouchdown: decoded copy did not reach the plane touchdown arm");
     const auto type = queued.h.base.type_10;
     delete_plane_touchdown_message_00762b00(&sent, 0u);
     return type; // 00762B00(1) releases the factory's 20h allocation.
@@ -1218,6 +1256,9 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     auto& queued = owner.get();
     seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
     seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x93, [](std::uint32_t type) {
+        return seg42::is_ship_addtorque_00762280(type);
+    }, "ShipAddTorque: decoded copy did not reach the unit torque arm");
     ShipAddTorqueCopy copy;
     for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
     return copy;
@@ -1255,6 +1296,9 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     NativeSessionMessage112& queued = owner.get();
     construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
     read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
+    require_local_unit_route(queued.base.type_10, 0x70, [](std::uint32_t type) {
+        return native_session_message_is112_00761df0(type);
+    }, "KamikazeDetonate: decoded copy did not reach the unit detonation arm");
     KamikazeDetonateCopy copy;
     copy.other_id = queued.value_1c;
     for (int i = 0; i < 3; ++i) {
@@ -1294,6 +1338,9 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     auto& queued = owner.get();
     seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
     seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
+    require_local_unit_route(queued.h.base.type_10, 0x9e, [](std::uint32_t type) {
+        return seg42::is_shiprepair_adddamage_00760940(type);
+    }, "RepairAddDamage: decoded copy did not reach the unit repair-damage arm");
     return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
 }
 
@@ -1972,11 +2019,13 @@ HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
 HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_launch_7a(
     std::uint8_t flag) const {
     const Image& image = *image_;
-    // 009CFBFB..009CFC23: 0080F960's stores inline; 007604C0 makes the same
-    // header, and the sender adds +20h.
+    // 009CFBFB..009CFC23 inline the 0080F960 value constructor. Run that
+    // existing body over the sender and this session's actual player state.
+    // Evidence: bsp.py show 0080F960. Relocate only its original vptr.
     seg42::VehicleShipyardLaunchMessage sent{};
-    seg42::construct_vehicle_shipyard_launch_007604c0(&sent, image.seg42);
-    sent.flag_20 = flag;
+    UnitMessageConstructionBinding binding(image.session);
+    cc13_sweepC::unit_message_shipyard_launch_construct_0080f960(binding, &sent, flag);
+    sent.u.h.base.profile_00 = image.seg42.vtables.vtable(0x00d03310u);
 
     LocalStream stream;
     seg42::write_vehicle_shipyard_launch_00760550(&sent, &stream.out);
@@ -2336,6 +2385,9 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     auto& queued = owner.get();
     seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
     seg42::read_plane_disappear_00762c30(&queued, &stream.in);
+    require_local_unit_route(queued.u.h.base.type_10, 0xc7, [](std::uint32_t type) {
+        return seg42::is_plane_disappear_00762b90(type);
+    }, "PlaneDisappear: decoded copy did not reach the plane disappear arm");
     PlaneDisappearCopy copy;
     copy.type = queued.u.h.base.type_10;
     copy.holder_id = queued.id_20;
@@ -2347,13 +2399,7 @@ namespace {
 // Goal 5 chain 632. The 7Bh class: the 20h-byte unit message and the heading
 // at +20h, 24h bytes as 00768530 case 7Bh allocates it
 // (include/bsp/oct18_tail_a_factory.inc: {0x7b, 0x24, 0x007601a0, ...}).
-struct VehicleUnitLaunchMessage7B {
-    seg42::UnitMessage u;
-    float heading_20;
-};
-static_assert(sizeof(VehicleUnitLaunchMessage7B) == 0x24);
-static_assert(offsetof(VehicleUnitLaunchMessage7B, heading_20) == 0x20);
-static_assert(sizeof(VehicleUnitLaunchMessage7B)
+static_assert(sizeof(NativeVehicleUnitLaunchMessage)
               == sizeof(HostSessionMessages::UnitKindSwitchCopy::bytes));
 
 // The six boundaries 004647D0 / 00464810 call, bound to the process's
@@ -2410,7 +2456,7 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     float heading) const {
     const Image& image = *image_;
     // 00891F05..00891F31: 007601A0's stores, then +20h the heading.
-    VehicleUnitLaunchMessage7B sent{};
+    NativeVehicleUnitLaunchMessage sent{};
     seg42::construct_vehicle_unit_launch_007601a0(&sent.u, image.seg42);
     sent.heading_20 = heading;
 
@@ -2421,11 +2467,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     cc13_seg5::vehicle_launch_message_write_004647d0(reinterpret_cast<cc13_seg5::Object>(&sent),
         reinterpret_cast<cc13_seg5::Object>(&stream.out), codec);
     // 00768530 case 7Bh: operator new(24h), 007601A0 at 00769186; 0076A27B
-    // vtable[8] = 00464810. The copy is host storage: its scalar delete
-    // 00464FE0 is the compiler's (it restamps 00CE4974 and frees) and the class
-    // owns no payload subobjects.
+    // vtable[8] = 00464810. Retain the original factory's 24h allocation
+    // through decode/routing/projection, then scalar-delete it with bit 0 set.
     stream.begin_read();
-    VehicleUnitLaunchMessage7B queued{};
+    OwnedDecodedMessage<NativeVehicleUnitLaunchMessage,
+        delete_vehicle_unit_launch_message_00464fe0> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_unit_launch_007601a0(&queued.u, image.seg42);
     cc13_seg5::vehicle_launch_message_read_00464810(reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in), codec);
@@ -2439,25 +2486,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_unit_
     return copy;
 }
 
-namespace {
-// Goal 5 chain 632. The 7Ch class: the 20h-byte unit message and the plane's
-// handle word at +20h, 24h bytes as 00768530 case 7Ch allocates it
-// (include/bsp/oct18_tail_a_factory.inc: {0x7c, 0x24, 0x00760200, ...}).
-struct VehicleAddLaunchedMessage7C {
-    seg42::UnitMessage u;
-    std::uint16_t plane_id_20;
-    std::uint16_t pad_22;
-};
-static_assert(sizeof(VehicleAddLaunchedMessage7C) == 0x24);
-static_assert(offsetof(VehicleAddLaunchedMessage7C, plane_id_20) == 0x20);
-}  // namespace
-
 HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_add_launched_7c(
     std::uint16_t plane_id) const {
     const Image& image = *image_;
     // 006ED3E3..006ED3EF: 006EB9C0(stack message, plane). It reads only the
     // plane's +174h word (006EB9E7 MOV CX,[EAX+174h]); its other service is 0075B430.
-    VehicleAddLaunchedMessage7C sent{};
+    NativeVehicleAddLaunchedMessage sent{};
     GunFireMessageBinding codec(image.session);
     {
         PlaneHandleView174 plane{};
@@ -2471,10 +2505,12 @@ HostSessionMessages::UnitKindSwitchCopy HostSessionMessages::queue_vehicle_add_l
     // 0076E575: vtable[4] = 006EBA20.
     cc13_seg33a::vehicle_add_launched_message_write_006eba20(codec, &sent, &stream.out);
     // 00768530 case 7Ch: operator new(24h), 00760200 at 007691A6; 0076A27B
-    // vtable[8] = 006EBA50. The copy is host storage: 006EC100, the scalar
-    // delete, only restamps 00CE4974 and frees, and the class owns no payload.
+    // vtable[8] = 006EBA50. Keep the factory's real 24h allocation through
+    // decode/routing/projection; 006EC100 then restamps and releases it.
     stream.begin_read();
-    VehicleAddLaunchedMessage7C queued{};
+    OwnedDecodedMessage<NativeVehicleAddLaunchedMessage,
+        delete_vehicle_add_launched_message_006ec100> owner;
+    auto& queued = owner.get();
     seg42::construct_vehicle_add_launched_00760200(&queued.u, image.seg42);
     cc13_seg33a::vehicle_launched_message_read_006eba50(codec, &queued, &stream.in);
 

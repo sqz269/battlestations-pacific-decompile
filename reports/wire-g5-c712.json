@@ -1,0 +1,197 @@
+{
+  "goal": 5,
+  "chain": 712,
+  "slot": "g5-w10",
+  "run": 1517,
+  "branch": "agent/g5-w10",
+  "summary": "Replace LoadingScreen::End's logging-only GUI refresh with the existing AA2B80 -> B1C4B0 bodies over the startup renderer's actual queue/frame/stop providers.",
+  "wired_total": {
+    "before": 10461,
+    "after": 10463
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed after final C++ edits; all four existing tests passed.",
+    "call_graph": "Final rebuilt executable has one reachable direct call to each reconstructed body at 00AA2B80 and 00B1C4B0 from GameNativeRendererApplication::reset_gui_render_queue and its Cycle adapter.",
+    "readiness": "wire_readiness.py --standins: both targets wired, called=true, call_sites=1; text wired total increased by two.",
+    "float_math": "No arithmetic expressions changed; the existing native begin operation was separated from the existing host clear so the GUI cycle adds no clear.",
+    "runtime": "Game not run, as instructed; static entry reach and successful build/tests are not gameplay or original ABI proof."
+  },
+  "assumptions": [
+    "The startup-owned renderer is borrowed by the menu before any frame or loading-screen publication.",
+    "Use the same FrameGraph queue, stop, begin and end contexts; original D5F0A8 slots +0C/+14/+11C resolve to B2B200/B2F4A0/B28A90.",
+    "A headless host has no created native device and skips this render-only operation without fabricating a queue/device."
+  ],
+  "left_for_others": [
+    "Loading-screen GUI update/render-worker start callbacks still need their concrete GUI/frame callback owner.",
+    "Please-wait-screen AA2B80 sites were not changed; this packet wires the loading-screen End site.",
+    "Live loading completion, device recreation during the cycle and worker-mode transition remain untested in game."
+  ],
+  "rows": [
+    {
+      "native": "00aa2b80",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh -> src/game_native_renderer_application.cpp: GameNativeRendererApplication::reset_gui_render_queue"
+    },
+    {
+      "native": "00b1c4b0",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp: GameNativeRendererApplication::reset_gui_render_queue::Cycle::reset_queue_00b1c4b0"
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl native enum publication",
+      "reason": "Already called from the entry-reachable native scene-property projection in the baseline executable; no missing wiring to add."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl native bag merge",
+      "reason": "Already called from the entry-reachable native bag projection in the baseline executable despite readiness state ready; no missing wiring to add."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list commentary near kAiGroupScoreListReleaseBound",
+      "reason": "The host has no candidate score-list owner, and its documented native reader is an unreachable debug text overlay rather than a single-player gameplay consumer."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list commentary near kAiGroupScoreListReleaseBound",
+      "reason": "No live candidate score-list entries exist to mark; the only documented native table consumer is the unreachable debug text overlay."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: pick-screen reset stand-in",
+      "reason": "Missing the selection-mode producer at screen+30h and selection-vector owner at +C4h, including the retained +C0h/+D4h reset state."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: scripted squadron-target order path",
+      "reason": "The inspected site uses a scripted named target; the native routine requires the real screen-cursor unit-pick producer and selected-unit state."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: marker-drop stand-in",
+      "reason": "Missing a concrete marker-manager slot owner, per-entry keep flags and observer-pair membership; an empty synthetic marker container would supply no real state."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: player-command flag adapter commentary",
+      "reason": "The inspected live path changes director flags directly and has no controller-state replication message producer or consumer to replace."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot stand-in",
+      "reason": "No complete live controller-snapshot owner with descriptor, enable, avoidance and getter publications was established in this packet."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission-load assign_party_player_slots step",
+      "reason": "The native load call requires game+1FE4h == 1; ordinary single-player uses 0 and never runs this multiplayer slot assignment."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission player-count check",
+      "reason": "The native participant-count behavior is gated on nonzero session mode; single-player returns before that behavior."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: lobby_handle_gui_event_005e4490 briefing action; src/mission_briefing_start.cpp: start_selected_mission_005c5600",
+      "reason": "Missing a live single-player mission-tree launch/briefing-screen owner; the other inspected caller is a multiplayer-lobby event adapter."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::checkpoint_differs/write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save table/current-mission checkpoint owner; checkpoint_differs remains a false stand-in, so a real clear cannot be authorized by that state."
+    },
+    {
+      "native": "0043ff40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun animation integration candidate",
+      "reason": "Missing the gun+360h render object and its nested animation owner, track availability and length producer; class-only gunnery state cannot provide this graph."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080 and landscape_build_shore_mask_00880420",
+      "reason": "No concrete entry-reachable Left55Host supplies the real byte-column grid to these reconstructed callers; connecting only the sample callback would leave the body unlinked."
+    },
+    {
+      "native": "00880080",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080",
+      "reason": "Missing the live landscape column-grid producer and concrete Left55Host; a text-level wired state does not establish an executable caller."
+    },
+    {
+      "native": "00880420",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: landscape_build_shore_mask_00880420",
+      "reason": "Missing a live landscape terrain-source owner at +3D0h, byte-grid allocation and concrete Left55Host for the shore-mask pass."
+    },
+    {
+      "native": "00481510",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp: traffic_visible_cells_00498c40",
+      "reason": "Missing the live traffic-cell tree/quad-node producer; the inspected caller only exposes a quad_node_construct callback with no concrete game host."
+    },
+    {
+      "native": "008f84a0",
+      "status": "skipped",
+      "host_site": "src/lua_spawn_new.cpp: spawn_reference_frame_0094a140",
+      "reason": "The live spawn helper uses SpawnGroupFrame values, not an owned native observer/ref-frame object required by the assignment body."
+    },
+    {
+      "native": "008f84d0",
+      "status": "skipped",
+      "host_site": "src/lua_spawn_new.cpp: spawn_reference_frame_0094a140",
+      "reason": "Missing a native SpawnRefFrame owner whose stored matrix is consumed by the live spawn path; constructing an unused auxiliary frame would add no wiring."
+    },
+    {
+      "native": "008f8610",
+      "status": "skipped",
+      "host_site": "src/lua_spawn_new.cpp: spawn_reference_frame_0094a140",
+      "reason": "Missing the native source/destination SpawnRefFrame ownership and observer registrations required by the copy constructor."
+    },
+    {
+      "native": "008db990",
+      "status": "skipped",
+      "host_site": "src/objectives_seg57_argon.cpp: session_message55_entry_read_properties_008dec10",
+      "reason": "The existing provisional helper only selects entity/pos property keys; the live constructor callback also needs an actual allocated objective-entry owner and archive-reader behavior."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc16_dyn_profile_report.cpp: report_profile_node_00c320d0",
+      "reason": "The inspected caller is the debug profiling-report renderer and has no linked single-player gameplay path in this build."
+    },
+    {
+      "native": "00766d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: PowerupManagerBinding session-message broadcast path",
+      "reason": "Missing a single-player consumer for the type-66 network payload; the local manager does not broadcast to transport peers."
+    },
+    {
+      "native": "00765760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: PowerupManagerBinding::send_powerup_message67",
+      "reason": "Single-player has no transport peers for this broadcast; serializing an unused network message would not replace local power-up behavior."
+    },
+    {
+      "native": "00765850",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: PowerupManagerBinding::send_powerup_message68",
+      "reason": "Single-player has no transport peers for this broadcast; serializing an unused network message would not replace local modifier behavior."
+    }
+  ]
+}

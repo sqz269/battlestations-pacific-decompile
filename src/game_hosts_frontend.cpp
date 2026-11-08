@@ -25,6 +25,9 @@
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
+#include "bsp/gui_timed_entry_types.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/locale_tables.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/texture_atlas.hpp"
@@ -54,6 +57,23 @@ constexpr UINT kD3dxDefault = 0xFFFFFFFFu;
 constexpr DWORD kD3dxImageFormatPng = 3;
 using SaveSurfaceToFile = HRESULT(WINAPI*)(LPCSTR, DWORD, IDirect3DSurface9*,
     const PALETTEENTRY*, const RECT*);
+
+// The binary's scalar constants, shared by this bridge's constructor/update
+// domain. bsp.py ghidra bytes: D7A24C = 3F800000, D7A208 = 80000000 (negative
+// zero). These are not widget state defaults.
+const volatile float kTimedOne = 1.0f;
+const volatile float kTimedZero = -0.0f;
+struct BridgeAlphaEntryDelete {
+    void operator()(GuiTimedEntryStorage* entry) const noexcept {
+        if (!entry) return;
+        try {
+            delete_gui_timed_entry_profile(*entry, 1u, &singleton_lifetime_free);
+        } catch (...) {
+            std::terminate();
+        }
+    }
+};
+using BridgeAlphaEntry = std::unique_ptr<GuiTimedEntryStorage, BridgeAlphaEntryDelete>;
 
 // The same two D3DX9 entry points the font resources use, imported once for the sprite
 // bridge. This is executable plumbing, not a native routine.
@@ -285,6 +305,26 @@ struct GameFrontendHost::Impl {
     std::map<const GuiLayoutWidget*, std::string> text_sources;
     // Goal 5 chain 667: the +100h / +0FCh stores a screen made ahead of them.
     std::map<const GuiLayoutWidget*, GameTextLayoutOverride> text_layouts;
+    // The existing layout is the sole widget. Each timed allocation borrows it;
+    // no raw widget/native node or second color projection is manufactured.
+    std::map<const GuiLayoutWidget*, std::map<int, BridgeAlphaEntry>> alpha_entries;
+    void require_alpha_widget(const GuiLayoutWidget& widget) const {
+        if (std::find(widget_nodes.begin(), widget_nodes.end(), &widget) == widget_nodes.end())
+            throw std::logic_error("Timed alpha requires a live widget owned by this bridge");
+    }
+    void require_alpha_entry(const GuiTimedEntryStorage* entry) const {
+        for (const auto& widget : alpha_entries) {
+            for (const auto& slot : widget.second) {
+                if (slot.second.get() == entry) {
+                    if (entry->widget_08 != widget.first)
+                        throw std::logic_error("Timed alpha changed its borrowed widget identity");
+                    require_alpha_widget(*widget.first);
+                    return;
+                }
+            }
+        }
+        throw std::logic_error("Timed alpha handle is not live in this bridge");
+    }
     const GameTextLayoutOverride* text_layout(const GuiLayoutWidget& widget) const {
         const auto found = text_layouts.find(&widget);
         return found != text_layouts.end() ? &found->second : nullptr;
@@ -943,6 +983,10 @@ GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std:
     return page;
 }
 
+const bool& GameFrontendHost::crt_sse2_conversion() const noexcept {
+    return impl_->sse2_conversion;
+}
+
 GameFrontendHost::GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
     GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen, const bool& gui_sse2_conversion)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen,
@@ -1491,6 +1535,94 @@ void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float 
     if (changed) impl_->quads_built = false;
 }
 
+GuiTimedEntryStorage* GameFrontendHost::widget_alpha_animation(GuiLayoutWidget& widget, int slot) {
+    Impl& host = *impl_;
+    host.require_alpha_widget(widget);
+    // 00AD3A80: indices 0/1 construct an AC2ED0 alpha entry; index 2 is a
+    // Section entry, outside this explicitly alpha-only bridge owner.
+    if (slot < 0 || slot > 1)
+        throw std::logic_error("Bridge alpha animation requires native index 0 or 1");
+    auto& entry = host.alpha_entries[&widget][slot];
+    if (!entry) {
+        void* allocation = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x14, 0x14});
+        if (!allocation) throw std::bad_alloc();
+        auto* created = ::new (allocation) GuiTimedEntryStorage;
+        construct_gui_timed_entry_alpha_00ac2ed0(*created, widget, kTimedOne);
+        entry.reset(created);
+    }
+    return entry.get();
+}
+
+void GameFrontendHost::stop_widget_alpha_animation(GuiLayoutWidget& widget, int slot) {
+    Impl& host = *impl_;
+    host.require_alpha_widget(widget);
+    const auto found = host.alpha_entries.find(&widget);
+    if (found == host.alpha_entries.end()) return;
+    // AA8B80: delete the existing slot's entry, then clear the pointer. Erasing
+    // this owner slot performs the same profile reset/free once.
+    found->second.erase(slot);
+    if (found->second.empty()) host.alpha_entries.erase(found);
+}
+
+void GameFrontendHost::set_widget_alpha_interval(GuiTimedEntryStorage* entry, float target, float rate) {
+    if (!entry) return; // The HUD may have no loaded WeaponInfo widget.
+    impl_->require_alpha_entry(entry);
+    std::uint32_t target_bits, rate_bits;
+    std::memcpy(&target_bits, &target, sizeof(target_bits));
+    std::memcpy(&rate_bits, &rate, sizeof(rate_bits));
+    cc13_seg49_64_78::GuiHudTickerRange view{entry->target_0c, entry->rate_10};
+    // bsp.py show AC2F20: MOV [this+C],arg1; MOV [this+10],arg2, RET8.
+    cc13_seg49_64_78::hud_ticker_set_range_00ac2f20(view, target_bits, rate_bits);
+}
+
+void GameFrontendHost::set_widget_alpha_delay(GuiTimedEntryStorage* entry, float seconds) {
+    if (!entry) return;
+    impl_->require_alpha_entry(entry);
+    entry->remaining_04 = seconds; // 00649245: the caller's 1.0f delay store.
+}
+
+void GameFrontendHost::advance_widget_alpha_animations(float seconds) {
+    Impl& host = *impl_;
+    struct AlphaCalls final : GuiTimedEntryAlphaCalls {
+        GameFrontendHost& frontend;
+        GuiLayoutWidget& widget;
+        AlphaCalls(GameFrontendHost& f, GuiLayoutWidget& w) : frontend(f), widget(w) {}
+        void require_widget(const GuiLayoutWidget& current) const {
+            if (&current != &widget)
+                throw std::logic_error("Bridge alpha dispatch changed its live widget");
+        }
+        const float* read_color54(GuiLayoutWidget& current, float (&)[4]) override {
+            require_widget(current);
+            return &current.color[0];
+        }
+        void set_alpha4c(GuiLayoutWidget& current, float alpha) override {
+            require_widget(current);
+            frontend.set_widget_color(current, current.color[0], current.color[1], current.color[2], alpha);
+        }
+    };
+    const GuiTimedEntryConstants constants{kTimedOne, kTimedZero};
+    for (auto widget = host.alpha_entries.begin(); widget != host.alpha_entries.end();) {
+        host.require_alpha_widget(*widget->first);
+        auto& slots = widget->second;
+        for (auto slot = slots.begin(); slot != slots.end();) {
+            // Like AA87B0's pointer walk, an empty slot has no current8.
+            // It can remain empty if allocation escaped before publication.
+            if (!slot->second) { ++slot; continue; }
+            auto& entry = *slot->second;
+            host.require_alpha_entry(&entry);
+            AlphaCalls calls(*this, *entry.widget_08);
+            // Same frame delta, retained +04 delay, current widget color and
+            // AC2F20's actual +0C/+10 cells. AD39A0 owns the countdown and
+            // current8 dispatch; AC2F40 owns all fade arithmetic/clamping.
+            if (advance_gui_timed_entry_00ad39a0(entry, calls, seconds, entry.widget_08, constants))
+                ++slot;
+            else slot = slots.erase(slot);
+        }
+        if (slots.empty()) widget = host.alpha_entries.erase(widget);
+        else ++widget;
+    }
+}
+
 void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::string source) {
     Impl& host = *impl_;
     host.text_sources[&widget] = std::move(source);
@@ -1877,6 +2009,7 @@ void GameFrontendHost::destroy_runtime_widget(GuiLayoutWidget& widget) {
     host.widget_records = std::move(records);
     host.widget_nodes = std::move(nodes);
     for (const GuiLayoutWidget* const w : subtree) {
+        host.alpha_entries.erase(w); // End borrowers before freeing the widget.
         host.digit_uvs.erase(w);
         host.published_rotations.erase(w);
         host.text_runs.erase(w);

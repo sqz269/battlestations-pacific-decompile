@@ -128,13 +128,11 @@ void configure_system_dsps_00a7e0d0(void* system, SoundConfigurationState& state
     each_lua_entry(lua, config, [&](const GuiLuaRef&, const GuiLuaRef& value) {
         void* dsp = create_configured_sound_dsp_00a7c740(system, value, fmod, lua);
         if (!dsp) return;
-        if (state.system_dsps_134.size() ==
-            static_cast<std::size_t>(state.system_dsp_capacity_13c)) {
-            state.system_dsp_capacity_13c =
-                std::max(state.system_dsp_capacity_13c + 16, 16);
-            state.system_dsps_134.reserve(state.system_dsp_capacity_13c);
-        }
-        state.system_dsps_134.push_back(dsp);
+        // A7E0D0 inlines the exact A7B310 append policy over manager+134.
+        // The stored word is the real handle just returned by createDSPByType.
+        const auto word = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(dsp));
+        sound_cc13::append_sound_system_dsp_pointer_00a7b310(
+            state.system_dsps_134.native_header(), word);
         check_memory(fmod.add_system_dsp(system, dsp, nullptr), fmod);
     });
 }
@@ -158,11 +156,11 @@ void configure_channel_group_00a7de10(void* system, SoundConfiguredChannelGroup&
     each_lua_entry(lua, dsps.ref, [&](const GuiLuaRef&, const GuiLuaRef& value) {
         void* dsp = create_configured_sound_dsp_00a7c740(system, value, fmod, lua);
         if (!dsp) return;
-        if (group.dsps.size() == static_cast<std::size_t>(group.dsp_capacity)) {
-            group.dsp_capacity = std::max(group.dsp_capacity + 4, 8);
-            group.dsps.reserve(group.dsp_capacity);
-        }
-        group.dsps.push_back(dsp);
+        // A7DE10 inlines A7B2D0 over record+0C before addDSP. Use that
+        // existing body with the same live handle and owning array header.
+        const auto word = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(dsp));
+        sound_cc13::append_sound_group_effect_pointer_00a7b2d0(
+            group.dsps.native_header(), word);
         check_memory(fmod.add_channel_group_dsp(group.channel_group, dsp, nullptr), fmod);
     });
 }

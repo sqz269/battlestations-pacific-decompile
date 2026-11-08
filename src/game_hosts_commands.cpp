@@ -3057,20 +3057,18 @@ public:
         return chain_.owner.command_count(chain_.director);
     }
     void director_raise_primary_stage_0071d810(int stage) override {
-        // 0071D810 is monotonic (0071D818 returns when the stored stage is
-        // already at least the requested one).
-        if (!bsp::stage_raise_applies(chain_.director.stage, stage)) {
-            chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-            return;
-        }
-        chain_.director.stage = stage;
+        const int previous = chain_.director.stage;
+        // bsp.py show 0071D810: use the actual +48h owner and game+1FE4h;
+        // the returned CLEARCMD is delivered by the existing session route.
+        const auto message = bsp::gameplay_seg38_cc13::raise_command_stage_0071d810(
+            chain_.director.stage, stage, session_mode_1fe4());
         chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-        ++chain_.owner.summary.stage_raises;
+        if (chain_.director.stage > previous) ++chain_.owner.summary.stage_raises;
         // Milestone 2q: reaching stage 2 is what sends MT_GAMEUNIT_CLEARCMD,
         // and the queue only advances when that message is received. In a local
         // session this process is both ends, so it routes its own message back
         // into 00721A40's 5Dh arm here rather than recording the send.
-        if (!bsp::stage_raise_sends_message(stage, session_mode_1fe4())) return;
+        if (!message) return;
         if (chain_.owner.route_clear_command(chain_.unit.index, player_)) {
             queue_advanced = true;
         }
@@ -3458,36 +3456,24 @@ public:
         // this machine originates it. The send itself is deferred by one
         // statement to the caller, which is where 0071E430 returns anyway: arm
         // B is CALL 0071D810 followed by RET 8.
-        if (!bsp::stage_raise_applies(state_.queue_stage, stage)) {
-            owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-            return;
-        }
-        state_.queue_stage = stage;
-        director_.stage = stage;
+        const int previous = state_.queue_stage;
+        const auto message = bsp::gameplay_seg38_cc13::raise_command_stage_0071d810(
+            state_.queue_stage, stage, session_mode_1fe4());
+        if (state_.queue_stage > previous) director_.stage = state_.queue_stage;
         owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-        if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
+        if (message) {
             sends_clear_command = true;
         }
     }
 
     void raise_override_stage(int stage) override {
-        if (kDirectorOverrideLayerBound) {
-            // Packet s56_autotarget_override: director+50h itself; the 5Dh clear
-            // (+20h = 0) is applied by end_command_0071e430 after the state is back.
-            if (!bsp::stage_raise_applies(state_.override_stage, stage)) return;
-            state_.override_stage = stage;
-            owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
-            if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
-                clears_override = true;
-            }
-            return;
-        }
-        if (!bsp::stage_raise_applies(override_stage_, stage)) return;
-        override_stage_ = stage;
+        // bsp.py show 0071D9E0: the persistent director+50h, carried in the
+        // queue transaction, and game+1FE4h determine the override CLEARCMD.
+        // end_command_0071e430 delivers it after committing the queue state.
+        const auto message = bsp::gameplay_seg38_cc13::raise_override_stage_0071d9e0(
+            state_.override_stage, stage, session_mode_1fe4());
         owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
-        if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
-            owner_.record("WeaponDirector::clear_override_command", 0x0071e610u);
-        }
+        if (message) clears_override = true;
     }
 
     void route_clear_command_message(const bsp::ClearCommandMessage&) override {
@@ -3536,7 +3522,6 @@ private:
     bsp::CommandQueueState& state_;
     QueueClearBinding& exec_;
     bool player_{false};
-    int override_stage_{0};
 };
 
 }  // namespace
@@ -5016,10 +5001,13 @@ void GameCommandsHost::raise_override_stage_0071d9e0(std::size_t unit_index, int
     Impl& host = *impl_;
     if (!kDirectorOverrideLayerBound || unit_index >= host.directors.size()) return;
     GameDirector& director = host.directors[unit_index];
-    if (director.override_stage >= stage) return;
-    director.override_stage = stage;
+    // 0071D9E0 sends the 5Dh override clear only after a genuine rise to 2,
+    // and suppresses it for client mode 2; use the same session word as the
+    // primary-stage binding instead of clearing solely on the argument.
+    const auto message = bsp::gameplay_seg38_cc13::raise_override_stage_0071d9e0(
+        director.override_stage, stage, session_mode_1fe4());
     host.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
-    if (stage == 2) clear_override_in_place(host, unit_index);
+    if (message) clear_override_in_place(host, unit_index);
 }
 
 int GameCommandsHost::director_mode_0030(std::size_t unit_index) const {

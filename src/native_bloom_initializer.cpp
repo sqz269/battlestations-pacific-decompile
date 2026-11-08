@@ -1,4 +1,5 @@
 #include "bsp/native_bloom_initializer.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_particle_preparation.hpp"
@@ -208,8 +209,8 @@ void NativeBloomInitializationBlock::register_parameter(Word member,Word source,
     Word vector_count,int state,bool last) {
     NativeString& header=last?last_name_:common_name_;
     build_name(header,name,14);acquired_.native_state=state;
-    register_native_material_parameter_00b17e10(current_material(acquired_.receiver,member),&header,
-        pointer(reinterpret_cast<Word>(acquired_.receiver)+source),vector_count*4u,0,context_->parameters);
+    cc13_terrain::material_register_float4_array_00b18ac0(&current_material(acquired_.receiver,member),&header,
+        pointer(reinterpret_cast<Word>(acquired_.receiver)+source),vector_count,context_->parameters);
     acquired_.native_state=-1;return_name(header);
 }
 void NativeBloomInitializationBlock::unwind() {

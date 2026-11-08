@@ -160,6 +160,10 @@ public:
     // is a host choice; the raw frame providers retain their native branches.
     void begin_frame(std::uint32_t clear_color);
     NativeRendererPresentObservation end_frame();
+    // LoadingScreen::End's AA2B80 -> B1C4B0 on this same queue and renderer.
+    // Called between application frames; the native cycle adds no clear.
+    // False only when the host has no created device (headless launch).
+    bool reset_gui_render_queue();
     void copy_settings_capabilities(SettingsRendererCapabilities&) const;
     // The loader reads CURRENT renderer fields and rebuilds its raw AA table.
     void* const volatile& publication_00f8d394() noexcept;
@@ -383,6 +387,7 @@ public:
     void drain_singletons();
     void after_native_drain();
 private:
+    void begin_frame_without_clear();
     struct OrdinaryMeshConstruction final {};
     GameNativeRendererApplication(OrdinaryMeshConstruction, GameHostLog&,
         GameSingletonHost&, GameVfsHost&, GameNativeLuaServices&,

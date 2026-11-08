@@ -1,0 +1,98 @@
+{
+  "chain": 707,
+  "slot": "g5-w3",
+  "picked": "HUD WeaponInfo alpha timed-entry ownership and dispatch",
+  "implementation": [
+    "Replace the HUD's null animation handle and recorded stop/interval calls with a retained 14h alpha entry borrowing the same rendered GuiLayoutWidget.",
+    "Bind the existing alpha/countdown bodies to the bridge's live color operations while preserving canonical GuiWidgetOwner callers and per-call widget reloads.",
+    "Make AC2F20 borrow the actual target/rate cells and copy argument bits; retain the caller's 1.0f delay and the binary's 3F800000/80000000 constants.",
+    "Advance once in MissionFrame::update_front_end_screens_004d8620 after interface-request draining, using the frame's raw delta; HUD updates only configure/stop entries. Release completed/stopped entries and end borrowers before widget retirement."
+  ],
+  "evidence": [
+    "bsp.py show 00648c20 --asm: 00649221 calls AA8B00(0), 00649226..00649238 supplies target 0/rate 1 to AC2F20, 00649245 stores D7A24C at entry+4, and 00649251 calls AA8B80(0).",
+    "bsp.py show 00ac2f20: two dword MOVs at entry+C/+10; no numeric integer-to-float conversion.",
+    "bsp.py show 00ac2f40 / 00ad39a0 / 00aa8b80: current color/alpha dispatch, retained countdown, and deletion of an occupied timed slot.",
+    "bsp.py ghidra bytes: 00D7A208 = 00 00 00 80; 00D7A24C = 00 00 80 3F. No Ghidra mutation.",
+    "mission_state_frame.cpp: 004E5442..004E5488 may repeat update_interface_only_004c40f0; 004E549D invokes update_front_end_screens_004d8620 once afterward. cc13_sweepA2.cpp documents that GUI phase's game+21ECh raw delta."
+  ],
+  "assumptions_and_limits": [
+    "This is a Source API integration for the existing sprite bridge, not an original widget ABI replacement. The bridge owns alpha indices 0/1; Section still requires its existing canonical companion.",
+    "A missing loaded WeaponInfo widget creates no animation. Loaded widgets supply their actual retained identity/color; target/rate/delay are the original caller's constants.",
+    "The call graph conservatively reaches the existing Section switch arm through AD39A0; this packet creates only alpha profiles and claims no new ABE7B0 gameplay execution.",
+    "Build, focused fixture and built-executable reachability only; the game was not run and visual timing remains unvalidated."
+  ],
+  "counts": {
+    "readiness_wired_before": 10454,
+    "readiness_wired_after": 10461,
+    "entry_reachable_reconstructed_before": 5358,
+    "entry_reachable_reconstructed_after": 5365,
+    "intentionally_wired": 6
+  },
+  "validation": [
+    "scripts/build.ps1: MSVC Win32 Release and all four test groups passed.",
+    "The original math_tests.cpp fixture checks interval bits, delayed dispatch, widget reload and retirement. A focused run_mission_frame regression adds two request-drain iterations: three interface pumps configure a new fade before one GUI update consumes raw delta 1.25, leaving alpha 0.75 after its 1.0 delay.",
+    "call_graph.py who: each of the six claimed bodies has a call site reachable from the executable entry.",
+    "pc24_lint.py --diff origin/main...HEAD: 0 findings."
+  ],
+  "review_round_1": {
+    "review_run": 1537,
+    "reviewed_head": "740e92e4fc234f98ac62859c0bbab6dfe972cc73",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "reason": "Moved advancement out of update_hud_root_screen_00649860 into the once-per-frame GUI phase after the request drain; callbacks retain configuration/cancellation only, so new fades participate in that same GUI phase.",
+        "verification": "Passed the real-frame-scheduler fixture with two drain passes, three interface pumps, one GUI time step and alpha 0.75. MSVC Win32 Release and all four test groups passed (local/output/wire-g5-c707-r1-build.log). All six body callers remain entry-reachable; AD39A0's path now passes through MissionFrameBinding::update_front_end_screens_004d8620. PC24 lint: 0 findings."
+      }
+    ]
+  },
+  "rows": [
+    {"native":"00AC2ED0","status":"wired","host_site":"src/game_hosts_frontend.cpp: GameFrontendHost::widget_alpha_animation"},
+    {"native":"00AD3970","status":"wired","host_site":"src/gui_timed_entry_types.cpp: construct_gui_timed_entry_alpha_00ac2ed0"},
+    {"native":"00AC2F20","status":"wired","host_site":"src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_alpha_interval"},
+    {"native":"00AD39A0","status":"wired","host_site":"src/game_hosts_frontend.cpp: GameFrontendHost::advance_widget_alpha_animations"},
+    {"native":"00AC2F40","status":"wired","host_site":"src/gui_timed_entry_types.cpp: advance_gui_timed_entry_00ad39a0"},
+    {"native":"00AD3990","status":"wired","host_site":"src/game_hosts_frontend.cpp: BridgeAlphaEntryDelete through delete_gui_timed_entry_profile"},
+    {"native":"005251C0","status":"skipped","host_site":"src/game_hosts_hud.cpp: SetSelectedUnit/ForceSelectUnit screen-reset callbacks","reason":"Missing produced selection mode +30h and selection-vector owner +C4h; existing pick-screen state does not retain those reset inputs."},
+    {"native":"00A2B950","status":"skipped","host_site":"src/game_hosts_ai.cpp: score-list inspection","reason":"The score list serves the debug text overlay; no single-player gameplay consumer was established for insertion."},
+    {"native":"00A2BCC0","status":"skipped","host_site":"src/game_hosts_ai.cpp: score-list inspection","reason":"The chosen-byte reader belongs to the debug text overlay, outside this single-player wiring packet."},
+    {"native":"008F54F0","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: Impl::Impl/merge_child","reason":"Already entry-reachable through the existing native property merge; another call would not add wiring."},
+    {"native":"008F3A20","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: Bag::insert_enum","reason":"The existing enum projection already calls this body with its declaration and symbol; no replacement was needed."},
+    {"native":"008F3710","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: Bag::insert_into","reason":"The existing integer projection already calls this body with parser-owned integer bits; no replacement was needed."},
+    {"native":"005CAFB0","status":"skipped","host_site":"src/game_hosts_lua.cpp: movcam_reset_deviation_factor","reason":"The legacy movie-camera callback is explicitly unreached and has no owned current/default deviation fields."},
+    {"native":"005CAFC0","status":"skipped","host_site":"src/game_hosts_lua.cpp: movcam_reset_overview_height","reason":"The legacy movie-camera callback is explicitly unreached and has no owned current/default height fields."},
+    {"native":"005CB970","status":"skipped","host_site":"src/game_hosts_lua.cpp: movcam_reset_speed_limits","reason":"The legacy movie-camera callback has no produced default limits/current acceleration time receiver."},
+    {"native":"005CB9C0","status":"skipped","host_site":"src/game_hosts_lua.cpp: movcam_reset_accel_time","reason":"The legacy movie-camera callback has no produced default acceleration-time receiver."},
+    {"native":"00A0F680","status":"skipped","host_site":"src/game_hosts_ai.cpp: candidate_attack_value","reason":"The air-support flight class has no concrete class-weight/pair-composition provider in this host."},
+    {"native":"005F98F0","status":"skipped","host_site":"src/game_hosts_ai.cpp: selling_tick_00a11ff0","reason":"The per-member selling message path and its +308h producer remain unbound; no live port-query consumer was established here."},
+    {"native":"00721280","status":"skipped","host_site":"src/game_hosts_lua.cpp: director-flags inspection","reason":"No live single-player controller-snapshot producer/consumer was established in the inspected director-flags path."},
+    {"native":"00721070","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: command-target descriptor inspection","reason":"No live initializer consumer with the produced 00E08F8C class ordinal was established before selecting alpha ownership work."},
+    {"native":"00A03900","status":"skipped","host_site":"src/game_hosts_ai.cpp: spawn/composition inspection","reason":"Missing parser-owned per-mode class-pair rows and a live scoring consumer; the semantic float API also needs review against the native row-pointer result."},
+    {"native":"00A25A30","status":"skipped","host_site":"src/game_hosts_ai.cpp: spawn-group inspection","reason":"Missing native request weight, threat-record vector and support-site list; quick_spawn_named_group does not produce those gate inputs."},
+    {"native":"00A2C3D0","status":"skipped","host_site":"src/game_hosts_ai.cpp: group-recon inspection","reason":"Missing member 00779D00 recon-value production and a live ratio-query consumer."},
+    {"native":"00AA5A00","status":"skipped","host_site":"src/game_hosts_frontend.cpp: child-order inspection","reason":"Alphabetical child snapshots serve the reflection descriptor writer, not the live render order; no gameplay descriptor-writer caller was established."},
+    {"native":"00B4ED70","status":"skipped","host_site":"src/native_distortion_lifetime.cpp: reserve_native_distortion_records","reason":"No new live distortion-record producer was established; existing owner teardown does not justify synthetic growth."},
+    {"native":"00B4EE20","status":"skipped","host_site":"src/native_distortion_lifetime.cpp: destroy_native_distortion_records","reason":"The actual-storage teardown already invokes this resize body; repeating it would duplicate existing cleanup."},
+    {"native":"00809270","status":"skipped","host_site":"src/unit_instance_subobjects.cpp: owned-reference-slot inspection","reason":"No complete live vehicle/fort constructor owning the required reference slot was established for this typed constructor."},
+    {"native":"00AB6D00","status":"skipped","host_site":"src/font_data.cpp: text-byte acceptance inspection","reason":"Missing live input-character consumer with its text-context font; existing constant probe calls are not game input wiring."},
+    {"native":"00B6FC30","status":"skipped","host_site":"src/camera_configuration.cpp: FOV/aspect-product inspection","reason":"No linked original product-query consumer was established; the shadow-fit caller remains unhosted."},
+    {"native":"00803C20","status":"skipped","host_site":"src/engine_seg49_64_78_cc13.cpp: recon-style inspection","reason":"No concrete live recon-style palette/table consumer was established for the typed relation-style query."},
+    {"native":"009AF9A0","status":"skipped","host_site":"include/bsp/game_hosts_units_internal.hpp: land-task state inspection","reason":"The enum-based host landing task lacks the complete canonical state identities/registry receiver required by the native constructor contract."},
+    {"native":"009B3240","status":"skipped","host_site":"src/game_hosts_units.cpp: land-task construction inspection","reason":"Missing complete task/base/composite production and executable profiles/entry services; the sparse host fields cannot satisfy this constructor contract."},
+    {"native":"00AA0E20","status":"skipped","host_site":"src/cc13_seg87.cpp: animated-value restart inspection","reason":"No live animated-value owner with its current/default child objects and stop-vcall provider was established."},
+    {"native":"00AA0E60","status":"skipped","host_site":"src/cc13_seg87.cpp: animated-value target inspection","reason":"No live animated-value owner and target/notification providers were established."},
+    {"native":"00501670","status":"skipped","host_site":"src/native_loading_queue_work_items.cpp: loading-work-item inspection","reason":"No production pending-work-item owner and queue-pump consumer was established for the inspected native loader graph."},
+    {"native":"00504D20","status":"skipped","host_site":"src/native_loading_queue_submission.cpp: loading-work-item submission inspection","reason":"No production native loader/callback receiver was established for the inspected loading submission graph."},
+    {"native":"005055C0","status":"skipped","host_site":"src/native_loading_queue_work_items.cpp: loading-job enqueue inspection","reason":"No complete live native queue owner/pump path was established to consume newly enqueued jobs."},
+    {"native":"00506BF0","status":"skipped","host_site":"src/native_loading_queue_retirement.cpp: loading-front retirement inspection","reason":"No production pending-job owner/completion provider was established for a new retirement call."},
+    {"native":"00521F10","status":"skipped","host_site":"src/game_hosts_hud.cpp: UnitPickBinding lock branch","reason":"Missing the live lock-action/row-array producer; the inspected action_byte callback remains unbound."},
+    {"native":"00521FD0","status":"skipped","host_site":"src/game_hosts_hud.cpp: UnitPickBinding lock branch","reason":"Missing the live lock-action/entry-position receiver consumed by the native lock branch."},
+    {"native":"006DE3D0","status":"skipped","host_site":"src/game_hosts_lua.cpp: ObjectivePositionHost marker_bind_on_add_stub","reason":"This concrete objective host is position-only; a live unit-add callback and marker-manager receiver were not established."},
+    {"native":"006DE3F0","status":"skipped","host_site":"src/game_hosts_lua.cpp: marker_rebind_unit","reason":"Missing marker-manager slot occupancy, entry keep flags and observer-pair membership/cleanup effects."},
+    {"native":"0067C170","status":"skipped","host_site":"src/band_0067_cc13.cpp: listbox-row activation inspection","reason":"No live enabled/locked row-array producer and activation consumer was established before selecting alpha ownership work."},
+    {"native":"0059ABC0","status":"skipped","host_site":"src/frontend_screens_cc13.cpp: HUD-map zoom inspection","reason":"Missing bound map-screen mode +2Ch and zoom scale +5BCh producers/consumer in the inspected HUD bridge."},
+    {"native":"00BF0340","status":"skipped","host_site":"src/engine_services_cc13.cpp: stream-writer inspection","reason":"No live writer object with its actual +54h write provider and remaining-count owner was established."},
+    {"native":"00BF0810","status":"skipped","host_site":"src/engine_services_cc13.cpp: stream-writer chunk inspection","reason":"No live native writer-chunk-stack producer with its reserve/string providers was established."},
+    {"native":"00BD8CD0","status":"skipped","host_site":"src/engine_seg11_35_66_cc13.cpp: archive-field writer inspection","reason":"No gameplay archive-field-writer consumer with its indentation/key/value/terminator providers was established."}
+  ]
+}

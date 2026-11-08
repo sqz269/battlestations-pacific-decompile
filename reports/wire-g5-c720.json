@@ -1,0 +1,111 @@
+{
+  "goal": 5,
+  "chain": 720,
+  "run": 1540,
+  "owner": "agent/g5-w2",
+  "base_head": "ea9f804749",
+  "picked": "Live strafe approach target-reference rearm and eager hull pick",
+  "rows": [
+    {
+      "native": "009ca780",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding::st_gotowards_enter_009ca820 -> rearm_strafe_target",
+      "body": "src/cc13_seg67b.cpp: bot_approach_strafe_rearm_target_point_009ca780",
+      "original_abi": "__fastcall(ECX = strafe approach), RET; row at +14h, rocket at +20h, target ref at +58h",
+      "evidence": [
+        "bsp.py show 009ca780 --asm: 009CA786..009CA7D2 copies row+E4h..F4h to the target ref's spread, dirty byte, chance and section weights",
+        "009CA7D7 calls 009FA260 before the rocket tail at 009CA80E; target is approach+70h and point is approach+80h, the reference centre",
+        "bsp.py show 009fa260: target+100h chooses the body offset, bias is added, dirty is cleared even with a null target; this call does not update the world point",
+        "The loaded PilotBotParameters row begins after the 0Ch descriptor: static assertions map strafe_target_point_select_prec_0f0 to row+E4h and strafe_fueltank_weight_100 to row+F4h",
+        "game_hosts_units.cpp settings load calls load_pilot_bot_config_00901610 before units exist; this binding borrows its selected level row"
+      ],
+      "real_state": [
+        "PilotBot row selected by the running plane's pilot_skill_index",
+        "Existing hull_aim_ref, including its bias and centre, plus the current approach+70h target resolved from the live unit registry",
+        "Target class hull dimensions and current section records; GameGunneryHost's shared stream-1 hull-pick draws",
+        "The plane's existing opportunistic rocket state and its live target handle"
+      ],
+      "replacement": "Deleted the inline copied-row rearm, counter-seed increment, deferred pick and separate rocket setter; the existing body now owns their sequence once.",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1,
+      "built_body": "10412c40",
+      "built_call_site": "103083f1",
+      "built_caller": "GameUnitsHost::motion_step_00825f20::PlaneBinding::st_enter",
+      "uncertainty": "The enclosing strafe task remains the existing typed host projection, not a drop-in original object ABI; no game run or live strafe appearance validation was performed."
+    },
+    {
+      "native": "009fa260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: rearm_strafe_target picker callback",
+      "reason": "Already-wired dependency reused for the immediate body-frame pick; no additional address is claimed or counted."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: aircraft task tick gating",
+      "reason": "The packet does not own a canonical task+2F4h unit view or the live unit+9C2h per-side bytes indexed by 00F876B8."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: PlaneBinding dogfight target setter",
+      "reason": "The dogfight host still lacks the native approach+A0h observer owner and +B4h persistent target required by the complete unregister/register and target-reference setter body."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail::Pass::candidate_attack_value",
+      "reason": "Air-support flight classes lack the weapon-facts owner needed to evaluate the constructed class record through the group's pair-value model."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list planning",
+      "reason": "Prior skips identify the native score table as debug-overlay data; this survey identified no live single-player gameplay consumer to replace."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list planning",
+      "reason": "No live native candidate score entries and gameplay consumer were identified to consume mark_chosen; the existing planner uses separate state."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline teardown counterpart",
+      "reason": "The raw cleanup needs the canonical game+1930h native string set, Lua owner at +1A0Ch and teardown callbacks; the current ready host owns a vector baseline."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer player-count handling is outside the requested single-player wiring scope."
+    },
+    {
+      "native": "00662020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player loadout selection",
+      "reason": "The command host represents the player's choice without a live radial loadout screen and icon owner for the highlight body."
+    },
+    {
+      "native": "00665f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: player loadout selection",
+      "reason": "The command host has no live radial loadout screen, ring elements or UI consumer for the builder's output."
+    }
+  ],
+  "wired_total_before": 10468,
+  "wired_total_after": 10469,
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed",
+    "final_build": "scripts/build.ps1 passed; all four CTests passed after the tracking projection correction",
+    "layout": "Win32 static assertions cover the row offsets, approach row/rocket/ref offsets, target/dirty/spread/centre/section fields and complete view size",
+    "call_graph": "python tools/call_graph.py; who 009ca780: REACHABLE, one call site from the changed motion object; path 009ca780 connects to WinMainCRTStartup",
+    "readiness": "wire_readiness.py --standins: 009ca780 wired, called=true, call_sites=1, callers_live=1",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 3 files",
+    "diff_check": "git diff --check passed",
+    "game_run": false
+  },
+  "left_for_others": "Remaining aircraft task constructors, task gating and dogfight observer ownership; all candidate skips above remain available for a later packet."
+}

@@ -1,10 +1,14 @@
 // Packet cc13-sweepA3: segments 0..14 leftovers, third pass (cc13_sweepA3 marker).
 // See include/bsp/cc13_sweepA3.hpp and docs/CC13_SWEEPA3.md. Each body carries
 // its address, the original ABI and every simplification next to it.
-// Common simplification: SEH unwind actions are not modelled (no body here
-// throws itself).
+// The raw host bodies do not model SEH unwind actions. The typed 004D32A0
+// interface below owns its temporary LuaObject and string cleanup explicitly.
 
 #include "bsp/cc13_sweepA3.hpp"
+#include "bsp/native_lua_objects.hpp"
+#include "bsp/cc13_seg87.hpp"
+
+#include <algorithm>
 
 #include <cstdlib>
 #include <cstring>
@@ -1073,65 +1077,56 @@ void game_destroy_world_004d2bb0(Raw game, SweepA3Host& host) {
 // the tree from [head+4], the head is relinked to itself (+4, then size 0,
 // +0, +8), the globals, value and key objects are destroyed in that order,
 // 00427110(vector, 0) and _free (00BF6989) of the vector data.
-void game_nil_script_added_globals_004d32a0(Raw game, SweepA3Host& host) {
-    if (game.at<std::uint32_t>(0x1938) == 0) return;
-    alignas(4) std::uint8_t names_storage[0xc] = {};
-    const Raw names{names_storage};
-    LuaObjectStorage key;
-    LuaObjectStorage value;
-    LuaObjectStorage globals;
-    host.lua_object_construct_00b65f50(&key);
-    host.lua_object_construct_00b65f50(&value);
-    host.lua_state_owner_get_globals_00b67980(game.field(0x1a0c), &globals);
-    host.lua_object_iterate_first_00b67080(&globals, &key, &value);
-    while (!host.lua_object_is_unbound_00b66420(&globals, &key)) {
-        const char* const text = host.lua_object_get_string_00b662b0(&key);
-        alignas(4) std::uint8_t name_storage[8] = {};
-        const Raw name{name_storage};
-        host.native_string_resize_0041dd40(name, static_cast<std::uint32_t>(std::strlen(text)), 1);
-        void* const data = name.ptr(4);
-        if (data != nullptr) std::memcpy(data, text, name.at<std::uint32_t>(0) + 1);
-        if (host.lua_object_is_function_00b66200(&value)) {
-            void* const head = game.ptr(0x1934);
-            const Raw set{game.field(0x1930)};
-            alignas(4) std::uint8_t found_storage[8];
-            const Raw found = host.native_string_set_find_004c7f10(set, Raw{found_storage}, name);
-            if (found.ptr(0) == nullptr || found.ptr(0) != set.p) host.invalid_parameter_noinfo_00bf6713();
-            if (found.ptr(4) == head) host.native_string_vector_append_004cdc20(names.p, name);
+// Goal 5 chain 722: the typed baseline is the retained output of 004D30F0,
+// and lua wraps the SAME interpreter the mission scripts ran on. Evidence:
+// bsp.py show 004D32A0, 004D33DB (end means absent), 004D3445..004D34CE
+// (execute collected names last-first), and 004C7F10 (case-insensitive set).
+// The former raw-game/abstract-host interface had no callers. Its sole body
+// now uses the existing native LuaObject/ExecuteString bodies over live state;
+// std::vector/string replace only the baseline tree and temporary name vector.
+void game_nil_script_added_globals_004d32a0(std::vector<std::string>& baseline,
+    NativeLuaStateStorage& lua, NativeStringStorage& strings) {
+    if (baseline.empty()) return; // 004D32D2: no walk and no Lua side effects.
+    NativeLuaObjectStorage key, value, globals;
+    construct_native_lua_object_00b65f50(&key);
+    construct_native_lua_object_00b65f50(&value);
+    native_lua_globals_00b67980(lua, &globals);
+    struct Objects {
+        NativeLuaObjectStorage &globals, &value, &key;
+        ~Objects() {
+            destroy_native_lua_object_00b67700(globals);
+            destroy_native_lua_object_00b67700(value);
+            destroy_native_lua_object_00b67700(key);
         }
-        if (data != nullptr) {
-            host.sized_storage_pool_return_block_00bd1510(host.sized_storage_pool_get_singleton_00419cc0(), data,
-                                                          name.at<std::uint32_t>(0) + 1, 1);
+    } cleanup{globals, value, key};
+    std::vector<std::string> names;
+    native_lua_iterate_first_00b67080(globals, key, value);
+    while (!native_lua_is_unbound_00b66420(key)) {
+        // As in 004D334B, read the key before testing the value's type.
+        const std::string name(native_lua_string_00b662b0(key));
+        if (native_lua_is_function_00b66200(value)
+            && std::none_of(baseline.begin(), baseline.end(), [&](const std::string& existing) {
+                return ::_stricmp(existing.c_str(), name.c_str()) == 0;
+            })) {
+            names.push_back(name);
         }
-        host.lua_object_iterate_next_00b67190(&globals, &key, &value);
+        native_lua_iterate_next_00b67190(globals, key, value);
     }
-    while (names.at<std::uint32_t>(4) != 0) {
-        alignas(4) std::uint8_t suffix_storage[8];
-        const Raw suffix{suffix_storage};
-        construct_literal(suffix, literal(0x00ce78f4, host), 6, host);  // " = nil"
-        const Raw last{static_cast<std::uint8_t*>(names.ptr(0)) + names.at<std::uint32_t>(4) * 8 - 8};
-        alignas(4) std::uint8_t statement_storage[8];
-        const Raw statement{statement_storage};
-        host.lua_state_owner_execute_string_00b66c60(game.field(0x1a0c),
-                                                     host.native_string_concat_004261a0(last, statement, suffix));
-        release_string(statement, host);
-        release_string(suffix, host);
-        const std::uint32_t count = names.at<std::uint32_t>(4);
-        if (count == 0) break;
-        release_string(Raw{static_cast<std::uint8_t*>(names.ptr(0)) + count * 8 - 8}, host);
-        names.at<std::uint32_t>(4) = count - 1;
+    while (!names.empty()) {
+        NativeString statement;
+        struct Statement {
+            NativeString& text;
+            NativeStringStorage& storage;
+            ~Statement() { text.release_to(storage); }
+        } release{statement, strings};
+        statement.assign_0041e870(strings, (names.back() + " = nil").c_str());
+        // Original ignores the status and leaves ExecuteString's result/error
+        // stack values in place. Do not replace this with lua_setglobal: a
+        // global metatable can observe the assignment expression.
+        (void)execute_native_lua_string_00b66c60(lua, statement);
+        names.pop_back();
     }
-    const Raw set{game.field(0x1930)};
-    host.native_string_set_erase_subtree_004cec60(set, raw(set.ptr(4)).ptr(4));
-    raw(set.ptr(4)).ptr(4) = set.ptr(4);
-    set.at<std::uint32_t>(8) = 0;
-    raw(set.ptr(4)).ptr(0) = set.ptr(4);
-    raw(set.ptr(4)).ptr(8) = set.ptr(4);
-    host.lua_object_destruct_00b67700(&globals);
-    host.lua_object_destruct_00b67700(&value);
-    host.lua_object_destruct_00b67700(&key);
-    host.native_string_vector_resize_00427110(names, 0);
-    host.free_00bf6989(names.ptr(0));
+    baseline.clear(); // 004D3509..004D3534 clears and self-links the native set.
 }
 
 // ============================ segment 12 ===================================

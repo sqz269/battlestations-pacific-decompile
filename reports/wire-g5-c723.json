@@ -1,0 +1,266 @@
+{
+  "run": 1546,
+  "goal": 5,
+  "chain": 723,
+  "slot": "g5-w9",
+  "base_head": "97075d0565bd256332423413999938dcef1b07ad",
+  "rows": [
+    {
+      "native": "009f60c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::DirectorTargetDeleter::operator(), Controller::constructed_target and GameShipAiHost::bind_gunnery",
+      "evidence": "bsp.py show 009f60c0: original fastcall selector destructor frees priority storage, clears its vector words and restores base vtable 00D21B40. The custom unique_ptr deleter calls the existing reconstructed body on the same selector initialized by 009F6A20 and consumed by TargetBinding and auto_target_tick_009F5DA0, then deletes the enclosing C++ object. Replacement, mission reload and host destruction use this owner; controller moves transfer ownership. No parallel selector or duplicate reconstructed destructor was introduced."
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp:HudMinimap map_ping_prune record",
+      "reason": "The inspected baseline has no owned native ping list or ping producer; agent/g5-w4 subsequently announced ownership of the list constructor and expiry pass."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp:map ping comments / src/leftovers_cc13.cpp:send_map_ping_008e2ee0",
+      "reason": "The HUD map input sender and its shared cooldown, current-game and message-transport bindings are missing from the inspected host."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:generated ship registration",
+      "reason": "The host retains split semantic controller fields; the full 2268h native ship-AI object and constructor adapters are missing, and invoking a second brain would duplicate constructor draws."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "The native ammo+48h alternate record, retained references and property-tree owner have no live producer at this site."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp:unit_clear_vector660_0095d3c0",
+      "reason": "The inspected ship-AI host has no original-layout unit+660h vector owner for the command-building D3h receiver."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list comments",
+      "reason": "The table lacks a live gameplay consumer; the documented original reader is an unreachable debug overlay, so debug-only wiring is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:candidate score-list comments",
+      "reason": "No live candidate score-table entries exist to mark, and the documented consumer is debug-only."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The inspected slice body itself is absent from this built call graph; wiring its product alone would not establish entry reach, and agent/g5-w5 subsequently claimed this workstream."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:extra clip-plane submission",
+      "reason": "The native scene submission source already calls this body; no additional live call site was established in this packet."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:extra clip-plane clearing",
+      "reason": "The native scene submission source already calls this body; no additional live call site was established in this packet."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MissionTeardown::close_result_gui",
+      "reason": "The transition needs actual game+7184h storage, the movie screen, input-context and cinematic callbacks, and a listener-capable sound frame; this host site only records the operation."
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:clear_all_leak_zones trap",
+      "reason": "The inspected receiver has no live LeakManagerZones owner and deliberately traps this unbound message arm."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:write_checkpoint",
+      "reason": "The mission-start host has no checkpoint comparison or profile checkpoint rewrite owner; it records both operations."
+    },
+    {
+      "native": "009fb010",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp:leg_lock_get_009fb010",
+      "reason": "A live leg-lock singleton publication, singleton manager section and registration/lifetime host are missing from the inspected ship-AI path."
+    },
+    {
+      "native": "009fcf90",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp:opportunistic_rocket_set_rocket_ref_009fcf90",
+      "reason": "The ship-AI host has no live ObservedPointerHolder and native rocket observer owner for this setter."
+    },
+    {
+      "native": "009fcfd0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp:land_state_observer_vector_push_back_009fcfd0",
+      "reason": "No live native land-state observer vector/source-element producer was found in the selected ship-AI workstream."
+    },
+    {
+      "native": "009d59c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:ship_ai_path_node_run_end_point_009d59c0",
+      "reason": "The live path follower uses immediate successors rather than the end-of-run result; no matching result consumer was established."
+    },
+    {
+      "native": "009d5cf0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:ship_ai_path_has_no_sided_node_009d5cf0",
+      "reason": "bsp.py callers reports zero original call sites, and no live consumer of this combined predicate was found."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:oriented_rect_distance_to_point_009d7780",
+      "reason": "The existing evidence labels the routine unreferenced; a real original-path consumer of its rectangle distance is missing."
+    },
+    {
+      "native": "009d4ea0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:command_record_set_float40_009d4ea0",
+      "reason": "bsp.py callers reports zero original call sites; no matching live command-record producer was established."
+    },
+    {
+      "native": "009d4ec0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:command_record_set_float48_009d4ec0",
+      "reason": "bsp.py callers reports zero original call sites; no matching live command-record producer was established."
+    },
+    {
+      "native": "009d4f00",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:command_record_get_float48_009d4f00",
+      "reason": "No original-path consumer of this command-record getter was established in the semantic order-slot host."
+    },
+    {
+      "native": "009d4f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:Controller::OrderStorage",
+      "reason": "The order owner has semantic slots and an index rather than native ai+A98h/B40h backing required by the raw pointer-arithmetic getter."
+    },
+    {
+      "native": "009f9c80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp:random_unit_circle_direction_009f9c80",
+      "reason": "bsp.py callers reports zero original sites; adding a random-direction call without a live consumer would introduce an unjustified stream-one draw."
+    },
+    {
+      "native": "009f6ad0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp:command_controller_fire_forbidden_009f6ad0",
+      "reason": "The selected ship-AI workstream has no matching original-path consumer of the controller+3Ch predicate."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "The mission Lua host runs on the main thread and lacks the frame-job-thread producer needed to enqueue a real deferred call."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp and src/game_hosts_ready.cpp:deferred-call comments",
+      "reason": "No real frame-job-thread source LuaVariantRecord vector or deferred destination node is produced by the current main-thread interpreter."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp:byte_grid_propagate_falloff_00880080 and landscape_build_shore_mask_00880420",
+      "reason": "The inspected native caller chain has no concrete Left55Host implementation in src, so no real live column-grid sampling call site was established."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_pointer_array.cpp:reserve_native_vehicle_pointer_array_00546630",
+      "reason": "The existing resize body already delegates to this reserve helper; a new entry-reachable activation owner was outside the selected lifetime packet."
+    },
+    {
+      "native": "005471b0",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_class_activation.cpp:pointer-array activation",
+      "reason": "The native activation source already calls this body; no additional live activation path was established in this packet."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing entry-reachable query refresh already calls this body; adding another layer clear would duplicate its work."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing entry-reachable query refresh already calls this body; adding another refill would duplicate its work."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:AvoidSearchBinding / GameAvoidZoneRuntime::refresh_search",
+      "reason": "The baseline built graph already shows the reconstructed query body called from entry-reachable GameAvoidZoneRuntime::refresh_search."
+    },
+    {
+      "native": "00780db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:create_multi_score",
+      "reason": "The original constructor is gated to session mode 1 and creates the network MultiScore entity; this packet excludes multiplayer-only wiring."
+    },
+    {
+      "native": "00815010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:pass-side message checked cast",
+      "reason": "This host already calls the existing reconstructed body with canonical live unit identity and its real IsKindOf query."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:TailGunnerBot skill notification",
+      "reason": "The existing site already calls this body with the loaded descriptor, actual skill level and shared stream-one draw."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane flight-state impulse reset record",
+      "reason": "The complete native impulse and saved-affine backing plus its host callbacks were not established for this raw-layout reset body."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:PlayerGunSeat handover",
+      "reason": "The handover site lacks a persistent native fire-mode/ammo-switch owner implementing 0072D5B0; calling only the wrapper would leave its actual effect unbound."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:TailGunnerFire and TailGunnerAim owners",
+      "reason": "The host splits tail-gunner state across semantic records; a complete bot object and base 0072BBD0 constructor binding are missing."
+    },
+    {
+      "native": "008fbec0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp:tail_gunner_bot_attach_008fbec0",
+      "reason": "The selected host has no constructed native tail-gunner bot with the required parent and gun-reference fields."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (4/4)",
+    "float_math_changed": false,
+    "built_reconstructed_addresses_called_before": 5376,
+    "built_reconstructed_addresses_called_after": 5377,
+    "wire_readiness_wired_before": 10472,
+    "wire_readiness_wired_after": 10473,
+    "call_graph": "009F60C0 was absent at baseline; after the build it is REACHABLE at 104CEA80 with three call sites from unique_ptr destruction, Controller destruction and unique_ptr::reset, all generated from game_hosts_ship_ai.cpp.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost destruction -> GameMenuHost destruction -> GameMissionHost destruction -> GameMissionFrameHost destruction -> GameShipAiHost destruction -> Impl destruction -> vector<Controller> destruction -> Controller destruction -> 009F60C0",
+    "boundary": "Build/test and static built-executable entry reach verified. The game was not run; no gameplay or original binary ABI compatibility claim. Existing typed reconstruction reused unchanged."
+  }
+}

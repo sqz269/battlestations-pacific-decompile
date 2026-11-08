@@ -41,6 +41,7 @@
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
+#include "bsp/cc13_sweepC_trap_host.hpp"
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"        // 0074B570 receiver (goal 5 chain 630)
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
@@ -1647,6 +1648,21 @@ struct GameShipAiHost::Impl {
     unsigned long long cruise_latches{}, cruise_latch_resends{}, cruise_latch_sentinels{};
     std::int32_t session_mode{};
 
+    struct DirectorTargetDeleter {
+        void operator()(bsp::cc13_seg68::WeaponDirectorAutoTarget* target) const noexcept {
+            if (target == nullptr) return;
+            // 009F60C0: release the selector's priority vector and restore its
+            // base vtable before freeing the enclosing object. This is the
+            // same selector built by 009F6A20 below and read by TargetBinding
+            // and auto_target_tick_009F5DA0, not a separate teardown record.
+            // The owning pointer covers replacement, controllers.clear() at
+            // mission load, and Impl destruction; vector moves transfer it.
+            // Evidence: bsp.py show 009f60c0, derived 00D21B48 -> base 00D21B40.
+            bsp::cc13_seg68::weapon_director_auto_target_destruct_009f60c0(*target);
+            delete target;
+        }
+    };
+
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
     // whole of this record: the timers are ai+0B14h / ai+0B18h, the block is
     // ai+60h, and the order slots live on the unit rather than on the AI.
@@ -1666,7 +1682,8 @@ struct GameShipAiHost::Impl {
             }
         } order{};
         bsp::AutoTargetState target{};          // director+38h
-        std::unique_ptr<bsp::cc13_seg68::WeaponDirectorAutoTarget> constructed_target;
+        std::unique_ptr<bsp::cc13_seg68::WeaponDirectorAutoTarget,
+            DirectorTargetDeleter> constructed_target;
         // ai+2264h. 009F3C0D..009F3C27 (the controller constructor 009F3BA0):
         // the current state starts as ai+0BC8h, brain+0B70h, the `cruise` leaf,
         // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
@@ -13275,8 +13292,25 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
             if (decision.route != bsp::QueuedMessageRoute::kEntityGeneric) continue;
         }
         done("ShipAiNeighbour::pass_side_deliver_00821e80", 0x00822294u);
-        // 00822298: 00521E30 resolves msg+1Ch, 00815010 keeps a kind-6 unit.
-        if (m.other >= controllers.size() || !units.unit_is_kind_of(m.other, 6)) continue;
+        if (m.other >= controllers.size()) continue;
+        // 00822298..008222A4: resolve msg+1Ch, then run the checked cast at
+        // 00815010 (ECX=entity, EAX=entity/null; show --asm 00815010). Borrow
+        // the same canonical identity carried by the neighbour nodes. The
+        // body owns null/kind-6 selection; its sole virtual boundary queries
+        // the referenced live unit's class rather than a fabricated image.
+        struct NarrowUnit final : bsp::cc13_sweepC::SweepCTrapHost {
+            GameUnitsHost& units;
+            std::size_t index;
+            NarrowUnit(GameUnitsHost& units_, std::size_t index_)
+                : units(units_), index(index_) {}
+            bool object_is_kind_of_vslot_5c(void* entity, std::uint32_t kind) override {
+                if (entity != units.unit_identity(index))
+                    throw std::logic_error("Ship pass-side cast lost its canonical unit identity");
+                return units.unit_is_kind_of(index, static_cast<int>(kind));
+            }
+        } narrow{units, m.other};
+        if (bsp::cc13_sweepC::entity_narrow_to_class6_00815010(
+                narrow, const_cast<void*>(units.unit_identity(m.other))) == nullptr) continue;
         // 009F3E30: this ship's node for the other, then the other ship's ai
         // (unit+740h) and its node for this ship.
         NeighbourNodeStore* n1 = find(m.sender, m.other);
@@ -14820,8 +14854,7 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
             auto& ctl = impl_->controllers[i];
             if (!ctl.nav_block_built) continue;
             ShipDirectorTargetBinding binding(*impl_, i);
-            ctl.constructed_target =
-                std::make_unique<bsp::cc13_seg68::WeaponDirectorAutoTarget>();
+            ctl.constructed_target.reset(new bsp::cc13_seg68::WeaponDirectorAutoTarget{});
             bsp::cc13_seg68::weapon_director_auto_target_construct_009f6a20(
                 binding, *ctl.constructed_target,
                 static_cast<bsp::cc13_seg68::Handle>(i + 1u));

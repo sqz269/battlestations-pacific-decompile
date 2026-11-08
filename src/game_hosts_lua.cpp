@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/mission_picture_owner.hpp"
@@ -1185,8 +1186,11 @@ struct ScopedMissionCheckpointRecord {
             &value, game_native_string_process().raw_context());
     }
     ~ScopedMissionCheckpointRecord() {
-        destroy_native_string_header_0041dd20(
-            &value.unlock_name, game_native_string_process().raw_context());
+        // Chain 687: 00436490's listing releases this actual record's +0Ch
+        // pooled string without clearing its header or touching the words.
+        bsp::profile_seg2_cc13::native_string_at_0c_destroy_storage_00436490(
+            {reinterpret_cast<std::uint8_t*>(&value)},
+            game_native_string_process().raw_context());
     }
     ScopedMissionCheckpointRecord(const ScopedMissionCheckpointRecord&) = delete;
     ScopedMissionCheckpointRecord& operator=(const ScopedMissionCheckpointRecord&) = delete;
@@ -2436,6 +2440,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     // AA2B30 invocation contributes exactly one credit, including hits on
     // a texture that an earlier class also acquired.
     vehicle_class_base_fields_.clear();
+    vehicle_class_ship_base_fields_.clear();
     vehicle_class_ship_leaf_fields_.clear();
     for (void* texture : class_icon_references_)
         bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
@@ -2497,11 +2502,20 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             };
             row.name = text("Name");
             row.type = text("Type");
-            row.max_speed = number("MaxSpeed");
-            row.max_accel = number("MaxAccel");
-            row.retardation = number("Retardation");
-            row.max_rot_angle = number("MaxRotAngle");
-            row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
+            const auto ship = vehicle_class_ship_base_fields_.find(index);
+            if (ship != vehicle_class_ship_base_fields_.end()) {
+                row.max_speed = ship->second.max_speed;
+                row.max_accel = ship->second.max_accel;
+                row.retardation = ship->second.retardation;
+                row.max_rot_angle = ship->second.max_rot_angle;
+                row.max_rot_angle_change_ratio = ship->second.max_rot_angle_change_ratio;
+            } else {
+                row.max_speed = number("MaxSpeed");
+                row.max_accel = number("MaxAccel");
+                row.retardation = number("Retardation");
+                row.max_rot_angle = number("MaxRotAngle");
+                row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
+            }
             row.length = number("Length");
             row.death_efx_id = static_cast<int>(number("DeathEfx"));
             // The plane rate/accel keys, in the spellings 007D1F70's reader
@@ -3536,6 +3550,29 @@ bool GameMissionLuaHost::read_pipe_sight_params_0083b5e0(bool& enabled, float& z
 bool GameMissionLuaHost::read_ship_class_camera_00831e0d(int type_id,
     bsp::ShipClassCameraInputs& out) {
     if (state_ == nullptr || type_id < 0) return false;
+    const auto loaded = vehicle_class_ship_base_fields_.find(type_id);
+    const auto base = vehicle_class_base_fields_.find(type_id);
+    if (loaded != vehicle_class_ship_base_fields_.end()
+            && base != vehicle_class_base_fields_.end()) {
+        // These are descriptor slots after 00831840's chained defaults. The
+        // camera consumer must use them as present values, without rereading
+        // mutable Lua fields or applying different defaults a second time.
+        const auto& camera = loaded->second.camera;
+        // HUD zoom also consumes the separate 00960230 Length slot (+A0h).
+        // CameraDistanceFront may differ (installed class 8: 110 vs 100).
+        out.base_length = base->second.length;
+        out.has_captain_camera_height = true;
+        out.captain_camera_height = camera.captain_camera_height;
+        out.has_distance_front = true;
+        out.distance_front = camera.distance_front;
+        out.has_distance_side = true;
+        out.distance_side = camera.distance_side;
+        out.has_distance_vertical = true;
+        out.distance_vertical = camera.distance_vertical;
+        out.has_min_height = true;
+        out.min_height = camera.min_height;
+        return true;
+    }
     const int top = ::lua_gettop(state_);
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (::lua_type(state_, -1) != LUA_TTABLE) {
@@ -6447,7 +6484,7 @@ private:
 class GameMissionLuaShipLeafFieldBinding final : public bsp::ShipLeafFieldHost {
 public:
     GameMissionLuaShipLeafFieldBinding(bsp::GameplayTuningSettings& settings,
-        std::int32_t mode) : settings_(settings), mode_(mode) {}
+        std::int32_t mode, lua_State* state) : settings_(settings), mode_(mode), state_(state) {}
 
     std::uint32_t tuning_block_dword(std::uint32_t offset) override {
         return select_loaded_ship_depth_table(settings_, mode_).word(offset);
@@ -6457,7 +6494,17 @@ public:
     void register_landing_troop_soldier(const char*) override { unavailable(); }
     void register_landing_troop_vehicle(std::int32_t) override { unavailable(); }
     bsp::GuiLuaRef landing_troop_classes(std::int32_t) override { unavailable(); }
-    void store_deck_camera_basis(const bsp::DeckCameraAngles&) override { unavailable(); }
+    void read_deck_camera_position(const bsp::GuiLuaRef& position, float out[3]) override {
+        NativeLuaStateStorage owner;
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state_;
+        const int ref = static_cast<int>(position.id) - 3;
+        if (ref > 0) lua_rawgeti(state_, LUA_REGISTRYINDEX, ref);
+        else lua_pushnil(state_);
+        auto object = stack_object(owner, ::lua_gettop(state_));
+        native_lua_get_vector3_00b67a80(object, out);
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    }
 
 private:
     [[noreturn]] static void unavailable() {
@@ -6465,6 +6512,45 @@ private:
     }
     bsp::GameplayTuningSettings& settings_;
     std::int32_t mode_;
+    lua_State* state_;
+};
+
+// 00831840's value model stores effect IDs, not native ref-counted pointers
+// (ship_class_fields.hpp). Keep those authored IDs in that representation.
+// The two class-owning branches are admitted separately below: neither a
+// soldier/land-vehicle template nor a nonzero LandingShip is synthesized here.
+class GameMissionLuaShipBaseFieldBinding final : public bsp::ShipClassFieldHost {
+public:
+    explicit GameMissionLuaShipBaseFieldBinding(const bsp::GameplayTuningSettings& settings)
+        : settings_(settings) {}
+    std::int32_t make_effect_handle(std::int32_t id) override { return id; }
+    bool class_table_contains(const char*, const char*) override { unavailable(); }
+    bool resolve_vehicle_class(const char*) override { unavailable(); }
+    bool resolve_soldier_type(const char*) override { unavailable(); }
+    std::int32_t resolve_landing_ship_class(std::int32_t id) override {
+        if (id != 0) unavailable();
+        return 0; // 00833B6C's absent/default class ID; no descriptor retained.
+    }
+    float settings_float(std::uint32_t offset) override {
+        switch (offset) {
+        case bsp::ShipClassSettingsOffsets::kHackShipRotationAdd:
+            return settings_.hack_rotation_add;
+        case bsp::ShipClassSettingsOffsets::kHackShipHeightAdd:
+            return settings_.hack_height_add;
+        case bsp::ShipClassSettingsOffsets::kFireDamagePerFireTick:
+            return settings_.fire_fire_damage_per_fire_tick;
+        default: throw std::logic_error("00831840 requested an unknown settings field");
+        }
+    }
+    float default_captain_camera_height() override {
+        // bsp.py ghidra bytes 00CE38B8 --length 4: 00 00 20 41.
+        return 10.0f;
+    }
+private:
+    [[noreturn]] static void unavailable() {
+        throw std::logic_error("00831840 class-owning branch was not admitted");
+    }
+    const bsp::GameplayTuningSettings& settings_;
 };
 
 // Goal 3 chain 234 (kWireGoal3Chain234Bound). The bsp::VehicleClassHost that
@@ -6637,12 +6723,14 @@ public:
             // for the host's class +C0h..+CCh, +124h and +134h readers.
             // DIVERGENCE (bsp/game_host_vehicle_class.hpp, split copy): the image
             // bytes are not written; the read lives beside the semantic descriptor.
-            // The ship-base reader 00831840 and plane reader 007D1F70 are not
-            // run here. The four supported surface leaf tails below do run.
+            // 00831840 chains to 00960230 before reading shared ship fields;
+            // admitted ship rows then continue through their surface leaves.
+            // The plane reader 007D1F70 remains separate.
             GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_, owner_);
             const bsp::GuiLuaRef row = lua.row(descriptor->class_index);
             bsp::VehicleClassBaseFields fields;
             bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
+            load_ship_base(descriptor, lua, row, fields.length);
             load_surface_ship_leaf(descriptor, lua, row);
             lua.release(row);
             descriptor->linked_class_index = fields.launched_class;
@@ -6666,6 +6754,39 @@ public:
     bsp::NativeStringStorage& string_storage() override { return bsp::crt_string_storage(); }
 
 private:
+    void load_ship_base(bsp::VehicleClassDescriptor* descriptor,
+        GameMissionLuaVehicleClassFieldBinding& lua, const bsp::GuiLuaRef& row,
+        float base_length) {
+        const int index = descriptor->kind_index;
+        if (index < 0 || index >= bsp::kVehicleClassDescriptorCount) return;
+        const auto kind = bsp::kVehicleClassDescriptorTable[index].kind;
+        if (kind < bsp::VehicleClassKind::ShipBase || kind > bsp::VehicleClassKind::TorpedoBoat)
+            return;
+
+        // 008331E6..008332AE retains template classes, and 00833B6C..00833BAA
+        // retains the valid LandingShip class. This host has no owner for those
+        // references yet. Admit only rows that do not take either branch;
+        // the rest retain their existing Lua path, without running a partial
+        // 00831840 or manufacturing class-resolution results.
+        const auto idle = lua.get_by_name(row, "Idle");
+        const bool has_idle = lua.inspect(idle).kind != bsp::VehicleClassValueKind::Nil;
+        lua.release(idle);
+        const auto landing = lua.get_by_name(row, "LandingShip");
+        const auto landing_id = bsp::vehicle_class_integer_or_00b66380(lua.inspect(landing), 0);
+        lua.release(landing);
+        if (has_idle || landing_id != 0) return;
+
+        if (!owner_.gameplay_tuning_settings_) owner_.load_ship_globals_0083b6e6();
+        if (!owner_.gameplay_tuning_settings_)
+            throw std::runtime_error("ship-base load requires completed gameplay settings");
+        GameMissionLuaShipBaseFieldBinding settings(*owner_.gameplay_tuning_settings_);
+        bsp::ShipClassFields fields;
+        bsp::read_ship_class_fields_00831840(lua, settings, row, base_length, fields);
+        owner_.vehicle_class_ship_base_fields_.insert_or_assign(descriptor->class_index,
+            std::move(fields));
+        owner_.log_.implemented("VehicleClass::load_ship_base", "00831840");
+    }
+
     void load_surface_ship_leaf(bsp::VehicleClassDescriptor* descriptor,
         GameMissionLuaVehicleClassFieldBinding& lua, const bsp::GuiLuaRef& row) {
         const int index = descriptor->kind_index;
@@ -6673,7 +6794,8 @@ private:
         const auto kind = bsp::kVehicleClassDescriptorTable[index].kind;
         using Kind = bsp::VehicleClassKind;
         if (kind != Kind::BattleShip && kind != Kind::Cargo
-            && kind != Kind::Cruiser && kind != Kind::Destroyer) return;
+            && kind != Kind::Cruiser && kind != Kind::Destroyer
+            && kind != Kind::MotherShip) return;
 
         // 00424C40 is lazy in the image as well. Resolve its real ShipGlobals
         // producer if this class is the first settings borrower in this run.
@@ -6682,7 +6804,7 @@ private:
         if (!owner_.gameplay_tuning_settings_)
             throw std::runtime_error("ship leaf load requires completed gameplay settings");
         const auto mode = bsp::session_context().session_word_1fe4;
-        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode);
+        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode, state_);
         bsp::ShipLeafFields fields;
         // Evidence: bsp.py show 006e00f0 / 006eb4a0 / 006fb550 / 006fe6a0.
         // Original ABI: descriptor in ECX, LuaObject* row on stack, RET 4.
@@ -6704,6 +6826,14 @@ private:
         case Kind::Destroyer:
             bsp::read_destroyer_class_fields_006fe6a0(settings, fields);
             owner_.log_.implemented("VehicleClass::load_destroyer_leaf", "006fe6a0");
+            break;
+        case Kind::MotherShip:
+            // 00759590, descriptor ECX / LuaObject* row / RET 4. The existing
+            // semantic descriptor owns these results beside its base fields;
+            // read_ship_navigation_input/read_ship_depth_input consume this
+            // same retained tuning instead of re-reading the Lua class type.
+            bsp::read_mothership_class_fields_00759590(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_mothership_leaf", "00759590");
             break;
         default: return;
         }
@@ -8474,6 +8604,22 @@ private:
     bsp::GuiLuaHandleResolver& handles_;
 };
 
+// Goal 5 chain 727: bsp.py show 0097A330/0097A530/0097A6D0/0097A810/
+// 0097A930/0097AA50 releases each channel's filters in reverse order, then
+// its callback. These are the same value-model subscriptions the archive
+// loaders populate below. Run the existing body when the last shared owner
+// releases it, including a failed load; a copied dispatch owner keeps it alive.
+// The final C++ delete retires the now-empty containers and allocation. Native
+// tree heads, vtables, sized pools and scalar-deleting ABI remain substituted.
+template<auto Destroy, class Subscription>
+std::shared_ptr<Subscription> own_listener_subscription(Subscription subscription) {
+    return std::shared_ptr<Subscription>(new Subscription(std::move(subscription)),
+        [](Subscription* owned) {
+            Destroy(*owned);
+            delete owned;
+        });
+}
+
 }  // namespace
 
 // Goal 4 chain 352. 00980C10 copies the params LuaObject (00980C66 00B66FA0), builds the
@@ -8552,8 +8698,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                                           crt_sse2_conversion, handles);
         switch (channel) {
         case Channel::kill: {
-            auto subscription =
-                std::make_shared<seg64::KillSubscription>(seg64::construct_kill_0097a450());
+            auto subscription = own_listener_subscription<seg64::destruct_kill_0097a530>(
+                seg64::construct_kill_0097a450());
             seg64::load_kill_00972520(*subscription, reader, handles);
             entry.callback = subscription->callback;
             entry.attacker_filters_set = !subscription->last_attacker.ids.empty()
@@ -8569,7 +8715,7 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             break;
         }
         case Channel::exit_zone: {
-            auto subscription = std::make_shared<seg64::ExitZoneSubscription>(
+            auto subscription = own_listener_subscription<seg64::destruct_exit_zone_0097a6d0>(
                 seg64::construct_exit_zone_0097a620());
             seg64::load_exit_zone_009726d0(*subscription, reader, handles);
             entry.callback = subscription->callback;
@@ -8577,8 +8723,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             break;
         }
         case Channel::recon: {
-            auto subscription =
-                std::make_shared<seg64::ReconSubscription>(seg64::construct_recon_0097a220());
+            auto subscription = own_listener_subscription<seg64::destruct_recon_0097a330>(
+                seg64::construct_recon_0097a220());
             seg64::load_recon_00972450(*subscription, reader, handles);
             entry.callback = subscription->callback;
             entry.native_recon = std::move(subscription);
@@ -8593,18 +8739,23 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         }
         case Channel::other: {
             std::shared_ptr<const seg64::EventSubscription> other;
-            auto load = [&](auto subscription, auto&& load_slot) {
-                auto held = std::make_shared<decltype(subscription)>(std::move(subscription));
+            auto load_held = [&](auto held, auto&& load_slot) {
                 load_slot(*held);
                 entry.callback = held->callback;
                 other = std::move(held);
             };
+            auto load = [&](auto subscription, auto&& load_slot) {
+                load_held(std::make_shared<decltype(subscription)>(std::move(subscription)),
+                    std::forward<decltype(load_slot)>(load_slot));
+            };
             const std::string& c = entry.channel;
             if (listener_key_equal(c, "input")) {
-                load(seg64::construct_input_0097a790(),
+                load_held(own_listener_subscription<seg64::destruct_input_0097a810>(
+                    seg64::construct_input_0097a790()),
                     [&](seg64::InputSubscription& s) { seg64::load_input_00972750(s, reader); });
             } else if (listener_key_equal(c, "surrender")) {
-                load(seg64::construct_surrender_0097a8b0(), [&](seg64::SurrenderSubscription& s) {
+                load_held(own_listener_subscription<seg64::destruct_surrender_0097a930>(
+                    seg64::construct_surrender_0097a8b0()), [&](seg64::SurrenderSubscription& s) {
                     seg64::load_surrender_009727b0(s, reader);
                 });
             } else if (listener_key_equal(c, "failure")) {          // 0097C560
@@ -8612,7 +8763,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                     seg64::load_failure_00972810(s, reader, handles);
                 });
             } else if (listener_key_equal(c, "leak")) {
-                load(seg64::construct_leak_0097a9d0(seg64::RangeFilter{}),
+                load_held(own_listener_subscription<seg64::destruct_leak_0097aa50>(
+                    seg64::construct_leak_0097a9d0(seg64::RangeFilter{})),
                     [&](seg64::LeakSubscription& s) { seg64::load_leak_009728a0(s, reader, handles); });
             } else if (listener_key_equal(c, "fire")) {             // 0097AAF0
                 load(seg64::FireSubscription{},
@@ -16854,6 +17006,11 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     const char* nested_key, int fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (nested_key == nullptr && leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership
+        && std::strcmp(key, "MaxLandingPlanesOnBoard") == 0)
+        return leaf->second.fields.max_landing_planes;
     note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     int value = fallback;
@@ -16971,6 +17128,26 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     // the result; this reader does not, because the Lua field is the modifier
     // and class+B8h is its square.
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership) {
+        // 00759120's carrier deck borrows the loaded class+820h/+824h, not a
+        // second lookup of the mutable Lua row (00759590 has already run).
+        if (std::strcmp(key, "RunwayWidth") == 0) return leaf->second.fields.runway_width;
+        if (std::strcmp(key, "RunwayLength") == 0) return leaf->second.fields.runway_length;
+    }
+    const auto loaded = vehicle_class_ship_base_fields_.find(index);
+    if (loaded != vehicle_class_ship_base_fields_.end()) {
+        const auto& ship = loaded->second;
+        if (std::strcmp(key, "MaxSpeed") == 0) return ship.max_speed;
+        if (std::strcmp(key, "MaxAccel") == 0) return ship.max_accel;
+        if (std::strcmp(key, "Retardation") == 0) return ship.retardation;
+        if (std::strcmp(key, "MaxRotAngle") == 0) return ship.max_rot_angle;
+        if (std::strcmp(key, "MaxRotAngleChangeRatio") == 0) return ship.max_rot_angle_change_ratio;
+        if (std::strcmp(key, "KamikazeDamage") == 0) return ship.kamikaze_damage;
+        if (std::strcmp(key, "KamikazeBlastDamage") == 0) return ship.kamikaze_blast_damage;
+        if (std::strcmp(key, "KamikazeBlastRange") == 0) return ship.kamikaze_blast_range;
+    }
     note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     float value = fallback;
@@ -16992,6 +17169,11 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
 bool GameMissionLuaHost::read_vehicle_class_boolean(int index, const char* key,
     bool fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(index);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()
+        && leaf->second.fields.leaf == bsp::ShipLeafClass::Mothership
+        && std::strcmp(key, "CarrierEscort") == 0)
+        return leaf->second.fields.is_carrier_escort;
     const int top = ::lua_gettop(state_);
     bool value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
@@ -17638,6 +17820,7 @@ public:
     }
     void publish_command_points(float value) override {
         command_points_ = value;
+        bsp::lobby_session_state().command_points_00e0cfb4 = value;
         log_.implemented("MissionLua::lobby_settings_command_points", "00e0cfb4");
     }
 

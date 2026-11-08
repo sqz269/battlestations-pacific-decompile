@@ -1,5 +1,6 @@
 #include "bsp/sound_resource_cache.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
+#include "bsp/sound_cc13.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -45,10 +46,10 @@ void append_sound_resource_cache_record_00a84530(SoundResourceOwner& owner,
         const auto doubled = static_cast<std::uint32_t>(owner.capacity_0c) * 2u;
         const auto requested = doubled <= static_cast<std::uint32_t>(INT32_MAX)
             && doubled > 64u ? doubled : 64u;
-        if (requested > static_cast<std::uint32_t>(owner.capacity_0c)) {
-            owner.records_04.reserve(requested);
-            owner.capacity_0c = static_cast<std::int32_t>(requested);
-        }
+        // 00A84530 calls 00A84450 with this live cache's doubled capacity.
+        // The reserve body owns the copy/destroy/publication sequence.
+        sound_cc13::sound_cache_records_reserve_00a84450(owner,
+            static_cast<std::int32_t>(requested));
     }
     // Overflowed/full native storage would be an out-of-bounds placement-new.
     // This host container cannot model that memory corruption as valid behavior.

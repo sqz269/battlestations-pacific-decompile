@@ -6,6 +6,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_world.hpp"
@@ -41,8 +42,11 @@
 #include "bsp/objective_units.hpp"          // the +20h entry records
 #include "bsp/plane_squadron_host.hpp"      // vtable +140h of a plane
 #include "bsp/recon_sensor_pass.hpp"
+#include "bsp/cc13_seg49.hpp"
 #include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/cc13_sweepB3.hpp"
+#include "bsp/objectives_seg57_argon.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <algorithm>
 #include <array>
@@ -50,6 +54,7 @@
 #include <cmath>
 #include <cstdio>
 #include <map>
+#include <new>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -97,6 +102,87 @@ int marker_colour_index_00639990(int team_id) noexcept {
     return 5;
 }
 
+// Goal 5 chain 717: the list formerly represented only by the prune record.
+// bsp.py show 008E2B90 / 008E28F0: the world constructor's list is initially
+// empty, with a real 1Ch self-linked sentinel. Retain that native layout and
+// the same allocation domain through the HUD lifetime. This owner supplies no
+// synthetic ping: 005B45C0's input and the session receive producer remain
+// unbound, so single-player currently retains the constructor's empty state.
+class MinimapPingList final : public bsp::objectives_seg57_argon::MapPingListHost {
+    struct Node {
+        Node* next;
+        Node* previous;
+        std::uint32_t party;
+        std::uint32_t field_0c;
+        float x;
+        float y;
+        float expiry;
+    };
+    struct Storage {
+        std::uint32_t profile;
+        std::uint32_t allocator; // constructor-unwritten, never consumed here
+        Node* head;
+        std::uint32_t count;
+    } storage_;
+    static_assert(sizeof(Node) == 0x1c && offsetof(Node, expiry) == 0x18);
+    static_assert(sizeof(Storage) == 0x10 && offsetof(Storage, head) == 8);
+    static_assert(offsetof(Storage, count) == 0x0c);
+
+public:
+    MinimapPingList() {
+        bsp::objectives_seg57_argon::map_ping_list_construct_008e2b90(*this, &storage_);
+    }
+    ~MinimapPingList() override {
+        auto* node = storage_.head->next;
+        while (node != storage_.head) {
+            auto* const next = node->next;
+            bsp::singleton_lifetime_free(node);
+            node = next;
+        }
+        bsp::singleton_lifetime_free(storage_.head);
+    }
+    MinimapPingList(const MinimapPingList&) = delete;
+    MinimapPingList& operator=(const MinimapPingList&) = delete;
+
+    void prune(bsp::MissionResultHost& clock_source) {
+        clock_source_ = &clock_source;
+        // 005C22DE..005C22EA calls the original expiry body on the same
+        // retained list, after all objective entries and before pool trimming.
+        bsp::objectives_seg57_argon::map_ping_list_prune_expired_008e2bf0(*this, &storage_);
+        clock_source_ = nullptr;
+    }
+
+private:
+    float& global_f32(std::uint32_t address) override {
+        if (address != 0x00f876a4u || clock_source_ == nullptr)
+            throw std::logic_error("Map ping expiry requires the live mission clock");
+        // Re-read the same mission clock used by Lua, scoring and objectives
+        // at every native read boundary; there is no local elapsed-time clock.
+        clock_read_ = clock_source_->mission_clock();
+        return clock_read_;
+    }
+    void* image_address(std::uint32_t address) override {
+        if (address != 0x00d16168u)
+            throw std::logic_error("Unexpected map ping list profile");
+        // An opaque profile word, never dispatched as a host vtable.
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(address));
+    }
+    void* stl_list_buy_head_node_008e28f0() override {
+        auto* const head = static_cast<Node*>(bsp::singleton_lifetime_allocate(
+            {bsp::SingletonAllocationKind::object, sizeof(Node), sizeof(Node)}));
+        if (head == nullptr) throw std::bad_alloc();
+        head->next = head;
+        head->previous = head;
+        return head;
+    }
+    void free_00bf65ac(void* node) override { bsp::singleton_lifetime_free(node); }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("Invalid map ping list iterator");
+    }
+    bsp::MissionResultHost* clock_source_{nullptr};
+    float clock_read_; // assigned from the live source before any read
+};
+
 }  // namespace
 
 // ===========================================================================
@@ -111,6 +197,7 @@ struct GameHudMinimapHost::Impl {
     GameUnitsHost* units{nullptr};
     GameMissionLuaHost* lua{nullptr};
     GameHudMinimapSummary summary;
+    MinimapPingList map_pings;
 
     GuiLayoutPage* page{nullptr};
     // The six `item_ship_Icon` templates at screen +6Ch..+7Ch, indexed by the
@@ -888,10 +975,12 @@ void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBin
             for (const std::size_t unit : objective.units) place_entry(objective, true, unit, {});
         }
     }
-    // 005C22DE..005C22EA 008E2BF0 on [game+21C8h]: the map pings come only
-    // from the HUD map screen (005B45C0 -> 008E2EE0) and the session, neither
-    // of which runs here, so the list is empty and the prune has nothing to do.
-    host.record("HudMinimap::map_ping_prune", 0x008e2bf0u);
+    GameMissionResultHost* const result = host.lua != nullptr
+        ? host.lua->mission_result() : nullptr;
+    if (result == nullptr)
+        throw std::logic_error("Minimap ping expiry requires the attached mission clock");
+    host.map_pings.prune(*result);
+    host.done("HudMinimap::map_ping_prune", 0x008e2bf0u);
     host.hide_unused_objective_markers();
     host.summary.objective_markers_placed = placed;
     if (placed > 0 && !host.logged_objective_marker) {
@@ -1418,10 +1507,64 @@ struct GameHudMarkersHost::Impl {
 
     void bind_page_0063e280();
     void fit_stand_in_camera();
-    void place_marker(std::size_t index, const bsp::HudMarkerScreenBounds& bounds);
+    const char* display_name_for_unit(std::size_t index, const bsp::HudMarkerFlags& flags);
+    void set_marker_name(GuiLayoutWidget& marker, std::size_t index,
+        const bsp::HudMarkerFlags& flags);
+    void place_marker(std::size_t index, const bsp::HudMarkerScreenBounds& bounds,
+        const bsp::HudMarkerFlags& flags);
 };
 
 namespace {
+
+class MarkerReconNameBinding final : public bsp::cc13_seg49::MarkerDisplayNameHost {
+public:
+    explicit MarkerReconNameBinding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
+
+    bool marked_unit_is_aircraft(void* marked_unit) override {
+        return owner_.units->unit_is_kind_of(owner_.index_of(marked_unit), 0x0f);
+    }
+    bool marked_plane_is_flight_leader(void* marked_unit) override {
+        // 007B8AD0 reads plane+9D8h == 0, the original spawn-index stamp.
+        // It is not the current leader's position after member compaction.
+        return bsp::plane_squadron_registry().spawn_index_of_unit(
+            owner_.index_of(marked_unit)) == 0;
+    }
+    void* aircraft_squadron_9d4(void*) override {
+        // The registry fuses squadron_unit with wing 0 and has no independent
+        // squadron detection record/name virtual. Neither the marked wing nor
+        // that fused slot can bind the native [plane+9D4h] naming subject.
+        return nullptr;
+    }
+    void* unit_subject_140(void* marked_unit) override {
+        // Supported non-aircraft units inherit 0047F320 at +140h: return self.
+        // Bind that result explicitly; a missing class descriptor remains unbound.
+        const auto* row = owner_.units->unit_row(owner_.index_of(marked_unit));
+        return row != nullptr && row->class_row_found ? marked_unit : nullptr;
+    }
+
+    int display_name_detection_level(int party, void* unit) override {
+        const auto* gunnery = owner_.units->gunnery();
+        const auto* record = gunnery != nullptr
+            ? gunnery->recon_sensor_pass_state().record(party, owner_.index_of(unit)) : nullptr;
+        // A newly created unit's unlaid-out detection record is zero, just as
+        // the objective reveal binding above handles it. Do not use level(),
+        // whose permissive pre-pass fallback would reveal an unobserved name.
+        return record != nullptr
+            ? static_cast<int>(bsp::recon_record_effective_level(*record))
+            : static_cast<int>(bsp::ReconDetectionRecord{}.level);
+    }
+
+    const char* unit_name_14(void* unit) override {
+        // The host currently retains the default display-name producer:
+        // [unit+538h]+54h is VehicleClass[Type].Name, loaded into this row.
+        // The optional +15Ch/+160h custom-name owner is not implemented here.
+        // Its absence is not the entity's scene/instance name (+10h).
+        return owner_.units->unit_row(owner_.index_of(unit))->class_row_name.c_str();
+    }
+
+private:
+    GameHudMarkersHost::Impl& owner_;
+};
 
 // bsp::HudMarkersRuntimeHost, the boundary of src/hud_markers_runtime.cpp.
 // Packet cc13-fix24: the Front6Host the 0077A2F0 body needs. It reaches only
@@ -1658,10 +1801,12 @@ public:
         owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
     }
     const char* unit_class_name(void* unit) override {
-        owner_.record("HudMarkers::unit_class_name", 0x00803dc0u);
-        if (owner_.units == nullptr) return "";
-        const GameUnitRow* row = owner_.units->unit_row(owner_.index_of(unit));
-        return row != nullptr ? row->type_symbol.c_str() : "";
+        // This legacy callback carries no marker eligibility flags. Only the
+        // non-aircraft +140h arm can bind here; place_marker passes the flags.
+        if (owner_.units == nullptr || owner_.units->unit_is_kind_of(owner_.index_of(unit), 0x0f)) {
+            return nullptr;
+        }
+        return owner_.display_name_for_unit(owner_.index_of(unit), {});
     }
     float unit_health(void* unit) override {
         static_cast<void>(unit);
@@ -1829,7 +1974,7 @@ public:
         }
         ++owner_.summary.markers_added;
         if (bounds.collapsed) ++owner_.summary.markers_collapsed;
-        owner_.place_marker(index, bounds);
+        owner_.place_marker(index, bounds, flags);
     }
     void note_marker(std::uint32_t unit) override { static_cast<void>(unit); }
 
@@ -2025,8 +2170,40 @@ void GameHudMarkersHost::Impl::fit_stand_in_camera() {
         static_cast<double>(summary.camera_half_extent));
 }
 
+const char* GameHudMarkersHost::Impl::display_name_for_unit(std::size_t index,
+    const bsp::HudMarkerFlags& flags) {
+    if (units == nullptr || index >= handles.size()) return nullptr;
+    MarkerReconNameBinding binding(*this);
+    // 00642287..006422F5 chooses the naming subject before 00803DC0. The
+    // resolved object supplies BOTH detection and +14h, never the marked wing.
+    const char* name = bsp::cc13_seg49::marker_display_name(binding, local_player_party(),
+        &handles[index], flags.is_self, flags.is_friendly, flags.is_target);
+    if (name != nullptr) done("HudMarkers::unit_class_name", 0x00803dc0u);
+    return name;
+}
+
+void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::size_t index,
+    const bsp::HudMarkerFlags& flags) {
+    auto* text = bsp::find_child_by_name_00aa7e00(marker, bsp::kHudMarkerWidgetUnitName);
+    if (text == nullptr) return;
+    const char* name = display_name_for_unit(index, flags);
+    // An unsupported descriptor must not inherit another unit's label when
+    // this widget comes from the shared marker pool.
+    menu.frontend().set_widget_visible(*text, name != nullptr);
+    if (name == nullptr) return;
+    // 006422F0 -> 00803DC0; 0063D751 -> 00ABBE50. The latter is the
+    // C-string overload of the LOCALIZED source setter (cc13_pkt642.cpp), so
+    // the bridge can consume the returned class key or globals.unknown.
+    // Refresh on pool reuse and recon changes, not just when a clone is made.
+    const auto* previous = menu.frontend().widget_text_source(*text);
+    if (previous == nullptr || *previous != name) {
+        menu.frontend().set_widget_text_source(*text, name);
+    }
+    done("HudMarkers::find_child", 0x00aa7e00u);
+}
+
 void GameHudMarkersHost::Impl::place_marker(std::size_t index,
-    const bsp::HudMarkerScreenBounds& bounds) {
+    const bsp::HudMarkerScreenBounds& bounds, const bsp::HudMarkerFlags& flags) {
     if (page == nullptr || sidemarker == nullptr || type_icon == nullptr) return;
     const float centre_x = 0.5f * (bounds.min_x + bounds.max_x);
     const float centre_y = 0.5f * (bounds.min_y + bounds.max_y);
@@ -2051,11 +2228,10 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
             if (marker == nullptr) return;
             pool_a.push_back(marker);
             ++summary.markers_created;
-            record("HudMarkers::set_unit_name_text", 0x00abbe50u);
         }
         ++pool_cursor_a;
         menu.frontend().set_widget_visible(*marker, true);
-        static_cast<void>(index);
+        set_marker_name(*marker, index, flags);
         const float offset_x = type_icon->transform.position.x
             - sidemarker->transform.pivot_x * sidemarker->transform.size.width;
         const float offset_y = type_icon->transform.position.y
@@ -2075,17 +2251,8 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
         if (marker == nullptr) return;
         markers.emplace(index, marker);
         ++summary.markers_created;
-        // 0063D1E0 binds `Unit_name_Text` by name and fills it at 0063D751
-        // through 00ABBE50, the plain C-string setter, not the localisation id
-        // setter 00ABAED0 at 0063D694. A unit's instance name is not a locale
-        // id, and the executable's text path only carries ids, so the label
-        // keeps the page's authored `Unit Name` and the C-string setter is a
-        // record. Nothing invents a string here.
-        record("HudMarkers::set_unit_name_text", 0x00abbe50u);
-        if (bsp::find_child_by_name_00aa7e00(*marker, "Unit_name_Text") != nullptr) {
-            done("HudMarkers::find_child", 0x00aa7e00u);
-        }
     }
+    set_marker_name(*marker, index, flags);
     // The authored template puts `type_Icon` at its own offset inside the group,
     // so the group is moved by the difference rather than to the point itself.
     const float offset_x = type_icon->transform.position.x

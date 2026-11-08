@@ -129,7 +129,7 @@ void* unit_class_data_kind5_or_18_009fff20(Seg69Host& host, Raw unit)
 // below 0 (COMISS 0 against it, JBE stores when 0 <= x, so a NaN is stored) is replaced by
 // 00BD2F10(stream 1, tuning+50h, tuning+54h); 00A371A0 is called twice, +54h read first.
 // This draw moves the process-wide RNG.
-Raw ai_candidate_record_construct_00a00020(Seg69Host& host, Raw record, void* subject,
+Raw ai_candidate_record_construct_00a00020(CandidateRecordHost& host, Raw record, void* subject,
     std::uint32_t value10, float class_weight, std::uint32_t value1c, float random_factor,
     std::uint8_t flag, const float* point)
 {

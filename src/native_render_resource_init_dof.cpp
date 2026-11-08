@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_init_dof.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_material_parameters.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
@@ -97,10 +98,8 @@ void parameter(std::size_t index,Context& c,const Names& names,State& a) {
     if(step.words==1)register_native_material_float_00b18b20(*material,&a.names[n],source,c.passes.parameters);
     else if(step.words==2)register_native_material_float2_00b18b00(*material,&a.names[n],source,c.passes.parameters);
     else {
-        // Native B18AC0: wrapping DWORD 4*vector_count, matrix0, RET0C.
-        // Both B107F0 sites push vector_count1. Reuse the established exact
-        // wrapper expansion from native_render_pass_initializers.cpp.
-        register_native_material_parameter_00b17e10(*material,&a.names[n],source,4u*1u,0,c.passes.parameters);
+        // Both B107F0 sites push vector_count1 to B18AC0.
+        cc13_terrain::material_register_float4_array_00b18ac0(material,&a.names[n],source,1,c.passes.parameters);
     }
     return_name(n,0,step.getter,step.release,c,a);
 }

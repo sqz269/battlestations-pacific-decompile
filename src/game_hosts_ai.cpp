@@ -45,6 +45,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/ordnance_kinds.hpp"
+#include "bsp/kill_credit.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -55,6 +56,8 @@
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
+#include "bsp/cc13_left61.hpp"
+#include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/game_ai_group_queries.hpp"
 #include "bsp/band_0080_cc13.hpp"         // 00828EC0, the power-up unit score
 #include "bsp/cc13_powerup.hpp"           // 008EA0C0's items, 00A179E0
@@ -1231,13 +1234,15 @@ int ai_team_slot_009ffd20(int team) {
 
 namespace {
 
-// 009FFD20's tail after +180h: 8 is no slot, 0..7 the slot, else the team's.
-// LABELLED: single-player (session mode 0) arms only; 009FFD35's
-// [00E188A8]+1FE4h != 0 arm, which answers -1, is not modelled (rev5 N6).
+// Goal 5 chain 711. bsp.py show 009ffd20 --asm: ECX's +180h owner,
+// game+1FE4h session word, unit+54h side and local player+28h side are
+// exactly the four inputs of the existing typed reconstruction. In single
+// player the local player is slot 0, whose Party the scene loader publishes.
+// PowerupUnitResolverBinding consumes this result as PowerupUnitView::slot;
+// the AI group constructor consumes it as Group::party.
 int slot_from_owner_player(int owner, int team) {
-    if (owner == 8) return -1;
-    if (owner >= 0 && owner < 8) return owner;
-    return ai_team_slot_009ffd20(team);
+    return bsp::kill_credit_owning_slot_009ffd20(owner,
+        bsp::session_context().session_word_1fe4 != 0, team, local_player_party());
 }
 
 // +180h by scene entity name: 9 when unauthored or authored twice.
@@ -1263,19 +1268,10 @@ int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
     // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
     // unit index (no squadron proxy).
     const int team = units.unit_side_0054(unit);
-    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
-    int owner = 9;
-    const auto by_index = g_unit_owner_players.find(unit);
-    if (by_index != g_unit_owner_players.end()) {
-        owner = by_index->second;
-    } else if (const GameUnitRow* row = units.unit_row(unit)) {
-        owner = scene_owner_player_by_name(row->name);
-    }
-    return slot_from_owner_player(owner, team);
+    return slot_from_owner_player(ai_unit_owner_player(units, unit), team);
 }
 
 int ai_scene_unit_slot_009ffd20(int team, const std::string& name) {
-    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
     return slot_from_owner_player(scene_owner_player_by_name(name), team);
 }
 
@@ -2243,16 +2239,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return (g_scene_slot_parties_published && party >= 0) ? party : slot;
     }
     // 009FFD20 BSP_Unit_LossCountingSlot (009FFD20-009FFD5C, live decompile):
-    // +180h == 8 answers -1, +180h < 8 answers itself, otherwise the single-
-    // player team rule below. kAiOwnerPlayerSlotBound OFF takes +180h as 9 for
-    // every unit (section 60's labelled substitution).
+    // Preserve the squadron/member owner lookup and geometric proxy's side;
+    // the reconstructed body owns the slot-selection branches.
     int unit_slot_009ffd20(std::size_t unit) const {
-        const int team_slot = party_slot_of_team(units.unit_side_0054(proxy(unit)));
-        if constexpr (!kAiOwnerPlayerSlotBound) return team_slot;
+        const int team = units.unit_side_0054(proxy(unit));
         const int owner = unit_owner_player_0180(unit);
-        if (owner == 8) return -1;
-        if (owner >= 0 && owner < 8) return owner;
-        return team_slot;
+        return slot_from_owner_player(owner, team);
     }
     // unit+180h as 0077F1F9 stores it from the scene's `OwnerPlayer`, else 9.
     int unit_owner_player_0180(std::size_t unit) const {
@@ -4693,16 +4685,68 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return t;
     }
 
-    // 00A1E6D9 / 00A1E701 -> 00946FC0 BSP_AiParty_AvailableResources:
-    // [00E0CFB4] * 0.5 - sum(unit+304h) - 009469F0(team). [00E0CFB4] holds
-    // 2400.0 in the image's .data (and 00CE396C, the 2400.0 005E3262 stores
-    // whenever 004BCA50 answers above 3, which a campaign mission does).
-    // LABELLED: this party-wide budget still omits the unit+304h subtraction;
-    // chain308 binds group demand below, not this independent budget query.
-    // 009469F0 sums 009467B0 over the [00F89B3C] records
-    // of the team, which this process never creates (the spawn arm is a
-    // record), so it is 0.
-    static constexpr float kCaptureAvailableResources = 2400.0f * 0.5f;
+    // Goal 5 chain 705. The two 00A1E250 budget sites now run 00946FC0
+    // over the live world registry and the same creation rows as group demand.
+    // No raw whole-unit facade is built: only the recovered read services
+    // are supplied to the existing accumulator body.
+    class CaptureResourceBudgetBinding final : public bsp::cc13_left61::TeamResourceBudgetHost {
+    public:
+        explicit CaptureResourceBudgetBinding(Impl& owner) : h(owner) {}
+        float support_points_total_00e0cfb4() override {
+            return bsp::lobby_session_state().command_points_00e0cfb4;
+        }
+        void visit_live_resource_units(
+            const std::function<void(std::int32_t, float)>& visit) override {
+            // 00946FE2 reads world+58h: slot 5's HEAD, not slot 2.
+            // Payload identities are the registry's actual stable unit slots.
+            std::map<const void*, std::size_t> indices;
+            for (std::size_t i = 0; i < h.units.count(); ++i)
+                indices.emplace(h.units.unit_identity(i), i);
+            for (const void* node = h.units.world_list_head(5); node != nullptr;
+                 node = GameUnitsHost::world_list_node_next(node)) {
+                const auto unit = indices.at(GameUnitsHost::world_list_node_unit(node));
+                bsp::SceneNodeFlags flags;
+                bool pending;
+                if (!h.units.unit_scene_node_flags(unit, flags) ||
+                    !h.units.unit_pending_destroy_0060(unit, pending))
+                    throw std::logic_error("00946FC0 unit lacks live lifecycle fields");
+                if (!flags.active || flags.torn_down || pending || flags.destroyed) continue;
+                std::size_t resource_owner = unit;
+                if (h.units.unit_is_kind_of(unit, 0x0f)) {
+                    const auto& plane_registry = bsp::plane_squadron_registry();
+                    if (const auto* squadron = plane_registry.find_by_member_unit(unit)) {
+                        // 007B8AD0 tests +9D8h == 0. Use the retained stamp,
+                        // not the current array position or a geometric proxy.
+                        if (plane_registry.spawn_index_of_unit(unit) != 0) continue;
+                        resource_owner = squadron->squadron_unit;
+                    } else {
+                        // The AI already owns a one-wing squadron for a lone
+                        // scene plane. Its sole attached member has index 0;
+                        // use that existing owner's creation row, as group_resource
+                        // does, rather than manufacturing a squadron here.
+                        const auto singleton = std::find_if(h.squadrons.begin(), h.squadrons.end(),
+                            [unit](const Squadron& s) {
+                                return !s.registry_backed && s.member_units.size() == 1 &&
+                                    s.member_units.front() == unit;
+                            });
+                        if (singleton == h.squadrons.end())
+                            throw std::logic_error("00946FC0 plane lacks its squadron resource owner");
+                        resource_owner = singleton->resource_owner.creation_unit;
+                    }
+                }
+                const GameUnitRow* row = h.units.unit_row(resource_owner);
+                if (row == nullptr) throw std::logic_error("00946FC0 missing resource creation row");
+                visit(h.units.unit_side_0054(resource_owner), row->resource_usage_304);
+            }
+        }
+        float queued_resource_usage_for_team_009469f0(std::int32_t) override {
+            // 009469F0's empty-list result. This process has no queued spawn
+            // request producer: the planner spawn arms remain named records.
+            return 0.0f;
+        }
+    private:
+        Impl& h;
+    };
     // OFF arm's former group-resource stand-in. The ON arm reads the actual
     // creation bags, including 006ECA3F's Cost-derived catapult ResourceUsage.
     static constexpr float kCaptureGroupResource = 0.0f;
@@ -4860,8 +4904,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             return h.unit_xz_distance(near_list[static_cast<std::size_t>(i)], unit_index_of(target));
         }
         float available_resources(int team) override {
-            (void)team;
-            return kCaptureAvailableResources;
+            CaptureResourceBudgetBinding budget(h);
+            return bsp::cc13_left61::team_available_resources_00946fc0(team, budget);
         }
         float tuning(std::uint32_t offset) override {
             if (offset == bsp::kAiTailTuningCapturePointValue) return t.point_value;
@@ -6290,34 +6334,50 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     struct GroupValueRecord {
         std::size_t member{0};   // the group member (a unit or a squadron)
         std::size_t unit{0};     // proxy(member): the plane leader for a squadron
-        float x{0.0f};           // +4h, the pose X (00A04582, entity+FCh)
-        float z{0.0f};           // +8h, the pose Z (00A0459D, entity+104h)
-        float fix_weight{1.0f};  // +14h, 009FDF30's class weight x 00A04240
-        float spread{1.0f};      // +18h, the ValueRandomMul interpolation
-        bool third_party{false}; // +1Ch, 00A04568 CMP [entity+54h],2 / SETGE
+        // The constructor's actual output is retained and read by pair scoring;
+        // it is not a parallel diagnostic record. subject borrows the loaded
+        // class-derived weapon-facts projection, not an image class/vtable.
+        bsp::cc13_seg69::CandidateRecord native{};
         // record+0h's class answers vtable[+18h](6) (a ship class, 00A0C3F5) or
         // (0Fh) (a plane class, 00A0C51D); 0 when neither.
         int class_query{0};
         float class_max_speed{0.0f};  // class+500h (ship) or class+188h (plane)
     };
 
-    // ValueRandomMul [1] and [2], tuning +50h/+54h. This installation's
-    // highlvlaiglobals.lua (2024-07-13) authors {0.95, 1.05} in the three
-    // IslandCapture tables (lines 37, 225, 411) and {0.85, 1.1} in the other
-    // four. The per-entity spread is 00419010(0, [1], 78.0 [00D21D04], [2],
-    // entity pointer mod 79) (00A0458A-00A045E5). LABELLED stand-in: this
-    // process has no stable entity addresses, so the argument is the midpoint
-    // 39, which gives every record the same spread. A constant spread scales
-    // every candidate's value by the same square, so it moves no pick; the
-    // per-entity +-5% the image draws is what is lost.
-    float group_value_spread() const {
-        const bool island = current_tuning().mode == bsp::AiTuningMode::IslandCaptureRookie ||
-                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular ||
-                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran;
-        const float lo = island ? 0.95f : 0.85f;
-        const float hi = island ? 1.05f : 1.1f;
-        return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, 39.0f);
+    // bsp.py show 00a04560 --asm: 00A0458A..00A045B0 takes the
+    // creation entity address modulo 79, not its geometric proxy/leader.
+    // Source identities are retained owners, not original-image addresses;
+    // their allocation-dependent spread therefore is not binary replay proof.
+    float group_value_spread(std::size_t member) {
+        const Squadron* squadron = squadron_of(member);
+        // Squadron wrappers move when the vector grows. The fused creation
+        // unit owns a stable slot, including after leader promotion/removal.
+        const std::size_t creation_unit = squadron != nullptr
+            ? squadron->resource_owner.creation_unit : member;
+        const void* identity = units.unit_identity(creation_unit);
+        if (identity == nullptr) throw std::logic_error("AI record requires a live entity identity");
+        const float fraction = static_cast<float>(reinterpret_cast<std::uintptr_t>(identity) % 79u);
+        // 00A045B9 reads +54h before 00A045D1 reads +50h.
+        const float hi = selected_tuning_field(bsp::kAiTuningValueRandomHigh, game_mode());
+        const float lo = selected_tuning_field(bsp::kAiTuningValueRandomLow, game_mode());
+        return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, fraction);
     }
+
+    struct CandidateRecordBridge final : bsp::cc13_seg69::CandidateRecordHost {
+        Impl& owner;
+        explicit CandidateRecordBridge(Impl& owner_in) : owner(owner_in) {}
+        bsp::cc13_seg69::Raw active_mode_tuning_00a371a0() override {
+            TuningRecordBridge bridge(owner, static_cast<int>(owner.current_tuning().mode));
+            return {static_cast<std::uint8_t*>(
+                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge))};
+        }
+        float random_uniform_00bd2f10(std::uint32_t stream, float low, float high) override {
+            if (stream != 1) throw std::logic_error("AI record random stream must be 1");
+            // Existing coordinator RNG projection; the installed positive
+            // ValueRandomMul intervals never take the constructor's draw arm.
+            return owner.random_00bd2f10(low, high);
+        }
+    };
 
     // 00A04560's record+10h (00A04608..00A0464E) for X = proxy(member): the
     // plane itself, or a squadron's leader ([entity+3D0h]). [X+C54h] when
@@ -6358,9 +6418,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         GroupValueRecord r;
         r.member = member;
         r.unit = proxy(member);
-        float y = 0.0f;
-        units.unit_position_00fc(r.unit, r.x, y, r.z);
-        r.third_party = units.unit_side_0054(r.unit) >= 2;
+        float point[2], y = 0.0f;
+        units.unit_position_00fc(r.unit, point[0], y, point[1]);
+        const std::uint32_t third_party = units.unit_side_0054(r.unit) >= 2;
+        float fix_weight;
         // 00A045EE-00A04604: 009FDF30's weight for the entity's +C4h class id,
         // times 00A04240(entity). 00A04240 multiplies the two hint-weight maps
         // at 00F8A740 (global) and 00F8A750 + party*0Ch, default 1.0
@@ -6376,13 +6437,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (current_party >= 0 && current_party < 8) {
             const float class_weight = unit_class_weight(member);
             const float hint_weight = member_hint_weight(member);
-            r.fix_weight = class_weight * hint_weight;
+            fix_weight = class_weight * hint_weight;
         } else {
             // Preserve the host's non-party observation calls; the image's
             // unchecked party-map read has no defined source domain here.
-            r.fix_weight = unit_class_weight(member);
+            fix_weight = unit_class_weight(member);
         }
-        r.spread = group_value_spread();
+        const float spread = group_value_spread(member);
+        // 00A04652..00A04680 picks the vehicle/squadron's class, or null.
+        // Borrow the class-derived facts that pair scoring already queries;
+        // it never dispatches this typed projection as a raw image vtable.
+        const auto* subject = (is_squadron(member) || units.unit_is_kind_of(r.unit, 5))
+            ? game_ai_weapon_facts().row(r.unit)
+            : nullptr;
+        CandidateRecordBridge bridge(*this);
+        // 00A04682..00A046A5: original stack order verified in the listing;
+        // flag=1 is PUSH 1 at 00A0468F. No second field-building path remains.
+        bsp::cc13_seg69::ai_candidate_record_construct_00a00020(bridge,
+            {reinterpret_cast<std::uint8_t*>(&r.native)},
+            const_cast<GameAiWeaponFacts::Unit*>(subject),
+            static_cast<std::uint32_t>(record_loadout_00a04560(r.unit)), fix_weight,
+            third_party, spread, 1, point);
         // 00A04652 IsKindOf(5) takes [entity+538h], 00A0466E IsKindOf(18h)
         // [entity+35Ch], the squadron's plane class. LABELLED: this host asks
         // the unit's own kind for the class's vtable[+18h] answer.
@@ -6463,11 +6538,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.attacker = handle(a.unit);
             // a+10h: 0 for a ship record (00A04650); the model reads it only
             // as a memo key, and this binding keeps no memo.
-            key.attacker_class = kAiPlaneLoadoutArmBound ? record_loadout_00a04560(a.unit)
-                                 : kAiPlaneAttackerWeightBound ? 0   // record+10h
-                                 : units.unit_class_id(a.unit);
+            key.attacker_class = static_cast<int>(a.native.value10);
             key.target = handle(t.unit);
-            key.target_is_neutral = t.third_party ? 1 : 0;
+            key.target_is_neutral = t.native.value1c != 0 ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, current_tuning(),
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
@@ -6485,14 +6558,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A0C34E: an attacker record with +1Ch set whose class answers
         // vtable[+18h](1Ch) scores 0. That query is unread here (the same slot
         // 00A0F859 asks), so the arm never fires; it can only remove value.
-        float value = a.spread * t.spread * weight * t.fix_weight;
+        float value = a.native.random_factor * t.native.random_factor;
+        value *= weight;
+        value *= t.native.class_weight;
         // 00A0C3F5 / 00A0C51D: the distance multiplier, ship or plane class.
         if (a.class_query == 0x06 || a.class_query == 0x0F) {
             const bool ship = a.class_query == 0x06;
             // 00A0C415-00A0C439: the records' +0Ch bytes are both 1 (00A0468F),
             // so the distance is 00414C60 over the pose delta, 0 under 1e-10.
-            const float dx = a.x - t.x;
-            const float dz = a.z - t.z;
+            const float dx = a.native.point_x - t.native.point_x;
+            const float dz = a.native.point_z - t.native.point_z;
             const float d2 = dx * dx + dz * dz;
             const float d = static_cast<double>(d2) > 1.0e-10
                                 ? static_cast<float>(std::sqrt(static_cast<double>(d2)))

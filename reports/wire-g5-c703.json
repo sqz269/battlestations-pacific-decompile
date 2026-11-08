@@ -1,0 +1,192 @@
+{
+  "goal": 5,
+  "chain": 703,
+  "slot": "g5-w10",
+  "base": "d98eb873ffad6e6f835da1c1c8faf680b1f355f7",
+  "rows": [
+    {
+      "native": "0040eef0",
+      "status": "wired",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: hull_00c5cae0 via HullFlags::reserve/append",
+      "change": "Replace the extreme/support-eligibility STL integer arrays with owning DynVector4 descriptors. Reserve from the live input point count, append the native 0/1 words, and consume the same allocations throughout simplex selection and hull extrusion.",
+      "evidence": [
+        "00C5CB55..00C5CBAA: empty native headers and calls at 00C5CB67/00C5CB96, ESI=header and EAX=point count",
+        "00C5CBC3..00C5CCCA: native flag appends (allow=1 at 00C5CC32, extreme=0 at 00C5CCBA), size/capacity and growth rules",
+        "0040EEF0..0040EF36: capacity publication, overflow-aware BF55BE allocation, signed DWORD copy, BF6989 free"
+      ],
+      "called": true,
+      "call_sites": 4,
+      "caller": "hull_00c5cae0",
+      "limits": "Existing finite-input C++ hull projection and scratch lifetime remain; original register/SEH ABI and native work-pool identity are not validated."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: deliver_loopback UserPathPoint arm",
+      "reason": "Missing a live presence-zero clear-message producer and per-slot retained path owners; the live sender produces additions only."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit screen reset",
+      "reason": "Missing producers and ownership for screen+30h selection mode and +C4h selection vector; current sites only record the reset."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property merge",
+      "reason": "Already entry-reachable at baseline (built body 105FE8C0); no new wiring was needed."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum property insertion",
+      "reason": "Already entry-reachable at baseline (built body 105FE2C0); no new wiring was needed."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "Missing retained native ammo+48h alternate record, its referenced owners and owned tree; the current host carries only ammunition handles."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building owner change",
+      "reason": "Missing the native unit+660h vector of 44h records and its producers; the current capture path does not own that storage."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing a renderer-bound command-queue reset/cycle provider for 00B1C4B0 and renderer slots 0Ch/14h/11Ch."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "The existing manager frame already composes this highlight-reset body; no new host path was selected, and its optimized address is absent from the baseline call graph."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "The existing manager frame already composes this live-entry query; no new host path was selected, and its optimized address is absent from the baseline call graph."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: set_pointer_activation_reader_00aa6be0",
+      "reason": "No live 00F8BC84 callback publication cell and matching consumer were identified in the inspected GUI application."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: set_selection_callback_00aab5e0",
+      "reason": "No live 00F8BCFC callback publication cell and matching consumer were identified in the inspected GUI application."
+    },
+    {
+      "native": "00546630",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_class_activation.cpp: vehicle pointer-array resize",
+      "reason": "The activation body already composes this helper through resize; no new live caller was selected and the optimized helper has no baseline call-graph address."
+    },
+    {
+      "native": "005471b0",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_class_activation.cpp: vehicle pointer-array resize",
+      "reason": "Existing reconstructed activation already invokes this resize; a new live activation root was outside the selected hull packet."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: vehicle camera array resize",
+      "reason": "Missing a live camera hand-mode caller with the native class-owned camera array reached through camera+38Ch/entity+538h/class+BCh."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair composition scoring",
+      "reason": "Missing a parser-owned per-mode class-pair table and live composition-scoring caller; guessed class scores would invent inputs."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "Missing a live spawn-composition caller supplying the group weight and actual threat/source record counts."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path lookup",
+      "reason": "Missing a native director layout retaining the per-slot pointer array at +1A4h; the host retains one optional user-path projection."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "The current adjacency builder has no consumer for the native transient edge hash map and no matching pool-backed map owner."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "The native edge map is cleared unread; a live map consumer and matching 0109ED28 pool-backed owner are absent."
+    },
+    {
+      "native": "0040ee00",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: append_triangle_004060e0",
+      "reason": "Sibling triangle-pointer capacity wiring is already covered by g5-w5 review commit f0125d861; this packet owns the independent integer arrays."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record capacity",
+      "reason": "Existing lifetime code composes this reserve through resize, but no active renderer distortion-record owner was identified for a new root."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record resize",
+      "reason": "Existing destruction composes this resize; an active renderer distortion-record owner is needed before wiring a new root."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: animation value append/assign",
+      "reason": "Existing parsing code composes this reserve, but a new live animation-item parsing root was outside the selected hull packet."
+    },
+    {
+      "native": "00ae19b0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_node_array_release.cpp: shadow pointer-array release",
+      "reason": "Existing release code already composes this resize; a live shadow-array lifetime root was not established in the selected packet."
+    }
+  ],
+  "wired_total": {
+    "before": 10452,
+    "after": 10453
+  },
+  "entry_reachable_reconstructed_addresses": {
+    "before": 5354,
+    "after": 5355
+  },
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release, all 4 existing CTests passed; local/output/g5-c703-build.txt",
+    "graph": "tools/call_graph.py who/path 0040eef0: 4 reachable calls from hull_00c5cae0; entry chain through mission world-contact phase",
+    "focused_fixture": "One 96-point convex fixture under PC24, compared with isolated pre-change source: identical 96 vertices, 188 triangles, 564 indices, byte-identical XYZ and exact index order. Probe linked with /MANIFEST:EMBED; local/output/g5-c703-hull-probe.txt",
+    "float_math_changed": false,
+    "game_run": false,
+    "original_binary_abi_validated": false,
+    "readiness": "wire_readiness.py --standins: 0040eef0 state wired; total 10453"
+  },
+  "coordination": {
+    "notice": "Messages 3200 and 3202 announce the independent integer-array edit alongside g5-w5 triangle-slot review. No worker commits merged or cherry-picked.",
+    "ownership": "Only src/avoid_zone_dyn_hull.cpp and this report changed; lease released before completion."
+  },
+  "assumptions": [
+    "Retain the existing finite-input hull and C++ scratch-lifetime contract; use the input point count and binary flag constants 0, 1 and 3.",
+    "Reuse singleton_lifetime_allocate/free for the recovered BF55BE/BF6989 allocation pair, consistently with the sibling triangle-slot adapter."
+  ]
+}

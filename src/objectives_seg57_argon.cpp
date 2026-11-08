@@ -1494,7 +1494,7 @@ void map_ping_reset_cooldown_008e25f0(Seg57Host& host) {
 }
 
 // 008e2b90: BSP_MapPingList_Construct
-void* map_ping_list_construct_008e2b90(Seg57Host& host, void* self) {
+void* map_ping_list_construct_008e2b90(MapPingListHost& host, void* self) {
   const Raw s = raw_of(self);
   s.ptr(0x00) = host.image_address(0x00d16168u);
   s.ptr(0x08) = host.stl_list_buy_head_node_008e28f0();
@@ -1503,7 +1503,7 @@ void* map_ping_list_construct_008e2b90(Seg57Host& host, void* self) {
 }
 
 // 008e2bf0: BSP_MapPingList_PruneExpired
-void map_ping_list_prune_expired_008e2bf0(Seg57Host& host, void* self) {
+void map_ping_list_prune_expired_008e2bf0(MapPingListHost& host, void* self) {
   const Raw s = raw_of(self);
   void* const list_container = s.p + 0x04;
   void* node = raw_of(s.ptr(0x08)).ptr(0x00);

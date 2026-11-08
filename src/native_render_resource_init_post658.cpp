@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_init_post658.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_material_parameters.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
@@ -117,8 +118,7 @@ void parameter(std::size_t index,Context& c,const Names& names,State& a) {
     if(step.words==1)register_native_material_float_00b18b20(*material,&a.names[n],source,c.passes.parameters);
     else if(step.words==2)register_native_material_float2_00b18b00(*material,&a.names[n],source,c.passes.parameters);
     else {
-        // Existing full B18AC0: wrapping DWORD4*count, matrix0. Here count9.
-        register_native_material_parameter_00b17e10(*material,&a.names[n],source,4u*9u,0,c.passes.parameters);
+        cc13_terrain::material_register_float4_array_00b18ac0(material,&a.names[n],source,9,c.passes.parameters);
     }
     return_name(n,0,index==3,step.getter,step.release,c,a);
 }

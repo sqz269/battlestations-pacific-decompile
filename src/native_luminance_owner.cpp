@@ -1,4 +1,5 @@
 #include "bsp/native_luminance_owner.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_render_resources_remap.hpp"
@@ -212,8 +213,8 @@ void NativeLuminanceInitializationBlock::bind_sample(Word index,const void* inpu
     set_native_material_texture_unchecked_00b189f0(&current_material(acquired_.receiver,member),0,
         texture,context_->post_effects.destruction.actual_owners);
     build_name(common_name_,context_->sample_offsets_name_00d5e40c,14);acquired_.native_state=state;
-    register_native_material_parameter_00b17e10(current_material(acquired_.receiver,member),&common_name_,
-        at(acquired_.receiver,0x10),64,0,context_->parameters);
+    cc13_terrain::material_register_float4_array_00b18ac0(&current_material(acquired_.receiver,member),&common_name_,
+        at(acquired_.receiver,0x10),16,context_->parameters);
     acquired_.native_state=-1;return_name(common_name_);
     void* const output=pointer(word(at(acquired_.receiver,output_member)));
     require(output!=nullptr,"luminance sample requires current output holder");

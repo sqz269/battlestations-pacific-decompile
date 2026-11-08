@@ -1,0 +1,188 @@
+{
+  "chain": 694,
+  "owner": "agent/g5-w9",
+  "picked": "Live ship-formation membership join and observer ownership",
+  "source_wired_before": 10445,
+  "source_wired_after": 10446,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "call_graph": "ship_ai_formation_add_member is entry-reachable with one call from GameUnitsHost::formation_join_0077f940; the existing 0070DA00 body also has a new call from Join::refresh_speed_ceiling_0070da00",
+    "readiness": "0070EF30 changed from callees_done_no_wired_caller to wired, called=true, call_sites=1, callers_live=1",
+    "float_math": "No new float arithmetic; existing slot-production and class-speed-reduction bodies consume the actual poses, tuning, wake and class values",
+    "game_run": false
+  },
+  "ownership": [
+    "FormationGroup owns stable heap storage for its existing native 508h group, preserving callback-owner addresses across formation_groups vector growth.",
+    "The leader and joined members register their real unit observed endpoints against the group's native callback prefix in the application observer lifetime.",
+    "Transfers and explicit member destruction unregister those pairs; host teardown retires group callback owners before unit endpoints.",
+    "The semantic join receives writable record[count] while the published count remains unchanged until the recovered body increments it. The old append and slot writes were removed."
+  ],
+  "evidence": [
+    "bsp.py show 0070EF30 and --asm: unit+284 store first; new record identity and CF4888 speed; 0070ED30(join index); count increment; ECX=unit/EDX=group at 00694A60; 0070DA00 refresh",
+    "bsp.py show 0070D7B0: leader initialization registers the same unit/group observer pair",
+    "bsp.py show 0070DA00: reduce current member class speeds into group+504h using the existing typed view"
+  ],
+  "limitations": [
+    "This wires the existing semantic join through a new C++ host interface, not the original unit/group class ABI.",
+    "Native observer virtual delivery to the group's 0070ECA0 callback is still unbound; current formation leave/death handling explicitly removes membership and unregisters the pair.",
+    "Compilation, existing fixtures and executable reachability do not establish gameplay parity."
+  ],
+  "rows": [
+    {
+      "native": "0070EF30",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_join_0077f940",
+      "body": "src/ship_ai_formation.cpp: ship_ai_formation_add_member"
+    },
+    {
+      "native": "0070DA00",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: formation_join_0077f940::Join::refresh_speed_ceiling_0070da00",
+      "already_wired_before": true
+    },
+    {
+      "native": "0070ECA0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::leave_group_on_destroy_0077bd70",
+      "reason": "Native observer virtual delivery still needs a group callback adapter and native entity/group pointer view; the live host currently removes members explicitly."
+    },
+    {
+      "native": "0070D7B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation_join_0077f940 fresh-leader path",
+      "reason": "The raw initializer needs a native leader with unit+284h, class+538h and callable kind dispatch; registry identities supply only the existing non-dereferencing group operations."
+    },
+    {
+      "native": "0070D980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation group member storage",
+      "reason": "Its sole original caller is network entity-create construction 00766FC0; no single-player consumer of this raw member vector was found."
+    },
+    {
+      "native": "007BA8D0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: queue_plane_failure_63_67",
+      "reason": "C8h dead-meat-rotation messages are routed only by the multiplayer gate; single-player never runs this producer."
+    },
+    {
+      "native": "008FBEF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already entry-reachable from notify_gun_skill_level with the loaded descriptor and real random stream; another call would duplicate its draw."
+    },
+    {
+      "native": "00704060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: GameMessageManagerHost::Impl::clear_records",
+      "reason": "The existing destructor body is already entry-reachable through lookup_message_record_00705C50 and RecordOwner teardown; this is not a new unwired body."
+    },
+    {
+      "native": "00C4B9B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_report.cpp: hull-terrain summary",
+      "reason": "The native collision-update kernel already calls its private refresh_kernel body at original 00C54A06; the host match is diagnostic text, not an additional manifold consumer."
+    },
+    {
+      "native": "0074FA80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The sole original caller is the debug flooded-unit inspector 006FB750, outside single-player runtime work."
+    },
+    {
+      "native": "00AA4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp: native button default/copy factories",
+      "reason": "No live caller or native Button ownership path reaches either default/copy factory; page construction still needs that type-specific producer."
+    },
+    {
+      "native": "00AA15C0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp: native scrollbar default/copy factories",
+      "reason": "No live caller or native Scrollbar ownership path reaches either default/copy factory; page construction still needs that type-specific producer."
+    },
+    {
+      "native": "009F9CE0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: approach speed-ratio production",
+      "reason": "The full raw constructor requires actual unit+538h/+9D4h/+DF4h storage and native PilotBot descriptor-row publication; the current approach projection supplies semantic fields."
+    },
+    {
+      "native": "006E8320",
+      "status": "skipped",
+      "host_site": "src/projectile_kinds.cpp: weapon_class_constructed_defaults",
+      "reason": "The old WeaponClassDescriptor model has no runtime owner; current GameBulletClassRow loading needs an actual base-descriptor construction adapter."
+    },
+    {
+      "native": "006F7C20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "No live command-registry ordering consumer supplies this reference model's class keys and predicate semantics."
+    },
+    {
+      "native": "00AA5A00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "The live GUI path supplies no child-list snapshot consumer corresponding to original caller 00AAAED0; a new render-time sort would be an unrelated extra run."
+    },
+    {
+      "native": "00AB6D00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character GuiLeafHost consumer with the active text-context font; existing uses are probe constants."
+    },
+    {
+      "native": "00A2BD90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The command host has no actual AI-group command owner at +564Ch; its current stand-in records an unreachable forward."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: target listener reporting",
+      "reason": "Missing Seg62Host channel/reporting and observed-target argument ownership bound to the mission Lua manager."
+    },
+    {
+      "native": "004F1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: SceneCommandTarget production",
+      "reason": "The literal raw initializer reads unmapped original F87574/F87578/F8757C cells; the host owns semantic SceneCommandTarget values and lacks a bound raw initializer interface."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: construct_unit_owned_ref_slot_00809270",
+      "reason": "No live UnitOwnedRefSlot owner at unit+72Ch exists in the current host projection."
+    },
+    {
+      "native": "00638B90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp: clamp_to_screen_margins_00638b90",
+      "reason": "No concrete live marker-clamp callback supplies the native screen-margin values and widescreen selection."
+    },
+    {
+      "native": "00748C40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg41_land.cpp: land_fort_allocate_stationary_prop_00748c40",
+      "reason": "The full factory still needs native 1ACh stationary-prop construction, class assignment and matching ownership services."
+    },
+    {
+      "native": "007EE720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron head-task readiness",
+      "reason": "The raw predicate needs native squadron members and member+DF4h head tasks with callable slot+20h; the host uses semantic task state."
+    },
+    {
+      "native": "007EE8F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron attack-command eligibility",
+      "reason": "Missing native squadron/target storage and the Cc15Seg48Host kind, class and command-query adapter."
+    },
+    {
+      "native": "007F1000",
+      "status": "skipped",
+      "host_site": "src/cc15_seg48.cpp: cc15_seg48_command_record_init_with_entity_007f1000",
+      "reason": "The host does not own this raw command record or a native entity+174h handle view and bound zero-vector provider."
+    }
+  ]
+}

@@ -1,6 +1,11 @@
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include "bsp/avoid_zone_dyn_hull.hpp"
+#include "bsp/cc15_dyn_live.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_dyn_hull_cc13.hpp"  // packet pc24w2-hull
+#include "bsp/singleton_lifetime.hpp"
 #include <algorithm>
 #include <array>
 #include <cfloat>
@@ -118,10 +123,44 @@ void sine_cosine(float angle,float& sine,float& cosine) {
     sine=s;cosine=c;
 }
 
+// 00C5CB55..00C5CBAA: two empty native {data,size,capacity} descriptors,
+// reserved to the input point count by 0040EEF0 (ESI=header, EAX=count).
+// Their actual words are the support eligibility and extreme-vertex flags;
+// consumers below read/write this allocation, with no parallel STL copy.
+const cc15_dyn_live::DynLiveCrt kHullFlagsCrt{
+    nullptr,
+    +[](std::uint32_t bytes) -> void* {
+        return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+    },
+    &singleton_lifetime_free,
+    nullptr
+};
+struct HullFlags {
+    cc15_dyn_live::DynVector4 words{};
+    HullFlags() = default;
+    HullFlags(const HullFlags&) = delete;
+    HullFlags& operator=(const HullFlags&) = delete;
+    ~HullFlags() { singleton_lifetime_free(words.data_00); }
+    void reserve(std::uint32_t count) {
+        if(count) cc15_dyn_live::vector4_set_capacity_0040eef0(&words,count,kHullFlagsCrt);
+    }
+    void append(std::uint32_t value) {
+        // 00C5CBC3..00C5CCCA: the native append grows by 10h or doubles.
+        // Initial reservation normally supplies every point's flag slot.
+        if(static_cast<std::uint32_t>(words.size_04)==words.capacity_08) {
+            const auto capacity=words.capacity_08?words.capacity_08*2u:0x10u;
+            cc15_dyn_live::vector4_set_capacity_0040eef0(&words,capacity,kHullFlagsCrt);
+        }
+        words.data_00[words.size_04++]=value;
+    }
+    std::uint32_t& operator[](std::size_t index) noexcept { return words.data_00[index]; }
+    std::uint32_t operator[](std::size_t index) const noexcept { return words.data_00[index]; }
+};
+
 // 0040EF40: equality keeps the first allowed point; this is not a > rewrite
 // for unordered values. Such exceptional inputs are outside this API domain.
 int max_direction_filtered_0040ef40(const std::vector<V>& p,V direction,
-                                   const std::vector<int>& allow) {
+                                   const HullFlags& allow) {
     int best=-1;
     for (std::size_t i=0;i<p.size();++i) {
         if (!allow[i]) continue;
@@ -134,7 +173,7 @@ int max_direction_filtered_0040ef40(const std::vector<V>& p,V direction,
 // 0040C790: confirm a support vertex by the native angular neighborhood;
 // disabled candidates stay disabled for subsequent simplex/extrusion queries.
 int max_direction_0040c790(const std::vector<V>& p,V direction,
-                          std::vector<int>& allow) {
+                          HullFlags& allow) {
     for (;;) {
         const int best=max_direction_filtered_0040ef40(p,direction,allow);
         if (allow[best]==3) return best;
@@ -164,7 +203,7 @@ int max_direction_0040c790(const std::vector<V>& p,V direction,
         allow[best]=0;
     }
 }
-std::array<int,4> simplex_00c58920(const std::vector<V>& p,std::vector<int>& allow) {
+std::array<int,4> simplex_00c58920(const std::vector<V>& p,HullFlags& allow) {
     const std::array<int,4> fail{-1,-1,-1,-1};
     const int p0=max_direction_0040c790(p,{0.01f,0.02f,1},allow);
     const int p1=max_direction_0040c790(p,{-0.01f,-0.02f,-1},allow);
@@ -191,10 +230,49 @@ struct Triangle {
     int farthest=-1;
     float rise=0;
 };
-using Triangles=std::vector<std::unique_ptr<Triangle>>;
+// 004060F5..00406138: the hull's actual triangle-pointer slots correspond to
+// {0109EA00 data, 0109EA04 size, 0109EA08 capacity}. Keep the existing per-hull
+// scratch lifetime, but use that native descriptor instead of an STL vector.
+// Triangle objects retain C++ ownership; native work-pool/SEH ABI is unresolved.
+const cc15_dyn_live::DynLiveCrt kTriangleSlotsCrt{
+    nullptr,
+    +[](std::uint32_t bytes) -> void* {
+        return singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
+    },
+    &singleton_lifetime_free,
+    nullptr
+};
+struct Triangles {
+    cc15_dyn_live::DynVector4 slots{};
+    Triangles() = default;
+    Triangles(const Triangles&) = delete;
+    Triangles& operator=(const Triangles&) = delete;
+    ~Triangles() {
+        for(std::size_t i=0;i<size();++i) reset(i);
+        singleton_lifetime_free(slots.data_00);
+    }
+    std::size_t size() const noexcept { return static_cast<std::size_t>(slots.size_04); }
+    Triangle* operator[](std::size_t i) const noexcept {
+        return reinterpret_cast<Triangle*>(slots.data_00[i]);
+    }
+    void reset(std::size_t i) noexcept {
+        delete (*this)[i];
+        slots.data_00[i]=0;
+    }
+};
 int append_triangle_004060e0(Triangles& t,int a,int b,int c) {
     const int id=static_cast<int>(t.size());
-    t.push_back(std::make_unique<Triangle>(Triangle{{a,b,c},{-1,-1,-1},id,-1,0}));
+    auto triangle=std::make_unique<Triangle>(Triangle{{a,b,c},{-1,-1,-1},id,-1,0});
+    auto& slots=t.slots;
+    if(static_cast<std::uint32_t>(slots.size_04)==slots.capacity_08) {
+        // 0040610A..0040611D: first capacity 10h, otherwise ADD EAX,EAX.
+        // The existing body copies these same live pointers and frees their
+        // prior allocation; there is no second pointer array or append path.
+        const auto capacity=slots.capacity_08?slots.capacity_08*2u:0x10u;
+        cc15_dyn_live::vector4_set_capacity_0040ee00(&slots,capacity,kTriangleSlotsCrt);
+    }
+    slots.data_00[id]=reinterpret_cast<std::uint32_t>(triangle.release());
+    ++slots.size_04;
     return id;
 }
 int& neighbor_00c36730(Triangle& t,int a,int b) {
@@ -236,10 +314,10 @@ void extrude_00c51480(Triangles& all,int source,int v) {
         const int other=t.neighbor[0];
         if(contains(*all[other],v)) {
             splice_back_to_back_00c38f90(all,t,*all[other]);
-            all[added[i]].reset();all[other].reset();
+            all.reset(added[i]);all.reset(other);
         }
     }
-    all[source].reset();
+    all.reset(source);
 }
 V triangle_normal(const std::vector<V>& p,const Triangle& t) {
     return normal_00c48170(p[t.vertex[0]],p[t.vertex[1]],p[t.vertex[2]]);
@@ -258,8 +336,13 @@ bool hull_00c5cae0(const std::vector<V>& p,Triangles& all,int limit) {
     if(p.size()<4) return false;
     if(!limit) limit=1000000000;
     V minimum=p[0],maximum=p[0];
-    std::vector<int> extreme(p.size(),0),allow(p.size(),1);
+    HullFlags extreme,allow;
+    extreme.reserve(static_cast<std::uint32_t>(p.size())); // 00C5CB67
+    allow.reserve(static_cast<std::uint32_t>(p.size()));   // 00C5CB96
     for(V v:p) {
+        // 00C5CC32 and 00C5CCBA: append 1 to allow, then 0 to extreme.
+        allow.append(1);
+        extreme.append(0);
         minimum={std::min(minimum.x,v.x),std::min(minimum.y,v.y),std::min(minimum.z,v.z)};
         maximum={std::max(maximum.x,v.x),std::max(maximum.y,v.y),std::max(maximum.z,v.z)};
     }
@@ -513,7 +596,7 @@ std::uint32_t avoid_zone_dyn_hull_generate_00c5dae0(const AvoidZoneDynHullDescri
     // index encounter order, storing index+1 in the zero-initialized map.
     std::vector<V> points;std::vector<std::uint32_t> flat;
     std::vector<std::uint32_t> remap(cleaned.size(),0);
-    for(const auto& t:triangles) if(t) for(int v:t->vertex) {
+    for(std::size_t i=0;i<triangles.size();++i) if(const auto* t=triangles[i]) for(int v:t->vertex) {
         if(!remap[v]) { points.push_back(cleaned[v]);remap[v]=static_cast<std::uint32_t>(points.size()); }
         flat.push_back(remap[v]-1);
     }

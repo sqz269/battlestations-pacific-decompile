@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/gui_lua_reader.hpp"
+#include <array>
 #include <memory>
 struct lua_State;
 #include <string_view>
@@ -52,6 +53,11 @@ public:
     // The caller owns the fresh result and releases it in calls.strings.
     NativeString* to_display_string(const GuiLuaRef&, void* fresh,
         const NativeLuaDisplayStringCalls& calls);
+    // B67D40 over this interpreter's retained value. Temporary native tracking
+    // is relative to the current stack top. Like get_by_index, this retains
+    // Lua's nonlocal error transfer to an enclosing lua_pcall.
+    std::array<float, 4> to_vector4_or(const GuiLuaRef&,
+        const std::array<float, 4>& fallback);
     void* to_userdata(const GuiLuaRef&) override;
     void release(const GuiLuaRef&) override;
 private:

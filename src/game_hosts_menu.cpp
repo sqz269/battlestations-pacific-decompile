@@ -13,6 +13,7 @@
 #include "bsp/engine_core_cc13.hpp"
 #include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
+#include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -781,6 +782,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
 
     GameHostLog& log;
     GameFrontendHost& frontend;
+    GameNativeRendererApplication* native_renderer{};
     GameStateSlot& state;
     long press_start_frame{-1};
     GameMenuSummary summary;
@@ -2378,7 +2380,14 @@ public:
         static_cast<void>(mode);
         rec("LoadingScreen::gui_update", "00aa4f80");
     }
-    void gui_refresh() override { rec("LoadingScreen::gui_refresh", "00aa2b80"); }
+    void gui_refresh() override {
+        if (owner_.native_renderer == nullptr)
+            throw std::logic_error("LoadingScreen::End requires the startup renderer");
+        if (owner_.native_renderer->reset_gui_render_queue())
+            owner_.log.implemented("LoadingScreen::gui_refresh", "00aa2b80");
+        else
+            owner_.log.unimplemented("LoadingScreen::gui_refresh_no_device", "00aa2b80");
+    }
     // C251 publishes the loading screen's own page through the real registry.
     void screen_registry_commit() override {
         MenuCommitHost commit(owner_);
@@ -3122,6 +3131,10 @@ GameMenuHost::~GameMenuHost() {
 void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
     binding.prepare();
     impl_->input_contexts.manager = &binding;
+}
+
+void GameMenuHost::bind_native_renderer(GameNativeRendererApplication& renderer) {
+    impl_->native_renderer = &renderer;
 }
 
 void GameMenuHost::bind_input_configuration(GameNativeInputConfigurationApplication* configuration) {

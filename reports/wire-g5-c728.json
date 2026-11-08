@@ -1,0 +1,116 @@
+{
+  "goal": 5,
+  "chain": 728,
+  "slot": "g5-w6",
+  "rows": [
+    {
+      "native": "006c4f30",
+      "status": "wired",
+      "host_site": "src/air_operations.cpp: bsp::air_ops_release_squadron_slot_006c65b0",
+      "evidence": "bsp.py show 006c65b0 and 006c4f30: identical observer guard and five slot field writes; replaces the prior stores on the actual matched AirOpsDeck::slots element.",
+      "limitations": "The pre-existing typed AirOpsSlot model does not carry the native observer pair; this change does not add or remove observer behavior."
+    },
+    {
+      "native": "006bd360",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air-operations deck owner",
+      "reason": "No live deck-wide reset consumer was found; the active squadron-release path must preserve other squadrons and cannot run this all-slot pass."
+    },
+    {
+      "native": "006bf4c0",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air-operations deck owner",
+      "reason": "No live airborne-total consumer was found; the active committed-stock calculation has different state rules and cannot be replaced with this counter."
+    },
+    {
+      "native": "006bf540",
+      "status": "skipped",
+      "host_site": "src/air_operations.cpp: air-operations deck owner",
+      "reason": "No live airborne-or-queued-total consumer was found; the active committed-stock calculation has different state rules and cannot be replaced with this counter."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost camera services",
+      "reason": "The inspected camera host only binds AddPosition(s); it has no actual HudMovieScreen owner/default fields for these reset operations."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost camera services",
+      "reason": "The inspected camera host only binds AddPosition(s); it has no actual HudMovieScreen owner/default fields for these reset operations."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost camera services",
+      "reason": "The inspected camera host only binds AddPosition(s); it has no actual HudMovieScreen owner/default fields for these reset operations."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost camera services",
+      "reason": "The inspected camera host only binds AddPosition(s); it has no actual HudMovieScreen owner/default fields for these reset operations."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_set_zoom",
+      "reason": "The inspected AddPosition(s) host has no live MovCamZoom owner or zoom-command binding; its zoom service is explicitly unreachable."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "The semantic fixed-step host lacks the actual native group/owner attachment required by its dispatch path; its per-job entry only logs an unimplemented operation."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "The semantic fixed-step host lacks the actual native group/owner attachment required by its dispatch path; its per-job entry only logs an unimplemented operation."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "The semantic fixed-step host lacks the actual native group/owner attachment required by its dispatch path; its per-job entry only logs an unimplemented operation."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "The semantic fixed-step host lacks the actual native group/owner attachment required by its dispatch path; its per-job entry only logs an unimplemented operation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "The main-thread mission interpreter does not produce a job-thread deferred call with an actual source LuaVariantRecord vector to copy."
+    }
+  ],
+  "wired_before": 10489,
+  "validation": {
+    "baseline_build": "passed; all 4 CTest checks",
+    "evidence_commands": [
+      "python tools/bsp.py show 006c65b0",
+      "python tools/bsp.py show 006c4f30"
+    ],
+    "game_run": false,
+    "build": "./scripts/build.ps1 passed; all 4 CTest checks",
+    "diff_check": "git diff --check passed",
+    "call_graph": "006c4f30 is REACHABLE with one direct call at 104168ad from air_ops_release_squadron_slot_006c65b0; reachable through the Lua squadron-land-and-kill release service and the existing script-order release consumer.",
+    "call_graph_reconstructed_called": 5396,
+    "float_math": "No floating-point arithmetic changed; five field stores were replaced with the existing equivalent body.",
+    "readiness_target": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "assumptions": [
+    "Share the existing slot-clear body only where native listings show the same field effects; preserve the existing typed owner and matching-squadron filter."
+  ],
+  "wired_after": 10490
+}

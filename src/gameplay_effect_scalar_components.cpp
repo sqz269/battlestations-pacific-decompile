@@ -42,29 +42,10 @@ void truth(void* p, std::size_t offset, GuiLuaHost& lua, const GuiLuaRef& table,
     store<std::uint8_t>(p, offset, (!boolean_only || lua.type_of(field.value) == GuiLuaType::Boolean)
         && lua.to_boolean(field.value) ? 1 : 0);
 }
-//00B67D40 tracked-field projection. No table length check: index5 must be
-// nil, then read1..4 (numeric strings allowed, missing entries become0).
-// Each element is released before reading the next; publish only at the end.
-std::array<float, 4> vector4_or(GuiLua51Host& lua, const GuiLuaRef& ref,
-    const std::array<float, 4>& fallback) {
-    if (lua.type_of(ref) != GuiLuaType::Table) return fallback;
-    bool fifth_is_nil;
-    {
-        FieldRef fifth{lua, lua.get_by_index(ref, 5)};
-        fifth_is_nil = lua.type_of(fifth.value) == GuiLuaType::Nil;
-    }
-    if (!fifth_is_nil) return fallback;
-    std::array<float, 4> result;
-    for (std::int32_t i = 0; i != 4; ++i) {
-        FieldRef element{lua, lua.get_by_index(ref, i + 1)};
-        result[static_cast<std::size_t>(i)] = lua_object_number_00b66270(lua, element.value);
-    }
-    return result;
-}
 void color(void* p, std::size_t offset, GuiLua51Host& lua, const GuiLuaRef& table,
     const char* key, const std::array<float, 4>& fallback) {
     FieldRef field{lua, lua.get_by_name(table, key)};
-    const auto value = vector4_or(lua, field.value, fallback);
+    const auto value = lua.to_vector4_or(field.value, fallback);
     for (std::size_t i = 0; i != value.size(); ++i) store(p, offset + i * 4, value[i]);
 }
 struct TemporaryName {

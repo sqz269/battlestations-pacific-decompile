@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <vector>
 
+#include "bsp/observer_lifetime.hpp"
+
 namespace bsp::game {
 
 // Caller-owned Win32 layout for the existing whole UnitGroup bodies. The
@@ -25,6 +27,11 @@ public:
     void publish_speed_ceiling(float speed) noexcept;
     float speed_ceiling() const noexcept;
     void* data() noexcept { return bytes_.data(); }
+    // 0070DAB0 initializes the group's callback-owner base at +0. Its
+    // address must survive formation_groups vector growth while edges borrow it.
+    NativeObserverOwnerStorage& observer_owner() noexcept {
+        return *reinterpret_cast<NativeObserverOwnerStorage*>(bytes_.data());
+    }
 
 private:
     alignas(4) std::array<std::byte, 0x508> bytes_{};

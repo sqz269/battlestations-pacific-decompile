@@ -1,0 +1,224 @@
+{
+  "goal": 5,
+  "chain": 687,
+  "run": 1469,
+  "harness": "codex",
+  "branch": "agent/g5-w5",
+  "base_head": "3efcca81aecc2a04c1b12e546790d6db7c674146",
+  "picked": "Mission SaveCheckpoint record +0Ch pooled-string cleanup",
+  "rows": [
+    {
+      "native": "00436490",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::ScopedMissionCheckpointRecord::~ScopedMissionCheckpointRecord (GameMissionLuaHost::mission_checkpoint_binding SaveCheckpoint path)",
+      "body": "src/profile_seg2_cc13.cpp::native_string_at_0c_destroy_storage_00436490",
+      "real_state": "The existing real 14h MissionCheckpointRecord constructed by 00436690; unlock_name is statically asserted at +0Ch. Reuses game_native_string_process().raw_context(), the same pool publication cells used by its constructor.",
+      "change": "Narrow the existing body's Seg2Host dependency to NativeStringRawPoolContext and replace the old inline +0Ch string cleanup once. No new address body, shadow owner, switch, synthetic payload or duplicate cleanup.",
+      "evidence": "bsp.py show 00436490 --asm, 00436490..004364AD: capture data+10h; null skips length/getter/return; otherwise length+1 DWORD wrap, 00419CC0, 00BD1510(data,bytes,1); header/three words unchanged. Existing raw 0041DD20 composition has the same schedule over owner+0Ch.",
+      "original_abi": "__thiscall ECX=14h owner, plain RET; source interface explicitly adds its existing raw pool context and is not a binary replacement.",
+      "call_graph": "REACHABLE at 10417590; direct call sites 10134e5f from ScopedMissionCheckpointRecord destructor and 101376d1 from the SaveCheckpoint conversion lambda, including unwind reachability.",
+      "limitations": "The current SaveCheckpoint temporary is constructed with an empty native name before projection to CheckpointRecordFields; this change adds no new nonnull-string producer. Game/runtime execution and Original ABI/SEH parity were not tested."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing live candidate-score-table owner and gameplay consumer; the documented native table reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing native candidate-score entries to mark and a gameplay table consumer."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::set_unit_controlled_audio",
+      "reason": "Missing the same unit's native +BBCh emitter, +428h device list and +6B4h byte bindings."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::animation_interval",
+      "reason": "Missing a real weapon-animation timed-entry owner; weapon_animation returns zero."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::move-on-path bindings",
+      "reason": "Missing the process-wide native path-leg-manager owner/lifetime binding; current motion code labels a substitute."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::mission player-count check",
+      "reason": "The normal single-player session uses mode zero and exits before participant counting; excluded multiplayer behavior."
+    },
+    {
+      "native": "0074e830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::clear_all_leak_zones",
+      "reason": "Missing a live native LeakManagerZones owner; the current callback is explicitly unreached."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp::collect_sorted_children_00aa5a00",
+      "reason": "Missing the live reflection/property-descriptor writer caller 00AAAED0; normal render ordering is a different operation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::queue_call",
+      "reason": "Missing a frame-job-thread deferred-node producer and its real source LuaVariantRecord vector; this interpreter runs on the main thread."
+    },
+    {
+      "native": "00760390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_vehicle_race_80",
+      "reason": "Missing actual selected-player ownership and SetRace profile binding; existing code deliberately supplies codec-only storage."
+    },
+    {
+      "native": "0071cb50",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_94_to97.cpp::construct_native_session_message96_value_0071cb50",
+      "reason": "No actual single-player message96 sender/value producer was identified; current user-path messages are type 5Fh, not 60h."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path handling",
+      "reason": "Missing the live clear-last-user-path operation and native selected-slot path ownership; the existing helper only selects the index."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "Missing the live packed controller-state descriptor owner; SceneCommandTarget is a different representation."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_build_00721090",
+      "reason": "Missing the packed controller-state producer with real class ordinals and resolved entity network indices."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::state_message_build_00721280",
+      "reason": "Missing the real controller-state message producer, packed descriptors and receiver path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::director snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage and routed consumer; copying flattened flags into a temporary and back adds no behavior."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp::contains_native_property_library_name_008f2db0",
+      "reason": "Missing a bound native property-library owner/caller in this checkout; agent/g5-w6 subsequently claimed this work stream."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/native_enum_lua_declaration.cpp::declare_native_enum_symbols_from_lua_008f2f70",
+      "reason": "Missing a live Lua-backed enum-declaration producer with the required actual enum owner and canonical display bindings."
+    },
+    {
+      "native": "00523320",
+      "status": "skipped",
+      "host_site": "src/view_seg14_cc13.cpp::observer_handle_construct_00523320",
+      "reason": "Missing the actual observer-handle storage/target producer; the live observer runtime currently provides dispatch lifetime, not this handle owner."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp::create_native_gui_button_default_00aa4440",
+      "reason": "Missing the live raw Button factory route and same canonical Button registry/focus ownership."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::class-pair scoring",
+      "reason": "Missing a parser-owned per-mode class-pair table and live scoring consumer; class scores cannot be guessed."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/gun_platform_arc.cpp::gun_set_angles_immediate_0085b0f0",
+      "reason": "Missing the received four-angle producer and same gun's replication state/node callback on a live single-player path."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::vehicle_avoidance_007df4f0",
+      "reason": "Its original alternate-frame branch requires unit+B04h; current evidence has no writer and the host uses the inverse-pose branch."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp::direction_angle_deltas_00605630",
+      "reason": "Missing the live plane-HUD bomb-fire caller with both actual direction vectors and output consumers."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp::clamp_to_screen_margins_00638b90",
+      "reason": "Missing the actual runtime margin globals/wide-layout state and a bound native marker-widget caller."
+    },
+    {
+      "native": "00951220",
+      "status": "skipped",
+      "host_site": "src/scene_traffic_groups.cpp::create_traffic_record_00951220",
+      "reason": "Missing the actual native 4Ch traffic-record vector/storage owner; current scene parser retains the different semantic TrafficRecord representation."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp::set_native_last_render_command_metadata_00b1cb50",
+      "reason": "Missing an identified real three-word metadata producer for the queue's current last command."
+    },
+    {
+      "native": "005993a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_listener.cpp::CheckpointTemporary",
+      "reason": "The canonical current04 menu listener is not linked in the game executable; its cleanup refactor was left out."
+    },
+    {
+      "native": "0052aef0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::construct_native_session_message35_0052aef0",
+      "reason": "Missing an eligible single-player sender/owner for this native message35 class."
+    },
+    {
+      "native": "005f9660",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_78_to81.cpp::construct_native_session_message81_005f9660",
+      "reason": "No live single-player producer/consumer for this message class was identified in the inspected session bridge."
+    }
+  ],
+  "validation": {
+    "index": "python tools/bsp.py index --if-stale completed",
+    "baseline_build": "scripts/build.ps1 passed; all four existing CTests",
+    "final_build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader",
+    "call_graph": "41676 -> 41677 entry-reachable functions; 5341 -> 5342 reconstructed addresses called. These graph counts are distinct from readiness source-wired totals.",
+    "readiness_before": 10440,
+    "readiness_after": 10441,
+    "float_math": "Unchanged; pc24_lint not required.",
+    "game_run": "Not run as instructed.",
+    "target_readiness": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 2,
+      "callers_live": 2
+    }
+  },
+  "remaining": "Canonical menu checkpoint cleanup can use an equivalent narrow storage binding after its actual listener/services are linked. Inspected missing-owner candidates are listed per address.",
+  "assumptions": [
+    "Used the existing live raw-pool checkpoint-record path after the initially inspected canonical menu listener proved unlinked.",
+    "No new tests added for a storage-cleanup interface refactor; existing native-string checks and the full build/test gate were reused."
+  ]
+}

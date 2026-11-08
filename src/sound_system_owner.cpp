@@ -104,7 +104,7 @@ void construct_sound_system_owner_00a81480(SoundSystemOwner& owner,
     owner.configuration.current_listener_10c = -1;
     owner.time_118 = {0, 0, 1, 0};
     owner.configuration.channel_group_capacity_130 = 0;
-    owner.configuration.system_dsp_capacity_13c = 0;
+    owner.configuration.system_dsps_134.native_header().capacity = 0;
     owner.configuration.master_channel_group_140 = nullptr;
     owner.words_144.fill(0);
     owner.words_160.fill(0);

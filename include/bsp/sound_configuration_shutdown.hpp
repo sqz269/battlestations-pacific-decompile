@@ -40,8 +40,9 @@ void release_sound_configured_group_effects_00a7aaf0(
 // 00A7BFE0..00A7C051 / 00A7C6C0..00A7C731: ECX=record, no stack args,
 // RET. Complete ordinary storage-destruction policy, including disk-verified
 // tails missing from saved Ghidra bodies. Free inner handle-array storage,
-// then name storage; never release pointed-to FMOD objects. std::vector and
-// std::string substitute native array/pooled-string allocators and SEH.
+// then name storage; never release pointed-to FMOD objects. DSP slots use the
+// recovered native array allocator; outer records and names remain C++
+// projections, without original pooled-string allocation or SEH equivalence.
 // Native leaves dead pointer/capacity words; C++ empties owned containers.
 void destroy_sound_configured_group_storage_00a7bfe0(
     SoundConfiguredChannelGroup&);

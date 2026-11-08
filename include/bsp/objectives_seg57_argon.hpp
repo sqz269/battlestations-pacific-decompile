@@ -26,7 +26,18 @@ struct PowerupUnitKindHost {
   virtual std::uint8_t vcall_entity_is_kind_of_5c(const void* entity, std::int32_t kind_id) = 0;
 };
 
-struct Seg57Host : PowerupUnitKindHost {
+// The list constructor and expiry walk do not need objectives, replication or
+// power-up services. Keep their existing bodies usable by the live HUD owner.
+struct MapPingListHost {
+  virtual ~MapPingListHost() = default;
+  virtual float& global_f32(std::uint32_t address) = 0;
+  virtual void* image_address(std::uint32_t address) = 0;
+  virtual void* stl_list_buy_head_node_008e28f0() = 0;
+  virtual void free_00bf65ac(void* ptr) = 0;
+  virtual void invalid_parameter_00bf6713() = 0;
+};
+
+struct Seg57Host : PowerupUnitKindHost, MapPingListHost {
   virtual ~Seg57Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -312,8 +323,8 @@ void thread_set_debug_name_008e24f0(
     Seg57Host& host, std::uint32_t thread_id, const char* name);
 void flag_cloth_process_frame_008e2560(Seg57Host& host, float dt);
 void map_ping_reset_cooldown_008e25f0(Seg57Host& host);
-void* map_ping_list_construct_008e2b90(Seg57Host& host, void* self);
-void map_ping_list_prune_expired_008e2bf0(Seg57Host& host, void* self);
+void* map_ping_list_construct_008e2b90(MapPingListHost& host, void* self);
+void map_ping_list_prune_expired_008e2bf0(MapPingListHost& host, void* self);
 void map_ping_handle_received_008e2da0(Seg57Host& host, void* msg);
 void map_ping_add_local_008e2e50(Seg57Host& host, float x, float y);
 void powerup_class_resolve_air_support_vehicle_classes_008e34f0(

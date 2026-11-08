@@ -38,6 +38,7 @@ namespace bsp {
 // stays independent of the GUI layout types.
 struct GuiLayoutPage;
 struct GuiLayoutWidget;
+struct GuiTimedEntryStorage;
 struct FrontEndScreenScroller;
 struct GuiWidgetPoint;
 // bsp/gui_text.hpp: the Text widget's +100h Align.
@@ -169,6 +170,9 @@ public:
         const bool& gui_sse2_conversion);
     ~GameFrontendHost();
 
+    // Borrow the same application-owned CRT conversion mode as GUI readers.
+    const bool& crt_sse2_conversion() const noexcept;
+
     // BSP_NATIVE_GUI_RESOURCES: borrow the application's SAME ready native
     // renderer before initial startup. The existing manager slots borrow the
     // returned references; this binding owns them until explicit retirement.
@@ -236,6 +240,13 @@ public:
     // "Visible" key, else visible. Ancestors are not consulted (goal 5 chain 662).
     bool widget_own_visible(const GuiLayoutWidget& widget) const;
     void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
+    // HUD WeaponInfo's AA8B00/AA8B80 alpha slots on this SAME rendered layout.
+    // Returned entries are borrowed until stop/completion/widget retirement.
+    GuiTimedEntryStorage* widget_alpha_animation(GuiLayoutWidget&, int slot);
+    void stop_widget_alpha_animation(GuiLayoutWidget&, int slot);
+    void set_widget_alpha_interval(GuiTimedEntryStorage*, float target, float rate);
+    void set_widget_alpha_delay(GuiTimedEntryStorage*, float seconds);
+    void advance_widget_alpha_animations(float seconds);
     // 0043ABA0 on an authored digit icon. Uses its loaded atlas rectangle and
     // publishes the body's four vertex UVs to the next sprite-bridge draw.
     bool roll_widget_digit(GuiLayoutWidget& widget, int digit, float magnitude);

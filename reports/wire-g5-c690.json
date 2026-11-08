@@ -1,0 +1,321 @@
+{
+  "goal": 5,
+  "chain": 690,
+  "slot": "g5-w3",
+  "baseline": "08806732cdc1de314f7d5dc41da631b8aead6ae7",
+  "summary": "Use the existing 7Ah value constructor; retain and scalar-delete the actual 24h decoded 7Bh/7Ch messages after routing and payload projection.",
+  "rows": [
+    {
+      "native": "0080f960",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_shipyard_launch_7a",
+      "details": "Replaces the sender's read-constructor-plus-payload stores with the existing value-constructor body, narrowed to its sole base-construction boundary. The flag and session owner are the same live inputs; only the original native vptr is relocated afterward."
+    },
+    {
+      "native": "00464fe0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_vehicle_unit_launch_7b / OwnedDecodedMessage::~OwnedDecodedMessage",
+      "details": "The decoder now owns the original factory's 24h allocation through read, type routing and payload projection. RAII calls the complete scalar-delete body with flags=1, replacing stack-only receive storage."
+    },
+    {
+      "native": "006ec100",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_vehicle_add_launched_7c / OwnedDecodedMessage::~OwnedDecodedMessage",
+      "details": "The decoder now owns the original factory's 24h allocation through read, type routing and payload projection. RAII calls the complete scalar-delete body with flags=1, replacing stack-only receive storage."
+    },
+    {
+      "native": "007ba950",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp:session_message_plane_controlfactor_construct_007ba950",
+      "reason": "Missing live C9h control-factor message producer and payload consumer; the original constructor is unreferenced and this session host sends no C9h message."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::bind_movie_textures",
+      "reason": "Missing actual movie widget, decoder texture producer and material sampler owners; the current decoder-open callback returns false."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native movie Text child and subtitle/extratitle vector owners; the retained schedule projection is not the widget state this body clears."
+    },
+    {
+      "native": "007fbe20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::record_award",
+      "reason": "Missing single-player award-system/session readiness producers; both current readiness callbacks return false before record_award can run."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:periscope broken-shape path",
+      "reason": "Missing actual controller+394h collision-shape owner; the inspected periscope path explicitly records the operation without a shape to mutate."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp:shape_collide_mask_clear_00c47f60",
+      "reason": "No actual collision-shape owner and corresponding live mask-clear consumer were identified in the inspected unit-host slice."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp:shape_collide_mask_set_00c47f90",
+      "reason": "No actual collision-shape owner and corresponding live mask-set consumer were identified in the inspected unit-host slice."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp:get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No live original aspect-times-FOV consumer was identified in this slice; adding an unused product query would invent work."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_wrap_and_clamp_007904d0",
+      "reason": "Missing concrete live MovCam frame-host binding carrying the same camera's theta/rho fields; searches found abstract wrap callbacks only."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:update_gui_manager_00aa4f80",
+      "reason": "The existing typed manager body already calls reset_gui_manager_highlights_00aa0f70; no new live caller binding was established here."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:update_gui_manager_00aa4f80",
+      "reason": "The existing typed manager already conditionally calls gui_widget_has_live_entries_00aa7ef0; duplicating that check would add no wiring."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp:ai_class_pair_value_00a03900",
+      "reason": "No parser-owned per-mode class-pair table and live scoring consumer were identified in the inspected AI host."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg69.cpp:ai_command_find_nearest_enemy_group_00a13080",
+      "reason": "Missing live nearest-enemy-group host binding and per-member recon-query producer; the existing reconstructed caller remains abstract."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp:leak_manager_flooded_fraction_0074fa80",
+      "reason": "No permitted gameplay consumer was identified; the recorded original consumer is debug inspection, which this assignment excludes."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp:descriptor_init_00721070",
+      "reason": "Missing live default-descriptor consumer; placing it before a populated constructor would add redundant initialization."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp:remove_native_loading_work_item_00501670",
+      "reason": "Missing actual native loader job/work-vector producer and live removal caller; an invented queue would not supply real state."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp:enqueue_native_loading_job_005055c0",
+      "reason": "No actual native loader owner and live enqueue boundary were identified in the inspected host."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp:retire_native_loading_queue_front_00506bf0",
+      "reason": "No actual native loader queue/job owner and live retirement boundary were identified in the inspected host."
+    },
+    {
+      "native": "00866e60",
+      "status": "skipped",
+      "host_site": "src/point_effect_lookup.cpp:find_point_effect_child_by_type_00866e60",
+      "reason": "No live child-type lookup consumer with the canonical point instance, child array and effect-manager lock domain was identified."
+    },
+    {
+      "native": "00866cd0",
+      "status": "skipped",
+      "host_site": "src/point_effect_lookup.cpp:find_or_create_point_effect_child_00866cd0",
+      "reason": "No live named-child lookup consumer with the actual definition/component/runtime ownership bindings was identified."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp:GuiTimedEntryOwner construction",
+      "reason": "The typed owner already calls this constructor and the raw page path uses its existing native counterpart; no additional live producer was established."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp:timed-entry advancement",
+      "reason": "The typed owner already calls advance_gui_timed_entry_00ad39a0; another call would duplicate advancement rather than bind its missing live owner path."
+    },
+    {
+      "native": "00731040",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48U.cpp:cc13_seg48U_gun_current_bullet_00731040",
+      "reason": "Missing retained native class fire-record array at +74h/+78h; the inspected gun host consumes flattened loadout facts rather than that owner."
+    },
+    {
+      "native": "00731050",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48U.cpp:cc13_seg48U_gun_current_mode_record_00731050",
+      "reason": "Missing retained native class fire-record array at +74h/+78h; wrapping a flattened bullet fact would not create the original first-record owner."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::post_user_path_point_0071d340",
+      "reason": "Missing presence-zero remove-message producer and last-filled-slot path ownership; the inspected sender produces additions and only retains the slot-zero path object."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp:set_unit_order_ring_param_b_0080da00",
+      "reason": "No live original rudder-read or sinking-override producer was established for this setter; the existing ring alone supplies no new value."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp:active-use cooldown tail",
+      "reason": "Missing live active-use activation producer and retained cooldown record; the inspected existing grant path consumes passive classes."
+    },
+    {
+      "native": "004db190",
+      "status": "skipped",
+      "host_site": "src/frontend_managers.cpp:teardown_front_end_managers_004db190",
+      "reason": "No existing live front-end-exit call site using this manager-set contract was identified; adding teardown without that transition would change ownership arbitrarily."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_camera_store_owner.cpp:release_native_gui_scene_00b72250",
+      "reason": "Existing typed scene runtime already calls the release body; no additional live scene-owner release boundary was established here."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:main-scene metadata publication",
+      "reason": "Existing main-scene submission already calls this metadata body; no new entry-reachable submission owner was established in this slice."
+    },
+    {
+      "native": "006fe780",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp:LuaTable_ReadNumberOrDefault_006fe780",
+      "reason": "No live producer of the required by-value native LuaObject table was identified at the inspected class-reader boundary."
+    }
+  ],
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "factory": "Disk assembly 00769172..007691AD: both 7Bh and 7Ch allocate 24h, then call 007601A0 or 00760200 and enter the shared reader at 0076A27B.",
+    "scalar_deletes": "00464FE0 export assembly and live 006EC100 disassembly: root stamp, free iff low flags bit0, receiver identity return, RET4.",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261108T063754Z.json",
+    "old_annotations": {
+      "00464fe0": {
+        "name": "CG_scalar_deleting_dtor_00464fe0",
+        "plate_comment": null
+      },
+      "006ec100": {
+        "name": "Unwind@006ec100",
+        "plate_comment": null
+      }
+    },
+    "ghidra_saved_and_exports_refreshed": true
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "wire_readiness": {
+      "before": 10445,
+      "after": 10446,
+      "command": "python tools/wire_readiness.py --standins",
+      "note": "The readiness pool changes 0080F960 from ready to wired/called with one call site. The two newly reconstructed compiler scalar deletes do not appear as rows in this pool output; their distinct entry-reachable calls are verified independently below.",
+      "measurement_stage": "Original c690 measurement before merging origin/main; current merged measurement is recorded in merge_recheck."
+    },
+    "fixture": "local/c690_vehicle_lifetime_probe.cpp compiled MSVC Win32 with /MANIFEST:EMBED and passed: both scalar deletes preserve every byte after the vptr for flags0 and flags100h, return identity, run the heap flags1 path; 0080F960 preserves the actual fixture session-owner pointer and full byte payload.",
+    "call_graph": {
+      "command": "python tools/call_graph.py --build; python tools/call_graph.py --build-dir build/callgraph who <native> --limit 4",
+      "no_inline": true,
+      "no_icf": true,
+      "reconstructed_addresses_called": 7095,
+      "reconstructed_addresses_present": 7144,
+      "exact_calls": [
+        {
+          "native": "0080f960",
+          "compiled_body": "105220f0",
+          "caller": "HostSessionMessages::queue_shipyard_launch_7a",
+          "call_site": "102ee8fc",
+          "entry_reachable": true
+        },
+        {
+          "native": "00464fe0",
+          "compiled_body": "1062f130",
+          "caller": "OwnedDecodedMessage<NativeVehicleUnitLaunchMessage>::~OwnedDecodedMessage",
+          "call_site": "102e9186",
+          "host_normal_cleanup_site": "102ef2c8",
+          "host": "HostSessionMessages::queue_vehicle_unit_launch_7b",
+          "entry_reachable": true
+        },
+        {
+          "native": "006ec100",
+          "compiled_body": "1062f0a0",
+          "caller": "OwnedDecodedMessage<NativeVehicleAddLaunchedMessage>::~OwnedDecodedMessage",
+          "call_site": "102e9136",
+          "host_normal_cleanup_site": "102eefa9",
+          "host": "HostSessionMessages::queue_vehicle_add_launched_7c",
+          "entry_reachable": true
+        }
+      ]
+    },
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "merge_recheck": {
+    "origin_main": "d98eb873ffad6e6f835da1c1c8faf680b1f355f7",
+    "request": "Resolve landing conflict by merging origin/main into agent/g5-w3 in its own worktree.",
+    "resolved_files": [
+      "include/bsp/native_plane_session_message_lifetime.hpp",
+      "src/native_plane_session_message_lifetime.cpp"
+    ],
+    "resolution": "Retain main's ElevatorMoveSessionMessage/00758CD0 additions, then retain both c690 vehicle-launch types and 00464FE0/006EC100 bodies. All nonblank lines from both sides are preserved verbatim. The message-host merge retains the 87h decoded owner alongside c690's 7Ah/7Bh/7Ch changes.",
+    "normal_enabled_build": "scripts/build.ps1 passed, including all four CTests",
+    "on_build_interpretation": "C690 has no enable switch: its normal build is always enabled. Also rerun the separate no-inline/no-ICF analysis build for distinct caller proof.",
+    "fixture": "Recompiled and passed c690_vehicle_lifetime_probe against the merged Release library.",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 5 files",
+    "game_run": false,
+    "analysis_build": "python tools/call_graph.py --build passed (/Ob0, /OPT:NOICF); distinct entry-reachable calls confirmed for all three c690 bodies.",
+    "preserved_main_elevator_call": {
+      "native": "00758cd0",
+      "compiled_body": "1062ef20",
+      "call_site": "102e8be6",
+      "caller": "OwnedDecodedMessage<ElevatorMoveSessionMessage>::~OwnedDecodedMessage",
+      "normal_cleanup_site": "102ef816",
+      "entry_reachable": true
+    },
+    "wire_readiness": {
+      "wired_total": 10453,
+      "command": "python tools/wire_readiness.py --standins",
+      "source_text_sha256": "b0f1800e97d258274b81fc9c4a3d9a504852489f0dd3d8d9eba96f2b8e3e1a3a",
+      "analysis_call_graph_stale": false,
+      "0080f960": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "scalar_delete_note": "The pool still omits compiler scalar-delete rows; exact current entry-reachable calls to both c690 deletes and main's elevator delete are recorded above."
+    },
+    "conflicts_remaining": false
+  },
+  "assumptions_and_limits": [
+    "Unattended run: selected the existing session-message owner path after bounded candidate inspection.",
+    "The host continues to deliver its existing payload projection; the decoded native block is retained until that projection and then released once.",
+    "New message-role names are descriptive C++ interfaces; these are not original-ABI entry points.",
+    "The Release linker folds identical scalar-delete bodies; a separate no-inline/no-ICF analysis build is used to resolve exact caller ownership."
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "goal": 5,
+  "chain": 698,
+  "slot": "g5-w5",
+  "run": 1489,
+  "base": "29f7bf208b80ecc77670d8c0a4a3f2d475cb79a8",
+  "rows": [
+    {
+      "native": "0040ee00",
+      "status": "wired",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: append_triangle_004060e0",
+      "change": "Replace STL triangle-pointer slots with the live per-hull DynVector4 descriptor; call the existing capacity body with the binary initial capacity 0x10 or doubled current capacity, and the real CRT allocation/free pair.",
+      "evidence": [
+        "004060F5..00406138: size/capacity comparison, growth rule, CALL 0040611D, pointer store and size increment",
+        "0040EE00..0040EE46: native capacity publication, overflow-aware allocation, signed dword copy and old-buffer free"
+      ],
+      "called": true,
+      "call_sites": 1,
+      "caller": "bsp::append_triangle_004060e0",
+      "limits": "Triangle objects and scratch lifetime retain the existing C++ ownership model; this does not recover global work-pool identity or original SEH/register ABI."
+    },
+    {
+      "native": "0040eef0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: vector4_set_capacity_0040eef0",
+      "reason": "This separate capacity address has no corresponding consumer in the selected triangle-slot path; a real owner for its separate native vector is still needed."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "The current adjacency builder has no consumer for the native transient edge hash map; its pool-backed map producer and lifetime adapter are absent."
+    },
+    {
+      "native": "00407af0",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "The native edge hash map is cleared unread; no live map consumer or pool-backed owner exists in the inspected hull builder."
+    },
+    {
+      "native": "00408340",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp: avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "A live native edge map and matching pool owner are needed before its clear body can replace real cleanup."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "The inspected host has no producer for the retained native ammunition alternate at ammo+48h or its owned tree."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "The inspected capture host lacks the native unit+660h vector of 44h-byte elements and its lifetime adapter."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "The menu loading-screen binding has no actual renderer-command queue reset provider; replacing its log with another callback would not reset real state."
+    },
+    {
+      "native": "00aa4040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost render-worker start",
+      "reason": "The inspected menu path lacks a real renderer worker descriptor and start provider required by the existing body."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "The native score list has no gameplay reader; the documented reader is an unreachable debug overlay, excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "No live score-list entries exist to mark, and the only documented consumer is the excluded debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-think pass A",
+      "reason": "The inspected host already directly calls this reconstructed predicate; no additional missing body call was identified in that site."
+    },
+    {
+      "native": "00bbb890",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: msar_read_toc_00bbb890",
+      "reason": "No active MSAR archive byte-buffer producer or TOC owner was found in the inspected VFS bindings; the existing native MSAR lookup routes do not supply it."
+    },
+    {
+      "native": "00bbda50",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_manager_construct_00bbda50",
+      "reason": "No actual CloudManagerC owner and atmosphere group-node producer were found in the inspected host bindings."
+    },
+    {
+      "native": "00baf070",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: coast_ptr_vector_resize_00baf070",
+      "reason": "No live coast-pointer vector producer or consumer was found in the inspected host bindings."
+    },
+    {
+      "native": "00bbd110",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_vector_reserve_00bbd110",
+      "reason": "No live native cloud-instance array owner was found in the inspected host bindings."
+    },
+    {
+      "native": "00bbd170",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_class_vector_resize_00bbd170",
+      "reason": "No live CloudManagerC class-array owner was found in the inspected host bindings."
+    },
+    {
+      "native": "00bbd1d0",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_vector_resize_00bbd1d0",
+      "reason": "No live CloudManagerC instance-array owner was found in the inspected host bindings."
+    },
+    {
+      "native": "00bbf390",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: sky_colour_strip_reserve_00bbf390",
+      "reason": "No live native sky-colour strip array owner was found in the inspected host bindings."
+    },
+    {
+      "native": "00bc1860",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: waterdrop_vector_reserve_00bc1860",
+      "reason": "No live WaterdropsC drop-array owner was found in the inspected host bindings."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400",
+      "reason": "No live native error-context map owner or iterator consumer was found in the inspected host code."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420",
+      "reason": "No live native error-context map owner or iterator consumer was found in the inspected host code."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0",
+      "reason": "The insertion path uses a generic rebalance helper, but a live native error-context map owner must first reach that path."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630",
+      "reason": "The insertion path uses a generic rebalance helper, but a live native error-context map owner must first reach that path."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "No native writer-slot owner and remaining-byte counter consumer were identified; the baseline executable does not link this body."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "No live native stream-writer chunk-array owner was identified; the baseline executable does not link this body."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: reserve_native_distortion_records_00b4ed70",
+      "reason": "The inspected native distortion lifetime already composes this body through resize, but no active renderer distortion-record owner was found to reach it."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "Native destruction already calls this body; a live renderer distortion owner is still needed before it can replace real game-state cleanup."
+    }
+  ],
+  "wired_total": {
+    "before": 10448,
+    "after": 10449
+  },
+  "entry_reachable_reconstructed_addresses": {
+    "before": 5349,
+    "after": 5350
+  },
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release, 4/4 existing CTests passed; local/g5_c698_build.log",
+    "graph": "tools/call_graph.py who 0040ee00: one reachable call from append_triangle_004060e0; path through the hull builder and GameUnitsHost mission world-contact phase",
+    "readiness": "tools/wire_readiness.py --standins: 0040ee00 state wired, called true, call_sites 1",
+    "focused_fixture": "local/g5_c698_hull_probe.cpp: current library vs isolated pre-change source, PC24, one 96-point convex fixture; identical 96 vertices, 188 triangles and 564 indices, including byte-identical XYZ and exact index order. Exercises multiple growths, pointer preservation, retired triangle holes and scratch destruction. Ad hoc probe linked with /MANIFEST:EMBED.",
+    "float_math_changed": false,
+    "game_run": false,
+    "original_binary_abi_validated": false,
+    "diff_check": "git diff --check passed"
+  },
+  "left_for_others": [
+    "0040EEF0 requires its separate native vector owner",
+    "Triangle allocation remains C++ ownership rather than the original work pool; scratch remains per hull rather than the original global identity"
+  ],
+  "assumptions": [
+    "Keep the current per-hull scratch lifetime and finite-input domain; do not introduce a process-global work vector merely to reproduce its original address."
+  ]
+}

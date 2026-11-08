@@ -111,8 +111,9 @@ public:
     // +2Ch yaw and +30h pitch (18 bits over 6.3, 00D032E4), the three bools,
     // and `angles_carried` set. The target id is the posted one while the
     // has-target bit is set: the copy carries 12 bits and this host's ids do
-    // not fit. The drain's delete (007605F0) only restamps +0h, so the copy
-    // ends here.
+    // not fit. The decoded 3Ch allocation remains owned until these fields
+    // have been copied; 007605F0 then resets its profile and frees it once.
+    // The sender takes the same destructor with flags 0 and stays on the stack.
     game::GunAimMessage79 queue_gun_aim_79(const game::GunAimMessage79& posted) const;
 
     // Goal 4 chain 260 (kWireGoal4Chain260Bound). MT_FORMATION_JOIN (76h,

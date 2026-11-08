@@ -1,5 +1,6 @@
 #include "bsp/native_resource_reader_references.hpp"
 #include "bsp/native_adopted_substream.hpp"
+#include "bsp/director_geommesh_seg38_39_argon.hpp"
 
 #include <cstdint>
 
@@ -10,6 +11,25 @@
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native resource reader references require MSVC Win32.
 #endif
+
+namespace bsp::director_geommesh_seg38_39_argon {
+
+// 0071F3B0..0071F3D8: native ECX=pointer slot, plain RET. New source ABI
+// borrows only the two actual services this body calls. Moved here unchanged
+// in behavior so both bsp_core consumers and the game use the same body.
+__declspec(noinline) void bsp_ref_counted_ptr_release_0071f3b0(
+    RefCountedSlotReleaseHost& host, void* self) {
+    Raw slot{static_cast<std::uint8_t*>(self)};
+    void* held = slot.ptr(0);
+    if (held != nullptr) {
+        Raw owner{static_cast<std::uint8_t*>(held)};
+        if (host.interlocked_decrement_00ce2220(&owner.at<std::int32_t>(4)) == 0)
+            host.vcall_00(held);
+        slot.ptr(0) = nullptr;
+    }
+}
+
+} // namespace bsp::director_geommesh_seg38_39_argon
 
 namespace bsp {
 namespace {
@@ -43,12 +63,34 @@ void release_owner(void* owner, NativeAdoptedSubstreamDispatch& dispatch) {
         dispatch.source_zero_reference(entry, owner, table);
     }
 }
-void release_slot(void* slot, NativeAdoptedSubstreamDispatch& dispatch) {
-    auto* const owner = pointer(word(slot));
-    if (owner) {
-        release_owner(owner, dispatch);
-        put(slot, 0, 0);
+class ResourceSlotRelease final
+    : public director_geommesh_seg38_39_argon::RefCountedSlotReleaseHost {
+public:
+    explicit ResourceSlotRelease(NativeAdoptedSubstreamDispatch& dispatch)
+        : dispatch_(dispatch) {}
+
+    std::int32_t interlocked_decrement_00ce2220(std::int32_t* count) override {
+        return InterlockedDecrement(reinterpret_cast<volatile LONG*>(count));
     }
+    void vcall_00(void* owner) override {
+        // Read the current profile only after the captured owner's count
+        // reaches zero, exactly as the native CALL at 0071F3CE does.
+        const auto table = word(owner);
+        const auto entry = word(pointer(table));
+        dispatch_.source_zero_reference(entry, owner, table);
+    }
+private:
+    NativeAdoptedSubstreamDispatch& dispatch_;
+};
+
+void release_slot(void* slot, NativeAdoptedSubstreamDispatch& dispatch) {
+    // Source composition, not an original call edge: bsp.py show --asm
+    // 0071F3B0 and 00BE9ED0 have identical slot/decrement/vslot0/clear
+    // instructions; 00483850 additionally returns the same slot address.
+    // Reuse that complete body on the real reader/structured-node slot.
+    // It captures the owner once and clears the slot AFTER terminal reentry.
+    ResourceSlotRelease calls(dispatch);
+    director_geommesh_seg38_39_argon::bsp_ref_counted_ptr_release_0071f3b0(calls, slot);
 }
 } // namespace
 

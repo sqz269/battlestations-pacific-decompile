@@ -1,4 +1,5 @@
 #include "bsp/native_downscale_pass_initializers.hpp"
+#include "bsp/material_float4_array.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_particle_preparation.hpp"
@@ -170,8 +171,8 @@ void NativeRenderPassInitializationBlock::execute_downscale(void* owner,std::siz
                 word(&parameter_name_)+1u);
         void* const values=pointer(reinterpret_cast<Word>(owner)+(four?0x210u:0x10u));
         set_state(3);
-        register_native_material_parameter_00b17e10(current_material(owner),&parameter_name_,
-            values,four?4u:16u,0,c.parameters);
+        cc13_terrain::material_register_float4_array_00b18ac0(&current_material(owner),&parameter_name_,
+            values,four?1u:4u,c.parameters);
         set_state(-1);return_parameter_name();
         void* const texture=native_shadow_holder_texture_00b4cb10(args.input_holder);
         set_native_material_texture_unchecked_00b189f0(&current_material(owner),0,texture,

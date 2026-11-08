@@ -1,0 +1,151 @@
+{
+  "goal": 5,
+  "chain": 725,
+  "slot": "g5-w3",
+  "base": "f0d626b851f1fcb7eb3aaf76d1b0650dbf4fa29c",
+  "rows": [
+    {
+      "native": "00b67d40",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_scalar_components.cpp: color -> GuiLua51Host::to_vector4_or (src/gui_lua_runtime.cpp)",
+      "reason": "Native Lua adapter and reader reuse are implemented and fixture-tested, but no production GameplayEffectScalarComponentDispatcher/component-services owner instantiates the effect readers; the executable entry graph still cannot reach this body."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "Live entity order adapters expose no AI-group command owner and current command virtual provider."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target/report_target_event",
+      "reason": "Command event adapters still lack a real Seg62 warning-manager channel owner and entity-observer argument provider."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::apply_input_settings",
+      "reason": "The host still only records the apply operation and provides no native input-settings owner/Lua preset reader on this path."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: squadron_target helm order",
+      "reason": "The existing file-scripted target order does not supply the native HUD screen/cursor picker required by this body."
+    },
+    {
+      "native": "00526720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: unit-pick flags",
+      "reason": "No native HUD unit-pick cycle list, selected index and observed screen owner are produced."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "The live Lua adapter rejects the MovCam operation and produces no native limits block containing the defaults."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "The live Lua adapter rejects the MovCam operation and produces no native limits block containing the defaults."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "The live Lua adapter rejects the MovCam operation and produces no native limits block containing the defaults."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "The live Lua adapter rejects the MovCam operation and produces no native limits block containing the defaults."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_set_zoom",
+      "reason": "No native MovCamZoom owner is bound to the current mission-camera projection."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading work-items erase",
+      "reason": "No live native loader queue/job owner was identified for the frontend loading callbacks."
+    },
+    {
+      "native": "00504790",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading job ensure file-block",
+      "reason": "No live native loader queue/job owner was identified for the frontend loading callbacks."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading queue submit",
+      "reason": "No live native loader queue/job owner was identified for the frontend loading callbacks."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading queue enqueue",
+      "reason": "No live native loader queue/job owner was identified for the frontend loading callbacks."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: loading queue retire front",
+      "reason": "No live native loader queue/job owner was identified for the frontend loading callbacks."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: metadata publication",
+      "reason": "The existing native main-scene submission caller has no identified entry-reachable host binding."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/engine_seg4_6_9_cc13.cpp: release_session_render_resources_004bfd70",
+      "reason": "The F8D39C owner exists, but no live session-render cleanup caller was identified; renderer destruction is a different lifetime boundary."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: register_native_material_float3_00b18ae0",
+      "reason": "No live three-word material parameter call site was identified; current inspected native GUI/post-effect parameter sites use other widths."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: set_value_224_00b0d0b0",
+      "reason": "No current host producer for the original service+224h operand was identified."
+    },
+    {
+      "native": "00b0ea70",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: set_underwater_wave_00b0ea70",
+      "reason": "No current host producer for the original eight-word underwater-wave block was identified."
+    }
+  ],
+  "built": [
+    "GuiLua51Host::to_vector4_or borrows the retained value from its actual interpreter, builds native tracking storage and calls the one existing 00B67D40 body.",
+    "Removed the duplicate vector4 conversion loop from effect scalar color readers.",
+    "One focused probe covers sparse numeric-string reads, fifth-element fallback, raw Lua error transfer and greater-than-50 outer stack depth."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all four CTests",
+    "fixture": "tests/wire_g5_c725_lua_vector_probe.cpp compiled with MSVC Win32 /fp:strict /MANIFEST:EMBED and passed",
+    "call_graph": "00B67D40 is called by GuiLua51Host::to_vector4_or, but that caller and effect scalar readers remain unreachable from the executable entry. No new game wiring is claimed.",
+    "entry_called_before": 5384,
+    "entry_called_after": 5384,
+    "readiness_wired_text_before": 10479,
+    "readiness_wired_text_after": 10480,
+    "readiness_warning": "The text-based readiness label moved to wired, but called=false/call_sites=0 and entry-called total is unchanged. This is support-only partial progress.",
+    "float_lint": "No float arithmetic was changed; pc24_lint --diff origin/main reports 0 findings."
+  },
+  "remaining": "Instantiate the actual effect component-services/scalar dispatcher through a real gameplay effect acquisition owner before claiming 00B67D40 wired."
+}

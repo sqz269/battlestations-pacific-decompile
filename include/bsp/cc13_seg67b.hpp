@@ -89,8 +89,26 @@ public:
     virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
 };
 
+// 009CA780 calls only the target-ref picker and the pilot's rocket setter.
+// Keep its live binding independent of the task/archive construction services.
+class StrafeTargetRearmCalls {
+public:
+    virtual ~StrafeTargetRearmCalls() = default;
+    virtual void approach_ref_pick_aim_offset_009fa260(void* ref) = 0;
+    virtual void opportunistic_rocket_set_target_007b7870(void* rocket, void* target,
+                                                        const float point[3]) = 0;
+};
+
+// 009BDBB0 only allocates and forwards the bot to its constructor. Keep that
+// contract usable by typed task owners without inventing unrelated raw views.
+struct MoveOnPathTaskFactoryHost {
+    virtual ~MoveOnPathTaskFactoryHost() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void* move_on_path_task_construct_009bce50(void* task, void* bot) = 0;
+};
+
 class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls,
-    public MoveToEntityPoseHost {
+    public MoveToEntityPoseHost, public StrafeTargetRearmCalls, public MoveOnPathTaskFactoryHost {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -954,7 +972,7 @@ void* bot_task_move_on_path_create_from_stream_009bdc10(Cc13Seg67bHost& host, vo
 // 009B9030: __fastcall(ECX = bot, EDX = target), RET, EAX.
 void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* target);
 // 009BDBB0 / 009BADB0: __fastcall(ECX = bot), RET, EAX.
-void* bot_task_move_on_path_create_009bdbb0(Cc13Seg67bHost& host, void* bot);
+void* bot_task_move_on_path_create_009bdbb0(MoveOnPathTaskFactoryHost& host, void* bot);
 void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot);
 // 009BACB0: __fastcall(ECX = bot, EDX = target; float alt), RET 4, EAX. 009BAD30:
 // __fastcall(ECX = bot), RET, EAX. Both unreferenced; each takes the base's two draws.
@@ -1215,7 +1233,7 @@ void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void
 // 009CA2B0: __fastcall(ECX = bot), RET, EAX = the new retreat task or 0.
 void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot);
 // 009CA780: __fastcall(ECX = strafe approach), RET.
-void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a);
+void bot_approach_strafe_rearm_target_point_009ca780(StrafeTargetRearmCalls& host, void* a);
 // 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
 void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
 // 009D4E30: __fastcall(ECX = bot, EDX = target), RET, EAX = the new torpedo task or 0.
