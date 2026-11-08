@@ -151,11 +151,14 @@ bool flak_fuse_is_armed(float flight_time, float fuse_time) noexcept {
 }
 
 WeaponClassDescriptor weapon_class_constructed_defaults() noexcept {
-    // 006E8320. Only +4h (1), +8h (1), +54h and +5Ch (1.0f) and the four
-    // atlas-rectangle diagonals are non-zero; everything else is zero.
+    // 006E8320. Only +4h (1), +8h (1), +54h ([00D7A248] = FLT_MAX), +5Ch
+    // ([00D7A24C] = 1.0f) and the four atlas-rectangle diagonals (1.0f) are
+    // non-zero; everything else is zero. The +54h value was taken as 1.0f
+    // before: bsp.py show 006e8320 has `param_1[0x15] = DAT_00d7a248` and
+    // `param_1[0x17] = DAT_00d7a24c`, and the bytes at 00D7A248 are 7F7FFFFFh.
     WeaponClassDescriptor desc;
     desc.sub_type = kProjectileSubTypeBullet;
-    desc.fly_time = 1.0f;
+    desc.fly_time = kWeaponClassFloatMax_00d7a248;
     desc.time_scale = 1.0f;
     return desc;
 }
@@ -252,8 +255,10 @@ void load_depth_charge_class_fields(const WeaponClassRowView& row, WeaponClassLo
     desc.max_fall = row.float_value("MaxFall", 0.0f);
     desc.v0_random_factor = row.float_value("V0RandomFactor", 0.0f);
     desc.dive_speed = row.float_value("DiveSpeed", 0.0f);
-    desc.dive_min_depth = row.float_value("DiveMinDepth", 1.0f);
-    desc.dive_max_depth = row.float_value("DiveMaxDepth", 1.0f);
+    // 006FD507 / 006FD544 FLD [00D7A248] (FLT_MAX, not 1.0f) is the default
+    // pushed to 00B66330 (bsp.py show 006fd400 --asm); docs/WEAPON_CLASS_DESCRIPTOR.md.
+    desc.dive_min_depth = row.float_value("DiveMinDepth", kWeaponClassFloatMax_00d7a248);
+    desc.dive_max_depth = row.float_value("DiveMaxDepth", kWeaponClassFloatMax_00d7a248);
     desc.effects.water_splash = read_effect(row, host, "WaterSplashEfx");
 }
 

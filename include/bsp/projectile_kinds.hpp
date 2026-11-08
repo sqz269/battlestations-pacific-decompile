@@ -213,6 +213,11 @@ struct WeaponClassEffects {
     std::uint32_t water_splash{0}; // torpedo and depth charge only
 };
 
+// [00D7A248] = 7F7FFFFFh, read by 006E8320 for +54h (FlyTime) and by 006FD400
+// at 006FD507 / 006FD544 as the DiveMinDepth / DiveMaxDepth default
+// (bsp.py ghidra bytes 00d7a248: ff ff 7f 7f, then 00 00 80 3f = 1.0f).
+inline constexpr float kWeaponClassFloatMax_00d7a248 = 3.4028234663852886e+38f;
+
 struct WeaponClassDescriptor {
     int sub_type{kProjectileSubTypeBullet};
     int bullet_id{0};
@@ -224,7 +229,9 @@ struct WeaponClassDescriptor {
     bool has_blast{false};
     float mass{0.0f};
     float muzzle_speed{0.0f};
-    float fly_time{1.0f};
+    // +54h. 006E8320 stores [00D7A248] here, which is 7F7FFFFFh (FLT_MAX); the
+    // 1.0f constant is the next dword, 00D7A24C, which +5Ch takes.
+    float fly_time{kWeaponClassFloatMax_00d7a248};
     float time_scale{1.0f};
     float range{0.0f};
     float blast_range{0.0f};
@@ -251,8 +258,10 @@ struct WeaponClassDescriptor {
     float homing_vert_turn_speed{0.0f};
     float v0_random_factor{0.0f};
     float dive_speed{0.0f};
-    float dive_min_depth{1.0f};
-    float dive_max_depth{1.0f};
+    // +E0h/+E4h: 006EA3A0 leaves them as BSP_Memory_AllocZeroed gave them; the
+    // depth-charge reader 006FD400 then always writes them (default FLT_MAX).
+    float dive_min_depth{0.0f};
+    float dive_max_depth{0.0f};
     float v_max{0.0f};
     float acceleration{0.0f};
     float ignition_delay{0.0f};
