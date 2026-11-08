@@ -585,7 +585,7 @@ void power_up_manager_on_powerup_binding_message_008e6d30(
 // Original ABI: __thiscall(void* self, uint32_t player_slot, const void* item,
 //                          uint32_t op, const void* unit_a, const void* unit_b) -> void* (RET 0x14)
 void* session_message67_construct_from_class_008e6e00(
-    Seg58Host& host, void* self, std::uint32_t player_slot, const void* item,
+    PowerupMessageConstructionHost& host, void* self, std::uint32_t player_slot, const void* item,
     std::uint32_t op, const void* unit_a, const void* unit_b) {
   host.session_message_construct_base_0075b430(self, 0x43u);
   raw(self).at<std::uint32_t>(0x04) = 1u;
@@ -618,7 +618,7 @@ void* session_message67_construct_from_class_008e6e00(
 // Original ABI: __thiscall(void* self, uint32_t player_slot, const void* name_str,
 //                          uint32_t use_limit, uint32_t op, const void* unit_a, const void* unit_b) -> void* (RET 0x18)
 void* session_message67_construct_from_name_008e6ed0(
-    Seg58Host& host, void* self, std::uint32_t player_slot,
+    PowerupMessageConstructionHost& host, void* self, std::uint32_t player_slot,
     const void* name_str, std::uint32_t use_limit, std::uint32_t op,
     const void* unit_a, const void* unit_b) {
   host.session_message_construct_base_0075b430(self, 0x43u);
@@ -649,7 +649,7 @@ void* session_message67_construct_from_name_008e6ed0(
 
 // [008e6fb0] BSP_SessionMessage68_ConstructFromModifier
 // Original ABI: __thiscall(void* self, const void* modifier, uint32_t op) -> void* (RET 0x8)
-void* session_message68_construct_from_modifier_008e6fb0(Seg58Host& host,
+void* session_message68_construct_from_modifier_008e6fb0(PowerupMessageConstructionHost& host,
                                                          void* self,
                                                          const void* modifier,
                                                          std::uint32_t op) {

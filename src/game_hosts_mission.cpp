@@ -11,6 +11,7 @@
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/game_loading_config.hpp"
@@ -2137,7 +2138,8 @@ void GameMissionHost::Impl::resolve_skirmish_entry() {
 // LABELLED (rev9 N3): the image builds one record per MissionTree.multi entry
 // (0076FC7C) and selects game+60Ch; this host builds only the chosen entry, so its
 // game+60Ch (SceneSelection::selected_index) is 0 where the image's is the entry's
-// index. Its only reader is the scene-record log line in run_until_scene_load.
+// index. The scene-record log and native scene-index broadcast consume that
+// same retained selection; neither invents a second map index.
 // LABELLED: 0076FAD0 builds and selects before it stores the mode (0076FE85), so the
 // image's 0076FCA6 selection runs with +1FE4h still 0; the lobby's 005DA604 selects
 // again with +1FE4h = 1, and the host's single selection matches that last one.
@@ -2653,7 +2655,23 @@ void GameMissionHost::Impl::lobby_apply_selected_map_005da530() {
     if (static_cast<std::uint32_t>(mode) < 4u) mode = lobby.stored_options_00e1955c[3];
     bsp::set_game_mode_004bc890(bsp::session_context(), mode, false);
     lobby.game_settings_2020 = lobby.stored_options_00e1955c;
-    // 0076C9C0, 00772390 and 00772430 broadcast to peers; a host-only session has none.
+    // 00772390 creates its real native packet even when no peer receives it.
+    // The one-entry scene owner/selection was produced by 004E2770/004C6890.
+    const auto index = load.selection.selected_index;
+    if (!load.selection.have_record || index < 0
+        || static_cast<std::size_t>(index) >= load.records.size()) {
+        throw std::logic_error("00772390 without a selected scene record");
+    }
+    // join_local_player_007752d0 has already admitted only the actual slot-zero
+    // choice before this phase; a nonzero choice throws there. Borrow its real
+    // participant identity, not a fabricated null player table.
+    const std::size_t local_slot = 0;
+    bsp::HostSessionMessages messages;
+    messages.broadcast_scene_index(static_cast<std::uint32_t>(index),
+        load.records[static_cast<std::size_t>(index)].scene_path,
+        lobby.content_mask_2060, participants, local_slot);
+    log.implemented("Session::scene_index_message_destroy", "007662a0");
+    // 0076C9C0 and 00772430 remain zero-peer observations.
     log.notef("skirmish lobby start (005da530 / 005d62b0): SetGameMode(%d, 0), game+2020h "
         "takes 00E1955C, broadcasts reach no peer", mode);
 }
