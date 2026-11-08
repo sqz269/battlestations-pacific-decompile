@@ -1,4 +1,5 @@
 #include "bsp/seg10_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <initializer_list>
 
@@ -675,7 +676,7 @@ void game_toggle_pause_menu_004db030(Seg10Host& host, Object game) {
 // mission whose [[+A8h]+20h] vtable+38h() is true. Then with a camera
 // (+19FCh): 00B6FBB0(camera, float(config+F4h[index] * [00F889B4] *
 // scale)), the products on the x87 stack.
-void game_set_view_fov_004dc940(Seg10Host& host, Object game, float scale, std::int32_t index) {
+void game_set_view_fov_004dc940(ViewFovHost& host, Object game, float scale, std::int32_t index) {
     native_at<std::int32_t>(game, 0x1A04) = index;
     Object global_game = host.game_00e188a8();
     if (native_at<std::uint8_t>(global_game, 0x634) != 0) {
@@ -693,8 +694,11 @@ void game_set_view_fov_004dc940(Seg10Host& host, Object game, float scale, std::
     Object config = host.global_config_00432650();
     Object camera = native_at<Object>(game, 0x19FC);
     if (camera == nullptr) return;
-    const double base = static_cast<double>(native_at<float>(config, 0xF4 + static_cast<std::uint32_t>(native_at<std::int32_t>(game, 0x1A04)) * 4));
-    const float fov = static_cast<float>(base * static_cast<double>(host.fov_scale_00f889b4()) * static_cast<double>(scale));
+    const float base = native_at<float>(config, 0xF4 + static_cast<std::uint32_t>(native_at<std::int32_t>(game, 0x1A04)) * 4);
+    // bsp.py show 004dc940 --asm: 004DC9C4 and 004DC9CA are separate
+    // FMULs under the main thread's PC24 control word.
+    const float fov = static_cast<float>(cc13x87::x87_mul24(
+        cc13x87::x87_mul24(base, host.fov_scale_00f889b4()), scale));
     host.camera_set_fov_00b6fbb0(camera, fov);
 }
 

@@ -2,6 +2,42 @@
   "chain": 671,
   "slot": "g5-w3",
   "piece": "HUD leaf-screen virtuals on the 0068CC70 leaf blocks (goal 5 chain 646's table): screen 23h enter/exit/update and order screen 3Bh exit, plus a view-fov service for 004DC940's HUD callers",
+  "review_round_1": {
+    "review_run": 1427,
+    "repair_run": 1434,
+    "base": "be441607b936c4e6f9dd9037bf6fd00b67b714af",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "Removed the HUD's duplicate 004DC940 implementation. Both leaf-screen and pipe-sight FOV calls now use cc13_seg10::game_set_view_fov_004dc940 through its narrow ViewFovHost contract. Game+634h is borrowed from the live mission frame; +614h/+61Ch/+1FE4h come from session_context(). The HUD-manager presence test and the live hints_pause_Group visibility supply the remaining native gate. Rejected calls retain the unconditional game+1A04h index store. The two FMULs now round separately through x87_mul24.",
+        "evidence": "bsp.py show 004dc940 --asm: 004DC947 index store; 004DC952..004DC9A5 cinematic/mode/manager/group gates; 004DC9C4 and 004DC9CA FMULs. HudHintsState.pause_group_20 and hud_hints_layout_0054d980 identify screen 34h +20h."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "change": "The FOV service lazily reads Globals.FOVs.Ship through read_global_fov_ship_0087d7b0 at the reconstructed GlobalConfig singleton call, then supplies GlobalConfig+F8h using global_config_fov_0087ec0f. The reader loads globals.lua when necessary. Ship-view binding no longer initializes or gates this config value, and world detach/attach invalidates the cache.",
+        "evidence": "src/game_hosts_hud.cpp HudViewFovBinding::global_config_00432650; src/game_hosts_lua.cpp read_global_fov_ship_0087d7b0; native initialization 0087EBE2..0087EC2F."
+      }
+    ],
+    "checks": {
+      "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed (4/4).",
+      "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD: zero findings.",
+      "focused_probe": "local/wire-g5-c671-fov-probe.cpp and .txt: synthetic ViewFovHost fixture passed the cinematic/mode/session/manager/group accept/reject cases, index-store ordering, first-use config service and camera-null ordering. Its FOV output matched two real x87 FMULs under PC24 bit-for-bit, including a one-ULP-sensitive triple with the binary's 00F889B4 factor. Built with /MD and /link /MANIFEST:EMBED; no game process was run.",
+      "call_graph": "python tools/call_graph.py and who queries: 00517820, 00517860 and 005F9480 each have one reachable HUD call. 005178A0 remains linker-folded with reachable HUD update call sites; its aggregate caller count is not unique attribution. The shared cc13_seg10::game_set_view_fov_004dc940 body has one reachable direct call from GameHudHost::Impl::set_view_fov.",
+      "report_calls": "python tools/verify_report_calls.py reports/wire-g5-c671.json: 0 call rows checked, 0 failed (the report uses rows, not that verifier's call-row schema). Explicit who queries are the call evidence."
+    },
+    "counts": {
+      "claimed_rows_before": 4,
+      "claimed_rows_after": 4,
+      "readiness_wired_total_before": 10417,
+      "readiness_wired_total_after": 10417,
+      "readiness_called_total_before": 5675,
+      "readiness_called_total_after": 5675,
+      "note": "Repair of the four reviewed claims; no new rows claimed. The shared FOV dependency is now reached through its reconstructed gate body. Readiness totals include identifier aliases and are not the call_graph.py reconstructed-address total."
+    },
+    "remaining": "All original skipped rows remain out of scope. HUD callers bind only GlobalConfig index 1. When a cinematic gate runs before the hint model exists it reads the loaded frontend hints_pause_Group; an unavailable group rejects and records the missing service. An unavailable live Lua FOV setting fails explicitly instead of silently skipping the update. No runtime, gameplay or original binary ABI validation is claimed."
+  },
   "rows": [
     {
       "native": "00517820",

@@ -115,6 +115,11 @@ public:
     // class table.
     static bool pause_cinematic_sound_classes_004cd0f0(bool hidden_634, bool others_paused);
 
+    // Borrow the mission frame's game+634h for 004DC940's live cinematic gate.
+    // The frame unbinds this source before its state is destroyed.
+    void bind_view_fov_cinematic_state(const bool* hidden_634) noexcept;
+    void unbind_view_fov_cinematic_state(const bool* hidden_634) noexcept;
+
     // The `create_hud_manager` row of the load walk, 0068a990 at 004e046c, and
     // the Init 0068cc70 its caller runs. The construction itself is a record;
     // what runs is the part Init performs through recovered code: each screen's

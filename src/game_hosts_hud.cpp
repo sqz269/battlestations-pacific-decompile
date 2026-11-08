@@ -22,6 +22,8 @@
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
+#include "bsp/seg10_cc13.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/hud_ship_screen.hpp"
 #include "bsp/hud_warning_screen.hpp"
 #include "bsp/hud_updates.hpp"
@@ -2050,9 +2052,11 @@ struct GameHudHost::Impl {
     bsp::ShipCameraSettings camera_settings{};
     bsp::ShipClassCameraFields camera_class{};
     float camera_class_length{0.0f};
-    // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
+    // GlobalConfig+F8h, loaded independently of screen 46h's ship-view binding.
     bool camera_fov_read{false};
     double camera_fov_ship_degrees{0.0};
+    const bool* cinematic_hidden_634{nullptr};
+    // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
     bool camera_pipe_sight_read{false};
     bool camera_pipe_sight_enabled{false};
     float camera_pipe_sight_zoom_rate{0.0f};
@@ -4082,11 +4086,9 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     if (!settings_read) record("MissionCamera::ship_camera_settings", 0x0083b5e0u);
     if (!class_read) record("MissionCamera::class_camera_keys", 0x00831e0du);
     if (lua != nullptr) {
-        camera_fov_read = lua->read_global_fov_ship_0087d7b0(camera_fov_ship_degrees);
         camera_pipe_sight_read = lua->read_pipe_sight_params_0083b5e0(
             camera_pipe_sight_enabled, camera_pipe_sight_zoom_rate);
     }
-    if (!camera_fov_read) record("MissionCamera::global_config_fovs", 0x0087d7b0u);
     if (!camera_pipe_sight_read) record("MissionCamera::pipe_sight_params", 0x0083b5e0u);
     camera_class = bsp::ship_class_camera_00831e0d(inputs);
     camera_class_length = inputs.base_length;
@@ -4189,40 +4191,97 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
     // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
     // spring and drag never move it off zero without them, so it is 0.0f.
-    if (kMissionFovBound && camera_fov_read && camera_pipe_sight_read &&
+    if (kMissionFovBound && camera_pipe_sight_read &&
         camera_pipe_sight_enabled) {
-        const float stored = bsp::global_config_fov_0087ec0f(camera_fov_ship_degrees,
-            bsp::kFovDivisor00f889b4);
         const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
-        camera_projection.fov = bsp::mission_fov_004dc940(stored, bsp::kFovDivisor00f889b4, scale);
-        done("MissionCamera::pipe_sight_fov", 0x004dc940u);
+        set_view_fov(scale, 1);
     }
     bsp::publish_mission_camera(world, camera_projection);
 }
 
-// Goal 5 chain 671. 004DC940 __thiscall(game, float scale, int index), RET 8
-// (bsp.py ghidra disasm 004dc940; the full gate body is
-// bsp::cc13_seg10::game_set_view_fov_004dc940, which needs the native game object):
-//  * 004DC947: game+1A04h = index, before any test.
-//  * 004DC952..004DC9A5: with the cinematic byte game+634h set, a mode / mission
-//    test. Not applied here, as for the pipe-sight application above: this host
-//    holds +634h on the mission frame (cinematic_hidden), not on the HUD.
-//  * 004DC9A7..004DC9D8: with a camera (+19FCh) the Operator fov is
-//    GlobalConfig+F4h[index] * [00F889B4] * scale (00B6FBB0). Index 1 is
-//    GlobalConfig+F8h, Globals["FOVs"]["Ship"] as 0087EC0F stores it; that is
-//    the one FOV this host reads (0087D7B0, at the ship view bind), so another
-//    index, or index 1 before that read, leaves the fov as it is (recorded).
-//    The arithmetic is bsp::mission_fov_004dc940, as at 0064E2E3 above.
-void GameHudHost::Impl::set_view_fov(float scale, std::int32_t index) {
-    view_fov_index_1a04 = index;
-    if (!kMissionFovBound || index != 1 || !camera_fov_read) {
-        record("MissionCamera::view_fov_config", 0x004dc9a7u);
-        return;
+namespace {
+// Review repair, chain 671. These are field views, not a second 004DC940 body:
+// bsp.py show 004dc940 --asm, 004DC947..004DC9D9. +634h is borrowed from the
+// mission frame; +614h/+61Ch/+1FE4h come from the process's live SessionContext.
+// [00E198C4]+A8h is screen 34h and its +20h is hints_pause_Group (0054D980),
+// whose +38h reads its own visibility. The hint tracker owns the active model.
+class HudViewFovBinding final : public bsp::cc13_seg10::ViewFovHost {
+    using Object = bsp::cc13_seg10::Object;
+    template<class T> static T& at(Object p, std::uint32_t offset) {
+        return bsp::cc13_seg10::native_at<T>(p, offset);
     }
-    const float stored = bsp::global_config_fov_0087ec0f(camera_fov_ship_degrees,
-        bsp::kFovDivisor00f889b4);
-    camera_projection.fov = bsp::mission_fov_004dc940(stored, bsp::kFovDivisor00f889b4, scale);
-    done("MissionCamera::view_fov", 0x004dc940u);
+public:
+    explicit HudViewFovBinding(GameHudHost::Impl& owner) : owner_(owner) {
+        const bsp::SessionContext& session = bsp::session_context();
+        at<std::int32_t>(game_.data(), 0x614) = session.game_mode_614;
+        at<std::uint8_t>(game_.data(), 0x61C) = session.forced_61c;
+        at<std::uint8_t>(game_.data(), 0x634) =
+            owner_.cinematic_hidden_634 != nullptr && *owner_.cinematic_hidden_634;
+        at<std::int32_t>(game_.data(), 0x1FE4) = session.session_word_1fe4;
+        at<Object>(game_.data(), 0x19FC) = reinterpret_cast<Object>(&owner_.camera_projection);
+        at<Object>(manager_.data(), 0xA8) = hints_.data();
+        // The virtual receiver is resolved by vcall_38_bool to the actual hint
+        // model's +20h handle, or the loaded frontend widget before that model exists.
+        at<Object>(hints_.data(), 0x20) = hints_.data();
+    }
+    Object game_00e188a8() override { return game_.data(); }
+    Object mission_00e198c4() override {
+        return owner_.summary.manager_global_published ? manager_.data() : nullptr;
+    }
+    bool vcall_38_bool(Object object) override {
+        if (object != hints_.data()) throw std::logic_error("004DC940 queried another hints group");
+        GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+        GameHintTracker* tracker = slot != nullptr ? slot->built() : nullptr;
+        if (tracker != nullptr) {
+            GameHintsScreen& screen = tracker->hints_screen_34();
+            return screen.widget_shown_38(screen.state().pause_group_20);
+        }
+        GuiLayoutPage* page = owner_.menu.in_game_page(0x34, "GUI_hints");
+        GuiLayoutWidget* group = page != nullptr
+            ? owner_.menu.frontend().find_page_child(*page, "hints_pause_Group") : nullptr;
+        if (group == nullptr) {
+            owner_.record("MissionCamera::missing_hints_pause_group", 0x004dc9a1u);
+            return false;
+        }
+        return owner_.menu.frontend().widget_own_visible(*group);
+    }
+    Object global_config_00432650() override {
+        // 0087EBE2..0087EC2F initializes GlobalConfig+F8h from Globals.FOVs.Ship.
+        // The Lua reader loads globals.lua if needed; no ship-view bind is required.
+        if (!owner_.camera_fov_read && owner_.lua != nullptr)
+            owner_.camera_fov_read = owner_.lua->read_global_fov_ship_0087d7b0(
+                owner_.camera_fov_ship_degrees);
+        if (!owner_.camera_fov_read)
+            throw std::runtime_error("004DC940 requires the live Globals.FOVs.Ship setting");
+        if (at<std::int32_t>(game_.data(), 0x1A04) != 1)
+            throw std::logic_error("HUD FOV caller requested an unbound GlobalConfig index");
+        at<float>(config_.data(), 0xF8) = bsp::global_config_fov_0087ec0f(
+            owner_.camera_fov_ship_degrees, bsp::kFovDivisor00f889b4);
+        return config_.data();
+    }
+    float fov_scale_00f889b4() override { return bsp::kFovDivisor00f889b4; }
+    void camera_set_fov_00b6fbb0(Object camera, float fov) override {
+        if (camera != reinterpret_cast<Object>(&owner_.camera_projection))
+            throw std::logic_error("004DC940 set another Operator camera");
+        owner_.camera_projection.fov = fov;
+        owner_.done("MissionCamera::view_fov", 0x004dc940u);
+    }
+    ~HudViewFovBinding() override {
+        // Also retain 004DC947's unconditional index store when a gate rejects.
+        owner_.view_fov_index_1a04 = at<std::int32_t>(game_.data(), 0x1A04);
+    }
+private:
+    GameHudHost::Impl& owner_;
+    alignas(4) std::array<std::uint8_t, 0x1FE8> game_{};
+    alignas(4) std::array<std::uint8_t, 0xAC> manager_{};
+    alignas(4) std::array<std::uint8_t, 0x24> hints_{};
+    alignas(4) std::array<std::uint8_t, 0xFC> config_{};
+};
+}  // namespace
+
+void GameHudHost::Impl::set_view_fov(float scale, std::int32_t index) {
+    HudViewFovBinding binding(*this);
+    bsp::cc13_seg10::game_set_view_fov_004dc940(binding, binding.game_00e188a8(), scale, index);
 }
 
 namespace {
@@ -4462,10 +4521,19 @@ void GameHudHost::update_map_screen_005b45c0() {
     impl.record("HudMapScreen::update", 0x005b45c0u);
 }
 
+void GameHudHost::bind_view_fov_cinematic_state(const bool* hidden_634) noexcept {
+    impl_->cinematic_hidden_634 = hidden_634;
+}
+
+void GameHudHost::unbind_view_fov_cinematic_state(const bool* hidden_634) noexcept {
+    if (impl_->cinematic_hidden_634 == hidden_634) impl_->cinematic_hidden_634 = nullptr;
+}
+
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
     Impl& impl = *impl_;
     impl.units = &units;
     impl.lua = &lua;
+    impl.camera_fov_read = false;
     if (!impl.minimap) impl.minimap = std::make_unique<GameHudMinimapHost>(impl.log, impl.menu);
     if (!impl.markers) impl.markers = std::make_unique<GameHudMarkersHost>(impl.log, impl.menu);
     impl.minimap->attach_world(units, lua);
@@ -4478,6 +4546,7 @@ void GameHudHost::detach_world_2k() noexcept {
     if (attached_hud_for_selection() == this) attached_hud_for_selection() = nullptr;
     impl.units = nullptr;
     impl.lua = nullptr;
+    impl.camera_fov_read = false;
     impl.camera_bound = false;
     impl.camera_last_frame = ~0ull;
     impl.ship_screen = bsp::ShipScreenState{};
