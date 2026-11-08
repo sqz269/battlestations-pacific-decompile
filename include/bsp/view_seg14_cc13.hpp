@@ -58,7 +58,17 @@ struct BinocularsViewHooks {
     virtual void binoculars_turn_mover_0051f050(Raw mover, Raw state, float dt, float zoom) = 0;
 };
 
-struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks, BinocularsRegisterHooks,
+struct BinocularsToggleHooks : EntityKindHooks {
+    virtual void binoculars_apply_fov_0051e6e0(Raw screen) = 0;
+    virtual void camera_set_near_plane_00b6fbf0(Raw camera, float value) = 0;
+    virtual void unit_broadcast_controlled_part_flag_00817380(Raw unit, std::uint32_t flag) = 0;
+    // Defaults read the original layouts. Source hosts with typed owners
+    // override these accessors instead of manufacturing a second mover.
+    virtual Raw binoculars_camera(Raw mover);
+    virtual float binoculars_near_plane(Raw camera);
+};
+
+struct ViewSeg14Hooks : BinocularsToggleHooks, FrontEndScreenBaseHooks, BinocularsRegisterHooks,
                         BinocularsViewHooks {
     virtual ~ViewSeg14Hooks() = default;
     // Virtual slots, named by slot.
@@ -98,7 +108,8 @@ struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks, BinocularsRegi
 };
 
 // ---- binoculars screen (screen 26h, page "GUI_binoculars") -------------------------------
-void binoculars_toggle_zoom_0051e7e0(Raw screen, const ViewGlobals& globals, ViewSeg14Hooks& hooks);
+void binoculars_toggle_zoom_0051e7e0(Raw screen, Raw controlled_00e188d8,
+    float& saved_near_plane_00e18da8, BinocularsToggleHooks& hooks);
 void binoculars_reset_0051e8e0(Raw screen, ViewSeg14Hooks& hooks);
 Raw binoculars_screen_construct_0051e950(Raw screen, FrontEndScreenBaseHooks& hooks);
 void binoculars_screen_exit_0051e9b0(Raw screen, ViewSeg14Hooks& hooks);

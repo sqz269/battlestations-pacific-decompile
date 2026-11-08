@@ -372,27 +372,45 @@ Raw briefing_construct_0051e4d0(Raw screen, BriefingConstructHost& host) {
 // 0051E650, __thiscall(ECX = view mover, float delta), RET 4. +388h = 00438AA0(+388h, delta)
 // stored as float, then clamped: below +3ECh takes +3ECh, else above +3F0h takes +3F0h (the
 // FCOMIP/JBE pair leaves a NaN unclamped).
-void binoculars_add_clamped_pitch_0051e650(Raw mover, float delta) {
-    const float pitch = wrapped_angle_add_00438aa0(mover.at<float>(0x388), delta);
-    mover.at<float>(0x388) = pitch;
-    if (mover.at<float>(0x3EC) > pitch) {
-        mover.at<float>(0x388) = mover.at<float>(0x3EC);
+// Retain the original callable boundary from 0051E6E0 for built-call evidence.
+__declspec(noinline) void binoculars_add_clamped_pitch_0051e650(float& pitch_388, float min_pitch_3ec,
+    float max_pitch_3f0, float delta) {
+    const float pitch = wrapped_angle_add_00438aa0(pitch_388, delta);
+    pitch_388 = pitch;
+    if (min_pitch_3ec > pitch) {
+        pitch_388 = min_pitch_3ec;
         return;
     }
-    if (pitch > mover.at<float>(0x3F0)) {
-        mover.at<float>(0x388) = mover.at<float>(0x3F0);
+    if (pitch > max_pitch_3f0) {
+        pitch_388 = max_pitch_3f0;
     }
 }
 
 // 0051E6E0, __fastcall(ECX = binoculars screen), RET. 004DC940 on the game with (+38h zoom
 // fov, 1); with a mover at +40h: 0042A9C0 (mover+3A0h = (+30h == 1), inlined here as the byte
 // store it is), 0051E650(0.0), then the mover's vtable +DCh(0.0).
-void binoculars_apply_fov_0051e6e0(Raw screen, SegBHost& host) {
-    host.game_set_view_fov_004dc940(host.game_e188a8(), screen.at<float>(0x38), 1);
+void SegBHost::binoculars_set_view_fov(float scale, std::int32_t index) {
+    game_set_view_fov_004dc940(game_e188a8(), scale, index);
+}
+void BinocularsFovHost::binoculars_set_mover_zoom(void* mover, bool enabled) {
+    Raw{static_cast<std::uint8_t*>(mover)}.at<std::uint8_t>(0x3a0) = enabled ? 1 : 0;
+}
+float& BinocularsFovHost::binoculars_mover_pitch(void* mover) {
+    return Raw{static_cast<std::uint8_t*>(mover)}.at<float>(0x388);
+}
+float BinocularsFovHost::binoculars_mover_min_pitch(void* mover) {
+    return Raw{static_cast<std::uint8_t*>(mover)}.at<float>(0x3ec);
+}
+float BinocularsFovHost::binoculars_mover_max_pitch(void* mover) {
+    return Raw{static_cast<std::uint8_t*>(mover)}.at<float>(0x3f0);
+}
+void binoculars_apply_fov_0051e6e0(Raw screen, BinocularsFovHost& host) {
+    host.binoculars_set_view_fov(screen.at<float>(0x38), 1);
     if (screen.ptr(0x40) == nullptr) return;
-    Raw mover{static_cast<std::uint8_t*>(screen.ptr(0x40))};
-    mover.at<std::uint8_t>(0x3A0) = screen.at<std::int32_t>(0x30) == 1 ? 1 : 0;
-    binoculars_add_clamped_pitch_0051e650(mover, 0.0f);
+    host.binoculars_set_mover_zoom(screen.ptr(0x40), screen.at<std::int32_t>(0x30) == 1);
+    binoculars_add_clamped_pitch_0051e650(host.binoculars_mover_pitch(screen.ptr(0x40)),
+        host.binoculars_mover_min_pitch(screen.ptr(0x40)),
+        host.binoculars_mover_max_pitch(screen.ptr(0x40)), 0.0f);
     host.unit_virtual_dc(screen.ptr(0x40), 0.0f);
 }
 

@@ -36,7 +36,21 @@ struct TaggedValue {
     std::uint32_t value;
 };
 
-struct SweepA3Host : cc13_sweepA2::SweepA2Host {
+// The zoom helper needs only the live action bank and these four services.
+// Keep the full sweep binding available for existing raw callers.
+struct BinocularsAxesHost {
+    virtual ~BinocularsAxesHost() = default;
+    virtual Raw binoculars_input_bank() = 0;
+    virtual bool input_action_has_device_query_00a92090(void* action) = 0;
+    virtual bool binoculars_zoom_pressed() = 0;
+    virtual void math_step_towards_0042ac60(float*, float, float) = 0;
+    virtual void binoculars_reset_overlay() = 0;
+};
+
+struct SweepA3Host : cc13_sweepA2::SweepA2Host, BinocularsAxesHost {
+    Raw binoculars_input_bank() override;
+    bool binoculars_zoom_pressed() override;
+    void binoculars_reset_overlay() override;
     // --- property sink (the describe visitors) ------------------------------
     // [[sink]+4](sink, TaggedValue key by value), RET 8: open a group.
     virtual void vcall_sink_begin_4(void* sink, TaggedValue key) = 0;
@@ -393,6 +407,6 @@ void unit_pick_cycle_target_00526720(Raw screen, SweepA3Host& host);
 bool unit_line_of_sight_from_viewer_005220c0(void* unit, SweepA3Host& host);
 void hud_binoculars_step_input_axes_0051eaa0(float* value, float* limit, float divisor, float dt,
                                              std::uint8_t* active, std::uint8_t* rising, std::uint8_t* falling,
-                                             std::uint8_t keep_limit, SweepA3Host& host);
+                                             std::uint8_t keep_limit, BinocularsAxesHost& host);
 
 }  // namespace bsp::cc13_sweepA3

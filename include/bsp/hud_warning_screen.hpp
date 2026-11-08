@@ -166,16 +166,24 @@ struct BinocularsState {
     // the actual view flag, zoom and bound mover, rather than a frame copy.
     std::uint8_t unmodelled_00[0x24]{};
     bool view_24{false};          // +24h, set only by action 75h (0051F316)
-    std::uint8_t unmodelled_25[0x0b]{};
+    std::uint8_t unmodelled_25[3]{};
+    float zoom_limit_28{1.0f};     // 0051ED60
+    std::uint8_t zoom_active_2c{0};
+    std::uint8_t zoom_rising_2d{0};
+    std::uint8_t zoom_falling_2e{0};
+    std::uint8_t unmodelled_2f{};
     int mode_30{0};               // +30h, 1 = binoculars up; the register stores 0
     bool flag_34{false};          // +34h
     bool flag_35{false};          // +35h
     std::uint8_t unmodelled_36[2]{};
     float zoom_38{1.0f};          // +38h, the register stores 1.0 (00D7A24C)
-    std::uint8_t unmodelled_3c[4]{};
+    float zoom_divisor_3c{4.0f};   // 0051ED60's 00CE3D34
     void* mover_40{nullptr};      // host's live ShipCaptain mover; source binding
 };
 static_assert(offsetof(BinocularsState, view_24) == 0x24);
+static_assert(offsetof(BinocularsState, zoom_limit_28) == 0x28);
+static_assert(offsetof(BinocularsState, zoom_active_2c) == 0x2c);
+static_assert(offsetof(BinocularsState, zoom_divisor_3c) == 0x3c);
 static_assert(offsetof(BinocularsState, mode_30) == 0x30);
 static_assert(offsetof(BinocularsState, flag_34) == 0x34);
 static_assert(offsetof(BinocularsState, flag_35) == 0x35);
