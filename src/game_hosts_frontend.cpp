@@ -1717,6 +1717,7 @@ std::unique_ptr<GuiLayoutWidget> clone_widget_tree(const GuiLayoutWidget& source
     clone->type = source.type;
     clone->transform = source.transform;
     clone->transform.parent = nullptr;
+    clone->transform.children.clear();
     clone->source = source.source;
     clone->parent = nullptr;
     clone->node_id = 0;
@@ -1732,6 +1733,7 @@ std::unique_ptr<GuiLayoutWidget> clone_widget_tree(const GuiLayoutWidget& source
         std::unique_ptr<GuiLayoutWidget> copy = clone_widget_tree(*child, child->key);
         copy->parent = clone.get();
         copy->transform.parent = &clone->transform;
+        clone->transform.children.push_back(&copy->transform);
         clone->children.push_back(std::move(copy));
     }
     return clone;
@@ -1788,10 +1790,43 @@ GuiLayoutWidget* GameFrontendHost::clone_page_widget_subtree(const std::string& 
     GuiLayoutWidget* borrowed = clone.get();
     parent.children.push_back(std::move(clone));
     assign_clone_nodes(host, *borrowed);
+    parent.transform.children.push_back(&borrowed->transform);
     mirror_applied_visibility(host, source, *borrowed);
     host.record_widgets(page, *borrowed, 0, parent.key, true);
     host.quads_built = false;
     return borrowed;
+}
+
+void GameFrontendHost::reparent_runtime_widget(GuiLayoutWidget& widget, GuiLayoutWidget& parent) {
+    Impl& host = *impl_;
+    GuiLayoutWidget* const old_parent = widget.parent;
+    if (old_parent == &parent) return;
+    if (old_parent == nullptr)
+        throw std::logic_error("00AAA5A0 clone has no owning parent");
+    for (GuiLayoutWidget* ancestor = &parent; ancestor; ancestor = ancestor->parent) {
+        if (ancestor == &widget) throw std::logic_error("00AAA5A0 would create a widget cycle");
+    }
+    const auto owned = std::find_if(old_parent->children.begin(), old_parent->children.end(),
+        [&widget](const auto& child) { return child.get() == &widget; });
+    if (owned == old_parent->children.end())
+        throw std::logic_error("00AAA5A0 clone is not owned by its parent");
+    // Reserve before detaching so allocation failure preserves ownership.
+    parent.children.reserve(parent.children.size() + 1);
+    parent.transform.children.reserve(parent.transform.children.size() + 1);
+    auto clone = std::move(*owned);
+    old_parent->children.erase(owned);
+    auto& old_transforms = old_parent->transform.children;
+    old_transforms.erase(std::remove(old_transforms.begin(), old_transforms.end(), &widget.transform),
+        old_transforms.end());
+    widget.parent = &parent;
+    widget.transform.parent = &parent.transform;
+    parent.children.push_back(std::move(clone));
+    parent.transform.children.push_back(&widget.transform);
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        if (host.widget_nodes[i] == &widget) host.widget_records[i].parent = parent.key;
+    }
+    refresh_widget_geometry(widget);
+    host.quads_built = false;
 }
 
 void GameFrontendHost::destroy_runtime_widget(GuiLayoutWidget& widget) {

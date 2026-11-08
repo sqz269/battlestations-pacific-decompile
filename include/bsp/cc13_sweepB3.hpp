@@ -17,8 +17,18 @@
 
 namespace bsp {
 
-class Cc13SweepB3Host : public Cc13SweepB2Host {
+struct MinimapMarkerRetirementHost {
+    virtual ~MinimapMarkerRetirementHost() = default;
+    virtual void crt_invalid_parameter_noinfo_00bf6713() = 0;
+    virtual void object_vcall_00_delete(void* object, std::uint32_t flags) = 0;
+    virtual void dword_vector_resize_005c0390(void* vector, std::uint32_t size, std::uint32_t value) = 0;
+};
+
+class Cc13SweepB3Host : public Cc13SweepB2Host, public MinimapMarkerRetirementHost {
 public:
+    // Unify the inherited sweep and retirement contracts for existing bindings.
+    virtual void crt_invalid_parameter_noinfo_00bf6713() override = 0;
+    virtual void object_vcall_00_delete(void* object, std::uint32_t flags) override = 0;
     // ---- GUI widgets ----
     // 00AA6640 BSP_GuiWidget_CreateWithSceneNode: ECX = widget kind, EDX = name
     // (native string*), one stack argument, RET 4; EAX = the new widget.
@@ -243,7 +253,7 @@ void cc13_sweepB3_hud_map_acquire_line_model_005a8f50(void* screen, const float*
                                                       std::uint32_t layer, Cc13SweepB3Host& host);
 
 // 005C0BD0 BSP_HudMinimapScreen_HideUnusedMarkers(screen).
-void cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0(void* screen, Cc13SweepB3Host& host);
+void cc13_sweepB3_hud_minimap_hide_unused_markers_005c0bd0(void* screen, MinimapMarkerRetirementHost& host);
 
 // ---- segment 23 ----
 

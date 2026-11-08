@@ -391,7 +391,9 @@ void hud_map_icon_array_resize_0059ead0(void* slot, std::int32_t count, Seg20Hos
     raw(s.ptr(0)).at<std::int32_t>(4) = count;                         // 0059EAEF..0059EAF1
 }
 
-void* minimap_marker_construct_005bcac0(void* marker, void* unit, Seg20Host& host) {
+// Retain the native constructor boundary in the Release call graph for its
+// live 005C0930 caller (goal 5 chain 672).
+__declspec(noinline) void* minimap_marker_construct_005bcac0(void* marker, void* unit, MinimapMarkerHost& host) {
     const Raw m = raw(marker);
     m.at<std::uint32_t>(0) = kMinimapMarkerVtable;                     // 005BCACA
     const auto layout = [&host]() {
@@ -415,7 +417,23 @@ void* minimap_marker_construct_005bcac0(void* marker, void* unit, Seg20Host& hos
     return marker;
 }
 
-void* minimap_acquire_marker_005c0930(void* screen, void* unit, Seg20Host& host) {
+// 005BDB50..005BDB83, verified with bsp.py show 005bdb50 --asm.
+// The byte flag tests only bit 0; the widget has a different deleting slot
+// (+4h) from this marker's slot +0h. This is a semantic C++ host interface,
+// not a drop-in __thiscall implementation.
+__declspec(noinline) void* minimap_marker_scalar_delete_005bdb50(void* marker,
+    std::uint32_t flags, MinimapMarkerDeletionHost& host) {
+    const Raw m = raw(marker);
+    m.at<std::uint32_t>(0) = kMinimapMarkerVtable;
+    if (m.ptr(4) != nullptr) {
+        host.widget_delete_vslot04(m.ptr(4), 1);
+        m.ptr(4) = nullptr;
+    }
+    if ((flags & 1u) != 0) host.free_marker_00bf65ac(marker);
+    return marker;
+}
+
+void* minimap_acquire_marker_005c0930(void* screen, void* unit, MinimapMarkerHost& host) {
     const Raw s = raw(screen);
     std::size_t k;
     if (unit == nullptr) {
