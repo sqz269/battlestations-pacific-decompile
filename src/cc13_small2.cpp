@@ -40,7 +40,7 @@ void* entity_weapon_director_ref_construct_00778820(void* holder, void* entity,
 }
 
 // 00778860 __thiscall(unit) RET: the weapon director's path object 0, or null without one.
-void* unit_director_path_object0_00778860(void* unit, Small2Host& host) {
+void* unit_director_path_object0_00778860(void* unit, UnitDirectorPathHost& host) {
     void* const director = host.entity_weapon_director_114(unit);     // 00778868
     if (director == nullptr) return nullptr;                           // 0077886C
     return host.weapon_director_slot_path_object_0071bfc0(director, 0);  // 00778872

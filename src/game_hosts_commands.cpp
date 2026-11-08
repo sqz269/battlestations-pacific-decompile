@@ -23,6 +23,7 @@
 #include "bsp/pose_derived.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/cc13_small2.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
@@ -2869,6 +2870,33 @@ void GameCommandsHost::bind_user_path_world_bounds(const bsp::WorldMapBounds& bo
 
 void GameCommandsHost::bind_user_path_live_owner(const GameUnitsHost* owner) noexcept {
     impl_->user_path_live_owner = owner;
+}
+
+bool GameCommandsHost::unit_has_director_path_object0(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size() || unit_index >= host.directors.size()) return false;
+    // bsp.py show 00778860 / 0071BFC0: entity vt+114h returns its director,
+    // then the four-byte pointer at director+1A4h is returned. 00720180's
+    // allocation loop constructs that slot with the defaults of 0071FB90;
+    // register_units already does so for each newly registered live director.
+    // Borrow those SAME deque-resident owners. No copied path, fake native
+    // entity image or second presence flag is needed by these two lookups.
+    struct LivePathLookup final : bsp::cc13_small2::UnitDirectorPathHost {
+        GameCommandUnit& unit;
+        GameDirector& director;
+        LivePathLookup(GameCommandUnit& u, GameDirector& d) : unit(u), director(d) {}
+        void* entity_weapon_director_114(void* entity) override {
+            return entity == &unit ? &director : nullptr;
+        }
+        void* weapon_director_slot_path_object_0071bfc0(void* owner, std::int32_t slot) override {
+            // This body asks for slot 0 only; the host retains that slot's
+            // existing object, not ten independent native path allocations.
+            if (owner != &director || slot != 0 || !director.user_path_object) return nullptr;
+            return &*director.user_path_object;
+        }
+    } lookup(host.units[unit_index], host.directors[unit_index]);
+    return bsp::cc13_small2::unit_director_path_object0_00778860(
+        &host.units[unit_index], lookup) != nullptr;
 }
 
 bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const {

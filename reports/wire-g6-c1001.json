@@ -1,0 +1,96 @@
+{
+  "goal": 6,
+  "chain": 1001,
+  "owner": "agent/g6-w11",
+  "candidate": "src/game_hosts_ai.cpp",
+  "tier": 1,
+  "base": "8c408eee9d",
+  "selection": "The offered coordinator-load reasons are stale at this base: kSkirmishSessionCc13Bound is already true, and mission load publishes the retained participant flags. The coordinator's 00A2DEF0 row was already called. Of the remaining rows, the leader's slot-0 DirectorPathObject has an existing live producer, so this chain supplies its missing typed binding without allocating duplicate state.",
+  "rows": [
+    {
+      "native": "00778860",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:3754 GameAiCoordinatorHost::Impl::tick_route_slot_present -> src/game_hosts_commands.cpp:2875 GameCommandsHost::unit_has_director_path_object0",
+      "reason": "Reuses the sole existing unit_director_path_object0_00778860 body with a narrow UnitDirectorPathHost bound to the real GameCommandUnit, its deque-resident GameDirector and that director's retained user_path_object. Replaces the old unit-index-only presence answer.",
+      "newly_wired": true,
+      "called_before": false,
+      "called_after": true,
+      "call_sites_after": 1
+    },
+    {
+      "native": "00a2def0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:5897 GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "Already reachable in the clean baseline with one call site; no new credit. The current mission-frame load path publishes ai_coordinator_created_at_load from the session and participant records, with the skirmish session gate already enabled.",
+      "newly_wired": false,
+      "called_before": true,
+      "called_after": true,
+      "call_sites_after": 1
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::tick_issue_clearorders (00A14E93 in 00A14DD0)",
+      "reason": "climb: 004F1830 needs an 18h descriptor plus actual absolute mutable F87574/78/7C cells <- descriptor initialization at 00A14E93 <- original PE loader's .data virtual-fill storage (stopped: this original-address loader state is outside the host's Source data domain; GameNativeGeometryGlobals owns the mutable source vector at a different address, and the existing literal raw body cannot borrow it through an argument)."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::selling_tick_00a11ff0 (00A123A0..00A123F8 member pass)",
+      "reason": "climb: 005F98F0 needs native unit +54h/+C8h/+FCh/+104h and the capture-entity list at game+19CCh -> scene+16Ch, reached after SELLING's unit+308h timer gate <- native ship instance 006FE460 <- vehicle-base constructor 0081ED40 (stopped: only seed_navigator_params_0081F214 is reconstructed for that constructor; no full native allocation/base producer). The existing semantic selling tick records its 51h sell-message pass and does not supply the native unit/list graph or sell receiver."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "Leader director slot-0 DirectorPathObject binding",
+      "type": "bsp::cc13_small2::UnitDirectorPathHost over GameCommandUnit / GameDirector::user_path_object (gameplay_seg38_cc13::DirectorPathObject)",
+      "where": "src/game_hosts_commands.cpp:2875",
+      "constructor": "0071fb90 (also inlined by 00720180's ten-slot allocation loop)",
+      "new_storage": false,
+      "fields": [
+        {"owner": "entity", "offset": "vtable+114h", "width": 4, "meaning": "weapon-director dispatch; bound to this registered unit's existing GameDirector"},
+        {"owner": "director", "offset": "1A4h", "width": 4, "meaning": "slot-0 path pointer; bound to the existing engaged user_path_object"},
+        {"owner": "path", "offset": "04h/24h", "width": 4, "meaning": "owner fields initialized by existing 0071FB90 with this same stable director"},
+        {"owner": "path", "offset": "08h/0Ch", "width": 4, "meaning": "follow/start defaults 1/5 from 0071FB90; already consumed by the live follower"}
+      ],
+      "producers": [
+        "Binary: 008363E0 calls 00720180 at 00836403; 00720180 constructs the director's path objects with the same defaults as 0071FB90 and stores the first pointer at +1A4h.",
+        "Host: GameUnitsHost::create_units calls GameCommandsHost::register_units at src/game_hosts_units.cpp:9034. New directors construct user_path_object through existing director_path_object_construct_0071fb90 at src/game_hosts_commands.cpp:2178.",
+        "The existing 007207C0 replacement path reconstructs that same optional object at src/game_hosts_commands.cpp:2786. Lookup borrows it per call and retains no stale address across replacement or registration.",
+        "Existing command-host deque/optional ownership releases the object with its director. No additional lifetime, raw native image, path copy or presence flag was introduced."
+      ],
+      "rows": ["00778860"],
+      "climb": [
+        "00778860 <- entity virtual+114h / director+1A4h slot-0 lookup <- DirectorPathObject defaults 0071FB90 (inlined in 00720180) <- director construction 008363E0 <- existing GameCommandsHost::register_units <- existing GameUnitsHost::create_units (reached host phase; climb complete)."
+      ],
+      "abi": "Existing reconstructed C++ body with a narrowed callback interface; this is not a native drop-in ABI claim. Only slot 0 is bound; no claim of ten independent native path allocations."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 PASS; all four existing CTests passed",
+    "changed_build": "scripts/build.ps1 PASS; all four existing CTests passed; local/g6-c1001-build.log",
+    "tests": ["reconstructed_math", "tool_tests", "cc462_loading_config", "cc464_vfs_stream_reader"],
+    "call_graph": {
+      "reconstructed_addresses_called_before": 5742,
+      "reconstructed_addresses_called_after": 5743,
+      "wire_readiness_called_rows_before": 6155,
+      "wire_readiness_called_rows_after": 6156,
+      "new_direct_call": "10082DF1 GameCommandsHost::unit_has_director_path_object0 -> 1041A040 unit_director_path_object0_00778860",
+      "reachable_from_entry": true,
+      "path": "WinMainCRTStartup -> WinMain -> startup/mission/unit-host ownership and virtual tables -> GameAiCoordinatorHost::Impl::tick_route_slot_present -> GameCommandsHost::unit_has_director_path_object0 -> unit_director_path_object0_00778860",
+      "qualification": "Conservative built call-graph reachability, including virtual-table references; no game execution or mission runtime count was collected."
+    },
+    "wire_readiness_00778860": {"state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "float_math_changed": false,
+    "new_native_bodies": false,
+    "ghidra_mutations": false,
+    "game_run": false
+  },
+  "evidence": [
+    "bsp.py show 004F1830, 005F98F0, 00778860, 00A2DEF0, 00A32350, 00A31730, 0071BFC0, 0071FB90, 00720180 and 00720850; callers of the path/director constructors",
+    "bsp.py show 00A11FF0 --start 135: unit+308h gate, 005F98F0 query and 51h message receiver requirement",
+    "bsp.py lookup 0081ED40: only partial seed_navigator_params_0081F214; lookup 006FE590: host_reference_unverified",
+    "include/bsp/game_native_geometry_globals.hpp: mutable process-lifetime source vector, distinct from the absolute addresses consumed by 004F1830",
+    "call_graph.py before/after; who 00778860; path 00778860; who 00A2DEF0; wire_readiness.py"
+  ]
+}

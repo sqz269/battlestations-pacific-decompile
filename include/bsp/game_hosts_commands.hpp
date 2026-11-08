@@ -552,6 +552,9 @@ public:
     // Slot 0's path object: vt[+0Ch] 0071FC40 (the follower's source is this
     // object's point vector +40h) and vt[+10h] 0071D2A0 (+18h when attached,
     // else -1).
+    // 00778860's unit virtual +114h / director+1A4h query, over the same
+    // retained slot-0 object register_units constructs with 0071FB90.
+    bool unit_has_director_path_object0(std::size_t unit_index);
     bool user_path_attached_0071fc40(std::size_t unit_index) const;
     int user_path_remaining_0071d2a0(std::size_t unit_index) const;
 
