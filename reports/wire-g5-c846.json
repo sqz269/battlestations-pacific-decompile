@@ -1,0 +1,139 @@
+{
+  "goal": 5,
+  "chain": 846,
+  "slot": "g5-w8",
+  "base": "e05500de04",
+  "summary": "Wire the main-menu entry help-variant tail to its retained command owner and authored help widgets.",
+  "rows": [
+    {
+      "native": "00549620",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuScreenHost::screen_enter -> GameMenuHost::Impl::set_command_help_variant",
+      "evidence": "00598B21 loads the command owner, 00598B27 pushes 0, and 00598B29 calls 00549620. The host selects the actual main-menu enter virtual 005987F0 and supplies its retained MainMenuCommandOwner::bar and +2C/+30 authored widgets through MenuCommandWidgetReset.",
+      "validation": "Release executable: one reachable call from MenuScreenHost::screen_enter at 1018FBD0 to set_main_menu_help_variant_00549620 at 104987D0. No duplicate host visibility path was present."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list ownership survey",
+      "reason": "The inspected native score-list reader is the excluded debug overlay; no gameplay score-list owner or consumer was established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list ownership survey",
+      "reason": "Missing gameplay candidate-score records and a gameplay consumer of their chosen bytes; the documented reader is debug-only."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate collection",
+      "reason": "The existing predicate is already called from reachable code according to the baseline graph; no new production edge is needed."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing refresh body already invokes the canonical layer setter; no missing production edge was established in this survey."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing refresh body already invokes the canonical refill; no missing production edge was established in this survey."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: ocean depth-kernel candidate survey",
+      "reason": "Missing an established live ocean-field depth-sample/material owner for the kernel; ocean rendering inputs cannot be replaced by unit water-depth queries."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance query survey",
+      "reason": "Missing the live per-member reconnaissance-value provider and the corresponding group-scoring consumer."
+    },
+    {
+      "native": "00a2e1e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group composition query survey",
+      "reason": "Its native callers are FillLuaInfo and DescribeDebug; a live gameplay Lua-info consumer was not established and debug-only work is excluded."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition scoring survey",
+      "reason": "Missing an established parser-owned per-mode class-pair table and live spawn-composition scoring bridge."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: engagement Pass::candidate_attack_value",
+      "reason": "The air-support flight class lacks the live class weapon-fact adapter required by the host's pair-value composition; the current provider explicitly throws."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn gate candidate survey",
+      "reason": "Missing established native request weight, threat records and support-site producer for the original spawn gate."
+    },
+    {
+      "native": "00a156e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: retreat command survey",
+      "reason": "A live retreat-command dispatch and concrete RetreatHost adapter were not established in the inspected host."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing the production bridge from the native GUI manager to the typed timed-entry owner used by this projected frame body."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Missing the same-domain live GuiResourceOwner and GuiWidgetOwnerRuntime bridge for the actual native manager."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_set_zoom",
+      "reason": "The inspected CameraHost intentionally throws for this service; a persistent live mover zoom owner and FOV consumer were not established."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: map zoom candidate survey",
+      "reason": "Missing the actual map-screen mode+2C and zoom+5BC owner; the existing HUD projection is not that receiver."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: marker drop ownership survey",
+      "reason": "Missing the marker slot object, retained entry flags and observer-pair ownership required to apply the reconstructed drop outcome."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: player-count check candidate survey",
+      "reason": "The participant-count watchdog is multiplayer-only and single-player does not run its guarded work."
+    }
+  ],
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed all four checks",
+    "changed_build": "scripts/build.ps1 passed all four checks",
+    "call_graph": "00549620 reachable with one call site from MenuScreenHost::screen_enter",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "readiness": {
+    "wired_total_before": 10698,
+    "wired_total_after": 10699,
+    "target_called": true,
+    "target_call_sites": 1,
+    "called_reconstructed_addresses_after": 5561
+  },
+  "limits": "Only 005987F0's help-widget tail is wired here. Other main-menu entry work and other help-variant callers remain outside this change; no runtime or original ABI validation is claimed."
+}
