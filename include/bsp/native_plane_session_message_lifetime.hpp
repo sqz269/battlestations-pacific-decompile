@@ -35,4 +35,20 @@ seg42::VehicleValueMessage* delete_vehicle_set_party_message_00760610(
 seg42::VehicleShipyardLaunchMessage* delete_vehicle_shipyard_launch_message_00760650(
     seg42::VehicleShipyardLaunchMessage*, std::uint32_t flags);
 
+// The 7Bh / 7Ch factory records are each 24h bytes. Their decoded payloads
+// remain live until projected to the launch receiver; neither owns a subobject.
+struct NativeVehicleUnitLaunchMessage {
+    seg42::UnitMessage u;
+    float heading_20;
+};
+struct NativeVehicleAddLaunchedMessage {
+    seg42::UnitMessage u;
+    std::uint16_t plane_id_20;
+    std::uint16_t pad_22;
+};
+NativeVehicleUnitLaunchMessage* delete_vehicle_unit_launch_message_00464fe0(
+    NativeVehicleUnitLaunchMessage*, std::uint32_t flags);
+NativeVehicleAddLaunchedMessage* delete_vehicle_add_launched_message_006ec100(
+    NativeVehicleAddLaunchedMessage*, std::uint32_t flags);
+
 } // namespace bsp

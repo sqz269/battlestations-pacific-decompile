@@ -109,4 +109,32 @@ delete_vehicle_shipyard_launch_message_00760650(seg42::VehicleShipyardLaunchMess
     if ((flags & 1u) != 0) singleton_lifetime_free(message);
     return message;
 }
+
+// Chain 690 evidence: bsp.py show 00464FE0 --asm and ghidra disasm 006EC100,
+// existing bsp.gpr /battlestationspacific.exe. Both TEST byte [ESP+4],1;
+// save this; stamp 00CE4974; conditionally call 00BF65AC; return this; RET4.
+// Only +0 is written. The native 7Bh / 7Ch profiles (00CE53AC / 00CFAA0C)
+// select these scalar deletes. These are new C++ interfaces, not ABI entries.
+static_assert(sizeof(NativeVehicleUnitLaunchMessage) == 0x24);
+static_assert(offsetof(NativeVehicleUnitLaunchMessage, heading_20) == 0x20);
+static_assert(sizeof(NativeVehicleAddLaunchedMessage) == 0x24);
+static_assert(offsetof(NativeVehicleAddLaunchedMessage, plane_id_20) == 0x20);
+
+__declspec(noinline) NativeVehicleUnitLaunchMessage*
+delete_vehicle_unit_launch_message_00464fe0(NativeVehicleUnitLaunchMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
+
+__declspec(noinline) NativeVehicleAddLaunchedMessage*
+delete_vehicle_add_launched_message_006ec100(NativeVehicleAddLaunchedMessage* message,
+    std::uint32_t flags) {
+    static_cast<volatile NativeSessionMessageStorage&>(message->u.h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 } // namespace bsp
