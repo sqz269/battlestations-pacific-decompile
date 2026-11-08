@@ -1,0 +1,122 @@
+{
+  "goal": 5,
+  "chain": 839,
+  "slot": "g5-w11",
+  "base": "2784b5852ceeae19a54a73f9d9444d51143fd7d0",
+  "scope": "Local decoded director-message family dispatch for 5Ah, 5Dh and 5Fh",
+  "rows": [
+    {
+      "native": "0071c640",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_director_sub_kind_5a",
+      "mechanism": "Run the existing class predicate over 00780120's ordered receiver queries after decoding the actual 5Ah allocation; require the 59h weapon-director receiver and the decoded 5Ah switch arm before returning its selector/value payload.",
+      "built_call_site": "1022ea9c",
+      "before_called": false,
+      "after_called": true
+    },
+    {
+      "native": "0071c770",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_clear_command_5d",
+      "mechanism": "Gate the decoded 5Dh allocation's arm/index consumer through its existing native class predicate, the first-match receiver ladder and the actual decoded kind.",
+      "built_call_site": "1022e32c",
+      "before_called": false,
+      "after_called": true
+    },
+    {
+      "native": "0071cc70",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "mechanism": "Gate the retained decoded 5Fh queue allocation through its existing native class predicate and the 59h receiver before its present/XYZ payload can reach GameCommandsHost's user-path consumer.",
+      "built_call_site": "10231f47",
+      "before_called": false,
+      "after_called": true
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already reachable at baseline through three compiled calls; no missing wiring remains in this candidate."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already reachable at baseline through two compiled calls; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-start checkpoint_differs/write_checkpoint overrides",
+      "reason": "The pre-load checkpoint comparison still returns false and supplies no live BSP_Chk_Save/current-mission-key owner authorizing a real clear."
+    },
+    {
+      "native": "005558f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: native_string_erase_005558f0",
+      "reason": "No live owning string and Fe3TemplateHost caller were traced in this packet; only the existing raw-string body and declaration were located."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing constructed native movie-camera screen/default-field owner; the override explicitly reports the route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing constructed native movie-camera screen and its actual current/default height fields; the override reports the route unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing native movie-camera screen storage containing live/default limits and acceleration time; the current callback reports the route unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing native movie-camera screen storage containing the real default acceleration time and current limits; the callback reports the route unreached."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI planner candidate selection",
+      "reason": "No live AiGroupScoreList owner and consumer were established in this packet; a fresh auxiliary list would not mark the planner's actual candidates."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target construction",
+      "reason": "The literal body still reads original-image absolute globals 00F87574..00F8757C; no process-safe real global binding was established for a host call."
+    },
+    {
+      "native": "0071cb50",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_94_to97.cpp: construct_native_session_message96_value_0071cb50",
+      "reason": "No actual single-player 60h sender/value owner was identified; constructing an extra unused message would not supply a real consumer."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0071c640, 0071c770 and 0071cc70: existing full-DWORD class predicates accept their concrete kind plus 59h/49h/46h; the receiver itself is unused and the original leaf returns with RET 4.",
+    "bsp.py show 00780120: ordered vtable[0Ch] queries, first match wins; 00780636's 59h arm enters 00721A40. The host's existing decoded allocations retain the corresponding concrete factory profiles.",
+    "The shared local receiver helper replaces the old unit-only bulk query helper with the same native first-match ordering; no former sender, codec or payload application runs twice.",
+    "Each call_graph.py who query reports one direct reachable call from the changed HostSessionMessages queue method; all three addresses were absent from the baseline executable graph."
+  ],
+  "validation": {
+    "setup": "bsp.py brief; bsp.py index --if-stale; scripts/build.ps1: PASS",
+    "build": "scripts/build.ps1 after final C++ change: PASS, all 5 CTests",
+    "focused_probe": "tests/wire_g5_c839_director_route_probe.cmd: PASS (5A/5D/5F director payload round trips, signed -1 clear index, signed-zero path coordinate, existing 9F unit route)",
+    "built_call_graph_before": 5547,
+    "built_call_graph_after": 5550,
+    "text_readiness_wired_before": 10690,
+    "text_readiness_wired_after": 10691,
+    "count_note": "0071C640 and 0071C770 were already text-classified wired despite being absent from the built executable. All three are newly called in the executable; only 0071CC70 adds to the text count.",
+    "float_math_changed": false,
+    "game_run": false,
+    "limitations": "Build, focused host fixture and entry-reachable compiled-call evidence only. No gameplay, binary drop-in ABI or post-update runtime claim."
+  },
+  "left": "Other director-message families and movie-camera owner construction remain separate work. No game run, Ghidra mutation, merge, rebase or push was performed."
+}
