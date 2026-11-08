@@ -8,8 +8,8 @@
     {
       "native": "00803DC0",
       "status": "wired",
-      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker -> set_marker_name -> display_name_for_unit",
-      "reason": "Calls the existing body with local_player_party(), the persistent party/unit detection record and the actual loaded VehicleClass.Name; publishes the result to the real Unit_name_Text widget on pool reuse."
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker -> set_marker_name -> display_name_for_unit -> cc13_seg49::marker_display_name",
+      "reason": "Resolves the native naming subject before calling the existing body: supported non-aircraft +140h returns self. Detection and default class display name use that same subject. Aircraft are unbound because the live registry lacks a distinct squadron detection/name owner."
     },
     {
       "native": "00A2BD90",
@@ -217,7 +217,8 @@
     "Narrow ReconDisplayNameHost preserves lazy name lookup and the original raw Seg49Host detection implementation without fabricating a native unit buffer.",
     "Marker binding reads forced-or-sensor level directly from ReconSensorPassState::record; absent pre-layout records use the binary constructor's zero level, not level()'s permissive fallback.",
     "Default name is the installed VehicleClass[Type].Name retained as GameUnitRow::class_row_name, not the scene instance name or enum symbol.",
-    "Refreshes the actual marker text source on pool reassignment and detection changes; removes the old authored-label-only path."
+    "Refreshes the actual marker text source on pool reassignment and detection changes; removes the old authored-label-only path.",
+    "Review round 1: preserve the aircraft (flight-leader and self) or target or friendly gate, then choose squadron +9D4h; all other units resolve through +140h. A missing subject never falls back to the marked plane."
   ],
   "evidence": [
     "bsp.py show 00803dc0 (pseudocode)",
@@ -228,15 +229,46 @@
   ],
   "validation": {
     "build": "scripts/build.ps1 passed all four CTests",
-    "focused_probe": "tests/wire_g5_c685_recon_name_probe.cpp compiled MSVC Win32 against built bsp_core.lib with /OPT:REF /MANIFEST:EMBED; zero/forced/cleared/identified transitions and lazy name callback passed",
-    "graph": "call_graph.py who 00803dc0: REACHABLE, one call from display_name_for_unit. who set_marker_name: called by place_marker; who place_marker: called by MarkersUpdateBinding::add_marker. Full entry chain confirmed by call_graph.py path 00803dc0.",
+    "focused_probe": "MSVC Win32 probe linked against built bsp_core.lib with /OPT:REF /MANIFEST:EMBED passed distinct marked-plane/squadron/+140h identity, differing sensor and forced levels, all aircraft eligibility alternatives, lazy name lookup, changed subject names and unbound-subject behavior.",
+    "graph": "Review fix: call_graph.py confirms 00803DC0 REACHABLE at 1046B080 with call 1014258A from display_name_for_unit; set_marker_name is called by place_marker, itself called by MarkersUpdateBinding::add_marker. The resolver is inline at the host boundary so the reconstructed body remains an actual call.",
     "float_math": "No float arithmetic changed.",
     "game_run": false
   },
   "limitations": [
     "Original register ABI is documented, not reproduced by this typed C++ interface.",
     "Only the host's default class display-name state is owned; custom +15Ch/+160h display-name overrides and their shared native static buffer remain absent.",
+    "Aircraft naming is explicitly unbound: PlaneSquadronHostRecord fuses squadron_unit with wing 0 and owns no independent squadron detection/name state. The marker label is hidden; neither wing state nor the fused index substitutes for the native squadron.",
     "Stationary/unresolved classes without a retained descriptor hide the label rather than inherit a previous pool user's name.",
     "Build, fixture and executable reachability are not live visual/gameplay validation."
-  ]
+  ],
+  "review_round_1": {
+    "run": 1476,
+    "reviewed_head": "4f4ef69da0950a2179db488210b8d361f9c0c182",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "resolution": "Resolve subject before 00803DC0 and pass that one identity to both detection and name callbacks. Propagate actual marker flags and preserve 00642287..006422AC eligibility. Live aircraft subject ownership is missing, so leave their names unbound; non-aircraft bind the verified +140h self result.",
+        "verification": "Focused production-resolver fixture gives the plane level 2 and squadron level 0, then reverses them using forced squadron level 4; the name follows only the squadron. A distinct +140h root and missing subjects are checked too."
+      }
+    ],
+    "evidence": [
+      "bsp.py show 00642040 --asm --start 132/145: 00642287..006422AC gate, 006422C3 squadron load, 006422E4..006422F0 +140h resolution and name call",
+      "bsp.py show 007b8ad0: original plane+9D8h spawn-index zero test",
+      "bsp.py show 0047f320 and ghidra bytes 00cfc510 --length 4: base unit vtable +140h holds 0047F320 (return self)",
+      "include/bsp/plane_squadron_host.hpp: independent squadron object/detection identity absent; fused squadron_unit is also member_units[0]"
+    ],
+    "checks": {
+      "build": "scripts/build.ps1 passed all four CTests after final source changes",
+      "fixture": "Recompiled against final bsp_core.lib; subject identity, aircraft eligibility and differing forced/sensor levels passed",
+      "graph": "00803DC0 entry-reachable; one real call site retained",
+      "game_run": false,
+      "readiness": {
+        "wired": 10438,
+        "called": 5689,
+        "target_called": true,
+        "target_call_sites": 1
+      }
+    }
+  }
 }

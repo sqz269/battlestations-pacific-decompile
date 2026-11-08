@@ -1419,16 +1419,40 @@ struct GameHudMarkersHost::Impl {
 
     void bind_page_0063e280();
     void fit_stand_in_camera();
-    const char* display_name_for_unit(std::size_t index);
-    void set_marker_name(GuiLayoutWidget& marker, std::size_t index);
-    void place_marker(std::size_t index, const bsp::HudMarkerScreenBounds& bounds);
+    const char* display_name_for_unit(std::size_t index, const bsp::HudMarkerFlags& flags);
+    void set_marker_name(GuiLayoutWidget& marker, std::size_t index,
+        const bsp::HudMarkerFlags& flags);
+    void place_marker(std::size_t index, const bsp::HudMarkerScreenBounds& bounds,
+        const bsp::HudMarkerFlags& flags);
 };
 
 namespace {
 
-class MarkerReconNameBinding final : public bsp::cc13_seg49::ReconDisplayNameHost {
+class MarkerReconNameBinding final : public bsp::cc13_seg49::MarkerDisplayNameHost {
 public:
     explicit MarkerReconNameBinding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
+
+    bool marked_unit_is_aircraft(void* marked_unit) override {
+        return owner_.units->unit_is_kind_of(owner_.index_of(marked_unit), 0x0f);
+    }
+    bool marked_plane_is_flight_leader(void* marked_unit) override {
+        // 007B8AD0 reads plane+9D8h == 0, the original spawn-index stamp.
+        // It is not the current leader's position after member compaction.
+        return bsp::plane_squadron_registry().spawn_index_of_unit(
+            owner_.index_of(marked_unit)) == 0;
+    }
+    void* aircraft_squadron_9d4(void*) override {
+        // The registry fuses squadron_unit with wing 0 and has no independent
+        // squadron detection record/name virtual. Neither the marked wing nor
+        // that fused slot can bind the native [plane+9D4h] naming subject.
+        return nullptr;
+    }
+    void* unit_subject_140(void* marked_unit) override {
+        // Supported non-aircraft units inherit 0047F320 at +140h: return self.
+        // Bind that result explicitly; a missing class descriptor remains unbound.
+        const auto* row = owner_.units->unit_row(owner_.index_of(marked_unit));
+        return row != nullptr && row->class_row_found ? marked_unit : nullptr;
+    }
 
     int display_name_detection_level(int party, void* unit) override {
         const auto* gunnery = owner_.units->gunnery();
@@ -1689,7 +1713,12 @@ public:
         owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
     }
     const char* unit_class_name(void* unit) override {
-        return owner_.display_name_for_unit(owner_.index_of(unit));
+        // This legacy callback carries no marker eligibility flags. Only the
+        // non-aircraft +140h arm can bind here; place_marker passes the flags.
+        if (owner_.units == nullptr || owner_.units->unit_is_kind_of(owner_.index_of(unit), 0x0f)) {
+            return nullptr;
+        }
+        return owner_.display_name_for_unit(owner_.index_of(unit), {});
     }
     float unit_health(void* unit) override {
         static_cast<void>(unit);
@@ -1857,7 +1886,7 @@ public:
         }
         ++owner_.summary.markers_added;
         if (bounds.collapsed) ++owner_.summary.markers_collapsed;
-        owner_.place_marker(index, bounds);
+        owner_.place_marker(index, bounds, flags);
     }
     void note_marker(std::uint32_t unit) override { static_cast<void>(unit); }
 
@@ -2053,23 +2082,23 @@ void GameHudMarkersHost::Impl::fit_stand_in_camera() {
         static_cast<double>(summary.camera_half_extent));
 }
 
-const char* GameHudMarkersHost::Impl::display_name_for_unit(std::size_t index) {
+const char* GameHudMarkersHost::Impl::display_name_for_unit(std::size_t index,
+    const bsp::HudMarkerFlags& flags) {
     if (units == nullptr || index >= handles.size()) return nullptr;
-    const auto* row = units->unit_row(index);
-    // A stationary/unresolved class has no retained +538h descriptor. Keep
-    // that unsupported case out of the +14h callback rather than invent a key.
-    if (row == nullptr || !row->class_row_found) return nullptr;
     MarkerReconNameBinding binding(*this);
-    const char* name = bsp::cc13_seg49::recon_display_name_for_party_00803dc0(
-        binding, local_player_party(), &handles[index]);
-    done("HudMarkers::unit_class_name", 0x00803dc0u);
+    // 00642287..006422F5 chooses the naming subject before 00803DC0. The
+    // resolved object supplies BOTH detection and +14h, never the marked wing.
+    const char* name = bsp::cc13_seg49::marker_display_name(binding, local_player_party(),
+        &handles[index], flags.is_self, flags.is_friendly, flags.is_target);
+    if (name != nullptr) done("HudMarkers::unit_class_name", 0x00803dc0u);
     return name;
 }
 
-void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::size_t index) {
+void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::size_t index,
+    const bsp::HudMarkerFlags& flags) {
     auto* text = bsp::find_child_by_name_00aa7e00(marker, bsp::kHudMarkerWidgetUnitName);
     if (text == nullptr) return;
-    const char* name = display_name_for_unit(index);
+    const char* name = display_name_for_unit(index, flags);
     // An unsupported descriptor must not inherit another unit's label when
     // this widget comes from the shared marker pool.
     menu.frontend().set_widget_visible(*text, name != nullptr);
@@ -2086,7 +2115,7 @@ void GameHudMarkersHost::Impl::set_marker_name(GuiLayoutWidget& marker, std::siz
 }
 
 void GameHudMarkersHost::Impl::place_marker(std::size_t index,
-    const bsp::HudMarkerScreenBounds& bounds) {
+    const bsp::HudMarkerScreenBounds& bounds, const bsp::HudMarkerFlags& flags) {
     if (page == nullptr || sidemarker == nullptr || type_icon == nullptr) return;
     const float centre_x = 0.5f * (bounds.min_x + bounds.max_x);
     const float centre_y = 0.5f * (bounds.min_y + bounds.max_y);
@@ -2114,7 +2143,7 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
         }
         ++pool_cursor_a;
         menu.frontend().set_widget_visible(*marker, true);
-        set_marker_name(*marker, index);
+        set_marker_name(*marker, index, flags);
         const float offset_x = type_icon->transform.position.x
             - sidemarker->transform.pivot_x * sidemarker->transform.size.width;
         const float offset_y = type_icon->transform.position.y
@@ -2135,7 +2164,7 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
         markers.emplace(index, marker);
         ++summary.markers_created;
     }
-    set_marker_name(*marker, index);
+    set_marker_name(*marker, index, flags);
     // The authored template puts `type_Icon` at its own offset inside the group,
     // so the group is moved by the difference rather than to the point itself.
     const float offset_x = type_icon->transform.position.x

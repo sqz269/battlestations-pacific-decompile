@@ -86,6 +86,34 @@ struct ReconDisplayNameHost {
     virtual const char* unit_name_14(void* unit) = 0;
 };
 
+// The marker's unit and the subject named by 00803DC0 need not be identical.
+// A null subject means the live owner cannot bind that native object yet.
+struct MarkerDisplayNameHost : ReconDisplayNameHost {
+    virtual bool marked_unit_is_aircraft(void* marked_unit) = 0;
+    virtual bool marked_plane_is_flight_leader(void* marked_unit) = 0;
+    virtual void* aircraft_squadron_9d4(void* marked_unit) = 0;
+    virtual void* unit_subject_140(void* marked_unit) = 0;
+};
+
+// Adapter for the on-screen box arm, 00642287..006422F5. Resolve one native
+// subject, then use that same identity for both detection and the name virtual.
+// Null means ineligible or unsupported; it never falls back to the marked unit.
+const char* recon_display_name_for_party_00803dc0(ReconDisplayNameHost&, int party, void* unit);
+inline const char* marker_display_name(MarkerDisplayNameHost& host, int party, void* marked_unit,
+    bool is_self, bool is_friendly, bool is_target) {
+    void* subject;
+    if (host.marked_unit_is_aircraft(marked_unit)) {
+        // 00642287 CALL 007B8AD0, then (leader && self) || target || friendly.
+        const bool leader = host.marked_plane_is_flight_leader(marked_unit);
+        if (!((leader && is_self) || is_target || is_friendly)) return nullptr;
+        subject = host.aircraft_squadron_9d4(marked_unit); // 006422C3
+    } else {
+        subject = host.unit_subject_140(marked_unit);    // 006422E4..006422EC
+    }
+    if (subject == nullptr) return nullptr;
+    return recon_display_name_for_party_00803dc0(host, party, subject);
+}
+
 struct Seg49Host : ReconListStorageHost, ReconDisplayNameHost {
     virtual ~Seg49Host() = default;
     int display_name_detection_level(int party, void* unit) override;
@@ -261,7 +289,6 @@ int detection_effective_level(Raw record) noexcept;
 void recon_detection_clear_forced_level_00803b50(Seg49Host& host, Raw record);
 std::uint8_t party_relative_to_local_player_00803be0(Seg49Host& host, int party);
 void* recon_filter_undetected_unit_00803d40(Seg49Host& host, int party, void* unit);
-const char* recon_display_name_for_party_00803dc0(ReconDisplayNameHost& host, int party, void* unit);
 void recon_slot_send_detection_levels_to_peer_00803e40(Seg49Host& host, Raw slot, int peer_index);
 float unit_max_sensor_range_against_00803f30(Seg49Host& host, Raw unit, Raw target);
 void recon_list_splice_node_008040e0(ReconList& self, ReconList& source, ReconNode* node) noexcept;
