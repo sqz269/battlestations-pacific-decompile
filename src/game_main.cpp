@@ -1225,6 +1225,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int model_base_atexit = resource_pools.initialize_model_base_once_00cd7f20();
         log.notef("native model pools initialized: model_atexit=%d model_base_atexit=%d "
             "storage=process_actual38h/actual38h", resource_model_atexit, model_base_atexit);
+        // Original CRT slot CE3590 names CD8060, which initializes the distinct
+        // PointLight owner 0109011C and registers its CE0EA0 teardown.
+        const int point_light_atexit = resource_pools.initialize_point_light_once_00cd8060();
+        log.notef("native point-light pool CRT CD8060: atexit=%d", point_light_atexit);
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
         log.notef("native geometry pools initialized: mesh_atexit=%d section_atexit=%d "
             "storage=process_actual38h/actual38h", mesh_atexit, section_atexit);

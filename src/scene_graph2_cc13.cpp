@@ -1,4 +1,5 @@
 #include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -48,6 +49,10 @@ bool is_pointer_array_routine(std::uint32_t address) noexcept {
 }
 
 void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t n) {
+    if (address == 0x00B7ADE0) {
+        allocate_native_point_light_pool_table_00b7ade0({&a}, static_cast<std::uint32_t>(n));
+        return;
+    }
     (void)count_of(kAllocate);
     if (contains(kAllocate, 6, address)) array_reallocate_exact(a, n);
 }
@@ -61,6 +66,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
+    if (address == 0x00B7B4A0) {
+        reserve_native_point_light_pool_table_00b7b4a0({&a}, n);
+        return;
+    }
     if (contains(kReserve, 6, address)) array_reserve_unsigned(a, n);
 }
 
