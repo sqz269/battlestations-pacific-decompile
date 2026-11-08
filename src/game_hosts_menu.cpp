@@ -1073,6 +1073,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<true> {
     // 00aa5840 for a screen's own layout, with the byte 004f83b0 would publish.
     void attach_page(MenuScreen& screen, const std::string& layout_name);
     void initialize_command_widgets();
+    void set_command_help_variant(std::uint8_t variant);
     void pump(float raw_delta);
     void advance_path(float raw_delta);
 };
@@ -1808,6 +1809,12 @@ public:
         }
         // Goal 5 chain 646: the leaf +18h virtuals the HUD runs on their blocks.
         if (owner_.hud != nullptr && owner_.hud->enter_leaf_screen(slot)) return;
+        if (screen != nullptr && screen->enter_virtual == 0x005987f0u) {
+            // 00598B21..00598B29: main-menu entry passes zero to 00549620
+            // on the retained 00E1930C command owner. The rest of 005987F0
+            // remains unimplemented here; this is its help-widget tail.
+            owner_.set_command_help_variant(0);
+        }
         owner_.log.unimplemented("FrontEndScreen::enter", "004f75a0");
         if (screen == nullptr) return;
         owner_.log.notef("screen %d (%s) enter virtual %08lx", slot, screen->name.c_str(),
@@ -3109,6 +3116,14 @@ private:
     MainMenuCommandOwner& owner_;
     GameFrontendHost& frontend_;
 };
+}
+
+void GameMenuHost::Impl::set_command_help_variant(std::uint8_t variant) {
+    if (!command_widgets)
+        throw std::logic_error("main-menu help variant requires its command widget owner");
+    MenuCommandWidgetReset widgets(*command_widgets, frontend);
+    set_main_menu_help_variant_00549620(command_widgets->bar, variant, widgets);
+    log.implemented("MainMenuCommandBar::set_help_variant", "00549620");
 }
 
 void GameMenuHost::Impl::initialize_command_widgets() {
