@@ -1,0 +1,161 @@
+{
+  "chain": 718,
+  "owner": "agent/g5-w6",
+  "picked": "Native post-effect float4-array material parameter registration",
+  "rows": [
+    {
+      "native": "00b18ac0",
+      "status": "wired",
+      "host_site": "src/native_render_pass_initializers.cpp: NativeRenderPassInitializationBlock::execute; src/native_downscale_pass_initializers.cpp: execute_downscale; src/native_bloom_initializer.cpp: register_parameter; src/native_luminance_owner.cpp: bind_sample; src/native_distortion_initializer.cpp: parameter; src/native_render_resource_init_{dof,passthrough_dust,post658,post65c,tail}.cpp: parameter",
+      "evidence": "bsp.py show 00b18ac0 --asm: full DWORD count*4 via LEA, matrix=0, call B17E10, RET 0Ch. Existing initializer bodies supplied these same material/name/source/pool arguments directly to B17E10; they now call the one existing B18AC0 body instead.",
+      "call_sites": 10,
+      "entry_reachable": true
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "Active-use caller and retained cooldown record now exist, but the preceding 0090F5A0 GA_AE award operation lacks the real mission award-map/registry binding; completing only the cooldown would omit that side effect."
+    },
+    {
+      "native": "008eada0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 / use_ready_item_for_ai",
+      "reason": "Existing host projection reaches active use but its tail still lacks GA_AE award state and its air-support arm lacks native spawn-manager flight production; no second body or incomplete replacement was added."
+    },
+    {
+      "native": "0090f5a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "MissionScoreRecord does not retain the native per-slot award map that the existing body finds before granting GA_AE through 0090EDE0."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 air-support arm",
+      "reason": "Missing actual native spawn manager/member/reference-frame ownership and air-support callback producer for the existing Large61 body."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane death-message path",
+      "reason": "The constructor needs the plane's native BA0h rotation vector and a C8h local delivery consumer; the host dogfight/control vectors do not establish those fields."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge",
+      "reason": "Missing live decoder/player texture and material sampler producers for the native movie widget."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land/strafe MoveTo construction",
+      "reason": "Missing same-root native MoveTo receiver and actual observer endpoint/lifetime binding; current movement state is a typed host projection."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: df_pilot_targets_us",
+      "reason": "Missing native plane/pilot target-reference owner; host commanded and dogfight target indices do not establish the original pilot object chain."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Native check requires a multiplayer local-view mode; normal campaign mode returns before the participant and side-balance behavior."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission-load assign_party_player_slots arm",
+      "reason": "Native load site requires game+1FE4h == 1 and the campaign host deliberately skips this multiplayer-only arm."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: LandFort effect synchronization",
+      "reason": "Missing a retained native D1h message route/consumer in this effect host; constructing and discarding a message would not replace its recorded synchronization."
+    },
+    {
+      "native": "00749aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship ramp latch",
+      "reason": "0074AF50 first lowers the ramp locally and sends A6h with flags 4; adding a local round trip would double-run the ramp operation on this remote-only synchronization route."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support-site spawn composition",
+      "reason": "No live support-site owner produces the two native class/squad-size lists for the existing lookup body."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support-site availability",
+      "reason": "No live support-site config and class-availability owner supplies this typed body and its original spawn-composition consumer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: input-character admission",
+      "reason": "Missing original live input-character GuiLeafHost consumer with its actual text-context font; existing FontData layout users are output layout consumers."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: orbit_about_axis_0042d610",
+      "reason": "Missing a live WeaponViewHost implementation and weapon-view camera producer reaching this reconstructed orbit caller."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-composition class pair scoring",
+      "reason": "Missing parser-owned per-mode class-pair table and its live composition-scoring consumer."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "Existing scene/shadow callers use raw native camera ownership; no live CameraClipPlaneState view and extra-plane consumer is bound to this typed body."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing the same live typed clip-plane state and original scene/shadow caller binding as B70410."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a live binding from the original raw-camera consumers to this typed CameraProjection receiver."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: register_native_material_float3_00b18ae0",
+      "reason": "Existing native post-effect initializers register scalar, pair and float4-array fields; the original terrain/ocean float3 material/source producers are not provided by those callers."
+    },
+    {
+      "native": "00b18b40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: register_matrices",
+      "reason": "Particle manager construction is reachable, but AF74A0 particle-model construction and the original ocean matrix-parameter callers have no live built call path; replacing their matrix registration alone would remain dead."
+    }
+  ],
+  "metrics": {
+    "readiness_wired_before": 10466,
+    "readiness_wired_after": 10466,
+    "newly_entry_reachable_addresses": ["00b18ac0"],
+    "target_call_sites_before": 0,
+    "target_call_sites_after": 10,
+    "note": "B18AC0 was already marked wired by readiness's source-text/Host-method matching, but its actual body was absent from the initial executable. This packet establishes built entry-reachable calls; it does not claim a source-text counter increase."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed",
+    "call_graph": "00B18AC0 is entry-reachable with ten call sites from the modified initializer code",
+    "original_evidence": "bsp.py show 00b18ac0; bsp.py show 00b18ac0 --asm; bsp.py callers 00b18ac0 --limit 23",
+    "runtime": "Game was not run; reachability is built-executable evidence, not runtime or visual validation."
+  }
+}

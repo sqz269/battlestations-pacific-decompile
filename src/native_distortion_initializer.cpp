@@ -1,4 +1,6 @@
 #include "bsp/native_distortion_initializer.hpp"
+#include "bsp/material_float4_array.hpp"
+#include "bsp/gui_text_material.hpp"
 #include "bsp/native_renderer_format_check.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_particle_preparation.hpp"
@@ -205,8 +207,15 @@ void NativeDistortionInitializationBlock::create_post(Word index,Word member,con
 void NativeDistortionInitializationBlock::parameter(Word member,Word source,const char* name,
     Word length,Word count,int state,bool last) {
     auto& header=last?last_name_:parameter_name_;build_name(header,name,length);acquired_.native_state=state;
-    register_native_material_parameter_00b17e10(material(acquired_.receiver,member),&header,
-        at(acquired_.receiver,source),count,0,context_->parameters);
+    // B4F560 uses B18B20/B18B00 for scalar/pair fields and B18AC0 for
+    // the one- or sixteen-float4 sample records. Preserve the same source.
+    auto& target=material(acquired_.receiver,member);
+    if(count==1)register_native_material_float_00b18b20(target,&header,
+        at(acquired_.receiver,source),context_->parameters);
+    else if(count==2)register_native_material_float2_00b18b00(target,&header,
+        at(acquired_.receiver,source),context_->parameters);
+    else cc13_terrain::material_register_float4_array_00b18ac0(&target,&header,
+        at(acquired_.receiver,source),count/4u,context_->parameters);
     acquired_.native_state=-1;return_name(header);
 }
 void NativeDistortionInitializationBlock::unwind() {
