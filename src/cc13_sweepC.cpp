@@ -4,6 +4,7 @@
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
+#include "bsp/ship_ai_wake_trail.hpp"
 
 #include <cstring>
 #include <string.h>
@@ -808,9 +809,17 @@ void* unit_message_add_hull_torque_construct_0080ffd0(UnitMessageConstructionHos
 
 // 00811150-00811172, __thiscall(ECX = unit, float, a, b, c), RET 10h: 00810630(ECX = unit+BD0h,
 // float, a, b, c), the float passed through FLD/FSTP.
-void unit_wake_point_at_distance_00811150(SweepCHost& host, void* unit, float distance, void* a,
-                                          void* b, void* c) {
-    host.wake_point_at_distance_00810630(add(unit, 0xBD0), distance, a, b, c);
+ShipAiWakePoint unit_wake_point_at_distance_00811150(const ShipAiWakeTrail& unit_wake_bd0,
+                                                    float distance) noexcept {
+    // bsp.py show 00811150 --asm: 00811164 selects the existing unit+BD0h
+    // subobject; 00811154/0081116A copy the distance through FLD/FSTP before
+    // 0081116D calls the sampler. The live host keeps that same subobject as
+    // GameUnitSlot::wake, so no scratch unit image or copied ring is needed.
+    __asm {
+        fld distance
+        fstp distance
+    }
+    return ship_ai_wake_sample_at_distance_00810630(unit_wake_bd0, distance);
 }
 
 // 00812960-008129D1, __fastcall(ECX = unit) -> EAX. When the director [unit+738h] is non-null,

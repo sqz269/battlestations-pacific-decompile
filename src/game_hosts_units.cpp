@@ -11438,7 +11438,7 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
         // 0070D2EE: 00811150(leader, along) -> the wake point and its direction,
         // then out[0] = pos.x - across * dir.z and out[1] = pos.z + across * dir.x
         // (0070D342, 0070D348), the left normal this packet also decomposes on.
-        const bsp::ShipAiWakePoint base = bsp::ship_ai_wake_sample_at_distance_00810630(
+        const bsp::ShipAiWakePoint base = bsp::cc13_sweepC::unit_wake_point_at_distance_00811150(
             host.slots[leader]->wake, out.along);
         out.x = base.x - out.across * base.dir_z;
         out.z = base.z + out.across * base.dir_x;
