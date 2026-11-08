@@ -1,0 +1,90 @@
+{
+  "chain": 679,
+  "owner": "agent/g5-w6",
+  "scope": "Owned decoded ship-damage session messages",
+  "rows": [
+    {
+      "native": "00760bf0",
+      "status": "wired",
+      "identifier": "bsp::seg42::delete_shiprepair_bodyrepair_00760bf0",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_repair_body_9f",
+      "state": "Existing live 9Fh repair-body payload is decoded into its owned 20h factory-sized block; class scalar delete receives that same block once with flags1 after payload extraction."
+    },
+    {
+      "native": "00762600",
+      "status": "wired",
+      "identifier": "bsp::seg42::delete_ship_explodeonepart_00762600",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_explode_one_part_99",
+      "state": "Existing live 99h destroyed-part payload is decoded into its owned 24h factory-sized block; class scalar delete receives that same block once with flags1 after payload extraction."
+    },
+    {
+      "native": "00762660",
+      "status": "wired",
+      "identifier": "bsp::seg42::delete_ship_leak_00762660",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_leak_90",
+      "state": "Existing live 90h hull-leak payload is decoded into its owned 2Ch factory-sized block; class scalar delete receives that same block once with flags1 after payload extraction."
+    },
+    {
+      "native": "007626c0",
+      "status": "wired",
+      "identifier": "bsp::seg42::delete_ship_avoidside_007626c0",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_avoid_side_8f",
+      "state": "Existing live 8Fh avoidance-side payload is decoded into its owned 24h factory-sized block; class scalar delete receives that same block once with flags1 after payload extraction."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: weapon-director snapshot path",
+      "reason": "Missing live controller-snapshot producer/consumer and bindings for the director's 008356C0/008356B0/008356F0 getters."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun_bot_slots / tail-gunner setup",
+      "reason": "Missing persistent native bot storage and 0072BBD0 descriptor/base-construction binding; the host currently carries slot-class assignments and separate typed bot state."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun_bot_slots / torpedo-bot setup",
+      "reason": "Missing persistent native bot storage and 0072BBD0 descriptor/base-construction binding; the host currently carries slot-class assignments and separate typed bot state."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::note_damage_channel",
+      "reason": "Missing native warning-manager channel subscriptions and dispatch graph binding; current channel events are drained by the typed listener host."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: FirepowerBinding::ammo_select_flak_alternate",
+      "reason": "Missing native ammo+48h alternate record producer, retained references and owned +3Ch tree; current host projects ammunition from a gun-row handle."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: point-effect event path",
+      "reason": "Missing host adapter carrying the native effect-manager, admission and 008680B0 constructor owners into the reconstructed point-effect create body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, Win32 Release; all four CTests passed",
+    "call_graph": "python tools/call_graph.py --build passed (build/callgraph, no inlining and /OPT:NOICF); who for each wired address confirms its distinct body REACHABLE and one direct call from the matching OwnedDecodedMessage destructor, itself called from the reported HostSessionMessages path.",
+    "distinct_calls": [
+      {"native": "00760bf0", "built_body": "106276a0", "call_site": "102e55f6", "called": true},
+      {"native": "00762600", "built_body": "10627610", "call_site": "102e5006", "called": true},
+      {"native": "00762660", "built_body": "10627640", "call_site": "102e56e6", "called": true},
+      {"native": "007626c0", "built_body": "106275e0", "call_site": "102e5696", "called": true}
+    ],
+    "evidence": "Saved bsp.gpr /battlestationspacific.exe: full 31-byte destructor assembly, live profile slot0 bytes and factory allocation/constructor sites; preserved CG scalar-delete names, appended comments under Ghidra write lock, saved and refreshed four exports.",
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "wired_before": 10420,
+  "wired_after": 10420,
+  "readiness_note": "wire_readiness.py --standins omits these four compiler-generated scalar-deleting destructors from rows[] both before and after reconstruction. Its headline wired total is unchanged; the four new bodies' reachability and distinct call sites are verified independently in the no-fold analysis executable.",
+  "new_distinct_reachable_bodies": 4,
+  "left": "Native gun-bot storage/base constructor, controller snapshot production, native ammo alternate record/tree, warning-manager channel graph, and point-effect host bindings remain unwired as detailed in skipped rows."
+}

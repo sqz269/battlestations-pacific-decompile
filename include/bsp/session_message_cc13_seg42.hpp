@@ -319,6 +319,14 @@ RepairAddDamageMessage* construct_shiprepair_adddamage_007608e0(RepairAddDamageM
 RepairAddDamageMessage* delete_shiprepair_adddamage_00760bd0(
     RepairAddDamageMessage*, std::uint32_t flags);
 RepairBodyMessage* construct_shiprepair_bodyrepair_00760a50(RepairBodyMessage*, const Context&);
+// 00760BF0 / 00762600 / 00762660 / 007626C0: native scalar deleting
+// destructors, __thiscall(this, flags), EAX=this, RET 4. Restore the root
+// profile before releasing this iff flags bit 0 is set. No payload owns storage.
+// Explicit C++ interfaces over the matching singleton allocator, not binary ABI replacements.
+RepairBodyMessage* delete_shiprepair_bodyrepair_00760bf0(RepairBodyMessage*, std::uint32_t flags);
+ExplodeOnePartMessage* delete_ship_explodeonepart_00762600(ExplodeOnePartMessage*, std::uint32_t flags);
+ShipLeakMessage* delete_ship_leak_00762660(ShipLeakMessage*, std::uint32_t flags);
+ShipAvoidSideMessage* delete_ship_avoidside_007626c0(ShipAvoidSideMessage*, std::uint32_t flags);
 HeaderedMessage* construct_shiprepair_repairpriority_00760b70(HeaderedMessage*, const Context&);
 LandingShipsLaunchedMessage* construct_ship_landingshipslaunched_00760e90(LandingShipsLaunchedMessage*, const Context&);
 TorpedoGenerateMessage* construct_ship_torpedogenerate_hack_00760fd0(TorpedoGenerateMessage*, const Context&);
