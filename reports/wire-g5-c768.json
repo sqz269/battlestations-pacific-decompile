@@ -1,0 +1,93 @@
+{
+  "rows": [
+    {
+      "native": "00857f40",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_surface_ship_leaf",
+      "details": "Load the real TorpedoBoat descriptor's Lua row with the existing leaf body; retain its tuning and turbo fields in vehicle_class_ship_leaf_fields_. Navigation, depth and turbo scalar reads consume that retained result."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing retained pick-screen selection mode +30h and native selection vector +C4h; the existing host records the reset without owning those inputs."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Missing the selected unit's +BBCh sound emitter, +428h device-list audio consumers and retained +6B4h flag; the host callback only records the operation."
+    },
+    {
+      "native": "007ee4e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding pilot_detach",
+      "reason": "Missing world spectate-list and pilot-state producers; spectate_unit_count returns zero and the unit/pilot queries are fixed substitutions."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart binding write_checkpoint",
+      "reason": "Missing pre-load checkpoint comparison and BSP_Chk_Save owner/current-key binding; checkpoint_differs still returns false."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall binding queue_call",
+      "reason": "Missing the off-main-thread deferred-call enqueue producer and its actual source argument vector; the host currently discards the queued-call argument."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl",
+      "reason": "The score-list records only feed the native debug overlay 00A2CDD0; debug-only work is excluded and no gameplay consumer should be invented."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl",
+      "reason": "Missing score-list records outside the excluded debug-overlay path; marking an auxiliary list would add no real gameplay consumer."
+    },
+    {
+      "native": "0041d1e0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::rebuild",
+      "reason": "Missing raw entity/path/vtable/world storage required by the native constructor; rebuild currently owns semantic ScenePath access and separately constructed zone owners."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: map_initialize_header_006eeaf0 callback",
+      "reason": "Missing a live native variant-tree header owner and cleanup consumer; the host's semantic LuaVariantRecord is not that header."
+    },
+    {
+      "native": "006edea0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp: initialize_native_lua_variant_header_006eeaf0",
+      "reason": "The allocator depends on the same missing live native variant-tree owner; allocating an unattached sentinel would not replace a gameplay path."
+    },
+    {
+      "native": "0074c630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaShipLeafFieldBinding",
+      "reason": "Missing LandingTroopClasses lookup and soldier/vehicle registration owners; these services currently throw in the ship-leaf binding."
+    },
+    {
+      "native": "00854230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaShipLeafFieldBinding",
+      "reason": "Missing submarine PeriscopeWave effect resolution in the leaf binding; make_effect_handle remains unavailable."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a live host-owned native vehicle-camera row array and its default-constant binding; the existing initializer already serves its reconstructed resize caller."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest checks passed",
+    "call_graph": "00857f40 reachable with one call at 1015b443 from GameMissionLuaVehicleClassBinding::load_surface_ship_leaf; entry path confirmed through mark_vehicle_class_row_00964790 and scene loading",
+    "scope": "Build and executable call-path evidence only; game not run. No float arithmetic changed."
+  }
+}
