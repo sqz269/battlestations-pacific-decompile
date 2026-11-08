@@ -6,6 +6,8 @@
 
 #include "bsp/cc15_seg48.hpp"
 #include "bsp/attack_commands.hpp"
+#include "bsp/band_0080_cc13.hpp"
+#include "bsp/projectile_kinds.hpp"
 
 #include <cstring>
 #include <initializer_list>
@@ -374,6 +376,22 @@ bool drop_kamikaze_applies(const AttackFeasibilityInputs& in) noexcept
 }
 
 } // namespace
+
+void bind_attack_torpedo_inputs(AttackFeasibilityInputs& in,
+    const WeaponClassDescriptor* first_slot, bool target_kind_0e,
+    bool target_kind_0c, bool target_big_landing_ship_808, float target_speed_500) noexcept
+{
+    // bsp.py show 007ee8f0 --asm: 007EEA61 MOV BL,1 survives a null slot
+    // (007EEA68) or a subtype other than 0Ah (007EEA6C). COMISS/JA at
+    // 007EEA82 ignores an unordered +F0h, while COMISS/JC at 007EEA87 clears
+    // BL for an unordered +F4h. Do not replace these with an ordered range test.
+    constexpr float threshold = 0.001f; // 00D7A23C
+    in.torpedo_runs_at_surface = first_slot == nullptr || first_slot->sub_type != 0x0a
+        || (!(first_slot->homing_horz_turn_speed > threshold)
+            && threshold >= first_slot->homing_vert_turn_speed);
+    in.torpedo_target_blocked = cc13_band0080::torpedo_proof_small_craft_00828ec0(
+        target_kind_0e, target_kind_0c, target_big_landing_ship_808, target_speed_500);
+}
 
 bool cc15_seg48_unit_attack_command_applies_007ee8f0(std::uint32_t command,
                             const AttackFeasibilityInputs& in) noexcept

@@ -108,6 +108,7 @@ class ReconSensorPassState;
 struct UnitFirepowerReport;
 struct ShipRepairTaskTerms;
 struct ShipDeviceTerms;
+struct WeaponClassDescriptor;
 }
 
 namespace bsp::game {
@@ -1268,6 +1269,9 @@ public:
         std::size_t unit_index, int category) const noexcept;
     // The authored Bullets row a gun fires, by GameGunRow::bullet_class.
     const GameBulletClassRow* bullet_class_row(int id) const noexcept;
+    // Stable mission-owned descriptor used by the current rack's projectile;
+    // no flattened/quantized copy of subtype or +F0h/+F4h is introduced.
+    const bsp::WeaponClassDescriptor* weapon_class_descriptor(int id);
     // Goal 5 chain 696: the MParatrooper block 007AC780 read into Bullets[id]'s
     // class descriptor (built on first use, as 006EA910 builds it); null when
     // the row's Type is not Paratrooper.

@@ -3896,8 +3896,7 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
         tf.not_engageable ? 1 : 0, static_cast<double>(tf.world_y));
     log_.notef("  %s caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
         "dogfight_excluded=%d | target_class=%d structure=%d bomb_excluded=%d "
-        "submarine=%d ship_family=%d | REFUSED: weapon_controller, target_is_air, "
-        "target_is_surface (need live +5Dh); gates 0047B850/00604A50/00828EC0 unread",
+        "submarine=%d ship_family=%d | torpedo first-rack/class inputs bound below",
         label, self_class,
         units_.unit_is_kind_of(unit_index, 0x10) ? 1 : 0,
         units_.unit_is_kind_of(unit_index, 0x17) ? 1 : 0,
@@ -4021,6 +4020,33 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
         log_.notef("  %s guns feed: pilot_fires=%d suppressed=%d "
             "(007EEB08/007EEB2C, packet cc9_strafe_arm)",
             label, in.guns_available ? 1 : 0, in.guns_suppressed ? 1 : 0);
+    }
+    if (in.has_torpedo_ordnance) {
+        // 007EEA5B / 007B9230: the CURRENT leader's first +974h rack, not the
+        // first torpedo found among the squadron's other members or guns.
+        std::size_t leader = unit_index;
+        const auto* const squadron = bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+        if (squadron != nullptr) {
+            leader = squadron->flight_leader();
+        }
+        const int bullet_id = units_.plane_first_rack_bullet_id(leader);
+        const bsp::WeaponClassDescriptor* descriptor = nullptr;
+        if (bullet_id >= 0) {
+            auto* const gunnery = units_.gunnery();
+            if (gunnery == nullptr || (descriptor = gunnery->weapon_class_descriptor(bullet_id)) == nullptr)
+                throw std::logic_error("loaded first rack has no retained projectile descriptor");
+        }
+        // 00828EC0 reads the actual target class: kind 0Eh, or kind 0Ch with
+        // +808h clear, then +500h >= 00D099AC. The existing class readers own
+        // the boolean and converted speed, so do not substitute unit velocity.
+        const bool landing_ship = tf.present && units_.unit_is_kind_of(target_index, 0x0c);
+        const auto* const ship_ai = units_.ship_ai();
+        if (landing_ship && ship_ai == nullptr)
+            throw std::logic_error("landing-ship torpedo gate has no class flag owner");
+        bsp::bind_attack_torpedo_inputs(in, descriptor,
+            tf.present && units_.unit_is_kind_of(target_index, 0x0e), landing_ship,
+            landing_ship && ship_ai->unit_big_landing_ship_0808(target_index),
+            tf.present ? units_.unit_class_max_speed_0500(target_index) : 0.0f);
     }
     const std::uint32_t chosen =
         bsp::attack_command_choose(in, prefer_ordnance, allow_guns);

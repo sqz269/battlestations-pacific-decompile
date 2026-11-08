@@ -618,6 +618,10 @@ public:
     // answers 2Ah, and the flag-1 arm needs [00E17BF2], 0 in single player, so
     // this is squadron_ammo_type's per-plane rack test. False for a non-plane.
     bool plane_holds_rack_round_007b9140(std::size_t unit_index);
+    // 007B9230's first rack ONLY, queried with the loaded-ordnance flag 1.
+    // Returns the retained projectile class id, or -1 when that slot is empty.
+    // Uses the existing BSPGun rack order and live equipment/round projection.
+    int plane_first_rack_bullet_id(std::size_t unit_index);
     // Packet cc13-fix16 (docs/CC13_FIX16.md). 007B92E0, GetPlaneIsReloading's
     // test: some rack's vtable[20Ch] (006E3570, no round left) answers. The
     // per-rack count is the one plane_holds_rack_round_007b9140 reads. False

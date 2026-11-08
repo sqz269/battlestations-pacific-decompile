@@ -4,16 +4,16 @@
   "slot": "g5-w1",
   "base": "4ee31b3975",
   "branch": "agent/g5-w1",
-  "picked": "Consolidate 007EE8F0 attack feasibility into one typed body called by the live chooser and pilot retest.",
+  "picked": "Consolidate 007EE8F0 and bind its torpedo first-slot and target-immunity inputs to the live chooser.",
   "rows": [
     {
       "native": "007ee8f0",
       "status": "wired",
       "host_site": "src/attack_commands.cpp: attack_command_choose (called by GameScriptOrdersHost::choose_attack_class_007eec50); attack_command_applies facade (GameUnitsHost pilot retest)",
-      "real_state": "The established AttackFeasibilityInputs from the live ordered unit, selected loadout, squadron members and target; no fabricated raw object or new default state.",
-      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade.",
+      "real_state": "The live unit/target/loadout feasibility inputs. Review1800 additionally binds the current flight leader first-rack descriptor (current Equipment and held-round state) and actual target class kind, +808h BigLandingShip and +500h max speed.",
+      "change": "Replace the unused raw Host boundary on the existing address-suffixed function with the already-used typed input boundary. Move the nine arm helpers and dispatch exactly from the old live predicate, delete the duplicate raw body, and forward the compatibility facade. Review1800 round1 adds bind_attack_torpedo_inputs, a first-rack projectile-id read seam on GameUnitsHost, and access to the existing retained projectile descriptor on GameGunneryHost.",
       "original_abi": "thiscall ECX=squadron; class, target, surface byte, loadout; AL; RET 10h",
-      "evidence": "bsp.py show 007ee8f0 --asm (007EE8F0..007EEBFB); assembly 007EEB36 selects E08F50 kamikaze, 007EEB94 selects E08F40 strafe. Correct the old raw comments, which reversed these names.",
+      "evidence": "bsp.py show 007ee8f0 --asm (007EE8F0..007EEBFB); assembly 007EEB36 selects E08F50 kamikaze, 007EEB94 selects E08F40 strafe. Correct the old raw comments, which reversed these names. Review1800: 007EEA61 initializes BL=1; absent/non-0Ah first descriptor preserves it, 007EEA82 COMISS/JA and 007EEA87 COMISS/JC clear it with their original unordered behavior. 00828EC0 listing uses class kind0E/0C, byte808 and speed500 COMISS/JB.",
       "built_call_graph": {
         "reachable": true,
         "call_sites": 4,
@@ -112,12 +112,37 @@
       "status": "skipped",
       "host_site": "src/cc13_seg48.cpp: cc13_seg48_unit_has_rocket_ordnance_007ed970",
       "reason": "Missing an admitted live raw squadron/loadout Cc13Seg48Host consumer; its only textual call was in the deleted unused raw feasibility body."
+    },
+    {
+      "native": "00828ec0",
+      "status": "wired",
+      "host_site": "src/cc15_seg48.cpp: bind_attack_torpedo_inputs, called by GameScriptOrdersHost::choose_attack_class_007eec50",
+      "already_wired_before_review": true,
+      "change": "Reuse the existing predicate for attack feasibility; it already had another live powerup score caller. No new reconstructed-address count is claimed for this reuse."
+    },
+    {
+      "native": "007b9230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The existing raw body requires the native +974h/+994h weapon-controller owner; this packet uses the current BSPGun-order rack owner without fabricating a raw object."
+    },
+    {
+      "native": "006e4060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "The raw child-list owner is not reconstructed here; the established single-rack equipment/ammo projection supplies the loaded descriptor identity."
+    },
+    {
+      "native": "006e4640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id",
+      "reason": "Native multi-rack per-round slots are absent; this packet retains the existing authored multi-rack count projection and claims no call to the raw body."
     }
   ],
   "validation": {
     "baseline_build": "scripts/build.ps1 PASS, 4/4 CTests",
     "final_build": "scripts/build.ps1 PASS, 4/4 CTests",
-    "exact_move_check": "PASS: all nine arm helpers and the typed dispatch match the previous live predicate exactly, apart from the address-suffixed function name.",
+    "exact_move_check": "Initial consolidation at 24ace8d4e: helpers/dispatch matched the previous live predicate. Review1 intentionally corrects two previously unbound inputs, so preserving all previous chooser behavior is no longer claimed.",
     "baseline_readiness_wired": 10674,
     "baseline_built_reconstructed_addresses_called": 5529,
     "final_built_reconstructed_addresses_called": 5530,
@@ -129,9 +154,50 @@
     "pc24_lint": "python tools/pc24_lint.py --diff HEAD: PASS, zero findings (no new floating arithmetic)."
   },
   "limitations": [
-    "This consolidates existing live semantic behavior; it does not add a new attack mode or claim additional gameplay coverage.",
-    "The new typed boundary is not an original-ABI replacement; the existing host squadron-membership/liveness projections remain.",
-    "No game was run; validation is build/test/source-comparison and built-executable reachability."
+    "Typed host-value API is not an original-ABI replacement. The review fixes intentionally change torpedo acceptance for non-surface targets and immune small craft.",
+    "Rack order uses the existing BSPGun projection, equipment and current single-rack ammo. Native child-list topology and multi-rack per-round slots are not reconstructed by this packet; multi racks retain their established authored-count projection.",
+    "The focused fixture exercises the production binder plus chooser/predicate, not a live retail rack. No game run or original-ABI equivalence is claimed."
   ],
-  "left_for_others": "Other raw segment-48 bodies and missing original consumers listed in rows; genuine native-object ownership remains separate."
+  "left_for_others": "Other raw segment-48 bodies and missing original consumers listed in rows; genuine native-object ownership remains separate.",
+  "review_round_1": {
+    "review_run": 1800,
+    "reviewed_head": "24ace8d4e748a40295fcff7ade111c02d88af783",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "summary": "Bind torpedo_runs_at_surface from the actual current leader first rack, preserving absent-slot/subtype defaults and both native SSE comparisons.",
+        "producer": "GameScriptOrdersHost resolves plane_squadron_registry().find_by_member_unit(unit_index)->flight_leader(); GameUnitsHost::plane_first_rack_bullet_id reads racks.front(), resolves that platform current Equipment device, maps the single-rack identity to live ammo, and returns only that slot loaded projectile id. GameGunneryHost::weapon_class_descriptor returns the stable mission-owned descriptor. A missing rack/round yields null, not a search for another torpedo rack or member.",
+        "comparison": "Null or sub_type != 0Ah -> true. For type0Ah, !(homing_horz_turn_speed > 0.001f) && 0.001f >= homing_vert_turn_speed. The +F0h/+F4h fields are homing turn rates, despite historical depth-band shorthand."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "summary": "Bind torpedo_target_blocked through existing torpedo_proof_small_craft_00828ec0 using live target-class inputs.",
+        "producer": "GameUnitsHost::unit_is_kind_of for class identity, GameShipAiHost::unit_big_landing_ship_0808 for the loaded class flag, and GameUnitsHost::unit_class_max_speed_0500 for class max speed; not current movement speed. Missing required class/descriptor owners fail explicitly rather than supply false input defaults.",
+        "comparison": "Kind0E, or kind0C with +808h false; require +500h >= original float 00D099AC (8.938946723937988f). COMISS/JB rejects NaN speed."
+      }
+    ],
+    "other_production_site": "The pilot retest compatibility path is the free-attack tail. Its active results exclude the seven ordnance classes through early_arm (including torpedo E08F18); its consumed feasibility tests are artillery/attackmove/dogfight/strafe. The torpedo-bearing chooser is the production site that needs these bindings.",
+    "checks": {
+      "build": "scripts/build.ps1 PASS, all 4 CTests",
+      "focused_probe": "tests/wire_g5_c826_torpedo_probe.cpp PASS via local/c826-torpedo-probe.cmd; /MANIFEST:EMBED Win32 exe; observable chooser acceptance covers absent/wrong subtype, exact threshold, adjacent values, asymmetric NaNs, fast torpedo boat, small/big landing ship, ordinary class and NaN speed.",
+      "game_run": false,
+      "readiness": {
+        "wired_before_review": 10673,
+        "wired_after_review": 10673,
+        "007ee8f0_called": true,
+        "007ee8f0_call_sites": 4,
+        "00828ec0_call_sites": 2
+      },
+      "built_reconstructed_addresses_called_before_review": 5530,
+      "built_reconstructed_addresses_called_after_review": 5530,
+      "binder_reachable": true,
+      "first_rack_getter_reachable": true,
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: PASS, 0 findings, 10 files."
+    }
+  },
+  "claimed_new_addresses": [
+    "007ee8f0"
+  ]
 }
