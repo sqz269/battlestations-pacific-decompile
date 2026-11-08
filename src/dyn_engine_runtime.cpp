@@ -1,6 +1,7 @@
 #include "bsp/dyn_engine_runtime.hpp"
 #include "bsp/dyn_task_manager.hpp"
 #include "bsp/native_legacy_sbo_string.hpp"
+#include "bsp/scenes_seg1_cc13.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -37,10 +38,12 @@ DynProfileNodeStorage* construct_profile_node_payload(
     text.capacity_18=15;
     text.length_14=0;
     text.buffer_04.inline_bytes[0]=0;
-    const char* end=name;
-    while (*end++) {}
-    const auto length=static_cast<std::uint32_t>(end-name-1);
-    native_legacy_sbo_string_assign_counted_00408720(text,name,length);
+    // 00C4403E..00C44050 scans this actual node name and assigns it through
+    // 00408720. Reuse 00429FD0's identical strlen+assign-counted operation
+    // instead of maintaining the same sequence here (bsp.py show 00c44000 /
+    // 00429fd0). Native inlines the sequence; this is source-level delegation,
+    // not an assertion that its original call target was 00429FD0.
+    seg1_cc13::native_legacy_sbo_string_assign_cstring_00429fd0(text,name);
     at<std::uint32_t>(&node,0x2c)=word_2c;
     at<std::uint32_t>(&node,0x38)=0;
     at<std::uint32_t>(&node,0x3c)=0;
