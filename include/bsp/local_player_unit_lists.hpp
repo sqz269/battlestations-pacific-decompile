@@ -7,7 +7,9 @@
 namespace bsp {
 // 007CFD00..007CFD1F listing: ECX unused, class id on stack, RET 4/EAX bool.
 // Descriptor plane-base family; name remains a hypothesis, complete leaf body.
-inline bool plane_class_is_kind_of_007cfd00(std::uint32_t kind) noexcept {
+// Keep the recovered predicate callable from the descriptor dispatch, including
+// optimized builds. ECX was unused; this source interface takes the real query.
+__declspec(noinline) inline bool plane_class_is_kind_of_007cfd00(std::uint32_t kind) noexcept {
     return kind == 0x0F || kind == 5 || kind == 4;
 }
 }
