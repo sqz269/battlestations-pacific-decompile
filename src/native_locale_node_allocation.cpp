@@ -1,4 +1,5 @@
 #include "bsp/native_locale_node_allocation.hpp"
+#include "bsp/native_locale_pool_table.hpp"
 
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/game_native_locale_pool.hpp"
@@ -165,48 +166,11 @@ void* allocate_native_locale_node_00a9f0b0(
                 frame.require_entered();
             }
             // Native NULL continues: no invented graceful NULL return/cleanup.
-            const Word capacity = word(pool, 0x30u);
-            if (word(pool, 0x2cu) == capacity) {
-                const Word grown_capacity = capacity * 2u + 2u;
-                const Word bytes = grown_capacity * 4u;
-                put_word(pool, 0x30u, grown_capacity); // BEFORE allocation
-                p.capacity_published = true;
-                p.table_allocation_bytes = bytes;
-                p.table_allocation_entered = true;
-                void* const grown = singleton_lifetime_allocate(
-                    {SingletonAllocationKind::object, bytes, bytes});
-                p.table_allocation = grown;
-                p.table_allocation_returned = true;
-                frame.require_entered();
-                const Word new_table = address(grown);
-                Word destination = new_table;
-                for (Word i = 0u; i < word(pool, 0x2cu); ++i, destination += 4u) {
-                    if (destination != 0u) {
-                        const Word current_table = word(pool, 0x28u);
-                        const Word element = word(current_table, i * 4u);
-                        put_word(destination, 0u, element);
-                    }
-                }
-                const Word old_table = word(pool, 0x28u);
-                p.old_table = pointer(old_table);
-                if (old_table != 0u) {
-                    p.old_table_free_entered = true;
-                    singleton_lifetime_free(pointer(old_table));
-                    p.old_table_free_returned = true;
-                    frame.require_entered();
-                }
-                put_word(pool, 0x28u, new_table);
-                p.table_published = true;
-            }
-            const Word append_index = word(pool, 0x2cu);
-            const Word append_table = word(pool, 0x28u);
-            const Word slot = append_table + append_index * 4u;
-            if (slot != 0u) {
-                put_word(slot, 0u, address(block));
-                p.slab_store_performed = true;
-            }
-            add_word(pool, 0x2cu, 1u);
-            p.slab_count_incremented = true;
+            push_native_string_map_pool_slab_00a9ee40(
+                {pointer(pool + 0x28u)}, &block,
+                {&p, &frame, [](void* value) {
+                    static_cast<NativeLocaleNodeAllocationFrame*>(value)->require_entered();
+                }});
         }
 
         const Word current_index = word(pool, 0x34u);
