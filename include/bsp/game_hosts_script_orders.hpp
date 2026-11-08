@@ -1044,6 +1044,12 @@ private:
     void run_blackout_update(float step);
     // Packet cc9_lua_countdown: the countdown arm of 00735100 (00735151-0073524F).
     void run_countdown_update_00735100();
+    // Lua natives: ECX = borrowed lua_State*, EAX = result count, plain RET.
+    // These source methods use the dispatch's borrowed frame and the same
+    // countdown owner consumed by run_countdown_update_00735100; no binary ABI.
+    int run_countdown_008b16e0();
+    int run_countdown_cancel_008b19a0();
+    int run_countdown_time_left_008b1b40();
     // Packet cc9_lua_mission_narrative: 00735100's narrative half.
     void run_narrative_update_00735100(float step);
     // Packet cc9_lua_camera_state.
