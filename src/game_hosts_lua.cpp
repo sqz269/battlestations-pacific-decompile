@@ -2433,6 +2433,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     // AA2B30 invocation contributes exactly one credit, including hits on
     // a texture that an earlier class also acquired.
     vehicle_class_base_fields_.clear();
+    vehicle_class_ship_leaf_fields_.clear();
     for (void* texture : class_icon_references_)
         bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
 }
@@ -3950,6 +3951,17 @@ bool GameMissionLuaHost::read_ship_depth_input(int type_id, std::int32_t session
         error = "ship depth requires the completed load-time gameplay settings";
         return false;
     }
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(type_id);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()) {
+        // The class's +570h is the leaf loader's retained store, not a new
+        // read of VehicleClass.Type/HeavyCruiser or the current settings.
+        const auto& loaded = leaf->second;
+        const auto& tuning = loaded.fields.tuning;
+        output = {tuning.scalar, loaded.settings_block_offset,
+            tuning.scalar_source, depth_key(tuning.scalar_source)};
+        error.clear();
+        return true;
+    }
     GameShipNavigationInput loaded{};
     if (!read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
             false, loaded, error, gameplay_tuning_settings_.get())) return false;
@@ -3994,6 +4006,14 @@ bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t se
     if (!gameplay_tuning_settings_) {
         error = "ship navigation requires the completed load-time gameplay settings";
         return false;
+    }
+    const auto leaf = vehicle_class_ship_leaf_fields_.find(type_id);
+    if (leaf != vehicle_class_ship_leaf_fields_.end()) {
+        const auto& loaded = leaf->second;
+        output = {loaded.fields.tuning, loaded.settings_block_offset,
+            depth_key(loaded.fields.tuning.scalar_source)};
+        error.clear();
+        return true;
     }
     return read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
         true, output, error, gameplay_tuning_settings_.get());
@@ -6413,6 +6433,32 @@ private:
     std::deque<std::string> strings_;
 };
 
+// The four surface leaves below only ask for the actual settings singleton's
+// selected tuning dwords. Keep the other leaf-specific services unavailable:
+// they belong to the carrier, landing-ship and submarine loaders.
+class GameMissionLuaShipLeafFieldBinding final : public bsp::ShipLeafFieldHost {
+public:
+    GameMissionLuaShipLeafFieldBinding(bsp::GameplayTuningSettings& settings,
+        std::int32_t mode) : settings_(settings), mode_(mode) {}
+
+    std::uint32_t tuning_block_dword(std::uint32_t offset) override {
+        return select_loaded_ship_depth_table(settings_, mode_).word(offset);
+    }
+    std::int32_t session_mode() override { return mode_; }
+    std::int32_t make_effect_handle(std::int32_t) override { unavailable(); }
+    void register_landing_troop_soldier(const char*) override { unavailable(); }
+    void register_landing_troop_vehicle(std::int32_t) override { unavailable(); }
+    bsp::GuiLuaRef landing_troop_classes(std::int32_t) override { unavailable(); }
+    void store_deck_camera_basis(const bsp::DeckCameraAngles&) override { unavailable(); }
+
+private:
+    [[noreturn]] static void unavailable() {
+        throw std::logic_error("surface ship leaf requested another leaf's service");
+    }
+    bsp::GameplayTuningSettings& settings_;
+    std::int32_t mode_;
+};
+
 // Goal 3 chain 234 (kWireGoal3Chain234Bound). The bsp::VehicleClassHost that
 // 00964790's reconstructed body (bsp::resolve_vehicle_class_00964790) takes:
 // the descriptor cache and its constructors (bsp/game_host_vehicle_class.hpp)
@@ -6583,12 +6629,13 @@ public:
             // for the host's class +C0h..+CCh, +124h and +134h readers.
             // DIVERGENCE (bsp/game_host_vehicle_class.hpp, split copy): the image
             // bytes are not written; the read lives beside the semantic descriptor.
-            // The kind-specific remainder of each loader (00831840 for ships,
-            // 007D1F70 for planes, ...) is not run here.
+            // The ship-base reader 00831840 and plane reader 007D1F70 are not
+            // run here. The four supported surface leaf tails below do run.
             GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_, owner_);
             const bsp::GuiLuaRef row = lua.row(descriptor->class_index);
             bsp::VehicleClassBaseFields fields;
             bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
+            load_surface_ship_leaf(descriptor, lua, row);
             lua.release(row);
             descriptor->linked_class_index = fields.launched_class;
             owner_.vehicle_class_base_fields_[descriptor->class_index] = std::move(fields);
@@ -6611,6 +6658,51 @@ public:
     bsp::NativeStringStorage& string_storage() override { return bsp::crt_string_storage(); }
 
 private:
+    void load_surface_ship_leaf(bsp::VehicleClassDescriptor* descriptor,
+        GameMissionLuaVehicleClassFieldBinding& lua, const bsp::GuiLuaRef& row) {
+        const int index = descriptor->kind_index;
+        if (index < 0 || index >= bsp::kVehicleClassDescriptorCount) return;
+        const auto kind = bsp::kVehicleClassDescriptorTable[index].kind;
+        using Kind = bsp::VehicleClassKind;
+        if (kind != Kind::BattleShip && kind != Kind::Cargo
+            && kind != Kind::Cruiser && kind != Kind::Destroyer) return;
+
+        // 00424C40 is lazy in the image as well. Resolve its real ShipGlobals
+        // producer if this class is the first settings borrower in this run.
+        if (!owner_.gameplay_tuning_settings_)
+            owner_.load_ship_globals_0083b6e6();
+        if (!owner_.gameplay_tuning_settings_)
+            throw std::runtime_error("ship leaf load requires completed gameplay settings");
+        const auto mode = bsp::session_context().session_word_1fe4;
+        GameMissionLuaShipLeafFieldBinding settings(*owner_.gameplay_tuning_settings_, mode);
+        bsp::ShipLeafFields fields;
+        // Evidence: bsp.py show 006e00f0 / 006eb4a0 / 006fb550 / 006fe6a0.
+        // Original ABI: descriptor in ECX, LuaObject* row on stack, RET 4.
+        // These existing C++ bodies project the leaf portion; the result is
+        // owned beside the same live descriptor as 00960230's base fields.
+        switch (kind) {
+        case Kind::BattleShip:
+            bsp::read_battleship_class_fields_006e00f0(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_battleship_leaf", "006e00f0");
+            break;
+        case Kind::Cargo:
+            bsp::read_cargo_class_fields_006eb4a0(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_cargo_leaf", "006eb4a0");
+            break;
+        case Kind::Cruiser:
+            bsp::read_cruiser_class_fields_006fb550(lua, settings, row, fields);
+            owner_.log_.implemented("VehicleClass::load_cruiser_leaf", "006fb550");
+            break;
+        case Kind::Destroyer:
+            bsp::read_destroyer_class_fields_006fe6a0(settings, fields);
+            owner_.log_.implemented("VehicleClass::load_destroyer_leaf", "006fe6a0");
+            break;
+        default: return;
+        }
+        owner_.vehicle_class_ship_leaf_fields_.insert_or_assign(descriptor->class_index,
+            GameMissionLuaHost::LoadedShipLeaf{std::move(fields), ship_tuning_block_offset(mode)});
+    }
+
     bsp::GuiLuaRef take() {
         bsp::GuiLuaRef ref{};
         ref.id = static_cast<std::uint32_t>(luaL_ref(state_, LUA_REGISTRYINDEX) + 3);
