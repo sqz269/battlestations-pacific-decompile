@@ -137,6 +137,7 @@
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/follow_sight_draw_cc13.hpp"
+#include "bsp/native_land_follow_parameters.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
@@ -1191,6 +1192,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     // with no follow tick on the previous think is an entry (009BED80).
     unsigned long long fs_thinks{0};
     unsigned long long fs_last_follow_think{0};
+    bsp::FollowParameterSnapshot fs_parameters;
     // unit+914h: -1.0 from the plane constructor (007CFDDF, 00D7A260); 1.0 once
     // a follow sight search finds a contact (009C230B). Nothing resets it.
     float plane_formation_sight_914{-1.0f};
@@ -11584,7 +11586,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // the station at 009BEE92, on the latched and hold paths alike.
             band = bsp::plane_follow_band_009c16d2(
                 leader.motion.position[1], gt.pilot_follow_leader_follow_alt,
-                gt.pilot_follow_safe_alt, gt.dynamics_ceiling, true, false);
+                unit.fs_parameters.safe_alt(), gt.dynamics_ceiling, true, false);
             const float station_banded[3] = {
                 station.world[0],
                 bsp::plane_follow_band_clamp_009c17c6(station.world[1], band),
@@ -11704,7 +11706,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             gin.band_ceiling_210 = gt.dynamics_ceiling;
             gin.state_88 = 1.0e30f;
             if constexpr (kFollowBandSafeAltFloorBound) {
-                gin.state_88 = gt.pilot_follow_safe_alt;   // 009BEDBB
+                gin.state_88 = unit.fs_parameters.safe_alt();   // 009BEDBB
                 gin.band_floor_image = true;
             }
             gin.band_inputs_available = true;
@@ -12003,10 +12005,17 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // with no think between is missed, and a follow state whose tick skips a
     // think would be cleared where the image keeps +84h.
     void follow_sight_enter_009bed80(GameUnitSlot& unit) {
+        retain_follow_parameters(unit);
         if (unit.fs_last_follow_think + 1 != unit.fs_thinks) {
             unit.fs_sight_84 = false;                                     // 009BEDC3
         }
         unit.fs_last_follow_think = unit.fs_thinks;
+    }
+    void retain_follow_parameters(GameUnitSlot& unit) {
+        if (lua.plane_globals_loaded() &&
+            unit.fs_parameters.observe_follow_think(lua.plane_globals(), unit.fs_thinks)) {
+            done("BotStateFollow::copy_parameters", 0x009be150u);
+        }
     }
     void follow_sight_tick_009c211d(GameUnitSlot& unit, const GameUnitSlot& leader,
                                     float dt, float& countdown_74) {
@@ -12636,6 +12645,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const bsp::PlaneFormationStation& station,
         const GameUnitSlot& leader) {
         if (!lua.plane_globals_loaded()) return;
+        // Follow-derived task arms also enter this shared law directly. Their
+        // projected entry uses the same think-gap rule as the sight hook; a
+        // second visit in one think must not copy/run the native kernel again.
+        retain_follow_parameters(unit);
         const bsp::GameTuningBlock& gt = lua.plane_globals();
         // DIAGNOSTIC (cc9_follow_cross_track): this tick's split, bucketed below.
         double fct_tick_along = 0.0, fct_tick_cross = 0.0, fct_tick_err = 0.0;
@@ -12797,18 +12810,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // and 009C1789 reads singleton+210h = Dynamics/Ceiling.
         gin.band_floor_offset = gt.pilot_follow_leader_follow_alt;
         gin.band_ceiling_210 = gt.dynamics_ceiling;
-        // SUBSTITUTION, labelled: state+88h is the floor's other
-        // half and this host has no field for it.  A huge value
-        // makes the min pick `leaderY + LeaderFollowAlt`, which
-        // is the half that is named; it can only RAISE the floor
-        // relative to the image, never lower it. Replaced under
-        // kFollowBandSafeAltFloorBound (docs/CC13_FIX5.md).
         gin.state_88 = 1.0e30f;
         if constexpr (kFollowBandSafeAltFloorBound) {
             // 009BED84-009BEDBB: follow Enter latches state+88h from the
             // block copy's +08h = singleton+388h Pilot/Follow/SafeAlt; the
             // tail then bounds at leaderY - 120 on every path.
-            gin.state_88 = gt.pilot_follow_safe_alt;
+            gin.state_88 = unit.fs_parameters.safe_alt();
             gin.band_floor_image = true;
         }
         gin.band_inputs_available = true;

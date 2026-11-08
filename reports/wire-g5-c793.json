@@ -1,0 +1,467 @@
+{
+  "goal": 5,
+  "chain": 793,
+  "slot": "g5-w2",
+  "base": "f79dd3bc136c2d678cf6d52fb450e5b0826430ea",
+  "picked": "Retain the plane follow A4h parameter payload through native 009BE150 and consume copied SafeAlt in live follow geometry.",
+  "wired_total_before": 10633,
+  "wired_total_after": 10634,
+  "reachable_reconstructed_before": 5480,
+  "reachable_reconstructed_after": 5481,
+  "rows": [
+    {
+      "native": "009be150",
+      "status": "wired",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp::GameUnitsHost::Impl::retain_follow_parameters -> FollowParameterSnapshot::observe_follow_think",
+      "evidence": "009BED89/8C/92 use existing state+6Ch and actual PlaneGlobals+380h; 009BEDB0/BB consume copied payload+8h as SafeAlt. Built call at 1051A9AF reaches 1051A820 from live follow ticks."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::enum property insertion",
+      "reason": "Already called in the baseline from actual scene-property insertion; no new wiring required."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::property merge",
+      "reason": "Already called in the baseline from reachable scene-property merge code; no new wiring required."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart::write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save Lua owner and genuine checkpoint comparison/current mission key."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::mission player-count check",
+      "reason": "The native watchdog is gated to multiplayer; single-player only takes its first early return."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::land moveto task setup",
+      "reason": "Missing the constructed native land-moveto owner and complete task/approach lifetime services; current motion fields are flattened."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::path-leg manager access",
+      "reason": "Missing the native path-leg-manager singleton owner and concrete registration/critical-section adapter."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user path-point sender",
+      "reason": "Missing a presence-zero clear-message producer with retained per-slot path owners; the live sender adds points."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "Missing a live original empty-descriptor consumer and its class-ordinal publication; populated descriptor building is a different operation."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::enum declaration",
+      "reason": "Missing the canonical world+1A0Ch Lua owner and matching Lua declaration-table producer; the active library enum reader consumes lexer tokens."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp::shore mask/falloff sampling",
+      "reason": "Missing the landscape shore-mask column grid and concrete Left55Host consumer; avoidance sampling uses a different grid contract."
+    },
+    {
+      "native": "0042c4c0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp::camera_mover_set_shake_0042c4c0",
+      "reason": "No live original camera-shake request and matching mover field owner was established in this pass."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::update_map_screen_005b45c0",
+      "reason": "The original map-time accounting call is guarded by game+1FE4h multiplayer mode; single-player wiring is excluded."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp::movie_camera_set_linear_speed_limit_005cb9f0",
+      "reason": "Missing a live explicit speed-limit request on this native movie-camera owner; reset-speed code is a separate operation."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp::movie_camera_set_angular_speed_limit_005cba20",
+      "reason": "Missing a live explicit angular-limit request on this native movie-camera owner; reset-speed code is a separate operation."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::support information panel",
+      "reason": "Missing a complete support-entry availability producer and the retained information-panel widgets required by the body."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::toggle_movie_camera",
+      "reason": "Missing the legacy +98h screen/target owner and complete spectated-unit binding; the separate new movie camera is a different owner."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::toggle_new_movie_camera",
+      "reason": "Missing the +9Ch screen visibility/target and spectated-selection publications required by the native toggle."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudUpdateBinding::exit_free_camera_overlay",
+      "reason": "Missing the complete +BCh support-screen and overlay request owner graph; the callback still only records the operation."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp::unit_pick_row_value_00521f10",
+      "reason": "No concrete live unit-pick lock-action consumer with the matching row storage was established in this pass."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp::unit_pick_read_position_00521fd0",
+      "reason": "No concrete live unit-pick lock-action consumer with the matching position-entry owner was established in this pass."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp::font_accepts_text_byte_00ab6d00",
+      "reason": "Missing the live input-character admission consumer and its text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp::gui_curve_control_points_00abca10",
+      "reason": "Missing a constructed Curve with authored point/width vectors and its live tessellation/render consumer."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp::initialize_native_vehicle_camera_limits_0078e230",
+      "reason": "Missing the live native vehicle-camera array/preset producer; the array resize path that calls this body is not connected."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::set_native_listbox_input_filter_00a9ac70",
+      "reason": "Missing a live original native-listbox filter publication site and retained callback owner."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing a live original silent-selection request on the raw native listbox owner; the semantic listbox has a different representation."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp::clear_native_listbox_selection_00a9cdc0",
+      "reason": "Missing a live original clear-selection consumer and complete raw listbox call adapter."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp::clear_marker_classes_006db2f0",
+      "reason": "Missing the live MarkerClassContext registry/mesh owner and its matching cleanup lifecycle."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp::movcam_wrap_and_clamp_007904d0",
+      "reason": "Missing the retained MovCamAngles owner and original frame-update consumer; the published mission camera is a different projection."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp::camera_aim_delta_00794910",
+      "reason": "Missing the original live AimCameraView/AimTargetView consumer and its target/pose publications."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp::remove_native_loading_work_item_00501670",
+      "reason": "Missing a nonempty native job+8h work-vector producer and the full native queue-update binding."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp::submit_native_loading_work_item_00504d20",
+      "reason": "Missing a live native model/job submission producer and matching queue/FileStore service composition."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp::enqueue_native_loading_job_005055c0",
+      "reason": "Missing a live native job producer; the current native queue owner remains empty and its nonempty update is unbound."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp::retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing nonempty native queue jobs and the concrete acquired FileStore/string retirement contexts."
+    },
+    {
+      "native": "0070b330",
+      "status": "skipped",
+      "host_site": "src/native_game_grid.cpp::initialize_native_game_grid_0070b330",
+      "reason": "Missing the live grid descriptor/CPU-array producer and complete renderer stream/map lifecycle context."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp::df_pilot_targets_us",
+      "reason": "Missing the actual current-step pilot+98h target publication; dogfight and command targets are labelled substitutions."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread named-call producer and its retained LuaVariantRecord argument vectors; the host callback only logs."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::metadata submission",
+      "reason": "The native main-scene submission already directly calls the body; the optimized baseline has no separate symbol, so another call would duplicate work."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::material float3 registration",
+      "reason": "Missing a live cloud/ocean/rain material-register-float3 consumer with its native material owner."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing the native ammunition alternate, retained-reference fields and tree-copy owner; the current device handle is a semantic gun row."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command_building_set_owner_player_006f4d10",
+      "reason": "Missing the native unit+660h vector of 44h records and its Seg62Host element-lifetime adapter."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::generated ship registration",
+      "reason": "Missing the complete native 2268h brain owner and constructor/subobject service adapter; live controllers are projections."
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::vehicle_registry",
+      "reason": "The baseline has a typed registry projection rather than the constructed native 401Ch singleton; g5-w9 is now building that separate owner."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::MSAR checksum verification",
+      "reason": "Missing a live original MSAR verification request and archive-stream owner; the reconstructed checksum caller is not connected."
+    },
+    {
+      "native": "00b9dd90",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::ocean_field_set_spectrum_00b9dd90",
+      "reason": "Missing a live native field/spectrum-link owner and its retained-reference publication consumer."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp::ocean_orthonormalize_00bbd310",
+      "reason": "Missing the native CloudManager/reference-node frame owner and update consumer; this historical ocean-named body actually describes clouds."
+    },
+    {
+      "native": "00523580",
+      "status": "skipped",
+      "host_site": "src/view_seg14_cc13.cpp::entity_cast_if_kind_00523580",
+      "reason": "Missing a live original kind-2 cast consumer with a concrete ViewSeg14Hooks binding and matching entity identity."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp::leak_manager_flooded_fraction_0074fa80",
+      "reason": "The identified original caller is debug inspector 006FB750; debug-only wiring is excluded."
+    },
+    {
+      "native": "00711be0",
+      "status": "skipped",
+      "host_site": "src/native_model_numbering.cpp::set_native_model_numbering_00711be0",
+      "reason": "Missing the complete live model/mesh/material/texture numbering owner and its renderer lifetime services."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_class_pair_value_00a03900",
+      "reason": "Missing the parser-owned per-mode class-pair table and a live original class-pair scoring consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp::ai_group_recon_ratio_00a2c3d0",
+      "reason": "Missing the real per-member reconnaissance-value producer and corresponding group-scoring consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_try_spawn_group_gate_00a25a30",
+      "reason": "Missing the native request weight, threat-record vector and support-site list required by the original spawn gate."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::read_dword_field",
+      "reason": "Missing the live original RamImage owner/data consumer; this generic helper also represents other getters and is not a distinct new call opportunity."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::stream_writer_write_dword_00bf0340",
+      "reason": "Missing a live original counted writer request on an actual stream vtable+54h owner with its remaining-byte cell."
+    },
+    {
+      "native": "00bd8cd0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp::archive_write_field_00bd8cd0",
+      "reason": "Missing the live tagged-field archive writer owner and its indent/key/value/terminator callbacks."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a live original perspective-product consumer; the GUI application uses an orthographic projection."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp::oriented_rect_distance_to_point_009d7780",
+      "reason": "No original caller is recorded; no live matching oriented-rectangle owner/consumer was established."
+    },
+    {
+      "native": "009d7930",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp::oriented_rect2_distance_to_point_009d7930",
+      "reason": "The body is marked unreferenced; no live matching two-rectangle owner/consumer was established."
+    },
+    {
+      "native": "0071cf30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::oriented_rect_clamp_0071cf30",
+      "reason": "No live original director-boundary clamping consumer with the matching rectangle and movement inputs was established."
+    },
+    {
+      "native": "009c6220",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp::math_clamp_symmetric_009c6220",
+      "reason": "No live original clamp consumer with its two native operands was established in this pass."
+    },
+    {
+      "native": "0042b3c0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_x_0042b3c0",
+      "reason": "No matching live original non-negated X-rotation consumer and focused Seg2Host adapter was established."
+    },
+    {
+      "native": "0042b3f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_y_0042b3f0",
+      "reason": "No matching live original non-negated Y-rotation consumer and focused Seg2Host adapter was established."
+    },
+    {
+      "native": "0042b420",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_rotation_z_0042b420",
+      "reason": "No matching live original Z-rotation consumer and focused Seg2Host adapter was established."
+    },
+    {
+      "native": "0042b7f0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_orthonormalize_return_this_0042b7f0",
+      "reason": "No matching live original wrapper consumer was established; reusing a different matrix operation would not prove this native call."
+    },
+    {
+      "native": "0042d510",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_identity_0042d510",
+      "reason": "No matching live original identity-wrapper consumer was established; inserting it before a populated matrix builder would be redundant."
+    },
+    {
+      "native": "0042e8c0",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp::matrix_set_identity_0042e8c0",
+      "reason": "No matching live original identity-wrapper consumer was established; inserting it before a populated matrix builder would be redundant."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::run_wave3_job_00874fe0",
+      "reason": "The readiness identifier selects a logging stub; the actual native receiver/group owner is not attached to that stub."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::run_wave1_job_008750a0",
+      "reason": "The readiness identifier selects a logging stub; the actual native receiver/group owner is not attached to that stub."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::run_interpolation_job_00875160",
+      "reason": "The readiness identifier selects a logging stub; the native interpolation receiver/group owner is not attached."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::run_wave2_job_00875b90",
+      "reason": "The readiness identifier selects a logging stub; the actual native receiver/group owner is not attached to that stub."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::controlled audio flag publication",
+      "reason": "Missing the native ship sound object, device list and controlled-audio byte owner required by the broadcast."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::free_gui_widget_pool_slot",
+      "reason": "The pool wrapper already calls the mapped NativeGuiWidgetPool<GuiButtonPoolTraits>::free template body; adding another free would duplicate it."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_gui_frame_box_allocation_storage.cpp::frame-box allocation",
+      "reason": "The existing factory already invokes the mapped NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate template body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; 4/4 CTests",
+    "focused_probe": "tests/wire_g5_c793_follow_parameters_probe.cpp passed via local/c793-probe.cmd, MSVC Win32 /MANIFEST:EMBED",
+    "call_graph": "009BE150 reachable; one call at 1051A9AF from FollowParameterSnapshot::observe_follow_think, with entry path through pilot follow/mission frame",
+    "readiness": "009BE150 remains text-ready but called=true, call_sites=1, callers_live=1; aggregate wired 10633 -> 10634",
+    "pc24": "No new floating-point arithmetic; instruction-exact existing copy kernel unchanged. Working-tree diff lint passed; committed-range check follows."
+  },
+  "remaining": [
+    "The host still approximates follow entry by a gap in pilot-think observations; immediate state re-entry without a think gap is not reconstructed.",
+    "Other follow tuning reads still use the loaded tuning block directly; only SafeAlt consumption is moved to the retained copy.",
+    "No game run or live gameplay validation; build, focused lifetime fixture and compiled entry reachability only."
+  ],
+  "assumptions": [
+    "Apply the existing follow-entry think-gap approximation to shared follow-derived task arms; repeated observations in one think and consecutive follow thinks reuse the payload.",
+    "The actual loaded GameTuningBlock is the semantic singleton backing at offset 380h; static offsets assert the copied span and SafeAlt lane."
+  ]
+}
