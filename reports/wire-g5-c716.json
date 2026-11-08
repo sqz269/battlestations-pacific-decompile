@@ -1,0 +1,144 @@
+{
+  "goal": 5,
+  "chain": 716,
+  "slot": "g5-w1",
+  "base": "b412621522",
+  "picked": "Weapon-director primary and override stage transitions",
+  "rows": [
+    {
+      "native": "0071d810",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorStageBinding::director_raise_primary_stage_0071d810 and CompletionBinding::raise_queue_stage",
+      "body": "bsp::gameplay_seg38_cc13::raise_command_stage_0071d810",
+      "newly_reachable_body": true,
+      "state": "Persistent GameDirector::stage, or its CommandQueueState transaction field, and the existing session_mode_1fe4 binding.",
+      "evidence": "bsp.py show 0071d810: signed monotonic +48h update; only a rise to 2 outside mode 2 constructs primary CLEARCMD. Replaced host comparisons/stores/send predicates; the existing route still runs once.",
+      "built_calls": [
+        "10074a00 from DirectorStageBinding::director_raise_primary_stage_0071d810",
+        "1007ac1a from CompletionBinding::raise_queue_stage"
+      ]
+    },
+    {
+      "native": "0071d9e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::raise_override_stage and GameCommandsHost::raise_override_stage_0071d9e0",
+      "body": "bsp::gameplay_seg38_cc13::raise_override_stage_0071d9e0",
+      "newly_reachable_body": true,
+      "state": "Persistent GameDirector::override_stage, or its CommandQueueState transaction field, and the existing session_mode_1fe4 binding.",
+      "evidence": "bsp.py show 0071d9e0: +50h is monotonic; override CLEARCMD is produced only on a rise to 2 outside mode 2. Replaced two host copies and removed the completion binding's obsolete local override-stage fallback. The public helper now also honors native client-mode suppression. The earlier called metric matched same-named host methods; no source called the gameplay_seg38_cc13 body before this change. The final director_step call is an inlined copy of the changed public helper.",
+      "built_calls_added": [
+        "1007aab8 from CompletionBinding::raise_override_stage",
+        "1007aba0 from GameCommandsHost::raise_override_stage_0071d9e0"
+      ]
+    },
+    {
+      "native": "0071d6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::command_allowed and GameCommandsHost::command_accepts_target_0071d6d0",
+      "reason": "The extra-test adapter still substitutes acceptance for unknown torpedo classes and infers authored paths from non-unit descriptors; native class/FakedType and path-interface facts must be bound before feeding the reconstructed predicate. Trial wiring was removed."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support flight spawn boundary at the 008EADA0 use-item binding",
+      "reason": "Air-support spawn still throws as unmodelled; the native spawn-manager receiver, reference frames and enqueue host are not supplied by this live powerup path."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Single-player uses session mode 0 and never enters the participant-count arm; no single-player behavior would be replaced."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: scripted helm-order squadron_target handling",
+      "reason": "This candidate site consumes a file-scripted target instead of the real screen-centre target picker and its unit-pick screen owner."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: pre-load checkpoint path",
+      "reason": "The pre-load candidate lacks the mission checkpoint table/current-key owner; agent/g5-w5 separately claimed the mission-start checkpoint/archive work during this run."
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HudMinimap::map_ping_prune record",
+      "reason": "The HUD map/session ping producers do not run here; there is no populated native ping-list owner to prune."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: map-ping producer dependency of the minimap",
+      "reason": "The live interactive map-ping operation and its owning screen/input state are not implemented."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: run_land_moveto_tick_009c18c0",
+      "reason": "Landing uses semantic state; no same-root native MoveTo receiver and observer-endpoint lifetime producer is available for the constructor."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: AirOpsBlock::queue_squadron_006c0b50 record",
+      "reason": "The landing sequencer uses host deck queues; this site has no NativeLandingQueueBlockStorage with its real critical-section, slot and holder owners."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The literal initializer reads original absolute writable cells F87574/F87578/F8757C, whose runtime publication is absent from the relocated host executable."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: missing C8h deadmeat-rotation message path",
+      "reason": "No live C8h sender/decoder boundary or native plane BA0h/BA4h/BA8h rotation owner is present in this message host."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: df_pilot_targets_us and wingmate target counting",
+      "reason": "These paths substitute dogfight/commanded targets; no native plane+DF4h pilot owner and local-slot target table is bound."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340; original terrain writer callers 00ADDA60/00AE0250",
+      "reason": "No live native terrain writer with the vtable+54h writer slot and remaining-byte owner was found in this packet's host paths."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field; original RAM-image data accessor",
+      "reason": "The accessor needs the actual RAM-image receiver's +18h data word; no such live receiver/consumer was found in the inspected game/native host files."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call and src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "The host executes mission Lua on the main thread; no off-main-thread deferred-call producer supplies an owned argument vector here."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: lua_variant_vector_tidy_00887670",
+      "reason": "The inspected live Lua paths do not own a MissionLuaResultSink instance whose vector lifetime can be transferred to this semantic cleanup body."
+    }
+  ],
+  "validation": {
+    "initial_build": "scripts/build.ps1 passed all 4 test groups before selection",
+    "final_build": "scripts/build.ps1 passed all 4 test groups after the final stage-pair change",
+    "call_graph_before": {"reconstructed_called": 5369, "reconstructed_total": 5968},
+    "call_graph_after": {"reconstructed_called": 5370, "reconstructed_total": 5969},
+    "readiness_text_wired_before": 10462,
+    "readiness_text_wired_after": 10462,
+    "metric_note": "The text metric already counted same-address host method names. The address-level called metric also already counted 0071D9E0 through same-named host methods. The final graph separately identifies the actual gameplay_seg38_cc13 bodies: 0071D810 has two reachable calls and 0071D9E0 has three (two changed source sites, one additionally inlined into director_step). Thus two reconstructed body bindings were added while the aggregate called-address metric rises by one.",
+    "float_math_changed": false,
+    "game_run": false,
+    "proof_boundary": "Build/tests and static entry reachability only; no gameplay execution or original binary ABI compatibility is claimed. Native originals are __thiscall with one stage argument and RET 4; existing semantic C++ bodies borrow stage fields and return the logical clear-message result."
+  },
+  "left": "Target predicate 0071D6D0 still needs actual extra-test facts. The legacy secondary-stage projection in DirectorStageBinding was not changed; this packet binds the persistent override owner in the completion/public paths."
+}
