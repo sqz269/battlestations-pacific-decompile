@@ -1,0 +1,87 @@
+{
+  "goal": 6,
+  "chain": 1016,
+  "owner": "agent/g6-w2",
+  "candidate": "src/game_hosts_ai.cpp",
+  "tier": 1,
+  "base_commit": "85390ba8a0",
+  "selection": "The shared coordinator gate in the supplied skip notes is already enabled and 00A2DEF0 is baseline-reachable. Chose the remaining concrete forced-rule table object, whose reconstructed inserter can feed an existing live weight-query consumer. Other inspected objects were not combined into this change.",
+  "rows": [
+    {
+      "native": "00a32500",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp: GameStartupHost::run_initialize_phases -> src/game_hosts_ai.cpp: ai_initialize_forced_rule_tables -> include/bsp/game_ai_forced_rules.hpp: AiForcedRuleTables::load",
+      "reason": "New entry-reachable call to the existing native-table insertion body; its resulting storage replaces the weight model's direct scan of the authored-row manifest.",
+      "newly_wired": true
+    },
+    {
+      "native": "00a2def0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "Already called and entry-reachable in the initial build. kSkirmishSessionCc13Bound is now true and mission load already publishes the coordinator gate. No new wiring credit claimed.",
+      "newly_wired": false
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::tick_issue_clearorders",
+      "reason": "climb: 004F1830 needs an actual 18h command-target receiver and literal F87574/F87578/F8757C DATA cells <- 00A14E8A cautious clear-orders <- process-loader DATA publication (stopped: no host phase publishes those native absolute addresses; GameNativeGeometryGlobals supplies relocated storage and this caller owns a semantic SceneCommandTarget)."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::selling_tick_00a11ff0",
+      "reason": "climb: 005F98F0 needs unit+54/C8/FC/104 and world-list-28 entity+7A0 backing <- 00A123B7 SELLING member query <- unit+308 zero-speed producer and 0077C2A0 message-51 delivery/consumer (stopped: the live SELLING site still only records that send, exposes no +308 producer and supplies no native capture-query receiver; the selected forced-rule object does not supply this distinct unit/session graph)."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "include/bsp/gameplay_seg69_70_cc13.hpp: SpawnCompositionHost::class_pair_value (abstract)",
+      "reason": "climb: 00A03900 needs HighLvlAIGlobals class-pair vectors at +FAC with 10h mode stride <- 00A335D0 / ctor 00A37130; its consumer is 00A0D1D0 through SpawnCompositionHost (stopped at selection: this is distinct class-pair storage and a composition-host chain, outside the one chosen F8AB08 forced-rule object)."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::engagement_pass Pass::candidate_attack_value",
+      "reason": "climb: 00A0F680 needs power-up class flight blocks +0C/+44 and their +20 plane-class weapon facts <- 00A0C650 pair scoring <- class-owned facts producer (stopped at selection: this is a distinct flight/class owner; the existing host only has live-unit weapon facts and throws at the candidate callback, and no replacement was attempted in this single-object change)."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "bsp::game::detail::AiForcedRuleTables",
+      "where": "include/bsp/game_ai_forced_rules.hpp:18",
+      "constructor": "F8AB08..F8AB67 are loader-zero process globals, not fields of AI controller 00A31730. Their population runs from HighLvlAIGlobals ctor 00A37130 through 00A335D0's 00A36FD5 tail.",
+      "producers": [
+        "GameStartupHost::run_initialize_phases at the OnInitOnce 004DD766 site, before OnInitTitle",
+        "004C1C50 -> HighLvlAIGlobals constructor 00A37130 -> loader 00A335D0 -> insertion site 00A36FD5",
+        "Existing ai_shipped_forced_rules input manifest, independently compared with all 64 active installed highlvlaiglobals.lua rows in all seven modes"
+      ],
+      "rows": ["00a32500"],
+      "consumers": ["src/game_hosts_ai.cpp: AiWeightModelBinding::forced_rule_weight -> ai_forced_rule_scan_00a31db0"],
+      "fields": [
+        {"name": "seven per-mode tables", "address": "00f8ab08 + mode*0c", "fields": "data +0 width 4; count +4 width 4; capacity +8 width 4"},
+        {"name": "global table", "address": "00f8ab5c", "fields": "data +0 width 4; count +4 width 4; capacity +8 width 4"},
+        {"name": "20h rule", "fields": "attacker +00/4; target +04/4; neutral +08/1; weight +0c/4; relative +10/1; reference attacker +14/4; reference target +18/4; reference neutral +1c/1; attacker exact +1d/1; target exact +1e/1"}
+      ],
+      "climb": [
+        "00A32500 <- retained native F8AB08/F8AB5C table publications <- 00A335D0 insertion tail at 00A36FD5 <- HighLvlAIGlobals ctor 00A37130 <- singleton 004C1C50 <- OnInitOnce 004DD766, a phase the host already executes"
+      ],
+      "lifetime": "Zero-initialized on first OnInitOnce access, populated once, retained across missions, source allocations released at process exit. Native 00A33020 clears the eight global counts. No parallel mutable query vector remains; authored vectors are producer inputs only.",
+      "dependency_scope": "The private loader adapter binds only explicit-mode 00A36FD5 insertion. Its cache invalidation has no work because the existing model has no weight memo. Runtime negative-mode/relative-rule Lua setters and mod-script reload remain outside this binding. Installed producer input contains no relative rules."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: PASS; all four existing CTests passed after the final C++ changes",
+    "focused_fixture": "tests/wire_g6_c1016_forced_rules_probe.cmd: PASS; 64 native rows byte-equal to producer inputs, all seven mode tables, idempotent startup, neutral/non-neutral retained-table queries",
+    "installed_lua": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/highlvlaiglobals.lua",
+    "installed_lua_sha256": "939e70774a60ebb4ee38fe2b691cedf148e8ad060547568f188ed935fafa69a0",
+    "installed_lua_comparison": "PASS: all 64 active rows matched the existing input manifest, including order, selector kind/id, neutral flag and float32 weight",
+    "call_graph_before": {"called": 5743, "reconstructed_addresses": 6455},
+    "call_graph_after": {"called": 5744, "reconstructed_addresses": 6457},
+    "newly_called": ["00a32500"],
+    "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost::application_initialize -> run_initialize_phases -> ai_initialize_forced_rule_tables -> forced_target_weight_insert_00a32500",
+    "native_abi": "Existing typed reconstructed interfaces; not a drop-in original binary ABI claim",
+    "game_run": false,
+    "float_math_changed": false
+  }
+}

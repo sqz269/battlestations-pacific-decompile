@@ -23,6 +23,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_manager_cc13.hpp"
 #include "bsp/gui_page_script.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
@@ -39,6 +40,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <map>
@@ -54,6 +56,22 @@ namespace {
 // D3DX_DEFAULT, kept local because the D3DX headers stay private to the implementations
 // that need them (bsp/d3d9_texture.hpp forward-declares the image-info tag).
 constexpr UINT kD3dxDefault = 0xFFFFFFFFu;
+
+// Borrow the SAME 88h manager constructed by 00AA5D70, never a copied flag.
+// 00AA5E20 produces +7C/+80 at 00AA6251/00AA62C8 and clears +84 at
+// 00AA6305. 00AA2110's only stores are the one-byte +84 shown latch.
+struct GuiSafeZoneManagerImage {
+    std::byte prefix_00[0x7c];
+    void* four_by_three_7c;
+    void* sixteen_by_nine_80;
+    gui_manager_cc13::GuiSafeZoneState state_84;
+    std::byte tail_85[3];
+};
+static_assert(sizeof(gui_manager_cc13::GuiSafeZoneState) == 1);
+static_assert(offsetof(GuiSafeZoneManagerImage, four_by_three_7c) == 0x7c);
+static_assert(offsetof(GuiSafeZoneManagerImage, sixteen_by_nine_80) == 0x80);
+static_assert(offsetof(GuiSafeZoneManagerImage, state_84) == 0x84);
+static_assert(sizeof(GuiSafeZoneManagerImage) == 0x88);
 
 // D3DXIMAGE_FILEFORMAT::D3DXIFF_PNG. Declared locally for the same reason.
 constexpr DWORD kD3dxImageFormatPng = 3;
@@ -192,7 +210,7 @@ struct GameFrontendHost::Impl {
     GameScriptHost& scripts;
     GameFontHost& fonts;
     IDirect3DDevice9& device;
-    bool widescreen{};
+    const bool& widescreen; // SAME platform+0Dh, kept alive by GameStartupHost
     // SAME Source capability owned by GameStartupHost through shared drain.
     // No second hardware query/value or Original0109EEA4 state is installed.
     const bool& sse2_conversion;
@@ -269,7 +287,7 @@ struct GameFrontendHost::Impl {
         void* fields[0x88 / 4]{};
         GuiManagerPointerState pointer{};  // the byte at +48h 00aa0e00 stores
         bool constructed{false};
-        bool ready_flag{true};
+        gui_manager_cc13::GuiSafeZoneState safe_zone;
     } manager;
     GameNativeGuiManagerApplication* native_manager{};  // kGuiManagerCc15Bound only
     std::set<const void*> page_handles;  // which create_gui_resource results are pages
@@ -287,7 +305,7 @@ struct GameFrontendHost::Impl {
         std::size_t stores{};
     };
     struct RawPointerCall {
-        enum class Kind { getter, enabled, visible, cursor };
+        enum class Kind { getter, enabled, visible, cursor, safe_zone, relayout };
         Kind kind;bool requested{};
         void* manager{};void* pointer{};
         bool entered{},getter_returned{},enabled_store_entered{},enabled_stored{},visibility_entered{},normal_returned{};
@@ -421,7 +439,7 @@ struct GameFrontendHost::Impl {
     }
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
-        GameFontHost& fonts_in, IDirect3DDevice9& device_in, bool widescreen_in,
+        GameFontHost& fonts_in, IDirect3DDevice9& device_in, const bool& widescreen_in,
         const bool& sse2_conversion_in)
         : log(log_in), vfs(vfs_in), scripts(scripts_in), fonts(fonts_in), device(device_in),
           widescreen(widescreen_in), sse2_conversion(sse2_conversion_in) {}
@@ -750,6 +768,50 @@ struct GuiManagerCursorSwitch final : NativeGuiAnimatedValueCalls {
     }
 };
 
+// AA2110's current +34 calls use the very same Page visibility graph as the
+// AA5E20 resource producer. Reload each frame slot at its call boundary;
+// hiding 169 may change the 43 slot before the second call (00AA2165).
+struct GuiManagerSafeZone final : gui_manager_cc13::GuiSafeZoneHost {
+    GameFrontendHost::Impl& owner;
+    GameFrontendHost::Impl::RawPointerCall* call;
+    explicit GuiManagerSafeZone(GameFrontendHost::Impl& host,
+        GameFrontendHost::Impl::RawPointerCall* history = nullptr) : owner(host), call(history) {}
+    bool platform_widescreen() override { return owner.widescreen; }
+    void set_frame_visible(gui_manager_cc13::GuiSafeZoneFrame frame, bool visible) override {
+        const bool wide = frame == gui_manager_cc13::GuiSafeZoneFrame::SixteenByNine;
+        if (call) {
+            auto& image = *static_cast<GuiSafeZoneManagerImage*>(call->manager);
+            call->pointer = wide ? image.sixteen_by_nine_80 : image.four_by_three_7c;
+            call->site = visible ? 0x00aa2140 : (wide ? 0x00aa2163 : 0x00aa216f);
+            call->visibility_entered = true;
+            owner.raw_transport->pages.set_widget_visibility_00aa8530(call->pointer, visible ? 1 : 0);
+        } else {
+            apply_gui_resource_visibility(owner, owner.manager.fields[(wide ? 0x80 : 0x7c) / 4], visible);
+            owner.quads_built = false;
+        }
+    }
+};
+
+struct GuiManagerRelayout final : gui_manager_cc13::GuiWideScreenRelayoutHost {
+    GameFrontendHost::Impl& owner;
+    void* actual;
+    GuiManagerRelayout(GameFrontendHost::Impl& host, void* manager) : owner(host), actual(manager) {}
+    std::vector<void*> snapshot_pages() override {
+        // AA4EF0 -> 004D35D0 copies the current +18/+1C range. These are
+        // AA52A0's actual priority-ordered Page pointers, not bridge records.
+        auto* const fields = static_cast<void* const*>(actual);
+        auto* const begin = static_cast<void* const*>(fields[0x18 / 4]);
+        auto* const end = static_cast<void* const*>(fields[0x1c / 4]);
+        if (begin == end) return {};
+        if (!begin || end < begin)
+            throw std::logic_error("GUI relayout requires a valid actual Page registry range");
+        return std::vector<void*>(begin, end);
+    }
+    void apply_widescreen_layout(void* page) override {
+        owner.raw_transport->pages.apply_page_widescreen_layout(page, owner.widescreen);
+    }
+};
+
 // GuiStartupHost for 0073bae0.
 class GameGuiStartupHost final : public GuiStartupHost {
 public:
@@ -866,7 +928,7 @@ public:
 
     void clear_gui_manager_ready_flag(void* manager) override {
         auto* state = static_cast<GameFrontendHost::Impl::ManagerState*>(manager);
-        if (state != nullptr) state->ready_flag = false;
+        if (state != nullptr) state->safe_zone.shown = false;
         owner_.log.implemented("GuiManagerResources::clear_ready_flag", "00aa6305");
     }
 
@@ -1000,6 +1062,14 @@ void* GameFrontendHost::Impl::run_raw_pointer(GameFrontendHost& frontend,RawPoin
                 call.site=0x00aa0e2d;
                 GuiManagerCursorSwitch binding(*this,&call);
                 restart_native_gui_animated_value_00aa0e20(call.manager,value?1:0,binding);
+            } else if(kind==RawPointerCall::Kind::safe_zone) {
+                GuiManagerSafeZone binding(*this, &call);
+                auto& image = *static_cast<GuiSafeZoneManagerImage*>(call.manager);
+                gui_manager_cc13::set_safe_zone_visible_00aa2110(image.state_84, binding, value);
+            } else if(kind==RawPointerCall::Kind::relayout) {
+                GuiManagerRelayout binding(*this, call.manager);
+                call.site = 0x00aa4ef0;
+                gui_manager_cc13::relayout_all_pages_00aa4ef0(binding);
             } else {
                 if(kind==RawPointerCall::Kind::enabled) {
                     call.enabled_store_entered=true;
@@ -1058,7 +1128,7 @@ const bool& GameFrontendHost::crt_sse2_conversion() const noexcept {
 }
 
 GameFrontendHost::GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-    GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen, const bool& gui_sse2_conversion)
+    GameFontHost& fonts, IDirect3DDevice9& device, const bool& widescreen, const bool& gui_sse2_conversion)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen,
           gui_sse2_conversion)) {}
 GameFrontendHost::~GameFrontendHost() = default;
@@ -1927,6 +1997,26 @@ void GameFrontendHost::select_gui_cursor(bool frontend_cursor) {
     GuiManagerCursorSwitch binding(*impl_);
     restart_native_gui_animated_value_00aa0e20(
         impl_->manager.fields, frontend_cursor ? 1 : 0, binding);
+}
+
+void GameFrontendHost::set_safe_zone_visible(bool visible) {
+    if (!impl_->summary.gui_startup_ran)
+        throw std::logic_error("safe-zone frames require completed 00AA5E20 resources");
+    if (impl_->raw_transport) {
+        impl_->run_raw_pointer(*this, Impl::RawPointerCall::Kind::safe_zone, visible);
+    } else {
+        gui_manager_get_or_create_004c12b0(*impl_);
+        GuiManagerSafeZone binding(*impl_);
+        gui_manager_cc13::set_safe_zone_visible_00aa2110(impl_->manager.safe_zone, binding, visible);
+    }
+    impl_->log.implemented("OnInitOnce::set_safe_zone_visible", "00aa2110");
+}
+
+void GameFrontendHost::relayout_gui_pages() {
+    if (!impl_->summary.gui_startup_ran || !impl_->raw_transport)
+        throw std::logic_error("GUI relayout requires the actual initialized Page graph");
+    impl_->run_raw_pointer(*this, Impl::RawPointerCall::Kind::relayout, false);
+    impl_->log.implemented("QuickSettingsApply::relayout_gui_pages", "00aa4ef0");
 }
 
 // ---------------------------------------------------------------------------

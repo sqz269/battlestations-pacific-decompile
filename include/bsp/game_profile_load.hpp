@@ -83,6 +83,8 @@ struct GameProfileSettingsSinks {
     std::function<bool(std::uint32_t mode)> store_renderer_old_film_effect;
     // 008D5686/008D5C85: 004C1710's get-or-create of the 18h media manager 00F8AEF8.
     std::function<void*()> media_manager;
+    // 008D60FB -> AA4EF0 on the existing initialized GUI manager/Page graph.
+    std::function<void()> relayout_gui_pages;
     // Chain 144 borrows the already initialized sound/configuration owners.
     // Empty unless its switch is ON; no additional sound owner is constructed.
     std::function<bool(const char* bus, float volume)> apply_named_sound_class_level;

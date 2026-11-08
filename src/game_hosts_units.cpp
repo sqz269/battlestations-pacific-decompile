@@ -10087,7 +10087,8 @@ void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
     host.summary.controlled_name = slot.row.name;
     host.log.notef("controlled unit: 00e188d8 = \"%s\" (%s %s, party %d); 00e188dc %s; "
         "class_id=%d IsKindOf(0Fh)=%d IsKindOf(18h)=%d; "
-        "listener handle/publication adapters remain unimplemented",
+        "native null-listener publication bound when render resources exist; "
+        "driven-unit listener handle remains unimplemented",
         slot.row.name.c_str(), slot.row.class_name.c_str(), slot.row.type_symbol.c_str(),
         slot.row.party, globals.listener_present ? "published a handle" : "was cleared",
         slot.class_id, query.unit_is_kind_of(0x0f) ? 1 : 0,

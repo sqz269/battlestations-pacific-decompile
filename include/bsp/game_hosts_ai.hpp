@@ -482,6 +482,9 @@ void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
 // (bsp::ai_coordinator_created_at_load_004e17fd). Unpublished, it is false, the
 // campaign's value; the coordinator's fixed step reads it.
 void ai_publish_coordinator_created_at_load(bool created);
+// OnInitOnce 004DD766 -> 004C1C50 -> 00A37130 -> 00A335D0's
+// 00A36FD5 forced-rule tail. Retains the native tables for live weight queries.
+void ai_initialize_forced_rule_tables();
 // Packet cc9_local_party_source (docs/SHIP_AI_OPEN_ITEMS.md section 125): player
 // slot `slot`'s published party, or `fallback` before publication, outside 0..7 or
 // for a block that authors no Party.

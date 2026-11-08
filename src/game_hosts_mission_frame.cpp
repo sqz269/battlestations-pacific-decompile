@@ -1934,23 +1934,27 @@ public:
             host_.record("PowerUps::resolve_air_support_classes", 0x008e34f0u);
         }
     }
-    // kPowerupSessionBroadcastCc13Bound: 0076A9F0 -> 00784790 sends only to the
-    // transport's peers, and this process has none, so the send is recorded only.
-    void send_powerup_message67(std::int32_t, const bsp::cc13_powerup::PowerupItem&,
-        std::int32_t) override {
-        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
-            host_.record("PowerUps::send_message67", 0x0076a9f0u);
-        } else {
-            throw std::logic_error("power-up message 67 without a session");
+    // 008EDDC0/008E9FD0 build their stack packet before 0076A9F0's zero-peer
+    // terminal. Retain its real payload/string lifetime even with no recipients.
+    void send_powerup_message67(std::int32_t slot, const bsp::cc13_powerup::PowerupItem& item,
+        std::int32_t operation) override {
+        if (powerup_messages_.broadcast_powerup_item(slot, item, operation,
+                host_.participants, host_.entry_state.local_slot_index)) {
+            host_.done("PowerUps::message67_destroy", 0x007657d0u);
+            return;
         }
+        // Bound entities still lack an original +174h identity here. Keep
+        // their unsupported transport observation; never serialize index+1.
+        host_.record("PowerUps::send_message67", 0x0076a9f0u);
     }
-    void send_powerup_message68(const bsp::game_powerups::PowerupModifier&,
-        std::int32_t) override {
-        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
-            host_.record("PowerUps::send_message68", 0x0076a9f0u);
-        } else {
-            throw std::logic_error("power-up message 68 without a session");
+    void send_powerup_message68(const bsp::game_powerups::PowerupModifier& record,
+        std::int32_t operation) override {
+        if (powerup_messages_.broadcast_powerup_modifier(record, operation,
+                host_.participants, host_.entry_state.local_slot_index)) {
+            host_.done("PowerUps::message68_destroy", 0x007658c0u);
+            return;
         }
+        host_.record("PowerUps::send_message68", 0x0076a9f0u);
     }
     std::vector<bsp::PowerUpSlot>& active_slot_records() override {
         return host_.world.power_ups.player_slots;
@@ -1961,6 +1965,7 @@ public:
 
 private:
     GameMissionFrameHost::Impl& host_;
+    bsp::HostSessionMessages powerup_messages_;
 };
 
 // Packet cc13-powerup-bind: what 008E4680 reads off a unit, over the units host.

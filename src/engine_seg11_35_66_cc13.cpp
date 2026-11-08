@@ -3780,7 +3780,8 @@ TailNativeString c_string_literal(const char* source, const TailStringBindings& 
     if (result.data) std::memcpy(result.data, source, result.length + 1);
     return result;
 }
-void c_string_release(const TailNativeString& value, const TailStringBindings& b) {
+template<class Bindings>
+void c_string_release(const TailNativeString& value, const Bindings& b) {
     if (value.data) b.release_00419cc0_00bd1510(value.data, value.length + 1, 1);
 }
 CWord c_vector_count(const TailCheckedVector& v, unsigned shift) {
@@ -4361,8 +4362,9 @@ void c_atlas_append(void* header, void* value,
     if (slot) c_write<void*>(slot, 0, value);
     c_write<CWord>(header, 4, c_read<CWord>(header, 4) + 1);
 }
+template<class Bindings>
 void c_string_assign_header(void* destination, const TailNativeString* source,
-    const TailStringBindings& b) {
+    const Bindings& b) {
     if (destination == source) return;
     b.resize_0041dd40(destination, source->length, 1);
     if (source->length) std::memcpy(c_read<void*>(destination, 4), source->data,
@@ -4462,17 +4464,24 @@ std::uint8_t atlas_parse_00aeeaf0(void* manager, void* buffer,
 
 // 00AD4C30: ECX actual font; stack root, DAT, GFX, alpha, language; RET14.
 // All scalar reads, cache publications and native map calls retain their actual
-// owners. STL lookup/insertion and pool/renderer/VFS services remain bindings.
+// owners. Explicit Source bindings replace indirect calls through Original
+// numeric vtable tokens (AD4CD0/4E29/4E6E renderer64, AD4ED5 VFS04,
+// AD4F29..500A stream38/3C/40/44, AD5079 release). Scalar/field/tree order
+// is unchanged. This is not the Original ECX/RET14h or private EH/heap ABI.
 void font_load_00ad4c30(void* font, const TailNativeString* root,
     const TailNativeString* dat, const TailNativeString* gfx, const TailNativeString* alpha,
-    const TailNativeString* language, void* volatile& image_f8d394,
-    void* volatile& image_109ceec, FontLoadScratch& scratch, const FontLoadBindings& b) {
-    TailNativeString gfx_suffix = c_string_copy(gfx, b.text.strings);
+    const TailNativeString* language, void* const volatile& image_f8d394,
+    void* const volatile& image_109ceec, FontLoadScratch& scratch, const FontLoadBindings& b) {
+    auto& gfx_suffix = scratch.gfx_suffix;
+    gfx_suffix = {};
+    b.text.strings.resize_0041dd40(&gfx_suffix, gfx->length, 1);
+    if (gfx->length) std::memcpy(gfx_suffix.data, gfx->data, gfx_suffix.length);
     void* const gfx_renderer = image_f8d394;
-    TailNativeString localized_root, full_gfx;
+    auto& localized_root = scratch.localized_root;
+    auto& full_gfx = scratch.full_gfx;
     void* intermediate = b.text.concat_004261a0(root, &localized_root, language);
     void* name = b.text.concat_004261a0(intermediate, &full_gfx, &gfx_suffix);
-    void* const gfx_texture = c_virtual<void*>(gfx_renderer, 0x64, name, CWord{0});
+    void* const gfx_texture = b.renderer_texture_64(gfx_renderer, name, 0);
     c_string_release(full_gfx, b.text.strings);
     c_string_release(localized_root, b.text.strings);
     c_string_assign_header(c_at(font, 0x38), root, b.text.strings);
@@ -4483,63 +4492,64 @@ void font_load_00ad4c30(void* font, const TailNativeString* root,
     void* alpha_texture;
     if (alpha->length) {
         void* const renderer = image_f8d394;
-        TailNativeString full_alpha;
+        auto& full_alpha = scratch.full_alpha;
         name = b.text.concat_004261a0(root, &full_alpha, alpha);
-        alpha_texture = c_virtual<void*>(renderer, 0x64, name, CWord{0});
+        alpha_texture = b.renderer_texture_64(renderer, name, 0);
         c_string_release(full_alpha, b.text.strings);
     } else {
-        TailNativeString white;
+        auto& white = scratch.white;
         b.text.strings.assign_0041e870(&white, "white.tga");
-        alpha_texture = c_virtual<void*>(image_f8d394, 0x64, &white, CWord{0});
+        alpha_texture = b.renderer_texture_64(image_f8d394, &white, 0);
         c_string_release(white, b.text.strings);
     }
     void* const files = image_109ceec;
-    TailNativeString dat_root, full_dat;
+    auto& dat_root = scratch.dat_root;
+    auto& full_dat = scratch.full_dat;
     intermediate = b.text.concat_004261a0(root, &dat_root, language);
     name = b.text.concat_004261a0(intermediate, &full_dat, dat);
-    void* const stream = c_virtual<void*>(files, 4, name, CWord{2});
+    void* const stream = b.vfs_open_04(files, name, 2);
     c_string_release(full_dat, b.text.strings);
     c_string_release(dat_root, b.text.strings);
-    CWord remaining = c_virtual<CWord>(stream, 0x38, CWord{0});
-    const auto height = static_cast<std::int16_t>(c_virtual<std::uint16_t>(stream, 0x40, CWord{0}));
+    CWord remaining = b.stream_u32_38(stream);
+    const auto height = static_cast<std::int16_t>(b.stream_word_40(stream));
     c_write<std::uint16_t>(font, 0x14, c_font_scaled_metric(height, c_at(font, 0x18)));
     while (remaining) {
-        c_write<std::uint16_t>(&scratch.key, 0, c_virtual<std::uint16_t>(stream, 0x40, CWord{0}));
+        scratch.key = b.stream_word_40(stream);
         void* const glyph = b.allocate_00bf681b(0x20);
         for (CWord i = 0; i < 4; ++i) {
-            const float value = c_virtual<float>(stream, 0x44, CWord{0});
+            const float value = b.stream_float_44(stream);
             c_fld_store(static_cast<float*>(c_at(glyph, i * 4)), &value);
         }
-        c_write<std::uint16_t>(glyph, 0x10, c_virtual<std::uint16_t>(stream, 0x3c, CWord{0}));
-        auto metric = c_virtual<std::uint16_t>(stream, 0x3c, CWord{0});
+        c_write<std::uint16_t>(glyph, 0x10, b.stream_word_3c(stream));
+        auto metric = b.stream_word_3c(stream);
         c_write<std::uint16_t>(glyph, 0x12, metric);
         c_write<std::uint16_t>(glyph, 0x12, c_font_scaled_metric(metric, c_at(font, 0x18)));
-        metric = c_virtual<std::uint16_t>(stream, 0x40, CWord{0});
+        metric = b.stream_word_40(stream);
         c_write<std::uint16_t>(glyph, 0x14, metric);
         const auto scaled_width = c_font_scaled_metric(metric, c_at(font, 0x18));
         c_write<void*>(glyph, 0x18, gfx_texture);
         c_write<void*>(glyph, 0x1c, alpha_texture);
         c_write<std::uint16_t>(glyph, 0x14, scaled_width);
         void* const sentinel = c_read<void*>(font, 4);
-        WarningIteratorPair iterator;
-        WarningIteratorPair* const found = b.lookup_00ad4540(font, &iterator, &scratch.key);
+        NativeIntPointerTree18Iterator iterator;
+        auto* const found = b.lookup_00ad4540(font, &iterator, scratch.key);
         if (!found->owner || found->owner != font) b.checked_iterator_bf6713();
         if (found->node == sentinel) {
-            c_write<std::uint16_t>(scratch.pair, 0, c_read<std::uint16_t>(&scratch.key));
-            c_write<void*>(scratch.pair, 4, glyph);
-            b.insert_00ad4aa0(font, scratch.insertion_result, scratch.pair);
+            c_write<std::uint16_t>(&scratch.pair, 0, scratch.key);
+            scratch.pair.value_04 = glyph;
+            b.insert_00ad4aa0(font, &scratch.insertion_result, &scratch.pair);
         } else b.free_00bf65ac(glyph);
         --remaining;
     }
-    c_release_ref(stream);
+    b.release_stream(stream);
     for (CWord offset = 0x4c; offset <= 0x68; offset += 4) c_write<CWord>(font, offset, 0);
     c_write<std::uint16_t>(font, 0x5e,
         static_cast<std::uint16_t>(static_cast<std::int32_t>(c_read<std::int16_t>(font, 0x14)) / 4));
     c_write<void*>(font, 0x68, alpha_texture);
     c_write<void*>(font, 0x64, gfx_texture);
     scratch.key = 0x91;
-    WarningIteratorPair fallback;
-    b.lookup_00ad4540(font, &fallback, &scratch.key);
+    NativeIntPointerTree18Iterator fallback;
+    b.lookup_00ad4540(font, &fallback, scratch.key);
     if (!fallback.owner) b.checked_iterator_bf6713();
     if (fallback.node == c_read<void*>(fallback.owner, 4)) b.checked_iterator_bf6713();
     const void* const glyph = c_read<void*>(fallback.node, 0x10);

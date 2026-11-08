@@ -2,6 +2,7 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_startup_random.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/platform_activation.hpp"
@@ -3781,6 +3782,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         sinks.languages = &settings_host_->language_catalog();
         sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
         sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        // AA5E20 and AA52A0 have already produced the actual Page registry.
+        // 008D5B50's original 008D60FB site controls when this snapshot runs.
+        sinks.relayout_gui_pages = [this] { frontend_->relayout_gui_pages(); };
         if (native_renderer_) {
             GameNativeRendererApplication* const renderer = native_renderer_.get();
             sinks.change_renderer_presentation_mode = [renderer](int width, int height,
@@ -3894,15 +3898,24 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // the real sound class table, sample cache and FMOD/VFS services.
     sound_->core.initialize_gui_sound_set();
     log_.implemented("OnInitOnce::initialize_gui_sound_set", "00940ec0");
+    // 004DD72A reads 00F88A31, which is the authoritative settings owner
+    // 00F88980+B1h (ShowSafeArea, initialized by 008D7710 and read from
+    // options by 008D8190). 004DD734 calls AA2110 after the AA5E20 frame
+    // producers and before the input configuration load at 004DD745.
+    frontend_->set_safe_zone_visible(settings_process_->settings().data()[0xb1] != std::byte{0});
     // The same OnInitOnce, later: 004DD739 CMP byte [game+55Ch],0 (the
     // configuration's +520h loaded byte); clear, 004DD742 LEA ECX,[game+3Ch]
     // and 004DD745 CALL 00698A10 (Scripts\datatables\Inputs.lua into the
     // action owner, then rebind, a zero-second tick and the keyboard
     // defaults). The remaining intervening OnInitOnce steps (readers, GUI
-    // hooks, safe zone) are not run by this host; [00F8BBFC], stored at
+    // hooks) are not run by this host; [00F8BBFC], stored at
     // 004DD71B, has no writer here (see the application's comment).
     if (input_configuration_ && input_configuration_->load_if_unloaded())
         log_.implemented("OnInitOnce::load_input_configuration", "00698a10");
+    // 004DD766: 004C1C50 -> HighLvlAIGlobals ctor 00A37130 -> 00A335D0.
+    // Its 00A36FD5 tail supplies the retained native forced-rule tables before
+    // OnInitTitle and any mission's weight-model queries.
+    ai_initialize_forced_rule_tables();
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

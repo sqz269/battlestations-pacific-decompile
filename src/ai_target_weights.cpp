@@ -295,7 +295,7 @@ const std::vector<AiForcedTargetWeightRule>& ai_shipped_forced_rules(int mode) n
     }
 }
 
-bool ai_forced_rule_scan_00a31db0(const std::vector<AiForcedTargetWeightRule>& table,
+bool ai_forced_rule_scan_00a31db0(AiForcedRuleRange table,
                                   const AiForcedRuleSubject& attacker,
                                   const AiForcedRuleSubject& target, bool query_flag,
                                   float& weight, int& matched_index) {

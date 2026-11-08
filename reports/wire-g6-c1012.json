@@ -1,0 +1,88 @@
+{
+  "chain": 1012,
+  "owner": "agent/g6-w5",
+  "review_round_1": {
+    "run": 2253,
+    "finding": "P2: message 68 could copy synthetic modifier unit_id/centre_id, including during expiration",
+    "status": "fixed",
+    "change": "broadcast_powerup_modifier now rejects either nonzero target ID before its operation-specific binding check, for insertion and expiration alike. False preserves PowerupManagerBinding::send_powerup_message68's existing observation fallback. Native modifier packets are admitted only when unit_id and centre_id are both zero; operation-zero bound-item restrictions still apply.",
+    "validation": "Win32 build and all four existing CTest checks passed. The focused probe rejects nonzero unit_id and nonzero centre_id separately for operations 0 and 2, and accepts the supported zero-ID expiration. All three claimed rows remain entry-reachable; called-address total remains 5751."
+  },
+  "candidate": "game_hosts_session_messages.cpp",
+  "rows": [
+    {
+      "native": "007657d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: PowerupManagerBinding::send_powerup_message67 -> src/game_hosts_session_messages.cpp: HostSessionMessages::broadcast_powerup_item",
+      "reason": "008E6E00 constructs the real unbound inventory item's slot, class name, use limit and operation; 007657D0 releases its owned native pool string after the host-only zero-peer send. Bound-entity and unresolved-class sends remain unsupported; no synthetic entity IDs or receive loopback were added."
+    },
+    {
+      "native": "007658c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: PowerupManagerBinding::send_powerup_message68 -> src/game_hosts_session_messages.cpp: HostSessionMessages::broadcast_powerup_modifier",
+      "reason": "008E6FB0 copies the actual modifier's complete native prefix and name; 007658C0 releases its owned pool string. Both insertion and expiration require unit_id == 0 and centre_id == 0 because nonzero resolver values are synthetic. Insertion additionally requires no binding needing a native unit+174h. Rejected target/binding cases retain the existing observation fallback."
+    },
+    {
+      "native": "007662a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::lobby_apply_selected_map_005da530 -> src/game_hosts_session_messages.cpp: HostSessionMessages::broadcast_scene_index",
+      "reason": "The required mission caller lease became available during foreground retries. The existing 00771190 body now constructs NativeSessionMessage09 and its owned pooled name from the actual selected scene, index and content mask. 007662A0 frees the packet after the host-only zero-peer broadcast, without a local scene-selection replay."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "NativeSessionMessage67/68 stack power-up packets and their canonical pooled-string ownership",
+      "where": "src/game_hosts_session_messages.cpp:569",
+      "constructors": ["008e6e00", "008e6fb0"],
+      "fields": [
+        "67: profile +00h DWORD, slot +18h DWORD, name length +1Ch DWORD, owned name pointer +20h DWORD, use limit +24h DWORD, operation +28h DWORD, unit IDs +2Ch/+2Eh WORD",
+        "68: profile +00h DWORD, category +18h DWORD, binding ID +1Ch WORD, multiplier +20h DWORD bits, unit/centre IDs +24h/+26h WORD (only zero IDs admitted for every operation until native identities exist), slot/owner/party/end/operation +28h..+38h DWORD, name length +3Ch DWORD, owned name pointer +40h DWORD",
+        "0075B430: selected owner +14h DWORD comes from the retained SessionParticipantPools and current local-slot cell through NativeSessionMessageParticipantOwner",
+        "Names allocate/resize through 0041DD40 using the process's actual 01090AA8 / 01090AA0 / 01090AA4 cells; native destructors return their exact length+1 blocks"
+      ],
+      "producers": [
+        "004DC6A0 / 008EDC60 / 008ECEC0: existing mission-load PowerupRuntime and Lua class registry; frame publishes PowerupManagerBinding with that owner",
+        "008EDDC0 / 008E9FD0: loaded real item and slot -> existing 008E6E00 sender, null unit arguments for unbound items",
+        "008E8C30 / 008EA250: real category-list modifier with zero unit_id and centre_id -> existing 008E6FB0 sender; operation two skips the item/binding graph but still copies both target-ID fields, so nonzero targets are rejected for expiration as well",
+        "004BB160 / 004BB440: existing mission participant records and current selection, borrowed without a second game/player table",
+        "Existing GameNativeStringProcess / 00419CC0 / 00BD1480: the canonical native string pool; no new pool, singleton domain, native body or feature switch"
+      ],
+      "rows": ["007657d0", "007658c0"],
+      "climb": [
+        "007657D0 <- native stack packet from 008E6E00 <- unbound item produced by 008EDDC0 / 008E9FD0 <- mission-load PowerupRuntime and PowerupManagerBinding <- run_scene_load_004DFB70 (connected to existing host root)",
+        "007658C0 <- native stack packet from 008E6FB0 <- actual modifier produced/expired by 008EA250 / 008E8C30 <- mission-load category lists and PowerupManagerBinding <- run_scene_load_004DFB70 (connected to existing host root)"
+      ]
+    },
+    {
+      "name": "NativeSessionMessage09 scene-index packet and pooled scene-name ownership",
+      "where": "src/game_hosts_session_messages.cpp:547",
+      "constructors": ["00771190", "007661d0"],
+      "fields": [
+        "profile +00h DWORD and selected participant +14h DWORD from existing 0075B430 / 007661D0",
+        "name length +18h DWORD and owned pointer +1Ch DWORD from the selected SceneRecord.scene_path, via existing 00BE0A30 copy fragment / 0041DD40 and the canonical native string pool",
+        "index +20h DWORD from load.selection.selected_index (existing one-record scene list)",
+        "content-mask low/high +28h/+2Ch DWORD from LobbySessionState.content_mask_2060, refreshed by 005D9C50 immediately before lobby apply",
+        "native +24h DWORD and base +11h..+13h padding retained, never zero-initialized or consumed"
+      ],
+      "producers": [
+        "Existing start_skirmish -> 0076FAD0 / 004E2770 / 004C6890: retained scene record and selection, followed by join_local_player_007752D0 and lobby apply 005DA530 / 005D62B0",
+        "The existing join path accepts only its actual computed slot-zero choice; the broadcast borrows that current participant identity from SessionParticipantPools",
+        "00771190 replaces its former STL-only result with one native message; generic 007661D0 supplies its identical inlined base/header stores and the copy fragment supplies owned name storage",
+        "Existing GameNativeStringProcess supplies both the raw profile context and its matching ActualNativeStringPoolStorage; no second owner or pool"
+      ],
+      "rows": ["007662a0"],
+      "climb": [
+        "007662A0 <- NativeSessionMessage09 owned name <- corrected existing 00771190 body <- 00772390 zero-peer stack-send site <- lobby apply 005D62B0 / 005DA530 <- existing start_skirmish host phase (connected to entry)"
+      ]
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, all four existing CTest checks passed",
+    "call_graph_before": "5742 / 6454 reconstructed addresses called; selected gaps 0 / 3",
+    "call_graph_after": "5751 / 6463 reconstructed addresses called; selected gaps 3 / 3",
+    "call_sites": "007657D0 and 007658C0 each have normal, exception-cleanup and profile scalar-delete calls from reachable code. 007662A0 has its direct broadcast_scene_index call, builder exception cleanup and profile scalar-delete call. Paths reach PowerupManagerBinding / run_scene_load_004DFB70 and start_skirmish respectively. Corrected 00771190 also has a direct reachable caller in broadcast_scene_index.",
+    "probe": "tests/wire_g6_c1012_packet_probe.cpp passed under MSVC Win32 with /MANIFEST:EMBED: embedded-NUL exact-length name copy, base/owner/index/both mask words, retained padding/+24h, native destructor profile, immediate reuse of its returned pool block, and rejection of either nonzero modifier target ID for both insertion and expiration (plus supported zero-ID expiration)",
+    "probe_command": "From a VS x86 developer shell, create local\\g6_c1012_probe if absent, then: cl /nologo /std:c++17 /EHsc /MD /O2 /fp:strict /Gy /Iinclude tests\\wire_g6_c1012_packet_probe.cpp src\\game_hosts_session_messages.cpp src\\gameplay_seg38_cc13.cpp src\\gameplay_seg41_cc13.cpp src\\gameplay_seg47_cc13.cpp src\\band_0060_cc13.cpp /Folocal\\g6_c1012_probe\\ build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib user32.lib PowrProf.lib shell32.lib d3d9.lib /link /MANIFEST:EMBED /OPT:REF /OUT:local\\g6_c1012_probe.exe; then run local\\g6_c1012_probe.exe",
+    "runtime": "No game run, deployment or original ABI compatibility claim. Campaign's session-mode-zero gate is unchanged. Offline-skirmish sends are entry-reachable static proof only."
+  }
+}

@@ -1,6 +1,10 @@
 #include "bsp/mission_load_path.hpp"
+#include "bsp/native_game_container_lifetime.hpp"
+#include "bsp/segs_0_9_11_cc13.hpp"
 
 #include <algorithm>
+#include <new>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -9,7 +13,57 @@ namespace {
 constexpr std::uint32_t kMissionStartRequests[2]
     = {kMissionStartInterfaceRequest, kMissionSceneLoadRequest};
 
+class SceneRecordListCalls final
+    : public segs_0_9_11_cc13::SceneRecordListHost,
+      public NativeGameContainerLifetimeCalls {
+public:
+    explicit SceneRecordListCalls(SetPendingSceneHost* host = nullptr) : host_(host) {}
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        return ::operator new(bytes);
+    }
+    void free_00bf65ac(void* node) override {
+        // Same CRT allocation domain as the 004C2C80 new binding above.
+        ::operator delete(node);
+    }
+    void virtual_scalar(void* payload, std::uint32_t slot, std::uint32_t flags) override {
+        if (slot != 0 || flags != 1) throw std::logic_error("scene-record scalar-delete contract");
+        auto* record = static_cast<SceneRecord*>(payload);
+        if (host_) host_->destroy_scene_record(*record);
+        delete record;
+    }
+    void virtual_terminal(void*) override {
+        throw std::logic_error("scene-record list has no reference-count terminal call");
+    }
+private:
+    SetPendingSceneHost* host_;
+};
+
 } // namespace
+
+NativeSceneRecordList::~NativeSceneRecordList() { clear(); }
+
+const SceneRecord& NativeSceneRecordList::operator[](std::size_t index) const noexcept {
+    const auto* node = image_.head;
+    while (index-- != 0) node = node->next;
+    return *node->record;
+}
+
+void NativeSceneRecordList::push_back(std::unique_ptr<SceneRecord> record) {
+    SceneRecordListCalls calls;
+    // 004E1D70's Create arm, call 004E21C1 with ECX = game+5F0h.
+    // The reuse arm's inline append at 004E20DF has the same node layout.
+    segs_0_9_11_cc13::scene_record_list_push_back_004c2c80(
+        calls, segs_0_9_11_cc13::raw(&image_), record.get());
+    record.release();
+}
+
+void NativeSceneRecordList::clear(SetPendingSceneHost* host) {
+    SceneRecordListCalls calls(host);
+    NativeGameContainerLifetimeProgress progress;
+    // 004E277A before replacement; 004DCFEE at native game destruction.
+    // Calls the payload destructor before unlink/free, and reloads live links.
+    destroy_native_game_scene_records_004bf930(&image_, calls, progress);
+}
 
 std::size_t scene_slot_record_offset(std::size_t index) noexcept
 {
@@ -43,7 +97,7 @@ static std::int32_t select_scene_record_script_slot(
 }
 
 SelectSceneRecordResult run_select_scene_record_004c6890(
-    const std::vector<SceneRecord>& records, std::int32_t index,
+    const NativeSceneRecordList& records, std::int32_t index,
     const SelectSceneRecordInputs& inputs)
 {
     SelectSceneRecordResult result;
@@ -110,7 +164,7 @@ SelectSceneRecordResult run_select_scene_record_004c6890(
     return result;
 }
 
-bool run_build_scene_record_004e1d70(std::vector<SceneRecord>& records,
+bool run_build_scene_record_004e1d70(NativeSceneRecordList& records,
     const std::string& scene_path, SceneRecordBuildArm arm,
     const std::string& weather_override, SetPendingSceneHost& host)
 {
@@ -130,23 +184,23 @@ bool run_build_scene_record_004e1d70(std::vector<SceneRecord>& records,
                 return false;
             }
         }
-        SceneRecord record;
-        record.scene_path = scene_path;
+        auto record = std::make_unique<SceneRecord>();
+        record->scene_path = scene_path;
         // 004e1fbd then 004e20c2: the VFS probe, and the header pass only when
         // the file is there.
-        record.file_present = host.scene_file_exists(scene_path);
-        if (record.file_present) {
-            host.load_scene_header_pass(scene_path, weather_override, record);
+        record->file_present = host.scene_file_exists(scene_path);
+        if (record->file_present) {
+            host.load_scene_header_pass(scene_path, weather_override, *record);
         }
-        records.push_back(record); // 004e20df, the hand-built 0xc node
+        records.push_back(std::move(record)); // 004e20df, the hand-built 0xc node
         created = true;
     } else {
         // 004e2143..004e21cd. No duplicate test, no VFS probe, and the header
         // pass runs unconditionally.
-        SceneRecord record;
-        record.scene_path = scene_path;
-        host.load_scene_header_pass(scene_path, weather_override, record);
-        records.push_back(record); // 004e21c1, the container push_back 004c2c80
+        auto record = std::make_unique<SceneRecord>();
+        record->scene_path = scene_path;
+        host.load_scene_header_pass(scene_path, weather_override, *record);
+        records.push_back(std::move(record)); // 004e21c1, the container push_back 004c2c80
         host.notify_award_tracker(); // 004e21c6 then 004e21cd
         created = true;
     }
@@ -155,7 +209,7 @@ bool run_build_scene_record_004e1d70(std::vector<SceneRecord>& records,
     return created;
 }
 
-SetPendingSceneResult run_set_pending_scene_004e2770(std::vector<SceneRecord>& records,
+SetPendingSceneResult run_set_pending_scene_004e2770(NativeSceneRecordList& records,
     const std::string& scene_path, const std::string& weather_override,
     const SelectSceneRecordInputs& inputs, SetPendingSceneHost& host)
 {
@@ -163,11 +217,8 @@ SetPendingSceneResult run_set_pending_scene_004e2770(std::vector<SceneRecord>& r
 
     // 004e277a, 004bf930 with ECX = game+5F0h: pop every node, destroy the
     // record through its virtual +0h with 1, free the node.
-    for (SceneRecord& record : records) {
-        host.destroy_scene_record(record);
-    }
     result.records_destroyed = records.size();
-    records.clear();
+    records.clear(&host);
 
     // 004e278b and 004e2795: game+5FCh is nulled and the override string at
     // game+600h/604h is emptied before the record is built.

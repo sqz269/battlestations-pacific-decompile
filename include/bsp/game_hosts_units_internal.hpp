@@ -14,6 +14,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_host_renderer_listener.hpp"
 #include "bsp/unit_instance_subobjects.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/entity_local_matrix.hpp"
@@ -14930,16 +14931,23 @@ public:
         owner_.done("ControlledUnit::store_global", 0x004c0893u);
     }
     bool driven_listener_handle() override {
+        queried_driven_listener_ = true;
         owner_.record("ControlledUnit::driven_listener_handle", 0x004c08f7u);
         return false;
     }
     void publish_listener(bool) override {
-        // 00b0d7b0 stores the handle at renderResources+1C0h and kicks +30h.
-        // The render-resources singleton at 00f8d39c is the renderer owner's.
+        // 004C090C..004C0924 is an exact null operand when resolution found
+        // no listener target (including 004C0890(nullptr)). Never convert the
+        // unresolved driven-unit virtual+18 result's bool into a native pointer.
+        if (!queried_driven_listener_ && clear_game_native_controlled_listener()) {
+            owner_.done("ControlledUnit::publish_listener", 0x00b0d7b0u);
+            return;
+        }
         owner_.record("ControlledUnit::publish_listener", 0x00b0d7b0u);
     }
 
 private:
+    bool queried_driven_listener_{false};
     GameUnitsHost::Impl& owner_;
 };
 

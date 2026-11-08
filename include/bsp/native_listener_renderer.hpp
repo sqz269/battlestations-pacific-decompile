@@ -9,15 +9,33 @@ namespace bsp {
 // listener slot already identified by controlled_unit.hpp. No renderer owner,
 // pointer publication, reference count or semantic-to-native cast is added.
 struct NativeListenerRendererView {
-    void*& listener_1c0;
-    void* const& invalidation_owner_30;
+    NativeListenerRendererView(void*& listener, void* const& owner) noexcept
+        : listener_cell_(&listener), owner_cell_(&owner) {}
+    // Borrow the existing B14A10/B107F0 allocation, with no typed overlay or
+    // new renderer publication. Each access reads/writes its actual DWORD.
+    static NativeListenerRendererView from_raw(void* actual_renderer) noexcept;
+    void publish_listener(void*) const noexcept;
+    void* invalidation_owner() const noexcept;
+private:
+    NativeListenerRendererView(void* listener_cell, const void* owner_cell) noexcept
+        : listener_cell_(listener_cell), owner_cell_(owner_cell) {}
+    void* listener_cell_;
+    const void* owner_cell_;
 };
 
 // The actual object reached through renderer+30. Names describe these accesses;
 // no complete native layout or additional scene owner is inferred.
 struct NativeListenerInvalidationView {
-    void* const& root_owner_3c;
-    std::uint8_t& byte_250;
+    NativeListenerInvalidationView(void* const& root, std::uint8_t& flag) noexcept
+        : root_cell_(&root), flag_cell_(&flag) {}
+    static NativeListenerInvalidationView from_raw(void* actual_owner) noexcept;
+    void* root_owner() const noexcept;
+    void mark_invalid() const noexcept;
+private:
+    NativeListenerInvalidationView(const void* root_cell, void* flag_cell) noexcept
+        : root_cell_(root_cell), flag_cell_(flag_cell) {}
+    const void* root_cell_;
+    void* flag_cell_;
 };
 
 class NativeListenerRendererBindings {
@@ -27,10 +45,17 @@ public:
     virtual ~NativeListenerRendererBindings() = default;
 
     // Required side-effect-free mappings of the supplied live actual identities.
-    // The root view must borrow that same owner's actual +0C head and +1C scene
-    // fields, and use the existing canonical CameraTransform node bindings.
+    // Typed root views borrow that same owner's +0C head and +1C scene fields
+    // and use the existing canonical CameraTransform node bindings.
     virtual NativeListenerInvalidationView invalidation_owner(void* actual_owner) = 0;
     virtual RenderNodeRootList& root_owner(void* actual_owner) = 0;
+
+    // Raw scene owners override these operations, borrowing actual +0C and
+    // calling the existing raw B6D890 null-request entry, which needs no scene
+    // attachment dispatch.
+    // The typed fixture/provider domain retains its original composition.
+    virtual void* root_head(void* actual_owner);
+    virtual void detach_root_head(void* actual_node);
 
     // Concrete composition with the complete existing 00B6D890 implementation.
     // Overrides must preserve that complete contract, including actual root

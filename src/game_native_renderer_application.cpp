@@ -1,4 +1,7 @@
 #include "bsp/native_renderer_constructor.hpp"
+#include "bsp/native_listener_renderer.hpp"
+#include "bsp/platform_renderer_activation.hpp"
+#include "bsp/game_host_renderer_listener.hpp"
 #include "bsp/native_shader_global_readers.hpp"
 #include "bsp/native_render_entry_cache.hpp"
 #include "bsp/native_renderer_base_lifetime.hpp"
@@ -158,6 +161,7 @@
 #include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_game_grid.hpp"
+#include "bsp/game_host_flag_cloth.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_vertex_position_read.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
@@ -170,6 +174,9 @@
 namespace bsp::game {
 namespace {
 using U=std::uint32_t;
+// Host-only borrow installed at the actual B14A10 publication phase. The
+// native listener/+30/root fields remain solely in the existing raw owners.
+GameNativeRendererApplication* listener_application{};
 void check(bool value,const char* message) { if(!value) throw std::runtime_error(message); }
 U bits(const void* p) noexcept { return reinterpret_cast<U>(p); }
 template<class T> T get(const void* p,U offset=0) noexcept {
@@ -560,6 +567,24 @@ struct GameNativeRendererApplication::Impl {
     std::optional<scene_weather_cc13::ScenePostProcessMotionBlur> pending_scene_blur;
     std::optional<scene_weather_cc13::ScenePostProcessUnderwaterWave> pending_scene_wave;
 
+    struct ListenerBindings final : NativeListenerRendererBindings {
+        explicit ListenerBindings(Impl& value)
+            : NativeListenerRendererBindings(value.graph.nodes) {}
+        NativeListenerInvalidationView invalidation_owner(void* actual) override {
+            return NativeListenerInvalidationView::from_raw(actual);
+        }
+        RenderNodeRootList& root_owner(void*) override {
+            throw std::logic_error("raw listener roots have no typed scene overlay");
+        }
+        void* root_head(void* actual) override { return get<void*>(actual, 0x0c); }
+        void detach_root_head(void* actual) override {
+            // The established raw B6D890 null-argument entry needs no scene
+            // attachment/profile dispatch. It unlinks the real +A4/+3C/+40
+            // root links and recurses through actual +34 children itself.
+            clear_native_raw_node_root_00b6d890_null(actual);
+        }
+    } listener_bindings{*this};
+
     template<class Block, class Apply>
     bool set_scene_parameters(const Block& block, std::optional<Block>& pending, Apply apply) {
         check(phase == Phase::ready || phase == Phase::rendering,
@@ -661,15 +686,21 @@ struct GameNativeRendererApplication::Impl {
 GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,GameSingletonHost& host,
     GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
     void* const volatile& clock,const void* platform)
-    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,platform)) {}
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,platform)) {
+    impl_->resources.listener_application_owner=this;
+}
 GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,GameSingletonHost& host,
     GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
     void* const volatile& clock,NativePlatformLoadPublication platform)
-    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform)) {}
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform)) {
+    impl_->resources.listener_application_owner=this;
+}
 GameNativeRendererApplication::GameNativeRendererApplication(OrdinaryMeshConstruction,
     GameHostLog& log,GameSingletonHost& host,GameVfsHost& files,GameNativeLuaServices& lua,
     GameNativeReadOnlyData& data,void* const volatile& clock,NativePlatformLoadPublication platform)
-    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform,&mesh_retention_)) {}
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform,&mesh_retention_)) {
+    impl_->resources.listener_application_owner=this;
+}
 std::unique_ptr<GameNativeRendererApplication>
 GameNativeRendererApplication::create_with_ordinary_mesh_ownership(GameHostLog& log,
     GameSingletonHost& host,GameVfsHost& files,GameNativeLuaServices& lua,
@@ -678,6 +709,7 @@ GameNativeRendererApplication::create_with_ordinary_mesh_ownership(GameHostLog& 
         OrdinaryMeshConstruction{},log,host,files,lua,data,clock,platform));
 }
 GameNativeRendererApplication::~GameNativeRendererApplication() {
+    if (listener_application == this) listener_application = nullptr;
     // Before ANY Impl/provider/member teardown. No Native read/log/cleanup.
     if(ordinary_mesh_exception_requires_retention()) std::_Exit(1);
     // Failed remap/cache frames and their borrowed name headers must survive
@@ -794,6 +826,30 @@ void* GameNativeRendererApplication::construct_render_resources() {
 }
 NativeRenderResourcesLifetimeContext& GameNativeRendererApplication::render_resources_lifetime() noexcept {
     return impl_->resources.lifetime;
+}
+bool GameNativeRendererApplication::clear_controlled_listener() {
+    auto& p = *impl_;
+    if (!p.resources.publication) return false;
+    check(p.phase == Impl::Phase::ready || p.phase == Impl::Phase::rendering,
+        "listener publication requires a live application renderer");
+    check(p.resources.acquired.phase == NativeRenderResourcesConstructionAcquired::Phase::complete,
+        "listener publication requires the actual constructed F8D39C service");
+    // 004C0914/004C091F pass null; B14A10 initializes +1C0/+30 at
+    // B14D6C/B14D2D. B107F0's B11E40 distortion stage produces +30, whose
+    // B4F0C0/B4F560 constructor/initializer produce +3C and +250. Those SAME
+    // native owners are used here, including live raw root+0C node removal.
+    try {
+        update_native_listener_renderer_00b0d7b0(
+            NativeListenerRendererView::from_raw(p.resources.publication), nullptr,
+            p.listener_bindings);
+    } catch (...) {
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
+    return true;
+}
+bool clear_game_native_controlled_listener() {
+    return listener_application && listener_application->clear_controlled_listener();
 }
 NativeRenderResourcesRemapContext& GameNativeRendererApplication::render_resources_remap_context() {
     auto& p=*impl_;
@@ -1030,6 +1086,9 @@ GameNativeModelDomain& GameNativeRendererApplication::model_domain() {
 }
 NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
     return impl_->game_grids.context;
+}
+GameHostFlagClothServices& GameNativeRendererApplication::flag_cloth_services() noexcept {
+    return impl_->game_grids.cloth;
 }
 const volatile std::uint32_t*
 GameNativeRendererApplication::borrow_gui_material_destruction_profile_00d5e520() {

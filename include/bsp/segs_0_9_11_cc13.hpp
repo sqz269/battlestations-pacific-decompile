@@ -44,14 +44,20 @@ struct ScopedCriticalSectionHost {
     virtual void enter_critical_section(void* cs) = 0; // [00CE2218]
 };
 
-struct Segs0911Host : ScopedCriticalSectionHost {
+// 004C2C80 reaches only operator new. A live list owner should not need
+// unrelated archive, camera, session or Lua services to append its record.
+struct SceneRecordListHost {
+    virtual ~SceneRecordListHost() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+};
+
+struct Segs0911Host : ScopedCriticalSectionHost, SceneRecordListHost {
     virtual ~Segs0911Host() = default;
     // Address of an image global's storage (00E198C4, 00E19894, 00E17628, 00E18680).
     virtual void* global(std::uint32_t address) = 0;
 
     // --- CRT and Win32 ---
     virtual void invalid_parameter_00bf6713() = 0;          // checked-iterator / range report
-    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
     virtual void free_00bf65ac(void* block) = 0;
     virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
     virtual void leave_critical_section(void* cs) = 0;      // [00CE2210]
@@ -243,7 +249,7 @@ std::int32_t c_string_length_00412500(const char* text);                     // 
 void game_set_camera_mover_004bc410(Segs0911Host& host, Raw game, void* mover);   // RET 4
 void game_set_game_mode_004bc890(Raw game, std::int32_t mode, std::uint8_t forced);  // RET 8
 void* game_singleton_construct_base_004bf9a0(Segs0911Host& host, Raw self);      // ECX
-void scene_record_list_push_back_004c2c80(Segs0911Host& host, Raw list, void* payload);  // RET 4
+void scene_record_list_push_back_004c2c80(SceneRecordListHost& host, Raw list, void* payload);  // RET 4
 void game_reset_local_player_units_004c3c90(Segs0911Host& host, Raw game);       // ECX
 void session_message_e4_write_004c60e0(Segs0911Host& host, Raw message, void* cursor);  // RET 4
 void* scene_texture_layer_construct_a_004c62a0(Segs0911Host& host, Raw layer);   // ECX

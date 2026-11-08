@@ -256,6 +256,29 @@ struct AiForcedTargetWeightRule {
     bool target_selector_is_class_id{false};     // +1Eh, 00A31E64
 };
 inline constexpr std::size_t kAiForcedRuleStride = 0x20;
+static_assert(sizeof(AiForcedTargetWeightRule) == kAiForcedRuleStride);
+static_assert(offsetof(AiForcedTargetWeightRule, target_selector) == 0x04);
+static_assert(offsetof(AiForcedTargetWeightRule, target_is_neutral) == 0x08);
+static_assert(offsetof(AiForcedTargetWeightRule, weight) == 0x0c);
+static_assert(offsetof(AiForcedTargetWeightRule, relative) == 0x10);
+static_assert(offsetof(AiForcedTargetWeightRule, reference_attacker_selector) == 0x14);
+static_assert(offsetof(AiForcedTargetWeightRule, reference_target_selector) == 0x18);
+static_assert(offsetof(AiForcedTargetWeightRule, reference_target_is_neutral) == 0x1c);
+static_assert(offsetof(AiForcedTargetWeightRule, attacker_selector_is_class_id) == 0x1d);
+static_assert(offsetof(AiForcedTargetWeightRule, target_selector_is_class_id) == 0x1e);
+
+// Borrow the producer's native table; scanning must not copy it into a second
+// mutable vector. The vector conversion retains existing semantic callers.
+struct AiForcedRuleRange {
+    const AiForcedTargetWeightRule* data;
+    std::size_t count;
+    AiForcedRuleRange(const AiForcedTargetWeightRule* rows, std::size_t size) noexcept
+        : data(rows), count(size) {}
+    AiForcedRuleRange(const std::vector<AiForcedTargetWeightRule>& rows) noexcept
+        : data(rows.data()), count(rows.size()) {}
+    std::size_t size() const noexcept { return count; }
+    const AiForcedTargetWeightRule& operator[](std::size_t i) const noexcept { return data[i]; }
+};
 
 // A selector scores 2 on an exact class-id comparison against the entity's +70h,
 // 1 on a type-group query through the entity vtable slot +18h, 0 on no match
@@ -303,7 +326,7 @@ struct AiForcedRuleSubject {
 // the matched rule's index. A relative rule (+10h) recurses without end in the
 // image (docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md 3); it is not projected and is
 // skipped here.
-bool ai_forced_rule_scan_00a31db0(const std::vector<AiForcedTargetWeightRule>& table,
+bool ai_forced_rule_scan_00a31db0(AiForcedRuleRange table,
                                   const AiForcedRuleSubject& attacker,
                                   const AiForcedRuleSubject& target, bool query_flag,
                                   float& weight, int& matched_index);

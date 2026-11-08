@@ -1059,14 +1059,27 @@ SceneNameMessage build_scene_name_00770ff0(std::uint32_t index, const std::strin
     return m;
 }
 
-SceneIndexMessage build_scene_index_00771190(std::uint32_t index, const std::string& name,
-                                             std::uint32_t word_28, std::uint32_t word_2c) {
-    SceneIndexMessage m;
-    m.name_18 = name;
-    m.index_20 = index;
-    m.word_28 = word_28;
-    m.word_2c = word_2c;
-    return m;
+SceneIndexMessage& build_scene_index_00771190(SceneIndexMessage& message, std::uint32_t index,
+    const void* name_header, std::uint32_t word_28, std::uint32_t word_2c,
+    const SceneIndexBuildContext& context) {
+    // bsp.py show 00771190: the former STL result omitted the native base,
+    // profile and owned 8h name header. 007661D0 has exactly its inlined base
+    // stores. BE0A30's existing copy fragment has the same identity guard,
+    // 0041DD40(length,1), post-allocation reloads and conditional memcpy.
+    construct_native_session_message09_007661d0(&message, context.session, context.profile);
+    try {
+        copy_native_string_header_00be0a30_fragment(&message.length_18,
+            context.strings, name_header);
+        message.words_28[1] = word_2c;
+        message.value_20 = index;
+        message.words_28[0] = word_28;
+    } catch (...) {
+        // Original 00771190's state-0 cleanup owns the partially built name.
+        destroy_native_session_message09_007662a0(&message, *context.profile.strings,
+            context.profile);
+        throw;
+    }
+    return message;
 }
 
 void host_refresh_scene_007717a0(bool game_present, const SceneListView& scenes, void* peer,
@@ -1078,8 +1091,21 @@ void host_refresh_scene_007717a0(bool game_present, const SceneListView& scenes,
                                                              scene.name_90c, scene.second_920));
     }
     if (scenes.selected_5fc != nullptr) {
-        host.send_scene_index(peer, build_scene_index_00771190(scenes.selected_index_60c,
-            scenes.selected_5fc->name_90c, scenes.word_2060, scenes.word_2064));
+        const auto& context = host.scene_index_build_context();
+        const auto& name = scenes.selected_5fc->name_90c;
+        const SceneIndexNameView header{static_cast<std::uint32_t>(name.size()), name.data()};
+        SceneIndexMessage message;
+        build_scene_index_00771190(message, scenes.selected_index_60c, &header,
+            scenes.word_2060, scenes.word_2064, context);
+        try {
+            host.send_scene_index(peer, message);
+        } catch (...) {
+            destroy_native_session_message09_007662a0(&message, *context.profile.strings,
+                context.profile);
+            throw;
+        }
+        destroy_native_session_message09_007662a0(&message, *context.profile.strings,
+            context.profile);
     }
 }
 

@@ -8,6 +8,7 @@
 
 namespace bsp {
 namespace game { class GameNativeStringProcess; }
+namespace oct18_tail_c { struct FontLoadScratch; struct FontLoadBindings; }
 // Owns either the SAME decoded FontData allocation or a native AC-byte Font
 // with a genuine glyph tree, plus the two transferred actual image references.
 // No second live metric/glyph map, retained texture wrapper or
@@ -33,22 +34,21 @@ public:
     static std::unique_ptr<NativeFontResources> adopt_00ad4c30_fragment(
         const FontDescriptor&, std::unique_ptr<FontData>& decoded,
         void*& gfx_reference, void*& alpha_reference, NativeRenderActualOwners&);
-    // Optional real AC-byte Font arm. Construct with the established raw
-    // AD55C0/string process, then populate DAT directly into genuine native
-    // 18h tree nodes and separately allocated 20h glyph payloads. No FontData
+    // Real AC-byte Font arm. Construct with the established raw
+    // AD55C0/string process, then run the existing complete AD4C30 body into
+    // genuine native 18h nodes and separately allocated 20h glyphs. No FontData
     // or metric mirror survives in this arm. Keep an incomplete owner retained
     // after a throwing population; it is not a reload/rollback interface.
     // Publishes the Source retained-owner slot BEFORE native allocation/copy
     // effects, so a throwing constructor remains observable in its operation.
     static void construct_image_00ad55c0(const FontDescriptor&, NativeRenderActualOwners&,
         game::GameNativeStringProcess&, std::unique_ptr<NativeFontResources>& retained_owner);
-    // Original saves these after GFX and before alpha production.
-    void save_image_paths_00ad4c30_fragment(const std::string& root,
-        const std::string& language_path);
-    void populate_image_00ad4c30_fragment(MemoryStream&,
-        void*& gfx_reference, void*& alpha_reference);
-    // Call only after retiring the DAT stream, matching AD5079 before AD508F.
-    void finish_image_00ad4c30_fragment(void*& gfx_reference, void*& alpha_reference);
+    // One-shot whole-body load, at AC3D99 after constructor/list publication.
+    // Names borrow stable descriptor/caller bytes. Bindings retain actual
+    // renderer/VFS/string/stream/tree providers and failed operation storage.
+    void load_image(const std::string& root, const std::string& language_path,
+        void* const volatile& renderer, void* const volatile& vfs,
+        oct18_tail_c::FontLoadScratch&, const oct18_tail_c::FontLoadBindings&);
     ~NativeFontResources() noexcept;
     NativeFontResources(const NativeFontResources&) = delete;
     NativeFontResources& operator=(const NativeFontResources&) = delete;
@@ -91,8 +91,7 @@ private:
     struct Image;
     Image* image_{};
     game::GameNativeStringProcess* image_strings_{};
-    void* pending_image_glyph_{}; // Retained only if native insertion throws.
-    bool image_paths_saved_{}, image_population_started_{}, image_dat_complete_{};
+    bool image_load_started_{};
     enum class Phase { preparing, live, destroying, destroyed };
     Phase phase_{Phase::preparing};
 };
