@@ -7,7 +7,7 @@
       "native": "00aacdf0",
       "status": "wired",
       "host_site": "src/game_main.cpp WinMain -> GameNativeGuiWidgetPoolProcess<GuiMoviePoolTraits>::initialize_once -> src/native_material_pools.cpp NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize",
-      "evidence": "The canonical F8BD4C process pool now starts at the native CE3458/CD70F0 position between Button and Icon. The actual pool+28h header and native capacity 32 reach the sole Movie address entry, reusing the existing AA6FA0 capacity implementation. AAD5F0 contains this exact inline schedule; the original has no direct CALL to AACDF0."
+      "evidence": "Current merged path: main c877 supplies the sole native_gui_movie_pool_table_set_capacity_00aacdf0 entry in include/bsp/native_gui_movie_pool_table.hpp, reached through AAD4D0 reserve from the Movie constructor. c893 independently confirms the native CRT position and inline constructor schedule; its redundant address entry/startup/specialization were removed during landing repair."
     },
     {
       "native": "00aad5f0",
@@ -15,24 +15,105 @@
       "host_site": "src/game_main.cpp WinMain -> GameNativeGuiWidgetPoolProcess<GuiMoviePoolTraits>::initialize_once -> src/native_material_pools.cpp NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize",
       "evidence": "Existing shared reconstructed constructor now runs on the canonical process storage and allocator list; its existing CRT shutdown registration remains in initialize_once. This supporting constructor has no new address-suffixed entry and is not counted as an additional called-address gain."
     },
-    {"native":"00b1cb50","status":"skipped","host_site":"src/game_native_renderer_shadow.inc ShadowTargetGraph","reason":"Missing reached shadow-service command producer; the bounded mission frame has no shadow-map owner."},
-    {"native":"00b1eb80","status":"skipped","host_site":"src/game_native_mission_frame.cpp FrameHost::dispatch_frame_jobs","reason":"Missing reached native shadow command owner and its scene/upload inputs; normal geometry submission does not supply that contract."},
-    {"native":"0043ea00","status":"skipped","host_site":"src/native_vfs_remove_content.cpp remove_native_vfs_content_package_00bdd020","reason":"Missing reached content-package removal path owning the canonical manager+48h native string vector."},
-    {"native":"00bdd020","status":"skipped","host_site":"src/native_vfs_remove_content.cpp remove_native_vfs_content_package_00bdd020","reason":"Missing reached content-package mount/removal lifecycle supplying the actual manager and native key header."},
-    {"native":"00721280","status":"skipped","host_site":"src/game_hosts_lua.cpp director-state stores","reason":"Missing reached single-player controller-message producer with actual primary and override target descriptors."},
-    {"native":"007214c0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp controller snapshot references","reason":"Missing reached single-player controller snapshot producer and consumer with actual director extension state."},
-    {"native":"005cd070","status":"skipped","host_site":"src/native_vehicle_camera_array.cpp reserve_native_vehicle_camera_array_005cd260","reason":"Missing reached native vehicle-camera row producer and retained actual camera-array descriptor."},
-    {"native":"005cd260","status":"skipped","host_site":"src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640","reason":"Missing reached native vehicle-camera array owner; host camera settings alone do not provide its actual 5Ch rows."},
-    {"native":"005cd640","status":"skipped","host_site":"src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640","reason":"Missing reached native vehicle-camera list loader and consumer retaining the actual array."},
-    {"native":"0078e230","status":"skipped","host_site":"src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640","reason":"Missing reached native camera-row producer and its canonical four default-word bindings."},
-    {"native":"00501670","status":"skipped","host_site":"src/native_loading_queue_work_items.cpp remove_native_loading_work_item_00501670","reason":"Missing reached native loading-work scheduler owning actual job work-item descriptors."},
-    {"native":"00504d20","status":"skipped","host_site":"src/native_loading_queue_submission.cpp submit_native_loading_work_item_00504d20","reason":"Missing reached submission adapter supplying actual loading jobs, resource type and work-item lifetime."},
-    {"native":"005055c0","status":"skipped","host_site":"src/native_loading_queue_work_items.cpp enqueue_native_loading_job_005055c0","reason":"Missing reached native loading-job producer and scheduler consuming the same canonical queue."},
-    {"native":"005a1610","status":"skipped","host_site":"src/native_point_light_storage_lifetime.cpp destroy_native_point_light_storage_00b7c770","reason":"Missing reached full PointLight object-retirement path with canonical backlink ownership and light/node runtime bindings."},
-    {"native":"00926e80","status":"skipped","host_site":"src/game_hosts_gunnery.cpp GameGunneryHost::Impl::queue_deferred_hit","reason":"Existing live producer retains a projected hit record, not the complete native deferred-event payload required by this body."},
-    {"native":"00aafe20","status":"skipped","host_site":"src/game_native_gui_page_application.cpp widget factory dispatch","reason":"Missing Movie widget factory/property/render/lifetime composition; process-pool startup does not fabricate a Movie instance."}
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_shadow.inc ShadowTargetGraph",
+      "reason": "Missing reached shadow-service command producer; the bounded mission frame has no shadow-map owner."
+    },
+    {
+      "native": "00b1eb80",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_frame.cpp FrameHost::dispatch_frame_jobs",
+      "reason": "Missing reached native shadow command owner and its scene/upload inputs; normal geometry submission does not supply that contract."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp remove_native_vfs_content_package_00bdd020",
+      "reason": "Missing reached content-package removal path owning the canonical manager+48h native string vector."
+    },
+    {
+      "native": "00bdd020",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp remove_native_vfs_content_package_00bdd020",
+      "reason": "Missing reached content-package mount/removal lifecycle supplying the actual manager and native key header."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp director-state stores",
+      "reason": "Missing reached single-player controller-message producer with actual primary and override target descriptors."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp controller snapshot references",
+      "reason": "Missing reached single-player controller snapshot producer and consumer with actual director extension state."
+    },
+    {
+      "native": "005cd070",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp reserve_native_vehicle_camera_array_005cd260",
+      "reason": "Missing reached native vehicle-camera row producer and retained actual camera-array descriptor."
+    },
+    {
+      "native": "005cd260",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing reached native vehicle-camera array owner; host camera settings alone do not provide its actual 5Ch rows."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing reached native vehicle-camera list loader and consumer retaining the actual array."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing reached native camera-row producer and its canonical four default-word bindings."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp remove_native_loading_work_item_00501670",
+      "reason": "Missing reached native loading-work scheduler owning actual job work-item descriptors."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp submit_native_loading_work_item_00504d20",
+      "reason": "Missing reached submission adapter supplying actual loading jobs, resource type and work-item lifetime."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp enqueue_native_loading_job_005055c0",
+      "reason": "Missing reached native loading-job producer and scheduler consuming the same canonical queue."
+    },
+    {
+      "native": "005a1610",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp destroy_native_point_light_storage_00b7c770",
+      "reason": "Missing reached full PointLight object-retirement path with canonical backlink ownership and light/node runtime bindings."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::queue_deferred_hit",
+      "reason": "Existing live producer retains a projected hit record, not the complete native deferred-event payload required by this body."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp widget factory dispatch",
+      "reason": "Missing Movie widget factory/property/render/lifetime composition; process-pool startup does not fabricate a Movie instance."
+    }
   ],
-  "validation": {
+  "left": "Movie widget factory, property loading, playback/rendering and full widget lifetime remain unwired. Shadow queue candidates need their real shadow-map service owner.",
+  "initial_branch_validation": {
     "initial_build": "scripts/build.ps1 passed all six CTests",
     "final_build": "scripts/build.ps1 passed all six CTests",
     "wire_readiness_before": 10749,
@@ -45,5 +126,44 @@
     "game_run": false,
     "native_abi_compatible": false
   },
-  "left": "Movie widget factory, property loading, playback/rendering and full widget lifetime remain unwired. Shadow queue candidates need their real shadow-map service owner."
+  "landing_repair": {
+    "merged_origin_main": "ba2af27c5021f22eaf786ec7ea29ea626a1ff650",
+    "resolution": "Retain c877 single Movie startup, table entry, reserve/append paths and ledger metadata; append c893 independent evidence and remove duplicate c893 startup/body/specialization. Keep updated AACE40 record from main.",
+    "additional_wiring_gain_over_merged_main": 0,
+    "checks": "passed: normal, ON, restored normal and NOICF builds; all six CTests each; byte-identical header restore; call graph and refreshed readiness",
+    "validation": {
+      "default_build": "passed, all six CTests",
+      "nofold_build": "passed, all six CTests; temporary linker /OPT:NOICF only, original /INCREMENTAL:NO cache value restored",
+      "nofold_call_graph": "One reachable call site: native_gui_movie_pool_table_set_capacity_00aacdf0 <- native_gui_movie_pool_table_reserve_00aad4d0 <- Movie initialize_pool <- NativeGuiWidgetPool<Movie>::initialize <- GameNativeGuiWidgetPoolProcess<Movie>::initialize_once <- WinMain <- WinMainCRTStartup",
+      "nofold_graph_artifact": "local/output/c893-nofold-call_graph.json",
+      "on_build": "passed, exit 0, zero distinct diagnostics, all six CTests; kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled enabled by off_switch_on_build.py",
+      "restored_default_build": "passed, all six CTests, normal /INCREMENTAL:NO linker cache restored",
+      "game_run": false,
+      "on_headers_restored_sha256_identical": true,
+      "on_header_hashes": {
+        "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+        "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+      },
+      "on_log": "local/c893-on-build.log",
+      "normal_log": "local/c893-default-build.log",
+      "restored_default_called_addresses": 5656,
+      "float_math_changed": false,
+      "wire_readiness_summary": {
+        "wired": 10760,
+        "callees_done_no_wired_caller": 8513,
+        "ready": 1201,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "wire_readiness_aacdf0": {
+        "source": "include/bsp/native_gui_movie_pool_table.hpp",
+        "state": "callees_done_no_wired_caller",
+        "called": true,
+        "call_sites": 2,
+        "callers_live": 2
+      },
+      "readiness_note": "The text-based state for the header-defined entry remains callees_done_no_wired_caller; built called=true and the unfolded unique Movie chain prove actual source reachability. No additional wiring gain over merged main."
+    },
+    "resolver": "tools/merge_resolve.py retained both game_main insertions; semantic review removed duplicate Movie work already on main. The same-address AA ledger conflict needed targeted reconciliation: keep main metadata and AACE40 record, append c893 independent evidence through bsp.py ledger add-function --replace."
+  }
 }

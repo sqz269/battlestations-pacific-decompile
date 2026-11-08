@@ -35,7 +35,9 @@ GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
       group_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
           group_storage_010902f4_),
       directional_light_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
-          directional_light_storage_01090154_) {
+          directional_light_storage_01090154_),
+      point_light_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+          point_light_storage_0109011c_) {
     // Binding takes an AllocatorListElement reference. Establish only that
     // trivial header's lifetime here; CD7F20/B6E980 later constructs the pool,
     // publishes the list links and initializes the real critical section.
@@ -222,6 +224,26 @@ DirectionalLightPool& GameNativeResourcePoolProcess::directional_light_pool_0109
     if (directional_light_state_ != StartupState::returned)
         throw std::logic_error("resource directional-light pool requires completed explicit startup");
     return directional_light_;
+}
+
+int GameNativeResourcePoolProcess::initialize_point_light_once_00cd8060() {
+    std::lock_guard lock(startup_mutex_);
+    if (point_light_state_ == StartupState::returned)
+        return point_light_registration_status_;
+    if (point_light_state_ == StartupState::threw)
+        throw std::logic_error("resource point-light pool startup previously threw");
+    point_light_state_ = StartupState::threw;
+    bind_static_native_point_light_pool_0109011c(point_light_);
+    point_light_registration_status_ = initialize_static_native_point_light_pool_00cd8060();
+    point_light_state_ = StartupState::returned;
+    return point_light_registration_status_;
+}
+
+NativePointLightPool& GameNativeResourcePoolProcess::point_light_pool_0109011c() {
+    std::lock_guard lock(startup_mutex_);
+    if (point_light_state_ != StartupState::returned)
+        throw std::logic_error("resource point-light pool requires completed explicit startup");
+    return point_light_;
 }
 
 } // namespace bsp::game

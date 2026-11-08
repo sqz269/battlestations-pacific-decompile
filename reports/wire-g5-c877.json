@@ -1,0 +1,294 @@
+{
+  "goal": 5,
+  "chain": 877,
+  "slot": "g5-w7",
+  "rows": [
+    {
+      "native": "00aacdf0",
+      "status": "wired",
+      "host_site": "include/bsp/native_gui_movie_pool_table.hpp: native_gui_movie_pool_table_reserve_00aad4d0"
+    },
+    {
+      "native": "00aace40",
+      "status": "skipped",
+      "host_site": "include/bsp/native_gui_movie_pool_table.hpp: native_gui_movie_pool_table_push_back_00aad450",
+      "reason": "Prepared and fixture-tested on the actual pool type, but the production executable has no native Movie factory calling pool.allocate; CRT startup only reserves the table."
+    },
+    {
+      "native": "00aad450",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate",
+      "reason": "Prepared and fixture-tested on the actual pool type, but the production executable has no native Movie factory calling pool.allocate; CRT startup only reserves the table."
+    },
+    {
+      "native": "00aad4d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize"
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner skill notification",
+      "reason": "Existing host already calls the reconstructed skill body with the loaded descriptor and actual shared random stream; an additional call would duplicate it."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and transport consumer; the inspected host exposes flattened controller facts."
+    },
+    {
+      "native": "00708920",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: allocate_pool_slot_00708920",
+      "reason": "Missing the entry-reachable fish-school creator and its FishSchoolCreateCalls/render providers."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing the production binding from the actual GUI manager to the projected pointer owner and complete input/hit-test services."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "No live authored-curve producer and control-point consumer was established for the projected vector body."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "The existing wrapper already invokes the body; a new entry-reachable declaration owner/consumer was not established here."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: remove_native_loading_work_item_00501670",
+      "reason": "Missing an entry-reachable loading-queue work-item owner and concrete retirement binding."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_work_items.cpp: enqueue_native_loading_job_005055c0",
+      "reason": "Missing the live native loader owner and complete submission/retirement services for this queue."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate attack value",
+      "reason": "Missing resolved air-support plane-class weapon-value facts needed by compose_against_group."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list provenance",
+      "reason": "The documented candidate-list reader is an excluded debug overlay; no gameplay list consumer was established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list provenance",
+      "reason": "Missing live candidate-score records and a gameplay consumer of their chosen flags; the known reader is debug-only."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp: initialize_native_command_target_004f1830",
+      "reason": "The literal body reads native absolute mutable globals F87574/F87578/F8757C; their production transport and complete native target owner are not established."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty-descriptor construction site with its real class-ordinal publication."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/entity_lifecycle_tails.cpp: marker_drop_unit_006de3f0",
+      "reason": "Missing the retained marker slot, per-entry keep flags and observer-pair lifecycle consumer for the complete drop operation."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile water transition",
+      "reason": "Missing the shot interface retained +24h/+28h effect slots and complete effect lifecycle providers; flattened water flags are insufficient."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established original consumer is the excluded debug inspector, not gameplay."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: render metadata publication",
+      "reason": "Existing native scene submission already directly calls this body; another call would duplicate the metadata write."
+    },
+    {
+      "native": "00abc410",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: existing traits-bound member",
+      "reason": "Baseline readiness already records an entry-reachable compiled call through the pool specialization; no extra call is warranted."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: existing traits-bound member",
+      "reason": "Baseline readiness already records an entry-reachable compiled call through the pool specialization; no extra call is warranted."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: existing traits-bound member",
+      "reason": "Baseline readiness already records an entry-reachable compiled call through the pool specialization; no extra call is warranted."
+    },
+    {
+      "native": "004b4850",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: game_map_box_center_004b4850",
+      "reason": "No live map-center consumer with the original GameMapBox state was established in the inspected hosts."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_list_set_layer_00419fa0",
+      "reason": "The existing search already calls the same body; no additional production search binding was established in this packet."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_list_refill_004224c0",
+      "reason": "The existing search already calls the same body; an additional call would replay the refill on that path."
+    }
+  ],
+  "implementation": "Reuse existing capacity source alias and AACE40 growth body; reconstruct Movie append/reserve and bind the real F8BD4C pool+28h table via Movie member specializations. Add original Movie CRT startup CD70F0 (table CE3458) before Icon; append/growth remain prepared work pending the native Movie factory.",
+  "assumptions": [
+    "Equivalent out-of-line pointer-vector members may replace the identical inline Movie constructor/allocation schedules without changing their native state or lifetime."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all four CTests",
+    "fixture": "PASS: 129 Movie slots; 33 slabs; capacity 32 -> 66; payloads, trailers, trim and teardown",
+    "call_graph_before": 5599,
+    "call_graph_after": 5601,
+    "readiness_before": 10728,
+    "readiness_after": 10728,
+    "game_run": false,
+    "abi_compatible": false,
+    "production_build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w7\\build\\win32",
+    "call_graph_no_inline": false,
+    "called_delta": 2,
+    "entry_path": "WinMain -> GameNativeGuiWidgetPoolProcess<GuiMoviePoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize -> initialize_pool -> native_gui_movie_pool_table_reserve_00aad4d0 -> native_gui_movie_pool_table_set_capacity_00aacdf0",
+    "fixture_compile": "MSVC x86 /std:c++17 /EHsc /O2 /MD /DNDEBUG /Iinclude; links bsp_core, bsp_lua511, bsp_zlib121 and the standard game Windows libraries; /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:NOICF; output c877_movie_probe.exe",
+    "float_math_changed": false,
+    "readiness_graph_stale": false,
+    "readiness_note": "Text-state summary stays 10728 -> 10728; AACDF0 is called=true despite callees_done_no_wired_caller. AAD4D0 is a newly reconstructed tagged template entry outside the old readiness rows. The production PE call graph directly confirms both suffix symbols and a 5599 -> 5601 increase.",
+    "non_reachable_prepared": [
+      "00aace40",
+      "00aad450"
+    ]
+  },
+  "remaining": "Movie append/growth need a production native Movie allocation owner. C++ interfaces are not original register-ABI replacements; no gameplay or live GUI validation.",
+  "producer_evidence": "Saved bsp.gpr /battlestationspacific.exe: ghidra xrefs F8BD4C, decompile/disasm CD70F0. MOV ECX,F8BD4C at CD70F0; CALL AAD5F0 at CD70F5; PUSH CE0A50 at CD70FA; atexit at CD70FF. CRT table reference CE3458. initialize_once reuses the existing process storage/allocator-list owner and one-shot teardown registration.",
+  "integration_note": "Common game_main failure flag/diagnostics deliberately use the same gui_widget_pool_startup_incomplete rename as c881 Line work; retain the separate Movie (before Icon), Button and Line startup blocks when landing concurrent work. Material/GUI-header edits are explicit Movie member specializations, leaving generic and Icon/Button/Line dispatch alone.",
+  "merge_repair": {
+    "origin_main": "4301b06ffb843dfed252396e36dab0c414e8e947",
+    "original_head": "f0199fd6b0667d5fb986255a1f8ee81bc675f32a",
+    "conflict_files": [
+      "src/native_material_pools.cpp"
+    ],
+    "resolution": "Reviewed the helper union of pure insertions: retain incoming WidgetSlabAppender<T>/Icon specialization and generic allocate routing, plus Movie initialize/allocate specializations and their include. No ledger or cmake/startup.cmake conflict. Diff against origin/main leaves only the intended Movie source/header additions.",
+    "normal_build": "scripts/build.ps1 passed all four CTests",
+    "movie_fixture": "129 Movie slots; 33 slabs; capacity 32 -> 66; payloads/trailers and trim/teardown pass",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c877-merge-on-build.log",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_restored_against_merge_index": true,
+      "backup_manifest_remaining": false,
+      "ctests_passed": 4
+    },
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "summary": {
+        "wired": 10739,
+        "callees_done_no_wired_caller": 8533,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "graph_stale": false,
+      "aacdf0_called": true,
+      "aacdf0_call_sites": 2,
+      "aad4d0": "Direct PE who/path confirms reachable Movie initialize_pool call; new tagged entry remains outside old readiness rows"
+    },
+    "production_called": 5625,
+    "source_calls": "AACDF0 remains called by AAD4D0; AAD4D0 remains called by Movie initialize_pool, reached from WinMain startup.",
+    "game_run": false,
+    "restored_normal_build": "scripts/build.ps1 passed all four CTests after ON restoration",
+    "call_graph_meta": {
+      "build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w7\\build\\win32",
+      "map_mtime": 1794149847.5310607,
+      "exe_mtime": 1794149847.5230072,
+      "head": "f0199fd6b0667d5fb986255a1f8ee81bc675f32a",
+      "no_inline": false,
+      "seconds": 4.7,
+      "orphan_contributions": {}
+    },
+    "tests": "Normal, ON and restored-normal builds each pass all four CTests; focused 129-slot Movie fixture passes against merged library."
+  },
+  "merge_repair_2": {
+    "origin_main": "77d866ef5be57d717c8cda9c219654f7b657c2de",
+    "prior_head": "05ede76eb798533eb45edecdc69f58ed143410d2",
+    "conflict_files": [
+      "src/game_main.cpp",
+      "src/native_material_pools.cpp"
+    ],
+    "resolution": "Manually resolved all five source hunks. Keep Button table include/helpers/specializations and Movie include/specializations, with each allocation method independently closed. Keep Button CE3450 -> Movie CE3458 -> Icon CE3468 startup order. Preserve their shared gui_widget_pool_startup_incomplete guard and generic widget/Text/Group failure-retention messages. Incoming Icon appender routing retained. Ledger shard merged automatically; merge_resolve.py found zero remaining conflicts.",
+    "normal_build": "scripts/build.ps1 passed all four CTests",
+    "movie_fixture": "129 Movie slots; 33 slabs; table 32 -> 66; retained payloads/trailers and trim/teardown passed",
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --log local/c877-merge2-on-build.log",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "ctests_passed": 4,
+      "switches": [
+        "kAutoAttackAllMembersBound",
+        "kPlaneFormationPlacementEnabled"
+      ],
+      "headers_restored_against_merge_index": true
+    },
+    "restored_normal_build": "scripts/build.ps1 passed all four CTests after automatic ON restoration",
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "summary": {
+        "wired": 10741,
+        "callees_done_no_wired_caller": 8531,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "graph_stale": false,
+      "aacdf0_called": true,
+      "production_called": 5633
+    },
+    "game_run": false,
+    "call_graph_meta": {
+      "build_dir": "J:\\PROG\\battlestations-pacific-decompile-g5-w7\\build\\win32",
+      "map_mtime": 1794150628.5744345,
+      "exe_mtime": 1794150628.5681837,
+      "head": "05ede76eb798533eb45edecdc69f58ed143410d2",
+      "no_inline": false,
+      "seconds": 4.3,
+      "orphan_contributions": {}
+    },
+    "source_calls": "Movie AAD4D0 and Button AABD00 are each called by their respective entry-reachable initialize_pool specializations. The linker folds their identical bodies at one address but retains both distinct caller sites. AACDF0 remains called; allocation/growth work stays prepared, not claimed wired.",
+    "headers_restored_against_merge_index": true
+  }
+}

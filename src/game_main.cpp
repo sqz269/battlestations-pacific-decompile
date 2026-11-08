@@ -49,6 +49,7 @@
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
+#include "bsp/game_native_traceline_pool.hpp"
 #include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_surface_pool.hpp"
@@ -1152,15 +1153,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
             "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
-        // Live Ghidra CD70F0, CRT cell CE3458 (between Button CE3450 and
-        // Icon CE3468): ECX=F8BD4C, CALL AAD5F0, atexit(CE0A50).
+        // CE3458/CD70F0: MOV ECX,F8BD4C; CALL AAD5F0; atexit(CE0A50).
+        // Live Ghidra confirms this lies between Button CE3450 and Icon CE3468.
+        // Start the same retained Movie pool used by AAD990 before Icon.
+        // This reserves the table; Movie factory/allocation remains separate.
         auto& gui_movie_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
             bsp::GuiMoviePoolTraits>::instance();
         gui_widget_pool_startup_incomplete = true;
         const int movie_pool_atexit = gui_movie_pool.initialize_once();
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Movie pool CRT CD70F0: atexit=%d storage_bytes=%zu "
-            "before_gui_icon_pool=1", movie_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+            "before_icon_pool=1", movie_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3468/CD7180 starts the SAME F8BDA0 process pool used by AA1410.
         // No Icon allocation or Page factory is entered by pool startup.
         auto& gui_icon_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
@@ -1179,6 +1182,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native GUI Text pool CRT CD71F0: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1 type_bootstrap=pending_canonical_vfs",
             text_pool_atexit, sizeof(bsp::NativeGuiTextPoolStorage));
+        // CE3480/CD7280: ECX=F8BE5C, CALL ABC570, atexit(CE0AA0).
+        // Start the SAME Curve process owner used by AA1800 after Text and
+        // before Group; its constructor reserves the actual pool+28h table.
+        auto& gui_curve_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiCurvePoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int curve_pool_atexit = gui_curve_process.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
+            curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();
@@ -1186,6 +1199,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_pool_atexit = gui_group_process.initialize_once_00cd7440();
         log.notef("native GUI Group pool CRT CD7440: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", group_pool_atexit, sizeof(bsp::NativeGuiGroupPoolStorage));
+        // Original CRT table CE34E4 selects CD77F0, before the particle
+        // model entry CD7830 at CE34EC. Both use the same E188B4 domain.
+        auto& traceline_pool = bsp::game::game_native_traceline_pool_process();
+        const int traceline_atexit = traceline_pool.initialize_once();
+        log.notef("native Traceline pool CRT CD77F0: atexit=%d storage=process_actual38h",
+            traceline_atexit);
         auto& particle_pools = bsp::game::game_native_particle_pool_process();
         const int model_atexit = particle_pools.initialize_model_once_00cd7830();
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
@@ -1244,6 +1263,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int model_base_atexit = resource_pools.initialize_model_base_once_00cd7f20();
         log.notef("native model pools initialized: model_atexit=%d model_base_atexit=%d "
             "storage=process_actual38h/actual38h", resource_model_atexit, model_base_atexit);
+        // Original CRT slot CE3590 names CD8060, which initializes the distinct
+        // PointLight owner 0109011C and registers its CE0EA0 teardown.
+        const int point_light_atexit = resource_pools.initialize_point_light_once_00cd8060();
+        log.notef("native point-light pool CRT CD8060: atexit=%d", point_light_atexit);
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
         log.notef("native geometry pools initialized: mesh_atexit=%d section_atexit=%d "
             "storage=process_actual38h/actual38h", mesh_atexit, section_atexit);
@@ -1281,9 +1304,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
                 log.notef("native pool startup failed: %s", failure.what());
-                log.note("interrupted GUI Button/Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("interrupted GUI widget/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Button/Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI widget/Text/Group pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
@@ -1295,9 +1318,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             (text_pool_process && text_pool_process->native_operation_interrupted()) ||
             (group_pool_process && group_pool_process->native_operation_interrupted())) {
             try {
-                log.note("unknown interrupted GUI Button/Icon/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
+                log.note("unknown interrupted GUI widget/Text/Group pool startup; retaining raw pool/list state without CRT cleanup");
                 log.close();
-            } catch (...) { std::fputs("bsp_game: GUI Button/Icon/Text/Group pools require process retention\n", stderr); }
+            } catch (...) { std::fputs("bsp_game: GUI widget/Text/Group pools require process retention\n", stderr); }
             std::_Exit(2);
         }
         std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.

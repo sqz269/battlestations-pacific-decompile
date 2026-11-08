@@ -1,6 +1,7 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
+#include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -483,8 +484,24 @@ __declspec(noinline) void native_gui_group_pool_table_reserve_00ac7370(
 // GUI widget pool family (cc13-gui1, docs/CC13_GUI_1.md): fourteen more instances
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
 #include "bsp/terrain_bush_pool_cc13.hpp"
+#include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
+template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize() {
+    // 00ABC570 inlines 00ABC500's reserve(32) in unwind state 2.
+    // CD7280 constructs this same F8BE5C process owner, never a side table.
+    initialize_pool<GuiCurvePoolTraits,
+        &native_gui_curve_pool_table_reserve_00abc500>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
+    // 00ABC650 appends its initialized slab at +28h while the lock is held.
+    // Replace that inline append with its existing out-of-line equivalent.
+    return allocate_slot<GuiCurvePoolTraits,
+        &NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize_slab,
+        &native_gui_curve_pool_table_push_back_00abc480>(storage_);
+}
+
 namespace {
 template<class T> struct WidgetSlabInitializer {
     static constexpr auto entry = &NativeGuiWidgetPool<T>::initialize_slab;
@@ -545,6 +562,21 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
     // Address entry only: reuse the one pre-existing Icon member body.
     return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
 }
+// 00AAD5F0 / 00AAD6D0 inline the same reserve and append schedules as
+// 00AAD4D0 / 00AAD450. Borrow the real pool+28h header once, retaining the
+// allocator-list lifetime, first-free publication and allocation lock scope.
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
+    // 00AAD5F0 initializes pool+28h to {nullptr,0,0}, then reserves 32
+    // entries in unwind state 2. AAD4D0 reuses the one AACDF0 entry for
+    // that same inline allocation schedule on this retained process table.
+    initialize_pool<GuiMoviePoolTraits, &native_gui_movie_pool_table_reserve_00aad4d0>(
+        allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
+    return allocate_slot<GuiMoviePoolTraits, WidgetSlabInitializer<GuiMoviePoolTraits>::entry,
+        &native_gui_movie_pool_table_push_back_00aad450>(storage_);
+}
+
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.
@@ -576,22 +608,6 @@ template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize() {
     initialize_pool<GuiButtonPoolTraits,
         &reserve_native_gui_button_pool_table_00aabd00>(allocator_list_, storage_);
 }
-__declspec(noinline) void set_native_gui_movie_pool_table_capacity_00aacdf0(
-    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
-    // bsp.py show 00AACDF0: Movie's equivalent-address specialization uses
-    // the existing capacity-first allocate/copy/free/adopt implementation.
-    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
-}
-
-template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
-    // bsp.py show 00AAD5F0: immediately after initializing pool+28h to
-    // {nullptr,0,0}, native reserves 32 entries in unwind state 2. Its
-    // inline set-capacity schedule is exactly 00AACDF0, reused here on the
-    // SAME process table; there is no original CALL to that out-of-line entry.
-    initialize_pool<GuiMoviePoolTraits,
-        &set_native_gui_movie_pool_table_capacity_00aacdf0>(allocator_list_, storage_);
-}
-
 template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
     // 00AABF80 inlines 00AABC70 after initializing the actual 4084h slab,
     // under the existing pool lock. Replace its common append, running once.
