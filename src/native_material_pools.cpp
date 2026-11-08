@@ -64,7 +64,7 @@ void destroy_section(NativeMaterialPoolStorage& storage) noexcept {
     }
     DeleteCriticalSection(section(storage));
 }
-template<class Pool> void initialize_pool(
+template<class Pool, auto Reserve = &native_gui_pool_table_reserve_00aa7740> void initialize_pool(
     AllocatorListDomain& list, NativeMaterialPoolStorage& storage) {
     list.prepend_base_element(storage.allocator_00);
     storage.allocator_00.native_vtable_00 = Pool::native_vtable;
@@ -84,7 +84,7 @@ template<class Pool> void initialize_pool(
         // Source reuse of 00AA7740, not an original CALL claim: bsp.py show
         // 00AA79A0 has the same reserve(32) at pool+28h, inside unwind state 2.
         // The common pool engine retains the actual published table header.
-        native_gui_pool_table_reserve_00aa7740(native_gui_pool_slab_table(storage), 32);
+        Reserve(native_gui_pool_slab_table(storage), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table(storage);
@@ -442,6 +442,12 @@ template<class T> NativeGuiWidgetPool<T>::~NativeGuiWidgetPool() {
 }
 template<class T> void NativeGuiWidgetPool<T>::initialize() {
     initialize_pool<T>(allocator_list_, storage_);
+}
+template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize() {
+    // 00AB2850 inlines 00AB2420's reserve(32) at the same pool+28h header,
+    // in unwind state 2. CD7180 starts this retained F8BDA0 process pool.
+    initialize_pool<GuiIconPoolTraits,
+        &reserve_native_gui_icon_pool_table_00ab2420>(allocator_list_, storage_);
 }
 template<class T> void* NativeGuiWidgetPool<T>::allocate() {
     return allocate_slot<T>(storage_);
