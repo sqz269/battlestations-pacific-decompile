@@ -38,7 +38,7 @@
     {
       "native": "00651760",
       "status": "skipped",
-      "host_site": "src/game_hosts_hud.cpp:InGameInterfaceBinding submarine handoff (0068ACA0 caller)",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::apply_pending_interface_0068aca0 submarine handoff",
       "reason": "climb: 00651760 needs a native Submarine unit+122Ch and its observer/periscope/camera graph <- 008531A0 instance allocation <- 00852F10 submarine constructor <- 0081ED40 ship base constructor (stopped: no reconstructed full body; only seed_navigator_params_0081f214 is recorded). The semantic submarine-default helper does not construct a compatible native receiver; zeroing a shadow unit or borrowing a command-building allocation would invent the missing lifetime.",
       "required_fields": [
         "view+24h: 32-bit observed unit pointer",
@@ -82,7 +82,7 @@
     "0064b780": "REACHABLE; one compiled call at 1011AA09 from run_hud_leaf_screen_constructor",
     "00415680": "existing body now also called from HudLeafShipStatusBinding::eh_vector_construct_00bf7cd1",
     "remaining_rows": "00641910 and 00651760 remain unlinked in the built game",
-    "pc24": "Arithmetic operation order retained; final committed-range pc24_lint is run separately before reporting completion",
+    "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 10 files; arithmetic operation order retained",
     "limits": "Source, build, isolated geometry/layout and compiled reachability verified. No game was run; event occurrence, visual presentation, native ABI/FH3 behavior and original CRT dispatch policy are not claimed. Only the offered ship hit route is changed; plane damage-direction callers were outside this assignment."
   }
 }
