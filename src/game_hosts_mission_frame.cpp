@@ -4294,6 +4294,20 @@ void GameMissionFrameHost::bind_native_scene_remaps(GameNativeRendererApplicatio
     impl_->remap_names = names;
 }
 
+bool publish_scene_load_map_bounds(GameMissionLuaHost& lua,
+    const bsp::ScenePropertyBlock& root, std::int32_t mode,
+    bool forced, std::int32_t session) {
+    for (const auto& block : root.blocks) {
+        if (_stricmp(block.first.c_str(), "Map") != 0) continue;
+        bsp::WorldMapSettings settings;
+        if (!bsp::read_world_map_settings_004e6c00(block.second, settings)) return false;
+        lua.set_world_border_zones(bsp::select_world_map_bounds_004d5ede(
+            settings, mode, forced ? 1u : 0u, session));
+        return true;
+    }
+    return false;
+}
+
 void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path,
     const std::string& script_name, const std::string& locale_tables,
     std::int32_t mission_id, const bsp::SceneRecord* scene_record,
@@ -4431,19 +4445,6 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.scene_state.script_slot,
                     host.scene_state.script_slot_forced ? 1u : 0u,
                     host.scene_state.session_mode);
-                // Packet cc9_get_closest_border_zone: the same Map block and
-                // 004D5EDE selection, handed to the Lua host for world+7134h.
-                for (const auto& block : host.scene_contents->root_properties().blocks) {
-                    if (_stricmp(block.first.c_str(), "Map") != 0) continue;
-                    bsp::WorldMapSettings settings;
-                    if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
-                        host.lua.set_world_border_zones(bsp::select_world_map_bounds_004d5ede(
-                            settings, host.scene_state.script_slot,
-                            host.scene_state.script_slot_forced ? 1u : 0u,
-                            host.scene_state.session_mode));
-                    }
-                    break;
-                }
             });
             host.done(label, step.address);
             ++host.load.concrete;
@@ -4587,6 +4588,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.scene_state.scene_override, host.scene_state.script_slot,
                 host.scene_state.script_slot_forced,
                 host.scene_state.session_mode != 0);
+            // The scene read runs load-time InitAll below, before the inventory's
+            // later reset_avoid_zone_state step. Pass C can issue an on-water
+            // squadron's stop command, so its 007EF8F0 clamp needs this mission's
+            // selected world+711Ch..+7130h now (chain 787 review regression).
+            publish_scene_load_map_bounds(host.lua, host.scene_contents->root_properties(),
+                host.scene_state.script_slot, host.scene_state.script_slot_forced,
+                host.scene_state.session_mode);
             host.done(label, step.address);
             ++host.load.concrete;
             // Milestone 2i: the instances the instantiate pass created become

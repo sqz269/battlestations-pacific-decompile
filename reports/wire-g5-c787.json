@@ -170,11 +170,24 @@
     "baseline_call_graph": "42502/42656 entry-reachable functions; 5477/6091 reconstructed addresses called",
     "build": "scripts/build.ps1 passed all four tests after the host change",
     "call_graph": "42503/42657 entry-reachable functions; 5478/6092 reconstructed addresses called",
-    "target_call": "REACHABLE at 10506fa0; one call site at 102a3518 from GameUnitsHost::on_squadron_pass_c_initial_command",
+    "target_call": "Review round 1 rebuild: REACHABLE at 10506b60; one call site at 102a30d8 from GameUnitsHost::on_squadron_pass_c_initial_command",
     "readiness": "007ef8f0 state=wired, called=true, call_sites=1, callers_live=1; total wired 10631 -> 10632",
-    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD passed: zero findings, one file scanned; no new arithmetic.",
+    "pc24_lint": "Review round 1: python tools/pc24_lint.py --diff origin/main...HEAD passed: zero findings, four files scanned.",
     "original_evidence": "bsp.py show 007ef8f0 --asm; bsp.py show 007f4ba0 --asm (007F4E87 caller and 007F4E91 descriptor construction)",
-    "new_tests": "None; the existing body is unchanged and this packet replaces only its host input/call path."
+    "new_tests": "Review round 1 adds one headless source fixture, tests/wire_g5_c787_fresh_load_probe.cpp, exercising the shared Map publication producer, real InitAll/pass C, 007EF8F0, and command delivery."
+  },
+  "review_round_1": {
+    "run": 1715,
+    "finding": "P1: Fresh-load squadron pass C precedes the reset_avoid_zone_state bounds publication, dropping initial on-water stop commands without a retry.",
+    "disposition": "fixed",
+    "agreement": "The review is correct. Source-line order obscured the runtime load-inventory order; the first version relied on bounds that had not yet been published.",
+    "change": "Extract the existing Map decode/selection/publication into publish_scene_load_map_bounds. Call it immediately after this mission's scene read, before units are created and before load-time InitAll. Remove the later publication from reset_avoid_zone_state.",
+    "fresh_load_fixture": "Starts with world_border_bounds()==nullptr, publishes synthetic current-mission Map data through the production producer, and runs the real run_scene_load_init_all_0046eb4b over a scene squadron. Production placement selects Water and pass C issues exactly one stop that is delivered into a director slot near (99,0,-199), including command-message quantization.",
+    "negative_control": "The same fixture with --late publishes the same Map after InitAll; it exits 1 with 'fresh-load water squadron lost its initial stop command'. No retry is synthesized.",
+    "probe_command": "Generate a linker response listing rebuilt bsp_game Release objects except game_main.obj, plus bsp_core/lua/zlib and the game's Windows libraries; run local/c787-probe.cmd. The fixture header documents the linking contract. Probe links with /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO and maps the original PE as read-only data only.",
+    "build": "scripts/build.ps1 passed all four tests after the production fix; the focused fixture separately compiled and passed.",
+    "readiness": "Recomputed after the fix: total wired remains 10632; 007ef8f0 is wired, called=true, call_sites=1.",
+    "scope": "Headless source-fixture and static call-graph evidence only; no full game, installed-scene gameplay, or original ABI validation."
   },
   "limits": [
     "No game run was performed.",
