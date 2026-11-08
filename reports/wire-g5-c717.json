@@ -1,0 +1,382 @@
+{
+  "run": 1533,
+  "goal": 5,
+  "chain": 717,
+  "slot": "g5-w4",
+  "branch": "agent/g5-w4",
+  "baseline_head": "39f0521edf8d054ff6e70be28d46fd3666ef4347",
+  "summary": "Retain the original constructor's initially empty map-ping list and call its expiry walk from the live minimap objective pass.",
+  "wired_before": 10465,
+  "wired_after": 10467,
+  "reachable_reconstructed_before": 5899,
+  "reachable_reconstructed_after": 5901,
+  "rows": [
+    {
+      "native": "008e2b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapPingList::MinimapPingList (GameHudMinimapHost::Impl construction)",
+      "evidence": "bsp.py show 008e2b90 and 008e28f0; call_graph.py who 008e2b90: reachable, one call from GameHudMinimapHost::Impl::Impl"
+    },
+    {
+      "native": "008e2bf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: place_objective_markers_005c1e00 -> MinimapPingList::prune",
+      "evidence": "bsp.py show 008e2bf0; call_graph.py who/path 008e2bf0: reachable, one call from place_objective_markers_005c1e00 through the mission HUD frame chain"
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: MarkerRuntimeBinding::gui_extent",
+      "reason": "Already invoked inline on live platform widescreen/aspect state; no new behavior to wire here."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBinding::bind_movie_textures",
+      "reason": "The real movie decoder/player and material texture owners are missing."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: subtitle reset path",
+      "reason": "The raw movie Text widget and subtitle/extratitle owner containers are missing."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::instance",
+      "reason": "Only a shared lazy-singleton table row exists; no address-specific callable body exists."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: air-support use arm",
+      "reason": "The real air-support spatial query, spawn-member properties and pending spawn-manager queue are missing."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: retained formation-group reads",
+      "reason": "The live per-member +04h vector publication and matching consumer boundary were not established; literal miss reads also require native zero-vector cells."
+    },
+    {
+      "native": "00876ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: unit visual group-state publication",
+      "reason": "The descriptor effect, announcement manager and native model-group owner contract are missing on this path."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight pilot-target tests",
+      "reason": "The real per-parity pilot target array at plane+DF4h is missing; semantic dogfight/command targets are substitutions."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_internal.hpp: pilot fast-path gate",
+      "reason": "The actual task+2F4h unit and its per-parity +9C2h byte producer are missing."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: converging path-leg ownership",
+      "reason": "Only the semantic LegAltitudeManager is hosted; the raw singleton/registry/critical-section owner is missing."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline teardown",
+      "reason": "No teardown adapter was changed here; agent/g5-w8 subsequently claimed this function and baseline lifetime."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "The real checkpoint-difference gate and complete archive rewrite boundary are missing; the existing clear-only projection is insufficient."
+    },
+    {
+      "native": "00753810",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::report_mission_start_metrics",
+      "reason": "Xbox Live sign-in/account telemetry path; excluded from single-player wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum insertion",
+      "reason": "Already has reachable calls in the baseline executable."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: complete child merge",
+      "reason": "Already has reachable calls in the baseline executable."
+    },
+    {
+      "native": "004ed690",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: read_scene_music_group",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "004ee450",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_ship.inc: scene sky/light read",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "008f04c0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: replace float-array payload",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "008f0520",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: replace integer-array payload",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "008f0580",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: replace vector3-array payload",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "008f0700",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_merge.cpp: overwrite existing property",
+      "reason": "Already has a reachable call in the baseline executable."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: future HUD map input producer",
+      "reason": "The HUD map-screen cursor/input-to-world ping producer is missing; no fabricated ping event is supplied."
+    },
+    {
+      "native": "008e2da0",
+      "status": "skipped",
+      "host_site": "src/objectives_seg57_argon.cpp: map_ping_handle_received_008e2da0",
+      "reason": "The native game/player pointer table and actual incoming message producer are missing."
+    },
+    {
+      "native": "008e2e50",
+      "status": "skipped",
+      "host_site": "src/objectives_seg57_argon.cpp: map_ping_add_local_008e2e50",
+      "reason": "The real HUD map-screen input producer and native game/player publication are missing."
+    },
+    {
+      "native": "008e25f0",
+      "status": "skipped",
+      "host_site": "src/objectives_seg57_argon.cpp: map_ping_reset_cooldown_008e25f0",
+      "reason": "The real sender cooldown cell and its map-input lifecycle producer are missing."
+    },
+    {
+      "native": "008e28f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapPingList::stl_list_buy_head_node_008e28f0",
+      "reason": "No existing reconstructed address-bearing body exists; the adapter retains its 1Ch allocation and self-link schedule without claiming body credit."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "No frame-job-thread deferred named-call producer runs in the current main-thread Lua host."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/mission_named_call_args.cpp: result-sink lifecycle",
+      "reason": "The active semantic named-call result type differs from the existing body's LuaVariantRecord sink; an owning conversion/lifecycle is missing."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: plane failure queue",
+      "reason": "The C8h deadmeat-rotation message is routed only for multiplayer; excluded from single-player wiring."
+    },
+    {
+      "native": "0071c0a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: weapon-director flags",
+      "reason": "The actual DirectorFlags +1CCh field and original caller boundary were not established in the semantic command owner."
+    },
+    {
+      "native": "0071c480",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: arg_is_zero_0071c480",
+      "reason": "No matching live argument-zero virtual-dispatch caller was established; an arbitrary comparison replacement would not establish that contract."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path editing",
+      "reason": "The body only selects the last-filled slot; the native tail dispatch needs an actual retained path object and live edit caller."
+    },
+    {
+      "native": "0071cf30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: oriented_rect_clamp_0071cf30",
+      "reason": "Unreferenced in the original call graph; no game-run caller was established."
+    },
+    {
+      "native": "009d7780",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect_distance_to_point_009d7780",
+      "reason": "Unreferenced in the original image; no game-run caller was established."
+    },
+    {
+      "native": "009d7930",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: oriented_rect2_distance_to_point_009d7930",
+      "reason": "Unreferenced in the original image; no game-run caller was established."
+    },
+    {
+      "native": "009c6220",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: math_clamp_symmetric_009c6220",
+      "reason": "Unreferenced in the original call graph; no game-run caller was established."
+    },
+    {
+      "native": "00412f60",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: int_clamp_00412f60",
+      "reason": "Unreferenced in the original image; no game-run caller was established."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: explicit float-property parsing",
+      "reason": "The active SceneLexer does not own the genuine 838h tokenizer/context required by the existing complete body."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: unknown property-group skipping",
+      "reason": "The active SceneLexer does not own the genuine native tokenizer/value context required by the complete body."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: escape_scene_text_008ee5f0",
+      "reason": "No game-run scene-save text writer caller was established; current options output uses a different format."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "Already calls the existing unsuffixed set_scroll_range body on live scroller state; renaming alone would add attribution rather than wiring."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: listbox highlight lifecycle",
+      "reason": "The actual raw listbox row links/highlight-manager provider boundary is missing from the typed runtime."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: listbox highlight-width publication",
+      "reason": "No live width-reset/layout caller with the required raw listbox fields was established."
+    },
+    {
+      "native": "00440a30",
+      "status": "skipped",
+      "host_site": "src/seg3_4_cc13.cpp: ref_slot_release_00440a30",
+      "reason": "No suitable live native intrusive-reference slot and current deleting-dispatch binding were established."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: register_native_material_float3_00b18ae0",
+      "reason": "Its terrain/rain/cloud/ocean float3 registration callers lack linked live owner paths in this baseline."
+    },
+    {
+      "native": "00b18b40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: register_matrices",
+      "reason": "The native particle-model constructor root is not linked in this build."
+    },
+    {
+      "native": "00af74a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: particle-model construction",
+      "reason": "No linked live particle-model creation caller was established; only manager/pool construction is reachable."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: camera FOV/aspect reads",
+      "reason": "The inspected shadow/frustum callers are not linked; no live camera consumer boundary was established here."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "No linked live cascade fitting root was established in the current executable."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "The active text-editor owner, selected-row producer and input-action reset binding are missing."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: last-command metadata",
+      "reason": "A live command producer supplying the original three metadata words is missing from the inspected queue path."
+    },
+    {
+      "native": "00b1cb30",
+      "status": "skipped",
+      "host_site": "src/native_render_batch_preparation_actual.cpp: batch sort configuration",
+      "reason": "Already called by the live batch preparation source; the wrapper is inlined in the current build."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile_owns_content",
+      "reason": "ProfileResetState has no native profile+CC/D0 owned-content list; a genuine producer is missing."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: animation-value reserve",
+      "reason": "The inspected native animation-resource item reader root is not linked in this executable."
+    },
+    {
+      "native": "00b0d0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: movie black-bar updates",
+      "reason": "The real movie/engine-movie black-bar update consumer remains a record."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::lock_branch",
+      "reason": "The lock branch still lacks its actual command-row table producer and full branch implementation."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: unit-marker widget placement",
+      "reason": "The six live screen-margin global cells and original clamp-consuming widget writer are missing on this path."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "python tools/call_graph.py; who 008e2b90; who/path 008e2bf0",
+    "readiness": "python tools/wire_readiness.py --standins: both rows wired, called=true, call_sites=1",
+    "diff_check": "git diff --check passed",
+    "float_math": "No arithmetic changed; existing expiry comparison is unchanged.",
+    "runtime": "Game was not run."
+  },
+  "limitations": [
+    "No synthetic ping events are injected. The real HUD map-input and incoming-message producers remain unbound, so current single-player uses the original constructor's empty state.",
+    "The Source list is retained by the minimap owner, rather than claiming original game+21C8h pointer/ABI compatibility.",
+    "Construction, lifetime, layout and reachable calls are build/static evidence; nonempty expiry and visual ping behavior are not game-validated."
+  ]
+}

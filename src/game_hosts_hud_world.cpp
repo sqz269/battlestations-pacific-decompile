@@ -6,6 +6,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_world.hpp"
@@ -44,6 +45,8 @@
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/cc13_sweepB3.hpp"
+#include "bsp/objectives_seg57_argon.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <algorithm>
 #include <array>
@@ -51,6 +54,7 @@
 #include <cmath>
 #include <cstdio>
 #include <map>
+#include <new>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -98,6 +102,87 @@ int marker_colour_index_00639990(int team_id) noexcept {
     return 5;
 }
 
+// Goal 5 chain 717: the list formerly represented only by the prune record.
+// bsp.py show 008E2B90 / 008E28F0: the world constructor's list is initially
+// empty, with a real 1Ch self-linked sentinel. Retain that native layout and
+// the same allocation domain through the HUD lifetime. This owner supplies no
+// synthetic ping: 005B45C0's input and the session receive producer remain
+// unbound, so single-player currently retains the constructor's empty state.
+class MinimapPingList final : public bsp::objectives_seg57_argon::MapPingListHost {
+    struct Node {
+        Node* next;
+        Node* previous;
+        std::uint32_t party;
+        std::uint32_t field_0c;
+        float x;
+        float y;
+        float expiry;
+    };
+    struct Storage {
+        std::uint32_t profile;
+        std::uint32_t allocator; // constructor-unwritten, never consumed here
+        Node* head;
+        std::uint32_t count;
+    } storage_;
+    static_assert(sizeof(Node) == 0x1c && offsetof(Node, expiry) == 0x18);
+    static_assert(sizeof(Storage) == 0x10 && offsetof(Storage, head) == 8);
+    static_assert(offsetof(Storage, count) == 0x0c);
+
+public:
+    MinimapPingList() {
+        bsp::objectives_seg57_argon::map_ping_list_construct_008e2b90(*this, &storage_);
+    }
+    ~MinimapPingList() override {
+        auto* node = storage_.head->next;
+        while (node != storage_.head) {
+            auto* const next = node->next;
+            bsp::singleton_lifetime_free(node);
+            node = next;
+        }
+        bsp::singleton_lifetime_free(storage_.head);
+    }
+    MinimapPingList(const MinimapPingList&) = delete;
+    MinimapPingList& operator=(const MinimapPingList&) = delete;
+
+    void prune(bsp::MissionResultHost& clock_source) {
+        clock_source_ = &clock_source;
+        // 005C22DE..005C22EA calls the original expiry body on the same
+        // retained list, after all objective entries and before pool trimming.
+        bsp::objectives_seg57_argon::map_ping_list_prune_expired_008e2bf0(*this, &storage_);
+        clock_source_ = nullptr;
+    }
+
+private:
+    float& global_f32(std::uint32_t address) override {
+        if (address != 0x00f876a4u || clock_source_ == nullptr)
+            throw std::logic_error("Map ping expiry requires the live mission clock");
+        // Re-read the same mission clock used by Lua, scoring and objectives
+        // at every native read boundary; there is no local elapsed-time clock.
+        clock_read_ = clock_source_->mission_clock();
+        return clock_read_;
+    }
+    void* image_address(std::uint32_t address) override {
+        if (address != 0x00d16168u)
+            throw std::logic_error("Unexpected map ping list profile");
+        // An opaque profile word, never dispatched as a host vtable.
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(address));
+    }
+    void* stl_list_buy_head_node_008e28f0() override {
+        auto* const head = static_cast<Node*>(bsp::singleton_lifetime_allocate(
+            {bsp::SingletonAllocationKind::object, sizeof(Node), sizeof(Node)}));
+        if (head == nullptr) throw std::bad_alloc();
+        head->next = head;
+        head->previous = head;
+        return head;
+    }
+    void free_00bf65ac(void* node) override { bsp::singleton_lifetime_free(node); }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("Invalid map ping list iterator");
+    }
+    bsp::MissionResultHost* clock_source_{nullptr};
+    float clock_read_; // assigned from the live source before any read
+};
+
 }  // namespace
 
 // ===========================================================================
@@ -112,6 +197,7 @@ struct GameHudMinimapHost::Impl {
     GameUnitsHost* units{nullptr};
     GameMissionLuaHost* lua{nullptr};
     GameHudMinimapSummary summary;
+    MinimapPingList map_pings;
 
     GuiLayoutPage* page{nullptr};
     // The six `item_ship_Icon` templates at screen +6Ch..+7Ch, indexed by the
@@ -889,10 +975,12 @@ void place_objective_markers_005c1e00(GameHudMinimapHost::Impl& host, MinimapBin
             for (const std::size_t unit : objective.units) place_entry(objective, true, unit, {});
         }
     }
-    // 005C22DE..005C22EA 008E2BF0 on [game+21C8h]: the map pings come only
-    // from the HUD map screen (005B45C0 -> 008E2EE0) and the session, neither
-    // of which runs here, so the list is empty and the prune has nothing to do.
-    host.record("HudMinimap::map_ping_prune", 0x008e2bf0u);
+    GameMissionResultHost* const result = host.lua != nullptr
+        ? host.lua->mission_result() : nullptr;
+    if (result == nullptr)
+        throw std::logic_error("Minimap ping expiry requires the attached mission clock");
+    host.map_pings.prune(*result);
+    host.done("HudMinimap::map_ping_prune", 0x008e2bf0u);
     host.hide_unused_objective_markers();
     host.summary.objective_markers_placed = placed;
     if (placed > 0 && !host.logged_objective_marker) {
