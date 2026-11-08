@@ -37,6 +37,13 @@ private:
 void* initialize_native_gui_group_slab_00ac6ff0(void*,std::uint32_t index) noexcept;
 // Complete pointer-table cleanup; actual header is pool+28. No clearing.
 void free_native_gui_group_pool_table_00ac70d0(void* actual_header) noexcept;
+// The SAME Group pool+28h pointer/count/capacity header, not a copied vector.
+// Native ECX=header; capacity/reference arguments use RET4, Grow uses RET.
+struct NativeGuiPoolSlabTable;
+void native_gui_group_pool_table_set_capacity_00ac7100(NativeGuiPoolSlabTable&, std::uint32_t);
+void native_gui_group_pool_table_grow_00ac7150(NativeGuiPoolSlabTable&);
+void native_gui_group_pool_table_push_back_00ac72e0(NativeGuiPoolSlabTable&, std::byte* const&);
+void native_gui_group_pool_table_reserve_00ac7370(NativeGuiPoolSlabTable&, std::uint32_t);
 
 namespace game {
 // Process storage binding only. Explicit CD7440 first performs AC7410, then

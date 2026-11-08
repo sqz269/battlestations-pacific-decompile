@@ -556,7 +556,9 @@ Object* ref_ptr_attach_0086afc0(Seg53Host& host, Object* ref, Object raw);
 void node_ref_release(Seg53Host& host, Object* handle);
 
 // --- recon categories (NativeString {size, ptr}) ---
-std::int32_t recon_category_index_from_name_0085bce0(Seg53Host& host, Object name);
+// category_names supplies the 19 pointers from 00E0B590; the caller may use
+// their literal spellings when the original global table is not mapped.
+std::int32_t recon_category_index_from_name_0085bce0(const char* const* category_names, Object name);
 std::int32_t recon_category_from_class_type_name_0085bd50(Seg53Host& host, Object name);
 
 // --- unit gunnery AI group switches (category mask words at +80h + 4*category) ---

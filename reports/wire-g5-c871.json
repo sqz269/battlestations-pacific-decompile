@@ -282,5 +282,41 @@
     "compiled_reconstructed_called": 5597,
     "compiled_reconstructed_total": 6220,
     "readiness_wired": 10723
+  },
+  "merge_repair": {
+    "merged_origin_main": "d005742426fb0da36b29928748126a69fdede1d3",
+    "conflicts": [
+      "src/native_material_pools.cpp: equivalent one-line versus two-line initialize_pool template declaration"
+    ],
+    "resolution": "Kept origin/main formatting and both sides intent: Group and Icon source changes remain, with ShaderStateList Reserve/Append routing and all four B62xxx helpers. No ledger or cmake/startup.cmake conflicts occurred.",
+    "default_build": "scripts/build.ps1 passed; 4/4 CTests",
+    "on_build": "scripts/build.ps1 with BSP_NATIVE_GUI_TEXT=1 passed; 4/4 CTests",
+    "on_mode_definition": "Current CMakeLists.txt compiles native GUI services unconditionally. BSP_NATIVE_GUI_TEXT=1 selects the application route at runtime; there is no separate compile-time ON configuration. No game launched.",
+    "pc24_lint": "0 findings, 0 allowed, 2 files",
+    "compiled_graph": "5621/6255 reconstructed addresses called after merging main; all four ShaderStateList helpers remain distinct entry-reachable bodies (who: 2/1/1/1 call sites). This combined total includes incoming main changes.",
+    "wire_readiness": {
+      "completed": true,
+      "summary": {
+        "wired": 10733,
+        "callees_done_no_wired_caller": 8539,
+        "ready": 1202,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "called_count": {
+        "called": 6030,
+        "called_not_wired": 355,
+        "wired_not_called": 41,
+        "not_in_binary": 14654
+      },
+      "shader_helpers_scope": "Four TMPL_/tmpl_shape helpers remain excluded from game-only rows; all four verified by compiled who queries."
+    },
+    "checks_logs": [
+      "local/output/c871-merge-build.log",
+      "local/output/c871-merge-on-build.log",
+      "local/output/c871-merge-call-graph.log",
+      "local/output/c871-merge-readiness.log"
+    ],
+    "diff_check": "git diff --check and cached diff check passed; no unresolved files"
   }
 }

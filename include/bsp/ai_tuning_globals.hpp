@@ -79,6 +79,8 @@ inline constexpr std::uint32_t kAiTuningCloseAttackTargetGroupMemberMul = 0x204;
 inline constexpr std::uint32_t kAiTuningAutoMergeMergeDist = 0x208;
 inline constexpr std::uint32_t kAiTuningAutoMergeLeaveDist = 0x20C;
 inline constexpr std::uint32_t kAiTuningFormationUnitDist = 0x210;
+inline constexpr std::uint32_t kAiTuningComposeGroupSpeedBonusWeightRatio = 0x228;
+inline constexpr std::uint32_t kAiTuningComposeGroupSpeedBonus = 0x22C;
 inline constexpr std::uint32_t kAiTuningValueRandomLow = 0x050;
 inline constexpr std::uint32_t kAiTuningValueRandomHigh = 0x054;
 
@@ -91,7 +93,7 @@ struct AiTuningKey {
     float image_default;
 };
 
-inline constexpr std::size_t kAiTuningKeyCount = 33;
+inline constexpr std::size_t kAiTuningKeyCount = 35;
 
 // +110h..+18Ch inclusive, the BulletTypeAccuracy block.
 inline constexpr std::uint32_t kAiTuningBulletTypeAccuracyBase = 0x110u;

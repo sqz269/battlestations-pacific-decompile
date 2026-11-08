@@ -7,9 +7,11 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_append.hpp"
 #include "bsp/native_string_float_format.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/pool_pool15_cc13.hpp"
 
 #include <array>
+#include <cstddef>
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -259,6 +261,60 @@ cc13_front5::TaggedValue archive_value(const SettingsValue& value) {
     return result;
 }
 
+// 00BD8CD0's explicit bindings have native-style context-free callbacks. Bind
+// the real destination for this invocation, restoring it on nested writes and
+// exceptions. Each dependency captures the current output globals afresh, as
+// the native emitters do. No writer depth or key/value payload is synthesized.
+class ArchiveFieldScope final {
+public:
+    explicit ArchiveFieldScope(ArchiveTextOutput& output) noexcept
+        : previous_(current_) { current_ = &output; }
+    ~ArchiveFieldScope() { current_ = previous_; }
+    ArchiveFieldScope(const ArchiveFieldScope&) = delete;
+    ArchiveFieldScope& operator=(const ArchiveFieldScope&) = delete;
+
+    static const oct18_tail_c::ArchiveFieldBindings& bindings() noexcept {
+        static const oct18_tail_c::ArchiveFieldBindings calls{
+            [](std::uint32_t depth) {
+                ArchiveEmitter emitter(*current_);
+                emitter.run([&] {
+                    cc13_front5::archive_emit_indent_00bd6990(depth, emitter.globals(), emitter);
+                });
+            },
+            [](std::uint8_t root, oct18_tail_c::GuiTaggedWord key) {
+                // Keep the public writer's supported-key boundary even if a
+                // reentrant sink changes the depth before BD8CEC reloads it.
+                if (root && key.tag != static_cast<std::uint32_t>(GuiLuaKeyKind::Name))
+                    throw std::invalid_argument("root archive key requires a name");
+                ArchiveEmitter emitter(*current_);
+                emitter.run([&] {
+                    cc13_front5::archive_emit_key_00bd7b30(root, {key.tag, key.value},
+                        emitter.globals(), emitter);
+                });
+            },
+            [](oct18_tail_c::GuiTaggedWord value) {
+                ArchiveEmitter emitter(*current_);
+                emitter.run([&] {
+                    cc13_front5::archive_emit_value_00bd7f50({value.tag, value.value},
+                        emitter.globals(), emitter);
+                });
+            },
+            [](std::uint8_t root) {
+                ArchiveEmitter emitter(*current_);
+                emitter.run([&] {
+                    cc13_front5::archive_emit_terminator_00bd6ac0(root, emitter.globals(), emitter);
+                });
+            }
+        };
+        return calls;
+    }
+
+private:
+    static thread_local ArchiveTextOutput* current_;
+    ArchiveTextOutput* previous_;
+};
+thread_local ArchiveTextOutput* ArchiveFieldScope::current_{};
+
 } // namespace
 
 void ArchiveStringSink::write(std::string_view bytes) {
@@ -272,11 +328,13 @@ void ArchiveTextOutput::emit(std::string_view bytes) {
 
 ArchiveTextWriter::ArchiveTextWriter(ArchiveTextOutput& output,
     ArchiveSettingsServices* services) noexcept
-    : output_(output), settings_services_(services) {}
+    : output_(output), settings_services_(services) {
+    static_assert(offsetof(NativeState, depth_04) == 4 && sizeof(NativeState) == 8);
+}
 
 std::string ArchiveTextWriter::format_key(const GuiLuaVariant& key) const {
     //00BD7B30 takes root flag in CL and an8h variant on the stack.
-    if (depth_ == 0) {
+    if (native_.depth_04 == 0) {
         //Native ignores tag here and treats payload as a C-string pointer.
         if (key.tag != static_cast<std::int32_t>(GuiLuaKeyKind::Name))
             throw std::invalid_argument("root archive key requires a name");
@@ -300,12 +358,12 @@ std::string ArchiveTextWriter::format_key(const GuiLuaVariant& key) const {
 
 void ArchiveTextWriter::indent() {
     ArchiveEmitter emitter(output_);
-    emitter.run([&] { cc13_front5::archive_emit_indent_00bd6990(depth_, emitter.globals(), emitter); });
+    emitter.run([&] { cc13_front5::archive_emit_indent_00bd6990(native_.depth_04, emitter.globals(), emitter); });
 }
 
 void ArchiveTextWriter::terminate_row() {
     ArchiveEmitter emitter(output_);
-    emitter.run([&] { cc13_front5::archive_emit_terminator_00bd6ac0(depth_ == 0, emitter.globals(), emitter); });
+    emitter.run([&] { cc13_front5::archive_emit_terminator_00bd6ac0(native_.depth_04 == 0, emitter.globals(), emitter); });
 }
 
 void ArchiveTextWriter::begin_section(const char* name) {
@@ -313,19 +371,19 @@ void ArchiveTextWriter::begin_section(const char* name) {
 }
 
 void ArchiveTextWriter::begin_section(const GuiLuaVariant& key) {
-    if (depth_ == std::numeric_limits<std::uint32_t>::max())
+    if (native_.depth_04 == std::numeric_limits<std::uint32_t>::max())
         throw std::overflow_error("archive section depth overflow");
-    const auto native_key = archive_key(key, depth_ == 0);
+    const auto native_key = archive_key(key, native_.depth_04 == 0);
     indent();
     ArchiveEmitter emitter(output_);
-    emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
+    emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(native_.depth_04 == 0, native_key, emitter.globals(), emitter); });
     output_.emit("{\n");
-    ++depth_;
+    ++native_.depth_04;
 }
 
 void ArchiveTextWriter::end_section() {
-    if (!depth_) throw std::logic_error("archive section depth underflow");
-    --depth_;
+    if (!native_.depth_04) throw std::logic_error("archive section depth underflow");
+    --native_.depth_04;
     indent();
     output_.emit("}");
     terminate_row();
@@ -336,13 +394,15 @@ void ArchiveTextWriter::write_field(const char* key, const SettingsValue& value)
 }
 
 void ArchiveTextWriter::write_field(const GuiLuaVariant& key, const SettingsValue& value) {
-    const auto native_key = archive_key(key, depth_ == 0);
+    const auto native_key = archive_key(key, native_.depth_04 == 0);
     const auto native_value = archive_value(value);
-    indent();
-    ArchiveEmitter emitter(output_);
-    emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
-    emitter.run([&] { cc13_front5::archive_emit_value_00bd7f50(native_value, emitter.globals(), emitter); });
-    terminate_row();
+    ArchiveFieldScope scope(output_);
+    // 00BD8CD3/8CDF/8D00 read the retained writer+4 around the four emitter
+    // calls (bsp.py show 00bd8cd0 --asm). Replace the inline orchestration,
+    // preserving the real scalar payloads, current sink and depth ownership.
+    oct18_tail_c::archive_write_field_00bd8cd0(&native_,
+        {native_key.tag, native_key.payload}, {native_value.tag, native_value.payload},
+        scope.bindings());
 }
 
 void ArchiveTextWriter::write_options_text_008d6170() {

@@ -73,6 +73,13 @@
 #include "bsp/cc13_front4.hpp"               // 006529E0
 #include "bsp/cc13_front5.hpp"               // 00652A30, 00652A20, 00652A50, 006529C0, 006529B0
 #include "bsp/view_seg14_cc13.hpp"           // 0051E950
+#include "bsp/cc13_sweepA3.hpp"
+#include "bsp/frontend_screen_sets.hpp"
+#include "bsp/native_input_action_configuration.hpp"
+#include "bsp/unit_motion.hpp"
+#include "bsp/unit_rudder.hpp"
+#include "bsp/input_tick.hpp"
+#include "bsp/segs_13_15_22_44_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"                // 006735D0
 #include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_sweepB2.hpp"              // 005AAEF0
@@ -2395,7 +2402,8 @@ struct HudLeafScreenVirtuals {
 //   +284h) and its +20h 005F9DD0 the manager's +5Ch screen and the page
 //   colours, so both keep the existing path (0). bsp.py ghidra bytes 00cf3b7c
 //   --length 40.
-constexpr std::array<HudLeafScreenVirtuals, 7> kHudLeafScreenVirtuals{{
+constexpr std::array<HudLeafScreenVirtuals, 8> kHudLeafScreenVirtuals{{
+    {0x26, 0x00CEC9B0u, 0, 0, 0x0051E9B0u, 0},
     {0x43, bsp::ingame_gui_cc13::kSpectatorScreenVtable, 0x00643DD0u, 0x00643F40u, 0x00643DE0u,
         0x00643DF0u},
     {0x27, 0x00CF7A38u, 0, 0x0067B400u, 0x0067B410u, 0},
@@ -2573,6 +2581,7 @@ struct GameHudHost::Impl {
     // 004DC940 BSP_Game_SetViewFov(scale, index) for the callers the HUD runs (the
     // leaf screen virtuals below), over this camera's projection.
     void set_view_fov(float scale, std::int32_t index);
+    void publish_ship_view_camera(const bsp::CameraMatrix16& world);
     // Packet cc9_ship_screen_update: screen 45h's fields and its widgets.
     bsp::ShipScreenState ship_screen{};
     std::size_t ship_screen_unit{0};
@@ -2609,6 +2618,8 @@ struct GameHudHost::Impl {
     void log_map_state(const char* state);
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
+    void reset_binoculars_0051e8e0();
+    float binoculars_saved_near_plane{0.0f}; // process cell 00E18DA8, initially 00D7A218
     // Screen 44h, the HUD root (00649860). The enter 006488D0 zeroes +F4h;
     // the default state is that store, and the screen enters once per run.
     bsp::HudRootUpdateState hud_root{};
@@ -4722,17 +4733,7 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     for (int i = 0; i < 5; ++i) record("MissionCamera::collision_ray", 0x0098b370u);
     if (!published) return;
     done("MissionCamera::publish_pose", 0x004329d0u);
-    // Screen 45h's update (0064DD30) sets the fov every frame while its unit is
-    // bound and pipe sight is enabled: 004DC940(1 - zoom_rate * [00E197F4], 1).
-    // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
-    // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
-    // spring and drag never move it off zero without them, so it is 0.0f.
-    if (kMissionFovBound && camera_pipe_sight_read &&
-        camera_pipe_sight_enabled) {
-        const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
-        set_view_fov(scale, 1);
-    }
-    bsp::publish_mission_camera(world, camera_projection);
+    publish_ship_view_camera(world);
 }
 
 namespace {
@@ -4754,6 +4755,7 @@ public:
         at<std::uint8_t>(game_.data(), 0x634) =
             owner_.cinematic_hidden_634 != nullptr && *owner_.cinematic_hidden_634;
         at<std::int32_t>(game_.data(), 0x1FE4) = session.session_word_1fe4;
+        at<std::int32_t>(game_.data(), 0x1A04) = owner_.view_fov_index_1a04;
         at<Object>(game_.data(), 0x19FC) = reinterpret_cast<Object>(&owner_.camera_projection);
         at<Object>(manager_.data(), 0xA8) = hints_.data();
         // The virtual receiver is resolved by vcall_38_bool to the actual hint
@@ -4799,7 +4801,7 @@ public:
     void camera_set_fov_00b6fbb0(Object camera, float fov) override {
         if (camera != reinterpret_cast<Object>(&owner_.camera_projection))
             throw std::logic_error("004DC940 set another Operator camera");
-        owner_.camera_projection.fov = fov;
+        bsp::set_mission_camera_fov(owner_.camera_projection, fov);
         owner_.done("MissionCamera::view_fov", 0x004dc940u);
     }
     ~HudViewFovBinding() override {
@@ -4818,6 +4820,18 @@ private:
 void GameHudHost::Impl::set_view_fov(float scale, std::int32_t index) {
     HudViewFovBinding binding(*this);
     bsp::cc13_seg10::game_set_view_fov_004dc940(binding, binding.game_00e188a8(), scale, index);
+}
+
+void GameHudHost::Impl::publish_ship_view_camera(const bsp::CameraMatrix16& world) {
+    // Screen 45h's 0064DD30 pipe-sight FOV is the unraised default. A raised
+    // screen 26h has already set the same Operator FOV via 0051E6E0/004DC940.
+    // Existing substitution: [00E197F4] remains zero without the unhosted
+    // 0064DFDE gun-fire adds, so the pipe-sight spring has not moved it.
+    const bsp::MissionCameraFovFrame frame{
+        kMissionFovBound && camera_pipe_sight_read && camera_pipe_sight_enabled,
+        binoculars.mode_30 == 1, camera_pipe_sight_zoom_rate, 0.0f};
+    HudViewFovBinding binding(*this);
+    bsp::publish_ship_view_mission_camera(world, camera_projection, frame, binding);
 }
 
 namespace {
@@ -4882,7 +4896,7 @@ void GameHudHost::Impl::log_map_state(const char* state) {
 void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     // 0068B4A8..0068B4C6: the level-3 collapse runs only with 00E18D1C non-empty; this
     // host never fills level 3 (level3_screen_count answers 0).
-    record("InGameInterface::binoculars_reset", 0x0051e8e0u);   // 0068B4CE
+    reset_binoculars_0051e8e0();                              // 0068B4CE
     if (release_gun_map_up) {
         // Packet cc13-mapback. 0068B4D3..0068B4DA: [this+54h]+4h set (the map
         // is up) takes the close arm. HARNESS INPUT, labelled: the C1h press is
@@ -4968,8 +4982,8 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
 // Each collapse is followed by 0068AA40(004B4B00()), modelled as the C1h close
 // models it (back_out_one_overlay_level_0068b470). The level-2 clear also ends
 // the host's two mirrors of the map being up (release_gun_map_up, the helm
-// occlusion), which that close keeps in step with the same clear. 0051E8E0 has
-// no body here: it stays the record the C1h close makes.
+// occlusion), which that close keeps in step with the same clear. The extra
+// hook resets the same retained binocular state as the C1h close (0051E8E0).
 void GameHudHost::Impl::collapse_in_game_overlays(bool clear_level2, bool run_extra_hook,
     const char* site) {
     bsp::InGameInterfaceCollapseState state;
@@ -4999,7 +5013,7 @@ void GameHudHost::Impl::collapse_in_game_overlays(bool clear_level2, bool run_ex
         menu.clear_level3_screen_and_context_sets();
         request_scene_for_controlled_unit();
     }
-    if (state.extra_hook_ran) record("InGameInterface::binoculars_reset", 0x0051e8e0u);
+    if (state.extra_hook_ran) reset_binoculars_0051e8e0();
     if (state.level2_cleared) {
         // 0068AC00 004F85D0(0), 0068AC0A 004D8AE0(game, 0).
         static const int kNone[] = {0};
@@ -6969,16 +6983,20 @@ private:
 
 // bsp::ShipViewInputHost over this process's HUD and the mission camera's
 // mover.
-class ShipViewInputBinding final : public bsp::ShipViewInputHost {
+class ShipViewInputBinding final : public bsp::ShipViewInputHost,
+    public bsp::cc13_seg14::BinocularsToggleHooks,
+    public bsp::cc13_seg14::BinocularsResetHooks,
+    public bsp::cc13_sweepA3::BinocularsAxesHost,
+    public bsp::segs_13_15_22_44_cc13::BinocularsFovHost {
 public:
-    ShipViewInputBinding(GameHudHost::Impl& owner, float dt) : owner_(owner), dt_(dt) {}
+    ShipViewInputBinding(GameHudHost::Impl& owner, float dt = 0.0f) : owner_(owner), dt_(dt) {}
     bsp::BinocularsViewTerms view_terms() override {
-        // SUBSTITUTION: the input manager's axes +1584h/+15B4h/+15E4h are not
-        // modelled and read zero (no in-mission input is driven);
-        // GlobalConfig+4 is unread and reads 1.0. It only scales a zero axis.
+        // The raise axis is the application's actual input-action bank. The
+        // look axes/config retain the existing helm-aim source binding below.
         owner_.record("HudShipView::view_input_terms", 0x0051f061u);
         bsp::BinocularsViewTerms terms{};
         terms.config_04 = 1.0f;
+        terms.raise_axis_15e4 = binoculars_input_bank().at<float>(0x15e4);
         helm_aim_axes(terms);
         return terms;
     }
@@ -7129,22 +7147,141 @@ public:
         }
         return true;
     }
-    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    bsp::cc13_sweepA::Raw binoculars_input_bank() override {
+        void* manager = owner_.menu.input_context_manager().current_owner();
+        const auto count = read<std::uint32_t>(manager, 8);
+        if (count <= 0xe0u) throw std::logic_error("binoculars requires prepared native action bank");
+        return {static_cast<std::uint8_t*>(read<void*>(manager, 4))};
+    }
+    bool input_pressed(int action) override {
+        const auto bank = binoculars_input_bank();
+        const auto* record = bank.field(static_cast<std::size_t>(action) * 0x30);
+        bsp::InputActionRecord state;
+        state.current_down = read<std::uint8_t>(record, 0x28) != 0;
+        state.current_hold = read<float>(record, 0x24);
+        state.previous_down = read<std::uint8_t>(record, 0x20) != 0;
+        state.previous_hold = read<float>(record, 0x1c);
+        return bsp::action_pressed_this_frame_004c43c0(state)
+            || owner_.menu.input_action_pressed(action);
+    }
     void raise_toggle_0051e7e0(bsp::BinocularsState& screen) override {
-        static_cast<void>(screen);
-        owner_.record("HudShipView::binoculars_raise_toggle", 0x0051e7e0u);
+        // 0051EF6B..EFA6: the controlled unit gates precede the CALL. The
+        // ship view has no kind-46h weapon-view owner; that arm stays recorded.
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return;
+        const auto unit = owner_.units->controlled_index();
+        if (owner_.units->unit_is_kind_of(unit, 0x18)) return;
+        if (owner_.units->unit_is_kind_of(unit, 0x46)) {
+            owner_.record("HudShipView::weapon_view_raise_gate", 0x0051ef90u);
+            return;
+        }
+        bsp::cc13_seg14::binoculars_toggle_zoom_0051e7e0(&screen,
+            owner_.units->controlled_unit_publication(), owner_.binoculars_saved_near_plane, *this);
+        owner_.done("HudShipView::binoculars_raise_toggle", 0x0051e7e0u);
     }
     void raised_view(bsp::BinocularsState& screen, float dt) override {
-        static_cast<void>(screen);
-        static_cast<void>(dt);
-        owner_.record("HudShipView::binoculars_raised_view", 0x0051efb7u);
+        // 0051EFD1..EFDF: ECX=&+38h, EDX=&+28h; the three byte
+        // arguments are the screen's retained +2Ch/+2Dh/+2Eh, not frame flags.
+        bsp::cc13_sweepA3::hud_binoculars_step_input_axes_0051eaa0(
+            &screen.zoom_38, &screen.zoom_limit_28, screen.zoom_divisor_3c, dt,
+            &screen.zoom_active_2c, &screen.zoom_rising_2d, &screen.zoom_falling_2e, 0, *this);
+        binoculars_apply_fov_0051e6e0(&screen);
+        set_model_visible(true);
+        // The renderer's lens-flare owner has no source implementation here.
+        owner_.record("HudShipView::binoculars_lens_update", 0x00452bd0u);
+        owner_.done("HudShipView::binoculars_raised_view", 0x0051efb7u);
+    }
+    bool object_is_kind_virtual_5c(void* object, std::uint32_t kind) override {
+        return owner_.units != nullptr && owner_.units->controlled_bound()
+            && object == owner_.units->controlled_unit_publication()
+            && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), kind);
+    }
+    void* binoculars_camera(void* mover) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars received another mover");
+        return owner_.camera_bound ? &owner_.camera_projection : nullptr;
+    }
+    float binoculars_near_plane(void* camera) override {
+        if (camera != &owner_.camera_projection) throw std::logic_error("binoculars received another camera");
+        return owner_.camera_projection.near_plane;
+    }
+    void camera_set_near_plane_00b6fbf0(void* camera, float value) override {
+        if (camera != &owner_.camera_projection) throw std::logic_error("binoculars set another camera");
+        owner_.camera_projection.near_plane = value;
+        bsp::update_mission_camera_projection(owner_.camera_projection);
+    }
+    void binoculars_apply_fov_0051e6e0(void* raw_screen) override {
+        bsp::segs_13_15_22_44_cc13::binoculars_apply_fov_0051e6e0(
+            {static_cast<std::uint8_t*>(raw_screen)}, *this);
+    }
+    void binoculars_set_view_fov(float scale, std::int32_t index) override {
+        owner_.set_view_fov(scale, index);
+    }
+    void binoculars_set_mover_zoom(void* mover, bool enabled) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars zoomed another mover");
+        owner_.camera.zoom_enabled_3a0 = enabled;
+    }
+    float& binoculars_mover_pitch(void* mover) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars pitched another mover");
+        return owner_.camera.pitch_388;
+    }
+    float binoculars_mover_min_pitch(void* mover) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars read another mover limit");
+        return owner_.camera.min_pitch_3ec;
+    }
+    float binoculars_mover_max_pitch(void* mover) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars read another mover limit");
+        return owner_.camera.max_pitch_3f0;
+    }
+    void unit_virtual_dc(void* mover, float delta) override {
+        if (mover != &owner_.camera) throw std::logic_error("binoculars turned another mover");
+        // ShipCaptain's +DCh = 0051E620: 00438AA0 on yaw+384h.
+        owner_.camera.yaw_384 = bsp::wrapped_angle_add_00438aa0(owner_.camera.yaw_384, delta);
+    }
+    void unit_broadcast_controlled_part_flag_00817380(void*, std::uint32_t) override {
+        // Same unresolved provider as SelectControlledUnitBinding: the host
+        // has no unit+FFCh effect-group list. Do not invent an empty list.
+        owner_.record("HudShipView::binoculars_controlled_part_flag", 0x00817380u);
+    }
+    bool input_action_has_device_query_00a92090(void* action) override {
+        auto& devices = owner_.menu.input_context_manager().configuration.bindings.devices;
+        return bsp::query_native_input_action_relative_00a92090(action, devices) != 0;
+    }
+    bool binoculars_zoom_pressed() override { return input_pressed(0xe0); }
+    void math_step_towards_0042ac60(float* value, float target, float rate) override {
+        *value = bsp::unit_step_towards_0042ac60(*value, target, rate);
+    }
+    void binoculars_reset_overlay() override {
+        // 0051EC65..EC92: use the actual screen at root+84h and its +20h
+        // widget. These allocations belong to the HUD registry/page loader.
+        const auto index = bsp::in_game_hud_screen_index_at(0x84);
+        auto* leaf = index < kInGameHudScreenCount ? owner_.leaf_screens[index].get() : nullptr;
+        if (leaf == nullptr) return;
+        leaf->data()[0x1c] = 1;
+        auto* widget = read<GuiLayoutWidget*>(leaf->data(), 0x20);
+        if (widget != nullptr) owner_.menu.frontend().set_widget_visible(*widget, false);
     }
     void set_model_visible(bool visible) override {
         // Screen 26h's +20h, the Tavcso_Model widget of GUI_binoculars.
-        GuiLayoutPage* page = owner_.menu.in_game_page(0x26, "GUI_binoculars");
-        GuiLayoutWidget* w = page != nullptr && page->root
-            ? bsp::find_descendant_by_name(*page->root, "Tavcso_Model") : nullptr;
+        auto* w = static_cast<GuiLayoutWidget*>(binoculars_model_widget(&owner_.binoculars));
         if (w != nullptr) owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    bool binoculars_screen_applied(void* screen) override {
+        if (screen != &owner_.binoculars) throw std::logic_error("binoculars reset another screen");
+        return owner_.menu.in_game_screen_applied(0x26);
+    }
+    void* binoculars_model_widget(void* screen) override {
+        if (screen != &owner_.binoculars) throw std::logic_error("binoculars read another model");
+        GuiLayoutPage* page = owner_.menu.in_game_page(0x26, "GUI_binoculars");
+        return page != nullptr && page->root
+            ? bsp::find_descendant_by_name(*page->root, "Tavcso_Model") : nullptr;
+    }
+    void widget_show_virtual_34(void* widget, std::uint32_t flag) override {
+        if (widget != nullptr)
+            owner_.menu.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), flag != 0);
+    }
+    void lens_flare_set_enabled_00452b80(void* lens, std::uint32_t flag) override {
+        if (lens != reinterpret_cast<void*>(0x00e081a0u) || flag != 0)
+            throw std::logic_error("binoculars reset requested another lens operation");
+        lens_effect_off_00452b80();
     }
     void lens_effect_off_00452b80() override {
         // 00B0D020 on the renderer object [00F8D39C] is not modelled.
@@ -7173,6 +7310,11 @@ public:
     bool ship_view_mover_20() override { return owner_.camera_bound; }
 
 private:
+    template<class T> static T read(const void* object, std::size_t offset) {
+        T value;
+        std::memcpy(&value, static_cast<const std::uint8_t*>(object) + offset, sizeof value);
+        return value;
+    }
     GameHudHost::Impl& owner_;
     float dt_;
 };
@@ -7199,6 +7341,14 @@ void ShipViewScreen46Binding::integrated_controls_0064b870(float dt) {
     owner_.done("HudShipView::integrated_controls_0064b870", 0x0064b870u);
 }
 }  // namespace
+
+void GameHudHost::Impl::reset_binoculars_0051e8e0() {
+    // 0051E8E0 has no frame/input arguments: this binding only reads the
+    // retained screen, registry visibility and the existing camera projection.
+    ShipViewInputBinding binding(*this);
+    bsp::cc13_seg14::binoculars_reset_0051e8e0(&binoculars, binding);
+    done("InGameInterface::binoculars_reset", 0x0051e8e0u);
+}
 
 void GameHudHost::update_ship_view_screen_0064d610(float seconds, bool wanted) {
     Impl& impl = *impl_;
@@ -8420,7 +8570,7 @@ public:
         unreached("00549260");
     }
     void weapon_group_release_005470c0() override { unreached("005470C0"); }
-    void screen26_call_0051e8e0() override { unreached("0051E8E0"); }
+    void screen26_call_0051e8e0() override { owner_.reset_binoculars_0051e8e0(); }
 
     static bsp::ObservedUnitScreenState state_of(const HudLeafScreenStorage& block) {
         if (!block.contains(block.data() + 0x28, sizeof(std::uint32_t)))
@@ -8507,6 +8657,11 @@ bool GameHudHost::exit_leaf_screen(int slot) {
     if (block == nullptr) return false;
     const bsp::ingame_gui_cc13::Raw raw{block->data()};
     switch (v->exit_1c) {
+    case 0x0051E9B0u: {
+        ShipViewInputBinding binding(impl);
+        bsp::cc13_seg14::binoculars_screen_exit_0051e9b0(&impl.binoculars, binding);
+        break;
+    }
     case 0x00643DE0u: bsp::ingame_gui_cc13::hud_spectator_screen_exit_00643de0(raw); break;
     case 0x0067B410u: bsp::ingame_gui_cc13::hud_common_overlay_screen_exit_0067b410(raw); break;
     case 0x004F75B0u: bsp::engine_seg11_35_66_cc13::base_screen_exit_004f75b0(); break;
