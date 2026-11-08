@@ -1,6 +1,7 @@
 #include "bsp/recon_slot_lists.hpp"
 
 #include "bsp/fixed_step_countdown.hpp"
+#include "bsp/settings_seg29_cc13.hpp"
 
 #include <algorithm>
 #include <charconv>
@@ -101,7 +102,9 @@ void publish_recon_relation_categories_00805d90(cc13_seg49::ReconListStorageHost
             *result.ptr = '\0';
             lua_pushstring(instance.state_04, key);
             host.push_unit_lua_self_00927bf0(unit, instance);
-            lua_settable(instance.state_04, -3);
+            // 00805EBA calls 006B84D0(-3) after the key and unit Lua self.
+            // Borrow the SAME live state; this machine never owns/closes it.
+            cc13_seg29::LuaMachine(instance.state_04).set_table_006b84d0(-3);
         }
     }
 }

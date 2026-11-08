@@ -1,0 +1,73 @@
+{
+  "run": 2179,
+  "goal": 5,
+  "chain": 986,
+  "slot": "g5-w1",
+  "branch": "agent/g5-w1",
+  "summary": "Route live recon category assignment through the existing LuaMachine SetTable body at the recovered native callsite.",
+  "rows": [
+    {
+      "native": "006b84d0",
+      "status": "wired",
+      "host_site": "src/recon_slot_lists.cpp::publish_recon_relation_categories_00805d90",
+      "evidence": [
+        "bsp.py show 00805d90: native 00805EBA calls 006B84D0(-3) after decimal key and unit Lua self",
+        "bsp.py show 006b84d0 --asm: machine+04 state, stack index, CALL 00A67E10, RET4",
+        "call_graph.py who 006b84d0: reachable, one callsite 10492bb7 from publish_recon_relation_categories_00805d90"
+      ],
+      "real_state": "Borrowed instance.state_04 is the mission Lua state; existing key/unit Lua self and -3 stack index are unchanged. The direct lua_settable at this site is removed.",
+      "body": "src/settings_seg29_cc13.cpp::LuaMachine::set_table_006b84d0",
+      "limits": "New C++ service ABI calling stock Lua; original register ABI and gameplay are not validated."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "Missing the retained native ammunition-record/alternate producer and reference/tree ownership; the current callback exposes a semantic gun handle."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command-building clear path",
+      "reason": "Missing the native unit+660h vector of 44h elements and matching Seg62Host lifetime services."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/native_gui_curve_storage.cpp::load_native_gui_curve_00abc040 (candidate)",
+      "reason": "Missing an entry-reachable Curve producer and property/geometry dispatch; the existing Curve load body does not rebuild control points."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::report_loading_progress_0057bec0",
+      "reason": "LoadingScreen owner creation and progress services remain behind kLoadingScreenCc13Bound; complete activation was not established in this packet."
+    }
+  ],
+  "validation": {
+    "baseline_build": "passed; 4/4 CTest groups",
+    "build": "passed; 4/4 CTest groups; local/output/c986-build.log",
+    "wire_readiness_before": {
+      "wired": 10840,
+      "callees_done_no_wired_caller": 8442,
+      "ready": 1192,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "wire_readiness_after": {
+      "wired": 10841,
+      "callees_done_no_wired_caller": 8442,
+      "ready": 1191,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "called_addresses_before": 5728,
+    "called_addresses_after": 5729,
+    "target_called": true,
+    "target_call_sites": 1,
+    "call_graph_evidence": "local/output/c986-who.log",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "left": "Native ammunition/vector producers and Curve activation remain unimplemented; 006B8610 global registration is owned separately by g5-w6."
+}

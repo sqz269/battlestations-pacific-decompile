@@ -51,7 +51,7 @@ struct ReconRelationPublicationHost {
 //00805D90: native ECX is unused; stack(instance,triple,unused), RET0Ch at
 //00805F27. Complete normal flow: filter ten classes/no-category19, bucket in
 //input order, ensure all19 named raw tables and assign decimal keys with
-//ordinary lua_settable(-3). Caller supplies the live19-entry00E0B590 table;
+//006B84D0(-3), which performs ordinary lua_settable. Caller supplies the live19-entry00E0B590 table;
 //category virtual must return0..18 or19. Records/units are opaque borrowed
 //identities resolved by the required accessors, not native layout overlays.
 //Native table/stack preconditions and
