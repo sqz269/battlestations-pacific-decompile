@@ -7,16 +7,23 @@
   "wired_total_after": 10420,
   "validation": {
     "build": "scripts/build.ps1 passed; all four existing CTest checks passed",
-    "call_graph": "00899300 called=true, one reachable call at 10206C84 from GameScriptOrdersHost::dispatch; entry path includes the mission binding trampoline",
-    "probe": "local/output/vector3_frame_probe.cpp: linked Win32 source body with a live Lua 5.1 frame; ordered argument reads, 16777217 to binary32 16777216, signed zero, negative fraction and one table result passed; not a game run",
+    "call_graph": "Review round 1 rebuild: 00899300 called=true, one reachable call at 10206D1A from GameScriptOrdersHost::dispatch; entry path includes the mission binding trampoline",
+    "probe": "tests/wire_g5_c678_vector3_probe.cpp passed through the actual registered mission binding trampoline and GameScriptOrdersHost::dispatch: numeric string 1.5 converts to 1.5, numeric string 16777217 narrows to binary32 16777216, and a table with throwing __index returns x=0 without invoking it. The linked probe uses real host/VM objects and read-only original PE data in a controlled child; no game startup or loop runs. Compiled against the rebuilt bsp_game objects except game_main.obj plus the usual core/Lua/zlib/Windows libraries with /MANIFEST:EMBED; local/output/run_vector3_dispatch_probe.ps1 is the local runner.",
     "limits": "New C++ interface, not original fastcall/class ABI; no game execution or visual validation"
+  },
+  "review_round_1": {
+    "review_run": 1458,
+    "findings": [
+      {"id": 1, "status": "fixed", "detail": "DoVector3 now uses its own lua_tonumber-compatible Vector3NumberArgs adapter; the shared strict reader is unchanged. The existing reconstructed body still narrows each result to binary32. Registered-binding probe verifies numeric-string conversion and narrowing."},
+      {"id": 2, "status": "fixed", "detail": "DoVector3 bypasses entity resolution in GameScriptOrdersHost::dispatch and the earlier diagnostic ID lookup in binding_trampoline. Registered-binding probe verifies that a table's throwing __index is never invoked and x is zero."}
+    ]
   },
   "rows": [
     {
       "native": "00899300",
       "status": "wired",
       "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch, DoVector3 arm",
-      "evidence": "Original 008993DD..008994A7 reads args 0,1,2, FSTP32 at 00899407/0089943A/0089946C, then NewTable and 0088BA30. Reuses the existing body, renamed lua_do_vector3_00899300, with the dispatch's actual numeric arguments and same-VM vector-table writer. The generic record fallback no longer handles this binding."
+      "evidence": "Original 008993DD..008994A7 reads args 0,1,2, FSTP32 at 00899407/0089943A/0089946C, then NewTable and 0088BA30. Reuses the existing body, renamed lua_do_vector3_00899300, with the dispatch's actual numeric arguments and same-VM vector-table writer. Review 1458: original 00B66270 -> 00A67770 -> 00A6D190 accepts numeric strings, now preserved by Vector3NumberArgs; both entity-ID preflights are bypassed for this numeric-only binding. Registered trampoline/dispatch probe passes both requested regression cases and float32 narrowing."
     },
     {"native":"007214c0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: controller state-message producer absent","reason":"Missing retained controller snapshot producer and transport; copying flattened enable flags into a snapshot and back would add no consumer."},
     {"native":"008fbef0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: existing tail-gunner skill notification","reason":"Already directly called with the loaded descriptor, actual skill notification and shared stream-one draw; no second call added."},
