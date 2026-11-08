@@ -134,7 +134,15 @@ inline constexpr std::uint32_t kScenePropertyRecordVtable = 0x00CE89D4;
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
 // address; the comment gives the original register ABI.
 // ---------------------------------------------------------------------------
-struct Seg59bHost {
+// The reference-frame slice does not require the unrelated archive/scoring
+// services. Existing full hosts retain the same two virtual contracts.
+struct SpawnRefFrameAccess {
+    virtual ~SpawnRefFrameAccess() = default;
+    virtual void observer_register_pair_00694a60(void* subject, void* member) = 0;
+    virtual void matrix_copy_004134f0(void* dst, const void* src) = 0;
+};
+
+struct Seg59bHost : SpawnRefFrameAccess {
     virtual ~Seg59bHost() = default;
 
     // The dword at an image global (the robot descriptor aliases at 00E19988..00E199A0).
@@ -832,12 +840,12 @@ void singleton_lifetime_destroy_global_008f7d20(Seg59bHost& host);
 void random_threads_scope_release_008f7d80(Seg59bHost& host, void* slot);
 
 // --- Spawn reference frame (vtable 00D16AA4: +14h observed entity, +18h 4x4 matrix) ---------
-void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other);           // RET 4
-void* spawn_ref_frame_construct_from_matrix_008f84d0(Seg59bHost& host, void* frame,
+void* spawn_ref_frame_assign_008f84a0(SpawnRefFrameAccess& host, void* frame, void* other);   // RET 4
+void* spawn_ref_frame_construct_from_matrix_008f84d0(SpawnRefFrameAccess& host, void* frame,
                                                       const void* matrix);                    // RET 4
 void* spawn_ref_frame_construct_from_entity_008f8530(Seg59bHost& host, void* frame,
                                                       void* entity);                          // RET 4
-void* spawn_ref_frame_copy_construct_008f8610(Seg59bHost& host, void* frame, void* other);   // RET 4
+void* spawn_ref_frame_copy_construct_008f8610(SpawnRefFrameAccess& host, void* frame, void* other); // RET 4
 void spawn_ref_frame_freeze_to_matrix_008f86b0(Seg59bHost& host, void* frame);              // RET
 void spawn_ref_frame_on_observed_released_008f8700(Seg59bHost& host, void* frame,
                                                    void* entity);                             // RET 4

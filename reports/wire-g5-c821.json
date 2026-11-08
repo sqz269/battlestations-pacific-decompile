@@ -1,0 +1,317 @@
+{
+  "goal": 5,
+  "chain": 821,
+  "slot": "g5-w6",
+  "branch": "agent/g5-w6",
+  "base": "5f940f84b8a9f7a9fd770301dd25d593d447c91c",
+  "picked": "Retained matrix-only SpawnNew reference frames from the real Lua vector refPos branch through queue copying, assignment and placement.",
+  "rows": [
+    {
+      "native": "008f84d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_spawn_new_00949750 -> src/lua_spawn_new.cpp: SpawnNewMatrixReference(const float*)",
+      "evidence": "Original 00949750 vector arm builds identity basis plus decoded vector translation and calls 008F84D0; the 58h-byte owner is retained in the real request and placement consumes +18h."
+    },
+    {
+      "native": "008f8610",
+      "status": "wired",
+      "host_site": "src/lua_spawn_new.cpp: SpawnNewMatrixReference copy constructor / SpawnRequestQueue enqueue, erase and retry",
+      "evidence": "Existing reconstructed body initializes the observer base and copies +14h/+18h. The matrix-only producer guarantees entity+14h is null; original 004134F0 copies the matrix."
+    },
+    {
+      "native": "008f84a0",
+      "status": "wired",
+      "host_site": "src/lua_spawn_new.cpp: SpawnNewMatrixReference::operator= / real request-vector erasure",
+      "evidence": "Existing reconstructed assignment body runs while shifting retained requests after erasure; native matrix output remains the source used by placement."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / skill propagation",
+      "reason": "Already entry-reachable in the baseline through its existing caller; no additional call is needed."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp / df_adopt_gun_target_009a797f",
+      "reason": "Missing persistent native pilot, approach+A0h observer member and +2Ch target-reference owner; semantic target indices cannot supply them."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp / path-leg lookup",
+      "reason": "Missing native path-leg-manager singleton owner and its construction/registration adapter."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / hull collision filtering",
+      "reason": "Missing actual DYN hull-shape chain and manifold-invalidation/world-lock services."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / hull collision filtering",
+      "reason": "Missing actual DYN hull-shape storage and filter-change manifold invalidation."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / periscope collision filtering",
+      "reason": "Missing actual periscope shape-group owner and manifold-invalidation service."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp / device_ammo_record",
+      "reason": "Missing retained native ammunition record and its reference/tree ownership; the current handle identifies a semantic gun."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp / command-building vector clear",
+      "reason": "Missing native unit+660h vector owner with 44h-byte elements and its lifetime adapter."
+    },
+    {
+      "native": "007ba8d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp / DeadMeatRot",
+      "reason": "Excluded multiplayer-only message; no single-player call site is required."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp / air-support activation",
+      "reason": "Missing concrete flight-spawn manager and resolved support vehicle-class provider."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp / error-context traversal",
+      "reason": "Missing entry-reachable native error-context reporter/map consumer; iterator bodies are not linked in this build."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp / error-context traversal",
+      "reason": "Missing entry-reachable native error-context reporter/map consumer; iterator bodies are not linked in this build."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp / error-context rebalance",
+      "reason": "Missing entry-reachable native error-context reporter/map mutation consumer."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp / error-context rebalance",
+      "reason": "Missing entry-reachable native error-context reporter/map mutation consumer."
+    },
+    {
+      "native": "00bf1450",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp / error_context_advance_00bf1450",
+      "reason": "Missing entry-reachable native error-context map iterator owner; no matching iterator body is linked in this build."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp / manager-frame reset",
+      "reason": "Missing production bridge supplying the same-domain GuiResourceOwner and GuiWidgetOwnerRuntime graph."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp / timed-entry query",
+      "reason": "Missing entry-reachable typed timed-entry owner and its native-manager bridge."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp / GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing production bridge between the native GUI manager and projected pointer state/input services."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp / collect_sorted_children_00aa5a00",
+      "reason": "Missing original per-parent child-order producer; the live flattened render-quad ordering is a different operation."
+    },
+    {
+      "native": "00aa8f30",
+      "status": "skipped",
+      "host_site": "src/gui_manager_cc13.cpp / rect_from_widget_00aa8f30",
+      "reason": "Missing live GuiWidgetTransform producer and original rectangle-copy call site in the native page application."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / Impl::Bag::insert",
+      "reason": "Already entry-reachable through existing native scene-bag insertion; another constructor call would duplicate it."
+    },
+    {
+      "native": "008f3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / Impl::Bag::insert",
+      "reason": "Existing scene-bag insertion already calls this body; no new wiring is needed."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / hash iteration",
+      "reason": "Existing scene merge iterator already calls this body; no new wiring is needed."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / hash iteration",
+      "reason": "Existing scene merge iterator already calls this body; no new wiring is needed."
+    },
+    {
+      "native": "008f3b60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / Impl::Bag::adopt_child",
+      "reason": "Existing canonical child-bag producer already calls this body; another producer would duplicate ownership."
+    },
+    {
+      "native": "008f3ac0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp / Impl::Bag::insert",
+      "reason": "Existing scene reference-property producer already calls this body; no new wiring is needed."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp / leak_manager_flooded_fraction_0074fa80",
+      "reason": "Missing live caller supplying actual water quantity, settings+404h and leak capacity and consuming the ratio."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp / cloud_instance_set_alpha_00bbe490",
+      "reason": "Missing live CloudInstanceC owner and matching alpha-update consumer."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp / active-use tail",
+      "reason": "Missing scoring+70h award-map owner and 0090F5A0/0090EDE0 providers before the cooldown tail."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp / font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission consumer with its retained text-context font."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp / platform base construction",
+      "reason": "The actual platform path already calls construct_native_window_platform_base_00be2ac0; running the older duplicate base body would initialize twice."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/band_0060_cc13.cpp / clamp_to_screen_margins_00638b90",
+      "reason": "Missing original HUD-margin clamp consumer and recovered live margin values."
+    },
+    {
+      "native": "006cedd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / AirOps occupant cleanup",
+      "reason": "The host never sets the original dirty byte+1Ch and lacks native occupants/observer ownership for this path."
+    },
+    {
+      "native": "00922e90",
+      "status": "skipped",
+      "host_site": "src/entity_mission_seg60_argon.cpp / entity_find_ancestor_of_kind_00922e90",
+      "reason": "Missing matching live entity+3Ch ancestry graph with native kind-test adapter at the inspected gunnery site."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp / ai_class_pair_value_00a03900",
+      "reason": "No matching live class-pair table query was established; AI host files were owned by another worker."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp / ai_try_spawn_group_gate_00a25a30",
+      "reason": "No matching live spawn-composition gate was established; AI host files were owned by another worker."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp / ai_group_recon_ratio_00a2c3d0",
+      "reason": "No matching live recon-ratio consumer was established; AI host files were owned by another worker."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg48_cc13.cpp / engine_sound_step_007de490",
+      "reason": "Missing live per-engine sound/voice owner consuming the interpolated pitch and volume."
+    },
+    {
+      "native": "00866e60",
+      "status": "skipped",
+      "host_site": "src/point_effect_lookup.cpp / find_point_effect_child_by_type_00866e60",
+      "reason": "No matching live point-effect child-type query and output-reference consumer was established."
+    },
+    {
+      "native": "008f8530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / entity refPos branch",
+      "reason": "Missing persistent native entity observer graph; this packet only admits the original matrix-only vector branch."
+    },
+    {
+      "native": "00949750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp / GameMissionLuaHost::run_spawn_new_00949750",
+      "reason": "This caller was already wired; its vector refPos branch now produces the newly retained matrix-only object."
+    },
+    {
+      "native": "004134f0",
+      "status": "skipped",
+      "host_site": "src/lua_spawn_new.cpp / MatrixReferenceAccess::matrix_copy_004134f0",
+      "reason": "Existing canonical raw matrix-copy body is reused as the provider; no additional address-level wiring claim."
+    }
+  ],
+  "measurement": {
+    "readiness_wired_before": 10671,
+    "readiness_wired_after": 10674,
+    "new_entry_reachable_addresses": [
+      "008f84d0",
+      "008f8610",
+      "008f84a0"
+    ],
+    "call_sites_after": {
+      "008f84d0": 1,
+      "008f8610": 4,
+      "008f84a0": 2
+    },
+    "built_reconstructed_called_after": 5530,
+    "before_call_graph_note": "The first readiness run carried a stale prior-build call graph. No before/after total built-call count is claimed; all three selected bodies now have explicit reachable callers."
+  },
+  "checks": {
+    "baseline_build": "./scripts/build.ps1 passed, 5/5 tests",
+    "final_build": "./scripts/build.ps1 passed, 5/5 tests",
+    "probe": "tests/wire_g5_c821_spawn_matrix_probe.cpp compiled MSVC Win32 /O2 /Gy /EHsc /MD /fp:strict and /link /MANIFEST:EMBED /OPT:REF; passed source-lifetime, copy, queue shift, retry and placement checks",
+    "call_graph": "python tools/call_graph.py and who/path for 008F84D0, 008F8610, 008F84A0; all reachable",
+    "readiness": "python tools/wire_readiness.py --standins; all three state=wired and called=true",
+    "pc24": "python tools/pc24_lint.py --staged: 0 findings across 6 files; no new arithmetic chain"
+  },
+  "evidence_queries": [
+    "python tools/bsp.py show 00949750 --start 200 --lines 64",
+    "python tools/bsp.py show 008f84d0 --lines 50",
+    "python tools/bsp.py show 008f8610 --lines 50",
+    "python tools/bsp.py show 008f84a0 --lines 44",
+    "python tools/bsp.py lookup 004134f0"
+  ],
+  "limits": [
+    "No game launch or gameplay validation.",
+    "New C++ ownership/interface, not a drop-in binary ABI replacement.",
+    "Entity-backed reference frames still use the existing semantic entity-ID route; native observer-backed ownership remains open."
+  ],
+  "probe_reproduction": "From an MSVC x86 developer prompt: cl /nologo /std:c++17 /O2 /Gy /EHsc /MD /fp:strict /Iinclude tests/wire_g5_c821_spawn_matrix_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /Folocal/output/c821-spawn-matrix-probe.obj /Felocal/output/c821-spawn-matrix-probe.exe /link /MANIFEST:EMBED /OPT:REF user32.lib d3d9.lib PowrProf.lib shell32.lib; then run local/output/c821-spawn-matrix-probe.exe"
+}

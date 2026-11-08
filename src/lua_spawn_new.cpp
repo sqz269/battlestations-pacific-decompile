@@ -6,6 +6,10 @@
 
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
+
+#include "bsp/cc13_seg59b.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
@@ -18,7 +22,44 @@ namespace {
 std::uint32_t g_spawn_request_serial = 1u;
 constexpr std::uint32_t kSerialWrapAbove = 16000u;
 
+class MatrixReferenceAccess final : public cc13_seg59b::SpawnRefFrameAccess {
+public:
+    void matrix_copy_004134f0(void* destination, const void* source) override {
+        copy_native_camera_matrix_004134f0(destination, nullptr, source);
+    }
+    void observer_register_pair_00694a60(void*, void*) override {
+        // A non-null entity would violate this owner's matrix-only contract;
+        // refuse it instead of accepting a reference without its observer.
+        throw std::logic_error("matrix-only spawn reference contains an entity");
+    }
+};
+
 }  // namespace
+
+SpawnNewMatrixReference::SpawnNewMatrixReference(const float* matrix) {
+    static_assert(sizeof(void*) == 4 && sizeof(SpawnNewMatrixReference) == 0x58);
+    MatrixReferenceAccess access;
+    cc13_seg59b::spawn_ref_frame_construct_from_matrix_008f84d0(access, native_.data(), matrix);
+}
+
+SpawnNewMatrixReference::SpawnNewMatrixReference(const SpawnNewMatrixReference& other) {
+    MatrixReferenceAccess access;
+    // 008F8610 only reads its source. The older reconstruction's void* API
+    // predates this const owning wrapper.
+    cc13_seg59b::spawn_ref_frame_copy_construct_008f8610(
+        access, native_.data(), const_cast<std::byte*>(other.native_.data()));
+}
+
+SpawnNewMatrixReference& SpawnNewMatrixReference::operator=(const SpawnNewMatrixReference& other) {
+    MatrixReferenceAccess access;
+    cc13_seg59b::spawn_ref_frame_assign_008f84a0(
+        access, native_.data(), const_cast<std::byte*>(other.native_.data()));
+    return *this;
+}
+
+const float* SpawnNewMatrixReference::matrix() const noexcept {
+    return reinterpret_cast<const float*>(native_.data() + 0x18);
+}
 
 std::uint32_t next_spawn_request_serial_00949f2b() noexcept {
     // 00949F2B MOV EAX,[00E0CF74] / CMP EAX,0x3e80 / JBE +5 / MOV EAX,1, then
@@ -254,9 +295,16 @@ void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept {
 
 SpawnGroupFrame spawn_reference_frame_0094a140(const SpawnNewRequest& request) noexcept {
     SpawnGroupFrame f;
-    f.m[12] = request.ref_pos[0];
-    f.m[13] = request.ref_pos[1];
-    f.m[14] = request.ref_pos[2];
+    if (request.matrix_reference) {
+        // The queued 00949750 vector arm now supplies the actual +18h
+        // matrix produced by 008F84D0 and copied with the request.
+        const float* const matrix = request.matrix_reference->matrix();
+        for (int i = 0; i < 16; ++i) f.m[i] = matrix[i];
+    } else {
+        f.m[12] = request.ref_pos[0];
+        f.m[13] = request.ref_pos[1];
+        f.m[14] = request.ref_pos[2];
+    }
     if (kSpawnNewEntityRefPosBound && request.ref_frame_valid) {
         // Packet cc9_spawn_new_shipyard. 008F8680's +14h arm: the entity's own
         // world matrix at entity+CCh, basis and translation both.

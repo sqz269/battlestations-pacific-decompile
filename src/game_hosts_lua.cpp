@@ -5201,6 +5201,14 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
         if (!ref_is_entity
             && read_vector3_00888760(state, ::lua_gettop(state), request.ref_pos)) {
             request.has_ref_pos = true;
+            // bsp.py show 00949750: the vector arm builds identity rows with
+            // the Lua vector in row 3, then calls 008F84D0 and 008F8610.
+            // Retain that matrix-only object through queue copies; placement
+            // reads its +18h matrix rather than rebuilding it from ref_pos.
+            const float matrix[16] = {
+                1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+                request.ref_pos[0], request.ref_pos[1], request.ref_pos[2], 1};
+            request.matrix_reference.emplace(matrix);
         }
         ::lua_settop(state, area);
         request.has_angle_range = read_range_pair(state, area, "angleRange",

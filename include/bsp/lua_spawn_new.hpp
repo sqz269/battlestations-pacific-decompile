@@ -39,6 +39,8 @@
 // interval, never dropped, and never answered.
 #include <cstddef>
 #include <cstdint>
+#include <array>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -195,6 +197,20 @@ struct SpawnNewExcludeRadius {
     float formation_horizontal{0.0f};
 };
 
+// The vector refPos arm of 00949750 owns a matrix-only 58h-byte reference
+// frame. Its observer list and entity pointer are constructed empty by
+// 008F84D0; it never registers an entity and owns no external resources.
+// Copies used by the request queue run 008F8610/008F84A0 on the same object.
+class SpawnNewMatrixReference {
+public:
+    explicit SpawnNewMatrixReference(const float* matrix);
+    SpawnNewMatrixReference(const SpawnNewMatrixReference&);
+    SpawnNewMatrixReference& operator=(const SpawnNewMatrixReference&);
+    const float* matrix() const noexcept;
+private:
+    alignas(4) std::array<std::byte, 0x58> native_;
+};
+
 struct SpawnNewRequest {
     std::int32_t party{-1};      // `party`, record+80h
     bool player{false};          // `player`
@@ -205,6 +221,7 @@ struct SpawnNewRequest {
 
     bool has_ref_pos{false};
     float ref_pos[3]{0.0f, 0.0f, 0.0f};  // `area.refPos`
+    std::optional<SpawnNewMatrixReference> matrix_reference;
     // Packet cc9_spawn_new_shipyard (kSpawnNewEntityRefPosBound). `refPos` was an
     // entity table (00949B60 008889C0 answered yes): the record keeps the entity
     // (008F8530 stores it at ref+14h) and 008F8680 hands out that entity's own
