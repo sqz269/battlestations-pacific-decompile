@@ -1,0 +1,229 @@
+{
+  "goal": 5,
+  "chain": 770,
+  "slot": "g5-w6",
+  "run": 1652,
+  "branch": "agent/g5-w6",
+  "picked": "Native GUI scene creator-credit release through existing raw 00B72250",
+  "baseline_head": "2a38f83f55c685ffeed87bc2bb81f295b786583c",
+  "wired_before": 10612,
+  "wired_after": 10613,
+  "reconstructed_addresses_called_before": 5460,
+  "reconstructed_addresses_called_after": 5461,
+  "rows": [
+    {
+      "native": "00b72250",
+      "status": "wired",
+      "host_site": "src/game_native_gui_render_application.cpp: GameNativeGuiRenderApplication::retire_before_fonts",
+      "body": "src/native_gui_layer_lifetime.cpp: release_native_gui_scene_storage_00b72250",
+      "real_state": "Same scene_raw constructed by make_scene/00B724E0, its actual +04 count, captured current profile/table0 and renderer-owned current CE2220 decrement target cell.",
+      "integration": "Replaces the generic scene creator-credit release; zero dispatch uses the same admitted NativeGuiSceneReference through dispatch_native_render_actual_owner_zero without a second decrement."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit",
+      "reason": "Missing owned screen+30h selection mode, +C4h selection-vector producer and +C0h/+D4h reset fields; the current sites only record the reset."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_movie_camera",
+      "reason": "Missing actual legacy +98h spectate-screen/target graph; the current toggle records the callback."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_new_movie_camera",
+      "reason": "Missing actual +9Ch spectate-screen visibility/target and native HUD spectated-selection consumer; the current callback only records."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit controlled_audio",
+      "reason": "Missing the ship +BBCh sound owner, +428h device list and +6B4h byte consumer; current callback only records."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing constructed native movie-camera limit storage; current callback aborts through movcam_new_unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing constructed native movie-camera current/default height storage; current callback aborts through movcam_new_unreached."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing constructed native movie-camera speed-limit storage; current callback aborts through movcam_new_unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing constructed native movie-camera acceleration-limit storage; current callback aborts through movcam_new_unreached."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message construction",
+      "reason": "Missing live controller-state snapshot producer and routed state-message consumer; descriptor construction alone would produce an unused copy."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: post_user_path_point_0071d340 / apply_user_path_point_007207c0",
+      "reason": "Missing clear-message producer: current UserPathPoint route publishes present=1 additions; the retained queue alone does not establish a reached clear request."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn-composition scoring",
+      "reason": "Missing parser-owned per-mode class-pair rows and concrete live SpawnCompositionHost scoring consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: mode_think_apply SpawnGroup",
+      "reason": "Missing native spawn-request weight, target-record vector and support-site list; quick_spawn_named_group does not supply those inputs."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group reconnaissance ratio",
+      "reason": "Missing member reconnaissance-value provider and a reached native nearest-enemy-group consumer; group membership alone is insufficient."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score list",
+      "reason": "Excluded debug-only score-record writer: host documents that only the unreachable text overlay reads these records."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score list",
+      "reason": "Excluded debug-only chosen-record marker: host documents that only the unreachable text overlay reads these records."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: order_cautious_move_00a2ccf0",
+      "reason": "Missing a real ratio producer selecting CAUTIOUSMOVE; current caller passes ratio=1 and cannot select this constructor branch."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: avoidance sampling",
+      "reason": "Missing actual landscape shore-mask/falloff column-grid producer and its caller; avoidance sampling is a different operation."
+    },
+    {
+      "native": "00b65710",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: CameraServices::classify_aabb_00b65710",
+      "reason": "Missing concrete reached CameraServices implementation with its actual plane-set/count and AABB owner."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: report_loading_progress_0057bec0",
+      "reason": "Already directly called with the current loading-screen singleton and real progress; a second call would duplicate existing work."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already called with the real parser-owned float bits; baseline executable graph confirms the existing reachable call."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already called on the actual owned bag map; baseline executable graph confirms the existing reachable call."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already used by the existing owned-bag iteration; adding another walk would duplicate the current consumer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread enqueue producer with real LuaVariantRecord arguments; mission interpretation runs on the main thread."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::collect_results",
+      "reason": "Missing retained MissionLuaResultSink lifecycle and real result-vector consumer; constructing an empty sink would not wire result collection."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::collect_results",
+      "reason": "Missing retained MissionLuaResultSink result producer/lifecycle; cleaning a fabricated empty sink would not be live wiring."
+    },
+    {
+      "native": "007de490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: plane engine sound",
+      "reason": "Missing retained engine-sound parameter owner and sound-render consumer; the existing model header explicitly leaves this owner unbound."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: immediate replicated gun angles",
+      "reason": "Missing reached replication/snapshot consumer carrying all four received angles; ordinary gun aiming is a different update path."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "Missing actual native game+7184h/movie-screen/input/cinematic transition graph; current teardown only records this operation."
+    },
+    {
+      "native": "00800160",
+      "status": "skipped",
+      "host_site": "src/race_config.cpp: load_race_config_00800160",
+      "reason": "Missing reached canonical RaceRecordTable startup/lifetime composition from 004DC6A0; no live race-table host consumer was established."
+    },
+    {
+      "native": "0085bce0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg53.cpp: recon_category_index_from_name_0085bce0",
+      "reason": "Missing reached mission-score archive decoder supplying the real category strings; original callers are score persistence readers."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug inspector flooded fraction",
+      "reason": "Excluded debug-only function: its only identified original consumer is inspector 006FB750."
+    }
+  ],
+  "changes": [
+    "Extracted the scene-release bindings/context from layer-only manager/widget/string cleanup dependencies; existing layer callers convert to the same borrowed leaf dependencies.",
+    "Bound actual GUI scene profile lookup and current zero-terminal dispatch to the retained native GUI renderer scene and canonical owner registry.",
+    "Removed the replaced generic scene-release call and its unused observation member."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "readiness": "wire_readiness.py --standins: 00b72250 wired, called=true, call_sites=1, callers_live=1",
+    "graph": "call_graph.py: reconstructed addresses called 5460 -> 5461; who 00b72250 shows one reachable call from GameNativeGuiRenderApplication::retire_before_fonts",
+    "path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> application_shutdown -> retire_native_gui_text_before_fonts -> GameNativeGuiRenderApplication::retire_before_fonts -> release_native_gui_scene_storage_00b72250",
+    "focused_fixture": "local/c770-scene-release-probe.cpp and .cmd: MSVC Win32, /MANIFEST:EMBED; passed 2->1->0 with current decrement-target reload, post-decrement profile lookup and exactly one zero terminal",
+    "fixture_log": "local/output/c770-scene-release-probe.log",
+    "original_evidence": "bsp.py show 00b72250: InterlockedDecrement(scene+4), then current scene vtable slot0 tail dispatch only at zero",
+    "float_math": "No floating-point operations changed; pc24 lint not required",
+    "runtime": "Game was not launched, as instructed. Build, synthetic fixture and entry-reachable executable graph evidence only; original tail-jump/private-frame ABI and live gameplay are not claimed."
+  },
+  "assumptions": [
+    "Retained the existing native GUI admission and lifecycle; the binding admits only the actual constructed D62D48 scene profile and its BD30E0 zero terminal."
+  ],
+  "left_for_others": "Other native GUI scene/layer creation paths and the independently listed missing producer/consumer graphs remain unchanged."
+}
