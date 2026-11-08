@@ -15,6 +15,9 @@
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/cc13_seg69.hpp"
+#include "bsp/ai_command_object.hpp"
+#include "bsp/ai_planner_tails.hpp"
+#include "bsp/lua_binding_ai.hpp"
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/gameplay_tuning_lua_rows.hpp"
@@ -1442,6 +1445,11 @@ int binding_trampoline(lua_State* state) {
     // row keeps milestone 2l's record.
     const bsp::MissionLuaBinding& dispatch_row =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    if (dispatch_row.address == 0x00a37a00u) {
+        if (host->error_replay()) return 0;
+        host->note_native_call(static_cast<std::size_t>(row), argc, true);
+        return host->run_ai_set_command(state);
+    }
     if (dispatch_row.address == 0x00a37b30u) {
         if (host->error_replay()) return 0;
         host->note_native_call(static_cast<std::size_t>(row), argc, true);
@@ -12093,6 +12101,63 @@ int GameMissionLuaHost::run_get_firepower(lua_State* state) {
     } binding(state, *gunnery, static_cast<std::size_t>(id - 1));
     const int results = bsp::lua_get_firepower_0088dc10(binding);
     log_.implemented("MissionLuaNative::GetFirepower", "0088dc10");
+    return results;
+}
+
+int GameMissionLuaHost::run_ai_set_command(lua_State* state) {
+    // bsp.py show 00A37A00 and 00A13340: resolve argument 0's entity+16Ch,
+    // decode commandType and targetPos/target from argument 1, then replace
+    // group+564Ch once. The recipe and sequence are the existing bodies.
+    struct Binding final : bsp::LuaBindingAiSetCommandHost {
+        explicit Binding(lua_State* value) : lua(value) {}
+        void* group_at(int index) {
+            const int id = listener_entity_id_at(lua, index);
+            void* const group = id > 0 ? ai_group_for_entity(static_cast<std::size_t>(id - 1)) : nullptr;
+            if (group == nullptr) ::luaL_error(lua, "AISetCommand: entity has no live AI group");
+            return group;
+        }
+        void* ai_group_of_entity_argument(int index) override { return group_at(index + 1); }
+        void* ai_command_from_table(void* group, int index) override {
+            const int table = index + 1;
+            if (::lua_type(lua, table) != LUA_TTABLE)
+                ::luaL_error(lua, "AISetCommand: command must be a table");
+            ::lua_getfield(lua, table, bsp::kAiTailCommandTypeKey);
+            const auto recipe = bsp::ai_tail_command_recipe(::lua_tostring(lua, -1));
+            ::lua_pop(lua, 1);
+            command = bsp::AiCommandObject{};
+            command.type = recipe.type;
+            command.owner_group = group;
+            if (recipe.argument == bsp::AiTailCommandArgument::TargetPosition) {
+                ::lua_getfield(lua, table, bsp::kAiTailTargetPositionKey);
+                const int point = ::lua_gettop(lua);
+                if (::lua_type(lua, point) != LUA_TTABLE)
+                    ::luaL_error(lua, "AISetCommand: targetPos must be a vector table");
+                // 00888760 leaves missing lanes undefined. Admit complete
+                // vectors here so this adapter never supplies invented lanes.
+                for (const char* lane : {"x", "y", "z"}) {
+                    ::lua_getfield(lua, point, lane);
+                    const bool present = ::lua_isnumber(lua, -1) != 0;
+                    ::lua_pop(lua, 1);
+                    if (!present) ::luaL_error(lua, "AISetCommand: targetPos requires numeric x/y/z");
+                }
+                read_vector3_00888760(lua, point, command.target_position);
+                ::lua_pop(lua, 1);
+            } else if (recipe.argument == bsp::AiTailCommandArgument::TargetEntity) {
+                ::lua_getfield(lua, table, bsp::kAiTailTargetEntityKey);
+                command.target_group = group_at(::lua_gettop(lua));
+                ::lua_pop(lua, 1);
+            }
+            return &command;
+        }
+        void ai_group_set_command(void* group, void* value) override {
+            if (value != &command || !ai_install_group_command(group, command))
+                ::luaL_error(lua, "AISetCommand: command has no matching live owner");
+        }
+        lua_State* lua;
+        bsp::AiCommandObject command;
+    } binding(state);
+    const int results = bsp::lua_binding_ai_set_command(binding);
+    log_.implemented("MissionLuaNative::AISetCommand", "00a37a00");
     return results;
 }
 

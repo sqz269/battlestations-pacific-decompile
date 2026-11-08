@@ -154,7 +154,7 @@ int lua_binding_ai_get_group_info(LuaBindingAiHost& host) {
     return kNoResults;
 }
 
-int lua_binding_ai_set_command(LuaBindingAiHost& host) {
+int lua_binding_ai_set_command(LuaBindingAiSetCommandHost& host) {
     void* group = host.ai_group_of_entity_argument(0);
     void* command = host.ai_command_from_table(group, 1);
     host.ai_group_set_command(group, command);
