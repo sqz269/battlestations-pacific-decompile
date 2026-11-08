@@ -1,0 +1,242 @@
+{
+  "goal": 5,
+  "chain": 771,
+  "slot": "g5-w8",
+  "rows": [
+    {
+      "native": "00854230",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaVehicleClassBinding::load_submarine_leaf"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl",
+      "reason": "Missing gameplay consumer for the candidate score table; the documented reader is an unreachable debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl",
+      "reason": "Missing live gameplay-owned candidate-list records; marking a parallel debug-only table would add unused work."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Missing selecting producer: the current caller passes ratio 1, so its random fraction cannot select CAUTIOUSMOVE."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:run_land_moveto_tick_009c18c0",
+      "reason": "Missing genuine retained MoveTo state, approach owner, observer endpoints and full NativeObserverLifetime services; motion state remains flattened."
+    },
+    {
+      "native": "009c1c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:plane move-to task",
+      "reason": "Missing retained native approach, observed target endpoint, base speed-reference owner and complete constructor-service adapter."
+    },
+    {
+      "native": "009f9ce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:pilot approach construction",
+      "reason": "Missing live native approach-head receiver and complete speed-reference/observer lifetime on the inspected motion path."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:sound transition",
+      "reason": "Missing corresponding live SoundInstance volume-scaling consumer; no sound-volume call site was found in the inspected frame host."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp:water sample consumers",
+      "reason": "Missing renderer depth-texture sampling pass and float4 kernel consumer; inspected motion consumers use water depth rather than this screen-space kernel."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp:text input",
+      "reason": "Missing live input-character consumer owning both its input byte and text-context FontData; existing probe constants are insufficient."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing retained screen selection mode/vector and their live producer; the current reset call site only records the action."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No additional behavior is missing: the existing live refresh already calls this reconstructed layer setter."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No additional behavior is missing: the existing live refresh already directly calls this reconstructed refill."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No additional behavior is missing: current upper/lower cached-bound tests already call this reconstructed body."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:update_ocean_00bbddd0",
+      "reason": "Missing cloud-manager/reference-node owner graph and live dirty/world-axis state required by the orthonormalization consumer."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp:mover frustum build",
+      "reason": "Missing entry-reachable product-query caller with an actual CameraProjection; inspected host camera queries do not consume FOV times aspect."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing live reflection/extra-plane producer and retained CameraClipPlaneState consumer in the inspected application path."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing matching live extra-plane lifecycle; adding a clear call without its camera owner and producer would fabricate work."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp:descriptor_init_00721070",
+      "reason": "Missing identified live default-descriptor construction site; the populated descriptor builder is a distinct operation."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user path clear",
+      "reason": "Missing established presence-zero clear-message producer and retained per-slot path owners in the inspected host path."
+    },
+    {
+      "native": "004704e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:apply hit record",
+      "reason": "Missing bound native hit-record owner virtual query and corresponding real owner +ACh field; current hit path uses semantic unit identities."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:tail-gunner skill installation",
+      "reason": "No additional behavior is missing: current host already calls this body with its loaded descriptor, actual skill and shared-stream draw."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp:SensorClassBinding::load_from_row_00809147",
+      "reason": "No additional behavior is missing: the existing ReconClass registry directly calls this loader on the actual Lua row."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp:SensorClassBinding::allocate_record_0080910d",
+      "reason": "No additional behavior is missing: the existing ReconClass registry already constructs its retained record through this body."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:raw bag iterator",
+      "reason": "No additional behavior is missing: existing property traversal already calls this whole iterator-begin body."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:raw bag iterator",
+      "reason": "No additional behavior is missing: existing property traversal already calls this whole iterator-next body."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:Bag::insert",
+      "reason": "No additional behavior is missing: existing float-property insertion already calls this body with actual parsed payload bits."
+    },
+    {
+      "native": "008f38a0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:Bag::insert",
+      "reason": "No additional behavior is missing: existing string-property insertion already calls this body with actual parsed text."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp:construct_native_window_platform_base_00be2ac0",
+      "reason": "No extra constructor call is warranted: a separate existing native platform-construction body already represents this same original address."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:hull-filter consumer",
+      "reason": "Missing actual DYN shape-chain state and world-lock/manifold-clear service adapter; the host retains a hull-filter boolean."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_set_speed_limits",
+      "reason": "Missing live legacy movie-screen owner/consumer; the inspected new-camera callback is explicitly unreached."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:movcam_set_speed_limits",
+      "reason": "Missing live legacy movie-screen owner/consumer; the inspected new-camera callback is explicitly unreached."
+    },
+    {
+      "native": "00984eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:Shipyard::stock_notice",
+      "reason": "Missing native warning-manager channel map, subscription factory/filter ownership, lock and Lua callback lifetime."
+    }
+  ],
+  "implementation": [
+    "Replace inline submarine dive/air Lua reads with retained output from the existing 00854230 Source body.",
+    "Class descriptor load passes its actual mission Lua row and selected loaded ShipGlobals tuning; navigation/depth and numeric readers share that retained result.",
+    "Fix SwimDepth1 alias predicate to skip unordered values as COMISS/JBE at 00854335..0085433C does."
+  ],
+  "assumptions": [
+    "ShipLeafFields retains PeriscopeWave as the authored semantic effect ID, consistent with the existing ship-base field model. Native effect-resource acquisition/refcount traffic is not supplied by this C++ field API."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00854230 --lines 68",
+    "python tools/bsp.py show 00854230 --asm --start 55 --lines 50"
+  ],
+  "wired_before": 10613,
+  "validation": {
+    "baseline_build": "passed; all four tests",
+    "post_change_build": "passed; all four tests, including focused unordered alias assertion",
+    "call_graph": {
+      "before_called_recon": 5461,
+      "after_called_recon": 5462,
+      "target_reachable": true,
+      "target_call_sites": 1,
+      "caller": "GameMissionLuaVehicleClassBinding::load_descriptor",
+      "site": "1015800d",
+      "target": "10475e30",
+      "path": "WinMainCRTStartup -> GameStartupHost -> GameFrameHost -> GameMenuHost -> GameMissionHost -> GameMissionFrameHost::run_scene_load_004dfb70 -> mark_vehicle_class_row_00964790 -> load_descriptor -> read_submarine_class_fields_00854230"
+    },
+    "readiness": {
+      "before": 10613,
+      "after": 10614,
+      "target_state": "wired",
+      "called": true,
+      "call_sites": 1
+    }
+  },
+  "limits": [
+    "No game execution was performed. Built entry reach and existing focused tests do not prove original ABI or in-game behavior."
+  ],
+  "wired_after": 10614
+}
