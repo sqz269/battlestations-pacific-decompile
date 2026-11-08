@@ -8,6 +8,16 @@
 
 namespace bsp {
 
+// Source entries for the existing Sound pool implementation. Each operates on
+// the retained F8C0EC owner: no second header, table, lock or allocator node.
+// Original ACD530 returns ECX in EAX; ACD610/ACD2F0 return no value. These C++
+// interfaces do not reproduce the original register ABI or private CRT EH.
+void construct_native_gui_sound_pool_00acd530(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage);
+void trim_native_gui_sound_pool_00acd610(NativeGuiWidgetPoolStorage& storage);
+void destroy_native_gui_sound_pool_00acd2f0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage);
+
 // Source interfaces for the Sound pool's retained F8C0EC+28h slab table.
 // Evidence: bsp.py show ACD200/ACD250/ACD430/ACD4C0 and ACD530/ACD6B0.
 // The constructor/allocator inline the reserve/append schedules. These entries

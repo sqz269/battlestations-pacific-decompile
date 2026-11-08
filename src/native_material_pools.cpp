@@ -831,21 +831,46 @@ template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::destroy() {
 // ACD530/ACD6B0 inline ACD4C0/ACD430 on this same retained F8C0EC+28h
 // header. Preserve constructor unwind state 2 and the allocator's existing
 // lock/first-free publications; the generic reserve/append no longer run here.
-template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize() {
+__declspec(noinline) void construct_native_gui_sound_pool_00acd530(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // bsp.py show 00ACD530: same allocator-list prepend, D5CFBC profile,
+    // critical section and reserve(32) in constructor unwind state 2. Move
+    // the existing Sound specialization here; its caller no longer runs the
+    // engine directly. This is a Source entry, not the original ECX/EAX ABI.
     initialize_pool<GuiSoundPoolTraits, &reserve_native_gui_sound_pool_table_00acd4c0>(
-        allocator_list_, storage_);
+        list, storage);
+}
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::initialize() {
+    construct_native_gui_sound_pool_00acd530(allocator_list_, storage_);
 }
 template<> void* NativeGuiWidgetPool<GuiSoundPoolTraits>::allocate() {
     return allocate_slot<GuiSoundPoolTraits, WidgetSlabInitializer<GuiSoundPoolTraits>::entry,
         &append_native_gui_sound_pool_table_00acd430>(storage_);
 }
 
-template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
+__declspec(noinline) void trim_native_gui_sound_pool_00acd610(
+    NativeGuiWidgetPoolStorage& storage) {
+    // bsp.py show 00ACD610: a full slab has 16 free slots at +10E0h.
+    // Retire it, move the last slab into its table entry, rewrite ALL sixteen
+    // +108h trailers at stride10Ch, retry that index and find the first free
+    // slab. Reuse the sole shared reconstruction on the callback's live owner.
+    trim_empty_slabs<GuiSoundPoolTraits>(storage);
+}
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::trim() {
+    trim_native_gui_sound_pool_00acd610(storage_);
+}
+
+__declspec(noinline) void destroy_native_gui_sound_pool_00acd2f0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
     // ACD2F0 inlines ACD1D0 on the retained F8C0EC+28h table after freeing
     // its slabs. Reuse that one body before CS/list teardown; keep the native
-    // dangling header words and replace the common free on this path once.
+    // dangling header words. bsp.py show 00ACD2F0 also establishes the D5CFBC
+    // restamp, recursion unwind, DeleteCriticalSection and allocator unlink.
     destroy_pool<GuiSoundPoolTraits, &free_native_gui_sound_pool_table_00acd1d0>(
-        allocator_list_, storage_);
+        list, storage);
+}
+template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
+    destroy_native_gui_sound_pool_00acd2f0(allocator_list_, storage_);
 }
 
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
