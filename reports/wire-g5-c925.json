@@ -1,0 +1,141 @@
+{
+  "goal": 5,
+  "chain": 925,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "baseline_head": "256d72bf4fdb0be41fe6c44d310683ec372b1ef6",
+  "picked": "Canonical AnimIcon F8C1D4 pool startup, lifetime and retained slab table",
+  "rows": [
+    {
+      "native": "00ad36a0",
+      "status": "wired",
+      "host_site": "src/game_main.cpp::WinMain -> GameNativeGuiWidgetPoolProcess<GuiAnimIconPoolTraits>::initialize_once -> NativeGuiWidgetPool<GuiAnimIconPoolTraits>::initialize",
+      "implementation": "src/native_material_pools.cpp::initialize_native_gui_anim_icon_pool_00ad36a0",
+      "evidence": "Original CD77B0 loads ECX=F8C1D4, calls AD36A0 and registers CE0B50; CE34DC precedes Traceline CE34E4. The existing generic constructor algorithm now has one stable address entry; the traits method only forwards."
+    },
+    {
+      "native": "00ad31f0",
+      "status": "wired",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp::GameNativeGuiWidgetPoolProcess<GuiAnimIconPoolTraits>::destroy_at_exit -> NativeGuiWidgetPool<GuiAnimIconPoolTraits>::destroy",
+      "implementation": "src/native_material_pools.cpp::destroy_native_gui_anim_icon_pool_00ad31f0",
+      "evidence": "Original CE0B50 loads ECX=F8C1D4 and tail-jumps AD31F0. The real process atexit callback retires that same retained owner, with the existing slab/free/critical-section/list-unlink algorithm."
+    },
+    {
+      "native": "00ad2f20",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::destroy_pool<GuiAnimIconPoolTraits> and initialize_pool<GuiAnimIconPoolTraits> unwind state 2",
+      "implementation": "src/native_material_pools.cpp::free_native_gui_anim_icon_pool_table_00ad2f20",
+      "evidence": "Receives the actual pool+28h header, frees only its data word and preserves data/count/capacity. Used on normal teardown and constructor unwind."
+    },
+    {
+      "native": "00ad2f50",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::native_gui_anim_icon_pool_table_reserve_00ad33c0",
+      "implementation": "src/native_material_pools.cpp::native_gui_anim_icon_pool_table_set_capacity_00ad2f50",
+      "evidence": "Reuses the equivalent existing AA6FA0 algorithm on the retained F8C1D4+28h table; capacity publication precedes allocation, copy/free/adopt order is retained."
+    },
+    {
+      "native": "00ad33c0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp::initialize_native_gui_anim_icon_pool_00ad36a0 -> initialize_pool<GuiAnimIconPoolTraits>",
+      "implementation": "src/native_material_pools.cpp::native_gui_anim_icon_pool_table_reserve_00ad33c0",
+      "evidence": "AD36A0 reserve(32) inline copy now reuses AD33C0 on the same actual table; no widget slot allocation or payload construction is added."
+    },
+    {
+      "native": "00ad2fa0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::native_gui_anim_icon_pool_table_push_back_00ad3330",
+      "reason": "Missing a live AnimIcon widget factory calling the retained allocator; grow is reconstructed and probe-tested but has no production call chain."
+    },
+    {
+      "native": "00ad3330",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiAnimIconPoolTraits>::allocate",
+      "reason": "Missing a live AnimIcon widget factory consumer; the correct retained slab/lock append path is prepared and probe-tested but unlinked from the game entry."
+    },
+    {
+      "native": "00ad3820",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp::NativeGuiWidgetPool<GuiAnimIconPoolTraits>::allocate",
+      "reason": "Missing the live AnimIcon widget factory producer/consumer; only startup and lifetime are activated, and no slot is allocated just to obtain wiring credit."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/native_gui_movie_default_storage.cpp::construct_native_gui_movie_default_00aafe20",
+      "reason": "Missing a live Movie default-object factory caller; raw Movie pool allocation also serves copy paths and cannot safely run this constructor unconditionally."
+    }
+  ],
+  "checks": {
+    "default_build": "scripts/build.ps1; all four existing CTests passed",
+    "focused_probe": "local/c925-probe.cmd; 129 slots, 33 slabs, table capacity 32->66, payload/trailer retention, trim, teardown and header preservation passed",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/c849-analysis -NoInline -Target bsp_game -SkipTests; /Ob0 and /OPT:NOICF; passed",
+    "float_math": "No float arithmetic changed",
+    "ghidra": "Existing bsp.gpr /battlestationspacific.exe verified; names/evidence applied under annotation tool write lock, old values saved, project saved and affected exports refreshed",
+    "compiled_call_evidence": "Default Release and /Ob0 /OPT:NOICF: AD36A0 1 reachable call, AD31F0 1, AD2F20 2 (normal teardown plus constructor unwind), AD2F50 1, AD33C0 1. No production AD2FA0/AD3330/AD3820 caller."
+  },
+  "limitations": [
+    "Source interfaces and compiled reachability are verified; original register/FH3 ABI and game execution are not validated.",
+    "AnimIcon widget default/copy factory, type initialization, payload rendering and allocation consumer remain separate work."
+  ],
+  "integration": "Union the initialize_pool third FreeTable callback hook once with c924/c926; all new pool specializations here are AnimIcon-only. Preserve original CRT order: AnimIcon CD77B0/CE34DC before Traceline CD77F0/CE34E4.",
+  "measurements": {
+    "baseline": {
+      "readiness_wired": 10803,
+      "compiled_reconstructed_called": 5674
+    },
+    "after": {
+      "compiled_reconstructed_called": 5678,
+      "readiness_wired": 10805,
+      "readiness_reachable_called": 6101,
+      "analysis_compiled_reconstructed_called": 7523
+    },
+    "note": "Readiness output contains the two lifecycle rows and omits the newly reconstructed table-helper addresses; the three table-helper calls are verified directly with call_graph. Default Release totals include linker identical-code folding. Independent /Ob0 /OPT:NOICF checks identify all five AnimIcon callers directly."
+  },
+  "merge_repair": {
+    "origin_main": "2cee01fd755e63c72aae407b95bb3a26ab2d9c61",
+    "conflict": "src/game_main.cpp concurrent FrameBox and AnimIcon startup insertions",
+    "resolution": "Ran merge_resolve.py for the merge, then manually placed FrameBox CD7740 before AnimIcon CD77B0 before Traceline CD77F0. Kept both pools and the incoming cleanup specializations; shared material-pool helper remains single.",
+    "default_build": "local/c925-merge-build.log; passed all four CTests",
+    "on_build": "local/c925-merge-on-build.log; passed all four CTests, zero distinct diagnostics",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "on_header_receipt": {
+      "on_exit_code": 0,
+      "headers_after": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      "headers_restored": true,
+      "origin_main": "2cee01fd755e63c72aae407b95bb3a26ab2d9c61",
+      "headers_before": {
+        "include/bsp/game_hosts_units_internal.hpp": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59",
+        "include/bsp/air_operations.hpp": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      }
+    },
+    "probe": "local/c925-merge-probe.log; 129 slots, 33 slabs, 32->66 capacity, payload/trailer retention, trim and teardown passed",
+    "call_graph": "local/c925-merge-callers.log; all five original wired entries remain reachable, including actual AnimIcon constructor-unwind and destructor calls to AD2F20",
+    "compiled_reconstructed_called": 5688,
+    "metrics_qualification": "Post-merge totals include incoming origin/main work; the original c925 contribution and skipped rows are unchanged.",
+    "game_run": false,
+    "readiness_wired": 10815,
+    "readiness_called": 6126,
+    "readiness_log": "local/c925-merge-readiness.log",
+    "lifecycle_rows": [
+      {
+        "address": "00ad31f0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00ad36a0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_anim_icon_pool_table.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
@@ -671,6 +672,74 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
     void* raw, std::uint32_t index) noexcept {
     // Address entry only: reuse the one pre-existing Icon member body.
     return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
+}
+
+__declspec(noinline) void free_native_gui_anim_icon_pool_table_00ad2f20(
+    void* actual_header) noexcept {
+    // AD2F20 frees only data. Leave data/count/capacity untouched on both
+    // AD31F0 normal teardown and AD36A0 unwind state 2 (handler CB934E).
+    auto* const data = *static_cast<std::byte**>(actual_header);
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_set_capacity_00ad2f50(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // bsp.py show AD2F50: same capacity-before-allocation, null-tested
+    // pointer copy, old-table free and replacement publication as AA6FA0.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_grow_00ad2fa0(
+    NativeGuiPoolSlabTable& table) {
+    // Native LEA implements DWORD wrapping for capacity*2+2.
+    native_gui_anim_icon_pool_table_set_capacity_00ad2f50(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_push_back_00ad3330(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // AD3330 / inlined AD3820: grow before the null-tested slot store,
+    // publish count afterwards, with the real slab under the pool lock.
+    if (table.count == table.capacity) native_gui_anim_icon_pool_table_grow_00ad2fa0(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_reserve_00ad33c0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_anim_icon_pool_table_set_capacity_00ad2f50(table, capacity);
+}
+
+__declspec(noinline) NativeGuiWidgetPoolStorage* initialize_native_gui_anim_icon_pool_00ad36a0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // AD36A0 / CRT CD77B0: reserve 32 on the retained F8C1D4+28h header.
+    // Expose the existing constructor algorithm once; the traits adapter
+    // below forwards instead of running a second initialization path.
+    initialize_pool<GuiAnimIconPoolTraits, &native_gui_anim_icon_pool_table_reserve_00ad33c0,
+        &free_native_gui_anim_icon_pool_table_00ad2f20>(list, storage);
+    return &storage;
+}
+
+template<> void NativeGuiWidgetPool<GuiAnimIconPoolTraits>::initialize() {
+    initialize_native_gui_anim_icon_pool_00ad36a0(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiAnimIconPoolTraits>::allocate() {
+    // AD3820: the existing slab initializer and same actual table/lock.
+    return allocate_slot<GuiAnimIconPoolTraits, WidgetSlabInitializer<GuiAnimIconPoolTraits>::entry,
+        &native_gui_anim_icon_pool_table_push_back_00ad3330>(storage_);
+}
+
+__declspec(noinline) void destroy_native_gui_anim_icon_pool_00ad31f0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // AD31F0 / CE0B50 retire this owner; no widget payload destructor runs.
+    destroy_pool<GuiAnimIconPoolTraits, &free_native_gui_anim_icon_pool_table_00ad2f20>(
+        list, storage);
+}
+
+template<> void NativeGuiWidgetPool<GuiAnimIconPoolTraits>::destroy() {
+    destroy_native_gui_anim_icon_pool_00ad31f0(allocator_list_, storage_);
 }
 // 00AAD5F0 / 00AAD6D0 inline the same reserve and append schedules as
 // 00AAD4D0 / 00AAD450. Borrow the real pool+28h header once, retaining the
