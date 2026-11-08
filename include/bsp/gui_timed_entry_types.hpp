@@ -11,8 +11,9 @@ inline constexpr std::uint32_t kGuiTimedEntryAlphaProfile = 0x00d5ca74;
 inline constexpr std::uint32_t kGuiTimedEntrySectionProfile = 0x00d5d210;
 
 // Newly owned Win32 14h storage. profile_00 is an identity, NEVER a callable
-// C++ vtable. widget_08 borrows the SAME canonical layout, resolved through its
-// existing owner runtime. It is not an original executable object pointer.
+// C++ vtable. widget_08 borrows the SAME live layout, resolved through its
+// existing owner runtime or the sprite bridge's required alpha binding below.
+// It is not an original executable object pointer.
 struct GuiTimedEntryStorage {
     std::uint32_t profile_00;
     float remaining_04;
@@ -28,6 +29,32 @@ static_assert(offsetof(GuiTimedEntryStorage, rate_10) == 0x10);
 struct GuiTimedEntryConstants {
     const volatile float& one_00d7a24c;
     const volatile float& zero_00d7a208;
+};
+
+// The sprite bridge owns the layout whose color its renderer consumes.
+// Supply its actual current54/current4C operations without manufacturing a
+// GuiWidgetOwner/native node for that layout. Each call receives the CURRENT
+// entry+08; the provider must authenticate it and keep the layout alive.
+class GuiTimedEntryAlphaCalls {
+public:
+    virtual ~GuiTimedEntryAlphaCalls() = default;
+    virtual const float* read_color54(GuiLayoutWidget&, float (&scratch)[4]) = 0;
+    virtual void set_alpha4c(GuiLayoutWidget&, float) = 0;
+};
+
+// One borrowed dispatch domain. Existing canonical callers convert implicitly
+// and retain their runtime lookup on EVERY widget reload. The bridge domain
+// admits alpha only; section entries still require their canonical companion.
+class GuiTimedEntryWidgetDomain {
+public:
+    GuiTimedEntryWidgetDomain(GuiWidgetOwner& owner) noexcept : owner_(&owner) {}
+    GuiTimedEntryWidgetDomain(GuiTimedEntryAlphaCalls& alpha) noexcept : alpha_(&alpha) {}
+    const float* read_color54(GuiTimedEntryStorage&, float (&scratch)[4]) const;
+    void set_alpha4c(GuiTimedEntryStorage&, float) const;
+    GuiWidgetOwner& canonical_owner() const;
+private:
+    GuiWidgetOwner* owner_{};
+    GuiTimedEntryAlphaCalls* alpha_{};
 };
 
 // AD3970/AC2ED0: ECX destination, borrowed widget stack, EAX destination,
@@ -55,7 +82,7 @@ GuiTimedEntryStorage* delete_gui_timed_entry_profile(GuiTimedEntryStorage&, std:
 // dispatch; ECX entry, delta stack, AL changed, RET4. Native x87 control state
 // and unordered comparisons are preserved. No default profile callback.
 bool update_gui_timed_entry_alpha_00ac2f40(
-    GuiTimedEntryStorage&, GuiWidgetOwner& domain_owner, float delta);
+    GuiTimedEntryStorage&, GuiTimedEntryWidgetDomain, float delta);
 
 // ABE7B0: current5C != 17 (11h) returns false. Type 17 reloads entry+08 and
 // hands the section companion to update_gui_section_timed_owner_00abe7b0
@@ -71,6 +98,6 @@ bool approach_gui_timed_entry_section_00abe7b0(const float& current,
 // D7A208-countdown, then clears +4 only AFTER successful return. A thrown
 // owner boundary leaves the negative countdown, not a completed update.
 bool advance_gui_timed_entry_00ad39a0(GuiTimedEntryStorage&,
-    GuiWidgetOwner& domain_owner, float delta, GuiLayoutWidget* unused_widget,
+    GuiTimedEntryWidgetDomain, float delta, GuiLayoutWidget* unused_widget,
     const GuiTimedEntryConstants&);
 } // namespace bsp

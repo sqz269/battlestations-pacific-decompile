@@ -765,8 +765,10 @@ void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLea
 
 // 00AC2F20, __thiscall(ticker, a, b), RET 8: +0Ch = a, +10h = b.
 struct GuiHudTickerRange {
-    std::uint32_t from_0c{0};
-    std::uint32_t to_10{0};
+    // Borrow the actual timed entry's +0C/+10 float storage. Arguments are
+    // dword bit patterns, as the native MOVs; no numeric integer conversion.
+    float& from_0c;
+    float& to_10;
 };
 void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to);
 

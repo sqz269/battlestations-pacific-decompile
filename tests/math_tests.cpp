@@ -63,6 +63,9 @@
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_render_order.hpp"
+#include "bsp/gui_timed_entry_types.hpp"
+#include "bsp/mission_state_frame.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_text.hpp"
@@ -287,6 +290,155 @@ private:
 }
 
 int main() {
+    {
+        // Chain707: the alpha dispatch domain consumes the retained interval
+        // and countdown, and reloads entry+08 between current54/current4C.
+        bsp::GuiLayoutWidget first, second;
+        first.color[3] = 1.0f;
+        second.color[3] = 0.5f;
+        const volatile float one = 1.0f, zero = -0.0f;
+        bsp::GuiTimedEntryStorage entry;
+        bsp::construct_gui_timed_entry_alpha_00ac2ed0(entry, first, one);
+        bsp::cc13_seg49_64_78::GuiHudTickerRange interval{entry.target_0c, entry.rate_10};
+        bsp::cc13_seg49_64_78::hud_ticker_set_range_00ac2f20(interval, 0, 0x3f800000u);
+        entry.remaining_04 = 1.0f;
+        struct AlphaCalls final : bsp::GuiTimedEntryAlphaCalls {
+            bsp::GuiTimedEntryStorage& entry;
+            bsp::GuiLayoutWidget& first;
+            bsp::GuiLayoutWidget& second;
+            int reads{}, writes{};
+            AlphaCalls(bsp::GuiTimedEntryStorage& e, bsp::GuiLayoutWidget& a, bsp::GuiLayoutWidget& b)
+                : entry(e), first(a), second(b) {}
+            const float* read_color54(bsp::GuiLayoutWidget& current, float (&)[4]) override {
+                check(&current == &first, "alpha reads the current borrowed widget");
+                ++reads;
+                entry.widget_08 = &second;
+                return &current.color[0];
+            }
+            void set_alpha4c(bsp::GuiLayoutWidget& current, float alpha) override {
+                check(&current == &second, "alpha reloads its widget after current54");
+                ++writes;
+                current.color[3] = alpha;
+            }
+        } calls(entry, first, second);
+        const bsp::GuiTimedEntryConstants constants{one, zero};
+        check(bsp::advance_gui_timed_entry_00ad39a0(entry, calls, 0.5f, &first, constants)
+            && entry.remaining_04 == 0.5f && calls.reads == 0,
+            "alpha retained delay prevents early dispatch");
+        check(bsp::advance_gui_timed_entry_00ad39a0(entry, calls, 0.75f, &first, constants)
+            && entry.remaining_04 == 0.0f && entry.target_0c == 0.0f && entry.rate_10 == 1.0f
+            && first.color[3] == 1.0f && second.color[3] == 0.75f
+            && calls.reads == 1 && calls.writes == 1,
+            "alpha consumes interval bits and only the delta beyond its delay");
+        bsp::destroy_gui_timed_entry_profile(entry);
+        check(entry.profile_00 == bsp::kGuiTimedEntryBaseProfile,
+            "alpha retirement restores the base profile");
+    }
+    {
+        // Chain707 review: run the real frame scheduler with two pending-menu
+        // drain passes. The final interface pump configures a fresh fade; only
+        // the following GUI phase may charge this frame's 1.25 seconds.
+        struct GuiFrameHost final : bsp::MissionFrameHost, bsp::GuiTimedEntryAlphaCalls {
+            const bsp::MissionFrameState& frame;
+            bsp::GuiLayoutWidget widget;
+            bsp::GuiTimedEntryStorage entry;
+            const volatile float one{1.0f}, zero{-0.0f};
+            int interface_pumps{}, menu_polls{}, gui_updates{};
+            bool configured{};
+            explicit GuiFrameHost(const bsp::MissionFrameState& f) : frame(f) { widget.color[3] = 1.0f; }
+            ~GuiFrameHost() override { if (configured) bsp::destroy_gui_timed_entry_profile(entry); }
+            void update_interface_only_004c40f0() override {
+                ++interface_pumps;
+                if (interface_pumps != 3) return;
+                bsp::construct_gui_timed_entry_alpha_00ac2ed0(entry, widget, one);
+                bsp::cc13_seg49_64_78::GuiHudTickerRange range{entry.target_0c, entry.rate_10};
+                bsp::cc13_seg49_64_78::hud_ticker_set_range_00ac2f20(range, 0, 0x3f800000u);
+                entry.remaining_04 = 1.0f;
+                configured = true;
+            }
+            bool service_pending_menu_requests_006840f0() override { return menu_polls++ < 2; }
+            void update_front_end_screens_004d8620() override {
+                check(interface_pumps == 3 && configured && gui_updates == 0,
+                    "GUI animation phase follows every interface-request pump");
+                ++gui_updates;
+                if (!configured) return;
+                const bsp::GuiTimedEntryConstants constants{one, zero};
+                bsp::advance_gui_timed_entry_00ad39a0(entry, *this, frame.raw_delta, &widget, constants);
+            }
+            const float* read_color54(bsp::GuiLayoutWidget& current, float (&)[4]) override {
+                check(&current == &widget, "GUI frame reads the configured widget");
+                return &current.color[0];
+            }
+            void set_alpha4c(bsp::GuiLayoutWidget& current, float alpha) override {
+                check(&current == &widget, "GUI frame publishes to the configured widget");
+                current.color[3] = alpha;
+            }
+            // Unrelated frame services are inert in this suspended-simulation
+            // fixture; the actual scheduler still owns drain/GUI call order.
+            bool session_counts_mission_start_004b6260() override { return false; }
+            void adjust_mission_start_counters_004bcaa0(bool) override {}
+            void update_warning_manager_00987590(float) override {}
+            int run_input_effect_sets_004e4e6c(float) override { return 0; }
+            void record_action_deadlines_004d8cd0() override {}
+            void multiplayer_tick_00778560(float) override {}
+            void begin_game_profile_block() override {}
+            void end_game_profile_block() override {}
+            void register_game_block_label() override {}
+            void update_in_mission_subsystems_004c40a0() override {}
+            void begin_engine_movie_004cce50() override {}
+            bsp::SimulationGateBranch pause_gate_branch_004e5153() override {
+                return bsp::SimulationGateBranch::kSimulationOnly;
+            }
+            bool tutorial_hint_step_available() override { return false; }
+            void advance_tutorial_hint_0054e440() override {}
+            void toggle_pause_menu_004db030() override {}
+            bool in_game_interface_active() override { return false; }
+            void update_in_game_interface_0068c1f0() override {}
+            void hint_tick_cooldowns_0068ec10(float) override {}
+            void hint_drain_queued_00692b00() override {}
+            void hint_unit_class_00692b60() override {}
+            void hint_weapon_006926f0() override {}
+            void hint_environment_00692580() override {}
+            void hint_zone_first_get_00692fd0() override {}
+            void hint_strategic_map_00692960() override {}
+            void update_bot_scheduler_00914ef0(float) override {}
+            void update_markers_006dc1a0(float) override {}
+            void update_entity_manager_00481640(float) override {}
+            void update_rain_descriptor_00865ab0() override {}
+            void update_ocean_00bbddd0(float) override {}
+            void update_decals_00740e10(float) override {}
+            void update_00f89b3c_0094c8f0(float) override {}
+            void update_power_ups_008eb110() override {}
+            void update_effect_manager_00867ee0(float) override {}
+            void flush_entity_activations_00903670() override {}
+            bool check_mission_completion_004d7ea0() override { return false; }
+            void set_particle_clock_time_00b19a10(float) override {}
+            void set_foliage_shader_time_00af0450(float) override {}
+            void build_foliage_visible_set_00af0c50() override {}
+            void apply_gui_visibility_004c6c70() override {}
+            bool interface_manager_present() override { return false; }
+            void update_interface_music_00685c80(float) override {}
+            void update_multiplayer_interface_004d80d0() override {}
+            void pump_peer_queues_00776230() override {}
+            void apply_sound_requests_00941140() override {}
+            void begin_render_profile_block() override {}
+            void render_004ca440() override {}
+            void end_render_profile_block() override {}
+            void finish_render_frame_004ca1f0() override {}
+            bool frame_metrics_enabled() override { return false; }
+            void submit_frame_metrics_00757ce0(float) override {}
+        };
+        bsp::MissionFrameState frame;
+        frame.state = bsp::kMissionGameState;
+        frame.raw_delta = 1.25f;
+        frame.mission_end_suspended = true;
+        frame.cinematic_hidden = true;
+        GuiFrameHost host(frame);
+        const auto result = bsp::run_mission_frame(frame, host);
+        check(result.menu_drain_iterations == 2 && host.interface_pumps == 3 && host.gui_updates == 1
+            && host.entry.remaining_04 == 0.0f && host.widget.color[3] == 0.75f,
+            "repeated interface pumps charge one GUI delta and advance the new fade in the same frame");
+    }
     {
         // Chain683: raw native readers borrow the retained slot directly.
         // A stale host cache must not replace the live class+7C/+80 fields.
