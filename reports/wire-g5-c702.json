@@ -1,0 +1,152 @@
+{
+  "goal": 5,
+  "chain": 702,
+  "slot": "g5-w2",
+  "baseline": "d98eb873ffad6e6f835da1c1c8faf680b1f355f7",
+  "picked": "Canonical intrusive pointer-slot cleanup in the live resource-reader pipeline",
+  "rows": [
+    {
+      "native": "0071f3b0",
+      "status": "wired",
+      "host_site": "src/native_resource_reader_references.cpp: release_slot, called by release_native_resource_slot_00483850 and release_native_structured_node_handle_00be9ed0",
+      "evidence": "Saved assembly 0071F3B0..0071F3D8 and 00BE9ED0..00BE9EF8 has the same capture, null check, InterlockedDecrement(owner+4), current virtual slot0 call at zero, and post-callback slot clear. 00483850 performs the same cleanup and returns the slot. This is new source composition, not a recovered original call edge.",
+      "real_state": "The pointer slot, intrusive owner count and current terminal profile all belong to the actual resource-reader/structured-node owner; the adapter forwards the existing NativeAdoptedSubstreamDispatch without another owner or count.",
+      "change": "Moved the sole existing body into the already compiled core resource-reference TU, exposed its two-service borrowed interface, and replaced duplicate release_slot code. The previous cleanup no longer runs on these paths.",
+      "call_sites": [
+        "1057f6f0",
+        "1057f750"
+      ]
+    },
+    {
+      "native": "00483850",
+      "status": "skipped",
+      "host_site": "src/native_resource_reader_references.cpp: release_native_resource_slot_00483850",
+      "reason": "Already entry-reachable at baseline; its cleanup is the new caller of 0071F3B0, not a newly wired address."
+    },
+    {
+      "native": "00be9ed0",
+      "status": "skipped",
+      "host_site": "src/native_resource_reader_references.cpp: release_native_structured_node_handle_00be9ed0",
+      "reason": "Already entry-reachable at baseline; its cleanup is the second new caller of 0071F3B0, not a newly wired address."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing a live reset adapter retaining the debug screen's current/default +54h/+58h fields; the AddPosition-only host explicitly rejects this service."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_overview_height",
+      "reason": "Missing a live reset adapter retaining the debug screen's current/default +5Ch/+60h fields; the AddPosition-only host explicitly rejects this service."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing the live debug-screen limits/defaults/acceleration state and corresponding Lua reset path; AddPosition does not call this service."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_accel_time",
+      "reason": "Missing the live debug-screen current/default acceleration fields and corresponding Lua reset path; AddPosition does not call this service."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_set_zoom",
+      "reason": "Missing a live MovCamZoom owner and zoom-command adapter; the AddPosition-only host rejects this service."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list ownership",
+      "reason": "Missing the native candidate score-list producer and gameplay consumer; current capture planning consumes separate weights."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list ownership",
+      "reason": "Missing live native score-list entries and a gameplay consumer for their chosen flags."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property merge",
+      "reason": "Already called through the existing numeric-property merge path; the readiness stand-in label is not a new wiring opportunity."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick selection reset",
+      "reason": "Missing retained producers for selection mode +30h, selection vector +C4h and reset fields +C0h/+D4h; current callbacks only record the reset."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller state ownership",
+      "reason": "Missing a controller snapshot producer and routed snapshot consumer; temporary flag-copy construction would add a redundant round trip."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing an entry-reachable native vehicle-camera-array owner/hand-mode producer, including native row strings and camera defaults."
+    },
+    {
+      "native": "00867320",
+      "status": "skipped",
+      "host_site": "src/point_effect_children.cpp: update_point_effect_children_00867790",
+      "reason": "Missing an entry-reachable point-effect owner/child producer for this auxiliary reference array."
+    },
+    {
+      "native": "00868420",
+      "status": "skipped",
+      "host_site": "src/point_effect_owner.cpp: create_point_effect_matrix_00868420",
+      "reason": "Missing a live consumed effect-definition reference and actual effect-manager/construction ownership at the gunnery stand-in."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/point_effect_owner.cpp: create_point_effect_008689c0",
+      "reason": "Missing a live consumed effect-definition reference, parent transform and effect-manager ownership at the fire-effect stand-in."
+    },
+    {
+      "native": "00877b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::set_damaged_gfx_level_00819cc0",
+      "reason": "Missing the complete native model-group owner/callee contract and mode-one 56h broadcast binding; a retained level alone cannot bind the full raw body."
+    },
+    {
+      "native": "00876ec0",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_state.cpp: set_native_unit_group_state_00876ec0",
+      "reason": "Missing the shared native descriptor/model/pose fields, announcement manager and model-group context at the damaged-GFX host site."
+    },
+    {
+      "native": "00aafe20",
+      "status": "skipped",
+      "host_site": "src/native_gui_movie_default_storage.cpp: construct_native_gui_movie_default_00aafe20",
+      "reason": "Missing a live GUI Movie default-factory caller and its full native owner lifecycle; the default constructor currently has no caller."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; 4/4 existing CTests passed",
+    "assembly": "bsp.py show --asm 0071f3b0, 00483850, 00be9ed0",
+    "call_graph": "call_graph.py and who/path 0071f3b0: reachable from entry through GameNativeMissionModel::load_installed_unit; direct calls from 00483850 and 00BE9ED0",
+    "called_before": 5354,
+    "called_after": 5355,
+    "float_math_changed": false,
+    "game_run": false,
+    "abi_compatible": false,
+    "wired_before": 10452,
+    "wired_after": 10453,
+    "focused_probe": {
+      "source": "tests/wire_g5_c702_reference_probe.cpp",
+      "result": "PASS: actual slot survives into terminal callback, current owner/count/profile dispatched once, replacement slot is cleared afterward, wrapper returns its original slot address",
+      "compile": "vcvars32.bat; cl /std:c++20 /EHsc /MD /O2 /Iinclude tests/wire_g5_c702_reference_probe.cpp build/win32/Release/bsp_core.lib /Fe<probe.exe> /link /MANIFEST:EMBED"
+    }
+  }
+}
