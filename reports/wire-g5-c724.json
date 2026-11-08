@@ -1,0 +1,152 @@
+{
+  "goal": 5,
+  "chain": 724,
+  "slot": "g5-w1",
+  "base": "f0d626b851f1fcb7eb3aaf76d1b0650dbf4fa29c",
+  "picked": "Retained Dyn draft-shape collision group filtering",
+  "rows": [
+    {
+      "native": "00c32450",
+      "status": "wired",
+      "host_site": "src/hull_terrain_contact.cpp: HullTerrainContactSolver::hull_draft_narrow_phase and HullTerrainContactSolver::world_step",
+      "evidence": "bsp.py show 00c32450 --asm: MOV EAX,[ECX+2Ch]; RET; original fastcall shape-to-group getter. set_draft_bodies stores the authored class mask at retained DraftShape::convex+2Ch. Both filters now call the existing cc13_dyn1 body on that same convex shape instead of reading entry.group.",
+      "call_sites": ["1037c0b8", "10383f87"],
+      "called": true
+    },
+    {
+      "native": "006b0020",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "The serializer roots 006B7710 and 006B5960 lack a linked game consumer; changing internal walker calls alone would leave this helper unreachable."
+    },
+    {
+      "native": "006b1190",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing live mission-state serialization entry; the source-wired encode root is unlinked in the baseline executable."
+    },
+    {
+      "native": "006b1490",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_mission_lua_state_006b23e0",
+      "reason": "Missing live mission-state restore entry; the source-wired decode root is unlinked in the baseline executable."
+    },
+    {
+      "native": "006b1870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing linked save-state consumer for the naming pass; checkpoint table copying is a different operation."
+    },
+    {
+      "native": "006b3fd0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing linked save-state consumer for the forced thisTable encoding pass; internal forwarding alone would not reach the game."
+    },
+    {
+      "native": "006b5bf0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: encode_mission_lua_state_006b68c0",
+      "reason": "Missing linked save-state consumer for Mission/MissionGlobals/MessageSender encoding; the save root is unlinked."
+    },
+    {
+      "native": "006b68c0",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: save_mission_lua_globals_006b7710",
+      "reason": "Missing live whole-mission serialization producer and archive continuation; the baseline graph has no linked encode root."
+    },
+    {
+      "native": "006b23e0",
+      "status": "skipped",
+      "host_site": "src/save_settings_cc13.cpp: finish_mission_load_006b5960",
+      "reason": "Missing live whole-mission restore producer; the baseline graph has no linked decode root or finish_mission_load entry."
+    },
+    {
+      "native": "006b7710",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: save_mission_lua_globals_006b7710",
+      "reason": "Missing actual game save dispatcher for this whole-mission writer; MW_SaveCheckpoint calls the separate checkpoint copier."
+    },
+    {
+      "native": "006b5960",
+      "status": "skipped",
+      "host_site": "src/save_settings_cc13.cpp: finish_mission_load_006b5960",
+      "reason": "Missing actual load caller and retained whole-mission savedata publication; the entry is unlinked in the baseline graph."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "Missing live TextContext byte-input consumer; NativeFontResources::accepts_text_byte itself has no source callers, so a glyph-membership adapter alone would not wire the body."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_deviation_factor",
+      "reason": "Missing bound reset dispatch and owned debug-screen tuning/default view; the inspected live CameraHost handles AddPosition(s) and throws for this service."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_overview_height",
+      "reason": "Missing bound reset dispatch and owned debug-screen tuning/default view; the existing HudMovieCamera is the separate keyframe-camera object."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_speed_limits",
+      "reason": "Missing live reset caller and screen fields +3Ch/+40h/+44h; the AddPosition(s) adapter deliberately throws for this service."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost::movcam_reset_accel_time",
+      "reason": "Missing live reset caller and owned screen acceleration defaults at +48h; keyframe camera state cannot substitute for them."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 air-support arm",
+      "reason": "Missing retained flight spawn-manager services and actual air-support activation path; the currently hosted grant consumer auto-uses passive classes."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail",
+      "reason": "Missing active-use activation caller and its award/session tail; the live grant path uses passive classes and never sets consumed."
+    },
+    {
+      "native": "00c32bb0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: sap_next_pair_00c32bb0",
+      "reason": "Missing live owner of this SAP manager layout; the inspected native SAP pair owner uses 00C32AF0 with a different sentinel offset."
+    },
+    {
+      "native": "00c32bd0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: sap_first_pair_00c32bd0",
+      "reason": "Missing live SAP owner with pair count +58h and head +44h; the retained native owner uses 00C32B10 and different fields."
+    },
+    {
+      "native": "00c32be0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: sap_pair_count_00c32be0",
+      "reason": "Missing live SAP owner with count +58h; the retained native pair manager uses count +D0h through 00C32B30."
+    }
+  ],
+  "totals": {
+    "source_wired_before": 10479,
+    "source_wired_after": 10500,
+    "reachable_reconstructed_before": 5384,
+    "reachable_reconstructed_after": 5385,
+    "note": "Source readiness is a coarse source-reachability measure and was refreshed against the regenerated graph; its larger increase is not claimed as 21 individual wirings. Only 00C32450 is newly called by this packet."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all 4 existing tests passed",
+    "call_graph": "Regenerated after successful build: 00C32450 REACHABLE, two reachable call sites, zero unreachable callers",
+    "path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost -> GameMissionHost -> GameMissionFrameHost -> fixed simulation -> GameUnitsHost::motion_step_00825f20 -> run_world_contact_phase -> HullTerrainContactSolver::world_step -> shape_group_00c32450",
+    "float_math": "No float arithmetic changed; no new tests added",
+    "runtime": "Game not run; build and static emitted-call evidence only"
+  },
+  "coordination": "agent/g5-w5 was notified of the hull_terrain_contact.cpp edit and acknowledged no overlap with its current lease; plane still owns integration of reviewed branches."
+}
