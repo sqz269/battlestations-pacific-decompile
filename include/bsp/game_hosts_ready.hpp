@@ -155,4 +155,9 @@ void run_load_avoid_zone_state_004e0754(GameHostLog& log,
 std::size_t run_load_scripted_name_baseline_004d30f0(GameHostLog& log,
     GameMissionLuaHost& lua, std::vector<std::string>& names);
 
+// 004DAFF6 -> 004D32A0: remove function globals absent from that same baseline,
+// then clear the baseline. The mission interpreter remains owned by `lua`.
+void run_teardown_scripted_globals(GameHostLog& log,
+    GameMissionLuaHost& lua, std::vector<std::string>& names);
+
 }  // namespace bsp::game

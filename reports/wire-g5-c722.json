@@ -1,0 +1,254 @@
+{
+  "goal": 5,
+  "chain": 722,
+  "slot": "g5-w8",
+  "run": 1545,
+  "branch": "agent/g5-w8",
+  "base": "19836a52f6",
+  "summary": "Retain the real pre-script function baseline and run 004D32A0 against the mission interpreter at gated session teardown.",
+  "wired_total_before": 10471,
+  "wired_total_after": 10472,
+  "rows": [
+    {
+      "native": "004d32a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: FrameControlBinding::request_10_teardown_004e458a -> src/game_hosts_ready.cpp: run_teardown_scripted_globals -> game_nil_script_added_globals_004d32a0",
+      "evidence": "004DA780 assembly calls 004D32A0 at 004DAFF6 after the mission clock reset; the same outer gate excludes states 1/2/4.",
+      "real_state": "The retained 004D30F0 function-name baseline and a borrowed NativeLuaStateStorage tracking view of GameMissionLuaHost::mission_lua_state(); no new interpreter or fabricated raw game object.",
+      "call_graph": {
+        "called": true,
+        "direct_calls": 1,
+        "site": "101c588b",
+        "caller": "bsp::game::run_teardown_scripted_globals",
+        "callee": "bsp::cc13_sweepA3::game_nil_script_added_globals_004d32a0"
+      }
+    },
+    {
+      "native": "008e2bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudWorldHost minimap update",
+      "reason": "The baseline host lacks a live ping-list owner; agent/g5-w4 subsequently claimed the real owner and expiry pass, so left to that packet."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: minimap ping record / src/game_hosts_hud.cpp: update_map_screen_005b45c0",
+      "reason": "Missing real map-screen ping input producer, cooldown state and sender; HUD file was owned by another worker during selection."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl enum projection",
+      "reason": "Already called by the numeric-property merge enum projection; readiness stand-in text in scene_contents is stale, so no new call added."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl child merge",
+      "reason": "Already called by the actual property-bag merge bridge; no new behavior to wire at the scene_contents comment."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall queue_call / src/game_hosts_fixed_step.cpp: deferred Lua drain",
+      "reason": "Missing live off-main-thread named-call producer and a compatible argument queue; current queue_call remains unimplemented."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing real decoder frame/texture producer; the existing decoder_open path returns failure."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The host owns a projected schedule rather than the raw movie subtitle storage expected by the body; no real movie page/subtitle widget producer."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::run_teardown_arm_004e458a",
+      "reason": "Sound-transition record lacks the original GUI/movie manager state required by the complete body."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: objective state replication",
+      "reason": "Missing native objective-message sender/receiver state at the result host; avoided constructing a message solely for a count."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_ship_landed_listeners",
+      "reason": "Missing native warning-manager/channel map and landing-target hierarchy adapter; current dispatcher works on host subscriptions, not the raw manager."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing real alternate ammunition record, retained references and source tree; current host device handle is only a gun-row identity."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building owner-change path",
+      "reason": "Missing real unit+660h 44-byte effect vector and its producer; smoke/fire projections are separate state."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort synchronization record",
+      "reason": "Missing local D1 message routing/consumption at this host; constructing an unconsumed synchronization message would add no behavior."
+    },
+    {
+      "native": "00749aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing ramp latch update",
+      "reason": "Missing local A6 message routing/consumption for the ramp path; current ramp state is updated directly by the latch."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "Missing gameplay consumer of the native score-list entries; the documented consumer is the debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "Missing live native score-list entries to mark and gameplay consumer; no auxiliary debug table added."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate loop",
+      "reason": "Existing live host already calls the body; no additional wiring to add."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane bomb-fire HUD path",
+      "reason": "Original caller is the HUD bomb-fire update; the HUD file was owned by another packet and no substitute caller was introduced."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: camera FOV callback",
+      "reason": "Inspected getter and original callback sites; no unowned live callback selected, and another worker later claimed its real camera consumer."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Body already appears in the native submitter but that submitter is unlinked; missing complete live scene-submission integration."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Body already appears in the native submitter but that submitter is unlinked; missing complete live scene-submission integration."
+    },
+    {
+      "native": "004a5620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: traffic runtime build record",
+      "reason": "Missing original traffic-record range/map owner and complete native runtime-construction services; host traffic records use a separate model."
+    },
+    {
+      "native": "004697b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsHost::destroy_scene_database_pending",
+      "reason": "Real database exists but no pending-object producer or deleting-destructor adapter is bound; declined an always-empty-only wiring."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing live reflection/property-descriptor writer 00AAAED0; render sorting is a different operation."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "Missing concrete live input-character consumer and text-context font; existing direct uses are constant probe checks."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartHost::write_checkpoint",
+      "reason": "Missing real checkpoint-differs predicate and full checkpoint rewrite binding at this site; did not clear a checkpoint on a fabricated trigger."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail::Pass::candidate_attack_value",
+      "reason": "Missing powerup flight-class weapon facts/compose-against-group adapter; class objects cannot be treated as instantiated unit facts."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition planning",
+      "reason": "Missing mode-specific class-pair table and live spawn-composition consumer at the inspected host."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: quick_spawn_named_group",
+      "reason": "Missing complete live spawn sources/threat-record producer at the record-only spawn hook; gate inputs were not fabricated."
+    },
+    {
+      "native": "004e60e0",
+      "status": "skipped",
+      "host_site": "src/seg10_cc13.cpp: scene_record_load_cloud_areas_004e7220",
+      "reason": "Original non-debug consumer is the cloud-area loader; missing a live binding for that original loader at the inspected hosts."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: landscape_build_shore_mask_00880420",
+      "reason": "Missing landscape shore-mask grid producer and concrete Left55Host sampling callback; avoid-zone sampling is a different operation."
+    },
+    {
+      "native": "007c3ea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown human-pilot branch",
+      "reason": "Missing complete landing-command/retire-task/message adapter; the units file also had a pending-review edit during selection."
+    },
+    {
+      "native": "004722d0",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_anim_class_004722d0",
+      "reason": "Missing live animation-class registry owner and SceneClassLuaTables consumer for the original get-or-create path."
+    },
+    {
+      "native": "00475710",
+      "status": "skipped",
+      "host_site": "src/scene_class_registry.cpp: get_or_create_buoy_class_00475710",
+      "reason": "Missing live buoy-class registry owner and SceneClassLuaTables consumer for the original get-or-create path."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_search_refresh_009d7050",
+      "reason": "Already called directly by the live search refresh body; exposing an optimized-away standalone symbol would not add behavior."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_search_refresh_009d7050",
+      "reason": "Already called directly by the live search refresh body; exposing an optimized-away standalone symbol would not add behavior."
+    }
+  ],
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed; 4/4 CTests",
+    "changed_build": "scripts/build.ps1 passed; 4/4 CTests",
+    "focused_probe": "tests/wire_g5_c722_lua_cleanup_probe.cpp compiled Win32 /W4 /WX /O2 /MANIFEST:EMBED and passed against linked Lua 5.1.1",
+    "call_graph": "Direct reachable call at 101c588b from run_teardown_scripted_globals to the actual game_nil_script_added_globals_004d32a0 body; entry path includes FrameControlBinding::request_10_teardown_004e458a.",
+    "readiness": "wired 10471 -> 10472; 004d32a0 called=true",
+    "pc24": "No float math changed; not applicable.",
+    "game_run": "Not run, as instructed."
+  },
+  "interface_limits": "New C++ typed views, not a binary ABI replacement. Baseline tree/temp name-vector layouts, allocation counts and iterator diagnostics are not native. Native LuaObject iteration and ExecuteString are reused.",
+  "selection_notes": "Rows record substantively inspected candidates. Broad readiness/name-only scans were orientation; no edits made to other packets. Baseline count is from this worktree, not the assignment pool snapshot."
+}

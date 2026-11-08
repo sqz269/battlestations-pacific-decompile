@@ -5,6 +5,9 @@
 // pass can show in this process.
 
 #include "bsp/game_hosts_ready.hpp"
+#include "bsp/cc13_sweepA3.hpp"
+#include "bsp/native_lua_objects.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq
@@ -535,7 +538,8 @@ public:
     }
     void insert_scripted_name(const std::string& name) override {
         for (const std::string& existing : out_) {
-            if (existing == name) return;
+            // 004C7F10 / 00443D00: this is a case-insensitive string set.
+            if (::_stricmp(existing.c_str(), name.c_str()) == 0) return;
         }
         out_.push_back(name);
     }
@@ -769,6 +773,25 @@ std::size_t run_load_scripted_name_baseline_004d30f0(GameHostLog& log,
         "pre-script baseline of the global namespace, which 004d32a0 uses at teardown to "
         "nil exactly the globals the mission scripts added", count, inserted);
     return inserted;
+}
+
+void run_teardown_scripted_globals(GameHostLog& log,
+    GameMissionLuaHost& lua, std::vector<std::string>& names) {
+    if (names.empty()) return;
+    if (lua.mission_lua_state() == nullptr)
+        throw std::logic_error("scripted-name baseline outlived its mission interpreter");
+    // A borrowed tracking view of the actual interpreter, as game+1A0Ch is
+    // for [[game+1A08h]+4]. Constructing this view does not create a VM, replace
+    // its globals, or install DoFile. No owner metadata escapes this call.
+    bsp::NativeLuaStateStorage owner;
+    bsp::construct_native_lua_state_00b66bd0(&owner);
+    owner.state_04 = lua.mission_lua_state();
+    const std::size_t baseline_size = names.size();
+    bsp::cc13_sweepA3::game_nil_script_added_globals_004d32a0(
+        names, owner, bsp::crt_string_storage());
+    log.implemented("MissionTeardown::nil_script_added_globals", "004d32a0");
+    log.notef("mission script globals teardown: 004D32A0 consumed the %zu-name "
+        "004D30F0 baseline on the live mission interpreter", baseline_size);
 }
 
 }  // namespace bsp::game

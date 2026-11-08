@@ -521,6 +521,8 @@ struct GameMissionFrameHost::Impl {
     GameHostLog& log;
     GameVfsHost& vfs;
     GameMissionLuaHost& lua;
+    // game+1930h: 004D30F0's pre-script function set, consumed by 004D32A0.
+    std::vector<std::string> script_function_baseline;
     GameObserverRuntime* observer_runtime{nullptr};
     GameInputRuntime* input_runtime{nullptr};
     bsp::SessionParticipantPools& participants; // persistent GameMissionHost owner
@@ -2719,6 +2721,11 @@ public:
                 owner_.reset_shared_frame_mission_clock();
             }
         }
+        // 004DAFF6, the tail of 004DA780, after the clock reset and before
+        // 004E4710 returns. Its outer gate excludes front-end states 1/2/4.
+        if (state.state != 1u && state.state != 2u && state.state != 4u)
+            run_teardown_scripted_globals(owner_.log, owner_.lua,
+                owner_.script_function_baseline);
         return owner_.result->run_teardown_arm_004e458a(state);
     }
     void request_12_resume_004cd0f0() override {
@@ -4431,9 +4438,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         }
         if (method == "rebuild_scripted_name_list"
             || method == "record_script_function_baseline") {
-            std::vector<std::string> names;
             const std::size_t inserted = run_load_scripted_name_baseline_004d30f0(
-                host.log, host.lua, names);
+                host.log, host.lua, host.script_function_baseline);
             host.load.scripted_names = inserted;
             host.done(label, step.address);
             ++host.load.concrete;
