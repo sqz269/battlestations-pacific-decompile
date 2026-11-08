@@ -15407,6 +15407,78 @@ private:
     lua_State* state_;
     GameUnitsHost* units_;
 };
+
+// Goal 5 chain 761: 0042ED80's +150h read/write and +48h/+44h walk, over the
+// SAME gunnery values and live squadron membership the SetInvincible host used.
+// SUBSTITUTION (retained): the squadron and wing 0 share a unit slot, so that
+// slot is written once and its other member slots are its health-bearing
+// children. The host's gun components have no separate health/invincibility.
+// The record is borrowed for this synchronous call; the field setter does not
+// change the squadron registry. Each recursive dispatch has its own cursor.
+class UnitInvincibilityBinding final : public bsp::UnitDamageHostUnreached {
+public:
+    UnitInvincibilityBinding(GameUnitsHost& units, std::size_t unit, std::size_t& writes)
+        : units_(units), unit_(unit), writes_(writes) {
+        if (unit >= units_.count())
+            throw std::logic_error("0042ED80 addressed a missing unit slot");
+        for (const auto& record : bsp::plane_squadron_registry().records()) {
+            if (record.squadron_unit == unit_) {
+                squadron_ = &record;
+                break;
+            }
+        }
+    }
+
+    void write_invincibility(std::uint32_t entity, float value) override {
+        require_owner(entity);
+        units_.gunnery()->set_unit_invincibility(unit_, value);
+        ++writes_;
+    }
+    bsp::UnitHealth read_health(std::uint32_t entity) override {
+        require_owner(entity);
+        bsp::UnitHealth health{};
+        health.invincibility = units_.gunnery()->unit_invincibility(unit_);
+        return health;
+    }
+    std::uint32_t first_child(std::uint32_t entity) override {
+        require_owner(entity);
+        cursor_ = 0;
+        return next_member();
+    }
+    std::uint32_t next_sibling(std::uint32_t entity) override {
+        if (entity != last_child_)
+            throw std::logic_error("0042ED80 sibling walk changed its current child");
+        return next_member();
+    }
+    void dispatch_set_invincible(std::uint32_t entity, float value) override {
+        UnitInvincibilityBinding child(units_, static_cast<std::size_t>(entity - 1u), writes_);
+        bsp::entity_set_invincible_0042ed80(child, entity, value);
+    }
+
+private:
+    void require_owner(std::uint32_t entity) const {
+        if (entity != unit_ + 1u)
+            throw std::logic_error("0042ED80 field access changed its owner");
+    }
+    std::uint32_t next_member() {
+        while (squadron_ != nullptr && cursor_ < squadron_->member_units.size()) {
+            const std::size_t member = squadron_->member_units[cursor_++];
+            if (member == bsp::kPlaneSquadronNoUnit || member == unit_) continue;
+            if (member >= units_.count())
+                throw std::logic_error("0042ED80 squadron member has no live unit slot");
+            last_child_ = static_cast<std::uint32_t>(member + 1u);
+            return last_child_;
+        }
+        last_child_ = 0;
+        return 0;
+    }
+    GameUnitsHost& units_;
+    std::size_t unit_;
+    std::size_t& writes_;
+    const bsp::PlaneSquadronHostRecord* squadron_{};
+    std::size_t cursor_{};
+    std::uint32_t last_child_{};
+};
 }  // namespace
 
 // Packet cc9_lua_add_damage. 0088E000 AddDamage(entity, amount) through its body
@@ -16654,23 +16726,15 @@ int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argume
     // 00897C63 vtable[F4h], 0042ED80: +150h, fanned out to the children; a
     // squadron's fused slot carries its live members.
     binding.set_invincible_f4 = [&](std::size_t index, float value) {
-        GameGunneryHost& gunnery = *units_hooks_->gunnery();
-        std::vector<std::size_t> targets{index};
-        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
-            if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
-            for (std::size_t member : r.member_units) {
-                if (member != bsp::kPlaneSquadronNoUnit && member != index) targets.push_back(member);
-            }
-            break;
-        }
-        for (std::size_t unit : targets) {
-            gunnery.set_unit_invincibility(unit, value);
-            ++summary_.invincible_units;
-        }
+        std::size_t writes = 0;
+        UnitInvincibilityBinding propagation(*units_hooks_, index, writes);
+        bsp::entity_set_invincible_0042ed80(
+            propagation, static_cast<std::uint32_t>(index + 1u), value);
+        summary_.invincible_units += writes;
         const GameUnitRow* row = units_hooks_->unit_row(index);
         log_.notef("  SetInvincible 00897a50: \"%s\" value=%.3f units=%zu (packet "
             "cc9_set_invincible_native)", row != nullptr ? row->name.c_str() : "?", value,
-            targets.size());
+            writes);
         log_.implemented("MissionLuaNative::SetInvincible", "00897a50");
     };
     binding.unresolved = [&](std::uint32_t id) {
