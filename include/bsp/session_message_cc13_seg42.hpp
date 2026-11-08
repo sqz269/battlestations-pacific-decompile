@@ -54,6 +54,10 @@ struct VtableBinding {
 struct Context {
     void* volatile& current_game_00e188a8;  // read by the inlined 0075B430
     const VtableBinding& vtables;
+    // Borrow the authoritative selected-participant identity when the caller
+    // owns a typed mission instead of a raw game image. Null keeps the raw ABI
+    // view used by existing callers; no participant fields are projected here.
+    const NativeSessionMessageOwnerView* selected_participant{};
 };
 
 // ---- shared prefixes ---------------------------------------------------

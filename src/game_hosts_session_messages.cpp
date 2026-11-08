@@ -59,6 +59,8 @@ struct HostSessionMessages::Image {
     alignas(4) std::uint8_t game[0x18f0]{};
     void* volatile current_game{game};
     NativeSessionMessageContext session{current_game};
+    const SessionParticipantPools* vehicle_race_participants{};
+    const std::size_t* vehicle_race_local_slot{};
 
     // The codec's image constants, read from the PE: 00D7A218 0.0f, 00D7A260
     // -1.0f, 00D7A24C 1.0f, 00CE3978 4294967296.0f, 00D7A278 the double
@@ -241,7 +243,13 @@ struct HostSessionMessages::Image {
         // IsType, 004499C0.
         std::uint32_t slots_00cfaa0c[5]{0x006ec100u, 0x006eba20u, 0x006eba50u, 0x006eba00u,
                                         0x004499c0u};
+        // Goal 5 chain 775: bsp.py ghidra bytes 00D032FC --length 20,
+        // bsp.gpr /battlestationspacific.exe. SetRace's complete five-slot
+        // profile: scalar delete, writer, reader, IsType, always-true.
+        std::uint32_t slots_00d032fc[5]{0x00760630u, 0x00760420u, 0x00760470u, 0x007603f0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if (image_address == 0x00d032fcu) return slots_00d032fc;
             if (image_address == 0x00cf64c4u) return slots_00cf64c4;
             if (image_address == 0x00ce53acu) return slots_00ce53ac;
             if (image_address == 0x00cfaa0cu) return slots_00cfaa0c;
@@ -788,23 +796,39 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     return copied_party;
 }
 
+void HostSessionMessages::bind_vehicle_race_owner(const SessionParticipantPools& participants,
+    const std::size_t& local_slot) const noexcept {
+    image_->vehicle_race_participants = &participants;
+    image_->vehicle_race_local_slot = &local_slot;
+}
+
 std::uint32_t HostSessionMessages::queue_vehicle_race_80(
     const VehicleRaceFields& posted) const {
-    // Review round 1: selected-player ownership and the 00D032FC profile are
-    // not bound, so do not run or claim the native constructor. These plain
-    // records provide storage only for the codec's fields, taken from the
-    // actual descriptor produced by 008A8720 (008A8879..008A88B7).
-    // bsp.py show 00760420/00760470: only type +10h, id +18h, relay +1Ah and
-    // race +1Ch are read/written. Profile +0h and owner +14h are never used.
+    Image& image = *image_;
+    if (!image.vehicle_race_participants || !image.vehicle_race_local_slot)
+        throw std::logic_error("SetRace: no live selected-participant source");
+    if (posted.type_10 != 0x80 || posted.id_18 != 0 || posted.relay_1a != 0)
+        throw std::logic_error("SetRace: posted header disagrees with 008A8720");
+    NativeSessionMessageParticipantOwner selected(*image.vehicle_race_participants,
+        *image.vehicle_race_local_slot);
+    const seg42::Context live{image.current_game, image.seg42_vtables, &selected};
+    // 008A8879..008A88B7 inlines 00760390's stores on the sender, then
+    // supplies the requested race. Its +14h now comes from the real mission
+    // pool/slot, without filling the legacy Image::game with copied records.
     seg42::VehicleValueMessage sent{};
-    sent.h.base.type_10 = posted.type_10;
-    sent.h.id_18 = posted.id_18;
-    sent.h.relay_1a = posted.relay_1a;
+    seg42::construct_vehicle_set_race_00760390(&sent, live);
     sent.value_1c = posted.race_1c;
     LocalStream stream;
     seg42::write_vehicle_set_race_00760420(&sent, &stream.out);
     stream.begin_read();
-    seg42::VehicleValueMessage queued{};
+    // 00768530 case 80h: 007691D2 allocates 20h, 007691E6 calls 00760390,
+    // then 0076A27B dispatches the reader. Keep that actual allocation until
+    // the race has been copied for the unit callback; 00760630(1) frees it.
+    static_assert(sizeof(seg42::VehicleValueMessage) == 0x20);
+    OwnedDecodedMessage<seg42::VehicleValueMessage,
+        delete_vehicle_set_race_message_00760630> owner;
+    auto& queued = owner.get();
+    seg42::construct_vehicle_set_race_00760390(&queued, live);
     seg42::read_vehicle_set_race_00760470(&queued, &stream.in);
     // 00780120's real IsType ladder must select the session kind switch,
     // whose 80h arm consumes this payload (0095ABE0 / unit_message_arms.cpp).
@@ -813,8 +837,9 @@ std::uint32_t HostSessionMessages::queue_vehicle_race_80(
         })
         || queued.h.base.type_10 != 0x80)
         throw std::logic_error("SetRace: decoded copy did not reach the unit race arm");
-    // Codec storage owns no heap members and claims no native object lifetime.
-    return queued.value_1c;
+    const auto copied_race = queued.value_1c;
+    delete_vehicle_set_race_message_00760630(&sent, 0u);
+    return copied_race;
 }
 
 namespace {

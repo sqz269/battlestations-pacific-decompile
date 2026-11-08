@@ -25,12 +25,14 @@ seg42::UnitMessage* delete_ship_explode_to_parts_message_007625e0(
 
 // Local formation and vehicle messages use the same root stamp/free contract.
 // Their factory allocations are 24h for formation and shipyard launch, 20h
-// for SetParty. No payload member owns a reference or a separate allocation.
+// for SetParty and SetRace. No payload member owns a reference or a separate allocation.
 seg42::FormationMemberMessage* delete_formation_join_message_0075ca20(
     seg42::FormationMemberMessage*, std::uint32_t flags);
 seg42::FormationMemberMessage* delete_formation_leave_message_0075ca40(
     seg42::FormationMemberMessage*, std::uint32_t flags);
 seg42::VehicleValueMessage* delete_vehicle_set_party_message_00760610(
+    seg42::VehicleValueMessage*, std::uint32_t flags);
+seg42::VehicleValueMessage* delete_vehicle_set_race_message_00760630(
     seg42::VehicleValueMessage*, std::uint32_t flags);
 seg42::VehicleShipyardLaunchMessage* delete_vehicle_shipyard_launch_message_00760650(
     seg42::VehicleShipyardLaunchMessage*, std::uint32_t flags);
