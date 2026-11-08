@@ -5,6 +5,7 @@ extern "C" {
 }
 
 #include "bsp/cc13_front3.hpp"   // goal 5 chain 650: 007C11E0's PlaneNotifyFlightStateHost
+#include "bsp/path_movcam_seg46_argon.hpp"   // goal 5 chain 696: 007AC780's block
 
 namespace bsp::game {  // namespace
 
@@ -27,20 +28,36 @@ bool GameUnitsHost::Impl::para_soldier_globals_0084cb70() {
 // row (bulletclasses.lua keys), cached by bullet id. step_scale +5Ch is the
 // constructor default (bsp::level_bomb_paratrooper::kParatrooperStepScale). The
 // SoldierClass / SoldierAnim handles stay 0: the soldier is not a host entity.
+// Goal 5 chain 696: the fields are 007AC780's own, read once into the row's
+// class descriptor by the gunnery host (GameGunneryHost::paratrooper_class,
+// 006EA910's reader call), where they were read here key by key before. A
+// row that is not a Paratrooper, or a call before the gunnery host exists,
+// keeps the constructor's zeros (006EA720 leaves +D8h..+FCh as allocated).
 const bsp::gameplay_seg46_cc13::ParatrooperClassFields&
 GameUnitsHost::Impl::para_class_fields(int bullet_id) {
     for (const auto& row : para_class_rows)
         if (row.first == bullet_id) return row.second;
     bsp::gameplay_seg46_cc13::ParatrooperClassFields f;
     f.step_scale_5c = bsp::level_bomb_paratrooper::kParatrooperStepScale;
-    if (bullet_id >= 0) {
-        f.capture_power_d8 = lua.read_bullet_class_number(bullet_id, "CapturePower", 0.0f);
-        f.slow_factor_closed_dc = lua.read_bullet_class_number(bullet_id, "SlowFactorClosed", 0.0f);
-        f.slow_factor_opened_e0 = lua.read_bullet_class_number(bullet_id, "SlowFactorOpened", 0.0f);
-        f.open_duration_e4 = lua.read_bullet_class_number(bullet_id, "OpenDuration", 0.0f);
-        f.close_duration_e8 = lua.read_bullet_class_number(bullet_id, "CloseDuration", 0.0f);
-        f.capture_duration_f8 = lua.read_bullet_class_number(bullet_id, "CaptureDuration", 0.0f);
-        f.damage_fc = lua.read_bullet_class_number(bullet_id, "Damage", 0.0f);
+    if (gunnery == nullptr) {
+        // Not cached: the class is read once the gunnery host (created with the
+        // first unit batch) can build its descriptor.
+        static bsp::gameplay_seg46_cc13::ParatrooperClassFields unavailable;
+        unavailable = f;
+        log.notef("paratrooper class: bullet=%d before the gunnery host exists; constructor "
+            "zeros (007AC780 not yet read)", bullet_id);
+        return unavailable;
+    }
+    const bsp::path_movcam_seg46_argon::ParatrooperClassResidue* const read =
+        bullet_id >= 0 ? gunnery->paratrooper_class(bullet_id) : nullptr;
+    if (read != nullptr) {
+        f.capture_power_d8 = read->capture_power_d8;
+        f.slow_factor_closed_dc = read->slow_factor_closed_dc;
+        f.slow_factor_opened_e0 = read->slow_factor_opened_e0;
+        f.open_duration_e4 = read->open_duration_e4;
+        f.close_duration_e8 = read->close_duration_e8;
+        f.capture_duration_f8 = read->capture_duration_f8;
+        f.damage_fc = read->damage_fc;
     }
     para_class_rows.emplace_back(bullet_id, f);
     log.notef("paratrooper class: bullet=%d power=%.2f slow=%.2f/%.2f open=%.2f close=%.2f "

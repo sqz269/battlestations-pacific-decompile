@@ -348,6 +348,48 @@ public:
     unsigned long long decals{0};
 };
 
+// 007AC780's table accessors over the same row. Its first call is its parent
+// reader 006E1BE0 (007AC7A3), which fills the shared descriptor block. The
+// number readers 007AAE50 / 007AAED0 / 007AAF50 / 007AAFD0 / 007003B0 are
+// GetByName + GetNumber (00B66270, lua_tonumber: 0 for an absent key).
+// LABELLED, contracts not run: SoldierClass resolves through 004B1400 and
+// SoldierAnim through 004FE080 into handles; the soldier is not a host entity
+// (GameUnitsHost::Impl::para_class_fields), so both stay 0 and are counted.
+class ParatrooperClassRowReader final : public bsp::path_movcam_seg46_argon::LuaTableReaderHost {
+public:
+    ParatrooperClassRowReader(const LuaBulletClassRow& row, bsp::WeaponClassLoadHost& resources,
+                              bsp::WeaponClassDescriptor& descriptor)
+        : row_(row), resources_(resources), descriptor_(descriptor) {}
+    double get_number_by_name(const char* field_name) override {
+        return row_.float_value(field_name, 0.0f);
+    }
+    const char* get_string_by_name(const char* field_name) override {
+        string_ = row_.string_value(field_name, "");
+        return string_.c_str();
+    }
+    void read_bomb_class_lua_fields_006e1be0() override {
+        bsp::load_bomb_class_fields(row_, resources_, descriptor_);
+    }
+    void read_number_field_007003b0(const char* field_name, float& out) override {
+        out = row_.float_value(field_name, 0.0f);
+    }
+    void read_string_field_004fe080(const char*, std::uint32_t& out_handle) override {
+        ++unresolved_handles;
+        out_handle = 0u;
+    }
+    std::uint32_t get_or_load_soldier_class_004b1400(const char*) override {
+        ++unresolved_handles;
+        return 0u;
+    }
+    unsigned long long unresolved_handles{0};
+
+private:
+    const LuaBulletClassRow& row_;
+    bsp::WeaponClassLoadHost& resources_;
+    bsp::WeaponClassDescriptor& descriptor_;
+    std::string string_;
+};
+
 // 006E9890's inputs are fields of the descriptor the reader filled: +8h, +68h,
 // +50h, +54h, +5Ch, +ACh, +B4h, the +10h Name, +E4h / +E0h (MTorpedo) and +58h
 // (MFlakBullet). A kind whose reader does not write a field leaves the
@@ -5950,6 +5992,9 @@ struct GameGunneryHost::Impl {
         bool row_present{false};   // Bullets[id] is a table
         bool class_found{false};   // the Type matched one of 006EA910's thirteen names
         bsp::WeaponClassDescriptor descriptor;
+        // MParatrooper's own block (+D8h..+FCh), 007AC780; read for that kind only.
+        bool paratrooper_read{false};
+        bsp::path_movcam_seg46_argon::ParatrooperClassResidue paratrooper;
     };
     std::map<int, BulletClassDescriptorEntry> bullet_class_descriptors;
     UnresolvedBulletClassResources bullet_class_resources;
@@ -16276,7 +16321,9 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
 // (006EAAE6..006EACE0, projectile_class_for_lua_type), the class constructor
 // (006E8320 and the derived +8h sub-type), the Lua reader vtable[18h] at
 // 006EACFD (006E8770, 006E1BE0, 008566B0, 006FD400, 00809CB0, 0070C030 by
-// kind; load_weapon_class_fields dispatches) and +0Ch = id (006EAD86). The
+// kind through load_weapon_class_fields; 007AC780 for a Paratrooper; the
+// other dummy / water-mine readers keep their 006E1BE0 parent, as
+// load_weapon_class_fields has them) and +0Ch = id (006EAD86). The
 // map stands in for the 006E9B70 cache: one build per id, later lookups hit.
 // The descriptor is a typed value, not the image's refcounted 0D4h..100h
 // block: 006EA910's own body (bullet_class_get_or_create_006ea910,
@@ -16306,7 +16353,25 @@ GameGunneryHost::Impl::bullet_class_descriptor(int id) {
     } else {
         entry.descriptor.sub_type = 0;
     }
-    bsp::load_weapon_class_fields(kind, row, bullet_class_resources, entry.descriptor);
+    if (kind == bsp::ProjectileKind::Paratrooper) {
+        // MParatrooper's vtable[18h] is 007AC780 (kClassTable), which chains
+        // 006E1BE0 first and then reads its own keys.
+        ParatrooperClassRowReader reader(row, bullet_class_resources, entry.descriptor);
+        bsp::path_movcam_seg46_argon::mparatrooper_class_read_lua_fields_007ac780(
+            entry.paratrooper, reader);
+        entry.paratrooper_read = true;
+        log.notef("gunnery: paratrooper class %d (007AC780): power=%.2f slow=%.2f/%.2f "
+            "open=%.2f close=%.2f capture=%.2f damage=%.2f, %llu soldier handles unresolved",
+            id, static_cast<double>(entry.paratrooper.capture_power_d8),
+            static_cast<double>(entry.paratrooper.slow_factor_closed_dc),
+            static_cast<double>(entry.paratrooper.slow_factor_opened_e0),
+            static_cast<double>(entry.paratrooper.open_duration_e4),
+            static_cast<double>(entry.paratrooper.close_duration_e8),
+            static_cast<double>(entry.paratrooper.capture_duration_f8),
+            static_cast<double>(entry.paratrooper.damage_fc), reader.unresolved_handles);
+    } else {
+        bsp::load_weapon_class_fields(kind, row, bullet_class_resources, entry.descriptor);
+    }
     entry.descriptor.bullet_id = id;                                      // 006EAD86
     ++bullet_class_descriptor_loads;
     log.notef("gunnery: bullet class %d descriptor Type=%s sub-type %d (006EA910 -> %08X): "
@@ -21018,6 +21083,13 @@ const std::vector<std::size_t>* GameGunneryHost::unit_category_guns(
 
 const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexcept {
     return impl_->bullet(id);
+}
+
+const bsp::path_movcam_seg46_argon::ParatrooperClassResidue*
+GameGunneryHost::paratrooper_class(int id) {
+    if (id < 0) return nullptr;
+    const Impl::BulletClassDescriptorEntry& entry = impl_->bullet_class_descriptor(id);
+    return entry.paratrooper_read ? &entry.paratrooper : nullptr;
 }
 
 const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
