@@ -1,4 +1,5 @@
 #include "bsp/native_hardware_layout_pool_allocate.hpp"
+#include "bsp/native_hardware_layout_pool_table.hpp"
 #include "bsp/native_hardware_layout_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -87,32 +88,9 @@ void* allocate_native_hardware_layout_slot_00b605b0(void* pool) {
         void* const slab = raw ? initialize_native_hardware_layout_slab_00b5ff50(
             raw, word(pool, 0x34)) : nullptr;
 
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown_capacity = capacity * 2u + 2u;
-            const auto bytes = grown_capacity * 4u;
-            put(pool, 0x30, grown_capacity);
-            void* const replacement = singleton_lifetime_allocate({
-                SingletonAllocationKind::pointer_slots, bytes, bytes});
-            auto* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination) {
-                    const auto old_table = word(pool, 0x28);
-                    put(destination, 0, word(pointer(old_table), index * 4u));
-                }
-                destination = at(destination, 4);
-            }
-            void* const old_table = pointer(word(pool, 0x28));
-            if (old_table) singleton_lifetime_free(old_table);
-            // B60646 is ADD ESP,4 after free, followed by this publication.
-            put(pool, 0x28, address(replacement));
-        }
-
-        const auto index = word(pool, 0x2c);
-        auto* const destination = at(pointer(word(pool, 0x28)), index * 4u);
-        if (destination) put(destination, 0, address(slab));
-        // Reload after the store: a caller-supplied table can alias this word.
-        put(pool, 0x2c, word(pool, 0x2c) + 1u);
+        // 00B605B0 inlines 00B603F0's table append. Pass the genuine new
+        // slab word and pool+28 header; no extra lock, cleanup, or second run.
+        append_native_hardware_layout_table_00b603f0(at(pool, 0x28), &slab);
     }
 
     const auto slab_index = word(pool, 0x34);

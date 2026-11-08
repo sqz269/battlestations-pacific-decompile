@@ -1,5 +1,6 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
@@ -484,8 +485,24 @@ __declspec(noinline) void native_gui_group_pool_table_reserve_00ac7370(
 // GUI widget pool family (cc13-gui1, docs/CC13_GUI_1.md): fourteen more instances
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
 #include "bsp/terrain_bush_pool_cc13.hpp"
+#include "bsp/native_gui_curve_pool_table.hpp"
 #include "bsp/cc13_seg87.hpp"
 namespace bsp {
+template<> void NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize() {
+    // 00ABC570 inlines 00ABC500's reserve(32) in unwind state 2.
+    // CD7280 constructs this same F8BE5C process owner, never a side table.
+    initialize_pool<GuiCurvePoolTraits,
+        &native_gui_curve_pool_table_reserve_00abc500>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiCurvePoolTraits>::allocate() {
+    // 00ABC650 appends its initialized slab at +28h while the lock is held.
+    // Replace that inline append with its existing out-of-line equivalent.
+    return allocate_slot<GuiCurvePoolTraits,
+        &NativeGuiWidgetPool<GuiCurvePoolTraits>::initialize_slab,
+        &native_gui_curve_pool_table_push_back_00abc480>(storage_);
+}
+
 namespace {
 template<class T> struct WidgetSlabInitializer {
     static constexpr auto entry = &NativeGuiWidgetPool<T>::initialize_slab;
@@ -600,6 +617,16 @@ template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
+template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
+    // ACC1D0 inlines ACC160 on the actual F8C09C+28h header, EH state 2.
+    initialize_pool<GuiModelPoolTraits,
+        &native_gui_model_pool_table_reserve_00acc160>(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiModelPoolTraits>::allocate() {
+    // ACC350 inlines ACC0D0 while holding the real pool critical section.
+    return allocate_slot<GuiModelPoolTraits, WidgetSlabInitializer<GuiModelPoolTraits>::entry,
+        &native_gui_model_pool_table_push_back_00acc0d0>(storage_);
+}
 #define BSP_GUI_WIDGET_POOL_INSTANCE(T)                                                     \
     static_assert(T::free_count_offset + 4 == T::slab_bytes);                               \
     static_assert(T::slots_per_slab <= 0xffffu);                                            \
@@ -652,6 +679,35 @@ __declspec(noinline) void native_gui_pool_table_push_back_00aa76c0(
 __declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     if (table.capacity < capacity) native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+// ACBE00/ACBE50/ACC0D0/ACC160 and the inlined Model pool copies operate on
+// the retained F8C09C+28h table. Evidence and original ABI are in the header.
+__declspec(noinline) void native_gui_model_pool_table_set_capacity_00acbe00(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // Same native allocation/copy/free shape as the existing AA6FA0 body.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_model_pool_table_grow_00acbe50(
+    NativeGuiPoolSlabTable& table) {
+    native_gui_model_pool_table_set_capacity_00acbe00(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_model_pool_table_push_back_00acc0d0(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        native_gui_model_pool_table_grow_00acbe50(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_model_pool_table_reserve_00acc160(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_model_pool_table_set_capacity_00acbe00(table, capacity);
 }
 
 __declspec(noinline) void set_native_gui_icon_pool_table_capacity_00ab1580(

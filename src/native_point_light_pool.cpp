@@ -1,4 +1,5 @@
 #include "bsp/native_point_light_pool.hpp"
+#include "bsp/native_point_light_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -62,6 +63,37 @@ NativePointLightPool& require_static_pool() {
 }
 } // namespace
 
+__declspec(noinline) void allocate_native_point_light_pool_table_00b7ade0(
+    NativePointLightPoolTableView table, std::uint32_t capacity) {
+    auto* header = static_cast<std::byte*>(table.header);
+    // 00B7ADE7 publishes capacity before the allocator; ADEE/AE03..AE17
+    // preserve DWORD byte-count wrap, a null-tested destination, and a live
+    // unsigned count reload. AE19..AE28 frees the current old table before
+    // publishing the replacement. Evidence: bsp.py show 00b7ade0 --asm.
+    write(header + 8, capacity);
+    auto** replacement = allocate_table(capacity);
+    auto destination = reinterpret_cast<std::uintptr_t>(replacement);
+    for (std::uint32_t i = 0; i < read<std::uint32_t>(header + 4); ++i) {
+        if (destination) {
+            auto** old = read<std::byte**>(header);
+            write(reinterpret_cast<std::byte*>(destination), read<std::byte*>(
+                reinterpret_cast<const std::byte*>(old) + i * 4u));
+        }
+        destination += 4u;
+    }
+    if (auto** old = read<std::byte**>(header)) singleton_lifetime_free(old);
+    write(header, replacement);
+}
+
+__declspec(noinline) void reserve_native_point_light_pool_table_00b7b4a0(
+    NativePointLightPoolTableView table, std::uint32_t minimum) {
+    // 00B7B4A0 compares the existing capacity unsigned; equal/smaller requests
+    // preserve every field and never call the allocator.
+    auto* header = static_cast<std::byte*>(table.header);
+    if (read<std::uint32_t>(header + 8) < minimum)
+        allocate_native_point_light_pool_table_00b7ade0(table, minimum);
+}
+
 NativePointLightPool::NativePointLightPool(AllocatorListDomain& list,
     NativePointLightPoolStorage& storage) : allocator_list_(list), storage_(storage) {
     // Establish the host dispatch binding before native construction makes this
@@ -85,14 +117,7 @@ void NativePointLightPool::initialize_00b7b690() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        reserve_native_point_light_pool_table_00b7b4a0({&storage_.slabs_28}, 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b7ad70();
@@ -168,7 +193,7 @@ void NativePointLightPool::return_raw_slot_00b7b1d0(void* slot) {
     LeaveCriticalSection(section(storage_));
 }
 
-void NativePointLightPool::trim_empty_slabs_00b7b770() {
+__declspec(noinline) void NativePointLightPool::trim_empty_slabs_00b7b770() {
     std::uint32_t index = 0;
     while (index < storage_.slab_count_2c) {
         auto* slab = storage_.slabs_28[index];
@@ -213,7 +238,7 @@ void NativePointLightPool::free_table_unwind_00b7ad70() noexcept {
     // Native leaf does not clear table/count/capacity fields.
 }
 
-void NativePointLightPool::destroy_00b7b110() {
+__declspec(noinline) void NativePointLightPool::destroy_00b7b110() {
     storage_.allocator_00.native_vtable_00 = native_vtable;
     for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
         singleton_lifetime_free(storage_.slabs_28[i]);

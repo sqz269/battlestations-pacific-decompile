@@ -229,5 +229,82 @@
   "coordination": "Claimed target files/addresses; coordinated with g5-w7 and waited for/reclaimed render_fx_cc13.cpp and B3 reconstruction shard. Only four surface kRows entries removed; preserve g5-w7 texture2D row removals and shard records at landing.",
   "left_for_others": "Unbound movie-camera, error-context, movie-clock, native scene submission and point-effect consumers remain; listed rows describe missing owners. Other pool families remain outside this packet.",
   "run": 1963,
-  "harness": "codex"
+  "harness": "codex",
+  "landing_repair": {
+    "merge_parent": "7ed4d33564eecdb9b5bc2e217c8a5ab74b842027",
+    "original_worker_head": "4cf65d150a8b5a0125d55ed7b7f5d9002e0f1498",
+    "conflicts": [
+      "config/reconstruction/00b30000.jsonl",
+      "src/render_fx_cc13.cpp"
+    ],
+    "resolver": "tools/merge_resolve.py attempted; conservatively refused both-side base-record replacements. Exact address comparison proved disjoint edits: surface DA70/DAC0/E800/E880 versus incoming Texture2D DB10/DB60/E8E0/E960. Preserved all eight canonical records and both descriptor-removal sets, retaining incoming ledger line order.",
+    "normal_build": "PASS: scripts/build.ps1; all five CTests passed",
+    "normal_build_log": "local/c895-merge-default-build.log",
+    "focused_probe": "PASS: 1057 actual pool slots,34 slabs,table32 to66,preserved old entries,all returns and trim",
+    "on_build": "PASS: off_switch_on_build.py; both listed switches enabled; build.ps1 exit0, zero distinct compiler diagnostics, all five CTests passed",
+    "game_run": false,
+    "wire_readiness_summary": {
+      "wired": 10773,
+      "callees_done_no_wired_caller": 8500,
+      "ready": 1201,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "wire_readiness_rows": [
+      {
+        "native": "00b3da70",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3dac0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e800",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      },
+      {
+        "native": "00b3e880",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "source": "src/d3d9_surface_pool.cpp"
+      }
+    ],
+    "merged_normal_call_graph": {
+      "entry_reachable_functions": 43160,
+      "all_functions": 43316,
+      "entry_reachable_reconstructed_addresses": 5662,
+      "all_reconstructed_addresses": 6326,
+      "edges": 223985,
+      "roots": 2
+    },
+    "on_build_log": "local/c895-merge-on-build.log",
+    "on_headers_restored": true,
+    "on_header_pre_and_post_sha256": [
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-g5-w6\\include\\bsp\\air_operations.hpp",
+        "Hash": "C3D2BCC891539B5E1451FC956DCF1A08F8AB2F026CF4B700F9AACCBEE7FB0EA5"
+      },
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-g5-w6\\include\\bsp\\game_hosts_units_internal.hpp",
+        "Hash": "46DF652ADC36FF3FDE0FA4E13EB87C65DA9BA7AF25AC38C45F6CBB6FAA340C59"
+      }
+    ],
+    "on_headers_git_diff": "clean after helper restored both files",
+    "normal_restored_build_log": "local/c895-merge-restored-build.log",
+    "normal_restored_build": "PASS: normal configuration restored; scripts/build.ps1 passed all five CTests",
+    "final_call_graph_log": "local/c895-merge-final-callgraph.log",
+    "final_wire_readiness_log": "local/c895-merge-final-readiness.log",
+    "final_check": "Restored normal build remeasured: 10773 text-wired rows; 5662 entry-reachable reconstructed addresses; all four packet bodies called."
+  }
 }
