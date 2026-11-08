@@ -1,0 +1,77 @@
+{
+  "chain": 756,
+  "slot": "g5-w11",
+  "branch": "agent/g5-w11",
+  "baseline": "defdb470b8",
+  "rows": [
+    {
+      "native": "00b6fe70",
+      "status": "wired",
+      "host_site": "src/native_camera_storage_construct.cpp: construct_native_camera_storage_00b71a80",
+      "evidence": "00B6FE74 stores the argument DWORD to camera+194h; 00B71C69 initializes the same live camera field from EBX=0.",
+      "real_state": "The aligned pooled camera allocation passed to the existing raw constructor; zero is the binary's constructor constant.",
+      "change": "Replace the inline store with the existing address body, narrowed from an independent CameraView aggregate to the actual camera storage pointer.",
+      "native_abi": "Original __thiscall: ECX=camera, stack DWORD, RET4; the source interface remains a C++ adapter, not a binary replacement.",
+      "call_graph": "Unique Release symbol 105FD730, called at 106869C8 by construct_native_camera_storage_00b71a80; reachable through acquire_scene -> GUI page properties -> startup."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::order_cautious_move_00a2ccf0",
+      "reason": "The only current caller passes ratio=1.0, so its stream-1 fraction cannot select the CAUTIOUSMOVE construction branch; a live selecting producer is missing."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "No live raw vehicle-camera-array resize producer was identified; Release graph finds neither the existing resize body nor this already-present initializer call."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "The inspected render submission path has no live producer of the three metadata DWORDs required for the queue's last command."
+    },
+    {
+      "native": "00b0d580",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: set_motion_blur_and_samples_00b0d580",
+      "reason": "The inspected render-service path lacks the live sample/configuration producer and SceneRendererHost device/texture binding required by this setter."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "No live extra-plane installation producer was found in the inspected camera construction path, which initializes base frustum storage."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "No live extra-plane removal event was found to replace with this body; constructor initialization does not request an extra-plane clear."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "The movie bridge lacks the live decoder texture owner and native movie/material sampler storage needed by the body."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The bridge owns a subtitle schedule projection, without the native Text child, 14h subtitle records, or extratitle widget owners required for native clearing."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed",
+    "readiness_wired_before": 10586,
+    "readiness_wired_after": 10587,
+    "selected_row": "00b6fe70 state=wired called=true call_sites=1 callers_live=1",
+    "call_graph_called_before": 5446,
+    "call_graph_called_after": 5447,
+    "game_run": false,
+    "float_arithmetic_changed": false,
+    "limits": "Build and entry-reachable binary-call evidence only; gameplay and binary ABI equivalence were not tested."
+  }
+}

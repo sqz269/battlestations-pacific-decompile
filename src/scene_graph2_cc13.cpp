@@ -433,7 +433,13 @@ float registry_float_00b77480(const std::vector<float>& values_14, std::int32_t 
 // Camera.
 
 void camera_get_190_00b6fe60(const CameraView& c, std::uint32_t& out) { out = c.word_190; }
-void camera_set_194_00b6fe70(CameraView& c, std::uint32_t value) { c.word_194 = value; }
+// show 00b6fe70 --asm: MOV [ECX+194h], argument; RET4. Preserve every DWORD
+// bit and make the single store visible in the Release executable call graph.
+__declspec(noinline) void camera_set_194_00b6fe70(
+    void* actual_camera, std::uint32_t value) noexcept {
+    *reinterpret_cast<volatile std::uint32_t*>(
+        static_cast<std::uint8_t*>(actual_camera) + 0x194u) = value;
+}
 
 void camera_set_eye_and_target_00b70200(CameraView& c, const float eye[3], const float target[3],
     const float up[3], CameraServices& s) {
