@@ -8,12 +8,20 @@
 // layout). Every call the image makes goes through a SweepA3Host method named
 // for its target; SweepA3Host extends SweepA2Host (and so SweepAHost), whose
 // bindings and reconstructions are reused directly. Descriptive names are
-// hypotheses, not recovered symbols. Nothing here is wired.
+// hypotheses, not recovered symbols. 004D32A0 is called by session teardown;
+// its typed interface below is distinct from the original binary ABI.
 
 #include "bsp/cc13_sweepA2.hpp"
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
+#include <vector>
+
+namespace bsp {
+struct NativeLuaStateStorage;
+class NativeStringStorage;
+}
 
 namespace bsp::cc13_sweepA3 {
 
@@ -371,7 +379,10 @@ void traffic_runtime_remap_side_templates_00487470(Raw runtime, SweepA3Host& hos
 // ============================ segment 10 ===================================
 std::uint32_t game_complete_leaderboard_read_004dd7c0(Raw game, SweepA3Host& host);
 void game_begin_engine_movie_004cce50(Raw game, SweepA3Host& host);
-void game_nil_script_added_globals_004d32a0(Raw game, SweepA3Host& host);
+// Typed views of game+1930h's baseline and game+1A0Ch's live Lua owner.
+// Original ABI is __fastcall(ECX=game), RET0; this is not a binary replacement.
+void game_nil_script_added_globals_004d32a0(std::vector<std::string>& baseline,
+    NativeLuaStateStorage& lua, NativeStringStorage& strings);
 void game_destroy_world_004d2bb0(Raw game, SweepA3Host& host);
 
 // ============================ segment 12 ===================================
