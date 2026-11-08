@@ -3389,6 +3389,8 @@ struct GameGunneryHost::Impl {
     void bind_projectile_owner(GameProjectileRow& shot, std::size_t owner) {
         const void* const identity = units.unit_identity(owner);
         if (identity == nullptr) {
+            if (shot.observed_owner)
+                shot.observed_owner->target_gone(shot.observed_owner->identity());
             shot.observed_owner.reset();
             return;
         }
@@ -3396,8 +3398,13 @@ struct GameGunneryHost::Impl {
         // Keep its mutable +14h separate from owner_unit's source/accounting
         // identity. Capturing actual notice state also permits a native rebind
         // after an earlier notification without inventing another notification.
-        shot.observed_owner = std::make_shared<GameProjectileObservedOwner>(owner, identity,
-            projectile_owner_destroyed(owner), lua.target_gone_notice_delivered(owner));
+        const auto destroyed = projectile_owner_destroyed(owner);
+        const bool delivered = lua.target_gone_notice_delivered(owner);
+        if (shot.observed_owner)
+            shot.observed_owner->bind(owner, identity, destroyed, delivered);
+        else
+            shot.observed_owner = std::make_shared<GameProjectileObservedOwner>(
+                owner, identity, destroyed, delivered);
     }
     std::optional<std::size_t> resolve_projectile_owner(const GameProjectileOwnerRef& observer) {
         if (!observer) return std::nullopt;

@@ -32,6 +32,16 @@ public:
     std::optional<std::size_t> unit() const noexcept { return unit_; }
     const void* identity() const noexcept { return identity_; }
 
+    // 006E1B90 repoints the SAME attacker member. Hit records referring to
+    // this projectile must see an explicit later bind as well as a clear.
+    void bind(std::size_t unit, const void* identity,
+        std::optional<bool> destroyed_at_bind, bool notice_delivered_at_bind) noexcept {
+        unit_ = unit;
+        identity_ = identity;
+        destroyed_at_bind_ = destroyed_at_bind;
+        notice_delivered_at_bind_ = notice_delivered_at_bind;
+    }
+
     // 006E17D0: only the matching notifier clears the member's +14h. Once
     // cleared, retained/deferred copies cannot recreate an owner from source.
     void target_gone(const void* notifier) noexcept {

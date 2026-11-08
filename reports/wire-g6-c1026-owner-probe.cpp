@@ -61,11 +61,13 @@ int main() {
     // baseline; neither source reuse nor old notice state recreates the slot.
     queued->refresh(&actual_identity, false, false);
     assert(!queued->unit());
-    GameProjectileObservedOwner rebound(9, &actual_identity, true, true);
-    rebound.refresh(&actual_identity, true, true);
-    assert(rebound.unit() == std::size_t{9});
-    rebound.refresh(&unrelated_identity, true, true);
-    assert(!rebound.unit());
+    const GameProjectileOwnerRef rebound_alias = queued;
+    queued->bind(9, &actual_identity, true, true);
+    rebound_alias->refresh(&actual_identity, true, true);
+    assert(rebound_alias->unit() == std::size_t{9}); // new owner, source stays7
+    assert(accounting_source == 7);
+    rebound_alias->refresh(&unrelated_identity, true, true);
+    assert(!queued->unit());
 
     std::puts("PASS: in-flight and deferred owner invalidation; queued versus delivered notices; source identity retained");
 }

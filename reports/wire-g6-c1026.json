@@ -64,7 +64,9 @@
         "0051EF00/0051E7E0 maintain the canonical BinocularsState.mode_30 that 0064E31A reads"
       ],
       "lifetime": "Owned by the existing HUD leaf allocation at its original manager slot, released with that owner. GUI pointers are borrowed from the existing menu page owner. Detach clears the semantic borrowed view; no second timer/enable storage or extra widget ownership is retained.",
-      "rows": ["0064b170"],
+      "rows": [
+        "0064b170"
+      ],
       "climb": [
         "0064B170 <- screen45+18Ch fade <- 0064B780 <- 0068CC70 Init (already hosted)",
         "0064B170 camera <- MissionCameraPublication <- existing ship/movie camera pose publication (already hosted)",
@@ -81,15 +83,19 @@
         "GameMissionLuaHost::target_gone_notice_delivered derives current pass-K delivery from the existing target_gone_notified_ and target_gone_pending_ stores; pending notices do not clear the reference and no new delivery flag or duplicate queue is introduced",
         "Direct/radial/device hits explicitly carry the projectile's shared reference; DeferredHit retains the same reference and refreshes it before dispatch, then ShipHitBinding refreshes it again immediately before reading the owner's pose"
       ],
-      "lifetime": "One nullable target view shared by its projectile and retained hit records. Deferred ownership survives projectile-row retirement. Matching notification clears all aliases and latches null; immutable owner_unit/shooter accounting indices remain separate. A later bind creates a new relation with its actual lifecycle/notice baseline.",
-      "rows": ["0064b170"],
+      "lifetime": "One nullable target view shared by its projectile and retained hit records. Deferred ownership survives projectile-row retirement. Matching notification clears all aliases and latches null; immutable owner_unit/shooter accounting indices remain separate. An explicit later 006E1B90 bind repoints the same shared relation with its actual lifecycle/notice baseline, so already-queued records also see the new owner.",
+      "rows": [
+        "0064b170"
+      ],
       "climb": [
         "0064B170 <- current 004704E0 owner <- shared attacker observer <- 006E6BB0/006E1B90 bind at existing projectile launch",
         "006E17D0 matching target-gone clear <- canonical unit removal / completed existing pass-K delivery <- refresh before hit and deferred dispatch"
       ]
     }
   ],
-  "producer_functions_wired": ["0064b780"],
+  "producer_functions_wired": [
+    "0064b780"
+  ],
   "review_round_1": {
     "review_run": 2261,
     "reviewed_head": "9e9491538498530fba2365df0f29bc47e0034f60",
@@ -125,7 +131,7 @@
         "id": 1,
         "status": "fixed",
         "finding": "An engaged optional reconstructed from shooter loses 006E17D0 owner invalidation before impact or deferred dispatch.",
-        "change": "Replace the round-1 optional snapshot with GameProjectileOwnerRef shared by the projectile, direct/radial/device records, DeferredHit and ShipHitBinding. Bind at the existing launch sites; retain source/accounting indices independently. Resolve the current nullable relationship before queue/dispatch and immediately before the flash pose lookup. A matching completed target-gone notice, a canonical +5Eh removal transition or loss of canonical identity clears the shared target permanently; pending notices and wreck/health-zero state alone do not. Gunless/direct-kamikaze records keep an empty reference.",
+        "change": "Replace the round-1 optional snapshot with GameProjectileOwnerRef shared by the projectile, direct/radial/device records, DeferredHit and ShipHitBinding. Bind at the existing launch sites; retain source/accounting indices independently. Resolve the current nullable relationship before queue/dispatch and immediately before the flash pose lookup. A matching completed target-gone notice, a canonical +5Eh removal transition or loss of canonical identity clears the shared target until an explicit later bind; pending notices and wreck/health-zero state alone do not. Gunless/direct-kamikaze records keep an empty reference.",
         "evidence": [
           "bsp.py show 006E6BB0: calls006E1B90 to bind the attacker member, independently of the shot+0C8h owner pointer",
           "bsp.py show 006E17D0 and src/cc13_seg33a.cpp: resolve notifier, compare with member+14h, clear and unregister only on a match",
@@ -139,7 +145,7 @@
     "checks": [
       "scripts/build.ps1 PASS; 4/4 CTests",
       "reports/wire-g6-c1026-owner-probe.cpp compiled MSVC Win32 /MD /EHsc /O2 /W4 with /link /MANIFEST:EMBED; PASS without warnings",
-      "Owner probe covers matching versus unrelated notifications, invalidation before impact, actual GameProjectileRow copies sharing state, invalidation after enqueue/projectile retirement, queued versus delivered pass-K notices using the production query, +5Eh removal, latched null, rebind baseline and unchanged source identity",
+      "Owner probe covers matching versus unrelated notifications, invalidation before impact, actual GameProjectileRow copies sharing state, invalidation after enqueue/projectile retirement, queued versus delivered pass-K notices using the production query, +5Eh removal, latched null, rebind through existing queued aliases to an owner different from source, and unchanged source identity",
       "Existing fade constructor/four-sector/centre probe recompiled against current bsp_core.lib and PASS",
       "call_graph.py: 5752/6462 reconstructed addresses called; 0064B170 and 0064B780 each retain one entry-reachable compiled call",
       "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 14 files",
@@ -151,10 +157,16 @@
     "baseline_build": "scripts/build.ps1 PASS; 4/4 CTests",
     "changed_build": "scripts/build.ps1 PASS; 4/4 CTests",
     "isolated_probe": "local/damage_direction_probe.cpp compiled MSVC Win32 /MD /EHsc /O2 /Gy with /link /MANIFEST:EMBED /OPT:REF; PASS: native screen constructor, shared fade storage, four sectors and centre",
-    "call_graph_before": {"called": 5748, "reconstructed": 6460},
-    "call_graph_after": {"called": 5752, "reconstructed": 6462},
-    "0064b170": "REACHABLE; one compiled call at 101135CB from hud_register_ship_damage_direction, through the changed ShipHitBinding event path",
-    "0064b780": "REACHABLE; one compiled call at 1011C109 from run_hud_leaf_screen_constructor",
+    "call_graph_before": {
+      "called": 5748,
+      "reconstructed": 6460
+    },
+    "call_graph_after": {
+      "called": 5752,
+      "reconstructed": 6462
+    },
+    "0064b170": "REACHABLE; one compiled call at 1011361B from hud_register_ship_damage_direction, through the changed ShipHitBinding event path",
+    "0064b780": "REACHABLE; one compiled call at 1011C159 from run_hud_leaf_screen_constructor",
     "00415680": "existing body now also called from HudLeafShipStatusBinding::eh_vector_construct_00bf7cd1",
     "remaining_rows": "00641910 and 00651760 remain unlinked in the built game",
     "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 14 files; arithmetic operation order retained",
