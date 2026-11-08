@@ -148,7 +148,9 @@
     "probe_command": "cmd /c local\\c814-registry-probe.cmd",
     "call_graph": "00437f50 has one reachable call from Bindings::Bindings; path proceeds through mark_vehicle_class_row_00964790 and mission scene load to game entry",
     "readiness": "00437f50 state=wired called=true call_sites=1 callers_live=1",
-    "float_math": "No float arithmetic changed; pc24 lint not required."
+    "float_math": "No float arithmetic changed; pc24 lint not required.",
+    "existing_probe": "tests/wire_g5_c797_vehicle_registry_probe.cpp: /MD /fp:strict /link /MANIFEST:EMBED compile and run passed; growth to 2048, replacement, shrink, retained-capacity reuse, stable receiver registration, and fixture manager cleanup checked.",
+    "existing_probe_command": "cmd /c local\\c814-review1-probe.cmd"
   },
   "limitations": [
     "New Source interface and shared-lifetime adapter; Original register ABI/FH3/SEH equivalence is not claimed.",
@@ -159,5 +161,28 @@
   "left_for_others": [
     "Unify semantic vehicle registry party rows and descriptor cache into one process-scoped owner.",
     "Recover native registry/descriptor destruction and eliminate the existing descriptor split-copy divergence."
+  ],
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1773,
+      "reviewed_head": "b318432c8445072411100b5335cd30ab5896aa0f",
+      "findings": [
+        {
+          "finding": 1,
+          "status": "fixed",
+          "file": "tests/wire_g5_c797_vehicle_registry_probe.cpp",
+          "change": "Pass stable NativeSingletonDeletionBindings to the cache constructor; retain fixture descriptors and bindings beyond cache scope; replace the no-manager assumption with live registered receiver/count checks; drain and free the fixture manager after cache teardown. Existing relocation, replacement, shrink and retained-capacity checks are preserved."
+        }
+      ],
+      "checks": [
+        "scripts/build.ps1: Win32 Release build and all four CTest checks passed.",
+        "Updated c797 cache regression probe compiled and ran successfully.",
+        "Existing c814 shared-drain/later-teardown probe compiled and ran successfully.",
+        "Rebuilt call graph remains 5512 reachable reconstructed addresses; 00437F50 retains its one entry-reachable call from Bindings::Bindings.",
+        "git diff --check passed."
+      ],
+      "production_changes": false
+    }
   ]
 }
