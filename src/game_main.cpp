@@ -1229,6 +1229,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int group_pool_atexit = gui_group_process.initialize_once_00cd7440();
         log.notef("native GUI Group pool CRT CD7440: atexit=%d storage_bytes=%zu "
             "before_particle_pool=1", group_pool_atexit, sizeof(bsp::NativeGuiGroupPoolStorage));
+        // CE34AC selects CD7510: MOV ECX,F8C004; CALL AC8240; atexit(CE0AF0).
+        // The existing Scrollbar factory and this CRT entry share this owner.
+        auto& gui_scrollbar_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiScrollbarPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int gui_scrollbar_pool_atexit = gui_scrollbar_pool.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Scrollbar pool CRT CD7510: atexit=%d storage_bytes=%zu",
+            gui_scrollbar_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // Original CRT CE34B4 selects CD7580: MOV ECX,F8C050; CALL AC9B30;
         // atexit(CE0B00 -> AC94C0). Start the same Grid process used by its
         // factory after Group and before Model, preserving CRT registration order.
