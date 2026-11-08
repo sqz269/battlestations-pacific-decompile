@@ -18,6 +18,11 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bsp {
+struct ShipAiWakeTrail;
+struct ShipAiWakePoint;
+}
+
 namespace bsp::cc13_sweepC {
 
 template <class T>
@@ -533,8 +538,10 @@ void* unit_message_add_hull_torque_construct_0080ffd0(UnitMessageConstructionHos
                                                       std::uint32_t a, std::uint32_t b,
                                                       std::uint32_t c);
 // 00811150, __thiscall(ECX = unit, float, a, b, c), RET 10h: 00810630 on unit+BD0h.
-void unit_wake_point_at_distance_00811150(SweepCHost& host, void* unit, float distance, void* a,
-                                          void* b, void* c);
+// Typed interface receives the unit's persistent +BD0h wake subobject and returns
+// the sampler's outputs, including whether the native yaw-rate output was written.
+ShipAiWakePoint unit_wake_point_at_distance_00811150(const ShipAiWakeTrail& unit_wake_bd0,
+                                                    float distance) noexcept;
 // 00812960, __fastcall(ECX = unit) -> EAX: the director's slot-2Ch object when it answers
 // IsKindOf(1Ch), else the party's nearest landing site (006F2C30).
 void* unit_landing_target_00812960(SweepCHost& host, void* unit);

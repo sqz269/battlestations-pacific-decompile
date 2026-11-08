@@ -1,0 +1,73 @@
+{
+  "chain": 789,
+  "slot": "g5-w4",
+  "base": "ac287e276b1fdf43a37db7216383ebdcec5bb4f3",
+  "picked": "Unit wake-point forwarding on the live formation station path",
+  "rows": [
+    {
+      "native": "00811150",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290",
+      "source": "src/cc13_sweepC.cpp: unit_wake_point_at_distance_00811150",
+      "real_state": "The leader slot's persistent ShipAiWakeTrail, already filled at spawn by 00810020 and used for formation following, plus the existing computed out.along distance. No copied ring or fabricated raw unit layout.",
+      "change": "Adapt the one existing body to a typed reference to the unit+BD0h wake subobject, preserving the FLD/FSTP distance copy and forwarding to the existing 00810630 sampler. Replace the host's direct sampler call; the sample runs once.",
+      "evidence": "bsp.py show 00811150 --asm: FLD at 00811154, ADD ECX,BD0h at 00811164, FSTP at 0081116A, CALL 00810630 at 0081116D, RET 10h at 00811172.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing live decoder texture owner and native movie widget; the bridge still records the bind operation."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native Text child and subtitle/extratitle widget-vector owners; the existing bridge owns only a subtitle schedule projection."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown close_result_gui site",
+      "reason": "Missing captured native screen and sound-transition owners; the body prepares a sound transition rather than simply closing the result GUI."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart checkpoint hooks",
+      "reason": "Missing pre-load checkpoint comparison and actual BSP_Chk_Save/current-mission-key owner at this site; checkpoint_differs still returns false."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search -> ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No absent behavior to wire: the existing live 009D7050 body already calls this layer setter; an optimized-away symbol is not new wiring."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search -> ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No absent behavior to wire: the existing live 009D7050 body already calls this refill; an optimized-away symbol is not new wiring."
+    },
+    {
+      "native": "006fbce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: 006D0050 elevator travel tail",
+      "reason": "Single-player has no qualifying caller: 006D0050 invokes this only for session-client mode game+1FE4h == 2."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all four tests",
+    "changed_build": "scripts/build.ps1 passed all four tests",
+    "baseline_readiness_wired": 10632,
+    "after_readiness_wired": 10634,
+    "readiness_row": "00811150: state=wired, called=true, call_sites=1, callers_live=1; readiness is a source-based metric, while the executable gained one newly reachable reconstructed address",
+    "baseline_reachable_reconstructed_addresses": 6020,
+    "after_reachable_reconstructed_addresses": 6021,
+    "call_graph_who": "00811150 at 10441C30 is REACHABLE; one call at 102E1A96 from GameUnitsHost::formation_station_0070d290",
+    "scope": "Win32 build and executable static reachability only; original ABI compatibility and gameplay execution are unproven."
+  },
+  "left": "Movie/checkpoint native owners remain absent; elevator travel is client-only. No other workers' files or shared unit header were changed."
+}
