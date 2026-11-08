@@ -33,6 +33,7 @@
 #include "bsp/native_render_resource_initializer.hpp"
 #include "bsp/native_shader_preload.hpp"
 #include "bsp/native_render_service_base.hpp"
+#include "bsp/scene_renderer_cc13.hpp"
 #include "bsp/native_material_effect_owner.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_weak_owner.hpp"
@@ -548,6 +549,9 @@ struct GameNativeRendererApplication::Impl {
     bool startup_factories_retired{};
     std::unique_ptr<StartupShaderPreload> startup_preload;
     std::unique_ptr<MissionShipGraph> mission_ship;
+    // Goal 5 chain 684: settings may precede the actual native service. Empty
+    // means no profile request; no mode is supplied by this host.
+    std::optional<U> pending_old_film_effect;
 
     Impl(NativeMeshRetentionState& retained_state,GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
@@ -824,6 +828,27 @@ bool GameNativeRendererApplication::set_scene_remap_texture(std::size_t slot,
         p.phase = Impl::Phase::failed;
         throw;
     }
+}
+bool GameNativeRendererApplication::set_old_film_effect(std::uint32_t mode) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready || p.phase == Impl::Phase::rendering,
+        "old-film settings require the live application renderer");
+    if (!p.resources.publication) {
+        // The sprite host has no F8D39C. Keep the actual settings operand for
+        // the existing native mission producer, as with scene remap names.
+        p.pending_old_film_effect = mode;
+        return false;
+    }
+    check(p.resources.acquired.phase == NativeRenderResourcesConstructionAcquired::Phase::complete,
+        "old-film settings require the constructed actual F8D39C service");
+    // bsp.py show 00B0D080: ECX service, stack DWORD, RET4; only +220h is
+    // written. Reuse that body on the producer's publication, without a
+    // surrogate service or a second inline write. Settings_ApplyAll's
+    // 008D610D supplies mode from settings+90h, including all its bits.
+    scene_renderer::set_film_effect_00b0d080(p.resources.publication, mode);
+    p.pending_old_film_effect.reset();
+    p.log.implemented("NativeRenderService::set_old_film_effect", "00b0d080");
+    return true;
 }
 GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
     check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");
@@ -1134,6 +1159,8 @@ void GameNativeRendererApplication::prepare_mission_ship() {
     }
     try {
         p.mission_ship->prepare(*this, p.device_generation);
+        if (p.pending_old_film_effect)
+            (void)set_old_film_effect(*p.pending_old_film_effect);
         // The native B14A10/B107F0 producer has now completed, before
         // the first scene draw. Apply only actual pending record strings,
         // once each and in 004D4F60's slot order. No construction replay.

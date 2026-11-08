@@ -3787,6 +3787,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
                 return renderer->change_presentation_mode(width, height, fullscreen,
                     sample_count, vsync, force);
             };
+            sinks.store_renderer_old_film_effect = [renderer](std::uint32_t mode) {
+                return renderer->set_old_film_effect(mode);
+            };
         }
         // 00A7F8E0: set_sound_class_level_00a7f8e0 applies named profile gains; OFF keeps the unbound sink.
         // 008D5539/55C4/564F borrow [00F8BBD8], initialized at 0073DAFD.

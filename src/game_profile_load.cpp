@@ -471,7 +471,18 @@ public:
         missing("renderer_rebuild_post_effects", "00b107f0");
     }
     void gui_manager_reload() override { missing("gui_manager_reload", "004c12b0"); }
-    void renderer_set_old_film_effect(int) override { missing("renderer_set_old_film_effect", "00b0d080"); }
+    void renderer_set_old_film_effect(int mode) override {
+        // 008D610D: settings+90h is passed unchanged to [00F8D39C]+220h.
+        if (!sinks_.store_renderer_old_film_effect) {
+            missing("renderer_set_old_film_effect", "00b0d080");
+            return;
+        }
+        if (sinks_.store_renderer_old_film_effect(static_cast<std::uint32_t>(mode))) {
+            log_.implemented("QuickSettingsApply::renderer_set_old_film_effect", "00b0d080");
+        } else {
+            log_.notef("quick settings: old-film mode=%d retained until the native render service is initialized", mode);
+        }
+    }
     void publish_lua_region(const std::string& region) override {
         // 008D6132: 0108FF24's NativeString, read by every later Lua owner open.
         publish_lua_region_008d6132(game_native_lua_globals_process().globals_0108ff20(), region,

@@ -359,6 +359,11 @@ public:
     // retain the current scene's request; apply it before its first native
     // draw. True means applied now. Sprite-only rendering owns no service.
     bool set_scene_remap_texture(std::size_t slot, const std::string& name);
+    // Profile settings+90h (008D610D), preserving the complete DWORD. Applies
+    // 00B0D080 to the same actual F8D39C service; before its construction,
+    // retain only the latest setting and apply it after native mission
+    // resource initialization, before the first draw. False means retained.
+    bool set_old_film_effect(std::uint32_t mode);
     // Ready-phase borrowed raw factory contexts, retained by this application.
     // Caller retains each acquired frame and disposes survivors before drain;
     // failed attempts may require process retention. Does not call B107F0 or
