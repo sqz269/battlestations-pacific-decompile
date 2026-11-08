@@ -114,6 +114,12 @@ struct AttackCommandObserverHost {
     virtual void observer_register_pair_00694a60(void* endpoint, void* owner) = 0;  // ECX, EDX
 };
 
+// The matching destructor uses only the retained observer's cleanup service.
+struct CommandObserverDestructionHost {
+    virtual ~CommandObserverDestructionHost() = default;
+    virtual void callback_owner_destroy_00695870(void* owner) = 0;  // ECX
+};
+
 // 00A00020 needs only the tuning/RNG services on its negative-factor arm.
 // A record owner need not implement the segment's unrelated planner services.
 struct CandidateRecordHost {
@@ -134,7 +140,8 @@ struct PartyBrainConstructionHost {
     virtual void* planner_construct(std::uint32_t constructor, void* memory, void* brain) = 0;
 };
 
-struct Seg69Host : AttackCommandObserverHost, CandidateRecordHost, PartyBrainConstructionHost {
+struct Seg69Host : AttackCommandObserverHost, CommandObserverDestructionHost,
+    CandidateRecordHost, PartyBrainConstructionHost {
     virtual ~Seg69Host() = default;
 
     // Image globals: the address of the cell (BSS / .data) named by its image address.
@@ -257,7 +264,9 @@ void ai_collect_candidate_records_00a08420(Seg69Host& host, void* owner, bool sp
     bool team_entities, void* out_vector, void* filter, int kind_filter);
 void ai_debug_target_weight_all_classes_00a0c1f0(Seg69Host& host);
 void ai_debug_write_groups_target_value_00a0fa70(Seg69Host& host, const char* arguments);
-void ai_command_destruct_observer_body(Seg69Host& host, Raw command);  // 00A0FDE0 and three twins
+// One shared normal-flow body for 00A108F0 and the identical 00A0FDE0,
+// 00A10A20, 00A10B40 twins. Original EH-frame ABI is not reproduced.
+void ai_command_destruct_observer_body_00a108f0(CommandObserverDestructionHost& host, Raw command);
 void ai_command_describe_type_00a0ff60(Seg69Host& host, Raw command, void* lua_object);
 Raw ai_command_moveto_construct_00a10240(Raw command, void* group, const float* point);
 Raw ai_command_cautious_move_construct_00a102d0(Raw command, void* group, const float* point);
