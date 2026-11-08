@@ -1368,7 +1368,11 @@ void HullTerrainContactSolver::hull_draft_narrow_phase(std::vector<HullWorldEntr
             }
             if (!overlap) continue;
             HullWorldEntry& eb = hulls[j];
-            if (!dyn_shapes_overlap_filter(d.entry.group, 0u, 1u, 0x0Du | eb.class_bit)) {
+            // Goal 5 chain 724: bsp.py show 00C32450 --asm is MOV EAX,[ECX+2Ch]; RET
+            // (fastcall shape -> group). set_draft_bodies writes the authored class
+            // mask into this retained convex shape; read the same shape dispatched below.
+            if (!dyn_shapes_overlap_filter(cc13_dyn1::shape_group_00c32450(d.convex),
+                    0u, 1u, 0x0Du | eb.class_bit)) {
                 ++census_.draft_pairs_filtered;
                 continue;
             }
@@ -1514,8 +1518,9 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
         Manifold& m = *it->second;
         bool live = fh != by_unit.end() && it->first.first < drafts_.size();
         if (live) {
-            live = dyn_shapes_overlap_filter(drafts_[it->first.first]->entry.group, 0u, 1u,
-                                             0x0Du | fh->second->class_bit);
+            live = dyn_shapes_overlap_filter(
+                cc13_dyn1::shape_group_00c32450(drafts_[it->first.first]->convex),
+                0u, 1u, 0x0Du | fh->second->class_bit);
         }
         if (live) {
             const DynBody& b = *fh->second->body;
