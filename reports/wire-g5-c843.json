@@ -1,0 +1,119 @@
+{
+  "chain": 843,
+  "run": 1822,
+  "worker": "agent/g5-w6",
+  "base": "a838068cdc",
+  "summary": "Replace the live scene-path key formatter stand-in with the existing canonical 004F9A80 body.",
+  "evidence": [
+    "bsp.py show 007b34f0: calls 004F9A80 at 007B3571 and 007B35F1 with the 80h stack name buffer, Point%002i and the current path point count.",
+    "bsp.py show 004f9a80: cdecl varargs forwarding to _vsprintf_s with capacity 80h; existing reconstructed body already implements it.",
+    "The adapter forwards its original dst/fmt/value arguments directly. The old snprintf call is removed; no duplicate formatting or new data producer is introduced.",
+    "call_graph.py who 004f9a80: the canonical engine_seg11_35_66_cc13.obj body is now REACHABLE with one direct call at 101e4f0c from ScenePathSourceAdapter::format_string128_004f9a80. Before this change only the same-named adapter was linked.",
+    "call_graph.py path 004f9a80: WinMain -> startup -> mission scene load -> SceneReaderBinding::instantiate_entity -> load_scene_path_source -> adapter -> canonical body."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after the C++ change",
+    "tests": "All 5 existing CTests passed: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "new_tests": "None; this replaces one formatter forwarding call without introducing an algorithm or float arithmetic.",
+    "compiled_reconstructed_called_before": 5554,
+    "compiled_reconstructed_called_after": 5555,
+    "compiled_reconstructed_linked_before": 6172,
+    "compiled_reconstructed_linked_after": 6173,
+    "source_readiness_wired_before": 10692,
+    "source_readiness_wired_after": 10692,
+    "source_readiness_note": "The text-based state already counted the same-named adapter. After rebuilding, the row reports called=true, call_sites=1 and callers_live=1 for the newly linked canonical body.",
+    "runtime_boundary": "Build and compiled entry reachability verified. The game was not run; no claim of gameplay execution or original binary ABI replacement is made."
+  },
+  "rows": [
+    {
+      "native": "004f9a80",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: ScenePathSourceAdapter::format_string128_004f9a80",
+      "reason": "Calls the canonical formatter with the scene loader's actual name buffer, binary format string and current authored point index."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member candidate collection",
+      "reason": "No absent call to replace: the existing real kind/team-set branch already calls the body and baseline compiled reachability reports it called."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate attack-value adapter",
+      "reason": "Missing verified plane-class weapon-value facts for air-support composition; this pass did not establish that producer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner candidate scores",
+      "reason": "Missing a live native score-record owner and gameplay consumer for the candidate-score list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner candidate scores",
+      "reason": "Missing live candidate-score records whose chosen byte feeds a gameplay consumer."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: Curve control-point rebuild",
+      "reason": "Missing a retained Curve authored-point producer and entry-reachable widget/render consumer in the inspected application bridge."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: retained listbox selection lifecycle",
+      "reason": "Missing a live exclusive-selection clear caller and adapter from the retained typed row iterator to the raw listbox operation."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: retained listbox highlight layout",
+      "reason": "Missing a live highlight-width setter caller and view over the same retained rows; constructor field defaults alone do not establish this operation."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: retained listbox highlight lifecycle",
+      "reason": "Missing a live reset-width caller binding the retained row list and current manager highlight widget to the raw operation."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Missing the unit+BBCh emitter and child-audio list bindings at this callback, which currently only records 00954990."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart checkpoint_differs/write_checkpoint",
+      "reason": "Missing the pre-load checkpoint comparison, actual checkpoint Lua owner/current key and storage continuation; checkpoint_differs still returns false."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: cc13_director_queue",
+      "reason": "Missing a typed slot accessor for the retained optional path object; no actual raw director+1A4h pointer-table owner was established."
+    },
+    {
+      "native": "00778860",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: retained unit/director path queries",
+      "reason": "Missing the narrow real-unit/director/slot adapter needed to reach the existing path-object getter without fabricating a raw director."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameHostLog::notef",
+      "reason": "Missing a relevant gameplay formatting site; the inspected logger is instrumentation and also forwards a va_list rather than this body's varargs."
+    },
+    {
+      "native": "0043ee60",
+      "status": "skipped",
+      "host_site": "src/seg3_4_cc13.cpp: string_format_buffer_2a_0043ee60",
+      "reason": "Missing an established live 2Ah formatting-buffer consumer; the selected original scene-path caller requires the separate 80h formatter."
+    }
+  ]
+}
