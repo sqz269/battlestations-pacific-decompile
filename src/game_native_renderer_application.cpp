@@ -118,6 +118,9 @@
 #include "bsp/native_cube_volume_retained_recreation.hpp"
 #include "bsp/native_renderer_begin_frame.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
+#include "bsp/native_renderer_stop_pipeline.hpp"
+#include "bsp/render_queue_seg83_cc13.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_render_queue_destruction.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_material_effect_runtime.hpp"
@@ -1434,7 +1437,7 @@ void GameNativeRendererApplication::copy_settings_capabilities(SettingsRendererC
     output.pixel_shader_version_28=get<U>(p.renderer,0x1b40);
     output.max_shader_model=get<int>(p.renderer,0x1b48);
 }
-void GameNativeRendererApplication::begin_frame(U clear_color) {
+void GameNativeRendererApplication::begin_frame_without_clear() {
     auto& p=*impl_;
     check(p.phase==Impl::Phase::ready && p.frames && p.entry_cache_publication,"native frame startup order");
     p.phase=Impl::Phase::rendering;
@@ -1454,9 +1457,55 @@ void GameNativeRendererApplication::begin_frame(U clear_color) {
             p.log.notef("native renderer device replaced by 00B29670: generation=%lu",
                 static_cast<unsigned long>(p.device_generation));
         }
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+void GameNativeRendererApplication::begin_frame(U clear_color) {
+    begin_frame_without_clear();
+    auto& p=*impl_;
+    try {
+        NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
         clear_native_renderer_00b21430(p.renderer,&p.frames->clear,0,nullptr,
             D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,&clear_color,1.0f,0);
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+
+bool GameNativeRendererApplication::reset_gui_render_queue() {
+    auto& p=*impl_;
+    // A headless host has no native frame domain to cycle. Do not construct a
+    // queue or enter the reconstructed bodies with fabricated device state.
+    if (p.retained_device==nullptr) return false;
+    check(p.phase==Impl::Phase::ready && p.frames && p.entry_cache_publication,
+        "loading-screen queue reset requires an idle ready renderer");
+    // Evidence: bsp.py show AA2B80/B1C4B0 and bsp.gpr /battlestationspacific.exe
+    // D5F0A8 slots 0Ch/14h/11Ch = B2B200/B2F4A0/B28A90. Use the startup
+    // FrameGraph's actual queue, stop, begin and end domains. This native cycle
+    // has no B21430 clear and does not complete a mission overlay frame.
+    struct Cycle final : gui_widgets_cc13::GuiRenderQueueHost,
+                         cc13_seg83::RenderQueueFrameCycleHost {
+        GameNativeRendererApplication& application;
+        Impl& p;
+        Cycle(GameNativeRendererApplication& a, Impl& state) : application(a), p(state) {}
+        void* render_command_queue_004c11f0() override {
+            return get_native_render_command_queue_004c11f0(p.frames->queue_getter);
+        }
+        void reset_queue_00b1c4b0(void* queue) override {
+            cc13_seg83::render_queue_reset_mode_and_cycle_frame_00b1c4b0(queue, *this);
+        }
+        void renderer_slot11c() override {
+            stop_native_renderer_worker_mode_00b28a90(p.renderer, p.frames->stop);
+        }
+        void renderer_slot0c() override { application.begin_frame_without_clear(); }
+        void renderer_slot14() override {
+            p.frames->present={};
+            end_native_renderer_frame_default_00b2f4a0(p.renderer,&p.frames->end);
+            p.phase=Impl::Phase::ready;
+        }
+    } cycle(*this,p);
+    try {
+        NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+        gui_widgets_cc13::gui_reset_render_command_queue_00aa2b80(cycle);
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+    return true;
 }
 NativeRendererPresentObservation GameNativeRendererApplication::end_frame() {
     auto& p=*impl_;check(p.phase==Impl::Phase::rendering,"native frame end order");

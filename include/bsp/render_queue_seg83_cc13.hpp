@@ -18,14 +18,19 @@ namespace bsp::cc13_seg83 {
 
 using bsp::cc13_terrain::TerrainHost;
 
-struct RenderQueueHost {
-    virtual ~RenderQueueHost() = default;
-    // The renderer singleton [00F8D394]: vtable +0Ch (BeginFrame), +14h (EndFrame), +118h
-    // (00B21740 StartWorker, three arguments), +11Ch (leave mode 2).
+struct RenderQueueFrameCycleHost {
+    virtual ~RenderQueueFrameCycleHost() = default;
+    // The renderer singleton [00F8D394]: vtable +0Ch (BeginFrame), +14h (EndFrame)
+    // and +11Ch (leave mode 2). This subset borrows no batch/array providers.
     virtual void renderer_slot0c() = 0;
     virtual void renderer_slot14() = 0;
-    virtual void renderer_slot118(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
     virtual void renderer_slot11c() = 0;
+};
+
+struct RenderQueueHost : RenderQueueFrameCycleHost {
+    virtual ~RenderQueueHost() = default;
+    // +118h (00B21740 StartWorker, three arguments).
+    virtual void renderer_slot118(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
     // BSP_RenderBatch_Construct (ECX = batch); BSP_CriticalSection_Create;
     // BSP_CriticalSection_DestroyOwned (ECX = owner of the section at +04).
     virtual void render_batch_construct(void* batch) = 0;
@@ -76,7 +81,7 @@ void render_queue_set_mode_00b1c460(void* queue, std::uint32_t mode, RenderQueue
 // caller's three stack arguments (cleaned up by the target, RET 0Ch).
 void render_queue_start_worker_00b1c4a0(std::uint32_t a, std::uint32_t b, std::uint32_t c, RenderQueueHost& host);
 // 00B1C4B0, __fastcall(queue): mode 2 -> renderer +11Ch; +20h = 0; renderer +0Ch then +14h.
-void render_queue_reset_mode_and_cycle_frame_00b1c4b0(void* queue, RenderQueueHost& host);
+void render_queue_reset_mode_and_cycle_frame_00b1c4b0(void* queue, RenderQueueFrameCycleHost& host);
 
 // The label lock (8 bytes {vtable 00D5E5D8, critical section*}) published at [00F8D43C].
 // 00B1CA90 construct (__fastcall): vtable, +04 = BSP_CriticalSection_Create().
