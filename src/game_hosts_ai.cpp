@@ -6350,8 +6350,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // their allocation-dependent spread therefore is not binary replay proof.
     float group_value_spread(std::size_t member) {
         const Squadron* squadron = squadron_of(member);
-        const void* identity = squadron != nullptr
-            ? static_cast<const void*>(&squadron->entity) : units.unit_identity(member);
+        // Squadron wrappers move when the vector grows. The fused creation
+        // unit owns a stable slot, including after leader promotion/removal.
+        const std::size_t creation_unit = squadron != nullptr
+            ? squadron->resource_owner.creation_unit : member;
+        const void* identity = units.unit_identity(creation_unit);
         if (identity == nullptr) throw std::logic_error("AI record requires a live entity identity");
         const float fraction = static_cast<float>(reinterpret_cast<std::uintptr_t>(identity) % 79u);
         // 00A045B9 reads +54h before 00A045D1 reads +50h.

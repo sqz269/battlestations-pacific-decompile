@@ -163,7 +163,7 @@
   "validation": {
     "build": "scripts/build.ps1 passed; all four CTest suites passed",
     "call_graph": "tools/call_graph.py: 41885/42039 functions reachable; 5376/5978 reconstructed addresses called",
-    "constructor_call": "00a00020 REACHABLE; body 103f0f40; one reachable call at 10059a2c from GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+    "constructor_call": "00a00020 REACHABLE; body 103f0f40; one reachable call at 10059a30 from GameAiCoordinatorHost::Impl::group_value_record_00a04560 (review round 1 rebuild)",
     "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 5 files",
     "game": "not run as instructed",
     "readiness": {
@@ -181,10 +181,67 @@
   ],
   "limitations": [
     "Source interfaces and typed class-facts projection, not an original binary ABI replacement.",
-    "Spread uses the actual retained source entity address; allocation differences prevent original-image replay equivalence.",
+    "Spread uses the stable retained creation-unit slot identity for squadrons and the unit slot identity otherwise; allocation differences prevent original-image replay equivalence.",
     "The installed positive ValueRandomMul intervals do not exercise the constructor negative-factor RNG arm; its adapter retains the existing coordinator RNG projection.",
     "Unrelated incomplete class/weapon scoring projections remain; no gameplay validation was performed.",
     "Coordinator load gate remains intact: this scoring path runs in local AI skirmish/forced-session contexts; ordinary campaign loads do not create the coordinator. kSkirmishSessionCc13Bound is true and start_skirmish publishes the real session context."
   ],
-  "left": "Nearest-enemy recon query, powerup flight composition, debug score lists and full aircraft approach receivers remain outside this change."
+  "left": "Nearest-enemy recon query, powerup flight composition, debug score lists and full aircraft approach receivers remain outside this change.",
+  "review_round_1": {
+    "review_run": 1558,
+    "reviewed_head": "53b56df917d66e6373b38662d390dec6092a90f1",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_spread",
+        "finding": "The address of squadron.entity relocates when the squadron vector grows and changes modulo-79 spread.",
+        "resolution": "Resolve units.unit_identity(squadron.resource_owner.creation_unit), preserving the fused creation slot across wrapper vector growth and leader promotion. Non-squadron records keep units.unit_identity(member).",
+        "evidence": [
+          "GameUnitsHost::unit_identity returns the independently allocated GameUnitSlot owned by slots[index].",
+          "include/bsp/game_hosts_units_internal.hpp: slots is vector<unique_ptr<GameUnitSlot>>.",
+          "Squadron resource_owner.creation_unit is assigned from the registry original squadron_unit, or the unregistered singleton creation unit."
+        ]
+      }
+    ],
+    "verification": {
+      "fixture": "Temporary Win32 C++ ownership/vector fixture compiles the production group_value_spread, unit_identity and clamped_interpolate_00419010 methods extracted unchanged; no game was run.",
+      "production_method_probe": {
+        "command": "local/output/wire_g5_c721_identity_probe.exe",
+        "exit_code": 0,
+        "squadron_vector_reallocations": 8,
+        "existing_squadrons": 4,
+        "spread_checks": 36,
+        "changed_spreads": 0,
+        "final_squadrons": 64,
+        "additional_checks": "Grow the unit slot vector by 256 entries and promote leaders; creation identities and existing spread bits remain unchanged."
+      },
+      "pre_fix_negative_control": {
+        "command": "local/output/wire_g5_c721_identity_control_probe.exe",
+        "method_from": "git show 53b56df917:src/game_hosts_ai.cpp",
+        "exit_code": 1,
+        "spread_checks": 36,
+        "changed_spreads": 36
+      },
+      "source_manifest": {
+        "extracted_functions": [
+          "GameAiCoordinatorHost::Impl::group_value_spread",
+          "GameUnitsHost::unit_identity",
+          "bsp::clamped_interpolate_00419010"
+        ],
+        "source_sha256": "6c10c62e7348f8c21b4a7758871a284e72de055620ca62e4fddd54844c82fc25",
+        "fixture": "Source methods compiled unchanged against isolated ownership/vector fixtures; not a running-game test."
+      },
+      "build": "scripts/build.ps1 passed after the fix; all four CTest suites passed.",
+      "call_graph": "Rebuilt graph: 00A00020 remains REACHABLE with one call at 10059a30 from group_value_record_00a04560; overall 41885/42039 reachable and 5376/5978 reconstructed addresses called.",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: passed, 0 findings, 0 allowed, 5 files; repeated after final commit.",
+      "readiness": {
+        "wired_total": 10472,
+        "native": "00a00020",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    }
+  }
 }
