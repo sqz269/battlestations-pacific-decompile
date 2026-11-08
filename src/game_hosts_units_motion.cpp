@@ -20361,9 +20361,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             // 0099995C-00999979: after the task arm, 009FC7C0 on
                             // task+314h while unit+C24h. The dogfight arm already
-                            // ticks it. SUBSTITUTIONS, labelled: the fast-path test
-                            // reads generic_suppress_520 now, not the previous step's
-                            // published copy; a plane with no modelled task has no
+                            // ticks it. 0099C270 reads this plane's retained prior
+                            // step publication (007CDCD0), not its current +520h.
+                            // SUBSTITUTIONS, labelled: a plane with no modelled task has no
                             // arm here and no gun tick; the non-dogfight states' cones
                             // (Angle_MoveTo, Angle_GoAway at +40h) are not delivered,
                             // so the fine-aim steer never runs outside dogfight.
@@ -20378,7 +20378,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     (bsp::kPlaneRetreatTaskBound && unit_.retreat_task_installed) ||
                                     (bsp::kPlaneLevelBombTaskBound && unit_.level_bomb_task_installed);
                                 const bool eligible = !unit_.dogfight_task_installed &&
-                                    !unit_.generic_suppress_520 &&
+                                    !bsp::bot_task_tick_gate_passes_0099c270(
+                                        &unit_.plane_published_suppress_9c2[
+                                            (owner_.summary.motion_steps ^ 1u) & 1u]) &&
                                     (!GameUnitsHost::Impl::kPilotFiresBound ||
                                      unit_.plane_pilot_fires_c24);
                                 if (eligible && !has_task) ++unit_.tg_untasked_ticks;
@@ -22986,6 +22988,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     row.distance = static_cast<float>(std::sqrt(dx * dx + dz * dz));
                     ++host.summary.plane_row_refreshes;
                 }
+                // 007CF0D5 -> 007CDC70, specifically 007CDCD0: publish the
+                // actual current +520h into this step's write slot. The pass
+                // counter advances once at the head; its opposite parity is
+                // the previous slot all readers use, including later planes.
+                // Leave an unstepped plane's write slot untouched, as native.
+                slot.plane_published_suppress_9c2[host.summary.motion_steps & 1u] =
+                    slot.generic_suppress_520 ? 1 : 0;
                 host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
                 continue;
             }

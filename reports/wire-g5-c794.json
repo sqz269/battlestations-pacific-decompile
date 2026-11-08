@@ -1,0 +1,214 @@
+{
+  "goal": 5,
+  "chain": 794,
+  "slot": "g5-w7",
+  "picked": "Pilot task gun-tail gate over the actual prior-step plane suppression publication",
+  "baseline": {
+    "head": "7f9738bf41a13912087acb357c2f4d9f0fd8995c",
+    "readiness_wired": 10635,
+    "compiled_called": 5481
+  },
+  "rows": [
+    {
+      "native": "0099c270",
+      "status": "wired",
+      "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::motion_step_00825f20 / PlaneBinding::pilot_think_and_commit",
+      "details": "Replaced the existing live +520h check with the single reconstructed predicate over the retained previous-parity +9C2 byte. The existing plane step publishes its actual generic_suppress_520 to the other parity. The native null-unit/nonzero-byte predicate uses a typed field pointer; this is a new C++ interface, not a native ABI replacement."
+    },
+    {
+      "native": "009be050",
+      "status": "skipped",
+      "host_site": "include/bsp/game_hosts_units_internal.hpp: run_follow_hold_arm_009bee56",
+      "reason": "The native lock also sets follower +520h and plan+270h to the leader; its retained leader-reference input consumer and complete lock writeback are missing."
+    },
+    {
+      "native": "007cdc70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: GameUnitsHost::motion_step_00825f20",
+      "reason": "The full publisher needs the other four record lanes and a Seg47Host provider; this change retains only the real +520h publication byte required by 0099C270."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset binding",
+      "reason": "A retained movie-camera limits owner and live reset consumer are missing; the existing callback reports the route unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset binding",
+      "reason": "A retained movie-camera owner with actual default/current overview heights and a live reset consumer is missing."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset binding",
+      "reason": "The host owns an identity token rather than the movie-camera speed-limit block required by this reset."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset binding",
+      "reason": "The actual movie-camera acceleration-limit storage and its live reset consumer are missing."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost zoom binding",
+      "reason": "The unreached callback has no retained MovCamZoom owner or original camera-FOV consumer."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost angle update",
+      "reason": "A retained MovCamAngles owner and original frame-update consumer are missing."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp: add_native_scene_property_integer_word_008f3710",
+      "reason": "Already reachable in the baseline compiled graph with one incoming call; no new wiring opportunity."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_enum_add.cpp: add_native_scene_property_enum_symbol_008f3a20",
+      "reason": "Already reachable in the baseline compiled graph with three incoming calls; no new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge",
+      "reason": "Already reachable in the baseline compiled graph with two incoming calls; no new wiring opportunity."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "The consumed-active tail still lacks the retained scoring award map and award providers before cooldown completion; c799 is working in this file."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: GameTextBuilderHost",
+      "reason": "A live byte-admission input consumer with its retained text-context font is missing; full-string layout is a different call site."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: voice fade callback",
+      "reason": "A retained VoicePlaybackManager and actual global sound-level/fade-binding owner are missing from the unreached callbacks."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: directional shadow fitting",
+      "reason": "The original shadow/frustum consumer is not entry-reachable; the live GUI orthographic path does not consume the camera FOV-aspect product."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "A live support-site stock owner and its original squad-composition consumer are missing."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp: support_site_can_supply_class_0084d050",
+      "reason": "A live support-site class-availability list and owner-health consumer are missing."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its only original caller is the debug unit inspector; debug-only code is excluded from this single-player wiring task."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: deferred-call queue",
+      "reason": "A frame-job-thread producer with a real LuaVariantRecord argument vector is missing; the mission interpreter executes directly on the main thread."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: mission_lua_result_sink_construct_008875d0",
+      "reason": "A live MissionLuaResultSink producer and result consumer are missing."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: lua_variant_vector_tidy_00887670",
+      "reason": "A live result-sink lifecycle with produced result records is missing; an empty invented sink would not establish wiring."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: queue_named_call_for_main_thread",
+      "reason": "A real frame-job-thread deferred-call producer is missing; current main-thread calls execute directly."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "Already reachable at baseline from MergedRecords::collect; no new wiring opportunity."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "Already reachable at baseline from MergedRecords::collect; no new wiring opportunity."
+    },
+    {
+      "native": "0070bba0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB.cpp: cc13_sweepB_flag_params_init_0070bba0",
+      "reason": "A live flag-parameter object producer and its native flag-model consumer are missing from the inspected host path."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: read_dword_field",
+      "reason": "A live native RamImage owner and original data-field consumer were not established; the generic getter alone does not supply them."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "The original writer facade and live vtable+54h provider with its remaining-byte owner are missing from this packet."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: push_back_stream_writer_chunk_00bf0810",
+      "reason": "A live native writer chunk-stack owner and original chunk producer were not established."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: unit_broadcast_controlled_audio_flag_00954990",
+      "reason": "The ship sound object and device-list consumers of the returned plan are missing from the inspected host path."
+    },
+    {
+      "native": "0093aa90",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: repair_set_section_failure_effect_0093aa90",
+      "reason": "The original section-effect slot owner and effect-instance side-effect providers were not established in this packet."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; 4/4 tests",
+    "readiness_wired_after": 10636,
+    "readiness_gate": "0099C270 state=wired, called=true, call_sites=1, callers_live=1",
+    "call_graph": "0099C270 reachable: direct call 102EF57D from PlaneBinding::pilot_think_and_commit to body 104268B0",
+    "compiled_called_after": 5482,
+    "evidence": [
+      "bsp.py show 0099c270 --asm: 0099C270..0099C293",
+      "bsp.py show 007cdc70: write parity +9C2 is the current +520 byte; readers use previous parity",
+      "bsp.py show 009998a0: true tick gate bypasses the gun-tail slow path"
+    ],
+    "limits": "Build/static call reachability only; the game was not run. This bounds the change to the existing non-dogfight gun-tail gate; other pilot fast-path consumers and the full plane publication remain separate work.",
+    "tests_added": false,
+    "float_math_changed": false
+  }
+}

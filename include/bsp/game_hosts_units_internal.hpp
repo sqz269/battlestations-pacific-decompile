@@ -662,6 +662,12 @@ struct GameUnitSlot : SquadronForceReleaseByte<true> {
     float generic_timer_6f8{0.0f};             //0095CF50
     float generic_timer_6fc{0.0f};             //0095CF58
     bool generic_suppress_520{false};         //0095CDD7
+    // Chain 794: the +2 byte of BOTH plane +9C0h stride-8 publications.
+    // 007CDCD0 copies the real +520h to the write parity at the end of the
+    // plane step; 0099C270 reads the opposite parity. The host pass counter
+    // chooses the two slots; their absolute numbering is immaterial. Both
+    // start with the constructor's false +520h (0095CDD7 / 007CDFFF).
+    std::array<std::uint8_t, 2> plane_published_suppress_9c2{};
 
     // Plane control state. 007CFD20 zeroes unit+900h (XOR EBX,EBX); the
     // free-flight arm needs 7, which 007C6340's fall-through sets at 007C6481
