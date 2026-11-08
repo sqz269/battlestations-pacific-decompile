@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/game_host_bomb_view.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_left1.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
@@ -409,6 +410,32 @@ public:
     void* operator_new(std::size_t bytes) override { return screen_.allocate_owned(bytes); }
 private:
     HudLeafScreenStorage& screen_;
+};
+
+// 0068A330 destroys the screen's own callback-owner +8h, then unregisters
+// its actual FrontEndScreen base. Both services borrow the application owners;
+// no separate observer domain or registry is created for this leaf.
+class HudBombViewLifetimeBinding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    HudBombViewLifetimeBinding(HudLeafScreenStorage& screen, GameMenuHost& menu,
+        bsp::NativeObserverLifetime& observers)
+        : screen_(screen), menu_(menu), observers_(observers) {}
+    void callback_owner_destroy_00695870(bsp::cc13_fe5::Raw owner) override {
+        if (owner.p != screen_.data() + 8)
+            throw std::logic_error("0068A330 callback owner is not screen+8");
+        observers_.destroy_callback_owner_00695870(
+            *reinterpret_cast<bsp::NativeObserverOwnerStorage*>(owner.p));
+    }
+    void front_end_screen_destruct_004f71a0(bsp::cc13_fe5::Raw screen) override {
+        if (screen.p != screen_.data())
+            throw std::logic_error("0068A330 front-end base is not the retained screen");
+        screen.at<std::uint32_t>(0) = 0x00CEAE54u; // 004F71A0, before the registry scan
+        menu_.unregister_in_game_screen(0x24, screen_.flags());
+    }
+private:
+    HudLeafScreenStorage& screen_;
+    GameMenuHost& menu_;
+    bsp::NativeObserverLifetime& observers_;
 };
 
 // The STL head-node allocators (_Buyheadnode) the leaf constructors call for
@@ -2604,7 +2631,8 @@ public:
 // ---------------------------------------------------------------------------
 
 struct GameHudHost::Impl {
-    Impl(GameHostLog& log_in, GameMenuHost& menu_in) : log(log_in), menu(menu_in) {}
+    Impl(GameHostLog& log_in, GameMenuHost& menu_in, bsp::NativeObserverLifetime& observers_in)
+        : log(log_in), menu(menu_in), observers(observers_in) {}
     // Before leaf_screens frees the blocks: screen 33h's retained samples go back
     // as 005B9D40 returns them (release_hud_narrative_leaf_samples), screen 50h's
     // four as 00682030 releases its +30h slots (release_hud_warning_leaf_samples),
@@ -2633,6 +2661,7 @@ struct GameHudHost::Impl {
 
     GameHostLog& log;
     GameMenuHost& menu;
+    bsp::NativeObserverLifetime& observers;
     // Packet cc9_mission_camera: the ShipCaptain mover 0064DA40 creates for the
     // 25h arm's ship view, and what it reads off its unit.
     GameMissionLuaHost* lua{nullptr};
@@ -3151,7 +3180,14 @@ public:
         return static_cast<int>(reinterpret_cast<std::uintptr_t>(unit));
     }
     void bomb_view_screen_bind(int value) override { static_cast<void>(value); }
-    void bomb_view_screen_store(int value) override { static_cast<void>(value); }
+    void bomb_view_screen_store(int value) override {
+        const std::size_t index = bsp::in_game_hud_screen_index_at(0x8C);
+        if (index >= kInGameHudScreenCount || !owner_.leaf_screens[index])
+            throw std::logic_error("0068B199 requires the constructed bomb-view screen");
+        // 0068B18E reads 00644230 again; 0068B199 stores that exact unit at +34h.
+        bsp::cc13_fe5::Raw{owner_.leaf_screens[index]->data()}.ptr(0x34) =
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(value));
+    }
     std::uint32_t unit_ambient_sound_source() override { return 0; }
     void stop_ambient_sound() override {
         owner_.record("InGameInterface::stop_ambient_sound", 0x0054d510u);
@@ -3678,8 +3714,12 @@ public:
             owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
             return true;
         }
+        const bool bomb_view = index < kInGameHudScreenCount
+            && kInGameHudScreens[index].offset == 0x8C;
+        if (bomb_view && size_bytes != sizeof(GameBombViewScreenImage))
+            throw std::logic_error("0068CC70 bomb-view screen allocation size changed");
         if (index < kInGameHudScreenCount
-            && is_hud_leaf_screen_constructor(kInGameHudScreens[index].constructor)) {
+            && (bomb_view || is_hud_leaf_screen_constructor(kInGameHudScreens[index].constructor))) {
             if (owner_.leaf_screens[index])
                 throw std::logic_error("0068CC70 allocated a HUD leaf screen twice");
             owner_.leaf_screens[index] = std::make_unique<HudLeafScreenStorage>(size_bytes);
@@ -3714,7 +3754,17 @@ public:
             } else if (index < kInGameHudScreenCount && owner_.leaf_screens[index]) {
                 if (constructor != kInGameHudScreens[index].constructor)
                     throw std::logic_error("0068CC70 leaf constructor changed");
-                run_hud_leaf_screen_constructor(constructor, *owner_.leaf_screens[index]);
+                if (kInGameHudScreens[index].offset == 0x8C) {
+                    // 0068D1BF..0068D1FD is the inline 0068A2D0 build:
+                    // callback owner, +34/+4C/+50/+40/+44/+48/+54 clears,
+                    // native vtables. The registry below borrows its +4/+5.
+                    HudLeafScreenStorage& screen = *owner_.leaf_screens[index];
+                    HudLeafFe5Binding binding(screen);
+                    bsp::cc13_fe5::small_hud_screen_construct(small_hud_shape(0x0068A2D0u),
+                        {screen.data()}, binding);
+                } else {
+                    run_hud_leaf_screen_constructor(constructor, *owner_.leaf_screens[index]);
+                }
                 ++owner_.summary.screen_constructors;
                 owner_.done("InGameInterface::leaf_screen_constructor", constructor);
             } else {
@@ -3830,10 +3880,25 @@ private:
 // GameHudHost
 // ---------------------------------------------------------------------------
 
-GameHudHost::GameHudHost(GameHostLog& log, GameMenuHost& menu)
-    : impl_(std::make_unique<Impl>(log, menu)) {}
+GameHudHost::GameHudHost(GameHostLog& log, GameMenuHost& menu, NativeObserverLifetime& observers)
+    : impl_(std::make_unique<Impl>(log, menu, observers)) {}
 
 GameHudHost::~GameHudHost() = default;
+
+void GameHudHost::release_bomb_view_screen() {
+    Impl& impl = *impl_;
+    const std::size_t index = bsp::in_game_hud_screen_index_at(0x8C);
+    if (index >= kInGameHudScreenCount || !impl.leaf_screens[index]) return;
+    HudLeafScreenStorage& screen = *impl.leaf_screens[index];
+    HudBombViewLifetimeBinding binding(screen, impl.menu, impl.observers);
+    // 0068BB34 dispatches the leaf's +0Ch(1); 0068A390 calls 0068A330,
+    // then 00BF6989 releases this same 58h allocation. Cameras remain null
+    // until the native camera/scene producer climb is completed.
+    bsp::cc13_fe5::small_hud_screen_destruct(small_hud_shape(0x0068A2D0u),
+        {screen.data()}, binding);
+    impl.done("InGameInterface::bomb_view_destruct", 0x0068A330u);
+    impl.leaf_screens[index].reset();
+}
 
 bool GameHudHost::show_mission_narrative_text(const std::string& source) {
     auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");

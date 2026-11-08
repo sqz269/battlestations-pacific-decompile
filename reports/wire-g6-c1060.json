@@ -1,0 +1,147 @@
+{
+  "chain": 1060,
+  "owner": "agent/g6-w9",
+  "candidate": "game_hosts_lua.cpp",
+  "tier": 1,
+  "result": "partial_host_object",
+  "rows": [
+    {
+      "native": "0067b3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WeaponGroupScreenBinding::lock_branch_00548b06 / torpedo_branch_00548cb6",
+      "reason": "climb: 0067B3D0 needs retained screen24 +40h/+44h/+48h (now constructed by 0068A2D0 within 0068CC70); its real consumer 0067B7E0 needs +54h from enter 0067BAA0 <- canonical F876A4 from 00874640/00875BB0 (stopped: shared mission-clock publication is behind OFF kWireGoal3Chain242Bound). The original weapon-selection branches also still need produced projectile/launcher identities; no synthetic selection or alternate clock was supplied."
+    },
+    {
+      "native": "0067b4d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::bomb_view_screen_bind, invoked by src/ingame_interface.cpp apply_in_game_interface_0068aca0 arm 26h",
+      "reason": "climb: 0067B4D0 needs screen24 +4Ch/+50h camera lifetime (screen storage now constructed) <- 00435280/00435120 and 00432750 <- 00923870 -> native parent attach 009258F0 to game+19CCh from 004DE610/004CB030/009037F0; activating this screen also requires enter 0067BAA0 and consumer 0067B7E0 <- canonical F876A4 from 00874640/00875BB0 (stopped: OFF kWireGoal3Chain242Bound). Native camera, World and renderer bindings remain separate required work; GameWorldHost's handle chain was not passed as native World storage."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GameBombViewScreenImage: native 58h screen24 at interface+8Ch",
+      "where": "src/game_hosts_hud.cpp:3717",
+      "layout": "include/bsp/game_host_bomb_view.hpp:16",
+      "constructor": "0068A2D0, inlined at 0068D1BF..0068D1FD in 0068CC70",
+      "producers": [
+        "0068CC70: 0068D1A3 allocates 58h; 0068D208 publishes interface+8Ch. HudInitBinding now retains that actual leaf block.",
+        "Existing cc13_fe5::small_hud_screen_construct with its existing 0068A2D0 shape runs 004F7180, constructs callback owner +8h and writes native 00CF7938 / 00CF7920 tables and constructor clears.",
+        "The menu registry borrows the actual leaf's +4h/+5h flags, rather than a second FrontEndScreen.",
+        "0068ACA0: the second 00644230 read at 0068B18E now stores the real controlled-unit publication into the leaf's +34h at the 0068B199 host site.",
+        "Menu construction supplies its existing singletons.observers().lifetime(); no second observer manager or dispatch owner is constructed.",
+        "Menu teardown runs the existing small_hud_screen_destruct with the 0068A330 shape, destroys the actual callback owner through existing 00695870, restores CEAE54 and runs existing 004F71A0 over the same registry, then frees the retained allocation."
+      ],
+      "rows": [
+        "0067b3d0",
+        "0067b4d0"
+      ],
+      "climb": [
+        "0067B3D0 / 0067B4D0 <- screen24 58h image <- existing ctor 0068A2D0 <- inline constructor in 0068CC70 <- existing GameHudHost::build_manager_0068a990 load phase (implemented).",
+        "screen24 callback cleanup <- existing 0068A330 -> 00695870 / 004F71A0 <- existing application observer lifetime and menu registry (implemented).",
+        "screen24 real controlled-unit field +34h <- 0068ACA0 @0068B199 <- existing 00644230 publication (implemented).",
+        "screen24 selection consumer 0067B7E0 <- entry timestamp +54h from 0067BAA0 <- canonical F876A4 publication via 00874640 / 00875BB0 (stopped: OFF kWireGoal3Chain242Bound).",
+        "screen24 camera +4Ch/+50h <- 00435280 / 00435120 <- mover base 00432750; scene attachment 00923870 dispatches vtable +98h to 009258F0, requiring actual native World +4h/+8h chain headers from 004CB030 / 009037F0 in 004DE610 (traced, not implemented in this packet)."
+      ],
+      "fields": [
+        {
+          "offset": "00h",
+          "width": 4,
+          "producer": "0068A2D0 / inline 0068CC70: primary table CF7938"
+        },
+        {
+          "offset": "04h,05h",
+          "width": 1,
+          "producer": "004F7180: actual wanted/active flags; same bytes borrowed by registry"
+        },
+        {
+          "offset": "08h..17h",
+          "width": 16,
+          "producer": "0068A2D0: callback-owner table CF7920, empty native pointer/count/capacity"
+        },
+        {
+          "offset": "18h",
+          "width": 1,
+          "producer": "0068A2D0: callback flag clear"
+        },
+        {
+          "offset": "1Ch,20h,24h",
+          "width": 4,
+          "producer": "0067BAA0 transition capture; deferred until full screen activation, not consumed by current partial owner"
+        },
+        {
+          "offset": "28h,2Ch,30h",
+          "width": 4,
+          "producer": "0067B4D0 camera world position; deferred with native camera"
+        },
+        {
+          "offset": "34h",
+          "width": 4,
+          "producer": "0068A2D0 null, then real controlled-unit publication at 0068B199"
+        },
+        {
+          "offset": "38h,3Ch",
+          "width": 4,
+          "producer": "0067BAA0 zero stores; meaning provisional, not consumed by current partial owner"
+        },
+        {
+          "offset": "40h,44h",
+          "width": 4,
+          "producer": "0068A2D0 zero stores; later 0067B3D0 selection producer deferred"
+        },
+        {
+          "offset": "48h",
+          "width": 1,
+          "producer": "0068A2D0 pending flag clear; later 0067B3D0 producer deferred"
+        },
+        {
+          "offset": "4Ch,50h",
+          "width": 4,
+          "producer": "0068A2D0 null camera pointers; 0067B4D0 native camera producer deferred"
+        },
+        {
+          "offset": "54h",
+          "width": 4,
+          "producer": "0068A2D0 zero; later 0067BAA0 canonical mission-clock timestamp deferred at required OFF gate"
+        }
+      ],
+      "remaining": [
+        "Implement the original weapon-selection branch inputs and resulting projectile/launcher identities.",
+        "Bind the native camera constructors, scene attachment, observer registration, active mover and camera update consumer using actual shared native storage.",
+        "Complete native World/camera/renderer services before camera activation; the current semantic World chain is not the required image.",
+        "Screen enter/update must use the canonical mission clock; this packet leaves kWireGoal3Chain242Bound OFF.",
+        "Whole native manager teardown is still a host boundary; this packet retires its retained partial screen in the existing menu-owner teardown before registry and observer owners are released."
+      ]
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0067b3d0; show 0067b4d0 (both pages); callers --sites for both gap rows",
+    "bsp.py show 0068a2d0; show 0068a330; show 0068cc70 --asm --start 389 --lines 49",
+    "bsp.py show 0068aca0 --asm --start 410 --lines 49 and --start 459 --lines 10",
+    "bsp.py show 00435120; show 00432750; show 004307f0; show 00923870; show 009258f0; show 009037f0; show 004cb030; show 004de610",
+    "bsp.py ghidra xrefs CF7938; bytes CE3E60 --length 176 (torpedo camera vtable +98h = 009258F0)",
+    "include/bsp/wire_goal3_chain242_switches.hpp:4 remains false; src/game_hosts_mission_frame.cpp:576 and :2582 keep canonical shared clock publication behind that gate"
+  ],
+  "validation": {
+    "baseline_revision": "cf0b85018",
+    "baseline_build": "local/g6-w9-baseline-build.log: strict Win32 build and all 4 CTests passed",
+    "final_build": "local/g6-w9-final-build.log: strict Win32 build and all 4 CTests passed",
+    "call_graph_command": "python tools/call_graph.py, then who for 0067b3d0 and 0067b4d0",
+    "wired_before": 5764,
+    "wired_after": 5764,
+    "selected_rows_called_before": 0,
+    "selected_rows_called_after": 0,
+    "address_specific_ctor_destructor_symbol": "The existing shared small_hud_screen_construct/destruct bodies take a shape; no separate 0068A2D0 / 0068A330 symbol or new native-body credit is claimed.",
+    "game_run": false,
+    "float_arithmetic_changed": false,
+    "new_tests": 0,
+    "new_native_bodies": 0
+  },
+  "coordination": [
+    "Picked and claimed game_hosts_lua.cpp plus both gap rows before index/build.",
+    "Climb moved into game_hosts_hud.cpp; its initial g6-w6 lease refusal cleared on a foreground retry.",
+    "Acquired game_hosts_menu.cpp and its header after foreground retries while preparing lifetime bindings.",
+    "Released the unused Lua lease and notified agent/g6-w11; no Lua source changes.",
+    "No merge, rebase, push, game run or subagents."
+  ]
+}
