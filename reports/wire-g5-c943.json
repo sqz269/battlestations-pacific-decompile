@@ -1,0 +1,103 @@
+{
+  "goal": 5,
+  "chain": 943,
+  "run": 2104,
+  "owner": "agent/g5-w5",
+  "summary": "Wire sinking-hull terrain-mask removal on retained collision shapes and invalidate all live contact families through the contact owner's adapter.",
+  "rows": [
+    {
+      "native": "00c47f60",
+      "status": "wired",
+      "host_site": "src/hull_terrain_contact.cpp: HullTerrainContactSolver::world_step",
+      "state": "The existing sink-time request in HullWorldEntry selects the persistent convex shape used by 00C535E0. The reconstructed body clears that shape's +30h bit 8; subsequent terrain filtering reads the resulting mask. Its +4h pose owner maps to the unit's actual retained terrain/pair/fort/draft manifolds, all invalidated under the shared recursive contact lock.",
+      "evidence": "bsp.py show 00c47f60 --asm: AND [ESI+30h],~bits; enter 0109ECD8; 00C43AA0([ESI+4h]); leave 0109ECD8. Existing hull_convex produces group 1/mask 0Dh from the hull's native build and actual scene points. Sink request comes from 00826410..0082643B.",
+      "abi": "Existing reconstructed C++ body reused once. ShapeFilterCalls exposes the three required services; typed contact maps implement invalidation instead of pretending the pose owner has the native body's +74h manifold vector. Not a drop-in original register ABI replacement.",
+      "call_graph": "REACHABLE; one call at HullTerrainContactSolver::world_step, through GameUnitsHost::Impl::run_world_contact_phase and motion_step_00825f20 to the mission frame and WinMainCRTStartup."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost services",
+      "reason": "The body belongs to debug movie-camera screen 36h; a single-player gameplay screen owner is absent and debug-only work is excluded."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost services",
+      "reason": "The body belongs to debug movie-camera screen 36h; a single-player gameplay screen owner is absent and debug-only work is excluded."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost services",
+      "reason": "The body resets debug movie-camera screen 36h limits; a gameplay owner with authored defaults is absent and debug-only work is excluded."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovCamNew CameraHost services",
+      "reason": "The body resets debug movie-camera screen 36h limits; a gameplay owner with authored defaults is absent and debug-only work is excluded."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiGroupsHost planner/group state",
+      "reason": "Missing retained per-group native score records and a planner path that supplies the original sixteen score/label terms; command-target bookkeeping alone cannot substitute."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiGroupsHost planner/group state",
+      "reason": "Missing the populated retained score-list owner produced by 00A2B950; a chosen target alone cannot supply that object's records."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member selection",
+      "reason": "The existing predicate fragment is already binary-reachable; the complete native member-list collector and its append/list owner remain missing."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Bag::insert_enum",
+      "reason": "No missing binary wiring: the existing enum projection already reaches this body; a readiness text match alone had left it marked ready."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: copy_or_merge",
+      "reason": "No missing binary wiring: populated native destination bags already call this body; a readiness text match alone had left it marked ready."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land MoveTo state dispatch",
+      "reason": "Missing a retained native MoveTo state producer with its approach owner, target observer registration and ordered constructor lifetime; the host currently supplies tick state."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: AirOpsBlock queue_squadron path",
+      "reason": "Missing the native queue/block and holder ownership producer plus observer/message bindings; the current squadron bookkeeping is not that queue."
+    }
+  ],
+  "counts": {
+    "source_wired_before": 10815,
+    "source_wired_after": 10816,
+    "binary_called_before": 5691,
+    "binary_called_after": 5692,
+    "target_reachable_call_sites": 1
+  },
+  "validation": [
+    "Initial index --if-stale and scripts/build.ps1: PASS, all four CTests.",
+    "Final scripts/build.ps1: PASS, all four CTests.",
+    "python tests/wire_g5_c943_hull_filter_probe.py: PASS; verbatim owner-definition fixture confirms bit-8 removal, five affected contacts across four families removed, other-unit contacts retained, and shape lifetime preserved.",
+    "python tools/call_graph.py and who/path 00c47f60: one reachable production call from world_step.",
+    "python tools/wire_readiness.py --standins: target wired, called true, one call site.",
+    "git diff --check: PASS. No floating-point arithmetic changed."
+  ],
+  "limits": [
+    "Game was not launched. Build, fixture and entry reachability are not retail gameplay or original ABI validation.",
+    "Collision pose owners and contact collections retain the existing host representation. This packet replaces the mask mutation and invalidation path, not the whole native world/body layout."
+  ]
+}
