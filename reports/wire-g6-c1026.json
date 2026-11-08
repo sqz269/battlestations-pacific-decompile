@@ -25,7 +25,7 @@
       "native": "0064b170",
       "status": "wired",
       "host_site": "src/game_hosts_gunnery.cpp:ShipHitBinding::push_damage_direction -> src/game_hosts_hud.cpp:hud_register_ship_damage_direction / GameHudHost::register_ship_damage_direction",
-      "reason": "00826F10's existing hit handler now tests the canonical 004C0890 controlled-unit selection and forwards the shooter's existing world pose. 0064B170 writes the actual screen45+18Ch member constructed by 0064B780; 0064ABD0 reads the same four intensities. Camera inverse and FOV borrow the current MissionCameraPublication, and the enable DWORD reads the existing binoculars mode instead of the previous constant false.",
+      "reason": "00826F10's existing hit handler tests the canonical 004C0890 controlled-unit selection and forwards the resolved 004704E0 owner's pose only when that owner is present. ShipHitBinding retains an optional owner: ordinary projectile records keep shot.owner_unit, while shot0 and direct kamikaze records pass nullopt even with a valid source and hull segment. 0064B170 writes the actual screen45+18Ch member constructed by 0064B780; 0064ABD0 reads the same four intensities. Camera inverse and FOV borrow the current MissionCameraPublication, and the enable DWORD reads the existing binoculars mode.",
       "called": true,
       "call_sites": 1,
       "required_fields": [
@@ -58,7 +58,7 @@
         "0068CC70 already runs in HUD initialization: its existing slot78h row allocates the actual 1B0h HudLeafScreenStorage and now calls the existing vt_cf5e30_construct_0064b780 body",
         "004F7180 constructs the base; BF7CD1 invokes the four existing 00415680 slot initializers; 0064B780 initializes every fade field in the same allocation",
         "0064C0F0's existing GUI_ship_effects / VillanasFelso, Also, Bal and Jobb lookups bind the real widgets directly into this member; their former map entries were removed",
-        "004C0890 supplies controlled-unit identity; the existing gunnery unit_pose supplies the attacker's world point",
+        "004C0890 supplies controlled-unit identity; ShipHitBinding retains the nullable 004704E0 result separately from the source/shot identity and unit_pose reads that resolved owner only when present",
         "MissionCameraPublication owns the actual inverse-world cache and projection FOV; get_transform_inverse_world_00b6e0d0, transform_point_004142e0, normalize_camera_basis_0042b260 and camera_asin_clamped_0042cf10 are reused",
         "0051EF00/0051E7E0 maintain the canonical BinocularsState.mode_30 that 0064E31A reads"
       ],
@@ -72,14 +72,41 @@
     }
   ],
   "producer_functions_wired": ["0064b780"],
+  "review_round_1": {
+    "review_run": 2261,
+    "reviewed_head": "9e9491538498530fba2365df0f29bc47e0034f60",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "where": "src/game_hosts_gunnery.cpp:ShipHitBinding constructor/shooter_world_position; apply_hit and apply_gunless_blast_hit",
+        "finding": "The newly enabled damage-direction route assumed every valid shooter/source index was the hit's owning unit, admitting direct kamikaze records whose +108h virtual returns null.",
+        "change": "Replace the unconditional shooter_ member with std::optional<size_t> hit_owner_. The ordinary projectile funnel explicitly passes its resolved shot.owner_unit identity; the gunless funnel explicitly passes nullopt for both no-shot and direct kamikaze records. shooter_world_position returns false before pose access for an absent owner and otherwise calls unit_pose(*hit_owner_); no fallback to source, shot, weapon presence or hull-segment validity remains.",
+        "evidence": [
+          "bsp.py show 00826F10 --asm, 0082745F..00827481: call004704E0, TEST EAX, JZ0082749C, then resolve owner and refresh its pose",
+          "bsp.py show 004704E0: return null when hit+4 is null or its +108h virtual returns null; otherwise return the resolved object's +ACh unit",
+          "bsp.py show 0042BB30: returns0; apply_gunless_blast_hit documents this +108h virtual for direct kamikaze unit shots",
+          "run_projectiles passes shot.owner_unit-1 into apply_hit; deferred/radial projectile records retain that resolved owner identity"
+        ]
+      }
+    ],
+    "checks": [
+      "scripts/build.ps1 PASS; 4/4 CTests",
+      "Existing isolated constructor/four-sector/centre probe recompiled against current bsp_core.lib and PASS; it covers unchanged fade layout/math, not the new nullable-owner guard",
+      "Source inspection of both ShipHitBinding construction sites confirms explicit owner versus nullopt propagation; no new routine implementation-mirroring test was added",
+      "call_graph.py: 5752/6462 reconstructed addresses called; 0064B170 and 0064B780 retain one entry-reachable compiled call each",
+      "git diff --check PASS; no floating-point arithmetic expression changed in this fix"
+    ],
+    "game_run": false
+  },
   "verification": {
     "baseline_build": "scripts/build.ps1 PASS; 4/4 CTests",
     "changed_build": "scripts/build.ps1 PASS; 4/4 CTests",
     "isolated_probe": "local/damage_direction_probe.cpp compiled MSVC Win32 /MD /EHsc /O2 /Gy with /link /MANIFEST:EMBED /OPT:REF; PASS: native screen constructor, shared fade storage, four sectors and centre",
     "call_graph_before": {"called": 5748, "reconstructed": 6460},
     "call_graph_after": {"called": 5752, "reconstructed": 6462},
-    "0064b170": "REACHABLE; one compiled call at 10111ECB from hud_register_ship_damage_direction, through the changed ShipHitBinding event path",
-    "0064b780": "REACHABLE; one compiled call at 1011AA09 from run_hud_leaf_screen_constructor",
+    "0064b170": "REACHABLE; one compiled call at 10111F0B from hud_register_ship_damage_direction, through the changed ShipHitBinding event path",
+    "0064b780": "REACHABLE; one compiled call at 1011AA49 from run_hud_leaf_screen_constructor",
     "00415680": "existing body now also called from HudLeafShipStatusBinding::eh_vector_construct_00bf7cd1",
     "remaining_rows": "00641910 and 00651760 remain unlinked in the built game",
     "pc24": "python tools/pc24_lint.py --diff origin/main...HEAD PASS: 0 findings, 0 allowed, 10 files; arithmetic operation order retained",

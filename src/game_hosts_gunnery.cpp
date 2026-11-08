@@ -15149,9 +15149,10 @@ namespace {
 
 class ShipHitBinding final : public bsp::ShipHitRecordHost {
 public:
-    ShipHitBinding(GameGunneryHost::Impl& owner, std::size_t victim, std::size_t shooter,
+    ShipHitBinding(GameGunneryHost::Impl& owner, std::size_t victim,
+        std::optional<std::size_t> hit_owner,
         const GameBulletClassRow* weapon, const float direction[3])
-        : owner_(owner), victim_(victim), shooter_(shooter), weapon_(weapon) {
+        : owner_(owner), victim_(victim), hit_owner_(hit_owner), weapon_(weapon) {
         for (int i = 0; i < 3; ++i) direction_[i] = direction[i];
     }
 
@@ -15389,8 +15390,12 @@ public:
             && owner_.units.controlled_index() == victim_;
     }
     bool shooter_world_position(float out[3]) override {
+        // bsp.py show 00826F10 --asm, 0082745F..00827481: 004704E0
+        // must resolve an owner before its pose is refreshed. A present shot
+        // (notably the direct kamikaze unit) need not have a +108h owner.
+        if (!hit_owner_) return false;
         float right[3], up[3], forward[3], origin[3];
-        owner_.unit_pose(shooter_, right, up, forward, origin);
+        owner_.unit_pose(*hit_owner_, right, up, forward, origin);
         for (int i = 0; i < 3; ++i) out[i] = origin[i];
         return true;
     }
@@ -15521,7 +15526,7 @@ public:
 private:
     GameGunneryHost::Impl& owner_;
     std::size_t victim_;
-    std::size_t shooter_;
+    std::optional<std::size_t> hit_owner_; // nullable 004704E0 result, not the shot/source identity
     const GameBulletClassRow* weapon_;
     float direction_[3]{};
     bsp::HitRecord hit_{};
@@ -15814,7 +15819,11 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
-    ShipHitBinding binding(*this, victim, shooter, weapon, direction);
+    // The projectile funnel passes shot.owner_unit-1 as shooter (006E7C40's
+    // projectile+170h owner+ACh); deferred and radial records retain that
+    // resolved identity. Keep it distinct from a possibly absent shot owner
+    // in the gunless funnel below, rather than inferring it from weapon.
+    ShipHitBinding binding(*this, victim, std::optional<std::size_t>{shooter}, weapon, direction);
     binding.set_hit(hit);
     const float before = target.health;
     notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
@@ -16283,8 +16292,8 @@ void GameGunneryHost::Impl::kamikaze_direct_hit_00819a20(std::size_t unit, std::
 // The tail of apply_hit for a record with no gun and no shot (0084BAD0 with
 // shot 0): the queue, the dispatch 00826F10, the health write and the death.
 // No attribution: with shot 0 the record's +4h is null and 0077CE60's source
-// record does not resolve. The kamikaze stands in as the ShipHitBinding's
-// shooter only for the shooter position.
+// record does not resolve. The source is retained for queue/accounting only;
+// it must not stand in for 004704E0's null owning-unit result.
 //
 // Packet cc13-kzdirect: with `unit_shot` the record's +4h is the kamikaze unit
 // (00819A20's direct record). 00826F10 then sees a shot that is neither a
@@ -16338,7 +16347,10 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     hit_event_leak = 0.0f;
     const float no_shot_direction[3] = {0.0f, 1.0f, 0.0f};
     const float* direction = unit_shot != nullptr ? unit_shot->direction : no_shot_direction;
-    ShipHitBinding binding(*this, victim, source, nullptr, direction);
+    // 004704E0 returns null both for shot0 and for a direct kamikaze unit:
+    // its +108h virtual is 0042BB30 (XOR EAX,EAX). A valid source index or
+    // hull segment does not supply an owner for the damage-direction flash.
+    ShipHitBinding binding(*this, victim, std::nullopt, nullptr, direction);
     binding.set_hit(hit);
     const float before = target.health;
     notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
