@@ -2280,7 +2280,7 @@ void* bot_task_move_on_path_construct_from_stream_009bda30(Cc13Seg67bHost& host,
 
 // 009BDBB0 (009BDBB0-009BDC0F). __fastcall(ECX = bot): new(520h) (009BDBC7); null
 // -> 0; else 009BCE50(ECX = t, bot) (009BDBE9).
-void* bot_task_move_on_path_create_009bdbb0(Cc13Seg67bHost& host, void* bot) {
+void* bot_task_move_on_path_create_009bdbb0(MoveOnPathTaskFactoryHost& host, void* bot) {
     void* const t = host.operator_new_00bf681b(0x520);
     if (t == nullptr) return nullptr;
     return host.move_on_path_task_construct_009bce50(t, bot);
