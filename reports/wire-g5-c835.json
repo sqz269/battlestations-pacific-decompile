@@ -283,9 +283,9 @@
     "entry_reachable_reconstructed_after": 5543
   },
   "checks": {
-    "official_build": "scripts/build.ps1: passed; all four CTests passed",
-    "focused_probe": "tests/wire_g5_c835_leave_map_probe.cmd: passed reentrant warning/latch/kill-order, mode9, session2 and final-squadron owner sequence; executable has embedded manifest",
-    "call_graph": "007f31a0 REACHABLE; one direct call site in the new units-motion lambda; path reaches retreat_leave_map_007ee410 from fixed-step mission loop",
+    "official_build": "scripts/build.ps1: rerun after review1828 fix; Win32 Release passed and all four CTests passed",
+    "focused_probe": "tests/wire_g5_c835_leave_map_probe.cmd: passed reentrant/sparse-member/latch/owner/gate sequence; tests the actual PlaneSquadronHostRecord compact accessors used by the adapter; embedded executable manifest",
+    "call_graph": "Rerun after review1828 fix: 007f31a0 REACHABLE with one direct call site in the units-motion lambda; entry-reachable reconstructed total remains 5543.",
     "diff_check": "git diff --check passed",
     "game_run": false,
     "float_math_changed": false
@@ -295,5 +295,27 @@
     "Host fuses squadron and wing entity identities; final-member party/kill use that live member proxy.",
     "No original ABI or gameplay validation."
   ],
-  "coordination": "units_internal.hpp declaration edit is disjoint from g5-w8 c832 Impl destructor and path-leg owner changes; no merges or pushes performed."
+  "coordination": "units_internal.hpp declaration edit is disjoint from g5-w8 c832 Impl destructor and path-leg owner changes; no merges or pushes performed.",
+  "review_round_1": {
+    "review_run": 1828,
+    "reviewed_head": "868024a5932db395e260a11e924f878c05b35d30",
+    "findings": [
+      {
+        "id": "P1",
+        "status": "fixed",
+        "finding": "Mixed filtered flight_leader and raw sparse count/member indices could route a promoted leader to itself indefinitely.",
+        "change": "Added live_member(ordinal) to the real squadron record; flight_leader delegates to live_member(0), and all live handler callbacks use live_count/flight_leader/live_member. Each callback rescans current member_units and excludes only kPlaneSquadronNoUnit; no snapshot or invented member state.",
+        "regression_before_fix": "Extended focused probe failed with exit1 and message: leader recursively routed its own exit. The probe guard stopped recursion without a stack overflow.",
+        "regression_after_fix": "Same probe passes with leading/interior/trailing NoUnit holes, a single member amid holes, and a leading seat cleared during the warning callback. The route callback rejects self-routing, and outside-map callback rejects sentinel members.",
+        "validation": [
+          "Win32 Release build and all four CTests passed",
+          "Focused probe passed",
+          "git diff --check passed",
+          "Optimized call graph rerun: claimed body still entry-reachable, one call site; reconstructed called total 5543",
+          "Fresh wire_readiness --standins: wired total10686; 007f31a0 wired/called with one call site."
+        ],
+        "remaining_scope": "Original partial host-projection limitations remain; no original ABI or gameplay validation."
+      }
+    ]
+  }
 }

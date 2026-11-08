@@ -23392,8 +23392,9 @@ void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
     if (zone == nullptr) ++exit_zone_party_no_zone;
     std::size_t outside_killed = 0;
     bool main_killed = false;
-    // 007F31A0 operates on the live member array, including its native count;
-    // do not rebuild an alive-only array, which changes the last-member arm.
+    // NoUnit holes can appear after start-of-step compaction. Count, leader
+    // and indexed members must share compact live ordinals, rescanned at each
+    // callback; keep existing unit entries until the owner actually clears them.
     std::function<void(std::size_t)> left_map;
     left_map = [&](std::size_t plane) {
         bsp::SquadronLeaveMapHost h;
@@ -23410,9 +23411,9 @@ void GameUnitsHost::Impl::retreat_leave_map_007ee410(std::size_t m) {
                 true);
             done("PlaneSquadron::exit_zone_notice_00982120", 0x00982120u);
         };
-        h.member_count = [&] { return sq->member_units.size(); };
+        h.member_count = [&] { return static_cast<std::size_t>(sq->live_count()); };
         h.leader = [&] { return sq->flight_leader(); };
-        h.member = [&](std::size_t i) { return sq->member_units.at(i); };
+        h.member = [&](std::size_t i) { return sq->live_member(i); };
         h.outside_map = [&](std::size_t u) {
             if (bounds == nullptr || u >= slots.size() || !slots[u]) return false;
             const float* p = slots[u]->motion.position;

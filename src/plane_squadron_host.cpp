@@ -177,12 +177,18 @@ std::int32_t PlaneSquadronHostRecord::live_count() const noexcept {
     return live;
 }
 
-std::size_t PlaneSquadronHostRecord::flight_leader() const noexcept {
-    // 007EDA91 MOV ESI,[ECX+3D0h]: slot 0, whatever the count.
+std::size_t PlaneSquadronHostRecord::live_member(std::size_t ordinal) const noexcept {
     for (std::size_t unit : member_units) {
-        if (unit != kPlaneSquadronNoUnit) return unit;
+        if (unit == kPlaneSquadronNoUnit) continue;
+        if (ordinal == 0) return unit;
+        --ordinal;
     }
     return kPlaneSquadronNoUnit;
+}
+
+std::size_t PlaneSquadronHostRecord::flight_leader() const noexcept {
+    // 007EDA91's slot0, expressed in the same compact sequence as live_count.
+    return live_member(0);
 }
 
 bool PlaneSquadronHostRecord::remove_member_unit_007f3970(std::size_t unit,
