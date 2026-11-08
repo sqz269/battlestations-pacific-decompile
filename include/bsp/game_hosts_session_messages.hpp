@@ -185,6 +185,12 @@ public:
     // was handled; false leaves non-local transport to the caller's record.
     bool post_landing_ship_open_a6(std::int32_t game_state, std::int32_t session_mode,
         const SessionParticipantPools& participants, const std::size_t& local_slot) const;
+    // 007465E0's death-smoke send: 007448B0(7, duration), then 0077C2A0
+    // with flags 4. The native router drops this in a local session before
+    // serialization or delivery. True means that single-player path ran.
+    bool post_land_fort_death_smoke_d1(float duration, std::int32_t game_state,
+        std::int32_t session_mode, const SessionParticipantPools& participants,
+        const std::size_t& local_slot) const;
     // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
     // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
     // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local

@@ -1,0 +1,85 @@
+{
+  "goal": 5,
+  "chain": 805,
+  "slot": "g5-w7",
+  "base": "64a68196bbd9712c7224e648f07dfde6da144746",
+  "picked": "LandFort death-smoke D1 sender constructor over the native kind 7 and live smoke duration",
+  "rows": [
+    {
+      "native": "007448b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_land_fort_on_destroyed::FortDeathFire::send_effect_message_7 -> src/game_hosts_ship_ai.cpp: GameShipAiHost::post_land_fort_death_smoke_d1 -> src/game_hosts_session_messages.cpp: HostSessionMessages::post_land_fort_death_smoke_d1",
+      "real_state": "Duration comes unchanged from start_death_fire_007465e0 time_748; kind 7 is PUSH 7 at 00746754; current participant identity, local slot and game-state cells are borrowed from the retained mission owner.",
+      "evidence": [
+        "bsp.py show 007448b0",
+        "bsp.py show 007465e0 --asm --start 96 --lines 36",
+        "bsp.py ghidra bytes 00cff37c --length 20",
+        "src/game_hosts_mission_frame.cpp:4833 binds mission state, slot and participants"
+      ],
+      "abi": "Existing new C++ interface over the 2Ch message; original __thiscall ECX message, kind/float stack arguments, RET8; not a binary drop-in.",
+      "call_graph": "REACHABLE, one call at 1022afc4 from HostSessionMessages::post_land_fort_death_smoke_d1 in the validated build."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landfort_fire_frame_00745be0 secondary_sync_message_d1",
+      "reason": "Missing actual class+150h secondary-effect selection and class+28h/+2Ch effect-point owner/index; current producer records the effect and assumes a zero point count."
+    },
+    {
+      "native": "00746320",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landfort_smoke_fire_roll",
+      "reason": "Its inline D1 float-form sender needs the actual class+144h fire-effect index; the current effect-choice draw is flattened to a diagnostic."
+    },
+    {
+      "native": "009c2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: land moveto task construction",
+      "reason": "Missing genuine land-moveto placement object, observer endpoints and complete task/approach lifetime binding; current task state is flattened host data."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship AI controller registration",
+      "reason": "Missing complete 2268h native brain owner and its constructed subobject services; registration currently owns projected controllers."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No live host FOV/aspect-product consumer was established; adapting an unrelated product merely for reachability would not preserve a native call site."
+    },
+    {
+      "native": "008050e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: recon-slot runtime",
+      "reason": "No same-root native recon-slot allocation and list-consumer mapping was established for the constructor; gunnery was separately leased during selection."
+    },
+    {
+      "native": "004845a0",
+      "status": "skipped",
+      "host_site": "src/native_unit_owner_entity.cpp: native owner destruction",
+      "reason": "The existing raw owner-destructor caller is not entry-reachable; no authoritative live unit-list owner/destructor binding was established."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::progress_slot20",
+      "reason": "The adapter already calls this body, but no live gameplay progress-query consumer was established; adding an unused audio query would not be wiring."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 4 tests",
+    "final_build": "scripts/build.ps1 passed, all 4 tests",
+    "call_graph": "tools/call_graph.py; who 007448b0; path 007448b0: reachable through the changed FortDeathFire hook",
+    "source_wired_before": 10644,
+    "source_wired_after": 10645,
+    "baseline_called_count": "Initial readiness reused a stale call graph; its called total is not used as a fresh baseline.",
+    "final_built_reconstructed_addresses_called": 5495,
+    "float_math_changed": false,
+    "game_run": false,
+    "final_called_rows": 5881
+  },
+  "remaining": "Integer and ordinary fire D1 variants need real effect/point indices. Existing smoke-effect creation remains a host projection. The new sender follows the native flags-4 local-session drop before serialization/delivery; online transport and gameplay were not tested.",
+  "coordination": "Gunnery edit is limited to the FortDeathFire send_effect_message_7 hook; notified g5-w8 (deferred-hit guard) and g5-w11 (director getters), then released gunnery."
+}
