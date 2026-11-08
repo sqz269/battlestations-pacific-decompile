@@ -9,12 +9,12 @@
       "native": "007b95e0",
       "status": "wired",
       "host_site": "include/bsp/game_hosts_units_internal.hpp: GameUnitsHost::Impl::plane_is_leader_with_wingmen_007b95e0, called by src/game_hosts_units_motion.cpp: PlaneBinding::plan_yaw_0099d300",
-      "inputs": "PlaneSquadronRegistry::spawn_index_of_unit (retained plane+9D8h), actual member squadron binding (+9D4h), and wingmen_recount_[name].count_3bc (+3BCh)",
+      "inputs": "Live-seat zero/nonzero test (+9D8h rewritten by 007ED260): sq->flight_leader()==unit.process_index ? 0 : 1, actual member squadron binding (+9D4h), and wingmen_recount_[name].count_3bc (+3BCh)",
       "consumer": "The predicate chooses the aircraft class TurnRollLeader (+260h) input to the live pilot roll law.",
-      "change": "Replace the host's flight_leader() equality and count comparison with the existing reconstructed predicate; retain the spawn stamp across member-array compaction.",
-      "evidence": "bsp.py show 007b95e0; src/band_007a_cc13.cpp; src/plane_squadron_host.cpp: PlaneSquadronRegistry::spawn_index_of_unit",
+      "change": "Call the existing reconstructed predicate with the current live-seat zero/nonzero test, so a new first live member qualifies for TurnRollLeader after leader removal; do not use the stale member_spawn_index stamp.",
+      "evidence": "bsp.py show 007b95e0; bsp.py show 007f3970 --asm: 007F3A11 CALL 007ED260 after compaction; bsp.py show 007ed260 --asm: 007ED292 MOV [ESI+9D8h],EAX publishes the live array position; src/plane_squadron_host.cpp: PlaneSquadronHostRecord::flight_leader returns the first non-NoUnit member",
       "original_abi": "__fastcall(ECX=plane), EAX boolean; reconstructed C++ takes typed field values and is not a binary replacement",
-      "call_site": "102b330d",
+      "call_site": "102b331c",
       "compiled_caller": "PlaneBinding::plan_yaw_0099d300",
       "called_before": false,
       "called_after": true
@@ -227,6 +227,37 @@
     "pc24_lint": "Not applicable: no floating-point arithmetic changed",
     "game_execution": "Not run, as instructed"
   },
+  "review_round_1": {
+    "review_run": 1304,
+    "reviewed_head": "63388e256cf056269661d6f4b6f86660ab217b35",
+    "finding_1": "Accepted: the original retained-spawn-stamp interpretation contradicted the binary and suppressed the new leader's TurnRollLeader selection after removal.",
+    "fixes": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "Pass sq->flight_leader()==unit.process_index ? 0 : 1 to the existing band_007a_cc13 body. The body tests only index==0, so this is equivalent to the live seat among non-NoUnit members and permits the new first live member after leader removal."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "change": "Replace the retained-stamp comment with the verified 007F3970 -> 007F3A11 CALL 007ED260 -> 007ED292 MOV [ESI+9D8h],EAX live-position publication chain."
+      },
+      {
+        "id": 3,
+        "status": "fixed",
+        "change": "Correct row 007b95e0 inputs/change/evidence to the live-seat zero/nonzero test and the 007ED260 rewrite, and refresh its compiled call site."
+      }
+    ],
+    "checks": {
+      "build": "PASS: scripts/build.ps1, all four existing CTests (11.72 seconds)",
+      "call_graph": "PASS: one reachable call at 102b331c from PlaneBinding::plan_yaw_0099d300, with a path to WinMainCRTStartup; 5043 reconstructed addresses called",
+      "readiness": "PASS: wired=9965; 007b95e0 is wired, called=true, call_sites=1, callers_live=1",
+      "diff_check": "PASS",
+      "pc24_lint": "Not applicable: no floating-point arithmetic changed",
+      "game_execution": "Not run, as instructed"
+    },
+    "scope": "The pre-existing member_spawn_index model/comment and its other readers are separate follow-up work; this repair changes only the reviewed predicate and report."
+  },
   "artifacts": [
     "local/output/wire-g5-c624-build.log",
     "local/output/wire-g5-c624-callgraph-before.log",
@@ -234,7 +265,12 @@
     "local/output/wire-g5-c624-calls-007b95e0.log",
     "local/output/wire-g5-c624-path-007b95e0.log",
     "local/output/wire-g5-c624-readiness-before.log",
-    "local/output/wire-g5-c624-readiness-after.log"
+    "local/output/wire-g5-c624-readiness-after.log",
+    "local/output/wire-g5-c624-r1-build.log",
+    "local/output/wire-g5-c624-r1-callgraph.log",
+    "local/output/wire-g5-c624-r1-calls-007b95e0.log",
+    "local/output/wire-g5-c624-r1-path-007b95e0.log",
+    "local/output/wire-g5-c624-r1-readiness.log"
   ],
   "limitations": [
     "Compiled entry reachability establishes wiring, not a live gameplay observation.",
