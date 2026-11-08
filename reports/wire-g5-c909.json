@@ -1,0 +1,111 @@
+{
+  "chain": 909,
+  "slot": "g5-w7",
+  "baseline_head": "96a98098490f8894077f16e263268aae0a08153f",
+  "picked": "Actual 0108FD70 hardware-layout owner table startup reserve/exact allocation",
+  "rows": [
+    {
+      "native": "00b482d0",
+      "status": "wired",
+      "host_site": "src/native_graphics_pool_lifetime.cpp: NativeGraphicsPoolLifetime::initialize, reached through GameNativeGraphicsPoolProcess::initialize_once and CD7C00",
+      "evidence": "B486A0 inlines this unsigned reserve32 operation over the actual 0108FD70+28h table in existing FH3 state2; the former inline allocation is bypassed for this profile."
+    },
+    {
+      "native": "00b47b60",
+      "status": "wired",
+      "host_site": "src/render_sprites_cc13.cpp: reserve_native_hardware_layout_owner_table_00b482d0",
+      "evidence": "Complete borrowed-header exact allocation replaces the former PodArray spec: capacity before wrapped allocation, current count/data reloads, current old pointer free, then replacement publication."
+    },
+    {
+      "native": "00b48250",
+      "status": "skipped",
+      "host_site": "src/render_sprites_cc13.cpp: allocate_layout_slot_00b48780",
+      "reason": "Missing a production raw-slot allocation caller for the older 0108FD70 hardware-layout pool; B48780 is reached only by native-unreferenced B488D0."
+    },
+    {
+      "native": "00b47bb0",
+      "status": "skipped",
+      "host_site": "src/render_sprites_cc13.cpp: allocate_layout_slot_00b48780",
+      "reason": "Missing a live growing table producer for the older hardware-layout pool; startup uses reserve32 and live layouts allocate from the distinct 0108FE9C pool."
+    },
+    {
+      "native": "00b604d0",
+      "status": "skipped",
+      "host_site": "src/native_hardware_layout_pool_static.cpp: initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "reason": "Already entry-reachable at baseline through the existing 0108FE9C pool startup; no missing wiring at this site."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native enum projection",
+      "reason": "Already called at baseline; ready text classification does not identify missing compiled wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native bag merge",
+      "reason": "Already called at baseline through the owning property projection; no missing body call at this site."
+    },
+    {
+      "native": "008eea80",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native hash iteration",
+      "reason": "Already called through the reviewed shared semantic mapping to next_native_scene_property_hash_008eeb60; another iteration would duplicate the operation."
+    },
+    {
+      "native": "008ef650",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: existing native hash iteration",
+      "reason": "Already called through the reviewed shared semantic mapping to begin_native_scene_property_hash_008eeb10; no missing semantic body call."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "The documented candidate-score reader is an excluded debug overlay; missing a gameplay owner and consumer."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score list",
+      "reason": "Missing gameplay score records and consumer; the documented mark/list reader is debug-only."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller flag storage",
+      "reason": "Missing a retained controller-state message producer and routed consumer carrying both target descriptors and mode."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and its snapshot transport consumer."
+    },
+    {
+      "native": "00af62f0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_pool_allocate.cpp: constructor-unwind raw storage return",
+      "reason": "Missing an entry-reachable particle-model construction/unwind producer; the pool's startup table alone supplies no object to return."
+    },
+    {
+      "native": "00bac2b0",
+      "status": "skipped",
+      "host_site": "src/native_tracer_pool.cpp: constructor-unwind raw storage return",
+      "reason": "Missing an entry-reachable tracer construction/unwind producer with a real allocated slot; no artificial return was added."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, all four CTests passed",
+    "focused_probe": "tests/wire_g5_c909_hardware_owner_table_probe.cpp passed against production bsp_core: startup reserve32, no shrink, two-pointer preservation, real FFFFFFF8 allocation failure and capacity-before-handler publication",
+    "release_call_graph": "Both selected addresses reachable; reserve called by NativeGraphicsPoolLifetime::initialize; release ICF folds bodies with B601C0/B60470 from the separate newer pool",
+    "analysis_call_graph": "build/callgraph compiled with /Ob0 and /OPT:NOICF: B482D0 has exactly one reachable caller, NativeGraphicsPoolLifetime::initialize; B47B60 has exactly one reachable caller, B482D0. Both are reachable from WinMainCRTStartup through CD7C00 and the actual graphics-pool process.",
+    "wired_text_before": 10775,
+    "wired_text_after": 10776,
+    "new_called_bodies": 2,
+    "metric_note": "Readiness labels B482D0 callees_done_no_wired_caller despite called=true; compiled callers establish wiring. The release graph's canonical count is affected by ICF; its alias-aware original-address set adds only B47B60/B482D0 and removes none.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": "Older pool raw-slot allocation remains unreferenced; no game run or native binary ABI claim."
+}
